@@ -5,7 +5,25 @@
   flex-direction: column;
   height: 100vh;
   background-color: #fff;
-  
+
+  .info-bar {
+    background-color: $danger-color;
+    color: $white;
+    display: flex;
+    align-items: center;
+    padding: $spacing / 2;
+
+    .icon {
+      margin: $spacing / 2;
+      font-size: 1.2em;
+    }
+
+    .text {
+      padding: $spacing / 2;
+      font-weight: $base-font-medium;
+    }
+  }
+
   .header {
     padding: 10px;
     flex-shrink: 0;

@@ -1,4 +1,5 @@
 import React from 'react';
+import { IoInformationCircle } from 'react-icons/io5';
 import ContentEditable from 'react-contenteditable';
 import { connect } from 'react-redux';
 import _cs from 'classnames';
@@ -26,6 +27,8 @@ import {
   languageResponseSelector,
   allLanguagesSelector
 } from '#selectors';
+
+import useRequest from '#hooks/useRequest';
 
 
 import BlockLoading from '#components/block-loading';
@@ -96,6 +99,12 @@ function TranslationDashboard(p) {
     langAll
   } = p;
 
+  const [mePending, meResponse] = useRequest('api/v2/user/me');
+
+  const hasPermissionToModify = React.useMemo(() => (
+    meResponse?.lang_permissions[currentLanguage] ?? false
+  ), [meResponse, currentLanguage]);
+
   const handleExportButtonClick = React.useCallback(() => {
     const langEntries = Object.entries(lang);
     const ws = sheet.utils.aoa_to_sheet([
@@ -139,7 +148,7 @@ function TranslationDashboard(p) {
     }
 
     prevBulkResponse.current = languageBulkResponse;
-  }, [prevBulkResponse, languageBulkResponse, currentLanguage, getLanguage]);
+  }, [hasPermissionToModify, prevBulkResponse, languageBulkResponse, currentLanguage, getLanguage]);
 
   const [appStrings, setAppStrings] = React.useState({});
 
@@ -305,7 +314,7 @@ function TranslationDashboard(p) {
     updated: updatedKeyList.length,
   }), [appStringKeyList, addedKeyList, removedKeyList, updatedKeyList]);
 
-  const pending = languageResponse.fetching || languageBulkResponse.fetching;
+  const pending = mePending || languageResponse.fetching || languageBulkResponse.fetching;
   const conflicted = React.useMemo(() => (
     viewCounts.added > 0 || viewCounts.removed > 0 || viewCounts.updated > 0
   ), [viewCounts]);
@@ -341,17 +350,29 @@ function TranslationDashboard(p) {
           IFRC GO - Translation Dashboard
         </title>
       </Helmet>
+      <div className={styles.infoBar}>
+        <IoInformationCircle className={styles.icon} />
+        <div className={styles.text}>
+          View only mode (You do not have enough permission to modify the content)
+        </div>
+      </div>
       <header className={styles.header}>
         <div className={styles.topSection}>
           <h2 className={styles.heading}>
             Translation Dashboard
           </h2>
           <div className={styles.actions}>
-            <label htmlFor="import" className={_cs(pending && 'disabled', 'button button--secondary-bounded')}>
+            <label
+              htmlFor="import"
+              className={_cs(
+                (!hasPermissionToModify || pending) && 'disabled',
+                'button button--secondary-bounded'
+              )}
+            >
               Import from xlsx
             </label>
             <input
-              disabled={pending}
+              disabled={(!hasPermissionToModify || pending)}
               id="import"
               type="file"
               accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
@@ -359,14 +380,22 @@ function TranslationDashboard(p) {
               hidden
             />
             <button
+              disabled={pending || !hasPermissionToModify}
               onClick={handleExportButtonClick}
-              className='button button--secondary-bounded'
+              className={_cs(
+                (!hasPermissionToModify || pending) && 'disabled',
+                'button button--secondary-bounded'
+              )}
             >
               Export dev strings
             </button>
             <button
+              disabled={pending || !hasPermissionToModify}
               onClick={handleExportAllClick}
-              className='button button--secondary-bounded'
+              className={_cs(
+                (!hasPermissionToModify || pending) && 'disabled',
+                'button button--secondary-bounded'
+              )}
             >
               Export ALL strings
             </button>
@@ -382,7 +411,7 @@ function TranslationDashboard(p) {
                 onClick={handleTabClick}
                 type="button"
                 className={_cs(styles.tab, (!conflicted || currentView === viewKey) && styles.active)}
-                disabled={pending}
+                disabled={(!hasPermissionToModify || pending)}
               >
                 {`${views[viewKey]} (${viewCounts[viewKey]})`}
               </button>
@@ -393,27 +422,27 @@ function TranslationDashboard(p) {
               <>
                 { currentView === 'removed' && (
                   <button
-                    className={_cs(pending && 'disabled', 'button button--secondary-bounded')}
+                    className={_cs((!hasPermissionToModify || pending) && 'disabled', 'button button--secondary-bounded')}
                     onClick={handleRemoveOutdatedButtonClick}
-                    disabled={pending}
+                    disabled={(!hasPermissionToModify || pending)}
                   >
                     Remove outdated keys
                   </button>
                 )}
                 { currentView === 'added' && (
                   <button
-                    className={_cs(pending && 'disabled', 'button button--secondary-bounded')}
+                    className={_cs((!hasPermissionToModify || pending) && 'disabled', 'button button--secondary-bounded')}
                     onClick={handleAddNewKeysButtonClick}
-                    disabled={pending}
+                    disabled={(!hasPermissionToModify || pending)}
                   >
                     Add new keys
                   </button>
                 )}
                 { currentView === 'updated' && (
                   <button
-                    className={_cs(pending && 'disabled', 'button button--secondary-bounded')}
+                    className={_cs((!hasPermissionToModify || pending) && 'disabled', 'button button--secondary-bounded')}
                     onClick={handleResolveButtonClick}
-                    disabled={pending}
+                    disabled={(!hasPermissionToModify || pending)}
                   >
                     Resolve
                   </button>
@@ -421,7 +450,10 @@ function TranslationDashboard(p) {
               </>
             ) : (
               <button
-                className={_cs(pending && 'disabled', 'button button--primary-bounded')}
+                className={_cs(
+                  (!hasPermissionToModify || pending) && 'disabled',
+                  'button button--primary-bounded',
+                )}
                 onClick={handleSaveButtonClick}
                 disabled={pending}
               >
