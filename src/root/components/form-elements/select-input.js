@@ -36,6 +36,7 @@ class SelectInput extends React.PureComponent {
       options,
       isMulti,
       error,
+      disabled,
       ...otherProps
     } = this.props;
 
@@ -57,6 +58,8 @@ class SelectInput extends React.PureComponent {
         <Select
           {...otherProps}
           isMulti={isMulti}
+          defaultValue={value}
+          isDisabled={disabled}
           options={options}
           className='tc-select-input'
           value={value}

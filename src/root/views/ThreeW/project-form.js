@@ -142,7 +142,7 @@ class ProjectForm extends React.PureComponent {
         budget_amount: [requiredCondition, positiveIntegerCondition],
         project_country: [],
         event: [],
-        dtype: [],
+        dtype: [requiredCondition],
         project_districts: [requiredCondition],
         name: [requiredCondition],
         operation_type: [requiredCondition],
@@ -532,7 +532,7 @@ class ProjectForm extends React.PureComponent {
     // const shouldShowDisasterType = String(faramValues.operation_type) === '0' ||
     //   shouldShowCurrentOperation ||
     //   shouldShowCurrentEmergencyOperation;
-    const shouldDisableDisasterType = String(faramValues.operation_type) === '1';
+    const shouldDisableDisasterType = shouldShowCurrentEmergencyOperation || shouldShowCurrentOperation;
     const isReachedTotalRequired = String(faramValues.status) === '2' && !isBudgetAndTotalNotRequired;
     const isTargetTotalRequired = !isBudgetAndTotalNotRequired;
 
