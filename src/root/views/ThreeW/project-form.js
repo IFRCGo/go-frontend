@@ -600,7 +600,7 @@ class ProjectForm extends React.PureComponent {
                 options={districtOptions}
                 disabled={shouldDisableDistrictInput}
                 placeholder={fetchingDistricts ? strings.projectFormDistrictFetching : strings.projectFormDistrictSelect }
-                multi
+                isMulti
               />
               <button
                 type="button"
@@ -723,7 +723,7 @@ class ProjectForm extends React.PureComponent {
               className='project-form-select'
               label={strings.projectFormSecondarySectorLabel}
               options={filteredSecondarySectorOptions}
-              multi
+              isMulti
             />
           </InputSection>
 

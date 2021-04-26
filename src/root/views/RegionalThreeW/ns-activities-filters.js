@@ -64,7 +64,7 @@ function NSActivitiesFilters (p) {
         placeholder={strings.nsActivityReportingPlaceholder}
         options={supportingNSOptions}
         className='select-input'
-        multi
+        isMulti
       />
       <SelectInput
         faramElementName='primary_sector'
@@ -72,7 +72,7 @@ function NSActivitiesFilters (p) {
         placeholder={strings.nsActivitySectorPlaceholder}
         options={activityOptions}
         className='select-input'
-        multi
+        isMulti
       />
       <SelectInput
         faramElementName='country'
@@ -80,7 +80,7 @@ function NSActivitiesFilters (p) {
         placeholder={strings.nsActivityCountryPlaceholder}
         options={receivingNSOptions}
         className='select-input'
-        multi
+        isMulti
       />
     </Faram>
   );

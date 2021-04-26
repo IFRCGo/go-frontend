@@ -566,7 +566,7 @@ class FieldReportForm extends React.Component {
                     onChange={this.onFieldChange.bind(this, 'districts')}
                     options={districtChoices}
                     disabled={!this.state.data.isCovidReport}
-                    multi
+                    isMulti
                   />
 
                   <FormError
@@ -991,7 +991,7 @@ class FieldReportForm extends React.Component {
                           value={this.state.data.externalPartners}
                           onChange={this.onFieldChange.bind(this, 'externalPartners')}
                           options={extParChoices}
-                          multi
+                          isMulti
                         />
                         <FormError
                           errors={this.state.errors}
@@ -1004,7 +1004,7 @@ class FieldReportForm extends React.Component {
                           value={this.state.data.supportedActivities}
                           onChange={this.onFieldChange.bind(this, 'supportedActivities')}
                           options={suppActChoices}
-                          multi
+                          isMulti
                         />
                         <FormError
                           errors={this.state.errors}
