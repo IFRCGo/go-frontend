@@ -728,6 +728,7 @@ export default {
   deploymentsDeployedHeops: 'Deployed HEOPS',
   deploymentEruDeploymentTypes: 'ERU Deployment Types',
   deploymentNumber: 'Number of Deployments by NS',
+  nationalSocieties: 'National Societies',
   readinessFilteredERUs: 'Filter Ready ERUs',
   readinessResetFilters: 'Reset Filters',
   readinessLastUpdated: 'Last updated {date}',

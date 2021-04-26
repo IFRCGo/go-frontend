@@ -135,7 +135,7 @@ class Readiness extends React.Component {
         </div>
         <div className='col col-9-mid'>
           <div className='readiness__header'>
-            <h2 className='fold__title spacing-b'>National Societies</h2>
+            <h2 className='fold__title spacing-b'>{strings.nationalSocieties}</h2>
           </div>
           <div className='readiness__cards row flex-sm'>
             {filtered.map(this.renderCard)}
