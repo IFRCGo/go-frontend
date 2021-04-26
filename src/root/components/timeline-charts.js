@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { ResponsiveContainer, LineChart, Line, Legend, XAxis, YAxis, Tooltip } from 'recharts';
 import { find, sortBy } from 'lodash';
 import { DateTime } from 'luxon';
+import { listToMap } from '@togglecorp/fujs';
 
 import { environment } from '#config';
 import BlockLoading from './block-loading';
@@ -12,6 +13,116 @@ import { getAggregateAppeals } from '#actions';
 
 import LanguageContext from '#root/languageContext';
 import Translate from '#components/Translate';
+
+const getMonthKey = (d) => {
+  const date = new Date(d);
+  return `${date.getFullYear()}-${date.getMonth()}`;
+};
+
+const monthTickFormatter = (date) => {
+  const zone = 'utc';
+  const month = DateTime.fromISO(date, {zone}).toFormat('MMM');
+  return month;
+};
+
+const yearTickFormatter = (date) => {
+  const zone = 'utc';
+  const year = DateTime.fromISO(date, {zone}).toFormat('yyyy');
+  return year;
+};
+
+
+function MonthlyChart({
+  data,
+  contentFormatter,
+}) {
+  const { strings } = React.useContext(LanguageContext);
+  const dataByMonth = React.useMemo(() => (
+    listToMap(
+      data,
+      d => getMonthKey(d.timespan),
+      d => d,
+    )
+  ), [data]);
+
+  const [minDate, maxDate] = React.useMemo(() => {
+    const max = new Date();
+    const min = new Date(max);
+    min.setFullYear(max.getFullYear() - 1);
+    min.setMonth(min.getMonth() + 1);
+
+    return [min, max];
+  }, []);
+
+  const renderData = React.useMemo(() => {
+    const monthlyData = [];
+
+    for (
+      let currentDate = new Date(minDate);
+      currentDate.getTime() <= maxDate.getTime();
+      currentDate.setMonth(currentDate.getMonth() + 1)
+    ) {
+      const monthKey = getMonthKey(currentDate);
+      const currentMonthData = dataByMonth[monthKey];
+
+      monthlyData.push(currentMonthData ?? {
+        appeals: { count: 0 },
+        drefs: { count: 0, beneficiaries: undefined, amount_funded: undefined },
+        timespan: currentDate.toISOString(),
+        timestamp: currentDate.getTime(),
+      });
+    }
+
+    return monthlyData;
+  }, [dataByMonth, minDate, maxDate]);
+
+
+  return (
+    <ResponsiveContainer>
+      <LineChart data={renderData}>
+        <XAxis
+          interval={0}
+          tickFormatter={monthTickFormatter}
+          dataKey="timespan"
+          axisLine={false}
+          padding={{ left: 16, right: 16 }}
+        />
+        <YAxis axisLine={false} tickLine={false} width={32} padding={{ bottom: 16 }} />
+        <Line name={strings.timeLineChartAppeal} type='monotone' dataKey='appeals.count' stroke='#f5333f' />
+        <Line name={strings.timeLineChartDREFs} type='monotone' dataKey='drefs.count' stroke='#F39C12' />
+        <Tooltip content={contentFormatter}/>
+        <Legend verticalAlign='bottom' iconType='circle' iconSize={10} />
+      </LineChart>
+    </ResponsiveContainer>
+  );
+
+}
+
+function YearlyChart({
+  data,
+  contentFormatter,
+}) {
+  const { strings } = React.useContext(LanguageContext);
+
+  return (
+    <ResponsiveContainer>
+      <LineChart data={data}>
+        <XAxis
+          interval={0}
+          tickFormatter={yearTickFormatter}
+          dataKey="timespan"
+          axisLine={false}
+          padding={{ left: 16, right: 16 }}
+        />
+        <YAxis axisLine={false} tickLine={false} width={32} padding={{ bottom: 16 }} />
+        <Line name={strings.timeLineChartAppeal} type='monotone' dataKey='appeals.count' stroke='#f5333f' />
+        <Line name={strings.timeLineChartDREFs} type='monotone' dataKey='drefs.count' stroke='#F39C12' />
+        <Tooltip content={contentFormatter}/>
+        <Legend verticalAlign='bottom' iconType='circle' iconSize={10} />
+      </LineChart>
+    </ResponsiveContainer>
+  );
+}
 
 class TimelineCharts extends React.Component {
   componentDidMount () {
@@ -25,25 +136,22 @@ class TimelineCharts extends React.Component {
   }
 
   renderChart (data, unit) {
-    let tickFormatter;
     let contentDateFormatter;
 
     const { strings } = this.context;
     const zone = 'utc';
+
     switch (unit) {
       case 'month':
-        tickFormatter = (date) => DateTime.fromISO(date, {zone}).toFormat('MMM');
         contentDateFormatter = (date) => DateTime.fromISO(date, {zone}).toFormat('MMMM yyyy');
         break;
       case 'year':
-        tickFormatter = (date) => DateTime.fromISO(date, {zone}).toFormat('yyyy');
-        contentDateFormatter = tickFormatter;
+        contentDateFormatter = yearTickFormatter;
         break;
     }
 
     const contentFormatter = (payload) => {
       if (!payload.payload[0]) { return null; }
-
       const item = payload.payload[0].payload;
       return (
         <article className='chart-tooltip chart-tooltip--transparent'>
@@ -70,18 +178,21 @@ class TimelineCharts extends React.Component {
       );
     };
 
-
     return (
-      <ResponsiveContainer>
-        <LineChart data={data}>
-          <XAxis tickFormatter={tickFormatter} dataKey='timespan' axisLine={false} padding={{ left: 16, right: 16 }} />
-          <YAxis axisLine={false} tickLine={false} width={32} padding={{ bottom: 16 }} />
-          <Line name={strings.timeLineChartAppeal} type='monotone' dataKey='appeals.count' stroke='#f5333f' />
-          <Line name={strings.timeLineChartDREFs} type='monotone' dataKey='drefs.count' stroke='#F39C12' />
-          <Tooltip content={contentFormatter}/>
-          <Legend verticalAlign='bottom' iconType='circle' iconSize={10} />
-        </LineChart>
-      </ResponsiveContainer>
+      <>
+        { unit === 'year' && (
+          <YearlyChart
+            data={data}
+            contentFormatter={contentFormatter}
+          />
+        )}
+        {unit === 'month' && (
+          <MonthlyChart
+            data={data}
+            contentFormatter={contentFormatter}
+          />
+        )}
+      </>
     );
   }
 

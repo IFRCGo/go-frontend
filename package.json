@@ -138,7 +138,7 @@
     "react-toggle-button": "^2.2.0",
     "react-tooltip": "^3.11.1",
     "react-transition-group": "^2.2.1",
-    "recharts": "^1.0.0-beta.6",
+    "recharts": "^2.0.9",
     "redux": "^3.7.2",
     "redux-listener-middleware": "^0.2.0",
     "redux-logger": "^3.0.6",
