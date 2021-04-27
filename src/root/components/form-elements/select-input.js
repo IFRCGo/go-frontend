@@ -9,7 +9,7 @@ class SelectInput extends React.PureComponent {
   handleChange = (selectedItem) => {
     const {
       onChange,
-      multi,
+      isMulti,
     } = this.props;
 
     if (!onChange) {
@@ -17,13 +17,13 @@ class SelectInput extends React.PureComponent {
     }
 
     if (selectedItem) {
-      if (multi) {
+      if (isMulti) {
         onChange(selectedItem.map(d => d.value));
       } else {
         onChange(selectedItem.value);
       }
     } else {
-      onChange(multi ? emptyList : undefined);
+      onChange(isMulti ? emptyList : undefined);
     }
   }
 
@@ -43,9 +43,13 @@ class SelectInput extends React.PureComponent {
     let value = valueFromProp;
 
     if (isMulti) {
-      value = options.filter(d => (valueFromProp || []).indexOf(d.value) !== -1);
+      value = options.filter(
+        o => (valueFromProp || []).findIndex(
+          v => String(v) === String(o.value)
+        ) !== -1
+    );
     } else {
-      value = (options.filter(d => valueFromProp === d.value) || [])[0];
+      value = (options.filter(d => String(valueFromProp) === String(d.value)) || [])[0];
     }
 
     return (
