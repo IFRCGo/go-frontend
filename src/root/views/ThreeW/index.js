@@ -190,9 +190,7 @@ function ThreeW (p) {
       )}
       <header className='fold__header__block'>
         <h2 className='fold__title fold__title--inline'>
-          <Translate
-            stringId="rcActivities"
-          />
+          <Translate stringId="rcActivities" />
         </h2>
         <div className='fold__title__linkwrap'>
           { isCountryAdmin && (

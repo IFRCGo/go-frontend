@@ -944,7 +944,7 @@ export default {
   projectFormCurrentEmergency: 'Current Emergency Operation*',
   projectFormCurrentEmergencyHelpText: 'The list is populated from current emergency operations related to the selected country. If necessary, create the related emergency through a field report',
   projectFormFetchingEvents: 'Fetching events...',
-  projectFormDisasterType: 'Disaster Type',
+  projectFormDisasterType: 'Disaster Type*',
   projectFormDisasterTypePlaceholder: 'Select an operation to view its disaster type',
   projectFormProjectName: 'Project Name*',
   projectFormHelpText: 'Enter a name that differentiates your activity or project from other initiatives taking place in the response.',
