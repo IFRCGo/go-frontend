@@ -172,7 +172,7 @@ function useRequest(
           setPendingSafe(false, clientId);
 
           if (onSuccess) {
-            onSuccess(res);
+            onSuccess(resBody, res);
           }
         } else {
           if (onFailure) {

@@ -1,10 +1,13 @@
 import React from 'react';
+import { IoInformationCircle } from 'react-icons/io5';
 import ContentEditable from 'react-contenteditable';
 import { connect } from 'react-redux';
 import _cs from 'classnames';
 import spark from 'spark-md5';
 import Helmet from 'react-helmet';
 import sheet from 'xlsx';
+
+import EnvironmentBanner from '#components/EnvironmentBanner';
 
 import {
   listToMap,
@@ -27,9 +30,12 @@ import {
   allLanguagesSelector
 } from '#selectors';
 
+import useRequest from '#hooks/useRequest';
+
 
 import BlockLoading from '#components/block-loading';
 import LanguageSelect from '#components/LanguageSelect';
+import { getFileName } from '#utils/utils';
 
 import styles from './styles.module.scss';
 
@@ -96,19 +102,43 @@ function TranslationDashboard(p) {
     langAll
   } = p;
 
-  const handleExportButtonClick = React.useCallback(() => {
+  const [mePending, meResponse] = useRequest('api/v2/user/me');
+  /*
+  const [allLanguageUrl, setAllLanguageUrl] = React.useState('');
+  const [allLanguagePending] = useRequest(
+    allLanguageUrl,
+    undefined,
+    { onSuccess: (resBody) => {
+      console.info(resBody);
+      setAllLanguageUrl('');
+    }}
+  );
+  */
+
+  const hasPermissionToModify = React.useMemo(() => (
+    meResponse?.lang_permissions[currentLanguage] ?? false
+  ), [meResponse, currentLanguage]);
+
+  const handleExportDevStringsButtonClick = React.useCallback(() => {
     const langEntries = Object.entries(lang);
     const ws = sheet.utils.aoa_to_sheet([
       ['ID', 'dev', 'en', 'fr', 'es', 'ar'],
       ...langEntries,
     ]);
+
     const wb = sheet.utils.book_new();
     sheet.utils.book_append_sheet(wb, ws);
 
-    sheet.writeFile(wb, 'go-strings.xlsx');
+    sheet.writeFile(wb, getFileName('go-dev-strings', 'xlsx'));
   }, []);
 
-  const handleExportAllClick = React.useCallback(() => {
+  /*
+  const handleExportEmptyStringsButtonClick = React.useCallback(() => {
+    setAllLanguageUrl('/api/v2/language/all');
+  }, [setAllLanguageUrl]);
+  */
+
+  const handleExportAllStringsButtonClick = React.useCallback(() => {
     if (!langAll.fetched && !langAll.fetching) {
       getAllLanguages();
     }
@@ -123,7 +153,7 @@ function TranslationDashboard(p) {
       const wb = sheet.utils.book_new();
       sheet.utils.book_append_sheet(wb, ws);
 
-      sheet.writeFile(wb, 'go-strings-all.xlsx');
+      sheet.writeFile(wb, getFileName('go-all-strings', 'xlsx'));
       resetAllLanguages();
     }
   }, [allLanguages, resetAllLanguages]);
@@ -139,7 +169,7 @@ function TranslationDashboard(p) {
     }
 
     prevBulkResponse.current = languageBulkResponse;
-  }, [prevBulkResponse, languageBulkResponse, currentLanguage, getLanguage]);
+  }, [hasPermissionToModify, prevBulkResponse, languageBulkResponse, currentLanguage, getLanguage]);
 
   const [appStrings, setAppStrings] = React.useState({});
 
@@ -231,6 +261,36 @@ function TranslationDashboard(p) {
     ];
   }, [devStringKeyList, appStringKeyList, devStrings, appStrings]);
 
+  const handleNewStringsExportButtonClick = React.useCallback(() => {
+    const langEntries = addedKeyList.map(
+      (key) => ([key, devStrings[key]?.value])
+    );
+    const ws = sheet.utils.aoa_to_sheet([
+      ['ID', 'dev', 'en', 'fr', 'es', 'ar'],
+      ...langEntries,
+    ]);
+
+    const wb = sheet.utils.book_new();
+    sheet.utils.book_append_sheet(wb, ws);
+
+    sheet.writeFile(wb, getFileName('go-new-dev-strings', 'xlsx'));
+  }, [devStrings, addedKeyList]);
+
+  const handleUpdatedStringsExportButtonClick = React.useCallback(() => {
+    const langEntries = updatedKeyList.map(
+      (key) => ([key, devStrings[key]?.value])
+    );
+    const ws = sheet.utils.aoa_to_sheet([
+      ['ID', 'dev', 'en', 'fr', 'es', 'ar'],
+      ...langEntries,
+    ]);
+
+    const wb = sheet.utils.book_new();
+    sheet.utils.book_append_sheet(wb, ws);
+
+    sheet.writeFile(wb, getFileName('go-updated-dev-strings', 'xlsx'));
+  }, [devStrings, updatedKeyList]);
+
   const removedKeys = React.useMemo(() => listToMap(removedKeyList, d => d, d => true), [removedKeyList]);
 
   const handleSaveButtonClick = React.useCallback(() => {
@@ -305,7 +365,10 @@ function TranslationDashboard(p) {
     updated: updatedKeyList.length,
   }), [appStringKeyList, addedKeyList, removedKeyList, updatedKeyList]);
 
-  const pending = languageResponse.fetching || languageBulkResponse.fetching;
+  const pending = mePending
+    // || allLanguagePending
+    || languageResponse.fetching
+    || languageBulkResponse.fetching;
   const conflicted = React.useMemo(() => (
     viewCounts.added > 0 || viewCounts.removed > 0 || viewCounts.updated > 0
   ), [viewCounts]);
@@ -341,17 +404,31 @@ function TranslationDashboard(p) {
           IFRC GO - Translation Dashboard
         </title>
       </Helmet>
+      {!hasPermissionToModify && !pending && (
+        <div className={styles.infoBar}>
+          <IoInformationCircle className={styles.icon} />
+          <div className={styles.text}>
+            View only mode (You do not have enough permission to modify the content)
+          </div>
+        </div>
+      )}
       <header className={styles.header}>
         <div className={styles.topSection}>
           <h2 className={styles.heading}>
             Translation Dashboard
           </h2>
           <div className={styles.actions}>
-            <label htmlFor="import" className={_cs(pending && 'disabled', 'button button--secondary-bounded')}>
+            <label
+              htmlFor="import"
+              className={_cs(
+                (!hasPermissionToModify || pending) && 'disabled',
+                'button button--primary-bounded'
+              )}
+            >
               Import from xlsx
             </label>
             <input
-              disabled={pending}
+              disabled={(!hasPermissionToModify || pending)}
               id="import"
               type="file"
               accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
@@ -359,14 +436,34 @@ function TranslationDashboard(p) {
               hidden
             />
             <button
-              onClick={handleExportButtonClick}
-              className='button button--secondary-bounded'
+              disabled={pending || !hasPermissionToModify}
+              onClick={handleExportDevStringsButtonClick}
+              className={_cs(
+                (!hasPermissionToModify || pending) && 'disabled',
+                'button button--secondary-bounded'
+              )}
             >
               Export dev strings
             </button>
+            {/*
             <button
-              onClick={handleExportAllClick}
-              className='button button--secondary-bounded'
+              disabled={pending || !hasPermissionToModify}
+              onClick={handleExportEmptyStringsButtonClick}
+              className={_cs(
+                (!hasPermissionToModify || pending) && 'disabled',
+                'button button--secondary-bounded'
+              )}
+            >
+              Export empty strings
+            </button>
+            */}
+            <button
+              disabled={pending || !hasPermissionToModify}
+              onClick={handleExportAllStringsButtonClick}
+              className={_cs(
+                (!hasPermissionToModify || pending) && 'disabled',
+                'button button--secondary-bounded'
+              )}
             >
               Export ALL strings
             </button>
@@ -393,35 +490,56 @@ function TranslationDashboard(p) {
               <>
                 { currentView === 'removed' && (
                   <button
-                    className={_cs(pending && 'disabled', 'button button--secondary-bounded')}
+                    className={_cs((!hasPermissionToModify || pending) && 'disabled', 'button button--secondary-bounded')}
                     onClick={handleRemoveOutdatedButtonClick}
-                    disabled={pending}
+                    disabled={(!hasPermissionToModify || pending)}
                   >
                     Remove outdated keys
                   </button>
                 )}
                 { currentView === 'added' && (
-                  <button
-                    className={_cs(pending && 'disabled', 'button button--secondary-bounded')}
-                    onClick={handleAddNewKeysButtonClick}
-                    disabled={pending}
-                  >
-                    Add new keys
-                  </button>
+                  <>
+                    <button
+                      className={_cs((!hasPermissionToModify || pending) && 'disabled', 'button button--secondary-bounded')}
+                      onClick={handleNewStringsExportButtonClick}
+                      disabled={(!hasPermissionToModify || pending)}
+                    >
+                      Export
+                    </button>
+                    <button
+                      className={_cs((!hasPermissionToModify || pending) && 'disabled', 'button button--secondary-bounded')}
+                      onClick={handleAddNewKeysButtonClick}
+                      disabled={(!hasPermissionToModify || pending)}
+                    >
+                      Add new keys
+                    </button>
+                  </>
                 )}
                 { currentView === 'updated' && (
-                  <button
-                    className={_cs(pending && 'disabled', 'button button--secondary-bounded')}
-                    onClick={handleResolveButtonClick}
-                    disabled={pending}
-                  >
-                    Resolve
-                  </button>
+                  <>
+                    <button
+                      className={_cs((!hasPermissionToModify || pending) && 'disabled', 'button button--secondary-bounded')}
+                      onClick={handleUpdatedStringsExportButtonClick}
+                      disabled={(!hasPermissionToModify || pending)}
+                    >
+                      Export
+                    </button>
+                    <button
+                      className={_cs((!hasPermissionToModify || pending) && 'disabled', 'button button--secondary-bounded')}
+                      onClick={handleResolveButtonClick}
+                      disabled={(!hasPermissionToModify || pending)}
+                    >
+                      Resolve
+                    </button>
+                  </>
                 )}
               </>
             ) : (
               <button
-                className={_cs(pending && 'disabled', 'button button--primary-bounded')}
+                className={_cs(
+                  (!hasPermissionToModify || pending) && 'disabled',
+                  'button button--primary-bounded',
+                )}
                 onClick={handleSaveButtonClick}
                 disabled={pending}
               >
@@ -494,6 +612,7 @@ function TranslationDashboard(p) {
           )}
         </div>
       </div>
+      <EnvironmentBanner />
     </div>
   );
 }

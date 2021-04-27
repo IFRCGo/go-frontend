@@ -5,20 +5,9 @@ import stringify from 'csv-stringify/lib/sync';
 
 import { showAlert } from '#components/system-alerts';
 import Translate from '#components/Translate';
+import { getFileName } from '#utils/utils';
 
 import { useRecursiveCsvFetch } from '#hooks/useRequest';
-
-function getFileName(suffix) {
-  const date = new Date();
-  const year = date.getFullYear();
-  const month = date.getMonth() + 1;
-  const day = date.getDate();
-  const h = date.getHours();
-  const m = date.getMinutes();
-  const s = date.getSeconds();
-
-  return `${suffix}-${year}-${month}-${day}-${h}-${m}-${s}.csv`;
-}
 
 function formatHeader(headerRow) {
   let str = headerRow;

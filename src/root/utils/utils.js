@@ -396,3 +396,15 @@ export function getElasticSearchOptions(input, callback) {
     });
 }
 
+export function getFileName(suffix, extension = 'csv') {
+  const date = new Date();
+  const year = date.getFullYear();
+  const month = date.getMonth() + 1;
+  const day = date.getDate();
+  const h = date.getHours();
+  const m = date.getMinutes();
+  const s = date.getSeconds();
+
+  return `${suffix}-${year}-${month}-${day}-${h}-${m}-${s}.${extension}`;
+}
+
