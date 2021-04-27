@@ -34,14 +34,14 @@ class SelectInput extends React.PureComponent {
       onChange, // capturing
       value: valueFromProp,
       options,
-      multi,
+      isMulti,
       error,
       ...otherProps
     } = this.props;
 
     let value = valueFromProp;
 
-    if (multi) {
+    if (isMulti) {
       value = options.filter(d => (valueFromProp || []).indexOf(d.value) !== -1);
     }
 
@@ -54,7 +54,7 @@ class SelectInput extends React.PureComponent {
         )}
         <Select
           {...otherProps}
-          multi={multi}
+          isMulti={isMulti}
           options={options}
           className='tc-select-input'
           value={value}
