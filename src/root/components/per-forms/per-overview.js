@@ -6,6 +6,7 @@ import { PropTypes as T } from 'prop-types';
 import LanguageContext from '#root/languageContext';
 import Translate from '#components/Translate';
 import { isoDate } from '#utils/format';
+import { getSelectInputValue } from '#utils/utils';
 import { nsDropdownSelector } from '#selectors';
 
 import {
@@ -100,7 +101,7 @@ function PerOverview (props) {
                   <Select
                     id='country_id'
                     name='country_id'
-                    value={overviewState.country_id}
+                    value={getSelectInputValue(overviewState.country_id, props.nsDropdownItems)}
                     onChange={(e) => handleChange(e, false, false, false, 'country_id')}
                     options={props.nsDropdownItems}
                     disabled={!editable}
@@ -142,7 +143,7 @@ function PerOverview (props) {
                   <Select
                     id='type_of_assessment'
                     name='type_of_assessment'
-                    value={overviewState.type_of_assessment}
+                    value={getSelectInputValue(overviewState.type_of_assessment, assessmentTypes)}
                     onChange={(e) => setOverviewState({ ...overviewState, type_of_assessment: e?.value })}
                     options={assessmentTypes}
                     disabled={!editable}

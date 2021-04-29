@@ -9,7 +9,12 @@ import ajvKeywords from 'ajv-keywords';
 import Select from 'react-select';
 import { Helmet } from 'react-helmet';
 
-import { isValidEmail, isWhitelistedEmail, get } from '#utils/utils';
+import {
+  isValidEmail,
+  isWhitelistedEmail,
+  get,
+  getSelectInputValue,
+} from '#utils/utils';
 import { countries, orgTypes } from '#utils/field-report-constants';
 import { registerUser, getDomainWhitelist } from '#actions';
 import { environment } from '#config';
@@ -187,9 +192,10 @@ class Register extends React.Component {
           </label>
           <Select
             name='country'
-            value={this.state.data.country}
-            onChange={this.onFieldChange.bind(this, 'country')}
-            options={countriesList} />
+            value={getSelectInputValue(this.state.data.country, countriesList)}
+            onChange={({ value }) => this.onFieldChange('country', value)}
+            options={countriesList}
+          />
           <FormError
             errors={this.state.errors}
             property='country'
@@ -225,7 +231,7 @@ class Register extends React.Component {
               </label>
               <Select
                 name='register-organization'
-                value={this.state.data.organization}
+                value={getSelectInputValue(this.state.data.organization, this.state.nationalSocieties)}
                 onChange={this.onFieldChange.bind(this, 'organization')}
                 options={this.state.nationalSocieties} />
               <FormError

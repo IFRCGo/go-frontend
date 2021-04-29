@@ -2,6 +2,7 @@ import React from 'react';
 import _get from 'lodash.get';
 import _groupBy from 'lodash.groupby';
 import _toNumber from 'lodash.tonumber';
+import isUndefined from 'lodash.isundefined';
 import _find from 'lodash.find';
 import _filter from 'lodash.filter';
 import * as EmailValidator from 'email-validator';
@@ -408,3 +409,10 @@ export function getFileName(suffix, extension = 'csv') {
   return `${suffix}-${year}-${month}-${day}-${h}-${m}-${s}.${extension}`;
 }
 
+export const getSelectInputValue = (value, options) => {
+  if (isUndefined(value)) {
+    return undefined;
+  }
+
+  return options.find(d => String(d.value) === String(value));
+};

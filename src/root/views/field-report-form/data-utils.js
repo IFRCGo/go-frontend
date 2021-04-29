@@ -136,7 +136,7 @@ export function prepStateForValidation (state) {
     nsAssistance: toBool,
     isCovidReport: toBool,
     country: (val) => val ? val.value : undefined,
-    districts: (val) => val.map(o => o.value),
+    districts: (val) => val?.map(o => o.value),
     // countries: (val) => val.value,
     event: (val) => val ? toNumIfNum(val.value) : undefined,
 
