@@ -27,7 +27,7 @@ import {
   getPerAreas
 } from '#actions';
 
-import { get } from '#utils/utils';
+import { get, getSelectInputValue } from '#utils/utils';
 import { getCountryMeta } from '#utils/get-country-meta';
 import { countries, orgTypes } from '#utils/field-report-constants';
 import { apiPropertyDisplay, apiPropertyValue } from '#utils/format';
@@ -565,8 +565,10 @@ class Account extends React.Component {
                 <div className='form__inner-body'>
                   <Select
                     name='organizationType'
-                    value={profile.orgType}
-                    onChange={this.onFieldChange.bind(this, 'profile', 'orgType')}
+                    value={getSelectInputValue(profile.orgType, orgTypes)}
+                    onChange={({ value }) => {
+                      this.onFieldChange('profile', 'orgType', value);
+                    }}
                     options={orgTypes} />
                 </div>
               </div>
@@ -694,7 +696,8 @@ class Account extends React.Component {
                 value={this.state.notifications.countries}
                 onChange={this.onFieldChange.bind(this, 'notifications', 'countries')}
                 options={countries(this.props.allCountries)}
-                multi />
+                isMulti
+              />
             </div>
             <FormCheckboxGroup
               label={strings.accountDisasterCategory}
