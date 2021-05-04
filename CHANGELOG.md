@@ -21,6 +21,10 @@ This release includes various important bug-fixes and improvements:
  - Backend changes for 3w improvements: #1148 #1181
 
 
+### Release 4.6.2: Hotfix for map filters
+
+ - Implements a hotfix for filters on the map not causing points to disappear
+
 ### Release 4.6.2: Geo-fixes and minor improvements
 
 	(Version bump to keep up with backend versioning)
