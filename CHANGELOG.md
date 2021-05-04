@@ -1,3 +1,26 @@
+### Release 5.0.0: First big release of 2021
+
+This release includes various important bug-fixes and improvements:
+
+##### Frontend
+
+ - Fix CSV exports by paginating on the frontend: #1412 #1349
+ - Upgrade React-Select to fix issues with Emergency search: #1895 #1881
+ - Fix Line Graphs to show all months: #1398
+ - Deal correctly with Yes / No fields left unfilled in Field Report: #1060
+ - Improvements to Translation Dashboard: #1830
+ - 3w Improvements: #1148 #1181
+
+##### Backend
+
+ - Fix bug with deployment counts on Surge page: #1836
+ - Handle `null` values for boolean fields on field report: #1060
+ - Fix Deployments CSV export to remove extra columns: https://github.com/IFRCGo/go-api/issues/903
+ - Add permissions for translation management: #1052
+ - Improve translation string export: #1051
+ - Backend changes for 3w improvements: #1148 #1181
+
+
 ### Release 4.6.2: Geo-fixes and minor improvements
 
 	(Version bump to keep up with backend versioning)
