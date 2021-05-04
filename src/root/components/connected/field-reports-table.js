@@ -13,16 +13,25 @@ import {
   intersperse
 } from '#utils/format';
 import { get, dateOptions, datesAgo } from '#utils/utils';
-
-import ExportButton from '#components/export-button-container';
 import Fold from '#components/fold';
 import BlockLoading from '#components/block-loading';
-import DisplayTable, { FilterHeader, SortHeader } from '#components/display-table';
+import DisplayTable, {
+  FilterHeader,
+  SortHeader,
+} from '#components/display-table';
 import { SFPComponent } from '#utils/extendables';
 import { withLanguage } from '#root/languageContext';
 import Translate from '#components/Translate';
-
+import useExportButton from '#hooks/useExportButton';
 import { disasterTypesSelectSelector } from '#selectors';
+
+import styles from './styles.module.scss';
+
+function ExportAllFieldReportsButton({ className }) {
+  const component = useExportButton('api/v2/field_report', 'field-reports', className);
+
+  return component;
+}
 
 class FieldReportsTable extends SFPComponent {
   // Methods form SFPComponent:
@@ -102,13 +111,16 @@ class FieldReportsTable extends SFPComponent {
 
   render () {
     const {
-      fetched,
-      fetching,
-      error,
-      data
-    } = this.props.list;
-    const { strings } = this.props;
-    const title = this.props.title || strings.fieldReportsTableTitleDefault;
+      strings,
+      showExport,
+      title = strings.fieldReportsTableTitleDefault,
+      list: {
+        fetched,
+        fetching,
+        error,
+        data
+      }
+    } = this.props;
 
     if (fetching) {
       return (
@@ -159,16 +171,20 @@ class FieldReportsTable extends SFPComponent {
       }));
 
       return (
-        <Fold title={`${title} (${n(data.count)})`} id={this.props.id} foldWrapperClass='fold--main'
+        <Fold
+          foldHeaderClass={styles.foldHeader}
+          title={`${title} (${n(data.count)})`}
+          foldActions={ showExport && (
+            <ExportAllFieldReportsButton
+              className={styles.exportButton}
+            />
+          )}
+          id={this.props.id}
+          foldWrapperClass='fold--main'
           navLink={this.props.viewAll ? (
               <Link className='fold__title__link export--link' to={this.props.viewAll}>{this.props.viewAllText || strings.fieldReportsTableViewAllReports}</Link>
-          ) : null}>
-          {this.props.showExport ? (
-            <ExportButton filename='field-reports'
-              qs={this.getQs(this.props)}
-              resource='api/v2/field_report'
-            />
           ) : null}
+        >
           <DisplayTable
             headings={headings}
             rows={rows}

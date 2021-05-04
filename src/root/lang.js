@@ -728,6 +728,7 @@ export default {
   deploymentsDeployedHeops: 'Deployed HEOPS',
   deploymentEruDeploymentTypes: 'ERU Deployment Types',
   deploymentNumber: 'Number of Deployments by NS',
+  nationalSocieties: 'National Societies',
   readinessFilteredERUs: 'Filter Ready ERUs',
   readinessResetFilters: 'Reset Filters',
   readinessLastUpdated: 'Last updated {date}',
@@ -875,6 +876,7 @@ export default {
   expandableShowLess: 'Show less',
   expandableShowMore: 'Show more',
   exportButtonExportTable: 'Export Table',
+  exportButtonDownloadingProgress: 'Downloading... {progress}%',
   globalHeaderBannerTitle: 'COVID-19 global situational information and technical guidance available {link}.',
   globalHeaderBannerHere: 'here',
   globalHeaderBannerSurveyTitle: 'Take 5 mins to tell us what you think - {link}',
@@ -942,7 +944,7 @@ export default {
   projectFormCurrentEmergency: 'Current Emergency Operation*',
   projectFormCurrentEmergencyHelpText: 'The list is populated from current emergency operations related to the selected country. If necessary, create the related emergency through a field report',
   projectFormFetchingEvents: 'Fetching events...',
-  projectFormDisasterType: 'Disaster Type',
+  projectFormDisasterType: 'Disaster Type*',
   projectFormDisasterTypePlaceholder: 'Select an operation to view its disaster type',
   projectFormProjectName: 'Project Name*',
   projectFormHelpText: 'Enter a name that differentiates your activity or project from other initiatives taking place in the response.',
@@ -1473,4 +1475,7 @@ export default {
 
   fieldReportLastUpdatedBy: 'Last updated by {user} on {date}',
   fieldReportLastUpdatedOn: 'Last updated on {date}',
+
+  searchSelectTypeToSearch: 'Type to search',
+  searchSelectNoOptionsAvailable: 'No options available',
 };

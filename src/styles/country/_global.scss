@@ -482,29 +482,33 @@
 }
 
 .more-actions-dropdown-menu.tc-dropdown-menu {
-  font-size: 24px;
+  font-size: $font-size-xxl;
   margin: 0;
 }
 
 .more-actions-dropdown-container {
+  padding: $spacing/2 $spacing;
+
   .button {
     width: 100%;
     text-align: left;
     display: flex;
     align-items: center;
-    padding: 5px 0;
+    padding: $spacing/2 0;
     border-radius: 0;
+    font-size: $font-size-lg;
 
     .tc-icon {
-      padding: 0 6px;
+      padding: 0 $spacing/2;
       display: block;
-      font-size: 1.5rem;
+      font-size: 1.2em;
       width: 32px;
     }
 
     .tc-label {
       display: block;
-      padding: 0 6px;
+      padding: 0 $spacing/2;
+      font-size: inherit;
     }
   }
 

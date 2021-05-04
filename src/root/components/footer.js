@@ -1,20 +1,12 @@
-
 import React from 'react';
 import { adminUrl } from '#config';
 
 import LanguageContext from '#root/languageContext';
 import Translate from '#components/Translate';
+import EnvironmentBanner from '#components/EnvironmentBanner';
 
 class Footer extends React.PureComponent {
   render () {
-    const { NODE_ENV: currentEnv } = process.env;
-    const stagingBanner = currentEnv !== 'production' && currentEnv !== 'development'
-      ? (
-        <div className='sticky-banner staging-footer'>
-          {process.env.NODE_ENV === 'staging' ? 'STAGING' : 'TESTING (SURGE)'} SITE
-        </div>
-      )
-          : null;
     const { strings } = this.context;
     return (
       <React.Fragment>
@@ -69,8 +61,7 @@ class Footer extends React.PureComponent {
             </div>
           </div>
         </footer>
-
-        {stagingBanner}
+        <EnvironmentBanner />
       </React.Fragment>
     );
   }

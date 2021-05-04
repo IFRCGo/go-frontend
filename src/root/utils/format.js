@@ -207,5 +207,6 @@ export function intersperse (arr, sep) {
 }
 
 export function yesno (bool) {
+  if (!bool) return '-';
   return bool ? 'Yes' : 'No';
 }

@@ -184,17 +184,19 @@ class ThreeWMap extends React.PureComponent {
   resetBounds = (countryId, largePadding = false) => {
     const countryMeta = getCountryMeta(countryId, this.props.countries);
     const bbox = turfBbox(countryMeta.bbox);
-    this.map.fitBounds(
-      bbox,
-      {
-        padding: {
-          top: largePadding ? 100 : 20,
-          right: largePadding ? (280 + 10) : 90,
-          bottom: largePadding ? 80 : 20,
-          left: 10,
+    if (bbox?.every(Number.isFinite)) {
+      this.map.fitBounds(
+        bbox,
+        {
+          padding: {
+            top: largePadding ? 100 : 20,
+            right: largePadding ? (280 + 10) : 90,
+            bottom: largePadding ? 80 : 20,
+            left: 10,
+          }
         }
-      }
-    );
+      );
+    }
   }
 
   fillMap = (countryId, projectList, districtsResponse) => {

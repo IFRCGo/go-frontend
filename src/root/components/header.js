@@ -1,15 +1,17 @@
 import React from 'react';
 import { PropTypes as T } from 'prop-types';
-import Select from 'react-select';
+import AsyncSelect from 'react-select/async';
 import {
   NavLink,
   Link,
   withRouter,
 } from 'react-router-dom';
 
-import { api, environment } from '#config';
-import { request } from '#utils/network';
-import { uppercaseFirstLetter as u, isoDate } from '#utils/format';
+import { environment } from '#config';
+import {
+  getSelectInputNoOptionsMessage,
+  getElasticSearchOptions,
+} from '#utils/utils';
 import LanguageSelect from '#components/LanguageSelect';
 import Translate from '#components/Translate';
 import LanguageContext from '#root/languageContext';
@@ -20,23 +22,6 @@ import DropdownMenu from './dropdown-menu';
 
 const noFilter = options => options;
 
-function getUriForType (type, id, data) {
-  switch (type) {
-    case 'region':
-      return '/regions/' + id;
-    case 'country':
-      return '/countries/' + id;
-    case 'report':
-      return '/reports/' + id;
-    case 'event':
-      return '/emergencies/' + id;
-    case 'appeal':
-      return data.event_id ? '/emergencies/' + data.event_id : '/appeals/all?record=' + id;
-    default:
-      return '/uhoh';
-  }
-}
-
 function Header (props) {
   const {
     history,
@@ -44,47 +29,16 @@ function Header (props) {
   } = props;
 
   const { strings } = React.useContext(LanguageContext);
-  const requestCountRef = React.useRef(0);
-  const timeoutRef = React.useRef();
+  const debounceTimeoutRef = React.useRef();
+  const loadOptionsWithDebouncing = React.useCallback((input, callback) => {
+    window.clearTimeout(debounceTimeoutRef.current);
 
-  const getOptions = React.useCallback((input) => (
-      !input
-        ? Promise.resolve({ options: [] })
-        : request(`${api}api/v1/es_search/?keyword=${input}`)
-          .then(data => {
-            const options = data.hits.map(o => {
-              const d = o._source;
-              const value = getUriForType(d.type, d.id, d);
-              const date = d.date ? ` (${isoDate(d.date)})` : '';
-              const label = `${u(d.type)}: ${d.name}${date}`;
-              return {
-                value,
-                label
-              };
-            }).filter(Boolean);
-            return { options };
-          })
-  ), []);
+    debounceTimeoutRef.current = window.setTimeout(() => {
+      getElasticSearchOptions(input, callback);
+    }, 500);
 
-  const slowLoad = React.useCallback((input) => {
-    requestCountRef.current += 1;
-    let mirror = requestCountRef.current;
-
-    return new Promise((resolve, reject) => {
-      if (!input) {
-        resolve({ options: [] });
-      }
-      window.clearTimeout(timeoutRef.current);
-
-      timeoutRef.current = window.setTimeout(() => {
-        if (requestCountRef.current === mirror) {
-          return resolve(getOptions(input));
-        } else {
-          return resolve({ options: [] });
-        }
-      }, 500);
-    });
-  }, [requestCountRef, getOptions]);
+    return false;
+  }, []);
 
   const handleSelect = React.useCallback(({ value }) => {
     history.push(value);
@@ -175,13 +129,14 @@ function Header (props) {
                   <label className='form__label'>
                     <Translate stringId="headerSearchLabel" />
                   </label>
-                  <Select.Async
+                  <AsyncSelect
                     placeholder={strings.headerSearchPlaceholder}
                     onChange={handleSelect}
                     filterOptions={noFilter}
                     autoload={false}
+                    noOptionsMessage={getSelectInputNoOptionsMessage}
                     cache={false}
-                    loadOptions={slowLoad} />
+                    loadOptions={loadOptionsWithDebouncing} />
                 </div>
               </form>
             </div>

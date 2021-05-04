@@ -19,6 +19,7 @@ import {
   step4 as schemaStep4
 } from '../../schemas/field-report-form';
 import * as formData from '#utils/field-report-constants';
+import { getSelectInputValue } from '#utils/utils';
 import { showAlert } from '#components/system-alerts';
 import {
   createFieldReport,
@@ -34,7 +35,7 @@ import BreadCrumb from '#components/breadcrumb';
 import {
   dataPathToDisplay,
   prepStateForValidation,
-  getEventsFromApi,
+  fetchEventsFromApi,
   getInitialDataState,
   convertStateToPayload,
   convertFieldReportToState,
@@ -76,6 +77,7 @@ const LANGUAGE_OVERRIDE = 'en';
 //   error display.
 // - Add field to the submission payload in convertStateToPayload()
 
+
 class FieldReportForm extends React.Component {
   constructor(props) {
     super(props);
@@ -89,21 +91,13 @@ class FieldReportForm extends React.Component {
     this.onSubmit = this.onSubmit.bind(this);
     this.onStepBackClick = this.onStepBackClick.bind(this);
 
-    // Basic function to wait until user stops typing to query ES.
-    // Code duplicate of components/header.js:40 (different timeout)
-    let i = 0;
-    this.slowLoad = input => {
-      i += 1;
-      let mirror = i;
-      return new Promise((resolve, reject) => {
-        setTimeout(() => {
-          if (i === mirror) {
-            return resolve(getEventsFromApi(input));
-          } else {
-            return resolve({ options: [] });
-          }
-        }, 350);
-      });
+    this.slowLoad = (input, callback) => {
+      window.clearTimeout(this.eventRequestTimeout);
+      this.eventRequestTimeout = window.setTimeout(() => {
+        fetchEventsFromApi(input, callback);
+      }, 350);
+
+      return false;
     };
   }
 
@@ -557,7 +551,7 @@ class FieldReportForm extends React.Component {
                     name='country'
                     value={this.state.data.country}
                     onChange={this.onCountryChange.bind(this)}
-                    options={ formData.countries(this.props.countries, true) }
+                    options={formData.countries(this.props.countries, true) }
                     disabled={!this.state.data.isCovidReport}
                   />
 
@@ -574,7 +568,7 @@ class FieldReportForm extends React.Component {
                     onChange={this.onFieldChange.bind(this, 'districts')}
                     options={districtChoices}
                     disabled={!this.state.data.isCovidReport}
-                    multi
+                    isMulti
                   />
 
                   <FormError
@@ -601,7 +595,7 @@ class FieldReportForm extends React.Component {
                 id='disaster-type'
                 disabled={this.state.data.isCovidReport === 'true' || !this.state.data.isCovidReport}
                 options={this.props.disasterTypesSelect}
-                value={this.state.data.disasterType}
+                value={getSelectInputValue(this.state.data.disasterType, this.props.disasterTypesSelect)}
                 onChange={({ value }) => this.onFieldChange('disasterType', value)}
               />
               <FormError
@@ -757,7 +751,7 @@ class FieldReportForm extends React.Component {
                       <Select
                         placeholder={strings.fieldsStep2SourceOfFiguresLabel}
                         name='epi-figures-source'
-                        value={this.state.data.epiFiguresSource}
+                        value={getSelectInputValue(this.state.data.epiFiguresSource, formData.epiSources)}
                         onChange={({ value }) => this.onFieldChange('epiFiguresSource', value)}
                         options={formData.epiSources}
                       />
@@ -923,7 +917,7 @@ class FieldReportForm extends React.Component {
               const sectionValues = options.map(o => {
                 return {
                   value: o.value,
-                  checked: values.options.find(v => v.value === o.value).checked
+                  checked: values.options.find(v => String(v.value) === String(o.value))?.checked
                 };
               });
               values.options = sectionValues;
@@ -999,7 +993,7 @@ class FieldReportForm extends React.Component {
                           value={this.state.data.externalPartners}
                           onChange={this.onFieldChange.bind(this, 'externalPartners')}
                           options={extParChoices}
-                          multi
+                          isMulti
                         />
                         <FormError
                           errors={this.state.errors}
@@ -1012,7 +1006,7 @@ class FieldReportForm extends React.Component {
                           value={this.state.data.supportedActivities}
                           onChange={this.onFieldChange.bind(this, 'supportedActivities')}
                           options={suppActChoices}
-                          multi
+                          isMulti
                         />
                         <FormError
                           errors={this.state.errors}

@@ -18,6 +18,7 @@ import {
 import Select from 'react-select';
 import { FormError } from '#components/form-elements/';
 // include , { SortHeader, FilterHeader } if needed
+import { getSelectInputValue } from '#utils/utils';
 import DisplayTable from '#components/display-table';
 import ConfirmModal from '#components/confirm-modal';
 import { isoDate } from '#utils/format';
@@ -143,8 +144,7 @@ function PerAccount (props) {
                     )
                     : null }
                 </React.Fragment>
-              ) 
-              : (
+              ) : (
                 <React.Fragment>
                   <Link
                     className='button button--xsmall button--primary-bounded per__list__button'
@@ -179,7 +179,13 @@ function PerAccount (props) {
       }
     }
   }, [props.perForm.deletePerOverview, _getPerOverviews]);
-  
+
+  const countryOptions = React.useMemo(() => (
+    props.countries.map(country => (
+      { value: country.value, label: country.label }
+    ))
+  ), [props.countries]);
+
   return (
     <React.Fragment>
       <div className='container-lg new-assessment-button'>
@@ -205,10 +211,10 @@ function PerAccount (props) {
                   <div className='form__group'>
                     <Select
                       name='country'
-                      value={country}
+                      value={getSelectInputValue(country, countryOptions)}
                       placeholder={strings.perAccountSelectCountryPlaceholder}
                       onChange={(e) => setCountry(e?.value)}
-                      options={props.countries.map(country => ({ value: country.value, label: country.label }))}
+                      options={countryOptions}
                     />
                     <FormError
                       errors={[]}

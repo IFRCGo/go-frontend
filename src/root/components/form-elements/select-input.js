@@ -9,7 +9,7 @@ class SelectInput extends React.PureComponent {
   handleChange = (selectedItem) => {
     const {
       onChange,
-      multi,
+      isMulti,
     } = this.props;
 
     if (!onChange) {
@@ -17,13 +17,13 @@ class SelectInput extends React.PureComponent {
     }
 
     if (selectedItem) {
-      if (multi) {
+      if (isMulti) {
         onChange(selectedItem.map(d => d.value));
       } else {
         onChange(selectedItem.value);
       }
     } else {
-      onChange(multi ? emptyList : undefined);
+      onChange(isMulti ? emptyList : undefined);
     }
   }
 
@@ -34,15 +34,22 @@ class SelectInput extends React.PureComponent {
       onChange, // capturing
       value: valueFromProp,
       options,
-      multi,
+      isMulti,
       error,
+      disabled,
       ...otherProps
     } = this.props;
 
     let value = valueFromProp;
 
-    if (multi) {
-      value = options.filter(d => (valueFromProp || []).indexOf(d.value) !== -1);
+    if (isMulti) {
+      value = options.filter(
+        o => (valueFromProp || []).findIndex(
+          v => String(v) === String(o.value)
+        ) !== -1
+    );
+    } else {
+      value = (options.filter(d => String(valueFromProp) === String(d.value)) || [])[0];
     }
 
     return (
@@ -54,7 +61,9 @@ class SelectInput extends React.PureComponent {
         )}
         <Select
           {...otherProps}
-          multi={multi}
+          isMulti={isMulti}
+          defaultValue={value}
+          isDisabled={disabled}
           options={options}
           className='tc-select-input'
           value={value}

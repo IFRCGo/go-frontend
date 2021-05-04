@@ -142,7 +142,7 @@ class ProjectForm extends React.PureComponent {
         budget_amount: [requiredCondition, positiveIntegerCondition],
         project_country: [],
         event: [],
-        dtype: [],
+        dtype: [requiredCondition],
         project_districts: [requiredCondition],
         name: [requiredCondition],
         operation_type: [requiredCondition],
@@ -529,10 +529,10 @@ class ProjectForm extends React.PureComponent {
 
     const isBudgetAndTotalNotRequired = this.getBudgetAndTotalNotRequired(faramValues.reporting_ns, nationalSocietyOptions);
 
-    const shouldShowDisasterType = String(faramValues.operation_type) === '0' ||
-      shouldShowCurrentOperation ||
-      shouldShowCurrentEmergencyOperation;
-    const shouldDisableDisasterType = String(faramValues.operation_type) === '1';
+    // const shouldShowDisasterType = String(faramValues.operation_type) === '0' ||
+    //   shouldShowCurrentOperation ||
+    //   shouldShowCurrentEmergencyOperation;
+    const shouldDisableDisasterType = shouldShowCurrentEmergencyOperation || shouldShowCurrentOperation;
     const isReachedTotalRequired = String(faramValues.status) === '2' && !isBudgetAndTotalNotRequired;
     const isTargetTotalRequired = !isBudgetAndTotalNotRequired;
 
@@ -600,7 +600,7 @@ class ProjectForm extends React.PureComponent {
                 options={districtOptions}
                 disabled={shouldDisableDistrictInput}
                 placeholder={fetchingDistricts ? strings.projectFormDistrictFetching : strings.projectFormDistrictSelect }
-                multi
+                isMulti
               />
               <button
                 type="button"
@@ -667,19 +667,17 @@ class ProjectForm extends React.PureComponent {
             </InputSection>
           )}
 
-          { shouldShowDisasterType && (
-            <InputSection
-              title={strings.projectFormDisasterType}
-            >
-              <SelectInput
-                faramElementName='dtype'
-                className='project-form-select'
-                options={this.props.disasterTypesSelect}
-                disabled={shouldDisableDisasterType}
-                placeholder={shouldDisableDisasterType ? strings.projectFormDisasterTypePlaceholder : undefined}
-              />
-            </InputSection>
-          )}
+          <InputSection
+            title={strings.projectFormDisasterType}
+          >
+            <SelectInput
+              faramElementName='dtype'
+              className='project-form-select'
+              options={this.props.disasterTypesSelect}
+              disabled={shouldDisableDisasterType}
+              placeholder={shouldDisableDisasterType ? strings.projectFormDisasterTypePlaceholder : undefined}
+            />
+          </InputSection>
 
           <InputSection
             title={strings.projectFormProjectName}
@@ -723,7 +721,7 @@ class ProjectForm extends React.PureComponent {
               className='project-form-select'
               label={strings.projectFormSecondarySectorLabel}
               options={filteredSecondarySectorOptions}
-              multi
+              isMulti
             />
           </InputSection>
 

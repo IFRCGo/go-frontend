@@ -1,12 +1,13 @@
 import React from 'react';
 import { PropTypes as T } from 'prop-types';
-import Select from 'react-select';
+import AsyncSelect from 'react-select/async';
 import { Link, withRouter } from 'react-router-dom';
 import c from 'classnames';
 
 import { api, environment } from '#config';
 import { request } from '#utils/network';
 import { uppercaseFirstLetter as u, isoDate } from '#utils/format';
+import { getSelectInputNoOptionsMessage } from '#utils/utils';
 import UserMenu from './connected/user-menu';
 import DropdownMenu from './dropdown-menu';
 import { withLanguage } from '#root/languageContext';
@@ -89,9 +90,12 @@ class MobileHeader extends React.PureComponent {
                 <label className='form__label'>
                   <Translate stringId='mobileHeaderSearchTitle'/>
                 </label>
-                <Select.Async
+                <AsyncSelect
+                  // FIXME: use debouncing (slow load) here as well
+                  // Similar to header.js
                   placeholder={strings.mobileHeaderSearch}
                   onChange={this.onSelect}
+                  noOptionsMessage={getSelectInputNoOptionsMessage}
                   loadOptions={this.getOptions} />
               </div>
             </form>
@@ -120,7 +124,7 @@ class MobileHeader extends React.PureComponent {
                     <a href='https://eenew.ifrc.org/single/VmcTHDMh?returnURL=https://go.ifrc.org/emergencies/3972#actions' target='_blank'>
                       {strings.headerDropdownCovid19NSFinancialOverview}
                     </a>
-                  </li>                                        
+                  </li>
                 </ul>
               </DropdownMenu>
               <button className='button button--small button--close button--text-hidden' onClick={this.toggleMenu}>
