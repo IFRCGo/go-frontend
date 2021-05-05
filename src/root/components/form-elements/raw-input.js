@@ -5,13 +5,16 @@ import _cs from 'classnames';
 class RawInput extends React.PureComponent {
   handleChange = (event) => {
     const { value } = event.target;
-    const { onChange } = this.props;
+    const {
+      onChange,
+      name,
+    } = this.props;
 
     if (onChange) {
       if (value === '') {
-        onChange(undefined);
+        onChange(undefined, name);
       } else {
-        onChange(value);
+        onChange(value, name);
       }
     }
   }

@@ -1,0 +1,8 @@
+@import '~styles/settings/variables';
+
+.input-label {
+  font-weight: $base-font-medium;
+  font-size: $font-size-sm;
+  opacity: .7;
+  padding: $spacing/4 $spacing;
+}

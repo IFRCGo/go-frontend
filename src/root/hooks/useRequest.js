@@ -6,7 +6,6 @@ import { isFalsyString } from '@togglecorp/fujs';
 import AbortController from 'abort-controller';
 import { api } from '#config';
 
-
 // Type of RequestInit
 export const defaultRequestOptions = {
   headers: {
