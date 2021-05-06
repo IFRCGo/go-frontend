@@ -34,7 +34,7 @@ function InputContainer(props) {
       </InputLabel>
       <div
         className={_cs(
-          'go-input-section',
+          'go-input-internal-input-section',
           styles.inputSection,
         )}
       >

@@ -41,6 +41,26 @@ export const otherOptionsForPost = {
   lazy: true,
 };
 
+export function transformServerError(
+  result,
+  onErrorSet,
+  fatalError = 'Some unknown error occured',
+) {
+  if (result.responseBody) {
+    onErrorSet({
+      fields: { ...result.responseBody }
+    });
+  } else if (result.responseText) {
+    onErrorSet({
+      $internal: result.responseText,
+    });
+  } else {
+    onErrorSet({
+      $internal: fatalError,
+    });
+  }
+}
+
 function withAuthToken(options = defaultRequestOptions) {
   const user = getFromLocalStorage('user');
 
@@ -68,7 +88,7 @@ function useRequest(
   otherOptions,
 ): [boolean, T | undefined] {
   const [response, setResponse] = useState();
-  const [pending, setPending] = useState(!!url);
+  const [pending, setPending] = useState(!otherOptions?.lazy && !!url);
 
   const otherOptionsRef = React.useRef({
     ...defaultOtherOptions,
@@ -201,6 +221,8 @@ function useRequest(
             });
           }
         } else {
+          setPendingSafe(false, clientId);
+
           if (onFailure) {
             try {
               resBody = JSON.parse(resText);

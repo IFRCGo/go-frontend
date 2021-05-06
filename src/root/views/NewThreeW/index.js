@@ -10,11 +10,23 @@ import LanguageContext from '#root/languageContext';
 function NewThreeW(props) {
   const { strings } = React.useContext(LanguageContext);
 
+  const handleSubmitSuccess = React.useCallback((result) => {
+    if (props.history?.push) {
+      const {
+        responseBody: {
+          project_country: countryId,
+        },
+      } = result;
+
+      props.history.push(`/countries/${countryId}#3w`);
+    }
+  }, [props.history]);
+
   // FIXME: use strings
   const crumbs= React.useMemo(() => [
     {link: props.location?.pathname, name: 'New 3W'},
     {link: '/', name: strings.breadCrumbHome}
-  ]);
+  ], [strings.breadCrumbHome, props.location]);
   return (
     <Page
       title="IFRC Go - New 3W"
@@ -22,7 +34,7 @@ function NewThreeW(props) {
       breadCrumbs={<BreadCrumb crumbs={crumbs} compact />}
     >
       <Container>
-        <ThreeWForm />
+        <ThreeWForm onSubmitSuccess={handleSubmitSuccess} />
       </Container>
     </Page>
   );

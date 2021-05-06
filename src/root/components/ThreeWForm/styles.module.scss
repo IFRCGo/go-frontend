@@ -13,6 +13,12 @@
     }
   }
 
+  .select-all-districts-button {
+    display: flex;
+    align-items: center;
+  }
+
+
   :global {
     .go-input-section {
       margin: $spacing 0;

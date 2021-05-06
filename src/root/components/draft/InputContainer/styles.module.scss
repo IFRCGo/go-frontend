@@ -4,8 +4,14 @@
   padding: $spacing/2 $spacing;
 
   .input-section {
+    display: flex;
+    align-items: center;
     border: 1px solid rgba(0, 0, 0, .1);
     border-radius: 5px;
+
+    .internal-input-container {
+      flex-grow: 1;
+    }
   }
 
   &.disabled {

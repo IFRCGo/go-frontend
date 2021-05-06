@@ -30,7 +30,7 @@ function Container(props) {
           { actions }
         )}
       </div>
-      <div className={styles.content}>
+      <div className={_cs(styles.content, contentClassName)}>
         { children }
       </div>
     </div>

@@ -8,6 +8,7 @@ import {
   useForm,
   createSubmitHandler,
 } from '@togglecorp/toggle-form';
+import { MdDoneAll } from 'react-icons/md';
 
 import InputSection from '#components/draft/InputSection';
 import SelectInput from '#components/draft/SelectInput';
@@ -21,6 +22,7 @@ import LanguageContext from '#root/languageContext';
 
 import useRequest, {
   postRequestOptions,
+  transformServerError,
 } from '#hooks/useRequest';
 
 import {
@@ -40,7 +42,10 @@ const defaultFormValues = {
 };
 
 function ThreeWForm(props) {
-  const { className } = props;
+  const {
+    className,
+    onSubmitSuccess,
+  } = props;
   const { strings } = React.useContext(LanguageContext);
 
   const {
@@ -57,11 +62,9 @@ function ThreeWForm(props) {
     postRequestOptions,
     {
       lazy: true,
-      onSuccess: (resBody) => {
-        console.info('3w created successfully', resBody);
-      },
-      onFailure: (res) => {
-        console.error('3w creation failed', res);
+      onSuccess: onSubmitSuccess,
+      onFailure: (result) => {
+        transformServerError(result, onErrorSet);
       },
     },
   );
@@ -167,13 +170,25 @@ function ThreeWForm(props) {
     }
   }, [onValueChange, value.event, operationToDisasterMap, shouldDisableDisasterType]);
 
+  const projectDistrictsValueRef = React.useRef(value.project_districts);
+  React.useEffect(() => {
+    projectDistrictsValueRef.current = value.project_districts;
+  }, [value.project_districts]);
+
   // Clear out any selected region when country is changed
   React.useEffect(() => {
-    onValueChange([], 'project_districts');
+    if (projectDistrictsValueRef.current?.length > 0) {
+      onValueChange([], 'project_districts');
+    }
   }, [onValueChange, value.project_country]);
 
-  const projectFormPending = false;
-  const shouldDisableSubmitButton = !!error;
+  const handleSelectAllDistrictButtonClick = React.useCallback(() => {
+    const allDistricts = districtOptions.map(d => d.value);
+    onValueChange(allDistricts, 'project_districts');
+  }, [onValueChange, districtOptions]);
+
+  const projectFormPending = submitRequestPending;
+  const shouldDisableSubmitButton = !!(error?.fields) || submitRequestPending;
 
   return (
     <form
@@ -219,6 +234,22 @@ function ThreeWForm(props) {
           options={districtOptions}
           placeholder={districtPlaceholder}
           value={value.project_districts}
+          actions={(
+            <button
+              // FIXME: use strings
+              title="Select all districts"
+              type="button"
+              className={_cs(
+                styles.selectAllDistrictsButton,
+                'button button--secondary',
+                shouldDisableDistrictInput && 'disabled',
+              )}
+              disabled={shouldDisableDistrictInput}
+              onClick={handleSelectAllDistrictButtonClick}
+            >
+              <MdDoneAll />
+            </button>
+          )}
         />
       </InputSection>
       <InputSection

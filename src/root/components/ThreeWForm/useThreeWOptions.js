@@ -6,7 +6,11 @@ import {
   listToMap,
 } from '@togglecorp/fujs';
 
-import { requiredCondition } from '@togglecorp/toggle-form';
+import {
+  requiredCondition,
+  requiredListCondition,
+  requiredStringCondition,
+} from '@togglecorp/toggle-form';
 
 import useRequest from '#hooks/useRequest';
 import { compareString } from '#utils/utils';
@@ -95,12 +99,12 @@ export const schema = {
       end_date: [requiredCondition, generateValidEndDateCondition(value.start_date)],
       event: [],
       is_project_completed: [],
-      name: [requiredCondition],
+      name: [requiredStringCondition],
       operation_type: [requiredCondition],
       primary_sector: [requiredCondition],
       programme_type: [requiredCondition],
-      project_country: [],
-      project_districts: [requiredCondition],
+      project_country: [requiredCondition],
+      project_districts: [requiredListCondition],
       reached_female: [positiveIntegerCondition],
       reached_male: [positiveIntegerCondition],
       reached_other: [positiveIntegerCondition],
@@ -246,7 +250,9 @@ export function useThreeWOptions (value) {
     }));
   }, [disasterTypesResponse]);
 
-  const shouldDisableDistrictInput = fetchingDistricts || !isDefined(value.project_country);
+  const shouldDisableDistrictInput = fetchingDistricts
+    || !isDefined(value.project_country)
+    || districtOptions?.length === 0;
 
   const [
     shouldShowCurrentEmergencyOperation,
@@ -265,10 +271,10 @@ export function useThreeWOptions (value) {
 
   // FIXME: use strings
   let currentOperationPlaceholder = 'Select an operation';
-  let districtPlaceholder = 'Select regions';
+  let districtPlaceholder = 'Select region(s)';
   if (!isDefined(value.project_country)) {
-    currentOperationPlaceholder = 'Please select a country to view it\'s current operations';
-    districtPlaceholder = 'Please select a country to view it\'s regions';
+    currentOperationPlaceholder = 'Select a country to view it\'s current operations';
+    districtPlaceholder = 'Select a country to view it\'s regions';
   } else {
     if (fetchingEvents) {
       currentOperationPlaceholder = 'Fetching current operations...';
@@ -284,7 +290,7 @@ export function useThreeWOptions (value) {
   if (fetchingDisasterTypes) {
     disasterTypePlaceholder = 'Fetching disaster types..';
   } else if(shouldDisableDisasterType) {
-    disasterTypePlaceholder = 'Please select an operation for it\'s disaster type';
+    disasterTypePlaceholder = 'Select an operation for it\'s disaster type';
   }
 
   const secondarySectorOptions = React.useMemo(() => (
