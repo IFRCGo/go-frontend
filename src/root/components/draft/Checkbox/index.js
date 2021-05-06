@@ -34,6 +34,7 @@ function Checkbox(props) {
         'go-checkbox',
         styles.checkbox,
         className,
+        value && styles.checked,
       )}
     >
       <div className={styles.checkmark}>

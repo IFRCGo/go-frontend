@@ -47,7 +47,7 @@
     }
 
     &:last-of-type {
-      margin-inline-end: 0;    
+      margin-inline-end: 0;
     }
 
     &--selected {
@@ -55,7 +55,7 @@
       font-weight: $base-font-semi-bold;
       color: $primary-color;
       box-shadow: 0px 15px 1px -14px $primary-color;
-  
+
       @include media(small) {
         border-color: $base-border-color;
         bottom: -1px;

@@ -112,7 +112,11 @@ export const schema = {
       reporting_ns: [requiredCondition],
       secondary_sectors: [],
       start_date: [requiredCondition],
-      status: [requiredCondition],
+      // Note: Event though status is required field,
+      // its not marked required in the schema
+      // because it is calculated automatically
+      // using value of other required fields
+      status: [],
       target_female: [positiveIntegerCondition],
       target_male: [positiveIntegerCondition],
       target_other: [positiveIntegerCondition],

@@ -24,5 +24,11 @@
   .input {
     display: none;
   }
+
+  &.checked {
+    .checkmark {
+      color: $primary-color;
+    }
+  }
 }
 

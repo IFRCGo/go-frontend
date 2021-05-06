@@ -24,13 +24,13 @@ function NewThreeW(props) {
 
   // FIXME: use strings
   const crumbs= React.useMemo(() => [
-    {link: props.location?.pathname, name: 'New 3W'},
+    {link: props.location?.pathname, name: 'Create new 3W activity'},
     {link: '/', name: strings.breadCrumbHome}
   ], [strings.breadCrumbHome, props.location]);
   return (
     <Page
-      title="IFRC Go - New 3W"
-      heading="Create 3W"
+      title="IFRC Go - New 3W Activity"
+      heading="Create 3W Activity"
       breadCrumbs={<BreadCrumb crumbs={crumbs} compact />}
     >
       <Container>
