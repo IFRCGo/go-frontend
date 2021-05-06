@@ -31,21 +31,23 @@ yarn install
 
 #### Environment variables
 All the environment variables are stored in `.env` file in the project's base directory. Currently there are 4 environment variables:
-- `REACT_APP_MAPBOX_ACCESS_TOKEN` access token for the mapbox, defaults to the IFRC's mapbox token 
+- `REACT_APP_MAPBOX_ACCESS_TOKEN` access token for the mapbox, defaults to the IFRC's mapbox token
 - `REACT_APP_API_ENDPOINT` endpoint where API for go is served, defaults to the staging server's URL
 - `REACT_APP_FDRS_AUTH` authentication token for FDRS API (optional)
 - `REACT_APP_ENVIRONMENT` current app environment (could be one of `development` / `staging` / `production`, defaults to `development`)
+- `REACT_APP_INSTRUMENTATION_KEY` application insights instrumentation key for analytics tracking
 
 Sample `.env` file
 ```
 REACT_APP_MAPBOX_ACCESS_TOKEN=<your_mapbox_token>
 REACT_APP_API_ENDPOINT=https://dsgocdnapi.azureedge.net/
+REACT_APP_INSTRUMENTATION_KEY=<your_instrumentation_key>
 ```
 
 #### Starting the app
 
 ```
-yarn start 
+yarn start
 ```
 Compiles the sass files, javascript, and launches the server making the site available at `http://localhost:3000/`
 The system will watch files and execute tasks whenever one of them changes.
@@ -89,4 +91,3 @@ To add an icon:
  - Run `yarn run collecticons` to rebuild the icon font and re-generate the _collecticons.scss file, found in `src/styles/core/`. NOTE: Do NOT update this file by hand.
  - Use the added class in your React Markup to add the icon - this class name will be `collecticons-` + your SVG filename, so if your file was called `my-icon.svg`, the className to use will be `collecticons-my-icon`. Refer to existing code for usage examples.
  - Alternatively, you can use Icomoon to rebuild the icon font. First import the new SVG icons on the Icomoon site. Then upload the `selection.json` (src/assets/icons/icomoon/selection.json) file (which contains the icon settings) using the 'Import Icons' button. You can regenerate the font from Icomoon. For more instructions, see [Icomoon](https://icomoon.io/#docs).
- 

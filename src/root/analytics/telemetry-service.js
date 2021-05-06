@@ -1,0 +1,65 @@
+import { ApplicationInsights } from '@microsoft/applicationinsights-web';
+import { ReactPlugin } from '@microsoft/applicationinsights-react-js';
+import { api, environment } from '#root/config';
+import packageJson from '../../../package.json';
+
+let reactPlugin = null;
+let appInsights = null;
+
+/**
+ * Create the App Insights Telemetry Service
+ * @return {{reactPlugin: ReactPlugin, appInsights: Object, initialize: Function}} - Object
+ */
+const createTelemetryService = () => {
+    /**
+     * Initialize the Application Insights class
+     * @param {string} instrumentationKey - Application Insights Instrumentation Key
+     * @param {Object} browserHistory - client's browser history, supplied by the withRouter HOC
+     * @return {void}
+     */
+    const initialize = (instrumentationKey, browserHistory) => {
+        if (!browserHistory) {
+            throw new Error('Could not initialize Telemetry Service');
+        }
+        if (!instrumentationKey) {
+            throw new Error(
+                'Instrumentation key not provided in ./src/telemetry-provider.jsx'
+            );
+        }
+
+        reactPlugin = new ReactPlugin();
+
+        appInsights = new ApplicationInsights({
+            config: {
+                instrumentationKey: instrumentationKey,
+                maxBatchInterval: 0,
+                disableFetchTracking: false,
+                extensions: [reactPlugin],
+                extensionConfig: {
+                    [reactPlugin.identifier]: {
+                        history: browserHistory,
+                    },
+                },
+            },
+        });
+
+        appInsights.loadAppInsights();
+        appInsights.addTelemetryInitializer(telemetryInitializer);
+    };
+
+    return { reactPlugin, appInsights, initialize };
+};
+
+
+const telemetryInitializer = (item) => {
+    Object.assign(item.data, {
+      environment: environment,
+      version: packageJson.version,
+      apiUrl: api,
+      location: window.location
+    });
+  };
+
+
+export const ai = createTelemetryService();
+export const getAppInsights = () => appInsights;
