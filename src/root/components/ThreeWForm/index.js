@@ -15,10 +15,13 @@ import TextInput from '#components/draft/TextInput';
 import NumberInput from '#components/draft/NumberInput';
 import DateInput from '#components/draft/DateInput';
 import Checkbox from '#components/draft/Checkbox';
-
+import NonFieldError from '#components/draft/NonFieldError';
 import TextOutput from '#components/text-output';
-
 import LanguageContext from '#root/languageContext';
+
+import useRequest, {
+  postRequestOptions,
+} from '#hooks/useRequest';
 
 import {
   schema,
@@ -27,10 +30,12 @@ import {
   PROJECT_STATUS_PLANNED,
   PROJECT_STATUS_ONGOING,
 } from './useThreeWOptions';
+
 import styles from './styles.module.scss';
 
 const defaultFormValues = {
   project_districts: [],
+  secondary_sectors: [],
   visibility: 'public',
 };
 
@@ -47,10 +52,27 @@ function ThreeWForm(props) {
     onValueSet,
   } = useForm(defaultFormValues, schema);
 
+  const [submitRequestPending, ,submitRequest] = useRequest(
+    'api/v2/project/',
+    postRequestOptions,
+    {
+      lazy: true,
+      onSuccess: (resBody) => {
+        console.info('3w created successfully', resBody);
+      },
+      onFailure: (res) => {
+        console.error('3w creation failed', res);
+      },
+    },
+  );
+
   const handleSubmit = React.useCallback((finalValues) => {
     onValueSet(finalValues);
-    console.info(finalValues);
-  }, [onValueSet]);
+    submitRequest({
+      ...postRequestOptions,
+      body: JSON.stringify(finalValues),
+    });
+  }, [onValueSet, submitRequest]);
 
   const {
     fetchingCountries,
@@ -149,6 +171,9 @@ function ThreeWForm(props) {
   React.useEffect(() => {
     onValueChange([], 'project_districts');
   }, [onValueChange, value.project_country]);
+
+  const projectFormPending = false;
+  const shouldDisableSubmitButton = !!error;
 
   return (
     <form
@@ -477,9 +502,31 @@ function ThreeWForm(props) {
           clearable={false}
         />
       </InputSection>
-      <button type="submit">
-        Save
-      </button>
+      <div className={styles.formActions}>
+        {/*
+          The first hidden and disabled submit button is to disable form submission on enter
+          more details on: https://www.w3.org/TR/2018/SPSD-html5-20180327/forms.html#implicit-submission
+        */}
+        <button
+          className={styles.fakeSubmitButton}
+          type="submit"
+          disabled
+        />
+        <NonFieldError
+          error={error}
+          message="Please correct all the errors above before submission"
+        />
+        <button
+          className={_cs(
+            'button button--primary-bounded',
+            shouldDisableSubmitButton && 'disabled'
+          )}
+          type="submit"
+          disabled={shouldDisableSubmitButton}
+        >
+          { projectFormPending ? strings.projectFormSubmitting : strings.projectFormSubmit }
+        </button>
+      </div>
     </form>
   );
 }

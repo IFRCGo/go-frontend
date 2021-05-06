@@ -13,7 +13,13 @@ function InputSection(props) {
   } = props;
 
   return (
-    <div className={_cs(className, styles.inputSection)}>
+    <div
+      className={_cs(
+        'go-input-section',
+        className,
+        styles.inputSection,
+      )}
+    >
       <div
         className={styles.sectionTitle}
         title={tooltip}

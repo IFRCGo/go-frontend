@@ -185,7 +185,7 @@ function Multiplexer(props) {
           <Route exact path='/per-assessment/:id' component={PerAssessment} />
           <Route exact path='/per-assessment/:id/edit' render={props => <PerAssessment {...props} isEdit={true} />} />
           <Route path='/preparedness' component={Preparedness} />
-          <PrivateRoute exact path='/three-w/add/' render={props => <NewThreeW {...props} />} />
+          <PrivateRoute exact path='/three-w/new/' render={props => <NewThreeW {...props} />} />
           <Route component={UhOh}/>
         </Switch>
       </BreadcrumbsProvider>

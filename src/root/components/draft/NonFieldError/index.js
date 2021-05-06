@@ -1,12 +1,20 @@
 import React from 'react';
+import { _cs } from '@togglecorp/fujs';
+
+import styles from './styles.module.scss';
 
 function NonFieldError(props) {
   const {
     className,
     error,
+    message,
   } = props;
 
-  if (!error?.$internal) {
+  if (!error) {
+    return null;
+  }
+
+  if (!(error?.$internal) && !message) {
     return null;
   }
 
@@ -17,7 +25,8 @@ function NonFieldError(props) {
         className,
       )}
     >
-      {error.$internal}
+      {error?.$internal}
+      {error && !error.$internal && message}
     </div>
   );
 }
