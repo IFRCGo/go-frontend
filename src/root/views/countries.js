@@ -598,7 +598,7 @@ class AdminArea extends SFPComponent {
             <div className='col col-6-sm col-7-mid'>
               <BreadCrumb breadcrumbContainerClass='padding-reset' crumbs={ crumbs } />
             </div>
-            <div className='col col-6-sm col-5-mid spacing-half-t'>  
+            <div className='col col-6-sm col-5-mid spacing-half-t'>
               <div className='row-sm flex flex-justify-flex-end'>
                 <div className='col-sm spacing-half-v'>
                   <a
@@ -618,18 +618,18 @@ class AdminArea extends SFPComponent {
             <h1 className='inpage__title'>
               {data.name}
             </h1>
-            { region ? (
-            <div className='inpage__header-actions text-center'>
-              <div className='spacing-half-v'>
-                <Link to={`/regions/${data.region}`}
-                  className='link link--with-icon flex-justify-center'
-                >
-                  <span className='link--with-icon-text'>{region.label}</span>
-                  <span className='collecticon-chevron-right link--with-icon-inner'></span>
-                </Link>
+            {region && (
+              <div className='inpage__header-actions text-center'>
+                <div className='spacing-half-v'>
+                  <Link to={`/regions/${data.region}`}
+                    className='link link--with-icon flex-justify-center'
+                  >
+                    <span className='link--with-icon-text'>{region.label}</span>
+                    <span className='collecticon-chevron-right link--with-icon-inner'></span>
+                  </Link>
+                </div>
               </div>
-            </div>) : null }
-
+            )}
           </div>
         </header>
         <section className='inpage__body'>

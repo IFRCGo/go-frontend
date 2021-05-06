@@ -1,0 +1,33 @@
+@import '~styles/settings/variables';
+
+.page-header {
+  .top-section {
+    display: flex;
+    flex-wrap: wrap;
+
+    .bread-crumbs {
+      flex-grow: 1;
+    }
+
+    .actions {
+      flex-shrink: 0;
+    }
+  }
+
+  .middle-section {
+    padding: $spacing*2;
+
+    .heading {
+      text-align: center;
+      padding: $spacing/2 $spacing;
+      margin: 0;
+      font-size: 2.25rem;
+    }
+
+    .description {
+      text-align: center;
+      padding: $spacing/2 $spacing;
+      margin: 0;
+    }
+  }
+}

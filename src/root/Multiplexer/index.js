@@ -48,6 +48,7 @@ import PerAssessment from '#views/per-assessment';
 import Preparedness from '#views/preparedness';
 import TranslationDashboard from '#views/TranslationDashboard';
 import ClearInitCache from '#views/ClearInitCache';
+import NewThreeW from '#views/NewThreeW';
 
 import styles from './styles.module.scss';
 
@@ -184,6 +185,7 @@ function Multiplexer(props) {
           <Route exact path='/per-assessment/:id' component={PerAssessment} />
           <Route exact path='/per-assessment/:id/edit' render={props => <PerAssessment {...props} isEdit={true} />} />
           <Route path='/preparedness' component={Preparedness} />
+          <PrivateRoute exact path='/three-w/new/' render={props => <NewThreeW {...props} />} />
           <Route component={UhOh}/>
         </Switch>
       </BreadcrumbsProvider>
