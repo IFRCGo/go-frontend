@@ -1,0 +1,7 @@
+@import '~styles/settings/variables';
+
+.non-field-error {
+  color: $danger-color;
+  font-weight: $base-font-bold;
+  padding: $spacing;
+}

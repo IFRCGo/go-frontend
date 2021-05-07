@@ -1,0 +1,7 @@
+@import '~styles/settings/variables';
+
+.container {
+  max-width: $media-large;
+  padding: 0 $spacing*8;
+  margin: 0 auto;
+}

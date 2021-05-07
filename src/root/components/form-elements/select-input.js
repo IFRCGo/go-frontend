@@ -10,6 +10,7 @@ class SelectInput extends React.PureComponent {
     const {
       onChange,
       isMulti,
+      name,
     } = this.props;
 
     if (!onChange) {
@@ -18,12 +19,12 @@ class SelectInput extends React.PureComponent {
 
     if (selectedItem) {
       if (isMulti) {
-        onChange(selectedItem.map(d => d.value));
+        onChange(selectedItem.map(d => d.value), name);
       } else {
-        onChange(selectedItem.value);
+        onChange(selectedItem.value, name);
       }
     } else {
-      onChange(isMulti ? emptyList : undefined);
+      onChange(isMulti ? emptyList : undefined, name);
     }
   }
 
@@ -32,6 +33,7 @@ class SelectInput extends React.PureComponent {
       label,
       className,
       onChange, // capturing
+      name,     // capturing
       value: valueFromProp,
       options,
       isMulti,

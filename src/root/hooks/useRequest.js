@@ -6,13 +6,14 @@ import { isFalsyString } from '@togglecorp/fujs';
 import AbortController from 'abort-controller';
 import { api } from '#config';
 
+export const defaultHeaders = {
+  Accept: 'application/json',
+  'Content-Type': 'application/json; charset=utf-8',
+};
 
 // Type of RequestInit
 export const defaultRequestOptions = {
-  headers: {
-    Accept: 'application/json',
-    'Content-Type': 'application/json; charset=utf-8',
-  },
+  headers: { ...defaultHeaders },
 };
 
 export const csvRequestOptions = {
@@ -22,12 +23,43 @@ export const csvRequestOptions = {
   },
 };
 
-const defaultOtherOptions = {
+export const postRequestOptions = {
+  method: 'POST',
+  headers: { ...defaultHeaders },
+};
+
+export const defaultOtherOptions = {
   onSuccess: undefined,
   onFailure: undefined,
+  lazy: false,
   preserveResponse: true,
   debug: false,
 };
+
+export const otherOptionsForPost = {
+  ...defaultOtherOptions,
+  lazy: true,
+};
+
+export function transformServerError(
+  result,
+  onErrorSet,
+  fatalError = 'Some unknown error occured',
+) {
+  if (result.responseBody) {
+    onErrorSet({
+      fields: { ...result.responseBody }
+    });
+  } else if (result.responseText) {
+    onErrorSet({
+      $internal: result.responseText,
+    });
+  } else {
+    onErrorSet({
+      $internal: fatalError,
+    });
+  }
+}
 
 function withAuthToken(options = defaultRequestOptions) {
   const user = getFromLocalStorage('user');
@@ -56,12 +88,20 @@ function useRequest(
   otherOptions,
 ): [boolean, T | undefined] {
   const [response, setResponse] = useState();
-  const [pending, setPending] = useState(!!url);
+  const [pending, setPending] = useState(!otherOptions?.lazy && !!url);
 
   const otherOptionsRef = React.useRef({
     ...defaultOtherOptions,
     ...otherOptions,
   });
+
+  React.useEffect(() => {
+    otherOptionsRef.current = {
+      ...defaultOtherOptions,
+      ...otherOptionsRef.current,
+      ...otherOptions,
+    };
+  }, [otherOptions]);
 
   const clientIdRef = useRef(-1);
   const pendingSetByRef = useRef(-1);
@@ -94,9 +134,9 @@ function useRequest(
     isFalsyString(url) ? '' : /http/.test(url) ? url: resolveUrl(api, url)
   ), [url]);
 
-  useEffect(
-    () => {
-      if (isFalsyString(fullUrl)) {
+  const triggerRequest = React.useCallback(
+    (requestUrl, options) => {
+      if (isFalsyString(requestUrl)) {
         setResponseSafe(undefined, clientIdRef.current);
         setPendingSafe(false, clientIdRef.current);
         return () => {};
@@ -134,7 +174,9 @@ function useRequest(
             } = otherOptionsRef;
 
             if (onFailure) {
-              onFailure(e);
+              onFailure({
+                exception: e,
+              });
             }
           } else {
             // console.info('Clearing response on network error');
@@ -172,25 +214,50 @@ function useRequest(
           setPendingSafe(false, clientId);
 
           if (onSuccess) {
-            onSuccess(resBody, res);
+            onSuccess({
+              responseBody: resBody,
+              responseText: resText,
+              response: res,
+            });
           }
         } else {
+          setPendingSafe(false, clientId);
+
           if (onFailure) {
-            onFailure(res);
+            try {
+              resBody = JSON.parse(resText);
+            } catch(e) {
+            }
+
+            onFailure({
+              responseBody: resBody,
+              response: res,
+              responseText: resText,
+            });
           }
         }
       }
 
-      fetchResource(fullUrl, withAuthToken(requestOptions), clientIdRef.current);
+      fetchResource(requestUrl, withAuthToken(options), clientIdRef.current);
 
       return () => {
         controller.abort();
       };
     },
-    [fullUrl, requestOptions, setPendingSafe, setResponseSafe],
+    [setPendingSafe, setResponseSafe],
   );
 
-  return [pending, response];
+  useEffect(() => {
+    if (!(otherOptionsRef.current.lazy)) {
+      triggerRequest(fullUrl, requestOptions);
+    }
+  }, [fullUrl, requestOptions, triggerRequest]);
+
+  const triggerManually = React.useCallback((options = requestOptions) => {
+    triggerRequest(fullUrl, options);
+  }, [fullUrl, requestOptions, triggerRequest]);
+
+  return [pending, response, triggerManually];
 }
 
 export function useRecursiveFetch(url) {

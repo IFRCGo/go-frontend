@@ -192,8 +192,8 @@ class Register extends React.Component {
           </label>
           <Select
             name='country'
-            value={getSelectInputValue(this.state.data.country, countriesList)}
-            onChange={({ value }) => this.onFieldChange('country', value)}
+            value={this.state.data.country}
+            onChange={(value) => this.onFieldChange('country', value)}
             options={countriesList}
           />
           <FormError

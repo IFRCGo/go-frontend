@@ -1,6 +1,6 @@
 {
   "name": "go-frontend",
-  "version": "4.6.2",
+  "version": "5.0.0",
   "private": true,
   "devDependencies": {
     "@babel/core": "7.9.0",
@@ -80,6 +80,7 @@
     "@microsoft/applicationinsights-web": "^2.6.2",
     "@togglecorp/faram": "^1.2.1",
     "@togglecorp/fujs": "^1.9.0",
+    "@togglecorp/toggle-form": "^0.1.1",
     "@turf/bbox": "^6.0.1",
     "@turf/centroid": "^6.0.2",
     "abort-controller": "^3.0.0",

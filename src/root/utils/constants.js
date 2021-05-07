@@ -210,6 +210,6 @@ export const operationTypes = {
 
 export const projectVisibilityList = [
   { value: 'public', label: 'Public' },
-  { value: 'logged_in_user', label: 'Logged in user' },
-  { value: 'ifrc_only', label: 'IFRC only' },
+  { value: 'logged_in_user', label: 'Membership' },
+  { value: 'ifrc_only', label: 'IFRC Only' },
 ];

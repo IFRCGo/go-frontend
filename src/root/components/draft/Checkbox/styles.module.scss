@@ -1,0 +1,34 @@
+@import '~styles/settings/variables';
+
+.checkbox {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+
+  .checkmark {
+    display: flex;
+    align-items: center;
+    margin: $spacing/2;
+
+    .check-icon {
+      display: flex;
+      align-items: center;
+      font-size: 1.3em;
+    }
+  }
+
+  .label {
+    padding: $spacing/2;
+  }
+
+  .input {
+    display: none;
+  }
+
+  &.checked {
+    .checkmark {
+      color: $primary-color;
+    }
+  }
+}
+
