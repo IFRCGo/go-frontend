@@ -1,0 +1,35 @@
+.radio {
+    --cursor: default;
+    display: flex;
+    align-items: center;
+    cursor: var(--cursor);
+    padding: var(--dui-spacing-extra-small) calc(var(--dui-spacing-medium) - var(--dui-spacing-extra-small));
+
+    .icon {
+        font-size: 1.2em;
+    }
+
+    .input {
+        display: none;
+    }
+
+    &.active {
+        .icon {
+            color: var(--dui-color-accent);
+        }
+    }
+
+    &.disabled {
+        opacity: var(--dui-opacity-disabled-element);
+    }
+
+    &:not(.disabled) {
+        &:hover {
+            background-color: var(--dui-color-background-hover);
+        }
+
+        &:not(.read-only) {
+            --cursor: pointer;
+        }
+    }
+}

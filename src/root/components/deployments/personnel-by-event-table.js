@@ -31,7 +31,12 @@ function PersonnelByEventTable (props) {
     <Fold
       title={strings.deploymentsOverviewByEmergencies}
       foldWrapperClass="fold--main fold-deployments-overview-emergencies"
-      navLink=<Link className='fold__title__link' to='/deployments/personnel/all'>{strings.deploymentsOverviewViewAll}</Link>>
+      navLink={(
+        <Link className='fold__title__link' to='/deployments/personnel/all'>
+        {strings.deploymentsOverviewViewAll}
+        </Link>
+      )}
+    >
       <table className='responsive-table table table--border-bottom table--box-shadow'>
         <thead>
           <th>
@@ -70,23 +75,6 @@ function PersonnelByEventTable (props) {
       </table>
     </Fold>
   );
-
-  /*
-
-  return (
-    <div>
-      {
-        data.results.map(d => {
-          return (
-            <div>
-              { d.name }
-            </div>
-          );
-        })
-      }
-    </div>
-  );
-  */
 }
 
 export default PersonnelByEventTable;

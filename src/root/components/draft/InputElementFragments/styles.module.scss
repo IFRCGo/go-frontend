@@ -1,0 +1,20 @@
+.icons {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    padding: 0 var(--dui-spacing-extra-small);
+}
+
+.children {
+    display: flex;
+    align-items: center;
+    flex-grow: 1;
+    padding: 0 var(--dui-spacing-extra-small);
+}
+
+.actions {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    padding: 0 var(--dui-spacing-extra-small);
+}

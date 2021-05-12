@@ -49,6 +49,7 @@ import Preparedness from '#views/preparedness';
 import TranslationDashboard from '#views/TranslationDashboard';
 import ClearInitCache from '#views/ClearInitCache';
 import NewThreeW from '#views/NewThreeW';
+import NewFieldReportForm from '#components/NewFieldReportForm';
 
 import styles from './styles.module.scss';
 
@@ -186,6 +187,7 @@ function Multiplexer(props) {
           <Route exact path='/per-assessment/:id/edit' render={props => <PerAssessment {...props} isEdit={true} />} />
           <Route path='/preparedness' component={Preparedness} />
           <PrivateRoute exact path='/three-w/new/' render={props => <NewThreeW {...props} />} />
+          <PrivateRoute exact path='/new-field-report-form/' render={props => <NewFieldReportForm {...props} /> } />
           <Route component={UhOh}/>
         </Switch>
       </BreadcrumbsProvider>
