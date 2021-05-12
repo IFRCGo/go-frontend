@@ -83,10 +83,10 @@ function withAuthToken(options = defaultRequestOptions) {
 }
 
 function useRequest(
-  url: string | undefined,
+  url,
   requestOptions = defaultRequestOptions,
   otherOptions,
-): [boolean, T | undefined] {
+) {
   const [response, setResponse] = useState();
   const [pending, setPending] = useState(!otherOptions?.lazy && !!url);
 
@@ -107,7 +107,7 @@ function useRequest(
   const pendingSetByRef = useRef(-1);
   const responseSetByRef = useRef(-1);
 
-  const setPendingSafe = useCallback((value: boolean, clientId) => {
+  const setPendingSafe = useCallback((value, clientId) => {
     if (clientId >= pendingSetByRef.current) {
       pendingSetByRef.current = clientId;
       if (otherOptionsRef.current.debug) {
@@ -118,7 +118,7 @@ function useRequest(
   }, [setPending]);
 
   const setResponseSafe = useCallback(
-    (value: T | undefined, clientId) => {
+    (value, clientId) => {
       if (clientId >= responseSetByRef.current) {
         responseSetByRef.current = clientId;
         if (otherOptionsRef.current.debug) {

@@ -220,6 +220,7 @@ class FieldReportForm extends React.Component {
         break;
     }
     validator(state);
+    console.info(validator.errors);
 
     this.setState({ errors: _cloneDeep(validator.errors) });
     return validator.errors === null;

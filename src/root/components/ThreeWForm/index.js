@@ -450,8 +450,8 @@ function ThreeWForm(props) {
         </div>
       </InputSection>
       <InputSection
-        title={strings.projectFormPeopleTageted}
         description={strings.projectFormPeopleTagetedHelpText}
+        title={strings.projectFormPeopleTageted}
         tooltip={strings.projectFormPeopleTagetedTooltip}
       >
         <NumberInput
