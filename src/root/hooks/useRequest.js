@@ -2,9 +2,27 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { get as getFromLocalStorage } from 'local-storage';
 import csvParse from 'csv-parse/lib/sync';
 import {resolve as resolveUrl} from 'url';
-import { isFalsyString } from '@togglecorp/fujs';
+import {
+  isFalsyString,
+  isDefined,
+} from '@togglecorp/fujs';
 import AbortController from 'abort-controller';
 import { api } from '#config';
+
+export function buildUrl(url, queryParams={}) {
+  const queryKeys = Object.keys(queryParams);
+
+  if (queryKeys.length === 0) {
+    return url;
+  }
+
+  const queryString = queryKeys.map((key) => (
+    isDefined(queryParams[key]) ? `${key}=${queryParams[key]}` : ''
+  )).join('&');
+
+  return `${url}?${queryString}`;
+}
+
 
 export const defaultHeaders = {
   Accept: 'application/json',

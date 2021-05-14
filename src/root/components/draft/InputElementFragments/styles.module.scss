@@ -1,20 +1,22 @@
+@import '~styles/settings/variables';
+
 .icons {
     display: flex;
     align-items: center;
     flex-shrink: 0;
-    padding: 0 var(--dui-spacing-extra-small);
+    padding: 0 $spacing / 4;
 }
 
 .children {
     display: flex;
     align-items: center;
     flex-grow: 1;
-    padding: 0 var(--dui-spacing-extra-small);
+    padding: 0 $spacing / 4;
 }
 
 .actions {
     display: flex;
     align-items: center;
     flex-shrink: 0;
-    padding: 0 var(--dui-spacing-extra-small);
+    padding: 0 $spacing / 4;
 }

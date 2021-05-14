@@ -2,19 +2,16 @@
 
 .checkbox {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   cursor: pointer;
+  padding: $spacing/2;
 
   .checkmark {
     display: flex;
+    flex-shrink: 0;
     align-items: center;
     margin: $spacing/2;
-
-    .check-icon {
-      display: flex;
-      align-items: center;
-      font-size: 1.3em;
-    }
+    font-size: 1.5em;
   }
 
   .label {

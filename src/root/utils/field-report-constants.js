@@ -1,6 +1,10 @@
 export const statusEarlyWarningValue = '8';
 export const statusEventValue = '9';
 
+export const STATUS_EARLY_WARNING = '8';
+export const STATUS_EVENT = '9';
+export const DISASTER_TYPE_EPIDEMIC = '1';
+
 export const getStatusEarlyWarning = (strings) => ({
   value: statusEarlyWarningValue,
   label: strings.fieldReportConstantStatusEarlyWarningLabel,
@@ -18,7 +22,7 @@ export const getIsStatusEventByValue = value =>
 
 export const getStatus = (strings) => [
   getStatusEarlyWarning(strings),
-  getStatusEvent(strings), 
+  getStatusEvent(strings),
 ];
 
 export const statusValues = [

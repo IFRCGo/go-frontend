@@ -246,6 +246,7 @@ class FieldReportForm extends React.Component {
         this.setState({ data });
       }
       if (step === 4) {
+        console.info('data', this.state.data);
         const payload = convertStateToPayload(this.state.data);
         const userId = _get(this.props.user, 'data.id');
         if (userId) {
@@ -257,9 +258,10 @@ class FieldReportForm extends React.Component {
         if (this.props.match.params.id) {
           this.props._updateFieldReport(this.props.match.params.id, payload);
         } else {
-          this.props._createFieldReport(payload);
+          console.info('payload', payload);
+          // this.props._createFieldReport(payload);
         }
-        showGlobalLoading();
+        // showGlobalLoading();
       } else {
         window.scrollTo(0, 0);
         this.setState({ step: step + 1 });
@@ -704,8 +706,7 @@ class FieldReportForm extends React.Component {
       >
         {
           fields.situationFields[status + covidTag].map(field => {
-            return status !== 'EPI'
-              ? (
+            return status !== 'EPI' ? (
                 <SourceEstimation
                   status={status}
                   estimationLabel={field.estimationLabel}
@@ -718,8 +719,7 @@ class FieldReportForm extends React.Component {
                   errors={this.state.errors}
                   onChange={this.onFieldChange.bind(this, field.key)}
                 />
-              )
-              : (
+              ) : (
                 <EPISourceEstimation
                   estimationLabel={field.estimationLabel}
                   label={field.label}
@@ -810,7 +810,8 @@ class FieldReportForm extends React.Component {
             name='other-sources'
             classInput='textarea--lg'
             classWrapper='form__group__fr'
-            placeholder={status === 'EPI' ? strings.fieldReportFormSourceDetailsEPIPlaceholder : strings.fieldReportFormSourceDetailsPlaceholder}
+            placeholder={
+            status === 'EPI' ? strings.fieldReportFormSourceDetailsEPIPlaceholder : strings.fieldReportFormSourceDetailsPlaceholder}
             id='other-sources'
             description={strings.fieldReportFormSourceDetailsDescription}
             value={this.state.data.otherSources}

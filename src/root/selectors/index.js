@@ -100,11 +100,83 @@ export const countriesByIso = (state) => {
   }
 };
 
+export const languageSelector = (state) => (
+  state.lang
+);
+
+export const languageResponseSelector = (state) => (
+  state.lang
+);
+
+export const currentLanguageSelector = (state) => (
+  languageSelector(state).current
+);
+
+export const languageDataSelector = (state) => (
+  languageSelector(state).data
+);
+
+export const languageStringsSelector = (state) => (
+  languageSelector(state).strings
+);
+
+export const currentLanguageStringsSelector = languageStringsSelector;
+
+export const languageBulkResponseSelector = (state) => (
+  state.postLanguageBulk
+);
+
+export const currentLangugageSelector = (state) => (
+  languageSelector(state).current || 'en'
+);
+
+export const allLanguagesSelector = (state) => {
+  if (state.langAll.fetched && state.langAll.data) {
+    let excelReadyObj = state.langAll.data.reduce((result, item) => {
+      //                                                         dev         en, fr, es, ar
+      const keyObj = result[item.key] = result[item.key] || [lang[item.key], '', '', '', ''];
+      switch (item.language) {
+        case 'en':
+          keyObj[1] = item.value;
+          break;
+        case 'fr':
+          keyObj[2] = item.value;
+          break;
+        case 'es':
+          keyObj[3] = item.value;
+          break;
+        case 'ar':
+          keyObj[4] = item.value;
+          break;
+        default:
+          break;
+      }
+      return result;
+    });
+
+    // First few elements are weird, we don't need those
+    delete excelReadyObj.id;
+    delete excelReadyObj.key;
+    delete excelReadyObj.hash;
+    delete excelReadyObj.value;
+    delete excelReadyObj.language;
+
+    let objToArray = [];
+    Object.keys(excelReadyObj).map(key => {
+      objToArray.push([key, ...excelReadyObj[key]]);
+      return null; // linter needs a return
+    });
+    return objToArray;
+  }
+  return null;
+};
+
 export const countriesGeojsonSelector = (state) => {
   const featureCollection = {
     'type': 'FeatureCollection',
     'features': []
   };
+
   if (state.allCountries && state.allCountries.data.results) {
     const currentLang = currentLanguageSelector(state);
     state.allCountries.data.results.forEach(country => {
@@ -216,76 +288,6 @@ export const projectFormSelector = (state) => (
   state.projectForm
 );
 
-export const languageSelector = (state) => (
-  state.lang
-);
-
-export const languageResponseSelector = (state) => (
-  state.lang
-);
-
-export const currentLanguageSelector = (state) => (
-  languageSelector(state).current
-);
-
-export const languageDataSelector = (state) => (
-  languageSelector(state).data
-);
-
-export const languageStringsSelector = (state) => (
-  languageSelector(state).strings
-);
-
-export const currentLanguageStringsSelector = languageStringsSelector;
-
-export const languageBulkResponseSelector = (state) => (
-  state.postLanguageBulk
-);
-
-export const currentLangugageSelector = (state) => (
-  languageSelector(state).current || 'en'
-);
-
-export const allLanguagesSelector = (state) => {
-  if (state.langAll.fetched && state.langAll.data) {
-    let excelReadyObj = state.langAll.data.reduce((result, item) => {
-      //                                                         dev         en, fr, es, ar
-      const keyObj = result[item.key] = result[item.key] || [lang[item.key], '', '', '', ''];
-      switch (item.language) {
-        case 'en':
-          keyObj[1] = item.value;
-          break;
-        case 'fr':
-          keyObj[2] = item.value;
-          break;
-        case 'es':
-          keyObj[3] = item.value;
-          break;
-        case 'ar':
-          keyObj[4] = item.value;
-          break;
-        default:
-          break;
-      }
-      return result;
-    });
-
-    // First few elements are weird, we don't need those
-    delete excelReadyObj.id;
-    delete excelReadyObj.key;
-    delete excelReadyObj.hash;
-    delete excelReadyObj.value;
-    delete excelReadyObj.language;
-
-    let objToArray = [];
-    Object.keys(excelReadyObj).map(key => {
-      objToArray.push([key, ...excelReadyObj[key]]);
-      return null; // linter needs a return
-    });
-    return objToArray;
-  }
-  return null;
-};
 
 export const userResponseSelector = (state) => (
   state.me || {}

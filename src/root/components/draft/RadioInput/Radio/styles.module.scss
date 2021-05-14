@@ -1,12 +1,24 @@
+@import '~styles/settings/variables';
+
 .radio {
     --cursor: default;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     cursor: var(--cursor);
-    padding: var(--dui-spacing-extra-small) calc(var(--dui-spacing-medium) - var(--dui-spacing-extra-small));
+    padding: $spacing / 2;
 
     .icon {
-        font-size: 1.2em;
+        font-size: 1.6em;
+    }
+
+    .children {
+      flex-direction: column;
+      align-items: flex-start;
+
+      .description {
+        color: rgba(0, 0, 0, .6);
+        font-size: $font-size-xs;
+      }
     }
 
     .input {
@@ -15,7 +27,7 @@
 
     &.active {
         .icon {
-            color: var(--dui-color-accent);
+            color: $primary-color;
         }
     }
 

@@ -12,7 +12,7 @@ import {
   requiredStringCondition,
 } from '@togglecorp/toggle-form';
 
-import useRequest from '#hooks/useRequest';
+import useRequest, { buildUrl } from '#hooks/useRequest';
 import { compareString } from '#utils/utils';
 import {
   statuses,
@@ -52,20 +52,6 @@ const programmeTypeOptions = programmeTypeList.map(p => ({
 
 const operationTypeOptions = [...operationTypeList].sort(compareString);
 const projectVisibilityOptions = [...projectVisibilityList].sort(compareString);
-
-const buildUrl = (url, queryParams={}) => {
-  const queryKeys = Object.keys(queryParams);
-
-  if (queryKeys.length === 0) {
-    return url;
-  }
-
-  const queryString = queryKeys.map((key) => (
-    isDefined(queryParams[key]) ? `${key}=${queryParams[key]}` : ''
-  )).join('&');
-
-  return `${url}?${queryString}`;
-};
 
 function positiveIntegerCondition(value) {
   return (value === undefined || value === '')
