@@ -18,8 +18,13 @@ import {
   Option,
   ReportType,
   emptyOptionList,
+  emptyActionList,
   FormType,
   ListResponse,
+  ActionFields,
+  ActionByReportType,
+  ActionsByOrganization,
+  OrganizationType,
 } from './common';
 
 type FormSchema = ObjectSchema<PartialForm<FormType>>;
@@ -75,9 +80,6 @@ export const schema: FormSchema = {
     num_local_staff: [],
     num_volunteers: [],
     num_expats: [],
-
-    actions_ns: [],
-    actions_ns_desc: [],
   }),
 
   validation: (value) => {
@@ -98,13 +100,13 @@ function useFieldReportOptions(value: Partial<FormType>) {
     countriesResponse,
   ] = useRequest(
     buildUrl('api/v2/country', { limit: 500 })
-  ) as [boolean, ListResponse];
+  ) as ListResponse;
 
   const countryOptions = React.useMemo(() => (
     countriesResponse?.results?.map((c) => ({
       value: c.id,
       label: c.name,
-    }))
+    })) ?? emptyOptionList
   ), [countriesResponse]);
 
   const [
@@ -117,7 +119,7 @@ function useFieldReportOptions(value: Partial<FormType>) {
         limit: 500,
       })
     ) : ''
-  ) as [boolean, ListResponse];
+  ) as ListResponse;
 
   const districtOptions = React.useMemo(() => (
     districtsResponse?.results?.map(d => ({
@@ -129,7 +131,7 @@ function useFieldReportOptions(value: Partial<FormType>) {
   const [
     fetchingDisasterTypes,
     disasterTypesResponse,
-  ] = useRequest('api/v2/disaster_type') as  [boolean, ListResponse];
+  ] = useRequest('api/v2/disaster_type') as  ListResponse;
 
   const disasterTypeOptions = React.useMemo(() => (
     disasterTypesResponse?.results?.map((d) => ({
@@ -159,81 +161,58 @@ function useFieldReportOptions(value: Partial<FormType>) {
     actionsResponse
   ] = useRequest(
     buildUrl('api/v2/action', { limit: 500 })
-  ) as [boolean, ListResponse];
+  ) as ListResponse<ActionFields>;
 
-  const actionOptionsMap: {
-    [key in ReportType]: Option[];
-  } = React.useMemo(() => {
+  const actionOptionsMap: ActionByReportType = React.useMemo(() => {
     if (!actionsResponse?.results?.length) {
       return {
-        EPI: emptyOptionList,
-        COVID: emptyOptionList,
-        EVT: emptyOptionList,
-        EW: emptyOptionList,
-      };
+        EVT: emptyActionList,
+        EPI: emptyActionList,
+        COVID: emptyActionList,
+        EW: emptyActionList,
+      } as ActionByReportType;
     }
 
-    const getFilter = (reportType: string) => (a: {
-      reportTypeList: string[];
-    }) => (
-      a.reportTypeList?.findIndex(
+    const actionList = actionsResponse.results;
+    const getFilter = (reportType: string) => (a: ActionFields) => (
+      a.field_report_types.findIndex(
         (frt: string) => frt === reportType
       ) !== -1
     );
 
-    const actions = actionsResponse.results.map(d => ({
-        value: String(d.id),
-        label: d.name,
-        description: d.tooltip_text,
-        reportTypeList: d.field_report_types,
-        organizations: d.organizations,
-        category: d.category,
-      }));
+    const actionMap = {
+      EW: actionList.filter(getFilter('EW')),
+      EPI: actionList.filter(getFilter('EPI')),
+      COVID: actionList.filter(getFilter('COVID')),
+      EVT: actionList.filter(getFilter('EVT')),
+    };
 
-    const groupByOrg = (acc: Record<string, any>, val: Record<string, any>) => {
-      const newAcc = {...acc};
-      Object.keys(newAcc).forEach((org) => {
-        if (val.organizations.findIndex((o: string) => o === org) !== -1) {
+    return actionMap;
+  }, [actionsResponse]);
+
+  const orgGroupedActionForCurrentReport = React.useMemo(() => {
+    const options = actionOptionsMap[reportType];
+
+    return options.reduce((acc, val) => {
+      const newAcc = {...acc} as ActionsByOrganization;
+      (Object.keys(newAcc) as OrganizationType[]).forEach((org) => {
+        if (val.organizations.findIndex((o) => o === org) !== -1) {
           newAcc[org].push({
-            value: val.value,
-            label: val.label,
-            description: val.description,
+            value: String(val.id),
+            label: val.name,
+            description: val.tooltip_text ?? undefined,
             category: val.category,
             organization: org,
           });
         }
       });
-
       return newAcc;
-    };
-
-    const actionMap = {
-      EPI: actions.filter(getFilter('EPI')).reduce(groupByOrg, {
-        FDRN: [], NTLS: [], PNS: [],
-      }),
-      COVID: actions.filter(getFilter('COVID')).reduce(groupByOrg, {
-        FDRN: [], NTLS: [], PNS: [],
-      }),
-      EVT: actions.filter(getFilter('EVT')).reduce(groupByOrg, {
-        FDRN: [], NTLS: [], PNS: [],
-      }),
-      EW: actions.filter(getFilter('EW')).reduce(groupByOrg, {
-        FDRN: [], NTLS: [], PNS: [],
-      }),
-    };
-
-    const actionCategoryReverse = {
-      'Health': 'health',
-      'NS Institutional Strengthening': 'ns',
-      'Socioeconomic Interventions': 'socioeco',
-    };
-
-    console.info(
-      listToGroupList(actionMap.COVID.NTLS, d => d.category, d => d)
-    );
-
-    return actionMap;
-  }, [actionsResponse]);
+    }, {
+      NTLS: [],
+      PNS: [],
+      FDRN: [],
+    } as ActionsByOrganization);
+  }, [actionOptionsMap, reportType]);
 
   const statusOptions = React.useMemo(() => (
     getStatus(strings) as Option[]
@@ -246,9 +225,16 @@ function useFieldReportOptions(value: Partial<FormType>) {
     ] as Option[];
   }, [strings]);
 
+  const bulletinOptions: Option[] = React.useMemo(() => [
+    { label: strings.fieldReportFormOptionNoLabel, value: '0' },
+    { label: strings.fieldReportFormOptionPlannedLabel, value: '2' },
+    { label: strings.fieldReportFormOptionPublishedLabel, value: '3' },
+  ], [strings]);
+
   return {
+    bulletinOptions,
+    orgGroupedActionForCurrentReport,
     fetchingActions,
-    actionOptions: actionOptionsMap[reportType],
     fetchingDistricts,
     districtOptions,
     fetchingCountries,

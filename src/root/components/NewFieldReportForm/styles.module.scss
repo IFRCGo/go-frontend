@@ -1,3 +1,10 @@
+@import '~styles/settings/_variables.scss';
+
 .new-field-report-form {
   padding: 0;
+
+  hr {
+    background: transparent;
+    margin: $spacing 0;
+  }
 }

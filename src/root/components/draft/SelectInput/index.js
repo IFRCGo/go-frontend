@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  // _cs,
+   _cs,
   isDefined,
 } from '@togglecorp/fujs';
 import Select from 'react-select';
@@ -49,7 +49,7 @@ function SelectInput(props) {
     if (!isMulti) {
       return options.find(o => (
         String(value) === String(o.value)
-      ));
+      )) ?? null;
     }
 
     return options.filter(
@@ -61,7 +61,11 @@ function SelectInput(props) {
 
   return (
     <InputContainer
-      className={className}
+      className={_cs(
+        disabled && styles.disabled,
+        styles.selectInput,
+        className,
+      )}
       actions={actions}
       icons={icons}
       error={error}

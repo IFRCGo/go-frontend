@@ -29,7 +29,7 @@ function InputContainer(props) {
         readOnly && styles.readOnly,
       )}
     >
-      <InputLabel>
+      <InputLabel disabled={disabled}>
         { label }
       </InputLabel>
       <div
@@ -67,7 +67,7 @@ function InputContainer(props) {
           </div>
         )}
       </div>
-      <InputError>
+      <InputError disabled={disabled}>
         { error }
       </InputError>
     </div>

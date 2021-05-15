@@ -1,0 +1,33 @@
+@import '~styles/settings/variables';
+
+.heading {
+    display: flex;
+    align-items: center;
+    padding: $spacing / 2;
+    color: $color-text;
+    font-weight: $heading-font-weight;
+    margin: 0;
+
+    &.large {
+        font-size: $font-size-xl;
+        text-transform: uppercase;
+        font-weight: $heading-font-weight;
+        letter-spacing: $letter-spacing-lg;
+    }
+
+    &.medium {
+        font-size: $font-size-lg;
+        text-transform: uppercase;
+        font-weight: $heading-font-weight;
+        letter-spacing: $letter-spacing-lg;
+    }
+
+    &.small {
+        font-size: $font-size-md;
+    }
+
+    &.extra-small {
+        font-size: $font-size-sm;
+    }
+}
+

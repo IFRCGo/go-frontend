@@ -1,0 +1,30 @@
+@import '~styles/settings/variables';
+
+.header {
+  display: flex;
+  align-items: flex-start;
+  padding: $spacing / 4;
+
+  .heading-container {
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+    flex-grow: 1;
+    padding: 0;
+
+    .heading {
+      flex-grow: 1;
+      padding: $spacing / 4;
+      line-height: 1;
+    }
+
+    .description {
+      padding: $spacing / 4;
+
+      &.small {
+        font-size: $font-size-sm;
+      }
+    }
+  }
+}
+

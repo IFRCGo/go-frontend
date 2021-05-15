@@ -5,7 +5,8 @@ import {
   EntriesAsList,
 } from '@togglecorp/toggle-form';
 
-import { DISASTER_TYPE_EPIDEMIC } from '#utils/field-report-constants';
+import Description from '#components/draft/Description';
+import Container from '#components/draft/Container';
 import InputSection from '#components/draft/InputSection';
 import NumberInput from '#components/draft/NumberInput';
 import TextArea from '#components/draft/TextArea';
@@ -13,6 +14,7 @@ import RadioInput from '#components/draft/RadioInput';
 import DateInput from '#components/draft/DateInput';
 import SelectInput from '#components/draft/SelectInput';
 import LanguageContext from '#root/languageContext';
+import { DISASTER_TYPE_EPIDEMIC } from '#utils/field-report-constants';
 
 import {
   FormType,
@@ -45,9 +47,19 @@ function SituationFields(props: Props) {
     {label: strings.fieldsStep2OrganizationsLabelOther, value: 'other'},
   ]), [strings]);
 
+  // FIXME: use translations
+  const sectionHeading = "Numeric Details (People)";
+
   if (value.is_covid_report === 'true') {
     return (
-      <>
+      <Container
+        heading={sectionHeading}
+        description={(
+          <Description>
+            {strings.fieldsStep2HeaderDescription}
+          </Description>
+        )}
+      >
         <InputSection
           title={strings.fieldsStep2SituationFieldsEPICasesLabel}
           description={strings.fieldsStep2SituationFieldsEPICasesDescription}
@@ -153,13 +165,13 @@ function SituationFields(props: Props) {
             placeholder={strings.fieldsStep2DescriptionCOVIDPlaceholder}
           />
         </InputSection>
-      </>
+      </Container>
     );
   }
 
   if (String(value.disaster_type) === DISASTER_TYPE_EPIDEMIC) {
     return (
-      <>
+      <Container heading={sectionHeading}>
         <InputSection
           title={strings.fieldsStep2SituationFieldsEPICasesLabel}
           description={strings.fieldsStep2SituationFieldsEPICasesDescription}
@@ -277,12 +289,12 @@ function SituationFields(props: Props) {
             placeholder={strings.fieldsStep2DescriptionEPIPlaceholder}
           />
         </InputSection>
-      </>
+      </Container>
     );
   }
 
   return (
-    <>
+    <Container heading={sectionHeading}>
       <InputSection
         title={strings.fieldsStep2SituationFieldsEVTInjuredLabel}
         description={strings.fieldsStep2SituationFieldsEVTInjuredDescription}
@@ -422,7 +434,7 @@ function SituationFields(props: Props) {
           placeholder={strings.fieldsStep2DescriptionEVTPlaceholder}
         />
       </InputSection>
-    </>
+    </Container>
   );
 }
 

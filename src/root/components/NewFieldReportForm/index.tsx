@@ -5,7 +5,7 @@ import {
   createSubmitHandler,
   PartialForm,
 } from '@togglecorp/toggle-form';
-// import { _cs } from '@togglecorp/fujs';
+import { _cs } from '@togglecorp/fujs';
 
 import BreadCrumb from '#components/breadcrumb';
 import Container from '#components/draft/Container';
@@ -23,9 +23,12 @@ import ContextFields from './ContextFields';
 import SituationFields from './SituationFields';
 import RiskAnalysisFields from './RiskAnalysisFields';
 import ActionsFields from './ActionsFields';
+import EarlyActionsFields from './EarlyActionsFields';
+import ResponseFields from './ResponseFields';
 
 import useFieldReportOptions, { schema } from './useFieldReportOptions';
 import { FormType } from './common';
+import styles from './styles.module.scss';
 
 const defaultFormValues: PartialForm<FormType> = {
   status: STATUS_EVENT,
@@ -66,12 +69,15 @@ function NewFieldReportForm(props: Props) {
   } = useForm(defaultFormValues, schema);
 
   const {
-    actionOptions,
+    orgGroupedActionForCurrentReport,
     disasterTypeOptions,
     yesNoOptions,
     statusOptions,
-    // sourceOptions,
-    // estimationFields,
+    bulletinOptions,
+    countryOptions,
+    districtOptions,
+    fetchingCountries,
+    fetchingDistricts,
     reportType,
   } = useFieldReportOptions(value);
 
@@ -81,6 +87,16 @@ function NewFieldReportForm(props: Props) {
   }, [onValueSet]);
 
   React.useEffect(() => {
+    if (value.status === STATUS_EARLY_WARNING) {
+      onValueChange('false', 'is_covid_report');
+
+      if (String(value.disaster_type) === DISASTER_TYPE_EPIDEMIC) {
+        onValueChange(undefined, 'disaster_type');
+      }
+    }
+  }, [value.status, onValueChange, value.disaster_type]);
+
+  React.useEffect(() => {
     if (value.is_covid_report === 'true') {
       onValueChange(DISASTER_TYPE_EPIDEMIC, 'disaster_type');
     }
@@ -88,51 +104,72 @@ function NewFieldReportForm(props: Props) {
 
   return (
     <Page
-      className={className}
+      className={_cs(styles.newFieldReportForm, className)}
       title="IFRC GO - New Field Report"
       heading="Create Field Report"
       breadCrumbs={<BreadCrumb crumbs={crumbs} compact />}
     >
-      <Container>
-        <form
-          onSubmit={createSubmitHandler(validate, onErrorSet, handleSubmit)}
-        >
-          <NonFieldError error={error} />
-          <ContextFields
-            error={error}
-            onValueChange={onValueChange}
-            statusOptions={statusOptions}
-            value={value}
-            yesNoOptions={yesNoOptions}
-            disasterTypeOptions={disasterTypeOptions}
-            reportType={reportType}
-          />
-          <hr />
-          {value.status === STATUS_EVENT && (
-            <>
-              <SituationFields
-                error={error}
-                onValueChange={onValueChange}
-                value={value}
-              />
-              <hr />
-              <ActionsFields
-                options={actionOptions}
-                error={error}
-                onValueChange={onValueChange}
-                value={value}
-              />
-            </>
-          )}
-          {value.status === STATUS_EARLY_WARNING && (
+      <form
+        onSubmit={createSubmitHandler(validate, onErrorSet, handleSubmit)}
+      >
+        <NonFieldError error={error} />
+        <hr />
+        <ContextFields
+          error={error}
+          onValueChange={onValueChange}
+          statusOptions={statusOptions}
+          value={value}
+          yesNoOptions={yesNoOptions}
+          disasterTypeOptions={disasterTypeOptions}
+          reportType={reportType}
+          countryOptions={countryOptions}
+          districtOptions={districtOptions}
+          fetchingCountries={fetchingCountries}
+          fetchingDistricts={fetchingDistricts}
+        />
+        <hr />
+        {value.status === STATUS_EVENT && (
+          <>
+            <SituationFields
+              error={error}
+              onValueChange={onValueChange}
+              value={value}
+            />
+            <hr />
+            <ActionsFields
+              bulletinOptions={bulletinOptions}
+              options={orgGroupedActionForCurrentReport}
+              reportType={reportType}
+              error={error}
+              onValueChange={onValueChange}
+              value={value}
+            />
+          </>
+        )}
+        {value.status === STATUS_EARLY_WARNING && (
+          <>
             <RiskAnalysisFields
               error={error}
               onValueChange={onValueChange}
               value={value}
             />
-          )}
-        </form>
-      </Container>
+            <hr />
+            <EarlyActionsFields
+              bulletinOptions={bulletinOptions}
+              options={orgGroupedActionForCurrentReport}
+              error={error}
+              onValueChange={onValueChange}
+              value={value}
+            />
+          </>
+        )}
+        <ResponseFields
+          reportType={reportType}
+          error={error}
+          onValueChange={onValueChange}
+          value={value}
+        />
+      </form>
     </Page>
   );
 }

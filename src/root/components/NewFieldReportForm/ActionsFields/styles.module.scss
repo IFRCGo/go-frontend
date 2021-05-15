@@ -1,0 +1,10 @@
+@import '~styles/settings/_variables.scss';
+
+.category {
+  padding: $spacing;
+  font-weight: $base-font-bold;
+}
+
+.action-taken {
+  margin: $spacing 0;
+}
