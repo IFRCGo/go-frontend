@@ -1,6 +1,11 @@
 .radio-input {
-    .radio-list-container {
-        display: flex;
-        flex-wrap: wrap;
-    }
+  .radio-list-container {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  &.disabled {
+    opacity: 0.4;
+    filter: saturate(50%);
+  }
 }

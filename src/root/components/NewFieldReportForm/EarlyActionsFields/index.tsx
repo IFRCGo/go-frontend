@@ -13,14 +13,11 @@ import RadioInput from '#components/draft/RadioInput';
 import Checklist from '#components/draft/Checklist';
 import LanguageContext from '#root/languageContext';
 
-import CovidActionFields from './CovidActionFields';
-
 import {
   FormType,
   Option,
   optionKeySelector,
   optionLabelSelector,
-  ReportType,
   ActionsByOrganization,
 } from '../common';
 
@@ -32,39 +29,23 @@ interface Props {
   error: Error<Value> | undefined;
   onValueChange: (...entries: EntriesAsList<Value>) => void;
   value: Value;
-  reportType: ReportType;
   bulletinOptions: Option[];
 }
 
-function ActionsFields(props: Props) {
+function EarlyActionFields(props: Props) {
   const { strings } = React.useContext(LanguageContext);
   const {
     error,
     onValueChange,
     value,
     options,
-    reportType,
-    bulletinOptions
+    bulletinOptions,
   } = props;
 
-
-  if (reportType === 'COVID') {
-    return (
-      <CovidActionFields
-        value={value}
-        error={error}
-        onValueChange={onValueChange}
-        options={options.NTLS}
-      />
-    );
-  }
-
   return (
-    <Container
-      heading={strings.fieldReportFormActionTakenTitle}
-    >
+    <Container heading={strings.fieldReportFormActionTakenTitle}>
       <InputSection
-        title={strings.fieldsStep3Section1FieldsAssistedGovEVTEPILabel}
+        title={strings.fieldsStep3Section1FieldsAssistedGovEWLabel}
       >
         <NumberInput
           name="num_assisted_gov"
@@ -74,7 +55,7 @@ function ActionsFields(props: Props) {
         />
       </InputSection>
       <InputSection
-        title={strings.fieldsStep3Section1FieldsAssistedRCRCEVTEPILabel}
+        title={strings.fieldsStep3Section1FieldsAssistedRCRCEWLabel}
       >
         <NumberInput
           name="num_assisted_red_cross"
@@ -84,39 +65,8 @@ function ActionsFields(props: Props) {
         />
       </InputSection>
       <InputSection
-        title={strings.fieldsStep3Section1FieldsLocalStaffEVTEPILabel}
-      >
-        <NumberInput
-          name="num_local_staff"
-          value={value.num_local_staff}
-          onChange={onValueChange}
-          error={error?.fields?.num_local_staff}
-        />
-      </InputSection>
-      <InputSection
-        title={strings.fieldsStep3Section1FieldsVolunteersEVTEPILabel}
-      >
-        <NumberInput
-          name="num_volunteers"
-          value={value.num_volunteers}
-          onChange={onValueChange}
-          error={error?.fields?.num_volunteers}
-        />
-      </InputSection>
-      <InputSection
-        title={strings.fieldsStep3Section1FieldsExpatsEVTEPILabel}
-        description={strings.fieldsStep3Section1FieldsExpatsEVTEPIDescription}
-      >
-        <NumberInput
-          name="num_expats"
-          value={value.num_expats}
-          onChange={onValueChange}
-          error={error?.fields?.num_expats}
-        />
-      </InputSection>
-      <InputSection
-        title={strings.fieldsStep3CheckboxSectionsNSActionsEVTEPILabel}
-        description={strings.fieldsStep3CheckboxSectionsNSActionsEVTEPIDescription}
+        title={strings.fieldsStep3CheckboxSectionsNSActionsEWLabel}
+        description={strings.fieldsStep3CheckboxSectionsNSActionsEWDescription}
       >
         <div>
           <Checklist
@@ -134,13 +84,13 @@ function ActionsFields(props: Props) {
             onChange={onValueChange}
             value={value.actions_ntls_desc}
             error={error?.fields?.actions_ntls_desc}
-            placeholder={strings.fieldsStep3CheckboxSectionsNSActionsEVTPlaceholder}
+            // placeholder={strings.fieldsStep3CheckboxSectionsNSActionsEWPlaceholder}
           />
         </div>
       </InputSection>
       <InputSection
-        title={strings.fieldsStep3CheckboxSectionsFederationActionsEVTEPILabel}
-        description={strings.fieldsStep3CheckboxSectionsFederationActionsEVTEPIDescription}
+        title={strings.fieldsStep3CheckboxSectionsFederationActionsEWLabel}
+        description={strings.fieldsStep3CheckboxSectionsFederationActionsEWDescription}
       >
         <div>
           <Checklist
@@ -163,8 +113,8 @@ function ActionsFields(props: Props) {
         </div>
       </InputSection>
       <InputSection
-        title={strings.fieldsStep3CheckboxSectionsPNSActionsEVTLabel}
-        description={strings.fieldsStep3CheckboxSectionsPNSActionsEVTEPIDescription}
+        title={strings.fieldsStep3CheckboxSectionsPNSActionsEWLabel}
+        description={strings.fieldsStep3CheckboxSectionsPNSActionsEWDescription}
       >
         <div>
           <Checklist
@@ -216,4 +166,4 @@ function ActionsFields(props: Props) {
   );
 }
 
-export default ActionsFields;
+export default EarlyActionFields;

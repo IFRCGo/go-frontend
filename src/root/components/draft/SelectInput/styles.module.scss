@@ -1,3 +1,13 @@
+.select-input {
+  &.disabled {
+    :global {
+      .go-input-internal-input-section {
+        opacity: 1;
+      }
+    }
+  }
+}
+
 .select {
   :global {
     .go__control {

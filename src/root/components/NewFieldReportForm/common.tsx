@@ -15,6 +15,7 @@ export interface FormType {
   event: string;
   title: string;
   country: string;
+  districts: string[];
   start_date: string;
   assistance: string;
   ns_assistance: string;
@@ -57,6 +58,7 @@ export interface FormType {
   num_local_staff: number;
   num_volunteers: number;
   num_expats: number;
+
   actions_ntls: string[];
   actions_ntls_desc: string;
   actions_fdrn: string[];
@@ -65,11 +67,50 @@ export interface FormType {
   actions_pns_desc: string;
   bulletin: string;
   actions_others: string;
+
+  notes_health: string;
+  notes_ns: string;
+  notes_socioeco: string;
+
+  dref_status: string;
+  dref_value: number;
+  emergency_appeal_status: string;
+  emergency_appeal_value: number;
+  fact_status: string;
+  fact_value: number;
+  ifrc_staff_status: string;
+  ifrc_staff_value: number;
+  forecast_based_action_status: string;
+  forecast_based_action_value: string;
+
+  contact_originator_name: string;
+  contact_originator_title: string;
+  contact_originator_email: string;
+  contact_originator_phone: string;
+  contact_nat_soc_name: string;
+  contact_nat_soc_title: string;
+  contact_nat_soc_email: string;
+  contact_nat_soc_phone: string;
+  contact_federation_name: string;
+  contact_federation_title: string;
+  contact_federation_email: string;
+  contact_federation_phone: string;
+  contact_media_name: string;
+  contact_media_title: string;
+  contact_media_email: string;
+  contact_media_phone: string;
+  visibility: string;
 }
 
-export interface ListResponse {
-  results?: any[];
-}
+export type ListResponse<T = any> = [
+  boolean,
+  {
+    count: number;
+    results: T[];
+    next?: string;
+  } | undefined,
+  (options: any) => void,
+];
 
 export const optionKeySelector = (o: Option) => o.value;
 export const optionLabelSelector = (o: Option) => o.label;
@@ -88,4 +129,32 @@ export const epiSourceOptions: Option[] = [
 // FDRN: IFRC
 // PNS: Other RCRC (Partner NS)
 export type OrganizationType = 'NTLS' | 'PNS' | 'FDRN';
+export type FieldReportType = 'EW' | 'EVT' | 'EPI' | 'COVID';
+
+export interface ActionFields {
+  category: string;
+  field_report_types: FieldReportType[];
+  id: number;
+  name: string;
+  organizations: OrganizationType[]
+  tooltip_text: string | null;
+}
+
+export type ActionByReportType = {
+  [key in FieldReportType]: ActionFields[];
+}
+
+export type ActionsByOrganization = {
+  [key in OrganizationType]: Action[]
+};
+
+export const emptyActionList: ActionFields[] = [];
+
+export type Action = {
+  value: string;
+  label: string;
+  category: string;
+  description: string | undefined;
+  organization: OrganizationType;
+}
 

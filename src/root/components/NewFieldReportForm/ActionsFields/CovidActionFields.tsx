@@ -1,4 +1,5 @@
 import React from 'react';
+import { listToGroupList } from '@togglecorp/fujs';
 import {
   PartialForm,
   Error,
@@ -9,55 +10,56 @@ import Container from '#components/draft/Container';
 import InputSection from '#components/draft/InputSection';
 import NumberInput from '#components/draft/NumberInput';
 import TextArea from '#components/draft/TextArea';
-import RadioInput from '#components/draft/RadioInput';
 import Checklist from '#components/draft/Checklist';
 import LanguageContext from '#root/languageContext';
 
-import CovidActionFields from './CovidActionFields';
-
 import {
   FormType,
-  Option,
-  optionKeySelector,
-  optionLabelSelector,
-  ReportType,
-  ActionsByOrganization,
+  Action,
 } from '../common';
 
-// import styles from './styles.module.scss';
+import styles from './styles.module.scss';
+
+type CategoryType = 'Health' | 'NS Institutional Strengthening' | 'Socioeconomic Interventions';
+const categoryNameToFieldNameMap: {
+  [key in CategoryType]: 'notes_health' | 'notes_ns' | 'notes_socioeco';
+} = {
+  'Health': 'notes_health',
+  'NS Institutional Strengthening': 'notes_ns',
+  'Socioeconomic Interventions': 'notes_socioeco',
+};
 
 type Value = PartialForm<FormType>;
 interface Props {
-  options: ActionsByOrganization;
   error: Error<Value> | undefined;
   onValueChange: (...entries: EntriesAsList<Value>) => void;
   value: Value;
-  reportType: ReportType;
-  bulletinOptions: Option[];
+  options: Action[];
 }
 
-function ActionsFields(props: Props) {
+function CovidActionFields(props: Props) {
   const { strings } = React.useContext(LanguageContext);
+
   const {
+    value,
     error,
     onValueChange,
-    value,
     options,
-    reportType,
-    bulletinOptions
   } = props;
 
+  const categoryGroupedOptions = React.useMemo(() => {
+    /*
+    const actionCategoryReverse = {
+      'Health': 'health',
+      'NS Institutional Strengthening': 'ns',
+      'Socioeconomic Interventions': 'socioeco',
+    };
+     */
 
-  if (reportType === 'COVID') {
-    return (
-      <CovidActionFields
-        value={value}
-        error={error}
-        onValueChange={onValueChange}
-        options={options.NTLS}
-      />
-    );
-  }
+    return listToGroupList(options, d => d.category, d => d) as {
+      [key in CategoryType]: Action[];
+    };
+  }, [options]);
 
   return (
     <Container
@@ -75,6 +77,7 @@ function ActionsFields(props: Props) {
       </InputSection>
       <InputSection
         title={strings.fieldsStep3Section1FieldsAssistedRCRCEVTEPILabel}
+        description={strings.fieldsStep3TooltipDescriptionRCRC}
       >
         <NumberInput
           name="num_assisted_red_cross"
@@ -85,6 +88,7 @@ function ActionsFields(props: Props) {
       </InputSection>
       <InputSection
         title={strings.fieldsStep3Section1FieldsLocalStaffEVTEPILabel}
+        description={strings.fieldsStep3TooltipDescriptionNS}
       >
         <NumberInput
           name="num_local_staff"
@@ -95,6 +99,7 @@ function ActionsFields(props: Props) {
       </InputSection>
       <InputSection
         title={strings.fieldsStep3Section1FieldsVolunteersEVTEPILabel}
+        description={strings.fieldsStep3TooltipDescriptionVolunteers}
       >
         <NumberInput
           name="num_volunteers"
@@ -104,37 +109,44 @@ function ActionsFields(props: Props) {
         />
       </InputSection>
       <InputSection
-        title={strings.fieldsStep3Section1FieldsExpatsEVTEPILabel}
-        description={strings.fieldsStep3Section1FieldsExpatsEVTEPIDescription}
-      >
-        <NumberInput
-          name="num_expats"
-          value={value.num_expats}
-          onChange={onValueChange}
-          error={error?.fields?.num_expats}
-        />
-      </InputSection>
-      <InputSection
         title={strings.fieldsStep3CheckboxSectionsNSActionsEVTEPILabel}
         description={strings.fieldsStep3CheckboxSectionsNSActionsEVTEPIDescription}
       >
         <div>
-          <Checklist
-            name="actions_ntls"
-            onChange={onValueChange}
-            options={options.NTLS}
-            labelSelector={optionLabelSelector}
-            keySelector={optionKeySelector}
-            value={value.actions_ntls}
-            error={error?.fields?.actions_ntls?.$internal}
-          />
+          {(Object.keys(categoryGroupedOptions) as CategoryType[]).map((category) => (
+            <div
+              className={styles.actionTaken}
+              key={category}
+            >
+              <div className={styles.category}>
+                { category }
+              </div>
+              <Checklist
+                name="actions_ntls"
+                onChange={onValueChange}
+                options={categoryGroupedOptions[category]}
+                labelSelector={d => d.label}
+                keySelector={d => d.value}
+                value={value.actions_ntls}
+                error={error?.fields?.actions_ntls?.$internal}
+              />
+              <TextArea
+                label={strings.fieldsStep2NotesLabel}
+                name={categoryNameToFieldNameMap[category]}
+                onChange={onValueChange}
+                value={value[categoryNameToFieldNameMap[category]]}
+                error={error?.fields ? error.fields[categoryNameToFieldNameMap[category]] : undefined}
+                placeholder={strings.fieldsStep3ActionsNotesPlaceholder}
+              />
+            </div>
+          ))}
           <TextArea
             label={strings.cmpActionDescriptionLabel}
             name="actions_ntls_desc"
             onChange={onValueChange}
             value={value.actions_ntls_desc}
             error={error?.fields?.actions_ntls_desc}
-            placeholder={strings.fieldsStep3CheckboxSectionsNSActionsEVTPlaceholder}
+            placeholder={strings.fieldsStep3CheckboxSectionsNSActionsEPIEWPlaceholder}
           />
         </div>
       </InputSection>
@@ -142,62 +154,26 @@ function ActionsFields(props: Props) {
         title={strings.fieldsStep3CheckboxSectionsFederationActionsEVTEPILabel}
         description={strings.fieldsStep3CheckboxSectionsFederationActionsEVTEPIDescription}
       >
-        <div>
-          <Checklist
-            name="actions_fdrn"
-            onChange={onValueChange}
-            options={options.FDRN}
-            labelSelector={optionLabelSelector}
-            keySelector={optionKeySelector}
-            value={value.actions_fdrn}
-            error={error?.fields?.actions_fdrn?.$internal}
-          />
-          <TextArea
-            label={strings.cmpActionDescriptionLabel}
-            name="actions_fdrn_desc"
-            onChange={onValueChange}
-            value={value.actions_fdrn_desc}
-            error={error?.fields?.actions_fdrn_desc}
-            placeholder={strings.fieldsStep3CheckboxSectionsFederationActionsEVTEPIEWPlaceholder}
-          />
-        </div>
+        <TextArea
+          label={strings.cmpActionDescriptionLabel}
+          name="actions_fdrn_desc"
+          onChange={onValueChange}
+          value={value.actions_fdrn_desc}
+          error={error?.fields?.actions_fdrn_desc}
+          placeholder={strings.fieldsStep3CheckboxSectionsFederationActionsEVTEPIEWPlaceholder}
+        />
       </InputSection>
       <InputSection
         title={strings.fieldsStep3CheckboxSectionsPNSActionsEVTLabel}
         description={strings.fieldsStep3CheckboxSectionsPNSActionsEVTEPIDescription}
       >
-        <div>
-          <Checklist
-            name="actions_pns"
-            onChange={onValueChange}
-            options={options.PNS}
-            labelSelector={optionLabelSelector}
-            keySelector={optionKeySelector}
-            value={value.actions_pns}
-            error={error?.fields?.actions_pns?.$internal}
-          />
-          <TextArea
-            label={strings.cmpActionDescriptionLabel}
-            name="actions_pns_desc"
-            onChange={onValueChange}
-            value={value.actions_pns_desc}
-            error={error?.fields?.actions_pns_desc}
-            placeholder={strings.fieldsStep3CheckboxSectionsPNSActionsEVTEPIEWPlaceholder}
-          />
-        </div>
-      </InputSection>
-      <InputSection
-        title={strings.fieldReportFormInformationBulletinDescription}
-        description={strings.fieldReportFormInformationBulletinDescription}
-      >
-        <RadioInput
-          name="bulletin"
-          options={bulletinOptions}
-          radioKeySelector={optionKeySelector}
-          radioLabelSelector={optionLabelSelector}
-          value={value.bulletin}
+        <TextArea
+          label={strings.cmpActionDescriptionLabel}
+          name="actions_pns_desc"
           onChange={onValueChange}
-          error={error?.fields?.bulletin}
+          value={value.actions_pns_desc}
+          error={error?.fields?.actions_pns_desc}
+          placeholder={strings.fieldsStep3CheckboxSectionsPNSActionsEVTEPIEWPlaceholder}
         />
       </InputSection>
       <InputSection
@@ -216,4 +192,4 @@ function ActionsFields(props: Props) {
   );
 }
 
-export default ActionsFields;
+export default CovidActionFields;

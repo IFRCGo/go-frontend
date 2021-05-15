@@ -7,6 +7,7 @@ function InputLabel(props) {
   const {
     children,
     className,
+    disabled,
   } = props;
 
   if (!children) {
@@ -18,6 +19,7 @@ function InputLabel(props) {
       className={_cs(
         'go-input-label',
         styles.inputLabel,
+        disabled && styles.disabled,
         className,
       )}
     >

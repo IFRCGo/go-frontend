@@ -5,6 +5,7 @@ import {
   EntriesAsList,
 } from '@togglecorp/toggle-form';
 
+import Container from '#components/draft/Container';
 import InputSection from '#components/draft/InputSection';
 import NumberInput from '#components/draft/NumberInput';
 import TextArea from '#components/draft/TextArea';
@@ -42,7 +43,8 @@ function RiskAnalysisFields(props: Props) {
   ]), [strings]);
 
   return (
-    <>
+    // FIXME: use translations
+    <Container heading="Numeric Details (People)">
       <InputSection
         title={strings.fieldsStep2SituationFieldsEWPotentiallyAffectedLabel}
         description={strings.fieldsStep2SituationFieldsEWPotentiallyAffectedDescription}
@@ -136,7 +138,7 @@ function RiskAnalysisFields(props: Props) {
           placeholder={strings.fieldsStep2DescriptionEWPlaceholder}
         />
       </InputSection>
-    </>
+    </Container>
   );
 }
 
