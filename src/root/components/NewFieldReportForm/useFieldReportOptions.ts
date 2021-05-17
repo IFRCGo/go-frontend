@@ -1,21 +1,21 @@
 import React from 'react';
-import { listToGroupList } from '@togglecorp/fujs';
+import {
+  isDefined,
+} from '@togglecorp/fujs';
 import {
   PartialForm,
   ObjectSchema,
+  requiredCondition,
 } from '@togglecorp/toggle-form';
 
-import {
-  getStatus,
-  STATUS_EARLY_WARNING,
-  DISASTER_TYPE_EPIDEMIC,
-} from '#utils/field-report-constants';
 import { compareString } from '#utils/utils';
 import LanguageContext from '#root/languageContext';
 import useRequest, { buildUrl } from '#hooks/useRequest';
 
 import {
-  Option,
+  BooleanValueOption,
+  NumericValueOption,
+  StringValueOption,
   ReportType,
   emptyOptionList,
   emptyActionList,
@@ -25,22 +25,42 @@ import {
   ActionByReportType,
   ActionsByOrganization,
   OrganizationType,
+  STATUS_EARLY_WARNING,
+  STATUS_EVENT,
+  DISASTER_TYPE_EPIDEMIC,
+  BULLETIN_PUBLISHED_NO,
+  BULLETIN_PUBLISHED_PLANNED,
+  BULLETIN_PUBLISHED_YES,
+  SOURCE_RC,
+  SOURCE_GOV,
+  SOURCE_OTHER,
 } from './common';
 
 type FormSchema = ObjectSchema<PartialForm<FormType>>;
 type FormSchemaFields = ReturnType<FormSchema['fields']>;
 
+const getRequiredWithCondition = (key: keyof FormType) => (
+  value: number | string | null | undefined,
+  allValue: PartialForm<FormType>
+) => {
+  if (!isDefined(value) && isDefined(allValue?.[key])) {
+    return 'This field is required';
+  }
+
+  return undefined;
+};
+
 export const schema: FormSchema = {
   fields: (value): FormSchemaFields => ({
-    status: [],
-    is_covid_report: [],
-    disaster_type: [],
+    status: [requiredCondition],
+    is_covid_report: [requiredCondition],
+    dtype: [requiredCondition],
     event: [],
-    title: [],
-    country: [],
-    start_date: [],
-    assistance: [],
-    ns_assistance: [],
+    summary: [requiredCondition],
+    country: [requiredCondition],
+    start_date: [requiredCondition],
+    request_assistance: [],
+    ns_request_assistance: [],
 
     epi_cases: [],
     epi_suspected_cases: [],
@@ -53,20 +73,21 @@ export const schema: FormSchema = {
 
     epi_figures_source: [],
     epi_notes_since_last_fr: [],
-    situation_fields_date: [],
+    sit_fields_date: [],
     other_sources: [],
     description: [],
 
-    num_injured: [],
-    num_dead: [],
-    num_missing: [],
-    num_affected: [],
-    num_displaced: [],
-    num_injured_source: [],
-    num_dead_source: [],
-    num_missing_source: [],
-    num_affected_source: [],
-    num_displaced_source: [],
+    num_injured: [getRequiredWithCondition('num_injured_source')],
+    num_dead: [getRequiredWithCondition('num_dead_source')],
+    num_missing: [getRequiredWithCondition('num_missing_source')],
+    num_affected: [getRequiredWithCondition('num_affected_source')],
+    num_displaced: [getRequiredWithCondition('num_displaced_source')],
+
+    num_injured_source: [getRequiredWithCondition('num_injured')],
+    num_dead_source: [getRequiredWithCondition('num_dead')],
+    num_missing_source: [getRequiredWithCondition('num_missing')],
+    num_affected_source: [getRequiredWithCondition('num_affected')],
+    num_displaced_source: [getRequiredWithCondition('num_displaced')],
 
     num_potentially_affected: [],
     num_highest_risk: [],
@@ -75,21 +96,72 @@ export const schema: FormSchema = {
     num_highest_risk_source: [],
     affected_pop_centres_source: [],
 
-    num_assisted_gov: [],
-    num_assisted_red_cross: [],
-    num_local_staff: [],
+    gov_num_assisted: [],
+    num_assisted: [],
+    num_localstaff: [],
     num_volunteers: [],
-    num_expats: [],
+    num_expats_delegates: [],
+
+    actions_ntls: [],
+    actions_ntls_desc: [],
+    actions_fdrn: [],
+    actions_fdrn_desc: [],
+    actions_pns: [],
+    actions_pns_desc: [],
+    bulletin: [],
+    actions_others: [],
+
+    notes_health: [],
+    notes_ns: [],
+    notes_socioeco: [],
+    external_partners: [],
+    supported_activities: [],
+
+    dref: [],
+    dref_amount: [],
+    appeal: [],
+    appeal_amount: [],
+    fact: [],
+    num_fact: [],
+    ifrc_staff: [],
+    num_ifrc_staff: [],
+    forecast_based_action: [],
+    forecast_based_action_amount: [],
+
+    contact_originator_name: [],
+    contact_originator_title: [],
+    contact_originator_email: [],
+    contact_originator_phone: [],
+    contact_nat_soc_name: [],
+    contact_nat_soc_title: [],
+    contact_nat_soc_email: [],
+    contact_nat_soc_phone: [],
+    contact_federation_name: [],
+    contact_federation_title: [],
+    contact_federation_email: [],
+    contact_federation_phone: [],
+    contact_media_name: [],
+    contact_media_title: [],
+    contact_media_email: [],
+    contact_media_phone: [],
+    visibility: [],
+  }),
+
+  fieldDependencies: () => ({
+    num_injured: ['num_injured_source'],
+    num_injured_source: ['num_injured'],
+    num_dead: ['num_dead_source'],
+    num_dead_source: ['num_dead'],
   }),
 
   validation: (value) => {
-    if (String(value.status) === STATUS_EARLY_WARNING
-        && String(value.disaster_type) === DISASTER_TYPE_EPIDEMIC) {
+    if (value.status === STATUS_EARLY_WARNING
+        && value.dtype === DISASTER_TYPE_EPIDEMIC) {
       return 'Early Warning / Early action cannot be selected when disaster type is Epidemic or vice-versa';
     }
 
     return undefined;
-  }
+  },
 };
 
 function useFieldReportOptions(value: Partial<FormType>) {
@@ -123,7 +195,7 @@ function useFieldReportOptions(value: Partial<FormType>) {
 
   const districtOptions = React.useMemo(() => (
     districtsResponse?.results?.map(d => ({
-      value: String(d.id),
+      value: d.id,
       label: d.name,
     })).sort(compareString) ?? emptyOptionList
   ), [districtsResponse]);
@@ -135,26 +207,50 @@ function useFieldReportOptions(value: Partial<FormType>) {
 
   const disasterTypeOptions = React.useMemo(() => (
     disasterTypesResponse?.results?.map((d) => ({
-      value: String(d.id),
+      value: d.id,
       label: d.name,
     })) ?? emptyOptionList
   ), [disasterTypesResponse]);
 
   const reportType: ReportType = React.useMemo(() => {
-    if (String(value.status) === STATUS_EARLY_WARNING) {
+    if (value.status === STATUS_EARLY_WARNING) {
       return 'EW';
     }
 
-    if (value.is_covid_report === 'true') {
+    if (value.is_covid_report) {
       return 'COVID';
     }
 
-    if (String(value.disaster_type) === DISASTER_TYPE_EPIDEMIC) {
+    if (value.dtype === DISASTER_TYPE_EPIDEMIC) {
       return 'EPI';
     }
 
     return 'EVT';
-  }, [value.status, value.disaster_type, value.is_covid_report]);
+  }, [value.status, value.dtype, value.is_covid_report]);
+
+  const [
+    fetchingSupportedActivities,
+    supportedActivitiesResponse,
+  ] = useRequest(buildUrl('api/v2/supported_activity', { limit: 500 })) as ListResponse;
+
+  const supportedActivityOptions = React.useMemo(() => (
+    supportedActivitiesResponse?.results?.map((d) => ({
+      value: d.id,
+      label: d.name,
+    })) ?? emptyOptionList
+  ), [supportedActivitiesResponse]);
+
+  const [
+    fetchingExternalPartners,
+    externalPartnersResponse,
+  ] = useRequest(buildUrl('api/v2/external_partner', { limit: 500 })) as ListResponse;
+
+  const externalPartnerOptions = React.useMemo(() => (
+    externalPartnersResponse?.results?.map((d) => ({
+      value: d.id,
+      label: d.name,
+    })) ?? emptyOptionList
+  ), [externalPartnersResponse]);
 
   const [
     fetchingActions,
@@ -198,7 +294,7 @@ function useFieldReportOptions(value: Partial<FormType>) {
       (Object.keys(newAcc) as OrganizationType[]).forEach((org) => {
         if (val.organizations.findIndex((o) => o === org) !== -1) {
           newAcc[org].push({
-            value: String(val.id),
+            value: val.id,
             label: val.name,
             description: val.tooltip_text ?? undefined,
             category: val.category,
@@ -214,22 +310,37 @@ function useFieldReportOptions(value: Partial<FormType>) {
     } as ActionsByOrganization);
   }, [actionOptionsMap, reportType]);
 
-  const statusOptions = React.useMemo(() => (
-    getStatus(strings) as Option[]
-  ), [strings]);
+  const statusOptions: NumericValueOption[] = React.useMemo(() => ([
+    {
+      value: STATUS_EARLY_WARNING,
+      label: strings.fieldReportConstantStatusEarlyWarningLabel,
+      description: strings.fieldReportConstantStatusEarlyWarningDescription,
+    },
+    {
+      value: STATUS_EVENT,
+      label: strings.fieldReportConstantStatusEventLabel,
+      description: strings.fieldReportConstantStatusEventDescription,
+    },
+  ]), [strings]);
 
   const yesNoOptions = React.useMemo(() => {
     return [
-      { value: 'true', label: strings.fieldReportFormOptionYesLabel },
-      { value: 'false', label: strings.fieldReportFormOptionNoLabel },
-    ] as Option[];
+      { value: true, label: strings.fieldReportFormOptionYesLabel },
+      { value: false, label: strings.fieldReportFormOptionNoLabel },
+    ] as BooleanValueOption[];
   }, [strings]);
 
-  const bulletinOptions: Option[] = React.useMemo(() => [
-    { label: strings.fieldReportFormOptionNoLabel, value: '0' },
-    { label: strings.fieldReportFormOptionPlannedLabel, value: '2' },
-    { label: strings.fieldReportFormOptionPublishedLabel, value: '3' },
+  const bulletinOptions: NumericValueOption[] = React.useMemo(() => [
+    { label: strings.fieldReportFormOptionNoLabel, value: BULLETIN_PUBLISHED_NO },
+    { label: strings.fieldReportFormOptionPlannedLabel, value: BULLETIN_PUBLISHED_PLANNED },
+    { label: strings.fieldReportFormOptionPublishedLabel, value: BULLETIN_PUBLISHED_YES },
   ], [strings]);
+
+  const sourceOptions: StringValueOption[] = React.useMemo(() => ([
+    {label: strings.fieldsStep2OrganizationsEVTEWLabelRC, value: SOURCE_RC},
+    {label: strings.fieldsStep2OrganizationsEVTEWLabelGovernment, value: SOURCE_GOV},
+    {label: strings.fieldsStep2OrganizationsLabelOther, value: SOURCE_OTHER},
+  ]), [strings]);
 
   return {
     bulletinOptions,
@@ -244,6 +355,11 @@ function useFieldReportOptions(value: Partial<FormType>) {
     reportType,
     yesNoOptions,
     statusOptions,
+    externalPartnerOptions,
+    supportedActivityOptions,
+    fetchingExternalPartners,
+    fetchingSupportedActivities,
+    sourceOptions,
   };
 }
 

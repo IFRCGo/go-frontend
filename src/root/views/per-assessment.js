@@ -2,7 +2,6 @@ import React, { useContext, useMemo, useState, useEffect, useReducer, useCallbac
 import { connect } from 'react-redux';
 import { environment } from '#config';
 import { PropTypes as T } from 'prop-types';
-import memoize from "fast-memoize";
 
 import LanguageContext from '#root/languageContext';
 import Translate from '#components/Translate';
@@ -49,14 +48,14 @@ function PerAssessment (props) {
   const [overviewState, setOverviewState] = useState({
     branches_involved: '',
     date_of_mid_term_review: '',
-    date_of_next_asmt: '',  
+    date_of_next_asmt: '',
     facilitator_name: '',
     facilitator_email: '',
     facilitator_phone: '',
     facilitator_contact: '',
     is_epi: 'false',
     is_finalized: false,
-    method_asmt_used: '',    
+    method_asmt_used: '',
     ns_focal_point_name: '',
     ns_focal_point_email: '',
     ns_focal_point_phone: '',
@@ -129,31 +128,27 @@ function PerAssessment (props) {
     props.history.replace(`${url}${tabHashArray[index]}`);
   }
 
-  const handlePerFormInputChange = useCallback(
-    memoize(function (formId, question, isRadio, isFormVal = false) {
-      return (e) => {
-        if (isFormVal) {
-          setFormCommentsState({
-            type: 'update',
-            formId,
-            value: e.target.value
-          });
-        } else {
-          if (isRadio) {
-            setFormDataState({ type: 'radio', formId, question, value: e.target.value });
-          } else {
-            setFormDataState({ type: 'notes', formId, question, value: e.target.value });
-          }
-        }
-      };
-    })
-  , []);
+  const handlePerFormInputChange = useCallback((
+    formId, question, isRadio, isFormVal = false
+  ) => (e) => {
+    if (isFormVal) {
+      setFormCommentsState({
+        type: 'update',
+        formId,
+        value: e.target.value
+      });
+    } else {
+      if (isRadio) {
+        setFormDataState({ type: 'radio', formId, question, value: e.target.value });
+      } else {
+        setFormDataState({ type: 'notes', formId, question, value: e.target.value });
+      }
+    }
+  }, []);
 
-  const clearRadio = useCallback(
-    memoize(function (formId, question) {
+  const clearRadio = useCallback((formId, question) => {
       setFormDataState({ type: 'radio', formId, question, value: undefined });
-    })
-  , []);
+  }, []);
 
   const saveForms = useCallback((e, isSubmit = false) => {
     if (e) {
@@ -182,11 +177,14 @@ function PerAssessment (props) {
         // on POST, also makes the request way smaller
         let omittedFormData = {};
         for (const [formId, form] of Object.entries(formsState)) {
-          const { form_data, ...restOfForm } = form;
+          const {
+            form_data, // eslint-disable-line @typescript-eslint/no-unused-vars
+            ...restOfForm
+          } = form;
           restOfForm.comment = formCommentsState[formId];
           omittedFormData[formId] = restOfForm;
         }
-        
+
         _updatePerForms({
           forms: omittedFormData,
           forms_data: formDataState
@@ -596,7 +594,7 @@ if (environment !== 'production') {
   };
 }
 
-const selector = (state, ownProps) => ({
+const selector = (state) => ({
   user: state.user.data,
   perAreas: state.perAreas,
   perComponents: state.perComponents,

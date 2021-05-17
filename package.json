@@ -94,7 +94,7 @@
     "@brainhubeu/react-carousel": "^1.13.40",
     "@togglecorp/faram": "^1.2.1",
     "@togglecorp/fujs": "^1.9.0",
-    "@togglecorp/toggle-form": "^0.2.0-beta.4",
+    "@togglecorp/toggle-form": "^0.2.0-beta.5",
     "@turf/bbox": "^6.0.1",
     "@turf/centroid": "^6.0.2",
     "@types/react-select": "^4.0.15",

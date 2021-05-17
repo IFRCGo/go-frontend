@@ -2032,10 +2032,10 @@
   dependencies:
     "@babel/runtime" "^7.7.7"
 
-"@togglecorp/toggle-form@^0.2.0-beta.4":
-  version "0.2.0-beta.4"
-  resolved "https://registry.yarnpkg.com/@togglecorp/toggle-form/-/toggle-form-0.2.0-beta.4.tgz#0608bbcae42c7cf7b2260b2bf7353a30cbbb3806"
-  integrity sha512-8/jwUbHaVocWA6nrq642SAGru5kwzkOvvHW/Y1W/yLmpwCWRp1sPfHpPY3fHxeP3muZIFLbQiHC+fkOkGbRxpQ==
+"@togglecorp/toggle-form@^0.2.0-beta.5":
+  version "0.2.0-beta.5"
+  resolved "https://registry.yarnpkg.com/@togglecorp/toggle-form/-/toggle-form-0.2.0-beta.5.tgz#04904669a440da07707280379e272d94a755a4cf"
+  integrity sha512-zxDFwIqGay7ptvnKQEXlNqIrsq4fMMKkA563K6qAW7Giq368lIaz5Hga4Mm8EQhFiYyODwHAWxZmD2I6VSGyYg==
   dependencies:
     "@babel/runtime-corejs3" "^7.11.2"
     "@storybook/client-api" "^6.0.21"

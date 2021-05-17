@@ -8,6 +8,7 @@ import {
 
 import Container from '#components/draft/Container';
 import InputSection from '#components/draft/InputSection';
+import SelectInput from '#components/draft/SelectInput';
 import NumberInput from '#components/draft/NumberInput';
 import TextArea from '#components/draft/TextArea';
 import Checklist from '#components/draft/Checklist';
@@ -16,12 +17,14 @@ import LanguageContext from '#root/languageContext';
 import {
   FormType,
   Action,
+  NumericValueOption,
 } from '../common';
 
 import styles from './styles.module.scss';
 
 type CategoryType = 'Health' | 'NS Institutional Strengthening' | 'Socioeconomic Interventions';
 const categoryNameToFieldNameMap: {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   [key in CategoryType]: 'notes_health' | 'notes_ns' | 'notes_socioeco';
 } = {
   'Health': 'notes_health',
@@ -34,7 +37,9 @@ interface Props {
   error: Error<Value> | undefined;
   onValueChange: (...entries: EntriesAsList<Value>) => void;
   value: Value;
-  options: Action[];
+  actionOptions: Action[];
+  externalPartnerOptions: NumericValueOption[];
+  supportedActivityOptions: NumericValueOption[];
 }
 
 function CovidActionFields(props: Props) {
@@ -44,7 +49,9 @@ function CovidActionFields(props: Props) {
     value,
     error,
     onValueChange,
-    options,
+    actionOptions,
+    externalPartnerOptions,
+    supportedActivityOptions,
   } = props;
 
   const categoryGroupedOptions = React.useMemo(() => {
@@ -56,10 +63,11 @@ function CovidActionFields(props: Props) {
     };
      */
 
-    return listToGroupList(options, d => d.category, d => d) as {
+    return listToGroupList(actionOptions, d => d.category, d => d) as {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       [key in CategoryType]: Action[];
     };
-  }, [options]);
+  }, [actionOptions]);
 
   return (
     <Container
@@ -69,10 +77,10 @@ function CovidActionFields(props: Props) {
         title={strings.fieldsStep3Section1FieldsAssistedGovEVTEPILabel}
       >
         <NumberInput
-          name="num_assisted_gov"
-          value={value.num_assisted_gov}
+          name="gov_num_assisted"
+          value={value.gov_num_assisted}
           onChange={onValueChange}
-          error={error?.fields?.num_assisted_gov}
+          error={error?.fields?.gov_num_assisted}
         />
       </InputSection>
       <InputSection
@@ -80,10 +88,10 @@ function CovidActionFields(props: Props) {
         description={strings.fieldsStep3TooltipDescriptionRCRC}
       >
         <NumberInput
-          name="num_assisted_red_cross"
-          value={value.num_assisted_red_cross}
+          name="num_assisted"
+          value={value.num_assisted}
           onChange={onValueChange}
-          error={error?.fields?.num_assisted_red_cross}
+          error={error?.fields?.num_assisted}
         />
       </InputSection>
       <InputSection
@@ -91,10 +99,10 @@ function CovidActionFields(props: Props) {
         description={strings.fieldsStep3TooltipDescriptionNS}
       >
         <NumberInput
-          name="num_local_staff"
-          value={value.num_local_staff}
+          name="num_localstaff"
+          value={value.num_localstaff}
           onChange={onValueChange}
-          error={error?.fields?.num_local_staff}
+          error={error?.fields?.num_localstaff}
         />
       </InputSection>
       <InputSection
@@ -186,6 +194,26 @@ function CovidActionFields(props: Props) {
           onChange={onValueChange}
           error={error?.fields?.actions_others}
           placeholder={strings.fieldReportFormOthersActionsPlaceholder}
+        />
+      </InputSection>
+      <InputSection
+        title={strings.fieldsStep3CombinedLabelExternalSupported}
+      >
+        <SelectInput
+          name="external_partners"
+          value={value.external_partners}
+          error={error?.fields?.external_partners}
+          options={externalPartnerOptions}
+          onChange={onValueChange}
+          isMulti
+        />
+        <SelectInput
+          name="supported_activities"
+          value={value.supported_activities}
+          error={error?.fields?.supported_activities}
+          options={supportedActivityOptions}
+          onChange={onValueChange}
+          isMulti
         />
       </InputSection>
     </Container>

@@ -8,13 +8,9 @@ import {
 import { _cs } from '@togglecorp/fujs';
 
 import BreadCrumb from '#components/breadcrumb';
-import Container from '#components/draft/Container';
 import NonFieldError from '#components/draft/NonFieldError';
 
 import {
-  STATUS_EVENT,
-  STATUS_EARLY_WARNING,
-  DISASTER_TYPE_EPIDEMIC,
 } from '#utils/field-report-constants';
 
 import LanguageContext from '#root/languageContext';
@@ -27,12 +23,20 @@ import EarlyActionsFields from './EarlyActionsFields';
 import ResponseFields from './ResponseFields';
 
 import useFieldReportOptions, { schema } from './useFieldReportOptions';
-import { FormType } from './common';
+import {
+  STATUS_EVENT,
+  STATUS_EARLY_WARNING,
+  DISASTER_TYPE_EPIDEMIC,
+  VISIBILITY_PUBLIC,
+  FormType,
+  transformFormFieldsToAPIFields,
+} from './common';
 import styles from './styles.module.scss';
 
 const defaultFormValues: PartialForm<FormType> = {
   status: STATUS_EVENT,
-  is_covid_report: 'false',
+  is_covid_report: false,
+  visibility: VISIBILITY_PUBLIC,
 };
 
 
@@ -79,26 +83,42 @@ function NewFieldReportForm(props: Props) {
     fetchingCountries,
     fetchingDistricts,
     reportType,
+    supportedActivityOptions,
+    externalPartnerOptions,
+    sourceOptions,
   } = useFieldReportOptions(value);
 
   const handleSubmit = React.useCallback((finalValues) => {
     onValueSet(finalValues);
-    console.info(finalValues);
+
+    const apiFields = transformFormFieldsToAPIFields(finalValues as FormType);
+
+    const definedValues = (Object.keys(apiFields) as (keyof PartialForm<FormType>)[]).reduce((acc, key) => {
+      const newAcc = { ...acc } as PartialForm<FormType>;
+
+      if (finalValues[key] !== null) {
+        newAcc[key] = finalValues[key];
+      }
+
+      return newAcc;
+    }, {});
+
+    console.info(definedValues);
   }, [onValueSet]);
 
   React.useEffect(() => {
     if (value.status === STATUS_EARLY_WARNING) {
-      onValueChange('false', 'is_covid_report');
+      onValueChange(false, 'is_covid_report');
 
-      if (String(value.disaster_type) === DISASTER_TYPE_EPIDEMIC) {
-        onValueChange(undefined, 'disaster_type');
+      if (value.dtype === DISASTER_TYPE_EPIDEMIC) {
+        onValueChange(undefined, 'dtype');
       }
     }
-  }, [value.status, onValueChange, value.disaster_type]);
+  }, [value.status, onValueChange, value.dtype]);
 
   React.useEffect(() => {
-    if (value.is_covid_report === 'true') {
-      onValueChange(DISASTER_TYPE_EPIDEMIC, 'disaster_type');
+    if (value.is_covid_report) {
+      onValueChange(DISASTER_TYPE_EPIDEMIC, 'dtype');
     }
   }, [value.is_covid_report, onValueChange]);
 
@@ -131,6 +151,8 @@ function NewFieldReportForm(props: Props) {
         {value.status === STATUS_EVENT && (
           <>
             <SituationFields
+              sourceOptions={sourceOptions}
+              reportType={reportType}
               error={error}
               onValueChange={onValueChange}
               value={value}
@@ -138,17 +160,20 @@ function NewFieldReportForm(props: Props) {
             <hr />
             <ActionsFields
               bulletinOptions={bulletinOptions}
-              options={orgGroupedActionForCurrentReport}
+              actionOptions={orgGroupedActionForCurrentReport}
               reportType={reportType}
               error={error}
               onValueChange={onValueChange}
               value={value}
+              externalPartnerOptions={externalPartnerOptions}
+              supportedActivityOptions={supportedActivityOptions}
             />
           </>
         )}
         {value.status === STATUS_EARLY_WARNING && (
           <>
             <RiskAnalysisFields
+              sourceOptions={sourceOptions}
               error={error}
               onValueChange={onValueChange}
               value={value}
@@ -169,6 +194,9 @@ function NewFieldReportForm(props: Props) {
           onValueChange={onValueChange}
           value={value}
         />
+        <button type="submit">
+          Submit
+        </button>
       </form>
     </Page>
   );

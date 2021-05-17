@@ -18,7 +18,7 @@ export const getStatusEvent = (strings) => ({
 });
 
 export const getIsStatusEventByValue = value =>
-  value === statusEventValue;
+  String(value) === statusEventValue;
 
 export const getStatus = (strings) => [
   getStatusEarlyWarning(strings),
@@ -70,7 +70,7 @@ export const countries = (countries, independent=false) => {
 };
 
 export const getIsEpidemicDisasterTypeByValue = value =>
-  value === '1';
+  String(value) === '1';
 
 // FIXME: pull this list from server
 export const sources = [

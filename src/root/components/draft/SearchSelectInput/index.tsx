@@ -82,6 +82,7 @@ function SearchSelectInput<N extends Key, V extends Key>(props: Props<N, V>) {
         props.onChange(undefined as unknown as V, name);
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [name, props.isMulti, props.onChange]);
 
   const selectValue = React.useMemo(() => {

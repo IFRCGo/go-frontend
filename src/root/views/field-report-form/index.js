@@ -220,7 +220,6 @@ class FieldReportForm extends React.Component {
         break;
     }
     validator(state);
-    console.info(validator.errors);
 
     this.setState({ errors: _cloneDeep(validator.errors) });
     return validator.errors === null;
@@ -246,7 +245,6 @@ class FieldReportForm extends React.Component {
         this.setState({ data });
       }
       if (step === 4) {
-        console.info('data', this.state.data);
         const payload = convertStateToPayload(this.state.data);
         const userId = _get(this.props.user, 'data.id');
         if (userId) {
@@ -258,8 +256,7 @@ class FieldReportForm extends React.Component {
         if (this.props.match.params.id) {
           this.props._updateFieldReport(this.props.match.params.id, payload);
         } else {
-          console.info('payload', payload);
-          // this.props._createFieldReport(payload);
+          this.props._createFieldReport(payload);
         }
         // showGlobalLoading();
       } else {
