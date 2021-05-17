@@ -14,8 +14,8 @@ import LanguageContext from '#root/languageContext';
 
 import {
   FormType,
-  Option,
-  optionKeySelector,
+  StringValueOption,
+  stringOptionKeySelector,
   optionLabelSelector,
 } from '../common';
 
@@ -23,9 +23,10 @@ import styles from './styles.module.scss';
 
 type Value = PartialForm<FormType>;
 interface Props {
-    error: Error<Value> | undefined;
-    onValueChange: (...entries: EntriesAsList<Value>) => void;
-    value: Value;
+  error: Error<Value> | undefined;
+  onValueChange: (...entries: EntriesAsList<Value>) => void;
+  value: Value;
+  sourceOptions: StringValueOption[]
 }
 
 function RiskAnalysisFields(props: Props) {
@@ -33,14 +34,10 @@ function RiskAnalysisFields(props: Props) {
     error,
     onValueChange,
     value,
+    sourceOptions,
   } = props;
 
   const { strings } = React.useContext(LanguageContext);
-  const sourceOptions: Option[] = React.useMemo(() => ([
-    {label: strings.fieldsStep2OrganizationsEVTEWLabelRC, value: 'red-cross'},
-    {label: strings.fieldsStep2OrganizationsEVTEWLabelGovernment, value: 'government'},
-    {label: strings.fieldsStep2OrganizationsLabelOther, value: 'other'},
-  ]), [strings]);
 
   return (
     // FIXME: use translations
@@ -63,7 +60,7 @@ function RiskAnalysisFields(props: Props) {
           name="num_potentially_affected_source"
           onChange={onValueChange}
           options={sourceOptions}
-          radioKeySelector={optionKeySelector}
+          radioKeySelector={stringOptionKeySelector}
           radioLabelSelector={optionLabelSelector}
           value={value.num_potentially_affected_source}
         />
@@ -86,7 +83,7 @@ function RiskAnalysisFields(props: Props) {
           name="num_highest_risk_source"
           onChange={onValueChange}
           options={sourceOptions}
-          radioKeySelector={optionKeySelector}
+          radioKeySelector={stringOptionKeySelector}
           radioLabelSelector={optionLabelSelector}
           value={value.num_highest_risk_source}
         />
@@ -109,7 +106,7 @@ function RiskAnalysisFields(props: Props) {
           name="affected_pop_centres_source"
           onChange={onValueChange}
           options={sourceOptions}
-          radioKeySelector={optionKeySelector}
+          radioKeySelector={stringOptionKeySelector}
           radioLabelSelector={optionLabelSelector}
           value={value.affected_pop_centres_source}
         />

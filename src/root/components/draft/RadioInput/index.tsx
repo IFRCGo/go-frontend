@@ -13,7 +13,7 @@ export interface Props<N, O, V, RRP extends RadioProps<V>> {
   options: O[];
   name: N;
   value: V | undefined;
-  onChange: (value: V, name: N) => void;
+  onChange: (value: V | undefined, name: N) => void;
   radioKeySelector: (option: O) => V;
   radioLabelSelector: (option: O) => React.ReactNode;
   radioDescriptionSelector?: (option: O) => React.ReactNode;
@@ -31,10 +31,9 @@ export interface Props<N, O, V, RRP extends RadioProps<V>> {
 }
 
 function RadioInput<
-N extends string | number,
-// eslint-disable-next-line @typescript-eslint/ban-types
-O extends object,
-V extends string | number,
+  N extends string | number,
+  O extends object,
+  V extends string | number,
 RRP extends RadioProps<V>,
 >(props: Props<N, O, V, RRP>) {
   const {
@@ -67,8 +66,6 @@ RRP extends RadioProps<V>,
     k: V,
     i: O,
   ) => RRP = React.useCallback((key: V, item: O) => {
-    // NOTE: this is required becase this is advance usecase
-    // and the typings
     const radioProps: Pick<RRP, 'inputName' | 'label' | 'name' | 'onClick' | 'value' | 'disabled' | 'readOnly' | 'description'> = {
       inputName: name,
       label: radioLabelSelector(item),
@@ -112,7 +109,6 @@ RRP extends RadioProps<V>,
         { label }
       </InputLabel>
       <div className={_cs(styles.radioListContainer, radioListContainerClassName)}>
-        {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
         <List<O, RadioProps<V> & RRP, V, any, any>
           data={options}
           rendererParams={radioRendererParams}

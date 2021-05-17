@@ -1,12 +1,11 @@
-import React, { useMemo, memo } from 'react';
-import {
-    isNotDefined,
-    listToGroupList,
-} from '@togglecorp/fujs';
+import React, { useCallback, useMemo, memo } from 'react';
+import { listToGroupList } from '@togglecorp/fujs';
 
 export const typedMemo: (<T>(c: T) => T) = memo;
 
 type OptionKey = string | number;
+
+const emptyList: unknown[] = [];
 
 export interface GroupCommonProps {
     className?: string;
@@ -14,7 +13,7 @@ export interface GroupCommonProps {
 }
 
 interface BaseProps<D, P, K extends OptionKey> {
-    data: D[];
+    data: D[] | undefined;
     keySelector(datum: D, index: number): K;
     renderer: (props: P) => JSX.Element;
     rendererClassName?: string;
@@ -61,13 +60,15 @@ function GroupedList<D, P, K extends OptionKey, GP extends GroupCommonProps, GK 
         groupRenderer: GroupRenderer,
         groupRendererClassName,
         groupRendererParams,
-        data,
+        data: dataFromProps,
         keySelector,
         rendererParams,
         rendererClassName,
     } = props;
 
-    const renderListItem = (datum: D, i: number) => {
+    const data = dataFromProps ?? (emptyList as D[]);
+
+    const renderListItem = useCallback((datum: D, i: number) => {
         const key = keySelector(datum, i);
         const extraProps = rendererParams(key, datum, i, data);
 
@@ -78,7 +79,7 @@ function GroupedList<D, P, K extends OptionKey, GP extends GroupCommonProps, GK 
                 {...extraProps}
             />
         );
-    };
+    }, [Renderer, data, keySelector, rendererClassName, rendererParams]);
 
     const renderGroup = (
         groupKey: GK,
@@ -136,18 +137,16 @@ function List<D, P, K extends OptionKey, GP extends GroupCommonProps, GK extends
     props: Props<D, P, K, GP, GK>,
 ) {
     const {
-        data,
+        data: dataFromProps,
         keySelector,
         renderer: Renderer,
         rendererClassName,
         rendererParams,
     } = props;
 
-    if (isNotDefined(data)) {
-        return null;
-    }
+    const data = dataFromProps ?? (emptyList as D[]);
 
-    const renderListItem = (datum: D, i: number) => {
+    const renderListItem = useCallback((datum: D, i: number) => {
         const key = keySelector(datum, i);
         const extraProps = rendererParams(key, datum, i, data);
 
@@ -158,7 +157,7 @@ function List<D, P, K extends OptionKey, GP extends GroupCommonProps, GK extends
                 {...extraProps}
             />
         );
-    };
+    }, [keySelector, Renderer, rendererClassName, rendererParams, data]);
 
     if (!hasGroup(props)) {
         return (

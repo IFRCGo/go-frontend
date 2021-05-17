@@ -15,10 +15,6 @@ import SearchSelectInput from '#components/draft/SearchSelectInput';
 import SelectInput from '#components/draft/SelectInput';
 import LanguageContext from '#root/languageContext';
 import { fetchEventsFromApi } from '#views/field-report-form/data-utils';
-import {
-  STATUS_EARLY_WARNING,
-  DISASTER_TYPE_EPIDEMIC,
-} from '#utils/field-report-constants';
 
 import {
   ReportType,
@@ -27,18 +23,24 @@ import {
   optionDescriptionSelector,
   Option,
   FormType,
+  STATUS_EARLY_WARNING,
+  DISASTER_TYPE_EPIDEMIC,
+  NumericValueOption,
+  numericOptionKeySelector,
+  BooleanValueOption,
+  booleanOptionKeySelector,
 } from './common';
 
-const isEpidemic = (o: Option) => String(o.value) === DISASTER_TYPE_EPIDEMIC;
+const isEpidemic = (o: Option) => o.value === DISASTER_TYPE_EPIDEMIC;
 
 type Value = PartialForm<FormType>;
 interface Props {
   disasterTypeOptions: Option[];
   error: Error<Value> | undefined;
   onValueChange: (...entries: EntriesAsList<Value>) => void;
-  statusOptions: Option[];
+  statusOptions: NumericValueOption[];
   value: Value;
-  yesNoOptions: Option[];
+  yesNoOptions: BooleanValueOption[];
   reportType: ReportType;
   countryOptions: Option[];
   districtOptions: Option[];
@@ -70,6 +72,7 @@ function ContextFields(props: Props) {
     countrySectionDescription,
   ] = React.useMemo(() => {
     type MapByReportType = {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       [key in ReportType]: string | undefined;
     }
 
@@ -120,7 +123,7 @@ function ContextFields(props: Props) {
         <RadioInput
           name="status"
           options={statusOptions}
-          radioKeySelector={optionKeySelector}
+          radioKeySelector={numericOptionKeySelector}
           radioLabelSelector={optionLabelSelector}
           radioDescriptionSelector={optionDescriptionSelector}
           value={value.status}
@@ -134,7 +137,7 @@ function ContextFields(props: Props) {
         <RadioInput
           name="is_covid_report"
           options={yesNoOptions}
-          radioKeySelector={optionKeySelector}
+          radioKeySelector={booleanOptionKeySelector}
           radioLabelSelector={optionLabelSelector}
           radioDescriptionSelector={optionDescriptionSelector}
           value={value.is_covid_report}
@@ -160,10 +163,10 @@ function ContextFields(props: Props) {
           <TextInput
             label={strings.fieldReportFormTitleSecondaryLabel}
             placeholder={strings.fieldReportFormTitleInputPlaceholder}
-            name="title"
-            value={value.title}
+            name="summary"
+            value={value.summary}
             onChange={onValueChange}
-            error={error?.fields?.title}
+            error={error?.fields?.summary}
           />
         </div>
       </InputSection>
@@ -172,13 +175,13 @@ function ContextFields(props: Props) {
         description={strings.fieldsStep1DisasterTypeDescription}
       >
         <SelectInput
-          name="disaster_type"
+          name="dtype"
           isOptionDisabled={value.status === STATUS_EARLY_WARNING ? isEpidemic : undefined}
-          value={value.disaster_type}
+          value={value.dtype}
           options={disasterTypeOptions}
           onChange={onValueChange}
-          error={error?.fields?.disaster_type}
-          disabled={value.is_covid_report === 'true'}
+          error={error?.fields?.dtype}
+          disabled={value.is_covid_report}
         />
       </InputSection>
       <InputSection
@@ -222,14 +225,14 @@ function ContextFields(props: Props) {
         description={strings.fieldsStep1AssistanceDescription}
       >
         <RadioInput
-          name="assistance"
+          name="request_assistance"
           options={yesNoOptions}
-          radioKeySelector={optionKeySelector}
+          radioKeySelector={booleanOptionKeySelector}
           radioLabelSelector={optionLabelSelector}
           radioDescriptionSelector={optionDescriptionSelector}
-          value={value.assistance}
+          value={value.request_assistance}
           onChange={onValueChange}
-          error={error?.fields?.assistance}
+          error={error?.fields?.request_assistance}
         />
       </InputSection>
       <InputSection
@@ -237,14 +240,14 @@ function ContextFields(props: Props) {
         description={strings.fieldsStep1NSAssistanceDescription}
       >
         <RadioInput
-          name="ns_assistance"
+          name="ns_request_assistance"
           options={yesNoOptions}
-          radioKeySelector={optionKeySelector}
+          radioKeySelector={booleanOptionKeySelector}
           radioLabelSelector={optionLabelSelector}
           radioDescriptionSelector={optionDescriptionSelector}
-          value={value.ns_assistance}
+          value={value.ns_request_assistance}
           onChange={onValueChange}
-          error={error?.fields?.ns_assistance}
+          error={error?.fields?.ns_request_assistance}
         />
       </InputSection>
     </Container>

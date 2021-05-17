@@ -17,8 +17,8 @@ import CovidActionFields from './CovidActionFields';
 
 import {
   FormType,
-  Option,
-  optionKeySelector,
+  NumericValueOption,
+  numericOptionKeySelector,
   optionLabelSelector,
   ReportType,
   ActionsByOrganization,
@@ -28,12 +28,14 @@ import {
 
 type Value = PartialForm<FormType>;
 interface Props {
-  options: ActionsByOrganization;
+  actionOptions: ActionsByOrganization;
   error: Error<Value> | undefined;
   onValueChange: (...entries: EntriesAsList<Value>) => void;
   value: Value;
   reportType: ReportType;
-  bulletinOptions: Option[];
+  bulletinOptions: NumericValueOption[];
+  externalPartnerOptions: NumericValueOption[];
+  supportedActivityOptions: NumericValueOption[];
 }
 
 function ActionsFields(props: Props) {
@@ -42,9 +44,11 @@ function ActionsFields(props: Props) {
     error,
     onValueChange,
     value,
-    options,
+    actionOptions,
     reportType,
-    bulletinOptions
+    bulletinOptions,
+    externalPartnerOptions,
+    supportedActivityOptions,
   } = props;
 
 
@@ -54,7 +58,9 @@ function ActionsFields(props: Props) {
         value={value}
         error={error}
         onValueChange={onValueChange}
-        options={options.NTLS}
+        actionOptions={actionOptions.NTLS}
+        externalPartnerOptions={externalPartnerOptions}
+        supportedActivityOptions={supportedActivityOptions}
       />
     );
   }
@@ -67,30 +73,30 @@ function ActionsFields(props: Props) {
         title={strings.fieldsStep3Section1FieldsAssistedGovEVTEPILabel}
       >
         <NumberInput
-          name="num_assisted_gov"
-          value={value.num_assisted_gov}
+          name="gov_num_assisted"
+          value={value.gov_num_assisted}
           onChange={onValueChange}
-          error={error?.fields?.num_assisted_gov}
+          error={error?.fields?.gov_num_assisted}
         />
       </InputSection>
       <InputSection
         title={strings.fieldsStep3Section1FieldsAssistedRCRCEVTEPILabel}
       >
         <NumberInput
-          name="num_assisted_red_cross"
-          value={value.num_assisted_red_cross}
+          name="num_assisted"
+          value={value.num_assisted}
           onChange={onValueChange}
-          error={error?.fields?.num_assisted_red_cross}
+          error={error?.fields?.num_assisted}
         />
       </InputSection>
       <InputSection
         title={strings.fieldsStep3Section1FieldsLocalStaffEVTEPILabel}
       >
         <NumberInput
-          name="num_local_staff"
-          value={value.num_local_staff}
+          name="num_localstaff"
+          value={value.num_localstaff}
           onChange={onValueChange}
-          error={error?.fields?.num_local_staff}
+          error={error?.fields?.num_localstaff}
         />
       </InputSection>
       <InputSection
@@ -108,10 +114,10 @@ function ActionsFields(props: Props) {
         description={strings.fieldsStep3Section1FieldsExpatsEVTEPIDescription}
       >
         <NumberInput
-          name="num_expats"
-          value={value.num_expats}
+          name="num_expats_delegates"
+          value={value.num_expats_delegates}
           onChange={onValueChange}
-          error={error?.fields?.num_expats}
+          error={error?.fields?.num_expats_delegates}
         />
       </InputSection>
       <InputSection
@@ -122,9 +128,9 @@ function ActionsFields(props: Props) {
           <Checklist
             name="actions_ntls"
             onChange={onValueChange}
-            options={options.NTLS}
+            options={actionOptions.NTLS}
             labelSelector={optionLabelSelector}
-            keySelector={optionKeySelector}
+            keySelector={numericOptionKeySelector}
             value={value.actions_ntls}
             error={error?.fields?.actions_ntls?.$internal}
           />
@@ -146,9 +152,9 @@ function ActionsFields(props: Props) {
           <Checklist
             name="actions_fdrn"
             onChange={onValueChange}
-            options={options.FDRN}
+            options={actionOptions.FDRN}
             labelSelector={optionLabelSelector}
-            keySelector={optionKeySelector}
+            keySelector={numericOptionKeySelector}
             value={value.actions_fdrn}
             error={error?.fields?.actions_fdrn?.$internal}
           />
@@ -170,9 +176,9 @@ function ActionsFields(props: Props) {
           <Checklist
             name="actions_pns"
             onChange={onValueChange}
-            options={options.PNS}
+            options={actionOptions.PNS}
             labelSelector={optionLabelSelector}
-            keySelector={optionKeySelector}
+            keySelector={numericOptionKeySelector}
             value={value.actions_pns}
             error={error?.fields?.actions_pns?.$internal}
           />
@@ -193,7 +199,7 @@ function ActionsFields(props: Props) {
         <RadioInput
           name="bulletin"
           options={bulletinOptions}
-          radioKeySelector={optionKeySelector}
+          radioKeySelector={numericOptionKeySelector}
           radioLabelSelector={optionLabelSelector}
           value={value.bulletin}
           onChange={onValueChange}

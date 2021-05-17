@@ -14,7 +14,7 @@ import styles from './styles.module.scss';
 
 export interface Props<N> {
   className?: string;
-  inputName?: string | number;
+  inputName?: string | number | boolean;
   label?: React.ReactNode;
   description?: React.ReactNode;
   name: N;

@@ -14,23 +14,25 @@ import RadioInput from '#components/draft/RadioInput';
 import DateInput from '#components/draft/DateInput';
 import SelectInput from '#components/draft/SelectInput';
 import LanguageContext from '#root/languageContext';
-import { DISASTER_TYPE_EPIDEMIC } from '#utils/field-report-constants';
 
 import {
   FormType,
   epiSourceOptions,
-  Option,
-  optionKeySelector,
+  StringValueOption,
+  stringOptionKeySelector,
   optionLabelSelector,
+  ReportType,
 } from '../common';
 
 import styles from './styles.module.scss';
 
 type Value = PartialForm<FormType>;
 interface Props {
-    error: Error<Value> | undefined;
-    onValueChange: (...entries: EntriesAsList<Value>) => void;
-    value: Value;
+  error: Error<Value> | undefined;
+  onValueChange: (...entries: EntriesAsList<Value>) => void;
+  value: Value;
+  sourceOptions: StringValueOption[];
+  reportType: ReportType;
 }
 
 function SituationFields(props: Props) {
@@ -38,19 +40,16 @@ function SituationFields(props: Props) {
     error,
     onValueChange,
     value,
+    sourceOptions,
+    reportType,
   } = props;
 
   const { strings } = React.useContext(LanguageContext);
-  const sourceOptions: Option[] = React.useMemo(() => ([
-    {label: strings.fieldsStep2OrganizationsEVTEWLabelRC, value: 'red-cross'},
-    {label: strings.fieldsStep2OrganizationsEVTEWLabelGovernment, value: 'government'},
-    {label: strings.fieldsStep2OrganizationsLabelOther, value: 'other'},
-  ]), [strings]);
 
   // FIXME: use translations
   const sectionHeading = "Numeric Details (People)";
 
-  if (value.is_covid_report === 'true') {
+  if (reportType === 'COVID') {
     return (
       <Container
         heading={sectionHeading}
@@ -135,10 +134,10 @@ function SituationFields(props: Props) {
           description={strings.fieldsStep2SituationFieldsDateEPIDescription}
         >
           <DateInput
-            name="situation_fields_date"
-            value={value.situation_fields_date}
+            name="sit_fields_date"
+            value={value.sit_fields_date}
             onChange={onValueChange}
-            error={error?.fields?.situation_fields_date}
+            error={error?.fields?.sit_fields_date}
           />
         </InputSection>
         <InputSection
@@ -169,7 +168,7 @@ function SituationFields(props: Props) {
     );
   }
 
-  if (String(value.disaster_type) === DISASTER_TYPE_EPIDEMIC) {
+  if (reportType === 'EPI') {
     return (
       <Container heading={sectionHeading}>
         <InputSection
@@ -259,10 +258,10 @@ function SituationFields(props: Props) {
           description={strings.fieldsStep2SituationFieldsDateEPIDescription}
         >
           <DateInput
-            name="situation_fields_date"
-            value={value.situation_fields_date}
+            name="sit_fields_date"
+            value={value.sit_fields_date}
             onChange={onValueChange}
-            error={error?.fields?.situation_fields_date}
+            error={error?.fields?.sit_fields_date}
           />
         </InputSection>
         <InputSection
@@ -313,7 +312,7 @@ function SituationFields(props: Props) {
           name="num_injured_source"
           onChange={onValueChange}
           options={sourceOptions}
-          radioKeySelector={optionKeySelector}
+          radioKeySelector={stringOptionKeySelector}
           radioLabelSelector={optionLabelSelector}
           value={value.num_injured_source}
         />
@@ -336,7 +335,7 @@ function SituationFields(props: Props) {
           name="num_dead_source"
           onChange={onValueChange}
           options={sourceOptions}
-          radioKeySelector={optionKeySelector}
+          radioKeySelector={stringOptionKeySelector}
           radioLabelSelector={optionLabelSelector}
           value={value.num_dead_source}
         />
@@ -359,7 +358,7 @@ function SituationFields(props: Props) {
           name="num_missing_source"
           onChange={onValueChange}
           options={sourceOptions}
-          radioKeySelector={optionKeySelector}
+          radioKeySelector={stringOptionKeySelector}
           radioLabelSelector={optionLabelSelector}
           value={value.num_missing_source}
         />
@@ -382,7 +381,7 @@ function SituationFields(props: Props) {
           name="num_affected_source"
           onChange={onValueChange}
           options={sourceOptions}
-          radioKeySelector={optionKeySelector}
+          radioKeySelector={stringOptionKeySelector}
           radioLabelSelector={optionLabelSelector}
           value={value.num_affected_source}
         />
@@ -405,7 +404,7 @@ function SituationFields(props: Props) {
           name="num_displaced_source"
           onChange={onValueChange}
           options={sourceOptions}
-          radioKeySelector={optionKeySelector}
+          radioKeySelector={stringOptionKeySelector}
           radioLabelSelector={optionLabelSelector}
           value={value.num_displaced_source}
         />

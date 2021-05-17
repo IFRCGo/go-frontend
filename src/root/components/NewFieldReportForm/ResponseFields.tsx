@@ -15,10 +15,13 @@ import LanguageContext from '#root/languageContext';
 
 import {
   FormType,
-  Option,
-  optionKeySelector,
   optionLabelSelector,
   ReportType,
+  NumericValueOption,
+  numericOptionKeySelector,
+  VISIBILITY_IFRC_SECRETARIAT,
+  VISIBILITY_PUBLIC,
+  VISIBILITY_RCRC_MOVEMENT,
 } from './common';
 
 type Value = PartialForm<FormType>;
@@ -46,25 +49,25 @@ function ResponseFields(props: Props) {
   ] = React.useMemo(() => [
     // FIXME: use translations
     [
-      { label: 'Planned', value: '2' },
-      { label: 'Requested', value: '1' },
-      { label: 'Allocated', value: '3' },
-    ] as Option[],
+      { label: 'Planned', value: 2 },
+      { label: 'Requested', value: 1 },
+      { label: 'Allocated', value: 3 },
+    ] as NumericValueOption[],
     [
-      { label: 'Planned', value: '2' },
-      { label: 'Requested', value: '1' },
-      { label: 'Launched', value: '3' },
-    ] as Option[],
+      { label: 'Planned', value: 2 },
+      { label: 'Requested', value: 1 },
+      { label: 'Launched', value: 3 },
+    ] as NumericValueOption[],
     [
-      { label: 'Planned', value: '2' },
-      { label: 'Requested', value: '1' },
-      { label: 'Deployed', value: '3' },
-    ] as Option[],
+      { label: 'Planned', value: 2 },
+      { label: 'Requested', value: 1 },
+      { label: 'Deployed', value: 3 },
+    ] as NumericValueOption[],
     [
-      { label: strings.fieldReportConstantVisibilityPublicLabel, value: '3' },
-      { label: strings.fieldReportConstantVisibilityRCRCMovementLabel, value: '1' },
-      { label: strings.fieldReportConstantVisibilityIFRCSecretariatLabel, value: '2' },
-    ] as Option[],
+      { label: strings.fieldReportConstantVisibilityPublicLabel, value: VISIBILITY_PUBLIC },
+      { label: strings.fieldReportConstantVisibilityRCRCMovementLabel, value: VISIBILITY_RCRC_MOVEMENT },
+      { label: strings.fieldReportConstantVisibilityIFRCSecretariatLabel, value: VISIBILITY_IFRC_SECRETARIAT },
+    ] as NumericValueOption[],
   ], [strings]);
 
   return (
@@ -85,80 +88,80 @@ function ResponseFields(props: Props) {
               title={strings.fieldsStep4PlannedResponseRowsDREFEVTEPILabel}
             >
               <RadioInput
-                error={error?.fields?.dref_status}
-                name="dref_status"
+                error={error?.fields?.dref}
+                name="dref"
                 onChange={onValueChange}
                 options={drefOptions}
-                radioKeySelector={optionKeySelector}
+                radioKeySelector={numericOptionKeySelector}
                 radioLabelSelector={optionLabelSelector}
-                value={value.dref_status}
+                value={value.dref}
               />
               <NumberInput
                 label={strings.fieldsStep4PlannedResponseRowsDREFValueFieldLabel}
-                name="dref_value"
-                value={value.dref_value}
+                name="dref_amount"
+                value={value.dref_amount}
                 onChange={onValueChange}
-                error={error?.fields?.dref_value}
+                error={error?.fields?.dref_amount}
               />
             </InputSection>
             <InputSection
               title={strings.fieldsStep4PlannedResponseRowsEmergencyAppealEVTEPIEWLabel}
             >
               <RadioInput
-                error={error?.fields?.emergency_appeal_status}
-                name="emergency_appeal_status"
+                error={error?.fields?.appeal}
+                name="appeal"
                 onChange={onValueChange}
                 options={appealOptions}
-                radioKeySelector={optionKeySelector}
+                radioKeySelector={numericOptionKeySelector}
                 radioLabelSelector={optionLabelSelector}
-                value={value.emergency_appeal_status}
+                value={value.appeal}
               />
               <NumberInput
                 label={strings.fieldsStep4PlannedResponseRowsEmergencyAppealValueFieldLabel}
-                name="emergency_appeal_value"
-                value={value.emergency_appeal_value}
+                name="appeal_amount"
+                value={value.appeal_amount}
                 onChange={onValueChange}
-                error={error?.fields?.emergency_appeal_value}
+                error={error?.fields?.appeal_amount}
               />
             </InputSection>
             <InputSection
               title={strings.fieldsStep4PlannedResponseRowsFactEVTEPIEWLabel}
             >
               <RadioInput
-                error={error?.fields?.fact_status}
-                name="fact_status"
+                error={error?.fields?.fact}
+                name="fact"
                 onChange={onValueChange}
                 options={responseOptions}
-                radioKeySelector={optionKeySelector}
+                radioKeySelector={numericOptionKeySelector}
                 radioLabelSelector={optionLabelSelector}
-                value={value.fact_status}
+                value={value.fact}
               />
               <NumberInput
                 label={strings.fieldsStep4PlannedResponseRowsFactValueFieldLabel}
-                name="fact_value"
-                value={value.fact_value}
+                name="num_fact"
+                value={value.num_fact}
                 onChange={onValueChange}
-                error={error?.fields?.fact_value}
+                error={error?.fields?.num_fact}
               />
             </InputSection>
             <InputSection
               title={strings.fieldsStep4PlannedResponseRowsIFRCStaffEVTEPIEWLabel}
             >
               <RadioInput
-                error={error?.fields?.ifrc_staff_status}
-                name="ifrc_staff_status"
+                error={error?.fields?.ifrc_staff}
+                name="ifrc_staff"
                 onChange={onValueChange}
                 options={responseOptions}
-                radioKeySelector={optionKeySelector}
+                radioKeySelector={numericOptionKeySelector}
                 radioLabelSelector={optionLabelSelector}
-                value={value.ifrc_staff_status}
+                value={value.ifrc_staff}
               />
               <NumberInput
                 label={strings.fieldsStep4PlannedResponseRowsIFRCStaffValueFieldLabel}
-                name="ifrc_staff_value"
-                value={value.ifrc_staff_value}
+                name="num_ifrc_staff"
+                value={value.num_ifrc_staff}
                 onChange={onValueChange}
-                error={error?.fields?.ifrc_staff_value}
+                error={error?.fields?.num_ifrc_staff}
               />
             </InputSection>
           </>
@@ -168,20 +171,20 @@ function ResponseFields(props: Props) {
             title={strings.fieldsStep4PlannedResponseRowsForecastBasedActionEWLabel}
           >
             <RadioInput
-              error={error?.fields?.forecast_based_action_status}
-              name="forecast_based_action_status"
+              error={error?.fields?.forecast_based_action}
+              name="forecast_based_action"
               onChange={onValueChange}
               options={responseOptions}
-              radioKeySelector={optionKeySelector}
+              radioKeySelector={numericOptionKeySelector}
               radioLabelSelector={optionLabelSelector}
-              value={value.forecast_based_action_status}
+              value={value.forecast_based_action}
             />
             <NumberInput
               label={strings.fieldsStep4PlannedResponseRowsForecastBasedActionValueFieldLabel}
-              name="forecast_based_action_value"
-              value={value.forecast_based_action_value}
+              name="forecast_based_action_amount"
+              value={value.forecast_based_action_amount}
               onChange={onValueChange}
-              error={error?.fields?.forecast_based_action_value}
+              error={error?.fields?.forecast_based_action_amount}
             />
           </InputSection>
         )}
@@ -342,7 +345,7 @@ function ResponseFields(props: Props) {
             name="visibility"
             onChange={onValueChange}
             options={visibilityOptions}
-            radioKeySelector={optionKeySelector}
+            radioKeySelector={numericOptionKeySelector}
             radioLabelSelector={optionLabelSelector}
             value={value.visibility}
           />

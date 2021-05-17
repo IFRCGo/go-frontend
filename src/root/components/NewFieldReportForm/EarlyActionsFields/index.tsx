@@ -15,8 +15,8 @@ import LanguageContext from '#root/languageContext';
 
 import {
   FormType,
-  Option,
-  optionKeySelector,
+  NumericValueOption,
+  numericOptionKeySelector,
   optionLabelSelector,
   ActionsByOrganization,
 } from '../common';
@@ -29,7 +29,7 @@ interface Props {
   error: Error<Value> | undefined;
   onValueChange: (...entries: EntriesAsList<Value>) => void;
   value: Value;
-  bulletinOptions: Option[];
+  bulletinOptions: NumericValueOption[];
 }
 
 function EarlyActionFields(props: Props) {
@@ -48,20 +48,20 @@ function EarlyActionFields(props: Props) {
         title={strings.fieldsStep3Section1FieldsAssistedGovEWLabel}
       >
         <NumberInput
-          name="num_assisted_gov"
-          value={value.num_assisted_gov}
+          name="gov_num_assisted"
+          value={value.gov_num_assisted}
           onChange={onValueChange}
-          error={error?.fields?.num_assisted_gov}
+          error={error?.fields?.gov_num_assisted}
         />
       </InputSection>
       <InputSection
         title={strings.fieldsStep3Section1FieldsAssistedRCRCEWLabel}
       >
         <NumberInput
-          name="num_assisted_red_cross"
-          value={value.num_assisted_red_cross}
+          name="num_assisted"
+          value={value.num_assisted}
           onChange={onValueChange}
-          error={error?.fields?.num_assisted_red_cross}
+          error={error?.fields?.num_assisted}
         />
       </InputSection>
       <InputSection
@@ -74,7 +74,7 @@ function EarlyActionFields(props: Props) {
             onChange={onValueChange}
             options={options.NTLS}
             labelSelector={optionLabelSelector}
-            keySelector={optionKeySelector}
+            keySelector={numericOptionKeySelector}
             value={value.actions_ntls}
             error={error?.fields?.actions_ntls?.$internal}
           />
@@ -98,7 +98,7 @@ function EarlyActionFields(props: Props) {
             onChange={onValueChange}
             options={options.FDRN}
             labelSelector={optionLabelSelector}
-            keySelector={optionKeySelector}
+            keySelector={numericOptionKeySelector}
             value={value.actions_fdrn}
             error={error?.fields?.actions_fdrn?.$internal}
           />
@@ -122,7 +122,7 @@ function EarlyActionFields(props: Props) {
             onChange={onValueChange}
             options={options.PNS}
             labelSelector={optionLabelSelector}
-            keySelector={optionKeySelector}
+            keySelector={numericOptionKeySelector}
             value={value.actions_pns}
             error={error?.fields?.actions_pns?.$internal}
           />
@@ -143,7 +143,7 @@ function EarlyActionFields(props: Props) {
         <RadioInput
           name="bulletin"
           options={bulletinOptions}
-          radioKeySelector={optionKeySelector}
+          radioKeySelector={numericOptionKeySelector}
           radioLabelSelector={optionLabelSelector}
           value={value.bulletin}
           onChange={onValueChange}
