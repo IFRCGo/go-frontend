@@ -6,7 +6,18 @@ import InputError from '#components/draft/InputError';
 
 import styles from './styles.module.scss';
 
-function InputContainer(props) {
+export interface Props {
+  className?: string;
+  actions?: React.ReactNode;
+  disabled?: boolean;
+  error?: React.ReactNode;
+  icons?: React.ReactNode;
+  label?: React.ReactNode;
+  readOnly?: boolean;
+  input: React.ReactNode;
+}
+
+function InputContainer(props: Props) {
   const {
     actions,
     className,

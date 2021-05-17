@@ -1,12 +1,15 @@
 import React from 'react';
-// import { _cs } from '@togglecorp/fujs';
 
-import InputContainer from '#components/draft/InputContainer';
-import RawInput from '#components/draft/RawInput';
+import InputContainer, { Props as InputContainerProps } from '#components/draft/InputContainer';
+import RawInput, { Props as RawInputProps } from '#components/draft/RawInput';
 
-// import styles from './styles.module.scss';
+type InheritedProps<T> = (Omit<InputContainerProps, 'input'> & RawInputProps<T>);
+export interface Props<T extends string | undefined> extends InheritedProps<T> {
+    inputElementRef?: React.RefObject<HTMLInputElement>;
+    inputClassName?: string;
+}
 
-function NumberInput(props) {
+function DateInput<T extends string | undefined>(props: Props<T>) {
   const {
     className,
     actions,
@@ -33,11 +36,11 @@ function NumberInput(props) {
           readOnly={readOnly}
           disabled={disabled}
           className={inputClassName}
-          type="number"
+          type="date"
         />
       )}
     />
   );
 }
 
-export default NumberInput;
+export default DateInput;

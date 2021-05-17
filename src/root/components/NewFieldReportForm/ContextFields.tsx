@@ -18,7 +18,6 @@ import { fetchEventsFromApi } from '#views/field-report-form/data-utils';
 
 import {
   ReportType,
-  optionKeySelector,
   optionLabelSelector,
   optionDescriptionSelector,
   Option,
@@ -35,15 +34,15 @@ const isEpidemic = (o: Option) => o.value === DISASTER_TYPE_EPIDEMIC;
 
 type Value = PartialForm<FormType>;
 interface Props {
-  disasterTypeOptions: Option[];
+  disasterTypeOptions: NumericValueOption[];
   error: Error<Value> | undefined;
   onValueChange: (...entries: EntriesAsList<Value>) => void;
   statusOptions: NumericValueOption[];
   value: Value;
   yesNoOptions: BooleanValueOption[];
   reportType: ReportType;
-  countryOptions: Option[];
-  districtOptions: Option[];
+  countryOptions: NumericValueOption[];
+  districtOptions: NumericValueOption[];
   fetchingCountries: boolean;
   fetchingDistricts: boolean;
 }

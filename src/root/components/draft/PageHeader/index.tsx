@@ -5,7 +5,16 @@ import Container from '#components/draft/Container';
 
 import styles from './styles.module.scss';
 
-function PageHeader(props) {
+interface Props {
+  className?: string;
+  heading?: React.ReactNode;
+  description?: React.ReactNode;
+  actions?: React.ReactNode;
+  breadCrumbs?: React.ReactNode;
+  info?: React.ReactNode;
+}
+
+function PageHeader(props: Props) {
   const {
     className,
     heading,

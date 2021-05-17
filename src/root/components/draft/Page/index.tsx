@@ -17,7 +17,19 @@ import {
 
 import styles from './styles.module.scss';
 
-function Page(props) {
+interface Props {
+  className?: string;
+  title?: React.ReactNode;
+  actions?: React.ReactNode;
+  heading?: React.ReactNode;
+  description?: React.ReactNode;
+  breadCrumbs?: React.ReactNode;
+  info?: React.ReactNode;
+  children?: React.ReactNode;
+  mainSectionClassName?: string;
+}
+
+function Page(props: Props) {
   const {
     className,
     title,
@@ -30,15 +42,15 @@ function Page(props) {
     mainSectionClassName,
   } = props;
 
-  const [loading, setLoading] = React.useState(false);
+  const [loading, setLoading] = React.useState(0);
 
   const setGlobalLoading = React.useCallback((isLoading) => {
     setLoading((loading) => loading + (isLoading ? 1 : -1));
   }, [setLoading]);
 
   const loadingContextValue = React.useMemo(() => ({
-    loading,
-    setLoading: setGlobalLoading,
+    loading: loading > 0,
+    setLoading: setGlobalLoading as () => void,
   }), [loading, setGlobalLoading]);
 
   return (
