@@ -33,7 +33,7 @@ export interface Props<N, O, V, RRP extends RadioProps<V>> {
 function RadioInput<
   N extends string | number,
   O extends object,
-  V extends string | number,
+  V extends string | number | boolean,
 RRP extends RadioProps<V>,
 >(props: Props<N, O, V, RRP>) {
   const {

@@ -3,7 +3,13 @@ import { _cs } from '@togglecorp/fujs';
 
 import styles from './styles.module.scss';
 
-function InputLabel(props) {
+export interface Props {
+  className?: string;
+  children?: React.ReactNode;
+  disabled?: boolean;
+}
+
+function InputError(props: Props) {
   const {
     children,
     className,
@@ -17,8 +23,8 @@ function InputLabel(props) {
   return (
     <div
       className={_cs(
-        'go-input-label',
-        styles.inputLabel,
+        'go-input-error',
+        styles.inputError,
         disabled && styles.disabled,
         className,
       )}
@@ -28,4 +34,4 @@ function InputLabel(props) {
   );
 }
 
-export default InputLabel;
+export default InputError;

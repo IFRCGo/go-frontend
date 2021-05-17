@@ -3,7 +3,15 @@ import { _cs } from '@togglecorp/fujs';
 
 import styles from './styles.module.scss';
 
-function NonFieldError(props) {
+export interface Props {
+  className?: string;
+  error?: {
+    $internal?: string | string[];
+  };
+  message?: React.ReactNode;
+}
+
+function NonFieldError(props: Props) {
   const {
     className,
     error,
@@ -18,6 +26,13 @@ function NonFieldError(props) {
     return null;
   }
 
+  let stringError: string | undefined;
+  if (Array.isArray(error.$internal)) {
+    stringError = error.$internal.join(', ');
+  } else {
+    stringError = error.$internal;
+  }
+
   return (
     <div className={_cs(
         'go-non-field-error',
@@ -25,8 +40,8 @@ function NonFieldError(props) {
         className,
       )}
     >
-      {error?.$internal}
-      {error && !error.$internal && message}
+      {stringError}
+      {error && !stringError && message}
     </div>
   );
 }

@@ -3,7 +3,15 @@ import { _cs } from '@togglecorp/fujs';
 
 import styles from './styles.module.scss';
 
-function InputSection(props) {
+export interface Props {
+  className?: string;
+  title?: React.ReactNode;
+  children?: React.ReactNode;
+  description?: React.ReactNode;
+  tooltip?: string;
+}
+
+function InputSection(props: Props) {
   const {
     className,
     title,
