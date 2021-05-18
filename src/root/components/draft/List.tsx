@@ -79,6 +79,7 @@ function GroupedList<D, P, K extends OptionKey, GP extends GroupCommonProps, GK 
                 {...extraProps}
             />
         );
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [Renderer, data, keySelector, rendererClassName, rendererParams]);
 
     const renderGroup = (
@@ -157,6 +158,7 @@ function List<D, P, K extends OptionKey, GP extends GroupCommonProps, GK extends
                 {...extraProps}
             />
         );
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [keySelector, Renderer, rendererClassName, rendererParams, data]);
 
     if (!hasGroup(props)) {
