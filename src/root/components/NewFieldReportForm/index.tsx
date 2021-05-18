@@ -5,7 +5,10 @@ import {
   createSubmitHandler,
   PartialForm,
 } from '@togglecorp/toggle-form';
-import { _cs } from '@togglecorp/fujs';
+import {
+  _cs,
+  isDefined,
+} from '@togglecorp/fujs';
 
 import BreadCrumb from '#components/breadcrumb';
 import NonFieldError from '#components/draft/NonFieldError';
@@ -30,6 +33,7 @@ import {
   VISIBILITY_PUBLIC,
   FormType,
   transformFormFieldsToAPIFields,
+  FieldReportAPIFields,
 } from './common';
 import styles from './styles.module.scss';
 
@@ -92,18 +96,15 @@ function NewFieldReportForm(props: Props) {
     onValueSet(finalValues);
 
     const apiFields = transformFormFieldsToAPIFields(finalValues as FormType);
+    const definedValues = {} as FieldReportAPIFields;
 
-    const definedValues = (Object.keys(apiFields) as (keyof PartialForm<FormType>)[]).reduce((acc, key) => {
-      const newAcc = { ...acc } as PartialForm<FormType>;
-
-      if (finalValues[key] !== null) {
-        newAcc[key] = finalValues[key];
+    (Object.keys(apiFields) as (keyof FieldReportAPIFields)[]).forEach((key) => {
+      if (isDefined(apiFields[key])) {
+        definedValues[key] = apiFields[key];
       }
+    });
 
-      return newAcc;
-    }, {});
-
-    console.info(definedValues);
+    console.info(finalValues, definedValues);
   }, [onValueSet]);
 
   React.useEffect(() => {
