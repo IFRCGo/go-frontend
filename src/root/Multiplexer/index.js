@@ -188,6 +188,7 @@ function Multiplexer(props) {
           <Route path='/preparedness' component={Preparedness} />
           <PrivateRoute exact path='/three-w/new/' render={props => <NewThreeW {...props} />} />
           <PrivateRoute exact path='/new-field-report-form/' render={props => <NewFieldReportForm {...props} /> } />
+          <PrivateRoute exact path='/new-field-report-form/:reportId' render={props => <NewFieldReportForm {...props} /> } />
           <Route component={UhOh}/>
         </Switch>
       </BreadcrumbsProvider>

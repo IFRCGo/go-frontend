@@ -1,4 +1,6 @@
 import React from 'react';
+import type { History, Location } from 'history';
+import type { match as Match } from 'react-router-dom';
 import Page from '#components/draft/Page';
 import {
   useForm,
@@ -17,6 +19,10 @@ import {
 } from '#utils/field-report-constants';
 
 import LanguageContext from '#root/languageContext';
+import useRequest, {
+  putRequestOptions,
+  postRequestOptions,
+} from '#hooks/useRequest';
 
 import ContextFields from './ContextFields';
 import SituationFields from './SituationFields';
@@ -33,7 +39,10 @@ import {
   VISIBILITY_PUBLIC,
   FormType,
   transformFormFieldsToAPIFields,
+  transformAPIFieldsToFormFields,
   FieldReportAPIFields,
+  FieldReportAPIResponseFields,
+  ObjectResponse,
 } from './common';
 import styles from './styles.module.scss';
 
@@ -46,21 +55,27 @@ const defaultFormValues: PartialForm<FormType> = {
 
 interface Props {
   className?: string;
-  history: {
-    push: (url: string) => void;
-  };
-  location: {
-    pathname: string;
-  };
+  match: Match<{ reportId?: string }>;
+  history: History;
+  location: Location;
 }
 
 function NewFieldReportForm(props: Props) {
   const {
     className,
     location,
+    match,
   } = props;
 
+  const { reportId } = match.params;
   const { strings } = React.useContext(LanguageContext);
+
+  const [
+    fieldReportPending,
+    fieldReportResponse,
+  ] = useRequest(
+    reportId ? `api/v2/field_report/${reportId}` : '',
+  ) as ObjectResponse<FieldReportAPIResponseFields>;
 
   const crumbs = React.useMemo(() => [
     {link: location?.pathname, name: 'Create new field report'},
@@ -76,6 +91,34 @@ function NewFieldReportForm(props: Props) {
     onValueSet,
   } = useForm(defaultFormValues, schema);
 
+   React.useEffect(() => {
+    if (fieldReportResponse) {
+      console.info(fieldReportResponse);
+      const formValue = transformAPIFieldsToFormFields(fieldReportResponse);
+      onValueSet(formValue);
+    }
+  }, [fieldReportResponse, onValueSet]);
+
+
+  const [, ,submitRequest] = useRequest(
+    isDefined(reportId) ? (
+      `api/v2/update_field_report/${reportId}/`
+    ) : (
+      'api/v2/create_field_report/'
+    ),
+    reportId ? putRequestOptions : postRequestOptions,
+    {
+      lazy: true,
+      onSuccess: (result: any) => {
+        console.info('successful', result);
+      },
+      onFailure: (result: any) => {
+        console.error(result);
+        // transformServerError(result, onErrorSet);
+      },
+    },
+  ) as [boolean, any, (o: any) => void];
+
   const {
     orgGroupedActionForCurrentReport,
     disasterTypeOptions,
@@ -90,6 +133,7 @@ function NewFieldReportForm(props: Props) {
     supportedActivityOptions,
     externalPartnerOptions,
     sourceOptions,
+    userDetails,
   } = useFieldReportOptions(value);
 
   const handleSubmit = React.useCallback((finalValues) => {
@@ -104,8 +148,27 @@ function NewFieldReportForm(props: Props) {
       }
     });
 
+    if (userDetails && userDetails.id) {
+      const body = JSON.stringify({
+        user: userDetails.id,
+        ...definedValues
+      });
+
+      if (isDefined(reportId)) {
+        submitRequest({
+          ...putRequestOptions,
+          body,
+        });
+      } else {
+        submitRequest({
+          ...postRequestOptions,
+          body,
+        });
+      }
+    }
+
     console.info(finalValues, definedValues);
-  }, [onValueSet]);
+  }, [onValueSet, submitRequest, userDetails, reportId]);
 
   React.useEffect(() => {
     if (value.status === STATUS_EARLY_WARNING) {
