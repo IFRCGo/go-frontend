@@ -97,9 +97,9 @@ function NewFieldReportForm(props: Props) {
   ) as ObjectResponse<FieldReportAPIResponseFields>;
 
   const crumbs = React.useMemo(() => [
-    {link: location?.pathname, name: 'Create new field report'},
+    {link: location?.pathname, name: isDefined(reportId) ? 'Edit Field Report' : strings.breadCrumbNewFieldReport},
     {link: '/', name: strings.breadCrumbHome},
-  ], [strings.breadCrumbHome, location]);
+  ], [strings.breadCrumbHome, strings.breadCrumbNewFieldReport, location, reportId]);
 
   const {
     value,
@@ -300,8 +300,8 @@ function NewFieldReportForm(props: Props) {
     >
       <Page
         className={_cs(styles.newFieldReportForm, className)}
-        title="IFRC GO - New Field Report"
-        heading="Create Field Report"
+        title={isDefined(reportId) ? 'IFRC Go - Update Field Report' : strings.fieldReportFormPageTitle}
+        heading={isDefined(reportId) ? 'Update Field Report' : strings.fieldReportCreate}
         breadCrumbs={<BreadCrumb crumbs={crumbs} compact />}
         info={(
           <TabList className={styles.tabList}>
