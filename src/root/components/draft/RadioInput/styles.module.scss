@@ -27,6 +27,7 @@
 
   &:hover {
     .clear-button {
+      z-index: 1;
       opacity: 1;
     }
   }
