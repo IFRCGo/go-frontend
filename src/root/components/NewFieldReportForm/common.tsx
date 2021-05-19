@@ -134,6 +134,19 @@ export interface FormType {
   visibility: number;
 }
 
+export function getDefinedValues<T extends Record<string, any>>(o: T): Partial<T> {
+  type Key = keyof T;
+  const keys = Object.keys(o) as Key[];
+  const definedValues: Partial<T> = {};
+  keys.forEach((key) => {
+    if (isDefined(o[key])) {
+      definedValues[key] = o[key];
+    }
+  });
+
+  return definedValues;
+}
+
 export type ListResponse<T = any> = [
   boolean,
   {
@@ -195,12 +208,10 @@ export interface ActionFields {
 }
 
 export type ActionByReportType = {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   [key in FieldReportType]: ActionFields[];
 }
 
 export type ActionsByOrganization = {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   [key in OrganizationType]: Action[]
 };
 

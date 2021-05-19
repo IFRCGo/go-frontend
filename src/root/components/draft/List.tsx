@@ -3,7 +3,7 @@ import { listToGroupList } from '@togglecorp/fujs';
 
 export const typedMemo: (<T>(c: T) => T) = memo;
 
-type OptionKey = string | number;
+type OptionKey = string | number | boolean;
 
 const emptyList: unknown[] = [];
 
@@ -74,7 +74,7 @@ function GroupedList<D, P, K extends OptionKey, GP extends GroupCommonProps, GK 
 
         return (
             <Renderer
-                key={key}
+                key={String(key)}
                 className={rendererClassName}
                 {...extraProps}
             />
@@ -98,16 +98,26 @@ function GroupedList<D, P, K extends OptionKey, GP extends GroupCommonProps, GK 
 
         return (
             <GroupRenderer
-                key={groupKey}
+                key={String(groupKey)}
                 // FIXME: currently typescript is not smart enough to join Omit
                 {...finalProps as GP}
             />
         );
     };
 
+    const typeSafeGroupKeySelector: (d: D) => string | number = React.useCallback((d) => {
+      const key = groupKeySelector(d);
+
+      if (typeof key === 'number') {
+        return key;
+      }
+
+      return String(key);
+    }, [groupKeySelector]);
+
     const groups = useMemo(
-        () => listToGroupList(data, groupKeySelector),
-        [data, groupKeySelector],
+        () => listToGroupList(data, typeSafeGroupKeySelector),
+        [data, typeSafeGroupKeySelector],
     );
 
     const sortedGroupKeys = useMemo(
@@ -122,8 +132,8 @@ function GroupedList<D, P, K extends OptionKey, GP extends GroupCommonProps, GK 
         renderGroup(
             groupKey,
             i,
-            groups[groupKey],
-            groups[groupKey].map(renderListItem),
+            groups[String(groupKey)],
+            groups[String(groupKey)].map(renderListItem),
         )
     ));
 
@@ -153,7 +163,7 @@ function List<D, P, K extends OptionKey, GP extends GroupCommonProps, GK extends
 
         return (
             <Renderer
-                key={key}
+                key={String(key)}
                 className={rendererClassName}
                 {...extraProps}
             />

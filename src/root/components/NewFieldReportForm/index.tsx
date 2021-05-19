@@ -43,6 +43,7 @@ import {
   FieldReportAPIFields,
   FieldReportAPIResponseFields,
   ObjectResponse,
+  getDefinedValues,
 } from './common';
 import styles from './styles.module.scss';
 
@@ -93,7 +94,6 @@ function NewFieldReportForm(props: Props) {
 
    React.useEffect(() => {
     if (fieldReportResponse) {
-      console.info(fieldReportResponse);
       const formValue = transformAPIFieldsToFormFields(fieldReportResponse);
       onValueSet(formValue);
     }
@@ -114,8 +114,10 @@ function NewFieldReportForm(props: Props) {
       },
       onFailure: (result: any) => {
         console.error(result);
-        // transformServerError(result, onErrorSet);
       },
+      // TODO: remove following after converting useRequest to TS
+      preserveResponse: true,
+      debug: false,
     },
   ) as [boolean, any, (o: any) => void];
 
@@ -140,13 +142,7 @@ function NewFieldReportForm(props: Props) {
     onValueSet(finalValues);
 
     const apiFields = transformFormFieldsToAPIFields(finalValues as FormType);
-    const definedValues = {} as FieldReportAPIFields;
-
-    (Object.keys(apiFields) as (keyof FieldReportAPIFields)[]).forEach((key) => {
-      if (isDefined(apiFields[key])) {
-        definedValues[key] = apiFields[key];
-      }
-    });
+    const definedValues = getDefinedValues(apiFields);
 
     if (userDetails && userDetails.id) {
       const body = JSON.stringify({

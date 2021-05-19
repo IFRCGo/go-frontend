@@ -24,7 +24,7 @@ export interface Props<N> {
   readOnly?: boolean;
 }
 
-function Radio<N extends string | number>(props: Props<N>) {
+function Radio<N extends string | number | boolean>(props: Props<N>) {
   const {
     name,
     label,
