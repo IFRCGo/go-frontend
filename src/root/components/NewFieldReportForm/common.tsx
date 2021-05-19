@@ -25,6 +25,10 @@ export interface StringValueOption {
   description?: string;
 }
 
+export interface User {
+  id: number;
+}
+
 export type Option = NumericValueOption | BooleanValueOption | StringValueOption;
 
 export const emptyOptionList: Option[] = [];
@@ -139,6 +143,12 @@ export type ListResponse<T = any> = [
   } | undefined,
   (options: any) => void,
 ];
+
+export type ObjectResponse<T extends object = any> = [
+  boolean,
+  T | undefined,
+  (options: any) => void,
+]
 
 export const optionKeySelector = (o: Option) => o.value;
 export const numericOptionKeySelector = (o: NumericValueOption) => o.value;
@@ -345,6 +355,7 @@ export interface FieldReportAPIFields {
 export function transformFormFieldsToAPIFields(formValues: FormType): FieldReportAPIFields {
   const {
     country,
+    start_date,
 
     sit_fields_date,
     other_sources,
@@ -381,7 +392,6 @@ export function transformFormFieldsToAPIFields(formValues: FormType): FieldRepor
     actions_fdrn_desc,
     actions_pns,
     actions_pns_desc,
-    bulletin,
     actions_others,
 
     contact_originator_name,
@@ -500,6 +510,8 @@ export function transformFormFieldsToAPIFields(formValues: FormType): FieldRepor
 
   return {
     ...otherFields,
+    start_date: isDefined(start_date) ? (new Date(start_date)).toISOString() : start_date,
+    sit_fields_date: isDefined(sit_fields_date) ? (new Date(sit_fields_date)).toISOString() : sit_fields_date,
 
     actions_taken,
     contacts,
@@ -534,20 +546,26 @@ export function transformFormFieldsToAPIFields(formValues: FormType): FieldRepor
   };
 }
 
-export interface FieldReportAPIResponseFields extends Omit<FieldReportAPIFields, 'user' | 'dtype' | 'event' | 'countries'> {
+export interface FieldReportAPIResponseFields extends Omit<FieldReportAPIFields, 'user' | 'dtype' | 'event' | 'countries' | 'actions_taken'> {
   id: number;
   user: {
     id: number;
-  }
+  };
   dtype: {
     id: number;
-  }
+  };
   event: {
     id: number;
-  }
+  };
   countries: {
     id: number;
-  }[]
+  }[];
+  actions_taken: {
+    id: number;
+    organization: OrganizationType;
+    summary?: string;
+    actions: ActionFields[];
+  }[];
 }
 
 export function transformAPIFieldsToFormFields(apiValues: FieldReportAPIResponseFields): PartialForm<FormType> {
@@ -772,15 +790,15 @@ export function transformAPIFieldsToFormFields(apiValues: FieldReportAPIResponse
   actions_taken.forEach((action) => {
     switch(action.organization) {
       case 'NTLS':
-        actions_ntls = action.actions;
+        actions_ntls = action.actions.map(d => d.id);
         actions_ntls_desc = action.summary;
         break;
       case 'FDRN':
-        actions_fdrn = action.actions;
+        actions_fdrn = action.actions.map(d => d.id);
         actions_fdrn_desc = action.summary;
         break;
       case 'PNS':
-        actions_pns = action.actions;
+        actions_pns = action.actions.map(d => d.id);
         actions_pns_desc = action.summary;
         break;
       default:
@@ -834,8 +852,9 @@ export function transformAPIFieldsToFormFields(apiValues: FieldReportAPIResponse
     }
   });
 
+
   return {
-    start_date,
+    start_date: start_date.split('T')[0],
     summary,
     other_sources,
     dtype,

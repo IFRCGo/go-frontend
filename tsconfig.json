@@ -29,6 +29,9 @@
   },
   "include": [
     "src"
-  ]
+  ],
+  "rules": {
+    "no-unused-vars": "warn"
+  }
 }
 

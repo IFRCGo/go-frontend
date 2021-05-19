@@ -21,6 +21,7 @@ import {
   emptyActionList,
   FormType,
   ListResponse,
+  ObjectResponse,
   ActionFields,
   ActionByReportType,
   ActionsByOrganization,
@@ -34,6 +35,7 @@ import {
   SOURCE_RC,
   SOURCE_GOV,
   SOURCE_OTHER,
+  User,
 } from './common';
 
 type FormSchema = ObjectSchema<PartialForm<FormType>>;
@@ -166,6 +168,11 @@ export const schema: FormSchema = {
 
 function useFieldReportOptions(value: Partial<FormType>) {
   const { strings } = React.useContext(LanguageContext);
+
+  const [
+    fetchingUserDetails,
+    userDetails,
+  ] = useRequest('api/v2/user/me/') as ObjectResponse<User>;
 
   const [
     fetchingCountries,
@@ -360,6 +367,8 @@ function useFieldReportOptions(value: Partial<FormType>) {
     fetchingExternalPartners,
     fetchingSupportedActivities,
     sourceOptions,
+    fetchingUserDetails,
+    userDetails,
   };
 }
 

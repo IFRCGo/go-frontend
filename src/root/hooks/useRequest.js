@@ -46,6 +46,11 @@ export const postRequestOptions = {
   headers: { ...defaultHeaders },
 };
 
+export const putRequestOptions = {
+  method: 'PUT',
+  headers: { ...defaultHeaders },
+};
+
 export const defaultOtherOptions = {
   onSuccess: undefined,
   onFailure: undefined,
@@ -103,7 +108,7 @@ function withAuthToken(options = defaultRequestOptions) {
 function useRequest(
   url,
   requestOptions = defaultRequestOptions,
-  otherOptions,
+  otherOptions = defaultOtherOptions,
 ) {
   const [response, setResponse] = useState();
   const [pending, setPending] = useState(!otherOptions?.lazy && !!url);
