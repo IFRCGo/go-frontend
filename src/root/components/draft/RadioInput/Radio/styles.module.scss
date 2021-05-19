@@ -9,6 +9,7 @@
 
     .icon {
         font-size: 1.6em;
+        transition: $duration-transition-medium color ease-in-out;
     }
 
     .children {
@@ -32,12 +33,15 @@
     }
 
     &.disabled {
-        opacity: var(--dui-opacity-disabled-element);
+        opacity: $opacity-disabled-element;
     }
 
     &:not(.disabled) {
+        &:focus,
         &:hover {
-            background-color: var(--dui-color-background-hover);
+          .icon {
+            color: $primary-color;
+          }
         }
 
         &:not(.read-only) {

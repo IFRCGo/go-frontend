@@ -47,7 +47,7 @@ module.exports = {
     "no-use-before-define": "off",
     "no-unused-vars": "off",
     "@typescript-eslint/no-use-before-define": "off",
-    "@typescript-eslint/no-unused-vars": "off",
+    "@typescript-eslint/no-unused-vars": "warn",
 
     "semi": [2, "always"],
     "no-extra-semi": 2,

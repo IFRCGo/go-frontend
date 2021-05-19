@@ -40,6 +40,8 @@ interface Props {
   actionOptions: Action[];
   externalPartnerOptions: NumericValueOption[];
   supportedActivityOptions: NumericValueOption[];
+  fetchingExternalPartners?: boolean;
+  fetchingSupportedActivities?: boolean;
 }
 
 function CovidActionFields(props: Props) {
@@ -52,6 +54,8 @@ function CovidActionFields(props: Props) {
     actionOptions,
     externalPartnerOptions,
     supportedActivityOptions,
+    fetchingExternalPartners,
+    fetchingSupportedActivities,
   } = props;
 
   const categoryGroupedOptions = React.useMemo(() => {
@@ -203,6 +207,7 @@ function CovidActionFields(props: Props) {
           name="external_partners"
           value={value.external_partners}
           error={error?.fields?.external_partners}
+          pending={fetchingExternalPartners}
           options={externalPartnerOptions}
           onChange={onValueChange}
           isMulti
@@ -213,6 +218,7 @@ function CovidActionFields(props: Props) {
           error={error?.fields?.supported_activities}
           options={supportedActivityOptions}
           onChange={onValueChange}
+          pending={fetchingSupportedActivities}
           isMulti
         />
       </InputSection>

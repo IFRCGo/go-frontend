@@ -1,5 +1,6 @@
 import React from 'react';
 import { _cs } from '@togglecorp/fujs';
+import { IoTrash } from 'react-icons/io5';
 
 import InputLabel from '../InputLabel';
 import InputError from '../InputError';
@@ -28,6 +29,7 @@ export interface Props<N, O, V, RRP extends RadioProps<V>> {
   readOnly?: boolean;
   radioRenderer?: (p: RRP) => React.ReactElement;
   radioRendererParams?: (o: O) => Omit<RRP, 'inputName' | 'label' | 'name' | 'onClick' | 'value'>;
+  clearable?: boolean;
 }
 
 function RadioInput<
@@ -54,6 +56,7 @@ RRP extends RadioProps<V>,
     radioRendererParams: radioRendererParamsFromProps,
     disabled,
     readOnly,
+    clearable,
   } = props;
 
   const handleRadioClick = React.useCallback((radioKey) => {
@@ -94,6 +97,12 @@ RRP extends RadioProps<V>,
     radioDescriptionSelector,
   ]);
 
+  const handleClearButtonClick = React.useCallback(() => {
+    if (onChange) {
+      onChange(undefined, name);
+    }
+  }, [name, onChange]);
+
   return (
     <div
       className={_cs(
@@ -102,6 +111,15 @@ RRP extends RadioProps<V>,
         className,
       )}
     >
+      {clearable && (
+        <button
+          type="button"
+          className={styles.clearButton}
+          onClick={handleClearButtonClick}
+        >
+          <IoTrash />
+        </button>
+      )}
       <InputLabel
         className={labelContainerClassName}
         disabled={disabled}

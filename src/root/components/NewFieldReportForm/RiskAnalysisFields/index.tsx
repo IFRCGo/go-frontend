@@ -63,6 +63,7 @@ function RiskAnalysisFields(props: Props) {
           radioKeySelector={stringOptionKeySelector}
           radioLabelSelector={optionLabelSelector}
           value={value.num_potentially_affected_source}
+          clearable
         />
       </InputSection>
       <InputSection
@@ -86,6 +87,7 @@ function RiskAnalysisFields(props: Props) {
           radioKeySelector={stringOptionKeySelector}
           radioLabelSelector={optionLabelSelector}
           value={value.num_highest_risk_source}
+          clearable
         />
       </InputSection>
       <InputSection
@@ -109,6 +111,7 @@ function RiskAnalysisFields(props: Props) {
           radioKeySelector={stringOptionKeySelector}
           radioLabelSelector={optionLabelSelector}
           value={value.affected_pop_centres_source}
+          clearable
         />
       </InputSection>
       <InputSection

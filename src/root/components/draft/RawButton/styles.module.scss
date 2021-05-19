@@ -1,0 +1,23 @@
+.raw-button {
+    position: relative;
+    outline: none;
+    border: 0;
+    background-color: transparent;
+    cursor: pointer;
+    padding: 0;
+    color: inherit;
+    font-family: inherit;
+    font-size: inherit;
+
+    &.light {
+        &:focus {
+            outline-color: var(--dui-color-outline-light);
+        }
+    }
+
+    &.dark {
+        &:focus {
+            outline-color: var(--dui-color-outline-dark);
+        }
+    }
+}

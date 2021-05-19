@@ -43,8 +43,9 @@ interface Props {
   reportType: ReportType;
   countryOptions: NumericValueOption[];
   districtOptions: NumericValueOption[];
-  fetchingCountries: boolean;
-  fetchingDistricts: boolean;
+  fetchingCountries?: boolean;
+  fetchingDistricts?: boolean;
+  fetchingDisasterTypes?: boolean;
 }
 
 function ContextFields(props: Props) {
@@ -55,6 +56,7 @@ function ContextFields(props: Props) {
     districtOptions,
     fetchingCountries,
     fetchingDistricts,
+    fetchingDisasterTypes,
     disasterTypeOptions,
     error,
     onValueChange,
@@ -170,20 +172,6 @@ function ContextFields(props: Props) {
         </div>
       </InputSection>
       <InputSection
-        title={strings.fieldsStep1DisasterTypeLabel}
-        description={strings.fieldsStep1DisasterTypeDescription}
-      >
-        <SelectInput
-          name="dtype"
-          isOptionDisabled={value.status === STATUS_EARLY_WARNING ? isEpidemic : undefined}
-          value={value.dtype}
-          options={disasterTypeOptions}
-          onChange={onValueChange}
-          error={error?.fields?.dtype}
-          disabled={value.is_covid_report}
-        />
-      </InputSection>
-      <InputSection
         title={countrySectionTitle}
         description={countrySectionDescription}
       >
@@ -206,6 +194,21 @@ function ContextFields(props: Props) {
           onChange={onValueChange}
           options={districtOptions}
           value={value.districts}
+        />
+      </InputSection>
+      <InputSection
+        title={strings.fieldsStep1DisasterTypeLabel}
+        description={strings.fieldsStep1DisasterTypeDescription}
+      >
+        <SelectInput
+          name="dtype"
+          isOptionDisabled={value.status === STATUS_EARLY_WARNING ? isEpidemic : undefined}
+          value={value.dtype}
+          options={disasterTypeOptions}
+          pending={fetchingDisasterTypes}
+          onChange={onValueChange}
+          error={error?.fields?.dtype}
+          disabled={value.is_covid_report}
         />
       </InputSection>
       <InputSection

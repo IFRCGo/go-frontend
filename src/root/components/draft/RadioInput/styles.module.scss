@@ -1,11 +1,33 @@
+@import '~styles/settings/variables';
+
 .radio-input {
+  position: relative;
+
   .radio-list-container {
     display: flex;
     flex-wrap: wrap;
+    padding: $spacing/2 0;
   }
 
   &.disabled {
-    opacity: 0.4;
+    opacity: $opacity-disabled-element;
     filter: saturate(50%);
+  }
+
+  .clear-button {
+    position: absolute;
+    right: 0;
+    top: 0;
+    background-color: transparent;
+    border: 0;
+    cursor: pointer;
+    transition: $duration-transition-medium opacity ease-in-out;
+    opacity: 0;
+  }
+
+  &:hover {
+    .clear-button {
+      opacity: 1;
+    }
   }
 }
