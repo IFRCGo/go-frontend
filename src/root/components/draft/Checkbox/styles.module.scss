@@ -12,6 +12,7 @@
     align-items: center;
     margin: $spacing/2;
     font-size: 1.5em;
+    transition: $duration-transition-medium color ease-in-out;
   }
 
   .label {
@@ -23,6 +24,13 @@
   }
 
   &.checked {
+    .checkmark {
+      color: $primary-color;
+    }
+  }
+
+  &:focus,
+  &:hover {
     .checkmark {
       color: $primary-color;
     }

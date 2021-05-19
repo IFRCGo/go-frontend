@@ -95,6 +95,7 @@ function ResponseFields(props: Props) {
                 radioKeySelector={numericOptionKeySelector}
                 radioLabelSelector={optionLabelSelector}
                 value={value.dref}
+                clearable
               />
               <NumberInput
                 label={strings.fieldsStep4PlannedResponseRowsDREFValueFieldLabel}
@@ -115,6 +116,7 @@ function ResponseFields(props: Props) {
                 radioKeySelector={numericOptionKeySelector}
                 radioLabelSelector={optionLabelSelector}
                 value={value.appeal}
+                clearable
               />
               <NumberInput
                 label={strings.fieldsStep4PlannedResponseRowsEmergencyAppealValueFieldLabel}
@@ -135,6 +137,7 @@ function ResponseFields(props: Props) {
                 radioKeySelector={numericOptionKeySelector}
                 radioLabelSelector={optionLabelSelector}
                 value={value.fact}
+                clearable
               />
               <NumberInput
                 label={strings.fieldsStep4PlannedResponseRowsFactValueFieldLabel}
@@ -155,6 +158,7 @@ function ResponseFields(props: Props) {
                 radioKeySelector={numericOptionKeySelector}
                 radioLabelSelector={optionLabelSelector}
                 value={value.ifrc_staff}
+                clearable
               />
               <NumberInput
                 label={strings.fieldsStep4PlannedResponseRowsIFRCStaffValueFieldLabel}
@@ -178,6 +182,7 @@ function ResponseFields(props: Props) {
               radioKeySelector={numericOptionKeySelector}
               radioLabelSelector={optionLabelSelector}
               value={value.forecast_based_action}
+              clearable
             />
             <NumberInput
               label={strings.fieldsStep4PlannedResponseRowsForecastBasedActionValueFieldLabel}
@@ -193,6 +198,8 @@ function ResponseFields(props: Props) {
         <InputSection
           title={strings.fieldsStep4ContactRowsOriginatorLabel}
           description={strings.fieldsStep4ContactRowsOriginatorEVTEPIEWDesc}
+          multiRow
+          twoColumn
         >
           <TextInput
             name="contact_originator_name"
@@ -226,6 +233,8 @@ function ResponseFields(props: Props) {
         <InputSection
           title={strings.fieldsStep4ContactRowsNSContactLabel}
           description={strings.fieldsStep4ContactRowsNSContactEVTEPIDesc}
+          multiRow
+          twoColumn
         >
           <TextInput
             name="contact_nat_soc_name"
@@ -259,6 +268,8 @@ function ResponseFields(props: Props) {
         <InputSection
           title={strings.fieldsStep4ContactRowsFederationContactLabel}
           description={strings.fieldsStep4ContactRowsFederationContactEVTEPIDesc}
+          multiRow
+          twoColumn
         >
           <TextInput
             name="contact_federation_name"
@@ -292,6 +303,8 @@ function ResponseFields(props: Props) {
         <InputSection
           title={strings.fieldsStep4ContactRowsMediaContactLabel}
           description={strings.fieldsStep4ContactRowsMediaContactEVTEPIEWDesc}
+          multiRow
+          twoColumn
         >
           <TextInput
             name="contact_media_name"

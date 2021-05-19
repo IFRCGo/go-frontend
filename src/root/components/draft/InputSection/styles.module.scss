@@ -22,7 +22,7 @@
       font-size: $font-size-sm;
       padding: $spacing/2;
       white-space: pre-wrap;
-      word-wrap: brea-word;
+      word-wrap: break-word;
     }
   }
 
@@ -35,6 +35,36 @@
       flex-grow: 1;
       flex-basis: 0;
       margin: $spacing/2;
+    }
+  }
+
+  &.multi-row {
+    .section-content {
+      flex-wrap: wrap;
+    }
+  }
+
+  &.one-column {
+    .section-content {
+      >* {
+        flex-basis: calc(100% - #{$spacing});
+      }
+    }
+  }
+
+  &.two-column {
+    .section-content {
+      >* {
+        flex-basis: calc(50% - #{$spacing});
+      }
+    }
+  }
+
+  &.three-column {
+    .section-content {
+      >* {
+        flex-basis: calc(100% / 3 - #{$spacing});
+      }
     }
   }
 }

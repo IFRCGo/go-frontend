@@ -315,6 +315,7 @@ function SituationFields(props: Props) {
           radioKeySelector={stringOptionKeySelector}
           radioLabelSelector={optionLabelSelector}
           value={value.num_injured_source}
+          clearable
         />
       </InputSection>
       <InputSection
@@ -338,6 +339,7 @@ function SituationFields(props: Props) {
           radioKeySelector={stringOptionKeySelector}
           radioLabelSelector={optionLabelSelector}
           value={value.num_dead_source}
+          clearable
         />
       </InputSection>
       <InputSection
@@ -361,6 +363,7 @@ function SituationFields(props: Props) {
           radioKeySelector={stringOptionKeySelector}
           radioLabelSelector={optionLabelSelector}
           value={value.num_missing_source}
+          clearable
         />
       </InputSection>
       <InputSection
@@ -384,6 +387,7 @@ function SituationFields(props: Props) {
           radioKeySelector={stringOptionKeySelector}
           radioLabelSelector={optionLabelSelector}
           value={value.num_affected_source}
+          clearable
         />
       </InputSection>
       <InputSection
@@ -407,6 +411,7 @@ function SituationFields(props: Props) {
           radioKeySelector={stringOptionKeySelector}
           radioLabelSelector={optionLabelSelector}
           value={value.num_displaced_source}
+          clearable
         />
       </InputSection>
       <InputSection

@@ -25,7 +25,7 @@ import {
 
 type Value = PartialForm<FormType>;
 interface Props {
-  options: ActionsByOrganization;
+  actionOptions: ActionsByOrganization;
   error: Error<Value> | undefined;
   onValueChange: (...entries: EntriesAsList<Value>) => void;
   value: Value;
@@ -38,7 +38,7 @@ function EarlyActionFields(props: Props) {
     error,
     onValueChange,
     value,
-    options,
+    actionOptions,
     bulletinOptions,
   } = props;
 
@@ -72,7 +72,7 @@ function EarlyActionFields(props: Props) {
           <Checklist
             name="actions_ntls"
             onChange={onValueChange}
-            options={options.NTLS}
+            options={actionOptions.NTLS}
             labelSelector={optionLabelSelector}
             keySelector={numericOptionKeySelector}
             value={value.actions_ntls}
@@ -96,7 +96,7 @@ function EarlyActionFields(props: Props) {
           <Checklist
             name="actions_fdrn"
             onChange={onValueChange}
-            options={options.FDRN}
+            options={actionOptions.FDRN}
             labelSelector={optionLabelSelector}
             keySelector={numericOptionKeySelector}
             value={value.actions_fdrn}
@@ -120,7 +120,7 @@ function EarlyActionFields(props: Props) {
           <Checklist
             name="actions_pns"
             onChange={onValueChange}
-            options={options.PNS}
+            options={actionOptions.PNS}
             labelSelector={optionLabelSelector}
             keySelector={numericOptionKeySelector}
             value={value.actions_pns}

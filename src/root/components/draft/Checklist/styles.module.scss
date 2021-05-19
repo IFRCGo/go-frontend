@@ -1,6 +1,7 @@
 .checklist {
   .checkbox-list-container {
     display: flex;
+    align-items: flex-start;
     flex-wrap: wrap;
 
     >* {

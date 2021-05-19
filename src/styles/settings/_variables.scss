@@ -32,6 +32,7 @@ $color-background: $grey-mist;
 $color-text: #000;
 $color-text-heading: $color-text;
 $color-text-light: rgba(0, 0, 0, .7);
+$color-text-disabled: rgba(0, 0, 0, .4);
 
 /* State colors */
 
@@ -170,3 +171,11 @@ $xxlarge-range: (1601px, 3000px);
 
 $screen: "only screen";
 
+$opacity-disabled-element: .4;
+
+$duration-transition-fast: .13s;
+$duration-transition-medium: .3s;
+$duration-transition-slow: .56s;
+$duration-animation-fast: .2s;
+$duration-animation-medium: .5s;
+$duration-animation-slow: 1.2s;

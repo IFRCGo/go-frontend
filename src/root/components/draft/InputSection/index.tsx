@@ -3,13 +3,33 @@ import { _cs } from '@togglecorp/fujs';
 
 import styles from './styles.module.scss';
 
-export interface Props {
+export interface BaseProps {
   className?: string;
   title?: React.ReactNode;
   children?: React.ReactNode;
   description?: React.ReactNode;
+  contentSectionClassName?: string;
   tooltip?: string;
+  multiRow?: boolean;
 }
+
+type Props = BaseProps & ({
+  oneColumn: true;
+  twoColumn?: never;
+  threeColumn?: never;
+} | {
+  oneColumn?: never;
+  twoColumn: true;
+  threeColumn?: never;
+} | {
+  oneColumn?: never;
+  twoColumn?: never;
+  threeColumn: true;
+} | {
+  oneColumn?: never;
+  twoColumn?: never;
+  threeColumn?: never;
+});
 
 function InputSection(props: Props) {
   const {
@@ -18,6 +38,8 @@ function InputSection(props: Props) {
     children,
     description,
     tooltip,
+    multiRow,
+    contentSectionClassName,
   } = props;
 
   return (
@@ -26,6 +48,10 @@ function InputSection(props: Props) {
         'go-input-section',
         className,
         styles.inputSection,
+        multiRow && styles.multiRow,
+        props.oneColumn && styles.oneColumn,
+        props.twoColumn && styles.twoColumn,
+        props.threeColumn && styles.threeColumn,
       )}
     >
       <div
@@ -39,7 +65,7 @@ function InputSection(props: Props) {
           { description }
         </div>
       </div>
-      <div className={styles.sectionContent}>
+      <div className={_cs(styles.sectionContent, contentSectionClassName)}>
         { children }
       </div>
     </div>

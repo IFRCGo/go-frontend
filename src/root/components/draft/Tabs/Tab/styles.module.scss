@@ -1,0 +1,60 @@
+@import '~styles/settings/_variables.scss';
+
+.tab {
+    border: 0;
+    border-radius: 0;
+    padding: $spacing $spacing*3;
+    color: $color-text;
+    font-weight: $base-font-bold;
+
+    &.disabled {
+        pointer-events: none;
+    }
+
+    &.primary {
+        border-bottom: $base-border-width solid $base-border-color;
+
+        &.active {
+          border-bottom-color: $primary-color;
+          color: $primary-color;
+        }
+
+        &.disabled {
+           color: $color-text-disabled;
+           border-bottom-color: $base-border-color;
+        }
+    }
+
+    &.secondary {
+        --background-color: $white;
+        background-color: var(--background-color);
+
+        &.active {
+            --text-color: $primary-color;
+            --background-color: lighten($primary-color, 20%);
+        }
+
+        &.disabled {
+            --text-color: $color-text-disabled;
+        }
+    }
+
+    &.step {
+        --background-color: $white;
+        --text-color: $primary-color;
+        position: relative;
+        background-color: var(--background-color);
+
+        &.active {
+            --text-color: $primary-color;
+            --background-color: lighten($primary-color, 20%);
+        }
+
+        &.disabled {
+            --text-color: $color-text-disabled;
+        }
+    }
+}
+
+.border-wrapper {
+}

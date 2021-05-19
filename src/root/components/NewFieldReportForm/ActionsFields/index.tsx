@@ -36,6 +36,8 @@ interface Props {
   bulletinOptions: NumericValueOption[];
   externalPartnerOptions: NumericValueOption[];
   supportedActivityOptions: NumericValueOption[];
+  fetchingExternalPartners?: boolean;
+  fetchingSupportedActivities?: boolean;
 }
 
 function ActionsFields(props: Props) {
@@ -49,6 +51,8 @@ function ActionsFields(props: Props) {
     bulletinOptions,
     externalPartnerOptions,
     supportedActivityOptions,
+    fetchingExternalPartners,
+    fetchingSupportedActivities,
   } = props;
 
 
@@ -61,6 +65,8 @@ function ActionsFields(props: Props) {
         actionOptions={actionOptions.NTLS}
         externalPartnerOptions={externalPartnerOptions}
         supportedActivityOptions={supportedActivityOptions}
+        fetchingExternalPartners={fetchingExternalPartners}
+        fetchingSupportedActivities={fetchingSupportedActivities}
       />
     );
   }

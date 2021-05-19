@@ -52,6 +52,17 @@ const getRequiredWithCondition = (key: keyof FormType) => (
   return undefined;
 };
 
+const getRequiredWithNonEmptyCondition = (key: keyof FormType) => (
+  value: number | string | null | undefined,
+  allValue: PartialForm<FormType>
+) => {
+  if (!value && allValue?.[key]) {
+    return 'This field is required';
+  }
+
+  return undefined;
+};
+
 export const schema: FormSchema = {
   fields: (value): FormSchemaFields => ({
     status: [requiredCondition],
@@ -119,16 +130,16 @@ export const schema: FormSchema = {
     external_partners: [],
     supported_activities: [],
 
-    dref: [],
-    dref_amount: [],
-    appeal: [],
-    appeal_amount: [],
-    fact: [],
-    num_fact: [],
-    ifrc_staff: [],
-    num_ifrc_staff: [],
-    forecast_based_action: [],
-    forecast_based_action_amount: [],
+    dref: [getRequiredWithNonEmptyCondition('dref_amount')],
+    dref_amount: [getRequiredWithNonEmptyCondition('dref')],
+    appeal: [getRequiredWithNonEmptyCondition('appeal_amount')],
+    appeal_amount: [getRequiredWithNonEmptyCondition('appeal')],
+    fact: [getRequiredWithNonEmptyCondition('num_fact')],
+    num_fact: [getRequiredWithNonEmptyCondition('fact')],
+    ifrc_staff: [getRequiredWithNonEmptyCondition('num_ifrc_staff')],
+    num_ifrc_staff: [getRequiredWithNonEmptyCondition('ifrc_staff')],
+    forecast_based_action: [getRequiredWithNonEmptyCondition('forecast_based_action_amount')],
+    forecast_based_action_amount: [getRequiredWithNonEmptyCondition('forecast_based_action')],
 
     contact_originator_name: [],
     contact_originator_title: [],
@@ -146,7 +157,7 @@ export const schema: FormSchema = {
     contact_media_title: [],
     contact_media_email: [],
     contact_media_phone: [],
-    visibility: [],
+    visibility: [requiredCondition],
   }),
 
   fieldDependencies: () => ({
@@ -154,6 +165,22 @@ export const schema: FormSchema = {
     num_injured_source: ['num_injured'],
     num_dead: ['num_dead_source'],
     num_dead_source: ['num_dead'],
+    num_missing: ['num_missing_source'],
+    num_missing_source: ['num_missing'],
+    num_affected: ['num_affected_source'],
+    num_affected_source: ['num_affected'],
+    num_displaced: ['num_displaced_source'],
+    num_displaced_source: ['num_displaced'],
+    dref: ['dref_amount'],
+    dref_amount: ['dref'],
+    appeal: ['appeal_amount'],
+    appeal_amount: ['appeal'],
+    fact: ['num_fact'],
+    num_fact: ['fact'],
+    ifrc_staff: ['num_ifrc_staff'],
+    num_ifrc_staff: ['ifrc_staff'],
+    forecast_based_action: ['forecast_based_action_amount'],
+    forecast_based_action_amount: ['forecast_based_action'],
   }),
 
   validation: (value) => {
@@ -351,24 +378,24 @@ function useFieldReportOptions(value: Partial<FormType>) {
 
   return {
     bulletinOptions,
-    orgGroupedActionForCurrentReport,
-    fetchingActions,
-    fetchingDistricts,
-    districtOptions,
-    fetchingCountries,
     countryOptions,
-    fetchingDisasterTypes,
     disasterTypeOptions,
-    reportType,
-    yesNoOptions,
-    statusOptions,
+    districtOptions,
     externalPartnerOptions,
-    supportedActivityOptions,
+    fetchingActions,
+    fetchingCountries,
+    fetchingDisasterTypes,
+    fetchingDistricts,
     fetchingExternalPartners,
     fetchingSupportedActivities,
-    sourceOptions,
     fetchingUserDetails,
+    orgGroupedActionForCurrentReport,
+    reportType,
+    sourceOptions,
+    statusOptions,
+    supportedActivityOptions,
     userDetails,
+    yesNoOptions,
   };
 }
 

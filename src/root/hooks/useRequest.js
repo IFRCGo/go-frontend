@@ -52,7 +52,7 @@ export const putRequestOptions = {
 };
 
 export const defaultOtherOptions = {
-  onSuccess: (res) => { console.info(res); },
+  onSuccess: (res) => { /* console.info(res); */ },
   onFailure: (res) => { console.error(res); },
   lazy: false,
   preserveResponse: true,
