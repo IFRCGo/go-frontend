@@ -1,5 +1,9 @@
 import { isDefined } from '@togglecorp/fujs';
 import { PartialForm } from '@togglecorp/toggle-form';
+import { DateTime } from 'luxon';
+
+import { api } from '#config';
+import { request } from '#utils/network';
 
 export const STATUS_EARLY_WARNING = 8;
 export const STATUS_EVENT = 9;
@@ -35,6 +39,22 @@ export const emptyOptionList: Option[] = [];
 export const emptyStringOptionList: StringValueOption[] = [];
 export const emptyNumericOptionList: NumericValueOption[] = [];
 export const emptyBooleanOptionList: BooleanValueOption[] = [];
+
+export function fetchEventsFromApi (input: string | undefined, callback: (options: Option[]) => void) {
+  if (!input) {
+    callback([]);
+  }
+
+  request(`${api}api/v1/es_search/?type=event&keyword=${input}`)
+    .then(data => {
+      const options = data.hits.map((o: any) => ({
+        value: o._source.id,
+        label: `${o._source.name} (${DateTime.fromISO(o._source.date).toISODate()})`
+      }));
+
+      callback(options);
+    });
+}
 
 export interface FormType {
   status: number;

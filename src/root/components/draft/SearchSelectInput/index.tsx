@@ -27,7 +27,7 @@ interface BaseProps<N, V extends Key> {
   readOnly?: boolean;
   name: N;
   value: V;
-  loadOptions: (value: V, callback: (opt: Option[]) => void) => void;
+  loadOptions: (value: string | undefined, callback: (opt: Option[]) => void) => void;
   isMulti?: boolean,
   onChange: (newValue: V, name: N) => void;
   placeholder?: string;

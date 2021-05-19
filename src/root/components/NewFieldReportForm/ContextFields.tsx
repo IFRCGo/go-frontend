@@ -14,7 +14,6 @@ import TextInput from '#components/draft/TextInput';
 import SearchSelectInput from '#components/draft/SearchSelectInput';
 import SelectInput from '#components/draft/SelectInput';
 import LanguageContext from '#root/languageContext';
-import { fetchEventsFromApi } from '#views/field-report-form/data-utils';
 
 import {
   ReportType,
@@ -28,6 +27,7 @@ import {
   numericOptionKeySelector,
   BooleanValueOption,
   booleanOptionKeySelector,
+  fetchEventsFromApi,
 } from './common';
 
 const isEpidemic = (o: Option) => o.value === DISASTER_TYPE_EPIDEMIC;
