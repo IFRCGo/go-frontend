@@ -105,10 +105,10 @@ function SituationFields(props: Props) {
           >
             <NumberInput
               label={strings.fieldsStep2SituationFieldsEstimation}
-              name="epi_cases_since_last_fr"
-              value={value.epi_cases_since_last_fr}
+              name="epi_deaths_since_last_fr"
+              value={value.epi_deaths_since_last_fr}
               onChange={onValueChange}
-              error={error?.fields?.epi_cases_since_last_fr}
+              error={error?.fields?.epi_deaths_since_last_fr}
             />
           </InputSection>
         </div>

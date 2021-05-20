@@ -578,6 +578,12 @@ export function transformFormFieldsToAPIFields(formValues: FormType): FieldRepor
     num_affected: rc_num_affected,
     num_displaced: rc_num_displaced,
 
+    gov_num_assisted,
+    num_assisted,
+    num_localstaff,
+    num_volunteers,
+    num_expats_delegates,
+
     gov_num_potentially_affected,
     gov_num_highest_risk,
     gov_affected_pop_centres,
@@ -920,6 +926,7 @@ export function transformAPIFieldsToFormFields(apiValues: FieldReportAPIResponse
     status,
     request_assistance,
     ns_request_assistance,
+
     num_assisted,
     num_localstaff,
     num_volunteers,
