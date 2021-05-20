@@ -22,7 +22,9 @@ import {
   VISIBILITY_IFRC_SECRETARIAT,
   VISIBILITY_PUBLIC,
   VISIBILITY_RCRC_MOVEMENT,
-} from './common';
+} from '../common';
+
+import styles from './styles.module.scss';
 
 type Value = PartialForm<FormType>;
 interface Props {
@@ -194,7 +196,10 @@ function ResponseFields(props: Props) {
           </InputSection>
         )}
       </Container>
-      <Container heading={strings.fieldReportFormContactsTitle}>
+      <Container
+        heading={strings.fieldReportFormContactsTitle}
+        className={styles.contactsSection}
+      >
         <InputSection
           title={strings.fieldsStep4ContactRowsOriginatorLabel}
           description={strings.fieldsStep4ContactRowsOriginatorEVTEPIEWDesc}

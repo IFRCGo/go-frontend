@@ -9,6 +9,7 @@ import { setHashToBrowser } from '#utils/common';
 import styles from './styles.module.scss';
 
 const tabVariantToStyleMap: {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   [key in TabVariant]: string;
 } = {
   primary: styles.primary,

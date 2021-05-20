@@ -2,6 +2,17 @@
   :global {
     .go__control {
       border: 0;
+      box-shadow: unset;
+
+      &.go__control--is-focused {
+        border: 0;
+        box-shadow: unset;
+
+        &:hover {
+          border: 0;
+          box-shadow: unset;
+        }
+      }
     }
   }
 }

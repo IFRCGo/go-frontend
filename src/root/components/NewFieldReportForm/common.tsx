@@ -4,6 +4,7 @@ import { DateTime } from 'luxon';
 
 import { api } from '#config';
 import { request } from '#utils/network';
+import type { Option as SearchSelectOption } from '#components/draft/SearchSelectInput';
 
 export const STATUS_EARLY_WARNING = 8;
 export const STATUS_EVENT = 9;
@@ -40,7 +41,7 @@ export const emptyStringOptionList: StringValueOption[] = [];
 export const emptyNumericOptionList: NumericValueOption[] = [];
 export const emptyBooleanOptionList: BooleanValueOption[] = [];
 
-export function fetchEventsFromApi (input: string | undefined, callback: (options: Option[]) => void) {
+export function fetchEventsFromApi (input: string | undefined, callback: (options: SearchSelectOption[]) => void) {
   if (!input) {
     callback([]);
   }
@@ -228,10 +229,12 @@ export interface ActionFields {
 }
 
 export type ActionByReportType = {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   [key in FieldReportType]: ActionFields[];
 }
 
 export type ActionsByOrganization = {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   [key in OrganizationType]: Action[]
 };
 
@@ -472,43 +475,61 @@ export function transformFormFieldsToAPIFields(formValues: FormType): FieldRepor
   }
 
   const contacts: FieldReportAPIFields['contacts'] = [];
-  if (isDefined(contact_originator_name)) {
+
+  // NOTE: server will not accept the contact unless all the fields are present
+  const hasOriginatorContact = isDefined(contact_originator_name)
+    || isDefined(contact_originator_title)
+    || isDefined(contact_originator_email)
+    || isDefined(contact_originator_phone);
+  if (hasOriginatorContact) {
     contacts.push({
       ctype: 'Originator',
-      name: contact_originator_name,
-      title: contact_originator_title,
-      email: contact_originator_email,
-      phone: contact_originator_phone,
+      name: contact_originator_name ?? '',
+      title: contact_originator_title ?? '',
+      email: contact_originator_email ?? '',
+      phone: contact_originator_phone ?? '',
     });
   }
 
-  if (isDefined(contact_nat_soc_name)) {
+  const hasNationalSocietyContact = isDefined(contact_nat_soc_name)
+    || isDefined(contact_nat_soc_title)
+    || isDefined(contact_nat_soc_email)
+    || isDefined(contact_nat_soc_phone);
+  if (hasNationalSocietyContact) {
     contacts.push({
       ctype: 'NationalSociety',
-      name: contact_nat_soc_name,
-      title: contact_nat_soc_title,
-      email: contact_nat_soc_email,
-      phone: contact_nat_soc_phone,
+      name: contact_nat_soc_name ?? '',
+      title: contact_nat_soc_title ?? '',
+      email: contact_nat_soc_email ?? '',
+      phone: contact_nat_soc_phone ?? '',
     });
   }
 
-  if (isDefined(contact_federation_name)) {
+  const hasFederationContact = isDefined(contact_federation_name)
+    || isDefined(contact_federation_title)
+    || isDefined(contact_federation_email)
+    || isDefined(contact_federation_phone);
+  if (hasFederationContact) {
     contacts.push({
       ctype: 'Federation',
-      name: contact_federation_name,
-      title: contact_federation_title,
-      email: contact_federation_email,
-      phone: contact_federation_phone,
+      name: contact_federation_name ?? '',
+      title: contact_federation_title ?? '',
+      email: contact_federation_email ?? '',
+      phone: contact_federation_phone ?? '',
     });
   }
 
-  if (isDefined(contact_media_name)) {
+  const hasMediaContact = isDefined(contact_media_name)
+    || isDefined(contact_media_title)
+    || isDefined(contact_media_email)
+    || isDefined(contact_media_phone);
+  if (hasMediaContact) {
     contacts.push({
       ctype: 'Media',
-      name: contact_media_name,
-      title: contact_media_title,
-      email: contact_media_email,
-      phone: contact_media_phone,
+      name: contact_media_name ?? '',
+      title: contact_media_title ?? '',
+      email: contact_media_email ?? '',
+      phone: contact_media_phone ?? '',
     });
   }
 
@@ -587,6 +608,7 @@ export interface FieldReportAPIResponseFields extends Omit<FieldReportAPIFields,
   };
   event: {
     id: number;
+    name: string;
   };
   countries: {
     id: number;

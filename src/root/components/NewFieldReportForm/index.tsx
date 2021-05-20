@@ -51,6 +51,7 @@ import {
   FieldReportAPIResponseFields,
   ObjectResponse,
   getDefinedValues,
+  Option,
 } from './common';
 import styles from './styles.module.scss';
 
@@ -88,6 +89,7 @@ function NewFieldReportForm(props: Props) {
 
   const { reportId } = match.params;
   const { strings } = React.useContext(LanguageContext);
+  const [initialEventOptions, setInitialEventOptions] = React.useState<Option[]>([]);
 
   const [
     fieldReportPending,
@@ -97,6 +99,7 @@ function NewFieldReportForm(props: Props) {
   ) as ObjectResponse<FieldReportAPIResponseFields>;
 
   const crumbs = React.useMemo(() => [
+    // FIXME: use translations
     {link: location?.pathname, name: isDefined(reportId) ? 'Edit Field Report' : strings.breadCrumbNewFieldReport},
     {link: '/', name: strings.breadCrumbHome},
   ], [strings.breadCrumbHome, strings.breadCrumbNewFieldReport, location, reportId]);
@@ -114,9 +117,13 @@ function NewFieldReportForm(props: Props) {
     if (fieldReportResponse) {
       const formValue = transformAPIFieldsToFormFields(fieldReportResponse);
       onValueSet(formValue);
+      setInitialEventOptions([{
+        value: fieldReportResponse.event.id,
+        label: fieldReportResponse.event.name,
+      }]);
+      // fieldReportResponse.event.
     }
-  }, [fieldReportResponse, onValueSet]);
-
+  }, [fieldReportResponse, onValueSet, setInitialEventOptions]);
 
   const [fieldReportSubmitPending, ,submitRequest] = useRequest(
     isDefined(reportId) ? (
@@ -260,6 +267,7 @@ function NewFieldReportForm(props: Props) {
       }
     } else {
       const nextStepMap: {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         [key in Exclude<StepTypes, 'step4'>]: Exclude<StepTypes, 'step1'>;
       } = {
         step1: 'step2',
@@ -282,6 +290,7 @@ function NewFieldReportForm(props: Props) {
 
     if (!errored && currentStep !== 'step1') {
       const prevStepMap: {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         [key in Exclude<StepTypes, 'step1'>]: Exclude<StepTypes, 'step4'>;
       } = {
         step2: 'step1',
@@ -361,6 +370,7 @@ function NewFieldReportForm(props: Props) {
                 fetchingCountries={fetchingCountries}
                 fetchingDistricts={fetchingDistricts}
                 fetchingDisasterTypes={fetchingDisasterTypes}
+                initialEventOptions={initialEventOptions}
               />
             </TabPanel>
             <TabPanel name="step2">
