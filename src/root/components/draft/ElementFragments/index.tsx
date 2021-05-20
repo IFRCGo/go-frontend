@@ -33,7 +33,7 @@ function ElementFragments(props: Props) {
         {children}
       </div>
       {actions && (
-        <div className={actionsContainerClassName}>
+        <div className={_cs(actionsContainerClassName, styles.actions)}>
           {actions}
         </div>
       )}

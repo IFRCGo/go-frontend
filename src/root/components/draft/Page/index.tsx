@@ -10,6 +10,8 @@ import PageHeader from '#components/draft/PageHeader';
 import GlobalLoading from '#components/global-loading';
 import SysAlerts from '#components/system-alerts';
 
+import AlertContainer from '#components/AlertContainer';
+
 import {
   GlobalLoadingContext,
   NewGlobalLoadingParent,
@@ -74,6 +76,9 @@ function Page(props: Props) {
           <MobileNavbar />
           <GlobalLoading />
           { loading > 0 && <NewGlobalLoadingParent /> }
+          <AlertContainer>
+            <SysAlerts />
+          </AlertContainer>
           <PageHeader
             actions={actions}
             heading={heading}
@@ -91,7 +96,6 @@ function Page(props: Props) {
             { children }
           </main>
           <PageFooter/>
-          <SysAlerts />
         </GlobalLoadingContext.Provider>
       </ThroughProvider>
     </div>

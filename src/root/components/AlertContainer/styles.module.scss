@@ -1,0 +1,21 @@
+@import '~styles/settings/variables';
+
+.alert-container {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 11;
+  padding: 3em 0;
+  max-height: calc(100vh - 6em);
+  overflow: auto;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  .alert {
+    margin: $spacing/2 0;
+  }
+}

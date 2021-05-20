@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { environment } from '#config';
 import store from '#utils/store';
 
-import Alert from './alert';
+import Alert from '#components/Alert';
 
 // Once the component is mounted we store it to track initialization.
 var theSysAlerts = null;
@@ -13,6 +13,7 @@ var theSysAlerts = null;
 // Component
 // To be mounted globally only once.
 class SysAlerts extends React.Component {
+  alertTimeouts = {};
   componentDidMount () {
     if (theSysAlerts !== null) {
       throw new Error('<SysAlerts /> component was already mounted. Only 1 is allowed.');
@@ -24,22 +25,35 @@ class SysAlerts extends React.Component {
     theSysAlerts = null;
   }
 
-  onDismiss (id) {
+  onDismiss = (id) => {
     this.props._hide(id);
+    window.clearTimeout(this.alertTimeouts[id]);
   }
 
   render () {
     // Get the last elements.
     const items = this.props.items.slice(-this.props.max);
+
+    items.forEach((a) => {
+      if (a.autoDismiss) {
+        if (!this.alertTimeouts[a.id]) {
+          this.alertTimeouts[a.id] = window.setTimeout(() => {
+            this.onDismiss(a.id);
+          }, a.autoDismiss);
+        }
+      }
+    });
+
     return (
       <div className='alert-container'>
         {items.map(o => (
           <Alert
             key={o.id}
-            type={o.type}
-            dismissable={o.dismissable}
-            onDismiss={this.onDismiss.bind(this, o.id)}
-            autoDismiss={o.autoDismiss || 0} >
+            name={o.id}
+            variant={o.type}
+            onCloseButtonClick={this.onDismiss}
+            nonDismissable={!o.dismissable}
+          >
             {o.content}
           </Alert>
         ))}
@@ -153,7 +167,7 @@ const initialState = {
   //     id: (new Date()).getTime() + 2,
   //     type: 'warning',
   //     content: 'This one is stuck forever',
-  //     dismissable: true,
+  //     dismissable: false,
   //     autoDismiss: null
   //   },
   //   {

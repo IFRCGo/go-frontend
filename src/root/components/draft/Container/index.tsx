@@ -7,14 +7,14 @@ import Description from '#components/draft/Description';
 import styles from './styles.module.scss';
 
 interface Props {
-    className?: string;
-    innerContainerClassName?: string;
-    contentClassName?: string;
-    descriptionClassName?: string;
-    heading?: React.ReactNode;
-    description?: React.ReactNode;
-    actions?: React.ReactNode;
-    children?: React.ReactNode;
+  className?: string;
+  innerContainerClassName?: string;
+  contentClassName?: string;
+  descriptionClassName?: string;
+  heading?: React.ReactNode;
+  description?: React.ReactNode;
+  actions?: React.ReactNode;
+  children?: React.ReactNode;
 }
 
 function Container(props: Props) {

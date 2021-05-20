@@ -1,5 +1,6 @@
 import React from 'react';
 import { _cs } from '@togglecorp/fujs';
+import { FiAlertTriangle } from 'react-icons/fi';
 
 import styles from './styles.module.scss';
 
@@ -29,7 +30,11 @@ function InputError(props: Props) {
         className,
       )}
     >
-      { children }
+      <div className={styles.tip} />
+      <div className={styles.content}>
+        <FiAlertTriangle className={styles.icon} />
+        { children }
+      </div>
     </div>
   );
 }

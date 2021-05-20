@@ -19,6 +19,13 @@
     }
   }
 
+  &.errored {
+    .input-section {
+      border-left-width: 4px;
+      border-left-color: $danger-color;
+    }
+  }
+
   &.disabled {
     .input-section {
       opacity: .5;

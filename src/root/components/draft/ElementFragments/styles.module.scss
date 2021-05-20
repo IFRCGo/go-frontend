@@ -5,7 +5,7 @@
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  padding: $spacing /4 $spacing / 8;
+  padding: $spacing/4 $spacing/ 8;
 
   >* {
     flex-shrink: 0;
@@ -17,7 +17,7 @@
   display: flex;
   align-items: center;
   flex-grow: 1;
-  padding: $spacing / 4;
+  padding: $spacing/4;
 }
 
 .actions {
