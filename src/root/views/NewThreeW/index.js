@@ -29,8 +29,8 @@ function NewThreeW(props) {
   ], [strings.breadCrumbHome, props.location]);
   return (
     <Page
-      title="IFRC Go - New 3W Activity"
-      heading="Create 3W Activity"
+      title="IFRC Go - New 3W project"
+      heading="Create 3W project"
       breadCrumbs={<BreadCrumb crumbs={crumbs} compact />}
     >
       <Container>
