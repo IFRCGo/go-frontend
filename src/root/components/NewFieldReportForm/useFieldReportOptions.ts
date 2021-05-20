@@ -41,6 +41,17 @@ import {
 type FormSchema = ObjectSchema<PartialForm<FormType>>;
 type FormSchemaFields = ReturnType<FormSchema['fields']>;
 
+const titleCondition = (
+  value: number | string | null | undefined,
+  allValue: PartialForm<FormType>
+) => {
+  if (!isDefined(allValue.event)) {
+    return 'Title is required if not linked to an existing emergency';
+  }
+
+  return undefined;
+};
+
 const getRequiredWithCondition = (key: keyof FormType) => (
   value: number | string | null | undefined,
   allValue: PartialForm<FormType>
@@ -69,7 +80,7 @@ export const schema: FormSchema = {
     is_covid_report: [requiredCondition],
     dtype: [requiredCondition],
     event: [],
-    summary: [requiredCondition],
+    summary: [titleCondition],
     country: [requiredCondition],
     start_date: [requiredCondition],
     request_assistance: [],
@@ -161,6 +172,7 @@ export const schema: FormSchema = {
   }),
 
   fieldDependencies: () => ({
+    summary: ['event'],
     num_injured: ['num_injured_source'],
     num_injured_source: ['num_injured'],
     num_dead: ['num_dead_source'],
@@ -209,7 +221,9 @@ function useFieldReportOptions(value: Partial<FormType>) {
   ) as ListResponse;
 
   const countryOptions = React.useMemo(() => (
-    countriesResponse?.results?.map((c) => ({
+    countriesResponse?.results?.filter(
+      c => c.independent === true && c.record_type === 1
+    ).map((c) => ({
       value: c.id,
       label: c.name,
     })) ?? emptyOptionList

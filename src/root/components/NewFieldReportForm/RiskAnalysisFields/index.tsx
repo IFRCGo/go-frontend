@@ -41,7 +41,10 @@ function RiskAnalysisFields(props: Props) {
 
   return (
     // FIXME: use translations
-    <Container heading="Numeric Details (People)">
+    <Container
+      heading="Numeric Details (People)"
+      className={styles.riskAnalysisFields}
+    >
       <InputSection
         title={strings.fieldsStep2SituationFieldsEWPotentiallyAffectedLabel}
         description={strings.fieldsStep2SituationFieldsEWPotentiallyAffectedDescription}

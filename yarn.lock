@@ -2196,6 +2196,11 @@
   resolved "https://registry.yarnpkg.com/@types/local-storage/-/local-storage-1.4.0.tgz#2838b4c2556b79edf87af75d13a10b25de7a8041"
   integrity sha512-a1lcfo+7Cao6ROLcj/OAuMXbfFi8H4wB0T0ROcmxs0BJVGtNkfSqTc5VY9Hbql5wL9FrsefeIOGnjSHrBZTeCQ==
 
+"@types/luxon@^1.26.5":
+  version "1.26.5"
+  resolved "https://registry.yarnpkg.com/@types/luxon/-/luxon-1.26.5.tgz#843fb705e16e4d2a90847a351b799ea9d879859e"
+  integrity sha512-XeQxxRMyJi1znfzHw4CGDLyup/raj84SnjjkI2fDootZPGlB0yqtvlvEIAmzHDa5wiEI5JJevZOWxpcofsaV+A==
+
 "@types/minimatch@*":
   version "3.0.4"
   resolved "https://registry.yarnpkg.com/@types/minimatch/-/minimatch-3.0.4.tgz#f0ec25dbf2f0e4b18647313ac031134ca5b24b21"

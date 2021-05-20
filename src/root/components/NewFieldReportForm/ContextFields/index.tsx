@@ -11,7 +11,7 @@ import InputSection from '#components/draft/InputSection';
 import RadioInput from '#components/draft/RadioInput';
 import DateInput from '#components/draft/DateInput';
 import TextInput from '#components/draft/TextInput';
-import SearchSelectInput from '#components/draft/SearchSelectInput';
+import SearchSelectInput, { Option as SearchSelectOption } from '#components/draft/SearchSelectInput';
 import SelectInput from '#components/draft/SelectInput';
 import LanguageContext from '#root/languageContext';
 
@@ -28,7 +28,9 @@ import {
   BooleanValueOption,
   booleanOptionKeySelector,
   fetchEventsFromApi,
-} from './common';
+} from '../common';
+
+import styles from './styles.module.scss';
 
 const isEpidemic = (o: Option) => o.value === DISASTER_TYPE_EPIDEMIC;
 
@@ -46,6 +48,7 @@ interface Props {
   fetchingCountries?: boolean;
   fetchingDistricts?: boolean;
   fetchingDisasterTypes?: boolean;
+  initialEventOptions?: Option[];
 }
 
 function ContextFields(props: Props) {
@@ -64,6 +67,7 @@ function ContextFields(props: Props) {
     value,
     yesNoOptions,
     reportType,
+    initialEventOptions,
   } = props;
 
   const [
@@ -117,6 +121,7 @@ function ContextFields(props: Props) {
     <Container
       // FIXME: use translation
       heading="Context"
+      className={styles.contextFields}
     >
       <InputSection
         title={strings.fieldReportFormStatusLabel}
@@ -159,6 +164,7 @@ function ContextFields(props: Props) {
             value={value.event}
             onChange={onValueChange}
             loadOptions={fetchEventsFromApi}
+            initialOptions={initialEventOptions as SearchSelectOption[]}
             error={error?.fields?.event}
           />
           <TextInput
@@ -235,6 +241,7 @@ function ContextFields(props: Props) {
           value={value.request_assistance}
           onChange={onValueChange}
           error={error?.fields?.request_assistance}
+          clearable
         />
       </InputSection>
       <InputSection
@@ -250,6 +257,7 @@ function ContextFields(props: Props) {
           value={value.ns_request_assistance}
           onChange={onValueChange}
           error={error?.fields?.ns_request_assistance}
+          clearable
         />
       </InputSection>
     </Container>

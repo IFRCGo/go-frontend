@@ -52,6 +52,7 @@ function SituationFields(props: Props) {
   if (reportType === 'COVID') {
     return (
       <Container
+        className={styles.covidSituationFields}
         heading={sectionHeading}
         description={(
           <Description>
@@ -59,118 +60,127 @@ function SituationFields(props: Props) {
           </Description>
         )}
       >
-        <InputSection
-          title={strings.fieldsStep2SituationFieldsEPICasesLabel}
-          description={strings.fieldsStep2SituationFieldsEPICasesDescription}
-        >
-          <NumberInput
-            label={strings.fieldsStep2SituationFieldsEstimation}
-            name="epi_cases"
-            value={value.epi_cases}
-            onChange={onValueChange}
-            error={error?.fields?.epi_cases}
-          />
-        </InputSection>
-        <InputSection
-          title={strings.fieldsStep2SituationFieldsEPIDeadLabel}
-          description={strings.fieldsStep2SituationFieldsEPIDeadDescription}
-        >
-          <NumberInput
-            label={strings.fieldsStep2SituationFieldsEstimation}
-            name="epi_num_dead"
-            value={value.epi_num_dead}
-            onChange={onValueChange}
-            error={error?.fields?.epi_num_dead}
-          />
-        </InputSection>
-        <InputSection
-          title={strings.fieldReportCasesSince}
-          description={strings.fieldsStep2SituationFieldsEPICasesSinceDesciption}
-        >
-          <NumberInput
-            label={strings.fieldsStep2SituationFieldsEstimation}
-            name="epi_cases_since_last_fr"
-            value={value.epi_cases_since_last_fr}
-            onChange={onValueChange}
-            error={error?.fields?.epi_cases_since_last_fr}
-          />
-        </InputSection>
-        <InputSection
-          title={strings.fieldReportDeathsSince}
-          description={strings.fieldsStep2SituationFieldsEPIDeathsSinceDescription}
-        >
-          <NumberInput
-            label={strings.fieldsStep2SituationFieldsEstimation}
-            name="epi_cases_since_last_fr"
-            value={value.epi_cases_since_last_fr}
-            onChange={onValueChange}
-            error={error?.fields?.epi_cases_since_last_fr}
-          />
-        </InputSection>
-        <InputSection
-          title={strings.fieldsStep2SourceOfFiguresLabel}
-        >
-          <SelectInput
-            name="epi_figures_source"
-            value={value.epi_figures_source}
-            onChange={onValueChange}
-            error={error?.fields?.epi_figures_source}
-            options={epiSourceOptions}
-          />
-        </InputSection>
-        <InputSection
-          title={strings.fieldsStep2NotesLabel}
-          description={strings.fieldsStep2EPINotes}
-        >
-          <TextArea
-            name="epi_notes_since_last_fr"
-            value={value.epi_notes_since_last_fr}
-            onChange={onValueChange}
-            error={error?.fields?.epi_notes_since_last_fr}
-          />
-        </InputSection>
-        <InputSection
-          title={strings.fieldsStep2SituationFieldsDateEPILabel}
-          description={strings.fieldsStep2SituationFieldsDateEPIDescription}
-        >
-          <DateInput
-            name="sit_fields_date"
-            value={value.sit_fields_date}
-            onChange={onValueChange}
-            error={error?.fields?.sit_fields_date}
-          />
-        </InputSection>
-        <InputSection
-          title={strings.fieldReportFormSourceDetailsLabel}
-          description={strings.fieldReportFormSourceDetailsDescription}
-        >
-          <TextArea
-            name="other_sources"
-            value={value.other_sources}
-            onChange={onValueChange}
-            error={error?.fields?.other_sources}
-            placeholder={strings.fieldReportFormSourceDetailsEPIPlaceholder}
-          />
-        </InputSection>
-        <InputSection
-          title={strings.fieldsStep2DescriptionEPILabel}
-          description={strings.fieldsStep2DescriptionEPICOVDescription}
-        >
-          <TextArea
-            name="description"
-            value={value.description}
-            onChange={onValueChange}
-            error={error?.fields?.description}
-            placeholder={strings.fieldsStep2DescriptionCOVIDPlaceholder}
-          />
-        </InputSection>
+        <div className={styles.inputSectionGroup}>
+          <InputSection
+            title={strings.fieldsStep2SituationFieldsEPICasesLabel}
+            description={strings.fieldsStep2SituationFieldsEPICasesDescription}
+          >
+            <NumberInput
+              label={strings.fieldsStep2SituationFieldsEstimation}
+              name="epi_cases"
+              value={value.epi_cases}
+              onChange={onValueChange}
+              error={error?.fields?.epi_cases}
+            />
+          </InputSection>
+          <InputSection
+            title={strings.fieldsStep2SituationFieldsEPIDeadLabel}
+            description={strings.fieldsStep2SituationFieldsEPIDeadDescription}
+          >
+            <NumberInput
+              label={strings.fieldsStep2SituationFieldsEstimation}
+              name="epi_num_dead"
+              value={value.epi_num_dead}
+              onChange={onValueChange}
+              error={error?.fields?.epi_num_dead}
+            />
+          </InputSection>
+        </div>
+        <div className={styles.inputSectionGroup}>
+          <InputSection
+            title={strings.fieldReportCasesSince}
+            description={strings.fieldsStep2SituationFieldsEPICasesSinceDesciption}
+          >
+            <NumberInput
+              label={strings.fieldsStep2SituationFieldsEstimation}
+              name="epi_cases_since_last_fr"
+              value={value.epi_cases_since_last_fr}
+              onChange={onValueChange}
+              error={error?.fields?.epi_cases_since_last_fr}
+            />
+          </InputSection>
+          <InputSection
+            title={strings.fieldReportDeathsSince}
+            description={strings.fieldsStep2SituationFieldsEPIDeathsSinceDescription}
+          >
+            <NumberInput
+              label={strings.fieldsStep2SituationFieldsEstimation}
+              name="epi_cases_since_last_fr"
+              value={value.epi_cases_since_last_fr}
+              onChange={onValueChange}
+              error={error?.fields?.epi_cases_since_last_fr}
+            />
+          </InputSection>
+        </div>
+        <div className={styles.nonGroupedInputsSection}>
+          <InputSection
+            title={strings.fieldsStep2SourceOfFiguresLabel}
+          >
+            <SelectInput
+              name="epi_figures_source"
+              value={value.epi_figures_source}
+              onChange={onValueChange}
+              error={error?.fields?.epi_figures_source}
+              options={epiSourceOptions}
+            />
+          </InputSection>
+          <InputSection
+            title={strings.fieldsStep2NotesLabel}
+            description={strings.fieldsStep2EPINotes}
+          >
+            <TextArea
+              name="epi_notes_since_last_fr"
+              value={value.epi_notes_since_last_fr}
+              onChange={onValueChange}
+              error={error?.fields?.epi_notes_since_last_fr}
+            />
+          </InputSection>
+          <InputSection
+            title={strings.fieldsStep2SituationFieldsDateEPILabel}
+            description={strings.fieldsStep2SituationFieldsDateEPIDescription}
+          >
+            <DateInput
+              name="sit_fields_date"
+              value={value.sit_fields_date}
+              onChange={onValueChange}
+              error={error?.fields?.sit_fields_date}
+            />
+          </InputSection>
+          <InputSection
+            title={strings.fieldReportFormSourceDetailsLabel}
+            description={strings.fieldReportFormSourceDetailsDescription}
+          >
+            <TextArea
+              name="other_sources"
+              value={value.other_sources}
+              onChange={onValueChange}
+              error={error?.fields?.other_sources}
+              placeholder={strings.fieldReportFormSourceDetailsEPIPlaceholder}
+            />
+          </InputSection>
+          <InputSection
+            title={strings.fieldsStep2DescriptionEPILabel}
+            description={strings.fieldsStep2DescriptionEPICOVDescription}
+          >
+            <TextArea
+              name="description"
+              value={value.description}
+              onChange={onValueChange}
+              error={error?.fields?.description}
+              placeholder={strings.fieldsStep2DescriptionCOVIDPlaceholder}
+            />
+          </InputSection>
+        </div>
       </Container>
     );
   }
 
   if (reportType === 'EPI') {
     return (
-      <Container heading={sectionHeading}>
+      <Container
+        className={styles.situationFields}
+        heading={sectionHeading}
+      >
         <InputSection
           title={strings.fieldsStep2SituationFieldsEPICasesLabel}
           description={strings.fieldsStep2SituationFieldsEPICasesDescription}
@@ -293,7 +303,10 @@ function SituationFields(props: Props) {
   }
 
   return (
-    <Container heading={sectionHeading}>
+    <Container
+      className={styles.situationFields}
+      heading={sectionHeading}
+    >
       <InputSection
         title={strings.fieldsStep2SituationFieldsEVTInjuredLabel}
         description={strings.fieldsStep2SituationFieldsEVTInjuredDescription}

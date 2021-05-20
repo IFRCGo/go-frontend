@@ -8,9 +8,14 @@
     align-items: center;
     border: $base-border-width solid $base-border-color;
     border-radius: $base-border-radius;
+    transition: $duration-transition-medium border-color ease-in-out;
 
     .internal-input-container {
       flex-grow: 1;
+    }
+
+    &:focus-within {
+      border-color: $color-text-light;
     }
   }
 

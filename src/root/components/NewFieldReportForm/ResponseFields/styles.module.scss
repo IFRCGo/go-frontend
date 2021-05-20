@@ -1,10 +1,6 @@
 @import '~styles/settings/_variables.scss';
 
-.risk-analysis-fields {
-  .source-radio-list-container {
-    flex-direction: column;
-  }
-
+.contacts-section {
   :global {
     .go-input-section {
       margin: $spacing 0;

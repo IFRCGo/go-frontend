@@ -7,8 +7,8 @@ import styles from './styles.module.scss';
 import InputContainer from '#components/draft/InputContainer';
 import { getSelectInputNoOptionsMessage } from '#utils/utils';
 
-interface Option {
-  value: string;
+export interface Option {
+  value: string | number;
   label: string;
 }
 
@@ -31,6 +31,7 @@ interface BaseProps<N, V extends Key> {
   isMulti?: boolean,
   onChange: (newValue: V, name: N) => void;
   placeholder?: string;
+  initialOptions?: Option[];
 }
 
 type Props<N extends Key, V extends Key> = BaseProps<N, V> & ({
@@ -58,10 +59,19 @@ function SearchSelectInput<N extends Key, V extends Key>(props: Props<N, V>) {
     loadOptions,
     isMulti,
     onChange,
+    initialOptions = emptyOptionList,
     ...otherSelectInputProps
   } = props;
 
-  const [options, setOptions] = React.useState<Option[]>(emptyOptionList);
+  const [options, setOptions] = React.useState<Option[]>(initialOptions);
+
+  React.useEffect(() => {
+    if (initialOptions.length > 0) {
+      // TODO: Make unique
+      setOptions(prevOptions => [...prevOptions, ...initialOptions]);
+    }
+  }, [initialOptions, setOptions]);
+
   const timeoutRef = React.useRef<number | undefined>();
 
   const handleChange = React.useCallback((newValue) => {
@@ -99,7 +109,6 @@ function SearchSelectInput<N extends Key, V extends Key>(props: Props<N, V>) {
     );
   }, [props.isMulti, options, props.value]);
 
-
   const handleLoadOptions = React.useCallback((searchText, callback) => {
     if (!isDefined(searchText)) {
       callback(emptyOptionList);
@@ -107,6 +116,7 @@ function SearchSelectInput<N extends Key, V extends Key>(props: Props<N, V>) {
 
     const localCallback = (currentOptions: Option[]) => {
       if (currentOptions.length > 0) {
+        // TODO: Make unique
         setOptions(prevOptions => [...prevOptions, ...currentOptions]);
       }
       callback(currentOptions);

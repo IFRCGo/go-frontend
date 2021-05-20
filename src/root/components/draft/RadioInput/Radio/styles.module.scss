@@ -1,51 +1,51 @@
 @import '~styles/settings/variables';
 
 .radio {
-    --cursor: default;
-    display: flex;
+  --cursor: default;
+  display: flex;
+  align-items: flex-start;
+  cursor: var(--cursor);
+  padding: $spacing / 2;
+
+  .icon {
+    font-size: 1.6em;
+    transition: $duration-transition-medium color ease-in-out;
+  }
+
+  .children {
+    flex-direction: column;
     align-items: flex-start;
-    cursor: var(--cursor);
-    padding: $spacing / 2;
 
-    .icon {
-        font-size: 1.6em;
-        transition: $duration-transition-medium color ease-in-out;
+    .description {
+      color: $color-text-light;
+      font-size: $font-size-xs;
     }
+  }
 
-    .children {
-      flex-direction: column;
-      align-items: flex-start;
+  .input {
+    display: none;
+  }
 
-      .description {
-        color: rgba(0, 0, 0, .6);
-        font-size: $font-size-xs;
+  &.active {
+    .icon {
+      color: $primary-color;
+    }
+  }
+
+  &.disabled {
+    opacity: $opacity-disabled-element;
+  }
+
+  &:not(.disabled) {
+    &:focus,
+    &:hover {
+      .icon {
+        color: $primary-color;
       }
     }
 
-    .input {
-        display: none;
+    &:not(.read-only) {
+      --cursor: pointer;
     }
-
-    &.active {
-        .icon {
-            color: $primary-color;
-        }
-    }
-
-    &.disabled {
-        opacity: $opacity-disabled-element;
-    }
-
-    &:not(.disabled) {
-        &:focus,
-        &:hover {
-          .icon {
-            color: $primary-color;
-          }
-        }
-
-        &:not(.read-only) {
-            --cursor: pointer;
-        }
-    }
+  }
 }
