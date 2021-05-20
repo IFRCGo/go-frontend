@@ -6,6 +6,7 @@
     padding: $spacing $spacing*3;
     color: $color-text;
     font-weight: $base-font-bold;
+    transition: $duration-transition-medium color, background-color ease-in-out;
 
     &.disabled {
         pointer-events: none;
@@ -26,35 +27,90 @@
     }
 
     &.secondary {
-        --background-color: $white;
-        background-color: var(--background-color);
-
         &.active {
-            --text-color: $primary-color;
-            --background-color: lighten($primary-color, 20%);
+            color: $primary-color;
+            background-color: lighten($primary-color, 33%);
         }
 
         &.disabled {
-            --text-color: $color-text-disabled;
+            color: $color-text-disabled;
         }
     }
 
     &.step {
-        --background-color: $white;
-        --text-color: $primary-color;
         position: relative;
-        background-color: var(--background-color);
+        text-transform: uppercase;
+        color: $color-text-light;
+
+        &:hover {
+          color: $color-text;
+        }
 
         &.active {
-            --text-color: $primary-color;
-            --background-color: lighten($primary-color, 20%);
+            color: $primary-color;
         }
 
         &.disabled {
-            --text-color: $color-text-disabled;
+            color: $color-text-disabled;
         }
     }
 }
 
-.border-wrapper {
+.tab-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0 $spacing*2;
+  flex-basis: 0;
+  flex-grow: 1;
+
+  .step-circle {
+    border-radius: 50%;
+    padding: $spacing*1/3;
+    border: $base-border-width*2 solid transparent;
+    transition: $duration-transition-slow border-color ease-in-out;
+    background-color: $color-background;
+
+    .inner-circle {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: lighten($color-text, 50%);
+      border-radius: 50%;
+      width: 1rem;
+      height: 1rem;
+      transition: $duration-transition-slow background-color ease-in-out;
+
+      .icon {
+        color: $color-text-on-dark;
+        padding: 0.1em;
+      }
+    }
+  }
+
+  &.completed {
+    .step-circle {
+      .inner-circle {
+        background-color: lighten($color-text, 20%);
+      }
+    }
+  }
+
+  &.active {
+    .step-circle {
+      border-color: $primary-color;
+
+      .inner-circle {
+        background-color: $primary-color;
+      }
+    }
+  }
+
+  &.disabled {
+    .step-circle {
+      opacity: $opacity-disabled-element;
+      filter: saturate(50%);
+    }
+  }
 }
