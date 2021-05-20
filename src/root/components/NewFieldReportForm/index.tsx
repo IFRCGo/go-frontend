@@ -297,6 +297,7 @@ function NewFieldReportForm(props: Props) {
       disabled={pending}
       onChange={handleTabChange}
       value={currentStep}
+      variant="step"
     >
       <Page
         className={_cs(styles.newFieldReportForm, className)}
@@ -305,18 +306,30 @@ function NewFieldReportForm(props: Props) {
         breadCrumbs={<BreadCrumb crumbs={crumbs} compact />}
         info={(
           <TabList className={styles.tabList}>
-            <Tab name="step1">
+            <Tab
+              name="step1"
+              step={1}
+            >
               Context
             </Tab>
-            <Tab name="step2">
+            <Tab
+              name="step2"
+              step={2}
+            >
               { value.status === STATUS_EARLY_WARNING && 'Risk Analysis' }
               { value.status === STATUS_EVENT && 'Situation' }
             </Tab>
-            <Tab name="step3">
+            <Tab
+              name="step3"
+              step={3}
+            >
               { value.status === STATUS_EARLY_WARNING && 'Early Action' }
               { value.status === STATUS_EVENT && 'Action' }
             </Tab>
-            <Tab name="step4">
+            <Tab
+              name="step4"
+              step={4}
+            >
               Response
             </Tab>
           </TabList>
