@@ -100,7 +100,7 @@ function Header (props) {
                       className='drop__menu-item'
                     >
                       {/* FIXME: use strings */}
-                      New 3W Activity
+                      New 3W project
                     </Link>
                   </div>
                 </DropdownMenu>
