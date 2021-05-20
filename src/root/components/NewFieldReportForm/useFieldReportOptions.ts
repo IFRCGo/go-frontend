@@ -45,7 +45,7 @@ const titleCondition = (
   value: number | string | null | undefined,
   allValue: PartialForm<FormType>
 ) => {
-  if (!isDefined(allValue.event)) {
+  if (!isDefined(value) && !isDefined(allValue.event)) {
     return 'Title is required if not linked to an existing emergency';
   }
 
@@ -113,12 +113,12 @@ export const schema: FormSchema = {
     num_affected_source: [getRequiredWithCondition('num_affected')],
     num_displaced_source: [getRequiredWithCondition('num_displaced')],
 
-    num_potentially_affected: [],
-    num_highest_risk: [],
-    affected_pop_centres: [],
-    num_potentially_affected_source: [],
-    num_highest_risk_source: [],
-    affected_pop_centres_source: [],
+    num_potentially_affected: [getRequiredWithCondition('num_potentially_affected_source')],
+    num_highest_risk: [getRequiredWithCondition('num_highest_risk_source')],
+    affected_pop_centres: [getRequiredWithCondition('affected_pop_centres_source')],
+    num_potentially_affected_source: [getRequiredWithCondition('num_potentially_affected')],
+    num_highest_risk_source: [getRequiredWithCondition('num_highest_risk')],
+    affected_pop_centres_source: [getRequiredWithCondition('affected_pop_centres')],
 
     gov_num_assisted: [],
     num_assisted: [],
@@ -193,6 +193,13 @@ export const schema: FormSchema = {
     num_ifrc_staff: ['ifrc_staff'],
     forecast_based_action: ['forecast_based_action_amount'],
     forecast_based_action_amount: ['forecast_based_action'],
+
+    num_potentially_affected: ['num_potentially_affected_source'],
+    num_highest_risk: ['num_highest_risk_source'],
+    affected_pop_centres: ['affected_pop_centres_source'],
+    num_potentially_affected_source: ['num_potentially_affected'],
+    num_highest_risk_source: ['num_highest_risk'],
+    affected_pop_centres_source: ['affected_pop_centres'],
   }),
 
   validation: (value) => {
