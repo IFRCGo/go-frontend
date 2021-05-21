@@ -264,7 +264,7 @@
 .about__contact__col {
   @include media(medium) {
     @include col(33.33%);
-    margin-bottom: $global-spacing;  
+    margin-bottom: $global-spacing;
   }
 }
 
@@ -283,6 +283,19 @@
   display: block;
 
   @include media(medium-up) {
-    margin-bottom: $global-spacing;  
+    margin-bottom: $global-spacing;
+  }
+}
+
+.donor-logo-container {
+  flex-wrap: wrap;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: $spacing*2;
+
+  >* {
+    flex-basis: calc(100% / 5 - #{$spacing*2});
+    flex-shrink: 0;
   }
 }
