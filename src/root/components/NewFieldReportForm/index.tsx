@@ -26,10 +26,11 @@ import {
 } from '#utils/field-report-constants';
 
 import LanguageContext from '#root/languageContext';
-import useRequest, {
-  putRequestOptions,
-  postRequestOptions,
-} from '#hooks/useRequest';
+import {
+  useRequest,
+  useLazyRequest,
+} from '#utils/restRequest';
+import { Error, ErrorFromServer } from '#utils/restRequest/go';
 
 import ContextFields from './ContextFields';
 import SituationFields from './SituationFields';
@@ -47,9 +48,9 @@ import {
   BULLETIN_PUBLISHED_NO,
   FormType,
   transformFormFieldsToAPIFields,
+  FieldReportAPIFields,
   transformAPIFieldsToFormFields,
   FieldReportAPIResponseFields,
-  ObjectResponse,
   getDefinedValues,
   Option,
 } from './common';
@@ -91,12 +92,13 @@ function NewFieldReportForm(props: Props) {
   const { strings } = React.useContext(LanguageContext);
   const [initialEventOptions, setInitialEventOptions] = React.useState<Option[]>([]);
 
-  const [
-    fieldReportPending,
-    fieldReportResponse,
-  ] = useRequest(
-    reportId ? `api/v2/field_report/${reportId}` : '',
-  ) as ObjectResponse<FieldReportAPIResponseFields>;
+  const {
+    pending: fieldReportPending,
+    response: fieldReportResponse,
+  } = useRequest<FieldReportAPIResponseFields, unknown, unknown, unknown>({
+    skip: !reportId,
+    url: `api/v2/field_report/${reportId}/`,
+  });
 
   const crumbs = React.useMemo(() => [
     // FIXME: use translations
@@ -125,7 +127,8 @@ function NewFieldReportForm(props: Props) {
     }
   }, [fieldReportResponse, onValueSet, setInitialEventOptions]);
 
-  const [fieldReportSubmitPending, ,submitRequest] = useRequest(
+  /*
+  const [fieldReportSubmitPending, ,submitRequest] = useOldRequest(
     isDefined(reportId) ? (
       `api/v2/update_field_report/${reportId}/`
     ) : (
@@ -134,36 +137,44 @@ function NewFieldReportForm(props: Props) {
     reportId ? putRequestOptions : postRequestOptions,
     {
       lazy: true,
-      onSuccess: (result: any) => {
-        console.info('successful', result);
-        showAlert('success', (
-          <p>
-            {strings.fieldReportFormRedirectMessage}
-          </p>
-        ), true, 2000);
-        window.setTimeout(
-          () => history.push(`/reports/${result?.responseBody?.id}`),
-          2000,
-        );
-      },
-      onFailure: (result: any) => {
-        const message = result?.responseBody || result?.responseText || 'Failed to submit';
-        console.error(result);
-        showAlert('danger', (
-          <p>
-            <strong>
-              {strings.fieldReportFormErrorLabel}
-            </strong>
-            &nbsp;
-            {message}
-          </p>
-        ), true, 4500);
-      },
-      // TODO: remove following after converting useRequest to TS
+      // TODO: remove following after converting useOldRequest to TS
       preserveResponse: true,
       debug: false,
     },
   ) as [boolean, any, (o: any) => void];
+  */
+
+  const {
+    pending: fieldReportSubmitPending,
+    trigger: submitRequest,
+  } = useLazyRequest<FieldReportAPIResponseFields, ErrorFromServer, Error, unknown, Partial<FieldReportAPIFields>>({
+    url: reportId ? `api/v2/update_field_report/${reportId}/` : 'api/v2/create_field_report/',
+    method: reportId ? 'PUT' : 'POST',
+    body: ctx => ctx,
+    onSuccess: (response) => {
+      showAlert('success', (
+        <p>
+          {strings.fieldReportFormRedirectMessage}
+        </p>
+      ), true, 2000);
+      window.setTimeout(
+        () => history.push(`/reports/${response?.id}`),
+        2000,
+      );
+    },
+    onFailure: ({ value: { messageForNotification, errors }}) => {
+      console.error(errors);
+      showAlert('danger', (
+        <p>
+          <strong>
+            {strings.fieldReportFormErrorLabel}
+          </strong>
+          &nbsp;
+          {messageForNotification}
+        </p>
+      ), true, 4500);
+    },
+  });
 
   const {
     bulletinOptions,
@@ -248,22 +259,12 @@ function NewFieldReportForm(props: Props) {
       const definedValues = getDefinedValues(apiFields);
 
       if (userDetails && userDetails.id) {
-        const body = JSON.stringify({
+        const body = {
           user: userDetails.id,
           ...definedValues
-        });
+        };
 
-        if (isDefined(reportId)) {
-          submitRequest({
-            ...putRequestOptions,
-            body,
-          });
-        } else {
-          submitRequest({
-            ...postRequestOptions,
-            body,
-          });
-        }
+        submitRequest(body);
       }
     } else {
       const nextStepMap: {
@@ -277,7 +278,7 @@ function NewFieldReportForm(props: Props) {
 
       setCurrentStep(nextStepMap[currentStep]);
     }
-  }, [submitRequest, userDetails, reportId, currentStep, setCurrentStep, validate, onErrorSet]);
+  }, [submitRequest, userDetails, currentStep, setCurrentStep, validate, onErrorSet]);
 
   const handleBackButtonClick = React.useCallback(() => {
     scrollToTop();

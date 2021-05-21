@@ -30,8 +30,7 @@ import {
   allLanguagesSelector
 } from '#selectors';
 
-import useRequest from '#hooks/useRequest';
-
+import { useRequest } from '#utils/restRequest';
 
 import BlockLoading from '#components/block-loading';
 import LanguageSelect from '#components/LanguageSelect';
@@ -102,16 +101,18 @@ function TranslationDashboard(p) {
     langAll
   } = p;
 
-  const [mePending, meResponse] = useRequest('api/v2/user/me');
+  const {
+    pending: mePending,
+    response: meResponse,
+  } = useRequest({ url: 'api/v2/user/me' });
   /*
   const [allLanguageUrl, setAllLanguageUrl] = React.useState('');
-  const [allLanguagePending] = useRequest(
-    allLanguageUrl,
-    undefined,
-    { onSuccess: (resBody) => {
+  const { pending: allLanguagePending } = useRequest({
+    url: allLanguageUrl,
+    onSuccess: (resBody) => {
       console.info(resBody);
       setAllLanguageUrl('');
-    }}
+    },
   );
   */
 

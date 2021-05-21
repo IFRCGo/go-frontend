@@ -20,10 +20,7 @@ import NonFieldError from '#components/draft/NonFieldError';
 import TextOutput from '#components/text-output';
 import LanguageContext from '#root/languageContext';
 
-import useRequest, {
-  postRequestOptions,
-  transformServerError,
-} from '#hooks/useRequest';
+import { useLazyRequest } from '#utils/restRequest';
 
 import {
   schema,
@@ -57,24 +54,22 @@ function ThreeWForm(props) {
     onValueSet,
   } = useForm(defaultFormValues, schema);
 
-  const [submitRequestPending, ,submitRequest] = useRequest(
-    'api/v2/project/',
-    postRequestOptions,
-    {
-      lazy: true,
-      onSuccess: onSubmitSuccess,
-      onFailure: (result) => {
-        transformServerError(result, onErrorSet);
-      },
+  const {
+    pending: submitRequestPending,
+    trigger: submitRequest,
+  } = useLazyRequest({
+    url: 'api/v2/project/',
+    method: 'POST',
+    body: ctx => ctx,
+    onSuccess: onSubmitSuccess,
+    onFailure: ({ value: { formErrors } }) => {
+      onErrorSet(formErrors);
     },
-  );
+  });
 
   const handleSubmit = React.useCallback((finalValues) => {
     onValueSet(finalValues);
-    submitRequest({
-      ...postRequestOptions,
-      body: JSON.stringify(finalValues),
-    });
+    submitRequest(finalValues);
   }, [onValueSet, submitRequest]);
 
   const {

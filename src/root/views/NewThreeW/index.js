@@ -13,9 +13,7 @@ function NewThreeW(props) {
   const handleSubmitSuccess = React.useCallback((result) => {
     if (props.history?.push) {
       const {
-        responseBody: {
-          project_country: countryId,
-        },
+        project_country: countryId,
       } = result;
 
       props.history.push(`/countries/${countryId}#3w`);
