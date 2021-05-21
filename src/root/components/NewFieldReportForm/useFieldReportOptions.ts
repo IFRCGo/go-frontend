@@ -10,18 +10,19 @@ import {
 
 import { compareString } from '#utils/utils';
 import LanguageContext from '#root/languageContext';
-import useRequest, { buildUrl } from '#hooks/useRequest';
+import { useRequest } from '#utils/restRequest';
 
 import {
   BooleanValueOption,
   NumericValueOption,
   StringValueOption,
   ReportType,
-  emptyOptionList,
+  emptyNumericOptionList,
   emptyActionList,
   FormType,
   ListResponse,
-  ObjectResponse,
+  Country,
+  Entity,
   ActionFields,
   ActionByReportType,
   ActionsByOrganization,
@@ -212,59 +213,70 @@ export const schema: FormSchema = {
   },
 };
 
+const limitQuery = {
+  limit: 500,
+};
+
 function useFieldReportOptions(value: Partial<FormType>) {
   const { strings } = React.useContext(LanguageContext);
 
-  const [
-    fetchingUserDetails,
-    userDetails,
-  ] = useRequest('api/v2/user/me/') as ObjectResponse<User>;
+  const {
+    pending: fetchingUserDetails,
+    response: userDetails,
+  } = useRequest<User, unknown, unknown, unknown>({
+    url: 'api/v2/user/me/',
+  });
 
-  const [
-    fetchingCountries,
-    countriesResponse,
-  ] = useRequest(
-    buildUrl('api/v2/country', { limit: 500 })
-  ) as ListResponse;
+  const {
+    pending: fetchingCountries,
+    response: countriesResponse,
+  } = useRequest<ListResponse<Country>, unknown, unknown, unknown>({
+    url: 'api/v2/country',
+    query: limitQuery,
+  });
 
   const countryOptions = React.useMemo(() => (
     countriesResponse?.results?.filter(
-      c => c.independent === true && c.record_type === 1
+      c => c.independent && c.record_type === 1
     ).map((c) => ({
       value: c.id,
       label: c.name,
-    })) ?? emptyOptionList
+    })) ?? emptyNumericOptionList
   ), [countriesResponse]);
 
-  const [
-    fetchingDistricts,
-    districtsResponse,
-  ] = useRequest(
-    value.country ? (
-      buildUrl('api/v2/district', {
-        country: value.country,
-        limit: 500,
-      })
-    ) : ''
-  ) as ListResponse;
+  const countryQuery = React.useMemo(() => ({
+    country: value.country,
+    limit: 500,
+  }), [value.country]);
+
+  const {
+    pending: fetchingDistricts,
+    response: districtsResponse,
+  } = useRequest<ListResponse<Entity>, unknown, unknown, unknown>({
+    skip: !value.country,
+    url: 'api/v2/district/',
+    query: countryQuery,
+  });
 
   const districtOptions = React.useMemo(() => (
     districtsResponse?.results?.map(d => ({
       value: d.id,
       label: d.name,
-    })).sort(compareString) ?? emptyOptionList
+    })).sort(compareString) ?? emptyNumericOptionList
   ), [districtsResponse]);
 
-  const [
-    fetchingDisasterTypes,
-    disasterTypesResponse,
-  ] = useRequest('api/v2/disaster_type') as  ListResponse;
+  const {
+    pending: fetchingDisasterTypes,
+    response: disasterTypesResponse,
+  } = useRequest<ListResponse<Entity>, unknown, unknown, unknown>({
+    url: 'api/v2/disaster_type',
+  });
 
   const disasterTypeOptions = React.useMemo(() => (
     disasterTypesResponse?.results?.map((d) => ({
       value: d.id,
       label: d.name,
-    })) ?? emptyOptionList
+    })) ?? emptyNumericOptionList
   ), [disasterTypesResponse]);
 
   const reportType: ReportType = React.useMemo(() => {
@@ -283,36 +295,44 @@ function useFieldReportOptions(value: Partial<FormType>) {
     return 'EVT';
   }, [value.status, value.dtype, value.is_covid_report]);
 
-  const [
-    fetchingSupportedActivities,
-    supportedActivitiesResponse,
-  ] = useRequest(buildUrl('api/v2/supported_activity', { limit: 500 })) as ListResponse;
+  const {
+    pending: fetchingSupportedActivities,
+    response: supportedActivitiesResponse,
+  } = useRequest<ListResponse<Entity>, unknown, unknown, unknown>({
+    url: 'api/v2/supported_activity/',
+    query: limitQuery,
+  });
 
   const supportedActivityOptions = React.useMemo(() => (
     supportedActivitiesResponse?.results?.map((d) => ({
       value: d.id,
       label: d.name,
-    })) ?? emptyOptionList
+    })) ?? emptyNumericOptionList
   ), [supportedActivitiesResponse]);
 
-  const [
-    fetchingExternalPartners,
-    externalPartnersResponse,
-  ] = useRequest(buildUrl('api/v2/external_partner', { limit: 500 })) as ListResponse;
+  const {
+    pending: fetchingExternalPartners,
+    response: externalPartnersResponse,
+  } = useRequest<ListResponse<Entity>, unknown, unknown, unknown>({
+    url: 'api/v2/external_partner',
+    query: limitQuery,
+  });
 
   const externalPartnerOptions = React.useMemo(() => (
     externalPartnersResponse?.results?.map((d) => ({
       value: d.id,
       label: d.name,
-    })) ?? emptyOptionList
+    })) ?? emptyNumericOptionList
   ), [externalPartnersResponse]);
 
-  const [
-    fetchingActions,
-    actionsResponse
-  ] = useRequest(
-    buildUrl('api/v2/action', { limit: 500 })
-  ) as ListResponse<ActionFields>;
+  const {
+    pending: fetchingActions,
+    response: actionsResponse,
+  } = useRequest<ListResponse<ActionFields>, unknown, unknown, unknown>({
+    url: 'api/v2/action/',
+    query: limitQuery,
+  });
+
 
   const actionOptionsMap: ActionByReportType = React.useMemo(() => {
     if (!actionsResponse?.results?.length) {

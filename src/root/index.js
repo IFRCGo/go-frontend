@@ -1,8 +1,17 @@
 import React from 'react';
 import { Provider } from 'react-redux';
+import { get as getFromLocalStorage } from 'local-storage';
 
 import store from '#utils/store';
 import { detectIE } from '#utils/ie';
+
+import { RequestContext } from '#utils/restRequest';
+import {
+  processGoUrls,
+  processGoOptions,
+  processGoError,
+  processGoResponse,
+} from '#utils/restRequest/go';
 
 import LanguageContext from '#root/languageContext';
 import lang from '#lang';
@@ -12,6 +21,7 @@ require('isomorphic-fetch');
 
 function Root () {
   const [strings, setStrings] = React.useState(lang);
+  const user = getFromLocalStorage('user');
   const contextValue = React.useMemo(() => {
     return {
       strings,
@@ -19,10 +29,19 @@ function Root () {
     };
   }, [strings, setStrings]);
 
+  const requestContextValue = {
+    transformUrl: processGoUrls,
+    transformOptions: processGoOptions(user.token),
+    transformBody: processGoResponse,
+    transformError: processGoError,
+  };
+
   return (
     <Provider store={store}>
       <LanguageContext.Provider value={contextValue}>
-        <Multiplexer />
+        <RequestContext.Provider value={requestContextValue}>
+          <Multiplexer />
+        </RequestContext.Provider>
       </LanguageContext.Provider>
     </Provider>
   );
