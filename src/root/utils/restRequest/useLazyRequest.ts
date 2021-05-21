@@ -13,6 +13,7 @@ import AbortController from 'abort-controller';
 
 import { prepareUrlParams, isFetchable, Methods } from './utils';
 import { UrlParams } from './types';
+import { Error, OptionBase } from './go';
 import RequestContext, { ContextInterface } from './context';
 import fetchResource, { RequestOptions as BaseRequestOptions } from './fetch';
 
@@ -49,15 +50,15 @@ type LazyRequestOptions<R, E, C, O> = BaseRequestOptions<R, E, C> & {
     preserveResponse?: boolean;
 } & O;
 
-function useLazyRequest<R, RE, E, O, C = null>(
+function useLazyRequest<R, E, O, C = null>(
     requestOptions: LazyRequestOptions<R, E, C, O>,
 ) {
     const {
         transformOptions,
         transformUrl,
-        transformBody,
+        transformResponse,
         transformError,
-    } = useContext(RequestContext as React.Context<ContextInterface<R, RE, E, O>>);
+    } = useContext(RequestContext as React.Context<ContextInterface<R, unknown, E, O>>);
 
     // NOTE: forgot why the clientId is required but it is required
     const clientIdRef = useRef<number>(-1);
@@ -72,7 +73,7 @@ function useLazyRequest<R, RE, E, O, C = null>(
     const requestOptionsRef = useRef(requestOptions);
     const transformOptionsRef = useRef(transformOptions);
     const transformUrlRef = useRef(transformUrl);
-    const transformBodyRef = useRef(transformBody);
+    const transformResponseRef = useRef(transformResponse);
     const transformErrorRef = useRef(transformError);
 
     const contextRef = useRef(context);
@@ -168,9 +169,9 @@ function useLazyRequest<R, RE, E, O, C = null>(
     );
     useLayoutEffect(
         () => {
-            transformBodyRef.current = transformBody;
+            transformResponseRef.current = transformResponse;
         },
-        [transformBody],
+        [transformResponse],
     );
     useLayoutEffect(
         () => {
@@ -222,7 +223,6 @@ function useLazyRequest<R, RE, E, O, C = null>(
             }
 
             const {
-                // schemaName,
                 preserveResponse,
                 delay = 0,
             } = requestOptionsRef.current;
@@ -236,12 +236,6 @@ function useLazyRequest<R, RE, E, O, C = null>(
 
             // FIXME: this may need to move up
             setPendingSafe(true, clientIdRef.current);
-
-            /*
-            if (method !== 'DELETE' && !schemaName) {
-                console.error(`Schema is not defined for ${extendedUrl} ${method}`);
-            }
-            */
 
             const controller = new AbortController();
 
@@ -257,7 +251,7 @@ function useLazyRequest<R, RE, E, O, C = null>(
 
                 transformUrlRef,
                 transformOptionsRef,
-                transformBodyRef,
+                transformResponseRef,
                 transformErrorRef,
                 requestOptionsRef,
                 context,
@@ -302,4 +296,13 @@ function useLazyRequest<R, RE, E, O, C = null>(
         context,
     };
 }
-export default useLazyRequest;
+
+const useMyLazyRequest: <R, C = null>(requestOptions: LazyRequestOptions<R, Error, C, OptionBase>) => {
+    response: R | undefined;
+    pending: boolean;
+    error: Error | undefined;
+    trigger: (ctx: C) => void;
+    context: C | undefined,
+} = useLazyRequest;
+
+export default useMyLazyRequest;

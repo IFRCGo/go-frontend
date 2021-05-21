@@ -137,7 +137,7 @@ export function useThreeWOptions(value) {
     pending: fetchingCountries,
     response: countriesResponse,
   } = useRequest({
-    url: 'api/v2/country',
+    url: 'api/v2/country/',
     query: limitQuery,
   });
 
@@ -176,7 +176,7 @@ export function useThreeWOptions(value) {
     response: districtsResponse,
   } = useRequest({
     skip: !value.project_country,
-    url: 'api/v2/district',
+    url: 'api/v2/district/',
     query: projectCountryQuery,
   });
 
@@ -231,7 +231,7 @@ export function useThreeWOptions(value) {
     pending: fetchingDisasterTypes,
     response: disasterTypesResponse,
   } = useRequest({
-    url: 'api/v2/disaster_type',
+    url: 'api/v2/disaster_type/',
   });
 
   const disasterTypeOptions = React.useMemo(() => {

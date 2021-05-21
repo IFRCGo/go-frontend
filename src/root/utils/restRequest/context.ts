@@ -13,7 +13,7 @@ export interface ContextInterface<R, RE, E, O> {
         options: Omit<RequestInit, 'body'> & { body?: RequestInit['body'] | object | undefined },
         requestOptions: O,
     ) => RequestInit;
-    transformBody: (
+    transformResponse: (
         res: Response,
         url: string,
         // eslint-disable-next-line @typescript-eslint/ban-types
@@ -40,7 +40,7 @@ const defaultContext: ContextInterface<unknown, unknown, unknown, unknown> = {
         body: JSON.stringify(body),
         ...otherOptions,
     }),
-    transformBody: res => res,
+    transformResponse: res => res,
     transformError: res => res,
 };
 

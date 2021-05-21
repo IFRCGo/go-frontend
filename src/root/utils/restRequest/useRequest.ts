@@ -11,6 +11,7 @@ import AbortController from 'abort-controller';
 
 import { prepareUrlParams, isFetchable, Methods } from './utils';
 import { UrlParams } from './types';
+import { Error, OptionBase } from './go';
 import RequestContext, { ContextInterface } from './context';
 import fetchResource, { RequestOptions as BaseRequestOptions } from './fetch';
 
@@ -33,15 +34,15 @@ type RequestOptions<R, E, O> = BaseRequestOptions<R, E, null> & {
     preserveResponse?: boolean;
 } & O;
 
-function useRequest<R, RE, E, O>(
+function useRequest<R, E, O>(
     requestOptions: RequestOptions<R, E, O>,
 ) {
     const {
         transformOptions,
         transformUrl,
-        transformBody,
+        transformResponse,
         transformError,
-    } = useContext(RequestContext as React.Context<ContextInterface<R, RE, E, O>>);
+    } = useContext(RequestContext as React.Context<ContextInterface<R, unknown, E, O>>);
 
     // NOTE: forgot why the clientId is required but it is required
     const clientIdRef = useRef<number>(-1);
@@ -53,7 +54,7 @@ function useRequest<R, RE, E, O>(
     const requestOptionsRef = useRef(requestOptions);
     const transformOptionsRef = useRef(transformOptions);
     const transformUrlRef = useRef(transformUrl);
-    const transformBodyRef = useRef(transformBody);
+    const transformResponseRef = useRef(transformResponse);
     const transformErrorRef = useRef(transformError);
 
     const { skip = false } = requestOptions;
@@ -132,9 +133,9 @@ function useRequest<R, RE, E, O>(
     );
     useLayoutEffect(
         () => {
-            transformBodyRef.current = transformBody;
+            transformResponseRef.current = transformResponse;
         },
-        [transformBody],
+        [transformResponse],
     );
     useLayoutEffect(
         () => {
@@ -188,7 +189,6 @@ function useRequest<R, RE, E, O>(
             }
 
             const {
-                // schemaName,
                 preserveResponse,
                 delay = 0,
             } = requestOptionsRef.current;
@@ -202,12 +202,6 @@ function useRequest<R, RE, E, O>(
 
             // FIXME: this may need to move up
             setPendingSafe(true, clientIdRef.current);
-
-            /*
-            if (method !== 'DELETE' && !schemaName) {
-                console.error(`Schema is not defined for ${extendedUrl} ${method}`);
-            }
-            */
 
             const controller = new AbortController();
 
@@ -223,7 +217,7 @@ function useRequest<R, RE, E, O>(
 
                 transformUrlRef,
                 transformOptionsRef,
-                transformBodyRef,
+                transformResponseRef,
                 transformErrorRef,
                 requestOptionsRef,
                 null,
@@ -262,4 +256,12 @@ function useRequest<R, RE, E, O>(
         retrigger,
     };
 }
-export default useRequest;
+
+const useMyRequest: <R>(requestOptions: RequestOptions<R, Error, OptionBase>) => {
+    response: R | undefined;
+    pending: boolean;
+    error: Error | undefined;
+    retrigger: () => void;
+} = useRequest;
+
+export default useMyRequest;

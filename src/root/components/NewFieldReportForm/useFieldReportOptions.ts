@@ -223,15 +223,15 @@ function useFieldReportOptions(value: Partial<FormType>) {
   const {
     pending: fetchingUserDetails,
     response: userDetails,
-  } = useRequest<User, unknown, unknown, unknown>({
+  } = useRequest<User>({
     url: 'api/v2/user/me/',
   });
 
   const {
     pending: fetchingCountries,
     response: countriesResponse,
-  } = useRequest<ListResponse<Country>, unknown, unknown, unknown>({
-    url: 'api/v2/country',
+  } = useRequest<ListResponse<Country>>({
+    url: 'api/v2/country/',
     query: limitQuery,
   });
 
@@ -252,7 +252,7 @@ function useFieldReportOptions(value: Partial<FormType>) {
   const {
     pending: fetchingDistricts,
     response: districtsResponse,
-  } = useRequest<ListResponse<Entity>, unknown, unknown, unknown>({
+  } = useRequest<ListResponse<Entity>>({
     skip: !value.country,
     url: 'api/v2/district/',
     query: countryQuery,
@@ -268,8 +268,8 @@ function useFieldReportOptions(value: Partial<FormType>) {
   const {
     pending: fetchingDisasterTypes,
     response: disasterTypesResponse,
-  } = useRequest<ListResponse<Entity>, unknown, unknown, unknown>({
-    url: 'api/v2/disaster_type',
+  } = useRequest<ListResponse<Entity>>({
+    url: 'api/v2/disaster_type/',
   });
 
   const disasterTypeOptions = React.useMemo(() => (
@@ -298,7 +298,7 @@ function useFieldReportOptions(value: Partial<FormType>) {
   const {
     pending: fetchingSupportedActivities,
     response: supportedActivitiesResponse,
-  } = useRequest<ListResponse<Entity>, unknown, unknown, unknown>({
+  } = useRequest<ListResponse<Entity>>({
     url: 'api/v2/supported_activity/',
     query: limitQuery,
   });
@@ -313,8 +313,8 @@ function useFieldReportOptions(value: Partial<FormType>) {
   const {
     pending: fetchingExternalPartners,
     response: externalPartnersResponse,
-  } = useRequest<ListResponse<Entity>, unknown, unknown, unknown>({
-    url: 'api/v2/external_partner',
+  } = useRequest<ListResponse<Entity>>({
+    url: 'api/v2/external_partner/',
     query: limitQuery,
   });
 
@@ -328,7 +328,7 @@ function useFieldReportOptions(value: Partial<FormType>) {
   const {
     pending: fetchingActions,
     response: actionsResponse,
-  } = useRequest<ListResponse<ActionFields>, unknown, unknown, unknown>({
+  } = useRequest<ListResponse<ActionFields>>({
     url: 'api/v2/action/',
     query: limitQuery,
   });
