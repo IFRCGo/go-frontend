@@ -23,7 +23,7 @@ function useAlertContext() {
   const show = React.useCallback((children: React.ReactNode, options?: AddAlertOption) => {
     const name = options?.name ?? randomString(16);
     addAlert({
-      variant: options?.variant ?? 'default',
+      variant: options?.variant ?? 'info',
       duration: options?.duration ?? DEFAULT_ALERT_DISMISS_DURATION,
       name,
       children,

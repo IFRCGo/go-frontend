@@ -24,6 +24,10 @@ function PageHeader(props: Props) {
     info,
   } = props;
 
+  if (!(actions || breadCrumbs || info || description || heading)) {
+    return null;
+  }
+
   return (
     <header
       className={_cs(
@@ -33,24 +37,28 @@ function PageHeader(props: Props) {
       )}
     >
       <Container>
-        <section className={styles.topSection}>
-          <div className={styles.breadCrumbs}>
-            { breadCrumbs }
-          </div>
-          <div className={styles.actions}>
-            { actions }
-          </div>
-        </section>
-        <section className={styles.middleSection}>
-          <h1 className={styles.heading}>
-            { heading }
-          </h1>
-          { description && (
-            <p className={styles.description}>
-              { description }
-            </p>
-          )}
-        </section>
+        {(actions || breadCrumbs) && (
+          <section className={styles.topSection}>
+            <div className={styles.breadCrumbs}>
+              { breadCrumbs }
+            </div>
+            <div className={styles.actions}>
+              { actions }
+            </div>
+          </section>
+        )}
+        {(heading || description) && (
+          <section className={styles.middleSection}>
+            <h1 className={styles.heading}>
+              { heading }
+            </h1>
+            { description && (
+              <p className={styles.description}>
+                { description }
+              </p>
+            )}
+          </section>
+        )}
         { info && (
           <div className={styles.info}>
             { info }
