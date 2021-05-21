@@ -104,7 +104,7 @@ function TranslationDashboard(p) {
   const {
     pending: mePending,
     response: meResponse,
-  } = useRequest({ url: 'api/v2/user/me' });
+  } = useRequest({ url: 'api/v2/user/me/' });
   /*
   const [allLanguageUrl, setAllLanguageUrl] = React.useState('');
   const { pending: allLanguagePending } = useRequest({

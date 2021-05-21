@@ -30,7 +30,6 @@ import {
   useRequest,
   useLazyRequest,
 } from '#utils/restRequest';
-import { Error, ErrorFromServer } from '#utils/restRequest/go';
 
 import ContextFields from './ContextFields';
 import SituationFields from './SituationFields';
@@ -95,7 +94,7 @@ function NewFieldReportForm(props: Props) {
   const {
     pending: fieldReportPending,
     response: fieldReportResponse,
-  } = useRequest<FieldReportAPIResponseFields, unknown, unknown, unknown>({
+  } = useRequest<FieldReportAPIResponseFields>({
     skip: !reportId,
     url: `api/v2/field_report/${reportId}/`,
   });
@@ -147,7 +146,7 @@ function NewFieldReportForm(props: Props) {
   const {
     pending: fieldReportSubmitPending,
     trigger: submitRequest,
-  } = useLazyRequest<FieldReportAPIResponseFields, ErrorFromServer, Error, unknown, Partial<FieldReportAPIFields>>({
+  } = useLazyRequest<FieldReportAPIResponseFields, Partial<FieldReportAPIFields>>({
     url: reportId ? `api/v2/update_field_report/${reportId}/` : 'api/v2/create_field_report/',
     method: reportId ? 'PUT' : 'POST',
     body: ctx => ctx,

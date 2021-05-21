@@ -5,12 +5,7 @@ import AbortController from 'abort-controller';
 import sleep from './sleep';
 import { ContextInterface } from './context';
 
-// import { alterResponseErrorToFaramError } from '#rest';
-// import { Error, Err } from './types';
-// import schema from '../../schema';
-
 export interface RequestOptions<R, E, C> {
-    // schemaName?: string;
     shouldRetry?: (val: R, run: number, context: C) => number;
     shouldPoll?: (val: R | undefined, context: C) => number;
     onSuccess?: (val: R, context: C) => void;
@@ -26,7 +21,7 @@ async function fetchResource<R, RE, E, C, O>(
 
     transformUrlRef: MutableRefObject<ContextInterface<R, RE, E, ExtendedRequestOptions<R, E, C, O>>['transformUrl']>,
     transformOptionsRef: MutableRefObject<ContextInterface<R, RE, E, ExtendedRequestOptions<R, E, C, O>>['transformOptions']>,
-    transformBodyRef: MutableRefObject<ContextInterface<R, RE, E, ExtendedRequestOptions<R, E, C, O>>['transformBody']>,
+    transformResponseRef: MutableRefObject<ContextInterface<R, RE, E, ExtendedRequestOptions<R, E, C, O>>['transformResponse']>,
     transformErrorRef: MutableRefObject<ContextInterface<R, RE, E, ExtendedRequestOptions<R, E, C, O>>['transformError']>,
     requestOptionsRef: MutableRefObject<ExtendedRequestOptions<R, E, C, O>>,
     context: C,
@@ -53,7 +48,7 @@ async function fetchResource<R, RE, E, C, O>(
 
             transformUrlRef,
             transformOptionsRef,
-            transformBodyRef,
+            transformResponseRef,
             transformErrorRef,
             requestOptionsRef,
             context,
@@ -121,7 +116,7 @@ async function fetchResource<R, RE, E, C, O>(
 
     let resBody: R | RE;
     try {
-        resBody = await transformBodyRef.current(
+        resBody = await transformResponseRef.current(
             res,
             url,
             options,
@@ -164,7 +159,7 @@ async function fetchResource<R, RE, E, C, O>(
 
             transformUrlRef,
             transformOptionsRef,
-            transformBodyRef,
+            transformResponseRef,
             transformErrorRef,
             requestOptionsRef,
             context,
