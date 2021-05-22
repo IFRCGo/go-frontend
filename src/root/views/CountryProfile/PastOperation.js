@@ -66,7 +66,6 @@ class PastOperations extends React.PureComponent {
   renderEventDetailTooltip = ({
     active,
     payload,
-    label,
   }) => {
     if (!active) {
       return null;
@@ -189,11 +188,11 @@ class PastOperations extends React.PureComponent {
   }
 }
 
-const selector = (state, ownProps) => ({
+const selector = (state) => ({
   countries: countriesSelector(state)
 });
 
-const dispatcher = (dispatch) => ({});
+const dispatcher = () => ({});
 
 PastOperations.contextType = languageContext;
 export default connect(selector, dispatcher)(PastOperations);

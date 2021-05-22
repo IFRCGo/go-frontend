@@ -6,5 +6,5 @@
 */
 export const DateComparator = (dates) => {
   return dates.startDate && dates.endDate
-    ? emergency => emergency.start_date >= dates.startDate && emergency.start_date <= dates.endDate : d => true;
+    ? emergency => emergency.start_date >= dates.startDate && emergency.start_date <= dates.endDate : () => true;
 };

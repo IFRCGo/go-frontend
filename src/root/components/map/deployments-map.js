@@ -101,10 +101,10 @@ export default class DeploymentsMap extends React.Component {
       this.showPopover(theMap, e.features[0]);
     });
 
-    theMap.on('mousemove', 'deployments', e => {
+    theMap.on('mousemove', 'deployments', () => {
       theMap.getCanvas().style.cursor = 'pointer';
     });
-    theMap.on('mouseleave', 'deployments', e => {
+    theMap.on('mouseleave', 'deployments', () => {
       theMap.getCanvas().style.cursor = '';
     });
 
@@ -120,11 +120,11 @@ export default class DeploymentsMap extends React.Component {
         theMap.getCanvas().style.cursor = 'pointer';
       }
     });
-    theMap.on('mouseleave', 'icrc_admin0', e => {
+    theMap.on('mouseleave', 'icrc_admin0', () => {
       theMap.getCanvas().style.cursor = '';
     });
 
-    theMap.on('style.load', e => {
+    theMap.on('style.load', () => {
       this.setState({loaded: true});
       this.setCountryStyle(this.props.data.features);
     });

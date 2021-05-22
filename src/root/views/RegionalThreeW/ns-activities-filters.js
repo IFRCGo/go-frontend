@@ -86,10 +86,10 @@ function NSActivitiesFilters (p) {
   );
 }
 
-const selector = (state, ownProps) => ({
+const selector = (state) => ({
   countriesByIso: countriesByIso(state)
 });
 
-const dispatcher = (dispatch) => ({});
+const dispatcher = () => ({});
 
 export default connect(selector, dispatcher)(NSActivitiesFilters);

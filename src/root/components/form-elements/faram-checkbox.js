@@ -5,7 +5,7 @@ import { FaramInputElement } from '@togglecorp/faram';
 class FaramCheckbox extends React.PureComponent {
   inputId = randomString(8);
 
-  handleChange = (e) => {
+  handleChange = () => {
     const {
       onChange,
       value,

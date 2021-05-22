@@ -221,11 +221,12 @@ class TimelineCharts extends React.Component {
       );
     }
 
-    let data = dataDrefs.map((o, i) => {
+    let data = dataDrefs.map((o) => {
       const {timespan, ...drefData} = o;
       // Sometimes a month or year will have a DREF, but no appeals data yet.
       // The aggregate URL endpoint won't return an empty object for the appeal,
       // so stub it.
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const {timespan: _, ...appealsData} = dataAppeals.find(o => o.timespan === timespan) || {count: 0};
 
       return {
@@ -290,8 +291,9 @@ class TimelineCharts extends React.Component {
       );
     }
 
-    const data = dataDrefs.map((o, i) => {
+    const data = dataDrefs.map((o) => {
       const {timespan, ...drefData} = o;
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const {timespan: _, ...appealsData} = dataAppeals.find(o => o.timespan === timespan) || {count: 0};
 
       return {

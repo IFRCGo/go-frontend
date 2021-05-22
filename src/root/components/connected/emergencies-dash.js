@@ -46,7 +46,7 @@ class EmergenciesDash extends React.Component {
     );
   }
 
-  renderChart (data, unit) {
+  renderChart (data) {
     const zone = 'utc';
     const tickFormatter = (date) => DateTime.fromISO(date, {zone}).toFormat('MMM');
     const contentFormatter = (payload) => {

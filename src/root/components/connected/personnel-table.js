@@ -114,7 +114,7 @@ class PersonnelTable extends SFPComponent {
     return qs;
   }
 
-  updateData (what) {
+  updateData () {
     this.requestResults(this.props);
   }
 
@@ -311,7 +311,7 @@ if (environment !== 'production') {
   };
 }
 
-const selector = (state, props) => ({
+const selector = (state) => ({
   personnel: state.deployments.personnel
 });
 

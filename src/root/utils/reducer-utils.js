@@ -1,4 +1,4 @@
-export const stateInflight = (state, action) => {
+export const stateInflight = (state) => {
   return Object.assign({}, state, {
     error: null,
     fetching: true,

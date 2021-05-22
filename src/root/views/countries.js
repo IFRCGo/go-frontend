@@ -126,7 +126,7 @@ class AdminArea extends SFPComponent {
     }
   }
 
-  loadCountry (props, countryId, countries) {
+  loadCountry (props, countryId) {
     this.getData(props, countryId);
     this.getAdmArea(props.type, countryId);
     this.props._getPerNsPhase(countryId);

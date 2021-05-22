@@ -146,7 +146,7 @@ const initialState = {
 const logger = createLogger({
   level: 'info',
   collapsed: true,
-  predicate: (getState, action) => {
+  predicate: () => {
     return (config.environment !== 'production');
   }
 });
@@ -198,8 +198,7 @@ const disasterTypesListener = ({ data, receivedAt }) => {
   });
 };
 
-
-const logoutListener = ({ data }) => {
+const logoutListener = () => {
   localStorage.remove('user');
   localStorage.remove(ME_STORAGE_KEY);
   // localStorage.remove(LANG_STORAGE_KEY);

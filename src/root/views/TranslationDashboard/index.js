@@ -292,7 +292,9 @@ function TranslationDashboard(p) {
     sheet.writeFile(wb, getFileName('go-updated-dev-strings', 'xlsx'));
   }, [devStrings, updatedKeyList]);
 
-  const removedKeys = React.useMemo(() => listToMap(removedKeyList, d => d, d => true), [removedKeyList]);
+  const removedKeys = React.useMemo(() => listToMap(
+    removedKeyList, d => d, () => true,
+  ), [removedKeyList]);
 
   const handleSaveButtonClick = React.useCallback(() => {
     const actions = Object.keys(appStrings).map((key) => ({
@@ -618,7 +620,7 @@ function TranslationDashboard(p) {
   );
 }
 
-const mapStateToProps = (state, props) => ({
+const mapStateToProps = (state) => ({
   languageBulkResponse: languageBulkResponseSelector(state),
   currentLanguage: currentLanguageSelector(state),
   languageData: languageDataSelector(state),

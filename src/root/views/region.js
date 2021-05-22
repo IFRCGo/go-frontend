@@ -55,7 +55,7 @@ import { countriesSelector, countriesByRegionSelector, regionsByIdSelector, regi
 import turfBbox from '@turf/bbox';
 
 class AdminArea extends SFPComponent {
-  constructor (props, context) {
+  constructor (props) {
     super(props);
 
     this.state = {
@@ -63,7 +63,6 @@ class AdminArea extends SFPComponent {
       regionAdditionalInfoTabIframe: null,
       fullscreen: false,
       showCountriesSidebar: false
-
     };
 
     this.toggleCountriesSidebar = this.toggleCountriesSidebar.bind(this);

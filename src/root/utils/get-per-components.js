@@ -184,7 +184,7 @@ export function getAllComponents () {
 }
 
 // FIXME: rework/remove this for the graph
-export function getBenchmarksByComponent (componentId) {
+export function getBenchmarksByComponent () {
   // const splittedComponentId = componentId.split('c');
   // const formCode = splittedComponentId[0];
   const benchmarks = [];

@@ -105,7 +105,7 @@ class FieldReportsTable extends SFPComponent {
     return qs;
   }
 
-  updateData (what) {
+  updateData () {
     this.requestResults(this.props);
   }
 

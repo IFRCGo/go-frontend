@@ -55,7 +55,7 @@ function StatusOverview (p) {
                   startAngle={90}
                   endAngle={450}
                 >
-                  { data.map((entry, index) => {
+                  { data.map((entry) => {
                     return (
                       <Cell
                         key={entry.label}

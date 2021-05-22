@@ -89,7 +89,7 @@ function ExportButton (p) {
   );
 }
 
-const mapStateToProps = (state, props) => ({
+const mapStateToProps = (state) => ({
   projectsResponse: regionalProjectsSelector(state),
 });
 
