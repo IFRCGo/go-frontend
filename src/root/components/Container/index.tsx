@@ -1,8 +1,8 @@
 import React from 'react';
 import { _cs } from '@togglecorp/fujs';
 
-import Header from '#components/draft/Header';
-import Description from '#components/draft/Description';
+import Header from '#components/Header';
+import Description from '#components/Description';
 
 import styles from './styles.module.scss';
 

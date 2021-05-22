@@ -6,13 +6,13 @@ import {
   EntriesAsList,
 } from '@togglecorp/toggle-form';
 
-import Container from '#components/draft/Container';
-import InputSection from '#components/draft/InputSection';
-import RadioInput from '#components/draft/RadioInput';
-import DateInput from '#components/draft/DateInput';
-import TextInput from '#components/draft/TextInput';
-import SearchSelectInput, { Option as SearchSelectOption } from '#components/draft/SearchSelectInput';
-import SelectInput from '#components/draft/SelectInput';
+import Container from '#components/Container';
+import InputSection from '#components/InputSection';
+import RadioInput from '#components/RadioInput';
+import DateInput from '#components/DateInput';
+import TextInput from '#components/TextInput';
+import SearchSelectInput, { Option as SearchSelectOption } from '#components/SearchSelectInput';
+import SelectInput from '#components/SelectInput';
 import LanguageContext from '#root/languageContext';
 
 import {

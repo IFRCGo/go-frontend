@@ -1,8 +1,8 @@
 import React from 'react';
 import { isDefined } from '@togglecorp/fujs';
 
-import InputContainer, { Props as InputContainerProps } from '#components/draft/InputContainer';
-import RawInput, { Props as RawInputProps } from '#components/draft/RawInput';
+import InputContainer, { Props as InputContainerProps } from '#components/InputContainer';
+import RawInput, { Props as RawInputProps } from '#components/RawInput';
 
 type InheritedProps<T> = (Omit<InputContainerProps, 'input'> & Omit<RawInputProps<T>, 'onChange' | 'value'>);
 export interface Props<T extends string | undefined> extends InheritedProps<T> {

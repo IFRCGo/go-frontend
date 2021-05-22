@@ -1,7 +1,7 @@
 import React from 'react';
 
-import InputContainer, { Props as InputContainerProps } from '#components/draft/InputContainer';
-import RawInput, { Props as RawInputProps } from '#components/draft/RawInput';
+import InputContainer, { Props as InputContainerProps } from '#components/InputContainer';
+import RawInput, { Props as RawInputProps } from '#components/RawInput';
 
 type InheritedProps<T> = (Omit<InputContainerProps, 'input'> & RawInputProps<T>);
 export interface Props<T extends string | undefined> extends InheritedProps<T> {
@@ -9,7 +9,7 @@ export interface Props<T extends string | undefined> extends InheritedProps<T> {
     inputClassName?: string;
 }
 
-function TextInput<T extends string | undefined>(props: Props<T>) {
+function DateInput<T extends string | undefined>(props: Props<T>) {
   const {
     className,
     actions,
@@ -36,11 +36,11 @@ function TextInput<T extends string | undefined>(props: Props<T>) {
           readOnly={readOnly}
           disabled={disabled}
           className={inputClassName}
-          type="text"
+          type="date"
         />
       )}
     />
   );
 }
 
-export default TextInput;
+export default DateInput;

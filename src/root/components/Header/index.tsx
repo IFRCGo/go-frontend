@@ -1,9 +1,9 @@
 import React from 'react';
 import { _cs } from '@togglecorp/fujs';
 
-import ElementFragments from '#components/draft/ElementFragments';
-import Heading, { Props as HeadingProps } from '#components/draft/Heading';
-import Description from '#components/draft/Description';
+import ElementFragments from '#components/ElementFragments';
+import Heading, { Props as HeadingProps } from '#components/Heading';
+import Description from '#components/Description';
 
 import styles from './styles.module.scss';
 

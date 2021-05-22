@@ -1,8 +1,8 @@
 import React from 'react';
 // import { _cs } from '@togglecorp/fujs';
 
-import InputContainer, { Props as InputContainerProps } from '#components/draft/InputContainer';
-import RawTextArea, { Props as RawTextAreaProps } from '#components/draft/RawTextArea';
+import InputContainer, { Props as InputContainerProps } from '#components/InputContainer';
+import RawTextArea, { Props as RawTextAreaProps } from '#components/RawTextArea';
 
 type InheritedProps<T> = (Omit<InputContainerProps, 'input'> & RawTextAreaProps<T>);
 export interface Props<T extends string | undefined> extends InheritedProps<T> {

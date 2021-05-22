@@ -2,8 +2,8 @@ import React from 'react';
 import { _cs } from '@togglecorp/fujs';
 import { ImCheckmark } from 'react-icons/im';
 
-import RawButton, { Props as RawButtonProps } from '#components/draft/RawButton';
-import { TabKey, TabContext, TabVariant } from '#components/draft/Tabs/TabContext';
+import RawButton, { Props as RawButtonProps } from '#components/RawButton';
+import { TabKey, TabContext, TabVariant } from '#components/Tabs/TabContext';
 import { setHashToBrowser } from '#utils/common';
 
 import styles from './styles.module.scss';

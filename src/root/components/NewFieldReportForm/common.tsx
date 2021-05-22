@@ -4,7 +4,7 @@ import { DateTime } from 'luxon';
 
 import { api } from '#config';
 import { request } from '#utils/network';
-import type { Option as SearchSelectOption } from '#components/draft/SearchSelectInput';
+import type { Option as SearchSelectOption } from '#components/SearchSelectInput';
 
 export const STATUS_EARLY_WARNING = 8;
 export const STATUS_EVENT = 9;

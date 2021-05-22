@@ -10,8 +10,8 @@ import {
 } from 'react-icons/ai';
 
 import { AlertVariant } from '#components/AlertContext';
-import ElementFragments from '#components/draft/ElementFragments';
-import RawButton from '#components/draft/RawButton';
+import ElementFragments from '#components/ElementFragments';
+import RawButton from '#components/RawButton';
 
 import styles from './styles.module.scss';
 

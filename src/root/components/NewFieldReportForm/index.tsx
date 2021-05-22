@@ -4,7 +4,7 @@ import type { match as Match } from 'react-router-dom';
 
 import BlockLoading from '#components/block-loading';
 import { showAlert } from '#components/system-alerts';
-import Page from '#components/draft/Page';
+import Page from '#components/Page';
 import {
   useForm,
   PartialForm,
@@ -15,12 +15,12 @@ import {
 } from '@togglecorp/fujs';
 
 import BreadCrumb from '#components/breadcrumb';
-import NonFieldError from '#components/draft/NonFieldError';
-import Container from '#components/draft/Container';
-import Tabs from '#components/draft/Tabs';
-import TabPanel from '#components/draft/Tabs/TabPanel';
-import TabList from '#components/draft/Tabs/TabList';
-import Tab from '#components/draft/Tabs/Tab';
+import NonFieldError from '#components/NonFieldError';
+import Container from '#components/Container';
+import Tabs from '#components/Tabs';
+import TabPanel from '#components/Tabs/TabPanel';
+import TabList from '#components/Tabs/TabList';
+import Tab from '#components/Tabs/Tab';
 
 import {
 } from '#utils/field-report-constants';

@@ -10,13 +10,13 @@ import {
 } from '@togglecorp/toggle-form';
 import { MdDoneAll } from 'react-icons/md';
 
-import InputSection from '#components/draft/InputSection';
-import SelectInput from '#components/draft/SelectInput';
-import TextInput from '#components/draft/TextInput';
-import NumberInput from '#components/draft/NumberInput';
-import DateInput from '#components/draft/DateInput';
-import Checkbox from '#components/draft/Checkbox';
-import NonFieldError from '#components/draft/NonFieldError';
+import InputSection from '#components/InputSection';
+import SelectInput from '#components/SelectInput';
+import TextInput from '#components/TextInput';
+import NumberInput from '#components/NumberInput';
+import DateInput from '#components/DateInput';
+import Checkbox from '#components/Checkbox';
+import NonFieldError from '#components/NonFieldError';
 import TextOutput from '#components/text-output';
 import LanguageContext from '#root/languageContext';
 

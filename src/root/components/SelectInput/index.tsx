@@ -1,22 +1,24 @@
 import React from 'react';
-import { isDefined, } from '@togglecorp/fujs';
-import AsyncSelect from 'react-select/async';
+import {
+   _cs,
+  isDefined,
+} from '@togglecorp/fujs';
+import Select, { Props as SelectProps } from 'react-select';
+
+import InputContainer from '#components/InputContainer';
 
 import styles from './styles.module.scss';
 
-import InputContainer from '#components/draft/InputContainer';
-import { getSelectInputNoOptionsMessage } from '#utils/utils';
 
-export interface Option {
+interface Option {
   value: string | number;
   label: string;
 }
 
 const emptyOptionList: Option[] = [];
-
 type Key = string | number | undefined;
 
-interface BaseProps<N, V extends Key> {
+interface BaseProps<N> {
   className?: string;
   actions?: React.ReactNode;
   icons?: React.ReactNode;
@@ -26,25 +28,23 @@ interface BaseProps<N, V extends Key> {
   pending?: boolean;
   readOnly?: boolean;
   name: N;
-  value: V;
-  loadOptions: (value: string | undefined, callback: (opt: Option[]) => void) => void;
   isMulti?: boolean,
-  onChange: (newValue: V, name: N) => void;
+  options?: Option[];
   placeholder?: string;
-  initialOptions?: Option[];
+  isOptionDisabled?: SelectProps<Option>['isOptionDisabled'];
 }
 
-type Props<N extends Key, V extends Key> = BaseProps<N, V> & ({
+type Props<N extends Key, V extends Key> = BaseProps<N> & ({
   isMulti?: false;
   value: V;
   onChange: (newValue: V, name: N) => void;
 } | {
   isMulti: true;
-  value: V[];
+  value: V[] | undefined;
   onChange: (newValue: V[], name: N) => void;
 })
 
-function SearchSelectInput<N extends Key, V extends Key>(props: Props<N, V>) {
+function SelectInput<N extends Key, V extends Key>(props: Props<N, V>) {
   const {
     className,
     actions,
@@ -56,23 +56,11 @@ function SearchSelectInput<N extends Key, V extends Key>(props: Props<N, V>) {
     readOnly,
     name,
     value,
-    loadOptions,
+    options = emptyOptionList,
     isMulti,
     onChange,
-    initialOptions = emptyOptionList,
     ...otherSelectInputProps
   } = props;
-
-  const [options, setOptions] = React.useState<Option[]>(initialOptions);
-
-  React.useEffect(() => {
-    if (initialOptions.length > 0) {
-      // TODO: Make unique
-      setOptions(prevOptions => [...prevOptions, ...initialOptions]);
-    }
-  }, [initialOptions, setOptions]);
-
-  const timeoutRef = React.useRef<number | undefined>();
 
   const handleChange = React.useCallback((newValue) => {
     if (!props.onChange) {
@@ -99,7 +87,7 @@ function SearchSelectInput<N extends Key, V extends Key>(props: Props<N, V>) {
     if (!props.isMulti) {
       return options.find(o => (
         String(props.value) === String(o.value)
-      ));
+      )) ?? null;
     }
 
     return options.filter(
@@ -109,50 +97,34 @@ function SearchSelectInput<N extends Key, V extends Key>(props: Props<N, V>) {
     );
   }, [props.isMulti, options, props.value]);
 
-  const handleLoadOptions = React.useCallback((searchText, callback) => {
-    if (!isDefined(searchText)) {
-      callback(emptyOptionList);
-    }
-
-    const localCallback = (currentOptions: Option[]) => {
-      if (currentOptions.length > 0) {
-        // TODO: Make unique
-        setOptions(prevOptions => [...prevOptions, ...currentOptions]);
-      }
-      callback(currentOptions);
-    };
-
-    window.clearTimeout(timeoutRef.current);
-    timeoutRef.current = window.setTimeout(() => {
-      loadOptions(searchText, localCallback);
-    }, 350);
-  }, [setOptions, loadOptions]);
-
   return (
     <InputContainer
-      className={className}
+      className={_cs(
+        disabled && styles.disabled,
+        styles.selectInput,
+        className,
+      )}
       actions={actions}
       icons={icons}
       error={error}
       label={label}
       disabled={disabled}
       input={(
-        <AsyncSelect
+        <Select
           {...otherSelectInputProps}
           className={styles.select}
           classNamePrefix="go"
           readOnly={readOnly}
           onChange={handleChange}
           value={selectValue}
-          loadOptions={handleLoadOptions}
+          options={options}
           isMulti={isMulti}
           isDisabled={pending || disabled}
           isLoading={pending}
-          noOptionsMessage={getSelectInputNoOptionsMessage as unknown as (obj: { inputValue: string }) => string}
         />
       )}
     />
   );
 }
 
-export default SearchSelectInput;
+export default SelectInput;

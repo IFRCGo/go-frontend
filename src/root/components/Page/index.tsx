@@ -6,7 +6,7 @@ import { _cs } from '@togglecorp/fujs';
 import Navbar from '#components/header';
 import MobileNavbar from '#components/mobile-header';
 import PageFooter from '#components/footer';
-import PageHeader from '#components/draft/PageHeader';
+import PageHeader from '#components/PageHeader';
 import GlobalLoading from '#components/global-loading';
 import SysAlerts from '#components/system-alerts';
 

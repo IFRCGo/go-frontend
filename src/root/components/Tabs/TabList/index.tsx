@@ -1,6 +1,6 @@
 import React from 'react';
 import { _cs } from '@togglecorp/fujs';
-import { TabContext } from '#components/draft/Tabs/TabContext';
+import { TabContext } from '#components/Tabs/TabContext';
 
 import styles from './styles.module.scss';
 

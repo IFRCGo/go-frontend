@@ -5,14 +5,14 @@ import {
   EntriesAsList,
 } from '@togglecorp/toggle-form';
 
-import Description from '#components/draft/Description';
-import Container from '#components/draft/Container';
-import InputSection from '#components/draft/InputSection';
-import NumberInput from '#components/draft/NumberInput';
-import TextArea from '#components/draft/TextArea';
-import RadioInput from '#components/draft/RadioInput';
-import DateInput from '#components/draft/DateInput';
-import SelectInput from '#components/draft/SelectInput';
+import Description from '#components/Description';
+import Container from '#components/Container';
+import InputSection from '#components/InputSection';
+import NumberInput from '#components/NumberInput';
+import TextArea from '#components/TextArea';
+import RadioInput from '#components/RadioInput';
+import DateInput from '#components/DateInput';
+import SelectInput from '#components/SelectInput';
 import LanguageContext from '#root/languageContext';
 
 import {

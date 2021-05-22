@@ -4,7 +4,7 @@ import {
   TabKey,
   TabVariant,
   TabContext,
-} from '#components/draft/Tabs/TabContext';
+} from '#components/Tabs/TabContext';
 
 import useHash from '#hooks/useHash';
 

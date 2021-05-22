@@ -1,7 +1,7 @@
 import React from 'react';
 import { _cs } from '@togglecorp/fujs';
 
-import Container from '#components/draft/Container';
+import Container from '#components/Container';
 
 import styles from './styles.module.scss';
 

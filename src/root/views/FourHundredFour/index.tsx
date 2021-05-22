@@ -6,9 +6,9 @@ import {
   BiDotsHorizontalRounded
 } from 'react-icons/bi';
 
-import Heading from '#components/draft/Heading';
-import Description from '#components/draft/Description';
-import Page from '#components/draft/Page';
+import Heading from '#components/Heading';
+import Description from '#components/Description';
+import Page from '#components/Page';
 import LanguageContext from '#root/languageContext';
 import Translate from '#components/Translate';
 

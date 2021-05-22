@@ -5,12 +5,12 @@ import {
   EntriesAsList,
 } from '@togglecorp/toggle-form';
 
-import Header from '#components/draft/Header';
-import Container from '#components/draft/Container';
-import InputSection from '#components/draft/InputSection';
-import NumberInput from '#components/draft/NumberInput';
-import TextInput from '#components/draft/TextInput';
-import RadioInput from '#components/draft/RadioInput';
+import Header from '#components/Header';
+import Container from '#components/Container';
+import InputSection from '#components/InputSection';
+import NumberInput from '#components/NumberInput';
+import TextInput from '#components/TextInput';
+import RadioInput from '#components/RadioInput';
 import LanguageContext from '#root/languageContext';
 
 import {
