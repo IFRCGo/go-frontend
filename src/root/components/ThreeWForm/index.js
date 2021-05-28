@@ -177,6 +177,14 @@ function ThreeWForm(props) {
     }
   }, [onValueChange, value.project_country]);
 
+  React.useEffect(() => {
+    onValueChange(value.budget_amount, 'actual_expenditure');
+  }, [onValueChange, value.budget_amount]);
+
+  React.useEffect(() => {
+    onValueChange(value.actual_expenditure, 'budget_amount');
+  }, [onValueChange, value.actual_expenditure]);
+
   const handleSelectAllDistrictButtonClick = React.useCallback(() => {
     const allDistricts = districtOptions.map(d => d.value);
     onValueChange(allDistricts, 'project_districts');

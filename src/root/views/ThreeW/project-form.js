@@ -54,13 +54,6 @@ const positiveIntegerCondition = (value) => {
   };
 };
 
-/*
-const statusOptions = statusList.map(p => ({
-  value: p.key,
-  label: p.title,
-})).sort(compareString);
-*/
-
 const sectorOptions = sectorList.map(p => ({
   value: p.inputValue,
   label: p.title,

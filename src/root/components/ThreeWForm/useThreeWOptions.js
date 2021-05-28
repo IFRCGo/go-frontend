@@ -80,6 +80,7 @@ const generateValidEndDateCondition = (start) => (end) => {
 export const schema = {
   fields: (value) => {
     const schema = {
+      actual_expenditure: [requiredCondition, positiveIntegerCondition],
       budget_amount: [requiredCondition, positiveIntegerCondition],
       dtype: [requiredCondition],
       end_date: [requiredCondition, generateValidEndDateCondition(value.start_date)],

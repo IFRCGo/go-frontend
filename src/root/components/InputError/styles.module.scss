@@ -27,6 +27,8 @@
     .icon {
       margin-right: $spacing;
       font-size: $font-size-lg;
+      flex-shrink: 0;
+      align-self: flex-start;
     }
   }
 }

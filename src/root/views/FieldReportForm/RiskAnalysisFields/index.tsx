@@ -7,6 +7,7 @@ import {
 
 import Container from '#components/Container';
 import InputSection from '#components/InputSection';
+import TextInput from '#components/TextInput';
 import NumberInput from '#components/NumberInput';
 import TextArea from '#components/TextArea';
 import RadioInput from '#components/RadioInput';
@@ -97,7 +98,7 @@ function RiskAnalysisFields(props: Props) {
         title={strings.fieldsStep2SituationFieldsEWAffectedPopCenteresLabel}
         description={strings.fieldsStep2SituationFieldsEWAffectedPopCenteresDescription}
       >
-        <NumberInput
+        <TextInput
           label={strings.fieldsStep2SituationFieldsEstimation}
           name="affected_pop_centres"
           value={value.affected_pop_centres}

@@ -98,7 +98,7 @@ export interface FormType {
 
   num_potentially_affected: number;
   num_highest_risk: number;
-  affected_pop_centres: number;
+  affected_pop_centres: string;
   num_potentially_affected_source: string;
   num_highest_risk_source: string;
   affected_pop_centres_source: string;
@@ -271,7 +271,7 @@ export interface FieldReportAPIFields {
   // Potentially affected with source = "Red Cross / Red Cresent"
   num_potentially_affected: number | undefined;
   num_highest_risk: number | undefined;
-  affected_pop_centres: number | undefined;
+  affected_pop_centres: string | undefined;
   num_injured: number | undefined;
   num_dead: number | undefined;
   num_missing: number | undefined;
@@ -281,7 +281,7 @@ export interface FieldReportAPIFields {
   // Potentially affected with source = "Government"
   gov_num_potentially_affected: number | undefined;
   gov_num_highest_risk: number | undefined;
-  gov_affected_pop_centres: number | undefined;
+  gov_affected_pop_centres: string | undefined;
   gov_num_injured: number | undefined;
   gov_num_dead: number | undefined;
   gov_num_missing: number | undefined;
@@ -291,7 +291,7 @@ export interface FieldReportAPIFields {
   // Potentially affected with source = "Other"
   other_num_potentially_affected: number | undefined;
   other_num_highest_risk: number | undefined;
-  other_affected_pop_centres: number | undefined;
+  other_affected_pop_centres: string | undefined;
   other_num_injured: number | undefined;
   other_num_dead: number | undefined;
   other_num_missing: number | undefined;
@@ -828,11 +828,11 @@ export function transformAPIFieldsToFormFields(apiValues: FieldReportAPIResponse
      */
   } = apiValues;
 
-  const getSourceAndValue: (
-    rc?: number, gov?: number, other?: number,
+  const getSourceAndValue: <T extends string | number>(
+    rc?: T, gov?: T, other?: T,
   ) => [
     string | undefined,
-    number | undefined,
+    T | undefined,
   ] = (rc, gov, other) => {
     if (isDefined(rc)) {
       return [SOURCE_RC, rc];
