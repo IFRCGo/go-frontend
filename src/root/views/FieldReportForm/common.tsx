@@ -255,67 +255,67 @@ export interface FieldReportAPIFields {
   // ------------------------------------------
   status: number;
   is_covid_report: boolean;
-  event?: number;
+  event: number | undefined;
   summary: string;
   countries: number[];
   districts: number[];
   dtype: number;
   start_date: string;
-  request_assistance?: boolean;
-  ns_request_assistance?: boolean;
+  request_assistance: boolean | undefined;
+  ns_request_assistance: boolean | undefined;
 
   // ------------------------------------------
   // Risk Analysis, Situation
   // ------------------------------------------
 
   // Potentially affected with source = "Red Cross / Red Cresent"
-  num_potentially_affected?: number;
-  num_highest_risk?: number;
-  affected_pop_centres?: number;
-  num_injured?: number;
-  num_dead?: number;
-  num_missing?: number;
-  num_affected?: number;
-  num_displaced?: number;
+  num_potentially_affected: number | undefined;
+  num_highest_risk: number | undefined;
+  affected_pop_centres: number | undefined;
+  num_injured: number | undefined;
+  num_dead: number | undefined;
+  num_missing: number | undefined;
+  num_affected: number | undefined;
+  num_displaced: number | undefined;
 
   // Potentially affected with source = "Government"
-  gov_num_potentially_affected?: number
-  gov_num_highest_risk?: number;
-  gov_affected_pop_centres?: number;
-  gov_num_injured?: number;
-  gov_num_dead?: number;
-  gov_num_missing?: number;
-  gov_num_affected?: number;
-  gov_num_displaced?: number;
+  gov_num_potentially_affected: number | undefined;
+  gov_num_highest_risk: number | undefined;
+  gov_affected_pop_centres: number | undefined;
+  gov_num_injured: number | undefined;
+  gov_num_dead: number | undefined;
+  gov_num_missing: number | undefined;
+  gov_num_affected: number | undefined;
+  gov_num_displaced: number | undefined;
 
   // Potentially affected with source = "Other"
-  other_num_potentially_affected?: number
-  other_num_highest_risk?: number;
-  other_affected_pop_centres?: number;
-  other_num_injured?: number;
-  other_num_dead?: number;
-  other_num_missing?: number;
-  other_num_affected?: number;
-  other_num_displaced?: number;
+  other_num_potentially_affected: number | undefined;
+  other_num_highest_risk: number | undefined;
+  other_affected_pop_centres: number | undefined;
+  other_num_injured: number | undefined;
+  other_num_dead: number | undefined;
+  other_num_missing: number | undefined;
+  other_num_affected: number | undefined;
+  other_num_displaced: number | undefined;
 
-  epi_cases?: number;
-  epi_suspected_cases?: number;
-  epi_probable_cases?: number;
-  epi_confirmed_cases?: number;
-  epi_num_dead?: number
-  epi_figures_source?: string;
-  epi_notes_since_last_fr?: string;
-  epi_cases_since_last_fr?: number;
-  epi_deaths_since_last_fr?: number;
+  epi_cases: number | undefined;
+  epi_suspected_cases: number | undefined;
+  epi_probable_cases: number | undefined;
+  epi_confirmed_cases: number | undefined;
+  epi_num_dead: number | undefined;
+  epi_figures_source: string | undefined;
+  epi_notes_since_last_fr: string | undefined;
+  epi_cases_since_last_fr: number | undefined;
+  epi_deaths_since_last_fr: number | undefined;
 
   // Date of Data for Epidemic
-  sit_fields_date?: string;
+  sit_fields_date: string | undefined;
 
   // Source details
-  other_sources?: string;
+  other_sources: string | undefined;
 
   // Risk analysis or Situational Overview
-  description?: string;
+  description: string | undefined;
 
 
   // ------------------------------------------
@@ -323,19 +323,19 @@ export interface FieldReportAPIFields {
   // ------------------------------------------
 
   // Assisted by Government
-  gov_num_assisted?: number;
+  gov_num_assisted: number | undefined;
 
   // Assisted by RCRC Movements
-  num_assisted?: number;
+  num_assisted: number | undefined;
 
   // Number of NS Staff Involved
-  num_localstaff?: number;
+  num_localstaff: number | undefined;
 
   // Number of NS Volunteers Involved
-  num_volunteers?: number;
+  num_volunteers: number | undefined;
 
   // Number of RCRC Partner Personnel Involved
-  num_expats_delegates?: number;
+  num_expats_delegates: number | undefined;
 
   actions_taken: {
     organization: OrganizationType;
@@ -343,34 +343,34 @@ export interface FieldReportAPIFields {
     actions: number[];
   }[]
 
-  notes_health?: string;
-  notes_ns?: string;
-  notes_socioeco?: string;
+  notes_health: string | undefined;
+  notes_ns: string | undefined;
+  notes_socioeco: string | undefined;
 
-  bulletin?: number;
-  actions_others?: string;
-  external_partners?: number[];
-  supported_activities?: number[];
+  bulletin: number | undefined;
+  actions_others: string | undefined;
+  external_partners: number[] | undefined;
+  supported_activities: number[] | undefined;
 
 
   // ------------------------------------------
   // Early Actions: Planned Interventions
   // ------------------------------------------
-  dref?: number;
-  dref_amount?: number;
-  appeal?: number;
-  appeal_amount?: number;
+  dref: number | undefined;
+  dref_amount: number | undefined;
+  appeal: number | undefined;
+  appeal_amount: number | undefined;
 
   // Rapid Response Personnel
-  fact?: number;
-  num_fact: number;
+  fact: number | undefined;
+  num_fact: number | undefined;
 
   // Emergency Response Units
-  ifrc_staff?: number;
-  num_ifrc_staff?: number;
+  ifrc_staff: number | undefined;
+  num_ifrc_staff: number | undefined;
 
-  forecast_based_action: number;
-  forecast_based_action_amount?: number;
+  forecast_based_action: number | undefined;
+  forecast_based_action_amount: number | undefined;
 
   // ------------------------------------------
   // Early Actions: Contacts
@@ -388,9 +388,27 @@ export interface FieldReportAPIFields {
 
 export function transformFormFieldsToAPIFields(formValues: FormType): FieldReportAPIFields {
   const {
+    status,
+    is_covid_report,
+    dtype,
+    event,
+    summary,
     country,
+    districts,
     start_date,
+    request_assistance,
+    ns_request_assistance,
 
+    epi_cases,
+    epi_suspected_cases,
+    epi_probable_cases,
+    epi_confirmed_cases,
+    epi_num_dead,
+    epi_cases_since_last_fr,
+    epi_deaths_since_last_fr,
+
+    epi_figures_source,
+    epi_notes_since_last_fr,
     sit_fields_date,
     other_sources,
     description,
@@ -426,7 +444,25 @@ export function transformFormFieldsToAPIFields(formValues: FormType): FieldRepor
     actions_fdrn_desc,
     actions_pns,
     actions_pns_desc,
+    bulletin,
     actions_others,
+
+    notes_health,
+    notes_ns,
+    notes_socioeco,
+    external_partners,
+    supported_activities,
+
+    dref,
+    dref_amount,
+    appeal,
+    appeal_amount,
+    fact,
+    num_fact,
+    ifrc_staff,
+    num_ifrc_staff,
+    forecast_based_action,
+    forecast_based_action_amount,
 
     contact_originator_name,
     contact_originator_title,
@@ -445,7 +481,7 @@ export function transformFormFieldsToAPIFields(formValues: FormType): FieldRepor
     contact_media_email,
     contact_media_phone,
 
-    ...otherFields
+    visibility,
   } = formValues;
 
   const actions_taken: FieldReportAPIFields['actions_taken'] = [];
@@ -561,13 +597,16 @@ export function transformFormFieldsToAPIFields(formValues: FormType): FieldRepor
   const other_num_displaced = num_displaced_source === SOURCE_OTHER? num_displaced : undefined;
 
   return {
-    ...otherFields,
-    start_date: isDefined(start_date) ? (new Date(start_date)).toISOString() : start_date,
-    sit_fields_date: isDefined(sit_fields_date) ? (new Date(sit_fields_date)).toISOString() : sit_fields_date,
-
-    actions_taken,
-    contacts,
+    status,
+    is_covid_report,
+    event,
+    summary,
     countries: [country],
+    districts,
+    dtype,
+    start_date: isDefined(start_date) ? (new Date(start_date)).toISOString() : start_date,
+    request_assistance,
+    ns_request_assistance,
 
     num_potentially_affected: rc_num_potentially_affected,
     num_highest_risk: rc_num_highest_risk,
@@ -577,12 +616,6 @@ export function transformFormFieldsToAPIFields(formValues: FormType): FieldRepor
     num_missing: rc_num_missing,
     num_affected: rc_num_affected,
     num_displaced: rc_num_displaced,
-
-    gov_num_assisted,
-    num_assisted,
-    num_localstaff,
-    num_volunteers,
-    num_expats_delegates,
 
     gov_num_potentially_affected,
     gov_num_highest_risk,
@@ -601,6 +634,50 @@ export function transformFormFieldsToAPIFields(formValues: FormType): FieldRepor
     other_num_missing,
     other_num_affected,
     other_num_displaced,
+
+    epi_cases,
+    epi_suspected_cases,
+    epi_probable_cases,
+    epi_confirmed_cases,
+    epi_num_dead,
+    epi_figures_source,
+    epi_notes_since_last_fr,
+    epi_cases_since_last_fr,
+    epi_deaths_since_last_fr,
+
+    sit_fields_date: isDefined(sit_fields_date) ? (new Date(sit_fields_date)).toISOString() : sit_fields_date,
+    other_sources,
+    description,
+
+    gov_num_assisted,
+    num_assisted,
+    num_localstaff,
+    num_volunteers,
+    num_expats_delegates,
+
+    actions_taken,
+    notes_health,
+    notes_ns,
+    notes_socioeco,
+
+    bulletin,
+    actions_others,
+    external_partners,
+    supported_activities,
+
+    dref,
+    dref_amount,
+    appeal,
+    appeal_amount,
+    fact,
+    num_fact,
+    ifrc_staff,
+    num_ifrc_staff,
+    forecast_based_action,
+    forecast_based_action_amount,
+
+    contacts,
+    visibility,
   };
 }
 
@@ -913,7 +990,7 @@ export function transformAPIFieldsToFormFields(apiValues: FieldReportAPIResponse
 
 
   return {
-    start_date: start_date.split('T')[0],
+    start_date: isDefined(start_date) ? start_date.split('T')[0] : start_date,
     summary,
     other_sources,
     dtype,

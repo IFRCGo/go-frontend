@@ -75,9 +75,17 @@ const getRequiredWithNonEmptyCondition = (key: keyof FormType) => (
   return undefined;
 };
 
+const validStatusCondition = (value: number | string | null | undefined) => {
+  if (value === STATUS_EARLY_WARNING || value === STATUS_EVENT) {
+    return undefined;
+  }
+
+  return 'Status should either be an Event or an Early Warning / Early Action';
+};
+
 export const schema: FormSchema = {
   fields: (value): FormSchemaFields => ({
-    status: [requiredCondition],
+    status: [requiredCondition, validStatusCondition],
     is_covid_report: [requiredCondition],
     dtype: [requiredCondition],
     event: [],

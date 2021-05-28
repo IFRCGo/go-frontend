@@ -1,12 +1,11 @@
 import React from 'react';
 
 export type AlertVariant = 'success' | 'warning' | 'danger' | 'info';
-export type AlertName = string;
 
-export const DEFAULT_ALERT_DISMISS_DURATION = 130000;
+export const DEFAULT_ALERT_DISMISS_DURATION = 3000;
 
 export interface AlertParams {
-  name: AlertName;
+  name: string;
   variant: AlertVariant;
   children: React.ReactNode;
   duration: number;
@@ -16,8 +15,8 @@ export interface AlertParams {
 export interface AlertContextProps {
   alerts: AlertParams[];
   addAlert: (p: AlertParams) => void;
-  removeAlert: (name: AlertName) => void;
-  updateAlert: (name: AlertName, params: Omit<AlertParams, 'name'>) => void;
+  removeAlert: (name: string) => void;
+  updateAlert: (name: string, params: Omit<AlertParams, 'name'>) => void;
 }
 
 const AlertContext = React.createContext<AlertContextProps>({

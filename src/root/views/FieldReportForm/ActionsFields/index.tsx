@@ -133,77 +133,80 @@ function ActionsFields(props: Props) {
         <InputSection
           title={strings.fieldsStep3CheckboxSectionsNSActionsEVTEPILabel}
           description={strings.fieldsStep3CheckboxSectionsNSActionsEVTEPIDescription}
+          oneColumn
+          multiRow
         >
-          <div>
-            <Checklist
-              name="actions_ntls"
-              onChange={onValueChange}
-              options={actionOptions.NTLS}
-              labelSelector={optionLabelSelector}
-              keySelector={numericOptionKeySelector}
-              value={value.actions_ntls}
-              error={error?.fields?.actions_ntls?.$internal}
-            />
-            <TextArea
-              label={strings.cmpActionDescriptionLabel}
-              name="actions_ntls_desc"
-              onChange={onValueChange}
-              value={value.actions_ntls_desc}
-              error={error?.fields?.actions_ntls_desc}
-              placeholder={strings.fieldsStep3CheckboxSectionsNSActionsEVTPlaceholder}
-            />
-          </div>
+          <Checklist
+            name="actions_ntls"
+            onChange={onValueChange}
+            options={actionOptions.NTLS}
+            labelSelector={optionLabelSelector}
+            keySelector={numericOptionKeySelector}
+            tooltipSelector={d => d.description}
+            value={value.actions_ntls}
+            error={error?.fields?.actions_ntls?.$internal}
+          />
+          <TextArea
+            label={strings.cmpActionDescriptionLabel}
+            name="actions_ntls_desc"
+            onChange={onValueChange}
+            value={value.actions_ntls_desc}
+            error={error?.fields?.actions_ntls_desc}
+            placeholder={strings.fieldsStep3CheckboxSectionsNSActionsEVTPlaceholder}
+          />
         </InputSection>
         <InputSection
           title={strings.fieldsStep3CheckboxSectionsFederationActionsEVTEPILabel}
           description={strings.fieldsStep3CheckboxSectionsFederationActionsEVTEPIDescription}
+          oneColumn
+          multiRow
         >
-          <div>
-            <Checklist
-              name="actions_fdrn"
-              onChange={onValueChange}
-              options={actionOptions.FDRN}
-              labelSelector={optionLabelSelector}
-              keySelector={numericOptionKeySelector}
-              value={value.actions_fdrn}
-              error={error?.fields?.actions_fdrn?.$internal}
-            />
-            <TextArea
-              label={strings.cmpActionDescriptionLabel}
-              name="actions_fdrn_desc"
-              onChange={onValueChange}
-              value={value.actions_fdrn_desc}
-              error={error?.fields?.actions_fdrn_desc}
-              placeholder={strings.fieldsStep3CheckboxSectionsFederationActionsEVTEPIEWPlaceholder}
-            />
-          </div>
+          <Checklist
+            name="actions_fdrn"
+            onChange={onValueChange}
+            options={actionOptions.FDRN}
+            labelSelector={optionLabelSelector}
+            keySelector={numericOptionKeySelector}
+            tooltipSelector={d => d.description}
+            value={value.actions_fdrn}
+            error={error?.fields?.actions_fdrn?.$internal}
+          />
+          <TextArea
+            label={strings.cmpActionDescriptionLabel}
+            name="actions_fdrn_desc"
+            onChange={onValueChange}
+            value={value.actions_fdrn_desc}
+            error={error?.fields?.actions_fdrn_desc}
+            placeholder={strings.fieldsStep3CheckboxSectionsFederationActionsEVTEPIEWPlaceholder}
+          />
         </InputSection>
         <InputSection
           title={strings.fieldsStep3CheckboxSectionsPNSActionsEVTLabel}
           description={strings.fieldsStep3CheckboxSectionsPNSActionsEVTEPIDescription}
+          oneColumn
+          multiRow
         >
-          <div>
-            <Checklist
-              name="actions_pns"
-              onChange={onValueChange}
-              options={actionOptions.PNS}
-              labelSelector={optionLabelSelector}
-              keySelector={numericOptionKeySelector}
-              value={value.actions_pns}
-              error={error?.fields?.actions_pns?.$internal}
-            />
-            <TextArea
-              label={strings.cmpActionDescriptionLabel}
-              name="actions_pns_desc"
-              onChange={onValueChange}
-              value={value.actions_pns_desc}
-              error={error?.fields?.actions_pns_desc}
-              placeholder={strings.fieldsStep3CheckboxSectionsPNSActionsEVTEPIEWPlaceholder}
-            />
-          </div>
+          <Checklist
+            name="actions_pns"
+            onChange={onValueChange}
+            options={actionOptions.PNS}
+            labelSelector={optionLabelSelector}
+            keySelector={numericOptionKeySelector}
+            tooltipSelector={d => d.description}
+            value={value.actions_pns}
+            error={error?.fields?.actions_pns?.$internal}
+          />
+          <TextArea
+            label={strings.cmpActionDescriptionLabel}
+            name="actions_pns_desc"
+            onChange={onValueChange}
+            value={value.actions_pns_desc}
+            error={error?.fields?.actions_pns_desc}
+            placeholder={strings.fieldsStep3CheckboxSectionsPNSActionsEVTEPIEWPlaceholder}
+          />
         </InputSection>
         <InputSection
-          title={strings.fieldReportFormInformationBulletinDescription}
+          title={strings.fieldReportFormInformationBulletinLabel}
           description={strings.fieldReportFormInformationBulletinDescription}
         >
           <RadioInput

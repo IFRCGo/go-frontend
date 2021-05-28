@@ -25,6 +25,7 @@ export interface Props<V, O, N> {
   checkboxListContainerClassName?: string;
   keySelector: (option: O) => V;
   labelSelector: (option: O) => React.ReactNode;
+  tooltipSelector?: (option: O) => string | undefined;
   disabled?: boolean;
   readOnly?: boolean;
 }
@@ -49,6 +50,7 @@ function Checklist<
     errorContainerClassName,
     disabled,
     readOnly,
+    tooltipSelector,
   } = props;
 
   const valueRef = React.useRef<V[]>(value ?? []);
@@ -81,7 +83,8 @@ function Checklist<
     label: labelSelector(option),
     onChange: handleChange,
     value: value ? value.findIndex(k => k === key) !== -1 : false,
-  }), [value, labelSelector, handleChange]);
+    tooltip: tooltipSelector ? tooltipSelector(option): undefined,
+  }), [value, labelSelector, handleChange, tooltipSelector]);
 
   return (
     <div

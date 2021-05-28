@@ -155,10 +155,10 @@ function NewFieldReportForm(props: Props) {
         <p>
           {strings.fieldReportFormRedirectMessage}
         </p>
-      ), true, 2000);
+      ), true, 3000);
       window.setTimeout(
         () => history.push(`/reports/${response?.id}`),
-        2000,
+        250,
       );
     },
     onFailure: ({ value: { messageForNotification, errors }}) => {

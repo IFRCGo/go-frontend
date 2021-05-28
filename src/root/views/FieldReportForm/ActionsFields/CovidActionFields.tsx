@@ -59,14 +59,6 @@ function CovidActionFields(props: Props) {
   } = props;
 
   const categoryGroupedOptions = React.useMemo(() => {
-    /*
-    const actionCategoryReverse = {
-      'Health': 'health',
-      'NS Institutional Strengthening': 'ns',
-      'Socioeconomic Interventions': 'socioeco',
-    };
-     */
-
     return listToGroupList(actionOptions, d => d.category, d => d) as {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       [key in CategoryType]: Action[];
@@ -127,44 +119,45 @@ function CovidActionFields(props: Props) {
         <InputSection
           title={strings.fieldsStep3CheckboxSectionsNSActionsEVTEPILabel}
           description={strings.fieldsStep3CheckboxSectionsNSActionsEVTEPIDescription}
+          oneColumn
+          multiRow
         >
-          <div>
-            {(Object.keys(categoryGroupedOptions) as CategoryType[]).map((category) => (
-              <div
-                className={styles.actionTaken}
-                key={category}
-              >
-                <div className={styles.category}>
-                  { category }
-                </div>
-                <Checklist
-                  name="actions_ntls"
-                  onChange={onValueChange}
-                  options={categoryGroupedOptions[category]}
-                  labelSelector={d => d.label}
-                  keySelector={d => d.value}
-                  value={value.actions_ntls}
-                  error={error?.fields?.actions_ntls?.$internal}
-                />
-                <TextArea
-                  label={strings.fieldsStep2NotesLabel}
-                  name={categoryNameToFieldNameMap[category]}
-                  onChange={onValueChange}
-                  value={value[categoryNameToFieldNameMap[category]]}
-                  error={error?.fields ? error.fields[categoryNameToFieldNameMap[category]] : undefined}
-                  placeholder={strings.fieldsStep3ActionsNotesPlaceholder}
-                />
+          {(Object.keys(categoryGroupedOptions) as CategoryType[]).map((category) => (
+            <div
+              className={styles.actionTaken}
+              key={category}
+            >
+              <div className={styles.category}>
+                { category }
               </div>
-            ))}
-            <TextArea
-              label={strings.cmpActionDescriptionLabel}
-              name="actions_ntls_desc"
-              onChange={onValueChange}
-              value={value.actions_ntls_desc}
-              error={error?.fields?.actions_ntls_desc}
-              placeholder={strings.fieldsStep3CheckboxSectionsNSActionsEPIEWPlaceholder}
-            />
-          </div>
+              <Checklist
+                name="actions_ntls"
+                onChange={onValueChange}
+                options={categoryGroupedOptions[category]}
+                labelSelector={d => d.label}
+                keySelector={d => d.value}
+                tooltipSelector={d => d.description}
+                value={value.actions_ntls}
+                error={error?.fields?.actions_ntls?.$internal}
+              />
+              <TextArea
+                label={strings.fieldsStep2NotesLabel}
+                name={categoryNameToFieldNameMap[category]}
+                onChange={onValueChange}
+                value={value[categoryNameToFieldNameMap[category]]}
+                error={error?.fields ? error.fields[categoryNameToFieldNameMap[category]] : undefined}
+                placeholder={strings.fieldsStep3ActionsNotesPlaceholder}
+              />
+            </div>
+          ))}
+          <TextArea
+            label={strings.cmpActionDescriptionLabel}
+            name="actions_ntls_desc"
+            onChange={onValueChange}
+            value={value.actions_ntls_desc}
+            error={error?.fields?.actions_ntls_desc}
+            placeholder={strings.fieldsStep3CheckboxSectionsNSActionsEPIEWPlaceholder}
+          />
         </InputSection>
         <InputSection
           title={strings.fieldsStep3CheckboxSectionsFederationActionsEVTEPILabel}
