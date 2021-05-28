@@ -6,8 +6,8 @@ import Header from '#components/header';
 import MobileHeader from '#components/mobile-header';
 import Footer from '#components/footer';
 import GlobalLoading from '#components/global-loading';
-// import GlobalHeaderBanner from '#components/global-header-banner';
 import SysAlerts from '#components/system-alerts';
+import AlertContainer from '#components/AlertContainer';
 
 import {
   GlobalLoadingContext,
@@ -38,7 +38,9 @@ function App(p) {
           <main className='page__body' role='main'>
             {p.children}
           </main>
-          <SysAlerts />
+          <AlertContainer>
+            <SysAlerts />
+          </AlertContainer>
           <Footer/>
         </div>
       </GlobalLoadingContext.Provider>

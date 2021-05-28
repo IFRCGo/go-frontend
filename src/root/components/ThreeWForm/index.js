@@ -10,20 +10,17 @@ import {
 } from '@togglecorp/toggle-form';
 import { MdDoneAll } from 'react-icons/md';
 
-import InputSection from '#components/draft/InputSection';
-import SelectInput from '#components/draft/SelectInput';
-import TextInput from '#components/draft/TextInput';
-import NumberInput from '#components/draft/NumberInput';
-import DateInput from '#components/draft/DateInput';
-import Checkbox from '#components/draft/Checkbox';
-import NonFieldError from '#components/draft/NonFieldError';
+import InputSection from '#components/InputSection';
+import SelectInput from '#components/SelectInput';
+import TextInput from '#components/TextInput';
+import NumberInput from '#components/NumberInput';
+import DateInput from '#components/DateInput';
+import Checkbox from '#components/Checkbox';
+import NonFieldError from '#components/NonFieldError';
 import TextOutput from '#components/text-output';
 import LanguageContext from '#root/languageContext';
 
-import useRequest, {
-  postRequestOptions,
-  transformServerError,
-} from '#hooks/useRequest';
+import { useLazyRequest } from '#utils/restRequest';
 
 import {
   schema,
@@ -57,24 +54,22 @@ function ThreeWForm(props) {
     onValueSet,
   } = useForm(defaultFormValues, schema);
 
-  const [submitRequestPending, ,submitRequest] = useRequest(
-    'api/v2/project/',
-    postRequestOptions,
-    {
-      lazy: true,
-      onSuccess: onSubmitSuccess,
-      onFailure: (result) => {
-        transformServerError(result, onErrorSet);
-      },
+  const {
+    pending: submitRequestPending,
+    trigger: submitRequest,
+  } = useLazyRequest({
+    url: 'api/v2/project/',
+    method: 'POST',
+    body: ctx => ctx,
+    onSuccess: onSubmitSuccess,
+    onFailure: ({ value: { formErrors } }) => {
+      onErrorSet(formErrors);
     },
-  );
+  });
 
   const handleSubmit = React.useCallback((finalValues) => {
     onValueSet(finalValues);
-    submitRequest({
-      ...postRequestOptions,
-      body: JSON.stringify(finalValues),
-    });
+    submitRequest(finalValues);
   }, [onValueSet, submitRequest]);
 
   const {
@@ -181,6 +176,14 @@ function ThreeWForm(props) {
       onValueChange([], 'project_districts');
     }
   }, [onValueChange, value.project_country]);
+
+  React.useEffect(() => {
+    onValueChange(value.budget_amount, 'actual_expenditure');
+  }, [onValueChange, value.budget_amount]);
+
+  React.useEffect(() => {
+    onValueChange(value.actual_expenditure, 'budget_amount');
+  }, [onValueChange, value.actual_expenditure]);
 
   const handleSelectAllDistrictButtonClick = React.useCallback(() => {
     const allDistricts = districtOptions.map(d => d.value);
@@ -450,8 +453,8 @@ function ThreeWForm(props) {
         </div>
       </InputSection>
       <InputSection
-        title={strings.projectFormPeopleTageted}
         description={strings.projectFormPeopleTagetedHelpText}
+        title={strings.projectFormPeopleTageted}
         tooltip={strings.projectFormPeopleTagetedTooltip}
       >
         <NumberInput

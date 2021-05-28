@@ -150,7 +150,7 @@ function ThreeW (p) {
 
   const handleCloneButtonClick = React.useCallback((project) => {
     const {
-      id,
+      id, // eslint-disable-line @typescript-eslint/no-unused-vars
       ...otherDetails
     } = project;
 

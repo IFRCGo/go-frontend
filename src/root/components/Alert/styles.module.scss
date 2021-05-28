@@ -1,0 +1,42 @@
+@import '~styles/settings/variables';
+
+.alert {
+  padding: $spacing;
+  background-color: $grey-cement;
+  color: $color-text-on-dark;
+  display: flex;
+  align-items: flex-start;
+  border-radius: $base-border-radius;
+  width: $width-alert;
+
+  .close-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .icon {
+    font-size: 1.4em;
+  }
+
+  .content {
+    flex-direction: column;
+    align-items: initial;
+  }
+
+  p {
+    margin: 0;
+  }
+
+  &.success {
+    background-color: $success-color;
+  }
+
+  &.danger {
+    background-color: $danger-color;
+  }
+
+  &.warning {
+    background-color: $warning-color;
+  }
+}

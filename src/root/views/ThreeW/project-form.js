@@ -54,13 +54,6 @@ const positiveIntegerCondition = (value) => {
   };
 };
 
-/*
-const statusOptions = statusList.map(p => ({
-  value: p.key,
-  label: p.title,
-})).sort(compareString);
-*/
-
 const sectorOptions = sectorList.map(p => ({
   value: p.inputValue,
   label: p.title,
@@ -881,7 +874,7 @@ class ProjectForm extends React.PureComponent {
 
 ProjectForm.contextType = LanguageContext;
 
-const selector = (state, ownProps) => ({
+const selector = (state) => ({
   countries: allCountriesSelector(state),
   districts: state.districts,
   eventList: state.event ? state.event.eventList : undefined,

@@ -1,0 +1,34 @@
+@import '~styles/settings/variables';
+
+.input-container {
+  padding: $spacing/2 $spacing;
+
+  .input-section {
+    display: flex;
+    align-items: center;
+    border: $base-border-width solid $base-border-color;
+    border-radius: $base-border-radius;
+    transition: $duration-transition-medium border-color ease-in-out;
+
+    .internal-input-container {
+      flex-grow: 1;
+    }
+
+    &:focus-within {
+      border-color: $color-text-light;
+    }
+  }
+
+  &.errored {
+    .input-section {
+      border-left-width: 4px;
+      border-left-color: $danger-color;
+    }
+  }
+
+  &.disabled {
+    .input-section {
+      opacity: .5;
+    }
+  }
+}

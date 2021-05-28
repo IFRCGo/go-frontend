@@ -32,7 +32,9 @@ class SelectInput extends React.PureComponent {
     const {
       label,
       className,
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       onChange, // capturing
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       name,     // capturing
       value: valueFromProp,
       options,

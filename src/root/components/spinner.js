@@ -1,6 +1,6 @@
 import React from 'react';
 
-function Spinner (p) {
+function Spinner () {
   return (
     <div className='spinner'>
       <div className='spinner__bounce'></div>

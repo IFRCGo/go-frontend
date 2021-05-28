@@ -1,0 +1,37 @@
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "esnext",
+    "moduleResolution": "node",
+    "skipLibCheck": true,
+    "allowJs": true,
+    "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true,
+    "noEmit": true,
+    "strict": true,
+    "isolatedModules": true,
+    "esModuleInterop": true,
+    "experimentalDecorators": true,
+    "jsx": "react",
+    "rootDir": "./src",
+    "baseUrl": ".",
+    "paths": {
+      "#actions/*": ["./src/root/actions/*"],
+      "#components/*": ["./src/root/components/*"],
+      "#config": ["./src/root/config"],
+      "#hooks/*": ["./src/root/hooks/*"],
+      "#lang": ["./src/root/lang"],
+      "#selectors/*": ["./src/root/selectors/*"],
+      "#utils/*": ["./src/root/utils/*"],
+      "#views/*": ["./src/root/views/*"],
+      "#root/*": ["./src/root/*"]
+    }
+  },
+  "include": [
+    "src"
+  ],
+  "rules": {
+    "no-unused-vars": "warn"
+  }
+}
+

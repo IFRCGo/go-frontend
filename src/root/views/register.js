@@ -63,7 +63,7 @@ class Register extends React.Component {
         position: undefined,
         phoneNumber: undefined,
 
-        contact: [0, 1].map(o => ({ name: undefined, email: undefined }))
+        contact: [0, 1].map(() => ({ name: undefined, email: undefined }))
       },
       whitelist: [],
       nationalSocieties: [],

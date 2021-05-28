@@ -9,9 +9,10 @@ module.exports = {
     "react-hooks",
     "import",
   ],
-  "parser": "babel-eslint",
+  // "parser": "babel-eslint",
+  "parser": "@typescript-eslint/parser",
   "parserOptions": {
-    "ecmaVersion": 6,
+    "ecmaVersion": 2018,
     "sourceType": "module",
     "allowImportExportEverywhere": true,
     "ecmaFeatures": {
@@ -21,13 +22,33 @@ module.exports = {
   },
   "settings": {
     "import/resolver": {
-      "babel-module": {},
+      "babel-module": {
+        "root": ['.'],
+        "extensions": ['.js', '.jsx', '.ts', '.tsx'],
+        "alias": {
+          "#actions": "./src/root/actions",
+          "#components": "./src/root/components",
+          "#config": "./src/root/config",
+          "#hooks": "./src/root/hooks",
+          "#lang": "./src/root/lang",
+          "#selectors": "./src/root/selectors",
+          "#utils": "./src/root/utils",
+          "#views": "./src/root/views",
+          "#root": "./src/root",
+        }
+      },
     },
     "react": {
       "version": "detect"
     }	
   },
   "rules": {
+    // NOTE: We must disable the base rule as it can report incorrect errors
+    "no-use-before-define": "off",
+    "no-unused-vars": "off",
+    "@typescript-eslint/no-use-before-define": "off",
+    "@typescript-eslint/no-unused-vars": "warn",
+
     "semi": [2, "always"],
     "no-extra-semi": 2,
     "semi-spacing": [2, { "before": false, "after": true }],
@@ -57,5 +78,8 @@ module.exports = {
     "jsx-a11y/anchor-has-content": 0,
     "react/jsx-no-target-blank": 0,
     "react/prop-types": 0,
+
+    'react-hooks/rules-of-hooks': 'error',
+    'react-hooks/exhaustive-deps': 'warn',
   },
 };

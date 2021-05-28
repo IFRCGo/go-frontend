@@ -12,7 +12,7 @@ import {
   requiredStringCondition,
 } from '@togglecorp/toggle-form';
 
-import useRequest from '#hooks/useRequest';
+import { useRequest } from '#utils/restRequest';
 import { compareString } from '#utils/utils';
 import {
   statuses,
@@ -53,20 +53,6 @@ const programmeTypeOptions = programmeTypeList.map(p => ({
 const operationTypeOptions = [...operationTypeList].sort(compareString);
 const projectVisibilityOptions = [...projectVisibilityList].sort(compareString);
 
-const buildUrl = (url, queryParams={}) => {
-  const queryKeys = Object.keys(queryParams);
-
-  if (queryKeys.length === 0) {
-    return url;
-  }
-
-  const queryString = queryKeys.map((key) => (
-    isDefined(queryParams[key]) ? `${key}=${queryParams[key]}` : ''
-  )).join('&');
-
-  return `${url}?${queryString}`;
-};
-
 function positiveIntegerCondition(value) {
   return (value === undefined || value === '')
     || (
@@ -94,6 +80,7 @@ const generateValidEndDateCondition = (start) => (end) => {
 export const schema = {
   fields: (value) => {
     const schema = {
+      actual_expenditure: [requiredCondition, positiveIntegerCondition],
       budget_amount: [requiredCondition, positiveIntegerCondition],
       dtype: [requiredCondition],
       end_date: [requiredCondition, generateValidEndDateCondition(value.start_date)],
@@ -142,14 +129,18 @@ export const schema = {
   },
 };
 
+const limitQuery = {
+  limit: 500,
+};
 
-export function useThreeWOptions (value) {
-  const [
-    fetchingCountries,
-    countriesResponse,
-  ] = useRequest(
-    buildUrl('api/v2/country', { limit: 500 })
-  );
+export function useThreeWOptions(value) {
+  const {
+    pending: fetchingCountries,
+    response: countriesResponse,
+  } = useRequest({
+    url: 'api/v2/country/',
+    query: limitQuery,
+  });
 
   const [
     nationalSocietyOptions,
@@ -176,17 +167,28 @@ export function useThreeWOptions (value) {
     return [ns, c];
   }, [countriesResponse]);
 
-  const [
-    fetchingDistricts,
-    districtsResponse,
-  ] = useRequest(
-    value.project_country ? (
-      buildUrl('api/v2/district', {
-        country: value.project_country,
-        limit: 500,
-      })
-    ) : ''
-  );
+  const projectCountryQuery = React.useMemo(() => ({
+    country: value.project_country,
+    limit: 500,
+  }), [value.project_country]);
+
+  const {
+    pending: fetchingDistricts,
+    response: districtsResponse,
+  } = useRequest({
+    skip: !value.project_country,
+    url: 'api/v2/district/',
+    query: projectCountryQuery,
+  });
+
+  const {
+    pending: fetchingEvents,
+    response: eventsResponse,
+  } = useRequest({
+    skip: !value.project_country,
+    url: 'api/v2/event/mini/',
+    query: projectCountryQuery,
+  });
 
   const districtOptions = React.useMemo(() => (
     districtsResponse?.results.map(d => ({
@@ -194,18 +196,6 @@ export function useThreeWOptions (value) {
       label: d.name,
     })).sort(compareString) ?? emptyList
   ), [districtsResponse]);
-
-  const [
-    fetchingEvents,
-    eventsResponse,
-  ] = useRequest(
-    value.project_country ? (
-      buildUrl('api/v2/event/mini/', {
-        countries__in: value.project_country,
-        limit: 500,
-      })
-    ) : ''
-  );
 
   const [
     currentOperationOptions,
@@ -238,10 +228,12 @@ export function useThreeWOptions (value) {
   }, [eventsResponse]);
 
 
-  const [
-    fetchingDisasterTypes,
-    disasterTypesResponse,
-  ] = useRequest('api/v2/disaster_type');
+  const {
+    pending: fetchingDisasterTypes,
+    response: disasterTypesResponse,
+  } = useRequest({
+    url: 'api/v2/disaster_type/',
+  });
 
   const disasterTypeOptions = React.useMemo(() => {
     if (!(disasterTypesResponse?.results?.length > 0)) {

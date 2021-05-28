@@ -4,25 +4,40 @@ import { Provider } from 'react-redux';
 import store from '#utils/store';
 import { detectIE } from '#utils/ie';
 
+import { RequestContext } from '#utils/restRequest';
+import {
+  processGoUrls,
+  processGoOptions,
+  processGoError,
+  processGoResponse,
+} from '#utils/restRequest/go';
+
 import LanguageContext from '#root/languageContext';
 import lang from '#lang';
 import Multiplexer from './Multiplexer';
 
 require('isomorphic-fetch');
 
+const requestContextValue = {
+  transformUrl: processGoUrls,
+  transformOptions: processGoOptions,
+  transformResponse: processGoResponse,
+  transformError: processGoError,
+};
+
 function Root () {
   const [strings, setStrings] = React.useState(lang);
-  const contextValue = React.useMemo(() => {
-    return {
-      strings,
-      setStrings,
-    };
-  }, [strings, setStrings]);
+  const langContextValue = React.useMemo(() => ({
+    strings,
+    setStrings,
+  }), [strings, setStrings]);
 
   return (
     <Provider store={store}>
-      <LanguageContext.Provider value={contextValue}>
-        <Multiplexer />
+      <LanguageContext.Provider value={langContextValue}>
+        <RequestContext.Provider value={requestContextValue}>
+          <Multiplexer />
+        </RequestContext.Provider>
       </LanguageContext.Provider>
     </Provider>
   );

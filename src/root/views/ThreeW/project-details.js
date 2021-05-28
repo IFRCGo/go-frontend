@@ -240,7 +240,7 @@ class ProjectDetails extends React.PureComponent {
 
 ProjectDetails.contextType = LanguageContext;
 
-const selector = (state, ownProps) => ({
+const selector = (state) => ({
   eventDetails: state.event ? state.event.event : undefined,
   disasterTypesSelect: disasterTypesSelectSelector(state)
 });

@@ -927,7 +927,7 @@ if (environment !== 'production') {
 // /////////////////////////////////////////////////////////////////// //
 // Connect functions
 
-const selector = (state, ownProps) => ({
+const selector = (state) => ({
   user: state.user.data,
   profile: state.profile,
   fieldReport: state.fieldReport,

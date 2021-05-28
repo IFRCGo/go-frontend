@@ -1,0 +1,28 @@
+.select-input {
+  &.disabled {
+    :global {
+      .go-input-internal-input-section {
+        opacity: 1;
+      }
+    }
+  }
+}
+
+.select {
+  :global {
+    .go__control {
+      border: 0;
+      box-shadow: unset;
+
+      &.go__control--is-focused {
+        border: 0;
+        box-shadow: unset;
+
+        &:hover {
+          border: 0;
+          box-shadow: unset;
+        }
+      }
+    }
+  }
+}

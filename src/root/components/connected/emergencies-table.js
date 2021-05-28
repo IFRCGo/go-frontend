@@ -31,7 +31,7 @@ import { disasterTypesSelectSelector } from '#selectors';
 import styles from './styles.module.scss';
 
 function ExportAllEmergenciesButton({ className }) {
-  const component = useExportButton('api/v2/event', 'emergencies', className);
+  const component = useExportButton('api/v2/event/', 'emergencies', className);
 
   return component;
 }
@@ -114,7 +114,7 @@ class EmergenciesTable extends SFPComponent {
     return qs;
   }
 
-  updateData (what) {
+  updateData () {
     this.requestResults(this.props);
   }
 

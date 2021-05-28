@@ -21,7 +21,7 @@ export default function BreadCrumb ({
           <BreadcrumbsItem order={i} key={crumb.name} to={crumb.link} className='breadcrumb'>{crumb.name}</BreadcrumbsItem>
         ))}
         <Breadcrumbs
-          separator={<span className="breadcrumb__next"> > </span>}
+          separator={<span className="breadcrumb__next"> &gt; </span>}
           breadcrumbContainerClass={breadcrumbContainerClass}
           item={NavLink}
           compare={(a,b) => b.order - a.order}

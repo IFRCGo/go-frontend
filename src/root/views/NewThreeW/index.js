@@ -1,8 +1,8 @@
 import React from 'react';
-import Page from '#components/draft/Page';
+import Page from '#components/Page';
 
 import BreadCrumb from '#components/breadcrumb';
-import Container from '#components/draft/Container';
+import Container from '#components/Container';
 import ThreeWForm from '#components/ThreeWForm';
 
 import LanguageContext from '#root/languageContext';
@@ -13,9 +13,7 @@ function NewThreeW(props) {
   const handleSubmitSuccess = React.useCallback((result) => {
     if (props.history?.push) {
       const {
-        responseBody: {
-          project_country: countryId,
-        },
+        project_country: countryId,
       } = result;
 
       props.history.push(`/countries/${countryId}#3w`);

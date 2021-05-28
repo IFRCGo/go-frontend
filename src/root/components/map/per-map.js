@@ -120,11 +120,11 @@ class PerMap extends React.Component {
       this.showOperationsPopover(theMap, e.features[0]);
     });
 
-    theMap.on('mousemove', 'mapboxPoint', e => {
+    theMap.on('mousemove', 'mapboxPoint', () => {
       theMap.getCanvas().style.cursor = 'pointer';
     });
 
-    theMap.on('mouseleave', 'mapboxPoint', e => {
+    theMap.on('mouseleave', 'mapboxPoint', () => {
       theMap.getCanvas().style.cursor = '';
     });
 

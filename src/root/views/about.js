@@ -435,7 +435,7 @@ function About (props) {
 }
 
 About.contextType = LanguageContext;
-const selector = (state, ownProps) => ({
+const selector = (state) => ({
   mainContacts: state.mainContacts
 });
 

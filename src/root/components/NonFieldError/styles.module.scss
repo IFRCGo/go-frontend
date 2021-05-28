@@ -1,0 +1,22 @@
+@import '~styles/settings/variables';
+
+.non-field-error {
+  color: $danger-color;
+  font-weight: $base-font-bold;
+  padding: $spacing;
+
+  animation: flash $duration-animation-fast 5 ease-in-out;
+  animation-delay: $duration-animation-medium;
+}
+
+@keyframes flash {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+  100% {
+    opacity: 1;
+  }
+}

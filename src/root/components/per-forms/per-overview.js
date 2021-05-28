@@ -512,7 +512,7 @@ if (environment !== 'production') {
   };
 }
 
-const selector = (state, ownProps) => ({
+const selector = (state) => ({
   user: state.user.data,
   perAreas: state.perAreas,
   perForm: state.perForm,

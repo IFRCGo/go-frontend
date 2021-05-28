@@ -245,7 +245,7 @@ if (environment !== 'production') {
   };
 }
 
-const selector = (state, ownProps) => ({
+const selector = (state) => ({
   disasterTypesSelect: disasterTypesSelectSelector(state)
 });
 
