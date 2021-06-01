@@ -7,6 +7,7 @@ This release includes important refactors on the frontend, better error handling
  - Complete overhaul / refactor of Field Report form code, adding stability going forward, and improving architecture for forms: #1898
  - Refactors to request handling code on the frontend, to support improved loading behaviour and error handling: #1897
  - Improve UI for error messaging: #1556
+ - Add new ERU types to the frontend: https://github.com/IFRCGo/go-api/issues/1085
 
 ##### Backend
 
