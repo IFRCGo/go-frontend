@@ -5,7 +5,7 @@ import {
   EntriesAsList,
 } from '@togglecorp/toggle-form';
 
-import Header from '#components/header';
+import Header from '#components/Header';
 import Container from '#components/Container';
 import InputSection from '#components/InputSection';
 import NumberInput from '#components/NumberInput';
