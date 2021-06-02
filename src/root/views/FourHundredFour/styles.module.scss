@@ -1,0 +1,90 @@
+@import '~styles/settings/_variables.scss';
+
+.four-hundred-four {
+  .main {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    flex-direction: column;
+
+    .top-section {
+      .heading {
+        display: flex;
+        flex-direction: column;
+        font-size: 3rem;
+        position: relative;
+        padding: $spacing*2;
+
+        .icons {
+          display: flex;
+          align-items: flex-start;
+
+          .search-icon {
+            font-size: 6rem;
+          }
+
+          .error-code-container {
+            position: relative;
+
+            .dots-icon {
+              font-size: 2rem;
+            }
+
+            .error-code {
+              padding: $spacing;
+              position: absolute;
+              top: -1em;
+              left: 50%;
+              background-color: $primary-color;
+              color: $color-text-on-dark;
+              font-size: $font-size-lg;
+              margin: 0;
+              padding: 0 $spacing;
+              border-radius: 1em;
+              transform: translate(-50%, -50%);
+
+              &:after {
+                content: '';
+                width: 10px;
+                height: 6px;
+                bottom: -5px;
+                clip-path: polygon(0% 0%, 100% 0%, 50% 100%);
+                background-color: $primary-color;
+                position: absolute;
+                left: 50%;
+                transform: translateX(-50%);
+              }
+            }
+          }
+        }
+      }
+
+      .description {
+        text-align: center;
+        font-weight: $base-font-medium;
+        font-size: $font-size-lg;
+      }
+    }
+
+    .bottom-section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      color: $color-text-light;
+      text-align: center;
+
+      .description {
+        padding: $spacing*2 0;
+      }
+
+      .text {
+        font-weight: $base-font-medium;
+        padding: $spacing/4 0;
+      }
+
+      .contact-link {
+        text-decoration: underline;
+      }
+    }
+  }
+}

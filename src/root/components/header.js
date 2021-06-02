@@ -74,21 +74,35 @@ function Header (props) {
                   }
                   dropdownContainerClassName='header-menu-dropdown'
                 >
-                  <ul className='drop__menu drop__menu--select drop__menu__field__report' role='menu'>
-                    <li className='drop__menu-item'>
-                      <Link to='/reports/new'>{strings.headerDropdownNewFieldReport}</Link>
-                    </li>
-                    <li className='drop__menu-item'>
-                      <a href='https://eenew.ifrc.org/single/y300V3lY?returnURL=https://go.ifrc.org/emergencies/3972#actions' target='_blank'>
+                  <div className='drop__menu drop__menu--select drop__menu__field__report' role='menu'>
+                    <Link
+                      to='/reports/new'
+                      className='drop__menu-item'
+                    >
+                        {strings.headerDropdownNewFieldReport}
+                    </Link>
+                    <a
+                      href='https://eenew.ifrc.org/single/y300V3lY?returnURL=https://go.ifrc.org/emergencies/3972#actions'
+                      target='_blank'
+                      className='drop__menu-item'
+                    >
                         {strings.headerDropdownCovid19IndicatorTracking}
-                      </a>
-                    </li>
-                    <li className='drop__menu-item'>
-                      <a href='https://eenew.ifrc.org/single/VmcTHDMh?returnURL=https://go.ifrc.org/emergencies/3972#actions' target='_blank'>
-                        {strings.headerDropdownCovid19NSFinancialOverview}
-                      </a>
-                    </li>                                        
-                  </ul>
+                    </a>
+                    <a
+                      className='drop__menu-item'
+                      href='https://eenew.ifrc.org/single/VmcTHDMh?returnURL=https://go.ifrc.org/emergencies/3972#actions'
+                      target='_blank'
+                    >
+                      {strings.headerDropdownCovid19NSFinancialOverview}
+                    </a>
+                    <Link
+                      to='/three-w/new'
+                      className='drop__menu-item'
+                    >
+                      {/* FIXME: use strings */}
+                      New 3W project
+                    </Link>
+                  </div>
                 </DropdownMenu>
               </nav>
             </div>

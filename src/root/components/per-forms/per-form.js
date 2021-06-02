@@ -140,7 +140,7 @@ function PerForm (props) {
                 </FormInput>
               </div>
             )) : null;
-  
+
           return (
             <React.Fragment key={comp.id}>
               {componentHeader}
@@ -159,7 +159,7 @@ if (environment !== 'production') {
   };
 }
 
-const selector = (state, ownProps) => ({
+const selector = (state) => ({
   user: state.user.data,
   perForm: state.perForm,
   perComponents: state.perComponents,

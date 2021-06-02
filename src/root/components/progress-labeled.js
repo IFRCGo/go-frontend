@@ -4,7 +4,7 @@ import { PropTypes as T } from 'prop-types';
 import { environment } from '#config';
 import { round } from '#utils/format';
 
-const Progress = ({max, value, children}) => {
+const Progress = ({max, value}) => {
   value = round(value, 2);
   return (
     <div className='progress-bar-container'>

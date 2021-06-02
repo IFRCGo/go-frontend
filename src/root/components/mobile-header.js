@@ -125,6 +125,15 @@ class MobileHeader extends React.PureComponent {
                       {strings.headerDropdownCovid19NSFinancialOverview}
                     </a>
                   </li>
+                  <li className='drop__menu-item'>
+                    <Link
+                      to='/three-w/new'
+                      className='drop__menu-item'
+                    >
+                      {/* FIXME: use strings */}
+                      New 3W Activity
+                    </Link>
+                  </li>
                 </ul>
               </DropdownMenu>
               <button className='button button--small button--close button--text-hidden' onClick={this.toggleMenu}>

@@ -81,7 +81,7 @@ function ExportButton (p) {
       disabled={pending}
     >
       <span className='f-icon-download font-size-sm spacing-half-r'></span>
-      { pending ?        
+      { pending ?
         <Translate stringId='exportButtonExporting'/> :
         <Translate stringId='exportButtonExport'/>
       }
@@ -89,7 +89,7 @@ function ExportButton (p) {
   );
 }
 
-const mapStateToProps = (state, props) => ({
+const mapStateToProps = (state) => ({
   projectsResponse: regionalProjectsSelector(state),
 });
 

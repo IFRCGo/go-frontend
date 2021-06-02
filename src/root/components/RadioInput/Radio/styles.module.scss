@@ -1,0 +1,51 @@
+@import '~styles/settings/variables';
+
+.radio {
+  --cursor: default;
+  display: flex;
+  align-items: flex-start;
+  cursor: var(--cursor);
+  padding: $spacing / 2;
+
+  .icon {
+    font-size: 1.6em;
+    transition: $duration-transition-medium color ease-in-out;
+  }
+
+  .children {
+    flex-direction: column;
+    align-items: flex-start;
+
+    .description {
+      color: $color-text-light;
+      font-size: $font-size-xs;
+    }
+  }
+
+  .input {
+    display: none;
+  }
+
+  &.active {
+    .icon {
+      color: $primary-color;
+    }
+  }
+
+  &.disabled {
+    opacity: $opacity-disabled-element;
+  }
+
+  &:not(.disabled) {
+    &:focus,
+    &:hover {
+      .icon {
+        color: $primary-color;
+      }
+    }
+
+    &:not(.read-only) {
+      --cursor: pointer;
+    }
+  }
+}

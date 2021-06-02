@@ -8,7 +8,7 @@ import LanguageContext from '#root/languageContext';
 
 import DisplayTable from '#components/display-table';
 
-function PerTable ({regionId, countries}) {
+function PerTable ({countries}) {
   const { strings } = useContext(LanguageContext);
 
   // Must pass headings (with matching 'id's) to DisplayTable for the columns to show up at all
@@ -87,8 +87,8 @@ if (environment !== 'production') {
   };
 }
 
-const selector = (state, ownProps) => ({});
+const selector = () => ({});
 
-const dispatcher = (dispatch) => ({});
+const dispatcher = () => ({});
 
 export default connect(selector, dispatcher)(PerTable);

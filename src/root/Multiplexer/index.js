@@ -1,11 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { unique } from '@togglecorp/fujs';
 
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { BreadcrumbsProvider } from 'react-breadcrumbs-dynamic';
 
 import PrivateRoute from '#components/PrivateRoute';
 import AnonymousRoute from '#components/AnonymousRoute';
+import AlertContext from '#components/AlertContext';
 
 import {
   getMe as getUserAction,
@@ -33,8 +35,7 @@ import Register from '#views/register';
 import RecoverAccount from '#views/recover-account';
 import RecoverUsername from '#views/recover-username';
 import ResendValidation from '#views/resend-validation';
-import UhOh from '#views/uhoh';
-import FieldReportForm from '#views/field-report-form/';
+import FourHundredFour from '#views/FourHundredFour';
 import FieldReport from '#views/field-report';
 import Emergencies from '#views/emergencies';
 import Emergency from '#views/emergency';
@@ -48,6 +49,8 @@ import PerAssessment from '#views/per-assessment';
 import Preparedness from '#views/preparedness';
 import TranslationDashboard from '#views/TranslationDashboard';
 import ClearInitCache from '#views/ClearInitCache';
+import NewThreeW from '#views/NewThreeW';
+import FieldReportForm from '#views/FieldReportForm';
 
 import styles from './styles.module.scss';
 
@@ -70,6 +73,56 @@ function Multiplexer(props) {
 
   const languageRef = React.useRef(currentLanguage);
   const [skipUserDetails, setSkipUserDetails] = React.useState(false);
+
+  const [alerts, setAlerts] = React.useState([]);
+
+  const addAlert = React.useCallback((alert) => {
+    setAlerts((prevAlerts) => unique(
+      [...prevAlerts, alert],
+      a => a.name
+    ) ?? prevAlerts);
+  }, [setAlerts]);
+
+  const removeAlert = React.useCallback((name) => {
+    setAlerts((prevAlerts) => {
+      const i = prevAlerts.findIndex(a => a.name === name);
+      if (i === -1) {
+        return prevAlerts;
+      }
+
+      const newAlerts = [...prevAlerts];
+      newAlerts.splice(i, 1);
+
+      return newAlerts;
+    });
+  }, [setAlerts]);
+
+  const updateAlert = React.useCallback((name, children) => {
+    setAlerts((prevAlerts) => {
+      const i = prevAlerts.findIndex(a => a.name === name);
+      if (i === -1) {
+        return prevAlerts;
+      }
+
+      const updatedAlert = {
+        ...prevAlerts[i],
+        children,
+      };
+
+      const newAlerts = [...prevAlerts];
+      newAlerts.splice(i, 1, updatedAlert);
+
+      return newAlerts;
+    });
+  }, [setAlerts]);
+
+  const alertContextValue = React.useMemo(() => ({
+    alerts,
+    addAlert,
+    updateAlert,
+    removeAlert,
+  }), [alerts, addAlert, updateAlert, removeAlert]);
+
 
   React.useEffect(() => {
     getLanguage(languageRef.current);
@@ -148,46 +201,49 @@ function Multiplexer(props) {
   }
 
   return (
-    <Router>
-      <BreadcrumbsProvider>
-        <Switch>
-          <Route exact path='/' component={Home}/>
-          <Route path='/clear-init-cache' component={ClearInitCache} />
-          <Route exact path='/covid19-3w-sankey' component={Covid19ThreeWSankey}/>
-          <PrivateRoute exact path='/translation-dashboard' component={TranslationDashboard}/>
-          <Route exact path='/about' component={About}/>
-          <PrivateRoute exact path='/account' component={Account}/>
-          <PrivateRoute exact path='/account/password-change' component={PasswordChange}/>
-          <Route exact path='/appeals/all' render={props => <Table {...props} type='appeal' />} />
-          <AnonymousRoute exact path='/login' component={Login}/>
-          <AnonymousRoute exact path='/register' component={Register}/>
-          <AnonymousRoute exact path='/recover-account' component={RecoverAccount}/>
-          <AnonymousRoute exact path='/recover-account/:username/:token' component={RecoverAccount}/>
-          <AnonymousRoute exact path='/recover-username' component={RecoverUsername}/>
-          <AnonymousRoute exact path='/resend-validation' component={ResendValidation} />
-          <PrivateRoute exact path='/reports/new' component={FieldReportForm}/>
-          <Route exact path='/reports/all' render={props => <Table {...props} type='report' />} />
-          <PrivateRoute exact path='/reports/:id/edit' component={FieldReportForm}/>
-          <Route exact path='/reports/:id' component={FieldReport}/>
-          <Route exact path='/emergencies' component={Emergencies}/>
-          <Route exact path='/emergencies/all' render={props => <Table {...props} type='emergency' />} />
-          <Route exact path='/emergencies/:id' component={Emergency}/>
-          <Route exact path='/regions/:id' render={props => <Region {...props} type='region' />} />
-          <Route exact path='/countries/:id' render={props => <Country {...props} type='country' />} />
-          <Route exact path='/alerts/all' render={props => <Table {...props} type='alert' />} />
-          <PrivateRoute exact path='/deployments' component={Deployments}/>
-          <PrivateRoute exact path='/deployments/personnel/all' render={props => <Table {...props} type='personnel' />} />
-          <PrivateRoute exact path='/deployments/erus/all' render={props => <Table {...props} type='eru' />} />
-          <Route exact path='/per-form/:form_id' component={PerForm} />
-          <Route exact path='/per-form/:form_id/edit' render={props => <PerForm {...props} isEdit={true} />} />
-          <Route path='/per-assessment/create' render={props => <PerAssessment {...props} isCreate={true} />} />
-          <Route exact path='/per-assessment/:id' component={PerAssessment} />
-          <Route exact path='/per-assessment/:id/edit' render={props => <PerAssessment {...props} isEdit={true} />} />
-          <Route path='/preparedness' component={Preparedness} />
-          <Route component={UhOh}/>
-        </Switch>
-      </BreadcrumbsProvider>
-    </Router>
+    <AlertContext.Provider value={alertContextValue}>
+      <Router>
+        <BreadcrumbsProvider>
+          <Switch>
+            <Route exact path='/' component={Home}/>
+            <Route path='/clear-init-cache' component={ClearInitCache} />
+            <Route exact path='/covid19-3w-sankey' component={Covid19ThreeWSankey}/>
+            <PrivateRoute exact path='/translation-dashboard' component={TranslationDashboard}/>
+            <Route exact path='/about' component={About}/>
+            <PrivateRoute exact path='/account' component={Account}/>
+            <PrivateRoute exact path='/account/password-change' component={PasswordChange}/>
+            <Route exact path='/appeals/all' render={props => <Table {...props} type='appeal' />} />
+            <AnonymousRoute exact path='/login' component={Login}/>
+            <AnonymousRoute exact path='/register' component={Register}/>
+            <AnonymousRoute exact path='/recover-account' component={RecoverAccount}/>
+            <AnonymousRoute exact path='/recover-account/:username/:token' component={RecoverAccount}/>
+            <AnonymousRoute exact path='/recover-username' component={RecoverUsername}/>
+            <AnonymousRoute exact path='/resend-validation' component={ResendValidation} />
+            <PrivateRoute exact path='/reports/new' component={FieldReportForm}/>
+            <Route exact path='/reports/all' render={props => <Table {...props} type='report' />} />
+            <PrivateRoute exact path='/reports/:reportId/edit' component={FieldReportForm}/>
+            <Route exact path='/reports/:id' component={FieldReport}/>
+            <Route exact path='/emergencies' component={Emergencies}/>
+            <Route exact path='/emergencies/all' render={props => <Table {...props} type='emergency' />} />
+            <Route exact path='/emergencies/:id' component={Emergency}/>
+            <Route exact path='/regions/:id' render={props => <Region {...props} type='region' />} />
+            <Route exact path='/countries/:id' render={props => <Country {...props} type='country' />} />
+            <Route exact path='/alerts/all' render={props => <Table {...props} type='alert' />} />
+            <PrivateRoute exact path='/deployments' component={Deployments}/>
+            <PrivateRoute exact path='/deployments/personnel/all' render={props => <Table {...props} type='personnel' />} />
+            <PrivateRoute exact path='/deployments/erus/all' render={props => <Table {...props} type='eru' />} />
+            <Route exact path='/per-form/:form_id' component={PerForm} />
+            <Route exact path='/per-form/:form_id/edit' render={props => <PerForm {...props} isEdit={true} />} />
+            <Route path='/per-assessment/create' render={props => <PerAssessment {...props} isCreate={true} />} />
+            <Route exact path='/per-assessment/:id' component={PerAssessment} />
+            <Route exact path='/per-assessment/:id/edit' render={props => <PerAssessment {...props} isEdit={true} />} />
+            <Route path='/preparedness' component={Preparedness} />
+            <PrivateRoute exact path='/three-w/new/' component={NewThreeW} />
+            <Route component={FourHundredFour}/>
+          </Switch>
+        </BreadcrumbsProvider>
+      </Router>
+    </AlertContext.Provider>
   );
 }
 

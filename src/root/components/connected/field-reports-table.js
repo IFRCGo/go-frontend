@@ -28,7 +28,7 @@ import { disasterTypesSelectSelector } from '#selectors';
 import styles from './styles.module.scss';
 
 function ExportAllFieldReportsButton({ className }) {
-  const component = useExportButton('api/v2/field_report', 'field-reports', className);
+  const component = useExportButton('api/v2/field_report/', 'field-reports', className);
 
   return component;
 }
@@ -105,7 +105,7 @@ class FieldReportsTable extends SFPComponent {
     return qs;
   }
 
-  updateData (what) {
+  updateData () {
     this.requestResults(this.props);
   }
 

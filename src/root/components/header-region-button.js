@@ -74,6 +74,6 @@ const selector = (state, ownProps) => ({
   thisRegion: ownProps.currentPath.url.includes('/regions') ? regionByIdOrNameSelector(state, ownProps.currentPath.params['id']) : null
 });
 
-const dispatcher = dispatch => ({});
+const dispatcher = () => ({});
 
 export default connect(selector, dispatcher)(HeaderRegionButton);

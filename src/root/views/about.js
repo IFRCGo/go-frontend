@@ -392,52 +392,39 @@ function About (props) {
             </section>
 
             <section className='logo__group'>
-              <div className='container-mid'>
+              <div className='container-lg'>
                 <p className='logo__title text-center'>
                   <Translate stringId='aboutGoFunding'/>
                 </p>
-                <ul className='logo__list row-lg flex-sm'>
-                  <li className='logo__item col-lg col-6-xs col-4-sm col-3-mid'>
-                    <a href='http://www.redcross.org/' target='_blank'>
-                      <img src='/assets/graphics/content/arc_logo.png' alt='Visit American Red Cross Page' width='160' />
-                    </a>
-                  </li>
-                  <li className='logo__item col-lg col-6-xs col-4-sm col-3-mid'>
-                    <a href='http://www.redcross.org.uk/' target='_blank'>
-                      <img src='/assets/graphics/content/brc_logo.png' alt='Visit British Red Cross Page' width='170'/>
-                    </a>
-                  </li>
-                  <li className='logo__item col-lg col-6-xs col-4-sm col-3-mid'>
-                    <a href='http://www.jrc.or.jp/english/' target='_blank'>
-                      <img src='/assets/graphics/content/jrc_logo.png' alt='Visit Japanese Red Cross Page' width='154'/>
-                    </a>
-                  </li>
-                  <li className='logo__item col-lg col-6-xs col-4-sm col-3-mid'>
-                    <a href='http://www.redcross.ca/' target='_blank'>
-                      <img src='/assets/graphics/content/crc_logo.png' alt='Visit Canadian Red Cross Page' width='120'/>
-                    </a>
-                  </li>
-                  <li className='logo__item col-lg col-6-xs col-4-sm col-3-mid'>
-                    <a href='https://www.rodekruis.nl/' target='_blank'>
-                      <img src='/assets/graphics/content/nlrc_logo.jpg' alt='Visit Netherlands Red Cross Page' width='160'/>
-                    </a>
-                  </li>
-                  <li className='logo__item col-lg col-6-xs col-4-sm col-3-mid'>
-                    <a href='https://www.cruzroja.es/' target='_blank'>
-                      <img src='/assets/graphics/content/esp_logo.jpg' alt='Visit Spanish Red Cross Page' width='180'/>
-                    </a>
-                  </li>
-                  <li className='logo__item col-lg col-6-xs col-4-sm col-3-mid'>
-                    <a href='https://www.redcross.org.au/' target='_blank'>
-                      <img src='/assets/graphics/content/aurc_logo.jpg' alt='Visit Australian Red Cross Page' width='200'/>
-                    </a>
-                  </li>
-                  <li className='logo__item col-lg col-6-xs col-4-sm col-3-mid'>
-                    <a href='https://www.ericsson.com/en' target='_blank'>
-                      <img src='/assets/graphics/content/ericsson_logo.png' alt='Visit Ericsson Page' width='140'/>
-                    </a>
-                  </li>
-                </ul>
+                <div className='donor-logo-container'>
+                  <a href='http://www.redcross.org/' target='_blank'>
+                    <img src='/assets/graphics/content/arc_logo.png' alt='Visit American Red Cross Page' width='160' />
+                  </a>
+                  <a href='https://www.redcross.org.au/' target='_blank'>
+                    <img src='/assets/graphics/content/aurc_logo.jpg' alt='Visit Australian Red Cross Page' width='200'/>
+                  </a>
+                  <a href='http://www.redcross.org.uk/' target='_blank'>
+                    <img src='/assets/graphics/content/brc_logo.png' alt='Visit British Red Cross Page' width='170'/>
+                  </a>
+                  <a href='http://www.redcross.ca/' target='_blank'>
+                    <img src='/assets/graphics/content/crc_logo.png' alt='Visit Canadian Red Cross Page' width='120'/>
+                  </a>
+                  <a href='http://www.redcross.fi/' target='_blank'>
+                    <img src='/assets/graphics/content/frc_logo.png' alt='Visit Finnish Red Cross Page' width='200'/>
+                  </a>
+                  <a href='http://www.jrc.or.jp/english/' target='_blank'>
+                    <img src='/assets/graphics/content/jrc_logo.png' alt='Visit Japanese Red Cross Page' width='154'/>
+                  </a>
+                  <a href='https://www.rodekruis.nl/' target='_blank'>
+                    <img src='/assets/graphics/content/nlrc_logo.jpg' alt='Visit Netherlands Red Cross Page' width='160'/>
+                  </a>
+                  <a href='https://www.cruzroja.es/' target='_blank'>
+                    <img src='/assets/graphics/content/esp_logo.jpg' alt='Visit Spanish Red Cross Page' width='180'/>
+                  </a>
+                  <a href='https://www.ericsson.com/en' target='_blank'>
+                    <img src='/assets/graphics/content/ericsson_logo.png' alt='Visit Ericsson Page' width='140'/>
+                  </a>
+                </div>
               </div>
             </section>
           </div>
@@ -448,7 +435,7 @@ function About (props) {
 }
 
 About.contextType = LanguageContext;
-const selector = (state, ownProps) => ({
+const selector = (state) => ({
   mainContacts: state.mainContacts
 });
 

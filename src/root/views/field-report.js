@@ -28,6 +28,10 @@ import { resolveToString } from '#utils/lang';
 import App from './app';
 
 class FieldReport extends React.Component {
+  componentDidMount () {
+    this.getReport(this.props.match.params.id);
+  }
+
   // eslint-disable-next-line camelcase
   UNSAFE_componentWillReceiveProps (nextProps) {
     if (this.props.match.params.id !== nextProps.match.params.id) {
@@ -39,9 +43,6 @@ class FieldReport extends React.Component {
     }
   }
 
-  componentDidMount () {
-    this.getReport(this.props.match.params.id);
-  }
 
   getReport (id) {
     showGlobalLoading();

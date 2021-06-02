@@ -161,19 +161,19 @@ class CountryMap extends React.Component {
       this.showOperationsPopover(theMap, e.features[0]);
     });
 
-    theMap.on('mousemove', 'appeals', e => {
+    theMap.on('mousemove', 'appeals', () => {
       theMap.getCanvas().style.cursor = 'pointer';
     });
 
-    theMap.on('mouseleave', 'appeals', e => {
+    theMap.on('mouseleave', 'appeals', () => {
       theMap.getCanvas().style.cursor = '';
     });
 
-    theMap.on('mousemove', 'country', e => {
+    theMap.on('mousemove', 'country', () => {
       theMap.getCanvas().style.cursor = 'pointer';
     });
 
-    theMap.on('mouseleave', 'country', e => {
+    theMap.on('mouseleave', 'country', () => {
       theMap.getCanvas().style.cursor = '';
     });
 

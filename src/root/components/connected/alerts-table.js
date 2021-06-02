@@ -26,7 +26,7 @@ class AlertsTable extends SFPComponent {
   // handleFilterChange (what, field, value)
   // handleSortChange (what, field)
 
-  constructor (props, context) {
+  constructor (props) {
     super(props);
     this.state = {
       table: {
@@ -116,7 +116,7 @@ class AlertsTable extends SFPComponent {
     return qs;
   }
 
-  updateData (what) {
+  updateData () {
     this.requestResults(this.props);
   }
 
@@ -161,7 +161,7 @@ class AlertsTable extends SFPComponent {
       }
     ];
 
-    const rows = data.results.reduce((acc, rowData, idx, all) => {
+    const rows = data.results.reduce((acc, rowData) => {
       const date = DateTime.fromISO(rowData.created_at);
       const event = get(rowData, 'event.id');
       const eventTitle = rowData.operation || get(rowData, 'event.name');

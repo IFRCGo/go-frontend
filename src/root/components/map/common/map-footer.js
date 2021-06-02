@@ -1,7 +1,7 @@
 import React from 'react';
 import Translate from '#components/Translate';
 
-const MapFooter = (props) => (
+const MapFooter = () => (
   <div
     style={{
       backgroundColor: '#ffffff',

@@ -43,10 +43,10 @@ class EmergenciesMap extends React.Component {
     theMap.on('click', 'emergencies', e => {
       this.showPopover(theMap, e.features[0]);
     });
-    theMap.on('mousemove', 'emergencies', e => {
+    theMap.on('mousemove', 'emergencies', () => {
       theMap.getCanvas().style.cursor = 'pointer';
     });
-    theMap.on('mouseleave', 'emergencies', e => {
+    theMap.on('mouseleave', 'emergencies', () => {
       theMap.getCanvas().style.cursor = '';
     });
   }

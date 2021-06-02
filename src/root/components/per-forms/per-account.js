@@ -260,7 +260,7 @@ if (environment !== 'production') {
   };
 }
 
-const selector = (state, ownProps) => ({
+const selector = (state) => ({
   exportPer: state.exportPerToCSV,
   perForm: state.perForm,
   perOverviewForm: state.perForm.getPerOverviewForm,

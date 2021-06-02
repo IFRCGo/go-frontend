@@ -349,7 +349,7 @@ class ThreeWMap extends React.PureComponent {
 
 ThreeWMap.contextType = LanguageContext;
 
-const selector = (state, ownProps) => ({
+const selector = (state) => ({
   districtsResponse: state.districts,
   countries: countriesSelector(state),
   countriesGeojson: countriesGeojsonSelector(state)

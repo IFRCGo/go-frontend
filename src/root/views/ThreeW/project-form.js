@@ -54,13 +54,6 @@ const positiveIntegerCondition = (value) => {
   };
 };
 
-/*
-const statusOptions = statusList.map(p => ({
-  value: p.key,
-  label: p.title,
-})).sort(compareString);
-*/
-
 const sectorOptions = sectorList.map(p => ({
   value: p.inputValue,
   label: p.title,
@@ -137,29 +130,29 @@ class ProjectForm extends React.PureComponent {
 
     this.defaultSchema = {
       fields: {
-        is_project_completed: [],
         actual_expenditure: [requiredCondition, positiveIntegerCondition],
         budget_amount: [requiredCondition, positiveIntegerCondition],
-        project_country: [],
-        event: [],
         dtype: [requiredCondition],
-        project_districts: [requiredCondition],
+        end_date: [requiredCondition],
+        event: [],
+        is_project_completed: [],
         name: [requiredCondition],
         operation_type: [requiredCondition],
         primary_sector: [requiredCondition],
         programme_type: [requiredCondition],
-        end_date: [requiredCondition],
-        start_date: [requiredCondition],
-        reached_other: [positiveIntegerCondition],
+        project_country: [],
+        project_districts: [requiredCondition],
         reached_female: [positiveIntegerCondition],
         reached_male: [positiveIntegerCondition],
+        reached_other: [positiveIntegerCondition],
         reached_total: [positiveIntegerCondition],
         reporting_ns: [requiredCondition],
         secondary_sectors: [],
+        start_date: [requiredCondition],
         status: [requiredCondition],
-        target_other: [positiveIntegerCondition],
         target_female: [positiveIntegerCondition],
         target_male: [positiveIntegerCondition],
+        target_other: [positiveIntegerCondition],
         target_total: [requiredCondition, positiveIntegerCondition],
         visibility: [requiredCondition],
       },
@@ -881,7 +874,7 @@ class ProjectForm extends React.PureComponent {
 
 ProjectForm.contextType = LanguageContext;
 
-const selector = (state, ownProps) => ({
+const selector = (state) => ({
   countries: allCountriesSelector(state),
   districts: state.districts,
   eventList: state.event ? state.event.eventList : undefined,

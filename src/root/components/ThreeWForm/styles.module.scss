@@ -1,0 +1,27 @@
+@import '~styles/settings/variables';
+
+.three-w-form {
+  .form-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: $spacing*5;
+
+    .fake-submit-button {
+      display: none;
+    }
+  }
+
+  .select-all-districts-button {
+    display: flex;
+    align-items: center;
+  }
+
+
+  :global {
+    .go-input-section {
+      margin: $spacing 0;
+    }
+  }
+}

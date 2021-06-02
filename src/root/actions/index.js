@@ -355,7 +355,7 @@ export function getPersonnelByEvent () {
 }
 
 export const GET_SITREP_TYPES = 'GET_SITREP_TYPES';
-export function getSitrepTypes (type) {
+export function getSitrepTypes () {
   return fetchJSON('api/v2/situation_report_type/', GET_SITREP_TYPES);
 }
 

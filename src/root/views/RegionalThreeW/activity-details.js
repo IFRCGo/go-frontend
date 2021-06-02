@@ -77,7 +77,7 @@ function ActivityDetails (p) {
 
     const sectorGroupedProjectsByNS = Object.keys(projectsByNS).map(nsId => ({
       sectorList: mapToMap(
-        listToGroupMap(projectsByNS[nsId], d => d.sector, d => true),
+        listToGroupMap(projectsByNS[nsId], d => d.sector, () => true),
         undefined,
         d => d.length,
       ),

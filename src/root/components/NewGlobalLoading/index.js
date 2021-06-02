@@ -7,7 +7,7 @@ export const GlobalLoadingContext = React.createContext({
   setLoading: () => { console.warn('setLoading on GlobalLoadingContext called without initialization'); },
 });
 
-export function NewGlobalLoadingParent(p) {
+export function NewGlobalLoadingParent() {
   React.useEffect(() => {
     document.body.classList.add('unscrollable-y');
 

@@ -120,13 +120,13 @@ export class Modal extends React.Component {
 Modal.defaultProps = {
   revealed: false,
 
-  onOverlayClick: function (e) {
+  onOverlayClick: function () {
     if (process.env.NODE_ENV !== 'production') {
       console.warn('Modal', 'onOverlayClick handler not implemented');
     }
   },
 
-  onCloseClick: function (e) {
+  onCloseClick: function () {
     if (process.env.NODE_ENV !== 'production') {
       console.warn('Modal', 'onCloseClick handler not implemented');
     }
