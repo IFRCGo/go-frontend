@@ -4,7 +4,7 @@ import { IoTrash } from 'react-icons/io5';
 
 import InputLabel from '../InputLabel';
 import InputError from '../InputError';
-import List from '../list';
+import List from '../List';
 import Radio, { Props as RadioProps } from './Radio';
 
 import styles from './styles.module.scss';

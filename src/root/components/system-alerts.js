@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { environment } from '#config';
 import store from '#utils/store';
 
-import Alert from '#components/alert';
+import Alert from '#components/Alert';
 
 // Once the component is mounted we store it to track initialization.
 var theSysAlerts = null;
