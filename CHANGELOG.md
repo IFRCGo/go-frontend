@@ -1,3 +1,23 @@
+### Release 5.1.0: Refactors and a Time Machine
+
+This release includes important refactors on the frontend, better error handling, and historical data querying for the Appeals API.
+
+##### Frontend
+
+ - Complete overhaul / refactor of Field Report form code, adding stability going forward, and improving architecture for forms: #1898
+ - Refactors to request handling code on the frontend, to support improved loading behaviour and error handling: #1897
+ - Improve UI for error messaging: #1556
+ - Add new ERU types to the frontend: https://github.com/IFRCGo/go-api/issues/1085
+
+##### Backend
+
+ - 3w: Unify user roles to match rest of GO: #1312
+ - Allow appeals to filter out to be managed in the Admin: https://github.com/IFRCGo/go-api/issues/1034
+ - Add back country ISO codes to Districts API: https://github.com/IFRCGo/go-api/issues/1072
+
+Bonus: A bug that was affecting map interactions for some users on Chrome seems to have been fixed by an upstream fix in Chrome: https://github.com/IFRCGo/go-frontend/issues/1868
+
+
 ### Release 5.0.0: First big release of 2021
 
 This release includes various important bug-fixes and improvements:
