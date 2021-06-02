@@ -4,7 +4,7 @@ import { _cs } from '@togglecorp/fujs';
 import AlertContext, {
   DEFAULT_ALERT_DISMISS_DURATION,
 } from '#components/AlertContext';
-import Alert from '#components/Alert';
+import Alert from '#components/alert';
 
 import styles from './styles.module.scss';
 
