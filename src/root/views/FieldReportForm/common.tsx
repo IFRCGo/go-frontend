@@ -696,6 +696,9 @@ export interface FieldReportAPIResponseFields extends Omit<FieldReportAPIFields,
   countries: {
     id: number;
   }[];
+  districts: {
+    id: number;
+  }[];
   actions_taken: {
     id: number;
     organization: OrganizationType;
@@ -996,7 +999,7 @@ export function transformAPIFieldsToFormFields(apiValues: FieldReportAPIResponse
     dtype,
     event,
     country,
-    districts,
+    districts: districts?.map(d => d.id) ?? [],
     external_partners,
     is_covid_report,
     supported_activities,
