@@ -3,8 +3,8 @@ import { Helmet } from 'react-helmet';
 import { ThroughProvider } from 'react-through';
 import { _cs } from '@togglecorp/fujs';
 
-import Navbar from '#components/header';
-import MobileNavbar from '#components/mobile-header';
+import Navbar from '#components/navbar';
+import MobileNavbar from '#components/mobile-navbar';
 import PageFooter from '#components/footer';
 import PageHeader from '#components/PageHeader';
 import GlobalLoading from '#components/global-loading';

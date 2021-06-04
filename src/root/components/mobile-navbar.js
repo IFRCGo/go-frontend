@@ -24,7 +24,7 @@ function getUriForType (type, id) {
   }
 }
 
-class MobileHeader extends React.PureComponent {
+class MobileNavbar extends React.PureComponent {
   constructor (props) {
     super(props);
     this.state = {
@@ -172,10 +172,10 @@ class MobileHeader extends React.PureComponent {
 }
 
 if (environment !== 'production') {
-  MobileHeader.propTypes = {
+  MobileNavbar.propTypes = {
     history: T.object,
     location: T.object
   };
 }
 
-export default withLanguage(withRouter(MobileHeader));
+export default withLanguage(withRouter(MobileNavbar));
