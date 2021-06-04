@@ -22,7 +22,7 @@ import DropdownMenu from './dropdown-menu';
 
 const noFilter = options => options;
 
-function Header (props) {
+function Navbar (props) {
   const {
     history,
     match,
@@ -162,10 +162,10 @@ function Header (props) {
 }
 
 if (environment !== 'production') {
-  Header.propTypes = {
+  Navbar.propTypes = {
     history: T.object,
     match: T.object
   };
 }
 
-export default withRouter(Header);
+export default withRouter(Navbar);
