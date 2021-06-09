@@ -95,6 +95,13 @@ function Navbar (props) {
                     >
                       {strings.headerDropdownCovid19NSFinancialOverview}
                     </a>
+                    <Link
+                      to='/three-w/new'
+                      className='drop__menu-item'
+                    >
+                      {/* FIXME: use strings */}
+                      New 3W project
+                    </Link>
                   </div>
                 </DropdownMenu>
               </nav>
