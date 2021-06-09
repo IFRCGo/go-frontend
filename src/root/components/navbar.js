@@ -135,6 +135,11 @@ function Navbar (props) {
                     <Translate stringId="headerMenuPreparedness" />
                   </NavLink>
                 </li>
+                <li>
+                  <NavLink to='/three-w/' title={strings.headerMenuThreeWTooltip} activeClassName='navbar-highlighted' exact>
+                    <Translate stringId="headerMenuThreeW" />
+                  </NavLink>
+                </li>
               </ul>
             </nav>
             <div className='nav-global-search col'>

@@ -158,6 +158,7 @@ class MobileNavbar extends React.PureComponent {
                 </ul>
               </li>
               <li><Link to='/deployments' title={strings.mobileHeaderVisitDeployments} className={c({'disabled': pathname === '/deployments'})}><span><Translate stringId='mobileHeaderDeployments'/></span></Link></li>
+              <li><Link to='/three-w/' title={strings.mobileHeaderVisitThreeW} className={c({'disabled': pathname === '/three-w'})}><span><Translate stringId='mobileHeaderThreeW'/></span></Link></li>
               <li><Link to='/about' title={strings.mobileHeaderVisitResources} className={c({'disabled': pathname === '/about'})}><span><Translate stringId='mobileHeaderResources'/></span></Link></li>
             </ul>
             <ul className='nav-block-user-menu' role='menu'>
