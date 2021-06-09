@@ -714,17 +714,17 @@ export function transformAPIFieldsToFormFields(apiValues: FieldReportAPIResponse
      */
     dtype: {
         id: dtype,
-    },
+    } = {},
     contacts,
     actions_taken,
     event: {
         id: event,
-    },
+    } = {},
     countries: {
         0: {
             id: country,
-        }
-    },
+        } = {} as { id: number }
+    } = [],
     districts,
     external_partners,
     supported_activities,

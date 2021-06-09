@@ -1,3 +1,7 @@
+### Release 5.1.1: Hotfix for Field Report Title
+
+- Implements a hotfix for the field report title to be a required field
+
 ### Release 5.1.0: Refactors and a Time Machine
 
 This release includes important refactors on the frontend, better error handling, and historical data querying for the Appeals API.
