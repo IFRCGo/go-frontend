@@ -13,6 +13,7 @@ import { useRequest } from '#utils/restRequest';
 
 import {
   requiredCondition,
+  requiredStringCondition,
   positiveIntegerCondition,
 } from '#utils/form';
 
@@ -45,17 +46,6 @@ import {
 
 type FormSchema = ObjectSchema<PartialForm<FormType>>;
 type FormSchemaFields = ReturnType<FormSchema['fields']>;
-
-const titleCondition = (
-  value: number | string | null | undefined,
-  allValue: PartialForm<FormType>
-) => {
-  if (!isDefined(value) && !isDefined(allValue.event)) {
-    return 'Title is required if not linked to an existing emergency';
-  }
-
-  return undefined;
-};
 
 const getRequiredWithCondition = (key: keyof FormType) => (
   value: number | string | null | undefined,
@@ -93,7 +83,7 @@ export const schema: FormSchema = {
     is_covid_report: [requiredCondition],
     dtype: [requiredCondition],
     event: [],
-    summary: [titleCondition],
+    summary: [requiredStringCondition],
     country: [requiredCondition],
     start_date: [requiredCondition],
     request_assistance: [],
@@ -185,7 +175,6 @@ export const schema: FormSchema = {
   }),
 
   fieldDependencies: () => ({
-    summary: ['event'],
     num_injured: ['num_injured_source'],
     num_injured_source: ['num_injured'],
     num_dead: ['num_dead_source'],
