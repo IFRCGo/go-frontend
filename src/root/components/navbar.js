@@ -95,13 +95,6 @@ function Navbar (props) {
                     >
                       {strings.headerDropdownCovid19NSFinancialOverview}
                     </a>
-                    <Link
-                      to='/three-w/new'
-                      className='drop__menu-item'
-                    >
-                      {/* FIXME: use strings */}
-                      New 3W project
-                    </Link>
                   </div>
                 </DropdownMenu>
               </nav>
@@ -133,6 +126,11 @@ function Navbar (props) {
                 <li>
                   <NavLink to='/preparedness#global-summary' title={strings.headerMenuPreparednessTooltip} activeClassName='navbar-highlighted' exact>
                     <Translate stringId="headerMenuPreparedness" />
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink to='/three-w/' title={strings.headerMenuThreeWTooltip} activeClassName='navbar-highlighted' exact>
+                    <Translate stringId="headerMenuThreeW" />
                   </NavLink>
                 </li>
               </ul>
