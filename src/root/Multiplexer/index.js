@@ -51,6 +51,7 @@ import TranslationDashboard from '#views/TranslationDashboard';
 import ClearInitCache from '#views/ClearInitCache';
 import NewThreeW from '#views/NewThreeW';
 import FieldReportForm from '#views/FieldReportForm';
+import GlobalThreeW from '#views/GlobalThreeW';
 
 import styles from './styles.module.scss';
 
@@ -238,6 +239,7 @@ function Multiplexer(props) {
             <Route exact path='/per-assessment/:id' component={PerAssessment} />
             <Route exact path='/per-assessment/:id/edit' render={props => <PerAssessment {...props} isEdit={true} />} />
             <Route path='/preparedness' component={Preparedness} />
+            <Route exact path='/three-w/' component={GlobalThreeW} />
             <PrivateRoute exact path='/three-w/new/' component={NewThreeW} />
             <Route component={FourHundredFour}/>
           </Switch>
