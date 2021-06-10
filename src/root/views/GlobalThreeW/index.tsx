@@ -31,7 +31,6 @@ interface GlobalProjectsOverviewFields {
   target_total: number;
 }
 
-
 interface Props {
   className?: string;
   location: Location;
