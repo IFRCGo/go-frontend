@@ -22,6 +22,12 @@ import KeyFigure from '#components/KeyFigure';
 import Card from '#components/Card';
 import Container from '#components/Container';
 
+import Table, { Column } from '#components/Table';
+import {
+    createStringColumn,
+    createNumberColumn,
+} from '#components/Table/predefinedColumns';
+
 import {
   ListResponse,
   useRequest,
@@ -40,6 +46,55 @@ export const PROJECT_STATUS_ONGOING = 1;
 export const PROJECT_STATUS_PLANNED = 0;
 
 const emptyProjectList: Project[] = [];
+
+const projectTableColumns = [
+  createStringColumn<Project, number>(
+    'ns',
+    'National Society',
+    (item) => item.reporting_ns_detail?.society_name,
+  ),
+  createStringColumn<Project, number>(
+    'name',
+    'Project Name',
+    (item) => item.name,
+  ),
+  createStringColumn<Project, number>(
+    'sector',
+    'Sector',
+    (item) => item.primary_sector_display,
+  ),
+  createNumberColumn<Project, number>(
+    'budget',
+    'Total Budget',
+    (item) => item.budget_amount,
+    undefined,
+    { normal: true }
+  ),
+  createStringColumn<Project, number>(
+    'programmeType',
+    'Programme Type',
+    (item) => item.programme_type_display,
+  ),
+  createStringColumn<Project, number>(
+    'disasterType',
+    'Disaster Type',
+    (item) => item.dtype_detail?.name,
+  ),
+  createNumberColumn<Project, number>(
+    'peopleTargeted',
+    'People Targeted',
+    (item) => item.target_total,
+    undefined,
+    { normal: true }
+  ),
+  createNumberColumn<Project, number>(
+    'peopleReached',
+    'People Reached',
+    (item) => item.reached_total,
+    undefined,
+    { normal: true }
+  ),
+];
 
 const colors = ['#f5333f', '#f7969c', '#f9e5e6'];
 function BasicPieChart(props: { data: LabelValue[] , title: React.ReactNode }) {
@@ -223,12 +278,11 @@ function ThreeW(props: Props) {
             actions="View All Projects >"
             sub
           >
-            <div>
-              Map
-            </div>
-            <div>
-              Table
-            </div>
+            <Table
+              data={projectList}
+              columns={projectTableColumns}
+              keySelector={d => d.id}
+            />
           </Container>
         </TabPanel>
         <TabPanel name="nsProjects">
