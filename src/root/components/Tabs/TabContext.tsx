@@ -15,12 +15,12 @@ interface BaseTabContextProps {
 
 export type TabContextProps = BaseTabContextProps & (
   {
+    useHash: true;
+    hash: string | undefined;
+  } | {
     useHash?: false;
     activeTab: TabKey | undefined;
     setActiveTab: (key: TabKey) => void;
-  } | {
-    useHash: true;
-    hash: string | undefined;
   }
 );
 

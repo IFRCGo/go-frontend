@@ -39,7 +39,7 @@ import {
 import { getFdrs } from '#actions/query-external';
 // import { getBoundingBox } from '#utils/country-bounding-box';
 
-import App from './app';
+import App from '#views/app';
 import ErrorPanel from '#components/error-panel';
 import TabContent from '#components/tab-content';
 import Fold from '#components/fold';
@@ -67,7 +67,7 @@ import { SFPComponent } from '#utils/extendables';
 
 import ThreeW from './ThreeW';
 // import CountryProfile from './CountryProfile';
-import { countryByIdOrNameSelector, regionsByIdSelector, disasterTypesSelectSelector } from '../selectors';
+import { countryByIdOrNameSelector, regionsByIdSelector, disasterTypesSelectSelector } from '#selectors';
 
 const emptyObject = {};
 
@@ -701,7 +701,7 @@ class AdminArea extends SFPComponent {
                 <TabPanel>
                   <div className='container-lg'>
                     <TabContent title= {strings.region3WTitle}>
-                      <ThreeW countryId={this.props.country.id} />
+                      <ThreeW country={this.props.country} />
                     </TabContent>
                   </div>
                 </TabPanel>

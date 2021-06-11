@@ -1,0 +1,15 @@
+@import '~styles/settings/variables';
+
+.key-figure {
+  padding: $spacing/2;
+
+  .value {
+    font-weight: $base-font-semi-bold;
+    font-size: $font-size-key-figure;
+    padding: $spacing/2;
+  }
+
+  .description {
+    padding: $spacing/2;
+  }
+}

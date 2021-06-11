@@ -51,6 +51,7 @@ export default function TabList(props: Props) {
         className,
         styles.tabList,
         disabled && styles.disabled,
+        variant === 'primary' && styles.primary,
       )}
       role="tablist"
     >
@@ -65,7 +66,13 @@ export default function TabList(props: Props) {
           />
         </div>
       )}
+      {variant === 'primary' && (
+        <div className={styles.startDummyContent} />
+      )}
       { children }
+      {variant === 'primary' && (
+        <div className={styles.endDummyContent} />
+      )}
     </div>
   );
 }
