@@ -1,62 +1,107 @@
 @import '~styles/settings/_variables.scss';
 
 .tab {
-    border: 0;
-    border-radius: 0;
-    padding: $spacing $spacing*3;
-    color: $color-text;
-    font-weight: $base-font-bold;
-    transition: $duration-transition-medium color, background-color ease-in-out;
+  border: 0;
+  border-radius: 0;
+  padding: $spacing $spacing*3;
+  color: $color-text;
+  font-weight: $base-font-bold;
+
+  &.disabled {
+    pointer-events: none;
+  }
+
+  &.primary {
+    background-color: $color-background;
+    position: relative;
+
+    .active-border {
+      position: absolute;
+      bottom: 0;
+      left: $spacing/2;
+      width: calc(100% - #{$spacing});
+      background-color: $primary-color;
+      height: $base-border-width;
+      animation: grow-h .2s ease-in;
+    }
+
+    &.active {
+      background-color: $color-foreground;
+      color: $primary-color;
+    }
 
     &.disabled {
-        pointer-events: none;
+      color: $color-text-disabled;
+
+      .active-border {
+        background-color: $base-border-color;
+      }
+    }
+  }
+
+  &.secondary {
+    background-color: $color-background;
+
+    &.active {
+      color: $color-text-on-dark;
+      background-color: $primary-color;
+
     }
 
-    &.primary {
-        border-bottom: $base-border-width solid $base-border-color;
-
-        &.active {
-          border-bottom-color: $primary-color;
-          color: $primary-color;
-        }
-
-        &.disabled {
-           color: $color-text-disabled;
-           border-bottom-color: $base-border-color;
-        }
+    &.disabled {
+      color: $color-text-disabled;
     }
 
-    &.secondary {
-        &.active {
-            color: $primary-color;
-            background-color: lighten($primary-color, 33%);
-        }
+    $border-radius: calc(1em + #{$spacing});
 
-        &.disabled {
-            color: $color-text-disabled;
-        }
+    &:first-child {
+      border-top-left-radius: $border-radius;
+      border-bottom-left-radius: $border-radius;
     }
 
-    &.step {
-        position: relative;
-        text-transform: uppercase;
-        color: $color-text-light;
-
-        &:hover {
-          color: $color-text;
-        }
-
-        &.active {
-            color: $primary-color;
-        }
-
-        &.disabled {
-            color: $color-text-disabled;
-        }
+    &:last-child {
+      border-top-right-radius: $border-radius;
+      border-bottom-right-radius: $border-radius;
     }
+  }
+
+  &.step {
+    position: relative;
+    text-transform: uppercase;
+    color: $color-text-light;
+    transition: $duration-transition-medium color, background-color ease-in-out;
+
+    &:hover {
+      color: $color-text;
+    }
+
+    &.active {
+      color: $primary-color;
+    }
+
+    &.disabled {
+      color: $color-text-disabled;
+    }
+  }
 }
 
-.tab-wrapper {
+.primary-tab-wrapper {
+  padding: 0 $spacing/2;
+  border: $base-border-width solid transparent;
+  border-bottom-color: $base-border-color;
+
+  &.active {
+    border-color: $base-border-color;
+    border-bottom-color: transparent;
+  }
+}
+
+@keyframes grow-h {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(100%); }
+}
+
+.step-tab-wrapper {
   display: flex;
   flex-direction: column;
   align-items: center;

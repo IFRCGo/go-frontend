@@ -206,7 +206,7 @@ const logoutListener = () => {
   // localStorage.remove(ALL_REGIONS_STORAGE_KEY);
 };
 
-const listener = listen();
+export const listener = listen();
 listener.createListener(tokenListener).addRule(/^TOKEN_SUCCESS/);
 listener.createListener(logoutListener).addRule(/^LOGOUT_USER/);
 listener.createListener(currentLanguageListener).addRule(/^SET_CURRENT_LANGUAGE/);
@@ -216,10 +216,16 @@ listener.createListener(meListener).addRule(/^GET_ME_SUCCESS/);
 listener.createListener(disasterTypesListener).addRule(/^GET_DISASTER_TYPES_SUCCESS/);
 
 const composeEnhancers = config.environment !== 'production' ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose : compose;
-const store = createStore(reducer, initialState, composeEnhancers(applyMiddleware(
-  thunkMiddleware,
-  listener,
-  logger
-)));
+const store = createStore(
+  reducer,
+  initialState,
+  composeEnhancers(
+    applyMiddleware(
+      thunkMiddleware,
+      listener,
+      logger
+    ),
+  ),
+);
 
 export default store;

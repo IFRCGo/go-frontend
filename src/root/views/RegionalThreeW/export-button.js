@@ -8,7 +8,7 @@ import { convertJsonToCsv } from '#utils/utils';
 import { getRegionalProjects as getRegionalProjectsAction } from '#actions';
 import { regionalProjectsSelector } from '#selectors';
 
-import exportHeaders from '../ThreeW/export-headers';
+import exportHeaders from '#views/Country/ThreeW/export-headers';
 import Translate from '#components/Translate';
 
 function ExportButton (p) {

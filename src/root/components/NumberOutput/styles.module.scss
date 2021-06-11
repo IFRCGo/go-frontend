@@ -1,0 +1,15 @@
+@import '~styles/settings/variables';
+
+.numeral {
+    display: flex;
+    font-family: $base-font-family;
+    font-size: inherit;
+
+    .prefix,
+    .sign,
+    .number,
+    .normalization-suffix,
+    .suffix {
+        white-space: nowrap;
+    }
+}

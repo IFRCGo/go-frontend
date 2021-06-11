@@ -1,0 +1,39 @@
+@import '~styles/settings/variables';
+
+.three-w {
+  $page-spacing-v: $spacing*2;
+  padding: $page-spacing-v 0;
+
+  .tab-list {
+    margin: $page-spacing-v 0;
+  }
+  .stats {
+    display: flex;
+    padding: $page-spacing-v 0;
+
+    >* {
+      flex-basis: 0;
+      flex-grow: 1;
+      margin: 0 $spacing/2;
+    }
+  }
+
+  .ongoing-project {
+    margin: $page-spacing-v 0;
+  }
+
+  :global {
+    .recharts-legend-item-text {
+      color: $color-text!important;
+    }
+  }
+}
+
+.basic-pie-chart {
+  .title {
+    font-size: $font-size-sm;
+    text-align: center;
+    color: $color-text-light;
+    font-weight: $base-font-medium;
+  }
+}

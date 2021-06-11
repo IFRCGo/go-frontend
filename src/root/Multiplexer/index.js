@@ -40,7 +40,7 @@ import FieldReport from '#views/field-report';
 import Emergencies from '#views/emergencies';
 import Emergency from '#views/emergency';
 import Region from '#views/region';
-import Country from '#views/countries';
+import Country from '#views/Country';
 import Deployments from '#views/deployments';
 import Table from '#views/table';
 import Covid19ThreeWSankey from '#views/Covid19ThreeWSankey';

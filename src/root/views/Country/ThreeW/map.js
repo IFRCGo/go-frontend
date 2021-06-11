@@ -19,8 +19,8 @@ import LanguageContext from '#root/languageContext';
 import { getCountryMeta } from '#utils/get-country-meta';
 import { countriesSelector } from '#selectors';
 import turfBbox from '@turf/bbox';
-import { countriesGeojsonSelector } from '../../selectors';
-import { countryLabels } from '../../utils/country-labels';
+import { countriesGeojsonSelector } from '#selectors';
+import { countryLabels } from '#utils/country-labels';
 
 const emptyList = [];
 const emptyObject = {};
