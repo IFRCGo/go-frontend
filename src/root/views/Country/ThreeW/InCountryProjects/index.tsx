@@ -4,7 +4,17 @@ import {
   isNotDefined,
   unique,
   listToGroupList,
+  mapToList,
 } from '@togglecorp/fujs';
+
+import {
+  ResponsiveContainer,
+  Sankey,
+  Tooltip,
+  Layer,
+  Label,
+  Rectangle,
+} from 'recharts';
 
 import BlockLoading from '#components/block-loading';
 import KeyFigure from '#components/KeyFigure';
@@ -19,12 +29,15 @@ import {
   useRequest,
 } from '#utils/restRequest';
 
+import { sum } from '#utils/common';
+
 import {
   Country,
   Project,
 } from '#types';
 
 import ProjectStatPieChart from '../ProjectStatPieChart';
+import ProjectFlowSankey from '../ProjectFlowSankey';
 import {
   LabelValue,
   emptyProjectList,
@@ -65,8 +78,8 @@ function InCountryProjects(props: Props) {
     statusCounts,
   ] = React.useMemo(() => {
     const ongoing = projectList.filter((p) => p.status === PROJECT_STATUS_ONGOING);
-    const ongoingBudget = ongoing.reduce((acc, val) => acc + (+(val.budget_amount ?? 0)), 0);
-    const target = projectList.reduce((acc, val) => acc + (+(val.target_total ?? 0)), 0);
+    const ongoingBudget = sum(ongoing, d => (d.budget_amount ?? 0));
+    const target = sum(projectList, d => (d.target_total ?? 0));
     const programmeTypeGrouped = (
       listToGroupList(
         projectList,
@@ -74,9 +87,10 @@ function InCountryProjects(props: Props) {
         d => d,
       ) ?? {}
     );
-    const programmeTypeCounts = Object.keys(programmeTypeGrouped).reduce((acc, key) => (
-      [...acc, { label: key, value: programmeTypeGrouped[key].length }]
-    ), [] as LabelValue[]);
+    const programmeTypeCounts: LabelValue[] = mapToList(
+      programmeTypeGrouped,
+      (d, k) => ({ label: String(k), value: d.length })
+    );
 
     const statusGrouped = (
       listToGroupList(
@@ -85,9 +99,11 @@ function InCountryProjects(props: Props) {
         d => d,
       ) ?? {}
     );
-    const statusCounts = Object.keys(statusGrouped).reduce((acc, key) => (
-      [...acc, { label: key, value: statusGrouped[key].length }]
-    ), [] as LabelValue[]);
+
+    const statusCounts: LabelValue[] = mapToList(
+      statusGrouped,
+      (d, k) => ({ label: String(k), value: d.length }),
+    );
 
     return [
       ongoing,
@@ -153,6 +169,12 @@ function InCountryProjects(props: Props) {
               keySelector={d => d.id}
               variant="large"
             />
+          </Container>
+          <Container
+            heading="Overview of Activities"
+            sub
+          >
+            <ProjectFlowSankey projectList={projectList} />
           </Container>
         </>
       )}
