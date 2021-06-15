@@ -8,8 +8,10 @@ interface Props {
   className?: string;
   value?: number;
   description?: React.ReactNode;
-  icon?: React.ReactNode;
+  headerIcon?: React.ReactNode;
+  footerIcon?: React.ReactNode;
   source?: React.ReactNode;
+  inline?: boolean;
 }
 
 function KeyFigure(props: Props) {
@@ -17,25 +19,40 @@ function KeyFigure(props: Props) {
     className,
     value,
     description,
-    icon,
+    headerIcon,
+    footerIcon,
+    inline,
   } = props;
 
   return (
-    <div className={_cs(styles.keyFigure, className)}>
-      {icon && (
-        <div className={styles.icon}>
-          {icon}
+    <div
+      className={_cs(
+        styles.keyFigure,
+        inline && styles.inlineMainContent,
+        className,
+      )}
+    >
+      {headerIcon && (
+        <div className={styles.headerIcon}>
+          {headerIcon}
         </div>
       )}
-      <NumberOutput
-        className={styles.value}
-        value={value}
-        precision="auto"
-        normal
-      />
-      {description && (
-        <div className={styles.description}>
-          {description}
+      <div className={styles.mainContent}>
+        <NumberOutput
+          className={styles.value}
+          value={value}
+          precision="auto"
+          normal
+        />
+        {description && (
+          <div className={styles.description}>
+            {description}
+          </div>
+        )}
+      </div>
+      {footerIcon && (
+        <div className={styles.footerIcon}>
+          {footerIcon}
         </div>
       )}
     </div>

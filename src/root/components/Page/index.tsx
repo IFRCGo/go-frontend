@@ -29,7 +29,9 @@ interface Props {
   info?: React.ReactNode;
   children?: React.ReactNode;
   mainSectionClassName?: string;
+  infoContainerClassName?: string;
 }
+
 
 function Page(props: Props) {
   const {
@@ -42,6 +44,7 @@ function Page(props: Props) {
     info,
     children,
     mainSectionClassName,
+    infoContainerClassName,
   } = props;
 
   const [loading, setLoading] = React.useState(0);
@@ -85,6 +88,7 @@ function Page(props: Props) {
             description={description}
             breadCrumbs={breadCrumbs}
             info={info}
+            infoContainerClassName={infoContainerClassName}
           />
           <main
             className={_cs(

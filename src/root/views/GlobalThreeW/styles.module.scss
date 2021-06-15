@@ -1,0 +1,14 @@
+@import '~styles/settings/variables';
+
+.global-three-w {
+  .info-container {
+    display: flex;
+    padding: $spacing/2;
+
+    >* {
+      margin: $spacing/2;
+      flex-basis: 0;
+      flex-grow: 1;
+    }
+  }
+}
