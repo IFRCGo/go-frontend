@@ -10,15 +10,12 @@ import BlockLoading from '#components/block-loading';
 import KeyFigure from '#components/KeyFigure';
 import Card from '#components/Card';
 import Container from '#components/Container';
-
+import ExportProjectsButton from '#components/ExportProjectsButton';
 import Table from '#components/Table';
-import { nsProjectColumns } from '../projectTableColumns';
-
 import {
   ListResponse,
   useRequest,
 } from '#utils/restRequest';
-
 import {
   Country,
   Project,
@@ -30,6 +27,7 @@ import {
   emptyProjectList,
   PROJECT_STATUS_ONGOING,
 } from '../common';
+import { nsProjectColumns } from '../projectTableColumns';
 import styles from './styles.module.scss';
 
 interface Props {
@@ -108,6 +106,11 @@ function NSProjects(props: Props) {
         <BlockLoading />
       ) : (
         <>
+          <ExportProjectsButton
+            countryId={country?.id}
+            fileNameSuffix={country?.name}
+            isNationalSociety
+          />
           <div className={styles.stats}>
             <Card multiColumn>
               <KeyFigure
