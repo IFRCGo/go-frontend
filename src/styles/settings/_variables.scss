@@ -27,8 +27,8 @@ $grey-soot: #282d32;
 $black: #000;
 $white: #fff;
 
-$color-foreground: $white;
-$color-background: $grey-mist;
+$color-foreground: #ffffff;
+$color-background: #f7f7f7;
 $color-text: #000;
 $color-text-on-dark: #fff;
 $color-text-heading: $color-text;
@@ -72,13 +72,14 @@ $base-font-size: 0.875rem;  // 14px
 $font-size-xxs: 0.63rem;    // 10px
 $font-size-xs: 0.695rem;    // 11px
 $font-size-sm: 0.75rem;     // 12px
-$font-size-md: 0.88em;
+$font-size-md: 0.875rem;    // 14px
 $font-size-lg: 1rem;        // 16px
 $font-size-xl: 1.06rem;     // 17px
 $font-size-xxl: 1.16rem;    // 18px
 $font-size-heading-widget: 1.72rem;
-$font-size-heading: 18px;
-$font-size-heading-sm: 14px;
+$font-size-heading: 1.125rem;
+$font-size-heading-sm: 0.875rem;
+$font-size-key-figure: 2rem;
 
 
 $code-font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
@@ -172,7 +173,8 @@ $xxlarge-range: (1601px, 3000px);
 
 $screen: "only screen";
 
-$opacity-disabled-element: .4;
+$opacity-disabled-element: .5;
+$saturation-disabled-element: 60%;
 
 $duration-transition-fast: .13s;
 $duration-transition-medium: .3s;

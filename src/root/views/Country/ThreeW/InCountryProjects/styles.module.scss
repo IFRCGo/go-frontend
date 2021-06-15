@@ -1,0 +1,25 @@
+@import '~styles/settings/variables';
+
+.in-country-projects {
+  $page-spacing-v: $spacing*2;
+
+  .stats {
+    display: flex;
+    padding: $page-spacing-v 0;
+
+    >* {
+      flex-basis: 0;
+      flex-grow: 1;
+      margin: 0 $spacing/2;
+    }
+  }
+
+  .ongoing-project {
+    margin: $page-spacing-v 0;
+
+    .projects-table {
+      width: 100%;
+    }
+  }
+
+}

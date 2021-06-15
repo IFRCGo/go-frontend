@@ -30,6 +30,7 @@ module.exports = {
           "#components": "./src/root/components",
           "#config": "./src/root/config",
           "#hooks": "./src/root/hooks",
+          "#types": "./src/root/types",
           "#lang": "./src/root/lang",
           "#selectors": "./src/root/selectors",
           "#utils": "./src/root/utils",

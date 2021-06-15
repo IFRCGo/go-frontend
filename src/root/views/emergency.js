@@ -54,8 +54,8 @@ import PersonnelTable from '#components/connected/personnel-table';
 import EruTable from '#components/connected/eru-table';
 import EmergencyMap from '#components/map/emergency-map';
 import { epiSources } from '#utils/field-report-constants';
-import ProjectFormModal from '#views/ThreeW/project-form-modal';
-import { countriesGeojsonSelector, regionsByIdSelector, disasterTypesSelector } from '../selectors';
+import ProjectFormModal from '#views/Country/ThreeW/project-form-modal';
+import { countriesGeojsonSelector, regionsByIdSelector, disasterTypesSelector } from '#selectors';
 
 class Emergency extends React.Component {
   constructor (props) {

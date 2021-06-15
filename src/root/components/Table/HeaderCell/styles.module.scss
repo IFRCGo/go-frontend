@@ -1,0 +1,83 @@
+@import '~styles/settings/_variables.scss';
+
+.header-cell {
+  display: flex;
+  flex-direction: column;
+  border-right: $base-border-width solid transparent;
+  border-left: $base-border-width solid transparent;
+
+  &.dragging {
+    opacity: 0.5;
+  }
+
+  &.dropping {
+    border-left-color: $base-border-color;
+  }
+
+  &.dropping-behind {
+    border-right-color: $base-border-color;
+  }
+
+  .title-container {
+    display: flex;
+    align-items: center;
+    padding: 0 $spacing/8;
+
+    .title {
+      flex-grow: 1;
+      padding: 0 $spacing/8;
+      text-align: left;
+    }
+
+    .hide-button {
+      flex-shrink: 0;
+      visibility: hidden;
+    }
+
+    .grip {
+      flex-shrink: 0;
+      visibility: hidden;
+      margin-left: $spacing/8;
+      cursor: move;
+    }
+  }
+
+  &:hover {
+    .title-container {
+      .hide-button {
+        visibility: visible;
+      }
+      .grip {
+        visibility: visible;
+      }
+    }
+  }
+
+  .filter-container {
+    display: flex;
+    padding: $spacing/8;
+
+    >:not(:last-child) {
+      margin-right: $spacing/8;
+    }
+
+    .text-input,
+    .number-input {
+      .icon {
+        color: $color-text-light;
+        font-size: $font-size-sm;
+      }
+
+      .raw-input-container {
+        background-color: $color-foreground;
+      }
+    }
+
+    .number-input {
+      .raw-input-container {
+        width: 96px;
+      }
+    }
+
+  }
+}

@@ -1,0 +1,100 @@
+@import '~styles/settings/_variables.scss';
+
+.table {
+  table-layout: fixed;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: inherit;
+  position: relative;
+  z-index: 0;
+
+  .header-row {
+    .header-cell {
+      position: sticky;
+      top: 0;
+      z-index: 2;
+      border: 0;
+      background-color: $color-foreground;
+
+      &:not(:first-child) {
+        border-left: 0;
+      }
+
+      &.stick-left {
+        left: 0;
+        z-index: 3;
+      }
+
+      .header-component {
+        padding: $spacing/2 $spacing*2/3;
+      }
+    }
+  }
+
+  .row {
+    .row-header-cell {
+      position: sticky;
+      left: 0;
+      z-index: 1;
+      border-bottom: $base-border-width solid $base-border-color--light;
+      background-color: $color-foreground;
+      text-align: left;
+
+      .cell-component {
+        padding: $spacing;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+    }
+
+    .cell {
+      border-top: 0;
+      border-bottom: $base-border-width solid $base-border-color--light;
+      background-color: $color-foreground;
+
+      .cell-component {
+        padding: $spacing;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+    }
+  }
+
+  &.small {
+    .row {
+      .row-header-cell {
+        .cell-component {
+          padding: $spacing/2;
+        }
+      }
+
+      .cell {
+        .cell-component {
+          padding: $spacing/2;
+        }
+      }
+    }
+  }
+
+  &.large {
+    .row {
+      .row-header-cell {
+        .cell-component {
+          overflow: initial;
+          text-overflow: initial;
+          white-space: initial;
+        }
+      }
+
+      .cell {
+        .cell-component {
+          overflow: initial;
+          text-overflow: initial;
+          white-space: initial;
+        }
+      }
+    }
+  }
+}
