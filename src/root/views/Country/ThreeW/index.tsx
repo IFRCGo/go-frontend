@@ -1,18 +1,21 @@
 import React from 'react';
-import { _cs } from '@togglecorp/fujs';
+import {
+  _cs,
+  isDefined,
+} from '@togglecorp/fujs';
 
+import Button from '#components/Button';
 import Tabs from '#components/Tabs';
 import Tab from '#components/Tabs/Tab';
 import TabPanel from '#components/Tabs/TabPanel';
 import TabList from '#components/Tabs/TabList';
 
-/*
+import { useRequest } from '#utils/restRequest';
 import {
-  ListResponse,
-  useRequest,
-} from '#utils/restRequest';
- */
-import { Country } from '#types';
+  Country,
+  User,
+} from '#types';
+import useReduxState, { ReduxResponse } from '#hooks/useReduxState';
 
 import InCountryProjects from './InCountryProjects';
 import NSProjects from './NSProjects';
@@ -30,15 +33,7 @@ function ThreeW(props: Props) {
     country,
   } = props;
 
-  /*
-  const {
-    pending: fetchingUserDetails,
-    response: userDetails,
-  } = useRequest<User>({
-    url: 'api/v2/user/me/',
-  });
-   */
-
+  const { data: userDetails } = useReduxState('me') as ReduxResponse<User>;
   const [activeTab, setActiveTab] = React.useState<'projectsIn' | 'nsProjects'>('projectsIn');
 
   return (
@@ -48,6 +43,13 @@ function ThreeW(props: Props) {
         onChange={setActiveTab}
         variant="secondary"
       >
+        { isDefined(userDetails?.id) && (
+          <div className={styles.headerActions}>
+            <Button disabled>
+              Add 3W Activity
+            </Button>
+          </div>
+        )}
         <TabList className={styles.tabList}>
           <Tab name="projectsIn">
             Projects in {country?.name}

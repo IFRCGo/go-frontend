@@ -4,6 +4,12 @@
   $page-spacing-v: $spacing*2;
   padding: $page-spacing-v 0;
 
+  .header-actions {
+    display: flex;
+    justify-content: flex-end;
+    padding: 0 $spacing/2;
+  }
+
   .tab-list {
     margin: $page-spacing-v 0;
   }

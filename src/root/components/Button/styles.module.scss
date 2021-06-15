@@ -1,143 +1,63 @@
+@import '~styles/settings/variables';
+
 .button {
-    --padding-internal-h: var(--dui-spacing-extra-small);
-    --padding-h: var(--dui-spacing-large);
-    --padding-v: var(--dui-spacing-small);
-    --color-border: transparent;
-    --color-text: transparent;
-    --color-background: transparent;
-    --padding: var(--padding-v) calc(var(--padding-h) - var(--padding-internal-h));
-    --font-size: var(--dui-font-size-medium);
-    --border-radius: calc(var(--font-size) + var(--dui-spacing-medium));
-    --text-transform: none;
-    --cursor: default;
+  display: flex;
+  position: relative;
+  align-items: center;
+  padding: $spacing/2 $spacing*7/4;
+  border-radius: calc(#{$spacing} + 1em);
+  font-weight: $base-font-medium;
 
+  .icons {
     display: flex;
-    position: relative;
+    flex-shrink: 0;
     align-items: center;
-    justify-content: space-around;
-    border: var(--dui-width-separator-thin) solid var(--color-border);
-    border-radius: var(--border-radius);
-    background-color: var(--color-background);
-    cursor: var(--cursor);
-    padding: var(--padding);
-    width: fit-content;
-    overflow: hidden;
-    text-transform: var(--text-transform);
-    color: var(--color-text);
-    font-family: inherit;
-    font-size: var(--font-size);
-    font-weight: var(--font-weight-bold);
+    padding: 0 $spacing/4;
+    font-size: 1.2em;
+  }
 
-    .icons {
-        display: flex;
-        align-items: center;
-        padding: 0 var(--padding-internal-h);
+  .actions {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    padding: 0 $spacing/4;
+    font-size: 1.2em;
+  }
+
+  .children {
+    display: flex;
+    flex-grow: 1;
+    align-items: center;
+    padding: 0 $spacing/4;
+  }
+
+  &.primary {
+    background-color: $primary-color;
+    color: $color-text-on-dark;
+
+    &:hover {
+      background-color: darken($primary-color, 10%);
     }
+  }
 
-    .actions {
-        display: flex;
-        align-items: center;
-        padding: 0 var(--padding-internal-h);
+  &.secondary {
+    border: $base-border-width solid $primary-color;
+    color: $primary-color;
+
+    &:hover {
+      background-color: $primary-color;
+      color: $color-text-on-dark;
     }
+  }
 
-    .children {
-        display: flex;
-        align-items: center;
-        padding: 0 var(--padding-internal-h);
-    }
+  &.tertiary {
+    padding: $spacing/2 $spacing/4;
+    color: $primary-color;
+  }
 
-
-    &.primary {
-        --text-transform: uppercase;
-        --color-border: var(--dui-color-background-primary-button);
-        --color-background: var(--dui-color-background-primary-button);
-        --color-text: var(--dui-color-text-primary-button);
-
-        &:not(:disabled) {
-            &:hover {
-                --color-border: var(--dui-color-background-hover-primary-button);
-                --color-background: var(--dui-color-background-hover-primary-button);
-            }
-        }
-    }
-
-    &.secondary {
-        --text-transform: uppercase;
-        --color-border: transparent;
-        --color-background: var(--dui-color-background-information);
-        --color-text: var(--dui-color-accent);
-
-        &:not(:disabled) {
-            &:hover {
-                --color-border: transparent;
-                --color-background: var(--dui-color-background-negative);
-            }
-        }
-    }
-
-    &.tertiary {
-        --color-background: var(--dui-color-foreground);
-        --color-text: var(--dui-color-accent);
-        --color-border: var(--dui-color-accent);
-
-        &:disabled {
-            --color-border: var(--dui-color-text-disabled);
-            --color-text: var(--dui-color-text);
-        }
-
-        &:not(:disabled) {
-            &:hover {
-                --color-background: var(--dui-color-background-tertiary-hover);
-            }
-        }
-    }
-
-    &.action {
-        --padding: 0;
-        --padding-internal-h: 0;
-        --padding-h: 0;
-        --padding-v: 0;
-        --color-border: transparent;
-        --color-background: transparent;
-        --color-text: inherit;
-
-        .icons,
-        .children,
-        .actions {
-            font-size: 1.27em;
-        }
-    }
-
-    &.big {
-        --padding-v: var(--dui-spacing-medium);
-        --font-size: var(--dui-font-size-large);
-
-        &.action {
-            .icons,
-            .children,
-            .actions {
-                font-size: 1.4em;
-            }
-        }
-    }
-
-    &:disabled {
-        --cursor: not-allowed;
-        opacity: var(--dui-opacity-disabled-element);
-        filter: saturate(var(--dui-saturation-disabled-element));
-
-        &.action {
-            --padding: 0;
-            --padding-h: 0;
-            --padding-v: 0;
-            --color-border: transparent;
-            --color-background: transparent;
-        }
-    }
-
-    &:not(&.read-only) {
-        &:not(:disabled) {
-            --cursor: pointer;
-        }
-    }
+  &:disabled {
+    opacity: $opacity-disabled-element;
+    filter: saturate($saturation-disabled-element);
+    pointer-events: none;
+  }
 }
