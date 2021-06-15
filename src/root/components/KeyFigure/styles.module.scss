@@ -3,13 +3,46 @@
 .key-figure {
   padding: $spacing/2;
 
-  .value {
-    font-weight: $base-font-semi-bold;
-    font-size: $font-size-key-figure;
-    padding: $spacing/2;
+  .header-icon {
+    font-size: 3rem;
+    color: $primary-color;
+
+    >* {
+      height: 1em;
+      display: flex;
+      align-items: center;
+    }
   }
 
-  .description {
-    padding: $spacing/2;
+  .main-content {
+    .value {
+      font-weight: $base-font-semi-bold;
+      font-size: $font-size-key-figure;
+      padding: $spacing/2;
+    }
+
+    .description {
+      padding: $spacing/2;
+    }
+  }
+
+  .footer-icon {
+    display: flex;
+    justify-content: flex-end;
+    font-size: 3rem;
+    color: $primary-color;
+
+    >* {
+      height: 1em;
+      display: flex;
+      align-items: center;
+    }
+  }
+
+  &.inline-main-content {
+    .main-content {
+      display: flex;
+      align-items: center;
+    }
   }
 }
