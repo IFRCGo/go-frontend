@@ -112,7 +112,7 @@ function NSProjects(props: Props) {
             <Card multiColumn>
               <KeyFigure
                 value={numActivities}
-                description="Activities in countries"
+                description="Activities in Countries"
               />
               <KeyFigure
                 value={targetedPopulation}
@@ -125,7 +125,7 @@ function NSProjects(props: Props) {
                 description="Total Projects"
               />
               <ProjectStatPieChart
-                title="Programme type"
+                title="Programme Type"
                 data={programmeTypeCounts}
               />
             </Card>
@@ -135,7 +135,7 @@ function NSProjects(props: Props) {
                 description="Total Budget (CHF) for Ongoing Projects"
               />
               <ProjectStatPieChart
-                title="Project status"
+                title="Project Status"
                 data={statusCounts}
               />
             </Card>

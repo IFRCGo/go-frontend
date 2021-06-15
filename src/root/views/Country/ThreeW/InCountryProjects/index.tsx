@@ -6,17 +6,10 @@ import {
   listToGroupList,
   mapToList,
 } from '@togglecorp/fujs';
-
-import {
-  ResponsiveContainer,
-  Sankey,
-  Tooltip,
-  Layer,
-  Label,
-  Rectangle,
-} from 'recharts';
+import { IoChevronForward } from 'react-icons/io5';
 
 import BlockLoading from '#components/block-loading';
+import Button from '#components/Button';
 import KeyFigure from '#components/KeyFigure';
 import Card from '#components/Card';
 import Container from '#components/Container';
@@ -141,7 +134,7 @@ function InCountryProjects(props: Props) {
                 description="Total Projects"
               />
               <ProjectStatPieChart
-                title="Programme type"
+                title="Programme Type"
                 data={programmeTypeCounts}
               />
             </Card>
@@ -151,7 +144,7 @@ function InCountryProjects(props: Props) {
                 description="Total Budget (CHF) for Ongoing Projects"
               />
               <ProjectStatPieChart
-                title="Project status"
+                title="Project Status"
                 data={statusCounts}
               />
             </Card>
@@ -159,7 +152,15 @@ function InCountryProjects(props: Props) {
           <Container
             className={styles.ongoingProject}
             heading="Ongoing projects"
-            actions="View All Projects >"
+            actions={(
+              <Button
+                actions={<IoChevronForward />}
+                variant="tertiary"
+                disabled
+              >
+                View all projects
+              </Button>
+            )}
             sub
           >
             <Table

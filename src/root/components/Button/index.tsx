@@ -1,6 +1,7 @@
 import React from 'react';
 import { _cs } from '@togglecorp/fujs';
 
+import RawButton from '#components/RawButton';
 import styles from './styles.module.scss';
 
 export type ButtonVariant = (
@@ -31,13 +32,11 @@ React.HTMLProps<HTMLButtonElement>,
   childrenClassName?: string;
   actionsClassName?: string;
   disabled?: boolean;
-  big?: boolean;
-  name: N;
-  onClick?: (name: N, e: React.MouseEvent<HTMLButtonElement>) => void;
-  readOnly?: boolean;
+  name?: N;
+  onClick?: (name: N | undefined, e: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
-type ButtonFeatureKeys = 'variant' | 'className' | 'actionsClassName' | 'iconsClassName' | 'childrenClassName' | 'children' | 'icons' | 'actions' | 'disabled' | 'big' | 'readOnly';
+type ButtonFeatureKeys = 'variant' | 'className' | 'actionsClassName' | 'iconsClassName' | 'childrenClassName' | 'children' | 'icons' | 'actions' | 'disabled';
 export function useButtonFeatures(
   props: Pick<Props<void>, ButtonFeatureKeys>,
 ) {
@@ -51,16 +50,12 @@ export function useButtonFeatures(
     children,
     icons,
     actions,
-    big,
-    readOnly,
   } = props;
 
   const buttonClassName = _cs(
     styles.button,
     variant,
     buttonVariantToStyleMap[variant] ?? styles.primary,
-    readOnly && styles.readOnly,
-    big && styles.big,
     className,
   );
 
@@ -102,7 +97,6 @@ function Button<N>(props: Props<N>) {
     icons,
     actions,
     disabled,
-    big,
     name,
     onClick,
     readOnly,
@@ -125,13 +119,10 @@ function Button<N>(props: Props<N>) {
     icons,
     actions,
     disabled,
-    big,
-    readOnly,
   });
 
-  // FIXME: Use raw button
   return (
-    <button
+    <RawButton
       type="button"
       onClick={handleButtonClick}
       {...otherProps}

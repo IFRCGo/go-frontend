@@ -28,25 +28,25 @@ export interface Props {
   /**
    * Prefix the output with certain string. Eg. $
    */
-  prefix?: string,
-    /**
-     * Specify which separator to use for thousands
-     */
-    separator?: string | null,
-    /**
-     * Show both positive and negative sign for number
-     */
-    showSign?: boolean,
-    /**
-     * Prefix the output with certain string. Eg. %
-     */
-    suffix?: string,
-    /**
-     * The value of the numeral
-     */
-    value?: number,
+  prefix?: string;
+  /**
+   * Specify which separator to use for thousands
+   */
+  separator?: string | null;
+  /**
+   * Show both positive and negative sign for number
+   */
+  showSign?: boolean;
+  /**
+   * Prefix the output with certain string. Eg. %
+   */
+  suffix?: string;
+  /**
+   * The value of the numeral
+   */
+  value?: number;
 
-  valueModifier?: (value: string | undefined) => React.ReactNode,
+  valueModifier?: (value: string | undefined) => React.ReactNode;
   signClassName?: string;
   prefixClassName?: string;
   numberClassName?: string;

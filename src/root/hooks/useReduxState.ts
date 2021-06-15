@@ -13,7 +13,7 @@ type StateKeys = 'user'
   | 'me'
   | 'disasterTypes';
 
-interface ReduxResponse<T> {
+export interface ReduxResponse<T> {
   cached?: boolean;
   fetching: boolean;
   fetched: boolean;
