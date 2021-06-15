@@ -12,6 +12,7 @@ interface Props {
   actions?: React.ReactNode;
   breadCrumbs?: React.ReactNode;
   info?: React.ReactNode;
+  infoContainerClassName?: string;
 }
 
 function PageHeader(props: Props) {
@@ -22,6 +23,7 @@ function PageHeader(props: Props) {
     actions,
     breadCrumbs,
     info,
+    infoContainerClassName,
   } = props;
 
   if (!(actions || breadCrumbs || info || description || heading)) {
@@ -60,7 +62,7 @@ function PageHeader(props: Props) {
           </section>
         )}
         { info && (
-          <div className={styles.info}>
+          <div className={_cs(styles.info, infoContainerClassName)}>
             { info }
           </div>
         )}
