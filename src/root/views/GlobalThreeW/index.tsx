@@ -7,6 +7,7 @@ import Card from '#components/Card';
 import KeyFigure from '#components/KeyFigure';
 import Container from '#components/Container';
 import BreadCrumb from '#components/breadcrumb';
+import ExportProjectsButton from '#components/ExportProjectsButton';
 import LanguageContext from '#root/languageContext';
 import { useRequest } from '#utils/restRequest';
 import { sum } from '#utils/common';
@@ -112,6 +113,9 @@ function GlobalThreeW(props: Props) {
       {pending && <BlockLoading /> }
       <Container>
         Charts and map
+        <ExportProjectsButton
+          fileNameSuffix="All projects"
+        />
       </Container>
     </Page>
   );
