@@ -168,20 +168,9 @@ export function getDefinedValues<T extends Record<string, any>>(o: T): Partial<T
   return definedValues;
 }
 
-export type ListResponse<T> = {
-  count: number;
-  results: T[];
-  next?: string;
-};
-
 export interface Entity {
   id: number;
   name: string;
-}
-
-export interface Country extends Entity {
-  independent: boolean;
-  record_type: number;
 }
 
 export const optionKeySelector = (o: Option) => o.value;

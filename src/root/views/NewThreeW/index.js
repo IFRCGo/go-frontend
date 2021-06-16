@@ -1,24 +1,30 @@
 import React from 'react';
-import Page from '#components/Page';
+import { _cs } from '@togglecorp/fujs';
 
+import Page from '#components/Page';
 import BreadCrumb from '#components/breadcrumb';
 import Container from '#components/Container';
 import ThreeWForm from '#components/ThreeWForm';
-
 import LanguageContext from '#root/languageContext';
+
+import styles from './styles.module.scss';
 
 function NewThreeW(props) {
   const { strings } = React.useContext(LanguageContext);
+  const {
+    className,
+    history,
+  } = props;
 
   const handleSubmitSuccess = React.useCallback((result) => {
-    if (props.history?.push) {
+    if (history?.push) {
       const {
         project_country: countryId,
       } = result;
 
-      props.history.push(`/countries/${countryId}#3w`);
+      history.push(`/countries/${countryId}#3w`);
     }
-  }, [props.history]);
+  }, [history]);
 
   // FIXME: use strings
   const crumbs= React.useMemo(() => [
@@ -27,6 +33,7 @@ function NewThreeW(props) {
   ], [strings.breadCrumbHome, props.location]);
   return (
     <Page
+      className={_cs(styles.newThreeW, className)}
       title="IFRC Go - New 3W project"
       heading="Create 3W project"
       breadCrumbs={<BreadCrumb crumbs={crumbs} compact />}

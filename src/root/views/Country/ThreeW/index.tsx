@@ -10,7 +10,6 @@ import Tab from '#components/Tabs/Tab';
 import TabPanel from '#components/Tabs/TabPanel';
 import TabList from '#components/Tabs/TabList';
 
-import { useRequest } from '#utils/restRequest';
 import {
   Country,
   User,
