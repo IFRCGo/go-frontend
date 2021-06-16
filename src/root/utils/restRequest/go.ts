@@ -5,6 +5,7 @@ import {
 import {resolve as resolveUrl} from 'url';
 import { get as getFromLocalStorage } from 'local-storage';
 import { api } from '#config';
+import store from '#utils/store';
 
 import { ContextInterface } from './context';
 
@@ -42,6 +43,7 @@ function alterResponse(errors: ErrorFromServer['errors']): Error['value']['formE
 
 export interface OptionBase {
     isCsvRequest?: boolean;
+    enforceEnglish?: boolean;
 }
 
 type GoContextInterface = ContextInterface<
@@ -64,25 +66,29 @@ export const processGoOptions: GoContextInterface['transformOptions'] = (
     const {
         body,
         headers,
+        method = 'GET',
         ...otherOptions
     } = options;
 
     const {
         isCsvRequest,
+        enforceEnglish,
     } = requestOptions;
 
     const user = getFromLocalStorage('user');
+    const currentLanguage = store.getState().lang.current;
     const token = Date.parse(user?.expires) > Date.now()
         ? user?.token
         : undefined;
 
     return {
-        method: 'GET',
+        method,
         headers: {
             Accept: isCsvRequest ? CONTENT_TYPE_CSV : CONTENT_TYPE_JSON,
             'Content-Type': isCsvRequest
                 ? 'text/csv; charset=utf-8' : 'application/json; charset=utf-8',
             Authorization: token ? `Token ${token}` : '',
+            'Accept-Language': (enforceEnglish || method !== 'GET') ? 'en': currentLanguage,
             ...headers,
         },
         body: body ? JSON.stringify(body) : undefined,
