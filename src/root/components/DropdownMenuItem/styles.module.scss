@@ -1,0 +1,25 @@
+@import '~styles/settings/_variables.scss';
+
+.dropdown-menu-item {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  padding: $spacing/2;
+
+  .icon-container {
+    display: flex;
+    align-items: center;
+    font-size: 1.2em;
+    padding: 0 $spacing/2;
+  }
+
+  .label {
+    display: flex;
+    align-items: center;
+    padding:  0 $spacing/2;
+  }
+
+  &:hover {
+    background-color: lighten($primary-color, 40%);
+  }
+}

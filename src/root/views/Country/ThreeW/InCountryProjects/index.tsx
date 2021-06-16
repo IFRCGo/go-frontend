@@ -5,10 +5,17 @@ import {
   unique,
   listToGroupList,
   mapToList,
+  isDefined,
 } from '@togglecorp/fujs';
-import { IoChevronForward } from 'react-icons/io5';
+import {
+  IoChevronForward,
+  IoClipboardOutline,
+  IoPencil,
+} from 'react-icons/io5';
 
 import BlockLoading from '#components/block-loading';
+import BasicModal from '#components/BasicModal';
+import DropdownMenuItem from '#components/DropdownMenuItem';
 import Button from '#components/Button';
 import KeyFigure from '#components/KeyFigure';
 import Card from '#components/Card';
@@ -16,22 +23,22 @@ import Container from '#components/Container';
 import ExportProjectsButton from '#components/ExportProjectsButton';
 
 import Table from '#components/Table';
-import { inCountryProjectColumns } from '../projectTableColumns';
-
+import { createActionColumn } from '#components/Table/predefinedColumns';
 import {
   ListResponse,
   useRequest,
 } from '#utils/restRequest';
-
 import { sum } from '#utils/common';
-
 import {
   Country,
   Project,
 } from '#types';
 
+import ProjectEditModal from '../ProjectEditModal';
+import ProjectDetailModal from '../ProjectDetailModal';
 import ProjectStatPieChart from '../ProjectStatPieChart';
 import ProjectFlowSankey from '../ProjectFlowSankey';
+import { inCountryProjectColumns } from '../projectTableColumns';
 import {
   LabelValue,
   emptyProjectList,
@@ -63,6 +70,8 @@ function InCountryProjects(props: Props) {
   });
 
   const projectList = projectListResponse?.results ?? emptyProjectList;
+  const [showProjectDetailFor, setShowProjectDetailFor] = React.useState<number | undefined>();
+  const [editProjectDetailFor, setEditProjectDetailFor] = React.useState<number | undefined>();
 
   const [
     ongoingProjects,
@@ -111,6 +120,51 @@ function InCountryProjects(props: Props) {
   const numActiveNS = React.useMemo(() => (
     unique(ongoingProjects, d => d.reporting_ns)?.length ?? 0
   ), [ongoingProjects]);
+
+  const handleViewProjectClick = React.useCallback((projectId: string | number | undefined) => {
+    if (projectId) {
+      setShowProjectDetailFor(+projectId);
+    }
+  }, []);
+
+  const handleEditProjectClick = React.useCallback((projectId: string | number | undefined) => {
+    if (projectId) {
+      setEditProjectDetailFor(+projectId);
+    }
+  }, []);
+
+  const handleProjectDetailModalCloseButtonClick = React.useCallback(() => {
+    setShowProjectDetailFor(undefined);
+  }, []);
+
+  const handleProjectEditModalCloseButtonClick = React.useCallback(() => {
+    setEditProjectDetailFor(undefined);
+  }, []);
+
+  const tableColumns = [
+    ...inCountryProjectColumns,
+    createActionColumn(
+      'actions',
+      (rowKey: number | string) => ({
+        extraActions: (
+          <>
+            <DropdownMenuItem
+              name={rowKey}
+              onClick={handleViewProjectClick}
+              label="View Project"
+              icon={<IoClipboardOutline />}
+            />
+            <DropdownMenuItem
+              name={rowKey}
+              icon={<IoPencil />}
+              onClick={handleEditProjectClick}
+              label="Edit"
+            />
+          </>
+        ),
+      }),
+    ),
+  ];
 
   return (
     <div className={_cs(styles.inCountryProjects, className)}>
@@ -163,7 +217,7 @@ function InCountryProjects(props: Props) {
                 variant="tertiary"
                 disabled
               >
-                View all projects
+                View All Projects
               </Button>
             )}
             sub
@@ -171,7 +225,7 @@ function InCountryProjects(props: Props) {
             <Table
               className={styles.projectsTable}
               data={projectList}
-              columns={inCountryProjectColumns}
+              columns={tableColumns}
               keySelector={d => d.id}
               variant="large"
             />
@@ -183,6 +237,20 @@ function InCountryProjects(props: Props) {
             <ProjectFlowSankey projectList={projectList} />
           </Container>
         </>
+      )}
+      {isDefined(showProjectDetailFor) && (
+        <ProjectDetailModal
+          onCloseButtonClick={handleProjectDetailModalCloseButtonClick}
+          className={styles.projectDetailModal}
+          projectId={showProjectDetailFor}
+        />
+      )}
+      {isDefined(editProjectDetailFor) && (
+        <ProjectEditModal
+          onCloseButtonClick={handleProjectEditModalCloseButtonClick}
+          className={styles.projectEditModal}
+          projectId={editProjectDetailFor}
+        />
       )}
     </div>
   );

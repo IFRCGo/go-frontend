@@ -1,0 +1,31 @@
+@import '~styles/settings/_variables.scss';
+
+.text-output {
+  &:not(.block-type) {
+    display: flex;
+    align-items: center;
+  }
+
+  >.label {
+    padding: $spacing/4;
+    color: $color-text-light;
+    font-weight: $base-font-medium;
+  }
+
+  >.value {
+    padding: $spacing/4;
+  }
+
+  >.description {
+    padding: $spacing/4;
+  }
+
+  &.with-label-colon {
+    >.label {
+      &:after {
+        content: ':';
+      }
+    }
+  }
+}
+

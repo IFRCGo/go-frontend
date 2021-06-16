@@ -11,6 +11,7 @@ export type ButtonVariant = (
   | 'action'
 );
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const buttonVariantToStyleMap: { [key in ButtonVariant]: string; } = {
   primary: styles.primary,
   secondary: styles.secondary,

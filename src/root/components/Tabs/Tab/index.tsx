@@ -130,7 +130,6 @@ export default function Tab<T extends TabKey>(props: Props<T>) {
         {button}
       </div>
     );
-    return button;
   }
 
   return button;
