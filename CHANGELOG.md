@@ -1,3 +1,8 @@
+### Release 5.1.2: Hotfix for Field Report language submission errors
+
+ - Implements a fix where users with non-english locales in their system / browser configuration were sometimes facing errors when submitting Field Reports
+
+
 ### Release 5.1.1: Hotfix for Field Report Title
 
 - Implements a hotfix for the field report title to be a required field
