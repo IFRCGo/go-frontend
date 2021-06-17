@@ -31,7 +31,7 @@ function BasicModal(props: Props) {
     hideCloseButton,
   } = props;
 
-  const shouldHideHeader = hideCloseButton && (!heading && !headerActions);
+  const shouldHideHeader = hideCloseButton && !heading && !headerActions;
 
   return (
     <Backdrop
@@ -60,7 +60,7 @@ function BasicModal(props: Props) {
         <div className={styles.body}>
           {children}
         </div>
-        {footerContent || footerActions && (
+        {(footerContent || footerActions) && (
           <div className={styles.footer}>
             <div className={styles.footerContent}>
               {footerContent}

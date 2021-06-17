@@ -5,13 +5,12 @@
   align-items: center;
   justify-content: center;
   animation: fade-in .3s ease-in;
-  perspective: 200em;
   overflow: auto;
 
   .basic-modal {
     display: flex;
     flex-direction: column;
-    max-width: 96vw;
+    max-width: unquote('min(96vw, #{$media-desktop})');
     max-height: 96vh;
     background-color: $color-foreground;
     overflow: auto;
@@ -50,12 +49,12 @@
 @keyframes appear {
   from {
     opacity: 0;
-    transform: rotateX(-30deg);
+    transform: translateY(-2vh) rotateX(-30deg);
   }
 
   to {
     opacity: 1;
-    transform: rotateX(0);
+    transform: translateY(0) rotateX(0);
   }
 }
 

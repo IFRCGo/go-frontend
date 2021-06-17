@@ -10,12 +10,14 @@ import Tab from '#components/Tabs/Tab';
 import TabPanel from '#components/Tabs/TabPanel';
 import TabList from '#components/Tabs/TabList';
 
+import useBooleanState from '#hooks/useBooleanState';
 import {
   Country,
   User,
 } from '#types';
 import useReduxState, { ReduxResponse } from '#hooks/useReduxState';
 
+import ProjectFormModal from './ProjectFormModal';
 import InCountryProjects from './InCountryProjects';
 import NSProjects from './NSProjects';
 
@@ -34,6 +36,14 @@ function ThreeW(props: Props) {
 
   const { data: userDetails } = useReduxState('me') as ReduxResponse<User>;
   const [activeTab, setActiveTab] = React.useState<'projectsIn' | 'nsProjects'>('projectsIn');
+  const [
+    showProjectFormModal,
+    setShowProjectFormModalTrue,
+    setShowProjectFormModalFalse,
+  ] = useBooleanState(false);
+
+  const handleProjectFormSubmitSuccess = React.useCallback(() => {
+  }, []);
 
   return (
     <div className={_cs(styles.threeW, className)}>
@@ -44,7 +54,7 @@ function ThreeW(props: Props) {
       >
         { isDefined(userDetails?.id) && (
           <div className={styles.headerActions}>
-            <Button disabled>
+            <Button onClick={setShowProjectFormModalTrue}>
               Add 3W Activity
             </Button>
           </div>
@@ -64,6 +74,14 @@ function ThreeW(props: Props) {
           <NSProjects country={country} />
         </TabPanel>
       </Tabs>
+      {showProjectFormModal && (
+        <ProjectFormModal
+          onCloseButtonClick={setShowProjectFormModalFalse}
+          countryId={activeTab === 'projectsIn' ? country?.id : undefined}
+          reportingNsId={activeTab === 'nsProjects' ? country?.id : undefined}
+          onSubmitSuccess={handleProjectFormSubmitSuccess}
+        />
+      )}
     </div>
   );
 }
