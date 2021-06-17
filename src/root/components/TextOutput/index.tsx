@@ -1,11 +1,8 @@
 import React from 'react';
 import { _cs } from '@togglecorp/fujs';
 
-import NumberOutput from '#components/NumberOutput';
-import DateOutput from '#components/DateOutput';
-
-import type { Props as NumberOutputProps } from '../NumberOutput';
-import type { Props as DateOutputProps } from '../DateOutput';
+import NumberOutput, { Props as NumberOutputProps } from '#components/NumberOutput';
+import DateOutput, { Props as DateOutputProps } from '#components/DateOutput';
 
 import styles from './styles.module.scss';
 

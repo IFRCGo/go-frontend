@@ -74,7 +74,7 @@ function ProjectTableActions(props: Props) {
     pending: projectDeletionPending,
     trigger: requestProjectDeletion,
   } = useLazyRequest({
-    url: `api/v2/project/${project.id}`,
+    url: `api/v2/project/${project.id}/`,
     method: 'DELETE',
     body: ctx => ctx,
     onSuccess: onProjectDeletionSuccess,
@@ -87,7 +87,7 @@ function ProjectTableActions(props: Props) {
     },
   });
 
-  const handleDeleteProjectConfirmModalClose = React.useCallback((ok) => {
+  const handleDeleteProjectConfirmModalClose = React.useCallback((ok: boolean) => {
     setShowProjectDeleteConfirmationFalse();
     if (ok) {
       requestProjectDeletion(null);

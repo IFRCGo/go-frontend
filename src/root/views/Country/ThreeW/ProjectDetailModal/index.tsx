@@ -72,7 +72,7 @@ function ProjectDetail(props: Props) {
     response: projectResponse,
   } = useRequest<Project>({
     skip: isNotDefined(projectId),
-    url: `api/v2/project/${projectId}`,
+    url: `api/v2/project/${projectId}/`,
   });
 
   if (isNotDefined(projectId)) {

@@ -119,21 +119,21 @@ function NSProjects(props: Props) {
     unique(ongoingProjects, d => d.project_country)?.length ?? 0
   ), [ongoingProjects]);
 
-  const tableColumns = [
+  const tableColumns = React.useMemo(() => ([
     ...nsProjectColumns,
     createActionColumn(
       'actions',
-      (rowKey: number | string, project: Project) => ({
+      (rowKey: number | string, prj: Project) => ({
         children: (
           <ProjectTableActions
             onProjectFormSubmitSuccess={retriggerProjectListRequest}
             onProjectDeletionSuccess={retriggerProjectListRequest}
-            project={project}
+            project={prj}
           />
         ),
       }),
     ),
-  ];
+  ]), [retriggerProjectListRequest]);
 
   const sankeyData = React.useMemo(() => (
     projectListToNsSankeyData(projectList)

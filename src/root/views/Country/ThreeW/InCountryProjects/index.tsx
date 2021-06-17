@@ -123,21 +123,21 @@ function InCountryProjects(props: Props) {
     unique(ongoingProjects, d => d.reporting_ns)?.length ?? 0
   ), [ongoingProjects]);
 
-  const tableColumns = [
+  const tableColumns = React.useMemo(() => ([
     ...inCountryProjectColumns,
     createActionColumn(
       'actions',
-      (rowKey: number | string, project: Project) => ({
+      (rowKey: number | string, prj: Project) => ({
         children: (
           <ProjectTableActions
             onProjectFormSubmitSuccess={retriggerProjectListRequest}
             onProjectDeletionSuccess={retriggerProjectListRequest}
-            project={project}
+            project={prj}
           />
         ),
       }),
     ),
-  ];
+  ]), [retriggerProjectListRequest]);
 
   const sankeyData = React.useMemo(() => (
     projectListToInCountrySankeyData(projectList)

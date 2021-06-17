@@ -55,7 +55,7 @@ function reduceLinks(links: SankeyLink[]) {
     return [
       ...newAcc, {
         ...prevLink,
-        value: prevLink.value + 1
+        value: prevLink.value + 1,
       }
     ];
   }, [] as SankeyLink[]);
@@ -201,7 +201,6 @@ export function projectListToNsSankeyData(projectList: Project[]) {
   });
 
   const reducedLinks = reduceLinks(links);
-  console.info(reducedLinks);
 
   return {
     nodes,

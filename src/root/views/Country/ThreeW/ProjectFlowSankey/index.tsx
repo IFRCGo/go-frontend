@@ -105,7 +105,7 @@ function SankeyLink (props: {
 
 interface Props {
   className?: string;
-  data: {
+  data?: {
     nodes: SankeyNodeFields[];
     links: SankeyLinkFields[];
   };
