@@ -15,6 +15,12 @@
    ========================================================================== */
 
 /**
+ * Using Mapboxgl, map library
+ */
+
+@import "../../node_modules/mapbox-gl/dist/mapbox-gl";
+
+/**
  * Using Bourbon for extended SASS functionality:
  * http://bourbon.io/
  */
@@ -168,7 +174,6 @@
 @import "vendor/react-paginate";
 @import "vendor/react-select";
 @import "vendor/react-carousel";
-@import "vendor/mapbox-gl";
 
 /* Header navbar 
    ========================================================================== */
