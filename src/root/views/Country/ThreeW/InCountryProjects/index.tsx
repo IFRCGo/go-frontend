@@ -13,6 +13,7 @@ import Button from '#components/Button';
 import KeyFigure from '#components/KeyFigure';
 import Card from '#components/Card';
 import Container from '#components/Container';
+import ExportProjectsButton from '#components/ExportProjectsButton';
 
 import Table from '#components/Table';
 import { inCountryProjectColumns } from '../projectTableColumns';
@@ -117,6 +118,10 @@ function InCountryProjects(props: Props) {
         <BlockLoading />
       ) : (
         <>
+          <ExportProjectsButton
+            countryId={country?.id}
+            fileNameSuffix={country?.name}
+          />
           <div className={styles.stats}>
             <Card multiColumn>
               <KeyFigure

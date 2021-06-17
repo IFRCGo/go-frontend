@@ -2,7 +2,7 @@
 import { isNotDefined } from '@togglecorp/fujs';
 
 // FIXME: move this somewhere nice
-interface Row {
+export interface Row {
   [key: string]: string | number | boolean | undefined | null;
 }
 export function convertTableData<T>(

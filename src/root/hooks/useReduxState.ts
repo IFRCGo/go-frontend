@@ -21,7 +21,7 @@ export interface ReduxResponse<T> {
   data: T;
 }
 
-interface OldListResponse<T> {
+export interface OldListResponse<T> {
   count: number;
   next: string | null;
   previous: string | null;
