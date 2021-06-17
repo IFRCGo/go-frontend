@@ -41,6 +41,7 @@ import {
   PROJECT_STATUS_PLANNED,
   PROJECT_STATUS_ONGOING,
   FormType,
+  transformResponseFieldsToFormFields,
 } from './useThreeWOptions';
 
 import styles from './styles.module.scss';
@@ -92,61 +93,7 @@ function ThreeWForm(props: Props) {
 
   React.useEffect(() => {
     if (projectResponse) {
-      const {
-        actual_expenditure,
-        budget_amount,
-        dtype,
-        end_date,
-        event,
-        name,
-        operation_type,
-        primary_sector,
-        programme_type,
-        project_country,
-        project_districts,
-        reached_female,
-        reached_male,
-        reached_other,
-        reached_total,
-        reporting_ns,
-        secondary_sectors,
-        start_date,
-        status,
-        target_female,
-        target_male,
-        target_other,
-        target_total,
-        visibility,
-      } = projectResponse;
-
-      const formValue: FormType = {
-        is_project_completed: status === PROJECT_STATUS_COMPLETED,
-        actual_expenditure,
-        budget_amount,
-        dtype,
-        end_date,
-        event,
-        name,
-        operation_type,
-        primary_sector,
-        programme_type,
-        project_country,
-        project_districts,
-        reached_female,
-        reached_male,
-        reached_other,
-        reached_total,
-        reporting_ns,
-        secondary_sectors,
-        start_date,
-        status,
-        target_female,
-        target_male,
-        target_other,
-        target_total,
-        visibility,
-      };
-
+      const formValue = transformResponseFieldsToFormFields(projectResponse);
       projectCountryRef.current = undefined;
       onValueSet(formValue);
     }

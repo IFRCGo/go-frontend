@@ -127,12 +127,12 @@ function InCountryProjects(props: Props) {
     ...inCountryProjectColumns,
     createActionColumn(
       'actions',
-      (rowKey: number | string) => ({
+      (rowKey: number | string, project: Project) => ({
         children: (
           <ProjectTableActions
             onProjectFormSubmitSuccess={retriggerProjectListRequest}
             onProjectDeletionSuccess={retriggerProjectListRequest}
-            projectId={+rowKey}
+            project={project}
           />
         ),
       }),
