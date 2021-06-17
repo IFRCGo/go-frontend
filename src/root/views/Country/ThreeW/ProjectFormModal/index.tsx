@@ -10,9 +10,6 @@ import styles from './styles.module.scss';
 
 interface BaseProps {
   className?: string;
-  // projectId: number;
-  // countryId?: number;
-  // reportingNsId?: number
   onCloseButtonClick?: ButtonProps<void>['onClick'];
   onSubmitSuccess?: () => void;
 }

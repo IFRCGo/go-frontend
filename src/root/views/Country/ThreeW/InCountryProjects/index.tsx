@@ -44,12 +44,14 @@ import styles from './styles.module.scss';
 interface Props {
   country: Country | undefined;
   className?: string;
+  projectsUpdatedOn?: number | undefined;
 }
 
 function InCountryProjects(props: Props) {
   const {
     country,
     className,
+    projectsUpdatedOn,
   } = props;
 
   const {
@@ -64,6 +66,12 @@ function InCountryProjects(props: Props) {
       country: country?.iso,
     },
   });
+
+  React.useEffect(() => {
+    if (projectsUpdatedOn) {
+      retriggerProjectListRequest();
+    }
+  }, [projectsUpdatedOn, retriggerProjectListRequest]);
 
   const [viewAllProjects,,,, toggleViewAllProject] = useBooleanState(false);
   const projectList = projectListResponse?.results ?? emptyProjectList;
@@ -123,6 +131,7 @@ function InCountryProjects(props: Props) {
         children: (
           <ProjectTableActions
             onProjectFormSubmitSuccess={retriggerProjectListRequest}
+            onProjectDeletionSuccess={retriggerProjectListRequest}
             projectId={+rowKey}
           />
         ),
