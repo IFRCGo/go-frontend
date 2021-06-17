@@ -41,13 +41,16 @@ import styles from './styles.module.scss';
 interface Props {
   country: Country | undefined;
   className?: string;
+  projectsUpdatedOn?: number | undefined;
 }
 
 function NSProjects(props: Props) {
   const {
     country,
     className,
+    projectsUpdatedOn,
   } = props;
+
 
   const {
     pending: projectListPending,
@@ -61,6 +64,12 @@ function NSProjects(props: Props) {
       reporting_ns: country?.id,
     },
   });
+
+  React.useEffect(() => {
+    if (projectsUpdatedOn) {
+      retriggerProjectListRequest();
+    }
+  }, [projectsUpdatedOn, retriggerProjectListRequest]);
 
   const [viewAllProjects,,,, toggleViewAllProject] = useBooleanState(false);
   const projectList = projectListResponse?.results ?? emptyProjectList;
@@ -118,6 +127,7 @@ function NSProjects(props: Props) {
         children: (
           <ProjectTableActions
             onProjectFormSubmitSuccess={retriggerProjectListRequest}
+            onProjectDeletionSuccess={retriggerProjectListRequest}
             projectId={+rowKey}
           />
         ),
