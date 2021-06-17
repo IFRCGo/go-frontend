@@ -21,7 +21,9 @@ function DateOutput(props: Props) {
   } = props;
 
   const formattedValueList = React.useMemo(() => {
-    if (!value) return [];
+    if (!value) {
+      return [];
+    }
     const date = new Date(value);
     return populateFormat(breakFormat(format), date);
   }, [format, value]);

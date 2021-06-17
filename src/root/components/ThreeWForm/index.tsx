@@ -88,7 +88,7 @@ function ThreeWForm(props: Props) {
     response: projectResponse,
   } = useRequest<Project>({
     skip: isNotDefined(projectId),
-    url: `api/v2/project/${projectId}`,
+    url: `api/v2/project/${projectId}/`,
   });
 
   React.useEffect(() => {
