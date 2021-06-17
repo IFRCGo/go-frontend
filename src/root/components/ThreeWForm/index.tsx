@@ -119,7 +119,8 @@ function ThreeWForm(props: Props) {
         visibility,
       } = projectResponse;
 
-      const formValue: ProjectFormFields = {
+      const formValue: FormType = {
+        is_project_completed: status === PROJECT_STATUS_COMPLETED,
         actual_expenditure,
         budget_amount,
         dtype,
@@ -150,6 +151,7 @@ function ThreeWForm(props: Props) {
       onValueSet(formValue);
     }
   }, [projectResponse, onValueSet]);
+
 
   const {
     pending: submitRequestPending,

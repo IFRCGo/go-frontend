@@ -5,17 +5,10 @@ import {
   unique,
   listToGroupList,
   mapToList,
-  isDefined,
 } from '@togglecorp/fujs';
-import {
-  IoChevronForward,
-  IoClipboardOutline,
-  IoPencil,
-} from 'react-icons/io5';
+import { IoChevronForward } from 'react-icons/io5';
 
 import BlockLoading from '#components/block-loading';
-import BasicModal from '#components/BasicModal';
-import DropdownMenuItem from '#components/DropdownMenuItem';
 import Button from '#components/Button';
 import KeyFigure from '#components/KeyFigure';
 import Card from '#components/Card';
@@ -24,6 +17,7 @@ import ExportProjectsButton from '#components/ExportProjectsButton';
 
 import Table from '#components/Table';
 import { createActionColumn } from '#components/Table/predefinedColumns';
+import useBooleanState from '#hooks/useBooleanState';
 import {
   ListResponse,
   useRequest,
@@ -34,8 +28,7 @@ import {
   Project,
 } from '#types';
 
-import ProjectEditModal from '../ProjectEditModal';
-import ProjectDetailModal from '../ProjectDetailModal';
+import ProjectTableActions from '../ProjectTableActions';
 import ProjectStatPieChart from '../ProjectStatPieChart';
 import ProjectFlowSankey from '../ProjectFlowSankey';
 import { inCountryProjectColumns } from '../projectTableColumns';
@@ -43,6 +36,8 @@ import {
   LabelValue,
   emptyProjectList,
   PROJECT_STATUS_ONGOING,
+  projectKeySelector,
+  projectListToInCountrySankeyData,
 } from '../common';
 import styles from './styles.module.scss';
 
@@ -60,6 +55,7 @@ function InCountryProjects(props: Props) {
   const {
     pending: projectListPending,
     response: projectListResponse,
+    retrigger: retriggerProjectListRequest,
   } = useRequest<ListResponse<Project>>({
     skip: isNotDefined(country?.iso),
     url: 'api/v2/project/',
@@ -69,9 +65,8 @@ function InCountryProjects(props: Props) {
     },
   });
 
+  const [viewAllProjects,,,, toggleViewAllProject] = useBooleanState(false);
   const projectList = projectListResponse?.results ?? emptyProjectList;
-  const [showProjectDetailFor, setShowProjectDetailFor] = React.useState<number | undefined>();
-  const [editProjectDetailFor, setEditProjectDetailFor] = React.useState<number | undefined>();
 
   const [
     ongoingProjects,
@@ -94,7 +89,6 @@ function InCountryProjects(props: Props) {
       programmeTypeGrouped,
       (d, k) => ({ label: String(k), value: d.length })
     );
-
     const statusGrouped = (
       listToGroupList(
         projectList,
@@ -121,50 +115,24 @@ function InCountryProjects(props: Props) {
     unique(ongoingProjects, d => d.reporting_ns)?.length ?? 0
   ), [ongoingProjects]);
 
-  const handleViewProjectClick = React.useCallback((projectId: string | number | undefined) => {
-    if (projectId) {
-      setShowProjectDetailFor(+projectId);
-    }
-  }, []);
-
-  const handleEditProjectClick = React.useCallback((projectId: string | number | undefined) => {
-    if (projectId) {
-      setEditProjectDetailFor(+projectId);
-    }
-  }, []);
-
-  const handleProjectDetailModalCloseButtonClick = React.useCallback(() => {
-    setShowProjectDetailFor(undefined);
-  }, []);
-
-  const handleProjectEditModalCloseButtonClick = React.useCallback(() => {
-    setEditProjectDetailFor(undefined);
-  }, []);
-
   const tableColumns = [
     ...inCountryProjectColumns,
     createActionColumn(
       'actions',
       (rowKey: number | string) => ({
-        extraActions: (
-          <>
-            <DropdownMenuItem
-              name={rowKey}
-              onClick={handleViewProjectClick}
-              label="View Project"
-              icon={<IoClipboardOutline />}
-            />
-            <DropdownMenuItem
-              name={rowKey}
-              icon={<IoPencil />}
-              onClick={handleEditProjectClick}
-              label="Edit"
-            />
-          </>
+        children: (
+          <ProjectTableActions
+            onProjectFormSubmitSuccess={retriggerProjectListRequest}
+            projectId={+rowKey}
+          />
         ),
       }),
     ),
   ];
+
+  const sankeyData = React.useMemo(() => (
+    projectListToInCountrySankeyData(projectList)
+  ), [projectList]);
 
   return (
     <div className={_cs(styles.inCountryProjects, className)}>
@@ -210,23 +178,23 @@ function InCountryProjects(props: Props) {
           </div>
           <Container
             className={styles.ongoingProject}
-            heading="Ongoing projects"
+            heading={viewAllProjects ? 'All Projects' : 'Ongoing Projects'}
             actions={(
               <Button
                 actions={<IoChevronForward />}
                 variant="tertiary"
-                disabled
+                onClick={toggleViewAllProject}
               >
-                View All Projects
+                { viewAllProjects ? 'View Ongoing Projects' : 'View All Projects' }
               </Button>
             )}
             sub
           >
             <Table
               className={styles.projectsTable}
-              data={projectList}
+              data={viewAllProjects ? projectList : ongoingProjects}
               columns={tableColumns}
-              keySelector={d => d.id}
+              keySelector={projectKeySelector}
               variant="large"
             />
           </Container>
@@ -234,23 +202,9 @@ function InCountryProjects(props: Props) {
             heading="Overview of Activities"
             sub
           >
-            <ProjectFlowSankey projectList={projectList} />
+            <ProjectFlowSankey data={sankeyData} />
           </Container>
         </>
-      )}
-      {isDefined(showProjectDetailFor) && (
-        <ProjectDetailModal
-          onCloseButtonClick={handleProjectDetailModalCloseButtonClick}
-          className={styles.projectDetailModal}
-          projectId={showProjectDetailFor}
-        />
-      )}
-      {isDefined(editProjectDetailFor) && (
-        <ProjectEditModal
-          onCloseButtonClick={handleProjectEditModalCloseButtonClick}
-          className={styles.projectEditModal}
-          projectId={editProjectDetailFor}
-        />
       )}
     </div>
   );
