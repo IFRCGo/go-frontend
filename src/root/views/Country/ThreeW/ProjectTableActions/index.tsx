@@ -1,19 +1,26 @@
 import React from 'react';
+import url from 'url';
 import {
-  IoClipboardOutline,
-  IoPencil,
-  IoTrash,
-  IoEllipsisVertical,
-} from 'react-icons/io5';
+  MdContentCopy,
+  MdSearch,
+  MdEdit,
+  MdHistory,
+  MdDeleteForever,
+  MdMoreHoriz,
+} from 'react-icons/md';
 
 import { useLazyRequest } from '#utils/restRequest';
+import Button from '#components/Button';
 import GlobalLoading from '#components/NewGlobalLoading';
 import DropdownMenu from '#components/dropdown-menu';
 import LanguageContext from '#root/languageContext';
 import ConfirmModal from '#components/confirm-modal';
 import DropdownMenuItem from '#components/DropdownMenuItem';
+import { transformResponseFieldsToFormFields } from '#components/ThreeWForm/useThreeWOptions';
 import useBooleanState from '#hooks/useBooleanState';
 import useAlert from '#hooks/useAlert';
+import { adminUrl } from '#config';
+import { Project } from '#types';
 
 import ProjectFormModal from '../ProjectFormModal';
 import ProjectDetailModal from '../ProjectDetailModal';
@@ -21,16 +28,16 @@ import ProjectDetailModal from '../ProjectDetailModal';
 import styles from './styles.module.scss';
 
 interface Props {
-  projectId: number;
   onProjectFormSubmitSuccess?: () => void;
   onProjectDeletionSuccess?: () => void;
+  project: Project;
 }
 
 function ProjectTableActions(props: Props) {
   const { strings } = React.useContext(LanguageContext);
   const alert = useAlert();
   const {
-    projectId,
+    project,
     onProjectFormSubmitSuccess,
     onProjectDeletionSuccess,
   } = props;
@@ -48,16 +55,26 @@ function ProjectTableActions(props: Props) {
   ] = useBooleanState(false);
 
   const [
+    showDuplicateProject,
+    setShowDuplicateProjectTrue,
+    setShowDuplicateProjectFalse,
+  ] = useBooleanState(false);
+
+  const [
     showProjectDeleteConfirmation,
     setShowProjectDeleteConfirmationTrue,
     setShowProjectDeleteConfirmationFalse,
   ] = useBooleanState(false);
 
+  const projectFormFields = React.useMemo(() => (
+    transformResponseFieldsToFormFields(project)
+  ), [project]);
+
   const {
     pending: projectDeletionPending,
     trigger: requestProjectDeletion,
   } = useLazyRequest({
-    url: `api/v2/project/${projectId}`,
+    url: `api/v2/project/${project.id}`,
     method: 'DELETE',
     body: ctx => ctx,
     onSuccess: onProjectDeletionSuccess,
@@ -77,34 +94,56 @@ function ProjectTableActions(props: Props) {
     }
   }, [requestProjectDeletion, setShowProjectDeleteConfirmationFalse]);
 
+  const handleEditProjectButtonClick = React.useCallback(() => {
+    setShowProjectDetailsFalse();
+    setShowProjectEditTrue();
+  }, [setShowProjectDetailsFalse, setShowProjectEditTrue]);
+
   return (
     <>
       {projectDeletionPending && <GlobalLoading />}
-      <DropdownMenu label={<IoEllipsisVertical />}>
+      <DropdownMenu label={<MdMoreHoriz className={styles.overflowIcon} />}>
         <DropdownMenuItem
-          name={projectId}
           onClick={setShowProjectDetailsTrue}
-          label="View Details"
-          icon={<IoClipboardOutline />}
+          label={strings.projectListTableViewDetails}
+          icon={<MdSearch />}
         />
         <DropdownMenuItem
-          name={projectId}
-          icon={<IoPencil />}
+          icon={<MdEdit />}
           onClick={setShowProjectEditTrue}
-          label="Edit"
+          label={strings.projectListTableEdit}
         />
         <DropdownMenuItem
-          name={projectId}
-          icon={<IoTrash />}
+          icon={<MdContentCopy />}
+          onClick={setShowDuplicateProjectTrue}
+          label={strings.projectListTableDuplicate}
+        />
+        <DropdownMenuItem
+          icon={<MdHistory />}
+          label={strings.projectListTableHistory}
+          href={url.resolve(adminUrl, `deployments/project/${project.id}/history/`)}
+        />
+        <hr className={styles.optionsSeparator} />
+        <DropdownMenuItem
+          className={styles.deleteOption}
+          icon={<MdDeleteForever />}
           onClick={setShowProjectDeleteConfirmationTrue}
-          label="Delete"
+          label={strings.projectListTableDelete}
         />
       </DropdownMenu>
       {showProjectDetails && (
         <ProjectDetailModal
           onCloseButtonClick={setShowProjectDetailsFalse}
           className={styles.projectDetailModal}
-          projectId={projectId}
+          projectId={project.id}
+          headerActions={(
+            <Button
+              variant="primary"
+              onClick={handleEditProjectButtonClick}
+            >
+              {strings.projectListTableEdit}
+            </Button>
+          )}
         />
       )}
       {showProjectEdit && (
@@ -112,7 +151,15 @@ function ProjectTableActions(props: Props) {
           onSubmitSuccess={onProjectFormSubmitSuccess}
           onCloseButtonClick={setShowProjectEditFalse}
           className={styles.projectFormModal}
-          projectId={projectId}
+          projectId={project.id}
+        />
+      )}
+      {showDuplicateProject && (
+        <ProjectFormModal
+          onSubmitSuccess={onProjectFormSubmitSuccess}
+          onCloseButtonClick={setShowDuplicateProjectFalse}
+          className={styles.projectFormModal}
+          initialValue={projectFormFields}
         />
       )}
       {showProjectDeleteConfirmation && (

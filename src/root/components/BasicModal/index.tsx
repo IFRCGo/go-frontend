@@ -3,7 +3,7 @@ import { _cs } from '@togglecorp/fujs';
 import { IoClose } from 'react-icons/io5';
 
 import Backdrop from '#components/backdrop';
-import Header from '#components/Header';
+import Header, { Props as HeaderProps } from '#components/Header';
 import Button from '#components/Button';
 
 import styles from './styles.module.scss';
@@ -11,6 +11,7 @@ import styles from './styles.module.scss';
 export interface Props {
   className?: string;
   heading?: React.ReactNode;
+  headingSize?: HeaderProps['headingSize'];
   headerActions?: React.ReactNode;
   onCloseButtonClick?: () => void;
   footerActions?: React.ReactNode;
@@ -23,6 +24,7 @@ function BasicModal(props: Props) {
   const {
     className,
     heading,
+    headingSize,
     headerActions,
     onCloseButtonClick,
     footerActions,
@@ -42,6 +44,7 @@ function BasicModal(props: Props) {
           <Header
             className={styles.header}
             heading={heading}
+            headingSize={headingSize}
             actions={(
               <>
                 {headerActions}
