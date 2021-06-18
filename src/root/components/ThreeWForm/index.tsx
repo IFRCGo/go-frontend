@@ -81,8 +81,6 @@ function ThreeWForm(props: Props) {
     ...initialValue,
   }, schema);
 
-  const projectCountryRef = React.useRef(value.project_country);
-
   const {
     pending: projectDetailsPending,
     response: projectResponse,
@@ -94,7 +92,6 @@ function ThreeWForm(props: Props) {
   React.useEffect(() => {
     if (projectResponse) {
       const formValue = transformResponseFieldsToFormFields(projectResponse);
-      projectCountryRef.current = undefined;
       onValueSet(formValue);
     }
   }, [projectResponse, onValueSet]);
@@ -212,19 +209,6 @@ function ThreeWForm(props: Props) {
   }, [onValueChange, value.event, operationToDisasterMap, shouldDisableDisasterType]);
 
   React.useEffect(() => {
-    projectCountryRef.current = value.project_country;
-  }, [value.project_country]);
-
-  // Clear out any selected region when country is changed
-  React.useEffect(() => {
-    if (isDefined(projectCountryRef.current)) {
-      if (projectCountryRef.current !== value.project_country) {
-        onValueChange([], 'project_districts');
-      }
-    }
-  }, [onValueChange, value.project_country]);
-
-  React.useEffect(() => {
     onValueChange((oldValue: number | undefined) => {
       if (isNotDefined(oldValue)) {
         return value.budget_amount;
@@ -250,6 +234,14 @@ function ThreeWForm(props: Props) {
 
   const projectFormPending = submitRequestPending;
   const shouldDisableSubmitButton = !!(error?.fields) || submitRequestPending || projectDetailsPending;
+
+  const handleProjectCountryChange = React.useCallback(
+    (val: number | undefined, name: 'project_country') => {
+      onValueChange(val, name);
+      onValueChange(undefined, 'project_districts' as const);
+    },
+    [onValueChange],
+  );
 
   return (
     <form
@@ -283,7 +275,7 @@ function ThreeWForm(props: Props) {
               error={error?.fields?.project_country}
               label={strings.projectFormCountryLabel}
               name="project_country"
-              onChange={onValueChange}
+              onChange={handleProjectCountryChange}
               options={countryOptions}
               pending={fetchingCountries}
               value={value.project_country}
