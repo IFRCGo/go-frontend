@@ -18,10 +18,7 @@
     align-items: center;
   }
 
-
-  :global {
-    .go-input-section {
-      margin: $spacing 0;
-    }
+  .non-field-error {
+    margin-bottom: $spacing*2;
   }
 }

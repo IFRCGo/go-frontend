@@ -2,18 +2,25 @@ import React from 'react';
 import {
   isDefined,
   isFalsy,
-  isInteger,
   listToMap,
 } from '@togglecorp/fujs';
 
 import {
-  requiredCondition,
-  requiredListCondition,
-  requiredStringCondition,
+  PartialForm,
+  ObjectSchema,
 } from '@togglecorp/toggle-form';
 
-import { useRequest } from '#utils/restRequest';
+import {
+  useRequest,
+  ListResponse,
+} from '#utils/restRequest';
 import { compareString } from '#utils/utils';
+import {
+  requiredCondition,
+  requiredStringCondition,
+  positiveIntegerCondition,
+  requiredListCondition,
+} from '#utils/form';
 import {
   statuses,
   sectorList,
@@ -22,26 +29,39 @@ import {
   operationTypeList,
   projectVisibilityList,
 } from '#utils/constants';
+import {
+  ProjectFormFields,
+  Disaster,
+  Country,
+  District,
+  EventMini,
+  Project,
+} from '#types';
 
 
-export const OPERATION_TYPE_EMERGENCY = '1';
-export const PROGRAMME_TYPE_MULTILATERAL = '1';
-export const PROGRAMME_TYPE_DOMESTIC = '2';
+export const OPERATION_TYPE_EMERGENCY = 1;
+export const PROGRAMME_TYPE_MULTILATERAL = 1;
+export const PROGRAMME_TYPE_DOMESTIC = 2;
 
-export const PROJECT_STATUS_COMPLETED = '2';
-export const PROJECT_STATUS_ONGOING = '1';
-export const PROJECT_STATUS_PLANNED = '0';
+export const PROJECT_STATUS_COMPLETED = 2;
+export const PROJECT_STATUS_ONGOING = 1;
+export const PROJECT_STATUS_PLANNED = 0;
 
-const emptyList = [];
+export interface LabelValue {
+  value: number;
+  label: string;
+}
+
+const emptyLabelValueList: LabelValue[] = [];
 const emptyObject = {};
 
 const sectorOptions = sectorList.map(p => ({
-  value: p.inputValue,
+  value: (+p.inputValue),
   label: p.title,
 })).sort(compareString);
 
 const allSecondarySectorOptions = secondarySectorList.map(p => ({
-  value: p.inputValue,
+  value: (+p.inputValue),
   label: p.title,
 })).sort(compareString);
 
@@ -53,16 +73,17 @@ const programmeTypeOptions = programmeTypeList.map(p => ({
 const operationTypeOptions = [...operationTypeList].sort(compareString);
 const projectVisibilityOptions = [...projectVisibilityList].sort(compareString);
 
-function positiveIntegerCondition(value) {
-  return (value === undefined || value === '')
-    || (
-      (!Number.isNaN(value))
-      && (isFalsy(value) || isInteger(+value))
-      && (+value >= 0)
-    ) ? undefined : 'Value must be a positive integer';
+export interface FormType extends ProjectFormFields {
+  is_project_completed: boolean;
 }
 
-const generateValidEndDateCondition = (start) => (end) => {
+const greaterThanStartDateCondition = (
+  value: number | string | null | undefined,
+  allValue: PartialForm<FormType>,
+) => {
+  const start = allValue?.start_date;
+  const end = value;
+
   if (!start || !end) {
     return undefined;
   }
@@ -77,13 +98,16 @@ const generateValidEndDateCondition = (start) => (end) => {
   return undefined;
 };
 
-export const schema = {
-  fields: (value) => {
-    const schema = {
+type FormSchema = ObjectSchema<PartialForm<FormType>>;
+type FormSchemaFields = ReturnType<FormSchema['fields']>;
+
+export const schema: FormSchema = {
+  fields: (value): FormSchemaFields => {
+    let schema: FormSchemaFields = {
       actual_expenditure: [requiredCondition, positiveIntegerCondition],
       budget_amount: [requiredCondition, positiveIntegerCondition],
       dtype: [requiredCondition],
-      end_date: [requiredCondition, generateValidEndDateCondition(value.start_date)],
+      end_date: [requiredCondition, greaterThanStartDateCondition],
       event: [],
       is_project_completed: [],
       name: [requiredStringCondition],
@@ -111,13 +135,13 @@ export const schema = {
       visibility: [requiredCondition],
     };
 
-    const programmeType = String(value.programme_type);
-    const operationType = String(value.operation_type);
-    const projectStatus = String(value.status);
+    const programmeType = value.programme_type;
+    const operationType = value.operation_type;
+    const projectStatus = value.status;
 
     if (operationType === OPERATION_TYPE_EMERGENCY
       && (programmeType === PROGRAMME_TYPE_MULTILATERAL || programmeType === PROGRAMME_TYPE_DOMESTIC)) {
-      schema.event = [requiredCondition];
+        schema.event = [requiredCondition];
     }
 
     if (projectStatus === PROJECT_STATUS_COMPLETED) {
@@ -127,17 +151,20 @@ export const schema = {
 
     return schema;
   },
+  fieldDependencies: () => ({
+    end_date: ['start_date'],
+  }),
 };
 
 const limitQuery = {
   limit: 500,
 };
 
-export function useThreeWOptions(value) {
+export function useThreeWOptions(value: Partial<FormType>) {
   const {
     pending: fetchingCountries,
     response: countriesResponse,
-  } = useRequest({
+  } = useRequest<ListResponse<Country>>({
     url: 'api/v2/country/',
     query: limitQuery,
   });
@@ -146,25 +173,25 @@ export function useThreeWOptions(value) {
     nationalSocietyOptions,
     countryOptions,
   ] = React.useMemo(() => {
-    if (!(countriesResponse?.results?.length > 0)) {
-      return [emptyList, emptyList];
+    if (!countriesResponse) {
+      return [emptyLabelValueList, emptyLabelValueList];
     }
 
-    const ns = countriesResponse?.results
+    const ns: LabelValue[] = countriesResponse.results
       .filter(d => d.independent && d.society_name)
       .map(d => ({
         value: d.id,
         label: d.society_name,
       })).sort(compareString);
 
-    const c = countriesResponse.results
+    const c: LabelValue[] = countriesResponse.results
       .filter(d => d.independent && d.iso)
       .map(d => ({
         value: d.id,
         label: d.name,
       })).sort(compareString);
 
-    return [ns, c];
+    return [ns, c] as const;
   }, [countriesResponse]);
 
   const projectCountryQuery = React.useMemo(() => ({
@@ -175,47 +202,47 @@ export function useThreeWOptions(value) {
   const {
     pending: fetchingDistricts,
     response: districtsResponse,
-  } = useRequest({
+  } = useRequest<ListResponse<District>>({
     skip: !value.project_country,
     url: 'api/v2/district/',
     query: projectCountryQuery,
   });
 
+  const districtOptions: LabelValue[] = React.useMemo(() => (
+    districtsResponse?.results.map(d => ({
+      value: d.id,
+      label: d.name,
+    })).sort(compareString) ?? emptyLabelValueList 
+  ), [districtsResponse]);
+
   const {
     pending: fetchingEvents,
     response: eventsResponse,
-  } = useRequest({
+  } = useRequest<ListResponse<EventMini>>({
     skip: !value.project_country,
     url: 'api/v2/event/mini/',
     query: projectCountryQuery,
   });
-
-  const districtOptions = React.useMemo(() => (
-    districtsResponse?.results.map(d => ({
-      value: d.id,
-      label: d.name,
-    })).sort(compareString) ?? emptyList
-  ), [districtsResponse]);
 
   const [
     currentOperationOptions,
     currentEmergencyOperationOptions,
     operationToDisasterMap,
   ] = React.useMemo(() => {
-    if (!(eventsResponse?.results?.length > 0)) {
-      return [emptyList, emptyList, emptyObject];
+    if (!eventsResponse) {
+      return [emptyLabelValueList, emptyLabelValueList, emptyObject];
     }
 
     const {
       results: eventList,
     } = eventsResponse;
 
-    const coo = eventList.map((d) => ({
+    const coo: LabelValue[] = eventList.map((d) => ({
       value: d.id,
       label: d.name,
     }));
 
-    const ceoo = eventList
+    const ceoo: LabelValue[] = eventList
       .filter(d => d.auto_generated_source === 'New field report')
       .map((d) => ({
         value: d.id,
@@ -224,26 +251,28 @@ export function useThreeWOptions(value) {
 
     const otdm = listToMap(eventList, d => d.id, d => d.dtype?.id);
 
-    return [coo, ceoo, otdm];
+    return [coo, ceoo, otdm] as const;
   }, [eventsResponse]);
 
 
   const {
     pending: fetchingDisasterTypes,
     response: disasterTypesResponse,
-  } = useRequest({
+  } = useRequest<ListResponse<Disaster>>({
     url: 'api/v2/disaster_type/',
   });
 
   const disasterTypeOptions = React.useMemo(() => {
-    if (!(disasterTypesResponse?.results?.length > 0)) {
-      return emptyList;
+    if (!disasterTypesResponse) {
+      return emptyLabelValueList;
     }
 
-    return disasterTypesResponse.results.map((d) => ({
+    const dto: LabelValue[] = disasterTypesResponse.results.map((d) => ({
       value: d.id,
       label: d.name,
     }));
+
+    return dto;
   }, [disasterTypesResponse]);
 
   const shouldDisableDistrictInput = fetchingDistricts
@@ -254,15 +283,15 @@ export function useThreeWOptions(value) {
     shouldShowCurrentEmergencyOperation,
     shouldShowCurrentOperation
   ] = React.useMemo(() => {
-    const operationType = String(value.operation_type);
-    const programmeType = String(value.programme_type);
+    const operationType = value.operation_type;
+    const programmeType = value.programme_type;
 
     const isEmergencyOperation = operationType === OPERATION_TYPE_EMERGENCY;
 
     return [
       isEmergencyOperation && programmeType === PROGRAMME_TYPE_DOMESTIC,
       isEmergencyOperation && programmeType === PROGRAMME_TYPE_MULTILATERAL,
-    ];
+    ] as const;
   }, [value]);
 
   // FIXME: use strings
@@ -293,7 +322,7 @@ export function useThreeWOptions(value) {
     allSecondarySectorOptions.filter(d => d.value !== value.primary_sector)
   ), [value.primary_sector]);
 
-  const isReachedTotalRequired = String(value.status) === PROJECT_STATUS_COMPLETED;
+  const isReachedTotalRequired = value.status === PROJECT_STATUS_COMPLETED;
   const shouldDisableTotalTarget = !isFalsy(value.target_male)
     || !isFalsy(value.target_female)
     || !isFalsy(value.target_other);
@@ -329,5 +358,64 @@ export function useThreeWOptions(value) {
     isReachedTotalRequired,
     shouldDisableTotalTarget,
     shouldDisableTotalReached,
+  } as const;
+}
+
+export function transformResponseFieldsToFormFields(projectResponse: Project): FormType {
+  const {
+    actual_expenditure,
+    budget_amount,
+    dtype,
+    end_date,
+    event,
+    name,
+    operation_type,
+    primary_sector,
+    programme_type,
+    project_country,
+    project_districts,
+    reached_female,
+    reached_male,
+    reached_other,
+    reached_total,
+    reporting_ns,
+    secondary_sectors,
+    start_date,
+    status,
+    target_female,
+    target_male,
+    target_other,
+    target_total,
+    visibility,
+  } = projectResponse;
+
+  const formValue: FormType = {
+    is_project_completed: status === PROJECT_STATUS_COMPLETED,
+    actual_expenditure,
+    budget_amount,
+    dtype,
+    end_date,
+    event,
+    name,
+    operation_type,
+    primary_sector,
+    programme_type,
+    project_country,
+    project_districts,
+    reached_female,
+    reached_male,
+    reached_other,
+    reached_total,
+    reporting_ns,
+    secondary_sectors,
+    start_date,
+    status,
+    target_female,
+    target_male,
+    target_other,
+    target_total,
+    visibility,
   };
+
+  return formValue;
 }

@@ -20,7 +20,7 @@ export type TabContextProps = BaseTabContextProps & (
   } | {
     useHash?: false;
     activeTab: TabKey | undefined;
-    setActiveTab: (key: TabKey) => void;
+    setActiveTab: (key: TabKey | undefined) => void;
   }
 );
 

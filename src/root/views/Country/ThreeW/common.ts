@@ -2,24 +2,68 @@ import {
   unique,
   isDefined,
   listToGroupList,
+  mapToList,
 } from '@togglecorp/fujs';
 import { Project } from '#types';
 
 export const emptyProjectList: Project[] = [];
-
 
 export interface LabelValue {
   label: string;
   value: number;
 }
 
-interface SankeyNode {
+export interface SankeyNode {
   name: string;
 }
-interface SankeyLink {
+
+export interface SankeyLink {
   source: number;
   target: number;
   value: number;
+}
+
+interface SankeyNodeInternal {
+  id: number;
+  name: string;
+  uniqueId: string;
+}
+
+interface SankeyLinkInternal {
+  source: number | undefined;
+  target: number | undefined;
+  value: number;
+}
+
+function isValidLink(value: SankeyLinkInternal): value is SankeyLink {
+  return isDefined(value.source) && isDefined(value.target);
+}
+
+function mergeList<T>(list: T[], transform: (acc: T, val: T) => T): T {
+  const [firstValue, ...otherValues] = list;
+  return otherValues.reduce(
+    transform,
+    firstValue,
+  );
+}
+
+export function listToMap<T, K extends string | number, V>(
+  items: T[],
+  keySelector: (val: T, index: number) => K,
+  valueSelector: (val: T, index: number) => V,
+) {
+  const val: Partial<Record<K, V>> = items.reduce(
+    (acc, item, index) => {
+      const key = keySelector(item, index);
+      const value = valueSelector(item, index);
+      return {
+        ...acc,
+        [key]: value,
+      };
+    },
+    {},
+  );
+  return val;
 }
 
 function uniqueAndTransform<I, R>(
@@ -37,105 +81,145 @@ function uniqueAndTransform<I, R>(
   return transformedList;
 }
 
-export function projectListToSankeyData(projectList: Project[]) {
-  const nodes: SankeyNode[] = [];
-  const links: SankeyLink[] = [];
-
-  const nsList = uniqueAndTransform(
-    projectList,
-    d => d.reporting_ns,
-    d => d.reporting_ns_detail,
+function mergeLinks(links: SankeyLink[]) {
+  const groupedLinks = listToGroupList(
+    links,
+    (item) => `${item.source}-${item.target}`,
+    (item) => item,
   );
-  const nsIdToNodeIndexMap: Record<string, number> = {};
-  nsList.forEach((ns) => {
-    nsIdToNodeIndexMap[ns.id] = nodes.push({
-      name: ns.society_name
-    }) - 1;
-  });
-
-  const primarySectorList = uniqueAndTransform(
-    projectList,
-    d => d.primary_sector,
-    d => ({ id: d.primary_sector, label: d.primary_sector_display }),
-  );
-  const primarySectorIdToNodeIndexMap: Record<string, number> = {};
-  primarySectorList.forEach((ps) => {
-    primarySectorIdToNodeIndexMap[ps.id] = nodes.push({
-      name: ps.label,
-    }) - 1;
-  });
-
-
-  const allSecondarySectorList = projectList.reduce((acc, val) => ([
-    ...acc,
-    ...val.secondary_sectors.map((key, i) => ({
-      id: key,
-      label: val.secondary_sectors_display[i],
+  return mapToList(
+    groupedLinks,
+    item => mergeList(item, (prev, next) => ({
+      ...prev,
+      value: prev.value + next.value,
     })),
-  ]), [] as { id: number, label: string }[]);
+  );
+}
 
-  const secondarySectorList = unique(allSecondarySectorList, d => d.id) ?? [];
-  const secondarySectorIdToNodeIndexMap: Record<string, number> = {};
-  secondarySectorList.forEach((ss) => {
-    secondarySectorIdToNodeIndexMap[ss.id] = nodes.push({
-      name: ss.label,
-    }) - 1;
-  });
-
-  const nsGroupedProjectList = listToGroupList(
+export function projectListToInCountrySankeyData(projectList: Project[]) {
+  const nsList: SankeyNodeInternal[] = uniqueAndTransform(
     projectList,
     d => d.reporting_ns,
-    d => d,
+    d => ({
+      id: d.reporting_ns,
+      name: d.reporting_ns_detail.society_name,
+      uniqueId: `ns-${d.reporting_ns}`,
+    }),
   );
-  Object.keys(nsGroupedProjectList).forEach((nsId) => {
-    const nsProjectList = nsGroupedProjectList[nsId];
-    nsProjectList.forEach((p) => {
-      links.push({
-        source: nsIdToNodeIndexMap[nsId],
-        target: primarySectorIdToNodeIndexMap[p.primary_sector],
-        value: 1,
-      });
-    });
-  });
-
-  const primarySectorGroupedProjectList = listToGroupList(
+  const primarySectorList: SankeyNodeInternal[] = uniqueAndTransform(
     projectList,
     d => d.primary_sector,
+    d => ({
+      id: d.primary_sector,
+      name: d.primary_sector_display,
+      uniqueId: `primary-sector-${d.primary_sector}`,
+    }),
+  );
+  const secondarySectorList: SankeyNodeInternal[] = uniqueAndTransform(
+    projectList.map((project) => (
+      project.secondary_sectors.map((key, index) => ({
+        id: key,
+        name: project.secondary_sectors_display[index],
+        uniqueId: `secondary-sector-${key}`,
+      }))
+    )).flat(),
+    d => d.id,
     d => d,
   );
-  Object.keys(primarySectorGroupedProjectList).forEach((psId) => {
-    const psProjectList = primarySectorGroupedProjectList[psId];
-    psProjectList.forEach((p) => {
-      (p.secondary_sectors ?? []).forEach((ssId) => {
-        links.push({
-          source: primarySectorIdToNodeIndexMap[psId],
-          target: secondarySectorIdToNodeIndexMap[ssId],
-          value: 1,
-        });
-      });
-    });
-  });
 
-  const reducedLinks = links.reduce((acc, val) => {
-    const i = acc.findIndex(
-      l => l.source === val.source
-      && l.target === val.target
-    );
+  const nodes: SankeyNodeInternal[] = [
+    ...nsList,
+    ...primarySectorList,
+    ...secondarySectorList,
+  ];
+  const nodesMapping = listToMap(
+    nodes,
+    (node) => node.uniqueId,
+    (_, index) => index,
+  );
 
-    if (i === -1) {
-      return [...acc, val];
-    }
+  const nsToPrimarySectorLinks: SankeyLinkInternal[] = projectList.map((project) => ({
+    source: nodesMapping[`ns-${project.reporting_ns}`],
+    target: nodesMapping[`primary-sector-${project.primary_sector}`],
+    value: 1,
+  })).flat();
 
-    const newAcc = [...acc];
-    const {0: prevLink} = newAcc.splice(i, 1);
+  const primarySectorToSecondarySectorLinks: SankeyLinkInternal[] = projectList.map((project) => (
+    project.secondary_sectors.map((secondary_sector_key) => ({
+      source: nodesMapping[`primary-sector-${project.primary_sector}`],
+      target: nodesMapping[`secondary-sector-${secondary_sector_key}`],
+      value: 1,
+    }))
+  )).flat(2);
 
-    return [
-      ...newAcc, {
-        ...prevLink,
-        value: prevLink.value + 1
-      }
-    ];
-  }, [] as SankeyLink[]);
+  const reducedLinks = mergeLinks([
+    ...nsToPrimarySectorLinks,
+    ...primarySectorToSecondarySectorLinks,
+  ].filter(isValidLink));
+
+  return {
+    nodes,
+    links: reducedLinks,
+  };
+}
+
+export function projectListToNsSankeyData(projectList: Project[]) {
+  const nsList: SankeyNodeInternal[] = uniqueAndTransform(
+    projectList,
+    d => d.reporting_ns,
+    d => ({
+      id: d.reporting_ns,
+      name: d.reporting_ns_detail.society_name,
+      uniqueId: `ns-${d.reporting_ns}`,
+    }),
+  );
+  const primarySectorList: SankeyNodeInternal[] = uniqueAndTransform(
+    projectList,
+    d => d.primary_sector,
+    d => ({
+      id: d.primary_sector,
+      name: d.primary_sector_display,
+      uniqueId: `primary-sector-${d.primary_sector}`,
+    }),
+  );
+
+  const countryList: SankeyNodeInternal[] = uniqueAndTransform(
+    projectList,
+    d => d.project_country,
+    d => ({
+      id: d.project_country,
+      name: d.project_country_detail.name,
+      uniqueId: `country-${d.project_country}`,
+    }),
+  );
+
+  const nodes: SankeyNodeInternal[] = [
+    ...nsList,
+    ...primarySectorList,
+    ...countryList,
+  ];
+  const nodesMapping = listToMap(
+    nodes,
+    (node) => node.uniqueId,
+    (_, index) => index,
+  );
+
+  const nsToPrimarySectorLinks: SankeyLinkInternal[] = projectList.map((project) => ({
+    source: nodesMapping[`ns-${project.reporting_ns}`],
+    target: nodesMapping[`primary-sector-${project.primary_sector}`],
+    value: 1,
+  })).flat();
+
+  const primarySectorToCountryLinks: SankeyLinkInternal[] = projectList.map((project) => ({
+    source: nodesMapping[`primary-sector-${project.primary_sector}`],
+    target: nodesMapping[`country-${project.project_country}`],
+    value: 1,
+  })).flat();
+
+  const reducedLinks = mergeLinks([
+    ...nsToPrimarySectorLinks,
+    ...primarySectorToCountryLinks,
+  ].filter(isValidLink));
 
   return {
     nodes,
@@ -147,3 +231,4 @@ export const PROJECT_STATUS_COMPLETED = 2;
 export const PROJECT_STATUS_ONGOING = 1;
 export const PROJECT_STATUS_PLANNED = 0;
 
+export const projectKeySelector = (p: Project) => p.id;

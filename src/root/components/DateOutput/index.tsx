@@ -9,21 +9,25 @@ import styles from './styles.module.scss';
 
 export interface Props {
   className?: string;
-  value: string | number;
+  value?: string | number;
   format?: string;
 }
 
 function DateOutput(props: Props) {
   const {
     value,
-    format = 'dd MMM, yyyy',
+    format = 'yyyy-MM-dd',
     className,
   } = props;
 
   const formattedValueList = React.useMemo(() => {
+    if (!value) {
+      return [];
+    }
     const date = new Date(value);
     return populateFormat(breakFormat(format), date);
   }, [format, value]);
+
   const formattedDate = formattedValueList.find((d) => d.type === 'date');
 
   return (

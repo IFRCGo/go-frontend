@@ -12,7 +12,10 @@ import {
 } from 'recharts';
 
 import { Project } from '#types';
-import { projectListToSankeyData } from '../common';
+import type {
+  SankeyNode as SankeyNodeFields,
+  SankeyLink as SankeyLinkFields,
+} from '../common';
 
 import styles from './styles.module.scss';
 
@@ -84,16 +87,16 @@ function SankeyLink (props: {
           isLeft && styles.left,
         )}
         d={`
-            M${sourceX},${sourceY + linkWidth / 2}
-            C${sourceControlX},${sourceY + linkWidth / 2}
-              ${targetControlX},${targetY + linkWidth / 2}
-              ${targetX},${targetY + linkWidth / 2}
-            L${targetX},${targetY - linkWidth / 2}
-            C${targetControlX},${targetY - linkWidth / 2}
-              ${sourceControlX},${sourceY - linkWidth / 2}
-              ${sourceX},${sourceY - linkWidth / 2}
-            Z
-          `}
+          M${sourceX},${sourceY + linkWidth / 2}
+          C${sourceControlX},${sourceY + linkWidth / 2}
+            ${targetControlX},${targetY + linkWidth / 2}
+            ${targetX},${targetY + linkWidth / 2}
+          L${targetX},${targetY - linkWidth / 2}
+          C${targetControlX},${targetY - linkWidth / 2}
+            ${sourceControlX},${sourceY - linkWidth / 2}
+            ${sourceX},${sourceY - linkWidth / 2}
+          Z
+        `}
         strokeWidth={0}
       />
     </Layer>
@@ -102,26 +105,38 @@ function SankeyLink (props: {
 
 interface Props {
   className?: string;
-  projectList: Project[];
+  data?: {
+    nodes: SankeyNodeFields[];
+    links: SankeyLinkFields[];
+  };
 }
 
 function ProjectFlowSankey(props: Props) {
   const {
     className,
-    projectList,
+    data,
   } = props;
 
-  const sankeyData = React.useMemo(() => (
-    projectListToSankeyData(projectList)
-  ), [projectList]);
+  if (!data) {
+    return null;
+  }
+
+  if (!data.links || data.links.length === 0) {
+    return null;
+  }
+
+  if (!data.nodes || data.nodes.length === 0) {
+    return null;
+  }
 
   return (
     <ResponsiveContainer
       className={_cs(styles.projectFlowSankey, className)}
     >
       <Sankey
-        data={sankeyData}
-        node={SankeyNode}
+        data={data}
+        // NOTE: recharts has wrong typing for node
+        node={SankeyNode as unknown as object}
         link={SankeyLink}
       >
         <Tooltip />

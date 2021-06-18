@@ -44,7 +44,7 @@ export interface Props {
   /**
    * The value of the numeral
    */
-  value?: number;
+  value?: number | null;
 
   valueModifier?: (value: string | undefined) => React.ReactNode;
   signClassName?: string;

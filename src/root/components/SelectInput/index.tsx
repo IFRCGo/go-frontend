@@ -36,11 +36,11 @@ interface BaseProps<N> {
 
 type Props<N extends Key, V extends Key> = BaseProps<N> & ({
   isMulti?: false;
-  value: V;
+  value: V | null;
   onChange: (newValue: V, name: N) => void;
 } | {
   isMulti: true;
-  value: V[] | undefined;
+  value: V[] | undefined | null;
   onChange: (newValue: V[], name: N) => void;
 })
 

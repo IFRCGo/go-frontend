@@ -5,7 +5,12 @@ import {
 
 import HeaderCell, { HeaderCellProps } from './HeaderCell';
 import Cell, { CellProps } from './Cell';
-import NumberOutput, { Props as NumberOutputProps } from '../NumberOutput';
+import NumberOutput, {
+  Props as NumberOutputProps
+} from '#components/NumberOutput';
+import TableActions, {
+  Props as TableActionsProps
+} from '#components/TableActions';
 
 import { Column } from './index';
 import { SortDirection, FilterType } from './types';
@@ -77,12 +82,33 @@ export function createNumberColumn<D, K>(
     },
     cellRenderer: NumberOutput,
     cellRendererParams: (_: K, datum: D): NumberOutputProps => ({
-      // Note override null with undefined
+      // Note: override null with undefined
       value: accessor(datum) ?? undefined,
       ...rendererProps,
     }),
     valueSelector: accessor,
     valueComparator: (foo: D, bar: D) => compareNumber(accessor(foo), accessor(bar)),
   };
+
+  return item;
+}
+
+export function createActionColumn<D, K>(
+  id: string,
+  rendererParams: (_: K, datum: D) => TableActionsProps,
+) {
+  const item: Column<D, K, TableActionsProps, HeaderCellProps> = {
+    id,
+    title: '',
+    headerCellRenderer: HeaderCell,
+    headerCellRendererParams: {
+      sortable: false,
+      orderable: false,
+      hideable: false,
+    },
+    cellRenderer: TableActions,
+    cellRendererParams: rendererParams,
+  };
+
   return item;
 }
