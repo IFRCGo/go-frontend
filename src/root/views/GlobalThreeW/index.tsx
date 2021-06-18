@@ -12,6 +12,8 @@ import LanguageContext from '#root/languageContext';
 import { useRequest } from '#utils/restRequest';
 import { sum } from '#utils/common';
 
+import { GoBarChart, GoPieChart } from './Charts';
+
 import styles from './styles.module.scss';
 
 interface NsProjectsOverviewFields {
@@ -25,10 +27,19 @@ interface NsProjectOverview {
   results: NsProjectsOverviewFields[];
 }
 
+interface ProgrammePerSector {
+  programme_type: number;
+  programme_type_display: string;
+  count: number;
+}
+
 interface GlobalProjectsOverviewFields {
   total_ongoing_projects: number;
   ns_with_ongoing_activities: number;
   target_total: number;
+  projects_per_sector: any[];
+  projects_per_programme_type: ProgrammePerSector[];
+  projects_per_secondary_sectors: any[];
 }
 
 interface Props {
@@ -108,14 +119,28 @@ function GlobalThreeW(props: Props) {
           </Card>
         </>
       )}
-    >
-      {pending && <BlockLoading /> }
-      <Container>
-        Charts and map
+      actions={(
         <ExportProjectsButton
           fileNameSuffix="All projects"
         />
-      </Container>
+      )}
+    >
+      {pending ? <BlockLoading /> : (
+        <Container>
+          {projectsOverviewResponse && <GoPieChart
+            heading="Programme Type"
+            data={projectsOverviewResponse.projects_per_programme_type} />}
+
+          {projectsOverviewResponse && <GoBarChart
+            heading="Project Per Sector"
+            data={projectsOverviewResponse.projects_per_sector} />}
+
+          {projectsOverviewResponse && <GoBarChart
+            heading="Top Tags"
+            data={projectsOverviewResponse.projects_per_secondary_sectors}
+          />}
+        </Container>
+      )}
     </Page>
   );
 }
