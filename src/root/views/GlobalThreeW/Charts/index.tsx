@@ -1,90 +1,186 @@
 import React from 'react';
-import { Cell, Bar, Pie, PieChart, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ComposedChart } from 'recharts';
+import {
+  Cell,
+  Bar,
+  BarChart,
+  Pie,
+  PieChart,
+  XAxis,
+  YAxis,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+  LabelList,
+} from 'recharts';
+import Card from '#components/Card';
+import { sum } from '#utils/common';
 
 import styles from './styles.module.scss';
 
-interface ChartData {
+interface PieChartData {
   key: number,
   name: string,
   value: number,
 }
 
-interface Data {
-  data: any[],
+const PIE_COLORS = ['#f64752', '#fa999f', '#f87079'];
+
+interface PieChartProps {
+  data: PieChartData[],
   heading: string,
+  className?: string;
 }
 
-function GoPieChart(props: Data) {
-  const [data, setData] = React.useState<ChartData[]>([]);
+function ThreeWPieChart(props: PieChartProps) {
+  const {
+    data = [],
+    className,
+  } = props;
 
-  React.useEffect(() => {
-    if (props.data) {
-      const dataArr = props.data.map((datum: any) => {
-        return { key: datum["programme_type"], name: datum["programme_type_display"], value: datum["count"] };
-      });
-      setData(dataArr);
-    }
-  }, [props]);
-
-  const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
+  const total = sum(data, d => d.value) ?? 0;
 
   return (
-    <>
-      <h2>{props.heading}</h2>
-      <PieChart width={400} height={400}>
-        <Pie data={data} dataKey="value" cx={200} cy={200} outerRadius={90} fill="#82ca9d" label>
-          {
-            data.map((entry, index) => <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />)
-          }
-        </Pie>
-        <Legend verticalAlign="top" height={36} />
-      </PieChart>
-    </>
-  );
-}
-
-function GoBarChart(props: Data) {
-
-  const [data, setData] = React.useState<ChartData[]>([]);
-
-  React.useEffect(() => {
-    if (props.data && props.data.length > 0) {
-      const keys = Object.keys(props.data[0]);
-      const dataArr = props.data.map((datum: any) => {
-        return { key: datum[keys[0]], name: datum[keys[1]], value: datum["count"] };
-      });
-      setData(dataArr);
-    }
-  }, [props]);
-
-  return (
-    <>
-      <h2>{props.heading}</h2>
-      <ComposedChart
-        layout="vertical"
-        width={500}
-        height={400}
-        data={data}
-        margin={{
-          top: 20,
-          right: 20,
-          bottom: 20,
-          left: 20,
-        }}
-        barCategoryGap={2}
+    <Card
+      className={className}
+      title={props.heading}
+    >
+      <ResponsiveContainer
+        className={styles.chartContainer}
       >
-        <CartesianGrid stroke="#f5f5f5" />
-        <XAxis type="number" hide={true} />
-        <YAxis dataKey="name" type="category" scale="band" />
-        <Tooltip />
-        <Bar barSize={20}
-          dataKey="value"
-          fontSize={12}
-          fill={"#0088FE"}
-        />
-      </ComposedChart>
-    </>
+        <PieChart
+          margin={{
+            right: 50,
+            bottom: 30,
+            left: 30,
+            top: 30,
+          }}
+        >
+          <Pie
+            data={data}
+            dataKey="value"
+            labelLine={false}
+          >
+            { data.map((entry, index) => (
+              <Cell
+                key={`cell-${index}`}
+                fill={PIE_COLORS[index % PIE_COLORS.length]}
+              />
+            ))}
+            <LabelList
+              className={styles.pieLabel}
+              position="outside"
+              formatter={(v: number) => `${((100 * (v / total))).toFixed(1)}%`}
+            />
+          </Pie>
+          <Legend
+            iconType="circle"
+            iconSize={10}
+            verticalAlign="middle"
+            align="right"
+            layout="vertical"
+            wrapperStyle={{
+              right: 10,
+            }}
+          />
+        </PieChart>
+      </ResponsiveContainer>
+    </Card>
   );
 }
 
-export { GoPieChart, GoBarChart };
+function CustomYAxisTick (props: {
+  y: number;
+  payload: unknown;
+}) {
+  const { y, payload } = props;
+  const { value } = payload as { value: number };
+
+  return (
+    <g transform={`translate(${0},${y})`}>
+      <text
+        x={0}
+        y={0}
+        textAnchor="start"
+        className={styles.tick}
+      >
+        {value}
+      </text>
+    </g>
+  );
+}
+
+interface BarChartData {
+  key: number | string;
+  name: string;
+  value: number;
+}
+
+interface BarChartProps {
+  data: BarChartData[],
+  heading: string,
+  className?: string;
+}
+
+function ThreeWBarChart(props: BarChartProps) {
+  const {
+    data,
+    className,
+  } = props;
+
+  const chartData = React.useMemo(() => {
+    if (!data) {
+      return [];
+    }
+
+    return data
+    .sort((a, b) => b.value - a.value)
+    .splice(0, 5); // Only show top 5
+  }, [data]);
+
+  return (
+    <Card
+      title={props.heading}
+      className={className}
+    >
+      <ResponsiveContainer className={styles.chartContainer}>
+        <BarChart
+          layout="vertical"
+          data={chartData}
+          margin={{
+            top: 10,
+            right: 30,
+            bottom: 10,
+            left: 10,
+          }}
+          barSize={10}
+          barCategoryGap={2}
+        >
+          <XAxis type="number" hide={true} />
+          <YAxis
+            interval={0}
+            dataKey="name"
+            type="category"
+            scale="band"
+            axisLine={false}
+            width={160}
+            tick={CustomYAxisTick}
+          />
+          <Tooltip />
+          <Bar
+            radius={5}
+            dataKey="value"
+            fill="#f5333f"
+          >
+            <LabelList
+              className={styles.barLabel}
+              dataKey="value"
+              position="right"
+            />
+          </Bar>
+        </BarChart>
+      </ResponsiveContainer>
+    </Card>
+  );
+}
+
+export { ThreeWPieChart, ThreeWBarChart };

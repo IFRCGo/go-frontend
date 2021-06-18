@@ -8,11 +8,13 @@
 
   .title {
     padding: $spacing/2;
+    font-weight: $base-font-medium;
+    text-transform: uppercase;
+    border-bottom: $base-border-color solid $base-border-width;
   }
 
   .content {
     padding: $spacing/2;
-
   }
 
   &.multi-column {
