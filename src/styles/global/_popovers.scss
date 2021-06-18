@@ -266,3 +266,11 @@ a.popover__contents {
     color: $warning-color;
   }
 }
+
+.mapboxgl-popup {
+  max-width: unset!important;
+
+  .mapboxgl-popup-content {
+    padding: unset;
+  }
+}
