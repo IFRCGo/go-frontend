@@ -1,0 +1,40 @@
+@import '~styles/settings/variables';
+
+.chart-container {
+  height: 14rem!important;
+
+  :global {
+    .recharts-text.recharts-cartesian-axis-tick-value {
+      font-weight: $base-font-bold;
+    }
+    .recharts-cartesian-axis-tick-line {
+      display: none;
+    }
+
+    .recharts-legend-item {
+      margin-right: 0!important;
+
+      .recharts-legend-item-text {
+        color: $color-text!important;
+        margin-left: $spacing/2;
+        text-transform: uppercase;
+      }
+    }
+  }
+
+  .tick {
+    font-weight: $base-font-bold;
+    color: $color-text!important;
+    fill: $color-text!important;
+  }
+
+  .bar-label {
+    font-size: $font-size-sm;
+    font-weight: $base-font-medium;
+  }
+
+  .pie-label {
+    stroke: transparent;
+    fill: $color-text!important;
+  }
+}

@@ -11,4 +11,31 @@
       flex-grow: 1;
     }
   }
+
+  .charts-container {
+    display: flex;
+    flex-wrap: wrap;
+    overflow: hidden;
+
+    .project-per-sector-chart {
+      margin: $spacing/2;
+      flex-basis: 0;
+      flex-grow: 1;
+      min-width: 20rem;
+    }
+
+    .programme-type-chart {
+      margin: $spacing/2;
+      flex-basis: 0;
+      flex-grow: 1;
+      min-width: 20rem;
+    }
+
+    .top-tags-chart {
+      margin: $spacing/2;
+      flex-basis: 0;
+      flex-grow: 1;
+      min-width: 20rem;
+    }
+  }
 }
