@@ -9,7 +9,7 @@ export const RECORD_TYPE_REGION = 3;
 
 export interface Country {
   bbox: GeoFeature;
-  centroid: GeoFeature;
+  centroid: GeoFeature | undefined;
   fdrs: string;
   id: number;
   independent: boolean;

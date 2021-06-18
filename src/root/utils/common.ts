@@ -19,6 +19,16 @@ export function sum<L, V extends string | number>(list: L[], valueSelector: (ite
   ), 0);
 }
 
+export function max<L, V extends string | number>(list: L[], valueSelector: (item: L) => V) {
+  if (!list || !Array.isArray(list)) {
+    return undefined;
+  }
+
+  return list.reduce((acc, item) => (
+    Math.max(acc, +valueSelector(item))
+  ), 0);
+}
+
 export function transformObjectItems<K extends string, T, R>(obj: Record<K, T>, itemSelector: (item: T) => R) {
   const keys = Object.keys(obj) as K[];
 
