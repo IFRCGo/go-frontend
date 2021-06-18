@@ -43,6 +43,7 @@ export default function Tab<T extends TabKey>(props: Props<T>) {
     step = 0,
     disabled: disabledFromProps,
     borderWrapperClassName,
+    children,
     ...otherProps
   } = props;
 
@@ -79,10 +80,18 @@ export default function Tab<T extends TabKey>(props: Props<T>) {
       onClick={context.useHash ? setHashToBrowser : context.setActiveTab}
       name={name}
       disabled={disabled}
-      role="tab"
+      // Note removing this for now,
+      // since it has weird behaviour with react-tabs
+      // role="tab"
+      type="button"
       // eslint-disable-next-line react/jsx-props-no-spreading
       {...otherProps}
-    />
+    >
+      {children}
+      {variant === 'primary' && isActive && (
+        <div className={styles.activeBorder} />
+      )}
+    </RawButton>
   );
 
   // The clip path used for step tab does not support border
@@ -92,7 +101,7 @@ export default function Tab<T extends TabKey>(props: Props<T>) {
     return (
       <div
         className={_cs(
-          styles.tabWrapper,
+          styles.stepTabWrapper,
           disabled && styles.disabled,
           isActive && styles.active,
           borderWrapperClassName,
@@ -107,6 +116,21 @@ export default function Tab<T extends TabKey>(props: Props<T>) {
         { button }
       </div>
     );
+  }
+
+  if (variant === 'primary') {
+    return (
+      <div
+        className={_cs(
+          styles.primaryTabWrapper,
+          isActive && styles.active,
+          disabled && styles.disabled,
+        )}
+      >
+        {button}
+      </div>
+    );
+    return button;
   }
 
   return button;

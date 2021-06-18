@@ -1,11 +1,15 @@
 @import '~styles/settings/variables';
 
 .container {
-  .inner-container {
-    max-width: $media-large;
-    padding: 0 $spacing*8;
-    margin: 0 auto;
+  &:not(.sub) {
+    >.inner-container {
+      max-width: $media-large;
+      padding: 0 $spacing*8;
+      margin: 0 auto;
+    }
+  }
 
+  >.inner-container {
     .header {
       padding: $spacing * 3/4;
       border-bottom: $base-border-width solid $base-border-color;

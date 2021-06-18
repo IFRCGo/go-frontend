@@ -19,15 +19,16 @@
 
     .heading {
       text-align: center;
-      padding: $spacing/2 $spacing;
+      padding: $spacing;
       margin: 0;
       font-size: 2.25rem;
     }
 
     .description {
       text-align: center;
-      padding: $spacing/2 $spacing;
-      margin: 0;
+      padding: $spacing;
+      margin: 0 auto;
+      max-width: 48rem;
     }
   }
 }

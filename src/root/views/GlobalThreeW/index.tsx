@@ -1,26 +1,18 @@
 import React from 'react';
 import Page from '#components/Page';
 import { _cs } from '@togglecorp/fujs';
-import LanguageContext from '#root/languageContext';
+
+import BlockLoading from '#components/block-loading';
+import Card from '#components/Card';
+import KeyFigure from '#components/KeyFigure';
 import Container from '#components/Container';
 import BreadCrumb from '#components/breadcrumb';
-import {
-  useRequest
-} from '#utils/restRequest';
+import LanguageContext from '#root/languageContext';
+import { useRequest } from '#utils/restRequest';
+import { sum } from '#utils/common';
+import { GoBarChart, GoPieChart } from './Charts';
 
 import styles from './styles.module.scss';
-
-
-interface Props {
-  className?: string;
-  location: Location;
-}
-
-interface ProjectOverview {
-  target_total?: number | string;
-  active_societies?: number | string;
-  on_going_projects?: number | string;
-}
 
 interface NsProjectsOverviewFields {
   ongoing_projects: number;
@@ -33,10 +25,24 @@ interface NsProjectOverview {
   results: NsProjectsOverviewFields[];
 }
 
+interface ProgrammePerSector {
+  programme_type: number;
+  programme_type_display: string;
+  count: number;
+}
+
 interface GlobalProjectsOverviewFields {
   total_ongoing_projects: number;
   ns_with_ongoing_activities: number;
   target_total: number;
+  projects_per_sector: any[];
+  projects_per_programme_type: ProgrammePerSector[];
+  projects_per_secondary_sectors: any[];
+}
+
+interface Props {
+  className?: string;
+  location: Location;
 }
 
 function GlobalThreeW(props: Props) {
@@ -49,59 +55,85 @@ function GlobalThreeW(props: Props) {
     pending: nsProjectsPending,
     response: nsProjectsResponse,
   } = useRequest<NsProjectOverview>({
-    url: `api/v2/global-project/ns-ongoing-projects-stats/`,
+    url: 'api/v2/global-project/ns-ongoing-projects-stats/',
   });
 
   const {
     pending: projectsOverviewPending,
     response: projectsOverviewResponse,
   } = useRequest<GlobalProjectsOverviewFields>({
-    url: `api/v2/global-project/overview/`,
+    url: 'api/v2/global-project/overview/',
   });
 
   const pending = projectsOverviewPending || nsProjectsPending;
 
   const { strings } = React.useContext(LanguageContext);
 
-  const [projectOverview, setProjectOverview] = React.useState<ProjectOverview>({ target_total: 'n/a', active_societies: 'n/a', on_going_projects: 'n/a' });
-
   const crumbs = React.useMemo(() => [
-    { link: location?.pathname, name: 'GlobalThreeW' },
+    { link: location?.pathname, name: 'Global 3W' },
     { link: '/', name: strings.breadCrumbHome },
-  ], [strings.breadCrumbHome, strings.breadCrumbNewFieldReport, location]);
+  ], [strings.breadCrumbHome, location]);
 
-  React.useEffect(() => {
-    if (nsProjectsResponse && projectsOverviewResponse) {
-      const totalprojects = nsProjectsResponse.results
-        .map((r: NsProjectsOverviewFields) => r.ongoing_projects)
-        .reduce((a, b) => a + b, 0);
+  const numTargetedPopulation = React.useMemo(() => (
+    sum(nsProjectsResponse?.results ?? [], d => d.target_total)
+  ), [nsProjectsResponse]);
 
-      const overview: ProjectOverview = {
-        target_total: projectsOverviewResponse.target_total,
-        active_societies: projectsOverviewResponse.ns_with_ongoing_activities,
-        on_going_projects: totalprojects,
-      };
-      setProjectOverview(overview);
-    }
-  }, [nsProjectsResponse, projectsOverviewResponse,]);
+  const numActiveSocieties = projectsOverviewResponse?.ns_with_ongoing_activities;
+  const numOngoingProjects = projectsOverviewResponse?.target_total;
 
   return (
     <Page
-      title="IFRC Go -Global 3W Response"
+      className={_cs(styles.globalThreeW, className)}
+      title="IFRC Go - Global 3W Response"
       heading="Global 3W Response"
+      description="Description lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque ligula sem, tempus et iaculis quis, auctor ut elit. Ut vitae eros quis nunc fringilla ultrices."
       breadCrumbs={<BreadCrumb crumbs={crumbs} compact />}
+      infoContainerClassName={styles.infoContainer}
+      info={(
+        <>
+          <Card>
+            <KeyFigure
+              value={numOngoingProjects}
+              description="Ongoing Projects"
+              footerIcon={<div className="collecticon-book" />}
+              inline
+            />
+          </Card>
+          <Card>
+            <KeyFigure
+              value={numActiveSocieties}
+              description="Active National Societies"
+              footerIcon={<div className="collecticon-rc-block" />}
+              inline
+            />
+          </Card>
+          <Card>
+            <KeyFigure
+              value={numTargetedPopulation}
+              description="Targeted Population"
+              footerIcon={<div className="collecticon-affected-population" />}
+              inline
+            />
+          </Card>
+        </>
+      )}
     >
-      <Container>
-        <div>
-          {projectOverview.on_going_projects}
-        </div>
-        <div>
-          {projectOverview.active_societies}
-        </div>
-        <div>
-          {projectOverview.target_total}
-        </div>
-      </Container>
+      {pending ? <BlockLoading /> : (
+        <Container>
+          {projectsOverviewResponse && <GoPieChart
+            heading="Programme Type"
+            data={projectsOverviewResponse.projects_per_programme_type} />}
+
+          {projectsOverviewResponse && <GoBarChart
+            heading="Project Per Sector"
+            data={projectsOverviewResponse.projects_per_sector} />}
+
+          {projectsOverviewResponse && <GoBarChart
+            heading="Top Tags"
+            data={projectsOverviewResponse.projects_per_secondary_sectors}
+          />}
+        </Container>
+      )}
     </Page>
   );
 }

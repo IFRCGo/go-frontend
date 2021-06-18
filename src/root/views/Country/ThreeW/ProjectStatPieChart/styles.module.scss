@@ -1,0 +1,16 @@
+@import '~styles/settings/variables';
+
+.project-stat-pie-chart {
+  .title {
+    font-size: $font-size-sm;
+    text-align: center;
+    color: $color-text-light;
+    font-weight: $base-font-medium;
+  }
+
+  :global {
+    .recharts-legend-item-text {
+      color: $color-text!important;
+    }
+  }
+}

@@ -15,6 +15,7 @@ interface Props {
   description?: React.ReactNode;
   actions?: React.ReactNode;
   children?: React.ReactNode;
+  sub?: boolean;
 }
 
 function Container(props: Props) {
@@ -27,6 +28,7 @@ function Container(props: Props) {
     contentClassName,
     innerContainerClassName,
     descriptionClassName,
+    sub,
   } = props;
 
   return (
@@ -34,6 +36,7 @@ function Container(props: Props) {
       className={_cs(
         'go-container',
         styles.container,
+        sub && styles.sub,
         className,
       )}
     >

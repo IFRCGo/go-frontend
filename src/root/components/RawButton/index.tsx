@@ -5,13 +5,13 @@ import { genericMemo } from '#utils/common';
 
 import styles from './styles.module.scss';
 
-export interface Props<N extends number | string | undefined> extends Omit<React.HTMLProps<HTMLButtonElement>, 'ref' | 'onClick' | 'name'>{
-    className?: string;
-    onClick?: (name: N, e: React.MouseEvent<HTMLButtonElement>) => void;
-    type?: 'button' | 'submit' | 'reset';
-    name: N;
-    elementRef?: React.Ref<HTMLButtonElement>;
-    focused?: boolean;
+export interface Props<N> extends Omit<React.HTMLProps<HTMLButtonElement>, 'ref' | 'onClick' | 'name'>{
+  className?: string;
+  onClick?: (name: N | undefined, e: React.MouseEvent<HTMLButtonElement>) => void;
+  type?: 'button' | 'submit' | 'reset';
+  name?: N;
+  elementRef?: React.Ref<HTMLButtonElement>;
+  focused?: boolean;
 }
 
 /**
@@ -23,44 +23,43 @@ export interface Props<N extends number | string | undefined> extends Omit<React
  * clickable elements
  */
 function RawButton<N extends number | string | undefined>(props: Props<N>) {
-    const {
+  const {
+    className,
+    onClick,
+    children,
+    disabled,
+    elementRef,
+    name,
+    focused,
+    ...otherProps
+  } = props;
+
+  const handleClick = React.useCallback(
+    (e: React.MouseEvent<HTMLButtonElement>) => {
+      if (onClick) {
+        onClick(name, e);
+      }
+    },
+    [onClick, name],
+  );
+
+  return (
+    <button
+      ref={elementRef}
+      type="button"
+      className={_cs(
+        styles.rawButton,
+        focused && styles.focused,
         className,
-        onClick,
-        children,
-        disabled,
-        elementRef,
-        name,
-        focused,
-        ...otherProps
-    } = props;
-
-    const handleClick = React.useCallback(
-        (e: React.MouseEvent<HTMLButtonElement>) => {
-            if (onClick) {
-                onClick(name, e);
-            }
-        },
-        [onClick, name],
-    );
-
-    return (
-        <button
-            ref={elementRef}
-            type="button"
-            className={_cs(
-                styles.rawButton,
-                focused && styles.focused,
-                className,
-            )}
-            disabled={disabled}
-            onClick={onClick ? handleClick : undefined}
-            name={name as string}
-            // eslint-disable-next-line react/jsx-props-no-spreading
-            {...otherProps}
-        >
-            { children }
-        </button>
-    );
+      )}
+      disabled={disabled}
+      onClick={onClick ? handleClick : undefined}
+      // eslint-disable-next-line react/jsx-props-no-spreading
+      {...otherProps}
+    >
+      { children }
+    </button>
+  );
 }
 
 export default genericMemo(RawButton);
