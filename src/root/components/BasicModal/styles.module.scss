@@ -1,0 +1,69 @@
+@import '~styles/settings/variables';
+
+.backdrop {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fade-in .3s ease-in;
+  overflow: auto;
+
+  .basic-modal {
+    display: flex;
+    flex-direction: column;
+    max-width: unquote('min(96vw, #{$media-desktop})');
+    max-height: 96vh;
+    background-color: $color-foreground;
+    overflow: auto;
+    border-radius: $base-border-radius;
+    animation: appear .3s ease-in;
+    transform-origin: 0% 0%;
+    transition: width .2s ease-in-out, height .2s ease-in-out;
+
+    .header {
+      flex-shrink: 0;
+      padding: $spacing*2;
+    }
+
+    .body {
+      flex-grow: 1;
+      overflow: auto;
+    }
+
+    .footer {
+      flex-shrink: 0;
+      display: flex;
+
+      .footer-content {
+        flex-grow: 1;
+        padding: $spacing/4;
+      }
+
+      .footer-actions {
+        flex-shrink: 0;
+        padding: $spacing/4;
+      }
+    }
+  }
+}
+
+@keyframes appear {
+  from {
+    opacity: 0;
+    transform: translateY(-2vh) rotateX(-30deg);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) rotateX(0);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}

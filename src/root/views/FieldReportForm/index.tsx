@@ -79,7 +79,7 @@ interface Props {
   location: Location;
 }
 
-function NewFieldReportForm(props: Props) {
+function FieldReportForm(props: Props) {
   const {
     className,
     location,
@@ -134,11 +134,12 @@ function NewFieldReportForm(props: Props) {
     method: reportId ? 'PUT' : 'POST',
     body: ctx => ctx,
     onSuccess: (response) => {
-      showAlert('success', (
-        <p>
-          {strings.fieldReportFormRedirectMessage}
-        </p>
-      ), true, 3000);
+      showAlert(
+        'success',
+        strings.fieldReportFormRedirectMessage,
+        true,
+        3000,
+      );
       window.setTimeout(
         () => history.push(`/reports/${response?.id}`),
         250,
@@ -432,4 +433,4 @@ function NewFieldReportForm(props: Props) {
   );
 }
 
-export default NewFieldReportForm;
+export default FieldReportForm;

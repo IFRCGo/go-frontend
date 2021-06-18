@@ -11,6 +11,7 @@ export type TableVariant = (
   | 'large'
 );
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const tableVariantToStyleMap: { [key in TableVariant]: string; } = {
   regular: styles.regular,
   small: styles.small,

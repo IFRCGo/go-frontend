@@ -5,13 +5,17 @@ import {
   unique,
   listToGroupList,
 } from '@togglecorp/fujs';
+import { IoChevronForward } from 'react-icons/io5';
 
 import BlockLoading from '#components/block-loading';
+import Button from '#components/Button';
 import KeyFigure from '#components/KeyFigure';
 import Card from '#components/Card';
 import Container from '#components/Container';
 import ExportProjectsButton from '#components/ExportProjectsButton';
 import Table from '#components/Table';
+import { createActionColumn } from '#components/Table/predefinedColumns';
+import useBooleanState from '#hooks/useBooleanState';
 import {
   ListResponse,
   useRequest,
@@ -21,11 +25,15 @@ import {
   Project,
 } from '#types';
 
+import ProjectTableActions from '../ProjectTableActions';
 import ProjectStatPieChart from '../ProjectStatPieChart';
+import ProjectFlowSankey from '../ProjectFlowSankey';
 import {
   LabelValue,
   emptyProjectList,
   PROJECT_STATUS_ONGOING,
+  projectKeySelector,
+  projectListToNsSankeyData,
 } from '../common';
 import { nsProjectColumns } from '../projectTableColumns';
 import styles from './styles.module.scss';
@@ -33,17 +41,21 @@ import styles from './styles.module.scss';
 interface Props {
   country: Country | undefined;
   className?: string;
+  projectsUpdatedOn?: number | undefined;
 }
 
 function NSProjects(props: Props) {
   const {
     country,
     className,
+    projectsUpdatedOn,
   } = props;
+
 
   const {
     pending: projectListPending,
     response: projectListResponse,
+    retrigger: retriggerProjectListRequest,
   } = useRequest<ListResponse<Project>>({
     skip: isNotDefined(country?.id),
     url: 'api/v2/project/',
@@ -53,6 +65,13 @@ function NSProjects(props: Props) {
     },
   });
 
+  React.useEffect(() => {
+    if (projectsUpdatedOn) {
+      retriggerProjectListRequest();
+    }
+  }, [projectsUpdatedOn, retriggerProjectListRequest]);
+
+  const [viewAllProjects,,,, toggleViewAllProject] = useBooleanState(false);
   const projectList = projectListResponse?.results ?? emptyProjectList;
 
   const [
@@ -100,6 +119,26 @@ function NSProjects(props: Props) {
     unique(ongoingProjects, d => d.project_country)?.length ?? 0
   ), [ongoingProjects]);
 
+  const tableColumns = React.useMemo(() => ([
+    ...nsProjectColumns,
+    createActionColumn(
+      'actions',
+      (rowKey: number | string, prj: Project) => ({
+        children: (
+          <ProjectTableActions
+            onProjectFormSubmitSuccess={retriggerProjectListRequest}
+            onProjectDeletionSuccess={retriggerProjectListRequest}
+            project={prj}
+          />
+        ),
+      }),
+    ),
+  ]), [retriggerProjectListRequest]);
+
+  const sankeyData = React.useMemo(() => (
+    projectListToNsSankeyData(projectList)
+  ), [projectList]);
+
   return (
     <div className={_cs(styles.nsProjects, className)}>
       { projectListPending ? (
@@ -145,17 +184,31 @@ function NSProjects(props: Props) {
           </div>
           <Container
             className={styles.ongoingProject}
-            heading="Ongoing projects"
-            actions="View All Projects >"
+            heading={viewAllProjects ? 'All Projects' : 'Ongoing Projects'}
+            actions={(
+              <Button
+                actions={<IoChevronForward />}
+                variant="tertiary"
+                onClick={toggleViewAllProject}
+              >
+                { viewAllProjects ? 'View Ongoing Projects' : 'View All Projects' }
+              </Button>
+            )}
             sub
           >
             <Table
               className={styles.projectsTable}
-              data={projectList}
-              columns={nsProjectColumns}
-              keySelector={d => d.id}
+              data={viewAllProjects ? projectList : ongoingProjects}
+              columns={tableColumns}
+              keySelector={projectKeySelector}
               variant="large"
             />
+          </Container>
+          <Container
+            heading="Overview of Activities"
+            sub
+          >
+            <ProjectFlowSankey data={sankeyData} />
           </Container>
         </>
       )}

@@ -16,43 +16,48 @@ import Container from '#components/Container';
 import ExportProjectsButton from '#components/ExportProjectsButton';
 
 import Table from '#components/Table';
-import { inCountryProjectColumns } from '../projectTableColumns';
-
+import { createActionColumn } from '#components/Table/predefinedColumns';
+import useBooleanState from '#hooks/useBooleanState';
 import {
   ListResponse,
   useRequest,
 } from '#utils/restRequest';
-
 import { sum } from '#utils/common';
-
 import {
   Country,
   Project,
 } from '#types';
 
+import ProjectTableActions from '../ProjectTableActions';
 import ProjectStatPieChart from '../ProjectStatPieChart';
 import ProjectFlowSankey from '../ProjectFlowSankey';
+import { inCountryProjectColumns } from '../projectTableColumns';
 import {
   LabelValue,
   emptyProjectList,
   PROJECT_STATUS_ONGOING,
+  projectKeySelector,
+  projectListToInCountrySankeyData,
 } from '../common';
 import styles from './styles.module.scss';
 
 interface Props {
   country: Country | undefined;
   className?: string;
+  projectsUpdatedOn?: number | undefined;
 }
 
 function InCountryProjects(props: Props) {
   const {
     country,
     className,
+    projectsUpdatedOn,
   } = props;
 
   const {
     pending: projectListPending,
     response: projectListResponse,
+    retrigger: retriggerProjectListRequest,
   } = useRequest<ListResponse<Project>>({
     skip: isNotDefined(country?.iso),
     url: 'api/v2/project/',
@@ -62,6 +67,13 @@ function InCountryProjects(props: Props) {
     },
   });
 
+  React.useEffect(() => {
+    if (projectsUpdatedOn) {
+      retriggerProjectListRequest();
+    }
+  }, [projectsUpdatedOn, retriggerProjectListRequest]);
+
+  const [viewAllProjects,,,, toggleViewAllProject] = useBooleanState(false);
   const projectList = projectListResponse?.results ?? emptyProjectList;
 
   const [
@@ -85,7 +97,6 @@ function InCountryProjects(props: Props) {
       programmeTypeGrouped,
       (d, k) => ({ label: String(k), value: d.length })
     );
-
     const statusGrouped = (
       listToGroupList(
         projectList,
@@ -111,6 +122,26 @@ function InCountryProjects(props: Props) {
   const numActiveNS = React.useMemo(() => (
     unique(ongoingProjects, d => d.reporting_ns)?.length ?? 0
   ), [ongoingProjects]);
+
+  const tableColumns = React.useMemo(() => ([
+    ...inCountryProjectColumns,
+    createActionColumn(
+      'actions',
+      (rowKey: number | string, prj: Project) => ({
+        children: (
+          <ProjectTableActions
+            onProjectFormSubmitSuccess={retriggerProjectListRequest}
+            onProjectDeletionSuccess={retriggerProjectListRequest}
+            project={prj}
+          />
+        ),
+      }),
+    ),
+  ]), [retriggerProjectListRequest]);
+
+  const sankeyData = React.useMemo(() => (
+    projectListToInCountrySankeyData(projectList)
+  ), [projectList]);
 
   return (
     <div className={_cs(styles.inCountryProjects, className)}>
@@ -156,23 +187,23 @@ function InCountryProjects(props: Props) {
           </div>
           <Container
             className={styles.ongoingProject}
-            heading="Ongoing projects"
+            heading={viewAllProjects ? 'All Projects' : 'Ongoing Projects'}
             actions={(
               <Button
                 actions={<IoChevronForward />}
                 variant="tertiary"
-                disabled
+                onClick={toggleViewAllProject}
               >
-                View all projects
+                { viewAllProjects ? 'View Ongoing Projects' : 'View All Projects' }
               </Button>
             )}
             sub
           >
             <Table
               className={styles.projectsTable}
-              data={projectList}
-              columns={inCountryProjectColumns}
-              keySelector={d => d.id}
+              data={viewAllProjects ? projectList : ongoingProjects}
+              columns={tableColumns}
+              keySelector={projectKeySelector}
               variant="large"
             />
           </Container>
@@ -180,7 +211,7 @@ function InCountryProjects(props: Props) {
             heading="Overview of Activities"
             sub
           >
-            <ProjectFlowSankey projectList={projectList} />
+            <ProjectFlowSankey data={sankeyData} />
           </Container>
         </>
       )}
