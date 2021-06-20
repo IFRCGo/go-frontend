@@ -6,6 +6,8 @@ import DateOutput, { Props as DateOutputProps } from '#components/DateOutput';
 
 import styles from './styles.module.scss';
 
+type DisplayType = 'inline' | 'block' | 'table';
+
 interface BaseProps {
   className?: string;
   label?: React.ReactNode;
@@ -14,8 +16,17 @@ interface BaseProps {
   descriptionContainerClassName?: string;
   valueContainerClassName?: string;
   hideLabelColon?: boolean;
-  block?: boolean;
+  displayType?: DisplayType;
+  strongValue?: boolean;
 }
+
+const displayTypeToStyleMap: {
+  [key in DisplayType]: string;
+} = {
+  inline: styles.inlineType,
+  block: styles.blockType,
+  table: styles.tableType,
+};
 
 export type Props = BaseProps & ({
   valueType: 'number';
@@ -40,7 +51,8 @@ function TextOutput(props: Props) {
     description,
     descriptionContainerClassName,
     hideLabelColon,
-    block,
+    displayType = 'inline',
+    strongValue,
   } = props;
 
   // eslint-disable-next-line prefer-destructuring, react/destructuring-assignment
@@ -70,7 +82,8 @@ function TextOutput(props: Props) {
         styles.textOutput,
         className,
         !hideLabelColon && styles.withLabelColon,
-        block && styles.blockType,
+        displayTypeToStyleMap[displayType],
+        strongValue && styles.strongValue,
       )}
     >
       {label && (

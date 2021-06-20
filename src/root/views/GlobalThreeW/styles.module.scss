@@ -41,5 +41,11 @@
 
   .map-container {
     height: 40rem;
+
+    .meta {
+      margin: 0 $spacing*3/4;
+      padding: $spacing/2;
+      border-bottom: $base-border-width solid $base-border-color;
+    }
   }
 }

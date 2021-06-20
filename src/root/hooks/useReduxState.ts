@@ -48,12 +48,14 @@ interface State {
   }>>
 }
 
+/* eslint-disable no-redeclare */
 function useReduxState(watchFor: 'allCountries'): State['allCountries']
 function useReduxState(watchFor: 'allRegions'): State['allRegions']
 function useReduxState(watchFor: 'me'): State['me']
 function useReduxState(watchFor: 'lang'): State['lang']
 function useReduxState(watchFor: 'disasterTypes'): State['disasterTypes']
 function useReduxState(watchFor?: StateKeys): unknown {
+/* elsint-enable no-redeclare */
   const [state, setState] = React.useState<State>(store.getState());
 
   React.useEffect(() => {

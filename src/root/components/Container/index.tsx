@@ -1,7 +1,7 @@
 import React from 'react';
 import { _cs } from '@togglecorp/fujs';
 
-import Header from '#components/Header';
+import Header, { Props as HeaderProps } from '#components/Header';
 import Description from '#components/Description';
 
 import styles from './styles.module.scss';
@@ -12,10 +12,12 @@ interface Props {
   contentClassName?: string;
   descriptionClassName?: string;
   heading?: React.ReactNode;
+  headingSize?: HeaderProps['headingSize'];
   description?: React.ReactNode;
   actions?: React.ReactNode;
   children?: React.ReactNode;
   sub?: boolean;
+  hideHeaderBorder?: boolean;
 }
 
 function Container(props: Props) {
@@ -29,6 +31,8 @@ function Container(props: Props) {
     innerContainerClassName,
     descriptionClassName,
     sub,
+    headingSize,
+    hideHeaderBorder,
   } = props;
 
   return (
@@ -38,6 +42,7 @@ function Container(props: Props) {
         styles.container,
         sub && styles.sub,
         className,
+        hideHeaderBorder && styles.withoutHeaderBorder,
       )}
     >
       <div className={_cs(styles.innerContainer, innerContainerClassName)}>
@@ -46,6 +51,7 @@ function Container(props: Props) {
             className={styles.header}
             heading={heading}
             actions={actions}
+            headingSize={headingSize}
           />
         )}
         {description && (
