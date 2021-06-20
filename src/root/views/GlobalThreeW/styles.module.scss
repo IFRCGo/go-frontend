@@ -42,10 +42,18 @@
   .map-container {
     height: 40rem;
 
-    .meta {
-      margin: 0 $spacing*3/4;
-      padding: $spacing/2;
-      border-bottom: $base-border-width solid $base-border-color;
+    .map-tooltip {
+      width: 18rem;
+
+      .meta {
+        margin: 0 $spacing*3/4;
+        padding: $spacing/2;
+        border-bottom: $base-border-width solid $base-border-color;
+      }
+
+      .top-project-sectors-chart {
+        margin: $spacing;
+      }
     }
   }
 }

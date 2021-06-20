@@ -12,10 +12,14 @@ import {
   listToMap,
   isDefined,
 } from '@togglecorp/fujs';
-import Map, { MapContainer, MapSource, MapLayer, MapTooltip } from '@togglecorp/re-map';
+import Map, {
+  MapContainer,
+  MapSource,
+  MapLayer,
+  MapTooltip
+} from '@togglecorp/re-map';
 import type { Location } from 'history';
 
-import Button from '#components/Button';
 import MapTooltipContent from '#components/MapTooltipContent';
 import BlockLoading from '#components/block-loading';
 import { useButtonFeatures } from '#components/Button';
@@ -27,7 +31,6 @@ import BreadCrumb from '#components/breadcrumb';
 import ExportProjectsButton from '#components/ExportProjectsButton';
 import LanguageContext from '#root/languageContext';
 import { useRequest, ListResponse } from '#utils/restRequest';
-import { sum } from '#utils/common';
 import { max } from '#utils/common';
 import useReduxState from '#hooks/useReduxState';
 
@@ -285,25 +288,48 @@ function GlobalThreeW(props: Props) {
     children: "Add 3W Project",
   });
 
-  const projectPerSectorChartData = projectsOverviewResponse?.projects_per_sector.map((p) => ({
-    key: p.primary_sector,
-    value: p.count,
-    name: p.primary_sector_display,
-  })) ?? [];
+  const [
+    projectPerSectorChartData,
+    projectPerSecondarySectorChartData,
+    projectPerProgrammeTypeChartData,
+  ] = useMemo(() => {
+    if (!projectsOverviewResponse) {
+      return [[], [], []];
+    }
 
-  const projectPerSecondarySectorChartData = projectsOverviewResponse?.projects_per_secondary_sectors
-    .map((p) => ({
-      key: p.secondary_sector,
-      value: p.count,
-      name: p.secondary_sector_display,
-    })) ?? [];
+    const {
+      projects_per_sector,
+      projects_per_secondary_sectors,
+      projects_per_programme_type,
+    } = projectsOverviewResponse;
 
-  const projectPerProgrammeTypeChartData = projectsOverviewResponse?.projects_per_programme_type
-    .map((p) => ({
-      key: p.programme_type,
+    return [
+      projects_per_sector.map((p) => ({
+        key: p.primary_sector,
+        value: p.count,
+        name: p.primary_sector_display,
+      })),
+      projects_per_secondary_sectors.map((p) => ({
+        key: p.secondary_sector,
+        value: p.count,
+        name: p.secondary_sector_display,
+      })),
+      projects_per_programme_type.map((p) => ({
+        key: p.programme_type,
+        value: p.count,
+        name: p.programme_type_display,
+      })),
+    ];
+  }, [projectsOverviewResponse]);
+
+  const selectedProjectsPerSectorChartData = useMemo(
+    () => selectedNsProjectStats?.projects_per_sector.map((p) => ({
+      key: p.primary_sector,
       value: p.count,
-      name: p.programme_type_display,
-    })) ?? [];
+      name: p.primary_sector_display,
+    })) ?? [],
+    [selectedNsProjectStats?.projects_per_sector]
+  );
 
   return (
     <Page
@@ -350,32 +376,30 @@ function GlobalThreeW(props: Props) {
       )}
     >
       {pending ? <BlockLoading /> : (
-        <>
-          <Container>
-            <ExportProjectsButton
-              fileNameSuffix="All projects"
-            />
-          </Container>
-          <Container
-            contentClassName={styles.chartsContainer}
+        <Container
+          contentClassName={styles.chartsContainer}
+        >
+          <Card
+            title="Project Per Sector"
+            className={styles.projectPerSectorChart}
+          >
+            <ThreeWBarChart data={projectPerSectorChartData} />
+          </Card>
+          <Card
+            className={styles.programmeTypeChart}
+            title="Programme Type"
+          >
+            <ThreeWPieChart data={projectPerProgrammeTypeChartData} />
+          </Card>
+          <Card
+            className={styles.topTagsChart}
+            title="Top Tags"
           >
             <ThreeWBarChart
-              className={styles.projectPerSectorChart}
-              heading="Project Per Sector"
-              data={projectPerSectorChartData}
-            />
-            <ThreeWPieChart
-              className={styles.programmeTypeChart}
-              heading="Programme Type"
-              data={projectPerProgrammeTypeChartData}
-            />
-            <ThreeWBarChart
-              className={styles.topTagsChart}
-              heading="Top Tags"
               data={projectPerSecondarySectorChartData}
             />
-          </Container>
-        </>
+          </Card>
+        </Container>
       )}
       <Container
         heading="NS with ongoing projects"
@@ -435,8 +459,9 @@ function GlobalThreeW(props: Props) {
             >
               <MapTooltipContent
                 title={selectedNsProjectStats.name}
-                href={`/countries/${selectedNsProjectStats.id}`}
+                href={`/countries/${selectedNsProjectStats.id}/#3w`}
                 onCloseButtonClick={handlePointClose}
+                className={styles.mapTooltip}
               >
                 <div className={styles.meta}>
                   <TextOutput
@@ -460,18 +485,12 @@ function GlobalThreeW(props: Props) {
                   hideHeaderBorder
                   sub
                 >
-                  {selectedNsProjectStats.projects_per_sector.map((item) => (
-                    <div
-                      key={item.primary_sector}
-                    >
-                      <div>
-                        {item.primary_sector_display}
-                      </div>
-                      <div>
-                        {item.count}
-                      </div>
-                    </div>
-                  ))}
+                  <ThreeWBarChart
+                    className={styles.topProjectSectorsChart}
+                    data={selectedProjectsPerSectorChartData}
+                    limitHeight
+                    hideLabel
+                  />
                 </Container>
               </MapTooltipContent>
             </MapTooltip>
