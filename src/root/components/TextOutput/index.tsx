@@ -21,6 +21,7 @@ interface BaseProps {
 }
 
 const displayTypeToStyleMap: {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   [key in DisplayType]: string;
 } = {
   inline: styles.inlineType,

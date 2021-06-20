@@ -11,7 +11,6 @@ import {
   Rectangle,
 } from 'recharts';
 
-import { Project } from '#types';
 import type {
   SankeyNode as SankeyNodeFields,
   SankeyLink as SankeyLinkFields,

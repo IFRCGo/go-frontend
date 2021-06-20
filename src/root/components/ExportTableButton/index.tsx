@@ -31,6 +31,7 @@ function ExportTableButton<D, N>(props: Props<D, N>) {
     transformItem,
     label,
     icons = <IoMdDownload />,
+    variant = 'secondary',
     ...otherProps
   } = props;
 
@@ -81,6 +82,7 @@ function ExportTableButton<D, N>(props: Props<D, N>) {
       onClick={triggerExportStart}
       className={className}
       icons={icons}
+      variant={variant}
       {...otherProps}
     >
       { pending && (
@@ -91,7 +93,7 @@ function ExportTableButton<D, N>(props: Props<D, N>) {
       )}
       {!pending && !label && (
         <Translate
-          stringId='exportButtonExportTable'
+          stringId='exportButtonExport'
         />
       )}
       {label}
