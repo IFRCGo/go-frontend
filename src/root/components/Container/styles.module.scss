@@ -3,13 +3,14 @@
 .container {
   &:not(.sub) {
     >.inner-container {
-      max-width: $media-large;
       padding: 0 $spacing*8;
       margin: 0 auto;
     }
   }
 
   >.inner-container {
+    max-width: $media-large;
+
     .header {
       padding: $spacing * 3/4;
       border-bottom: $base-border-width solid $base-border-color;
@@ -17,6 +18,14 @@
 
     .content {
       padding: $spacing 0;
+    }
+  }
+
+  &.without-header-border {
+    >.inner-container {
+      .header {
+        border-bottom: none;
+      }
     }
   }
 }

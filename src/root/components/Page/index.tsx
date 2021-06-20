@@ -30,6 +30,7 @@ interface Props {
   children?: React.ReactNode;
   mainSectionClassName?: string;
   infoContainerClassName?: string;
+  withMainContentBackground?: boolean;
 }
 
 
@@ -45,6 +46,7 @@ function Page(props: Props) {
     children,
     mainSectionClassName,
     infoContainerClassName,
+    withMainContentBackground,
   } = props;
 
   const [loading, setLoading] = React.useState(0);
@@ -64,6 +66,7 @@ function Page(props: Props) {
         'go-page',
         styles.page,
         className,
+        withMainContentBackground && styles.withMainContentBackground,
       )}
     >
       <ThroughProvider>

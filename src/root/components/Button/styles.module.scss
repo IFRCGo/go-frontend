@@ -55,6 +55,11 @@
     color: $primary-color;
   }
 
+  &.action {
+    padding: 0;
+    font-size: 1.6em;
+  }
+
   &:disabled {
     opacity: $opacity-disabled-element;
     filter: saturate($saturation-disabled-element);

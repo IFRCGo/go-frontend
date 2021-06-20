@@ -86,7 +86,7 @@ export function Tabs<T extends TabKey>(props: Props<T>) {
       variant,
       disabled,
       activeTab: props.value,
-      setActiveTab: props.onChange as (key: TabKey) => void,
+      setActiveTab: props.onChange as (key: TabKey | undefined) => void,
       registerTab,
       unregisterTab,
       step,

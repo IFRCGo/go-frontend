@@ -1,9 +1,19 @@
 @import '~styles/settings/_variables.scss';
 
 .text-output {
-  &:not(.block-type) {
+  &:not(.inline-type) {
     display: flex;
     align-items: center;
+  }
+
+  &.table-type {
+    display: table-row;
+
+    >.description,
+    >.value,
+    >.label {
+      display: table-cell;
+    }
   }
 
   >.label {
@@ -25,6 +35,12 @@
       &:after {
         content: ':';
       }
+    }
+  }
+
+  &.strong-value {
+    >.value {
+      font-weight: $base-font-bold;
     }
   }
 }

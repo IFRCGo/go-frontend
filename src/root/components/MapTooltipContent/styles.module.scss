@@ -1,0 +1,15 @@
+@import '~styles/settings/variables';
+
+.map-tooltip-content {
+  border: $base-border-width solid $base-border-color;
+  min-width: 16rem;
+
+  .header {
+    padding: $spacing/2 $spacing*3/8;
+    border-bottom: $base-border-width solid $base-border-color;
+  }
+
+  .content {
+    padding: $spacing/4;
+  }
+}

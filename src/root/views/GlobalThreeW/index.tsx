@@ -13,12 +13,14 @@ import {
   isDefined,
 } from '@togglecorp/fujs';
 import Map, { MapContainer, MapSource, MapLayer, MapTooltip } from '@togglecorp/re-map';
-import history from 'history';
+import type { Location } from 'history';
 
 import Button from '#components/Button';
+import MapTooltipContent from '#components/MapTooltipContent';
 import BlockLoading from '#components/block-loading';
 import { useButtonFeatures } from '#components/Button';
 import Card from '#components/Card';
+import TextOutput from '#components/TextOutput';
 import KeyFigure from '#components/KeyFigure';
 import Container from '#components/Container';
 import BreadCrumb from '#components/breadcrumb';
@@ -120,15 +122,13 @@ interface GlobalProjectsOverview {
 
 interface Props {
   className?: string;
-  location: history.LocationState;
-  history: history.History;
+  location: Location;
 }
 
 function GlobalThreeW(props: Props) {
   const {
     className,
     location,
-    history,
   } = props;
 
   const { strings } = useContext(LanguageContext);
@@ -305,8 +305,6 @@ function GlobalThreeW(props: Props) {
       name: p.programme_type_display,
     })) ?? [];
 
-  console.info(projectsOverviewResponse?.projects_per_secondary_sectors);
-
   return (
     <Page
       className={_cs(styles.globalThreeW, className)}
@@ -321,6 +319,7 @@ function GlobalThreeW(props: Props) {
       description="Description lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque ligula sem, tempus et iaculis quis, auctor ut elit. Ut vitae eros quis nunc fringilla ultrices."
       breadCrumbs={<BreadCrumb crumbs={crumbs} compact />}
       infoContainerClassName={styles.infoContainer}
+      withMainContentBackground
       info={(
         <>
           <Card>
@@ -378,7 +377,15 @@ function GlobalThreeW(props: Props) {
           </Container>
         </>
       )}
-      <Container>
+      <Container
+        heading="NS with ongoing projects"
+        actions={(
+          <ExportProjectsButton
+            label="Export"
+            fileNameSuffix="All projects"
+          />
+        )}
+      >
         <Map
           mapStyle="mapbox://styles/go-ifrc/cki7aznup3hqz19rxliv3naf4"
           mapOptions={{
@@ -396,6 +403,7 @@ function GlobalThreeW(props: Props) {
           }}
           navControlShown
           navControlPosition="top-right"
+          debug={false}
         >
           <MapContainer className={styles.mapContainer} />
           <MapSource
@@ -425,49 +433,50 @@ function GlobalThreeW(props: Props) {
               tooltipOptions={tooltipOptions}
               onHide={handlePointClose}
             >
-              <>
-                  <a
-                    // NOTE: can't use Link inside mapboxgl tooltip
-                    onClick={() => history.push(`/countries/${selectedNsProjectStats.id}`)}
-                  >
-                    {selectedNsProjectStats.name}
-                  </a>
-                <Button
-                  onClick={handlePointClose}
-                  title="Close"
+              <MapTooltipContent
+                title={selectedNsProjectStats.name}
+                href={`/countries/${selectedNsProjectStats.id}`}
+                onCloseButtonClick={handlePointClose}
+              >
+                <div className={styles.meta}>
+                  <TextOutput
+                    value={selectedNsProjectStats.ongoing_projects}
+                    description="Ongoing Projects"
+                    valueType="number"
+                    displayType="table"
+                    strongValue
+                  />
+                  <TextOutput
+                    value={selectedNsProjectStats.target_total}
+                    description="Targeted Population"
+                    valueType="number"
+                    displayType="table"
+                    strongValue
+                  />
+                </div>
+                <Container
+                  heading="Top Project Sectors"
+                  headingSize="small"
+                  hideHeaderBorder
+                  sub
                 >
-                  Close
-                </Button>
-                <div>
-                    {selectedNsProjectStats.ongoing_projects}
-                    Ongoing Projects
-                </div>
-                <div>
-                    {selectedNsProjectStats.target_total}
-                    Targeted Population
-                </div>
-                <div>
-                    Top Project Sectors
-                </div>
-                {selectedNsProjectStats.projects_per_sector.map((item) => (
-                  <div
-                    key={item.primary_sector}
-                  >
-                    <div>
-                      {item.primary_sector_display}
+                  {selectedNsProjectStats.projects_per_sector.map((item) => (
+                    <div
+                      key={item.primary_sector}
+                    >
+                      <div>
+                        {item.primary_sector_display}
+                      </div>
+                      <div>
+                        {item.count}
+                      </div>
                     </div>
-                    <div>
-                      {item.count}
-                    </div>
-                  </div>
-                ))}
-              </>
+                  ))}
+                </Container>
+              </MapTooltipContent>
             </MapTooltip>
           )}
         </Map>
-        <ExportProjectsButton
-          fileNameSuffix="All projects"
-        />
       </Container>
     </Page>
   );
