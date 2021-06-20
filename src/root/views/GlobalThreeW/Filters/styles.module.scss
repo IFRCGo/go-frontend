@@ -1,0 +1,12 @@
+@import '~styles/settings/variables';
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+
+  >* {
+    flex-grow: 1;
+    flex-basis: 0;
+    padding: 0 $spacing/2;
+  }
+}

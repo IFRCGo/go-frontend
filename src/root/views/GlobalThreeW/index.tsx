@@ -38,6 +38,7 @@ import {
   ThreeWBarChart,
   ThreeWPieChart,
 } from './Charts';
+import Filters, { FilterValue } from './Filters';
 
 import styles from './styles.module.scss';
 
@@ -143,11 +144,21 @@ function GlobalThreeW(props: Props) {
 
   const allCountries = useReduxState('allCountries');
 
+  const [filters, setFilters] = React.useState<FilterValue>({
+    reporting_ns: [],
+    programme_types: [],
+    primary_sectors: [],
+    secondary_sectors: [],
+  });
+
   const {
     pending: nsProjectsPending,
     response: nsProjectsResponse,
   } = useRequest<ListResponse<NsOngoingProjectStats>>({
     url: 'api/v2/global-project/ns-ongoing-projects-stats/',
+    query: {
+      ...filters,
+    }
   });
 
   const {
@@ -375,38 +386,42 @@ function GlobalThreeW(props: Props) {
         </>
       )}
     >
-      {pending ? <BlockLoading /> : (
-        <Container
-          contentClassName={styles.chartsContainer}
+      <Container
+        contentClassName={styles.chartsContainer}
+      >
+        <Card
+          title="Project Per Sector"
+          className={styles.projectPerSectorChart}
         >
-          <Card
-            title="Project Per Sector"
-            className={styles.projectPerSectorChart}
-          >
-            <ThreeWBarChart data={projectPerSectorChartData} />
-          </Card>
-          <Card
-            className={styles.programmeTypeChart}
-            title="Programme Type"
-          >
-            <ThreeWPieChart data={projectPerProgrammeTypeChartData} />
-          </Card>
-          <Card
-            className={styles.topTagsChart}
-            title="Top Tags"
-          >
-            <ThreeWBarChart
-              data={projectPerSecondarySectorChartData}
-            />
-          </Card>
-        </Container>
-      )}
+          <ThreeWBarChart data={projectPerSectorChartData} />
+        </Card>
+        <Card
+          className={styles.programmeTypeChart}
+          title="Programme Type"
+        >
+          <ThreeWPieChart data={projectPerProgrammeTypeChartData} />
+        </Card>
+        <Card
+          className={styles.topTagsChart}
+          title="Top Tags"
+        >
+          <ThreeWBarChart
+            data={projectPerSecondarySectorChartData}
+          />
+        </Card>
+      </Container>
       <Container
         heading="NS with ongoing projects"
         actions={(
           <ExportProjectsButton
             label="Export"
             fileNameSuffix="All projects"
+          />
+        )}
+        description={(
+          <Filters
+            value={filters}
+            onChange={setFilters}
           />
         )}
       >

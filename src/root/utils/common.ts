@@ -38,4 +38,8 @@ export function transformObjectItems<K extends string, T, R>(obj: Record<K, T>, 
   }), {} as Record<K, R>);
 }
 
+export function compareLabel<O extends { label: string }>(a: O, b: O) {
+  return a.label.localeCompare(b.label);
+}
+
 export const genericMemo: (<T>(c: T) => T) = memo;
