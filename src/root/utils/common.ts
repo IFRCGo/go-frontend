@@ -38,6 +38,20 @@ export function transformObjectItems<K extends string, T, R>(obj: Record<K, T>, 
   }), {} as Record<K, R>);
 }
 
+export function denormalizeList<A, B, C>(
+  list: A[],
+  secondaryListSelector: (li: A) => B[],
+  transformFn: (li: A, sli: B) => C,
+): C[] {
+  const newList = list.map((li) => {
+    const sl = secondaryListSelector(li);
+
+    return sl.map(sli => transformFn(li, sli));
+  }).flat();
+
+  return newList;
+}
+
 export function compareLabel<O extends { label: string }>(a: O, b: O) {
   return a.label.localeCompare(b.label);
 }

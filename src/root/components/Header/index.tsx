@@ -19,6 +19,7 @@ export interface Props {
   icons?: React.ReactNode;
   actions?: React.ReactNode;
   headingSize?: HeadingProps['size'];
+  elementRef?: React.Ref<HTMLDivElement>;
 }
 
 function Header(props: Props) {
@@ -34,10 +35,14 @@ function Header(props: Props) {
     actions,
     icons,
     headingSize,
+    elementRef,
   } = props;
 
   return (
-    <header className={_cs(className, styles.header)}>
+    <header
+      ref={elementRef}
+      className={_cs(className, styles.header)}
+    >
       <ElementFragments
         icons={icons}
         iconsContainerClassName={iconsContainerClassName}

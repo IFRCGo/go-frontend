@@ -41,8 +41,19 @@ export type CountryMini = Pick<
     | 'society_name'
 >
 
+export type DistrictMini = Pick<
+  District,
+  'code'
+  | 'id'
+  | 'is_deprecated'
+  | 'is_enclave'
+  | 'name'
+>
+
 export interface District {
   code: string;
+  bbox: GeoFeature;
+  centroid: GeoFeature | undefined;
   id: number;
   is_deprecated: boolean;
   is_enclave: boolean;

@@ -10,6 +10,7 @@
       flex-basis: 0;
       flex-grow: 1;
     }
+
   }
 
   .charts-container {
@@ -17,21 +18,7 @@
     flex-wrap: wrap;
     overflow: hidden;
 
-    .project-per-sector-chart {
-      margin: $spacing/2;
-      flex-basis: 0;
-      flex-grow: 1;
-      min-width: 20rem;
-    }
-
-    .programme-type-chart {
-      margin: $spacing/2;
-      flex-basis: 0;
-      flex-grow: 1;
-      min-width: 20rem;
-    }
-
-    .top-tags-chart {
+    >* {
       margin: $spacing/2;
       flex-basis: 0;
       flex-grow: 1;
@@ -39,20 +26,39 @@
     }
   }
 
-  .map-container {
-    height: 40rem;
+  .ns-with-ongoing-projects {
+    margin-top: $spacing*4;
+    position: relative;
 
-    .map-tooltip {
-      width: 18rem;
+    .map-loading {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      left: 0;
+      top: 0;
+      z-index: 1;
+    }
 
-      .meta {
-        margin: 0 $spacing*3/4;
-        padding: $spacing/2;
-        border-bottom: $base-border-width solid $base-border-color;
-      }
+    .filters-container {
+      padding: $spacing 0;
+      border-bottom: $base-border-width solid $base-border-color--light;
+    }
 
-      .top-project-sectors-chart {
-        margin: $spacing;
+    .map-container {
+      height: 40rem;
+
+      .map-tooltip {
+        width: 18rem;
+
+        .meta {
+          margin: 0 $spacing*3/4;
+          padding: $spacing/2;
+          border-bottom: $base-border-width solid $base-border-color;
+        }
+
+        .top-project-sectors-chart {
+          margin: $spacing;
+        }
       }
     }
   }
