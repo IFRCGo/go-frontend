@@ -30,8 +30,8 @@ const tagOptions = secondarySectorList.map(p => ({
 
 export interface FilterValue {
   reporting_ns: number[];
-  programme_types: number[];
-  primary_sectors: number[];
+  programme_type: number[];
+  primary_sector: number[];
   secondary_sectors: number[];
 }
 
@@ -39,6 +39,7 @@ interface Props {
   className?: string;
   value: FilterValue;
   onChange: React.Dispatch<React.SetStateAction<FilterValue>>;
+  disabled?: boolean;
 }
 
 function Filters(props: Props) {
@@ -46,6 +47,7 @@ function Filters(props: Props) {
     className,
     value,
     onChange,
+    disabled,
   } = props;
 
   const allCountries = useReduxState('allCountries');
@@ -79,30 +81,34 @@ function Filters(props: Props) {
         value={value.reporting_ns}
         isMulti
         onChange={handleInputChange}
+        disabled={disabled}
       />
       <SelectInput<string, number>
-        name="programme_types"
+        name="programme_type"
         placeholder="Programme Types"
         options={programmeTypeOptions}
-        value={value.programme_types}
+        value={value.programme_type}
         isMulti
         onChange={handleInputChange}
+        disabled={disabled}
       />
       <SelectInput<string, number>
-        name="primary_sectors"
+        name="primary_sector"
         placeholder="Sectors"
         options={sectorOptions}
-        value={value.primary_sectors}
+        value={value.primary_sector}
         isMulti
         onChange={handleInputChange}
+        disabled={disabled}
       />
       <SelectInput<string, number>
         name="secondary_sectors"
-        placeholder="Sectors"
+        placeholder="Tags"
         options={tagOptions}
         value={value.secondary_sectors}
         isMulti
         onChange={handleInputChange}
+        disabled={disabled}
       />
     </div>
   );

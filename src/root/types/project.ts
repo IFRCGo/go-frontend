@@ -1,6 +1,6 @@
 import {
   CountryMini,
-  District,
+  DistrictMini,
 } from './country';
 
 export interface Disaster {
@@ -69,7 +69,7 @@ export interface Project {
   project_country: number;
   project_country_detail: CountryMini;
   project_districts: number[];
-  project_districts_detail: District[];
+  project_districts_detail: DistrictMini[];
   reached_female: number | null;
   reached_male: number | null;
   reached_other: number | null;

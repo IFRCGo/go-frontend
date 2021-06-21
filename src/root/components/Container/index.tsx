@@ -6,9 +6,10 @@ import Description from '#components/Description';
 
 import styles from './styles.module.scss';
 
-interface Props {
+export interface Props {
   className?: string;
   innerContainerClassName?: string;
+  headerClassName?: string;
   contentClassName?: string;
   descriptionClassName?: string;
   heading?: React.ReactNode;
@@ -18,6 +19,7 @@ interface Props {
   children?: React.ReactNode;
   sub?: boolean;
   hideHeaderBorder?: boolean;
+  headerElementRef?: HeaderProps['elementRef'];
 }
 
 function Container(props: Props) {
@@ -28,11 +30,13 @@ function Container(props: Props) {
     actions,
     children,
     contentClassName,
+    headerClassName,
     innerContainerClassName,
     descriptionClassName,
     sub,
     headingSize,
     hideHeaderBorder,
+    headerElementRef,
   } = props;
 
   return (
@@ -48,10 +52,11 @@ function Container(props: Props) {
       <div className={_cs(styles.innerContainer, innerContainerClassName)}>
         {(heading || actions) && (
           <Header
-            className={styles.header}
+            className={_cs(styles.header, headerClassName)}
             heading={heading}
             actions={actions}
             headingSize={headingSize}
+            elementRef={headerElementRef}
           />
         )}
         {description && (
@@ -59,9 +64,11 @@ function Container(props: Props) {
             { description }
           </Description>
         )}
-        <div className={_cs(styles.content, contentClassName)}>
-          { children }
-        </div>
+        {children && (
+          <div className={_cs(styles.content, contentClassName)}>
+            { children }
+          </div>
+        )}
       </div>
     </div>
   );

@@ -32,6 +32,13 @@ import ExportProjectsButton from '#components/ExportProjectsButton';
 import LanguageContext from '#root/languageContext';
 import { useRequest, ListResponse } from '#utils/restRequest';
 import { max } from '#utils/common';
+import {
+  defaultMapStyle,
+  defaultMapOptions,
+  getPointCirclePaint,
+  getPointCircleHaloPaint,
+  COLOR_RED,
+} from '#utils/map';
 import useReduxState from '#hooks/useReduxState';
 
 import {
@@ -55,20 +62,6 @@ const tooltipOptions: mapboxgl.PopupOptions = {
 
 const sourceOption: mapboxgl.GeoJSONSourceRaw = {
     type: 'geojson',
-};
-const pointCirclePaint: mapboxgl.CirclePaint = {
-    /*
-    'circle-color': [
-        'case',
-        ['==', ['get', 'type'], 'xxx'],
-        foo,
-        bar,
-    ],
-    */
-  'circle-color': '#f5333f',
-  'circle-radius': 5,
-  'circle-opacity': 1,
-  'circle-pitch-alignment': 'map',
 };
 
 interface ClickedPoint {
@@ -124,6 +117,8 @@ interface GlobalProjectsOverview {
   projects_per_secondary_sectors: ProjectPerSecondarySector[];
 }
 
+const pointCirclePaint = getPointCirclePaint(COLOR_RED);
+
 interface Props {
   className?: string;
   location: Location;
@@ -146,8 +141,8 @@ function GlobalThreeW(props: Props) {
 
   const [filters, setFilters] = React.useState<FilterValue>({
     reporting_ns: [],
-    programme_types: [],
-    primary_sectors: [],
+    programme_type: [],
+    primary_sector: [],
     secondary_sectors: [],
   });
 
@@ -168,7 +163,6 @@ function GlobalThreeW(props: Props) {
     url: 'api/v2/global-project/overview/',
   });
 
-  const pending = projectsOverviewPending || nsProjectsPending;
   const numActiveSocieties = projectsOverviewResponse?.ns_with_ongoing_activities;
   const numOngoingProjects = projectsOverviewResponse?.total_ongoing_projects;
   const numTargetedPopulation = projectsOverviewResponse?.target_total;
@@ -213,40 +207,10 @@ function GlobalThreeW(props: Props) {
     [countries, nsProjectsMap],
   );
 
-  const scaleProp = 'total';
   const maxScaleValue = Math.min(maxProjectCount ?? 0, 2);
-  const pointHaloCirclePaint: mapboxgl.CirclePaint = useMemo(
-    () => ({
-    ...pointCirclePaint,
-    'circle-opacity': 0.4,
-    'circle-radius': [
-      'interpolate',
-      ['linear'],
-      ['zoom'],
-      3, [
-        'interpolate',
-        ['exponential', 1],
-        ['number', ['get', scaleProp]],
-        0,
-        0,
-        1,
-        10,
-        maxScaleValue,
-        15
-      ],
-      8, [
-        'interpolate',
-        ['exponential', 1],
-        ['number', ['get', scaleProp]],
-        0,
-        0,
-        1,
-        20,
-        maxScaleValue,
-        40,
-      ],
-    ],
-    }),
+
+  const pointHaloCirclePaint = useMemo(
+    () => getPointCircleHaloPaint(COLOR_RED, 'total', maxScaleValue),
     [maxScaleValue],
   );
 
@@ -357,7 +321,9 @@ function GlobalThreeW(props: Props) {
       breadCrumbs={<BreadCrumb crumbs={crumbs} compact />}
       infoContainerClassName={styles.infoContainer}
       withMainContentBackground
-      info={(
+      info={projectsOverviewPending ? (
+        <BlockLoading />
+      ) : (
         <>
           <Card>
             <KeyFigure
@@ -389,28 +355,35 @@ function GlobalThreeW(props: Props) {
       <Container
         contentClassName={styles.chartsContainer}
       >
-        <Card
-          title="Project Per Sector"
-          className={styles.projectPerSectorChart}
-        >
-          <ThreeWBarChart data={projectPerSectorChartData} />
-        </Card>
-        <Card
-          className={styles.programmeTypeChart}
-          title="Programme Type"
-        >
-          <ThreeWPieChart data={projectPerProgrammeTypeChartData} />
-        </Card>
-        <Card
-          className={styles.topTagsChart}
-          title="Top Tags"
-        >
-          <ThreeWBarChart
-            data={projectPerSecondarySectorChartData}
-          />
-        </Card>
+        {projectsOverviewPending ? (
+          <BlockLoading />
+        ) : (
+          <>
+            <Card
+              title="Project Per Sector"
+              className={styles.projectPerSectorChart}
+            >
+              <ThreeWBarChart data={projectPerSectorChartData} />
+            </Card>
+            <Card
+              className={styles.programmeTypeChart}
+              title="Programme Type"
+            >
+              <ThreeWPieChart data={projectPerProgrammeTypeChartData} />
+            </Card>
+            <Card
+              className={styles.topTagsChart}
+              title="Top Tags"
+            >
+              <ThreeWBarChart
+                data={projectPerSecondarySectorChartData}
+              />
+            </Card>
+          </>
+        )}
       </Container>
       <Container
+        className={styles.nsWithOngoingProjects}
         heading="NS with ongoing projects"
         actions={(
           <ExportProjectsButton
@@ -418,28 +391,19 @@ function GlobalThreeW(props: Props) {
             fileNameSuffix="All projects"
           />
         )}
+        descriptionClassName={styles.filtersContainer}
         description={(
           <Filters
+            disabled={nsProjectsPending}
             value={filters}
             onChange={setFilters}
           />
         )}
       >
+        {nsProjectsPending && <BlockLoading className={styles.mapLoading} />}
         <Map
-          mapStyle="mapbox://styles/go-ifrc/cki7aznup3hqz19rxliv3naf4"
-          mapOptions={{
-            logoPosition: 'bottom-left',
-            zoom: 1.5,
-            minZoom: 0,
-            maxZoom: 8,
-            scrollZoom: false,
-            pitchWithRotate: false,
-            dragRotate: false,
-            renderWorldCopies: true,
-            attributionControl: true,
-            preserveDrawingBuffer: true,
-            // interactive: false,
-          }}
+          mapStyle={defaultMapStyle}
+          mapOptions={defaultMapOptions}
           navControlShown
           navControlPosition="top-right"
           debug={false}
@@ -450,21 +414,21 @@ function GlobalThreeW(props: Props) {
               sourceOptions={sourceOption}
               geoJson={geo}
           >
-              <MapLayer
-                  layerKey="points-halo-circle"
-                  onClick={handlePointClick}
-                  layerOptions={{
-                      type: 'circle',
-                      paint: pointHaloCirclePaint,
-                  }}
-              />
-              <MapLayer
-                  layerKey="points-circle"
-                  layerOptions={{
-                      type: 'circle',
-                      paint: pointCirclePaint,
-                  }}
-              />
+            <MapLayer
+              layerKey="points-halo-circle"
+              onClick={handlePointClick}
+              layerOptions={{
+                type: 'circle',
+                paint: pointHaloCirclePaint,
+              }}
+            />
+            <MapLayer
+              layerKey="points-circle"
+              layerOptions={{
+                type: 'circle',
+                paint: pointCirclePaint,
+              }}
+            />
           </MapSource>
           {clickedPointProperties?.lngLat && selectedNsProjectStats && (
             <MapTooltip

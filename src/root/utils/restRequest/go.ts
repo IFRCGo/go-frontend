@@ -14,10 +14,11 @@ const CONTENT_TYPE_CSV = 'text/csv';
 
 export interface ErrorFromServer {
     errorCode?: number;
-    errors: {
+    errors?: {
         // NOTE: it is most probably only string[]
         [key: string]: string[] | string;
     };
+    detail?: string;
 }
 export interface Error {
     reason: string;
@@ -138,12 +139,10 @@ export const processGoError: GoContextInterface['transformError'] = (res, url, o
             errorCode: undefined,
         };
     }
-    const {
-        method,
-    } = options;
+    const { method } = options;
 
     const formErrors = alterResponse(res.errors);
-    const finalMessage = method === 'GET'
+    let finalMessage = method === 'GET'
         ? 'Failed to load data'
         : 'Some error occurred while performing this action.';
 

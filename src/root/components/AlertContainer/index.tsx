@@ -5,6 +5,7 @@ import AlertContext, {
   DEFAULT_ALERT_DISMISS_DURATION,
 } from '#components/AlertContext';
 import Alert from '#components/Alert';
+import Portal from '#components/portal';
 
 import styles from './styles.module.scss';
 
@@ -43,21 +44,23 @@ function AlertContainer(props: Props) {
   }, [removeAlert]);
 
   return (
-    <div className={_cs(styles.alertContainer, className)}>
-      {alerts.map((alert) => (
-        <Alert
-          name={alert.name}
-          className={styles.alert}
-          key={alert.name}
-          nonDismissable={alert.nonDismissable}
-          variant={alert.variant}
-          onCloseButtonClick={handleAlertCloseButtonClick}
-        >
-          { alert.children }
-        </Alert>
-      ))}
-      { children }
-    </div>
+    <Portal>
+      <div className={_cs(styles.alertContainer, className)}>
+        {alerts.map((alert) => (
+          <Alert
+            name={alert.name}
+            className={styles.alert}
+            key={alert.name}
+            nonDismissable={alert.nonDismissable}
+            variant={alert.variant}
+            onCloseButtonClick={handleAlertCloseButtonClick}
+          >
+            { alert.children }
+          </Alert>
+        ))}
+        { children }
+      </div>
+    </Portal>
   );
 }
 

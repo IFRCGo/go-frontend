@@ -1,6 +1,10 @@
 @import '~styles/settings/variables';
 
 .container {
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+
   &:not(.sub) {
     >.inner-container {
       padding: 0 $spacing*8;
@@ -9,15 +13,30 @@
   }
 
   >.inner-container {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
     max-width: $media-large;
+    overflow: auto;
 
     .header {
+      flex-shrink: 0;
       padding: $spacing * 3/4;
       border-bottom: $base-border-width solid $base-border-color;
     }
 
     .content {
+      flex-grow: 1;
+      overflow: auto;
       padding: $spacing 0;
+    }
+  }
+
+  &.sub {
+    >.inner-container {
+      .content {
+        padding: $spacing/2 0;
+      }
     }
   }
 

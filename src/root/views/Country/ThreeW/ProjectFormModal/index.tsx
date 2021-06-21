@@ -11,7 +11,7 @@ import styles from './styles.module.scss';
 
 interface BaseProps {
   className?: string;
-  onCloseButtonClick?: ButtonProps<void>['onClick'];
+  onCloseButtonClick?: ButtonProps<undefined>['onClick'];
   onSubmitSuccess?: () => void;
 }
 

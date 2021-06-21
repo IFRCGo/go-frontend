@@ -25,6 +25,7 @@ import NonFieldError from '#components/NonFieldError';
 import TextOutput from '#components/text-output';
 import LanguageContext from '#root/languageContext';
 
+import useAlert from '#hooks/useAlert';
 import {
   useLazyRequest,
   useRequest,
@@ -68,6 +69,7 @@ function ThreeWForm(props: Props) {
   } = props;
 
   const { strings } = React.useContext(LanguageContext);
+  const alert = useAlert();
 
   const {
     value,
@@ -105,8 +107,18 @@ function ThreeWForm(props: Props) {
     method: projectId ? 'PUT' : 'POST',
     body: ctx => ctx,
     onSuccess: onSubmitSuccess,
-    onFailure: ({ value: { formErrors } }) => {
-      onErrorSet(formErrors);
+    onFailure: ({ value: { messageForNotification, errors } }) => {
+      console.error(errors);
+      alert.show(
+        (
+          <p>
+            Failed to sumbit project
+            &nbsp;
+            { messageForNotification }
+          </p>
+        ),
+        { variant: 'danger' },
+      );
     },
   });
 

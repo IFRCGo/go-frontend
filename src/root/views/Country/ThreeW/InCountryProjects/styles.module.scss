@@ -16,9 +16,51 @@
 
   .ongoing-project {
     margin: $page-spacing-v 0;
+    background-color: $color-background;
+
+    .map-section {
+      display: flex;
+
+      .map {
+        flex-grow: 1;
+      }
+
+      .map-details {
+        width: 20rem;
+        height: 60vh;
+        background-color: $color-foreground;
+        box-shadow: $base-box-shadow;
+
+        .inner-container {
+          display: flex;
+          flex-direction: column;
+
+          .content {
+            flex-grow: 1;
+            overflow: auto;
+            padding: $spacing;
+
+            .project-detail-item {
+              display: flex;
+
+              .name {
+                flex-grow: 1;
+                padding: $spacing/2 $spacing;
+              }
+
+              .actions {
+                flex-shrink: 0;
+                margin: $spacing/2;
+              }
+            }
+          }
+        }
+      }
+    }
 
     .projects-table {
       width: 100%;
+      background-color: inherit;
     }
   }
 }

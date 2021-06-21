@@ -1,6 +1,7 @@
 import React from 'react';
 import {
   _cs,
+  isDefined,
   isNotDefined,
   unique,
   listToGroupList,
@@ -14,6 +15,7 @@ import KeyFigure from '#components/KeyFigure';
 import Card from '#components/Card';
 import Container from '#components/Container';
 import ExportProjectsButton from '#components/ExportProjectsButton';
+import ExpandableContainer from '#components/ExpandableContainer';
 
 import Table from '#components/Table';
 import { createActionColumn } from '#components/Table/predefinedColumns';
@@ -22,12 +24,17 @@ import {
   ListResponse,
   useRequest,
 } from '#utils/restRequest';
-import { sum } from '#utils/common';
+import {
+  sum,
+  denormalizeList,
+} from '#utils/common';
 import {
   Country,
   Project,
 } from '#types';
 
+import Map from './Map';
+import ProjectFormModal from '../ProjectFormModal';
 import ProjectTableActions from '../ProjectTableActions';
 import ProjectStatPieChart from '../ProjectStatPieChart';
 import ProjectFlowSankey from '../ProjectFlowSankey';
@@ -74,6 +81,7 @@ function InCountryProjects(props: Props) {
   }, [projectsUpdatedOn, retriggerProjectListRequest]);
 
   const [viewAllProjects,,,, toggleViewAllProject] = useBooleanState(false);
+  const [projectIdToEdit, setProjectIdToEdit] = React.useState<number | undefined>();
   const projectList = projectListResponse?.results ?? emptyProjectList;
 
   const [
@@ -93,10 +101,12 @@ function InCountryProjects(props: Props) {
         d => d,
       ) ?? {}
     );
+
     const programmeTypeCounts: LabelValue[] = mapToList(
       programmeTypeGrouped,
       (d, k) => ({ label: String(k), value: d.length })
     );
+
     const statusGrouped = (
       listToGroupList(
         projectList,
@@ -139,9 +149,27 @@ function InCountryProjects(props: Props) {
     ),
   ]), [retriggerProjectListRequest]);
 
+  const currentProjectList = viewAllProjects ? projectList : ongoingProjects;
+
   const sankeyData = React.useMemo(() => (
     projectListToInCountrySankeyData(projectList)
   ), [projectList]);
+
+  const districtGroupedProject = React.useMemo(() => {
+    const districtDenormalizedProjectList = denormalizeList(
+      currentProjectList ?? [],
+      (p) => p.project_districts_detail,
+      (p, d) => ({
+        ...p,
+        project_district: d,
+      }),
+    );
+
+    return listToGroupList(
+      districtDenormalizedProjectList,
+      d => d.project_district.id,
+    );
+  }, [currentProjectList]);
 
   return (
     <div className={_cs(styles.inCountryProjects, className)}>
@@ -199,9 +227,86 @@ function InCountryProjects(props: Props) {
             )}
             sub
           >
+            <div className={styles.mapSection}>
+              <Map
+                className={styles.map}
+                projectList={projectList}
+                countryId={country?.id}
+              />
+              <Container
+                className={styles.mapDetails}
+                heading="Projects by Province"
+                contentClassName={styles.content}
+                innerContainerClassName={styles.innerContainer}
+                sub
+              >
+                {Object.values(districtGroupedProject).map((projectList) => {
+                  if (!projectList || projectList.length === 0) {
+                    return null;
+                  }
+
+                  const d0 = projectList[0].project_district;
+
+                  if (isNotDefined(d0.id)) {
+                    return (
+                      <ExpandableContainer
+                        key="others"
+                        heading={`Others ${projectList.length} Projects`}
+                        headingSize="small"
+                        initiallyExpanded
+                        sub
+                      >
+                        {projectList.map((project) => (
+                          <div className={styles.projectDetailItem}>
+                            <div className={styles.name}>
+                              {project.name}
+                            </div>
+                            <Button
+                              name={project.id}
+                              variant="tertiary"
+                              className={styles.actions}
+                              onClick={setProjectIdToEdit}
+                            >
+                              Add Province
+                            </Button>
+                          </div>
+                        ))}
+                      </ExpandableContainer>
+                    );
+                  }
+
+                  const title = `${d0.name} (${projectList.length} Projects)`;
+
+                  // const heading = d0.is_deprecated ? `[deprecated] ${title}` : title;
+
+                  return (
+                    <ExpandableContainer
+                      key={d0.id}
+                      heading={title}
+                      headingSize="small"
+                      sub
+                    >
+                      {projectList.map((project) => (
+                          <div className={styles.projectDetailItem}>
+                            <div className={styles.name}>
+                              {project.name}
+                            </div>
+                            <ProjectTableActions
+                              className={styles.actions}
+                              project={project}
+                              onProjectFormSubmitSuccess={retriggerProjectListRequest}
+                              onProjectDeletionSuccess={retriggerProjectListRequest}
+                            />
+                          </div>
+                      ))}
+                    </ExpandableContainer>
+                  );
+                })}
+              </Container>
+            </div>
             <Table
               className={styles.projectsTable}
-              data={viewAllProjects ? projectList : ongoingProjects}
+              data={currentProjectList}
               columns={tableColumns}
               keySelector={projectKeySelector}
               variant="large"
@@ -213,6 +318,13 @@ function InCountryProjects(props: Props) {
           >
             <ProjectFlowSankey data={sankeyData} />
           </Container>
+          {isDefined(projectIdToEdit) && (
+            <ProjectFormModal
+              projectId={projectIdToEdit}
+              onCloseButtonClick={setProjectIdToEdit}
+              onSubmitSuccess={retriggerProjectListRequest}
+            />
+          )}
         </>
       )}
     </div>

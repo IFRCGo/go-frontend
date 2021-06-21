@@ -28,6 +28,7 @@ import ProjectDetailModal from '../ProjectDetailModal';
 import styles from './styles.module.scss';
 
 interface Props {
+  className?: string;
   onProjectFormSubmitSuccess?: () => void;
   onProjectDeletionSuccess?: () => void;
   project: Project;
@@ -37,6 +38,7 @@ function ProjectTableActions(props: Props) {
   const { strings } = React.useContext(LanguageContext);
   const alert = useAlert();
   const {
+    className,
     project,
     onProjectFormSubmitSuccess,
     onProjectDeletionSuccess,
@@ -80,10 +82,10 @@ function ProjectTableActions(props: Props) {
     onSuccess: onProjectDeletionSuccess,
     onFailure: ({ value: { messageForNotification, errors }}) => {
       console.error(errors);
-      alert.show('Failed to delete the project', {
-        variant: 'danger',
-        duration: 4500,
-      });
+      alert.show(
+        'Failed to delete the project',
+        { variant: 'danger', }
+      );
     },
   });
 
@@ -102,7 +104,10 @@ function ProjectTableActions(props: Props) {
   return (
     <>
       {projectDeletionPending && <GlobalLoading />}
-      <DropdownMenu label={<MdMoreHoriz className={styles.overflowIcon} />}>
+      <DropdownMenu
+        className={className}
+        label={<MdMoreHoriz className={styles.overflowIcon} />}
+      >
         <DropdownMenuItem
           onClick={setShowProjectDetailsTrue}
           label={strings.projectListTableViewDetails}
