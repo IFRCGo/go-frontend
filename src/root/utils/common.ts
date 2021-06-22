@@ -1,4 +1,5 @@
 import { memo } from 'react';
+import { isDefined } from '@togglecorp/fujs';
 
 export const getHashFromBrowser = () => window.location.hash.substr(1);
 export const setHashToBrowser = (hash: string | undefined) => {
@@ -14,8 +15,12 @@ export function sum<L, V extends string | number>(list: L[], valueSelector: (ite
     return undefined;
   }
 
-  return list.reduce((acc, item) => (
-    acc + (+valueSelector(item))
+  const values = list
+    .map(valueSelector)
+    .filter(isDefined);
+
+  return values.reduce((acc, item) => (
+    acc + (+item)
   ), 0);
 }
 
@@ -24,8 +29,13 @@ export function max<L, V extends string | number>(list: L[], valueSelector: (ite
     return undefined;
   }
 
-  return list.reduce((acc, item) => (
-    Math.max(acc, +valueSelector(item))
+  const values = list
+    .map(valueSelector)
+    .filter(isDefined);
+
+  // FIXME: the zero value may be problematic when there are negative numbers
+  return values.reduce((acc, item) => (
+    Math.max(acc, +item)
   ), 0);
 }
 
