@@ -1,7 +1,7 @@
 @import '~styles/settings/_variables.scss';
 
 .text-output {
-  &:not(.inline-type) {
+  &.inline-type {
     display: flex;
     align-items: center;
   }

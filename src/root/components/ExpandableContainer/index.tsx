@@ -41,7 +41,7 @@ function ExpandibleContainer(props: Props) {
         headerElement.removeEventListener('click', toggleShowChildren);
       }
     };
-  }, []);
+  }, [toggleShowChildren]);
 
   return (
     <Container

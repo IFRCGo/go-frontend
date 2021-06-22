@@ -13,6 +13,7 @@ import KeyFigure from '#components/KeyFigure';
 import Card from '#components/Card';
 import Container from '#components/Container';
 import ExportProjectsButton from '#components/ExportProjectsButton';
+import ExpandableContainer from '#components/ExpandableContainer';
 import Table from '#components/Table';
 import { createActionColumn } from '#components/Table/predefinedColumns';
 import useBooleanState from '#hooks/useBooleanState';
@@ -28,6 +29,7 @@ import {
 import ProjectTableActions from '../ProjectTableActions';
 import ProjectStatPieChart from '../ProjectStatPieChart';
 import ProjectFlowSankey from '../ProjectFlowSankey';
+import { nsProjectColumns } from '../projectTableColumns';
 import {
   LabelValue,
   emptyProjectList,
@@ -35,7 +37,9 @@ import {
   projectKeySelector,
   projectListToNsSankeyData,
 } from '../common';
-import { nsProjectColumns } from '../projectTableColumns';
+import Map from './Map';
+import Filters, { FilterValue } from './Filters';
+
 import styles from './styles.module.scss';
 
 interface Props {
@@ -51,6 +55,13 @@ function NSProjects(props: Props) {
     projectsUpdatedOn,
   } = props;
 
+  const [filters, setFilters] = React.useState<FilterValue>({
+    project_country: [],
+    operation_type: [],
+    programme_type: [],
+    primary_sector: [],
+    secondary_sectors: [],
+  });
 
   const {
     pending: projectListPending,
@@ -135,9 +146,15 @@ function NSProjects(props: Props) {
     ),
   ]), [retriggerProjectListRequest]);
 
+  const currentProjectList = viewAllProjects ? projectList : ongoingProjects;
+
   const sankeyData = React.useMemo(() => (
     projectListToNsSankeyData(projectList)
   ), [projectList]);
+
+  const countryGroupedProjects = React.useMemo(() => (
+    listToGroupList(currentProjectList, d => d.project_country)
+  ), [currentProjectList]);
 
   return (
     <div className={_cs(styles.nsProjects, className)}>
@@ -145,11 +162,6 @@ function NSProjects(props: Props) {
         <BlockLoading />
       ) : (
         <>
-          <ExportProjectsButton
-            countryId={country?.id}
-            fileNameSuffix={country?.name}
-            isNationalSociety
-          />
           <div className={styles.stats}>
             <Card multiColumn>
               <KeyFigure
@@ -186,16 +198,75 @@ function NSProjects(props: Props) {
             className={styles.ongoingProject}
             heading={viewAllProjects ? 'All Projects' : 'Ongoing Projects'}
             actions={(
-              <Button
-                actions={<IoChevronForward />}
-                variant="tertiary"
-                onClick={toggleViewAllProject}
-              >
-                { viewAllProjects ? 'View Ongoing Projects' : 'View All Projects' }
-              </Button>
+              <>
+                <ExportProjectsButton
+                  countryId={country?.id}
+                  fileNameSuffix={country?.name}
+                  isNationalSociety
+                />
+                <Button
+                  actions={<IoChevronForward />}
+                  variant="tertiary"
+                  onClick={toggleViewAllProject}
+                >
+                  { viewAllProjects ? 'View Ongoing Projects' : 'View All Projects' }
+                </Button>
+              </>
             )}
             sub
           >
+            <Filters
+              value={filters}
+              onChange={setFilters}
+            />
+            <div className={styles.mapSection}>
+              <Map
+                className={styles.map}
+                projectList={currentProjectList}
+              />
+              <Container
+                className={styles.mapDetails}
+                heading="Projects by Province"
+                contentClassName={styles.content}
+                innerContainerClassName={styles.innerContainer}
+                sub
+              >
+                {Object.values(countryGroupedProjects).map((projectList) => {
+                  if (!projectList || projectList.length === 0) {
+                    return null;
+                  }
+
+                  const d0 = projectList[0].project_country_detail;
+                  const title = `${d0.name} (${projectList.length} Projects)`;
+
+                  return (
+                    <ExpandableContainer
+                      key={d0.id}
+                      heading={title}
+                      headingSize="small"
+                      sub
+                    >
+                      {projectList.map((project) => (
+                        <div
+                          className={styles.projectDetailItem}
+                          key={project.id}
+                        >
+                          <div className={styles.name}>
+                            {project.name}
+                          </div>
+                          <ProjectTableActions
+                            className={styles.actions}
+                            project={project}
+                            onProjectFormSubmitSuccess={retriggerProjectListRequest}
+                            onProjectDeletionSuccess={retriggerProjectListRequest}
+                          />
+                        </div>
+                      ))}
+                    </ExpandableContainer>
+                  );
+                })}
+              </Container>
+            </div>
             <Table
               className={styles.projectsTable}
               data={viewAllProjects ? projectList : ongoingProjects}

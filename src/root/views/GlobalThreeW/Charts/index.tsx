@@ -124,6 +124,7 @@ interface BarChartProps {
   data: BarChartData[],
   className?: string;
   limitHeight?: boolean;
+  hideTooltip?: boolean;
   hideLabel?: boolean;
 }
 
@@ -133,6 +134,7 @@ function ThreeWBarChart(props: BarChartProps) {
     className,
     limitHeight,
     hideLabel,
+    hideTooltip,
   } = props;
 
   const chartData = React.useMemo(() => {
@@ -172,7 +174,7 @@ function ThreeWBarChart(props: BarChartProps) {
           width={164}
           tick={CustomYAxisTick}
         />
-        <Tooltip />
+        {!hideTooltip && <Tooltip />}
         <Bar
           radius={5}
           dataKey="value"

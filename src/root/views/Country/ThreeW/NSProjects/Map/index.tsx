@@ -1,6 +1,7 @@
 import React from 'react';
 import {
   _cs,
+  listToMap,
   listToGroupList,
   isDefined,
 } from '@togglecorp/fujs';
@@ -8,29 +9,18 @@ import Map, {
   MapContainer,
   MapSource,
   MapLayer,
-  MapBounds,
   MapTooltip
 } from '@togglecorp/re-map';
-import turfBbox from '@turf/bbox';
 
 import MapTooltipContent from '#components/MapTooltipContent';
 import useReduxState from '#hooks/useReduxState';
 import {
-  COLOR_RED,
   defaultMapStyle,
   defaultMapOptions,
   getPointCirclePaint,
-  getPointCircleHaloPaint,
+  COLOR_RED,
 } from '#utils/map';
-import { denormalizeList } from '#utils/common';
-import {
-  useRequest,
-  ListResponse,
-} from '#utils/restRequest';
-import {
-  Project,
-  District,
-} from '#types';
+import { Project } from '#types';
 
 import styles from './styles.module.scss';
 
@@ -39,14 +29,14 @@ const tooltipOptions: mapboxgl.PopupOptions = {
   closeButton: false,
   offset: 8,
 };
-
 const sourceOption: mapboxgl.GeoJSONSourceRaw = {
     type: 'geojson',
 };
 
+
 interface GeoJsonProps {
-  districtId: number;
-  numProjects: number;
+  countryId: number;
+  total: number;
 }
 
 interface ClickedPoint {
@@ -54,13 +44,10 @@ interface ClickedPoint {
   lngLat: mapboxgl.LngLatLike;
 }
 
-type ProjectGeoJson = GeoJSON.FeatureCollection<GeoJSON.Point, GeoJsonProps>;
-
-const emptyDistrictList: District[] = [];
+type NsProjectStatsGeoJson = GeoJSON.FeatureCollection<GeoJSON.Point, GeoJsonProps>;
 
 interface Props {
   className?: string;
-  countryId?: number;
   projectList: Project[];
 }
 
@@ -68,92 +55,78 @@ function ThreeWMap(props: Props) {
   const {
     className,
     projectList,
-    countryId,
   } = props;
-
-  const allCountries = useReduxState('allCountries');
-  const countryBounds = React.useMemo(() => (
-    turfBbox(allCountries?.data.results.find(
-      d => d.id === countryId)?.bbox ?? []
-    )
-  ), [allCountries, countryId]);
-
-  const {
-    response: districtListResponse,
-  } = useRequest<ListResponse<District>>({
-    skip: !countryId,
-    url: 'api/v2/district/',
-    query: {
-      country: countryId,
-      limit: 200,
-    },
-  });
-
-  const districtDenormalizedProjectList = React.useMemo(
-    () => denormalizeList(
-      projectList ?? [],
-      (p) => p.project_districts_detail,
-      (p, d) => ({
-        ...p,
-        project_district: d,
-      }),
-    ),
-    [projectList]
-  );
-
-  const districtGroupedProjects = listToGroupList(
-    districtDenormalizedProjectList,
-    d => d.project_district.id,
-  );
-
-  const districtList = districtListResponse?.results ?? emptyDistrictList;
 
   const [
     clickedPointProperties,
     setClickedPointProperties,
   ] = React.useState<ClickedPoint| undefined>();
 
-  const geo: ProjectGeoJson = React.useMemo(
+  const allCountries = useReduxState('allCountries');
+  const countries = allCountries?.data?.results;
+
+  const [
+    countryGroupedProjects,
+    countryGroupedProjectList,
+  ] = React.useMemo(() => {
+    const group = listToGroupList(projectList, d => d.project_country);
+
+    return [
+      group,
+      Object.values(group),
+    ] as const;
+  }, [projectList]);
+
+  const nsProjectsMap = React.useMemo(
+    () => listToMap(
+      countryGroupedProjectList ?? [],
+      item => item[0].project_country,
+      (item) => ({
+        countryId: item[0].project_country,
+        total: item.length,
+      }),
+    ),
+    [countryGroupedProjectList],
+  );
+
+  const geo: NsProjectStatsGeoJson = React.useMemo(
     () => ({
       type: 'FeatureCollection' as const,
-      features: districtList.map((district) => {
-        const projects = districtGroupedProjects[district.id];
-        if (!projects) {
+      features: countries.map((country) => {
+        const nsProject = nsProjectsMap[country.id];
+        if (!nsProject) {
           return undefined;
         }
 
         return {
-          id: district.id,
+          id: country.id,
           type: 'Feature' as const,
-          properties: {
-            districtId: district.id,
-            numProjects: projects.length,
-          },
+          properties: nsProject,
           geometry: {
             type: 'Point' as const,
-            coordinates: district.centroid?.coordinates ?? [0, 0],
+            coordinates: country.centroid?.coordinates ?? [0, 0],
           },
         };
       }).filter(isDefined),
     }),
-    [districtList, districtGroupedProjects],
+    [countries, nsProjectsMap],
   );
 
-  const selectedDistrictProjectDetail = React.useMemo(
+  const selectedCountryProjectDetail = React.useMemo(
     () => {
       if (!clickedPointProperties || !clickedPointProperties.feature?.id) {
         return undefined;
       }
 
-      const selectedDistrictProjectList = districtGroupedProjects[clickedPointProperties.feature.id];
+      const selectedCountryProjectList = countryGroupedProjects[clickedPointProperties.feature.id];
 
-      if (!selectedDistrictProjectList) {
+      if (!selectedCountryProjectList) {
         return undefined;
       }
 
-      return selectedDistrictProjectList;
+      return selectedCountryProjectList;
     },
-    [clickedPointProperties, districtGroupedProjects],
+    [clickedPointProperties, countryGroupedProjects],
   );
 
   const handlePointClick = React.useCallback(
@@ -174,18 +147,13 @@ function ThreeWMap(props: Props) {
     [setClickedPointProperties],
   );
 
-  const maxScaleValue = Math.max(projectList?.length ?? 0, 2);
-  const pointHaloCirclePaint: mapboxgl.CirclePaint = React.useMemo(
-    () => getPointCircleHaloPaint(COLOR_RED, 'numProjects', maxScaleValue),
-    [maxScaleValue],
-  );
-
   return (
     <Map
       mapStyle={defaultMapStyle}
       mapOptions={defaultMapOptions}
       navControlShown
       navControlPosition="top-right"
+      debug={false}
     >
       <MapContainer className={_cs(styles.mapContainer, className)} />
       <MapSource
@@ -194,36 +162,27 @@ function ThreeWMap(props: Props) {
           geoJson={geo}
       >
         <MapLayer
-          layerKey="points-halo-circle"
-          onClick={handlePointClick}
-          layerOptions={{
-            type: 'circle',
-            paint: pointHaloCirclePaint,
-          }}
-        />
-        <MapLayer
           layerKey="points-circle"
+          onClick={handlePointClick}
           layerOptions={{
             type: 'circle',
             paint: pointCirclePaint,
           }}
         />
       </MapSource>
-      <MapBounds
-        bounds={countryBounds}
-      />
-      {clickedPointProperties?.lngLat && selectedDistrictProjectDetail && (
+      {clickedPointProperties?.lngLat && selectedCountryProjectDetail && (
         <MapTooltip
           coordinates={clickedPointProperties.lngLat}
           tooltipOptions={tooltipOptions}
           onHide={handlePointClose}
         >
           <MapTooltipContent
-            title={selectedDistrictProjectDetail[0].project_district.name}
+            title={selectedCountryProjectDetail[0].project_country_detail.name}
+            href={`/countries/${selectedCountryProjectDetail[0].project_country}/#3w`}
             onCloseButtonClick={handlePointClose}
             className={styles.mapTooltip}
           >
-            {selectedDistrictProjectDetail.map((project) => (
+            {selectedCountryProjectDetail.map((project) => (
               <div
                 className={styles.projectDetailItem}
                 key={project.id}
@@ -238,7 +197,6 @@ function ThreeWMap(props: Props) {
       )}
     </Map>
   );
-
 }
 
 export default ThreeWMap;

@@ -55,9 +55,9 @@ function PageHeader(props: Props) {
               { heading }
             </h1>
             { description && (
-              <p className={styles.description}>
+              <div className={styles.description}>
                 { description }
-              </p>
+              </div>
             )}
           </section>
         )}

@@ -87,6 +87,7 @@ function mergeLinks(links: SankeyLink[]) {
     (item) => `${item.source}-${item.target}`,
     (item) => item,
   );
+
   return mapToList(
     groupedLinks,
     item => mergeList(item, (prev, next) => ({
