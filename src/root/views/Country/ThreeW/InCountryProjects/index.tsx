@@ -16,7 +16,6 @@ import Card from '#components/Card';
 import Container from '#components/Container';
 import ExportProjectsButton from '#components/ExportProjectsButton';
 import ExpandableContainer from '#components/ExpandableContainer';
-
 import Table from '#components/Table';
 import { createActionColumn } from '#components/Table/predefinedColumns';
 import useBooleanState from '#hooks/useBooleanState';
@@ -31,9 +30,9 @@ import {
 import {
   Country,
   Project,
+  District,
 } from '#types';
 
-import Map from './Map';
 import ProjectFormModal from '../ProjectFormModal';
 import ProjectTableActions from '../ProjectTableActions';
 import ProjectStatPieChart from '../ProjectStatPieChart';
@@ -46,7 +45,12 @@ import {
   projectKeySelector,
   projectListToInCountrySankeyData,
 } from '../common';
+import Map from './Map';
+import Filters, { FilterValue } from './Filters';
+
 import styles from './styles.module.scss';
+
+const emptyDistrictList: District[] = [];
 
 interface Props {
   country: Country | undefined;
@@ -61,6 +65,15 @@ function InCountryProjects(props: Props) {
     projectsUpdatedOn,
   } = props;
 
+  const [filters, setFilters] = React.useState<FilterValue>({
+    reporting_ns: [],
+    project_districts: [],
+    operation_type: [],
+    programme_type: [],
+    primary_sector: [],
+    secondary_sectors: [],
+  });
+
   const {
     pending: projectListPending,
     response: projectListResponse,
@@ -71,8 +84,24 @@ function InCountryProjects(props: Props) {
     query: {
       limit: 500,
       country: country?.iso,
+      ...filters,
+      project_districts: filters.project_districts.length > 0 ?
+        filters.project_districts : undefined,
     },
   });
+
+  const {
+    response: districtListResponse,
+  } = useRequest<ListResponse<District>>({
+    skip: !country?.id,
+    url: 'api/v2/district/',
+    query: {
+      country: country?.id,
+      limit: 200,
+    },
+  });
+
+  const districtList = districtListResponse?.results ?? emptyDistrictList;
 
   React.useEffect(() => {
     if (projectsUpdatedOn) {
@@ -177,10 +206,6 @@ function InCountryProjects(props: Props) {
         <BlockLoading />
       ) : (
         <>
-          <ExportProjectsButton
-            countryId={country?.id}
-            fileNameSuffix={country?.name}
-          />
           <div className={styles.stats}>
             <Card multiColumn>
               <KeyFigure
@@ -217,16 +242,27 @@ function InCountryProjects(props: Props) {
             className={styles.ongoingProject}
             heading={viewAllProjects ? 'All Projects' : 'Ongoing Projects'}
             actions={(
-              <Button
-                actions={<IoChevronForward />}
-                variant="tertiary"
-                onClick={toggleViewAllProject}
-              >
-                { viewAllProjects ? 'View Ongoing Projects' : 'View All Projects' }
-              </Button>
+              <>
+                <ExportProjectsButton
+                  countryId={country?.id}
+                  fileNameSuffix={country?.name}
+                />
+                <Button
+                  actions={<IoChevronForward />}
+                  variant="tertiary"
+                  onClick={toggleViewAllProject}
+                >
+                  { viewAllProjects ? 'View Ongoing Projects' : 'View All Projects' }
+                </Button>
+              </>
             )}
             sub
           >
+            <Filters
+              value={filters}
+              onChange={setFilters}
+              districtList={districtList}
+            />
             <div className={styles.mapSection}>
               <Map
                 className={styles.map}
@@ -257,7 +293,10 @@ function InCountryProjects(props: Props) {
                         sub
                       >
                         {projectList.map((project) => (
-                          <div className={styles.projectDetailItem}>
+                          <div
+                            key={project.id}
+                            className={styles.projectDetailItem}
+                          >
                             <div className={styles.name}>
                               {project.name}
                             </div>
@@ -287,17 +326,20 @@ function InCountryProjects(props: Props) {
                       sub
                     >
                       {projectList.map((project) => (
-                          <div className={styles.projectDetailItem}>
-                            <div className={styles.name}>
-                              {project.name}
-                            </div>
-                            <ProjectTableActions
-                              className={styles.actions}
-                              project={project}
-                              onProjectFormSubmitSuccess={retriggerProjectListRequest}
-                              onProjectDeletionSuccess={retriggerProjectListRequest}
-                            />
+                        <div
+                          key={project.id}
+                          className={styles.projectDetailItem}
+                        >
+                          <div className={styles.name}>
+                            {project.name}
                           </div>
+                          <ProjectTableActions
+                            className={styles.actions}
+                            project={project}
+                            onProjectFormSubmitSuccess={retriggerProjectListRequest}
+                            onProjectDeletionSuccess={retriggerProjectListRequest}
+                          />
+                        </div>
                       ))}
                     </ExpandableContainer>
                   );

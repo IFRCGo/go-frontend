@@ -16,7 +16,6 @@
 
   .ongoing-project {
     margin: $page-spacing-v 0;
-    background-color: $color-background;
 
     .map-section {
       display: flex;
@@ -28,7 +27,7 @@
       .map-details {
         width: 20rem;
         height: 60vh;
-        background-color: $color-foreground;
+        background-color: $color-background;
         box-shadow: $base-box-shadow;
 
         .inner-container {
@@ -41,16 +40,18 @@
             padding: $spacing;
 
             .project-detail-item {
+              align-items: flex-start;
+              padding: $spacing/4 0;
               display: flex;
 
               .name {
                 flex-grow: 1;
-                padding: $spacing/2 $spacing;
+                padding: 0 $spacing;
               }
 
               .actions {
                 flex-shrink: 0;
-                margin: $spacing/2;
+                margin: 0 $spacing/2;
               }
             }
           }

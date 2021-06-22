@@ -5,13 +5,20 @@ import {
   sectorList,
   secondarySectorList,
   programmeTypeList,
+  operationTypeList,
 } from '#utils/constants';
 import { compareLabel } from '#utils/common';
 
+import { District } from '#types';
 import SelectInput from '#components/SelectInput';
 import useReduxState from '#hooks/useReduxState';
 
 import styles from './styles.module.scss';
+
+const operationTypeOptions = operationTypeList.map(p => ({
+  value: +p.value,
+  label: p.label,
+})).sort(compareLabel);
 
 const programmeTypeOptions = programmeTypeList.map(p => ({
   value: +p.key,
@@ -30,6 +37,8 @@ const tagOptions = secondarySectorList.map(p => ({
 
 export interface FilterValue {
   reporting_ns: number[];
+  project_districts: number[];
+  operation_type: number[];
   programme_type: number[];
   primary_sector: number[];
   secondary_sectors: number[];
@@ -40,6 +49,7 @@ interface Props {
   value: FilterValue;
   onChange: React.Dispatch<React.SetStateAction<FilterValue>>;
   disabled?: boolean;
+  districtList: District[];
 }
 
 function Filters(props: Props) {
@@ -48,6 +58,7 @@ function Filters(props: Props) {
     value,
     onChange,
     disabled,
+    districtList,
   } = props;
 
   const allCountries = useReduxState('allCountries');
@@ -57,6 +68,14 @@ function Filters(props: Props) {
       label: c.society_name,
     })).filter(d => d.label).sort(compareLabel) ?? [],
     [allCountries],
+  );
+
+  const districtOptions = React.useMemo(
+    () => districtList.map((d) => ({
+      value: d.id,
+      label: d.name,
+    })),
+    [districtList],
   );
 
   const handleInputChange = React.useCallback((newValue: number[], name: string) => {
@@ -79,6 +98,24 @@ function Filters(props: Props) {
         placeholder="National Societies"
         options={nsOptions}
         value={value.reporting_ns}
+        isMulti
+        onChange={handleInputChange}
+        disabled={disabled}
+      />
+      <SelectInput<string, number>
+        name="project_districts"
+        placeholder="Provinces"
+        options={districtOptions}
+        value={value.project_districts}
+        isMulti
+        onChange={handleInputChange}
+        disabled={disabled}
+      />
+      <SelectInput<string, number>
+        name="operation_type"
+        placeholder="Project Types"
+        options={operationTypeOptions}
+        value={value.operation_type}
         isMulti
         onChange={handleInputChange}
         disabled={disabled}

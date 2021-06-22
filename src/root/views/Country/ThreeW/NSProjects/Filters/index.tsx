@@ -5,6 +5,7 @@ import {
   sectorList,
   secondarySectorList,
   programmeTypeList,
+  operationTypeList,
 } from '#utils/constants';
 import { compareLabel } from '#utils/common';
 
@@ -12,6 +13,11 @@ import SelectInput from '#components/SelectInput';
 import useReduxState from '#hooks/useReduxState';
 
 import styles from './styles.module.scss';
+
+const operationTypeOptions = operationTypeList.map(p => ({
+  value: +p.value,
+  label: p.label,
+})).sort(compareLabel);
 
 const programmeTypeOptions = programmeTypeList.map(p => ({
   value: +p.key,
@@ -29,7 +35,8 @@ const tagOptions = secondarySectorList.map(p => ({
 })).sort(compareLabel);
 
 export interface FilterValue {
-  reporting_ns: number[];
+  project_country: number[];
+  operation_type: number[];
   programme_type: number[];
   primary_sector: number[];
   secondary_sectors: number[];
@@ -51,10 +58,10 @@ function Filters(props: Props) {
   } = props;
 
   const allCountries = useReduxState('allCountries');
-  const nsOptions = React.useMemo(
+  const countryOptions = React.useMemo(
     () => allCountries?.data?.results.map((c) => ({
       value: c.id,
-      label: c.society_name,
+      label: c.name,
     })).filter(d => d.label).sort(compareLabel) ?? [],
     [allCountries],
   );
@@ -75,10 +82,19 @@ function Filters(props: Props) {
   return (
     <div className={_cs(styles.filters, className)}>
       <SelectInput<string, number>
-        name="reporting_ns"
-        placeholder="National Societies"
-        options={nsOptions}
-        value={value.reporting_ns}
+        name="project_country"
+        placeholder="Receiving Countries"
+        options={countryOptions}
+        value={value.project_country}
+        isMulti
+        onChange={handleInputChange}
+        disabled={disabled}
+      />
+      <SelectInput<string, number>
+        name="operation_type"
+        placeholder="Project Types"
+        options={operationTypeOptions}
+        value={value.operation_type}
         isMulti
         onChange={handleInputChange}
         disabled={disabled}
