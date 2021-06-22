@@ -200,6 +200,14 @@ function InCountryProjects(props: Props) {
     );
   }, [currentProjectList]);
 
+  const [
+    localNSProjects,
+    otherNSProjects,
+  ] = React.useMemo(() => ([
+    currentProjectList.filter(d => d.reporting_ns === d.project_country),
+    currentProjectList.filter(d => d.reporting_ns !== d.project_country),
+  ]), [currentProjectList]);
+
   return (
     <div className={_cs(styles.inCountryProjects, className)}>
       { projectListPending ? (
@@ -346,13 +354,36 @@ function InCountryProjects(props: Props) {
                 })}
               </Container>
             </div>
-            <Table
-              className={styles.projectsTable}
-              data={currentProjectList}
-              columns={tableColumns}
-              keySelector={projectKeySelector}
-              variant="large"
-            />
+            <ExpandableContainer
+              className={styles.projectsTableContainer}
+              heading={`Local Projects by NS (${localNSProjects.length})`}
+              headingSize="small"
+              sub
+              initiallyExpanded={localNSProjects.length > 0}
+            >
+              <Table
+                className={styles.projectsTable}
+                data={localNSProjects}
+                columns={tableColumns}
+                keySelector={projectKeySelector}
+                variant="large"
+              />
+            </ExpandableContainer>
+            <ExpandableContainer
+              className={styles.projectsTableContainer}
+              heading={`Projects by Other NS (${otherNSProjects.length})`}
+              headingSize="small"
+              sub
+              initiallyExpanded={localNSProjects.length === 0}
+            >
+              <Table
+                className={styles.projectsTable}
+                data={otherNSProjects}
+                columns={tableColumns}
+                keySelector={projectKeySelector}
+                variant="large"
+              />
+            </ExpandableContainer>
           </Container>
           <Container
             heading="Overview of Activities"
