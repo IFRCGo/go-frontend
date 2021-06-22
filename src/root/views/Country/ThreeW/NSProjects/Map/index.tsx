@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { useCallback, useState } from 'react';
 import {
   _cs,
   listToMap,
-  listToGroupList,
   isDefined,
 } from '@togglecorp/fujs';
 import Map, {
+  MapImage,
   MapContainer,
   MapSource,
   MapLayer,
@@ -14,17 +14,24 @@ import Map, {
 
 import MapTooltipContent from '#components/MapTooltipContent';
 import useReduxState from '#hooks/useReduxState';
+import { aggregateList } from '#utils/common';
 import {
   defaultMapStyle,
   defaultMapOptions,
   getPointCirclePaint,
   COLOR_RED,
+  COLOR_BLUE,
 } from '#utils/map';
 import { Project } from '#types';
+
+import image from './arrow.png';
 
 import styles from './styles.module.scss';
 
 const pointCirclePaint = getPointCirclePaint(COLOR_RED);
+
+const reportingPointCirclePaint = getPointCirclePaint(COLOR_BLUE);
+
 const tooltipOptions: mapboxgl.PopupOptions = {
   closeButton: false,
   offset: 8,
@@ -33,10 +40,45 @@ const sourceOption: mapboxgl.GeoJSONSourceRaw = {
     type: 'geojson',
 };
 
+const arrowImageOptions = {
+    sdf: true,
+};
+
+const linePaint: mapboxgl.LinePaint = {
+    'line-color': COLOR_BLUE,
+    'line-opacity': 0.8,
+    'line-width': 1,
+};
+const lineLayout: mapboxgl.LineLayout = {
+    visibility: 'visible',
+    'line-join': 'round',
+    'line-cap': 'round',
+};
+const hiddenLayout: mapboxgl.LineLayout = {
+    visibility: 'none',
+};
+
+const arrowPaint: mapboxgl.SymbolPaint = {
+    'icon-color': COLOR_BLUE,
+};
+const arrowLayout: mapboxgl.SymbolLayout = {
+    visibility: 'visible',
+    'icon-image': 'equilateral-arrow-icon',
+    'icon-size': 0.6,
+    'symbol-placement': 'line-center',
+    'icon-rotate': 90,
+    'icon-rotation-alignment': 'map',
+    'icon-ignore-placement': true,
+    // 'icon-allow-overlap': true,
+};
 
 interface GeoJsonProps {
   countryId: number;
   total: number;
+}
+
+interface ReportingGeoJsonProps {
+  countryId: number;
 }
 
 interface ClickedPoint {
@@ -45,6 +87,10 @@ interface ClickedPoint {
 }
 
 type NsProjectStatsGeoJson = GeoJSON.FeatureCollection<GeoJSON.Point, GeoJsonProps>;
+
+type ReportingNsProjectStatsGeoJson = GeoJSON.FeatureCollection<GeoJSON.Point, ReportingGeoJsonProps>;
+
+type LineGeoJson = GeoJSON.FeatureCollection<GeoJSON.LineString, {}>;
 
 interface Props {
   className?: string;
@@ -65,68 +111,148 @@ function ThreeWMap(props: Props) {
   const allCountries = useReduxState('allCountries');
   const countries = allCountries?.data?.results;
 
-  const [
-    countryGroupedProjects,
-    countryGroupedProjectList,
-  ] = React.useMemo(() => {
-    const group = listToGroupList(projectList, d => d.project_country);
+  const [iconReady, setIconReady] = useState(false);
 
-    return [
-      group,
-      Object.values(group),
-    ] as const;
-  }, [projectList]);
-
-  const nsProjectsMap = React.useMemo(
-    () => listToMap(
-      countryGroupedProjectList ?? [],
-      item => item[0].project_country,
-      (item) => ({
-        countryId: item[0].project_country,
-        total: item.length,
-      }),
-    ),
-    [countryGroupedProjectList],
+  const handleIconLoad = useCallback(
+    () => {
+      setIconReady(true);
+    },
+    [],
   );
 
   const geo: NsProjectStatsGeoJson = React.useMemo(
-    () => ({
-      type: 'FeatureCollection' as const,
-      features: countries.map((country) => {
-        const nsProject = nsProjectsMap[country.id];
-        if (!nsProject) {
-          return undefined;
-        }
+    () => {
+      interface Value {
+        countryId: number;
+        total: number;
+      }
+      const nsProjects = aggregateList(
+        projectList,
+        (item) => item.project_country,
+        (oldValue: Value | undefined, newValue) => ({
+          countryId: newValue.project_country,
+          total: (oldValue?.total ?? 0) + 1,
+        }),
+      );
+      const nsProjectsMap = listToMap(
+        nsProjects,
+        item => item.countryId,
+        item => item,
+      );
+      return {
+        type: 'FeatureCollection' as const,
+        features: countries.map((country) => {
+          const nsProject = nsProjectsMap[country.id];
+          if (!nsProject) {
+            return undefined;
+          }
 
-        return {
-          id: country.id,
-          type: 'Feature' as const,
-          properties: nsProject,
-          geometry: {
-            type: 'Point' as const,
-            coordinates: country.centroid?.coordinates ?? [0, 0],
-          },
-        };
-      }).filter(isDefined),
-    }),
-    [countries, nsProjectsMap],
+          return {
+            id: country.id,
+            type: 'Feature' as const,
+            properties: nsProject,
+            geometry: {
+              type: 'Point' as const,
+              coordinates: country.centroid?.coordinates ?? [0, 0],
+            },
+          };
+        }).filter(isDefined),
+      };
+    },
+    [countries, projectList],
+  );
+
+  const reportingNsGeo: ReportingNsProjectStatsGeoJson  = React.useMemo(
+    () => {
+      interface ReportingValue {
+        countryId: number;
+      }
+      const reportingNsProjects = aggregateList(
+        projectList,
+        (item) => item.reporting_ns,
+        (_: ReportingValue | undefined, newValue) => ({
+          countryId: newValue.reporting_ns,
+        }),
+      );
+      const reportingNsProjectsMap = listToMap(
+        reportingNsProjects,
+        item => item.countryId,
+        item => item,
+      );
+      return {
+        type: 'FeatureCollection' as const,
+        features: countries.map((country) => {
+          const nsProject = reportingNsProjectsMap[country.id];
+          if (!nsProject) {
+            return undefined;
+          }
+
+          return {
+            id: country.id,
+            type: 'Feature' as const,
+            properties: nsProject,
+            geometry: {
+              type: 'Point' as const,
+              coordinates: country.centroid?.coordinates ?? [0, 0],
+            },
+          };
+        }).filter(isDefined),
+      };
+    },
+    [countries, projectList],
+  );
+
+  const lines: LineGeoJson = React.useMemo(
+    () => {
+      interface Relation {
+        projectCountry: number,
+        reportingNs: number,
+      }
+      const relations = aggregateList(
+        projectList,
+        (item) => `${item.project_country}-${item.reporting_ns}`,
+        (_: Relation | undefined, item) => ({
+          projectCountry: item.project_country,
+          reportingNs: item.reporting_ns,
+        }),
+      );
+      const countriesMap = listToMap(
+        countries,
+        item => item.id,
+        item => item,
+      );
+
+      const geo = {
+          type: 'FeatureCollection' as const,
+          features: relations.map(({ projectCountry, reportingNs }) => ({
+              id: undefined,
+              type: 'Feature' as const,
+              geometry: {
+                  type: 'LineString' as const,
+                  coordinates: [
+                    countriesMap[reportingNs]?.centroid?.coordinates ?? [0, 0],
+                    countriesMap[projectCountry]?.centroid?.coordinates ?? [0, 0],
+                  ],
+              },
+              properties: {},
+          })),
+      };
+      return geo;
+    },
+    [countries, projectList],
   );
 
   const selectedCountryProjectDetail = React.useMemo(
     () => {
-      if (!clickedPointProperties || !clickedPointProperties.feature?.id) {
+      if (!clickedPointProperties?.feature?.id) {
         return undefined;
       }
 
-      const selectedCountryProjectList = countryGroupedProjects[clickedPointProperties.feature.id];
-
-      if (!selectedCountryProjectList) {
-        return undefined;
-      }
-
-      return selectedCountryProjectList;
+      return projectList.filter(
+        (item) => item.project_country === clickedPointProperties.feature.id,
+      );
     },
-    [clickedPointProperties, countryGroupedProjects],
+    [clickedPointProperties, projectList],
   );
 
   const handlePointClick = React.useCallback(
@@ -156,6 +282,34 @@ function ThreeWMap(props: Props) {
       debug={false}
     >
       <MapContainer className={_cs(styles.mapContainer, className)} />
+      <MapImage
+        name="equilateral-arrow-icon"
+        url={image}
+        imageOptions={arrowImageOptions}
+        onLoad={handleIconLoad}
+      />
+      <MapSource
+        sourceKey="lines"
+        sourceOptions={sourceOption}
+        geoJson={lines}
+      >
+        <MapLayer
+          layerKey="line"
+          layerOptions={{
+            type: 'line',
+            layout: lineLayout,
+            paint: linePaint,
+          }}
+        />
+        <MapLayer
+          layerKey="arrows-icon"
+          layerOptions={{
+            type: 'symbol',
+            paint: arrowPaint,
+            layout: iconReady ? arrowLayout : hiddenLayout,
+          }}
+        />
+      </MapSource>
       <MapSource
           sourceKey="points"
           sourceOptions={sourceOption}
@@ -167,6 +321,20 @@ function ThreeWMap(props: Props) {
           layerOptions={{
             type: 'circle',
             paint: pointCirclePaint,
+          }}
+        />
+      </MapSource>
+      <MapSource
+          sourceKey="reporting-points"
+          sourceOptions={sourceOption}
+          geoJson={reportingNsGeo}
+      >
+        <MapLayer
+          layerKey="reporting-points-circle"
+          onClick={handlePointClick}
+          layerOptions={{
+            type: 'circle',
+            paint: reportingPointCirclePaint,
           }}
         />
       </MapSource>

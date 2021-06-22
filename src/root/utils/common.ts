@@ -1,4 +1,5 @@
 import { memo } from 'react';
+import { isDefined } from '@togglecorp/fujs';
 
 export const getHashFromBrowser = () => window.location.hash.substr(1);
 export const setHashToBrowser = (hash: string | undefined) => {
@@ -29,7 +30,28 @@ export function max<L, V extends string | number>(list: L[], valueSelector: (ite
   ), 0);
 }
 
-export function transformObjectItems<K extends string, T, R>(obj: Record<K, T>, itemSelector: (item: T) => R) {
+export function aggregateList<T, R>(
+  item: T[],
+  keySelector: (item: T) => string | number,
+  aggregator: (val: R | undefined, value: T) => R,
+): R[] {
+  const mapping = item.reduce(
+    (acc, value) => {
+      const key = keySelector(value);
+      return {
+        ...acc,
+        [key]: aggregator(acc[key], value),
+      };
+    },
+    {} as { [key: string]: R },
+  );
+  return Object.values(mapping);
+}
+
+export function transformObjectItems<K extends string, T, R>(
+  obj: Record<K, T>,
+  itemSelector: (item: T) => R,
+) {
   const keys = Object.keys(obj) as K[];
 
   return keys.reduce((acc, val) => ({
