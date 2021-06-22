@@ -1,4 +1,6 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+import { createBrowserHistory } from 'history';
 import {
   _cs,
   isDefined,
@@ -7,10 +9,14 @@ import {
   listToGroupList,
   mapToList,
 } from '@togglecorp/fujs';
-import { IoChevronForward } from 'react-icons/io5';
+import {
+  IoChevronForward,
+  IoLockClosed,
+} from 'react-icons/io5';
 
 import BlockLoading from '#components/block-loading';
-import Button from '#components/Button';
+import Button, { useButtonFeatures } from '#components/Button';
+import Translate from '#components/Translate';
 import KeyFigure from '#components/KeyFigure';
 import Card from '#components/Card';
 import Container from '#components/Container';
@@ -19,6 +25,7 @@ import ExpandableContainer from '#components/ExpandableContainer';
 import Table from '#components/Table';
 import { createActionColumn } from '#components/Table/predefinedColumns';
 import useBooleanState from '#hooks/useBooleanState';
+import useReduxState from '#hooks/useReduxState';
 import {
   ListResponse,
   useRequest,
@@ -51,6 +58,7 @@ import Filters, { FilterValue } from './Filters';
 import styles from './styles.module.scss';
 
 const emptyDistrictList: District[] = [];
+const history = createBrowserHistory();
 
 interface Props {
   country: Country | undefined;
@@ -64,6 +72,9 @@ function InCountryProjects(props: Props) {
     className,
     projectsUpdatedOn,
   } = props;
+
+  const user = useReduxState('me');
+  const isLoggedIn = !!user.data.id;
 
   const [filters, setFilters] = React.useState<FilterValue>({
     reporting_ns: [],
@@ -85,8 +96,9 @@ function InCountryProjects(props: Props) {
       limit: 500,
       country: country?.iso,
       ...filters,
-      project_districts: filters.project_districts.length > 0 ?
-        filters.project_districts : undefined,
+      project_districts: filters.project_districts.length > 0
+        ? filters.project_districts
+        : undefined,
     },
   });
 
@@ -208,6 +220,12 @@ function InCountryProjects(props: Props) {
     currentProjectList.filter(d => d.reporting_ns !== d.project_country),
   ]), [currentProjectList]);
 
+  const bottomLinkProps = useButtonFeatures({
+    variant: 'secondary',
+    children: 'Login to see more details',
+    actions: <IoLockClosed />,
+  });
+
   return (
     <div className={_cs(styles.inCountryProjects, className)}>
       { projectListPending ? (
@@ -246,6 +264,23 @@ function InCountryProjects(props: Props) {
               />
             </Card>
           </div>
+          {!isLoggedIn && (
+            <div className={styles.topLoginInfo}>
+              To view all the project details,
+              &nbsp;
+              <Link
+                className={styles.link}
+                to={{
+                  pathname: '/login',
+                  state: { from: history.location }
+                }}
+              >
+                <Translate stringId='userMenuLogin'/>
+              </Link>
+              &nbsp;
+              with your RCRC credentials
+            </div>
+          )}
           <Container
             className={styles.ongoingProject}
             heading={viewAllProjects ? 'All Projects' : 'Ongoing Projects'}
@@ -274,7 +309,7 @@ function InCountryProjects(props: Props) {
             <div className={styles.mapSection}>
               <Map
                 className={styles.map}
-                projectList={projectList}
+                projectList={currentProjectList}
                 countryId={country?.id}
               />
               <Container
@@ -374,7 +409,7 @@ function InCountryProjects(props: Props) {
               heading={`Projects by Other NS (${otherNSProjects.length})`}
               headingSize="small"
               sub
-              initiallyExpanded={localNSProjects.length === 0}
+              initiallyExpanded={localNSProjects.length === 0 && otherNSProjects.length > 0}
             >
               <Table
                 className={styles.projectsTable}
@@ -399,6 +434,18 @@ function InCountryProjects(props: Props) {
             />
           )}
         </>
+      )}
+      {!isLoggedIn && (
+        <div className={styles.bottomLoginInfo}>
+          <Link
+            {...bottomLinkProps}
+            to={{
+              pathname: '/login',
+              state: { from: history.location }
+            }}
+          />
+          If you are a member of RCRC Movement, login with your credentials to see more details.
+        </div>
       )}
     </div>
   );

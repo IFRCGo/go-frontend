@@ -22,24 +22,11 @@ import {
   ThreeWBarChart,
   ThreeWPieChart,
 } from './Charts';
+import { NSOngoingProjectStat } from './common';
 
 import Map from './Map';
 import Filters, { FilterValue } from './Filters';
 import styles from './styles.module.scss';
-
-interface NSOngoingProjectStat {
-  id: number;
-  iso3: string;
-  ongoing_projects: number;
-  target_total: number;
-  society_name: string;
-  name: string;
-  projects_per_sector: {
-    primary_sector: number;
-    primary_sector_display: string;
-    count: number;
-  }[];
-}
 
 const emptyNsOngoingProjectStats: NSOngoingProjectStat[] = [];
 

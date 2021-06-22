@@ -45,13 +45,19 @@ function MapTooltipContent(props: Props) {
     >
       <Header
         className={styles.header}
-        heading={(
-          <a
-            {...linkProps}
-            href={href}
-          >
-          </a>
-        )}
+        heading={
+          href ? (
+            <a
+              {...linkProps}
+              href={href}
+            >
+            </a>
+          ) : (
+            <div className={styles.normalTitle}>
+              { title }
+            </div>
+          )
+        }
         actions={(
           <Button
             onClick={onCloseButtonClick}

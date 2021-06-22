@@ -13,6 +13,7 @@ import Map, {
 } from '@togglecorp/re-map';
 import turfBbox from '@turf/bbox';
 
+import TextOutput from '#components/TextOutput';
 import MapTooltipContent from '#components/MapTooltipContent';
 import useReduxState from '#hooks/useReduxState';
 import {
@@ -31,6 +32,7 @@ import {
   Project,
   District,
 } from '#types';
+import LanguageContext from '#root/languageContext';
 
 import styles from './styles.module.scss';
 
@@ -71,6 +73,7 @@ function ThreeWMap(props: Props) {
     countryId,
   } = props;
 
+  const { strings } = React.useContext(LanguageContext);
   const allCountries = useReduxState('allCountries');
   const countryBounds = React.useMemo(() => (
     turfBbox(allCountries?.data.results.find(
@@ -141,7 +144,7 @@ function ThreeWMap(props: Props) {
 
   const selectedDistrictProjectDetail = React.useMemo(
     () => {
-      if (!clickedPointProperties || !clickedPointProperties.feature?.id) {
+      if (!clickedPointProperties?.feature?.id) {
         return undefined;
       }
 
@@ -228,9 +231,29 @@ function ThreeWMap(props: Props) {
                 className={styles.projectDetailItem}
                 key={project.id}
               >
-                <div className={styles.name}>
-                  {project.name}
-                </div>
+                <TextOutput
+                  label={project.reporting_ns_detail.name}
+                  value={project.name}
+                  strongValue
+                />
+                <TextOutput
+                  label={strings.threeWMapLastUpdate}
+                  value={project.modified_at}
+                  valueType="date"
+                />
+                <TextOutput
+                  label={strings.threeWMapStatus}
+                  value={project.status_display}
+                />
+                <TextOutput
+                  label={strings.threeWMapProgrammeType}
+                  value={project.programme_type_display}
+                />
+                <TextOutput
+                  label={strings.threeWMapBudget}
+                  value={project.budget_amount}
+                  valueType="number"
+                />
               </div>
             ))}
           </MapTooltipContent>
@@ -238,7 +261,6 @@ function ThreeWMap(props: Props) {
       )}
     </Map>
   );
-
 }
 
 export default ThreeWMap;

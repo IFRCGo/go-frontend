@@ -14,15 +14,25 @@ export const defaultMapOptions = {
   // interactive: false,
 };
 
+export const COLOR_BLACK = '#000000';
 export const COLOR_RED = '#f5333f';
 export const COLOR_YELLOW = '#ff9e00';
 export const COLOR_BLUE = '#4c5d9b';
 export const COLOR_ORANGE = '#ff6b00';
 
-export function getPointCirclePaint(color: string): mapboxgl.CirclePaint {
+export function getPointCirclePaint(
+  color: string,
+  size: 'small' | 'medium' | 'large' = 'medium',
+): mapboxgl.CirclePaint {
+  const sizeMap = {
+    small: 3,
+    medium: 5,
+    large: 8,
+  };
+
   return {
     'circle-color': color,
-    'circle-radius': 5,
+    'circle-radius': sizeMap[size],
     'circle-opacity': 1,
     'circle-pitch-alignment': 'map',
   };
