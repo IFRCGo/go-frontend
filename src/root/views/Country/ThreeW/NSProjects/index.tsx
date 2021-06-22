@@ -1,14 +1,20 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+import { createBrowserHistory } from 'history';
 import {
   _cs,
   isNotDefined,
   unique,
   listToGroupList,
 } from '@togglecorp/fujs';
-import { IoChevronForward } from 'react-icons/io5';
+import {
+  IoChevronForward,
+  IoLockClosed,
+} from 'react-icons/io5';
 
 import BlockLoading from '#components/block-loading';
-import Button from '#components/Button';
+import Button, { useButtonFeatures } from '#components/Button';
+import Translate from '#components/Translate';
 import KeyFigure from '#components/KeyFigure';
 import Card from '#components/Card';
 import Container from '#components/Container';
@@ -17,6 +23,7 @@ import ExpandableContainer from '#components/ExpandableContainer';
 import Table from '#components/Table';
 import { createActionColumn } from '#components/Table/predefinedColumns';
 import useBooleanState from '#hooks/useBooleanState';
+import useReduxState from '#hooks/useReduxState';
 import {
   ListResponse,
   useRequest,
@@ -42,6 +49,8 @@ import Filters, { FilterValue } from './Filters';
 
 import styles from './styles.module.scss';
 
+const history = createBrowserHistory();
+
 interface Props {
   country: Country | undefined;
   className?: string;
@@ -49,6 +58,9 @@ interface Props {
 }
 
 function NSProjects(props: Props) {
+  const user = useReduxState('me');
+  const isLoggedIn = !!user.data.id;
+
   const {
     country,
     className,
@@ -73,6 +85,7 @@ function NSProjects(props: Props) {
     query: {
       limit: 500,
       reporting_ns: country?.id,
+      ...filters,
     },
   });
 
@@ -156,6 +169,13 @@ function NSProjects(props: Props) {
     listToGroupList(currentProjectList, d => d.project_country)
   ), [currentProjectList]);
 
+
+  const bottomLinkProps = useButtonFeatures({
+    variant: 'secondary',
+    children: 'Login to see more details',
+    actions: <IoLockClosed />,
+  });
+
   return (
     <div className={_cs(styles.nsProjects, className)}>
       { projectListPending ? (
@@ -194,6 +214,23 @@ function NSProjects(props: Props) {
               />
             </Card>
           </div>
+          {!isLoggedIn && (
+            <div className={styles.topLoginInfo}>
+              To view all the project details,
+              &nbsp;
+              <Link
+                className={styles.link}
+                to={{
+                  pathname: '/login',
+                  state: { from: history.location }
+                }}
+              >
+                <Translate stringId='userMenuLogin'/>
+              </Link>
+              &nbsp;
+              with your RCRC credentials
+            </div>
+          )}
           <Container
             className={styles.ongoingProject}
             heading={viewAllProjects ? 'All Projects' : 'Ongoing Projects'}
@@ -282,6 +319,18 @@ function NSProjects(props: Props) {
             <ProjectFlowSankey data={sankeyData} />
           </Container>
         </>
+      )}
+      {!isLoggedIn && (
+        <div className={styles.bottomLoginInfo}>
+          <Link
+            {...bottomLinkProps}
+            to={{
+              pathname: '/login',
+              state: { from: history.location }
+            }}
+          />
+          If you are a member of RCRC Movement, login with your credentials to see more details.
+        </div>
       )}
     </div>
   );

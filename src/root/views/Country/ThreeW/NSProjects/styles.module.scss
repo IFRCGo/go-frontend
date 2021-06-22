@@ -65,4 +65,24 @@
     }
   }
 
+  .top-login-info {
+    padding: $spacing;
+  }
+
+  .bottom-login-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: $spacing*4 $spacing;
+
+    >* {
+      margin: $spacing;
+    }
+  }
+
+  .link {
+    color: $primary-color;
+  }
+
 }

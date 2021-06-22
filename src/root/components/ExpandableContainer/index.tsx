@@ -17,7 +17,7 @@ export type Props = Omit<ContainerProps, 'headerElementRef'> & {
   initiallyExpanded?: boolean;
 };
 
-function ExpandibleContainer(props: Props) {
+function ExpandableContainer(props: Props) {
   const {
     className,
     children,
@@ -65,4 +65,4 @@ function ExpandibleContainer(props: Props) {
   );
 }
 
-export default ExpandibleContainer;
+export default ExpandableContainer;

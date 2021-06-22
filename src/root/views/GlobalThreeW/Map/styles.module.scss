@@ -18,3 +18,27 @@
     }
   }
 }
+
+.legend {
+  display: flex;
+  justify-content: flex-end;
+  background-color: $color-background;
+  padding: $spacing;
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    padding: $spacing/2;
+
+    .point {
+      height: 1em;
+      width: 1em;
+      margin: $spacing/2;
+      border-radius: 50%;
+    }
+
+    .label {
+      padding: $spacing/2;
+    }
+  }
+}

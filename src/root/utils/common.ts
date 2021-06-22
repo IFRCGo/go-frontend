@@ -1,5 +1,4 @@
 import { memo } from 'react';
-import { isDefined } from '@togglecorp/fujs';
 
 export const getHashFromBrowser = () => window.location.hash.substr(1);
 export const setHashToBrowser = (hash: string | undefined) => {
@@ -60,11 +59,11 @@ export function transformObjectItems<K extends string, T, R>(
   }), {} as Record<K, R>);
 }
 
-export function denormalizeList<A, B, C>(
-  list: A[],
-  secondaryListSelector: (li: A) => B[],
-  transformFn: (li: A, sli: B) => C,
-): C[] {
+export function denormalizeList<ListItem, SecondaryListItem, ReturnType>(
+  list: ListItem[],
+  secondaryListSelector: (li: ListItem) => SecondaryListItem[],
+  transformFn: (li: ListItem, sli: SecondaryListItem) => ReturnType,
+): ReturnType[] {
   const newList = list.map((li) => {
     const sl = secondaryListSelector(li);
 

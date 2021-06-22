@@ -21,6 +21,7 @@ import {
   getPointCirclePaint,
   COLOR_RED,
   COLOR_BLUE,
+  COLOR_BLACK,
 } from '#utils/map';
 import { Project } from '#types';
 
@@ -29,47 +30,47 @@ import image from './arrow.png';
 import styles from './styles.module.scss';
 
 const pointCirclePaint = getPointCirclePaint(COLOR_RED);
-
-const reportingPointCirclePaint = getPointCirclePaint(COLOR_BLUE);
+const reportingPointCirclePaint = getPointCirclePaint(COLOR_BLUE, 'large');
 
 const tooltipOptions: mapboxgl.PopupOptions = {
   closeButton: false,
   offset: 8,
 };
 const sourceOption: mapboxgl.GeoJSONSourceRaw = {
-    type: 'geojson',
+  type: 'geojson',
 };
 
 const arrowImageOptions = {
-    sdf: true,
+  sdf: true,
 };
 
 const linePaint: mapboxgl.LinePaint = {
-    'line-color': COLOR_BLUE,
-    'line-opacity': 0.8,
-    'line-width': 1,
+  'line-color': COLOR_BLACK,
+  'line-opacity': 0.4,
+  'line-width': 1,
 };
 const lineLayout: mapboxgl.LineLayout = {
-    visibility: 'visible',
-    'line-join': 'round',
-    'line-cap': 'round',
+  visibility: 'visible',
+  'line-join': 'round',
+  'line-cap': 'round',
 };
 const hiddenLayout: mapboxgl.LineLayout = {
-    visibility: 'none',
+  visibility: 'none',
 };
 
 const arrowPaint: mapboxgl.SymbolPaint = {
-    'icon-color': COLOR_BLUE,
+  'icon-color': COLOR_BLACK,
+  'icon-opacity': 0.6,
 };
 const arrowLayout: mapboxgl.SymbolLayout = {
-    visibility: 'visible',
-    'icon-image': 'equilateral-arrow-icon',
-    'icon-size': 0.6,
-    'symbol-placement': 'line-center',
-    'icon-rotate': 90,
-    'icon-rotation-alignment': 'map',
-    'icon-ignore-placement': true,
-    // 'icon-allow-overlap': true,
+  visibility: 'visible',
+  'icon-image': 'equilateral-arrow-icon',
+  'icon-size': 0.4,
+  'symbol-placement': 'line-center',
+  'icon-rotate': 90,
+  'icon-rotation-alignment': 'map',
+  'icon-ignore-placement': true,
+  // 'icon-allow-overlap': true,
 };
 
 interface GeoJsonProps {
@@ -206,7 +207,7 @@ function ThreeWMap(props: Props) {
     () => {
       interface Relation {
         projectCountry: number,
-        reportingNs: number,
+          reportingNs: number,
       }
       const relations = aggregateList(
         projectList,
@@ -223,19 +224,19 @@ function ThreeWMap(props: Props) {
       );
 
       const geo = {
-          type: 'FeatureCollection' as const,
-          features: relations.map(({ projectCountry, reportingNs }) => ({
-              id: undefined,
-              type: 'Feature' as const,
-              geometry: {
-                  type: 'LineString' as const,
-                  coordinates: [
-                    countriesMap[reportingNs]?.centroid?.coordinates ?? [0, 0],
-                    countriesMap[projectCountry]?.centroid?.coordinates ?? [0, 0],
-                  ],
-              },
-              properties: {},
-          })),
+        type: 'FeatureCollection' as const,
+        features: relations.map(({ projectCountry, reportingNs }) => ({
+          id: undefined,
+          type: 'Feature' as const,
+          geometry: {
+            type: 'LineString' as const,
+            coordinates: [
+              countriesMap[reportingNs]?.centroid?.coordinates ?? [0, 0],
+              countriesMap[projectCountry]?.centroid?.coordinates ?? [0, 0],
+            ],
+          },
+          properties: {},
+        })),
       };
       return geo;
     },
@@ -311,9 +312,9 @@ function ThreeWMap(props: Props) {
         />
       </MapSource>
       <MapSource
-          sourceKey="points"
-          sourceOptions={sourceOption}
-          geoJson={geo}
+        sourceKey="points"
+        sourceOptions={sourceOption}
+        geoJson={geo}
       >
         <MapLayer
           layerKey="points-circle"
@@ -325,9 +326,9 @@ function ThreeWMap(props: Props) {
         />
       </MapSource>
       <MapSource
-          sourceKey="reporting-points"
-          sourceOptions={sourceOption}
-          geoJson={reportingNsGeo}
+        sourceKey="reporting-points"
+        sourceOptions={sourceOption}
+        geoJson={reportingNsGeo}
       >
         <MapLayer
           layerKey="reporting-points-circle"
