@@ -177,7 +177,7 @@ function ThreeWMap(props: Props) {
     [setClickedPointProperties],
   );
 
-  const maxScaleValue = Math.max(projectList?.length ?? 0, 2);
+  const maxScaleValue = projectList?.length ?? 0;
   const pointHaloCirclePaint: mapboxgl.CirclePaint = React.useMemo(
     () => getPointCircleHaloPaint(COLOR_RED, 'numProjects', maxScaleValue),
     [maxScaleValue],

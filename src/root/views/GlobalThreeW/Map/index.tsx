@@ -181,7 +181,7 @@ function GlobalThreeWMap(props: Props) {
     [countries, nsProjectsMap],
   );
 
-  const maxScaleValue = Math.min(maxProjectCount ?? 0, 2);
+  const maxScaleValue = maxProjectCount ?? 0;
 
   const [
     redPointHaloCirclePaint,

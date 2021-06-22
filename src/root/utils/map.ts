@@ -69,7 +69,9 @@ export function getPointCircleHaloPaint(
         0,
         1,
         20,
-        maxScaleValue,
+        // NOTE: setting this value as 2 because there are already stops of 0
+        // and 1
+        Math.max(maxScaleValue, 2),
         40,
       ],
     ],
