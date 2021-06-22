@@ -43,6 +43,11 @@ export function getPointCircleHaloPaint(
   scaleProp: string,
   maxScaleValue: number,
 ): mapboxgl.CirclePaint  {
+
+  // NOTE: setting this value as 2 because there are already stops of 0
+  // and 1
+  const maxScale = Math.max(maxScaleValue, 2);
+
   return {
     ...getPointCirclePaint(color),
     'circle-opacity': 0.4,
@@ -58,7 +63,7 @@ export function getPointCircleHaloPaint(
         0,
         1,
         10,
-        maxScaleValue,
+        maxScale,
         15
       ],
       8, [
@@ -69,9 +74,7 @@ export function getPointCircleHaloPaint(
         0,
         1,
         20,
-        // NOTE: setting this value as 2 because there are already stops of 0
-        // and 1
-        Math.max(maxScaleValue, 2),
+        maxScale,
         40,
       ],
     ],
