@@ -1,0 +1,9 @@
+@import '~styles/settings/variables';
+
+.map-container {
+  height: 60vh;
+
+  .project-detail-item {
+    padding: $spacing/2 $spacing*3/4;
+  }
+}

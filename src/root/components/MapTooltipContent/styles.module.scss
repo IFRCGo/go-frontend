@@ -1,0 +1,28 @@
+@import '~styles/settings/variables';
+
+.map-tooltip-content {
+  border: $base-border-width solid $base-border-color;
+  min-width: 16rem;
+  max-width: 24rem;
+  min-height: 2rem;
+  max-height: 16rem;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+
+  .header {
+    flex-shrink: 0;
+    padding: $spacing/2 $spacing*3/8;
+    border-bottom: $base-border-width solid $base-border-color;
+
+    .normal-title {
+      padding: 0 $spacing/2;
+    }
+  }
+
+  .content {
+    flex-grow: 1;
+    padding: $spacing/4;
+    overflow: auto;
+  }
+}

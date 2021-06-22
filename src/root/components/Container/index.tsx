@@ -1,20 +1,25 @@
 import React from 'react';
 import { _cs } from '@togglecorp/fujs';
 
-import Header from '#components/Header';
+import Header, { Props as HeaderProps } from '#components/Header';
 import Description from '#components/Description';
 
 import styles from './styles.module.scss';
 
-interface Props {
+export interface Props {
   className?: string;
   innerContainerClassName?: string;
+  headerClassName?: string;
   contentClassName?: string;
   descriptionClassName?: string;
   heading?: React.ReactNode;
+  headingSize?: HeaderProps['headingSize'];
   description?: React.ReactNode;
   actions?: React.ReactNode;
   children?: React.ReactNode;
+  sub?: boolean;
+  hideHeaderBorder?: boolean;
+  headerElementRef?: HeaderProps['elementRef'];
 }
 
 function Container(props: Props) {
@@ -25,8 +30,13 @@ function Container(props: Props) {
     actions,
     children,
     contentClassName,
+    headerClassName,
     innerContainerClassName,
     descriptionClassName,
+    sub,
+    headingSize,
+    hideHeaderBorder,
+    headerElementRef,
   } = props;
 
   return (
@@ -34,15 +44,19 @@ function Container(props: Props) {
       className={_cs(
         'go-container',
         styles.container,
+        sub && styles.sub,
         className,
+        hideHeaderBorder && styles.withoutHeaderBorder,
       )}
     >
       <div className={_cs(styles.innerContainer, innerContainerClassName)}>
         {(heading || actions) && (
           <Header
-            className={styles.header}
+            className={_cs(styles.header, headerClassName)}
             heading={heading}
             actions={actions}
+            headingSize={headingSize}
+            elementRef={headerElementRef}
           />
         )}
         {description && (
@@ -50,9 +64,11 @@ function Container(props: Props) {
             { description }
           </Description>
         )}
-        <div className={_cs(styles.content, contentClassName)}>
-          { children }
-        </div>
+        {children && (
+          <div className={_cs(styles.content, contentClassName)}>
+            { children }
+          </div>
+        )}
       </div>
     </div>
   );

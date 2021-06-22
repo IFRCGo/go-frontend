@@ -1,3 +1,16 @@
+@import '~styles/settings/variables';
+
 .page {
   position: relative;
+
+  &.with-main-content-background {
+    .page-header {
+      background-color: $color-background;
+    }
+
+    .main-section {
+      background-color: $color-foreground;
+      padding: $spacing*2 0;
+    }
+  }
 }

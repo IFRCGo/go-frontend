@@ -1,0 +1,68 @@
+@import '~styles/settings/variables';
+
+.button {
+  display: flex;
+  position: relative;
+  align-items: center;
+  padding: $spacing/4 $spacing*7/4;
+  border-radius: calc(#{$spacing} + 1em);
+  font-weight: $base-font-medium;
+
+  .icons {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    padding: 0 $spacing/4;
+    font-size: 1.2em;
+  }
+
+  .actions {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    padding: 0 $spacing/4;
+    font-size: 1.2em;
+  }
+
+  .children {
+    display: flex;
+    flex-grow: 1;
+    align-items: center;
+    padding: 0 $spacing/4;
+  }
+
+  &.primary {
+    background-color: $primary-color;
+    color: $color-text-on-dark;
+
+    &:hover {
+      background-color: darken($primary-color, 10%);
+    }
+  }
+
+  &.secondary {
+    border: $base-border-width solid $primary-color;
+    color: $primary-color;
+
+    &:hover {
+      background-color: $primary-color;
+      color: $color-text-on-dark;
+    }
+  }
+
+  &.tertiary {
+    padding: 0 $spacing/4;
+    color: $primary-color;
+  }
+
+  &.action {
+    padding: 0;
+    font-size: 1.4em;
+  }
+
+  &:disabled {
+    opacity: $opacity-disabled-element;
+    filter: saturate($saturation-disabled-element);
+    pointer-events: none;
+  }
+}

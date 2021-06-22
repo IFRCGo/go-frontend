@@ -29,7 +29,7 @@ import {
 
 import { statuses } from '#utils/constants';
 import { getDataFromResponse } from '#utils/request';
-import ProjectFormModal from '#views/ThreeW/project-form-modal';
+import ProjectFormModal from '#views/Country/ThreeW/project-form-modal';
 
 import StatusOverview from './status-overview';
 import BudgetOverview from './budget-overview';

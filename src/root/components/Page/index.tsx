@@ -9,7 +9,6 @@ import PageFooter from '#components/footer';
 import PageHeader from '#components/PageHeader';
 import GlobalLoading from '#components/global-loading';
 import SysAlerts from '#components/system-alerts';
-
 import AlertContainer from '#components/AlertContainer';
 
 import {
@@ -29,7 +28,10 @@ interface Props {
   info?: React.ReactNode;
   children?: React.ReactNode;
   mainSectionClassName?: string;
+  infoContainerClassName?: string;
+  withMainContentBackground?: boolean;
 }
+
 
 function Page(props: Props) {
   const {
@@ -42,6 +44,8 @@ function Page(props: Props) {
     info,
     children,
     mainSectionClassName,
+    infoContainerClassName,
+    withMainContentBackground,
   } = props;
 
   const [loading, setLoading] = React.useState(0);
@@ -61,6 +65,7 @@ function Page(props: Props) {
         'go-page',
         styles.page,
         className,
+        withMainContentBackground && styles.withMainContentBackground,
       )}
     >
       <ThroughProvider>
@@ -85,6 +90,7 @@ function Page(props: Props) {
             description={description}
             breadCrumbs={breadCrumbs}
             info={info}
+            infoContainerClassName={infoContainerClassName}
           />
           <main
             className={_cs(

@@ -1,18 +1,52 @@
 @import '~styles/settings/variables';
 
 .container {
-  .inner-container {
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  &:not(.sub) {
+    >.inner-container {
+      padding: 0 $spacing*8;
+    }
+  }
+
+  >.inner-container {
+    width: 100%;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
     max-width: $media-large;
-    padding: 0 $spacing*8;
-    margin: 0 auto;
+    overflow: auto;
 
     .header {
+      flex-shrink: 0;
       padding: $spacing * 3/4;
       border-bottom: $base-border-width solid $base-border-color;
     }
 
     .content {
+      flex-grow: 1;
+      overflow: auto;
       padding: $spacing 0;
+    }
+  }
+
+  &.sub {
+    >.inner-container {
+      .content {
+        padding: $spacing/2 0;
+      }
+    }
+  }
+
+  &.without-header-border {
+    >.inner-container {
+      .header {
+        border-bottom: none;
+      }
     }
   }
 }
