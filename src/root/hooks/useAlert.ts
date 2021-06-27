@@ -11,6 +11,7 @@ interface AddAlertOption {
   variant?: AlertVariant;
   duration?: number;
   nonDismissable?: boolean;
+  debugMessage?: string;
 }
 
 function useAlertContext() {
@@ -28,6 +29,7 @@ function useAlertContext() {
       name,
       children,
       nonDismissable: options?.nonDismissable ?? false,
+      debugMessage: options?.debugMessage,
     });
   }, [addAlert]);
 

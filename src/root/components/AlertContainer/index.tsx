@@ -20,6 +20,7 @@ function AlertContainer(props: Props) {
     className,
     children,
   } = props;
+
   const {
     alerts,
     removeAlert,
@@ -54,6 +55,7 @@ function AlertContainer(props: Props) {
             nonDismissable={alert.nonDismissable}
             variant={alert.variant}
             onCloseButtonClick={handleAlertCloseButtonClick}
+            debugMessage={alert.debugMessage}
           >
             { alert.children }
           </Alert>

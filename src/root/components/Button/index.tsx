@@ -9,6 +9,7 @@ export type ButtonVariant = (
   | 'secondary'
   | 'tertiary'
   | 'action'
+  | 'transparent'
 );
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -17,6 +18,7 @@ const buttonVariantToStyleMap: { [key in ButtonVariant]: string; } = {
   secondary: styles.secondary,
   tertiary: styles.tertiary,
   action: styles.action,
+  transparent: styles.transparent,
 };
 
 export interface Props<N> extends Omit<

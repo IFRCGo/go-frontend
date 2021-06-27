@@ -22,9 +22,7 @@ import TabPanel from '#components/Tabs/TabPanel';
 import TabList from '#components/Tabs/TabList';
 import Tab from '#components/Tabs/Tab';
 
-import {
-} from '#utils/field-report-constants';
-
+import useAlert from '#hooks/useAlert';
 import LanguageContext from '#root/languageContext';
 import {
   useRequest,
@@ -87,6 +85,7 @@ function FieldReportForm(props: Props) {
     match,
   } = props;
 
+  const alert = useAlert();
   const { reportId } = match.params;
   const { strings } = React.useContext(LanguageContext);
   const [initialEventOptions, setInitialEventOptions] = React.useState<Option[]>([]);
@@ -134,28 +133,33 @@ function FieldReportForm(props: Props) {
     method: reportId ? 'PUT' : 'POST',
     body: ctx => ctx,
     onSuccess: (response) => {
-      showAlert(
-        'success',
+      alert.show(
         strings.fieldReportFormRedirectMessage,
-        true,
-        3000,
+        { variant: 'success' },
       );
       window.setTimeout(
         () => history.push(`/reports/${response?.id}`),
         250,
       );
     },
-    onFailure: ({ value: { messageForNotification, errors }}) => {
+    onFailure: ({
+      value: { messageForNotification, errors },
+      debugMessage,
+    }) => {
       console.error(errors);
-      showAlert('danger', (
+      alert.show(
         <p>
-          <strong>
-            {strings.fieldReportFormErrorLabel}
-          </strong>
+          {strings.fieldReportFormErrorLabel}
           &nbsp;
-          {messageForNotification}
-        </p>
-      ), true, 4500);
+          <strong>
+            {messageForNotification}
+          </strong>
+        </p>,
+        {
+          variant: 'danger',
+          debugMessage,
+        },
+      );
     },
   });
 

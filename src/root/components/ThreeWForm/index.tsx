@@ -107,17 +107,25 @@ function ThreeWForm(props: Props) {
     method: projectId ? 'PUT' : 'POST',
     body: ctx => ctx,
     onSuccess: onSubmitSuccess,
-    onFailure: ({ value: { messageForNotification, errors } }) => {
+    onFailure: ({
+      value: { messageForNotification, errors },
+      debugMessage,
+    }) => {
       console.error(errors);
       alert.show(
         (
           <p>
-            Failed to sumbit project
+            Failed to sumbit project:
             &nbsp;
-            { messageForNotification }
+            <strong>
+              { messageForNotification }
+            </strong>
           </p>
         ),
-        { variant: 'danger' },
+        {
+          variant: 'danger',
+          debugMessage,
+        },
       );
     },
   });

@@ -2,7 +2,7 @@ import React from 'react';
 
 export type AlertVariant = 'success' | 'warning' | 'danger' | 'info';
 
-export const DEFAULT_ALERT_DISMISS_DURATION = 3000;
+export const DEFAULT_ALERT_DISMISS_DURATION = 4500;
 
 export interface AlertParams {
   name: string;
@@ -10,6 +10,7 @@ export interface AlertParams {
   children: React.ReactNode;
   duration: number;
   nonDismissable?: boolean;
+  debugMessage?: string;
 }
 
 export interface AlertContextProps {

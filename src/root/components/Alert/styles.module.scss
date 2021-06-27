@@ -1,31 +1,52 @@
 @import '~styles/settings/variables';
 
 .alert {
-  padding: $spacing;
+  padding: $spacing / 2;
   background-color: $grey-cement;
   color: $color-text-on-dark;
-  display: flex;
-  align-items: flex-start;
   border-radius: $base-border-radius;
   width: $width-alert;
 
-  .close-button {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .icon {
-    font-size: 1.4em;
-  }
-
   .content {
-    flex-direction: column;
-    align-items: initial;
+    display: flex;
+    align-items: flex-start;
+    font-weight: $base-font-medium;
+    padding: $spacing / 2;
+
+    .close-button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .icon {
+      font-size: 1.4em;
+    }
+
+    .content {
+      flex-direction: column;
+      align-items: initial;
+    }
+
+    p {
+      margin: 0;
+    }
+
+    strong {
+      font-weight: $base-font-bold;
+    }
   }
 
-  p {
-    margin: 0;
+  .actions {
+    display: flex;
+    justify-content: flex-end;
+    padding: $spacing / 2;
+    font-weight: $base-font-bold;
+
+    .copy-debug-message-button {
+      padding: $spacing / 2;
+      text-transform: uppercase;
+    }
   }
 
   &.success {
