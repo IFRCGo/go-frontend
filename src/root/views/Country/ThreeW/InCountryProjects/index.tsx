@@ -51,9 +51,11 @@ import {
   PROJECT_STATUS_ONGOING,
   projectKeySelector,
   projectListToInCountrySankeyData,
+  filterProjects,
 } from '../common';
 import Map from './Map';
 import Filters, { FilterValue } from './Filters';
+import SankeyFilters, { SankeyFilterValue } from './SankeyFilters';
 
 import styles from './styles.module.scss';
 
@@ -85,6 +87,12 @@ function InCountryProjects(props: Props) {
     secondary_sectors: [],
   });
 
+  const [sankeyFilters, setSankeyFilters] = React.useState<SankeyFilterValue>({
+    reporting_ns: [],
+    primary_sector: [],
+    secondary_sectors: [],
+  });
+
   const {
     pending: projectListPending,
     response: projectListResponse,
@@ -95,10 +103,6 @@ function InCountryProjects(props: Props) {
     query: {
       limit: 500,
       country: country?.iso,
-      ...filters,
-      project_districts: filters.project_districts.length > 0
-        ? filters.project_districts
-        : undefined,
     },
   });
 
@@ -124,6 +128,7 @@ function InCountryProjects(props: Props) {
   const [viewAllProjects,,,, toggleViewAllProject] = useBooleanState(false);
   const [projectIdToEdit, setProjectIdToEdit] = React.useState<number | undefined>();
   const projectList = projectListResponse?.results ?? emptyProjectList;
+  const filteredProjectList = filterProjects(projectList, filters);
 
   const [
     ongoingProjects,
@@ -132,12 +137,12 @@ function InCountryProjects(props: Props) {
     programmeTypeCounts,
     statusCounts,
   ] = React.useMemo(() => {
-    const ongoing = projectList.filter((p) => p.status === PROJECT_STATUS_ONGOING);
+    const ongoing = filteredProjectList.filter((p) => p.status === PROJECT_STATUS_ONGOING);
     const ongoingBudget = sum(ongoing, d => (d.budget_amount ?? 0));
-    const target = sum(projectList, d => (d.target_total ?? 0));
+    const target = sum(filteredProjectList, d => (d.target_total ?? 0));
     const programmeTypeGrouped = (
       listToGroupList(
-        projectList,
+        filteredProjectList,
         d => d.programme_type_display,
         d => d,
       ) ?? {}
@@ -150,7 +155,7 @@ function InCountryProjects(props: Props) {
 
     const statusGrouped = (
       listToGroupList(
-        projectList,
+        filteredProjectList,
         d => d.status_display,
         d => d,
       ) ?? {}
@@ -168,7 +173,7 @@ function InCountryProjects(props: Props) {
       programmeTypeCounts,
       statusCounts,
     ];
-  }, [projectList]);
+  }, [filteredProjectList]);
 
   const numActiveNS = React.useMemo(() => (
     unique(ongoingProjects, d => d.reporting_ns)?.length ?? 0
@@ -190,11 +195,16 @@ function InCountryProjects(props: Props) {
     ),
   ]), [retriggerProjectListRequest]);
 
-  const currentProjectList = viewAllProjects ? projectList : ongoingProjects;
+  const currentProjectList = viewAllProjects ? filteredProjectList: ongoingProjects;
 
   const sankeyData = React.useMemo(() => (
-    projectListToInCountrySankeyData(projectList)
-  ), [projectList]);
+    projectListToInCountrySankeyData(
+      filterProjects(
+        projectList,
+        sankeyFilters,
+      ),
+    )
+  ), [sankeyFilters, projectList]);
 
   const districtGroupedProject = React.useMemo(() => {
     const districtDenormalizedProjectList = denormalizeList(
@@ -319,23 +329,23 @@ function InCountryProjects(props: Props) {
                 innerContainerClassName={styles.innerContainer}
                 sub
               >
-                {Object.values(districtGroupedProject).map((projectList) => {
-                  if (!projectList || projectList.length === 0) {
+                {Object.values(districtGroupedProject).map((pl) => {
+                  if (!pl || pl.length === 0) {
                     return null;
                   }
 
-                  const d0 = projectList[0].project_district;
+                  const d0 = pl[0].project_district;
 
                   if (isNotDefined(d0.id)) {
                     return (
                       <ExpandableContainer
                         key="others"
-                        heading={`Others ${projectList.length} Projects`}
+                        heading={`Others ${pl.length} Projects`}
                         headingSize="small"
                         initiallyExpanded
                         sub
                       >
-                        {projectList.map((project) => (
+                        {pl.map((project) => (
                           <div
                             key={project.id}
                             className={styles.projectDetailItem}
@@ -357,7 +367,7 @@ function InCountryProjects(props: Props) {
                     );
                   }
 
-                  const title = `${d0.name} (${projectList.length} Projects)`;
+                  const title = `${d0.name} (${pl.length} Projects)`;
 
                   // const heading = d0.is_deprecated ? `[deprecated] ${title}` : title;
 
@@ -368,7 +378,7 @@ function InCountryProjects(props: Props) {
                       headingSize="small"
                       sub
                     >
-                      {projectList.map((project) => (
+                      {pl.map((project) => (
                         <div
                           key={project.id}
                           className={styles.projectDetailItem}
@@ -424,6 +434,10 @@ function InCountryProjects(props: Props) {
             heading="Overview of Activities"
             sub
           >
+            <SankeyFilters
+              value={sankeyFilters}
+              onChange={setSankeyFilters}
+            />
             <ProjectFlowSankey data={sankeyData} />
           </Container>
           {isDefined(projectIdToEdit) && (

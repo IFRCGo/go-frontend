@@ -18,6 +18,14 @@ import type {
 
 import styles from './styles.module.scss';
 
+function EmptySankey ({ className } : { className?: string}) {
+  return (
+    <div className={_cs(styles.emptySankey, className)}>
+      Not enough data to view the chart!
+    </div>
+  );
+}
+
 function SankeyNode (props: {
   x: number;
   y: number;
@@ -117,15 +125,15 @@ function ProjectFlowSankey(props: Props) {
   } = props;
 
   if (!data) {
-    return null;
+    return <EmptySankey className={className} />;
   }
 
   if (!data.links || data.links.length === 0) {
-    return null;
+    return <EmptySankey className={className} />;
   }
 
   if (!data.nodes || data.nodes.length === 0) {
-    return null;
+    return <EmptySankey className={className} />;
   }
 
   return (

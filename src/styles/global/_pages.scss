@@ -8,6 +8,7 @@ main {
 
 .page {
   position: relative;
+  z-index: 0;
   display: flex;
   min-height: 100vh;
   flex-direction: column;

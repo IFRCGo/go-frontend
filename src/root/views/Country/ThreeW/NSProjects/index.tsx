@@ -43,9 +43,11 @@ import {
   PROJECT_STATUS_ONGOING,
   projectKeySelector,
   projectListToNsSankeyData,
+  filterProjects,
 } from '../common';
 import Map from './Map';
 import Filters, { FilterValue } from './Filters';
+import SankeyFilters, { SankeyFilterValue } from './SankeyFilters';
 
 import styles from './styles.module.scss';
 
@@ -75,6 +77,11 @@ function NSProjects(props: Props) {
     secondary_sectors: [],
   });
 
+  const [sankeyFilters, setSankeyFilters] = React.useState<SankeyFilterValue>({
+    primary_sector: [],
+    project_country: [],
+  });
+
   const {
     pending: projectListPending,
     response: projectListResponse,
@@ -85,7 +92,6 @@ function NSProjects(props: Props) {
     query: {
       limit: 500,
       reporting_ns: country?.id,
-      ...filters,
     },
   });
 
@@ -97,6 +103,7 @@ function NSProjects(props: Props) {
 
   const [viewAllProjects,,,, toggleViewAllProject] = useBooleanState(false);
   const projectList = projectListResponse?.results ?? emptyProjectList;
+  const filteredProjectList = filterProjects(projectList, filters);
 
   const [
     ongoingProjects,
@@ -105,12 +112,12 @@ function NSProjects(props: Props) {
     programmeTypeCounts,
     statusCounts,
   ] = React.useMemo(() => {
-    const ongoing = projectList.filter((p) => p.status === PROJECT_STATUS_ONGOING);
+    const ongoing = filteredProjectList.filter((p) => p.status === PROJECT_STATUS_ONGOING);
     const ongoingBudget = ongoing.reduce((acc, val) => acc + (+(val.budget_amount ?? 0)), 0);
-    const target = projectList.reduce((acc, val) => acc + (+(val.target_total ?? 0)), 0);
+    const target = filteredProjectList.reduce((acc, val) => acc + (+(val.target_total ?? 0)), 0);
     const programmeTypeGrouped = (
       listToGroupList(
-        projectList,
+        filteredProjectList,
         d => d.programme_type_display,
         d => d,
       ) ?? {}
@@ -121,7 +128,7 @@ function NSProjects(props: Props) {
 
     const statusGrouped = (
       listToGroupList(
-        projectList,
+        filteredProjectList,
         d => d.status_display,
         d => d,
       ) ?? {}
@@ -137,7 +144,7 @@ function NSProjects(props: Props) {
       programmeTypeCounts,
       statusCounts,
     ];
-  }, [projectList]);
+  }, [filteredProjectList]);
 
   const numActivities = React.useMemo(() => (
     unique(ongoingProjects, d => d.project_country)?.length ?? 0
@@ -159,11 +166,16 @@ function NSProjects(props: Props) {
     ),
   ]), [retriggerProjectListRequest]);
 
-  const currentProjectList = viewAllProjects ? projectList : ongoingProjects;
+  const currentProjectList = viewAllProjects ? filteredProjectList : ongoingProjects;
 
   const sankeyData = React.useMemo(() => (
-    projectListToNsSankeyData(projectList)
-  ), [projectList]);
+    projectListToNsSankeyData(
+      filterProjects(
+        projectList,
+        sankeyFilters,
+      )
+    )
+  ), [sankeyFilters, projectList]);
 
   const countryGroupedProjects = React.useMemo(() => (
     listToGroupList(currentProjectList, d => d.project_country)
@@ -268,13 +280,13 @@ function NSProjects(props: Props) {
                 innerContainerClassName={styles.innerContainer}
                 sub
               >
-                {Object.values(countryGroupedProjects).map((projectList) => {
-                  if (!projectList || projectList.length === 0) {
+                {Object.values(countryGroupedProjects).map((pl) => {
+                  if (!pl || pl.length === 0) {
                     return null;
                   }
 
-                  const d0 = projectList[0].project_country_detail;
-                  const title = `${d0.name} (${projectList.length} Projects)`;
+                  const d0 = pl[0].project_country_detail;
+                  const title = `${d0.name} (${pl.length} Projects)`;
 
                   return (
                     <ExpandableContainer
@@ -283,7 +295,7 @@ function NSProjects(props: Props) {
                       headingSize="small"
                       sub
                     >
-                      {projectList.map((project) => (
+                      {pl.map((project) => (
                         <div
                           className={styles.projectDetailItem}
                           key={project.id}
@@ -306,7 +318,7 @@ function NSProjects(props: Props) {
             </div>
             <Table
               className={styles.projectsTable}
-              data={viewAllProjects ? projectList : ongoingProjects}
+              data={currentProjectList}
               columns={tableColumns}
               keySelector={projectKeySelector}
               variant="large"
@@ -316,6 +328,10 @@ function NSProjects(props: Props) {
             heading="Overview of Activities"
             sub
           >
+            <SankeyFilters
+              value={sankeyFilters}
+              onChange={setSankeyFilters}
+            />
             <ProjectFlowSankey data={sankeyData} />
           </Container>
         </>
