@@ -20,7 +20,8 @@
     }
 
     .icon {
-      font-size: 1.4em;
+      font-size: 1.2em;
+      margin-top: $spacing/4;
     }
 
     .content {
@@ -46,6 +47,7 @@
     .copy-debug-message-button {
       padding: $spacing / 2;
       text-transform: uppercase;
+      font-size: $font-size-sm;
     }
   }
 
