@@ -25,7 +25,6 @@ import ExpandableContainer from '#components/ExpandableContainer';
 import Table from '#components/Table';
 import { createActionColumn } from '#components/Table/predefinedColumns';
 import LanguageContext from '#root/languageContext';
-import useBooleanState from '#hooks/useBooleanState';
 import useReduxState from '#hooks/useReduxState';
 import {
   ListResponse,
@@ -127,7 +126,6 @@ function InCountryProjects(props: Props) {
     }
   }, [projectsUpdatedOn, retriggerProjectListRequest]);
 
-  const [viewAllProjects,,,, toggleViewAllProject] = useBooleanState(false);
   const [projectIdToEdit, setProjectIdToEdit] = React.useState<number | undefined>();
   const projectList = projectListResponse?.results ?? emptyProjectList;
   const filteredProjectList = filterProjects(projectList, filters);
@@ -197,7 +195,7 @@ function InCountryProjects(props: Props) {
     ),
   ]), [retriggerProjectListRequest]);
 
-  const currentProjectList = viewAllProjects ? filteredProjectList: ongoingProjects;
+  const currentProjectList = ongoingProjects;
 
   const sankeyData = React.useMemo(() => (
     projectListToInCountrySankeyData(
@@ -236,6 +234,12 @@ function InCountryProjects(props: Props) {
     variant: 'secondary',
     children: strings.threeWLoginMessage,
     actions: <IoLockClosed />,
+  });
+
+  const viewAllProjectLinkProps = useButtonFeatures({
+    variant: 'tertiary',
+    actions: <IoChevronForward />,
+    children: strings.threeWViewAllProjectsLabel,
   });
 
   return (
@@ -305,13 +309,10 @@ function InCountryProjects(props: Props) {
                   countryId={country?.id}
                   fileNameSuffix={country?.name}
                 />
-                <Button
-                  actions={<IoChevronForward />}
-                  variant="tertiary"
-                  onClick={toggleViewAllProject}
-                >
-                  { strings.threeWViewAllProjectsLabel }
-                </Button>
+                <Link
+                  to={`/three-w/all/?country=${country?.iso}`}
+                  {...viewAllProjectLinkProps}
+                />
               </>
             )}
             sub

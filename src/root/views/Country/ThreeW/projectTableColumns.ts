@@ -3,10 +3,9 @@ import {
     createNumberColumn,
 } from '#components/Table/predefinedColumns';
 
-import {
-  Project,
-} from '#types';
+import { Project } from '#types';
 
+// FIXME: use strings
 const baseColumns = [
   createStringColumn<Project, string | number>(
     'name',
@@ -23,7 +22,7 @@ const baseColumns = [
     'Total Budget',
     (item) => item.budget_amount,
     undefined,
-    { normal: true }
+    { normal: true, precision: 'auto' }
   ),
   createStringColumn<Project, string | number>(
     'programmeType',
@@ -40,14 +39,14 @@ const baseColumns = [
     'People Targeted',
     (item) => item.target_total,
     undefined,
-    { normal: true }
+    { normal: true, precision: 'auto' }
   ),
   createNumberColumn<Project, string | number>(
     'peopleReached',
     'People Reached',
     (item) => item.reached_total,
     undefined,
-    { normal: true }
+    { normal: true, precision: 'auto' }
   ),
 ];
 
@@ -65,6 +64,20 @@ export const nsProjectColumns = [
     'country',
     'Receiving Country',
     (item) => item.project_country_detail?.name,
+  ),
+  ...baseColumns,
+];
+
+export const allProjectColumns = [
+  createStringColumn<Project, string | number>(
+    'country',
+    'Receiving Country',
+    (item) => item.project_country_detail?.name,
+  ),
+  createStringColumn<Project, string | number>(
+    'ns',
+    'Reporting NS',
+    (item) => item.reporting_ns_detail?.society_name,
   ),
   ...baseColumns,
 ];
