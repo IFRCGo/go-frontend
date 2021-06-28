@@ -9,12 +9,13 @@ import { _cs } from '@togglecorp/fujs';
 import type { Location } from 'history';
 
 import BlockLoading from '#components/block-loading';
-import { useButtonFeatures } from '#components/Button';
+import Translate from '#components/Translate';
 import Card from '#components/Card';
 import KeyFigure from '#components/KeyFigure';
 import Container from '#components/Container';
 import BreadCrumb from '#components/breadcrumb';
 import ExportProjectsButton from '#components/ExportProjectsButton';
+import { useButtonFeatures } from '#components/Button';
 import LanguageContext from '#root/languageContext';
 import { useRequest, ListResponse } from '#utils/restRequest';
 
@@ -161,7 +162,28 @@ function GlobalThreeW(props: Props) {
           {...addThreeWLinkProps}
         />
       )}
-      description={strings.globalThreeWPageDescription}
+      description={(
+        <>
+          <p>
+            {strings.globalThreeWPageDescriptionP1}
+          </p>
+          <p>
+            <Translate
+              stringId="globalThreeWPageDescriptionP2"
+              params={{
+                contactLink: (
+                  <a
+                    href="mailto:im@ifrc.org"
+                  >
+                    IM@ifrc.org
+                  </a>
+                ),
+              }}
+            />
+          </p>
+        </>
+
+      )}
       breadCrumbs={<BreadCrumb crumbs={crumbs} compact />}
       infoContainerClassName={styles.infoContainer}
       withMainContentBackground

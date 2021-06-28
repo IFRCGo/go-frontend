@@ -1527,7 +1527,8 @@ export default {
 
   globalThreeWPageTitle: 'IFRC Go - Global 3W Response',
   globalThreeWPageHeading: 'Global 3W Response',
-  globalThreeWPageDescription: 'Description lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque ligula sem, tempus et iaculis quis, auctor ut elit. Ut vitae eros quis nunc fringilla ultrices.',
+  globalThreeWPageDescriptionP1: 'The \'Who does What, Where\' or 3w aims to map the global footprint of the Red Cross Red Crescent Movement. It is a global database of projects conducted by National Societies, IFRC and the ICRC, broken down by sector, location, budget and people targeted and reached.',
+  globalThreeWPageDescriptionP2: 'Find explanatory videos and guidance on the Resources page. Please note data is incomplete and maintained by GO users. If you know of an error or omission, please submit data or contact {contactLink} for assistance.',
   globalThreeWAddProjectButtonLabel: 'Add 3W Project',
   globalThreeWExploreRegionalButtonLabel: 'Explore Regional 3W',
   globalThreeWKeyFigureOngoingProjectsTitle: 'Ongoing Projects',
