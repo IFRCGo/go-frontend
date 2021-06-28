@@ -4,12 +4,14 @@ import {
   isDefined,
 } from '@togglecorp/fujs';
 
+import Translate from '#components/Translate';
 import Button from '#components/Button';
 import Tabs from '#components/Tabs';
 import Tab from '#components/Tabs/Tab';
 import TabPanel from '#components/Tabs/TabPanel';
 import TabList from '#components/Tabs/TabList';
 
+import LanguageContext from '#root/languageContext';
 import useBooleanState from '#hooks/useBooleanState';
 import {
   Country,
@@ -29,6 +31,8 @@ interface Props {
 }
 
 function ThreeW(props: Props) {
+  const { strings } = React.useContext(LanguageContext);
+
   const {
     className,
     country,
@@ -58,16 +62,22 @@ function ThreeW(props: Props) {
         { isDefined(userDetails?.id) && (
           <div className={styles.headerActions}>
             <Button onClick={setShowProjectFormModalTrue}>
-              Add 3W Activity
+              { strings.threeWAddProject }
             </Button>
           </div>
         )}
         <TabList className={styles.tabList}>
           <Tab name="projectsIn">
-            Projects in {country?.name}
+            <Translate
+              stringId="threeWInCountryTabLabel"
+              params={{ countryName: country?.name }}
+            />
           </Tab>
           <Tab name="nsProjects">
-            {country?.society_name} projects
+            <Translate
+              stringId="threeWNSProjectTabLabel"
+              params={{ societyName: country?.society_name }}
+            />
           </Tab>
         </TabList>
         <TabPanel name="projectsIn">

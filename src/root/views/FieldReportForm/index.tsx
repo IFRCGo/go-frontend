@@ -3,7 +3,6 @@ import type { History, Location } from 'history';
 import type { match as Match } from 'react-router-dom';
 
 import BlockLoading from '#components/block-loading';
-import { showAlert } from '#components/system-alerts';
 import Page from '#components/Page';
 import {
   useForm,

@@ -11,6 +11,7 @@ import { compareLabel } from '#utils/common';
 
 import { District } from '#types';
 import SelectInput from '#components/SelectInput';
+import LanguageContext from '#root/languageContext';
 import useReduxState from '#hooks/useReduxState';
 
 import styles from './styles.module.scss';
@@ -61,6 +62,7 @@ function Filters(props: Props) {
     districtList,
   } = props;
 
+  const { strings } = React.useContext(LanguageContext);
   const allCountries = useReduxState('allCountries');
   const nsOptions = React.useMemo(
     () => allCountries?.data?.results.map((c) => ({
@@ -95,7 +97,7 @@ function Filters(props: Props) {
     <div className={_cs(styles.filters, className)}>
       <SelectInput<string, number>
         name="reporting_ns"
-        placeholder="National Societies"
+        placeholder={strings.threeWFilterNS}
         options={nsOptions}
         value={value.reporting_ns}
         isMulti
@@ -104,7 +106,7 @@ function Filters(props: Props) {
       />
       <SelectInput<string, number>
         name="project_districts"
-        placeholder="Provinces"
+        placeholder={strings.threeWFilterProvinces}
         options={districtOptions}
         value={value.project_districts}
         isMulti
@@ -113,7 +115,7 @@ function Filters(props: Props) {
       />
       <SelectInput<string, number>
         name="operation_type"
-        placeholder="Project Types"
+        placeholder={strings.threeWFilterProjectTypes}
         options={operationTypeOptions}
         value={value.operation_type}
         isMulti
@@ -122,7 +124,7 @@ function Filters(props: Props) {
       />
       <SelectInput<string, number>
         name="programme_type"
-        placeholder="Programme Types"
+        placeholder={strings.threeWFilterProgrammeTypes}
         options={programmeTypeOptions}
         value={value.programme_type}
         isMulti
@@ -131,7 +133,7 @@ function Filters(props: Props) {
       />
       <SelectInput<string, number>
         name="primary_sector"
-        placeholder="Sectors"
+        placeholder={strings.threeWFilterSectors}
         options={sectorOptions}
         value={value.primary_sector}
         isMulti
@@ -140,7 +142,7 @@ function Filters(props: Props) {
       />
       <SelectInput<string, number>
         name="secondary_sectors"
-        placeholder="Tags"
+        placeholder={strings.threeWFilterTags}
         options={tagOptions}
         value={value.secondary_sectors}
         isMulti

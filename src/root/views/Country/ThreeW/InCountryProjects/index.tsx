@@ -24,6 +24,7 @@ import ExportProjectsButton from '#components/ExportProjectsButton';
 import ExpandableContainer from '#components/ExpandableContainer';
 import Table from '#components/Table';
 import { createActionColumn } from '#components/Table/predefinedColumns';
+import LanguageContext from '#root/languageContext';
 import useBooleanState from '#hooks/useBooleanState';
 import useReduxState from '#hooks/useReduxState';
 import {
@@ -75,6 +76,7 @@ function InCountryProjects(props: Props) {
     projectsUpdatedOn,
   } = props;
 
+  const { strings } = React.useContext(LanguageContext);
   const user = useReduxState('me');
   const isLoggedIn = !!user.data.id;
 
@@ -232,7 +234,7 @@ function InCountryProjects(props: Props) {
 
   const bottomLinkProps = useButtonFeatures({
     variant: 'secondary',
-    children: 'Login to see more details',
+    children: strings.threeWLoginMessage,
     actions: <IoLockClosed />,
   });
 
@@ -246,54 +248,57 @@ function InCountryProjects(props: Props) {
             <Card multiColumn>
               <KeyFigure
                 value={numActiveNS}
-                description="Active National Societies"
+                description={strings.threeWKeyFigureActiveNSTitle}
               />
               <KeyFigure
                 value={targetedPopulation}
-                description="Targeted Population"
+                description={strings.threeWKeyFigureTargetedPopulationTitle}
               />
             </Card>
             <Card multiColumn>
               <KeyFigure
                 value={projectList.length}
-                description="Total Projects"
+                description={strings.threeWKeyFigureTotalProjectsTitle}
               />
               <ProjectStatPieChart
-                title="Programme Type"
+                title={strings.threeWKeyFigureProgrammeTypeTitle}
                 data={programmeTypeCounts}
               />
             </Card>
             <Card multiColumn>
               <KeyFigure
                 value={ongoingProjectBudget}
-                description="Total Budget (CHF) for Ongoing Projects"
+                description={strings.threeWKeyFigureOngoingProjectBudgetTitle}
               />
               <ProjectStatPieChart
-                title="Project Status"
+                title={strings.threeWKeyFigureStatusTitle}
                 data={statusCounts}
               />
             </Card>
           </div>
           {!isLoggedIn && (
             <div className={styles.topLoginInfo}>
-              To view all the project details,
-              &nbsp;
-              <Link
-                className={styles.link}
-                to={{
-                  pathname: '/login',
-                  state: { from: history.location }
+              <Translate
+                stringId="threeWTopNoLoginMessage"
+                params={{
+                  loginLink: (
+                    <Link
+                      className={styles.link}
+                      to={{
+                        pathname: '/login',
+                        state: { from: history.location }
+                      }}
+                    >
+                      <Translate stringId='userMenuLogin'/>
+                    </Link>
+                  ),
                 }}
-              >
-                <Translate stringId='userMenuLogin'/>
-              </Link>
-              &nbsp;
-              with your RCRC credentials
+              />
             </div>
           )}
           <Container
             className={styles.ongoingProject}
-            heading={viewAllProjects ? 'All Projects' : 'Ongoing Projects'}
+            heading={strings.threeWOngoingProjectsTitle}
             actions={(
               <>
                 <ExportProjectsButton
@@ -305,7 +310,7 @@ function InCountryProjects(props: Props) {
                   variant="tertiary"
                   onClick={toggleViewAllProject}
                 >
-                  { viewAllProjects ? 'View Ongoing Projects' : 'View All Projects' }
+                  { strings.threeWViewAllProjectsLabel }
                 </Button>
               </>
             )}
@@ -324,7 +329,7 @@ function InCountryProjects(props: Props) {
               />
               <Container
                 className={styles.mapDetails}
-                heading="Projects by Province"
+                heading={strings.threeWInCountryMapSidebarTitle}
                 contentClassName={styles.content}
                 innerContainerClassName={styles.innerContainer}
                 sub
@@ -340,7 +345,12 @@ function InCountryProjects(props: Props) {
                     return (
                       <ExpandableContainer
                         key="others"
-                        heading={`Others ${pl.length} Projects`}
+                        heading={(
+                          <Translate
+                            stringId="threeWInCountryOtherProjectsText"
+                            params={{ numProjects: pl.length }}
+                          />
+                        )}
                         headingSize="small"
                         initiallyExpanded
                         sub
@@ -359,7 +369,7 @@ function InCountryProjects(props: Props) {
                               className={styles.actions}
                               onClick={setProjectIdToEdit}
                             >
-                              Add Province
+                              { strings.threeWInCountryAddProvinceButtonLabel }
                             </Button>
                           </div>
                         ))}
@@ -367,14 +377,18 @@ function InCountryProjects(props: Props) {
                     );
                   }
 
-                  const title = `${d0.name} (${pl.length} Projects)`;
-
-                  // const heading = d0.is_deprecated ? `[deprecated] ${title}` : title;
-
                   return (
                     <ExpandableContainer
                       key={d0.id}
-                      heading={title}
+                      heading={(
+                        <Translate
+                          stringId="threeWInCountryProvinceProjectsText"
+                          params={{
+                            provinceName: d0.name,
+                            numProjects: pl.length,
+                          }}
+                        />
+                      )}
                       headingSize="small"
                       sub
                     >
@@ -401,7 +415,12 @@ function InCountryProjects(props: Props) {
             </div>
             <ExpandableContainer
               className={styles.projectsTableContainer}
-              heading={`Local Projects by NS (${localNSProjects.length})`}
+              heading={(
+                <Translate
+                  stringId="threeWInCountryTableLocalTitle"
+                  params={{ numProjects: localNSProjects.length }}
+                />
+              )}
               headingSize="small"
               sub
               initiallyExpanded={localNSProjects.length > 0}
@@ -416,7 +435,12 @@ function InCountryProjects(props: Props) {
             </ExpandableContainer>
             <ExpandableContainer
               className={styles.projectsTableContainer}
-              heading={`Projects by Other NS (${otherNSProjects.length})`}
+              heading={(
+                <Translate
+                  stringId="threeWInCountryTableOtherNSTitle"
+                  params={{ numProjects: otherNSProjects.length }}
+                />
+              )}
               headingSize="small"
               sub
               initiallyExpanded={localNSProjects.length === 0 && otherNSProjects.length > 0}
@@ -431,7 +455,7 @@ function InCountryProjects(props: Props) {
             </ExpandableContainer>
           </Container>
           <Container
-            heading="Overview of Activities"
+            heading={strings.threeWSankeyDiagramTitle}
             sub
           >
             <SankeyFilters
@@ -458,7 +482,7 @@ function InCountryProjects(props: Props) {
               state: { from: history.location }
             }}
           />
-          If you are a member of RCRC Movement, login with your credentials to see more details.
+          { strings.threeWBottomNoLoginMessage }
         </div>
       )}
     </div>

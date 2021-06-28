@@ -22,6 +22,7 @@ import ExportProjectsButton from '#components/ExportProjectsButton';
 import ExpandableContainer from '#components/ExpandableContainer';
 import Table from '#components/Table';
 import { createActionColumn } from '#components/Table/predefinedColumns';
+import LanguageContext from '#root/languageContext';
 import useBooleanState from '#hooks/useBooleanState';
 import useReduxState from '#hooks/useReduxState';
 import {
@@ -60,6 +61,7 @@ interface Props {
 }
 
 function NSProjects(props: Props) {
+  const { strings } = React.useContext(LanguageContext);
   const user = useReduxState('me');
   const isLoggedIn = !!user.data.id;
 
@@ -184,7 +186,7 @@ function NSProjects(props: Props) {
 
   const bottomLinkProps = useButtonFeatures({
     variant: 'secondary',
-    children: 'Login to see more details',
+    children: strings.threeWLoginMessage,
     actions: <IoLockClosed />,
   });
 
@@ -198,54 +200,57 @@ function NSProjects(props: Props) {
             <Card multiColumn>
               <KeyFigure
                 value={numActivities}
-                description="Activities in Countries"
+                description={strings.threeWKeyFigureCountryActivityTitle}
               />
               <KeyFigure
                 value={targetedPopulation}
-                description="Targeted Population"
+                description={strings.threeWKeyFigureTargetedPopulationTitle}
               />
             </Card>
             <Card multiColumn>
               <KeyFigure
                 value={projectList.length}
-                description="Total Projects"
+                description={strings.threeWKeyFigureTotalProjectsTitle}
               />
               <ProjectStatPieChart
-                title="Programme Type"
+                title={strings.threeWKeyFigureProgrammeTypeTitle}
                 data={programmeTypeCounts}
               />
             </Card>
             <Card multiColumn>
               <KeyFigure
                 value={ongoingProjectBudget}
-                description="Total Budget (CHF) for Ongoing Projects"
+                description={strings.threeWKeyFigureOngoingProjectBudgetTitle}
               />
               <ProjectStatPieChart
-                title="Project Status"
+                title={strings.threeWKeyFigureStatusTitle}
                 data={statusCounts}
               />
             </Card>
           </div>
           {!isLoggedIn && (
             <div className={styles.topLoginInfo}>
-              To view all the project details,
-              &nbsp;
-              <Link
-                className={styles.link}
-                to={{
-                  pathname: '/login',
-                  state: { from: history.location }
+              <Translate
+                stringId="threeWTopNoLoginMessage"
+                params={{
+                  loginLink: (
+                    <Link
+                      className={styles.link}
+                      to={{
+                        pathname: '/login',
+                        state: { from: history.location }
+                      }}
+                    >
+                      <Translate stringId='userMenuLogin'/>
+                    </Link>
+                  ),
                 }}
-              >
-                <Translate stringId='userMenuLogin'/>
-              </Link>
-              &nbsp;
-              with your RCRC credentials
+              />
             </div>
           )}
           <Container
             className={styles.ongoingProject}
-            heading={viewAllProjects ? 'All Projects' : 'Ongoing Projects'}
+            heading={strings.threeWOngoingProjectsTitle}
             actions={(
               <>
                 <ExportProjectsButton
@@ -258,7 +263,7 @@ function NSProjects(props: Props) {
                   variant="tertiary"
                   onClick={toggleViewAllProject}
                 >
-                  { viewAllProjects ? 'View Ongoing Projects' : 'View All Projects' }
+                  { strings.threeWViewAllProjectsLabel }
                 </Button>
               </>
             )}
@@ -275,7 +280,7 @@ function NSProjects(props: Props) {
               />
               <Container
                 className={styles.mapDetails}
-                heading="Projects by Province"
+                heading={strings.threeWNSMapSidebarTitle}
                 contentClassName={styles.content}
                 innerContainerClassName={styles.innerContainer}
                 sub
@@ -286,12 +291,19 @@ function NSProjects(props: Props) {
                   }
 
                   const d0 = pl[0].project_country_detail;
-                  const title = `${d0.name} (${pl.length} Projects)`;
 
                   return (
                     <ExpandableContainer
                       key={d0.id}
-                      heading={title}
+                      heading={(
+                        <Translate
+                          stringId="threeWNSCountryProjectsText"
+                          params={{
+                            countryName: d0.name,
+                            numProjects: pl.length,
+                          }}
+                        />
+                      )}
                       headingSize="small"
                       sub
                     >
@@ -325,7 +337,7 @@ function NSProjects(props: Props) {
             />
           </Container>
           <Container
-            heading="Overview of Activities"
+            heading={strings.threeWSankeyDiagramTitle}
             sub
           >
             <SankeyFilters
@@ -345,7 +357,7 @@ function NSProjects(props: Props) {
               state: { from: history.location }
             }}
           />
-          If you are a member of RCRC Movement, login with your credentials to see more details.
+          { strings.threeWBottomNoLoginMessage }
         </div>
       )}
     </div>
