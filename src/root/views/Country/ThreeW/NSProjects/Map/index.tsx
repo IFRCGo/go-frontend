@@ -16,6 +16,7 @@ import Map, {
 import BlockLoading from '#components/block-loading';
 import MapTooltipContent from '#components/MapTooltipContent';
 import useReduxState from '#hooks/useReduxState';
+import LanguageContext from '#root/languageContext';
 import {
   ListResponse,
   useRequest,
@@ -28,6 +29,7 @@ import {
   COLOR_RED,
   COLOR_BLUE,
   COLOR_BLACK,
+  getPointCircleHaloPaint,
 } from '#utils/map';
 import { Project } from '#types';
 
@@ -36,7 +38,7 @@ import image from './arrow.png';
 import styles from './styles.module.scss';
 
 const pointCirclePaint = getPointCirclePaint(COLOR_RED);
-const reportingPointCirclePaint = getPointCirclePaint(COLOR_BLUE, 'large');
+const reportingPointCirclePaint = getPointCirclePaint(COLOR_BLUE);
 
 const tooltipOptions: mapboxgl.PopupOptions = {
   closeButton: false,
@@ -163,6 +165,26 @@ function Tooltip(props: TooltipProps) {
   );
 }
 
+function LegendItem({
+  color,
+  label,
+}: {
+  color: string;
+  label: string;
+}) {
+  return (
+    <div className={styles.legendItem}>
+      <div
+        style={{ backgroundColor: color }}
+        className={styles.color}
+      />
+      <div className={styles.label}>
+        {label}
+      </div>
+    </div>
+  );
+}
+
 interface Props {
   className?: string;
   projectList: Project[];
@@ -174,6 +196,7 @@ function ThreeWMap(props: Props) {
     projectList,
   } = props;
 
+  const { strings } = React.useContext(LanguageContext);
   const [
     clickedPointProperties,
     setClickedPointProperties,
@@ -237,12 +260,14 @@ function ThreeWMap(props: Props) {
     () => {
       interface ReportingValue {
         countryId: number;
+        total: number;
       }
       const reportingNsProjects = aggregateList(
         projectList,
         (item) => item.reporting_ns,
-        (_: ReportingValue | undefined, newValue) => ({
+        (oldValue: ReportingValue | undefined, newValue) => ({
           countryId: newValue.reporting_ns,
+          total: (oldValue?.total ?? 0) + 1,
         }),
       );
       const reportingNsProjectsMap = listToMap(
@@ -313,19 +338,6 @@ function ThreeWMap(props: Props) {
     [countries, projectList],
   );
 
-  const selectedCountryProjectDetail = React.useMemo(
-    () => {
-      if (!clickedPointProperties?.feature?.id) {
-        return undefined;
-      }
-
-      return projectList.filter(
-        (item) => item.project_country === clickedPointProperties.feature.id,
-      );
-    },
-    [clickedPointProperties, projectList],
-  );
-
   const handlePointClick = React.useCallback(
     (feature: mapboxgl.MapboxGeoJSONFeature, lngLat: mapboxgl.LngLat) => {
       setClickedPointProperties({
@@ -344,6 +356,16 @@ function ThreeWMap(props: Props) {
     [setClickedPointProperties],
   );
 
+  const maxScaleValue = projectList?.length ?? 0;
+  const pointHaloCirclePaint: mapboxgl.CirclePaint = React.useMemo(
+    () => getPointCircleHaloPaint(COLOR_RED, 'total', maxScaleValue),
+    [maxScaleValue],
+  );
+  const reportingPointHaloCirclePaint: mapboxgl.CirclePaint = React.useMemo(
+    () => getPointCircleHaloPaint(COLOR_BLUE, 'total', maxScaleValue),
+    [maxScaleValue],
+  );
+
   return (
     <Map
       mapStyle={defaultMapStyle}
@@ -352,7 +374,19 @@ function ThreeWMap(props: Props) {
       navControlPosition="top-right"
       debug={false}
     >
-      <MapContainer className={_cs(styles.mapContainer, className)} />
+      <div className={_cs(styles.map, className)}>
+        <MapContainer className={styles.mapContainer} />
+        <div className={styles.legend}>
+          <LegendItem
+            color={COLOR_BLUE}
+            label={strings.threeWNSMapReportingNS}
+          />
+          <LegendItem
+            color={COLOR_RED}
+            label={strings.threeWNSMapReceivingCountry}
+          />
+        </div>
+      </div>
       <MapImage
         name="equilateral-arrow-icon"
         url={image}
@@ -382,16 +416,24 @@ function ThreeWMap(props: Props) {
         />
       </MapSource>
       <MapSource
-        sourceKey="points"
+        sourceKey="receiving-points"
         sourceOptions={sourceOption}
         geoJson={geo}
       >
         <MapLayer
-          layerKey="points-circle"
+          layerKey="receiving-points-circle"
           onClick={handlePointClick}
           layerOptions={{
             type: 'circle',
             paint: pointCirclePaint,
+          }}
+        />
+        <MapLayer
+          layerKey="receiving-points-halo-circle"
+          onClick={handlePointClick}
+          layerOptions={{
+            type: 'circle',
+            paint: pointHaloCirclePaint,
           }}
         />
       </MapSource>
@@ -406,6 +448,14 @@ function ThreeWMap(props: Props) {
           layerOptions={{
             type: 'circle',
             paint: reportingPointCirclePaint,
+          }}
+        />
+        <MapLayer
+          layerKey="reporting-points-halo-circle"
+          onClick={handlePointClick}
+          layerOptions={{
+            type: 'circle',
+            paint: reportingPointHaloCirclePaint,
           }}
         />
       </MapSource>

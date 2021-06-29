@@ -7,9 +7,9 @@ import styles from './styles.module.scss';
 
 export interface Props<N> extends Omit<React.HTMLProps<HTMLButtonElement>, 'ref' | 'onClick' | 'name'>{
   className?: string;
-  onClick?: (name: N | undefined, e: React.MouseEvent<HTMLButtonElement>) => void;
+  onClick?: (name: N, e: React.MouseEvent<HTMLButtonElement>) => void;
   type?: 'button' | 'submit' | 'reset';
-  name?: N;
+  name: N;
   elementRef?: React.Ref<HTMLButtonElement>;
   focused?: boolean;
 }

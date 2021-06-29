@@ -294,7 +294,6 @@ export function useThreeWOptions(value: Partial<FormType>) {
     ] as const;
   }, [value]);
 
-  // FIXME: use strings
   let currentOperationPlaceholder = strings.projectFormOperationDefaultPlaceholder;
   let districtPlaceholder = strings.projectFormDistrictSelect;
   if (!isDefined(value.project_country)) {

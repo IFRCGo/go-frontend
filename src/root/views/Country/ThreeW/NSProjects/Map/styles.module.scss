@@ -1,23 +1,48 @@
 @import '~styles/settings/variables';
 
-.map-container {
-  height: 60vh;
+.map {
+  .map-container {
+    height: 60vh;
 
-  .project-detail-item {
-    padding: $spacing;
+    .project-detail-item {
+      padding: $spacing;
+    }
+
+    .loading {
+      width: 100%;
+      margin: 0;
+      height: 10rem;
+      border: $base-border-width solid $base-border-color;
+      border-radius: 0;
+
+      :global {
+        .spinner {
+          display: flex;
+          align-items: center;
+        }
+      }
+    }
   }
 
-  .loading {
-    width: 16rem;
-    margin: 0;
-    height: 10rem;
-    border: $base-border-width solid $base-border-color;
-    border-radius: 0;
+  .legend {
+    display: flex;
+    align-items: center;
+    padding: $spacing/2;
 
-    :global {
-      .spinner {
-        display: flex;
-        align-items: center;
+    .legend-item {
+      display: flex;
+      align-items: center;
+      padding: $spacing/2;
+
+      .color {
+        width: 0.6em;
+        height: 0.6em;
+        margin: $spacing/2;
+        border-radius: 50%;
+      }
+
+      .label {
+        padding: $spacing/2;
       }
     }
   }

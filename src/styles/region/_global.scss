@@ -59,18 +59,16 @@
     font-size: $font-size-lg;
     font-weight: $base-font-semi-bold;
   }
-  
+
   .region-countries__linkC {
     padding: 0 ($global-spacing / 1.5) 0 0;
 
-    &:after {
-      content: '\F145';
-      font-family: 'Collecticons';
-      font-size: $base-font-size;
-      margin-left: $spacing;
-      position: relative;
-      top: 2px;
-    }
+  }
+
+  .right-icon {
+    font-size: $base-font-size;
+    position: relative;
+    top: 2px;
   }
 
   .region-countries__link-op {

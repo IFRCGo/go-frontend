@@ -139,10 +139,6 @@ function applyPagination(
   return lst;
 }
 
-interface PagerOption {
-  key: number;
-  label: string;
-}
 
 export type Props = {
   activePage: number;

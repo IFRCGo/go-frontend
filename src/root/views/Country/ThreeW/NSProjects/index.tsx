@@ -28,6 +28,7 @@ import {
   ListResponse,
   useRequest,
 } from '#utils/restRequest';
+import { sum } from '#utils/common';
 import {
   Country,
   Project,
@@ -113,8 +114,8 @@ function NSProjects(props: Props) {
     statusCounts,
   ] = React.useMemo(() => {
     const ongoing = filteredProjectList.filter((p) => p.status === PROJECT_STATUS_ONGOING);
-    const ongoingBudget = ongoing.reduce((acc, val) => acc + (+(val.budget_amount ?? 0)), 0);
-    const target = filteredProjectList.reduce((acc, val) => acc + (+(val.target_total ?? 0)), 0);
+    const ongoingBudget = sum(ongoing, d => (+(d.budget_amount ?? 0)));
+    const target = sum(filteredProjectList, d => (+(d.target_total ?? 0)));
     const programmeTypeGrouped = (
       listToGroupList(
         filteredProjectList,

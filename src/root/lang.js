@@ -972,6 +972,9 @@ export default {
   threeWTableCountry: 'Receiving Country',
   threeWEmptySankeyMessage: 'Not enough data to view the chart!',
 
+  threeWNSMapReportingNS: 'Reporting NS',
+  threeWNSMapReceivingCountry: 'Receiving Country',
+
   projectFormReportingNational: 'Reporting National Society *',
   projectFormReportingHelpText: 'Select National Society that is carrying out the activity.',
   projectFormReportingTooltip: 'It can be either the National Society where the disaster has taken place or a different National Society that is carrying out an activity in support of the response.',

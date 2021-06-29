@@ -31,7 +31,7 @@ interface Props {
   location: Location;
 }
 
-function NewThreeW(props: Props) {
+function AllThreeW(props: Props) {
   const {
     className,
     location,
@@ -135,4 +135,4 @@ function NewThreeW(props: Props) {
   );
 }
 
-export default NewThreeW;
+export default AllThreeW;
