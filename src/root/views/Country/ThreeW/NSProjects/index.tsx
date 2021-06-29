@@ -13,7 +13,7 @@ import {
 } from 'react-icons/io5';
 
 import BlockLoading from '#components/block-loading';
-import Button, { useButtonFeatures } from '#components/Button';
+import { useButtonFeatures } from '#components/Button';
 import Translate from '#components/Translate';
 import KeyFigure from '#components/KeyFigure';
 import Card from '#components/Card';
@@ -22,12 +22,13 @@ import ExportProjectsButton from '#components/ExportProjectsButton';
 import ExpandableContainer from '#components/ExpandableContainer';
 import Table from '#components/Table';
 import { createActionColumn } from '#components/Table/predefinedColumns';
-import useBooleanState from '#hooks/useBooleanState';
+import LanguageContext from '#root/languageContext';
 import useReduxState from '#hooks/useReduxState';
 import {
   ListResponse,
   useRequest,
 } from '#utils/restRequest';
+import { sum } from '#utils/common';
 import {
   Country,
   Project,
@@ -36,16 +37,18 @@ import {
 import ProjectTableActions from '../ProjectTableActions';
 import ProjectStatPieChart from '../ProjectStatPieChart';
 import ProjectFlowSankey from '../ProjectFlowSankey';
-import { nsProjectColumns } from '../projectTableColumns';
+import { getNSProjectColumns } from '../projectTableColumns';
 import {
   LabelValue,
   emptyProjectList,
   PROJECT_STATUS_ONGOING,
   projectKeySelector,
   projectListToNsSankeyData,
+  filterProjects,
 } from '../common';
 import Map from './Map';
 import Filters, { FilterValue } from './Filters';
+import SankeyFilters, { SankeyFilterValue } from './SankeyFilters';
 
 import styles from './styles.module.scss';
 
@@ -58,6 +61,7 @@ interface Props {
 }
 
 function NSProjects(props: Props) {
+  const { strings } = React.useContext(LanguageContext);
   const user = useReduxState('me');
   const isLoggedIn = !!user.data.id;
 
@@ -75,6 +79,11 @@ function NSProjects(props: Props) {
     secondary_sectors: [],
   });
 
+  const [sankeyFilters, setSankeyFilters] = React.useState<SankeyFilterValue>({
+    primary_sector: [],
+    project_country: [],
+  });
+
   const {
     pending: projectListPending,
     response: projectListResponse,
@@ -85,7 +94,6 @@ function NSProjects(props: Props) {
     query: {
       limit: 500,
       reporting_ns: country?.id,
-      ...filters,
     },
   });
 
@@ -95,8 +103,8 @@ function NSProjects(props: Props) {
     }
   }, [projectsUpdatedOn, retriggerProjectListRequest]);
 
-  const [viewAllProjects,,,, toggleViewAllProject] = useBooleanState(false);
   const projectList = projectListResponse?.results ?? emptyProjectList;
+  const filteredProjectList = filterProjects(projectList, filters);
 
   const [
     ongoingProjects,
@@ -105,12 +113,12 @@ function NSProjects(props: Props) {
     programmeTypeCounts,
     statusCounts,
   ] = React.useMemo(() => {
-    const ongoing = projectList.filter((p) => p.status === PROJECT_STATUS_ONGOING);
-    const ongoingBudget = ongoing.reduce((acc, val) => acc + (+(val.budget_amount ?? 0)), 0);
-    const target = projectList.reduce((acc, val) => acc + (+(val.target_total ?? 0)), 0);
+    const ongoing = filteredProjectList.filter((p) => p.status === PROJECT_STATUS_ONGOING);
+    const ongoingBudget = sum(ongoing, d => (+(d.budget_amount ?? 0)));
+    const target = sum(filteredProjectList, d => (+(d.target_total ?? 0)));
     const programmeTypeGrouped = (
       listToGroupList(
-        projectList,
+        filteredProjectList,
         d => d.programme_type_display,
         d => d,
       ) ?? {}
@@ -121,7 +129,7 @@ function NSProjects(props: Props) {
 
     const statusGrouped = (
       listToGroupList(
-        projectList,
+        filteredProjectList,
         d => d.status_display,
         d => d,
       ) ?? {}
@@ -137,14 +145,14 @@ function NSProjects(props: Props) {
       programmeTypeCounts,
       statusCounts,
     ];
-  }, [projectList]);
+  }, [filteredProjectList]);
 
   const numActivities = React.useMemo(() => (
     unique(ongoingProjects, d => d.project_country)?.length ?? 0
   ), [ongoingProjects]);
 
   const tableColumns = React.useMemo(() => ([
-    ...nsProjectColumns,
+    ...getNSProjectColumns(strings),
     createActionColumn(
       'actions',
       (rowKey: number | string, prj: Project) => ({
@@ -157,13 +165,18 @@ function NSProjects(props: Props) {
         ),
       }),
     ),
-  ]), [retriggerProjectListRequest]);
+  ]), [strings, retriggerProjectListRequest]);
 
-  const currentProjectList = viewAllProjects ? projectList : ongoingProjects;
+  const currentProjectList = ongoingProjects;
 
   const sankeyData = React.useMemo(() => (
-    projectListToNsSankeyData(projectList)
-  ), [projectList]);
+    projectListToNsSankeyData(
+      filterProjects(
+        projectList,
+        sankeyFilters,
+      )
+    )
+  ), [sankeyFilters, projectList]);
 
   const countryGroupedProjects = React.useMemo(() => (
     listToGroupList(currentProjectList, d => d.project_country)
@@ -172,8 +185,14 @@ function NSProjects(props: Props) {
 
   const bottomLinkProps = useButtonFeatures({
     variant: 'secondary',
-    children: 'Login to see more details',
+    children: strings.threeWLoginMessage,
     actions: <IoLockClosed />,
+  });
+
+  const viewAllProjectLinkProps = useButtonFeatures({
+    variant: 'tertiary',
+    actions: <IoChevronForward />,
+    children: strings.threeWViewAllProjectsLabel,
   });
 
   return (
@@ -186,54 +205,57 @@ function NSProjects(props: Props) {
             <Card multiColumn>
               <KeyFigure
                 value={numActivities}
-                description="Activities in Countries"
+                description={strings.threeWKeyFigureCountryActivityTitle}
               />
               <KeyFigure
                 value={targetedPopulation}
-                description="Targeted Population"
+                description={strings.threeWKeyFigureTargetedPopulationTitle}
               />
             </Card>
             <Card multiColumn>
               <KeyFigure
                 value={projectList.length}
-                description="Total Projects"
+                description={strings.threeWKeyFigureTotalProjectsTitle}
               />
               <ProjectStatPieChart
-                title="Programme Type"
+                title={strings.threeWKeyFigureProgrammeTypeTitle}
                 data={programmeTypeCounts}
               />
             </Card>
             <Card multiColumn>
               <KeyFigure
                 value={ongoingProjectBudget}
-                description="Total Budget (CHF) for Ongoing Projects"
+                description={strings.threeWKeyFigureOngoingProjectBudgetTitle}
               />
               <ProjectStatPieChart
-                title="Project Status"
+                title={strings.threeWKeyFigureStatusTitle}
                 data={statusCounts}
               />
             </Card>
           </div>
           {!isLoggedIn && (
             <div className={styles.topLoginInfo}>
-              To view all the project details,
-              &nbsp;
-              <Link
-                className={styles.link}
-                to={{
-                  pathname: '/login',
-                  state: { from: history.location }
+              <Translate
+                stringId="threeWTopNoLoginMessage"
+                params={{
+                  loginLink: (
+                    <Link
+                      className={styles.link}
+                      to={{
+                        pathname: '/login',
+                        state: { from: history.location }
+                      }}
+                    >
+                      <Translate stringId='userMenuLogin'/>
+                    </Link>
+                  ),
                 }}
-              >
-                <Translate stringId='userMenuLogin'/>
-              </Link>
-              &nbsp;
-              with your RCRC credentials
+              />
             </div>
           )}
           <Container
             className={styles.ongoingProject}
-            heading={viewAllProjects ? 'All Projects' : 'Ongoing Projects'}
+            heading={strings.threeWOngoingProjectsTitle}
             actions={(
               <>
                 <ExportProjectsButton
@@ -241,13 +263,10 @@ function NSProjects(props: Props) {
                   fileNameSuffix={country?.name}
                   isNationalSociety
                 />
-                <Button
-                  actions={<IoChevronForward />}
-                  variant="tertiary"
-                  onClick={toggleViewAllProject}
-                >
-                  { viewAllProjects ? 'View Ongoing Projects' : 'View All Projects' }
-                </Button>
+                <Link
+                  to={`/three-w/all/?reporting_ns=${country?.id}`}
+                  {...viewAllProjectLinkProps}
+                />
               </>
             )}
             sub
@@ -263,27 +282,34 @@ function NSProjects(props: Props) {
               />
               <Container
                 className={styles.mapDetails}
-                heading="Projects by Province"
+                heading={strings.threeWNSMapSidebarTitle}
                 contentClassName={styles.content}
                 innerContainerClassName={styles.innerContainer}
                 sub
               >
-                {Object.values(countryGroupedProjects).map((projectList) => {
-                  if (!projectList || projectList.length === 0) {
+                {Object.values(countryGroupedProjects).map((pl) => {
+                  if (!pl || pl.length === 0) {
                     return null;
                   }
 
-                  const d0 = projectList[0].project_country_detail;
-                  const title = `${d0.name} (${projectList.length} Projects)`;
+                  const d0 = pl[0].project_country_detail;
 
                   return (
                     <ExpandableContainer
                       key={d0.id}
-                      heading={title}
+                      heading={(
+                        <Translate
+                          stringId="threeWNSCountryProjectsText"
+                          params={{
+                            countryName: d0.name,
+                            numProjects: pl.length,
+                          }}
+                        />
+                      )}
                       headingSize="small"
                       sub
                     >
-                      {projectList.map((project) => (
+                      {pl.map((project) => (
                         <div
                           className={styles.projectDetailItem}
                           key={project.id}
@@ -306,16 +332,20 @@ function NSProjects(props: Props) {
             </div>
             <Table
               className={styles.projectsTable}
-              data={viewAllProjects ? projectList : ongoingProjects}
+              data={currentProjectList}
               columns={tableColumns}
               keySelector={projectKeySelector}
               variant="large"
             />
           </Container>
           <Container
-            heading="Overview of Activities"
+            heading={strings.threeWSankeyDiagramTitle}
             sub
           >
+            <SankeyFilters
+              value={sankeyFilters}
+              onChange={setSankeyFilters}
+            />
             <ProjectFlowSankey data={sankeyData} />
           </Container>
         </>
@@ -329,7 +359,7 @@ function NSProjects(props: Props) {
               state: { from: history.location }
             }}
           />
-          If you are a member of RCRC Movement, login with your credentials to see more details.
+          { strings.threeWBottomNoLoginMessage }
         </div>
       )}
     </div>

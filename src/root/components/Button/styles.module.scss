@@ -60,6 +60,10 @@
     font-size: 1.4em;
   }
 
+  &.transparent {
+    padding: 0;
+  }
+
   &:disabled {
     opacity: $opacity-disabled-element;
     filter: saturate($saturation-disabled-element);

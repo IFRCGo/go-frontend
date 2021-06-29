@@ -13,6 +13,7 @@ import {
 import { MdDoneAll } from 'react-icons/md';
 
 import BlockLoading from '#components/block-loading';
+import Translate from '#components/Translate';
 import Button from '#components/Button';
 import InputSection from '#components/InputSection';
 import SelectInput from '#components/SelectInput';
@@ -55,7 +56,7 @@ const defaultFormValues: PartialForm<FormType> = {
 
 interface Props {
   className?: string;
-  onSubmitSuccess?: () => void;
+  onSubmitSuccess?: (result: Project) => void;
   projectId?: number;
   initialValue?: Partial<ProjectFormFields>;
 }
@@ -107,17 +108,26 @@ function ThreeWForm(props: Props) {
     method: projectId ? 'PUT' : 'POST',
     body: ctx => ctx,
     onSuccess: onSubmitSuccess,
-    onFailure: ({ value: { messageForNotification, errors } }) => {
+    onFailure: ({
+      value: { messageForNotification, errors },
+      debugMessage,
+    }) => {
       console.error(errors);
       alert.show(
         (
-          <p>
-            Failed to sumbit project
-            &nbsp;
-            { messageForNotification }
-          </p>
+          <Translate
+            stringId="projectFormFailedToSubmit"
+            params={{ message: (
+              <strong>
+                {messageForNotification}
+              </strong>
+            )}}
+          />
         ),
-        { variant: 'danger' },
+        {
+          variant: 'danger',
+          debugMessage,
+        },
       );
     },
   });
@@ -305,8 +315,7 @@ function ThreeWForm(props: Props) {
               value={value.project_districts}
               actions={(
                 <button
-                  // FIXME: use strings
-                  title="Select all districts"
+                  title={strings.projectFormSelectAllDistricts}
                   type="button"
                   className={_cs(
                     styles.selectAllDistrictsButton,
@@ -465,8 +474,7 @@ function ThreeWForm(props: Props) {
           </InputSection>
           <InputSection
             className='multi-input-section'
-            // TODO: use translations
-            title="Budget and Status*"
+            title={strings.projectFormBudgetTitle}
             description={
               <React.Fragment>
                 <p>
@@ -487,11 +495,10 @@ function ThreeWForm(props: Props) {
             }
             tooltip={strings.projectFormProjectTooltip}
           >
-            {/* TODO: use translations */}
             { value.is_project_completed ? (
               <NumberInput
                 error={error?.fields?.actual_expenditure}
-                label='Actual Expenditure (CHF)'
+                label={strings.projectFormActualExpenditure}
                 name='actual_expenditure'
                 value={value.actual_expenditure}
                 onChange={onValueChange}
@@ -499,7 +506,7 @@ function ThreeWForm(props: Props) {
             ) : (
               <NumberInput
                 error={error?.fields?.budget_amount}
-                label='Project Budget (CHF)'
+                label={strings.projectFormProjectBudget}
                 name='budget_amount'
                 value={value.budget_amount}
                 onChange={onValueChange}
@@ -582,7 +589,7 @@ function ThreeWForm(props: Props) {
             <NumberInput
               disabled={shouldDisableTotalReached}
               name='reached_total'
-              label={isReachedTotalRequired ? 'Total* ' : 'Total'}
+              label={isReachedTotalRequired ? strings.projectFormTotalRequired : strings.projectFormTotal}
               value={value.reached_total}
               error={error?.fields?.reached_total}
               onChange={onValueChange}
@@ -616,7 +623,7 @@ function ThreeWForm(props: Props) {
             <NonFieldError
               className={styles.nonFieldError}
               error={error}
-              message="Please correct all the errors above before submission"
+              message={strings.projectFormNonFieldError}
             />
             <Button
               type="submit"

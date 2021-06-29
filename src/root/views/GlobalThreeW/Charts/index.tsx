@@ -24,7 +24,7 @@ interface PieChartData {
   value: number,
 }
 
-const PIE_COLORS = ['#f64752', '#fa999f', '#f87079'];
+const PIE_COLORS = ['#f64752', '#fa999f', '#fdd6d9'];
 
 interface PieChartProps {
   data: PieChartData[],
@@ -38,6 +38,9 @@ function ThreeWPieChart(props: PieChartProps) {
   } = props;
 
   const total = sum(data, d => d.value) ?? 0;
+  const chartData = React.useMemo(() => (
+    data.sort((a, b) => a.name.localeCompare(b.name))
+  ), [data]);
 
   return (
     <ResponsiveContainer
@@ -52,11 +55,11 @@ function ThreeWPieChart(props: PieChartProps) {
         }}
       >
         <Pie
-          data={data}
+          data={chartData}
           dataKey="value"
           labelLine={false}
         >
-          { data.map((entry, index) => (
+          { chartData.map((entry, index) => (
             <Cell
               key={`cell-${index}`}
               fill={PIE_COLORS[index % PIE_COLORS.length]}

@@ -78,13 +78,24 @@ function DropdownMenuItem<N extends string | number>(props: Props<N>) {
   }
 
 
+  if (props.name) {
+    return (
+      <RawButton
+        className={className}
+        name={props.name}
+        onClick={props.onClick}
+      >
+        {children}
+      </RawButton>
+    );
+  }
+
   return (
-    <RawButton
+    <RawButton<undefined>
+      name={undefined}
       className={className}
-      name={props.name}
-      onClick={props.onClick}
+      onClick={props.onClick as RawButtonProps<undefined>['onClick']}
     >
-      {children}
     </RawButton>
   );
 }

@@ -30,11 +30,11 @@ const CountryList = props => {
           <input type='text' className='country__sidebar-input-search form__control' placeholder='Select a Country' onChange={updateCountryFilter} />
           <ul className='region-countries__list'>
             {
-              countries.map(country => 
+              countries.map(country =>
                 <li key={country.id} className='region-countries__item'>
-                  <Link to={`/countries/${country.id}`} className='region-countries__link'><span className='region-countries__linkC'>{country.name}</span></Link>
+                  <Link to={`/countries/${country.id}`} className='region-countries__link'><span className='region-countries__linkC'>{country.name}</span><span className="right-icon collecticon-chevron-right" /></Link>
                   <div className='region-countries__link-op'>({country.numOperations} {country.numOperations === 1 ? <Translate stringId='countryListActiveOperation' /> : <Translate stringId='countryListActiveOperations'/>})</div>
-                </li>              
+                </li>
             )}
           </ul>
         </div>

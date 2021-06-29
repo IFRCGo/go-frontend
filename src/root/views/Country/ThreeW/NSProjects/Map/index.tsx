@@ -3,6 +3,7 @@ import {
   _cs,
   listToMap,
   isDefined,
+  isNotDefined,
 } from '@togglecorp/fujs';
 import Map, {
   MapImage,
@@ -12,8 +13,14 @@ import Map, {
   MapTooltip
 } from '@togglecorp/re-map';
 
+import BlockLoading from '#components/block-loading';
 import MapTooltipContent from '#components/MapTooltipContent';
 import useReduxState from '#hooks/useReduxState';
+import LanguageContext from '#root/languageContext';
+import {
+  ListResponse,
+  useRequest,
+} from '#utils/restRequest';
 import { aggregateList } from '#utils/common';
 import {
   defaultMapStyle,
@@ -22,6 +29,7 @@ import {
   COLOR_RED,
   COLOR_BLUE,
   COLOR_BLACK,
+  getPointCircleHaloPaint,
 } from '#utils/map';
 import { Project } from '#types';
 
@@ -30,7 +38,7 @@ import image from './arrow.png';
 import styles from './styles.module.scss';
 
 const pointCirclePaint = getPointCirclePaint(COLOR_RED);
-const reportingPointCirclePaint = getPointCirclePaint(COLOR_BLUE, 'large');
+const reportingPointCirclePaint = getPointCirclePaint(COLOR_BLUE);
 
 const tooltipOptions: mapboxgl.PopupOptions = {
   closeButton: false,
@@ -93,6 +101,90 @@ type ReportingNsProjectStatsGeoJson = GeoJSON.FeatureCollection<GeoJSON.Point, R
 
 type LineGeoJson = GeoJSON.FeatureCollection<GeoJSON.LineString, {}>;
 
+interface TooltipProps {
+  countryId: number;
+  onHide: () => void;
+  lngLat: mapboxgl.LngLatLike;
+}
+
+const emptyProjectList: Project[] = [];
+
+function Tooltip(props: TooltipProps) {
+  const {
+    countryId,
+    lngLat,
+    onHide,
+  } = props;
+
+  const allCountries = useReduxState('allCountries');
+  const countries = allCountries?.data?.results ?? [];
+  const country = countries.find(d => d.id === countryId);
+
+  const {
+    pending,
+    response,
+  } = useRequest<ListResponse<Project>>({
+    skip: isNotDefined(country?.iso),
+    url: 'api/v2/project/',
+    query: {
+      limit: 500,
+      country: country?.iso,
+    },
+  });
+
+  const projectList = response?.results || emptyProjectList;
+
+  return (
+    <MapTooltip
+      coordinates={lngLat}
+      tooltipOptions={tooltipOptions}
+      onHide={onHide}
+    >
+      {pending ? (
+        <BlockLoading className={styles.loading} />
+      ) : (
+        <MapTooltipContent
+          title={projectList[0]?.project_country_detail.name}
+          href={`/countries/${projectList[0]?.project_country}/#3w`}
+          onCloseButtonClick={onHide}
+          className={styles.mapTooltip}
+        >
+          {projectList.map((project) => (
+            <div
+              className={styles.projectDetailItem}
+              key={project.id}
+            >
+              <div className={styles.name}>
+                {project.name}
+              </div>
+            </div>
+          ))}
+        </MapTooltipContent>
+      )}
+    </MapTooltip>
+  );
+}
+
+function LegendItem({
+  color,
+  label,
+}: {
+  color: string;
+  label: string;
+}) {
+  return (
+    <div className={styles.legendItem}>
+      <div
+        style={{ backgroundColor: color }}
+        className={styles.color}
+      />
+      <div className={styles.label}>
+        {label}
+      </div>
+    </div>
+  );
+}
+
 interface Props {
   className?: string;
   projectList: Project[];
@@ -104,6 +196,7 @@ function ThreeWMap(props: Props) {
     projectList,
   } = props;
 
+  const { strings } = React.useContext(LanguageContext);
   const [
     clickedPointProperties,
     setClickedPointProperties,
@@ -167,12 +260,14 @@ function ThreeWMap(props: Props) {
     () => {
       interface ReportingValue {
         countryId: number;
+        total: number;
       }
       const reportingNsProjects = aggregateList(
         projectList,
         (item) => item.reporting_ns,
-        (_: ReportingValue | undefined, newValue) => ({
+        (oldValue: ReportingValue | undefined, newValue) => ({
           countryId: newValue.reporting_ns,
+          total: (oldValue?.total ?? 0) + 1,
         }),
       );
       const reportingNsProjectsMap = listToMap(
@@ -243,19 +338,6 @@ function ThreeWMap(props: Props) {
     [countries, projectList],
   );
 
-  const selectedCountryProjectDetail = React.useMemo(
-    () => {
-      if (!clickedPointProperties?.feature?.id) {
-        return undefined;
-      }
-
-      return projectList.filter(
-        (item) => item.project_country === clickedPointProperties.feature.id,
-      );
-    },
-    [clickedPointProperties, projectList],
-  );
-
   const handlePointClick = React.useCallback(
     (feature: mapboxgl.MapboxGeoJSONFeature, lngLat: mapboxgl.LngLat) => {
       setClickedPointProperties({
@@ -274,6 +356,16 @@ function ThreeWMap(props: Props) {
     [setClickedPointProperties],
   );
 
+  const maxScaleValue = projectList?.length ?? 0;
+  const pointHaloCirclePaint: mapboxgl.CirclePaint = React.useMemo(
+    () => getPointCircleHaloPaint(COLOR_RED, 'total', maxScaleValue),
+    [maxScaleValue],
+  );
+  const reportingPointHaloCirclePaint: mapboxgl.CirclePaint = React.useMemo(
+    () => getPointCircleHaloPaint(COLOR_BLUE, 'total', maxScaleValue),
+    [maxScaleValue],
+  );
+
   return (
     <Map
       mapStyle={defaultMapStyle}
@@ -282,7 +374,19 @@ function ThreeWMap(props: Props) {
       navControlPosition="top-right"
       debug={false}
     >
-      <MapContainer className={_cs(styles.mapContainer, className)} />
+      <div className={_cs(styles.map, className)}>
+        <MapContainer className={styles.mapContainer} />
+        <div className={styles.legend}>
+          <LegendItem
+            color={COLOR_BLUE}
+            label={strings.threeWNSMapReportingNS}
+          />
+          <LegendItem
+            color={COLOR_RED}
+            label={strings.threeWNSMapReceivingCountry}
+          />
+        </div>
+      </div>
       <MapImage
         name="equilateral-arrow-icon"
         url={image}
@@ -312,16 +416,24 @@ function ThreeWMap(props: Props) {
         />
       </MapSource>
       <MapSource
-        sourceKey="points"
+        sourceKey="receiving-points"
         sourceOptions={sourceOption}
         geoJson={geo}
       >
         <MapLayer
-          layerKey="points-circle"
+          layerKey="receiving-points-circle"
           onClick={handlePointClick}
           layerOptions={{
             type: 'circle',
             paint: pointCirclePaint,
+          }}
+        />
+        <MapLayer
+          layerKey="receiving-points-halo-circle"
+          onClick={handlePointClick}
+          layerOptions={{
+            type: 'circle',
+            paint: pointHaloCirclePaint,
           }}
         />
       </MapSource>
@@ -338,31 +450,21 @@ function ThreeWMap(props: Props) {
             paint: reportingPointCirclePaint,
           }}
         />
+        <MapLayer
+          layerKey="reporting-points-halo-circle"
+          onClick={handlePointClick}
+          layerOptions={{
+            type: 'circle',
+            paint: reportingPointHaloCirclePaint,
+          }}
+        />
       </MapSource>
-      {clickedPointProperties?.lngLat && selectedCountryProjectDetail && (
-        <MapTooltip
-          coordinates={clickedPointProperties.lngLat}
-          tooltipOptions={tooltipOptions}
+      {clickedPointProperties?.lngLat && clickedPointProperties?.feature?.id && (
+        <Tooltip
+          countryId={+clickedPointProperties.feature.id}
           onHide={handlePointClose}
-        >
-          <MapTooltipContent
-            title={selectedCountryProjectDetail[0].project_country_detail.name}
-            href={`/countries/${selectedCountryProjectDetail[0].project_country}/#3w`}
-            onCloseButtonClick={handlePointClose}
-            className={styles.mapTooltip}
-          >
-            {selectedCountryProjectDetail.map((project) => (
-              <div
-                className={styles.projectDetailItem}
-                key={project.id}
-              >
-                <div className={styles.name}>
-                  {project.name}
-                </div>
-              </div>
-            ))}
-          </MapTooltipContent>
-        </MapTooltip>
+          lngLat={clickedPointProperties.lngLat}
+        />
       )}
     </Map>
   );

@@ -4,7 +4,6 @@ import {
   isFalsy,
   listToMap,
 } from '@togglecorp/fujs';
-
 import {
   PartialForm,
   ObjectSchema,
@@ -37,7 +36,7 @@ import {
   EventMini,
   Project,
 } from '#types';
-
+import LanguageContext from '#root/languageContext';
 
 export const OPERATION_TYPE_EMERGENCY = 1;
 export const PROGRAMME_TYPE_MULTILATERAL = 1;
@@ -161,6 +160,7 @@ const limitQuery = {
 };
 
 export function useThreeWOptions(value: Partial<FormType>) {
+  const { strings } = React.useContext(LanguageContext);
   const {
     pending: fetchingCountries,
     response: countriesResponse,
@@ -294,28 +294,27 @@ export function useThreeWOptions(value: Partial<FormType>) {
     ] as const;
   }, [value]);
 
-  // FIXME: use strings
-  let currentOperationPlaceholder = 'Select an operation';
-  let districtPlaceholder = 'Select region(s)';
+  let currentOperationPlaceholder = strings.projectFormOperationDefaultPlaceholder;
+  let districtPlaceholder = strings.projectFormDistrictSelect;
   if (!isDefined(value.project_country)) {
-    currentOperationPlaceholder = 'Select a country to view it\'s current operations';
-    districtPlaceholder = 'Select a country to view it\'s regions';
+    currentOperationPlaceholder = strings.projectFormNoCountryOperationPlaceholder;
+    districtPlaceholder = strings.projectFormNoCountryDistrictPlaceholder;
   } else {
     if (fetchingEvents) {
-      currentOperationPlaceholder = 'Fetching current operations...';
+      currentOperationPlaceholder = strings.projectFormFetchingCurrentOperationPlaceholder;
     }
 
     if (fetchingDistricts) {
-      districtPlaceholder = 'Fetching regions...';
+      districtPlaceholder = strings.projectFormDistrictFetching;
     }
   }
 
   const shouldDisableDisasterType = shouldShowCurrentEmergencyOperation || shouldShowCurrentOperation;
-  let disasterTypePlaceholder = 'Select a disaster type';
+  let disasterTypePlaceholder = strings.projectFormDisasterTypeDefaultPlaceholder;
   if (fetchingDisasterTypes) {
-    disasterTypePlaceholder = 'Fetching disaster types..';
+    disasterTypePlaceholder = strings.projectFormFetchingDisasterTypePlaceholder;
   } else if(shouldDisableDisasterType) {
-    disasterTypePlaceholder = 'Select an operation for it\'s disaster type';
+    disasterTypePlaceholder = strings.projectFormDisasterTypePlaceholder;
   }
 
   const secondarySectorOptions = React.useMemo(() => (

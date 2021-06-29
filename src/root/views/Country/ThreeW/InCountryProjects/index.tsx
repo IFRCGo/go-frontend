@@ -24,7 +24,7 @@ import ExportProjectsButton from '#components/ExportProjectsButton';
 import ExpandableContainer from '#components/ExpandableContainer';
 import Table from '#components/Table';
 import { createActionColumn } from '#components/Table/predefinedColumns';
-import useBooleanState from '#hooks/useBooleanState';
+import LanguageContext from '#root/languageContext';
 import useReduxState from '#hooks/useReduxState';
 import {
   ListResponse,
@@ -44,16 +44,18 @@ import ProjectFormModal from '../ProjectFormModal';
 import ProjectTableActions from '../ProjectTableActions';
 import ProjectStatPieChart from '../ProjectStatPieChart';
 import ProjectFlowSankey from '../ProjectFlowSankey';
-import { inCountryProjectColumns } from '../projectTableColumns';
+import { getInCountryProjectColumns } from '../projectTableColumns';
 import {
   LabelValue,
   emptyProjectList,
   PROJECT_STATUS_ONGOING,
   projectKeySelector,
   projectListToInCountrySankeyData,
+  filterProjects,
 } from '../common';
 import Map from './Map';
 import Filters, { FilterValue } from './Filters';
+import SankeyFilters, { SankeyFilterValue } from './SankeyFilters';
 
 import styles from './styles.module.scss';
 
@@ -73,6 +75,7 @@ function InCountryProjects(props: Props) {
     projectsUpdatedOn,
   } = props;
 
+  const { strings } = React.useContext(LanguageContext);
   const user = useReduxState('me');
   const isLoggedIn = !!user.data.id;
 
@@ -81,6 +84,12 @@ function InCountryProjects(props: Props) {
     project_districts: [],
     operation_type: [],
     programme_type: [],
+    primary_sector: [],
+    secondary_sectors: [],
+  });
+
+  const [sankeyFilters, setSankeyFilters] = React.useState<SankeyFilterValue>({
+    reporting_ns: [],
     primary_sector: [],
     secondary_sectors: [],
   });
@@ -95,10 +104,6 @@ function InCountryProjects(props: Props) {
     query: {
       limit: 500,
       country: country?.iso,
-      ...filters,
-      project_districts: filters.project_districts.length > 0
-        ? filters.project_districts
-        : undefined,
     },
   });
 
@@ -121,9 +126,9 @@ function InCountryProjects(props: Props) {
     }
   }, [projectsUpdatedOn, retriggerProjectListRequest]);
 
-  const [viewAllProjects,,,, toggleViewAllProject] = useBooleanState(false);
   const [projectIdToEdit, setProjectIdToEdit] = React.useState<number | undefined>();
   const projectList = projectListResponse?.results ?? emptyProjectList;
+  const filteredProjectList = filterProjects(projectList, filters);
 
   const [
     ongoingProjects,
@@ -132,12 +137,12 @@ function InCountryProjects(props: Props) {
     programmeTypeCounts,
     statusCounts,
   ] = React.useMemo(() => {
-    const ongoing = projectList.filter((p) => p.status === PROJECT_STATUS_ONGOING);
+    const ongoing = filteredProjectList.filter((p) => p.status === PROJECT_STATUS_ONGOING);
     const ongoingBudget = sum(ongoing, d => (d.budget_amount ?? 0));
-    const target = sum(projectList, d => (d.target_total ?? 0));
+    const target = sum(filteredProjectList, d => (d.target_total ?? 0));
     const programmeTypeGrouped = (
       listToGroupList(
-        projectList,
+        filteredProjectList,
         d => d.programme_type_display,
         d => d,
       ) ?? {}
@@ -150,7 +155,7 @@ function InCountryProjects(props: Props) {
 
     const statusGrouped = (
       listToGroupList(
-        projectList,
+        filteredProjectList,
         d => d.status_display,
         d => d,
       ) ?? {}
@@ -168,14 +173,14 @@ function InCountryProjects(props: Props) {
       programmeTypeCounts,
       statusCounts,
     ];
-  }, [projectList]);
+  }, [filteredProjectList]);
 
   const numActiveNS = React.useMemo(() => (
     unique(ongoingProjects, d => d.reporting_ns)?.length ?? 0
   ), [ongoingProjects]);
 
   const tableColumns = React.useMemo(() => ([
-    ...inCountryProjectColumns,
+    ...getInCountryProjectColumns(strings),
     createActionColumn(
       'actions',
       (rowKey: number | string, prj: Project) => ({
@@ -188,13 +193,18 @@ function InCountryProjects(props: Props) {
         ),
       }),
     ),
-  ]), [retriggerProjectListRequest]);
+  ]), [retriggerProjectListRequest, strings]);
 
-  const currentProjectList = viewAllProjects ? projectList : ongoingProjects;
+  const currentProjectList = ongoingProjects;
 
   const sankeyData = React.useMemo(() => (
-    projectListToInCountrySankeyData(projectList)
-  ), [projectList]);
+    projectListToInCountrySankeyData(
+      filterProjects(
+        projectList,
+        sankeyFilters,
+      ),
+    )
+  ), [sankeyFilters, projectList]);
 
   const districtGroupedProject = React.useMemo(() => {
     const districtDenormalizedProjectList = denormalizeList(
@@ -222,8 +232,14 @@ function InCountryProjects(props: Props) {
 
   const bottomLinkProps = useButtonFeatures({
     variant: 'secondary',
-    children: 'Login to see more details',
+    children: strings.threeWLoginMessage,
     actions: <IoLockClosed />,
+  });
+
+  const viewAllProjectLinkProps = useButtonFeatures({
+    variant: 'tertiary',
+    actions: <IoChevronForward />,
+    children: strings.threeWViewAllProjectsLabel,
   });
 
   return (
@@ -236,67 +252,67 @@ function InCountryProjects(props: Props) {
             <Card multiColumn>
               <KeyFigure
                 value={numActiveNS}
-                description="Active National Societies"
+                description={strings.threeWKeyFigureActiveNSTitle}
               />
               <KeyFigure
                 value={targetedPopulation}
-                description="Targeted Population"
+                description={strings.threeWKeyFigureTargetedPopulationTitle}
               />
             </Card>
             <Card multiColumn>
               <KeyFigure
                 value={projectList.length}
-                description="Total Projects"
+                description={strings.threeWKeyFigureTotalProjectsTitle}
               />
               <ProjectStatPieChart
-                title="Programme Type"
+                title={strings.threeWKeyFigureProgrammeTypeTitle}
                 data={programmeTypeCounts}
               />
             </Card>
             <Card multiColumn>
               <KeyFigure
                 value={ongoingProjectBudget}
-                description="Total Budget (CHF) for Ongoing Projects"
+                description={strings.threeWKeyFigureOngoingProjectBudgetTitle}
               />
               <ProjectStatPieChart
-                title="Project Status"
+                title={strings.threeWKeyFigureStatusTitle}
                 data={statusCounts}
               />
             </Card>
           </div>
           {!isLoggedIn && (
             <div className={styles.topLoginInfo}>
-              To view all the project details,
-              &nbsp;
-              <Link
-                className={styles.link}
-                to={{
-                  pathname: '/login',
-                  state: { from: history.location }
+              <Translate
+                stringId="threeWTopNoLoginMessage"
+                params={{
+                  loginLink: (
+                    <Link
+                      className={styles.link}
+                      to={{
+                        pathname: '/login',
+                        state: { from: history.location }
+                      }}
+                    >
+                      <Translate stringId='userMenuLogin'/>
+                    </Link>
+                  ),
                 }}
-              >
-                <Translate stringId='userMenuLogin'/>
-              </Link>
-              &nbsp;
-              with your RCRC credentials
+              />
             </div>
           )}
           <Container
             className={styles.ongoingProject}
-            heading={viewAllProjects ? 'All Projects' : 'Ongoing Projects'}
+            heading={strings.threeWOngoingProjectsTitle}
             actions={(
               <>
                 <ExportProjectsButton
                   countryId={country?.id}
                   fileNameSuffix={country?.name}
                 />
-                <Button
-                  actions={<IoChevronForward />}
-                  variant="tertiary"
-                  onClick={toggleViewAllProject}
-                >
-                  { viewAllProjects ? 'View Ongoing Projects' : 'View All Projects' }
-                </Button>
+                <Link
+                  to={`/three-w/all/?country=${country?.iso}`}
+                  {...viewAllProjectLinkProps}
+                />
               </>
             )}
             sub
@@ -314,28 +330,33 @@ function InCountryProjects(props: Props) {
               />
               <Container
                 className={styles.mapDetails}
-                heading="Projects by Province"
+                heading={strings.threeWInCountryMapSidebarTitle}
                 contentClassName={styles.content}
                 innerContainerClassName={styles.innerContainer}
                 sub
               >
-                {Object.values(districtGroupedProject).map((projectList) => {
-                  if (!projectList || projectList.length === 0) {
+                {Object.values(districtGroupedProject).map((pl) => {
+                  if (!pl || pl.length === 0) {
                     return null;
                   }
 
-                  const d0 = projectList[0].project_district;
+                  const d0 = pl[0].project_district;
 
                   if (isNotDefined(d0.id)) {
                     return (
                       <ExpandableContainer
                         key="others"
-                        heading={`Others ${projectList.length} Projects`}
+                        heading={(
+                          <Translate
+                            stringId="threeWInCountryOtherProjectsText"
+                            params={{ numProjects: pl.length }}
+                          />
+                        )}
                         headingSize="small"
                         initiallyExpanded
                         sub
                       >
-                        {projectList.map((project) => (
+                        {pl.map((project) => (
                           <div
                             key={project.id}
                             className={styles.projectDetailItem}
@@ -349,7 +370,7 @@ function InCountryProjects(props: Props) {
                               className={styles.actions}
                               onClick={setProjectIdToEdit}
                             >
-                              Add Province
+                              { strings.threeWInCountryAddProvinceButtonLabel }
                             </Button>
                           </div>
                         ))}
@@ -357,18 +378,22 @@ function InCountryProjects(props: Props) {
                     );
                   }
 
-                  const title = `${d0.name} (${projectList.length} Projects)`;
-
-                  // const heading = d0.is_deprecated ? `[deprecated] ${title}` : title;
-
                   return (
                     <ExpandableContainer
                       key={d0.id}
-                      heading={title}
+                      heading={(
+                        <Translate
+                          stringId="threeWInCountryProvinceProjectsText"
+                          params={{
+                            provinceName: d0.name,
+                            numProjects: pl.length,
+                          }}
+                        />
+                      )}
                       headingSize="small"
                       sub
                     >
-                      {projectList.map((project) => (
+                      {pl.map((project) => (
                         <div
                           key={project.id}
                           className={styles.projectDetailItem}
@@ -391,7 +416,12 @@ function InCountryProjects(props: Props) {
             </div>
             <ExpandableContainer
               className={styles.projectsTableContainer}
-              heading={`Local Projects by NS (${localNSProjects.length})`}
+              heading={(
+                <Translate
+                  stringId="threeWInCountryTableLocalTitle"
+                  params={{ numProjects: localNSProjects.length }}
+                />
+              )}
               headingSize="small"
               sub
               initiallyExpanded={localNSProjects.length > 0}
@@ -406,7 +436,12 @@ function InCountryProjects(props: Props) {
             </ExpandableContainer>
             <ExpandableContainer
               className={styles.projectsTableContainer}
-              heading={`Projects by Other NS (${otherNSProjects.length})`}
+              heading={(
+                <Translate
+                  stringId="threeWInCountryTableOtherNSTitle"
+                  params={{ numProjects: otherNSProjects.length }}
+                />
+              )}
               headingSize="small"
               sub
               initiallyExpanded={localNSProjects.length === 0 && otherNSProjects.length > 0}
@@ -421,9 +456,13 @@ function InCountryProjects(props: Props) {
             </ExpandableContainer>
           </Container>
           <Container
-            heading="Overview of Activities"
+            heading={strings.threeWSankeyDiagramTitle}
             sub
           >
+            <SankeyFilters
+              value={sankeyFilters}
+              onChange={setSankeyFilters}
+            />
             <ProjectFlowSankey data={sankeyData} />
           </Container>
           {isDefined(projectIdToEdit) && (
@@ -444,7 +483,7 @@ function InCountryProjects(props: Props) {
               state: { from: history.location }
             }}
           />
-          If you are a member of RCRC Movement, login with your credentials to see more details.
+          { strings.threeWBottomNoLoginMessage }
         </div>
       )}
     </div>

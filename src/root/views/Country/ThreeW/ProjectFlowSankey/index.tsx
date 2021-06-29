@@ -11,12 +11,23 @@ import {
   Rectangle,
 } from 'recharts';
 
+import Translate from '#components/Translate';
 import type {
   SankeyNode as SankeyNodeFields,
   SankeyLink as SankeyLinkFields,
 } from '../common';
 
 import styles from './styles.module.scss';
+
+function EmptySankey ({ className } : { className?: string}) {
+  return (
+    <div className={_cs(styles.emptySankey, className)}>
+      <Translate
+        id="threeWEmptySankeyMessage"
+      />
+    </div>
+  );
+}
 
 function SankeyNode (props: {
   x: number;
@@ -117,15 +128,15 @@ function ProjectFlowSankey(props: Props) {
   } = props;
 
   if (!data) {
-    return null;
+    return <EmptySankey className={className} />;
   }
 
   if (!data.links || data.links.length === 0) {
-    return null;
+    return <EmptySankey className={className} />;
   }
 
   if (!data.nodes || data.nodes.length === 0) {
-    return null;
+    return <EmptySankey className={className} />;
   }
 
   return (

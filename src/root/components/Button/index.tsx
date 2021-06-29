@@ -1,7 +1,7 @@
 import React from 'react';
 import { _cs } from '@togglecorp/fujs';
 
-import RawButton from '#components/RawButton';
+import RawButton, { Props as RawButtonProps } from '#components/RawButton';
 import styles from './styles.module.scss';
 
 export type ButtonVariant = (
@@ -9,6 +9,7 @@ export type ButtonVariant = (
   | 'secondary'
   | 'tertiary'
   | 'action'
+  | 'transparent'
 );
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -17,6 +18,7 @@ const buttonVariantToStyleMap: { [key in ButtonVariant]: string; } = {
   secondary: styles.secondary,
   tertiary: styles.tertiary,
   action: styles.action,
+  transparent: styles.transparent,
 };
 
 export interface Props<N> extends Omit<
@@ -104,7 +106,7 @@ function Button<N>(props: Props<N>) {
     ...otherProps
   } = props;
 
-  const handleButtonClick = React.useCallback((e) => {
+  const handleButtonClick: RawButtonProps<undefined>['onClick'] = React.useCallback((n, e) => {
     if (onClick && !readOnly) {
       onClick(name, e);
     }
@@ -124,6 +126,7 @@ function Button<N>(props: Props<N>) {
 
   return (
     <RawButton
+      name={undefined}
       type="button"
       onClick={handleButtonClick}
       {...otherProps}

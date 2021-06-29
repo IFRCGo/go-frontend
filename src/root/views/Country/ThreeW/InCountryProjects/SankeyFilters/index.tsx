@@ -4,8 +4,6 @@ import { _cs } from '@togglecorp/fujs';
 import {
   sectorList,
   secondarySectorList,
-  programmeTypeList,
-  operationTypeList,
 } from '#utils/constants';
 import { compareLabel } from '#utils/common';
 
@@ -14,16 +12,6 @@ import LanguageContext from '#root/languageContext';
 import useReduxState from '#hooks/useReduxState';
 
 import styles from './styles.module.scss';
-
-const operationTypeOptions = operationTypeList.map(p => ({
-  value: +p.value,
-  label: p.label,
-})).sort(compareLabel);
-
-const programmeTypeOptions = programmeTypeList.map(p => ({
-  value: +p.key,
-  label: p.title,
-})).sort(compareLabel);
 
 const sectorOptions = sectorList.map(p => ({
   value: +p.inputValue,
@@ -35,18 +23,16 @@ const tagOptions = secondarySectorList.map(p => ({
   label: p.title,
 })).sort(compareLabel);
 
-export interface FilterValue {
-  project_country: number[];
-  operation_type: number[];
-  programme_type: number[];
+export interface SankeyFilterValue {
+  reporting_ns: number[];
   primary_sector: number[];
   secondary_sectors: number[];
 }
 
 interface Props {
   className?: string;
-  value: FilterValue;
-  onChange: React.Dispatch<React.SetStateAction<FilterValue>>;
+  value: SankeyFilterValue;
+  onChange: React.Dispatch<React.SetStateAction<SankeyFilterValue>>;
   disabled?: boolean;
 }
 
@@ -60,13 +46,11 @@ function Filters(props: Props) {
 
   const { strings } = React.useContext(LanguageContext);
   const allCountries = useReduxState('allCountries');
-  const countryOptions = React.useMemo(
-    () => allCountries?.data?.results.filter((c) => (
-      c.independent && !c.is_deprecated && c.name
-    )).map((c) => ({
+  const nsOptions = React.useMemo(
+    () => allCountries?.data?.results.map((c) => ({
       value: c.id,
-      label: c.name,
-    })).sort(compareLabel) ?? [],
+      label: c.society_name,
+    })).filter(d => d.label).sort(compareLabel) ?? [],
     [allCountries],
   );
 
@@ -86,28 +70,10 @@ function Filters(props: Props) {
   return (
     <div className={_cs(styles.filters, className)}>
       <SelectInput<string, number>
-        name="project_country"
-        placeholder={strings.threeWFilterReceivingCountries}
-        options={countryOptions}
-        value={value.project_country}
-        isMulti
-        onChange={handleInputChange}
-        disabled={disabled}
-      />
-      <SelectInput<string, number>
-        name="operation_type"
-        placeholder={strings.threeWFilterProjectTypes}
-        options={operationTypeOptions}
-        value={value.operation_type}
-        isMulti
-        onChange={handleInputChange}
-        disabled={disabled}
-      />
-      <SelectInput<string, number>
-        name="programme_type"
-        placeholder={strings.threeWFilterProgrammeTypes}
-        options={programmeTypeOptions}
-        value={value.programme_type}
+        name="reporting_ns"
+        placeholder={strings.threeWFilterNS}
+        options={nsOptions}
+        value={value.reporting_ns}
         isMulti
         onChange={handleInputChange}
         disabled={disabled}

@@ -20,6 +20,7 @@ export interface ErrorFromServer {
   };
   detail?: string;
 }
+
 export interface Error {
   reason: string;
   // exception: any;
@@ -31,6 +32,7 @@ export interface Error {
     errors?: ErrorFromServer['errors'];
   };
   errorCode: number | undefined;
+  debugMessage: string;
 }
 
 function alterResponse(errors: ErrorFromServer['errors']): Error['value']['formErrors'] {
@@ -39,6 +41,7 @@ function alterResponse(errors: ErrorFromServer['errors']): Error['value']['formE
     item => item,
     item => (Array.isArray(item) ? item.join(' ') : item),
   );
+
   return otherErrors;
 }
 
@@ -48,11 +51,11 @@ export interface OptionBase {
 }
 
 type GoContextInterface = ContextInterface<
-// eslint-disable-next-line @typescript-eslint/ban-types
-object,
-ErrorFromServer,
-Error,
-OptionBase
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  object,
+  ErrorFromServer,
+  Error,
+  OptionBase
 >;
 
 export const processGoUrls: GoContextInterface['transformUrl'] = (url) => (
@@ -61,20 +64,20 @@ export const processGoUrls: GoContextInterface['transformUrl'] = (url) => (
 
 export const processGoOptions: GoContextInterface['transformOptions'] = (
   url,
-  options,
   requestOptions,
+  extraOptions,
 ) => {
   const {
     body,
     headers,
     method = 'GET',
     ...otherOptions
-  } = options;
+  } = requestOptions;
 
   const {
     isCsvRequest,
     enforceEnglish,
-  } = requestOptions;
+  } = extraOptions;
 
   const user = getFromLocalStorage('user');
   const currentLanguage = store.getState().lang.current;
@@ -87,10 +90,11 @@ export const processGoOptions: GoContextInterface['transformOptions'] = (
       headers: {
         Accept: isCsvRequest ? CONTENT_TYPE_CSV : CONTENT_TYPE_JSON,
         'Content-Type': isCsvRequest
-          ? 'text/csv; charset=utf-8' : 'application/json; charset=utf-8',
-          Authorization: token ? `Token ${token}` : '',
-          'Accept-Language': (enforceEnglish || method !== 'GET') ? 'en': currentLanguage,
-          ...headers,
+          ? 'text/csv; charset=utf-8'
+          : 'application/json; charset=utf-8',
+        Authorization: token ? `Token ${token}` : '',
+        'Accept-Language': (enforceEnglish || method !== 'GET') ? 'en': currentLanguage,
+        ...headers,
       },
       body: body ? JSON.stringify(body) : undefined,
       ...otherOptions,
@@ -112,51 +116,83 @@ export const processGoResponse: GoContextInterface['transformResponse'] = async 
   return resText;
 };
 
-export const processGoError: GoContextInterface['transformError'] = (res, url, options) => {
-  if (res === 'network') {
+export const processGoError: GoContextInterface['transformError'] = async (
+  reason,
+  url,
+  requestOptions,
+  extraOptions,
+  responseBody,
+  response,
+) => {
+  const responseText = await response?.text();
+
+  if (reason === 'network') {
     return {
       reason: 'network',
-      // exception: e,
       value: {
-        messageForNotification: 'Network error',
+        messageForNotification: 'Cannot communicate with the server! Please, make sure you have an active internet connection and try again!',
         formErrors: {
           $internal: 'Network error',
         },
       },
       errorCode: undefined,
+      debugMessage: JSON.stringify({
+        url,
+        status: response?.status,
+        requestOptions,
+        error: 'Network error',
+      }),
     };
   }
-  if (res === 'parse') {
+
+
+  if (reason === 'parse') {
     return {
       reason: 'parse',
-      // exception: e,
       value: {
-        messageForNotification: 'Response parse error',
+        messageForNotification: 'There was a problem parsing the response from server',
         formErrors: {
           $internal: 'Response parse error',
         },
       },
       errorCode: undefined,
+      debugMessage: JSON.stringify({
+        url,
+        status: response?.status,
+        requestOptions,
+        error: 'Response parse error',
+        responseText: responseText,
+      }),
     };
   }
-  const { method } = options;
 
-  const formErrors = alterResponse(res.errors);
+  const { method } = requestOptions;
+  const formErrors = alterResponse(responseBody?.errors);
+
   let finalMessage = method === 'GET'
     ? 'Failed to load data'
     : 'Some error occurred while performing this action.';
 
-    const messageForNotification = formErrors?.$internal ?? res.detail ?? finalMessage;
+  let messageForNotification = formErrors?.$internal ?? responseBody?.detail ?? finalMessage;
 
-    const requestError = {
+  if (method === 'POST' && response?.status === 401) {
+    messageForNotification = 'You do not have enough permission to perform this action';
+  }
+
+  return {
+    reason: 'server',
+    value: {
       formErrors,
       messageForNotification,
-      errors: res.errors,
-    };
-
-    return {
-      reason: 'server',
-      value: requestError,
-      errorCode: res.errorCode,
-    };
+      errors: responseBody?.errors,
+    },
+    errorCode: response?.status,
+    debugMessage: JSON.stringify({
+      url,
+      status: response?.status,
+      requestOptions,
+      error: 'Request rejected by the server',
+      responseText: responseText,
+    }),
+  };
 };

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Provider } from 'react-redux';
+import mapboxgl from 'mapbox-gl';
 
 import store from '#utils/store';
 import { detectIE } from '#utils/ie';
@@ -14,9 +15,18 @@ import {
 
 import LanguageContext from '#root/languageContext';
 import lang from '#lang';
+import { mbtoken }from './config';
 import Multiplexer from './Multiplexer';
 
 require('isomorphic-fetch');
+
+mapboxgl.setRTLTextPlugin(
+  'https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-rtl-text/v0.2.3/mapbox-gl-rtl-text.js',
+  null,
+  true // Lazy load the plugin
+);
+
+mapboxgl.accessToken = mbtoken;
 
 const requestContextValue = {
   transformUrl: processGoUrls,

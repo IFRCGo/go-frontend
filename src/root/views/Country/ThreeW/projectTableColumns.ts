@@ -5,66 +5,81 @@ import {
 
 import {
   Project,
+  Strings,
 } from '#types';
 
-const baseColumns = [
+const getBaseColumns = (strings: Strings) => ([
   createStringColumn<Project, string | number>(
     'name',
-    'Project Name',
+    strings.threeWTableProjectName,
     (item) => item.name,
   ),
   createStringColumn<Project, string | number>(
     'sector',
-    'Sector',
+    strings.threeWTableSector,
     (item) => item.primary_sector_display,
   ),
   createNumberColumn<Project, string | number>(
     'budget',
-    'Total Budget',
+    strings.threeWTableTotalBudget,
     (item) => item.budget_amount,
     undefined,
-    { normal: true }
+    { normal: true, precision: 'auto' }
   ),
   createStringColumn<Project, string | number>(
     'programmeType',
-    'Programme Type',
+    strings.threeWTableProgrammeType,
     (item) => item.programme_type_display,
   ),
   createStringColumn<Project, string | number>(
     'disasterType',
-    'Disaster Type',
+    strings.threeWTableDisasterType,
     (item) => item.dtype_detail?.name,
   ),
   createNumberColumn<Project, string | number>(
     'peopleTargeted',
-    'People Targeted',
+    strings.threeWTablePeopleTargeted,
     (item) => item.target_total,
     undefined,
-    { normal: true }
+    { normal: true, precision: 'auto' }
   ),
   createNumberColumn<Project, string | number>(
     'peopleReached',
-    'People Reached',
+    strings.threeWTablePeopleReached,
     (item) => item.reached_total,
     undefined,
-    { normal: true }
+    { normal: true, precision: 'auto' }
   ),
-];
+]);
 
-export const inCountryProjectColumns = [
+export const getInCountryProjectColumns = (strings: Strings) => ([
   createStringColumn<Project, string | number>(
     'ns',
-    'National Society',
+    strings.threeWTableNS,
     (item) => item.reporting_ns_detail?.society_name,
   ),
-  ...baseColumns,
-];
+  ...getBaseColumns(strings),
+]);
 
-export const nsProjectColumns = [
+export const getNSProjectColumns = (strings: Strings) => ([
   createStringColumn<Project, string | number>(
     'country',
-    'Receiving Country',
+    strings.threeWTableCountry,
     (item) => item.project_country_detail?.name,
   ),
-  ...baseColumns,
-];
+  ...getBaseColumns(strings),
+]);
+
+export const getAllProjectColumns = (strings: Strings) => ([
+  createStringColumn<Project, string | number>(
+    'country',
+    strings.threeWTableCountry,
+    (item) => item.project_country_detail?.name,
+  ),
+  createStringColumn<Project, string | number>(
+    'ns',
+    strings.threeWTableNS,
+    (item) => item.reporting_ns_detail?.society_name,
+  ),
+  ...getBaseColumns(strings),
+]);

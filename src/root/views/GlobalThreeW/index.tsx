@@ -9,12 +9,13 @@ import { _cs } from '@togglecorp/fujs';
 import type { Location } from 'history';
 
 import BlockLoading from '#components/block-loading';
-import { useButtonFeatures } from '#components/Button';
+import Translate from '#components/Translate';
 import Card from '#components/Card';
 import KeyFigure from '#components/KeyFigure';
 import Container from '#components/Container';
 import BreadCrumb from '#components/breadcrumb';
 import ExportProjectsButton from '#components/ExportProjectsButton';
+import { useButtonFeatures } from '#components/Button';
 import LanguageContext from '#root/languageContext';
 import { useRequest, ListResponse } from '#utils/restRequest';
 
@@ -101,19 +102,19 @@ function GlobalThreeW(props: Props) {
   const numTargetedPopulation = projectsOverviewResponse?.target_total;
 
   const crumbs = useMemo(() => [
-    { link: location?.pathname, name: 'Global 3W' },
+    { link: location?.pathname, name: strings.breadCrumbGlobalThreeW },
     { link: '/', name: strings.breadCrumbHome },
-  ], [strings.breadCrumbHome, location]);
+  ], [strings.breadCrumbHome, strings.breadCrumbGlobalThreeW, location]);
 
   const addThreeWLinkProps = useButtonFeatures({
     variant: 'secondary',
     icons: <IoAdd />,
-    children: 'Add 3W Project',
+    children: strings.globalThreeWAddProjectButtonLabel,
   });
 
   const exploreRegional3WLinkProps = useButtonFeatures({
     variant: 'primary',
-    children: 'Explore Regional 3W',
+    children: strings.globalThreeWExploreRegionalButtonLabel,
   });
 
   const [
@@ -153,15 +154,36 @@ function GlobalThreeW(props: Props) {
   return (
     <Page
       className={_cs(styles.globalThreeW, className)}
-      title="IFRC Go - Global 3W Response"
-      heading="Global 3W Response"
+      title={strings.globalThreeWPageTitle}
+      heading={strings.globalThreeWPageHeading}
       actions={(
         <Link
           to="/three-w/new"
           {...addThreeWLinkProps}
         />
       )}
-      description="Description lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque ligula sem, tempus et iaculis quis, auctor ut elit. Ut vitae eros quis nunc fringilla ultrices."
+      description={(
+        <>
+          <p>
+            {strings.globalThreeWPageDescriptionP1}
+          </p>
+          <p>
+            <Translate
+              stringId="globalThreeWPageDescriptionP2"
+              params={{
+                contactLink: (
+                  <a
+                    href="mailto:im@ifrc.org"
+                  >
+                    IM@ifrc.org
+                  </a>
+                ),
+              }}
+            />
+          </p>
+        </>
+
+      )}
       breadCrumbs={<BreadCrumb crumbs={crumbs} compact />}
       infoContainerClassName={styles.infoContainer}
       withMainContentBackground
@@ -172,7 +194,7 @@ function GlobalThreeW(props: Props) {
           <Card>
             <KeyFigure
               value={numOngoingProjects}
-              description="Ongoing Projects"
+              description={strings.globalThreeWKeyFigureOngoingProjectsTitle}
               footerIcon={<div className="collecticon-book" />}
               inline
             />
@@ -180,7 +202,7 @@ function GlobalThreeW(props: Props) {
           <Card>
             <KeyFigure
               value={numActiveSocieties}
-              description="Active National Societies"
+              description={strings.globalThreeWKeyFigureActiveNSTitle}
               footerIcon={<div className="collecticon-rc-block" />}
               inline
             />
@@ -188,7 +210,7 @@ function GlobalThreeW(props: Props) {
           <Card>
             <KeyFigure
               value={numTargetedPopulation}
-              description="Targeted Population"
+              description={strings.globalThreeWKeyTargetedPopulationTitle}
               footerIcon={<div className="collecticon-affected-population" />}
               inline
             />
@@ -204,20 +226,20 @@ function GlobalThreeW(props: Props) {
         ) : (
           <>
             <Card
-              title="Project Per Sector"
+              title={strings.globalThreeWChartProjectPerSectorTitle}
               className={styles.projectPerSectorChart}
             >
               <ThreeWBarChart data={projectPerSectorChartData} />
             </Card>
             <Card
+              title={strings.globalThreeWChartProgrammeTypeTitle}
               className={styles.programmeTypeChart}
-              title="Programme Type"
             >
               <ThreeWPieChart data={projectPerProgrammeTypeChartData} />
             </Card>
             <Card
+              title={strings.globalThreeWChartTopTagsTitle}
               className={styles.topTagsChart}
-              title="Top Tags"
             >
               <ThreeWBarChart
                 data={projectPerSecondarySectorChartData}
@@ -228,12 +250,11 @@ function GlobalThreeW(props: Props) {
       </Container>
       <Container
         className={styles.nsWithOngoingProjects}
-        heading="NS with ongoing projects"
+        heading={strings.globalThreeWMapHeading}
         actions={(
           <>
             <ExportProjectsButton
-              label="Export"
-              fileNameSuffix="All projects"
+              fileNameSuffix="All 3W Projects"
             />
             <Link
               to="/regions/0#3w"

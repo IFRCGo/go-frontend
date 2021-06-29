@@ -233,3 +233,47 @@ export const PROJECT_STATUS_ONGOING = 1;
 export const PROJECT_STATUS_PLANNED = 0;
 
 export const projectKeySelector = (p: Project) => p.id;
+
+type ProjectKey = keyof Project;
+
+export function filterProjects(
+  projectList: Project[],
+  filters: Partial<Record<ProjectKey, number[]>>,
+) {
+  const filterKeys = Object.keys(filters) as ProjectKey[];
+
+  return filterKeys.reduce((filteredProjectList, filterKey) => {
+    const filterValue = filters[filterKey];
+
+    if (filterValue?.length === 0) {
+      return filteredProjectList;
+    }
+
+    return filteredProjectList.filter((project) => {
+      const value = project[filterKey];
+
+      if (!isDefined(value)) {
+        return true;
+      }
+
+
+      if (!isDefined(filterValue)) {
+        return true;
+      }
+
+      if (Array.isArray(value)) {
+        return (value as number[]).some(
+          (v) => (
+            filterValue.findIndex(
+              (fv) => String(fv) === String(v)
+            ) !== -1
+          )
+        );
+      }
+
+      return filterValue.findIndex(
+        (fv) => String(fv) === String(value)
+      ) !== -1;
+    });
+  }, projectList);
+}

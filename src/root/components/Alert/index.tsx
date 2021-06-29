@@ -5,13 +5,17 @@ import {
   AiOutlineInfoCircle,
   AiOutlineWarning,
   AiOutlineCheckCircle,
-  AiOutlineClose,
   AiOutlineQuestionCircle,
 } from 'react-icons/ai';
 
+import {
+  IoClose,
+} from 'react-icons/io5';
+
 import { AlertVariant } from '#components/AlertContext';
 import ElementFragments from '#components/ElementFragments';
-import RawButton from '#components/RawButton';
+import Button from '#components/Button';
+import Translate from '#components/Translate';
 
 import styles from './styles.module.scss';
 
@@ -22,6 +26,7 @@ export interface Props<N> {
   children: React.ReactNode;
   nonDismissable?: boolean;
   onCloseButtonClick?: (name: N) => void;
+  debugMessage?: string;
 }
 
 const alertVariantToClassNameMap: {
@@ -42,6 +47,7 @@ function Alert<N extends string>(props: Props<N>) {
     children,
     onCloseButtonClick,
     nonDismissable,
+    debugMessage,
   } = props;
 
   const icon: {
@@ -60,6 +66,12 @@ function Alert<N extends string>(props: Props<N>) {
     }
   }, [onCloseButtonClick, name]);
 
+  const handleCopyDebugMessageButtonClick = React.useCallback(() => {
+    if (debugMessage) {
+      navigator.clipboard.writeText(debugMessage);
+    }
+  }, [debugMessage]);
+
   return (
     <div
       className={_cs(
@@ -68,21 +80,36 @@ function Alert<N extends string>(props: Props<N>) {
         alertVariantToClassNameMap[variant],
       )}
     >
-      <ElementFragments
-        icons={icon[variant]}
-        childrenContainerClassName={styles.content}
-        actions={!nonDismissable && (
-          <RawButton
-            className={styles.closeButton}
+      <div className={styles.content}>
+        <ElementFragments
+          icons={icon[variant]}
+          childrenContainerClassName={styles.content}
+          actions={!nonDismissable && (
+            <Button
+              className={styles.closeButton}
+              name={undefined}
+              onClick={handleCloseButtonClick}
+              variant="action"
+            >
+              <IoClose />
+            </Button>
+          )}
+        >
+          { children }
+        </ElementFragments>
+      </div>
+      {debugMessage && (
+        <div className={styles.actions}>
+          <Button
+            className={styles.copyDebugMessageButton}
             name={undefined}
-            onClick={handleCloseButtonClick}
+            onClick={handleCopyDebugMessageButtonClick}
+            variant="transparent"
           >
-            <AiOutlineClose className={styles.icon} />
-          </RawButton>
-        )}
-      >
-        { children }
-      </ElementFragments>
+            <Translate stringId="alertCopyErrorDetails" />
+          </Button>
+        </div>
+      )}
     </div>
   );
 }
