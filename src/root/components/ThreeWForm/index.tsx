@@ -56,7 +56,7 @@ const defaultFormValues: PartialForm<FormType> = {
 
 interface Props {
   className?: string;
-  onSubmitSuccess?: () => void;
+  onSubmitSuccess?: (result: Project) => void;
   projectId?: number;
   initialValue?: Partial<ProjectFormFields>;
 }

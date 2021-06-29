@@ -11,6 +11,7 @@ import {
   Rectangle,
 } from 'recharts';
 
+import Translate from '#components/Translate';
 import type {
   SankeyNode as SankeyNodeFields,
   SankeyLink as SankeyLinkFields,
@@ -21,7 +22,9 @@ import styles from './styles.module.scss';
 function EmptySankey ({ className } : { className?: string}) {
   return (
     <div className={_cs(styles.emptySankey, className)}>
-      Not enough data to view the chart!
+      <Translate
+        id="threeWEmptySankeyMessage"
+      />
     </div>
   );
 }

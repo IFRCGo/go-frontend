@@ -65,10 +65,12 @@ function Filters(props: Props) {
   const { strings } = React.useContext(LanguageContext);
   const allCountries = useReduxState('allCountries');
   const nsOptions = React.useMemo(
-    () => allCountries?.data?.results.map((c) => ({
+    () => allCountries?.data?.results.filter((c) => (
+      c.independent && !c.is_deprecated && c.society_name
+    )).map((c) => ({
       value: c.id,
       label: c.society_name,
-    })).filter(d => d.label).sort(compareLabel) ?? [],
+    })).sort(compareLabel) ?? [],
     [allCountries],
   );
 

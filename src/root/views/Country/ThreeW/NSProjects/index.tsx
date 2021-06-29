@@ -13,7 +13,7 @@ import {
 } from 'react-icons/io5';
 
 import BlockLoading from '#components/block-loading';
-import Button, { useButtonFeatures } from '#components/Button';
+import { useButtonFeatures } from '#components/Button';
 import Translate from '#components/Translate';
 import KeyFigure from '#components/KeyFigure';
 import Card from '#components/Card';
@@ -36,7 +36,7 @@ import {
 import ProjectTableActions from '../ProjectTableActions';
 import ProjectStatPieChart from '../ProjectStatPieChart';
 import ProjectFlowSankey from '../ProjectFlowSankey';
-import { nsProjectColumns } from '../projectTableColumns';
+import { getNSProjectColumns } from '../projectTableColumns';
 import {
   LabelValue,
   emptyProjectList,
@@ -151,7 +151,7 @@ function NSProjects(props: Props) {
   ), [ongoingProjects]);
 
   const tableColumns = React.useMemo(() => ([
-    ...nsProjectColumns,
+    ...getNSProjectColumns(strings),
     createActionColumn(
       'actions',
       (rowKey: number | string, prj: Project) => ({
@@ -164,7 +164,7 @@ function NSProjects(props: Props) {
         ),
       }),
     ),
-  ]), [retriggerProjectListRequest]);
+  ]), [strings, retriggerProjectListRequest]);
 
   const currentProjectList = ongoingProjects;
 

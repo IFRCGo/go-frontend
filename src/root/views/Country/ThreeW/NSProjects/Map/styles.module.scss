@@ -6,4 +6,19 @@
   .project-detail-item {
     padding: $spacing;
   }
+
+  .loading {
+    width: 16rem;
+    margin: 0;
+    height: 10rem;
+    border: $base-border-width solid $base-border-color;
+    border-radius: 0;
+
+    :global {
+      .spinner {
+        display: flex;
+        align-items: center;
+      }
+    }
+  }
 }

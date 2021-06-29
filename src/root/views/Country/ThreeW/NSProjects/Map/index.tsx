@@ -3,6 +3,7 @@ import {
   _cs,
   listToMap,
   isDefined,
+  isNotDefined,
 } from '@togglecorp/fujs';
 import Map, {
   MapImage,
@@ -12,8 +13,13 @@ import Map, {
   MapTooltip
 } from '@togglecorp/re-map';
 
+import BlockLoading from '#components/block-loading';
 import MapTooltipContent from '#components/MapTooltipContent';
 import useReduxState from '#hooks/useReduxState';
+import {
+  ListResponse,
+  useRequest,
+} from '#utils/restRequest';
 import { aggregateList } from '#utils/common';
 import {
   defaultMapStyle,
@@ -92,6 +98,70 @@ type NsProjectStatsGeoJson = GeoJSON.FeatureCollection<GeoJSON.Point, GeoJsonPro
 type ReportingNsProjectStatsGeoJson = GeoJSON.FeatureCollection<GeoJSON.Point, ReportingGeoJsonProps>;
 
 type LineGeoJson = GeoJSON.FeatureCollection<GeoJSON.LineString, {}>;
+
+interface TooltipProps {
+  countryId: number;
+  onHide: () => void;
+  lngLat: mapboxgl.LngLatLike;
+}
+
+const emptyProjectList: Project[] = [];
+
+function Tooltip(props: TooltipProps) {
+  const {
+    countryId,
+    lngLat,
+    onHide,
+  } = props;
+
+  const allCountries = useReduxState('allCountries');
+  const countries = allCountries?.data?.results ?? [];
+  const country = countries.find(d => d.id === countryId);
+
+  const {
+    pending,
+    response,
+  } = useRequest<ListResponse<Project>>({
+    skip: isNotDefined(country?.iso),
+    url: 'api/v2/project/',
+    query: {
+      limit: 500,
+      country: country?.iso,
+    },
+  });
+
+  const projectList = response?.results || emptyProjectList;
+
+  return (
+    <MapTooltip
+      coordinates={lngLat}
+      tooltipOptions={tooltipOptions}
+      onHide={onHide}
+    >
+      {pending ? (
+        <BlockLoading className={styles.loading} />
+      ) : (
+        <MapTooltipContent
+          title={projectList[0]?.project_country_detail.name}
+          href={`/countries/${projectList[0]?.project_country}/#3w`}
+          onCloseButtonClick={onHide}
+          className={styles.mapTooltip}
+        >
+          {projectList.map((project) => (
+            <div
+              className={styles.projectDetailItem}
+              key={project.id}
+            >
+              <div className={styles.name}>
+                {project.name}
+              </div>
+            </div>
+          ))}
+        </MapTooltipContent>
+      )}
+    </MapTooltip>
+  );
+}
 
 interface Props {
   className?: string;
@@ -339,30 +409,12 @@ function ThreeWMap(props: Props) {
           }}
         />
       </MapSource>
-      {clickedPointProperties?.lngLat && selectedCountryProjectDetail && (
-        <MapTooltip
-          coordinates={clickedPointProperties.lngLat}
-          tooltipOptions={tooltipOptions}
+      {clickedPointProperties?.lngLat && clickedPointProperties?.feature?.id && (
+        <Tooltip
+          countryId={+clickedPointProperties.feature.id}
           onHide={handlePointClose}
-        >
-          <MapTooltipContent
-            title={selectedCountryProjectDetail[0].project_country_detail.name}
-            href={`/countries/${selectedCountryProjectDetail[0].project_country}/#3w`}
-            onCloseButtonClick={handlePointClose}
-            className={styles.mapTooltip}
-          >
-            {selectedCountryProjectDetail.map((project) => (
-              <div
-                className={styles.projectDetailItem}
-                key={project.id}
-              >
-                <div className={styles.name}>
-                  {project.name}
-                </div>
-              </div>
-            ))}
-          </MapTooltipContent>
-        </MapTooltip>
+          lngLat={clickedPointProperties.lngLat}
+        />
       )}
     </Map>
   );

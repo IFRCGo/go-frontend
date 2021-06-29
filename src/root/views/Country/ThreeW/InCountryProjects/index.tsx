@@ -44,7 +44,7 @@ import ProjectFormModal from '../ProjectFormModal';
 import ProjectTableActions from '../ProjectTableActions';
 import ProjectStatPieChart from '../ProjectStatPieChart';
 import ProjectFlowSankey from '../ProjectFlowSankey';
-import { inCountryProjectColumns } from '../projectTableColumns';
+import { getInCountryProjectColumns } from '../projectTableColumns';
 import {
   LabelValue,
   emptyProjectList,
@@ -180,7 +180,7 @@ function InCountryProjects(props: Props) {
   ), [ongoingProjects]);
 
   const tableColumns = React.useMemo(() => ([
-    ...inCountryProjectColumns,
+    ...getInCountryProjectColumns(strings),
     createActionColumn(
       'actions',
       (rowKey: number | string, prj: Project) => ({
@@ -193,7 +193,7 @@ function InCountryProjects(props: Props) {
         ),
       }),
     ),
-  ]), [retriggerProjectListRequest]);
+  ]), [retriggerProjectListRequest, strings]);
 
   const currentProjectList = ongoingProjects;
 

@@ -15,6 +15,7 @@ import {
 import { AlertVariant } from '#components/AlertContext';
 import ElementFragments from '#components/ElementFragments';
 import Button from '#components/Button';
+import Translate from '#components/Translate';
 
 import styles from './styles.module.scss';
 
@@ -67,12 +68,7 @@ function Alert<N extends string>(props: Props<N>) {
 
   const handleCopyDebugMessageButtonClick = React.useCallback(() => {
     if (debugMessage) {
-      const el = document.createElement('textarea');
-      el.value = debugMessage;
-      document.body.appendChild(el);
-      el.select();
-      document.execCommand('copy');
-      document.body.removeChild(el);
+      navigator.clipboard.writeText(debugMessage);
     }
   }, [debugMessage]);
 
@@ -110,7 +106,7 @@ function Alert<N extends string>(props: Props<N>) {
             onClick={handleCopyDebugMessageButtonClick}
             variant="transparent"
           >
-            Copy detailed error
+            <Translate stringId="alertCopyErrorDetails" />
           </Button>
         </div>
       )}

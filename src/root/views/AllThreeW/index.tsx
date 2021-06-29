@@ -3,15 +3,16 @@ import { _cs } from '@togglecorp/fujs';
 import type { Location } from 'history';
 
 import BlockLoading from '#components/block-loading';
+import Translate from '#components/Translate';
 import Page from '#components/Page';
 import Pager from '#components/Pager';
 import BreadCrumb from '#components/breadcrumb';
 import Container from '#components/Container';
 import Table from '#components/Table';
 import {
-  inCountryProjectColumns,
-  nsProjectColumns,
-  allProjectColumns,
+  getInCountryProjectColumns,
+  getNSProjectColumns,
+  getAllProjectColumns,
 } from '#views/Country/ThreeW/projectTableColumns';
 import { projectKeySelector } from '#views/Country/ThreeW/common';
 import LanguageContext from '#root/languageContext';
@@ -35,7 +36,6 @@ function NewThreeW(props: Props) {
     className,
     location,
   } = props;
-
   const [query, queryType] = React.useMemo(() => {
     let baseQuery;
     let queryType: 'country' | 'ns' | undefined;
@@ -59,10 +59,9 @@ function NewThreeW(props: Props) {
 
   const { strings } = React.useContext(LanguageContext);
   const crumbs = React.useMemo(() => [
-    // FIXME: use translations
-    {link: location?.pathname, name: 'All 3W' },
+    {link: location?.pathname, name: strings.breadCrumbAllThreeW},
     {link: '/', name: strings.breadCrumbHome},
-  ], [strings.breadCrumbHome, location]);
+  ], [strings.breadCrumbHome, strings.breadCrumbAllThreeW, location]);
 
   const [activePage, setActivePage] = React.useState(1);
 
@@ -80,26 +79,33 @@ function NewThreeW(props: Props) {
 
   const columns = React.useMemo(() => {
     if (queryType === 'ns') {
-      return nsProjectColumns;
+      return getNSProjectColumns(strings);
     }
 
     if (queryType === 'country') {
-      return inCountryProjectColumns;
+      return getInCountryProjectColumns(strings);
     }
 
-    return allProjectColumns;
-  }, [queryType]);
+    return getAllProjectColumns(strings);
+  }, [queryType, strings]);
 
 
   return (
     <Page
       className={_cs(styles.allThreeW, className)}
-      title="IFRC Go - All 3W"
+      title={strings.allThreeWPageTitle}
       breadCrumbs={<BreadCrumb crumbs={crumbs} compact />}
     >
       <Container
         className={styles.mainContent}
-        heading={pending ? 'All 3W' : `All 3W (${response?.count})`}
+        heading={(
+          <Translate
+            stringId="allThreeWPageHeading"
+            params={{
+              count: (!pending && response) ? response.count : '--'
+            }}
+          />
+        )}
       >
         {pending ? (
           <BlockLoading />

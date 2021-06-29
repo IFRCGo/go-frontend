@@ -55,7 +55,7 @@ const bluePointCirclePaint = getPointCirclePaint(COLOR_BLUE);
 const orangePointCirclePaint = getPointCirclePaint(COLOR_ORANGE);
 const tooltipOptions: mapboxgl.PopupOptions = {
   closeButton: false,
-  offset: 8,
+  // offset: 8,
 };
 const sourceOption: mapboxgl.GeoJSONSourceRaw = {
   type: 'geojson',
@@ -163,7 +163,10 @@ function GlobalThreeWMap(props: Props) {
           type: getPointType(item),
         }),
       ),
-      unique(projectList.map(getPointType), d => d.id),
+      unique(
+        projectList.map(getPointType),
+        d => d.id,
+      )?.sort((a, b) => (b.id - a.id)),
     ]),
     [projectList],
   );

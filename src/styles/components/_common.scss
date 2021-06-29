@@ -5,6 +5,20 @@
   .mapboxgl-ctrl-compass {
     display: none;
   }
+
+  .mapboxgl-popup {
+    height: 12rem;
+    width: 20rem;
+
+    .mapboxgl-popup-content {
+      width: 100%;
+
+      >div {
+        width: 100%;
+        height: 100%;
+      }
+    }
+  }
 }
 
 .project-form-modal {
