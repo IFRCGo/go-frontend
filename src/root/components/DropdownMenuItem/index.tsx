@@ -96,6 +96,7 @@ function DropdownMenuItem<N extends string | number>(props: Props<N>) {
       className={className}
       onClick={props.onClick as RawButtonProps<undefined>['onClick']}
     >
+      {children}
     </RawButton>
   );
 }

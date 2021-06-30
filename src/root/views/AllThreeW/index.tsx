@@ -36,6 +36,7 @@ function AllThreeW(props: Props) {
     className,
     location,
   } = props;
+
   const [query, queryType] = React.useMemo(() => {
     let baseQuery;
     let queryType: 'country' | 'ns' | undefined;
