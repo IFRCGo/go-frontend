@@ -107,11 +107,11 @@ function ProjectDetail(props: Props) {
         <div className={styles.content}>
           <Row>
             <FieldOutput
-              label="Reporting National Society"
+              label={strings.threeWNationalSociety}
               value={projectResponse?.reporting_ns_detail?.name}
             />
             <FieldOutput
-              label="Country and Region/Province"
+              label={strings.threeWCountryAndRegion}
               value={(
                 <>
                   <div>
@@ -126,79 +126,79 @@ function ProjectDetail(props: Props) {
           </Row>
           <Row>
             <FieldOutput
-              label="Project Type"
+              label={strings.threeWProjectType}
               value={projectResponse?.operation_type_display}
             />
             <FieldOutput
-              label="Programme Type"
+              label={strings.threeWProgrammeType}
               value={projectResponse?.programme_type_display}
             />
           </Row>
           <Row>
             <FieldOutput
-              label="Linked Operation"
+              label={strings.threeWLinkedOperation}
               value={projectResponse?.event_detail?.name}
             />
             <FieldOutput
-              label="Disaster Type"
+              label={strings.threeWDisasterType}
               value={projectResponse?.dtype_detail?.name}
             />
           </Row>
           <Row>
             <FieldOutput
-              label="Project Sector"
+              label={strings.threeWPrimarySector}
               value={projectResponse?.primary_sector_display}
             />
             <FieldOutput
-              label="Tags"
+              label={strings.threeWTagging}
               value={projectResponse?.secondary_sectors_display?.join(', ')}
             />
           </Row>
           <Row>
             <FieldOutput
-              label="Start Date"
+              label={strings.threeWStartDate}
               value={projectResponse?.start_date}
               valueType="date"
             />
             <FieldOutput
-              label="End Date"
+              label={strings.threeWEndDate}
               value={projectResponse?.end_date}
               valueType="date"
             />
           </Row>
           <Row>
             <FieldOutput
-              label="Status"
+              label={strings.threeWStatus}
               value={projectResponse?.status_display}
             />
             <FieldOutput
-              label="Budget"
+              label={strings.threeWBudgetAmount}
               value={projectResponse?.budget_amount}
               valueType="number"
             />
           </Row>
           <Row>
             <FieldOutput
-              label="People Targeted"
+              label={strings.threeWPeopleTargeted}
               value={(
                 <Row>
                   <FieldOutput
-                    label="Male"
+                    label={strings.threeWMale}
                     value={projectResponse?.target_male}
                     valueType="number"
                   />
                   <FieldOutput
-                    label="Female"
+                    label={strings.threeWFemale}
                     value={projectResponse?.target_female}
                     valueType="number"
                   />
                   <FieldOutput
-                    label="Other"
+                    label={strings.threeWOther}
                     value={projectResponse?.target_other}
                     valueType="number"
                   />
                   <FieldOutput
-                    label="Total"
+                    label={strings.threeWTotal}
                     value={projectResponse?.target_total}
                     valueType="number"
                   />
@@ -208,26 +208,26 @@ function ProjectDetail(props: Props) {
           </Row>
           <Row>
             <FieldOutput
-              label="People Reached"
+              label={strings.threeWPeopleReached}
               value={(
                 <Row>
                   <FieldOutput
-                    label="Male"
+                    label={strings.threeWMale}
                     value={projectResponse?.reached_male}
                     valueType="number"
                   />
                   <FieldOutput
-                    label="Female"
+                    label={strings.threeWFemale}
                     value={projectResponse?.reached_female}
                     valueType="number"
                   />
                   <FieldOutput
-                    label="Other"
+                    label={strings.threeWOther}
                     value={projectResponse?.reached_other}
                     valueType="number"
                   />
                   <FieldOutput
-                    label="Total"
+                    label={strings.threeWTotal}
                     value={projectResponse?.reached_total}
                     valueType="number"
                   />
