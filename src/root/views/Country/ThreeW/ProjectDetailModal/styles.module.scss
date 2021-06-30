@@ -2,46 +2,4 @@
 
 .project-detail {
   padding: $spacing*2;
-
-  .header {
-    padding: $spacing*7/4;
-
-    .header-description {
-      margin: -$spacing/4;
-    }
-  }
-
-  .content {
-    .row {
-      display: flex;
-
-      >* {
-        flex-basis: 0;
-        flex-grow: 1;
-      }
-    }
-
-    .field-output {
-      display: flex;
-      padding: $spacing;
-
-      .label {
-        text-transform: uppercase;
-        width: 10rem;
-        flex-shrink: 0;
-        padding: $spacing;
-      }
-
-      .value {
-        font-weight: $base-font-medium;
-        padding: $spacing;
-      }
-
-      .field-output {
-        .label {
-          width: auto;
-        }
-      }
-    }
-  }
 }

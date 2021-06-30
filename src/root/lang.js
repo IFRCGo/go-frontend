@@ -960,6 +960,8 @@ export default {
   threeWFilterTags: 'Tags',
   threeWFilterNS: 'National Societies',
   threeWFilterProvinces: 'Provinces',
+  threeWEditProject: 'Edit Project',
+  threeWUpdateMessage: 'Project Updated, Redirecting...',
 
   threeWTableProjectName: 'Project Name',
   threeWTableSector: 'Sector',
@@ -971,9 +973,9 @@ export default {
   threeWTableNS: 'National Society',
   threeWTableCountry: 'Receiving Country',
   threeWEmptySankeyMessage: 'Not enough data to view the chart!',
-
   threeWNSMapReportingNS: 'Reporting NS',
   threeWNSMapReceivingCountry: 'Receiving Country',
+  threeWLastModifiedOn: 'Last Modified On',
 
   projectFormReportingNational: 'Reporting National Society *',
   projectFormReportingHelpText: 'Select National Society that is carrying out the activity.',
@@ -1334,6 +1336,9 @@ export default {
   breadCrumbEditFieldReport: 'Edit Field Report',
   breadCrumbGlobalThreeW: 'Global 3W',
   breadCrumbAllThreeW: 'All 3W',
+  breadCrumbThreeW: '3W',
+  breadCrumbEditProject: 'Edit Project',
+  breadCrumbProjectDetails: 'Project Details',
   breadCrumbNewThreeW: 'Create new 3W activity',
 
   countriesEmergencyLinkTooltip: 'View Emergency',
@@ -1547,4 +1552,7 @@ export default {
   newThreeWPageHeading: 'Create 3W Project',
 
   alertCopyErrorDetails: 'Copy Error Details',
+
+  threeWPageTitle: 'IFRC Go - 3W Details',
+  threeWEditPageTitle: 'IFRC Go - Edit 3W',
 };
