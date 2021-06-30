@@ -6,8 +6,9 @@ import {
   useContext,
   useLayoutEffect,
 } from 'react';
-
 import AbortController from 'abort-controller';
+
+import useDidUpdateEffect from '#hooks/useDidUpdateEffect';
 
 import { prepareUrlParams, isFetchable, Methods } from './utils';
 import { UrlParams } from './types';
@@ -151,7 +152,7 @@ function useRequest<R, E, O>(
   );
 
   // To re-trigger request when skip changes
-  useEffect(
+  useDidUpdateEffect(
     () => {
       setRunId(skip ? -1 : new Date().getTime());
     },
