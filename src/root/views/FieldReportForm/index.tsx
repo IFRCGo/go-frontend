@@ -100,7 +100,13 @@ function FieldReportForm(props: Props) {
   const crumbs = React.useMemo(() => [
     {link: location?.pathname, name: isDefined(reportId) ? strings.breadCrumbEditFieldReport : strings.breadCrumbNewFieldReport},
     {link: '/', name: strings.breadCrumbHome},
-  ], [strings.breadCrumbHome, strings.breadCrumbNewFieldReport, location, reportId]);
+  ], [
+    strings.breadCrumbHome,
+    strings.breadCrumbEditFieldReport,
+    strings.breadCrumbNewFieldReport,
+    location,
+    reportId,
+  ]);
 
   const {
     value,

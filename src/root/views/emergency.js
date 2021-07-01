@@ -751,6 +751,8 @@ class Emergency extends React.Component {
     }
     const reportsByType = getRecordsByType(types, data);
     const filteredReportsByType = this.filterReports(reportsByType);
+    const reportTypes = filteredReportsByType.filter((rt) => ((rt.items?.length ?? 0) > 0));
+
     return (
       <Fold
         id="response-documents"
@@ -777,7 +779,7 @@ class Emergency extends React.Component {
           placeholder={strings.emergencyReportSearchPlaceholder}
         />
 
-        <div>{this.renderReports('situation-reports-list', filteredReportsByType)}</div>
+        <div>{this.renderReports('situation-reports-list', reportTypes)}</div>
       </Fold>
     );
   }
@@ -908,9 +910,16 @@ class Emergency extends React.Component {
   ))
 
   hasReportsTab () {
-    return get(this.props.event, 'data.field_reports.length') || 
-      get(this.props.appealDocuments, 'data.results.length') || 
-      get(this.props.situationReports, 'data.results.length');    
+    const {
+      event,
+      appealDocuments,
+      situationReports,
+    } = this.props;
+
+    return get(event, 'data.field_reports.length') ||
+      get(event, 'data.featured_documents.length') ||
+      get(appealDocuments, 'data.results.length') ||
+      get(situationReports, 'data.results.length');
   }
 
   hasRRTab () {
@@ -1189,7 +1198,6 @@ class Emergency extends React.Component {
                 <Tab key={tab.title}>{tab.title}</Tab>
               ))}
             </TabList>
-
             <div className="inpage__body">
               <div className="inner">
                 <TabPanel>
@@ -1202,7 +1210,6 @@ class Emergency extends React.Component {
                     <EmergencyOverview
                       data={data}
                       disasterTypes={disasterTypes} 
-                    
                     />
                   </TabContent>
                   <TabContent
@@ -1222,6 +1229,45 @@ class Emergency extends React.Component {
                       />
                     </Fold>
                   </TabContent>
+                  {(data?.links?.length ?? 0) > 0 && (
+                    <TabContent>
+                      <Fold
+                        id="links"
+                        title={strings.emergencyLinksTitle}
+                        foldWrapperClass="emergency-links fold--main"
+                      >
+                        <div className="emergency-link-list">
+                          {data.links.map((link) => {
+                            const {
+                              id,
+                              title,
+                              description,
+                              url,
+                            } = link;
+
+                            return (
+                              <div
+                                key={id}
+                                className="emergency-link"
+                              >
+                                <a
+                                  href={url}
+                                  className="emergency-link-title"
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                >
+                                  {title}
+                                </a>
+                                <div className="emergency-link-description">
+                                  {description}
+                                </div>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </Fold>
+                    </TabContent>
+                  )}
                   <div className='container-lg'>
                     <div className='row-lg flex-sm flex-justify-center'>
                       {showExportMap()}
@@ -1286,24 +1332,53 @@ class Emergency extends React.Component {
                 </TabPanel>
                 { this.hasReportsTab() ? (
                 <TabPanel>
-                  <TabContent
-                    isError={!get(this.props.event, 'data.field_reports.length')}
-                    errorMessage={strings.noDataMessage}
-                    title={strings.emergencyFieldReportsTitle}
-                  >
-                    {this.renderFieldReports()}
-                  </TabContent>
+                  {(data?.featured_documents?.length ?? 0) > 0 && (
+                    <TabContent>
+                      <Fold
+                        title={strings.emergencyFeaturedDocumentsTitle}
+                        foldWrapperClass="featured-documents fold--main"
+                      >
+                        <div className="feature-document-list">
+                          {data.featured_documents.map((featuredDocument) => {
+                            const {
+                              id,
+                              title,
+                              description,
+                              file,
+                              thumbnail,
+                            } = featuredDocument;
 
-                  <TabContent
-                    isError={
-                      !get(this.props.appealDocuments, 'data.results.length')
-                    }
-                    errorMessage={strings.noDataMessage}
-                    title={strings.emergencyAppealDocumentsTitle}
-                  >
-                    {this.renderAppealDocuments()}
-                  </TabContent>
-
+                            return (
+                              <div
+                                key={id}
+                                className="featured-document"
+                              >
+                                <div className="featured-document-thumbnail">
+                                  <img
+                                    src={thumbnail}
+                                    alt="Preview not available"
+                                  />
+                                </div>
+                                <div className="featured-document-details">
+                                  <a
+                                    href={file}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="featured-document-title"
+                                  >
+                                    {title}
+                                  </a>
+                                  <div className="featured-document-description">
+                                    {description}
+                                  </div>
+                                </div>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </Fold>
+                    </TabContent>
+                  )}
                   <TabContent
                     isError={
                       !get(this.props.situationReports, 'data.results.length')
@@ -1313,7 +1388,22 @@ class Emergency extends React.Component {
                   >
                     {this.renderResponseDocuments()}
                   </TabContent>
-
+                  <TabContent
+                    isError={!get(this.props.event, 'data.field_reports.length')}
+                    errorMessage={strings.noDataMessage}
+                    title={strings.emergencyFieldReportsTitle}
+                  >
+                    {this.renderFieldReports()}
+                  </TabContent>
+                  <TabContent
+                    isError={
+                      !get(this.props.appealDocuments, 'data.results.length')
+                    }
+                    errorMessage={strings.noDataMessage}
+                    title={strings.emergencyAppealDocumentsTitle}
+                  >
+                    {this.renderAppealDocuments()}
+                  </TabContent>
                 </TabPanel>
                 ) : null }
 

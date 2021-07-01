@@ -1369,6 +1369,8 @@ export default {
   emergencyRapidResponsePersonnel: 'Rapid Response Personnel',
   emergencyAffectedRegions: 'Affected Provinces',
   emergencySituationalOverviewTitle: 'Situational Overview',
+  emergencyLinksTitle: 'Links',
+  emergencyFeaturedDocumentsTitle: 'Featured Dcouments',
   emergencyAlertsTitle: 'Open Surge Alerts',
   emergencyPersonnelTitle: 'Personnel',
   emergencyERUTitle: 'ERUs',
