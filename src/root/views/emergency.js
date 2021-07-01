@@ -6,7 +6,7 @@ import { Link, withRouter } from 'react-router-dom';
 import { PropTypes as T } from 'prop-types';
 import _toNumber from 'lodash.tonumber';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
-
+import { isDefined } from '@togglecorp/fujs';
 import { Helmet } from 'react-helmet';
 
 import { adminUrl, environment } from '#config';
@@ -750,22 +750,43 @@ class Emergency extends React.Component {
       return null;
     }
     const reportsByType = getRecordsByType(types, data);
-    const filteredReportsByType = this.filterReports(reportsByType);
-    const reportTypes = filteredReportsByType.filter((rt) => ((rt.items?.length ?? 0) > 0));
+    const filteredReportsByType = (this.filterReports(reportsByType)).filter(
+      (rt) => ((rt.items?.length ?? 0) > 0)
+    );
+    const search = this.state.responseDocSearch;
+
+    let children = null;
+    if (filteredReportsByType.length === 0) {
+      if (isDefined(search)) {
+        children = (
+          <div className="empty-response-documents">
+            {strings.emergencyResponseDocumentSearchEmptyMessage}
+          </div>
+        );
+      }
+    } else {
+        children = (
+          <div>
+            {this.renderReports('situation-reports-list', filteredReportsByType)}
+          </div>
+        );
+    }
 
     return (
       <Fold
         id="response-documents"
         header={() => (
           <div className="fold__header__block">
-            <h2 className="fold__title">Response Documents</h2>
+            <h2 className="fold__title">
+              {strings.emergencyResponseDocumentsTitle}
+            </h2>
             <div className="fold__actions margin-left-auto">
               <a
                 className="button button--primary-bounded button--small"
                 href={addReportLink}
                 target="_blank"
               >
-                Add a Report
+                {strings.emergencyAddReportButtonLabel}
               </a>
             </div>
           </div>
@@ -778,8 +799,7 @@ class Emergency extends React.Component {
           className='emergency__response__search form__control'
           placeholder={strings.emergencyReportSearchPlaceholder}
         />
-
-        <div>{this.renderReports('situation-reports-list', reportTypes)}</div>
+        {children}
       </Fold>
     );
   }

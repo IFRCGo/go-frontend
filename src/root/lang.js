@@ -1425,6 +1425,8 @@ export default {
   emergencyActionUnsubscribeLabel: 'Unfollow',
   emergencyActionEditEventLabel: 'Edit Event',
   emergencyActionCreateThreeWActivityLabel: 'Create 3W Activity',
+  emergencyResponseDocumentSearchEmptyMessage: 'No document found for the given search',
+  emergencyAddReportButtonLabel: 'Add a Report',
 
   passwordChangePageTitle: 'IFRC Go - Change Password',
   passwordChangeHeading: 'Change my password',
