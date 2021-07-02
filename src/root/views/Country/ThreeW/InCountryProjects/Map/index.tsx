@@ -181,7 +181,7 @@ function ThreeWMap(props: Props) {
           title: d.operation_type_display,
         })),
       d => d.id,
-    ),
+    )?.sort((a, b) => (b.id - a.id)),
   ]), [projectList]);
 
   const districtGroupedProjects = listToGroupList(
