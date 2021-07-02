@@ -152,13 +152,21 @@ function ThreeWBarChart(props: BarChartProps) {
 
   return (
     <ResponsiveContainer
-      className={_cs(styles.chartContainer, className)}
+      className={_cs(
+        styles.chartContainer,
+        className
+      )}
       maxHeight={limitHeight ? 30*chartData.length : undefined}
     >
       <BarChart
         layout="vertical"
         data={chartData}
-        margin={{
+        margin={limitHeight ? {
+          top: 0,
+          right: 0,
+          bottom: 0,
+          left: 0,
+        } : {
           top: 10,
           right: 30,
           bottom: 10,
@@ -174,7 +182,7 @@ function ThreeWBarChart(props: BarChartProps) {
           type="category"
           scale="band"
           axisLine={false}
-          width={164}
+          width={limitHeight ? 186 : 164}
           tick={CustomYAxisTick}
         />
         {!hideTooltip && <Tooltip />}
