@@ -278,6 +278,7 @@
   
 .table__cell--progress__personnel {
   width: 40%;
+  padding-inline-start: 0;
 }
 
 .progress__block__personnel {
@@ -376,16 +377,6 @@
   background-size: 2px 100%;
   background-repeat:no-repeat;
   width: 1px;
-}
-
-.personnel__table__date {
-  &:first-of-type {
-    margin-inline-start: -30px;
-  }
-
-  &:last-of-type {
-    margin-inline-end: 30px;
-  }
 }
 
 .login-link {
