@@ -73,7 +73,6 @@ function GlobalThreeW(props: Props) {
   } = props;
 
   const allRegions = useReduxState('allRegions');
-  const regionList = allRegions?.data?.results || [];
 
   const { strings } = useContext(LanguageContext);
 
@@ -263,16 +262,19 @@ function GlobalThreeW(props: Props) {
             <ExportProjectsButton
               fileNameSuffix="All 3W Projects"
             />
-            <DropdownMenu
-              label={<div {...exploreRegional3WLinkProps} /> }
-            >
-              {regionList.map((region) => (
-                <DropdownMenuItem
-                  label={region.region_name}
-                  href={`/regions/${region.id}#3w`}
-                />
-              ))}
-            </DropdownMenu>
+            {(allRegions?.data?.results?.length ?? 0) > 0 && (
+              <DropdownMenu
+                label={<div {...exploreRegional3WLinkProps} /> }
+              >
+                {allRegions.data.results.map((region) => (
+                  <DropdownMenuItem
+                    key={region.id}
+                    label={region.region_name}
+                    href={`/regions/${region.id}#3w`}
+                  />
+                ))}
+              </DropdownMenu>
+            )}
           </>
         )}
         descriptionClassName={styles.filtersContainer}
