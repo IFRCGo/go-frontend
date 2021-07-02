@@ -269,7 +269,7 @@ function GlobalThreeW(props: Props) {
               {regionList.map((region) => (
                 <DropdownMenuItem
                   label={region.region_name}
-                  href={`/regions/${region.id}#3w/`}
+                  href={`/regions/${region.id}#3w`}
                 />
               ))}
             </DropdownMenu>
