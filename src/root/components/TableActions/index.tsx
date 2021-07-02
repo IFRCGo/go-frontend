@@ -1,6 +1,6 @@
 import React from 'react';
 import { _cs } from '@togglecorp/fujs';
-import { IoEllipsisVertical } from 'react-icons/io5';
+import { IoEllipsisHorizontal } from 'react-icons/io5';
 
 import DropdownMenu from '#components/dropdown-menu';
 
@@ -24,7 +24,7 @@ function TableActions(props: Props) {
       { children }
       {extraActions && (
         <DropdownMenu
-          label={<IoEllipsisVertical />}
+          label={<IoEllipsisHorizontal />}
         >
           {extraActions}
         </DropdownMenu>

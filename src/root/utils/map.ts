@@ -20,6 +20,19 @@ export const COLOR_YELLOW = '#ff9e00';
 export const COLOR_BLUE = '#4c5d9b';
 export const COLOR_ORANGE = '#ff6b00';
 
+export const OPERATION_TYPE_PROGRAMME = 0;
+export const OPERATION_TYPE_EMERGENCY = 1;
+export const OPERATION_TYPE_MULTI = -1;
+
+export const pointColorMap: {
+  [key: number]: string;
+} = {
+  [OPERATION_TYPE_EMERGENCY]: COLOR_BLUE,
+  [OPERATION_TYPE_PROGRAMME]: COLOR_RED,
+  [OPERATION_TYPE_MULTI]: COLOR_ORANGE,
+};
+
+
 export function getPointCirclePaint(
   color: string,
   size: 'small' | 'medium' | 'large' = 'medium',

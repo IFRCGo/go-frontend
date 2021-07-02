@@ -25,6 +25,10 @@ import {
   COLOR_RED,
   COLOR_BLUE,
   COLOR_ORANGE,
+  pointColorMap,
+  OPERATION_TYPE_EMERGENCY,
+  OPERATION_TYPE_MULTI,
+  OPERATION_TYPE_PROGRAMME,
 } from '#utils/map';
 import { max } from '#utils/common';
 
@@ -38,40 +42,28 @@ import styles from './styles.module.scss';
 // 3. map.touchZoomRotate.disableRotation()
 // 4. Hide .mapbox-ctrl .mapbox-ctrl-compass
 
-const OPERATION_TYPE_PROGRAMME = 0;
-const OPERATION_TYPE_EMERGENCY = 1;
-const OPERATION_TYPE_MULTI = -1;
-
-const pointColorMap: {
-  [key: number]: string;
-} = {
-  [OPERATION_TYPE_EMERGENCY]: COLOR_BLUE,
-  [OPERATION_TYPE_PROGRAMME]: COLOR_RED,
-  [OPERATION_TYPE_MULTI]: COLOR_ORANGE,
-};
-
 const redPointCirclePaint = getPointCirclePaint(COLOR_RED);
 const bluePointCirclePaint = getPointCirclePaint(COLOR_BLUE);
 const orangePointCirclePaint = getPointCirclePaint(COLOR_ORANGE);
 const tooltipOptions: mapboxgl.PopupOptions = {
   closeButton: false,
-  // offset: 8,
+  offset: 8,
 };
 const sourceOption: mapboxgl.GeoJSONSourceRaw = {
   type: 'geojson',
 };
 
-interface ClickedPoint {
-  feature: GeoJSON.Feature<GeoJSON.Point, GeojsonProps>;
-  lngLat: mapboxgl.LngLatLike;
-}
-
-interface GeojsonProps {
+interface GeoJsonProps {
   countryId: number;
   total: number;
 }
 
-type NSProjectStatsGeoJson = GeoJSON.FeatureCollection<GeoJSON.Point, GeojsonProps>;
+interface ClickedPoint {
+  feature: GeoJSON.Feature<GeoJSON.Point, GeoJsonProps>;
+  lngLat: mapboxgl.LngLatLike;
+}
+
+type NSProjectGeoJson = GeoJSON.FeatureCollection<GeoJSON.Point, GeoJsonProps>;
 
 function getPointType(projectStat: NSOngoingProjectStat) {
   const {
@@ -87,7 +79,7 @@ function getPointType(projectStat: NSOngoingProjectStat) {
   }
 
   return {
-    id: -1,
+    id: OPERATION_TYPE_MULTI,
     title: 'Multiple types',
   };
 }
@@ -103,7 +95,7 @@ function getGeoJson(
     };
   }>,
   operationType: number
-): NSProjectStatsGeoJson {
+): NSProjectGeoJson {
   return {
     type: 'FeatureCollection' as const,
     features: countries.map((country) => {

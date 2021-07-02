@@ -1,6 +1,10 @@
 import React from 'react';
 import { _cs } from '@togglecorp/fujs';
 import type { Location } from 'history';
+import {
+  MdSearch,
+  MdEdit,
+} from 'react-icons/md';
 
 import BlockLoading from '#components/block-loading';
 import Translate from '#components/Translate';
@@ -8,7 +12,9 @@ import Page from '#components/Page';
 import Pager from '#components/Pager';
 import BreadCrumb from '#components/breadcrumb';
 import Container from '#components/Container';
+import DropdownMenuItem from '#components/DropdownMenuItem';
 import Table from '#components/Table';
+import { createActionColumn } from '#components/Table/predefinedColumns';
 import {
   getInCountryProjectColumns,
   getNSProjectColumns,
@@ -79,15 +85,44 @@ function AllThreeW(props: Props) {
   });
 
   const columns = React.useMemo(() => {
+    const actionsColumn = createActionColumn(
+      'actions',
+      (rowKey: number | string, prj: Project) => ({
+        extraActions: (
+          <>
+            <DropdownMenuItem
+              href={`/three-w/${prj.id}/`}
+              label={strings.projectListTableViewDetails}
+              icon={<MdSearch />}
+            />
+            <DropdownMenuItem
+              href={`/three-w/${prj.id}/edit/`}
+              icon={<MdEdit />}
+              label={strings.projectListTableEdit}
+            />
+          </>
+        ),
+      }),
+    );
+
     if (queryType === 'ns') {
-      return getNSProjectColumns(strings);
+      return [
+        ...getNSProjectColumns(strings),
+        actionsColumn,
+      ];
     }
 
     if (queryType === 'country') {
-      return getInCountryProjectColumns(strings);
+      return [
+        ...getInCountryProjectColumns(strings),
+        actionsColumn,
+      ];
     }
 
-    return getAllProjectColumns(strings);
+    return [
+      ...getAllProjectColumns(strings),
+      actionsColumn,
+    ];
   }, [queryType, strings]);
 
 
