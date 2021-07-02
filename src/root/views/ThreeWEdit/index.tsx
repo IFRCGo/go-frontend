@@ -58,7 +58,7 @@ function ThreeWEdit(props: Props) {
       () => history.push(`/three-w/${project.id}/`),
       250,
     );
-  }, []);
+  }, [alert, history, strings.threeWUpdateMessage]);
 
   return (
     <Page

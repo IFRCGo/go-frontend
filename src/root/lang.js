@@ -1369,6 +1369,8 @@ export default {
   emergencyRapidResponsePersonnel: 'Rapid Response Personnel',
   emergencyAffectedRegions: 'Affected Provinces',
   emergencySituationalOverviewTitle: 'Situational Overview',
+  emergencyLinksTitle: 'Links',
+  emergencyFeaturedDocumentsTitle: 'Featured Dcouments',
   emergencyAlertsTitle: 'Open Surge Alerts',
   emergencyPersonnelTitle: 'Personnel',
   emergencyERUTitle: 'ERUs',
@@ -1423,6 +1425,8 @@ export default {
   emergencyActionUnsubscribeLabel: 'Unfollow',
   emergencyActionEditEventLabel: 'Edit Event',
   emergencyActionCreateThreeWActivityLabel: 'Create 3W Activity',
+  emergencyResponseDocumentSearchEmptyMessage: 'No document found for the given search',
+  emergencyAddReportButtonLabel: 'Add a Report',
 
   passwordChangePageTitle: 'IFRC Go - Change Password',
   passwordChangeHeading: 'Change my password',
