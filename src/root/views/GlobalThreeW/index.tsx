@@ -9,15 +9,18 @@ import { _cs } from '@togglecorp/fujs';
 import type { Location } from 'history';
 
 import BlockLoading from '#components/block-loading';
-import Translate from '#components/Translate';
-import Card from '#components/Card';
-import KeyFigure from '#components/KeyFigure';
-import Container from '#components/Container';
 import BreadCrumb from '#components/breadcrumb';
+import Card from '#components/Card';
+import Container from '#components/Container';
+import DropdownMenu from '#components/dropdown-menu';
+import DropdownMenuItem from '#components/DropdownMenuItem';
 import ExportProjectsButton from '#components/ExportProjectsButton';
+import KeyFigure from '#components/KeyFigure';
+import Translate from '#components/Translate';
 import { useButtonFeatures } from '#components/Button';
 import LanguageContext from '#root/languageContext';
 import { useRequest, ListResponse } from '#utils/restRequest';
+import useReduxState from '#hooks/useReduxState';
 
 import {
   ThreeWBarChart,
@@ -68,6 +71,8 @@ function GlobalThreeW(props: Props) {
     className,
     location,
   } = props;
+
+  const allRegions = useReduxState('allRegions');
 
   const { strings } = useContext(LanguageContext);
 
@@ -251,15 +256,25 @@ function GlobalThreeW(props: Props) {
       <Container
         className={styles.nsWithOngoingProjects}
         heading={strings.globalThreeWMapHeading}
+        contentClassName={styles.mapContent}
         actions={(
           <>
             <ExportProjectsButton
               fileNameSuffix="All 3W Projects"
             />
-            <Link
-              to="/regions/0#3w"
-              {...exploreRegional3WLinkProps}
-            />
+            {(allRegions?.data?.results?.length ?? 0) > 0 && (
+              <DropdownMenu
+                label={<div {...exploreRegional3WLinkProps} /> }
+              >
+                {allRegions.data.results.map((region) => (
+                  <DropdownMenuItem
+                    key={region.id}
+                    label={region.region_name}
+                    href={`/regions/${region.id}#3w`}
+                  />
+                ))}
+              </DropdownMenu>
+            )}
           </>
         )}
         descriptionClassName={styles.filtersContainer}

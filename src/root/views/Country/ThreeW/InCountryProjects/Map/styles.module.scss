@@ -7,3 +7,25 @@
     padding: $spacing/2 $spacing*3/4;
   }
 }
+
+.legend {
+  display: flex;
+  padding: $spacing/2;
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    padding: $spacing/2;
+
+    .point {
+      height: 0.6em;
+      width: 0.6em;
+      margin: $spacing/2;
+      border-radius: 50%;
+    }
+
+    .label {
+      padding: $spacing/2;
+    }
+  }
+}
