@@ -52,8 +52,8 @@ function StatusOverview (p) {
                   dataKey='value'
                   nameKey='label'
                   legendType='circle'
-                  startAngle={90}
-                  endAngle={450}
+                  startAngle={450}
+                  endAngle={90}
                 >
                   { data.map((entry) => {
                     return (
