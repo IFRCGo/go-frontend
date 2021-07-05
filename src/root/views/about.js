@@ -166,12 +166,12 @@ function About (props) {
                             </div>
                             <div className='box__global__content'>
                               <div className='box__global__content--ref row flex-xs'>
-                                <a href='https://ifrcorg.sharepoint.com/:b:/s/IFRCSharing/EX2saJXpnKRNtez_YFsTyAABZkv63odVuBlH7XLYtxgEgQ?e=lTm6ID' target='_blank' className='box__global__content--ref__link col col-6-xs'>
-                                  <Translate stringId='aboutVisualGuidelines'/>
+                                <a href='https://go-user-library.ifrc.org/' target='_blank' className='box__global__content--ref__link col col-6-xs'>
+                                  <Translate stringId='aboutGoUserLibrary'/>
                                   <span className='collecticon-chevron-right icon-about-ref'></span>
                                 </a>
-                                <a href='https://company-190156.frontify.com/d/zFf8DVC7Q8Uq/go-visual-identity' target='_blank' className='box__global__content--ref__link col col-6-xs'>
-                                  <Translate stringId='aboutVisualIdentity'/>
+                                <a href='https://ifrcgoproject.medium.com/' target='_blank' className='box__global__content--ref__link col col-6-xs'>
+                                  <Translate stringId='aboutGoBlog'/>
                                   <span className='collecticon-chevron-right icon-about-ref'></span>
                                 </a>
                                 <a href='https://ifrcorg.sharepoint.com/:b:/s/IFRCSharing/EUV7xJOyEZtDmecIH6uS9SIBwl3gv1cbxVjwS6m79gx7TQ?e=b2AgU3' target='_blank' className='box__global__content--ref__link col col-6-xs'>
@@ -190,14 +190,14 @@ function About (props) {
                                   <Translate stringId='about3WLessonLearned'/>
                                   <span className='collecticon-chevron-right icon-about-ref'></span>
                                 </a>
-                                <div className='box__global__content--ref__link col col-6-xs'>
-                                  <Translate stringId='aboutPresentation'/>
+                                <a href='https://ifrcorg.sharepoint.com/:f:/s/IFRCSharing/Es9Yv8LsLVBGn_jAkphR4YMBuZOD0eFgKPVCQMvREPw8ig?e=eLaaXF' target='_blank' className='box__global__content--ref__link col col-6-xs'>
+                                  <Translate stringId='aboutGoWorkplan2021'/>
                                   <span className='collecticon-chevron-right icon-about-ref'></span>
-                                </div>
-                                <div className='box__global__content--ref__link col col-6-xs'>
-                                  <Translate stringId='aboutImStrategy'/>
+                                </a>
+                                <a href='https://ifrcgoproject.medium.com/information-saves-lives-scaling-data-analytics-in-the-ifrc-network-fd3686718f9c' target='_blank' className='box__global__content--ref__link col col-6-xs'>
+                                  <Translate stringId='aboutImStrategicDirection'/>
                                   <span className='collecticon-chevron-right icon-about-ref'></span>
-                                </div>
+                                </a>
                               </div>
                             </div>
                           </div>
