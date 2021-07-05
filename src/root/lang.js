@@ -1555,7 +1555,9 @@ export default {
   globalThreeWMapHeading: 'NS with ongoing projects',
 
   allThreeWPageTitle: 'IFRC Go - All 3W',
-  allThreeWPageHeading: 'All 3W ({count})',
+  allThreeWPageHeading: 'All 3W Projects ({count})',
+  allThreeWInCountryPageHeading: 'All 3W Projects in {country} ({count})',
+  allThreeWNSPageHeading: 'All 3W Projects by {ns} ({count})',
 
   newThreeWPageTitle: 'IFRC Go - New 3W Project',
   newThreeWPageHeading: 'Create 3W Project',
