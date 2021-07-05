@@ -46,17 +46,11 @@ export default {
   aboutReferenceMaterialsDescription: 'These materials provide more information on how and why GO does what it does.',
   aboutGoUserLibrary: 'GO User Library',
   aboutGoBlog: 'GO Blog',
-  
-
-  //aboutVisualGuidelines: 'Visual Guidelines',
-  //aboutVisualIdentity: 'Visual Identity',
   aboutUserStudy: 'User Studies',
   aboutInformationArchitecture: 'Information Architecture',
   about3WGuidance: '3w guidance',
   about3WLessonLearned: '3w lessons learned',
   aboutGoWorkplan2021: 'GO Workplan 2021',
-  // aboutPresentation: 'GO presentation materials',
-  // aboutImStrategy: 'IFRC IM strategy',
   aboutImStrategicDirection: 'IFRC IM Strategic Direction',
   aboutIfrcResources: 'IFRC Resources',
   aboutSurgeEvents: 'Global Surge events and trainings',
