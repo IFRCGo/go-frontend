@@ -43,19 +43,19 @@ import {
 import ProjectFormModal from '../ProjectFormModal';
 import ProjectTableActions from '../ProjectTableActions';
 import ProjectStatPieChart from '../ProjectStatPieChart';
-import ProjectFlowSankey from '../ProjectFlowSankey';
+// import ProjectFlowSankey from '../ProjectFlowSankey';
 import { getInCountryProjectColumns } from '../projectTableColumns';
 import {
   LabelValue,
   emptyProjectList,
   PROJECT_STATUS_ONGOING,
   projectKeySelector,
-  projectListToInCountrySankeyData,
+  // projectListToInCountrySankeyData,
   filterProjects,
 } from '../common';
 import Map from './Map';
 import Filters, { FilterValue } from './Filters';
-import SankeyFilters, { SankeyFilterValue } from './SankeyFilters';
+// import SankeyFilters, { SankeyFilterValue } from './SankeyFilters';
 
 import styles from './styles.module.scss';
 
@@ -88,11 +88,13 @@ function InCountryProjects(props: Props) {
     secondary_sectors: [],
   });
 
+  /*
   const [sankeyFilters, setSankeyFilters] = React.useState<SankeyFilterValue>({
     reporting_ns: [],
     primary_sector: [],
     secondary_sectors: [],
   });
+   */
 
   const {
     pending: projectListPending,
@@ -197,6 +199,7 @@ function InCountryProjects(props: Props) {
 
   const currentProjectList = ongoingProjects;
 
+  /*
   const sankeyData = React.useMemo(() => (
     projectListToInCountrySankeyData(
       filterProjects(
@@ -205,6 +208,7 @@ function InCountryProjects(props: Props) {
       ),
     )
   ), [sankeyFilters, projectList]);
+   */
 
   const districtGroupedProject = React.useMemo(() => {
     const districtDenormalizedProjectList = denormalizeList(
@@ -455,6 +459,7 @@ function InCountryProjects(props: Props) {
               />
             </ExpandableContainer>
           </Container>
+          {/*
           <Container
             heading={strings.threeWSankeyDiagramTitle}
             sub
@@ -465,6 +470,7 @@ function InCountryProjects(props: Props) {
             />
             <ProjectFlowSankey data={sankeyData} />
           </Container>
+            */}
           {isDefined(projectIdToEdit) && (
             <ProjectFormModal
               projectId={projectIdToEdit}

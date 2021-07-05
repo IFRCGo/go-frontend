@@ -165,6 +165,7 @@ function ThreeWForm(props: Props) {
     isReachedTotalRequired,
     shouldDisableTotalTarget,
     shouldDisableTotalReached,
+    disasterTypeLabel,
   } = useThreeWOptions(value);
 
 
@@ -255,7 +256,7 @@ function ThreeWForm(props: Props) {
   }, [onValueChange, districtOptions]);
 
   const projectFormPending = submitRequestPending;
-  const shouldDisableSubmitButton = !!(error?.fields) || submitRequestPending || projectDetailsPending;
+  const shouldDisableSubmitButton = submitRequestPending || projectDetailsPending;
 
   const handleProjectCountryChange = React.useCallback(
     (val: number | undefined, name: 'project_country') => {
@@ -387,7 +388,9 @@ function ThreeWForm(props: Props) {
               />
             </InputSection>
           )}
-          <InputSection title={strings.projectFormDisasterType}>
+          <InputSection
+            title={disasterTypeLabel}
+          >
             <SelectInput
               error={error?.fields?.dtype}
               name="dtype"

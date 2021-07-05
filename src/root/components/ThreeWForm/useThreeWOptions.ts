@@ -38,7 +38,9 @@ import {
 } from '#types';
 import LanguageContext from '#root/languageContext';
 
+export const OPERATION_TYPE_PROGRAMME = 0;
 export const OPERATION_TYPE_EMERGENCY = 1;
+
 export const PROGRAMME_TYPE_MULTILATERAL = 1;
 export const PROGRAMME_TYPE_DOMESTIC = 2;
 
@@ -65,11 +67,15 @@ const allSecondarySectorOptions = secondarySectorList.map(p => ({
 })).sort(compareString);
 
 const programmeTypeOptions = programmeTypeList.map(p => ({
-  value: p.key,
+  value: (+p.key),
   label: p.title,
 })).sort(compareString);
 
-const operationTypeOptions = [...operationTypeList].sort(compareString);
+const operationTypeOptions = operationTypeList.map((o) => ({
+  value: (+o.value),
+  label: o.label,
+})).sort(compareString);
+
 const projectVisibilityOptions = [...projectVisibilityList].sort(compareString);
 
 export interface FormType extends ProjectFormFields {
@@ -137,6 +143,10 @@ export const schema: FormSchema = {
     const programmeType = value.programme_type;
     const operationType = value.operation_type;
     const projectStatus = value.status;
+
+    if (operationType === OPERATION_TYPE_PROGRAMME) {
+      schema.dtype = [];
+    }
 
     if (operationType === OPERATION_TYPE_EMERGENCY
       && (programmeType === PROGRAMME_TYPE_MULTILATERAL || programmeType === PROGRAMME_TYPE_DOMESTIC)) {
@@ -329,6 +339,10 @@ export function useThreeWOptions(value: Partial<FormType>) {
     || !isFalsy(value.reached_female)
     || !isFalsy(value.reached_other);
 
+  const disasterTypeLabel = value.operation_type === OPERATION_TYPE_PROGRAMME
+    ? strings.projectFormDisasterType
+    : strings.projectFormDisasterTypeMandatory;
+
   return {
     fetchingCountries,
     fetchingDistricts,
@@ -357,6 +371,7 @@ export function useThreeWOptions(value: Partial<FormType>) {
     isReachedTotalRequired,
     shouldDisableTotalTarget,
     shouldDisableTotalReached,
+    disasterTypeLabel,
   } as const;
 }
 

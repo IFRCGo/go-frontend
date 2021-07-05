@@ -1,6 +1,7 @@
 import React from 'react';
 import { _cs } from '@togglecorp/fujs';
 import type { Location } from 'history';
+import { Link } from 'react-router-dom';
 import {
   MdSearch,
   MdEdit,
@@ -26,7 +27,10 @@ import {
   ListResponse,
   useRequest,
 } from '#utils/restRequest';
-import { Project } from '#types';
+import {
+  Project,
+  Strings,
+} from '#types';
 
 import styles from './styles.module.scss';
 
@@ -125,6 +129,37 @@ function AllThreeW(props: Props) {
     ];
   }, [queryType, strings]);
 
+  const headingStringId: keyof Strings = React.useMemo(() => {
+    if (pending) {
+      return 'allThreeWPageHeading';
+    }
+
+    if (queryType === 'country') {
+      return 'allThreeWInCountryPageHeading';
+    }
+
+    if (queryType === 'ns') {
+      return 'allThreeWNSPageHeading';
+    }
+
+    return 'allThreeWPageHeading';
+  }, [queryType, pending]);
+
+  const countryName = response && response.results
+    ? (response.results[0]?.project_country_detail?.name ?? '--')
+    : '--';
+
+  const countryUrl = response && response.results
+    ? `/countries/${response.results[0]?.project_country}#3w`
+    : '';
+
+  const nsName = response && response.results
+    ? (response.results[0]?.reporting_ns_detail?.society_name ?? '--')
+    : '--';
+
+  const nsUrl = response && response.results
+    ? `/countries/${response.results[0]?.reporting_ns}#3w`
+    : '';
 
   return (
     <Page
@@ -136,9 +171,19 @@ function AllThreeW(props: Props) {
         className={styles.mainContent}
         heading={(
           <Translate
-            stringId="allThreeWPageHeading"
+            stringId={headingStringId}
             params={{
-              count: (!pending && response) ? response.count : '--'
+              count: (!pending && response) ? response.count : '--',
+              country: (
+                <Link to={countryUrl}>
+                  {countryName}
+                </Link>
+              ),
+              ns: (
+                <Link to={nsUrl}>
+                  {nsName}
+                </Link>
+              ),
             }}
           />
         )}
