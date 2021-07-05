@@ -70,6 +70,7 @@ function ThreeWPieChart(props: PieChartProps) {
             className={styles.pieLabel}
             position="outside"
             formatter={(v: number) => `${((100 * (v / total))).toFixed(1)}%`}
+            isAnimationActive={false}
           />
         </Pie>
         <Legend
@@ -197,6 +198,7 @@ function ThreeWBarChart(props: BarChartProps) {
         />
         {!hideTooltip && (
           <Tooltip
+            isAnimationActive={false}
             allowEscapeViewBox={{
               x: false,
               y: false,
@@ -207,6 +209,7 @@ function ThreeWBarChart(props: BarChartProps) {
           radius={5}
           dataKey="value"
           fill="#f5333f"
+          isAnimationActive={false}
         >
           {!hideLabel && (
             <LabelList
