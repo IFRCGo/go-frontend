@@ -1,3 +1,25 @@
+### Release 5.2.0:
+ 
+   - Release Date: 2021-07-05
+
+### Frontend:
+
+ - Various 3w improvements: https://github.com/IFRCGo/go-frontend/issues/1819
+   - PNS, Global views: https://github.com/IFRCGo/go-frontend/issues/1823
+ - Fix placement of "Today" line in Personnel Deployment charts.
+ - Emergency page changes to support new Covid page: https://github.com/IFRCGo/go-frontend/issues/1950
+
+### Backend:
+
+ - Add historical query support to Appeals endpoint.
+ - Email notifications for 3w project closure: https://github.com/IFRCGo/go-api/issues/1061
+ - Fix date format in 3w bulk upload
+ - Fix 3w CSV exports
+ - Backend changes to support frontend 3w changes
+ - Minor fixes to geospatial data import scripts
+ - Changes to Emergency model, admin and API to support frontend changes.
+
+
 ### Release 5.1.2: Hotfix for Field Report language submission errors
 
  - Implements a fix where users with non-english locales in their system / browser configuration were sometimes facing errors when submitting Field Reports
