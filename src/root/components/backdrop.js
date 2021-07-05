@@ -11,7 +11,7 @@ function Backdrop (p) {
     return () => {
       html.style.overflow = prevValue;
     };
-  });
+  }, []);
 
   return (
     <Portal>

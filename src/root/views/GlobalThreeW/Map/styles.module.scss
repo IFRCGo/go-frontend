@@ -1,0 +1,42 @@
+@import '~styles/settings/variables';
+
+.map-container {
+  height: 40rem;
+
+  .map-tooltip {
+    .meta {
+      margin: 0 $spacing*3/4;
+      padding: $spacing/2;
+      border-bottom: $base-border-width solid $base-border-color;
+    }
+
+    .top-project-sectors-chart {
+      margin: $spacing;
+      width: calc(100% - 2 * #{$spacing})!important;
+    }
+  }
+}
+
+.legend {
+  display: flex;
+  justify-content: flex-end;
+  background-color: $color-background;
+  padding: $spacing;
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    padding: $spacing/2;
+
+    .point {
+      height: 1em;
+      width: 1em;
+      margin: $spacing/2;
+      border-radius: 50%;
+    }
+
+    .label {
+      padding: $spacing/2;
+    }
+  }
+}

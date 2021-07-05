@@ -1,0 +1,9 @@
+@import '~styles/settings/variables';
+
+.project-form-modal {
+  :global {
+    .go-input-section {
+      border-bottom: $base-border-width solid $base-border-color;
+    }
+  }
+}

@@ -1,0 +1,15 @@
+@import '~styles/settings/variables';
+
+.all-three-w {
+  .main-content {
+    padding: $spacing*4 0;
+    margin: 0 -$spacing;
+    width: calc(100% + #{$spacing});
+  }
+
+  .footer {
+    display: flex;
+    justify-content: flex-end;
+    padding: $spacing*3 $spacing;
+  }
+}

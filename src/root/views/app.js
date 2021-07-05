@@ -2,8 +2,8 @@ import React from 'react';
 import { ThroughProvider } from 'react-through';
 import c from 'classnames';
 
-import Header from '#components/header';
-import MobileHeader from '#components/mobile-header';
+import Navbar from '#components/navbar';
+import MobileNavbar from '#components/mobile-navbar';
 import Footer from '#components/footer';
 import GlobalLoading from '#components/global-loading';
 import SysAlerts from '#components/system-alerts';
@@ -30,11 +30,10 @@ function App(p) {
     <ThroughProvider>
       <GlobalLoadingContext.Provider value={contextValue}>
         <div className={c('page', p.className)}>
-          {/* <GlobalHeaderBanner /> */}
           <GlobalLoading />
           { loading > 0 && <NewGlobalLoadingParent /> }
-          <Header />
-          <MobileHeader />
+          <Navbar />
+          <MobileNavbar />
           <main className='page__body' role='main'>
             {p.children}
           </main>

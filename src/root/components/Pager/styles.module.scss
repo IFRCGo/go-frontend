@@ -1,0 +1,26 @@
+@import '~styles/settings/variables';
+
+.pager {
+  .page-list {
+    display: flex;
+    align-items: center;
+
+    .page-button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 2.2em;
+      height: 2.2em;
+
+      &.active {
+        background-color: $primary-color;
+        color: $color-text-on-dark;
+        border-radius: 50%;
+      }
+
+      &:disabled {
+        opacity: $opacity-disabled-element;
+      }
+    }
+  }
+}

@@ -1,3 +1,38 @@
+### Release 5.2.0:
+ 
+   - Release Date: 2021-07-05
+
+### Frontend:
+
+ - Various 3w improvements: https://github.com/IFRCGo/go-frontend/issues/1819
+   - PNS, Global views: https://github.com/IFRCGo/go-frontend/issues/1823
+   - Improve Country 3w
+   - Add separate pages for 3W list, details and edit (We can now have a URL for individual 3W project)
+   - Refactor and re-use 3W form everywhere
+   - Make disaster type optional in 3W form when the operation type is 'Programme'
+   - Make filters clearable in Regional 3W page
+ - Emergency page changes to support new Covid page: https://github.com/IFRCGo/go-frontend/issues/1950:
+   - Add links section in the `Emergency Details` tab
+   - Add featured documents in the `Report/Documents` tab
+   - Only show response document category when it has published document
+ - Fix placement of "Today" line in Personnel Deployment charts: https://github.com/IFRCGo/go-frontend/issues/1837
+ - Add a mechanism to copy detailed error message in the Alerts
+ - Add option to copy error details in Field Report form and 3W form
+ - Upgrade Mapboxgl
+
+### Backend:
+
+ - Add historical query support to Appeals endpoint.
+ - Changes for 3w:
+   - Add a feature to notify project creator through email when project status is about to auto update from 'ongoing' to 'completed' (https://github.com/IFRCGo/go-api/issues/1061)
+   - Fix date format in 3w bulk upload
+   - Fix 3w CSV exports: https://github.com/IFRCGo/go-api/issues/768
+ - Changes to support new Covid pages:
+   - Add Links to Emergencies
+   - Add Featured Documents to Emergencies 
+ - Minor fixes to geospatial data import scripts
+
+
 ### Release 5.1.2: Hotfix for Field Report language submission errors
 
  - Implements a fix where users with non-english locales in their system / browser configuration were sometimes facing errors when submitting Field Reports

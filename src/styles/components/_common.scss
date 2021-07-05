@@ -1,3 +1,44 @@
+.mapboxgl-map {
+  position: relative;
+  z-index: 0;
+
+  .mapboxgl-ctrl-compass {
+    display: none;
+  }
+
+  .mapboxgl-popup {
+    height: 14rem;
+    width: 20rem;
+    overflow: auto;
+
+    ::-webkit-scrollbar-track {
+      background-color: transparent;
+    }
+
+    ::-webkit-scrollbar {
+      background-color: transparent;
+      width: 0.5rem;
+      height: 0.5rem;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      border-radius: 0.25rem;
+      background-color: rgba(0, 0, 0, .1);
+    }
+
+    .mapboxgl-popup-content {
+      width: 100%;
+      overflow: auto;
+
+      >div {
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+      }
+    }
+  }
+}
+
 .project-form-modal {
   width: 100%;
   height: 100%;
@@ -237,6 +278,7 @@
   
 .table__cell--progress__personnel {
   width: 40%;
+  padding-inline-start: 0;
 }
 
 .progress__block__personnel {
@@ -335,16 +377,6 @@
   background-size: 2px 100%;
   background-repeat:no-repeat;
   width: 1px;
-}
-
-.personnel__table__date {
-  &:first-of-type {
-    margin-inline-start: -30px;
-  }
-
-  &:last-of-type {
-    margin-inline-end: 30px;
-  }
 }
 
 .login-link {

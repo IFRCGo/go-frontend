@@ -29,7 +29,7 @@ export default function reducer (state = langInitialState, action) {
       const { data } = successState;
 
       const newStrings = data.strings.reduce((acc, val) => {
-        acc[val.key] = val.value;
+        acc[val.key] = val.value ? val.value : lang[val.key];
         return acc;
       }, { ...lang });
 

@@ -1,0 +1,47 @@
+@import '~styles/settings/_variables.scss';
+
+.text-output {
+  &.inline-type {
+    display: flex;
+    align-items: center;
+  }
+
+  &.table-type {
+    display: table-row;
+
+    >.description,
+    >.value,
+    >.label {
+      display: table-cell;
+    }
+  }
+
+  >.label {
+    padding: $spacing/4;
+    color: $color-text-light;
+    font-weight: $base-font-medium;
+  }
+
+  >.value {
+    padding: $spacing/4;
+  }
+
+  >.description {
+    padding: $spacing/4;
+  }
+
+  &.with-label-colon {
+    >.label {
+      &:after {
+        content: ':';
+      }
+    }
+  }
+
+  &.strong-value {
+    >.value {
+      font-weight: $base-font-bold;
+    }
+  }
+}
+

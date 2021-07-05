@@ -69,6 +69,7 @@ function MovementActivitiesFilters (p) {
         placeholder={strings.movementFilterOperationPlaceholder}
         options={operationTypeOptions}
         className='select-input form__control--filter'
+        isClearable
       />
       <SelectInput
         faramElementName='programme_type'
@@ -76,6 +77,7 @@ function MovementActivitiesFilters (p) {
         placeholder={strings.movementFilterProgrammePlaceholder}
         options={programmeTypeOptions}
         className='select-input form__control--filter'
+        isClearable
       />
       <SelectInput
         faramElementName='primary_sector'
@@ -83,6 +85,7 @@ function MovementActivitiesFilters (p) {
         placeholder={strings.movementFilterSectorPlaceholder}
         options={sectorsOfActivityOptions}
         className='select-input form__control--filter'
+        isClearable
       />
       <SelectInput
         faramElementName='secondary_sectors'
@@ -90,6 +93,7 @@ function MovementActivitiesFilters (p) {
         placeholder={strings.movementFilterTagPlaceholder}
         options={tagOptions}
         className='select-input form__control--filter'
+        isClearable
 
       />
       <SelectInput
@@ -98,6 +102,7 @@ function MovementActivitiesFilters (p) {
         placeholder={strings.movementFilterStatusPlaceholder}
         options={statusOptions}
         className='select-input form__control--filter'
+        isClearable
       />
     </Faram>
   );

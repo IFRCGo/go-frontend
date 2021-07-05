@@ -1,0 +1,32 @@
+@import '~styles/settings/variables';
+
+.card {
+  background-color: $color-foreground;
+  border-radius: $base-border-radius;
+  box-shadow: $base-box-shadow;
+  padding: $spacing/2;
+
+  .title {
+    padding: $spacing/2;
+    font-weight: $base-font-medium;
+    text-transform: uppercase;
+    border-bottom: $base-border-color solid $base-border-width;
+  }
+
+  .content {
+    padding: $spacing/2;
+  }
+
+  &.multi-column {
+    .content {
+      display: flex;
+
+      >* {
+        flex-basis: 0;
+        flex-grow: 1;
+        flex-shrink: 0;
+      }
+    }
+  }
+
+}

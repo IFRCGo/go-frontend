@@ -1,0 +1,39 @@
+@import '~styles/settings/variables';
+
+.project-flow-sankey {
+  height: 60vh!important;
+
+  .sankey-link {
+    fill-opacity: 0.1;
+    fill: $secondary-color;
+
+    &.left {
+      fill: $primary-color;
+    }
+
+    &:hover {
+      fill-opacity: 0.4;
+    }
+  }
+
+  .node-block {
+    fill: $secondary-color-light;
+    fill-opacity: 1;
+  }
+
+  .label {
+    fill: $color-text;
+    stroke-width: 0;
+    pointer-events: none;
+    font-size: $font-size-sm;
+  }
+}
+
+.empty-sankey {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: $font-size-lg;
+  color: rgba(0, 0, 0, .5);
+  height: 30vh;
+}

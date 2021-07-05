@@ -9,13 +9,20 @@ import {
 
 import { compareString } from '#utils/utils';
 import LanguageContext from '#root/languageContext';
-import { useRequest } from '#utils/restRequest';
+import {
+  useRequest,
+  ListResponse,
+} from '#utils/restRequest';
 
 import {
   requiredCondition,
   requiredStringCondition,
   positiveIntegerCondition,
 } from '#utils/form';
+
+import {
+  Country
+} from '#types';
 
 import {
   BooleanValueOption,
@@ -25,8 +32,6 @@ import {
   emptyNumericOptionList,
   emptyActionList,
   FormType,
-  ListResponse,
-  Country,
   Entity,
   ActionFields,
   ActionByReportType,
@@ -85,6 +90,7 @@ export const schema: FormSchema = {
     event: [],
     summary: [requiredStringCondition],
     country: [requiredCondition],
+    districts: [],
     start_date: [requiredCondition],
     request_assistance: [],
     ns_request_assistance: [],

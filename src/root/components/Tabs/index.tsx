@@ -16,14 +16,14 @@ export interface BaseProps {
 
 export type Props<T extends TabKey> = BaseProps & (
   {
-    useHash?: false;
-    value: T;
-    onChange: (key: T) => void;
-  } | {
     useHash: true;
     initialHash?: string;
     value?: never;
     onChange?: never;
+  } | {
+    useHash?: false;
+    value: T;
+    onChange: (key: T) => void;
   }
 );
 
@@ -62,7 +62,7 @@ export function Tabs<T extends TabKey>(props: Props<T>) {
   }, [setTabs]);
 
   // eslint-disable-next-line react/destructuring-assignment
-  const hash = useHash(props.useHash ? props.initialHash : undefined);
+  const hash = useHash(props.useHash ? props.initialHash : undefined, !!props.useHash);
 
   const contextValue = React.useMemo(() => {
     if (props.useHash) {
@@ -86,7 +86,7 @@ export function Tabs<T extends TabKey>(props: Props<T>) {
       variant,
       disabled,
       activeTab: props.value,
-      setActiveTab: props.onChange as (key: TabKey) => void,
+      setActiveTab: props.onChange as (key: TabKey | undefined) => void,
       registerTab,
       unregisterTab,
       step,

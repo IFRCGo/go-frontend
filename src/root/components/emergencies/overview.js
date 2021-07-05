@@ -32,8 +32,7 @@ function EmergencyOverview(props) {
                     </div>
                   </div>
                 </div>
-              </div> 
-
+              </div>
               <div className='flex row emergency__overview-row'>
                 <div className='col emergency__overview-col-cat'>{strings.emergencyDisasterType}</div>
                 <div className='col emergency__overview-col-desc'>
@@ -41,8 +40,7 @@ function EmergencyOverview(props) {
                     {disasterType}
                   </div>
                 </div>
-              </div> 
-
+              </div>
               <div className='flex row emergency__overview-row'>
                 <div className='col emergency__overview-col-cat'>{strings.globalStartDate}</div>
                 <div className='col emergency__overview-col-desc'>
@@ -60,8 +58,7 @@ function EmergencyOverview(props) {
                     { hasFieldReports ? yesno(firstFieldReport.request_assistance) : '-' }
                   </div>
                 </div>
-              </div> 
-
+              </div>
               <div className='flex row emergency__overview-row'>
                 <div className='col emergency__overview-col-cat'>{strings.emergencyNSReqIntlAsst}</div>
                 <div className='col emergency__overview-col-desc'>

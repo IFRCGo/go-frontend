@@ -30,6 +30,7 @@ module.exports = {
           "#components": "./src/root/components",
           "#config": "./src/root/config",
           "#hooks": "./src/root/hooks",
+          "#types": "./src/root/types",
           "#lang": "./src/root/lang",
           "#selectors": "./src/root/selectors",
           "#utils": "./src/root/utils",
@@ -79,7 +80,13 @@ module.exports = {
     "react/jsx-no-target-blank": 0,
     "react/prop-types": 0,
 
+
     'react-hooks/rules-of-hooks': 'error',
-    'react-hooks/exhaustive-deps': 'warn',
+    'react-hooks/exhaustive-deps': [
+      'warn',
+      {
+        'additionalHooks': 'useDidUpdateEffect',
+      },
+    ],
   },
 };

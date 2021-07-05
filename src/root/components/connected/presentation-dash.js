@@ -98,7 +98,7 @@ class PresentationDash extends React.Component {
               )
               : null
             }
-            
+
             <AppealsTable
               showActive={true}
               showHomeMap={true}

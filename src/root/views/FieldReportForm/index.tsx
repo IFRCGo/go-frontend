@@ -3,7 +3,6 @@ import type { History, Location } from 'history';
 import type { match as Match } from 'react-router-dom';
 
 import BlockLoading from '#components/block-loading';
-import { showAlert } from '#components/system-alerts';
 import Page from '#components/Page';
 import {
   useForm,
@@ -22,9 +21,7 @@ import TabPanel from '#components/Tabs/TabPanel';
 import TabList from '#components/Tabs/TabList';
 import Tab from '#components/Tabs/Tab';
 
-import {
-} from '#utils/field-report-constants';
-
+import useAlert from '#hooks/useAlert';
 import LanguageContext from '#root/languageContext';
 import {
   useRequest,
@@ -79,7 +76,7 @@ interface Props {
   location: Location;
 }
 
-function NewFieldReportForm(props: Props) {
+function FieldReportForm(props: Props) {
   const {
     className,
     location,
@@ -87,6 +84,7 @@ function NewFieldReportForm(props: Props) {
     match,
   } = props;
 
+  const alert = useAlert();
   const { reportId } = match.params;
   const { strings } = React.useContext(LanguageContext);
   const [initialEventOptions, setInitialEventOptions] = React.useState<Option[]>([]);
@@ -100,10 +98,15 @@ function NewFieldReportForm(props: Props) {
   });
 
   const crumbs = React.useMemo(() => [
-    // FIXME: use translations
-    {link: location?.pathname, name: isDefined(reportId) ? 'Edit Field Report' : strings.breadCrumbNewFieldReport},
+    {link: location?.pathname, name: isDefined(reportId) ? strings.breadCrumbEditFieldReport : strings.breadCrumbNewFieldReport},
     {link: '/', name: strings.breadCrumbHome},
-  ], [strings.breadCrumbHome, strings.breadCrumbNewFieldReport, location, reportId]);
+  ], [
+    strings.breadCrumbHome,
+    strings.breadCrumbEditFieldReport,
+    strings.breadCrumbNewFieldReport,
+    location,
+    reportId,
+  ]);
 
   const {
     value,
@@ -126,23 +129,6 @@ function NewFieldReportForm(props: Props) {
     }
   }, [fieldReportResponse, onValueSet, setInitialEventOptions]);
 
-  /*
-  const [fieldReportSubmitPending, ,submitRequest] = useOldRequest(
-    isDefined(reportId) ? (
-      `api/v2/update_field_report/${reportId}/`
-    ) : (
-      'api/v2/create_field_report/'
-    ),
-    reportId ? putRequestOptions : postRequestOptions,
-    {
-      lazy: true,
-      // TODO: remove following after converting useOldRequest to TS
-      preserveResponse: true,
-      debug: false,
-    },
-  ) as [boolean, any, (o: any) => void];
-  */
-
   const {
     pending: fieldReportSubmitPending,
     trigger: submitRequest,
@@ -151,27 +137,33 @@ function NewFieldReportForm(props: Props) {
     method: reportId ? 'PUT' : 'POST',
     body: ctx => ctx,
     onSuccess: (response) => {
-      showAlert('success', (
-        <p>
-          {strings.fieldReportFormRedirectMessage}
-        </p>
-      ), true, 3000);
+      alert.show(
+        strings.fieldReportFormRedirectMessage,
+        { variant: 'success' },
+      );
       window.setTimeout(
         () => history.push(`/reports/${response?.id}`),
         250,
       );
     },
-    onFailure: ({ value: { messageForNotification, errors }}) => {
+    onFailure: ({
+      value: { messageForNotification, errors },
+      debugMessage,
+    }) => {
       console.error(errors);
-      showAlert('danger', (
+      alert.show(
         <p>
-          <strong>
-            {strings.fieldReportFormErrorLabel}
-          </strong>
+          {strings.fieldReportFormErrorLabel}
           &nbsp;
-          {messageForNotification}
-        </p>
-      ), true, 4500);
+          <strong>
+            {messageForNotification}
+          </strong>
+        </p>,
+        {
+          variant: 'danger',
+          debugMessage,
+        },
+      );
     },
   });
 
@@ -220,7 +212,7 @@ function NewFieldReportForm(props: Props) {
 
   type StepTypes = 'step1' | 'step2' | 'step3' | 'step4';
   const [currentStep, setCurrentStep] = React.useState<StepTypes>('step1');
-  const submitButtonLabel = currentStep === 'step4' ? 'Submit' : 'Continue';
+  const submitButtonLabel = currentStep === 'step4' ? strings.fieldReportSubmit : strings.fieldReportContinue;
   const submitButtonClassName = currentStep === 'step4' ? 'button--primary-filled' : 'button--secondary-filled';
   const shouldDisabledBackButton = currentStep === 'step1';
 
@@ -310,8 +302,8 @@ function NewFieldReportForm(props: Props) {
     >
       <Page
         className={_cs(styles.newFieldReportForm, className)}
-        title={isDefined(reportId) ? 'IFRC Go - Update Field Report' : strings.fieldReportFormPageTitle}
-        heading={isDefined(reportId) ? 'Update Field Report' : strings.fieldReportCreate}
+        title={isDefined(reportId) ? strings.fieldReportUpdateFormPageTitle : strings.fieldReportFormPageTitle}
+        heading={isDefined(reportId) ? strings.fieldReportUpdate : strings.fieldReportCreate}
         breadCrumbs={<BreadCrumb crumbs={crumbs} compact />}
         info={(
           <TabList className={styles.tabList}>
@@ -319,27 +311,27 @@ function NewFieldReportForm(props: Props) {
               name="step1"
               step={1}
             >
-              Context
+              {strings.fieldReportFormItemContextLabel}
             </Tab>
             <Tab
               name="step2"
               step={2}
             >
-              { value.status === STATUS_EARLY_WARNING && 'Risk Analysis' }
-              { value.status === STATUS_EVENT && 'Situation' }
+              { value.status === STATUS_EARLY_WARNING && strings.fieldReportFormItemRiskAnalysisLabel }
+              { value.status === STATUS_EVENT && strings.fieldReportFormItemSituationLabel }
             </Tab>
             <Tab
               name="step3"
               step={3}
             >
-              { value.status === STATUS_EARLY_WARNING && 'Early Action' }
-              { value.status === STATUS_EVENT && 'Action' }
+              { value.status === STATUS_EARLY_WARNING && strings.fieldReportFormItemEarlyActionsLabel }
+              { value.status === STATUS_EVENT && strings.fieldReportFormItemActionsLabel }
             </Tab>
             <Tab
               name="step4"
               step={4}
             >
-              Response
+              { strings.fieldReportFormItemResponseLabel }
             </Tab>
           </TabList>
         )}
@@ -353,7 +345,7 @@ function NewFieldReportForm(props: Props) {
             <Container>
               <NonFieldError
                 error={error}
-                message="Please fill in required fields first!"
+                message={strings.fieldReportFormNonFieldError}
               />
             </Container>
             <TabPanel name="step1">
@@ -449,4 +441,4 @@ function NewFieldReportForm(props: Props) {
   );
 }
 
-export default NewFieldReportForm;
+export default FieldReportForm;

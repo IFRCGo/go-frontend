@@ -1,4 +1,6 @@
 .tc-dropdown-menu {
+  display: flex;
+  align-items: center;
   box-sizing: border-box;
   padding: 3px 6px;
   cursor: pointer;
@@ -14,6 +16,7 @@
 }
 
 .tc-dropdown-container {
+  padding: $spacing/2 0;
   z-index: 10;
   box-sizing: border-box;
   position: fixed;
