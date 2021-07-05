@@ -59,6 +59,8 @@ function ThreeWPieChart(props: PieChartProps) {
           data={chartData}
           dataKey="value"
           labelLine={false}
+          startAngle={450}
+          endAngle={90}
         >
           { chartData.map((entry, index) => (
             <Cell
