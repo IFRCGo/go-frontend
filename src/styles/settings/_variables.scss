@@ -34,6 +34,7 @@ $color-text-on-dark: #fff;
 $color-text-heading: $color-text;
 $color-text-light: rgba(0, 0, 0, .7);
 $color-text-disabled: rgba(0, 0, 0, .4);
+$color-text-message: rgba(0, 0, 0, .5);
 
 /* State colors */
 
@@ -107,6 +108,7 @@ $input-rounded-radius: 1.8rem;
 $base-border-color: rgba(#000, 0.1);
 $base-border-color--light: rgba(#000, 0.05);
 $base-border-width: 1px;
+$border-width-errored-input: 4px;
 
 
 /* Box shadow */

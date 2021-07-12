@@ -1,0 +1,11 @@
+@import '~styles/settings/variables';
+
+.empty-message {
+  padding: $spacing*3 $spacing;
+
+  p {
+    margin: 0;
+    text-align: center;
+    color: $color-text-message;
+  }
+}
