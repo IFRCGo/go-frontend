@@ -1,3 +1,8 @@
+### Release 5.2.1: Hotfix for Field Report numeric field submission errors
+- Fix the positive integer condition in form (Restrict users to enter decimals in numbers)
+- Fix the "Dcoument" typo
+
+
 ### Release 5.2.0:
  
    - Release Date: 2021-07-05

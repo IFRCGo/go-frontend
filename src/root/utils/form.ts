@@ -116,7 +116,7 @@ export function integerCondition(value: Maybe<number>) {
 }
 
 export function positiveIntegerCondition(value: Maybe<number>) {
-  return isDefined(value) && isInteger(value) && !(value >= 0)
+  return isDefined(value) && (!isInteger(value) || value < 0)
     ? 'The field must be a positive integer'
     : undefined;
 }
