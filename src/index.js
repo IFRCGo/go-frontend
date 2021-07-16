@@ -5,7 +5,10 @@ import Root from '#root';
 
 import './styles/main.scss';
 
-ReactDOM.render(
-  <Root />,
-  document.getElementById('app-container')
-);
+var isIE = !!document.documentMode;
+if (!isIE) {
+  ReactDOM.render(
+    <Root />,
+    document.getElementById('app-container')
+  );
+}
