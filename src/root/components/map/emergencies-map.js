@@ -4,16 +4,16 @@ import { PropTypes as T } from 'prop-types';
 import mapboxgl from 'mapbox-gl';
 import { withRouter } from 'react-router-dom';
 
-import { source } from '#utils/get-new-map';
 import { environment } from '#config';
-import {
-  FormRadioGroup
-} from '../form-elements';
-import MapComponent from './common/map-component';
-import { commaSeparatedNumber as n } from '#utils/format';
-
 import { withLanguage } from '#root/languageContext';
+import { source } from '#utils/get-new-map';
+import { commaSeparatedNumber as n } from '#utils/format';
 import Translate from '#components/Translate';
+import EmptyMessage from '#components/EmptyMessage';
+
+import { FormRadioGroup } from '../form-elements';
+import MapComponent from './common/map-component';
+
 
 class EmergenciesMap extends React.Component {
   constructor (props) {
@@ -203,9 +203,7 @@ class EmergenciesMap extends React.Component {
               </MapComponent>
             </div>
           ) : (
-            <p>
-              <Translate stringId='emergenciesMapNoData'/>
-            </p>
+            <EmptyMessage />
           )}
         </div>
       </div>

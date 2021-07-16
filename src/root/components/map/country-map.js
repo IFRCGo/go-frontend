@@ -1,23 +1,24 @@
-
 import React from 'react';
 import { render } from 'react-dom';
 import { PropTypes as T } from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import mapboxgl from 'mapbox-gl';
 import chroma from 'chroma-js';
+
 import { environment } from '#config';
+import { get } from '#utils/utils';
+import LanguageContext from '#root/languageContext';
+import EmptyMessage from '#components/EmptyMessage';
+
 import BlockLoading from '../block-loading';
 import MapComponent from './common/map-component';
 import OperationsPopover from './home-map/operations-popover';
-import { get } from '#utils/utils';
 import ExplanationBubble from './home-map/explanation-bubble';
 import { filtering } from './home-map/filtering/filtering-processor';
 import { AppealTypeComparator } from './home-map/filtering/comparator/appeal-type-comparator';
 import { EmergencyTypeComparator } from './home-map/filtering/comparator/emergency-type-comparator';
 import EmergenciesLeftMenu from './common/emergencies-left-menu';
 import MarkerLayerStylesheetFactory from './home-map/factory/marker-layer-stylesheet-factory';
-import LanguageContext from '#root/languageContext';
-import Translate from '#components/Translate';
 
 const scale = chroma.scale(['#F0C9E8', '#861A70']);
 
@@ -240,9 +241,7 @@ class CountryMap extends React.Component {
   renderError () {
     const { operations, deployments } = this.props;
     if (get(operations, 'error') || get(deployments, 'error')) {
-      return <p>
-               <Translate stringId='countryMapError'/>
-             </p>;
+      return <EmptyMessage />;
     }
   }
 

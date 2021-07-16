@@ -23,7 +23,7 @@ function EmptySankey ({ className } : { className?: string}) {
   return (
     <div className={_cs(styles.emptySankey, className)}>
       <Translate
-        id="threeWEmptySankeyMessage"
+        stringId="threeWEmptySankeyMessage"
       />
     </div>
   );

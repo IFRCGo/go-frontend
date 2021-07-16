@@ -1,26 +1,27 @@
-
 import React from 'react';
+import mapboxgl from 'mapbox-gl';
 import { render } from 'react-dom';
 import { PropTypes as T } from 'prop-types';
 import { withRouter } from 'react-router-dom';
-import mapboxgl from 'mapbox-gl';
 // import chroma from 'chroma-js';
-import ExplanationBubble from './per-map/explanation-bubble';
+
 import { environment } from '#config';
-import BlockLoading from '../block-loading';
-import MapComponent from './common/map-component';
-import OperationsPopover from './per-map/operations-popover';
+import { withLanguage } from '#root/languageContext';
 import { get } from '#utils/utils';
-// import ExplanationBubble from './home-map/explanation-bubble';
-// import { filtering } from './home-map/filtering/filtering-processor';
-// import { AppealTypeComparator } from './home-map/filtering/comparator/appeal-type-comparator';
-// import { EmergencyTypeComparator } from './home-map/filtering/comparator/emergency-type-comparator';
+import EmptyMessage from '#components/EmptyMessage';
+
 import EmergenciesLeftMenu from './common/emergencies-left-menu';
 import MarkerLayerStylesheetFactory from './per-map/factory/marker-layer-stylesheet-factory';
 import PerPhaseDropdown from './per-map/per-phase-dropdown';
 import PerTypeDropdown from './per-map/per-type-dropdown';
-import Translate from '#components/Translate';
-import { withLanguage } from '#root/languageContext';
+import BlockLoading from '../block-loading';
+import MapComponent from './common/map-component';
+import OperationsPopover from './per-map/operations-popover';
+import ExplanationBubble from './per-map/explanation-bubble';
+// import ExplanationBubble from './home-map/explanation-bubble';
+// import { filtering } from './home-map/filtering/filtering-processor';
+// import { AppealTypeComparator } from './home-map/filtering/comparator/appeal-type-comparator';
+// import { EmergencyTypeComparator } from './home-map/filtering/comparator/emergency-type-comparator';
 
 // const scale = chroma.scale(['#F0C9E8', '#861A70']);
 
@@ -189,9 +190,9 @@ class PerMap extends React.Component {
   renderError () {
     const { data } = this.props;
     if (get(data, 'error')) {
-      return <p>
-               <Translate stringId='preparednessMapError'/>
-             </p>;
+      return (
+        <EmptyMessage />
+      );
     }
   }
 

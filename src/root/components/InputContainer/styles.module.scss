@@ -21,7 +21,7 @@
 
   &.errored {
     .input-section {
-      border-left-width: 4px;
+      border-left-width: $border-width-errored-input;
       border-left-color: $danger-color;
     }
   }
