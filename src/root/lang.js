@@ -254,7 +254,6 @@ export default {
 
   presentationDashAppealsTitle: 'Active Operations',
 
-  keyFiguresError: 'Data not available.',
   keyFiguresHeading: 'IFRC Disaster Response and Preparedness',
   keyFiguresStatsOverall: 'Overall stats',
   keyFiguresActiveDrefs: 'Active DREF Operations',
@@ -347,7 +346,6 @@ export default {
 
   preparednessHeaderTitle: 'The PER approach',
   preparednessHeaderDetail: 'The PER Approach is a continuous and flexible process that enables National Societies to assess, measure and analyse the strengths and gaps of its preparedness and response mechanism, and ultimately take necessary action to improve it. For more information on the PER Approach select {link}.',
-  preparednessMapError: 'Data not available.',
   preparednessMapDownloadTitle: 'Preparedness state',
   preparednessOverviewCrumb: 'PER Overview',
   preparednessOverview: 'Preparedness Overview',
@@ -534,7 +532,6 @@ export default {
   perDraftEdit: 'Edit',
   perDraftDelete: 'Delete',
   perDraftHeading: 'Active drafts',
-  mainMapDataError: 'Data not available.',
   mainMapDownloadHeaderTitle: 'Ongoing operations',
   mainMapViewFullscreen: 'View in fullscreen',
   mainMapClose: 'Close the Map',
@@ -741,7 +738,6 @@ export default {
   readinessDeployedErus: '{numDeployed} Deployed ERUs',
   mapComponentExport: 'Export',
   mapFooterDisclaimer: 'The maps used do not imply the expresion of any opinion on the part of the International Federation of Red Cross and Red Crescent Societies or National Societies concerning the legal status of a territory or of its authorities, Data sources: IFRC, OSM contributors, Map box.',
-  countryMapError: 'Data not available.',
   countryMapDownloadedTitle: 'Movement activities',
   mapPopoverTitle: 'Deployments in {name}',
   deploymentsMapHeading: 'Deployments by Country',
@@ -757,7 +753,6 @@ export default {
   emergenciesMapWithIFRC: 'With IFRC response',
   emergenciesMapMixResponse: 'Mixed Level of response',
   emergenciesMapDescription: '*IFRC response indicates the existence of appeal(s) and/or DREF(s) for a given emergency.',
-  emergenciesMapNoData: 'Data not available.',
   emergenciesMapPopoverDismiss: 'Dismiss',
   emergenciesMapPopoverPeopleAffected: '{numAffected} People Affected',
   emergenciesMapPopoverTotalEmergencies: '{totalEmergencies} Emergencies',

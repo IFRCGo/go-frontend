@@ -5,11 +5,15 @@ import { withRouter } from 'react-router-dom';
 import mapboxgl from 'mapbox-gl';
 // import _debounce from 'lodash.debounce';
 import chroma from 'chroma-js';
+
 import { environment } from '#config';
+import { get } from '#utils/utils';
+import EmptyMessage from '#components/EmptyMessage';
+
 import BlockLoading from '../block-loading';
+import DateFilterHeader from '../common/filters/date-filter-header';
 import MapComponent from './common/map-component';
 import OperationsPopover from './home-map/operations-popover';
-import { get } from '#utils/utils';
 import ExplanationBubble from './home-map/explanation-bubble';
 import EmergencyTypesDropdown from './home-map/emergency-types-dropdown';
 import AppealTypesDropdown from './home-map/appeal-types-dropdown';
@@ -17,11 +21,9 @@ import { filtering } from './home-map/filtering/filtering-processor';
 import { AppealTypeComparator } from './home-map/filtering/comparator/appeal-type-comparator';
 import { DateComparator } from './home-map/filtering/comparator/date-comparator';
 import { EmergencyTypeComparator } from './home-map/filtering/comparator/emergency-type-comparator';
-import DateFilterHeader from '../common/filters/date-filter-header';
 import EmergenciesLeftMenu from './common/emergencies-left-menu';
 import MarkerLayerStylesheetFactory from './home-map/factory/marker-layer-stylesheet-factory';
 
-import Translate from '#components/Translate';
 import { withLanguage } from '#root/languageContext';
 
 const scale = chroma.scale(['#F0C9E8', '#861A70']);
@@ -328,9 +330,7 @@ class MainMap extends React.Component {
   renderError () {
     const { operations, deployments } = this.props;
     if (get(operations, 'error') || get(deployments, 'error')) {
-      return <p>
-               <Translate stringId='mainMapDataError'/>
-             </p>;
+      return <EmptyMessage />;
     }
   }
 
