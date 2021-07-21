@@ -6,7 +6,7 @@ import isUndefined from 'lodash.isundefined';
 import _find from 'lodash.find';
 import _filter from 'lodash.filter';
 import * as EmailValidator from 'email-validator';
-import { DateTime } from 'luxon';
+import { DateTime, Duration } from 'luxon';
 import {
   isNotDefined,
   isFalsyString,
@@ -416,3 +416,42 @@ export const getSelectInputValue = (value, options) => {
 
   return options.find(d => String(d.value) === String(value));
 };
+
+/**
+ * Get duration as a human readable string
+ * 
+ * @param {DateTime} start - Start date as a luxon DateTime object
+ * @param {DateTime} end - End date as a luxon DateTime object
+ * @returns {String} - String - eg. "4 months"
+ */
+export function getDuration(start, end) {
+  const diff = end.diff(start, [
+    'months',
+    'days'
+  ]);
+  if (diff.months < 2) {
+    return `${diff.days} days`;
+  }
+  if (diff.days < 15) {
+    return `${diff.months} months`;
+  } else {
+    return `${diff.months + 1} months`;
+  }
+}
+
+/**
+ * Gets Keywords from Molnix tag objects,
+ * ignoring certain keywords based on rules
+ * 
+ * @param {Array<Object>} molnixTags - molnix tag objects
+ * @returns {String} Comma separated keywords
+ */
+export function getMolnixKeywords(molnixTags) {
+  const filtered = molnixTags.filter(tag => {
+    if (tag.name.startsWith('OP-')) {
+      return false;
+    }
+    return true;
+  });
+  return filtered.map(tag => tag.name).join(', ');
+}
