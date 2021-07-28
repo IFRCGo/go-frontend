@@ -1,5 +1,4 @@
 import React from 'react';
-import { isDefined } from '@togglecorp/fujs';
 import {
   PartialForm,
   Error,
@@ -27,7 +26,7 @@ import {
 
 import styles from './styles.module.scss';
 import RadioInput from '#components/RadioInput';
-import DateInput from '#components/DateInput';
+import TextArea from '#components/TextArea';
 
 const isEpidemic = (o: Option) => o.value === DISASTER_TYPE_EPIDEMIC;
 
@@ -48,14 +47,12 @@ interface Props {
   initialEventOptions?: Option[];
 }
 
-function DrefOverview(props: Props) {
+function EventDetails(props: Props) {
   const { strings } = React.useContext(LanguageContext);
 
   const {
     countryOptions,
-    districtOptions,
     fetchingCountries,
-    fetchingDistricts,
     error,
     onValueChange,
     value,
@@ -109,101 +106,26 @@ function DrefOverview(props: Props) {
 
   return (
     <>
+      <Container>
+        <InputSection
+          title="Copy data from an existing field report"
+          description="These field reports have already been filtered by the country and disaster type that you have entered. Selecting field report will pre-fill matching fields in this report, which you can modify."
+        >
+          <SelectInput
+            error={error?.fields?.country}
+            name="country"
+            onChange={onValueChange}
+            options={countryOptions}
+            pending={fetchingCountries}
+            value={value.country}
+          />
+        </InputSection>
+      </Container>
       <Container
-        // FIXME: use translation
-        heading="Essential Information"
-        className={styles.drefOverview}
-      >
+        heading="PREVIOUS OPERATIONS"
+        className={styles.eventDetails}>
         <InputSection
-          title={strings.fieldsStep1SummaryLabel}
-        >
-          <div>
-            <TextInput
-              // label={strings.fieldReportFormTitleSecondaryLabel}
-              // placeholder={strings.fieldReportFormTitleInputPlaceholder}
-              name="summary"
-              value={value.summary}
-              onChange={onValueChange}
-              error={error?.fields?.summary}
-            />
-          </div>
-        </InputSection>
-        <InputSection
-          title="Disaster details*"
-        >
-          <SelectInput
-            error={error?.fields?.country}
-            name="country"
-            onChange={onValueChange}
-            options={countryOptions}
-            pending={fetchingCountries}
-            value={value.country}
-          />
-        </InputSection>
-        <InputSection
-          title="Disaster Details*"
-        >
-          <SelectInput
-            error={error?.fields?.country}
-            label="DISASTER TYPE"
-            name="country"
-            onChange={onValueChange}
-            options={countryOptions}
-            pending={fetchingCountries}
-            value={value.country}
-          />
-          <SelectInput
-            disabled={!isDefined(value.country)}
-            pending={fetchingDistricts}
-            error={error?.fields?.districts}
-            isMulti
-            label="TYPE OF ONSET"
-            name="districts"
-            onChange={onValueChange}
-            options={districtOptions}
-            value={value.districts}
-          />
-        </InputSection>
-        <InputSection
-          title="Number of people affected/ number of people at risk"
-        >
-          <div>
-            <TextInput
-              // label={strings.fieldReportFormTitleSecondaryLabel}
-              // placeholder={strings.fieldReportFormTitleInputPlaceholder}
-              name="summary"
-              value={value.summary}
-              onChange={onValueChange}
-              error={error?.fields?.summary}
-            />
-          </div>
-          <div>
-            <TextInput
-              // label={strings.fieldReportFormTitleSecondaryLabel}
-              // placeholder={strings.fieldReportFormTitleInputPlaceholder}
-              name="summary"
-              value={value.summary}
-              onChange={onValueChange}
-              error={error?.fields?.summary}
-            />
-          </div>
-        </InputSection>
-        <InputSection
-          title="Requested Amount"
-        >
-          <div>
-            <TextInput
-              // label={strings.fieldReportFormTitleSecondaryLabel}
-              // placeholder={strings.fieldReportFormTitleInputPlaceholder}
-              name="summary"
-              value={value.summary}
-              onChange={onValueChange}
-              error={error?.fields?.summary}
-            />
-          </div>
-        </InputSection>
-        <InputSection
-          title="Emergency appeal planned"
+          title="Has a similar event affected the same population"
         >
           <RadioInput
             name="is_covid_report"
@@ -217,28 +139,107 @@ function DrefOverview(props: Props) {
             disabled={value.status === STATUS_EARLY_WARNING}
           />
         </InputSection>
-      </Container>
-      <Container
-        heading="TIMEFRAMES"
-        className={styles.drefOverview}>
         <InputSection
-          title="Disaster date/ trigger date"
+          title="Did it affect the same communities?"
         >
-          <DateInput
-            name="start_date"
-            value={value.start_date}
+          <RadioInput
+            name="is_covid_report"
+            options={yesNoOptions}
+            radioKeySelector={booleanOptionKeySelector}
+            radioLabelSelector={optionLabelSelector}
+            radioDescriptionSelector={optionDescriptionSelector}
+            value={value.is_covid_report}
             onChange={onValueChange}
-            error={error?.fields?.start_date}
+            error={error?.fields?.is_covid_report}
+            disabled={value.status === STATUS_EARLY_WARNING}
           />
         </InputSection>
         <InputSection
-          title="Date NS response started"
+          title="Did the NS respond?"
         >
-          <DateInput
-            name="start_date"
-            value={value.start_date}
+          <RadioInput
+            name="is_covid_report"
+            options={yesNoOptions}
+            radioKeySelector={booleanOptionKeySelector}
+            radioLabelSelector={optionLabelSelector}
+            radioDescriptionSelector={optionDescriptionSelector}
+            value={value.is_covid_report}
             onChange={onValueChange}
-            error={error?.fields?.start_date}
+            error={error?.fields?.is_covid_report}
+            disabled={value.status === STATUS_EARLY_WARNING}
+          />
+        </InputSection>
+        <InputSection
+          title="Did the NS request a DREF?"
+        >
+          <RadioInput
+            name="is_covid_report"
+            options={yesNoOptions}
+            radioKeySelector={booleanOptionKeySelector}
+            radioLabelSelector={optionLabelSelector}
+            radioDescriptionSelector={optionDescriptionSelector}
+            value={value.is_covid_report}
+            onChange={onValueChange}
+            error={error?.fields?.is_covid_report}
+            disabled={value.status === STATUS_EARLY_WARNING}
+          />
+        </InputSection>
+        <InputSection
+          title="If yes, please specify"
+        >
+          <TextInput
+            // label={strings.fieldReportFormTitleSecondaryLabel}
+            placeholder="Enter MDR or DREF number"
+            name="summary"
+            value={value.summary}
+            onChange={onValueChange}
+            error={error?.fields?.summary}
+          />
+        </InputSection>
+        <InputSection
+          title="Mention lessons learned from similar operations and steps to mitigate challenges"
+          oneColumn
+          multiRow
+        >
+          <TextArea
+            label={strings.cmpActionDescriptionLabel}
+            name="actions_ntls_desc"
+            onChange={onValueChange}
+            value={value.actions_ntls_desc}
+            error={error?.fields?.actions_ntls_desc}
+            placeholder="Max 500 characters"
+          />
+        </InputSection>
+      </Container>
+      <Container
+        heading="DESCRIPTION OF THE EVENT"
+        className={styles.eventDetails}>
+        <InputSection
+          title="What happened, where and when? For imminent and anticipatory action, explain what is expected to happen"
+          oneColumn
+          multiRow
+        >
+          <TextArea
+            label={strings.cmpActionDescriptionLabel}
+            name="actions_ntls_desc"
+            onChange={onValueChange}
+            value={value.actions_ntls_desc}
+            error={error?.fields?.actions_ntls_desc}
+            placeholder="Max 800 characters"
+          />
+        </InputSection>
+        <InputSection
+          title="Scope and scale of the event"
+          oneColumn
+          multiRow
+        >
+          <TextArea
+            label={strings.cmpActionDescriptionLabel}
+            name="actions_ntls_desc"
+            onChange={onValueChange}
+            value={value.actions_ntls_desc}
+            error={error?.fields?.actions_ntls_desc}
+            placeholder="Max 800 characters"
           />
         </InputSection>
       </Container>
@@ -246,4 +247,4 @@ function DrefOverview(props: Props) {
   );
 }
 
-export default DrefOverview;
+export default EventDetails;
