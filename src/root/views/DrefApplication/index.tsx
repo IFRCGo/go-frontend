@@ -21,6 +21,10 @@ import Tab from '#components/Tabs/Tab';
 import DrefOverview from '#views/DrefApplication/DrefOverview';
 
 import styles from './styles.module.scss';
+import EventDetails from './EventDetails';
+import ActionsFields from './ActionsFields';
+import Response from './Response';
+import Submission from './Submission';
 
 const defaultFormValues: PartialForm<FormType> = {
   status: STATUS_EVENT,
@@ -69,10 +73,10 @@ function DrefApplication() {
     yesNoOptions,
   } = useDrefFormOptions(value);
 
-  type StepTypes = 'step1' | 'step2' | 'step3' | 'step4';
+  type StepTypes = 'step1' | 'step2' | 'step3' | 'step4' | 'step5';
   const [currentStep, setCurrentStep] = React.useState<StepTypes>('step1');
-  const submitButtonLabel = currentStep === 'step4'? 'Submit' : 'Continue';
-  const submitButtonClassName = currentStep === 'step4' ? 'button--primary-filled' : 'button--secondary-filled';
+  const submitButtonLabel = currentStep === 'step5' ? 'Submit' : 'Continue';
+  const submitButtonClassName = currentStep === 'step5' ? 'button--primary-filled' : 'button--secondary-filled';
   const shouldDisabledBackButton = currentStep === 'step1';
 
   const handleTabChange = React.useCallback((newStep: StepTypes) => {
@@ -85,14 +89,68 @@ function DrefApplication() {
 
     // onErrorSet(error);
 
-      setCurrentStep(newStep);
+    setCurrentStep(newStep);
   }, [setCurrentStep]);
+
+  const handleSubmitButtonClick = React.useCallback(() => {
+    scrollToTop();
+    // const {
+    //   errored,
+    //   error,
+    //   value: finalValues,
+    // } = validate();
+
+    // onErrorSet(error);
+
+    // if (errored) {
+    //   return;
+    // }
+
+    if (currentStep === 'step5') {
+    } else {
+      const nextStepMap: {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        [key in Exclude<StepTypes, 'step5'>]: Exclude<StepTypes, 'step1'>;
+      } = {
+        step1: 'step2',
+        step2: 'step3',
+        step3: 'step4',
+        step4: 'step5',
+      };
+
+      setCurrentStep(nextStepMap[currentStep]);
+    }
+  }, [currentStep, setCurrentStep, validate, onErrorSet]);
+
+
+  const handleBackButtonClick = React.useCallback(() => {
+    scrollToTop();
+    // const {
+    //   errored,
+    //   error,
+    // } = validate();
+
+    // onErrorSet(error);
+
+    if (currentStep !== 'step1') {
+      const prevStepMap: {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        [key in Exclude<StepTypes, 'step1'>]: Exclude<StepTypes, 'step5'>;
+      } = {
+        step2: 'step1',
+        step3: 'step2',
+        step4: 'step3',
+        step5: 'step4',
+      };
+      setCurrentStep(prevStepMap[currentStep]);
+    }
+  }, [validate, setCurrentStep, currentStep, onErrorSet]);
 
   return (
     <Tabs
       disabled={false}
       onChange={handleTabChange}
-      value={"step1"}
+      value={currentStep}
       variant="step"
     >
       <Page
@@ -125,8 +183,8 @@ function DrefApplication() {
               Response
             </Tab>
             <Tab
-              name="step4"
-              step={4}
+              name="step5"
+              step={5}
             >
               Submission/Contacts
             </Tab>
@@ -152,34 +210,90 @@ function DrefApplication() {
             />
           </TabPanel>
           <TabPanel name="step2">
-            {value.status === STATUS_EARLY_WARNING && (
-              <>Step2</>
-            )}
-            {value.status === STATUS_EVENT && (
-              <></>
-            )}
+            <EventDetails
+              error={error}
+              onValueChange={onValueChange}
+              statusOptions={statusOptions}
+              value={value}
+              yesNoOptions={yesNoOptions}
+              disasterTypeOptions={disasterTypeOptions}
+              reportType={reportType}
+              countryOptions={countryOptions}
+              districtOptions={districtOptions}
+              fetchingCountries={fetchingCountries}
+              fetchingDistricts={fetchingDistricts}
+              fetchingDisasterTypes={fetchingDisasterTypes}
+              initialEventOptions={initialEventOptions}
+            />
           </TabPanel>
           <TabPanel name="step3">
-            {value.status === STATUS_EARLY_WARNING && (
-              <>Step4</>
-            )}
-            {value.status === STATUS_EVENT && (<></>)}
+            <ActionsFields
+              error={error}
+              onValueChange={onValueChange}
+              statusOptions={statusOptions}
+              value={value}
+              yesNoOptions={yesNoOptions}
+              disasterTypeOptions={disasterTypeOptions}
+              reportType={reportType}
+              countryOptions={countryOptions}
+              districtOptions={districtOptions}
+              fetchingCountries={fetchingCountries}
+              fetchingDistricts={fetchingDistricts}
+              fetchingDisasterTypes={fetchingDisasterTypes}
+              initialEventOptions={initialEventOptions}
+            />
+          </TabPanel>
+          <TabPanel name="step4">
+            <Response
+              error={error}
+              onValueChange={onValueChange}
+              statusOptions={statusOptions}
+              value={value}
+              yesNoOptions={yesNoOptions}
+              disasterTypeOptions={disasterTypeOptions}
+              reportType={reportType}
+              countryOptions={countryOptions}
+              districtOptions={districtOptions}
+              fetchingCountries={fetchingCountries}
+              fetchingDistricts={fetchingDistricts}
+              fetchingDisasterTypes={fetchingDisasterTypes}
+              initialEventOptions={initialEventOptions}
+            />
+          </TabPanel>
+          <TabPanel name="step5">
+            <Submission
+              error={error}
+              onValueChange={onValueChange}
+              statusOptions={statusOptions}
+              value={value}
+              yesNoOptions={yesNoOptions}
+              disasterTypeOptions={disasterTypeOptions}
+              reportType={reportType}
+              countryOptions={countryOptions}
+              districtOptions={districtOptions}
+              fetchingCountries={fetchingCountries}
+              fetchingDistricts={fetchingDistricts}
+              fetchingDisasterTypes={fetchingDisasterTypes}
+              initialEventOptions={initialEventOptions}
+            />
           </TabPanel>
           <div className={styles.actions}>
-              <button
-                className={_cs('button button--secondary-bounded', shouldDisabledBackButton && 'disabled')}
-                type="button"
-                disabled={shouldDisabledBackButton}
-              >
-                Back
+            <button
+              className={_cs('button button--secondary-bounded', shouldDisabledBackButton && 'disabled')}
+              onClick={handleBackButtonClick}
+              type="button"
+              disabled={shouldDisabledBackButton}
+            >
+              Back
               </button>
-              <button
-                className={_cs('button', submitButtonClassName)}
-                type="submit"
-              >
-                {submitButtonLabel}
-              </button>
-            </div>
+            <button
+              className={_cs('button', submitButtonClassName)}
+              onClick={handleSubmitButtonClick}
+              type="submit"
+            >
+              {submitButtonLabel}
+            </button>
+          </div>
         </Container>
       </Page>
     </Tabs>
