@@ -57,6 +57,7 @@ import ThreeW from '#views/ThreeW';
 import ThreeWEdit from '#views/ThreeWEdit';
 
 import styles from './styles.module.scss';
+import DrefApplication from '#views/DrefApplication';
 
 
 function Multiplexer(props) {
@@ -223,9 +224,9 @@ function Multiplexer(props) {
             <AnonymousRoute exact path='/recover-account/:username/:token' component={RecoverAccount}/>
             <AnonymousRoute exact path='/recover-username' component={RecoverUsername}/>
             <AnonymousRoute exact path='/resend-validation' component={ResendValidation} />
-            <PrivateRoute exact path='/reports/new' component={FieldReportForm}/>
+            <Route exact path='/reports/new' component={FieldReportForm}/>
             <Route exact path='/reports/all' render={props => <Table {...props} type='report' />} />
-            <PrivateRoute exact path='/reports/:reportId/edit' component={FieldReportForm}/>
+            <Route exact path='/reports/:reportId/edit' component={FieldReportForm}/>
             <Route exact path='/reports/:id' component={FieldReport}/>
             <Route exact path='/emergencies' component={Emergencies}/>
             <Route exact path='/emergencies/all' render={props => <Table {...props} type='emergency' />} />
@@ -243,7 +244,8 @@ function Multiplexer(props) {
             <Route exact path='/per-assessment/:id/edit' render={props => <PerAssessment {...props} isEdit={true} />} />
             <Route path='/preparedness' component={Preparedness} />
             <PrivateRoute exact path='/three-w/new/' component={NewThreeW} />
-            <Route exact path='/three-w/all/' component={AllThreeW} />
+            <PrivateRoute exact path='/dref-application/' component={DrefApplication} />
+            <PrivateRoute exact path='/three-w/all/' component={AllThreeW} />
             <Route exact path='/three-w/:projectId/' component={ThreeW} />
             <PrivateRoute exact path='/three-w/:projectId/edit/' component={ThreeWEdit} />
             <Route exact path='/three-w/' component={GlobalThreeW} />
