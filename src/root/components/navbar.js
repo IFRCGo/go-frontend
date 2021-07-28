@@ -96,6 +96,12 @@ function Navbar (props) {
                       {strings.headerDropdownCovid19NSFinancialOverview}
                     </a>
                     <Link
+                      to='/dref-application'
+                      className='drop__menu-item'
+                    >
+                      Dref Application
+                    </Link>
+                    <Link
                       to='/three-w/new'
                       className='drop__menu-item'
                     >
