@@ -1,5 +1,4 @@
 import React from 'react';
-import { isDefined } from '@togglecorp/fujs';
 import {
   PartialForm,
   Error,
@@ -9,25 +8,18 @@ import {
 import Container from '#components/Container';
 import InputSection from '#components/InputSection';
 import TextInput from '#components/TextInput';
-import SelectInput from '#components/SelectInput';
 import LanguageContext from '#root/languageContext';
 
 import {
   ReportType,
-  optionLabelSelector,
-  optionDescriptionSelector,
   Option,
   FormType,
-  STATUS_EARLY_WARNING,
   DISASTER_TYPE_EPIDEMIC,
   NumericValueOption,
   BooleanValueOption,
-  booleanOptionKeySelector,
 } from '../common';
 
 import styles from './styles.module.scss';
-import RadioInput from '#components/RadioInput';
-import DateInput from '#components/DateInput';
 
 const isEpidemic = (o: Option) => o.value === DISASTER_TYPE_EPIDEMIC;
 
@@ -48,18 +40,13 @@ interface Props {
   initialEventOptions?: Option[];
 }
 
-function DrefOverview(props: Props) {
+function Submission(props: Props) {
   const { strings } = React.useContext(LanguageContext);
 
   const {
-    countryOptions,
-    districtOptions,
-    fetchingCountries,
-    fetchingDistricts,
     error,
     onValueChange,
     value,
-    yesNoOptions,
     reportType,
   } = props;
 
@@ -109,141 +96,191 @@ function DrefOverview(props: Props) {
 
   return (
     <>
-      <Container
-        // FIXME: use translation
-        heading="Essential Information"
-        className={styles.drefOverview}
-      >
-        <InputSection
-          title={strings.fieldsStep1SummaryLabel}
-        >
-          <div>
-            <TextInput
-              // label={strings.fieldReportFormTitleSecondaryLabel}
-              // placeholder={strings.fieldReportFormTitleInputPlaceholder}
-              name="summary"
-              value={value.summary}
-              onChange={onValueChange}
-              error={error?.fields?.summary}
-            />
-          </div>
-        </InputSection>
-        <InputSection
-          title="Disaster details*"
-        >
-          <SelectInput
-            error={error?.fields?.country}
-            name="country"
-            onChange={onValueChange}
-            options={countryOptions}
-            pending={fetchingCountries}
-            value={value.country}
-          />
-        </InputSection>
-        <InputSection
-          title="Disaster Details*"
-        >
-          <SelectInput
-            error={error?.fields?.country}
-            label="DISASTER TYPE"
-            name="country"
-            onChange={onValueChange}
-            options={countryOptions}
-            pending={fetchingCountries}
-            value={value.country}
-          />
-          <SelectInput
-            disabled={!isDefined(value.country)}
-            pending={fetchingDistricts}
-            error={error?.fields?.districts}
-            isMulti
-            label="TYPE OF ONSET"
-            name="districts"
-            onChange={onValueChange}
-            options={districtOptions}
-            value={value.districts}
-          />
-        </InputSection>
-        <InputSection
-          title="Number of people affected/ number of people at risk"
-        >
-          <div>
-            <TextInput
-              // label={strings.fieldReportFormTitleSecondaryLabel}
-              // placeholder={strings.fieldReportFormTitleInputPlaceholder}
-              name="summary"
-              value={value.summary}
-              onChange={onValueChange}
-              error={error?.fields?.summary}
-            />
-          </div>
-          <div>
-            <TextInput
-              // label={strings.fieldReportFormTitleSecondaryLabel}
-              // placeholder={strings.fieldReportFormTitleInputPlaceholder}
-              name="summary"
-              value={value.summary}
-              onChange={onValueChange}
-              error={error?.fields?.summary}
-            />
-          </div>
-        </InputSection>
-        <InputSection
-          title="Requested Amount"
-        >
-          <div>
-            <TextInput
-              // label={strings.fieldReportFormTitleSecondaryLabel}
-              // placeholder={strings.fieldReportFormTitleInputPlaceholder}
-              name="summary"
-              value={value.summary}
-              onChange={onValueChange}
-              error={error?.fields?.summary}
-            />
-          </div>
-        </InputSection>
-        <InputSection
-          title="Emergency appeal planned"
-        >
-          <RadioInput
-            name="is_covid_report"
-            options={yesNoOptions}
-            radioKeySelector={booleanOptionKeySelector}
-            radioLabelSelector={optionLabelSelector}
-            radioDescriptionSelector={optionDescriptionSelector}
-            value={value.is_covid_report}
-            onChange={onValueChange}
-            error={error?.fields?.is_covid_report}
-            disabled={value.status === STATUS_EARLY_WARNING}
-          />
-        </InputSection>
+    <Container
+    heading="SUBMISSION FLOW"
+    className={styles.submission}
+    >
       </Container>
       <Container
-        heading="TIMEFRAMES"
-        className={styles.drefOverview}>
+        heading="TRACKING DATA AND CONTACTS"
+        className={styles.submission}
+      >
         <InputSection
-          title="Disaster date/ trigger date"
+          title="Appeal Code"
+          description="Add at approval"
         >
-          <DateInput
-            name="start_date"
-            value={value.start_date}
+          <TextInput
+            // label={strings.fieldReportFormTitleSecondaryLabel}
+            placeholder="MDR code"
+            name="summary"
+            value={value.summary}
             onChange={onValueChange}
-            error={error?.fields?.start_date}
+            error={error?.fields?.summary}
           />
         </InputSection>
         <InputSection
-          title="Date NS response started"
+          title="GLIDE number"
+          description="Added by the regional office"
         >
-          <DateInput
-            name="start_date"
-            value={value.start_date}
+          <TextInput
+            // label={strings.fieldReportFormTitleSecondaryLabel}
+            placeholder="MDR code"
+            name="summary"
+            value={value.summary}
             onChange={onValueChange}
-            error={error?.fields?.start_date}
+            error={error?.fields?.summary}
           />
+        </InputSection>
+        <InputSection
+          title="Appeal manager"
+          description="Added by the regional office"
+        >
+          <div>
+            <TextInput
+              label="NAME"
+              // placeholder={strings.fieldReportFormTitleInputPlaceholder}
+              name="summary"
+              value={value.summary}
+              onChange={onValueChange}
+              error={error?.fields?.summary}
+            />
+          </div>
+          <div>
+            <TextInput
+              label="EMAIL"
+              // placeholder={strings.fieldReportFormTitleInputPlaceholder}
+              name="summary"
+              value={value.summary}
+              onChange={onValueChange}
+              error={error?.fields?.summary}
+            />
+          </div>
+        </InputSection>
+        <InputSection
+          title="Project manager"
+          description="Added by the regional office"
+        >
+          <div>
+            <TextInput
+              label="NAME"
+              // placeholder={strings.fieldReportFormTitleInputPlaceholder}
+              name="summary"
+              value={value.summary}
+              onChange={onValueChange}
+              error={error?.fields?.summary}
+            />
+          </div>
+          <div>
+            <TextInput
+              label="EMAIL"
+              // placeholder={strings.fieldReportFormTitleInputPlaceholder}
+              name="summary"
+              value={value.summary}
+              onChange={onValueChange}
+              error={error?.fields?.summary}
+            />
+          </div>
+        </InputSection>
+        <InputSection
+          title="Requestor"
+          description="Added by the regional office"
+        >
+          <div>
+            <TextInput
+              label="NAME"
+              // placeholder={strings.fieldReportFormTitleInputPlaceholder}
+              name="summary"
+              value={value.summary}
+              onChange={onValueChange}
+              error={error?.fields?.summary}
+            />
+          </div>
+          <div>
+            <TextInput
+              label="EMAIL"
+              // placeholder={strings.fieldReportFormTitleInputPlaceholder}
+              name="summary"
+              value={value.summary}
+              onChange={onValueChange}
+              error={error?.fields?.summary}
+            />
+          </div>
+        </InputSection>
+        <InputSection
+          title="National Society contact"
+        >
+          <div>
+            <TextInput
+              label="NAME"
+              // placeholder={strings.fieldReportFormTitleInputPlaceholder}
+              name="summary"
+              value={value.summary}
+              onChange={onValueChange}
+              error={error?.fields?.summary}
+            />
+          </div>
+          <div>
+            <TextInput
+              label="EMAIL"
+              // placeholder={strings.fieldReportFormTitleInputPlaceholder}
+              name="summary"
+              value={value.summary}
+              onChange={onValueChange}
+              error={error?.fields?.summary}
+            />
+          </div>
+        </InputSection>
+        <InputSection
+          title="IFRC focal point for the emergency"
+        >
+          <div>
+            <TextInput
+              label="NAME"
+              // placeholder={strings.fieldReportFormTitleInputPlaceholder}
+              name="summary"
+              value={value.summary}
+              onChange={onValueChange}
+              error={error?.fields?.summary}
+            />
+          </div>
+          <div>
+            <TextInput
+              label="EMAIL"
+              // placeholder={strings.fieldReportFormTitleInputPlaceholder}
+              name="summary"
+              value={value.summary}
+              onChange={onValueChange}
+              error={error?.fields?.summary}
+            />
+          </div>
+        </InputSection>
+        <InputSection
+          title="Media contact"
+        >
+          <div>
+            <TextInput
+              label="NAME"
+              // placeholder={strings.fieldReportFormTitleInputPlaceholder}
+              name="summary"
+              value={value.summary}
+              onChange={onValueChange}
+              error={error?.fields?.summary}
+            />
+          </div>
+          <div>
+            <TextInput
+              label="EMAIL"
+              // placeholder={strings.fieldReportFormTitleInputPlaceholder}
+              name="summary"
+              value={value.summary}
+              onChange={onValueChange}
+              error={error?.fields?.summary}
+            />
+          </div>
         </InputSection>
       </Container>
     </>
   );
 }
 
-export default DrefOverview;
+export default Submission;

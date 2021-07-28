@@ -27,7 +27,7 @@ import {
 
 import styles from './styles.module.scss';
 import RadioInput from '#components/RadioInput';
-import DateInput from '#components/DateInput';
+import TextArea from '#components/TextArea';
 
 const isEpidemic = (o: Option) => o.value === DISASTER_TYPE_EPIDEMIC;
 
@@ -48,14 +48,12 @@ interface Props {
   initialEventOptions?: Option[];
 }
 
-function DrefOverview(props: Props) {
+function ActionsFields(props: Props) {
   const { strings } = React.useContext(LanguageContext);
 
   const {
     countryOptions,
-    districtOptions,
     fetchingCountries,
-    fetchingDistricts,
     error,
     onValueChange,
     value,
@@ -110,26 +108,11 @@ function DrefOverview(props: Props) {
   return (
     <>
       <Container
-        // FIXME: use translation
-        heading="Essential Information"
-        className={styles.drefOverview}
-      >
+        heading="NATIONAL SOCIETY ACTIONS"
+        className={styles.ActionsFields}>
         <InputSection
-          title={strings.fieldsStep1SummaryLabel}
-        >
-          <div>
-            <TextInput
-              // label={strings.fieldReportFormTitleSecondaryLabel}
-              // placeholder={strings.fieldReportFormTitleInputPlaceholder}
-              name="summary"
-              value={value.summary}
-              onChange={onValueChange}
-              error={error?.fields?.summary}
-            />
-          </div>
-        </InputSection>
-        <InputSection
-          title="Disaster details*"
+          title=""
+          description="Select the needs that apply."
         >
           <SelectInput
             error={error?.fields?.country}
@@ -140,70 +123,12 @@ function DrefOverview(props: Props) {
             value={value.country}
           />
         </InputSection>
+      </Container>
+      <Container
+        heading="Other Actors"
+        className={styles.ActionsFields}>
         <InputSection
-          title="Disaster Details*"
-        >
-          <SelectInput
-            error={error?.fields?.country}
-            label="DISASTER TYPE"
-            name="country"
-            onChange={onValueChange}
-            options={countryOptions}
-            pending={fetchingCountries}
-            value={value.country}
-          />
-          <SelectInput
-            disabled={!isDefined(value.country)}
-            pending={fetchingDistricts}
-            error={error?.fields?.districts}
-            isMulti
-            label="TYPE OF ONSET"
-            name="districts"
-            onChange={onValueChange}
-            options={districtOptions}
-            value={value.districts}
-          />
-        </InputSection>
-        <InputSection
-          title="Number of people affected/ number of people at risk"
-        >
-          <div>
-            <TextInput
-              // label={strings.fieldReportFormTitleSecondaryLabel}
-              // placeholder={strings.fieldReportFormTitleInputPlaceholder}
-              name="summary"
-              value={value.summary}
-              onChange={onValueChange}
-              error={error?.fields?.summary}
-            />
-          </div>
-          <div>
-            <TextInput
-              // label={strings.fieldReportFormTitleSecondaryLabel}
-              // placeholder={strings.fieldReportFormTitleInputPlaceholder}
-              name="summary"
-              value={value.summary}
-              onChange={onValueChange}
-              error={error?.fields?.summary}
-            />
-          </div>
-        </InputSection>
-        <InputSection
-          title="Requested Amount"
-        >
-          <div>
-            <TextInput
-              // label={strings.fieldReportFormTitleSecondaryLabel}
-              // placeholder={strings.fieldReportFormTitleInputPlaceholder}
-              name="summary"
-              value={value.summary}
-              onChange={onValueChange}
-              error={error?.fields?.summary}
-            />
-          </div>
-        </InputSection>
-        <InputSection
-          title="Emergency appeal planned"
+          title="Government has requested international assistance"
         >
           <RadioInput
             name="is_covid_report"
@@ -217,28 +142,105 @@ function DrefOverview(props: Props) {
             disabled={value.status === STATUS_EARLY_WARNING}
           />
         </InputSection>
-      </Container>
-      <Container
-        heading="TIMEFRAMES"
-        className={styles.drefOverview}>
         <InputSection
-          title="Disaster date/ trigger date"
+          title="National authorities"
+          oneColumn
+          multiRow
         >
-          <DateInput
-            name="start_date"
-            value={value.start_date}
+          <TextArea
+            label={strings.cmpActionDescriptionLabel}
+            name="actions_ntls_desc"
             onChange={onValueChange}
-            error={error?.fields?.start_date}
+            value={value.actions_ntls_desc}
+            error={error?.fields?.actions_ntls_desc}
+            placeholder="If selected, max 300 characters"
           />
         </InputSection>
         <InputSection
-          title="Date NS response started"
+          title="RCRC Partner NSs"
+          oneColumn
+          multiRow
         >
-          <DateInput
-            name="start_date"
-            value={value.start_date}
+          <TextArea
+            label={strings.cmpActionDescriptionLabel}
+            name="actions_ntls_desc"
             onChange={onValueChange}
-            error={error?.fields?.start_date}
+            value={value.actions_ntls_desc}
+            error={error?.fields?.actions_ntls_desc}
+            placeholder="If selected, max 300 characters"
+          />
+        </InputSection>
+        <InputSection
+          title="ICRC"
+          oneColumn
+          multiRow
+        >
+          <TextArea
+            label={strings.cmpActionDescriptionLabel}
+            name="actions_ntls_desc"
+            onChange={onValueChange}
+            value={value.actions_ntls_desc}
+            error={error?.fields?.actions_ntls_desc}
+            placeholder="If selected, max 300 characters"
+          />
+        </InputSection>
+        <InputSection
+          title="UN or other actors"
+          oneColumn
+          multiRow
+        >
+          <TextArea
+            label={strings.cmpActionDescriptionLabel}
+            name="actions_ntls_desc"
+            onChange={onValueChange}
+            value={value.actions_ntls_desc}
+            error={error?.fields?.actions_ntls_desc}
+            placeholder="If selected, max 300 characters"
+          />
+        </InputSection>
+        <InputSection
+          title="List major coordination mechanism in place"
+          oneColumn
+          multiRow
+        >
+          <TextArea
+            label={strings.cmpActionDescriptionLabel}
+            name="actions_ntls_desc"
+            onChange={onValueChange}
+            value={value.actions_ntls_desc}
+            error={error?.fields?.actions_ntls_desc}
+            placeholder="If selected, max 300 characters"
+          />
+        </InputSection>
+      </Container>
+      <Container
+        heading="NEEDS IDENTIFIED"
+        className={styles.eventDetails}>
+        <InputSection
+          title=""
+          description="Select the needs that apply."
+        >
+          <SelectInput
+            error={error?.fields?.country}
+            name="country"
+            onChange={onValueChange}
+            options={countryOptions}
+            pending={fetchingCountries}
+            value={value.country}
+          />
+        </InputSection>
+        <InputSection
+          title="Any identified gaps/limitations in the assessment*"
+          oneColumn
+          multiRow
+        >
+          <TextArea
+            label={strings.cmpActionDescriptionLabel}
+            name="actions_ntls_desc"
+            onChange={onValueChange}
+            value={value.actions_ntls_desc}
+            error={error?.fields?.actions_ntls_desc}
+            placeholder="Max 300 characters"
           />
         </InputSection>
       </Container>
@@ -246,4 +248,4 @@ function DrefOverview(props: Props) {
   );
 }
 
-export default DrefOverview;
+export default ActionsFields;
