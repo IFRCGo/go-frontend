@@ -383,7 +383,7 @@ function About (props) {
                           {contact.extent}
                         </div>
                         <div className='about__contact__col about__contact__name'>{contact.name}</div>
-                        <a href='mailto:rrim.africa@ifrc.org' className='about__contact__col about__contact__email'>{contact.email}</a>
+                        <a href={`mailto:${contact.email}`} className='about__contact__col about__contact__email'>{contact.email}</a>
                       </React.Fragment>
                     );
                   })}
