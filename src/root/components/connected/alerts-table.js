@@ -200,7 +200,9 @@ class AlertsTable extends SFPComponent {
         date: date.toISODate(),
         startDate: startDate.ts < nowMs ? 'Immediately' : startDate.toISODate(),
         duration: getDuration(startDate, endDate),
-        position: rowData.message,
+
+        // for position, we only want first segment before a comma
+        position: rowData.message.split(',')[0],
         keywords: getMolnixKeywords(rowData.molnix_tags),
         emergency: event ? <Link className='link--table' to={`/emergencies/${event}`} title={strings.alertTableViewEmergency}>{eventTitle}</Link> : rowData.operation || nope,
         country: country,
