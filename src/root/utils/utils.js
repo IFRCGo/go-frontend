@@ -448,8 +448,16 @@ export function getDuration(start, end) {
  * @returns {String} Comma separated keywords
  */
 export function getMolnixKeywords(molnixTags) {
+  const TAGS_TO_IGNORE = [
+    'Nosuitable',
+    'NotSurge',
+    'OpsChange'
+  ];
   const filtered = molnixTags.filter(tag => {
     if (tag.name.startsWith('OP-')) {
+      return false;
+    }
+    if (TAGS_TO_IGNORE.indexOf(tag) !== -1) {
       return false;
     }
     return true;
