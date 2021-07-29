@@ -437,7 +437,7 @@ export function getDuration(start, end) {
     return `${diff.months} months`;
   }
 
-  return `${diff.months} months ${diff.days} days`
+  return `${diff.months} months ${diff.days} days`;
 }
 
 /**
