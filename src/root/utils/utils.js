@@ -429,14 +429,15 @@ export function getDuration(start, end) {
     'months',
     'days'
   ]);
-  if (diff.months < 2) {
+  if (diff.months === 0) {
     return `${diff.days} days`;
   }
-  if (diff.days < 15) {
+
+  if (diff.days === 0) {
     return `${diff.months} months`;
-  } else {
-    return `${diff.months + 1} months`;
   }
+
+  return `${diff.months} months ${diff.days} days`
 }
 
 /**
