@@ -1,3 +1,8 @@
+### Release 5.2.2: Hotfix for incorrect emails on about page email links
+
+ - Fixes the mailto: values for emails on the About page to reflect the correct emails.
+
+
 ### Release 5.2.1: Hotfix for Field Report numeric field submission errors
 - Fix the positive integer condition in form (Restrict users to enter decimals in numbers)
 - Fix the "Dcoument" typo
