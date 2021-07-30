@@ -418,6 +418,17 @@ export const getSelectInputValue = (value, options) => {
 };
 
 /**
+ * 
+ * @param {String} singular 
+ * @param {String} plural 
+ * @param {Number} number 
+ * @returns {String} - either singular or plural based on number
+ */
+export function plural(singular, plural, number) {
+  return number === 1 ? singular : plural;
+}
+
+/**
  * Get duration as a human readable string
  * 
  * @param {DateTime} start - Start date as a luxon DateTime object
@@ -429,15 +440,17 @@ export function getDuration(start, end) {
     'months',
     'days'
   ]);
+  const daysString = plural('day', 'days', diff.days);
+  const monthsString = plural('month', 'months', diff.months);
   if (diff.months === 0) {
-    return `${diff.days} days`;
+    return `${diff.days} ${daysString}`;
   }
 
   if (diff.days === 0) {
-    return `${diff.months} months`;
+    return `${diff.months} ${monthsString}`;
   }
 
-  return `${diff.months} months ${diff.days} days`;
+  return `${diff.months} ${monthsString} ${diff.days} ${daysString}`;
 }
 
 /**

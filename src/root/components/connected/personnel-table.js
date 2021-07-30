@@ -52,6 +52,29 @@ const getProgressValues = (min, max, start, end) => {
   };
 };
 
+/**
+ * For a country object, only make it a link
+ * if it is independent=True,
+ * else, just display country NS name / name
+ * without a link.
+ * 
+ * @param {Object} country - country_from object from API 
+ */
+const getCountryDisplay = (country, strings) => {
+  if (!country.independent === true) {
+    return country.society_name || country.name;
+  } else {
+    return (
+      <Link
+        to={`/countries/${country.id}`} 
+        className='link--table' 
+        title={strings.personnelTableViewCountry}>
+          { country.society_name || country.name}
+      </Link>      
+    );
+  }
+};
+
 class PersonnelTable extends SFPComponent {
   constructor (props) {
     super(props);
@@ -202,7 +225,7 @@ class PersonnelTable extends SFPComponent {
           //endDate: DateTime.fromISO(o.end_date).toISODate(),
           role: get(o, 'role', nope),
           type: o.type === 'rr' ? typeLongNames[o.type] : o.type.toUpperCase(),
-          country: o.country_from ? <Link to={`/countries/${o.country_from.id}`} className='link--table' title={strings.personnelTableViewCountry}>{o.country_from.society_name || o.country_from.name}</Link> : nope,
+          country: o.country_from ? getCountryDisplay(o.country_from, strings)  : nope,
           name: o.name,
           progress__personnel: 
                     <div className='progress__block__personnel'

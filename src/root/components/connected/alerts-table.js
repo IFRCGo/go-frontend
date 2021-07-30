@@ -187,6 +187,7 @@ class AlertsTable extends SFPComponent {
     ];
 
     const rows = data.results.reduce((acc, rowData) => {
+      console.log('row data', rowData);
       const date = DateTime.fromISO(rowData.created_at);
       const startDate = DateTime.fromISO(rowData.start);
       const endDate = DateTime.fromISO(rowData.end);
