@@ -81,7 +81,7 @@ class PersonnelTable extends SFPComponent {
     this.state = {
       table: {
         page: 1,
-        limit: isNaN(props.limit) ? 10 : props.limit,
+        limit: isNaN(props.limit) ? 50 : props.limit,
         sort: {
           field: '',
           direction: 'asc'
