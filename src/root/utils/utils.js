@@ -436,17 +436,37 @@ export function plural(singular, plural, number) {
  * @returns {String} - String - eg. "4 months"
  */
 export function getDuration(start, end) {
+  if (start.invalid || end.invalid) {
+    return '';
+  }
   const diff = end.diff(start, [
     'months',
     'days'
   ]);
+
+  let months;
+  let days;
+
+  // Normalize to months when days are more than 25 or less than 5
+  if (diff.days > 25) {
+    months = months + 1;
+    days = 0;
+  } else if (diff.days < 5 && diff.months > 0) {
+    months = diff.months;
+    days = 0;
+  } else {
+    months = diff.months;
+    days = Math.round(diff.days);
+  }
+
   const daysString = plural('day', 'days', diff.days);
   const monthsString = plural('month', 'months', diff.months);
-  if (diff.months === 0) {
+
+  if (months === 0) {
     return `${diff.days} ${daysString}`;
   }
 
-  if (diff.days === 0) {
+  if (days === 0) {
     return `${diff.months} ${monthsString}`;
   }
 
