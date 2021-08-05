@@ -27,6 +27,16 @@ import Expandable from '#components/expandable';
 import LanguageContext from '#root/languageContext';
 import Translate from '#components/Translate';
 
+
+// If alert comes from Molnix, only show first part of message as position.
+function getPositionString(alertRow) {
+  if (!alertRow.molnix_id) {
+    return alertRow.message;
+  } else {
+    return alertRow.message.split(',')[0];
+  }
+}
+
 class AlertsTable extends SFPComponent {
   // Methods form SFPComponent:
   // handlePageChange (what, page)
@@ -202,7 +212,7 @@ class AlertsTable extends SFPComponent {
         duration: getDuration(startDate, endDate),
 
         // for position, we only want first segment before a comma
-        position: rowData.message.split(',')[0],
+        position: getPositionString(rowData),
         keywords: getMolnixKeywords(rowData.molnix_tags),
         emergency: event ? <Link className='link--table' to={`/emergencies/${event}`} title={strings.alertTableViewEmergency}>{eventTitle}</Link> : rowData.operation || nope,
         country: country,

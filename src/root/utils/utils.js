@@ -436,7 +436,7 @@ export function plural(singular, plural, number) {
  * @returns {String} - String - eg. "4 months"
  */
 export function getDuration(start, end) {
-  if (!start || !end) {
+  if (start.invalid || end.invalid) {
     return '';
   }
   const diff = end.diff(start, [
