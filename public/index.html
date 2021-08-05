@@ -36,12 +36,77 @@
     <link rel="apple-touch-icon" sizes="152x152" href="/assets/graphics/meta/apple-touch-icon-152x152.png" />
 
     <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Poppins:300,300italic,400,400italic,500,600" type="text/css" />
+    <style>
+      html, body {
+        margin: 0;
+        padding: 0;
+      }
+
+      #unsupported-browser-message {
+        background-color: #faf9f9;
+        font-family: "Poppins", "Helvetica Neue", Helvetica, Arial, sans-serif;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+      }
+
+      #unsupported-browser-message > p {
+        text-align: center;
+        margin: 5px 0;
+      }
+
+      #unsupported-browser-message img {
+        vertical-align: middle;
+        border-style: none;
+      }
+
+      #unsupported-browser-message .vertical-separator {
+        display: inline-block;
+        height: 48px;
+        border-left: 1px solid rgba(0, 0, 0, 0.1);
+        margin-left: 10px;
+        margin-right: -20px;
+        vertical-align: middle;
+      }
+    </style>
   </head>
   <body>
+    <div id="unsupported-browser-message">
+      <div class="ifrc-logo">
+        <img
+          src="/assets/graphics/layout/logo-icon.svg"
+          width="66"
+        />
+        <span class="vertical-separator">
+        </span>
+        <img
+          src="/assets/graphics/layout/ifrc_logo_2020.svg"
+          alt="IFRC GO"
+          width="260"
+        />
+      </div>
+      <h1>
+        Welcome to IFRC GO!
+      </h1>
+      <p>
+        GO doesn't work on Internet Explorer.
+      </p>
+      <p>
+        Please visit GO on Chrome, Edge, Safari, Firefox or any other chromium based browser
+      </p>
+    </div>
+    <script type="text/javascript">
+      var isIE = !!document.documentMode;
+      if (!isIE) {
+        document.getElementById('unsupported-browser-message').remove();
+      }
+    </script>
     <div id="app-container">
       <!-- page -->
     </div>
-
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-84297335-3"></script>
     <script>
       window.dataLayer = window.dataLayer || [];

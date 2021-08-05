@@ -2,18 +2,24 @@ import React from 'react';
 import _cs from 'classnames';
 import { isDefined } from '@togglecorp/fujs';
 
-import languageContext from '#root/languageContext';
+import LanguageContext from '#root/languageContext';
 import lang from '#root/lang';
 import { resolveToComponent } from '#utils/lang';
 import styles from './styles.module.scss';
 
-function Translate(p) {
-  const { strings } = React.useContext(languageContext);
+interface Props {
+  className?: string;
+  stringId: keyof typeof lang;
+  params?: object;
+}
+
+function Translate(props: Props) {
+  const { strings } = React.useContext(LanguageContext);
   const {
     stringId,
     className,
     params,
-  } = p;
+  } = props;
 
   const displayComponent = React.useMemo(() => {
     const string = strings[stringId] || lang[stringId];

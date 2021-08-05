@@ -1,6 +1,6 @@
 {
   "name": "go-frontend",
-  "version": "5.2.2",
+  "version": "5.3.0",
   "private": true,
   "devDependencies": {
     "@babel/core": "7.9.0",
@@ -80,7 +80,7 @@
     "postcss-normalize": "8.0.1",
     "postcss-preset-env": "6.7.0",
     "postcss-safe-parser": "4.0.1",
-    "react-dev-utils": "^10.2.1",
+    "react-dev-utils": "^11.0.4",
     "resolve": "1.15.0",
     "resolve-url-loader": "3.1.1",
     "sass-loader": "8.0.2",
@@ -172,7 +172,7 @@
     "resize-observer-polyfill": "^1.5.1",
     "set-value": "^2.0.1",
     "spark-md5": "^3.0.1",
-    "swiper": "^5.3.8",
+    "swiper": "^6.5.1",
     "tar": "^2.2.2",
     "url": "^0.11.0",
     "xlsx": "^0.16.5"

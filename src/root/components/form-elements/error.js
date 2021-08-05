@@ -1,11 +1,14 @@
 import React, { useContext } from 'react';
+import { FiAlertTriangle } from 'react-icons/fi';
 import { PropTypes as T } from 'prop-types';
-import Translate from '#components/Translate';
 import LanguageContext from '#root/languageContext';
 
 export default function FormError (props) {
   const { strings } = useContext(LanguageContext);
-  const { errors, property } = props;
+  const {
+    errors,
+    property,
+  } = props;
   if (!errors) return null;
 
   // The path in the validator starts with . for deep props.
@@ -16,7 +19,6 @@ export default function FormError (props) {
   let message;
   switch (err.keyword) {
     case 'required':
-      message = <Translate id="formElementErrorRequiredMessage" />;
       message = strings.formElementErrorRequiredMessage;
       break;
     case 'dependencies':
@@ -30,7 +32,13 @@ export default function FormError (props) {
   }
 
   return (
-    <p className='form__error'>{message}</p>
+    <p className='form__error'>
+      <div className='form__error_tip' />
+      <div className='form__error_content'>
+        <FiAlertTriangle className='form__error_icon' />
+        {message}
+      </div>
+    </p>
   );
 }
 

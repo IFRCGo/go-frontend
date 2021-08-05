@@ -1,10 +1,10 @@
 import React, { useContext } from 'react';
-// import c from 'classnames';
 import { percent, shortenLargeNumber } from '#utils/format';
 import BlockLoading from '#components/block-loading';
 import { environment } from '#config';
 import { PropTypes as T } from 'prop-types';
 import Tooltip from '#components/common/tooltip';
+import EmptyMessage from '#components/EmptyMessage';
 import FullscreenHeader from '#components/common/fullscreen-header';
 
 import LanguageContext from '#root/languageContext';
@@ -67,7 +67,9 @@ export default function KeyFiguresHeader (props) {
   }
 
   if (error) {
-    return <p>{strings.keyFiguresError}</p>;
+    return (
+      <EmptyMessage />
+    );
   }
 
   if (!fetched || error) { return null; }

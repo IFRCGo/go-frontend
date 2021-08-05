@@ -25,6 +25,7 @@ import AppealsTable from '#components/connected/appeals-table';
 import MainMap from '#components/map/main-map';
 import LanguageContext from '#root/languageContext';
 import { countriesGeojsonSelector, countriesSelector } from '#selectors';
+
 class PresentationDash extends React.Component {
   constructor (props) {
     super(props);
