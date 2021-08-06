@@ -444,33 +444,31 @@ export function getDuration(start, end) {
     'days'
   ]);
 
-  let months;
-  let days;
+  let months = diff.months ? diff.months : 0;
+  let days = diff.days ? diff.days : 0;
 
   // Normalize to months when days are more than 25 or less than 5
-  if (diff.days > 25) {
-    months = diff.months + 1;
+  if (days > 25) {
+    months = months + 1;
     days = 0;
-  } else if (diff.days < 5 && diff.months > 0) {
-    months = diff.months;
+  } else if (days < 5 && months > 0) {
     days = 0;
   } else {
-    months = diff.months;
     days = Math.round(diff.days);
   }
 
-  const daysString = plural('day', 'days', diff.days);
-  const monthsString = plural('month', 'months', diff.months);
+  const daysString = plural('day', 'days', days);
+  const monthsString = plural('month', 'months', months);
 
   if (months === 0) {
-    return `${diff.days} ${daysString}`;
+    return `${days} ${daysString}`;
   }
 
   if (days === 0) {
-    return `${diff.months} ${monthsString}`;
+    return `${months} ${monthsString}`;
   }
 
-  return `${diff.months} ${monthsString} ${diff.days} ${daysString}`;
+  return `${months} ${monthsString} ${days} ${daysString}`;
 }
 
 /**
