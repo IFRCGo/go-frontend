@@ -449,7 +449,7 @@ export function getDuration(start, end) {
 
   // Normalize to months when days are more than 25 or less than 5
   if (diff.days > 25) {
-    months = months + 1;
+    months = diff.months + 1;
     days = 0;
   } else if (diff.days < 5 && diff.months > 0) {
     months = diff.months;
