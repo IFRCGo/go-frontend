@@ -1,3 +1,9 @@
+### Release 5.3.1: Hotfix
+
+ - Fix display of Duration in Surge Alerts table
+ - Truncate Position only for Alerts coming from Molnix
+ - Truncate Position in Deployments table
+
 ### Release 5.3.0
 
 #### Backend:
