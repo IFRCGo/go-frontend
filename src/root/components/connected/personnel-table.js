@@ -223,7 +223,8 @@ class PersonnelTable extends SFPComponent {
           id: o.id,
           //startDateInterval: DateTime.fromISO(o.start_date).toISODate(),
           //endDate: DateTime.fromISO(o.end_date).toISODate(),
-          role: get(o, 'role', nope),
+          // display only first part before comma for role
+          role: o.role ? o.role.split(',')[0] : nope,
           type: o.type === 'rr' ? typeLongNames[o.type] : o.type.toUpperCase(),
           country: o.country_from ? getCountryDisplay(o.country_from, strings)  : nope,
           name: o.name,
