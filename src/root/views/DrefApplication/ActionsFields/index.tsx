@@ -13,7 +13,6 @@ import SelectInput from '#components/SelectInput';
 import LanguageContext from '#root/languageContext';
 
 import {
-  ReportType,
   optionLabelSelector,
   optionDescriptionSelector,
   Option,
@@ -29,7 +28,6 @@ import styles from './styles.module.scss';
 import RadioInput from '#components/RadioInput';
 import TextArea from '#components/TextArea';
 
-const isEpidemic = (o: Option) => o.value === DISASTER_TYPE_EPIDEMIC;
 
 type Value = PartialForm<FormType>;
 interface Props {
@@ -39,7 +37,6 @@ interface Props {
   statusOptions: NumericValueOption[];
   value: Value;
   yesNoOptions: BooleanValueOption[];
-  reportType: ReportType;
   countryOptions: NumericValueOption[];
   districtOptions: NumericValueOption[];
   fetchingCountries?: boolean;
@@ -58,52 +55,7 @@ function ActionsFields(props: Props) {
     onValueChange,
     value,
     yesNoOptions,
-    reportType,
   } = props;
-
-  const [
-    countrySectionDescription,
-  ] = React.useMemo(() => {
-    type MapByReportType = {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      [key in ReportType]: string | undefined;
-    }
-
-    const startDateDescriptionMap: MapByReportType = {
-      EW: strings.fieldsStep1StartDateDescriptionEW,
-      COVID: strings.fieldsStep1StartDateDescriptionEPI,
-      EPI: strings.fieldsStep1StartDateDescriptionEPI,
-      EVT: strings.fieldsStep1StartDateDescriptionEVT,
-    };
-
-    const startDateTitleMap: MapByReportType = {
-      EW: strings.fieldsStep1StartDateLabelEW,
-      COVID: strings.fieldsStep1StartDateLabelEPI,
-      EPI: strings.fieldsStep1StartDateLabelEPI,
-      EVT: strings.fieldsStep1StartDateLabelStartDate,
-    };
-
-    const countryTitleMap: MapByReportType = {
-      EW: strings.fieldsStep1CountryLabelEW,
-      COVID: strings.fieldsStep1CountryLabelAffected,
-      EPI: strings.fieldsStep1CountryLabelAffected,
-      EVT: strings.fieldsStep1CountryLabelAffected,
-    };
-
-    const countryDescriptionMap: MapByReportType = {
-      EW: strings.fieldsStep1CountryDescriptionEW,
-      COVID: undefined,
-      EPI: undefined,
-      EVT: undefined,
-    };
-
-    return [
-      startDateDescriptionMap[reportType],
-      startDateTitleMap[reportType],
-      countryTitleMap[reportType],
-      countryDescriptionMap[reportType],
-    ];
-  }, [strings, reportType]);
 
   return (
     <>
@@ -131,15 +83,14 @@ function ActionsFields(props: Props) {
           title="Government has requested international assistance"
         >
           <RadioInput
-            name="is_covid_report"
+            name="government_requested_assistance"
             options={yesNoOptions}
             radioKeySelector={booleanOptionKeySelector}
             radioLabelSelector={optionLabelSelector}
             radioDescriptionSelector={optionDescriptionSelector}
-            value={value.is_covid_report}
+            value={value.government_requested_assistance}
             onChange={onValueChange}
-            error={error?.fields?.is_covid_report}
-            disabled={value.status === STATUS_EARLY_WARNING}
+            error={error?.fields?.government_requested_assistance}
           />
         </InputSection>
         <InputSection
@@ -148,11 +99,11 @@ function ActionsFields(props: Props) {
           multiRow
         >
           <TextArea
-            label={strings.cmpActionDescriptionLabel}
-            name="actions_ntls_desc"
+            // label={strings.cmpActionDescriptionLabel}
+            name="national_authorities"
             onChange={onValueChange}
-            value={value.actions_ntls_desc}
-            error={error?.fields?.actions_ntls_desc}
+            value={value.national_authorities}
+            error={error?.fields?.national_authorities}
             placeholder="If selected, max 300 characters"
           />
         </InputSection>
@@ -162,11 +113,11 @@ function ActionsFields(props: Props) {
           multiRow
         >
           <TextArea
-            label={strings.cmpActionDescriptionLabel}
-            name="actions_ntls_desc"
+            // label={strings.cmpActionDescriptionLabel}
+            name="rcrc_partners"
             onChange={onValueChange}
-            value={value.actions_ntls_desc}
-            error={error?.fields?.actions_ntls_desc}
+            value={value.rcrc_partners}
+            error={error?.fields?.rcrc_partners}
             placeholder="If selected, max 300 characters"
           />
         </InputSection>
@@ -177,10 +128,10 @@ function ActionsFields(props: Props) {
         >
           <TextArea
             label={strings.cmpActionDescriptionLabel}
-            name="actions_ntls_desc"
+            name="icrc"
             onChange={onValueChange}
-            value={value.actions_ntls_desc}
-            error={error?.fields?.actions_ntls_desc}
+            value={value.icrc}
+            error={error?.fields?.icrc}
             placeholder="If selected, max 300 characters"
           />
         </InputSection>
@@ -191,10 +142,10 @@ function ActionsFields(props: Props) {
         >
           <TextArea
             label={strings.cmpActionDescriptionLabel}
-            name="actions_ntls_desc"
+            name="un_or_other"
             onChange={onValueChange}
-            value={value.actions_ntls_desc}
-            error={error?.fields?.actions_ntls_desc}
+            value={value.un_or_other}
+            error={error?.fields?.un_or_other}
             placeholder="If selected, max 300 characters"
           />
         </InputSection>
@@ -205,10 +156,10 @@ function ActionsFields(props: Props) {
         >
           <TextArea
             label={strings.cmpActionDescriptionLabel}
-            name="actions_ntls_desc"
+            name="major_coordination_mechanism"
             onChange={onValueChange}
-            value={value.actions_ntls_desc}
-            error={error?.fields?.actions_ntls_desc}
+            value={value.major_coordination_mechanism}
+            error={error?.fields?.major_coordination_mechanism}
             placeholder="If selected, max 300 characters"
           />
         </InputSection>
@@ -236,10 +187,10 @@ function ActionsFields(props: Props) {
         >
           <TextArea
             label={strings.cmpActionDescriptionLabel}
-            name="actions_ntls_desc"
+            name="identified_gaps"
             onChange={onValueChange}
-            value={value.actions_ntls_desc}
-            error={error?.fields?.actions_ntls_desc}
+            value={value.identified_gaps}
+            error={error?.fields?.identified_gaps}
             placeholder="Max 300 characters"
           />
         </InputSection>

@@ -6,12 +6,9 @@ import TabPanel from '#components/Tabs/TabPanel';
 import { PartialForm, useForm } from '@togglecorp/toggle-form';
 
 import {
-  BULLETIN_PUBLISHED_NO,
   FormType,
-  STATUS_EARLY_WARNING,
-  STATUS_EVENT,
-  VISIBILITY_PUBLIC,
-  Option
+  Option,
+  DrefApplicationAPIFields
 } from './common';
 import useDrefFormOptions, { schema } from './useDrefFormOptions';
 import Page from '#components/Page';
@@ -25,14 +22,9 @@ import EventDetails from './EventDetails';
 import ActionsFields from './ActionsFields';
 import Response from './Response';
 import Submission from './Submission';
+import { useRequest } from '#utils/restRequest';
 
-const defaultFormValues: PartialForm<FormType> = {
-  status: STATUS_EVENT,
-  is_covid_report: false,
-  visibility: VISIBILITY_PUBLIC,
-  bulletin: BULLETIN_PUBLISHED_NO,
-};
-
+const defaultFormValues: PartialForm<FormType> = {};
 function scrollToTop() {
   window.setTimeout(() => {
     window.scrollTo({
@@ -42,7 +34,6 @@ function scrollToTop() {
     });
   }, 0);
 }
-
 interface Props {
   className?: string;
   match: Match<{ reportId?: string }>;
@@ -57,7 +48,6 @@ function DrefApplication() {
     onValueChange,
     validate,
     onErrorSet,
-    onValueSet,
   } = useForm(defaultFormValues, schema);
   const [initialEventOptions, setInitialEventOptions] = React.useState<Option[]>([]);
 
@@ -68,79 +58,85 @@ function DrefApplication() {
     fetchingCountries,
     fetchingDisasterTypes,
     fetchingDistricts,
-    reportType,
     statusOptions,
+    nationalSocietyOptions,
+    fetchingNationalSociety,
     yesNoOptions,
   } = useDrefFormOptions(value);
 
-  type StepTypes = 'step1' | 'step2' | 'step3' | 'step4' | 'step5';
-  const [currentStep, setCurrentStep] = React.useState<StepTypes>('step1');
-  const submitButtonLabel = currentStep === 'step5' ? 'Submit' : 'Continue';
-  const submitButtonClassName = currentStep === 'step5' ? 'button--primary-filled' : 'button--secondary-filled';
-  const shouldDisabledBackButton = currentStep === 'step1';
+  const {
+    pending: fieldReportPending,
+    response: fieldReportResponse,
+  } = useRequest<DrefApplicationAPIFields>({
+    // skip: !reportId,
+    url: `/api/v2/dref/`,
+  });
+
+  type StepTypes = 'DrefOverview' | 'EventDetails' | 'Action' | 'Response' | 'Submisson';
+  const [currentStep, setCurrentStep] = React.useState<StepTypes>('DrefOverview');
+  const submitButtonLabel = currentStep === 'Submisson' ? 'Submit' : 'Continue';
+  const submitButtonClassName = currentStep === 'Submisson' ? 'button--primary-filled' : 'button--secondary-filled';
+  const shouldDisabledBackButton = currentStep === 'DrefOverview';
 
   const handleTabChange = React.useCallback((newStep: StepTypes) => {
     scrollToTop();
+    const {
+      errored,
+      error,
+    } = validate();
 
-    // const {
-    //   errored,
-    //   error,
-    // } = validate();
-
-    // onErrorSet(error);
+    onErrorSet(error);
 
     setCurrentStep(newStep);
   }, [setCurrentStep]);
 
   const handleSubmitButtonClick = React.useCallback(() => {
     scrollToTop();
-    // const {
-    //   errored,
-    //   error,
-    //   value: finalValues,
-    // } = validate();
+    const {
+      errored,
+      error,
+      value: finalValues,
+    } = validate();
 
-    // onErrorSet(error);
+    onErrorSet(error);
 
-    // if (errored) {
-    //   return;
-    // }
+    if (errored) {
+      return;
+    }
 
-    if (currentStep === 'step5') {
+    if (currentStep === 'Submisson') {
     } else {
       const nextStepMap: {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        [key in Exclude<StepTypes, 'step5'>]: Exclude<StepTypes, 'step1'>;
+        [key in Exclude<StepTypes, 'Submisson'>]: Exclude<StepTypes, 'DrefOverview'>;
       } = {
-        step1: 'step2',
-        step2: 'step3',
-        step3: 'step4',
-        step4: 'step5',
+        DrefOverview: 'EventDetails',
+        EventDetails: 'Action',
+        Action: 'Response',
+        Response: 'Submisson',
       };
 
       setCurrentStep(nextStepMap[currentStep]);
     }
   }, [currentStep, setCurrentStep, validate, onErrorSet]);
-
-
   const handleBackButtonClick = React.useCallback(() => {
     scrollToTop();
-    // const {
-    //   errored,
-    //   error,
-    // } = validate();
+    const {
+      errored,
+      error,
+    } = validate();
 
-    // onErrorSet(error);
+    onErrorSet(error);
 
-    if (currentStep !== 'step1') {
+    if (currentStep !== 'DrefOverview') {
       const prevStepMap: {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        [key in Exclude<StepTypes, 'step1'>]: Exclude<StepTypes, 'step5'>;
+        [key in Exclude<StepTypes, 'DrefOverview'>]: Exclude<StepTypes, 'Submisson'>;
       } = {
-        step2: 'step1',
-        step3: 'step2',
-        step4: 'step3',
-        step5: 'step4',
+        EventDetails: 'DrefOverview',
+        Action: 'EventDetails',
+        Response: 'Action',
+        Submisson: 'Response',
       };
       setCurrentStep(prevStepMap[currentStep]);
     }
@@ -159,31 +155,31 @@ function DrefApplication() {
         info={(
           <TabList className={styles.tabList}>
             <Tab
-              name="step1"
+              name="DrefOverview"
               step={1}
             >
               Dref Overview
             </Tab>
             <Tab
-              name="step2"
+              name="EventDetails"
               step={2}
             >
               Event Details
             </Tab>
             <Tab
-              name="step3"
+              name="Action"
               step={3}
             >
               Actions/Needs
             </Tab>
             <Tab
-              name="step4"
+              name="Response"
               step={4}
             >
               Response
             </Tab>
             <Tab
-              name="step5"
+              name="Submisson"
               step={5}
             >
               Submission/Contacts
@@ -192,7 +188,7 @@ function DrefApplication() {
         )}
       >
         <Container>
-          <TabPanel name="step1">
+          <TabPanel name="DrefOverview">
             <DrefOverview
               error={error}
               onValueChange={onValueChange}
@@ -200,16 +196,16 @@ function DrefApplication() {
               value={value}
               yesNoOptions={yesNoOptions}
               disasterTypeOptions={disasterTypeOptions}
-              reportType={reportType}
               countryOptions={countryOptions}
               districtOptions={districtOptions}
               fetchingCountries={fetchingCountries}
               fetchingDistricts={fetchingDistricts}
               fetchingDisasterTypes={fetchingDisasterTypes}
-              initialEventOptions={initialEventOptions}
+              nationalSocietyOptions={nationalSocietyOptions}
+              fetchingNationalSociety={fetchingNationalSociety}
             />
           </TabPanel>
-          <TabPanel name="step2">
+          <TabPanel name="EventDetails">
             <EventDetails
               error={error}
               onValueChange={onValueChange}
@@ -217,7 +213,6 @@ function DrefApplication() {
               value={value}
               yesNoOptions={yesNoOptions}
               disasterTypeOptions={disasterTypeOptions}
-              reportType={reportType}
               countryOptions={countryOptions}
               districtOptions={districtOptions}
               fetchingCountries={fetchingCountries}
@@ -226,7 +221,7 @@ function DrefApplication() {
               initialEventOptions={initialEventOptions}
             />
           </TabPanel>
-          <TabPanel name="step3">
+          <TabPanel name="Action">
             <ActionsFields
               error={error}
               onValueChange={onValueChange}
@@ -234,7 +229,6 @@ function DrefApplication() {
               value={value}
               yesNoOptions={yesNoOptions}
               disasterTypeOptions={disasterTypeOptions}
-              reportType={reportType}
               countryOptions={countryOptions}
               districtOptions={districtOptions}
               fetchingCountries={fetchingCountries}
@@ -243,7 +237,7 @@ function DrefApplication() {
               initialEventOptions={initialEventOptions}
             />
           </TabPanel>
-          <TabPanel name="step4">
+          <TabPanel name="Response">
             <Response
               error={error}
               onValueChange={onValueChange}
@@ -251,7 +245,6 @@ function DrefApplication() {
               value={value}
               yesNoOptions={yesNoOptions}
               disasterTypeOptions={disasterTypeOptions}
-              reportType={reportType}
               countryOptions={countryOptions}
               districtOptions={districtOptions}
               fetchingCountries={fetchingCountries}
@@ -260,7 +253,7 @@ function DrefApplication() {
               initialEventOptions={initialEventOptions}
             />
           </TabPanel>
-          <TabPanel name="step5">
+          <TabPanel name="Submisson">
             <Submission
               error={error}
               onValueChange={onValueChange}
@@ -268,7 +261,6 @@ function DrefApplication() {
               value={value}
               yesNoOptions={yesNoOptions}
               disasterTypeOptions={disasterTypeOptions}
-              reportType={reportType}
               countryOptions={countryOptions}
               districtOptions={districtOptions}
               fetchingCountries={fetchingCountries}
