@@ -12,7 +12,6 @@ import SelectInput from '#components/SelectInput';
 import LanguageContext from '#root/languageContext';
 
 import {
-  ReportType,
   Option,
   FormType,
   DISASTER_TYPE_EPIDEMIC,
@@ -33,7 +32,6 @@ interface Props {
   statusOptions: NumericValueOption[];
   value: Value;
   yesNoOptions: BooleanValueOption[];
-  reportType: ReportType;
   countryOptions: NumericValueOption[];
   districtOptions: NumericValueOption[];
   fetchingCountries?: boolean;
@@ -51,52 +49,7 @@ function Response(props: Props) {
     error,
     onValueChange,
     value,
-    reportType,
   } = props;
-
-  const [
-    countrySectionDescription,
-  ] = React.useMemo(() => {
-    type MapByReportType = {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      [key in ReportType]: string | undefined;
-    }
-
-    const startDateDescriptionMap: MapByReportType = {
-      EW: strings.fieldsStep1StartDateDescriptionEW,
-      COVID: strings.fieldsStep1StartDateDescriptionEPI,
-      EPI: strings.fieldsStep1StartDateDescriptionEPI,
-      EVT: strings.fieldsStep1StartDateDescriptionEVT,
-    };
-
-    const startDateTitleMap: MapByReportType = {
-      EW: strings.fieldsStep1StartDateLabelEW,
-      COVID: strings.fieldsStep1StartDateLabelEPI,
-      EPI: strings.fieldsStep1StartDateLabelEPI,
-      EVT: strings.fieldsStep1StartDateLabelStartDate,
-    };
-
-    const countryTitleMap: MapByReportType = {
-      EW: strings.fieldsStep1CountryLabelEW,
-      COVID: strings.fieldsStep1CountryLabelAffected,
-      EPI: strings.fieldsStep1CountryLabelAffected,
-      EVT: strings.fieldsStep1CountryLabelAffected,
-    };
-
-    const countryDescriptionMap: MapByReportType = {
-      EW: strings.fieldsStep1CountryDescriptionEW,
-      COVID: undefined,
-      EPI: undefined,
-      EVT: undefined,
-    };
-
-    return [
-      startDateDescriptionMap[reportType],
-      startDateTitleMap[reportType],
-      countryTitleMap[reportType],
-      countryDescriptionMap[reportType],
-    ];
-  }, [strings, reportType]);
 
   return (
     <>
@@ -110,10 +63,10 @@ function Response(props: Props) {
         >
           <TextArea
             label={strings.cmpActionDescriptionLabel}
-            name="actions_ntls_desc"
+            name="people_assisted"
             onChange={onValueChange}
-            value={value.actions_ntls_desc}
-            error={error?.fields?.actions_ntls_desc}
+            value={value.people_assisted}
+            error={error?.fields?.people_assisted}
             placeholder="Max 300 characters"
           />
         </InputSection>
@@ -124,10 +77,10 @@ function Response(props: Props) {
         >
           <TextArea
             label={strings.cmpActionDescriptionLabel}
-            name="actions_ntls_desc"
+            name="selection_criteria"
             onChange={onValueChange}
-            value={value.actions_ntls_desc}
-            error={error?.fields?.actions_ntls_desc}
+            value={value.selection_criteria}
+            error={error?.fields?.selection_criteria}
             placeholder="Max 300 characters"
           />
         </InputSection>
@@ -138,10 +91,10 @@ function Response(props: Props) {
         >
           <TextArea
             label={strings.cmpActionDescriptionLabel}
-            name="actions_ntls_desc"
+            name="entity_affected"
             onChange={onValueChange}
-            value={value.actions_ntls_desc}
-            error={error?.fields?.actions_ntls_desc}
+            value={value.entity_affected}
+            error={error?.fields?.entity_affected}
             placeholder="Max 300 characters"
           />
         </InputSection>
@@ -152,10 +105,10 @@ function Response(props: Props) {
         >
           <TextArea
             label={strings.cmpActionDescriptionLabel}
-            name="actions_ntls_desc"
+            name="community_involved"
             onChange={onValueChange}
-            value={value.actions_ntls_desc}
-            error={error?.fields?.actions_ntls_desc}
+            value={value.community_involved}
+            error={error?.fields?.community_involved}
             placeholder="Max 300 characters"
           />
         </InputSection>
@@ -170,10 +123,10 @@ function Response(props: Props) {
               <TextInput
                 // label={strings.fieldReportFormTitleSecondaryLabel}
                 // placeholder={strings.fieldReportFormTitleInputPlaceholder}
-                name="summary"
-                value={value.summary}
+                name="women"
+                value={value.women}
                 onChange={onValueChange}
-                error={error?.fields?.summary}
+                error={error?.fields?.women}
               />
             </InputSection>
           </div>
@@ -183,10 +136,10 @@ function Response(props: Props) {
               <TextInput
                 // label={strings.fieldReportFormTitleSecondaryLabel}
                 // placeholder={strings.fieldReportFormTitleInputPlaceholder}
-                name="summary"
-                value={value.summary}
+                name="men"
+                value={value.men}
                 onChange={onValueChange}
-                error={error?.fields?.summary}
+                error={error?.fields?.men}
               />
             </InputSection>
           </div>
@@ -198,10 +151,10 @@ function Response(props: Props) {
               <TextInput
                 // label={strings.fieldReportFormTitleSecondaryLabel}
                 // placeholder={strings.fieldReportFormTitleInputPlaceholder}
-                name="summary"
-                value={value.summary}
+                name="girls"
+                value={value.girls}
                 onChange={onValueChange}
-                error={error?.fields?.summary}
+                error={error?.fields?.girls}
               />
             </InputSection>
           </div>
@@ -211,10 +164,10 @@ function Response(props: Props) {
               <TextInput
                 // label={strings.fieldReportFormTitleSecondaryLabel}
                 // placeholder={strings.fieldReportFormTitleInputPlaceholder}
-                name="summary"
-                value={value.summary}
+                name="boys"
+                value={value.boys}
                 onChange={onValueChange}
-                error={error?.fields?.summary}
+                error={error?.fields?.boys}
               />
             </InputSection>
           </div>
@@ -226,10 +179,10 @@ function Response(props: Props) {
               <TextInput
                 label="ESTIMATED % PEOPLE WITH DISABILITY"
                 // placeholder={strings.fieldReportFormTitleInputPlaceholder}
-                name="summary"
-                value={value.summary}
+                name="disability_people_per"
+                value={value.disability_people_per}
                 onChange={onValueChange}
-                error={error?.fields?.summary}
+                error={error?.fields?.disability_people_per}
               />
             </InputSection>
           </div>
@@ -238,10 +191,10 @@ function Response(props: Props) {
               <TextInput
                 label="ESTIMATED % URBAN/RURAL"
                 // placeholder={strings.fieldReportFormTitleInputPlaceholder}
-                name="summary"
-                value={value.summary}
+                name="people_per"
+                value={value.people_per}
                 onChange={onValueChange}
-                error={error?.fields?.summary}
+                error={error?.fields?.people_per}
               />
             </InputSection>
           </div>
@@ -250,10 +203,10 @@ function Response(props: Props) {
               <TextInput
                 label="ESTIMATED NUMBER OF DISPLACED PEOPLE"
                 // placeholder={strings.fieldReportFormTitleInputPlaceholder}
-                name="summary"
-                value={value.summary}
+                name="displaced_people"
+                value={value.displaced_people}
                 onChange={onValueChange}
-                error={error?.fields?.summary}
+                error={error?.fields?.displaced_people}
               />
             </InputSection>
           </div>
@@ -282,10 +235,10 @@ function Response(props: Props) {
         >
           <TextArea
             label={strings.cmpActionDescriptionLabel}
-            name="actions_ntls_desc"
+            name="response_strategy"
             onChange={onValueChange}
-            value={value.actions_ntls_desc}
-            error={error?.fields?.actions_ntls_desc}
+            value={value.response_strategy}
+            error={error?.fields?.response_strategy}
             placeholder="Max 300 characters"
           />
         </InputSection>
@@ -298,12 +251,12 @@ function Response(props: Props) {
           description="Select the needs that apply."
         >
           <SelectInput
-            error={error?.fields?.country}
-            name="country"
+            error={error?.fields?.planned_interventions}
+            name="planned_interventions"
             onChange={onValueChange}
             options={countryOptions}
             pending={fetchingCountries}
-            value={value.country}
+            value={value.planned_interventions}
           />
         </InputSection>
         <InputSection
@@ -313,10 +266,10 @@ function Response(props: Props) {
         >
           <TextArea
             label={strings.cmpActionDescriptionLabel}
-            name="actions_ntls_desc"
+            name="secretariat_service"
             onChange={onValueChange}
-            value={value.actions_ntls_desc}
-            error={error?.fields?.actions_ntls_desc}
+            value={value.secretariat_service}
+            error={error?.fields?.secretariat_service}
             placeholder="Example: HR deployment, logistics, international procurement, Quality programing"
           />
         </InputSection>
@@ -327,10 +280,10 @@ function Response(props: Props) {
         >
           <TextArea
             label={strings.cmpActionDescriptionLabel}
-            name="actions_ntls_desc"
+            name="national_society_strengthening"
             onChange={onValueChange}
-            value={value.actions_ntls_desc}
-            error={error?.fields?.actions_ntls_desc}
+            value={value.national_society_strengthening}
+            error={error?.fields?.national_society_strengthening}
             placeholder="Example:Staff and valunteers involved."
           />
         </InputSection>

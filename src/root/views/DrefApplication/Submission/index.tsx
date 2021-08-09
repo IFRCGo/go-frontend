@@ -11,17 +11,14 @@ import TextInput from '#components/TextInput';
 import LanguageContext from '#root/languageContext';
 
 import {
-  ReportType,
   Option,
   FormType,
-  DISASTER_TYPE_EPIDEMIC,
   NumericValueOption,
   BooleanValueOption,
 } from '../common';
 
 import styles from './styles.module.scss';
-
-const isEpidemic = (o: Option) => o.value === DISASTER_TYPE_EPIDEMIC;
+import DateInput from '#components/DateInput';
 
 type Value = PartialForm<FormType>;
 interface Props {
@@ -31,7 +28,6 @@ interface Props {
   statusOptions: NumericValueOption[];
   value: Value;
   yesNoOptions: BooleanValueOption[];
-  reportType: ReportType;
   countryOptions: NumericValueOption[];
   districtOptions: NumericValueOption[];
   fetchingCountries?: boolean;
@@ -47,59 +43,89 @@ function Submission(props: Props) {
     error,
     onValueChange,
     value,
-    reportType,
   } = props;
-
-  const [
-    countrySectionDescription,
-  ] = React.useMemo(() => {
-    type MapByReportType = {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      [key in ReportType]: string | undefined;
-    }
-
-    const startDateDescriptionMap: MapByReportType = {
-      EW: strings.fieldsStep1StartDateDescriptionEW,
-      COVID: strings.fieldsStep1StartDateDescriptionEPI,
-      EPI: strings.fieldsStep1StartDateDescriptionEPI,
-      EVT: strings.fieldsStep1StartDateDescriptionEVT,
-    };
-
-    const startDateTitleMap: MapByReportType = {
-      EW: strings.fieldsStep1StartDateLabelEW,
-      COVID: strings.fieldsStep1StartDateLabelEPI,
-      EPI: strings.fieldsStep1StartDateLabelEPI,
-      EVT: strings.fieldsStep1StartDateLabelStartDate,
-    };
-
-    const countryTitleMap: MapByReportType = {
-      EW: strings.fieldsStep1CountryLabelEW,
-      COVID: strings.fieldsStep1CountryLabelAffected,
-      EPI: strings.fieldsStep1CountryLabelAffected,
-      EVT: strings.fieldsStep1CountryLabelAffected,
-    };
-
-    const countryDescriptionMap: MapByReportType = {
-      EW: strings.fieldsStep1CountryDescriptionEW,
-      COVID: undefined,
-      EPI: undefined,
-      EVT: undefined,
-    };
-
-    return [
-      startDateDescriptionMap[reportType],
-      startDateTitleMap[reportType],
-      countryTitleMap[reportType],
-      countryDescriptionMap[reportType],
-    ];
-  }, [strings, reportType]);
 
   return (
     <>
-    <Container
-    heading="SUBMISSION FLOW"
-    className={styles.submission}
-    >
+      <Container
+        heading="SUBMISSION FLOW"
+        className={styles.submission}
+      >
+        <InputSection
+          title="Date of NS request"
+        >
+          <DateInput
+            name="start_date"
+            value={value.start_date}
+            onChange={onValueChange}
+            error={error?.fields?.start_date}
+          />
+        </InputSection>
+        <InputSection
+          title="Start date"
+          description=" Added by the regional office"
+        >
+          <DateInput
+            name="start_date"
+            value={value.start_date}
+            onChange={onValueChange}
+            error={error?.fields?.start_date}
+          />
+        </InputSection>
+        <InputSection
+          title="Date of Submission to Geneva"
+          description="Added by Geneva"
+        >
+          <DateInput
+            name="start_date"
+            value={value.start_date}
+            onChange={onValueChange}
+            error={error?.fields?.start_date}
+          />
+        </InputSection>
+        <InputSection
+          title="End date"
+          description="Added by the regional office"
+        >
+          <DateInput
+            name="start_date"
+            value={value.start_date}
+            onChange={onValueChange}
+            error={error?.fields?.start_date}
+          />
+        </InputSection>
+        <InputSection
+          title="Date of approval"
+          description=" Added by Geneva"
+        >
+          <DateInput
+            name="start_date"
+            value={value.start_date}
+            onChange={onValueChange}
+            error={error?.fields?.start_date}
+          />
+        </InputSection>
+        <InputSection
+          title="Operation timeframe"
+        >
+          <TextInput
+            name="operation_objective"
+            value={value.operation_objective}
+            onChange={onValueChange}
+            error={error?.fields?.operation_objective}
+          />
+        </InputSection>
+        <InputSection
+          title="Date of publishing"
+          description=" Added by the regional office"
+        >
+          <DateInput
+            name="publishing_date"
+            value={value.publishing_date}
+            onChange={onValueChange}
+            error={error?.fields?.publishing_date}
+          />
+        </InputSection>
       </Container>
       <Container
         heading="TRACKING DATA AND CONTACTS"
@@ -112,10 +138,10 @@ function Submission(props: Props) {
           <TextInput
             // label={strings.fieldReportFormTitleSecondaryLabel}
             placeholder="MDR code"
-            name="summary"
-            value={value.summary}
+            name="appeal_code"
+            value={value.appeal_code}
             onChange={onValueChange}
-            error={error?.fields?.summary}
+            error={error?.fields?.appeal_code}
           />
         </InputSection>
         <InputSection
@@ -125,10 +151,10 @@ function Submission(props: Props) {
           <TextInput
             // label={strings.fieldReportFormTitleSecondaryLabel}
             placeholder="MDR code"
-            name="summary"
-            value={value.summary}
+            name="glide_code"
+            value={value.glide_code}
             onChange={onValueChange}
-            error={error?.fields?.summary}
+            error={error?.fields?.glide_code}
           />
         </InputSection>
         <InputSection
@@ -139,20 +165,20 @@ function Submission(props: Props) {
             <TextInput
               label="NAME"
               // placeholder={strings.fieldReportFormTitleInputPlaceholder}
-              name="summary"
-              value={value.summary}
+              name="appeal_manager_name"
+              value={value.appeal_manager_name}
               onChange={onValueChange}
-              error={error?.fields?.summary}
+              error={error?.fields?.appeal_manager_name}
             />
           </div>
           <div>
             <TextInput
               label="EMAIL"
               // placeholder={strings.fieldReportFormTitleInputPlaceholder}
-              name="summary"
-              value={value.summary}
+              name="appeal_manager_email"
+              value={value.appeal_manager_email}
               onChange={onValueChange}
-              error={error?.fields?.summary}
+              error={error?.fields?.appeal_manager_email}
             />
           </div>
         </InputSection>
@@ -164,20 +190,20 @@ function Submission(props: Props) {
             <TextInput
               label="NAME"
               // placeholder={strings.fieldReportFormTitleInputPlaceholder}
-              name="summary"
-              value={value.summary}
+              name="project_manager_name"
+              value={value.project_manager_name}
               onChange={onValueChange}
-              error={error?.fields?.summary}
+              error={error?.fields?.project_manager_name}
             />
           </div>
           <div>
             <TextInput
               label="EMAIL"
               // placeholder={strings.fieldReportFormTitleInputPlaceholder}
-              name="summary"
-              value={value.summary}
+              name="project_manager_email"
+              value={value.project_manager_email}
               onChange={onValueChange}
-              error={error?.fields?.summary}
+              error={error?.fields?.project_manager_email}
             />
           </div>
         </InputSection>
@@ -213,20 +239,20 @@ function Submission(props: Props) {
             <TextInput
               label="NAME"
               // placeholder={strings.fieldReportFormTitleInputPlaceholder}
-              name="summary"
-              value={value.summary}
+              name="national_scoiety_contact_name"
+              value={value.national_scoiety_contact_name}
               onChange={onValueChange}
-              error={error?.fields?.summary}
+              error={error?.fields?.national_scoiety_contact_name}
             />
           </div>
           <div>
             <TextInput
               label="EMAIL"
               // placeholder={strings.fieldReportFormTitleInputPlaceholder}
-              name="summary"
-              value={value.summary}
+              name="national_scoiety_contact_email"
+              value={value.national_scoiety_contact_email}
               onChange={onValueChange}
-              error={error?.fields?.summary}
+              error={error?.fields?.national_scoiety_contact_email}
             />
           </div>
         </InputSection>
@@ -237,20 +263,20 @@ function Submission(props: Props) {
             <TextInput
               label="NAME"
               // placeholder={strings.fieldReportFormTitleInputPlaceholder}
-              name="summary"
-              value={value.summary}
+              name="ifrc_emergency_name"
+              value={value.ifrc_emergency_name}
               onChange={onValueChange}
-              error={error?.fields?.summary}
+              error={error?.fields?.ifrc_emergency_name}
             />
           </div>
           <div>
             <TextInput
               label="EMAIL"
               // placeholder={strings.fieldReportFormTitleInputPlaceholder}
-              name="summary"
-              value={value.summary}
+              name="ifrc_emergency_email"
+              value={value.ifrc_emergency_email}
               onChange={onValueChange}
-              error={error?.fields?.summary}
+              error={error?.fields?.ifrc_emergency_email}
             />
           </div>
         </InputSection>
@@ -261,20 +287,20 @@ function Submission(props: Props) {
             <TextInput
               label="NAME"
               // placeholder={strings.fieldReportFormTitleInputPlaceholder}
-              name="summary"
-              value={value.summary}
+              name="media_contact_name"
+              value={value.media_contact_name}
               onChange={onValueChange}
-              error={error?.fields?.summary}
+              error={error?.fields?.media_contact_name}
             />
           </div>
           <div>
             <TextInput
               label="EMAIL"
               // placeholder={strings.fieldReportFormTitleInputPlaceholder}
-              name="summary"
-              value={value.summary}
+              name="media_contact_email"
+              value={value.media_contact_email}
               onChange={onValueChange}
-              error={error?.fields?.summary}
+              error={error?.fields?.media_contact_email}
             />
           </div>
         </InputSection>

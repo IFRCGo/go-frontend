@@ -17,7 +17,6 @@ import {
   optionDescriptionSelector,
   Option,
   FormType,
-  STATUS_EARLY_WARNING,
   DISASTER_TYPE_EPIDEMIC,
   NumericValueOption,
   BooleanValueOption,
@@ -28,8 +27,6 @@ import styles from './styles.module.scss';
 import RadioInput from '#components/RadioInput';
 import TextArea from '#components/TextArea';
 
-const isEpidemic = (o: Option) => o.value === DISASTER_TYPE_EPIDEMIC;
-
 type Value = PartialForm<FormType>;
 interface Props {
   disasterTypeOptions: NumericValueOption[];
@@ -38,7 +35,6 @@ interface Props {
   statusOptions: NumericValueOption[];
   value: Value;
   yesNoOptions: BooleanValueOption[];
-  reportType: ReportType;
   countryOptions: NumericValueOption[];
   districtOptions: NumericValueOption[];
   fetchingCountries?: boolean;
@@ -57,52 +53,7 @@ function EventDetails(props: Props) {
     onValueChange,
     value,
     yesNoOptions,
-    reportType,
   } = props;
-
-  const [
-    countrySectionDescription,
-  ] = React.useMemo(() => {
-    type MapByReportType = {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      [key in ReportType]: string | undefined;
-    }
-
-    const startDateDescriptionMap: MapByReportType = {
-      EW: strings.fieldsStep1StartDateDescriptionEW,
-      COVID: strings.fieldsStep1StartDateDescriptionEPI,
-      EPI: strings.fieldsStep1StartDateDescriptionEPI,
-      EVT: strings.fieldsStep1StartDateDescriptionEVT,
-    };
-
-    const startDateTitleMap: MapByReportType = {
-      EW: strings.fieldsStep1StartDateLabelEW,
-      COVID: strings.fieldsStep1StartDateLabelEPI,
-      EPI: strings.fieldsStep1StartDateLabelEPI,
-      EVT: strings.fieldsStep1StartDateLabelStartDate,
-    };
-
-    const countryTitleMap: MapByReportType = {
-      EW: strings.fieldsStep1CountryLabelEW,
-      COVID: strings.fieldsStep1CountryLabelAffected,
-      EPI: strings.fieldsStep1CountryLabelAffected,
-      EVT: strings.fieldsStep1CountryLabelAffected,
-    };
-
-    const countryDescriptionMap: MapByReportType = {
-      EW: strings.fieldsStep1CountryDescriptionEW,
-      COVID: undefined,
-      EPI: undefined,
-      EVT: undefined,
-    };
-
-    return [
-      startDateDescriptionMap[reportType],
-      startDateTitleMap[reportType],
-      countryTitleMap[reportType],
-      countryDescriptionMap[reportType],
-    ];
-  }, [strings, reportType]);
 
   return (
     <>
@@ -136,7 +87,6 @@ function EventDetails(props: Props) {
             value={value.is_covid_report}
             onChange={onValueChange}
             error={error?.fields?.is_covid_report}
-            disabled={value.status === STATUS_EARLY_WARNING}
           />
         </InputSection>
         <InputSection
@@ -151,37 +101,34 @@ function EventDetails(props: Props) {
             value={value.is_covid_report}
             onChange={onValueChange}
             error={error?.fields?.is_covid_report}
-            disabled={value.status === STATUS_EARLY_WARNING}
           />
         </InputSection>
         <InputSection
           title="Did the NS respond?"
         >
           <RadioInput
-            name="is_covid_report"
+            name="ns_respond_text"
             options={yesNoOptions}
             radioKeySelector={booleanOptionKeySelector}
             radioLabelSelector={optionLabelSelector}
             radioDescriptionSelector={optionDescriptionSelector}
-            value={value.is_covid_report}
+            value={value.ns_respond_text}
             onChange={onValueChange}
-            error={error?.fields?.is_covid_report}
-            disabled={value.status === STATUS_EARLY_WARNING}
+            error={error?.fields?.ns_respond_text}
           />
         </InputSection>
         <InputSection
           title="Did the NS request a DREF?"
         >
           <RadioInput
-            name="is_covid_report"
+            name="ns_request"
             options={yesNoOptions}
             radioKeySelector={booleanOptionKeySelector}
             radioLabelSelector={optionLabelSelector}
             radioDescriptionSelector={optionDescriptionSelector}
-            value={value.is_covid_report}
+            value={value.ns_request}
             onChange={onValueChange}
-            error={error?.fields?.is_covid_report}
-            disabled={value.status === STATUS_EARLY_WARNING}
+            error={error?.fields?.ns_request}
           />
         </InputSection>
         <InputSection
@@ -202,11 +149,11 @@ function EventDetails(props: Props) {
           multiRow
         >
           <TextArea
-            label={strings.cmpActionDescriptionLabel}
-            name="actions_ntls_desc"
+            // label={strings.cmpActionDescriptionLabel}
+            name="lessons_learned"
             onChange={onValueChange}
-            value={value.actions_ntls_desc}
-            error={error?.fields?.actions_ntls_desc}
+            value={value.lessons_learned}
+            error={error?.fields?.lessons_learned}
             placeholder="Max 500 characters"
           />
         </InputSection>
@@ -220,11 +167,11 @@ function EventDetails(props: Props) {
           multiRow
         >
           <TextArea
-            label={strings.cmpActionDescriptionLabel}
-            name="actions_ntls_desc"
+            // label={strings.cmpActionDescriptionLabel}
+            name="event_description"
             onChange={onValueChange}
-            value={value.actions_ntls_desc}
-            error={error?.fields?.actions_ntls_desc}
+            value={value.event_description}
+            error={error?.fields?.event_description}
             placeholder="Max 800 characters"
           />
         </InputSection>
@@ -234,11 +181,11 @@ function EventDetails(props: Props) {
           multiRow
         >
           <TextArea
-            label={strings.cmpActionDescriptionLabel}
-            name="actions_ntls_desc"
+            // label={strings.cmpActionDescriptionLabel}
+            name="event_scope"
             onChange={onValueChange}
-            value={value.actions_ntls_desc}
-            error={error?.fields?.actions_ntls_desc}
+            value={value.event_scope}
+            error={error?.fields?.event_scope}
             placeholder="Max 800 characters"
           />
         </InputSection>
