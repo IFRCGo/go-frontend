@@ -942,7 +942,7 @@ export default {
   threeWKeyFigureProgrammeTypeTitle: 'Programme Type',
   threeWKeyFigureOngoingProjectBudgetTitle: 'Total Budget (CHF) for Ongoing Projects',
   threeWKeyFigureStatusTitle: 'Project Status',
-  threeWKeyFigureCountryActivityTitle: 'Activities in Countries',
+  threeWKeyFigureCountryActivityTitle: 'Countries where NS has reported projects',
   threeWTopNoLoginMessage: 'To view all the project details, {loginLink} with your RCRC credentials',
   threeWBottomNoLoginMessage: 'If you are a member of RCRC Movement, login with your credentials to see more details.',
   threeWOngoingProjectsTitle: 'Ongoing Projects',
