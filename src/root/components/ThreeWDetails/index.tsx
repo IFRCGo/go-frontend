@@ -97,6 +97,7 @@ function ProjectDetail(props: Props) {
               label={strings.threeWLastModifiedOn}
               value={projectResponse?.modified_at}
               valueType="date"
+            //  description={`By ${projectResponse?.modified_by_detail?.username}`}
             />
           )}
         />

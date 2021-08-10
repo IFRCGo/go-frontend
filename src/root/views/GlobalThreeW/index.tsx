@@ -232,19 +232,19 @@ function GlobalThreeW(props: Props) {
                     <>
                         <Card
                             title={strings.globalThreeWChartProjectPerSectorTitle}
-                            className={styles.projectPerSectorChart}
+                            // className={styles.projectPerSectorChart}
                         >
                             <ThreeWBarChart data={projectPerSectorChartData} />
                         </Card>
                         <Card
                             title={strings.globalThreeWChartProgrammeTypeTitle}
-                            className={styles.programmeTypeChart}
+                            // className={styles.programmeTypeChart}
                         >
                             <ThreeWPieChart data={projectPerProgrammeTypeChartData} />
                         </Card>
                         <Card
                             title={strings.globalThreeWChartTopTagsTitle}
-                            className={styles.topTagsChart}
+                            // className={styles.topTagsChart}
                         >
                             <ThreeWBarChart
                                 data={projectPerSecondarySectorChartData}
