@@ -858,3 +858,8 @@ export const GET_MAIN_CONTACTS = 'GET_MAIN_CONTACTS';
 export function getMainContacts () {
   return fetchJSON('api/v2/main_contact/?limit=200', GET_MAIN_CONTACTS);
 }
+
+export const GET_DREF_APPLICATIONS = 'GET_DREF_APPLICATIONS';
+export function getDrefApplications () {
+  return fetchJSON('api/v2/dref/?limit=200', GET_DREF_APPLICATIONS);
+}

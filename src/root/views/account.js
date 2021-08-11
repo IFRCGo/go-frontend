@@ -48,6 +48,7 @@ import {
 } from '#components/form-elements/';
 
 import App from './app';
+import DrefApplications from '#components/DrefApplications';
 
 const Fragment = React.Fragment;
 
@@ -161,7 +162,8 @@ class Account extends React.Component {
   getTabDetails = memoize((strings) => [
     { title: strings.accountInformation, hash: '#account-information' },
     { title: strings.accountNotification, hash: '#notifications' },
-    { title: strings.accountPerForms, hash: '#per-forms' }
+    { title: strings.accountPerForms, hash: '#per-forms' },
+    { title: strings.accountMyDrefApplications, hash: '#my-dref-applications'}
   ])
 
   getBasicTypes = memoize((strings) => [
@@ -886,6 +888,11 @@ class Account extends React.Component {
                   <TabPanel>
                     <TabContent isError={!this.isPerPermission()} errorMessage={strings.accountPerError} title={strings.accountPerTitle}>
                       <PerAccount user={this.props.user} />
+                    </TabContent>
+                  </TabPanel>
+                  <TabPanel>
+                    <TabContent isError={!this.isPerPermission()} errorMessage={strings.accountPerError} title={strings.accountPerTitle}>
+                      <DrefApplications/>
                     </TabContent>
                   </TabPanel>
                 </div>
