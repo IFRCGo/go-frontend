@@ -6,11 +6,9 @@ import Translate from '#components/Translate';
 
 import Select from 'react-select';
 import { FormError } from '#components/form-elements/';
-import { getSelectInputValue } from '#utils/utils';
 import DisplayTable from '#components/display-table';
-import ConfirmModal from '#components/confirm-modal';
 
-function DrefApplications(props) {
+function DrefApplications(props: any) {
   const { strings } = useContext(LanguageContext);
   const headings = [
     {
