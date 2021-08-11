@@ -6,7 +6,7 @@ import isUndefined from 'lodash.isundefined';
 import _find from 'lodash.find';
 import _filter from 'lodash.filter';
 import * as EmailValidator from 'email-validator';
-import { DateTime } from 'luxon';
+import { DateTime, Duration } from 'luxon';
 import {
   isNotDefined,
   isFalsyString,
@@ -416,3 +416,82 @@ export const getSelectInputValue = (value, options) => {
 
   return options.find(d => String(d.value) === String(value));
 };
+
+/**
+ * 
+ * @param {String} singular 
+ * @param {String} plural 
+ * @param {Number} number 
+ * @returns {String} - either singular or plural based on number
+ */
+export function plural(singular, plural, number) {
+  return number === 1 ? singular : plural;
+}
+
+/**
+ * Get duration as a human readable string
+ * 
+ * @param {DateTime} start - Start date as a luxon DateTime object
+ * @param {DateTime} end - End date as a luxon DateTime object
+ * @returns {String} - String - eg. "4 months"
+ */
+export function getDuration(start, end) {
+  if (start.invalid || end.invalid) {
+    return '';
+  }
+  const diff = end.diff(start, [
+    'months',
+    'days'
+  ]);
+
+  let months = diff.months ? diff.months : 0;
+  let days = diff.days ? diff.days : 0;
+
+  // Normalize to months when days are more than 25 or less than 5
+  if (days > 25) {
+    months = months + 1;
+    days = 0;
+  } else if (days < 5 && months > 0) {
+    days = 0;
+  } else {
+    days = Math.round(diff.days);
+  }
+
+  const daysString = plural('day', 'days', days);
+  const monthsString = plural('month', 'months', months);
+
+  if (months === 0) {
+    return `${days} ${daysString}`;
+  }
+
+  if (days === 0) {
+    return `${months} ${monthsString}`;
+  }
+
+  return `${months} ${monthsString} ${days} ${daysString}`;
+}
+
+/**
+ * Gets Keywords from Molnix tag objects,
+ * ignoring certain keywords based on rules
+ * 
+ * @param {Array<Object>} molnixTags - molnix tag objects
+ * @returns {String} Comma separated keywords
+ */
+export function getMolnixKeywords(molnixTags) {
+  const TAGS_TO_IGNORE = [
+    'Nosuitable',
+    'NotSurge',
+    'OpsChange'
+  ];
+  const filtered = molnixTags.filter(tag => {
+    if (tag.name.startsWith('OP-')) {
+      return false;
+    }
+    if (TAGS_TO_IGNORE.indexOf(tag) !== -1) {
+      return false;
+    }
+    return true;
+  });
+  return filtered.map(tag => tag.name).join(', ');
+}

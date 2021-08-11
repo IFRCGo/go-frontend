@@ -1,3 +1,31 @@
+### Release 5.3.0
+
+#### Backend:
+
+ - Make Molnix integration live
+ - Add 3 new aggregation endpoints for Personnel Deployments: https://github.com/IFRCGo/go-api/pull/1135
+ - Fix various issues with Molnix import and sync process: https://github.com/IFRCGo/go-api/pull/1140
+ - Minor fixes to Geospatial data import pipeline: https://github.com/IFRCGo/go-api/pull/1139
+
+#### Frontend:
+
+ - Implement updated table for Surge Alerts: https://github.com/IFRCGo/go-frontend/issues/1965
+ - Fix popup display on Personnel Deployments table
+ - Show more items on Personnel Deployments table
+ - Make form validation errors consistent across PER forms: https://github.com/IFRCGo/go-frontend/issues/1926
+ - Improve display of generic data display errors: https://github.com/IFRCGo/go-frontend/issues/1924
+ - Improve error messaging for unsupported browsers: https://github.com/IFRCGo/go-frontend/issues/1925
+
+### Release 5.2.2: Hotfix for incorrect emails on about page email links
+
+ - Fixes the mailto: values for emails on the About page to reflect the correct emails.
+
+
+### Release 5.2.1: Hotfix for Field Report numeric field submission errors
+- Fix the positive integer condition in form (Restrict users to enter decimals in numbers)
+- Fix the "Dcoument" typo
+
+
 ### Release 5.2.0:
  
    - Release Date: 2021-07-05

@@ -1,12 +1,19 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { PropTypes as T } from 'prop-types';
+import { PropTypes as T, string } from 'prop-types';
 import { Link } from 'react-router-dom';
 import { DateTime } from 'luxon';
 
 import { environment } from '#config';
 import { getSurgeAlerts } from '#actions';
-import { get, dateOptions, datesAgo, isLoggedIn } from '#utils/utils';
+import { 
+  get,
+  dateOptions,
+  datesAgo,
+  isLoggedIn,
+  getDuration,
+  getMolnixKeywords 
+} from '#utils/utils';
 import { nope, privateSurgeAlert, recentInterval } from '#utils/format';
 
 // FIXME: imports from the /components/ could be a 1 liner?
@@ -19,6 +26,16 @@ import Expandable from '#components/expandable';
 
 import LanguageContext from '#root/languageContext';
 import Translate from '#components/Translate';
+
+
+// If alert comes from Molnix, only show first part of message as position.
+function getPositionString(alertRow) {
+  if (!alertRow.molnix_id) {
+    return alertRow.message;
+  } else {
+    return alertRow.message.split(',')[0];
+  }
+}
 
 class AlertsTable extends SFPComponent {
   // Methods form SFPComponent:
@@ -147,32 +164,59 @@ class AlertsTable extends SFPComponent {
     const headings = [
       {
         id: 'date',
-        label: <FilterHeader id='date' title={strings.alertTableDate} options={dateOptions} filter={this.state.table.filters.date} onSelect={this.handleFilterChange.bind(this, 'table', 'date')} />
+        label: strings.alertTableAlertDate
       },
       {
-        id: 'category',
-        label: <FilterHeader id='category' title={strings.alertTableCategory} options={this.getCategoryOptions(strings)} filter={this.state.table.filters.category} onSelect={this.handleFilterChange.bind(this, 'table', 'category')} />
+        id: 'duration',
+        label: strings.alertTableDuration
       },
-      { id: 'emergency', label: strings.alertTableEmergency },
-      { id: 'msg', label: strings.alertTableMessage },
       {
-        id: 'type',
-        label: <FilterHeader id='type' title={strings.alertTableType} options={this.getTypeOptions(strings)} filter={this.state.table.filters.type} onSelect={this.handleFilterChange.bind(this, 'table', 'type')} />
+        id: 'startDate',
+        label: strings.alertTableStartDate
+      },
+      {
+        id: 'position',
+        label: strings.alertTablePosition
+      },
+      {
+        id: 'keywords',
+        label: strings.alertTableKeywords
+      },
+      {
+        id: 'emergency',
+        label: strings.alertTableEmergency
+      },
+      {
+        id: 'country',
+        label: strings.alertTableCountry
+      },
+      {
+        id: 'status',
+        label: strings.alertTableStatus
       }
     ];
 
     const rows = data.results.reduce((acc, rowData) => {
       const date = DateTime.fromISO(rowData.created_at);
+      const startDate = DateTime.fromISO(rowData.start);
+      const endDate = DateTime.fromISO(rowData.end);
+      const nowMs = new Date().getTime();
       const event = get(rowData, 'event.id');
+      const countries = get(rowData, 'event.countries');
+      const country = countries && countries.length > 0 ? countries[0].name : '';
       const eventTitle = rowData.operation || get(rowData, 'event.name');
       acc.push({
         id: rowData.id,
         date: date.toISODate(),
-        emergency: event ? <Link className='link--table' to={`/emergencies/${event}`} title={strings.alertTableViewEmergency}>{eventTitle}</Link> : rowData.operation || nope,
+        startDate: startDate.ts < nowMs ? 'Immediately' : startDate.toISODate(),
+        duration: getDuration(startDate, endDate),
 
-        msg: isLoggedIn(this.props.user) ? <Expandable limit={128} text={rowData.message} /> : privateSurgeAlert,
-        type: this.getAlertTypes(strings)[rowData.atype],
-        category: this.getAlertCategories(strings)[rowData.category]
+        // for position, we only want first segment before a comma
+        position: getPositionString(rowData),
+        keywords: getMolnixKeywords(rowData.molnix_tags),
+        emergency: event ? <Link className='link--table' to={`/emergencies/${event}`} title={strings.alertTableViewEmergency}>{eventTitle}</Link> : rowData.operation || nope,
+        country: country,
+        status: rowData.molnix_status === 'unfilled' ? 'Stood down' : 'Open' 
       });
 
       return acc;
