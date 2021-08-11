@@ -12,12 +12,10 @@ import SelectInput from '#components/SelectInput';
 import LanguageContext from '#root/languageContext';
 
 import {
-  ReportType,
   optionLabelSelector,
   optionDescriptionSelector,
   Option,
   FormType,
-  DISASTER_TYPE_EPIDEMIC,
   NumericValueOption,
   BooleanValueOption,
   booleanOptionKeySelector,
@@ -57,7 +55,7 @@ function EventDetails(props: Props) {
 
   return (
     <>
-      <Container>
+      <Container sub>
         <InputSection
           title="Copy data from an existing field report"
           description="These field reports have already been filtered by the country and disaster type that you have entered. Selecting field report will pre-fill matching fields in this report, which you can modify."

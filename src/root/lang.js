@@ -1570,5 +1570,7 @@ export default {
   threeWEditPageTitle: 'IFRC Go - Edit 3W',
 
   emptyMessage: 'Data is not available.',
-  emptyMessageHelpText: 'Please refresh the browser or visit the platform in a little bit.'
+  emptyMessageHelpText: 'Please refresh the browser or visit the platform in a little bit.',
+
+  drefFormTitle: 'Title*',
 };
