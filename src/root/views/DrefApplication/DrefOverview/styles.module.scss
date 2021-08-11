@@ -1,10 +1,19 @@
 @import '~styles/settings/_variables.scss';
 
-.dref-overview {
+.timeframes,
+.essential-information{
   :global {
     .go-input-section {
       margin: $spacing 0;
       box-shadow: $box-shadow-component;
     }
+  }
+}
+
+.essential-information {
+  .actions {
+    display: flex;
+    justify-content: flex-end;
+    padding: $spacing/2 $spacing;
   }
 }

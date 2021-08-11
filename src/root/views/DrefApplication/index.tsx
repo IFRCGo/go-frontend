@@ -1,30 +1,32 @@
 import React from 'react';
 import { _cs } from '@togglecorp/fujs';
+import { PartialForm, useForm } from '@togglecorp/toggle-form';
 import type { match as Match } from 'react-router-dom';
+
 import Container from '#components/Container';
 import TabPanel from '#components/Tabs/TabPanel';
-import { PartialForm, useForm } from '@togglecorp/toggle-form';
-
-import {
-  FormType,
-  Option,
-  DrefApplicationAPIFields
-} from './common';
-import useDrefFormOptions, { schema } from './useDrefFormOptions';
 import Page from '#components/Page';
 import Tabs from '#components/Tabs';
 import TabList from '#components/Tabs/TabList';
 import Tab from '#components/Tabs/Tab';
 import DrefOverview from '#views/DrefApplication/DrefOverview';
+import { useRequest } from '#utils/restRequest';
 
-import styles from './styles.module.scss';
 import EventDetails from './EventDetails';
 import ActionsFields from './ActionsFields';
 import Response from './Response';
 import Submission from './Submission';
-import { useRequest } from '#utils/restRequest';
+import {
+  Option,
+  DrefFields
+} from './common';
+import useDrefFormOptions, { schema } from './useDrefFormOptions';
 
-const defaultFormValues: PartialForm<FormType> = {};
+import styles from './styles.module.scss';
+
+const defaultFormValues: PartialForm<DrefFields> = {
+};
+
 function scrollToTop() {
   window.setTimeout(() => {
     window.scrollTo({
@@ -34,14 +36,15 @@ function scrollToTop() {
     });
   }, 0);
 }
+
 interface Props {
   className?: string;
   match: Match<{ reportId?: string }>;
   history: History;
   location: Location;
 }
-function DrefApplication() {
 
+function DrefApplication(props: Props) {
   const {
     value,
     error,
@@ -54,20 +57,19 @@ function DrefApplication() {
   const {
     countryOptions,
     disasterTypeOptions,
-    districtOptions,
     fetchingCountries,
     fetchingDisasterTypes,
-    fetchingDistricts,
-    statusOptions,
     nationalSocietyOptions,
     fetchingNationalSociety,
     yesNoOptions,
+    disasterCategoryOptions,
+    onsetOptions,
   } = useDrefFormOptions(value);
 
   const {
     pending: fieldReportPending,
     response: fieldReportResponse,
-  } = useRequest<DrefApplicationAPIFields>({
+  } = useRequest<DrefFields>({
     // skip: !reportId,
     url: `/api/v2/dref/`,
   });
@@ -87,8 +89,10 @@ function DrefApplication() {
 
     onErrorSet(error);
 
-    setCurrentStep(newStep);
-  }, [setCurrentStep]);
+    if (!errored) {
+      setCurrentStep(newStep);
+    }
+  }, [setCurrentStep, onErrorSet, validate]);
 
   const handleSubmitButtonClick = React.useCallback(() => {
     scrollToTop();
@@ -192,14 +196,13 @@ function DrefApplication() {
             <DrefOverview
               error={error}
               onValueChange={onValueChange}
-              statusOptions={statusOptions}
               value={value}
               yesNoOptions={yesNoOptions}
               disasterTypeOptions={disasterTypeOptions}
+              onsetOptions={onsetOptions}
+              disasterCategoryOptions={disasterCategoryOptions}
               countryOptions={countryOptions}
-              districtOptions={districtOptions}
               fetchingCountries={fetchingCountries}
-              fetchingDistricts={fetchingDistricts}
               fetchingDisasterTypes={fetchingDisasterTypes}
               nationalSocietyOptions={nationalSocietyOptions}
               fetchingNationalSociety={fetchingNationalSociety}
@@ -209,14 +212,11 @@ function DrefApplication() {
             <EventDetails
               error={error}
               onValueChange={onValueChange}
-              statusOptions={statusOptions}
               value={value}
               yesNoOptions={yesNoOptions}
               disasterTypeOptions={disasterTypeOptions}
               countryOptions={countryOptions}
-              districtOptions={districtOptions}
               fetchingCountries={fetchingCountries}
-              fetchingDistricts={fetchingDistricts}
               fetchingDisasterTypes={fetchingDisasterTypes}
               initialEventOptions={initialEventOptions}
             />
@@ -225,14 +225,11 @@ function DrefApplication() {
             <ActionsFields
               error={error}
               onValueChange={onValueChange}
-              statusOptions={statusOptions}
               value={value}
               yesNoOptions={yesNoOptions}
               disasterTypeOptions={disasterTypeOptions}
               countryOptions={countryOptions}
-              districtOptions={districtOptions}
               fetchingCountries={fetchingCountries}
-              fetchingDistricts={fetchingDistricts}
               fetchingDisasterTypes={fetchingDisasterTypes}
               initialEventOptions={initialEventOptions}
             />
@@ -241,14 +238,11 @@ function DrefApplication() {
             <Response
               error={error}
               onValueChange={onValueChange}
-              statusOptions={statusOptions}
               value={value}
               yesNoOptions={yesNoOptions}
               disasterTypeOptions={disasterTypeOptions}
               countryOptions={countryOptions}
-              districtOptions={districtOptions}
               fetchingCountries={fetchingCountries}
-              fetchingDistricts={fetchingDistricts}
               fetchingDisasterTypes={fetchingDisasterTypes}
               initialEventOptions={initialEventOptions}
             />
@@ -257,14 +251,11 @@ function DrefApplication() {
             <Submission
               error={error}
               onValueChange={onValueChange}
-              statusOptions={statusOptions}
               value={value}
               yesNoOptions={yesNoOptions}
               disasterTypeOptions={disasterTypeOptions}
               countryOptions={countryOptions}
-              districtOptions={districtOptions}
               fetchingCountries={fetchingCountries}
-              fetchingDistricts={fetchingDistricts}
               fetchingDisasterTypes={fetchingDisasterTypes}
               initialEventOptions={initialEventOptions}
             />
