@@ -14,7 +14,6 @@ import LanguageContext from '#root/languageContext';
 import {
   Option,
   FormType,
-  DISASTER_TYPE_EPIDEMIC,
   NumericValueOption,
   BooleanValueOption,
 } from '../common';
@@ -22,7 +21,6 @@ import {
 import styles from './styles.module.scss';
 import TextArea from '#components/TextArea';
 
-const isEpidemic = (o: Option) => o.value === DISASTER_TYPE_EPIDEMIC;
 
 type Value = PartialForm<FormType>;
 interface Props {
@@ -244,7 +242,7 @@ function Response(props: Props) {
         </InputSection>
       </Container>
       <Container
-        heading="PLANNED INTERVENTIONS"
+        heading="Planned Intervention"
         className={styles.ActionsFields}>
         <InputSection
           title=""

@@ -3,44 +3,46 @@ import {
   PartialForm,
   Error,
   EntriesAsList,
+  useFormArray,
 } from '@togglecorp/toggle-form';
+import { randomString } from '@togglecorp/fujs';
 
 import Container from '#components/Container';
 import InputSection from '#components/InputSection';
+import Button from '#components/Button';
 import TextInput from '#components/TextInput';
 import SelectInput from '#components/SelectInput';
 import LanguageContext from '#root/languageContext';
-
-import {
-  ReportType,
-  optionLabelSelector,
-  optionDescriptionSelector,
-  Option,
-  FormType,
-  NumericValueOption,
-  BooleanValueOption,
-  booleanOptionKeySelector,
-} from '../common';
-
-import styles from './styles.module.scss';
 import RadioInput from '#components/RadioInput';
 import DateInput from '#components/DateInput';
 import NumberInput from '#components/NumberInput';
 import { StringValueOption } from '#views/FieldReportForm/common';
 
-type Value = PartialForm<FormType>;
+import {
+  optionLabelSelector,
+  optionDescriptionSelector,
+  DrefFields,
+  NumericValueOption,
+  BooleanValueOption,
+  booleanOptionKeySelector,
+  CountryDistrict,
+} from '../common';
+import { CountryDistrictType } from '../useDrefFormOptions';
+import CountryDistrictInput from './CountryDistrictInput';
+import styles from './styles.module.scss';
+
+type Value = PartialForm<DrefFields>;
 interface Props {
   disasterTypeOptions: NumericValueOption[];
   error: Error<Value> | undefined;
   onValueChange: (...entries: EntriesAsList<Value>) => void;
-  statusOptions: NumericValueOption[];
   value: Value;
   yesNoOptions: BooleanValueOption[];
   countryOptions: NumericValueOption[];
-  districtOptions: NumericValueOption[];
   nationalSocietyOptions: StringValueOption[];
+  disasterCategoryOptions: NumericValueOption[];
+  onsetOptions: NumericValueOption[];
   fetchingCountries?: boolean;
-  fetchingDistricts?: boolean;
   fetchingDisasterTypes?: boolean;
   fetchingNationalSociety?: boolean;
 }
@@ -50,10 +52,8 @@ function DrefOverview(props: Props) {
 
   const {
     countryOptions,
-    districtOptions,
     fetchingCountries,
     fetchingNationalSociety,
-    fetchingDistricts,
     fetchingDisasterTypes,
     disasterTypeOptions,
     nationalSocietyOptions,
@@ -61,28 +61,49 @@ function DrefOverview(props: Props) {
     onValueChange,
     value,
     yesNoOptions,
+    disasterCategoryOptions,
+    onsetOptions,
   } = props;
 
+  const {
+    onValueChange: onCountryDistrictChange,
+    onValueRemove: onCountryDistrictRemove,
+  } = useFormArray<'country_district', PartialForm<CountryDistrict>>(
+    'country_district',
+    onValueChange,
+  );
+
+  type CountryDistricts  = typeof value.country_district;
+
+  const handleCountryDistrictAdd = React.useCallback(() => {
+    const clientId = randomString();
+    const newList: PartialForm<CountryDistrictType> = {
+      clientId,
+    };
+
+    onValueChange(
+      (oldValue: PartialForm<CountryDistricts>) => (
+        [...(oldValue ?? []), newList]
+      ),
+      'country_district' as const,
+    );
+  }, [onValueChange]);
+
+  // FIXME: use translations
   return (
     <>
       <Container
-        // FIXME: use translation
         heading="Essential Information"
-        className={styles.drefOverview}
+        className={styles.essentialInformation}
+        sub
       >
-        <InputSection
-          title={strings.fieldsStep1SummaryLabel}
-        >
-          <div>
+        <InputSection title={strings.drefFormTitle}>
             <TextInput
-              // label={strings.fieldReportFormTitleSecondaryLabel}
-              // placeholder={strings.fieldReportFormTitleInputPlaceholder}
               name="title"
               value={value.title}
               onChange={onValueChange}
               error={error?.fields?.title}
             />
-          </div>
         </InputSection>
         <InputSection
           title="Name of National Society*"
@@ -98,69 +119,65 @@ function DrefOverview(props: Props) {
         </InputSection>
         <InputSection
           title="Disaster Details*"
+          multiRow
+          twoColumn
         >
-          <div>
-            <SelectInput
-              error={error?.fields?.disaster_type}
-              label="Disaster type"
-              name="disaster_type"
-              onChange={onValueChange}
-              options={disasterTypeOptions}
-              pending={fetchingDisasterTypes}
-              value={value.disaster_type}
-            />
-            <SelectInput
-              error={error?.fields?.type_of_onset}
-              label="Disaster Categories"
-              name="type_of_onset"
-              onChange={onValueChange}
-              // options={districtOptions}
-              // pending={fetchingDistricts}
-              value={value.type_of_onset}
-            />
-          </div>
+          <SelectInput
+            error={error?.fields?.disaster_type}
+            label="Disaster type"
+            name="disaster_type"
+            onChange={onValueChange}
+            options={disasterTypeOptions}
+            pending={fetchingDisasterTypes}
+            value={value.disaster_type}
+          />
+          <SelectInput
+            error={error?.fields?.type_of_onset}
+            label="Type of Onset"
+            name="type_of_onset"
+            onChange={onValueChange}
+            options={onsetOptions}
+            value={value.type_of_onset}
+          />
           <SelectInput
             error={error?.fields?.disaster_category_level}
-            label="Type of onset"
+            label="Disaster Category"
             name="disaster_category_level"
             onChange={onValueChange}
-            // options={districtOptions}
-            // pending={fetchingDistricts}
+            options={disasterCategoryOptions}
             value={value.disaster_category_level}
           />
         </InputSection>
         <InputSection
           title="Affected country and province/region*"
+          multiRow
+          oneColumn
         >
-          <div>
-            <SelectInput
-              pending={fetchingCountries}
-              error={error?.fields?.country}
-              name="country"
-              onChange={onValueChange}
-              options={countryOptions}
-              value={value.country}
-            />
-          </div>
-          <div>
-            <SelectInput
-              pending={fetchingDistricts}
-              isMulti={true}
+          {value.country_district?.map((c, i) => (
+            <CountryDistrictInput
+              key={c.clientId}
+              index={i}
+              value={c}
+              onChange={onCountryDistrictChange}
+              onRemove={onCountryDistrictRemove}
               error={error?.fields?.country_district}
-              name="country_district"
-              onChange={onValueChange}
-              options={districtOptions}
-              value={value.country_district}
+              countryOptions={countryOptions}
+              fetchingCountries={fetchingCountries}
             />
-            <button>Add country</button>
+          ))}
+          <div className={styles.actions}>
+            <Button
+              onClick={handleCountryDistrictAdd}
+              variant="secondary"
+            >
+              Add Country
+            </Button>
           </div>
         </InputSection>
         <InputSection
           title="Number of people affected/ number of people at risk"
         >
           <NumberInput
-            // label={strings.fieldReportFormTitleSecondaryLabel}
-            // placeholder={strings.fieldReportFormTitleInputPlaceholder}
             name="num_affected"
             value={value.num_affected}
             onChange={onValueChange}
@@ -171,8 +188,6 @@ function DrefOverview(props: Props) {
           title="Name of People to be assisted"
         >
           <NumberInput
-            // label={strings.fieldReportFormTitleSecondaryLabel}
-            // placeholder={strings.fieldReportFormTitleInputPlaceholder}
             name="num_assisted"
             value={value.num_assisted}
             onChange={onValueChange}
@@ -182,16 +197,12 @@ function DrefOverview(props: Props) {
         <InputSection
           title="Requested Amount"
         >
-          <div>
-            <NumberInput
-              // label={strings.fieldReportFormTitleSecondaryLabel}
-              // placeholder={strings.fieldReportFormTitleInputPlaceholder}
-              name="amount_requested"
-              value={value.amount_requested}
-              onChange={onValueChange}
-              error={error?.fields?.amount_requested}
-            />
-          </div>
+          <NumberInput
+            name="amount_requested"
+            value={value.amount_requested}
+            onChange={onValueChange}
+            error={error?.fields?.amount_requested}
+          />
         </InputSection>
         <InputSection
           title="Emergency appeal planned"
@@ -207,13 +218,12 @@ function DrefOverview(props: Props) {
             error={error?.fields?.emergency_appeal_planned}
           />
         </InputSection>
-        <InputSection
-          title="Upload map">
-        </InputSection>
       </Container>
       <Container
-        heading="TIMEFRAMES"
-        className={styles.drefOverview}>
+        heading="Timeframes"
+        className={styles.timeframes}
+        sub
+      >
         <InputSection
           title="Disaster date/ trigger date"
         >
