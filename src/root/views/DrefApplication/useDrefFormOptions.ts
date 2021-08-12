@@ -1,4 +1,5 @@
 import React from 'react';
+import { compareString } from '#utils/utils';
 import {
   PartialForm,
   ObjectSchema,
@@ -6,7 +7,6 @@ import {
 } from '@togglecorp/toggle-form';
 
 import { requiredCondition } from '#utils/form';
-import { compareString } from '#utils/utils';
 import LanguageContext from '#root/languageContext';
 import {
   useRequest,
@@ -14,18 +14,19 @@ import {
 } from '#utils/restRequest';
 
 import {
-  Country
+  Country,
+  Disaster,
 } from '#types';
 
 import {
   BooleanValueOption,
   NumericValueOption,
   emptyNumericOptionList,
-  Entity,
-  User,
   emptyStringOptionList,
-  NSEntity,
+  User,
   DrefFields,
+  NumericKeyValuePair,
+  StringKeyValuePair,
 } from './common';
 
 export type FormSchema = ObjectSchema<PartialForm<DrefFields>>;
@@ -37,13 +38,25 @@ export type CountryDistrictSchemaFields = ReturnType<CountryDistrictSchema['fiel
 export type CountryDistrictsSchema = ArraySchema<PartialForm<CountryDistrictType>>;
 export type CountryDistrictsSchemaMember = ReturnType<CountryDistrictsSchema['member']>;
 
+export type NeedType = NonNullable<NonNullable<DrefFields['needs_identified']>>[number];
+export type NeedSchema = ObjectSchema<PartialForm<NeedType>>;
+export type NeedSchemaFields = ReturnType<NeedSchema['fields']>;
+export type NeedsSchema = ArraySchema<PartialForm<NeedType>>;
+export type NeedsSchemaMember = ReturnType<NeedsSchema['member']>;
+
+export type InterventionType = NonNullable<NonNullable<DrefFields['planned_interventions']>>[number];
+export type InterventionSchema = ObjectSchema<PartialForm<InterventionType>>;
+export type InterventionSchemaFields = ReturnType<InterventionSchema['fields']>;
+export type InterventionsSchema = ArraySchema<PartialForm<InterventionType>>;
+export type InterventionsSchemaMember = ReturnType<InterventionsSchema['member']>;
+
 export const schema: FormSchema = {
   fields: (value): FormSchemaFields => ({
-    title: [],
-    national_society: [],
-    disaster_type: [],
-    type_of_onset: [],
-    disaster_category_level: [],
+    title: [requiredCondition],
+    national_society: [requiredCondition],
+    disaster_type: [requiredCondition],
+    type_of_onset: [requiredCondition],
+    disaster_category: [requiredCondition],
     country_district: {
       keySelector: (c) => c.clientId as string,
       member: (): CountryDistrictsSchemaMember => ({
@@ -81,7 +94,16 @@ export const schema: FormSchema = {
     un_or_other: [],
     major_coordination_mechanism: [],
 
-    needs_identified: [],
+    needs_identified: {
+      keySelector: (n) => n.clientId as string,
+      member: (): NeedsSchemaMember => ({
+        fields: (): NeedSchemaFields => ({
+          clientId: [],
+          need: [requiredCondition],
+          description: [requiredCondition],
+        }),
+      }),
+    },
 
     people_assisted: [],
     selection_criteria: [],
@@ -128,10 +150,28 @@ export const schema: FormSchema = {
   },
 };
 
-
 const limitQuery = {
   limit: 500,
 };
+
+interface DrefOptions {
+  disaster_category: NumericKeyValuePair[];
+  national_society_actions: StringKeyValuePair[];
+  needs_identified: StringKeyValuePair[];
+  planned_interventions: StringKeyValuePair[];
+  status: NumericKeyValuePair[];
+  type_of_onset: NumericKeyValuePair[];
+}
+
+function transformKeyValueToLabelValue<O extends NumericKeyValuePair | StringKeyValuePair>(o: O): {
+  label: string;
+  value: O['key'];
+} {
+  return {
+    value: o.key,
+    label: o.value,
+  };
+}
 
 function useDrefFormOptions(value: PartialForm<DrefFields>) {
   const { strings } = React.useContext(LanguageContext);
@@ -144,6 +184,39 @@ function useDrefFormOptions(value: PartialForm<DrefFields>) {
   });
 
   const {
+    pending: fetchingDrefOptions,
+    response: drefOptions,
+  } = useRequest<DrefOptions>({
+    url: 'api/v2/dref-options/',
+  });
+
+  const [
+    disasterCategoryOptions,
+    nsActionOptions,
+    needOptions,
+    interventionOptions,
+    onsetOptions,
+  ] = React.useMemo(() => {
+    if (!drefOptions) {
+      return [
+        emptyNumericOptionList,
+        emptyStringOptionList,
+        emptyStringOptionList,
+        emptyStringOptionList,
+        emptyNumericOptionList,
+      ];
+    }
+
+    return [
+      drefOptions.disaster_category.map(transformKeyValueToLabelValue),
+      drefOptions.national_society_actions.map(transformKeyValueToLabelValue),
+      drefOptions.needs_identified.map(transformKeyValueToLabelValue),
+      drefOptions.planned_interventions.map(transformKeyValueToLabelValue),
+      drefOptions.type_of_onset.map(transformKeyValueToLabelValue),
+    ];
+  }, [drefOptions]);
+
+  const {
     pending: fetchingCountries,
     response: countriesResponse,
   } = useRequest<ListResponse<Country>>({
@@ -151,72 +224,43 @@ function useDrefFormOptions(value: PartialForm<DrefFields>) {
     query: limitQuery,
   });
 
-  const countryOptions = React.useMemo(() => (
-    countriesResponse?.results?.filter(
-      c => c.independent && c.record_type === 1
-    ).map((c) => ({
-      value: c.id,
-      label: c.name,
-    })) ?? emptyNumericOptionList
-  ), [countriesResponse]);
+  const [
+    nationalSocietyOptions,
+    countryOptions,
+  ] = React.useMemo(() => {
+    if (!countriesResponse) {
+      return [emptyNumericOptionList, emptyNumericOptionList];
+    }
+
+    const ns: NumericValueOption[] = countriesResponse.results
+      .filter(d => d.independent && d.society_name)
+      .map(d => ({
+        value: d.id,
+        label: d.society_name,
+      })).sort(compareString);
+
+    const c: NumericValueOption[] = countriesResponse.results
+      .filter(d => d.independent && d.iso)
+      .map(d => ({
+        value: d.id,
+        label: d.name,
+      })).sort(compareString);
+
+    return [ns, c] as const;
+  }, [countriesResponse]);
 
   const {
     pending: fetchingDisasterTypes,
     response: disasterTypesResponse,
-  } = useRequest<ListResponse<Entity>>({
+  } = useRequest<ListResponse<Disaster>>({
     url: 'api/v2/disaster_type/',
   });
-
   const disasterTypeOptions = React.useMemo(() => (
     disasterTypesResponse?.results?.map((d) => ({
       value: d.id,
       label: d.name,
     })) ?? emptyNumericOptionList
   ), [disasterTypesResponse]);
-
-  const {
-    pending: fetchingNationalSociety,
-    response: nationalSocietyResponse,
-  } = useRequest<ListResponse<NSEntity>>({
-    url: 'api/v2/national-society-action/',
-  });
-
-  const nationalSocietyOptions = React.useMemo(() => (
-    nationalSocietyResponse?.results?.map((d) => ({
-      value: d.title,
-      label: d.description,
-    })) ?? emptyStringOptionList
-  ), [nationalSocietyResponse]);
-
-  const {
-    pending: fetchingSupportedActivities,
-    response: supportedActivitiesResponse,
-  } = useRequest<ListResponse<Entity>>({
-    url: 'api/v2/supported_activity/',
-    query: limitQuery,
-  });
-
-  const supportedActivityOptions = React.useMemo(() => (
-    supportedActivitiesResponse?.results?.map((d) => ({
-      value: d.id,
-      label: d.name,
-    })) ?? emptyNumericOptionList
-  ), [supportedActivitiesResponse]);
-
-  const {
-    pending: fetchingExternalPartners,
-    response: externalPartnersResponse,
-  } = useRequest<ListResponse<Entity>>({
-    url: 'api/v2/external_partner/',
-    query: limitQuery,
-  });
-
-  const externalPartnerOptions = React.useMemo(() => (
-    externalPartnersResponse?.results?.map((d) => ({
-      value: d.id,
-      label: d.name,
-    })) ?? emptyNumericOptionList
-  ), [externalPartnersResponse]);
 
   const yesNoOptions = React.useMemo(() => {
     return [
@@ -225,45 +269,21 @@ function useDrefFormOptions(value: PartialForm<DrefFields>) {
     ] as BooleanValueOption[];
   }, []);
 
-  const ONSET_ANTICIPATORY = 0;
-  const ONSET_IMMINENT = 1;
-  const ONSET_SLOW = 2;
-  const ONSET_SUDDEN = 3;
-
-  const DISASTER_CATEGORY_YELLOW = 0;
-  const DISASTER_CATEGORY_ORANGE = 1;
-  const DISASTER_CATEGORY_RED = 2;
-
-  const onsetOptions: NumericValueOption[] = React.useMemo(() => ([
-    {label: 'Anticipatory', value: ONSET_ANTICIPATORY},
-    {label: 'Imminent', value: ONSET_IMMINENT},
-    {label: 'Slow', value: ONSET_SLOW},
-    {label: 'Sudden onset', value: ONSET_SUDDEN},
-  ]), []);
-
-  const disasterCategoryOptions: NumericValueOption[] = React.useMemo(() => ([
-    {label: 'Yellow', value: DISASTER_CATEGORY_YELLOW},
-    {label: 'Orange', value: DISASTER_CATEGORY_ORANGE},
-    {label: 'Red', value: DISASTER_CATEGORY_RED},
-  ]), []);
-
-
   return {
     countryOptions,
+    disasterCategoryOptions,
     disasterTypeOptions,
-    externalPartnerOptions,
     fetchingCountries,
     fetchingDisasterTypes,
-    fetchingExternalPartners,
-    fetchingSupportedActivities,
+    fetchingDrefOptions,
     fetchingUserDetails,
-    supportedActivityOptions,
+    interventionOptions,
+    needOptions,
+    nsActionOptions,
+    onsetOptions,
     userDetails,
     yesNoOptions,
-    fetchingNationalSociety,
     nationalSocietyOptions,
-    onsetOptions,
-    disasterCategoryOptions,
   };
 }
 
