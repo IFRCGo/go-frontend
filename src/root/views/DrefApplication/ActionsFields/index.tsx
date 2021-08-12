@@ -1,84 +1,173 @@
 import React from 'react';
-import { isDefined } from '@togglecorp/fujs';
+import {
+  randomString,
+  isNotDefined,
+  listToMap,
+} from '@togglecorp/fujs';
 import {
   PartialForm,
   Error,
   EntriesAsList,
+  useFormArray,
 } from '@togglecorp/toggle-form';
 
+import Button from '#components/Button';
 import Container from '#components/Container';
 import InputSection from '#components/InputSection';
-import TextInput from '#components/TextInput';
 import SelectInput from '#components/SelectInput';
+import RadioInput from '#components/RadioInput';
+import TextArea from '#components/TextArea';
 import LanguageContext from '#root/languageContext';
 
 import {
   optionLabelSelector,
-  optionDescriptionSelector,
-  Option,
-  FormType,
-  STATUS_EARLY_WARNING,
-  DISASTER_TYPE_EPIDEMIC,
-  NumericValueOption,
+  DrefFields,
   BooleanValueOption,
   booleanOptionKeySelector,
+  Need,
+  NsAction,
+  StringValueOption,
 } from '../common';
 
+import NeedInput from './NeedInput';
+import NsActionInput from './NSActionInput';
+
 import styles from './styles.module.scss';
-import RadioInput from '#components/RadioInput';
-import TextArea from '#components/TextArea';
 
-
-type Value = PartialForm<FormType>;
+type Value = PartialForm<DrefFields>;
 interface Props {
-  disasterTypeOptions: NumericValueOption[];
   error: Error<Value> | undefined;
   onValueChange: (...entries: EntriesAsList<Value>) => void;
-  statusOptions: NumericValueOption[];
   value: Value;
   yesNoOptions: BooleanValueOption[];
-  countryOptions: NumericValueOption[];
-  districtOptions: NumericValueOption[];
-  fetchingCountries?: boolean;
-  fetchingDistricts?: boolean;
-  fetchingDisasterTypes?: boolean;
-  initialEventOptions?: Option[];
+  needOptions: StringValueOption[];
+  nsActionOptions: StringValueOption[];
 }
 
 function ActionsFields(props: Props) {
   const { strings } = React.useContext(LanguageContext);
 
   const {
-    countryOptions,
-    fetchingCountries,
     error,
     onValueChange,
     value,
     yesNoOptions,
+    needOptions,
+    nsActionOptions,
   } = props;
+
+  const [need, setNeed] = React.useState<string | undefined>();
+  const [nsAction, setNsAction] = React.useState<string | undefined>();
+  const {
+    onValueChange: onNeedChange,
+    onValueRemove: onNeedRemove,
+  } = useFormArray<'needs_identified', PartialForm<Need>>(
+    'needs_identified',
+    onValueChange,
+  );
+  const {
+    onValueChange: onNsActionChange,
+    onValueRemove: onNsActionRemove,
+  } = useFormArray<'national_society_actions', PartialForm<NsAction>>(
+    'national_society_actions',
+    onValueChange,
+  );
+
+  type Needs = typeof value.needs_identified;
+  const handleNeedAddButtonClick = React.useCallback((title) => {
+    const clientId = randomString();
+    const newList: PartialForm<Need> = {
+      clientId,
+      title,
+    };
+
+    onValueChange(
+      (oldValue: PartialForm<Needs>) => (
+        [...(oldValue ?? []), newList]
+      ),
+      'needs_identified' as const,
+    );
+    setNeed(undefined);
+  }, [onValueChange, setNeed]);
+
+  type NsActions = typeof value.needs_identified;
+  const handleNsActionAddButtonClick = React.useCallback((title) => {
+    const clientId = randomString();
+    const newList: PartialForm<NsAction> = {
+      clientId,
+      title,
+    };
+
+    onValueChange(
+      (oldValue: PartialForm<NsActions>) => (
+        [...(oldValue ?? []), newList]
+      ),
+      'national_society_actions' as const,
+    );
+    setNsAction(undefined);
+  }, [onValueChange, setNsAction]);
+
+  const needsIdentifiedMap = React.useMemo(() =>(
+    listToMap(
+      value.needs_identified,
+      d => d.title ?? '',
+      d => true
+    )
+  ), [value.needs_identified]);
+
+  const filteredNeedOptions = needOptions.filter(n => !needsIdentifiedMap[n.value]);
+
+  const nsActionsMap = React.useMemo(() =>(
+    listToMap(
+      value.national_society_actions,
+      d => d.title ?? '',
+      d => true
+    )
+  ), [value.national_society_actions]);
+  const filteredNsActionOptions = nsActionOptions.filter(n => !nsActionsMap[n.value]);
 
   return (
     <>
       <Container
-        heading="NATIONAL SOCIETY ACTIONS"
-        className={styles.ActionsFields}>
-        <InputSection
-          title=""
-          description="Select the needs that apply."
-        >
+        heading="National Society Actions"
+        className={styles.nationalSocietyActions}
+        visibleOverflow
+      >
+        <InputSection>
           <SelectInput
-            error={error?.fields?.country}
-            name="country"
-            onChange={onValueChange}
-            options={countryOptions}
-            pending={fetchingCountries}
-            value={value.country}
+            label="Select the actions that apply."
+            name={undefined}
+            options={filteredNsActionOptions}
+            value={nsAction}
+            onChange={setNsAction}
           />
+          <div className={styles.actions}>
+            <Button
+              variant="secondary"
+              name={nsAction}
+              onClick={handleNsActionAddButtonClick}
+              disabled={isNotDefined(nsAction)}
+            >
+              Add
+            </Button>
+          </div>
         </InputSection>
+        {value?.national_society_actions?.map((n, i) => (
+          <NsActionInput
+            key={n.clientId}
+            index={i}
+            value={n}
+            onChange={onNsActionChange}
+            onRemove={onNsActionRemove}
+            error={error?.fields?.national_society_actions}
+            nsActionOptions={nsActionOptions}
+          />
+        ))}
       </Container>
       <Container
         heading="Other Actors"
-        className={styles.ActionsFields}>
+        className={styles.otherActions}
+      >
         <InputSection
           title="Government has requested international assistance"
         >
@@ -87,7 +176,6 @@ function ActionsFields(props: Props) {
             options={yesNoOptions}
             radioKeySelector={booleanOptionKeySelector}
             radioLabelSelector={optionLabelSelector}
-            radioDescriptionSelector={optionDescriptionSelector}
             value={value.government_requested_assistance}
             onChange={onValueChange}
             error={error?.fields?.government_requested_assistance}
@@ -95,11 +183,8 @@ function ActionsFields(props: Props) {
         </InputSection>
         <InputSection
           title="National authorities"
-          oneColumn
-          multiRow
         >
           <TextArea
-            // label={strings.cmpActionDescriptionLabel}
             name="national_authorities"
             onChange={onValueChange}
             value={value.national_authorities}
@@ -109,11 +194,8 @@ function ActionsFields(props: Props) {
         </InputSection>
         <InputSection
           title="RCRC Partner NSs"
-          oneColumn
-          multiRow
         >
           <TextArea
-            // label={strings.cmpActionDescriptionLabel}
             name="rcrc_partners"
             onChange={onValueChange}
             value={value.rcrc_partners}
@@ -123,8 +205,6 @@ function ActionsFields(props: Props) {
         </InputSection>
         <InputSection
           title="ICRC"
-          oneColumn
-          multiRow
         >
           <TextArea
             label={strings.cmpActionDescriptionLabel}
@@ -165,21 +245,40 @@ function ActionsFields(props: Props) {
         </InputSection>
       </Container>
       <Container
-        heading="NEEDS IDENTIFIED"
-        className={styles.eventDetails}>
-        <InputSection
-          title=""
-          description="Select the needs that apply."
-        >
+        heading="Needs (Gaps) Identified"
+        className={styles.needsIdentified}
+        visibleOverflow
+      >
+        <InputSection>
           <SelectInput
-            error={error?.fields?.country}
-            name="country"
-            onChange={onValueChange}
-            options={countryOptions}
-            pending={fetchingCountries}
-            value={value.country}
+            label="Select the needs that apply."
+            name={undefined}
+            onChange={setNeed}
+            options={filteredNeedOptions}
+            value={need}
           />
+          <div className={styles.actions}>
+            <Button
+              variant="secondary"
+              name={need}
+              onClick={handleNeedAddButtonClick}
+              disabled={isNotDefined(need)}
+            >
+              Add
+            </Button>
+          </div>
         </InputSection>
+        {value?.needs_identified?.map((n, i) => (
+          <NeedInput
+            key={n.clientId}
+            index={i}
+            value={n}
+            onChange={onNeedChange}
+            onRemove={onNeedRemove}
+            error={error?.fields?.needs_identified}
+            needOptions={needOptions}
+          />
+        ))}
         <InputSection
           title="Any identified gaps/limitations in the assessment*"
           oneColumn

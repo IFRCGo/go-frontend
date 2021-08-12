@@ -1,10 +1,20 @@
 @import '~styles/settings/_variables.scss';
 
-.actions-fields {
+.other-actions,
+.national-society-actions {
   :global {
     .go-input-section {
       margin: $spacing 0;
       box-shadow: $box-shadow-component;
     }
+  }
+}
+
+.national-society-actions,
+.needs-identified {
+  .actions {
+    display: flex;
+    align-items: flex-end;
+    padding: $spacing/2;
   }
 }
