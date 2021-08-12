@@ -1,7 +1,7 @@
 import React from 'react';
 import {
   PartialForm,
-  Error,
+  ArrayError,
   useFormObject,
 } from '@togglecorp/toggle-form';
 
@@ -22,24 +22,25 @@ import styles from './styles.module.scss';
 
 type SetValueArg<T> = T | ((value: T) => T);
 
+const defaultCountryDistrictValue: PartialForm<CountryDistrictType> = {
+  clientId: 'test',
+};
+
+
 interface Props {
   fetchingCountries?: boolean;
   value: PartialForm<CountryDistrictType>;
-  error: Error<CountryDistrictType> | undefined;
+  error: ArrayError<CountryDistrictType> | undefined;
   onChange: (value: SetValueArg<PartialForm<CountryDistrictType>>, index: number) => void;
   onRemove: (index: number) => void;
   index: number;
   countryOptions: NumericValueOption[];
 }
 
-const defaultCountryDistrictValue: PartialForm<CountryDistrictType> = {
-  clientId: 'test',
-};
-
 function CountryDistrictInput(props: Props) {
   const {
     fetchingCountries,
-    error,
+    error: errorFromProps,
     onChange,
     countryOptions,
     value,
@@ -68,6 +69,9 @@ function CountryDistrictInput(props: Props) {
   ), [districtsResponse]);
 
   const onFieldChange = useFormObject(index, onChange, defaultCountryDistrictValue);
+  const error = (value && value.clientId && errorFromProps)
+    ? errorFromProps.members?.[value.clientId]
+    : undefined;
 
   return (
     <div className={styles.countryDistrictInput}>
