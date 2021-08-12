@@ -224,9 +224,9 @@ function Multiplexer(props) {
             <AnonymousRoute exact path='/recover-account/:username/:token' component={RecoverAccount}/>
             <AnonymousRoute exact path='/recover-username' component={RecoverUsername}/>
             <AnonymousRoute exact path='/resend-validation' component={ResendValidation} />
-            <Route exact path='/reports/new' component={FieldReportForm}/>
+            <PrivateRoute exact path='/reports/new' component={FieldReportForm}/>
             <Route exact path='/reports/all' render={props => <Table {...props} type='report' />} />
-            <Route exact path='/reports/:reportId/edit' component={FieldReportForm}/>
+            <PrivateRoute exact path='/reports/:reportId/edit' component={FieldReportForm}/>
             <Route exact path='/reports/:id' component={FieldReport}/>
             <Route exact path='/emergencies' component={Emergencies}/>
             <Route exact path='/emergencies/all' render={props => <Table {...props} type='emergency' />} />
@@ -244,7 +244,8 @@ function Multiplexer(props) {
             <Route exact path='/per-assessment/:id/edit' render={props => <PerAssessment {...props} isEdit={true} />} />
             <Route path='/preparedness' component={Preparedness} />
             <Route exact path='/three-w/new/' component={NewThreeW} />
-            <Route exact path='/dref-application/' component={DrefApplication} />
+            <PrivateRoute exact path='/dref-application/' component={DrefApplication} />
+            <PrivateRoute exact path='/dref-application/:drefId/edit/' component={DrefApplication} />
             <Route exact path='/three-w/all/' component={AllThreeW} />
             <Route exact path='/three-w/:projectId/' component={ThreeW} />
             <PrivateRoute exact path='/three-w/:projectId/edit/' component={ThreeWEdit} />

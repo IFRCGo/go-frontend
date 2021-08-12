@@ -9,31 +9,20 @@ import Container from '#components/Container';
 import InputSection from '#components/InputSection';
 import TextInput from '#components/TextInput';
 import LanguageContext from '#root/languageContext';
+import DateInput from '#components/DateInput';
 
 import {
-  Option,
-  FormType,
-  NumericValueOption,
+  DrefFields,
   BooleanValueOption,
 } from '../common';
 
 import styles from './styles.module.scss';
-import DateInput from '#components/DateInput';
 
-type Value = PartialForm<FormType>;
+type Value = PartialForm<DrefFields>;
 interface Props {
-  disasterTypeOptions: NumericValueOption[];
   error: Error<Value> | undefined;
   onValueChange: (...entries: EntriesAsList<Value>) => void;
-  statusOptions: NumericValueOption[];
   value: Value;
-  yesNoOptions: BooleanValueOption[];
-  countryOptions: NumericValueOption[];
-  districtOptions: NumericValueOption[];
-  fetchingCountries?: boolean;
-  fetchingDistricts?: boolean;
-  fetchingDisasterTypes?: boolean;
-  initialEventOptions?: Option[];
 }
 
 function Submission(props: Props) {
@@ -48,8 +37,8 @@ function Submission(props: Props) {
   return (
     <>
       <Container
-        heading="SUBMISSION FLOW"
-        className={styles.submission}
+        heading="Submission flow"
+        className={styles.submissionFlow}
       >
         <InputSection
           title="Date of NS request"
@@ -128,15 +117,14 @@ function Submission(props: Props) {
         </InputSection>
       </Container>
       <Container
-        heading="TRACKING DATA AND CONTACTS"
-        className={styles.submission}
+        heading="Tracking Data and Contacts"
+        className={styles.trackingData}
       >
         <InputSection
           title="Appeal Code"
           description="Add at approval"
         >
           <TextInput
-            // label={strings.fieldReportFormTitleSecondaryLabel}
             placeholder="MDR code"
             name="appeal_code"
             value={value.appeal_code}
@@ -149,7 +137,6 @@ function Submission(props: Props) {
           description="Added by the regional office"
         >
           <TextInput
-            // label={strings.fieldReportFormTitleSecondaryLabel}
             placeholder="MDR code"
             name="glide_code"
             value={value.glide_code}
@@ -161,108 +148,83 @@ function Submission(props: Props) {
           title="Appeal manager"
           description="Added by the regional office"
         >
-          <div>
-            <TextInput
-              label="NAME"
-              // placeholder={strings.fieldReportFormTitleInputPlaceholder}
-              name="appeal_manager_name"
-              value={value.appeal_manager_name}
-              onChange={onValueChange}
-              error={error?.fields?.appeal_manager_name}
-            />
-          </div>
-          <div>
-            <TextInput
-              label="EMAIL"
-              // placeholder={strings.fieldReportFormTitleInputPlaceholder}
-              name="appeal_manager_email"
-              value={value.appeal_manager_email}
-              onChange={onValueChange}
-              error={error?.fields?.appeal_manager_email}
-            />
-          </div>
+          <TextInput
+            label="Name"
+            name="appeal_manager_name"
+            value={value.appeal_manager_name}
+            onChange={onValueChange}
+            error={error?.fields?.appeal_manager_name}
+          />
+          <TextInput
+            label="Email"
+            name="appeal_manager_email"
+            value={value.appeal_manager_email}
+            onChange={onValueChange}
+            error={error?.fields?.appeal_manager_email}
+          />
         </InputSection>
         <InputSection
           title="Project manager"
           description="Added by the regional office"
         >
-          <div>
-            <TextInput
-              label="NAME"
-              // placeholder={strings.fieldReportFormTitleInputPlaceholder}
-              name="project_manager_name"
-              value={value.project_manager_name}
-              onChange={onValueChange}
-              error={error?.fields?.project_manager_name}
-            />
-          </div>
-          <div>
-            <TextInput
-              label="EMAIL"
-              // placeholder={strings.fieldReportFormTitleInputPlaceholder}
-              name="project_manager_email"
-              value={value.project_manager_email}
-              onChange={onValueChange}
-              error={error?.fields?.project_manager_email}
-            />
-          </div>
+          <TextInput
+            label="name"
+            name="project_manager_name"
+            value={value.project_manager_name}
+            onChange={onValueChange}
+            error={error?.fields?.project_manager_name}
+          />
+          <TextInput
+            label="email"
+            name="project_manager_email"
+            value={value.project_manager_email}
+            onChange={onValueChange}
+            error={error?.fields?.project_manager_email}
+          />
         </InputSection>
         <InputSection
           title="Requestor"
           description="Added by the regional office"
         >
-          <div>
-            <TextInput
-              label="NAME"
-              // placeholder={strings.fieldReportFormTitleInputPlaceholder}
-              name="summary"
-              value={value.summary}
-              onChange={onValueChange}
-              error={error?.fields?.summary}
-            />
-          </div>
-          <div>
-            <TextInput
-              label="EMAIL"
-              // placeholder={strings.fieldReportFormTitleInputPlaceholder}
-              name="summary"
-              value={value.summary}
-              onChange={onValueChange}
-              error={error?.fields?.summary}
-            />
-          </div>
+          <TextInput
+            label="Name"
+            name="requestor_name"
+            value={value.requestor_name}
+            onChange={onValueChange}
+            error={error?.fields?.requestor_name}
+          />
+          <TextInput
+            label="Email"
+            name="requestor_email"
+            value={value.requestor_email}
+            onChange={onValueChange}
+            error={error?.fields?.requestor_email}
+          />
         </InputSection>
         <InputSection
           title="National Society contact"
         >
-          <div>
-            <TextInput
-              label="NAME"
-              // placeholder={strings.fieldReportFormTitleInputPlaceholder}
-              name="national_scoiety_contact_name"
-              value={value.national_scoiety_contact_name}
-              onChange={onValueChange}
-              error={error?.fields?.national_scoiety_contact_name}
-            />
-          </div>
-          <div>
-            <TextInput
-              label="EMAIL"
-              // placeholder={strings.fieldReportFormTitleInputPlaceholder}
-              name="national_scoiety_contact_email"
-              value={value.national_scoiety_contact_email}
-              onChange={onValueChange}
-              error={error?.fields?.national_scoiety_contact_email}
-            />
-          </div>
+          <TextInput
+            label="Name"
+            name="national_society_contact_name"
+            value={value.national_society_contact_name}
+            onChange={onValueChange}
+            error={error?.fields?.national_society_contact_name}
+          />
+          <TextInput
+            label="Email"
+            name="national_society_contact_email"
+            value={value.national_society_contact_email}
+            onChange={onValueChange}
+            error={error?.fields?.national_society_contact_email}
+          />
         </InputSection>
         <InputSection
           title="IFRC focal point for the emergency"
         >
           <div>
             <TextInput
-              label="NAME"
-              // placeholder={strings.fieldReportFormTitleInputPlaceholder}
+              label="Name"
               name="ifrc_emergency_name"
               value={value.ifrc_emergency_name}
               onChange={onValueChange}
@@ -271,8 +233,7 @@ function Submission(props: Props) {
           </div>
           <div>
             <TextInput
-              label="EMAIL"
-              // placeholder={strings.fieldReportFormTitleInputPlaceholder}
+              label="Email"
               name="ifrc_emergency_email"
               value={value.ifrc_emergency_email}
               onChange={onValueChange}
@@ -283,26 +244,20 @@ function Submission(props: Props) {
         <InputSection
           title="Media contact"
         >
-          <div>
-            <TextInput
-              label="NAME"
-              // placeholder={strings.fieldReportFormTitleInputPlaceholder}
-              name="media_contact_name"
-              value={value.media_contact_name}
-              onChange={onValueChange}
-              error={error?.fields?.media_contact_name}
-            />
-          </div>
-          <div>
-            <TextInput
-              label="EMAIL"
-              // placeholder={strings.fieldReportFormTitleInputPlaceholder}
-              name="media_contact_email"
-              value={value.media_contact_email}
-              onChange={onValueChange}
-              error={error?.fields?.media_contact_email}
-            />
-          </div>
+          <TextInput
+            label="Name"
+            name="media_contact_name"
+            value={value.media_contact_name}
+            onChange={onValueChange}
+            error={error?.fields?.media_contact_name}
+          />
+          <TextInput
+            label="Email"
+            name="media_contact_email"
+            value={value.media_contact_email}
+            onChange={onValueChange}
+            error={error?.fields?.media_contact_email}
+          />
         </InputSection>
       </Container>
     </>

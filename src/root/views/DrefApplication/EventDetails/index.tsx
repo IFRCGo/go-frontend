@@ -13,106 +13,87 @@ import LanguageContext from '#root/languageContext';
 
 import {
   optionLabelSelector,
-  optionDescriptionSelector,
-  Option,
-  FormType,
   NumericValueOption,
   BooleanValueOption,
   booleanOptionKeySelector,
+  DrefFields,
 } from '../common';
+
 
 import styles from './styles.module.scss';
 import RadioInput from '#components/RadioInput';
 import TextArea from '#components/TextArea';
 
-type Value = PartialForm<FormType>;
+type Value = PartialForm<DrefFields>;
 interface Props {
-  disasterTypeOptions: NumericValueOption[];
   error: Error<Value> | undefined;
   onValueChange: (...entries: EntriesAsList<Value>) => void;
-  statusOptions: NumericValueOption[];
   value: Value;
   yesNoOptions: BooleanValueOption[];
-  countryOptions: NumericValueOption[];
-  districtOptions: NumericValueOption[];
-  fetchingCountries?: boolean;
-  fetchingDistricts?: boolean;
-  fetchingDisasterTypes?: boolean;
-  initialEventOptions?: Option[];
 }
 
 function EventDetails(props: Props) {
   const { strings } = React.useContext(LanguageContext);
 
   const {
-    countryOptions,
-    fetchingCountries,
     error,
     onValueChange,
     value,
     yesNoOptions,
   } = props;
 
+
   return (
     <>
-      <Container sub>
+      <Container>
         <InputSection
           title="Copy data from an existing field report"
           description="These field reports have already been filtered by the country and disaster type that you have entered. Selecting field report will pre-fill matching fields in this report, which you can modify."
         >
-          <SelectInput
-            error={error?.fields?.country}
-            name="country"
-            onChange={onValueChange}
-            options={countryOptions}
-            pending={fetchingCountries}
-            value={value.country}
-          />
+          <SelectInput options={[]} />
         </InputSection>
       </Container>
       <Container
-        heading="PREVIOUS OPERATIONS"
-        className={styles.eventDetails}>
+        heading="Previous Operations"
+        className={styles.previousOperations}
+      >
         <InputSection
           title="Has a similar event affected the same population"
         >
           <RadioInput
-            name="is_covid_report"
+            name="affect_same_population"
             options={yesNoOptions}
             radioKeySelector={booleanOptionKeySelector}
             radioLabelSelector={optionLabelSelector}
-            radioDescriptionSelector={optionDescriptionSelector}
-            value={value.is_covid_report}
+            value={value.affect_same_population}
             onChange={onValueChange}
-            error={error?.fields?.is_covid_report}
+            error={error?.fields?.affect_same_population}
           />
         </InputSection>
         <InputSection
           title="Did it affect the same communities?"
         >
           <RadioInput
-            name="is_covid_report"
+            name="affect_same_communities"
             options={yesNoOptions}
             radioKeySelector={booleanOptionKeySelector}
             radioLabelSelector={optionLabelSelector}
-            radioDescriptionSelector={optionDescriptionSelector}
-            value={value.is_covid_report}
+            value={value.affect_same_communities}
             onChange={onValueChange}
-            error={error?.fields?.is_covid_report}
+            error={error?.fields?.affect_same_communities}
           />
         </InputSection>
         <InputSection
           title="Did the NS respond?"
         >
           <RadioInput
-            name="ns_respond_text"
+            name="ns_respond"
             options={yesNoOptions}
             radioKeySelector={booleanOptionKeySelector}
             radioLabelSelector={optionLabelSelector}
-            radioDescriptionSelector={optionDescriptionSelector}
-            value={value.ns_respond_text}
+            value={value.ns_respond}
             onChange={onValueChange}
-            error={error?.fields?.ns_respond_text}
+            error={error?.fields?.ns_respond}
           />
         </InputSection>
         <InputSection
@@ -123,7 +104,6 @@ function EventDetails(props: Props) {
             options={yesNoOptions}
             radioKeySelector={booleanOptionKeySelector}
             radioLabelSelector={optionLabelSelector}
-            radioDescriptionSelector={optionDescriptionSelector}
             value={value.ns_request}
             onChange={onValueChange}
             error={error?.fields?.ns_request}
@@ -133,12 +113,11 @@ function EventDetails(props: Props) {
           title="If yes, please specify"
         >
           <TextInput
-            // label={strings.fieldReportFormTitleSecondaryLabel}
             placeholder="Enter MDR or DREF number"
-            name="summary"
-            value={value.summary}
+            name="ns_request_text"
+            value={value.ns_request_text}
             onChange={onValueChange}
-            error={error?.fields?.summary}
+            error={error?.fields?.ns_request_text}
           />
         </InputSection>
         <InputSection
@@ -147,7 +126,6 @@ function EventDetails(props: Props) {
           multiRow
         >
           <TextArea
-            // label={strings.cmpActionDescriptionLabel}
             name="lessons_learned"
             onChange={onValueChange}
             value={value.lessons_learned}
@@ -157,15 +135,15 @@ function EventDetails(props: Props) {
         </InputSection>
       </Container>
       <Container
-        heading="DESCRIPTION OF THE EVENT"
-        className={styles.eventDetails}>
+        heading="Description of the Event"
+        className={styles.eventDetails}
+      >
         <InputSection
           title="What happened, where and when? For imminent and anticipatory action, explain what is expected to happen"
           oneColumn
           multiRow
         >
           <TextArea
-            // label={strings.cmpActionDescriptionLabel}
             name="event_description"
             onChange={onValueChange}
             value={value.event_description}
@@ -179,7 +157,6 @@ function EventDetails(props: Props) {
           multiRow
         >
           <TextArea
-            // label={strings.cmpActionDescriptionLabel}
             name="event_scope"
             onChange={onValueChange}
             value={value.event_scope}

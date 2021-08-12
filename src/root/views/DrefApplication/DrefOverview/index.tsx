@@ -16,11 +16,9 @@ import LanguageContext from '#root/languageContext';
 import RadioInput from '#components/RadioInput';
 import DateInput from '#components/DateInput';
 import NumberInput from '#components/NumberInput';
-import { StringValueOption } from '#views/FieldReportForm/common';
 
 import {
   optionLabelSelector,
-  optionDescriptionSelector,
   DrefFields,
   NumericValueOption,
   BooleanValueOption,
@@ -39,7 +37,7 @@ interface Props {
   value: Value;
   yesNoOptions: BooleanValueOption[];
   countryOptions: NumericValueOption[];
-  nationalSocietyOptions: StringValueOption[];
+  nationalSocietyOptions: NumericValueOption[];
   disasterCategoryOptions: NumericValueOption[];
   onsetOptions: NumericValueOption[];
   fetchingCountries?: boolean;
@@ -73,7 +71,7 @@ function DrefOverview(props: Props) {
     onValueChange,
   );
 
-  type CountryDistricts  = typeof value.country_district;
+  type CountryDistricts = typeof value.country_district;
 
   const handleCountryDistrictAdd = React.useCallback(() => {
     const clientId = randomString();
@@ -95,7 +93,6 @@ function DrefOverview(props: Props) {
       <Container
         heading="Essential Information"
         className={styles.essentialInformation}
-        sub
       >
         <InputSection title={strings.drefFormTitle}>
             <TextInput
@@ -140,12 +137,12 @@ function DrefOverview(props: Props) {
             value={value.type_of_onset}
           />
           <SelectInput
-            error={error?.fields?.disaster_category_level}
+            error={error?.fields?.disaster_category}
             label="Disaster Category"
-            name="disaster_category_level"
+            name="disaster_category"
             onChange={onValueChange}
             options={disasterCategoryOptions}
-            value={value.disaster_category_level}
+            value={value.disaster_category}
           />
         </InputSection>
         <InputSection
@@ -212,7 +209,6 @@ function DrefOverview(props: Props) {
             options={yesNoOptions}
             radioKeySelector={booleanOptionKeySelector}
             radioLabelSelector={optionLabelSelector}
-            radioDescriptionSelector={optionDescriptionSelector}
             value={value.emergency_appeal_planned}
             onChange={onValueChange}
             error={error?.fields?.emergency_appeal_planned}
@@ -222,7 +218,6 @@ function DrefOverview(props: Props) {
       <Container
         heading="Timeframes"
         className={styles.timeframes}
-        sub
       >
         <InputSection
           title="Disaster date/ trigger date"

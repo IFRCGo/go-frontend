@@ -3,20 +3,28 @@ import { isDefined } from '@togglecorp/fujs';
 export interface NumericValueOption {
   value: number;
   label: string;
-  description?: string;
 }
 
 export interface BooleanValueOption {
   value: boolean;
   label: string;
-  description?: string;
 }
 
 export interface StringValueOption {
   value: string;
   label: string;
-  description?: string;
 }
+
+export interface NumericKeyValuePair {
+  key: number;
+  value: string;
+}
+
+export interface StringKeyValuePair {
+  key: string;
+  value: string;
+}
+
 
 export interface User {
   id: number;
@@ -47,15 +55,31 @@ export interface Entity {
   name: string;
 }
 
-export interface NSEntity {
-  title: string;
-  description: string;
-}
-
 export interface CountryDistrict {
   clientId: string;
   country: number;
   district: number[];
+}
+
+export interface Need {
+  clientId: string;
+  title: string;
+  description: string;
+}
+
+export interface NsAction {
+  clientId: string;
+  title: string;
+  description: string;
+}
+
+export interface Intervention {
+  clientId: string;
+  title: string;
+  budget: number;
+  persons_targeted: number;
+  indicator: number;
+  description: string;
 }
 
 export const optionKeySelector = (o: Option) => o.value;
@@ -63,14 +87,13 @@ export const numericOptionKeySelector = (o: NumericValueOption) => o.value;
 export const stringOptionKeySelector = (o: StringValueOption) => o.value;
 export const booleanOptionKeySelector = (o: BooleanValueOption) => o.value;
 export const optionLabelSelector = (o: Option) => o.label;
-export const optionDescriptionSelector = (o: Option) => o.description;
 
 export interface DrefFields {
   title: string;
   national_society: number;
   disaster_type: number;
   type_of_onset: number;
-  disaster_category_level: number;
+  disaster_category: number;
   country_district: CountryDistrict[];
   num_affected: number;
   num_assisted: number;
@@ -80,18 +103,19 @@ export interface DrefFields {
   disaster_date: string;
   ns_respond_date: string;
 
+  // Previous operations
   affect_same_population: boolean;
   affect_same_communities: boolean;
   ns_respond: boolean;
   ns_request: boolean;
-  ns_request_text: number; // MDR number, max 10 characters
+  ns_request_text: string;
   lessons_learned: string;
 
   event_description: string;
   // image: null;
   event_scope: string;
 
-  national_society_actions: number[]; // TODO
+  national_society_actions: NsAction[];
   government_requested_assistance: boolean;
   government_requested_assistance_date: string;
   national_authorities: string;
@@ -100,10 +124,12 @@ export interface DrefFields {
   un_or_other: string;
   major_coordination_mechanism: string;
 
-  needs_identified: []; // TODO
+  needs_identified: Need[];
+  identified_gaps: string;
 
   people_assisted: string;
   selection_criteria: string;
+  entity_affected: string,
   community_involved: string;
 
   women: number;
@@ -117,7 +143,9 @@ export interface DrefFields {
   operation_objective: string;
   response_strategy: string;
 
-  planned_interventions: [], // TODO
+  planned_interventions: Intervention[];
+  secretariat_service: string;
+  national_society_strengthening: string;
 
   ns_request_date: string;
   start_date: string;
@@ -148,9 +176,5 @@ export interface DrefFields {
   document: null,
   ns_respond_text: string,
   anticipatory_actions: string,
-  identified_gaps: string,
-  entity_affected: string,
-  secretariat_service: string,
-  national_society_strengthening: string,
    */
 }
