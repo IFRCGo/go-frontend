@@ -861,5 +861,5 @@ export function getMainContacts () {
 
 export const GET_DREF_APPLICATIONS = 'GET_DREF_APPLICATIONS';
 export function getDrefApplications () {
-  return fetchJSON('api/v2/dref/?limit=200', GET_DREF_APPLICATIONS);
+  return fetchJSON('/api/v2/dref/?limit=200', GET_DREF_APPLICATIONS);
 }
