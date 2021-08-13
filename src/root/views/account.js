@@ -24,7 +24,8 @@ import {
   delSubscription,
   getPerOverviewsStrict as getPerOverviewForm,
   getPerMission,
-  getPerAreas
+  getPerAreas,
+  getDrefApplications
 } from '#actions';
 
 import { get, getSelectInputValue } from '#utils/utils';
@@ -103,7 +104,7 @@ const profileAttributes = [
 ];
 
 class Account extends React.Component {
-  constructor (props, context) {
+  constructor(props, context) {
     super(props);
 
     const { strings } = context;
@@ -145,14 +146,15 @@ class Account extends React.Component {
     this.componentIsLoading = true;
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.componentIsLoading = true;
     showGlobalLoading();
-    const { user, _getProfile, _getFieldReportsByUser, _getPerCountries, _getPerForms } = this.props;
+    const { user, _getProfile, _getFieldReportsByUser, _getPerCountries, _getPerForms, _getDrefApplications } = this.props;
     _getProfile(user.username);
     _getFieldReportsByUser(user.id);
     _getPerCountries();
     _getPerForms();
+    _getDrefApplications();
     this.props._getPerAreas();
     this.props._getPerOverviewForm();
     this.props._getPerMission();
@@ -163,7 +165,7 @@ class Account extends React.Component {
     { title: strings.accountInformation, hash: '#account-information' },
     { title: strings.accountNotification, hash: '#notifications' },
     { title: strings.accountPerForms, hash: '#per-forms' },
-    { title: strings.accountMyDrefApplications, hash: '#my-dref-applications'}
+    { title: strings.accountMyDrefApplications, hash: '#my-dref-applications' }
   ])
 
   getBasicTypes = memoize((strings) => [
@@ -219,7 +221,7 @@ class Account extends React.Component {
       value: 'perDueDate'
     }
   ])
-  
+
   getRegions = memoize((strings) => [
     {
       label: strings.accountRegionAfrica,
@@ -245,7 +247,7 @@ class Account extends React.Component {
 
 
   // Sets default tab if url param is blank or incorrect
-  displayTabContent () {
+  displayTabContent() {
     const { strings } = this.context;
 
     const tabHashArray = this.getTabDetails(strings).map(({ hash }) => hash);
@@ -255,7 +257,7 @@ class Account extends React.Component {
   }
 
   // eslint-disable-next-line camelcase
-  UNSAFE_componentWillReceiveProps (nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (this.props.profile.receivedAt !== nextProps.profile.receivedAt) {
       if (typeof nextProps.profile.data !== 'undefined' && nextProps.profile.data !== null && typeof nextProps.profile.data.subscription !== 'undefined' && nextProps.profile.data.subscription !== null) {
         nextProps.profile.data.subscription.forEach((subscription) => {
@@ -267,7 +269,7 @@ class Account extends React.Component {
     }
     if (this.props.profile.fetching && !nextProps.profile.fetching) {
       if (nextProps.profile.error) {
-        showAlert('danger', <p><strong><Translate stringId='accountError'/></strong><Translate stringId='accountCouldNotLoad'/></p>, true, 4500);
+        showAlert('danger', <p><strong><Translate stringId='accountError' /></strong><Translate stringId='accountCouldNotLoad' /></p>, true, 4500);
       } else {
         this.syncNotificationState(nextProps.profile.data);
         this.syncProfileState(nextProps.profile.data);
@@ -277,7 +279,7 @@ class Account extends React.Component {
       if (nextProps.profile.updateError) {
         showAlert('danger', <p><strong><Translate stringId='accountError' /></strong> {nextProps.profile.updateError.detail}</p>, true, 4500);
       } else {
-        showAlert('success', <p><Translate stringId='accountUpdated'/></p>, true, 4500);
+        showAlert('success', <p><Translate stringId='accountUpdated' /></p>, true, 4500);
         this.setState({ isNotificationsDirty: false, isProfileDirty: false, profileEditMode: false });
         this.props._getProfile(this.props.user.username);
       }
@@ -288,7 +290,7 @@ class Account extends React.Component {
     }
   }
 
-  syncNotificationState (data) {
+  syncNotificationState(data) {
     const subscriptions = get(data, 'subscription', []);
     if (!subscriptions.length) {
       return;
@@ -328,7 +330,7 @@ class Account extends React.Component {
     this.setState({ notifications: next });
   }
 
-  syncProfileState (data) {
+  syncProfileState(data) {
     const profile = get(data, 'profile', {});
     const next = {
       email: data.email || null,
@@ -344,7 +346,7 @@ class Account extends React.Component {
     this.setState({ profile: next });
   }
 
-  onFieldChange (stateProperty, field, e) {
+  onFieldChange(stateProperty, field, e) {
     let state = _cloneDeep(this.state[stateProperty]);
     let val = e && e.target ? e.target.value : e;
     _set(state, field, val === '' || val === null ? undefined : val);
@@ -352,7 +354,7 @@ class Account extends React.Component {
     this.setState({ [dirtyProperty]: true, [stateProperty]: state });
   }
 
-  onNotificationSubmit (e) {
+  onNotificationSubmit(e) {
     e.preventDefault();
     showGlobalLoading();
     const payload = this.serializeNotifications(this.state.notifications);
@@ -360,17 +362,17 @@ class Account extends React.Component {
     this.props._updateSubscriptions(id, payload);
   }
 
-  serializeNotifications (notifications) {
+  serializeNotifications(notifications) {
     let serialized = ['regions', 'disasterTypes', 'appeal', 'event', 'fieldReport']
-        .reduce((acc, currentType) => {
-          const flattened = get(notifications, currentType, [])
-                .filter(d => d.checked)
-                .map(d => ({
-                  type: currentType,
-                  value: d.value
-                }));
-          return acc.concat(flattened);
-        }, []);
+      .reduce((acc, currentType) => {
+        const flattened = get(notifications, currentType, [])
+          .filter(d => d.checked)
+          .map(d => ({
+            type: currentType,
+            value: d.value
+          }));
+        return acc.concat(flattened);
+      }, []);
 
     let surgeNotifications = get(notifications, 'surg', []).filter(d => d.checked).map(d => ({
       type: d.value,
@@ -418,14 +420,14 @@ class Account extends React.Component {
     return serialized;
   }
 
-  onProfileSubmit (e) {
+  onProfileSubmit(e) {
     e.preventDefault();
     showGlobalLoading();
     const id = this.props.profile.data.id;
     this.props._updateProfile(id, this.serializeProfile(profileAttributes.slice(1, profileAttributes.length)));
   }
 
-  serializeProfile (attributes) {
+  serializeProfile(attributes) {
     const serialized = {};
     attributes.forEach(d => {
       let nextValue = this.state.profile[d[1]];
@@ -436,35 +438,35 @@ class Account extends React.Component {
     return serialized;
   }
 
-  toggleEditProfile () {
+  toggleEditProfile() {
     this.syncProfileState(this.props.profile.data);
     this.setState({ profileEditMode: !this.state.profileEditMode });
   }
 
-  delSubscription (event) {
+  delSubscription(event) {
     let eventId = event.target.id.substring('followedEvent'.length);
     this.props._clearEvents(eventId);
     this.props._delSubscription(eventId);
     this.forceUpdate();
   }
 
-  isPerPermission () {
+  isPerPermission() {
     return (typeof this.props.user.username !== 'undefined' && this.props.user.username !== null) &&
       (this.props.getPerMission !== 'undefined' && this.props.getPerMission.fetched && this.props.getPerMission.data.count > 0);
   }
 
-  renderProfileAttributes () {
+  renderProfileAttributes() {
     const { profile } = this.props;
     return (
       <div className='inner'>
         <div className='fold__header'>
           <div className='fold__actions'>
             <button className='button button--small button--secondary-bounded' onClick={this.toggleEditProfile}>
-              <Translate stringId='accountEditProfile'/>
+              <Translate stringId='accountEditProfile' />
             </button>
           </div>
           <h2 className='fold__title'>
-            <Translate stringId='accountInformation'/>
+            <Translate stringId='accountInformation' />
           </h2>
         </div>
         <div className='fold__body'>
@@ -479,14 +481,14 @@ class Account extends React.Component {
         </div>
         <div className='fold__footer text-right'>
           <Link className='button button--small button--secondary-light' to='/account/password-change'>
-            <Translate stringId='accountChangePassword'/>
+            <Translate stringId='accountChangePassword' />
           </Link>
         </div>
       </div>
     );
   }
 
-  renderProfileForm () {
+  renderProfileForm() {
     const { profile } = this.state;
     const { strings } = this.context;
     return (
@@ -494,11 +496,11 @@ class Account extends React.Component {
         <div className='fold__header'>
           <div className='fold__actions'>
             <button className='button button--small button--secondary-bounded' onClick={this.toggleEditProfile}>
-              <Translate stringId='accountCancel'/>
+              <Translate stringId='accountCancel' />
             </button>
           </div>
           <h2 className='fold__title'>
-            <Translate stringId='accountEditProfile'/>
+            <Translate stringId='accountEditProfile' />
           </h2>
         </div>
         <div className='fold__body'>
@@ -561,7 +563,7 @@ class Account extends React.Component {
               <div className='form__group__wrap'>
                 <div className='form__inner-header'>
                   <label className='form__label'>
-                    <Translate stringId='accountOrganizationType'/>
+                    <Translate stringId='accountOrganizationType' />
                   </label>
                 </div>
                 <div className='form__inner-body'>
@@ -597,7 +599,7 @@ class Account extends React.Component {
               <button type='submit' className={c('button', 'button--large', 'button--secondary-filled', {
                 'disabled': !this.state.isProfileDirty
               })} title={strings.accountProfileFormSubmitButtonTooltip}>
-                <Translate stringId='accountSave'/>
+                <Translate stringId='accountSave' />
               </button>
             </div>
           </form>
@@ -606,7 +608,7 @@ class Account extends React.Component {
     );
   }
 
-  renderFieldReports () {
+  renderFieldReports() {
     const { user, fieldReport } = this.props;
     const userReports = get(fieldReport, `user-${user.id}`, {
       fetching: false,
@@ -623,7 +625,7 @@ class Account extends React.Component {
             <div className='container-lg'>
               <div className='fold__header'>
                 <h2 className='fold__title margin-reset'>
-                  <Translate stringId='accountSubmittedReports'/>
+                  <Translate stringId='accountSubmittedReports' />
                 </h2>
                 <hr />
               </div>
@@ -650,7 +652,7 @@ class Account extends React.Component {
                 </ul>
               </div>
               <div className='fold__footer'>
-                <p><Translate stringId='accountDeleteContact'/> <a href='mailto:im@ifrc.org'><Translate stringId='accountDeleteInfo'/></a></p>
+                <p><Translate stringId='accountDeleteContact' /> <a href='mailto:im@ifrc.org'><Translate stringId='accountDeleteInfo' /></a></p>
               </div>
             </div>
           </section>
@@ -659,7 +661,7 @@ class Account extends React.Component {
     );
   }
 
-  renderSubscriptionForm () {
+  renderSubscriptionForm() {
     this.props.profile.data.subscription.filter(subscription => subscription.event !== null);
     const events = [];
     const { strings } = this.context;
@@ -688,10 +690,10 @@ class Account extends React.Component {
               onChange={this.onFieldChange.bind(this, 'notifications', 'regions')} />
             <div className='form__group'>
               <label className='form__label'>
-                <Translate stringId='accountCountryLevel'/>
+                <Translate stringId='accountCountryLevel' />
               </label>
               <p className='form__description'>
-                <Translate stringId='accountCountryLevelDescription'/>
+                <Translate stringId='accountCountryLevelDescription' />
               </p>
               <Select
                 name='countries'
@@ -740,19 +742,19 @@ class Account extends React.Component {
               values={this.state.notifications.surg}
               onChange={this.onFieldChange.bind(this, 'notifications', 'surg')} />
             {this.isPerPermission()
-             ? <FormCheckboxGroup
-                 label={strings.acccountOtherNotification}
-                 name='per'
-                 classWrapper='action-checkboxes'
-                 options={this.getPerDueDateTypes(strings)}
-                 values={this.state.notifications.per}
-                 onChange={this.onFieldChange.bind(this, 'notifications', 'per')} />
-             : null}
+              ? <FormCheckboxGroup
+                label={strings.acccountOtherNotification}
+                name='per'
+                classWrapper='action-checkboxes'
+                options={this.getPerDueDateTypes(strings)}
+                values={this.state.notifications.per}
+                onChange={this.onFieldChange.bind(this, 'notifications', 'per')} />
+              : null}
             {events}
             <div className="text-center">
               <button type='submit' className={c('button', 'button--large', 'button--secondary-filled', {
                 'disabled': !this.state.isNotificationsDirty
-              })} title={strings.accountSave}><Translate stringId='accountSave'/></button>
+              })} title={strings.accountSave}><Translate stringId='accountSave' /></button>
             </div>
           </Fold>
         </div>
@@ -760,17 +762,17 @@ class Account extends React.Component {
     );
   }
 
-  renderAccountInformation () {
+  renderAccountInformation() {
     return (<div className='prose'>
-              <div className='fold-container'>
-                <section className='fold' id='account-information'>
-                  {this.state.profileEditMode ? this.renderProfileForm() : this.renderProfileAttributes()}
-                </section>
-              </div>
-            </div>);
+      <div className='fold-container'>
+        <section className='fold' id='account-information'>
+          {this.state.profileEditMode ? this.renderProfileForm() : this.renderProfileAttributes()}
+        </section>
+      </div>
+    </div>);
   }
 
-  renderOperationsFollowing () {
+  renderOperationsFollowing() {
     const events = [];
     if (Object.keys(this.props.event.event).length > 0) {
       Object.keys(this.props.event.event).forEach((eventId) => {
@@ -783,7 +785,7 @@ class Account extends React.Component {
                 </div>
                 <div className='account__op__each__button col col-4-sm'>
                   <button className={'button button--small button--primary-bounded btn--span-clickthrough'} onClick={this.delSubscription} id={'followedEvent' + eventId}>
-                    <Translate stringId='accountUnfollow'/>
+                    <Translate stringId='accountUnfollow' />
                   </button>
                 </div>
               </div>
@@ -797,12 +799,12 @@ class Account extends React.Component {
         <section className='fold' id='notifications'>
           <div className='inner'>
             <h2 className='fold__title spacing-b'>
-              <Translate stringId='accountOperationFollowing'/>
+              <Translate stringId='accountOperationFollowing' />
             </h2>
             <div className='row flex-sm'>
               <div className='account__op__title col col-3-sm'>
                 <div className='text-uppercase'>
-                  <Translate stringId='accountCurrentlyFollowing'/>
+                  <Translate stringId='accountCurrentlyFollowing' />
                 </div>
               </div>
               <div className='account__op__links col col-9-sm row flex-mid'>
@@ -815,14 +817,14 @@ class Account extends React.Component {
     );
   }
 
-  handleTabChange (index) {
+  handleTabChange(index) {
     const { strings } = this.context;
     const tabHashArray = this.getTabDetails(strings).map(({ hash }) => hash);
     const url = this.props.location.pathname;
     this.props.history.replace(`${url}${tabHashArray[index]}`);
   }
 
-  render () {
+  render() {
     const { strings } = this.context;
     return (
       <App className='page--account'>
@@ -832,8 +834,8 @@ class Account extends React.Component {
           </title>
         </Helmet>
         <BreadCrumb crumbs={[
-          {link: '/account', name: strings.breadCrumbAccount},
-          {link: '/', name: strings.breadCrumbHome}
+          { link: '/account', name: strings.breadCrumbAccount },
+          { link: '/', name: strings.breadCrumbHome }
         ]} />
         <section className='inpage'>
           <header className='inpage__header'>
@@ -892,7 +894,7 @@ class Account extends React.Component {
                   </TabPanel>
                   <TabPanel>
                     <TabContent isError={!this.isPerPermission()} errorMessage={strings.accountPerError} title={strings.accountPerTitle}>
-                      <DrefApplications/>
+                      <DrefApplications />
                     </TabContent>
                   </TabPanel>
                 </div>
@@ -962,7 +964,8 @@ const dispatcher = (dispatch) => ({
   _delSubscription: (...args) => dispatch(delSubscription(...args)),
   _clearEvents: (eventId) => dispatch({ type: 'CLEAR_EVENTS', eventId: eventId }),
   _getPerOverviewForm: (...args) => dispatch(getPerOverviewForm(...args)),
-  _getPerMission: (...args) => dispatch(getPerMission(...args))
+  _getPerMission: (...args) => dispatch(getPerMission(...args)),
+  _getDrefApplications: () => dispatch(getDrefApplications()),
 });
 
 Account.contextType = LanguageContext;
