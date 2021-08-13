@@ -99,7 +99,8 @@ function Navbar (props) {
                       to='/dref-application'
                       className='drop__menu-item'
                     >
-                      Dref Application
+                      {/* FIXME: use strings */}
+                      New Dref Application
                     </Link>
                     <Link
                       to='/three-w/new'
