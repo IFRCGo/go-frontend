@@ -33,6 +33,7 @@ import NeedInput from './NeedInput';
 import NsActionInput from './NSActionInput';
 
 import styles from './styles.module.scss';
+import { string } from 'prop-types';
 
 type Value = PartialForm<DrefFields>;
 interface Props {
@@ -107,7 +108,7 @@ function ActionsFields(props: Props) {
     setNsAction(undefined);
   }, [onValueChange, setNsAction]);
 
-  const needsIdentifiedMap = React.useMemo(() =>(
+  const needsIdentifiedMap = React.useMemo(() => (
     listToMap(
       value.needs_identified,
       d => d.title ?? '',
@@ -117,7 +118,7 @@ function ActionsFields(props: Props) {
 
   const filteredNeedOptions = needOptions.filter(n => !needsIdentifiedMap[n.value]);
 
-  const nsActionsMap = React.useMemo(() =>(
+  const nsActionsMap = React.useMemo(() => (
     listToMap(
       value.national_society_actions,
       d => d.title ?? '',
@@ -129,13 +130,12 @@ function ActionsFields(props: Props) {
   return (
     <>
       <Container
-        heading="National Society Actions"
+        heading={strings.nationalSocietiesActions}
         className={styles.nationalSocietyActions}
-        visibleOverflow
       >
         <InputSection>
           <SelectInput
-            label="Select the actions that apply."
+            label={strings.nationalSocietiesActionsLabel}
             name={undefined}
             options={filteredNsActionOptions}
             value={nsAction}
@@ -165,7 +165,7 @@ function ActionsFields(props: Props) {
         ))}
       </Container>
       <Container
-        heading="Other Actors"
+        heading={strings.nationalOtherActors}
         className={styles.otherActions}
       >
         <InputSection
@@ -182,10 +182,10 @@ function ActionsFields(props: Props) {
           />
         </InputSection>
         <InputSection
-          title="National authorities"
+          title={strings.nationalAuthorities}
         >
           <TextArea
-            name="national_authorities"
+            label={strings.cmpActionDescriptionLabel}
             onChange={onValueChange}
             value={value.national_authorities}
             error={error?.fields?.national_authorities}
@@ -193,7 +193,7 @@ function ActionsFields(props: Props) {
           />
         </InputSection>
         <InputSection
-          title="RCRC Partner NSs"
+          title={strings.rCRCPartnerNss}
         >
           <TextArea
             name="rcrc_partners"
@@ -204,7 +204,7 @@ function ActionsFields(props: Props) {
           />
         </InputSection>
         <InputSection
-          title="ICRC"
+          title={strings.iCRC}
         >
           <TextArea
             label={strings.cmpActionDescriptionLabel}
@@ -216,7 +216,7 @@ function ActionsFields(props: Props) {
           />
         </InputSection>
         <InputSection
-          title="UN or other actors"
+          title={strings.uNorOtherActors}
           oneColumn
           multiRow
         >
@@ -230,7 +230,7 @@ function ActionsFields(props: Props) {
           />
         </InputSection>
         <InputSection
-          title="List major coordination mechanism in place"
+          title={strings.coordinationMechanism}
           oneColumn
           multiRow
         >
@@ -245,13 +245,12 @@ function ActionsFields(props: Props) {
         </InputSection>
       </Container>
       <Container
-        heading="Needs (Gaps) Identified"
+        heading={strings.needsIdentified}
         className={styles.needsIdentified}
-        visibleOverflow
       >
         <InputSection>
           <SelectInput
-            label="Select the needs that apply."
+            label={strings.actionFieldsLabel}
             name={undefined}
             onChange={setNeed}
             options={filteredNeedOptions}
@@ -280,7 +279,7 @@ function ActionsFields(props: Props) {
           />
         ))}
         <InputSection
-          title="Any identified gaps/limitations in the assessment*"
+          title={strings.gapsInAssessment}
           oneColumn
           multiRow
         >

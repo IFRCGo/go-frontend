@@ -47,18 +47,18 @@ function EventDetails(props: Props) {
     <>
       <Container>
         <InputSection
-          title="Copy data from an existing field report"
-          description="These field reports have already been filtered by the country and disaster type that you have entered. Selecting field report will pre-fill matching fields in this report, which you can modify."
+          title={strings.eventDetailsTitle}
+          description={strings.eventDescription}
         >
           <SelectInput options={[]} />
         </InputSection>
       </Container>
       <Container
-        heading="Previous Operations"
+        heading={strings.previousOperations}
         className={styles.previousOperations}
       >
         <InputSection
-          title="Has a similar event affected the same population"
+          title={strings.affectedthePopulationTitle}
         >
           <RadioInput
             name="affect_same_population"
@@ -71,7 +71,7 @@ function EventDetails(props: Props) {
           />
         </InputSection>
         <InputSection
-          title="Did it affect the same communities?"
+          title={strings.affectedCommunities}
         >
           <RadioInput
             name="affect_same_communities"
@@ -84,7 +84,7 @@ function EventDetails(props: Props) {
           />
         </InputSection>
         <InputSection
-          title="Did the NS respond?"
+          title={strings.nsRespond}
         >
           <RadioInput
             name="ns_respond"
@@ -97,7 +97,7 @@ function EventDetails(props: Props) {
           />
         </InputSection>
         <InputSection
-          title="Did the NS request a DREF?"
+          title={strings.nsRequest}
         >
           <RadioInput
             name="ns_request"
@@ -110,7 +110,7 @@ function EventDetails(props: Props) {
           />
         </InputSection>
         <InputSection
-          title="If yes, please specify"
+          title={strings.eventDetailsSpecify}
         >
           <TextInput
             placeholder="Enter MDR or DREF number"
@@ -121,7 +121,7 @@ function EventDetails(props: Props) {
           />
         </InputSection>
         <InputSection
-          title="Mention lessons learned from similar operations and steps to mitigate challenges"
+          title={strings.lessonsLearned}
           oneColumn
           multiRow
         >
@@ -135,11 +135,11 @@ function EventDetails(props: Props) {
         </InputSection>
       </Container>
       <Container
-        heading="Description of the Event"
+        heading={strings.descriptionEvent}
         className={styles.eventDetails}
       >
         <InputSection
-          title="What happened, where and when? For imminent and anticipatory action, explain what is expected to happen"
+          title={strings.anticipatoryActionWhen}
           oneColumn
           multiRow
         >
@@ -152,7 +152,7 @@ function EventDetails(props: Props) {
           />
         </InputSection>
         <InputSection
-          title="Scope and scale of the event"
+          title={strings.scopeAndScaleEvent}
           oneColumn
           multiRow
         >
