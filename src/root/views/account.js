@@ -25,7 +25,6 @@ import {
   getPerOverviewsStrict as getPerOverviewForm,
   getPerMission,
   getPerAreas,
-  getDrefApplications
 } from '#actions';
 
 import { get, getSelectInputValue } from '#utils/utils';
@@ -49,7 +48,7 @@ import {
 } from '#components/form-elements/';
 
 import App from './app';
-import DrefApplications from '#components/DrefApplications';
+import DrefApplicationList from '#components/DrefApplicationList';
 
 const Fragment = React.Fragment;
 
@@ -149,12 +148,11 @@ class Account extends React.Component {
   componentDidMount() {
     this.componentIsLoading = true;
     showGlobalLoading();
-    const { user, _getProfile, _getFieldReportsByUser, _getPerCountries, _getPerForms, _getDrefApplications } = this.props;
+    const { user, _getProfile, _getFieldReportsByUser, _getPerCountries, _getPerForms } = this.props;
     _getProfile(user.username);
     _getFieldReportsByUser(user.id);
     _getPerCountries();
     _getPerForms();
-    _getDrefApplications();
     this.props._getPerAreas();
     this.props._getPerOverviewForm();
     this.props._getPerMission();
@@ -894,7 +892,7 @@ class Account extends React.Component {
                   </TabPanel>
                   <TabPanel>
                     <TabContent isError={!this.isPerPermission()} errorMessage={strings.accountPerError} title={strings.accountPerTitle}>
-                      <DrefApplications />
+                      <DrefApplicationList />
                     </TabContent>
                   </TabPanel>
                 </div>
@@ -965,7 +963,6 @@ const dispatcher = (dispatch) => ({
   _clearEvents: (eventId) => dispatch({ type: 'CLEAR_EVENTS', eventId: eventId }),
   _getPerOverviewForm: (...args) => dispatch(getPerOverviewForm(...args)),
   _getPerMission: (...args) => dispatch(getPerMission(...args)),
-  _getDrefApplications: () => dispatch(getDrefApplications()),
 });
 
 Account.contextType = LanguageContext;

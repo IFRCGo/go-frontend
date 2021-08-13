@@ -361,7 +361,3 @@ export const disasterTypesSelector = (state) => {
   }
   return {};
 };
-
-export const drefApplicationsSelector = (state) => {
-  return state.drefApplications;
-};
