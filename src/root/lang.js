@@ -3020,4 +3020,4 @@ export default {
   nationalSocietyContact: 'National Society contact',
   ifrcEmergency: 'IFRC focal point for the emergency',
   mediaContact: 'Media Contact',
-}
+};
