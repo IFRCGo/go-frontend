@@ -86,11 +86,11 @@ function Response(props: Props) {
   return (
     <>
       <Container
-        heading="Targeting Strategy"
+        heading={strings.targetingStrategy}
         className={styles.targetingStrategy}
       >
         <InputSection
-          title="Which group of people will be assisted through this operation?"
+          title={strings.peopleAssistedthroughOperation}
         >
           <TextArea
             label={strings.cmpActionDescriptionLabel}
@@ -102,7 +102,7 @@ function Response(props: Props) {
           />
         </InputSection>
         <InputSection
-          title="What selection criteria or process has been applied to select affected people?"
+          title={strings.selectionCriteria}
         >
           <TextArea
             label={strings.cmpActionDescriptionLabel}
@@ -114,7 +114,7 @@ function Response(props: Props) {
           />
         </InputSection>
         <InputSection
-          title="How has Protection, Gender and Inclusion been considered in planning this response?"
+          title={strings.protectionGenderAndInclusion}
         >
           <TextArea
             label={strings.cmpActionDescriptionLabel}
@@ -126,7 +126,7 @@ function Response(props: Props) {
           />
         </InputSection>
         <InputSection
-          title="How has the community been involved in the needs analysis and planning process?"
+          title={strings.analysisAndPlanningProcess}
           oneColumn
           multiRow
         >
@@ -141,7 +141,7 @@ function Response(props: Props) {
         </InputSection>
       </Container>
       <Container
-        heading="The Assisted Population"
+        heading={strings.assistedPopulation}
         className={styles.assistedPopulation}
       >
         <InputSection
@@ -149,28 +149,28 @@ function Response(props: Props) {
           twoColumn
         >
           <NumberInput
-            label="Women"
+            label={strings.women}
             name="women"
             value={value.women}
             onChange={onValueChange}
             error={error?.fields?.women}
           />
           <NumberInput
-            label="Men"
+            label={strings.men}
             name="men"
             value={value.men}
             onChange={onValueChange}
             error={error?.fields?.men}
           />
           <NumberInput
-            label="Girls (under 18)"
+            label={strings.girls}
             name="girls"
             value={value.girls}
             onChange={onValueChange}
             error={error?.fields?.girls}
           />
           <NumberInput
-            label="Boys (under 18)"
+            label={strings.boys}
             name="boys"
             value={value.boys}
             onChange={onValueChange}
@@ -178,25 +178,25 @@ function Response(props: Props) {
           />
         </InputSection>
         <InputSection
-          title="Estimate"
+          title={strings.estimateResponse}
           threeColumn
         >
           <NumberInput
-            label="Estimated % People with Disability"
+            label={strings.estimatePeopleDisability}
             name="disability_people_per"
             value={value.disability_people_per}
             onChange={onValueChange}
             error={error?.fields?.disability_people_per}
           />
           <NumberInput
-            label="Estimated % Urban/Rural"
+            label={strings.estimatedUran}
             name="people_per"
             value={value.people_per}
             onChange={onValueChange}
             error={error?.fields?.people_per}
           />
           <NumberInput
-            label="Estimated Number of Displaced People"
+            label={strings.estimatedDisplacedPeople}
             name="displaced_people"
             value={value.displaced_people}
             onChange={onValueChange}
@@ -205,11 +205,11 @@ function Response(props: Props) {
         </InputSection>
       </Container>
       <Container
-        heading="Objective and Strategy Rationale"
+        heading={strings.objectiveAndStrategy}
         className={styles.objectiveRationale}
       >
         <InputSection
-          title="Overall objective of the operation"
+          title={strings.objectiveOperation}
         >
           <TextArea
             error={error?.fields?.operation_objective}
@@ -219,7 +219,7 @@ function Response(props: Props) {
           />
         </InputSection>
         <InputSection
-          title="Response strategy rationale"
+          title={strings.responseRationale}
         >
           <TextArea
             name="response_strategy"
@@ -230,7 +230,7 @@ function Response(props: Props) {
         </InputSection>
       </Container>
       <Container
-        heading="Planned Intervention"
+        heading={strings.plannedIntervention}
         className={styles.plannedIntervention}
       >
         <InputSection>
@@ -238,7 +238,7 @@ function Response(props: Props) {
             name={undefined}
             onChange={setIntervention}
             value={intervention}
-            label="Select the interventions that apply."
+            label={strings.interventionsLabel}
             options={filteredInterventionOptions}
           />
           <div className={styles.actions}>
@@ -264,7 +264,7 @@ function Response(props: Props) {
           />
         ))}
         <InputSection
-          title="Secretariat services"
+          title=""
         >
           <TextArea
             name="secretariat_service"
@@ -275,7 +275,7 @@ function Response(props: Props) {
           />
         </InputSection>
         <InputSection
-          title="National Society strengthening"
+          title={strings.nationalSocietyStrengthening}
         >
           <TextArea
             name="national_society_strengthening"
