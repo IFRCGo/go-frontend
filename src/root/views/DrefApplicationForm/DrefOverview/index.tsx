@@ -28,6 +28,7 @@ import {
 import { CountryDistrictType } from '../useDrefFormOptions';
 import CountryDistrictInput from './CountryDistrictInput';
 import styles from './styles.module.scss';
+import { string } from 'prop-types';
 
 type Value = PartialForm<DrefFields>;
 interface Props {
@@ -91,7 +92,7 @@ function DrefOverview(props: Props) {
   return (
     <>
       <Container
-        heading="Essential Information"
+        heading={strings.essentialInformation}
         className={styles.essentialInformation}
       >
         <InputSection title={strings.drefFormTitle}>
@@ -103,7 +104,7 @@ function DrefOverview(props: Props) {
             />
         </InputSection>
         <InputSection
-          title="Name of National Society*"
+          title={strings.nationalSociety}
         >
           <SelectInput
             error={error?.fields?.national_society}
@@ -115,13 +116,13 @@ function DrefOverview(props: Props) {
           />
         </InputSection>
         <InputSection
-          title="Disaster Details*"
+          title={strings.disasterDetails}
           multiRow
           twoColumn
         >
           <SelectInput
             error={error?.fields?.disaster_type}
-            label="Disaster type"
+            label={strings.disasterTypeLabel}
             name="disaster_type"
             onChange={onValueChange}
             options={disasterTypeOptions}
@@ -130,7 +131,7 @@ function DrefOverview(props: Props) {
           />
           <SelectInput
             error={error?.fields?.type_of_onset}
-            label="Type of Onset"
+            label={strings.typeOfOnsetLabel}
             name="type_of_onset"
             onChange={onValueChange}
             options={onsetOptions}
@@ -138,7 +139,7 @@ function DrefOverview(props: Props) {
           />
           <SelectInput
             error={error?.fields?.disaster_category}
-            label="Disaster Category"
+            label={strings.disasterCategoryLabel}
             name="disaster_category"
             onChange={onValueChange}
             options={disasterCategoryOptions}
@@ -146,7 +147,7 @@ function DrefOverview(props: Props) {
           />
         </InputSection>
         <InputSection
-          title="Affected country and province/region*"
+          title={strings.AffectedCountryAndProvince}
           multiRow
           oneColumn
         >
@@ -172,7 +173,7 @@ function DrefOverview(props: Props) {
           </div>
         </InputSection>
         <InputSection
-          title="Number of people affected/ number of people at risk"
+          title={strings.peopleAffected}
         >
           <NumberInput
             name="num_affected"
@@ -182,7 +183,7 @@ function DrefOverview(props: Props) {
           />
         </InputSection>
         <InputSection
-          title="Name of People to be assisted"
+          title={strings.numPeopleAssisted}
         >
           <NumberInput
             name="num_assisted"
@@ -192,7 +193,7 @@ function DrefOverview(props: Props) {
           />
         </InputSection>
         <InputSection
-          title="Requested Amount"
+          title={strings.requestAmount}
         >
           <NumberInput
             name="amount_requested"
@@ -202,7 +203,7 @@ function DrefOverview(props: Props) {
           />
         </InputSection>
         <InputSection
-          title="Emergency appeal planned"
+          title={strings.emergencyAppealPlanned}
         >
           <RadioInput
             name="emergency_appeal_planned"
@@ -216,11 +217,11 @@ function DrefOverview(props: Props) {
         </InputSection>
       </Container>
       <Container
-        heading="Timeframes"
+        heading={strings.timeFrames}
         className={styles.timeframes}
       >
         <InputSection
-          title="Disaster date/ trigger date"
+          title={strings.triggerDate}
         >
           <DateInput
             name="disaster_date"
@@ -230,7 +231,7 @@ function DrefOverview(props: Props) {
           />
         </InputSection>
         <InputSection
-          title="Date NS response started"
+          title={strings.nsResponseStarted}
         >
           <DateInput
             name="ns_respond_date"

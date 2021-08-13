@@ -37,11 +37,11 @@ function Submission(props: Props) {
   return (
     <>
       <Container
-        heading="Submission flow"
+        heading={strings.submissionFlow}
         className={styles.submissionFlow}
       >
         <InputSection
-          title="Date of NS request"
+          title={strings.nsRequestDate}
         >
           <DateInput
             name="start_date"
@@ -62,8 +62,8 @@ function Submission(props: Props) {
           />
         </InputSection>
         <InputSection
-          title="Date of Submission to Geneva"
-          description="Added by Geneva"
+          title={strings.dateSubmissionToGeneva}
+          description={strings.dateSubmissionToGenevaDescription}
         >
           <DateInput
             name="start_date"
@@ -73,8 +73,8 @@ function Submission(props: Props) {
           />
         </InputSection>
         <InputSection
-          title="End date"
-          description="Added by the regional office"
+          title={strings.endDateSubmission}
+          description={strings.endDateSubmissionDescription}
         >
           <DateInput
             name="start_date"
@@ -84,8 +84,8 @@ function Submission(props: Props) {
           />
         </InputSection>
         <InputSection
-          title="Date of approval"
-          description=" Added by Geneva"
+          title={strings.dateOfApproval}
+          description={strings.dateOfApprovalDescription}
         >
           <DateInput
             name="start_date"
@@ -95,7 +95,7 @@ function Submission(props: Props) {
           />
         </InputSection>
         <InputSection
-          title="Operation timeframe"
+          title={strings.operationTimeframeSubmission}
         >
           <TextInput
             name="operation_objective"
@@ -105,8 +105,8 @@ function Submission(props: Props) {
           />
         </InputSection>
         <InputSection
-          title="Date of publishing"
-          description=" Added by the regional office"
+          title={strings.dateOfPublishing}
+          description={strings.dateOfPublishingDescription}
         >
           <DateInput
             name="publishing_date"
@@ -117,12 +117,12 @@ function Submission(props: Props) {
         </InputSection>
       </Container>
       <Container
-        heading="Tracking Data and Contacts"
+        heading={strings.trackingData}
         className={styles.trackingData}
       >
         <InputSection
-          title="Appeal Code"
-          description="Add at approval"
+          title={strings.appealCode}
+          description={strings.appealCodeDescription}
         >
           <TextInput
             placeholder="MDR code"
@@ -133,8 +133,8 @@ function Submission(props: Props) {
           />
         </InputSection>
         <InputSection
-          title="GLIDE number"
-          description="Added by the regional office"
+          title={strings.glideNum}
+          description={strings.glideNumDescription}
         >
           <TextInput
             placeholder="MDR code"
@@ -145,8 +145,8 @@ function Submission(props: Props) {
           />
         </InputSection>
         <InputSection
-          title="Appeal manager"
-          description="Added by the regional office"
+          title={strings.appealManager}
+          description={strings.appealManagerDescription}
         >
           <TextInput
             label="Name"
@@ -164,8 +164,8 @@ function Submission(props: Props) {
           />
         </InputSection>
         <InputSection
-          title="Project manager"
-          description="Added by the regional office"
+          title={strings.projectManager}
+          description={strings.projectManagerDescription}
         >
           <TextInput
             label="name"
@@ -183,8 +183,8 @@ function Submission(props: Props) {
           />
         </InputSection>
         <InputSection
-          title="Requestor"
-          description="Added by the regional office"
+          title={strings.requestor}
+          description={strings.requestorDescription}
         >
           <TextInput
             label="Name"
@@ -202,7 +202,7 @@ function Submission(props: Props) {
           />
         </InputSection>
         <InputSection
-          title="National Society contact"
+          title={strings.nationalSocietyContact}
         >
           <TextInput
             label="Name"
@@ -220,7 +220,7 @@ function Submission(props: Props) {
           />
         </InputSection>
         <InputSection
-          title="IFRC focal point for the emergency"
+          title={strings.ifrcEmergency}
         >
           <div>
             <TextInput
@@ -242,7 +242,7 @@ function Submission(props: Props) {
           </div>
         </InputSection>
         <InputSection
-          title="Media contact"
+          title={strings.mediaContact}
         >
           <TextInput
             label="Name"
