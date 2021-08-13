@@ -8,6 +8,9 @@ import Cell, { CellProps } from './Cell';
 import NumberOutput, {
   Props as NumberOutputProps
 } from '#components/NumberOutput';
+import DateOutput, {
+  Props as DateOutputProps
+} from '#components/DateOutput';
 import TableActions, {
   Props as TableActionsProps
 } from '#components/TableActions';
@@ -88,6 +91,46 @@ export function createNumberColumn<D, K>(
     }),
     valueSelector: accessor,
     valueComparator: (foo: D, bar: D) => compareNumber(accessor(foo), accessor(bar)),
+  };
+
+  return item;
+}
+
+export function createDateColumn<D, K>(
+  id: string,
+  title: string,
+  accessor: (item: D) => string | undefined | null,
+  options?: {
+    cellAsHeader?: boolean,
+    sortable?: boolean,
+    defaultSortDirection?: SortDirection,
+    filterType?: FilterType,
+    orderable?: boolean;
+    hideable?: boolean;
+  },
+  rendererProps?: DateOutputProps,
+) {
+  const item: Column<D, K, DateOutputProps, HeaderCellProps> & {
+    valueSelector: (item: D) => number | undefined | null,
+    valueComparator: (foo: D, bar: D) => number,
+  } = {
+    id,
+    title,
+    cellAsHeader: options?.cellAsHeader,
+    headerCellRenderer: HeaderCell,
+    headerCellRendererParams: {
+      sortable: options?.sortable,
+      filterType: options?.filterType,
+      orderable: options?.orderable,
+      hideable: options?.hideable,
+    },
+    cellRenderer: DateOutput,
+    cellRendererParams: (_: K, datum: D): DateOutputProps => ({
+      // Note: override null with undefined
+      value: accessor(datum) ?? undefined,
+      ...rendererProps,
+    }),
+    valueSelector: accessor,
   };
 
   return item;
