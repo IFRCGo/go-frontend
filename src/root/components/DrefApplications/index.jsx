@@ -1,15 +1,53 @@
-import React, { useContext }  from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import LanguageContext from '#root/languageContext';
 import Translate from '#components/Translate';
-
+import { environment } from '#config';
+import { PropTypes as T } from 'prop-types';
 import Select from 'react-select';
-import { FormError } from '#components/form-elements/';
+import { getSelectInputValue } from '#utils/utils';
 import DisplayTable from '#components/display-table';
+import { connect } from 'react-redux';
+import { drefApplicationsSelector, countriesSelector } from '#selectors';
 
-function DrefApplications(props: any) {
+// status:0|1
+// created_at : datetime
+// modified_at : datetime
+// title : string;
+// country_district.country : field
+// appeal_code: string
+// submission_to_geneva : date
+// date_of_approval : date
+
+// id: "123",
+//       createdOn: '2021-01-01',
+//       country: 'Nepal',
+//       appealNumber: 'MDRMY006',
+//       name: 'Nepal:Flood',
+//       regionalTechReview: '2021-02-02',
+//       submittedToGeneva: '2021-03-03',
+//       lastUpdate: '2021-03-03'
+//     }
+
+const DrefApplications = (props) => {
   const { strings } = useContext(LanguageContext);
+  const { countries, drefApplications } = props;
+  const [country, setCountry] = useState();
+  const [approved, setApproved] = useState([]);
+  const [inProgress, setInProgress] = useState([]);
+
+  useEffect(() => {
+
+  }, [countries, drefApplications]);
+
+  const countryOptions = React.useMemo(() => (
+    props.countries.map(country => (
+      { value: country.value, label: country.label }
+    ))
+  ), [props.countries]);
+
+
   const headings = [
     {
       id: 'createdOn',
@@ -47,7 +85,7 @@ function DrefApplications(props: any) {
 
   const formList = [
     {
-      id:"123",
+      id: "123",
       createdOn: '2021-01-01',
       country: 'Nepal',
       appealNumber: 'MDRMY006',
@@ -100,14 +138,10 @@ function DrefApplications(props: any) {
           <div className='form__group'>
             <Select
               name='country'
-              value={[]}
+              value={getSelectInputValue(country, countryOptions)}
               placeholder={strings.perAccountSelectCountryPlaceholder}
-              onChange={(e) => console.log(e)}
-              options={[]}
-            />
-            <FormError
-              errors={[]}
-              property='country'
+              onChange={(e) => setCountry(e?.value)}
+              options={countryOptions}
             />
           </div>
         </div>
@@ -118,7 +152,7 @@ function DrefApplications(props: any) {
           <React.Fragment>
             <DisplayTable
               headings={headings}
-              rows={rows}
+              rows={inProgress}
               showHeader={true}
               noPaginate={true}
               className='table per-table--border-bottom'
@@ -132,7 +166,7 @@ function DrefApplications(props: any) {
           <React.Fragment>
             <DisplayTable
               headings={headings}
-              rows={rows}
+              rows={approved}
               showHeader={true}
               noPaginate={true}
               className='table per-table--border-bottom'
@@ -142,6 +176,23 @@ function DrefApplications(props: any) {
       </div>
     </React.Fragment>
   );
+};
+
+if (environment !== 'production') {
+  DrefApplications.propTypes = {
+    user: T.object,
+    drefApplications: T.object,
+    countries: T.array,
+  };
 }
 
-export default DrefApplications;
+const selector = (state) => ({
+  user: state.user.data,
+  drefApplications: drefApplicationsSelector(state),
+  countries: countriesSelector(state),
+});
+
+const dispatcher = (dispatch) => ({
+});
+
+export default connect(selector, dispatcher)(DrefApplications);
