@@ -8,6 +8,7 @@ import config from '#config';
 import reducer from '../reducers';
 import { langInitialState } from '#root/reducers/lang';
 import { defaultInitialState } from '#utils/reducer-utils';
+import { GET_DREF_APPLICATIONS } from '#actions/';
 
 const hydrateUser = () => {
   // Check if there's user data in localstorage.
@@ -37,6 +38,7 @@ export const ALL_COUNTRIES_STORAGE_KEY = 'allCountries';
 export const ALL_REGIONS_STORAGE_KEY = 'allRegions';
 export const ME_STORAGE_KEY = 'me';
 export const DTYPES_STORAGE_KEY = 'disasterTypes';
+export const DREF_APPLICATIONS_KEY = 'drefApplications';
 
 const ONE_SECOND = 1000;
 const ONE_MINUTE = ONE_SECOND * 60;
@@ -198,6 +200,13 @@ const disasterTypesListener = ({ data, receivedAt }) => {
   });
 };
 
+const drefApplicationsListener =({data, receivedAt}) => {
+  localStorage.set(DREF_APPLICATIONS_KEY, {
+    data,
+    receivedAt,
+  });
+};
+
 const logoutListener = () => {
   localStorage.remove('user');
   localStorage.remove(ME_STORAGE_KEY);
@@ -214,6 +223,7 @@ listener.createListener(allCountriesListener).addRule(/^GET_COUNTRIES_ALL_SUCCES
 listener.createListener(allRegionsListener).addRule(/^GET_REGIONS_ALL_SUCCESS/);
 listener.createListener(meListener).addRule(/^GET_ME_SUCCESS/);
 listener.createListener(disasterTypesListener).addRule(/^GET_DISASTER_TYPES_SUCCESS/);
+listener.createListener(drefApplicationsListener).addRule(/^GET_DREF_APPLICATIONS_SUCESS/);
 
 const composeEnhancers = config.environment !== 'production' ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose : compose;
 const store = createStore(

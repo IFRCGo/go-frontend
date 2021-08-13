@@ -65,8 +65,8 @@ export const countriesByRegionSelector = (state) => {
 
 export const countrySelector = (state, countryId) => {
   if (state.allCountries && state.allCountries.data.results) {
-    countryId = typeof(countryId) === "string" ? Number(countryId) : countryId;
-    let thisCountry = _find(state.allCountries.data.results, { 'id': countryId } );
+    countryId = typeof (countryId) === "string" ? Number(countryId) : countryId;
+    let thisCountry = _find(state.allCountries.data.results, { 'id': countryId });
     return thisCountry;
   } else {
     return null;
@@ -183,14 +183,14 @@ export const countriesGeojsonSelector = (state) => {
       // select only independent = true or null and record_type = 1
       // also remove ICRC and IFRC
       if (
-          country.centroid &&
-          (country.independent || country.independent === null) &&
-          country.record_type === 1 &&
+        country.centroid &&
+        (country.independent || country.independent === null) &&
+        country.record_type === 1 &&
 
-          // This filters out the ICRC and IFRC "countries". FIXME: this should be handled better
-          // in the backend
-          (country.id !== 315 && country.id !== 289)
-        ) {
+        // This filters out the ICRC and IFRC "countries". FIXME: this should be handled better
+        // in the backend
+        (country.id !== 315 && country.id !== 289)
+      ) {
         const f = {
           'type': 'Feature',
           'geometry': country.centroid,
@@ -360,4 +360,8 @@ export const disasterTypesSelector = (state) => {
     }, {});
   }
   return {};
+};
+
+export const drefApplicationsSelector = (state) => {
+  return state.drefApplications;
 };

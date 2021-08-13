@@ -47,6 +47,7 @@ import langAll from './lang-all';
 import disasterTypes from './disaster-types';
 import personnelByEvent from './personnel-by-event';
 import mainContacts from './main_contacts';
+import drefApplications from './dref-application';
 
 import {
   POST_PROJECT,
@@ -116,6 +117,7 @@ export const reducers = {
   postLanguageBulk: createReducer(POST_LANGUAGE_BULK),
   allCountries: createReducer(GET_COUNTRIES_ALL),
   allRegions: createReducer(GET_REGIONS_ALL),
+  drefApplications,
   disasterTypes,
   personnelByEvent,
   mainContacts

@@ -1,0 +1,986 @@
+{
+    "actions": {
+        "POST": {
+            "id": {
+                "type": "integer",
+                "required": false,
+                "read_only": true,
+                "label": "ID"
+            },
+            "country_district": {
+                "type": "field",
+                "required": false,
+                "read_only": false,
+                "label": "Country district",
+                "child": {
+                    "type": "nested object",
+                    "required": false,
+                    "read_only": false,
+                    "children": {
+                        "id": {
+                            "type": "integer",
+                            "required": false,
+                            "read_only": true,
+                            "label": "ID"
+                        },
+                        "country": {
+                            "type": "field",
+                            "required": true,
+                            "read_only": false,
+                            "label": "Country",
+                            "help_text": "Affected County"
+                        },
+                        "district": {
+                            "type": "field",
+                            "required": false,
+                            "read_only": false,
+                            "label": "District"
+                        }
+                    }
+                }
+            },
+            "national_society_actions": {
+                "type": "field",
+                "required": false,
+                "read_only": false,
+                "label": "National society actions",
+                "child": {
+                    "type": "nested object",
+                    "required": false,
+                    "read_only": false,
+                    "children": {
+                        "id": {
+                            "type": "integer",
+                            "required": false,
+                            "read_only": true,
+                            "label": "ID"
+                        },
+                        "title": {
+                            "type": "choice",
+                            "required": true,
+                            "read_only": false,
+                            "label": "Title",
+                            "choices": [
+                                {
+                                    "value": "ns_readiness",
+                                    "display_name": "Ns Readiness"
+                                },
+                                {
+                                    "value": "assessment",
+                                    "display_name": "Assessment"
+                                },
+                                {
+                                    "value": "coordination",
+                                    "display_name": "Coordination"
+                                },
+                                {
+                                    "value": "resource_mobilization",
+                                    "display_name": "Resource Mobilization"
+                                },
+                                {
+                                    "value": "activation_of_contingency",
+                                    "display_name": "Activation Of Contingency"
+                                },
+                                {
+                                    "value": "national_society_eoc",
+                                    "display_name": "National Society Eoc"
+                                },
+                                {
+                                    "value": "shelter_and_basic_household_items",
+                                    "display_name": "Shelter And Basic Household Items"
+                                },
+                                {
+                                    "value": "livelihoods",
+                                    "display_name": "Livelihoods"
+                                },
+                                {
+                                    "value": "multipurpose_cash",
+                                    "display_name": "Multipurpose Cash"
+                                },
+                                {
+                                    "value": "health",
+                                    "display_name": "Health"
+                                },
+                                {
+                                    "value": "water_sanitation_hygiene",
+                                    "display_name": "Water Sanitation Hygiene"
+                                },
+                                {
+                                    "value": "protection_gender_inculsion",
+                                    "display_name": "Protection Gender Inculsion"
+                                },
+                                {
+                                    "value": "education",
+                                    "display_name": "Education"
+                                },
+                                {
+                                    "value": "migration",
+                                    "display_name": "Migration"
+                                },
+                                {
+                                    "value": "risk_reduction_climate_adaptation_and_recovery",
+                                    "display_name": "Risk Reduction Climate Adaptation And Recovery"
+                                },
+                                {
+                                    "value": "community_engagement_and _accountability",
+                                    "display_name": "Community Engagement And Accountability"
+                                },
+                                {
+                                    "value": "environment_sustainability ",
+                                    "display_name": "Environment Sustainability"
+                                },
+                                {
+                                    "value": "other",
+                                    "display_name": "Other"
+                                }
+                            ]
+                        },
+                        "description": {
+                            "type": "string",
+                            "required": false,
+                            "read_only": false,
+                            "label": "Description",
+                            "max_length": 300
+                        }
+                    }
+                }
+            },
+            "needs_identified": {
+                "type": "field",
+                "required": false,
+                "read_only": false,
+                "label": "Needs identified",
+                "child": {
+                    "type": "nested object",
+                    "required": false,
+                    "read_only": false,
+                    "children": {
+                        "id": {
+                            "type": "integer",
+                            "required": false,
+                            "read_only": true,
+                            "label": "ID"
+                        },
+                        "title": {
+                            "type": "choice",
+                            "required": true,
+                            "read_only": false,
+                            "label": "Title",
+                            "choices": [
+                                {
+                                    "value": "shelter_and_basic_household_items",
+                                    "display_name": "Shelter And Basic Household Items"
+                                },
+                                {
+                                    "value": "livelihoods",
+                                    "display_name": "Livelihoods"
+                                },
+                                {
+                                    "value": "multipurpose_cash",
+                                    "display_name": "Multipurpose Cash"
+                                },
+                                {
+                                    "value": "health",
+                                    "display_name": "Health"
+                                },
+                                {
+                                    "value": "water_sanitation_hygiene",
+                                    "display_name": "Water Sanitation Hygiene"
+                                },
+                                {
+                                    "value": "protection_gender_inculsion",
+                                    "display_name": "Protection Gender Inculsion"
+                                },
+                                {
+                                    "value": "education",
+                                    "display_name": "Education"
+                                },
+                                {
+                                    "value": "migration",
+                                    "display_name": "Migration"
+                                },
+                                {
+                                    "value": "risk_reduction_climate_adaptation_and_recovery",
+                                    "display_name": "Risk Reduction Climate Adaptation And Recovery"
+                                },
+                                {
+                                    "value": "community_engagement_and _accountability",
+                                    "display_name": "Community Engagement And Accountability"
+                                },
+                                {
+                                    "value": "environment_sustainability ",
+                                    "display_name": "Environment Sustainability"
+                                },
+                                {
+                                    "value": "shelter_cluster_coordination",
+                                    "display_name": "Shelter Cluster Coordination"
+                                }
+                            ]
+                        },
+                        "description": {
+                            "type": "string",
+                            "required": false,
+                            "read_only": false,
+                            "label": "Description",
+                            "max_length": 300
+                        }
+                    }
+                }
+            },
+            "planned_interventions": {
+                "type": "field",
+                "required": false,
+                "read_only": false,
+                "label": "Planned interventions",
+                "child": {
+                    "type": "nested object",
+                    "required": false,
+                    "read_only": false,
+                    "children": {
+                        "id": {
+                            "type": "integer",
+                            "required": false,
+                            "read_only": true,
+                            "label": "ID"
+                        },
+                        "title": {
+                            "type": "choice",
+                            "required": true,
+                            "read_only": false,
+                            "label": "Title",
+                            "choices": [
+                                {
+                                    "value": "shelter_and_basic_household_items",
+                                    "display_name": "Shelter And Basic Household Items"
+                                },
+                                {
+                                    "value": "livelihoods",
+                                    "display_name": "Livelihoods"
+                                },
+                                {
+                                    "value": "multipurpose_cash",
+                                    "display_name": "Multipurpose Cash"
+                                },
+                                {
+                                    "value": "health",
+                                    "display_name": "Health"
+                                },
+                                {
+                                    "value": "water_sanitation_hygiene",
+                                    "display_name": "Water Sanitation Hygiene"
+                                },
+                                {
+                                    "value": "protection_gender_inculsion",
+                                    "display_name": "Protection Gender Inculsion"
+                                },
+                                {
+                                    "value": "education",
+                                    "display_name": "Education"
+                                },
+                                {
+                                    "value": "migration",
+                                    "display_name": "Migration"
+                                },
+                                {
+                                    "value": "risk_reduction_climate_adaptation_and_recovery_",
+                                    "display_name": "Risk Reduction Climate Adaptation And Recovery"
+                                },
+                                {
+                                    "value": "secretariat_services",
+                                    "display_name": "Secretariat Services"
+                                },
+                                {
+                                    "value": "national_society_strengthening",
+                                    "display_name": "National Society Strengthening"
+                                }
+                            ]
+                        },
+                        "description": {
+                            "type": "string",
+                            "required": false,
+                            "read_only": false,
+                            "label": "Description",
+                            "max_length": 300
+                        },
+                        "budget": {
+                            "type": "integer",
+                            "required": false,
+                            "read_only": false,
+                            "label": "Budget",
+                            "min_value": -2147483648,
+                            "max_value": 2147483647
+                        },
+                        "person_targated": {
+                            "type": "integer",
+                            "required": false,
+                            "read_only": false,
+                            "label": "Person targated",
+                            "min_value": -2147483648,
+                            "max_value": 2147483647
+                        }
+                    }
+                }
+            },
+            "type_of_onset_display": {
+                "type": "string",
+                "required": false,
+                "read_only": true,
+                "label": "Type of onset display"
+            },
+            "disaster_category_level_display": {
+                "type": "string",
+                "required": false,
+                "read_only": true,
+                "label": "Disaster category level display"
+            },
+            "status_display": {
+                "type": "string",
+                "required": false,
+                "read_only": true,
+                "label": "Status display"
+            },
+            "modified_by_details": {
+                "type": "nested object",
+                "required": false,
+                "read_only": true,
+                "label": "Modified by details",
+                "children": {
+                    "id": {
+                        "type": "integer",
+                        "required": false,
+                        "read_only": true,
+                        "label": "ID"
+                    },
+                    "username": {
+                        "type": "string",
+                        "required": true,
+                        "read_only": false,
+                        "label": "Username",
+                        "help_text": "Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.",
+                        "max_length": 150
+                    },
+                    "first_name": {
+                        "type": "string",
+                        "required": false,
+                        "read_only": false,
+                        "label": "First name",
+                        "max_length": 30
+                    },
+                    "last_name": {
+                        "type": "string",
+                        "required": false,
+                        "read_only": false,
+                        "label": "Last name",
+                        "max_length": 150
+                    }
+                }
+            },
+            "created_at": {
+                "type": "datetime",
+                "required": false,
+                "read_only": true,
+                "label": "Created at"
+            },
+            "modified_at": {
+                "type": "datetime",
+                "required": false,
+                "read_only": true,
+                "label": "Modified at"
+            },
+            "title": {
+                "type": "string",
+                "required": true,
+                "read_only": false,
+                "label": "Title",
+                "max_length": 255
+            },
+            "type_of_onset": {
+                "type": "choice",
+                "required": true,
+                "read_only": false,
+                "label": "Onset type",
+                "choices": [
+                    {
+                        "value": 0,
+                        "display_name": "Anticipatory"
+                    },
+                    {
+                        "value": 1,
+                        "display_name": "Imminent"
+                    },
+                    {
+                        "value": 2,
+                        "display_name": "Slow"
+                    },
+                    {
+                        "value": 3,
+                        "display_name": "Sudden"
+                    }
+                ]
+            },
+            "disaster_category": {
+                "type": "choice",
+                "required": true,
+                "read_only": false,
+                "label": "Disaster category",
+                "choices": [
+                    {
+                        "value": 0,
+                        "display_name": "Yellow"
+                    },
+                    {
+                        "value": 1,
+                        "display_name": "Orange"
+                    },
+                    {
+                        "value": 2,
+                        "display_name": "Red"
+                    }
+                ]
+            },
+            "status": {
+                "type": "choice",
+                "required": false,
+                "read_only": false,
+                "label": "Status",
+                "choices": [
+                    {
+                        "value": 0,
+                        "display_name": "In Progress"
+                    },
+                    {
+                        "value": 1,
+                        "display_name": "Completed"
+                    }
+                ]
+            },
+            "num_assisted": {
+                "type": "integer",
+                "required": false,
+                "read_only": false,
+                "label": "Number of assisted",
+                "min_value": -2147483648,
+                "max_value": 2147483647
+            },
+            "num_affected": {
+                "type": "integer",
+                "required": false,
+                "read_only": false,
+                "label": "Number of affected",
+                "min_value": -2147483648,
+                "max_value": 2147483647
+            },
+            "amount_requested": {
+                "type": "integer",
+                "required": false,
+                "read_only": false,
+                "label": "Amount requested",
+                "min_value": -2147483648,
+                "max_value": 2147483647
+            },
+            "emergency_appeal_planned": {
+                "type": "boolean",
+                "required": false,
+                "read_only": false,
+                "label": "Emergency appeal planned "
+            },
+            "event_map": {
+                "type": "file upload",
+                "required": false,
+                "read_only": false,
+                "label": "Event map",
+                "help_text": "Map and other images of the event",
+                "max_length": 100
+            },
+            "event_date": {
+                "type": "date",
+                "required": false,
+                "read_only": false,
+                "label": "Event date",
+                "help_text": "Date of event/Approximate date of impact"
+            },
+            "event_text": {
+                "type": "string",
+                "required": false,
+                "read_only": false,
+                "label": "Event text",
+                "max_length": 500
+            },
+            "ns_respond_date": {
+                "type": "date",
+                "required": false,
+                "read_only": false,
+                "label": "Ns respond date",
+                "help_text": "NS anticipatory actions started/NS response"
+            },
+            "affect_same_area": {
+                "type": "boolean",
+                "required": false,
+                "read_only": false,
+                "label": "Affect same area",
+                "help_text": "Has a similar event affected the same areas in the past?"
+            },
+            "affect_same_population": {
+                "type": "boolean",
+                "required": false,
+                "read_only": false,
+                "label": "Affect same population",
+                "help_text": "Did it affect the same population?"
+            },
+            "affect_same_population_text": {
+                "type": "string",
+                "required": false,
+                "read_only": false,
+                "label": "Affect same population text",
+                "max_length": 255
+            },
+            "ns_respond": {
+                "type": "boolean",
+                "required": false,
+                "read_only": false,
+                "label": "Ns respond",
+                "help_text": "Did NS respond"
+            },
+            "ns_request_fund": {
+                "type": "boolean",
+                "required": false,
+                "read_only": false,
+                "label": "Ns request fund",
+                "help_text": "Did the NS request funding from DREF?"
+            },
+            "ns_request_text": {
+                "type": "string",
+                "required": false,
+                "read_only": false,
+                "label": "Ns request text",
+                "max_length": 10
+            },
+            "lessons_learned": {
+                "type": "string",
+                "required": false,
+                "read_only": false,
+                "label": "Lessons learned",
+                "max_length": 500
+            },
+            "event_description": {
+                "type": "string",
+                "required": false,
+                "read_only": false,
+                "label": "Event description",
+                "max_length": 800
+            },
+            "image": {
+                "type": "image upload",
+                "required": false,
+                "read_only": false,
+                "label": "Image",
+                "max_length": 100
+            },
+            "anticipatory_actions": {
+                "type": "string",
+                "required": false,
+                "read_only": false,
+                "label": "Anaticipatory actions",
+                "help_text": "Description of anticipatory actions or imminent disaster",
+                "max_length": 800
+            },
+            "event_scope": {
+                "type": "string",
+                "required": false,
+                "read_only": false,
+                "label": "Event scope",
+                "help_text": "Scope and scale of event",
+                "max_length": 800
+            },
+            "government_requested_assistance": {
+                "type": "boolean",
+                "required": false,
+                "read_only": false,
+                "label": "Government requested assistance",
+                "help_text": "Has government requested assistance"
+            },
+            "government_requested_assistance_date": {
+                "type": "date",
+                "required": false,
+                "read_only": false,
+                "label": "Government requested assistance date"
+            },
+            "national_authorities": {
+                "type": "string",
+                "required": false,
+                "read_only": false,
+                "label": "National authorities",
+                "max_length": 300
+            },
+            "ifrc": {
+                "type": "string",
+                "required": false,
+                "read_only": false,
+                "label": "Ifrc",
+                "max_length": 300
+            },
+            "icrc": {
+                "type": "string",
+                "required": false,
+                "read_only": false,
+                "label": "Icrc",
+                "max_length": 300
+            },
+            "partner_national_society": {
+                "type": "string",
+                "required": false,
+                "read_only": false,
+                "label": "Partner national society",
+                "max_length": 300
+            },
+            "un_or_other_actor": {
+                "type": "string",
+                "required": false,
+                "read_only": false,
+                "label": "Un or other",
+                "max_length": 300
+            },
+            "major_coordination_mechanism": {
+                "type": "string",
+                "required": false,
+                "read_only": false,
+                "label": "Major coordination mechanism",
+                "help_text": "List major coordination mechanisms in place",
+                "max_length": 300
+            },
+            "identified_gaps": {
+                "type": "string",
+                "required": false,
+                "read_only": false,
+                "label": "Identified gaps",
+                "help_text": "Any identified gaps/limitations in the assessment",
+                "max_length": 300
+            },
+            "people_assisted": {
+                "type": "string",
+                "required": false,
+                "read_only": false,
+                "label": "People assisted",
+                "max_length": 300
+            },
+            "selection_criteria": {
+                "type": "string",
+                "required": false,
+                "read_only": false,
+                "label": "Selection criteria",
+                "help_text": "Selection criteria for affected people",
+                "max_length": 300
+            },
+            "entity_affected": {
+                "type": "string",
+                "required": false,
+                "read_only": false,
+                "label": "Entity affected",
+                "help_text": "Protection, gender, Inclusion affected in this process",
+                "max_length": 300
+            },
+            "community_involved": {
+                "type": "string",
+                "required": false,
+                "read_only": false,
+                "label": "Community involved",
+                "help_text": "Community been involved in the analysis of the process"
+            },
+            "women": {
+                "type": "integer",
+                "required": false,
+                "read_only": false,
+                "label": "Women",
+                "min_value": -2147483648,
+                "max_value": 2147483647
+            },
+            "men": {
+                "type": "integer",
+                "required": false,
+                "read_only": false,
+                "label": "Men",
+                "min_value": -2147483648,
+                "max_value": 2147483647
+            },
+            "girls": {
+                "type": "integer",
+                "required": false,
+                "read_only": false,
+                "label": "Girls",
+                "help_text": "Girls under 18",
+                "min_value": -2147483648,
+                "max_value": 2147483647
+            },
+            "boys": {
+                "type": "integer",
+                "required": false,
+                "read_only": false,
+                "label": "Boys",
+                "help_text": "Boys under 18",
+                "min_value": -2147483648,
+                "max_value": 2147483647
+            },
+            "disability_people_per": {
+                "type": "decimal",
+                "required": false,
+                "read_only": false,
+                "label": "Disability people per",
+                "help_text": "Estimated % people disability"
+            },
+            "people_per_urban_local": {
+                "type": "decimal",
+                "required": false,
+                "read_only": false,
+                "label": "People per urban local",
+                "help_text": "Estimated % people Urban/Rural"
+            },
+            "people_targeted_with_early_actions": {
+                "type": "integer",
+                "required": false,
+                "read_only": false,
+                "label": "People targeted with early actions",
+                "help_text": "Number of persons targeted with early actions",
+                "min_value": -2147483648,
+                "max_value": 2147483647
+            },
+            "displaced_people": {
+                "type": "integer",
+                "required": false,
+                "read_only": false,
+                "label": "Displaced people",
+                "help_text": "Estimated number of displaced people",
+                "min_value": -2147483648,
+                "max_value": 2147483647
+            },
+            "operation_objective": {
+                "type": "string",
+                "required": false,
+                "read_only": false,
+                "label": "Operation objective",
+                "help_text": "Overall objective of the operation",
+                "max_length": 400
+            },
+            "response_strategy": {
+                "type": "string",
+                "required": false,
+                "read_only": false,
+                "label": "Response strategy",
+                "max_length": 200
+            },
+            "go_field_report_date": {
+                "type": "date",
+                "required": false,
+                "read_only": false,
+                "label": "Go field report date"
+            },
+            "ns_request_date": {
+                "type": "date",
+                "required": false,
+                "read_only": false,
+                "label": "Ns request date"
+            },
+            "submission_to_geneva": {
+                "type": "date",
+                "required": false,
+                "read_only": false,
+                "label": "Submission to geneva"
+            },
+            "date_of_approval": {
+                "type": "date",
+                "required": false,
+                "read_only": false,
+                "label": "Date of approval"
+            },
+            "start_date": {
+                "type": "date",
+                "required": false,
+                "read_only": false,
+                "label": "Start date"
+            },
+            "end_date": {
+                "type": "date",
+                "required": false,
+                "read_only": false,
+                "label": "End date"
+            },
+            "publishing_date": {
+                "type": "date",
+                "required": false,
+                "read_only": false,
+                "label": "Publishing date"
+            },
+            "operation_timeframe": {
+                "type": "integer",
+                "required": false,
+                "read_only": false,
+                "label": "Operation timeframe",
+                "min_value": -2147483648,
+                "max_value": 2147483647
+            },
+            "appeal_code": {
+                "type": "string",
+                "required": false,
+                "read_only": false,
+                "label": "Appeal code",
+                "max_length": 255
+            },
+            "glide_code": {
+                "type": "string",
+                "required": false,
+                "read_only": false,
+                "label": "Glide number",
+                "max_length": 255
+            },
+            "ifrc_appeal_manager_name": {
+                "type": "string",
+                "required": false,
+                "read_only": false,
+                "label": "Ifrc appeal manager name",
+                "max_length": 255
+            },
+            "ifrc_appeal_manager_email": {
+                "type": "string",
+                "required": false,
+                "read_only": false,
+                "label": "Ifrc appeal manager email",
+                "max_length": 255
+            },
+            "ifrc_project_manager_name": {
+                "type": "string",
+                "required": false,
+                "read_only": false,
+                "label": "Ifrc project manager name",
+                "max_length": 255
+            },
+            "ifrc_project_manager_email": {
+                "type": "string",
+                "required": false,
+                "read_only": false,
+                "label": "Ifrc project manager email",
+                "max_length": 255
+            },
+            "national_society_contact_name": {
+                "type": "string",
+                "required": false,
+                "read_only": false,
+                "label": "National society contact name",
+                "max_length": 255
+            },
+            "national_society_contact_email": {
+                "type": "string",
+                "required": false,
+                "read_only": false,
+                "label": "National society contact email",
+                "max_length": 255
+            },
+            "media_contact_name": {
+                "type": "string",
+                "required": false,
+                "read_only": false,
+                "label": "Media contact name",
+                "max_length": 255
+            },
+            "media_contact_email": {
+                "type": "string",
+                "required": false,
+                "read_only": false,
+                "label": "Media contact email",
+                "max_length": 255
+            },
+            "ifrc_emergency_name": {
+                "type": "string",
+                "required": false,
+                "read_only": false,
+                "label": "Ifrc emergency name",
+                "max_length": 255
+            },
+            "ifrc_emergency_email": {
+                "type": "string",
+                "required": false,
+                "read_only": false,
+                "label": "Ifrc emergency email",
+                "max_length": 255
+            },
+            "originator_name": {
+                "type": "string",
+                "required": false,
+                "read_only": false,
+                "label": "Originator name",
+                "max_length": 255
+            },
+            "originator_email": {
+                "type": "string",
+                "required": false,
+                "read_only": false,
+                "label": "Originator email",
+                "max_length": 255
+            },
+            "human_resource": {
+                "type": "string",
+                "required": false,
+                "read_only": false,
+                "label": "Human resource",
+                "help_text": "how many volunteers and staff involved in the response?",
+                "max_length": 300
+            },
+            "surge_personnel_deployed": {
+                "type": "string",
+                "required": false,
+                "read_only": false,
+                "label": "Surge personnel deployed",
+                "help_text": "Will a Surge personnel be deployed?",
+                "max_length": 500
+            },
+            "logistic_capacity_of_ns": {
+                "type": "string",
+                "required": false,
+                "read_only": false,
+                "label": "Logistic capacity of ns",
+                "help_text": "what is the logistics capacity of the National Society?",
+                "max_length": 500
+            },
+            "safety_concerns": {
+                "type": "string",
+                "required": false,
+                "read_only": false,
+                "label": "Safety concerns",
+                "help_text": "Are there any safety/security concerns which may impact the implementation of this operation?",
+                "max_length": 500
+            },
+            "pmer": {
+                "type": "string",
+                "required": false,
+                "read_only": false,
+                "label": "Pmer",
+                "help_text": "Does the NS have PMER capacity?",
+                "max_length": 500
+            },
+            "communication": {
+                "type": "string",
+                "required": false,
+                "read_only": false,
+                "label": "Organization",
+                "help_text": "Does the NS have Communications capacity?",
+                "max_length": 500
+            },
+            "modified_by": {
+                "type": "field",
+                "required": false,
+                "read_only": true,
+                "label": "Modified by"
+            },
+            "national_society": {
+                "type": "field",
+                "required": false,
+                "read_only": false,
+                "label": "National_society"
+            },
+            "disaster_type": {
+                "type": "field",
+                "required": false,
+                "read_only": false,
+                "label": "Disaster type"
+            }
+        }
+    }
+}
