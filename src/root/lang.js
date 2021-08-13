@@ -2924,7 +2924,7 @@ export default {
   drefTableAppealNumber: 'Appeal Number',
   drefTableName: 'Name',
   drefTableRegionalTechReview: 'Regional Technical Review',
-  drefTableSubToGeneva: 'Submitted to Geneva',
+  drefTableSubmittedToGeneva: 'Submitted to Geneva',
   drefTableLastUpdate: 'Last Update',
   drefInProgressApplications: 'In progress Applications',
   drefApprovedApplications: 'Approved Applications'
