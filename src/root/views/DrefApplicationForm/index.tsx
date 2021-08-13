@@ -1,7 +1,6 @@
 import React from 'react';
 import type { History, Location } from 'history';
 import {
-  _cs,
   randomString,
   isDefined,
 } from '@togglecorp/fujs';
@@ -9,21 +8,21 @@ import { PartialForm, useForm } from '@togglecorp/toggle-form';
 import type { match as Match } from 'react-router-dom';
 
 import BlockLoading from '#components/block-loading';
-import NonFieldError from '#components/NonFieldError';
 import Button from '#components/Button';
 import Container from '#components/Container';
-import TabPanel from '#components/Tabs/TabPanel';
+import NonFieldError from '#components/NonFieldError';
 import Page from '#components/Page';
-import Tabs from '#components/Tabs';
-import TabList from '#components/Tabs/TabList';
 import Tab from '#components/Tabs/Tab';
-import DrefOverview from '#views/DrefApplication/DrefOverview';
+import TabList from '#components/Tabs/TabList';
+import TabPanel from '#components/Tabs/TabPanel';
+import Tabs from '#components/Tabs';
 import {
   useLazyRequest,
   useRequest,
 } from '#utils/restRequest';
 import useAlert from '#hooks/useAlert';
 
+import DrefOverview from './DrefOverview';
 import EventDetails from './EventDetails';
 import ActionsFields from './ActionsFields';
 import Response from './Response';
@@ -168,13 +167,7 @@ function DrefApplication(props: Props) {
     skip: !drefId,
     url: `api/v2/dref/${drefId}/`,
     onSuccess: (response) => {
-      onValueSet({
-        ...response,
-        country_district: response.country_district?.map((d) => ({
-          ...d,
-          district: [d.district as unknown as number],
-        })),
-      });
+      onValueSet(response);
     },
   });
 
