@@ -458,6 +458,7 @@ export default {
   accountInformation: 'Account Information',
   accountNotification: 'Notifications',
   accountPerForms: 'PER forms',
+  accountMyDrefApplications: 'My Dref Applications',
   accountWeeklyDigest: 'Weekly Digest',
   accountWeeklyDigestDescription: 'Select to get a weekly compilation of emergency events based on your preferences.',
   accountNewEmergencies: 'New Emergencies',
@@ -1570,5 +1571,17 @@ export default {
   threeWEditPageTitle: 'IFRC Go - Edit 3W',
 
   emptyMessage: 'Data is not available.',
-  emptyMessageHelpText: 'Please refresh the browser or visit the platform in a little bit.'
+  emptyMessageHelpText: 'Please refresh the browser or visit the platform in a little bit.',
+
+  drefFormTitle: 'Title*',
+  // dref table headings
+  drefTableCreatedOn: 'Created On',
+  drefTableCountry: 'Country',
+  drefTableAppealNumber: 'Appeal Number',
+  drefTableName: 'Name',
+  drefTableRegionalTechReview: 'Regional Technical Review',
+  drefTableSubmittedToGeneva: 'Submitted to Geneva',
+  drefTableLastUpdate: 'Last Update',
+  drefInProgressApplications: 'In progress Applications',
+  drefApprovedApplications: 'Approved Applications'
 };

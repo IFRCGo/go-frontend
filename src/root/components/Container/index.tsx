@@ -20,6 +20,7 @@ export interface Props {
   sub?: boolean;
   hideHeaderBorder?: boolean;
   headerElementRef?: HeaderProps['elementRef'];
+  visibleOverflow?: boolean;
 }
 
 function Container(props: Props) {
@@ -37,6 +38,7 @@ function Container(props: Props) {
     headingSize,
     hideHeaderBorder,
     headerElementRef,
+    visibleOverflow,
   } = props;
 
   return (
@@ -47,6 +49,7 @@ function Container(props: Props) {
         sub && styles.sub,
         className,
         hideHeaderBorder && styles.withoutHeaderBorder,
+        visibleOverflow && styles.visibleOverflow,
       )}
     >
       <div className={_cs(styles.innerContainer, innerContainerClassName)}>

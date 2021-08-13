@@ -49,4 +49,16 @@
       }
     }
   }
+
+  .visible-overflow {
+    overflow: visible;
+
+    >.inner-container {
+      overflow: visible;
+
+      .content {
+        overflow: visible;
+      }
+    }
+  }
 }
