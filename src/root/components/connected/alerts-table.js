@@ -213,7 +213,7 @@ class AlertsTable extends SFPComponent {
 
         // for position, we only want first segment before a comma
         position: getPositionString(rowData),
-        keywords: getMolnixKeywords(rowData.molnix_tags),
+        keywords: getMolnixKeywords(rowData.molnix_tags || []),
         emergency: event ? <Link className='link--table' to={`/emergencies/${event}`} title={strings.alertTableViewEmergency}>{eventTitle}</Link> : rowData.operation || nope,
         country: country,
         status: rowData.molnix_status === 'unfilled' ? 'Stood down' : 'Open' 
