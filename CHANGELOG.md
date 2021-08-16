@@ -1,3 +1,7 @@
+### Release 5.3.2: Hotfix
+
+ - Fix surge molnix tags missing
+
 ### Release 5.3.1: Hotfix
 
  - Fix display of Duration in Surge Alerts table
