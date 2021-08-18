@@ -147,8 +147,15 @@ class AlertsTable extends SFPComponent {
 
     const { strings } = this.context;
     const title = this.props.title || strings.alertTableTitle;
+    const userNotLoggedIn = !this.props.user.data.token;
 
-    if (this.props.returnNullForEmpty &&
+    if (userNotLoggedIn) {
+      return <Fold title={title} id={this.props.id}>
+               <p>
+                 <Translate stringId="privateRouteNotAuthenticatedMessage" />
+               </p>
+             </Fold>;
+    } else if (this.props.returnNullForEmpty &&
         (error || (fetching && !fetched) || (fetched && !data.results.length))) {
       return null;
     } else if (fetching || !fetched) {
