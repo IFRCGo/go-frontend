@@ -202,8 +202,11 @@ class AlertsTable extends SFPComponent {
       const endDate = DateTime.fromISO(rowData.end);
       const nowMs = new Date().getTime();
       const event = get(rowData, 'event.id');
-      const countries = get(rowData, 'event.countries');
-      const country = countries && countries.length > 0 ? countries[0].name : '';
+      let country = get(rowData, 'country.name');
+      if (!country) {
+        const countries = get(rowData, 'event.countries');
+        country = countries && countries.length > 0 ? countries[0].name : '';
+      }
       const eventTitle = rowData.operation || get(rowData, 'event.name');
       acc.push({
         id: rowData.id,
