@@ -169,7 +169,7 @@ function ActionsFields(props: Props) {
         className={styles.otherActions}
       >
         <InputSection
-          title="Government has requested international assistance"
+          title={strings.internationalAssistance}
         >
           <RadioInput
             name="government_requested_assistance"
