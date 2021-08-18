@@ -166,7 +166,7 @@ function About (props) {
                             </div>
                             <div className='box__global__content'>
                               <div className='box__global__content--ref row flex-xs'>
-                                <a href='https://go-user-library.ifrc.org/' target='_blank' className='box__global__content--ref__link col col-6-xs'>
+                                <a href='https://ifrcgo.org/go-user-library/' target='_blank' className='box__global__content--ref__link col col-6-xs'>
                                   <Translate stringId='aboutGoUserLibrary'/>
                                   <span className='collecticon-chevron-right icon-about-ref'></span>
                                 </a>
