@@ -3003,6 +3003,7 @@ export default {
   nationalSocietiesActions: 'National Society Actions',
   nationalSocietiesActionsLabel: 'Select the actions that apply.',
   nationalOtherActors: 'Other Actors',
+  internationalAssistance: 'Government has requested international assistance',
   nationalAuthorities: 'National authorities',
   rCRCPartnerNss: 'RCRC Partner NSS',
   iCRC: 'ICRC',
