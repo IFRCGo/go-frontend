@@ -121,7 +121,7 @@ class Register extends React.Component {
     this.setState({
       nationalSocieties: props.countries
         .reduce(function (results, country) {
-          if (country.society_name && country.society_name !== 'ICRC') {
+          if (country.society_name && country.society_name !== 'ICRC' && country.independent) {
             results.push({
               value: country.society_name,
               label: country.society_name

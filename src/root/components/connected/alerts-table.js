@@ -147,8 +147,15 @@ class AlertsTable extends SFPComponent {
 
     const { strings } = this.context;
     const title = this.props.title || strings.alertTableTitle;
+    const userNotLoggedIn = !this.props.user.data.token;
 
-    if (this.props.returnNullForEmpty &&
+    if (userNotLoggedIn) {
+      return <Fold title={title} id={this.props.id}>
+               <p>
+                 <Translate stringId="privateRouteNotAuthenticatedMessage" />
+               </p>
+             </Fold>;
+    } else if (this.props.returnNullForEmpty &&
         (error || (fetching && !fetched) || (fetched && !data.results.length))) {
       return null;
     } else if (fetching || !fetched) {
@@ -202,8 +209,11 @@ class AlertsTable extends SFPComponent {
       const endDate = DateTime.fromISO(rowData.end);
       const nowMs = new Date().getTime();
       const event = get(rowData, 'event.id');
-      const countries = get(rowData, 'event.countries');
-      const country = countries && countries.length > 0 ? countries[0].name : '';
+      let country = get(rowData, 'country.name');
+      if (!country) {
+        const countries = get(rowData, 'event.countries');
+        country = countries && countries.length > 0 ? countries[0].name : '';
+      }
       const eventTitle = rowData.operation || get(rowData, 'event.name');
       acc.push({
         id: rowData.id,
@@ -213,7 +223,7 @@ class AlertsTable extends SFPComponent {
 
         // for position, we only want first segment before a comma
         position: getPositionString(rowData),
-        keywords: getMolnixKeywords(rowData.molnix_tags),
+        keywords: getMolnixKeywords(rowData.molnix_tags || []),
         emergency: event ? <Link className='link--table' to={`/emergencies/${event}`} title={strings.alertTableViewEmergency}>{eventTitle}</Link> : rowData.operation || nope,
         country: country,
         status: rowData.molnix_status === 'unfilled' ? 'Stood down' : 'Open' 
