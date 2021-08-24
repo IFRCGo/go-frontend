@@ -20,6 +20,7 @@ import {
   useLazyRequest,
   useRequest,
 } from '#utils/restRequest';
+import LanguageContext from '#root/languageContext';
 import useAlert from '#hooks/useAlert';
 
 import DrefOverview from './DrefOverview';
@@ -89,7 +90,7 @@ function DrefApplication(props: Props) {
 
   const alert = useAlert();
   const { drefId } = match.params;
-
+  const { strings } = React.useContext(LanguageContext);
   const {
     value,
     error,
@@ -118,7 +119,7 @@ function DrefApplication(props: Props) {
 
   type StepTypes = 'DrefOverview' | 'EventDetails' | 'Action' | 'Response' | 'Submisson';
   const [currentStep, setCurrentStep] = React.useState<StepTypes>('DrefOverview');
-  const submitButtonLabel = currentStep === 'Submisson' ? 'Submit' : 'Continue';
+  const submitButtonLabel = currentStep === 'Submisson' ? strings.fieldReportSubmit : strings.fieldReportContinue;
   const shouldDisabledBackButton = currentStep === 'DrefOverview';
 
   const {
@@ -192,7 +193,7 @@ function DrefApplication(props: Props) {
       error,
       value: finalValues,
     } = validate();
-
+    console.log(finalValues, error);
     onErrorSet(error);
 
     if (errored) {
@@ -307,7 +308,7 @@ function DrefApplication(props: Props) {
             <Container>
               <NonFieldError
                 error={error}
-                message="Please fill in all thre required fields"
+                message="Please fill in all the required fields"
               />
             </Container>
             <TabPanel name="DrefOverview">

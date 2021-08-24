@@ -1609,7 +1609,7 @@ export default {
   disasterCategoryLabel: 'Disaster Category',
   AffectedCountryAndProvince: 'Affected country and province/region*',
   peopleAffected: 'Number of people affected/ number of people at risk',
-  numPeopleAssisted: 'Name of People to be assisted',
+  numPeopleAssisted: 'Number of People to be assisted',
   requestAmount: 'Requested Amount',
   emergencyAppealPlanned: 'Emergency appeal planned',
   timeFrames: 'Timeframes',
