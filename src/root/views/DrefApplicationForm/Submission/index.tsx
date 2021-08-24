@@ -168,14 +168,14 @@ function Submission(props: Props) {
           description={strings.projectManagerDescription}
         >
           <TextInput
-            label="name"
+            label="Name"
             name="project_manager_name"
             value={value.project_manager_name}
             onChange={onValueChange}
             error={error?.fields?.project_manager_name}
           />
           <TextInput
-            label="email"
+            label="Email"
             name="project_manager_email"
             value={value.project_manager_email}
             onChange={onValueChange}
