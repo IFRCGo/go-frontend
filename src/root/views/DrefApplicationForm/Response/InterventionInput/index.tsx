@@ -5,6 +5,7 @@ import {
   ArrayError,
   useFormObject,
 } from '@togglecorp/toggle-form';
+import { IoTrash } from 'react-icons/io5';
 
 import {
   Intervention,
@@ -12,8 +13,11 @@ import {
 } from '../../common';
 
 import TextArea from '#components/TextArea';
+import Button from '#components/Button';
 import NumberInput from '#components/NumberInput';
 import InputSection from '#components/InputSection';
+
+import styles from './styles.module.scss';
 
 type SetValueArg<T> = T | ((value: T) => T);
 
@@ -37,6 +41,7 @@ function InterventionInput(props: Props) {
     value,
     index,
     interventionOptions,
+    onRemove,
   } = props;
 
   const interventionLabel = React.useMemo(() => (
@@ -53,6 +58,7 @@ function InterventionInput(props: Props) {
       title={interventionLabel}
       multiRow
       twoColumn
+      contentSectionClassName={styles.content}
     >
       <NumberInput
         label="Budget"
@@ -75,6 +81,14 @@ function InterventionInput(props: Props) {
         onChange={onFieldChange}
         error={error?.fields?.description}
       />
+      <Button
+        className={styles.removeButton}
+        name={index}
+        onClick={onRemove}
+        variant="action"
+      >
+        <IoTrash />
+      </Button>
     </InputSection>
   );
 }

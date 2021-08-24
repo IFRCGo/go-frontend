@@ -264,7 +264,7 @@ function Response(props: Props) {
           />
         ))}
         <InputSection
-          title=""
+          title={strings.secretariatServices}
         >
           <TextArea
             name="secretariat_service"

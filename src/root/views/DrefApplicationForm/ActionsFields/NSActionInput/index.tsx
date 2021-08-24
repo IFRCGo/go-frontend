@@ -5,14 +5,18 @@ import {
   ArrayError,
   useFormObject,
 } from '@togglecorp/toggle-form';
+import { IoTrash } from 'react-icons/io5';
 
 import TextArea from '#components/TextArea';
+import Button from '#components/Button';
 import InputSection from '#components/InputSection';
 
 import {
   NsAction,
   StringValueOption,
 } from '../../common';
+
+import styles from './styles.module.scss';
 
 type SetValueArg<T> = T | ((value: T) => T);
 
@@ -36,6 +40,7 @@ function NsActionInput(props: Props) {
     value,
     index,
     nsActionOptions,
+    onRemove,
   } = props;
 
   const nsActionLabel = React.useMemo(() => (
@@ -50,6 +55,7 @@ function NsActionInput(props: Props) {
   return (
     <InputSection
       title={nsActionLabel}
+      contentSectionClassName={styles.content}
     >
       <TextArea
         name="description"
@@ -57,6 +63,14 @@ function NsActionInput(props: Props) {
         onChange={onFieldChange}
         error={error?.fields?.description}
       />
+      <Button
+        className={styles.removeButton}
+        name={index}
+        onClick={onRemove}
+        variant="action"
+      >
+        <IoTrash />
+      </Button>
     </InputSection>
   );
 }
