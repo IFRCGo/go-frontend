@@ -979,6 +979,7 @@ export default {
   threeWNSMapReportingNS: 'Reporting NS',
   threeWNSMapReceivingCountry: 'Receiving Country',
   threeWLastModifiedOn: 'Last Modified On',
+  threeWLastModifiedBy: 'by {user}',
 
   projectFormReportingNational: 'Reporting National Society *',
   projectFormReportingHelpText: 'Select National Society that is carrying out the activity.',

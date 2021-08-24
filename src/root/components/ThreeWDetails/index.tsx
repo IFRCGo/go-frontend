@@ -7,6 +7,7 @@ import {
 import LanguageContext from '#root/languageContext';
 import BlockLoading from '#components/block-loading';
 import Header from '#components/Header';
+import Translate from '#components/Translate';
 import TextOutput, { Props as TextOutputProps } from '#components/TextOutput';
 import { useRequest } from '#utils/restRequest';
 import { Project } from '#types';
@@ -79,6 +80,25 @@ function ProjectDetail(props: Props) {
     onSuccess: onProjectLoad,
   });
 
+  const displayName = React.useMemo(() => {
+    if (!projectResponse?.modified_by_detail) {
+      return undefined;
+    }
+
+    const {
+      username,
+      firstName,
+      lastName,
+    } = projectResponse.modified_by_detail;
+
+    if (firstName) {
+      return `${firstName} ${lastName}`;
+    }
+
+    return username;
+  }, [projectResponse?.modified_by_detail]);
+
+
   if (isNotDefined(projectId)) {
     return null;
   }
@@ -92,14 +112,19 @@ function ProjectDetail(props: Props) {
           heading={projectResponse?.name}
           actions={headerActions}
           descriptionClassName={styles.headerDescription}
-          description={(
+          description={ projectResponse ? (
             <TextOutput
               label={strings.threeWLastModifiedOn}
               value={projectResponse?.modified_at}
               valueType="date"
-            //  description={`By ${projectResponse?.modified_by_detail?.username}`}
+              description={displayName ? (
+                <Translate
+                  stringId="threeWLastModifiedBy"
+                  params={{ user: displayName }}
+                />
+              ) : undefined}
             />
-          )}
+          ) : undefined }
         />
       )}
       {projectPending ? (
