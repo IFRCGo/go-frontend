@@ -6,7 +6,7 @@ import {
   ArraySchema,
 } from '@togglecorp/toggle-form';
 
-import { requiredCondition } from '#utils/form';
+import { positiveIntegerCondition, requiredCondition } from '#utils/form';
 import LanguageContext from '#root/languageContext';
 import {
   useRequest,
@@ -28,6 +28,7 @@ import {
   NumericKeyValuePair,
   StringKeyValuePair,
 } from './common';
+import { isDefined } from '@togglecorp/fujs';
 
 export type FormSchema = ObjectSchema<PartialForm<DrefFields>>;
 export type FormSchemaFields = ReturnType<FormSchema['fields']>;
@@ -50,6 +51,35 @@ export type InterventionSchemaFields = ReturnType<InterventionSchema['fields']>;
 export type InterventionsSchema = ArraySchema<PartialForm<InterventionType>>;
 export type InterventionsSchemaMember = ReturnType<InterventionsSchema['member']>;
 
+export function max500CharCondition(value: any) {
+  return isDefined(value) && value.length > 500
+    ? 'Only 500 characters are allowed'
+    : undefined;
+}
+
+export function max800CharCondition(value: any) {
+  return isDefined(value) && value.length > 800
+  ? 'only 800 characters are allowed'
+  : undefined;
+}
+
+export function max300CharCondition(value: any) {
+  return isDefined(value) && value.length > 300
+  ? 'only 300 characters are allowed'
+  : undefined;
+}
+
+export function max10CharCondition(value: any) {
+  return isDefined(value) && value.length > 10
+  ? 'only 10 characters are allowed'
+  : undefined;
+}
+export function validEmailCondition (email : any) {
+  const emailRegex = /^([A-Za-z0-9_\-.+])+@([A-Za-z0-9_\-.])+\.([A-Za-z]{2,})$/;
+  return !isDefined(email) || !emailRegex.test(email) 
+  ? 'Invalid Email' : undefined;
+}
+
 export const schema: FormSchema = {
   fields: (value): FormSchemaFields => ({
     title: [requiredCondition],
@@ -67,9 +97,9 @@ export const schema: FormSchema = {
         }),
       }),
     },
-    num_affected: [],
-    num_assisted: [],
-    amount_requested: [],
+    num_affected: [positiveIntegerCondition],
+    num_assisted: [positiveIntegerCondition],
+    amount_requested: [positiveIntegerCondition],
     emergency_appeal_planned: [],
 
     disaster_date: [],
@@ -79,20 +109,21 @@ export const schema: FormSchema = {
     affect_same_communities: [],
     ns_respond: [],
     ns_request: [],
-    ns_request_text: [],
-    lessons_learned: [],
+    ns_request_text: [max10CharCondition],
+    lessons_learned: [max500CharCondition],
 
-    event_description: [],
-    event_scope: [],
+    event_description: [max800CharCondition],
+    event_scope: [max800CharCondition],
 
     national_society_actions: [],
     government_requested_assistance: [],
     government_requested_assistance_date: [],
-    national_authorities: [],
-    rcrc_partners: [],
-    icrc: [],
-    un_or_other: [],
-    major_coordination_mechanism: [],
+    national_authorities: [max300CharCondition],
+    rcrc_partners: [max300CharCondition],
+    icrc: [max300CharCondition],
+    un_or_other: [max300CharCondition],
+    major_coordination_mechanism: [max300CharCondition],
+    identified_gaps : [max300CharCondition],
 
     needs_identified: {
       keySelector: (n) => n.clientId as string,
@@ -105,17 +136,18 @@ export const schema: FormSchema = {
       }),
     },
 
-    people_assisted: [],
-    selection_criteria: [],
-    community_involved: [],
+    people_assisted: [max300CharCondition],
+    selection_criteria: [max300CharCondition],
+    entity_affected: [max300CharCondition],
+    community_involved: [max300CharCondition],
 
-    women: [],
-    men: [],
-    girls: [],
-    boys: [],
-    disability_people_per: [],
-    people_per: [],
-    displaced_people: [],
+    women: [positiveIntegerCondition],
+    men: [positiveIntegerCondition],
+    girls: [positiveIntegerCondition],
+    boys: [positiveIntegerCondition],
+    disability_people_per: [positiveIntegerCondition],
+    people_per: [positiveIntegerCondition],
+    displaced_people: [positiveIntegerCondition],
 
     operation_objective: [],
     response_strategy: [],
