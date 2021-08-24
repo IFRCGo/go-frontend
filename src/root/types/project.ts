@@ -3,6 +3,10 @@ import {
   DistrictMini,
 } from './country';
 
+import {
+  UserMini,
+} from './user';
+
 export interface Disaster {
   id: number;
   name: string;
@@ -59,6 +63,8 @@ export interface Project {
   event_detail: Event | null;
   id: number;
   modified_at: string;
+  modified_by: number | null;
+  modified_by_detail: UserMini | null;
   name: string;
   operation_type: number;
   operation_type_display: string;

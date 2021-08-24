@@ -55,6 +55,13 @@ function ThreeWPieChart(props: PieChartProps) {
           top: 30,
         }}
       >
+        <Tooltip
+          isAnimationActive={false}
+          allowEscapeViewBox={{
+            x: false,
+            y: false,
+          }}
+        />
         <Pie
           data={chartData}
           dataKey="value"
@@ -62,7 +69,7 @@ function ThreeWPieChart(props: PieChartProps) {
           startAngle={450}
           endAngle={90}
         >
-          { chartData.map((entry, index) => (
+          {chartData.map((entry, index) => (
             <Cell
               key={`cell-${index}`}
               fill={PIE_COLORS[index % PIE_COLORS.length]}
@@ -71,6 +78,7 @@ function ThreeWPieChart(props: PieChartProps) {
           <LabelList
             className={styles.pieLabel}
             position="outside"
+            // @ts-ignore
             formatter={(v: number) => `${((100 * (v / total))).toFixed(1)}%`}
             isAnimationActive={false}
           />
@@ -90,7 +98,7 @@ function ThreeWPieChart(props: PieChartProps) {
   );
 }
 
-function CustomYAxisTick (props: {
+function CustomYAxisTick(props: {
   y: number;
   payload: unknown;
   width: number;
@@ -169,7 +177,7 @@ function ThreeWBarChart(props: BarChartProps) {
         styles.chartContainer,
         className
       )}
-      maxHeight={limitHeight ? 30*chartData.length : undefined}
+      maxHeight={limitHeight ? 30 * chartData.length : undefined}
     >
       <BarChart
         layout="vertical"
@@ -205,6 +213,7 @@ function ThreeWBarChart(props: BarChartProps) {
               x: false,
               y: false,
             }}
+            formatter={(value: number) => [value, 'Projects']}
           />
         )}
         <Bar

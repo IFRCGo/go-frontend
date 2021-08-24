@@ -234,6 +234,7 @@ function GlobalThreeWMap(props: Props) {
       key: p.primary_sector,
       value: p.count,
       name: p.primary_sector_display,
+      Projects: p.count,
     })) ?? [],
     [selectedNsProjectStats?.projects_per_sector]
   );
