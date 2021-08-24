@@ -4,6 +4,7 @@ import {
   ArrayError,
   useFormObject,
 } from '@togglecorp/toggle-form';
+import { IoTrash } from 'react-icons/io5';
 
 import {
   useRequest,
@@ -11,6 +12,7 @@ import {
 } from '#utils/restRequest';
 import { compareString } from '#utils/utils';
 import SelectInput from '#components/SelectInput';
+import Button from '#components/Button';
 import { DistrictMini } from '#types';
 import { CountryDistrictType } from '../../useDrefFormOptions';
 import {
@@ -45,6 +47,7 @@ function CountryDistrictInput(props: Props) {
     countryOptions,
     value,
     index,
+    onRemove,
   } = props;
 
   const countryQuery = React.useMemo(() => ({
@@ -94,6 +97,15 @@ function CountryDistrictInput(props: Props) {
         options={districtOptions}
         value={value.district}
       />
+      <Button
+        className={styles.removeButton}
+        name={index}
+        onClick={onRemove}
+        variant="action"
+        disabled={index === 0}
+      >
+        <IoTrash />
+      </Button>
     </div>
   );
 }

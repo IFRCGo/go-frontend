@@ -362,6 +362,7 @@ function DrefApplication(props: Props) {
             </TabPanel>
             <div className={styles.actions}>
               <Button
+                name={undefined}
                 variant="secondary"
                 onClick={handleBackButtonClick}
                 disabled={shouldDisabledBackButton}
@@ -369,6 +370,7 @@ function DrefApplication(props: Props) {
                 Back
               </Button>
               <Button
+                name={undefined}
                 variant="secondary"
                 onClick={handleSubmitButtonClick}
                 type="submit"

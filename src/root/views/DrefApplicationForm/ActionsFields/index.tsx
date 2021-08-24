@@ -132,6 +132,7 @@ function ActionsFields(props: Props) {
       <Container
         heading={strings.nationalSocietiesActions}
         className={styles.nationalSocietyActions}
+        visibleOverflow
       >
         <InputSection>
           <SelectInput
