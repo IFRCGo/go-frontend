@@ -28,7 +28,6 @@ import {
 import { CountryDistrictType } from '../useDrefFormOptions';
 import CountryDistrictInput from './CountryDistrictInput';
 import styles from './styles.module.scss';
-import { string } from 'prop-types';
 
 type Value = PartialForm<DrefFields>;
 interface Props {
@@ -165,6 +164,7 @@ function DrefOverview(props: Props) {
           ))}
           <div className={styles.actions}>
             <Button
+              name={undefined}
               onClick={handleCountryDistrictAdd}
               variant="secondary"
             >
