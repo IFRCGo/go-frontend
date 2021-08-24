@@ -186,6 +186,7 @@ function ActionsFields(props: Props) {
         >
           <TextArea
             label={strings.cmpActionDescriptionLabel}
+            name="national_authorities"
             onChange={onValueChange}
             value={value.national_authorities}
             error={error?.fields?.national_authorities}
