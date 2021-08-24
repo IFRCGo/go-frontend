@@ -3064,6 +3064,7 @@ export default {
   plannedIntervention: 'Planned Intervention',
   interventionsLabel: 'Select the interventions that apply.',
   nationalSocietyStrengthening: 'National Society strengthening',
+  secretariatServices: 'Secretariat services',
 
   //Sumission
   submissionFlow: 'Submission flow',
