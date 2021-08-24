@@ -50,7 +50,7 @@
     }
   }
 
-  .visible-overflow {
+  &.visible-overflow {
     overflow: visible;
 
     >.inner-container {

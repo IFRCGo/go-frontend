@@ -1,0 +1,11 @@
+@import '~styles/settings/variables';
+
+.content {
+  .remove-button {
+    align-self: flex-end;
+    flex-basis: unset!important;
+    flex-grow: unset!important;
+    flex-shrink: 0;
+    padding: $spacing;
+  }
+}
