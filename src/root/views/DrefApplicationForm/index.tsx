@@ -3,6 +3,7 @@ import type { History, Location } from 'history';
 import {
   randomString,
   isDefined,
+  listToMap,
 } from '@togglecorp/fujs';
 import { PartialForm, useForm } from '@togglecorp/toggle-form';
 import type { match as Match } from 'react-router-dom';
@@ -28,7 +29,14 @@ import EventDetails from './EventDetails';
 import ActionsFields from './ActionsFields';
 import Response from './Response';
 import Submission from './Submission';
-import { DrefFields } from './common';
+import {
+  DrefFields,
+  overviewFields,
+  eventDetailsFields,
+  actionsFields,
+  responseFields,
+  submissionFields,
+} from './common';
 import useDrefFormOptions, { schema } from './useDrefFormOptions';
 
 import styles from './styles.module.scss';
@@ -179,11 +187,41 @@ function DrefApplication(props: Props) {
       error,
     } = validate();
 
+    const stepTypesToFieldsMap: {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      [key in StepTypes]: (keyof DrefFields)[];
+    } = {
+      DrefOverview: overviewFields,
+      EventDetails: eventDetailsFields,
+      Action: actionsFields,
+      Response: responseFields,
+      Submisson: submissionFields,
+    };
+
     onErrorSet(error);
 
-    if (!errored) {
+    if (!errored || !error) {
       setCurrentStep(newStep);
+      return;
     }
+
+    setCurrentStep((prevStep) => {
+      const currentFields = stepTypesToFieldsMap[prevStep];
+      const currentFieldsMap = listToMap(currentFields, d => d, d => true);
+
+      const erroredFields = Object.keys(error.fields ?? {});
+      console.info(erroredFields, currentFieldsMap);
+      const hasError = erroredFields.some(d => currentFieldsMap[d]);
+
+      console.info(hasError);
+
+      if (hasError) {
+        return prevStep;
+      }
+
+      return newStep;
+    });
+
   }, [setCurrentStep, onErrorSet, validate]);
 
   const handleSubmitButtonClick = React.useCallback(() => {
@@ -308,7 +346,7 @@ function DrefApplication(props: Props) {
             <Container>
               <NonFieldError
                 error={error}
-                message="Please fill in all the required fields"
+                message="Please correct all the errors!"
               />
             </Container>
             <TabPanel name="DrefOverview">
