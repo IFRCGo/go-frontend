@@ -13,7 +13,6 @@ import LanguageContext from '#root/languageContext';
 
 import {
   optionLabelSelector,
-  NumericValueOption,
   BooleanValueOption,
   booleanOptionKeySelector,
   DrefFields,
@@ -50,7 +49,10 @@ function EventDetails(props: Props) {
           title={strings.eventDetailsTitle}
           description={strings.eventDescription}
         >
-          <SelectInput options={[]} />
+          {/* @ts-ignore */}
+          <SelectInput
+            options={[]}
+          />
         </InputSection>
       </Container>
       <Container

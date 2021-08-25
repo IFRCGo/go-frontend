@@ -50,6 +50,7 @@ function BasicModal(props: Props) {
                 {headerActions}
                 {!hideCloseButton && (
                   <Button
+                    name={undefined}
                     onClick={onCloseButtonClick}
                     variant="action"
                   >

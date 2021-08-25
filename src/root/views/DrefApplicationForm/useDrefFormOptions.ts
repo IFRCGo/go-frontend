@@ -130,7 +130,7 @@ export const schema: FormSchema = {
       member: (): NeedsSchemaMember => ({
         fields: (): NeedSchemaFields => ({
           clientId: [],
-          need: [requiredCondition],
+          title: [requiredCondition],
           description: [requiredCondition],
         }),
       }),
@@ -296,10 +296,10 @@ function useDrefFormOptions(value: PartialForm<DrefFields>) {
 
   const yesNoOptions = React.useMemo(() => {
     return [
-      { value: true, label: 'Yes' },
-      { value: false, label: 'No' },
+      { value: true, label: strings.yesLabel },
+      { value: false, label: strings.noLabel },
     ] as BooleanValueOption[];
-  }, []);
+  }, [strings]);
 
   return {
     countryOptions,

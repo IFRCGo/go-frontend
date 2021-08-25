@@ -66,6 +66,7 @@ function ProjectFormModal(props: Props) {
       headingSize="extraLarge"
       headerActions={(
         <Button
+          name={undefined}
           variant="secondary"
           onClick={onCloseButtonClick}
         >
