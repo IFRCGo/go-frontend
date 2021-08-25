@@ -297,9 +297,9 @@ function DrefApplication(props: Props) {
         Response: 'Submisson',
       };
 
-      setCurrentStep(nextStepMap[currentStep]);
+      handleTabChange(nextStepMap[currentStep]);
     }
-  }, [currentStep, setCurrentStep, validate, onErrorSet, submitRequest, userDetails]);
+  }, [currentStep, handleTabChange, validate, onErrorSet, submitRequest, userDetails]);
 
   const handleBackButtonClick = React.useCallback(() => {
     scrollToTop();
@@ -320,9 +320,10 @@ function DrefApplication(props: Props) {
         Response: 'Action',
         Submisson: 'Response',
       };
-      setCurrentStep(prevStepMap[currentStep]);
+
+      handleTabChange(prevStepMap[currentStep]);
     }
-  }, [validate, setCurrentStep, currentStep, onErrorSet]);
+  }, [validate, handleTabChange, currentStep, onErrorSet]);
 
   const pending = fetchingCountries
     || fetchingDisasterTypes
@@ -330,6 +331,8 @@ function DrefApplication(props: Props) {
     || fetchingUserDetails
     || drefSubmitPending
     || drefApplicationPending;
+
+  console.info('error', error);
 
   return (
     <Tabs

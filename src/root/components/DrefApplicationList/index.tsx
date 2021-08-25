@@ -1,19 +1,24 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { isDefined } from '@togglecorp/fujs';
 
-import {
-  ListResponse,
-  useRequest,
-} from '#utils/restRequest';
 import LanguageContext from '#root/languageContext';
 import Container from '#components/Container';
 import Table from '#components/Table';
+import SelectInput from '#components/SelectInput';
 import { useButtonFeatures } from '#components/Button';
 import {
   createStringColumn,
   createDateColumn,
   createActionColumn,
 } from '#components/Table/predefinedColumns';
+import useReduxState from '#hooks/useReduxState';
+import useInputState from '#hooks/useInputState';
+import {
+  ListResponse,
+  useRequest,
+} from '#utils/restRequest';
+import { compareLabel } from '#utils/common';
 
 import styles from './styles.module.scss';
 
@@ -37,9 +42,23 @@ interface Props {
 
 function DrefApplicationList(props: Props) {
   const { strings } = React.useContext(LanguageContext);
+  const allCountries = useReduxState('allCountries');
+  const [country, setCountry] = useInputState<number | undefined>(undefined);
+  const countryOptions = React.useMemo(
+    () => allCountries?.data?.results.filter((c) => (
+      c.independent && !c.is_deprecated && c.name
+    )).map((c) => ({
+      value: c.id,
+      label: c.name,
+    })).sort(compareLabel) ?? [],
+    [allCountries],
+  );
   const {
     response,
-  } = useRequest<ListResponse<DrefApplication>>({ url: 'api/v2/dref/' });
+  } = useRequest<ListResponse<DrefApplication>>({
+    url: 'api/v2/dref/',
+    query: isDefined(country) ? ({ country }) : undefined,
+  });
   const linkProps = useButtonFeatures({
     variant: 'secondary',
     children: 'Edit',
@@ -80,14 +99,30 @@ function DrefApplicationList(props: Props) {
   ]), [linkProps, strings]);
 
   return (
-    <Container>
-      <Table
-        className={styles.table}
-        data={response?.results}
-        columns={columns}
-        keySelector={drefKeySelector}
-        variant="large"
-      />
+    <Container
+      className={styles.drefApplicationList}
+    >
+      <div className={styles.filters}>
+        <SelectInput
+          name={undefined}
+          placeholder="Select Country"
+          options={countryOptions}
+          value={country}
+          onChange={setCountry}
+        />
+      </div>
+      <Container
+        heading="In-progress Applications"
+        sub
+      >
+        <Table
+          className={styles.table}
+          data={response?.results}
+          columns={columns}
+          keySelector={drefKeySelector}
+          variant="large"
+        />
+      </Container>
     </Container>
   );
 }
