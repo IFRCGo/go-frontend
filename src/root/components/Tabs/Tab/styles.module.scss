@@ -95,8 +95,7 @@
       height: .75em;
       background-color: $danger-color;
       border-radius: 50%;
-      left: $spacing*2;
-      top: $spacing/2;
+      transform: translate(-100%, -100%);
     }
   }
 }
