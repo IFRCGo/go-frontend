@@ -178,3 +178,31 @@ export interface DrefFields {
   anticipatory_actions: string,
    */
 }
+
+export const overviewFields: (keyof DrefFields)[] = [
+  'title',
+  'national_society',
+  'disaster_type',
+  'type_of_onset',
+  'disaster_category',
+  'country_district',
+];
+
+export const eventDetailsFields: (keyof DrefFields)[] = [
+  'affect_same_population',
+  'affect_same_communities',
+];
+
+export const actionsFields: (keyof DrefFields)[] = [
+  'national_society_actions',
+];
+
+export const responseFields: (keyof DrefFields)[] = [
+  'women',
+  'men',
+  'planned_interventions',
+];
+
+export const submissionFields: (keyof DrefFields)[] = [
+  'date_of_approval',
+];
