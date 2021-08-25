@@ -111,7 +111,7 @@ export function createDateColumn<D, K>(
   rendererProps?: DateOutputProps,
 ) {
   const item: Column<D, K, DateOutputProps, HeaderCellProps> & {
-    valueSelector: (item: D) => number | undefined | null,
+    valueSelector: (item: D) => string | undefined | null,
     valueComparator: (foo: D, bar: D) => number,
   } = {
     id,
@@ -131,6 +131,7 @@ export function createDateColumn<D, K>(
       ...rendererProps,
     }),
     valueSelector: accessor,
+    valueComparator: (foo: D, bar: D) => compareString(accessor(foo), accessor(bar)),
   };
 
   return item;
