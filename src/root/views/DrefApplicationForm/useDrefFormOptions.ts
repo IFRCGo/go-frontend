@@ -6,7 +6,10 @@ import {
   ArraySchema,
 } from '@togglecorp/toggle-form';
 
-import { positiveIntegerCondition, requiredCondition } from '#utils/form';
+import {
+  positiveIntegerCondition,
+  requiredCondition,
+} from '#utils/form';
 import LanguageContext from '#root/languageContext';
 import {
   useRequest,
@@ -145,8 +148,8 @@ export const schema: FormSchema = {
     men: [positiveIntegerCondition],
     girls: [positiveIntegerCondition],
     boys: [positiveIntegerCondition],
-    disability_people_per: [positiveIntegerCondition],
-    people_per: [positiveIntegerCondition],
+    disability_people_per: [],
+    people_per: [],
     displaced_people: [positiveIntegerCondition],
 
     operation_objective: [],

@@ -5,25 +5,28 @@ import {
 import {resolve as resolveUrl} from 'url';
 import { get as getFromLocalStorage } from 'local-storage';
 import { api } from '#config';
+
 import store from '#utils/store';
+import { isObject } from '#utils/common';
 
 import { ContextInterface } from './context';
 
 const CONTENT_TYPE_JSON = 'application/json';
 const CONTENT_TYPE_CSV = 'text/csv';
 
-export interface ErrorFromServer {
+export type ErrorFromServer = {
   errorCode?: number;
   errors?: {
     // NOTE: it is most probably only string[]
     [key: string]: string[] | string;
   };
   detail?: string;
+} | {
+  [key: string]: string[];
 }
 
 export interface Error {
-  reason: string;
-  // exception: any;
+  reason: 'network' | 'parse' | 'server';
   value: {
     formErrors: {
       [key: string]: string | undefined;
@@ -35,14 +38,22 @@ export interface Error {
   debugMessage: string;
 }
 
-function alterResponse(errors: ErrorFromServer['errors']): Error['value']['formErrors'] {
-  const otherErrors = mapToMap(
-    errors,
+
+function alterResponse(response: ErrorFromServer | undefined): Error['value']['formErrors'] {
+  let errors = {};
+  if (!response) {
+    return errors;
+  }
+
+  if (!isObject(response) || !response.errors) {
+    return errors;
+  }
+
+  return mapToMap(
+    (response?.errors) as Record<string, string>,
     item => item,
     item => (Array.isArray(item) ? item.join(' ') : item),
   );
-
-  return otherErrors;
 }
 
 export interface OptionBase {
@@ -105,17 +116,21 @@ export const processGoResponse: GoContextInterface['transformResponse'] = async 
   res,
 ) => {
   const resText = await res.text();
-  if (resText.length < 1) {
-    return undefined;
-  }
-  if (res.headers.get('content-type') === CONTENT_TYPE_JSON) {
-    const json = JSON.parse(resText);
-    return json;
-  }
 
-  return resText;
+  return new Promise((resolve) => {
+    if (resText.length < 1) {
+      resolve(undefined);
+    }
+    if (res.headers.get('content-type') === CONTENT_TYPE_JSON) {
+      const json = JSON.parse(resText);
+      resolve(json);
+    }
+
+    return resolve(resText);
+  });
 };
 
+// @ts-ignore
 export const processGoError: GoContextInterface['transformError'] = async (
   reason,
   url,
@@ -145,7 +160,6 @@ export const processGoError: GoContextInterface['transformError'] = async (
     };
   }
 
-
   if (reason === 'parse') {
     return {
       reason: 'parse',
@@ -167,7 +181,7 @@ export const processGoError: GoContextInterface['transformError'] = async (
   }
 
   const { method } = requestOptions;
-  const formErrors = alterResponse(responseBody?.errors);
+  const formErrors = alterResponse(responseBody);
 
   let finalMessage = method === 'GET'
     ? 'Failed to load data'
@@ -184,7 +198,7 @@ export const processGoError: GoContextInterface['transformError'] = async (
     value: {
       formErrors,
       messageForNotification,
-      errors: responseBody?.errors,
+      errors: responseBody?.errors ?? responseBody,
     },
     errorCode: response?.status,
     debugMessage: JSON.stringify({
