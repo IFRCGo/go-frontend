@@ -70,6 +70,7 @@
     text-transform: uppercase;
     color: $color-text-light;
     transition: $duration-transition-medium color, background-color ease-in-out;
+    padding: $spacing;
 
     &:hover {
       color: $color-text;
