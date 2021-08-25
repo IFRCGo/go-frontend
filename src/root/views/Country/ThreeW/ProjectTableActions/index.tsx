@@ -143,6 +143,7 @@ function ProjectTableActions(props: Props) {
           projectId={project.id}
           headerActions={(
             <Button
+              name={undefined}
               variant="primary"
               onClick={handleEditProjectButtonClick}
             >

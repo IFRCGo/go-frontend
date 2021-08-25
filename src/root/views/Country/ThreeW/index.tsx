@@ -61,7 +61,10 @@ function ThreeW(props: Props) {
       >
         { isDefined(userDetails?.id) && (
           <div className={styles.headerActions}>
-            <Button onClick={setShowProjectFormModalTrue}>
+            <Button
+              onClick={setShowProjectFormModalTrue}
+              name={undefined}
+            >
               { strings.threeWAddProject }
             </Button>
           </div>
