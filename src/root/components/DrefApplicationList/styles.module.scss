@@ -1,4 +1,20 @@
-.table {
-  width: 100%;
+@import '~styles/settings/_variables.scss';
+
+.dref-application-list {
+  min-height: 50vh;
+
+  .filters {
+    display: flex;
+    padding: $spacing 0;
+    margin-bottom: $spacing*2;
+
+    >* {
+      flex-basis: calc(100% / 3);
+    }
+  }
+
+  .table {
+    width: 100%;
+  }
 }
 
