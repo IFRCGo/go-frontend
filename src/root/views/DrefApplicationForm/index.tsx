@@ -81,6 +81,18 @@ export function getDefinedValues<T extends Record<string, any>>(o: T): Partial<T
   return definedValues;
 }
 
+type StepTypes = 'DrefOverview' | 'EventDetails' | 'Action' | 'Response' | 'Submisson';
+const stepTypesToFieldsMap: {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  [key in StepTypes]: (keyof DrefFields)[];
+} = {
+  DrefOverview: overviewFields,
+  EventDetails: eventDetailsFields,
+  Action: actionsFields,
+  Response: responseFields,
+  Submisson: submissionFields,
+};
+
 interface Props {
   className?: string;
   match: Match<{ drefId?: string }>;
@@ -125,10 +137,33 @@ function DrefApplication(props: Props) {
     userDetails,
   } = useDrefFormOptions(value);
 
-  type StepTypes = 'DrefOverview' | 'EventDetails' | 'Action' | 'Response' | 'Submisson';
-  const [currentStep, setCurrentStep] = React.useState<StepTypes>('DrefOverview');
+  const [currentStep, setCurrentStep] = React.useState<StepTypes>('Submisson');
   const submitButtonLabel = currentStep === 'Submisson' ? strings.fieldReportSubmit : strings.fieldReportContinue;
   const shouldDisabledBackButton = currentStep === 'DrefOverview';
+
+  const erroredTabs = React.useMemo(() => {
+    const tabs: {
+      [key in StepTypes]: boolean;
+    } = {
+      DrefOverview: false,
+      EventDetails: false,
+      Action: false,
+      Response: false,
+      Submisson: false,
+    };
+
+    const tabKeys = (Object.keys(tabs)) as StepTypes[];
+    tabKeys.forEach((tabKey) => {
+      const currentFields = stepTypesToFieldsMap[tabKey];
+      const currentFieldsMap = listToMap(currentFields, d => d, d => true);
+
+      const erroredFields = Object.keys(error?.fields ?? {});
+      const hasError = erroredFields.some(d => currentFieldsMap[d]);
+      tabs[tabKey] = hasError;
+    });
+
+    return tabs;
+  }, [error]);
 
   const {
     pending: drefSubmitPending,
@@ -150,10 +185,27 @@ function DrefApplication(props: Props) {
       }
     },
     onFailure: ({
-      value: { messageForNotification, errors },
+      value: {
+        messageForNotification,
+        errors,
+      },
       debugMessage,
     }) => {
-      console.error(errors);
+      if (errors) {
+        const errorKeys = Object.keys(errors);
+        const transformedError: Record<string, string> = {};
+        errorKeys.forEach((ek) => {
+          if (Array.isArray(errors[ek])) {
+            transformedError[ek] = (errors[ek] as string[]).join(', ');
+          } else {
+            transformedError[ek] = errors[ek] as string;
+          }
+        });
+
+        onErrorSet({
+          fields: transformedError,
+        });
+      }
       alert.show(
         <p>
           Failed to create / update Dref Application
@@ -187,16 +239,6 @@ function DrefApplication(props: Props) {
       error,
     } = validate();
 
-    const stepTypesToFieldsMap: {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      [key in StepTypes]: (keyof DrefFields)[];
-    } = {
-      DrefOverview: overviewFields,
-      EventDetails: eventDetailsFields,
-      Action: actionsFields,
-      Response: responseFields,
-      Submisson: submissionFields,
-    };
 
     onErrorSet(error);
 
@@ -210,10 +252,7 @@ function DrefApplication(props: Props) {
       const currentFieldsMap = listToMap(currentFields, d => d, d => true);
 
       const erroredFields = Object.keys(error.fields ?? {});
-      console.info(erroredFields, currentFieldsMap);
       const hasError = erroredFields.some(d => currentFieldsMap[d]);
-
-      console.info(hasError);
 
       if (hasError) {
         return prevStep;
@@ -231,7 +270,7 @@ function DrefApplication(props: Props) {
       error,
       value: finalValues,
     } = validate();
-    console.log(finalValues, error);
+
     onErrorSet(error);
 
     if (errored) {
@@ -307,30 +346,35 @@ function DrefApplication(props: Props) {
             <Tab
               name="DrefOverview"
               step={1}
+              errored={erroredTabs['DrefOverview']}
             >
               Dref Overview
             </Tab>
             <Tab
               name="EventDetails"
               step={2}
+              errored={erroredTabs['EventDetails']}
             >
               Event Details
             </Tab>
             <Tab
               name="Action"
               step={3}
+              errored={erroredTabs['Action']}
             >
               Actions/Needs
             </Tab>
             <Tab
               name="Response"
               step={4}
+              errored={erroredTabs['Response']}
             >
               Response
             </Tab>
             <Tab
               name="Submisson"
               step={5}
+              errored={erroredTabs['Submisson']}
             >
               Submission/Contacts
             </Tab>
