@@ -87,4 +87,9 @@ export function compareLabel<O extends { label: string }>(a: O, b: O) {
   return a.label.localeCompare(b.label);
 }
 
+export function isObject(foo: unknown): foo is object {
+  return typeof foo === 'object' && foo !== null && !Array.isArray(foo);
+}
+
 export const genericMemo: (<T>(c: T) => T) = memo;
+
