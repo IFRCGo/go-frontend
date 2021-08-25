@@ -83,6 +83,21 @@
       color: $color-text-disabled;
     }
   }
+
+  &.errored {
+    position: relative;
+
+    .error-icon {
+      position: absolute;
+      color: $danger-color;
+      width: .75em;
+      height: .75em;
+      background-color: $danger-color;
+      border-radius: 50%;
+      left: $spacing*2;
+      top: $spacing/2;
+    }
+  }
 }
 
 .primary-tab-wrapper {
@@ -105,7 +120,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   flex-basis: 0;
   flex-grow: 1;
 
