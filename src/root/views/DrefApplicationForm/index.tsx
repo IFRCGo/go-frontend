@@ -5,7 +5,11 @@ import {
   isDefined,
   listToMap,
 } from '@togglecorp/fujs';
-import { PartialForm, useForm } from '@togglecorp/toggle-form';
+import {
+  PartialForm,
+  useForm,
+  accumulateErrors,
+} from '@togglecorp/toggle-form';
 import type { match as Match } from 'react-router-dom';
 
 import BlockLoading from '#components/block-loading';
@@ -32,6 +36,7 @@ import Response from './Response';
 import Submission from './Submission';
 import {
   DrefFields,
+  DrefApiFields,
   overviewFields,
   eventDetailsFields,
   actionsFields,
@@ -63,10 +68,6 @@ function scrollToTop() {
 
 interface DrefResponseFields {
   id: number;
-}
-
-interface DrefApiFields extends DrefFields {
-  user: number;
 }
 
 export function getDefinedValues<T extends Record<string, any>>(o: T): Partial<T> {
@@ -138,12 +139,13 @@ function DrefApplication(props: Props) {
     userDetails,
   } = useDrefFormOptions(value);
 
-  const [currentStep, setCurrentStep] = React.useState<StepTypes>('Submisson');
+  const [currentStep, setCurrentStep] = React.useState<StepTypes>('DrefOverview');
   const submitButtonLabel = currentStep === 'Submisson' ? strings.fieldReportSubmit : strings.fieldReportContinue;
   const shouldDisabledBackButton = currentStep === 'DrefOverview';
 
   const erroredTabs = React.useMemo(() => {
     const tabs: {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       [key in StepTypes]: boolean;
     } = {
       DrefOverview: false,
@@ -232,40 +234,66 @@ function DrefApplication(props: Props) {
     skip: !drefId,
     url: `api/v2/dref/${drefId}/`,
     onSuccess: (response) => {
-      onValueSet(response);
+      onValueSet({
+        ...response,
+        country_district: response.country_district?.map((cd) => ({
+          ...cd,
+          clientId: String(cd.id),
+        })),
+        planned_interventions: response.planned_interventions?.map((pi) => ({
+          ...pi,
+          clientId: String(pi.id),
+        })),
+        national_society_actions: response.national_society_actions?.map((nsa) => ({
+          ...nsa,
+          clientId: String(nsa.id),
+        })),
+        needs_identified: response.needs_identified?.map((ni) => ({
+          ...ni,
+          clientId: String(ni.id),
+        })),
+      });
     },
   });
 
   const handleTabChange = React.useCallback((newStep: StepTypes) => {
     scrollToTop();
-    const {
-      errored,
-      error,
-    } = validate();
 
+    const validationError = accumulateErrors(value, schema);
 
-    onErrorSet(error);
-
-    if (!errored || !error) {
+    if (!validationError) {
       setCurrentStep(newStep);
       return;
     }
 
-    setCurrentStep((prevStep) => {
-      const currentFields = stepTypesToFieldsMap[prevStep];
-      const currentFieldsMap = listToMap(currentFields, d => d, d => true);
+    const currentFields = stepTypesToFieldsMap[currentStep];
 
-      const erroredFields = Object.keys(error.fields ?? {});
-      const hasError = erroredFields.some(d => currentFieldsMap[d]);
+    const currentTabFieldErrors = listToMap(
+      currentFields.filter(field => !!validationError.fields?.[field]),
+      field => field,
+      field => validationError.fields?.[field]
+    );
 
-      if (hasError) {
-        return prevStep;
+    const newError = {
+      ...error,
+      fields: {
+        ...error?.fields,
+        ...validationError.fields,
+        ...currentTabFieldErrors,
       }
+    };
 
-      return newStep;
-    });
+    onErrorSet(newError);
 
-  }, [setCurrentStep, onErrorSet, validate]);
+    const hasError = Object.keys(currentTabFieldErrors).some(d => !!d);
+
+
+    if (hasError) {
+      return;
+    }
+
+    setCurrentStep(newStep);
+  }, [value, setCurrentStep, onErrorSet, error, currentStep]);
 
   const handleSubmitButtonClick = React.useCallback(() => {
     scrollToTop();
@@ -306,15 +334,7 @@ function DrefApplication(props: Props) {
   }, [currentStep, handleTabChange, validate, onErrorSet, submitRequest, userDetails]);
 
   const handleBackButtonClick = React.useCallback(() => {
-    scrollToTop();
-    const {
-      errored,
-      error,
-    } = validate();
-
-    onErrorSet(error);
-
-    if (!errored && currentStep !== 'DrefOverview') {
+    if (currentStep !== 'DrefOverview') {
       const prevStepMap: {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         [key in Exclude<StepTypes, 'DrefOverview'>]: Exclude<StepTypes, 'Submisson'>;
@@ -327,7 +347,7 @@ function DrefApplication(props: Props) {
 
       handleTabChange(prevStepMap[currentStep]);
     }
-  }, [validate, handleTabChange, currentStep, onErrorSet]);
+  }, [handleTabChange, currentStep]);
 
   const pending = fetchingCountries
     || fetchingDisasterTypes
