@@ -80,6 +80,7 @@ function ThreeWPieChart(props: PieChartProps) {
             position="outside"
             // @ts-ignore
             formatter={(v: number) => `${((100 * (v / total))).toFixed(1)}%`}
+            // @ts-ignore
             isAnimationActive={false}
           />
         </Pie>
