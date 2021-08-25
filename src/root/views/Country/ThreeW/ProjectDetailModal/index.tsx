@@ -14,7 +14,7 @@ interface Props {
   className?: string;
   projectId: number;
   headerActions?: React.ReactNode;
-  onCloseButtonClick?: ButtonProps<void>['onClick'];
+  onCloseButtonClick?: ButtonProps<undefined>['onClick'];
 }
 
 function ProjectDetail(props: Props) {
@@ -40,6 +40,7 @@ function ProjectDetail(props: Props) {
           <>
             { headerActions }
             <Button
+              name={undefined}
               variant="secondary"
               onClick={onCloseButtonClick}
             >

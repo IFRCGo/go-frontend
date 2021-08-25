@@ -46,22 +46,22 @@ function DrefApplicationList(props: Props) {
   });
 
   const columns = React.useMemo(() => ([
-    createDateColumn<DrefApplication, string>(
+    createDateColumn<DrefApplication, string | number>(
       'created_at',
       strings.drefTableCreatedOn,
       (item) => item.created_at,
     ),
-    createStringColumn<DrefApplication, string>(
+    createStringColumn<DrefApplication, string | number>(
       'appeal_code',
       strings.drefTableAppealNumber,
       (item) => item.appeal_code,
     ),
-    createStringColumn<DrefApplication, string>(
+    createStringColumn<DrefApplication, string | number>(
       'title',
       strings.drefTableName,
       (item) => item.title,
     ),
-    createStringColumn<DrefApplication, string>(
+    createStringColumn<DrefApplication, string | number>(
       'submission_to_geneva',
       strings.drefTableSubmittedToGeneva,
       (item) => item.submission_to_geneva,
