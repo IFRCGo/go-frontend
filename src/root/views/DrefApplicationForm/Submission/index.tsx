@@ -11,10 +11,7 @@ import TextInput from '#components/TextInput';
 import LanguageContext from '#root/languageContext';
 import DateInput from '#components/DateInput';
 
-import {
-  DrefFields,
-  BooleanValueOption,
-} from '../common';
+import { DrefFields } from '../common';
 
 import styles from './styles.module.scss';
 
@@ -44,10 +41,10 @@ function Submission(props: Props) {
           title={strings.nsRequestDate}
         >
           <DateInput
-            name="start_date"
-            value={value.start_date}
+            name="ns_request_date"
+            value={value.ns_request_date}
             onChange={onValueChange}
-            error={error?.fields?.start_date}
+            error={error?.fields?.ns_request_date}
           />
         </InputSection>
         <InputSection
@@ -62,25 +59,25 @@ function Submission(props: Props) {
           />
         </InputSection>
         <InputSection
-          title={strings.dateSubmissionToGeneva}
-          description={strings.dateSubmissionToGenevaDescription}
-        >
-          <DateInput
-            name="start_date"
-            value={value.start_date}
-            onChange={onValueChange}
-            error={error?.fields?.start_date}
-          />
-        </InputSection>
-        <InputSection
           title={strings.endDateSubmission}
           description={strings.endDateSubmissionDescription}
         >
           <DateInput
-            name="start_date"
-            value={value.start_date}
+            name="end_date"
+            value={value.end_date}
             onChange={onValueChange}
-            error={error?.fields?.start_date}
+            error={error?.fields?.end_date}
+          />
+        </InputSection>
+        <InputSection
+          title={strings.dateSubmissionToGeneva}
+          description={strings.dateSubmissionToGenevaDescription}
+        >
+          <DateInput
+            name="submission_to_geneva"
+            value={value.submission_to_geneva}
+            onChange={onValueChange}
+            error={error?.fields?.submission_to_geneva}
           />
         </InputSection>
         <InputSection
@@ -88,20 +85,20 @@ function Submission(props: Props) {
           description={strings.dateOfApprovalDescription}
         >
           <DateInput
-            name="start_date"
-            value={value.start_date}
+            name="date_of_approval"
+            value={value.date_of_approval}
             onChange={onValueChange}
-            error={error?.fields?.start_date}
+            error={error?.fields?.date_of_approval}
           />
         </InputSection>
         <InputSection
           title={strings.operationTimeframeSubmission}
         >
           <TextInput
-            name="operation_objective"
-            value={value.operation_objective}
+            name="operation_timeframe"
+            value={value.operation_timeframe}
             onChange={onValueChange}
-            error={error?.fields?.operation_objective}
+            error={error?.fields?.operation_timeframe}
           />
         </InputSection>
         <InputSection

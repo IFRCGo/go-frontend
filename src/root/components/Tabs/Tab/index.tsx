@@ -1,6 +1,10 @@
 import React from 'react';
 import { _cs } from '@togglecorp/fujs';
-import { ImCheckmark } from 'react-icons/im';
+import {
+  ImCheckmark,
+  ImCross,
+  ImNotification,
+} from 'react-icons/im';
 
 import RawButton, { Props as RawButtonProps } from '#components/RawButton';
 import { TabKey, TabContext, TabVariant } from '#components/Tabs/TabContext';
@@ -22,6 +26,7 @@ export interface Props<T extends TabKey> extends Omit<RawButtonProps<T>, 'onClic
   activeClassName?: string;
   borderWrapperClassName?: string;
   step?: number;
+  errored?: boolean;
 }
 
 export default function Tab<T extends TabKey>(props: Props<T>) {
@@ -44,6 +49,7 @@ export default function Tab<T extends TabKey>(props: Props<T>) {
     disabled: disabledFromProps,
     borderWrapperClassName,
     children,
+    errored,
     ...otherProps
   } = props;
 
@@ -76,6 +82,7 @@ export default function Tab<T extends TabKey>(props: Props<T>) {
         isActive && activeClassName,
         disabled && styles.disabled,
         variant && tabVariantToStyleMap[variant],
+        errored && styles.errored,
       )}
       onClick={context.useHash ? setHashToBrowser : context.setActiveTab}
       name={name}
@@ -87,6 +94,7 @@ export default function Tab<T extends TabKey>(props: Props<T>) {
       // eslint-disable-next-line react/jsx-props-no-spreading
       {...otherProps}
     >
+      {errored && <span className={styles.errorIcon } />}
       {children}
       {variant === 'primary' && isActive && (
         <div className={styles.activeBorder} />
@@ -110,7 +118,8 @@ export default function Tab<T extends TabKey>(props: Props<T>) {
       >
         <div className={styles.stepCircle}>
           <div className={styles.innerCircle}>
-            { completed && <ImCheckmark className={styles.icon} /> }
+            { errored && <ImCross className={styles.icon} /> }
+            { (!errored && completed) && <ImCheckmark className={styles.icon} /> }
           </div>
         </div>
         { button }

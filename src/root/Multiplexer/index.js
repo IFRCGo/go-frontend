@@ -244,7 +244,7 @@ function Multiplexer(props) {
             <Route exact path='/per-assessment/:id/edit' render={props => <PerAssessment {...props} isEdit={true} />} />
             <Route path='/preparedness' component={Preparedness} />
             <Route exact path='/three-w/new/' component={NewThreeW} />
-            <PrivateRoute exact path='/dref-application/' component={DrefApplicationForm} />
+            <PrivateRoute exact path='/dref-application/new/' component={DrefApplicationForm} />
             <PrivateRoute exact path='/dref-application/:drefId/edit/' component={DrefApplicationForm} />
             <Route exact path='/three-w/all/' component={AllThreeW} />
             <Route exact path='/three-w/:projectId/' component={ThreeW} />
