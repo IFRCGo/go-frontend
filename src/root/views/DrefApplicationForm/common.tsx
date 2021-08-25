@@ -179,6 +179,15 @@ export interface DrefFields {
    */
 }
 
+export interface DrefApiFields extends Omit<DrefFields, 'country_district' | 'planned_interventions' | 'national_society_actions' | 'needs_identified'> {
+  user: number;
+  country_district: (Omit<CountryDistrict, 'clientId'> & { id: number })[];
+  planned_interventions: (Omit<Intervention, 'clientId'> & { id: number })[];
+  national_society_actions: (Omit<NsAction, 'clientId'> & { id: number })[];
+  needs_identified: (Omit<Need, 'clientId'> & { id: number })[];
+}
+
+
 export const overviewFields: (keyof DrefFields)[] = [
   'title',
   'national_society',
