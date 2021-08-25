@@ -629,6 +629,7 @@ function ThreeWForm(props: Props) {
               message={strings.projectFormNonFieldError}
             />
             <Button
+              name={undefined}
               type="submit"
               disabled={shouldDisableSubmitButton}
               variant="secondary"
