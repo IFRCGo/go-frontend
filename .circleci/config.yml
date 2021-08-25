@@ -3,7 +3,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: node:13
+      - image: node:15
 
     working_directory: ~/repo
 
