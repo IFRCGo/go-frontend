@@ -2981,7 +2981,7 @@ export default {
   analysisAndPlanningProcess: 'How has the community been involved in the needs analysis and planning process?',
   assistedPopulation: 'The Assisted Population',
   women: "Women",
-  men: 'men',
+  men: 'Men',
   girls: 'Girls (under 18)',
   boys: 'Boys (under 18)',
   estimateResponse: 'Estimate',
