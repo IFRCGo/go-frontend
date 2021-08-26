@@ -88,6 +88,11 @@ export function validEmailCondition(email: any) {
   return isDefined(email) && !emailRegex.test(email)
     ? 'Invalid Email' : undefined;
 }
+export function lessThanSixItemsCondition(value: any) {
+  return isDefined(value) && Array.isArray(value) && value.length > 6
+    ? 'Only six images are allowed'
+    : undefined;
+}
 
 export const schema: FormSchema = {
   fields: (value): FormSchemaFields => ({
@@ -110,6 +115,7 @@ export const schema: FormSchema = {
     num_assisted: [positiveIntegerCondition],
     amount_requested: [positiveIntegerCondition],
     emergency_appeal_planned: [],
+    event_map: [requiredCondition],
 
     event_date: [],
     ns_respond_date: [],
@@ -121,6 +127,7 @@ export const schema: FormSchema = {
 
     event_description: [max800CharCondition],
     event_scope: [max800CharCondition],
+    images: [lessThanSixItemsCondition],
 
     national_society_actions: [],
     government_requested_assistance: [],
