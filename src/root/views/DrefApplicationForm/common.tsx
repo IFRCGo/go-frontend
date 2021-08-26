@@ -115,7 +115,7 @@ export interface DrefFields {
   entity_affected: string,
   event_date: string;
   event_description: string;
-  event_map : null;
+  event_map : string;
   event_scope: string;
   event_text: string;
   girls: number;
