@@ -1,8 +1,9 @@
 import {
+  isDefined,
   mapToMap,
   isFalsyString,
 } from '@togglecorp/fujs';
-import {resolve as resolveUrl} from 'url';
+import { resolve as resolveUrl } from 'url';
 import { get as getFromLocalStorage } from 'local-storage';
 import { api } from '#config';
 
@@ -57,6 +58,7 @@ function alterResponse(response: ErrorFromServer | undefined): Error['value']['f
 }
 
 export interface OptionBase {
+  formData?: boolean;
   isCsvRequest?: boolean;
   enforceEnglish?: boolean;
 }
@@ -70,8 +72,30 @@ type GoContextInterface = ContextInterface<
 >;
 
 export const processGoUrls: GoContextInterface['transformUrl'] = (url) => (
-  isFalsyString(url) ? '' : /http/.test(url) ? url: resolveUrl(api, url)
+  isFalsyString(url) ? '' : /http/.test(url) ? url : resolveUrl(api, url)
 );
+type Literal = string | number | boolean | File;
+
+type FormDataCompatibleObj = Record<string, Literal | Literal[] | null | undefined>;
+
+function getFormData(jsonData: FormDataCompatibleObj) {
+  const formData = new FormData();
+  Object.keys(jsonData || {}).forEach(
+    (key) => {
+      const value = jsonData?.[key];
+      if (value && Array.isArray(value)) {
+        value.forEach((v) => {
+          formData.append(key, v instanceof Blob ? v : String(v));
+        });
+      } else if (isDefined(value)) {
+        formData.append(key, value instanceof Blob ? value : String(value));
+      } else {
+        formData.append(key, '');
+      }
+    },
+  );
+  return formData;
+}
 
 export const processGoOptions: GoContextInterface['transformOptions'] = (
   url,
@@ -86,6 +110,7 @@ export const processGoOptions: GoContextInterface['transformOptions'] = (
   } = requestOptions;
 
   const {
+    formData,
     isCsvRequest,
     enforceEnglish,
   } = extraOptions;
@@ -96,20 +121,36 @@ export const processGoOptions: GoContextInterface['transformOptions'] = (
     ? user?.token
     : undefined;
 
+  if (formData) {
+    const requestBody = getFormData(body as FormDataCompatibleObj);
     return {
       method,
       headers: {
-        Accept: isCsvRequest ? CONTENT_TYPE_CSV : CONTENT_TYPE_JSON,
-        'Content-Type': isCsvRequest
-          ? 'text/csv; charset=utf-8'
-          : 'application/json; charset=utf-8',
+        Accept: 'application/json',
         Authorization: token ? `Token ${token}` : '',
-        'Accept-Language': (enforceEnglish || method !== 'GET') ? 'en': currentLanguage,
+        'Accept-Language': (enforceEnglish || method !== 'GET') ? 'en' : currentLanguage,
         ...headers,
       },
-      body: body ? JSON.stringify(body) : undefined,
+      body: requestBody,
       ...otherOptions,
     };
+  }
+
+  const requestBody = body ? JSON.stringify(body) : undefined;
+  return {
+    method,
+    headers: {
+      Accept: isCsvRequest ? CONTENT_TYPE_CSV : CONTENT_TYPE_JSON,
+      'Content-Type': isCsvRequest
+        ? 'text/csv; charset=utf-8'
+        : 'application/json; charset=utf-8',
+      Authorization: token ? `Token ${token}` : '',
+      'Accept-Language': (enforceEnglish || method !== 'GET') ? 'en' : currentLanguage,
+      ...headers,
+    },
+    body: requestBody,
+    ...otherOptions,
+  };
 };
 
 export const processGoResponse: GoContextInterface['transformResponse'] = async (

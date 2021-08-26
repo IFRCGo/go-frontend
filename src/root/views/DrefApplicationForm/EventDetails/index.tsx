@@ -24,6 +24,7 @@ import {
   ListResponse,
 } from '#utils/restRequest';
 import { FieldReportAPIResponseFields } from '#views/FieldReportForm/common';
+import FileInput from '#components/FileInput';
 
 import {
   optionLabelSelector,
@@ -249,6 +250,21 @@ function EventDetails(props: Props) {
             error={error?.fields?.event_description}
             placeholder={strings.whatWhereWhenPlaceholder}
           />
+        </InputSection>
+        <InputSection
+          title={strings.uploadPhotos}
+        >
+          <FileInput
+            name="images"
+            value={value.images}
+            onChange={onValueChange}
+            accept="image/*"
+            multiple
+            showStatus
+            error={error?.fields?.images}
+          >
+            Upload
+          </FileInput>
         </InputSection>
         <InputSection
           title={strings.scopeAndScaleEvent}
