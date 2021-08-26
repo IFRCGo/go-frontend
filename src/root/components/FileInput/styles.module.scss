@@ -1,0 +1,14 @@
+@import '~styles/settings/variables';
+
+.file-input {
+    .input {
+        display: none;
+    }
+
+    .input-wrapper {
+        display: flex;
+        position: relative;
+        align-items: center;
+        flex-grow: 1;
+    }
+}
