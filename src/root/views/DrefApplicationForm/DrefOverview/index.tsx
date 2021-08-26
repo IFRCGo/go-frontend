@@ -19,6 +19,7 @@ import LanguageContext from '#root/languageContext';
 import RadioInput from '#components/RadioInput';
 import DateInput from '#components/DateInput';
 import NumberInput from '#components/NumberInput';
+import FileInput from '#components/FileInput';
 
 import {
   optionLabelSelector,
@@ -101,12 +102,12 @@ function DrefOverview(props: Props) {
         className={styles.essentialInformation}
       >
         <InputSection title={strings.drefFormTitle}>
-            <TextInput
-              name="title"
-              value={value.title}
-              onChange={onValueChange}
-              error={error?.fields?.title}
-            />
+          <TextInput
+            name="title"
+            value={value.title}
+            onChange={onValueChange}
+            error={error?.fields?.title}
+          />
         </InputSection>
         <InputSection
           title={strings.nationalSociety}
@@ -210,6 +211,20 @@ function DrefOverview(props: Props) {
             onChange={onValueChange}
             error={error?.fields?.emergency_appeal_planned}
           />
+        </InputSection>
+        <InputSection
+          title={strings.uploadMap}
+        >
+          <FileInput
+            name="event_map"
+            value={value.event_map}
+            onChange={onValueChange}
+            accept="image/*"
+            error={error?.fields?.event_map}
+            showStatus
+          >
+            Upload
+          </FileInput>
         </InputSection>
       </Container>
       <Container
