@@ -2960,7 +2960,9 @@ export default {
   timeFrames: 'Timeframes',
   eventDate: 'Date of event',
   goFieldReportDate: 'Go Field Report Date',
+  triggerDate: 'Disaster date/ trigger date',
   nsResponseStarted: 'NS response commenced',
+  uploadMap: 'Upload map',
 
   //EventDetails
   eventDetailsTitle: 'Copy data from an existing field report',
@@ -2981,6 +2983,7 @@ export default {
   scopeAndScaleDescription: 'Main drivers and effects of the crisis: damage caused, damage to infrastructure, system disruption, numbers of affected people. Include if the government has declared a state of emergency and if it has requested RC support.\n\r1. Impact on accessibility, availability, quality, use and awareness of goods and services.\n\r2. Impact on physical and mental well being\n\r3. Risks & vulnerabilities Space to upload photos about the situation, are mandatory, please explain if the event has a bigger scale that has triggered the response.',
   nsFundingDetail: 'If yes, please specify',
   nsFundingDetailDescription: 'Enter MDR number (max 10 characters)',
+  uploadPhotos: 'Upload photos (e.g. impact of the events, NS in the field, assessments)',
 
   //Response
   targetingStrategy:'Targeting Strategy',

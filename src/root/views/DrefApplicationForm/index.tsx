@@ -175,6 +175,7 @@ function DrefApplication(props: Props) {
   } = useLazyRequest<DrefResponseFields, Partial<DrefApiFields>>({
     url: drefId ? `api/v2/dref/${drefId}/` : 'api/v2/dref/',
     method: drefId ? 'PUT' : 'POST',
+    formData: true,
     body: ctx => ctx,
     onSuccess: (response) => {
       alert.show(
@@ -232,9 +233,9 @@ function DrefApplication(props: Props) {
   const {
     pending: drefApplicationPending,
   } = useRequest<DrefApiFields>({
-    skip: !drefId,
-    url: `api/v2/dref/${drefId}/`,
-    onSuccess: (response) => {
+      skip: !drefId,
+      url: `api/v2/dref/${drefId}/`,
+      onSuccess: (response) => {
       onValueSet({
         ...response,
         country_district: response.country_district?.map((cd) => ({
@@ -312,12 +313,19 @@ function DrefApplication(props: Props) {
 
     if (currentStep === 'submission') {
       if (finalValues && userDetails && userDetails.id) {
-        const body = {
+        const { event_map, images,  ...others } = finalValues;
+        let body = {
           user: userDetails.id,
-          ...getDefinedValues(finalValues),
-        } as DrefApiFields;
+          ...getDefinedValues(others),
+        };
+        if (event_map instanceof File)  {
+          body = { ...body, event_map } as DrefApiFields;
+        }
+        if (Array.isArray(images) && images.every(image => image instanceof File)) {
+          body = { ...body, images } as DrefApiFields;
+        }
 
-        submitRequest(body);
+        submitRequest(body as DrefApiFields);
       }
     } else {
       const nextStepMap: {
