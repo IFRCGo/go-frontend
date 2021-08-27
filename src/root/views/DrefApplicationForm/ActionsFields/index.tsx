@@ -34,6 +34,7 @@ import NsActionInput from './NSActionInput';
 
 import styles from './styles.module.scss';
 import { string } from 'prop-types';
+import DateInput from '#components/DateInput';
 
 type Value = PartialForm<DrefFields>;
 interface Props {
@@ -166,42 +167,17 @@ function ActionsFields(props: Props) {
         ))}
       </Container>
       <Container
-        heading={strings.nationalOtherActors}
-        className={styles.otherActions}
+        heading={strings.movementPartnets}
       >
         <InputSection
-          title={strings.internationalAssistance}
-        >
-          <RadioInput
-            name="government_requested_assistance"
-            options={yesNoOptions}
-            radioKeySelector={booleanOptionKeySelector}
-            radioLabelSelector={optionLabelSelector}
-            value={value.government_requested_assistance}
-            onChange={onValueChange}
-            error={error?.fields?.government_requested_assistance}
-          />
-        </InputSection>
-        <InputSection
-          title={strings.nationalAuthorities}
+          title={strings.ifrc}
         >
           <TextArea
             label={strings.cmpActionDescriptionLabel}
-            name="national_authorities"
+            name="ifrc"
             onChange={onValueChange}
-            value={value.national_authorities}
-            error={error?.fields?.national_authorities}
-            placeholder="If selected, max 300 characters"
-          />
-        </InputSection>
-        <InputSection
-          title={strings.rCRCPartnerNss}
-        >
-          <TextArea
-            name="rcrc_partners"
-            onChange={onValueChange}
-            value={value.rcrc_partners}
-            error={error?.fields?.rcrc_partners}
+            value={value.ifrc}
+            error={error?.fields?.ifrc}
             placeholder="If selected, max 300 characters"
           />
         </InputSection>
@@ -214,6 +190,55 @@ function ActionsFields(props: Props) {
             onChange={onValueChange}
             value={value.icrc}
             error={error?.fields?.icrc}
+            placeholder="If selected, max 300 characters"
+          />
+        </InputSection>
+        <InputSection
+          title={strings.partnerNationalSociety}
+        >
+          <TextArea
+            name="partner_national_society"
+            onChange={onValueChange}
+            value={value.partner_national_society}
+            error={error?.fields?.partner_national_society}
+            placeholder="If selected, max 300 characters"
+          />
+        </InputSection>
+      </Container>
+      <Container
+        heading={strings.nationalOtherActors}
+        className={styles.otherActions}
+      >
+        <InputSection
+          title={strings.internationalAssistance}
+        >
+          <div>
+            <RadioInput
+              name="government_requested_assistance"
+              options={yesNoOptions}
+              radioKeySelector={booleanOptionKeySelector}
+              radioLabelSelector={optionLabelSelector}
+              value={value.government_requested_assistance}
+              onChange={onValueChange}
+              error={error?.fields?.government_requested_assistance}
+            />
+            <DateInput
+              name="government_requested_assistance_date"
+              value={value.government_requested_assistance_date}
+              onChange={onValueChange}
+              error={error?.fields?.government_requested_assistance_date}
+            />
+          </div>
+        </InputSection>
+        <InputSection
+          title={strings.nationalAuthorities}
+        >
+          <TextArea
+            label={strings.cmpActionDescriptionLabel}
+            name="national_authorities"
+            onChange={onValueChange}
+            value={value.national_authorities}
+            error={error?.fields?.national_authorities}
             placeholder="If selected, max 300 characters"
           />
         </InputSection>
