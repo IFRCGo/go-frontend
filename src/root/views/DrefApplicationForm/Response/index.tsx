@@ -74,7 +74,7 @@ function Response(props: Props) {
     setIntervention(undefined);
   }, [onValueChange, setIntervention]);
 
-  const interventionsIdentifiedMap = React.useMemo(() =>(
+  const interventionsIdentifiedMap = React.useMemo(() => (
     listToMap(
       value.planned_interventions,
       d => d.title ?? '',
@@ -102,18 +102,6 @@ function Response(props: Props) {
           />
         </InputSection>
         <InputSection
-          title={strings.selectionCriteria}
-        >
-          <TextArea
-            label={strings.cmpActionDescriptionLabel}
-            name="selection_criteria"
-            onChange={onValueChange}
-            value={value.selection_criteria}
-            error={error?.fields?.selection_criteria}
-            placeholder="Max 300 characters"
-          />
-        </InputSection>
-        <InputSection
           title={strings.protectionGenderAndInclusion}
         >
           <TextArea
@@ -122,20 +110,6 @@ function Response(props: Props) {
             onChange={onValueChange}
             value={value.entity_affected}
             error={error?.fields?.entity_affected}
-            placeholder="Max 300 characters"
-          />
-        </InputSection>
-        <InputSection
-          title={strings.analysisAndPlanningProcess}
-          oneColumn
-          multiRow
-        >
-          <TextArea
-            label={strings.cmpActionDescriptionLabel}
-            name="community_involved"
-            onChange={onValueChange}
-            value={value.community_involved}
-            error={error?.fields?.community_involved}
             placeholder="Max 300 characters"
           />
         </InputSection>
@@ -190,10 +164,10 @@ function Response(props: Props) {
           />
           <NumberInput
             label={strings.estimatedUran}
-            name="people_per"
-            value={value.people_per}
+            name="people_per_urban_local"
+            value={value.people_per_urban_local}
             onChange={onValueChange}
-            error={error?.fields?.people_per}
+            error={error?.fields?.people_per_urban_local}
           />
           <NumberInput
             label={strings.estimatedDisplacedPeople}
@@ -201,6 +175,13 @@ function Response(props: Props) {
             value={value.displaced_people}
             onChange={onValueChange}
             error={error?.fields?.displaced_people}
+          />
+          <NumberInput
+            label={strings.peopleTargetedWithEarlyActions}
+            name="people_targeted_with_early_actions"
+            value={value.people_targeted_with_early_actions}
+            onChange={onValueChange}
+            error={error?.fields?.people_targeted_with_early_actions}
           />
         </InputSection>
       </Container>
@@ -263,26 +244,79 @@ function Response(props: Props) {
             interventionOptions={interventionOptions}
           />
         ))}
+      </Container>
+      <Container
+        heading={strings.supportServices}>
         <InputSection
-          title={strings.secretariatServices}
+          title={strings.humanResource}
         >
           <TextArea
-            name="secretariat_service"
+            label={strings.cmpActionDescriptionLabel}
+            name="human_resource"
             onChange={onValueChange}
-            value={value.secretariat_service}
-            error={error?.fields?.secretariat_service}
-            placeholder="Example: HR deployment, logistics, international procurement, Quality programing"
+            value={value.human_resource}
+            error={error?.fields?.human_resource}
+            placeholder="Max 300 characters"
           />
         </InputSection>
         <InputSection
-          title={strings.nationalSocietyStrengthening}
+          title={strings.surgePersonnelDeployed}
         >
           <TextArea
-            name="national_society_strengthening"
+            label={strings.cmpActionDescriptionLabel}
+            name="surge_personnel_deployed"
             onChange={onValueChange}
-            value={value.national_society_strengthening}
-            error={error?.fields?.national_society_strengthening}
-            placeholder="Example: Staff and valunteers involved."
+            value={value.surge_personnel_deployed}
+            error={error?.fields?.surge_personnel_deployed}
+            placeholder="Max 300 characters"
+          />
+        </InputSection>
+        <InputSection
+          title={strings.logisticCapacityOfNs}
+        >
+          <TextArea
+            label={strings.cmpActionDescriptionLabel}
+            name="logistic_capacity_of_ns"
+            onChange={onValueChange}
+            value={value.logistic_capacity_of_ns}
+            error={error?.fields?.logistic_capacity_of_ns}
+            placeholder="Max 300 characters"
+          />
+        </InputSection>
+        <InputSection
+          title={strings.safetyConcerns}
+        >
+          <TextArea
+            label={strings.cmpActionDescriptionLabel}
+            name="safety_concerns"
+            onChange={onValueChange}
+            value={value.logistic_capacity_of_ns}
+            error={error?.fields?.safety_concerns}
+            placeholder="Max 300 characters"
+          />
+        </InputSection>
+        <InputSection
+          title={strings.pMer}
+        >
+          <TextArea
+            label={strings.cmpActionDescriptionLabel}
+            name="pmer"
+            onChange={onValueChange}
+            value={value.pmer}
+            error={error?.fields?.pmer}
+            placeholder="Max 300 characters"
+          />
+        </InputSection>
+        <InputSection
+          title={strings.communication}
+        >
+          <TextArea
+            label={strings.cmpActionDescriptionLabel}
+            name="communication"
+            onChange={onValueChange}
+            value={value.communication}
+            error={error?.fields?.communication}
+            placeholder="Max 300 characters"
           />
         </InputSection>
       </Container>
