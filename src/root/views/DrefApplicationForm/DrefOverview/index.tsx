@@ -152,7 +152,7 @@ function DrefOverview(props: Props) {
         >
           {value.country_district?.map((c, i) => (
             <CountryDistrictInput
-              key={c.clientId}
+              key={`${c.clientId}_${i}`}
               index={i}
               value={c}
               onChange={onCountryDistrictChange}
@@ -183,16 +183,6 @@ function DrefOverview(props: Props) {
           />
         </InputSection>
         <InputSection
-          title={strings.numPeopleAssisted}
-        >
-          <NumberInput
-            name="num_assisted"
-            value={value.num_assisted}
-            onChange={onValueChange}
-            error={error?.fields?.num_assisted}
-          />
-        </InputSection>
-        <InputSection
           title={strings.requestAmount}
         >
           <NumberInput
@@ -210,7 +200,7 @@ function DrefOverview(props: Props) {
             options={yesNoOptions}
             radioKeySelector={booleanOptionKeySelector}
             radioLabelSelector={optionLabelSelector}
-            value={value.emergency_appeal_planned}
+            value={value.type_of_onset == 3 ? value.emergency_appeal_planned = false : value.emergency_appeal_planned}
             onChange={onValueChange}
             error={error?.fields?.emergency_appeal_planned}
           />
@@ -221,13 +211,23 @@ function DrefOverview(props: Props) {
         className={styles.timeframes}
       >
         <InputSection
-          title={strings.triggerDate}
+          title={strings.eventDate}
         >
           <DateInput
-            name="disaster_date"
-            value={value.disaster_date}
+            name="event_date"
+            value={value.event_date}
             onChange={onValueChange}
-            error={error?.fields?.disaster_date}
+            error={error?.fields?.event_date}
+          />
+        </InputSection>
+        <InputSection
+          title={strings.goFieldReportDate}
+        >
+          <DateInput
+            name="go_field_report_date"
+            value={value.go_field_report_date}
+            onChange={onValueChange}
+            error={error?.fields?.go_field_report_date}
           />
         </InputSection>
         <InputSection
@@ -236,8 +236,10 @@ function DrefOverview(props: Props) {
           <DateInput
             name="ns_respond_date"
             value={value.ns_respond_date}
+            min={value.event_date}
             onChange={onValueChange}
             error={error?.fields?.ns_respond_date}
+            disabled={value.event_date == undefined}
           />
         </InputSection>
       </Container>
