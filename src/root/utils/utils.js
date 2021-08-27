@@ -6,7 +6,7 @@ import isUndefined from 'lodash.isundefined';
 import _find from 'lodash.find';
 import _filter from 'lodash.filter';
 import * as EmailValidator from 'email-validator';
-import { DateTime, Duration } from 'luxon';
+import { DateTime } from 'luxon';
 import {
   isNotDefined,
   isFalsyString,
