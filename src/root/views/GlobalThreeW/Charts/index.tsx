@@ -80,6 +80,7 @@ function ThreeWPieChart(props: PieChartProps) {
             position="outside"
             // @ts-ignore
             formatter={(v: number) => `${((100 * (v / total))).toFixed(1)}%`}
+            // @ts-ignore
             isAnimationActive={false}
           />
         </Pie>
@@ -180,6 +181,7 @@ function ThreeWBarChart(props: BarChartProps) {
       maxHeight={limitHeight ? 30 * chartData.length : undefined}
     >
       <BarChart
+        style={{ direction: 'ltr' }}
         layout="vertical"
         data={chartData}
         margin={limitHeight ? {

@@ -211,8 +211,8 @@ export const schema: FormSchema = {
   }),
 
   validation: (value) => {
-    if (value.status === STATUS_EARLY_WARNING
-        && value.dtype === DISASTER_TYPE_EPIDEMIC) {
+    if (value?.status === STATUS_EARLY_WARNING
+        && value?.dtype === DISASTER_TYPE_EPIDEMIC) {
       return 'Early Warning / Early action cannot be selected when disaster type is Epidemic or vice-versa';
     }
 
