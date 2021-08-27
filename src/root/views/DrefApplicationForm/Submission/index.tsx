@@ -81,8 +81,8 @@ function Submission(props: Props) {
           />
         </InputSection>
         <InputSection
-          title={strings.dateOfApproval}
-          description={strings.dateOfApprovalDescription}
+          title={strings.dateOfPublishing}
+          description={strings.dateOfPublishingDescription}
         >
           <DateInput
             name="date_of_approval"
@@ -96,20 +96,20 @@ function Submission(props: Props) {
         >
           <TextInput
             name="operation_timeframe"
+            placeholder='Input number of months'
             value={value.operation_timeframe}
             onChange={onValueChange}
             error={error?.fields?.operation_timeframe}
           />
         </InputSection>
         <InputSection
-          title={strings.dateOfPublishing}
-          description={strings.dateOfPublishingDescription}
+          title={strings.endDateOperation}
         >
           <DateInput
-            name="publishing_date"
-            value={value.publishing_date}
+            name="end_date"
+            value={value.end_date}
             onChange={onValueChange}
-            error={error?.fields?.publishing_date}
+            error={error?.fields?.end_date}
           />
         </InputSection>
       </Container>
@@ -122,7 +122,6 @@ function Submission(props: Props) {
           description={strings.appealCodeDescription}
         >
           <TextInput
-            placeholder="MDR code"
             name="appeal_code"
             value={value.appeal_code}
             onChange={onValueChange}
@@ -147,17 +146,17 @@ function Submission(props: Props) {
         >
           <TextInput
             label="Name"
-            name="appeal_manager_name"
-            value={value.appeal_manager_name}
+            name="ifrc_appeal_manager_name"
+            value={value.ifrc_appeal_manager_name}
             onChange={onValueChange}
-            error={error?.fields?.appeal_manager_name}
+            error={error?.fields?.ifrc_appeal_manager_name}
           />
           <TextInput
             label="Email"
-            name="appeal_manager_email"
-            value={value.appeal_manager_email}
+            name="ifrc_appeal_manager_email"
+            value={value.ifrc_appeal_manager_email}
             onChange={onValueChange}
-            error={error?.fields?.appeal_manager_email}
+            error={error?.fields?.ifrc_appeal_manager_email}
           />
         </InputSection>
         <InputSection
@@ -166,36 +165,17 @@ function Submission(props: Props) {
         >
           <TextInput
             label="Name"
-            name="project_manager_name"
-            value={value.project_manager_name}
+            name="ifrc_project_manager_name"
+            value={value.ifrc_project_manager_name}
             onChange={onValueChange}
-            error={error?.fields?.project_manager_name}
+            error={error?.fields?.ifrc_project_manager_name}
           />
           <TextInput
             label="Email"
-            name="project_manager_email"
-            value={value.project_manager_email}
+            name="ifrc_project_manager_email"
+            value={value.ifrc_project_manager_email}
             onChange={onValueChange}
-            error={error?.fields?.project_manager_email}
-          />
-        </InputSection>
-        <InputSection
-          title={strings.requestor}
-          description={strings.requestorDescription}
-        >
-          <TextInput
-            label="Name"
-            name="requestor_name"
-            value={value.requestor_name}
-            onChange={onValueChange}
-            error={error?.fields?.requestor_name}
-          />
-          <TextInput
-            label="Email"
-            name="requestor_email"
-            value={value.requestor_email}
-            onChange={onValueChange}
-            error={error?.fields?.requestor_email}
+            error={error?.fields?.ifrc_project_manager_email}
           />
         </InputSection>
         <InputSection

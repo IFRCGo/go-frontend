@@ -13,6 +13,7 @@ import LanguageContext from '#root/languageContext';
 
 import {
   optionLabelSelector,
+  NumericValueOption,
   BooleanValueOption,
   booleanOptionKeySelector,
   DrefFields,
@@ -49,16 +50,26 @@ function EventDetails(props: Props) {
           title={strings.eventDetailsTitle}
           description={strings.eventDescription}
         >
-          {/* @ts-ignore */}
-          <SelectInput
-            options={[]}
-          />
+          <SelectInput options={[]} />
         </InputSection>
       </Container>
       <Container
         heading={strings.previousOperations}
         className={styles.previousOperations}
       >
+        <InputSection
+          title={strings.affectSameArea}
+        >
+          <RadioInput
+            name="affect_same_area"
+            options={yesNoOptions}
+            radioKeySelector={booleanOptionKeySelector}
+            radioLabelSelector={optionLabelSelector}
+            value={value.affect_same_area}
+            onChange={onValueChange}
+            error={error?.fields?.affect_same_area}
+          />
+        </InputSection>
         <InputSection
           title={strings.affectedthePopulationTitle}
         >
@@ -72,19 +83,17 @@ function EventDetails(props: Props) {
             error={error?.fields?.affect_same_population}
           />
         </InputSection>
-        <InputSection
-          title={strings.affectedCommunities}
+        {!value.affect_same_population && <InputSection
+          title={strings.eventDetailsSpecify}
         >
-          <RadioInput
-            name="affect_same_communities"
-            options={yesNoOptions}
-            radioKeySelector={booleanOptionKeySelector}
-            radioLabelSelector={optionLabelSelector}
-            value={value.affect_same_communities}
+          <TextInput
+            placeholder="Same region not same communities"
+            name="affect_same_population_text"
+            value={value.affect_same_population_text}
             onChange={onValueChange}
-            error={error?.fields?.affect_same_communities}
+            error={error?.fields?.affect_same_population_text}
           />
-        </InputSection>
+        </InputSection>}
         <InputSection
           title={strings.nsRespond}
         >
@@ -102,24 +111,13 @@ function EventDetails(props: Props) {
           title={strings.nsRequest}
         >
           <RadioInput
-            name="ns_request"
+            name="ns_request_fund"
             options={yesNoOptions}
             radioKeySelector={booleanOptionKeySelector}
             radioLabelSelector={optionLabelSelector}
-            value={value.ns_request}
+            value={value.ns_request_fund}
             onChange={onValueChange}
-            error={error?.fields?.ns_request}
-          />
-        </InputSection>
-        <InputSection
-          title={strings.eventDetailsSpecify}
-        >
-          <TextInput
-            placeholder="Enter MDR or DREF number"
-            name="ns_request_text"
-            value={value.ns_request_text}
-            onChange={onValueChange}
-            error={error?.fields?.ns_request_text}
+            error={error?.fields?.ns_request_fund}
           />
         </InputSection>
         <InputSection

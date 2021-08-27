@@ -9,6 +9,7 @@ import {
   PartialForm,
   useForm,
   accumulateErrors,
+  Error,
 } from '@togglecorp/toggle-form';
 import type { match as Match } from 'react-router-dom';
 
@@ -94,6 +95,36 @@ const stepTypesToFieldsMap: {
   Response: responseFields,
   Submisson: submissionFields,
 };
+
+function getErroredStep(errors: Error<DrefFields> | undefined, currentStep: StepTypes): StepTypes {
+  if (!errors?.fields) {
+    return currentStep;
+  }
+
+  const ek = Object.keys(errors.fields);
+
+  if (ek.includes('title')
+    || ek.includes('national_society')
+    || ek.includes('disaster_type')
+    || ek.includes('type_of_onset')
+    || ek.includes('disaster_category')
+    || ek.includes('country_district')
+   ) {
+     return 'DrefOverview';
+   }
+
+   if (ek.includes('ifrc_appeal_manager_email')
+     || ek.includes('ifrc_project_manager_email')
+     || ek.includes('national_society_contact_email')
+     || ek.includes('ifrc_emergency_email')
+     || ek.includes('media_contact_email')
+    ) {
+      return 'Submisson';
+    }
+
+  return currentStep;
+}
+
 
 interface Props {
   className?: string;
@@ -306,6 +337,7 @@ function DrefApplication(props: Props) {
     onErrorSet(error);
 
     if (errored) {
+      setCurrentStep(getErroredStep(error, currentStep));
       return;
     }
 

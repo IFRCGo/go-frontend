@@ -100,14 +100,12 @@ export interface DrefFields {
   amount_requested: number;
   emergency_appeal_planned: boolean;
 
-  disaster_date: string;
   ns_respond_date: string;
 
   // Previous operations
   affect_same_population: boolean;
   affect_same_communities: boolean;
   ns_respond: boolean;
-  ns_request: boolean;
   ns_request_text: string;
   lessons_learned: string;
 
@@ -119,7 +117,7 @@ export interface DrefFields {
   government_requested_assistance: boolean;
   government_requested_assistance_date: string;
   national_authorities: string;
-  rcrc_partners: string;
+  partner_national_society: string;
   icrc: string;
   un_or_other: string;
   major_coordination_mechanism: string;
@@ -144,8 +142,6 @@ export interface DrefFields {
   response_strategy: string;
 
   planned_interventions: Intervention[];
-  secretariat_service: string;
-  national_society_strengthening: string;
 
   ns_request_date: string;
   start_date: string;
@@ -156,19 +152,36 @@ export interface DrefFields {
   publishing_date: string;
 
   appeal_code: string;
+  ifrc : string;
   glide_code: string;
-  appeal_manager_name: string;
-  appeal_manager_email: string;
-  project_manager_name: string;
-  project_manager_email: string;
-  requestor_name: string;
-  requestor_email: string;
+  ifrc_appeal_manager_name: string;
+  ifrc_appeal_manager_email: string;
+  ifrc_project_manager_name: string;
+  ifrc_project_manager_email: string;
   national_society_contact_name: string;
   national_society_contact_email: string;
   ifrc_emergency_name: string;
   ifrc_emergency_email: string;
   media_contact_name: string;
   media_contact_email: string;
+  event_map : null;
+  event_date: string;
+  event_text: string;
+  affect_same_area: boolean;
+  affect_same_population_text : string;
+  ns_request_fund : boolean;
+  un_or_other_actor : string;
+  people_per_urban_local: number;
+  people_targeted_with_early_actions: number;
+  go_field_report_date : string;
+  originator_name: string;
+  originator_email : string;
+  human_resource : string;
+  surge_personnel_deployed : string;
+  logistic_capacity_of_ns : string;
+  safety_concerns : string;
+  pmer : string;
+  communication : string;
 
   /*
   affect_same_communities_text: string;

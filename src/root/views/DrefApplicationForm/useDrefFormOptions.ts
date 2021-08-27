@@ -62,25 +62,31 @@ export function max500CharCondition(value: any) {
 
 export function max800CharCondition(value: any) {
   return isDefined(value) && value.length > 800
-  ? 'only 800 characters are allowed'
-  : undefined;
+    ? 'only 800 characters are allowed'
+    : undefined;
 }
 
 export function max300CharCondition(value: any) {
   return isDefined(value) && value.length > 300
-  ? 'only 300 characters are allowed'
-  : undefined;
+    ? 'only 300 characters are allowed'
+    : undefined;
 }
 
 export function max10CharCondition(value: any) {
   return isDefined(value) && value.length > 10
-  ? 'only 10 characters are allowed'
-  : undefined;
+    ? 'only 10 characters are allowed'
+    : undefined;
 }
-export function validEmailCondition (email : any) {
+export function max200CharCondition(value: any) {
+  return isDefined(value) && value.length > 200
+    ? 'only 10 characters are allowed'
+    : undefined;
+}
+
+export function validEmailCondition(email: any) {
   const emailRegex = /^([A-Za-z0-9_\-.+])+@([A-Za-z0-9_\-.])+\.([A-Za-z]{2,})$/;
-  return !isDefined(email) || !emailRegex.test(email) 
-  ? 'Invalid Email' : undefined;
+  return isDefined(email) && !emailRegex.test(email)
+    ? 'Invalid Email' : undefined;
 }
 
 export const schema: FormSchema = {
@@ -105,13 +111,12 @@ export const schema: FormSchema = {
     amount_requested: [positiveIntegerCondition],
     emergency_appeal_planned: [],
 
-    disaster_date: [],
+    event_date: [],
     ns_respond_date: [],
 
     affect_same_population: [],
     affect_same_communities: [],
     ns_respond: [],
-    ns_request: [],
     ns_request_text: [max10CharCondition],
     lessons_learned: [max500CharCondition],
 
@@ -122,11 +127,12 @@ export const schema: FormSchema = {
     government_requested_assistance: [],
     government_requested_assistance_date: [],
     national_authorities: [max300CharCondition],
-    rcrc_partners: [max300CharCondition],
+    partner_national_society: [max300CharCondition],
+    ifrc: [max300CharCondition],
     icrc: [max300CharCondition],
     un_or_other: [max300CharCondition],
     major_coordination_mechanism: [max300CharCondition],
-    identified_gaps : [max300CharCondition],
+    identified_gaps: [max300CharCondition],
 
     needs_identified: {
       keySelector: (n) => n.clientId as string,
@@ -138,7 +144,6 @@ export const schema: FormSchema = {
         }),
       }),
     },
-
     people_assisted: [max300CharCondition],
     selection_criteria: [max300CharCondition],
     entity_affected: [max300CharCondition],
@@ -149,14 +154,14 @@ export const schema: FormSchema = {
     girls: [positiveIntegerCondition],
     boys: [positiveIntegerCondition],
     disability_people_per: [],
-    people_per: [],
+    people_per_urban_local: [positiveIntegerCondition],
     displaced_people: [positiveIntegerCondition],
+    people_targeted_with_early_actions: [positiveIntegerCondition],
 
     operation_objective: [],
-    response_strategy: [],
+    response_strategy: [max200CharCondition],
 
     planned_interventions: [], // TODO
-
     ns_request_date: [],
     start_date: [],
     submission_to_geneva: [],
@@ -167,18 +172,24 @@ export const schema: FormSchema = {
 
     appeal_code: [],
     glide_code: [],
-    appeal_manager_name: [],
-    appeal_manager_email: [],
-    project_manager_name: [],
-    project_manager_email: [],
-    requestor_name: [],
-    requestor_email: [],
+    ifrc_appeal_manager_name: [],
+    ifrc_appeal_manager_email: [validEmailCondition],
+    ifrc_project_manager_name: [],
+    ifrc_project_manager_email: [validEmailCondition],
     national_society_contact_name: [],
-    national_society_contact_email: [],
+    national_society_contact_email: [validEmailCondition],
     ifrc_emergency_name: [],
-    ifrc_emergency_email: [],
+    ifrc_emergency_email: [validEmailCondition],
     media_contact_name: [],
-    media_contact_email: [],
+    media_contact_email: [validEmailCondition],
+    human_resource : [max300CharCondition],
+    surge_personnel_deployed : [max500CharCondition],
+    logistic_capacity_of_ns : [max500CharCondition],
+    safety_concerns : [max500CharCondition],
+    pmer : [max500CharCondition],
+    communication : [max500CharCondition],
+  }),
+  fieldDependencies: () => ({
   }),
   validation: (value) => {
     return undefined;
