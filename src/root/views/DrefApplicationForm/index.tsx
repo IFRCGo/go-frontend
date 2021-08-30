@@ -175,7 +175,6 @@ function DrefApplication(props: Props) {
   } = useLazyRequest<DrefResponseFields, Partial<DrefApiFields>>({
     url: drefId ? `api/v2/dref/${drefId}/` : 'api/v2/dref/',
     method: drefId ? 'PUT' : 'POST',
-    formData: true,
     body: ctx => ctx,
     onSuccess: (response) => {
       alert.show(
@@ -313,18 +312,10 @@ function DrefApplication(props: Props) {
 
     if (currentStep === 'submission') {
       if (finalValues && userDetails && userDetails.id) {
-        const { event_map, images,  ...others } = finalValues;
-        let body = {
+        const  body = {
           user: userDetails.id,
-          ...getDefinedValues(others),
+          ...getDefinedValues(finalValues),
         };
-        if (event_map instanceof File)  {
-          body = { ...body, event_map } as DrefApiFields;
-        }
-        if (Array.isArray(images) && images.every(image => image instanceof File)) {
-          body = { ...body, images } as DrefApiFields;
-        }
-
         submitRequest(body as DrefApiFields);
       }
     } else {

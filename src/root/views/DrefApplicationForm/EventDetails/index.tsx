@@ -24,7 +24,7 @@ import {
   ListResponse,
 } from '#utils/restRequest';
 import { FieldReportAPIResponseFields } from '#views/FieldReportForm/common';
-import FileInput from '#components/FileInput';
+import GoFileInput from '#components/GoFileInput';
 
 import {
   optionLabelSelector,
@@ -254,7 +254,7 @@ function EventDetails(props: Props) {
         <InputSection
           title={strings.uploadPhotos}
         >
-          <FileInput
+          <GoFileInput
             name="images"
             value={value.images}
             onChange={onValueChange}
@@ -264,7 +264,7 @@ function EventDetails(props: Props) {
             error={error?.fields?.images}
           >
             Upload
-          </FileInput>
+          </GoFileInput>
         </InputSection>
         <InputSection
           title={strings.scopeAndScaleEvent}

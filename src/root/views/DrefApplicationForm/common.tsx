@@ -114,8 +114,10 @@ export interface DrefFields {
   end_date: string;
   entity_affected: string,
   event_date: string;
+  event_map: number;
+  images: number[];
+  // Previous operations
   event_description: string;
-  event_map : string;
   event_scope: string;
   event_text: string;
   girls: number;
@@ -134,7 +136,6 @@ export interface DrefFields {
   ifrc_emergency_name: string;
   ifrc_project_manager_email: string;
   ifrc_project_manager_name: string;
-  images: string[],
   lessons_learned: string;
   logistic_capacity_of_ns : string;
   major_coordination_mechanism: string;
