@@ -27,10 +27,14 @@ function groupEruArray(arr) {
 function groupEventsArray(arr) {
    const res = [];
    for (let i = 0; i < arr.length; i++) {
-      const ind = res.indexOf(arr[i].name);
+      const ind = res.findIndex((el) => el.name === arr[i].name);
       if(ind !== -1){
-         res[ind].units += arr[i].units;
-         res[ind].personnel += arr[i].personnel;
+        // add zero values if it's undefined
+        if (res[ind].units === undefined) res[ind].units = 0;
+        if (res[ind].personnel === undefined) res[ind].personnel = 0;
+        // sum if value is valid
+        if (arr[i].units !== undefined) res[ind].units += arr[i].units;
+        if (arr[i].personnel !== undefined) res[ind].personnel += arr[i].personnel;
       } else {
          res.push(arr[i]);
       }
@@ -43,18 +47,19 @@ export function mergeDeployData(countries, eru, personnel) {
     country: i.deployed_to.iso,
     country_id: i.deployed_to.id,
     units: i.units,
-    name: i.event.name,
-    id: i.event.id
+    name: i.event ? i.event.name : 'No detailed event',
+    id: i.event ? i.event.id : null
   }));
   const personnelByCountry = groupPersonalArray(
     personnel.map((i) => ({
       country: i.deployment.country_deployed_to.iso,
       country_id: i.deployment.country_deployed_to.id,
       personnel: 1,
-      name: i.deployment.event_deployed_to.name,
-      id: i.deployment.event_deployed_to.id,
+      name: i.deployment.event_deployed_to ? i.deployment.event_deployed_to.name : 'No detailed event',
+      id: i.deployment.event_deployed_to ? i.deployment.event_deployed_to.id : null,
     }))
   );
+  console.log(personnelByCountry);
   let newCountries = {};
   Object.assign(newCountries, countries);
 
@@ -71,16 +76,16 @@ export function mergeDeployData(countries, eru, personnel) {
 
     // set events and ERU units
     if (countryUnits.length) {
-      country.properties.id = countryUnits[0].country_id;
+      country.properties.iso = countryUnits[0].country;
       country.properties.events = groupEruArray(
         countryUnits.map(({ name, id, units }) => ({ name, id, units }))
       );
     }
     // set personnel events and its amount
     if (countryPersonnel.length) {
-      country.properties.id = countryPersonnel[0].country_id;
+      country.properties.iso = countryPersonnel[0].country;
       if (country.properties.events && country.properties.events.length) {
-        country.properties.events.concat(
+        country.properties.events = country.properties.events.concat(
           countryPersonnel.map(({ name, id, personnel }) => ({ name, id, personnel }))
         );
       } else {
