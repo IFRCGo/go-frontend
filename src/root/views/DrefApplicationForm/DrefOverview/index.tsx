@@ -5,7 +5,10 @@ import {
   EntriesAsList,
   useFormArray,
 } from '@togglecorp/toggle-form';
-import { randomString } from '@togglecorp/fujs';
+import {
+  randomString,
+  isNotDefined,
+} from '@togglecorp/fujs';
 
 import Container from '#components/Container';
 import InputSection from '#components/InputSection';
@@ -24,6 +27,7 @@ import {
   BooleanValueOption,
   booleanOptionKeySelector,
   CountryDistrict,
+  ONSET_IMMINENT,
 } from '../common';
 import { CountryDistrictType } from '../useDrefFormOptions';
 import CountryDistrictInput from './CountryDistrictInput';
@@ -87,6 +91,8 @@ function DrefOverview(props: Props) {
     );
   }, [onValueChange]);
 
+  const isImminentOnset = value.type_of_onset === ONSET_IMMINENT;
+
   // FIXME: use translations
   return (
     <>
@@ -146,13 +152,13 @@ function DrefOverview(props: Props) {
           />
         </InputSection>
         <InputSection
-          title={strings.AffectedCountryAndProvince}
+          title={isImminentOnset ? strings.affectedCountryAndProvinceImminent : strings.affectedCountryAndProvince}
           multiRow
           oneColumn
         >
           {value.country_district?.map((c, i) => (
             <CountryDistrictInput
-              key={`${c.clientId}_${i}`}
+              key={c.clientId}
               index={i}
               value={c}
               onChange={onCountryDistrictChange}
@@ -200,7 +206,7 @@ function DrefOverview(props: Props) {
             options={yesNoOptions}
             radioKeySelector={booleanOptionKeySelector}
             radioLabelSelector={optionLabelSelector}
-            value={value.type_of_onset == 3 ? value.emergency_appeal_planned = false : value.emergency_appeal_planned}
+            value={value.emergency_appeal_planned}
             onChange={onValueChange}
             error={error?.fields?.emergency_appeal_planned}
           />
@@ -239,7 +245,7 @@ function DrefOverview(props: Props) {
             min={value.event_date}
             onChange={onValueChange}
             error={error?.fields?.ns_respond_date}
-            disabled={value.event_date == undefined}
+            disabled={isNotDefined(value.event_date)}
           />
         </InputSection>
       </Container>

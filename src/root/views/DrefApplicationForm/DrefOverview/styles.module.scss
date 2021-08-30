@@ -1,15 +1,5 @@
 @import '~styles/settings/_variables.scss';
 
-.timeframes,
-.essential-information{
-  :global {
-    .go-input-section {
-      margin: $spacing 0;
-      box-shadow: $box-shadow-component;
-    }
-  }
-}
-
 .essential-information {
   .actions {
     display: flex;
