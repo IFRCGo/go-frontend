@@ -72,7 +72,7 @@ function InterventionInput(props: Props) {
         name="persons_targeted"
         value={value.persons_targeted}
         onChange={onFieldChange}
-        error={error?.fields?.budget}
+        error={error?.fields?.persons_targeted}
       />
       <TextArea
         label="Description"

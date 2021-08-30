@@ -48,8 +48,8 @@ function Submission(props: Props) {
           />
         </InputSection>
         <InputSection
-          title="Start date"
-          description=" Added by the regional office"
+          title={strings.submissionStartDate}
+          description={strings.submissionStartDateDescription}
         >
           <DateInput
             name="start_date"
@@ -59,7 +59,7 @@ function Submission(props: Props) {
           />
         </InputSection>
         <InputSection
-          title={strings.endDateSubmission}
+          title={strings.submissionEndDate}
           description={strings.endDateSubmissionDescription}
         >
           <DateInput
@@ -96,20 +96,10 @@ function Submission(props: Props) {
         >
           <TextInput
             name="operation_timeframe"
-            placeholder='Input number of months'
+            placeholder={strings.operationTimeframeSubmissionDescription}
             value={value.operation_timeframe}
             onChange={onValueChange}
             error={error?.fields?.operation_timeframe}
-          />
-        </InputSection>
-        <InputSection
-          title={strings.endDateOperation}
-        >
-          <DateInput
-            name="end_date"
-            value={value.end_date}
-            onChange={onValueChange}
-            error={error?.fields?.end_date}
           />
         </InputSection>
       </Container>

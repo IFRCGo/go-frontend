@@ -115,7 +115,6 @@ export const schema: FormSchema = {
     ns_respond_date: [],
 
     affect_same_population: [],
-    affect_same_communities: [],
     ns_respond: [],
     ns_request_text: [max10CharCondition],
     lessons_learned: [max500CharCondition],
@@ -161,7 +160,18 @@ export const schema: FormSchema = {
     operation_objective: [],
     response_strategy: [max200CharCondition],
 
-    planned_interventions: [], // TODO
+    planned_interventions: {
+      keySelector: (n) => n.clientId as string,
+      member: (): InterventionsSchemaMember => ({
+        fields: (): InterventionSchemaFields => ({
+          clientId: [],
+          title: [requiredCondition],
+          budget: [requiredCondition, positiveIntegerCondition],
+          persons_targeted: [positiveIntegerCondition],
+          description: [],
+        }),
+      }),
+    },
     ns_request_date: [],
     start_date: [],
     submission_to_geneva: [],
