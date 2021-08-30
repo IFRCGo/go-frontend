@@ -33,8 +33,6 @@ import NeedInput from './NeedInput';
 import NsActionInput from './NSActionInput';
 
 import styles from './styles.module.scss';
-import { string } from 'prop-types';
-import DateInput from '#components/DateInput';
 
 type Value = PartialForm<DrefFields>;
 interface Props {
@@ -178,7 +176,7 @@ function ActionsFields(props: Props) {
             onChange={onValueChange}
             value={value.ifrc}
             error={error?.fields?.ifrc}
-            placeholder="If selected, max 300 characters"
+            placeholder={strings.maxThreeHundredCharacters}
           />
         </InputSection>
         <InputSection
@@ -190,7 +188,7 @@ function ActionsFields(props: Props) {
             onChange={onValueChange}
             value={value.icrc}
             error={error?.fields?.icrc}
-            placeholder="If selected, max 300 characters"
+            placeholder={strings.maxThreeHundredCharacters}
           />
         </InputSection>
         <InputSection
@@ -201,34 +199,26 @@ function ActionsFields(props: Props) {
             onChange={onValueChange}
             value={value.partner_national_society}
             error={error?.fields?.partner_national_society}
-            placeholder="If selected, max 300 characters"
+            placeholder={strings.maxThreeHundredCharacters}
           />
         </InputSection>
       </Container>
       <Container
         heading={strings.nationalOtherActors}
-        className={styles.otherActions}
+        className={styles.otherActors}
       >
         <InputSection
           title={strings.internationalAssistance}
         >
-          <div>
-            <RadioInput
-              name="government_requested_assistance"
-              options={yesNoOptions}
-              radioKeySelector={booleanOptionKeySelector}
-              radioLabelSelector={optionLabelSelector}
-              value={value.government_requested_assistance}
-              onChange={onValueChange}
-              error={error?.fields?.government_requested_assistance}
-            />
-            <DateInput
-              name="government_requested_assistance_date"
-              value={value.government_requested_assistance_date}
-              onChange={onValueChange}
-              error={error?.fields?.government_requested_assistance_date}
-            />
-          </div>
+          <RadioInput
+            name="government_requested_assistance"
+            options={yesNoOptions}
+            radioKeySelector={booleanOptionKeySelector}
+            radioLabelSelector={optionLabelSelector}
+            value={value.government_requested_assistance}
+            onChange={onValueChange}
+            error={error?.fields?.government_requested_assistance}
+          />
         </InputSection>
         <InputSection
           title={strings.nationalAuthorities}
@@ -239,7 +229,7 @@ function ActionsFields(props: Props) {
             onChange={onValueChange}
             value={value.national_authorities}
             error={error?.fields?.national_authorities}
-            placeholder="If selected, max 300 characters"
+            placeholder={strings.maxThreeHundredCharacters}
           />
         </InputSection>
         <InputSection
@@ -253,7 +243,7 @@ function ActionsFields(props: Props) {
             onChange={onValueChange}
             value={value.un_or_other}
             error={error?.fields?.un_or_other}
-            placeholder="If selected, max 300 characters"
+            placeholder={strings.maxThreeHundredCharacters}
           />
         </InputSection>
         <InputSection
@@ -267,13 +257,14 @@ function ActionsFields(props: Props) {
             onChange={onValueChange}
             value={value.major_coordination_mechanism}
             error={error?.fields?.major_coordination_mechanism}
-            placeholder="If selected, max 300 characters"
+            placeholder={strings.maxThreeHundredCharacters}
           />
         </InputSection>
       </Container>
       <Container
         heading={strings.needsIdentified}
         className={styles.needsIdentified}
+        visibleOverflow
       >
         <InputSection>
           <SelectInput
@@ -316,7 +307,7 @@ function ActionsFields(props: Props) {
             onChange={onValueChange}
             value={value.identified_gaps}
             error={error?.fields?.identified_gaps}
-            placeholder="Max 300 characters"
+            placeholder={strings.maxThreeHundredCharacters}
           />
         </InputSection>
       </Container>
