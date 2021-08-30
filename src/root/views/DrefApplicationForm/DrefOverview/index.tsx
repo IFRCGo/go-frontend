@@ -19,7 +19,7 @@ import LanguageContext from '#root/languageContext';
 import RadioInput from '#components/RadioInput';
 import DateInput from '#components/DateInput';
 import NumberInput from '#components/NumberInput';
-import FileInput from '#components/FileInput';
+import GoFileInput from '#components/GoFileInput';
 
 import {
   optionLabelSelector,
@@ -215,7 +215,7 @@ function DrefOverview(props: Props) {
         <InputSection
           title={strings.uploadMap}
         >
-          <FileInput
+          <GoFileInput
             name="event_map"
             value={value.event_map}
             onChange={onValueChange}
@@ -224,7 +224,7 @@ function DrefOverview(props: Props) {
             showStatus
           >
             Upload
-          </FileInput>
+          </GoFileInput>
         </InputSection>
       </Container>
       <Container
