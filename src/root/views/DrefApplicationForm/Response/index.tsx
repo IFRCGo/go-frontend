@@ -98,7 +98,7 @@ function Response(props: Props) {
             onChange={onValueChange}
             value={value.people_assisted}
             error={error?.fields?.people_assisted}
-            placeholder="Max 300 characters"
+            placeholder={strings.maxThreeHundredCharacters}
           />
         </InputSection>
         <InputSection
@@ -110,7 +110,7 @@ function Response(props: Props) {
             onChange={onValueChange}
             value={value.entity_affected}
             error={error?.fields?.entity_affected}
-            placeholder="Max 300 characters"
+            placeholder={strings.maxThreeHundredCharacters}
           />
         </InputSection>
       </Container>
@@ -153,7 +153,8 @@ function Response(props: Props) {
         </InputSection>
         <InputSection
           title={strings.estimateResponse}
-          threeColumn
+          multiRow
+          twoColumn
         >
           <NumberInput
             label={strings.estimatePeopleDisability}
@@ -197,6 +198,7 @@ function Response(props: Props) {
             name="operation_objective"
             onChange={onValueChange}
             value={value.operation_objective}
+            placeholder={strings.objectiveOperationPlaceholder}
           />
         </InputSection>
         <InputSection
@@ -207,12 +209,93 @@ function Response(props: Props) {
             onChange={onValueChange}
             value={value.response_strategy}
             error={error?.fields?.response_strategy}
+            placeholder={strings.responseRationalePlaceholder}
+          />
+        </InputSection>
+      </Container>
+      <Container
+        heading={strings.supportServices}
+      >
+        <InputSection
+          title={strings.humanResource}
+          description={strings.humanResourceDescription}
+        >
+          <TextArea
+            label={strings.cmpActionDescriptionLabel}
+            name="human_resource"
+            onChange={onValueChange}
+            value={value.human_resource}
+            error={error?.fields?.human_resource}
+            placeholder={strings.maxThreeHundredCharacters}
+          />
+        </InputSection>
+        <InputSection
+          title={strings.surgePersonnelDeployed}
+        >
+          <TextArea
+            label={strings.cmpActionDescriptionLabel}
+            name="surge_personnel_deployed"
+            onChange={onValueChange}
+            value={value.surge_personnel_deployed}
+            error={error?.fields?.surge_personnel_deployed}
+            placeholder={strings.maxThreeHundredCharacters}
+          />
+        </InputSection>
+        <InputSection
+          title={strings.logisticCapacityOfNs}
+        >
+          <TextArea
+            label={strings.cmpActionDescriptionLabel}
+            name="logistic_capacity_of_ns"
+            onChange={onValueChange}
+            value={value.logistic_capacity_of_ns}
+            error={error?.fields?.logistic_capacity_of_ns}
+            placeholder={strings.maxThreeHundredCharacters}
+          />
+        </InputSection>
+        <InputSection
+          title={strings.safetyConcerns}
+        >
+          <TextArea
+            label={strings.cmpActionDescriptionLabel}
+            name="safety_concerns"
+            onChange={onValueChange}
+            value={value.safety_concerns}
+            error={error?.fields?.safety_concerns}
+            placeholder={strings.maxThreeHundredCharacters}
+          />
+        </InputSection>
+        <InputSection
+          title={strings.pMer}
+          description={strings.pMerDescription}
+        >
+          <TextArea
+            label={strings.cmpActionDescriptionLabel}
+            name="pmer"
+            onChange={onValueChange}
+            value={value.pmer}
+            error={error?.fields?.pmer}
+            placeholder={strings.maxThreeHundredCharacters}
+          />
+        </InputSection>
+        <InputSection
+          title={strings.communication}
+          description={strings.communicationDescription}
+        >
+          <TextArea
+            label={strings.cmpActionDescriptionLabel}
+            name="communication"
+            onChange={onValueChange}
+            value={value.communication}
+            error={error?.fields?.communication}
+            placeholder={strings.maxThreeHundredCharacters}
           />
         </InputSection>
       </Container>
       <Container
         heading={strings.plannedIntervention}
         className={styles.plannedIntervention}
+        visibleOverflow
       >
         <InputSection>
           <SelectInput
@@ -244,81 +327,6 @@ function Response(props: Props) {
             interventionOptions={interventionOptions}
           />
         ))}
-      </Container>
-      <Container
-        heading={strings.supportServices}>
-        <InputSection
-          title={strings.humanResource}
-        >
-          <TextArea
-            label={strings.cmpActionDescriptionLabel}
-            name="human_resource"
-            onChange={onValueChange}
-            value={value.human_resource}
-            error={error?.fields?.human_resource}
-            placeholder="Max 300 characters"
-          />
-        </InputSection>
-        <InputSection
-          title={strings.surgePersonnelDeployed}
-        >
-          <TextArea
-            label={strings.cmpActionDescriptionLabel}
-            name="surge_personnel_deployed"
-            onChange={onValueChange}
-            value={value.surge_personnel_deployed}
-            error={error?.fields?.surge_personnel_deployed}
-            placeholder="Max 300 characters"
-          />
-        </InputSection>
-        <InputSection
-          title={strings.logisticCapacityOfNs}
-        >
-          <TextArea
-            label={strings.cmpActionDescriptionLabel}
-            name="logistic_capacity_of_ns"
-            onChange={onValueChange}
-            value={value.logistic_capacity_of_ns}
-            error={error?.fields?.logistic_capacity_of_ns}
-            placeholder="Max 300 characters"
-          />
-        </InputSection>
-        <InputSection
-          title={strings.safetyConcerns}
-        >
-          <TextArea
-            label={strings.cmpActionDescriptionLabel}
-            name="safety_concerns"
-            onChange={onValueChange}
-            value={value.logistic_capacity_of_ns}
-            error={error?.fields?.safety_concerns}
-            placeholder="Max 300 characters"
-          />
-        </InputSection>
-        <InputSection
-          title={strings.pMer}
-        >
-          <TextArea
-            label={strings.cmpActionDescriptionLabel}
-            name="pmer"
-            onChange={onValueChange}
-            value={value.pmer}
-            error={error?.fields?.pmer}
-            placeholder="Max 300 characters"
-          />
-        </InputSection>
-        <InputSection
-          title={strings.communication}
-        >
-          <TextArea
-            label={strings.cmpActionDescriptionLabel}
-            name="communication"
-            onChange={onValueChange}
-            value={value.communication}
-            error={error?.fields?.communication}
-            placeholder="Max 300 characters"
-          />
-        </InputSection>
       </Container>
     </>
   );

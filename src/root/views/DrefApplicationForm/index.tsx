@@ -9,7 +9,6 @@ import {
   PartialForm,
   useForm,
   accumulateErrors,
-  Error,
 } from '@togglecorp/toggle-form';
 import type { match as Match } from 'react-router-dom';
 
@@ -43,6 +42,7 @@ import {
   actionsFields,
   responseFields,
   submissionFields,
+  ONSET_IMMINENT,
 } from './common';
 import useDrefFormOptions, { schema } from './useDrefFormOptions';
 
@@ -84,47 +84,17 @@ export function getDefinedValues<T extends Record<string, any>>(o: T): Partial<T
   return definedValues;
 }
 
-type StepTypes = 'DrefOverview' | 'EventDetails' | 'Action' | 'Response' | 'Submisson';
+type StepTypes = 'drefOverview' | 'eventDetails' | 'action' | 'response' | 'submission';
 const stepTypesToFieldsMap: {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   [key in StepTypes]: (keyof DrefFields)[];
 } = {
-  DrefOverview: overviewFields,
-  EventDetails: eventDetailsFields,
-  Action: actionsFields,
-  Response: responseFields,
-  Submisson: submissionFields,
+  drefOverview: overviewFields,
+  eventDetails: eventDetailsFields,
+  action: actionsFields,
+  response: responseFields,
+  submission: submissionFields,
 };
-
-function getErroredStep(errors: Error<DrefFields> | undefined, currentStep: StepTypes): StepTypes {
-  if (!errors?.fields) {
-    return currentStep;
-  }
-
-  const ek = Object.keys(errors.fields);
-
-  if (ek.includes('title')
-    || ek.includes('national_society')
-    || ek.includes('disaster_type')
-    || ek.includes('type_of_onset')
-    || ek.includes('disaster_category')
-    || ek.includes('country_district')
-   ) {
-     return 'DrefOverview';
-   }
-
-   if (ek.includes('ifrc_appeal_manager_email')
-     || ek.includes('ifrc_project_manager_email')
-     || ek.includes('national_society_contact_email')
-     || ek.includes('ifrc_emergency_email')
-     || ek.includes('media_contact_email')
-    ) {
-      return 'Submisson';
-    }
-
-  return currentStep;
-}
-
 
 interface Props {
   className?: string;
@@ -170,20 +140,20 @@ function DrefApplication(props: Props) {
     userDetails,
   } = useDrefFormOptions(value);
 
-  const [currentStep, setCurrentStep] = React.useState<StepTypes>('DrefOverview');
-  const submitButtonLabel = currentStep === 'Submisson' ? strings.fieldReportSubmit : strings.fieldReportContinue;
-  const shouldDisabledBackButton = currentStep === 'DrefOverview';
+  const [currentStep, setCurrentStep] = React.useState<StepTypes>('drefOverview');
+  const submitButtonLabel = currentStep === 'submission' ? strings.fieldReportSubmit : strings.fieldReportContinue;
+  const shouldDisabledBackButton = currentStep === 'drefOverview';
 
   const erroredTabs = React.useMemo(() => {
     const tabs: {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       [key in StepTypes]: boolean;
     } = {
-      DrefOverview: false,
-      EventDetails: false,
-      Action: false,
-      Response: false,
-      Submisson: false,
+      drefOverview: false,
+      eventDetails: false,
+      action: false,
+      response: false,
+      submission: false,
     };
 
     const tabKeys = (Object.keys(tabs)) as StepTypes[];
@@ -337,11 +307,10 @@ function DrefApplication(props: Props) {
     onErrorSet(error);
 
     if (errored) {
-      setCurrentStep(getErroredStep(error, currentStep));
       return;
     }
 
-    if (currentStep === 'Submisson') {
+    if (currentStep === 'submission') {
       if (finalValues && userDetails && userDetails.id) {
         const body = {
           user: userDetails.id,
@@ -353,28 +322,27 @@ function DrefApplication(props: Props) {
     } else {
       const nextStepMap: {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        [key in Exclude<StepTypes, 'Submisson'>]: Exclude<StepTypes, 'DrefOverview'>;
+        [key in Exclude<StepTypes, 'submission'>]: Exclude<StepTypes, 'drefOverview'>;
       } = {
-        DrefOverview: 'EventDetails',
-        EventDetails: 'Action',
-        Action: 'Response',
-        Response: 'Submisson',
+        drefOverview: 'eventDetails',
+        eventDetails: 'action',
+        action: 'response',
+        response: 'submission',
       };
 
       handleTabChange(nextStepMap[currentStep]);
     }
   }, [currentStep, handleTabChange, validate, onErrorSet, submitRequest, userDetails]);
-
   const handleBackButtonClick = React.useCallback(() => {
-    if (currentStep !== 'DrefOverview') {
+    if (currentStep !== 'drefOverview') {
       const prevStepMap: {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        [key in Exclude<StepTypes, 'DrefOverview'>]: Exclude<StepTypes, 'Submisson'>;
+        [key in Exclude<StepTypes, 'drefOverview'>]: Exclude<StepTypes, 'submission'>;
       } = {
-        EventDetails: 'DrefOverview',
-        Action: 'EventDetails',
-        Response: 'Action',
-        Submisson: 'Response',
+        eventDetails: 'drefOverview',
+        action: 'eventDetails',
+        response: 'action',
+        submission: 'response',
       };
 
       handleTabChange(prevStepMap[currentStep]);
@@ -387,6 +355,8 @@ function DrefApplication(props: Props) {
     || fetchingUserDetails
     || drefSubmitPending
     || drefApplicationPending;
+
+  const isImminentOnset = value?.type_of_onset === ONSET_IMMINENT;
 
   return (
     <Tabs
@@ -401,37 +371,37 @@ function DrefApplication(props: Props) {
         info={(
           <TabList className={styles.tabList}>
             <Tab
-              name="DrefOverview"
+              name="drefOverview"
               step={1}
-              errored={erroredTabs['DrefOverview']}
+              errored={erroredTabs['drefOverview']}
             >
               Dref Overview
             </Tab>
             <Tab
-              name="EventDetails"
+              name="eventDetails"
               step={2}
-              errored={erroredTabs['EventDetails']}
+              errored={erroredTabs['eventDetails']}
             >
               Event Details
             </Tab>
             <Tab
-              name="Action"
+              name="action"
               step={3}
-              errored={erroredTabs['Action']}
+              errored={erroredTabs['action']}
             >
               Actions/Needs
             </Tab>
             <Tab
-              name="Response"
+              name="response"
               step={4}
-              errored={erroredTabs['Response']}
+              errored={erroredTabs['response']}
             >
               Response
             </Tab>
             <Tab
-              name="Submisson"
+              name="submission"
               step={5}
-              errored={erroredTabs['Submisson']}
+              errored={erroredTabs['submission']}
             >
               Submission/Contacts
             </Tab>
@@ -450,7 +420,7 @@ function DrefApplication(props: Props) {
                 message="Please correct all the errors!"
               />
             </Container>
-            <TabPanel name="DrefOverview">
+            <TabPanel name="drefOverview">
               <DrefOverview
                 error={error}
                 onValueChange={onValueChange}
@@ -466,15 +436,17 @@ function DrefApplication(props: Props) {
                 fetchingNationalSociety={fetchingCountries}
               />
             </TabPanel>
-            <TabPanel name="EventDetails">
+            <TabPanel name="eventDetails">
               <EventDetails
+                isImminentOnset={isImminentOnset}
                 error={error}
                 onValueChange={onValueChange}
                 value={value}
                 yesNoOptions={yesNoOptions}
+                onValueSet={onValueSet}
               />
             </TabPanel>
-            <TabPanel name="Action">
+            <TabPanel name="action">
               <ActionsFields
                 error={error}
                 onValueChange={onValueChange}
@@ -484,7 +456,7 @@ function DrefApplication(props: Props) {
                 nsActionOptions={nsActionOptions}
               />
             </TabPanel>
-            <TabPanel name="Response">
+            <TabPanel name="response">
               <Response
                 interventionOptions={interventionOptions}
                 error={error}
@@ -492,7 +464,7 @@ function DrefApplication(props: Props) {
                 value={value}
               />
             </TabPanel>
-            <TabPanel name="Submisson">
+            <TabPanel name="submission">
               <Submission
                 error={error}
                 onValueChange={onValueChange}

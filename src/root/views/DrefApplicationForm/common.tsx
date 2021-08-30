@@ -1,5 +1,10 @@
 import { isDefined } from '@togglecorp/fujs';
 
+export const ONSET_ANTICIPATORY = 0;
+export const ONSET_IMMINENT = 1;
+export const ONSET_SLOW = 2;
+export const ONSET_SUDDEN = 3;
+
 export interface NumericValueOption {
   value: number;
   label: string;
@@ -89,107 +94,92 @@ export const booleanOptionKeySelector = (o: BooleanValueOption) => o.value;
 export const optionLabelSelector = (o: Option) => o.label;
 
 export interface DrefFields {
-  title: string;
-  national_society: number;
-  disaster_type: number;
-  type_of_onset: number;
-  disaster_category: number;
-  country_district: CountryDistrict[];
-  num_affected: number;
-  num_assisted: number;
-  amount_requested: number;
-  emergency_appeal_planned: boolean;
-
-  ns_respond_date: string;
-
-  // Previous operations
+  affect_same_area: boolean;
   affect_same_population: boolean;
-  affect_same_communities: boolean;
-  ns_respond: boolean;
-  ns_request_text: string;
-  lessons_learned: string;
-
+  affect_same_population_text : string;
+  amount_requested: number;
+  anticipatory_actions: string,
+  appeal_code: string;
+  boys: number;
+  communication : string;
+  community_involved: string;
+  country_district: CountryDistrict[];
+  created_at: string;
+  date_of_approval: string;
+  disability_people_per: number;
+  disaster_category: number;
+  disaster_type: number;
+  displaced_people: number;
+  emergency_appeal_planned: boolean;
+  end_date: string;
+  entity_affected: string,
+  event_date: string;
   event_description: string;
-  // image: null;
+  event_map : null;
   event_scope: string;
-
-  national_society_actions: NsAction[];
+  event_text: string;
+  girls: number;
+  glide_code: string;
+  go_field_report_date : string;
   government_requested_assistance: boolean;
   government_requested_assistance_date: string;
-  national_authorities: string;
-  partner_national_society: string;
+  human_resource : string;
   icrc: string;
-  un_or_other: string;
-  major_coordination_mechanism: string;
-
-  needs_identified: Need[];
+  id: string;
   identified_gaps: string;
-
-  people_assisted: string;
-  selection_criteria: string;
-  entity_affected: string,
-  community_involved: string;
-
-  women: number;
-  men: number;
-  girls: number;
-  boys: number;
-  disability_people_per: number;
-  people_per: number;
-  displaced_people: number;
-
-  operation_objective: string;
-  response_strategy: string;
-
-  planned_interventions: Intervention[];
-
-  ns_request_date: string;
-  start_date: string;
-  submission_to_geneva: string;
-  end_date: string;
-  date_of_approval: string;
-  operation_timeframe: string;
-  publishing_date: string;
-
-  appeal_code: string;
   ifrc : string;
-  glide_code: string;
-  ifrc_appeal_manager_name: string;
   ifrc_appeal_manager_email: string;
-  ifrc_project_manager_name: string;
-  ifrc_project_manager_email: string;
-  national_society_contact_name: string;
-  national_society_contact_email: string;
-  ifrc_emergency_name: string;
+  ifrc_appeal_manager_name: string;
   ifrc_emergency_email: string;
-  media_contact_name: string;
+  ifrc_emergency_name: string;
+  ifrc_project_manager_email: string;
+  ifrc_project_manager_name: string;
+  images: string[],
+  lessons_learned: string;
+  logistic_capacity_of_ns : string;
+  major_coordination_mechanism: string;
   media_contact_email: string;
-  event_map : null;
-  event_date: string;
-  event_text: string;
-  affect_same_area: boolean;
-  affect_same_population_text : string;
+  media_contact_name: string;
+  men: number;
+  modified_at: string;
+  modified_by: number;
+  modified_by_details: {};
+  national_authorities: string;
+  national_society: number;
+  national_society_actions: NsAction[];
+  national_society_contact_email: string;
+  national_society_contact_name: string;
+  needs_identified: Need[];
+  ns_request_date: string;
   ns_request_fund : boolean;
-  un_or_other_actor : string;
+  ns_request_text: string;
+  ns_respond: boolean;
+  ns_respond_date: string;
+  num_affected: number;
+  num_assisted: number;
+  operation_objective: string;
+  operation_timeframe: string;
+  originator_email : string;
+  originator_name: string;
+  partner_national_society: string;
+  people_assisted: string;
   people_per_urban_local: number;
   people_targeted_with_early_actions: number;
-  go_field_report_date : string;
-  originator_name: string;
-  originator_email : string;
-  human_resource : string;
-  surge_personnel_deployed : string;
-  logistic_capacity_of_ns : string;
-  safety_concerns : string;
+  planned_interventions: Intervention[];
   pmer : string;
-  communication : string;
-
-  /*
-  affect_same_communities_text: string;
-  status: null,
-  document: null,
-  ns_respond_text: string,
-  anticipatory_actions: string,
-   */
+  publishing_date: string;
+  response_strategy: string;
+  safety_concerns : string;
+  selection_criteria: string;
+  start_date: string;
+  status: number;
+  submission_to_geneva: string;
+  surge_personnel_deployed : string;
+  title: string;
+  type_of_onset: number;
+  un_or_other: string;
+  un_or_other_actor : string;
+  women: number;
 }
 
 export interface DrefApiFields extends Omit<DrefFields, 'country_district' | 'planned_interventions' | 'national_society_actions' | 'needs_identified'> {
@@ -208,23 +198,77 @@ export const overviewFields: (keyof DrefFields)[] = [
   'type_of_onset',
   'disaster_category',
   'country_district',
+  'num_affected',
+  'amount_requested',
+  'emergency_appeal_planned',
+  'event_date',
+  'go_field_report_date',
+  'ns_respond_date',
 ];
 
 export const eventDetailsFields: (keyof DrefFields)[] = [
   'affect_same_population',
-  'affect_same_communities',
+  'affect_same_area',
+  'ns_respond',
+  'ns_request_fund',
+  'ns_request_text',
+  'lessons_learned',
+  'event_description',
+  'event_scope',
 ];
 
 export const actionsFields: (keyof DrefFields)[] = [
   'national_society_actions',
+  'ifrc',
+  'icrc',
+  'partner_national_society',
+  'government_requested_assistance',
+  'national_authorities',
+  'un_or_other',
+  'major_coordination_mechanism',
+  'needs_identified',
+  'identified_gaps',
 ];
 
 export const responseFields: (keyof DrefFields)[] = [
+  'people_assisted',
+  'entity_affected',
   'women',
   'men',
+  'girls',
+  'boys',
+  'disability_people_per',
+  'people_per_urban_local',
+  'displaced_people',
+  'people_targeted_with_early_actions',
+  'operation_objective',
+  'response_strategy',
+  'human_resource',
+  'surge_personnel_deployed',
+  'logistic_capacity_of_ns',
+  'safety_concerns',
+  'pmer',
+  'communication',
   'planned_interventions',
 ];
 
 export const submissionFields: (keyof DrefFields)[] = [
+  'ns_request_date',
+  'start_date',
+  'end_date',
+  'submission_to_geneva',
   'date_of_approval',
+  'operation_timeframe',
+  'appeal_code',
+  'glide_code',
+  'ifrc_appeal_manager_name',
+  'ifrc_appeal_manager_email',
+  'ifrc_project_manager_name',
+  'ifrc_project_manager_email',
+  'national_society_contact_name',
+  'national_society_contact_email',
+  'ifrc_emergency_name',
+  'ifrc_emergency_email',
+  'media_contact_name',
+  'media_contact_email',
 ];

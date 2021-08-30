@@ -672,6 +672,7 @@ export function transformFormFieldsToAPIFields(formValues: FormType): FieldRepor
 
 export interface FieldReportAPIResponseFields extends Omit<FieldReportAPIFields, 'user' | 'dtype' | 'event' | 'countries' | 'districts' | 'actions_taken'> {
   id: number;
+  created_at: string;
   user: {
     id: number;
   };
