@@ -156,22 +156,22 @@ class Deployments extends SFPComponent {
         <div className='header-stats container-lg'>
           <div className='sumstats__wrap'>
             <ul className='sumstats'>
-              <li className='sumstats__item__wrap'>            
+              <li className='sumstats__item__wrap'>
                 <div className='sumstats__item'>
-                  <img className='sumstats__icon_2020' src='/assets/graphics/layout/eru-brand.svg' /> 
+                  <img className='sumstats__icon_2020' src='/assets/graphics/layout/heops-brand.svg' />
                   <span className='sumstats__value'>
-                    {n(data.deployed)}
+                    {n(fact)}
                   </span>
-                  <Translate className='sumstats__key' stringId='deploymentsDeployedERU'/>
+                  <Translate className='sumstats__key' stringId='deploymentsDeployedRRP'/>
                 </div>
               </li>
               <li className='sumstats__item__wrap'>
                 <div className='sumstats__item'>
-                  <img className='sumstats__icon_2020' src='/assets/graphics/layout/fact-brand.svg' />
+                  <img className='sumstats__icon_2020' src='/assets/graphics/layout/eru-brand.svg'/>
                   <span className='sumstats__value'>
-                    {n(fact)}
+                    {n(data.deployed)}
                   </span>
-                  <Translate className='sumstats__key' stringId='deploymentsDeployedRR'/>
+                  <Translate className='sumstats__key' stringId='deploymentsDeployedERU'/> &nbsp;
                 </div>
               </li>
               <li className='sumstats__item__wrap'>
@@ -180,7 +180,7 @@ class Deployments extends SFPComponent {
                   <span className='sumstats__value'>
                     {n(heop)}
                   </span>
-                  <Translate className='sumstats__key' stringId='deploymentsDeployedHeops'/>
+                  <Translate className='sumstats__key' stringId='deploymentsNSProvidingRRP'/>
                 </div>
               </li>
             </ul>
