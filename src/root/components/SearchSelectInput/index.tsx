@@ -1,5 +1,8 @@
 import React from 'react';
-import { isDefined, } from '@togglecorp/fujs';
+import {
+  isDefined,
+  unique,
+} from '@togglecorp/fujs';
 import AsyncSelect from 'react-select/async';
 
 import styles from './styles.module.scss';
@@ -115,9 +118,16 @@ function SearchSelectInput<N extends Key, V extends Key>(props: Props<N, V>) {
     }
 
     const localCallback = (currentOptions: Option[]) => {
-      if (currentOptions.length > 0) {
-        // TODO: Make unique
-        setOptions(prevOptions => [...prevOptions, ...currentOptions]);
+      if (currentOptions?.length > 0) {
+        setOptions(
+          prevOptions => unique(
+            [
+              ...prevOptions,
+              ...currentOptions,
+            ],
+            o => o.value
+          ) ?? [],
+        );
       }
       callback(currentOptions);
     };
