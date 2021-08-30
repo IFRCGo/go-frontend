@@ -63,11 +63,11 @@ class DeploymentsMap extends React.Component {
     const ccolor = [
       'case',
       ['all', ['>', ['get', 'units'], 0], ['>', ['get', 'personnel'], 0]],
-      '#4680F2',
+      '#4c5d9b',
       ['>', ['get', 'units'], 0],
-      '#F39C12',
-      ['>', ['get', 'personnel'], 0],
       '#f5333f',
+      ['>', ['get', 'personnel'], 0],
+      '#ff9e00',
       '#fff'
     ];
 
@@ -190,11 +190,11 @@ class DeploymentsMap extends React.Component {
                         <dd>
                           <Translate stringId='eruOnly'/>
                         </dd>
-                        <dt className='color color--yellow'>yellow</dt>
+                        <dt className='color color--map-red2'>yellow</dt>
                         <dd>
                           <Translate stringId='rrOnly'/>
                         </dd>
-                        <dt className='color color--blue'>blue</dt>
+                        <dt className='color color--map-darkblue'>blue</dt>
                         <dd>
                           <Translate stringId='mixedEruRr'/>
                         </dd>
