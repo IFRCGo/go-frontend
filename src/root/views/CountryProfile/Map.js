@@ -17,7 +17,7 @@ export default class ThreeWMap extends React.PureComponent {
     const { current: mapContainer } = this.mapContainerRef;
     this.map = newMap(
       mapContainer,
-      'mapbox://styles/go-ifrc/ck1izjgrs016k1cmxwekow9m0',
+      'mapbox://styles/go-ifrc/ckrfe16ru4c8718phmckdfjh0',
       { interactive: false },
     );
 
@@ -95,7 +95,7 @@ export default class ThreeWMap extends React.PureComponent {
     }
 
     this.map.setPaintProperty(
-      'adm1',
+      'admin-1-highlight',
       'fill-opacity',
       opacityProperty,
     );

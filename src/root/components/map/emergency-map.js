@@ -86,12 +86,12 @@ class EmergencyMap extends React.Component {
     ]);
     theMap.setFilter('admin1-country-selected', [
       '==',
-      'Admin00Nam',
+      'country_name',
       country.name
     ]);
     theMap.setFilter('admin1-country-selected-boundaries', [
       '==',
-      'Admin00Nam',
+      'country_name',
       country.name
     ]);
 
@@ -121,7 +121,7 @@ class EmergencyMap extends React.Component {
 
   componentDidMount () {
     this.mapLoaded = false;
-    this.theMap = newMap(this.refs.map, 'mapbox://styles/go-ifrc/cjxa3k4cx39a21cqt9qilk9hp');
+    this.theMap = newMap(this.refs.map, 'mapbox://styles/go-ifrc/ckrfe16ru4c8718phmckdfjh0');
     this.theMap.on('load', () => {
       this.setupData();
       this.mapLoaded = true;
