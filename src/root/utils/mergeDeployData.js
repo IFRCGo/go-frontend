@@ -43,13 +43,16 @@ function groupEventsArray(arr) {
 }
 
 export function mergeDeployData(countries, eru, personnel) {
-  const eruByCountry = eru.map((i) => ({
-    country: i.deployed_to.iso,
-    country_id: i.deployed_to.id,
-    units: i.units,
-    name: i.event ? i.event.name : 'No detailed event',
-    id: i.event ? i.event.id : null
-  }));
+  const eruByCountry = eru
+    .filter((i) => i.deployed_to)
+    .map((i) => ({
+      country: i.deployed_to.iso,
+      country_id: i.deployed_to.id,
+      units: i.units,
+      name: i.event ? i.event.name : 'No detailed event',
+      id: i.event ? i.event.id : null
+    })
+  );
   const personnelByCountry = groupPersonalArray(
     personnel.map((i) => ({
       country: i.deployment.country_deployed_to.iso,
@@ -59,7 +62,6 @@ export function mergeDeployData(countries, eru, personnel) {
       id: i.deployment.event_deployed_to ? i.deployment.event_deployed_to.id : null,
     }))
   );
-  console.log(personnelByCountry);
   let newCountries = {};
   Object.assign(newCountries, countries);
 
