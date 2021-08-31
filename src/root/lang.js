@@ -447,6 +447,9 @@ export default {
   tableAllAlertsTitle: 'All Surge Alerts',
   tableAllEruTitle: 'All Deployed ERUs',
   tableAllPersonnel: 'All Deployed Personnel',
+  eruOnly: 'ERU only',
+  rrOnly: 'Rapid Response only',
+  mixedEruRr: 'Mixed',
 
   uhohPageNotFoundTitle: 'IFRC Go - Page not found',
   uhohPageNotFound: 'Page not found',

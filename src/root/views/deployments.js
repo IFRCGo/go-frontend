@@ -18,6 +18,7 @@ import {
   getPersonnelByEvent
 } from '#actions';
 import { finishedFetch, datesAgo } from '#utils/utils';
+import { mergeDeployData } from '#utils/mergeDeployData';
 import { showGlobalLoading, hideGlobalLoading } from '#components/global-loading';
 import { environment } from '#config';
 import {
@@ -222,6 +223,14 @@ class Deployments extends SFPComponent {
     } = this.props.eruOwners;
     const { strings } = this.context;
     if (!fetched || error) return null;
+    let deployData = {type: 'FeatureCollection', features: []};
+    if (this.props.eru.fetched && this.props.activePersonnel.fetched) {
+      deployData = mergeDeployData(
+        this.props.countriesGeojson,
+        this.props.allEru.data.results,
+        this.props.activePersonnel.data.results
+      );
+    }
 
     return (
       <section>
@@ -245,7 +254,7 @@ class Deployments extends SFPComponent {
           </header>
           <div className='container-lg'>
             <DeploymentsMap
-              data={this.props.locations}
+              data={deployData}
               countriesGeojson={this.props.countriesGeojson}
             />
           </div>
@@ -310,15 +319,16 @@ if (environment !== 'production') {
     eruOwners: T.object,
     eru: T.object,
     activePersonnel: T.object,
-    locations: T.object,
+    allEru: T.object,
     countriesGeojson: T.object
   };
 }
 
 const selector = (state) => ({
   eruOwners: state.eruOwners,
+  eru: state.deployments.eru,
   activePersonnel: state.deployments.activePersonnel,
-  locations: state.deployments.locations,
+  allEru: state.deployments.allEru,
   countriesGeojson: countriesGeojsonSelector(state),
   personnelByEvent: state.personnelByEvent
 });

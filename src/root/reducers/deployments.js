@@ -80,53 +80,19 @@ const locationInitialState = {
   features: []
 };
 
-function locations (state = locationInitialState, action) {
+function allEru (state = locationInitialState, action) {
   switch (action.type) {
     case 'GET_ACTIVE_PERSONNEL_SUCCESS':
     case 'GET_ALL_DEPLOYMENT_ERU_SUCCESS':
-      state = parseLocations(state.features, action);
+      state = stateSuccess(state, action);
       break;
   }
   return state;
-}
-
-// TODO: This can be simplified a lot
-function parseLocations (existingFeatures, action) {
-  const allCountries = action.countries;
-  const isEru = action.type === 'GET_ALL_DEPLOYMENT_ERU_SUCCESS';
-  const results = get(action, 'data.results', []);
-  let countryPath = isEru ? 'deployed_to' : 'deployment.country_deployed_to';
-  const countries = _groupBy(results, countryPath + '.id');
-  let features = existingFeatures.slice();
-  for (let id in countries) {
-    let deployments = countries[id];
-    let values = isEru
-      ? deployments.reduce((acc, next) => {
-        acc.eru += next.equipment_units;
-        return acc;
-      }, {eru: 0})
-      : deployments.reduce((acc, next) => {
-        acc[next.type] += 1;
-        return acc;
-      }, {heop: 0, fact: 0, rdrt: 0});
-    let existingFeature = features.find(d => d.properties.id.toString() === id);
-    if (existingFeature) {
-      for (let type in values) {
-        existingFeature.properties[type] += values[type];
-      }
-    } else {
-      let country = get(deployments[0], countryPath);
-      const thisCentroid = getCountryMeta(country.id, allCountries).centroid || [0, 0];
-      thisCentroid.properties = Object.assign({eru: 0, heop: 0, fact: 0, rdrt: 0}, country, values);
-      features.push(thisCentroid);
-    }
-  }
-  return { type: 'FeatureCollection', features };
 }
 
 export default combineReducers({
   eru,
   personnel,
   activePersonnel,
-  locations
+  allEru
 });
