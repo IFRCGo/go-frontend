@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { connect } from 'react-redux';
 import { PropTypes as T } from 'prop-types';
 import c from 'classnames';
 import { Helmet } from 'react-helmet';
+
+import { TimeLineChart } from '#components/Charts';
 
 import {
   enterFullscreen,
@@ -17,6 +19,7 @@ import {
   getEruOwners,
   getPersonnelByEvent
 } from '#actions';
+import { useRequest } from '#utils/restRequest';
 import { finishedFetch, datesAgo } from '#utils/utils';
 import { mergeDeployData } from '#utils/mergeDeployData';
 import { showGlobalLoading, hideGlobalLoading } from '#components/global-loading';
@@ -39,6 +42,23 @@ import BreadCrumb from '#components/breadcrumb';
 import LanguageContext from '#root/languageContext';
 import Translate from '#components/Translate';
 import { countriesGeojsonSelector } from '../selectors';
+
+
+const DeploymentsByMonth = () => {
+  const { pending, response } = useRequest({url: 'api/v2/deployment/aggregated_by_month/'});
+
+  const formatData = useCallback((data) => {
+    const keys = Object.keys(data).reverse();
+    return keys.map((key) =>
+      ({ timespan: new Date(key).toISOString(), count: data[key]} )
+    );
+  }, []);
+
+  return (!pending && response)
+    ? <TimeLineChart data={formatData(response)} />
+    : <></>;
+};
+
 
 class Deployments extends SFPComponent {
   // Methods form SFPComponent:
@@ -201,14 +221,19 @@ class Deployments extends SFPComponent {
             <div className='row flex-xs'>
               <div className='col col-6-xs spacing-v'>
                 <div className='chart box__content'>
-                  {this.renderHeaderCharts(data.types, strings.deploymentEruDeploymentTypes)}
+                  {this.renderHeaderCharts(data.owners, strings.deploymentNumber)}
                 </div>
               </div>
               <div className='col col-6-xs spacing-v'>
+                <figure className='chart'>
+                  <figcaption>
+                    <h2 className='fold__title'><Translate stringId='deployementsOverLastYear' /></h2>
+                  </figcaption>
+                </figure>
                 <div className='chart box__content'>
-                  {this.renderHeaderCharts(data.owners, strings.deploymentNumber)}
+                  <DeploymentsByMonth />
                 </div>
-            </div>
+              </div>
             </div>
           </div>
         </div>

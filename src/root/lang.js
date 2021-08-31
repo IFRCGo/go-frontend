@@ -1514,6 +1514,7 @@ export default {
   deploymentsPageTitleSurge: 'Surge',
   deploymentsOverviewError: 'Error loading data',
   deploymentsRapidResponse: 'Rapid Response',
+  deployementsOverLastYear: 'Deployments over the last year',
 
   emergencySourceMessage: 'Source: {link}',
   emergencyFieldReportStatsHeading: 'Key Figures',
