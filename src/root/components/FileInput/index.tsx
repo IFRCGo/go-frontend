@@ -1,10 +1,9 @@
 import React, { useCallback, useMemo } from 'react';
 import { _cs } from '@togglecorp/fujs';
-import { IoClose } from 'react-icons/io5';
 
 import InputContainer, { Props as InputContainerProps } from '#components/InputContainer';
 import RawInput, { Props as RawInputProps } from '#components/RawInput';
-import Button, { useButtonFeatures } from '#components/Button';
+import { useButtonFeatures } from '#components/Button';
 import styles from './styles.module.scss';
 
 export const isValidFile = (fileName: string, mimeType: string, acceptString?: string) => {
@@ -87,7 +86,7 @@ function FileInput<T extends string>(props: Props<T>) {
         props.onChange(validFiles, name);
       }
     },
-    // eslint-disable-next-line react/destructuring-assignment
+    // eslint-disable-next-line
     [accept, props.multiple, props.onChange, name],
   );
 
@@ -99,22 +98,6 @@ function FileInput<T extends string>(props: Props<T>) {
       handleFiles(files);
     }
   }, [handleFiles]);
-
-  const handleClear = useCallback(
-    () => {
-      if (!props.onChange) {
-        return;
-      }
-
-      if (props.multiple) {
-        props.onChange([], name);
-      } else {
-        props.onChange(undefined, name);
-      }
-    },
-    // eslint-disable-next-line react/destructuring-assignment
-    [props.multiple, props.onChange, name],
-  );
 
   const {
     className: buttonLabelClassName,
@@ -144,11 +127,6 @@ function FileInput<T extends string>(props: Props<T>) {
   });
 
   // eslint-disable-next-line react/destructuring-assignment
-  const hasValue = props.multiple
-    // eslint-disable-next-line react/destructuring-assignment
-    ? !!props.value && props.value.length > 0
-    // eslint-disable-next-line react/destructuring-assignment
-    : !!props.value;
 
   const status = useMemo(
     () => {
@@ -176,22 +154,7 @@ function FileInput<T extends string>(props: Props<T>) {
 
   return (
     <InputContainer
-      actions={(
-        <>
-          {actions}
-          {!readOnly && hasValue && (
-            <Button
-              onClick={handleClear}
-              disabled={disabled}
-              variant="action"
-              name={undefined}
-              title="Clear"
-            >
-              <IoClose />
-            </Button>
-          )}
-        </>
-      )}
+      actions={actions}
       className={_cs(className, styles.fileInput)}
       disabled={disabled}
       error={error}
