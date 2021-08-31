@@ -88,7 +88,7 @@ export function validEmailCondition(email: any) {
   return isDefined(email) && !emailRegex.test(email)
     ? 'Invalid Email' : undefined;
 }
-export function lessThanSixItemsCondition(value: any) {
+export function lessThanSixImagesCondition(value: any) {
   return isDefined(value) && Array.isArray(value) && value.length > 6
     ? 'Only six images are allowed'
     : undefined;
@@ -127,7 +127,7 @@ export const schema: FormSchema = {
 
     event_description: [max800CharCondition],
     event_scope: [max800CharCondition],
-    images: [lessThanSixItemsCondition],
+    images: [lessThanSixImagesCondition],
 
     national_society_actions: [],
     government_requested_assistance: [],

@@ -1,46 +1,51 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback } from 'react';
 
 import { useLazyRequest } from '#utils/restRequest';
-import { FileInput, FileInputProps } from '#components/FileInput';
+import { IoClose } from 'react-icons/io5';
+import Button from '#components/Button';
+import FileInput, {Props as FileInputProps } from '#components/FileInput';
 
 interface Option {
   id: number;
-  title: string;
   file: string; // this is a url
 }
 
-interface Props<T extends string> extends Omit<FileInputProps<T>, 'overrideStatus' | 'status' | 'value' | 'onChange' | 'multiple'>  & ({
+type Props<T extends string> =  Omit<FileInputProps<T>, 'overrideStatus' | 'status' | 'value' | 'onChange' | 'multiple'> & ({
   multiple: true;
-  value: number[];
+  value?: number[];
   onChange: (value: number[] | undefined, name: T) => void;
 } | {
   multiple?: false;
-  value: number;
+  value?: number;
   onChange: (value: number | undefined, name: T) => void;
 })
 
 function GoFileInput<T extends string>(props: Props<T>) {
   const {
-    value: valueFromProps,
+    value,
     disabled,
     name,
-    onChange,
-    multiple,
+    actions,
     ...otherProps
   } = props;
-
-  const [value, setValue] = useState<File | File[] | undefined>();
 
   const {
     pending,
     trigger,
-  } = useLazyRequest<Option, File>({
+    context,
+  } = useLazyRequest<Option | Option[], { file: FileInputProps<T>['value'] }>({
     formData: true,
-    url: 'server://files/',
+    url: props.multiple ? 'api/v2/dref-files/multiple/' : 'api/v2/dref-files/',
     method: 'POST',
     body: ctx => ctx,
     onSuccess: (response) => {
-      onChange(response, name);
+      if (props.multiple) {
+        const ids = (response as Option[]).map(v => v.id);
+        props.onChange(ids, name);
+      } else {
+        const { id } = response as Option;
+        props.onChange(id, name);
+      }
     },
     onFailure: () => {
       console.error('Could not upload file!');
@@ -48,37 +53,57 @@ function GoFileInput<T extends string>(props: Props<T>) {
   });
 
   const handleChange = useCallback(
-    (file: File | File[] | undefined) => {
-      setValue(file);
-
+    (file: FileInputProps<T>['value']) => {
       if (file) {
-        trigger(file);
+        trigger({ file });
       } else {
-        onChange(undefined, name);
+        props.onChange(undefined, name);
       }
     },
-    [trigger, name, onChange],
+
+    //eslint-disable-next-line
+    [trigger, name, props.onChange],
   );
 
   let currentStatus;
   if (pending) {
-    currentStatus = 'Uploading file'; // FIXME add translations
-  } else if (!valueFromProps) {
-    currentStatus = 'No file selected'; // FIXME add translations
+    currentStatus = 'Uploading file';
+  } else if (!value) {
+    currentStatus = 'No file selected';
   }  else {
-    currentStatus = `${valueFromProps.length} files selected`
+    currentStatus = Array.isArray(value) ? `${value.length} files selected` : '1 file selected';
   }
+
+  const handleClear = useCallback(() => {
+    props.onChange(undefined, name);
+    //eslint-disable-next-line
+  }, [props.onChange]);
 
   return (
     <FileInput
       {...otherProps}
+      actions={(
+        <>
+          {actions}
+          {value && (
+            <Button
+              onClick={handleClear}
+              disabled={disabled}
+              variant="action"
+              name={undefined}
+              title="Clear"
+            >
+              <IoClose />
+            </Button>
+        )}
+        </>
+      )}
       disabled={disabled || pending}
       name={name}
       overrideStatus
       status={currentStatus}
-      value={value}
+      value={context?.file}
       onChange={handleChange}
-      multiple={multiple}
     />
   );
 }
