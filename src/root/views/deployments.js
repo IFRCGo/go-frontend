@@ -276,6 +276,7 @@ class Deployments extends SFPComponent {
               <AlertsTable
                 title={strings.homeSurgeNotification}
                 limit={5}
+                isActive={true}
                 viewAll={'/alerts/all'}
                 showRecent={true}
               />

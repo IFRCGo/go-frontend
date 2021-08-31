@@ -1432,6 +1432,7 @@ class Emergency extends React.Component {
                   <TabContent title={strings.emergencyAlertsTitle}>
                     <SurgeAlertsTable
                       id="alerts"
+                      isActive={true}
                       title={strings.emergencyAlertsTitle}
                       emergency={this.props.match.params.id}
                       returnNullForEmpty={true}
