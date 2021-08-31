@@ -43,7 +43,9 @@ function groupEventsArray(arr) {
 }
 
 export function mergeDeployData(countries, eru, personnel) {
-  const eruByCountry = eru.map((i) => ({
+  const eruByCountry = eru.filter(i => {
+    return i.deployed_to ? true : false;
+  }).map((i) => ({
     country: i.deployed_to.iso,
     country_id: i.deployed_to.id,
     units: i.units,
