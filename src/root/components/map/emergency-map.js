@@ -106,14 +106,14 @@ class EmergencyMap extends React.Component {
         data: countriesGeojson
       });
       // hide stock labels
-      this.theMap.setLayoutProperty('icrc_admin0_labels', 'visibility', 'none');
+      this.theMap.setLayoutProperty('admin-0-label', 'visibility', 'none');
       this.theMap.setLayoutProperty('additional-geography-labels', 'visibility', 'none');
 
       // add custom language labels
       this.theMap.addLayer(countryLabels);
     }
 
-    const disputedTerritoriesVisible = this.theMap.queryRenderedFeatures({layers: ['disputed_territories copy']}).length;
+    const disputedTerritoriesVisible = this.theMap.queryRenderedFeatures({layers: ['admin-0-disputed']}).length;
     if (disputedTerritoriesVisible) {
       this.setState({ disputedTerritoriesVisible: true });
     }

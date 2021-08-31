@@ -60,7 +60,7 @@ export default class ThreeWMap extends React.PureComponent {
         data: countriesGeojson
       });
       // hide stock labels
-      this.map.setLayoutProperty('icrc_admin0_labels', 'visibility', 'none');
+      this.map.setLayoutProperty('admin-0-label', 'visibility', 'none');
     }
 
 
