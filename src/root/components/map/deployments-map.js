@@ -1,180 +1,117 @@
 import React from 'react';
-import * as path from 'path';
 import { render } from 'react-dom';
 import { PropTypes as T } from 'prop-types';
 import mapboxgl from 'mapbox-gl';
-import chroma from 'chroma-js';
-import _cloneDeep from 'lodash.clonedeep';
+import { withRouter } from 'react-router-dom';
 
-import { getCountryIsoFromVt } from '#utils/utils';
-import { source } from '#utils/get-new-map';
 import { environment } from '#config';
-import MapComponent from './common/map-component';
-// Commented when temporarily disabled the FormSelect filter, see ¤ below
-// import {
-//   FormSelect
-// } from '../form-elements';
-import LanguageContext from '#root/languageContext';
+import { withLanguage } from '#root/languageContext';
+import { source } from '#utils/get-new-map';
+import { commaSeparatedNumber as n } from '#utils/format';
 import Translate from '#components/Translate';
-import { resolveToString } from '#utils/lang';
+import EmptyMessage from '#components/EmptyMessage';
 
-const countryChromaScale = chroma.scale(['#F0C9E8', '#861A70']);
+import { FormRadioGroup } from '../form-elements';
+import MapComponent from './common/map-component';
 
-export default class DeploymentsMap extends React.Component {
+
+class DeploymentsMap extends React.Component {
   constructor (props) {
     super(props);
+    const scaleBy = 'units';
+    const { data } = props;
     this.state = {
-      layers: props.data.features.length ? this.getLayers(props.data.features) : [],
-      filters: this.getFilters('all'),
-      loaded: false,
-      mapFilter: {
-        deployment: 'all'
-      }
+      scaleBy,
+      layers: this.getLayers(data, scaleBy),
+      filters: []
     };
-    this.theMap = null;
     this.configureMap = this.configureMap.bind(this);
+    this.onFieldChange = this.onFieldChange.bind(this);
+    this.navigate = this.navigate.bind(this);
   }
 
   // eslint-disable-next-line camelcase
-  UNSAFE_componentWillReceiveProps (nextProps) {
-    if (this.props.data !== nextProps.data) {
+  UNSAFE_componentWillReceiveProps (data) {
+    if (!this.props.data && data) {
       this.setState({
-        layers: this.getLayers(nextProps.data.features)
+        layers: this.getLayers(data, this.state.scaleBy)
       });
-      this.setCountryStyle(nextProps.data.features);
-    }
-  }
-
-  onMapFilterChange (field, e) {
-    let mapFilter = _cloneDeep(this.state.mapFilter);
-    mapFilter[field] = e.target.value;
-    const filters = this.getFilters(e.target.value);
-    this.setState({ mapFilter, filters });
-    this.onPopoverCloseClick();
-  }
-
-  setCountryStyle (features) {
-    // Color the countries layer using the source data.
-    if (this.theMap && this.state.loaded) {
-      const maxScaleValue = Math.max(...features.map(o => isNaN(o.properties.eru) ? 0 : o.properties.eru));
-      countryChromaScale.domain([0, maxScaleValue]);
-
-      const countryWithEru = features
-        .filter(feat => feat.properties.eru > 0);
-
-      if (countryWithEru.length) {
-        // Data driven case statement:
-        // 'case',
-        //  // PT
-        //  ['==', ['to-string', ['get', 'ISO2']], 'PT'],
-        //  'red',
-        //  // Default
-        //  'hsl(213, 38%, 28%)'
-        let countryWithEruColor = countryWithEru.reduce((acc, feat) => {
-          const iso = feat.properties.iso.toUpperCase();
-          // France and Norway don't have ISO2 codes in tileset
-          if (iso === 'FR' || iso === 'NO') {
-            const nameLong = iso === 'FR' ? 'France' : 'Norway';
-            acc.push(['==', ['to-string', ['get', 'NAME_LONG']], nameLong]);
-          } else {
-            acc.push(['==', ['to-string', ['get', 'ISO2']], feat.properties.iso.toUpperCase()]);
-          }
-          acc.push(countryChromaScale(feat.properties.eru).hex());
-          return acc;
-        }, ['case']);
-
-        countryWithEruColor.push('#dedede');
-        this.theMap.setPaintProperty('icrc_admin0', 'fill-color', countryWithEruColor);
-      }
     }
   }
 
   configureMap (theMap) {
-    this.theMap = theMap;
-
-    const getCountryFeat = (e) => {
-      const iso = getCountryIsoFromVt(e.features[0]);
-      return iso ? this.props.data.features.find(f => f.properties.iso === iso) : null;
-    };
-
-    theMap.on('click', 'deployments', e => {
+    theMap.on('click', 'surge', e => {
       this.showPopover(theMap, e.features[0]);
     });
-
-    theMap.on('mousemove', 'deployments', () => {
+    theMap.on('mousemove', 'surge', () => {
       theMap.getCanvas().style.cursor = 'pointer';
     });
-    theMap.on('mouseleave', 'deployments', () => {
+    theMap.on('mouseleave', 'surge', () => {
       theMap.getCanvas().style.cursor = '';
-    });
-
-    theMap.on('click', 'icrc_admin0', e => {
-      const feat = getCountryFeat(e);
-      if (feat) {
-        this.showPopover(theMap, feat);
-      }
-    });
-
-    theMap.on('mousemove', 'icrc_admin0', e => {
-      if (getCountryFeat(e)) {
-        theMap.getCanvas().style.cursor = 'pointer';
-      }
-    });
-    theMap.on('mouseleave', 'icrc_admin0', () => {
-      theMap.getCanvas().style.cursor = '';
-    });
-
-    theMap.on('style.load', () => {
-      this.setState({loaded: true});
-      this.setCountryStyle(this.props.data.features);
     });
   }
 
-  getFilters (value) {
-    if (value === 'all') {
-      return [{
-        layer: 'deployments',
-        filter: [
-          'any',
-          ['>', 'fact', 0],
-          ['>', 'rdrt', 0],
-          ['>', 'heop', 0]
-        ]
-      }];
-    } else if (value === 'eru') {
-      return [
-        {layer: 'deployments', filter: ['has', 'nope']}
-      ];
-    }
+  onFieldChange (e) {
+    const scaleBy = e.target.value;
+    this.setState({
+      layers: this.getLayers(this.props.data, scaleBy),
+      scaleBy
+    });
+  }
 
-    // Only show layers where field value is above 0.
-    return [
-      {layer: 'deployments', filter: ['>', value, 0]}
+  getLayers (geoJSON, scaleBy) {
+    const ccolor = [
+      'case',
+      ['all', ['>', ['get', 'units'], 0], ['>', ['get', 'personnel'], 0]],
+      '#4c5d9b',
+      ['>', ['get', 'units'], 0],
+      '#f5333f',
+      ['>', ['get', 'personnel'], 0],
+      '#ff9e00',
+      '#fff'
     ];
-  }
 
-  getLayers (features) {
+    const scaleValues = geoJSON?.features?.map(o => o.properties[scaleBy]);
+    let maxScaleValue = 1;
+    if (scaleValues.length) {
+      maxScaleValue = Math.max.apply(Math, scaleValues) || 1;
+    }
+    const cradius = {
+      property: scaleBy,
+      stops: [
+        [0, 5],
+        [maxScaleValue, 12]
+      ]
+    };
+
     const layers = [];
-    const sumProps = ['+', ['get', 'fact'], ['get', 'rdrt'], ['get', 'heop']];
-    const maxValue = Math.max(...features.map(({properties: { fact, rdrt, heop }}) => fact + rdrt + heop)) || 1;
-
     layers.push({
-      id: 'deployments',
+      id: 'inner_circle',
       type: 'circle',
       source,
       paint: {
-        'circle-color': '#5890FF',
-        'circle-radius': [
-          'interpolate',
-          ['exponential', 1],
-          sumProps,
-          0, 3,
-          maxValue, 10
-        ]
+        'circle-color': ccolor,
+        'circle-radius': 5
+      }
+    });
+    layers.push({
+      id: 'surge',
+      type: 'circle',
+      source,
+      paint: {
+        'circle-color': ccolor,
+        'circle-radius': cradius,
+        'circle-opacity': 0.4
       }
     });
 
     return layers;
+  }
+
+  navigate (id) {
+    if (id) {
+      this.props.history.push(`/countries/${id}`);
+    }
   }
 
   onPopoverCloseClick () {
@@ -186,33 +123,12 @@ export default class DeploymentsMap extends React.Component {
   showPopover (theMap, feature) {
     let popoverContent = document.createElement('div');
 
-    let deployments = [
-      {
-        label: 'FACT',
-        value: feature.properties.fact
-      },
-      {
-        label: 'RDRT',
-        value: feature.properties.rdrt
-      },
-      {
-        label: 'HEOPs',
-        value: feature.properties.heop
-      },
-      {
-        label: 'ERU',
-        value: feature.properties.eru
-      }
-    ];
-
-    const { strings } = this.context;
-
     render(<MapPopover
-             title={resolveToString(strings.mapPopoverTitle, { name: feature.properties.name })}
-             countryId={feature.properties.id}
-             deployments={deployments}
-             onCloseClick={this.onPopoverCloseClick.bind(this)}
-           />, popoverContent);
+      title={feature.properties.name}
+      history={this.props.history}
+      uri={feature.properties.id}
+      events={JSON.parse(feature.properties.events)}
+      onCloseClick={this.onPopoverCloseClick.bind(this)} />, popoverContent);
 
     // Populate the popup and set its coordinates
     // based on the feature found.
@@ -221,171 +137,150 @@ export default class DeploymentsMap extends React.Component {
     }
 
     this.popover = new mapboxgl.Popup({closeButton: false})
-      .setLngLat(feature.coordinates)
+      .setLngLat(feature.geometry.coordinates)
       .setDOMContent(popoverContent.children[0])
       .addTo(theMap);
   }
 
   render () {
-    const {
-      features
-    } = this.props.data;
 
-    if (!features.length) return null;
-    const maxScaleValue = Math.max(...features.map(o => o.properties.eru));
-    const filterTypes = [
-      {
-        label: 'All',
-        value: 'all'
-      },
-      {
-        label: 'FACT',
-        value: 'fact'
-      },
-      {
-        label: 'RDRT',
-        value: 'rdrt'
-      },
-      {
-        label: 'HEOPs',
-        value: 'heop'
-      },
-      {
-        label: 'ERUs',
-        value: 'eru'
-      }
-    ];
-    const activeFilter = filterTypes.find(d => d.value === this.state.mapFilter.deployment).label;
-
-    const { strings } = this.context;
+    const { strings } = this.props;
     return (
       <div className='stats-map deployments-map'>
         <div className='inner'>
-          <div className='map-container'>
-            <h2 className='visually-hidden'>
-              <Translate stringId='deploymentsMapHeading'/>
-            </h2>
-            <MapComponent className='map-vis__holder'
-              configureMap={this.configureMap}
-              noExport={true}
-              downloadButton={true}
-              downloadedHeaderTitle={strings.deploymentsMapDownloadTitle}
-              layers={this.state.layers}
-              filters={this.state.filters}
-              geoJSON={this.props.data}
-              countriesGeojson={this.props.countriesGeojson}>
-              <figcaption className='map-vis__legend map-vis__legend--bottom-right legend'>
-                <div className='deployments-key'>
-                  <div>
-                    <label className='form__label'>
-                      <Translate stringId='deploymentsMapKey'/>
-                    </label>
-                    <dl className='legend__dl legend__dl--colors'>
-                      <dt className='color color--blue'>blue</dt>
-                      {activeFilter === 'All' ? (
+          {this.props.data ? (
+            <div className='map-container'>
+              <h2 className='visually-hidden'>
+                <Translate stringId='deploymentsMapHeading'/>
+              </h2>
+              <MapComponent className='map-vis__holder'
+                configureMap={this.configureMap}
+                noExport={true}
+                downloadButton={true}
+                downloadedHeaderTitle={strings.emergenciesMapDownloadTitle}
+                layers={this.state.layers}
+                // filters={this.state.filters}
+                geoJSON={this.props.data}
+                countriesGeojson={this.props.countriesGeojson}>
+                <figcaption className='map-vis__legend map-vis__legend--bottom-right legend'>
+                  <div className='legend__group'>
+                    <form className='form'>
+                      <FormRadioGroup
+                        label='Scale points by'
+                        name='map-scale'
+                        classWrapper='map-scale-options'
+                        options={[
+                          {
+                            label: 'ERU',
+                            value: 'units'
+                          },
+                          {
+                            label: 'Personnel',
+                            value: 'personnel'
+                          }
+                        ]}
+                        inline={false}
+                        selectedOption={this.state.scaleBy}
+                        onChange={this.onFieldChange} />
+                    </form>
+                    <div className='key'>
+                      <label className='form__label'>Key</label>
+                      <dl className='legend__dl legend__dl--colors'>
+                        <dt className='color color--red'>red</dt>
                         <dd>
-                          <Translate stringId='deploymentsMapDeployedTitle'/>
+                          <Translate stringId='eruOnly'/>
                         </dd>
-                      ) : (
+                        <dt className='color color--map-red2'>yellow</dt>
                         <dd>
-                          <Translate
-                            stringId='deploymentsMapDeployed'
-                            params={{
-                              activeFilter: activeFilter,
-                            }}
-                          />
+                          <Translate stringId='rrOnly'/>
                         </dd>
-                      )}
-                    </dl>
+                        <dt className='color color--map-darkblue'>blue</dt>
+                        <dd>
+                          <Translate stringId='mixedEruRr'/>
+                        </dd>
+                      </dl>
+                    </div>
                   </div>
-                  <div className='legend__block'>
-                    <h3 className='legend__title'>
-                      <Translate stringId='deploymentsMapLegendTitle'/>
-                    </h3>
-                    <dl className='legend__grandient'>
-                      <dt style={{background: 'linear-gradient(to right, #F0C9E8, #861A70)'}}>
-                        <Translate stringId='deploymentsMapScaleGradient'/>
-                      </dt>
-                      <dd>
-                        <span>0</span>
-                        <span>to</span>
-                        <span>{maxScaleValue}</span>
-                      </dd>
-                    </dl>
-                  </div>
-                </div>
-              </figcaption>
-
-              { /* Search for ¤ | <figcaption className='map-vis__legend map-vis__legend--top-left legend'>
-                <FormSelect
-                  label='Filter Deployments'
-                  name='deployments'
-                  id='deployments'
-                  options={filterTypes}
-                  value={this.state.mapFilter.deployment}
-                  onChange={this.onMapFilterChange.bind(this, 'deployment')} >
-
-                </FormSelect>
-              </figcaption> */ }
-
-              {/* <DownloadButton data={canvas} /> */}
-
-            </MapComponent>
-          </div>
+                </figcaption>
+              </MapComponent>
+            </div>
+          ) : (
+            <EmptyMessage />
+          )}
         </div>
       </div>
     );
   }
 }
 
-DeploymentsMap.contextType = LanguageContext;
 if (environment !== 'production') {
   DeploymentsMap.propTypes = {
     data: T.object,
-    countriesGeojson: T.object
+    history: T.object,
+    countriesGeojson: T.object,
   };
 }
 
-const logoPath = '/assets/graphics/content';
-const logoSrc = {
-  fact: 'fact.jpg',
-  eru: 'eru.jpg',
-  heops: 'heops.jpg',
-  rdrt: 'rdrt.jpg'
-};
+export default withLanguage(withRouter(DeploymentsMap));
 
 class MapPopover extends React.Component {
   render () {
     const {
       title,
-      countryId,
-      deployments
+      events,
+      history
     } = this.props;
     return (
       <article className='popover'>
         <div className='popover__contents'>
           <header className='popover__header'>
             <div className='popover__headline'>
-              <a className='link-underline' href={`/countries/${countryId}`}>{title}</a>
+              <a
+                className='link--primary link--with-icon'
+                onClick={() => history.push(`/countries/${this.props.uri}`)}
+              >
+                <span className='link--with-icon-text'>{title}</span>
+                <span className='popover__headline__icon collecticon-chevron-right'></span>
+              </a>
             </div>
             <div className='popover__actions actions'>
               <ul className='actions__menu'>
-                <li><button type='button' className='actions__menu-item poa-xmark' title='Close popover' onClick={this.props.onCloseClick}>
-                      <span>
-                        <Translate stringid='mapPopOverDismiss'/>
-                      </span>
-                    </button>
+                <li>
+                  <button type='button' className='actions__menu-item poa-xmark' title='Close popover' onClick={this.props.onCloseClick}>
+                    <span>
+                      <Translate stringId='emergenciesMapPopoverDismiss'/>
+                    </span>
+                  </button>
                 </li>
               </ul>
             </div>
           </header>
-          <div className='popover__body'>
-            <ul>
-              {deployments.map(dep => (
-                <li key={dep.label}>
-                  <img src={path.join(logoPath, logoSrc[dep.label.toLowerCase()])} />{dep.value} {dep.label}</li>
-              ))}
-            </ul>
+          <div className='popover__body scrollbar__custom'>
+            {events && events.map((event) =>
+              <>
+                <p className='base-font-semi-bold'>
+                  <a
+                    onClick={(e) => {
+                      e.preventDefault();
+                      history.push(`/emergencies/${event.id}`);
+                    }}
+                  >
+                    {event.name}
+                  </a>
+                </p>
+                {event.units &&
+                  <p>
+                    <Translate
+                      stringId='readinessDeployedErus'
+                      params={{ numDeployed: n(event.units) }}
+                    />
+                  </p>
+                }
+                {event.personnel &&
+                  <p>{event.personnel} <Translate stringId='tablePersonnel' /></p>
+                }
+              </>
+            )}
           </div>
         </div>
       </article>
@@ -397,7 +292,7 @@ if (environment !== 'production') {
   MapPopover.propTypes = {
     onCloseClick: T.func,
     title: T.string,
-    countryId: T.number,
-    deployments: T.array
+    events: T.object,
+    history: T.object
   };
 }
