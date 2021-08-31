@@ -3030,7 +3030,7 @@ export default {
   timeFrames: 'Timeframes',
   eventDate: 'Date of event',
   goFieldReportDate: 'Go Field Report Date',
-  triggerDate: 'Disaster date/ trigger date',
+  triggerDate: 'Disaster date / trigger date',
   nsResponseStarted: 'NS response commenced',
   uploadMap: 'Upload map',
 

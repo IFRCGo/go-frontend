@@ -232,9 +232,9 @@ function DrefApplication(props: Props) {
   const {
     pending: drefApplicationPending,
   } = useRequest<DrefApiFields>({
-      skip: !drefId,
-      url: `api/v2/dref/${drefId}/`,
-      onSuccess: (response) => {
+    skip: !drefId,
+    url: `api/v2/dref/${drefId}/`,
+    onSuccess: (response) => {
       onValueSet({
         ...response,
         country_district: response.country_district?.map((cd) => ({
@@ -312,7 +312,7 @@ function DrefApplication(props: Props) {
 
     if (currentStep === 'submission') {
       if (finalValues && userDetails && userDetails.id) {
-        const  body = {
+        const body = {
           user: userDetails.id,
           ...getDefinedValues(finalValues),
         };
