@@ -587,6 +587,16 @@ export function getAllDeploymentERU (filters = {}) {
   };
 }
 
+export const GET_AGGR_SURGE_KEY_FIGURES = 'GET_AGGR_SURGE_KEY_FIGURES';
+export function getAggrSurgeKeyFigures () {
+  return fetchJSON(`/api/v2/deployment/aggregated`, GET_AGGR_SURGE_KEY_FIGURES, withToken());
+}
+
+export const GET_AGGR_SURGE_EVENT_KEY_FIGURES = 'GET_AGGR_SURGE_EVENT_KEY_FIGURES';
+export function getAggrSurgeEventKeyFigures (eventId) {
+  return fetchJSON(`/api/v2/deployment/aggregated/?event=${eventId}`, GET_AGGR_SURGE_EVENT_KEY_FIGURES, withToken());
+}
+
 export const GET_LIST_CSV = 'GET_LIST_CSV';
 export function getListAsCsv (url, id) {
   return fetchCSV(url, GET_LIST_CSV, withToken(), { id });
