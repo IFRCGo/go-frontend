@@ -120,6 +120,11 @@ export const processGoOptions: GoContextInterface['transformOptions'] = (
   const token = Date.parse(user?.expires) > Date.now()
     ? user?.token
     : undefined;
+  
+  const defaultHeaders = {
+    Authorization: token ? `Token ${token}` : '',
+    'Accept-Language': (enforceEnglish || method !== 'GET') ? 'en' : currentLanguage,
+  };
 
   if (formData) {
     const requestBody = getFormData(body as FormDataCompatibleObj);
@@ -127,8 +132,7 @@ export const processGoOptions: GoContextInterface['transformOptions'] = (
       method,
       headers: {
         Accept: 'application/json',
-        Authorization: token ? `Token ${token}` : '',
-        'Accept-Language': (enforceEnglish || method !== 'GET') ? 'en' : currentLanguage,
+          ...defaultHeaders,
         ...headers,
       },
       body: requestBody,
@@ -144,8 +148,7 @@ export const processGoOptions: GoContextInterface['transformOptions'] = (
       'Content-Type': isCsvRequest
         ? 'text/csv; charset=utf-8'
         : 'application/json; charset=utf-8',
-      Authorization: token ? `Token ${token}` : '',
-      'Accept-Language': (enforceEnglish || method !== 'GET') ? 'en' : currentLanguage,
+      ...defaultHeaders,
       ...headers,
     },
     body: requestBody,
