@@ -117,6 +117,10 @@ class AlertsTable extends SFPComponent {
       qs.created_at__gte = recentInterval;
     }
 
+    if (props.isActive) {
+      qs.is_active = 'true';
+    }
+    
     if (!isNaN(props.emergency)) {
       qs.event = props.emergency.toString();
     }
@@ -264,7 +268,7 @@ if (environment !== 'production') {
     noPaginate: T.bool,
     showExport: T.bool,
     title: T.string,
-
+    isActive: T.bool,
     showRecent: T.bool,
     viewAll: T.string,
     viewAllText: T.string,
