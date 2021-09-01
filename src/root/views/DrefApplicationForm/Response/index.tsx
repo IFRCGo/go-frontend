@@ -86,11 +86,11 @@ function Response(props: Props) {
   return (
     <>
       <Container
-        heading={strings.targetingStrategy}
+        heading={strings.drefFormTargetingStrategy}
         className={styles.targetingStrategy}
       >
         <InputSection
-          title={strings.peopleAssistedthroughOperation}
+          title={strings.drefFormPeopleAssistedthroughOperation}
         >
           <TextArea
             label={strings.cmpActionDescriptionLabel}
@@ -98,11 +98,11 @@ function Response(props: Props) {
             onChange={onValueChange}
             value={value.people_assisted}
             error={error?.fields?.people_assisted}
-            placeholder={strings.maxThreeHundredCharacters}
+            placeholder={strings.drefFormMaxThreeHundredCharacters}
           />
         </InputSection>
         <InputSection
-          title={strings.protectionGenderAndInclusion}
+          title={strings.drefFormProtectionGenderAndInclusion}
         >
           <TextArea
             label={strings.cmpActionDescriptionLabel}
@@ -110,12 +110,12 @@ function Response(props: Props) {
             onChange={onValueChange}
             value={value.entity_affected}
             error={error?.fields?.entity_affected}
-            placeholder={strings.maxThreeHundredCharacters}
+            placeholder={strings.drefFormMaxThreeHundredCharacters}
           />
         </InputSection>
       </Container>
       <Container
-        heading={strings.assistedPopulation}
+        heading={strings.drefFormAssistedPopulation}
         className={styles.assistedPopulation}
       >
         <InputSection
@@ -123,28 +123,28 @@ function Response(props: Props) {
           twoColumn
         >
           <NumberInput
-            label={strings.women}
+            label={strings.drefFormWomen}
             name="women"
             value={value.women}
             onChange={onValueChange}
             error={error?.fields?.women}
           />
           <NumberInput
-            label={strings.men}
+            label={strings.drefFormMen}
             name="men"
             value={value.men}
             onChange={onValueChange}
             error={error?.fields?.men}
           />
           <NumberInput
-            label={strings.girls}
+            label={strings.drefFormGirls}
             name="girls"
             value={value.girls}
             onChange={onValueChange}
             error={error?.fields?.girls}
           />
           <NumberInput
-            label={strings.boys}
+            label={strings.drefFormBoys}
             name="boys"
             value={value.boys}
             onChange={onValueChange}
@@ -152,33 +152,33 @@ function Response(props: Props) {
           />
         </InputSection>
         <InputSection
-          title={strings.estimateResponse}
+          title={strings.drefFormEstimateResponse}
           multiRow
           twoColumn
         >
           <NumberInput
-            label={strings.estimatePeopleDisability}
+            label={strings.drefFormEstimatePeopleDisability}
             name="disability_people_per"
             value={value.disability_people_per}
             onChange={onValueChange}
             error={error?.fields?.disability_people_per}
           />
           <NumberInput
-            label={strings.estimatedUran}
+            label={strings.drefFormEstimatedUrban}
             name="people_per_urban_local"
             value={value.people_per_urban_local}
             onChange={onValueChange}
             error={error?.fields?.people_per_urban_local}
           />
           <NumberInput
-            label={strings.estimatedDisplacedPeople}
+            label={strings.drefFormEstimatedDisplacedPeople}
             name="displaced_people"
             value={value.displaced_people}
             onChange={onValueChange}
             error={error?.fields?.displaced_people}
           />
           <NumberInput
-            label={strings.peopleTargetedWithEarlyActions}
+            label={strings.drefFormPeopleTargetedWithEarlyActions}
             name="people_targeted_with_early_actions"
             value={value.people_targeted_with_early_actions}
             onChange={onValueChange}
@@ -187,38 +187,38 @@ function Response(props: Props) {
         </InputSection>
       </Container>
       <Container
-        heading={strings.objectiveAndStrategy}
+        heading={strings.drefFormObjectiveAndStrategy}
         className={styles.objectiveRationale}
       >
         <InputSection
-          title={strings.objectiveOperation}
+          title={strings.drefFormObjectiveOperation}
         >
           <TextArea
             error={error?.fields?.operation_objective}
             name="operation_objective"
             onChange={onValueChange}
             value={value.operation_objective}
-            placeholder={strings.objectiveOperationPlaceholder}
+            placeholder={strings.drefFormObjectiveOperationPlaceholder}
           />
         </InputSection>
         <InputSection
-          title={strings.responseRationale}
+          title={strings.drefFormResponseRationale}
         >
           <TextArea
             name="response_strategy"
             onChange={onValueChange}
             value={value.response_strategy}
             error={error?.fields?.response_strategy}
-            placeholder={strings.responseRationalePlaceholder}
+            placeholder={strings.drefFormResponseRationalePlaceholder}
           />
         </InputSection>
       </Container>
       <Container
-        heading={strings.supportServices}
+        heading={strings.drefFormSupportServices}
       >
         <InputSection
-          title={strings.humanResource}
-          description={strings.humanResourceDescription}
+          title={strings.drefFormHumanResource}
+          description={strings.drefFormHumanResourceDescription}
         >
           <TextArea
             label={strings.cmpActionDescriptionLabel}
@@ -226,11 +226,11 @@ function Response(props: Props) {
             onChange={onValueChange}
             value={value.human_resource}
             error={error?.fields?.human_resource}
-            placeholder={strings.maxThreeHundredCharacters}
+            placeholder={strings.drefFormMaxThreeHundredCharacters}
           />
         </InputSection>
         <InputSection
-          title={strings.surgePersonnelDeployed}
+          title={strings.drefFormSurgePersonnelDeployed}
         >
           <TextArea
             label={strings.cmpActionDescriptionLabel}
@@ -238,11 +238,11 @@ function Response(props: Props) {
             onChange={onValueChange}
             value={value.surge_personnel_deployed}
             error={error?.fields?.surge_personnel_deployed}
-            placeholder={strings.maxThreeHundredCharacters}
+            placeholder={strings.drefFormMaxThreeHundredCharacters}
           />
         </InputSection>
         <InputSection
-          title={strings.logisticCapacityOfNs}
+          title={strings.drefFormLogisticCapacityOfNs}
         >
           <TextArea
             label={strings.cmpActionDescriptionLabel}
@@ -250,11 +250,11 @@ function Response(props: Props) {
             onChange={onValueChange}
             value={value.logistic_capacity_of_ns}
             error={error?.fields?.logistic_capacity_of_ns}
-            placeholder={strings.maxThreeHundredCharacters}
+            placeholder={strings.drefFormMaxThreeHundredCharacters}
           />
         </InputSection>
         <InputSection
-          title={strings.safetyConcerns}
+          title={strings.drefFormSafetyConcerns}
         >
           <TextArea
             label={strings.cmpActionDescriptionLabel}
@@ -262,12 +262,12 @@ function Response(props: Props) {
             onChange={onValueChange}
             value={value.safety_concerns}
             error={error?.fields?.safety_concerns}
-            placeholder={strings.maxThreeHundredCharacters}
+            placeholder={strings.drefFormMaxThreeHundredCharacters}
           />
         </InputSection>
         <InputSection
-          title={strings.pMer}
-          description={strings.pMerDescription}
+          title={strings.drefFormPmer}
+          description={strings.drefFormPmerDescription}
         >
           <TextArea
             label={strings.cmpActionDescriptionLabel}
@@ -275,12 +275,12 @@ function Response(props: Props) {
             onChange={onValueChange}
             value={value.pmer}
             error={error?.fields?.pmer}
-            placeholder={strings.maxThreeHundredCharacters}
+            placeholder={strings.drefFormMaxThreeHundredCharacters}
           />
         </InputSection>
         <InputSection
-          title={strings.communication}
-          description={strings.communicationDescription}
+          title={strings.drefFormCommunication}
+          description={strings.drefFormCommunicationDescription}
         >
           <TextArea
             label={strings.cmpActionDescriptionLabel}
@@ -288,12 +288,12 @@ function Response(props: Props) {
             onChange={onValueChange}
             value={value.communication}
             error={error?.fields?.communication}
-            placeholder={strings.maxThreeHundredCharacters}
+            placeholder={strings.drefFormMaxThreeHundredCharacters}
           />
         </InputSection>
       </Container>
       <Container
-        heading={strings.plannedIntervention}
+        heading={strings.drefFormPlannedIntervention}
         className={styles.plannedIntervention}
         visibleOverflow
       >
@@ -302,7 +302,7 @@ function Response(props: Props) {
             name={undefined}
             onChange={setIntervention}
             value={intervention}
-            label={strings.interventionsLabel}
+            label={strings.drefFormInterventionsLabel}
             options={filteredInterventionOptions}
           />
           <div className={styles.actions}>

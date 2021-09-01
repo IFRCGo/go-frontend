@@ -98,7 +98,7 @@ function DrefOverview(props: Props) {
   return (
     <>
       <Container
-        heading={strings.essentialInformation}
+        heading={strings.drefFormEssentialInformation}
         className={styles.essentialInformation}
       >
         <InputSection title={strings.drefFormTitle}>
@@ -110,7 +110,7 @@ function DrefOverview(props: Props) {
           />
         </InputSection>
         <InputSection
-          title={strings.nationalSociety}
+          title={strings.drefFormNationalSociety}
         >
           <SelectInput
             error={error?.fields?.national_society}
@@ -122,13 +122,13 @@ function DrefOverview(props: Props) {
           />
         </InputSection>
         <InputSection
-          title={strings.disasterDetails}
+          title={strings.drefFormDisasterDetails}
           multiRow
           twoColumn
         >
           <SelectInput
             error={error?.fields?.disaster_type}
-            label={strings.disasterTypeLabel}
+            label={strings.drefFormDisasterTypeLabel}
             name="disaster_type"
             onChange={onValueChange}
             options={disasterTypeOptions}
@@ -137,7 +137,7 @@ function DrefOverview(props: Props) {
           />
           <SelectInput
             error={error?.fields?.type_of_onset}
-            label={strings.typeOfOnsetLabel}
+            label={strings.drefFormTypeOfOnsetLabel}
             name="type_of_onset"
             onChange={onValueChange}
             options={onsetOptions}
@@ -145,7 +145,7 @@ function DrefOverview(props: Props) {
           />
           <SelectInput
             error={error?.fields?.disaster_category}
-            label={strings.disasterCategoryLabel}
+            label={strings.drefFormDisasterCategoryLabel}
             name="disaster_category"
             onChange={onValueChange}
             options={disasterCategoryOptions}
@@ -153,7 +153,7 @@ function DrefOverview(props: Props) {
           />
         </InputSection>
         <InputSection
-          title={isImminentOnset ? strings.affectedCountryAndProvinceImminent : strings.affectedCountryAndProvince}
+          title={isImminentOnset ? strings.drefFormAffectedCountryAndProvinceImminent : strings.drefFormAffectedCountryAndProvinceImminent}
           multiRow
           oneColumn
         >
@@ -180,7 +180,7 @@ function DrefOverview(props: Props) {
           </div>
         </InputSection>
         <InputSection
-          title={strings.peopleAffected}
+          title={strings.drefFormPeopleAffected}
         >
           <NumberInput
             name="num_affected"
@@ -190,7 +190,7 @@ function DrefOverview(props: Props) {
           />
         </InputSection>
         <InputSection
-          title={strings.requestAmount}
+          title={strings.drefFormRequestAmount}
         >
           <NumberInput
             name="amount_requested"
@@ -200,7 +200,7 @@ function DrefOverview(props: Props) {
           />
         </InputSection>
         <InputSection
-          title={strings.emergencyAppealPlanned}
+          title={strings.drefFormEmergencyAppealPlanned}
         >
           <RadioInput
             name="emergency_appeal_planned"
@@ -213,7 +213,7 @@ function DrefOverview(props: Props) {
           />
         </InputSection>
         <InputSection
-          title={strings.uploadMap}
+          title={strings.drefFormUploadMap}
         >
           <GoFileInput
             name="event_map"
@@ -228,11 +228,11 @@ function DrefOverview(props: Props) {
         </InputSection>
       </Container>
       <Container
-        heading={strings.timeFrames}
+        heading={strings.drefFormTimeFrames}
         className={styles.timeframes}
       >
         <InputSection
-          title={strings.eventDate}
+          title={strings.drefFormEventDate}
         >
           <DateInput
             name="event_date"
@@ -242,7 +242,7 @@ function DrefOverview(props: Props) {
           />
         </InputSection>
         <InputSection
-          title={strings.goFieldReportDate}
+          title={strings.drefFormGoFieldReportDate}
         >
           <DateInput
             name="go_field_report_date"
@@ -252,7 +252,7 @@ function DrefOverview(props: Props) {
           />
         </InputSection>
         <InputSection
-          title={strings.nsResponseStarted}
+          title={strings.drefFormNsResponseStarted}
         >
           <DateInput
             name="ns_respond_date"
