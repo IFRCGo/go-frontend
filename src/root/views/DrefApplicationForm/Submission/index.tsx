@@ -34,11 +34,11 @@ function Submission(props: Props) {
   return (
     <>
       <Container
-        heading={strings.submissionFlow}
+        heading={strings.drefFormSubmissionFlow}
         className={styles.submissionFlow}
       >
         <InputSection
-          title={strings.nsRequestDate}
+          title={strings.drefFormNsRequestDate}
         >
           <DateInput
             name="ns_request_date"
@@ -48,8 +48,8 @@ function Submission(props: Props) {
           />
         </InputSection>
         <InputSection
-          title={strings.submissionStartDate}
-          description={strings.submissionStartDateDescription}
+          title={strings.drefFormSubmissionStartDate}
+          description={strings.drefFormSubmissionStartDateDescription}
         >
           <DateInput
             name="start_date"
@@ -59,8 +59,8 @@ function Submission(props: Props) {
           />
         </InputSection>
         <InputSection
-          title={strings.submissionEndDate}
-          description={strings.endDateSubmissionDescription}
+          title={strings.drefFormSubmissionEndDate}
+          description={strings.drefFormEndDateSubmissionDescription}
         >
           <DateInput
             name="end_date"
@@ -70,8 +70,8 @@ function Submission(props: Props) {
           />
         </InputSection>
         <InputSection
-          title={strings.dateSubmissionToGeneva}
-          description={strings.dateSubmissionToGenevaDescription}
+          title={strings.drefFormDateSubmissionToGeneva}
+          description={strings.drefFormDateSubmissionToGenevaDescription}
         >
           <DateInput
             name="submission_to_geneva"
@@ -81,8 +81,8 @@ function Submission(props: Props) {
           />
         </InputSection>
         <InputSection
-          title={strings.dateOfPublishing}
-          description={strings.dateOfPublishingDescription}
+          title={strings.drefFormDateOfPublishing}
+          description={strings.drefFormDateOfPublishingDescription}
         >
           <DateInput
             name="date_of_approval"
@@ -92,11 +92,11 @@ function Submission(props: Props) {
           />
         </InputSection>
         <InputSection
-          title={strings.operationTimeframeSubmission}
+          title={strings.drefFormOperationTimeframeSubmission}
         >
           <TextInput
             name="operation_timeframe"
-            placeholder={strings.operationTimeframeSubmissionDescription}
+            placeholder={strings.drefFormOperationTimeframeSubmissionDescription}
             value={value.operation_timeframe}
             onChange={onValueChange}
             error={error?.fields?.operation_timeframe}
@@ -104,12 +104,12 @@ function Submission(props: Props) {
         </InputSection>
       </Container>
       <Container
-        heading={strings.trackingData}
+        heading={strings.drefFormTrackingData}
         className={styles.trackingData}
       >
         <InputSection
-          title={strings.appealCode}
-          description={strings.appealCodeDescription}
+          title={strings.drefFormAppealCode}
+          description={strings.drefFormAppealCodeDescription}
         >
           <TextInput
             name="appeal_code"
@@ -119,8 +119,8 @@ function Submission(props: Props) {
           />
         </InputSection>
         <InputSection
-          title={strings.glideNum}
-          description={strings.glideNumDescription}
+          title={strings.drefFormGlideNum}
+          description={strings.drefFormGlideNumDescription}
         >
           <TextInput
             placeholder="MDR code"
@@ -131,8 +131,8 @@ function Submission(props: Props) {
           />
         </InputSection>
         <InputSection
-          title={strings.appealManager}
-          description={strings.appealManagerDescription}
+          title={strings.drefFormAppealManager}
+          description={strings.drefFormAppealManagerDescription}
         >
           <TextInput
             label="Name"
@@ -150,8 +150,8 @@ function Submission(props: Props) {
           />
         </InputSection>
         <InputSection
-          title={strings.projectManager}
-          description={strings.projectManagerDescription}
+          title={strings.drefFormProjectManager}
+          description={strings.drefFormProjectManagerDescription}
         >
           <TextInput
             label="Name"
@@ -169,7 +169,7 @@ function Submission(props: Props) {
           />
         </InputSection>
         <InputSection
-          title={strings.nationalSocietyContact}
+          title={strings.drefFormNationalSocietyContact}
         >
           <TextInput
             label="Name"
@@ -187,7 +187,7 @@ function Submission(props: Props) {
           />
         </InputSection>
         <InputSection
-          title={strings.ifrcEmergency}
+          title={strings.drefFormIfrcEmergency}
         >
           <div>
             <TextInput
@@ -209,7 +209,7 @@ function Submission(props: Props) {
           </div>
         </InputSection>
         <InputSection
-          title={strings.mediaContact}
+          title={strings.drefFormMediaContact}
         >
           <TextInput
             label="Name"

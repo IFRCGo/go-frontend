@@ -127,8 +127,8 @@ function EventDetails(props: Props) {
     <>
       <Container visibleOverflow>
         <InputSection
-          title={strings.eventDetailsTitle}
-          description={strings.eventDescription}
+          title={strings.drefFormEventDetailsTitle}
+          description={strings.drefFormEventDescription}
         >
           <SearchSelectInput
             name={undefined}
@@ -148,11 +148,11 @@ function EventDetails(props: Props) {
         </InputSection>
       </Container>
       <Container
-        heading={strings.previousOperations}
+        heading={strings.drefFormPreviousOperations}
         className={styles.previousOperations}
       >
         <InputSection
-          title={strings.affectSameArea}
+          title={strings.drefFormAffectSameArea}
         >
           <RadioInput
             name="affect_same_area"
@@ -165,7 +165,7 @@ function EventDetails(props: Props) {
           />
         </InputSection>
         <InputSection
-          title={strings.affectedthePopulationTitle}
+          title={strings.drefFormAffectedthePopulationTitle}
         >
           <RadioInput
             name="affect_same_population"
@@ -178,7 +178,7 @@ function EventDetails(props: Props) {
           />
         </InputSection>
         <InputSection
-          title={strings.nsRespond}
+          title={strings.drefFormNsRespond}
         >
           <RadioInput
             name="ns_respond"
@@ -191,7 +191,7 @@ function EventDetails(props: Props) {
           />
         </InputSection>
         <InputSection
-          title={strings.nsRequest}
+          title={strings.drefFormNsRequest}
         >
           <RadioInput
             name="ns_request_fund"
@@ -205,10 +205,10 @@ function EventDetails(props: Props) {
         </InputSection>
         {value.ns_request_fund && (
           <InputSection
-            title={strings.nsFundingDetail}
+            title={strings.drefFormNsFundingDetail}
           >
             <TextInput
-              placeholder={strings.nsFundingDetailDescription}
+              placeholder={strings.drefFormNsFundingDetailDescription}
               name="ns_request_text"
               value={value.ns_request_text}
               onChange={onValueChange}
@@ -218,8 +218,8 @@ function EventDetails(props: Props) {
         )}
         {isImminentOnset && (
           <InputSection
-            title={strings.lessonsLearnedTitle}
-            description={strings.lessonsLearnedDescription}
+            title={strings.drefFormLessonsLearnedTitle}
+            description={strings.drefFormLessonsLearnedDescription}
             oneColumn
             multiRow
           >
@@ -234,12 +234,12 @@ function EventDetails(props: Props) {
         )}
       </Container>
       <Container
-        heading={strings.descriptionEvent}
+        heading={strings.drefFormDescriptionEvent}
         className={styles.eventDetails}
       >
         <InputSection
-          title={strings.whatWhereWhen}
-          description={strings.whatWhereWhenDescription}
+          title={strings.drefFormWhatWhereWhen}
+          description={strings.drefFormWhatWhereWhenDescription}
           oneColumn
           multiRow
         >
@@ -248,11 +248,11 @@ function EventDetails(props: Props) {
             onChange={onValueChange}
             value={value.event_description}
             error={error?.fields?.event_description}
-            placeholder={strings.whatWhereWhenPlaceholder}
+            placeholder={strings.drefFormWhatWhereWhenPlaceholder}
           />
         </InputSection>
         <InputSection
-          title={strings.uploadPhotos}
+          title={strings.drefFormUploadPhotos}
         >
           <GoFileInput
             name="images"
@@ -267,8 +267,8 @@ function EventDetails(props: Props) {
           </GoFileInput>
         </InputSection>
         <InputSection
-          title={strings.scopeAndScaleEvent}
-          description={strings.scopeAndScaleDescription}
+          title={strings.drefFormScopeAndScaleEvent}
+          description={strings.drefFormScopeAndScaleDescription}
           oneColumn
           multiRow
         >
