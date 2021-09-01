@@ -15,7 +15,8 @@ import {
   getAllDeploymentERU,
   getActivePersonnel,
   getEruOwners,
-  getPersonnelByEvent
+  getPersonnelByEvent,
+  getAggrSurgeKeyFigures
 } from '#actions';
 import { finishedFetch, datesAgo } from '#utils/utils';
 import { mergeDeployData } from '#utils/mergeDeployData';
@@ -66,6 +67,7 @@ class Deployments extends SFPComponent {
     this.props._getAllDeploymentERU();
     this.props._getActivePersonnel();
     this.props._getPersonnelByEvent();
+    this.props._getAggrSurgeKeyFigures();
   }
 
   // eslint-disable-next-line camelcase
@@ -161,7 +163,7 @@ class Deployments extends SFPComponent {
                 <div className='sumstats__item'>
                   <img className='sumstats__icon_2020' src='/assets/graphics/layout/heops-brand.svg' />
                   <span className='sumstats__value'>
-                    {n(fact)}
+                    {n(this.props.aggregated.data.active_deployments)}
                   </span>
                   <Translate className='sumstats__key' stringId='deploymentsDeployedRRP'/>
                 </div>
@@ -170,18 +172,18 @@ class Deployments extends SFPComponent {
                 <div className='sumstats__item'>
                   <img className='sumstats__icon_2020' src='/assets/graphics/layout/eru-brand.svg'/>
                   <span className='sumstats__value'>
-                    {n(data.deployed)}
+                    {n(this.props.aggregated.data.active_erus)}
                   </span>
                   <Translate className='sumstats__key' stringId='deploymentsDeployedERU'/> &nbsp;
                 </div>
               </li>
               <li className='sumstats__item__wrap'>
                 <div className='sumstats__item'>
-                  <img className='sumstats__icon_2020' src='/assets/graphics/layout/heops-brand.svg' />
+                  <img className='sumstats__icon_2020' src='/assets/graphics/layout/fact-brand.svg' />
                   <span className='sumstats__value'>
-                    {n(heop)}
+                    {n(this.props.aggregated.data.deployments_this_year)}
                   </span>
-                  <Translate className='sumstats__key' stringId='deploymentsNSProvidingRRP'/>
+                  <Translate className='sumstats__key' stringId='deploymentsDeplThisYear'/> &nbsp;
                 </div>
               </li>
             </ul>
@@ -330,14 +332,16 @@ const selector = (state) => ({
   activePersonnel: state.deployments.activePersonnel,
   allEru: state.deployments.allEru,
   countriesGeojson: countriesGeojsonSelector(state),
-  personnelByEvent: state.personnelByEvent
+  personnelByEvent: state.personnelByEvent,
+  aggregated: state.deployments.aggregated
 });
 
 const dispatcher = (dispatch) => ({
   _getEruOwners: () => dispatch(getEruOwners()),
   _getAllDeploymentERU: (...args) => dispatch(getAllDeploymentERU(...args)),
   _getActivePersonnel: (...args) => dispatch(getActivePersonnel(...args)),
-  _getPersonnelByEvent: (...args) => dispatch(getPersonnelByEvent(...args))
+  _getPersonnelByEvent: (...args) => dispatch(getPersonnelByEvent(...args)),
+  _getAggrSurgeKeyFigures: () => dispatch(getAggrSurgeKeyFigures())
 });
 
 export default connect(selector, dispatcher)(Deployments);

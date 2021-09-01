@@ -27,7 +27,8 @@ import {
   addSubscriptions,
   delSubscription,
   getUserProfile,
-  getDeploymentERU
+  getDeploymentERU,
+  getAggrSurgeEventKeyFigures
 } from '#actions';
 import {
   commaSeparatedNumber as n,
@@ -145,6 +146,7 @@ class Emergency extends React.Component {
 
   componentDidMount () {
     this.getEvent(this.props.match.params.id);
+    this.props._getAggrSurgeEventKeyFigures(this.props.match.params.id);
     this.props._getSitrepTypes();
     if (this.props.isLogged) {
       this.props._getUserProfile(this.props.user.data.username);
@@ -1437,7 +1439,7 @@ class Emergency extends React.Component {
                             <div className='sumstats__item'>
                               <img className='sumstats__icon_2020' src='/assets/graphics/layout/heops-brand.svg' />
                               <span className='sumstats__value'>
-                                {n(0)}
+                                {n(this.props.aggregated.data.active_deployments)}
                               </span>
                               <Translate className='sumstats__key' stringId='deploymentsDeployedRRP'/>
                             </div>
@@ -1446,18 +1448,18 @@ class Emergency extends React.Component {
                             <div className='sumstats__item'>
                               <img className='sumstats__icon_2020' src='/assets/graphics/layout/eru-brand.svg'/>
                               <span className='sumstats__value'>
-                                {n(0)}
+                                {n(this.props.aggregated.data.active_erus)}
                               </span>
                               <Translate className='sumstats__key' stringId='deploymentsDeployedERU'/> &nbsp;
                             </div>
                           </li>
                           <li className='sumstats__item__wrap'>
                             <div className='sumstats__item'>
-                              <img className='sumstats__icon_2020' src='/assets/graphics/layout/heops-brand.svg' />
+                              <img className='sumstats__icon_2020' src='/assets/graphics/layout/fact-brand.svg' />
                               <span className='sumstats__value'>
-                                {n(0)}
+                                {n(this.props.aggregated.data.deployments_this_year)}
                               </span>
-                              <Translate className='sumstats__key' stringId='deploymentsNSProvidingRRP'/>
+                              <Translate className='sumstats__key' stringId='deploymentsDeplThisYear'/> &nbsp;
                             </div>
                           </li>
                         </ul>
@@ -1590,7 +1592,8 @@ const selector = (state, ownProps) => ({
   profile: state.profile,
   regionsById: regionsByIdSelector(state),
   countriesGeojson: countriesGeojsonSelector(state),
-  disasterTypes: disasterTypesSelector(state)
+  disasterTypes: disasterTypesSelector(state),
+  aggregated: state.event.aggregated
 });
 
 const dispatcher = (dispatch) => ({
@@ -1606,6 +1609,7 @@ const dispatcher = (dispatch) => ({
   _addSubscriptions: (...args) => dispatch(addSubscriptions(...args)),
   _delSubscription: (...args) => dispatch(delSubscription(...args)),
   _getUserProfile: (...args) => dispatch(getUserProfile(...args)),
+  _getAggrSurgeEventKeyFigures: (...args) => dispatch(getAggrSurgeEventKeyFigures(...args))
 });
 
 export default withLanguage(withRouter(connect(selector, dispatcher)(Emergency)));

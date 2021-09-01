@@ -594,7 +594,7 @@ export function getAggrSurgeKeyFigures () {
 
 export const GET_AGGR_SURGE_EVENT_KEY_FIGURES = 'GET_AGGR_SURGE_EVENT_KEY_FIGURES';
 export function getAggrSurgeEventKeyFigures (eventId) {
-  return fetchJSON(`/api/v2/deployment/aggregated/?event=${eventId}`, GET_AGGR_SURGE_EVENT_KEY_FIGURES, withToken());
+  return fetchJSON(`/api/v2/deployment/aggregated?event=${eventId}`, GET_AGGR_SURGE_EVENT_KEY_FIGURES, withToken());
 }
 
 export const GET_LIST_CSV = 'GET_LIST_CSV';
