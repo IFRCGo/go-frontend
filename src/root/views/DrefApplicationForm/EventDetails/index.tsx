@@ -45,6 +45,8 @@ interface Props {
   yesNoOptions: BooleanValueOption[];
   isImminentOnset: boolean;
   onValueSet: (value: StateArg<Value>) => void;
+  fileIdToUrlMap?: Record<number, string>;
+  setFileIdToUrlMap?: React.Dispatch<React.SetStateAction<Record<number, string>>>;
 }
 
 function EventDetails(props: Props) {
@@ -57,6 +59,8 @@ function EventDetails(props: Props) {
     yesNoOptions,
     isImminentOnset,
     onValueSet,
+    fileIdToUrlMap,
+    setFileIdToUrlMap,
   } = props;
 
   type FRCallback = (options: NumericValueOption[]) => void;
@@ -116,7 +120,6 @@ function EventDetails(props: Props) {
       return;
     }
 
-    console.info(fieldReport.created_at);
     onValueSet({
       ...value,
       go_field_report_date: fieldReport.created_at?.split('T')[0],
@@ -262,8 +265,10 @@ function EventDetails(props: Props) {
             multiple
             showStatus
             error={error?.fields?.images}
+            fileIdToUrlMap={fileIdToUrlMap}
+            setFileIdToUrlMap={setFileIdToUrlMap}
           >
-            Upload
+            Select images
           </GoFileInput>
         </InputSection>
         <InputSection
