@@ -59,6 +59,7 @@ export function useButtonFeatures(
     styles.button,
     variant,
     buttonVariantToStyleMap[variant] ?? styles.primary,
+    disabled && styles.disabled,
     className,
   );
 

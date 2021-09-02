@@ -48,6 +48,8 @@ interface Props {
   fetchingCountries?: boolean;
   fetchingDisasterTypes?: boolean;
   fetchingNationalSociety?: boolean;
+  fileIdToUrlMap: Record<number, string>;
+  setFileIdToUrlMap?: React.Dispatch<React.SetStateAction<Record<number, string>>>;
 }
 
 function DrefOverview(props: Props) {
@@ -66,6 +68,8 @@ function DrefOverview(props: Props) {
     yesNoOptions,
     disasterCategoryOptions,
     onsetOptions,
+    setFileIdToUrlMap,
+    fileIdToUrlMap,
   } = props;
 
   const {
@@ -222,8 +226,10 @@ function DrefOverview(props: Props) {
             accept="image/*"
             error={error?.fields?.event_map}
             showStatus
+            setFileIdToUrlMap={setFileIdToUrlMap}
+            fileIdToUrlMap={fileIdToUrlMap}
           >
-            Upload
+            Select an Image
           </GoFileInput>
         </InputSection>
       </Container>

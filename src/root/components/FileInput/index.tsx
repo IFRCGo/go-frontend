@@ -54,8 +54,8 @@ function FileInput<T extends string>(props: Props<T>) {
     readOnly,
     inputElementRef,
     inputClassName,
-    value, // eslint-disable-line @typescript-eslint/no-unused-vars
-    onChange, // eslint-disable-line @typescript-eslint/no-unused-vars
+    value: _,
+    onChange: __,
     overrideStatus,
     status: statusFromProps,
     name,
@@ -142,6 +142,7 @@ function FileInput<T extends string>(props: Props<T>) {
       if (multipleFile.length > 1) {
         return `${multipleFile.length} files selected`;
       }
+
       return multipleFile[0]?.name;
     },
     // eslint-disable-next-line react/destructuring-assignment
@@ -178,7 +179,7 @@ function FileInput<T extends string>(props: Props<T>) {
           )}
         >
           {showStatus && (
-            <div>
+            <div className={styles.status}>
               {visibleStatus}
             </div>
           )}

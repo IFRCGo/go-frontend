@@ -1,16 +1,61 @@
 import React, { useCallback } from 'react';
+import {
+  _cs,
+  isDefined,
+} from '@togglecorp/fujs';
+import { IoClose } from 'react-icons/io5';
 
 import { useLazyRequest } from '#utils/restRequest';
-import { IoClose } from 'react-icons/io5';
 import Button from '#components/Button';
+import RawButton from '#components/RawButton';
 import FileInput, {Props as FileInputProps } from '#components/FileInput';
+
+import styles from './styles.module.scss';
 
 interface Option {
   id: number;
   file: string; // this is a url
 }
 
-type Props<T extends string> =  Omit<FileInputProps<T>, 'overrideStatus' | 'status' | 'value' | 'onChange' | 'multiple'> & ({
+interface PreviewProps<ID extends number> {
+  id: ID,
+  file?: string;
+  onRemoveButtonClick?: (id: ID) => void;
+}
+
+// TODO: verify the file is an image before preview
+function Preview<ID extends number>(props: PreviewProps<ID>) {
+  const {
+    id,
+    file,
+    onRemoveButtonClick,
+  } = props;
+
+  if (!file) {
+    return null;
+  }
+
+  return (
+    <div className={styles.preview}>
+      <img
+        className={styles.image}
+        src={file}
+      />
+      <RawButton
+        name={id}
+        onClick={onRemoveButtonClick}
+        className={styles.removeButton}
+      >
+        <IoClose />
+      </RawButton>
+    </div>
+  );
+}
+
+type Props<T extends string> =  Omit<FileInputProps<T>, 'overrideStatus' | 'status' | 'value' | 'onChange' | 'multiple'> & {
+  fileIdToUrlMap?: Record<number, string>;
+  setFileIdToUrlMap?: React.Dispatch<React.SetStateAction<Record<number, string>>>;
+} & ({
   multiple: true;
   value?: number[];
   onChange: (value: number[] | undefined, name: T) => void;
@@ -26,12 +71,15 @@ function GoFileInput<T extends string>(props: Props<T>) {
     disabled,
     name,
     actions,
+    fileIdToUrlMap,
+    setFileIdToUrlMap,
+    className,
     ...otherProps
   } = props;
 
   const {
     pending,
-    trigger,
+    trigger: triggerFileUpload,
     context,
   } = useLazyRequest<Option | Option[], { file: FileInputProps<T>['value'] }>({
     formData: true,
@@ -41,10 +89,35 @@ function GoFileInput<T extends string>(props: Props<T>) {
     onSuccess: (response) => {
       if (props.multiple) {
         const ids = (response as Option[]).map(v => v.id);
-        props.onChange(ids, name);
+        if (setFileIdToUrlMap) {
+          setFileIdToUrlMap((oldMap) => {
+            const newMap = {
+              ...oldMap,
+            };
+
+            (response as Option[]).forEach((o) => {
+              newMap[o.id] = o.file;
+            });
+
+            return newMap;
+          });
+        }
+        props.onChange([...(props.value ?? []), ...ids], name);
       } else {
-        const { id } = response as Option;
+        const option = response as Option;
+        const { id } = option;
         props.onChange(id, name);
+
+        if (setFileIdToUrlMap) {
+          setFileIdToUrlMap((oldMap) => {
+            const newMap = {
+              ...oldMap,
+            };
+
+            newMap[option.id] = option.file;
+            return newMap;
+          });
+        }
       }
     },
     onFailure: () => {
@@ -55,19 +128,17 @@ function GoFileInput<T extends string>(props: Props<T>) {
   const handleChange = useCallback(
     (file: FileInputProps<T>['value']) => {
       if (file) {
-        trigger({ file });
-      } else {
-        props.onChange(undefined, name);
+        triggerFileUpload({ file });
       }
     },
 
-    //eslint-disable-next-line
-    [trigger, name, props.onChange],
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [triggerFileUpload, name, props.onChange],
   );
 
   let currentStatus;
   if (pending) {
-    currentStatus = 'Uploading file';
+    currentStatus = 'Uploading file(s)...';
   } else if (!value) {
     currentStatus = 'No file selected';
   }  else {
@@ -76,35 +147,106 @@ function GoFileInput<T extends string>(props: Props<T>) {
 
   const handleClear = useCallback(() => {
     props.onChange(undefined, name);
-    //eslint-disable-next-line
-  }, [props.onChange]);
+    //eslint-disable-next-line  react-hooks/exhaustive-deps
+  }, [props.onChange, name]);
+
+  const handleFileRemoveButtonClick = useCallback((id: number) => {
+    if (props.multiple) {
+      const newValue = [...(props.value ?? [])];
+      const i = newValue.findIndex(f => f === id);
+      if (i === -1) {
+        return;
+      }
+
+      newValue.splice(i, 1);
+      props.onChange(newValue, name);
+    } else {
+      props.onChange(undefined, name);
+    }
+    //eslint-disable-next-line  react-hooks/exhaustive-deps
+  }, [props.value, props.onChange, props.multiple, name]);
+
+  if (props.multiple) {
+    return (
+      <div className={_cs(styles.goFileInput, className)}>
+        <FileInput
+          {...otherProps}
+          multiple
+          actions={(
+            <>
+              {actions}
+              {value && (
+                <Button
+                  onClick={handleClear}
+                  disabled={disabled}
+                  variant="action"
+                  name={undefined}
+                  title="Clear"
+                >
+                  <IoClose />
+                </Button>
+            )}
+            </>
+          )}
+          disabled={disabled || pending}
+          name={name}
+          overrideStatus
+          status={currentStatus}
+          value={context?.file as (File[] | null | undefined)}
+          onChange={handleChange}
+        />
+        <div className={styles.previewList}>
+          {props.value?.map((fileId) => (
+            <Preview
+              key={fileId}
+              id={fileId}
+              file={fileIdToUrlMap?.[fileId]}
+              onRemoveButtonClick={handleFileRemoveButtonClick}
+            />
+          ))}
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <FileInput
-      {...otherProps}
-      actions={(
-        <>
-          {actions}
-          {value && (
-            <Button
-              onClick={handleClear}
-              disabled={disabled}
-              variant="action"
-              name={undefined}
-              title="Clear"
-            >
-              <IoClose />
-            </Button>
+    <div className={_cs(styles.goFileInput, className)}>
+      <FileInput
+        {...otherProps}
+        multiple={false}
+        actions={(
+          <>
+            {actions}
+            {value && (
+              <Button
+                onClick={handleClear}
+                disabled={disabled}
+                variant="action"
+                name={undefined}
+                title="Clear"
+              >
+                <IoClose />
+              </Button>
+          )}
+          </>
         )}
-        </>
+        disabled={disabled || pending}
+        name={name}
+        overrideStatus
+        status={currentStatus}
+        value={context?.file as (File | null | undefined)}
+        onChange={handleChange}
+      />
+      {isDefined(value) && (
+        <div className={styles.previewList}>
+          <Preview
+            id={value as number}
+            file={fileIdToUrlMap?.[value as number]}
+            onRemoveButtonClick={handleFileRemoveButtonClick}
+          />
+        </div>
       )}
-      disabled={disabled || pending}
-      name={name}
-      overrideStatus
-      status={currentStatus}
-      value={context?.file}
-      onChange={handleChange}
-    />
+    </div>
   );
 }
 export default GoFileInput;
