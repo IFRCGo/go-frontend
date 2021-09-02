@@ -732,7 +732,10 @@ export default {
   deploymentsOverviewTableHeaderOrg: 'Deploying Organization',
   deploymentsOverviewTableHeaderSurge: 'Surge Type',
   deploymentsOverviewTableHeaderNo: 'Number of Deployments',
-  deploymentsDeployedRR: 'Deployed Rapid Response',
+  deploymentsDeployedRR: 'Deployed Rapid Response',  // not used
+  deploymentsDeployedRRP: 'Deployed Rapid Response Personnel',
+  deploymentsNSProvidingRRP: 'NS Providing Rapid Response Personnel',  // not used
+  deploymentsDeplThisYear: 'Deployments This Year',
   deploymentsDeployedHeops: 'Deployed HEOPS',
   deploymentEruDeploymentTypes: 'ERU Deployment Types',
   deploymentNumber: 'Number of Deployments by NS',
