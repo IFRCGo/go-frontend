@@ -87,24 +87,8 @@ function snippets (state = initialState, action) {
   return state;
 }
 
-function aggregated (state = initialState, action) {
-  switch (action.type) {
-    case 'GET_AGGR_SURGE_EVENT_KEY_FIGURES_INFLIGHT':
-      state = stateInflight(state, action);
-      break;
-    case 'GET_AGGR_SURGE_EVENT_KEY_FIGURES_FAILED':
-      state = stateError(state, action);
-      break;
-    case 'GET_AGGR_SURGE_EVENT_KEY_FIGURES_SUCCESS':
-      state = stateSuccess(state, action);
-      break;
-  }
-  return state;
-}
-
 export default combineReducers({
   eventList,
   event,
-  snippets,
-  aggregated
+  snippets
 });
