@@ -11,4 +11,14 @@
         align-items: center;
         flex-grow: 1;
     }
+
+    .status {
+      padding: 0 $spacing;
+    }
+
+    :global {
+      .go-input-internal-input-section {
+        border: 0;
+      }
+    }
 }

@@ -189,6 +189,14 @@ export interface DrefApiFields extends Omit<DrefFields, 'country_district' | 'pl
   planned_interventions: (Omit<Intervention, 'clientId'> & { id: number })[];
   national_society_actions: (Omit<NsAction, 'clientId'> & { id: number })[];
   needs_identified: (Omit<Need, 'clientId'> & { id: number })[];
+  event_map_details: {
+    id: number;
+    file: string;
+  };
+  images_details: {
+    id: number;
+    file: string;
+  }[];
 }
 
 
@@ -201,6 +209,7 @@ export const overviewFields: (keyof DrefFields)[] = [
   'country_district',
   'num_affected',
   'amount_requested',
+  'event_map',
   'emergency_appeal_planned',
   'event_date',
   'go_field_report_date',
@@ -216,6 +225,7 @@ export const eventDetailsFields: (keyof DrefFields)[] = [
   'lessons_learned',
   'event_description',
   'event_scope',
+  'images',
 ];
 
 export const actionsFields: (keyof DrefFields)[] = [
