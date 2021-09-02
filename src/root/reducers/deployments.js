@@ -26,6 +26,21 @@ function aggregated (state = initialState, action) {
   return state;
 }
 
+function aggregated1 (state = initialState, action) {
+  switch (action.type) {
+    case 'GET_AGGR_SURGE_EVENT_KEY_FIGURES_INFLIGHT':
+      state = stateInflight(state, action);
+      break;
+    case 'GET_AGGR_SURGE_EVENT_KEY_FIGURES_FAILED':
+      state = stateError(state, action);
+      break;
+    case 'GET_AGGR_SURGE_EVENT_KEY_FIGURES_SUCCESS':
+      state = stateSuccess(state, action);
+      break;
+  }
+  return state;
+}
+
 function eru (state = initialState, action) {
   switch (action.type) {
     case 'GET_DEPLOYMENT_ERU_INFLIGHT':
@@ -110,5 +125,6 @@ export default combineReducers({
   personnel,
   activePersonnel,
   allEru,
-  aggregated
+  aggregated,
+  aggregated1
 });
