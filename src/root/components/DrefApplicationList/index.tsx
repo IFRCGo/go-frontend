@@ -63,6 +63,10 @@ function DrefApplicationList(props: Props) {
     variant: 'secondary',
     children: 'Edit',
   });
+  const exportProps = useButtonFeatures({
+    variant: 'secondary',
+    children: 'Export',
+  });
 
   const columns = React.useMemo(() => ([
     createDateColumn<DrefApplication, string | number>(
@@ -89,10 +93,14 @@ function DrefApplicationList(props: Props) {
       'actions',
       (rowKey: number) => ({
         children: (
-          <Link
-            to={`/dref-application/${rowKey}/edit/`}
-            {...linkProps}
-          />
+          <>
+            <Link
+              to={`/dref-application/${rowKey}/edit/`}
+              {...linkProps} />
+            <Link
+              to={`/dref-application/${rowKey}/export/`}
+              {...exportProps} />
+          </>
         ),
       }),
     ),
