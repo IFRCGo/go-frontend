@@ -1439,7 +1439,7 @@ class Emergency extends React.Component {
                             <div className='sumstats__item'>
                               <img className='sumstats__icon_2020' src='/assets/graphics/layout/heops-brand.svg' />
                               <span className='sumstats__value'>
-                                {n(this.props.aggregated.active_deployments)}
+                                0 {/*n(this.props.aggregated.active_deployments)*/}
                               </span>
                               <Translate className='sumstats__key' stringId='deploymentsDeployedRRP'/>
                             </div>
@@ -1448,7 +1448,7 @@ class Emergency extends React.Component {
                             <div className='sumstats__item'>
                               <img className='sumstats__icon_2020' src='/assets/graphics/layout/eru-brand.svg'/>
                               <span className='sumstats__value'>
-                                {n(this.props.aggregated.active_erus)}
+                                0 {/*n(this.props.aggregated.active_erus)*/}
                               </span>
                               <Translate className='sumstats__key' stringId='deploymentsDeployedERU'/> &nbsp;
                             </div>
@@ -1457,7 +1457,7 @@ class Emergency extends React.Component {
                             <div className='sumstats__item'>
                               <img className='sumstats__icon_2020' src='/assets/graphics/layout/fact-brand.svg' />
                               <span className='sumstats__value'>
-                                {n(this.props.aggregated.deployments_this_year)}
+                                0 {/* n(this.props.aggregated.deployments_this_year)*/}
                               </span>
                               <Translate className='sumstats__key' stringId='deploymentsDeplThisYear'/> &nbsp;
                             </div>
