@@ -9,6 +9,7 @@ import {
   PartialForm,
   useForm,
   accumulateErrors,
+  analyzeErrors,
 } from '@togglecorp/toggle-form';
 import type { match as Match } from 'react-router-dom';
 
@@ -140,6 +141,7 @@ function DrefApplication(props: Props) {
     userDetails,
   } = useDrefFormOptions(value);
 
+  const [fileIdToUrlMap, setFileIdToUrlMap] = React.useState<Record<number, string>>({});
   const [currentStep, setCurrentStep] = React.useState<StepTypes>('drefOverview');
   const submitButtonLabel = currentStep === 'submission' ? strings.fieldReportSubmit : strings.fieldReportContinue;
   const shouldDisabledBackButton = currentStep === 'drefOverview';
@@ -235,6 +237,23 @@ function DrefApplication(props: Props) {
     skip: !drefId,
     url: `api/v2/dref/${drefId}/`,
     onSuccess: (response) => {
+      setFileIdToUrlMap((prevMap) => {
+        const newMap = {
+          ...prevMap,
+        };
+
+        if (response.event_map_details) {
+          newMap[response.event_map_details.id] = response.event_map_details.file;
+        }
+
+        if (response.images_details?.length > 0) {
+          response.images_details.forEach((img) => {
+            newMap[img.id] = img.file;
+          });
+        }
+
+        return newMap;
+      });
       onValueSet({
         ...response,
         country_district: response.country_district?.map((cd) => ({
@@ -257,20 +276,19 @@ function DrefApplication(props: Props) {
     },
   });
 
-  const handleTabChange = React.useCallback((newStep: StepTypes) => {
-    scrollToTop();
-
+  const validateCurrentTab = React.useCallback((exceptions: (keyof DrefFields)[] = []) => {
     const validationError = accumulateErrors(value, schema);
+    const currentFields = stepTypesToFieldsMap[currentStep];
+    const exceptionsMap = listToMap(exceptions, d => d, d => true);
 
     if (!validationError) {
-      setCurrentStep(newStep);
-      return;
+      return true;
     }
 
-    const currentFields = stepTypesToFieldsMap[currentStep];
-
     const currentTabFieldErrors = listToMap(
-      currentFields.filter(field => !!validationError.fields?.[field]),
+      currentFields.filter(field => (
+        !exceptionsMap[field] && analyzeErrors(validationError.fields?.[field]
+      ))),
       field => field,
       field => validationError.fields?.[field]
     );
@@ -287,30 +305,45 @@ function DrefApplication(props: Props) {
     onErrorSet(newError);
 
     const hasError = Object.keys(currentTabFieldErrors).some(d => !!d);
+    return !hasError;
+  }, [value, currentStep, onErrorSet, error]);
 
+  const handleTabChange = React.useCallback((newStep: StepTypes) => {
+    scrollToTop();
 
-    if (hasError) {
+    const isCurrentTabValid = validateCurrentTab([
+      'event_map',
+    ]);
+
+    if (!isCurrentTabValid) {
       return;
     }
 
     setCurrentStep(newStep);
-  }, [value, setCurrentStep, onErrorSet, error, currentStep]);
+  }, [validateCurrentTab]);
 
   const handleSubmitButtonClick = React.useCallback(() => {
     scrollToTop();
-    const {
-      errored,
-      error,
-      value: finalValues,
-    } = validate();
 
-    onErrorSet(error);
-
-    if (errored) {
+    const isCurrentTabValid = validateCurrentTab([
+      'event_map'
+    ]);
+    if (!isCurrentTabValid) {
       return;
     }
 
     if (currentStep === 'submission') {
+      const {
+        errored,
+        error,
+        value: finalValues,
+      } = validate();
+
+      onErrorSet(error);
+
+      if (errored) {
+        return;
+      }
       if (finalValues && userDetails && userDetails.id) {
         const body = {
           user: userDetails.id,
@@ -331,7 +364,7 @@ function DrefApplication(props: Props) {
 
       handleTabChange(nextStepMap[currentStep]);
     }
-  }, [currentStep, handleTabChange, validate, onErrorSet, submitRequest, userDetails]);
+  }, [validateCurrentTab, currentStep, handleTabChange, validate, onErrorSet, submitRequest, userDetails]);
   const handleBackButtonClick = React.useCallback(() => {
     if (currentStep !== 'drefOverview') {
       const prevStepMap: {
@@ -433,6 +466,8 @@ function DrefApplication(props: Props) {
                 fetchingDisasterTypes={fetchingDisasterTypes}
                 nationalSocietyOptions={nationalSocietyOptions}
                 fetchingNationalSociety={fetchingCountries}
+                fileIdToUrlMap={fileIdToUrlMap}
+                setFileIdToUrlMap={setFileIdToUrlMap}
               />
             </TabPanel>
             <TabPanel name="eventDetails">
@@ -443,6 +478,8 @@ function DrefApplication(props: Props) {
                 value={value}
                 yesNoOptions={yesNoOptions}
                 onValueSet={onValueSet}
+                fileIdToUrlMap={fileIdToUrlMap}
+                setFileIdToUrlMap={setFileIdToUrlMap}
               />
             </TabPanel>
             <TabPanel name="action">

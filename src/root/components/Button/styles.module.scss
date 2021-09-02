@@ -65,6 +65,10 @@
     padding: 0;
   }
 
+  &:not(.disabled) {
+    cursor: pointer;
+  }
+
   &:disabled {
     opacity: $opacity-disabled-element;
     filter: saturate($saturation-disabled-element);
