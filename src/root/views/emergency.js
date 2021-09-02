@@ -1439,7 +1439,7 @@ class Emergency extends React.Component {
                             <div className='sumstats__item'>
                               <img className='sumstats__icon_2020' src='/assets/graphics/layout/heops-brand.svg' />
                               <span className='sumstats__value'>
-                                {n(this.props.aggregated.data.active_deployments)}
+                                {n(this.props.aggregated.active_deployments)}
                               </span>
                               <Translate className='sumstats__key' stringId='deploymentsDeployedRRP'/>
                             </div>
@@ -1448,7 +1448,7 @@ class Emergency extends React.Component {
                             <div className='sumstats__item'>
                               <img className='sumstats__icon_2020' src='/assets/graphics/layout/eru-brand.svg'/>
                               <span className='sumstats__value'>
-                                {n(this.props.aggregated.data.active_erus)}
+                                {n(this.props.aggregated.active_erus)}
                               </span>
                               <Translate className='sumstats__key' stringId='deploymentsDeployedERU'/> &nbsp;
                             </div>
@@ -1457,7 +1457,7 @@ class Emergency extends React.Component {
                             <div className='sumstats__item'>
                               <img className='sumstats__icon_2020' src='/assets/graphics/layout/fact-brand.svg' />
                               <span className='sumstats__value'>
-                                {n(this.props.aggregated.data.deployments_this_year)}
+                                {n(this.props.aggregated.deployments_this_year)}
                               </span>
                               <Translate className='sumstats__key' stringId='deploymentsDeplThisYear'/> &nbsp;
                             </div>
@@ -1594,7 +1594,7 @@ const selector = (state, ownProps) => ({
   regionsById: regionsByIdSelector(state),
   countriesGeojson: countriesGeojsonSelector(state),
   disasterTypes: disasterTypesSelector(state),
-  aggregated: state.event.aggregated
+  aggregated: state.event.aggregated.data
 });
 
 const dispatcher = (dispatch) => ({
