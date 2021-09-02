@@ -129,13 +129,13 @@ function ActionsFields(props: Props) {
   return (
     <>
       <Container
-        heading={strings.nationalSocietiesActions}
+        heading={strings.drefFormNationalSocietiesActions}
         className={styles.nationalSocietyActions}
         visibleOverflow
       >
         <InputSection>
           <SelectInput
-            label={strings.nationalSocietiesActionsLabel}
+            label={strings.drefFormNationalSocietiesActionsLabel}
             name={undefined}
             options={filteredNsActionOptions}
             value={nsAction}
@@ -165,10 +165,10 @@ function ActionsFields(props: Props) {
         ))}
       </Container>
       <Container
-        heading={strings.movementPartnets}
+        heading={strings.drefFormMovementPartnets}
       >
         <InputSection
-          title={strings.ifrc}
+          title={strings.drefFormIfrc}
         >
           <TextArea
             label={strings.cmpActionDescriptionLabel}
@@ -176,11 +176,11 @@ function ActionsFields(props: Props) {
             onChange={onValueChange}
             value={value.ifrc}
             error={error?.fields?.ifrc}
-            placeholder={strings.maxThreeHundredCharacters}
+            placeholder={strings.drefFormMaxThreeHundredCharacters}
           />
         </InputSection>
         <InputSection
-          title={strings.iCRC}
+          title={strings.drefFormIcrc}
         >
           <TextArea
             label={strings.cmpActionDescriptionLabel}
@@ -188,27 +188,27 @@ function ActionsFields(props: Props) {
             onChange={onValueChange}
             value={value.icrc}
             error={error?.fields?.icrc}
-            placeholder={strings.maxThreeHundredCharacters}
+            placeholder={strings.drefFormMaxThreeHundredCharacters}
           />
         </InputSection>
         <InputSection
-          title={strings.partnerNationalSociety}
+          title={strings.drefFormPartnerNationalSociety}
         >
           <TextArea
             name="partner_national_society"
             onChange={onValueChange}
             value={value.partner_national_society}
             error={error?.fields?.partner_national_society}
-            placeholder={strings.maxThreeHundredCharacters}
+            placeholder={strings.drefFormMaxThreeHundredCharacters}
           />
         </InputSection>
       </Container>
       <Container
-        heading={strings.nationalOtherActors}
+        heading={strings.drefFormNationalOtherActors}
         className={styles.otherActors}
       >
         <InputSection
-          title={strings.internationalAssistance}
+          title={strings.drefFormInternationalAssistance}
         >
           <RadioInput
             name="government_requested_assistance"
@@ -221,7 +221,7 @@ function ActionsFields(props: Props) {
           />
         </InputSection>
         <InputSection
-          title={strings.nationalAuthorities}
+          title={strings.drefFormNationalAuthorities}
         >
           <TextArea
             label={strings.cmpActionDescriptionLabel}
@@ -229,11 +229,11 @@ function ActionsFields(props: Props) {
             onChange={onValueChange}
             value={value.national_authorities}
             error={error?.fields?.national_authorities}
-            placeholder={strings.maxThreeHundredCharacters}
+            placeholder={strings.drefFormMaxThreeHundredCharacters}
           />
         </InputSection>
         <InputSection
-          title={strings.uNorOtherActors}
+          title={strings.drefFormUNorOtherActors}
           oneColumn
           multiRow
         >
@@ -243,11 +243,11 @@ function ActionsFields(props: Props) {
             onChange={onValueChange}
             value={value.un_or_other}
             error={error?.fields?.un_or_other}
-            placeholder={strings.maxThreeHundredCharacters}
+            placeholder={strings.drefFormMaxThreeHundredCharacters}
           />
         </InputSection>
         <InputSection
-          title={strings.coordinationMechanism}
+          title={strings.drefFormCoordinationMechanism}
           oneColumn
           multiRow
         >
@@ -257,18 +257,18 @@ function ActionsFields(props: Props) {
             onChange={onValueChange}
             value={value.major_coordination_mechanism}
             error={error?.fields?.major_coordination_mechanism}
-            placeholder={strings.maxThreeHundredCharacters}
+            placeholder={strings.drefFormMaxThreeHundredCharacters}
           />
         </InputSection>
       </Container>
       <Container
-        heading={strings.needsIdentified}
+        heading={strings.drefFormNeedsIdentified}
         className={styles.needsIdentified}
         visibleOverflow
       >
         <InputSection>
           <SelectInput
-            label={strings.actionFieldsLabel}
+            label={strings.drefFormActionFieldsLabel}
             name={undefined}
             onChange={setNeed}
             options={filteredNeedOptions}
@@ -297,7 +297,7 @@ function ActionsFields(props: Props) {
           />
         ))}
         <InputSection
-          title={strings.gapsInAssessment}
+          title={strings.drefFormGapsInAssessment}
           oneColumn
           multiRow
         >
@@ -307,7 +307,7 @@ function ActionsFields(props: Props) {
             onChange={onValueChange}
             value={value.identified_gaps}
             error={error?.fields?.identified_gaps}
-            placeholder={strings.maxThreeHundredCharacters}
+            placeholder={strings.drefFormMaxThreeHundredCharacters}
           />
         </InputSection>
       </Container>
