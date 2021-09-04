@@ -468,6 +468,7 @@ function DrefApplication(props: Props) {
                 fetchingNationalSociety={fetchingCountries}
                 fileIdToUrlMap={fileIdToUrlMap}
                 setFileIdToUrlMap={setFileIdToUrlMap}
+                onValueSet={onValueSet}
               />
             </TabPanel>
             <TabPanel name="eventDetails">
@@ -477,7 +478,6 @@ function DrefApplication(props: Props) {
                 onValueChange={onValueChange}
                 value={value}
                 yesNoOptions={yesNoOptions}
-                onValueSet={onValueSet}
                 fileIdToUrlMap={fileIdToUrlMap}
                 setFileIdToUrlMap={setFileIdToUrlMap}
               />
