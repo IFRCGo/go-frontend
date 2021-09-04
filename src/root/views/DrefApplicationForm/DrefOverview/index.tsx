@@ -4,6 +4,7 @@ import {
   Error,
   EntriesAsList,
   useFormArray,
+  StateArg,
 } from '@togglecorp/toggle-form';
 import {
   randomString,
@@ -32,6 +33,7 @@ import {
 } from '../common';
 import { CountryDistrictType } from '../useDrefFormOptions';
 import CountryDistrictInput from './CountryDistrictInput';
+import CopyFieldReportSection from './CopyFieldReportSection';
 import styles from './styles.module.scss';
 
 type Value = PartialForm<DrefFields>;
@@ -50,6 +52,7 @@ interface Props {
   fetchingNationalSociety?: boolean;
   fileIdToUrlMap: Record<number, string>;
   setFileIdToUrlMap?: React.Dispatch<React.SetStateAction<Record<number, string>>>;
+  onValueSet: (value: StateArg<Value>) => void;
 }
 
 function DrefOverview(props: Props) {
@@ -70,6 +73,7 @@ function DrefOverview(props: Props) {
     onsetOptions,
     setFileIdToUrlMap,
     fileIdToUrlMap,
+    onValueSet,
   } = props;
 
   const {
@@ -98,9 +102,12 @@ function DrefOverview(props: Props) {
 
   const isImminentOnset = value.type_of_onset === ONSET_IMMINENT;
 
-  // FIXME: use translations
   return (
     <>
+      <CopyFieldReportSection
+        value={value}
+        onValueSet={onValueSet}
+      />
       <Container
         heading={strings.drefFormEssentialInformation}
         className={styles.essentialInformation}
