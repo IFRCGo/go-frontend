@@ -115,8 +115,8 @@ export interface DrefFields {
   entity_affected: string,
   event_date: string;
   event_map: number;
+  field_report: number;
   images: number[];
-  // Previous operations
   event_description: string;
   event_scope: string;
   event_text: string;
@@ -201,6 +201,7 @@ export interface DrefApiFields extends Omit<DrefFields, 'country_district' | 'pl
 
 
 export const overviewFields: (keyof DrefFields)[] = [
+  'field_report',
   'title',
   'national_society',
   'disaster_type',

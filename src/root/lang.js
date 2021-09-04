@@ -1690,6 +1690,11 @@ export default {
   drefFormSubmissionStartDateDescription: 'Added by the regional office',
   drefFormSubmissionEndDate: 'End date',
   drefFormMaxThreeHundredCharacters: 'Max 300 characters',
+
+  drefFormCopyFRFailureMessage: 'Failed to get details for selected field report',
+  drefFormCopyFRSuccessMessage: 'Successfully copied some data from the selected field report',
+  drefFormCopyButtonLabel: 'Copy',
+
   yesLabel: 'Yes',
   noLabel: 'No',
 };
