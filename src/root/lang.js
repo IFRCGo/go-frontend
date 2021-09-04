@@ -1708,6 +1708,11 @@ export default {
 
   drefFormMaxFiveHundredCharacters: 'Max 500 characters',
   drefFormMaxEightHundredCharacters: 'Max 800 characters',
+
+  drefFormCopyFRFailureMessage: 'Failed to get details for selected field report',
+  drefFormCopyFRSuccessMessage: 'Successfully copied some data from the selected field report',
+  drefFormCopyButtonLabel: 'Copy',
+
   yesLabel: 'Yes',
   noLabel: 'No',
 };
