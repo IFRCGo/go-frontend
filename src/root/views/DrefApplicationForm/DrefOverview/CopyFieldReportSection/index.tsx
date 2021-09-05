@@ -162,7 +162,7 @@ function CopyFieldReportSection (props: Props) {
       });
 
       alert.show(
-        strings.drefFormCopyFrSuccessMessage,
+        strings.drefFormCopyFRSuccessMessage,
         { variant: 'success' },
       );
     },
