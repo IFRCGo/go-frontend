@@ -177,10 +177,7 @@ class PersonnelTable extends SFPComponent {
         id: 'role',
         label: <SortHeader id='role' title={strings.personnelTableRole} sort={this.state.table.sort} onClick={this.handleSortChange.bind(this, 'table', 'role')} />
       },
-      {
-        id: 'type',
-        label: <SortHeader id='type' title={strings.personnelTableType} sort={this.state.table.sort} onClick={this.handleSortChange.bind(this, 'table', 'type')} />
-      },
+      { id: 'type', label: strings.personnelTableType },
       {
         id: 'country',
         label: <SortHeader id='country_from' title={strings.personnelTableFrom} sort={this.state.table.sort} onClick={this.handleSortChange.bind(this, 'table', 'country_from')} />
