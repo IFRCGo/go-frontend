@@ -7,7 +7,6 @@
   }
 
   .mapboxgl-popup {
-    height: 14rem;
     width: 20rem;
     overflow: auto;
 
@@ -275,7 +274,7 @@
     padding-top: 0;
   }
 }
-  
+
 .table__cell--progress__personnel {
   width: 40%;
   padding-inline-start: 0;
@@ -301,7 +300,7 @@
 
 .fold__table--deploy-personnel {
   .fold__body {
-    position: relative;  
+    position: relative;
   }
 }
 
@@ -330,7 +329,7 @@
 .personnel__table__date__current {
   display: flex;
   font-size: $font-size-xs;
-  font-weight: $base-font-medium;  
+  font-weight: $base-font-medium;
   width: 40%;
   position: relative;
   top: 37px;
