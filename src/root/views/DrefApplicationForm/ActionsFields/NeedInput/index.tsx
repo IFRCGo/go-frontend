@@ -10,6 +10,7 @@ import { IoTrash } from 'react-icons/io5';
 import TextArea from '#components/TextArea';
 import Button from '#components/Button';
 import InputSection from '#components/InputSection';
+import LanguageContext from '#root/languageContext';
 
 import {
   Need,
@@ -34,6 +35,8 @@ interface Props {
 }
 
 function NeedInput(props: Props) {
+  const { strings } = React.useContext(LanguageContext);
+
   const {
     error: errorFromProps,
     onChange,
@@ -62,6 +65,7 @@ function NeedInput(props: Props) {
         value={value.description}
         onChange={onFieldChange}
         error={error?.fields?.description}
+        placeholder={strings.drefFormMaxThreeHundredCharacters}
       />
       <Button
         className={styles.removeButton}

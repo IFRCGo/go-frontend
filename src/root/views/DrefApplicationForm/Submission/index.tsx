@@ -14,6 +14,7 @@ import DateInput from '#components/DateInput';
 import { DrefFields } from '../common';
 
 import styles from './styles.module.scss';
+import { isNotDefined } from '@togglecorp/fujs';
 
 type Value = PartialForm<DrefFields>;
 interface Props {
@@ -33,76 +34,6 @@ function Submission(props: Props) {
 
   return (
     <>
-      <Container
-        heading={strings.drefFormSubmissionFlow}
-        className={styles.submissionFlow}
-      >
-        <InputSection
-          title={strings.drefFormNsRequestDate}
-        >
-          <DateInput
-            name="ns_request_date"
-            value={value.ns_request_date}
-            onChange={onValueChange}
-            error={error?.fields?.ns_request_date}
-          />
-        </InputSection>
-        <InputSection
-          title={strings.drefFormSubmissionStartDate}
-          description={strings.drefFormSubmissionStartDateDescription}
-        >
-          <DateInput
-            name="start_date"
-            value={value.start_date}
-            onChange={onValueChange}
-            error={error?.fields?.start_date}
-          />
-        </InputSection>
-        <InputSection
-          title={strings.drefFormSubmissionEndDate}
-          description={strings.drefFormEndDateSubmissionDescription}
-        >
-          <DateInput
-            name="end_date"
-            value={value.end_date}
-            onChange={onValueChange}
-            error={error?.fields?.end_date}
-          />
-        </InputSection>
-        <InputSection
-          title={strings.drefFormDateSubmissionToGeneva}
-          description={strings.drefFormDateSubmissionToGenevaDescription}
-        >
-          <DateInput
-            name="submission_to_geneva"
-            value={value.submission_to_geneva}
-            onChange={onValueChange}
-            error={error?.fields?.submission_to_geneva}
-          />
-        </InputSection>
-        <InputSection
-          title={strings.drefFormDateOfPublishing}
-          description={strings.drefFormDateOfPublishingDescription}
-        >
-          <DateInput
-            name="date_of_approval"
-            value={value.date_of_approval}
-            onChange={onValueChange}
-            error={error?.fields?.date_of_approval}
-          />
-        </InputSection>
-        <InputSection
-          title={strings.drefFormOperationTimeframeSubmission}
-        >
-          <TextInput
-            name="operation_timeframe"
-            placeholder={strings.drefFormOperationTimeframeSubmissionDescription}
-            value={value.operation_timeframe}
-            onChange={onValueChange}
-            error={error?.fields?.operation_timeframe}
-          />
-        </InputSection>
-      </Container>
       <Container
         heading={strings.drefFormTrackingData}
         className={styles.trackingData}
