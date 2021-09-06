@@ -143,8 +143,9 @@ class Deployments extends SFPComponent {
   }
 
   renderHeaderCharts (data, title) {
+    const rows = 5;
     const max = Math.max.apply(Math, data.map(o => +o.items));
-    const items = data.length > 6 ? data.slice(0, 6) : data;
+    const items = data.length > rows ? data.slice(0, rows) : data;
     return (
       <div>
         <figcaption>
@@ -292,12 +293,6 @@ class Deployments extends SFPComponent {
           </div>
         </section>
         <div className='inpage__body'>
-          <div className='inner'>
-            <EruTable
-              limit={5}
-              viewAll={'/deployments/erus/all'}
-            />
-          </div>
           <div className='inner margin-4-t'>
             <div>
               <AlertsTable
@@ -310,6 +305,12 @@ class Deployments extends SFPComponent {
             </div>
             <div className='table-deployed-personnel-block'>
               <PersonnelByEventTable data={this.props.personnelByEvent} />
+            </div>
+            <div className='inner'>
+            <EruTable
+              limit={5}
+              viewAll={'/deployments/erus/all'}
+            />
             </div>
             <div className='readiness__container container-lg'>
               <Readiness eruOwners={this.props.eruOwners} />
