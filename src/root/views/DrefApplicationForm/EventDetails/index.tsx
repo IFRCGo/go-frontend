@@ -117,30 +117,27 @@ function EventDetails(props: Props) {
             />
           </InputSection>
         )}
-        {isImminentOnset && (
-          <InputSection
-            title={strings.drefFormLessonsLearnedTitle}
-            description={strings.drefFormLessonsLearnedDescription}
-            oneColumn
-            multiRow
-          >
-            <TextArea
-              name="lessons_learned"
-              onChange={onValueChange}
-              value={value.lessons_learned}
-              error={error?.fields?.lessons_learned}
-              placeholder="Max 500 characters"
-            />
-          </InputSection>
-        )}
+        <InputSection
+          title={strings.drefFormLessonsLearnedTitle}
+          description={strings.drefFormLessonsLearnedDescription}
+          oneColumn
+          multiRow
+        >
+          <TextArea
+            name="lessons_learned"
+            onChange={onValueChange}
+            value={value.lessons_learned}
+            error={error?.fields?.lessons_learned}
+            placeholder="Max 500 characters"
+          />
+        </InputSection>
       </Container>
       <Container
         heading={strings.drefFormDescriptionEvent}
         className={styles.eventDetails}
       >
         <InputSection
-          title={strings.drefFormWhatWhereWhen}
-          description={strings.drefFormWhatWhereWhenDescription}
+          title={!isImminentOnset ? strings.drefFormWhatWhereWhen : strings.drefFormImmientDisaster}
           oneColumn
           multiRow
         >
@@ -152,6 +149,21 @@ function EventDetails(props: Props) {
             placeholder={strings.drefFormWhatWhereWhenPlaceholder}
           />
         </InputSection>
+        {!isImminentOnset &&
+          <InputSection
+            title={strings.drefFormTargetCommunities}
+            oneColumn
+            multiRow
+          >
+            <TextArea
+              name="anticipatory_actions"
+              onChange={onValueChange}
+              value={value.anticipatory_actions}
+              error={error?.fields?.anticipatory_actions}
+              placeholder={strings.drefFormWhatWhereWhenPlaceholder}
+            />
+          </InputSection>
+        }
         <InputSection
           title={strings.drefFormUploadPhotos}
         >
@@ -180,7 +192,7 @@ function EventDetails(props: Props) {
             onChange={onValueChange}
             value={value.event_scope}
             error={error?.fields?.event_scope}
-            placeholder="Max 800 characters"
+            placeholder={strings.drefFormMaxEightHundredCharacters}
           />
         </InputSection>
       </Container>

@@ -24,6 +24,7 @@ import {
   DrefFields,
   StringValueOption,
   Intervention,
+  ONSET_IMMINENT,
 } from '../common';
 import { InterventionType } from '../useDrefFormOptions';
 
@@ -82,6 +83,7 @@ function Response(props: Props) {
     )
   ), [value.planned_interventions]);
   const filteredInterventionOptions = interventionOptions.filter(n => !interventionsIdentifiedMap[n.value]);
+  const isImminentOnset = value.type_of_onset === ONSET_IMMINENT;
 
   return (
     <>
@@ -101,6 +103,20 @@ function Response(props: Props) {
             placeholder={strings.drefFormMaxThreeHundredCharacters}
           />
         </InputSection>
+        {isImminentOnset && (
+          <InputSection
+            title={!isImminentOnset ? strings.drefFormSelectionCriteria : strings.drefFormSelectionCriteriaRisk}
+          >
+            <TextArea
+              label={strings.cmpActionDescriptionLabel}
+              name="selection_criteria"
+              onChange={onValueChange}
+              value={value.selection_criteria}
+              error={error?.fields?.selection_criteria}
+              placeholder={strings.drefFormMaxThreeHundredCharacters}
+            />
+          </InputSection>
+        )}
         <InputSection
           title={strings.drefFormProtectionGenderAndInclusion}
         >
@@ -217,8 +233,7 @@ function Response(props: Props) {
         heading={strings.drefFormSupportServices}
       >
         <InputSection
-          title={strings.drefFormHumanResource}
-          description={strings.drefFormHumanResourceDescription}
+          title={strings.drefFormHumanResourceDescription}
         >
           <TextArea
             label={strings.cmpActionDescriptionLabel}
@@ -238,7 +253,7 @@ function Response(props: Props) {
             onChange={onValueChange}
             value={value.surge_personnel_deployed}
             error={error?.fields?.surge_personnel_deployed}
-            placeholder={strings.drefFormMaxThreeHundredCharacters}
+            placeholder={strings.drefFormMaxFiveHundredCharacters}
           />
         </InputSection>
         <InputSection
@@ -250,7 +265,7 @@ function Response(props: Props) {
             onChange={onValueChange}
             value={value.logistic_capacity_of_ns}
             error={error?.fields?.logistic_capacity_of_ns}
-            placeholder={strings.drefFormMaxThreeHundredCharacters}
+            placeholder={strings.drefFormMaxFiveHundredCharacters}
           />
         </InputSection>
         <InputSection
@@ -262,12 +277,11 @@ function Response(props: Props) {
             onChange={onValueChange}
             value={value.safety_concerns}
             error={error?.fields?.safety_concerns}
-            placeholder={strings.drefFormMaxThreeHundredCharacters}
+            placeholder={strings.drefFormMaxFiveHundredCharacters}
           />
         </InputSection>
         <InputSection
-          title={strings.drefFormPmer}
-          description={strings.drefFormPmerDescription}
+          title={strings.drefFormPmerDescription}
         >
           <TextArea
             label={strings.cmpActionDescriptionLabel}
@@ -275,12 +289,11 @@ function Response(props: Props) {
             onChange={onValueChange}
             value={value.pmer}
             error={error?.fields?.pmer}
-            placeholder={strings.drefFormMaxThreeHundredCharacters}
+            placeholder={strings.drefFormMaxFiveHundredCharacters}
           />
         </InputSection>
         <InputSection
-          title={strings.drefFormCommunication}
-          description={strings.drefFormCommunicationDescription}
+          title={strings.drefFormCommunicationDescription}
         >
           <TextArea
             label={strings.cmpActionDescriptionLabel}
@@ -288,7 +301,7 @@ function Response(props: Props) {
             onChange={onValueChange}
             value={value.communication}
             error={error?.fields?.communication}
-            placeholder={strings.drefFormMaxThreeHundredCharacters}
+            placeholder={strings.drefFormMaxFiveHundredCharacters}
           />
         </InputSection>
       </Container>
