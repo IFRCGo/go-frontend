@@ -221,20 +221,22 @@ class Deployments extends SFPComponent {
       <div className=''>
         <div className='inner'>
           <div className='inpage__body-charts'>
-            <div className='row flex-xs'>
-              <div className='col col-6-xs spacing-v'>
+            <div className='row display-flex flex-row'>
+              <div className='col col-6-xs spacing-v display-flex'>
                 <div className='chart box__content'>
                   {this.renderHeaderCharts(data.owners, strings.deploymentNumber)}
                 </div>
               </div>
-              <div className='col col-6-xs spacing-v'>
-                <figure className='chart'>
-                  <figcaption>
-                    <h2 className='fold__title'><Translate stringId='deployementsOverLastYear' /></h2>
-                  </figcaption>
-                </figure>
+              <div className='col col-6-xs spacing-v display-flex'>
                 <div className='chart box__content'>
-                  <DeploymentsByMonth />
+                  <figure>
+                    <figcaption>
+                      <h2 className='fold__title'><Translate stringId='deployementsOverLastYear' /></h2>
+                    </figcaption>
+                  </figure>
+                  <div className='spacing-2-t'>
+                    <DeploymentsByMonth />
+                  </div>
                 </div>
               </div>
             </div>
