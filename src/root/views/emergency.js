@@ -1453,15 +1453,6 @@ class Emergency extends React.Component {
                               <Translate className='sumstats__key' stringId='deploymentsDeployedERU'/> &nbsp;
                             </div>
                           </li>
-                          <li className='sumstats__item__wrap'>
-                            <div className='sumstats__item'>
-                              <img className='sumstats__icon_2020' src='/assets/graphics/layout/fact-brand.svg' />
-                              <span className='sumstats__value'>
-                                {n(this.props.aggregated.data.deployments_this_year)}
-                              </span>
-                              <Translate className='sumstats__key' stringId='deploymentsDeplThisYear'/> &nbsp;
-                            </div>
-                          </li>
                         </ul>
                       </div>
                     </div>
@@ -1476,15 +1467,6 @@ class Emergency extends React.Component {
                       viewAll='/alerts/all'
                     />
                   </TabContent>
-                  <TabContent
-                    title={strings.emergencyERUTitle}
-                  >
-                    <EruTable
-                      id="erus"
-                      emergency={this.props.match.params.id}
-                      viewAll='/deployments/erus/all'
-                    />
-                  </TabContent>
                   <TabContent title={strings.emergencyPersonnelTitle}>
                     { this.state.hasPersonnel ? (
                       <PersonnelTable
@@ -1493,6 +1475,15 @@ class Emergency extends React.Component {
                         viewAll='/deployments/personnel/all'
                       />
                     ) : null }
+                  </TabContent>
+                  <TabContent
+                    title={strings.emergencyERUTitle}
+                  >
+                    <EruTable
+                      id="erus"
+                      emergency={this.props.match.params.id}
+                      viewAll='/deployments/erus/all'
+                    />
                   </TabContent>
                 </TabPanel>
                 ) : null }
