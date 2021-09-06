@@ -4,9 +4,11 @@ import {
   PartialForm,
   ObjectSchema,
   ArraySchema,
+  integerCondition,
 } from '@togglecorp/toggle-form';
 
 import {
+  positiveFloatCondition,
   positiveIntegerCondition,
   requiredCondition,
 } from '#utils/form';
@@ -54,6 +56,12 @@ export type InterventionSchemaFields = ReturnType<InterventionSchema['fields']>;
 export type InterventionsSchema = ArraySchema<PartialForm<InterventionType>>;
 export type InterventionsSchemaMember = ReturnType<InterventionsSchema['member']>;
 
+export type NsActionType = NonNullable<NonNullable<DrefFields['national_society_actions']>>[number];
+export type NsActionSchema = ObjectSchema<PartialForm<NsActionType>>;
+export type NsActionSchemaFields = ReturnType<NsActionSchema['fields']>;
+export type NsActionsSchema = ArraySchema<PartialForm<NsActionType>>;
+export type NsActionsSchemaMember = ReturnType<NsActionsSchema['member']>;
+
 export function max500CharCondition(value: any) {
   return isDefined(value) && value.length > 500
     ? 'Only 500 characters are allowed'
@@ -77,9 +85,16 @@ export function max10CharCondition(value: any) {
     ? 'only 10 characters are allowed'
     : undefined;
 }
+
+export function max30CharCondition(value: any) {
+  return isDefined(value) && value.length > 30
+    ? 'only 30 characters are allowed'
+    : undefined;
+}
+
 export function max200CharCondition(value: any) {
   return isDefined(value) && value.length > 200
-    ? 'only 10 characters are allowed'
+    ? 'only 200 characters are allowed'
     : undefined;
 }
 
@@ -106,30 +121,51 @@ export const schema: FormSchema = {
       member: (): CountryDistrictsSchemaMember => ({
         fields: (): CountryDistrictSchemaFields => ({
           clientId: [],
-          country: [requiredCondition],
+          country: [requiredCondition, (v) =>{
+            let kv: any = {};
+            if (value && value.country_district){
+              value.country_district.forEach(d=>{
+                if(d.country){
+                  if (kv[d.country]) return 'Duplicate countries not allowed';
+                  kv[d.country] = true;
+                }
+              });
+            }
+            return undefined;
+          }],
           district: [],
         }),
       }),
     },
     num_affected: [positiveIntegerCondition],
     num_assisted: [positiveIntegerCondition],
-    amount_requested: [positiveIntegerCondition],
+    amount_requested: [positiveFloatCondition],
     emergency_appeal_planned: [],
     event_map: [requiredCondition],
 
     event_date: [],
+    event_text: [max500CharCondition],
+
+    go_field_report_date: [],
     ns_respond_date: [],
 
     affect_same_population: [],
     ns_respond: [],
-    ns_request_text: [max10CharCondition],
+    ns_request_text: [max30CharCondition],
     lessons_learned: [max500CharCondition],
 
     event_description: [max800CharCondition],
     event_scope: [max800CharCondition],
     images: [lessThanSixImagesCondition],
 
-    national_society_actions: [],
+    national_society_actions: {
+      keySelector: (n) => n.clientId as string,
+      member: (): NsActionsSchemaMember => ({
+        fields: (): NsActionSchemaFields => ({
+          description: [max300CharCondition],
+        }),
+      }),
+    },
     government_requested_assistance: [],
     government_requested_assistance_date: [],
     national_authorities: [max300CharCondition],
@@ -159,8 +195,8 @@ export const schema: FormSchema = {
     men: [positiveIntegerCondition],
     girls: [positiveIntegerCondition],
     boys: [positiveIntegerCondition],
-    disability_people_per: [],
-    people_per_urban_local: [positiveIntegerCondition],
+    disability_people_per: [positiveFloatCondition],
+    people_per_urban_local: [positiveFloatCondition],
     displaced_people: [positiveIntegerCondition],
     people_targeted_with_early_actions: [positiveIntegerCondition],
 
@@ -175,10 +211,11 @@ export const schema: FormSchema = {
           title: [requiredCondition],
           budget: [requiredCondition, positiveIntegerCondition],
           persons_targeted: [positiveIntegerCondition],
-          description: [],
+          description: [max300CharCondition],
         }),
       }),
     },
+
     ns_request_date: [],
     start_date: [],
     submission_to_geneva: [],
@@ -199,12 +236,12 @@ export const schema: FormSchema = {
     ifrc_emergency_email: [validEmailCondition],
     media_contact_name: [],
     media_contact_email: [validEmailCondition],
-    human_resource : [max300CharCondition],
-    surge_personnel_deployed : [max500CharCondition],
-    logistic_capacity_of_ns : [max500CharCondition],
-    safety_concerns : [max500CharCondition],
-    pmer : [max500CharCondition],
-    communication : [max500CharCondition],
+    human_resource: [max300CharCondition],
+    surge_personnel_deployed: [max500CharCondition],
+    logistic_capacity_of_ns: [max500CharCondition],
+    safety_concerns: [max500CharCondition],
+    pmer: [max500CharCondition],
+    communication: [max500CharCondition],
   }),
   fieldDependencies: () => ({
   }),

@@ -14,6 +14,7 @@ import {
 import Container from '#components/Container';
 import InputSection from '#components/InputSection';
 import Button from '#components/Button';
+import TextArea from '#components/TextArea';
 import TextInput from '#components/TextInput';
 import SelectInput from '#components/SelectInput';
 import LanguageContext from '#root/languageContext';
@@ -164,7 +165,7 @@ function DrefOverview(props: Props) {
           />
         </InputSection>
         <InputSection
-          title={isImminentOnset ? strings.drefFormAffectedCountryAndProvinceImminent : strings.drefFormAffectedCountryAndProvinceImminent}
+          title={!isImminentOnset ? strings.drefFormAffectedCountryAndProvinceImminent : strings.drefFormRiskCountryLabel}
           multiRow
           oneColumn
         >
@@ -191,13 +192,24 @@ function DrefOverview(props: Props) {
           </div>
         </InputSection>
         <InputSection
-          title={strings.drefFormPeopleAffected}
+          title={!isImminentOnset ? strings.drefFormPeopleAffected : strings.drefFormRiskPeopleLabel}
+
         >
           <NumberInput
             name="num_affected"
             value={value.num_affected}
             onChange={onValueChange}
             error={error?.fields?.num_affected}
+          />
+        </InputSection>
+        <InputSection
+          title={strings.drefFormPeopleTargeted}
+        >
+          <NumberInput
+            name="num_assisted"
+            value={value.num_assisted}
+            onChange={onValueChange}
+            error={error?.fields?.num_assisted}
           />
         </InputSection>
         <InputSection
@@ -245,14 +257,26 @@ function DrefOverview(props: Props) {
         className={styles.timeframes}
       >
         <InputSection
-          title={strings.drefFormEventDate}
+          title={!isImminentOnset ? strings.drefFormEventDate : strings.drefFormDateOfImpact}
+
         >
-          <DateInput
-            name="event_date"
-            value={value.event_date}
-            onChange={onValueChange}
-            error={error?.fields?.event_date}
-          />
+          {!isImminentOnset &&
+            <DateInput
+              name="event_date"
+              value={value.event_date}
+              onChange={onValueChange}
+              error={error?.fields?.event_date}
+            />
+          }
+          {isImminentOnset && (
+            <TextArea
+              name="event_text"
+              value={value.event_text}
+              onChange={onValueChange}
+              error={error?.fields?.event_text}
+              placeholder={strings.drefFormMaxFiveHundredCharacters}
+            />
+          )}
         </InputSection>
         <InputSection
           title={strings.drefFormGoFieldReportDate}
@@ -265,7 +289,7 @@ function DrefOverview(props: Props) {
           />
         </InputSection>
         <InputSection
-          title={strings.drefFormNsResponseStarted}
+          title={!isImminentOnset ? strings.drefFormNsResponseStarted : strings.drefFormNSAnticipatoryAction}
         >
           <DateInput
             name="ns_respond_date"
@@ -274,6 +298,71 @@ function DrefOverview(props: Props) {
             onChange={onValueChange}
             error={error?.fields?.ns_respond_date}
             disabled={isNotDefined(value.event_date)}
+          />
+        </InputSection>
+        <InputSection
+          title={strings.drefFormNsRequestDate}
+        >
+          <DateInput
+            name="ns_request_date"
+            value={value.ns_request_date}
+            onChange={onValueChange}
+            error={error?.fields?.ns_request_date}
+          />
+        </InputSection>
+        <InputSection
+          title={strings.drefFormDateSubmissionToGeneva}
+          description={strings.drefFormDateSubmissionToGenevaDescription}
+        >
+          <DateInput
+            name="submission_to_geneva"
+            value={value.submission_to_geneva}
+            onChange={onValueChange}
+            error={error?.fields?.submission_to_geneva}
+          />
+        </InputSection>
+        <InputSection
+          title={strings.drefFormDateOfApproval}
+          description={strings.drefFormDateOfApprovalDescription}
+        >
+          <DateInput
+            name="date_of_approval"
+            value={value.date_of_approval}
+            onChange={onValueChange}
+            error={error?.fields?.date_of_approval}
+          />
+        </InputSection>
+        <InputSection
+          title={strings.drefFormPublishingDate}
+          description={strings.drefFormPublishingDateDescription}
+        >
+          <DateInput
+            name="publishing_date"
+            value={value.publishing_date}
+            onChange={onValueChange}
+            error={error?.fields?.publishing_date}
+          />
+        </InputSection>
+        <InputSection
+          title={strings.drefFormOperationTimeframeSubmission}
+        >
+          <TextInput
+            name="operation_timeframe"
+            placeholder={strings.drefFormOperationTimeframeSubmissionDescription}
+            value={value.operation_timeframe}
+            onChange={onValueChange}
+            error={error?.fields?.operation_timeframe}
+          />
+        </InputSection>
+        <InputSection
+          title={strings.drefFormSubmissionEndDate}
+          description={strings.drefFormEndDateSubmissionDescription}
+        >
+          <DateInput
+            name="end_date"
+            value={value.end_date}
+            onChange={onValueChange}
+            error={error?.fields?.end_date}
           />
         </InputSection>
       </Container>

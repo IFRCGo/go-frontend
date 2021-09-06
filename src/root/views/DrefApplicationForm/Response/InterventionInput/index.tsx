@@ -16,6 +16,7 @@ import TextArea from '#components/TextArea';
 import Button from '#components/Button';
 import NumberInput from '#components/NumberInput';
 import InputSection from '#components/InputSection';
+import LanguageContext from '#root/languageContext';
 
 import styles from './styles.module.scss';
 
@@ -35,6 +36,8 @@ interface Props {
 }
 
 function InterventionInput(props: Props) {
+  const { strings } = React.useContext(LanguageContext);
+
   const {
     error: errorFromProps,
     onChange,
@@ -80,6 +83,7 @@ function InterventionInput(props: Props) {
         value={value.description}
         onChange={onFieldChange}
         error={error?.fields?.description}
+        placeholder={strings.drefFormMaxThreeHundredCharacters}
       />
       <Button
         className={styles.removeButton}
