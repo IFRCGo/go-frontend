@@ -737,7 +737,7 @@ export default {
   deploymentsNSProvidingRRP: 'NS Providing Rapid Response Personnel',  // not used
   deploymentsDeplThisYear: 'Deployments This Year',
   deploymentsDeployedHeops: 'Deployed HEOPS',
-  deploymentEruDeploymentTypes: 'ERU Deployment Types',
+  deploymentEruDeploymentTypes: 'ERU Deployment Types', // not used
   deploymentNumber: 'Number of Deployments by NS',
   nationalSocieties: 'National Societies',
   readinessFilteredERUs: 'Filter Ready ERUs',
