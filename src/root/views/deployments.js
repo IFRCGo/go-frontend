@@ -26,10 +26,7 @@ import { finishedFetch, datesAgo } from '#utils/utils';
 import { mergeDeployData } from '#utils/mergeDeployData';
 import { showGlobalLoading, hideGlobalLoading } from '#components/global-loading';
 import { environment } from '#config';
-import {
-  commaSeparatedNumber as n,
-  nope
-} from '#utils/format';
+import { commaSeparatedNumber as n } from '#utils/format';
 
 import App from './app';
 import Progress from '#components/progress';
@@ -168,14 +165,6 @@ class Deployments extends SFPComponent {
   }
 
   renderHeaderStats () {
-    const { data } = this.props.eruOwners;
-    const { types } = this.props.activePersonnel;
-    let fact = nope;
-    if (types.fact || types.rr || types.rdrt) {
-      fact = (types.fact || 0) + (types.rr || 0) + (types.rdrt || 0);
-    }
-    const heop = types.heop || nope;
-
     return (
       <div>
         <div className='header-stats container-lg'>
