@@ -320,7 +320,7 @@ function About (props) {
                           </div>
                         </div>
                         <div className='box__global__content'>
-                          <a href='https://media.ifrc.org/ifrc/what-we-do/reference-centres/' target='_blank' className='box__global__content--ref__link'>
+                          <a href='https://www.ifrc.org/reference-centres/' target='_blank' className='box__global__content--ref__link'>
                             <span>
                               <Translate stringId='aboutReferenceCenters'/>
                             </span>
