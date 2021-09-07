@@ -1,3 +1,23 @@
+### Release 5.4.0: 3w Improvements + Surge / Deployments
+
+Date: 2021-09-07
+
+### Frontend:
+
+ - Re-write Deployments map: https://github.com/IFRCGo/go-frontend/pull/2012
+ - Add new chart for Deployments over the Past Year: https://github.com/IFRCGo/go-frontend/pull/2018
+ - Update Key Figures on Deployments page: https://github.com/IFRCGo/go-frontend/issues/2011
+ - Add Key Figures to Surge tab on Emergency page: https://github.com/IFRCGo/go-frontend/issues/2011
+ - Miscellaneous updates to Surge page and tables as per https://github.com/IFRCGo/go-frontend/issues/1965
+ - Various improvements to 3w as per https://github.com/IFRCGo/go-frontend/issues/1970
+
+### Backend:
+
+ - Backend changes for 3w as per https://github.com/IFRCGo/go-frontend/issues/1970
+ - Upgrade xml2dict library
+ - For Surge Alert API, by default return all Alerts, not only Active
+ - Fix aggregation count for Events by Deployment endpoint
+
 ### Release 5.3.3: Hotfixes
 
  - Fix link to GO User Library: https://github.com/IFRCGo/go-frontend/issues/1999

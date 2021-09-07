@@ -232,19 +232,16 @@ function GlobalThreeW(props: Props) {
           <>
             <Card
               title={strings.globalThreeWChartProjectPerSectorTitle}
-              className={styles.projectPerSectorChart}
             >
               <ThreeWBarChart data={projectPerSectorChartData} />
             </Card>
             <Card
               title={strings.globalThreeWChartProgrammeTypeTitle}
-              className={styles.programmeTypeChart}
             >
               <ThreeWPieChart data={projectPerProgrammeTypeChartData} />
             </Card>
             <Card
               title={strings.globalThreeWChartTopTagsTitle}
-              className={styles.topTagsChart}
             >
               <ThreeWBarChart
                 data={projectPerSecondarySectorChartData}
@@ -264,7 +261,7 @@ function GlobalThreeW(props: Props) {
             />
             {(allRegions?.data?.results?.length ?? 0) > 0 && (
               <DropdownMenu
-                label={<div {...exploreRegional3WLinkProps} /> }
+                label={<div {...exploreRegional3WLinkProps} />}
               >
                 {allRegions.data.results.map((region) => (
                   <DropdownMenuItem

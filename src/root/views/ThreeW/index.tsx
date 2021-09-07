@@ -10,6 +10,7 @@ import {
 } from 'react-router-dom';
 import { IoPencil } from 'react-icons/io5';
 
+import Translate from '#components/Translate';
 import TextOutput from '#components/TextOutput';
 import Page from '#components/Page';
 import { useButtonFeatures } from '#components/Button';
@@ -62,6 +63,24 @@ function ThreeW(props: Props) {
     children: strings.threeWEditProject,
   });
 
+  const displayName = React.useMemo(() => {
+    if (!projectDetails?.modified_by_detail) {
+      return undefined;
+    }
+
+    const {
+      username,
+      firstName,
+      lastName,
+    } = projectDetails.modified_by_detail;
+
+    if (firstName) {
+      return `${firstName} ${lastName}`;
+    }
+
+    return username;
+  }, [projectDetails?.modified_by_detail]);
+
   return (
     <Page
       className={_cs(styles.threeWDetails, className)}
@@ -69,14 +88,20 @@ function ThreeW(props: Props) {
       breadCrumbs={<BreadCrumb crumbs={crumbs} compact />}
       heading={projectDetails?.name ?? '--'}
       withMainContentBackground
-      description={(
+      description={projectDetails ? (
         <TextOutput
-          className={styles.lastModifiedDate}
+          className={styles.lastModified}
           label={strings.threeWLastModifiedOn}
           value={projectDetails?.modified_at}
           valueType="date"
+          description={displayName ? (
+            <Translate
+              stringId="threeWLastModifiedBy"
+              params={{ user: displayName }}
+            />
+          ) : undefined}
         />
-      )}
+      ) : undefined }
       actions={(
         <Link
           to={`/three-w/${projectId}/edit/`}

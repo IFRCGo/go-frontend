@@ -10,6 +10,13 @@ export interface Subscription {
   stype: number;
 }
 
+export interface UserMini {
+  id: number;
+  username: string;
+  firstName?: string;
+  lastName?: string;
+}
+
 export interface User {
   id: number;
   username: string;

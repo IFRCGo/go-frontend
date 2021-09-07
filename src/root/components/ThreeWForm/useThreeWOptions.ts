@@ -140,9 +140,9 @@ export const schema: FormSchema = {
       visibility: [requiredCondition],
     };
 
-    const programmeType = value.programme_type;
-    const operationType = value.operation_type;
-    const projectStatus = value.status;
+    const programmeType = value?.programme_type;
+    const operationType = value?.operation_type;
+    const projectStatus = value?.status;
 
     if (operationType === OPERATION_TYPE_PROGRAMME) {
       schema.dtype = [];

@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { PropTypes as T, string } from 'prop-types';
+import { PropTypes as T } from 'prop-types';
 import { Link } from 'react-router-dom';
 import { DateTime } from 'luxon';
 
@@ -8,21 +8,18 @@ import { environment } from '#config';
 import { getSurgeAlerts } from '#actions';
 import { 
   get,
-  dateOptions,
   datesAgo,
-  isLoggedIn,
   getDuration,
   getMolnixKeywords 
 } from '#utils/utils';
-import { nope, privateSurgeAlert, recentInterval } from '#utils/format';
+import { nope, recentInterval } from '#utils/format';
 
 // FIXME: imports from the /components/ could be a 1 liner?
 import ExportButton from '#components/export-button-container';
 import { SFPComponent } from '#utils/extendables';
-import DisplayTable, { FilterHeader } from '#components/display-table';
+import DisplayTable from '#components/display-table';
 import BlockLoading from '#components/block-loading';
 import Fold from '#components/fold';
-import Expandable from '#components/expandable';
 
 import LanguageContext from '#root/languageContext';
 import Translate from '#components/Translate';
@@ -120,6 +117,10 @@ class AlertsTable extends SFPComponent {
       qs.created_at__gte = recentInterval;
     }
 
+    if (props.isActive) {
+      qs.is_active = 'true';
+    }
+    
     if (!isNaN(props.emergency)) {
       qs.event = props.emergency.toString();
     }
@@ -267,7 +268,7 @@ if (environment !== 'production') {
     noPaginate: T.bool,
     showExport: T.bool,
     title: T.string,
-
+    isActive: T.bool,
     showRecent: T.bool,
     viewAll: T.string,
     viewAllText: T.string,

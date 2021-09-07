@@ -447,6 +447,9 @@ export default {
   tableAllAlertsTitle: 'All Surge Alerts',
   tableAllEruTitle: 'All Deployed ERUs',
   tableAllPersonnel: 'All Deployed Personnel',
+  eruOnly: 'ERU only',
+  rrOnly: 'Rapid Response only',
+  mixedEruRr: 'Mixed',
 
   uhohPageNotFoundTitle: 'IFRC Go - Page not found',
   uhohPageNotFound: 'Page not found',
@@ -729,7 +732,10 @@ export default {
   deploymentsOverviewTableHeaderOrg: 'Deploying Organization',
   deploymentsOverviewTableHeaderSurge: 'Surge Type',
   deploymentsOverviewTableHeaderNo: 'Number of Deployments',
-  deploymentsDeployedRR: 'Deployed Rapid Response',
+  deploymentsDeployedRR: 'Deployed Rapid Response',  // not used
+  deploymentsDeployedRRP: 'Deployed Rapid Response Personnel',
+  deploymentsNSProvidingRRP: 'NS Providing Rapid Response Personnel',  // not used
+  deploymentsDeplThisYear: 'Deployments This Year',
   deploymentsDeployedHeops: 'Deployed HEOPS',
   deploymentEruDeploymentTypes: 'ERU Deployment Types',
   deploymentNumber: 'Number of Deployments by NS',
@@ -942,7 +948,7 @@ export default {
   threeWKeyFigureProgrammeTypeTitle: 'Programme Type',
   threeWKeyFigureOngoingProjectBudgetTitle: 'Total Budget (CHF) for Ongoing Projects',
   threeWKeyFigureStatusTitle: 'Project Status',
-  threeWKeyFigureCountryActivityTitle: 'Activities in Countries',
+  threeWKeyFigureCountryActivityTitle: 'Countries where NS has reported projects',
   threeWTopNoLoginMessage: 'To view all the project details, {loginLink} with your RCRC credentials',
   threeWBottomNoLoginMessage: 'If you are a member of RCRC Movement, login with your credentials to see more details.',
   threeWOngoingProjectsTitle: 'Ongoing Projects',
@@ -979,6 +985,7 @@ export default {
   threeWNSMapReportingNS: 'Reporting NS',
   threeWNSMapReceivingCountry: 'Receiving Country',
   threeWLastModifiedOn: 'Last Modified On',
+  threeWLastModifiedBy: 'by {user}',
 
   projectFormReportingNational: 'Reporting National Society *',
   projectFormReportingHelpText: 'Select National Society that is carrying out the activity.',
@@ -1510,6 +1517,7 @@ export default {
   deploymentsPageTitleSurge: 'Surge',
   deploymentsOverviewError: 'Error loading data',
   deploymentsRapidResponse: 'Rapid Response',
+  deployementsOverLastYear: 'Deployments over the last year',
 
   emergencySourceMessage: 'Source: {link}',
   emergencyFieldReportStatsHeading: 'Key Figures',

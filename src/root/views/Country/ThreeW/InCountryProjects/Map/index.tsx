@@ -349,7 +349,10 @@ function ThreeWMap(props: Props) {
           }}
         />
       </MapSource>
-      <MapBounds bounds={countryBounds} />
+      <MapBounds
+        // @ts-ignore
+        bounds={countryBounds}
+      />
       {clickedPointProperties?.lngLat && selectedDistrictProjectDetail && (
         <MapTooltip
           coordinates={clickedPointProperties.lngLat}

@@ -79,7 +79,11 @@ class Table extends React.Component {
         const title = props.hasOwnProperty('record')
           ? strings.operationsWithEmergency
           : resolveToString(strings.tableAppealsTitle, { title: titleArea, noun: noun });
-      return <AppealsTable title={title} {...props} />;
+      return (<AppealsTable
+        isActive={false}
+        title={title} 
+        {...props}
+      />);
       case 'alert':
       return <AlertsTable title={strings.tableAllAlertsTitle} {...props} />;
       case 'eru':

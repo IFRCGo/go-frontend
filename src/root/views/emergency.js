@@ -27,7 +27,8 @@ import {
   addSubscriptions,
   delSubscription,
   getUserProfile,
-  getDeploymentERU
+  getDeploymentERU,
+  getAggrSurgeEventKeyFigures
 } from '#actions';
 import {
   commaSeparatedNumber as n,
@@ -145,6 +146,7 @@ class Emergency extends React.Component {
 
   componentDidMount () {
     this.getEvent(this.props.match.params.id);
+    this.props._getAggrSurgeEventKeyFigures(this.props.match.params.id);
     this.props._getSitrepTypes();
     if (this.props.isLogged) {
       this.props._getUserProfile(this.props.user.data.username);
@@ -1429,22 +1431,40 @@ class Emergency extends React.Component {
 
                 { this.hasRRTab() ? (
                 <TabPanel>
+                  <div>
+                    <div className='header-stats container-lg'>
+                      <div className='sumstats__wrap'>
+                        <ul className='sumstats'>
+                          <li className='sumstats__item__wrap'>
+                            <div className='sumstats__item'>
+                              <img className='sumstats__icon_2020' src='/assets/graphics/layout/heops-brand.svg' />
+                              <span className='sumstats__value'>
+                                {n(this.props.aggregated.data.active_deployments)}
+                              </span>
+                              <Translate className='sumstats__key' stringId='deploymentsDeployedRRP'/>
+                            </div>
+                          </li>
+                          <li className='sumstats__item__wrap'>
+                            <div className='sumstats__item'>
+                              <img className='sumstats__icon_2020' src='/assets/graphics/layout/eru-brand.svg'/>
+                              <span className='sumstats__value'>
+                                {n(this.props.aggregated.data.active_erus)}
+                              </span>
+                              <Translate className='sumstats__key' stringId='deploymentsDeployedERU'/> &nbsp;
+                            </div>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
                   <TabContent title={strings.emergencyAlertsTitle}>
                     <SurgeAlertsTable
                       id="alerts"
+                      isActive={true}
                       title={strings.emergencyAlertsTitle}
                       emergency={this.props.match.params.id}
                       returnNullForEmpty={true}
                       viewAll='/alerts/all'
-                    />
-                  </TabContent>
-                  <TabContent
-                    title={strings.emergencyERUTitle}
-                  >
-                    <EruTable
-                      id="erus"
-                      emergency={this.props.match.params.id}
-                      viewAll='/deployments/erus/all'
                     />
                   </TabContent>
                   <TabContent title={strings.emergencyPersonnelTitle}>
@@ -1455,6 +1475,15 @@ class Emergency extends React.Component {
                         viewAll='/deployments/personnel/all'
                       />
                     ) : null }
+                  </TabContent>
+                  <TabContent
+                    title={strings.emergencyERUTitle}
+                  >
+                    <EruTable
+                      id="erus"
+                      emergency={this.props.match.params.id}
+                      viewAll='/deployments/erus/all'
+                    />
                   </TabContent>
                 </TabPanel>
                 ) : null }
@@ -1555,7 +1584,8 @@ const selector = (state, ownProps) => ({
   profile: state.profile,
   regionsById: regionsByIdSelector(state),
   countriesGeojson: countriesGeojsonSelector(state),
-  disasterTypes: disasterTypesSelector(state)
+  disasterTypes: disasterTypesSelector(state),
+  aggregated: state.deployments.aggregated1
 });
 
 const dispatcher = (dispatch) => ({
@@ -1571,6 +1601,7 @@ const dispatcher = (dispatch) => ({
   _addSubscriptions: (...args) => dispatch(addSubscriptions(...args)),
   _delSubscription: (...args) => dispatch(delSubscription(...args)),
   _getUserProfile: (...args) => dispatch(getUserProfile(...args)),
+  _getAggrSurgeEventKeyFigures: (...args) => dispatch(getAggrSurgeEventKeyFigures(...args))
 });
 
 export default withLanguage(withRouter(connect(selector, dispatcher)(Emergency)));

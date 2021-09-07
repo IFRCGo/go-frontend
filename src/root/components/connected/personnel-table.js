@@ -127,9 +127,6 @@ class PersonnelTable extends SFPComponent {
     if (state.filters.startDateInterval !== 'all') {
       qs.start_date__gte = datesAgo[state.filters.startDateInterval]();
     }
-    if (state.filters.type !== 'all') {
-      qs.type = state.filters.type;
-    }
 
     if (!isNaN(props.emergency)) {
       qs.event_deployed_to = props.emergency;
@@ -180,10 +177,7 @@ class PersonnelTable extends SFPComponent {
         id: 'role',
         label: <SortHeader id='role' title={strings.personnelTableRole} sort={this.state.table.sort} onClick={this.handleSortChange.bind(this, 'table', 'role')} />
       },
-      {
-        id: 'type',
-        label: <FilterHeader id='type' title={strings.personnelTableType} options={typeOptions} filter={this.state.table.filters.type} onSelect={this.handleFilterChange.bind(this, 'table', 'type')} />
-      },
+      { id: 'type', label: strings.personnelTableType },
       {
         id: 'country',
         label: <SortHeader id='country_from' title={strings.personnelTableFrom} sort={this.state.table.sort} onClick={this.handleSortChange.bind(this, 'table', 'country_from')} />

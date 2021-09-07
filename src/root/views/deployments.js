@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { connect } from 'react-redux';
 import { PropTypes as T } from 'prop-types';
 import c from 'classnames';
 import { Helmet } from 'react-helmet';
+
+import BlockLoading from '#components/block-loading';
+import { TimeLineChart } from '#components/Charts';
 
 import {
   enterFullscreen,
@@ -15,9 +18,12 @@ import {
   getAllDeploymentERU,
   getActivePersonnel,
   getEruOwners,
-  getPersonnelByEvent
+  getPersonnelByEvent,
+  getAggrSurgeKeyFigures
 } from '#actions';
+import { useRequest } from '#utils/restRequest';
 import { finishedFetch, datesAgo } from '#utils/utils';
+import { mergeDeployData } from '#utils/mergeDeployData';
 import { showGlobalLoading, hideGlobalLoading } from '#components/global-loading';
 import { environment } from '#config';
 import {
@@ -38,6 +44,23 @@ import BreadCrumb from '#components/breadcrumb';
 import LanguageContext from '#root/languageContext';
 import Translate from '#components/Translate';
 import { countriesGeojsonSelector } from '../selectors';
+
+
+const DeploymentsByMonth = () => {
+  const { pending, response } = useRequest({url: 'api/v2/deployment/aggregated_by_month/'});
+
+  const formatData = useCallback((data) => {
+    const keys = Object.keys(data).reverse();
+    return keys.map((key) =>
+      ({ timespan: new Date(key).toISOString(), count: data[key]} )
+    );
+  }, []);
+
+  return (!pending && response)
+    ? <TimeLineChart data={formatData(response)} />
+    : <></>;
+};
+
 
 class Deployments extends SFPComponent {
   // Methods form SFPComponent:
@@ -65,6 +88,7 @@ class Deployments extends SFPComponent {
     this.props._getAllDeploymentERU();
     this.props._getActivePersonnel();
     this.props._getPersonnelByEvent();
+    this.props._getAggrSurgeKeyFigures();
   }
 
   // eslint-disable-next-line camelcase
@@ -120,8 +144,9 @@ class Deployments extends SFPComponent {
   }
 
   renderHeaderCharts (data, title) {
+    const rows = 5;
     const max = Math.max.apply(Math, data.map(o => +o.items));
-    const items = data.length > 6 ? data.slice(0, 6) : data;
+    const items = data.length > rows ? data.slice(0, rows) : data;
     return (
       <div>
         <figcaption>
@@ -156,31 +181,31 @@ class Deployments extends SFPComponent {
         <div className='header-stats container-lg'>
           <div className='sumstats__wrap'>
             <ul className='sumstats'>
-              <li className='sumstats__item__wrap'>            
+              <li className='sumstats__item__wrap'>
                 <div className='sumstats__item'>
-                  <img className='sumstats__icon_2020' src='/assets/graphics/layout/eru-brand.svg' /> 
+                  <img className='sumstats__icon_2020' src='/assets/graphics/layout/heops-brand.svg' />
                   <span className='sumstats__value'>
-                    {n(data.deployed)}
+                    {n(this.props.aggregated.data.active_deployments)}
                   </span>
-                  <Translate className='sumstats__key' stringId='deploymentsDeployedERU'/>
+                  <Translate className='sumstats__key' stringId='deploymentsDeployedRRP'/>
+                </div>
+              </li>
+              <li className='sumstats__item__wrap'>
+                <div className='sumstats__item'>
+                  <img className='sumstats__icon_2020' src='/assets/graphics/layout/eru-brand.svg'/>
+                  <span className='sumstats__value'>
+                    {n(this.props.aggregated.data.active_erus)}
+                  </span>
+                  <Translate className='sumstats__key' stringId='deploymentsDeployedERU'/> &nbsp;
                 </div>
               </li>
               <li className='sumstats__item__wrap'>
                 <div className='sumstats__item'>
                   <img className='sumstats__icon_2020' src='/assets/graphics/layout/fact-brand.svg' />
                   <span className='sumstats__value'>
-                    {n(fact)}
+                    {n(this.props.aggregated.data.deployments_this_year)}
                   </span>
-                  <Translate className='sumstats__key' stringId='deploymentsDeployedRR'/>
-                </div>
-              </li>
-              <li className='sumstats__item__wrap'>
-                <div className='sumstats__item'>
-                  <img className='sumstats__icon_2020' src='/assets/graphics/layout/heops-brand.svg' />
-                  <span className='sumstats__value'>
-                    {n(heop)}
-                  </span>
-                  <Translate className='sumstats__key' stringId='deploymentsDeployedHeops'/>
+                  <Translate className='sumstats__key' stringId='deploymentsDeplThisYear'/> &nbsp;
                 </div>
               </li>
             </ul>
@@ -197,17 +222,24 @@ class Deployments extends SFPComponent {
       <div className=''>
         <div className='inner'>
           <div className='inpage__body-charts'>
-            <div className='row flex-xs'>
-              <div className='col col-6-xs spacing-v'>
-                <div className='chart box__content'>
-                  {this.renderHeaderCharts(data.types, strings.deploymentEruDeploymentTypes)}
-                </div>
-              </div>
-              <div className='col col-6-xs spacing-v'>
+            <div className='row display-flex flex-row'>
+              <div className='col col-6-xs spacing-v display-flex'>
                 <div className='chart box__content'>
                   {this.renderHeaderCharts(data.owners, strings.deploymentNumber)}
                 </div>
-            </div>
+              </div>
+              <div className='col col-6-xs spacing-v display-flex'>
+                <div className='chart box__content'>
+                  <figure>
+                    <figcaption>
+                      <h2 className='fold__title'><Translate stringId='deployementsOverLastYear' /></h2>
+                    </figcaption>
+                  </figure>
+                  <div className='spacing-2-t'>
+                    <DeploymentsByMonth />
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -222,6 +254,14 @@ class Deployments extends SFPComponent {
     } = this.props.eruOwners;
     const { strings } = this.context;
     if (!fetched || error) return null;
+    let deployData = {type: 'FeatureCollection', features: []};
+    if (this.props.eru.fetched && this.props.activePersonnel.fetched) {
+      deployData = mergeDeployData(
+        this.props.countriesGeojson,
+        this.props.allEru.data.results,
+        this.props.activePersonnel.data.results
+      );
+    }
 
     return (
       <section>
@@ -244,10 +284,13 @@ class Deployments extends SFPComponent {
             </div>
           </header>
           <div className='container-lg'>
-            <DeploymentsMap
-              data={this.props.locations}
-              countriesGeojson={this.props.countriesGeojson}
-            />
+            {this.props.eru.fetched && this.props.activePersonnel.fetched ?
+              <DeploymentsMap
+                data={deployData}
+                countriesGeojson={this.props.countriesGeojson}
+              />
+              : <BlockLoading />
+            }
           </div>
           <div className='inpage__body container-lg'>
             <div className='inner'>
@@ -256,23 +299,24 @@ class Deployments extends SFPComponent {
           </div>
         </section>
         <div className='inpage__body'>
-          <div className='inner'>
-            <EruTable
-              limit={5}
-              viewAll={'/deployments/erus/all'}
-            />
-          </div>
           <div className='inner margin-4-t'>
             <div>
               <AlertsTable
                 title={strings.homeSurgeNotification}
                 limit={5}
+                isActive={true}
                 viewAll={'/alerts/all'}
                 showRecent={true}
               />
             </div>
             <div className='table-deployed-personnel-block'>
               <PersonnelByEventTable data={this.props.personnelByEvent} />
+            </div>
+            <div className='inner'>
+            <EruTable
+              limit={5}
+              viewAll={'/deployments/erus/all'}
+            />
             </div>
             <div className='readiness__container container-lg'>
               <Readiness eruOwners={this.props.eruOwners} />
@@ -310,24 +354,27 @@ if (environment !== 'production') {
     eruOwners: T.object,
     eru: T.object,
     activePersonnel: T.object,
-    locations: T.object,
+    allEru: T.object,
     countriesGeojson: T.object
   };
 }
 
 const selector = (state) => ({
   eruOwners: state.eruOwners,
+  eru: state.deployments.eru,
   activePersonnel: state.deployments.activePersonnel,
-  locations: state.deployments.locations,
+  allEru: state.deployments.allEru,
   countriesGeojson: countriesGeojsonSelector(state),
-  personnelByEvent: state.personnelByEvent
+  personnelByEvent: state.personnelByEvent,
+  aggregated: state.deployments.aggregated
 });
 
 const dispatcher = (dispatch) => ({
   _getEruOwners: () => dispatch(getEruOwners()),
   _getAllDeploymentERU: (...args) => dispatch(getAllDeploymentERU(...args)),
   _getActivePersonnel: (...args) => dispatch(getActivePersonnel(...args)),
-  _getPersonnelByEvent: (...args) => dispatch(getPersonnelByEvent(...args))
+  _getPersonnelByEvent: (...args) => dispatch(getPersonnelByEvent(...args)),
+  _getAggrSurgeKeyFigures: () => dispatch(getAggrSurgeKeyFigures())
 });
 
 export default connect(selector, dispatcher)(Deployments);
