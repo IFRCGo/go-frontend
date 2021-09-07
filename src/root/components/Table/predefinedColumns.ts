@@ -140,6 +140,9 @@ export function createDateColumn<D, K>(
 export function createActionColumn<D, K>(
   id: string,
   rendererParams: (_: K, datum: D) => TableActionsProps,
+  options?: {
+    cellRendererClassName: string;
+  },
 ) {
   const item: Column<D, K, TableActionsProps, HeaderCellProps> = {
     id,
@@ -152,6 +155,7 @@ export function createActionColumn<D, K>(
     },
     cellRenderer: TableActions,
     cellRendererParams: rendererParams,
+    cellRendererClassName: options?.cellRendererClassName,
   };
 
   return item;
