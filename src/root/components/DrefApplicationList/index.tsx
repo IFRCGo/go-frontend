@@ -1,11 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { isDefined } from '@togglecorp/fujs';
 
 import LanguageContext from '#root/languageContext';
 import Container from '#components/Container';
 import Table from '#components/Table';
 import SelectInput from '#components/SelectInput';
+import Pager from '#components/Pager';
 import { useButtonFeatures } from '#components/Button';
 import {
   createStringColumn,
@@ -21,6 +21,8 @@ import {
 import { compareLabel } from '#utils/common';
 
 import styles from './styles.module.scss';
+
+const ITEM_PER_PAGE = 20;
 
 interface DrefApplication {
   id: number;
@@ -53,18 +55,23 @@ function DrefApplicationList(props: Props) {
     })).sort(compareLabel) ?? [],
     [allCountries],
   );
+  const [activePage, setActivePage] = React.useState(1);
   const {
     response,
   } = useRequest<ListResponse<DrefApplication>>({
     url: 'api/v2/dref/',
-    query: isDefined(country) ? ({ country }) : undefined,
+    query: {
+      country,
+      limit: ITEM_PER_PAGE,
+      offset: ITEM_PER_PAGE * (activePage - 1),
+    },
   });
-  const linkProps = useButtonFeatures({
+  const editLinkProps = useButtonFeatures({
     variant: 'secondary',
     children: 'Edit',
   });
-  const exportProps = useButtonFeatures({
-    variant: 'secondary',
+  const exportLinkProps = useButtonFeatures({
+    variant: 'primary',
     children: 'Export',
   });
 
@@ -92,19 +99,21 @@ function DrefApplicationList(props: Props) {
     createActionColumn(
       'actions',
       (rowKey: number) => ({
+        className: styles.actions,
         children: (
           <>
             <Link
               to={`/dref-application/${rowKey}/edit/`}
-              {...linkProps} />
+              {...editLinkProps} />
             <Link
               to={`/dref-application/${rowKey}/export/`}
-              {...exportProps} />
+              {...exportLinkProps} />
           </>
         ),
       }),
+      { cellRendererClassName: styles.actionsCell },
     ),
-  ]), [linkProps, strings]);
+  ]), [editLinkProps, strings, exportLinkProps]);
 
   return (
     <Container
@@ -130,6 +139,16 @@ function DrefApplicationList(props: Props) {
           keySelector={drefKeySelector}
           variant="large"
         />
+        {response && (
+          <div className={styles.footer}>
+            <Pager
+              activePage={activePage}
+              onActivePageChange={setActivePage}
+              itemsCount={response.count}
+              maxItemsPerPage={ITEM_PER_PAGE}
+            />
+          </div>
+        )}
       </Container>
     </Container>
   );

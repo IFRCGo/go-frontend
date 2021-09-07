@@ -15,6 +15,17 @@
 
   .table {
     width: 100%;
+
+    .actions-cell {
+      display: flex;
+      gap: $spacing / 2;
+    }
+  }
+
+  .footer {
+    display: flex;
+    justify-content: flex-end;
+    padding: $spacing*3 $spacing;
   }
 }
 
