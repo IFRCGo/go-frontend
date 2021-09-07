@@ -87,7 +87,7 @@ function DrefPdfExport(props: Props) {
   return (
     <Page
       className={className}
-      heading="DREF Application"
+      heading="DREF Export"
     >
       {pending ? (
         <Container>
