@@ -174,6 +174,7 @@ function Pager(props: Props) {
     <div className={styles.pageList}>
       <RawButton
         name={activePage - 1}
+        onClick={onActivePageChange}
         className={styles.pageButton}
         disabled={activePage <= 1 || disabled}
       >
