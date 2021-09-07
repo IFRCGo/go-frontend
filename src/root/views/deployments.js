@@ -4,6 +4,7 @@ import { PropTypes as T } from 'prop-types';
 import c from 'classnames';
 import { Helmet } from 'react-helmet';
 
+import BlockLoading from '#components/block-loading';
 import { TimeLineChart } from '#components/Charts';
 
 import {
@@ -283,10 +284,13 @@ class Deployments extends SFPComponent {
             </div>
           </header>
           <div className='container-lg'>
-            <DeploymentsMap
-              data={deployData}
-              countriesGeojson={this.props.countriesGeojson}
-            />
+            {this.props.eru.fetched && this.props.activePersonnel.fetched ?
+              <DeploymentsMap
+                data={deployData}
+                countriesGeojson={this.props.countriesGeojson}
+              />
+              : <BlockLoading />
+            }
           </div>
           <div className='inpage__body container-lg'>
             <div className='inner'>
