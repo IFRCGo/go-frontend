@@ -1,5 +1,7 @@
 ### Release 5.4.0: 3w Improvements + Surge / Deployments
 
+Date: 2021-09-07
+
 ### Frontend:
 
  - Re-write Deployments map: https://github.com/IFRCGo/go-frontend/pull/2012
