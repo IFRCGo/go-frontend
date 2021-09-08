@@ -78,7 +78,7 @@ function InterventionInput(props: Props) {
         error={error?.fields?.persons_targeted}
       />
       <TextArea
-        label="Description"
+        label={strings.drefFormListOfActivities}
         name="description"
         value={value.description}
         onChange={onFieldChange}
