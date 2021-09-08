@@ -103,20 +103,18 @@ function Response(props: Props) {
             placeholder={strings.drefFormMaxThreeHundredCharacters}
           />
         </InputSection>
-        {isImminentOnset && (
-          <InputSection
-            title={!isImminentOnset ? strings.drefFormSelectionCriteria : strings.drefFormSelectionCriteriaRisk}
-          >
-            <TextArea
-              label={strings.cmpActionDescriptionLabel}
-              name="selection_criteria"
-              onChange={onValueChange}
-              value={value.selection_criteria}
-              error={error?.fields?.selection_criteria}
-              placeholder={strings.drefFormMaxThreeHundredCharacters}
-            />
-          </InputSection>
-        )}
+        <InputSection
+          title={!isImminentOnset ? strings.drefFormSelectionCriteria : strings.drefFormSelectionCriteriaRisk}
+        >
+          <TextArea
+            label={strings.cmpActionDescriptionLabel}
+            name="selection_criteria"
+            onChange={onValueChange}
+            value={value.selection_criteria}
+            error={error?.fields?.selection_criteria}
+            placeholder={strings.drefFormMaxThreeHundredCharacters}
+          />
+        </InputSection>
         <InputSection
           title={strings.drefFormProtectionGenderAndInclusion}
         >
@@ -193,13 +191,15 @@ function Response(props: Props) {
             onChange={onValueChange}
             error={error?.fields?.displaced_people}
           />
-          <NumberInput
-            label={strings.drefFormPeopleTargetedWithEarlyActions}
-            name="people_targeted_with_early_actions"
-            value={value.people_targeted_with_early_actions}
-            onChange={onValueChange}
-            error={error?.fields?.people_targeted_with_early_actions}
-          />
+          {isImminentOnset &&
+            <NumberInput
+              label={strings.drefFormPeopleTargetedWithEarlyActions}
+              name="people_targeted_with_early_actions"
+              value={value.people_targeted_with_early_actions}
+              onChange={onValueChange}
+              error={error?.fields?.people_targeted_with_early_actions}
+            />
+          }
         </InputSection>
       </Container>
       <Container

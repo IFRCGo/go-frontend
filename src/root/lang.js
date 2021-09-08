@@ -2929,7 +2929,7 @@ export default {
   drefInProgressApplications: 'In progress Applications',
   drefApprovedApplications: 'Approved Applications',
 
-  //dref form ActionFields
+  // dref form ActionFields
   drefFormNationalSocietiesActions: 'National Society Actions',
   drefFormNationalSocietiesActionsLabel: 'Select the actions that apply.',
   drefFormMovementPartnets: 'Movement Partnets',
@@ -2937,7 +2937,7 @@ export default {
   drefFormIcrc: 'ICRC',
   drefFormPartnerNationalSociety: 'Partner National Society',
   drefFormNationalOtherActors: 'Other Actors',
-  drefFormInternationalAssistance: 'Government has requested international assistance.',
+  drefFormInternationalAssistance: 'Government has requested international assistance',
   drefFormNationalAuthorities: 'National authorities',
   drefFormUNorOtherActors: 'UN or other actors',
   drefFormCoordinationMechanism: 'List major coordination mechanisms in place',
@@ -2945,13 +2945,13 @@ export default {
   drefFormActionFieldsLabel: 'Select the needs that apply.',
   drefFormGapsInAssessment: 'Any identified gaps/limitations in the assessment',
 
-  //DrefOverview
+  // DrefOverview
   drefFormEssentialInformation: 'Essential Information',
   drefFormNationalSociety: 'Name of National Society',
   drefFormDisasterDetails: 'Disaster Details',
   drefFormDisasterTypeLabel: 'Disaster type',
   drefFormTypeOfOnsetLabel: 'Type of Onset',
-  //Imminent
+  // Imminent
   drefFormRiskCountryLabel: 'At Risk Country and Region(s)',
   drefFormRiskPeopleLabel: 'People At Risk',
   drefFormDateOfImpact: 'Approximate Date of Impact',
@@ -2968,7 +2968,7 @@ export default {
   drefFormGoFieldReportDate: 'Date of GO field report',
   drefFormNsResponseStarted: 'NS response commenced',
 
-  //EventDetails
+  // EventDetails
   drefFormEventDetailsTitle: 'Copy data from an existing field report',
   drefFormEventDescription: 'These field reports have already been filtered by the country and disaster type that you have entered. Selecting field report will pre-fill matching fields in this report, which you can modify.',
   drefFormPreviousOperations: 'Previous Operations',
@@ -2981,7 +2981,7 @@ export default {
   drefFormLessonsLearnedTitle: 'Lessons learned',
   drefFormLessonsLearnedDescription: 'Specify how the lessons learnt from these previous operations are being used to mitigate similar challenges in the current operation',
   drefFormDescriptionEvent: 'Description of the Event',
-  //Imminent
+  // Imminent
   drefFormImmientDisaster: 'For imminent disaster, explain what is expected to happen, where, when and how is above average ?',
   drefFormTargetCommunities: 'For imminent disasters, explain the phase triggers (if used) and mention reliable data sources that verify the risk and potential impacts target communities',
   drefFormSelectionCriteriaRisk: 'What selection criteria has been used to target people at risk?',
@@ -2992,7 +2992,7 @@ export default {
   drefFormScopeAndScaleDescription: 'Main drivers and effects of the crisis: damage caused, damage to infrastructure, system disruption, numbers of affected people. Include if the government has declared a state of emergency and if it has requested RC support.\n\r1. Impact on accessibility, availability, quality, use and awareness of goods and services.\n\r2. Impact on physical and mental well being\n\r3. Risks & vulnerabilities \n Space to upload photos about the situation, are mandatory, please explain if the event has a bigger scale that has triggered the response.',
   drefFormUploadPhotos: 'Upload photos (e.g. impact of the events, NS in the field, assessments)',
 
-  //Response
+  // Response
   drefFormTargetingStrategy: 'Targeting Strategy',
   drefFormPeopleAssistedthroughOperation: 'Which groups of people will be assisted through this operation?',
   drefFormSelectionCriteria: ' What selection criteria has been used for targeting affected?',
@@ -3022,7 +3022,7 @@ export default {
   drefFormInterventionsLabel: 'Select the interventions that apply.',
   drefFormSupportServices: 'About Support Services',
 
-  //Submission
+  // Submission
   drefFormSubmissionFlow: 'Submission flow',
   drefFormNsRequestDate: 'Date of NS request',
   drefFormDateSubmissionToGeneva: 'Date of Submission to GVA',
@@ -3052,6 +3052,7 @@ export default {
   drefFormEndDateSubmissionDescription: 'Added by the regional office',
   drefFormMaxThreeHundredCharacters: 'Max 300 characters',
 
+
   drefFormCopyFRFailureMessage: 'Failed to get details for selected field report',
   drefFormCopyFRSuccessMessage: 'Successfully copied some data from the selected field report',
   drefFormCopyButtonLabel: 'Copy',
@@ -3059,10 +3060,7 @@ export default {
   drefFormMaxFiveHundredCharacters: 'Max 500 characters',
   drefFormMaxEightHundredCharacters: 'Max 800 characters',
 
-  drefFormCopyFRFailureMessage: 'Failed to get details for selected field report',
-  drefFormCopyFRSuccessMessage: 'Successfully copied some data from the selected field report',
-  drefFormCopyButtonLabel: 'Copy',
-
+  drefFormListOfActivities: 'List of Activities',
   yesLabel: 'Yes',
   noLabel: 'No',
 };
