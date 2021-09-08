@@ -1,9 +1,8 @@
 import { isDefined } from '@togglecorp/fujs';
 
-export const ONSET_ANTICIPATORY = 0;
-export const ONSET_IMMINENT = 1;
-export const ONSET_SLOW = 2;
-export const ONSET_SUDDEN = 3;
+export const ONSET_IMMINENT = 0;
+export const ONSET_SLOW = 1;
+export const ONSET_SUDDEN = 2;
 
 export interface NumericValueOption {
   value: number;
