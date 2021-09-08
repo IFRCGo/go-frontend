@@ -1,3 +1,7 @@
+### Release 5.4.1: Hotfix for Surge Map
+
+Hotfix for ERUs not showing on the map.
+
 ### Release 5.4.0: 3w Improvements + Surge / Deployments
 
 Date: 2021-09-07

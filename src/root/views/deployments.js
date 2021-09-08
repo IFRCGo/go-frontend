@@ -255,10 +255,11 @@ class Deployments extends SFPComponent {
     const { strings } = this.context;
     if (!fetched || error) return null;
     let deployData = {type: 'FeatureCollection', features: []};
+    
     if (this.props.eru.fetched && this.props.activePersonnel.fetched) {
       deployData = mergeDeployData(
         this.props.countriesGeojson,
-        this.props.allEru.data.results,
+        this.props.eru.data.results,
         this.props.activePersonnel.data.results
       );
     }
