@@ -239,10 +239,10 @@ function ActionsFields(props: Props) {
         >
           <TextArea
             label={strings.cmpActionDescriptionLabel}
-            name="un_or_other"
+            name="un_or_other_actor"
             onChange={onValueChange}
-            value={value.un_or_other}
-            error={error?.fields?.un_or_other}
+            value={value.un_or_other_actor}
+            error={error?.fields?.un_or_other_actor}
             placeholder={strings.drefFormMaxThreeHundredCharacters}
           />
         </InputSection>

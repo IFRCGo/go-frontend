@@ -115,19 +115,19 @@ export function lessThanOrEqualToCondition(x: number) {
 
 export function integerCondition(value: Maybe<number>) {
   return isDefined(value) && !isInteger(value)
-    ? 'The field must be an integer'
+    ? 'The field must be a number without decimal'
     : undefined;
 }
 
 export function positiveFloatCondition(value: Maybe<number>) {
   return isDefined(value) && (!isFloat(value) || value < 0)
-    ? 'The field must be a positive decimal'
+    ? 'The field must be a positive number'
     : undefined;
 }
 
 export function positiveIntegerCondition(value: Maybe<number>) {
   return isDefined(value) && (!isInteger(value) || value < 0)
-    ? 'The field must be a positive integer'
+    ? 'The field must be a positive number without decimal'
     : undefined;
 }
 

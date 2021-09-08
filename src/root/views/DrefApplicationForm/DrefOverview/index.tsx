@@ -6,10 +6,7 @@ import {
   useFormArray,
   StateArg,
 } from '@togglecorp/toggle-form';
-import {
-  randomString,
-  isNotDefined,
-} from '@togglecorp/fujs';
+import { randomString } from '@togglecorp/fujs';
 
 import Container from '#components/Container';
 import InputSection from '#components/InputSection';
@@ -294,10 +291,8 @@ function DrefOverview(props: Props) {
           <DateInput
             name="ns_respond_date"
             value={value.ns_respond_date}
-            min={value.event_date}
             onChange={onValueChange}
             error={error?.fields?.ns_respond_date}
-            disabled={isNotDefined(value.event_date)}
           />
         </InputSection>
         <InputSection
