@@ -9,12 +9,10 @@ import Container from '#components/Container';
 import InputSection from '#components/InputSection';
 import TextInput from '#components/TextInput';
 import LanguageContext from '#root/languageContext';
-import DateInput from '#components/DateInput';
 
 import { DrefFields } from '../common';
 
 import styles from './styles.module.scss';
-import { isNotDefined } from '@togglecorp/fujs';
 
 type Value = PartialForm<DrefFields>;
 interface Props {
