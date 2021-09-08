@@ -60,7 +60,7 @@ class EmergencyMap extends React.Component {
       country.iso.toUpperCase()
     ];
     const countryPolys = theMap.queryRenderedFeatures({'layers': ['admin-0'], 'filter': countryFilter});
-    console.log(theMap.getStyle().layers);
+    // console.log(theMap.getStyle().layers); // do not remove, it can be sooo useful
     let geom;
     if (countryPolys.length > 0) {
       geom = countryPolys[0].geometry;
@@ -75,7 +75,23 @@ class EmergencyMap extends React.Component {
     const bbox = turfBbox(geom);
     theMap.fitBounds(bbox);
 
-    theMap.setLayoutProperty('admin-1-highlight', 'visibility', 'visible');
+//    theMap.setLayoutProperty('admin-1-highlight', 'visibility', 'visible');
+
+theMap.setFilter('admin-1-highlight', [
+  'in',
+  'district_id',
+  ...districtIds
+]);
+theMap.setFilter('admin-1-label-selected', [
+  'in',
+  'id',
+  ...districtIds
+]);
+
+theMap.setLayoutProperty('admin-1-highlight', 'visibility', 'visible');
+theMap.setLayoutProperty('admin-1-label-selected', 'visibility', 'visible');
+theMap.setLayoutProperty('admin-0-highlight', 'visibility', 'visible');
+
 
 /* Original is below – should be translated NOW to the new style, which accepts: 'background', 'admin-0', 'admin-0-disputed', 'DRAFT-admin-0-points', 'admin-1-highlight', 'admin-0-highlight', 'hillshade', 'admin-1-boundary', 'admin-0-boundary-mask', 'admin-0-boundary-disputed', 'admin-0-boundary', 'admin-1-label', 'admin-0-label'
     theMap.setFilter('admin1-selected', [
