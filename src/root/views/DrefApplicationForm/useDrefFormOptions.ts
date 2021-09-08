@@ -4,7 +4,6 @@ import {
   PartialForm,
   ObjectSchema,
   ArraySchema,
-  integerCondition,
 } from '@togglecorp/toggle-form';
 
 import {
@@ -145,11 +144,13 @@ export const schema: FormSchema = {
 
     event_date: [],
     event_text: [max500CharCondition],
+    anticipatory_actions: [max800CharCondition],
 
     go_field_report_date: [],
     ns_respond_date: [],
 
     affect_same_population: [],
+    ns_request_fund:[],
     ns_respond: [],
     ns_request_text: [max30CharCondition],
     lessons_learned: [max500CharCondition],
@@ -162,7 +163,8 @@ export const schema: FormSchema = {
       keySelector: (n) => n.clientId as string,
       member: (): NsActionsSchemaMember => ({
         fields: (): NsActionSchemaFields => ({
-          description: [max300CharCondition],
+          title: [requiredCondition],
+          description: [max300CharCondition, requiredCondition],
         }),
       }),
     },
@@ -172,7 +174,8 @@ export const schema: FormSchema = {
     partner_national_society: [max300CharCondition],
     ifrc: [max300CharCondition],
     icrc: [max300CharCondition],
-    un_or_other: [max300CharCondition],
+    affect_same_area:[],
+    un_or_other_actor: [max300CharCondition],
     major_coordination_mechanism: [max300CharCondition],
     identified_gaps: [max300CharCondition],
 
@@ -182,7 +185,7 @@ export const schema: FormSchema = {
         fields: (): NeedSchemaFields => ({
           clientId: [],
           title: [requiredCondition],
-          description: [requiredCondition],
+          description: [max300CharCondition,requiredCondition],
         }),
       }),
     },
@@ -215,7 +218,6 @@ export const schema: FormSchema = {
         }),
       }),
     },
-
     ns_request_date: [],
     start_date: [],
     submission_to_geneva: [],

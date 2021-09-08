@@ -128,7 +128,7 @@ function EventDetails(props: Props) {
             onChange={onValueChange}
             value={value.lessons_learned}
             error={error?.fields?.lessons_learned}
-            placeholder="Max 500 characters"
+            placeholder={strings.drefFormMaxFiveHundredCharacters}
           />
         </InputSection>
       </Container>
@@ -149,7 +149,7 @@ function EventDetails(props: Props) {
             placeholder={strings.drefFormWhatWhereWhenPlaceholder}
           />
         </InputSection>
-        {!isImminentOnset &&
+        {isImminentOnset &&
           <InputSection
             title={strings.drefFormTargetCommunities}
             oneColumn
