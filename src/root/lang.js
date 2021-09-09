@@ -1,8 +1,7 @@
 export default {
+  headerAppName: 'IFRC GO',
 // not used -   rcActivities: 'Red Cross / Red Crescent Activities',
 // not used -   langSelectLabel: 'Language: {currentLanguage}',
-
-  headerAppName: 'IFRC GO',
 // not used -   headerBetaNote: 'This is the beta version of IFRC GO. For issues and feedback on the platform, contact {email}',
 // not used -   headerCloseLabel: 'close',
   headerMenuResources: 'Resources',
@@ -26,16 +25,13 @@ export default {
   headerMenuPreparednessTooltip: 'Visit Preparedness page',
   headerMenuThreeWTooltip: 'Visit 3W page',
   headerSearchPlaceholder: 'Search',
-
 // not used -   menuHome: 'Home',
 // not used -   menuEmergencies: 'Emergencies',
 // not used -   menuDeployments: 'Deployments',
 // not used -   menuPreparedness: 'Preparedness',
   menuRegions: 'Regions',
-
   globalStartDate: 'Start Date',
 // not used -   globalEndDate: 'End Date',
-
   aboutTitle: 'IFRC Go - About',
   aboutResources: 'Resources',
   aboutDescription: 'GO is a Red Cross Red Crescent platform to connect information on emergency needs with the right response.',
@@ -76,7 +72,6 @@ export default {
 // not used -   aboutEuropeRegion: 'Europe Region',
 // not used -   aboutMenaRegion: 'MENA Region',
   aboutGoFunding: 'GO has received dedicated personnel and funding support from:',
-
   registerTitle: 'IFRC Go - Register',
   registerHeading: 'Register',
   registerSubHeader: 'Staff, members and volunteers of the Red Cross Red Crescent Movement (National Societies, the IFRC and the ICRC) are welcome to register for a user account on GO, to access information for the Membership. Other responders and members of the public may browse the public areas of the site without registering for an account.',
@@ -104,7 +99,6 @@ export default {
   registerAccountPresent: 'Already have an account?',
   registerGotoLogin: 'Go to login page',
   registerLogin: 'Login',
-
   loginTitle: 'IFRC Go - Login',
   loginHeader: 'Login',
   loginSubHeader: 'If you are staff, member or volunteer of the Red Cross Red Crescent Movement (National Societies, the IFRC and the ICRC) login with you email and password.',
@@ -125,23 +119,18 @@ export default {
   loginCreateAccountTitle: 'Create new account',
   loginSignUp: 'Sign up',
 // not used -   loginKeep: 'Keep me logged in',
-
   accountUserGreeting: 'Hello {user}',
-
 
   emergenciesTitle: 'IFRC Go - Emergencies',
   emergenciesTableTitle: 'Emergencies in the last 30 days',
-
   fieldReportsTableTitle: 'Field Reports in the last 30 days',
   preparednessTitle: 'IFRC Go - Global Preparedness',
   preparednessHeading: 'Preparedness for Effective Response (PER)',
   preparednessDescription: 'To enable National Societies to fulfil their auxiliary role, in line with the Red Cross and Red Crescent Fundamental Principles, by strengthening local preparedness capacities to ensure timely and effective humanitarian assistance to prevent and alleviate human suffering.',
-
   homeTitle: 'IFRC Go - Home',
   homeHeading: 'IFRC Disaster Response and Preparedness',
   homeDescription: 'IFRC GO aims to make all disaster information universally accessible and useful to IFRC responders for better decision making.',
   homeSurgeNotification: 'Open Surge Positions',
-
   regionAllCountries: 'All countries',
   regionTitle: 'IFRC Go - Region',
   regionTitleSelected: 'IFRC Go - {regionName}',
@@ -162,7 +151,6 @@ export default {
   regionAdditionalInfoTab: 'Additional Data',
   regionSnippetsTitle: 'Regional Content',
   regionIframeBackLink: 'Back to Regional Profile',
-
   regionalTabBox1: 'National Societies in {regionName}',
   regionalTabBox2: 'National Country Clusters',
   regionalTabBoxSource: 'Source: IFRC',
@@ -210,7 +198,6 @@ export default {
   countryListActiveOperation: 'IFRC-Supported Operation',
   countryListActiveOperations: 'IFRC-Supported Operations',
   countryPreparednessTitle: 'Preparedness',
-
   countryOperationsTab: 'Operations',
   country3WTab: '3W',
   countryPreparednessTab: 'Preparedness',
@@ -561,7 +548,6 @@ export default {
   operationPopoverActivity: 'Activity: {activity}',
   operationPopoverStart: 'Start: {start}',
   operationPopoverEnd: 'End: {end}',
-
 
 // not used -   editPerFormsTitle: 'IFRC Go - Emergencies',
   footerAboutGo: 'About Go',
@@ -1278,7 +1264,7 @@ export default {
   fieldReportConstantVisibilityRCRCMovementTooltipTitle: 'Available to those who have an IFRC GO login across the RCRC Movement',
   fieldReportConstantVisibilityIFRCSecretariatTooltipTitle: 'Available to only those with an active IFRC account',
 
-  // fieldReportEWEPIError: 'Early Warning / Early action cannot be selected when disaster type is Epidemic or vice-versa',
+// not used -   fieldReportEWEPIError: 'Early Warning / Early action cannot be selected when disaster type is Epidemic or vice-versa',
   fieldReportFormNonFieldError: 'Please fill in required fields first!',
 // not used -   fieldReportFormSubmitError: 'Could not submit field report',
   fieldReportFormErrorLabel: 'Error:',
