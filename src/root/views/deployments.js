@@ -46,6 +46,7 @@ import Translate from '#components/Translate';
 import { countriesGeojsonSelector } from '../selectors';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import TabContent from '#components/tab-content';
+import OperationalTimeline from './Surge/operational-timeline';
 
 const DeploymentsByMonth = () => {
   const { pending, response } = useRequest({url: 'api/v2/deployment/aggregated_by_month/'});
@@ -370,7 +371,7 @@ class Deployments extends SFPComponent {
                   <TabPanel>
                     <TabContent>
                       <div className='container-lg margin-4-t'>
-                        
+                        <OperationalTimeline />
                       </div>
                     </TabContent>
                   </TabPanel>

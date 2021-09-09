@@ -1,0 +1,29 @@
+.operationalTimelineContainer {
+    margin: 10px 0 30px 0;
+
+    .svgHeader {
+        width: 100%;
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    .svgHeader:after {
+        content: "";
+        overflow-y: scroll;
+        visibility: hidden;
+    }
+
+    .svgBody {
+        height: 800px;
+        overflow: auto;
+
+        #OperationalTimelineToolbox {
+            pointer-events: none;
+        
+            .svgPointerEvent {
+                pointer-events: all;
+                // cursor: pointer;
+            }
+        }
+    }
+}
