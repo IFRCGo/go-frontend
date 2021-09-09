@@ -151,6 +151,34 @@
             }
         }
 
-        
+        .catalogueServicePage {
+            h1 {
+                text-transform: uppercase;
+            }
+
+            h3 {
+                padding-left: 10px;
+                padding-right: 10px;
+                text-transform: uppercase;
+                border-bottom: 3px solid #E0E0E0;
+            }
+
+            p {
+                white-space: pre-line;
+            }
+
+            li {
+                white-space: pre-line;
+            }
+
+            a {
+                color: #F5333F;
+            }
+
+            ul {
+                padding-left: 20px;
+                padding-right: 20px;
+            }
+        }
     }
 }

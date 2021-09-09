@@ -1,5 +1,6 @@
 import LanguageContext from "#root/languageContext";
 import React from "react";
+import CatalogueOfSurgeServicesSubpage from "./catalogue-of-surge-services-subpage";
 
 export default class CatalogueOfSurgeServices extends React.Component {
 
@@ -196,6 +197,7 @@ export default class CatalogueOfSurgeServices extends React.Component {
                                     <span className="collecticon-chevron-left icon"></span>
                                     <span>{backToSelectedCatalogue}</span>
                                 </div>
+                                <CatalogueOfSurgeServicesSubpage selectedService={this.state.selectedService} />
                             </div>
                         )
                     }
