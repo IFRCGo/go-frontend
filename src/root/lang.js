@@ -725,6 +725,9 @@ export default {
   fieldReportPNSLabel: 'any other RCRC Movement actors',
 
   deploymentsTitle: 'IFRC Go - Deployments',
+  deploymentsSurgeOverViewTab: 'Surge Overview',
+  deploymentsOperationalToolboxTab: 'Operational Toolbox',
+  deploymentsCatalogueOfSurgeServicesTab: 'Catalogue Of Surge Services',
   deploymentsDeployedERU: 'Deployed ERUs',
   deploymentsOverviewByEmergencies: 'Active Deployments Overview By Emergencies',
   deploymentsOverviewViewAll: 'View All Deployed Personnel',
