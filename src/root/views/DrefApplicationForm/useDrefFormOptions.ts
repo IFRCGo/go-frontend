@@ -1,5 +1,5 @@
 import React from 'react';
-import { compareString } from '#utils/utils';
+import { isNotDefined } from '@togglecorp/fujs';
 import {
   PartialForm,
   ObjectSchema,
@@ -7,10 +7,12 @@ import {
 } from '@togglecorp/toggle-form';
 
 import {
-  positiveFloatCondition,
+  positiveNumberCondition,
   positiveIntegerCondition,
   requiredCondition,
+  emailCondition,
 } from '#utils/form';
+import { compareString } from '#utils/utils';
 import LanguageContext from '#root/languageContext';
 import {
   useRequest,
@@ -97,11 +99,6 @@ export function max200CharCondition(value: any) {
     : undefined;
 }
 
-export function validEmailCondition(email: any) {
-  const emailRegex = /^([A-Za-z0-9_\-.+])+@([A-Za-z0-9_\-.])+\.([A-Za-z]{2,})$/;
-  return isDefined(email) && !emailRegex.test(email)
-    ? 'Invalid Email' : undefined;
-}
 export function lessThanSixImagesCondition(value: any) {
   return isDefined(value) && Array.isArray(value) && value.length > 6
     ? 'Only six images are allowed'
@@ -120,16 +117,18 @@ export const schema: FormSchema = {
       member: (): CountryDistrictsSchemaMember => ({
         fields: (): CountryDistrictSchemaFields => ({
           clientId: [],
-          country: [requiredCondition, (v) =>{
-            let kv: any = {};
-            if (value && value.country_district){
-              value.country_district.forEach(d=>{
-                if(d.country){
-                  if (kv[d.country]) return 'Duplicate countries not allowed';
-                  kv[d.country] = true;
-                }
-              });
+          country: [requiredCondition, (value, allValues) =>{
+            if (isNotDefined(value)) {
+              return undefined;
             }
+            const countriesWithCurrentId = (allValues as unknown as DrefFields)?.country_district?.filter(
+              d => d.country === value
+            );
+
+            if (countriesWithCurrentId.length > 1) {
+              return 'Duplicate countries not allowed';
+            }
+
             return undefined;
           }],
           district: [],
@@ -138,7 +137,7 @@ export const schema: FormSchema = {
     },
     num_affected: [positiveIntegerCondition],
     num_assisted: [positiveIntegerCondition],
-    amount_requested: [positiveFloatCondition],
+    amount_requested: [positiveNumberCondition],
     emergency_appeal_planned: [],
     event_map: [requiredCondition],
 
@@ -198,8 +197,8 @@ export const schema: FormSchema = {
     men: [positiveIntegerCondition],
     girls: [positiveIntegerCondition],
     boys: [positiveIntegerCondition],
-    disability_people_per: [positiveFloatCondition],
-    people_per_urban_local: [positiveFloatCondition],
+    disability_people_per: [positiveNumberCondition],
+    people_per_urban_local: [positiveNumberCondition],
     displaced_people: [positiveIntegerCondition],
     people_targeted_with_early_actions: [positiveIntegerCondition],
 
@@ -229,15 +228,15 @@ export const schema: FormSchema = {
     appeal_code: [],
     glide_code: [],
     ifrc_appeal_manager_name: [],
-    ifrc_appeal_manager_email: [validEmailCondition],
+    ifrc_appeal_manager_email: [emailCondition],
     ifrc_project_manager_name: [],
-    ifrc_project_manager_email: [validEmailCondition],
+    ifrc_project_manager_email: [emailCondition],
     national_society_contact_name: [],
-    national_society_contact_email: [validEmailCondition],
+    national_society_contact_email: [emailCondition],
     ifrc_emergency_name: [],
-    ifrc_emergency_email: [validEmailCondition],
+    ifrc_emergency_email: [emailCondition],
     media_contact_name: [],
-    media_contact_email: [validEmailCondition],
+    media_contact_email: [emailCondition],
     human_resource: [max300CharCondition],
     surge_personnel_deployed: [max500CharCondition],
     logistic_capacity_of_ns: [max500CharCondition],
