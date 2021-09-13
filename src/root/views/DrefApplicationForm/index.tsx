@@ -288,7 +288,7 @@ function DrefApplication(props: Props) {
     const currentTabFieldErrors = listToMap(
       currentFields.filter(field => (
         !exceptionsMap[field] && analyzeErrors(validationError.fields?.[field]
-      ))),
+        ))),
       field => field,
       field => validationError.fields?.[field]
     );
@@ -390,6 +390,16 @@ function DrefApplication(props: Props) {
     || drefApplicationPending;
 
   const isImminentOnset = value?.type_of_onset === ONSET_IMMINENT;
+  React.useEffect(() => {
+    if (!isImminentOnset) {
+      onValueSet({
+        ...value,
+        event_text: undefined,
+        anticipatory_actions: undefined,
+        people_targeted_with_early_actions: undefined,
+      });
+    }
+  }, [isImminentOnset]);
 
   return (
     <Tabs

@@ -115,7 +115,7 @@ function ActionsFields(props: Props) {
     )
   ), [value.needs_identified]);
 
-  const filteredNeedOptions = needOptions.filter(n => !needsIdentifiedMap[n.value]);
+  const filteredNeedOptions = needsIdentifiedMap ? needOptions.filter(n => !needsIdentifiedMap[n.value]) : [];
 
   const nsActionsMap = React.useMemo(() => (
     listToMap(
@@ -124,7 +124,7 @@ function ActionsFields(props: Props) {
       d => true
     )
   ), [value.national_society_actions]);
-  const filteredNsActionOptions = nsActionOptions.filter(n => !nsActionsMap[n.value]);
+  const filteredNsActionOptions = nsActionsMap ? nsActionOptions.filter(n => !nsActionsMap[n.value]) : [];
 
   return (
     <>
