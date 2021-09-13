@@ -61,8 +61,8 @@ export default class CatalogueOfSurgeServices extends React.Component {
         if (card.cardType === "file") {
             return (
                 <div className="cardElementContainer">
-                    {card.elements.map(element => (
-                        <a href={element.url} onClick={e => this.openNewTab(element.url, e)} className="cardElement">
+                    {card.elements.map((element, index) => (
+                        <a key={index} href={element.url} onClick={e => this.openNewTab(element.url, e)} className="cardElement">
                             { element.url !== "" ? <span className="catalogueIcon collecticon-humanitarian-pdf"></span> : <></>}
                             <span className="cardElementText">{strings[element.name]}</span>
                             { element.url !== "" ? <span className="catalogueIcon collecticon-humanitarian-download"></span> : <></>}
@@ -74,8 +74,8 @@ export default class CatalogueOfSurgeServices extends React.Component {
             return (
                 <div className="cardElementContainer">
                     <span className="cardText">{strings[card.cardText]}</span>
-                    {card.buttons.map(btn => (
-                        <a href={btn.url} onClick={e => this.openNewTab(btn.url, e)} className="cardElement">
+                    {card.buttons.map((btn, index) => (
+                        <a key={index} href={btn.url} onClick={e => this.openNewTab(btn.url, e)} className="cardElement">
                             <span className="catalogueIcon collecticon-humanitarian-pdf"></span>
                             <span className="cardElementText">{strings[btn.btnText]}</span>
                             <span className="catalogueIcon collecticon-humanitarian-download"></span>
@@ -104,9 +104,9 @@ export default class CatalogueOfSurgeServices extends React.Component {
         const { strings } = this.context;
         return (
             <div className="cardsContainer row flex-sm">
-                {cards.map((card) => {
+                {cards.map((card, index) => {
                     return (
-                        <div className={`col col-6-sm ${cards.length <= 2 ? "col-4-sm" : "col-4-mid"}`}>
+                        <div key={index} className={`col col-6-sm ${cards.length <= 2 ? "col-4-sm" : "col-4-mid"}`}>
                             <div className="cardContainer">
                                 <div className="cardTitle">
                                     <span>{strings[card.cardTitle]}</span>
@@ -147,10 +147,10 @@ export default class CatalogueOfSurgeServices extends React.Component {
             <section>
                 <h1>{strings[queriedData.sectionTitle]}</h1>
                 <p>{strings[queriedData.sectionText]}</p>
-                {queriedData.sectionCards.map((sectionCard) => {
+                {queriedData.sectionCards.map((sectionCard, index) => {
                     const additionalResoruces = sectionCard.cardsTitle === "catalogueOfSurgeServicesCardsTitleAdditionalResources" ? true : false;
                     return (
-                        <div>
+                        <div key={index}>
                             <h3 className="cardsTitle fold__header">{strings[sectionCard.cardsTitle]}</h3>
                             {this.renderCards(sectionCard.cards, additionalResoruces)}
                         </div>
@@ -1222,7 +1222,7 @@ const data = [
                         cardType: 'textBtn',
                         cardTitle: 'catalogueOfSurgeServicesCardsTitleRapidResponse',
                         cardText: '',
-                        cardBtnText: 'catalogueOfSurgeServicesPlanningCards2Card1BtnText',
+                        cardBtnText: 'catalogueOfSurgeServicesSecurityCards2Card1BtnText',
                         url: '#security-management'
                     }
                 ]
