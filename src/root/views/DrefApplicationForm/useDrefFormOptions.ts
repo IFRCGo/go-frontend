@@ -213,6 +213,7 @@ export const schema: FormSchema = {
           title: [requiredCondition],
           budget: [requiredCondition, positiveIntegerCondition],
           persons_targeted: [positiveIntegerCondition],
+          indicator: [max300CharCondition],
           description: [max300CharCondition],
         }),
       }),
