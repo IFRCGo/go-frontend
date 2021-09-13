@@ -9,6 +9,7 @@ import { useLazyRequest } from '#utils/restRequest';
 import Button from '#components/Button';
 import RawButton from '#components/RawButton';
 import FileInput, {Props as FileInputProps } from '#components/FileInput';
+import useAlert from '#hooks/useAlert';
 
 import styles from './styles.module.scss';
 
@@ -77,6 +78,8 @@ function GoFileInput<T extends string>(props: Props<T>) {
     ...otherProps
   } = props;
 
+  const alert = useAlert();
+
   const {
     pending,
     trigger: triggerFileUpload,
@@ -120,8 +123,11 @@ function GoFileInput<T extends string>(props: Props<T>) {
         }
       }
     },
-    onFailure: () => {
-      console.error('Could not upload file!');
+    onFailure: (e) => {
+      const serverError = e?.value?.errors as { file: string[] };
+      const message = serverError?.file?.join(', ') ?? 'Failed to upload the file!';
+      alert.show(message, { variant: 'danger' });
+      console.error('Could not upload file!', e);
     },
   });
 

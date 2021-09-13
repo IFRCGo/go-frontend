@@ -365,6 +365,7 @@ function DrefApplication(props: Props) {
       handleTabChange(nextStepMap[currentStep]);
     }
   }, [validateCurrentTab, currentStep, handleTabChange, validate, onErrorSet, submitRequest, userDetails]);
+
   const handleBackButtonClick = React.useCallback(() => {
     if (currentStep !== 'drefOverview') {
       const prevStepMap: {

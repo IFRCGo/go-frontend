@@ -15,6 +15,7 @@ import {
 import TextArea from '#components/TextArea';
 import Button from '#components/Button';
 import NumberInput from '#components/NumberInput';
+import TextInput from '#components/TextInput';
 import InputSection from '#components/InputSection';
 import LanguageContext from '#root/languageContext';
 
@@ -76,6 +77,13 @@ function InterventionInput(props: Props) {
         value={value.persons_targeted}
         onChange={onFieldChange}
         error={error?.fields?.persons_targeted}
+      />
+      <TextInput
+        label="Indicator"
+        name="indicator"
+        value={value.indicator}
+        onChange={onFieldChange}
+        error={error?.fields?.indicator}
       />
       <TextArea
         label={strings.drefFormListOfActivities}

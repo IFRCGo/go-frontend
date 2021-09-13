@@ -119,7 +119,7 @@ export function integerCondition(value: Maybe<number>) {
     : undefined;
 }
 
-export function positiveFloatCondition(value: Maybe<number>) {
+export function positiveNumberCondition(value: Maybe<number>) {
   return isDefined(value) && (!isFloat(value) || value < 0)
     ? 'The field must be a positive number'
     : undefined;

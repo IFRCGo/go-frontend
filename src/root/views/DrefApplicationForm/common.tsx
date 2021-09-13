@@ -82,7 +82,7 @@ export interface Intervention {
   title: string;
   budget: number;
   persons_targeted: number;
-  indicator: number;
+  indicator: string;
   description: string;
 }
 
