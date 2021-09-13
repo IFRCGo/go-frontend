@@ -78,12 +78,13 @@ function InterventionInput(props: Props) {
         onChange={onFieldChange}
         error={error?.fields?.persons_targeted}
       />
-      <TextInput
+      <TextArea
         label="Indicator"
         name="indicator"
         value={value.indicator}
         onChange={onFieldChange}
         error={error?.fields?.indicator}
+        placeholder={strings.drefFormMaxThreeHundredCharacters}
       />
       <TextArea
         label={strings.drefFormListOfActivities}
