@@ -159,10 +159,11 @@ class Emergency extends React.Component {
   // Sets default tab if url param is blank or incorrect
   displayTabContent () {
     const tabs = this.getTabs();
+    console.log(this.props.location.hash);
     const tabHashArray = tabs.map(({ hash }) => hash);
     if (!tabHashArray.find((hash) => hash === this.props.location.hash)) {
       this.props.history.replace(
-        `${this.props.location.pathname}${tabHashArray[0]}`
+        `${this.props.location.pathname}${this.props.location.hash}`  // tabHashArray[0] can be still not loaded
       );
     }
   }
