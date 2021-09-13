@@ -82,7 +82,7 @@ function Response(props: Props) {
       d => true
     )
   ), [value.planned_interventions]);
-  const filteredInterventionOptions = interventionOptions.filter(n => !interventionsIdentifiedMap[n.value]);
+  const filteredInterventionOptions = interventionsIdentifiedMap ? interventionOptions.filter(n => !interventionsIdentifiedMap[n.value]) : [];
   const isImminentOnset = value.type_of_onset === ONSET_IMMINENT;
 
   return (
