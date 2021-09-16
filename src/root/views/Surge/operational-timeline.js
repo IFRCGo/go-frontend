@@ -42,7 +42,7 @@ export default class OperationalTimeline extends React.Component {
         
         var clickedObject = OperationTimelineContent.find(d => d.id === clickedElement.getAttribute("id"));
         if (clickedObject !== undefined && clickedObject.url !== '') {
-            window.open("https://ifrcorg.sharepoint.com/sites/" + clickedObject.url, '_blank');
+            window.open(clickedObject.url, '_blank');
         }
     }
 
