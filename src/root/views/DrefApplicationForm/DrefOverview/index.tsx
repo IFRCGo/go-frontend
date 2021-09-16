@@ -255,7 +255,6 @@ function DrefOverview(props: Props) {
       >
         <InputSection
           title={!isImminentOnset ? strings.drefFormEventDate : strings.drefFormDateOfImpact}
-
         >
           {!isImminentOnset &&
             <DateInput
