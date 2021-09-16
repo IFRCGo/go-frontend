@@ -111,7 +111,7 @@ function ActionsFields(props: Props) {
     listToMap(
       value.needs_identified,
       d => d.title ?? '',
-      d => true
+      d => true,
     )
   ), [value.needs_identified]);
 
@@ -121,7 +121,7 @@ function ActionsFields(props: Props) {
     listToMap(
       value.national_society_actions,
       d => d.title ?? '',
-      d => true
+      d => true,
     )
   ), [value.national_society_actions]);
   const filteredNsActionOptions = nsActionsMap ? nsActionOptions.filter(n => !nsActionsMap[n.value]) : [];
