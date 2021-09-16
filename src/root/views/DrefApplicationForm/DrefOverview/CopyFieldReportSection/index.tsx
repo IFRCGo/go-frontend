@@ -1,6 +1,7 @@
 import React from 'react';
 import {
   isNotDefined,
+  isDefined,
   unique,
   randomString,
 } from '@togglecorp/fujs';
@@ -49,13 +50,13 @@ function CopyFieldReportSection (props: Props) {
   const alert = useAlert();
 
   type FRCallback = (options: NumericValueOption[]) => void;
-  const [fieldReport, setFieldReport] = useInputState<number | undefined>(undefined);
+  const [fieldReport, setFieldReport] = useInputState<number | undefined>(value?.field_report);
   const [fieldReportSearch, setFieldReportSearch] = React.useState<string | undefined>();
   const [fetchedFieldReports, setFetchedFieldReports] = React.useState<FieldReportListItem[]>([]);
   const fieldReportCallbackRef = React.useRef<FRCallback>();
 
   useRequest<ListResponse<FieldReportListItem>>({
-    skip: isNotDefined(fieldReportSearch),
+    skip: (fieldReportSearch?.length ?? 0) === 0,
     url: 'api/v2/field_report/',
     query: {
       summary: fieldReportSearch,
@@ -79,6 +80,22 @@ function CopyFieldReportSection (props: Props) {
 
           return newFieldReports;
         });
+      }
+    }
+  });
+
+  const {
+    trigger: triggerSelectedFrRequest,
+    pending: selectedFrPending,
+  } = useLazyRequest<FieldReportAPIResponseFields, number>({
+    url: (frId) => `api/v2/field_report/${frId}`,
+    onSuccess: (fr) => {
+      if (fieldReportCallbackRef.current) {
+        const frOption = {
+          value: fr.id,
+          label: fr.summary,
+        };
+        fieldReportCallbackRef.current([frOption] ?? emptyNumericOptionList);
       }
     }
   });
@@ -168,18 +185,21 @@ function CopyFieldReportSection (props: Props) {
     },
   });
 
-
   const handleFieldReportLoad = React.useCallback((
     input: string | undefined,
     callback: FRCallback,
   ) => {
     if (!input) {
-      callback(emptyNumericOptionList);
+      if (isNotDefined(value.field_report)) {
+        callback(emptyNumericOptionList);
+      } else {
+        triggerSelectedFrRequest(value.field_report);
+      }
     }
 
     setFieldReportSearch(input);
     fieldReportCallbackRef.current = callback;
-  }, []);
+  }, [value.field_report, triggerSelectedFrRequest]);
 
   const handleCopyButtonClick = React.useCallback((fieldReportId: number | undefined) => {
     if (isNotDefined(fieldReportId)) {
@@ -189,12 +209,14 @@ function CopyFieldReportSection (props: Props) {
     triggerDetailRequest(fieldReportId);
   }, [triggerDetailRequest]);
 
-  const initialOptions = React.useMemo(() => (
-    fetchedFieldReports.map((fr) => ({
+  const initialOptions = React.useMemo(() => {
+    const optionList = fetchedFieldReports.map((fr) => ({
       value: fr.id,
       label: fr.summary,
-    }))
-  ), [fetchedFieldReports]);
+    }));
+
+    return optionList;
+  }, [fetchedFieldReports]);
 
   return (
     <Container visibleOverflow>
@@ -208,6 +230,8 @@ function CopyFieldReportSection (props: Props) {
           onChange={setFieldReport}
           loadOptions={handleFieldReportLoad}
           initialOptions={initialOptions}
+          pending={selectedFrPending}
+          defaultOptions
         />
         <div className={styles.actions}>
           <Button
