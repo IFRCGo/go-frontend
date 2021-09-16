@@ -107,6 +107,7 @@ export function lessThanSixImagesCondition(value: any) {
 
 export const schema: FormSchema = {
   fields: (value): FormSchemaFields => ({
+    field_report: [],
     title: [requiredCondition],
     national_society: [requiredCondition],
     disaster_type: [requiredCondition],
