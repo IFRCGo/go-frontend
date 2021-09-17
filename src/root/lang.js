@@ -147,6 +147,7 @@ export default {
   regionOperationsTab: 'Operations',
   region3WTab: '3w',
   regionProfileTab: 'Regional Profile',
+  regionRiskWatchTab: 'Risk Watch',
   regionPreparednessTab: 'Preparedness',
   regionAdditionalInfoTab: 'Additional Data',
   regionSnippetsTitle: 'Regional Content',
@@ -1561,5 +1562,10 @@ export default {
   threeWEditPageTitle: 'IFRC Go - Edit 3W',
 
   emptyMessage: 'Data is not available.',
-  emptyMessageHelpText: 'Please refresh the browser or visit the platform in a little bit.'
+  emptyMessageHelpText: 'Please refresh the browser or visit the platform in a little bit.',
+
+  //Risk Watch
+  riskModuleImminent: 'imminent',
+  riskModuleSeasonalRiskByMonth: 'Seasonal Risk By Month',
+
 };

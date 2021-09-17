@@ -53,9 +53,10 @@ import { resolveToString } from '#utils/lang';
 
 import { countriesSelector, countriesByRegionSelector, regionsByIdSelector, regionByIdOrNameSelector, countriesGeojsonSelector } from '../selectors';
 import turfBbox from '@turf/bbox';
+import RiskWatch from './RiskWatch';
 
 class AdminArea extends SFPComponent {
-  constructor (props) {
+  constructor(props) {
     super(props);
 
     this.state = {
@@ -72,7 +73,7 @@ class AdminArea extends SFPComponent {
     this.onAdditionalLinkClickAction = this.onAdditionalLinkClickAction.bind(this);
   }
 
-  getTabDetails () {
+  getTabDetails() {
     const { strings } = this.context;
     return [
       { title: strings.regionOperationsTab, hash: '#operations' },
@@ -80,15 +81,16 @@ class AdminArea extends SFPComponent {
       { title: strings.regionProfileTab, hash: '#regional-profile' },
       // { title: strings.regionPreparednessTab, hash: '#preparedness' },
       // { title: strings.regionAdditionalInfoTab, hash: '#additional-info' }
+      { title: strings.regionRiskWatchTab, hash: '#risk-watch' },
     ];
   }
 
-  toggleCountriesSidebar () {
-    this.setState({showCountriesSidebar: !this.state.showCountriesSidebar});
+  toggleCountriesSidebar() {
+    this.setState({ showCountriesSidebar: !this.state.showCountriesSidebar });
   }
 
   // eslint-disable-next-line camelcase
-  UNSAFE_componentWillReceiveProps (nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (this.props.thisRegion.id !== nextProps.thisRegion.id) {
       this.getData(nextProps);
       this.setState({ maskLayer: this.getMaskLayer(nextProps.thisRegion.id) });
@@ -105,22 +107,22 @@ class AdminArea extends SFPComponent {
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     this.getData(this.props);
     this.getAdmArea(this.props.type, this.props.thisRegion.id);
     this.displayTabContent();
     addFullscreenListener(this.onFullscreenChange);
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     removeFullscreenListener(this.onFullscreenChange);
   }
 
-  onFullscreenChange () {
-    this.setState({fullscreen: isFullscreen()});
+  onFullscreenChange() {
+    this.setState({ fullscreen: isFullscreen() });
   }
 
-  addClickHandler (data, clickHandler) {
+  addClickHandler(data, clickHandler) {
     if (data.links && data.links.length) {
       data.links = data.links.map(link => {
         if (link.show_in_go) {
@@ -133,37 +135,37 @@ class AdminArea extends SFPComponent {
     return data;
   }
 
-  onAdditionalLinkClickAction (linkObject) {
+  onAdditionalLinkClickAction(linkObject) {
     this.setState({
       regionAdditionalInfoTabIframe: linkObject.url
     });
   }
 
-  onIframeBackClick () {
+  onIframeBackClick() {
     this.setState({
       regionAdditionalInfoTabIframe: false
     });
   }
 
-  toggleFullscreen () {
+  toggleFullscreen() {
     if (isFullscreen()) {
       exitFullscreen();
-      this.setState({fullscreen: false});
+      this.setState({ fullscreen: false });
     } else {
       enterFullscreen(document.querySelector('#presentation'));
-      this.setState({fullscreen: true});
+      this.setState({ fullscreen: true });
     }
   }
 
   // Sets default tab if url param is blank or incorrect
-  displayTabContent () {
+  displayTabContent() {
     const tabHashArray = this.getTabDetails().map(({ hash }) => hash);
     if (!tabHashArray.find(hash => hash === this.props.location.hash)) {
       this.props.history.replace(`${this.props.location.pathname}${tabHashArray[0]}`);
     }
   }
 
-  getData (props) {
+  getData(props) {
     const id = props.thisRegion.id;
     this.props._getAdmAreaAppealsList(props.type, id);
     this.props._getAdmAreaAggregateAppeals(props.type, id, DateTime.local().minus({ years: 10 }).startOf('month').toISODate(), 'year');
@@ -171,10 +173,10 @@ class AdminArea extends SFPComponent {
     this.props._getAdmAreaKeyFigures(props.type, id);
     this.props._getAdmAreaSnippets(props.type, id);
     // this.props._getCountries(id);
-    this.props._getAppealsListStats({regionId: id});
+    this.props._getAppealsListStats({ regionId: id });
   }
 
-  getMaskLayer (regionId) {
+  getMaskLayer(regionId) {
     const countries = this.props.countriesByRegion[regionId.toString()];
     const isoCodes = countries.map(country => {
       return country.iso && country.iso.toUpperCase();
@@ -195,12 +197,12 @@ class AdminArea extends SFPComponent {
     };
   }
 
-  getAdmArea (type, id) {
+  getAdmArea(type, id) {
     showGlobalLoading();
     this.props._getAdmAreaById(type, id);
   }
 
-  renderContent () {
+  renderContent() {
     const {
       fetched,
       error,
@@ -213,7 +215,7 @@ class AdminArea extends SFPComponent {
     const { strings } = this.context;
 
     const additionalTabName = data.additional_tab_name ? data.additional_tab_name : strings.regionAdditionalInfoTab;
-    
+
     const tabDetails = [...this.getTabDetails()];
     // Add Preparedness Tab only if Preparedness Snippets exist
     if (data.preparedness_snippets.length > 0) {
@@ -262,12 +264,12 @@ class AdminArea extends SFPComponent {
       <section className='inpage'>
         <Helmet>
           <title>
-            {resolveToString(strings.regionTitleSelected, { regionName: regionName})}
+            {resolveToString(strings.regionTitleSelected, { regionName: regionName })}
           </title>
         </Helmet>
         <BreadCrumb crumbs={[
-          {link: this.props.location.pathname, name: regionName},
-          {link: '/', name: strings.breadCrumbHome}
+          { link: this.props.location.pathname, name: regionName },
+          { link: '/', name: strings.breadCrumbHome }
         ]} />
         <header className='inpage__header'>
           <div className='inner'>
@@ -280,7 +282,7 @@ class AdminArea extends SFPComponent {
           <div className='inner'>
             {this.props.appealsListStats.data ? (
               <KeyFiguresHeader appealsListStats={this.props.appealsListStats} />
-            ) : <BlockLoading/>}
+            ) : <BlockLoading />}
           </div>
         </section>
         <div className='tab__wrap tab__wrap--3W'>
@@ -302,7 +304,7 @@ class AdminArea extends SFPComponent {
             />
           </div>
           <Tabs
-            selectedIndex={ selectedIndex }
+            selectedIndex={selectedIndex}
             onSelect={index => handleTabChange(index)}
           >
             <TabList>
@@ -315,12 +317,12 @@ class AdminArea extends SFPComponent {
               <div className='inner'>
                 <TabPanel>
                   <TabContent>
-                    <HighlightedOperations opsType='region' opsId={data.id}/>
+                    <HighlightedOperations opsType='region' opsId={data.id} />
                     <section className={presentationClass} id='presentation'>
                       {this.state.fullscreen ? (
                         <KeyFiguresHeader fullscreen={this.state.fullscreen} appealsListStats={this.props.appealsListStats} />
                       ) : null}
-                      <div className={c('inner', {'appeals--fullscreen': this.state.fullscreen})}>
+                      <div className={c('inner', { 'appeals--fullscreen': this.state.fullscreen })}>
                         <Fold
                           showHeader={!this.state.fullscreen}
                           title={`${strings.regionAppealsTableTitle} (${n(activeOperations)})`}
@@ -337,7 +339,7 @@ class AdminArea extends SFPComponent {
                             toggleFullscreen={this.toggleFullscreen}
                             mapBoundingBox={mapBoundingBox}
                             countriesGeojson={this.props.countriesGeojson}
-                            // layers={this.state.maskLayer}
+                          // layers={this.state.maskLayer}
                           />
                           <AppealsTable
                             foldLink={foldLink}
@@ -377,40 +379,40 @@ class AdminArea extends SFPComponent {
                 </TabPanel>
                 <TabPanel>
                   {
-                    this.state.regionAdditionalInfoTabIframe 
-                    ? 
-                    (<TabContent>
-                      <div className='container-lg'>
-                        <button onClick={this.onIframeBackClick.bind(this)} className='regional-profile-back'><span className='collecticon-chevron-left font-size-xxs spacing-half-r'></span>{strings.regionIframeBackLink}</button>
-                      </div>
-                      <iframe src={this.state.regionAdditionalInfoTabIframe} frameBorder='0' width='100%' height='800px'></iframe>
-                    </TabContent>)
-                    :
-                  (<React.Fragment>
-                    <TabContent>
-                      <div className='container-mid margin-2-v spacing-2-h'>
-                        <div className='row-lg flex flex-justify-center'>
-                          <div className='col-lg col-12 col-6-xs margin-v'>
-                            <div className='regional-profile-key'>
-                              <div className='row flex regional-profile-key-block'>
-                                <div className='col'>
-                                  <div className='sumstats__value'>{data.national_society_count}</div>
-                                </div>
-                                <div className='col'>
-                                  <div className='regional-profile-subtitle'>{resolveToString(strings.regionalTabBox1, { regionName })}</div>
+                    this.state.regionAdditionalInfoTabIframe
+                      ?
+                      (<TabContent>
+                        <div className='container-lg'>
+                          <button onClick={this.onIframeBackClick.bind(this)} className='regional-profile-back'><span className='collecticon-chevron-left font-size-xxs spacing-half-r'></span>{strings.regionIframeBackLink}</button>
+                        </div>
+                        <iframe src={this.state.regionAdditionalInfoTabIframe} frameBorder='0' width='100%' height='800px'></iframe>
+                      </TabContent>)
+                      :
+                      (<React.Fragment>
+                        <TabContent>
+                          <div className='container-mid margin-2-v spacing-2-h'>
+                            <div className='row-lg flex flex-justify-center'>
+                              <div className='col-lg col-12 col-6-xs margin-v'>
+                                <div className='regional-profile-key'>
+                                  <div className='row flex regional-profile-key-block'>
+                                    <div className='col'>
+                                      <div className='sumstats__value'>{data.national_society_count}</div>
+                                    </div>
+                                    <div className='col'>
+                                      <div className='regional-profile-subtitle'>{resolveToString(strings.regionalTabBox1, { regionName })}</div>
+                                    </div>
+                                  </div>
+                                  <div className='row flex regional-profile-icon-block'>
+                                    <div className='col'>
+                                      <div className='regional-profile-source'>{strings.regionalTabBoxSource}</div>
+                                    </div>
+                                    <div className='col regional-profile-icon-col'>
+                                      <img src='/assets/graphics/content/2020/IFRC-icons-colour_Cross-ns.svg' />
+                                    </div>
+                                  </div>
                                 </div>
                               </div>
-                              <div className='row flex regional-profile-icon-block'>
-                                <div className='col'>
-                                  <div className='regional-profile-source'>{strings.regionalTabBoxSource}</div>
-                                </div>
-                                <div className='col regional-profile-icon-col'>
-                                  <img src='/assets/graphics/content/2020/IFRC-icons-colour_Cross-ns.svg' />
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                          {/*<div className='col-lg col-12 col-6-xs margin-v'>
+                              {/*<div className='col-lg col-12 col-6-xs margin-v'>
                             <div className='sumstat__item regional-profile-key'>
                               <div className='row flex regional-profile-key-block'>
                                 <div className='col'>
@@ -430,35 +432,40 @@ class AdminArea extends SFPComponent {
                               </div>
                             </div>
                           </div>*/}
-                        </div>
-                      </div>
-                    </TabContent>
-                    <TitledSnippets snippets={data.profile_snippets} />
-                    <TabContent isError={!get(data, 'links.length')} title={strings.regionLinks} showError={false}>
-                        <Links data={this.addClickHandler(data, this.onAdditionalLinkClickAction)} />    
-                    </TabContent>
-                    <TabContent showError={false} isError={!get(data, 'contacts.length')} title={strings.regionContacts}>
-                      <Contacts data={data} />
-                    </TabContent>
-                  </React.Fragment>)
-                }
+                            </div>
+                          </div>
+                        </TabContent>
+                        <TitledSnippets snippets={data.profile_snippets} />
+                        <TabContent isError={!get(data, 'links.length')} title={strings.regionLinks} showError={false}>
+                          <Links data={this.addClickHandler(data, this.onAdditionalLinkClickAction)} />
+                        </TabContent>
+                        <TabContent showError={false} isError={!get(data, 'contacts.length')} title={strings.regionContacts}>
+                          <Contacts data={data} />
+                        </TabContent>
+                      </React.Fragment>)
+                  }
                 </TabPanel>
-                { data.preparedness_snippets.length > 0 ?
-                (<TabPanel>
-                  <TabContent>
-                    <TitledSnippets snippets={data.preparedness_snippets} />
-                  </TabContent>
-                </TabPanel>) : null }
-
-                { get(this.props.snippets, 'data.results.length') || get(this.props.keyFigures, 'data.results.length') ? (
                 <TabPanel>
-                  <TabContent isError={!get(this.props.keyFigures, 'data.results.length')} errorMessage={ strings.noDataMessage } title={strings.regionKeyFigures}>
-                    <KeyFigures data={this.props.keyFigures} />
+                  <TabContent title={strings.regionRiskWatchTab}>
+                    <RiskWatch></RiskWatch>
                   </TabContent>
-                  <TabContent isError={!get(this.props.snippets, 'data.results.length')} errorMessage={ strings.noDataMessage } title={strings.regionGraphics}>
-                    <Snippets data={this.props.snippets} title={strings.regionSnippetsTitle} />
-                  </TabContent>
-                </TabPanel>) :null }
+                </TabPanel>
+                {data.preparedness_snippets.length > 0 ?
+                  (<TabPanel>
+                    <TabContent>
+                      <TitledSnippets snippets={data.preparedness_snippets} />
+                    </TabContent>
+                  </TabPanel>) : null}
+
+                {get(this.props.snippets, 'data.results.length') || get(this.props.keyFigures, 'data.results.length') ? (
+                  <TabPanel>
+                    <TabContent isError={!get(this.props.keyFigures, 'data.results.length')} errorMessage={strings.noDataMessage} title={strings.regionKeyFigures}>
+                      <KeyFigures data={this.props.keyFigures} />
+                    </TabContent>
+                    <TabContent isError={!get(this.props.snippets, 'data.results.length')} errorMessage={strings.noDataMessage} title={strings.regionGraphics}>
+                      <Snippets data={this.props.snippets} title={strings.regionSnippetsTitle} />
+                    </TabContent>
+                  </TabPanel>) : null}
               </div>
             </div>
           </Tabs>
@@ -467,7 +474,7 @@ class AdminArea extends SFPComponent {
     );
   }
 
-  render () {
+  render() {
     const { strings } = this.context;
 
     return (
