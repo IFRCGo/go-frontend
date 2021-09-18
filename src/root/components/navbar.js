@@ -96,6 +96,13 @@ function Navbar (props) {
                       {strings.headerDropdownCovid19NSFinancialOverview}
                     </a>
                     <Link
+                      to='/dref-application/new'
+                      className='drop__menu-item'
+                    >
+                      {/* FIXME: use strings */}
+                      New Dref Application
+                    </Link>
+                    <Link
                       to='/three-w/new'
                       className='drop__menu-item'
                     >

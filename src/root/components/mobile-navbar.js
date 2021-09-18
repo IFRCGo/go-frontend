@@ -126,6 +126,15 @@ class MobileNavbar extends React.PureComponent {
                     </a>
                   </li>
                   <li className='drop__menu-item'>
+                  <Link
+                      to='/dref-application/new'
+                      className='drop__menu-item'
+                    >
+                      {/* FIXME: use strings */}
+                      New Dref Application
+                    </Link>
+                  </li>
+                  <li className='drop__menu-item'>
                     <Link
                       to='/three-w/new'
                       className='drop__menu-item'

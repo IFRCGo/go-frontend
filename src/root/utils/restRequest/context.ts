@@ -19,7 +19,7 @@ export interface ContextInterface<R, RE, E, O> {
     // eslint-disable-next-line @typescript-eslint/ban-types
     options: Omit<RequestInit, 'body'> & { body?: RequestInit['body'] | object | undefined },
     requestOptions: O,
-  ) => R | RE;
+  ) => R | RE | string | undefined;
   transformError: (
     errorType: 'server' | 'parse' | 'network',
     url: string,

@@ -1,0 +1,9 @@
+@import '~styles/settings/_variables.scss';
+
+.essential-information {
+  .actions {
+    display: flex;
+    justify-content: flex-end;
+    padding: $spacing/2 $spacing;
+  }
+}

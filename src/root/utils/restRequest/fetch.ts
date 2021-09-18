@@ -117,7 +117,7 @@ async function fetchResource<R, RE, E, C, O>(
     return;
   }
 
-  let resBody: R | RE;
+  let resBody: R | RE | string | undefined;
   const responseClone = res?.clone();
   try {
     resBody = await transformResponseRef.current(

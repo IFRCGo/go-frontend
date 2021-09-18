@@ -1,6 +1,6 @@
 import {
-    createStringColumn,
-    createNumberColumn,
+  createStringColumn,
+  createNumberColumn,
 } from '#components/Table/predefinedColumns';
 
 import {
