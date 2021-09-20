@@ -202,13 +202,13 @@ theMap.setLayoutProperty('admin-0-highlight', 'visibility', 'visible');
                         <div>
                           <label className='form__label'>Key</label>
                           <dl className='legend__dl legend__dl--colors'>
-                            <dt className='color color--lightblue'>
+                            <dt className='color color--lightgrey'>
                               <Translate stringId='emergencyMapSelected'/>
                             </dt>
                             <dd>
                               <Translate stringId='emergencyMapAffectedCountry'/>
                             </dd>
-                            <dt className='color color--maroon'>
+                            <dt className='color color--rose'>
                               <Translate stringId='emergencyMapSelected'/>
                             </dt>
                             <dd>
