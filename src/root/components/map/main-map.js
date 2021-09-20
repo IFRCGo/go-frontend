@@ -190,11 +190,11 @@ class MainMap extends React.Component {
     //   theMap.getCanvas().style.cursor = '';
     // });
 
-    // theMap.on('mousemove', 'icrc_admin0', e => {
+    // theMap.on('mousemove', 'admin-0', e => {
     //   theMap.getCanvas().style.cursor = 'pointer';
     // });
 
-    // theMap.on('mouseleave', 'icrc_admin0', e => {
+    // theMap.on('mouseleave', 'admin-0', e => {
     //   theMap.getCanvas().style.cursor = '';
     // });
 
@@ -207,13 +207,13 @@ class MainMap extends React.Component {
     //   }
     // });
 
-    // theMap.on('mousemove', 'icrc_admin0', _debounce(e => {
+    // theMap.on('mousemove', 'admin-0', _debounce(e => {
     //   const feature = e.features.length ? e.features[0] : undefined;
     //   if (feature && feature.properties.INDEPENDEN !== 'FALSE' &&
     //     feature.properties.ISO2 !== this.state.selectedFeatureISO) {
     //       this.setState({ selectedFeatureISO: feature.properties.ISO2 });
-    //       theMap.setLayoutProperty('icrc_admin0_highlight', 'visibility', 'visible');
-    //       theMap.setFilter('icrc_admin0_highlight', ['==', 'OBJECTID', feature.properties.OBJECTID]);
+    //       theMap.setLayoutProperty('admin-0-highlight', 'visibility', 'visible');
+    //       theMap.setFilter('admin-0-highlight', ['==', 'OBJECTID', feature.properties.OBJECTID]);
     //   }
     // }, 80));
 
@@ -221,22 +221,22 @@ class MainMap extends React.Component {
       const feature = e.features.length ? e.features[0] : undefined;
       if (feature) {
         this.showOperationsPopover(theMap, feature, e, this.props.countries, 'appeals');
-        // theMap.setLayoutProperty('icrc_admin0_highlight', 'visibility', 'visible');
-        // theMap.setFilter('icrc_admin0_highlight', ['==', 'OBJECTID', feature.properties.OBJECTID]);
+        // theMap.setLayoutProperty('admin-0-highlight', 'visibility', 'visible');
+        // theMap.setFilter('admin-0-highlight', ['==', 'OBJECTID', feature.properties.OBJECTID]);
       }
     });
 
-    theMap.on('click', 'icrc_admin0', e => {
+    theMap.on('click', 'admin-0', e => {
       const feature = e.features.length ? e.features[0] : undefined;
       if (feature && feature.properties.INDEPENDEN !== 'FALSE') {
-        this.showOperationsPopover(theMap, feature, e, this.props.countries, 'icrc_admin0');
-        // theMap.setLayoutProperty('icrc_admin0_highlight', 'visibility', 'visible');
-        // theMap.setFilter('icrc_admin0_highlight', ['==', 'OBJECTID', feature.properties.OBJECTID]);
+        this.showOperationsPopover(theMap, feature, e, this.props.countries, 'admin-0');
+        // theMap.setLayoutProperty('admin-0-highlight', 'visibility', 'visible');
+        // theMap.setFilter('admin-0-highlight', ['==', 'OBJECTID', feature.properties.OBJECTID]);
       }
     });
 
-    // theMap.on('mouseleave', 'icrc_admin0', e => {
-    //   theMap.setLayoutProperty('icrc_admin0_highlight', 'visibility', 'none');
+    // theMap.on('mouseleave', 'admin-0', e => {
+    //   theMap.setLayoutProperty('admin-0-highlight', 'visibility', 'none');
     // });
 
     if (Array.isArray(this.props.mapBoundingBox)) {
