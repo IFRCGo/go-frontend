@@ -60,7 +60,7 @@ class EmergencyMap extends React.Component {
       country.iso.toUpperCase()
     ];
     const countryPolys = theMap.queryRenderedFeatures({'layers': ['admin-0'], 'filter': countryFilter});
-    // console.log(theMap.getStyle().layers); // do not remove, it can be sooo useful
+    // console.log(theMap.getStyle().layers); // do not remove it please, it can be so useful
     let geom;
     if (countryPolys.length > 0) {
       geom = countryPolys[0].geometry;
@@ -84,7 +84,7 @@ theMap.setFilter('admin-1-highlight', [
 ]);
 theMap.setFilter('admin-1-label-selected', [
   'in',
-  'id',
+  'district_id',
   ...districtIds
 ]);
 
