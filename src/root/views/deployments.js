@@ -32,7 +32,6 @@ import App from './app';
 import Progress from '#components/progress';
 import PersonnelByEventTable from '#components/deployments/personnel-by-event-table';
 import AlertsTable from '#components/connected/alerts-table';
-// import PersonnelTable from '#components/connected/personnel-table';
 import EruTable from '#components/connected/eru-table';
 import { SFPComponent } from '#utils/extendables';
 import DeploymentsMap from '#components/map/deployments-map';
