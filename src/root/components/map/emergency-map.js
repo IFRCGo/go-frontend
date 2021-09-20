@@ -7,14 +7,12 @@ import turfBbox from '@turf/bbox';
 import newMap from '#utils/get-new-map';
 import html2canvas from 'html2canvas';
 import { startDownload } from '#utils/download-starter';
-// import exportMap from '#utils/export-map';
 import { DateTime } from 'luxon';
 import _find from 'lodash.find';
 import LanguageContext from '#root/languageContext';
 import Translate from '#components/Translate';
 
 import { disasterTypesSelectSelector } from '#selectors';
-import { countryLabels } from '#utils/country-labels';
 
 class EmergencyMap extends React.Component {
   constructor (props) {
@@ -48,8 +46,7 @@ class EmergencyMap extends React.Component {
   setupData () {
     const {
       countries,
-      districts,
-      countriesGeojson
+      districts
     } = this.props;
 
     const theMap = this.theMap;
@@ -70,7 +67,6 @@ class EmergencyMap extends React.Component {
       this.setState({hideMap: true});
       return;
     }
-    const districtCodes = districts.map(d => d.code);
     const districtIds = districts.map(d => d.id);
     const bbox = turfBbox(geom);
     theMap.fitBounds(bbox);
@@ -93,7 +89,7 @@ theMap.setLayoutProperty('admin-1-label-selected', 'visibility', 'visible');
 theMap.setLayoutProperty('admin-0-highlight', 'visibility', 'visible');
 
 
-/* Original is below – should be translated NOW to the new style, which accepts: 'background', 'admin-0', 'admin-0-disputed', 'DRAFT-admin-0-points', 'admin-1-highlight', 'admin-0-highlight', 'hillshade', 'admin-1-boundary', 'admin-0-boundary-mask', 'admin-0-boundary-disputed', 'admin-0-boundary', 'admin-1-label', 'admin-0-label'
+/* Original is below – just for checking later:
     theMap.setFilter('admin1-selected', [
       'in',
       'Admin01Cod',
