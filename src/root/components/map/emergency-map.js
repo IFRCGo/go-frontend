@@ -56,10 +56,11 @@ class EmergencyMap extends React.Component {
     const country = countries[0];
     const countryFilter = [
       '==',
-      'ISO2',
+      'iso',
       country.iso.toUpperCase()
     ];
-    const countryPolys = theMap.queryRenderedFeatures({'layers': ['country'], 'filter': countryFilter});
+    const countryPolys = theMap.queryRenderedFeatures({'layers': ['admin-0'], 'filter': countryFilter});
+    // console.log(theMap.getStyle().layers); // do not remove it please, it can be so useful
     let geom;
     if (countryPolys.length > 0) {
       geom = countryPolys[0].geometry;
@@ -74,6 +75,25 @@ class EmergencyMap extends React.Component {
     const bbox = turfBbox(geom);
     theMap.fitBounds(bbox);
 
+//    theMap.setLayoutProperty('admin-1-highlight', 'visibility', 'visible');
+
+theMap.setFilter('admin-1-highlight', [
+  'in',
+  'district_id',
+  ...districtIds
+]);
+theMap.setFilter('admin-1-label-selected', [
+  'in',
+  'district_id',
+  ...districtIds
+]);
+
+theMap.setLayoutProperty('admin-1-highlight', 'visibility', 'visible');
+theMap.setLayoutProperty('admin-1-label-selected', 'visibility', 'visible');
+theMap.setLayoutProperty('admin-0-highlight', 'visibility', 'visible');
+
+
+/* Original is below – should be translated NOW to the new style, which accepts: 'background', 'admin-0', 'admin-0-disputed', 'DRAFT-admin-0-points', 'admin-1-highlight', 'admin-0-highlight', 'hillshade', 'admin-1-boundary', 'admin-0-boundary-mask', 'admin-0-boundary-disputed', 'admin-0-boundary', 'admin-1-label', 'admin-0-label'
     theMap.setFilter('admin1-selected', [
       'in',
       'Admin01Cod',
@@ -86,12 +106,12 @@ class EmergencyMap extends React.Component {
     ]);
     theMap.setFilter('admin1-country-selected', [
       '==',
-      'Admin00Nam',
+      'country_name',
       country.name
     ]);
     theMap.setFilter('admin1-country-selected-boundaries', [
       '==',
-      'Admin00Nam',
+      'country_name',
       country.name
     ]);
 
@@ -106,14 +126,14 @@ class EmergencyMap extends React.Component {
         data: countriesGeojson
       });
       // hide stock labels
-      this.theMap.setLayoutProperty('icrc_admin0_labels', 'visibility', 'none');
+      this.theMap.setLayoutProperty('admin-0-label', 'visibility', 'none');
       this.theMap.setLayoutProperty('additional-geography-labels', 'visibility', 'none');
 
       // add custom language labels
       this.theMap.addLayer(countryLabels);
     }
-
-    const disputedTerritoriesVisible = this.theMap.queryRenderedFeatures({layers: ['disputed_territories copy']}).length;
+*/
+    const disputedTerritoriesVisible = this.theMap.queryRenderedFeatures({layers: ['admin-0-disputed']}).length;
     if (disputedTerritoriesVisible) {
       this.setState({ disputedTerritoriesVisible: true });
     }
@@ -121,7 +141,7 @@ class EmergencyMap extends React.Component {
 
   componentDidMount () {
     this.mapLoaded = false;
-    this.theMap = newMap(this.refs.map, 'mapbox://styles/go-ifrc/cjxa3k4cx39a21cqt9qilk9hp');
+    this.theMap = newMap(this.refs.map, 'mapbox://styles/go-ifrc/ckrfe16ru4c8718phmckdfjh0');
     this.theMap.on('load', () => {
       this.setupData();
       this.mapLoaded = true;
@@ -182,13 +202,13 @@ class EmergencyMap extends React.Component {
                         <div>
                           <label className='form__label'>Key</label>
                           <dl className='legend__dl legend__dl--colors'>
-                            <dt className='color color--lightblue'>
+                            <dt className='color color--lightgrey'>
                               <Translate stringId='emergencyMapSelected'/>
                             </dt>
                             <dd>
                               <Translate stringId='emergencyMapAffectedCountry'/>
                             </dd>
-                            <dt className='color color--maroon'>
+                            <dt className='color color--rose'>
                               <Translate stringId='emergencyMapSelected'/>
                             </dt>
                             <dd>

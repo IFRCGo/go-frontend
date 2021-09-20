@@ -1,4 +1,4 @@
-export const defaultMapStyle = 'mapbox://styles/go-ifrc/cki7aznup3hqz19rxliv3naf4';
+export const defaultMapStyle = 'mapbox://styles/go-ifrc/ckrfe16ru4c8718phmckdfjh0';
 
 export const defaultMapOptions = {
   logoPosition: 'bottom-left' as const,
