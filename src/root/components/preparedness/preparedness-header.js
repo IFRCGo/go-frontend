@@ -20,7 +20,7 @@ class PreparednessHeader extends React.Component {
                   params={{
                     link: <a
                       className='link key-emergencies-list--preparedness'
-                      href='https://media.ifrc.org/ifrc/what-we-do-disaster-and-crisis-national-society-preparedness-effective-response/'
+                      href='https://www.ifrc.org/disaster-preparedness/'
                       >
                         here
                       </a>
