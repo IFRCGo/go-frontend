@@ -84,6 +84,12 @@ theMap.setFilter('admin-1-label-selected', [
   ...districtIds
 ]);
 
+theMap.setFilter('admin-0-highlight', [
+  '!in', // not in
+  'iso',
+  country.iso.toUpperCase()
+]);
+
 theMap.setLayoutProperty('admin-1-highlight', 'visibility', 'visible');
 theMap.setLayoutProperty('admin-1-label-selected', 'visibility', 'visible');
 theMap.setLayoutProperty('admin-0-highlight', 'visibility', 'visible');
