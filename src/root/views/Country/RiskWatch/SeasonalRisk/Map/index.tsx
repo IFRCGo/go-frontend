@@ -12,11 +12,7 @@ import Map, {
   MapBounds,
   MapTooltip
 } from '@togglecorp/re-map';
-import turfBbox from '@turf/bbox';
-
-import TextOutput from '#components/TextOutput';
-import MapTooltipContent from '#components/MapTooltipContent';
-import useReduxState from '#hooks/useReduxState';
+import { FilterValue, Filters } from '../Filter';
 import {
   COLOR_RED,
   COLOR_BLUE,
@@ -43,6 +39,9 @@ import {
 import LanguageContext from '#root/languageContext';
 
 import styles from './styles.module.scss';
+import Fold from '#components/fold';
+import Translate from '#components/Translate';
+import { RiskTable } from '../Table';
 
 const redPointCirclePaint = getPointCirclePaint(COLOR_RED);
 const bluePointCirclePaint = getPointCirclePaint(COLOR_BLUE);
@@ -139,85 +138,105 @@ function RiskMap(props: Props) {
     className,
   } = props;
 
+  const [filters, setFilters] = React.useState<FilterValue>({
+    reporting_ns: [],
+    programme_type: [],
+    primary_sector: [],
+    secondary_sectors: [],
+  });
 
   return (
-    <Map
-      mapStyle={defaultMapStyle}
-      mapOptions={defaultMapOptions}
-      navControlShown
-      navControlPosition="top-right"
+    <Fold
+      foldWrapperClass='fold--main'
+      foldTitleClass='fold__title--inline margin-reset'
+      title={
+        <Translate stringId='riskModuleRiskMap' />
+      }
+      showHeader={true}
     >
-      <div className={_cs(styles.map, className)}>
-        <MapContainer className={styles.mapContainer} />
-        <div className={styles.legend}>
-          <div
-            className={styles.legendItem}
-          >
+      <Filters
+        disabled={false}
+        value={filters}
+        onChange={setFilters} />
+      <Map
+        mapStyle={defaultMapStyle}
+        mapOptions={defaultMapOptions}
+        navControlShown
+        navControlPosition="top-right"
+      >
+        <div className={_cs(styles.map, className)}>
+          <MapContainer className={styles.mapContainer} />
+          <div className={styles.legend}>
             <div
-              className={styles.point}
-              style={{
-              }}
-            />
-            <div className={styles.label}>
+              className={styles.legendItem}
+            >
+              <div
+                className={styles.point}
+                style={{
+                }}
+              />
+              <div className={styles.label}>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      <MapSource
-        sourceKey="programme-points"
-        sourceOptions={sourceOption}
-      >
-        <MapLayer
-          layerKey="points-halo-circle"
-          layerOptions={{
-            type: 'circle',
-          }}
-        />
-        <MapLayer
-          layerKey="points-circle"
-          layerOptions={{
-            type: 'circle',
-            paint: redPointCirclePaint,
-          }}
-        />
-      </MapSource>
-      <MapSource
-        sourceKey="emergency-points"
-        sourceOptions={sourceOption}
-      >
-        <MapLayer
-          layerKey="points-halo-circle"
-          layerOptions={{
-            type: 'circle',
-          }}
-        />
-        <MapLayer
-          layerKey="points-circle"
-          layerOptions={{
-            type: 'circle',
-            paint: bluePointCirclePaint,
-          }}
-        />
-      </MapSource>
-      <MapSource
-        sourceKey="multi-points"
-        sourceOptions={sourceOption}
-      >
-        <MapLayer
-          layerKey="points-halo-circle"
-          layerOptions={{
-            type: 'circle',
-          }}
-        />
-        <MapLayer
-          layerKey="points-circle"
-          layerOptions={{
-            type: 'circle',
-            paint: orangePointCirclePaint,
-          }}
-        />
-      </MapSource>
-    </Map>
+        <MapSource
+          sourceKey="programme-points"
+          sourceOptions={sourceOption}
+        >
+          <MapLayer
+            layerKey="points-halo-circle"
+            layerOptions={{
+              type: 'circle',
+            }}
+          />
+          <MapLayer
+            layerKey="points-circle"
+            layerOptions={{
+              type: 'circle',
+              paint: redPointCirclePaint,
+            }}
+          />
+        </MapSource>
+        <MapSource
+          sourceKey="emergency-points"
+          sourceOptions={sourceOption}
+        >
+          <MapLayer
+            layerKey="points-halo-circle"
+            layerOptions={{
+              type: 'circle',
+            }}
+          />
+          <MapLayer
+            layerKey="points-circle"
+            layerOptions={{
+              type: 'circle',
+              paint: bluePointCirclePaint,
+            }}
+          />
+        </MapSource>
+        <MapSource
+          sourceKey="multi-points"
+          sourceOptions={sourceOption}
+        >
+          <MapLayer
+            layerKey="points-halo-circle"
+            layerOptions={{
+              type: 'circle',
+            }}
+          />
+          <MapLayer
+            layerKey="points-circle"
+            layerOptions={{
+              type: 'circle',
+              paint: orangePointCirclePaint,
+            }}
+          />
+        </MapSource>
+      </Map>
+      <RiskTable />
+    </Fold>
   );
 }
 

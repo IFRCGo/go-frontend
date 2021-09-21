@@ -1,0 +1,17 @@
+.fold-header {
+  :global {
+    .fold__header__block {
+      display: flex;
+      flex-grow: 1;
+
+      h2 {
+        flex-grow: 1;
+      }
+    }
+
+  }
+
+  .export-button {
+    flex-shrink: 0;
+  }
+}

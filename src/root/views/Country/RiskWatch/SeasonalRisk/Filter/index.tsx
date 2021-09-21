@@ -98,4 +98,94 @@ function Filters(props: Props) {
   );
 }
 
-export default Filters;
+function EventFilters(props: Props) {
+  const {
+    className,
+    value,
+    onChange,
+    disabled,
+  } = props;
+
+  const allCountries = useReduxState('allCountries');
+  const nsOptions = React.useMemo(
+    () => allCountries?.data?.results.filter((c) => (
+      c.independent && !c.is_deprecated && c.society_name
+    )).map((c) => ({
+      value: c.id,
+      label: c.society_name,
+    })).sort(compareLabel) ?? [],
+    [allCountries],
+  );
+
+  const handleInputChange = React.useCallback((newValue: number[], name: string) => {
+  }, [onChange]);
+  return (
+    <div className={_cs(styles.filters, className)}>
+      <SelectInput<string, number>
+        name="events"
+        placeholder="Event"
+        options={nsOptions}
+        value={value.reporting_ns}
+        isMulti
+        onChange={handleInputChange}
+        disabled={disabled}
+      />
+      <SelectInput<string, number>
+        name="years"
+        placeholder="Last 10 years"
+        options={programmeTypeOptions}
+        value={value.programme_type}
+        isMulti
+        onChange={handleInputChange}
+        disabled={disabled}
+      />
+    </div>
+  );
+}
+
+function MonthFilters(props: Props) {
+  const {
+    className,
+    value,
+    onChange,
+    disabled,
+  } = props;
+
+  const allCountries = useReduxState('allCountries');
+  const nsOptions = React.useMemo(
+    () => allCountries?.data?.results.filter((c) => (
+      c.independent && !c.is_deprecated && c.society_name
+    )).map((c) => ({
+      value: c.id,
+      label: c.society_name,
+    })).sort(compareLabel) ?? [],
+    [allCountries],
+  );
+
+  const handleInputChange = React.useCallback((newValue: number[], name: string) => {
+  }, [onChange]);
+  return (
+    <div className={_cs(styles.filters, className)}>
+      <SelectInput<string, number>
+        name="hazard_type"
+        placeholder="Hazard Type"
+        options={nsOptions}
+        value={value.reporting_ns}
+        isMulti
+        onChange={handleInputChange}
+        disabled={disabled}
+      />
+      <SelectInput<string, number>
+        name="people_affected"
+        placeholder="People Affected"
+        options={programmeTypeOptions}
+        value={value.programme_type}
+        isMulti
+        onChange={handleInputChange}
+        disabled={disabled}
+      />
+    </div>
+  );
+}
+
+export { Filters, EventFilters, MonthFilters };

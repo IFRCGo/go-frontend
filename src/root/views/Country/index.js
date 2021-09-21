@@ -65,6 +65,7 @@ import PreparednessOverview from '#components/country/preparedness-overview';
 import KeyFiguresHeader from '#components/common/key-figures-header';
 import { SFPComponent } from '#utils/extendables';
 
+import RiskWatch from './RiskWatch';
 import ThreeW from './ThreeW';
 // import CountryProfile from './CountryProfile';
 import { countryByIdOrNameSelector, regionsByIdSelector, disasterTypesSelectSelector } from '#selectors';
@@ -158,6 +159,10 @@ class AdminArea extends SFPComponent {
       {
         title: strings.country3WTab,
         hash: '#3w'
+      },
+      {
+        title: 'Risk Watch',
+        hash: '#risk',
       },
       /*
       {
@@ -704,6 +709,11 @@ class AdminArea extends SFPComponent {
                       <ThreeW country={this.props.country} />
                     </TabContent>
                   </div>
+                </TabPanel>
+                <TabPanel>
+                  <TabContent>
+                    <RiskWatch country={this.props.country} />
+                  </TabContent>
                 </TabPanel>
                 {/*
                 <TabPanel>
