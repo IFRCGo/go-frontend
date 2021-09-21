@@ -182,21 +182,25 @@ class MainMap extends React.Component {
     //   this.showOperationsPopover(theMap, e.features[0]);
     // });
 
-    // theMap.on('mousemove', 'appeals', e => {
-    //   theMap.getCanvas().style.cursor = 'pointer';
-    // });
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    theMap.on('mousemove', 'appeals', e => {
+      theMap.getCanvas().style.cursor = 'pointer';
+    });
 
-    // theMap.on('mouseleave', 'appeals', e => {
-    //   theMap.getCanvas().style.cursor = '';
-    // });
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    theMap.on('mouseleave', 'appeals', e => {
+      theMap.getCanvas().style.cursor = '';
+    });
 
-    // theMap.on('mousemove', 'admin-0', e => {
-    //   theMap.getCanvas().style.cursor = 'pointer';
-    // });
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    theMap.on('mousemove', 'admin-0', e => {
+      theMap.getCanvas().style.cursor = 'pointer';
+    });
 
-    // theMap.on('mouseleave', 'admin-0', e => {
-    //   theMap.getCanvas().style.cursor = '';
-    // });
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    theMap.on('mouseleave', 'admin-0', e => {
+      theMap.getCanvas().style.cursor = '';
+    });
 
     // theMap.on('mousemove', 'district', e => {
     //   const id = get(e, 'features.0.properties.OBJECTID').toString();
@@ -209,9 +213,9 @@ class MainMap extends React.Component {
 
     // theMap.on('mousemove', 'admin-0', _debounce(e => {
     //   const feature = e.features.length ? e.features[0] : undefined;
-    //   if (feature && feature.properties.INDEPENDEN !== 'FALSE' &&
-    //     feature.properties.ISO2 !== this.state.selectedFeatureISO) {
-    //       this.setState({ selectedFeatureISO: feature.properties.ISO2 });
+    //   if (feature && feature.properties.independent !== 'FALSE' &&
+    //     feature.properties.iso !== this.state.selectedFeatureISO) {
+    //       this.setState({ selectedFeatureISO: feature.properties.iso });
     //       theMap.setLayoutProperty('admin-0-highlight', 'visibility', 'visible');
     //       theMap.setFilter('admin-0-highlight', ['==', 'OBJECTID', feature.properties.OBJECTID]);
     //   }
@@ -228,7 +232,7 @@ class MainMap extends React.Component {
 
     theMap.on('click', 'admin-0', e => {
       const feature = e.features.length ? e.features[0] : undefined;
-      if (feature && feature.properties.INDEPENDEN !== 'FALSE') {
+      if (feature && feature.properties.independent !== 'FALSE') {
         this.showOperationsPopover(theMap, feature, e, this.props.countries, 'admin-0');
         // theMap.setLayoutProperty('admin-0-highlight', 'visibility', 'visible');
         // theMap.setFilter('admin-0-highlight', ['==', 'OBJECTID', feature.properties.OBJECTID]);
@@ -276,7 +280,7 @@ class MainMap extends React.Component {
     if (layer === 'appeals') {
       appealFeature = feature;
     } else {
-      iso = feature.properties.ISO2.toUpperCase();
+      iso = feature.properties.iso.toUpperCase();
       appealFeature = this.state.markerGeoJSON.features.find(f => f.properties.iso.toUpperCase() === iso);
     }
     let title, pageId, operations, centroid;
