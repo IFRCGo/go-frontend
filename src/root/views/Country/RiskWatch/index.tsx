@@ -12,12 +12,23 @@ import SeasonalRisk from './SeasonalRisk';
 
 type RiskTabTypes = 'seasonal' | 'imminent';
 
-function RiskWatch() {
+interface Props {
+  countryId: number;
+  className?: string;
+}
+
+function RiskWatch(props: Props) {
+  const {
+    className,
+    countryId,
+  } = props;
+
+  const { strings } = useContext(languageContext);
   const [activeTab, setActiveTab] = React.useState<RiskTabTypes>('imminent');
 
   return (
     <>
-      <Container>
+      <Container className={className}>
         <Tabs
           value={activeTab}
           onChange={setActiveTab}
@@ -32,7 +43,9 @@ function RiskWatch() {
             </Tab>
           </TabList>
           <TabPanel name="imminent">
-            <ImminentEvents />
+            <ImminentEvents
+              countryId={countryId}
+            />
           </TabPanel>
           <TabPanel name="seasonal">
             <SeasonalRisk />

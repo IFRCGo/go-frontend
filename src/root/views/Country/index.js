@@ -712,7 +712,7 @@ class AdminArea extends SFPComponent {
                 </TabPanel>
                 <TabPanel>
                   <TabContent>
-                    <RiskWatch country={this.props.country} />
+                    <RiskWatch countryId={this.props.country?.id} />
                   </TabContent>
                 </TabPanel>
                 {/*
