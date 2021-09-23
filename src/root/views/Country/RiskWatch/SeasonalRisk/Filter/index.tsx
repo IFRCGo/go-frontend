@@ -188,4 +188,49 @@ function MonthFilters(props: Props) {
   );
 }
 
-export { Filters, EventFilters, MonthFilters };
+function PeriodFilters(props: Props) {
+  const {
+    className,
+    value,
+    onChange,
+    disabled,
+  } = props;
+
+  const allCountries = useReduxState('allCountries');
+  const nsOptions = React.useMemo(
+    () => allCountries?.data?.results.filter((c) => (
+      c.independent && !c.is_deprecated && c.society_name
+    )).map((c) => ({
+      value: c.id,
+      label: c.society_name,
+    })).sort(compareLabel) ?? [],
+    [allCountries],
+  );
+
+  const handleInputChange = React.useCallback((newValue: number[], name: string) => {
+  }, [onChange]);
+  return (
+    <div className={_cs(styles.filters, className)}>
+      <SelectInput<string, number>
+        name="hazard_type"
+        placeholder="Hazard Type"
+        options={nsOptions}
+        value={value.reporting_ns}
+        isMulti
+        onChange={handleInputChange}
+        disabled={disabled}
+      />
+      <SelectInput<string, number>
+        name="risk_metric"
+        placeholder="Risk Metric"
+        options={programmeTypeOptions}
+        value={value.programme_type}
+        isMulti
+        onChange={handleInputChange}
+        disabled={disabled}
+      />
+    </div>
+  );
+}
+
+export { Filters, EventFilters, MonthFilters, PeriodFilters };

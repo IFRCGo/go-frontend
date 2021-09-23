@@ -20,7 +20,7 @@ function ImminentEvents(props: Props) {
         countryId={countryId}
         className={styles.map}
       />
-      <div>
+      <div className={styles.dashboard}>
         <button
           className='button button--primary-filled button--xsmall tc-ok-button text-uppercase'
         >

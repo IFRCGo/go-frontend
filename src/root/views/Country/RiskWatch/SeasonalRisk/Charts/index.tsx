@@ -1,9 +1,6 @@
 import React from 'react';
 import styles from './styles.module.scss';
 import {
-  Cell,
-  Bar,
-  BarChart,
   ScatterChart,
   Scatter,
   XAxis,
@@ -13,123 +10,105 @@ import {
   Tooltip,
   Legend,
   ResponsiveContainer,
-  ComposedChart,
   Area,
-  Line,
+  AreaChart,
+  ComposedChart,
 } from 'recharts';
 import Fold from '#components/fold';
 import Translate from '#components/Translate';
-import { FilterValue, EventFilters, MonthFilters } from '../Filter';
-
-
-const data = [
-  {
-    name: 'Page A',
-    uv: 4000,
-    pv: 2400,
-    amt: 2400,
-  },
-  {
-    name: 'Page B',
-    uv: 3000,
-    pv: 1398,
-    amt: 2210,
-  },
-  {
-    name: 'Page C',
-    uv: 2000,
-    pv: 9800,
-    amt: 2290,
-  },
-  {
-    name: 'Page D',
-    uv: 2780,
-    pv: 3908,
-    amt: 2000,
-  },
-  {
-    name: 'Page E',
-    uv: 1890,
-    pv: 4800,
-    amt: 2181,
-  },
-  {
-    name: 'Page F',
-    uv: 2390,
-    pv: 3800,
-    amt: 2500,
-  },
-  {
-    name: 'Page G',
-    uv: 3490,
-    pv: 4300,
-    amt: 2100,
-  },
-];
+import { FilterValue, MonthFilters } from '../Filter';
+import ExportProjectsButton from '#components/ExportProjectsButton';
+import RawButton from '#components/RawButton';
 
 const data01 = [
-  { x: 100, y: 200, z: 200 },
-  { x: 120, y: 100, z: 260 },
-  { x: 170, y: 300, z: 400 },
-  { x: 140, y: 250, z: 280 },
-  { x: 150, y: 400, z: 500 },
-  { x: 110, y: 280, z: 200 },
-];
-const data02 = [
-  { x: 200, y: 260, z: 240 },
-  { x: 240, y: 290, z: 220 },
-  { x: 190, y: 290, z: 250 },
-  { x: 198, y: 250, z: 210 },
-  { x: 180, y: 280, z: 260 },
-  { x: 210, y: 220, z: 230 },
+  { name: 'Jan', cyclone: 200, flood: 2000, landslide: 300 },
+  { name: 'Feb', cyclone: 100, flood: 2600, landslide: 400 },
+  { name: 'March', cyclone: 300, flood: 4000, landslide: 500 },
+  { name: 'April', cyclone: 250, flood: 2800, landslide: 400 },
+  { name: 'May', cyclone: 400, flood: 5000, landslide: 200 },
+  { name: 'June', cyclone: 280, flood: 2000, landslide: 500 },
+  { name: 'July', cyclone: 280, flood: 2000, landslide: 400 },
+  { name: 'Aug', cyclone: 280, flood: 2000, landslide: 100 },
+  { name: 'Sep', cyclone: 280, flood: 2000, landslide: 600 },
+  { name: 'Oct', cyclone: 280, flood: 2000, landslide: 100 },
+  { name: 'Nov', cyclone: 280, flood: 2000, landslide: 300 },
+  { name: 'Dec', cyclone: 280, flood: 2000, landslide: 200 },
 ];
 
-function RiskBarChart() {
-
-  const [filters, setFilters] = React.useState<FilterValue>({
-    reporting_ns: [],
-    programme_type: [],
-    primary_sector: [],
-    secondary_sectors: [],
-  });
-  return (
-    <Fold
-      foldWrapperClass='fold--main'
-      foldTitleClass='fold__title--inline margin-reset'
-      title={
-        <Translate stringId='riskModuleByMonth' />
-      }
-      showHeader={true}
-    >
-      <EventFilters
-        disabled={false}
-        value={filters}
-        onChange={setFilters} />
-      <ResponsiveContainer className={styles.chartContainer}>
-        <ComposedChart
-          width={500}
-          height={400}
-          data={data}
-          margin={{
-            top: 20,
-            right: 80,
-            bottom: 20,
-            left: 20,
-          }}
-        >
-          <CartesianGrid stroke="#f5f5f5" />
-          <XAxis dataKey="name" label={{ value: 'Pages', position: 'insideBottomRight', offset: 0 }} scale="band" />
-          <YAxis label={{ value: 'Index', angle: -90, position: 'insideLeft' }} />
-          <Tooltip />
-          <Legend />
-          <Area type="monotone" dataKey="amt" fill="#8884d8" stroke="#8884d8" />
-          <Bar dataKey="pv" barSize={20} fill="#413ea0" />
-          <Line type="monotone" dataKey="uv" stroke="#ff7300" />
-        </ComposedChart>
-      </ResponsiveContainer>
-    </Fold>
-  );
-}
+const data03 = [
+  {
+    name: "Jan",
+    uv: 75,
+    pv: 75,
+    amt: 75
+  },
+  {
+    name: "Feb",
+    uv: 75,
+    pv: 75,
+    amt: 0
+  },
+  {
+    name: "March",
+    uv: 0.5,
+    pv: 75,
+    amt: 100
+  },
+  {
+    name: "April",
+    uv: 0.5,
+    pv: 0.5,
+    amt: 20
+  },
+  {
+    name: "May",
+    uv: 80,
+    pv: 0.5,
+    amt: 0
+  },
+  {
+    name: "June",
+    uv: 80,
+    pv: 0.5,
+    amt: 30
+  },
+  {
+    name: "July",
+    uv: 0,
+    pv: 0.5,
+    amt: 0
+  },
+  {
+    name: "Aug",
+    uv: 50,
+    pv: 51,
+    amt: 0
+  },
+  {
+    name: "Sep",
+    uv: 0,
+    pv: 0,
+    amt: 20
+  },
+  {
+    name: "Oct",
+    uv: 51,
+    pv: 0,
+    amt: 100
+  },
+  {
+    name: "Nov",
+    uv: 0,
+    pv: 22,
+    amt: 100
+  },
+  {
+    name: "Dec",
+    uv: 0,
+    pv: 25,
+    amt: 0
+  }
+];
 
 function ImpactChart() {
   const [filters, setFilters] = React.useState<FilterValue>({
@@ -147,14 +126,35 @@ function ImpactChart() {
       }
       showHeader={true}
     >
-      <MonthFilters
-        disabled={false}
-        value={filters}
-        onChange={setFilters} />
+      <div className={styles.riskButton}>
+        <div className={styles.filterButton}>
+          <MonthFilters
+            disabled={false}
+            value={filters}
+            onChange={setFilters} />
+          <RawButton
+            name='clear'
+            onClick={() => {
+              setFilters({
+                reporting_ns: [],
+                programme_type: [],
+                primary_sector: [],
+                secondary_sectors: [],
+              });
+            }}
+          >
+            Clear Filters
+        </RawButton>
+        </div>
+        <ExportProjectsButton
+          fileNameSuffix="All Past Event Impact Table"
+        />
+      </div>
       <ResponsiveContainer className={styles.chartContainer}>
-        <ScatterChart
+        <ComposedChart
           width={400}
-          height={400}
+          height={1000}
+          data={data01}
           margin={{
             top: 20,
             right: 20,
@@ -163,14 +163,90 @@ function ImpactChart() {
           }}
         >
           <CartesianGrid />
-          <XAxis type="number" dataKey="x" name="stature" unit="cm" />
-          <YAxis type="number" dataKey="y" name="weight" unit="kg" />
-          <ZAxis type="number" dataKey="z" range={[60, 400]} name="score" unit="km" />
+          <XAxis type="category" minTickGap={30} dataKey="name" name="months" />
+          <YAxis type="number" range={[100, 500]} name="peopleExposed" />
           <Tooltip cursor={{ strokeDasharray: '3 3' }} />
           <Legend />
-          <Scatter name="A school" data={data01} fill="#8884d8" shape="star" />
-          <Scatter name="B school" data={data02} fill="#82ca9d" shape="triangle" />
-        </ScatterChart>
+          <Scatter name="cyclone" fill="#8884d8" shape="star" />
+          <Scatter name="flood" fill="#82ca9d" shape="triangle" />
+          <Scatter name="landside" fill="#8884d8" shape="circle" />
+          <Legend layout="horizontal" verticalAlign="top" align="center" />
+        </ComposedChart>
+      </ResponsiveContainer>
+    </Fold>
+  );
+}
+
+function RiskBarChart() {
+  const [filters, setFilters] = React.useState<FilterValue>({
+    reporting_ns: [],
+    programme_type: [],
+    primary_sector: [],
+    secondary_sectors: [],
+  });
+  return (
+    <Fold
+      foldWrapperClass='fold--main'
+      foldTitleClass='fold__title--inline margin-reset'
+      title={
+        <Translate stringId='riskModulePastAndHistoricEvent' />
+      }
+      showHeader={true}
+    >
+      <div className={styles.riskButton}>
+        <div className={styles.filterButton}>
+          <MonthFilters
+            disabled={false}
+            value={filters}
+            onChange={setFilters} />
+          <RawButton
+            name='clear'
+            onClick={() => {
+              setFilters({
+                reporting_ns: [],
+                programme_type: [],
+                primary_sector: [],
+                secondary_sectors: [],
+              });
+            }}
+          >
+            Clear Filters
+        </RawButton>
+        </div>
+        <ExportProjectsButton
+          fileNameSuffix="All Past Event And Historic Impact Table"
+        />
+      </div>
+      <ResponsiveContainer className={styles.chartContainer}>
+        <AreaChart
+          width={500}
+          height={400}
+          data={data03}
+          margin={{
+            top: 10,
+            right: 30,
+            left: 0,
+            bottom: 0
+          }}
+        >
+          <CartesianGrid strokeDasharray="3 3" />
+          <XAxis dataKey="name" />
+          <YAxis />
+          <Tooltip />
+          <Area type="step" dataKey="uv" stroke="#8884d8" fill="#8884d8" />
+          <Area
+            type="step"
+            dataKey="pv"
+            stroke="#82ca9d"
+            fill="#82ca9d"
+          />
+          <Area
+            type="step"
+            dataKey="amt"
+            stroke="#ffc658"
+            fill="#ffc658"
+          />
+        </AreaChart>
       </ResponsiveContainer>
     </Fold>
   );

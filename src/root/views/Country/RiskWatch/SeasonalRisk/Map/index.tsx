@@ -42,6 +42,9 @@ import styles from './styles.module.scss';
 import Fold from '#components/fold';
 import Translate from '#components/Translate';
 import { RiskTable } from '../Table';
+import ExportProjectsButton from '#components/ExportProjectsButton';
+import RawButton from '#components/RawButton';
+import Slider from './Slider';
 
 const redPointCirclePaint = getPointCirclePaint(COLOR_RED);
 const bluePointCirclePaint = getPointCirclePaint(COLOR_BLUE);
@@ -154,10 +157,30 @@ function RiskMap(props: Props) {
       }
       showHeader={true}
     >
-      <Filters
-        disabled={false}
-        value={filters}
-        onChange={setFilters} />
+      <div className={styles.riskButton}>
+        <div className={styles.filterButton}>
+          <Filters
+            disabled={false}
+            value={filters}
+            onChange={setFilters} />
+          <RawButton
+            name='clear'
+            onClick={() => {
+              setFilters({
+                reporting_ns: [],
+                programme_type: [],
+                primary_sector: [],
+                secondary_sectors: [],
+              });
+            }}
+          >
+            Clear Filters
+        </RawButton>
+        </div>
+        <ExportProjectsButton
+          fileNameSuffix="All Risk Module Map"
+        />
+      </div>
       <Map
         mapStyle={defaultMapStyle}
         mapOptions={defaultMapOptions}
@@ -235,6 +258,7 @@ function RiskMap(props: Props) {
           />
         </MapSource>
       </Map>
+      <Slider />
       <RiskTable />
     </Fold>
   );

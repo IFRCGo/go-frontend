@@ -29,3 +29,17 @@
     }
   }
 }
+
+.riskButton {
+  display: flex;
+  justify-content: space-between;
+  > *{
+    height: fit-content;
+  }
+}
+
+.filterButton {
+  display: flex;
+  min-width: 45%;
+  justify-content: space-between;
+}
