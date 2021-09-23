@@ -15,7 +15,7 @@ export const defaultMapOptions = {
 };
 
 export const COLOR_WHITE = '#ffffff';
-export const COLOR_LIGHT_GREY = '#717171';
+export const COLOR_LIGHT_GREY = '#e0e0e0';
 export const COLOR_BLACK = '#000000';
 export const COLOR_RED = '#f5333f';
 export const COLOR_YELLOW = '#ff9e00';
@@ -37,16 +37,21 @@ export const pointColorMap: {
 const DEFAULT_CIRCLE_SIZE = 'medium';
 const DEFAULT_CIRCLE_OPACITY = 'full';
 
+export const CIRCLE_RADIUS_SMALL = 3;
+export const CIRCLE_RADIUS_MEDIUM = 5;
+export const CIRCLE_RADIUS_LARGE = 8;
+export const CIRCLE_RADIUS_EXTRA_LARGE = 12;
+
 export function getPointCirclePaint(
   color: string,
   size: 'small' | 'medium' | 'large' | 'extraLarge' = DEFAULT_CIRCLE_SIZE,
   opacity: 'full' | 'light' = DEFAULT_CIRCLE_OPACITY,
 ): mapboxgl.CirclePaint {
   const sizeMap = {
-    small: 3,
-    medium: 5,
-    large: 8,
-    extraLarge: 12,
+    small: CIRCLE_RADIUS_SMALL,
+    medium: CIRCLE_RADIUS_MEDIUM,
+    large: CIRCLE_RADIUS_LARGE,
+    extraLarge: CIRCLE_RADIUS_EXTRA_LARGE,
   };
 
   const opacityMap = {

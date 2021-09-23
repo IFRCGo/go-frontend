@@ -1,45 +1,75 @@
 @import "~styles/settings/variables";
 
-.map-container {
-  height: 60vh;
-
-  .project-detail-item {
-    padding: $spacing/2 $spacing * 3/4;
-  }
-}
-
-.legend {
-  display: flex;
-  padding: $spacing/2;
-
-  .legend-item {
+.seasonal-risk-map {
+  .filter-section {
     display: flex;
+    justify-content: space-between;
     align-items: center;
-    padding: $spacing/2;
 
-    .point {
-      height: 0.6em;
-      width: 0.6em;
-      margin: $spacing/2;
-      border-radius: 50%;
-    }
+    .filters {
+      display: flex;
 
-    .label {
-      padding: $spacing/2;
+      .filter-input {
+        width: 20rem;
+      }
     }
   }
-}
 
-.riskButton {
-  display: flex;
-  justify-content: space-between;
-  > *{
-    height: fit-content;
+  .map-section {
+    position: relative;
+    z-index: 0;
+    display: flex;
+
+    .map {
+      z-index: 0;
+      flex-grow: 1;
+      height: 40rem;
+    }
+
+    .side-bar {
+      width: 20rem;
+      box-shadow: $base-box-shadow;
+      z-index: 1;
+
+      .event-list {
+        display: flex;
+        flex-direction: column;
+        gap: $base-border-width;
+        padding: $spacing;
+
+        .event-detail {
+          display: flex;
+          background-color: $color-background;
+          padding: $spacing;
+
+          .hazard-type {
+            padding: $spacing/2;
+          }
+
+          .risk-level {
+            padding: $spacing/2;
+            font-weight: $base-font-bold;
+          }
+
+          &.high-risk {
+            .risk-level {
+              color: $state-high;
+            }
+          }
+
+          &.medium-risk {
+            .risk-level {
+              color: $state-mid;
+            }
+          }
+
+          &.low-risk {
+            .risk-level {
+              color: $state-low;
+            }
+          }
+        }
+      }
+    }
   }
-}
-
-.filterButton {
-  display: flex;
-  min-width: 45%;
-  justify-content: space-between;
 }

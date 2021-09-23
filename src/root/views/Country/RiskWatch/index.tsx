@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import { _cs } from '@togglecorp/fujs';
 
 import Container from '#components/Container';
 import Tab from '#components/Tabs/Tab';
@@ -9,6 +10,8 @@ import languageContext from '#root/languageContext';
 
 import ImminentEvents from './ImminentEvents';
 import SeasonalRisk from './SeasonalRisk';
+
+import styles from './styles.module.scss';
 
 type RiskTabTypes = 'seasonal' | 'imminent';
 
@@ -28,13 +31,13 @@ function RiskWatch(props: Props) {
 
   return (
     <>
-      <Container className={className}>
+      <Container className={_cs(styles.riskWatch, className)}>
         <Tabs
           value={activeTab}
           onChange={setActiveTab}
           variant="secondary"
         >
-          <TabList>
+          <TabList className={styles.tabList}>
             <Tab name="imminent">
               Imminent
             </Tab>
@@ -48,7 +51,9 @@ function RiskWatch(props: Props) {
             />
           </TabPanel>
           <TabPanel name="seasonal">
-            <SeasonalRisk />
+            <SeasonalRisk
+              countryId={countryId}
+            />
           </TabPanel>
         </Tabs>
       </Container>

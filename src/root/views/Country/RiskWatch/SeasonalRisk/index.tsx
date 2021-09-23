@@ -6,11 +6,19 @@ import Container from '#components/Container';
 import styles from './styles.module.scss';
 
 
-function SeasonalRisk() {
+interface Props {
+  className?: string;
+  countryId: number;
+}
+
+function SeasonalRisk(props: Props) {
+  const {
+    countryId,
+  } = props;
 
   return (
     <>
-      <RiskMap />
+      <RiskMap countryId={countryId} />
       <RiskBarChart />
       <ReturnPeriodTable />
       <ImpactChart />

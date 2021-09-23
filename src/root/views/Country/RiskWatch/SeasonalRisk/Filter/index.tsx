@@ -18,16 +18,6 @@ const programmeTypeOptions = programmeTypeList.map(p => ({
   label: p.title,
 })).sort(compareLabel);
 
-const sectorOptions = sectorList.map(p => ({
-  value: +p.inputValue,
-  label: p.title,
-})).sort(compareLabel);
-
-const tagOptions = secondarySectorList.map(p => ({
-  value: +p.inputValue,
-  label: p.title,
-})).sort(compareLabel);
-
 export interface FilterValue {
   reporting_ns: number[];
   programme_type: number[];

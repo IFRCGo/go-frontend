@@ -5,23 +5,17 @@ import Map, {
   MapSource,
   MapLayer,
   MapBounds,
-  MapTooltip,
   MapImage,
 } from '@togglecorp/re-map';
-
 import turfBbox from '@turf/bbox';
 
-import {
-  ListResponse,
-  useRequest,
-} from '#utils/restRequest';
 import useReduxState from '#hooks/useReduxState';
 import {
   COLOR_WHITE,
   COLOR_BLACK,
   defaultMapStyle,
-  getPointCirclePaint,
   defaultMapOptions,
+  CIRCLE_RADIUS_EXTRA_LARGE,
 } from '#utils/map';
 
 import useBooleanState from '#hooks/useBooleanState';
@@ -29,7 +23,14 @@ import useBooleanState from '#hooks/useBooleanState';
 import earthquakeIcon from './earthquake.png';
 import styles from './styles.module.scss';
 
-const redPointCirclePaint = getPointCirclePaint(COLOR_WHITE, 'extraLarge');
+const redPointCirclePaint: mapboxgl.CirclePaint = {
+  'circle-color': COLOR_WHITE,
+  'circle-radius': CIRCLE_RADIUS_EXTRA_LARGE,
+  'circle-opacity': 1,
+  'circle-stroke-color': COLOR_BLACK,
+  'circle-stroke-width': 1,
+  'circle-stroke-opacity': 0.06,
+};
 
 const hiddenLayout: mapboxgl.LineLayout = {
   visibility: 'none',
@@ -46,7 +47,7 @@ const arrowLayout: mapboxgl.SymbolLayout = {
   'icon-allow-overlap': true,
 };
 
-interface EarthquakeListItem {
+export interface EarthquakeListItem {
   id: number;
   event_id: string;
   event_title: string;
@@ -69,41 +70,33 @@ const sourceOptions: mapboxgl.GeoJSONSourceRaw = {
     type: 'geojson',
 };
 
+
 interface Props {
   className?: string;
   countryId: number;
+  earthquakeList?: EarthquakeListItem[];
 }
 
 function RiskImminentMap(props: Props) {
   const {
     className,
     countryId,
+    earthquakeList,
   } = props;
 
   const allCountries = useReduxState('allCountries');
-  const countryBounds = React.useMemo(() => (
-    turfBbox(allCountries?.data.results.find(
-      d => d.id === countryId)?.bbox ?? []
-    )
-  ), [allCountries, countryId]);
-
   const country = React.useMemo(() => (
     allCountries?.data.results.find(d => d.id === countryId)
   ), [allCountries, countryId]);
-
-  const { response } = useRequest<ListResponse<EarthquakeListItem>>({
-    skip: !country,
-    url: `https://risk-module-api.togglecorp.com/api/v1/earthquake/?country=${country?.name}`,
-  });
-
+  const countryBounds = turfBbox(country?.bbox ?? []);
   const geoJson = React.useMemo(() => {
-    if (!response || !response.results?.length) {
+    if (!earthquakeList?.length) {
       return undefined;
     }
 
     return {
       type: 'FeatureCollection' as const,
-      features: response.results.map((eqItem) => ({
+      features: earthquakeList.map((eqItem) => ({
         id: eqItem.id,
         type: 'Feature' as const,
         properties: {
@@ -116,7 +109,8 @@ function RiskImminentMap(props: Props) {
         },
       })),
     };
-  }, [response]);
+  }, [earthquakeList]);
+
 
   const [iconsLoaded, setIconsLoadedTrue] = useBooleanState(false);
 

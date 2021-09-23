@@ -1,267 +1,225 @@
 import React from 'react';
-import {
-  _cs,
-  listToGroupList,
-  isDefined,
-  unique,
-} from '@togglecorp/fujs';
+import { _cs } from '@togglecorp/fujs';
+import { RiDownloadLine } from 'react-icons/ri';
 import Map, {
   MapContainer,
-  MapSource,
-  MapLayer,
   MapBounds,
-  MapTooltip
+  MapChildContext,
 } from '@togglecorp/re-map';
-import { FilterValue, Filters } from '../Filter';
+import turfBbox from '@turf/bbox';
+
+import { useRequest } from '#utils/restRequest';
 import {
   COLOR_RED,
-  COLOR_BLUE,
+  COLOR_LIGHT_GREY,
   COLOR_ORANGE,
+  COLOR_YELLOW,
   defaultMapStyle,
   defaultMapOptions,
-  getPointCirclePaint,
-  getPointCircleHaloPaint,
-  pointColorMap,
-  OPERATION_TYPE_EMERGENCY,
-  OPERATION_TYPE_MULTI,
-  OPERATION_TYPE_PROGRAMME,
 } from '#utils/map';
-import { denormalizeList } from '#utils/common';
-import {
-  useRequest,
-  ListResponse,
-} from '#utils/restRequest';
-import {
-  Project,
-  District,
-  DistrictMini,
-} from '#types';
-import LanguageContext from '#root/languageContext';
+import Container from '#components/Container';
+import Button from '#components/Button';
+import SelectInput from '#components/SelectInput';
+import useReduxState from '#hooks/useReduxState';
+import useInputState from '#hooks/useInputState';
+import { Country } from '#types';
 
 import styles from './styles.module.scss';
-import Fold from '#components/fold';
-import Translate from '#components/Translate';
-import { RiskTable } from '../Table';
-import ExportProjectsButton from '#components/ExportProjectsButton';
-import RawButton from '#components/RawButton';
-import Slider from './Slider';
 
-const redPointCirclePaint = getPointCirclePaint(COLOR_RED);
-const bluePointCirclePaint = getPointCirclePaint(COLOR_BLUE);
-const orangePointCirclePaint = getPointCirclePaint(COLOR_ORANGE);
-const tooltipOptions: mapboxgl.PopupOptions = {
-  closeButton: false,
-  offset: 8,
+type Writeable<T> = { -readonly [P in keyof T]: T[P] };
+
+const hazardTypeOptions = [
+  { label: 'Cyclone', value: 'CY' },
+  { label: 'Flood', value: 'FL' },
+  // { label: 'Food Insecurity', value: 'FI' },
+  { label: 'Drought', value: 'DG' },
+] as const;
+
+const riskMetricOptions = [
+  { label: 'Inform Risk Score', value: 'inform' },
+  { label: 'People Exposed', value: 'exposure' },
+  { label: 'People at Risk of Displacement', value: 'displacement' },
+] as const;
+
+
+interface HazardListResponse {
+  count: number;
+  results: [{
+    id: number;
+    country_details: {
+      country: string;
+      country_code: string;
+      iso3: string;
+    };
+    hazard_informations_details: {
+      hazard_level_display: string;
+      hazard_type_display: string;
+      hazard_level: 'HIG' | 'MED' | 'LOW' | 'no-data';
+      hazard_type: 'EQ' | 'FL' | 'VA' | 'WF' | 'EH' | 'DG' | 'CY' | 'TS' | 'LS' | 'CF' | 'UF';
+    }[];
+    country: number;
+    hazard_informations: number[];
+  }];
+}
+type HazardLevel = HazardListResponse['results'][number]['hazard_informations_details'][number]['hazard_level'];
+
+const hazardLevelToStyleMap: {
+  [key in HazardLevel]: string;
+} = {
+  HIG: styles.highRisk,
+  MED: styles.mediumRisk,
+  LOW: styles.lowRisk,
+  'no-data': '',
 };
 
-const sourceOption: mapboxgl.GeoJSONSourceRaw = {
-  type: 'geojson',
+const hazardLevelToColorMap: {
+  [key in HazardLevel]: string;
+} = {
+  HIG: COLOR_RED,
+  MED: COLOR_ORANGE,
+  LOW: COLOR_YELLOW,
+  'no-data': COLOR_LIGHT_GREY,
 };
 
-interface GeoJsonProps {
-  districtId: number;
-  numProjects: number;
+type HazardValueType = (typeof hazardTypeOptions)[number]['value'];
+type RiskMetricType = (typeof riskMetricOptions)[number]['value'];
+
+interface ChoroplethProps {
+  country: Country;
+  hazardResponse: HazardListResponse;
+  selectedHazard: HazardValueType;
 }
 
-interface ClickedPoint {
-  feature: GeoJSON.Feature<GeoJSON.Point, GeoJsonProps>;
-  lngLat: mapboxgl.LngLatLike;
-}
+function Choropleth(props: ChoroplethProps) {
+  const {
+    country,
+    hazardResponse,
+    selectedHazard,
+  } = props;
 
-type ProjectGeoJson = GeoJSON.FeatureCollection<GeoJSON.Point, GeoJsonProps>;
-function getOperationType(projectList: Project[]) {
-  const operationTypeList = unique(
-    projectList
-      .filter(d => isDefined(d.operation_type))
-      .map(d => ({
-        id: d.operation_type,
-        title: d.operation_type_display,
-      })),
-    d => d.id,
-  ) ?? [];
+  const c = React.useContext(MapChildContext);
 
-  if (operationTypeList.length === 1) {
-    return operationTypeList[0];
+  const hazard = hazardResponse?.results?.[0]?.hazard_informations_details?.find(hi => hi.hazard_type === selectedHazard);
+
+  if (c?.map && c.map.isStyleLoaded() && hazard) {
+    const opacityProperty = [
+      'match',
+      ['get', 'ISO3'],
+      country.iso3,
+      hazardLevelToColorMap[hazard.hazard_level],
+      COLOR_LIGHT_GREY,
+    ];
+
+    c.map.setPaintProperty(
+      'icrc_admin0',
+      'fill-color',
+      opacityProperty,
+    );
   }
 
-  return {
-    id: OPERATION_TYPE_MULTI,
-    title: 'Multiple types',
-  };
+  return null;
 }
-
-function getGeoJson(
-  districtList: District[],
-  districtDenormalizedProjectList: (Project & {
-    project_district_detail: DistrictMini;
-  })[],
-  requiredOperationTypeId: number,
-): ProjectGeoJson {
-  return {
-    type: 'FeatureCollection' as const,
-    features: districtList.map((district) => {
-      const projects = districtDenormalizedProjectList
-        .filter(d => d.project_district_detail.id === district.id);
-
-      if (projects.length === 0) {
-        return undefined;
-      }
-
-      const operationType = getOperationType(projects);
-
-      if (operationType.id !== requiredOperationTypeId) {
-        return undefined;
-      }
-
-      return {
-        id: district.id,
-        type: 'Feature' as const,
-        properties: {
-          districtId: district.id,
-          numProjects: projects.length,
-        },
-        geometry: {
-          type: 'Point' as const,
-          coordinates: district.centroid?.coordinates ?? [0, 0],
-        },
-      };
-    }).filter(isDefined),
-  };
-}
-
-const emptyDistrictList: District[] = [];
 
 interface Props {
   className?: string;
   countryId?: number;
 }
 
-function RiskMap(props: Props) {
+function SeasonalRiskMap(props: Props) {
   const {
     className,
+    countryId,
   } = props;
 
-  const [filters, setFilters] = React.useState<FilterValue>({
-    reporting_ns: [],
-    programme_type: [],
-    primary_sector: [],
-    secondary_sectors: [],
+  const allCountries = useReduxState('allCountries');
+  const country = React.useMemo(() => (
+    allCountries?.data.results.find(d => d.id === countryId)
+  ), [allCountries, countryId]);
+  console.info(country);
+  const countryBounds = turfBbox(country?.bbox ?? []);
+
+  const [hazardType, setHazardType] = useInputState<HazardValueType>('CY');
+  const [riskMetric, setRiskMetric] = useInputState<RiskMetricType>('inform');
+
+  const { response } = useRequest<HazardListResponse>({
+    skip: !country,
+    url: 'https://risk-module-api.togglecorp.com/api/v1/think-hazard/',
+    query: { country_iso3: country?.iso3 },
   });
 
   return (
-    <Fold
-      foldWrapperClass='fold--main'
-      foldTitleClass='fold__title--inline margin-reset'
-      title={
-        <Translate stringId='riskModuleRiskMap' />
-      }
-      showHeader={true}
-    >
-      <div className={styles.riskButton}>
-        <div className={styles.filterButton}>
-          <Filters
-            disabled={false}
-            value={filters}
-            onChange={setFilters} />
-          <RawButton
-            name='clear'
-            onClick={() => {
-              setFilters({
-                reporting_ns: [],
-                programme_type: [],
-                primary_sector: [],
-                secondary_sectors: [],
-              });
-            }}
+    <Container
+      className={_cs(styles.seasonalRiskMap, className)}
+      heading="Risk map"
+      descriptionClassName={styles.filterSection}
+      description={(
+        <>
+          <div className={styles.filters}>
+            <SelectInput
+              className={styles.filterInput}
+              value={hazardType}
+              onChange={setHazardType}
+              name="hazardType"
+              options={hazardTypeOptions as Writeable<typeof hazardTypeOptions>}
+            />
+            <SelectInput
+              className={styles.filterInput}
+              value={riskMetric}
+              onChange={setRiskMetric}
+              name="riskMetric"
+              options={riskMetricOptions as Writeable<typeof riskMetricOptions>}
+            />
+          </div>
+          <Button
+            icons={<RiDownloadLine />}
+            variant="secondary"
           >
-            Clear Filters
-        </RawButton>
-        </div>
-        <ExportProjectsButton
-          fileNameSuffix="All Risk Module Map"
-        />
-      </div>
+            Export
+          </Button>
+        </>
+      )}
+      contentClassName={styles.mapSection}
+    >
       <Map
         mapStyle={defaultMapStyle}
         mapOptions={defaultMapOptions}
         navControlShown
         navControlPosition="top-right"
       >
-        <div className={_cs(styles.map, className)}>
-          <MapContainer className={styles.mapContainer} />
-          <div className={styles.legend}>
-            <div
-              className={styles.legendItem}
-            >
-              <div
-                className={styles.point}
-                style={{
-                }}
-              />
-              <div className={styles.label}>
-              </div>
+        {country && response && (
+          <Choropleth
+            country={country}
+            hazardResponse={response}
+            selectedHazard={hazardType}
+          />
+        )}
+        <MapContainer className={styles.map} />
+        <MapBounds
+          // @ts-ignore
+          bounds={countryBounds}
+        />
+      </Map>
+      <Container
+        className={styles.sideBar}
+        contentClassName={styles.eventList}
+        heading={country?.name}
+        sub
+      >
+        {response?.results?.[0].hazard_informations_details?.filter(
+          (hazardDetails) => hazardDetails.hazard_type === 'CY' || hazardDetails.hazard_type === 'FL' || hazardDetails.hazard_type === 'DG',
+        ).map((hazardDetails) => (
+          <div className={_cs(styles.eventDetail, hazardLevelToStyleMap[hazardDetails.hazard_level])}>
+            <div className={styles.hazardType}>
+              {hazardDetails.hazard_type_display}
+            </div>
+            <div className={styles.riskLevel}>
+              {hazardDetails.hazard_level_display}
             </div>
           </div>
-        </div>
-        <MapSource
-          sourceKey="programme-points"
-          sourceOptions={sourceOption}
-        >
-          <MapLayer
-            layerKey="points-halo-circle"
-            layerOptions={{
-              type: 'circle',
-            }}
-          />
-          <MapLayer
-            layerKey="points-circle"
-            layerOptions={{
-              type: 'circle',
-              paint: redPointCirclePaint,
-            }}
-          />
-        </MapSource>
-        <MapSource
-          sourceKey="emergency-points"
-          sourceOptions={sourceOption}
-        >
-          <MapLayer
-            layerKey="points-halo-circle"
-            layerOptions={{
-              type: 'circle',
-            }}
-          />
-          <MapLayer
-            layerKey="points-circle"
-            layerOptions={{
-              type: 'circle',
-              paint: bluePointCirclePaint,
-            }}
-          />
-        </MapSource>
-        <MapSource
-          sourceKey="multi-points"
-          sourceOptions={sourceOption}
-        >
-          <MapLayer
-            layerKey="points-halo-circle"
-            layerOptions={{
-              type: 'circle',
-            }}
-          />
-          <MapLayer
-            layerKey="points-circle"
-            layerOptions={{
-              type: 'circle',
-              paint: orangePointCirclePaint,
-            }}
-          />
-        </MapSource>
-      </Map>
-      <Slider />
-      <RiskTable />
-    </Fold>
+        ))}
+      </Container>
+    </Container>
   );
 }
 
-export default RiskMap;
+export default SeasonalRiskMap;
