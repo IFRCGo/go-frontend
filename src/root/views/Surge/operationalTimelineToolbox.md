@@ -20,4 +20,4 @@
 
 ## Updating URLs
 
-The URLs for each object stored in a seprate file in `/src/root/views/Surge/contentData/operation-timeline-content.js`. Search for the object id or the name and you should get the existing URL for that object. If the object does not exists you need to add it to the list.
+The URL for each object stored in a separate file in `/src/root/views/Surge/contentData/operation-timeline-content.js`. Search for the object id or the name and you should get the existing URL for that object. If the object does not exists you need to add it to the list.
