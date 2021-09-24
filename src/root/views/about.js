@@ -166,7 +166,7 @@ function About (props) {
                             </div>
                             <div className='box__global__content'>
                               <div className='box__global__content--ref row flex-xs'>
-                                <a href='https://ifrcgo.org/go-user-library/' target='_blank' className='box__global__content--ref__link col col-6-xs'>
+                                <a href='https://go-user-library.ifrc.org/' target='_blank' className='box__global__content--ref__link col col-6-xs'>
                                   <Translate stringId='aboutGoUserLibrary'/>
                                   <span className='collecticon-chevron-right icon-about-ref'></span>
                                 </a>
@@ -256,7 +256,7 @@ function About (props) {
                             <span className='collecticon-chevron-right icon-about-ref'></span>
                           </a>
 
-                          <a href='http://rcrcsims.org/' target='_blank' className='box__global__content--ref__link'>
+                          <a href='https://rcrcsims.org/' target='_blank' className='box__global__content--ref__link'>
                             <span>
                               <Translate stringId='aboutSurgeNetwork'/>
                             </span>
@@ -397,22 +397,22 @@ function About (props) {
                   <Translate stringId='aboutGoFunding'/>
                 </p>
                 <div className='donor-logo-container'>
-                  <a href='http://www.redcross.org/' target='_blank'>
+                  <a href='https://www.redcross.org/' target='_blank'>
                     <img src='/assets/graphics/content/arc_logo.png' alt='Visit American Red Cross Page' width='160' />
                   </a>
                   <a href='https://www.redcross.org.au/' target='_blank'>
                     <img src='/assets/graphics/content/aurc_logo.jpg' alt='Visit Australian Red Cross Page' width='200'/>
                   </a>
-                  <a href='http://www.redcross.org.uk/' target='_blank'>
+                  <a href='https://www.redcross.org.uk/' target='_blank'>
                     <img src='/assets/graphics/content/brc_logo.png' alt='Visit British Red Cross Page' width='170'/>
                   </a>
-                  <a href='http://www.redcross.ca/' target='_blank'>
+                  <a href='https://www.redcross.ca/' target='_blank'>
                     <img src='/assets/graphics/content/crc_logo.png' alt='Visit Canadian Red Cross Page' width='120'/>
                   </a>
-                  <a href='http://www.redcross.fi/' target='_blank'>
+                  <a href='https://www.redcross.fi/' target='_blank'>
                     <img src='/assets/graphics/content/frc_logo.png' alt='Visit Finnish Red Cross Page' width='200'/>
                   </a>
-                  <a href='http://www.jrc.or.jp/english/' target='_blank'>
+                  <a href='https://www.jrc.or.jp/english/' target='_blank'>
                     <img src='/assets/graphics/content/jrc_logo.png' alt='Visit Japanese Red Cross Page' width='154'/>
                   </a>
                   <a href='https://www.rodekruis.nl/' target='_blank'>
