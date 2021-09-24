@@ -6,7 +6,7 @@ import { DateTime } from 'luxon';
 
 import { environment } from '#config';
 import { getPersonnel } from '#actions';
-import { commaSeparatedNumber as n, nope } from '#utils/format';
+import { /* commaSeparatedNumber as n, */ nope } from '#utils/format';
 import {
   get,
   formatDateSlashes,
@@ -263,7 +263,7 @@ class PersonnelTable extends SFPComponent {
       ) : null;
 
       return (
-        <Fold title={`${title} (${n(data.count)})`} navLink={foldLink} id={this.props.id} foldWrapperClass='table__container fold__table--deploy-personnel' foldTitleClass='fold__title--inline'>
+        <Fold title={`${title}` /* (${n(data.count)}) */ } navLink={foldLink} id={this.props.id} foldWrapperClass='table__container fold__table--deploy-personnel' foldTitleClass='fold__title--inline'>
           {this.props.showExport ? (
             <ExportButton filename='deployed-personnel'
               qs={this.getQs(this.props)}

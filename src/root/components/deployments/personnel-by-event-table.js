@@ -21,7 +21,7 @@ function PersonnelByEventTable (props) {
   if (error) {
     return (
       <ErrorPanel
-        title={strings.deploymentsOverviewByEmergencies}
+        title={strings.deploymentsByEmergencies}
         errorMessage={strings.deploymentsOverviewError}
       />
     );
@@ -29,7 +29,7 @@ function PersonnelByEventTable (props) {
 
   return (
     <Fold
-      title={strings.deploymentsOverviewByEmergencies}
+      title={strings.deploymentsByEmergencies}
       foldWrapperClass="fold--main fold-deployments-overview-emergencies"
       navLink={(
         <Link className='fold__title__link' to='/deployments/personnel/all'>

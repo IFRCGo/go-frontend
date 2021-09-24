@@ -1441,7 +1441,7 @@ class Emergency extends React.Component {
                               <span className='sumstats__value'>
                                 {n(this.props.aggregated.data.active_deployments)}
                               </span>
-                              <Translate className='sumstats__key' stringId='deploymentsDeployedRRP'/>
+                              <Translate className='sumstats__key' stringId='deploymentsOngoingRR'/>
                             </div>
                           </li>
                           <li className='sumstats__item__wrap'>
