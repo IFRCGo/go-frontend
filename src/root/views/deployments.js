@@ -291,7 +291,7 @@ class Deployments extends SFPComponent {
           <div className='inner margin-4-t'>
             <div>
               <AlertsTable
-                title={strings.homeSurgeNotification}
+                title={strings.homeSurgeAlerts}
                 limit={5}
                 isActive={true}
                 viewAll={'/alerts/all'}
