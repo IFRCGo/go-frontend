@@ -418,7 +418,7 @@ function About (props) {
                   <a href='https://www.rodekruis.nl/' target='_blank'>
                     <img src='/assets/graphics/content/nlrc_logo.jpg' alt='Visit Netherlands Red Cross Page' width='160'/>
                   </a>
-                  <a href='https://www.cruzroja.es/' target='_blank'>
+                  <a href='https://www2.cruzroja.es/' target='_blank'>
                     <img src='/assets/graphics/content/esp_logo.jpg' alt='Visit Spanish Red Cross Page' width='180'/>
                   </a>
                   <a href='https://www.ericsson.com/en' target='_blank'>
