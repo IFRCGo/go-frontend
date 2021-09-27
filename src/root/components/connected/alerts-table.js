@@ -148,15 +148,15 @@ class AlertsTable extends SFPComponent {
 
     const { strings } = this.context;
     const title = this.props.title || strings.alertTableTitle;
-    const userNotLoggedIn = !this.props.user.data.token;
-
-    if (userNotLoggedIn) {
-      return <Fold title={title} id={this.props.id}>
-               <p>
-                 <Translate stringId="privateRouteNotAuthenticatedMessage" />
-               </p>
-             </Fold>;
-    } else if (this.props.returnNullForEmpty &&
+    // const userNotLoggedIn = !this.props.user.data.token;
+    // if (userNotLoggedIn) {
+    //   return <Fold title={title} id={this.props.id}>
+    //            <p>
+    //              <Translate stringId="privateRouteNotAuthenticatedMessage" />
+    //            </p>
+    //          </Fold>;
+    // } else
+    if (this.props.returnNullForEmpty &&
         (error || (fetching && !fetched) || (fetched && !data.results.length))) {
       return null;
     } else if (fetching || !fetched) {
@@ -263,7 +263,7 @@ if (environment !== 'production') {
     surgeAlerts: T.object,
 
     limit: T.number,
-    emergency: T.number,
+    emergency: T.string,
 
     noPaginate: T.bool,
     showExport: T.bool,
