@@ -179,6 +179,7 @@ function SeasonalRiskMap(props: Props) {
         </>
       )}
       contentClassName={styles.mapSection}
+      sub
     >
       <Map
         mapStyle={defaultMapStyle}

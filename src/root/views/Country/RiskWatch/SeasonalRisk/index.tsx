@@ -1,8 +1,11 @@
-import React, { useContext, useMemo } from 'react';
+import React  from 'react';
+import Container from '#components/Container';
+
 import RiskMap from './Map';
+import { RiskTable } from './Table';
 import { ImpactChart, RiskBarChart } from './Charts';
 import { ReturnPeriodTable } from './Table';
-import Container from '#components/Container';
+
 import styles from './styles.module.scss';
 
 
@@ -19,6 +22,7 @@ function SeasonalRisk(props: Props) {
   return (
     <>
       <RiskMap countryId={countryId} />
+      <RiskTable />
       <RiskBarChart />
       <ReturnPeriodTable />
       <ImpactChart />

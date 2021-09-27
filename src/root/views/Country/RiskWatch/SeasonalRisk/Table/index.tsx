@@ -149,6 +149,7 @@ function ReturnPeriodTable() {
     primary_sector: [],
     secondary_sectors: [],
   });
+
   return (
     <Fold
       foldHeaderClass={styles.foldHeader}
