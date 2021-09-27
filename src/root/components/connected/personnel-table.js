@@ -211,7 +211,7 @@ class PersonnelTable extends SFPComponent {
           role: o.role ? o.role.split(',')[0] : nope,
           type: o.type === 'rr' ? typeLongNames[o.type] : o.type.toUpperCase(),
           country: o.country_from ? getCountryDisplay(o.country_from, strings)  : nope,
-          name: o.name,
+          name: o.name ? o.name : '***',
           progress__personnel: 
                     <div className='progress__block__personnel'
                       data-html={true}
