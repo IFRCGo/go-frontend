@@ -175,7 +175,7 @@
     "swiper": "^6.5.1",
     "tar": "^2.2.2",
     "url": "^0.11.0",
-    "xlsx": "^0.16.5"
+    "xlsx": "^0.17.0"
   },
   "scripts": {
     "start": "node scripts/start.js",
