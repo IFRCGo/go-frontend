@@ -719,6 +719,7 @@ export default {
   deploymentsOverviewTableHeaderSurge: 'Surge Type',
   deploymentsOverviewTableHeaderNo: 'Number of Deployments',
 // not used -   deploymentsDeployedRR: 'Deployed Rapid Response',
+// not used -   deploymentsDeployedRRP: 'Deployed Rapid Response Personnel',
   deploymentsOngoingRR: 'Ongoing Rapid Response Deployments',
 // not used -   deploymentsNSProvidingRRP: 'NS Providing Rapid Response Personnel',
   deploymentsDeplThisYear: 'Deployments This Year',
