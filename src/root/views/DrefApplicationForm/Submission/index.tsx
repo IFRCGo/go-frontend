@@ -49,7 +49,6 @@ function Submission(props: Props) {
         </InputSection>
         <InputSection
           title={strings.drefFormGlideNum}
-          description={strings.drefFormGlideNumDescription}
         >
           <TextInput
             placeholder="MDR code"

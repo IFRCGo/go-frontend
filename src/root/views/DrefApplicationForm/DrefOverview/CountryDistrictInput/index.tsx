@@ -19,8 +19,10 @@ import {
   NumericValueOption,
   emptyNumericOptionList,
 } from '../../common';
+import LanguageContext from '#root/languageContext';
 
 import styles from './styles.module.scss';
+import { stringOptionKeySelector } from '#views/FieldReportForm/common';
 
 type SetValueArg<T> = T | ((value: T) => T);
 
@@ -40,6 +42,8 @@ interface Props {
 }
 
 function CountryDistrictInput(props: Props) {
+  const { strings } = React.useContext(LanguageContext);
+
   const {
     fetchingCountries,
     error: errorFromProps,
@@ -79,7 +83,7 @@ function CountryDistrictInput(props: Props) {
   return (
     <div className={styles.countryDistrictInput}>
       <SelectInput
-        label="Country"
+        label={strings.drefFormAddCountry}
         pending={fetchingCountries}
         error={error?.fields?.country}
         name="country"
@@ -88,7 +92,7 @@ function CountryDistrictInput(props: Props) {
         value={value.country}
       />
       <SelectInput
-        label="Regions"
+        label={strings.drefFormAddRegion}
         pending={fetchingDistricts}
         isMulti={true}
         error={error?.fields?.district}

@@ -180,6 +180,8 @@ export interface DrefFields {
   un_or_other: string;
   un_or_other_actor : string;
   women: number;
+  dref_recurrent_text: string;
+  total_targated_population: number;
 }
 
 export interface DrefApiFields extends Omit<DrefFields, 'country_district' | 'planned_interventions' | 'national_society_actions' | 'needs_identified'> {

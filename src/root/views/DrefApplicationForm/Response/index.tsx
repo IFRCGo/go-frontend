@@ -166,6 +166,16 @@ function Response(props: Props) {
           />
         </InputSection>
         <InputSection
+          title={strings.drefFormTargetedPopulation}
+          className={styles.targetedPopulation}>
+          <NumberInput
+            name="total_targated_population"
+            value={value.total_targated_population}
+            onChange={onValueChange}
+            error={error?.fields?.total_targated_population}
+          />
+        </InputSection>
+        <InputSection
           title={strings.drefFormEstimateResponse}
           multiRow
           twoColumn
