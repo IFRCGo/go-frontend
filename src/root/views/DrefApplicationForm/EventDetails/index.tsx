@@ -117,6 +117,19 @@ function EventDetails(props: Props) {
             />
           </InputSection>
         )}
+        {value.ns_request_fund && value.ns_respond && value.affect_same_population && value.affect_same_area && (
+          <InputSection
+            title={strings.drefFormRecurrentText}
+          >
+            <TextArea
+              placeholder={strings.drefFormMaxThreeHundredCharacters}
+              name="dref_recurrent_text"
+              value={value.dref_recurrent_text}
+              onChange={onValueChange}
+              error={error?.fields?.dref_recurrent_text}
+            />
+          </InputSection>
+        )}
         <InputSection
           title={strings.drefFormLessonsLearnedTitle}
           description={strings.drefFormLessonsLearnedDescription}
@@ -146,7 +159,7 @@ function EventDetails(props: Props) {
             onChange={onValueChange}
             value={value.event_description}
             error={error?.fields?.event_description}
-            placeholder={strings.drefFormWhatWhereWhenPlaceholder}
+            placeholder={strings.drefFormMaxEightHundredCharacters}
           />
         </InputSection>
         {isImminentOnset &&
@@ -160,7 +173,7 @@ function EventDetails(props: Props) {
               onChange={onValueChange}
               value={value.anticipatory_actions}
               error={error?.fields?.anticipatory_actions}
-              placeholder={strings.drefFormWhatWhereWhenPlaceholder}
+              placeholder={strings.drefFormMaxEightHundredCharacters}
             />
           </InputSection>
         }

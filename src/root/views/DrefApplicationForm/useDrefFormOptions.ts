@@ -202,7 +202,7 @@ export const schema: FormSchema = {
     people_per_urban_local: [positiveNumberCondition],
     displaced_people: [positiveIntegerCondition],
     people_targeted_with_early_actions: [positiveIntegerCondition],
-
+    total_targated_population:[positiveIntegerCondition],
     operation_objective: [],
     response_strategy: [max200CharCondition],
 
@@ -226,7 +226,7 @@ export const schema: FormSchema = {
     date_of_approval: [],
     operation_timeframe: [],
     publishing_date: [],
-
+    dref_recurrent_text: [max300CharCondition],
     appeal_code: [],
     glide_code: [],
     ifrc_appeal_manager_name: [],
