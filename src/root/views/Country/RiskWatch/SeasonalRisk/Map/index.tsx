@@ -24,18 +24,17 @@ import useReduxState from '#hooks/useReduxState';
 import useInputState from '#hooks/useInputState';
 import { Country } from '#types';
 
+import {
+  hazardTypeOptions,
+  HazardValueType,
+  Writeable,
+} from '../common';
 import styles from './styles.module.scss';
 
-type Writeable<T> = { -readonly [P in keyof T]: T[P] };
 
-const hazardTypeOptions = [
-  { label: 'Cyclone', value: 'CY' },
-  { label: 'Flood', value: 'FL' },
-  // { label: 'Food Insecurity', value: 'FI' },
-  { label: 'Drought', value: 'DG' },
-] as const;
 
 const riskMetricOptions = [
+  { label: 'ThinkHazard', value: 'thinkhazard' },
   { label: 'Inform Risk Score', value: 'inform' },
   { label: 'People Exposed', value: 'exposure' },
   { label: 'People at Risk of Displacement', value: 'displacement' },
@@ -81,7 +80,6 @@ const hazardLevelToColorMap: {
   'no-data': COLOR_LIGHT_GREY,
 };
 
-type HazardValueType = (typeof hazardTypeOptions)[number]['value'];
 type RiskMetricType = (typeof riskMetricOptions)[number]['value'];
 
 interface ChoroplethProps {
@@ -101,22 +99,29 @@ function Choropleth(props: ChoroplethProps) {
 
   const hazard = hazardResponse?.results?.[0]?.hazard_informations_details?.find(hi => hi.hazard_type === selectedHazard);
 
-  if (c?.map && c.map.isStyleLoaded() && hazard) {
-    const opacityProperty = [
-      'match',
-      ['get', 'ISO3'],
-      country.iso3,
-      hazardLevelToColorMap[hazard.hazard_level],
-      COLOR_LIGHT_GREY,
-    ];
+  if (c?.map && c.map.isStyleLoaded()) {
+    if (hazard) {
+      const opacityProperty = [
+        'match',
+        ['get', 'ISO3'],
+        country.iso3,
+        hazardLevelToColorMap[hazard.hazard_level] ?? COLOR_LIGHT_GREY,
+        COLOR_LIGHT_GREY,
+      ];
 
-    c.map.setPaintProperty(
-      'icrc_admin0',
-      'fill-color',
-      opacityProperty,
-    );
+      c.map.setPaintProperty(
+        'icrc_admin0',
+        'fill-color',
+        opacityProperty,
+      );
+    } else {
+      c.map.setPaintProperty(
+        'icrc_admin0',
+        'fill-color',
+        COLOR_LIGHT_GREY,
+      );
+    }
   }
-
   return null;
 }
 
@@ -135,11 +140,10 @@ function SeasonalRiskMap(props: Props) {
   const country = React.useMemo(() => (
     allCountries?.data.results.find(d => d.id === countryId)
   ), [allCountries, countryId]);
-  console.info(country);
   const countryBounds = turfBbox(country?.bbox ?? []);
 
   const [hazardType, setHazardType] = useInputState<HazardValueType>('CY');
-  const [riskMetric, setRiskMetric] = useInputState<RiskMetricType>('inform');
+  const [riskMetric, setRiskMetric] = useInputState<RiskMetricType>('thinkhazard');
 
   const { response } = useRequest<HazardListResponse>({
     skip: !country,

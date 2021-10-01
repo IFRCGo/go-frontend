@@ -1,26 +1,23 @@
-.fold-header {
-  :global {
-    .fold__header__block {
-      display: flex;
-      flex-grow: 1;
+@import '~styles/settings/variables';
 
-      h2 {
-        flex-grow: 1;
-      }
-    }
-
-  }
+.risk-table {
+  width: 100%;
 }
-.riskButton {
-  display: flex;
-  justify-content: space-between;
-  > *{
-    height: fit-content;
+
+.return-period-table-container {
+  margin: $spacing*2 0;
+
+  .return-period-table {
+    width: 100%;
   }
 }
 
-.filterButton {
+.container-description {
   display: flex;
-  min-width: 45%;
+  align-items: center;
   justify-content: space-between;
+}
+
+.filter-input {
+  width: 14rem;
 }

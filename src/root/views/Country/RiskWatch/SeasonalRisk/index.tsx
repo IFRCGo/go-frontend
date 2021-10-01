@@ -8,7 +8,6 @@ import { ReturnPeriodTable } from './Table';
 
 import styles from './styles.module.scss';
 
-
 interface Props {
   className?: string;
   countryId: number;
@@ -27,28 +26,28 @@ function SeasonalRisk(props: Props) {
       <ReturnPeriodTable />
       <ImpactChart />
       <Container>
-      <div className={styles.dashboard}>
-        <button
-          className='button button--primary-filled button--xsmall tc-ok-button text-uppercase'
-        >
-          <span>Resilience Dashboard Report #1</span>
-        </button>
-        <button
-          className='button button--primary-filled button--xsmall tc-ok-button text-uppercase'
-        >
-          <span>Resilience Dashboard Report #2</span>
-        </button>
-        <button
-          className='button button--primary-filled button--xsmall tc-ok-button text-uppercase'
-        >
-          <span>Resilience Dashboard Report #3</span>
-        </button>
-        <button
-          className='button button--primary-filled button--xsmall tc-ok-button text-uppercase'
-        >
-          <span>EVCA repository</span>
-        </button>
-      </div>
+        <div className={styles.dashboard}>
+          <button
+            className='button button--primary-filled button--xsmall tc-ok-button text-uppercase'
+          >
+            <span>Resilience Dashboard Report #1</span>
+          </button>
+          <button
+            className='button button--primary-filled button--xsmall tc-ok-button text-uppercase'
+          >
+            <span>Resilience Dashboard Report #2</span>
+          </button>
+          <button
+            className='button button--primary-filled button--xsmall tc-ok-button text-uppercase'
+          >
+            <span>Resilience Dashboard Report #3</span>
+          </button>
+          <button
+            className='button button--primary-filled button--xsmall tc-ok-button text-uppercase'
+          >
+            <span>EVCA repository</span>
+          </button>
+        </div>
     </Container>
     </>
   );

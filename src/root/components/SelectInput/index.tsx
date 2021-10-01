@@ -29,6 +29,7 @@ interface BaseProps<N> {
   readOnly?: boolean;
   name: N;
   isMulti?: boolean,
+  isClearable?: boolean;
   options?: Option[];
   placeholder?: string;
   isOptionDisabled?: SelectProps<Option>['isOptionDisabled'];
