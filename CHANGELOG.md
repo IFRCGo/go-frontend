@@ -1,3 +1,25 @@
+### Release 5.5.0: New maps, various bugfixes and upgrades
+
+Date: 2021-10-04
+
+#### Frontend:
+
+ - Use new layers and maps from Mapbox: https://github.com/IFRCGo/go-frontend/issues/1889
+ - Various fixes to text on Surge / Deployments page: https://github.com/IFRCGo/go-frontend/issues/2057
+ - Update permission model for Surge / Deployments page.
+ - Several dependency upgrades: `xlsx`, `path-parse`, `immer`
+ - Various broken URL fixes for new ifrc.org site.
+ - Eliminate all Javascript linter and TypeScript warnings on the console
+
+### Backend:
+
+ - Update permission model for Surge + Deployments, only keeping Deployment names private / accessible to logged in users.
+ - Update Surge alert email notifications
+ - Fixes for snapshot tests
+ - Fixes for Appeals ingest process.
+ - More: https://github.com/IFRCGo/go-api/pull/1216
+
+
 ### Release 5.4.1: Hotfix for Surge Map
 
 Hotfix for ERUs not showing on the map.
