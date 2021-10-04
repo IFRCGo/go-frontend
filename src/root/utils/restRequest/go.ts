@@ -51,7 +51,6 @@ export interface OptionBase {
 }
 
 type GoContextInterface = ContextInterface<
-  // eslint-disable-next-line @typescript-eslint/ban-types
   object,
   ErrorFromServer,
   Error,
@@ -116,7 +115,7 @@ export const processGoResponse: GoContextInterface['transformResponse'] = async 
   return resText;
 };
 
-export const processGoError: GoContextInterface['transformError'] = async (
+export const processGoError: GoContextInterface['transformError2'] = async (
   reason,
   url,
   requestOptions,

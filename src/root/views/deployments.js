@@ -26,16 +26,12 @@ import { finishedFetch, datesAgo } from '#utils/utils';
 import { mergeDeployData } from '#utils/mergeDeployData';
 import { showGlobalLoading, hideGlobalLoading } from '#components/global-loading';
 import { environment } from '#config';
-import {
-  commaSeparatedNumber as n,
-  nope
-} from '#utils/format';
+import { commaSeparatedNumber as n } from '#utils/format';
 
 import App from './app';
 import Progress from '#components/progress';
 import PersonnelByEventTable from '#components/deployments/personnel-by-event-table';
 import AlertsTable from '#components/connected/alerts-table';
-// import PersonnelTable from '#components/connected/personnel-table';
 import EruTable from '#components/connected/eru-table';
 import { SFPComponent } from '#utils/extendables';
 import DeploymentsMap from '#components/map/deployments-map';
@@ -168,14 +164,6 @@ class Deployments extends SFPComponent {
   }
 
   renderHeaderStats () {
-    const { data } = this.props.eruOwners;
-    const { types } = this.props.activePersonnel;
-    let fact = nope;
-    if (types.fact || types.rr || types.rdrt) {
-      fact = (types.fact || 0) + (types.rr || 0) + (types.rdrt || 0);
-    }
-    const heop = types.heop || nope;
-
     return (
       <div>
         <div className='header-stats container-lg'>
@@ -187,7 +175,7 @@ class Deployments extends SFPComponent {
                   <span className='sumstats__value'>
                     {n(this.props.aggregated.data.active_deployments)}
                   </span>
-                  <Translate className='sumstats__key' stringId='deploymentsDeployedRRP'/>
+                  <Translate className='sumstats__key' stringId='deploymentsOngoingRR'/>
                 </div>
               </li>
               <li className='sumstats__item__wrap'>
@@ -303,7 +291,7 @@ class Deployments extends SFPComponent {
           <div className='inner margin-4-t'>
             <div>
               <AlertsTable
-                title={strings.homeSurgeNotification}
+                title={strings.homeSurgeAlerts}
                 limit={5}
                 isActive={true}
                 viewAll={'/alerts/all'}

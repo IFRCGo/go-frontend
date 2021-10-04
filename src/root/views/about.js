@@ -295,14 +295,14 @@ function About (props) {
                             <span className='collecticon-chevron-right icon-about-ref'></span>
                           </a>
 
-                          <a href='https://www.preparecenter.org/' target='_blank' className='box__global__content--ref__link'>
+                          <a href='https://preparecenter.org/' target='_blank' className='box__global__content--ref__link'>
                             <span>
                               <Translate stringId='aboutDisasterPreparednessCenter'/>
                             </span>
                             <span className='collecticon-chevron-right icon-about-ref'></span>
                           </a>
 
-                          <a href='https://www.preparecenter.org/toolkit/data-playbook-toolkit/' target='_blank' className='box__global__content--ref__link'>
+                          <a href='https://preparecenter.org/toolkit/data-playbook-toolkit/' target='_blank' className='box__global__content--ref__link'>
                             <span>
                               <Translate stringId='aboutDataPlaybook'/>                            </span>
                             <span className='collecticon-chevron-right icon-about-ref'></span>

@@ -162,7 +162,7 @@ class Emergency extends React.Component {
     const tabHashArray = tabs.map(({ hash }) => hash);
     if (!tabHashArray.find((hash) => hash === this.props.location.hash)) {
       this.props.history.replace(
-        `${this.props.location.pathname}${tabHashArray[0]}`
+        `${this.props.location.pathname}${this.props.location.hash}`  // tabHashArray[0] can be still not loaded
       );
     }
   }
@@ -1441,7 +1441,7 @@ class Emergency extends React.Component {
                               <span className='sumstats__value'>
                                 {n(this.props.aggregated.data.active_deployments)}
                               </span>
-                              <Translate className='sumstats__key' stringId='deploymentsDeployedRRP'/>
+                              <Translate className='sumstats__key' stringId='deploymentsOngoingRR'/>
                             </div>
                           </li>
                           <li className='sumstats__item__wrap'>

@@ -29,6 +29,23 @@ export interface ContextInterface<R, RE, E, O> {
     responseBody: RE | undefined,
     response: Response | undefined,
   ) => E;
+  transformError2: (
+      reason: any,
+      url: any,
+      requestOptions: any,
+      extraOptions: any,
+      responseBody: any,
+      response: any)
+      => Promise<
+      { reason: string;
+        errorCode: undefined;
+        debugMessage: string;
+        value: { messageForNotification: string; formErrors: { $internal: string } } } |
+      { reason: string;
+        errorCode: number | undefined;
+        debugMessage: string;
+        value: { messageForNotification: string; formErrors: { [p: string]: string | undefined }; errors: { [p: string]: string[] | string } | undefined } }
+      >
 }
 
 const defaultContext: ContextInterface<unknown, unknown, unknown, unknown> = {
@@ -44,6 +61,7 @@ const defaultContext: ContextInterface<unknown, unknown, unknown, unknown> = {
   }),
   transformResponse: res => res,
   transformError: res => res,
+  transformError2: res => res,
 };
 
 const RequestContext = createContext(defaultContext);

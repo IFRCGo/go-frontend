@@ -2,7 +2,6 @@ import { get } from '#utils/utils';
 import { combineReducers } from 'redux';
 import _groupBy from 'lodash.groupby';
 import { stateInflight, stateError, stateSuccess } from '#utils/reducer-utils';
-import { getCountryMeta } from '../utils/get-country-meta';
 
 const initialState = {
   fetching: false,
