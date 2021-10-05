@@ -22,7 +22,6 @@ import {
 import LanguageContext from '#root/languageContext';
 
 import styles from './styles.module.scss';
-import { stringOptionKeySelector } from '#views/FieldReportForm/common';
 
 type SetValueArg<T> = T | ((value: T) => T);
 

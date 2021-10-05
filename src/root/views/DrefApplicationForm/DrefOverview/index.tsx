@@ -270,7 +270,6 @@ function DrefOverview(props: Props) {
               value={value.event_text}
               onChange={onValueChange}
               error={error?.fields?.event_text}
-              placeholder={strings.drefFormMaxFiveHundredCharacters}
             />
           )}
         </InputSection>

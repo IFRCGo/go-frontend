@@ -139,6 +139,7 @@ function DrefApplication(props: Props) {
     onsetOptions,
     yesNoOptions,
     userDetails,
+    userOptions,
   } = useDrefFormOptions(value);
 
   const [fileIdToUrlMap, setFileIdToUrlMap] = React.useState<Record<number, string>>({});
@@ -516,6 +517,7 @@ function DrefApplication(props: Props) {
                 error={error}
                 onValueChange={onValueChange}
                 value={value}
+                userOptions={userOptions}
               />
             </TabPanel>
             <div className={styles.actions}>

@@ -2918,6 +2918,7 @@ export default {
   emptyMessageHelpText: 'Please refresh the browser or visit the platform in a little bit.',
 
   drefFormTitle: 'Title',
+  drefFormTitleDescription: 'Add country, type of disaster and location to the title',
   // dref table headings
   drefTableCreatedOn: 'Created On',
   drefTableCountry: 'Country',

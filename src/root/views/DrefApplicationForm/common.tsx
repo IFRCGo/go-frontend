@@ -182,6 +182,7 @@ export interface DrefFields {
   women: number;
   dref_recurrent_text: string;
   total_targated_population: number;
+  users: number[];
 }
 
 export interface DrefApiFields extends Omit<DrefFields, 'country_district' | 'planned_interventions' | 'national_society_actions' | 'needs_identified'> {
@@ -284,4 +285,5 @@ export const submissionFields: (keyof DrefFields)[] = [
   'ifrc_emergency_email',
   'media_contact_name',
   'media_contact_email',
+  'users',
 ];

@@ -176,7 +176,6 @@ function ActionsFields(props: Props) {
             onChange={onValueChange}
             value={value.ifrc}
             error={error?.fields?.ifrc}
-            placeholder={strings.drefFormMaxThreeHundredCharacters}
           />
         </InputSection>
         <InputSection
@@ -188,7 +187,6 @@ function ActionsFields(props: Props) {
             onChange={onValueChange}
             value={value.icrc}
             error={error?.fields?.icrc}
-            placeholder={strings.drefFormMaxThreeHundredCharacters}
           />
         </InputSection>
         <InputSection
@@ -199,7 +197,6 @@ function ActionsFields(props: Props) {
             onChange={onValueChange}
             value={value.partner_national_society}
             error={error?.fields?.partner_national_society}
-            placeholder={strings.drefFormMaxThreeHundredCharacters}
           />
         </InputSection>
       </Container>
@@ -229,7 +226,6 @@ function ActionsFields(props: Props) {
             onChange={onValueChange}
             value={value.national_authorities}
             error={error?.fields?.national_authorities}
-            placeholder={strings.drefFormMaxThreeHundredCharacters}
           />
         </InputSection>
         <InputSection
@@ -243,7 +239,6 @@ function ActionsFields(props: Props) {
             onChange={onValueChange}
             value={value.un_or_other_actor}
             error={error?.fields?.un_or_other_actor}
-            placeholder={strings.drefFormMaxThreeHundredCharacters}
           />
         </InputSection>
         <InputSection
@@ -257,7 +252,6 @@ function ActionsFields(props: Props) {
             onChange={onValueChange}
             value={value.major_coordination_mechanism}
             error={error?.fields?.major_coordination_mechanism}
-            placeholder={strings.drefFormMaxThreeHundredCharacters}
           />
         </InputSection>
       </Container>
@@ -307,7 +301,6 @@ function ActionsFields(props: Props) {
             onChange={onValueChange}
             value={value.identified_gaps}
             error={error?.fields?.identified_gaps}
-            placeholder={strings.drefFormMaxThreeHundredCharacters}
           />
         </InputSection>
       </Container>

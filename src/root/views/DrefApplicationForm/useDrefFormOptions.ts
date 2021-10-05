@@ -63,39 +63,9 @@ export type NsActionSchemaFields = ReturnType<NsActionSchema['fields']>;
 export type NsActionsSchema = ArraySchema<PartialForm<NsActionType>>;
 export type NsActionsSchemaMember = ReturnType<NsActionsSchema['member']>;
 
-export function max500CharCondition(value: any) {
-  return isDefined(value) && value.length > 500
-    ? 'Only 500 characters are allowed'
-    : undefined;
-}
-
-export function max800CharCondition(value: any) {
-  return isDefined(value) && value.length > 800
-    ? 'only 800 characters are allowed'
-    : undefined;
-}
-
-export function max300CharCondition(value: any) {
-  return isDefined(value) && value.length > 300
-    ? 'only 300 characters are allowed'
-    : undefined;
-}
-
 export function max10CharCondition(value: any) {
   return isDefined(value) && value.length > 10
     ? 'only 10 characters are allowed'
-    : undefined;
-}
-
-export function max30CharCondition(value: any) {
-  return isDefined(value) && value.length > 30
-    ? 'only 30 characters are allowed'
-    : undefined;
-}
-
-export function max200CharCondition(value: any) {
-  return isDefined(value) && value.length > 200
-    ? 'only 200 characters are allowed'
     : undefined;
 }
 
@@ -143,8 +113,8 @@ export const schema: FormSchema = {
     event_map: [requiredCondition],
 
     event_date: [],
-    event_text: [max500CharCondition],
-    anticipatory_actions: [max800CharCondition],
+    event_text: [],
+    anticipatory_actions: [],
 
     go_field_report_date: [],
     ns_respond_date: [],
@@ -152,11 +122,11 @@ export const schema: FormSchema = {
     affect_same_population: [],
     ns_request_fund:[],
     ns_respond: [],
-    ns_request_text: [max30CharCondition],
-    lessons_learned: [max500CharCondition],
+    ns_request_text: [],
+    lessons_learned: [],
 
-    event_description: [max800CharCondition],
-    event_scope: [max800CharCondition],
+    event_description: [],
+    event_scope: [],
     images: [lessThanSixImagesCondition],
 
     national_society_actions: {
@@ -164,20 +134,20 @@ export const schema: FormSchema = {
       member: (): NsActionsSchemaMember => ({
         fields: (): NsActionSchemaFields => ({
           title: [requiredCondition],
-          description: [max300CharCondition, requiredCondition],
+          description: [requiredCondition],
         }),
       }),
     },
     government_requested_assistance: [],
     government_requested_assistance_date: [],
-    national_authorities: [max300CharCondition],
-    partner_national_society: [max300CharCondition],
-    ifrc: [max300CharCondition],
-    icrc: [max300CharCondition],
+    national_authorities: [],
+    partner_national_society: [],
+    ifrc: [],
+    icrc: [],
     affect_same_area:[],
-    un_or_other_actor: [max300CharCondition],
-    major_coordination_mechanism: [max300CharCondition],
-    identified_gaps: [max300CharCondition],
+    un_or_other_actor: [],
+    major_coordination_mechanism: [],
+    identified_gaps: [],
 
     needs_identified: {
       keySelector: (n) => n.clientId as string,
@@ -185,14 +155,14 @@ export const schema: FormSchema = {
         fields: (): NeedSchemaFields => ({
           clientId: [],
           title: [requiredCondition],
-          description: [max300CharCondition,requiredCondition],
+          description: [requiredCondition],
         }),
       }),
     },
-    people_assisted: [max300CharCondition],
-    selection_criteria: [max300CharCondition],
-    entity_affected: [max300CharCondition],
-    community_involved: [max300CharCondition],
+    people_assisted: [],
+    selection_criteria: [],
+    entity_affected: [],
+    community_involved: [],
 
     women: [positiveIntegerCondition],
     men: [positiveIntegerCondition],
@@ -204,7 +174,7 @@ export const schema: FormSchema = {
     people_targeted_with_early_actions: [positiveIntegerCondition],
     total_targated_population:[positiveIntegerCondition],
     operation_objective: [],
-    response_strategy: [max200CharCondition],
+    response_strategy: [],
 
     planned_interventions: {
       keySelector: (n) => n.clientId as string,
@@ -214,8 +184,8 @@ export const schema: FormSchema = {
           title: [requiredCondition],
           budget: [requiredCondition, positiveIntegerCondition],
           persons_targeted: [positiveIntegerCondition],
-          indicator: [max300CharCondition],
-          description: [max300CharCondition],
+          indicator: [],
+          description: [],
         }),
       }),
     },
@@ -226,7 +196,7 @@ export const schema: FormSchema = {
     date_of_approval: [],
     operation_timeframe: [],
     publishing_date: [],
-    dref_recurrent_text: [max300CharCondition],
+    dref_recurrent_text: [],
     appeal_code: [],
     glide_code: [],
     ifrc_appeal_manager_name: [],
@@ -239,12 +209,13 @@ export const schema: FormSchema = {
     ifrc_emergency_email: [emailCondition],
     media_contact_name: [],
     media_contact_email: [emailCondition],
-    human_resource: [max300CharCondition],
-    surge_personnel_deployed: [max500CharCondition],
-    logistic_capacity_of_ns: [max500CharCondition],
-    safety_concerns: [max500CharCondition],
-    pmer: [max500CharCondition],
-    communication: [max500CharCondition],
+    human_resource: [],
+    surge_personnel_deployed: [],
+    logistic_capacity_of_ns: [],
+    safety_concerns: [],
+    pmer: [],
+    communication: [],
+    users: [],
   }),
   fieldDependencies: () => ({
   }),
@@ -257,6 +228,14 @@ const limitQuery = {
   limit: 500,
 };
 
+interface UserListItem {
+  id: number;
+  first_name: string;
+  last_name: string;
+  email: string;
+  username: string;
+}
+
 interface DrefOptions {
   disaster_category: NumericKeyValuePair[];
   national_society_actions: StringKeyValuePair[];
@@ -264,6 +243,7 @@ interface DrefOptions {
   planned_interventions: StringKeyValuePair[];
   status: NumericKeyValuePair[];
   type_of_onset: NumericKeyValuePair[];
+  users: UserListItem[];
 }
 
 function transformKeyValueToLabelValue<O extends NumericKeyValuePair | StringKeyValuePair>(o: O): {
@@ -299,6 +279,7 @@ function useDrefFormOptions(value: PartialForm<DrefFields>) {
     needOptions,
     interventionOptions,
     onsetOptions,
+    userOptions,
   ] = React.useMemo(() => {
     if (!drefOptions) {
       return [
@@ -306,6 +287,7 @@ function useDrefFormOptions(value: PartialForm<DrefFields>) {
         emptyStringOptionList,
         emptyStringOptionList,
         emptyStringOptionList,
+        emptyNumericOptionList,
         emptyNumericOptionList,
       ];
     }
@@ -316,6 +298,10 @@ function useDrefFormOptions(value: PartialForm<DrefFields>) {
       drefOptions.needs_identified.map(transformKeyValueToLabelValue),
       drefOptions.planned_interventions.map(transformKeyValueToLabelValue),
       drefOptions.type_of_onset.map(transformKeyValueToLabelValue),
+      drefOptions.users.map((u) => ({
+        label: `${u.first_name} ${u.last_name} (${u.email || u.username})`,
+        value: u.id,
+      })),
     ];
   }, [drefOptions]);
 
@@ -387,6 +373,7 @@ function useDrefFormOptions(value: PartialForm<DrefFields>) {
     userDetails,
     yesNoOptions,
     nationalSocietyOptions,
+    userOptions,
   };
 }
 
