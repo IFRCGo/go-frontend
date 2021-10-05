@@ -65,7 +65,6 @@ function NsActionInput(props: Props) {
         value={value.description}
         onChange={onFieldChange}
         error={error?.fields?.description}
-        placeholder={strings.drefFormMaxThreeHundredCharacters}
       />
       <Button
         className={styles.removeButton}

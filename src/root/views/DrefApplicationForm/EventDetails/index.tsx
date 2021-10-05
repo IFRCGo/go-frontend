@@ -122,7 +122,6 @@ function EventDetails(props: Props) {
             title={strings.drefFormRecurrentText}
           >
             <TextArea
-              placeholder={strings.drefFormMaxThreeHundredCharacters}
               name="dref_recurrent_text"
               value={value.dref_recurrent_text}
               onChange={onValueChange}
@@ -141,7 +140,6 @@ function EventDetails(props: Props) {
             onChange={onValueChange}
             value={value.lessons_learned}
             error={error?.fields?.lessons_learned}
-            placeholder={strings.drefFormMaxFiveHundredCharacters}
           />
         </InputSection>
       </Container>
@@ -159,7 +157,6 @@ function EventDetails(props: Props) {
             onChange={onValueChange}
             value={value.event_description}
             error={error?.fields?.event_description}
-            placeholder={strings.drefFormMaxEightHundredCharacters}
           />
         </InputSection>
         {isImminentOnset &&
@@ -173,7 +170,6 @@ function EventDetails(props: Props) {
               onChange={onValueChange}
               value={value.anticipatory_actions}
               error={error?.fields?.anticipatory_actions}
-              placeholder={strings.drefFormMaxEightHundredCharacters}
             />
           </InputSection>
         }
@@ -205,7 +201,6 @@ function EventDetails(props: Props) {
             onChange={onValueChange}
             value={value.event_scope}
             error={error?.fields?.event_scope}
-            placeholder={strings.drefFormMaxEightHundredCharacters}
           />
         </InputSection>
       </Container>

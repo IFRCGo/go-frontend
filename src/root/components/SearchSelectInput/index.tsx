@@ -17,9 +17,9 @@ export interface Option {
 
 const emptyOptionList: Option[] = [];
 
-type Key = string | number | undefined;
+type Key = string | number;
 
-interface BaseProps<N, V extends Key> {
+interface BaseProps<N extends Key | undefined> {
   className?: string;
   actions?: React.ReactNode;
   icons?: React.ReactNode;
@@ -29,26 +29,23 @@ interface BaseProps<N, V extends Key> {
   pending?: boolean;
   readOnly?: boolean;
   name: N;
-  value: V;
   loadOptions: (value: string | undefined, callback: (opt: Option[]) => void) => void;
-  isMulti?: boolean,
-  onChange: (newValue: V, name: N) => void;
   placeholder?: string;
   initialOptions?: Option[];
   defaultOptions?: boolean;
 }
 
-type Props<N extends Key, V extends Key> = BaseProps<N, V> & ({
-  isMulti?: false;
-  value: V;
-  onChange: (newValue: V, name: N) => void;
-} | {
+type Props<N extends Key | undefined, V extends Key | undefined> = BaseProps<N> & ({
   isMulti: true;
-  value: V[];
-  onChange: (newValue: V[], name: N) => void;
+  value: V[] | undefined | null;
+  onChange: (newValue: NonNullable<V>[] | undefined, name: N) => void;
+} | {
+  isMulti?: false;
+  value: V | undefined | null;
+  onChange: (newValue: V, name: N) => void;
 })
 
-function SearchSelectInput<N extends Key, V extends Key>(props: Props<N, V>) {
+function SearchSelectInput<N extends Key | undefined, V extends Key | undefined>(props: Props<N, V>) {
   const {
     className,
     actions,

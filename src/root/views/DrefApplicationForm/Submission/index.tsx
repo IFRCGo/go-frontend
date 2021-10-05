@@ -1,5 +1,11 @@
 import React from 'react';
 import {
+  isFalsyString,
+  caseInsensitiveSubmatch,
+  compareStringSearch,
+  listToMap,
+} from '@togglecorp/fujs';
+import {
   PartialForm,
   Error,
   EntriesAsList,
@@ -8,17 +14,41 @@ import {
 import Container from '#components/Container';
 import InputSection from '#components/InputSection';
 import TextInput from '#components/TextInput';
+import SearchSelectInput from '#components/SearchSelectInput';
 import LanguageContext from '#root/languageContext';
 
-import { DrefFields } from '../common';
+import {
+  DrefFields,
+  NumericValueOption,
+  emptyNumericOptionList,
+} from '../common';
 
 import styles from './styles.module.scss';
+
+export function rankedSearchOnList<T>(
+  list: T[],
+  searchString: string | undefined,
+  labelSelector: (item: T) => string,
+) {
+  if (isFalsyString(searchString)) {
+    return list;
+  }
+
+  return list
+  .filter((option) => caseInsensitiveSubmatch(labelSelector(option), searchString))
+  .sort((a, b) => compareStringSearch(
+    labelSelector(a),
+    labelSelector(b),
+    searchString,
+  ));
+}
 
 type Value = PartialForm<DrefFields>;
 interface Props {
   error: Error<Value> | undefined;
   onValueChange: (...entries: EntriesAsList<Value>) => void;
   value: Value;
+  userOptions: NumericValueOption[];
 }
 
 function Submission(props: Props) {
@@ -28,7 +58,28 @@ function Submission(props: Props) {
     error,
     onValueChange,
     value,
+    userOptions,
   } = props;
+
+  const handleUserSearch = React.useCallback((input: string | undefined, callback) => {
+    if (!input) {
+      callback(emptyNumericOptionList);
+    }
+
+    callback(rankedSearchOnList(
+      userOptions,
+      input,
+      d => d.label,
+    ));
+  }, [userOptions]);
+
+  const userMap = React.useMemo(() => listToMap(userOptions, d => d.value, d => d.label), [userOptions]);
+  const initialOptions = React.useMemo(() => (
+    value.users?.map((u) => ({
+      label: userMap[u],
+      value: u,
+    }))
+  ), [userMap, value.users]);
 
   return (
     <>
@@ -117,24 +168,20 @@ function Submission(props: Props) {
         <InputSection
           title={strings.drefFormIfrcEmergency}
         >
-          <div>
-            <TextInput
-              label="Name"
-              name="ifrc_emergency_name"
-              value={value.ifrc_emergency_name}
-              onChange={onValueChange}
-              error={error?.fields?.ifrc_emergency_name}
-            />
-          </div>
-          <div>
-            <TextInput
-              label="Email"
-              name="ifrc_emergency_email"
-              value={value.ifrc_emergency_email}
-              onChange={onValueChange}
-              error={error?.fields?.ifrc_emergency_email}
-            />
-          </div>
+          <TextInput
+            label="Name"
+            name="ifrc_emergency_name"
+            value={value.ifrc_emergency_name}
+            onChange={onValueChange}
+            error={error?.fields?.ifrc_emergency_name}
+          />
+          <TextInput
+            label="Email"
+            name="ifrc_emergency_email"
+            value={value.ifrc_emergency_email}
+            onChange={onValueChange}
+            error={error?.fields?.ifrc_emergency_email}
+          />
         </InputSection>
         <InputSection
           title={strings.drefFormMediaContact}
@@ -152,6 +199,24 @@ function Submission(props: Props) {
             value={value.media_contact_email}
             onChange={onValueChange}
             error={error?.fields?.media_contact_email}
+          />
+        </InputSection>
+      </Container>
+      <Container
+        heading="Sharing"
+        visibleOverflow
+      >
+        <InputSection
+          title="Share the DREF Application with other Users"
+          description="The users will be able to view, edit and add other users"
+        >
+          <SearchSelectInput
+            name="users"
+            isMulti
+            initialOptions={initialOptions}
+            value={value.users}
+            onChange={onValueChange}
+            loadOptions={handleUserSearch}
           />
         </InputSection>
       </Container>

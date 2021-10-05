@@ -1,7 +1,6 @@
 import React from 'react';
 import {
   isNotDefined,
-  isDefined,
   unique,
   randomString,
 } from '@togglecorp/fujs';

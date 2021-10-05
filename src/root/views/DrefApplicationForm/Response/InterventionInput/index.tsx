@@ -15,7 +15,6 @@ import {
 import TextArea from '#components/TextArea';
 import Button from '#components/Button';
 import NumberInput from '#components/NumberInput';
-import TextInput from '#components/TextInput';
 import InputSection from '#components/InputSection';
 import LanguageContext from '#root/languageContext';
 
@@ -84,7 +83,6 @@ function InterventionInput(props: Props) {
         value={value.indicator}
         onChange={onFieldChange}
         error={error?.fields?.indicator}
-        placeholder={strings.drefFormMaxThreeHundredCharacters}
       />
       <TextArea
         label={strings.drefFormListOfActivities}
@@ -92,7 +90,6 @@ function InterventionInput(props: Props) {
         value={value.description}
         onChange={onFieldChange}
         error={error?.fields?.description}
-        placeholder={strings.drefFormMaxThreeHundredCharacters}
       />
       <Button
         className={styles.removeButton}

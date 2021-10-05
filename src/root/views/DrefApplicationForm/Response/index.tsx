@@ -100,7 +100,6 @@ function Response(props: Props) {
             onChange={onValueChange}
             value={value.people_assisted}
             error={error?.fields?.people_assisted}
-            placeholder={strings.drefFormMaxThreeHundredCharacters}
           />
         </InputSection>
         <InputSection
@@ -112,7 +111,6 @@ function Response(props: Props) {
             onChange={onValueChange}
             value={value.selection_criteria}
             error={error?.fields?.selection_criteria}
-            placeholder={strings.drefFormMaxThreeHundredCharacters}
           />
         </InputSection>
         <InputSection
@@ -124,7 +122,6 @@ function Response(props: Props) {
             onChange={onValueChange}
             value={value.entity_affected}
             error={error?.fields?.entity_affected}
-            placeholder={strings.drefFormMaxThreeHundredCharacters}
           />
         </InputSection>
       </Container>
@@ -251,7 +248,6 @@ function Response(props: Props) {
             onChange={onValueChange}
             value={value.human_resource}
             error={error?.fields?.human_resource}
-            placeholder={strings.drefFormMaxThreeHundredCharacters}
           />
         </InputSection>
         <InputSection
@@ -263,7 +259,6 @@ function Response(props: Props) {
             onChange={onValueChange}
             value={value.surge_personnel_deployed}
             error={error?.fields?.surge_personnel_deployed}
-            placeholder={strings.drefFormMaxFiveHundredCharacters}
           />
         </InputSection>
         <InputSection
@@ -275,7 +270,6 @@ function Response(props: Props) {
             onChange={onValueChange}
             value={value.logistic_capacity_of_ns}
             error={error?.fields?.logistic_capacity_of_ns}
-            placeholder={strings.drefFormMaxFiveHundredCharacters}
           />
         </InputSection>
         <InputSection
@@ -287,7 +281,6 @@ function Response(props: Props) {
             onChange={onValueChange}
             value={value.safety_concerns}
             error={error?.fields?.safety_concerns}
-            placeholder={strings.drefFormMaxFiveHundredCharacters}
           />
         </InputSection>
         <InputSection
@@ -299,7 +292,6 @@ function Response(props: Props) {
             onChange={onValueChange}
             value={value.pmer}
             error={error?.fields?.pmer}
-            placeholder={strings.drefFormMaxFiveHundredCharacters}
           />
         </InputSection>
         <InputSection
@@ -311,7 +303,6 @@ function Response(props: Props) {
             onChange={onValueChange}
             value={value.communication}
             error={error?.fields?.communication}
-            placeholder={strings.drefFormMaxFiveHundredCharacters}
           />
         </InputSection>
       </Container>
