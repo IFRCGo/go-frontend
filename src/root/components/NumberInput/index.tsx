@@ -3,7 +3,6 @@ import { isDefined } from '@togglecorp/fujs';
 
 import InputContainer, { Props as InputContainerProps } from '#components/InputContainer';
 import RawInput, { Props as RawInputProps } from '#components/RawInput';
-import useInputState from '#hooks/useInputState';
 
 type InheritedProps<T> = (Omit<InputContainerProps, 'input'> & Omit<RawInputProps<T>, 'onChange' | 'value'>);
 export interface Props<T extends string | undefined> extends InheritedProps<T> {

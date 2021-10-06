@@ -13,6 +13,7 @@ import {
 } from '../../common';
 
 import TextArea from '#components/TextArea';
+import BulletTextArea from '#components/BulletTextArea';
 import Button from '#components/Button';
 import NumberInput from '#components/NumberInput';
 import InputSection from '#components/InputSection';
@@ -84,7 +85,7 @@ function InterventionInput(props: Props) {
         onChange={onFieldChange}
         error={error?.fields?.indicator}
       />
-      <TextArea
+      <BulletTextArea
         label={strings.drefFormListOfActivities}
         name="description"
         value={value.description}
