@@ -26,7 +26,10 @@ import {
   useLazyRequest,
   useRequest,
 } from '#utils/restRequest';
-import { isObject } from '#utils/common';
+import {
+  isObject,
+  ymdToDateString,
+} from '#utils/common';
 import LanguageContext from '#root/languageContext';
 import useAlert from '#hooks/useAlert';
 
@@ -392,15 +395,32 @@ function DrefApplication(props: Props) {
 
   const isImminentOnset = value?.type_of_onset === ONSET_IMMINENT;
   React.useEffect(() => {
-    if (!isImminentOnset) {
-      onValueSet({
-        ...value,
-        event_text: undefined,
-        anticipatory_actions: undefined,
-        people_targeted_with_early_actions: undefined,
-      });
+    onValueSet((oldValue) => {
+      if (value.type_of_onset !== ONSET_IMMINENT) {
+        return {
+          ...oldValue,
+          event_text: undefined,
+          anticipatory_actions: undefined,
+          people_targeted_with_early_actions: undefined,
+        };
+      }
+
+      return oldValue;
+    });
+  }, [onValueSet, value.type_of_onset]);
+
+  React.useEffect(() => {
+    if (isDefined(value.date_of_approval) && isDefined(value.operation_timeframe)) {
+      const approvalDate = new Date(value.date_of_approval);
+      if (!Number.isNaN(approvalDate.getTime())) {
+        approvalDate.setMonth(approvalDate.getMonth() + value.operation_timeframe);
+        const yyyy = approvalDate.getFullYear();
+        const mm = approvalDate.getMonth() + 1;
+        const dd = approvalDate.getDate();
+        onValueChange(ymdToDateString(yyyy, mm, dd), 'end_date' as const);
+      }
     }
-  }, [isImminentOnset]);
+  }, [onValueChange, value.date_of_approval, value.operation_timeframe]);
 
   return (
     <Tabs

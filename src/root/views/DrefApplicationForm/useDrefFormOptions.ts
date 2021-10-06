@@ -194,7 +194,7 @@ export const schema: FormSchema = {
     submission_to_geneva: [],
     end_date: [],
     date_of_approval: [],
-    operation_timeframe: [],
+    operation_timeframe: [positiveIntegerCondition],
     publishing_date: [],
     dref_recurrent_text: [],
     appeal_code: [],
