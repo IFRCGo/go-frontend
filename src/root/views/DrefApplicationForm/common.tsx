@@ -158,7 +158,7 @@ export interface DrefFields {
   num_affected: number;
   num_assisted: number;
   operation_objective: string;
-  operation_timeframe: string;
+  operation_timeframe: number;
   originator_email : string;
   originator_name: string;
   partner_national_society: string;

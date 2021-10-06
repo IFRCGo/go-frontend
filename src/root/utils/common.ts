@@ -91,5 +91,13 @@ export function isObject(foo: unknown): foo is object {
   return typeof foo === 'object' && foo !== null && !Array.isArray(foo);
 }
 
+export function ymdToDateString(year: number, month: number, day: number) {
+    const ys = String(year).padStart(4, '0');
+    const ms = String(month + 1).padStart(2, '0');
+    const ds = String(day).padStart(2, '0');
+
+    return `${ys}-${ms}-${ds}`;
+}
+
 export const genericMemo: (<T>(c: T) => T) = memo;
 

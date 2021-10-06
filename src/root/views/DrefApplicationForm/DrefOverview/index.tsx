@@ -339,7 +339,7 @@ function DrefOverview(props: Props) {
         <InputSection
           title={strings.drefFormOperationTimeframeSubmission}
         >
-          <TextInput
+          <NumberInput
             name="operation_timeframe"
             placeholder={strings.drefFormOperationTimeframeSubmissionDescription}
             value={value.operation_timeframe}
@@ -356,6 +356,7 @@ function DrefOverview(props: Props) {
             value={value.end_date}
             onChange={onValueChange}
             error={error?.fields?.end_date}
+            readOnly
           />
         </InputSection>
       </Container>

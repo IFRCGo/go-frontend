@@ -198,6 +198,7 @@ export const datesAgo = {
   year: () => DateTime.utc().minus({years: 1}).startOf('day').toISO()
 };
 
+// TODO: use strings
 export const appealStatusOptions = [
   { value: 'all', label: 'All' },
   { value: '0', label: 'Active' },
