@@ -11,6 +11,7 @@ import { DateTime } from 'luxon';
 import _find from 'lodash.find';
 import LanguageContext from '#root/languageContext';
 import Translate from '#components/Translate';
+import smallCountries, { getSmallCountry } from '#utils/small-countries';
 
 import { disasterTypesSelectSelector } from '#selectors';
 
@@ -56,20 +57,25 @@ class EmergencyMap extends React.Component {
       'iso',
       country.iso.toUpperCase()
     ];
+
+
     const countryPolys = theMap.queryRenderedFeatures({'layers': ['admin-0'], 'filter': countryFilter});
     // console.log(theMap.getStyle().layers); // do not remove it please, it can be so useful
-    let geom;
+    let geom, bbox;
+    console.log(country);
     if (countryPolys.length > 0) {
       geom = countryPolys[0].geometry;
+      bbox = turfBbox(geom);
+    } else if (country.iso in smallCountries) {
+      bbox = getSmallCountry(country.iso);
     } else {
       // NOTE: There is an edge case where the country is not independent / does not have a geom or ISO code.
       // In this case, we just hide the map, and return this function early.
       this.setState({hideMap: true});
       return;
     }
-    const districtIds = districts.map(d => d.id);
-    const bbox = turfBbox(geom);
     theMap.fitBounds(bbox);
+    const districtIds = districts.map(d => d.id);
 
 //    theMap.setLayoutProperty('admin-1-highlight', 'visibility', 'visible');
 
