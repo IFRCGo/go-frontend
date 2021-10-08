@@ -123,7 +123,7 @@ class EmergencyMap extends React.Component {
       });
       // hide stock labels
       this.theMap.setLayoutProperty('admin-0-label', 'visibility', 'none');
-      this.theMap.setLayoutProperty('additional-geography-labels', 'visibility', 'none');
+      // we do not use this name now: this.theMap.setLayoutProperty('additional-geography-labels', 'visibility', 'none');
 
       // add custom language labels
       this.theMap.addLayer(countryLabels);
