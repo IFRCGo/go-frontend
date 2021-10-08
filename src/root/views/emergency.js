@@ -56,7 +56,7 @@ import EruTable from '#components/connected/eru-table';
 import EmergencyMap from '#components/map/emergency-map';
 import { epiSources } from '#utils/field-report-constants';
 import ProjectFormModal from '#views/Country/ThreeW/ProjectFormModal';
-import { countriesGeojsonSelector, regionsByIdSelector, disasterTypesSelector } from '#selectors';
+import { regionsByIdSelector, disasterTypesSelector, countriesByIso } from '#selectors';
 
 class Emergency extends React.Component {
   constructor (props) {
@@ -1059,7 +1059,7 @@ class Emergency extends React.Component {
               name={data.name}
               date={data.updated_at}
               disasterTypeCode={data.dtype.toString()}
-              countriesGeojson={this.props.countriesGeojson}
+              countriesByIsoData={this.props.countriesByIsoData}
             />
         );
       } else {
@@ -1583,7 +1583,7 @@ const selector = (state, ownProps) => ({
   user: state.user,
   profile: state.profile,
   regionsById: regionsByIdSelector(state),
-  countriesGeojson: countriesGeojsonSelector(state),
+  countriesByIsoData: countriesByIso(state),
   disasterTypes: disasterTypesSelector(state),
   aggregated: state.deployments.aggregated1
 });
