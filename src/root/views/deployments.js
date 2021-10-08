@@ -18,6 +18,7 @@ import {
   getAllDeploymentERU,
   getActivePersonnel,
   getEruOwners,
+  getNsRapidResponse,
   getPersonnelByEvent,
   getAggrSurgeKeyFigures
 } from '#actions';
@@ -340,9 +341,11 @@ Deployments.contextType = LanguageContext;
 if (environment !== 'production') {
   Deployments.propTypes = {
     _getEruOwners: T.func,
+    _getNsRapidResponse: T.func,
     _getActivePersonnel: T.func,
     _getAllDeploymentERU: T.func,
     eruOwners: T.object,
+    NsRapidResponse: T.object,
     eru: T.object,
     activePersonnel: T.object,
     allEru: T.object,
@@ -352,6 +355,7 @@ if (environment !== 'production') {
 
 const selector = (state) => ({
   eruOwners: state.eruOwners,
+  NsRapidResponse: state.NsRapidResponse,
   eru: state.deployments.eru,
   activePersonnel: state.deployments.activePersonnel,
   allEru: state.deployments.allEru,
@@ -362,6 +366,7 @@ const selector = (state) => ({
 
 const dispatcher = (dispatch) => ({
   _getEruOwners: () => dispatch(getEruOwners()),
+  _getNsRapidResponse: () => dispatch(getNsRapidResponse()),
   _getAllDeploymentERU: (...args) => dispatch(getAllDeploymentERU(...args)),
   _getActivePersonnel: (...args) => dispatch(getActivePersonnel(...args)),
   _getPersonnelByEvent: (...args) => dispatch(getPersonnelByEvent(...args)),

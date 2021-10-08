@@ -368,7 +368,7 @@ export function getSitrepsByEventId (id, filters = {}) {
   return fetchJSON(`api/v2/situation_report/?${f}`, GET_SITREPS, withToken(), { id });
 }
 
-export const GET_ERU_OWNERS = 'GET_ERU_OWNERS'; // not used
+export const GET_ERU_OWNERS = 'GET_ERU_OWNERS';
 export function getEruOwners () {
   return (dispatch, getState) => {
     dispatch(fetchJSON('api/v2/eru_owner/?limit=0', GET_ERU_OWNERS, withToken(), { state: getState() }));

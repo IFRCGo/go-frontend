@@ -82,6 +82,7 @@ export const reducers = {
   event,
   adminArea,
   eruOwners,
+  NsRapidResponse,
   heops,
   resendValidation,
   registration,
