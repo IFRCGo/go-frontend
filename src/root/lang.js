@@ -725,7 +725,7 @@ export default {
   deploymentsDeplThisYear: 'Deployments This Year',
 // not used -   deploymentsDeployedHeops: 'Deployed HEOPS',
 // not used -   deploymentEruDeploymentTypes: 'ERU Deployment Types',
-  deploymentNumberTop5: 'Top 5 NS deploying Rapid Response Personnel',
+  deploymentNumberTop5: 'Top 5 NS deploying RR Personnel',
   nationalSocieties: 'National Societies',
   readinessFilteredERUs: 'Filter Ready ERUs',
   readinessResetFilters: 'Reset Filters',

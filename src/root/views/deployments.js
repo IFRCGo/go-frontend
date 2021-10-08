@@ -205,6 +205,7 @@ class Deployments extends SFPComponent {
 
   renderCharts () {
     const { data } = this.props.eruOwners;
+    console.log(data); // REMOVE ME
     const { strings } = this.context;
     const year = new Date().getFullYear();
     return (
