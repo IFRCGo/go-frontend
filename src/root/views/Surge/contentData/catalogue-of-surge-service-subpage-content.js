@@ -355,11 +355,11 @@ const CatalogueOfSurgeServiceSubpageContent = [
                     'catalogueSttAdditionalResourceText5'
                 ],
                 listItemsUrls: [
-                    { text: 'catalogueSttAdditionalResourceUrlText1', url: 'http://www.ifrc.org/en/what-we-do/disaster-management/responding/services-for-the-disaster-affected/shelter-and-settlement/' },
+                    { text: 'catalogueSttAdditionalResourceUrlText1', url: 'https://www.ifrc.org/shelter-and-settlements' },
                     { text: 'catalogueSttAdditionalResourceUrlText2', url: 'https://fednet.ifrc.org/en/resources/disasters/shelter/' },
-                    { text: 'catalogueSttAdditionalResourceUrlText3', url: 'https://itemscatalogue.redcross.int/relief--3/shelter-and-construction-materials--23.aspx' },
-                    { text: 'catalogueSttAdditionalResourceUrlText4', url: 'https://media.ifrc.org/ifrc/course-initiative/master-level-short-course-shelter-settlements-emergencies-natural-disasters/' },
-                    { text: 'catalogueSttAdditionalResourceUrlText5', url: 'https://www.sheltercluster.org/resources/page/more-just-roof' },
+                    { text: 'catalogueSttAdditionalResourceUrlText3', url: 'https://itemscatalogue.redcross.int/relief--4/shelter-and-construction-materials--23.aspx' },
+                    { text: 'catalogueSttAdditionalResourceUrlText4', url: 'https://www.ifrc.org/media/48901' },
+                    { text: 'catalogueSttAdditionalResourceUrlText5', url: 'https://ifrc.csod.com/ui/lms-learning-details/app/course/6bcddb4f-0e33-471c-93fb-281764be8092' },
                 ],
             }
         }
@@ -419,7 +419,7 @@ const CatalogueOfSurgeServiceSubpageContent = [
                 listItemsUrls: [
                     { text: 'catalogueSctAdditionalResourceUrlText1', url: 'https://www.sheltercluster.org/' },
                     { text: 'catalogueSctAdditionalResourceUrlText2', url: 'http://www.sheltercluster.org/library/coordination-team' },
-                    { text: 'catalogueSctAdditionalResourceUrlText3', url: 'https://media.ifrc.org/ifrc/course-initiative/master-level-short-course-in-humanitarian-shelter-coordination/' },
+                    { text: 'catalogueSctAdditionalResourceUrlText3', url: 'https://www.sheltercluster.org/global/humanitarian-shelter-coordination-master-level-short-course' },
                     { text: 'catalogueSctAdditionalResourceUrlText4', url: 'https://www.sheltercluster.org/resources/page/more-just-roof' },
                     { text: 'catalogueSctAdditionalResourceUrlText5', url: 'https://www.buildingabetterresponse.org/' },
                 ],
@@ -2076,7 +2076,8 @@ const CatalogueOfSurgeServiceSubpageContent = [
                 title: 'catalogueOtherServiceTextTitle2',
                 text: 'catalogueOtherService3Text2',
                 urls: [
-                    { text: 'catalogueOtherService3Text2Url', url: 'https://ifrcgo.org/global-services/assets/docs/other/Rapid%20Response%20Profile%20Human%20Resources%20Coordinator.pdf' }
+                    { text: 'catalogueOtherService3Text2Url', url: 'https://ifrcgo.org/global-services/assets/docs/other/Rapid%20Response%20Profile%20Human%20Resources%20Coordinator.pdf' },
+                    { text: 'catalogueOfSurgeServicesHealthCards1Card1Element5', url: '' }
                 ]
             }
         ]
@@ -2202,6 +2203,33 @@ const CatalogueOfSurgeServiceSubpageContent = [
                 urls: [
                     { text: 'catalogueOtherService9Text3Url1', url: 'https://ifrcgo.org/global-services/assets/docs/other/Rapid%20Response%20Profile%20Recovery%20Coordinator.pdf' },
                     { text: 'catalogueOtherService9Text3Url2', url: 'https://ifrcgo.org/global-services/assets/docs/other/Rapid%20Response%20Profile%20Early%20Recovery%20Officer.pdf' }
+                ]
+            }
+        ]
+    },
+    {
+        hash: '#greenresponse',
+        other: true,
+        title: '',
+        textSection: [
+            {
+                title: 'catalogueOtherServiceTextTitle1',
+                text: 'catalogueOtherService10Text1',
+                urls: []
+            },
+            {
+                title: 'catalogueOtherServiceTextTitle3',
+                text: 'catalogueOtherService10Text2',
+                urls: [
+                    { text: 'catalogueOtherService10Text2Url', url: 'https://ifrcgo.org/global-services/assets/docs/other/Recovery%20Technical%20Competency%20Framework%20March%202020.pdf' }
+                ]
+            },
+            {
+                title: 'catalogueOtherServiceTextTitle2',
+                text: 'catalogueOtherService10Text3',
+                urls: [
+                    { text: 'catalogueOtherService10Text3Url1', url: 'https://ifrcorg.sharepoint.com/:b:/s/IFRCSharing/Eadht7nkd0BGj2Hl_QUyvOMBJrIGZdgotLzPjGs6rJrXDA?e=Vay5KV' },
+                    
                 ]
             }
         ]
