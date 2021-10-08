@@ -75,7 +75,7 @@ function createStoreFromRaw (raw, state) {
     items: erusByType[key].reduce((acc, next) => acc + Number(get(next, 'equipment_units', 0)), 0)
   })).sort((a, b) => a.items > b.items ? -1 : 1);
 
-  const erusByOwnerNation = _groupBy(deployed, 'eru_owner.id');
+  // const erusByOwnerNation = _groupBy(deployed, 'eru_owner.id');
   // const owners = Object.keys(erusByOwnerNation).filter(Boolean).map(key => ({
   //   name: countrySelector(state, key).name,
   //   items: erusByOwnerNation[key].reduce((acc, next) => acc + Number(get(next, 'equipment_units', 0)), 0)
