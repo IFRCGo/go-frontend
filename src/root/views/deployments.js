@@ -18,6 +18,7 @@ import {
   getAllDeploymentERU,
   getActivePersonnel,
   getEruOwners,
+  getNsRapidResponse,
   getPersonnelByEvent,
   getAggrSurgeKeyFigures
 } from '#actions';
@@ -81,6 +82,7 @@ class Deployments extends SFPComponent {
     addFullscreenListener(this.onFullscreenChange);
     showGlobalLoading();
     this.props._getEruOwners();
+    this.props._getNsRapidResponse();
     this.props._getAllDeploymentERU();
     this.props._getActivePersonnel();
     this.props._getPersonnelByEvent();
@@ -141,7 +143,7 @@ class Deployments extends SFPComponent {
 
   renderHeaderCharts (data, title) {
     const rows = 5;
-    const max = Math.max.apply(Math, data.map(o => +o.items));
+    const max = Math.max.apply(Math, data.map(o => +o.deployments_count));
     const items = data.length > rows ? data.slice(0, rows) : data;
     return (
       <div>
@@ -151,10 +153,10 @@ class Deployments extends SFPComponent {
         <div className='emergencies__container spacing-2'>
           <ul className='emergencies__list'>
             {items.map(o => (
-              <li key={o.name}
+              <li key={o.society_name}
                 className='emergencies__item'>
-                <span className='key'>{o.name} ({o.items})</span>
-                <span className='value'><Progress value={o.items} max={max}><span>100</span></Progress></span>
+                <span className='key'>{o.society_name} ({o.deployments_count})</span>
+                <span className='value'><Progress value={o.deployments_count} max={max}><span>100</span></Progress></span>
               </li>
             ))}
           </ul>
@@ -204,35 +206,38 @@ class Deployments extends SFPComponent {
   }
 
   renderCharts () {
-    const { data } = this.props.eruOwners;
-    const { strings } = this.context;
-    return (
-      <div className=''>
-        <div className='inner'>
-          <div className='inpage__body-charts'>
-            <div className='row display-flex flex-row'>
-              <div className='col col-6-xs spacing-v display-flex'>
-                <div className='chart box__content'>
-                  {this.renderHeaderCharts(data.owners, strings.deploymentNumber)}
-                </div>
-              </div>
-              <div className='col col-6-xs spacing-v display-flex'>
-                <div className='chart box__content'>
-                  <figure>
-                    <figcaption>
-                      <h2 className='fold__title'><Translate stringId='deployementsOverLastYear' /></h2>
-                    </figcaption>
-                  </figure>
-                  <div className='spacing-2-t'>
-                    <DeploymentsByMonth />
+    if (this.props.NsRapidResponse.fetched) {
+      const {data} = this.props.NsRapidResponse;
+      const {strings} = this.context;
+      const year = new Date().getFullYear();
+      return (
+          <div className=''>
+            <div className='inner'>
+              <div className='inpage__body-charts'>
+                <div className='row display-flex flex-row'>
+                  <div className='col col-6-xs spacing-v display-flex'>
+                    <div className='chart box__content'>
+                      {this.renderHeaderCharts(data, strings.deploymentNumberTop5 + ' (' + year + ')')}
+                    </div>
+                  </div>
+                  <div className='col col-6-xs spacing-v display-flex'>
+                    <div className='chart box__content'>
+                      <figure>
+                        <figcaption>
+                          <h2 className='fold__title'><Translate stringId='deployementsOverLastYear'/></h2>
+                        </figcaption>
+                      </figure>
+                      <div className='spacing-2-t'>
+                        <DeploymentsByMonth/>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      </div>
-    );
+      );
+    }
   }
 
   renderContent () {
@@ -338,9 +343,11 @@ Deployments.contextType = LanguageContext;
 if (environment !== 'production') {
   Deployments.propTypes = {
     _getEruOwners: T.func,
+    _getNsRapidResponse: T.func,
     _getActivePersonnel: T.func,
     _getAllDeploymentERU: T.func,
     eruOwners: T.object,
+    NsRapidResponse: T.object,
     eru: T.object,
     activePersonnel: T.object,
     allEru: T.object,
@@ -350,6 +357,7 @@ if (environment !== 'production') {
 
 const selector = (state) => ({
   eruOwners: state.eruOwners,
+  NsRapidResponse: state.NsRapidResponse,
   eru: state.deployments.eru,
   activePersonnel: state.deployments.activePersonnel,
   allEru: state.deployments.allEru,
@@ -360,6 +368,7 @@ const selector = (state) => ({
 
 const dispatcher = (dispatch) => ({
   _getEruOwners: () => dispatch(getEruOwners()),
+  _getNsRapidResponse: () => dispatch(getNsRapidResponse()),
   _getAllDeploymentERU: (...args) => dispatch(getAllDeploymentERU(...args)),
   _getActivePersonnel: (...args) => dispatch(getActivePersonnel(...args)),
   _getPersonnelByEvent: (...args) => dispatch(getPersonnelByEvent(...args)),

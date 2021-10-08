@@ -375,6 +375,11 @@ export function getEruOwners () {
   };
 }
 
+export const GET_NS_RAPID_RESPONSE = 'GET_NS_RAPID_RESPONSE';
+export function getNsRapidResponse () {
+  return fetchJSON('api/v2/deployment/aggregated_by_ns/', GET_NS_RAPID_RESPONSE);
+}
+
 export const GET_DISTRICTS = 'GET_DISTRICTS';
 export function getDistrictsForCountry (country) {
   // should not be dependent on the country data structure
