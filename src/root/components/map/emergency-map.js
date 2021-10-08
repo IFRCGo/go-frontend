@@ -51,13 +51,11 @@ class EmergencyMap extends React.Component {
 
     const theMap = this.theMap;
     const country = countries[0];
-    const countryFilter = [
-      '==',
-      'iso',
-      country.iso.toUpperCase()
-    ];
-
-
+    // const countryFilter = [
+    //   '==',
+    //   'iso',
+    //   country.iso.toUpperCase()
+    // ];
     // const countryPolys = theMap.queryRenderedFeatures({'layers': ['admin-0'], 'filter': countryFilter});
     // console.log(theMap.getStyle().layers); // do not remove it please, it can be so useful
     const thisCountryGeom = countriesByIsoData[country.iso][0];
