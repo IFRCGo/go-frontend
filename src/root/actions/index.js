@@ -368,11 +368,16 @@ export function getSitrepsByEventId (id, filters = {}) {
   return fetchJSON(`api/v2/situation_report/?${f}`, GET_SITREPS, withToken(), { id });
 }
 
-export const GET_ERU_OWNERS = 'GET_ERU_OWNERS';
+export const GET_ERU_OWNERS = 'GET_ERU_OWNERS'; // not used
 export function getEruOwners () {
   return (dispatch, getState) => {
     dispatch(fetchJSON('api/v2/eru_owner/?limit=0', GET_ERU_OWNERS, withToken(), { state: getState() }));
   };
+}
+
+export const GET_NS_RAPID_RESPONSE = 'GET_NS_RAPID_RESPONSE';
+export function getNsRapidResponse () {
+  return fetchJSON('api/v2/deployment/aggregated_by_ns/', GET_NS_RAPID_RESPONSE);
 }
 
 export const GET_DISTRICTS = 'GET_DISTRICTS';
