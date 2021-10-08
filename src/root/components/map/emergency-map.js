@@ -51,21 +51,17 @@ class EmergencyMap extends React.Component {
 
     const theMap = this.theMap;
     const country = countries[0];
-    const countryFilter = [
-      '==',
-      'iso',
-      country.iso.toUpperCase()
-    ];
-
-
+    //const countryFilter = [
+    //  '==',
+    //  'iso',
+    //  country.iso.toUpperCase()
+    //];
     // const countryPolys = theMap.queryRenderedFeatures({'layers': ['admin-0'], 'filter': countryFilter});
     // console.log(theMap.getStyle().layers); // do not remove it please, it can be so useful
     const thisCountryGeom = countriesByIsoData[country.iso][0];
     const bbox = turfBbox(thisCountryGeom.bbox);
     theMap.fitBounds(bbox);
     const districtIds = districts.map(d => d.id);
-
-//    theMap.setLayoutProperty('admin-1-highlight', 'visibility', 'visible');
 
     theMap.setFilter('admin-1-highlight', [
       'in',
@@ -89,46 +85,6 @@ class EmergencyMap extends React.Component {
     theMap.setLayoutProperty('admin-0-highlight', 'visibility', 'visible');
 
 
-/* Original is below – just for checking later:
-    theMap.setFilter('admin1-selected', [
-      'in',
-      'Admin01Cod',
-      ...districtCodes
-    ]);
-    theMap.setFilter('admin1-selected-labels', [
-      'in',
-      'id',
-      ...districtIds
-    ]);
-    theMap.setFilter('admin1-country-selected', [
-      '==',
-      'country_name',
-      country.name
-    ]);
-    theMap.setFilter('admin1-country-selected-boundaries', [
-      '==',
-      'country_name',
-      country.name
-    ]);
-
-    theMap.setLayoutProperty('admin1-selected', 'visibility', 'visible');
-    theMap.setLayoutProperty('admin1-selected-labels', 'visibility', 'visible');
-    theMap.setLayoutProperty('admin1-country-selected', 'visibility', 'visible');
-    theMap.setLayoutProperty('admin1-country-selected-boundaries', 'visibility', 'visible');
-
-    if (countriesGeojson) {
-      this.theMap.addSource('countryCentroids', {
-        type: 'geojson',
-        data: countriesGeojson
-      });
-      // hide stock labels
-      this.theMap.setLayoutProperty('admin-0-label', 'visibility', 'none');
-      this.theMap.setLayoutProperty('additional-geography-labels', 'visibility', 'none');
-
-      // add custom language labels
-      this.theMap.addLayer(countryLabels);
-    }
-*/
     const disputedTerritoriesVisible = this.theMap.queryRenderedFeatures({layers: ['admin-0-disputed']}).length;
     if (disputedTerritoriesVisible) {
       this.setState({ disputedTerritoriesVisible: true });
