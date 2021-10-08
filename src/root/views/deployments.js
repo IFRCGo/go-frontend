@@ -143,7 +143,7 @@ class Deployments extends SFPComponent {
 
   renderHeaderCharts (data, title) {
     const rows = 5;
-    const max = Math.max.apply(Math, data.map(o => +o.items));
+    const max = Math.max.apply(Math, data.map(o => +o.deployments_count));
     const items = data.length > rows ? data.slice(0, rows) : data;
     return (
       <div>
@@ -208,7 +208,6 @@ class Deployments extends SFPComponent {
   renderCharts () {
     if (this.props.NsRapidResponse.fetched) {
       const {data} = this.props.NsRapidResponse;
-      console.log('REMOVE MEEEEEEEEEEEEEEEEEEEEEEEE', this.props.NsRapidResponse);
       const {strings} = this.context;
       const year = new Date().getFullYear();
       return (
