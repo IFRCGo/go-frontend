@@ -82,6 +82,7 @@ class Deployments extends SFPComponent {
     addFullscreenListener(this.onFullscreenChange);
     showGlobalLoading();
     this.props._getEruOwners();
+    this.props._getNsRapidResponse();
     this.props._getAllDeploymentERU();
     this.props._getActivePersonnel();
     this.props._getPersonnelByEvent();
@@ -206,7 +207,7 @@ class Deployments extends SFPComponent {
 
   renderCharts () {
     const { data } = this.props.eruOwners;
-    console.log(data); // REMOVE ME
+    console.log(this.props); // REMOVE ME
     const { strings } = this.context;
     const year = new Date().getFullYear();
     return (
