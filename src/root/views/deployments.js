@@ -205,7 +205,9 @@ class Deployments extends SFPComponent {
 
   renderCharts () {
     const { data } = this.props.eruOwners;
+    console.log('!!! Check this', data);  // REMOVE ME
     const { strings } = this.context;
+    const year = new Date().getFullYear();
     return (
       <div className=''>
         <div className='inner'>
@@ -213,7 +215,7 @@ class Deployments extends SFPComponent {
             <div className='row display-flex flex-row'>
               <div className='col col-6-xs spacing-v display-flex'>
                 <div className='chart box__content'>
-                  {this.renderHeaderCharts(data.owners, strings.deploymentNumber)}
+                  {this.renderHeaderCharts(data.owners, strings.deploymentsTop5 + ' (' + year + ')')}
                 </div>
               </div>
               <div className='col col-6-xs spacing-v display-flex'>

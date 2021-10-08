@@ -370,8 +370,8 @@ export function getSitrepsByEventId (id, filters = {}) {
 
 export const GET_ERU_OWNERS = 'GET_ERU_OWNERS';
 export function getEruOwners () {
-  return (dispatch, getState) => {
-    dispatch(fetchJSON('api/v2/eru_owner/?limit=0', GET_ERU_OWNERS, withToken(), { state: getState() }));
+  return (dispatch, getState) => { // originally: api/v2/eru_owner/?limit=0
+    dispatch(fetchJSON('api/v2/deployment/aggregated_by_ns/', GET_ERU_OWNERS, withToken(), { state: getState() }));
   };
 }
 
