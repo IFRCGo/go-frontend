@@ -11,8 +11,6 @@ import { DateTime } from 'luxon';
 import _find from 'lodash.find';
 import LanguageContext from '#root/languageContext';
 import Translate from '#components/Translate';
-import smallCountries, { getSmallCountry } from '#utils/small-countries';
-
 import { disasterTypesSelectSelector } from '#selectors';
 
 class EmergencyMap extends React.Component {
@@ -47,7 +45,8 @@ class EmergencyMap extends React.Component {
   setupData () {
     const {
       countries,
-      districts
+      districts,
+      countriesByIsoData
     } = this.props;
 
     const theMap = this.theMap;
@@ -59,46 +58,35 @@ class EmergencyMap extends React.Component {
     ];
 
 
-    const countryPolys = theMap.queryRenderedFeatures({'layers': ['admin-0'], 'filter': countryFilter});
+    // const countryPolys = theMap.queryRenderedFeatures({'layers': ['admin-0'], 'filter': countryFilter});
     // console.log(theMap.getStyle().layers); // do not remove it please, it can be so useful
-    let geom, bbox;
-    console.log(country);
-    if (countryPolys.length > 0) {
-      geom = countryPolys[0].geometry;
-      bbox = turfBbox(geom);
-    } else if (country.iso in smallCountries) {
-      bbox = getSmallCountry(country.iso);
-    } else {
-      // NOTE: There is an edge case where the country is not independent / does not have a geom or ISO code.
-      // In this case, we just hide the map, and return this function early.
-      this.setState({hideMap: true});
-      return;
-    }
+    const thisCountryGeom = countriesByIsoData[country.iso][0];
+    const bbox = turfBbox(thisCountryGeom.bbox);
     theMap.fitBounds(bbox);
     const districtIds = districts.map(d => d.id);
 
 //    theMap.setLayoutProperty('admin-1-highlight', 'visibility', 'visible');
 
-theMap.setFilter('admin-1-highlight', [
-  'in',
-  'district_id',
-  ...districtIds
-]);
-theMap.setFilter('admin-1-label-selected', [
-  'in',
-  'district_id',
-  ...districtIds
-]);
+    theMap.setFilter('admin-1-highlight', [
+      'in',
+      'district_id',
+      ...districtIds
+    ]);
+    theMap.setFilter('admin-1-label-selected', [
+      'in',
+      'district_id',
+      ...districtIds
+    ]);
 
-theMap.setFilter('admin-0-highlight', [
-  '!in', // not in
-  'iso',
-  country.iso.toUpperCase()
-]);
+    theMap.setFilter('admin-0-highlight', [
+      '!in', // not in
+      'iso',
+      country.iso.toUpperCase()
+    ]);
 
-theMap.setLayoutProperty('admin-1-highlight', 'visibility', 'visible');
-theMap.setLayoutProperty('admin-1-label-selected', 'visibility', 'visible');
-theMap.setLayoutProperty('admin-0-highlight', 'visibility', 'visible');
+    theMap.setLayoutProperty('admin-1-highlight', 'visibility', 'visible');
+    theMap.setLayoutProperty('admin-1-label-selected', 'visibility', 'visible');
+    theMap.setLayoutProperty('admin-0-highlight', 'visibility', 'visible');
 
 
 /* Original is below – just for checking later:
@@ -269,7 +257,8 @@ if (environment !== 'production') {
     countries: T.array,
     name: T.string,
     date: T.string,
-    disasterTypeCode: T.string
+    disasterTypeCode: T.string,
+    countriesByIsoData: T.object
   };
 }
 
