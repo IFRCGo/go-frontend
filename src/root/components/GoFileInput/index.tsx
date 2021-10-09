@@ -36,12 +36,9 @@ function Preview<ID extends number>(props: PreviewProps<ID>) {
     return null;
   }
 
-  return (
-    <div className={styles.preview}>
-      <img
-        className={styles.image}
-        src={file}
-      />
+  const isPreviewable = file.match(/.(jpg|jpeg|png|gif)$/i);
+
+  const removeButton = (
       <RawButton
         name={id}
         onClick={onRemoveButtonClick}
@@ -49,6 +46,24 @@ function Preview<ID extends number>(props: PreviewProps<ID>) {
       >
         <IoClose />
       </RawButton>
+  );
+
+  if (!isPreviewable) {
+    return (
+      <div className={styles.noPreview}>
+        {removeButton}
+        Preview not available!
+      </div>
+    );
+  }
+
+  return (
+    <div className={styles.preview}>
+      <img
+        className={styles.image}
+        src={file}
+      />
+      {removeButton}
     </div>
   );
 }
@@ -123,6 +138,7 @@ function GoFileInput<T extends string>(props: Props<T>) {
         }
       }
     },
+
     onFailure: (e) => {
       const serverError = e?.value?.errors as { file: string[] };
       const message = serverError?.file?.join(', ') ?? 'Failed to upload the file!';

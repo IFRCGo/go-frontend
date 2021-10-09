@@ -37,6 +37,8 @@ interface Props {
   onValueChange: (...entries: EntriesAsList<Value>) => void;
   value: Value;
   interventionOptions: StringValueOption[];
+  fileIdToUrlMap: Record<number, string>;
+  setFileIdToUrlMap?: React.Dispatch<React.SetStateAction<Record<number, string>>>;
 }
 
 function Response(props: Props) {
@@ -46,6 +48,8 @@ function Response(props: Props) {
     error,
     onValueChange,
     interventionOptions,
+    fileIdToUrlMap,
+    setFileIdToUrlMap,
     value,
   } = props;
 
@@ -130,6 +134,7 @@ function Response(props: Props) {
         className={styles.assistedPopulation}
       >
         <InputSection
+          title={strings.drefFormTargetedPopulation}
           multiRow
           twoColumn
         >
@@ -161,10 +166,6 @@ function Response(props: Props) {
             onChange={onValueChange}
             error={error?.fields?.boys}
           />
-        </InputSection>
-        <InputSection
-          title={strings.drefFormTargetedPopulation}
-          className={styles.targetedPopulation}>
           <NumberInput
             name="total_targated_population"
             value={value.total_targated_population}
@@ -339,6 +340,8 @@ function Response(props: Props) {
             onRemove={onInterventionRemove}
             error={error?.fields?.planned_interventions}
             interventionOptions={interventionOptions}
+            fileIdToUrlMap={fileIdToUrlMap}
+            setFileIdToUrlMap={setFileIdToUrlMap}
           />
         ))}
       </Container>

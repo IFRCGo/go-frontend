@@ -14,6 +14,7 @@ export const isValidFile = (fileName: string, mimeType: string, acceptString?: s
   const extensionMatch = /\.\w+$/.exec(fileName);
   const mimeMatch = /^.+\//.exec(mimeType);
 
+
   const fileTypeList = acceptString.split(/,\s+/);
   return fileTypeList.some((fileType) => {
     // check mimeType such as image/png or image/*

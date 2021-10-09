@@ -7,17 +7,19 @@ import {
 } from '@togglecorp/toggle-form';
 import { IoTrash } from 'react-icons/io5';
 
-import {
-  Intervention,
-  StringValueOption,
-} from '../../common';
-
 import TextArea from '#components/TextArea';
 import BulletTextArea from '#components/BulletTextArea';
 import Button from '#components/Button';
 import NumberInput from '#components/NumberInput';
 import InputSection from '#components/InputSection';
+import GoFileInput from '#components/GoFileInput';
 import LanguageContext from '#root/languageContext';
+
+import {
+  Intervention,
+  StringValueOption,
+} from '../../common';
+
 
 import styles from './styles.module.scss';
 
@@ -34,6 +36,8 @@ interface Props {
   onRemove: (index: number) => void;
   index: number;
   interventionOptions: StringValueOption[];
+  fileIdToUrlMap: Record<number, string>;
+  setFileIdToUrlMap?: React.Dispatch<React.SetStateAction<Record<number, string>>>;
 }
 
 function InterventionInput(props: Props) {
@@ -46,6 +50,8 @@ function InterventionInput(props: Props) {
     index,
     interventionOptions,
     onRemove,
+    fileIdToUrlMap,
+    setFileIdToUrlMap,
   } = props;
 
   const interventionLabel = React.useMemo(() => (
@@ -58,40 +64,55 @@ function InterventionInput(props: Props) {
     : undefined;
 
   return (
-    <InputSection
-      title={interventionLabel}
-      multiRow
-      twoColumn
-      contentSectionClassName={styles.content}
-    >
-      <NumberInput
-        label="Budget"
-        name="budget"
-        value={value.budget}
-        onChange={onFieldChange}
-        error={error?.fields?.budget}
-      />
-      <NumberInput
-        label="Persons Targeted"
-        name="persons_targeted"
-        value={value.persons_targeted}
-        onChange={onFieldChange}
-        error={error?.fields?.persons_targeted}
-      />
-      <TextArea
-        label="Indicator"
-        name="indicator"
-        value={value.indicator}
-        onChange={onFieldChange}
-        error={error?.fields?.indicator}
-      />
-      <BulletTextArea
-        label={strings.drefFormListOfActivities}
-        name="description"
-        value={value.description}
-        onChange={onFieldChange}
-        error={error?.fields?.description}
-      />
+    <div className={styles.interventionInput}>
+      <InputSection
+        className={styles.inputSection}
+        title={interventionLabel}
+        multiRow
+        twoColumn
+      >
+          <NumberInput
+            label="Budget"
+            name="budget"
+            value={value.budget}
+            onChange={onFieldChange}
+            error={error?.fields?.budget}
+          />
+          <NumberInput
+            label="Persons Targeted"
+            name="persons_targeted"
+            value={value.persons_targeted}
+            onChange={onFieldChange}
+            error={error?.fields?.persons_targeted}
+          />
+        <TextArea
+          label="Indicator"
+          name="indicator"
+          value={value.indicator}
+          onChange={onFieldChange}
+          error={error?.fields?.indicator}
+        />
+        <BulletTextArea
+          label={strings.drefFormListOfActivities}
+          name="description"
+          value={value.description}
+          onChange={onFieldChange}
+          error={error?.fields?.description}
+        />
+        <GoFileInput
+          accept=".xlsx, .xls"
+          error={error?.fields?.budget_file}
+          fileIdToUrlMap={fileIdToUrlMap}
+          label="Budget template"
+          name="budget_file"
+          onChange={onFieldChange}
+          setFileIdToUrlMap={setFileIdToUrlMap}
+          showStatus
+          value={value.budget_file}
+        >
+          Select a spreadsheet
+        </GoFileInput>
+      </InputSection>
       <Button
         className={styles.removeButton}
         name={index}
@@ -100,7 +121,7 @@ function InterventionInput(props: Props) {
       >
         <IoTrash />
       </Button>
-    </InputSection>
+    </div>
   );
 }
 

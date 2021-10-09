@@ -81,6 +81,7 @@ export interface Intervention {
   clientId: string;
   title: string;
   budget: number;
+  budget_file: number;
   persons_targeted: number;
   indicator: string;
   description: string;
@@ -188,7 +189,13 @@ export interface DrefFields {
 export interface DrefApiFields extends Omit<DrefFields, 'country_district' | 'planned_interventions' | 'national_society_actions' | 'needs_identified'> {
   user: number;
   country_district: (Omit<CountryDistrict, 'clientId'> & { id: number })[];
-  planned_interventions: (Omit<Intervention, 'clientId'> & { id: number })[];
+  planned_interventions: (Omit<Intervention, 'clientId'> & {
+    id: number,
+    budget_file_details: {
+      id: number;
+      file: string;
+    }
+  })[];
   national_society_actions: (Omit<NsAction, 'clientId'> & { id: number })[];
   needs_identified: (Omit<Need, 'clientId'> & { id: number })[];
   event_map_details: {
