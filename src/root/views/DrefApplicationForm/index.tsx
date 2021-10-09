@@ -256,6 +256,12 @@ function DrefApplication(props: Props) {
           });
         }
 
+        if (response.planned_interventions?.length > 0) {
+          response.planned_interventions.forEach((pi) => {
+            newMap[pi.budget_file_details.id] = pi.budget_file_details.file;
+          });
+        }
+
         return newMap;
       });
       onValueSet({
@@ -415,8 +421,9 @@ function DrefApplication(props: Props) {
       if (!Number.isNaN(approvalDate.getTime())) {
         approvalDate.setMonth(approvalDate.getMonth() + value.operation_timeframe);
         const yyyy = approvalDate.getFullYear();
-        const mm = approvalDate.getMonth() + 1;
+        const mm = approvalDate.getMonth();
         const dd = approvalDate.getDate();
+        console.info(ymdToDateString(yyyy, mm, dd));
         onValueChange(ymdToDateString(yyyy, mm, dd), 'end_date' as const);
       }
     }
@@ -431,6 +438,7 @@ function DrefApplication(props: Props) {
     >
       <Page
         className={className}
+        title="DREF Application"
         heading="DREF Application"
         info={(
           <TabList className={styles.tabList}>
@@ -530,6 +538,8 @@ function DrefApplication(props: Props) {
                 error={error}
                 onValueChange={onValueChange}
                 value={value}
+                fileIdToUrlMap={fileIdToUrlMap}
+                setFileIdToUrlMap={setFileIdToUrlMap}
               />
             </TabPanel>
             <TabPanel name="submission">

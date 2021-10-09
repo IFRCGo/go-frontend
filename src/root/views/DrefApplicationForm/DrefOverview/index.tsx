@@ -236,14 +236,14 @@ function DrefOverview(props: Props) {
           title={strings.drefFormUploadMap}
         >
           <GoFileInput
-            name="event_map"
-            value={value.event_map}
-            onChange={onValueChange}
             accept="image/*"
             error={error?.fields?.event_map}
-            showStatus
-            setFileIdToUrlMap={setFileIdToUrlMap}
             fileIdToUrlMap={fileIdToUrlMap}
+            name="event_map"
+            onChange={onValueChange}
+            setFileIdToUrlMap={setFileIdToUrlMap}
+            showStatus
+            value={value.event_map}
           >
             Select an Image
           </GoFileInput>

@@ -183,6 +183,7 @@ export const schema: FormSchema = {
           clientId: [],
           title: [requiredCondition],
           budget: [requiredCondition, positiveIntegerCondition],
+          budget_file: [],
           persons_targeted: [positiveIntegerCondition],
           indicator: [],
           description: [],
