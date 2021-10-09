@@ -10,6 +10,10 @@ import {
   EntriesAsList,
   useFormArray,
 } from '@togglecorp/toggle-form';
+import {
+  IoInformationCircle,
+  IoChevronForward,
+} from 'react-icons/io5';
 
 import Button from '#components/Button';
 import Container from '#components/Container';
@@ -39,6 +43,7 @@ interface Props {
   interventionOptions: StringValueOption[];
   fileIdToUrlMap: Record<number, string>;
   setFileIdToUrlMap?: React.Dispatch<React.SetStateAction<Record<number, string>>>;
+  needOptions: StringValueOption[];
 }
 
 function Response(props: Props) {
@@ -50,6 +55,7 @@ function Response(props: Props) {
     interventionOptions,
     fileIdToUrlMap,
     setFileIdToUrlMap,
+    needOptions,
     value,
   } = props;
 
@@ -88,6 +94,15 @@ function Response(props: Props) {
   ), [value.planned_interventions]);
   const filteredInterventionOptions = interventionsIdentifiedMap ? interventionOptions.filter(n => !interventionsIdentifiedMap[n.value]) : [];
   const isImminentOnset = value.type_of_onset === ONSET_IMMINENT;
+
+  const needsMap = React.useMemo(() => (
+    listToMap(
+      needOptions,
+      d => d.value,
+      d => d.label,
+    )
+  ), [needOptions]);
+
 
   return (
     <>
@@ -167,6 +182,7 @@ function Response(props: Props) {
             error={error?.fields?.boys}
           />
           <NumberInput
+            label={strings.drefFormTotal}
             name="total_targated_population"
             value={value.total_targated_population}
             onChange={onValueChange}
@@ -312,6 +328,39 @@ function Response(props: Props) {
         className={styles.plannedIntervention}
         visibleOverflow
       >
+        {value.needs_identified?.length !== 0 && (
+          <InputSection
+            title={strings.drefFormNeedsIdentified}
+          >
+            <div className={styles.identifiedNeeds}>
+              {value.needs_identified?.map((need) => (
+                need && need.title && (
+                  <div
+                    key={need.clientId}
+                    title={need.description}
+                    className={styles.need}
+                  >
+                    <div
+                      className={styles.icon}
+                      title={need.description}
+                    >
+                      <IoChevronForward />
+                    </div>
+                    <div className={styles.title}>
+                      {needsMap[need.title]}
+                    </div>
+                    <div
+                      className={styles.icon}
+                      title={need.description}
+                    >
+                      <IoInformationCircle />
+                    </div>
+                  </div>
+                )
+              ))}
+            </div>
+          </InputSection>
+        )}
         <InputSection>
           <SelectInput
             name={undefined}

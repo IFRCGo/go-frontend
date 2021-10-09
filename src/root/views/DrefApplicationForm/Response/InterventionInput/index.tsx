@@ -1,5 +1,7 @@
 import React from 'react';
-import { randomString } from '@togglecorp/fujs';
+import {
+  randomString,
+} from '@togglecorp/fujs';
 import {
   PartialForm,
   ArrayError,

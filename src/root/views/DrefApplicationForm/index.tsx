@@ -1,5 +1,6 @@
 import React from 'react';
 import type { History, Location } from 'history';
+import { Link } from 'react-router-dom';
 import {
   randomString,
   isDefined,
@@ -22,6 +23,7 @@ import Tab from '#components/Tabs/Tab';
 import TabList from '#components/Tabs/TabList';
 import TabPanel from '#components/Tabs/TabPanel';
 import Tabs from '#components/Tabs';
+import { useButtonFeatures } from '#components/Button';
 import {
   useLazyRequest,
   useRequest,
@@ -88,12 +90,12 @@ export function getDefinedValues<T extends Record<string, any>>(o: T): Partial<T
   return definedValues;
 }
 
-type StepTypes = 'drefOverview' | 'eventDetails' | 'action' | 'response' | 'submission';
+type StepTypes = 'operationOverview' | 'eventDetails' | 'action' | 'response' | 'submission';
 const stepTypesToFieldsMap: {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   [key in StepTypes]: (keyof DrefFields)[];
 } = {
-  drefOverview: overviewFields,
+  operationOverview: overviewFields,
   eventDetails: eventDetailsFields,
   action: actionsFields,
   response: responseFields,
@@ -146,16 +148,16 @@ function DrefApplication(props: Props) {
   } = useDrefFormOptions(value);
 
   const [fileIdToUrlMap, setFileIdToUrlMap] = React.useState<Record<number, string>>({});
-  const [currentStep, setCurrentStep] = React.useState<StepTypes>('drefOverview');
+  const [currentStep, setCurrentStep] = React.useState<StepTypes>('operationOverview');
   const submitButtonLabel = currentStep === 'submission' ? strings.fieldReportSubmit : strings.fieldReportContinue;
-  const shouldDisabledBackButton = currentStep === 'drefOverview';
+  const shouldDisabledBackButton = currentStep === 'operationOverview';
 
   const erroredTabs = React.useMemo(() => {
     const tabs: {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       [key in StepTypes]: boolean;
     } = {
-      drefOverview: false,
+      operationOverview: false,
       eventDetails: false,
       action: false,
       response: false,
@@ -258,7 +260,9 @@ function DrefApplication(props: Props) {
 
         if (response.planned_interventions?.length > 0) {
           response.planned_interventions.forEach((pi) => {
-            newMap[pi.budget_file_details.id] = pi.budget_file_details.file;
+            if (pi.budget_file_details) {
+              newMap[pi.budget_file_details.id] = pi.budget_file_details.file;
+            }
           });
         }
 
@@ -364,9 +368,9 @@ function DrefApplication(props: Props) {
     } else {
       const nextStepMap: {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        [key in Exclude<StepTypes, 'submission'>]: Exclude<StepTypes, 'drefOverview'>;
+        [key in Exclude<StepTypes, 'submission'>]: Exclude<StepTypes, 'operationOverview'>;
       } = {
-        drefOverview: 'eventDetails',
+        operationOverview: 'eventDetails',
         eventDetails: 'action',
         action: 'response',
         response: 'submission',
@@ -377,12 +381,12 @@ function DrefApplication(props: Props) {
   }, [validateCurrentTab, currentStep, handleTabChange, validate, onErrorSet, submitRequest, userDetails]);
 
   const handleBackButtonClick = React.useCallback(() => {
-    if (currentStep !== 'drefOverview') {
+    if (currentStep !== 'operationOverview') {
       const prevStepMap: {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        [key in Exclude<StepTypes, 'drefOverview'>]: Exclude<StepTypes, 'submission'>;
+        [key in Exclude<StepTypes, 'operationOverview'>]: Exclude<StepTypes, 'submission'>;
       } = {
-        eventDetails: 'drefOverview',
+        eventDetails: 'operationOverview',
         action: 'eventDetails',
         response: 'action',
         submission: 'response',
@@ -429,6 +433,11 @@ function DrefApplication(props: Props) {
     }
   }, [onValueChange, value.date_of_approval, value.operation_timeframe]);
 
+  const exportLinkProps = useButtonFeatures({
+    variant: 'secondary',
+    children: strings.drefFormExportLabel,
+  });
+
   return (
     <Tabs
       disabled={false}
@@ -438,44 +447,50 @@ function DrefApplication(props: Props) {
     >
       <Page
         className={className}
-        title="DREF Application"
-        heading="DREF Application"
+        actions={isDefined(drefId) && (
+          <Link
+            to={`/dref-application/${drefId}/export/`}
+            {...exportLinkProps}
+          />
+        )}
+        title={strings.drefFormPageTitle}
+        heading={strings.drefFormPageHeading}
         info={(
           <TabList className={styles.tabList}>
             <Tab
-              name="drefOverview"
+              name="operationOverview"
               step={1}
-              errored={erroredTabs['drefOverview']}
+              errored={erroredTabs['operationOverview']}
             >
-              Dref Overview
+              {strings.drefFormTabOperationOverviewLabel}
             </Tab>
             <Tab
               name="eventDetails"
               step={2}
               errored={erroredTabs['eventDetails']}
             >
-              Event Details
+              {strings.drefFormTabEventDetailLabel}
             </Tab>
             <Tab
               name="action"
               step={3}
               errored={erroredTabs['action']}
             >
-              Actions/Needs
+              {strings.drefFormTabActionsLabel}
             </Tab>
             <Tab
               name="response"
               step={4}
               errored={erroredTabs['response']}
             >
-              Response
+              {strings.drefFormTabResponseLabel}
             </Tab>
             <Tab
               name="submission"
               step={5}
               errored={erroredTabs['submission']}
             >
-              Submission/Contacts
+              {strings.drefFormTabSubmissionLabel}
             </Tab>
           </TabList>
         )}
@@ -492,7 +507,7 @@ function DrefApplication(props: Props) {
                 message="Please correct all the errors!"
               />
             </Container>
-            <TabPanel name="drefOverview">
+            <TabPanel name="operationOverview">
               <DrefOverview
                 error={error}
                 onValueChange={onValueChange}
@@ -540,6 +555,7 @@ function DrefApplication(props: Props) {
                 value={value}
                 fileIdToUrlMap={fileIdToUrlMap}
                 setFileIdToUrlMap={setFileIdToUrlMap}
+                needOptions={needOptions}
               />
             </TabPanel>
             <TabPanel name="submission">
