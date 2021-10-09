@@ -234,6 +234,7 @@ function CopyFieldReportSection (props: Props) {
         />
         <div className={styles.actions}>
           <Button
+            variant="secondary"
             disabled={isNotDefined(fieldReport) || frDetailPending}
             onClick={handleCopyButtonClick}
             name={fieldReport}

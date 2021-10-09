@@ -2987,8 +2987,6 @@ export default {
   emptyMessage: 'Data is not available.',
   emptyMessageHelpText: 'Please refresh the browser or visit the platform in a little bit.',
 
-  drefFormTitle: 'Title',
-  drefFormTitleDescription: 'Add country, type of disaster and location to the title',
   // dref table headings
   drefTableCreatedOn: 'Created On',
   drefTableCountry: 'Country',
@@ -2997,8 +2995,25 @@ export default {
   drefTableRegionalTechReview: 'Regional Technical Review',
   drefTableSubmittedToGeneva: 'Submitted to Geneva',
   drefTableLastUpdate: 'Last Update',
+  drefTableExport: 'Export',
+  drefTableEdit: 'Edit',
+
   drefInProgressApplications: 'In progress Applications',
   drefApprovedApplications: 'Approved Applications',
+
+
+  drefFormPageTitle: 'IFRC Go - DREF Application',
+  drefFormPageHeading: 'DREF Application',
+  drefFormExportLabel: 'Export',
+
+  drefFormTabOperationOverviewLabel: 'Operation Overview',
+  drefFormTabEventDetailLabel: 'Event Detail',
+  drefFormTabActionsLabel: 'Actions/Needs',
+  drefFormTabResponseLabel: 'Response',
+  drefFormTabSubmissionLabel: 'Submission/Contact',
+
+  drefFormTitle: 'Title',
+  drefFormTitleDescription: 'Add country, type of disaster and location to the title',
 
   // dref form ActionFields
   drefFormNationalSocietiesActions: 'Current National Society Actions',
@@ -3075,6 +3090,7 @@ export default {
   drefFormMen: 'Men',
   drefFormGirls: 'Girls (under 18)',
   drefFormBoys: 'Boys (under 18)',
+  drefFormTotal: 'Total',
   drefFormTargetedPopulation: 'Targeted Population',
   drefFormEstimateResponse: 'Estimate',
   drefFormEstimatePeopleDisability: 'Estimated Percentage People with Disability',

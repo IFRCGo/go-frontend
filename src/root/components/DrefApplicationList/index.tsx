@@ -66,13 +66,15 @@ function DrefApplicationList(props: Props) {
       offset: ITEM_PER_PAGE * (activePage - 1),
     },
   });
+
+  // TODO: use strings
   const editLinkProps = useButtonFeatures({
     variant: 'secondary',
-    children: 'Edit',
+    children: strings.drefTableEdit,
   });
   const exportLinkProps = useButtonFeatures({
     variant: 'primary',
-    children: 'Export',
+    children: strings.drefTableExport,
   });
 
   const columns = React.useMemo(() => ([
@@ -104,10 +106,12 @@ function DrefApplicationList(props: Props) {
           <>
             <Link
               to={`/dref-application/${rowKey}/edit/`}
-              {...editLinkProps} />
+              {...editLinkProps}
+            />
             <Link
               to={`/dref-application/${rowKey}/export/`}
-              {...exportLinkProps} />
+              {...exportLinkProps}
+            />
           </>
         ),
       }),

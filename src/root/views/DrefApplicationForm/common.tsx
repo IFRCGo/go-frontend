@@ -191,7 +191,7 @@ export interface DrefApiFields extends Omit<DrefFields, 'country_district' | 'pl
   country_district: (Omit<CountryDistrict, 'clientId'> & { id: number })[];
   planned_interventions: (Omit<Intervention, 'clientId'> & {
     id: number,
-    budget_file_details: {
+    budget_file_details?: {
       id: number;
       file: string;
     }
