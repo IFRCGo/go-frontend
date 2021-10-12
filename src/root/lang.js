@@ -779,6 +779,17 @@ export default {
   emergencyMapTerritory: 'territory',
   emergencyMapDisputedTerritory: 'Disputed territory',
 
+  operationalToolboxH1: 'Operational Timeline toolbox',
+  operationalToolboxH3: 'For Orange & Red Emergencies',
+  operationalToolboxAccordionBtnText: 'Overview of the toolbox',
+  operationalToolboxAccordionPanelText1: 'This operational toolbox is a central repository with key operational document helpful for your mission like templates, checklists, guidance and examples.\nHow to Navigate:\n',
+  operationalToolboxAccordionPanelText2: 'Toolbox',
+  operationalToolboxAccordionPanelText3: 'click on each section in pre-disaster column to acces the folders with all the relevant tools.',
+  operationalToolboxAccordionPanelText4: 'Timeline',
+  operationalToolboxAccordionPanelText5: 'click on the icons below to get direct access to the specific tool. When a longer grey bar is represented on the timeline it means that the timeframe can span over a nember of days/weeks. Note that these are indicative context specific timeframes, and are meant to function as a guide only.',
+  operationalToolboxAccordionPanelText6: 'The timeline below outlines the expected actions throughout the first four months of the response cycle. This timeline functions as a guide for RCRC operations practitioners and represents key milestones, deliverables and documents linked to them.',
+  operationalToolboxFooterText: 'If you have any feedback or improvement suggestions, please email:',
+
   catalogueOfSurgeServicesSelectorTitle: 'Catalogue',
   catalogueOfSurgeServicesSelectorEmergency: 'Emergency Needs Assessment',
   catalogueOfSurgeServicesSelectorBasecamp: 'Basecamp',

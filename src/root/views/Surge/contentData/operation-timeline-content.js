@@ -1,18 +1,8 @@
 const OperationTimelineContent = [
     {
-        id: 'surge_table/element1',
-        url: 'https://ifrcorg.sharepoint.com/sites/IFRCSharing/Shared%20Documents/Forms/AllItems.aspx?RootFolder=/sites%2FIFRCSharing%2FShared%20Documents%2FGLOBAL%20SURGE%2FOPERATIONAL%20TOOLBOX%2F1%2E%20Timeline%20documents%2F01%2E%20Assessments%2F01%2E01%20Conduct%20Initial%20Assessment&View=%7BA0DF7B8D%2DD671%2D4C77%2DA464%2D720655A5403E%7D',
-        name: 'Conduct Initial Assessment'
-    },
-    {
-        id: 'surge_table/element2_2',
-        url: 'https://ifrcorg.sharepoint.com/sites/IFRCSharing/Shared%20Documents/Forms/AllItems.aspx?RootFolder=/sites%2FIFRCSharing%2FShared%20Documents%2FGLOBAL%20SURGE%2FOPERATIONAL%20TOOLBOX%2F1%2E%20Timeline%20documents%2F01%2E%20Assessments%2F01%2E02%20Conduct%20Multi%2DSector%20Rapid%20Assessment&View=%7BA0DF7B8D%2DD671%2D4C77%2DA464%2D720655A5403E%7D',
-        name: 'Conduct Multi-Sector Rapid Assessment'
-    },
-    {
-        id: 'surge_table/element3_2',
-        url: 'https://ifrcorg.sharepoint.com/sites/IFRCSharing/Shared%20Documents/Forms/AllItems.aspx?RootFolder=/sites%2FIFRCSharing%2FShared%20Documents%2FGLOBAL%20SURGE%2FOPERATIONAL%20TOOLBOX%2F1%2E%20Timeline%20documents%2F01%2E%20Assessments%2F01%2E03%20Conduct%20In%2DDepth%20Multi%2DSector%20Assessment%20%26%20Produce%20Report&View=%7BA0DF7B8D%2DD671%2D4C77%2DA464%2D720655A5403E%7D',
-        name: 'Conduct In-Depth Multi-Sector Assessment & Produce Report'
+        id: 'surge_table/element1_31',
+        url: 'https://ifrcorg.sharepoint.com/sites/IFRCSharing/Shared%20Documents/Forms/AllItems.aspx?RootFolder=/sites%2FIFRCSharing%2FShared%20Documents%2FGLOBAL%20SURGE%2FOPERATIONAL%20TOOLBOX%2F1%2E%20Timeline%20documents%2F01%2E%20Assessments&View=%7BA0DF7B8D%2DD671%2D4C77%2DA464%2D720655A5403E%7D',
+        name: 'Design, Collect, Annalyze And Share'
     },
     {
         id: 'surge_table/element4_2',
@@ -30,22 +20,22 @@ const OperationTimelineContent = [
         name: 'Launch EA'
     },
     {
-        id: 'surge_table/tooltips_top',
+        id: 'surge_table/element4_3',
         url: 'https://ifrcorg.sharepoint.com/sites/IFRCSharing/Shared%20Documents/Forms/AllItems.aspx?RootFolder=/sites%2FIFRCSharing%2FShared%20Documents%2FGLOBAL%20SURGE%2FOPERATIONAL%20TOOLBOX%2F1%2E%20Timeline%20documents%2F02%2E%20Planning%2F02%2E04%20Develop%20Response%20Options&View=%7BA0DF7B8D%2DD671%2D4C77%2DA464%2D720655A5403E%7D',
         name: 'Develop Response Options'
     },
     {
-        id: 'surge_table/tooltips_top_12',
+        id: 'surge_table/element4_4',
         url: 'https://ifrcorg.sharepoint.com/sites/IFRCSharing/Shared%20Documents/Forms/AllItems.aspx?RootFolder=/sites%2FIFRCSharing%2FShared%20Documents%2FGLOBAL%20SURGE%2FOPERATIONAL%20TOOLBOX%2F1%2E%20Timeline%20documents%2F02%2E%20Planning%2F02%2E05%20Complete%20EPoA&View=%7BA0DF7B8D%2DD671%2D4C77%2DA464%2D720655A5403E%7D',
-        name: 'Complete EPoA'
+        name: 'Complete EPoA',
     },
     {
-        id: 'surge_table/tooltips_top_13',
+        id: 'surge_table/element1_30',
         url: 'https://ifrcorg.sharepoint.com/sites/IFRCSharing/Shared%20Documents/Forms/AllItems.aspx?RootFolder=/sites%2FIFRCSharing%2FShared%20Documents%2FGLOBAL%20SURGE%2FOPERATIONAL%20TOOLBOX%2F1%2E%20Timeline%20documents%2F02%2E%20Planning%2F02%2E06%20Create%20Risk%20Register&View=%7BA0DF7B8D%2DD671%2D4C77%2DA464%2D720655A5403E%7D',
         name: 'Create Risk Register'
     },
     {
-        id: 'surge_table/element4_3',
+        id: 'surge_table/element4_6',
         url: 'https://ifrcorg.sharepoint.com/sites/IFRCSharing/Shared%20Documents/Forms/AllItems.aspx?RootFolder=/sites%2FIFRCSharing%2FShared%20Documents%2FGLOBAL%20SURGE%2FOPERATIONAL%20TOOLBOX%2F1%2E%20Timeline%20documents%2F02%2E%20Planning%2F02%2E07%20Create%20Transition%20Plan%20for%20Surge%20in%20the%20long%20term&View=%7BA0DF7B8D%2DD671%2D4C77%2DA464%2D720655A5403E%7D',
         name: 'Create Transition Plan'
     },
@@ -70,7 +60,7 @@ const OperationTimelineContent = [
         name: 'Establish Task Forces'
     },
     {
-        id: 'surge_table/tooltips_top_2',
+        id: 'surge_table/element1',
         url: 'https://ifrcorg.sharepoint.com/sites/IFRCSharing/Shared%20Documents/Forms/AllItems.aspx?RootFolder=/sites%2FIFRCSharing%2FShared%20Documents%2FGLOBAL%20SURGE%2FOPERATIONAL%20TOOLBOX%2F1%2E%20Timeline%20documents%2F03%2E%20Coordination%2F03%2E02%20Hold%20in%2Dcountry%20Movement%20Partner%20Meetings&View=%7BA0DF7B8D%2DD671%2D4C77%2DA464%2D720655A5403E%7D',
         name: 'Hold in-country Movement Partner Meetings'
     },
@@ -85,17 +75,17 @@ const OperationTimelineContent = [
         name: 'Activate Shelter Cluster'
     },
     {
-        id: 'surge_table/tooltips_left_5',
+        id: 'surge_table/element1_5',
         url: 'https://ifrcorg.sharepoint.com/sites/IFRCSharing/Shared%20Documents/Forms/AllItems.aspx?RootFolder=/sites%2FIFRCSharing%2FShared%20Documents%2FGLOBAL%20SURGE%2FOPERATIONAL%20TOOLBOX%2F1%2E%20Timeline%20documents%2F03%2E%20Coordination%2F03%2E04%20Hold%20Mini%20Summit&View=%7BA0DF7B8D%2DD671%2D4C77%2DA464%2D720655A5403E%7D',
         name: 'Hold Mini Summit'
     },
     {
-        id: 'surge_table/tooltips_left',
+        id: 'surge_table/element1_2',
         url: 'https://ifrcorg.sharepoint.com/sites/IFRCSharing/Shared%20Documents/Forms/AllItems.aspx?RootFolder=/sites%2FIFRCSharing%2FShared%20Documents%2FGLOBAL%20SURGE%2FOPERATIONAL%20TOOLBOX%2F1%2E%20Timeline%20documents%2F03%2E%20Coordination%2F03%2E05%20Create%20External%20Coordination%20Engagement%20Plan&View=%7BA0DF7B8D%2DD671%2D4C77%2DA464%2D720655A5403E%7D',
         name: 'Create External Coordination Engagement Plan'
     },
     {
-        id: 'surge_table/element10_2',
+        id: 'surge_table/element10_3',
         url: 'https://ifrcorg.sharepoint.com/sites/IFRCSharing/Shared%20Documents/Forms/AllItems.aspx?RootFolder=/sites%2FIFRCSharing%2FShared%20Documents%2FGLOBAL%20SURGE%2FOPERATIONAL%20TOOLBOX%2F1%2E%20Timeline%20documents%2F03%2E%20Coordination%2F03%2E06%20Revise%20Movement%20Coordination%20Framework&View=%7BA0DF7B8D%2DD671%2D4C77%2DA464%2D720655A5403E%7D',
         name: 'Revise Movement Coordination Framework'
     },
@@ -115,7 +105,7 @@ const OperationTimelineContent = [
         name: 'Setup HR Plan'
     },
     {
-        id: 'surge_table/tooltips_left_6',
+        id: 'surge_table/element1_6',
         url: 'https://ifrcorg.sharepoint.com/sites/IFRCSharing/Shared%20Documents/Forms/AllItems.aspx?RootFolder=/sites%2FIFRCSharing%2FShared%20Documents%2FGLOBAL%20SURGE%2FOPERATIONAL%20TOOLBOX%2F1%2E%20Timeline%20documents%2F04%2E%20HR%2F04%2E03%20Create%20Staff%20Care%20and%20Duty%20of%20Care%20Advice&View=%7BA0DF7B8D%2DD671%2D4C77%2DA464%2D720655A5403E%7D',
         name: 'Create Staff Care and Duty of Care Advice'
     },
@@ -125,7 +115,7 @@ const OperationTimelineContent = [
         name: 'Identify Surge Needs for Future Rotations'
     },
     {
-        id: 'surge_table/tooltips_left_2',
+        id: 'surge_table/element1_3',
         url: 'https://ifrcorg.sharepoint.com/sites/IFRCSharing/Shared%20Documents/Forms/AllItems.aspx?RootFolder=/sites%2FIFRCSharing%2FShared%20Documents%2FGLOBAL%20SURGE%2FOPERATIONAL%20TOOLBOX%2F1%2E%20Timeline%20documents%2F04%2E%20HR%2F04%2E05%20Organigram%20for%20NS%20%26%20IFRC&View=%7BA0DF7B8D%2DD671%2D4C77%2DA464%2D720655A5403E%7D',
         name: 'Organigram for NS & IFRC'
     },
@@ -135,18 +125,13 @@ const OperationTimelineContent = [
         name: 'Post JDs for Standard Role Profiles'
     },
     {
-        id: 'surge_table/element16',
+        id: 'surge_table/element16_2',
         url: 'https://ifrcorg.sharepoint.com/sites/IFRCSharing/Shared%20Documents/Forms/AllItems.aspx?RootFolder=/sites%2FIFRCSharing%2FShared%20Documents%2FGLOBAL%20SURGE%2FOPERATIONAL%20TOOLBOX%2F1%2E%20Timeline%20documents%2F04%2E%20HR%2F04%2E07%20Complete%20End%20of%20Mission%20Steps&View=%7BA0DF7B8D%2DD671%2D4C77%2DA464%2D720655A5403E%7D',
         name: 'Complete End of Mission Steps'
     },
     {
-        id: 'surge_table/tooltips_left_3',
+        id: 'surge_table/element1_4',
         url: 'https://ifrcorg.sharepoint.com/sites/IFRCSharing/Shared%20Documents/Forms/AllItems.aspx?RootFolder=/sites%2FIFRCSharing%2FShared%20Documents%2FGLOBAL%20SURGE%2FOPERATIONAL%20TOOLBOX%2F1%2E%20Timeline%20documents%2F04%2E%20HR%2F04%2E08%20Update%20Organigram&View=%7BA0DF7B8D%2DD671%2D4C77%2DA464%2D720655A5403E%7D',
-        name: 'Update Organigram'
-    },
-    {
-        id: 'surge_table/tooltips_left_4',
-        url: 'https://ifrcorg.sharepoint.com/sites/IFRCSharing/Shared%20Documents/Forms/AllItems.aspx?RootFolder=/sites%2FIFRCSharing%2FShared%20Documents%2FGLOBAL%20SURGE%2FOPERATIONAL%20TOOLBOX%2F1%2E%20Timeline%20documents%2F04%2E%20HR%2F04%2E09%20Update%20Organigram&View=%7BA0DF7B8D%2DD671%2D4C77%2DA464%2D720655A5403E%7D',
         name: 'Update Organigram'
     },
     {
@@ -155,17 +140,17 @@ const OperationTimelineContent = [
         name: 'Create Sitreps'
     },
     {
-        id: 'surge_table/tooltips_top_3',
+        id: 'surge_table/element1_7',
         url: 'https://ifrcorg.sharepoint.com/sites/IFRCSharing/Shared%20Documents/Forms/AllItems.aspx?RootFolder=/sites%2FIFRCSharing%2FShared%20Documents%2FGLOBAL%20SURGE%2FOPERATIONAL%20TOOLBOX%2F1%2E%20Timeline%20documents%2F05%2E%20Monitoring%20Evaluation%20%26%20Reporting%2F05%2E02%20Develop%20Ops%20Update%201&View=%7BA0DF7B8D%2DD671%2D4C77%2DA464%2D720655A5403E%7D',
         name: 'Develop Ops Update 1'
     },
     {
-        id: 'surge_table/tooltips_left_7',
+        id: 'surge_table/element1_8',
         url: 'https://ifrcorg.sharepoint.com/sites/IFRCSharing/Shared%20Documents/Forms/AllItems.aspx?RootFolder=/sites%2FIFRCSharing%2FShared%20Documents%2FGLOBAL%20SURGE%2FOPERATIONAL%20TOOLBOX%2F1%2E%20Timeline%20documents%2F05%2E%20Monitoring%20Evaluation%20%26%20Reporting%2F05%2E03%20Develop%20Ops%20Update%202&View=%7BA0DF7B8D%2DD671%2D4C77%2DA464%2D720655A5403E%7D',
         name: 'Develop Ops Update 2'
     },
     {
-        id: 'surge_table/tooltips_left_8',
+        id: 'surge_table/element1_9',
         url: 'https://ifrcorg.sharepoint.com/sites/IFRCSharing/Shared%20Documents/Forms/AllItems.aspx?RootFolder=/sites%2FIFRCSharing%2FShared%20Documents%2FGLOBAL%20SURGE%2FOPERATIONAL%20TOOLBOX%2F1%2E%20Timeline%20documents%2F05%2E%20Monitoring%20Evaluation%20%26%20Reporting%2F05%2E04%20Develop%20M%26E%20plan&View=%7BA0DF7B8D%2DD671%2D4C77%2DA464%2D720655A5403E%7D',
         name: 'Develop M&E Plan'
     },
@@ -190,7 +175,7 @@ const OperationTimelineContent = [
         name: 'Conduct RTE'
     },
     {
-        id: 'surge_table/tooltips_left_9',
+        id: 'surge_table/element1_10',
         url: 'https://ifrcorg.sharepoint.com/sites/IFRCSharing/Shared%20Documents/Forms/AllItems.aspx?RootFolder=/sites%2FIFRCSharing%2FShared%20Documents%2FGLOBAL%20SURGE%2FOPERATIONAL%20TOOLBOX%2F1%2E%20Timeline%20documents%2F06%2E%20IM%2F06%2E01%20Define%20IM%20Strategy&View=%7BA0DF7B8D%2DD671%2D4C77%2DA464%2D720655A5403E%7D',
         name: 'Define IM Strategy'
     },
@@ -225,7 +210,7 @@ const OperationTimelineContent = [
         name: 'Develop Operating Budget'
     },
     {
-        id: 'surge_table/tooltips_left_10',
+        id: 'surge_table/element24_2',
         url: 'https://ifrcorg.sharepoint.com/sites/IFRCSharing/Shared%20Documents/Forms/AllItems.aspx?RootFolder=/sites%2FIFRCSharing%2FShared%20Documents%2FGLOBAL%20SURGE%2FOPERATIONAL%20TOOLBOX%2F1%2E%20Timeline%20documents%2F07%2E%20Finance%2C%20Admin%2C%20Resource%20planning%2F07%2E03%20Revise%20Operating%20Budget&View=%7BA0DF7B8D%2DD671%2D4C77%2DA464%2D720655A5403E%7D',
         name: 'Revise Operating Budget'
     },
@@ -235,27 +220,12 @@ const OperationTimelineContent = [
         name: 'Develop Appeal Project Agreement'
     },
     {
-        id: 'surge_table/tooltips_top_8',
-        url: 'https://ifrcorg.sharepoint.com/sites/IFRCSharing/Shared%20Documents/Forms/AllItems.aspx?RootFolder=/sites%2FIFRCSharing%2FShared%20Documents%2FGLOBAL%20SURGE%2FOPERATIONAL%20TOOLBOX%2F1%2E%20Timeline%20documents%2F07%2E%20Finance%2C%20Admin%2C%20Resource%20planning%2F07%2E05%20Revise%20Operating%20Budget&View=%7BA0DF7B8D%2DD671%2D4C77%2DA464%2D720655A5403E%7D',
-        name: 'Revise Operating Budget'
-    },
-    {
-        id: 'surge_table/tooltips_top_9',
-        url: 'https://ifrcorg.sharepoint.com/sites/IFRCSharing/Shared%20Documents/Forms/AllItems.aspx?RootFolder=/sites%2FIFRCSharing%2FShared%20Documents%2FGLOBAL%20SURGE%2FOPERATIONAL%20TOOLBOX%2F1%2E%20Timeline%20documents%2F07%2E%20Finance%2C%20Admin%2C%20Resource%20planning%2F07%2E06%20Revise%20Operating%20Budget&View=%7BA0DF7B8D%2DD671%2D4C77%2DA464%2D720655A5403E%7D',
-        name: 'Revise Operating Budget'
-    },
-    {
-        id: 'surge_table/tooltips_top_10',
-        url: 'https://ifrcorg.sharepoint.com/sites/IFRCSharing/Shared%20Documents/Forms/AllItems.aspx?RootFolder=/sites%2FIFRCSharing%2FShared%20Documents%2FGLOBAL%20SURGE%2FOPERATIONAL%20TOOLBOX%2F1%2E%20Timeline%20documents%2F07%2E%20Finance%2C%20Admin%2C%20Resource%20planning%2F07%2E07%20Revise%20Operational%20Budget&View=%7BA0DF7B8D%2DD671%2D4C77%2DA464%2D720655A5403E%7D',
-        name: 'Revise Operating Budget'
-    },
-    {
         id: 'surge_table/element24',
         url: 'https://ifrcorg.sharepoint.com/sites/IFRCSharing/Shared%20Documents/Forms/AllItems.aspx?RootFolder=/sites%2FIFRCSharing%2FShared%20Documents%2FGLOBAL%20SURGE%2FOPERATIONAL%20TOOLBOX%2F1%2E%20Timeline%20documents%2F07%2E%20Finance%2C%20Admin%2C%20Resource%20planning%2F07%2E08%20PEAR&View=%7BA0DF7B8D%2DD671%2D4C77%2DA464%2D720655A5403E%7D',
         name: 'PEAR'
     },
     {
-        id: 'surge_table/tooltips_left_11',
+        id: 'surge_table/element1_11',
         url: 'https://ifrcorg.sharepoint.com/sites/IFRCSharing/Shared%20Documents/Forms/AllItems.aspx?RootFolder=/sites%2FIFRCSharing%2FShared%20Documents%2FGLOBAL%20SURGE%2FOPERATIONAL%20TOOLBOX%2F1%2E%20Timeline%20documents%2F07%2E%20Finance%2C%20Admin%2C%20Resource%20planning%2F07%2E09%20Develop%20Plan%20of%20Arrival&View=%7BA0DF7B8D%2DD671%2D4C77%2DA464%2D720655A5403E%7D',
         name: 'Develop Plan of Arrival'
     },
@@ -265,7 +235,7 @@ const OperationTimelineContent = [
         name: 'Partners Call'
     },
     {
-        id: 'surge_table/tooltips_left_12',
+        id: 'surge_table/element1_12',
         url: 'https://ifrcorg.sharepoint.com/sites/IFRCSharing/Shared%20Documents/Forms/AllItems.aspx?RootFolder=/sites%2FIFRCSharing%2FShared%20Documents%2FGLOBAL%20SURGE%2FOPERATIONAL%20TOOLBOX%2F1%2E%20Timeline%20documents%2F07%2E%20Finance%2C%20Admin%2C%20Resource%20planning%2F07%2E11%20Develop%20Resource%20Mobilization%20Plan&View=%7BA0DF7B8D%2DD671%2D4C77%2DA464%2D720655A5403E%7D',
         name: 'Develop Resource Mobilization Plan'
     },
@@ -275,7 +245,7 @@ const OperationTimelineContent = [
         name: 'Update Resource Mobilization Tracking and Pledge Status'
     },
     {
-        id: 'surge_table/tooltips_left_13',
+        id: 'surge_table/element1_13',
         url: 'https://ifrcorg.sharepoint.com/sites/IFRCSharing/Shared%20Documents/Forms/AllItems.aspx?RootFolder=/sites%2FIFRCSharing%2FShared%20Documents%2FGLOBAL%20SURGE%2FOPERATIONAL%20TOOLBOX%2F1%2E%20Timeline%20documents%2F07%2E%20Finance%2C%20Admin%2C%20Resource%20planning%2F07%2E13%20Establish%20Welcome%20Service&View=%7BA0DF7B8D%2DD671%2D4C77%2DA464%2D720655A5403E%7D',
         name: 'Establish Welcome Service'
     },
@@ -285,7 +255,7 @@ const OperationTimelineContent = [
         name: 'Monitor Pledges, Donors Requirements, and Interest'
     },
     {
-        id: 'surge_table/tooltips_left_14',
+        id: 'surge_table/element1_14',
         url: 'https://ifrcorg.sharepoint.com/sites/IFRCSharing/Shared%20Documents/Forms/AllItems.aspx?RootFolder=/sites%2FIFRCSharing%2FShared%20Documents%2FGLOBAL%20SURGE%2FOPERATIONAL%20TOOLBOX%2F1%2E%20Timeline%20documents%2F08%2E%20Logistics%2F08%2E01%20Review%20Custom%20Regulations%20and%20Clearance&View=%7BA0DF7B8D%2DD671%2D4C77%2DA464%2D720655A5403E%7D',
         name: 'Review Custom Regulations and Clearance'
     },
@@ -295,17 +265,17 @@ const OperationTimelineContent = [
         name: 'Mobilization Table in Place & Modified as Operations Progresses'
     },
     {
-        id: 'surge_table/tooltips_left_15',
+        id: 'surge_table/element1_19',
         url: 'https://ifrcorg.sharepoint.com/sites/IFRCSharing/Shared%20Documents/Forms/AllItems.aspx?RootFolder=/sites%2FIFRCSharing%2FShared%20Documents%2FGLOBAL%20SURGE%2FOPERATIONAL%20TOOLBOX%2F1%2E%20Timeline%20documents%2F08%2E%20Logistics%2F08%2E03%20Set%20Up%20Fleet%20Plan&View=%7BA0DF7B8D%2DD671%2D4C77%2DA464%2D720655A5403E%7D',
         name: 'Set Up Fleet Plan'
     },
     {
-        id: 'surge_table/tooltips_left_20',
+        id: 'surge_table/element1_24',
         url: 'https://ifrcorg.sharepoint.com/sites/IFRCSharing/Shared%20Documents/Forms/AllItems.aspx?RootFolder=/sites%2FIFRCSharing%2FShared%20Documents%2FGLOBAL%20SURGE%2FOPERATIONAL%20TOOLBOX%2F1%2E%20Timeline%20documents%2F08%2E%20Logistics%2F08%2E04%20Set%20Up%20Fleet%2C%20Start%20Mobilization%20of%20Regional%20Fleet&View=%7BA0DF7B8D%2DD671%2D4C77%2DA464%2D720655A5403E%7D',
         name: 'Set Up Fleet, Start Mobilization of Regional Fleet'
     },
     {
-        id: 'surge_table/tooltips_left_16',
+        id: 'surge_table/element1_20',
         url: 'https://ifrcorg.sharepoint.com/sites/IFRCSharing/Shared%20Documents/Forms/AllItems.aspx?RootFolder=/sites%2FIFRCSharing%2FShared%20Documents%2FGLOBAL%20SURGE%2FOPERATIONAL%20TOOLBOX%2F1%2E%20Timeline%20documents%2F08%2E%20Logistics%2F08%2E05%20Create%20Logistics%20Plan&View=%7BA0DF7B8D%2DD671%2D4C77%2DA464%2D720655A5403E%7D',
         name: 'Create Logistics Plan'
     },
@@ -315,42 +285,37 @@ const OperationTimelineContent = [
         name: 'Set Up Procurement Plan'
     },
     {
-        id: 'surge_table/tooltips_left_21',
+        id: 'surge_table/element1_32',
         url: 'https://ifrcorg.sharepoint.com/sites/IFRCSharing/Shared%20Documents/Forms/AllItems.aspx?RootFolder=/sites%2FIFRCSharing%2FShared%20Documents%2FGLOBAL%20SURGE%2FOPERATIONAL%20TOOLBOX%2F1%2E%20Timeline%20documents%2F08%2E%20Logistics%2F08%2E07%20Revise%20Procurement%20Plan&View=%7BA0DF7B8D%2DD671%2D4C77%2DA464%2D720655A5403E%7D',
         name: 'Revise Procurement Plan'
     },
     {
-        id: 'surge_table/tooltips_left_17',
+        id: 'surge_table/element1_21',
         url: 'https://ifrcorg.sharepoint.com/sites/IFRCSharing/Shared%20Documents/Forms/AllItems.aspx?RootFolder=/sites%2FIFRCSharing%2FShared%20Documents%2FGLOBAL%20SURGE%2FOPERATIONAL%20TOOLBOX%2F1%2E%20Timeline%20documents%2F09%2E%20Duty%20of%20care%2F09%2E01%20Develop%20Security%20Plan&View=%7BA0DF7B8D%2DD671%2D4C77%2DA464%2D720655A5403E%7D',
         name: 'Develop Security Plan'
     },
     {
-        id: 'surge_table/tooltips_left_19',
+        id: 'surge_table/element1_23',
         url: 'https://ifrcorg.sharepoint.com/sites/IFRCSharing/Shared%20Documents/Forms/AllItems.aspx?RootFolder=/sites%2FIFRCSharing%2FShared%20Documents%2FGLOBAL%20SURGE%2FOPERATIONAL%20TOOLBOX%2F1%2E%20Timeline%20documents%2F09%2E%20Duty%20of%20care%2F09%2E02%20Develop%20Medevac&View=%7BA0DF7B8D%2DD671%2D4C77%2DA464%2D720655A5403E%7D',
         name: 'Develop Medevac'
     },
     {
-        id: 'surge_table/tooltips_left_18',
-        url: 'https://ifrcorg.sharepoint.com/sites/IFRCSharing/Shared%20Documents/Forms/AllItems.aspx?RootFolder=/sites%2FIFRCSharing%2FShared%20Documents%2FGLOBAL%20SURGE%2FOPERATIONAL%20TOOLBOX%2F1%2E%20Timeline%20documents%2F09%2E%20Duty%20of%20care%2F09%2E03%20Review%20Security%20Plan%20and%20Regulation&View=%7BA0DF7B8D%2DD671%2D4C77%2DA464%2D720655A5403E%7D',
-        name: 'Review Security Plan and Regulation'
-    },
-    {
-        id: 'surge_table/tooltips_top_4',
+        id: 'surge_table/element1_15',
         url: 'https://ifrcorg.sharepoint.com/sites/IFRCSharing/Shared%20Documents/Forms/AllItems.aspx?RootFolder=/sites%2FIFRCSharing%2FShared%20Documents%2FGLOBAL%20SURGE%2FOPERATIONAL%20TOOLBOX%2F1%2E%20Timeline%20documents%2F10%2E%20Other%2F10%2E01%20Define%20Key%20Messages%20%26%20Reactive%20Lines&View=%7BA0DF7B8D%2DD671%2D4C77%2DA464%2D720655A5403E%7D',
         name: 'Define Key Messages & Reactive Lines'
     },
     {
-        id: 'surge_table/tooltips_top_5',
+        id: 'surge_table/element1_16',
         url: 'https://ifrcorg.sharepoint.com/sites/IFRCSharing/Shared%20Documents/Forms/AllItems.aspx?RootFolder=/sites%2FIFRCSharing%2FShared%20Documents%2FGLOBAL%20SURGE%2FOPERATIONAL%20TOOLBOX%2F1%2E%20Timeline%20documents%2F10%2E%20Other%2F10%2E02%20Develop%20Communications%20Plan%20%26%20Strategy&View=%7BA0DF7B8D%2DD671%2D4C77%2DA464%2D720655A5403E%7D',
         name: 'Develop Communications Plan & Strategy'
     },
     {
-        id: 'surge_table/tooltips_top_6',
+        id: 'surge_table/element1_17',
         url: 'https://ifrcorg.sharepoint.com/sites/IFRCSharing/Shared%20Documents/Forms/AllItems.aspx?RootFolder=/sites%2FIFRCSharing%2FShared%20Documents%2FGLOBAL%20SURGE%2FOPERATIONAL%20TOOLBOX%2F1%2E%20Timeline%20documents%2F10%2E%20Other%2F10%2E03%20Create%20Environmental%20Impact%20Plan&View=%7BA0DF7B8D%2DD671%2D4C77%2DA464%2D720655A5403E%7D',
         name: 'Create Environmental Impact Plan'
     },
     {
-        id: 'surge_table/tooltips_top_7',
+        id: 'surge_table/element1_18',
         url: 'https://ifrcorg.sharepoint.com/sites/IFRCSharing/Shared%20Documents/Forms/AllItems.aspx?RootFolder=/sites%2FIFRCSharing%2FShared%20Documents%2FGLOBAL%20SURGE%2FOPERATIONAL%20TOOLBOX%2F1%2E%20Timeline%20documents%2F10%2E%20Other%2F10%2E04%20Establish%20Compliance%20Steps&View=%7BA0DF7B8D%2DD671%2D4C77%2DA464%2D720655A5403E%7D',
         name: 'Establish Compliance Steps'
     }
