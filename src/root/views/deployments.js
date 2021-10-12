@@ -41,7 +41,10 @@ import BreadCrumb from '#components/breadcrumb';
 import LanguageContext from '#root/languageContext';
 import Translate from '#components/Translate';
 import { countriesGeojsonSelector } from '../selectors';
-
+import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
+import TabContent from '#components/tab-content';
+import OperationalTimeline from './Surge/operational-timeline';
+import CatalogueOfSurgeServices from './Surge/catalogue-of-surge-services';
 
 const DeploymentsByMonth = () => {
   const { pending, response } = useRequest({url: 'api/v2/deployment/aggregated_by_month/'});
@@ -79,6 +82,7 @@ class Deployments extends SFPComponent {
   }
 
   componentDidMount () {
+    this.displayTabContent();
     addFullscreenListener(this.onFullscreenChange);
     showGlobalLoading();
     this.props._getEruOwners();
@@ -139,6 +143,23 @@ class Deployments extends SFPComponent {
 
   updateData (what) {
     this.requestResults(what);
+  }
+
+  getTabDetails() {
+    const { strings } = this.context;
+    return [
+      { title: strings.deploymentsSurgeOverViewTab, hash: '#overview' },
+      { title: strings.deploymentsOperationalToolboxTab, hash: '#operational-toolbox' },
+      { title: strings.deploymentsCatalogueOfSurgeServicesTab, hash: '#catalogue' }
+    ];
+  }
+
+  // Sets default tab if url param is blank or incorrect
+  displayTabContent () {
+    const tabHashArray = this.getTabDetails().map(({ hash }) => hash);
+    if (!tabHashArray.find(hash => hash === this.props.location.hash)) {
+      this.props.history.replace(`${this.props.location.pathname}${tabHashArray[0]}`);
+    }
   }
 
   renderHeaderCharts (data, title) {
@@ -257,6 +278,15 @@ class Deployments extends SFPComponent {
       );
     }
 
+    const tabDetails = [...this.getTabDetails()];
+    const handleTabChange = index => {
+      const tabHashArray = tabDetails.map(({ hash }) => hash);
+      const url = this.props.location.pathname;
+      this.props.history.replace(`${url}${tabHashArray[index]}`);
+    };
+    const hashes = tabDetails.map(t => t.hash);
+    const selectedIndex = hashes.indexOf(this.props.location.hash) !== -1 ? hashes.indexOf(this.props.location.hash) : 0;
+
     return (
       <section>
         <section className={c('inpage', {presenting: this.state.fullscreen})} id='presentation'>
@@ -277,19 +307,79 @@ class Deployments extends SFPComponent {
               </div>
             </div>
           </header>
-          <div className='container-lg'>
-            {this.props.eru.fetched && this.props.activePersonnel.fetched ?
-              <DeploymentsMap
-                data={deployData}
-                countriesGeojson={this.props.countriesGeojson}
-              />
-              : <BlockLoading />
-            }
-          </div>
-          <div className='inpage__body container-lg'>
-            <div className='inner'>
-              {this.renderCharts()}
-            </div>
+          <div className='tab__wrap tab__wrap--3W'>
+            <Tabs selectedIndex={selectedIndex} onSelect={index => handleTabChange(index)}>
+              <TabList>
+                {tabDetails.map(tab => (
+                  <Tab key={tab.title}>{tab.title}</Tab>
+                ))}
+              </TabList>
+              <div className='inpage__body'>
+                <div className='inner'>
+                  {/* Surge overview tab */}
+                  <TabPanel>
+                    <TabContent>
+                      {this.renderHeaderStats()}
+                      <div className='container-lg'>
+                        {this.props.eru.fetched && this.props.activePersonnel.fetched ?
+                          <DeploymentsMap
+                            data={deployData}
+                            countriesGeojson={this.props.countriesGeojson}
+                          />
+                          : <BlockLoading />
+                        }
+                      </div>
+                      <div className='inpage__body container-lg'>
+                        <div className='inner'>
+                          {this.renderCharts()}
+                        </div>
+                      </div>
+                      <div className='inpage__body'>
+                        <div className='inner margin-4-t'>
+                          <div>
+                            <AlertsTable
+                              title={strings.homeSurgeNotification}
+                              limit={5}
+                              isActive={true}
+                              viewAll={'/alerts/all'}
+                              showRecent={true}
+                            />
+                          </div>
+                          <div className='table-deployed-personnel-block'>
+                            <PersonnelByEventTable data={this.props.personnelByEvent} />
+                          </div>
+                          <div className='inner'>
+                          <EruTable
+                            limit={5}
+                            viewAll={'/deployments/erus/all'}
+                          />
+                          </div>
+                          <div className='readiness__container container-lg'>
+                            <Readiness eruOwners={this.props.eruOwners} />
+                          </div>
+                        </div>
+                      </div>
+                    </TabContent>
+                  </TabPanel>
+                  {/* Surge Operational toolbox tab */}
+                  <TabPanel>
+                    <TabContent>
+                      <div className='container-lg margin-4-t'>
+                        <OperationalTimeline />
+                      </div>
+                    </TabContent>
+                  </TabPanel>
+                  {/* Surge Catalogue of surge services tab */}
+                  <TabPanel>
+                    <TabContent>
+                      <div className='container-lg'>
+                        <CatalogueOfSurgeServices />
+                      </div>
+                    </TabContent>
+                  </TabPanel>
+                </div>
+              </div>
+            </Tabs>
           </div>
         </section>
         <div className='inpage__body'>
