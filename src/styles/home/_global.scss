@@ -568,6 +568,14 @@
     background: tint($base-color, 80%);
   }
 
+  .color--lightgrey::before {
+    background: #e8e8e8;
+  }
+
+  .color--rose::before {
+    background: #e7a4a8;
+  }
+
   .color--blue::before {
     background: #4680F2;
   }

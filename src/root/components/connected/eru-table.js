@@ -179,7 +179,7 @@ if (environment !== 'production') {
     eru: T.object,
 
     limit: T.number,
-    emergency: T.number,
+    emergency: T.string,
 
     noPaginate: T.bool,
     showExport: T.bool,

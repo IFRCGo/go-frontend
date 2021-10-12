@@ -6,10 +6,9 @@ import { DateTime } from 'luxon';
 
 import { environment } from '#config';
 import { getPersonnel } from '#actions';
-import { commaSeparatedNumber as n, nope } from '#utils/format';
+import { /* commaSeparatedNumber as n, */ nope } from '#utils/format';
 import {
   get,
-  // dateOptions,
   formatDateSlashes,
   formatDateMonth,
   getYear,
@@ -19,22 +18,13 @@ import {
 import ExportButton from '#components/export-button-container';
 import Fold from '#components/fold';
 import BlockLoading from '#components/block-loading';
-import DisplayTable, { SortHeader, FilterHeader } from '#components/display-table';
+import DisplayTable, { SortHeader } from '#components/display-table';
 import { SFPComponent } from '#utils/extendables';
 import LanguageContext from '#root/languageContext';
 import Progress from '#components/progress';
 import ReactTooltip from 'react-tooltip';
 
-const typeOptions = [
-  { value: 'all', label: 'All' },
-  { value: 'rdrt', label: 'RDRT/RIT' },
-  { value: 'heop', label: 'HEOP' },
-  { value: 'fact', label: 'FACT' },
-  { value: 'rr', label: 'Rapid Response' }
-];
-
-// Should add the other types if needed
-// These types reference types defined in the backend models here: https://github.com/IFRCGo/go-api/blob/e92b0ceadd70297a574fe4410d76eb7bf8614411/deployments/models.py#L98-L106
+// The Personnel types defined in the backend models here: https://github.com/IFRCGo/go-api/blob/e92b0ceadd70297a574fe4410d76eb7bf8614411/deployments/models.py#L98-L106
 const typeLongNames = {
   'rr': 'Rapid Response'
 };
@@ -221,7 +211,7 @@ class PersonnelTable extends SFPComponent {
           role: o.role ? o.role.split(',')[0] : nope,
           type: o.type === 'rr' ? typeLongNames[o.type] : o.type.toUpperCase(),
           country: o.country_from ? getCountryDisplay(o.country_from, strings)  : nope,
-          name: o.name,
+          name: o.name ? o.name : '***',
           progress__personnel: 
                     <div className='progress__block__personnel'
                       data-html={true}
@@ -273,7 +263,7 @@ class PersonnelTable extends SFPComponent {
       ) : null;
 
       return (
-        <Fold title={`${title} (${n(data.count)})`} navLink={foldLink} id={this.props.id} foldWrapperClass='table__container fold__table--deploy-personnel' foldTitleClass='fold__title--inline'>
+        <Fold title={`${title}` /* (${n(data.count)}) */ } navLink={foldLink} id={this.props.id} foldWrapperClass='table__container fold__table--deploy-personnel' foldTitleClass='fold__title--inline'>
           {this.props.showExport ? (
             <ExportButton filename='deployed-personnel'
               qs={this.getQs(this.props)}

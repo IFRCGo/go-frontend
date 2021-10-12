@@ -1,6 +1,6 @@
 {
   "name": "go-frontend",
-  "version": "5.4.1",
+  "version": "5.5.0",
   "private": true,
   "devDependencies": {
     "@babel/core": "7.9.0",
@@ -121,7 +121,7 @@
     "gulp-uglify-es": "^1.0.4",
     "hoist-non-react-statics": "^3.3.0",
     "html2canvas": "1.0.0-rc.1",
-    "immer": "^8.0.1",
+    "immer": "^9.0.6",
     "isomorphic-fetch": "^2.2.1",
     "js-yaml": "^3.13.1",
     "local-storage": "^1.4.2",
@@ -175,7 +175,7 @@
     "swiper": "^6.5.1",
     "tar": "^2.2.2",
     "url": "^0.11.0",
-    "xlsx": "^0.16.5"
+    "xlsx": "^0.17.0"
   },
   "scripts": {
     "start": "node scripts/start.js",

@@ -18,6 +18,7 @@ import {
   getAllDeploymentERU,
   getActivePersonnel,
   getEruOwners,
+  getNsRapidResponse,
   getPersonnelByEvent,
   getAggrSurgeKeyFigures
 } from '#actions';
@@ -26,16 +27,12 @@ import { finishedFetch, datesAgo } from '#utils/utils';
 import { mergeDeployData } from '#utils/mergeDeployData';
 import { showGlobalLoading, hideGlobalLoading } from '#components/global-loading';
 import { environment } from '#config';
-import {
-  commaSeparatedNumber as n,
-  nope
-} from '#utils/format';
+import { commaSeparatedNumber as n } from '#utils/format';
 
 import App from './app';
 import Progress from '#components/progress';
 import PersonnelByEventTable from '#components/deployments/personnel-by-event-table';
 import AlertsTable from '#components/connected/alerts-table';
-// import PersonnelTable from '#components/connected/personnel-table';
 import EruTable from '#components/connected/eru-table';
 import { SFPComponent } from '#utils/extendables';
 import DeploymentsMap from '#components/map/deployments-map';
@@ -89,6 +86,7 @@ class Deployments extends SFPComponent {
     addFullscreenListener(this.onFullscreenChange);
     showGlobalLoading();
     this.props._getEruOwners();
+    this.props._getNsRapidResponse();
     this.props._getAllDeploymentERU();
     this.props._getActivePersonnel();
     this.props._getPersonnelByEvent();
@@ -166,7 +164,7 @@ class Deployments extends SFPComponent {
 
   renderHeaderCharts (data, title) {
     const rows = 5;
-    const max = Math.max.apply(Math, data.map(o => +o.items));
+    const max = Math.max.apply(Math, data.map(o => +o.deployments_count));
     const items = data.length > rows ? data.slice(0, rows) : data;
     return (
       <div>
@@ -176,10 +174,10 @@ class Deployments extends SFPComponent {
         <div className='emergencies__container spacing-2'>
           <ul className='emergencies__list'>
             {items.map(o => (
-              <li key={o.name}
+              <li key={o.society_name}
                 className='emergencies__item'>
-                <span className='key'>{o.name} ({o.items})</span>
-                <span className='value'><Progress value={o.items} max={max}><span>100</span></Progress></span>
+                <span className='key'>{o.society_name} ({o.deployments_count})</span>
+                <span className='value'><Progress value={o.deployments_count} max={max}><span>100</span></Progress></span>
               </li>
             ))}
           </ul>
@@ -189,14 +187,6 @@ class Deployments extends SFPComponent {
   }
 
   renderHeaderStats () {
-    const { data } = this.props.eruOwners;
-    const { types } = this.props.activePersonnel;
-    let fact = nope;
-    if (types.fact || types.rr || types.rdrt) {
-      fact = (types.fact || 0) + (types.rr || 0) + (types.rdrt || 0);
-    }
-    const heop = types.heop || nope;
-
     return (
       <div>
         <div className='header-stats container-lg'>
@@ -208,7 +198,7 @@ class Deployments extends SFPComponent {
                   <span className='sumstats__value'>
                     {n(this.props.aggregated.data.active_deployments)}
                   </span>
-                  <Translate className='sumstats__key' stringId='deploymentsDeployedRRP'/>
+                  <Translate className='sumstats__key' stringId='deploymentsOngoingRR'/>
                 </div>
               </li>
               <li className='sumstats__item__wrap'>
@@ -237,35 +227,38 @@ class Deployments extends SFPComponent {
   }
 
   renderCharts () {
-    const { data } = this.props.eruOwners;
-    const { strings } = this.context;
-    return (
-      <div className=''>
-        <div className='inner'>
-          <div className='inpage__body-charts'>
-            <div className='row display-flex flex-row'>
-              <div className='col col-6-xs spacing-v display-flex'>
-                <div className='chart box__content'>
-                  {this.renderHeaderCharts(data.owners, strings.deploymentNumber)}
-                </div>
-              </div>
-              <div className='col col-6-xs spacing-v display-flex'>
-                <div className='chart box__content'>
-                  <figure>
-                    <figcaption>
-                      <h2 className='fold__title'><Translate stringId='deployementsOverLastYear' /></h2>
-                    </figcaption>
-                  </figure>
-                  <div className='spacing-2-t'>
-                    <DeploymentsByMonth />
+    if (this.props.NsRapidResponse.fetched) {
+      const {data} = this.props.NsRapidResponse;
+      const {strings} = this.context;
+      const year = new Date().getFullYear();
+      return (
+          <div className=''>
+            <div className='inner'>
+              <div className='inpage__body-charts'>
+                <div className='row display-flex flex-row'>
+                  <div className='col col-6-xs spacing-v display-flex'>
+                    <div className='chart box__content'>
+                      {this.renderHeaderCharts(data, strings.deploymentNumberTop5 + ' (' + year + ')')}
+                    </div>
+                  </div>
+                  <div className='col col-6-xs spacing-v display-flex'>
+                    <div className='chart box__content'>
+                      <figure>
+                        <figcaption>
+                          <h2 className='fold__title'><Translate stringId='deployementsOverLastYear'/></h2>
+                        </figcaption>
+                      </figure>
+                      <div className='spacing-2-t'>
+                        <DeploymentsByMonth/>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      </div>
-    );
+      );
+    }
   }
 
   renderContent () {
@@ -309,7 +302,7 @@ class Deployments extends SFPComponent {
                       <button className='button button--base-plain button--fullscreen' onClick={this.toggleFullscreen} title='View in fullscreen'><span>FullScreen</span></button>
                     </div>
                   </div> */ }
-                  
+                  {this.renderHeaderStats()}
                 </div>
               </div>
             </div>
@@ -389,6 +382,31 @@ class Deployments extends SFPComponent {
             </Tabs>
           </div>
         </section>
+        <div className='inpage__body'>
+          <div className='inner margin-4-t'>
+            <div>
+              <AlertsTable
+                title={strings.homeSurgeAlerts}
+                limit={5}
+                isActive={true}
+                viewAll={'/alerts/all'}
+                showRecent={true}
+              />
+            </div>
+            <div className='table-deployed-personnel-block'>
+              <PersonnelByEventTable data={this.props.personnelByEvent} />
+            </div>
+            <div className='inner'>
+            <EruTable
+              limit={5}
+              viewAll={'/deployments/erus/all'}
+            />
+            </div>
+            <div className='readiness__container container-lg'>
+              <Readiness eruOwners={this.props.eruOwners} />
+            </div>
+          </div>
+        </div>
       </section>
     );
   }
@@ -415,9 +433,11 @@ Deployments.contextType = LanguageContext;
 if (environment !== 'production') {
   Deployments.propTypes = {
     _getEruOwners: T.func,
+    _getNsRapidResponse: T.func,
     _getActivePersonnel: T.func,
     _getAllDeploymentERU: T.func,
     eruOwners: T.object,
+    NsRapidResponse: T.object,
     eru: T.object,
     activePersonnel: T.object,
     allEru: T.object,
@@ -427,6 +447,7 @@ if (environment !== 'production') {
 
 const selector = (state) => ({
   eruOwners: state.eruOwners,
+  NsRapidResponse: state.NsRapidResponse,
   eru: state.deployments.eru,
   activePersonnel: state.deployments.activePersonnel,
   allEru: state.deployments.allEru,
@@ -437,6 +458,7 @@ const selector = (state) => ({
 
 const dispatcher = (dispatch) => ({
   _getEruOwners: () => dispatch(getEruOwners()),
+  _getNsRapidResponse: () => dispatch(getNsRapidResponse()),
   _getAllDeploymentERU: (...args) => dispatch(getAllDeploymentERU(...args)),
   _getActivePersonnel: (...args) => dispatch(getActivePersonnel(...args)),
   _getPersonnelByEvent: (...args) => dispatch(getPersonnelByEvent(...args)),

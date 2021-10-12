@@ -20,6 +20,7 @@ import emergencies from './emergencies';
 import event from './event';
 import adminArea from './admin-area';
 import eruOwners from './eru-owners';
+import NsRapidResponse from './ns-rapid-response.js';
 import heops from './heops';
 import resendValidation from './resend-validation';
 import registration from './registration';
@@ -81,6 +82,7 @@ export const reducers = {
   event,
   adminArea,
   eruOwners,
+  NsRapidResponse,
   heops,
   resendValidation,
   registration,

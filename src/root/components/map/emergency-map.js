@@ -7,14 +7,11 @@ import turfBbox from '@turf/bbox';
 import newMap from '#utils/get-new-map';
 import html2canvas from 'html2canvas';
 import { startDownload } from '#utils/download-starter';
-// import exportMap from '#utils/export-map';
 import { DateTime } from 'luxon';
 import _find from 'lodash.find';
 import LanguageContext from '#root/languageContext';
 import Translate from '#components/Translate';
-
 import { disasterTypesSelectSelector } from '#selectors';
-import { countryLabels } from '#utils/country-labels';
 
 class EmergencyMap extends React.Component {
   constructor (props) {
@@ -49,71 +46,46 @@ class EmergencyMap extends React.Component {
     const {
       countries,
       districts,
-      countriesGeojson
+      countriesByIsoData
     } = this.props;
 
     const theMap = this.theMap;
     const country = countries[0];
-    const countryFilter = [
-      '==',
-      'ISO2',
-      country.iso.toUpperCase()
-    ];
-    const countryPolys = theMap.queryRenderedFeatures({'layers': ['country'], 'filter': countryFilter});
-    let geom;
-    if (countryPolys.length > 0) {
-      geom = countryPolys[0].geometry;
-    } else {
-      // NOTE: There is an edge case where the country is not independent / does not have a geom or ISO code.
-      // In this case, we just hide the map, and return this function early.
-      this.setState({hideMap: true});
-      return;
-    }
-    const districtCodes = districts.map(d => d.code);
-    const districtIds = districts.map(d => d.id);
-    const bbox = turfBbox(geom);
+    //const countryFilter = [
+    //  '==',
+    //  'iso',
+    //  country.iso.toUpperCase()
+    //];
+    // const countryPolys = theMap.queryRenderedFeatures({'layers': ['admin-0'], 'filter': countryFilter});
+    // console.log(theMap.getStyle().layers); // do not remove it please, it can be so useful
+    const thisCountryGeom = countriesByIsoData[country.iso][0];
+    const bbox = turfBbox(thisCountryGeom.bbox);
     theMap.fitBounds(bbox);
+    const districtIds = districts.map(d => d.id);
 
-    theMap.setFilter('admin1-selected', [
+    theMap.setFilter('admin-1-highlight', [
       'in',
-      'Admin01Cod',
-      ...districtCodes
-    ]);
-    theMap.setFilter('admin1-selected-labels', [
-      'in',
-      'id',
+      'district_id',
       ...districtIds
     ]);
-    theMap.setFilter('admin1-country-selected', [
-      '==',
-      'Admin00Nam',
-      country.name
-    ]);
-    theMap.setFilter('admin1-country-selected-boundaries', [
-      '==',
-      'Admin00Nam',
-      country.name
+    theMap.setFilter('admin-1-label-selected', [
+      'in',
+      'district_id',
+      ...districtIds
     ]);
 
-    theMap.setLayoutProperty('admin1-selected', 'visibility', 'visible');
-    theMap.setLayoutProperty('admin1-selected-labels', 'visibility', 'visible');
-    theMap.setLayoutProperty('admin1-country-selected', 'visibility', 'visible');
-    theMap.setLayoutProperty('admin1-country-selected-boundaries', 'visibility', 'visible');
+    theMap.setFilter('admin-0-highlight', [
+      '!in', // not in
+      'iso',
+      country.iso.toUpperCase()
+    ]);
 
-    if (countriesGeojson) {
-      this.theMap.addSource('countryCentroids', {
-        type: 'geojson',
-        data: countriesGeojson
-      });
-      // hide stock labels
-      this.theMap.setLayoutProperty('icrc_admin0_labels', 'visibility', 'none');
-      this.theMap.setLayoutProperty('additional-geography-labels', 'visibility', 'none');
+    theMap.setLayoutProperty('admin-1-highlight', 'visibility', 'visible');
+    theMap.setLayoutProperty('admin-1-label-selected', 'visibility', 'visible');
+    theMap.setLayoutProperty('admin-0-highlight', 'visibility', 'visible');
 
-      // add custom language labels
-      this.theMap.addLayer(countryLabels);
-    }
 
-    const disputedTerritoriesVisible = this.theMap.queryRenderedFeatures({layers: ['disputed_territories copy']}).length;
+    const disputedTerritoriesVisible = this.theMap.queryRenderedFeatures({layers: ['admin-0-disputed']}).length;
     if (disputedTerritoriesVisible) {
       this.setState({ disputedTerritoriesVisible: true });
     }
@@ -121,7 +93,7 @@ class EmergencyMap extends React.Component {
 
   componentDidMount () {
     this.mapLoaded = false;
-    this.theMap = newMap(this.refs.map, 'mapbox://styles/go-ifrc/cjxa3k4cx39a21cqt9qilk9hp');
+    this.theMap = newMap(this.refs.map, 'mapbox://styles/go-ifrc/ckrfe16ru4c8718phmckdfjh0');
     this.theMap.on('load', () => {
       this.setupData();
       this.mapLoaded = true;
@@ -182,13 +154,13 @@ class EmergencyMap extends React.Component {
                         <div>
                           <label className='form__label'>Key</label>
                           <dl className='legend__dl legend__dl--colors'>
-                            <dt className='color color--lightblue'>
+                            <dt className='color color--lightgrey'>
                               <Translate stringId='emergencyMapSelected'/>
                             </dt>
                             <dd>
                               <Translate stringId='emergencyMapAffectedCountry'/>
                             </dd>
-                            <dt className='color color--maroon'>
+                            <dt className='color color--rose'>
                               <Translate stringId='emergencyMapSelected'/>
                             </dt>
                             <dd>
@@ -241,7 +213,8 @@ if (environment !== 'production') {
     countries: T.array,
     name: T.string,
     date: T.string,
-    disasterTypeCode: T.string
+    disasterTypeCode: T.string,
+    countriesByIsoData: T.object
   };
 }
 
