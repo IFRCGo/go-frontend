@@ -147,7 +147,7 @@ export default class CatalogueOfSurgeServices extends React.Component {
                     <p>{strings.catalogueOfSurgeServicesInformationManSubtitle1Text4}</p>
 
                     <img src="/assets/graphics/content/Pyramid.png" width='80%' />
-                    <h1></h1>
+                    <h1> </h1>
 
                     <h1>{strings.catalogueOfSurgeServicesInformationManSubtitle2}</h1>
                     <p>{strings.catalogueOfSurgeServicesInformationManSubtitle2Text1}</p>
@@ -182,7 +182,7 @@ export default class CatalogueOfSurgeServices extends React.Component {
                         <li>{strings.catalogueOfSurgeServicesInformationManSubtitle2Group4Item4}</li>
                     </ul>
                     <img src="/assets/graphics/content/IMRoles.jpg" width='80%' />
-                    <h1></h1>
+                    <h1> </h1>
                     <h1>{strings.catalogueOfSurgeServicesInformationManSubtitle3}</h1>
                     <p>{strings.catalogueOfSurgeServicesInformationManSubtitle3Text1}</p>
                     <b><p>{strings.catalogueOfSurgeServicesInformationManSubtitle3Group1}</p></b>
@@ -212,7 +212,7 @@ export default class CatalogueOfSurgeServices extends React.Component {
                         <li>{strings.catalogueOfSurgeServicesInformationManSubtitle3Group3Item3}</li>
                     </ul>
                     <img src="/assets/graphics/content/IFRC_Surge_01.jpg" width='80%' />
-                    <h1></h1>
+                    <h1> </h1>
                     <h1>{strings.catalogueOfSurgeServicesInformationManSubtitle4}</h1>
                     <p>{strings.catalogueOfSurgeServicesInformationManSubtitle4Text1}</p>
                     <ul className="list_uo">
@@ -221,9 +221,9 @@ export default class CatalogueOfSurgeServices extends React.Component {
                         <li>{strings.catalogueOfSurgeServicesInformationManSubtitle4Group1Item3}</li>
                     </ul>
 
-                    {strings.catalogueOfSurgeServicesInformationManSubtitle4Text2} <b><a href={strings.catalogueOfSurgeServicesInformationManSubtitle4Link1} >{strings.catalogueOfSurgeServicesInformationManSubtitle4Link1Text} </a></b> 
-                    
-                    <h1></h1>
+                    {strings.catalogueOfSurgeServicesInformationManSubtitle4Text2} <b><a href={strings.catalogueOfSurgeServicesInformationManSubtitle4Link1} >{strings.catalogueOfSurgeServicesInformationManSubtitle4Link1Text} </a></b>
+
+                    <h1> </h1>
                     <h1>{strings.catalogueOfSurgeServicesInformationManSubtitle5}</h1>
                     <p>{strings.catalogueOfSurgeServicesInformationManSubtitle5Text1}</p>
                     <ul className="list_uo">
@@ -239,19 +239,19 @@ export default class CatalogueOfSurgeServices extends React.Component {
 
                     <p>{strings.catalogueOfSurgeServicesInformationManSubtitle5Text2}</p>
                     <img src="/assets/graphics/content/IFRC_Surge_02.jpg" width='80%' />
-                    <h1></h1>
+                    <h1> </h1>
                     <h1>{strings.catalogueOfSurgeServicesInformationManSubtitle6}</h1>
                     <b>{strings.catalogueOfSurgeServicesInformationManSubtitle6Text1}</b> - {strings.catalogueOfSurgeServicesInformationManSubtitle6Text2} - <b><a href={strings.catalogueOfSurgeServicesInformationManSubtitle6Link1} >{strings.catalogueOfSurgeServicesInformationManSubtitle6Link1Text} </a></b>
-                    <h1></h1>
+                    <h1> </h1>
                     <b>{strings.catalogueOfSurgeServicesInformationManSubtitle6Text3}</b> - {strings.catalogueOfSurgeServicesInformationManSubtitle6Text4} - <b><a href={strings.catalogueOfSurgeServicesInformationManSubtitle6Link2} >{strings.catalogueOfSurgeServicesInformationManSubtitle6Link2Text} </a></b>
-                    
-                    <h1></h1>
+
+                    <h1> </h1>
                     <h1>{strings.catalogueOfSurgeServicesInformationManSubtitle7}</h1>
 
                     <b>{strings.catalogueOfSurgeServicesInformationManSubtitle7Text1}</b> - {strings.catalogueOfSurgeServicesInformationManSubtitle7Text2} - <b><a href={strings.catalogueOfSurgeServicesInformationManSubtitle7Link1} >{strings.catalogueOfSurgeServicesInformationManSubtitle7Link1Text} </a></b>
-                    <h1></h1>
+                    <h1> </h1>
                     <b>{strings.catalogueOfSurgeServicesInformationManSubtitle7Text3}</b> - {strings.catalogueOfSurgeServicesInformationManSubtitle7Text4} - <b><a href={strings.catalogueOfSurgeServicesInformationManSubtitle7Link2} >{strings.catalogueOfSurgeServicesInformationManSubtitle7Link2Text} </a></b>
-                    <h1></h1>
+                    <h1> </h1>
                     <b>{strings.catalogueOfSurgeServicesInformationManSubtitle7Text5}</b> - {strings.catalogueOfSurgeServicesInformationManSubtitle7Text6} - <b><a href={strings.catalogueOfSurgeServicesInformationManSubtitle7Link3} >{strings.catalogueOfSurgeServicesInformationManSubtitle7Link3Text} </a></b>
 
                     {/* <p>{strings.catalogueOfSurgeServicesTitleSubtitle2Text1}</p> */}
