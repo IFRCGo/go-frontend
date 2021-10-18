@@ -804,12 +804,12 @@ export default {
   catalogueOfSurgeServicesTitleSubtitle2Link1: 'The Core competency framework',
   catalogueOfSurgeServicesTitleSubtitle2LinkUrl1: 'https://ifrcgo.org/global-services/assets/docs/SURGE%20CORE%20COMPETENCY%20FRAMEWORK-A4-Final-20191210.pdf',
   catalogueOfSurgeServicesTitleSubtitle2Text1: 'for Surge Personnel is applicable to all Rapid Response personnel and is to be used as the underlying tool for an objective and transparent approach to recruitment, selection, performance management and learning and development.',
-  catalogueOfSurgeServicesCardsTitleAdditionalResources: 'Additional Resoruces',
+  catalogueOfSurgeServicesCardsTitleAdditionalResources: 'Additional Resources',
   catalogueOfSurgeServicesCardsTitleAdditionalServices: 'Additional Services',
   catalogueOfSurgeServicesCardsTitleServices: 'Services',
   catalogueOfSurgeServicesCardsTitleRapidResponsePersonnel: 'Rapid Response Personnel',
-  catalogueOfSurgeServicesCardsTitleRapidResponse: 'Assessment Cell',
-  catalogueOfSurgeServicesCardsTitleEmergencyResponseUnit: 'Role profiles',
+  catalogueOfSurgeServicesCardsTitleRapidResponse: 'Rapid Response',
+  catalogueOfSurgeServicesCardsTitleEmergencyResponseUnit: 'Emergency Response Unit',
   catalogueOfSurgeServicesCardsTitleTechnicalCompetencyFramework: 'Technical Competency Framework',
   catalogueOfSurgeServicesCardsTitleTechnicalCompetencyFrameworkText: 'Tiered compentencies describing the knowledge and skills expected of personnel in this sector.',
   catalogueOfSurgeServicesCardTitleRoleProfiles: 'Role Profiles',
@@ -967,6 +967,41 @@ export default {
   catalogueOfSurgeServicesInformationManSubtitle7Link3: 'https://deephelp.zendesk.com/hc/en-us/articles/360041904812-4-DEEP-Using-the-DEEP-Platform-',
   catalogueOfSurgeServicesInformationManSubtitle7Link3Text: 'https://deephelp.zendesk.com/hc/en-us/articles/360041904812-4-DEEP-Using-the-DEEP-Platform-',
 
+
+  catalogueOfSurgeServicesInformationManSatelliteImagery: 'Satellite Imagery',
+  catalogueOfSurgeServicesInformationManSatelliteImageryText1: 'Satellite imagery analysis can play a crucial role in understanding the magnitude, geographic scope, scale, and severity of a disaster. The potential value continues to increase with innovation in image-analysis techniques, improvements in spatial and temporal resolution (image detail and capture frequency) and many organisations making the imagery openly available during disaster events. \n\nFor a wider and comprehensive review of aerial assessment in humanitarian response, please see the study from the IFRC Needs Assessment Working Group in 2020:\n\n',
+  catalogueOfSurgeServicesInformationManSatelliteImageryLinkText1: 'Images from above: A review of aerial assessment in support of humanitarian response operations',
+  catalogueOfSurgeServicesInformationManSatelliteImageryLink1: 'https://americanredcross.github.io/images-from-above/index.html',
+  catalogueOfSurgeServicesInformationManSatelliteImageryLinkText2: '\n\nThis spreadsheet',
+  catalogueOfSurgeServicesInformationManSatelliteImageryLink2: 'https://docs.google.com/spreadsheets/d/1IGxQVIRF0PkNXNXUcEA9_dz66-U2MCPRzN5O1hol1Mg/edit#gid=1206256283',
+  catalogueOfSurgeServicesInformationManSatelliteImageryText2: ' is a more exhaustive list of sources and their key attributes but this resource aims to summarise the frequently used sources - covering some openly available sources, as well as IFRC partnerships that offer products on request and how to access them.\n',
+ 
+  catalogueOfSurgeServicesInformationManSatelliteImageryTitle1: 'Defining what’s needed',
+  catalogueOfSurgeServicesInformationManSatelliteImageryText3:'The most important part of the analysis is to understand and define exactly what is needed and why. The ',
+  catalogueOfSurgeServicesInformationManSatelliteImageryLinkText3:'Images from Above',
+  catalogueOfSurgeServicesInformationManSatelliteImageryText4:' study gives example use cases but some examples might be damage assessment of buildings or flood extents. It’s useful to ask:\n\n',
+  catalogueOfSurgeServicesInformationManSatelliteImageryList1:'1. What are the aims of the analysis and what are the questions it intends to answer?\n',
+  catalogueOfSurgeServicesInformationManSatelliteImageryList2:'2. What is the Area of Interest (AOI)?\n',
+  catalogueOfSurgeServicesInformationManSatelliteImageryList3:'3. What product is needed - e.g. raw imagery or derived analysis and data?\n',
+  catalogueOfSurgeServicesInformationManSatelliteImageryList4:'4. Is the data openly available or do we need to activate an IFRC partnership?',
+
+  catalogueOfSurgeServicesInformationManSatelliteImageryTitle2: 'Analysis sources',
+  catalogueOfSurgeServicesInformationManSatelliteImageryText5: 'With limited remote sensing capacity in the Movement, it is often the derived data that is required rather than the raw imagery. For example GIS data for flood extent or damaged infrastructure that can then be overlaid with other datasets and displayed on a map.\n\nThere are numerous organisations that provide satellite imagery analysis but the sources below have agreements in place with IFRC.',
+
+  catalogueOfSurgeServicesInformationManSatelliteImageryTitle3: 'UNOSAT',
+  catalogueOfSurgeServicesInformationManSatelliteImageryText6:'\n\nThe UNOSAT Rapid Mapping Service provides satellite image analysis during humanitarian emergencies. They operate on activations from partners and make the data available on their website. Often, especially for bigger emergencies, they will already be working on analysis but the IFRC can also request an activation on behalf of National Societies for any emergency response.\n\nThis needs to be coordinated and initiated by the IFRC Geneva IM team but the follow up and analysis can then be directly between UNOSAT and the data users.\n\nThe process for accessing UNOSAT data:\n\n',
+  catalogueOfSurgeServicesInformationManSatelliteImageryText7:'1. Have they already been activated?\n',
+  catalogueOfSurgeServicesInformationManSatelliteImageryText8a:'_a. Check ',
+  catalogueOfSurgeServicesInformationManSatelliteImageryLinkText4:'their website ',
+  catalogueOfSurgeServicesInformationManSatelliteImageryText8b:'or live maps and data\n',
+  catalogueOfSurgeServicesInformationManSatelliteImageryText9a:'_b. Check the ',
+  catalogueOfSurgeServicesInformationManSatelliteImageryLinkText5:'GDACS Satellite Mapping Coordination System (SMCS) ',
+  catalogueOfSurgeServicesInformationManSatelliteImageryText9b:'to see Who is Doing What and Where for satellite mapping.\n',
+  catalogueOfSurgeServicesInformationManSatelliteImageryText10:'2. If there is no activation, send a request to im@ifrc.org including:\n_a. Operation the data will support\n_b. Area of interest (coordinates, KML, SHP, etc.)\n_c. Temporal bounds (e.g. pre or post event and date of event)\n_d. How will the data be used?\n_e. What do you need to see? What Questions are you trying to answer?\n_f. Any other partners that will use the data. What are their licenses for derived works? (e.g. OSM has a creative commons license this can be discussed)\n3. IFRC IM team will submit the request to the UNOSAT Rapid Mapping Service according to the ',
+  catalogueOfSurgeServicesInformationManSatelliteImageryLinkText6:'instructions on their website',
+  catalogueOfSurgeServicesInformationManSatelliteImageryText11:' with the requester in copy.\n4. If the request is accepted, follow up can then be directly between UNOSAT and the data requestor.', 
+  catalogueOfSurgeServicesInformationManSatelliteImageryLinkText7:'https://www.unitar.org/maps',
+
   catalogueOfSurgeServicesIformationManCards1Card1Element1: 'IM Coordinator',
   catalogueOfSurgeServicesIformationManCards1Card1Element2: 'Humanitarian Information Analysis Officer',
   catalogueOfSurgeServicesIformationManCards1Card1Element3: 'Primary Data Collection Officer',
@@ -977,9 +1012,9 @@ export default {
   catalogueOfSurgeServicesIformationTechCards1Card1Element2: 'IT & Telecom Officer',
   catalogueOfSurgeServicesIformationTechCards2Card1Text: 'ERU IT/Telecom',
   catalogueOfSurgeServicesLivelihoodsSectionText: 'IFRC operates within the Sustainable Livelihoods Framework and has identified 5 types of Livelihoods assistance: 1. provisioning for lost livelihoods sources (basic needs assistance), 2. livelihoods recovery including replacement of lost Livelihoods assets, 3. livelihoods strengthening, 4. livelihoods diversification and 5. livelihoods protection. In Surge context, interventions will first focus on meeting basic needs through livelihoods provisioning, which includes that immediate food and nutrition needs are met (typically through in-kind support, cash or voucher assistance). Meanwhile other activities can be designed aiming at preventing further erosion of productive assets (livelihoods protection) or supporting the recovery of livelihoods through assets’ replacement and skills strengthening.',
-  catalogueOfSurgeServicesLivelihoodsCards1Card1Element1: 'Food Security and Basic Needs Coordinator (details coming soon)',
-  catalogueOfSurgeServicesLivelihoodsCards1Card1Element2: 'Market-based Livelihoods Interventions Officer (details coming soon)',
-  catalogueOfSurgeServicesLivelihoodsCards1Card1Element3: 'Primary Production Support and Income Generation Officer (details coming soon)',
+  catalogueOfSurgeServicesLivelihoodsCards1Card1Element1: 'Food Security and Basic Needs Coordinator (details coming soon)', // coming soon not wanted 1
+  catalogueOfSurgeServicesLivelihoodsCards1Card1Element2: 'Market-based Livelihoods Interventions Officer (details coming soon)', // coming soon not wanted 1
+  catalogueOfSurgeServicesLivelihoodsCards1Card1Element3: 'Primary Production Support and Income Generation Officer (details coming soon)', // coming soon not wanted 1
   catalogueOfSurgeServicesLivelihoodsCards3Card1Title: 'IFRC Livelihoods Resource Centre (LRC)',
   catalogueOfSurgeServicesLivelihoodsCards3Card1Text: 'The Centre plays an active role in raising awareness and common understanding around livelihoods.',
   catalogueOfSurgeServicesLivelihoodsCards3Card2Title: 'Livelihoods Toolbox',
@@ -1018,7 +1053,7 @@ export default {
   catalogueOfSurgeServicesOperationsCards1Card1Element3: 'Deputy Operations Manager',
   catalogueOfSurgeServicesOperationsCards1Card1Element4: 'Field Coordinator',
   catalogueOfSurgeServicesOperationsCards1Card1Element5: 'Movement Coordination Officer',
-  catalogueOfSurgeServicesOperationsCards1Card1Element6: 'Humanitarian Liaison Coordinator (details coming soon)',
+  catalogueOfSurgeServicesOperationsCards1Card1Element6: 'Humanitarian Liaison Coordinator (details coming soon)', // coming soon not wanted 2
   catalogueOfSurgeServicesOperationsCards1Card1Element7: 'Recovery Coordinator',
   catalogueOfSurgeServicesOperationsCards2Card1BtnText: 'Head of Emergency Operations (HeOps)',
   catalogueOfSurgeServicesProtectionCards1Card1Element1: 'PGI Coordinator',
@@ -1038,7 +1073,7 @@ export default {
   catalogueOfSurgeServicesPlanningCards2Card2Title: 'Evaluation',
   catalogueOfSurgeServicesPlanningCards2Card2BtnText: 'Real Time Evaluation (RTE) and guidance',
   catalogueOfSurgeServicesReliefSectionText: 'Through the support of the National Societies, the Relief ERU have set up unit to ensures that essential relief goods are delivered to the appropriate beneficiaries rapidly, effectively and in a well coordinated and dignified manner. This ERU carries out tasks related to beneficiary targeting, registration, distribution of relief items and monitoring and evaluation. It also covers emergency operational shelter and, where appropriate, may initiate alternative relief support, such as voucher and cash distributions.',
-  catalogueOfSurgeServicesReliefCards1Card1Element1: 'Relief Coordinator (details coming soon)',
+  catalogueOfSurgeServicesReliefCards1Card1Element1: 'Relief Coordinator (details coming soon)', // coming soon not wanted 3
   catalogueOfSurgeServicesReliefCards2Card1BtnText: 'ERU Relief',
   catalogueOfSurgeServicesSecuritySectionText: 'The IFRC provides security management support to any Movement partner requesting IFRC security support in operational contexts where the IFRC has the required capacity and the country office is deemed to be in compliance with the IFRC Minimum Security Requirements. The services are detailed within the \'IFRC security management support to Movement partners\' procedures and are based upon 4 Levels of security coverage, depending on the modality of service requests. Movement partners can contact relevant IFRC Regional or Country offices for further information.',
   catalogueOfSurgeServicesSecurityCards1Card1Element1: 'Security Coordinator',
@@ -1047,15 +1082,15 @@ export default {
   catalogueOfSurgeServicesShelterCards1Card1Element1: 'Shelter Programme Coordinator',
   catalogueOfSurgeServicesShelterCards1Card1Element2: 'Shelter Programme Team Leader',
   catalogueOfSurgeServicesShelterCards1Card1Element3: 'Shelter Programme Technical Officer',
-  catalogueOfSurgeServicesShelterCards1Card1Element4: 'Shelter Programme Capacity Building Officer (details coming soon)',
-  catalogueOfSurgeServicesShelterCards1Card1Element5: 'Shelter Programme Settlements Planning Officer (details coming soon)',
-  catalogueOfSurgeServicesShelterCards1Card1Element6: 'Shelter Cluster Coordinator',
-  catalogueOfSurgeServicesShelterCards1Card1Element7: 'Shelter Cluster Deputy Coordinator (details coming soon)',
-  catalogueOfSurgeServicesShelterCards1Card1Element8: 'Shelter Cluster Hub Coordinator (details coming soon)',
-  catalogueOfSurgeServicesShelterCards1Card1Element9: 'Shelter Cluster Technical Coordinator (details coming soon)',
-  catalogueOfSurgeServicesShelterCards1Card1Element10: 'Shelter Cluster Recovery Coordinator (details coming soon)',
-  catalogueOfSurgeServicesShelterCards1Card1Element11: 'Shelter Cluster Environment Coordinator (details coming soon)',
-  catalogueOfSurgeServicesShelterCards1Card1Element12: 'Shelter Cluster IM Coordinator (details coming soon)',
+  catalogueOfSurgeServicesShelterCards1Card1Element4: 'Shelter Cluster Coordinator',
+  catalogueOfSurgeServicesShelterCards1Card1Element5: 'Shelter Programme Capacity Building Officer (details coming soon)', // coming soon not wanted 4
+  catalogueOfSurgeServicesShelterCards1Card1Element6: 'Shelter Programme Settlements Planning Officer (details coming soon)', // coming soon not wanted 4
+  catalogueOfSurgeServicesShelterCards1Card1Element7: 'Shelter Cluster Deputy Coordinator (details coming soon)', // coming soon not wanted 4
+  catalogueOfSurgeServicesShelterCards1Card1Element8: 'Shelter Cluster Hub Coordinator (details coming soon)', // coming soon not wanted 4
+  catalogueOfSurgeServicesShelterCards1Card1Element9: 'Shelter Cluster Technical Coordinator (details coming soon)', // coming soon not wanted 4
+  catalogueOfSurgeServicesShelterCards1Card1Element10: 'Shelter Cluster Recovery Coordinator (details coming soon)', // coming soon not wanted 4
+  catalogueOfSurgeServicesShelterCards1Card1Element11: 'Shelter Cluster Environment Coordinator (details coming soon)', // coming soon not wanted 4
+  catalogueOfSurgeServicesShelterCards1Card1Element12: 'Shelter Cluster IM Coordinator (details coming soon)', // coming soon not wanted 4
   catalogueOfSurgeServicesShelterCards1Card2BtnText: 'Shelter and Settlements',
   catalogueOfSurgeServicesShelterCards2Card1Title: 'Shelter Surge Coordination (cluster approach)',
   catalogueOfSurgeServicesShelterCards2Card1BtnText: 'SCT (Shelter Coordination Team)',
@@ -1063,7 +1098,7 @@ export default {
   catalogueOfSurgeServicesShelterCards2Card2BtnText: 'STT (Shelter Technical Team)',
   catalogueOfSurgeServicesWaterSectionText: 'The IFRC and its member national societies have built a network of WASH expertise and equipment to respond to a range of disaster scale and context. On average, we provide 1.8 million people per year with access to safe water, sanitation and hygiene promotion in emergency response globally.',
   catalogueOfSurgeServicesWaterCards1Card1Element1: 'WASH Coordinator',
-  catalogueOfSurgeServicesWaterCards1Card1Element2: 'Hygiene Promotion Officer (details coming soon)',
+  catalogueOfSurgeServicesWaterCards1Card1Element2: 'Hygiene Promotion Officer (details coming soon)', // coming soon not wanted 5
   catalogueOfSurgeServicesWaterCards1Card2BtnText: 'WASH',
   catalogueOfSurgeServicesWaterCards2Card1Text: 'Water treatment at household level for 2,000 people.',
   catalogueOfSurgeServicesWaterCards2Card1BtnText: 'Kit 2',
@@ -1109,7 +1144,7 @@ export default {
   catalogueOfSurgeServicesHealthCards1Card1Element2: 'Medical Coordinator',
   catalogueOfSurgeServicesHealthCards1Card1Element3: 'Public Health Coordinator',
   catalogueOfSurgeServicesHealthCards1Card1Element4: 'Safe and Dignified Burials (SDB) Coordinator',
-  catalogueOfSurgeServicesHealthCards1Card1Element5: 'Staff Health Officer (details coming soon)',
+  catalogueOfSurgeServicesHealthCards1Card1Element5: 'Staff Health Officer (details coming soon)',// coming soon not wanted 6
   catalogueOfSurgeServicesHealthCards1Card1Element6: 'Mental Health and Psychosocial Support Coordinator',
   catalogueOfSurgeServicesHealthCards1Card1Element7: 'Mental Health and Psychosocial Support Officer',
   catalogueOfSurgeServicesHealthCards1Card1Element8: 'Mental Health and Psychosocial Support Community Outreach Officer',
