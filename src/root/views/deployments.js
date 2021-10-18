@@ -43,7 +43,7 @@ import Translate from '#components/Translate';
 import { countriesGeojsonSelector } from '../selectors';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import TabContent from '#components/tab-content';
-import OperationalTimeline from './Surge/operational-timeline';
+// import OperationalTimeline from './Surge/operational-timeline';
 import CatalogueOfSurgeServices from './Surge/catalogue-of-surge-services';
 
 const DeploymentsByMonth = () => {
