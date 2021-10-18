@@ -361,7 +361,7 @@ class Deployments extends SFPComponent {
                       </div>
                     </TabContent>
                   </TabPanel>
-                  {/* Surge Operational toolbox tab */}
+                  {/* Surge Operational toolbox tab
                   <TabPanel>
                     <TabContent>
                       <div className='container-lg margin-4-t'>
@@ -369,6 +369,7 @@ class Deployments extends SFPComponent {
                       </div>
                     </TabContent>
                   </TabPanel>
+                  Put me 8 rows earlier (to row end) if you need S.O. toolbox tab: */}
                   {/* Surge Catalogue of surge services tab */}
                   <TabPanel>
                     <TabContent>
