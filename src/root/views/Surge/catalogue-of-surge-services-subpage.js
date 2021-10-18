@@ -279,6 +279,23 @@ export default class CatalogueOfSurgeServicesSubPage extends React.Component {
                     this.renderContent(content.textSection.additionalNotes, strings['catalogueAdditionalNoteTitle'])
                     : <></>
                 }
+                {content.textSection.satelliteImagery !== undefined ?
+                    this.renderContent(content.textSection.satelliteImagery, strings[''])
+                    : <></>
+                }
+                {content.textSection.whatsNeeded !== undefined ?
+                    this.renderContent(content.textSection.whatsNeeded, strings['catalogueOfSurgeServicesInformationManSatelliteImageryTitle1'])
+                    : <></>
+                }
+                {content.textSection.analysisSources !== undefined ?
+                    this.renderContent(content.textSection.analysisSources, strings['catalogueOfSurgeServicesInformationManSatelliteImageryTitle2'])
+                    : <></>
+                }
+                 {content.textSection.unosat !== undefined ?
+                    this.renderContent(content.textSection.unosat, strings['catalogueOfSurgeServicesInformationManSatelliteImageryTitle3'])
+                    : <></>
+                }
+                
             </div>
         );
     }

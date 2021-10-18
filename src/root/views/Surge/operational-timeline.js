@@ -43,7 +43,6 @@ export default class OperationalTimeline extends React.Component {
         if (clickedElement === undefined) {
             return;
         }
-        console.log(clickedElement.getAttribute("id"));
         var clickedObject = OperationTimelineContent.find(d => d.id === clickedElement.getAttribute("id"));
         if (clickedObject !== undefined && clickedObject.url !== '') {
             window.open(clickedObject.url, '_blank');

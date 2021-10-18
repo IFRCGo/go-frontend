@@ -499,44 +499,51 @@ const CatalogueOfSurgeServicesContent = [
         sectionText: "",
         sectionCards: [
             {
-                cardsTitle: "catalogueOfSurgeServicesCardsTitleRapidResponsePersonnel",
-                cards: [
-                    {
-                        cardType: 'file',
-                        cardTitle: "catalogueOfSurgeServicesCardTitleRoleProfiles",
-                        elements: [
-                            {
-                                name: "catalogueOfSurgeServicesIformationManCards1Card1Element1",
-                                url: 'https://ifrcgo.org/global-services/assets/docs/im/Rapid%20Response%20Profile%20IM%20Coordinator.pdf'
-                            },
-                            {
-                                name: "catalogueOfSurgeServicesIformationManCards1Card1Element2",
-                                url: 'https://ifrcgo.org/global-services/assets/docs/im/Rapid%20Response%20Profile%20Humanitarian%20Information%20Analysis%20Officer.pdf'
-                            },
-                            {
-                                name: "catalogueOfSurgeServicesIformationManCards1Card1Element3",
-                                url: 'https://ifrcgo.org/global-services/assets/docs/im/Rapid%20Response%20Profile%20Primary%20Data%20Collection%20Officer.pdf'
-                            },
-                            {
-                                name: "catalogueOfSurgeServicesIformationManCards1Card1Element4",
-                                url: 'https://ifrcgo.org/global-services/assets/docs/im/Rapid%20Response%20Profile%20Mapping%20and%20Visualization%20Officer.pdf'
-                            }
-                        ]
-                    }
-                ]
-            },
-            {
                 cardsTitle: "catalogueOfSurgeServicesCardsTitleServices",
                 cards: [
                     {
                         cardType: 'textBtn',
-                        cardTitle: 'catalogueOfSurgeServicesCardsTitleRapidResponse',
-                        cardText: 'catalogueOfSurgeServicesIformationManCards2Card1Text',
+                        cardTitle: 'catalogueOfSurgeServicesInformationManSubtitle6Text1',
+                        cardText: 'catalogueOfSurgeServicesInformationManSubtitle6Text2',
+                        cardBtnText: 'catalogueOfSurgeServicesCardBtnTextGoTo',
+                        url: 'https://rcrcsims.org/'
+                    },
+                    {
+                        cardType: 'textBtn',
+                        cardTitle: 'catalogueOfSurgeServicesInformationManSubtitle6Text3',
+                        cardText: 'catalogueOfSurgeServicesInformationManSubtitle6Text4',
                         cardBtnText: 'catalogueOfSurgeServicesCardBtnTextLearnMore',
-                        url: '#surge-information-management-support-sims'
+                        url: '#Satellite-imagery'
+                    }
+                ]
+            },
+            {
+                cardsTitle: "catalogueOfSurgeServicesCardsTitleAdditionalResources",
+                cards: [
+                    {
+                        cardType: 'textBtn',
+                        cardTitle: 'catalogueOfSurgeServicesInformationManSubtitle7Text1',
+                        cardText: 'catalogueOfSurgeServicesInformationManSubtitle7Text2',
+                        cardBtnText: 'catalogueOfSurgeServicesCardBtnTextGoTo',
+                        url: 'https://go-user-library.ifrc.org/'
+                    },
+                    {
+                        cardType: 'textBtn',
+                        cardTitle: 'catalogueOfSurgeServicesInformationManSubtitle7Text3',
+                        cardText: 'catalogueOfSurgeServicesInformationManSubtitle7Text4',
+                        cardBtnText: 'catalogueOfSurgeServicesCardBtnTextGoTo',
+                        url: 'https://www.ifrc.org/ifrc-kobotoolbox#'
+                    },
+                    {
+                        cardType: 'textBtn',
+                        cardTitle: 'catalogueOfSurgeServicesInformationManSubtitle7Text5',
+                        cardText: 'catalogueOfSurgeServicesInformationManSubtitle7Text6',
+                        cardBtnText: 'catalogueOfSurgeServicesCardBtnTextGoTo',
+                        url: 'https://deephelp.zendesk.com/hc/en-us/articles/360041904812-4-DEEP-Using-the-DEEP-Platform-'
                     }
                 ]
             }
+          
         ]
     },
     {

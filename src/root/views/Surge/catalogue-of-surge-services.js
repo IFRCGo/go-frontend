@@ -123,6 +123,7 @@ export default class CatalogueOfSurgeServices extends React.Component {
 
     renderContent(hash) {
         const { strings } = this.context;
+        var queriedData = CatalogueOfSurgeServicesContent.find(d => d.hash === hash);
 
         if (hash === "#catalogue") {
             return (
@@ -239,28 +240,22 @@ export default class CatalogueOfSurgeServices extends React.Component {
 
                     <p>{strings.catalogueOfSurgeServicesInformationManSubtitle5Text2}</p>
                     <img src="/assets/graphics/content/IFRC_Surge_02.jpg" width='80%' />
-                    <h1> </h1>
-                    <h1>{strings.catalogueOfSurgeServicesInformationManSubtitle6}</h1>
-                    <b>{strings.catalogueOfSurgeServicesInformationManSubtitle6Text1}</b> - {strings.catalogueOfSurgeServicesInformationManSubtitle6Text2} - <b><a href={strings.catalogueOfSurgeServicesInformationManSubtitle6Link1} >{strings.catalogueOfSurgeServicesInformationManSubtitle6Link1Text} </a></b>
-                    <h1> </h1>
-                    <b>{strings.catalogueOfSurgeServicesInformationManSubtitle6Text3}</b> - {strings.catalogueOfSurgeServicesInformationManSubtitle6Text4} - <b><a href={strings.catalogueOfSurgeServicesInformationManSubtitle6Link2} >{strings.catalogueOfSurgeServicesInformationManSubtitle6Link2Text} </a></b>
-
-                    <h1> </h1>
-                    <h1>{strings.catalogueOfSurgeServicesInformationManSubtitle7}</h1>
-
-                    <b>{strings.catalogueOfSurgeServicesInformationManSubtitle7Text1}</b> - {strings.catalogueOfSurgeServicesInformationManSubtitle7Text2} - <b><a href={strings.catalogueOfSurgeServicesInformationManSubtitle7Link1} >{strings.catalogueOfSurgeServicesInformationManSubtitle7Link1Text} </a></b>
-                    <h1> </h1>
-                    <b>{strings.catalogueOfSurgeServicesInformationManSubtitle7Text3}</b> - {strings.catalogueOfSurgeServicesInformationManSubtitle7Text4} - <b><a href={strings.catalogueOfSurgeServicesInformationManSubtitle7Link2} >{strings.catalogueOfSurgeServicesInformationManSubtitle7Link2Text} </a></b>
-                    <h1> </h1>
-                    <b>{strings.catalogueOfSurgeServicesInformationManSubtitle7Text5}</b> - {strings.catalogueOfSurgeServicesInformationManSubtitle7Text6} - <b><a href={strings.catalogueOfSurgeServicesInformationManSubtitle7Link3} >{strings.catalogueOfSurgeServicesInformationManSubtitle7Link3Text} </a></b>
-
+                    {queriedData.sectionCards.map((sectionCard, index) => {
+                    const additionalResoruces = sectionCard.cardsTitle === "catalogueOfSurgeServicesCardsTitleAdditionalResources" ? true : false;
+                    return (
+                        <div key={index}>
+                            <h3 className="cardsTitle fold__header">{strings[sectionCard.cardsTitle]}</h3>
+                            {this.renderCards(sectionCard.cards, additionalResoruces)}
+                        </div>
+                    );
+                })}
+                 
                     {/* <p>{strings.catalogueOfSurgeServicesTitleSubtitle2Text1}</p> */}
                 </section>
             );
         }
         
 
-        var queriedData = CatalogueOfSurgeServicesContent.find(d => d.hash === hash);
         if (queriedData === undefined) {
             return (
                 <></>

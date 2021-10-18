@@ -2235,7 +2235,101 @@ const CatalogueOfSurgeServiceSubpageContent = [
                 ]
             }
         ]
+    },
+    {
+        hash: '#Satellite-imagery',
+        other: false,
+        title: 'catalogueOfSurgeServicesInformationManSatelliteImagery',
+        textSection: {
+            satelliteImagery: {
+                texts: [
+                    'catalogueOfSurgeServicesInformationManSatelliteImageryText1',
+                    '',
+                    'catalogueOfSurgeServicesInformationManSatelliteImageryText2'
+                ],
+                urls: [
+                    { text: 'catalogueOfSurgeServicesInformationManSatelliteImageryLinkText1', url: 'https://americanredcross.github.io/images-from-above/index.html' },
+                    { text: 'catalogueOfSurgeServicesInformationManSatelliteImageryLinkText2', url: 'https://docs.google.com/spreadsheets/d/1IGxQVIRF0PkNXNXUcEA9_dz66-U2MCPRzN5O1hol1Mg/edit#gid=1206256283' },
+                    { text: '', url:''}
+            
+                ],
+                textsWithUrlOrder: [
+                    { text: 0, url: 0 },
+                    { text: 1, url: 1 },
+                    { text: 2, url: 2 }
+                ]
+            },
+            whatsNeeded: {
+                texts: [
+                    'catalogueOfSurgeServicesInformationManSatelliteImageryText3',
+                    'catalogueOfSurgeServicesInformationManSatelliteImageryText4',
+                    'catalogueOfSurgeServicesInformationManSatelliteImageryList1',
+                    'catalogueOfSurgeServicesInformationManSatelliteImageryList2',
+                    'catalogueOfSurgeServicesInformationManSatelliteImageryList3',
+                    'catalogueOfSurgeServicesInformationManSatelliteImageryList4'
+                ],
+                urls: [
+                    { text: 'catalogueOfSurgeServicesInformationManSatelliteImageryLinkText3', url: 'https://americanredcross.github.io/images-from-above/index.html' },
+                    { text: '', url: '' },
+                    { text: '', url:''},
+                    { text: '', url: '' },
+                    { text: '', url:''},
+                    { text: '', url: '' },
+                ],
+                textsWithUrlOrder: [
+                    { text: 0, url: 0 },
+                    { text: 1, url: 1 },
+                    { text: 2, url: 2 },
+                    { text: 3, url: 3 },
+                    { text: 4, url: 4 },
+                    { text: 5, url: 5 }
+                ]
+            },
+            analysisSources: {
+                text: 'catalogueOfSurgeServicesInformationManSatelliteImageryText5' 
+            },
+            unosat: {
+                texts: [
+                    '',
+                    'catalogueOfSurgeServicesInformationManSatelliteImageryText6',
+                    'catalogueOfSurgeServicesInformationManSatelliteImageryText7',
+                    'catalogueOfSurgeServicesInformationManSatelliteImageryText8a',
+                    'catalogueOfSurgeServicesInformationManSatelliteImageryText8b',
+                    'catalogueOfSurgeServicesInformationManSatelliteImageryText9a',
+                    'catalogueOfSurgeServicesInformationManSatelliteImageryText9b',
+                    'catalogueOfSurgeServicesInformationManSatelliteImageryText10',
+                    'catalogueOfSurgeServicesInformationManSatelliteImageryText11'
+                ],
+                urls: [
+                    { text: 'catalogueOfSurgeServicesInformationManSatelliteImageryLinkText7', url: 'https://www.unitar.org/maps' },
+                    { text: 'catalogueOfSurgeServicesInformationManSatelliteImageryLinkText4', url: 'https://www.unitar.org/maps' },
+                    { text: 'catalogueOfSurgeServicesInformationManSatelliteImageryLinkText5', url: 'http://smcs.unosat.org/' },
+                    { text: 'catalogueOfSurgeServicesInformationManSatelliteImageryLinkText6', url: 'https://www.unitar.org/maps/unosat-rapid-mapping-service' },
+                    { text: '', url:''},
+                    { text: '', url: '' },
+                    { text: '', url:''},
+                    { text: '', url: '' },
+                    { text: '', url: '' }
+
+                ],
+                textsWithUrlOrder: [
+                    { text: 0, url: 0 },
+                    { text: 1, url: 4 },
+                    { text: 2, url: 5 },
+                    { text: 3, url: 1 },
+                    { text: 4, url: 6 },
+                    { text: 5, url: 2 },
+                    { text: 6, url: 6 },
+                    { text: 7, url: 3 },
+                    { text: 8, url: 8}
+
+
+                ]
+            },
+        }
     }
+
+    
 ];
 
 export default CatalogueOfSurgeServiceSubpageContent;
