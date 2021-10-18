@@ -2077,7 +2077,9 @@ const CatalogueOfSurgeServiceSubpageContent = [
                 text: 'catalogueOtherService3Text2',
                 urls: [
                     { text: 'catalogueOtherService3Text2Url', url: 'https://ifrcgo.org/global-services/assets/docs/other/Rapid%20Response%20Profile%20Human%20Resources%20Coordinator.pdf' },
+                    /* coming soon not wanted 6
                     { text: 'catalogueOfSurgeServicesHealthCards1Card1Element5', url: '' }
+                    */
                 ]
             }
         ]

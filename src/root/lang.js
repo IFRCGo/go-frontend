@@ -977,9 +977,9 @@ export default {
   catalogueOfSurgeServicesIformationTechCards1Card1Element2: 'IT & Telecom Officer',
   catalogueOfSurgeServicesIformationTechCards2Card1Text: 'ERU IT/Telecom',
   catalogueOfSurgeServicesLivelihoodsSectionText: 'IFRC operates within the Sustainable Livelihoods Framework and has identified 5 types of Livelihoods assistance: 1. provisioning for lost livelihoods sources (basic needs assistance), 2. livelihoods recovery including replacement of lost Livelihoods assets, 3. livelihoods strengthening, 4. livelihoods diversification and 5. livelihoods protection. In Surge context, interventions will first focus on meeting basic needs through livelihoods provisioning, which includes that immediate food and nutrition needs are met (typically through in-kind support, cash or voucher assistance). Meanwhile other activities can be designed aiming at preventing further erosion of productive assets (livelihoods protection) or supporting the recovery of livelihoods through assets’ replacement and skills strengthening.',
-  catalogueOfSurgeServicesLivelihoodsCards1Card1Element1: 'Food Security and Basic Needs Coordinator (details coming soon)',
-  catalogueOfSurgeServicesLivelihoodsCards1Card1Element2: 'Market-based Livelihoods Interventions Officer (details coming soon)',
-  catalogueOfSurgeServicesLivelihoodsCards1Card1Element3: 'Primary Production Support and Income Generation Officer (details coming soon)',
+  catalogueOfSurgeServicesLivelihoodsCards1Card1Element1: 'Food Security and Basic Needs Coordinator (details coming soon)', // coming soon not wanted 1
+  catalogueOfSurgeServicesLivelihoodsCards1Card1Element2: 'Market-based Livelihoods Interventions Officer (details coming soon)', // coming soon not wanted 1
+  catalogueOfSurgeServicesLivelihoodsCards1Card1Element3: 'Primary Production Support and Income Generation Officer (details coming soon)', // coming soon not wanted 1
   catalogueOfSurgeServicesLivelihoodsCards3Card1Title: 'IFRC Livelihoods Resource Centre (LRC)',
   catalogueOfSurgeServicesLivelihoodsCards3Card1Text: 'The Centre plays an active role in raising awareness and common understanding around livelihoods.',
   catalogueOfSurgeServicesLivelihoodsCards3Card2Title: 'Livelihoods Toolbox',
@@ -1018,7 +1018,7 @@ export default {
   catalogueOfSurgeServicesOperationsCards1Card1Element3: 'Deputy Operations Manager',
   catalogueOfSurgeServicesOperationsCards1Card1Element4: 'Field Coordinator',
   catalogueOfSurgeServicesOperationsCards1Card1Element5: 'Movement Coordination Officer',
-  catalogueOfSurgeServicesOperationsCards1Card1Element6: 'Humanitarian Liaison Coordinator (details coming soon)',
+  catalogueOfSurgeServicesOperationsCards1Card1Element6: 'Humanitarian Liaison Coordinator (details coming soon)', // coming soon not wanted 2
   catalogueOfSurgeServicesOperationsCards1Card1Element7: 'Recovery Coordinator',
   catalogueOfSurgeServicesOperationsCards2Card1BtnText: 'Head of Emergency Operations (HeOps)',
   catalogueOfSurgeServicesProtectionCards1Card1Element1: 'PGI Coordinator',
@@ -1038,7 +1038,7 @@ export default {
   catalogueOfSurgeServicesPlanningCards2Card2Title: 'Evaluation',
   catalogueOfSurgeServicesPlanningCards2Card2BtnText: 'Real Time Evaluation (RTE) and guidance',
   catalogueOfSurgeServicesReliefSectionText: 'Through the support of the National Societies, the Relief ERU have set up unit to ensures that essential relief goods are delivered to the appropriate beneficiaries rapidly, effectively and in a well coordinated and dignified manner. This ERU carries out tasks related to beneficiary targeting, registration, distribution of relief items and monitoring and evaluation. It also covers emergency operational shelter and, where appropriate, may initiate alternative relief support, such as voucher and cash distributions.',
-  catalogueOfSurgeServicesReliefCards1Card1Element1: 'Relief Coordinator (details coming soon)',
+  catalogueOfSurgeServicesReliefCards1Card1Element1: 'Relief Coordinator (details coming soon)', // coming soon not wanted 3
   catalogueOfSurgeServicesReliefCards2Card1BtnText: 'ERU Relief',
   catalogueOfSurgeServicesSecuritySectionText: 'The IFRC provides security management support to any Movement partner requesting IFRC security support in operational contexts where the IFRC has the required capacity and the country office is deemed to be in compliance with the IFRC Minimum Security Requirements. The services are detailed within the \'IFRC security management support to Movement partners\' procedures and are based upon 4 Levels of security coverage, depending on the modality of service requests. Movement partners can contact relevant IFRC Regional or Country offices for further information.',
   catalogueOfSurgeServicesSecurityCards1Card1Element1: 'Security Coordinator',
@@ -1047,15 +1047,15 @@ export default {
   catalogueOfSurgeServicesShelterCards1Card1Element1: 'Shelter Programme Coordinator',
   catalogueOfSurgeServicesShelterCards1Card1Element2: 'Shelter Programme Team Leader',
   catalogueOfSurgeServicesShelterCards1Card1Element3: 'Shelter Programme Technical Officer',
-  catalogueOfSurgeServicesShelterCards1Card1Element4: 'Shelter Programme Capacity Building Officer (details coming soon)',
-  catalogueOfSurgeServicesShelterCards1Card1Element5: 'Shelter Programme Settlements Planning Officer (details coming soon)',
-  catalogueOfSurgeServicesShelterCards1Card1Element6: 'Shelter Cluster Coordinator',
-  catalogueOfSurgeServicesShelterCards1Card1Element7: 'Shelter Cluster Deputy Coordinator (details coming soon)',
-  catalogueOfSurgeServicesShelterCards1Card1Element8: 'Shelter Cluster Hub Coordinator (details coming soon)',
-  catalogueOfSurgeServicesShelterCards1Card1Element9: 'Shelter Cluster Technical Coordinator (details coming soon)',
-  catalogueOfSurgeServicesShelterCards1Card1Element10: 'Shelter Cluster Recovery Coordinator (details coming soon)',
-  catalogueOfSurgeServicesShelterCards1Card1Element11: 'Shelter Cluster Environment Coordinator (details coming soon)',
-  catalogueOfSurgeServicesShelterCards1Card1Element12: 'Shelter Cluster IM Coordinator (details coming soon)',
+  catalogueOfSurgeServicesShelterCards1Card1Element4: 'Shelter Cluster Coordinator',
+  catalogueOfSurgeServicesShelterCards1Card1Element5: 'Shelter Programme Capacity Building Officer (details coming soon)', // coming soon not wanted 4
+  catalogueOfSurgeServicesShelterCards1Card1Element6: 'Shelter Programme Settlements Planning Officer (details coming soon)', // coming soon not wanted 4
+  catalogueOfSurgeServicesShelterCards1Card1Element7: 'Shelter Cluster Deputy Coordinator (details coming soon)', // coming soon not wanted 4
+  catalogueOfSurgeServicesShelterCards1Card1Element8: 'Shelter Cluster Hub Coordinator (details coming soon)', // coming soon not wanted 4
+  catalogueOfSurgeServicesShelterCards1Card1Element9: 'Shelter Cluster Technical Coordinator (details coming soon)', // coming soon not wanted 4
+  catalogueOfSurgeServicesShelterCards1Card1Element10: 'Shelter Cluster Recovery Coordinator (details coming soon)', // coming soon not wanted 4
+  catalogueOfSurgeServicesShelterCards1Card1Element11: 'Shelter Cluster Environment Coordinator (details coming soon)', // coming soon not wanted 4
+  catalogueOfSurgeServicesShelterCards1Card1Element12: 'Shelter Cluster IM Coordinator (details coming soon)', // coming soon not wanted 4
   catalogueOfSurgeServicesShelterCards1Card2BtnText: 'Shelter and Settlements',
   catalogueOfSurgeServicesShelterCards2Card1Title: 'Shelter Surge Coordination (cluster approach)',
   catalogueOfSurgeServicesShelterCards2Card1BtnText: 'SCT (Shelter Coordination Team)',
@@ -1063,7 +1063,7 @@ export default {
   catalogueOfSurgeServicesShelterCards2Card2BtnText: 'STT (Shelter Technical Team)',
   catalogueOfSurgeServicesWaterSectionText: 'The IFRC and its member national societies have built a network of WASH expertise and equipment to respond to a range of disaster scale and context. On average, we provide 1.8 million people per year with access to safe water, sanitation and hygiene promotion in emergency response globally.',
   catalogueOfSurgeServicesWaterCards1Card1Element1: 'WASH Coordinator',
-  catalogueOfSurgeServicesWaterCards1Card1Element2: 'Hygiene Promotion Officer (details coming soon)',
+  catalogueOfSurgeServicesWaterCards1Card1Element2: 'Hygiene Promotion Officer (details coming soon)', // coming soon not wanted 5
   catalogueOfSurgeServicesWaterCards1Card2BtnText: 'WASH',
   catalogueOfSurgeServicesWaterCards2Card1Text: 'Water treatment at household level for 2,000 people.',
   catalogueOfSurgeServicesWaterCards2Card1BtnText: 'Kit 2',
@@ -1109,7 +1109,7 @@ export default {
   catalogueOfSurgeServicesHealthCards1Card1Element2: 'Medical Coordinator',
   catalogueOfSurgeServicesHealthCards1Card1Element3: 'Public Health Coordinator',
   catalogueOfSurgeServicesHealthCards1Card1Element4: 'Safe and Dignified Burials (SDB) Coordinator',
-  catalogueOfSurgeServicesHealthCards1Card1Element5: 'Staff Health Officer (details coming soon)',
+  catalogueOfSurgeServicesHealthCards1Card1Element5: 'Staff Health Officer (details coming soon)',// coming soon not wanted 6
   catalogueOfSurgeServicesHealthCards1Card1Element6: 'Mental Health and Psychosocial Support Coordinator',
   catalogueOfSurgeServicesHealthCards1Card1Element7: 'Mental Health and Psychosocial Support Officer',
   catalogueOfSurgeServicesHealthCards1Card1Element8: 'Mental Health and Psychosocial Support Community Outreach Officer',

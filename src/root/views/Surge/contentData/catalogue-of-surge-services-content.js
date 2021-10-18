@@ -582,6 +582,7 @@ const CatalogueOfSurgeServicesContent = [
         sectionTitle: "catalogueOfSurgeServicesSelectorLivelihoods",
         sectionText: "catalogueOfSurgeServicesLivelihoodsSectionText",
         sectionCards: [
+            /* coming soon not wanted 1
             {
                 cardsTitle: "catalogueOfSurgeServicesCardsTitleRapidResponsePersonnel",
                 cards: [
@@ -605,6 +606,7 @@ const CatalogueOfSurgeServicesContent = [
                     }
                 ]
             },
+            */
             {
                 cardsTitle: 'catalogueOfSurgeServicesCardsTitleServices',
                 cards: [
@@ -820,10 +822,12 @@ const CatalogueOfSurgeServicesContent = [
                                 name: "catalogueOfSurgeServicesOperationsCards1Card1Element7",
                                 url: 'https://ifrcgo.org/global-services/assets/docs/opsmanagement/Rapid%20Response%20Profile%20Recovery%20Coordinator.pdf'
                             },
+                            /* coming soon not wanted 2
                             {
                                 name: "catalogueOfSurgeServicesOperationsCards1Card1Element6",
                                 url: ''
                             }
+                            */
                         ]
                     }
                 ]
@@ -963,6 +967,7 @@ const CatalogueOfSurgeServicesContent = [
             {
                 cardsTitle: "catalogueOfSurgeServicesCardsTitleRapidResponsePersonnel",
                 cards: [
+                    /* coming soon not wanted 3
                     {
                         cardType: 'file',
                         cardTitle: "catalogueOfSurgeServicesCardTitleRoleProfiles",
@@ -973,6 +978,7 @@ const CatalogueOfSurgeServicesContent = [
                             }
                         ]
                     },
+                    */
                     {
                         cardType: 'textBtnPdf',
                         cardTitle: 'catalogueOfSurgeServicesCardsTitleTechnicalCompetencyFramework',
@@ -1059,15 +1065,16 @@ const CatalogueOfSurgeServicesContent = [
                                 url: 'https://ifrcgo.org/global-services/assets/docs/shelter/Rapid%20Response%20Profile%20Shelter%20Programme%20Technical%20Officer.pdf'
                             },
                             {
-                                name: "catalogueOfSurgeServicesShelterCards1Card1Element6",
+                                name: "catalogueOfSurgeServicesShelterCards1Card1Element4",
                                 url: 'https://ifrcgo.org/global-services/assets/docs/shelter/Rapid%20Response%20Profile%20Shelter%20Cluster%20Coordinator.pdf'
                             },
+                            /* coming soon not wanted 4
                             {
-                                name: "catalogueOfSurgeServicesShelterCards1Card1Element4",
+                                name: "catalogueOfSurgeServicesShelterCards1Card1Element5",
                                 url: ''
                             },
                             {
-                                name: "catalogueOfSurgeServicesShelterCards1Card1Element5",
+                                name: "catalogueOfSurgeServicesShelterCards1Card1Element6",
                                 url: ''
                             },
                             {
@@ -1094,6 +1101,7 @@ const CatalogueOfSurgeServicesContent = [
                                 name: "catalogueOfSurgeServicesShelterCards1Card1Element12",
                                 url: ''
                             }
+                            */
                         ]
                     },
                     {
@@ -1132,7 +1140,7 @@ const CatalogueOfSurgeServicesContent = [
     },
     {
         hash: '#water',
-        sectionTitle: "catalogueOfSurgeServicesSelectorHealth",
+        sectionTitle: "catalogueOfSurgeServicesSelectorWater",
         sectionText: "catalogueOfSurgeServicesWaterSectionText",
         sectionCards: [
             {
@@ -1146,10 +1154,12 @@ const CatalogueOfSurgeServicesContent = [
                                 name: "catalogueOfSurgeServicesWaterCards1Card1Element1",
                                 url: 'https://ifrcgo.org/global-services/assets/docs/wash/Rapid%20Response%20Profile%20WASH%20Coordinator.pdf'
                             },
+                            /* coming soon not wanted 5
                             {
                                 name: "catalogueOfSurgeServicesWaterCards1Card1Element2",
                                 url: ''
                             }
+                            */
                         ]
                     },
                     {
