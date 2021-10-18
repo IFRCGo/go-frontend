@@ -149,7 +149,7 @@ class Deployments extends SFPComponent {
     const { strings } = this.context;
     return [
       { title: strings.deploymentsSurgeOverViewTab, hash: '#overview' },
-      { title: strings.deploymentsOperationalToolboxTab, hash: '#operational-toolbox' },
+      // { title: strings.deploymentsOperationalToolboxTab, hash: '#operational-toolbox' },
       { title: strings.deploymentsCatalogueOfSurgeServicesTab, hash: '#catalogue' }
     ];
   }
