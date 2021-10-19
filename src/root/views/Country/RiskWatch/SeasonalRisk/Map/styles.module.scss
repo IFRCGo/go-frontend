@@ -20,11 +20,20 @@
     z-index: 0;
     display: flex;
 
-    .map {
-      z-index: 0;
+    .left-section {
       flex-grow: 1;
-      height: 40rem;
+
+      .map {
+        z-index: 0;
+        flex-grow: 1;
+        height: 40rem;
+      }
+
+      .month-selector {
+        width: 100%;
+      }
     }
+
 
     .side-bar {
       width: 20rem;
@@ -73,3 +82,4 @@
     }
   }
 }
+

@@ -27,6 +27,7 @@ function RiskWatch(props: Props) {
   } = props;
 
   // const { strings } = React.useContext(languageContext);
+  // const [activeTab, setActiveTab] = React.useState<RiskTabTypes>('imminent');
   const [activeTab, setActiveTab] = React.useState<RiskTabTypes>('seasonal');
 
   return (

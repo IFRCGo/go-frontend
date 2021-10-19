@@ -24,6 +24,24 @@ export function sum<L, V extends string | number>(list: L[], valueSelector: (ite
   ), 0);
 }
 
+export function avg<L, V extends string | number>(list: L[], valueSelector: (item: L) => V) {
+  if (!list || !Array.isArray(list)) {
+    return undefined;
+  }
+
+  if (list.length === 0) {
+    return 0;
+  }
+
+  const total = sum(list, valueSelector);
+
+  if (!isDefined(total)) {
+    return 0;
+  }
+
+  return total / list.length;
+}
+
 export function max<L, V extends string | number>(list: L[], valueSelector: (item: L) => V) {
   if (!list || !Array.isArray(list)) {
     return undefined;

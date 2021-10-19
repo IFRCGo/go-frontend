@@ -17,16 +17,22 @@ import {
   Area,
   AreaChart,
 } from 'recharts';
+import { scalePow } from 'd3-scale';
 
-import Translate from '#components/Translate';
 import Button from '#components/Button';
 import Container from '#components/Container';
-import SelectInput from '#components/SelectInput';
 import NumberOutput from '#components/NumberOutput';
-import useInputState from '#hooks/useInputState';
+import SelectInput from '#components/SelectInput';
+import Translate from '#components/Translate';
 import languageContext from '#root/languageContext';
+import useInputState from '#hooks/useInputState';
 
 import { getFullMonthNameList } from '#utils/utils';
+import {
+  useRequest,
+  ListResponse,
+} from '#utils/restRequest';
+import { HazardTypes } from '#types';
 
 import cycloneIcon from '../cyclone.svg';
 import droughtIcon from '../drought.svg';
@@ -37,8 +43,10 @@ import {
   hazardTypeOptions,
   HazardValueType,
   Writeable,
+  RiskData,
 } from '../common';
 import styles from './styles.module.scss';
+
 
 function IconShape({
   type,
@@ -122,46 +130,53 @@ const peopleAffectedData = [
   { date: new Date('2021-10-24').getTime(), hazard: 'FI', foodInsecurity: 25000000 },
 ];
 
+interface Props {
+  riskData: RiskData[];
+}
 
-function RiskBarChart() {
+function RiskBarChart(props: Props) {
+  const { riskData } = props;
   const { strings } = React.useContext(languageContext);
   const [hazardType, setHazardType] = useInputState<HazardValueType | undefined>(undefined);
-
-  const filteredData = React.useMemo(() => {
-    if (!hazardType) {
-      return peopleAffectedData;
-    }
-    return peopleAffectedData.filter(d => d.hazard === hazardType);
-  }, [hazardType]);
-
-  const domain = React.useMemo(() => {
-    const sortedData = [...filteredData].sort((a, b) => (
-      a.date - b.date
-    ));
-
-    const start = new Date(sortedData[0].date);
-    const end = new Date(sortedData[sortedData.length - 1].date);
-
-    start.setMonth(0);
-    start.setDate(1);
-
-    end.setFullYear(end.getFullYear() + 1);
-    end.setMonth(0);
-    end.setDate(0);
-
-    return [start.getTime(), end.getTime()];
-  }, [filteredData]);
 
   const monthNameList = React.useMemo(() => (
     getFullMonthNameList(strings).map(m => m.substr(0, 3))
   ), [strings]);
 
-  const monthTickFormatter = React.useCallback(
-    (timestamp: number) => {
-      const monthIndex = new Date(timestamp).getMonth();
-      return monthNameList[monthIndex];
-    },
-    [monthNameList],
+
+  const [
+    chartData,
+    maxDisplacement,
+  ] = React.useMemo(() => {
+    let maxDisplacement = 0;
+    let tempChartData: {
+      [key in HazardTypes | 'month']?: number | string | null;
+    }[] = monthNameList.map((m) => ({
+      month: m as string,
+    }));
+
+    riskData.forEach((risk) => {
+      if (risk.displacement?.monthly) {
+        risk.displacement.monthly.forEach((displacement, i) => {
+          const chartDataItem = tempChartData[i];
+          chartDataItem[risk.hazardType] = displacement ?? 0;
+
+          if (isDefined(displacement) && displacement > maxDisplacement) {
+            maxDisplacement = displacement;
+          }
+        });
+      }
+    });
+
+    return [
+      tempChartData,
+      maxDisplacement,
+    ];
+  }, [monthNameList, riskData]);
+
+  const scaleCbrt = React.useMemo(
+    () => scalePow().exponent(1/3).nice(),
+    [],
   );
 
   return (
@@ -183,6 +198,7 @@ function RiskBarChart() {
           <Button
             icons={<RiDownloadLine />}
             variant="secondary"
+            disabled
           >
             Export
           </Button>
@@ -192,10 +208,12 @@ function RiskBarChart() {
       contentClassName={styles.content}
       className={styles.riskByMonth}
     >
-      <div className={styles.chartContainer}>
+      <div
+        className={styles.chartContainer}
+      >
         <ResponsiveContainer>
           <AreaChart
-            data={filteredData}
+            data={chartData}
             margin={{
               top: 20,
               right: 10,
@@ -205,21 +223,17 @@ function RiskBarChart() {
           >
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis
-              type="number"
-              domain={domain}
-              range={domain}
-              dataKey="date"
-              tickCount={12}
-              interval={0}
-              tickFormatter={monthTickFormatter}
+              dataKey="month"
             />
             <YAxis
+              scale={scaleCbrt}
+              type="number"
               label={{
-                value: 'People exposed / affected',
+                value: 'People at Risk of Displacement',
                 angle: -90,
                 position: 'insideLeft',
               }}
-              tickFormatter={(value) => {
+              tickFormatter={(value: number) => {
                 const {
                   number,
                   normalizeSuffix,
@@ -232,10 +246,13 @@ function RiskBarChart() {
                 return addSeparator(number) ?? '';
               }}
             />
-            <Area type="step" dataKey="cyclone" stroke="#c8ccb7" fill="#c8ccb7" />
             <Area type="step" dataKey="flood" stroke="#85d1ee" fill="#85d1ee" />
+            <Area type="step" dataKey="storm" stroke="#c8ccb7" fill="#c8ccb7" />
+            <Area type="step" dataKey="food_insecurity" stroke="#ffab8e" fill="#ffab8e" />
+            {/*
+            <Area type="step" dataKey="cyclone" stroke="#c8ccb7" fill="#c8ccb7" />
             <Area type="step" dataKey="drought" stroke="#b09db2" fill="#b09db2" />
-            <Area type="step" dataKey="foodInsecurity" stroke="#ffab8e" fill="#ffab8e" />
+              */}
           </AreaChart>
         </ResponsiveContainer>
       </div>
@@ -266,6 +283,33 @@ function RiskBarChart() {
   );
 }
 
+interface HistoricalData {
+  appeals: {
+    aid: string;
+    amount_funded: string;
+    amount_requested: string;
+    end_date: string;
+    id: number;
+    num_beneficiaries: number;
+    start_date: string;
+    status: number;
+    status_display: string;
+  }[];
+  countries: {
+    iso: string;
+    iso3: string;
+    id: number;
+  }[];
+  created_at: string;
+  disaster_start_date: string;
+  dtype: {
+    id: number;
+    name: string;
+    summary: string;
+  }
+  name: string;
+  num_affected: number;
+}
 
 function ImpactChart() {
   const { strings } = React.useContext(languageContext);
@@ -309,6 +353,20 @@ function ImpactChart() {
     [monthNameList],
   );
 
+  const { response } = useRequest<ListResponse<HistoricalData>>({
+    url: 'api/v2/go-historical/',
+    // query: { cou
+  });
+
+  const chartData = React.useMemo(() => (
+    response?.results.map((d) => ({
+      [d.dtype.name]: d.num_affected,
+      date: new Date(d.disaster_start_date),
+    }))
+  ), [response]);
+
+  console.info(chartData);
+
   return (
     <Container
       heading={<Translate stringId='riskModulePastAndHistoricEvent' />}
@@ -340,7 +398,7 @@ function ImpactChart() {
       <div className={styles.chartContainer}>
         <ResponsiveContainer>
           <ScatterChart
-            data={filteredData}
+            data={chartData}
             margin={{
               top: 10,
               right: 10,
@@ -363,7 +421,7 @@ function ImpactChart() {
                 angle: -90,
                 position: 'insideLeft',
               }}
-              tickFormatter={(value) => {
+              tickFormatter={(value: number) => {
                 const {
                   number,
                   normalizeSuffix,
@@ -379,25 +437,25 @@ function ImpactChart() {
             <Scatter
               dataKey="cyclone"
               shape={(arg) => (
-                <IconShape type="cyclone" x={arg.x} y={arg.y} value={arg.cyclone} />
+                <IconShape type="cyclone" x={arg.x} y={arg.y} value={arg.Cyclone} />
               )}
             />
             <Scatter
               dataKey="flood"
               shape={(arg) => (
-                <IconShape type="flood" x={arg.x} y={arg.y} value={arg.flood} />
+                <IconShape type="flood" x={arg.x} y={arg.y} value={arg.Flood} />
               )}
             />
             <Scatter
               dataKey="drought"
               shape={(arg) => (
-                <IconShape type="drought" x={arg.x} y={arg.y} value={arg.drought} />
+                <IconShape type="drought" x={arg.x} y={arg.y} value={arg.Drought} />
               )}
             />
             <Scatter
               dataKey="foodInsecurity"
               shape={(arg) => (
-                <IconShape type="foodInsecurity" x={arg.x} y={arg.y} value={arg.foodInsecurity} />
+                <IconShape type="foodInsecurity" x={arg.x} y={arg.y} value={arg['Food Insecurity']} />
               )}
             />
           </ScatterChart>

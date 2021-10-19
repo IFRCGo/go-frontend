@@ -1,18 +1,16 @@
-import React  from 'react';
+import React from 'react';
 import { RiDownloadLine } from 'react-icons/ri';
-import { _cs } from '@togglecorp/fujs';
 
-import Table from '#components/Table';
 import Container from '#components/Container';
 import Button from '#components/Button';
+import Table from '#components/Table';
 import SelectInput from '#components/SelectInput';
-// import { Strings } from '#types';
-import {
-    createStringColumn,
-    createNumberColumn,
-} from '#components/Table/predefinedColumns';
-
 import useInputState from '#hooks/useInputState';
+
+import {
+  createStringColumn,
+  createNumberColumn,
+} from '#components/Table/predefinedColumns';
 
 import {
   hazardTypeOptions,
@@ -21,82 +19,6 @@ import {
 } from '../common';
 
 import styles from './styles.module.scss';
-
-interface RiskData {
-  id: number,
-  hazardTypeDisplay: string;
-  informRiskScore?: number;
-  peopleExposed?: number;
-  peopleAtRiskOfDisplacement?: number;
-}
-
-const riskData: RiskData[] = [
-  {
-    id: 1,
-    hazardTypeDisplay: 'Cyclone',
-    informRiskScore: 5.5,
-    peopleExposed: 15000,
-    peopleAtRiskOfDisplacement: 200,
-  },
-  {
-    id: 2,
-    hazardTypeDisplay: 'Flood',
-    informRiskScore: 3,
-    peopleExposed: 570000,
-    peopleAtRiskOfDisplacement: 5000,
-  },
-  {
-    id: 3,
-    hazardTypeDisplay: 'Food Insecurity',
-    informRiskScore: undefined,
-    peopleExposed: 15000,
-    peopleAtRiskOfDisplacement: undefined,
-  },
-  {
-    id: 4,
-    hazardTypeDisplay: 'Drought',
-    informRiskScore: 3,
-    peopleExposed: 12000,
-    peopleAtRiskOfDisplacement: 300,
-  },
-];
-
-const getRiskTableColumns = () => ([
-  createStringColumn<RiskData, string | number>(
-    'hazardTypeDisplay',
-    'Hazard Type',
-    (item) => item.hazardTypeDisplay,
-  ),
-  createNumberColumn<RiskData, string | number>(
-    'informRiskScore',
-    'Inform Risk Score',
-    (item) => item.informRiskScore,
-  ),
-  createNumberColumn<RiskData, string | number>(
-    'peopleExposed',
-    'People Exposed',
-    (item) => item.peopleExposed,
-  ),
-  createNumberColumn<RiskData, string | number>(
-    'peopleAtRiskOfDisplacement',
-    'People at Risk of Displacement',
-    (item) => item.peopleAtRiskOfDisplacement,
-  ),
-]);
-
-
-function RiskTable() {
-  const riskTableColumns = getRiskTableColumns();
-
-  return (
-    <Table
-      className={styles.riskTable}
-      data={riskData}
-      columns={riskTableColumns}
-      keySelector={d => d.id}
-    />
-  );
-}
 
 interface ReturnPeriodData {
   id: number;
@@ -202,4 +124,4 @@ function ReturnPeriodTable() {
   );
 }
 
-export { RiskTable, ReturnPeriodTable };
+export default ReturnPeriodTable;

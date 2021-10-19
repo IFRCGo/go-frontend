@@ -53,7 +53,6 @@ import { resolveToString } from '#utils/lang';
 
 import { countriesSelector, countriesByRegionSelector, regionsByIdSelector, regionByIdOrNameSelector, countriesGeojsonSelector } from '../selectors';
 import turfBbox from '@turf/bbox';
-import RiskWatch from '#views/Country/RiskWatch';
 
 class AdminArea extends SFPComponent {
   constructor(props) {
@@ -81,7 +80,6 @@ class AdminArea extends SFPComponent {
       { title: strings.regionProfileTab, hash: '#regional-profile' },
       // { title: strings.regionPreparednessTab, hash: '#preparedness' },
       // { title: strings.regionAdditionalInfoTab, hash: '#additional-info' }
-      { title: strings.regionRiskWatchTab, hash: '#risk-watch' },
     ];
   }
 
@@ -444,11 +442,6 @@ class AdminArea extends SFPComponent {
                         </TabContent>
                       </React.Fragment>)
                   }
-                </TabPanel>
-                <TabPanel>
-                  <TabContent title={strings.regionRiskWatchTab}>
-                    <RiskWatch/>
-                  </TabContent>
                 </TabPanel>
                 {data.preparedness_snippets.length > 0 ?
                   (<TabPanel>

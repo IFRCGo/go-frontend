@@ -23,11 +23,14 @@
     }
 
     .side-bar {
+      height: 40rem;
       width: 20rem;
       box-shadow: $base-box-shadow;
       z-index: 1;
+      overflow: auto;
 
       .event-list {
+        overflow: auto;
         display: flex;
         flex-direction: column;
         gap: $base-border-width;
