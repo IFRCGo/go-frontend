@@ -55,7 +55,6 @@ export default class CatalogueOfSurgeServicesSubPage extends React.Component {
         );
     }
    
-
     renderContentSpecifications(content, title) {
         const { strings } = this.context;
         return (
@@ -387,9 +386,10 @@ export default class CatalogueOfSurgeServicesSubPage extends React.Component {
                     </ul>
 
                     <p>{strings.catalogueOfSurgeServicesInformationManSubtitle5Text2}</p>
-                    <img src="/assets/graphics/content/IFRC_Surge_02.jpg" width='80%' /> </>
+                    <img src="/assets/graphics/content/IFRC_Surge_02.jpg" width='81%' /> </>
                     : <></>
                 }
+
 
                 {content.textSection.unosat !== undefined ?
                 <div>
