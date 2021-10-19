@@ -3115,7 +3115,7 @@ export default {
 
   // Submission
   drefFormSubmissionFlow: 'Submission flow',
-  drefFormNsRequestDate: 'Date of NS request',
+  drefFormNsRequestDate: 'Date of National Society Request',
   drefFormDateSubmissionToGeneva: 'Date of Submission to GVA',
   drefFormDateOfApproval: 'Date of Approval',
   drefFormPublishingDate: 'Date of Publishing',
