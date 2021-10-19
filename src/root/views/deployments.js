@@ -319,7 +319,6 @@ class Deployments extends SFPComponent {
                   {/* Surge overview tab */}
                   <TabPanel>
                     <TabContent>
-                      {this.renderHeaderStats()}
                       <div className='container-lg'>
                         {this.props.eru.fetched && this.props.activePersonnel.fetched ?
                           <DeploymentsMap
