@@ -499,6 +499,48 @@ const CatalogueOfSurgeServicesContent = [
         sectionText: "",
         sectionCards: [
             {
+                cardsTitle: "catalogueOfSurgeServicesCardsTitleRapidResponsePersonnel",
+                cards: [
+                    {
+                        cardType: 'file',
+                        cardTitle: "catalogueOfSurgeServicesCardTitleRoleProfiles",
+                        elements: [
+                            {
+                                name: "catalogueOfSurgeServicesIformationManCards1Card1Element1",
+                                url: 'https://ifrcgo.org/global-services/assets/docs/im/Rapid%20Response%20Profile%20IM%20Coordinator.pdf'
+                            },
+                            {
+                                name: "catalogueOfSurgeServicesIformationManCards1Card1Element2",
+                                url: 'https://ifrcgo.org/global-services/assets/docs/im/Rapid%20Response%20Profile%20Humanitarian%20Information%20Analysis%20Officer.pdf'
+                            },
+                            {
+                                name: "catalogueOfSurgeServicesIformationManCards1Card1Element3",
+                                url: 'https://ifrcgo.org/global-services/assets/docs/im/Rapid%20Response%20Profile%20Primary%20Data%20Collection%20Officer.pdf'
+                            },
+                            {
+                                name: "catalogueOfSurgeServicesIformationManCards1Card1Element4",
+                                url: 'https://ifrcgo.org/global-services/assets/docs/im/Rapid%20Response%20Profile%20Mapping%20and%20Visualization%20Officer.pdf'
+                            },
+                            
+                           
+                        ]
+                    },
+                    {
+                        cardType: 'textBtnPdf',
+                        cardTitle: 'catalogueOfSurgeServicesCardsTitleTechnicalCompetencyFramework',
+                        cardText: 'catalogueOfSurgeServicesCardsTitleTechnicalCompetencyFrameworkText',
+                        buttons: [
+                        
+                            {
+                                btnText: 'catalogueOfSurgeServicesIformationManCards1Card1Element5',
+                                url: 'https://ifrcgo.org/global-services/assets/docs/assessment/Assessment%20technical%20competency%20framework%20March%202020.pdf'
+                            }
+                        ]
+                    }
+                ]
+            },
+            
+            {
                 cardsTitle: "catalogueOfSurgeServicesCardsTitleServices",
                 cards: [
                     {
@@ -521,24 +563,52 @@ const CatalogueOfSurgeServicesContent = [
                 cardsTitle: "catalogueOfSurgeServicesCardsTitleAdditionalResources",
                 cards: [
                     {
-                        cardType: 'textBtn',
+                        cardType: 'textBtnSimple',
+                        cardTitle: 'catalogueOfSurgeServicesInformationManSubtitle7Text7',
+                        cardText: 'catalogueOfSurgeServicesInformationManSubtitle7Text8',
+                        cardBtnText: 'catalogueOfSurgeServicesCardBtnTextView',
+                        url: '#roles-and-resps'
+                    },
+                    {
+                        cardType: 'textBtnSimple',
+                        cardTitle: 'catalogueOfSurgeServicesInformationManSubtitle7Text9',
+                        cardText: 'catalogueOfSurgeServicesInformationManSubtitle7Text10',
+                        cardBtnText: 'catalogueOfSurgeServicesCardBtnTextView',
+                        url: '#im-support-for-op'
+                    },
+                    {
+                        cardType: 'textBtnSimple',
+                        cardTitle: 'catalogueOfSurgeServicesInformationManSubtitle7Text11',
+                        cardText: 'catalogueOfSurgeServicesInformationManSubtitle7Text12',
+                        cardBtnText: 'catalogueOfSurgeServicesCardBtnTextView',
+                        url: '#ifrc-geneva-im'
+                    },
+                    {
+                        cardType: 'textBtnSimple',
+                        cardTitle: 'catalogueOfSurgeServicesInformationManSubtitle7Text13',
+                        cardText: 'catalogueOfSurgeServicesInformationManSubtitle7Text14',
+                        cardBtnText: 'catalogueOfSurgeServicesCardBtnTextView',
+                        url: '#composition-of-im-res'
+                    },
+                    {
+                        cardType: 'textBtnSimple',
                         cardTitle: 'catalogueOfSurgeServicesInformationManSubtitle7Text1',
                         cardText: 'catalogueOfSurgeServicesInformationManSubtitle7Text2',
-                        cardBtnText: 'catalogueOfSurgeServicesCardBtnTextGoTo',
+                        cardBtnText: 'catalogueOfSurgeServicesCardBtnTextView',
                         url: 'https://go-user-library.ifrc.org/'
                     },
                     {
                         cardType: 'textBtn',
                         cardTitle: 'catalogueOfSurgeServicesInformationManSubtitle7Text3',
                         cardText: 'catalogueOfSurgeServicesInformationManSubtitle7Text4',
-                        cardBtnText: 'catalogueOfSurgeServicesCardBtnTextGoTo',
+                        cardBtnText: 'catalogueOfSurgeServicesCardBtnTextView',
                         url: 'https://www.ifrc.org/ifrc-kobotoolbox#'
                     },
                     {
                         cardType: 'textBtn',
                         cardTitle: 'catalogueOfSurgeServicesInformationManSubtitle7Text5',
                         cardText: 'catalogueOfSurgeServicesInformationManSubtitle7Text6',
-                        cardBtnText: 'catalogueOfSurgeServicesCardBtnTextGoTo',
+                        cardBtnText: 'catalogueOfSurgeServicesCardBtnTextView',
                         url: 'https://deephelp.zendesk.com/hc/en-us/articles/360041904812-4-DEEP-Using-the-DEEP-Platform-'
                     }
                 ]

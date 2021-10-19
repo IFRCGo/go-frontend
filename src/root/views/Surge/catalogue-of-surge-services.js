@@ -94,7 +94,19 @@ export default class CatalogueOfSurgeServices extends React.Component {
                     </button>
                 </div>
             );
-        } else {
+        } 
+        else if (card.cardType === "textBtnSimple") {
+            return (
+                <div className="cardElementContainer">
+                    <span className="cardText">{strings[card.cardText]}</span>
+                    <button onClick={e => this.openNewTab(card.url, e)} className="cardBtn">
+                        
+                        {strings[card.cardBtnText]}
+                    </button>
+                </div>
+            );
+        }
+        else {
             return (
                 <></>
             );
@@ -141,6 +153,9 @@ export default class CatalogueOfSurgeServices extends React.Component {
         if (hash === "#informationMan") {
             return (
                 <section>
+
+                             
+
                     <h1>{strings.catalogueOfSurgeServicesInformationManSubtitle1}</h1>
                     <p>{strings.catalogueOfSurgeServicesInformationManSubtitle1Text1}</p>
                     <p>{strings.catalogueOfSurgeServicesInformationManSubtitle1Text2}</p>
@@ -149,98 +164,8 @@ export default class CatalogueOfSurgeServices extends React.Component {
 
                     <img src="/assets/graphics/content/Pyramid.png" width='80%' />
                     <h1> </h1>
-
-                    <h1>{strings.catalogueOfSurgeServicesInformationManSubtitle2}</h1>
-                    <p>{strings.catalogueOfSurgeServicesInformationManSubtitle2Text1}</p>
-                    
-                    <b><p>{strings.catalogueOfSurgeServicesInformationManSubtitle2Group1}</p></b>
-                    <ul className="list_uo">
-                        <li>{strings.catalogueOfSurgeServicesInformationManSubtitle2Group1Item1}</li>
-                        <li>{strings.catalogueOfSurgeServicesInformationManSubtitle2Group1Item2}</li>
-                        <li>{strings.catalogueOfSurgeServicesInformationManSubtitle2Group1Item3}</li>
-                        <li>{strings.catalogueOfSurgeServicesInformationManSubtitle2Group1Item4}</li>
-                    </ul>
-                    <b><p>{strings.catalogueOfSurgeServicesInformationManSubtitle2Group2}</p></b>
-                    <ul className="list_uo">
-                        <li>{strings.catalogueOfSurgeServicesInformationManSubtitle2Group2Item1}</li>
-                        <li>{strings.catalogueOfSurgeServicesInformationManSubtitle2Group2Item2}</li>
-                        <li>{strings.catalogueOfSurgeServicesInformationManSubtitle2Group2Item3}</li>
-                        <li>{strings.catalogueOfSurgeServicesInformationManSubtitle2Group2Item4}</li>
-                        <li>{strings.catalogueOfSurgeServicesInformationManSubtitle2Group2Item5}</li>
-                    </ul>
-                    <b><p>{strings.catalogueOfSurgeServicesInformationManSubtitle2Group3}</p></b>
-                    <ul className="list_uo">
-                        <li>{strings.catalogueOfSurgeServicesInformationManSubtitle2Group3Item1}</li>
-                        <li>{strings.catalogueOfSurgeServicesInformationManSubtitle2Group3Item2}</li>
-                        <li>{strings.catalogueOfSurgeServicesInformationManSubtitle2Group3Item3}</li>
-                        <li>{strings.catalogueOfSurgeServicesInformationManSubtitle2Group3Item4}</li>
-                    </ul>
-                    <b><p>{strings.catalogueOfSurgeServicesInformationManSubtitle2Group4}</p></b>
-                    <ul className="list_uo">
-                        <li>{strings.catalogueOfSurgeServicesInformationManSubtitle2Group4Item1}</li>
-                        <li>{strings.catalogueOfSurgeServicesInformationManSubtitle2Group4Item2}</li>
-                        <li>{strings.catalogueOfSurgeServicesInformationManSubtitle2Group4Item3}</li>
-                        <li>{strings.catalogueOfSurgeServicesInformationManSubtitle2Group4Item4}</li>
-                    </ul>
-                    <img src="/assets/graphics/content/IMRoles.jpg" width='80%' />
-                    <h1> </h1>
-                    <h1>{strings.catalogueOfSurgeServicesInformationManSubtitle3}</h1>
-                    <p>{strings.catalogueOfSurgeServicesInformationManSubtitle3Text1}</p>
-                    <b><p>{strings.catalogueOfSurgeServicesInformationManSubtitle3Group1}</p></b>
-                    <ul className="list_uo">
-                        <li>{strings.catalogueOfSurgeServicesInformationManSubtitle3Group1Item1}</li>
-                        <li>{strings.catalogueOfSurgeServicesInformationManSubtitle3Group1Item2}</li>
-                        <li>{strings.catalogueOfSurgeServicesInformationManSubtitle3Group1Item3}</li>
-                        <li>{strings.catalogueOfSurgeServicesInformationManSubtitle3Group1Item4}</li>
-                        <li>{strings.catalogueOfSurgeServicesInformationManSubtitle3Group1Item5}</li>
-                        <li>{strings.catalogueOfSurgeServicesInformationManSubtitle3Group1Item6}</li>
-                    </ul>
-
-                    <b><p>{strings.catalogueOfSurgeServicesInformationManSubtitle3Group2}</p></b>
-                    <ul className="list_uo">
-                        <li>{strings.catalogueOfSurgeServicesInformationManSubtitle3Group2Item1}</li>
-                        <li>{strings.catalogueOfSurgeServicesInformationManSubtitle3Group2Item2}</li>
-                        <li>{strings.catalogueOfSurgeServicesInformationManSubtitle3Group2Item3}</li>
-                        <li>{strings.catalogueOfSurgeServicesInformationManSubtitle3Group2Item4}</li>
-                        <li>{strings.catalogueOfSurgeServicesInformationManSubtitle3Group2Item5}</li>
-                        <li>{strings.catalogueOfSurgeServicesInformationManSubtitle3Group2Item6}</li>
-                    </ul>
-
-                    <b><p>{strings.catalogueOfSurgeServicesInformationManSubtitle3Group3}</p></b>
-                    <ul className="list_uo">
-                        <li>{strings.catalogueOfSurgeServicesInformationManSubtitle3Group3Item1}</li>
-                        <li>{strings.catalogueOfSurgeServicesInformationManSubtitle3Group3Item2}</li>
-                        <li>{strings.catalogueOfSurgeServicesInformationManSubtitle3Group3Item3}</li>
-                    </ul>
-                    <img src="/assets/graphics/content/IFRC_Surge_01.jpg" width='80%' />
-                    <h1> </h1>
-                    <h1>{strings.catalogueOfSurgeServicesInformationManSubtitle4}</h1>
-                    <p>{strings.catalogueOfSurgeServicesInformationManSubtitle4Text1}</p>
-                    <ul className="list_uo">
-                        <li>{strings.catalogueOfSurgeServicesInformationManSubtitle4Group1Item1}</li>
-                        <li>{strings.catalogueOfSurgeServicesInformationManSubtitle4Group1Item2}</li>
-                        <li>{strings.catalogueOfSurgeServicesInformationManSubtitle4Group1Item3}</li>
-                    </ul>
-
-                    {strings.catalogueOfSurgeServicesInformationManSubtitle4Text2} <b><a href={strings.catalogueOfSurgeServicesInformationManSubtitle4Link1} >{strings.catalogueOfSurgeServicesInformationManSubtitle4Link1Text} </a></b>
-
-                    <h1> </h1>
-                    <h1>{strings.catalogueOfSurgeServicesInformationManSubtitle5}</h1>
-                    <p>{strings.catalogueOfSurgeServicesInformationManSubtitle5Text1}</p>
-                    <ul className="list_uo">
-                        <li>{strings.catalogueOfSurgeServicesInformationManSubtitle5Group1Item1}</li>
-                        <li>{strings.catalogueOfSurgeServicesInformationManSubtitle5Group1Item2}</li>
-                        <li>{strings.catalogueOfSurgeServicesInformationManSubtitle5Group1Item3}</li>
-                        <li>{strings.catalogueOfSurgeServicesInformationManSubtitle5Group1Item4}</li>
-                        <li>{strings.catalogueOfSurgeServicesInformationManSubtitle5Group1Item5}</li>
-                        <li>{strings.catalogueOfSurgeServicesInformationManSubtitle5Group1Item6}</li>
-                        <li>{strings.catalogueOfSurgeServicesInformationManSubtitle5Group1Item7}</li>
-                        <li>{strings.catalogueOfSurgeServicesInformationManSubtitle5Group1Item8}</li>
-                    </ul>
-
-                    <p>{strings.catalogueOfSurgeServicesInformationManSubtitle5Text2}</p>
-                    <img src="/assets/graphics/content/IFRC_Surge_02.jpg" width='80%' />
-                    {queriedData.sectionCards.map((sectionCard, index) => {
+                    <p>{strings[queriedData.sectionText]}</p>
+                      {queriedData.sectionCards.map((sectionCard, index) => {
                     const additionalResoruces = sectionCard.cardsTitle === "catalogueOfSurgeServicesCardsTitleAdditionalResources" ? true : false;
                     return (
                         <div key={index}>
@@ -249,8 +174,8 @@ export default class CatalogueOfSurgeServices extends React.Component {
                         </div>
                     );
                 })}
-                 
-                    {/* <p>{strings.catalogueOfSurgeServicesTitleSubtitle2Text1}</p> */}
+
+                   
                 </section>
             );
         }

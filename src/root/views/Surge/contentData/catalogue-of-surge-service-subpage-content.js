@@ -1095,6 +1095,7 @@ const CatalogueOfSurgeServiceSubpageContent = [
         title: 'catalogueManagementCholeraTitle',
         images: ['https://ifrcgo.org/global-services/assets/img/health/health-ccmc_01.jpg'],
         textSection: {
+
             capacity: {
                 text: 'catalogueManagementCholeraCapacityText'
             },
@@ -1127,6 +1128,36 @@ const CatalogueOfSurgeServiceSubpageContent = [
             }
         }
     },
+
+    {
+        hash: '#roles-and-resps',
+        other: false,
+        textSection: {
+            rolesAndResps: '1'
+        }
+    },
+    {
+        hash: '#im-support-for-op',
+        other: false,
+        textSection: {
+            imSupportForOp: '1'
+        }
+    },
+    {
+        hash: '#ifrc-geneva-im',
+        other: false,
+        textSection: {
+            ifrcGenevaIm: '1'
+        }
+    },
+    {
+        hash: '#composition-of-im-res',
+        other: false,
+        textSection: {
+            compositionOfImRes: '1'
+        }
+    },
+
     {
         hash: '#eru-cholera-treatment-center',
         other: false,

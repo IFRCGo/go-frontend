@@ -381,7 +381,7 @@ class Deployments extends SFPComponent {
             </Tabs>
           </div>
         </section>
-        <div className='inpage__body'>
+        {/* <div className='inpage__body'>
           <div className='inner margin-4-t'>
             <div>
               <AlertsTable
@@ -405,7 +405,7 @@ class Deployments extends SFPComponent {
               <Readiness eruOwners={this.props.eruOwners} />
             </div>
           </div>
-        </div>
+        </div> */}
       </section>
     );
   }
