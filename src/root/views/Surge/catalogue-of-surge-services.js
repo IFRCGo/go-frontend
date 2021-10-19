@@ -133,7 +133,7 @@ export default class CatalogueOfSurgeServices extends React.Component {
                     <p>{strings.catalogueOfSurgeServicesTitleSubtitle1Text1}</p>
                     <p>{strings.catalogueOfSurgeServicesTitleSubtitle1Text2}</p>
                     <h3>{strings.catalogueOfSurgeServicesTitleSubtitle2}</h3>
-                    <b><a bold='True' href={strings.catalogueOfSurgeServicesTitleSubtitle2LinkUrl1} >{strings.catalogueOfSurgeServicesTitleSubtitle2Link1} </a></b> {strings.catalogueOfSurgeServicesTitleSubtitle2Text1}
+                    <a href={strings.catalogueOfSurgeServicesTitleSubtitle2LinkUrl1} > <u>{strings.catalogueOfSurgeServicesTitleSubtitle2Link1} </u> </a> {strings.catalogueOfSurgeServicesTitleSubtitle2Text1}
                     {/* <p>{strings.catalogueOfSurgeServicesTitleSubtitle2Text1}</p> */}
                 </section>
             );
