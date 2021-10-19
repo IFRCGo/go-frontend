@@ -324,8 +324,7 @@ class Deployments extends SFPComponent {
                           <DeploymentsMap
                             data={deployData}
                             countriesGeojson={this.props.countriesGeojson}
-                          />
-                          : <BlockLoading />
+                          /> : <BlockLoading />
                         }
                       </div>
                       <div className='inpage__body container-lg'>
