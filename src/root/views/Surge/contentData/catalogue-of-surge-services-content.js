@@ -47,7 +47,7 @@ const CatalogueOfSurgeServicesContent = [
                 cards: [
                     {
                         cardType: 'textBtn',
-                        cardTitle: 'catalogueOfSurgeServicesCardsTitleRapidResponse',
+                        cardTitle: 'catalogueOfSurgeServicesEmergencyCards2Card1Title',
                         cardText: 'catalogueOfSurgeServicesEmergencyCards2Card1Text',
                         cardBtnText: 'catalogueOfSurgeServicesEmergencyCards2Card1BtnText',
                         url: '#assessment-cell'

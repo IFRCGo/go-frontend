@@ -2185,7 +2185,7 @@ const CatalogueOfSurgeServiceSubpageContent = [
     {
         hash: '#recovery',
         other: true,
-        title: '',
+        title: 'catalogueOtherService9Title',
         textSection: [
             {
                 title: 'catalogueOtherServiceTextTitle1',
@@ -2212,7 +2212,7 @@ const CatalogueOfSurgeServiceSubpageContent = [
     {
         hash: '#greenresponse',
         other: true,
-        title: '',
+        title: 'catalogueOtherService10Title',
         textSection: [
             {
                 title: 'catalogueOtherServiceTextTitle1',
