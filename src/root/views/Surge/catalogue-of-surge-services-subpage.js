@@ -386,7 +386,7 @@ export default class CatalogueOfSurgeServicesSubPage extends React.Component {
                     </ul>
 
                     <p>{strings.catalogueOfSurgeServicesInformationManSubtitle5Text2}</p>
-                    <img src="/assets/graphics/content/IFRC_Surge_02.jpg" width='81%' /> </>
+                    <img src="/assets/graphics/content/IFRC_Surge_02.jpg" width='80%' /> </>
                     : <></>
                 }
 
