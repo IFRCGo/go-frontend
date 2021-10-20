@@ -54,6 +54,7 @@ Date: 2021-09-07
  - For Surge Alert API, by default return all Alerts, not only Active
  - Fix aggregation count for Events by Deployment endpoint
 
+
 ### Release 5.3.3: Hotfixes
 
  - Fix link to GO User Library: https://github.com/IFRCGo/go-frontend/issues/1999
