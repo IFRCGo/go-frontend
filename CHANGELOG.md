@@ -1,3 +1,13 @@
+### Release 5.5.1: Surge Catalog of Services + Bugfixes
+
+Date: 2021-10-20
+
+ - Adds Surge Catalog of Services to Deployments Page
+ - Code to add Operational Toolbox on Deployments Page (currently hidden)
+ - Create tabs on Deployments page for new content
+ - Fix bug where map would not zoom correctly on emergency pages for small islands: https://github.com/IFRCGo/go-frontend/issues/2075
+
+
 ### Release 5.5.0: New maps, various bugfixes and upgrades
 
 Date: 2021-10-04

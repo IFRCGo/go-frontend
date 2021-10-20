@@ -1,0 +1,92 @@
+@import '~styles/settings/variables';
+
+.operationalTimelineContainer {
+    margin-top: 10px;
+    margin-bottom: 30px;
+
+    .svgHeader {
+        width: 100%;
+        display: flex;
+        justify-content: flex-end;
+    }
+
+    .svgHeader:after {
+        content: "";
+        overflow-y: scroll;
+        visibility: hidden;
+    }
+
+    .svgBody {
+        height: 800px;
+        overflow: auto;
+
+        #OperationalTimelineToolbox {
+            pointer-events: none;
+        
+            .svgPointerEvent {
+                pointer-events: all;
+                cursor: pointer;
+            }
+        }
+    }
+
+    a {
+        color: $primary-color;
+    }
+
+    h1 {
+        text-transform: uppercase;
+    }
+
+    .accordion {
+        background-color: $grey-mist;
+        cursor: pointer;
+        padding: 8px;
+        padding-left: 15px;
+        width: 100%;
+        border: none;
+        outline: none;
+        transition: 0.4s;
+        text-transform: uppercase;
+        font-weight: bold;
+        font-size: 1.2rem;
+
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+
+        span {
+            flex-grow: 1;
+            pointer-events: none;
+            &:last-of-type {
+                text-align: end;
+            }
+        }
+    }
+
+    .accordionPanel {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.2s ease-out;
+        border-bottom: 3px solid $grey-mist;
+        border-right: 3px solid $grey-mist;
+        border-left: 3px solid $grey-mist;
+
+        div {
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+
+            span {
+                white-space: pre-line;
+            }
+    
+            .listContainer {
+                display: flex;
+                flex-direction: column;
+                margin-left: 40px;
+                margin-right: 40px;
+            }
+        }
+    }
+}

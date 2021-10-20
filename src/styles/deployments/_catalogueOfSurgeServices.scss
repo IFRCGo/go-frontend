@@ -1,0 +1,188 @@
+@import '~styles/settings/variables';
+
+.cat-services-container {
+    margin-top: 50px;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+
+    .catalogueIcon {
+        font-size: 1.4rem;
+    }
+
+    .service-selector-container {
+        max-width: 250px;
+        display: flex;
+        flex-direction: column;
+        font-weight: bold;
+
+        .service-selector {
+            padding-left: 30px;
+            padding-top: 10px;
+            padding-bottom: 10px;
+            display: flex;
+            border-bottom: 3px solid $grey-mist;
+            border-right: 3px solid $grey-mist;
+            border-left: 3px solid $grey-mist;
+            cursor: pointer;
+
+            .serviceName {
+                width: 100%;
+                padding-left: 10px; 
+                padding-right: 10px;
+                align-self: center;
+            }
+        }
+
+        .title {
+            background-color: $grey-mist;
+            cursor: default;
+        }
+
+        .active {
+            color: $primary-color;
+            border-bottom: 3px solid $primary-color;
+
+            .activeIcon {
+                visibility: visible !important;
+            }
+        }
+    }
+
+    .selected-service-container {
+        padding-top: 20px;
+        padding-left: 20px;
+        padding-right: 20px;
+        width: 100%;
+        border-top: 3px solid $grey-mist;
+
+        section {
+            h1 {
+                text-transform: uppercase;
+            }
+
+            .cardsTitle {
+                padding-top: 20px;
+                border-bottom: 3px solid $grey-mist;
+            }
+
+            .cardsContainer {
+
+                .cardContainer {
+                    border-radius: $base-border-radius;
+                    box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.06);
+                    margin-bottom: 24px;
+                    
+                    &:hover {
+                        box-shadow: 
+                            0 3px 5px -1px rgba(0, 0, 0, 0.2),
+                            0 1px 18px 0 rgba(0, 0, 0, 0.12),
+                            0 6px 10px 0 rgba(0, 0, 0, 0.14);
+                    }
+
+                    .cardTitle {
+                        display: flex;
+                        width: 100%;
+                        min-height: 50px;
+                        background-color: $grey-mist;
+                        border-bottom: 3px solid $grey-mist;
+                        font-weight: bold;
+
+                        span {
+                            margin-left: 10px;
+                            margin-right: 10px;
+                            align-self: center;
+                        }
+                    }
+
+                    .cardElementContainer {
+                        display: flex;
+                        flex-direction: column;
+                        justify-content: space-between;
+                        border: 3px solid $grey-mist;
+
+                        .cardElement {
+                            cursor: pointer;
+                            padding: 10px;
+                            display: flex;
+
+                            span {
+                                align-self: center;
+                            }
+
+                            .cardElementText {
+                                padding-left: 10px;
+                                padding-right: 10px;
+                            }
+                        }
+
+                        .cardBtn {
+                            margin-left: 10px;
+                            margin-right: 10px;
+                            margin-bottom: 10px;
+                            max-width: 250px;
+                            border: 2px solid $primary-color;
+                            border-radius: 12px;
+                            background-color: $white;
+                            color: $primary-color;
+                            font-weight: bold;
+                            cursor: pointer;
+
+                            span {
+                                margin-right: 5px;
+                            }
+                        }
+
+                        .cardText {
+                            padding: 10px;
+                        }
+                    }
+                }
+            }
+        }
+
+        .backTo {
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            font-weight: bold;
+            color: $primary-color;
+            margin-bottom: 24px;
+            
+            span:nth-of-type(2) {
+                margin-left: 10px;
+                margin-right: 10px;
+            }
+        }
+
+        .catalogueServicePage {
+            h1 {
+                text-transform: uppercase;
+            }
+
+            h3 {
+                padding-left: 10px;
+                padding-right: 10px;
+                text-transform: uppercase;
+                border-bottom: 3px solid #E0E0E0;
+            }
+
+            p {
+                white-space: pre-line;
+            }
+
+            li {
+                white-space: pre-line;
+            }
+
+            a {
+                color: $primary-color;
+            }
+
+            ul {
+                padding-left: 20px;
+                padding-right: 20px;
+            }
+        }
+    }
+}

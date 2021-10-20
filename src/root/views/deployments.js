@@ -18,6 +18,7 @@ import {
   getAllDeploymentERU,
   getActivePersonnel,
   getEruOwners,
+  getNsRapidResponse,
   getPersonnelByEvent,
   getAggrSurgeKeyFigures
 } from '#actions';
@@ -40,7 +41,10 @@ import BreadCrumb from '#components/breadcrumb';
 import LanguageContext from '#root/languageContext';
 import Translate from '#components/Translate';
 import { countriesGeojsonSelector } from '../selectors';
-
+import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
+import TabContent from '#components/tab-content';
+// import OperationalTimeline from './Surge/operational-timeline';
+import CatalogueOfSurgeServices from './Surge/catalogue-of-surge-services';
 
 const DeploymentsByMonth = () => {
   const { pending, response } = useRequest({url: 'api/v2/deployment/aggregated_by_month/'});
@@ -78,9 +82,11 @@ class Deployments extends SFPComponent {
   }
 
   componentDidMount () {
+    this.displayTabContent();
     addFullscreenListener(this.onFullscreenChange);
     showGlobalLoading();
     this.props._getEruOwners();
+    this.props._getNsRapidResponse();
     this.props._getAllDeploymentERU();
     this.props._getActivePersonnel();
     this.props._getPersonnelByEvent();
@@ -139,9 +145,26 @@ class Deployments extends SFPComponent {
     this.requestResults(what);
   }
 
+  getTabDetails() {
+    const { strings } = this.context;
+    return [
+      { title: strings.deploymentsSurgeOverViewTab, hash: '#overview' },
+      // { title: strings.deploymentsOperationalToolboxTab, hash: '#operational-toolbox' },
+      { title: strings.deploymentsCatalogueOfSurgeServicesTab, hash: '#catalogue' }
+    ];
+  }
+
+  // Sets default tab if url param is blank or incorrect
+  displayTabContent () {
+    const tabHashArray = this.getTabDetails().map(({ hash }) => hash);
+    if (!tabHashArray.find(hash => hash === this.props.location.hash)) {
+      this.props.history.replace(`${this.props.location.pathname}${tabHashArray[0]}`);
+    }
+  }
+
   renderHeaderCharts (data, title) {
     const rows = 5;
-    const max = Math.max.apply(Math, data.map(o => +o.items));
+    const max = Math.max.apply(Math, data.map(o => +o.deployments_count));
     const items = data.length > rows ? data.slice(0, rows) : data;
     return (
       <div>
@@ -151,10 +174,10 @@ class Deployments extends SFPComponent {
         <div className='emergencies__container spacing-2'>
           <ul className='emergencies__list'>
             {items.map(o => (
-              <li key={o.name}
+              <li key={o.society_name}
                 className='emergencies__item'>
-                <span className='key'>{o.name} ({o.items})</span>
-                <span className='value'><Progress value={o.items} max={max}><span>100</span></Progress></span>
+                <span className='key'>{o.society_name} ({o.deployments_count})</span>
+                <span className='value'><Progress value={o.deployments_count} max={max}><span>100</span></Progress></span>
               </li>
             ))}
           </ul>
@@ -204,35 +227,38 @@ class Deployments extends SFPComponent {
   }
 
   renderCharts () {
-    const { data } = this.props.eruOwners;
-    const { strings } = this.context;
-    return (
-      <div className=''>
-        <div className='inner'>
-          <div className='inpage__body-charts'>
-            <div className='row display-flex flex-row'>
-              <div className='col col-6-xs spacing-v display-flex'>
-                <div className='chart box__content'>
-                  {this.renderHeaderCharts(data.owners, strings.deploymentNumber)}
-                </div>
-              </div>
-              <div className='col col-6-xs spacing-v display-flex'>
-                <div className='chart box__content'>
-                  <figure>
-                    <figcaption>
-                      <h2 className='fold__title'><Translate stringId='deployementsOverLastYear' /></h2>
-                    </figcaption>
-                  </figure>
-                  <div className='spacing-2-t'>
-                    <DeploymentsByMonth />
+    if (this.props.NsRapidResponse.fetched) {
+      const {data} = this.props.NsRapidResponse;
+      const {strings} = this.context;
+      const year = new Date().getFullYear();
+      return (
+          <div className=''>
+            <div className='inner'>
+              <div className='inpage__body-charts'>
+                <div className='row display-flex flex-row'>
+                  <div className='col col-6-xs spacing-v display-flex'>
+                    <div className='chart box__content'>
+                      {this.renderHeaderCharts(data, strings.deploymentNumberTop5 + ' (' + year + ')')}
+                    </div>
+                  </div>
+                  <div className='col col-6-xs spacing-v display-flex'>
+                    <div className='chart box__content'>
+                      <figure>
+                        <figcaption>
+                          <h2 className='fold__title'><Translate stringId='deployementsOverLastYear'/></h2>
+                        </figcaption>
+                      </figure>
+                      <div className='spacing-2-t'>
+                        <DeploymentsByMonth/>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      </div>
-    );
+      );
+    }
   }
 
   renderContent () {
@@ -251,6 +277,15 @@ class Deployments extends SFPComponent {
         this.props.activePersonnel.data.results
       );
     }
+
+    const tabDetails = [...this.getTabDetails()];
+    const handleTabChange = index => {
+      const tabHashArray = tabDetails.map(({ hash }) => hash);
+      const url = this.props.location.pathname;
+      this.props.history.replace(`${url}${tabHashArray[index]}`);
+    };
+    const hashes = tabDetails.map(t => t.hash);
+    const selectedIndex = hashes.indexOf(this.props.location.hash) !== -1 ? hashes.indexOf(this.props.location.hash) : 0;
 
     return (
       <section>
@@ -272,22 +307,81 @@ class Deployments extends SFPComponent {
               </div>
             </div>
           </header>
-          <div className='container-lg'>
-            {this.props.eru.fetched && this.props.activePersonnel.fetched ?
-              <DeploymentsMap
-                data={deployData}
-                countriesGeojson={this.props.countriesGeojson}
-              />
-              : <BlockLoading />
-            }
-          </div>
-          <div className='inpage__body container-lg'>
-            <div className='inner'>
-              {this.renderCharts()}
-            </div>
+          <div className='tab__wrap tab__wrap--3W'>
+            <Tabs selectedIndex={selectedIndex} onSelect={index => handleTabChange(index)}>
+              <TabList>
+                {tabDetails.map(tab => (
+                  <Tab key={tab.title}>{tab.title}</Tab>
+                ))}
+              </TabList>
+              <div className='inpage__body'>
+                <div className='inner'>
+                  {/* Surge overview tab */}
+                  <TabPanel>
+                    <TabContent>
+                      <div className='container-lg'>
+                        {this.props.eru.fetched && this.props.activePersonnel.fetched ?
+                          <DeploymentsMap
+                            data={deployData}
+                            countriesGeojson={this.props.countriesGeojson}
+                          /> : <BlockLoading />
+                        }
+                      </div>
+                      <div className='inpage__body container-lg'>
+                        <div className='inner'>
+                          {this.renderCharts()}
+                        </div>
+                      </div>
+                      <div className='inpage__body'>
+                        <div className='inner margin-4-t'>
+                          <div>
+                            <AlertsTable
+                              title={strings.homeSurgeNotification}
+                              limit={5}
+                              isActive={true}
+                              viewAll={'/alerts/all'}
+                              showRecent={true}
+                            />
+                          </div>
+                          <div className='table-deployed-personnel-block'>
+                            <PersonnelByEventTable data={this.props.personnelByEvent} />
+                          </div>
+                          <div className='inner'>
+                          <EruTable
+                            limit={5}
+                            viewAll={'/deployments/erus/all'}
+                          />
+                          </div>
+                          <div className='readiness__container container-lg'>
+                            <Readiness eruOwners={this.props.eruOwners} />
+                          </div>
+                        </div>
+                      </div>
+                    </TabContent>
+                  </TabPanel>
+                  {/* Surge Operational toolbox tab
+                  <TabPanel>
+                    <TabContent>
+                      <div className='container-lg margin-4-t'>
+                        <OperationalTimeline />
+                      </div>
+                    </TabContent>
+                  </TabPanel>
+                  Put me 8 rows earlier (to row end) if you need S.O. toolbox tab: */}
+                  {/* Surge Catalogue of surge services tab */}
+                  <TabPanel>
+                    <TabContent>
+                      <div className='container-lg'>
+                        <CatalogueOfSurgeServices />
+                      </div>
+                    </TabContent>
+                  </TabPanel>
+                </div>
+              </div>
+            </Tabs>
           </div>
         </section>
-        <div className='inpage__body'>
+        {/* <div className='inpage__body'>
           <div className='inner margin-4-t'>
             <div>
               <AlertsTable
@@ -311,7 +405,7 @@ class Deployments extends SFPComponent {
               <Readiness eruOwners={this.props.eruOwners} />
             </div>
           </div>
-        </div>
+        </div> */}
       </section>
     );
   }
@@ -338,9 +432,11 @@ Deployments.contextType = LanguageContext;
 if (environment !== 'production') {
   Deployments.propTypes = {
     _getEruOwners: T.func,
+    _getNsRapidResponse: T.func,
     _getActivePersonnel: T.func,
     _getAllDeploymentERU: T.func,
     eruOwners: T.object,
+    NsRapidResponse: T.object,
     eru: T.object,
     activePersonnel: T.object,
     allEru: T.object,
@@ -350,6 +446,7 @@ if (environment !== 'production') {
 
 const selector = (state) => ({
   eruOwners: state.eruOwners,
+  NsRapidResponse: state.NsRapidResponse,
   eru: state.deployments.eru,
   activePersonnel: state.deployments.activePersonnel,
   allEru: state.deployments.allEru,
@@ -360,6 +457,7 @@ const selector = (state) => ({
 
 const dispatcher = (dispatch) => ({
   _getEruOwners: () => dispatch(getEruOwners()),
+  _getNsRapidResponse: () => dispatch(getNsRapidResponse()),
   _getAllDeploymentERU: (...args) => dispatch(getAllDeploymentERU(...args)),
   _getActivePersonnel: (...args) => dispatch(getActivePersonnel(...args)),
   _getPersonnelByEvent: (...args) => dispatch(getPersonnelByEvent(...args)),
