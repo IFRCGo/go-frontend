@@ -2939,8 +2939,13 @@ export default {
   drefFormTabOperationOverviewLabel: 'Operation Overview',
   drefFormTabEventDetailLabel: 'Event Detail',
   drefFormTabActionsLabel: 'Actions/Needs',
-  drefFormTabResponseLabel: 'Response',
+  drefFormTabResponseLabel: 'Operation',
   drefFormTabSubmissionLabel: 'Submission/Contact',
+
+  drefFormSharingHeading: 'Sharing',
+  drefFormSharingTitle: 'Share the DREF Application with other Users',
+  drefFormSharingDescription: 'The users will be able to view, edit and add other users',
+  drefFormInstantShareLabel: 'Create & Share',
 
   drefFormTitle: 'Title',
   drefFormTitleDescription: 'Add country, type of disaster and location to the title',
@@ -3020,11 +3025,13 @@ export default {
   drefFormMen: 'Men',
   drefFormGirls: 'Girls (under 18)',
   drefFormBoys: 'Boys (under 18)',
-  drefFormTotal: 'Total',
+  drefFormTotal: 'Total Population',
   drefFormTargetedPopulation: 'Targeted Population',
   drefFormEstimateResponse: 'Estimate',
   drefFormEstimatePeopleDisability: 'Estimated Percentage People with Disability',
-  drefFormEstimatedUrban: 'Estimated Percentage Urban/Rural',
+  drefFormEstimatedPercentage: 'Estimated Percentage (Urban to Rural)',
+  drefFormEstimatedUrban: 'Urban',
+  drefFormEstimatedLocal: 'Rural',
   drefFormEstimatedDisplacedPeople: 'Estimated Number of Displaced People',
   drefFormPeopleTargetedWithEarlyActions: 'Numbers of persons targeted with early actions',
   drefFormObjectiveAndStrategy: 'Objective and Strategy Rationale',
@@ -3072,7 +3079,6 @@ export default {
   drefFormEndDateSubmissionDescription: 'Added by the regional office',
   drefFormMaxThreeHundredCharacters: 'Max 300 characters',
 
-
   drefFormCopyFRFailureMessage: 'Failed to get details for selected field report',
   drefFormCopyFRSuccessMessage: 'Successfully copied some data from the selected field report',
   drefFormCopyButtonLabel: 'Copy',
@@ -3083,4 +3089,22 @@ export default {
   drefFormListOfActivities: 'List of Activities',
   yesLabel: 'Yes',
   noLabel: 'No',
+
+  drefFormAddInterventionLabel: 'Add',
+  drefFormUploadImageLabel: 'Select and Image',
+  drefFormAddCountryLabel: 'Add Country',
+
+  drefFormSaveRequestSuccessMessage: 'DREF Application created / updated successfully',
+  drefFormSaveRequestFailureMessage: 'Failed to create / update DREF Application',
+  drefFormLoadRequestFailureMessage: 'Failed to load DREF Application',
+  drefFormLoadErrorTitle: 'Failed to load DREF Application',
+  drefFormLoadErrorDescription: 'There was an error loading the DREF Application',
+  drefFormLoadErrorHelpText: 'Please make sure that the application with given id exists and you have the permission to view it',
+  drefFormFieldGeneralError: 'Please correct all the errors!',
+
+  drefFormBudgetTemplateLabel: 'Budget template',
+  drefFormBudgetTemplateUploadButtonLabel: 'Select a spreadsheet',
+  drefFormContinueButtonLabel: 'Continue',
+  drefFormBackButtonLabel: 'Back',
+  drefFormSaveButtonLabel: 'Save',
 };

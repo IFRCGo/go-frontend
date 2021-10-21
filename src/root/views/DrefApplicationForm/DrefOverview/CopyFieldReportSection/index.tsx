@@ -122,11 +122,17 @@ function CopyFieldReportSection (props: Props) {
 
       let {
         national_society_contact_name,
+        national_society_contact_title,
         national_society_contact_email,
+        national_society_contact_phone_number,
         ifrc_emergency_name,
+        ifrc_emergency_title,
         ifrc_emergency_email,
+        ifrc_emergency_phone_number,
         media_contact_name,
+        media_contact_title,
         media_contact_email,
+        media_contact_phone_number,
       } = value;
 
       if (country_district.length === 1 && isNotDefined(country_district[0].country)) {
@@ -137,29 +143,47 @@ function CopyFieldReportSection (props: Props) {
         }];
       }
 
-      if (!national_society_contact_name && !national_society_contact_email) {
+      if (!national_society_contact_name
+        && !national_society_contact_email
+        && !national_society_contact_title
+        && !national_society_contact_phone_number
+      ) {
         const contact = fieldReport.contacts?.find(c => c.ctype === 'NationalSociety');
         if (contact) {
           national_society_contact_name = contact.name;
           national_society_contact_email = contact.email;
+          national_society_contact_phone_number = contact.phone;
+          national_society_contact_title = contact.title;
         }
       }
 
-      if (!ifrc_emergency_name && !ifrc_emergency_email) {
+      if (!ifrc_emergency_name
+        && !ifrc_emergency_email
+        && !ifrc_emergency_title
+        && !ifrc_emergency_phone_number
+      ) {
         const contact = fieldReport.contacts?.find(c => c.ctype === 'Federation');
         if (contact) {
           ifrc_emergency_name = contact.name;
           ifrc_emergency_email = contact.email;
+          ifrc_emergency_title = contact.title;
+          ifrc_emergency_phone_number = contact.phone;
         }
       }
 
-      if (!media_contact_name && !media_contact_email) {
-        const contact = fieldReport.contacts?.find(c => c.ctype === 'Media');
-        if (contact) {
-          media_contact_name = contact.name;
-          media_contact_email = contact.email;
-        }
-      }
+      if (!media_contact_name
+        && !media_contact_email
+        && !media_contact_title
+        && !media_contact_phone_number
+       ) {
+         const contact = fieldReport.contacts?.find(c => c.ctype === 'Media');
+         if (contact) {
+           media_contact_name = contact.name;
+           media_contact_email = contact.email;
+           media_contact_title = contact.title;
+           media_contact_phone_number = contact.phone;
+         }
+       }
 
       onValueSet({
         ...value,

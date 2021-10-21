@@ -6,7 +6,11 @@ import {
   useFormArray,
   StateArg,
 } from '@togglecorp/toggle-form';
-import { randomString } from '@togglecorp/fujs';
+import {
+  randomString,
+  listToMap,
+  isNotDefined,
+} from '@togglecorp/fujs';
 
 import Container from '#components/Container';
 import InputSection from '#components/InputSection';
@@ -14,11 +18,13 @@ import Button from '#components/Button';
 import TextArea from '#components/TextArea';
 import TextInput from '#components/TextInput';
 import SelectInput from '#components/SelectInput';
+import SearchSelectInput from '#components/SearchSelectInput';
 import LanguageContext from '#root/languageContext';
 import RadioInput from '#components/RadioInput';
 import DateInput from '#components/DateInput';
 import NumberInput from '#components/NumberInput';
 import GoFileInput from '#components/GoFileInput';
+import { rankedSearchOnList } from '#utils/common';
 
 import {
   optionLabelSelector,
@@ -28,6 +34,7 @@ import {
   booleanOptionKeySelector,
   CountryDistrict,
   ONSET_IMMINENT,
+  emptyNumericOptionList,
 } from '../common';
 import { CountryDistrictType } from '../useDrefFormOptions';
 import CountryDistrictInput from './CountryDistrictInput';
@@ -51,6 +58,7 @@ interface Props {
   fileIdToUrlMap: Record<number, string>;
   setFileIdToUrlMap?: React.Dispatch<React.SetStateAction<Record<number, string>>>;
   onValueSet: (value: StateArg<Value>) => void;
+  userOptions: NumericValueOption[];
 }
 
 function DrefOverview(props: Props) {
@@ -72,6 +80,7 @@ function DrefOverview(props: Props) {
     setFileIdToUrlMap,
     fileIdToUrlMap,
     onValueSet,
+    userOptions,
   } = props;
 
   const {
@@ -99,9 +108,58 @@ function DrefOverview(props: Props) {
   }, [onValueChange]);
 
   const isImminentOnset = value.type_of_onset === ONSET_IMMINENT;
+  const handleUserSearch = React.useCallback((input: string | undefined, callback) => {
+    if (!input) {
+      callback(emptyNumericOptionList);
+    }
+
+    callback(rankedSearchOnList(
+      userOptions,
+      input,
+      d => d.label,
+    ));
+  }, [userOptions]);
+
+  const userMap = React.useMemo(() => listToMap(userOptions, d => d.value, d => d.label), [userOptions]);
+  const initialOptions = React.useMemo(() => (
+    value.users?.map((u) => ({
+      label: userMap[u],
+      value: u,
+    }))
+  ), [userMap, value.users]);
 
   return (
     <>
+      <Container
+        className={styles.sharing}
+        heading={strings.drefFormSharingHeading}
+        visibleOverflow
+      >
+        <InputSection
+          title={strings.drefFormSharingTitle}
+          description={strings.drefFormSharingDescription}
+        >
+          <SearchSelectInput
+            name="users"
+            isMulti
+            initialOptions={initialOptions}
+            value={value.users}
+            onChange={onValueChange}
+            loadOptions={handleUserSearch}
+          />
+          {isNotDefined(value.id) && (
+            <div className={styles.actions}>
+              <Button
+                name={undefined}
+                variant="secondary"
+                disabled
+              >
+                {strings.drefFormInstantShareLabel}
+              </Button>
+            </div>
+          )}
+        </InputSection>
+      </Container>
       <CopyFieldReportSection
         value={value}
         onValueSet={onValueSet}
@@ -116,6 +174,7 @@ function DrefOverview(props: Props) {
             value={value.title}
             onChange={onValueChange}
             error={error?.fields?.title}
+            placeholder={strings.drefFormTitleDescription}
           />
         </InputSection>
         <InputSection
@@ -184,7 +243,7 @@ function DrefOverview(props: Props) {
               onClick={handleCountryDistrictAdd}
               variant="secondary"
             >
-              Add Country
+              {strings.drefFormAddCountryLabel}
             </Button>
           </div>
         </InputSection>
@@ -245,7 +304,7 @@ function DrefOverview(props: Props) {
             showStatus
             value={value.event_map}
           >
-            Select an Image
+            {strings.drefFormUploadImageLabel}
           </GoFileInput>
         </InputSection>
       </Container>

@@ -21,6 +21,8 @@ import InputSection from '#components/InputSection';
 import NumberInput from '#components/NumberInput';
 import SelectInput from '#components/SelectInput';
 import TextArea from '#components/TextArea';
+import InputLabel from '#components/InputLabel';
+import GoFileInput from '#components/GoFileInput';
 import LanguageContext from '#root/languageContext';
 
 import InterventionInput from './InterventionInput';
@@ -201,13 +203,27 @@ function Response(props: Props) {
             onChange={onValueChange}
             error={error?.fields?.disability_people_per}
           />
-          <NumberInput
-            label={strings.drefFormEstimatedUrban}
-            name="people_per_urban_local"
-            value={value.people_per_urban_local}
-            onChange={onValueChange}
-            error={error?.fields?.people_per_urban_local}
-          />
+          <div className={styles.urbanToRural}>
+            <InputLabel>
+              {strings.drefFormEstimatedPercentage}
+            </InputLabel>
+            <div className={styles.inputs}>
+              <NumberInput
+                placeholder={strings.drefFormEstimatedUrban}
+                name="people_per_urban"
+                value={value.people_per_urban}
+                onChange={onValueChange}
+                error={error?.fields?.people_per_urban}
+              />
+              <NumberInput
+                placeholder={strings.drefFormEstimatedLocal}
+                name="people_per_local"
+                value={value.people_per_local}
+                onChange={onValueChange}
+                error={error?.fields?.people_per_local}
+              />
+            </div>
+          </div>
           <NumberInput
             label={strings.drefFormEstimatedDisplacedPeople}
             name="displaced_people"
@@ -362,6 +378,21 @@ function Response(props: Props) {
           </InputSection>
         )}
         <InputSection>
+          <GoFileInput
+            accept=".xlsx, .xls"
+            error={error?.fields?.budget_file}
+            fileIdToUrlMap={fileIdToUrlMap}
+            label={strings.drefFormBudgetTemplateLabel}
+            name="budget_file"
+            onChange={onValueChange}
+            setFileIdToUrlMap={setFileIdToUrlMap}
+            showStatus
+            value={value.budget_file}
+          >
+            {strings.drefFormBudgetTemplateUploadButtonLabel}
+          </GoFileInput>
+        </InputSection>
+        <InputSection>
           <SelectInput
             name={undefined}
             onChange={setIntervention}
@@ -389,8 +420,6 @@ function Response(props: Props) {
             onRemove={onInterventionRemove}
             error={error?.fields?.planned_interventions}
             interventionOptions={interventionOptions}
-            fileIdToUrlMap={fileIdToUrlMap}
-            setFileIdToUrlMap={setFileIdToUrlMap}
           />
         ))}
       </Container>

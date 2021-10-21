@@ -149,7 +149,7 @@ function DrefApplication(props: Props) {
 
   const [fileIdToUrlMap, setFileIdToUrlMap] = React.useState<Record<number, string>>({});
   const [currentStep, setCurrentStep] = React.useState<StepTypes>('operationOverview');
-  const submitButtonLabel = currentStep === 'submission' ? strings.fieldReportSubmit : strings.fieldReportContinue;
+  const submitButtonLabel = currentStep === 'submission' ? strings.drefFormSaveButtonLabel: strings.drefFormContinueButtonLabel;
   const shouldDisabledBackButton = currentStep === 'operationOverview';
 
   const erroredTabs = React.useMemo(() => {
@@ -186,7 +186,7 @@ function DrefApplication(props: Props) {
     body: ctx => ctx,
     onSuccess: (response) => {
       alert.show(
-        'Dref application created / updated successfully',
+        strings.drefFormSaveRequestSuccessMessage,
         { variant: 'success' },
       );
       if (!drefId) {
@@ -223,7 +223,7 @@ function DrefApplication(props: Props) {
       }
       alert.show(
         <p>
-          Failed to create / update Dref Application
+          {strings.drefFormSaveRequestFailureMessage}
           &nbsp;
           <strong>
             {messageForNotification}
@@ -239,6 +239,7 @@ function DrefApplication(props: Props) {
 
   const {
     pending: drefApplicationPending,
+    response: drefResponse,
   } = useRequest<DrefApiFields>({
     skip: !drefId,
     url: `api/v2/dref/${drefId}/`,
@@ -258,12 +259,8 @@ function DrefApplication(props: Props) {
           });
         }
 
-        if (response.planned_interventions?.length > 0) {
-          response.planned_interventions.forEach((pi) => {
-            if (pi.budget_file_details) {
-              newMap[pi.budget_file_details.id] = pi.budget_file_details.file;
-            }
-          });
+        if (response.budget_file_details) {
+          newMap[response.budget_file_details.id] = response.budget_file_details.file;
         }
 
         return newMap;
@@ -286,8 +283,32 @@ function DrefApplication(props: Props) {
           ...ni,
           clientId: String(ni.id),
         })),
+        disability_people_per: response.disability_people_per ? +response.disability_people_per : undefined,
+        people_per_urban: response.people_per_urban ? +response.people_per_urban : undefined,
+        people_per_local: response.people_per_local ? +response.people_per_local : undefined,
       });
     },
+    onFailure: ({
+      value: {
+        messageForNotification,
+        errors,
+      },
+      debugMessage,
+    }) => {
+      alert.show(
+        <p>
+          {strings.drefFormLoadRequestFailureMessage}
+          &nbsp;
+          <strong>
+            {messageForNotification}
+          </strong>
+        </p>,
+        {
+          variant: 'danger',
+          debugMessage,
+        },
+      );
+    }
   });
 
   const validateCurrentTab = React.useCallback((exceptions: (keyof DrefFields)[] = []) => {
@@ -423,11 +444,16 @@ function DrefApplication(props: Props) {
     if (isDefined(value.date_of_approval) && isDefined(value.operation_timeframe)) {
       const approvalDate = new Date(value.date_of_approval);
       if (!Number.isNaN(approvalDate.getTime())) {
-        approvalDate.setMonth(approvalDate.getMonth() + value.operation_timeframe);
+        approvalDate.setMonth(
+          approvalDate.getMonth()
+          + value.operation_timeframe
+          + 1 // To get last day of the month
+        );
+        approvalDate.setDate(0);
+
         const yyyy = approvalDate.getFullYear();
         const mm = approvalDate.getMonth();
         const dd = approvalDate.getDate();
-        console.info(ymdToDateString(yyyy, mm, dd));
         onValueChange(ymdToDateString(yyyy, mm, dd), 'end_date' as const);
       }
     }
@@ -438,9 +464,11 @@ function DrefApplication(props: Props) {
     children: strings.drefFormExportLabel,
   });
 
+  const failedToLoadDref = !pending && isDefined(drefId) && !drefResponse;
+
   return (
     <Tabs
-      disabled={false}
+      disabled={failedToLoadDref}
       onChange={handleTabChange}
       value={currentStep}
       variant="step"
@@ -500,91 +528,107 @@ function DrefApplication(props: Props) {
             <BlockLoading />
           </Container>
         ) : (
-          <>
-            <Container>
-              <NonFieldError
-                error={error}
-                message="Please correct all the errors!"
-              />
+          failedToLoadDref ? (
+            <Container
+              contentClassName={styles.errorMessage}
+            >
+              <h3>
+                {strings.drefFormLoadErrorTitle}
+              </h3>
+              <p>
+                {strings.drefFormLoadErrorDescription}
+              </p>
+              <p>
+                {strings.drefFormLoadErrorHelpText}
+              </p>
             </Container>
-            <TabPanel name="operationOverview">
-              <DrefOverview
-                error={error}
-                onValueChange={onValueChange}
-                value={value}
-                yesNoOptions={yesNoOptions}
-                disasterTypeOptions={disasterTypeOptions}
-                onsetOptions={onsetOptions}
-                disasterCategoryOptions={disasterCategoryOptions}
-                countryOptions={countryOptions}
-                fetchingCountries={fetchingCountries}
-                fetchingDisasterTypes={fetchingDisasterTypes}
-                nationalSocietyOptions={nationalSocietyOptions}
-                fetchingNationalSociety={fetchingCountries}
-                fileIdToUrlMap={fileIdToUrlMap}
-                setFileIdToUrlMap={setFileIdToUrlMap}
-                onValueSet={onValueSet}
-              />
-            </TabPanel>
-            <TabPanel name="eventDetails">
-              <EventDetails
-                isImminentOnset={isImminentOnset}
-                error={error}
-                onValueChange={onValueChange}
-                value={value}
-                yesNoOptions={yesNoOptions}
-                fileIdToUrlMap={fileIdToUrlMap}
-                setFileIdToUrlMap={setFileIdToUrlMap}
-              />
-            </TabPanel>
-            <TabPanel name="action">
-              <ActionsFields
-                error={error}
-                onValueChange={onValueChange}
-                value={value}
-                yesNoOptions={yesNoOptions}
-                needOptions={needOptions}
-                nsActionOptions={nsActionOptions}
-              />
-            </TabPanel>
-            <TabPanel name="response">
-              <Response
-                interventionOptions={interventionOptions}
-                error={error}
-                onValueChange={onValueChange}
-                value={value}
-                fileIdToUrlMap={fileIdToUrlMap}
-                setFileIdToUrlMap={setFileIdToUrlMap}
-                needOptions={needOptions}
-              />
-            </TabPanel>
-            <TabPanel name="submission">
-              <Submission
-                error={error}
-                onValueChange={onValueChange}
-                value={value}
-                userOptions={userOptions}
-              />
-            </TabPanel>
-            <div className={styles.actions}>
-              <Button
-                name={undefined}
-                variant="secondary"
-                onClick={handleBackButtonClick}
-                disabled={shouldDisabledBackButton}
-              >
-                Back
-              </Button>
-              <Button
-                name={undefined}
-                variant="secondary"
-                onClick={handleSubmitButtonClick}
-                type="submit"
-              >
-                {submitButtonLabel}
-              </Button>
-            </div>
-          </>
+          ) : (
+            <>
+              <Container>
+                <NonFieldError
+                  error={error}
+                  message={strings.drefFormFieldGeneralError}
+                />
+              </Container>
+              <TabPanel name="operationOverview">
+                <DrefOverview
+                  error={error}
+                  onValueChange={onValueChange}
+                  value={value}
+                  yesNoOptions={yesNoOptions}
+                  disasterTypeOptions={disasterTypeOptions}
+                  onsetOptions={onsetOptions}
+                  disasterCategoryOptions={disasterCategoryOptions}
+                  countryOptions={countryOptions}
+                  fetchingCountries={fetchingCountries}
+                  fetchingDisasterTypes={fetchingDisasterTypes}
+                  nationalSocietyOptions={nationalSocietyOptions}
+                  fetchingNationalSociety={fetchingCountries}
+                  fileIdToUrlMap={fileIdToUrlMap}
+                  setFileIdToUrlMap={setFileIdToUrlMap}
+                  onValueSet={onValueSet}
+                  userOptions={userOptions}
+                />
+              </TabPanel>
+              <TabPanel name="eventDetails">
+                <EventDetails
+                  isImminentOnset={isImminentOnset}
+                  error={error}
+                  onValueChange={onValueChange}
+                  value={value}
+                  yesNoOptions={yesNoOptions}
+                  fileIdToUrlMap={fileIdToUrlMap}
+                  setFileIdToUrlMap={setFileIdToUrlMap}
+                />
+              </TabPanel>
+              <TabPanel name="action">
+                <ActionsFields
+                  error={error}
+                  onValueChange={onValueChange}
+                  value={value}
+                  yesNoOptions={yesNoOptions}
+                  needOptions={needOptions}
+                  nsActionOptions={nsActionOptions}
+                />
+              </TabPanel>
+              <TabPanel name="response">
+                <Response
+                  interventionOptions={interventionOptions}
+                  error={error}
+                  onValueChange={onValueChange}
+                  value={value}
+                  fileIdToUrlMap={fileIdToUrlMap}
+                  setFileIdToUrlMap={setFileIdToUrlMap}
+                  needOptions={needOptions}
+                />
+              </TabPanel>
+              <TabPanel name="submission">
+                <Submission
+                  error={error}
+                  onValueChange={onValueChange}
+                  value={value}
+                />
+              </TabPanel>
+              <div className={styles.actions}>
+                <Button
+                  name={undefined}
+                  variant="secondary"
+                  onClick={handleBackButtonClick}
+                  disabled={shouldDisabledBackButton}
+                >
+                  {strings.drefFormBackButtonLabel}
+                </Button>
+                <Button
+                  name={undefined}
+                  variant="secondary"
+                  onClick={handleSubmitButtonClick}
+                  type="submit"
+                >
+                  {submitButtonLabel}
+                </Button>
+              </div>
+            </>
+          )
         )}
       </Page>
     </Tabs>
