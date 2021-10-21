@@ -7,3 +7,11 @@
     padding: $spacing/2 $spacing;
   }
 }
+
+.sharing {
+  .actions {
+    flex-basis: unset;
+    flex-grow: unset;
+    padding: $spacing;
+  }
+}

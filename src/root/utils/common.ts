@@ -1,5 +1,10 @@
 import { memo } from 'react';
-import { isDefined } from '@togglecorp/fujs';
+import {
+  isDefined,
+  isFalsyString,
+  caseInsensitiveSubmatch,
+  compareStringSearch,
+} from '@togglecorp/fujs';
 
 export const getHashFromBrowser = () => window.location.hash.substr(1);
 export const setHashToBrowser = (hash: string | undefined) => {
@@ -100,4 +105,22 @@ export function ymdToDateString(year: number, month: number, day: number) {
 }
 
 export const genericMemo: (<T>(c: T) => T) = memo;
+
+export function rankedSearchOnList<T>(
+  list: T[],
+  searchString: string | undefined,
+  labelSelector: (item: T) => string,
+) {
+  if (isFalsyString(searchString)) {
+    return list;
+  }
+
+  return list
+  .filter((option) => caseInsensitiveSubmatch(labelSelector(option), searchString))
+  .sort((a, b) => compareStringSearch(
+    labelSelector(a),
+    labelSelector(b),
+    searchString,
+  ));
+}
 

@@ -14,7 +14,6 @@ import BulletTextArea from '#components/BulletTextArea';
 import Button from '#components/Button';
 import NumberInput from '#components/NumberInput';
 import InputSection from '#components/InputSection';
-import GoFileInput from '#components/GoFileInput';
 import LanguageContext from '#root/languageContext';
 
 import {
@@ -38,8 +37,6 @@ interface Props {
   onRemove: (index: number) => void;
   index: number;
   interventionOptions: StringValueOption[];
-  fileIdToUrlMap: Record<number, string>;
-  setFileIdToUrlMap?: React.Dispatch<React.SetStateAction<Record<number, string>>>;
 }
 
 function InterventionInput(props: Props) {
@@ -52,8 +49,6 @@ function InterventionInput(props: Props) {
     index,
     interventionOptions,
     onRemove,
-    fileIdToUrlMap,
-    setFileIdToUrlMap,
   } = props;
 
   const interventionLabel = React.useMemo(() => (
@@ -72,21 +67,26 @@ function InterventionInput(props: Props) {
         title={interventionLabel}
         multiRow
         twoColumn
+        normalDescription
+        description={(
+          <>
+            <NumberInput
+              label="Budget"
+              name="budget"
+              value={value.budget}
+              onChange={onFieldChange}
+              error={error?.fields?.budget}
+            />
+            <NumberInput
+              label="Persons Targeted"
+              name="person_targeted"
+              value={value.person_targeted}
+              onChange={onFieldChange}
+              error={error?.fields?.person_targeted}
+            />
+          </>
+        )}
       >
-          <NumberInput
-            label="Budget"
-            name="budget"
-            value={value.budget}
-            onChange={onFieldChange}
-            error={error?.fields?.budget}
-          />
-          <NumberInput
-            label="Persons Targeted"
-            name="persons_targeted"
-            value={value.persons_targeted}
-            onChange={onFieldChange}
-            error={error?.fields?.persons_targeted}
-          />
         <TextArea
           label="Indicator"
           name="indicator"
@@ -101,19 +101,6 @@ function InterventionInput(props: Props) {
           onChange={onFieldChange}
           error={error?.fields?.description}
         />
-        <GoFileInput
-          accept=".xlsx, .xls"
-          error={error?.fields?.budget_file}
-          fileIdToUrlMap={fileIdToUrlMap}
-          label="Budget template"
-          name="budget_file"
-          onChange={onFieldChange}
-          setFileIdToUrlMap={setFileIdToUrlMap}
-          showStatus
-          value={value.budget_file}
-        >
-          Select a spreadsheet
-        </GoFileInput>
       </InputSection>
       <Button
         className={styles.removeButton}

@@ -1,11 +1,5 @@
 import React from 'react';
 import {
-  isFalsyString,
-  caseInsensitiveSubmatch,
-  compareStringSearch,
-  listToMap,
-} from '@togglecorp/fujs';
-import {
   PartialForm,
   Error,
   EntriesAsList,
@@ -14,41 +8,17 @@ import {
 import Container from '#components/Container';
 import InputSection from '#components/InputSection';
 import TextInput from '#components/TextInput';
-import SearchSelectInput from '#components/SearchSelectInput';
 import LanguageContext from '#root/languageContext';
 
-import {
-  DrefFields,
-  NumericValueOption,
-  emptyNumericOptionList,
-} from '../common';
+import { DrefFields } from '../common';
 
 import styles from './styles.module.scss';
-
-export function rankedSearchOnList<T>(
-  list: T[],
-  searchString: string | undefined,
-  labelSelector: (item: T) => string,
-) {
-  if (isFalsyString(searchString)) {
-    return list;
-  }
-
-  return list
-  .filter((option) => caseInsensitiveSubmatch(labelSelector(option), searchString))
-  .sort((a, b) => compareStringSearch(
-    labelSelector(a),
-    labelSelector(b),
-    searchString,
-  ));
-}
 
 type Value = PartialForm<DrefFields>;
 interface Props {
   error: Error<Value> | undefined;
   onValueChange: (...entries: EntriesAsList<Value>) => void;
   value: Value;
-  userOptions: NumericValueOption[];
 }
 
 function Submission(props: Props) {
@@ -58,28 +28,8 @@ function Submission(props: Props) {
     error,
     onValueChange,
     value,
-    userOptions,
   } = props;
 
-  const handleUserSearch = React.useCallback((input: string | undefined, callback) => {
-    if (!input) {
-      callback(emptyNumericOptionList);
-    }
-
-    callback(rankedSearchOnList(
-      userOptions,
-      input,
-      d => d.label,
-    ));
-  }, [userOptions]);
-
-  const userMap = React.useMemo(() => listToMap(userOptions, d => d.value, d => d.label), [userOptions]);
-  const initialOptions = React.useMemo(() => (
-    value.users?.map((u) => ({
-      label: userMap[u],
-      value: u,
-    }))
-  ), [userMap, value.users]);
 
   return (
     <>
@@ -102,7 +52,6 @@ function Submission(props: Props) {
           title={strings.drefFormGlideNum}
         >
           <TextInput
-            placeholder="MDR code"
             name="glide_code"
             value={value.glide_code}
             onChange={onValueChange}
@@ -112,6 +61,8 @@ function Submission(props: Props) {
         <InputSection
           title={strings.drefFormAppealManager}
           description={strings.drefFormAppealManagerDescription}
+          multiRow
+          twoColumn
         >
           <TextInput
             label="Name"
@@ -121,16 +72,32 @@ function Submission(props: Props) {
             error={error?.fields?.ifrc_appeal_manager_name}
           />
           <TextInput
+            label="Title"
+            name="ifrc_appeal_manager_title"
+            value={value.ifrc_appeal_manager_title}
+            onChange={onValueChange}
+            error={error?.fields?.ifrc_appeal_manager_title}
+          />
+          <TextInput
             label="Email"
             name="ifrc_appeal_manager_email"
             value={value.ifrc_appeal_manager_email}
             onChange={onValueChange}
             error={error?.fields?.ifrc_appeal_manager_email}
           />
+          <TextInput
+            label="Phone Number"
+            name="ifrc_appeal_manager_phone_number"
+            value={value.ifrc_appeal_manager_phone_number}
+            onChange={onValueChange}
+            error={error?.fields?.ifrc_appeal_manager_phone_number}
+          />
         </InputSection>
         <InputSection
           title={strings.drefFormProjectManager}
           description={strings.drefFormProjectManagerDescription}
+          multiRow
+          twoColumn
         >
           <TextInput
             label="Name"
@@ -140,15 +107,31 @@ function Submission(props: Props) {
             error={error?.fields?.ifrc_project_manager_name}
           />
           <TextInput
+            label="Title"
+            name="ifrc_project_manager_title"
+            value={value.ifrc_project_manager_title}
+            onChange={onValueChange}
+            error={error?.fields?.ifrc_project_manager_title}
+          />
+          <TextInput
             label="Email"
             name="ifrc_project_manager_email"
             value={value.ifrc_project_manager_email}
             onChange={onValueChange}
             error={error?.fields?.ifrc_project_manager_email}
           />
+          <TextInput
+            label="Phone Number"
+            name="ifrc_project_manager_phone_number"
+            value={value.ifrc_project_manager_phone_number}
+            onChange={onValueChange}
+            error={error?.fields?.ifrc_project_manager_phone_number}
+          />
         </InputSection>
         <InputSection
           title={strings.drefFormNationalSocietyContact}
+          multiRow
+          twoColumn
         >
           <TextInput
             label="Name"
@@ -158,15 +141,31 @@ function Submission(props: Props) {
             error={error?.fields?.national_society_contact_name}
           />
           <TextInput
+            label="Title"
+            name="national_society_contact_title"
+            value={value.national_society_contact_title}
+            onChange={onValueChange}
+            error={error?.fields?.national_society_contact_title}
+          />
+          <TextInput
             label="Email"
             name="national_society_contact_email"
             value={value.national_society_contact_email}
             onChange={onValueChange}
             error={error?.fields?.national_society_contact_email}
           />
+          <TextInput
+            label="Phone Number"
+            name="national_society_contact_phone_number"
+            value={value.national_society_contact_phone_number}
+            onChange={onValueChange}
+            error={error?.fields?.national_society_contact_phone_number}
+          />
         </InputSection>
         <InputSection
           title={strings.drefFormIfrcEmergency}
+          multiRow
+          twoColumn
         >
           <TextInput
             label="Name"
@@ -176,15 +175,31 @@ function Submission(props: Props) {
             error={error?.fields?.ifrc_emergency_name}
           />
           <TextInput
+            label="Title"
+            name="ifrc_emergency_title"
+            value={value.ifrc_emergency_title}
+            onChange={onValueChange}
+            error={error?.fields?.ifrc_emergency_title}
+          />
+          <TextInput
             label="Email"
             name="ifrc_emergency_email"
             value={value.ifrc_emergency_email}
             onChange={onValueChange}
             error={error?.fields?.ifrc_emergency_email}
           />
+          <TextInput
+            label="Phone Number"
+            name="ifrc_emergency_phone_number"
+            value={value.ifrc_emergency_phone_number}
+            onChange={onValueChange}
+            error={error?.fields?.ifrc_emergency_phone_number}
+          />
         </InputSection>
         <InputSection
           title={strings.drefFormMediaContact}
+          multiRow
+          twoColumn
         >
           <TextInput
             label="Name"
@@ -194,29 +209,25 @@ function Submission(props: Props) {
             error={error?.fields?.media_contact_name}
           />
           <TextInput
+            label="Title"
+            name="media_contact_title"
+            value={value.media_contact_title}
+            onChange={onValueChange}
+            error={error?.fields?.media_contact_title}
+          />
+          <TextInput
             label="Email"
             name="media_contact_email"
             value={value.media_contact_email}
             onChange={onValueChange}
             error={error?.fields?.media_contact_email}
           />
-        </InputSection>
-      </Container>
-      <Container
-        heading="Sharing"
-        visibleOverflow
-      >
-        <InputSection
-          title="Share the DREF Application with other Users"
-          description="The users will be able to view, edit and add other users"
-        >
-          <SearchSelectInput
-            name="users"
-            isMulti
-            initialOptions={initialOptions}
-            value={value.users}
+          <TextInput
+            label="Phone Number"
+            name="media_contact_phone_number"
+            value={value.media_contact_phone_number}
             onChange={onValueChange}
-            loadOptions={handleUserSearch}
+            error={error?.fields?.media_contact_phone_number}
           />
         </InputSection>
       </Container>
