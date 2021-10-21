@@ -81,8 +81,7 @@ export interface Intervention {
   clientId: string;
   title: string;
   budget: number;
-  budget_file: number;
-  persons_targeted: number;
+  person_targeted: number;
   indicator: string;
   description: string;
 }
@@ -132,15 +131,23 @@ export interface DrefFields {
   ifrc : string;
   ifrc_appeal_manager_email: string;
   ifrc_appeal_manager_name: string;
+  ifrc_appeal_manager_phone_number: string;
+  ifrc_appeal_manager_title: string;
   ifrc_emergency_email: string;
   ifrc_emergency_name: string;
+  ifrc_emergency_phone_number: string;
+  ifrc_emergency_title: string;
   ifrc_project_manager_email: string;
   ifrc_project_manager_name: string;
+  ifrc_project_manager_phone_number: string;
+  ifrc_project_manager_title: string;
   lessons_learned: string;
   logistic_capacity_of_ns : string;
   major_coordination_mechanism: string;
   media_contact_email: string;
   media_contact_name: string;
+  media_contact_phone_number: string;
+  media_contact_title: string;
   men: number;
   modified_at: string;
   modified_by: number;
@@ -150,6 +157,8 @@ export interface DrefFields {
   national_society_actions: NsAction[];
   national_society_contact_email: string;
   national_society_contact_name: string;
+  national_society_contact_phone_number: string;
+  national_society_contact_title: string;
   needs_identified: Need[];
   ns_request_date: string;
   ns_request_fund : boolean;
@@ -162,10 +171,14 @@ export interface DrefFields {
   operation_timeframe: number;
   originator_email : string;
   originator_name: string;
+  originator_phone_number: string;
+  originator_title: string;
   partner_national_society: string;
   people_assisted: string;
-  people_per_urban_local: number;
+  people_per_urban: number;
+  people_per_local: number;
   people_targeted_with_early_actions: number;
+  budget_file: number;
   planned_interventions: Intervention[];
   pmer : string;
   publishing_date: string;
@@ -191,10 +204,6 @@ export interface DrefApiFields extends Omit<DrefFields, 'country_district' | 'pl
   country_district: (Omit<CountryDistrict, 'clientId'> & { id: number })[];
   planned_interventions: (Omit<Intervention, 'clientId'> & {
     id: number,
-    budget_file_details?: {
-      id: number;
-      file: string;
-    }
   })[];
   national_society_actions: (Omit<NsAction, 'clientId'> & { id: number })[];
   needs_identified: (Omit<Need, 'clientId'> & { id: number })[];
@@ -202,6 +211,10 @@ export interface DrefApiFields extends Omit<DrefFields, 'country_district' | 'pl
     id: number;
     file: string;
   };
+  budget_file_details: {
+    id: number;
+    file: string;
+  }
   images_details: {
     id: number;
     file: string;
@@ -210,6 +223,7 @@ export interface DrefApiFields extends Omit<DrefFields, 'country_district' | 'pl
 
 
 export const overviewFields: (keyof DrefFields)[] = [
+  'users',
   'field_report',
   'title',
   'national_society',
@@ -224,6 +238,12 @@ export const overviewFields: (keyof DrefFields)[] = [
   'event_date',
   'go_field_report_date',
   'ns_respond_date',
+  'ns_request_date',
+  'start_date',
+  'end_date',
+  'submission_to_geneva',
+  'date_of_approval',
+  'operation_timeframe',
 ];
 
 export const eventDetailsFields: (keyof DrefFields)[] = [
@@ -259,7 +279,8 @@ export const responseFields: (keyof DrefFields)[] = [
   'girls',
   'boys',
   'disability_people_per',
-  'people_per_urban_local',
+  'people_per_urban',
+  'people_per_local',
   'displaced_people',
   'people_targeted_with_early_actions',
   'operation_objective',
@@ -270,27 +291,31 @@ export const responseFields: (keyof DrefFields)[] = [
   'safety_concerns',
   'pmer',
   'communication',
+  'budget_file',
   'planned_interventions',
 ];
 
 export const submissionFields: (keyof DrefFields)[] = [
-  'ns_request_date',
-  'start_date',
-  'end_date',
-  'submission_to_geneva',
-  'date_of_approval',
-  'operation_timeframe',
   'appeal_code',
   'glide_code',
   'ifrc_appeal_manager_name',
   'ifrc_appeal_manager_email',
+  'ifrc_appeal_manager_phone_number',
+  'ifrc_appeal_manager_title',
   'ifrc_project_manager_name',
   'ifrc_project_manager_email',
+  'ifrc_project_manager_phone_number',
+  'ifrc_project_manager_title',
   'national_society_contact_name',
   'national_society_contact_email',
+  'national_society_contact_phone_number',
+  'national_society_contact_title',
   'ifrc_emergency_name',
   'ifrc_emergency_email',
+  'ifrc_emergency_phone_number',
+  'ifrc_emergency_title',
   'media_contact_name',
   'media_contact_email',
-  'users',
+  'media_contact_phone_number',
+  'media_contact_title',
 ];

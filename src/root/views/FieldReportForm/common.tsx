@@ -705,14 +705,10 @@ export function transformAPIFieldsToFormFields(apiValues: FieldReportAPIResponse
         id: user,
     },
      */
-    dtype: {
-        id: dtype,
-    } = {},
+    dtype,
     contacts,
     actions_taken,
-    event: {
-        id: event,
-    } = {},
+    event,
     countries: {
         0: {
             id: country,
@@ -986,8 +982,8 @@ export function transformAPIFieldsToFormFields(apiValues: FieldReportAPIResponse
     start_date: isDefined(start_date) ? start_date.split('T')[0] : start_date,
     summary,
     other_sources,
-    dtype,
-    event,
+    dtype: dtype?.id,
+    event: event?.id,
     country,
     districts: districts?.map(d => d.id) ?? [],
     external_partners,
