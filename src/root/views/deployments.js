@@ -44,7 +44,7 @@ import { countriesGeojsonSelector } from '../selectors';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import TabContent from '#components/tab-content';
 // import OperationalTimeline from './Surge/operational-timeline';
-// import CatalogueOfSurgeServices from './Surge/catalogue-of-surge-services';
+import CatalogueOfSurgeServices from './Surge/catalogue-of-surge-services';
 
 const DeploymentsByMonth = () => {
   const { pending, response } = useRequest({url: 'api/v2/deployment/aggregated_by_month/'});
@@ -150,7 +150,7 @@ class Deployments extends SFPComponent {
     return [
       { title: strings.deploymentsSurgeOverViewTab, hash: '#overview' },
       // { title: strings.deploymentsOperationalToolboxTab, hash: '#operational-toolbox' },
-      // { title: strings.deploymentsCatalogueOfSurgeServicesTab, hash: '#catalogue' }
+      { title: strings.deploymentsCatalogueOfSurgeServicesTab, hash: '#catalogue' }
     ];
   }
 
@@ -368,7 +368,7 @@ class Deployments extends SFPComponent {
                     </TabContent>
                   </TabPanel>
                   Put me 8 rows earlier (to row end) if you need S.O. toolbox tab: */}
-                  {/* Surge Catalogue of surge services tab
+                  {/* Surge Catalogue of surge services tab */}
                   <TabPanel>
                     <TabContent>
                       <div className='container-lg'>
@@ -376,7 +376,6 @@ class Deployments extends SFPComponent {
                       </div>
                     </TabContent>
                   </TabPanel>
-                  Put me 8 rows earlier (to row end) if you need Catalogue tab:  */}
                 </div>
               </div>
             </Tabs>
