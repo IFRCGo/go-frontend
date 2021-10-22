@@ -105,6 +105,16 @@ export default class CatalogueOfSurgeServices extends React.Component {
                     </button>
                 </div>
             );
+        } else if (card.cardType === "textBtnExt") {
+            return (
+                <div className="cardElementContainer">
+                    <span className="cardText">{strings[card.cardText]}</span>
+                    <button onClick={e => this.openNewTab(card.url, e)} className="cardBtn">
+                         <span className="f-icon-arrow-right-diagonal"></span> 
+                        {strings[card.cardBtnText]}
+                    </button>
+                </div>
+            );
         }
         else {
             return (
