@@ -149,7 +149,7 @@ function DrefApplication(props: Props) {
 
   const [fileIdToUrlMap, setFileIdToUrlMap] = React.useState<Record<number, string>>({});
   const [currentStep, setCurrentStep] = React.useState<StepTypes>('operationOverview');
-  const submitButtonLabel = currentStep === 'submission' ? strings.drefFormSaveButtonLabel: strings.drefFormContinueButtonLabel;
+  const submitButtonLabel = currentStep === 'submission' ? strings.drefFormSaveButtonLabel : strings.drefFormContinueButtonLabel;
   const shouldDisabledBackButton = currentStep === 'operationOverview';
 
   const erroredTabs = React.useMemo(() => {
@@ -439,6 +439,18 @@ function DrefApplication(props: Props) {
       return oldValue;
     });
   }, [onValueSet, value.type_of_onset]);
+
+  React.useEffect(() => {
+    onValueSet((oldValue) => {
+      if (value.ns_request_fund && value.ns_respond && value.affect_same_population && value.affect_same_area !== false) {
+        return {
+          ...oldValue,
+          dref_recurrent_text: undefined,
+        };
+      }
+      return oldValue;
+    });
+  }, [onValueSet, value.ns_request_fund, value.ns_respond, value.affect_same_population, value.affect_same_area]);
 
   React.useEffect(() => {
     if (isDefined(value.date_of_approval) && isDefined(value.operation_timeframe)) {
