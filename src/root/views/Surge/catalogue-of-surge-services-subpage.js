@@ -3,6 +3,7 @@ import LanguageContext from "#root/languageContext";
 import { PropTypes as T } from 'prop-types';
 import React from "react";
 import CatalogueOfSurgeServiceSubpageContent from "./contentData/catalogue-of-surge-service-subpage-content";
+import Gallery from 'react-grid-gallery';
 
 export default class CatalogueOfSurgeServicesSubPage extends React.Component {
 
@@ -243,6 +244,16 @@ export default class CatalogueOfSurgeServicesSubPage extends React.Component {
                     </div>
                     : <></>
                 }
+                {content.imgs !== undefined ?
+                <>
+                    <div className="row">
+                    <Gallery images={content.imgs} enableImageSelection={false}/>
+                    </div>
+                    
+                </>
+                    : <></>
+                
+                }
                
                 {content.textSection.capacity !== undefined ?
                     this.renderContent(content.textSection.capacity, strings['catalogueCapcityTitle'])
@@ -394,146 +405,77 @@ export default class CatalogueOfSurgeServicesSubPage extends React.Component {
                 {content.textSection.unosat !== undefined ?
                 <div>
                     <p> <br/></p>
-                    <h3>MapSwipe</h3>
+                    <h3>{strings.catalogueOfSurgeServicesInformationManSatelliteImageryMSTitle1}</h3>
                     <p><a href="https://mapswipe.org/en/index.html"><u>https://mapswipe.org</u></a>
                     </p>
                     <p>
-                    <span>MapSwipe
-                        is a community-based satellite imagery analysis tool supported by the
-                        British Red Cross. Anyone in the humanitarian sector is able to add
-                        projects which will then be completed by the users of the app. The
-                        main applications are:</span></p>
+                    <span>{strings.catalogueOfSurgeServicesInformationManSatelliteImageryMSText1}</span></p>
                     <ul>
-                        <li><p>
-                        <span>Finding and identifying features - e.g. buildings, roads, waste</span></p></li>
-                        <li><p>Change detection of before and after imagery - e.g. damage assessment</p></li>
+                        <li>{strings.catalogueOfSurgeServicesInformationManSatelliteImageryMSText2}</li>
+                        <li>{strings.catalogueOfSurgeServicesInformationManSatelliteImageryMSText3}</li>
                     </ul>
-                    <p>To request a project email <a href="mailto:info@mapswipe.org"><u>info@mapswipe.org</u></a>.
-                        You can find more information and data from the projects <a
-                            href="https://mapswipe.org/en/index.html"><u>on the website</u></a>.</p>
+                    <p>{strings.catalogueOfSurgeServicesInformationManSatelliteImageryMSText4} <a href="mailto:info@mapswipe.org"><u>info@mapswipe.org</u></a>. {strings.catalogueOfSurgeServicesInformationManSatelliteImageryMSText5} <a href="https://mapswipe.org/en/index.html"><u>{strings.catalogueOfSurgeServicesInformationManSatelliteImageryMSText6}</u></a>.</p>
                     <p><br/></p>
-                    <h2>Imagery Sources</h2>
+                    <h2>{strings.catalogueOfSurgeServicesInformationManSatelliteImageryMSTitle2}</h2>
                     <p>
-                    <span
-                    >Sometimes
-                        it may be necessary to get access to the raw imagery for our own
-                        analysis or mapping. Commercial satellite organisations are
-                        increasingly making their imagery freely available for disaster
-                        events. If this is not available then IFRC also has partnerships that
-                        can be activated.</span></p>
-                    <h3>Openly available</h3>
-                    <p> <b>Maxar</b> and <b>Planet</b> both
-                        have programs to openly release their high resolution imagery for
-                        select sudden onset major crisis events - often for pre and post
-                        disaster. You can check their websites for the latest activations and
-                        sign up there to receive email alerts for new imagery.</p>
+                    <span>{strings.catalogueOfSurgeServicesInformationManSatelliteImageryMSText7}</span></p>
+                    <h3>{strings.catalogueOfSurgeServicesInformationManSatelliteImageryMSTitle2}</h3>
+                    <p> <b>{strings.catalogueOfSurgeServicesInformationManSatelliteImageryMSText8} </b> {strings.catalogueOfSurgeServicesInformationManSatelliteImageryMSText9} <b>{strings.catalogueOfSurgeServicesInformationManSatelliteImageryMSText10} </b> {strings.catalogueOfSurgeServicesInformationManSatelliteImageryMSText11}</p>
                     <ul>
-                        <li><p><b>Maxar
-                            Open Data - </b><a href="https://www.maxar.com/open-data"><u>https://www.maxar.com/open-data</u></a>
+                        <li><p><b>{strings.catalogueOfSurgeServicesInformationManSatelliteImageryMSText12} - </b><a href="https://www.maxar.com/open-data"><u>https://www.maxar.com/open-data</u></a>
                         </p></li>
-                        <li><p><b>Planet Disaster Datasets - </b><a
+                        <li><p><b>{strings.catalogueOfSurgeServicesInformationManSatelliteImageryMSText13} - </b><a
                             href="https://www.planet.com/disasterdata"><u>https://www.planet.com/disasterdata</u></a>
                         </p></li>
                     </ul>
-                    <p>There
-                        is also the community-based <a href="https://openaerialmap.org/">Open Aerial Map</a> that
-                        provides openly licensed satellite and unmanned aerial vehicle (UAV)
-                        imagery and is worth checking for your area of interest.</p>
-                    <h3>IFRC Partnerships</h3>
-                    <p>If
-                        none of the above sources have the imagery required, IFRC can
-                        activate the following partnerships to gain access to more imagery.</p>
-                    <h3>International
-                        Space Charter and Major Disasters</h3>
+                    <p>{strings.catalogueOfSurgeServicesInformationManSatelliteImageryMSText14} <a href="https://openaerialmap.org/">{strings.catalogueOfSurgeServicesInformationManSatelliteImageryMSText15} </a>{strings.catalogueOfSurgeServicesInformationManSatelliteImageryMSText16}</p>
+                    <h3>{strings.catalogueOfSurgeServicesInformationManSatelliteImageryMSTitle4}</h3>
+                    <p>{strings.catalogueOfSurgeServicesInformationManSatelliteImageryMSText17}</p>
+                    <h3>{strings.catalogueOfSurgeServicesInformationManSatelliteImageryMSTitle5}</h3>
                     <p><a
                         href="https://disasterscharter.org/web/guest/home"><u>
                         https://disasterscharter.org/web/guest/home</u></a>
                     </p>
-                    <p>The
-                        Charter is a worldwide collaboration, through which satellite data
-                        from a wide range of commercial organisations are made available for
-                        the benefit of disaster management. The raw imagery is normally made
-                        available to the requesting organisation, who can then make the
-                        derived data openly available.</p>
-                    <p>IFRC
-                        is able to activate the Charter through UNOSAT - who will then assist
-                        in the analysis if required. The process for activation is the same
-                        as above for UNOSAT assistance.</p>
-                    <p>
-                        Check the Charter website for a list of the latest activations:</p>
-                    <p><a
-                        href="https://disasterscharter.org/web/guest/charter-activations">https://disasterscharter.org/web/guest/charter-activations</a>
-                    </p>
-                    <p>
-                        If it has been activated, but the data is not available, IFRC can also
-                        request this from UNOSAT.</p>
-                    <h3>Airbus Foundation</h3>
-                    <p><a
-                        href="https://www.intelligence-airbusds.com/airbus-foundation/">https://www.intelligence-airbusds.com/airbus-foundation/</a>
-                    </p>
-                    <p>
-                        IFRC
-                        has €100,000 of Airbus imagery credits available per year that are
-                        available for any use across the Movement. The Airbus platform has a
-                        huge catalogue that is constantly updated with new imagery. This can
-                        be useful for regular updates post-disaster or frequently checking if
-                        imagery isn’t available at first - e.g. due to cloud cover.</p>
-                    <p>First check if the imagery is available and if so, send a request
-                        to <a href="mailto:im@ifrc.org">im@ifrc.org</a> to purchase the imagery using the credits.</p>
-                    <p>To check:</p>
+                    <p>{strings.catalogueOfSurgeServicesInformationManSatelliteImageryMSText18}</p>
+                    <p>{strings.catalogueOfSurgeServicesInformationManSatelliteImageryMSText19}</p>
+                    <p>{strings.catalogueOfSurgeServicesInformationManSatelliteImageryMSText20}</p>
+                    <p><a href="https://disasterscharter.org/web/guest/charter-activations">https://disasterscharter.org/web/guest/charter-activations</a></p>
+                    <p>{strings.catalogueOfSurgeServicesInformationManSatelliteImageryMSText21}</p>
+                    <h3>{strings.catalogueOfSurgeServicesInformationManSatelliteImageryMSTitle6}</h3>
+                    <p><a href="https://www.intelligence-airbusds.com/airbus-foundation/">https://www.intelligence-airbusds.com/airbus-foundation/</a></p>
+                    <p>{strings.catalogueOfSurgeServicesInformationManSatelliteImageryMSText22}</p>
+                    <p>{strings.catalogueOfSurgeServicesInformationManSatelliteImageryMSText23} <a href="mailto:im@ifrc.org">im@ifrc.org</a> {strings.catalogueOfSurgeServicesInformationManSatelliteImageryMSText24}</p>
+                    <p>{strings.catalogueOfSurgeServicesInformationManSatelliteImageryMSText25}</p>
                     <ul>
                         <li><p>
-                            Go to <a
-                            href="https://www.intelligence-airbusds.com/airbus-foundation/">Airbus
-                            Foundation portal</a></p></li>
-                        <li><p>
-                            Upload or manually draw an AOI</p></li>
+                        {strings.catalogueOfSurgeServicesInformationManSatelliteImageryMSText26} <a href="https://www.intelligence-airbusds.com/airbus-foundation/">{strings.catalogueOfSurgeServicesInformationManSatelliteImageryMSText27}</a></p></li>
+                        <li><p>{strings.catalogueOfSurgeServicesInformationManSatelliteImageryMSText28}</p></li>
                         <ul>
-                            <li><p>
-                                This is used to calculate cost, so keep this area as small as possible</p></li>
+                            <li><p>{strings.catalogueOfSurgeServicesInformationManSatelliteImageryMSText29}</p></li>
                         </ul>
-                        <li><p>
-                            Image results will load and can then be sorted / filtered by:</p></li>
+                        <li><p>{strings.catalogueOfSurgeServicesInformationManSatelliteImageryMSText30}</p></li>
                         <ul>
-                            <li><p>
-                                Date - to get the latest imagery</p></li>
-                            <li><p>
-                                Cloud cover - % coverage for each image</p></li>
-                            <li><p>
-                                Incidence angle - higher incidence will distort the image</p></li>
-                            <li><p>
-                                Resolution - higher resolution = more detail</p></li>
+                            <li><p>{strings.catalogueOfSurgeServicesInformationManSatelliteImageryMSText31}</p></li>
+                            <li><p>{strings.catalogueOfSurgeServicesInformationManSatelliteImageryMSText32}</p></li>
+                            <li><p>{strings.catalogueOfSurgeServicesInformationManSatelliteImageryMSText33}</p></li>
+                            <li><p>{strings.catalogueOfSurgeServicesInformationManSatelliteImageryMSText34}</p></li>
                         </ul>
-                        <li><p>
-                            You can then preview each image to see if it meets the need</p></li>
-                        <li><p>
-                            If the image is suitable, record the image ID:</p></li>
+                        <li><p>{strings.catalogueOfSurgeServicesInformationManSatelliteImageryMSText35}</p></li>
+                        <li><p>{strings.catalogueOfSurgeServicesInformationManSatelliteImageryMSText36}</p></li>
                         <ul>
-                            <li><p>
-                                e.g. DS_PHR1B_202109251030026_FR1_PX_E003N19_0123_01804
-                            </p></li>
+                            <li><p>{strings.catalogueOfSurgeServicesInformationManSatelliteImageryMSText37}</p></li>
                         </ul>
-                        <li><p>
-                            Send request to <a href="mailto:im@ifrc.org">im@ifrc.org</a> with:</p></li>
+                        <li><p>{strings.catalogueOfSurgeServicesInformationManSatelliteImageryMSText38} <a href="mailto:im@ifrc.org">im@ifrc.org</a> {strings.catalogueOfSurgeServicesInformationManSatelliteImageryMSText39}</p></li>
                         <ul>
-                            <li><p>
-                                Operation the data will support</p></li>
-                            <li><p>
-                                Area of interest (KML, SHP, etc.)</p></li>
-                            <li><p>
-                                ID of images needed</p></li>
-                            <li><p>
-                                How will the data be used?</p></li>
-                            <li><p>
-                                What do you need to see? What Questions are you trying to answer?</p></li>
+                            <li><p>{strings.catalogueOfSurgeServicesInformationManSatelliteImageryMSText40}</p></li>
+                            <li><p>{strings.catalogueOfSurgeServicesInformationManSatelliteImageryMSText41}</p></li>
+                            <li><p>{strings.catalogueOfSurgeServicesInformationManSatelliteImageryMSText42}</p></li>
+                            <li><p>{strings.catalogueOfSurgeServicesInformationManSatelliteImageryMSText43}</p></li>
+                            <li><p>{strings.catalogueOfSurgeServicesInformationManSatelliteImageryMSText44}</p></li>
                         </ul>
                     </ul>
-                    <p>
-                        If
-                        all requirements are met, the imagery will then be purchased by IFRC
-                        Geneva IM team and the download link forwarded on.</p>
-                    <p><br/>
-                    </p>
+                    <p>{strings.catalogueOfSurgeServicesInformationManSatelliteImageryMSText45}</p>
+                    <p><br/></p>
                 </div>
                     : <></> }
             </div>

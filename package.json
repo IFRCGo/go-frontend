@@ -151,6 +151,7 @@
     "react-contenteditable": "^3.3.5",
     "react-device-detect": "^1.11.14",
     "react-dom": "16.9.0",
+    "react-grid-gallery": "^0.5.5",
     "react-helmet": "^5.2.0",
     "react-icons": "^4.2.0",
     "react-markdown": "^3.3.4",
