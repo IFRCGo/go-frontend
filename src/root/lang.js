@@ -1000,7 +1000,7 @@ export default {
   catalogueOfSurgeServicesInformationManSatelliteImageryTitle3: 'UNOSAT',
   catalogueOfSurgeServicesInformationManSatelliteImageryText6:'\n\nThe UNOSAT Rapid Mapping Service provides satellite image analysis during humanitarian emergencies. They operate on activations from partners and make the data available on their website. Often, especially for bigger emergencies, they will already be working on analysis but the IFRC can also request an activation on behalf of National Societies for any emergency response.\n\nThis needs to be coordinated and initiated by the IFRC Geneva IM team but the follow up and analysis can then be directly between UNOSAT and the data users.\n\nThe process for accessing UNOSAT data:\n\n',
   catalogueOfSurgeServicesInformationManSatelliteImageryText7:'1. Have they already been activated?\n',
-  catalogueOfSurgeServicesInformationManSatelliteImageryText8a:'\ta. Check ',
+  catalogueOfSurgeServicesInformationManSatelliteImageryText8a:'   _a. Check ',
   catalogueOfSurgeServicesInformationManSatelliteImageryLinkText4:'their website ',
   catalogueOfSurgeServicesInformationManSatelliteImageryText8b:'or live maps and data\n',
   catalogueOfSurgeServicesInformationManSatelliteImageryText9a:'_b. Check the ',

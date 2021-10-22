@@ -274,7 +274,7 @@ const CatalogueOfSurgeServicesContent = [
                             },
                             {
                                 name: "catalogueOfSurgeServicesCommunicationCards1Card1Element6",
-                                url: 'https://docs.google.com/document/d/1FceNsV1ONsC8dUlL8iAaQ2gvN-GZ-dlr/edit?usp=sharing&ouid=110240626470876013030&rtpof=true&sd=true'
+                                url: 'https://ifrcgo.org/global-services/assets/docs/comms/AV%20Officer%20Role%20Profile.pdf'
                             },
                             {
                                 name: "catalogueOfSurgeServicesCommunicationCards1Card1Element3",
@@ -544,7 +544,7 @@ const CatalogueOfSurgeServicesContent = [
                 cardsTitle: "catalogueOfSurgeServicesCardsTitleServices",
                 cards: [
                     {
-                        cardType: 'textBtn',
+                        cardType: 'textBtnExt',
                         cardTitle: 'catalogueOfSurgeServicesInformationManSubtitle6Text1',
                         cardText: 'catalogueOfSurgeServicesInformationManSubtitle6Text2',
                         cardBtnText: 'catalogueOfSurgeServicesCardBtnTextGoTo',
