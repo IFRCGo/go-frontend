@@ -3164,8 +3164,8 @@ export default {
   drefFormUploadImageLabel: 'Select and Image',
   drefFormAddCountryLabel: 'Add Country',
 
-  drefFormSaveRequestSuccessMessage: 'DREF Application created / updated successfully',
-  drefFormSaveRequestFailureMessage: 'Failed to create / update DREF Application',
+  drefFormSaveRequestSuccessMessage: 'DREF Application created/updated successfully',
+  drefFormSaveRequestFailureMessage: 'Failed to create/update DREF Application',
   drefFormLoadRequestFailureMessage: 'Failed to load DREF Application',
   drefFormLoadErrorTitle: 'Failed to load DREF Application',
   drefFormLoadErrorDescription: 'There was an error loading the DREF Application',
