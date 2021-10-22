@@ -94,13 +94,13 @@ export default class CatalogueOfSurgeServices extends React.Component {
                     </button>
                 </div>
             );
-        } 
+        }
         else if (card.cardType === "textBtnSimple") {
             return (
                 <div className="cardElementContainer">
                     <span className="cardText">{strings[card.cardText]}</span>
                     <button onClick={e => this.openNewTab(card.url, e)} className="cardBtn">
-                        
+
                         {strings[card.cardBtnText]}
                     </button>
                 </div>
@@ -164,8 +164,6 @@ export default class CatalogueOfSurgeServices extends React.Component {
             return (
                 <section>
 
-                             
-
                     <h1>{strings.catalogueOfSurgeServicesInformationManSubtitle1}</h1>
                     <p>{strings.catalogueOfSurgeServicesInformationManSubtitle1Text1}</p>
                     <p>{strings.catalogueOfSurgeServicesInformationManSubtitle1Text2}</p>
@@ -185,11 +183,9 @@ export default class CatalogueOfSurgeServices extends React.Component {
                     );
                 })}
 
-                   
                 </section>
             );
         }
-        
 
         if (queriedData === undefined) {
             return (
@@ -222,7 +218,7 @@ export default class CatalogueOfSurgeServices extends React.Component {
         if (selectedMenu !== undefined) {
             backToSelectedCatalogue = 'Back to ' + selectedMenu.title;
         }
-        window.scrollTo(0,501);
+        window.scrollTo(0,500);
         return (
             <section className="cat-services-container">
                 <div className="service-selector-container">
@@ -243,7 +239,7 @@ export default class CatalogueOfSurgeServices extends React.Component {
                     ))}
                 </div>
                 <div className="selected-service-container">
-                    {this.state.selectedService === '' ? 
+                    {this.state.selectedService === '' ?
                         this.renderContent(this.state.selectedSelector)
                         : (
                             <div>
