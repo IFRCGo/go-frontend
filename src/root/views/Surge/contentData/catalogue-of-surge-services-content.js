@@ -474,21 +474,21 @@ const CatalogueOfSurgeServicesContent = [
                         cardText: 'catalogueOfSurgeServicesHealthCards2Card11Text',
                         cardBtnText: 'catalogueOfSurgeServicesHealthCards2Card11BtnText',
                         url: '#eru-pss-module'
-                    },
-                    {
-                        cardType: 'textBtn',
-                        cardTitle: 'catalogueOfSurgeServicesHealthCards2CardTitle3',
-                        cardText: 'catalogueOfSurgeServicesHealthCards2Card12Text',
-                        cardBtnText: 'catalogueOfSurgeServicesHealthCards2Card12BtnText',
-                        url: ''
-                    },
-                    {
-                        cardType: 'textBtn',
-                        cardTitle: 'catalogueOfSurgeServicesHealthCards2CardTitle3',
-                        cardText: 'catalogueOfSurgeServicesHealthCards2Card13Text',
-                        cardBtnText: 'catalogueOfSurgeServicesHealthCards2Card13BtnText',
-                        url: ''
                     }
+                    // {
+                    //     cardType: 'textBtn',
+                    //     cardTitle: 'catalogueOfSurgeServicesHealthCards2CardTitle3',
+                    //     cardText: 'catalogueOfSurgeServicesHealthCards2Card12Text',
+                    //     cardBtnText: 'catalogueOfSurgeServicesHealthCards2Card12BtnText',
+                    //     url: ''
+                    // },
+                    // {
+                    //     cardType: 'textBtn',
+                    //     cardTitle: 'catalogueOfSurgeServicesHealthCards2CardTitle3',
+                    //     cardText: 'catalogueOfSurgeServicesHealthCards2Card13Text',
+                    //     cardBtnText: 'catalogueOfSurgeServicesHealthCards2Card13BtnText',
+                    //     url: ''
+                    // }
                 ]
             }
         ]
@@ -566,49 +566,49 @@ const CatalogueOfSurgeServicesContent = [
                         cardType: 'textBtnSimple',
                         cardTitle: 'catalogueOfSurgeServicesInformationManSubtitle7Text7',
                         cardText: 'catalogueOfSurgeServicesInformationManSubtitle7Text8',
-                        cardBtnText: 'catalogueOfSurgeServicesCardBtnTextView',
+                        cardBtnText: 'catalogueOfSurgeServicesCardBtnTextLearnMore',
                         url: '#roles-and-resps'
                     },
                     {
                         cardType: 'textBtnSimple',
                         cardTitle: 'catalogueOfSurgeServicesInformationManSubtitle7Text9',
                         cardText: 'catalogueOfSurgeServicesInformationManSubtitle7Text10',
-                        cardBtnText: 'catalogueOfSurgeServicesCardBtnTextView',
+                        cardBtnText: 'catalogueOfSurgeServicesCardBtnTextLearnMore',
                         url: '#im-support-for-op'
                     },
                     {
                         cardType: 'textBtnSimple',
                         cardTitle: 'catalogueOfSurgeServicesInformationManSubtitle7Text11',
                         cardText: 'catalogueOfSurgeServicesInformationManSubtitle7Text12',
-                        cardBtnText: 'catalogueOfSurgeServicesCardBtnTextView',
+                        cardBtnText: 'catalogueOfSurgeServicesCardBtnTextLearnMore',
                         url: '#ifrc-geneva-im'
                     },
                     {
                         cardType: 'textBtnSimple',
                         cardTitle: 'catalogueOfSurgeServicesInformationManSubtitle7Text13',
                         cardText: 'catalogueOfSurgeServicesInformationManSubtitle7Text14',
-                        cardBtnText: 'catalogueOfSurgeServicesCardBtnTextView',
+                        cardBtnText: 'catalogueOfSurgeServicesCardBtnTextLearnMore',
                         url: '#composition-of-im-res'
                     },
                     {
-                        cardType: 'textBtnSimple',
+                        cardType: 'textBtn',
                         cardTitle: 'catalogueOfSurgeServicesInformationManSubtitle7Text1',
                         cardText: 'catalogueOfSurgeServicesInformationManSubtitle7Text2',
-                        cardBtnText: 'catalogueOfSurgeServicesCardBtnTextView',
+                        cardBtnText: 'catalogueOfSurgeServicesCardBtnTextGoTo',
                         url: 'https://go-user-library.ifrc.org/'
                     },
                     {
                         cardType: 'textBtn',
                         cardTitle: 'catalogueOfSurgeServicesInformationManSubtitle7Text3',
                         cardText: 'catalogueOfSurgeServicesInformationManSubtitle7Text4',
-                        cardBtnText: 'catalogueOfSurgeServicesCardBtnTextView',
+                        cardBtnText: 'catalogueOfSurgeServicesCardBtnTextGoTo',
                         url: 'https://www.ifrc.org/ifrc-kobotoolbox#'
                     },
                     {
                         cardType: 'textBtn',
                         cardTitle: 'catalogueOfSurgeServicesInformationManSubtitle7Text5',
                         cardText: 'catalogueOfSurgeServicesInformationManSubtitle7Text6',
-                        cardBtnText: 'catalogueOfSurgeServicesCardBtnTextView',
+                        cardBtnText: 'catalogueOfSurgeServicesCardBtnTextGoTo',
                         url: 'https://deephelp.zendesk.com/hc/en-us/articles/360041904812-4-DEEP-Using-the-DEEP-Platform-'
                     }
                 ]
@@ -914,7 +914,7 @@ const CatalogueOfSurgeServicesContent = [
                 cards: [
                     {
                         cardType: 'textBtn',
-                        cardTitle: 'catalogueOfSurgeServicesCardsTitleEmergencyResponseUnit',
+                        cardTitle: 'catalogueOfSurgeServicesCardsTitleRapidResponse',
                         cardText: '',
                         cardBtnText: 'catalogueOfSurgeServicesOperationsCards2Card1BtnText',
                         url: '#head-of-emergency-operations-heops'
@@ -978,14 +978,14 @@ const CatalogueOfSurgeServicesContent = [
                         cardTitle: 'catalogueOfSurgeServicesProtectionCards3Card1Title',
                         cardText: 'catalogueOfSurgeServicesProtectionCards3Card1Text',
                         cardBtnText: 'catalogueOfSurgeServicesCardBtnTextGoTo',
-                        url: 'https://www.ifrc.org/Global/Photos/Secretariat/201505/Gender%20Diversity%20MSCs%20Emergency%20Programming%20HR3.pdf'
+                        url: 'https://www.ifrc.org/media/12346'
                     },
                     {
                         cardType: 'textBtn',
                         cardTitle: 'catalogueOfSurgeServicesProtectionCards3Card2Title',
                         cardText: 'catalogueOfSurgeServicesProtectionCards3Card2Text',
                         cardBtnText: 'catalogueOfSurgeServicesCardBtnTextGoTo',
-                        url: 'https://www.ifrc.org/Global/Documents/Secretariat/Shelter/All-under-one-roof_EN.pdf'
+                        url: 'https://www.ifrc.org/media/48958'
                     }
                 ]
             }
@@ -1231,12 +1231,18 @@ const CatalogueOfSurgeServicesContent = [
                                 name: "catalogueOfSurgeServicesWaterCards1Card1Element1",
                                 url: 'https://ifrcgo.org/global-services/assets/docs/wash/Rapid%20Response%20Profile%20WASH%20Coordinator.pdf'
                             },
-                            /* coming soon not wanted 5
                             {
                                 name: "catalogueOfSurgeServicesWaterCards1Card1Element2",
-                                url: ''
-                            }
-                            */
+                                url: 'https://ifrcgo.org/global-services/assets/docs/wash/Rapid%20Response%20Profile%20WASH%20Officer.pdf'
+                            },
+                            {
+                                name: "catalogueOfSurgeServicesWaterCards1Card1Element3",
+                                url: 'https://ifrcgo.org/global-services/assets/docs/wash/Rapid%20Response%20Profile%20WASH%20Officer%20-%20Hygiene%20Promotion.pdf'
+                            },
+                            {
+                                name: "catalogueOfSurgeServicesWaterCards1Card1Element4",
+                                url: 'https://ifrcgo.org/global-services/assets/docs/wash/Rapid%20Response%20Profile%20WASH%20Officer%20-%20Sanitation%20Engineer.pdf'
+                            },
                         ]
                     },
                     {

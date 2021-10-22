@@ -3,6 +3,7 @@ import LanguageContext from "#root/languageContext";
 import { PropTypes as T } from 'prop-types';
 import React from "react";
 import CatalogueOfSurgeServiceSubpageContent from "./contentData/catalogue-of-surge-service-subpage-content";
+import Gallery from 'react-grid-gallery';
 
 export default class CatalogueOfSurgeServicesSubPage extends React.Component {
 
@@ -242,6 +243,16 @@ export default class CatalogueOfSurgeServicesSubPage extends React.Component {
                         ))}
                     </div>
                     : <></>
+                }
+                {content.imgs !== undefined ?
+                <>
+                    <div className="row">
+                    <Gallery images={content.imgs} enableImageSelection={false}/>
+                    </div>
+                    
+                </>
+                    : <></>
+                
                 }
                
                 {content.textSection.capacity !== undefined ?
