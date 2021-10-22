@@ -222,7 +222,7 @@ export default class CatalogueOfSurgeServices extends React.Component {
         if (selectedMenu !== undefined) {
             backToSelectedCatalogue = 'Back to ' + selectedMenu.title;
         }
-        window.scrollTo(0,500);
+        window.scrollTo(0,501);
         return (
             <section className="cat-services-container">
                 <div className="service-selector-container">
