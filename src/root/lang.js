@@ -51,7 +51,7 @@ export default {
   aboutIfrcResources: 'IFRC Resources',
   aboutSurgeEvents: 'Global Surge events and trainings',
   aboutSurgeServices: 'IFRC Surge Services',
-  aboutSurgeCatalogue: 'Catalogue of surge services',
+// not used -   aboutSurgeCatalogue: 'Catalogue of surge services',
   aboutSurgeNetwork: 'Surge IM network',
   aboutCommunitySurveillance: 'Community Based Surveillance',
   aboutGuidanceMaterial: 'IFRC Guidance Material',

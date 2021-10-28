@@ -249,13 +249,6 @@ function About (props) {
                             <span className='collecticon-chevron-right icon-about-ref'></span>
                           </a>
 
-                          <a href='https://ifrcgo.org/global-services/' target='_blank' className='box__global__content--ref__link'>
-                            <span>
-                              <Translate stringId='aboutSurgeCatalogue'/>
-                            </span>
-                            <span className='collecticon-chevron-right icon-about-ref'></span>
-                          </a>
-
                           <a href='https://rcrcsims.org/' target='_blank' className='box__global__content--ref__link'>
                             <span>
                               <Translate stringId='aboutSurgeNetwork'/>
@@ -401,7 +394,7 @@ function About (props) {
                     <img src='/assets/graphics/content/arc_logo.png' alt='Visit American Red Cross Page' width='160' />
                   </a>
                   <a href='https://www.redcross.org.au/' target='_blank'>
-                    <img src='/assets/graphics/content/aurc_logo.jpg' alt='Visit Australian Red Cross Page' width='200'/>
+                    <img src='/assets/graphics/content/aurc_logo.svg' alt='Visit Australian Red Cross Page' width='120'/>
                   </a>
                   <a href='https://www.redcross.org.uk/' target='_blank'>
                     <img src='/assets/graphics/content/brc_logo.png' alt='Visit British Red Cross Page' width='170'/>
@@ -419,7 +412,7 @@ function About (props) {
                     <img src='/assets/graphics/content/nlrc_logo.jpg' alt='Visit Netherlands Red Cross Page' width='160'/>
                   </a>
                   <a href='https://www2.cruzroja.es/' target='_blank'>
-                    <img src='/assets/graphics/content/esp_logo.jpg' alt='Visit Spanish Red Cross Page' width='180'/>
+                    <img src='/assets/graphics/content/esp_logo.svg' alt='Visit Spanish Red Cross Page' width='170'/>
                   </a>
                   <a href='https://www.ericsson.com/en' target='_blank'>
                     <img src='/assets/graphics/content/ericsson_logo.png' alt='Visit Ericsson Page' width='140'/>
