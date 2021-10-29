@@ -57,8 +57,10 @@ import ThreeW from '#views/ThreeW';
 import ThreeWEdit from '#views/ThreeWEdit';
 
 import styles from './styles.module.scss';
-import DrefApplicationForm from '#views/DrefApplicationForm';
-import DrefPdfExport from '#components/DrefPdfExport';
+
+// @DREF
+// import DrefApplicationForm from '#views/DrefApplicationForm';
+// import DrefPdfExport from '#components/DrefPdfExport';
 
 
 function Multiplexer(props) {
@@ -245,9 +247,13 @@ function Multiplexer(props) {
             <Route exact path='/per-assessment/:id/edit' render={props => <PerAssessment {...props} isEdit={true} />} />
             <Route path='/preparedness' component={Preparedness} />
             <Route key="new-three-w" exact path='/three-w/new/' component={NewThreeW} />
+
+            {/* @DREF
             <PrivateRoute key="new-dref-application-form" exact path='/dref-application/new/' component={DrefApplicationForm} />
             <PrivateRoute exact path='/dref-application/:drefId/edit/' component={DrefApplicationForm} />
             <PrivateRoute exact path='/dref-application/:drefId/export/' component={DrefPdfExport} />
+            */}
+
             <Route exact path='/three-w/all/' component={AllThreeW} />
             <Route exact path='/three-w/:projectId/' component={ThreeW} />
             <PrivateRoute exact path='/three-w/:projectId/edit/' component={ThreeWEdit} />
