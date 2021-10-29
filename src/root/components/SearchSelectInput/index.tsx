@@ -1,5 +1,8 @@
 import React from 'react';
-import { isDefined, } from '@togglecorp/fujs';
+import {
+  isDefined,
+  unique,
+} from '@togglecorp/fujs';
 import AsyncSelect from 'react-select/async';
 
 import styles from './styles.module.scss';
@@ -14,9 +17,9 @@ export interface Option {
 
 const emptyOptionList: Option[] = [];
 
-type Key = string | number | undefined;
+type Key = string | number;
 
-interface BaseProps<N, V extends Key> {
+interface BaseProps<N extends Key | undefined> {
   className?: string;
   actions?: React.ReactNode;
   icons?: React.ReactNode;
@@ -26,25 +29,23 @@ interface BaseProps<N, V extends Key> {
   pending?: boolean;
   readOnly?: boolean;
   name: N;
-  value: V;
   loadOptions: (value: string | undefined, callback: (opt: Option[]) => void) => void;
-  isMulti?: boolean,
-  onChange: (newValue: V, name: N) => void;
   placeholder?: string;
   initialOptions?: Option[];
+  defaultOptions?: boolean;
 }
 
-type Props<N extends Key, V extends Key> = BaseProps<N, V> & ({
-  isMulti?: false;
-  value: V;
-  onChange: (newValue: V, name: N) => void;
-} | {
+type Props<N extends Key | undefined, V extends Key | undefined> = BaseProps<N> & ({
   isMulti: true;
-  value: V[];
-  onChange: (newValue: V[], name: N) => void;
+  value: V[] | undefined | null;
+  onChange: (newValue: NonNullable<V>[] | undefined, name: N) => void;
+} | {
+  isMulti?: false;
+  value: V | undefined | null;
+  onChange: (newValue: V, name: N) => void;
 })
 
-function SearchSelectInput<N extends Key, V extends Key>(props: Props<N, V>) {
+function SearchSelectInput<N extends Key | undefined, V extends Key | undefined>(props: Props<N, V>) {
   const {
     className,
     actions,
@@ -60,6 +61,7 @@ function SearchSelectInput<N extends Key, V extends Key>(props: Props<N, V>) {
     isMulti,
     onChange,
     initialOptions = emptyOptionList,
+    defaultOptions,
     ...otherSelectInputProps
   } = props;
 
@@ -67,10 +69,17 @@ function SearchSelectInput<N extends Key, V extends Key>(props: Props<N, V>) {
 
   React.useEffect(() => {
     if (initialOptions.length > 0) {
-      // TODO: Make unique
-      setOptions(prevOptions => [...prevOptions, ...initialOptions]);
+      setOptions(
+        prevOptions => unique(
+          [
+            ...prevOptions,
+            ...initialOptions,
+          ],
+          o => o.value
+        ) ?? [],
+      );
     }
-  }, [initialOptions, setOptions]);
+  }, [initialOptions]);
 
   const timeoutRef = React.useRef<number | undefined>();
 
@@ -115,9 +124,16 @@ function SearchSelectInput<N extends Key, V extends Key>(props: Props<N, V>) {
     }
 
     const localCallback = (currentOptions: Option[]) => {
-      if (currentOptions.length > 0) {
-        // TODO: Make unique
-        setOptions(prevOptions => [...prevOptions, ...currentOptions]);
+      if (currentOptions?.length > 0) {
+        setOptions(
+          prevOptions => unique(
+            [
+              ...prevOptions,
+              ...currentOptions,
+            ],
+            o => o.value
+          ) ?? [],
+        );
       }
       callback(currentOptions);
     };
@@ -149,6 +165,7 @@ function SearchSelectInput<N extends Key, V extends Key>(props: Props<N, V>) {
           isDisabled={pending || disabled}
           isLoading={pending}
           noOptionsMessage={getSelectInputNoOptionsMessage as unknown as (obj: { inputValue: string }) => string}
+          defaultOptions={defaultOptions}
         />
       )}
     />

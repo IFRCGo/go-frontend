@@ -7,7 +7,7 @@ import {
 import useReduxState, { ReduxResponse, OldListResponse } from '#hooks/useReduxState';
 import ExportTableButton, { Props as ExportTableButtonProps } from '#components/ExportTableButton';
 
-interface Props<N> extends Omit<ExportTableButtonProps<Project, N>, 'apiUrl' | 'transformItem' | 'urlOptions'> {
+interface Props extends Omit<ExportTableButtonProps<Project>, 'apiUrl' | 'transformItem' | 'urlOptions'> {
   apiUrl?: string;
   className?: string;
   countryId?: number;
@@ -38,7 +38,7 @@ const projectDataMap = (d: Project) => ({
   'Reached Total': d.reached_total,
 });
 
-function ExportProjectsButton<N>(props: Props<N>) {
+function ExportProjectsButton(props: Props) {
   const {
     apiUrl = '/api/v2/project/',
     countryId,

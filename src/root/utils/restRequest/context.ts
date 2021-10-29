@@ -19,7 +19,7 @@ export interface ContextInterface<R, RE, E, O> {
     // eslint-disable-next-line @typescript-eslint/ban-types
     options: Omit<RequestInit, 'body'> & { body?: RequestInit['body'] | object | undefined },
     requestOptions: O,
-  ) => R | RE;
+  ) => R | RE | string | undefined;
   transformError: (
     errorType: 'server' | 'parse' | 'network',
     url: string,
@@ -30,22 +30,26 @@ export interface ContextInterface<R, RE, E, O> {
     response: Response | undefined,
   ) => E;
   transformError2: (
-      reason: any,
-      url: any,
-      requestOptions: any,
-      extraOptions: any,
-      responseBody: any,
-      response: any)
-      => Promise<
-      { reason: string;
-        errorCode: undefined;
-        debugMessage: string;
-        value: { messageForNotification: string; formErrors: { $internal: string } } } |
-      { reason: string;
-        errorCode: number | undefined;
-        debugMessage: string;
-        value: { messageForNotification: string; formErrors: { [p: string]: string | undefined }; errors: { [p: string]: string[] | string } | undefined } }
-      >
+    reason: any,
+    url: any,
+    requestOptions: any,
+    extraOptions: any,
+    responseBody: any,
+    response: any
+  ) => Promise<{
+    reason: string;
+    errorCode: undefined;
+    debugMessage: string;
+    value: {
+      messageForNotification: string;
+      formErrors: { $internal: string }
+    }
+  } | {
+    reason: string;
+    errorCode: number | undefined;
+    debugMessage: string;
+    value: { messageForNotification: string; formErrors: { [p: string]: string | undefined }; errors: { [p: string]: string[] | string } | undefined }
+  }>
 }
 
 const defaultContext: ContextInterface<unknown, unknown, unknown, unknown> = {
