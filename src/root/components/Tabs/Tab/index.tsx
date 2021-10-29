@@ -3,7 +3,7 @@ import { _cs } from '@togglecorp/fujs';
 import {
   ImCheckmark,
   ImCross,
-  ImNotification,
+  // ImNotification,
 } from 'react-icons/im';
 
 import RawButton, { Props as RawButtonProps } from '#components/RawButton';

@@ -215,6 +215,7 @@ function ThreeWBarChart(props: BarChartProps) {
               x: false,
               y: false,
             }}
+            // @ts-ignore
             formatter={(value: number) => [value, 'Projects']}
           />
         )}
