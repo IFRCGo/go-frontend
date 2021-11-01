@@ -1,0 +1,19 @@
+@import '~styles/settings/variables';
+
+.return-period-table-container {
+  margin: $spacing*2 0;
+
+  .return-period-table {
+    width: 100%;
+  }
+}
+
+.container-description {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.filter-input {
+  width: 14rem;
+}

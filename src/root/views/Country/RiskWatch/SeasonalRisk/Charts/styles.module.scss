@@ -1,0 +1,100 @@
+@import "~styles/settings/variables";
+
+.filters {
+  display: flex;
+
+  .filter-input {
+    width: 20rem;
+  }
+}
+
+.container-description {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.past-event-and-historical-impact {
+  margin: $spacing*2 0;
+
+  .content {
+    display: flex;
+    overflow: auto;
+
+    .chart-container {
+      flex-grow: 1;
+      height: 24rem;
+      width: 40rem!important;
+      overflow: hidden;
+    }
+
+    .legend {
+      width: 16rem;
+      flex-shrink: 0;
+    }
+  }
+}
+
+.risk-by-month {
+  margin: $spacing*2 0;
+
+  .content {
+    display: flex;
+    overflow: auto;
+
+    .chart-container {
+      flex-grow: 1;
+      height: 24rem;
+      overflow: hidden;
+    }
+
+    .legend {
+      width: 16rem;
+      flex-shrink: 0;
+    }
+  }
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: $spacing*3/2;
+  padding: $spacing*3/2;
+
+  .icon {
+    height: 2rem;
+    width: 2rem;
+  }
+
+  .label {
+    font-weight: $base-font-medium;
+  }
+
+  .circle {
+    height: 0.6rem;
+    width: 0.6rem;
+    border-radius: 50%;
+  }
+}
+
+.fi-legend-item {
+  display: flex;
+  align-items: center;
+  gap: $spacing*3/2;
+  padding: $spacing/2 $spacing*3/2;
+
+  .icon {
+    height: 2rem;
+    width: 2rem;
+  }
+
+  .label {
+    font-weight: $base-font-medium;
+  }
+
+  .circle {
+    height: 0.6rem;
+    width: 0.6rem;
+    border-radius: 50%;
+  }
+}

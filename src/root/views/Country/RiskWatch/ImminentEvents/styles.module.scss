@@ -1,0 +1,90 @@
+@import '~styles/settings/variables';
+
+.imminent-events {
+  .description {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .filters {
+      display: flex;
+      align-items: center;
+      gap: $spacing;
+
+      .hazard-select-input {
+        width: 20rem;
+      }
+    }
+  }
+
+  .map-section {
+    position: relative;
+    z-index: 0;
+    display: flex;
+
+    .map {
+      z-index: 0;
+      flex-grow: 1;
+      height: 40rem;
+    }
+
+    .side-bar {
+      height: 40rem;
+      width: 20rem;
+      box-shadow: $base-box-shadow;
+      z-index: 1;
+      overflow: auto;
+
+      .event-list {
+        overflow: auto;
+        display: flex;
+        flex-direction: column;
+        gap: $base-border-width;
+        padding: $spacing;
+
+        .event-detail {
+          background-color: $color-background;
+          padding: $spacing / 2;
+
+          .top-section {
+            cursor: pointer;
+            padding: $spacing / 2;
+
+            .title {
+              font-size: $font-size-sm;
+              font-weight: $base-font-medium;
+            }
+
+            .sub-title {
+              display: flex;
+              gap: $spacing;
+
+              .type {
+                font-size: $font-size-sm;
+                color: $primary-color;
+              }
+
+              .start-date {
+                font-size: $font-size-sm;
+              }
+            }
+          }
+
+          .description {
+            padding: $spacing / 2;
+            font-size: $font-size-sm;
+            color: $color-text-light;
+            text-align: justify;
+          }
+        }
+      }
+    }
+  }
+}
+
+.tab-description {
+  padding: $spacing * 4;
+  text-align: center;
+  color: $color-text-light;
+}
+

@@ -1,0 +1,12 @@
+@import '~styles/settings/variables';
+
+.map-container {
+  padding: 0;
+}
+
+.map-tooltip {
+  .tooltip-content {
+    padding: $spacing;
+  }
+}
+
