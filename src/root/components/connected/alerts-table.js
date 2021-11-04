@@ -235,8 +235,8 @@ class AlertsTable extends SFPComponent {
 
     const foldLink = this.props.viewAll ? (<Link className='fold__title__link' to={this.props.viewAll}>{this.props.viewAllText || strings.alertTableViewAllText}</Link>) : null;
 
-    return (
-      <Fold title={`${title} (${data.count})`} id={this.props.id} navLink={foldLink} foldTitleClass='fold__title--inline' foldWrapperClass='fold--main'>
+    return ( //            v (${data.count}) – parentheses removed. Maybe later will be used
+      <Fold title={`${title}`} id={this.props.id} navLink={foldLink} foldTitleClass='fold__title--inline' foldWrapperClass='fold--main'>
         {this.props.showExport ? (
           <ExportButton filename='surge-alerts'
             qs={this.getQs(this.props)}

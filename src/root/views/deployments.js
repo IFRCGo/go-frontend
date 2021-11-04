@@ -336,7 +336,7 @@ class Deployments extends SFPComponent {
                         <div className='inner margin-4-t'>
                           <div>
                             <AlertsTable
-                              title={strings.homeSurgeNotification}
+                              title={strings.homeSurgeAlerts}
                               limit={5}
                               isActive={true}
                               viewAll={'/alerts/all'}
@@ -380,31 +380,6 @@ class Deployments extends SFPComponent {
             </Tabs>
           </div>
         </section>
-        {/* <div className='inpage__body'>
-          <div className='inner margin-4-t'>
-            <div>
-              <AlertsTable
-                title={strings.homeSurgeAlerts}
-                limit={5}
-                isActive={true}
-                viewAll={'/alerts/all'}
-                showRecent={true}
-              />
-            </div>
-            <div className='table-deployed-personnel-block'>
-              <PersonnelByEventTable data={this.props.personnelByEvent} />
-            </div>
-            <div className='inner'>
-            <EruTable
-              limit={5}
-              viewAll={'/deployments/erus/all'}
-            />
-            </div>
-            <div className='readiness__container container-lg'>
-              <Readiness eruOwners={this.props.eruOwners} />
-            </div>
-          </div>
-        </div> */}
       </section>
     );
   }
