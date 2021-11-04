@@ -44,7 +44,7 @@ class Emergencies extends React.Component {
             <BlockLoading />
           ) : (
             <>
-              <EmergenciesDash 
+              <EmergenciesDash
                 title={dashTitle}
               />
               <div>

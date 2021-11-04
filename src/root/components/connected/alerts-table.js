@@ -6,11 +6,11 @@ import { DateTime } from 'luxon';
 
 import { environment } from '#config';
 import { getSurgeAlerts } from '#actions';
-import { 
+import {
   get,
   datesAgo,
   getDuration,
-  getMolnixKeywords 
+  getMolnixKeywords
 } from '#utils/utils';
 import { nope, recentInterval } from '#utils/format';
 
