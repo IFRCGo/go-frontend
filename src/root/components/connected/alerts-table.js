@@ -47,7 +47,7 @@ class AlertsTable extends SFPComponent {
         page: 1,
         limit: isNaN(this.props.limit) ? 5 : this.props.limit,
         sort: {
-          field: '',
+          field: 'is_stood_down',
           direction: 'asc'
         },
         filters: {
@@ -227,7 +227,7 @@ class AlertsTable extends SFPComponent {
         keywords: getMolnixKeywords(rowData.molnix_tags || []),
         emergency: event ? <Link className='link--table' to={`/emergencies/${event}`} title={strings.alertTableViewEmergency}>{eventTitle}</Link> : rowData.operation || nope,
         country: country,
-        status: rowData.molnix_status === 'unfilled' ? 'Stood down' : 'Open' 
+        status: rowData.is_stood_down ? 'Stood down' : 'Open' // Former: molnix_status === 'unfilled'
       });
 
       return acc;
