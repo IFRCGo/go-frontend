@@ -48,8 +48,7 @@ import {
 } from '#components/form-elements/';
 
 import App from './app';
-// @DREF
-// import DrefApplicationList from '#components/DrefApplicationList';
+import DrefApplicationList from '#components/DrefApplicationList';
 
 const Fragment = React.Fragment;
 
@@ -164,8 +163,7 @@ class Account extends React.Component {
     { title: strings.accountInformation, hash: '#account-information' },
     { title: strings.accountNotification, hash: '#notifications' },
     { title: strings.accountPerForms, hash: '#per-forms' },
-    // @DREF
-    // { title: strings.accountMyDrefApplications, hash: '#my-dref-applications' }
+    { title: strings.accountMyDrefApplications, hash: '#my-dref-applications' }
   ])
 
   getBasicTypes = memoize((strings) => [
@@ -892,13 +890,11 @@ class Account extends React.Component {
                       <PerAccount user={this.props.user} />
                     </TabContent>
                   </TabPanel>
-                  {/* @DREF
                   <TabPanel>
                     <TabContent title={strings.accountPerTitle}>
                       <DrefApplicationList />
                     </TabContent>
                   </TabPanel>
-                  */}
                 </div>
               </div>
             </Tabs>
