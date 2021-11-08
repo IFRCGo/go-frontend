@@ -96,14 +96,12 @@ function Navbar (props) {
                       {strings.headerDropdownCovid19NSFinancialOverview}
                     </a>
                     {/* FIXME: use strings */}
-                    {/* @DREF
                     <Link
                       to='/dref-application/new'
                       className='drop__menu-item'
                     >
                       New Dref Application
                     </Link>
-                    */}
                     <Link
                       to='/three-w/new'
                       className='drop__menu-item'
