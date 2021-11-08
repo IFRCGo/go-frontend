@@ -58,11 +58,6 @@ import styles from './styles.module.scss';
 // import ThreeW from '#views/ThreeW';
 // import ThreeWEdit from '#views/ThreeWEdit';
 
-
-// @DREF
-// import DrefApplicationForm from '#views/DrefApplicationForm';
-// import DrefPdfExport from '#components/DrefPdfExport';
-
 const Home = lazy(() => import('../views/home'));
 const About = lazy(() => import('../views/about'));
 const Account = lazy(() => import('../views/account'));
@@ -92,6 +87,8 @@ const GlobalThreeW = lazy(() => import('../views/GlobalThreeW'));
 const AllThreeW = lazy(() => import('../views/AllThreeW'));
 const ThreeW = lazy(() => import('../views/ThreeW'));
 const ThreeWEdit = lazy(() => import('../views/ThreeWEdit'));
+const DrefApplicationForm = lazy(() => import('../views/DrefApplicationForm'));
+const DrefPdfExport = lazy(() => import('../components/DrefPdfExport'));
 
 function LoadingGlobal() {
   return (
@@ -289,11 +286,9 @@ function Multiplexer(props) {
               <Route path='/preparedness' component={Preparedness} />
               <Route key="new-three-w" exact path='/three-w/new/' component={NewThreeW} />
 
-              {/* @DREF
               <PrivateRoute key="new-dref-application-form" exact path='/dref-application/new/' component={DrefApplicationForm} />
               <PrivateRoute exact path='/dref-application/:drefId/edit/' component={DrefApplicationForm} />
               <PrivateRoute exact path='/dref-application/:drefId/export/' component={DrefPdfExport} />
-              */}
 
               <Route exact path='/three-w/all/' component={AllThreeW} />
               <Route exact path='/three-w/:projectId/' component={ThreeW} />
