@@ -3,6 +3,7 @@
 .essential-information {
   .actions {
     display: flex;
+    align-self: flex-start;
     justify-content: flex-end;
     padding: $spacing/2 $spacing;
   }

@@ -105,7 +105,7 @@ function CountryDistrictInput(props: Props) {
         name={index}
         onClick={onRemove}
         variant="action"
-        disabled={index === 0}
+        // disabled={index === 0}
       >
         <IoTrash />
       </Button>

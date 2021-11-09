@@ -81,9 +81,14 @@ export const schema: FormSchema = {
     field_report: [],
     title: [requiredCondition],
     national_society: [requiredCondition],
-    disaster_type: [requiredCondition],
-    type_of_onset: [requiredCondition],
-    disaster_category: [requiredCondition],
+    // disaster_type: [requiredCondition],
+    // type_of_onset: [requiredCondition],
+    // disaster_category: [requiredCondition],
+
+    disaster_category: [],
+    disaster_type: [],
+    type_of_onset: [],
+
     country_district: {
       keySelector: (c) => c.clientId as string,
       member: (): CountryDistrictsSchemaMember => ({
@@ -111,7 +116,8 @@ export const schema: FormSchema = {
     num_assisted: [positiveIntegerCondition],
     amount_requested: [positiveNumberCondition],
     emergency_appeal_planned: [],
-    event_map: [requiredCondition],
+    // event_map: [requiredCondition],
+    event_map: [],
 
     event_date: [],
     event_text: [],
