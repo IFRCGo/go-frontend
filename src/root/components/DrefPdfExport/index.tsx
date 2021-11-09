@@ -24,7 +24,20 @@ interface Props {
   location: Location;
 }
 
+
 function DrefPdfExport(props: Props) {
+  const FONT_FAMILY = 'Helvetica-Bold';
+  const FONT_SIZE_DREF_HEADING = 20;
+  const FONT_SIZE_HEADING = 16;
+  const FONT_SIZE_lABEL = 12;
+  const FONT_SIZE_SMALL_LABEL = 11;
+  const FONT_MID_LABEL = 14;
+  const TEXT_COLOR = '#FF0000';
+  const TEXT_COLOR_LABEL = '#000';
+  const BASE_MARGIN = 1;
+  const LINE_GAP = 0.2;
+  const SECTION_GAP = 0.2;
+
   const {
     className,
     match,
@@ -34,19 +47,19 @@ function DrefPdfExport(props: Props) {
   const { drefId } = match.params;
   const [pdfUrl, setPdfUrl] = React.useState<string | undefined>();
   const addFirstPage = (pdf: jsPDF, value: DrefApiFields) => {
-    pdf.setFont('Helvetica-Bold');
-    pdf.setTextColor('#ed1b2e');
-    pdf.setFontSize(20);
+    pdf.setFont(FONT_FAMILY);
+    pdf.setTextColor(TEXT_COLOR);
+    pdf.setFontSize(FONT_SIZE_DREF_HEADING);
     pdf.addImage(IfrcLogo, 'png', 1, 0.5, 1, 1);
     pdf.text(strings.drefFormPdfTitle, 4, 1.5, {});
-    pdf.setTextColor(0);
-    pdf.setFontSize(12);
+    pdf.setTextColor(TEXT_COLOR_LABEL);
+    pdf.setFontSize(FONT_SIZE_lABEL);
     pdf.setLineHeightFactor(0);
     pdf.text(value.country_district[0].country + '|' + value.country_district[0].district + '|' + value.ifrc_emergency_name, 6, 2);
     // pdf.addImage(value.event_map_details.file, 'png', 1, 3, 40, 30);
     pdf.addImage(IfrcLogo, 'png', 1, 2.5, 6, 4.5);
-    pdf.setFontSize(11);
-    pdf.setFont('Helvetica');
+    pdf.setFontSize(FONT_SIZE_SMALL_LABEL);
+    pdf.setFont(FONT_FAMILY);
     pdf.text(strings.drefFormAppealCode, 1, 8);
     pdf.text('Dref Allocated:', 3, 8);
     pdf.text(strings.drefFormGlideNum, 1, 9);
@@ -56,8 +69,8 @@ function DrefPdfExport(props: Props) {
     pdf.text(strings.drefFormPdfDrefEnds, 5, 9);
     pdf.text(strings.drefFormOperationTimeframeSubmission, 6, 9);
     pdf.text(strings.drefFormPdfAffectedAreas, 3, 9.5);
-    pdf.setFontSize(12);
-    pdf.setFont('Helvetica-Bold');
+    pdf.setFontSize(FONT_SIZE_lABEL);
+    pdf.setFont(FONT_FAMILY);
     pdf.text(value.appeal_code, 1, 8.2); // appeal no
     pdf.text(' ', 3, 8.2); //dref alloation
     pdf.text(value.glide_code, 1, 9.2); // glide no
@@ -82,27 +95,27 @@ function DrefPdfExport(props: Props) {
 
     pdf.addPage();
     pdf.addImage(IfrcLogo, 'JPEG', 1, 1, 2, 3);
-    pdf.setFont('Helvetica-Bold');
-    pdf.setTextColor(255, 0, 0);
-    pdf.setFontSize(16);
+    pdf.setFont(FONT_FAMILY);
+    pdf.setTextColor(TEXT_COLOR);
+    pdf.setFontSize(FONT_SIZE_HEADING);
     pdf.text(strings.drefFormPdfDrescriptionOfTheEvent, 3.5, 1.2);
-    pdf.setTextColor(0);
-    pdf.setFontSize(14);
+    pdf.setTextColor(TEXT_COLOR_LABEL);
+    pdf.setFontSize(FONT_MID_LABEL);
     pdf.text(strings.drefFormWhatWhereWhen, 3.5, 1.6);
     pdf.text(strings.drefFormScopeAndScaleEvent, 3.5, 2);
-    pdf.setFontSize(12);
+    pdf.setFontSize(FONT_SIZE_lABEL);
     pdf.text(value.event_scope, 3.5, 2.2);
     // pdf.html(str);
   };
 
   const addThirdPage = (pdf: jsPDF, value: DrefApiFields) => {
     pdf.addPage();
-    pdf.setFont('Helvetica-Bold');
-    pdf.setTextColor(255, 0, 0);
-    pdf.setFontSize(16);
+    pdf.setFont(FONT_FAMILY);
+    pdf.setTextColor(TEXT_COLOR);
+    pdf.setFontSize(FONT_SIZE_HEADING);
     pdf.text(strings.drefFormPreviousOperations, 1, 1);
-    pdf.setTextColor(0);
-    pdf.setFontSize(12);
+    pdf.setTextColor(TEXT_COLOR_LABEL);
+    pdf.setFontSize(FONT_SIZE_lABEL);
     pdf.text(strings.drefFormAffectSameArea, 1, 2);
     pdf.text(value.affect_same_area + '', 5, 2);
     pdf.text(strings.drefFormAffectedthePopulationTitle, 1, 2.2);
@@ -116,13 +129,14 @@ function DrefPdfExport(props: Props) {
     pdf.text(strings.drefFormLessonsLearnedTitle, 1, 3);
     pdf.text(strings.drefFormLessonsLearnedDescription, 1, 3.2);
     pdf.text(value.lessons_learned, 5, 3.2);
-    pdf.setFont('Helvetica-Bold');
-    pdf.setTextColor(255, 0, 0);
-    pdf.setFontSize(16);
+    pdf.setFont(FONT_FAMILY);
+    pdf.setTextColor(TEXT_COLOR);
+    pdf.setFontSize(FONT_SIZE_HEADING);
+
     pdf.text(strings.drefFormPdfCurrentNationalSocietyAction, 1, 4);
     pdf.text(strings.drefFormPdfMovementPartnersActions, 1, 5);
-    pdf.setTextColor(0);
-    pdf.setFontSize(12);
+    pdf.setTextColor(TEXT_COLOR_LABEL);
+    pdf.setFontSize(FONT_SIZE_lABEL);
     pdf.text(strings.drefFormIfrc, 1, 5.2);
     pdf.text(value.ifrc, 5, 5.2);
     pdf.text(strings.drefFormIcrc, 1, 5.4);
@@ -142,34 +156,36 @@ function DrefPdfExport(props: Props) {
 
   const addFourthPage = (pdf: jsPDF, value: DrefApiFields) => {
     pdf.addPage();
-    pdf.setFont('Helvetica-Bold');
-    pdf.setTextColor(255, 0, 0);
-    pdf.setFontSize(16);
+    pdf.setFont(FONT_FAMILY);
+    pdf.setTextColor(TEXT_COLOR);
+    pdf.setFontSize(FONT_SIZE_HEADING);
+
     pdf.text(strings.drefFormPdfNeedsGapsIdentified, 1, 1);
-    pdf.setTextColor(0);
-    pdf.setFontSize(12);
+    pdf.setTextColor(TEXT_COLOR_LABEL);
+    pdf.setFontSize(FONT_SIZE_lABEL);
   };
 
   const addFifthPage = (pdf: jsPDF, value: DrefApiFields) => {
     pdf.addPage();
-    pdf.setFont('Helvetica-Bold');
-    pdf.setTextColor(255, 0, 0);
-    pdf.setFontSize(16);
+    pdf.setFont(FONT_FAMILY);
+    pdf.setTextColor(TEXT_COLOR);
+    pdf.setFontSize(FONT_SIZE_HEADING);
     pdf.text(strings.drefFormTargetingStrategy, 1, 1);
-    pdf.setTextColor(0);
-    pdf.setFontSize(12);
+    pdf.setTextColor(TEXT_COLOR_LABEL);
+    pdf.setFontSize(FONT_SIZE_lABEL);
     pdf.text(strings.drefFormPeopleAssistedthroughOperation, 1, 1.4);
     pdf.text(value.people_assisted, 1, 1.6);
     pdf.text(strings.drefFormSelectionCriteria, 1, 1.8);
     pdf.text(value.selection_criteria, 1, 2);
     pdf.text(strings.drefFormProtectionGenderAndInclusion, 1, 2.2);
     pdf.text(value.entity_affected, 1, 2.4);
-    pdf.setFont('Helvetica-Bold');
-    pdf.setTextColor(255, 0, 0);
-    pdf.setFontSize(16);
+    pdf.setFont(FONT_FAMILY);
+    pdf.setTextColor(TEXT_COLOR);
+    pdf.setFontSize(FONT_SIZE_HEADING);
+
     pdf.text(strings.drefFormTargetedPopulation, 1, 3);
-    pdf.setTextColor(0);
-    pdf.setFontSize(12);
+    pdf.setTextColor(TEXT_COLOR_LABEL);
+    pdf.setFontSize(FONT_SIZE_lABEL);
     pdf.text(strings.drefFormTargetedPopulation, 1, 3.4);
     pdf.text(strings.drefFormWomen, 3, 3.4);
     pdf.text(value.women + '', 4.5, 3.4);
@@ -189,26 +205,29 @@ function DrefPdfExport(props: Props) {
     pdf.text(value.people_per_local + '', 6.5, 5);
     pdf.text(strings.drefFormEstimatedDisplacedPeople, 3, 5.2);
     pdf.text(value.displaced_people + '', 6.5, 5.2);
-    pdf.setFont('Helvetica-Bold');
-    pdf.setTextColor(255, 0, 0);
-    pdf.setFontSize(16);
+    pdf.setFont(FONT_FAMILY);
+    pdf.setTextColor(TEXT_COLOR);
+    pdf.setFontSize(FONT_SIZE_HEADING);
+
     pdf.text(strings.drefFormObjectiveOperation, 1, 6);
-    pdf.setTextColor(0);
-    pdf.setFontSize(12);
+    pdf.setTextColor(TEXT_COLOR_LABEL);
+    pdf.setFontSize(FONT_SIZE_lABEL);
     pdf.text(value.operation_objective, 1, 6.5);
-    pdf.setFont('Helvetica-Bold');
-    pdf.setTextColor(255, 0, 0);
-    pdf.setFontSize(16);
+    pdf.setFont(FONT_FAMILY);
+    pdf.setTextColor(TEXT_COLOR);
+    pdf.setFontSize(FONT_SIZE_HEADING);
+
     pdf.text(strings.drefFormResponseRationale, 1, 7);
-    pdf.setTextColor(0);
-    pdf.setFontSize(12);
+    pdf.setTextColor(TEXT_COLOR_LABEL);
+    pdf.setFontSize(FONT_SIZE_lABEL);
     pdf.text(value.response_strategy, 1, 7.5);
-    pdf.setFont('Helvetica-Bold');
-    pdf.setTextColor(255, 0, 0);
-    pdf.setFontSize(16);
+    pdf.setFont(FONT_FAMILY);
+    pdf.setTextColor(TEXT_COLOR);
+    pdf.setFontSize(FONT_SIZE_HEADING);
+
     pdf.text(strings.drefFormPdfAboutSupportSurvices, 1, 8);
-    pdf.setTextColor(0);
-    pdf.setFontSize(12);
+    pdf.setTextColor(TEXT_COLOR_LABEL);
+    pdf.setFontSize(FONT_SIZE_lABEL);
     pdf.text(strings.drefFormHumanResourceDescription, 1, 8.4);
     pdf.text(value.human_resource, 1, 8.6);
     pdf.text(strings.drefFormSurgePersonnelDeployed, 1, 8.8);
@@ -221,15 +240,16 @@ function DrefPdfExport(props: Props) {
 
   const addSixthPage = (pdf: jsPDF, value: DrefApiFields) => {
     pdf.addPage();
-    pdf.setTextColor(0);
-    pdf.setFontSize(12);
+    pdf.setTextColor(TEXT_COLOR_LABEL);
+    pdf.setFontSize(FONT_SIZE_lABEL);
     pdf.text(strings.drefFormPmerDescription, 1, 1);
     pdf.text(value.pmer, 1, 1.2);
     pdf.text(strings.drefFormCommunicationDescription, 1, 1.4);
     pdf.text(value.communication, 1, 1.6);
-    pdf.setFont('Helvetica-Bold');
-    pdf.setTextColor(255, 0, 0);
-    pdf.setFontSize(16);
+    pdf.setFont(FONT_FAMILY);
+    pdf.setTextColor(TEXT_COLOR);
+    pdf.setFontSize(FONT_SIZE_HEADING);
+
     pdf.text(strings.drefFormPlannedIntervention, 1, 2.2);
   };
 
@@ -239,12 +259,13 @@ function DrefPdfExport(props: Props) {
 
   const addEighthPage = (pdf: jsPDF, value: DrefApiFields) => {
     pdf.addPage();
-    pdf.setFont('Helvetica-Bold');
-    pdf.setTextColor(255, 0, 0);
-    pdf.setFontSize(16);
+    pdf.setFont(FONT_FAMILY);
+    pdf.setTextColor(TEXT_COLOR);
+    pdf.setFontSize(FONT_SIZE_HEADING);
+
     pdf.text(strings.drefFormPdfContactInformation, 1, 1);
-    pdf.setTextColor(0);
-    pdf.setFontSize(12);
+    pdf.setTextColor(TEXT_COLOR_LABEL);
+    pdf.setFontSize(FONT_SIZE_lABEL);
     pdf.text(strings.drefFormNationalSocietyContact, 1, 1.2);
     pdf.text(value.national_society_contact_name, 1, 1.4);
     pdf.text(value.national_society_contact_email, 1, 1.6);
@@ -265,7 +286,7 @@ function DrefPdfExport(props: Props) {
     pdf.text(value.media_contact_name, 1, 5.4);
     pdf.text(value.media_contact_email, 1, 5.6);
     pdf.text(value.media_contact_phone_number, 1, 5.8);
-    pdf.text(strings.drefFormPdfReference, 1, 6.2);
+    pdf.text(strings.drefFormPdfReference, 3, 6.2);
   };
 
   const { pending } = useRequest<DrefApiFields>({
