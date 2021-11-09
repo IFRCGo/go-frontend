@@ -35,15 +35,16 @@ function DrefPdfExport(props: Props) {
   const [pdfUrl, setPdfUrl] = React.useState<string | undefined>();
   const addFirstPage = (pdf: jsPDF, value: DrefApiFields) => {
     pdf.setFont('Helvetica-Bold');
-    pdf.setTextColor(255, 0, 0);
-    pdf.setFontSize(16);
-    pdf.addImage(IfrcLogo, 'png', 1, 1.5, 1, 1);
-    pdf.text("DREF APPLICATION", 5, 2, {});
+    pdf.setTextColor('#ed1b2e');
+    pdf.setFontSize(20);
+    pdf.addImage(IfrcLogo, 'png', 1, 0.5, 1, 1);
+    pdf.text(strings.drefFormPdfTitle, 4, 1.5, {});
     pdf.setTextColor(0);
     pdf.setFontSize(12);
     pdf.setLineHeightFactor(0);
-    pdf.text("Country, region | Emergency Name", 5, 3, {}); // to be filled from value
-    pdf.addImage(IfrcLogo, 'png', 1, 3.1, 6, 4.5);
+    pdf.text(value.country_district[0].country + '|' + value.country_district[0].district + '|' + value.ifrc_emergency_name, 6, 2);
+    // pdf.addImage(value.event_map_details.file, 'png', 1, 3, 40, 30);
+    pdf.addImage(IfrcLogo, 'png', 1, 2.5, 6, 4.5);
     pdf.setFontSize(11);
     pdf.setFont('Helvetica');
     pdf.text(strings.drefFormAppealCode, 1, 8);
@@ -114,9 +115,159 @@ function DrefPdfExport(props: Props) {
     pdf.text(value.dref_recurrent_text, 5, 2.8);
     pdf.text(strings.drefFormLessonsLearnedTitle, 1, 3);
     pdf.text(strings.drefFormLessonsLearnedDescription, 1, 3.2);
-    pdf.text(value.lessons_learned, 5, 3);
-    // Add auto table here
+    pdf.text(value.lessons_learned, 5, 3.2);
+    pdf.setFont('Helvetica-Bold');
+    pdf.setTextColor(255, 0, 0);
+    pdf.setFontSize(16);
+    pdf.text(strings.drefFormPdfCurrentNationalSocietyAction, 1, 4);
+    pdf.text(strings.drefFormPdfMovementPartnersActions, 1, 5);
+    pdf.setTextColor(0);
+    pdf.setFontSize(12);
+    pdf.text(strings.drefFormIfrc, 1, 5.2);
+    pdf.text(value.ifrc, 5, 5.2);
+    pdf.text(strings.drefFormIcrc, 1, 5.4);
+    pdf.text(value.icrc, 5, 5.4);
+    pdf.text(strings.drefFormPartnerNationalSociety, 1, 5.6);
+    pdf.text(value.partner_national_society, 5, 5.6);
+
+    pdf.text(strings.drefFormNationalOtherActors, 1, 5.8);
+
+    pdf.text(strings.drefFormInternationalAssistance + '', 1, 6);
+    pdf.text(value.government_requested_assistance + '', 5, 6);
+    pdf.text(strings.drefFormNationalAuthorities, 1, 6.2);
+    pdf.text(value.national_authorities, 5, 6.2);
+    pdf.text(strings.drefFormCoordinationMechanism, 1, 6.4);
+    pdf.text(value.major_coordination_mechanism, 5, 6.4);
   };
+
+  const addFourthPage = (pdf: jsPDF, value: DrefApiFields) => {
+    pdf.addPage();
+    pdf.setFont('Helvetica-Bold');
+    pdf.setTextColor(255, 0, 0);
+    pdf.setFontSize(16);
+    pdf.text(strings.drefFormPdfNeedsGapsIdentified, 1, 1);
+    pdf.setTextColor(0);
+    pdf.setFontSize(12);
+  };
+
+  const addFifthPage = (pdf: jsPDF, value: DrefApiFields) => {
+    pdf.addPage();
+    pdf.setFont('Helvetica-Bold');
+    pdf.setTextColor(255, 0, 0);
+    pdf.setFontSize(16);
+    pdf.text(strings.drefFormTargetingStrategy, 1, 1);
+    pdf.setTextColor(0);
+    pdf.setFontSize(12);
+    pdf.text(strings.drefFormPeopleAssistedthroughOperation, 1, 1.4);
+    pdf.text(value.people_assisted, 1, 1.6);
+    pdf.text(strings.drefFormSelectionCriteria, 1, 1.8);
+    pdf.text(value.selection_criteria, 1, 2);
+    pdf.text(strings.drefFormProtectionGenderAndInclusion, 1, 2.2);
+    pdf.text(value.entity_affected, 1, 2.4);
+    pdf.setFont('Helvetica-Bold');
+    pdf.setTextColor(255, 0, 0);
+    pdf.setFontSize(16);
+    pdf.text(strings.drefFormTargetedPopulation, 1, 3);
+    pdf.setTextColor(0);
+    pdf.setFontSize(12);
+    pdf.text(strings.drefFormTargetedPopulation, 1, 3.4);
+    pdf.text(strings.drefFormWomen, 3, 3.4);
+    pdf.text(value.women + '', 4.5, 3.4);
+    pdf.text(strings.drefFormMen, 5.5, 3.4);
+    pdf.text(value.men + '', 7, 3.4);
+    pdf.text(strings.drefFormGirls, 3, 3.8);
+    pdf.text(value.girls + '', 4.5, 3.8);
+    pdf.text(strings.drefFormBoys, 5.5, 3.8);
+    pdf.text(value.boys + '', 7, 3.8);
+    pdf.text(strings.drefFormTotal, 3, 4.2);
+    pdf.text(value.total_targated_population + '', 4.5, 4.2);
+    pdf.text(strings.drefFormEstimatePeopleDisability, 3, 4.6);
+    pdf.text(value.disability_people_per + '', 6.5, 4.6);
+    pdf.text(strings.drefFormEstimatedUrban, 3, 4.8);
+    pdf.text(value.people_per_urban + '', 6.5, 4.8);
+    pdf.text(strings.drefFormEstimatedLocal, 3, 5);
+    pdf.text(value.people_per_local + '', 6.5, 5);
+    pdf.text(strings.drefFormEstimatedDisplacedPeople, 3, 5.2);
+    pdf.text(value.displaced_people + '', 6.5, 5.2);
+    pdf.setFont('Helvetica-Bold');
+    pdf.setTextColor(255, 0, 0);
+    pdf.setFontSize(16);
+    pdf.text(strings.drefFormObjectiveOperation, 1, 6);
+    pdf.setTextColor(0);
+    pdf.setFontSize(12);
+    pdf.text(value.operation_objective, 1, 6.5);
+    pdf.setFont('Helvetica-Bold');
+    pdf.setTextColor(255, 0, 0);
+    pdf.setFontSize(16);
+    pdf.text(strings.drefFormResponseRationale, 1, 7);
+    pdf.setTextColor(0);
+    pdf.setFontSize(12);
+    pdf.text(value.response_strategy, 1, 7.5);
+    pdf.setFont('Helvetica-Bold');
+    pdf.setTextColor(255, 0, 0);
+    pdf.setFontSize(16);
+    pdf.text(strings.drefFormPdfAboutSupportSurvices, 1, 8);
+    pdf.setTextColor(0);
+    pdf.setFontSize(12);
+    pdf.text(strings.drefFormHumanResourceDescription, 1, 8.4);
+    pdf.text(value.human_resource, 1, 8.6);
+    pdf.text(strings.drefFormSurgePersonnelDeployed, 1, 8.8);
+    pdf.text(value.surge_personnel_deployed, 1, 9);
+    pdf.text(strings.drefFormLogisticCapacityOfNs, 1, 9.2);
+    pdf.text(value.logistic_capacity_of_ns, 1, 9.4);
+    pdf.text(strings.drefFormSafetyConcerns, 1, 9.6);
+    pdf.text(value.safety_concerns, 1, 9.8);
+  };
+
+  const addSixthPage = (pdf: jsPDF, value: DrefApiFields) => {
+    pdf.addPage();
+    pdf.setTextColor(0);
+    pdf.setFontSize(12);
+    pdf.text(strings.drefFormPmerDescription, 1, 1);
+    pdf.text(value.pmer, 1, 1.2);
+    pdf.text(strings.drefFormCommunicationDescription, 1, 1.4);
+    pdf.text(value.communication, 1, 1.6);
+    pdf.setFont('Helvetica-Bold');
+    pdf.setTextColor(255, 0, 0);
+    pdf.setFontSize(16);
+    pdf.text(strings.drefFormPlannedIntervention, 1, 2.2);
+  };
+
+  const addSeventhPage = (pdf: jsPDF, value: DrefApiFields) => {
+    pdf.addPage();
+  };
+
+  const addEighthPage = (pdf: jsPDF, value: DrefApiFields) => {
+    pdf.addPage();
+    pdf.setFont('Helvetica-Bold');
+    pdf.setTextColor(255, 0, 0);
+    pdf.setFontSize(16);
+    pdf.text(strings.drefFormPdfContactInformation, 1, 1);
+    pdf.setTextColor(0);
+    pdf.setFontSize(12);
+    pdf.text(strings.drefFormNationalSocietyContact, 1, 1.2);
+    pdf.text(value.national_society_contact_name, 1, 1.4);
+    pdf.text(value.national_society_contact_email, 1, 1.6);
+    pdf.text(value.national_society_contact_phone_number, 1, 1.8);
+    pdf.text(strings.drefFormAppealManager, 1, 2.2);
+    pdf.text(value.ifrc_appeal_manager_name, 1, 2.4);
+    pdf.text(value.ifrc_appeal_manager_email, 1, 2.6);
+    pdf.text(value.ifrc_appeal_manager_phone_number, 1, 2.8);
+    pdf.text(strings.drefFormProjectManager, 1, 3.2);
+    pdf.text(value.ifrc_project_manager_name, 1, 3.4);
+    pdf.text(value.ifrc_project_manager_email, 1, 3.6);
+    pdf.text(value.ifrc_project_manager_phone_number, 1, 3.8);
+    pdf.text(strings.drefFormIfrcEmergency, 1, 4.2);
+    pdf.text(value.ifrc_emergency_name, 1, 4.4);
+    pdf.text(value.ifrc_emergency_email, 1, 4.6);
+    pdf.text(value.ifrc_emergency_phone_number, 1, 4.8);
+    pdf.text(strings.drefFormMediaContact, 1, 5.2);
+    pdf.text(value.media_contact_name, 1, 5.4);
+    pdf.text(value.media_contact_email, 1, 5.6);
+    pdf.text(value.media_contact_phone_number, 1, 5.8);
+    pdf.text(strings.drefFormPdfReference, 1, 6.2);
+  };
+
   const { pending } = useRequest<DrefApiFields>({
     skip: !drefId,
     url: `api/v2/dref/${drefId}/`,
@@ -191,31 +342,7 @@ function DrefPdfExport(props: Props) {
       // pdf.text(response.un_or_other_actor, 2, 12);
       // pdf.text(strings.drefFormCoordinationMechanism, 1, 27);
       // pdf.text(response.major_coordination_mechanism, 2, 13);
-      // pdf.text(strings.drefFormPdfNeedsGapsIdentified, 1, 27);
       // pdf.text(strings.drefFormTargetingStrategy, 1, 28);
-      // pdf.text(strings.drefFormPeopleAssistedthroughOperation, 1, 29);
-      // pdf.text(response.people_assisted, 2, 14);
-      // pdf.text(strings.drefFormSelectionCriteria, 1, 30);
-      // // pdf.text(response.drefFormSelectionCriteria,2,15);
-      // pdf.text(strings.drefFormProtectionGenderAndInclusion, 1, 31);
-      // pdf.text(response.entity_affected, 2, 16);
-      // pdf.text(strings.drefFormTargetedPopulation, 1, 32);
-      // pdf.text(strings.drefFormWomen, 1, 33);
-      // // pdf.text(response.women, 2, 17);
-      // pdf.text(strings.drefFormMen, 1, 32);
-      // // pdf.text(response.men, 2, 18);
-      // pdf.text(strings.drefFormGirls, 1, 33);
-      // // pdf.text(response.girls,2,19);
-      // pdf.text(strings.drefFormBoys, 1, 34);
-      // // pdf.text(response.boys,2,20);
-      // pdf.text(strings.drefFormTargetedPopulation, 1, 35);
-      // // pdf.text(response.total_targated_population, 2, 21);
-      // pdf.text(strings.drefFormEstimatePeopleDisability, 1, 36);
-      // // pdf.text(response.drefFormEstimatePeopleDisability, 2, 22);
-      // pdf.text(strings.drefFormEstimatedUrban, 1, 37);
-      // // pdf.text(response.drefFormEstimatedUrban,2,23);
-      // pdf.text(strings.drefFormEstimatedDisplacedPeople, 1, 38);
-      // // pdf.text(response.displaced_people, 2, 24);
       // pdf.text(strings.drefFormObjectiveOperation, 1, 39);
       // pdf.text(response.operation_objective, 2, 26);
       // pdf.text(strings.drefFormResponseRationale, 1, 40);
@@ -232,28 +359,6 @@ function DrefPdfExport(props: Props) {
       // pdf.text(strings.drefFormCommunicationDescription, 1, 46);
       // pdf.text(response.communication, 2, 30);
       // pdf.text(strings.drefFormPlannedIntervention, 1, 47);
-      // pdf.text(strings.drefFormPdfContactInformation, 1, 49);
-      // pdf.text(strings.drefFormNationalSocietyContact, 1, 50);
-      // pdf.text(response.national_society_contact_name, 2, 31);
-      // pdf.text(response.national_society_contact_email, 2, 32);
-      // // pdf.text(response.national_society_contact_phone_number, 2, 33);
-      // pdf.text(strings.drefFormAppealManager, 1, 51);
-      // pdf.text(response.ifrc_appeal_manager_name, 2, 34);
-      // pdf.text(response.ifrc_appeal_manager_email, 2, 35);
-      // // pdf.text(response.ifrc_appeal_manager_phone_number, 2, 36);
-      // // pdf.text(strings.drefFormProjectManager, 1, 52);
-      // // pdf.text(response.ifrc_project_manager_name, 2, 37);
-      // // pdf.text(response.ifrc_project_manager_email, 2, 38);
-      // // pdf.text(response.ifrc_project_manager_phone_number, 2, 39);
-      // // pdf.text(strings.drefFormIfrcEmergency, 1, 53);
-      // // pdf.text(response.ifrc_emergency_name, 2, 40);
-      // // pdf.text(response.ifrc_emergency_email, 2, 41);
-      // // pdf.text(response.ifrc_emergency_phone_number, 2, 42);
-      // // pdf.text(strings.drefFormMediaContact, 1, 54);
-      // // pdf.text(response.media_contact_name, 2, 43);
-      // // pdf.text(response.media_contact_email, 2, 44);
-      // // pdf.text(response.media_contact_phone_number, 2, 45);
-
 
       pdf.addImage('../../../assets/icons/collecticons/ifrclogo.png', 'png', 10, 10, 50, 50);
       // const margin = 1.5;
@@ -289,6 +394,10 @@ function DrefPdfExport(props: Props) {
       addFirstPage(pdf, response);
       addSecondPage(pdf, response);
       addThirdPage(pdf, response);
+      addFourthPage(pdf, response);
+      addFifthPage(pdf, response);
+      addSixthPage(pdf, response);
+      addEighthPage(pdf, response);
       var blobPDF = new Blob([pdf.output()], { type: 'application/pdf' });
       setPdfUrl(URL.createObjectURL(blobPDF));
     },
