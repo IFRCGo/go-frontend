@@ -55,12 +55,17 @@ import useDrefFormOptions, { schema } from './useDrefFormOptions';
 import styles from './styles.module.scss';
 
 const defaultFormValues: PartialForm<DrefFields> = {
+  /*
   country_district: [
     { clientId: randomString() },
   ],
+   */
+  country_district: [],
   planned_interventions: [],
   national_society_actions: [],
   needs_identified: [],
+  images: [],
+  users: [],
 };
 
 function scrollToTop() {
@@ -357,17 +362,7 @@ function DrefApplication(props: Props) {
     setCurrentStep(newStep);
   }, [validateCurrentTab]);
 
-  const handleSubmitButtonClick = React.useCallback(() => {
-    scrollToTop();
-
-    const isCurrentTabValid = validateCurrentTab([
-      'event_map'
-    ]);
-    if (!isCurrentTabValid) {
-      return;
-    }
-
-    if (currentStep === 'submission') {
+  const submitDref = React.useCallback(() => {
       const {
         errored,
         error,
@@ -379,13 +374,29 @@ function DrefApplication(props: Props) {
       if (errored) {
         return;
       }
+
       if (finalValues && userDetails && userDetails.id) {
         const body = {
           user: userDetails.id,
-          ...getDefinedValues(finalValues),
+          ...finalValues,
         };
         submitRequest(body as DrefApiFields);
       }
+  }, [submitRequest, validate, userDetails, onErrorSet]);
+
+  const handleSubmitButtonClick = React.useCallback(() => {
+    scrollToTop();
+
+    const isCurrentTabValid = validateCurrentTab([
+      'event_map'
+    ]);
+
+    if (!isCurrentTabValid) {
+      return;
+    }
+
+    if (currentStep === 'submission') {
+      submitDref();
     } else {
       const nextStepMap: {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -399,7 +410,7 @@ function DrefApplication(props: Props) {
 
       handleTabChange(nextStepMap[currentStep]);
     }
-  }, [validateCurrentTab, currentStep, handleTabChange, validate, onErrorSet, submitRequest, userDetails]);
+  }, [validateCurrentTab, currentStep, handleTabChange, submitDref]);
 
   const handleBackButtonClick = React.useCallback(() => {
     if (currentStep !== 'operationOverview') {
@@ -487,11 +498,22 @@ function DrefApplication(props: Props) {
     >
       <Page
         className={className}
-        actions={isDefined(drefId) && (
-          <Link
-            to={`/dref-application/${drefId}/export/`}
-            {...exportLinkProps}
-          />
+        actions={(
+          <>
+            {isDefined(drefId) && (
+              <Link
+                to={`/dref-application/${drefId}/export/`}
+                {...exportLinkProps}
+              />
+            )}
+            <Button
+              name={undefined}
+              onClick={submitDref}
+              type="submit"
+            >
+              {strings.drefFormSaveButtonLabel}
+            </Button>
+          </>
         )}
         title={strings.drefFormPageTitle}
         heading={strings.drefFormPageHeading}
@@ -580,6 +602,7 @@ function DrefApplication(props: Props) {
                   setFileIdToUrlMap={setFileIdToUrlMap}
                   onValueSet={onValueSet}
                   userOptions={userOptions}
+                  onCreateAndShareButtonClick={submitDref}
                 />
               </TabPanel>
               <TabPanel name="eventDetails">

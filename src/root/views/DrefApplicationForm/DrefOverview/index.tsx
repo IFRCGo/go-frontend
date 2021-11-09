@@ -59,6 +59,7 @@ interface Props {
   setFileIdToUrlMap?: React.Dispatch<React.SetStateAction<Record<number, string>>>;
   onValueSet: (value: StateArg<Value>) => void;
   userOptions: NumericValueOption[];
+  onCreateAndShareButtonClick: () => void;
 }
 
 function DrefOverview(props: Props) {
@@ -81,6 +82,7 @@ function DrefOverview(props: Props) {
     fileIdToUrlMap,
     onValueSet,
     userOptions,
+    onCreateAndShareButtonClick,
   } = props;
 
   const {
@@ -152,7 +154,8 @@ function DrefOverview(props: Props) {
               <Button
                 name={undefined}
                 variant="secondary"
-                disabled
+                disabled={isNotDefined(value.users) || value.users.length === 0}
+                onClick={onCreateAndShareButtonClick}
               >
                 {strings.drefFormInstantShareLabel}
               </Button>
