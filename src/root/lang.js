@@ -3180,6 +3180,7 @@ export default {
 
   //dref pdf
   drefFormPdfTitle: 'DREF APPLICATION',
+  drefFormPdfDrefAllocated: 'DREF Allocated',
   drefFormPdfPeopleAffected: 'People [affected/ at risk]:',
   drefFormPdfPeopleAssisted: 'People to be assisted',
   drefFormPdfDrefLaunched: 'DREF Launched',
@@ -3189,7 +3190,13 @@ export default {
   drefFormPdfCurrentNationalSocietyAction: 'Current National Society Action',
   drefFormPdfMovementPartnersActions: 'Movement Partners Actions',
   drefFormPdfNeedsGapsIdentified: 'Needs (Gaps) Identified',
-  drefFormPdfAboutSupportSurvices: 'About Support Services',
+  drefFormPdfAboutSupportServices: 'About Support Services',
   drefFormPdfContactInformation: 'Contact Information',
   drefFormPdfReference : 'Reference',
+  drefFormPdfGlideNum : 'Glide No:',
+  drefFormPdfAppealNum: 'Appeal No:',
+  drefFormPdfBudget: 'Budget',
+  drefFormPdfTargetPersons: 'Targeted Persons',
+  drefFormPdfIndicators: 'Indicators:',
+  drefFormPdfPriorityActions: 'Priority Actions:'
 };
