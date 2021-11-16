@@ -131,7 +131,7 @@ export default {
   homeTitle: 'IFRC Go - Home',
   homeHeading: 'IFRC Disaster Response and Preparedness',
   homeDescription: 'IFRC GO aims to make all disaster information universally accessible and useful to IFRC responders for better decision making.',
-  homeSurgeAlerts: 'Open Surge Positions',
+  homeSurgeAlerts: 'Open Surge Alerts',
   regionAllCountries: 'All countries',
   regionTitle: 'IFRC Go - Region',
   regionTitleSelected: 'IFRC Go - {regionName}',
