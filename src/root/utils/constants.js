@@ -206,4 +206,5 @@ export const projectVisibilityList = [
   { value: 'public', label: 'Public' },
   { value: 'logged_in_user', label: 'Membership' },
   { value: 'ifrc_only', label: 'IFRC Only' },
+  { value: 'ifrc_ns', label: 'IFRC and NS' },
 ];

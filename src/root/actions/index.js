@@ -297,7 +297,7 @@ export function getLastMonthsEmergencies () {
       limit: 500,
       ordering: '-disaster_start_date'
     });
-    dispatch(fetchJSON(`api/v2/event/?${f}`, GET_LAST_MO_EMERGENCIES, {}, { countries: countriesByIso(getState()) }));
+    dispatch(fetchJSON(`api/v2/event/?${f}`, GET_LAST_MO_EMERGENCIES, withToken(), { countries: countriesByIso(getState()) }));
   };
 }
 

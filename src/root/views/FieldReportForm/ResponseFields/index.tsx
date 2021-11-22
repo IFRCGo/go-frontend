@@ -22,6 +22,7 @@ import {
   VISIBILITY_IFRC_SECRETARIAT,
   VISIBILITY_PUBLIC,
   VISIBILITY_RCRC_MOVEMENT,
+  VISIBILITY_IFRC_NS
 } from '../common';
 
 import styles from './styles.module.scss';
@@ -69,6 +70,7 @@ function ResponseFields(props: Props) {
       { label: strings.fieldReportConstantVisibilityPublicLabel, value: VISIBILITY_PUBLIC },
       { label: strings.fieldReportConstantVisibilityRCRCMovementLabel, value: VISIBILITY_RCRC_MOVEMENT },
       { label: strings.fieldReportConstantVisibilityIFRCSecretariatLabel, value: VISIBILITY_IFRC_SECRETARIAT },
+      { label: strings.fieldReportConstantVisibilityIFRCandNSLabel, value: VISIBILITY_IFRC_NS },
     ] as NumericValueOption[],
   ], [strings]);
 
@@ -354,6 +356,9 @@ function ResponseFields(props: Props) {
               </p>
               <p>
                 {strings.fieldReportConstantVisibilityIFRCSecretariatLabel} - {strings.fieldReportConstantVisibilityIFRCSecretariatTooltipTitle}
+              </p>
+              <p>
+                {strings.fieldReportConstantVisibilityIFRCandNSLabel} - {strings.fieldReportConstantVisibilityIFRCandNSTooltipTitle}
               </p>
             </>
           )}
