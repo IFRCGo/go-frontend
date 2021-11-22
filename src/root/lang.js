@@ -2680,9 +2680,11 @@ export default {
   fieldReportConstantVisibilityPublicLabel: 'Public',
   fieldReportConstantVisibilityRCRCMovementLabel: 'RCRC Movement',
   fieldReportConstantVisibilityIFRCSecretariatLabel: 'IFRC Secretariat',
+  fieldReportConstantVisibilityIFRCandNSLabel: 'IFRC and NS',
   fieldReportConstantVisibilityPublicTooltipTitle: 'Available to all stakeholders on the GO platform',
   fieldReportConstantVisibilityRCRCMovementTooltipTitle: 'Available to those who have an IFRC GO login across the RCRC Movement',
   fieldReportConstantVisibilityIFRCSecretariatTooltipTitle: 'Available to only those with an active IFRC account',
+  fieldReportConstantVisibilityIFRCandNSTooltipTitle: 'Available to only those with an active IFRC account or NS assignment',
 
 // not used -   fieldReportEWEPIError: 'Early Warning / Early action cannot be selected when disaster type is Epidemic or vice-versa',
   fieldReportFormNonFieldError: 'Please fill in required fields first!',

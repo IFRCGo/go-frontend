@@ -191,6 +191,7 @@ export const SOURCE_OTHER = 'other';
 export const VISIBILITY_PUBLIC = 3;
 export const VISIBILITY_RCRC_MOVEMENT = 1;
 export const VISIBILITY_IFRC_SECRETARIAT = 2;
+export const VISIBILITY_IFRC_NS = 4;
 
 export const EPI_SOURCE_MOH = 0;
 export const EPI_SOURCE_WHO = 1;
