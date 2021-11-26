@@ -43,6 +43,7 @@ function ProjectStatPieChart(props: Props) {
             legendType='circle'
             startAngle={450}
             endAngle={90}
+            cx={40}
           >
             { data.map((entry, i) => {
               return (
