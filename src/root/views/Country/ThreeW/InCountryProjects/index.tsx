@@ -99,7 +99,7 @@ function InCountryProjects(props: Props) {
   const {
     pending: projectListPending,
     response: projectListResponse,
-    retrigger: retriggerProjectListRequest,
+    retrigger: reTriggerProjectListRequest,
   } = useRequest<ListResponse<Project>>({
     skip: isNotDefined(country?.iso),
     url: 'api/v2/project/',
@@ -124,9 +124,9 @@ function InCountryProjects(props: Props) {
 
   React.useEffect(() => {
     if (projectsUpdatedOn) {
-      retriggerProjectListRequest();
+      reTriggerProjectListRequest();
     }
-  }, [projectsUpdatedOn, retriggerProjectListRequest]);
+  }, [projectsUpdatedOn, reTriggerProjectListRequest]);
 
   const [projectIdToEdit, setProjectIdToEdit] = React.useState<number | undefined>();
   const projectList = projectListResponse?.results ?? emptyProjectList;
@@ -188,14 +188,14 @@ function InCountryProjects(props: Props) {
       (rowKey: number | string, prj: Project) => ({
         children: (
           <ProjectTableActions
-            onProjectFormSubmitSuccess={retriggerProjectListRequest}
-            onProjectDeletionSuccess={retriggerProjectListRequest}
+            onProjectFormSubmitSuccess={reTriggerProjectListRequest}
+            onProjectDeletionSuccess={reTriggerProjectListRequest}
             project={prj}
           />
         ),
       }),
     ),
-  ]), [retriggerProjectListRequest, strings]);
+  ]), [reTriggerProjectListRequest, strings]);
 
   const currentProjectList = ongoingProjects;
 
@@ -269,6 +269,7 @@ function InCountryProjects(props: Props) {
                 description={strings.threeWKeyFigureTotalProjectsTitle}
               />
               <ProjectStatPieChart
+                className={styles.pieChart}
                 title={strings.threeWKeyFigureProgrammeTypeTitle}
                 data={programmeTypeCounts}
               />
@@ -279,6 +280,7 @@ function InCountryProjects(props: Props) {
                 description={strings.threeWKeyFigureOngoingProjectBudgetTitle}
               />
               <ProjectStatPieChart
+                className={styles.pieChart}
                 title={strings.threeWKeyFigureStatusTitle}
                 data={statusCounts}
               />
@@ -408,8 +410,8 @@ function InCountryProjects(props: Props) {
                           <ProjectTableActions
                             className={styles.actions}
                             project={project}
-                            onProjectFormSubmitSuccess={retriggerProjectListRequest}
-                            onProjectDeletionSuccess={retriggerProjectListRequest}
+                            onProjectFormSubmitSuccess={reTriggerProjectListRequest}
+                            onProjectDeletionSuccess={reTriggerProjectListRequest}
                           />
                         </div>
                       ))}
@@ -475,7 +477,7 @@ function InCountryProjects(props: Props) {
             <ProjectFormModal
               projectId={projectIdToEdit}
               onCloseButtonClick={setProjectIdToEdit}
-              onSubmitSuccess={retriggerProjectListRequest}
+              onSubmitSuccess={reTriggerProjectListRequest}
             />
           )}
         </>
