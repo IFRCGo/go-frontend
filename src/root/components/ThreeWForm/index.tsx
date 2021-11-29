@@ -265,7 +265,33 @@ function ThreeWForm(props: Props) {
     },
     [onValueChange],
   );
-
+  if(!projectResponse)
+  {
+    return(
+          <section className='inpage'>
+            <header className='inpage__header'>
+              <div className='inner'>
+                <div className='inpage__headline-content'>
+                  <h1 className='inpage__title'>
+                    <Translate stringId='fieldReportResourceNotFound'/>
+                  </h1>
+                </div>
+              </div>
+            </header>
+            <div className='inpage__body'>
+              <div className='inner'>
+                <div className='prose fold prose--responsive'>
+                  <div className='inner'>
+                    <p className='inpage_note'>
+                      <Translate stringId='fieldReportResourceDescription'/>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+    );
+  }
   return (
     <form
       onSubmit={createSubmitHandler(validate, onErrorSet, handleSubmit)}
