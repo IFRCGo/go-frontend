@@ -1,4 +1,8 @@
 import { isDefined } from '@togglecorp/fujs';
+import {
+  Country,
+  DistrictMini,
+} from '#types';
 
 export const ONSET_IMMINENT = 0;
 export const ONSET_SLOW = 1;
@@ -201,7 +205,11 @@ export interface DrefFields {
 
 export interface DrefApiFields extends Omit<DrefFields, 'country_district' | 'planned_interventions' | 'national_society_actions' | 'needs_identified'> {
   user: number;
-  country_district: (Omit<CountryDistrict, 'clientId'> & { id: number })[];
+  country_district: (Omit<CountryDistrict, 'clientId'> & {
+    id: number
+    country_details: Country,
+    district_details: DistrictMini[],
+  })[];
   planned_interventions: (Omit<Intervention, 'clientId'> & {
     id: number,
   })[];
