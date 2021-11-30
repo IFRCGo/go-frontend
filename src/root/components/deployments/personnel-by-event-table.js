@@ -15,7 +15,34 @@ function PersonnelByEventTable (props) {
   const { strings } = React.useContext(LanguageContext);
 
   if (!fetched || data.results?.length === 0) {
-    return null;
+    // instead of return null we give a noDataMessage
+    return (
+        <Fold
+            title={strings.deploymentsByEmergencies}
+            foldWrapperClass="fold--main fold-deployments-overview-emergencies"
+            navLink={(
+                <Link className='fold__title__link' to='/deployments/personnel/all'>
+                  {strings.deploymentsOverviewViewAll}
+                </Link>
+            )}
+        >
+          <table className='responsive-table table table--border-bottom table--box-shadow'>
+            <thead>
+              <th>{strings.deploymentsOverviewTableHeaderEmergency}</th>
+              <th>{strings.deploymentsOverviewTableHeaderOrg}</th>
+              <th>{strings.deploymentsOverviewTableHeaderSurge}</th>
+              <th className='table__cell--deploy-emergency-no'>
+                {strings.deploymentsOverviewTableHeaderNo}
+              </th>
+            </thead>
+            <tbody>
+              <tr>
+                <td colSpan={4}>{strings.noDataMessage}</td>
+              </tr>
+            </tbody>
+          </table>
+        </Fold>
+    );
   }
 
   if (error) {
