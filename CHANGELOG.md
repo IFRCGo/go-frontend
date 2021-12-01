@@ -1,3 +1,28 @@
+### Release 5.6.0
+
+Date: 2021-12-01
+
+#### Frontend:
+
+ - Show No Data message on Deployments table if no deployments
+ - Fix overlapping Pie chart on 3w
+ - Handle sorting for stand-downs on Surge frontend
+ - Code for DREF form (functionality hidden)
+
+#### Backend:
+
+ - Enhancements in surge alert notifications
+ - New content-visibility level (IFRC_NS: FR, Proj, event)
+ - Longer date interval for appeal doc scraper
+ - Bump up elasticsearch to 6.3.0, urllib3 to 1.26.7
+ - Fixing .dockerignore, bump up pip to 21.1
+ - Search parameter for most of /docs endpoints
+ - Handle Stand-Downs on Surge page
+ - GeneralDocument for general document upload
+ - Local development env change: psql 9.6 to 11
+ - Molnix_id as read only field
+ - Use molnix_id instead of pk while marking deployments inactive
+
 ### Release 5.5.1: Surge Catalog of Services + Bugfixes
 
 Date: 2021-10-20
