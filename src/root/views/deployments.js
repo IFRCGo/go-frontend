@@ -43,7 +43,7 @@ import Translate from '#components/Translate';
 import { countriesGeojsonSelector } from '../selectors';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import TabContent from '#components/tab-content';
-import OperationalTimeline from './Surge/operational-timeline';
+// import OperationalTimeline from './Surge/operational-timeline';
 import CatalogueOfSurgeServices from './Surge/catalogue-of-surge-services';
 
 const DeploymentsByMonth = () => {
@@ -149,7 +149,7 @@ class Deployments extends SFPComponent {
     const { strings } = this.context;
     return [
       { title: strings.deploymentsSurgeOverViewTab, hash: '#overview' },
-      { title: strings.deploymentsOperationalToolboxTab, hash: '#operational-toolbox' },
+      // { title: strings.deploymentsOperationalToolboxTab, hash: '#operational-toolbox' },
       { title: strings.deploymentsCatalogueOfSurgeServicesTab, hash: '#catalogue' }
     ];
   }
@@ -359,7 +359,7 @@ class Deployments extends SFPComponent {
                       </div>
                     </TabContent>
                   </TabPanel>
-                  {/* Surge Operational toolbox tab */}
+                  {/* Surge Operational toolbox tab
                   <TabPanel>
                     <TabContent>
                       <div className='container-lg margin-4-t'>
@@ -367,6 +367,7 @@ class Deployments extends SFPComponent {
                       </div>
                     </TabContent>
                   </TabPanel>
+                  Put me 8 rows earlier (to row end) if you need Catalogue tab:  */}
                   {/* Surge Catalogue of surge services tab */}
                   <TabPanel>
                     <TabContent>
