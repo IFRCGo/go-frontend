@@ -122,8 +122,8 @@ function FieldReportForm(props: Props) {
       const formValue = transformAPIFieldsToFormFields(fieldReportResponse);
       onValueSet(formValue);
       setInitialEventOptions([{
-        value: fieldReportResponse.event.id,
-        label: fieldReportResponse.event.name,
+        value: fieldReportResponse.event?.id,
+        label: fieldReportResponse.event?.name,
       }]);
       // fieldReportResponse.event.
     }

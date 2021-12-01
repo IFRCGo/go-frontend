@@ -21,7 +21,7 @@ const buttonVariantToStyleMap: { [key in ButtonVariant]: string; } = {
   transparent: styles.transparent,
 };
 
-export interface Props<N> extends Omit<
+export interface Props<N extends string | number | undefined> extends Omit<
 React.HTMLProps<HTMLButtonElement>,
 'ref' | 'onClick' | 'name' | 'type'
 > {
@@ -35,13 +35,13 @@ React.HTMLProps<HTMLButtonElement>,
   childrenClassName?: string;
   actionsClassName?: string;
   disabled?: boolean;
-  name?: N;
-  onClick?: (name: N | undefined, e: React.MouseEvent<HTMLButtonElement>) => void;
+  name: N;
+  onClick?: (name: N, e: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
 type ButtonFeatureKeys = 'variant' | 'className' | 'actionsClassName' | 'iconsClassName' | 'childrenClassName' | 'children' | 'icons' | 'actions' | 'disabled';
 export function useButtonFeatures(
-  props: Pick<Props<void>, ButtonFeatureKeys>,
+  props: Pick<Props<number | string | undefined>, ButtonFeatureKeys>,
 ) {
   const {
     variant = 'primary',
@@ -59,6 +59,7 @@ export function useButtonFeatures(
     styles.button,
     variant,
     buttonVariantToStyleMap[variant] ?? styles.primary,
+    disabled && styles.disabled,
     className,
   );
 
@@ -89,7 +90,7 @@ export function useButtonFeatures(
   };
 }
 
-function Button<N>(props: Props<N>) {
+function Button<N extends number | string | undefined>(props: Props<N>) {
   const {
     variant,
     className,

@@ -31,19 +31,28 @@ function NumberInput<T extends string | undefined>(props: Props<T>) {
     ...otherInputProps
   } = props;
 
+  const [tempValue, setTempValue] = React.useState<string | undefined>(String(valueFromProps ?? ''));
+
+  React.useEffect(() => {
+    setTempValue(String(valueFromProps ?? ''));
+  }, [valueFromProps]);
+
   const handleChange: RawInputProps<T>['onChange'] = React.useCallback((v, n, e) => {
+    setTempValue(v);
+
     if (!onChange) {
       return;
     }
 
     if (isDefined(v)) {
-      onChange(parseFloat(v), n, e);
+      const floatValue = +v;
+      if (!Number.isNaN(floatValue)) {
+        onChange(floatValue, n, e);
+      }
     } else {
       onChange(undefined, n, e);
     }
   }, [onChange]);
-
-  const value = isDefined(valueFromProps) ? String(valueFromProps) : '';
 
   return (
     <InputContainer
@@ -59,7 +68,7 @@ function NumberInput<T extends string | undefined>(props: Props<T>) {
           readOnly={readOnly}
           disabled={disabled}
           className={inputClassName}
-          value={value}
+          value={tempValue}
           onChange={handleChange}
           type="number"
         />

@@ -10,7 +10,7 @@ import { Row, convertJsonToCsv } from '#components/Table/useDownloading';
 import useRecursiveRequest from '#utils/restRequest/useRecursiveRequest';
 import useAlert from '#hooks/useAlert';
 
-interface BaseProps<D, N> extends ButtonProps<N> {
+interface BaseProps<D> extends Omit<ButtonProps<undefined>, 'name'> {
   className?: string;
   apiUrl: string;
   urlOptions?: Record<string, unknown>;
@@ -18,11 +18,11 @@ interface BaseProps<D, N> extends ButtonProps<N> {
   transformItem: (item: D) => Row;
 }
 
-export type Props<D, N> = BaseProps<D, N> & {
+export type Props<D> = BaseProps<D> & {
   label?: React.ReactNode;
 }
 
-function ExportTableButton<D, N>(props: Props<D, N>) {
+function ExportTableButton<D>(props: Props<D>) {
   const {
     apiUrl,
     fileNameSuffix,
@@ -83,6 +83,7 @@ function ExportTableButton<D, N>(props: Props<D, N>) {
       className={className}
       icons={icons}
       variant={variant}
+      name={undefined}
       {...otherProps}
     >
       { pending && (

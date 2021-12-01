@@ -6,11 +6,11 @@ import { DateTime } from 'luxon';
 
 import { environment } from '#config';
 import { getSurgeAlerts } from '#actions';
-import { 
+import {
   get,
   datesAgo,
   getDuration,
-  getMolnixKeywords 
+  getMolnixKeywords
 } from '#utils/utils';
 import { nope, recentInterval } from '#utils/format';
 
@@ -47,7 +47,7 @@ class AlertsTable extends SFPComponent {
         page: 1,
         limit: isNaN(this.props.limit) ? 5 : this.props.limit,
         sort: {
-          field: '',
+          field: 'is_stood_down',
           direction: 'asc'
         },
         filters: {
@@ -227,7 +227,7 @@ class AlertsTable extends SFPComponent {
         keywords: getMolnixKeywords(rowData.molnix_tags || []),
         emergency: event ? <Link className='link--table' to={`/emergencies/${event}`} title={strings.alertTableViewEmergency}>{eventTitle}</Link> : rowData.operation || nope,
         country: country,
-        status: rowData.molnix_status === 'unfilled' ? 'Stood down' : 'Open' 
+        status: rowData.is_stood_down ? 'Stood down' : 'Open' // Former: molnix_status === 'unfilled'
       });
 
       return acc;
@@ -235,8 +235,8 @@ class AlertsTable extends SFPComponent {
 
     const foldLink = this.props.viewAll ? (<Link className='fold__title__link' to={this.props.viewAll}>{this.props.viewAllText || strings.alertTableViewAllText}</Link>) : null;
 
-    return (
-      <Fold title={`${title} (${data.count})`} id={this.props.id} navLink={foldLink} foldTitleClass='fold__title--inline' foldWrapperClass='fold--main'>
+    return ( //            v (${data.count}) – parentheses removed. Maybe later will be used
+      <Fold title={`${title}`} id={this.props.id} navLink={foldLink} foldTitleClass='fold__title--inline' foldWrapperClass='fold--main'>
         {this.props.showExport ? (
           <ExportButton filename='surge-alerts'
             qs={this.getQs(this.props)}

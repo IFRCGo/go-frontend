@@ -269,7 +269,7 @@ class Deployments extends SFPComponent {
     const { strings } = this.context;
     if (!fetched || error) return null;
     let deployData = {type: 'FeatureCollection', features: []};
-    
+
     if (this.props.eru.fetched && this.props.activePersonnel.fetched) {
       deployData = mergeDeployData(
         this.props.countriesGeojson,
@@ -336,7 +336,7 @@ class Deployments extends SFPComponent {
                         <div className='inner margin-4-t'>
                           <div>
                             <AlertsTable
-                              title={strings.homeSurgeNotification}
+                              title={strings.homeSurgeAlerts}
                               limit={5}
                               isActive={true}
                               viewAll={'/alerts/all'}
@@ -367,7 +367,7 @@ class Deployments extends SFPComponent {
                       </div>
                     </TabContent>
                   </TabPanel>
-                  Put me 8 rows earlier (to row end) if you need S.O. toolbox tab: */}
+                  Put me 8 rows earlier (to row end) if you need Catalogue tab:  */}
                   {/* Surge Catalogue of surge services tab */}
                   <TabPanel>
                     <TabContent>
@@ -381,31 +381,6 @@ class Deployments extends SFPComponent {
             </Tabs>
           </div>
         </section>
-        {/* <div className='inpage__body'>
-          <div className='inner margin-4-t'>
-            <div>
-              <AlertsTable
-                title={strings.homeSurgeAlerts}
-                limit={5}
-                isActive={true}
-                viewAll={'/alerts/all'}
-                showRecent={true}
-              />
-            </div>
-            <div className='table-deployed-personnel-block'>
-              <PersonnelByEventTable data={this.props.personnelByEvent} />
-            </div>
-            <div className='inner'>
-            <EruTable
-              limit={5}
-              viewAll={'/deployments/erus/all'}
-            />
-            </div>
-            <div className='readiness__container container-lg'>
-              <Readiness eruOwners={this.props.eruOwners} />
-            </div>
-          </div>
-        </div> */}
       </section>
     );
   }

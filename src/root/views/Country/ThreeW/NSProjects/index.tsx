@@ -87,7 +87,7 @@ function NSProjects(props: Props) {
   const {
     pending: projectListPending,
     response: projectListResponse,
-    retrigger: retriggerProjectListRequest,
+    retrigger: reTriggerProjectListRequest,
   } = useRequest<ListResponse<Project>>({
     skip: isNotDefined(country?.id),
     url: 'api/v2/project/',
@@ -99,9 +99,9 @@ function NSProjects(props: Props) {
 
   React.useEffect(() => {
     if (projectsUpdatedOn) {
-      retriggerProjectListRequest();
+      reTriggerProjectListRequest();
     }
-  }, [projectsUpdatedOn, retriggerProjectListRequest]);
+  }, [projectsUpdatedOn, reTriggerProjectListRequest]);
 
   const projectList = projectListResponse?.results ?? emptyProjectList;
   const filteredProjectList = filterProjects(projectList, filters);
@@ -158,14 +158,14 @@ function NSProjects(props: Props) {
       (rowKey: number | string, prj: Project) => ({
         children: (
           <ProjectTableActions
-            onProjectFormSubmitSuccess={retriggerProjectListRequest}
-            onProjectDeletionSuccess={retriggerProjectListRequest}
+            onProjectFormSubmitSuccess={reTriggerProjectListRequest}
+            onProjectDeletionSuccess={reTriggerProjectListRequest}
             project={prj}
           />
         ),
       }),
     ),
-  ]), [strings, retriggerProjectListRequest]);
+  ]), [strings, reTriggerProjectListRequest]);
 
   const currentProjectList = ongoingProjects;
 
@@ -320,8 +320,8 @@ function NSProjects(props: Props) {
                           <ProjectTableActions
                             className={styles.actions}
                             project={project}
-                            onProjectFormSubmitSuccess={retriggerProjectListRequest}
-                            onProjectDeletionSuccess={retriggerProjectListRequest}
+                            onProjectFormSubmitSuccess={reTriggerProjectListRequest}
+                            onProjectDeletionSuccess={reTriggerProjectListRequest}
                           />
                         </div>
                       ))}

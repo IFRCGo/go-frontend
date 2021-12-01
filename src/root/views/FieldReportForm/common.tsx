@@ -191,6 +191,7 @@ export const SOURCE_OTHER = 'other';
 export const VISIBILITY_PUBLIC = 3;
 export const VISIBILITY_RCRC_MOVEMENT = 1;
 export const VISIBILITY_IFRC_SECRETARIAT = 2;
+export const VISIBILITY_IFRC_NS = 4;
 
 export const EPI_SOURCE_MOH = 0;
 export const EPI_SOURCE_WHO = 1;
@@ -672,6 +673,7 @@ export function transformFormFieldsToAPIFields(formValues: FormType): FieldRepor
 
 export interface FieldReportAPIResponseFields extends Omit<FieldReportAPIFields, 'user' | 'dtype' | 'event' | 'countries' | 'districts' | 'actions_taken'> {
   id: number;
+  created_at: string;
   user: {
     id: number;
   };
@@ -704,14 +706,10 @@ export function transformAPIFieldsToFormFields(apiValues: FieldReportAPIResponse
         id: user,
     },
      */
-    dtype: {
-        id: dtype,
-    } = {},
+    dtype,
     contacts,
     actions_taken,
-    event: {
-        id: event,
-    } = {},
+    event,
     countries: {
         0: {
             id: country,
@@ -985,8 +983,8 @@ export function transformAPIFieldsToFormFields(apiValues: FieldReportAPIResponse
     start_date: isDefined(start_date) ? start_date.split('T')[0] : start_date,
     summary,
     other_sources,
-    dtype,
-    event,
+    dtype: dtype?.id,
+    event: event?.id,
     country,
     districts: districts?.map(d => d.id) ?? [],
     external_partners,

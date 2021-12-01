@@ -17,12 +17,20 @@
     }
 
     .description {
-      font-weight: $base-font-light;
-      opacity: 0.6;
-      font-size: $font-size-sm;
-      padding: $spacing/2;
-      white-space: pre-wrap;
-      word-wrap: break-word;
+      padding: 0;
+    }
+  }
+
+  &.special-description {
+    .section-title {
+      .description {
+        font-weight: $base-font-light;
+        opacity: 0.6;
+        font-size: $font-size-sm;
+        padding: $spacing/2;
+        white-space: pre-wrap;
+        word-wrap: break-word;
+      }
     }
   }
 

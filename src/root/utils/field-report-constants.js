@@ -42,6 +42,10 @@ export const getVisibility = (strings) => [
   {
     label: strings.fieldReportConstantVisibilityIFRCSecretariatLabel,
     value: '2'
+  },
+  {
+    label: strings.fieldReportConstantVisibilityIFRCandNSLabel,
+    value: '4'
   }
 ];
 

@@ -58,6 +58,10 @@ import ThreeWEdit from '#views/ThreeWEdit';
 
 import styles from './styles.module.scss';
 
+// @DREF
+// import DrefApplicationForm from '#views/DrefApplicationForm';
+// import DrefPdfExport from '#components/DrefPdfExport';
+
 
 function Multiplexer(props) {
   const {
@@ -223,7 +227,7 @@ function Multiplexer(props) {
             <AnonymousRoute exact path='/recover-account/:username/:token' component={RecoverAccount}/>
             <AnonymousRoute exact path='/recover-username' component={RecoverUsername}/>
             <AnonymousRoute exact path='/resend-validation' component={ResendValidation} />
-            <PrivateRoute exact path='/reports/new' component={FieldReportForm}/>
+            <PrivateRoute key="new-field-report-form" exact path='/reports/new' component={FieldReportForm}/>
             <Route exact path='/reports/all' render={props => <Table {...props} type='report' />} />
             <PrivateRoute exact path='/reports/:reportId/edit' component={FieldReportForm}/>
             <Route exact path='/reports/:id' component={FieldReport}/>
@@ -242,7 +246,14 @@ function Multiplexer(props) {
             <Route exact path='/per-assessment/:id' component={PerAssessment} />
             <Route exact path='/per-assessment/:id/edit' render={props => <PerAssessment {...props} isEdit={true} />} />
             <Route path='/preparedness' component={Preparedness} />
-            <PrivateRoute exact path='/three-w/new/' component={NewThreeW} />
+            <Route key="new-three-w" exact path='/three-w/new/' component={NewThreeW} />
+
+            {/* @DREF
+            <PrivateRoute key="new-dref-application-form" exact path='/dref-application/new/' component={DrefApplicationForm} />
+            <PrivateRoute exact path='/dref-application/:drefId/edit/' component={DrefApplicationForm} />
+            <PrivateRoute exact path='/dref-application/:drefId/export/' component={DrefPdfExport} />
+            */}
+
             <Route exact path='/three-w/all/' component={AllThreeW} />
             <Route exact path='/three-w/:projectId/' component={ThreeW} />
             <PrivateRoute exact path='/three-w/:projectId/edit/' component={ThreeWEdit} />

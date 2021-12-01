@@ -1,0 +1,31 @@
+@import '~styles/settings/_variables.scss';
+
+.dref-application-list {
+  min-height: 50vh;
+
+  .filters {
+    display: flex;
+    padding: $spacing 0;
+    margin-bottom: $spacing*2;
+
+    >* {
+      flex-basis: calc(100% / 3);
+    }
+  }
+
+  .table {
+    width: 100%;
+
+    .actions-cell {
+      display: flex;
+      gap: $spacing / 2;
+    }
+  }
+
+  .footer {
+    display: flex;
+    justify-content: flex-end;
+    padding: $spacing*3 $spacing;
+  }
+}
+

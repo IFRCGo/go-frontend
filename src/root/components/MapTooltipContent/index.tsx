@@ -60,6 +60,7 @@ function MapTooltipContent(props: Props) {
         }
         actions={(
           <Button
+            name={undefined}
             onClick={onCloseButtonClick}
             variant="action"
           >
