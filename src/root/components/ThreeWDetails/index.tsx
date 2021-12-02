@@ -102,32 +102,7 @@ function ProjectDetail(props: Props) {
   if (isNotDefined(projectId)) {
     return null;
   }
-  if (!projectResponse){
-    return(
-      <section className='inpage'>
-        <header className='inpage__header'>
-          <div className='inner'>
-            <div className='inpage__headline-content'>
-              <h1 className='inpage__title'>
-                <Translate stringId='fieldReportResourceNotFound'/>
-              </h1>
-            </div>
-          </div>
-        </header>
-        <div className='inpage__body'>
-          <div className='inner'>
-            <div className='prose fold prose--responsive'>
-              <div className='inner'>
-                <p className='inpage_note'>
-                  <Translate stringId='fieldReportResourceDescription'/>
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-);
-  }
+
   return (
     <div className={_cs(styles.projectDetail, className)}>
       {!hideHeader && (
