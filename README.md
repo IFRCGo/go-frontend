@@ -5,7 +5,7 @@
 This repository contains the user interface of the IFRC Go.
 
 ## Installation and Usage.
-The steps below will walk you through setting up a development environment for the frontend.
+The steps below will walk you through setting up a development environment for the frontend. 
 
 ### Install Project Dependencies
 To set up the development environment for this website, you'll need to install the following on your system:
