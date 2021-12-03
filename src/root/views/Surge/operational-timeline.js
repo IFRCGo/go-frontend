@@ -1,6 +1,7 @@
 import React from "react";
-import { ReactComponent as OperationalTimelineTitleSvg } from '../../../assets/graphics/content/operational_timeline_title.svg';
-import { ReactComponent as OperationalTimelineBodySvg } from "../../../assets/graphics/content/operational_timeline_bodi.svg";
+// import { ReactComponent as OperationalTimelineTitleSvg } from '../../../assets/graphics/content/operational_timeline_title.svg';
+// import { ReactComponent as OperationalTimelineBodySvg } from "../../../assets/graphics/content/operational_timeline_bodi.svg";
+import Svg from '#components/Svg';
 import OperationTimelineContent from './contentData/operation-timeline-content';
 import LanguageContext from "#root/languageContext";
 
@@ -124,10 +125,10 @@ export default class OperationalTimeline extends React.Component {
                     </div>
                 </div>
                 <div className="svgHeader margin-2-t">
-                    <OperationalTimelineTitleSvg />
+                    <Svg src={"../../../assets/graphics/content/operational_timeline_title.svg"}/>
                 </div>
                 <div className="svgBody">
-                    <OperationalTimelineBodySvg />
+                    <Svg src={"../../../assets/graphics/content/operational_timeline_body.svg"}/>
                 </div>
                 <div className="margin-2-t">
                     <p>{strings.operationalToolboxFooterText}</p>
