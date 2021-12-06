@@ -6,7 +6,7 @@ const VERTICAL_MARGIN = 10;
 const HEADING_VERTICAL_PADDING = 10;
 const SECTION_WIDTH = FULL_WIDTH - SECTION_PADDING * 2;
 const SMALL_PADDING = 5;
-const TABLE_BORDER = '1px solid rgba(0, 0, 0, .3)';
+const TABLE_BORDER = '1px solid #000000';
 
 const pdfStyles = StyleSheet.create({
   page: {
@@ -14,7 +14,7 @@ const pdfStyles = StyleSheet.create({
     fontSize: 10,
   },
   mapImage: {
-    width: 260,
+    width: 240,
     height: 360,
     objectFit: 'contain',
     objectPosition: 'center',
