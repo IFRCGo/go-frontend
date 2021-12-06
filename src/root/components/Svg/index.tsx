@@ -5,56 +5,59 @@ import SVGInjector from 'svg-injector';
 import styles from './styles.module.scss';
 
 interface Props extends React.SVGProps<SVGSVGElement> {
-    className?: string;
-    evalScripts?: 'always' | 'once' | 'never';
-    fallback?: string;
-    onInject?: () => void;
-    src: string;
+  className?: string;
+  evalScripts?: 'always' | 'once' | 'never';
+  fallback?: string;
+  onInject?: () => void;
+  src: string;
+  elementId?: string;
 }
 
 function Svg(props: Props) {
-    const {
-        className,
-        src,
+  const {
+    className,
+    src,
+    evalScripts,
+    fallback,
+    onInject,
+    elementId,
+
+    ...otherProps
+  } = props;
+
+  const [id] = useState(() => elementId ?? randomString(16));
+
+  useEffect(() => {
+    const svg = document.getElementById(id);
+    if (svg) {
+      svg.setAttribute('data-src', src);
+      const options = {
         evalScripts,
-        fallback,
-        onInject,
-        ...otherProps
-    } = props;
+      };
 
-    const [id] = useState(() => randomString(16));
+      SVGInjector(svg, options, onInject);
+    }
 
-    useEffect(() => {
-        const svg = document.getElementById(id);
-        if (svg) {
-            svg.setAttribute('data-src', src);
-            const options = {
-                evalScripts,
-            };
+    return () => {
+      if (svg) {
+        svg.remove();
+      }
+    };
+  }, [evalScripts, id, onInject, src]);
 
-            SVGInjector(svg, options, onInject);
-        }
-
-        return () => {
-            if (svg) {
-                svg.remove();
-            }
-        };
-    }, [evalScripts, id, onInject, src]);
-
-    return (
-        <div
-            className={_cs(className, styles.svgContainer)}
-        >
-            <svg
-                className={styles.svg}
-                id={id}
-                data-src={src}
-                data-fallback={fallback}
-                {...otherProps}
-            />
-        </div>
-    );
+  return (
+    <div
+      className={_cs(className, styles.svgContainer)}
+    >
+      <svg
+        className={styles.svg}
+        id={id}
+        data-src={src}
+        data-fallback={fallback}
+        {...otherProps}
+      />
+    </div>
+  );
 }
 
 export default Svg;
