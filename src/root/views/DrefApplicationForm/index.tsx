@@ -2,7 +2,6 @@ import React from 'react';
 import type { History, Location } from 'history';
 import { Link } from 'react-router-dom';
 import {
-  randomString,
   isDefined,
   listToMap,
 } from '@togglecorp/fujs';
@@ -174,7 +173,7 @@ function DrefApplication(props: Props) {
       const currentFields = stepTypesToFieldsMap[tabKey];
       const currentFieldsMap = listToMap(currentFields, d => d, d => true);
 
-      const erroredFields = Object.keys(error?.fields ?? {});
+      const erroredFields = Object.keys(error?.fields ?? {}) as (keyof DrefFields)[];
       const hasError = erroredFields.some(d => currentFieldsMap[d]);
       tabs[tabKey] = hasError;
     });
@@ -331,9 +330,9 @@ function DrefApplication(props: Props) {
         ))),
       field => field,
       field => validationError.fields?.[field]
-    );
+    ) as NonNullable<NonNullable<(typeof error)>['fields']>;
 
-    const newError = {
+    const newError: typeof error = {
       ...error,
       fields: {
         ...error?.fields,
@@ -350,10 +349,7 @@ function DrefApplication(props: Props) {
 
   const handleTabChange = React.useCallback((newStep: StepTypes) => {
     scrollToTop();
-
-    const isCurrentTabValid = validateCurrentTab([
-      'event_map',
-    ]);
+    const isCurrentTabValid = validateCurrentTab(['event_map']);
 
     if (!isCurrentTabValid) {
       return;
