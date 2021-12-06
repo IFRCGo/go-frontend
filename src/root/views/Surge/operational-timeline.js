@@ -153,7 +153,7 @@ export default class OperationalTimeline extends React.Component {
           <Svg
             elementId="OperationalTimelineToolbox"
             onInject={this.handleBodySvgLoad}
-            src="../../../assets/graphics/content/operational_timeline_body.svg"
+            src="../../../assets/graphics/content/operational_timeline_bodi.svg"
           />
         </div>
         <div className="margin-2-t">
