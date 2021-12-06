@@ -188,8 +188,8 @@
   "scripts": {
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
-    "build-staging": "NODE_ENV=staging NODE_OPTIONS=--max_old_space_size=2048 node scripts/build.js",
-    "build-prod": "NODE_ENV=production NODE_OPTIONS=--max_old_space_size=2048 node scripts/build.js",
+    "build-staging": "NODE_ENV=staging NODE_OPTIONS=--max_old_space_size=3072 node scripts/build.js",
+    "build-prod": "NODE_ENV=production NODE_OPTIONS=--max_old_space_size=3072 node scripts/build.js",
     "collecticons": "collecticons compile src/assets/icons/collecticons/ --rescale --font-name Collecticons --font-types woff --style-formats sass --style-dest src/styles/core/ --style-name _collecticons --class-name collecticon --author-name 'IFRC' --author-url 'https://go.ifrc.org' --no-preview",
     "test": "echo 'No tests' && exit 0",
     "lint": "eslint src/ --ext .js",
