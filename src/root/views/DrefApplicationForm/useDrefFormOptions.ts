@@ -318,7 +318,7 @@ function useDrefFormOptions(value: PartialForm<DrefFields>) {
       drefOptions.planned_interventions.map(transformKeyValueToLabelValue),
       drefOptions.type_of_onset.map(transformKeyValueToLabelValue),
       drefOptions.users.map((u) => ({
-        label: `${u.first_name} ${u.last_name} (${u.email || u.username})`,
+        label: `${u.first_name} ${u.last_name}`,
         value: u.id,
       })),
     ];

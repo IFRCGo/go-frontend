@@ -90,7 +90,7 @@ function CountryDistrictInput(props: Props) {
         options={countryOptions}
         value={value.country}
       />
-      <SelectInput
+      <SelectInput<"district", number>
         label={strings.drefFormAddRegion}
         pending={fetchingDistricts}
         isMulti={true}
