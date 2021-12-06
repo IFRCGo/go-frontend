@@ -1,6 +1,6 @@
 import React from "react";
 // import { ReactComponent as OperationalTimelineTitleSvg } from '../../../assets/graphics/content/operational_timeline_title.svg';
-// import { ReactComponent as OperationalTimelineBodySvg } from "../../../assets/graphics/content/operational_timeline_bodi.svg";
+// import { ReactComponent as OperationalTimelineBodySvg } from "../../../assets/graphics/content/operational_timeline_body.svg";
 import Svg from '#components/Svg';
 import OperationTimelineContent from './contentData/operation-timeline-content';
 import LanguageContext from "#root/languageContext";
