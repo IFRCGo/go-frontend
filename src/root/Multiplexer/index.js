@@ -93,6 +93,36 @@ const AllThreeW = lazy(() => import('../views/AllThreeW'));
 const ThreeW = lazy(() => import('../views/ThreeW'));
 const ThreeWEdit = lazy(() => import('../views/ThreeWEdit'));
 
+function LoadingGlobal() {
+  return (
+    <div className={styles.loadingGlobal}>
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+  );
+}
+
+function InitialLoading() {
+  return (
+    <div className={styles.initialLoading}>
+      <img
+        src="/assets/graphics/layout/logo-icon.svg"
+        width="66"
+      />
+      <img
+        className={styles.logo}
+        src="/assets/graphics/layout/ifrc_logo_2020.svg"
+        alt="IFRC GO"
+        width="260"
+      />
+      <div className={styles.content}>
+        <LoadingGlobal />
+      </div>
+    </div>
+  );
+}
+
 function Multiplexer(props) {
   const {
     getUser,
@@ -215,33 +245,13 @@ function Multiplexer(props) {
   ), [allCountriesResponse, userResponse, allRegionsResponse, skipUserDetails, languageResponse, disasterTypes]);
 
   if (pending) {
-    return (
-      <div className={styles.initialLoading}>
-        <img
-          src="/assets/graphics/layout/logo-icon.svg"
-          width="66"
-        />
-        <img
-          className={styles.logo}
-          src="/assets/graphics/layout/ifrc_logo_2020.svg"
-          alt="IFRC GO"
-          width="260"
-        />
-        <div className={styles.content}>
-          <div className={styles.loadingGlobal}>
-            <div></div>
-            <div></div>
-            <div></div>
-          </div>
-        </div>
-      </div>
-    );
+    return <InitialLoading />;
   }
 
   return (
     <AlertContext.Provider value={alertContextValue}>
       <Router>
-        <Suspense fallback={<div>Loading...</div>}>
+        <Suspense fallback={<InitialLoading />}>
           <BreadcrumbsProvider>
             <Switch>
               <Route exact path='/' component={Home}/>

@@ -49,9 +49,7 @@ jobs:
             elif [ "${CIRCLE_BRANCH}" == "${PRODUCTION_BRANCH}" ]; then
               yarn build-prod
             else
-              echo test-build
-              yarn build
-              # echo "Skip building site"
+              echo "Skip building site"
             fi
 
       - run:
