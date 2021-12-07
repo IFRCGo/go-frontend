@@ -90,7 +90,7 @@ function CountryDistrictInput(props: Props) {
         options={countryOptions}
         value={value.country}
       />
-      <SelectInput
+      <SelectInput<"district", number>
         label={strings.drefFormAddRegion}
         pending={fetchingDistricts}
         isMulti={true}
@@ -105,7 +105,7 @@ function CountryDistrictInput(props: Props) {
         name={index}
         onClick={onRemove}
         variant="action"
-        disabled={index === 0}
+        // disabled={index === 0}
       >
         <IoTrash />
       </Button>

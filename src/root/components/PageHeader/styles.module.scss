@@ -11,6 +11,8 @@
     }
 
     .actions {
+      display: flex;
+      gap: $spacing;
       flex-shrink: 0;
     }
   }
