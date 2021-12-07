@@ -76,6 +76,26 @@ function loadImage(src: string): Promise<string> {
   });
 }
 
+interface NationalSocietyActionsProps {
+  data: DrefApiFields['national_society_actions'][number];
+  nsaMap?: Record<string, string>;
+}
+
+function NationalSocietyActions(props: NationalSocietyActionsProps) {
+  const {
+    data,
+    nsaMap = {},
+  } = props;
+
+  return (
+    <View style={pdfStyles.nsaOutput}>
+      <Text>
+      {'\u2022'} {nsaMap[data.title]}
+      </Text>
+    </View>
+  );
+}
+
 interface NeedIdentifiedProps {
   data: DrefApiFields['needs_identified'][number];
   niMap?: Record<string, string>;
@@ -270,6 +290,7 @@ function DrefPdfExport(props: Props) {
   const [
     piMap,
     niMap,
+    nsaMap,
   ] = React.useMemo(() => {
     if (!drefOptions) {
       return [
@@ -281,6 +302,7 @@ function DrefPdfExport(props: Props) {
     return [
       listToMap(drefOptions.planned_interventions, d => d.key, d => d.value),
       listToMap(drefOptions.needs_identified, d => d.key, d => d.value),
+      listToMap(drefOptions.national_society_actions, d => d.key, d => d.value),
     ];
   }, [drefOptions]);
 
@@ -537,11 +559,12 @@ function DrefPdfExport(props: Props) {
                 <Text style={pdfStyles.heading}>
                   {strings.drefFormPdfCurrentNationalSocietyAction}
                 </Text>
-                <View>
-                  {dref?.national_society_actions.map((nsa) => (
-                    <Text key={nsa.id}>{'\u2022'} {nsa.description}</Text>
-                  ))}
-                </View>
+                {dref?.national_society_actions.map((nsa) => (
+                  <NationalSocietyActions
+                    key={nsa.id}
+                    data={nsa}
+                    nsaMap={nsaMap} />
+                ))}
               </View>
               <View wrap={false} style={[pdfStyles.section, pdfStyles.table]}>
                 <Text style={pdfStyles.heading}>
