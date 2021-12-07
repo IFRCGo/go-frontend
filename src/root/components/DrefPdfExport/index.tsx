@@ -445,7 +445,7 @@ function DrefPdfExport(props: Props) {
                         marginTop: 30,
                       }}
                     >
-                      <Text style={pdfStyles.subHeading}>
+                      <Text style={pdfStyles.headerText}>
                         {strings.drefFormPdfScopeAndScale}
                       </Text>
                       <Text>
@@ -798,7 +798,7 @@ function DrefPdfExport(props: Props) {
                 <Text style={pdfStyles.heading}>
                   {strings.drefFormPdfContactInformation}
                 </Text>
-                <Text style={pdfStyles.textLabelSection}>
+                <Text style={pdfStyles.subHeading}>
                   {strings.drefFormPdfContactDescription}
                 </Text>
 
