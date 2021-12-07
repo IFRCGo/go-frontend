@@ -252,7 +252,11 @@ const pdfStyles = StyleSheet.create({
     border: TABLE_BORDER,
     flexBasis: '70%',
   },
-
+  nsaOutput: {
+    display: 'flex',
+    flexDirection: 'row',
+    width: '100%',
+  },
   ciRow: {
     display: 'flex',
     flexDirection: 'row',
