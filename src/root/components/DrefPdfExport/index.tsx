@@ -9,7 +9,7 @@ import {
   Document,
   Image as PDFImage,
   PDFViewer,
-  Font,
+  // Font,
 } from '@react-pdf/renderer';
 import {
   addSeparator,
@@ -22,11 +22,11 @@ import { useRequest } from '#utils/restRequest';
 import { DrefApiFields } from '#views/DrefApplicationForm/common';
 import LanguageContext from '#root/languageContext';
 
-import ifrcLogo from './resources/ifrc_logo.png';
-import drefBanner from './resources/dref-banner.png';
-import openSansRegularFont from './resources/OpenSans-Regular.ttf';
-import openSansBoldFont from './resources/OpenSans-Bold.ttf';
-import montserratFont from './resources/Montserrat-Bold.ttf';
+// import ifrcLogo from './resources/ifrc_logo.png';
+// import drefBanner from './resources/dref-banner.png';
+// import openSansRegularFont from './resources/OpenSans-Regular.ttf';
+// import openSansBoldFont from './resources/OpenSans-Bold.ttf';
+// import montserratFont from './resources/Montserrat-Bold.ttf';
 
 import {
   NumericKeyValuePair,
@@ -36,23 +36,23 @@ import {
 import pdfStyles from './pdfStyles';
 import styles from './styles.module.scss';
 
-Font.register({
-  family: 'OpenSans',
-  src: openSansRegularFont,
-  fontWeight: 'regular',
-});
-
-Font.register({
-  family: 'OpenSans',
-  src: openSansBoldFont,
-  fontWeight: 'bold',
-});
-
-Font.register({
-  family: 'Montserrat',
-  src: montserratFont,
-  fontWeight: 'bold',
-});
+// Font.register({
+//   family: 'OpenSans',
+//   src: openSansRegularFont,
+//   fontWeight: 'regular',
+// });
+// 
+// Font.register({
+//   family: 'OpenSans',
+//   src: openSansBoldFont,
+//   fontWeight: 'bold',
+// });
+// 
+// Font.register({
+//   family: 'Montserrat',
+//   src: montserratFont,
+//   fontWeight: 'bold',
+// });
 
 function loadImage(src: string): Promise<string> {
   return new Promise((resolve) => {
@@ -246,6 +246,7 @@ function DrefPdfExport(props: Props) {
     match,
   } = props;
   const [mapImage, setMapImage] = React.useState<string | undefined>();
+  const [ifrcLogo, setIfrcLogo] = React.useState<string | undefined>();
 
   const { drefId } = match.params;
 
@@ -290,6 +291,12 @@ function DrefPdfExport(props: Props) {
       });
     }
   }, [dref?.event_map_details]);
+
+  React.useEffect(() => {
+    loadImage('/assets/graphics/layout/go-logo-2020.png').then((img) => {
+      setIfrcLogo(img);
+    });
+  }, []);
 
   return (
     <Page
@@ -341,7 +348,7 @@ function DrefPdfExport(props: Props) {
               >
                 <PDFImage
                   style={pdfStyles.bannerImage}
-                  src={drefBanner}
+                  src={ifrcLogo}
                 />
               </View>
               <View
@@ -863,7 +870,7 @@ function DrefPdfExport(props: Props) {
           </Document>
         </PDFViewer>
       )}
-    </Page >
+    </Page>
   );
 }
 export default DrefPdfExport;
