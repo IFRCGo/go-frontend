@@ -5,11 +5,11 @@ jobs:
     docker:
       - image: node:15
 
+    resource_class: large
+
     working_directory: ~/repo
 
     environment:
-      - MAX_HEAP_SIZE: 4096m
-      - HEAP_NEW_SIZE: 1024m
       - STAGING_BRANCH: develop
       - PRODUCTION_BRANCH: master
       - GH_REF: git@github.com:ifrcgo/go-frontend.git
@@ -31,7 +31,7 @@ jobs:
       - save_cache:
           paths:
             - node_modules
-          key: v1-dependencies-{{ checksum "package.json" }}
+          key: v2-dependencies-{{ checksum "package.json" }}
 
       - run: yarn test
 
