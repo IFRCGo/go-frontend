@@ -313,6 +313,7 @@ class Deployments extends SFPComponent {
               <Link to="/deployments/overview">Overview</Link>
               <Link to="/deployments/operational-toolbox">Operational Toolbox</Link>
               <Link to="/deployments/catalogue">Catalogue of Services</Link>
+              <Link to="/deployments/user/zoltan">Show User Id</Link>
             </div>
             <Switch>
               <Route exact path="/deployments/overview">
@@ -367,7 +368,15 @@ class Deployments extends SFPComponent {
                   <CatalogueOfSurgeServices />
                 </div>
               </Route>
+              <Route path="/deployments/user/:userId"
+                children={({ match, ...rest }) => (
+                  <div>
+                    {match.params.userId}
+                  </div>
+                )}
+              />
             </Switch>
+
           </div>
         </section>
       </section>
