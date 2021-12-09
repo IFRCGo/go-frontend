@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { PropTypes as T } from 'prop-types';
 import c from 'classnames';
 import { Helmet } from 'react-helmet';
-
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import BlockLoading from '#components/block-loading';
 import { TimeLineChart } from '#components/Charts';
 
@@ -308,6 +308,23 @@ class Deployments extends SFPComponent {
             </div>
           </header>
           <div className='tab__wrap tab__wrap--3W'>
+            <Switch>
+              <Route exact path="/deployments/overview">
+                  <div>
+                    Show overview
+                  </div>
+              </Route>
+              <Route exact path="/deployments/operational-toolbox">
+                <div>
+                  Show toolbox
+                </div>
+              </Route>
+              <Route exact path="/deployments/catalogue">
+                  <div>
+                    Show catalogue
+                  </div>
+              </Route>
+            </Switch>
             <Tabs selectedIndex={selectedIndex} onSelect={index => handleTabChange(index)}>
               <TabList>
                 {tabDetails.map(tab => (
