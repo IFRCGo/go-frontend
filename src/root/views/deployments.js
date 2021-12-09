@@ -6,7 +6,7 @@ import { Helmet } from 'react-helmet';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import BlockLoading from '#components/block-loading';
 import { TimeLineChart } from '#components/Charts';
-
+import { Link } from 'react-router-dom';
 import {
   enterFullscreen,
   exitFullscreen,
@@ -308,93 +308,66 @@ class Deployments extends SFPComponent {
             </div>
           </header>
           <div className='tab__wrap tab__wrap--3W'>
+            <div className="tabs">
+              {/* REFACTOR INTO A TABS COMPONENT AND STYLE */}
+              <Link to="/deployments/overview">Overview</Link>
+              <Link to="/deployments/operational-toolbox">Operational Toolbox</Link>
+              <Link to="/deployments/catalogue">Catalogue of Services</Link>
+            </div>
             <Switch>
               <Route exact path="/deployments/overview">
-                  <div>
-                    Show overview
+                <div>
+                  <div className='container-lg'>
+                    {this.props.eru.fetched && this.props.activePersonnel.fetched ?
+                      <DeploymentsMap
+                        data={deployData}
+                        countriesGeojson={this.props.countriesGeojson}
+                      /> : <BlockLoading />
+                    }
                   </div>
+                  <div className='inpage__body container-lg'>
+                    <div className='inner'>
+                      {this.renderCharts()}
+                    </div>
+                  </div>
+                  <div className='inpage__body'>
+                    <div className='inner margin-4-t'>
+                      <div>
+                        <AlertsTable
+                          title={strings.homeSurgeAlerts}
+                          limit={5}
+                          isActive={true}
+                          viewAll={'/alerts/all'}
+                          showRecent={true}
+                        />
+                      </div>
+                      <div className='table-deployed-personnel-block'>
+                        <PersonnelByEventTable data={this.props.personnelByEvent} />
+                      </div>
+                      <div className='inner'>
+                      <EruTable
+                        limit={5}
+                        viewAll={'/deployments/erus/all'}
+                      />
+                      </div>
+                      <div className='readiness__container container-lg'>
+                        <Readiness eruOwners={this.props.eruOwners} />
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </Route>
               <Route exact path="/deployments/operational-toolbox">
-                <div>
-                  Show toolbox
+                <div className='container-lg margin-4-t'>
+                  <OperationalTimeline />
                 </div>
               </Route>
               <Route exact path="/deployments/catalogue">
-                  <div>
-                    Show catalogue
-                  </div>
+                <div className='container-lg'>
+                  <CatalogueOfSurgeServices />
+                </div>
               </Route>
             </Switch>
-            <Tabs selectedIndex={selectedIndex} onSelect={index => handleTabChange(index)}>
-              <TabList>
-                {tabDetails.map(tab => (
-                  <Tab key={tab.title}>{tab.title}</Tab>
-                ))}
-              </TabList>
-              <div className='inpage__body'>
-                <div className='inner'>
-                  {/* Surge overview tab */}
-                  <TabPanel>
-                    <TabContent>
-                      <div className='container-lg'>
-                        {this.props.eru.fetched && this.props.activePersonnel.fetched ?
-                          <DeploymentsMap
-                            data={deployData}
-                            countriesGeojson={this.props.countriesGeojson}
-                          /> : <BlockLoading />
-                        }
-                      </div>
-                      <div className='inpage__body container-lg'>
-                        <div className='inner'>
-                          {this.renderCharts()}
-                        </div>
-                      </div>
-                      <div className='inpage__body'>
-                        <div className='inner margin-4-t'>
-                          <div>
-                            <AlertsTable
-                              title={strings.homeSurgeAlerts}
-                              limit={5}
-                              isActive={true}
-                              viewAll={'/alerts/all'}
-                              showRecent={true}
-                            />
-                          </div>
-                          <div className='table-deployed-personnel-block'>
-                            <PersonnelByEventTable data={this.props.personnelByEvent} />
-                          </div>
-                          <div className='inner'>
-                          <EruTable
-                            limit={5}
-                            viewAll={'/deployments/erus/all'}
-                          />
-                          </div>
-                          <div className='readiness__container container-lg'>
-                            <Readiness eruOwners={this.props.eruOwners} />
-                          </div>
-                        </div>
-                      </div>
-                    </TabContent>
-                  </TabPanel>
-                  {/* Surge Operational toolbox tab */}
-                  <TabPanel>
-                    <TabContent>
-                      <div className='container-lg margin-4-t'>
-                        <OperationalTimeline />
-                      </div>
-                    </TabContent>
-                  </TabPanel>
-                  {/* Surge Catalogue of surge services tab */}
-                  <TabPanel>
-                    <TabContent>
-                      <div className='container-lg'>
-                        <CatalogueOfSurgeServices />
-                      </div>
-                    </TabContent>
-                  </TabPanel>
-                </div>
-              </div>
-            </Tabs>
           </div>
         </section>
       </section>
