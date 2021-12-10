@@ -151,7 +151,7 @@ export default class CatalogueOfSurgeServices extends React.Component {
         const { strings } = this.context;
         var queriedData = CatalogueOfSurgeServicesContent.find(d => d.hash === hash);
 
-        if (hash === "#catalogue") {
+        if (hash === "#catalogue" || hash === "") {
             return (
                 <section>
                     <h1>{strings.catalogueOfSurgeServicesTitle}</h1>
