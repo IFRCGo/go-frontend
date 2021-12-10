@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { PropTypes as T } from 'prop-types';
 import c from 'classnames';
 import { Helmet } from 'react-helmet';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import {  withRouter, Route, Switch } from 'react-router-dom';
 import BlockLoading from '#components/block-loading';
 import { TimeLineChart } from '#components/Charts';
 import { Link } from 'react-router-dom';
@@ -363,9 +363,9 @@ class Deployments extends SFPComponent {
                   <OperationalTimeline />
                 </div>
               </Route>
-              <Route exact path="/deployments/catalogue">
+              <Route path="/deployments/catalogue">
                 <div className='container-lg'>
-                  <CatalogueOfSurgeServices />
+                  <CatalogueOfSurgeServices history={this.props.history} />
                 </div>
               </Route>
               <Route path="/deployments/user/:userId"
@@ -413,7 +413,8 @@ if (environment !== 'production') {
     eru: T.object,
     activePersonnel: T.object,
     allEru: T.object,
-    countriesGeojson: T.object
+    countriesGeojson: T.object,
+    history: T.object
   };
 }
 
@@ -437,4 +438,4 @@ const dispatcher = (dispatch) => ({
   _getAggrSurgeKeyFigures: () => dispatch(getAggrSurgeKeyFigures())
 });
 
-export default connect(selector, dispatcher)(Deployments);
+export default withRouter(connect(selector, dispatcher)(Deployments));
