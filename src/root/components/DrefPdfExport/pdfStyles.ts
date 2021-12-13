@@ -10,7 +10,6 @@ const TABLE_BORDER = '1px solid #000000';
 
 const pdfStyles = StyleSheet.create({
   page: {
-    fontFamily: 'OpenSans',
     fontSize: 10,
   },
   mapImage: {
@@ -68,11 +67,9 @@ const pdfStyles = StyleSheet.create({
     fontSize: 14,
     fontWeight: 'bold',
   },
-  label: {
-    fontFamily: 'OpenSans',
-  },
   value: {
-    fontFamily: 'OpenSans',
+    fontFamily: 'Montserrat',
+    fontSize: 10,
     fontWeight: 'bold',
   },
   textOutput: {
