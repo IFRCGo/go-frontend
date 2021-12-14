@@ -9,7 +9,7 @@ import {
   Document,
   Image as PDFImage,
   PDFViewer,
-  // Font,
+  Font,
 } from '@react-pdf/renderer';
 import {
   addSeparator,
@@ -22,11 +22,7 @@ import { useRequest } from '#utils/restRequest';
 import { DrefApiFields } from '#views/DrefApplicationForm/common';
 import LanguageContext from '#root/languageContext';
 
-// import ifrcLogo from './resources/ifrc_logo.png';
-// import drefBanner from './resources/dref-banner.png';
-// import openSansRegularFont from './resources/OpenSans-Regular.ttf';
-// import openSansBoldFont from './resources/OpenSans-Bold.ttf';
-// import montserratFont from './resources/Montserrat-Bold.ttf';
+import montserratFont from './resources/Montserrat-Bold.ttf';
 
 import {
   NumericKeyValuePair,
@@ -36,23 +32,11 @@ import {
 import pdfStyles from './pdfStyles';
 import styles from './styles.module.scss';
 
-// Font.register({
-//   family: 'OpenSans',
-//   src: openSansRegularFont,
-//   fontWeight: 'regular',
-// });
-// 
-// Font.register({
-//   family: 'OpenSans',
-//   src: openSansBoldFont,
-//   fontWeight: 'bold',
-// });
-// 
-// Font.register({
-//   family: 'Montserrat',
-//   src: montserratFont,
-//   fontWeight: 'bold',
-// });
+Font.register({
+  family: 'Montserrat',
+  src: montserratFont,
+  fontWeight: 'bold',
+});
 
 function loadImage(src: string): Promise<string> {
   return new Promise((resolve) => {
@@ -90,7 +74,7 @@ function NationalSocietyActions(props: NationalSocietyActionsProps) {
   return (
     <View style={pdfStyles.nsaOutput}>
       <Text>
-      {'\u2022'} {nsaMap[data.title]}
+        {'\u2022'} {nsaMap[data.title]}
       </Text>
     </View>
   );
@@ -139,7 +123,9 @@ function PlannedInterventionOutput(props: PlannedInterventionProps) {
     <View wrap={false} style={pdfStyles.piOutput}>
       <View style={pdfStyles.piRow}>
         <View style={pdfStyles.piHeaderCell}>
-          <Text>
+          <Text style={{
+            color: '#011e41'
+          }}>
             {piMap[data.title]}
           </Text>
         </View>
@@ -149,7 +135,7 @@ function PlannedInterventionOutput(props: PlannedInterventionProps) {
               {strings.drefFormPdfBudget}
             </Text>
             <Text style={pdfStyles.piSubContentCell}>
-              {data.budget}
+              CHF {data.budget}
             </Text>
           </View>
           <View style={pdfStyles.piSubRow}>
@@ -258,6 +244,7 @@ interface Props {
   match: Match<{ drefId?: string }>;
   history: History;
   location: Location;
+  isImminentOnset: boolean;
 }
 
 function DrefPdfExport(props: Props) {
@@ -450,36 +437,40 @@ function DrefPdfExport(props: Props) {
                   <View
                     style={{
                       display: 'flex',
-                      alignItems: 'center',
+                      alignItems: 'flex-start',
                       justifyContent: 'center',
                     }}
                   >
+                    <Text style={pdfStyles.heading}>
+                      {strings.drefFormPdfDrescriptionOfTheEvent}
+                    </Text>
                     <PDFImage
                       style={pdfStyles.mapImage}
                       src={mapImage ? mapImage : ifrcLogo}
                     />
-                  </View>
-                  <View style={{ padding: 10 }}>
-                    <View>
-                      <Text style={pdfStyles.heading}>
-                        {strings.drefFormPdfDrescriptionOfTheEvent}
-                      </Text>
-                      <Text style={pdfStyles.subHeading}>
-                        {strings.drefFormPdfWhatWhereWhen}
-                      </Text>
-                    </View>
-                    <View
-                      style={{
-                        width: 240,
-                        marginTop: 30,
-                      }}
-                    >
-                      <Text style={pdfStyles.headerText}>
-                        {strings.drefFormPdfScopeAndScale}
-                      </Text>
-                      <Text>
-                        {dref?.event_scope}
-                      </Text>
+
+                    <View style={{ padding: 5 }}>
+                      <View>
+                        <Text style={pdfStyles.subHeading}>
+                          {strings?.drefFormPdfWhatWhereWhen}
+                        </Text>
+                        <Text>
+                          {dref?.event_description}
+                        </Text>
+                      </View>
+                      <View
+                        style={{
+                          width: '100%',
+                          marginTop: 20,
+                        }}
+                      >
+                        <Text style={pdfStyles.subHeading}>
+                          {strings.drefFormPdfScopeAndScale}
+                        </Text>
+                        <Text>
+                          {dref?.event_scope}
+                        </Text>
+                      </View>
                     </View>
                   </View>
                 </View>
@@ -571,26 +562,26 @@ function DrefPdfExport(props: Props) {
                   {strings.drefFormPdfMovementPartnersActions}
                 </Text>
                 <View style={pdfStyles.row}>
-                  <View style={pdfStyles.cell}>
+                  <View style={pdfStyles.niHeaderCell}>
                     <Text>{strings.drefFormPdfIfrc}</Text>
                   </View>
-                  <View style={pdfStyles.cell}>
+                  <View style={pdfStyles.niContentCell}>
                     <Text>{dref?.ifrc}</Text>
                   </View>
                 </View>
                 <View style={pdfStyles.row}>
-                  <View style={pdfStyles.cell}>
+                  <View style={pdfStyles.niHeaderCell}>
                     <Text>{strings.drefFormPdfIcrc}</Text>
                   </View>
-                  <View style={pdfStyles.cell}>
+                  <View style={pdfStyles.niContentCell}>
                     <Text>{dref?.icrc}</Text>
                   </View>
                 </View>
                 <View style={pdfStyles.row}>
-                  <View style={pdfStyles.cell}>
+                  <View style={pdfStyles.niHeaderCell}>
                     <Text>{strings.drefFormPdfPartnerNationalSociety}</Text>
                   </View>
-                  <View style={pdfStyles.cell}>
+                  <View style={pdfStyles.niContentCell}>
                     <Text>{dref?.partner_national_society}</Text>
                   </View>
                 </View>
@@ -601,34 +592,34 @@ function DrefPdfExport(props: Props) {
                 </Text>
                 <View>
                   <View style={pdfStyles.row}>
-                    <View style={pdfStyles.cell}>
+                    <View style={pdfStyles.niHeaderCell}>
                       <Text>{strings.drefFormPdfInternationalAssistance}</Text>
                     </View>
-                    <View style={pdfStyles.cell}>
+                    <View style={pdfStyles.niContentCell}>
                       <Text>{booleanToYesNo(dref?.government_requested_assistance)}</Text>
                     </View>
                   </View>
                   <View style={pdfStyles.row}>
-                    <View style={pdfStyles.cell}>
+                    <View style={pdfStyles.niHeaderCell}>
                       <Text>{strings.drefFormPdfNationalAuthorities}</Text>
                     </View>
-                    <View style={pdfStyles.cell}>
+                    <View style={pdfStyles.niContentCell}>
                       <Text>{dref?.national_authorities}</Text>
                     </View>
                   </View>
                   <View style={pdfStyles.row}>
-                    <View style={pdfStyles.cell}>
+                    <View style={pdfStyles.niHeaderCell}>
                       <Text>{strings.drefFormPdfUNorOtherActors}</Text>
                     </View>
-                    <View style={pdfStyles.cell}>
+                    <View style={pdfStyles.niContentCell}>
                       <Text>{dref?.un_or_other_actor}</Text>
                     </View>
                   </View>
                   <View style={pdfStyles.row}>
-                    <View style={pdfStyles.cell}>
+                    <View style={pdfStyles.niHeaderCell}>
                       <Text>{strings.drefFormPdfCoordinationMechanism}</Text>
                     </View>
-                    <View style={pdfStyles.cell}>
+                    <View style={pdfStyles.niContentCell}>
                       <Text>{dref?.major_coordination_mechanism}</Text>
                     </View>
                   </View>
