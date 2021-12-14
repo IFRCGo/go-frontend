@@ -5,15 +5,15 @@ const SECTION_PADDING = 20;
 const VERTICAL_MARGIN = 10;
 const HEADING_VERTICAL_PADDING = 10;
 const SECTION_WIDTH = FULL_WIDTH - SECTION_PADDING * 2;
-const SMALL_PADDING = 5;
-const TABLE_BORDER = '1px solid #000000';
+const SMALL_PADDING = 7;
+const TABLE_BORDER = '1px solid #ffffff';
 
 const pdfStyles = StyleSheet.create({
   page: {
     fontSize: 10,
   },
   mapImage: {
-    width: 240,
+    width: '100%',
     height: 360,
     objectFit: 'contain',
     objectPosition: 'center',
@@ -43,17 +43,18 @@ const pdfStyles = StyleSheet.create({
   },
   textLabelSection: {
     paddingTop: SECTION_PADDING,
+    color: '#011e41',
   },
   logo: {
-    width: 100,
-    height: 100,
+    width: 200,
+    height: 90,
   },
   icon: {
     width: 50,
     height: 50,
   },
   title: {
-    fontSize: 30,
+    fontSize: 27,
     fontFamily: 'Montserrat',
     color: '#f5333f',
   },
@@ -99,12 +100,11 @@ const pdfStyles = StyleSheet.create({
     flexWrap: "nowrap",
     alignItems: "stretch",
   },
-
   row: {
     display: "flex",
     flexDirection: "row",
     minWidth: '100%',
-    width: '100%',
+    backgroundColor: '#f0f0f0',
   },
   cellContent: {
     border: TABLE_BORDER,
@@ -155,6 +155,7 @@ const pdfStyles = StyleSheet.create({
     width: SECTION_WIDTH * 0.3,
     padding: SMALL_PADDING,
     textAlign: 'center',
+    color: '#011e41',
   },
   tpContentCell: {
     display: 'flex',
@@ -196,6 +197,7 @@ const pdfStyles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     width: '100%',
+    backgroundColor: '#f0f0f0',
   },
   piSubRow: {
     display: 'flex',
@@ -238,6 +240,7 @@ const pdfStyles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     width: '100%',
+    backgroundColor: '#f0f0f0',
   },
   niHeaderCell: {
     padding: SMALL_PADDING,
@@ -258,6 +261,7 @@ const pdfStyles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     flexWrap: 'wrap',
+    paddingTop: 2,
   },
 
   contactSection: {
@@ -271,7 +275,7 @@ const pdfStyles = StyleSheet.create({
   },
 
   contactType: {
-    fontWeight: 'bold',
+    fontFamily: 'Montserrat',
     marginRight: SMALL_PADDING,
   },
 });
