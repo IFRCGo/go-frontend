@@ -353,7 +353,7 @@ function DrefPdfExport(props: Props) {
                 <Text style={pdfStyles.subHeading}>
                   {[
                     dref?.country_district.map(d => d.country_details?.name).join(', '),
-                    dref?.ifrc_emergency_name
+                    dref?.title
                   ].join(' | ')}
                 </Text>
               </View>
