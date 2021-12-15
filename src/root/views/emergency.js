@@ -150,6 +150,10 @@ class Emergency extends React.Component {
     this.props._getSitrepTypes();
     if (this.props.isLogged) {
       this.props._getUserProfile(this.props.user.data.username);
+      if (window.location.pathname.split('/')[3] !== undefined &&
+          window.location.pathname.split('/')[3] === 'follow') {
+        this.addSubscription();
+      }
     }
 
     // FIXME - we might need a different strategy for this
