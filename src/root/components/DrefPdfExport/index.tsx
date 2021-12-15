@@ -255,6 +255,7 @@ function DrefPdfExport(props: Props) {
   } = props;
   const [mapImage, setMapImage] = React.useState<string | undefined>();
   const [ifrcLogo, setIfrcLogo] = React.useState<string | undefined>();
+  const [affectedAreas, setAffectedAreas] = React.useState<string | ''>();
 
   const { drefId } = match.params;
 
@@ -300,7 +301,16 @@ function DrefPdfExport(props: Props) {
         setMapImage(img);
       });
     }
-  }, [dref?.event_map_details]);
+    if (dref?.country_district) {
+      let areas = '';
+      const districts = dref.country_district.map(d => d.district_details);
+      districts.forEach(d => {
+        const names = d.map(dd => dd.name);
+        areas += names.join(', ');
+      });
+      setAffectedAreas(areas);
+    }
+  }, [pending]);
 
   React.useEffect(() => {
     loadImage('/assets/graphics/layout/go-logo-2020.png').then((img) => {
@@ -421,6 +431,7 @@ function DrefPdfExport(props: Props) {
                     <View style={pdfStyles.compactSection}>
                       <TextOutput
                         label={strings.drefFormPdfAffectedAreas}
+                        value={affectedAreas}
                         columns="3/3"
                       />
                     </View>
@@ -448,16 +459,29 @@ function DrefPdfExport(props: Props) {
                       style={pdfStyles.mapImage}
                       src={mapImage ? mapImage : ifrcLogo}
                     />
-
                     <View style={{ padding: 5 }}>
                       <View>
                         <Text style={pdfStyles.subHeading}>
-                          {strings?.drefFormPdfWhatWhereWhen}
+                          {dref?.anticipatory_actions == null ? strings.drefFormPdfWhatWhereWhen : strings.drefFormPdfImmientDisaster}
                         </Text>
                         <Text>
                           {dref?.event_description}
                         </Text>
                       </View>
+                      {dref?.anticipatory_actions != null &&
+                        <View
+                          style={{
+                            width: '100%',
+                            marginTop: 20,
+                          }}>
+                          <Text style={pdfStyles.subHeading}>
+                            {strings.drefFormPdfTargetCommunities}
+                          </Text>
+                          <Text>
+                            {dref?.anticipatory_actions}
+                          </Text>
+                        </View>
+                      }
                       <View
                         style={{
                           width: '100%',
@@ -737,6 +761,16 @@ function DrefPdfExport(props: Props) {
                         <Text>{dref?.displaced_people}</Text>
                       </View>
                     </View>
+                    {dref?.anticipatory_actions != null &&
+                      <View style={pdfStyles.tpSubRow}>
+                        <View style={pdfStyles.tpSubCell}>
+                          <Text>{strings.drefFormPeoplePdfTargetedWithEarlyActions}</Text>
+                        </View>
+                        <View style={pdfStyles.tpSubCell}>
+                          <Text>{dref?.people_targeted_with_early_actions}</Text>
+                        </View>
+                      </View>
+                    }
                   </View>
                 </View>
               </View>
