@@ -61,28 +61,112 @@ export default class OperationalTimeline extends React.Component {
       return;
     }
     var textContainerElement, circleElement;
+    var siblingElement;
+
+    // console.log('parent: ' + hoveredElement.id);
 
     if (event.type === 'mouseover') {
       // color text container
       textContainerElement = hoveredElement.firstElementChild;
+
+      if (!textContainerElement.id.startsWith('Sign up for Surge'))
+      {
       originalTextContainerColor = textContainerElement.style.fill;
       textContainerElement.style.fill = "#FEEFF0";
+                
+      // color sibling text container
+      siblingElement = this.getSibling(textContainerElement.id);
+      
+      if (siblingElement !== "") {
+        siblingElement.style.fill = "#FEEFF0";
+        // color the sibling's circle container
+        if (siblingElement.nextElementSibling !== null && siblingElement.nextElementSibling.nextElementSibling !==null )
+        {
+          circleElement = siblingElement.nextElementSibling.nextElementSibling.firstElementChild;
+        }
+              
+        if (circleElement !== undefined)
+        {
+          originalCircleContainerColor = circleElement.style.fill;
+          circleElement.style.fill = "#F5333F";
+        }
+      }
 
-      // color circle container
-      circleElement = textContainerElement.nextElementSibling.nextElementSibling.firstElementChild;
-      originalCircleContainerColor = circleElement.style.fill;
-      circleElement.style.fill = "#F5333F";
+
+      // color the circle container
+      if (textContainerElement.nextElementSibling !== null && textContainerElement.nextElementSibling.nextElementSibling !==null )
+      {
+        circleElement = textContainerElement.nextElementSibling.nextElementSibling.firstElementChild;
+      }
+            
+      if (circleElement !== undefined)
+      {
+        originalCircleContainerColor = circleElement.style.fill;
+        circleElement.style.fill = "#F5333F";
+      }
+    }
+      
+
+
     } else if (event.type === 'mouseout') {
       // color back text container
       textContainerElement = hoveredElement.firstElementChild;
+      if (!textContainerElement.id.startsWith('Sign up for Surge'))
+      {
       textContainerElement.style.fill = originalTextContainerColor;
+
+      siblingElement = this.getSibling(textContainerElement.id);
+      if (siblingElement !== "") {
+        siblingElement.style.fill = originalTextContainerColor;
+        // color back the sibling's circle container
+        if (siblingElement.nextElementSibling !== null && siblingElement.nextElementSibling.nextElementSibling !==null )
+        {
+          circleElement = siblingElement.nextElementSibling.nextElementSibling.firstElementChild;
+        }
+              
+        if (circleElement !== undefined)
+        {
+          circleElement.style.fill = originalCircleContainerColor;
+          originalCircleContainerColor = "";
+        }
+      }
+
       originalTextContainerColor = "";
 
       // color back circle container
-      circleElement = textContainerElement.nextElementSibling.nextElementSibling.firstElementChild;
-      circleElement.style.fill = originalCircleContainerColor;
-      originalCircleContainerColor = "";
+      if (textContainerElement.nextElementSibling !== null && textContainerElement.nextElementSibling.nextElementSibling !==null )
+      {
+        circleElement = textContainerElement.nextElementSibling.nextElementSibling.firstElementChild;
+      }
+      if (circleElement !== undefined)
+      {
+        circleElement.style.fill = originalCircleContainerColor;
+        originalCircleContainerColor = "";
+      }
+     }
     }
+  }
+
+  getSibling(id){
+    let siblingId= "";
+    if(id === 'Rectangle 32_7') {siblingId = document.getElementById('Rectangle 32_8');} else
+    if(id === 'Rectangle 32_8') {siblingId = document.getElementById('Rectangle 32_7');} else
+    if(id === 'Rectangle 32_16') {siblingId = document.getElementById('Rectangle 32_17');} else
+    if(id === 'Rectangle 32_17') {siblingId = document.getElementById('Rectangle 32_16');} else
+    if(id === 'Rectangle 32_25') {siblingId = document.getElementById('Rectangle 32_26');} else
+    if(id === 'Rectangle 32_26') {siblingId = document.getElementById('Rectangle 32_25');} else
+    if(id === 'Rectangle 32_27') {siblingId = document.getElementById('Rectangle 32_28');} else
+    if(id === 'Rectangle 32_28') {siblingId = document.getElementById('Rectangle 32_27');} else
+    if(id === 'Rectangle 32_29') {siblingId = document.getElementById('Rectangle 32_30');} else
+    if(id === 'Rectangle 32_30') {siblingId = document.getElementById('Rectangle 32_29');} else
+    if(id === 'Rectangle 32_47') {siblingId = document.getElementById('Rectangle 32_48');} else
+    if(id === 'Rectangle 32_56') {siblingId = document.getElementById('Rectangle 32_57');} else
+    if(id === 'Rectangle 32_57') {siblingId = document.getElementById('Rectangle 32_56');} else
+    if(id === 'Rectangle 32_58') {siblingId = document.getElementById('Rectangle 32_59');} else
+    if(id === 'Rectangle 32_59') {siblingId = document.getElementById('Rectangle 32_58');} else
+    if(id === 'Rectangle 32_48') {siblingId = document.getElementById('Rectangle 32_47');} 
+    
+    return siblingId;
   }
 
   accordionClick(btn) {
