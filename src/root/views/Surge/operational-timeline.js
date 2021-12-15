@@ -245,6 +245,30 @@ export default class OperationalTimeline extends React.Component {
           <p><a href="mailto:antoine.belair@ifrc.go">antoine.belair@ifrc.go</a></p>
           <p><a href="mailto:betisa.egea@ifrc.go">betisa.egea@ifrc.go</a></p>
         </div>
+
+        <div className="margin-2-t">
+          <p>{strings.operationalToolboxFooterTextPer1Text} <a href="https://eur02.safelinks.protection.outlook.com/?url=https%3A%2F%2Fifrcorg.sharepoint.com%2Fsites%2FIFRCSharing%2FNS%2520Preparedness%2FForms%2FAllItems.aspx%3Fid%3D%252Fsites%252FIFRCSharing%252FNS%2520Preparedness%252FNSP%2520sharing%252FPER%2520into%2520Operations%26p%3Dtrue%26originalPath%3DaHR0cHM6Ly9pZnJjb3JnLnNoYXJlcG9pbnQuY29tLzpmOi9zL0lGUkNTaGFyaW5nL0VoZm1ycHprMk14RnNrMFFxal9Qb1RzQk1ubF9COUwzVHcyVGRzSXlWTnpQWmc_cnRpbWU9VXF4SjhtT08yVWc&data=04%7C01%7CAnaMaria.ESCOBAR%40ifrc.org%7Ced517ec29d684796fe4908d99aefff43%7Ca2b53be5734e4e6cab0dd184f60fd917%7C0%7C0%7C637711177887192449%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C1000&sdata=As8%2BYejx8Jna%2BN07mYjGtATYFaR9GBkl1qImOYnD8dU%3D&reserved=0">{strings.operationalToolboxFooterTextPer2LinkText}</a>  {strings.operationalToolboxFooterTextPer3Text} </p>
+          <ol style={{ listStyleType: "lower-alpha" }}>
+            <li>{strings.operationalToolboxFooterTextList1Part1} <b>{strings.operationalToolboxFooterTextList1Part2Bold} </b> {strings.operationalToolboxFooterTextList1Part3}</li>
+            <li>{strings.operationalToolboxFooterTextList2Part1} <b>{strings.operationalToolboxFooterTextList2Part1Bold}</b> {strings.operationalToolboxFooterTextList2Part3} <b>{strings.operationalToolboxFooterTextList2Part4Bold} </b>, </li>
+            <li>{strings.operationalToolboxFooterTextList3Part1} <a href="https://go.ifrc.org/preparedness#resources-catalogue">{strings.operationalToolboxFooterTextList3Part2Link}</a></li>
+            <li>{strings.operationalToolboxFooterTextList4Part1} <b>{strings.operationalToolboxFooterTextList4Part2Bold}</b></li>
+            <li>{strings.operationalToolboxFooterTextList5Part1} <a href="https://go.ifrc.org/preparedness#operational-learning">{strings.operationalToolboxFooterTextList5Part2Link}</a> {strings.operationalToolboxFooterTextList5Part3} <a href="https://eur02.safelinks.protection.outlook.com/ap/w-59584e83/?url=https%3A%2F%2Fifrcorg.sharepoint.com%2F%3Aw%3A%2Fr%2Fsites%2FIFRCSharing%2F_layouts%2F15%2FDoc.aspx%3Fsourcedoc%3D%257B649265AA-DCEE-467D-99FC-EEA27C53B2B1%257D%26file%3D3.4%2520Discussion%2520points%2520for%2520DREF%2520operations%2520Lessons%2520Learnt%2520exercise.docx%26action%3Ddefault%26mobileredirect%3Dtrue&data=04%7C01%7CAnaMaria.ESCOBAR%40ifrc.org%7Ced517ec29d684796fe4908d99aefff43%7Ca2b53be5734e4e6cab0dd184f60fd917%7C0%7C0%7C637711177887192449%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C1000&sdata=Qgqny5AAgYRT4jV5mrfSxXZENXUMO4ufXeexPr0Dkg8%3D&reserved=0">{strings.operationalToolboxFooterTextList5Part4Link}</a> {strings.operationalToolboxFooterTextList5Part5}</li>
+            <li>{strings.operationalToolboxFooterTextList6Part1} <b>{strings.operationalToolboxFooterTextList6Part2Bold}</b></li>
+          </ol>
+
+          {strings.operationalToolboxFooterTextGeneralInfoPart1} 
+          <a href="https://www.ifrc.org/disaster-preparedness"> {strings.operationalToolboxFooterTextGeneralInfoPart2Link} </a>
+          {strings.operationalToolboxFooterTextGeneralInfoPart3} 
+          <a href="https://go.ifrc.org/preparedness#global-summary"> {strings.operationalToolboxFooterTextGeneralInfoPart4Link} </a>
+          {strings.operationalToolboxFooterTextGeneralInfoPart5} 
+          <a href="https://go.ifrc.org/preparedness#global-performance"> {strings.operationalToolboxFooterTextGeneralInfoPart6Link} </a>
+          {strings.operationalToolboxFooterTextGeneralInfoPart7} 
+          <a href="mailto:Marjorie.sotofranco@ifrc.org"> Marjorie.sotofranco@ifrc.org </a>
+          
+
+        </div>
+
       </div>
     );
   }

@@ -995,30 +995,40 @@ class Emergency extends React.Component {
   renderContent () {
     const { fetched, error, data } = this.props.event;
     const { disasterTypes } = this.props;
-    if (!fetched || error) return (
-      <section className='inpage'>
-            <header className='inpage__header'>
-              <div className='inner'>
-                <div className='inpage__headline-content'>
-                  <h1 className='inpage__title'>
-                    <Translate stringId='fieldReportResourceNotFound'/>
-                  </h1>
+    if (!fetched || !data)
+    {
+      if (error) 
+      {
+        return (
+        <section className='inpage'>
+              <header className='inpage__header'>
+                <div className='inner'>
+                  <div className='inpage__headline-content'>
+                    <h1 className='inpage__title'>
+                      <Translate stringId='fieldReportResourceNotFound'/>
+                    </h1>
+                  </div>
                 </div>
-              </div>
-            </header>
-            <div className='inpage__body'>
-              <div className='inner'>
-                <div className='prose fold prose--responsive'>
-                  <div className='inner'>
-                    <p className='inpage_note'>
-                      <Translate stringId='fieldReportResourceDescription'/>
-                    </p>
+              </header>
+              <div className='inpage__body'>
+                <div className='inner'>
+                  <div className='prose fold prose--responsive'>
+                    <div className='inner'>
+                      <p className='inpage_note'>
+                        <Translate stringId='fieldReportResourceDescription'/>
+                      </p>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-        </section>
-    );
+          </section>
+      );
+      } else {
+        return null;
+      }
+
+    } 
+
     const report =
       mostRecentReport(get(this.props, 'event.data.field_reports')) || {};
     const summary = data.summary || report.description || null;
