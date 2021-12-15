@@ -150,6 +150,10 @@ class Emergency extends React.Component {
     this.props._getSitrepTypes();
     if (this.props.isLogged) {
       this.props._getUserProfile(this.props.user.data.username);
+      if (window.location.pathname.split('/')[3] !== undefined &&
+          window.location.pathname.split('/')[3] === 'follow') {
+        this.addSubscription();
+      }
     }
 
     // FIXME - we might need a different strategy for this
@@ -995,7 +999,7 @@ class Emergency extends React.Component {
   renderContent () {
     const { fetched, error, data } = this.props.event;
     const { disasterTypes } = this.props;
-    if (!fetched || error) return (
+    if (error) return (
       <section className='inpage'>
             <header className='inpage__header'>
               <div className='inner'>
@@ -1018,6 +1022,17 @@ class Emergency extends React.Component {
               </div>
             </div>
         </section>
+    );
+    else if (!fetched) return (
+      <section className='inpage'>
+        <header className='inpage__header'>
+          <div className='inner'>
+            <div className='inpage__headline-content'>
+              ...
+            </div>
+          </div>
+        </header>
+      </section>
     );
     const report =
       mostRecentReport(get(this.props, 'event.data.field_reports')) || {};

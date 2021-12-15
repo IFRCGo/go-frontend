@@ -274,6 +274,7 @@ function Multiplexer(props) {
               <Route exact path='/reports/:id' component={FieldReport}/>
               <Route exact path='/emergencies' component={Emergencies}/>
               <Route exact path='/emergencies/all' render={props => <Table {...props} type='emergency' />} />
+              <Route exact path='/emergencies/:id/follow' component={Emergency}/>
               <Route exact path='/emergencies/:id' component={Emergency}/>
               <Route exact path='/regions/:id' render={props => <Region {...props} type='region' />} />
               <Route exact path='/countries/:id' render={props => <Country {...props} type='country' />} />
