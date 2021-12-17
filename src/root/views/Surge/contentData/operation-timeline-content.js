@@ -20,11 +20,6 @@ const OperationTimelineContent = [
         name: 'Launch EA'
     },
     {
-        id: 'surge_table/element6_2',
-        url: 'https://ifrcorg.sharepoint.com/:f:/s/IFRCSharing/Es4FC38i50hHnjMXLovQva0BNZRltQzPD0yKDP39a2g8DQ',
-        name: 'Launch EA'
-    },
-    {
         id: 'surge_table/element4_3',
         url: 'https://ifrcorg.sharepoint.com/:f:/s/IFRCSharing/Eh6fh83QrctBri8qnV_nIgMBnL_PLJUO1Lo7bYZEzJi3SQ',
         name: 'Develop Response Options'
@@ -55,7 +50,7 @@ const OperationTimelineContent = [
         name: 'Hold revised response options and planning workshops'
     },
     {
-        id: 'surge_table/element6_3', 
+        id: 'surge_table/element6_2',
         url: 'https://ifrcorg.sharepoint.com/sites/IFRCSharing/Shared%20Documents/Forms/AllItems.aspx?RootFolder=/sites%2FIFRCSharing%2FShared%20Documents%2FGLOBAL%20SURGE%2FOPERATIONAL%20TOOLBOX%2F1%2E%20Timeline%20documents%2F02%2E%20Planning%2F02%2E09%20Revise%20Emergency%20Appeal%2DEPoA&View=%7BA0DF7B8D%2DD671%2D4C77%2DA464%2D720655A5403E%7D',
         name: 'Revision to Emergency Appeal'
     },
@@ -196,7 +191,7 @@ const OperationTimelineContent = [
     },
     {
         id: 'surge_table/element1_11',
-        url: 'https://ifrcorg.sharepoint.com/:f:/s/IFRCSharing/ElLTunFGwzBCmr44s8d0XR4BAApsKasLOsDLOiDdosjQ4Q',
+        url: 'https://rcrcsims.org',
         name: 'Activate SIMS'
     },
     {
@@ -376,7 +371,7 @@ const OperationTimelineContent = [
     },
     {
         id: 'surge_table/element6_3',
-        url: 'https://ifrcorg.sharepoint.com/sites/IFRCSharing/Shared%20Documents/Forms/AllItems.aspx?ct=1639495523091&or=Teams%2DHL&id=%2Fsites%2FIFRCSharing%2FShared%20Documents%2FGLOBAL%20SURGE%2FOPERATIONAL%5FTOOLBOX%2F2%2E%20Toolbox%20Documents%2F05%20Monitoring%20Evaluation%20%26%20Reporting&viewid=a0df7b8d%2Dd671%2D4c77%2Da464%2D720655a5403e',
+        url: 'https://ifrcorg.sharepoint.com/:f:/s/IFRCSharing/EmR1ALmc2dNCm3xT9U12CpEBfeXyrsixX8B4W6IhGQJsOQ?e=raJX27',
         name: 'Monitor and Eval'
     },
     {
