@@ -91,7 +91,7 @@ const OperationTimelineContent = [
     },
     {
         id: 'surge_table/element8_2',
-        url: 'https://ifrcorg.sharepoint.com/:f:/s/IFRCSharing/ElUAIzfu4oxAuKPk3WUewvkBmUjIt1yPflN6v0PH-GNX_w?e=YGkbj5',
+        url: 'https://smcctoolkit.org/tool-kit',
         name: 'Establish Movement Coordination Framework'
     },
     {
@@ -101,7 +101,7 @@ const OperationTimelineContent = [
     },
     {
         id: 'surge_table/element30',
-        url: 'https://smcctoolkit.org/tool-kit/',
+        url: 'https://ifrcorg.sharepoint.com/:f:/s/IFRCSharing/Eo-iSVU8fjZMp9sJ3YWl8n8BqDmYa4QV3oZt7wUkHy-uig?e=5lRoVU',
         name: 'Create Federation-Wide Joint Response Plan, Movement Picture'
     },
     {
