@@ -76,7 +76,7 @@ const OperationTimelineContent = [
     },
     {
         id: 'surge_table/element9',
-        url: 'https://ifrcorg.sharepoint.com/:f:/s/IFRCSharing/Etfi0zxmyphHlnGIHxErzywBUexTPVDb-pgzrH3hBv2oSA?e=Sv44fE',
+        url: 'https://www.sheltercluster.org/global',
         name: 'Activate Shelter Cluster'
     },
     {
@@ -86,7 +86,7 @@ const OperationTimelineContent = [
     },
     {
         id: 'surge_table/element1_3',
-        url: 'https://ifrcorg.sharepoint.com/:f:/s/IFRCSharing/EitYNLFcU2FPkba17OdQSycBnsc1NBdC--nNiO4jD5GPEA',
+        url: 'https://ifrcorg.sharepoint.com/:f:/s/IFRCSharing/ElJyGf5pFExJgA8iwgkQXJIBZEk3LstDNCWka_DvZa_OGA?e=TtjVTj',
         name: 'Create External Coordination Engagement Plan'
     },
     {
@@ -96,7 +96,7 @@ const OperationTimelineContent = [
     },
     {
         id: 'surge_table/element10',
-        url: 'https://ifrcorg.sharepoint.com/:f:/s/IFRCSharing/EsEFShLDBsVFgT5BpillokcBM0qg5cslZWJqUXCjjWvLvw',
+        url: 'https://ifrcorg.sharepoint.com/:f:/s/IFRCSharing/ElUAIzfu4oxAuKPk3WUewvkBmUjIt1yPflN6v0PH-GNX_w?e=YGkbj5',
         name: 'Revise Movement Coordination Framework'
     },
     {
@@ -316,8 +316,8 @@ const OperationTimelineContent = [
     },
     {
         id: 'surge_table/element1_21',
-        url: 'https://ifrcorg.sharepoint.com/:f:/s/IFRCSharing/Ep-ZW8Nh_-FOi7Qo9FCOfxIBsTHJDpvW6k82Xz3fl4xtjQ',
-        name: 'Set yp Fleet Plan - regional'
+        url: 'https://ifrcorg.sharepoint.com/:f:/s/IFRCSharing/Et5Cc35pRYpJtas4a3IBooABKh0m6JR7dHdfLXGkQpKHDQ?e=UY2R5w',
+        name: 'Set up Fleet Plan - regional'
     },
     {
         id: 'surge_table/element1_26',
