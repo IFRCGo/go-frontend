@@ -200,7 +200,7 @@ function CovidActionFields(props: Props) {
         <InputSection
           title={strings.fieldsStep3CombinedLabelExternalSupported}
         >
-          <SelectInput
+          <SelectInput<"external_partners", number>
             name="external_partners"
             value={value.external_partners}
             error={error?.fields?.external_partners}
@@ -209,7 +209,7 @@ function CovidActionFields(props: Props) {
             onChange={onValueChange}
             isMulti
           />
-          <SelectInput
+          <SelectInput<"supported_activities", number>
             name="supported_activities"
             value={value.supported_activities}
             error={error?.fields?.supported_activities}

@@ -150,6 +150,10 @@ class Emergency extends React.Component {
     this.props._getSitrepTypes();
     if (this.props.isLogged) {
       this.props._getUserProfile(this.props.user.data.username);
+      if (window.location.pathname.split('/')[3] !== undefined &&
+          window.location.pathname.split('/')[3] === 'follow') {
+        this.addSubscription();
+      }
     }
 
     // FIXME - we might need a different strategy for this
@@ -995,30 +999,40 @@ class Emergency extends React.Component {
   renderContent () {
     const { fetched, error, data } = this.props.event;
     const { disasterTypes } = this.props;
-    if (!fetched || error) return (
-      <section className='inpage'>
-            <header className='inpage__header'>
-              <div className='inner'>
-                <div className='inpage__headline-content'>
-                  <h1 className='inpage__title'>
-                    <Translate stringId='fieldReportResourceNotFound'/>
-                  </h1>
+    if (!fetched || !data)
+    {
+      if (error) 
+      {
+        return (
+        <section className='inpage'>
+              <header className='inpage__header'>
+                <div className='inner'>
+                  <div className='inpage__headline-content'>
+                    <h1 className='inpage__title'>
+                      <Translate stringId='fieldReportResourceNotFound'/>
+                    </h1>
+                  </div>
                 </div>
-              </div>
-            </header>
-            <div className='inpage__body'>
-              <div className='inner'>
-                <div className='prose fold prose--responsive'>
-                  <div className='inner'>
-                    <p className='inpage_note'>
-                      <Translate stringId='fieldReportResourceDescription'/>
-                    </p>
+              </header>
+              <div className='inpage__body'>
+                <div className='inner'>
+                  <div className='prose fold prose--responsive'>
+                    <div className='inner'>
+                      <p className='inpage_note'>
+                        <Translate stringId='fieldReportResourceDescription'/>
+                      </p>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-        </section>
-    );
+          </section>
+      );
+      } else {
+        return null;
+      }
+
+    } 
+
     const report =
       mostRecentReport(get(this.props, 'event.data.field_reports')) || {};
     const summary = data.summary || report.description || null;

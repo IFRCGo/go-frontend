@@ -329,7 +329,7 @@ function ThreeWForm(props: Props) {
               pending={fetchingCountries}
               value={value.project_country}
             />
-            <SelectInput
+            <SelectInput<"project_districts", number>
               disabled={shouldDisableDistrictInput}
               pending={fetchingDistricts}
               error={error?.fields?.project_districts}
@@ -471,7 +471,7 @@ function ThreeWForm(props: Props) {
               options={sectorOptions}
               value={value.primary_sector}
             />
-            <SelectInput
+            <SelectInput<"secondary_sectors", number>
               error={error?.fields?.secondary_sectors}
               isMulti
               label={strings.projectFormSecondarySectorLabel}

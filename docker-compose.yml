@@ -1,0 +1,15 @@
+version: '3.2'
+
+services:
+  frontend:
+    image: ifrc/go-frontend:latest
+    build: ./
+    tty: true
+    env_file:
+      - .env
+    command: bash -c 'yarn install --frozen-lockfile && yarn start'
+    volumes:
+      - ./:/code
+    ports:
+      - '3000:3000'
+
