@@ -257,6 +257,10 @@ function DrefApplication(props: Props) {
           newMap[response.event_map_details.id] = response.event_map_details.file;
         }
 
+        if (response.cover_image_details) {
+          newMap[response.cover_image_details.id] = response.cover_image_details.file;
+        }
+
         if (response.images_details?.length > 0) {
           response.images_details.forEach((img) => {
             newMap[img.id] = img.file;

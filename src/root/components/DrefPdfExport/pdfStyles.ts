@@ -1,20 +1,29 @@
 import { StyleSheet } from '@react-pdf/renderer';
 
+const PAGE_PADDING = 20;
 const FULL_WIDTH = 595;
 const SECTION_PADDING = 20;
 const VERTICAL_MARGIN = 10;
 const HEADING_VERTICAL_PADDING = 10;
-const SECTION_WIDTH = FULL_WIDTH - SECTION_PADDING * 2;
+const SECTION_WIDTH = FULL_WIDTH - SECTION_PADDING * 2 - PAGE_PADDING* 2;
 const SMALL_PADDING = 7;
 const TABLE_BORDER = '1px solid #ffffff';
+const FONT_SIZE_SMALL = 6;
+const FONT_SIZE_MEDIUM = 8;
+const FONT_SIZE_LARGE = 10;
+const FONT_SIZE_EXTRA_LARGE = 14;
+const FONT_SIZE_SUPER_LARGE = 20;
 
 const pdfStyles = StyleSheet.create({
   page: {
-    fontSize: 10,
+    fontSize: FONT_SIZE_MEDIUM,
+    fontFamily: 'OpenSans',
+    fontWeight: 'medium',
+    padding: SECTION_PADDING,
   },
   mapImage: {
     width: '100%',
-    height: 360,
+    height: 300,
     objectFit: 'contain',
     objectPosition: 'center',
   },
@@ -48,29 +57,31 @@ const pdfStyles = StyleSheet.create({
   logo: {
     width: 200,
     height: 90,
+    objectFit: 'contain',
+    objectPosition: 'center',
   },
   icon: {
     width: 50,
     height: 50,
   },
   title: {
-    fontSize: 27,
+    fontSize: FONT_SIZE_SUPER_LARGE,
     fontFamily: 'Montserrat',
     color: '#f5333f',
   },
   heading: {
-    fontSize: 20,
+    fontSize: FONT_SIZE_EXTRA_LARGE,
     fontFamily: 'Montserrat',
     color: '#f5333f',
     paddingVertical: HEADING_VERTICAL_PADDING,
   },
   subHeading: {
-    fontSize: 14,
+    fontSize: FONT_SIZE_LARGE,
     fontWeight: 'bold',
   },
   value: {
     fontFamily: 'Montserrat',
-    fontSize: 10,
+    fontSize: FONT_SIZE_MEDIUM,
     fontWeight: 'bold',
   },
   textOutput: {
@@ -92,7 +103,7 @@ const pdfStyles = StyleSheet.create({
   },
 
   table: {
-    fontSize: 10,
+    fontSize: FONT_SIZE_MEDIUM,
     display: "flex",
     flexDirection: "column",
     justifyContent: "flex-start",
@@ -132,14 +143,14 @@ const pdfStyles = StyleSheet.create({
     backgroundColor: "#eee"
   },
   headerText: {
-    fontSize: 11,
+    fontSize: FONT_SIZE_LARGE,
     fontWeight: 'bold',
     color: "#1a245c",
     margin: 8
   },
   tableText: {
     margin: 10,
-    fontSize: 10,
+    fontSize: FONT_SIZE_MEDIUM,
   },
   tpSection: {
     display: 'flex',
