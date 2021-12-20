@@ -23,7 +23,7 @@ import LanguageContext from '#root/languageContext';
 import RadioInput from '#components/RadioInput';
 import DateInput from '#components/DateInput';
 import NumberInput from '#components/NumberInput';
-import GoFileInput from '#components/GoFileInput';
+import DREFFileInput from '#components/DREFFileInput';
 import { rankedSearchOnList } from '#utils/common';
 
 import {
@@ -297,7 +297,7 @@ function DrefOverview(props: Props) {
         <InputSection
           title={strings.drefFormUploadMap}
         >
-          <GoFileInput
+          <DREFFileInput
             accept="image/*"
             error={error?.fields?.event_map}
             fileIdToUrlMap={fileIdToUrlMap}
@@ -308,7 +308,23 @@ function DrefOverview(props: Props) {
             value={value.event_map}
           >
             {strings.drefFormUploadImageLabel}
-          </GoFileInput>
+          </DREFFileInput>
+        </InputSection>
+        <InputSection
+          title={strings.drefFormUploadCoverImage}
+        >
+          <DREFFileInput
+            accept="image/*"
+            error={error?.fields?.cover_image}
+            fileIdToUrlMap={fileIdToUrlMap}
+            name="cover_image"
+            onChange={onValueChange}
+            setFileIdToUrlMap={setFileIdToUrlMap}
+            showStatus
+            value={value.cover_image}
+          >
+            {strings.drefFormUploadImageLabel}
+          </DREFFileInput>
         </InputSection>
       </Container>
       <Container

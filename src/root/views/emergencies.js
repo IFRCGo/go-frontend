@@ -15,14 +15,15 @@ import { getLastMonthsEmergencies, getAggregateEmergencies } from '#actions';
 import { environment } from '#config';
 
 import LanguageContext from '#root/languageContext';
+import InformalUpdateReportsTable from '#components/connected/informalUpdateReportsTable';
 
 class Emergencies extends React.Component {
-  componentDidMount () {
+  componentDidMount() {
     this.props._getLastMonthsEmergencies();
-    this.props._getAggregateEmergencies(DateTime.local().minus({months: 11}).startOf('day').toISODate(), 'month');
+    this.props._getAggregateEmergencies(DateTime.local().minus({ months: 11 }).startOf('day').toISODate(), 'month');
   }
 
-  render () {
+  render() {
     const {
       lastMonth,
     } = this.props;
@@ -39,8 +40,8 @@ class Emergencies extends React.Component {
           </title>
         </Helmet>
         <section className='inpage'>
-          <BreadCrumb crumbs={[{link: '/emergencies', name: strings.breadCrumbEmergencies}, {link: '/', name: strings.breadCrumbHome }]} />
-          { pending ? (
+          <BreadCrumb crumbs={[{ link: '/emergencies', name: strings.breadCrumbEmergencies }, { link: '/', name: strings.breadCrumbHome }]} />
+          {pending ? (
             <BlockLoading />
           ) : (
             <>
@@ -61,6 +62,11 @@ class Emergencies extends React.Component {
                     title={strings.fieldReportsTableTitle}
                     viewAll={'/reports/all'}
                     showRecent={true}
+                  />
+                </div>
+
+                <div className='inner inner--field-reports-emergencies'>
+                  <InformalUpdateReportsTable
                   />
                 </div>
               </div>

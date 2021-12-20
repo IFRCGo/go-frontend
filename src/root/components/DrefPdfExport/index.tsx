@@ -22,7 +22,9 @@ import { useRequest } from '#utils/restRequest';
 import { DrefApiFields } from '#views/DrefApplicationForm/common';
 import LanguageContext from '#root/languageContext';
 
-import montserratFont from './resources/Montserrat-Bold.ttf';
+import montserratFont from './resources/montserrat.bold.ttf';
+import opensansFont from './resources/open-sans.regular.ttf';
+import opensansBoldFont from './resources/open-sans.bold.ttf';
 
 import {
   NumericKeyValuePair,
@@ -35,6 +37,18 @@ import styles from './styles.module.scss';
 Font.register({
   family: 'Montserrat',
   src: montserratFont,
+  fontWeight: 'bold',
+});
+
+Font.register({
+  family: 'OpenSans',
+  src: opensansFont,
+  fontWeight: 'medium',
+});
+
+Font.register({
+  family: 'OpenSans',
+  src: opensansBoldFont,
   fontWeight: 'bold',
 });
 
@@ -120,7 +134,7 @@ function PlannedInterventionOutput(props: PlannedInterventionProps) {
   } = props;
 
   return (
-    <View wrap={false} style={pdfStyles.piOutput}>
+    <View style={pdfStyles.piOutput}>
       <View style={pdfStyles.piRow}>
         <View style={pdfStyles.piHeaderCell}>
           <Text style={{
@@ -255,7 +269,6 @@ function DrefPdfExport(props: Props) {
   } = props;
   const [mapImage, setMapImage] = React.useState<string | undefined>();
   const [ifrcLogo, setIfrcLogo] = React.useState<string | undefined>();
-  const [affectedAreas, setAffectedAreas] = React.useState<string | ''>();
 
   const { drefId } = match.params;
 
@@ -301,16 +314,23 @@ function DrefPdfExport(props: Props) {
         setMapImage(img);
       });
     }
+  }, [dref?.event_map_details]);
+
+  const affectedAreas = React.useMemo(() => {
     if (dref?.country_district) {
       let areas = '';
       const districts = dref.country_district.map(d => d.district_details);
+
       districts.forEach(d => {
         const names = d.map(dd => dd.name);
         areas += names.join(', ');
       });
-      setAffectedAreas(areas);
+
+      return areas;
     }
-  }, [pending]);
+
+    return undefined;
+  }, [dref?.country_district]);
 
   React.useEffect(() => {
     loadImage('/assets/graphics/layout/go-logo-2020.png').then((img) => {
@@ -337,22 +357,17 @@ function DrefPdfExport(props: Props) {
                   style={pdfStyles.logo}
                   src={ifrcLogo}
                 />
-                <Text style={pdfStyles.title}>
-                  {strings.drefFormPdfTitle}
-                </Text>
-              </View>
-              <View
-                style={[
-                  pdfStyles.section,
-                  { alignSelf: 'flex-end' }
-                ]}
-              >
-                <Text style={pdfStyles.subHeading}>
-                  {[
-                    dref?.country_district.map(d => d.country_details?.name).join(', '),
-                    dref?.title
-                  ].join(' | ')}
-                </Text>
+                <View style={[ { alignSelf: 'flex-end' } ]} >
+                  <Text style={pdfStyles.title}>
+                    {strings.drefFormPdfTitle}
+                  </Text>
+                  <Text style={pdfStyles.subHeading}>
+                    {[
+                      dref?.country_district.map(d => d.country_details?.name).join(', '),
+                      dref?.title
+                    ].join(' | ')}
+                  </Text>
+                </View>
               </View>
               <View
                 style={[
@@ -504,7 +519,7 @@ function DrefPdfExport(props: Props) {
               size="A4"
               style={pdfStyles.page}
             >
-              <View wrap={false}>
+              <View>
                 <View style={[pdfStyles.section, pdfStyles.table]}>
                   <Text style={pdfStyles.heading}>
                     {strings.drefFormPdfPreviousOperations}
@@ -570,7 +585,7 @@ function DrefPdfExport(props: Props) {
                   </View>
                 </View>
               </View>
-              <View wrap={false} style={pdfStyles.textSection}>
+              <View style={pdfStyles.textSection}>
                 <Text style={pdfStyles.heading}>
                   {strings.drefFormPdfCurrentNationalSocietyAction}
                 </Text>
@@ -581,7 +596,7 @@ function DrefPdfExport(props: Props) {
                     nsaMap={nsaMap} />
                 ))}
               </View>
-              <View wrap={false} style={[pdfStyles.section, pdfStyles.table]}>
+              <View style={[pdfStyles.section, pdfStyles.table]}>
                 <Text style={pdfStyles.heading}>
                   {strings.drefFormPdfMovementPartnersActions}
                 </Text>
@@ -610,7 +625,7 @@ function DrefPdfExport(props: Props) {
                   </View>
                 </View>
               </View>
-              <View wrap={false} style={[pdfStyles.section, pdfStyles.table]}>
+              <View style={[pdfStyles.section, pdfStyles.table]}>
                 <Text style={pdfStyles.heading}>
                   {strings.drefFormPdfNationalOtherActors}
                 </Text>
@@ -649,7 +664,7 @@ function DrefPdfExport(props: Props) {
                   </View>
                 </View>
               </View>
-              <View wrap={false} style={pdfStyles.niSection}>
+              <View style={pdfStyles.niSection}>
                 <View style={pdfStyles.heading}>
                   <Text>{strings.drefFormPdfNeedsGapsIdentified}</Text>
                 </View>
@@ -661,7 +676,7 @@ function DrefPdfExport(props: Props) {
                   />
                 ))}
               </View>
-              <View wrap={false} style={pdfStyles.textSection}>
+              <View style={pdfStyles.textSection}>
                 <Text style={pdfStyles.heading}>
                   {strings.drefFormPdfTargetingStrategy}
                 </Text>
@@ -679,7 +694,7 @@ function DrefPdfExport(props: Props) {
                 <Text>{dref?.entity_affected} </Text>
               </View>
 
-              <View wrap={false} style={[pdfStyles.section, pdfStyles.tpSection]}>
+              <View style={[pdfStyles.section, pdfStyles.tpSection]}>
                 <Text style={pdfStyles.heading}>
                   {strings.drefFormPdfAssistedPopulation}
                 </Text>
@@ -774,19 +789,19 @@ function DrefPdfExport(props: Props) {
                   </View>
                 </View>
               </View>
-              <View wrap={false} style={pdfStyles.textSection}>
+              <View style={pdfStyles.textSection}>
                 <Text style={pdfStyles.heading}>
                   {strings.drefFormPdfObjectiveOperation}
                 </Text>
                 <Text>{dref?.operation_objective}</Text>
               </View>
-              <View wrap={false} style={pdfStyles.textSection}>
+              <View style={pdfStyles.textSection}>
                 <Text style={pdfStyles.heading}>
                   {strings.drefFormPdfResponseRationale}
                 </Text>
                 <Text>{dref?.response_strategy}</Text>
               </View>
-              <View wrap={false} style={pdfStyles.textSection}>
+              <View style={pdfStyles.textSection}>
                 <Text style={pdfStyles.heading}>
                   {strings.drefFormPdfSupportServices}
                 </Text>
@@ -853,7 +868,7 @@ function DrefPdfExport(props: Props) {
                   />
                 ))}
               </View>
-              <View wrap={false} style={[pdfStyles.section, pdfStyles.contactSection]}>
+              <View style={[pdfStyles.section, pdfStyles.contactSection]}>
                 <Text style={pdfStyles.heading}>
                   {strings.drefFormPdfContactInformation}
                 </Text>

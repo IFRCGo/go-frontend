@@ -107,6 +107,7 @@ export interface DrefFields {
   communication : string;
   community_involved: string;
   country_district: CountryDistrict[];
+  cover_image: number;
   created_at: string;
   date_of_approval: string;
   disability_people_per: number;
@@ -219,6 +220,10 @@ export interface DrefApiFields extends Omit<DrefFields, 'country_district' | 'pl
     id: number;
     file: string;
   };
+  cover_image_details: {
+    id: number;
+    file: string;
+  } | null;
   budget_file_details: {
     id: number;
     file: string;
@@ -242,6 +247,7 @@ export const overviewFields: (keyof DrefFields)[] = [
   'num_affected',
   'amount_requested',
   'event_map',
+  'cover_image',
   'emergency_appeal_planned',
   'event_date',
   'go_field_report_date',

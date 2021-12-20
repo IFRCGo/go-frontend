@@ -1,0 +1,35 @@
+@import '~styles/settings/_variables.scss';
+
+.reference-edit {
+    .actions {
+        display: flex;
+        flex-grow: auto;
+        justify-content: center;
+        align-items: center;
+    
+        button {
+            background-color: $danger-color;;
+            color: #fff;
+        }
+
+        span {
+            padding: 0 15px;
+            color: #8D8D8D;
+        }
+    }
+    
+    &-input {
+        &-date {
+            flex-grow: 1 !important;
+        }
+        &-name {
+            flex-grow: 2 !important;
+        }
+        &-url {
+           flex-grow: 3 !important;
+        }
+        &-button {
+            display: inline-flex;
+        }
+    }
+}

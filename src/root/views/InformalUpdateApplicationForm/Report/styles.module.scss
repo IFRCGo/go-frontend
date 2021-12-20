@@ -1,0 +1,18 @@
+.situational {
+ img {
+     width: 500px;
+ }
+    &-container {
+        display: flex;
+
+        &-label {
+            font-weight: 600;
+        }
+        &-value {
+            padding: 0 20px;
+        }
+    }
+    &-overview {
+        margin: 20px 0px;
+    }
+}

@@ -11,7 +11,7 @@ import TextInput from '#components/TextInput';
 import RadioInput from '#components/RadioInput';
 import TextArea from '#components/TextArea';
 import LanguageContext from '#root/languageContext';
-import GoFileInput from '#components/GoFileInput';
+import DREFFileInput from '#components/DREFFileInput';
 
 import {
   optionLabelSelector,
@@ -176,7 +176,7 @@ function EventDetails(props: Props) {
         <InputSection
           title={strings.drefFormUploadPhotos}
         >
-          <GoFileInput
+          <DREFFileInput
             name="images"
             value={value.images}
             onChange={onValueChange}
@@ -188,7 +188,7 @@ function EventDetails(props: Props) {
             setFileIdToUrlMap={setFileIdToUrlMap}
           >
             Select images
-          </GoFileInput>
+          </DREFFileInput>
         </InputSection>
         <InputSection
           title={strings.drefFormScopeAndScaleEvent}
