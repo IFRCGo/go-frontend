@@ -22,7 +22,7 @@ import NumberInput from '#components/NumberInput';
 import SelectInput from '#components/SelectInput';
 import TextArea from '#components/TextArea';
 import InputLabel from '#components/InputLabel';
-import GoFileInput from '#components/GoFileInput';
+import DREFFileInput from '#components/DREFFileInput';
 import LanguageContext from '#root/languageContext';
 
 import InterventionInput from './InterventionInput';
@@ -378,8 +378,8 @@ function Response(props: Props) {
           </InputSection>
         )}
         <InputSection>
-          <GoFileInput
-            accept=".xlsx, .xls"
+          <DREFFileInput
+            accept=".pdf"
             error={error?.fields?.budget_file}
             fileIdToUrlMap={fileIdToUrlMap}
             label={strings.drefFormBudgetTemplateLabel}
@@ -390,7 +390,7 @@ function Response(props: Props) {
             value={value.budget_file}
           >
             {strings.drefFormBudgetTemplateUploadButtonLabel}
-          </GoFileInput>
+          </DREFFileInput>
         </InputSection>
         <InputSection>
           <SelectInput

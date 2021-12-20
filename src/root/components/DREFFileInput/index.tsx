@@ -81,7 +81,7 @@ type Props<T extends string> =  Omit<FileInputProps<T>, 'overrideStatus' | 'stat
   onChange: (value: number | undefined, name: T) => void;
 })
 
-function GoFileInput<T extends string>(props: Props<T>) {
+function DREFFileInput<T extends string>(props: Props<T>) {
   const {
     value,
     disabled,
@@ -270,4 +270,4 @@ function GoFileInput<T extends string>(props: Props<T>) {
     </div>
   );
 }
-export default GoFileInput;
+export default DREFFileInput;
