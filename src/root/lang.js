@@ -3087,6 +3087,7 @@ export default {
   drefFormRequestAmount: 'Requested Amount in CHF',
   drefFormEmergencyAppealPlanned: 'Emergency appeal planned',
   drefFormUploadMap: 'Upload map',
+  drefFormUploadCoverImage: 'Cover image',
   drefFormTimeFrames: 'Timeframes',
   drefFormEventDate: 'Date of event',
   drefFormGoFieldReportDate: 'Date of GO field report',
@@ -3204,7 +3205,7 @@ export default {
   drefFormFieldGeneralError: 'Please correct all the errors!',
 
   drefFormBudgetTemplateLabel: 'Budget template',
-  drefFormBudgetTemplateUploadButtonLabel: 'Select a spreadsheet',
+  drefFormBudgetTemplateUploadButtonLabel: 'Select a pdf',
   drefFormContinueButtonLabel: 'Continue',
   drefFormBackButtonLabel: 'Back',
   drefFormSaveButtonLabel: 'Save',

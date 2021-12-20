@@ -118,6 +118,7 @@ export const schema: FormSchema = {
     emergency_appeal_planned: [],
     // event_map: [requiredCondition],
     event_map: [],
+    cover_image: [],
 
     event_date: [],
     event_text: [],
