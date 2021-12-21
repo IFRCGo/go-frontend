@@ -25,6 +25,7 @@ const ModuleNotFoundPlugin = require('react-dev-utils/ModuleNotFoundPlugin');
 const ForkTsCheckerWebpackPlugin = require('react-dev-utils/ForkTsCheckerWebpackPlugin');
 const typescriptFormatter = require('react-dev-utils/typescriptFormatter');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const HtmlReplaceWebpackPlugin = require('html-replace-webpack-plugin')
 
 const postcssNormalize = require('postcss-normalize');
 
@@ -167,7 +168,7 @@ module.exports = function(webpackEnv) {
     ].filter(Boolean),
     output: {
       // The build folder.
-      path: isEnvProduction ? paths.appBuild : undefined,
+      path: isEnvProduction ? paths.appBuild+'/myFolder1/' : undefined,
       // Add /* filename */ comments to generated require()s in the output.
       pathinfo: isEnvDevelopment,
       // There will be one main bundle, and one file per asynchronous chunk.
@@ -480,7 +481,7 @@ module.exports = function(webpackEnv) {
       // Generates an `index.html` file with the <script> injected.
       new HtmlWebpackPlugin(
         Object.assign(
-          {},
+          {filename: './../index.html'},
           {
             inject: true,
             template: paths.appHtml,
@@ -503,6 +504,13 @@ module.exports = function(webpackEnv) {
             : undefined
         )
       ),
+
+      new HtmlReplaceWebpackPlugin([
+        {
+          pattern: 'assets',
+          replacement: 'myFolder1/assets'
+        }
+      ]),
       // Inlines the webpack runtime script. This script is too small to warrant
       // a network request.
       // https://github.com/facebook/create-react-app/issues/5358
