@@ -1,5 +1,6 @@
 'use strict';
 
+const prefix = process.argv[2];
 const fs = require('fs');
 const path = require('path');
 const webpack = require('webpack');
@@ -508,7 +509,7 @@ module.exports = function(webpackEnv) {
       new HtmlReplaceWebpackPlugin([
         {
           pattern: 'assets',
-          replacement: 'myFolder1/assets'
+          replacement: prefix + '/assets'
         }
       ]),
       // Inlines the webpack runtime script. This script is too small to warrant
