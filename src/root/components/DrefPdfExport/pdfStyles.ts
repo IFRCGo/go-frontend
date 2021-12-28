@@ -202,7 +202,6 @@ const pdfStyles = StyleSheet.create({
   answer: {
     color: '#212121',
   },
-
   piSection: {
     display: 'flex',
     flexDirection: 'column',
@@ -217,6 +216,17 @@ const pdfStyles = StyleSheet.create({
     flexDirection: 'row',
     width: '100%',
     backgroundColor: '#f0f0f0',
+  },
+  piIconCell: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: 30,
+    height: 30,
+  },
+  piIcon: {
+    width: 20,
+    height: 20,
   },
   piSubRow: {
     display: 'flex',

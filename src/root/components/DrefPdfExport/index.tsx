@@ -26,7 +26,6 @@ import montserratFont from './resources/montserrat.bold.ttf';
 import opensansFont from './resources/open-sans.regular.ttf';
 import opensansBoldFont from './resources/open-sans.bold.ttf';
 
-
 import {
   NumericKeyValuePair,
   StringKeyValuePair,
@@ -34,6 +33,26 @@ import {
 
 import pdfStyles from './pdfStyles';
 import styles from './styles.module.scss';
+
+const pendingRecords: Record<string, boolean> = {};
+
+function usePendingCounts() {
+  const set = React.useCallback((key: string) => {
+    pendingRecords[key] = true;
+  }, []);
+
+  const resolve = React.useCallback((key: string) => {
+    pendingRecords[key] = false;
+  }, []);
+
+  const isPending = Object.values(pendingRecords).some(d => d === true);
+
+  return {
+    isPending,
+    setPending: set,
+    resolvePending:resolve 
+  };
+}
 
 Font.register({
   family: 'Montserrat',
@@ -134,9 +153,34 @@ function PlannedInterventionOutput(props: PlannedInterventionProps) {
     piMap = {},
   } = props;
 
+  const { setPending, resolvePending } = usePendingCounts();
+  const [icon, setIcon] = React.useState<string | undefined>();
+  React.useEffect(() => {
+    const key = data?.id;
+    if (key && data?.image_url) {
+      setPending(`pi-${key}`);
+      loadImage(data.image_url).then((img) => {
+        setIcon(img);
+        resolvePending(`pi-${key}`);
+      });
+    }
+
+    return () => {
+        resolvePending(`pi-${key}`);
+    };
+  }, [setPending, resolvePending, data?.image_url, data?.id]);
+
   return (
     <View style={pdfStyles.piOutput}>
       <View style={pdfStyles.piRow}>
+        <View style={pdfStyles.piIconCell}>
+          {icon && (
+            <PDFImage
+              style={pdfStyles.piIcon}
+              src={icon}
+            />
+          )}
+        </View>
         <View style={pdfStyles.piHeaderCell}>
           <Text style={{ color: '#011e41' }}>
             {piMap[data.title]}
@@ -162,6 +206,7 @@ function PlannedInterventionOutput(props: PlannedInterventionProps) {
         </View>
       </View>
       <View style={pdfStyles.piRow}>
+        <View style={pdfStyles.piIconCell} />
         <View style={pdfStyles.piHeaderCell}>
           <Text>
             {strings.drefFormPdfIndicators}
@@ -174,6 +219,7 @@ function PlannedInterventionOutput(props: PlannedInterventionProps) {
         </View>
       </View>
       <View style={pdfStyles.piRow}>
+        <View style={pdfStyles.piIconCell} />
         <View style={pdfStyles.piHeaderCell}>
           <Text>
             {strings.drefFormPdfPriorityActions}
@@ -267,6 +313,12 @@ function DrefPdfExport(props: Props) {
     match,
   } = props;
 
+  const {
+    isPending: imageResourcesPending,
+    setPending,
+    resolvePending,
+  } = usePendingCounts();
+
   const [coverImage, setCoverImage] = React.useState<string | undefined>();
   const [mapImage, setMapImage] = React.useState<string | undefined>();
   const [budgetOverview, setBudgetOverview] = React.useState<string | undefined>();
@@ -311,20 +363,50 @@ function DrefPdfExport(props: Props) {
   }, [drefOptions]);
 
   React.useEffect(() => {
-    if (dref?.event_map_details) {
-      loadImage(dref.event_map_details.file).then((img) => {
-        setMapImage(img);
+    const key = dref?.budget_file;
+
+    if (key && dref?.budget_file_preview) {
+      setPending(`dref-budget-${key}`);
+      loadImage(dref.budget_file_preview).then((img) => {
+        setBudgetOverview(img);
+        resolvePending(`dref-budget-${key}`);
       });
     }
-  }, [dref?.event_map_details]);
+
+    return () => {
+      resolvePending(`dref-budget-${key}`);
+    };
+  }, [dref?.budget_file_preview, dref?.budget_file, setPending, resolvePending]);
 
   React.useEffect(() => {
-    if (dref?.cover_image_details) {
-      loadImage(dref.cover_image_details.file).then((img) => {
-        setCoverImage(img);
+    const key = dref?.event_map;
+
+    if (key && dref?.event_map_details) {
+      setPending(`event-map-${key}`);
+      loadImage(dref.event_map_details.file).then((img) => {
+        setMapImage(img);
+        resolvePending(`event-map-${key}`);
       });
     }
-  }, [dref?.cover_image_details]);
+
+    return () => {
+      resolvePending(`event-map-${key}`);
+    };
+  }, [dref?.event_map_details, dref?.event_map, setPending, resolvePending]);
+
+  React.useEffect(() => {
+    const key = dref?.cover_image;
+    if (dref?.cover_image_details) {
+      setPending(`cover-image-${key}`);
+      loadImage(dref.cover_image_details.file).then((img) => {
+        setCoverImage(img);
+        resolvePending(`cover-image-${key}`);
+      });
+    }
+    return () => {
+      resolvePending(`cover-image-${key}`);
+    };
+  }, [dref?.cover_image_details, dref?.cover_image, setPending, resolvePending]);
 
   const affectedAreas = React.useMemo(() => {
     if (dref?.country_district) {
@@ -348,12 +430,13 @@ function DrefPdfExport(props: Props) {
     });
   }, []);
 
+
   return (
     <Page
       className={className}
       heading="DREF Export"
     >
-      {pending ? (
+      {pending && imageResourcesPending ? (
         <BlockLoading />
       ) : (
         <PDFViewer className={styles.pdfPreview}>
@@ -363,10 +446,12 @@ function DrefPdfExport(props: Props) {
               style={pdfStyles.page}
             >
               <View style={pdfStyles.section}>
-                <PDFImage
-                  style={pdfStyles.logo}
-                  src={ifrcLogo}
-                />
+                {ifrcLogo && (
+                  <PDFImage
+                    style={pdfStyles.logo}
+                    src={ifrcLogo}
+                  />
+                )}
                 <View style={[ { alignSelf: 'flex-end' } ]} >
                   <Text style={pdfStyles.title}>
                     {strings.drefFormPdfTitle}
@@ -380,10 +465,12 @@ function DrefPdfExport(props: Props) {
                 </View>
               </View>
               <View style={pdfStyles.section}>
-                <PDFImage
-                  style={pdfStyles.bannerImage}
-                  src={coverImage ?? ifrcLogo}
-                />
+                {(coverImage || ifrcLogo) && (
+                  <PDFImage
+                    style={pdfStyles.bannerImage}
+                    src={coverImage ?? ifrcLogo}
+                  />
+                )}
               </View>
               <View style={pdfStyles.section}>
                 <View style={pdfStyles.basicInfoTable}>
@@ -461,10 +548,12 @@ function DrefPdfExport(props: Props) {
                 </Text>
               </View>
               <View style={pdfStyles.verticalSection}>
+                {mapImage && (
                   <PDFImage
                     style={pdfStyles.mapImage}
-                    src={mapImage ? mapImage : ifrcLogo}
+                    src={mapImage}
                   />
+                )}
               </View>
               <View style={pdfStyles.verticalSection}>
                 <Text style={pdfStyles.subHeading}>
@@ -475,14 +564,14 @@ function DrefPdfExport(props: Props) {
                 </Text>
               </View>
               {dref?.anticipatory_actions != null &&
-                <View style={pdfStyles.verticalSection}>
-                  <Text style={pdfStyles.subHeading}>
-                    {strings.drefFormPdfTargetCommunities}
-                  </Text>
-                  <Text>
-                    {dref?.anticipatory_actions}
-                  </Text>
-                </View>
+              <View style={pdfStyles.verticalSection}>
+                <Text style={pdfStyles.subHeading}>
+                  {strings.drefFormPdfTargetCommunities}
+                </Text>
+                <Text>
+                  {dref?.anticipatory_actions}
+                </Text>
+              </View>
               }
               <View style={pdfStyles.verticalSection}>
                 <Text style={pdfStyles.subHeading}>
@@ -756,14 +845,14 @@ function DrefPdfExport(props: Props) {
                       </View>
                     </View>
                     {dref?.anticipatory_actions != null &&
-                      <View style={pdfStyles.tpSubRow}>
-                        <View style={pdfStyles.tpSubCell}>
-                          <Text>{strings.drefFormPeoplePdfTargetedWithEarlyActions}</Text>
-                        </View>
-                        <View style={pdfStyles.tpSubCell}>
-                          <Text>{dref?.people_targeted_with_early_actions}</Text>
-                        </View>
+                    <View style={pdfStyles.tpSubRow}>
+                      <View style={pdfStyles.tpSubCell}>
+                        <Text>{strings.drefFormPeoplePdfTargetedWithEarlyActions}</Text>
                       </View>
+                      <View style={pdfStyles.tpSubCell}>
+                        <Text>{dref?.people_targeted_with_early_actions}</Text>
+                      </View>
+                    </View>
                     }
                   </View>
                 </View>
@@ -774,12 +863,12 @@ function DrefPdfExport(props: Props) {
                 </Text>
                 <Text>{dref?.operation_objective}</Text>
               </View>
-              <View style={pdfStyles.verticalSection}>
-                <Text style={pdfStyles.heading}>
-                  {strings.drefFormPdfResponseRationale}
-                </Text>
-                <Text>{dref?.response_strategy}</Text>
-              </View>
+                <View style={pdfStyles.verticalSection}>
+                  <Text style={pdfStyles.heading}>
+                    {strings.drefFormPdfResponseRationale}
+                  </Text>
+                  <Text>{dref?.response_strategy}</Text>
+                </View>
               <View style={pdfStyles.verticalSection}>
                 <Text style={pdfStyles.heading}>
                   {strings.drefFormPdfSupportServices}
