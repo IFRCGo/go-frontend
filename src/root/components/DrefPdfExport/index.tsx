@@ -125,8 +125,34 @@ function NeedIdentified(props: NeedIdentifiedProps) {
     niMap = {},
   } = props;
 
+  const { setPending, resolvePending } = usePendingCounts();
+  const [icon, setIcon] = React.useState<string | undefined>();
+  React.useEffect(() => {
+    const key = data?.id;
+    const pendingKey = `ni-${key}`;
+    if (key && data?.image_url) {
+      setPending(pendingKey);
+      loadImage(data.image_url).then((img) => {
+        setIcon(img);
+        resolvePending(pendingKey);
+      });
+    }
+
+    return () => {
+        resolvePending(pendingKey);
+    };
+  }, [setPending, resolvePending, data?.image_url, data?.id]);
+
   return (
     <View style={pdfStyles.niOutput}>
+      <View style={pdfStyles.niIconCell}>
+        {icon && (
+          <PDFImage
+            style={pdfStyles.niIcon}
+            src={icon}
+          />
+        )}
+      </View>
       <View style={pdfStyles.niHeaderCell}>
         <Text>
           {niMap[data.title]}
@@ -157,16 +183,17 @@ function PlannedInterventionOutput(props: PlannedInterventionProps) {
   const [icon, setIcon] = React.useState<string | undefined>();
   React.useEffect(() => {
     const key = data?.id;
+    const pendingKey = `pi-${key}`;
     if (key && data?.image_url) {
-      setPending(`pi-${key}`);
+      setPending(pendingKey);
       loadImage(data.image_url).then((img) => {
         setIcon(img);
-        resolvePending(`pi-${key}`);
+        resolvePending(pendingKey);
       });
     }
 
     return () => {
-        resolvePending(`pi-${key}`);
+        resolvePending(pendingKey);
     };
   }, [setPending, resolvePending, data?.image_url, data?.id]);
 
@@ -749,18 +776,30 @@ function DrefPdfExport(props: Props) {
                 <Text style={pdfStyles.heading}>
                   {strings.drefFormPdfTargetingStrategy}
                 </Text>
-                <Text style={pdfStyles.textLabelSection}>
-                  {strings.drefFormPdfPeopleAssistedthroughOperation}
-                </Text>
-                <Text>{dref?.people_assisted}</Text>
-                <Text style={pdfStyles.textLabelSection}>
-                  {strings.drefFormPdfSelectionCriteriaRisk}
-                </Text>
-                <Text> {dref?.selection_criteria} </Text>
-                <Text style={pdfStyles.textLabelSection}>
-                  {strings.drefFormPdfProtectionGenderAndInclusion}
-                </Text>
-                <Text>{dref?.entity_affected} </Text>
+                <View style={pdfStyles.qna}>
+                  <Text style={pdfStyles.textLabelSection}>
+                    {strings.drefFormPdfPeopleAssistedthroughOperation}
+                  </Text>
+                  <Text style={pdfStyles.answer}>
+                    {dref?.people_assisted}
+                  </Text>
+                </View>
+                <View style={pdfStyles.qna}>
+                  <Text style={pdfStyles.textLabelSection}>
+                    {strings.drefFormPdfSelectionCriteriaRisk}
+                  </Text>
+                  <Text style={pdfStyles.answer}>
+                    {dref?.selection_criteria}
+                  </Text>
+                </View>
+                <View style={pdfStyles.qna}>
+                  <Text style={pdfStyles.textLabelSection}>
+                    {strings.drefFormPdfProtectionGenderAndInclusion}
+                  </Text>
+                  <Text style={pdfStyles.answer}>
+                    {dref?.entity_affected}
+                  </Text>
+                </View>
               </View>
               <View style={[pdfStyles.section, pdfStyles.tpSection]}>
                 <Text style={pdfStyles.heading}>
@@ -863,12 +902,12 @@ function DrefPdfExport(props: Props) {
                 </Text>
                 <Text>{dref?.operation_objective}</Text>
               </View>
-                <View style={pdfStyles.verticalSection}>
-                  <Text style={pdfStyles.heading}>
-                    {strings.drefFormPdfResponseRationale}
-                  </Text>
-                  <Text>{dref?.response_strategy}</Text>
-                </View>
+              <View style={pdfStyles.verticalSection}>
+                <Text style={pdfStyles.heading}>
+                  {strings.drefFormPdfResponseRationale}
+                </Text>
+                <Text>{dref?.response_strategy}</Text>
+              </View>
               <View style={pdfStyles.verticalSection}>
                 <Text style={pdfStyles.heading}>
                   {strings.drefFormPdfSupportServices}
@@ -943,6 +982,11 @@ function DrefPdfExport(props: Props) {
                   />
                 </View>
               )}
+            </PDFPage>
+            <PDFPage
+              size="A4"
+              style={pdfStyles.page}
+            >
               <View style={[pdfStyles.section, pdfStyles.contactSection]}>
                 <Text style={pdfStyles.heading}>
                   {strings.drefFormPdfContactInformation}
