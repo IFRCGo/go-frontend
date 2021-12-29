@@ -271,6 +271,17 @@ const pdfStyles = StyleSheet.create({
     width: '100%',
     backgroundColor: '#f0f0f0',
   },
+  niIconCell: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: 30,
+    height: 30,
+  },
+  niIcon: {
+    width: 20,
+    height: 20,
+  },
   niHeaderCell: {
     padding: SMALL_PADDING,
     border: TABLE_BORDER,
