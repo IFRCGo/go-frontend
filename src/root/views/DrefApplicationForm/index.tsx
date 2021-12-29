@@ -363,25 +363,25 @@ function DrefApplication(props: Props) {
   }, [validateCurrentTab]);
 
   const submitDref = React.useCallback(() => {
-      const {
-        errored,
-        error,
-        value: finalValues,
-      } = validate();
+    const {
+      errored,
+      error,
+      value: finalValues,
+    } = validate();
 
-      onErrorSet(error);
+    onErrorSet(error);
 
-      if (errored) {
-        return;
-      }
+    if (errored) {
+      return;
+    }
 
-      if (finalValues && userDetails && userDetails.id) {
-        const body = {
-          user: userDetails.id,
-          ...finalValues,
-        };
-        submitRequest(body as DrefApiFields);
-      }
+    if (finalValues && userDetails && userDetails.id) {
+      const body = {
+        user: userDetails.id,
+        ...finalValues,
+      };
+      submitRequest(body as DrefApiFields);
+    }
   }, [submitRequest, validate, userDetails, onErrorSet]);
 
   const handleSubmitButtonClick = React.useCallback(() => {
@@ -444,6 +444,7 @@ function DrefApplication(props: Props) {
           event_text: undefined,
           anticipatory_actions: undefined,
           people_targeted_with_early_actions: undefined,
+          event_date: undefined,
         };
       }
 
@@ -453,7 +454,7 @@ function DrefApplication(props: Props) {
 
   React.useEffect(() => {
     onValueSet((oldValue) => {
-      if (value.ns_request_fund === false || value.ns_respond ===false || value.affect_same_population ===false || value.affect_same_area === false) {
+      if (value.ns_request_fund === false || value.ns_respond === false || value.affect_same_population === false || value.affect_same_area === false) {
         return {
           ...oldValue,
           dref_recurrent_text: undefined,
