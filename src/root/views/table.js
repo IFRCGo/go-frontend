@@ -20,24 +20,26 @@ import LanguageContext from '#root/languageContext';
 import { resolveToString } from '#utils/lang';
 import { countriesSelector } from '#selectors';
 import { regionsByIdSelector } from '../selectors';
+import InformalUpdateReportsTable from '#components/connected/informalUpdateReportsTable';
 
 class Table extends React.Component {
   getDisplayTypes = (strings) => ({
-      report: strings.tableReport,
-      appeal: strings.tableOperation,
-      emergency: strings.tableEmergency,
-      alert: strings.tableAlert,
-      eru: strings.tableEru,
-      personnel: strings.tablePersonnel,
+    report: strings.tableReport,
+    appeal: strings.tableOperation,
+    emergency: strings.tableEmergency,
+    alert: strings.tableAlert,
+    eru: strings.tableEru,
+    personnel: strings.tablePersonnel,
+    informal: strings.informalUpdateReportsTableViewAllReportsBreadcrumTitle,
   })
 
-  getQueryParams () {
+  getQueryParams() {
     const { search } = this.props.location;
     const query = search ? qs.parse(search.slice(1, search.length)) : {};
     return query;
   }
 
-  renderContent () {
+  renderContent() {
     const { type } = this.props;
     let props = {
       limit: 50,
@@ -68,32 +70,36 @@ class Table extends React.Component {
     if (titleArea) titleArea += ' ';
     switch (this.props.type) {
       case 'emergency':
-      return <EmergenciesTable title={resolveToString(strings.tableEmergenciesTitle, { title: titleArea})} {...props} />;
+        return <EmergenciesTable title={resolveToString(strings.tableEmergenciesTitle, { title: titleArea })} {...props} />;
       case 'report':
-      return <FieldReportsTable title={resolveToString(strings.reportsTableTitle, { title: titleArea})} {...props} />;
+        return <FieldReportsTable title={resolveToString(strings.reportsTableTitle, { title: titleArea })} {...props} />;
       case 'appeal':
         let noun = strings.tableNounOperations;
         if (props.atype) {
-          noun = props.atype === 'dref' ? strings.tableNounDREFs: strings.tableNounAppeals;
+          noun = props.atype === 'dref' ? strings.tableNounDREFs : strings.tableNounAppeals;
         }
         const title = props.hasOwnProperty('record')
           ? strings.operationsWithEmergency
           : resolveToString(strings.tableAppealsTitle, { title: titleArea, noun: noun });
-      return (<AppealsTable
-        isActive={false}
-        title={title} 
-        {...props}
-      />);
+        return (<AppealsTable
+          isActive={false}
+          title={title}
+          {...props}
+        />);
       case 'alert':
-      return <AlertsTable title={strings.tableAllAlertsTitle} {...props} />;
+        return <AlertsTable title={strings.tableAllAlertsTitle} {...props} />;
       case 'eru':
-      return <EruTable title={strings.tableAllEruTitle} {...props} />;
+        return <EruTable title={strings.tableAllEruTitle} {...props} />;
       case 'personnel':
-      return <AllPersonnelTable title={strings.tableAllPersonnel} {...props} />;
+        return <AllPersonnelTable title={strings.tableAllPersonnel} {...props} />;
+      case 'informal':
+        return <InformalUpdateReportsTable title={resolveToString(strings.informalUpdateReportsTableViewAllReportsTitle)} {...props} />;
+
     }
+
   }
 
-  getCrumbs () {
+  getCrumbs() {
     const { strings } = this.context;
     const displayTypes = this.getDisplayTypes(strings);
     const tableType = displayTypes[this.props.type];
@@ -134,7 +140,7 @@ class Table extends React.Component {
     return extraCrumbs.concat([home]);
   }
 
-  render () {
+  render() {
     const crumbs = this.getCrumbs();
     const { strings } = this.context;
     const displayTypes = this.getDisplayTypes(strings);
@@ -150,7 +156,7 @@ class Table extends React.Component {
       <App>
         <Helmet>
           <title>
-            { title }
+            {title}
           </title>
         </Helmet>
         <BreadCrumb crumbs={crumbs} />

@@ -4,16 +4,29 @@ import Fold from '#components/fold';
 import languageContext from '#root/languageContext';
 
 import styles from './styles.module.scss';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
+import Translate from '#components/Translate';
+import useExportButton from '#hooks/useExportButton';
 
-function InformalUpdateReportsTable() {
+interface Props {
+  viewAll: string;
+  title: string;
+  showExport: boolean;
+}
+function InformalUpdateReportsTable(props: Props) {
   const { strings } = useContext(languageContext);
+
+  const {
+    viewAll,
+    title,
+    showExport
+  } = props;
 
   const rows = useMemo(() => [
     {
       id: '1',
       lastUpdate: '2020-09-18',
-      report: <Link to={`/informal-update-report/1`} className='link--table' title={strings.fieldReportsTableViewAll}>5.7 Earthquake in Pakistan (Flash Update #1)</Link>,
+      report: <Link to={`/informal-update-report/1`} className='link--table'>5.7 Earthquake in Pakistan (Flash Update #1)</Link>,
       disasterType: 'Earthquake',
       country: 'Pakistan'
     },
@@ -52,19 +65,40 @@ function InformalUpdateReportsTable() {
     },
   ], []);
 
+
+
   return (
-    <Fold foldHeaderClass={styles.foldHeader}
-      title={strings.informalUpdateReportsTableTitle}
+    <Fold
+      foldHeaderClass={styles.foldHeader}
       foldWrapperClass='fold--main'
+      title={title}
+      foldActions={showExport && (
+        <ExportAllFieldReportsButton
+          className={styles.exportButton}
+          disabled
+        />
+      )}
+      navLink={viewAll ? (
+        <Link className='fold__title__link export--link' to={viewAll}>{strings.informalUpdateReportsTableViewAllReports}</Link>
+      ) : null}
     >
       <DisplayTable
         headings={headings}
         rows={rows}
         className='table table--border-bottom'
       />
+
     </Fold>
   );
 }
 
-export default InformalUpdateReportsTable;
+function ExportAllFieldReportsButton(className: any) {
+  const component = useExportButton('api/v2/field_report/', 'field-reports', className);
+
+  return component;
+}
+
+export default withRouter(InformalUpdateReportsTable);
+
+
 

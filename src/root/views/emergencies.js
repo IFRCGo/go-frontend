@@ -58,15 +58,17 @@ class Emergencies extends React.Component {
                   />
                 </div>
                 <div className='inner inner--field-reports-emergencies'>
+                  <InformalUpdateReportsTable
+                    viewAll={'/informal-update-reports/all'}
+                    title={strings.informalUpdateReportsTableTitle}
+                    showRecent={true}
+                  />
+                </div>
+                <div className='inner inner--field-reports-emergencies'>
                   <FieldReportsTable
                     title={strings.fieldReportsTableTitle}
                     viewAll={'/reports/all'}
                     showRecent={true}
-                  />
-                </div>
-
-                <div className='inner inner--field-reports-emergencies'>
-                  <InformalUpdateReportsTable
                   />
                 </div>
               </div>
