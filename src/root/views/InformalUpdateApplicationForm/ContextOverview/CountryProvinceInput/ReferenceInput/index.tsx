@@ -1,14 +1,16 @@
 import React, { useContext } from 'react';
+import { PartialForm, ArrayError, useFormObject } from '@togglecorp/toggle-form';
 import { IoTrash } from 'react-icons/io5';
 import { MdModeEditOutline } from 'react-icons/md';
+
 import Button from '#components/Button';
 import DateInput from '#components/DateInput';
 import InputSection from '#components/InputSection';
 import TextInput from '#components/TextInput';
 import languageContext from '#root/languageContext';
-import { PartialForm, ArrayError, useFormObject } from '@togglecorp/toggle-form';
 import { ReferenceData } from '#views/InformalUpdateApplicationForm/common';
-import { ReferenceType, schema } from '#views/InformalUpdateApplicationForm/useInformalUpdateFormOptions';
+import { ReferenceType } from '#views/InformalUpdateApplicationForm/useInformalUpdateFormOptions';
+
 import styles from './styles.module.scss';
 
 type SetValueArg<T> = T | ((value: T) => T);
@@ -45,14 +47,14 @@ function ReferenceInput(props: Props) {
       className={styles.referenceEdit}
     >
       <DateInput
-        className={styles.referenceEditInputDate}
+        className={styles.inputDate}
         name="reference_date"
         value={value.reference_date}
         onChange={onValueChange}
         error={error?.fields?.reference_date}
       />
       <TextInput
-        className={styles.referenceEditInputName}
+        className={styles.inputName}
         name="reference_name"
         value={value.reference_name}
         onChange={onValueChange}
@@ -60,13 +62,13 @@ function ReferenceInput(props: Props) {
         readOnly={true}
       />
       <TextInput
-        className={styles.referenceEditInputUrl}
+        className={styles.inputUrl}
         name="reference_url"
         value={value.reference_url}
         onChange={onValueChange}
         error={error?.fields?.reference_url}
       />
-      <div className={styles.referenceEditInputButton}>
+      <div className={styles.inputButton}>
         <Button
           className={styles.removeButton}
           name={index}

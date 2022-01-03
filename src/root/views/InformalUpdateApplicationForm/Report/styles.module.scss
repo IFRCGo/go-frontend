@@ -4,44 +4,45 @@
   :global {
     .go-container {
       header {
-        background-color: #fff;
+        background-color: $white;
         padding: $spacing $spacing-2 !important;
       }
-      .styles_content__3hMfk {
+     
+      /*.styles_content__3hMfk {
         padding: 0px;
-      }
+      }*/
     }
   }
 
-  &-container {
+  .overview-container {
       display: flex;
 
-      &-label {
-          font-weight: 600;
+      .overview-label {
+          font-weight: $base-font-semi-bold;
       }
-      &-value {
-          padding: 0 20px;
+      .overview-value {
+          padding: 0 $spacing-2;
       }
   }
-  &-overview {
-      margin: 20px 0px;
+  .overview-description {
+      margin: $spacing-3/2 0;
   }
 
-  &-actionTaken {
+  /*.action-taken {
     :global {
       .styles_content__3hMfk{
         background-color: $white;
         padding: $spacing-2 !important;
       }
     }
-  }
+  }*/
 
-  .graphic, .image{
+  .graphic {
     display: flex;
     justify-content: space-around;
     padding: $spacing-2;
 
-    &-card {
+    .card {
       padding: $spacing;
       background-color: $white;
 
@@ -50,12 +51,12 @@
         max-height: 500px;
       }
     }
-    &-container {
-      background-color: $white;
-    }
   }
 
   .image {
+    display: flex;
+    justify-content: space-around;
+    padding: $spacing-2;
     background-color: $white;
     
     img {

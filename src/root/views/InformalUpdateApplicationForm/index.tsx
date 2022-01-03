@@ -4,26 +4,27 @@ import type { match as Match } from 'react-router-dom';
 import type { History, Location } from 'history';
 import { Link } from 'react-router-dom';
 import { accumulateErrors, analyzeErrors, PartialForm, useForm } from '@togglecorp/toggle-form';
-import { actionsFields, contextFields, focalFields, InformalUpdateFields } from './common';
-import useInformalUpdateFormOptions, { schema } from './useInformalUpdateFormOptions';
+
 import Page from '#components/Page';
 import Button, { useButtonFeatures } from '#components/Button';
 import LanguageContext from '#root/languageContext';
 import TabList from '#components/Tabs/TabList';
 import Tab from '#components/Tabs/Tab';
 import Tabs from '#components/Tabs';
-
-import styles from './styles.module.scss';
 import Container from '#components/Container';
 import NonFieldError from '#components/NonFieldError';
 import TabPanel from '#components/Tabs/TabPanel';
 import ContextOverview from './ContextOverview';
 import FocalPoints from './FocalPoint';
 import ActionsOverview from './ActionOverview';
+import { actionsFields, contextFields, focalFields, InformalUpdateFields } from './common';
+import useInformalUpdateFormOptions, { schema } from './useInformalUpdateFormOptions';
+
+import styles from './styles.module.scss';
 
 interface Props {
   className?: string;
-  match: Match<{ drefId?: string }>;
+  match: Match<{ id?: string }>;
   history: History;
   location: Location;
 }
@@ -97,7 +98,7 @@ function InformalUpdateForm(props: Props) {
 
   const [currentStep, setCurrentStep] = React.useState<StepTypes>('context');
   const [fileIdToUrlMap, setFileIdToUrlMap] = React.useState<Record<number, string>>({});
-  const submitButtonLabel = currentStep === 'focal' ? strings.drefFormSaveButtonLabel : strings.drefFormContinueButtonLabel;
+  const submitButtonLabel = currentStep === 'focal' ? strings.informalUpdateSaveButtonLabel : strings.informalUpdateContinueButtonLabel;
   const shouldDisabledBackButton = currentStep === 'context';
 
   const erroredTabs = React.useMemo(() => {
@@ -291,7 +292,7 @@ function InformalUpdateForm(props: Props) {
         <Container>
           <NonFieldError
             error={error}
-            message={strings.drefFormFieldGeneralError}
+            message={strings.informalUpdateFormFieldGeneralError}
           />
         </Container>
         <TabPanel name="context">
@@ -346,7 +347,7 @@ function InformalUpdateForm(props: Props) {
             onClick={handleBackButtonClick}
             disabled={shouldDisabledBackButton}
           >
-            {strings.drefFormBackButtonLabel}
+            {strings.informalUpdateBackButtonLabel}
           </Button>
           <Button
             name={undefined}

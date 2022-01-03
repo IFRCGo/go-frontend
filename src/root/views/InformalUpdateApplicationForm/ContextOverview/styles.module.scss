@@ -5,7 +5,7 @@
     justify-content: flex-end;
     flex-basis: unset;
     flex-grow: unset;
-    padding: $spacing;
+    padding: 0 $spacing;
   }
 }
 
@@ -18,25 +18,37 @@
     
         button {
             background-color: $danger-color;;
-            color: #fff;
+            color: $white;
         }
 
         span {
-            padding: 0 15px;
-            color: #8D8D8D;
+            padding: 0 $spacing;
+            color: $grey-silver;
         }
     }
 
-    &-input {
-
-        &-date {
-            flex-grow: 1 !important;
-        }
-        &-name {
-            flex-grow: 2 !important;
-        }
-        &-url {
-           flex-grow: 1 2;
-        }
+    .input-date {
+        flex-grow: 1;
     }
+    .input-name {
+        flex-grow: 2;
+    }
+    .input-url {
+        flex-grow: 1 2;
+    }
+}
+
+.addCountryButtonContainer {
+  :global {
+    padding: 0px $spacing;
+    
+    .styles_section-title__2CZN8 {
+      padding: 0px;
+    }
+    
+    .styles_section-content__3E58e {
+      justify-content: flex-end;
+      padding: 0px;
+    }
+  }
 }

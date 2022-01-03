@@ -3294,10 +3294,13 @@ export default {
   informalUpdateTabContextLabel: 'Context',
   informalUpdateTabActionLabel: 'Actions',
   informalUpdateTabFocalLabel: 'Focal Points',
+  informalUpdateFormFieldGeneralError: 'Please correct all the errors!',
+  informalUpdateContinueButtonLabel: 'Continue',
+  informalUpdateBackButtonLabel: 'Back',
+  informalUpdateSaveButtonLabel: 'Save',
 
   // Context Overview
   informalUpdateFormContextHeading: 'Context',
-
   informalUpdateFormContextCountryTitle: 'Country and Province/Region *',
   informalUpdateFormContextCountryLabel: 'Select a country',
   informalUpdateFormContextProvinceLabel: 'Select a province',
@@ -3367,5 +3370,7 @@ export default {
   informalUpdateReportsTableViewAllReports: 'View All Flash Updates',
   informalUpdateReportsTableViewAllReportsTitle: 'All Flash Updates',
   informalUpdateReportsTableViewAllReportsBreadcrumTitle: 'Flash Updates',
+
+  allFlashUpdatePageHeading: 'All Flash Updates',
 
 };

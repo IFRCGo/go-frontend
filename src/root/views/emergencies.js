@@ -15,7 +15,7 @@ import { getLastMonthsEmergencies, getAggregateEmergencies } from '#actions';
 import { environment } from '#config';
 
 import LanguageContext from '#root/languageContext';
-import InformalUpdateReportsTable from '#components/connected/informalUpdateReportsTable';
+import TableLists from './AllInformalUpdates/TableLists';
 
 class Emergencies extends React.Component {
   componentDidMount() {
@@ -58,10 +58,8 @@ class Emergencies extends React.Component {
                   />
                 </div>
                 <div className='inner inner--field-reports-emergencies'>
-                  <InformalUpdateReportsTable
-                    viewAll={'/informal-update-reports/all'}
-                    title={strings.informalUpdateReportsTableTitle}
-                    showRecent={true}
+                  <TableLists
+                    ITEM_PER_PAGE={4}
                   />
                 </div>
                 <div className='inner inner--field-reports-emergencies'>

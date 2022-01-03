@@ -1,18 +1,5 @@
 import React, { useContext, } from 'react';
-import Button from '#components/Button';
-import Container from '#components/Container';
-import InputSection from '#components/InputSection';
 import { isNotDefined, randomString } from '@togglecorp/fujs';
-
-import styles from './styles.module.scss';
-import languageContext from '#root/languageContext';
-import {
-  InformalUpdateFields,
-  NumericValueOption,
-  emptyNumericOptionList,
-  CountryDistrict,
-  ReferenceData,
-} from '../common';
 import {
   EntriesAsList,
   PartialForm,
@@ -20,15 +7,29 @@ import {
   Error,
   useFormArray,
 } from '@togglecorp/toggle-form';
+
+import Button from '#components/Button';
+import Container from '#components/Container';
+import InputSection from '#components/InputSection';
+import languageContext from '#root/languageContext';
 import { rankedSearchOnList } from '#utils/common';
 import SelectInput from '#components/SelectInput';
 import TextInput from '#components/TextInput';
 import TextArea from '#components/TextArea';
 import DREFFileInput from '#components/DREFFileInput';
+import DateInput from '#components/DateInput';
 import { CountryDistrictType, ReferenceType } from '../useInformalUpdateFormOptions';
 import CountryProvinceInput from './CountryProvinceInput';
-import DateInput from '#components/DateInput';
 import ReferenceInput from './CountryProvinceInput/ReferenceInput';
+import {
+  InformalUpdateFields,
+  NumericValueOption,
+  emptyNumericOptionList,
+  CountryDistrict,
+  ReferenceData,
+} from '../common';
+
+import styles from './styles.module.scss';
 
 type Value = PartialForm<InformalUpdateFields>;
 interface Props {
@@ -93,14 +94,18 @@ function ContextOverview(props: Props) {
     const clientId = randomString();
     const newList: PartialForm<CountryDistrictType> = {
       clientId,
+      country: value.country,
+      district: value.district,
     };
+
     onValueChange(
       (oldValue: PartialForm<CountryDistricts>) => (
         [...(oldValue ?? []), newList]
       ),
       'country_district' as const,
     );
-  }, [onValueChange]);
+
+  }, [onValueChange, value]);
 
 
   const handleAddReference = React.useCallback(() => {
@@ -200,7 +205,7 @@ function ContextOverview(props: Props) {
           />
         </InputSection>
 
-        <InputSection>
+        <InputSection className={styles.addCountryButtonContainer} >
           <div className={styles.actions}>
             <Button
               name={undefined}
@@ -322,12 +327,11 @@ function ContextOverview(props: Props) {
         className={styles.reference}
       >
         <InputSection
-          className={styles.referenceInput}
           title={strings.informalUpdateFormContextReferenceTitle}
           description={strings.informalUpdateFormContextReferenceDescription}
         >
           <DateInput
-            className={styles.referenceInputDate}
+            className={styles.inputDate}
             name="reference_date"
             value={value.reference_date}
             onChange={onValueChange}
@@ -335,7 +339,7 @@ function ContextOverview(props: Props) {
             label={strings.informalUpdateFormContextReferenceDateLabel}
           />
           <TextInput
-            className={styles.referenceInputName}
+            className={styles.inputName}
             name="reference_name"
             value={value.reference_name}
             onChange={onValueChange}
@@ -357,7 +361,7 @@ function ContextOverview(props: Props) {
           className={styles.referenceInput}
         >
           <TextInput
-            className={styles.referenceInputUrl}
+            className={styles.inputUrl}
             name="reference_url"
             value={value.reference_url}
             onChange={onValueChange}

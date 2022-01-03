@@ -319,7 +319,7 @@ function useInformalUpdateFormOptions(value: PartialForm<InformalUpdateFields>) 
       value.title = '';
     }
 
-  }, [value.country, countryOptions, value.district, districtOptions, value.hazard_type, disasterTypeOptions]);
+  }, [value, countryOptions, districtOptions, disasterTypeOptions]);
 
 
   return {

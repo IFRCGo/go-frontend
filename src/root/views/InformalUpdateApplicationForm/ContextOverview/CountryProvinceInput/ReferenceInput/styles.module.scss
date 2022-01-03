@@ -9,27 +9,20 @@
     
         button {
             background-color: $danger-color;;
-            color: #fff;
-        }
-
-        span {
-            padding: 0 15px;
-            color: #8D8D8D;
+            color: $white;
         }
     }
     
-    &-input {
-        &-date {
-            flex-grow: 1 !important;
-        }
-        &-name {
-            flex-grow: 2 !important;
-        }
-        &-url {
-           flex-grow: 3 !important;
-        }
-        &-button {
-            display: inline-flex;
-        }
+    .input-date {
+      flex-grow: 1;
+    }
+    .input-name {
+      flex-grow: 1;
+    }
+    .input.url {
+      flex-grow: 2;
+    }
+    .input-button {
+      display: inline-flex;
     }
 }
