@@ -1,7 +1,7 @@
 import { useMemo, useCallback, useState, useEffect, useRef } from 'react';
 
 import { Error } from './go';
-import useRequest from './useRequest';
+import { useRequest } from './index';
 
 const PAGE_SIZE = 500;
 

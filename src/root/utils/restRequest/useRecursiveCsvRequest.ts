@@ -1,17 +1,14 @@
 import { useCallback, useState, useEffect, useRef } from 'react';
 import csvParse from 'csv-parse/lib/sync';
+import {
+  ListResponse,
+  useLazyRequest,
+  useRequest,
+} from './index';
 
 import { Error } from './go';
-import useRequest from './useRequest';
-import useLazyRequest from './useLazyRequest';
 
 const PAGE_SIZE = 500;
-
-type ListResponse<T> = {
-  count: number;
-  results: T[];
-  next?: string;
-};
 
 const firstQuery = {
   format: 'json',
@@ -53,6 +50,7 @@ function useRecursiveCSVRequest<D>({
         offset: 0,
         limit: PAGE_SIZE,
       });
+
       onFailure(error);
     },
   });

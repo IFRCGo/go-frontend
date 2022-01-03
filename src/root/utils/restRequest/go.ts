@@ -119,7 +119,7 @@ export const processGoOptions: GoContextInterface['transformOptions'] = (
   const token = Date.parse(user?.expires) > Date.now()
     ? user?.token
     : undefined;
-  
+
   const defaultHeaders = {
     Authorization: token ? `Token ${token}` : '',
     'Accept-Language': (enforceEnglish || method !== 'GET') ? 'en' : currentLanguage,
