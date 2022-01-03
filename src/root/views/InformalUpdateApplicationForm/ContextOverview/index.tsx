@@ -1,18 +1,5 @@
 import React, { useContext, } from 'react';
-import Button from '#components/Button';
-import Container from '#components/Container';
-import InputSection from '#components/InputSection';
 import { isNotDefined, randomString } from '@togglecorp/fujs';
-
-import styles from './styles.module.scss';
-import languageContext from '#root/languageContext';
-import {
-  InformalUpdateFields,
-  NumericValueOption,
-  emptyNumericOptionList,
-  CountryDistrict,
-  ReferenceData,
-} from '../common';
 import {
   EntriesAsList,
   PartialForm,
@@ -20,15 +7,30 @@ import {
   Error,
   useFormArray,
 } from '@togglecorp/toggle-form';
+
+import Button from '#components/Button';
+import Container from '#components/Container';
+import InputSection from '#components/InputSection';
+import languageContext from '#root/languageContext';
 import { rankedSearchOnList } from '#utils/common';
 import SelectInput from '#components/SelectInput';
 import TextInput from '#components/TextInput';
 import TextArea from '#components/TextArea';
 import DREFFileInput from '#components/DREFFileInput';
+import DateInput from '#components/DateInput';
 import { CountryDistrictType, ReferenceType } from '../useInformalUpdateFormOptions';
 import CountryProvinceInput from './CountryProvinceInput';
-import DateInput from '#components/DateInput';
 import ReferenceInput from './CountryProvinceInput/ReferenceInput';
+import {
+  InformalUpdateFields,
+  NumericValueOption,
+  emptyNumericOptionList,
+  CountryDistrict,
+  ReferenceData,
+} from '../common';
+
+import styles from './styles.module.scss';
+import InformalUpdateFileInput from '#components/InformalUpdateFileInput';
 
 type Value = PartialForm<InformalUpdateFields>;
 interface Props {
@@ -92,25 +94,29 @@ function ContextOverview(props: Props) {
   const handleCountryDistrictAdd = React.useCallback(() => {
     const clientId = randomString();
     const newList: PartialForm<CountryDistrictType> = {
-      clientId,
+      // clientId,
+      country: value.country,
+      district: value.district,
     };
+
     onValueChange(
       (oldValue: PartialForm<CountryDistricts>) => (
         [...(oldValue ?? []), newList]
       ),
       'country_district' as const,
     );
-  }, [onValueChange]);
+
+  }, [onValueChange, value]);
 
 
   const handleAddReference = React.useCallback(() => {
     const clientId = randomString();
     const newList: PartialForm<ReferenceType> = {
       clientId,
-      reference_date: value.reference_date,
-      reference_name: value.reference_name,
-      reference_url: value.reference_url,
-      reference_image: 1,
+      date: value.reference_date,
+      source_description: value.reference_name,
+      url: value.reference_url,
+      image: 1,
     };
     onValueChange(
       (oldValue: PartialForm<References>) => (
@@ -200,7 +206,7 @@ function ContextOverview(props: Props) {
           />
         </InputSection>
 
-        <InputSection>
+        <InputSection className={styles.addCountryButtonContainer} >
           <div className={styles.actions}>
             <Button
               name={undefined}
@@ -218,7 +224,7 @@ function ContextOverview(props: Props) {
         >
           {value.country_district?.map((c, i) => (
             <CountryProvinceInput
-              key={c.clientId}
+              key={i}
               index={i}
               value={c}
               onChange={onCountryDistrictChange}
@@ -283,18 +289,18 @@ function ContextOverview(props: Props) {
           title={strings.informalUpdateFormContextGraphicTitle}
           description={strings.informalUpdateFormContextGraphicDescription}
         >
-          <DREFFileInput
+          <InformalUpdateFileInput
             accept="image/*"
-            error={error?.fields?.graphic_image}
+            error={error?.fields?.graphic}
             fileIdToUrlMap={fileIdToUrlMap}
-            name="graphic_image"
+            name="graphic"
             onChange={onValueChange}
             setFileIdToUrlMap={setFileIdToUrlMap}
             showStatus
-            value={value.graphic_image}
+            value={value.graphic}
           >
             {strings.informalUpdateFormContextReferenceUrlButtonLabel}
-          </DREFFileInput>
+          </InformalUpdateFileInput>
         </InputSection>
       </Container>
 
@@ -305,13 +311,13 @@ function ContextOverview(props: Props) {
         >
           <DREFFileInput
             accept="image/*"
-            error={error?.fields?.map_image}
+            error={error?.fields?.map}
             fileIdToUrlMap={fileIdToUrlMap}
-            name="map_image"
+            name="map"
             onChange={onValueChange}
             setFileIdToUrlMap={setFileIdToUrlMap}
             showStatus
-            value={value.map_image}
+            value={value.map}
           >
             {strings.informalUpdateFormContextReferenceUrlButtonLabel}
           </DREFFileInput>
@@ -322,12 +328,11 @@ function ContextOverview(props: Props) {
         className={styles.reference}
       >
         <InputSection
-          className={styles.referenceInput}
           title={strings.informalUpdateFormContextReferenceTitle}
           description={strings.informalUpdateFormContextReferenceDescription}
         >
           <DateInput
-            className={styles.referenceInputDate}
+            className={styles.inputDate}
             name="reference_date"
             value={value.reference_date}
             onChange={onValueChange}
@@ -335,7 +340,7 @@ function ContextOverview(props: Props) {
             label={strings.informalUpdateFormContextReferenceDateLabel}
           />
           <TextInput
-            className={styles.referenceInputName}
+            className={styles.inputName}
             name="reference_name"
             value={value.reference_name}
             onChange={onValueChange}
@@ -357,7 +362,7 @@ function ContextOverview(props: Props) {
           className={styles.referenceInput}
         >
           <TextInput
-            className={styles.referenceInputUrl}
+            className={styles.inputUrl}
             name="reference_url"
             value={value.reference_url}
             onChange={onValueChange}

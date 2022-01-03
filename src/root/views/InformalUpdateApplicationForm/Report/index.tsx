@@ -2,20 +2,20 @@ import React, { useContext, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import type { History, Location } from 'history';
 import type { match as Match } from 'react-router-dom';
+
 import Container from '#components/Container';
 import Page from '#components/Page';
-import styles from './styles.module.scss';
 import BreadCrumb from '#components/breadcrumb';
 import languageContext from '#root/languageContext';
 import { get } from '#utils/utils';
 import ViewSection from './ViewSection';
 
+import styles from './styles.module.scss';
 
 interface Props {
   match: Match<{ id: string }>
   history: History;
   location: Location;
-
 }
 
 function InformalUpdateReport(props: Props) {
@@ -57,7 +57,7 @@ function InformalUpdateReport(props: Props) {
     {
       name: 'Distances',
       value: `102 km ENE of Quetta, Pakistan / pop: 733,000 
-            16 km NE of Harnai, Pakistan / pop: 11,000 / local time: 03:01:08.7 2021-10-07`
+              16 km NE of Harnai, Pakistan / pop: 11,000 / local time: 03:01:08.7 2021-10-07`
     },
     {
       description: 'The 5.7 magnitude earthquake hit at 03 o’clock in the morning local time as people were sleeping. At least 20 persons are reported dead and 150 injured with many rushed to the hospital in critical condition and fractures. Approximately a hundred mud houses have reported collapsed leaving hundreds of persons without shelter. Much of the damage seems to have taken place in Hernai district according to local authority interviewed in news report. Hernai is a fairly remote, mountainous city and the area hosts a lot of coal mines. Health workers and rescue efforts were hampered by a power cut caused by the earthquake – hospital workers reported having to do with torches for light - and by a lack of paved roads and mobile phone coverage. The tremor caused also a lot of landslides according to Al Jazeera report, blocking roads that need to be opened for rescuers to get to the area.'
@@ -117,15 +117,15 @@ function InformalUpdateReport(props: Props) {
             <div>
               {situationalData.map((item) => (
                 <>
-                  <div className={styles.situationalContainer}>
-                    <div className={styles.situationalContainerLabel}>
+                  <div className={styles.overviewContainer}>
+                    <div className={styles.overviewLabel}>
                       {item.name}
                     </div>
-                    <div className={styles.situationalContainerValue}>
+                    <div className={styles.overviewValue}>
                       {item.value}
                     </div>
                   </div>
-                  <div className={styles.situationalOverview}>
+                  <div className={styles.overviewDescription}>
                     {item.description}
                   </div>
                 </>
@@ -138,7 +138,7 @@ function InformalUpdateReport(props: Props) {
           heading='MAPS'
         >
           <div className={styles.graphic}>
-            <div className={styles.graphicCard}>
+            <div className={styles.card}>
               <img src="https://www.geosp.com/wp-content/uploads/2019/10/2.jpg" alt="" />
             </div>
           </div>
@@ -157,15 +157,15 @@ function InformalUpdateReport(props: Props) {
           </div>
         </Container>
 
-        <Container heading='ACTIONS TAKEN' className={styles.situationalActionTaken}>
+        <Container heading='ACTIONS TAKEN' className={styles.actionTaken}>
           <ViewSection title='Actions taken by IFRC' data={actionTakenByIfrc} />
         </Container>
 
-        <Container className={styles.situationalActionTaken}>
+        <Container className={styles.actionTaken}>
           <ViewSection title='Actions taken by RCRC' data={actionTakenByRcrc} />
         </Container>
 
-        <Container className={styles.situationalActionTaken}>
+        <Container className={styles.actionTaken}>
           <ViewSection title='Actions taken by Government' data={actionTakenByGovernment} />
         </Container>
       </Page>

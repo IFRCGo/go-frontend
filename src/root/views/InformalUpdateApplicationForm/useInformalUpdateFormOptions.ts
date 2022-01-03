@@ -4,6 +4,7 @@ import {
   ObjectSchema,
   ArraySchema,
 } from '@togglecorp/toggle-form';
+import { isDefined } from '@togglecorp/fujs';
 
 import {
   requiredCondition,
@@ -14,7 +15,6 @@ import {
   useRequest,
   ListResponse,
 } from '#utils/restRequest';
-
 import {
   Country,
   Disaster,
@@ -27,17 +27,18 @@ import {
   emptyNumericOptionList,
   User,
   InformalUpdateFields,
+  ActionFields,
+  emptyActionList,
+  ActionsByOrganization,
+  OrganizationType,
+  ActionsByOrganizationArrayLists,
+  StringValueOption,
+  StringKeyValuePair,
+  NumericKeyValuePair,
   IFRC_SECRETARIAT,
   RCRC_NETWORK,
   RCRC_NETWORK_AND_DONORS,
-  ActionByReportType,
-  ActionFields,
-  emptyActionList,
-  ReportType,
-  ActionsByOrganization,
-  OrganizationType,
 } from './common';
-import { isDefined } from '@togglecorp/fujs';
 
 export type FormSchema = ObjectSchema<PartialForm<InformalUpdateFields>>;
 export type FormSchemaFields = ReturnType<FormSchema['fields']>;
@@ -68,18 +69,23 @@ export function lessThanSixImagesCondition(value: any) {
 
 export const schema: FormSchema = {
   fields: (value): FormSchemaFields => ({
-    country: [requiredCondition],
-    district: [requiredCondition],
-    hazard_type: [requiredCondition],
-    situational_overview: [requiredCondition],
+    country: [],
+    district: [],
+    hazard_type: [],
+    situational_overview: [],
+    title: [],
     country_district: [],
     references: [],
 
-    field_report: [],
-    title: [requiredCondition],
-    users: [],
-    originator_name: [requiredCondition],
-    originator_email: [requiredCondition],
+    originator_name: [],
+    originator_email: [],
+    originator_phone: [],
+    originator_title: [],
+    ifrc_email: [],
+    ifrc_name: [],
+    ifrc_phone: [],
+    ifrc_title: [],
+    share_with: []
 
   }),
   fieldDependencies: () => ({
@@ -189,6 +195,8 @@ function useInformalUpdateFormOptions(value: PartialForm<InformalUpdateFields>) 
     })) ?? emptyNumericOptionList
   ), [disasterTypesResponse]);
 
+
+
   const yesNoOptions = React.useMemo(() => {
     return [
       { value: true, label: strings.yesLabel },
@@ -228,24 +236,18 @@ function useInformalUpdateFormOptions(value: PartialForm<InformalUpdateFields>) 
        return 'EVT';
    }, [value.status, value.dtype, value.is_covid_report]);*/
 
-  const covid = true;
-  const ew = true;
-  const epi = true;
-  const reportType: ReportType = React.useMemo(() => {
-    if (ew) {
-      return 'EW';
+  const ntls = true;
+  const pns = true;
+  const organizationsType: OrganizationType = React.useMemo(() => {
+    if (ntls) {
+      return 'NTLS';
     }
 
-    if (covid) {
-      return 'COVID';
+    if (pns) {
+      return 'PNS';
     }
-
-    if (epi) {
-      return 'EPI';
-    }
-
-    return 'EVT';
-  }, [epi, ew, covid]);
+    return 'FDRN';
+  }, [ntls, pns]);
 
   const {
     pending: fetchingActions,
@@ -255,36 +257,34 @@ function useInformalUpdateFormOptions(value: PartialForm<InformalUpdateFields>) 
     query: limitQuery,
   });
 
-
-  const actionOptionsMap: ActionByReportType = React.useMemo(() => {
+  const actionOptionsMap: ActionsByOrganizationArrayLists = React.useMemo(() => {
     if (!actionsResponse?.results?.length) {
       return {
-        EVT: emptyActionList,
-        EPI: emptyActionList,
-        COVID: emptyActionList,
-        EW: emptyActionList,
-      } as ActionByReportType;
+        NTLS: emptyActionList,
+        FDRN: emptyActionList,
+        PNS: emptyActionList,
+      } as ActionsByOrganizationArrayLists;
     }
 
     const actionList = actionsResponse.results;
-    const getFilter = (reportType: string) => (a: ActionFields) => (
-      a.field_report_types.findIndex(
-        (frt: string) => frt === reportType
+    const getFilterOrganization = (organizationType: string) => (a: ActionFields) => (
+      a.organizations.findIndex(
+        (frt: string) => frt === organizationType
       ) !== -1
     );
 
     const actionMap = {
-      EW: actionList.filter(getFilter('EW')),
-      EPI: actionList.filter(getFilter('EPI')),
-      COVID: actionList.filter(getFilter('COVID')),
-      EVT: actionList.filter(getFilter('EVT')),
+      NTLS: actionList.filter(getFilterOrganization('NTLS')),
+      FDRN: actionList.filter(getFilterOrganization('FDRN')),
+      PNS: actionList.filter(getFilterOrganization('PNS')),
     };
 
     return actionMap;
+
   }, [actionsResponse]);
 
   const orgGroupedActionForCurrentReport = React.useMemo(() => {
-    const options = actionOptionsMap[reportType];
+    const options = actionOptionsMap[organizationsType];
 
     return options.reduce((acc, val) => {
       const newAcc = { ...acc } as ActionsByOrganization;
@@ -305,7 +305,7 @@ function useInformalUpdateFormOptions(value: PartialForm<InformalUpdateFields>) 
       PNS: [],
       FDRN: [],
     } as ActionsByOrganization);
-  }, [actionOptionsMap, reportType]);
+  }, [actionOptionsMap, organizationsType]);
 
   React.useMemo(() => {
     const date = `${(new Date().getMonth() + 1)} / ${(new Date().getFullYear())}`;
@@ -319,7 +319,7 @@ function useInformalUpdateFormOptions(value: PartialForm<InformalUpdateFields>) 
       value.title = '';
     }
 
-  }, [value.country, countryOptions, value.district, districtOptions, value.hazard_type, disasterTypeOptions]);
+  }, [value, countryOptions, districtOptions, disasterTypeOptions]);
 
 
   return {

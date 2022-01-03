@@ -1,14 +1,16 @@
 import React, { useContext } from 'react';
+import { PartialForm, ArrayError, useFormObject } from '@togglecorp/toggle-form';
 import { IoTrash } from 'react-icons/io5';
 import { MdModeEditOutline } from 'react-icons/md';
+
 import Button from '#components/Button';
 import DateInput from '#components/DateInput';
 import InputSection from '#components/InputSection';
 import TextInput from '#components/TextInput';
 import languageContext from '#root/languageContext';
-import { PartialForm, ArrayError, useFormObject } from '@togglecorp/toggle-form';
 import { ReferenceData } from '#views/InformalUpdateApplicationForm/common';
-import { ReferenceType, schema } from '#views/InformalUpdateApplicationForm/useInformalUpdateFormOptions';
+import { ReferenceType } from '#views/InformalUpdateApplicationForm/useInformalUpdateFormOptions';
+
 import styles from './styles.module.scss';
 
 type SetValueArg<T> = T | ((value: T) => T);
@@ -45,28 +47,28 @@ function ReferenceInput(props: Props) {
       className={styles.referenceEdit}
     >
       <DateInput
-        className={styles.referenceEditInputDate}
-        name="reference_date"
-        value={value.reference_date}
+        className={styles.inputDate}
+        name="date"
+        value={value.date}
         onChange={onValueChange}
-        error={error?.fields?.reference_date}
+        error={error?.fields?.date}
       />
       <TextInput
-        className={styles.referenceEditInputName}
-        name="reference_name"
-        value={value.reference_name}
+        className={styles.inputName}
+        name="source_description"
+        value={value.source_description}
         onChange={onValueChange}
-        error={error?.fields?.reference_name}
+        error={error?.fields?.source_description}
         readOnly={true}
       />
       <TextInput
-        className={styles.referenceEditInputUrl}
-        name="reference_url"
-        value={value.reference_url}
+        className={styles.inputUrl}
+        name="url"
+        value={value.url}
         onChange={onValueChange}
-        error={error?.fields?.reference_url}
+        error={error?.fields?.url}
       />
-      <div className={styles.referenceEditInputButton}>
+      <div className={styles.inputButton}>
         <Button
           className={styles.removeButton}
           name={index}

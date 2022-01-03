@@ -3,27 +3,30 @@ import { isDefined, listToMap } from '@togglecorp/fujs';
 import type { match as Match } from 'react-router-dom';
 import type { History, Location } from 'history';
 import { Link } from 'react-router-dom';
-import { accumulateErrors, analyzeErrors, PartialForm, useForm } from '@togglecorp/toggle-form';
-import { actionsFields, contextFields, focalFields, InformalUpdateFields } from './common';
-import useInformalUpdateFormOptions, { schema } from './useInformalUpdateFormOptions';
+import { PartialForm, useForm } from '@togglecorp/toggle-form';
+
 import Page from '#components/Page';
 import Button, { useButtonFeatures } from '#components/Button';
 import LanguageContext from '#root/languageContext';
 import TabList from '#components/Tabs/TabList';
 import Tab from '#components/Tabs/Tab';
 import Tabs from '#components/Tabs';
-
-import styles from './styles.module.scss';
 import Container from '#components/Container';
 import NonFieldError from '#components/NonFieldError';
 import TabPanel from '#components/Tabs/TabPanel';
 import ContextOverview from './ContextOverview';
 import FocalPoints from './FocalPoint';
 import ActionsOverview from './ActionOverview';
+import { actionsFields, contextFields, focalFields, getDefinedValues, InformalUpdateAPIFields, InformalUpdateFields, transformFormFieldsToAPIFields } from './common';
+import useInformalUpdateFormOptions, { schema } from './useInformalUpdateFormOptions';
+
+import styles from './styles.module.scss';
+import { useLazyRequest } from '#utils/restRequest';
+import useAlert from '#hooks/useAlert';
 
 interface Props {
   className?: string;
-  match: Match<{ drefId?: string }>;
+  match: Match<{ id?: string }>;
   history: History;
   location: Location;
 }
@@ -44,14 +47,14 @@ function scrollToTop() {
 };*/
 
 type StepTypes = 'context' | 'action' | 'focal';
-const stepTypesToFieldsMap: {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  [key in StepTypes]: (keyof InformalUpdateFields)[];
-} = {
-  context: contextFields,
-  action: actionsFields,
-  focal: focalFields,
-};
+//const stepTypesToFieldsMap: {
+//  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+//  [key in StepTypes]: (keyof InformalUpdateFields)[];
+//} = {
+//  context: contextFields,
+//  action: actionsFields,
+//  focal: focalFields,
+//};
 const defaultFormValues: PartialForm<InformalUpdateFields> = {
   /*
   country_district: [
@@ -59,7 +62,6 @@ const defaultFormValues: PartialForm<InformalUpdateFields> = {
   ],
    */
   country_district: [],
-  users: [],
 };
 
 function InformalUpdateForm(props: Props) {
@@ -69,6 +71,7 @@ function InformalUpdateForm(props: Props) {
     history,
     match,
   } = props;
+  const alert = useAlert();
   const { id } = match.params;
 
   const { strings } = React.useContext(LanguageContext);
@@ -97,74 +100,82 @@ function InformalUpdateForm(props: Props) {
 
   const [currentStep, setCurrentStep] = React.useState<StepTypes>('context');
   const [fileIdToUrlMap, setFileIdToUrlMap] = React.useState<Record<number, string>>({});
-  const submitButtonLabel = currentStep === 'focal' ? strings.drefFormSaveButtonLabel : strings.drefFormContinueButtonLabel;
+  const submitButtonLabel = currentStep === 'focal' ? strings.informalUpdateSaveButtonLabel : strings.informalUpdateContinueButtonLabel;
   const shouldDisabledBackButton = currentStep === 'context';
 
-  const erroredTabs = React.useMemo(() => {
-    const tabs: {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      [key in StepTypes]: boolean;
-    } = {
-      context: false,
-      action: false,
-      focal: false,
-    };
+  //const erroredTabs = React.useMemo(() => {
+  //  const tabs: {
+  //    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  //    [key in StepTypes]: boolean;
+  //  } = {
+  //    context: false,
+  //    action: false,
+  //    focal: false,
+  //  };
 
-    const tabKeys = (Object.keys(tabs)) as StepTypes[];
-    tabKeys.forEach((tabKey) => {
-      const currentFields = stepTypesToFieldsMap[tabKey];
-      const currentFieldsMap = listToMap(currentFields, d => d, d => true);
+  //  const tabKeys = (Object.keys(tabs)) as StepTypes[];
+  //  tabKeys.forEach((tabKey) => {
+  //    //const currentFields = stepTypesToFieldsMap[tabKey];
+  //    const currentFieldsMap = listToMap(currentFields, d => d, d => true);
 
-      const erroredFields = Object.keys(error?.fields ?? {}) as (keyof InformalUpdateFields)[];
-      const hasError = erroredFields.some(d => currentFieldsMap[d]);
-      tabs[tabKey] = hasError;
-    });
+  //    const erroredFields = Object.keys(error?.fields ?? {}) as (keyof InformalUpdateFields)[];
+  //    const hasError = erroredFields.some(d => currentFieldsMap[d]);
+  //    tabs[tabKey] = hasError;
+  //  });
 
-    return tabs;
-  }, [error]);
+  //  return tabs;
+  //}, [error]);
 
-  const validateCurrentTab = React.useCallback((exceptions: (keyof InformalUpdateFields)[] = []) => {
-    const validationError = accumulateErrors(value, schema);
-    const currentFields = stepTypesToFieldsMap[currentStep];
-    const exceptionsMap = listToMap(exceptions, d => d, d => true);
+  //const validateCurrentTab = React.useCallback((exceptions: (keyof InformalUpdateFields)[] = []) => {
+  //  const validationError = accumulateErrors(value, schema);
+  //  const currentFields = stepTypesToFieldsMap[currentStep];
+  //  const exceptionsMap = listToMap(exceptions, d => d, d => true);
 
-    if (!validationError) {
-      return true;
-    }
+  //  if (!validationError) {
+  //    return true;
+  //  }
 
-    const currentTabFieldErrors = listToMap(
-      currentFields.filter(field => (
-        !exceptionsMap[field] && analyzeErrors(validationError.fields?.[field]
-        ))),
-      field => field,
-      field => validationError.fields?.[field]
-    ) as NonNullable<NonNullable<(typeof error)>['fields']>;
+  //  const currentTabFieldErrors = listToMap(
+  //    currentFields.filter(field => (
+  //      !exceptionsMap[field] && analyzeErrors(validationError.fields?.[field]
+  //      ))),
+  //    field => field,
+  //    field => validationError.fields?.[field]
+  //  ) as NonNullable<NonNullable<(typeof error)>['fields']>;
 
-    const newError: typeof error = {
-      ...error,
-      fields: {
-        ...error?.fields,
-        ...validationError.fields,
-        ...currentTabFieldErrors,
-      }
-    };
+  //  const newError: typeof error = {
+  //    ...error,
+  //    fields: {
+  //      ...error?.fields,
+  //      ...validationError.fields,
+  //      ...currentTabFieldErrors,
+  //    }
+  //  };
 
-    onErrorSet(newError);
+  //  onErrorSet(newError);
 
-    const hasError = Object.keys(currentTabFieldErrors).some(d => !!d);
-    return !hasError;
-  }, [value, currentStep, onErrorSet, error]);
+  //  const hasError = Object.keys(currentTabFieldErrors).some(d => !!d);
+  //  return !hasError;
+  //}, [value, currentStep, onErrorSet, error]);
 
   const handleTabChange = React.useCallback((newStep: StepTypes) => {
     scrollToTop();
-    const isCurrentTabValid = validateCurrentTab(['map_image']);
+    //const isCurrentTabValid = validateCurrentTab(['map_image']);
+    const {
+      errored,
+      error,
+    } = validate();
+    onErrorSet(error);
 
-    if (!isCurrentTabValid) {
-      return;
+    //if (!isCurrentTabValid) {
+    //  return;
+    //}
+    if (!errored) {
+      setCurrentStep(newStep);
     }
 
-    setCurrentStep(newStep);
-  }, [validateCurrentTab]);
+    //setCurrentStep(newStep);
+  }, [setCurrentStep, validate, onErrorSet]);
 
   const exportLinkProps = useButtonFeatures({
     variant: 'secondary',
@@ -173,21 +184,18 @@ function InformalUpdateForm(props: Props) {
 
   const submitInformalUpdate = React.useCallback(() => {
     const {
-      errored,
-      error,
       value: finalValues,
     } = validate();
+    const apiFields = transformFormFieldsToAPIFields(finalValues as InformalUpdateFields);
+    const definedValues = getDefinedValues(apiFields);
+    console.log("final defined json---", definedValues);
 
-    onErrorSet(error);
-
-    if (errored) {
-      return;
-    }
+    submitRequest(definedValues);
 
     if (finalValues && userDetails && userDetails.id) {
       const body = {
         user: userDetails.id,
-        ...finalValues,
+        ...definedValues,
       };
       // submitRequest(body as InformalUpdateApiFields);
     }
@@ -196,11 +204,22 @@ function InformalUpdateForm(props: Props) {
   const handleSubmitButtonClick = React.useCallback(() => {
     scrollToTop();
 
-    const isCurrentTabValid = validateCurrentTab([
-      'map_image'
-    ]);
+    //const isCurrentTabValid = validateCurrentTab([
+    //  'situational_overview'
+    //]);
 
-    if (!isCurrentTabValid) {
+    //if (!isCurrentTabValid) {
+    //  return;
+    //}
+
+    const {
+      errored,
+      error,
+    } = validate();
+
+    onErrorSet(error);
+
+    if (errored) {
       return;
     }
 
@@ -217,13 +236,13 @@ function InformalUpdateForm(props: Props) {
 
       handleTabChange(nextStepMap[currentStep]);
     }
-  }, [validateCurrentTab, currentStep, handleTabChange, submitInformalUpdate]);
+  }, [validate, currentStep, handleTabChange, submitInformalUpdate, onErrorSet]);
 
   const handleBackButtonClick = React.useCallback(() => {
     if (currentStep !== 'context') {
       const prevStepMap: {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        [key in Exclude<StepTypes, 'context'>]: Exclude<StepTypes, 'submission'>;
+        [key in Exclude<StepTypes, 'context'>]: Exclude<StepTypes, 'focal'>;
       } = {
         action: 'context',
         focal: 'action',
@@ -232,6 +251,47 @@ function InformalUpdateForm(props: Props) {
       handleTabChange(prevStepMap[currentStep]);
     }
   }, [handleTabChange, currentStep]);
+
+
+  const {
+    pending: informalUpdateSubmitPending,
+    trigger: submitRequest,
+  } = useLazyRequest<InformalUpdateAPIFields, Partial<InformalUpdateAPIFields>>({
+    url: 'api/v2/informal-update/',
+    method: 'POST',
+    body: ctx => ctx,
+    onSuccess: (response) => {
+      alert.show(
+        strings.fieldReportFormRedirectMessage,
+        { variant: 'success' },
+      );
+      window.setTimeout(
+        () => history.push('/'),
+        250,
+      );
+    },
+    onFailure: ({
+      value: { messageForNotification, errors },
+      debugMessage,
+    }) => {
+      console.error(errors);
+      alert.show(
+        <p>
+          {strings.fieldReportFormErrorLabel}
+          &nbsp;
+          <strong>
+            {messageForNotification}
+          </strong>
+        </p>,
+        {
+          variant: 'danger',
+          debugMessage,
+        },
+      );
+    },
+  });
+
+  console.log({ value });
 
   return (
     <Tabs
@@ -267,21 +327,21 @@ function InformalUpdateForm(props: Props) {
             <Tab
               name="context"
               step={1}
-              errored={erroredTabs['context']}
+            // errored={erroredTabs['context']}
             >
               {strings.informalUpdateTabContextLabel}
             </Tab>
             <Tab
               name="action"
               step={2}
-              errored={erroredTabs['action']}
+            // errored={erroredTabs['action']}
             >
               {strings.informalUpdateTabActionLabel}
             </Tab>
             <Tab
               name="focal"
               step={3}
-              errored={erroredTabs['focal']}
+            //errored={erroredTabs['focal']}
             >
               {strings.informalUpdateTabFocalLabel}
             </Tab>
@@ -291,7 +351,7 @@ function InformalUpdateForm(props: Props) {
         <Container>
           <NonFieldError
             error={error}
-            message={strings.drefFormFieldGeneralError}
+            message={strings.informalUpdateFormFieldGeneralError}
           />
         </Container>
         <TabPanel name="context">
@@ -346,7 +406,7 @@ function InformalUpdateForm(props: Props) {
             onClick={handleBackButtonClick}
             disabled={shouldDisabledBackButton}
           >
-            {strings.drefFormBackButtonLabel}
+            {strings.informalUpdateBackButtonLabel}
           </Button>
           <Button
             name={undefined}

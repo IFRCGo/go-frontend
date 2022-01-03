@@ -91,6 +91,7 @@ const DrefApplicationForm = lazy(() => import('../views/DrefApplicationForm'));
 const DrefPdfExport = lazy(() => import('../components/DrefPdfExport'));
 const InformalUpdateApplicationForm = lazy(() => import('../views/InformalUpdateApplicationForm'));
 const InformalUpdateReport = lazy(() => import('../views/InformalUpdateApplicationForm/Report'));
+const AllInformalUpdates = lazy(() => import('../views/AllInformalUpdates'));
 
 function LoadingGlobal() {
   return (
@@ -299,8 +300,9 @@ function Multiplexer(props) {
               <Route exact path='/three-w/' component={GlobalThreeW} />
 
               <PrivateRoute key="new-informal-update-application-form" exact path='/informal-update-application/new/' component={InformalUpdateApplicationForm} />
-              <PrivateRoute key="new-informal-update-report" exact path='/informal-update-report/:id' component={InformalUpdateReport} />
-              <Route exact path='/informal-update-reports/all' render={props => <Table {...props} type='informal' />} />
+              <Route exact path='/informal-update-report/:id' component={InformalUpdateReport} />
+              <Route exact path='/informal-updates/all/' component={AllInformalUpdates} />
+
               <Route component={FourHundredFour} />
             </Switch>
           </BreadcrumbsProvider>

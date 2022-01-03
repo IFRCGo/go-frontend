@@ -20,7 +20,6 @@ import LanguageContext from '#root/languageContext';
 import { resolveToString } from '#utils/lang';
 import { countriesSelector } from '#selectors';
 import { regionsByIdSelector } from '../selectors';
-import InformalUpdateReportsTable from '#components/connected/informalUpdateReportsTable';
 
 class Table extends React.Component {
   getDisplayTypes = (strings) => ({
@@ -30,7 +29,6 @@ class Table extends React.Component {
     alert: strings.tableAlert,
     eru: strings.tableEru,
     personnel: strings.tablePersonnel,
-    informal: strings.informalUpdateReportsTableViewAllReportsBreadcrumTitle,
   })
 
   getQueryParams() {
@@ -92,9 +90,6 @@ class Table extends React.Component {
         return <EruTable title={strings.tableAllEruTitle} {...props} />;
       case 'personnel':
         return <AllPersonnelTable title={strings.tableAllPersonnel} {...props} />;
-      case 'informal':
-        return <InformalUpdateReportsTable title={resolveToString(strings.informalUpdateReportsTableViewAllReportsTitle)} {...props} />;
-
     }
 
   }
