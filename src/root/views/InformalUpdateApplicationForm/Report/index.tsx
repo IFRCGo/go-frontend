@@ -20,10 +20,10 @@ interface Props {
 
 function InformalUpdateReport(props: Props) {
   const {
-    history,
+    //history,
     match
   } = props;
-  const { id } = match.params;
+  //const { id } = match.params;
   const { strings } = useContext(languageContext);
   const data = undefined;
   const crumbs = [
