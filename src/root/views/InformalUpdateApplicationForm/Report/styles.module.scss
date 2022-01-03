@@ -1,18 +1,66 @@
-.situational {
- img {
-     width: 500px;
- }
-    &-container {
-        display: flex;
+@import '~styles/settings/variables';
 
-        &-label {
-            font-weight: 600;
-        }
-        &-value {
-            padding: 0 20px;
-        }
+.situational {
+  :global {
+    .go-container {
+      header {
+        background-color: #fff;
+        padding: $spacing $spacing-2 !important;
+      }
+      .styles_content__3hMfk {
+        padding: 0px;
+      }
     }
-    &-overview {
-        margin: 20px 0px;
+  }
+
+  &-container {
+      display: flex;
+
+      &-label {
+          font-weight: 600;
+      }
+      &-value {
+          padding: 0 20px;
+      }
+  }
+  &-overview {
+      margin: 20px 0px;
+  }
+
+  &-actionTaken {
+    :global {
+      .styles_content__3hMfk{
+        background-color: $white;
+        padding: $spacing-2 !important;
+      }
     }
+  }
+
+  .graphic, .image{
+    display: flex;
+    justify-content: space-around;
+    padding: $spacing-2;
+
+    &-card {
+      padding: $spacing;
+      background-color: $white;
+
+      img {
+        width: 350px;
+        max-height: 500px;
+      }
+    }
+    &-container {
+      background-color: $white;
+    }
+  }
+
+  .image {
+    background-color: $white;
+    
+    img {
+      width: 500px;
+      max-height: 300px;
+    }
+  }
 }

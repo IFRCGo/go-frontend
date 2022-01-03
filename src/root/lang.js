@@ -3342,7 +3342,6 @@ export default {
   informalUpdateFormActionTakenByGovernmentDescription: "Select the activities undertaken by the government and describe.",
   informalUpdateFormActionTakenByGovernmentPlaceholder: "Brief description of the action",
 
-
   //Focal Points
   informalUpdateFormFocalOriginatorTitle: 'Originator',
   informalUpdateFormFocalOriginatorDescription: 'IFRC staff completing the Flash Update',

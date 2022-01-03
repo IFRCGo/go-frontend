@@ -114,7 +114,7 @@ function InformalUpdateReport(props: Props) {
       >
         <Container heading="SITUATIONAL OVERVIEW">
           <ViewSection>
-            <div className={styles.situational}>
+            <div>
               {situationalData.map((item) => (
                 <>
                   <div className={styles.situationalContainer}>
@@ -137,24 +137,35 @@ function InformalUpdateReport(props: Props) {
         <Container
           heading='MAPS'
         >
-          <img src="https://www.geosp.com/wp-content/uploads/2019/10/2.jpg" alt="" />
+          <div className={styles.graphic}>
+            <div className={styles.graphicCard}>
+              <img src="https://www.geosp.com/wp-content/uploads/2019/10/2.jpg" alt="" />
+            </div>
+          </div>
         </Container>
 
         <Container
           heading='IMAGES'
         >
-          <img src="https://nepal24hours.com/wp-content/uploads/2021/10/earthquakes.jpg" alt="" />
+          <div className={styles.image}>
+            <div>
+              <img src="https://nepal24hours.com/wp-content/uploads/2021/10/earthquakes.jpg" alt="" />
+            </div>
+            <div>
+              <img src="https://nepal24hours.com/wp-content/uploads/2021/10/earthquakes.jpg" alt="" />
+            </div>
+          </div>
         </Container>
 
-        <Container heading='ACTIONS TAKEN'>
+        <Container heading='ACTIONS TAKEN' className={styles.situationalActionTaken}>
           <ViewSection title='Actions taken by IFRC' data={actionTakenByIfrc} />
         </Container>
 
-        <Container>
+        <Container className={styles.situationalActionTaken}>
           <ViewSection title='Actions taken by RCRC' data={actionTakenByRcrc} />
         </Container>
 
-        <Container>
+        <Container className={styles.situationalActionTaken}>
           <ViewSection title='Actions taken by Government' data={actionTakenByGovernment} />
         </Container>
       </Page>

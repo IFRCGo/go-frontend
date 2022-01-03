@@ -3,11 +3,13 @@
 .input-section {
     display: block;
     background-color: $white;
+    background: #FFFFFF;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.08);
 
 
     .section-title {
-        //background-color: green;
-        padding: $spacing $spacing-3;
+        background-color: #fafafa;
+        padding: $spacing/2 $spacing-3;
         flex-shrink: 0;
 
         .title {
@@ -18,7 +20,7 @@
     }
 
     .section-content {
-        padding: $spacing/2  $spacing-3 ;
+        padding: $spacing/2  $spacing-2 ;
         .label {
             font-size: 12px;
             line-height: 16px;
