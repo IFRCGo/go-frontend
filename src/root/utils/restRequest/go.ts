@@ -174,24 +174,22 @@ export const processGoResponse: GoContextInterface['transformResponse'] = async 
   const resClone = res.clone();
   const resText = await res.text();
 
-  return new Promise((resolve) => {
-    if (String(res.status)[0] === '2') {
-      if (res.headers.get('content-type') === CONTENT_TYPE_JSON) {
-        const json = JSON.parse(resText);
-        resolve(json);
-      }
-
-      return resolve(resText);
+  if (String(res.status)[0] === '2') {
+    if (res.headers.get('content-type') === CONTENT_TYPE_JSON) {
+      const json = JSON.parse(resText);
+      return json;
     }
 
-    const serverError: ResponseError = {
-      status: res.status,
-      originalReponse: resClone,
-      responseText: resText,
-    };
+    return resText;
+  }
 
-    resolve(serverError);
-  });
+  const serverError: ResponseError = {
+    status: res.status,
+    originalReponse: resClone,
+    responseText: resText,
+  };
+
+  return serverError;
 };
 
 export const processGoError: GoContextInterface['transformError'] = (
@@ -200,8 +198,6 @@ export const processGoError: GoContextInterface['transformError'] = (
   requestOptions,
   extraOptions,
 ) => {
-  // const responseText = await response?.text();
-
   if (responseError === 'network') {
     return {
       reason: 'network',

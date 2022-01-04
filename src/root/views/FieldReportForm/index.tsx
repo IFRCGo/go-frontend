@@ -153,7 +153,6 @@ function FieldReportForm(props: Props) {
       },
       debugMessage,
     }) => {
-      console.info(formErrors);
       onErrorSet(formErrors);
       alert.show(
         <p>
