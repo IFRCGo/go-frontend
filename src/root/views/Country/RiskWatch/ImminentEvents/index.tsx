@@ -1,11 +1,7 @@
 import React from 'react';
 import { RiDownloadLine } from 'react-icons/ri';
-import { unique } from '@togglecorp/fujs';
 
-import {
-  ListResponse,
-  useRequest,
-} from '#utils/restRequest';
+import { useRequest } from '#utils/restRequest';
 import Container from '#components/Container';
 import SelectInput from '#components/SelectInput';
 import Button from '#components/Button';
@@ -14,12 +10,12 @@ import useReduxState from '#hooks/useReduxState';
 import useInputState from '#hooks/useInputState';
 import { StringValueOption } from '#types';
 
+import PDCExposureMap from './PDCExposureMap';
+
 import {
-  HazardData,
   ImminentHazardTypes,
-  PDCExposure,
+  ImminentResponse,
 } from './common';
-import Map from './Map';
 import styles from './styles.module.scss';
 
 const sourceOptions = [
@@ -82,6 +78,8 @@ function EventDetail<E extends number>(props: EventDetailProps<E>) {
   );
 }
 
+const hazardOptions: StringValueOption[] = [];
+
 interface Props {
   className?: string;
   countryId: number;
@@ -95,85 +93,18 @@ function ImminentEvents(props: Props) {
     allCountries?.data.results.find(d => d.id === countryId)
   ), [allCountries, countryId]);
 
-  /*
-  const { response } = useRequest<ListResponse<GlobalExposureData>>({
-    skip: !country,
-    url: 'https://risk-module-api.togglecorp.com/api/v1/global-exposure-data/',
-    query: {
-      country: country?.iso3?.toLocaleLowerCase(),
-    },
-  });
-   */
-
-  const { response } = useRequest({
+  const { response } = useRequest<ImminentResponse>({
     skip: !country,
     url: 'https://risk-module-api.togglecorp.com/api/v1/imminent/',
-    query: {
-      iso3: country?.iso3?.toLocaleLowerCase(),
-    },
-  });
-
-  console.info(response);
-
-  const { response: pdcExposureResponse } = useRequest<ListResponse<PDCExposure>>({
-    skip: !country,
-    url: 'https://risk-module-api.togglecorp.com/api/v1/pdc-displacement/',
-    query: {
-      iso3: country?.iso3?.toLocaleLowerCase(),
-    },
+    query: { iso3: country?.iso3?.toLocaleLowerCase() },
   });
 
   const [selectedHazard, setSelectedHazard] = useInputState<ImminentHazardTypes | undefined>(undefined);
   const [selectedSource, setSelectedSource] = useInputState<typeof sourceOptions[number]['value'] | undefined>('pdc');
-  const [activeEvent, setActiveEvent] = React.useState<number | undefined>(undefined);
+  const [activeEventId, setActiveEventId] = React.useState<number | undefined>(undefined);
 
-  const [
-    hazardList,
-    hazardOptions,
-  ]: [HazardData[], StringValueOption[]] = React.useMemo(() => {
-    if (selectedSource === 'pdc') {
-      const hazardOptions = unique([
-        ...(pdcExposureResponse?.results?.map(d => ({ value: d.hazard_type, label: d.hazard_type_display }))) ?? [],
-      ], d => d.value) ?? [];
-
-      return [
-        (pdcExposureResponse?.results ?? []).filter(
-          h => !selectedHazard || h.hazard_type === selectedHazard,
-        ).map(d => ({
-          id: d.id,
-          hazardType: d.hazard_type,
-          hazardTypeDisplay: d.hazard_type_display,
-          hazardTitle: d.pdc_details.hazard_name,
-          latitude: d.pdc_details.latitude,
-          longitude: d.pdc_details.longitude,
-          peopleExposed: d.population_exposure ?? null,
-          peopleDisplaced: null,
-          buildingsExposed: null,
-          fileType: null,
-          mapboxLayerId: null,
-          description: d.pdc_details.description,
-          startDate: d.pdc_details.start_date,
-          source: 'pdc',
-        })),
-        hazardOptions,
-      ];
-    }
-
-    if (selectedSource === 'oddrin') {
-      return [
-        [],
-        [],
-      ];
-    }
-
-    return [
-      [],
-      [],
-    ];
-  }, [pdcExposureResponse, selectedHazard, selectedSource]);
-
-  const handleEventDetailClick = React.useCallback((eventId: number) => {
-    setActiveEvent((oldEventId) => {
+  const handleEventDetailClick = React.useCallback((eventId: number | undefined) => {
+    setActiveEventId((oldEventId) => {
       if (oldEventId === eventId) {
         return undefined;
       }
@@ -201,6 +132,7 @@ function ImminentEvents(props: Props) {
                 onChange={setSelectedSource}
                 radioKeySelector={d => d.value}
                 radioLabelSelector={d => d.label}
+                disabled
               />
               <SelectInput
                 className={styles.hazardSelectInput}
@@ -224,32 +156,36 @@ function ImminentEvents(props: Props) {
         )}
         sub
       >
-        <div className={styles.mapSection}>
-          <Map
-            hazardList={hazardList}
-            countryId={countryId}
-            className={styles.map}
-          />
-          <Container
-            className={styles.sideBar}
-            contentClassName={styles.eventList}
-            heading={country?.name}
-            sub
-          >
-            {hazardList.map((hazard) => (
-              <EventDetail
-                eventId={hazard.id}
-                key={hazard.id}
-                title={hazard.hazardTitle}
-                type={hazard.hazardTypeDisplay}
-                description={hazard.description}
-                startDate={hazard.startDate}
-                onClick={handleEventDetailClick}
-                isActive={activeEvent === hazard.id}
-              />
-            ))}
-          </Container>
-        </div>
+        {response?.pdc_data && (
+          <div className={styles.mapSection}>
+            <PDCExposureMap
+              countryId={countryId}
+              className={styles.map}
+              activeEventId={activeEventId}
+              data={response.pdc_data}
+              onActiveEventChange={handleEventDetailClick}
+            />
+            <Container
+              className={styles.sideBar}
+              contentClassName={styles.eventList}
+              heading={country?.name}
+              sub
+            >
+              {response?.pdc_data?.map((hazard) => (
+                <EventDetail
+                  eventId={hazard.id}
+                  key={hazard.id}
+                  title={hazard.pdc_details.hazard_name}
+                  type={hazard.hazard_type_display}
+                  description={hazard.pdc_details.description}
+                  startDate={hazard.pdc_details.start_date}
+                  onClick={handleEventDetailClick}
+                  isActive={activeEventId === hazard.id}
+                />
+              ))}
+            </Container>
+          </div>
+        )}
       </Container>
     </>
   );

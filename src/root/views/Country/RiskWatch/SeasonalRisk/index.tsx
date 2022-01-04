@@ -3,11 +3,16 @@ import {
   listToMap,
   isDefined,
   listToGroupList,
+  mapToMap,
+  unique,
 } from '@togglecorp/fujs';
 
 import useReduxState from '#hooks/useReduxState';
 import { useRequest } from '#utils/restRequest';
-import { avg } from '#utils/common';
+import {
+  avg,
+  avgSafe,
+} from '#utils/common';
 
 import {
   HazardTypes,
@@ -59,6 +64,16 @@ const hazardOrderMap: {
   FI: 4,
 };
 
+const estimationPriorityMap: {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  [key in IPCData['estimation_type']]: number
+} = {
+  current: 0,
+  first_projection: 1,
+  second_projection: 2,
+};
+
+
 interface Props {
   className?: string;
   countryId: number;
@@ -101,11 +116,8 @@ function SeasonalRisk(props: Props) {
     const hazardKeys = allHazardKeys.filter(
       (h) => visibleHazardTypeMap[h]
     );
-    const now = new Date();
-    const currentYear = now.getFullYear();
 
     const riskData = hazardKeys.map((hazard) => {
-
       const displacements = response?.idmc
         .filter((risk) => risk.hazard_type === hazard)
         .map((risk) => {
@@ -129,31 +141,28 @@ function SeasonalRisk(props: Props) {
         }) ?? [];
 
       if (hazard === 'FI') {
-        const foodInsecurityRaw = (response?.ipc_displacement_data.filter(
-          d => (isDefined(d.total_displacement) && d.year === currentYear)
-        ) ?? []).sort((a, b) => {
-          const estimationPriorityMap: {
-            // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            [key in IPCData['estimation_type']]: number
-          } = {
-            current: 0,
-            first_projection: 1,
-            second_projection: 2,
-          };
+        const maxYear = 2021;
 
+        const foodInsecurityRaw = (response?.ipc_displacement_data.filter(
+          d => (isDefined(d.total_displacement) && d.year <= maxYear)
+        ) ?? []).sort((a, b) => {
           return (a.year - b.year)
             || (a.month - b.month)
             || ((new Date(b.analysis_date ?? 0).getTime()) - (new Date(a.analysis_date ?? 0).getTime()))
             || ((estimationPriorityMap[a.estimation_type] ?? 0) - (estimationPriorityMap[b.estimation_type] ?? 0));
         });
 
-        const groupedMap = listToGroupList(foodInsecurityRaw, d => d.month);
+        const groupedMap = mapToMap(
+          listToGroupList(foodInsecurityRaw, d => d.month),
+          d => d,
+          (data) => unique(data, d => d.year)
+        );
         const foodInsecurity = Object.values(groupedMap).map(d => d[0]);
 
-        const months = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+        const months = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12] as const;
         displacements.push({
           annualAverage: avg(foodInsecurity, d => d.total_displacement) ?? null,
-          monthly: months.map(m => groupedMap[m]?.[0]?.total_displacement ?? 0),
+          monthly: months.map(m => avgSafe(groupedMap[m].map(d => d.total_displacement)) ?? null),
         });
       }
 
@@ -210,7 +219,7 @@ function SeasonalRisk(props: Props) {
   return (
     <>
       <div className={styles.description}>
-        This page displaces available information about specific disaster risks for for each month. When you move the slider from month to month, the information in the table and charts below will update automatically.
+        This page displays available information about specific disaster risks for for each month. When you move the slider from month to month, the information in the table and charts below will update automatically.
       </div>
       <RiskMap
         hazardOptions={hazardOptions}

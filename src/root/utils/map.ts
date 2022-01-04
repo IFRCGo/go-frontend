@@ -4,7 +4,7 @@ export const defaultMapOptions = {
   logoPosition: 'bottom-left' as const,
   zoom: 1.5,
   minZoom: 0,
-  maxZoom: 8,
+  maxZoom: 18,
   scrollZoom: false,
   pitchWithRotate: false,
   dragRotate: false,
@@ -109,3 +109,8 @@ export function getPointCircleHaloPaint(
     ],
   };
 }
+
+export const defaultTooltipOptions: mapboxgl.PopupOptions = {
+  closeButton: false,
+  offset: 10,
+};

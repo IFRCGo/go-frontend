@@ -83,134 +83,117 @@ const INFORM_RISK_LOW = 2;
 const INFORM_RISK_MEDIUM = 3.5;
 const INFORM_RISK_HIGH = 5;
 
+interface LegendItemProps {
+  color: string;
+  label: string;
+}
+
+function LegendItem(props: LegendItemProps) {
+  const {
+    color,
+    label,
+  } = props;
+
+  return (
+    <div className={styles.legendItem}>
+      <div
+        className={styles.symbol}
+        style={{ backgroundColor: color }}
+      />
+      <div className={styles.label}>
+        { label }
+      </div>
+    </div>
+  );
+}
+
+const displacementLegendData = [
+  {
+    color: COLOR_BLUE,
+    label: `Less than ${addSeparator(DISPLACEMENT_LOW)}`
+  },
+  {
+    color: COLOR_YELLOW,
+    label: `${addSeparator(DISPLACEMENT_LOW)} to ${addSeparator(DISPLACEMENT_MEDIUM)}`
+  },
+  {
+    color: COLOR_ORANGE,
+    label: `${addSeparator(DISPLACEMENT_MEDIUM)} to ${addSeparator(DISPLACEMENT_HIGH)}`
+  },
+  {
+    color: COLOR_RED,
+    label: `More than ${addSeparator(DISPLACEMENT_HIGH)}`
+  },
+];
+
+const exposureLegendData = [
+  {
+    color: COLOR_BLUE,
+    label: `Less than ${addSeparator(EXPOSURE_LOW)}`,
+  },
+  {
+    color: COLOR_YELLOW,
+    label: `${addSeparator(EXPOSURE_LOW)} to ${addSeparator(EXPOSURE_MEDIUM)}`,
+  },
+  {
+    color: COLOR_ORANGE,
+    label: `${addSeparator(EXPOSURE_MEDIUM)} to ${addSeparator(EXPOSURE_HIGH)}`,
+  },
+  {
+    color: COLOR_RED,
+    label: `More than ${addSeparator(EXPOSURE_HIGH)}`,
+  },
+];
+
+const informLegendData = [
+  {
+    color: COLOR_YELLOW,
+    label: `${INFORM_RISK_LOW} to ${INFORM_RISK_MEDIUM}`,
+  },
+  {
+    color: COLOR_ORANGE,
+    label: `${INFORM_RISK_MEDIUM} to ${INFORM_RISK_HIGH}`,
+  },
+  {
+    color: COLOR_RED,
+    label: `More than ${INFORM_RISK_HIGH}`,
+  },
+];
+
+
 interface MapLegendProps {
   selectedRiskMetric: (typeof riskMetricOptions)[number]['value'];
 }
 
 function MapLegend(props: MapLegendProps) {
   const { selectedRiskMetric } = props;
+  const legendData = React.useMemo(() => {
+    if (selectedRiskMetric === 'displacement') {
+      return displacementLegendData;
+    }
 
-  if (selectedRiskMetric === 'displacement') {
-    return (
-      <div className={styles.mapLegend}>
-        <div className={styles.legendItem}>
-          <div
-            className={styles.symbol}
-            style={{ backgroundColor: COLOR_BLUE }}
-          />
-          <div className={styles.label}>
-            Less than {addSeparator(DISPLACEMENT_LOW)}
-          </div>
-        </div>
-        <div className={styles.legendItem}>
-          <div
-            className={styles.symbol}
-            style={{ backgroundColor: COLOR_YELLOW }}
-          />
-          <div className={styles.label}>
-            {addSeparator(DISPLACEMENT_LOW)} to {addSeparator(DISPLACEMENT_MEDIUM)}
-          </div>
-        </div>
-        <div className={styles.legendItem}>
-          <div
-            className={styles.symbol}
-            style={{ backgroundColor: COLOR_ORANGE }}
-          />
-          <div className={styles.label}>
-            {addSeparator(DISPLACEMENT_MEDIUM)} to {addSeparator(DISPLACEMENT_HIGH)}
-          </div>
-        </div>
-        <div className={styles.legendItem}>
-          <div
-            className={styles.symbol}
-            style={{ backgroundColor: COLOR_RED }}
-          />
-          <div className={styles.label}>
-            More than {addSeparator(DISPLACEMENT_HIGH)}
-          </div>
-        </div>
-      </div>
-    );
-  }
+    if (selectedRiskMetric === 'exposure') {
+      return exposureLegendData;
+    }
 
-  if (selectedRiskMetric === 'exposure') {
-    return (
-      <div className={styles.mapLegend}>
-        <div className={styles.legendItem}>
-          <div
-            className={styles.symbol}
-            style={{ backgroundColor: COLOR_BLUE }}
-          />
-          <div className={styles.label}>
-            Less than {addSeparator(EXPOSURE_LOW)}
-          </div>
-        </div>
-        <div className={styles.legendItem}>
-          <div
-            className={styles.symbol}
-            style={{ backgroundColor: COLOR_YELLOW }}
-          />
-          <div className={styles.label}>
-            {addSeparator(EXPOSURE_LOW)} to {addSeparator(EXPOSURE_MEDIUM)}
-          </div>
-        </div>
-        <div className={styles.legendItem}>
-          <div
-            className={styles.symbol}
-            style={{ backgroundColor: COLOR_ORANGE }}
-          />
-          <div className={styles.label}>
-            {addSeparator(EXPOSURE_MEDIUM)} to {addSeparator(EXPOSURE_HIGH)}
-          </div>
-        </div>
-        <div className={styles.legendItem}>
-          <div
-            className={styles.symbol}
-            style={{ backgroundColor: COLOR_RED }}
-          />
-          <div className={styles.label}>
-            More than {addSeparator(EXPOSURE_HIGH)}
-          </div>
-        </div>
-      </div>
-    );
-  }
+    if (selectedRiskMetric === 'informRiskScore') {
+      return informLegendData;
+    }
 
-  if (selectedRiskMetric === 'informRiskScore') {
-    return (
-      <div className={styles.mapLegend}>
-        <div className={styles.legendItem}>
-          <div
-            className={styles.symbol}
-            style={{ backgroundColor: COLOR_YELLOW }}
-          />
-          <div className={styles.label}>
-            {INFORM_RISK_LOW} to {INFORM_RISK_MEDIUM}
-          </div>
-        </div>
-        <div className={styles.legendItem}>
-          <div
-            className={styles.symbol}
-            style={{ backgroundColor: COLOR_ORANGE }}
-          />
-          <div className={styles.label}>
-            {INFORM_RISK_MEDIUM} to {INFORM_RISK_HIGH}
-          </div>
-        </div>
-        <div className={styles.legendItem}>
-          <div
-            className={styles.symbol}
-            style={{ backgroundColor: COLOR_RED }}
-          />
-          <div className={styles.label}>
-             More than {INFORM_RISK_HIGH}
-          </div>
-        </div>
-      </div>
-    );
-  }
+    return [];
+  }, [selectedRiskMetric]);
 
-  return null;
+  return (
+    <div className={styles.mapLegend}>
+      {legendData.map((d) => (
+        <LegendItem
+          key={d.label}
+          color={d.color}
+          label={d.label}
+        />
+      ))}
+    </div>
+  );
 }
 
 interface ChoroplethProps {

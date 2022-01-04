@@ -19,7 +19,7 @@ export const setHashToBrowser = (hash: string | undefined) => {
 
 export function sum<L, V extends string | number>(list: L[], valueSelector: (item: L) => V) {
   if (!list || !Array.isArray(list)) {
-    return undefined;
+    return 0;
   }
 
   const values = list
@@ -159,5 +159,10 @@ export function getFullMonthNameList(strings: Strings) {
     strings.monthNameNovember,
     strings.monthNameDecember,
   ] as const;
+}
+
+export function avgSafe(list: (number|undefined|null)[]) {
+  const listSafe = list.filter((i) => isDefined(i) && !Number.isNaN(i)) as number[];
+  return avg(listSafe, d => d);
 }
 

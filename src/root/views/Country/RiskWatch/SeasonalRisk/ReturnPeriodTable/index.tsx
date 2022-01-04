@@ -37,16 +37,31 @@ const getReturnPeriodColumns = () => ([
     'numExposed',
     'People Exposed / Affected',
     (item) => item.exposure,
+    undefined,
+    {
+      normal: true,
+      precision: 'auto',
+    },
   ),
   createNumberColumn<TransformedReturnPeriodData, string | number>(
     'numRiskOfDisplacement',
     'People at Risk of Displacement',
     (item) => item.displacement,
+    undefined,
+    {
+      normal: true,
+      precision: 'auto',
+    },
   ),
   createNumberColumn<TransformedReturnPeriodData, string | number>(
     'economicLosses',
     'Economic Losses (USD)',
     (item) => item.economicLosses,
+    undefined,
+    {
+      normal: true,
+      precision: 'auto',
+    },
   ),
 ]);
 

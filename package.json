@@ -103,13 +103,9 @@
     "@react-pdf/renderer": "^2.0.21",
     "@togglecorp/faram": "^1.2.1",
     "@togglecorp/fujs": "^1.9.0",
-<<<<<<< HEAD
     "@togglecorp/re-map": "^0.1.0",
     "@togglecorp/toggle-form": "^1.2.1",
-=======
     "@togglecorp/re-map": "^0.1.3",
-    "@togglecorp/toggle-form": "^0.2.0-beta.5",
->>>>>>> ecbc1db1 (Add country risk watch)
     "@togglecorp/toggle-request": "^0.0.2",
     "@turf/bbox": "^6.0.1",
     "@turf/centroid": "^6.0.2",

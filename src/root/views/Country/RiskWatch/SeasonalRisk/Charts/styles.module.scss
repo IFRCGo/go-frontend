@@ -98,3 +98,16 @@
     border-radius: 50%;
   }
 }
+
+.event-details {
+  background-color: #fff;
+  box-shadow: $base-box-shadow;
+
+  .description {
+    padding: $spacing;
+  }
+
+  .event-detail-content {
+    padding: $spacing/2 !important;
+  }
+}
