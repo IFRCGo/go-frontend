@@ -109,10 +109,9 @@ function ThreeWForm(props: Props) {
     body: ctx => ctx,
     onSuccess: onSubmitSuccess,
     onFailure: ({
-      value: { messageForNotification, errors },
+      value: { messageForNotification },
       debugMessage,
     }) => {
-      console.error(errors);
       alert.show(
         (
           <Translate

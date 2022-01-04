@@ -147,10 +147,13 @@ function FieldReportForm(props: Props) {
       );
     },
     onFailure: ({
-      value: { messageForNotification, errors },
+      value: {
+        messageForNotification,
+        formErrors,
+      },
       debugMessage,
     }) => {
-      console.error(errors);
+      onErrorSet(formErrors);
       alert.show(
         <p>
           {strings.fieldReportFormErrorLabel}
