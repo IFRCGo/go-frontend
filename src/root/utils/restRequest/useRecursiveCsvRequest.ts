@@ -6,7 +6,7 @@ import {
   useRequest,
 } from './index';
 
-import { Error } from './go';
+import { TransformedError } from './go';
 
 const PAGE_SIZE = 500;
 
@@ -21,7 +21,7 @@ function useRecursiveCSVRequest<D>({
   onFailure,
 } : {
   url: string;
-  onFailure: (error: Error) => void,
+  onFailure: (error: TransformedError) => void,
 }) {
   const [pending, setPending] = useState(false);
   const [data, setData] = useState<D[]>([]);

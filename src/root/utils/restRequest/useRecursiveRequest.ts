@@ -1,6 +1,6 @@
 import { useMemo, useCallback, useState, useEffect, useRef } from 'react';
 
-import { Error } from './go';
+import { TransformedError } from './go';
 import { useRequest } from './index';
 
 const PAGE_SIZE = 500;
@@ -18,7 +18,7 @@ function useRecursiveRequest<D>({
 } : {
   url: string;
   urlOptions?: Record<string, unknown>;
-  onFailure: (error: Error) => void,
+  onFailure: (error: TransformedError) => void,
 }) {
   const [pending, setPending] = useState(false);
   const [data, setData] = useState<D[]>([]);

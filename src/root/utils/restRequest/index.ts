@@ -6,6 +6,11 @@ import {
   LazyRequestOptions,
 } from '@togglecorp/toggle-request';
 
+import {
+  TransformedError,
+  AdditionalOptions,
+} from './go';
+
 export type ListResponse<T> = {
   count: number;
   results: T[];
@@ -13,18 +18,18 @@ export type ListResponse<T> = {
 };
 
 // eslint-disable-next-line max-len
-const useGoLazyRequest: <R, C = null>(requestOptions: LazyRequestOptions<R, Error, C, unknown>) => {
+const useGoLazyRequest: <R, C = null>(requestOptions: LazyRequestOptions<R, TransformedError, C, AdditionalOptions>) => {
     response: R | undefined;
     pending: boolean;
-    error: Error | undefined;
+    error: TransformedError | undefined;
     trigger: (ctx: C) => void;
     context: C | undefined,
 } = useLazyRequest;
 
-const useGoRequest: <R>(requestOptions: RequestOptions<R, Error, unknown>) => {
+const useGoRequest: <R>(requestOptions: RequestOptions<R, TransformedError, AdditionalOptions>) => {
     response: R | undefined;
     pending: boolean;
-    error: Error | undefined;
+    error: TransformedError | undefined;
     retrigger: () => void;
 } = useRequest;
 

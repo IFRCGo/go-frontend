@@ -5,76 +5,89 @@ import {
 } from '@togglecorp/fujs';
 import { resolve as resolveUrl } from 'url';
 import { get as getFromLocalStorage } from 'local-storage';
-import { api } from '#config';
+import { ContextInterface } from '@togglecorp/toggle-request';
 
+import { api } from '#config';
 import store from '#utils/store';
 import { isObject } from '#utils/common';
-
-import { ContextInterface } from './context';
 
 const CONTENT_TYPE_JSON = 'application/json';
 const CONTENT_TYPE_CSV = 'text/csv';
 
-export type ErrorFromServer = {
-  errorCode?: number;
-  errors?: {
-    // NOTE: it is most probably only string[]
-    [key: string]: string[] | string;
-  };
-  detail?: string;
-} | {
-  [key: string]: string[];
+export type ResponseError = {
+  status: number;
+  originalReponse: Response,
+  responseText: string;
 }
 
-export interface Error {
-  reason: 'network' | 'parse' | 'server';
+export interface TransformedError {
   value: {
     formErrors: {
       [key: string]: string | undefined;
     },
     messageForNotification: string,
-    errors?: ErrorFromServer['errors'];
   };
-  errorCode: number | undefined;
+  status: number | undefined;
   debugMessage: string;
 }
 
-
-function alterResponse(response: ErrorFromServer | undefined): Error['value']['formErrors'] {
-  let errors = {};
-  if (!response) {
-    return errors;
-  }
-
-  if (!isObject(response) || !response.errors) {
-    return errors;
-  }
-
-  return mapToMap(
-    (response?.errors) as Record<string, string>,
-    item => item,
-    item => (Array.isArray(item) ? item.join(' ') : item),
-  );
-}
-
-export interface OptionBase {
+export interface AdditionalOptions {
   formData?: boolean;
   isCsvRequest?: boolean;
   enforceEnglish?: boolean;
 }
 
+
+function transformError(response: ResponseError): TransformedError['value']['formErrors'] {
+  const {
+    originalReponse,
+    responseText,
+  } = response;
+
+  let errors = {};
+  if (!response) {
+    return errors;
+  }
+
+  if (originalReponse.headers.get('content-type') === CONTENT_TYPE_JSON) {
+    try {
+      const json = JSON.parse(responseText);
+
+      if (Array.isArray(json)) {
+        return { $internal: json.join(', ') };
+      }
+
+      if (isObject(json)) {
+        const errorMap = mapToMap(
+          (json) as Record<string, string>,
+          item => item,
+          item => (Array.isArray(item) ? item.join(' ') : item),
+        );
+
+        return errorMap;
+      }
+
+      return { $internal: 'Response content type mismatch' };
+    } catch(e) {
+      return { $internal: responseText };
+    }
+  }
+
+  return { $internal: responseText };
+}
+
 type GoContextInterface = ContextInterface<
-  object,
-  ErrorFromServer,
-  Error,
-  OptionBase
+  unknown,
+  ResponseError,
+  TransformedError,
+  AdditionalOptions
 >;
 
 export const processGoUrls: GoContextInterface['transformUrl'] = (url) => (
   isFalsyString(url) ? '' : /http/.test(url) ? url : resolveUrl(api, url)
 );
-type Literal = string | number | boolean | File;
 
+type Literal = string | number | boolean | File;
 type FormDataCompatibleObj = Record<string, Literal | Literal[] | null | undefined>;
 
 function getFormData(jsonData: FormDataCompatibleObj) {
@@ -158,33 +171,38 @@ export const processGoOptions: GoContextInterface['transformOptions'] = (
 export const processGoResponse: GoContextInterface['transformResponse'] = async (
   res,
 ) => {
+  const resClone = res.clone();
   const resText = await res.text();
 
   return new Promise((resolve) => {
-    if (resText.length < 1) {
-      resolve(undefined);
-    }
-    if (res.headers.get('content-type') === CONTENT_TYPE_JSON) {
-      const json = JSON.parse(resText);
-      resolve(json);
+    if (String(res.status)[0] === '2') {
+      if (res.headers.get('content-type') === CONTENT_TYPE_JSON) {
+        const json = JSON.parse(resText);
+        resolve(json);
+      }
+
+      return resolve(resText);
     }
 
-    return resolve(resText);
+    const serverError: ResponseError = {
+      status: res.status,
+      originalReponse: resClone,
+      responseText: resText,
+    };
+
+    resolve(serverError);
   });
 };
 
-// @ts-ignore
-export const processGoError: GoContextInterface['transformError'] = async (
-  reason,
+export const processGoError: GoContextInterface['transformError'] = (
+  responseError,
   url,
   requestOptions,
   extraOptions,
-  responseBody,
-  response,
 ) => {
-  const responseText = await response?.text();
+  // const responseText = await response?.text();
 
-  if (reason === 'network') {
+  if (responseError === 'network') {
     return {
       reason: 'network',
       value: {
@@ -193,17 +211,17 @@ export const processGoError: GoContextInterface['transformError'] = async (
           $internal: 'Network error',
         },
       },
-      errorCode: undefined,
+      status: undefined,
       debugMessage: JSON.stringify({
         url,
-        status: response?.status,
+        status: undefined,
         requestOptions,
         error: 'Network error',
       }),
     };
   }
 
-  if (reason === 'parse') {
+  if (responseError === 'parse') {
     return {
       reason: 'parse',
       value: {
@@ -212,27 +230,26 @@ export const processGoError: GoContextInterface['transformError'] = async (
           $internal: 'Response parse error',
         },
       },
-      errorCode: undefined,
+      status: undefined,
       debugMessage: JSON.stringify({
         url,
-        status: response?.status,
+        status: undefined,
         requestOptions,
         error: 'Response parse error',
-        responseText: responseText,
       }),
     };
   }
 
   const { method } = requestOptions;
-  const formErrors = alterResponse(responseBody);
+  const formErrors = transformError(responseError);
 
   let finalMessage = method === 'GET'
     ? 'Failed to load data'
     : 'Some error occurred while performing this action.';
 
-  let messageForNotification = formErrors?.$internal ?? responseBody?.detail ?? finalMessage;
+  let messageForNotification = formErrors?.$internal ?? finalMessage;
 
-  if (method === 'POST' && response?.status === 401) {
+  if (method === 'POST' && responseError?.status === 401) {
     messageForNotification = 'You do not have enough permission to perform this action';
   }
 
@@ -241,15 +258,15 @@ export const processGoError: GoContextInterface['transformError'] = async (
     value: {
       formErrors,
       messageForNotification,
-      errors: responseBody?.errors ?? responseBody,
+      errorText: responseError.responseText,
     },
-    errorCode: response?.status,
+    status: responseError?.status,
     debugMessage: JSON.stringify({
       url,
-      status: response?.status,
+      status: responseError?.status,
       requestOptions,
       error: 'Request rejected by the server',
-      responseText: responseText,
+      responseText: responseError.responseText,
     }),
  };
 };
