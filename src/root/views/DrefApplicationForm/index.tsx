@@ -27,10 +27,7 @@ import {
   useLazyRequest,
   useRequest,
 } from '#utils/restRequest';
-import {
-  isObject,
-  ymdToDateString,
-} from '#utils/common';
+import { ymdToDateString } from '#utils/common';
 import LanguageContext from '#root/languageContext';
 import useAlert from '#hooks/useAlert';
 
@@ -203,28 +200,14 @@ function DrefApplication(props: Props) {
     onFailure: ({
       value: {
         messageForNotification,
-        errors,
         formErrors,
       },
       debugMessage,
     }) => {
-      if (errors && isObject(errors)) {
-        const objErrors = errors as Record<string, string | string[]>;
-        const errorKeys = Object.keys(objErrors) as (keyof (typeof objErrors))[];
+      onErrorSet({
+        fields: formErrors,
+      });
 
-        const transformedError: Record<string, string> = {};
-        errorKeys.forEach((ek) => {
-          if (Array.isArray(objErrors[ek])) {
-            transformedError[ek] = (objErrors[ek] as string[]).join(', ');
-          } else {
-            transformedError[ek] = objErrors[ek] as string;
-          }
-        });
-
-        onErrorSet({
-          fields: transformedError,
-        });
-      }
       alert.show(
         <p>
           {strings.drefFormSaveRequestFailureMessage}
@@ -297,10 +280,7 @@ function DrefApplication(props: Props) {
       });
     },
     onFailure: ({
-      value: {
-        messageForNotification,
-        errors,
-      },
+      value: { messageForNotification },
       debugMessage,
     }) => {
       alert.show(
