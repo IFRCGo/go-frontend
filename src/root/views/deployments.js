@@ -307,76 +307,87 @@ class Deployments extends SFPComponent {
               </div>
             </div>
           </header>
-          <div className='tab__wrap tab__wrap--3W'>
-            <div className="tabs">
+          <div className='tab__wrap margin-2-t'>
+            <div className="react-tabs">
+              <ul className="react-tabs__tab-list">
               {/* REFACTOR INTO A TABS COMPONENT AND STYLE */}
-              <Link to="/deployments/overview">Overview</Link>
-              <Link to="/deployments/operational-toolbox">Operational Toolbox</Link>
-              <Link to="/deployments/catalogue">Catalogue of Services</Link>
-              <Link to="/deployments/user/zoltan">Show User Id</Link>
+                <li className="react-tabs__tab">
+                  <Link to="/deployments/overview">Overview</Link>
+                </li>
+                <li className="react-tabs__tab">
+                  <Link to="/deployments/operational-toolbox">Operational Toolbox</Link>
+                </li>
+                <li className="react-tabs__tab">
+                  <Link to="/deployments/catalogue">Catalogue of Services</Link>
+                </li>
+                <li className="react-tabs__tab">
+                  <Link to="/deployments/user/zoltan">Show User Id</Link>
+                </li>
+              </ul>
             </div>
-            <Switch>
-              <Route exact path="/deployments/overview">
-                <div>
-                  <div className='container-lg'>
-                    {this.props.eru.fetched && this.props.activePersonnel.fetched ?
-                      <DeploymentsMap
-                        data={deployData}
-                        countriesGeojson={this.props.countriesGeojson}
-                      /> : <BlockLoading />
-                    }
-                  </div>
-                  <div className='inpage__body container-lg'>
-                    <div className='inner'>
-                      {this.renderCharts()}
-                    </div>
-                  </div>
-                  <div className='inpage__body'>
-                    <div className='inner margin-4-t'>
-                      <div>
-                        <AlertsTable
-                          title={strings.homeSurgeAlerts}
-                          limit={5}
-                          isActive={true}
-                          viewAll={'/alerts/all'}
-                          showRecent={true}
-                        />
-                      </div>
-                      <div className='table-deployed-personnel-block'>
-                        <PersonnelByEventTable data={this.props.personnelByEvent} />
-                      </div>
-                      <div className='inner'>
-                      <EruTable
-                        limit={5}
-                        viewAll={'/deployments/erus/all'}
-                      />
-                      </div>
-                      <div className='readiness__container container-lg'>
-                        <Readiness eruOwners={this.props.eruOwners} />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </Route>
-              <Route exact path="/deployments/operational-toolbox">
-                <div className='container-lg margin-4-t'>
-                  <OperationalTimeline />
-                </div>
-              </Route>
-              <Route path="/deployments/catalogue">
-                <div className='container-lg'>
-                  <CatalogueOfSurgeServices history={this.props.history} />
-                </div>
-              </Route>
-              <Route path="/deployments/user/:userId"
-                children={({ match, ...rest }) => (
+            <div className="inpage__body">
+              <Switch>
+                <Route exact path="/deployments/overview">
                   <div>
-                    {match.params.userId}
+                    <div className='container-lg'>
+                      {this.props.eru.fetched && this.props.activePersonnel.fetched ?
+                        <DeploymentsMap
+                          data={deployData}
+                          countriesGeojson={this.props.countriesGeojson}
+                        /> : <BlockLoading />
+                      }
+                    </div>
+                    <div className='inpage__body container-lg'>
+                      <div className='inner'>
+                        {this.renderCharts()}
+                      </div>
+                    </div>
+                    <div className='inpage__body'>
+                      <div className='inner margin-4-t'>
+                        <div>
+                          <AlertsTable
+                            title={strings.homeSurgeAlerts}
+                            limit={5}
+                            isActive={true}
+                            viewAll={'/alerts/all'}
+                            showRecent={true}
+                          />
+                        </div>
+                        <div className='table-deployed-personnel-block'>
+                          <PersonnelByEventTable data={this.props.personnelByEvent} />
+                        </div>
+                        <div className='inner'>
+                        <EruTable
+                          limit={5}
+                          viewAll={'/deployments/erus/all'}
+                        />
+                        </div>
+                        <div className='readiness__container container-lg'>
+                          <Readiness eruOwners={this.props.eruOwners} />
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                )}
-              />
-            </Switch>
-
+                </Route>
+                <Route exact path="/deployments/operational-toolbox">
+                  <div className='container-lg margin-4-t'>
+                    <OperationalTimeline />
+                  </div>
+                </Route>
+                <Route path="/deployments/catalogue">
+                  <div className='container-lg'>
+                    <CatalogueOfSurgeServices history={this.props.history} />
+                  </div>
+                </Route>
+                <Route path="/deployments/user/:userId"
+                  children={({ match, ...rest }) => (
+                    <div>
+                      {match.params.userId}
+                    </div>
+                  )}
+                />
+              </Switch>
+            </div>
           </div>
         </section>
       </section>
