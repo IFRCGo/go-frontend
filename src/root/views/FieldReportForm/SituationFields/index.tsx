@@ -3,6 +3,7 @@ import {
   PartialForm,
   Error,
   EntriesAsList,
+  getErrorObject,
 } from '@togglecorp/toggle-form';
 
 import Description from '#components/Description';
@@ -37,7 +38,7 @@ interface Props {
 
 function SituationFields(props: Props) {
   const {
-    error,
+    error: formError,
     onValueChange,
     value,
     sourceOptions,
@@ -45,6 +46,10 @@ function SituationFields(props: Props) {
   } = props;
 
   const { strings } = React.useContext(LanguageContext);
+  const error = React.useMemo(
+    () => getErrorObject(formError),
+    [formError]
+  );
 
   // FIXME: use translations
   const sectionHeading = "Numeric Details (People)";
@@ -70,7 +75,7 @@ function SituationFields(props: Props) {
               name="epi_cases"
               value={value.epi_cases}
               onChange={onValueChange}
-              error={error?.fields?.epi_cases}
+              error={error?.epi_cases}
             />
           </InputSection>
           <InputSection
@@ -82,7 +87,7 @@ function SituationFields(props: Props) {
               name="epi_num_dead"
               value={value.epi_num_dead}
               onChange={onValueChange}
-              error={error?.fields?.epi_num_dead}
+              error={error?.epi_num_dead}
             />
           </InputSection>
         </div>
@@ -96,7 +101,7 @@ function SituationFields(props: Props) {
               name="epi_cases_since_last_fr"
               value={value.epi_cases_since_last_fr}
               onChange={onValueChange}
-              error={error?.fields?.epi_cases_since_last_fr}
+              error={error?.epi_cases_since_last_fr}
             />
           </InputSection>
           <InputSection
@@ -108,7 +113,7 @@ function SituationFields(props: Props) {
               name="epi_deaths_since_last_fr"
               value={value.epi_deaths_since_last_fr}
               onChange={onValueChange}
-              error={error?.fields?.epi_deaths_since_last_fr}
+              error={error?.epi_deaths_since_last_fr}
             />
           </InputSection>
         </div>
@@ -120,7 +125,7 @@ function SituationFields(props: Props) {
               name="epi_figures_source"
               value={value.epi_figures_source}
               onChange={onValueChange}
-              error={error?.fields?.epi_figures_source}
+              error={error?.epi_figures_source}
               options={epiSourceOptions}
             />
           </InputSection>
@@ -132,7 +137,7 @@ function SituationFields(props: Props) {
               name="epi_notes_since_last_fr"
               value={value.epi_notes_since_last_fr}
               onChange={onValueChange}
-              error={error?.fields?.epi_notes_since_last_fr}
+              error={error?.epi_notes_since_last_fr}
             />
           </InputSection>
           <InputSection
@@ -143,7 +148,7 @@ function SituationFields(props: Props) {
               name="sit_fields_date"
               value={value.sit_fields_date}
               onChange={onValueChange}
-              error={error?.fields?.sit_fields_date}
+              error={error?.sit_fields_date}
             />
           </InputSection>
           <InputSection
@@ -154,7 +159,7 @@ function SituationFields(props: Props) {
               name="other_sources"
               value={value.other_sources}
               onChange={onValueChange}
-              error={error?.fields?.other_sources}
+              error={error?.other_sources}
               placeholder={strings.fieldReportFormSourceDetailsEPIPlaceholder}
             />
           </InputSection>
@@ -166,7 +171,7 @@ function SituationFields(props: Props) {
               name="description"
               value={value.description}
               onChange={onValueChange}
-              error={error?.fields?.description}
+              error={error?.description}
               placeholder={strings.fieldsStep2DescriptionCOVIDPlaceholder}
             />
           </InputSection>
@@ -190,7 +195,7 @@ function SituationFields(props: Props) {
             name="epi_cases"
             value={value.epi_cases}
             onChange={onValueChange}
-            error={error?.fields?.epi_cases}
+            error={error?.epi_cases}
           />
         </InputSection>
         <InputSection
@@ -202,7 +207,7 @@ function SituationFields(props: Props) {
             name="epi_suspected_cases"
             value={value.epi_suspected_cases}
             onChange={onValueChange}
-            error={error?.fields?.epi_suspected_cases}
+            error={error?.epi_suspected_cases}
           />
         </InputSection>
         <InputSection
@@ -214,7 +219,7 @@ function SituationFields(props: Props) {
             name="epi_probable_cases"
             value={value.epi_probable_cases}
             onChange={onValueChange}
-            error={error?.fields?.epi_probable_cases}
+            error={error?.epi_probable_cases}
           />
         </InputSection>
         <InputSection
@@ -226,7 +231,7 @@ function SituationFields(props: Props) {
             name="epi_confirmed_cases"
             value={value.epi_confirmed_cases}
             onChange={onValueChange}
-            error={error?.fields?.epi_confirmed_cases}
+            error={error?.epi_confirmed_cases}
           />
         </InputSection>
         <InputSection
@@ -238,7 +243,7 @@ function SituationFields(props: Props) {
             name="epi_num_dead"
             value={value.epi_num_dead}
             onChange={onValueChange}
-            error={error?.fields?.epi_num_dead}
+            error={error?.epi_num_dead}
           />
         </InputSection>
         <InputSection
@@ -248,7 +253,7 @@ function SituationFields(props: Props) {
             name="epi_figures_source"
             value={value.epi_figures_source}
             onChange={onValueChange}
-            error={error?.fields?.epi_figures_source}
+            error={error?.epi_figures_source}
             options={epiSourceOptions}
           />
         </InputSection>
@@ -260,7 +265,7 @@ function SituationFields(props: Props) {
             name="epi_notes_since_last_fr"
             value={value.epi_notes_since_last_fr}
             onChange={onValueChange}
-            error={error?.fields?.epi_notes_since_last_fr}
+            error={error?.epi_notes_since_last_fr}
           />
         </InputSection>
         <InputSection
@@ -271,7 +276,7 @@ function SituationFields(props: Props) {
             name="sit_fields_date"
             value={value.sit_fields_date}
             onChange={onValueChange}
-            error={error?.fields?.sit_fields_date}
+            error={error?.sit_fields_date}
           />
         </InputSection>
         <InputSection
@@ -282,7 +287,7 @@ function SituationFields(props: Props) {
             name="other_sources"
             value={value.other_sources}
             onChange={onValueChange}
-            error={error?.fields?.other_sources}
+            error={error?.other_sources}
             placeholder={strings.fieldReportFormSourceDetailsEPIPlaceholder}
           />
         </InputSection>
@@ -294,7 +299,7 @@ function SituationFields(props: Props) {
             name="description"
             value={value.description}
             onChange={onValueChange}
-            error={error?.fields?.description}
+            error={error?.description}
             placeholder={strings.fieldsStep2DescriptionEPIPlaceholder}
           />
         </InputSection>
@@ -316,12 +321,12 @@ function SituationFields(props: Props) {
           name="num_injured"
           value={value.num_injured}
           onChange={onValueChange}
-          error={error?.fields?.num_injured}
+          error={error?.num_injured}
         />
         <RadioInput
           label={strings.cmpSourceLabel}
           radioListContainerClassName={styles.sourceRadioListContainer}
-          error={error?.fields?.num_injured_source}
+          error={error?.num_injured_source}
           name="num_injured_source"
           onChange={onValueChange}
           options={sourceOptions}
@@ -340,12 +345,12 @@ function SituationFields(props: Props) {
           name="num_dead"
           value={value.num_dead}
           onChange={onValueChange}
-          error={error?.fields?.num_dead}
+          error={error?.num_dead}
         />
         <RadioInput
           label={strings.cmpSourceLabel}
           radioListContainerClassName={styles.sourceRadioListContainer}
-          error={error?.fields?.num_dead_source}
+          error={error?.num_dead_source}
           name="num_dead_source"
           onChange={onValueChange}
           options={sourceOptions}
@@ -364,12 +369,12 @@ function SituationFields(props: Props) {
           name="num_missing"
           value={value.num_missing}
           onChange={onValueChange}
-          error={error?.fields?.num_missing}
+          error={error?.num_missing}
         />
         <RadioInput
           label={strings.cmpSourceLabel}
           radioListContainerClassName={styles.sourceRadioListContainer}
-          error={error?.fields?.num_missing_source}
+          error={error?.num_missing_source}
           name="num_missing_source"
           onChange={onValueChange}
           options={sourceOptions}
@@ -388,12 +393,12 @@ function SituationFields(props: Props) {
           name="num_affected"
           value={value.num_affected}
           onChange={onValueChange}
-          error={error?.fields?.num_affected}
+          error={error?.num_affected}
         />
         <RadioInput
           label={strings.cmpSourceLabel}
           radioListContainerClassName={styles.sourceRadioListContainer}
-          error={error?.fields?.num_affected_source}
+          error={error?.num_affected_source}
           name="num_affected_source"
           onChange={onValueChange}
           options={sourceOptions}
@@ -412,12 +417,12 @@ function SituationFields(props: Props) {
           name="num_displaced"
           value={value.num_displaced}
           onChange={onValueChange}
-          error={error?.fields?.num_displaced}
+          error={error?.num_displaced}
         />
         <RadioInput
           label={strings.cmpSourceLabel}
           radioListContainerClassName={styles.sourceRadioListContainer}
-          error={error?.fields?.num_displaced_source}
+          error={error?.num_displaced_source}
           name="num_displaced_source"
           onChange={onValueChange}
           options={sourceOptions}
@@ -435,7 +440,7 @@ function SituationFields(props: Props) {
           name="other_sources"
           value={value.other_sources}
           onChange={onValueChange}
-          error={error?.fields?.other_sources}
+          error={error?.other_sources}
           placeholder={strings.fieldReportFormSourceDetailsPlaceholder}
         />
       </InputSection>
@@ -447,7 +452,7 @@ function SituationFields(props: Props) {
           name="description"
           value={value.description}
           onChange={onValueChange}
-          error={error?.fields?.description}
+          error={error?.description}
           placeholder={strings.fieldsStep2DescriptionEVTPlaceholder}
         />
       </InputSection>

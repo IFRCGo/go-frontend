@@ -4,6 +4,7 @@ import {
   PartialForm,
   Error,
   EntriesAsList,
+  getErrorObject,
 } from '@togglecorp/toggle-form';
 
 import Container from '#components/Container';
@@ -13,6 +14,7 @@ import NumberInput from '#components/NumberInput';
 import TextArea from '#components/TextArea';
 import Checklist from '#components/Checklist';
 import LanguageContext from '#root/languageContext';
+import { listErrorToString } from '#utils/form';
 
 import {
   FormType,
@@ -49,7 +51,7 @@ function CovidActionFields(props: Props) {
 
   const {
     value,
-    error,
+    error: formError,
     onValueChange,
     actionOptions,
     externalPartnerOptions,
@@ -57,6 +59,11 @@ function CovidActionFields(props: Props) {
     fetchingExternalPartners,
     fetchingSupportedActivities,
   } = props;
+
+  const error = React.useMemo(
+    () => getErrorObject(formError),
+    [formError]
+  );
 
   const categoryGroupedOptions = React.useMemo(() => {
     return listToGroupList(actionOptions, d => d.category, d => d) as {
@@ -78,7 +85,7 @@ function CovidActionFields(props: Props) {
             name="gov_num_assisted"
             value={value.gov_num_assisted}
             onChange={onValueChange}
-            error={error?.fields?.gov_num_assisted}
+            error={error?.gov_num_assisted}
           />
         </InputSection>
         <InputSection
@@ -89,7 +96,7 @@ function CovidActionFields(props: Props) {
             name="num_assisted"
             value={value.num_assisted}
             onChange={onValueChange}
-            error={error?.fields?.num_assisted}
+            error={error?.num_assisted}
           />
         </InputSection>
         <InputSection
@@ -100,7 +107,7 @@ function CovidActionFields(props: Props) {
             name="num_localstaff"
             value={value.num_localstaff}
             onChange={onValueChange}
-            error={error?.fields?.num_localstaff}
+            error={error?.num_localstaff}
           />
         </InputSection>
         <InputSection
@@ -111,7 +118,7 @@ function CovidActionFields(props: Props) {
             name="num_volunteers"
             value={value.num_volunteers}
             onChange={onValueChange}
-            error={error?.fields?.num_volunteers}
+            error={error?.num_volunteers}
           />
         </InputSection>
       </div>
@@ -138,14 +145,14 @@ function CovidActionFields(props: Props) {
                 keySelector={d => d.value}
                 tooltipSelector={d => d.description}
                 value={value.actions_ntls}
-                error={error?.fields?.actions_ntls?.$internal}
+                error={listErrorToString(error?.actions_ntls)}
               />
               <TextArea
                 label={strings.fieldsStep2NotesLabel}
                 name={categoryNameToFieldNameMap[category]}
                 onChange={onValueChange}
                 value={value[categoryNameToFieldNameMap[category]]}
-                error={error?.fields ? error.fields[categoryNameToFieldNameMap[category]] : undefined}
+                error={error?.[categoryNameToFieldNameMap[category]]}
                 placeholder={strings.fieldsStep3ActionsNotesPlaceholder}
               />
             </div>
@@ -155,7 +162,7 @@ function CovidActionFields(props: Props) {
             name="actions_ntls_desc"
             onChange={onValueChange}
             value={value.actions_ntls_desc}
-            error={error?.fields?.actions_ntls_desc}
+            error={error?.actions_ntls_desc}
             placeholder={strings.fieldsStep3CheckboxSectionsNSActionsEPIEWPlaceholder}
           />
         </InputSection>
@@ -168,7 +175,7 @@ function CovidActionFields(props: Props) {
             name="actions_fdrn_desc"
             onChange={onValueChange}
             value={value.actions_fdrn_desc}
-            error={error?.fields?.actions_fdrn_desc}
+            error={error?.actions_fdrn_desc}
             placeholder={strings.fieldsStep3CheckboxSectionsFederationActionsEVTEPIEWPlaceholder}
           />
         </InputSection>
@@ -181,7 +188,7 @@ function CovidActionFields(props: Props) {
             name="actions_pns_desc"
             onChange={onValueChange}
             value={value.actions_pns_desc}
-            error={error?.fields?.actions_pns_desc}
+            error={error?.actions_pns_desc}
             placeholder={strings.fieldsStep3CheckboxSectionsPNSActionsEVTEPIEWPlaceholder}
           />
         </InputSection>
@@ -193,7 +200,7 @@ function CovidActionFields(props: Props) {
             name="actions_others"
             value={value.actions_others}
             onChange={onValueChange}
-            error={error?.fields?.actions_others}
+            error={error?.actions_others}
             placeholder={strings.fieldReportFormOthersActionsPlaceholder}
           />
         </InputSection>
@@ -203,7 +210,7 @@ function CovidActionFields(props: Props) {
           <SelectInput<"external_partners", number>
             name="external_partners"
             value={value.external_partners}
-            error={error?.fields?.external_partners}
+            error={error?.external_partners}
             pending={fetchingExternalPartners}
             options={externalPartnerOptions}
             onChange={onValueChange}
@@ -212,7 +219,7 @@ function CovidActionFields(props: Props) {
           <SelectInput<"supported_activities", number>
             name="supported_activities"
             value={value.supported_activities}
-            error={error?.fields?.supported_activities}
+            error={error?.supported_activities}
             options={supportedActivityOptions}
             onChange={onValueChange}
             pending={fetchingSupportedActivities}

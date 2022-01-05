@@ -2286,11 +2286,12 @@
     immer "^7.0.5"
     resize-observer-polyfill "^1.5.1"
 
-"@togglecorp/toggle-form@^0.2.0-beta.5":
-  version "0.2.0-beta.7"
-  resolved "https://registry.yarnpkg.com/@togglecorp/toggle-form/-/toggle-form-0.2.0-beta.7.tgz#17ea6cbc518983efe5f234808445fcba20e844b2"
-  integrity sha512-FW2ZlB2UJhi/lhxRynepaGgoYgFvkfxsJaJg7rR8MnO5CNBQirhHkfNsqccyOCLQmQq/uQzFGZjELn3qgnSBLA==
+"@togglecorp/toggle-form@^1.2.1":
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/@togglecorp/toggle-form/-/toggle-form-1.2.1.tgz#43145c3e61bf910916edb73fd735eb2dd5cdbef6"
+  integrity sha512-YzjbiC2+E6aZOb2T57bkhcTG7Iq03dn53Yw/Ve2k/rBY6BNLLrFJaePbfAXe5on7rO+57/RVkqpO46FTFAjfRw==
   dependencies:
+    "@babel/runtime-corejs3" "^7.11.2"
     "@storybook/client-api" "^6.0.21"
     "@togglecorp/fujs" "^1.9.2-beta.0"
 
