@@ -50,7 +50,7 @@ function usePendingCounts() {
   return {
     isPending,
     setPending: set,
-    resolvePending:resolve 
+    resolvePending: resolve
   };
 }
 
@@ -139,7 +139,7 @@ function NeedIdentified(props: NeedIdentifiedProps) {
     }
 
     return () => {
-        resolvePending(pendingKey);
+      resolvePending(pendingKey);
     };
   }, [setPending, resolvePending, data?.image_url, data?.id]);
 
@@ -193,7 +193,7 @@ function PlannedInterventionOutput(props: PlannedInterventionProps) {
     }
 
     return () => {
-        resolvePending(pendingKey);
+      resolvePending(pendingKey);
     };
   }, [setPending, resolvePending, data?.image_url, data?.id]);
 
@@ -299,10 +299,10 @@ function TextOutput(props: {
         styleMap[columns] ?? pdfStyles.oneByThree,
       ]}
     >
-      <Text>
+      <Text style={pdfStyles.label}>
         {label}
       </Text>
-      <Text style={pdfStyles.value}>
+      <Text>
         {value}
       </Text>
     </View>
@@ -479,7 +479,7 @@ function DrefPdfExport(props: Props) {
                     src={ifrcLogo}
                   />
                 )}
-                <View style={[ { alignSelf: 'flex-end' } ]} >
+                <View style={[{ alignSelf: 'flex-end' }]} >
                   <Text style={pdfStyles.title}>
                     {strings.drefFormPdfTitle}
                   </Text>
@@ -591,14 +591,14 @@ function DrefPdfExport(props: Props) {
                 </Text>
               </View>
               {dref?.anticipatory_actions != null &&
-              <View style={pdfStyles.verticalSection}>
-                <Text style={pdfStyles.subHeading}>
-                  {strings.drefFormPdfTargetCommunities}
-                </Text>
-                <Text>
-                  {dref?.anticipatory_actions}
-                </Text>
-              </View>
+                <View style={pdfStyles.verticalSection}>
+                  <Text style={pdfStyles.subHeading}>
+                    {strings.drefFormPdfTargetCommunities}
+                  </Text>
+                  <Text>
+                    {dref?.anticipatory_actions}
+                  </Text>
+                </View>
               }
               <View style={pdfStyles.verticalSection}>
                 <Text style={pdfStyles.subHeading}>
@@ -620,7 +620,7 @@ function DrefPdfExport(props: Props) {
                   </Text>
                   <View>
                     <View style={pdfStyles.row}>
-                      <View style={pdfStyles.cell}>
+                      <View style={pdfStyles.cellTitle}>
                         <Text>{strings.drefFormPdfAffectSameArea}</Text>
                       </View>
                       <View style={pdfStyles.cell}>
@@ -628,7 +628,7 @@ function DrefPdfExport(props: Props) {
                       </View>
                     </View>
                     <View style={pdfStyles.row}>
-                      <View style={pdfStyles.cell}>
+                      <View style={pdfStyles.cellTitle}>
                         <Text>{strings.drefFormPdfAffectedthePopulationTitle}</Text>
                       </View>
                       <View style={pdfStyles.cell}>
@@ -636,7 +636,7 @@ function DrefPdfExport(props: Props) {
                       </View>
                     </View>
                     <View style={pdfStyles.row}>
-                      <View style={pdfStyles.cell}>
+                      <View style={pdfStyles.cellTitle}>
                         <Text>{strings.drefFormPdfNsRespond}</Text>
                       </View>
                       <View style={pdfStyles.cell}>
@@ -644,7 +644,7 @@ function DrefPdfExport(props: Props) {
                       </View>
                     </View>
                     <View style={pdfStyles.row}>
-                      <View style={pdfStyles.cell}>
+                      <View style={pdfStyles.cellTitle}>
                         <Text>{strings.drefFormPdfNsRequest}</Text>
                       </View>
                       <View style={pdfStyles.cell}>
@@ -652,7 +652,7 @@ function DrefPdfExport(props: Props) {
                       </View>
                     </View>
                     <View style={pdfStyles.row}>
-                      <View style={pdfStyles.cell}>
+                      <View style={pdfStyles.cellTitle}>
                         <Text>{strings.drefFormPdfNsFundingDetail}</Text>
                       </View>
                       <View style={pdfStyles.cell}>
@@ -660,7 +660,7 @@ function DrefPdfExport(props: Props) {
                       </View>
                     </View>
                     <View style={pdfStyles.row}>
-                      <View style={pdfStyles.cell}>
+                      <View style={pdfStyles.cellTitle}>
                         <Text> {strings.drefFormPdfRecurrentText}</Text>
                       </View>
                       <View style={pdfStyles.cell}>
@@ -668,7 +668,7 @@ function DrefPdfExport(props: Props) {
                       </View>
                     </View>
                     <View style={pdfStyles.row}>
-                      <View style={pdfStyles.cell}>
+                      <View style={pdfStyles.cellTitle}>
                         <Text>{strings.drefFormPdfLessonsLearnedTitle}</Text>
                         <Text>{strings.drefFormPdfLessonsLearnedDescription}</Text>
                       </View>
@@ -884,14 +884,14 @@ function DrefPdfExport(props: Props) {
                       </View>
                     </View>
                     {dref?.anticipatory_actions != null &&
-                    <View style={pdfStyles.tpSubRow}>
-                      <View style={pdfStyles.tpSubCell}>
-                        <Text>{strings.drefFormPeoplePdfTargetedWithEarlyActions}</Text>
+                      <View style={pdfStyles.tpSubRow}>
+                        <View style={pdfStyles.tpSubCell}>
+                          <Text>{strings.drefFormPeoplePdfTargetedWithEarlyActions}</Text>
+                        </View>
+                        <View style={pdfStyles.tpSubCell}>
+                          <Text>{dref?.people_targeted_with_early_actions}</Text>
+                        </View>
                       </View>
-                      <View style={pdfStyles.tpSubCell}>
-                        <Text>{dref?.people_targeted_with_early_actions}</Text>
-                      </View>
-                    </View>
                     }
                   </View>
                 </View>

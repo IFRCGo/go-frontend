@@ -7,12 +7,12 @@ const VERTICAL_MARGIN = 10;
 const TABLE_CELL_PADDING = 10;
 const HEADING_VERTICAL_PADDING = 10;
 const SUBHEADING_VERTICAL_PADDING = 5;
-const SECTION_WIDTH = FULL_WIDTH - SECTION_PADDING * 2 - PAGE_PADDING* 2;
+const SECTION_WIDTH = FULL_WIDTH - SECTION_PADDING * 2 - PAGE_PADDING * 2;
 const SMALL_PADDING = 7;
 const TABLE_BORDER = '1px solid #ffffff';
 // const FONT_SIZE_SMALL = 6;
-const FONT_SIZE_MEDIUM = 8;
-const FONT_SIZE_LARGE = 10;
+const FONT_SIZE_MEDIUM = 10;
+const FONT_SIZE_LARGE = 12;
 const FONT_SIZE_EXTRA_LARGE = 14;
 const FONT_SIZE_SUPER_LARGE = 20;
 
@@ -87,7 +87,7 @@ const pdfStyles = StyleSheet.create({
     fontWeight: 'bold',
     paddingVertical: SUBHEADING_VERTICAL_PADDING,
   },
-  value: {
+  label: {
     fontFamily: 'Montserrat',
     fontSize: FONT_SIZE_MEDIUM,
     fontWeight: 'bold',
@@ -147,6 +147,15 @@ const pdfStyles = StyleSheet.create({
     minWidth: '49%',
     maxWidth: '49%',
   },
+  cellTitle: {
+    border: TABLE_BORDER,
+    display: 'flex',
+    justifyContent: 'space-between',
+    padding: '5',
+    minWidth: '49%',
+    maxWidth: '49%',
+    fontWeight: 'bold',
+  },
   header: {
     backgroundColor: "#eee"
   },
@@ -175,6 +184,7 @@ const pdfStyles = StyleSheet.create({
     padding: SMALL_PADDING,
     textAlign: 'center',
     color: '#011e41',
+    fontWeight: 'bold',
   },
   tpContentCell: {
     display: 'flex',
@@ -286,6 +296,7 @@ const pdfStyles = StyleSheet.create({
     padding: SMALL_PADDING,
     border: TABLE_BORDER,
     flexBasis: '30%',
+    fontWeight: 'bold',
   },
   niContentCell: {
     padding: SMALL_PADDING,
