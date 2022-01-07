@@ -31,15 +31,17 @@ class EmergencyMap extends React.Component {
     $expimg.src = $canvas.toDataURL('png');
     $expimg.style.display = 'block';
     document.getElementsByClassName('mapboxgl-map')[0].style.visibility = 'hidden';
-    html2canvas($container, {useCORS: true}).then((renderedCanvas) => {
-      startDownload(
-        renderedCanvas,
-        `${DateTime.local().toISODate()}-${disasterTypeName}-${country}.png`
-      );
-      $expimg.style.display = 'none';
-      document.getElementsByClassName('mapboxgl-map')[0].style.visibility = 'visible';
-      this.setState({'isExporting': false});
-    });
+    setTimeout(() => {
+      html2canvas($container, {useCORS: true}).then((renderedCanvas) => {
+        startDownload(
+          renderedCanvas,
+          `${DateTime.local().toISODate()}-${disasterTypeName}-${country}.png`
+        );
+        $expimg.style.display = 'none';
+        document.getElementsByClassName('mapboxgl-map')[0].style.visibility = 'visible';
+        this.setState({'isExporting': false});
+      });
+    }, 0);
   }
 
   setupData () {
