@@ -1,37 +1,37 @@
 import React from 'react';
 import { _cs } from '@togglecorp/fujs';
+import {
+  getErrorObject,
+  internal,
+  Error,
+} from '@togglecorp/toggle-form';
 
 import styles from './styles.module.scss';
 
-export interface Props {
+export interface Props<T> {
   className?: string;
-  error?: {
-    $internal?: string | string[];
-  };
+  error?: Error<T>;
   message?: React.ReactNode;
 }
 
-function NonFieldError(props: Props) {
+function NonFieldError<T>(props: Props<T>) {
   const {
     className,
     error,
     message,
   } = props;
 
-  if (!error) {
+  const errorObject = React.useMemo(() => getErrorObject(error), [error]);
+
+  if (!errorObject) {
     return null;
   }
 
-  if (!(error?.$internal) && !message) {
+  const stringError = errorObject?.[internal];
+  if (!stringError && !message) {
     return null;
   }
 
-  let stringError: string | undefined;
-  if (Array.isArray(error.$internal)) {
-    stringError = error.$internal.join(', ');
-  } else {
-    stringError = error.$internal;
-  }
 
   return (
     <div className={_cs(

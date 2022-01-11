@@ -111,11 +111,11 @@ function FieldReportForm(props: Props) {
   const {
     value,
     error,
-    onValueChange,
+    setFieldValue: onValueChange,
     validate,
-    onErrorSet,
-    onValueSet,
-  } = useForm(defaultFormValues, schema);
+    setError: onErrorSet,
+    setValue: onValueSet,
+  } = useForm(schema, defaultFormValues);
 
    React.useEffect(() => {
     if (fieldReportResponse) {

@@ -103,7 +103,7 @@
     "@togglecorp/faram": "^1.2.1",
     "@togglecorp/fujs": "^1.9.0",
     "@togglecorp/re-map": "^0.1.0",
-    "@togglecorp/toggle-form": "^0.2.0-beta.5",
+    "@togglecorp/toggle-form": "^1.2.1",
     "@togglecorp/toggle-request": "^0.0.2",
     "@turf/bbox": "^6.0.1",
     "@turf/centroid": "^6.0.2",
