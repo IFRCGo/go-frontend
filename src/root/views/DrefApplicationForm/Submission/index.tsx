@@ -3,6 +3,7 @@ import {
   PartialForm,
   Error,
   EntriesAsList,
+  getErrorObject,
 } from '@togglecorp/toggle-form';
 
 import Container from '#components/Container';
@@ -25,11 +26,12 @@ function Submission(props: Props) {
   const { strings } = React.useContext(LanguageContext);
 
   const {
-    error,
+    error: formError,
     onValueChange,
     value,
   } = props;
 
+  const error = getErrorObject(formError);
 
   return (
     <>
@@ -45,7 +47,7 @@ function Submission(props: Props) {
             name="appeal_code"
             value={value.appeal_code}
             onChange={onValueChange}
-            error={error?.fields?.appeal_code}
+            error={error?.appeal_code}
           />
         </InputSection>
         <InputSection
@@ -55,7 +57,7 @@ function Submission(props: Props) {
             name="glide_code"
             value={value.glide_code}
             onChange={onValueChange}
-            error={error?.fields?.glide_code}
+            error={error?.glide_code}
           />
         </InputSection>
         <InputSection
@@ -69,28 +71,28 @@ function Submission(props: Props) {
             name="ifrc_appeal_manager_name"
             value={value.ifrc_appeal_manager_name}
             onChange={onValueChange}
-            error={error?.fields?.ifrc_appeal_manager_name}
+            error={error?.ifrc_appeal_manager_name}
           />
           <TextInput
             label="Title"
             name="ifrc_appeal_manager_title"
             value={value.ifrc_appeal_manager_title}
             onChange={onValueChange}
-            error={error?.fields?.ifrc_appeal_manager_title}
+            error={error?.ifrc_appeal_manager_title}
           />
           <TextInput
             label="Email"
             name="ifrc_appeal_manager_email"
             value={value.ifrc_appeal_manager_email}
             onChange={onValueChange}
-            error={error?.fields?.ifrc_appeal_manager_email}
+            error={error?.ifrc_appeal_manager_email}
           />
           <TextInput
             label="Phone Number"
             name="ifrc_appeal_manager_phone_number"
             value={value.ifrc_appeal_manager_phone_number}
             onChange={onValueChange}
-            error={error?.fields?.ifrc_appeal_manager_phone_number}
+            error={error?.ifrc_appeal_manager_phone_number}
           />
         </InputSection>
         <InputSection
@@ -104,28 +106,28 @@ function Submission(props: Props) {
             name="ifrc_project_manager_name"
             value={value.ifrc_project_manager_name}
             onChange={onValueChange}
-            error={error?.fields?.ifrc_project_manager_name}
+            error={error?.ifrc_project_manager_name}
           />
           <TextInput
             label="Title"
             name="ifrc_project_manager_title"
             value={value.ifrc_project_manager_title}
             onChange={onValueChange}
-            error={error?.fields?.ifrc_project_manager_title}
+            error={error?.ifrc_project_manager_title}
           />
           <TextInput
             label="Email"
             name="ifrc_project_manager_email"
             value={value.ifrc_project_manager_email}
             onChange={onValueChange}
-            error={error?.fields?.ifrc_project_manager_email}
+            error={error?.ifrc_project_manager_email}
           />
           <TextInput
             label="Phone Number"
             name="ifrc_project_manager_phone_number"
             value={value.ifrc_project_manager_phone_number}
             onChange={onValueChange}
-            error={error?.fields?.ifrc_project_manager_phone_number}
+            error={error?.ifrc_project_manager_phone_number}
           />
         </InputSection>
         <InputSection
@@ -138,28 +140,28 @@ function Submission(props: Props) {
             name="national_society_contact_name"
             value={value.national_society_contact_name}
             onChange={onValueChange}
-            error={error?.fields?.national_society_contact_name}
+            error={error?.national_society_contact_name}
           />
           <TextInput
             label="Title"
             name="national_society_contact_title"
             value={value.national_society_contact_title}
             onChange={onValueChange}
-            error={error?.fields?.national_society_contact_title}
+            error={error?.national_society_contact_title}
           />
           <TextInput
             label="Email"
             name="national_society_contact_email"
             value={value.national_society_contact_email}
             onChange={onValueChange}
-            error={error?.fields?.national_society_contact_email}
+            error={error?.national_society_contact_email}
           />
           <TextInput
             label="Phone Number"
             name="national_society_contact_phone_number"
             value={value.national_society_contact_phone_number}
             onChange={onValueChange}
-            error={error?.fields?.national_society_contact_phone_number}
+            error={error?.national_society_contact_phone_number}
           />
         </InputSection>
         <InputSection
@@ -172,28 +174,28 @@ function Submission(props: Props) {
             name="ifrc_emergency_name"
             value={value.ifrc_emergency_name}
             onChange={onValueChange}
-            error={error?.fields?.ifrc_emergency_name}
+            error={error?.ifrc_emergency_name}
           />
           <TextInput
             label="Title"
             name="ifrc_emergency_title"
             value={value.ifrc_emergency_title}
             onChange={onValueChange}
-            error={error?.fields?.ifrc_emergency_title}
+            error={error?.ifrc_emergency_title}
           />
           <TextInput
             label="Email"
             name="ifrc_emergency_email"
             value={value.ifrc_emergency_email}
             onChange={onValueChange}
-            error={error?.fields?.ifrc_emergency_email}
+            error={error?.ifrc_emergency_email}
           />
           <TextInput
             label="Phone Number"
             name="ifrc_emergency_phone_number"
             value={value.ifrc_emergency_phone_number}
             onChange={onValueChange}
-            error={error?.fields?.ifrc_emergency_phone_number}
+            error={error?.ifrc_emergency_phone_number}
           />
         </InputSection>
         <InputSection
@@ -206,28 +208,28 @@ function Submission(props: Props) {
             name="media_contact_name"
             value={value.media_contact_name}
             onChange={onValueChange}
-            error={error?.fields?.media_contact_name}
+            error={error?.media_contact_name}
           />
           <TextInput
             label="Title"
             name="media_contact_title"
             value={value.media_contact_title}
             onChange={onValueChange}
-            error={error?.fields?.media_contact_title}
+            error={error?.media_contact_title}
           />
           <TextInput
             label="Email"
             name="media_contact_email"
             value={value.media_contact_email}
             onChange={onValueChange}
-            error={error?.fields?.media_contact_email}
+            error={error?.media_contact_email}
           />
           <TextInput
             label="Phone Number"
             name="media_contact_phone_number"
             value={value.media_contact_phone_number}
             onChange={onValueChange}
-            error={error?.fields?.media_contact_phone_number}
+            error={error?.media_contact_phone_number}
           />
         </InputSection>
       </Container>

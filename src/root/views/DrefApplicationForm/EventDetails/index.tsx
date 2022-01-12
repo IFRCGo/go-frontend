@@ -3,6 +3,7 @@ import {
   PartialForm,
   Error,
   EntriesAsList,
+  getErrorObject,
 } from '@togglecorp/toggle-form';
 
 import Container from '#components/Container';
@@ -37,7 +38,7 @@ function EventDetails(props: Props) {
   const { strings } = React.useContext(LanguageContext);
 
   const {
-    error,
+    error: formError,
     onValueChange,
     value,
     yesNoOptions,
@@ -45,6 +46,8 @@ function EventDetails(props: Props) {
     fileIdToUrlMap,
     setFileIdToUrlMap,
   } = props;
+
+  const error = getErrorObject(formError);
 
   return (
     <>
@@ -62,7 +65,7 @@ function EventDetails(props: Props) {
             radioLabelSelector={optionLabelSelector}
             value={value.affect_same_area}
             onChange={onValueChange}
-            error={error?.fields?.affect_same_area}
+            error={error?.affect_same_area}
           />
         </InputSection>
         <InputSection
@@ -75,7 +78,7 @@ function EventDetails(props: Props) {
             radioLabelSelector={optionLabelSelector}
             value={value.affect_same_population}
             onChange={onValueChange}
-            error={error?.fields?.affect_same_population}
+            error={error?.affect_same_population}
           />
         </InputSection>
         <InputSection
@@ -88,7 +91,7 @@ function EventDetails(props: Props) {
             radioLabelSelector={optionLabelSelector}
             value={value.ns_respond}
             onChange={onValueChange}
-            error={error?.fields?.ns_respond}
+            error={error?.ns_respond}
           />
         </InputSection>
         <InputSection
@@ -101,7 +104,7 @@ function EventDetails(props: Props) {
             radioLabelSelector={optionLabelSelector}
             value={value.ns_request_fund}
             onChange={onValueChange}
-            error={error?.fields?.ns_request_fund}
+            error={error?.ns_request_fund}
           />
         </InputSection>
         {value.ns_request_fund && (
@@ -113,7 +116,7 @@ function EventDetails(props: Props) {
               name="ns_request_text"
               value={value.ns_request_text}
               onChange={onValueChange}
-              error={error?.fields?.ns_request_text}
+              error={error?.ns_request_text}
             />
           </InputSection>
         )}
@@ -125,7 +128,7 @@ function EventDetails(props: Props) {
               name="dref_recurrent_text"
               value={value.dref_recurrent_text}
               onChange={onValueChange}
-              error={error?.fields?.dref_recurrent_text}
+              error={error?.dref_recurrent_text}
             />
           </InputSection>
         )}
@@ -139,7 +142,7 @@ function EventDetails(props: Props) {
             name="lessons_learned"
             onChange={onValueChange}
             value={value.lessons_learned}
-            error={error?.fields?.lessons_learned}
+            error={error?.lessons_learned}
           />
         </InputSection>
       </Container>
@@ -156,7 +159,7 @@ function EventDetails(props: Props) {
             name="event_description"
             onChange={onValueChange}
             value={value.event_description}
-            error={error?.fields?.event_description}
+            error={error?.event_description}
           />
         </InputSection>
         {isImminentOnset &&
@@ -169,7 +172,7 @@ function EventDetails(props: Props) {
               name="anticipatory_actions"
               onChange={onValueChange}
               value={value.anticipatory_actions}
-              error={error?.fields?.anticipatory_actions}
+              error={error?.anticipatory_actions}
             />
           </InputSection>
         }
@@ -183,7 +186,7 @@ function EventDetails(props: Props) {
             accept="image/*"
             multiple
             showStatus
-            error={error?.fields?.images}
+            error={error?.images}
             fileIdToUrlMap={fileIdToUrlMap}
             setFileIdToUrlMap={setFileIdToUrlMap}
           >
@@ -200,7 +203,7 @@ function EventDetails(props: Props) {
             name="event_scope"
             onChange={onValueChange}
             value={value.event_scope}
-            error={error?.fields?.event_scope}
+            error={error?.event_scope}
           />
         </InputSection>
       </Container>

@@ -9,6 +9,7 @@ import {
   Error,
   EntriesAsList,
   useFormArray,
+  getErrorObject,
 } from '@togglecorp/toggle-form';
 import {
   IoInformationCircle,
@@ -52,7 +53,7 @@ function Response(props: Props) {
   const { strings } = React.useContext(LanguageContext);
 
   const {
-    error,
+    error: formError,
     onValueChange,
     interventionOptions,
     fileIdToUrlMap,
@@ -61,10 +62,12 @@ function Response(props: Props) {
     value,
   } = props;
 
+  const error = getErrorObject(formError);
+
   const [intervention, setIntervention] = React.useState<number | undefined>();
   const {
-    onValueChange: onInterventionChange,
-    onValueRemove: onInterventionRemove,
+    setValue: onInterventionChange,
+    removeValue: onInterventionRemove,
   } = useFormArray<'planned_interventions', PartialForm<Intervention>>(
     'planned_interventions',
     onValueChange,
@@ -120,7 +123,7 @@ function Response(props: Props) {
             name="people_assisted"
             onChange={onValueChange}
             value={value.people_assisted}
-            error={error?.fields?.people_assisted}
+            error={error?.people_assisted}
           />
         </InputSection>
         <InputSection
@@ -131,7 +134,7 @@ function Response(props: Props) {
             name="selection_criteria"
             onChange={onValueChange}
             value={value.selection_criteria}
-            error={error?.fields?.selection_criteria}
+            error={error?.selection_criteria}
           />
         </InputSection>
         <InputSection
@@ -142,7 +145,7 @@ function Response(props: Props) {
             name="entity_affected"
             onChange={onValueChange}
             value={value.entity_affected}
-            error={error?.fields?.entity_affected}
+            error={error?.entity_affected}
           />
         </InputSection>
       </Container>
@@ -160,35 +163,35 @@ function Response(props: Props) {
             name="women"
             value={value.women}
             onChange={onValueChange}
-            error={error?.fields?.women}
+            error={error?.women}
           />
           <NumberInput
             label={strings.drefFormMen}
             name="men"
             value={value.men}
             onChange={onValueChange}
-            error={error?.fields?.men}
+            error={error?.men}
           />
           <NumberInput
             label={strings.drefFormGirls}
             name="girls"
             value={value.girls}
             onChange={onValueChange}
-            error={error?.fields?.girls}
+            error={error?.girls}
           />
           <NumberInput
             label={strings.drefFormBoys}
             name="boys"
             value={value.boys}
             onChange={onValueChange}
-            error={error?.fields?.boys}
+            error={error?.boys}
           />
           <NumberInput
             label={strings.drefFormTotal}
             name="total_targated_population"
             value={value.total_targated_population}
             onChange={onValueChange}
-            error={error?.fields?.total_targated_population}
+            error={error?.total_targated_population}
           />
         </InputSection>
         <InputSection
@@ -201,7 +204,7 @@ function Response(props: Props) {
             name="disability_people_per"
             value={value.disability_people_per}
             onChange={onValueChange}
-            error={error?.fields?.disability_people_per}
+            error={error?.disability_people_per}
           />
           <div className={styles.urbanToRural}>
             <InputLabel>
@@ -213,14 +216,14 @@ function Response(props: Props) {
                 name="people_per_urban"
                 value={value.people_per_urban}
                 onChange={onValueChange}
-                error={error?.fields?.people_per_urban}
+                error={error?.people_per_urban}
               />
               <NumberInput
                 placeholder={strings.drefFormEstimatedLocal}
                 name="people_per_local"
                 value={value.people_per_local}
                 onChange={onValueChange}
-                error={error?.fields?.people_per_local}
+                error={error?.people_per_local}
               />
             </div>
           </div>
@@ -229,7 +232,7 @@ function Response(props: Props) {
             name="displaced_people"
             value={value.displaced_people}
             onChange={onValueChange}
-            error={error?.fields?.displaced_people}
+            error={error?.displaced_people}
           />
           {isImminentOnset &&
             <NumberInput
@@ -237,7 +240,7 @@ function Response(props: Props) {
               name="people_targeted_with_early_actions"
               value={value.people_targeted_with_early_actions}
               onChange={onValueChange}
-              error={error?.fields?.people_targeted_with_early_actions}
+              error={error?.people_targeted_with_early_actions}
             />
           }
         </InputSection>
@@ -250,7 +253,7 @@ function Response(props: Props) {
           title={strings.drefFormObjectiveOperation}
         >
           <TextArea
-            error={error?.fields?.operation_objective}
+            error={error?.operation_objective}
             name="operation_objective"
             onChange={onValueChange}
             value={value.operation_objective}
@@ -264,7 +267,7 @@ function Response(props: Props) {
             name="response_strategy"
             onChange={onValueChange}
             value={value.response_strategy}
-            error={error?.fields?.response_strategy}
+            error={error?.response_strategy}
             placeholder={strings.drefFormResponseRationalePlaceholder}
           />
         </InputSection>
@@ -280,7 +283,7 @@ function Response(props: Props) {
             name="human_resource"
             onChange={onValueChange}
             value={value.human_resource}
-            error={error?.fields?.human_resource}
+            error={error?.human_resource}
           />
         </InputSection>
         <InputSection
@@ -291,7 +294,7 @@ function Response(props: Props) {
             name="surge_personnel_deployed"
             onChange={onValueChange}
             value={value.surge_personnel_deployed}
-            error={error?.fields?.surge_personnel_deployed}
+            error={error?.surge_personnel_deployed}
           />
         </InputSection>
         <InputSection
@@ -302,7 +305,7 @@ function Response(props: Props) {
             name="logistic_capacity_of_ns"
             onChange={onValueChange}
             value={value.logistic_capacity_of_ns}
-            error={error?.fields?.logistic_capacity_of_ns}
+            error={error?.logistic_capacity_of_ns}
           />
         </InputSection>
         <InputSection
@@ -313,7 +316,7 @@ function Response(props: Props) {
             name="safety_concerns"
             onChange={onValueChange}
             value={value.safety_concerns}
-            error={error?.fields?.safety_concerns}
+            error={error?.safety_concerns}
           />
         </InputSection>
         <InputSection
@@ -324,7 +327,7 @@ function Response(props: Props) {
             name="pmer"
             onChange={onValueChange}
             value={value.pmer}
-            error={error?.fields?.pmer}
+            error={error?.pmer}
           />
         </InputSection>
         <InputSection
@@ -335,7 +338,7 @@ function Response(props: Props) {
             name="communication"
             onChange={onValueChange}
             value={value.communication}
-            error={error?.fields?.communication}
+            error={error?.communication}
           />
         </InputSection>
       </Container>
@@ -380,7 +383,7 @@ function Response(props: Props) {
         <InputSection>
           <DREFFileInput
             accept=".pdf"
-            error={error?.fields?.budget_file}
+            error={error?.budget_file}
             fileIdToUrlMap={fileIdToUrlMap}
             label={strings.drefFormBudgetTemplateLabel}
             name="budget_file"
@@ -418,7 +421,7 @@ function Response(props: Props) {
             value={n}
             onChange={onInterventionChange}
             onRemove={onInterventionRemove}
-            error={error?.fields?.planned_interventions}
+            error={getErrorObject(error?.planned_interventions)}
             interventionOptions={interventionOptions}
           />
         ))}

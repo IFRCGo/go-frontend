@@ -9,7 +9,8 @@ import {
   PartialForm,
   useForm,
   accumulateErrors,
-  analyzeErrors,
+  getErrorObject,
+  ObjectError,
 } from '@togglecorp/toggle-form';
 import type { match as Match } from 'react-router-dom';
 
@@ -113,7 +114,6 @@ interface Props {
 function DrefApplication(props: Props) {
   const {
     className,
-    // location,
     history,
     match,
   } = props;
@@ -124,11 +124,11 @@ function DrefApplication(props: Props) {
   const {
     value,
     error,
-    onValueChange,
+    setFieldValue: onValueChange,
     validate,
-    onErrorSet,
-    onValueSet,
-  } = useForm(defaultFormValues, schema);
+    setError: onErrorSet,
+    setValue: onValueSet,
+  } = useForm(schema, defaultFormValues);
 
   const {
     countryOptions,
@@ -170,7 +170,7 @@ function DrefApplication(props: Props) {
       const currentFields = stepTypesToFieldsMap[tabKey];
       const currentFieldsMap = listToMap(currentFields, d => d, d => true);
 
-      const erroredFields = Object.keys(error?.fields ?? {}) as (keyof DrefFields)[];
+      const erroredFields = Object.keys(getErrorObject(error) ?? {}) as (keyof DrefFields)[];
       const hasError = erroredFields.some(d => currentFieldsMap[d]);
       tabs[tabKey] = hasError;
     });
@@ -204,9 +204,7 @@ function DrefApplication(props: Props) {
       },
       debugMessage,
     }) => {
-      onErrorSet({
-        fields: formErrors,
-      });
+      onErrorSet(formErrors);
 
       alert.show(
         <p>
@@ -300,7 +298,7 @@ function DrefApplication(props: Props) {
   });
 
   const validateCurrentTab = React.useCallback((exceptions: (keyof DrefFields)[] = []) => {
-    const validationError = accumulateErrors(value, schema);
+    const validationError = getErrorObject(accumulateErrors(value, schema));
     const currentFields = stepTypesToFieldsMap[currentStep];
     const exceptionsMap = listToMap(exceptions, d => d, d => true);
 
@@ -308,28 +306,21 @@ function DrefApplication(props: Props) {
       return true;
     }
 
-    const currentTabFieldErrors = listToMap(
-      currentFields.filter(field => (
-        !exceptionsMap[field] && analyzeErrors(validationError.fields?.[field]
-        ))),
+    const currentTabErrors = listToMap(
+      currentFields.filter(field => (!exceptionsMap[field] && !!validationError?.[field])),
       field => field,
-      field => validationError.fields?.[field]
-    ) as NonNullable<NonNullable<(typeof error)>['fields']>;
+      field => validationError?.[field]
+    ) as ObjectError<DrefFields>;
 
     const newError: typeof error = {
-      ...error,
-      fields: {
-        ...error?.fields,
-        ...validationError.fields,
-        ...currentTabFieldErrors,
-      }
+      ...currentTabErrors,
     };
 
     onErrorSet(newError);
 
-    const hasError = Object.keys(currentTabFieldErrors).some(d => !!d);
+    const hasError = Object.keys(currentTabErrors).some(d => !!d);
     return !hasError;
-  }, [value, currentStep, onErrorSet, error]);
+  }, [value, currentStep, onErrorSet]);
 
   const handleTabChange = React.useCallback((newStep: StepTypes) => {
     scrollToTop();
@@ -343,22 +334,14 @@ function DrefApplication(props: Props) {
   }, [validateCurrentTab]);
 
   const submitDref = React.useCallback(() => {
-    const {
-      errored,
-      error,
-      value: finalValues,
-    } = validate();
+    const result = validate();
 
-    onErrorSet(error);
-
-    if (errored) {
-      return;
-    }
-
-    if (finalValues && userDetails && userDetails.id) {
+    if (result.errored) {
+      onErrorSet(result.error);
+    } else if (result.value && userDetails && userDetails.id) {
       const body = {
         user: userDetails.id,
-        ...finalValues,
+        ...result.value,
       };
       submitRequest(body as DrefApiFields);
     }
@@ -367,9 +350,7 @@ function DrefApplication(props: Props) {
   const handleSubmitButtonClick = React.useCallback(() => {
     scrollToTop();
 
-    const isCurrentTabValid = validateCurrentTab([
-      'event_map'
-    ]);
+    const isCurrentTabValid = validateCurrentTab(['event_map']);
 
     if (!isCurrentTabValid) {
       return;

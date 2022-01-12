@@ -9,6 +9,7 @@ import {
   Error,
   EntriesAsList,
   useFormArray,
+  getErrorObject,
 } from '@togglecorp/toggle-form';
 
 import Button from '#components/Button';
@@ -48,7 +49,7 @@ function ActionsFields(props: Props) {
   const { strings } = React.useContext(LanguageContext);
 
   const {
-    error,
+    error: formError,
     onValueChange,
     value,
     yesNoOptions,
@@ -56,18 +57,23 @@ function ActionsFields(props: Props) {
     nsActionOptions,
   } = props;
 
+  const error = React.useMemo(
+    () => getErrorObject(formError),
+    [formError]
+  );
+
   const [need, setNeed] = React.useState<string | undefined>();
   const [nsAction, setNsAction] = React.useState<string | undefined>();
   const {
-    onValueChange: onNeedChange,
-    onValueRemove: onNeedRemove,
+    setValue: onNeedChange,
+    removeValue: onNeedRemove,
   } = useFormArray<'needs_identified', PartialForm<Need>>(
     'needs_identified',
     onValueChange,
   );
   const {
-    onValueChange: onNsActionChange,
-    onValueRemove: onNsActionRemove,
+    setValue: onNsActionChange,
+    removeValue: onNsActionRemove,
   } = useFormArray<'national_society_actions', PartialForm<NsAction>>(
     'national_society_actions',
     onValueChange,
@@ -159,7 +165,7 @@ function ActionsFields(props: Props) {
             value={n}
             onChange={onNsActionChange}
             onRemove={onNsActionRemove}
-            error={error?.fields?.national_society_actions}
+            error={getErrorObject(error?.national_society_actions)}
             nsActionOptions={nsActionOptions}
           />
         ))}
@@ -175,7 +181,7 @@ function ActionsFields(props: Props) {
             name="ifrc"
             onChange={onValueChange}
             value={value.ifrc}
-            error={error?.fields?.ifrc}
+            error={error?.ifrc}
           />
         </InputSection>
         <InputSection
@@ -186,7 +192,7 @@ function ActionsFields(props: Props) {
             name="icrc"
             onChange={onValueChange}
             value={value.icrc}
-            error={error?.fields?.icrc}
+            error={error?.icrc}
           />
         </InputSection>
         <InputSection
@@ -196,7 +202,7 @@ function ActionsFields(props: Props) {
             name="partner_national_society"
             onChange={onValueChange}
             value={value.partner_national_society}
-            error={error?.fields?.partner_national_society}
+            error={error?.partner_national_society}
           />
         </InputSection>
       </Container>
@@ -214,7 +220,7 @@ function ActionsFields(props: Props) {
             radioLabelSelector={optionLabelSelector}
             value={value.government_requested_assistance}
             onChange={onValueChange}
-            error={error?.fields?.government_requested_assistance}
+            error={error?.government_requested_assistance}
           />
         </InputSection>
         <InputSection
@@ -225,7 +231,7 @@ function ActionsFields(props: Props) {
             name="national_authorities"
             onChange={onValueChange}
             value={value.national_authorities}
-            error={error?.fields?.national_authorities}
+            error={error?.national_authorities}
           />
         </InputSection>
         <InputSection
@@ -238,7 +244,7 @@ function ActionsFields(props: Props) {
             name="un_or_other_actor"
             onChange={onValueChange}
             value={value.un_or_other_actor}
-            error={error?.fields?.un_or_other_actor}
+            error={error?.un_or_other_actor}
           />
         </InputSection>
         <InputSection
@@ -251,7 +257,7 @@ function ActionsFields(props: Props) {
             name="major_coordination_mechanism"
             onChange={onValueChange}
             value={value.major_coordination_mechanism}
-            error={error?.fields?.major_coordination_mechanism}
+            error={error?.major_coordination_mechanism}
           />
         </InputSection>
       </Container>
@@ -286,7 +292,7 @@ function ActionsFields(props: Props) {
             value={n}
             onChange={onNeedChange}
             onRemove={onNeedRemove}
-            error={error?.fields?.needs_identified}
+            error={getErrorObject(error?.needs_identified)}
             needOptions={needOptions}
           />
         ))}
@@ -300,7 +306,7 @@ function ActionsFields(props: Props) {
             name="identified_gaps"
             onChange={onValueChange}
             value={value.identified_gaps}
-            error={error?.fields?.identified_gaps}
+            error={error?.identified_gaps}
           />
         </InputSection>
       </Container>
