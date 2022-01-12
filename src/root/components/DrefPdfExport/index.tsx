@@ -9,7 +9,7 @@ import {
   Document,
   Image as PDFImage,
   PDFViewer,
-  // Font,
+  Font,
 } from '@react-pdf/renderer';
 import {
   addSeparator,
@@ -22,11 +22,9 @@ import { useRequest } from '#utils/restRequest';
 import { DrefApiFields } from '#views/DrefApplicationForm/common';
 import LanguageContext from '#root/languageContext';
 
-// import ifrcLogo from './resources/ifrc_logo.png';
-// import drefBanner from './resources/dref-banner.png';
-// import openSansRegularFont from './resources/OpenSans-Regular.ttf';
-// import openSansBoldFont from './resources/OpenSans-Bold.ttf';
-// import montserratFont from './resources/Montserrat-Bold.ttf';
+import montserratFont from './resources/montserrat.bold.ttf';
+import opensansFont from './resources/open-sans.regular.ttf';
+import opensansBoldFont from './resources/open-sans.bold.ttf';
 
 import {
   NumericKeyValuePair,
@@ -36,23 +34,43 @@ import {
 import pdfStyles from './pdfStyles';
 import styles from './styles.module.scss';
 
-// Font.register({
-//   family: 'OpenSans',
-//   src: openSansRegularFont,
-//   fontWeight: 'regular',
-// });
-// 
-// Font.register({
-//   family: 'OpenSans',
-//   src: openSansBoldFont,
-//   fontWeight: 'bold',
-// });
-// 
-// Font.register({
-//   family: 'Montserrat',
-//   src: montserratFont,
-//   fontWeight: 'bold',
-// });
+const pendingRecords: Record<string, boolean> = {};
+
+function usePendingCounts() {
+  const set = React.useCallback((key: string) => {
+    pendingRecords[key] = true;
+  }, []);
+
+  const resolve = React.useCallback((key: string) => {
+    pendingRecords[key] = false;
+  }, []);
+
+  const isPending = Object.values(pendingRecords).some(d => d === true);
+
+  return {
+    isPending,
+    setPending: set,
+    resolvePending: resolve
+  };
+}
+
+Font.register({
+  family: 'Montserrat',
+  src: montserratFont,
+  fontWeight: 'bold',
+});
+
+Font.register({
+  family: 'OpenSans',
+  src: opensansFont,
+  fontWeight: 'medium',
+});
+
+Font.register({
+  family: 'OpenSans',
+  src: opensansBoldFont,
+  fontWeight: 'bold',
+});
 
 function loadImage(src: string): Promise<string> {
   return new Promise((resolve) => {
@@ -76,6 +94,26 @@ function loadImage(src: string): Promise<string> {
   });
 }
 
+interface NationalSocietyActionsProps {
+  data: DrefApiFields['national_society_actions'][number];
+  nsaMap?: Record<string, string>;
+}
+
+function NationalSocietyActions(props: NationalSocietyActionsProps) {
+  const {
+    data,
+    nsaMap = {},
+  } = props;
+
+  return (
+    <View style={pdfStyles.nsaOutput}>
+      <Text>
+        {'\u2022'} {nsaMap[data.title]}
+      </Text>
+    </View>
+  );
+}
+
 interface NeedIdentifiedProps {
   data: DrefApiFields['needs_identified'][number];
   niMap?: Record<string, string>;
@@ -87,8 +125,34 @@ function NeedIdentified(props: NeedIdentifiedProps) {
     niMap = {},
   } = props;
 
+  const { setPending, resolvePending } = usePendingCounts();
+  const [icon, setIcon] = React.useState<string | undefined>();
+  React.useEffect(() => {
+    const key = data?.id;
+    const pendingKey = `ni-${key}`;
+    if (key && data?.image_url) {
+      setPending(pendingKey);
+      loadImage(data.image_url).then((img) => {
+        setIcon(img);
+        resolvePending(pendingKey);
+      });
+    }
+
+    return () => {
+      resolvePending(pendingKey);
+    };
+  }, [setPending, resolvePending, data?.image_url, data?.id]);
+
   return (
     <View style={pdfStyles.niOutput}>
+      <View style={pdfStyles.niIconCell}>
+        {icon && (
+          <PDFImage
+            style={pdfStyles.niIcon}
+            src={icon}
+          />
+        )}
+      </View>
       <View style={pdfStyles.niHeaderCell}>
         <Text>
           {niMap[data.title]}
@@ -109,31 +173,58 @@ interface PlannedInterventionProps {
 }
 
 function PlannedInterventionOutput(props: PlannedInterventionProps) {
+  const { strings } = React.useContext(LanguageContext);
   const {
     data,
     piMap = {},
   } = props;
 
+  const { setPending, resolvePending } = usePendingCounts();
+  const [icon, setIcon] = React.useState<string | undefined>();
+  React.useEffect(() => {
+    const key = data?.id;
+    const pendingKey = `pi-${key}`;
+    if (key && data?.image_url) {
+      setPending(pendingKey);
+      loadImage(data.image_url).then((img) => {
+        setIcon(img);
+        resolvePending(pendingKey);
+      });
+    }
+
+    return () => {
+      resolvePending(pendingKey);
+    };
+  }, [setPending, resolvePending, data?.image_url, data?.id]);
+
   return (
-    <View wrap={false} style={pdfStyles.piOutput}>
+    <View style={pdfStyles.piOutput}>
       <View style={pdfStyles.piRow}>
+        <View style={pdfStyles.piIconCell}>
+          {icon && (
+            <PDFImage
+              style={pdfStyles.piIcon}
+              src={icon}
+            />
+          )}
+        </View>
         <View style={pdfStyles.piHeaderCell}>
-          <Text>
+          <Text style={{ color: '#011e41' }}>
             {piMap[data.title]}
           </Text>
         </View>
         <View style={[pdfStyles.piContentCell, { flexDirection: 'column' }]}>
           <View style={pdfStyles.piSubRow}>
             <Text style={pdfStyles.piSubHeadingCell}>
-              Budget
+              {strings.drefFormPdfBudget}
             </Text>
             <Text style={pdfStyles.piSubContentCell}>
-              {data.budget}
+              CHF {data.budget}
             </Text>
           </View>
           <View style={pdfStyles.piSubRow}>
             <Text style={pdfStyles.piSubHeadingCell}>
-              Targeted persons
+              {strings.drefFormPdfTargetPersons}
             </Text>
             <Text style={pdfStyles.piSubContentCell}>
               {data.person_targeted}
@@ -142,9 +233,10 @@ function PlannedInterventionOutput(props: PlannedInterventionProps) {
         </View>
       </View>
       <View style={pdfStyles.piRow}>
+        <View style={pdfStyles.piIconCell} />
         <View style={pdfStyles.piHeaderCell}>
           <Text>
-            Indicators:
+            {strings.drefFormPdfIndicators}
           </Text>
         </View>
         <View style={pdfStyles.piContentCell}>
@@ -154,9 +246,10 @@ function PlannedInterventionOutput(props: PlannedInterventionProps) {
         </View>
       </View>
       <View style={pdfStyles.piRow}>
+        <View style={pdfStyles.piIconCell} />
         <View style={pdfStyles.piHeaderCell}>
           <Text>
-            Priority Actions:
+            {strings.drefFormPdfPriorityActions}
           </Text>
         </View>
         <View style={pdfStyles.piContentCell}>
@@ -209,7 +302,7 @@ function TextOutput(props: {
       <Text style={pdfStyles.label}>
         {label}
       </Text>
-      <Text style={pdfStyles.value}>
+      <Text>
         {value}
       </Text>
     </View>
@@ -237,6 +330,7 @@ interface Props {
   match: Match<{ drefId?: string }>;
   history: History;
   location: Location;
+  isImminentOnset: boolean;
 }
 
 function DrefPdfExport(props: Props) {
@@ -245,7 +339,16 @@ function DrefPdfExport(props: Props) {
     className,
     match,
   } = props;
+
+  const {
+    isPending: imageResourcesPending,
+    setPending,
+    resolvePending,
+  } = usePendingCounts();
+
+  const [coverImage, setCoverImage] = React.useState<string | undefined>();
   const [mapImage, setMapImage] = React.useState<string | undefined>();
+  const [budgetOverview, setBudgetOverview] = React.useState<string | undefined>();
   const [ifrcLogo, setIfrcLogo] = React.useState<string | undefined>();
 
   const { drefId } = match.params;
@@ -270,6 +373,7 @@ function DrefPdfExport(props: Props) {
   const [
     piMap,
     niMap,
+    nsaMap,
   ] = React.useMemo(() => {
     if (!drefOptions) {
       return [
@@ -281,16 +385,71 @@ function DrefPdfExport(props: Props) {
     return [
       listToMap(drefOptions.planned_interventions, d => d.key, d => d.value),
       listToMap(drefOptions.needs_identified, d => d.key, d => d.value),
+      listToMap(drefOptions.national_society_actions, d => d.key, d => d.value),
     ];
   }, [drefOptions]);
 
   React.useEffect(() => {
-    if (dref?.event_map_details) {
-      loadImage(dref.event_map_details.file).then((img) => {
-        setMapImage(img);
+    const key = dref?.budget_file;
+
+    if (key && dref?.budget_file_preview) {
+      setPending(`dref-budget-${key}`);
+      loadImage(dref.budget_file_preview).then((img) => {
+        setBudgetOverview(img);
+        resolvePending(`dref-budget-${key}`);
       });
     }
-  }, [dref?.event_map_details]);
+
+    return () => {
+      resolvePending(`dref-budget-${key}`);
+    };
+  }, [dref?.budget_file_preview, dref?.budget_file, setPending, resolvePending]);
+
+  React.useEffect(() => {
+    const key = dref?.event_map;
+
+    if (key && dref?.event_map_details) {
+      setPending(`event-map-${key}`);
+      loadImage(dref.event_map_details.file).then((img) => {
+        setMapImage(img);
+        resolvePending(`event-map-${key}`);
+      });
+    }
+
+    return () => {
+      resolvePending(`event-map-${key}`);
+    };
+  }, [dref?.event_map_details, dref?.event_map, setPending, resolvePending]);
+
+  React.useEffect(() => {
+    const key = dref?.cover_image;
+    if (dref?.cover_image_details) {
+      setPending(`cover-image-${key}`);
+      loadImage(dref.cover_image_details.file).then((img) => {
+        setCoverImage(img);
+        resolvePending(`cover-image-${key}`);
+      });
+    }
+    return () => {
+      resolvePending(`cover-image-${key}`);
+    };
+  }, [dref?.cover_image_details, dref?.cover_image, setPending, resolvePending]);
+
+  const affectedAreas = React.useMemo(() => {
+    if (dref?.country_district) {
+      let areas = '';
+      const districts = dref.country_district.map(d => d.district_details);
+
+      districts.forEach(d => {
+        const names = d.map(dd => dd.name);
+        areas += names.join(', ');
+      });
+
+      return areas;
+    }
+
+    return undefined;
+  }, [dref?.country_district]);
 
   React.useEffect(() => {
     loadImage('/assets/graphics/layout/go-logo-2020.png').then((img) => {
@@ -298,12 +457,13 @@ function DrefPdfExport(props: Props) {
     });
   }, []);
 
+
   return (
     <Page
       className={className}
       heading="DREF Export"
     >
-      {pending ? (
+      {pending && imageResourcesPending ? (
         <BlockLoading />
       ) : (
         <PDFViewer className={styles.pdfPreview}>
@@ -313,151 +473,93 @@ function DrefPdfExport(props: Props) {
               style={pdfStyles.page}
             >
               <View style={pdfStyles.section}>
-                <PDFImage
-                  style={pdfStyles.logo}
-                  src={ifrcLogo}
-                />
-                <Text style={pdfStyles.title}>
-                  {/* FIXME: use strings */}
-                  DREF Application
-                </Text>
-              </View>
-              <View
-                style={[
-                  pdfStyles.section,
-                  { alignSelf: 'flex-end' }
-                ]}
-              >
-                <Text style={pdfStyles.subHeading}>
-                  {[
-                    dref?.country_district.map(d => d.country_details?.name).join(', '),
-                    dref?.ifrc_emergency_name
-                  ].join(' | ')}
-                </Text>
-              </View>
-              <View
-                style={[
-                  pdfStyles.section,
-                  {
-                    width: 560,
-                    justifyContent: 'center',
-                    alignSelf: 'center',
-                    backgroundColor: '#f0f0f0',
-                  },
-                ]}
-              >
-                <PDFImage
-                  style={pdfStyles.bannerImage}
-                  src={ifrcLogo}
-                />
-              </View>
-              <View
-                style={{
-                  width: '100%',
-                  padding: 16,
-                }}
-              >
-                <View style={pdfStyles.compactSection}>
-                  <TextOutput
-                    label={strings.drefFormPdfAppealNum}
-                    value={dref?.appeal_code}
+                {ifrcLogo && (
+                  <PDFImage
+                    style={pdfStyles.logo}
+                    src={ifrcLogo}
                   />
-                  <TextOutput
-                    label={strings.drefFormPdfDrefAllocated}
-                    value={`CHF ${addSeparator(dref?.amount_requested ?? '') ?? '-'}`}
-                    columns="2/3"
-                  />
+                )}
+                <View style={[{ alignSelf: 'flex-end' }]} >
+                  <Text style={pdfStyles.title}>
+                    {strings.drefFormPdfTitle}
+                  </Text>
+                  <Text style={pdfStyles.subHeading}>
+                    {[
+                      dref?.country_district.map(d => d.country_details?.name).join(', '),
+                      dref?.title
+                    ].join(' | ')}
+                  </Text>
                 </View>
-                <View style={pdfStyles.compactSection}>
-                  <TextOutput
-                    label={strings.drefFormPdfGlideNum}
-                    value={dref?.glide_code}
+              </View>
+              <View style={pdfStyles.section}>
+                {(coverImage || ifrcLogo) && (
+                  <PDFImage
+                    style={pdfStyles.bannerImage}
+                    src={coverImage ?? ifrcLogo}
                   />
-                  <View style={pdfStyles.twoByThree}>
-                    <View style={pdfStyles.compactSection}>
-                      <View style={[pdfStyles.compactSection, { width: '100%' }]}>
-                        <TextOutput
-                          label={strings.drefFormPdfPeopleAffected}
-                          value={`${dref?.num_affected} ${dref?.num_affected ? 'people' : ''}`}
-                          columns="1/2"
-                        />
-                        <TextOutput
-                          label={strings.drefFormPdfPeopleAssisted}
-                          value={`${dref?.num_assisted} ${dref?.num_assisted ? 'people' : ''}`}
-                          columns="1/2"
-                        />
-                      </View>
-                    </View>
-                    <View style={pdfStyles.compactSection}>
+                )}
+              </View>
+              <View style={pdfStyles.section}>
+                <View style={pdfStyles.basicInfoTable}>
+                  <View style={pdfStyles.compactSection}>
+                    <TextOutput
+                      label={strings.drefFormPdfAppealNum}
+                      value={dref?.appeal_code}
+                    />
+                    <TextOutput
+                      label={strings.drefFormPdfDrefAllocated}
+                      value={`CHF ${addSeparator(dref?.amount_requested ?? '') ?? '-'}`}
+                      columns="2/3"
+                    />
+                  </View>
+                  <View style={pdfStyles.compactSection}>
+                    <TextOutput
+                      label={strings.drefFormPdfGlideNum}
+                      value={dref?.glide_code}
+                    />
+                    <View style={pdfStyles.twoByThree}>
                       <View style={pdfStyles.compactSection}>
-                        <TextOutput
-                          label={strings.drefFormPdfDrefLaunched}
-                          value={dref?.date_of_approval}
-                          columns="1/2"
-                        />
-                        <View style={[pdfStyles.compactSection, pdfStyles.oneByTwo]}>
+                        <View style={pdfStyles.compactSection}>
                           <TextOutput
-                            label={strings.drefFormPdfDrefEnds}
-                            value={dref?.end_date}
+                            label={strings.drefFormPdfPeopleAffected}
+                            value={`${dref?.num_affected} ${dref?.num_affected ? 'people' : ''}`}
                             columns="1/2"
                           />
                           <TextOutput
-                            label={strings.drefFormOperationTimeframeSubmission}
-                            value={`${dref?.operation_timeframe} months`}
+                            label={strings.drefFormPdfPeopleAssisted}
+                            value={`${dref?.num_assisted} ${dref?.num_assisted ? 'people' : ''}`}
                             columns="1/2"
                           />
                         </View>
                       </View>
-                    </View>
-                    <View style={pdfStyles.compactSection}>
-                      <TextOutput
-                        label={strings.drefFormPdfAffectedAreas}
-                        columns="3/3"
-                      />
-                    </View>
-                  </View>
-                </View>
-              </View>
-            </PDFPage>
-            <PDFPage
-              size="A4"
-              style={pdfStyles.page}
-            >
-              <View style={pdfStyles.section}>
-                <View style={[pdfStyles.section, { alignItems: 'flex-start' }]}>
-                  <View
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                    }}
-                  >
-                    <PDFImage
-                      style={pdfStyles.mapImage}
-                      src={mapImage ? mapImage : ifrcLogo}
-                    />
-                  </View>
-                  <View style={{ padding: 10 }}>
-                    <View>
-                      <Text style={pdfStyles.heading}>
-                        {strings.drefFormPdfDrescriptionOfTheEvent}
-                      </Text>
-                      <Text style={pdfStyles.subHeading}>
-                        {strings.drefFormWhatWhereWhen}
-                      </Text>
-                    </View>
-                    <View
-                      style={{
-                        width: 240,
-                        marginTop: 30,
-                      }}
-                    >
-                      <Text style={pdfStyles.headerText}>
-                        {strings.drefFormPdfScopeAndScale}
-                      </Text>
-                      <Text>
-                        {dref?.event_scope}
-                      </Text>
+                      <View style={pdfStyles.compactSection}>
+                        <View style={pdfStyles.compactSection}>
+                          <TextOutput
+                            label={strings.drefFormPdfDrefLaunched}
+                            value={dref?.date_of_approval}
+                            columns="1/2"
+                          />
+                          <View style={[pdfStyles.compactSection, pdfStyles.oneByTwo]}>
+                            <TextOutput
+                              label={strings.drefFormPdfDrefEnds}
+                              value={dref?.end_date}
+                              columns="1/2"
+                            />
+                            <TextOutput
+                              label={strings.drefFormPdfOperationTimeframeSubmission}
+                              value={`${dref?.operation_timeframe} months`}
+                              columns="1/2"
+                            />
+                          </View>
+                        </View>
+                      </View>
+                      <View style={pdfStyles.compactSection}>
+                        <TextOutput
+                          label={strings.drefFormPdfAffectedAreas}
+                          value={affectedAreas}
+                          columns="3/3"
+                        />
+                      </View>
                     </View>
                   </View>
                 </View>
@@ -467,64 +569,108 @@ function DrefPdfExport(props: Props) {
               size="A4"
               style={pdfStyles.page}
             >
-              <View wrap={false}>
+              <View style={pdfStyles.verticalSection}>
+                <Text style={pdfStyles.heading}>
+                  {strings.drefFormPdfDrescriptionOfTheEvent}
+                </Text>
+              </View>
+              <View style={pdfStyles.verticalSection}>
+                {mapImage && (
+                  <PDFImage
+                    style={pdfStyles.mapImage}
+                    src={mapImage}
+                  />
+                )}
+              </View>
+              <View style={pdfStyles.verticalSection}>
+                <Text style={pdfStyles.subHeading}>
+                  {dref?.anticipatory_actions == null ? strings.drefFormPdfWhatWhereWhen : strings.drefFormPdfImmientDisaster}
+                </Text>
+                <Text>
+                  {dref?.event_description}
+                </Text>
+              </View>
+              {dref?.anticipatory_actions != null &&
+                <View style={pdfStyles.verticalSection}>
+                  <Text style={pdfStyles.subHeading}>
+                    {strings.drefFormPdfTargetCommunities}
+                  </Text>
+                  <Text>
+                    {dref?.anticipatory_actions}
+                  </Text>
+                </View>
+              }
+              <View style={pdfStyles.verticalSection}>
+                <Text style={pdfStyles.subHeading}>
+                  {strings.drefFormPdfScopeAndScale}
+                </Text>
+                <Text>
+                  {dref?.event_scope}
+                </Text>
+              </View>
+            </PDFPage>
+            <PDFPage
+              size="A4"
+              style={pdfStyles.page}
+            >
+              <View>
                 <View style={[pdfStyles.section, pdfStyles.table]}>
                   <Text style={pdfStyles.heading}>
-                    {strings.drefFormPreviousOperations}
+                    {strings.drefFormPdfPreviousOperations}
                   </Text>
                   <View>
                     <View style={pdfStyles.row}>
-                      <View style={pdfStyles.cell}>
-                        <Text>{strings.drefFormAffectSameArea}</Text>
+                      <View style={pdfStyles.cellTitle}>
+                        <Text>{strings.drefFormPdfAffectSameArea}</Text>
                       </View>
                       <View style={pdfStyles.cell}>
                         <Text>{booleanToYesNo(dref?.affect_same_area)}</Text>
                       </View>
                     </View>
                     <View style={pdfStyles.row}>
-                      <View style={pdfStyles.cell}>
-                        <Text>{strings.drefFormAffectedthePopulationTitle}</Text>
+                      <View style={pdfStyles.cellTitle}>
+                        <Text>{strings.drefFormPdfAffectedthePopulationTitle}</Text>
                       </View>
                       <View style={pdfStyles.cell}>
                         <Text>{booleanToYesNo(dref?.affect_same_population)}</Text>
                       </View>
                     </View>
                     <View style={pdfStyles.row}>
-                      <View style={pdfStyles.cell}>
-                        <Text>{strings.drefFormNsRespond}</Text>
+                      <View style={pdfStyles.cellTitle}>
+                        <Text>{strings.drefFormPdfNsRespond}</Text>
                       </View>
                       <View style={pdfStyles.cell}>
                         <Text>{booleanToYesNo(dref?.ns_respond)}</Text>
                       </View>
                     </View>
                     <View style={pdfStyles.row}>
-                      <View style={pdfStyles.cell}>
-                        <Text>{strings.drefFormNsRequest}</Text>
+                      <View style={pdfStyles.cellTitle}>
+                        <Text>{strings.drefFormPdfNsRequest}</Text>
                       </View>
                       <View style={pdfStyles.cell}>
                         <Text>{booleanToYesNo(dref?.ns_request_fund)}</Text>
                       </View>
                     </View>
                     <View style={pdfStyles.row}>
-                      <View style={pdfStyles.cell}>
-                        <Text>{strings.drefFormNsFundingDetail}</Text>
+                      <View style={pdfStyles.cellTitle}>
+                        <Text>{strings.drefFormPdfNsFundingDetail}</Text>
                       </View>
                       <View style={pdfStyles.cell}>
                         <Text>{dref?.ns_request_text ?? '-'}</Text>
                       </View>
                     </View>
                     <View style={pdfStyles.row}>
-                      <View style={pdfStyles.cell}>
-                        <Text> {strings.drefFormRecurrentText}</Text>
+                      <View style={pdfStyles.cellTitle}>
+                        <Text> {strings.drefFormPdfRecurrentText}</Text>
                       </View>
                       <View style={pdfStyles.cell}>
                         <Text>{dref?.dref_recurrent_text}</Text>
                       </View>
                     </View>
                     <View style={pdfStyles.row}>
-                      <View style={pdfStyles.cell}>
-                        <Text>{strings.drefFormLessonsLearnedTitle}</Text>
-                        <Text>{strings.drefFormLessonsLearnedDescription}</Text>
+                      <View style={pdfStyles.cellTitle}>
+                        <Text>{strings.drefFormPdfLessonsLearnedTitle}</Text>
+                        <Text>{strings.drefFormPdfLessonsLearnedDescription}</Text>
                       </View>
                       <View style={pdfStyles.cell}>
                         <Text>{dref?.lessons_learned}</Text>
@@ -533,89 +679,90 @@ function DrefPdfExport(props: Props) {
                   </View>
                 </View>
               </View>
-              <View wrap={false} style={pdfStyles.textSection}>
+              <View style={pdfStyles.verticalSection}>
                 <Text style={pdfStyles.heading}>
                   {strings.drefFormPdfCurrentNationalSocietyAction}
                 </Text>
-                <View>
-                  {dref?.national_society_actions.map((nsa) => (
-                    <Text key={nsa.id}>{'\u2022'} {nsa.description}</Text>
-                  ))}
-                </View>
+                {dref?.national_society_actions.map((nsa) => (
+                  <NationalSocietyActions
+                    key={nsa.id}
+                    data={nsa}
+                    nsaMap={nsaMap} />
+                ))}
               </View>
-              <View wrap={false} style={[pdfStyles.section, pdfStyles.table]}>
+              <View style={pdfStyles.verticalSection}>
                 <Text style={pdfStyles.heading}>
                   {strings.drefFormPdfMovementPartnersActions}
                 </Text>
+              </View>
+              <View style={pdfStyles.verticalSection}>
                 <View style={pdfStyles.row}>
-                  <View style={pdfStyles.cell}>
-                    <Text>{strings.drefFormIfrc}</Text>
+                  <View style={pdfStyles.niHeaderCell}>
+                    <Text>{strings.drefFormPdfIfrc}</Text>
                   </View>
-                  <View style={pdfStyles.cell}>
+                  <View style={pdfStyles.niContentCell}>
                     <Text>{dref?.ifrc}</Text>
                   </View>
                 </View>
                 <View style={pdfStyles.row}>
-                  <View style={pdfStyles.cell}>
-                    <Text>{strings.drefFormIcrc}</Text>
+                  <View style={pdfStyles.niHeaderCell}>
+                    <Text>{strings.drefFormPdfIcrc}</Text>
                   </View>
-                  <View style={pdfStyles.cell}>
+                  <View style={pdfStyles.niContentCell}>
                     <Text>{dref?.icrc}</Text>
                   </View>
                 </View>
                 <View style={pdfStyles.row}>
-                  <View style={pdfStyles.cell}>
-                    <Text>{strings.drefFormPartnerNationalSociety}</Text>
+                  <View style={pdfStyles.niHeaderCell}>
+                    <Text>{strings.drefFormPdfPartnerNationalSociety}</Text>
                   </View>
-                  <View style={pdfStyles.cell}>
+                  <View style={pdfStyles.niContentCell}>
                     <Text>{dref?.partner_national_society}</Text>
                   </View>
                 </View>
               </View>
-              <View wrap={false} style={[pdfStyles.section, pdfStyles.table]}>
+              <View style={pdfStyles.verticalSection}>
                 <Text style={pdfStyles.heading}>
-                  {strings.drefFormNationalOtherActors}
+                  {strings.drefFormPdfNationalOtherActors}
                 </Text>
                 <View>
                   <View style={pdfStyles.row}>
-                    <View style={pdfStyles.cell}>
-                      <Text>{strings.drefFormInternationalAssistance}</Text>
+                    <View style={pdfStyles.niHeaderCell}>
+                      <Text>{strings.drefFormPdfInternationalAssistance}</Text>
                     </View>
-                    <View style={pdfStyles.cell}>
+                    <View style={pdfStyles.niContentCell}>
                       <Text>{booleanToYesNo(dref?.government_requested_assistance)}</Text>
                     </View>
                   </View>
                   <View style={pdfStyles.row}>
-                    <View style={pdfStyles.cell}>
-                      <Text>{strings.drefFormNationalAuthorities}</Text>
+                    <View style={pdfStyles.niHeaderCell}>
+                      <Text>{strings.drefFormPdfNationalAuthorities}</Text>
                     </View>
-                    <View style={pdfStyles.cell}>
+                    <View style={pdfStyles.niContentCell}>
                       <Text>{dref?.national_authorities}</Text>
                     </View>
                   </View>
                   <View style={pdfStyles.row}>
-                    <View style={pdfStyles.cell}>
-                      <Text>{strings.drefFormUNorOtherActors}</Text>
+                    <View style={pdfStyles.niHeaderCell}>
+                      <Text>{strings.drefFormPdfUNorOtherActors}</Text>
                     </View>
-                    <View style={pdfStyles.cell}>
+                    <View style={pdfStyles.niContentCell}>
                       <Text>{dref?.un_or_other_actor}</Text>
                     </View>
                   </View>
                   <View style={pdfStyles.row}>
-                    <View style={pdfStyles.cell}>
-                      <Text>{strings.drefFormCoordinationMechanism}</Text>
+                    <View style={pdfStyles.niHeaderCell}>
+                      <Text>{strings.drefFormPdfCoordinationMechanism}</Text>
                     </View>
-                    <View style={pdfStyles.cell}>
+                    <View style={pdfStyles.niContentCell}>
                       <Text>{dref?.major_coordination_mechanism}</Text>
                     </View>
                   </View>
                 </View>
               </View>
-              <View wrap={false} style={pdfStyles.niSection}>
+              <View style={pdfStyles.niSection}>
                 <View style={pdfStyles.heading}>
-                  <Text>
-                    Needs (Gaps) Identified
-                  </Text>
+                  <Text>{strings.drefFormPdfNeedsGapsIdentified}</Text>
                 </View>
                 {dref?.needs_identified.map((ni) => (
                   <NeedIdentified
@@ -625,30 +772,47 @@ function DrefPdfExport(props: Props) {
                   />
                 ))}
               </View>
-              <View wrap={false} style={pdfStyles.textSection}>
+              <View style={pdfStyles.verticalSection}>
                 <Text style={pdfStyles.heading}>
-                  {strings.drefFormTargetingStrategy}
+                  {strings.drefFormPdfTargetingStrategy}
                 </Text>
-                <Text style={pdfStyles.textLabelSection}>{strings.drefFormPeopleAssistedthroughOperation}</Text>
-                <Text>{dref?.people_assisted}</Text>
-                <Text style={pdfStyles.textLabelSection}>{strings.drefFormSelectionCriteria}</Text>
-                <Text> {dref?.selection_criteria} </Text>
-                <Text style={pdfStyles.textLabelSection}>{strings.drefFormProtectionGenderAndInclusion}</Text>
-                <Text>{dref?.entity_affected} </Text>
+                <View style={pdfStyles.qna}>
+                  <Text style={pdfStyles.textLabelSection}>
+                    {strings.drefFormPdfPeopleAssistedthroughOperation}
+                  </Text>
+                  <Text style={pdfStyles.answer}>
+                    {dref?.people_assisted}
+                  </Text>
+                </View>
+                <View style={pdfStyles.qna}>
+                  <Text style={pdfStyles.textLabelSection}>
+                    {strings.drefFormPdfSelectionCriteriaRisk}
+                  </Text>
+                  <Text style={pdfStyles.answer}>
+                    {dref?.selection_criteria}
+                  </Text>
+                </View>
+                <View style={pdfStyles.qna}>
+                  <Text style={pdfStyles.textLabelSection}>
+                    {strings.drefFormPdfProtectionGenderAndInclusion}
+                  </Text>
+                  <Text style={pdfStyles.answer}>
+                    {dref?.entity_affected}
+                  </Text>
+                </View>
               </View>
-
-              <View wrap={false} style={[pdfStyles.section, pdfStyles.tpSection]}>
+              <View style={[pdfStyles.section, pdfStyles.tpSection]}>
                 <Text style={pdfStyles.heading}>
-                  {strings.drefFormAssistedPopulation}
+                  {strings.drefFormPdfAssistedPopulation}
                 </Text>
                 <View style={pdfStyles.row}>
                   <View style={pdfStyles.tpHeaderCell}>
-                    <Text>{strings.drefFormTargetedPopulation}</Text>
+                    <Text>{strings.drefFormPdfTargetedPopulation}</Text>
                   </View>
                   <View style={pdfStyles.tpContentCell}>
                     <View style={pdfStyles.tpSubRow}>
                       <View style={pdfStyles.tpSubCell}>
-                        <Text>{strings.drefFormWomen}</Text>
+                        <Text>{strings.drefFormPdfWomen}</Text>
                       </View>
                       <View style={pdfStyles.tpSubCell}>
                         <Text>{dref?.women}</Text>
@@ -656,7 +820,7 @@ function DrefPdfExport(props: Props) {
                     </View>
                     <View style={pdfStyles.tpSubRow}>
                       <View style={pdfStyles.tpSubCell}>
-                        <Text>{strings.drefFormMen}</Text>
+                        <Text>{strings.drefFormPdfMen}</Text>
                       </View>
                       <View style={pdfStyles.tpSubCell}>
                         <Text>{dref?.men}</Text>
@@ -664,7 +828,7 @@ function DrefPdfExport(props: Props) {
                     </View>
                     <View style={pdfStyles.tpSubRow}>
                       <View style={pdfStyles.tpSubCell}>
-                        <Text>{strings.drefFormGirls}</Text>
+                        <Text>{strings.drefFormPdfGirls}</Text>
                       </View>
                       <View style={pdfStyles.tpSubCell}>
                         <Text>{dref?.girls}</Text>
@@ -672,7 +836,7 @@ function DrefPdfExport(props: Props) {
                     </View>
                     <View style={pdfStyles.tpSubRow}>
                       <View style={pdfStyles.tpSubCell}>
-                        <Text>{strings.drefFormBoys}</Text>
+                        <Text>{strings.drefFormPdfBoys}</Text>
                       </View>
                       <View style={pdfStyles.tpSubCell}>
                         <Text>{dref?.boys}</Text>
@@ -680,7 +844,7 @@ function DrefPdfExport(props: Props) {
                     </View>
                     <View style={[pdfStyles.tpSubRow, { flexBasis: '100%' }]}>
                       <View style={pdfStyles.tpSubCell}>
-                        <Text>{strings.drefFormTotal}</Text>
+                        <Text>{strings.drefFormPdfTotal}</Text>
                       </View>
                       <View style={[pdfStyles.tpSubCell, { flexBasis: '75%' }]}>
                         <Text>{dref?.total_targated_population}</Text>
@@ -690,13 +854,13 @@ function DrefPdfExport(props: Props) {
                 </View>
                 <View style={pdfStyles.row}>
                   <View style={pdfStyles.tpHeaderCell}>
-                    <Text>{strings.drefFormEstimateResponse}</Text>
+                    <Text>{strings.drefFormPdfEstimateResponse}</Text>
                   </View>
                   <View style={pdfStyles.tpContentCell}>
                     <View style={pdfStyles.tpSubRow}>
                       <View style={pdfStyles.tpSubCell}>
                         <Text>
-                          {strings.drefFormEstimatePeopleDisability}
+                          {strings.drefFormPdfEstimatePeopleDisability}
                         </Text>
                       </View>
                       <View style={pdfStyles.tpSubCell}>
@@ -705,7 +869,7 @@ function DrefPdfExport(props: Props) {
                     </View>
                     <View style={pdfStyles.tpSubRow}>
                       <View style={pdfStyles.tpSubCell}>
-                        <Text>{strings.drefFormEstimatedPercentage}</Text>
+                        <Text>{strings.drefFormPdfEstimatedPercentage}</Text>
                       </View>
                       <View style={pdfStyles.tpSubCell}>
                         <Text>{dref?.people_per_urban}/{dref?.people_per_local} </Text>
@@ -713,34 +877,44 @@ function DrefPdfExport(props: Props) {
                     </View>
                     <View style={pdfStyles.tpSubRow}>
                       <View style={pdfStyles.tpSubCell}>
-                        <Text>{strings.drefFormEstimatedDisplacedPeople}</Text>
+                        <Text>{strings.drefFormPdfEstimatedDisplacedPeople}</Text>
                       </View>
                       <View style={pdfStyles.tpSubCell}>
                         <Text>{dref?.displaced_people}</Text>
                       </View>
                     </View>
+                    {dref?.anticipatory_actions != null &&
+                      <View style={pdfStyles.tpSubRow}>
+                        <View style={pdfStyles.tpSubCell}>
+                          <Text>{strings.drefFormPeoplePdfTargetedWithEarlyActions}</Text>
+                        </View>
+                        <View style={pdfStyles.tpSubCell}>
+                          <Text>{dref?.people_targeted_with_early_actions}</Text>
+                        </View>
+                      </View>
+                    }
                   </View>
                 </View>
               </View>
-              <View wrap={false} style={pdfStyles.textSection}>
+              <View style={pdfStyles.verticalSection}>
                 <Text style={pdfStyles.heading}>
-                  {strings.drefFormObjectiveOperation}
+                  {strings.drefFormPdfObjectiveOperation}
                 </Text>
                 <Text>{dref?.operation_objective}</Text>
               </View>
-              <View wrap={false} style={pdfStyles.textSection}>
+              <View style={pdfStyles.verticalSection}>
                 <Text style={pdfStyles.heading}>
-                  Response Strategy Rationale
+                  {strings.drefFormPdfResponseRationale}
                 </Text>
                 <Text>{dref?.response_strategy}</Text>
               </View>
-              <View wrap={false} style={pdfStyles.textSection}>
+              <View style={pdfStyles.verticalSection}>
                 <Text style={pdfStyles.heading}>
-                  {strings.drefFormSupportServices}
+                  {strings.drefFormPdfSupportServices}
                 </Text>
                 <View style={pdfStyles.qna}>
                   <Text style={pdfStyles.textLabelSection}>
-                    {strings.drefFormHumanResourceDescription}
+                    {strings.drefFormPdfHumanResourceDescription}
                   </Text>
                   <Text style={pdfStyles.answer}>
                     {dref?.human_resource}
@@ -748,7 +922,7 @@ function DrefPdfExport(props: Props) {
                 </View>
                 <View style={pdfStyles.qna}>
                   <Text style={pdfStyles.textLabelSection}>
-                    {strings.drefFormSurgePersonnelDeployed}
+                    {strings.drefFormPdfSurgePersonnelDeployed}
                   </Text>
                   <Text style={pdfStyles.answer}>
                     {dref?.surge_personnel_deployed}
@@ -756,7 +930,7 @@ function DrefPdfExport(props: Props) {
                 </View>
                 <View style={pdfStyles.qna}>
                   <Text style={pdfStyles.textLabelSection}>
-                    {strings.drefFormLogisticCapacityOfNs}
+                    {strings.drefFormPdfLogisticCapacityOfNs}
                   </Text>
                   <Text style={pdfStyles.answer}>
                     {dref?.logistic_capacity_of_ns}
@@ -764,7 +938,7 @@ function DrefPdfExport(props: Props) {
                 </View>
                 <View style={pdfStyles.qna}>
                   <Text style={pdfStyles.textLabelSection}>
-                    {strings.drefFormSafetyConcerns}
+                    {strings.drefFormPdfSafetyConcerns}
                   </Text>
                   <Text style={pdfStyles.answer}>
                     {dref?.safety_concerns}
@@ -772,7 +946,7 @@ function DrefPdfExport(props: Props) {
                 </View>
                 <View style={pdfStyles.qna}>
                   <Text style={pdfStyles.textLabelSection}>
-                    {strings.drefFormPmerDescription}
+                    {strings.drefFormPdfPmerDescription}
                   </Text>
                   <Text style={pdfStyles.answer}>
                     {dref?.pmer}
@@ -780,7 +954,7 @@ function DrefPdfExport(props: Props) {
                 </View>
                 <View style={pdfStyles.qna}>
                   <Text style={pdfStyles.textLabelSection}>
-                    {strings.drefFormCommunicationDescription}
+                    {strings.drefFormPdfCommunicationDescription}
                   </Text>
                   <Text style={pdfStyles.answer}>
                     {dref?.communication}
@@ -790,7 +964,7 @@ function DrefPdfExport(props: Props) {
               <View style={pdfStyles.piSection}>
                 <View style={pdfStyles.heading}>
                   <Text>
-                    {strings.drefFormPlannedIntervention}
+                    {strings.drefFormPdfPlannedIntervention}
                   </Text>
                 </View>
                 {dref?.planned_interventions.map((pi) => (
@@ -801,7 +975,19 @@ function DrefPdfExport(props: Props) {
                   />
                 ))}
               </View>
-              <View wrap={false} style={[pdfStyles.section, pdfStyles.contactSection]}>
+              {budgetOverview && (
+                <View>
+                  <PDFImage
+                    src={budgetOverview}
+                  />
+                </View>
+              )}
+            </PDFPage>
+            <PDFPage
+              size="A4"
+              style={pdfStyles.page}
+            >
+              <View style={[pdfStyles.section, pdfStyles.contactSection]}>
                 <Text style={pdfStyles.heading}>
                   {strings.drefFormPdfContactInformation}
                 </Text>
@@ -812,7 +998,7 @@ function DrefPdfExport(props: Props) {
                 <View style={pdfStyles.contactList}>
                   <View style={pdfStyles.ciRow}>
                     <Text style={pdfStyles.contactType}>
-                      {'\u2022'} {strings.drefFormNationalSocietyContact}
+                      {'\u2022'} {strings.drefFormPdfNationalSocietyContact}
                     </Text>
                     <Text>{dref?.national_society_contact_name}, </Text>
                     <Text>{dref?.national_society_contact_title}, </Text>
@@ -822,7 +1008,7 @@ function DrefPdfExport(props: Props) {
 
                   <View style={pdfStyles.ciRow}>
                     <Text style={pdfStyles.contactType}>
-                      {'\u2022'} {strings.drefFormAppealManager}
+                      {'\u2022'} {strings.drefFormPdfAppealManager}
                     </Text>
                     <Text>{dref?.ifrc_appeal_manager_name}, </Text>
                     <Text>{dref?.ifrc_appeal_manager_title}, </Text>
@@ -832,7 +1018,7 @@ function DrefPdfExport(props: Props) {
 
                   <View style={pdfStyles.ciRow}>
                     <Text style={pdfStyles.contactType}>
-                      {'\u2022'} {strings.drefFormProjectManager}
+                      {'\u2022'} {strings.drefFormPdfProjectManager}
                     </Text>
                     <Text>{dref?.ifrc_project_manager_name}, </Text>
                     <Text>{dref?.ifrc_project_manager_title}, </Text>
@@ -842,7 +1028,7 @@ function DrefPdfExport(props: Props) {
 
                   <View style={pdfStyles.ciRow}>
                     <Text style={pdfStyles.contactType}>
-                      {'\u2022'} {strings.drefFormIfrcEmergency}
+                      {'\u2022'} {strings.drefFormPdfIfrcEmergency}
                     </Text>
                     <Text>{dref?.ifrc_emergency_name}, </Text>
                     <Text>{dref?.ifrc_emergency_title}, </Text>
@@ -852,7 +1038,7 @@ function DrefPdfExport(props: Props) {
 
                   <View style={pdfStyles.ciRow}>
                     <Text style={pdfStyles.contactType}>
-                      {'\u2022'} {strings.drefFormMediaContact}
+                      {'\u2022'} {strings.drefFormPdfMediaContact}
                     </Text>
                     <Text>{dref?.media_contact_name}, </Text>
                     <Text>{dref?.media_contact_title}, </Text>
@@ -863,7 +1049,7 @@ function DrefPdfExport(props: Props) {
               </View>
               <View style={pdfStyles.section}>
                 <Link src="https://go.ifrc.org/emergencies">
-                  Click here for the reference
+                  {strings.drefFormPdfReference}
                 </Link>
               </View>
             </PDFPage>

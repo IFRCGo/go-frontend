@@ -64,6 +64,8 @@ export type NsActionSchemaFields = ReturnType<NsActionSchema['fields']>;
 export type NsActionsSchema = ArraySchema<PartialForm<NsActionType>>;
 export type NsActionsSchemaMember = ReturnType<NsActionsSchema['member']>;
 
+export const MaxIntLimit = 2147483647;
+
 export function max10CharCondition(value: any) {
   return isDefined(value) && value.length > 10
     ? 'only 10 characters are allowed'
@@ -94,7 +96,7 @@ export const schema: FormSchema = {
       member: (): CountryDistrictsSchemaMember => ({
         fields: (): CountryDistrictSchemaFields => ({
           clientId: [],
-          country: [requiredCondition, (value, allValues) =>{
+          country: [requiredCondition, (value, allValues) => {
             if (isNotDefined(value)) {
               return undefined;
             }
@@ -118,6 +120,7 @@ export const schema: FormSchema = {
     emergency_appeal_planned: [],
     // event_map: [requiredCondition],
     event_map: [],
+    cover_image: [],
 
     event_date: [],
     event_text: [],
@@ -127,7 +130,7 @@ export const schema: FormSchema = {
     ns_respond_date: [],
 
     affect_same_population: [],
-    ns_request_fund:[],
+    ns_request_fund: [],
     ns_respond: [],
     ns_request_text: [],
     lessons_learned: [],
@@ -151,7 +154,7 @@ export const schema: FormSchema = {
     partner_national_society: [],
     ifrc: [],
     icrc: [],
-    affect_same_area:[],
+    affect_same_area: [],
     un_or_other_actor: [],
     major_coordination_mechanism: [],
     identified_gaps: [],
@@ -180,7 +183,7 @@ export const schema: FormSchema = {
     people_per_local: [positiveNumberCondition, lessThanOrEqualToCondition(100)],
     displaced_people: [positiveIntegerCondition],
     people_targeted_with_early_actions: [positiveIntegerCondition],
-    total_targated_population:[positiveIntegerCondition],
+    total_targated_population: [positiveIntegerCondition],
     operation_objective: [],
     response_strategy: [],
 
@@ -191,8 +194,8 @@ export const schema: FormSchema = {
         fields: (): InterventionSchemaFields => ({
           clientId: [],
           title: [requiredCondition],
-          budget: [requiredCondition, positiveIntegerCondition],
-          person_targeted: [positiveIntegerCondition],
+          budget: [requiredCondition, positiveIntegerCondition, lessThanOrEqualToCondition(MaxIntLimit)],
+          person_targeted: [requiredCondition, positiveIntegerCondition, lessThanOrEqualToCondition(MaxIntLimit)],
           indicator: [],
           description: [],
         }),

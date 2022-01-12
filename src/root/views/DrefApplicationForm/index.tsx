@@ -9,7 +9,8 @@ import {
   PartialForm,
   useForm,
   accumulateErrors,
-  analyzeErrors,
+  getErrorObject,
+  ObjectError,
 } from '@togglecorp/toggle-form';
 import type { match as Match } from 'react-router-dom';
 
@@ -27,10 +28,7 @@ import {
   useLazyRequest,
   useRequest,
 } from '#utils/restRequest';
-import {
-  isObject,
-  ymdToDateString,
-} from '#utils/common';
+import { ymdToDateString } from '#utils/common';
 import LanguageContext from '#root/languageContext';
 import useAlert from '#hooks/useAlert';
 
@@ -116,7 +114,6 @@ interface Props {
 function DrefApplication(props: Props) {
   const {
     className,
-    // location,
     history,
     match,
   } = props;
@@ -127,11 +124,11 @@ function DrefApplication(props: Props) {
   const {
     value,
     error,
-    onValueChange,
+    setFieldValue: onValueChange,
     validate,
-    onErrorSet,
-    onValueSet,
-  } = useForm(defaultFormValues, schema);
+    setError: onErrorSet,
+    setValue: onValueSet,
+  } = useForm(schema, defaultFormValues);
 
   const {
     countryOptions,
@@ -173,7 +170,7 @@ function DrefApplication(props: Props) {
       const currentFields = stepTypesToFieldsMap[tabKey];
       const currentFieldsMap = listToMap(currentFields, d => d, d => true);
 
-      const erroredFields = Object.keys(error?.fields ?? {}) as (keyof DrefFields)[];
+      const erroredFields = Object.keys(getErrorObject(error) ?? {}) as (keyof DrefFields)[];
       const hasError = erroredFields.some(d => currentFieldsMap[d]);
       tabs[tabKey] = hasError;
     });
@@ -203,28 +200,12 @@ function DrefApplication(props: Props) {
     onFailure: ({
       value: {
         messageForNotification,
-        errors,
         formErrors,
       },
       debugMessage,
     }) => {
-      if (errors && isObject(errors)) {
-        const objErrors = errors as Record<string, string | string[]>;
-        const errorKeys = Object.keys(objErrors) as (keyof (typeof objErrors))[];
+      onErrorSet(formErrors);
 
-        const transformedError: Record<string, string> = {};
-        errorKeys.forEach((ek) => {
-          if (Array.isArray(objErrors[ek])) {
-            transformedError[ek] = (objErrors[ek] as string[]).join(', ');
-          } else {
-            transformedError[ek] = objErrors[ek] as string;
-          }
-        });
-
-        onErrorSet({
-          fields: transformedError,
-        });
-      }
       alert.show(
         <p>
           {strings.drefFormSaveRequestFailureMessage}
@@ -255,6 +236,10 @@ function DrefApplication(props: Props) {
 
         if (response.event_map_details) {
           newMap[response.event_map_details.id] = response.event_map_details.file;
+        }
+
+        if (response.cover_image_details) {
+          newMap[response.cover_image_details.id] = response.cover_image_details.file;
         }
 
         if (response.images_details?.length > 0) {
@@ -293,10 +278,7 @@ function DrefApplication(props: Props) {
       });
     },
     onFailure: ({
-      value: {
-        messageForNotification,
-        errors,
-      },
+      value: { messageForNotification },
       debugMessage,
     }) => {
       alert.show(
@@ -316,7 +298,7 @@ function DrefApplication(props: Props) {
   });
 
   const validateCurrentTab = React.useCallback((exceptions: (keyof DrefFields)[] = []) => {
-    const validationError = accumulateErrors(value, schema);
+    const validationError = getErrorObject(accumulateErrors(value, schema));
     const currentFields = stepTypesToFieldsMap[currentStep];
     const exceptionsMap = listToMap(exceptions, d => d, d => true);
 
@@ -324,28 +306,21 @@ function DrefApplication(props: Props) {
       return true;
     }
 
-    const currentTabFieldErrors = listToMap(
-      currentFields.filter(field => (
-        !exceptionsMap[field] && analyzeErrors(validationError.fields?.[field]
-        ))),
+    const currentTabErrors = listToMap(
+      currentFields.filter(field => (!exceptionsMap[field] && !!validationError?.[field])),
       field => field,
-      field => validationError.fields?.[field]
-    ) as NonNullable<NonNullable<(typeof error)>['fields']>;
+      field => validationError?.[field]
+    ) as ObjectError<DrefFields>;
 
     const newError: typeof error = {
-      ...error,
-      fields: {
-        ...error?.fields,
-        ...validationError.fields,
-        ...currentTabFieldErrors,
-      }
+      ...currentTabErrors,
     };
 
     onErrorSet(newError);
 
-    const hasError = Object.keys(currentTabFieldErrors).some(d => !!d);
+    const hasError = Object.keys(currentTabErrors).some(d => !!d);
     return !hasError;
-  }, [value, currentStep, onErrorSet, error]);
+  }, [value, currentStep, onErrorSet]);
 
   const handleTabChange = React.useCallback((newStep: StepTypes) => {
     scrollToTop();
@@ -359,33 +334,23 @@ function DrefApplication(props: Props) {
   }, [validateCurrentTab]);
 
   const submitDref = React.useCallback(() => {
-      const {
-        errored,
-        error,
-        value: finalValues,
-      } = validate();
+    const result = validate();
 
-      onErrorSet(error);
-
-      if (errored) {
-        return;
-      }
-
-      if (finalValues && userDetails && userDetails.id) {
-        const body = {
-          user: userDetails.id,
-          ...finalValues,
-        };
-        submitRequest(body as DrefApiFields);
-      }
+    if (result.errored) {
+      onErrorSet(result.error);
+    } else if (result.value && userDetails && userDetails.id) {
+      const body = {
+        user: userDetails.id,
+        ...result.value,
+      };
+      submitRequest(body as DrefApiFields);
+    }
   }, [submitRequest, validate, userDetails, onErrorSet]);
 
   const handleSubmitButtonClick = React.useCallback(() => {
     scrollToTop();
 
-    const isCurrentTabValid = validateCurrentTab([
-      'event_map'
-    ]);
+    const isCurrentTabValid = validateCurrentTab(['event_map']);
 
     if (!isCurrentTabValid) {
       return;
@@ -440,6 +405,7 @@ function DrefApplication(props: Props) {
           event_text: undefined,
           anticipatory_actions: undefined,
           people_targeted_with_early_actions: undefined,
+          event_date: undefined,
         };
       }
 
@@ -449,7 +415,7 @@ function DrefApplication(props: Props) {
 
   React.useEffect(() => {
     onValueSet((oldValue) => {
-      if (value.ns_request_fund === false || value.ns_respond ===false || value.affect_same_population ===false || value.affect_same_area === false) {
+      if (value.ns_request_fund === false || value.ns_respond === false || value.affect_same_population === false || value.affect_same_area === false) {
         return {
           ...oldValue,
           dref_recurrent_text: undefined,

@@ -1,21 +1,31 @@
 import { StyleSheet } from '@react-pdf/renderer';
 
+const PAGE_PADDING = 20;
 const FULL_WIDTH = 595;
 const SECTION_PADDING = 20;
 const VERTICAL_MARGIN = 10;
+const TABLE_CELL_PADDING = 10;
 const HEADING_VERTICAL_PADDING = 10;
-const SECTION_WIDTH = FULL_WIDTH - SECTION_PADDING * 2;
-const SMALL_PADDING = 5;
-const TABLE_BORDER = '1px solid #000000';
+const SUBHEADING_VERTICAL_PADDING = 5;
+const SECTION_WIDTH = FULL_WIDTH - SECTION_PADDING * 2 - PAGE_PADDING * 2;
+const SMALL_PADDING = 7;
+const TABLE_BORDER = '1px solid #ffffff';
+// const FONT_SIZE_SMALL = 6;
+const FONT_SIZE_MEDIUM = 10;
+const FONT_SIZE_LARGE = 12;
+const FONT_SIZE_EXTRA_LARGE = 14;
+const FONT_SIZE_SUPER_LARGE = 20;
 
 const pdfStyles = StyleSheet.create({
   page: {
+    fontSize: FONT_SIZE_MEDIUM,
     fontFamily: 'OpenSans',
-    fontSize: 10,
+    fontWeight: 'medium',
+    padding: SECTION_PADDING,
   },
   mapImage: {
-    width: 240,
-    height: 360,
+    width: '100%',
+    height: 200,
     objectFit: 'contain',
     objectPosition: 'center',
   },
@@ -26,6 +36,13 @@ const pdfStyles = StyleSheet.create({
     alignItems: 'baseline',
     flexDirection: 'row',
   },
+  verticalSection: {
+    paddingHorizontal: SECTION_PADDING,
+    paddingVertical: SECTION_PADDING / 2,
+  },
+  basicInfoTable: {
+    width: '100%',
+  },
   compactSection: {
     display: 'flex',
     justifyItem: 'stretch',
@@ -34,51 +51,51 @@ const pdfStyles = StyleSheet.create({
     width: '100%',
   },
   bannerImage: {
-    width: 400,
+    backgroundColor: '#f0f0f0',
+    width: '100%',
     height: 300,
     objectFit: 'contain',
     objectPosition: 'center',
   },
-  textSection: {
-    padding: SECTION_PADDING,
-  },
   textLabelSection: {
-    paddingTop: SECTION_PADDING,
+    color: '#011e41',
+    fontWeight: 'bold',
   },
   logo: {
-    width: 100,
-    height: 100,
+    width: 200,
+    height: 90,
+    objectFit: 'contain',
+    objectPosition: 'center',
   },
   icon: {
     width: 50,
     height: 50,
   },
   title: {
-    fontSize: 30,
+    fontSize: FONT_SIZE_SUPER_LARGE,
     fontFamily: 'Montserrat',
     color: '#f5333f',
   },
   heading: {
-    fontSize: 20,
+    fontSize: FONT_SIZE_EXTRA_LARGE,
     fontFamily: 'Montserrat',
     color: '#f5333f',
     paddingVertical: HEADING_VERTICAL_PADDING,
   },
   subHeading: {
-    fontSize: 14,
+    fontSize: FONT_SIZE_LARGE,
     fontWeight: 'bold',
+    paddingVertical: SUBHEADING_VERTICAL_PADDING,
   },
   label: {
-    fontFamily: 'OpenSans',
-  },
-  value: {
-    fontFamily: 'OpenSans',
+    fontFamily: 'Montserrat',
+    fontSize: FONT_SIZE_MEDIUM,
     fontWeight: 'bold',
   },
   textOutput: {
     backgroundColor: '#f0f0f0',
     margin: 1,
-    padding: 10,
+    padding: TABLE_CELL_PADDING,
   },
   oneByThree: {
     width: '33%',
@@ -94,7 +111,7 @@ const pdfStyles = StyleSheet.create({
   },
 
   table: {
-    fontSize: 10,
+    fontSize: FONT_SIZE_MEDIUM,
     display: "flex",
     flexDirection: "column",
     justifyContent: "flex-start",
@@ -102,12 +119,11 @@ const pdfStyles = StyleSheet.create({
     flexWrap: "nowrap",
     alignItems: "stretch",
   },
-
   row: {
     display: "flex",
     flexDirection: "row",
     minWidth: '100%',
-    width: '100%',
+    backgroundColor: '#f0f0f0',
   },
   cellContent: {
     border: TABLE_BORDER,
@@ -131,18 +147,27 @@ const pdfStyles = StyleSheet.create({
     minWidth: '49%',
     maxWidth: '49%',
   },
+  cellTitle: {
+    border: TABLE_BORDER,
+    display: 'flex',
+    justifyContent: 'space-between',
+    padding: '5',
+    minWidth: '49%',
+    maxWidth: '49%',
+    fontWeight: 'bold',
+  },
   header: {
     backgroundColor: "#eee"
   },
   headerText: {
-    fontSize: 11,
+    fontSize: FONT_SIZE_LARGE,
     fontWeight: 'bold',
     color: "#1a245c",
     margin: 8
   },
   tableText: {
     margin: 10,
-    fontSize: 10,
+    fontSize: FONT_SIZE_MEDIUM,
   },
   tpSection: {
     display: 'flex',
@@ -158,6 +183,8 @@ const pdfStyles = StyleSheet.create({
     width: SECTION_WIDTH * 0.3,
     padding: SMALL_PADDING,
     textAlign: 'center',
+    color: '#011e41',
+    fontWeight: 'bold',
   },
   tpContentCell: {
     display: 'flex',
@@ -189,7 +216,6 @@ const pdfStyles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'column',
     padding: SECTION_PADDING,
-    width: '100%',
   },
   piOutput: {
     width: '100%',
@@ -199,6 +225,18 @@ const pdfStyles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     width: '100%',
+    backgroundColor: '#f0f0f0',
+  },
+  piIconCell: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: 30,
+    height: 30,
+  },
+  piIcon: {
+    width: 20,
+    height: 20,
   },
   piSubRow: {
     display: 'flex',
@@ -241,24 +279,41 @@ const pdfStyles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     width: '100%',
+    backgroundColor: '#f0f0f0',
+  },
+  niIconCell: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: 30,
+    height: 30,
+  },
+  niIcon: {
+    width: 20,
+    height: 20,
   },
   niHeaderCell: {
     padding: SMALL_PADDING,
     border: TABLE_BORDER,
     flexBasis: '30%',
+    fontWeight: 'bold',
   },
   niContentCell: {
     padding: SMALL_PADDING,
     border: TABLE_BORDER,
     flexBasis: '70%',
   },
-
+  nsaOutput: {
+    display: 'flex',
+    flexDirection: 'row',
+    width: '100%',
+  },
   ciRow: {
     display: 'flex',
     flexDirection: 'row',
     flexWrap: 'wrap',
+    paddingTop: 2,
   },
-
   contactSection: {
     display: 'flex',
     flexDirection: 'column',
@@ -270,7 +325,7 @@ const pdfStyles = StyleSheet.create({
   },
 
   contactType: {
-    fontWeight: 'bold',
+    fontFamily: 'Montserrat',
     marginRight: SMALL_PADDING,
   },
 });

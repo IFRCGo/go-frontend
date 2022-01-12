@@ -6,6 +6,7 @@ import {
   PartialForm,
   ArrayError,
   useFormObject,
+  getErrorObject,
 } from '@togglecorp/toggle-form';
 import { IoTrash } from 'react-icons/io5';
 
@@ -57,7 +58,7 @@ function InterventionInput(props: Props) {
 
   const onFieldChange = useFormObject(index, onChange, defaultInterventionValue);
   const error = (value && value.clientId && errorFromProps)
-    ? errorFromProps.members?.[value.clientId]
+    ? getErrorObject(errorFromProps?.[value.clientId])
     : undefined;
 
   return (
@@ -75,14 +76,14 @@ function InterventionInput(props: Props) {
               name="budget"
               value={value.budget}
               onChange={onFieldChange}
-              error={error?.fields?.budget}
+              error={error?.budget}
             />
             <NumberInput
               label="Persons Targeted"
               name="person_targeted"
               value={value.person_targeted}
               onChange={onFieldChange}
-              error={error?.fields?.person_targeted}
+              error={error?.person_targeted}
             />
           </>
         )}
@@ -92,14 +93,14 @@ function InterventionInput(props: Props) {
           name="indicator"
           value={value.indicator}
           onChange={onFieldChange}
-          error={error?.fields?.indicator}
+          error={error?.indicator}
         />
         <BulletTextArea
           label={strings.drefFormListOfActivities}
           name="description"
           value={value.description}
           onChange={onFieldChange}
-          error={error?.fields?.description}
+          error={error?.description}
         />
       </InputSection>
       <Button

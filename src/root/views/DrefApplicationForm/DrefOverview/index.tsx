@@ -4,7 +4,8 @@ import {
   Error,
   EntriesAsList,
   useFormArray,
-  StateArg,
+  getErrorObject,
+  SetBaseValueArg,
 } from '@togglecorp/toggle-form';
 import {
   randomString,
@@ -23,7 +24,7 @@ import LanguageContext from '#root/languageContext';
 import RadioInput from '#components/RadioInput';
 import DateInput from '#components/DateInput';
 import NumberInput from '#components/NumberInput';
-import GoFileInput from '#components/GoFileInput';
+import DREFFileInput from '#components/DREFFileInput';
 import { rankedSearchOnList } from '#utils/common';
 
 import {
@@ -57,7 +58,7 @@ interface Props {
   fetchingNationalSociety?: boolean;
   fileIdToUrlMap: Record<number, string>;
   setFileIdToUrlMap?: React.Dispatch<React.SetStateAction<Record<number, string>>>;
-  onValueSet: (value: StateArg<Value>) => void;
+  onValueSet: (value: SetBaseValueArg<Value>) => void;
   userOptions: NumericValueOption[];
   onCreateAndShareButtonClick: () => void;
 }
@@ -72,7 +73,7 @@ function DrefOverview(props: Props) {
     fetchingDisasterTypes,
     disasterTypeOptions,
     nationalSocietyOptions,
-    error,
+    error: formError,
     onValueChange,
     value,
     yesNoOptions,
@@ -85,9 +86,14 @@ function DrefOverview(props: Props) {
     onCreateAndShareButtonClick,
   } = props;
 
+  const error = React.useMemo(
+    () => getErrorObject(formError),
+    [formError]
+  );
+
   const {
-    onValueChange: onCountryDistrictChange,
-    onValueRemove: onCountryDistrictRemove,
+    setValue: onCountryDistrictChange,
+    removeValue: onCountryDistrictRemove,
   } = useFormArray<'country_district', PartialForm<CountryDistrict>>(
     'country_district',
     onValueChange,
@@ -176,7 +182,7 @@ function DrefOverview(props: Props) {
             name="title"
             value={value.title}
             onChange={onValueChange}
-            error={error?.fields?.title}
+            error={error?.title}
             placeholder={strings.drefFormTitleDescription}
           />
         </InputSection>
@@ -184,7 +190,7 @@ function DrefOverview(props: Props) {
           title={strings.drefFormNationalSociety}
         >
           <SelectInput
-            error={error?.fields?.national_society}
+            error={error?.national_society}
             name="national_society"
             onChange={onValueChange}
             options={nationalSocietyOptions}
@@ -198,7 +204,7 @@ function DrefOverview(props: Props) {
           twoColumn
         >
           <SelectInput
-            error={error?.fields?.disaster_type}
+            error={error?.disaster_type}
             label={strings.drefFormDisasterTypeLabel}
             name="disaster_type"
             onChange={onValueChange}
@@ -207,7 +213,7 @@ function DrefOverview(props: Props) {
             value={value.disaster_type}
           />
           <SelectInput
-            error={error?.fields?.type_of_onset}
+            error={error?.type_of_onset}
             label={strings.drefFormTypeOfOnsetLabel}
             name="type_of_onset"
             onChange={onValueChange}
@@ -215,7 +221,7 @@ function DrefOverview(props: Props) {
             value={value.type_of_onset}
           />
           <SelectInput
-            error={error?.fields?.disaster_category}
+            error={error?.disaster_category}
             label={strings.drefFormDisasterCategoryLabel}
             name="disaster_category"
             onChange={onValueChange}
@@ -235,7 +241,7 @@ function DrefOverview(props: Props) {
               value={c}
               onChange={onCountryDistrictChange}
               onRemove={onCountryDistrictRemove}
-              error={error?.fields?.country_district}
+              error={getErrorObject(error?.country_district)}
               countryOptions={countryOptions}
               fetchingCountries={fetchingCountries}
             />
@@ -258,7 +264,7 @@ function DrefOverview(props: Props) {
             name="num_affected"
             value={value.num_affected}
             onChange={onValueChange}
-            error={error?.fields?.num_affected}
+            error={error?.num_affected}
           />
         </InputSection>
         <InputSection
@@ -268,7 +274,7 @@ function DrefOverview(props: Props) {
             name="num_assisted"
             value={value.num_assisted}
             onChange={onValueChange}
-            error={error?.fields?.num_assisted}
+            error={error?.num_assisted}
           />
         </InputSection>
         <InputSection
@@ -278,7 +284,7 @@ function DrefOverview(props: Props) {
             name="amount_requested"
             value={value.amount_requested}
             onChange={onValueChange}
-            error={error?.fields?.amount_requested}
+            error={error?.amount_requested}
           />
         </InputSection>
         <InputSection
@@ -291,15 +297,15 @@ function DrefOverview(props: Props) {
             radioLabelSelector={optionLabelSelector}
             value={value.emergency_appeal_planned}
             onChange={onValueChange}
-            error={error?.fields?.emergency_appeal_planned}
+            error={error?.emergency_appeal_planned}
           />
         </InputSection>
         <InputSection
           title={strings.drefFormUploadMap}
         >
-          <GoFileInput
+          <DREFFileInput
             accept="image/*"
-            error={error?.fields?.event_map}
+            error={error?.event_map}
             fileIdToUrlMap={fileIdToUrlMap}
             name="event_map"
             onChange={onValueChange}
@@ -308,7 +314,23 @@ function DrefOverview(props: Props) {
             value={value.event_map}
           >
             {strings.drefFormUploadImageLabel}
-          </GoFileInput>
+          </DREFFileInput>
+        </InputSection>
+        <InputSection
+          title={strings.drefFormUploadCoverImage}
+        >
+          <DREFFileInput
+            accept="image/*"
+            error={error?.cover_image}
+            fileIdToUrlMap={fileIdToUrlMap}
+            name="cover_image"
+            onChange={onValueChange}
+            setFileIdToUrlMap={setFileIdToUrlMap}
+            showStatus
+            value={value.cover_image}
+          >
+            {strings.drefFormUploadImageLabel}
+          </DREFFileInput>
         </InputSection>
       </Container>
       <Container
@@ -323,7 +345,7 @@ function DrefOverview(props: Props) {
               name="event_date"
               value={value.event_date}
               onChange={onValueChange}
-              error={error?.fields?.event_date}
+              error={error?.event_date}
             />
           }
           {isImminentOnset && (
@@ -331,7 +353,7 @@ function DrefOverview(props: Props) {
               name="event_text"
               value={value.event_text}
               onChange={onValueChange}
-              error={error?.fields?.event_text}
+              error={error?.event_text}
             />
           )}
         </InputSection>
@@ -342,7 +364,7 @@ function DrefOverview(props: Props) {
             name="go_field_report_date"
             value={value.go_field_report_date}
             onChange={onValueChange}
-            error={error?.fields?.go_field_report_date}
+            error={error?.go_field_report_date}
           />
         </InputSection>
         <InputSection
@@ -352,7 +374,7 @@ function DrefOverview(props: Props) {
             name="ns_respond_date"
             value={value.ns_respond_date}
             onChange={onValueChange}
-            error={error?.fields?.ns_respond_date}
+            error={error?.ns_respond_date}
           />
         </InputSection>
         <InputSection
@@ -362,7 +384,7 @@ function DrefOverview(props: Props) {
             name="ns_request_date"
             value={value.ns_request_date}
             onChange={onValueChange}
-            error={error?.fields?.ns_request_date}
+            error={error?.ns_request_date}
           />
         </InputSection>
         <InputSection
@@ -373,7 +395,7 @@ function DrefOverview(props: Props) {
             name="submission_to_geneva"
             value={value.submission_to_geneva}
             onChange={onValueChange}
-            error={error?.fields?.submission_to_geneva}
+            error={error?.submission_to_geneva}
           />
         </InputSection>
         <InputSection
@@ -384,7 +406,7 @@ function DrefOverview(props: Props) {
             name="date_of_approval"
             value={value.date_of_approval}
             onChange={onValueChange}
-            error={error?.fields?.date_of_approval}
+            error={error?.date_of_approval}
           />
         </InputSection>
         <InputSection
@@ -395,7 +417,7 @@ function DrefOverview(props: Props) {
             name="publishing_date"
             value={value.publishing_date}
             onChange={onValueChange}
-            error={error?.fields?.publishing_date}
+            error={error?.publishing_date}
           />
         </InputSection>
         <InputSection
@@ -406,7 +428,7 @@ function DrefOverview(props: Props) {
             placeholder={strings.drefFormOperationTimeframeSubmissionDescription}
             value={value.operation_timeframe}
             onChange={onValueChange}
-            error={error?.fields?.operation_timeframe}
+            error={error?.operation_timeframe}
           />
         </InputSection>
         <InputSection
@@ -417,7 +439,7 @@ function DrefOverview(props: Props) {
             name="end_date"
             value={value.end_date}
             onChange={onValueChange}
-            error={error?.fields?.end_date}
+            error={error?.end_date}
             readOnly
           />
         </InputSection>
