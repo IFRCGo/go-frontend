@@ -35,7 +35,6 @@ function ActionsOverview(props: Props) {
     value,
     actionOptions,
   } = props;
-
   return (
     <>
       <Container

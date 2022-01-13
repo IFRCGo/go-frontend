@@ -1,4 +1,12 @@
-import { isDefined, isNotDefined, randomString } from '@togglecorp/fujs';
+import {
+  isDefined,
+  isNotDefined,
+  randomString
+} from '@togglecorp/fujs';
+import {
+  Country,
+  DistrictMini,
+} from '#types';
 
 export const ONSET_IMMINENT = 0;
 export const ONSET_SLOW = 1;

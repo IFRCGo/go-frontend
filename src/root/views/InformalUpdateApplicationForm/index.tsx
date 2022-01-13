@@ -1,9 +1,15 @@
 import React from 'react';
 import { isDefined, listToMap } from '@togglecorp/fujs';
 import type { match as Match } from 'react-router-dom';
-import type { History, Location } from 'history';
+import type {
+  History,
+  Location
+} from 'history';
 import { Link } from 'react-router-dom';
-import { PartialForm, useForm } from '@togglecorp/toggle-form';
+import {
+  PartialForm,
+  useForm
+} from '@togglecorp/toggle-form';
 
 import Page from '#components/Page';
 import Button, { useButtonFeatures } from '#components/Button';
@@ -13,16 +19,28 @@ import Tab from '#components/Tabs/Tab';
 import Tabs from '#components/Tabs';
 import Container from '#components/Container';
 import NonFieldError from '#components/NonFieldError';
+import { useLazyRequest } from '#utils/restRequest';
+import useAlert from '#hooks/useAlert';
 import TabPanel from '#components/Tabs/TabPanel';
 import ContextOverview from './ContextOverview';
 import FocalPoints from './FocalPoint';
 import ActionsOverview from './ActionOverview';
-import { actionsFields, contextFields, focalFields, getDefinedValues, InformalUpdateAPIFields, InformalUpdateFields, transformFormFieldsToAPIFields } from './common';
-import useInformalUpdateFormOptions, { schema } from './useInformalUpdateFormOptions';
+
+import {
+  actionsFields,
+  contextFields,
+  focalFields,
+  InformalUpdateFields,
+  getDefinedValues,
+  InformalUpdateAPIFields,
+  transformFormFieldsToAPIFields
+} from './common';
+import
+useInformalUpdateFormOptions,
+{ schema }
+  from './useInformalUpdateFormOptions';
 
 import styles from './styles.module.scss';
-import { useLazyRequest } from '#utils/restRequest';
-import useAlert from '#hooks/useAlert';
 
 interface Props {
   className?: string;

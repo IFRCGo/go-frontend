@@ -12,7 +12,13 @@ import RadioInput from '#components/RadioInput';
 import TextInput from '#components/TextInput';
 import languageContext from '#root/languageContext';
 import { optionDescriptionSelector } from '#views/FieldReportForm/common';
-import { BooleanValueOption, InformalUpdateFields, numericOptionKeySelector, NumericValueOption, optionLabelSelector } from '../common';
+import {
+  BooleanValueOption,
+  InformalUpdateFields,
+  numericOptionKeySelector,
+  NumericValueOption,
+  optionLabelSelector
+} from '../common';
 
 type Value = PartialForm<InformalUpdateFields>;
 
