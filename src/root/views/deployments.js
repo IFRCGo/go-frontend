@@ -6,7 +6,6 @@ import { Helmet } from 'react-helmet';
 import {  withRouter, Route, Switch } from 'react-router-dom';
 import BlockLoading from '#components/block-loading';
 import { TimeLineChart } from '#components/Charts';
-import { Link } from 'react-router-dom';
 import {
   enterFullscreen,
   exitFullscreen,
@@ -42,8 +41,6 @@ import LanguageContext from '#root/languageContext';
 import RouterTabs from '#components/RouterTabs';
 import Translate from '#components/Translate';
 import { countriesGeojsonSelector } from '../selectors';
-import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
-import TabContent from '#components/tab-content';
 import OperationalTimeline from './Surge/operational-timeline';
 import CatalogueOfSurgeServices from './Surge/catalogue-of-surge-services';
 
@@ -160,7 +157,6 @@ class Deployments extends SFPComponent {
   displayTabContent () {
     const tabLinksArray = this.getTabDetails().map(({ link }) => link);
     const currentUrl = this.props.location.pathname;
-    console.log('current url', currentUrl);
     if (currentUrl === '/deployments') {
       this.props.history.replace(tabLinksArray[0]);
     }
