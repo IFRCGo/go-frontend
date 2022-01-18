@@ -140,41 +140,6 @@ function ContextOverview(props: Props) {
     ));
   }, [countryOptions]);
 
-  /*  const initialOptions = React.useMemo(() => (
-        value.users?.map((u) => ({
-            label: userMap[u],
-            value: u,
-        }))
-    ), [userMap, value.users]);*/
-
-
-  /*  React.useMemo(() => {
-        const newTitle: string = `${value.country} - ${value.district} : ${value.hazard_type} `;
-        onValueSet({ ...value, title: newTitle });
- 
-    }, [value.country, value.district, value.disaster_type]);
-*/
-  /* const countryQuery = React.useMemo(() => ({
-       country: value.country,
-       limit: 500,
-   }), [value.country]);
- 
-   const {
-       pending: fetchingDistricts,
-       response: districtsResponse,
-   } = useRequest<ListResponse<DistrictMini>>({
-       skip: !value.country,
-       url: 'api/v2/district/',
-       query: countryQuery,
-   });
- 
-   const districtOptions = React.useMemo(() => (
-       districtsResponse?.results?.map(d => ({
-           value: d.id,
-           label: d.name,
-       })).sort(compareString) ?? emptyNumericOptionList
-   ), [districtsResponse]);*/
-
   return (
     <>
       <Container
@@ -311,18 +276,19 @@ function ContextOverview(props: Props) {
           title={strings.informalUpdateFormContextMapTitle}
           description={strings.informalUpdateFormContextMapDescription}
         >
-          <DREFFileInput
+          <InformalUpdateFileInput
             accept="image/*"
             error={error?.fields?.map}
             fileIdToUrlMap={fileIdToUrlMap}
             name="map"
             onChange={onValueChange}
             setFileIdToUrlMap={setFileIdToUrlMap}
+            multiple
             showStatus
             value={value.map}
           >
             {strings.informalUpdateFormContextReferenceUrlButtonLabel}
-          </DREFFileInput>
+          </InformalUpdateFileInput>
         </InputSection>
       </Container>
 

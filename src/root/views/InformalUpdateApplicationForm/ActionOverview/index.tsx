@@ -135,7 +135,7 @@ function ActionsOverview(props: Props) {
           <Checklist
             name="actions_government"
             onChange={onValueChange}
-            options={actionOptions.PNS}
+            options={actionOptions.GOV}
             labelSelector={optionLabelSelector}
             keySelector={numericOptionKeySelector}
             tooltipSelector={d => d.description}

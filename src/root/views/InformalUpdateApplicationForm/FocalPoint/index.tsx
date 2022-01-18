@@ -17,7 +17,9 @@ import {
   InformalUpdateFields,
   numericOptionKeySelector,
   NumericValueOption,
-  optionLabelSelector
+  optionLabelSelector,
+  stringOptionKeySelector,
+  StringValueOption
 } from '../common';
 
 type Value = PartialForm<InformalUpdateFields>;
@@ -27,7 +29,7 @@ interface Props {
   onValueChange: (...entries: EntriesAsList<Value>) => void;
   yesNoOptions: BooleanValueOption[];
   value: Value;
-  shareWithOptions: NumericValueOption[];
+  shareWithOptions: StringValueOption[];
   onValueSet: (value: StateArg<Value>) => void;
 }
 
@@ -123,7 +125,7 @@ function FocalPoints(props: Props) {
           <RadioInput
             name="share_with"
             options={shareWithOptions}
-            radioKeySelector={numericOptionKeySelector}
+            radioKeySelector={stringOptionKeySelector}
             radioLabelSelector={optionLabelSelector}
             radioDescriptionSelector={optionDescriptionSelector}
             value={value.share_with}

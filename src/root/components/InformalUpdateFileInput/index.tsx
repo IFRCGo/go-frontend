@@ -101,26 +101,41 @@ function InformalUpdateFileInput<T extends string>(props: Props<T>) {
     context,
   } = useLazyRequest<Option | Option[], { file: FileInputProps<T>['value'] }>({
     formData: true,
-    url: props.multiple ? 'api/v2/informal-file/multiple/' : 'api/v2/informal-file/',
+    url: props.multiple ? 'api/v2/informal-file/' : 'api/v2/informal-file/',
     method: 'POST',
     body: ctx => ctx,
     onSuccess: (response) => {
       if (props.multiple) {
-        const ids = (response as Option[]).map(v => v.id);
+        const option = response as Option;
+        const { id } = option;
+
         if (setFileIdToUrlMap) {
           setFileIdToUrlMap((oldMap) => {
             const newMap = {
               ...oldMap,
             };
 
-            (response as Option[]).forEach((o) => {
-              newMap[o.id] = o.file;
-            });
-
+            newMap[option.id] = option.file;
             return newMap;
           });
         }
-        props.onChange([...(props.value ?? []), ...ids], name);
+        props.onChange([...(props.value ?? []), id], name);
+
+        //const ids = (response as Option[]).map(v => v.id);
+        //if (setFileIdToUrlMap) {
+        //  setFileIdToUrlMap((oldMap) => {
+        //    const newMap = {
+        //      ...oldMap,
+        //    };
+
+        //    (response as Option[]).forEach((o) => {
+        //      newMap[o.id] = o.file;
+        //    });
+
+        //    return newMap;
+        //  });
+        //}
+        //props.onChange([...(props.value ?? []), ...ids], name);
       } else {
         const option = response as Option;
         const { id } = option;

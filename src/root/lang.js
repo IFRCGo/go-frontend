@@ -3365,12 +3365,13 @@ export default {
   informalUpdateFormFocalIfrcRcrcNetworkAndDonorsLabel: 'IFRC Network and Donors',
 
   // informal update report
-  informalUpdateReportsTableViewAllReports: 'View all emergencies',
   informalUpdateReportsTableTitle: 'LATEST FLASH UPDATES',
   informalUpdateReportsTableViewAllReports: 'View All Flash Updates',
   informalUpdateReportsTableViewAllReportsTitle: 'All Flash Updates',
   informalUpdateReportsTableViewAllReportsBreadcrumTitle: 'Flash Updates',
-
   allFlashUpdatePageHeading: 'All Flash Updates',
-
+  informalUpdateIfrcSecretariatLabel: 'IFRC Secretariat',
+  informalUpdateRcrcNetworkLabel: 'RCRC Network',
+  informalUpdateRcrcNetworkAndDonorsLabel: 'RCRC Network and Donors',
+  informalUpdateFormRedirectMessage: 'Informal report updated, redirecting...',
 };

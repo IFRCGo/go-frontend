@@ -1,51 +1,34 @@
 import {
   isDefined,
   isNotDefined,
-  randomString
 } from '@togglecorp/fujs';
-import {
-  Country,
-  DistrictMini,
-} from '#types';
 
 export const ONSET_IMMINENT = 0;
 export const ONSET_SLOW = 1;
 export const ONSET_SUDDEN = 2;
-
-export const IFRC_SECRETARIAT = 1;
-export const RCRC_NETWORK = 2;
-export const RCRC_NETWORK_AND_DONORS = 3;
-
 export interface NumericValueOption {
   value: number;
   label: string;
 }
-
 export interface BooleanValueOption {
   value: boolean;
   label: string;
 }
-
 export interface StringValueOption {
   value: string;
   label: string;
 }
-
 export interface NumericKeyValuePair {
   key: number;
   value: string;
 }
-
 export interface StringKeyValuePair {
   key: string;
   value: string;
 }
-
 export interface User {
   id: number;
 }
-
-
 export interface HazardDetails {
   id: number;
   name: string;
@@ -59,22 +42,15 @@ export interface InformalUpdateTableFields {
   country: string;
   hazard_type_details: HazardDetails;
 }
-
 export interface Entity {
   id: number;
   name: string;
 }
-
 export interface CountryDistrict {
   //clientId: string;
   country: number | undefined;
   district: number | undefined;
 }
-
-//export interface ReferenceUrl {
-//  url: string;
-//}
-
 export interface ReferenceData {
   //clientId: string;
   date: string;
@@ -82,7 +58,6 @@ export interface ReferenceData {
   url?: string;
   document?: string;
 }
-
 export interface ImageDetails {
   id: number;
   file: string;
@@ -114,7 +89,6 @@ export const stringOptionKeySelector = (o: StringValueOption) => o.value;
 export const booleanOptionKeySelector = (o: BooleanValueOption) => o.value;
 export const optionLabelSelector = (o: Option) => o.label;
 export const tableKeySelector = (o: InformalUpdateTableFields) => o.id;
-
 export interface InformalUpdateFields {
   id: number;
   references: ReferenceData[];
@@ -125,7 +99,7 @@ export interface InformalUpdateFields {
   title: string;
   situational_overview: string;
   graphic: number[];
-  map: number;
+  map: number[];
   reference_date: string;
   reference_name: string;
   reference_url: string;
@@ -148,20 +122,19 @@ export interface InformalUpdateFields {
   ifrc_title: string;
   ifrc_email: string;
   ifrc_phone: string;
-  share_with: number;
+  share_with: string;
 
   hazard_type_details: HazardDetails[];
   graphic_details: ImageDetails;
   map_details: ImageDetails;
 }
-
 export interface InformalUpdateAPIFields {
   country_district: CountryDistrict[];
   hazard_type: number;
   title: string;
   situational_overview: string;
   graphic: number[];
-  map: number;
+  map: number[];
   references: ReferenceData[];
   hazard_type_details: HazardDetails[];
   graphic_details: ImageDetails;
@@ -186,7 +159,7 @@ export interface InformalUpdateAPIFields {
 
 }
 
-export type OrganizationType = 'NTLS' | 'PNS' | 'FDRN' | 'IFRC' | 'RCRC' | 'GOVERNMENT';
+export type OrganizationType = 'NTLS' | 'PNS' | 'FDRN' | 'IFRC' | 'RCRC' | 'GOV';
 export type ReportType = 'EW' | 'EVT';
 
 export type Action = {
@@ -196,7 +169,6 @@ export type Action = {
   description: string | undefined;
   organization: OrganizationType;
 }
-
 export interface ActionFields {
   category: string;
   field_report_types: ReportType[];
@@ -211,7 +183,6 @@ export type ActionByReportType = {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   [key in ReportType]: ActionFields[];
 }
-
 
 export type ActionsByOrganization = {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -327,13 +298,13 @@ export function transformFormFieldsToAPIFields(formValues: InformalUpdateFields)
 
   if (isDefined(actions_government_desc) || (actions_government ?? [].length > 0)) {
     actions_taken.push({
-      organization: 'GOVERNMENT',
+      organization: 'GOV',
       summary: actions_government_desc,
       actions: actions_government
     });
   }
 
-  if ((isDefined(country) && isDefined(district)) && (country_district ?? [].length < 0)) {
+  if ((isDefined(country) && isDefined(district))) {
     country_district.push({
       //clientId: randomString(),
       country: country,
@@ -360,11 +331,10 @@ export function transformFormFieldsToAPIFields(formValues: InformalUpdateFields)
     ifrc_name,
     ifrc_title,
     ifrc_phone,
-    share_with: 'ifrc_secretariat',
+    share_with,
 
     hazard_type_details,
     graphic_details,
     map_details,
   };
 }
-

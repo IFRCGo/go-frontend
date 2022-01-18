@@ -3,6 +3,7 @@ import {
   PartialForm,
   ObjectSchema,
   ArraySchema,
+  emailCondition,
 } from '@togglecorp/toggle-form';
 import { isDefined } from '@togglecorp/fujs';
 
@@ -32,12 +33,6 @@ import {
   ActionsByOrganization,
   OrganizationType,
   ActionsByOrganizationArrayLists,
-  StringValueOption,
-  StringKeyValuePair,
-  NumericKeyValuePair,
-  IFRC_SECRETARIAT,
-  RCRC_NETWORK,
-  RCRC_NETWORK_AND_DONORS,
 } from './common';
 
 export type FormSchema = ObjectSchema<PartialForm<InformalUpdateFields>>;
@@ -69,14 +64,15 @@ export function lessThanSixImagesCondition(value: any) {
 
 export const schema: FormSchema = {
   fields: (value): FormSchemaFields => ({
-    country: [],
-    district: [],
-    hazard_type: [],
-    situational_overview: [],
-    title: [],
+    country: [requiredCondition],
+    district: [requiredCondition],
+    hazard_type: [requiredCondition],
+    situational_overview: [requiredCondition],
+    title: [requiredCondition],
     country_district: [],
     references: [],
     graphic: [],
+    map: [],
 
     actions_ntls: [],
     actions_ntls_desc: [],
@@ -87,8 +83,8 @@ export const schema: FormSchema = {
     actions_government: [],
     actions_government_desc: [],
 
-    originator_name: [],
-    originator_email: [],
+    originator_name: [requiredCondition],
+    originator_email: [requiredCondition, emailCondition],
     originator_phone: [],
     originator_title: [],
     ifrc_email: [],
@@ -109,23 +105,14 @@ const limitQuery = {
   limit: 500,
 };
 
-/*interface UserListItem {
-  id: number;
-  first_name: string;
-  last_name: string;
-  email: string;
-  username: string;
-}
-*/
-
-/*function transformKeyValueToLabelValue<O extends NumericKeyValuePair | StringKeyValuePair>(o: O): {
-    label: string;
-    value: O['key'];
+/*function transformKeyValueToLabelValue<O extends StringKeyValuePair>(o: O): {
+  label: string;
+  value: O['key'];
 } {
-    return {
-        value: o.key,
-        label: o.value,
-    };
+  return {
+    value: o.key,
+    label: o.value,
+  };
 }*/
 
 function useInformalUpdateFormOptions(value: PartialForm<InformalUpdateFields>) {
@@ -198,14 +185,13 @@ function useInformalUpdateFormOptions(value: PartialForm<InformalUpdateFields>) 
   } = useRequest<ListResponse<Disaster>>({
     url: 'api/v2/disaster_type/',
   });
+
   const disasterTypeOptions = React.useMemo(() => (
     disasterTypesResponse?.results?.map((d) => ({
       value: d.id,
       label: d.name,
     })) ?? emptyNumericOptionList
   ), [disasterTypesResponse]);
-
-
 
   const yesNoOptions = React.useMemo(() => {
     return [
@@ -214,37 +200,22 @@ function useInformalUpdateFormOptions(value: PartialForm<InformalUpdateFields>) 
     ] as BooleanValueOption[];
   }, [strings]);
 
-  const shareWithOptions: NumericValueOption[] = React.useMemo(() => ([
-    {
-      value: IFRC_SECRETARIAT,
-      label: strings.informalUpdateFormFocalIfrcSecretariatLabel
-    },
-    {
-      value: RCRC_NETWORK,
-      label: strings.informalUpdateFormFocalIfrcRcrcNetworkLabel
-    },
-    {
-      value: RCRC_NETWORK_AND_DONORS,
-      label: strings.informalUpdateFormFocalIfrcRcrcNetworkAndDonorsLabel
-    },
-  ]), [strings]);
-
-
-  /* const reportType: ReportType = React.useMemo(() => {
-       if (value.status === STATUS_EARLY_WARNING) {
-           return 'EW';
-       }
- 
-       if (value.is_covid_report) {
-           return 'COVID';
-       }
- 
-       if (value.dtype === DISASTER_TYPE_EPIDEMIC) {
-           return 'EPI';
-       }
- 
-       return 'EVT';
-   }, [value.status, value.dtype, value.is_covid_report]);*/
+  const shareWithOptions = React.useMemo(() => (
+    [
+      {
+        label: strings.informalUpdateIfrcSecretariatLabel,
+        value: 'ifrc_secretariat'
+      },
+      {
+        label: strings.informalUpdateRcrcNetworkLabel,
+        value: 'rcrc_network'
+      },
+      {
+        label: strings.informalUpdateFormFocalIfrcRcrcNetworkAndDonorsLabel,
+        value: 'rcrc_network_and_donors'
+      }
+    ]
+  ), [strings]);
 
   const ntls = true;
   const pns = true;
@@ -269,7 +240,7 @@ function useInformalUpdateFormOptions(value: PartialForm<InformalUpdateFields>) 
       return "RCRC";
     }
     if (government) {
-      return "GOVERNMENT";
+      return "GOV";
     }
     return 'FDRN';
   }, [ntls, pns, ifrc, rcrc, government]);
@@ -278,7 +249,7 @@ function useInformalUpdateFormOptions(value: PartialForm<InformalUpdateFields>) 
     pending: fetchingActions,
     response: actionsResponse,
   } = useRequest<ListResponse<ActionFields>>({
-    url: 'api/v2/action/',
+    url: 'api/v2/informal_action/',
     query: limitQuery,
   });
 
@@ -290,7 +261,7 @@ function useInformalUpdateFormOptions(value: PartialForm<InformalUpdateFields>) 
         PNS: emptyActionList,
         IFRC: emptyActionList,
         RCRC: emptyActionList,
-        GOVERNMENT: emptyActionList,
+        GOV: emptyActionList,
       } as ActionsByOrganizationArrayLists;
     }
 
@@ -307,11 +278,10 @@ function useInformalUpdateFormOptions(value: PartialForm<InformalUpdateFields>) 
       PNS: actionList.filter(getFilterOrganization('PNS')),
       IFRC: actionList.filter(getFilterOrganization('IFRC')),
       RCRC: actionList.filter(getFilterOrganization('RCRC')),
-      GOVERNMENT: actionList.filter(getFilterOrganization('GOVERNMENT')),
+      GOV: actionList.filter(getFilterOrganization('GOV')),
     };
 
     return actionMap;
-
   }, [actionsResponse]);
 
   const orgGroupedActionForCurrentReport = React.useMemo(() => {
@@ -337,7 +307,7 @@ function useInformalUpdateFormOptions(value: PartialForm<InformalUpdateFields>) 
       FDRN: [],
       IFRC: [],
       RCRC: [],
-      GOVERNMENT: [],
+      GOV: [],
     } as ActionsByOrganization);
   }, [actionOptionsMap, organizationsType]);
 
@@ -354,7 +324,6 @@ function useInformalUpdateFormOptions(value: PartialForm<InformalUpdateFields>) 
     }
 
   }, [value, countryOptions, districtOptions, disasterTypeOptions]);
-
 
   return {
     countryOptions,
