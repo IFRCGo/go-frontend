@@ -158,9 +158,11 @@ class Deployments extends SFPComponent {
 
   // Sets default tab if url param is blank or incorrect
   displayTabContent () {
-    const tabHashArray = this.getTabDetails().map(({ hash }) => hash);
-    if (!tabHashArray.find(hash => hash === this.props.location.hash)) {
-      this.props.history.replace(`${this.props.location.pathname}${tabHashArray[0]}`);
+    const tabLinksArray = this.getTabDetails().map(({ link }) => link);
+    const currentUrl = this.props.location.pathname;
+    console.log('current url', currentUrl);
+    if (currentUrl === '/deployments') {
+      this.props.history.replace(tabLinksArray[0]);
     }
   }
 

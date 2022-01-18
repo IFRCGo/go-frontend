@@ -24,6 +24,7 @@ function RouterTabs({ tabs, currentUrl }) {
             <RouterTab
               tab={tab}
               isActive={currentUrl.startsWith(tab.link)}
+              key={tab.link}
             />
           ))
         }
