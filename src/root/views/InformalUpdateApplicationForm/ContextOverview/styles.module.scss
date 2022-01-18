@@ -1,0 +1,58 @@
+@import '~styles/settings/_variables.scss';
+
+.context {
+  .actions {
+    justify-content: flex-end;
+    flex-basis: unset;
+    flex-grow: unset;
+    padding: 0 $spacing;
+  }
+}
+
+.reference {
+    .actions {
+        display: flex;
+        flex-grow: auto;
+        justify-content: center;
+        align-items: center;
+    
+        button {
+            background-color: $danger-color;;
+            color: $white;
+        }
+
+        span {
+            padding: 0 $spacing;
+            color: $grey-silver;
+        }
+    }
+
+    .input-date {
+        flex-grow: 1;
+    }
+    .input-name {
+        flex-grow: 2;
+    }
+    .input-url {
+        
+        flex-grow: 1 2;
+        textarea {
+          height: 35px;
+        }
+    }
+}
+
+.addCountryButtonContainer {
+  :global {
+    padding: 0px $spacing;
+    
+    .styles_section-title__2CZN8 {
+      padding: 0px;
+    }
+    
+    .styles_section-content__3E58e {
+      justify-content: flex-end;
+      padding: 0px;
+    }
+  }
+}
