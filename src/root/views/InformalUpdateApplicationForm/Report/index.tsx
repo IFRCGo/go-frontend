@@ -1,4 +1,4 @@
-import React, { useContext, useMemo } from 'react';
+import React, { useContext, useMemo, useCallback, useState } from 'react';
 import { Link } from 'react-router-dom';
 import type { History, Location } from 'history';
 import type { match as Match } from 'react-router-dom';
@@ -11,9 +11,12 @@ import { get } from '#utils/utils';
 import ViewSection from './ViewSection';
 
 import styles from './styles.module.scss';
+import { InformalUpdateAPIFields } from '../common';
+import { useRequest } from '#utils/restRequest';
+import { isNotDefined } from '@togglecorp/fujs';
 
 interface Props {
-  match: Match<{ id: string }>
+  match: Match<{ id?: string }>
   history: History;
   location: Location;
 }
@@ -21,9 +24,14 @@ interface Props {
 function InformalUpdateReport(props: Props) {
   const {
     //history,
-    match
+    match: {
+      params: {
+        id
+      }
+    }
   } = props;
-  //const { id } = match.params;
+  console.log({ id });
+  const [informalUpdateData, setInformalUpdateData] = React.useState<InformalUpdateAPIFields | undefined>();
   const { strings } = useContext(languageContext);
   const data = undefined;
   const crumbs = [
@@ -33,6 +41,24 @@ function InformalUpdateReport(props: Props) {
     { link: '/emergencies', name: strings.breadCrumbEmergencies },
     { link: '/', name: strings.breadCrumbHome }
   ];
+
+
+  const {
+    pending: projectPending,
+    response: DataResponse,
+  } = useRequest<InformalUpdateAPIFields>({
+    skip: isNotDefined(id),
+    url: `api/v2/informal-update/${id}/`,
+    onSuccess: (response) => {
+      setInformalUpdateData(response);
+    }
+  });
+
+  const handleInformalDataLoad = React.useCallback((informalUpdateData: InformalUpdateAPIFields) => {
+    setInformalUpdateData(informalUpdateData);
+  }, []);
+
+  console.log('object------', informalUpdateData);
   const situationalData = [
     {
       name: 'Magnitude',

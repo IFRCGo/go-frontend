@@ -204,6 +204,8 @@ function InformalUpdateForm(props: Props) {
     const {
       value: finalValues,
     } = validate();
+
+    console.log('--final---', finalValues);
     const apiFields = transformFormFieldsToAPIFields(finalValues as InformalUpdateFields);
     const definedValues = getDefinedValues(apiFields);
     console.log("final defined json---", definedValues);
@@ -269,7 +271,6 @@ function InformalUpdateForm(props: Props) {
       handleTabChange(prevStepMap[currentStep]);
     }
   }, [handleTabChange, currentStep]);
-
 
   const {
     pending: informalUpdateSubmitPending,

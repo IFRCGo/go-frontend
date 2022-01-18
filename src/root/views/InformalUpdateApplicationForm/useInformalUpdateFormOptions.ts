@@ -76,6 +76,16 @@ export const schema: FormSchema = {
     title: [],
     country_district: [],
     references: [],
+    graphic: [],
+
+    actions_ntls: [],
+    actions_ntls_desc: [],
+    actions_ifrc: [],
+    actions_ifrc_desc: [],
+    actions_rcrc: [],
+    actions_rcrc_desc: [],
+    actions_government: [],
+    actions_government_desc: [],
 
     originator_name: [],
     originator_email: [],
@@ -238,6 +248,10 @@ function useInformalUpdateFormOptions(value: PartialForm<InformalUpdateFields>) 
 
   const ntls = true;
   const pns = true;
+  const ifrc = true;
+  const rcrc = true;
+  const government = true;
+
   const organizationsType: OrganizationType = React.useMemo(() => {
     if (ntls) {
       return 'NTLS';
@@ -246,8 +260,19 @@ function useInformalUpdateFormOptions(value: PartialForm<InformalUpdateFields>) 
     if (pns) {
       return 'PNS';
     }
+
+    if (ifrc) {
+      return "IFRC";
+    }
+
+    if (rcrc) {
+      return "RCRC";
+    }
+    if (government) {
+      return "GOVERNMENT";
+    }
     return 'FDRN';
-  }, [ntls, pns]);
+  }, [ntls, pns, ifrc, rcrc, government]);
 
   const {
     pending: fetchingActions,
@@ -263,6 +288,9 @@ function useInformalUpdateFormOptions(value: PartialForm<InformalUpdateFields>) 
         NTLS: emptyActionList,
         FDRN: emptyActionList,
         PNS: emptyActionList,
+        IFRC: emptyActionList,
+        RCRC: emptyActionList,
+        GOVERNMENT: emptyActionList,
       } as ActionsByOrganizationArrayLists;
     }
 
@@ -277,6 +305,9 @@ function useInformalUpdateFormOptions(value: PartialForm<InformalUpdateFields>) 
       NTLS: actionList.filter(getFilterOrganization('NTLS')),
       FDRN: actionList.filter(getFilterOrganization('FDRN')),
       PNS: actionList.filter(getFilterOrganization('PNS')),
+      IFRC: actionList.filter(getFilterOrganization('IFRC')),
+      RCRC: actionList.filter(getFilterOrganization('RCRC')),
+      GOVERNMENT: actionList.filter(getFilterOrganization('GOVERNMENT')),
     };
 
     return actionMap;
@@ -304,6 +335,9 @@ function useInformalUpdateFormOptions(value: PartialForm<InformalUpdateFields>) 
       NTLS: [],
       PNS: [],
       FDRN: [],
+      IFRC: [],
+      RCRC: [],
+      GOVERNMENT: [],
     } as ActionsByOrganization);
   }, [actionOptionsMap, organizationsType]);
 

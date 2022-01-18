@@ -57,52 +57,27 @@ function TableLists(props: Props) {
   const {
     pending,
     response,
-  } = useRequest<ListResponse<Project>>({
-    url: '',
+  } = useRequest<ListResponse<InformalUpdateTableFields>>({
+    url: 'api/v2/informal-update/',
     query: {
       limit: ITEM_PER_PAGE,
       offset: ITEM_PER_PAGE * (activePage - 1),
     },
   });
 
-  const tableData = useMemo(() => [
-    {
-      id: 1,
-      last_date: '2020-09-18',
-      report: '5.7 Earthquake in Pakistan (Flash Update #1)',
-      hazard_type: 'Earthquake',
-      country: 'Pakistan'
-    },
-    {
-      id: 2,
-      last_date: '2020-09-18',
-      report: '5.7 Earthquake in Pakistan (Flash Update #1)',
-      hazard_type: 'Earthquake',
-      country: 'Pakistan'
-    },
-    {
-      id: 3,
-      last_date: '2020-09-18',
-      report: '5.7 Earthquake in Pakistan (Flash Update #1)',
-      hazard_type: 'Earthquake',
-      country: 'Pakistan'
-    },
-  ]
-    , []);
-
   const columns = useMemo(() => {
     const actionsColumn = createActionColumn(
       'actions',
-      (rowKey: number | string, prj: InformalUpdateTableFields) => ({
+      (rowKey: number | string, infrl: InformalUpdateTableFields) => ({
         extraActions: (
           <>
             <DropdownMenuItem
-              href={`/informal-update-report/${prj.id}/`}
+              href={`/informal-update-report/${infrl.id}/`}
               label={strings.projectListTableViewDetails}
               icon={<MdSearch />}
             />
             <DropdownMenuItem
-              href={`/three-w/${prj.id}/edit/`}
+              href={`/three-w/${infrl.id}/edit/`}
               icon={<MdEdit />}
               label={strings.projectListTableEdit}
             />
@@ -159,7 +134,7 @@ function TableLists(props: Props) {
           <>
             <Table
               className={styles.projectsTable}
-              data={tableData}
+              data={response && response?.results}
               columns={columns}
               keySelector={tableKeySelector}
               variant="large"

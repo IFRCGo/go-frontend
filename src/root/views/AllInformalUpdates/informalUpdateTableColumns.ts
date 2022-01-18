@@ -6,17 +6,20 @@ export const getBaseColumns = (strings: Strings) => ([
   createStringColumn<InformalUpdateTableFields, string | number>(
     'last_update',
     'Last Update',
-    (item) => item?.last_date,
+    (item) => {
+      const date = new Date(item?.modified_at);
+      return date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
+    },
   ),
   createStringColumn<InformalUpdateTableFields, string | number>(
     'report',
     'Report',
-    (item) => item?.report,
+    (item) => item?.title,
   ),
   createStringColumn<InformalUpdateTableFields, string | number>(
     'hazard_type',
     'Disaster Type',
-    (item) => item?.hazard_type,
+    (item) => item?.hazard_type_details?.name,
   ),
   createStringColumn<InformalUpdateTableFields, string | number>(
     'country',

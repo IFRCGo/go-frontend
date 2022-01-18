@@ -44,12 +44,20 @@ export interface StringKeyValuePair {
 export interface User {
   id: number;
 }
+
+
+export interface HazardDetails {
+  id: number;
+  name: string;
+  summary: string;
+}
 export interface InformalUpdateTableFields {
   id: number;
-  last_date: string;
-  report: string;
+  modified_at: string;
+  title: string;
   hazard_type: string;
   country: string;
+  hazard_type_details: HazardDetails;
 }
 
 export interface Entity {
@@ -63,12 +71,22 @@ export interface CountryDistrict {
   district: number | undefined;
 }
 
+//export interface ReferenceUrl {
+//  url: string;
+//}
+
 export interface ReferenceData {
-  clientId: string;
+  //clientId: string;
   date: string;
   source_description: string;
-  url: string;
-  image: number;
+  url?: string;
+  document?: string;
+}
+
+export interface ImageDetails {
+  id: number;
+  file: string;
+  caption: string;
 }
 
 export type Option = NumericValueOption | BooleanValueOption | StringValueOption;
@@ -106,15 +124,12 @@ export interface InformalUpdateFields {
   hazard_type: number;
   title: string;
   situational_overview: string;
-  graphic: number;
+  graphic: number[];
   map: number;
   reference_date: string;
   reference_name: string;
   reference_url: string;
   reference_image: number;
-
-  actions_fdrn: number[];
-  actions_pns: number[];
 
   actions_ntls: number[];
   actions_ntls_desc: string;
@@ -134,6 +149,10 @@ export interface InformalUpdateFields {
   ifrc_email: string;
   ifrc_phone: string;
   share_with: number;
+
+  hazard_type_details: HazardDetails[];
+  graphic_details: ImageDetails;
+  map_details: ImageDetails;
 }
 
 export interface InformalUpdateAPIFields {
@@ -141,9 +160,12 @@ export interface InformalUpdateAPIFields {
   hazard_type: number;
   title: string;
   situational_overview: string;
-  graphic: number;
+  graphic: number[];
   map: number;
   references: ReferenceData[];
+  hazard_type_details: HazardDetails[];
+  graphic_details: ImageDetails;
+  map_details: ImageDetails;
 
   // Actions
   actions_taken: {
@@ -160,10 +182,11 @@ export interface InformalUpdateAPIFields {
   ifrc_title: string;
   ifrc_email: string;
   ifrc_phone: string;
-  share_with: number;
+  share_with: string;
+
 }
 
-export type OrganizationType = 'NTLS' | 'PNS' | 'FDRN';
+export type OrganizationType = 'NTLS' | 'PNS' | 'FDRN' | 'IFRC' | 'RCRC' | 'GOVERNMENT';
 export type ReportType = 'EW' | 'EVT';
 
 export type Action = {
@@ -240,8 +263,6 @@ export const focalFields: (keyof InformalUpdateFields)[] = [
   'share_with'
 ];
 
-
-
 export function transformFormFieldsToAPIFields(formValues: InformalUpdateFields): InformalUpdateAPIFields {
   const {
     country,
@@ -271,11 +292,16 @@ export function transformFormFieldsToAPIFields(formValues: InformalUpdateFields)
     ifrc_name,
     ifrc_phone,
     ifrc_title,
-    share_with
+    share_with,
+
+    hazard_type_details,
+    graphic_details,
+    map_details,
   } = formValues;
 
   const actions_taken: InformalUpdateAPIFields['actions_taken'] = [];
-  if (isDefined(actions_ntls_desc) || (actions_ntls ?? []).length > 0) {
+
+  if (isDefined(actions_ntls_desc) || (actions_ntls ?? [].length > 0)) {
     actions_taken.push({
       organization: 'NTLS',
       summary: actions_ntls_desc,
@@ -283,13 +309,36 @@ export function transformFormFieldsToAPIFields(formValues: InformalUpdateFields)
     });
   }
 
-  if (isNotDefined(country_district) || (country_district ?? [].length < 1)) {
+  if (isDefined(actions_ifrc_desc) || (actions_ifrc ?? [].length > 0)) {
+    actions_taken.push({
+      organization: 'IFRC',
+      summary: actions_ifrc_desc,
+      actions: actions_ifrc,
+    });
+  }
+
+  if (isDefined(actions_rcrc_desc) || (actions_rcrc ?? [].length > 0)) {
+    actions_taken.push({
+      organization: 'RCRC',
+      summary: actions_rcrc_desc,
+      actions: actions_rcrc,
+    });
+  }
+
+  if (isDefined(actions_government_desc) || (actions_government ?? [].length > 0)) {
+    actions_taken.push({
+      organization: 'GOVERNMENT',
+      summary: actions_government_desc,
+      actions: actions_government
+    });
+  }
+
+  if ((isDefined(country) && isDefined(district)) && (country_district ?? [].length < 0)) {
     country_district.push({
       //clientId: randomString(),
       country: country,
       district: district
     });
-
   }
 
   return {
@@ -311,6 +360,11 @@ export function transformFormFieldsToAPIFields(formValues: InformalUpdateFields)
     ifrc_name,
     ifrc_title,
     ifrc_phone,
-    share_with,
+    share_with: 'ifrc_secretariat',
+
+    hazard_type_details,
+    graphic_details,
+    map_details,
   };
 }
+

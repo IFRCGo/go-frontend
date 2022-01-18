@@ -31,6 +31,7 @@ import {
 
 import styles from './styles.module.scss';
 import InformalUpdateFileInput from '#components/InformalUpdateFileInput';
+import BulletTextArea from '#components/BulletTextArea';
 
 type Value = PartialForm<InformalUpdateFields>;
 interface Props {
@@ -112,11 +113,11 @@ function ContextOverview(props: Props) {
   const handleAddReference = React.useCallback(() => {
     const clientId = randomString();
     const newList: PartialForm<ReferenceType> = {
-      clientId,
+      //clientId,
       date: value.reference_date,
       source_description: value.reference_name,
       url: value.reference_url,
-      image: 1,
+      document: '',
     };
     onValueChange(
       (oldValue: PartialForm<References>) => (
@@ -297,6 +298,7 @@ function ContextOverview(props: Props) {
             onChange={onValueChange}
             setFileIdToUrlMap={setFileIdToUrlMap}
             showStatus
+            multiple
             value={value.graphic}
           >
             {strings.informalUpdateFormContextReferenceUrlButtonLabel}
@@ -361,13 +363,21 @@ function ContextOverview(props: Props) {
         <InputSection
           className={styles.referenceInput}
         >
-          <TextInput
+          {/*  <TextInput
             className={styles.inputUrl}
             name="reference_url"
             value={value.reference_url}
             onChange={onValueChange}
             error={error?.fields?.reference_url}
             label={strings.informalUpdateFormContextReferenceUrlLabel}
+          />*/}
+          <BulletTextArea
+            className={styles.inputUrl}
+            label={strings.informalUpdateFormContextReferenceUrlLabel}
+            name="reference_url"
+            value={value.reference_url}
+            onChange={onValueChange}
+            error={error?.fields?.reference_url}
           />
           <div className={styles.actions}>
             <Button
@@ -388,6 +398,7 @@ function ContextOverview(props: Props) {
 
         {value.references?.map((c, i) => (
           <ReferenceInput
+            key={i}
             index={i}
             value={c}
             error={error}

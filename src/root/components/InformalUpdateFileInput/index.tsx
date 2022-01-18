@@ -124,6 +124,7 @@ function InformalUpdateFileInput<T extends string>(props: Props<T>) {
       } else {
         const option = response as Option;
         const { id } = option;
+        console.log("response of file", option);
         props.onChange(id, name);
 
         if (setFileIdToUrlMap) {
@@ -133,6 +134,7 @@ function InformalUpdateFileInput<T extends string>(props: Props<T>) {
             };
 
             newMap[option.id] = option.file;
+            console.log('file value to set --', newMap);
             return newMap;
           });
         }

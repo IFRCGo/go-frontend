@@ -34,7 +34,11 @@
         flex-grow: 2;
     }
     .input-url {
+        
         flex-grow: 1 2;
+        textarea {
+          height: 35px;
+        }
     }
 }
 

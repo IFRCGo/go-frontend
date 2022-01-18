@@ -15,7 +15,7 @@ import styles from './styles.module.scss';
 
 type SetValueArg<T> = T | ((value: T) => T);
 const defaultFormValues: PartialForm<ReferenceData> = {
-  clientId: 'test',
+ // clientId: 'test',
 };
 
 interface Props {
@@ -38,8 +38,8 @@ function ReferenceInput(props: Props) {
 
   const onValueChange = useFormObject(index, onChange, defaultFormValues);
 
-  const error = (value && value.clientId && errorFromProps)
-    ? errorFromProps.members?.[value.clientId]
+  const error = (value && value?.source_description && errorFromProps)
+    ? errorFromProps.members?.[value?.source_description]
     : undefined;
 
   return (

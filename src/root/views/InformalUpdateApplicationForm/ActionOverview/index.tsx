@@ -80,14 +80,14 @@ function ActionsOverview(props: Props) {
         </InputSection>
         <InputSection>
           <Checklist
-            name="actions_fdrn"
+            name="actions_ifrc"
             onChange={onValueChange}
             options={actionOptions.FDRN}
             labelSelector={optionLabelSelector}
             keySelector={numericOptionKeySelector}
             tooltipSelector={d => d.description}
-            value={value.actions_fdrn}
-            error={error?.fields?.actions_fdrn?.$internal}
+            value={value.actions_ifrc}
+            error={error?.fields?.actions_ifrc?.$internal}
           />
         </InputSection>
       </Container>
@@ -106,14 +106,14 @@ function ActionsOverview(props: Props) {
         </InputSection>
         <InputSection>
           <Checklist
-            name="actions_pns"
+            name="actions_rcrc"
             onChange={onValueChange}
             options={actionOptions.PNS}
             labelSelector={optionLabelSelector}
             keySelector={numericOptionKeySelector}
             tooltipSelector={d => d.description}
-            value={value.actions_pns}
-            error={error?.fields?.actions_pns?.$internal}
+            value={value.actions_rcrc}
+            error={error?.fields?.actions_rcrc?.$internal}
           />
         </InputSection>
       </Container>
@@ -133,14 +133,14 @@ function ActionsOverview(props: Props) {
         </InputSection>
         <InputSection>
           <Checklist
-            name="actions_pns"
+            name="actions_government"
             onChange={onValueChange}
             options={actionOptions.PNS}
             labelSelector={optionLabelSelector}
             keySelector={numericOptionKeySelector}
             tooltipSelector={d => d.description}
-            value={value.actions_pns}
-            error={error?.fields?.actions_pns?.$internal}
+            value={value.actions_government}
+            error={error?.fields?.actions_government?.$internal}
           />
         </InputSection>
 
