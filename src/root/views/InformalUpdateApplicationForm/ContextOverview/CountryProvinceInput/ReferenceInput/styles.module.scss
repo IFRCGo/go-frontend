@@ -1,0 +1,28 @@
+@import '~styles/settings/_variables.scss';
+
+.reference-edit {
+    .actions {
+        display: flex;
+        flex-grow: auto;
+        justify-content: center;
+        align-items: center;
+    
+        button {
+            background-color: $danger-color;;
+            color: $white;
+        }
+    }
+    
+    .input-date {
+      flex-grow: 1;
+    }
+    .input-name {
+      flex-grow: 1;
+    }
+    .input.url {
+      flex-grow: 2;
+    }
+    .input-button {
+      display: inline-flex;
+    }
+}

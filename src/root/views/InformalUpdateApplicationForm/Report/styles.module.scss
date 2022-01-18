@@ -1,0 +1,67 @@
+@import '~styles/settings/variables';
+
+.situational {
+  :global {
+    .go-container {
+      header {
+        background-color: $white;
+        padding: $spacing $spacing-2 !important;
+      }
+     
+      /*.styles_content__3hMfk {
+        padding: 0px;
+      }*/
+    }
+  }
+
+  .overview-container {
+      display: flex;
+
+      .overview-label {
+          font-weight: $base-font-semi-bold;
+      }
+      .overview-value {
+          padding: 0 $spacing-2;
+      }
+  }
+  .overview-description {
+      margin: $spacing-3/2 0;
+  }
+
+  /*.action-taken {
+    :global {
+      .styles_content__3hMfk{
+        background-color: $white;
+        padding: $spacing-2 !important;
+      }
+    }
+  }*/
+
+  .graphic {
+    display: flex;
+    justify-content: space-around;
+    padding: $spacing-2;
+
+    .card {
+      padding: $spacing;
+      background-color: $white;
+
+      img {
+        width: 350px;
+        max-height: 500px;
+      }
+    }
+  }
+
+  .image {
+    display: flex;
+    justify-content: space-around;
+    padding: $spacing-2;
+    background-color: $white;
+    
+    img {
+      width: 500px;
+      max-height: 300px;
+    }
+  }
+}
