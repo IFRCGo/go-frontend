@@ -526,7 +526,6 @@ export default class CatalogueOfSurgeServicesSubPage extends React.Component {
     }
 
     render() {
-        console.log('subpage props', this.props);
         const content = CatalogueOfSurgeServiceSubpageContent.find(content => content.hash === this.props.selectedService);
         if (content === undefined) {
             return (
