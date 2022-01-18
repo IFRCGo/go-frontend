@@ -39,12 +39,14 @@ import DeploymentsMap from '#components/map/deployments-map';
 import Readiness from '#components/deployments/readiness';
 import BreadCrumb from '#components/breadcrumb';
 import LanguageContext from '#root/languageContext';
+import RouterTabs from '#components/RouterTabs';
 import Translate from '#components/Translate';
 import { countriesGeojsonSelector } from '../selectors';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import TabContent from '#components/tab-content';
 import OperationalTimeline from './Surge/operational-timeline';
 import CatalogueOfSurgeServices from './Surge/catalogue-of-surge-services';
+
 
 const DeploymentsByMonth = () => {
   const { pending, response } = useRequest({url: 'api/v2/deployment/aggregated_by_month/'});
@@ -148,9 +150,9 @@ class Deployments extends SFPComponent {
   getTabDetails() {
     const { strings } = this.context;
     return [
-      { title: strings.deploymentsSurgeOverViewTab, hash: '#overview' },
-      { title: strings.deploymentsOperationalToolboxTab, hash: '#operational-toolbox' },
-      { title: strings.deploymentsCatalogueOfSurgeServicesTab, hash: '#catalogue' }
+      { title: strings.deploymentsSurgeOverViewTab, link: '/deployments/overview' },
+      { title: strings.deploymentsOperationalToolboxTab, link: '/deployments/operational-toolbox' },
+      { title: strings.deploymentsCatalogueOfSurgeServicesTab, link: '/deployments/catalogue' }
     ];
   }
 
@@ -279,13 +281,14 @@ class Deployments extends SFPComponent {
     }
 
     const tabDetails = [...this.getTabDetails()];
-    const handleTabChange = index => {
-      const tabHashArray = tabDetails.map(({ hash }) => hash);
-      const url = this.props.location.pathname;
-      this.props.history.replace(`${url}${tabHashArray[index]}`);
-    };
-    const hashes = tabDetails.map(t => t.hash);
-    const selectedIndex = hashes.indexOf(this.props.location.hash) !== -1 ? hashes.indexOf(this.props.location.hash) : 0;
+
+    // const handleTabChange = index => {
+    //   const tabHashArray = tabDetails.map(({ hash }) => hash);
+    //   const url = this.props.location.pathname;
+    //   this.props.history.replace(`${url}${tabHashArray[index]}`);
+    // };
+    // const hashes = tabDetails.map(t => t.hash);
+    // const selectedIndex = hashes.indexOf(this.props.location.hash) !== -1 ? hashes.indexOf(this.props.location.hash) : 0;
 
     return (
       <section>
@@ -308,23 +311,10 @@ class Deployments extends SFPComponent {
             </div>
           </header>
           <div className='tab__wrap margin-2-t'>
-            <div className="react-tabs">
-              <ul className="react-tabs__tab-list">
-              {/* REFACTOR INTO A TABS COMPONENT AND STYLE */}
-                <li className="react-tabs__tab">
-                  <Link to="/deployments/overview">Overview</Link>
-                </li>
-                <li className="react-tabs__tab">
-                  <Link to="/deployments/operational-toolbox">Operational Toolbox</Link>
-                </li>
-                <li className="react-tabs__tab">
-                  <Link to="/deployments/catalogue">Catalogue of Services</Link>
-                </li>
-                <li className="react-tabs__tab">
-                  <Link to="/deployments/user/zoltan">Show User Id</Link>
-                </li>
-              </ul>
-            </div>
+            <RouterTabs
+              tabs={tabDetails}
+              currentUrl={this.props.location.pathname}
+            />
             <div className="inpage__body">
               <Switch>
                 <Route exact path="/deployments/overview">
