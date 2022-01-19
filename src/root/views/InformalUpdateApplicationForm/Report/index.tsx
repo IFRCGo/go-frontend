@@ -1,4 +1,4 @@
-import React, { useContext, useMemo, useCallback, useState } from 'react';
+import React, { useContext, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import type { History, Location } from 'history';
 import type { match as Match } from 'react-router-dom';
@@ -100,18 +100,14 @@ function InformalUpdateReport(props: Props) {
         affected areas. The team is led by Chairman of PRCS Balochistan Branch. Apart from medicines some basic NFIs are also on the way to Harnai district to assist the affected 
         families. The team will also assess the situation and needs of the affected population. PRCS Balochistan Branch is ready with more stocks in the warehouses if required to be 
         dispatched.
-       
         PRCS NHQ is closely monitoring the situation and in contact with the Provincial Branch Balochistan.
-        
         PRCS NHQ is waiting for Primary Incident Report (PIR) from the Branch on the basis of that PRCS NHQ will assess the needs to decide on whether they will request for DREF.`,
     actions: ['Others', 'Food and Security']
   }], []);
 
   const actionTakenByGovernment = useMemo(() => [{
     description: `As per Chief Minister of the Province, all assistance and evacuations are underway for the affected areas, Medical, local administration and disaster management teams are on high alert and mobilized, emergency services had been dispatched to the area.
-
         Rescue operations are still underway.
-        
         There has been quite a lot of land sliding, and the teams are currently working to clear the roads to the area.`,
     actions: ['Others', 'Food and Security']
   }], []);

@@ -3,6 +3,7 @@ import {
   PartialForm,
   ArrayError,
   useFormObject,
+  getErrorObject,
 } from '@togglecorp/toggle-form';
 import { IoTrash } from 'react-icons/io5';
 
@@ -72,7 +73,7 @@ function CountryProvinceInput(props: Props) {
 
   const onFieldChange = useFormObject(index, onChange, defaultCountryDistrictValue);
   const error = (value && value.country && errorFromProps)
-    ? errorFromProps.members?.[value.country]
+    ? getErrorObject(errorFromProps?.[value.country])
     : undefined;
 
   return (
@@ -80,7 +81,7 @@ function CountryProvinceInput(props: Props) {
       <SelectInput
         label={strings.informalUpdateFormContextCountryLabel}
         pending={fetchingCountries}
-        error={error?.fields?.country}
+        error={error?.country}
         name="country"
         onChange={onFieldChange}
         options={countryOptions}
@@ -89,7 +90,7 @@ function CountryProvinceInput(props: Props) {
       <SelectInput
         label={strings.informalUpdateFormContextProvinceLabel}
         pending={fetchingDistricts}
-        error={error?.fields?.district}
+        error={error?.district}
         name="district"
         onChange={onFieldChange}
         options={districtOptions}

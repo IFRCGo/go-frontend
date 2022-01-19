@@ -305,7 +305,6 @@ function Multiplexer(props) {
               <PrivateRoute key="new-informal-update-application-form" exact path='/informal-update-application/new/' component={InformalUpdateApplicationForm} />
               <Route exact path='/informal-update-report/:id' component={InformalUpdateReport} />
               <Route exact path='/informal-updates/all/' component={AllInformalUpdates} />
-
               <Route component={FourHundredFour} />
             </Switch>
           </BreadcrumbsProvider>

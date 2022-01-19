@@ -3,7 +3,8 @@ import {
   EntriesAsList,
   PartialForm,
   Error,
-  StateArg,
+  SetBaseValueArg,
+  getErrorObject,
 } from '@togglecorp/toggle-form';
 
 import Container from '#components/Container';
@@ -15,8 +16,6 @@ import { optionDescriptionSelector } from '#views/FieldReportForm/common';
 import {
   BooleanValueOption,
   InformalUpdateFields,
-  numericOptionKeySelector,
-  NumericValueOption,
   optionLabelSelector,
   stringOptionKeySelector,
   StringValueOption
@@ -30,17 +29,19 @@ interface Props {
   yesNoOptions: BooleanValueOption[];
   value: Value;
   shareWithOptions: StringValueOption[];
-  onValueSet: (value: StateArg<Value>) => void;
+  onValueSet: (value: SetBaseValueArg<Value>) => void;
 }
 
 function FocalPoints(props: Props) {
   const { strings } = useContext(languageContext);
   const {
-    error,
+    error: formError,
     onValueChange,
     value,
     shareWithOptions,
   } = props;
+
+  const error = getErrorObject(formError);
 
   return (
     <>
@@ -53,14 +54,14 @@ function FocalPoints(props: Props) {
             name="originator_name"
             value={value.originator_name}
             onChange={onValueChange}
-            error={error?.fields?.originator_name}
+            error={error?.originator_name}
             label={strings.informalUpdateFormFocalOriginatorNameLabel}
           />
           <TextInput
             name="originator_title"
             value={value.originator_title}
             onChange={onValueChange}
-            error={error?.fields?.originator_title}
+            error={error?.originator_title}
             label={strings.informalUpdateFormFocalOriginatorTitleLabel}
           />
         </InputSection>
@@ -69,14 +70,14 @@ function FocalPoints(props: Props) {
             name="originator_email"
             value={value.originator_email}
             onChange={onValueChange}
-            error={error?.fields?.originator_email}
+            error={error?.originator_email}
             label={strings.informalUpdateFormFocalOriginatorEmailLabel}
           />
           <TextInput
             name="originator_phone"
             value={value.originator_phone}
             onChange={onValueChange}
-            error={error?.fields?.originator_phone}
+            error={error?.originator_phone}
             label={strings.informalUpdateFormFocalOriginatorPhoneLabel}
           />
         </InputSection>
@@ -89,14 +90,14 @@ function FocalPoints(props: Props) {
             name="ifrc_name"
             value={value.ifrc_name}
             onChange={onValueChange}
-            error={error?.fields?.ifrc_name}
+            error={error?.ifrc_name}
             label={strings.informalUpdateFormFocalIfrcNameLabel}
           />
           <TextInput
             name="ifrc_title"
             value={value.ifrc_title}
             onChange={onValueChange}
-            error={error?.fields?.ifrc_title}
+            error={error?.ifrc_title}
             label={strings.informalUpdateFormFocalIfrcTitleLabel}
           />
         </InputSection>
@@ -105,14 +106,14 @@ function FocalPoints(props: Props) {
             name="ifrc_email"
             value={value.ifrc_email}
             onChange={onValueChange}
-            error={error?.fields?.ifrc_email}
+            error={error?.ifrc_email}
             label={strings.informalUpdateFormFocalIfrcEmailLabel}
           />
           <TextInput
             name="ifrc_phone"
             value={value.ifrc_phone}
             onChange={onValueChange}
-            error={error?.fields?.ifrc_phone}
+            error={error?.ifrc_phone}
             label={strings.informalUpdateFormFocalIfrcPhoneLabel}
           />
         </InputSection>
@@ -129,7 +130,7 @@ function FocalPoints(props: Props) {
             radioLabelSelector={optionLabelSelector}
             radioDescriptionSelector={optionDescriptionSelector}
             value={value.share_with}
-            error={error?.fields?.share_with}
+            error={error?.share_with}
             onChange={onValueChange}
           />
 

@@ -1,21 +1,28 @@
 import React, { useContext } from 'react';
-import { PartialForm, Error, EntriesAsList, StateArg } from '@togglecorp/toggle-form';
+import {
+  PartialForm,
+  Error,
+  EntriesAsList,
+  SetBaseValueArg,
+  getErrorObject,
+} from '@togglecorp/toggle-form';
 
 import Checklist from '#components/Checklist';
 import Container from '#components/Container';
 import InputSection from '#components/InputSection';
 import TextArea from '#components/TextArea';
 import languageContext from '#root/languageContext';
+import { listErrorToString } from '#utils/form';
+
 import {
   ActionsByOrganization,
   BooleanValueOption,
   InformalUpdateFields,
   numericOptionKeySelector,
-  NumericValueOption,
   optionLabelSelector
 } from '../common';
 
-import styles from './styles.module.scss';
+// import styles from './styles.module.scss';
 
 type Value = PartialForm<InformalUpdateFields>;
 interface Props {
@@ -23,18 +30,21 @@ interface Props {
   onValueChange: (...entries: EntriesAsList<Value>) => void;
   yesNoOptions: BooleanValueOption[];
   value: Value;
-  onValueSet: (value: StateArg<Value>) => void;
+  onValueSet: (value: SetBaseValueArg<Value>) => void;
   actionOptions: ActionsByOrganization;
 }
 
 function ActionsOverview(props: Props) {
   const { strings } = useContext(languageContext);
   const {
-    error,
+    error: formError,
     onValueChange,
     value,
     actionOptions,
   } = props;
+
+  const error = getErrorObject(formError);
+
   return (
     <>
       <Container
@@ -48,7 +58,7 @@ function ActionsOverview(props: Props) {
             name="actions_ntls_desc"
             value={value.actions_ntls_desc}
             onChange={onValueChange}
-            error={error?.fields?.actions_ntls_desc}
+            error={error?.actions_ntls_desc}
             placeholder={strings.informalUpdateFormActionTakenByNationalSocietyPlaceholder}
           />
         </InputSection>
@@ -61,7 +71,7 @@ function ActionsOverview(props: Props) {
             keySelector={numericOptionKeySelector}
             tooltipSelector={d => d.description}
             value={value.actions_ntls}
-            error={error?.fields?.actions_ntls?.$internal}
+            error={listErrorToString(error?.actions_ntls)}
           />
         </InputSection>
       </Container>
@@ -74,7 +84,7 @@ function ActionsOverview(props: Props) {
             name="actions_ifrc_desc"
             value={value.actions_ifrc_desc}
             onChange={onValueChange}
-            error={error?.fields?.actions_ifrc_desc}
+            error={error?.actions_ifrc_desc}
             placeholder={strings.informalUpdateFormActionTakenByRcrcPlaceholder}
           />
         </InputSection>
@@ -87,7 +97,7 @@ function ActionsOverview(props: Props) {
             keySelector={numericOptionKeySelector}
             tooltipSelector={d => d.description}
             value={value.actions_ifrc}
-            error={error?.fields?.actions_ifrc?.$internal}
+            error={listErrorToString(error?.actions_ifrc)}
           />
         </InputSection>
       </Container>
@@ -100,7 +110,7 @@ function ActionsOverview(props: Props) {
             name="actions_rcrc_desc"
             value={value.actions_rcrc_desc}
             onChange={onValueChange}
-            error={error?.fields?.actions_rcrc_desc}
+            error={error?.actions_rcrc_desc}
             placeholder={strings.informalUpdateFormActionTakenByRcrcPlaceholder}
           />
         </InputSection>
@@ -113,7 +123,7 @@ function ActionsOverview(props: Props) {
             keySelector={numericOptionKeySelector}
             tooltipSelector={d => d.description}
             value={value.actions_rcrc}
-            error={error?.fields?.actions_rcrc?.$internal}
+            error={listErrorToString(error?.actions_rcrc)}
           />
         </InputSection>
       </Container>
@@ -127,7 +137,7 @@ function ActionsOverview(props: Props) {
             name="actions_government_desc"
             value={value.actions_government_desc}
             onChange={onValueChange}
-            error={error?.fields?.actions_government_desc}
+            error={error?.actions_government_desc}
             placeholder={strings.informalUpdateFormActionTakenByGovernmentPlaceholder}
           />
         </InputSection>
@@ -140,7 +150,7 @@ function ActionsOverview(props: Props) {
             keySelector={numericOptionKeySelector}
             tooltipSelector={d => d.description}
             value={value.actions_government}
-            error={error?.fields?.actions_government?.$internal}
+            error={listErrorToString(error?.actions_government)}
           />
         </InputSection>
 

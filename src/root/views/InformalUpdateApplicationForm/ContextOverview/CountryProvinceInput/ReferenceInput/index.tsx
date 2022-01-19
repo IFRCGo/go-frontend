@@ -1,5 +1,10 @@
-import React, { useContext } from 'react';
-import { PartialForm, ArrayError, useFormObject } from '@togglecorp/toggle-form';
+import React from 'react';
+import {
+  PartialForm,
+  ArrayError,
+  useFormObject,
+  getErrorObject,
+} from '@togglecorp/toggle-form';
 import { IoTrash } from 'react-icons/io5';
 import { MdModeEditOutline } from 'react-icons/md';
 
@@ -7,7 +12,6 @@ import Button from '#components/Button';
 import DateInput from '#components/DateInput';
 import InputSection from '#components/InputSection';
 import TextInput from '#components/TextInput';
-import languageContext from '#root/languageContext';
 import { ReferenceData } from '#views/InformalUpdateApplicationForm/common';
 import { ReferenceType } from '#views/InformalUpdateApplicationForm/useInformalUpdateFormOptions';
 
@@ -27,7 +31,6 @@ interface Props {
 }
 
 function ReferenceInput(props: Props) {
-  const { strings } = useContext(languageContext);
   const {
     error: errorFromProps,
     onChange,
@@ -39,7 +42,7 @@ function ReferenceInput(props: Props) {
   const onValueChange = useFormObject(index, onChange, defaultFormValues);
 
   const error = (value && value?.source_description && errorFromProps)
-    ? errorFromProps.members?.[value?.source_description]
+    ? getErrorObject(errorFromProps?.[value?.source_description])
     : undefined;
 
   return (
@@ -51,14 +54,14 @@ function ReferenceInput(props: Props) {
         name="date"
         value={value.date}
         onChange={onValueChange}
-        error={error?.fields?.date}
+        error={error?.date}
       />
       <TextInput
         className={styles.inputName}
         name="source_description"
         value={value.source_description}
         onChange={onValueChange}
-        error={error?.fields?.source_description}
+        error={error?.source_description}
         readOnly={true}
       />
       <TextInput
@@ -66,7 +69,7 @@ function ReferenceInput(props: Props) {
         name="url"
         value={value.url}
         onChange={onValueChange}
-        error={error?.fields?.url}
+        error={error?.url}
       />
       <div className={styles.inputButton}>
         <Button

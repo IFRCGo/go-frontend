@@ -1,6 +1,5 @@
 import {
   isDefined,
-  isNotDefined,
 } from '@togglecorp/fujs';
 
 export const ONSET_IMMINENT = 0;
@@ -69,19 +68,6 @@ export const emptyOptionList: Option[] = [];
 export const emptyStringOptionList: StringValueOption[] = [];
 export const emptyNumericOptionList: NumericValueOption[] = [];
 export const emptyBooleanOptionList: BooleanValueOption[] = [];
-
-export function getDefinedValues<T extends Record<string, any>>(o: T): Partial<T> {
-  type Key = keyof T;
-  const keys = Object.keys(o) as Key[];
-  const definedValues: Partial<T> = {};
-  keys.forEach((key) => {
-    if (isDefined(o[key])) {
-      definedValues[key] = o[key];
-    }
-  });
-
-  return definedValues;
-}
 
 export const optionKeySelector = (o: Option) => o.value;
 export const numericOptionKeySelector = (o: NumericValueOption) => o.value;

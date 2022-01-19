@@ -105,16 +105,6 @@ const limitQuery = {
   limit: 500,
 };
 
-/*function transformKeyValueToLabelValue<O extends StringKeyValuePair>(o: O): {
-  label: string;
-  value: O['key'];
-} {
-  return {
-    value: o.key,
-    label: o.value,
-  };
-}*/
-
 function useInformalUpdateFormOptions(value: PartialForm<InformalUpdateFields>) {
   const { strings } = React.useContext(LanguageContext);
 
