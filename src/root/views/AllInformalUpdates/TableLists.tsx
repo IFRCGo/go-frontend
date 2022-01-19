@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useMemo, useState } from 'react';
+import React, { useContext, useMemo, useState } from 'react';
 import { _cs } from '@togglecorp/fujs';
 import {
   MdSearch,
@@ -20,10 +20,7 @@ import {
   ListResponse,
   useRequest,
 } from '#utils/restRequest';
-import {
-  Project,
-  Strings,
-} from '#types';
+import { Strings } from '#types';
 import { getBaseColumns } from './informalUpdateTableColumns';
 import { useButtonFeatures } from '#components/Button';
 import ExportProjectsButton from '#components/ExportProjectsButton';

@@ -1,22 +1,21 @@
 import React, { useContext, } from 'react';
-import { isNotDefined, randomString } from '@togglecorp/fujs';
+import { isNotDefined } from '@togglecorp/fujs';
 import {
   EntriesAsList,
   PartialForm,
-  StateArg,
+  SetBaseValueArg,
   Error,
   useFormArray,
+  getErrorObject,
 } from '@togglecorp/toggle-form';
 
 import Button from '#components/Button';
 import Container from '#components/Container';
 import InputSection from '#components/InputSection';
 import languageContext from '#root/languageContext';
-import { rankedSearchOnList } from '#utils/common';
 import SelectInput from '#components/SelectInput';
 import TextInput from '#components/TextInput';
 import TextArea from '#components/TextArea';
-import DREFFileInput from '#components/DREFFileInput';
 import DateInput from '#components/DateInput';
 import { CountryDistrictType, ReferenceType } from '../useInformalUpdateFormOptions';
 import CountryProvinceInput from './CountryProvinceInput';
@@ -24,7 +23,6 @@ import ReferenceInput from './CountryProvinceInput/ReferenceInput';
 import {
   InformalUpdateFields,
   NumericValueOption,
-  emptyNumericOptionList,
   CountryDistrict,
   ReferenceData,
 } from '../common';
@@ -39,30 +37,24 @@ interface Props {
   error: Error<Value> | undefined;
   onValueChange: (...entries: EntriesAsList<Value>) => void;
   value: Value;
-  //yesNoOptions: BooleanValueOption[];
   countryOptions: NumericValueOption[];
   disasterTypeOptions: NumericValueOption[];
-  //nationalSocietyOptions: NumericValueOption[];
-  //disasterCategoryOptions: NumericValueOption[];
-  //onsetOptions: NumericValueOption[];
   fetchingCountries?: boolean;
   fetchingDisasterTypes?: boolean;
   fetchingDistricts?: boolean;
   districtOptions: NumericValueOption[];
-  //fetchingNationalSociety?: boolean;
   fileIdToUrlMap: Record<number, string>;
   setFileIdToUrlMap?: React.Dispatch<React.SetStateAction<Record<number, string>>>;
-  onValueSet: (value: StateArg<Value>) => void;
+  onValueSet: (value: SetBaseValueArg<Value>) => void;
   onCreateAndShareButtonClick: () => void;
 }
 
 function ContextOverview(props: Props) {
   const { strings } = useContext(languageContext);
   const {
-    error,
+    error: formError,
     onValueChange,
     value,
-    onCreateAndShareButtonClick,
     setFileIdToUrlMap,
     fileIdToUrlMap,
     countryOptions,
@@ -71,19 +63,20 @@ function ContextOverview(props: Props) {
     fetchingDisasterTypes,
     fetchingDistricts,
     districtOptions,
-    onValueSet,
   } = props;
 
+  const error = getErrorObject(formError);
+
   const {
-    onValueChange: onCountryDistrictChange,
-    onValueRemove: onCountryDistrictRemove,
+    setValue: onCountryDistrictChange,
+    removeValue: onCountryDistrictRemove,
   } = useFormArray<'country_district', PartialForm<CountryDistrict>>(
     'country_district',
     onValueChange,
   );
   const {
-    onValueChange: onReferenceChange,
-    onValueRemove: onReferenceRemove,
+    setValue: onReferenceChange,
+    removeValue: onReferenceRemove,
   } = useFormArray<'references', PartialForm<ReferenceData>>(
     'references',
     onValueChange,
@@ -93,7 +86,6 @@ function ContextOverview(props: Props) {
   type References = typeof value.references;
 
   const handleCountryDistrictAdd = React.useCallback(() => {
-    const clientId = randomString();
     const newList: PartialForm<CountryDistrictType> = {
       // clientId,
       country: value.country,
@@ -111,9 +103,7 @@ function ContextOverview(props: Props) {
 
 
   const handleAddReference = React.useCallback(() => {
-    const clientId = randomString();
     const newList: PartialForm<ReferenceType> = {
-      //clientId,
       date: value.reference_date,
       source_description: value.reference_name,
       url: value.reference_url,
@@ -127,18 +117,6 @@ function ContextOverview(props: Props) {
     );
 
   }, [onValueChange, value]);
-
-  const handleCountrySearch = React.useCallback((input: string | undefined, callback) => {
-    if (!input) {
-      callback(emptyNumericOptionList);
-    }
-
-    callback(rankedSearchOnList(
-      countryOptions,
-      input,
-      d => d.label,
-    ));
-  }, [countryOptions]);
 
   return (
     <>
@@ -155,7 +133,7 @@ function ContextOverview(props: Props) {
             label={strings.informalUpdateFormContextCountryLabel}
             name="country"
             pending={fetchingCountries}
-            error={error?.fields?.country}
+            error={error?.country}
             onChange={onValueChange}
             options={countryOptions}
             value={value.country}
@@ -165,7 +143,7 @@ function ContextOverview(props: Props) {
             label={strings.informalUpdateFormContextProvinceLabel}
             name="district"
             pending={fetchingDistricts}
-            error={error?.fields?.district}
+            error={error?.district}
             onChange={onValueChange}
             options={districtOptions}
             value={value.district}
@@ -195,7 +173,7 @@ function ContextOverview(props: Props) {
               value={c}
               onChange={onCountryDistrictChange}
               onRemove={onCountryDistrictRemove}
-              error={error?.fields?.country_district}
+              error={getErrorObject(error?.country_district)}
               countryOptions={countryOptions}
               fetchingCountries={fetchingCountries}
             />
@@ -211,7 +189,7 @@ function ContextOverview(props: Props) {
           title={strings.informalUpdateFormContextHazardTypeTitle}
         >
           <SelectInput
-            error={error?.fields?.hazard_type}
+            error={error?.hazard_type}
             name="hazard_type"
             onChange={onValueChange}
             options={disasterTypeOptions}
@@ -230,7 +208,7 @@ function ContextOverview(props: Props) {
             name="title"
             value={value.title}
             onChange={onValueChange}
-            error={error?.fields?.title}
+            error={error?.title}
             placeholder={strings.informalUpdateFormContextTitlePlaceholder}
           />
         </InputSection>
@@ -245,7 +223,7 @@ function ContextOverview(props: Props) {
             name="situational_overview"
             onChange={onValueChange}
             value={value.situational_overview}
-            error={error?.fields?.situational_overview}
+            error={error?.situational_overview}
           />
         </InputSection>
       </Container>
@@ -257,7 +235,7 @@ function ContextOverview(props: Props) {
         >
           <InformalUpdateFileInput
             accept="image/*"
-            error={error?.fields?.graphic}
+            error={error?.graphic}
             fileIdToUrlMap={fileIdToUrlMap}
             name="graphic"
             onChange={onValueChange}
@@ -278,7 +256,7 @@ function ContextOverview(props: Props) {
         >
           <InformalUpdateFileInput
             accept="image/*"
-            error={error?.fields?.map}
+            error={error?.map}
             fileIdToUrlMap={fileIdToUrlMap}
             name="map"
             onChange={onValueChange}
@@ -304,7 +282,7 @@ function ContextOverview(props: Props) {
             name="reference_date"
             value={value.reference_date}
             onChange={onValueChange}
-            error={error?.fields?.reference_date}
+            error={error?.reference_date}
             label={strings.informalUpdateFormContextReferenceDateLabel}
           />
           <TextInput
@@ -312,7 +290,7 @@ function ContextOverview(props: Props) {
             name="reference_name"
             value={value.reference_name}
             onChange={onValueChange}
-            error={error?.fields?.reference_name}
+            error={error?.reference_name}
             label={strings.informalUpdateFormContextReferenceNameLabel}
           />
           <div className={styles.actions}>
@@ -329,28 +307,19 @@ function ContextOverview(props: Props) {
         <InputSection
           className={styles.referenceInput}
         >
-          {/*  <TextInput
-            className={styles.inputUrl}
-            name="reference_url"
-            value={value.reference_url}
-            onChange={onValueChange}
-            error={error?.fields?.reference_url}
-            label={strings.informalUpdateFormContextReferenceUrlLabel}
-          />*/}
           <BulletTextArea
             className={styles.inputUrl}
             label={strings.informalUpdateFormContextReferenceUrlLabel}
             name="reference_url"
             value={value.reference_url}
             onChange={onValueChange}
-            error={error?.fields?.reference_url}
+            error={error?.reference_url}
           />
           <div className={styles.actions}>
             <Button
               name={undefined}
               variant="secondary"
               disabled={isNotDefined(value.reference_name)}
-            // onClick={onCreateAndShareButtonClick}
             >
               {strings.informalUpdateFormContextReferenceUrlButtonLabel}
             </Button>

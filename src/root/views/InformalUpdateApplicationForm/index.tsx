@@ -1,5 +1,5 @@
 import React from 'react';
-import { isDefined } from '@togglecorp/fujs';
+import { isDefined, listToMap } from '@togglecorp/fujs';
 import type { match as Match } from 'react-router-dom';
 import type {
   History,
@@ -7,8 +7,11 @@ import type {
 } from 'history';
 import { Link } from 'react-router-dom';
 import {
+  getErrorObject,
   PartialForm,
-  useForm
+  useForm,
+  accumulateErrors,
+  ObjectError,
 } from '@togglecorp/toggle-form';
 
 import Page from '#components/Page';
@@ -19,9 +22,9 @@ import Tab from '#components/Tabs/Tab';
 import Tabs from '#components/Tabs';
 import Container from '#components/Container';
 import NonFieldError from '#components/NonFieldError';
-import { useLazyRequest } from '#utils/restRequest';
-import useAlert from '#hooks/useAlert';
 import TabPanel from '#components/Tabs/TabPanel';
+import useAlert from '#hooks/useAlert';
+import { useLazyRequest } from '#utils/restRequest';
 
 import ContextOverview from './ContextOverview';
 import FocalPoints from './FocalPoint';
@@ -29,9 +32,11 @@ import ActionsOverview from './ActionOverview';
 
 import {
   InformalUpdateFields,
-  getDefinedValues,
   InformalUpdateAPIFields,
-  transformFormFieldsToAPIFields
+  transformFormFieldsToAPIFields,
+  contextFields,
+  actionsFields,
+  focalFields
 } from './common';
 import
 useInformalUpdateFormOptions,
@@ -57,6 +62,15 @@ function scrollToTop() {
 }
 
 type StepTypes = 'context' | 'action' | 'focal';
+const stepTypesToFieldsMap: {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  [key in StepTypes]: (keyof InformalUpdateFields)[];
+} = {
+  context: contextFields,
+  action: actionsFields,
+  focal: focalFields
+};
+
 
 const defaultFormValues: PartialForm<InformalUpdateFields> = {
   country_district: [],
@@ -77,11 +91,11 @@ function InformalUpdateForm(props: Props) {
   const {
     value,
     error,
-    onValueChange,
+    setFieldValue: onValueChange,
     validate,
-    onErrorSet,
-    onValueSet,
-  } = useForm(defaultFormValues, schema);
+    setError: onErrorSet,
+    setValue: onValueSet,
+  } = useForm(schema, defaultFormValues);
 
   const {
     countryOptions,
@@ -91,7 +105,6 @@ function InformalUpdateForm(props: Props) {
     districtOptions,
     fetchingDisasterTypes,
     yesNoOptions,
-    userDetails,
     shareWithOptions,
     orgGroupedActionForCurrentReport,
   } = useInformalUpdateFormOptions(value);
@@ -101,84 +114,65 @@ function InformalUpdateForm(props: Props) {
   const submitButtonLabel = currentStep === 'focal' ? strings.informalUpdateSaveButtonLabel : strings.informalUpdateContinueButtonLabel;
   const shouldDisabledBackButton = currentStep === 'context';
 
+  const erroredTabs = React.useMemo(() => {
+    const tabs: {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      [key in StepTypes]: boolean;
+    } = {
+      context: false,
+      action: false,
+      focal: false
+    };
+
+    const tabKeys = (Object.keys(tabs)) as StepTypes[];
+    tabKeys.forEach((tabKey) => {
+      const currentFields = stepTypesToFieldsMap[tabKey];
+      const currentFieldsMap = listToMap(currentFields, d => d, d => true);
+
+      const erroredFields = Object.keys(getErrorObject(error) ?? {}) as (keyof InformalUpdateFields)[];
+      const hasError = erroredFields.some(d => currentFieldsMap[d]);
+      tabs[tabKey] = hasError;
+    });
+
+    return tabs;
+  }, [error]);
+
+
+  const validateCurrentTab = React.useCallback((exceptions: (keyof InformalUpdateFields)[] = []) => {
+    const validationError = getErrorObject(accumulateErrors(value, schema));
+    const currentFields = stepTypesToFieldsMap[currentStep];
+    const exceptionsMap = listToMap(exceptions, d => d, d => true);
+
+    if (!validationError) {
+      return true;
+    }
+
+    const currentTabErrors = listToMap(
+      currentFields.filter(field => (!exceptionsMap[field] && !!validationError?.[field])),
+      field => field,
+      field => validationError?.[field]
+    ) as ObjectError<InformalUpdateFields>;
+
+    const newError: typeof error = {
+      ...currentTabErrors,
+    };
+
+    onErrorSet(newError);
+
+    const hasError = Object.keys(currentTabErrors).some(d => !!d);
+    return !hasError;
+  }, [value, currentStep, onErrorSet]);
+
+
   const handleTabChange = React.useCallback((newStep: StepTypes) => {
     scrollToTop();
-    const {
-      errored,
-      error,
-    } = validate();
-    onErrorSet(error);
+    const isCurrentTabValid = validateCurrentTab(['title']);
 
-    if (!errored) {
-      setCurrentStep(newStep);
-    }
-  }, [setCurrentStep, validate, onErrorSet]);
-
-  const exportLinkProps = useButtonFeatures({
-    variant: 'secondary',
-    children: strings.informalUpdateFormExportLabel,
-  });
-
-  const submitInformalUpdate = React.useCallback(() => {
-    const {
-      value: finalValues,
-    } = validate();
-
-    const apiFields = transformFormFieldsToAPIFields(finalValues as InformalUpdateFields);
-    const definedValues = getDefinedValues(apiFields);
-
-    submitRequest(definedValues);
-
-    if (finalValues && userDetails && userDetails.id) {
-      const body = {
-        user: userDetails.id,
-        ...definedValues,
-      };
-      // submitRequest(body as InformalUpdateApiFields);
-    }
-  }, [validate, userDetails, onErrorSet]);
-
-  const handleSubmitButtonClick = React.useCallback(() => {
-    scrollToTop();
-    const {
-      errored,
-      error,
-    } = validate();
-
-    onErrorSet(error);
-
-    if (errored) {
+    if (!isCurrentTabValid) {
       return;
     }
-
-    if (currentStep === 'focal') {
-      submitInformalUpdate();
-    } else {
-      const nextStepMap: {
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        [key in Exclude<StepTypes, 'focal'>]: Exclude<StepTypes, 'context'>;
-      } = {
-        context: 'action',
-        action: 'focal',
-      };
-
-      handleTabChange(nextStepMap[currentStep]);
-    }
-  }, [validate, currentStep, handleTabChange, submitInformalUpdate, onErrorSet]);
-
-  const handleBackButtonClick = React.useCallback(() => {
-    if (currentStep !== 'context') {
-      const prevStepMap: {
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        [key in Exclude<StepTypes, 'context'>]: Exclude<StepTypes, 'focal'>;
-      } = {
-        action: 'context',
-        focal: 'action',
-      };
-
-      handleTabChange(prevStepMap[currentStep]);
-    }
-  }, [handleTabChange, currentStep]);
+    setCurrentStep(newStep);
+  }, [validateCurrentTab]);
 
   const {
     pending: informalUpdateSubmitPending,
@@ -198,10 +192,9 @@ function InformalUpdateForm(props: Props) {
       );
     },
     onFailure: ({
-      value: { messageForNotification, errors },
+      value: { messageForNotification },
       debugMessage,
     }) => {
-      console.error(errors);
       alert.show(
         <p>
           {strings.fieldReportFormErrorLabel}
@@ -217,6 +210,63 @@ function InformalUpdateForm(props: Props) {
       );
     },
   });
+
+  const exportLinkProps = useButtonFeatures({
+    variant: 'secondary',
+    children: strings.informalUpdateFormExportLabel,
+  });
+
+  const submitInformalUpdate = React.useCallback(() => {
+    const result = validate();
+
+    if (result.errored) {
+      onErrorSet(result.error);
+    } else {
+      const apiFields = transformFormFieldsToAPIFields(result.value as InformalUpdateFields);
+
+      submitRequest(apiFields);
+    }
+
+  }, [validate, onErrorSet, submitRequest]);
+
+  const handleSubmitButtonClick = React.useCallback(() => {
+    scrollToTop();
+    const isCurrentTabValid = validateCurrentTab(['title']);
+
+    if (!isCurrentTabValid) {
+      return;
+    }
+
+    if (currentStep === 'focal') {
+      submitInformalUpdate();
+    } else {
+      const nextStepMap: {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        [key in Exclude<StepTypes, 'focal'>]: Exclude<StepTypes, 'context'>;
+      } = {
+        context: 'action',
+        action: 'focal',
+      };
+
+      handleTabChange(nextStepMap[currentStep]);
+    }
+  }, [validateCurrentTab, currentStep, handleTabChange, submitInformalUpdate]);
+
+  const handleBackButtonClick = React.useCallback(() => {
+    if (currentStep !== 'context') {
+      const prevStepMap: {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        [key in Exclude<StepTypes, 'context'>]: Exclude<StepTypes, 'focal'>;
+      } = {
+        action: 'context',
+        focal: 'action',
+      };
+
+      handleTabChange(prevStepMap[currentStep]);
+    }
+  }, [handleTabChange, currentStep]);
+
+
 
   return (
     <Tabs
@@ -252,18 +302,21 @@ function InformalUpdateForm(props: Props) {
             <Tab
               name="context"
               step={1}
+              errored={erroredTabs['context']}
             >
               {strings.informalUpdateTabContextLabel}
             </Tab>
             <Tab
               name="action"
               step={2}
+              errored={erroredTabs['action']}
             >
               {strings.informalUpdateTabActionLabel}
             </Tab>
             <Tab
               name="focal"
               step={3}
+              errored={erroredTabs['focal']}
             >
               {strings.informalUpdateTabFocalLabel}
             </Tab>
@@ -313,14 +366,6 @@ function InformalUpdateForm(props: Props) {
             shareWithOptions={shareWithOptions}
           />
         </TabPanel>
-
-        {/*<TabPanel name="submission">
-                    <Submission
-                        error={error}
-                        onValueChange={onValueChange}
-                        value={value}
-                    />
-                </TabPanel>*/}
         <div className={styles.actions}>
           <Button
             name={undefined}
@@ -335,13 +380,12 @@ function InformalUpdateForm(props: Props) {
             variant="secondary"
             onClick={handleSubmitButtonClick}
             type="submit"
+            disabled={informalUpdateSubmitPending}
           >
             {submitButtonLabel}
           </Button>
         </div>
-
       </Page>
-
     </Tabs>
   );
 }
