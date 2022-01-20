@@ -1,6 +1,4 @@
-import {
-  isDefined,
-} from '@togglecorp/fujs';
+import { isDefined } from '@togglecorp/fujs';
 
 export const ONSET_IMMINENT = 0;
 export const ONSET_SLOW = 1;
@@ -46,7 +44,7 @@ export interface Entity {
   name: string;
 }
 export interface CountryDistrict {
-  //clientId: string;
+  clientId: string;
   country: number | undefined;
   district: number | undefined;
 }
@@ -79,8 +77,6 @@ export interface InformalUpdateFields {
   id: number;
   references: ReferenceData[];
   country_district: CountryDistrict[];
-  country?: number | undefined;
-  district?: number | undefined;
   hazard_type: number;
   title: string;
   situational_overview: string;
@@ -180,8 +176,6 @@ export type ActionsByOrganizationArrayLists = {
 };
 
 export const contextFields: (keyof InformalUpdateFields)[] = [
-  'country',
-  'district',
   'hazard_type',
   'title',
   'situational_overview',
@@ -222,8 +216,6 @@ export const focalFields: (keyof InformalUpdateFields)[] = [
 
 export function transformFormFieldsToAPIFields(formValues: InformalUpdateFields): InformalUpdateAPIFields {
   const {
-    country,
-    district,
     country_district,
     hazard_type,
     title,
@@ -287,14 +279,6 @@ export function transformFormFieldsToAPIFields(formValues: InformalUpdateFields)
       organization: 'GOV',
       summary: actions_government_desc,
       actions: actions_government
-    });
-  }
-
-  if ((isDefined(country) && isDefined(district))) {
-    country_district.push({
-      //clientId: randomString(),
-      country: country,
-      district: district
     });
   }
 

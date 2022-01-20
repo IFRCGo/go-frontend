@@ -4,12 +4,9 @@ import {
   ObjectSchema,
   ArraySchema,
   emailCondition,
+  requiredCondition,
 } from '@togglecorp/toggle-form';
 import { isDefined } from '@togglecorp/fujs';
-
-import {
-  requiredCondition,
-} from '#utils/form';
 import { compareString } from '#utils/utils';
 import LanguageContext from '#root/languageContext';
 import {
@@ -62,14 +59,18 @@ export function lessThanSixImagesCondition(value: any) {
     : undefined;
 }
 
+export function notDefinedCondition(value: []) {
+  return isDefined(value) && value?.map((x: any, i: number) => x[i] === undefined)
+    ? `${console.log('required')}`
+    : undefined;
+}
+
 export const schema: FormSchema = {
   fields: (value): FormSchemaFields => ({
-    country: [requiredCondition],
-    district: [requiredCondition],
+    country_district: [requiredCondition],
     hazard_type: [requiredCondition],
     situational_overview: [requiredCondition],
     title: [requiredCondition],
-    country_district: [],
     references: [],
     graphic: [],
     map: [],
@@ -149,15 +150,14 @@ function useInformalUpdateFormOptions(value: PartialForm<InformalUpdateFields>) 
   }, [countriesResponse]);
 
   const countryQuery = React.useMemo(() => ({
-    country: value.country,
     limit: 500,
-  }), [value.country]);
+  }), []);
 
   const {
     pending: fetchingDistricts,
     response: districtsResponse,
   } = useRequest<ListResponse<DistrictMini>>({
-    skip: !value.country,
+    skip: !value.country_district,
     url: 'api/v2/district/',
     query: countryQuery,
   });
@@ -303,17 +303,17 @@ function useInformalUpdateFormOptions(value: PartialForm<InformalUpdateFields>) 
 
   React.useMemo(() => {
     const date = `${(new Date().getMonth() + 1)} / ${(new Date().getFullYear())}`;
-    const countryTitle = countryOptions.find((x) => x.value === value?.country)?.label ?? ' ';
-    const districtTitle = districtOptions.find((x) => x.value === value?.district)?.label ?? ' ';
+    //const countryTitle = countryOptions.find((x) => x.value === value?.country)?.label ?? ' ';
+    //const districtTitle = districtOptions.find((x) => x.value === value?.district)?.label ?? ' ';
     const hazardTitle = disasterTypeOptions.find((x) => x.value === value?.hazard_type)?.label ?? ' ';
 
-    if (isDefined(value.country) && isDefined(value.district) && isDefined(value.hazard_type)) {
-      value.title = `${countryTitle} - ${districtTitle} : ${hazardTitle}  ${date}`;
+    if (isDefined(value.country_district) && isDefined(value.hazard_type)) {
+      value.title = `${hazardTitle}  ${date}`;
     } else {
       value.title = '';
     }
 
-  }, [value, countryOptions, districtOptions, disasterTypeOptions]);
+  }, [value, disasterTypeOptions]);
 
   return {
     countryOptions,

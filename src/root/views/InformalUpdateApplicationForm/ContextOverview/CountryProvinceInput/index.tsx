@@ -24,9 +24,7 @@ import styles from './styles.module.scss';
 type SetValueArg<T> = T | ((value: T) => T);
 
 const defaultCountryDistrictValue: PartialForm<CountryDistrictType> = {
-  //clientId: 'test',
 };
-
 interface Props {
   fetchingCountries?: boolean;
   value: PartialForm<CountryDistrictType>;
@@ -102,11 +100,10 @@ function CountryProvinceInput(props: Props) {
         name={index}
         onClick={onRemove}
         variant="action"
-      // disabled={index === 0}
+        disabled={index === 0}
       >
         <IoTrash />
       </Button>
-
 
     </div>
   );

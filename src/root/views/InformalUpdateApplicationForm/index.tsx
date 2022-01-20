@@ -40,7 +40,9 @@ import {
 } from './common';
 import
 useInformalUpdateFormOptions,
-{ schema }
+{
+  schema
+}
   from './useInformalUpdateFormOptions';
 
 import styles from './styles.module.scss';
@@ -70,7 +72,6 @@ const stepTypesToFieldsMap: {
   action: actionsFields,
   focal: focalFields
 };
-
 
 const defaultFormValues: PartialForm<InformalUpdateFields> = {
   country_district: [],
@@ -211,11 +212,6 @@ function InformalUpdateForm(props: Props) {
     },
   });
 
-  const exportLinkProps = useButtonFeatures({
-    variant: 'secondary',
-    children: strings.informalUpdateFormExportLabel,
-  });
-
   const submitInformalUpdate = React.useCallback(() => {
     const result = validate();
 
@@ -266,6 +262,13 @@ function InformalUpdateForm(props: Props) {
     }
   }, [handleTabChange, currentStep]);
 
+  const exportLinkProps = useButtonFeatures({
+    variant: 'secondary',
+    children: strings.informalUpdateFormExportLabel,
+  });
+
+  console.log({ value });
+
 
 
   return (
@@ -287,9 +290,8 @@ function InformalUpdateForm(props: Props) {
             )}
             <Button
               name={undefined}
-              //onClick={submitInformalUpdate}
+              onClick={submitInformalUpdate}
               type="submit"
-              onClick={() => history.push('/informal-update-report/')}
             >
               {strings.informalUpdateFormSaveButtonLabel}
             </Button>

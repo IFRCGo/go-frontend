@@ -1,4 +1,4 @@
-import React, { useContext, } from 'react';
+import React, { useContext, useEffect, } from 'react';
 import { isNotDefined } from '@togglecorp/fujs';
 import {
   EntriesAsList,
@@ -19,7 +19,6 @@ import TextArea from '#components/TextArea';
 import DateInput from '#components/DateInput';
 import { CountryDistrictType, ReferenceType } from '../useInformalUpdateFormOptions';
 import CountryProvinceInput from './CountryProvinceInput';
-import ReferenceInput from './CountryProvinceInput/ReferenceInput';
 import {
   InformalUpdateFields,
   NumericValueOption,
@@ -30,10 +29,15 @@ import {
 import styles from './styles.module.scss';
 import InformalUpdateFileInput from '#components/InformalUpdateFileInput';
 import BulletTextArea from '#components/BulletTextArea';
+import ReferenceInput from './ReferenceInput';
+
+//const defaultFormValues: PartialForm<CountryDistrictType> = {
+//  country: undefined,
+//  district: undefined
+//};
 
 type Value = PartialForm<InformalUpdateFields>;
 interface Props {
-
   error: Error<Value> | undefined;
   onValueChange: (...entries: EntriesAsList<Value>) => void;
   value: Value;
@@ -52,6 +56,7 @@ interface Props {
 function ContextOverview(props: Props) {
   const { strings } = useContext(languageContext);
   const {
+    onValueSet,
     error: formError,
     onValueChange,
     value,
@@ -61,8 +66,6 @@ function ContextOverview(props: Props) {
     fetchingCountries,
     disasterTypeOptions,
     fetchingDisasterTypes,
-    fetchingDistricts,
-    districtOptions,
   } = props;
 
   const error = getErrorObject(formError);
@@ -86,10 +89,10 @@ function ContextOverview(props: Props) {
   type References = typeof value.references;
 
   const handleCountryDistrictAdd = React.useCallback(() => {
+
     const newList: PartialForm<CountryDistrictType> = {
-      // clientId,
-      country: value.country,
-      district: value.district,
+      country: undefined,
+      district: undefined
     };
 
     onValueChange(
@@ -98,9 +101,7 @@ function ContextOverview(props: Props) {
       ),
       'country_district' as const,
     );
-
-  }, [onValueChange, value]);
-
+  }, [onValueChange,]);
 
   const handleAddReference = React.useCallback(() => {
     const newList: PartialForm<ReferenceType> = {
@@ -118,6 +119,10 @@ function ContextOverview(props: Props) {
 
   }, [onValueChange, value]);
 
+  useEffect(() => {
+    handleCountryDistrictAdd();
+  }, [handleCountryDistrictAdd]);
+
   return (
     <>
       <Container
@@ -125,43 +130,6 @@ function ContextOverview(props: Props) {
         heading={strings.informalUpdateFormContextHeading}
         visibleOverflow
       >
-        <InputSection
-          title={strings.informalUpdateFormContextCountryTitle}
-          description={strings.informalUpdateFormContextCountryDescription}
-        >
-          <SelectInput
-            label={strings.informalUpdateFormContextCountryLabel}
-            name="country"
-            pending={fetchingCountries}
-            error={error?.country}
-            onChange={onValueChange}
-            options={countryOptions}
-            value={value.country}
-
-          />
-          <SelectInput
-            label={strings.informalUpdateFormContextProvinceLabel}
-            name="district"
-            pending={fetchingDistricts}
-            error={error?.district}
-            onChange={onValueChange}
-            options={districtOptions}
-            value={value.district}
-          />
-        </InputSection>
-
-        <InputSection className={styles.addCountryButtonContainer} >
-          <div className={styles.actions}>
-            <Button
-              name={undefined}
-              onClick={handleCountryDistrictAdd}
-              variant="secondary"
-            >
-              {strings.informalUpdateFormContextCountryButton}
-            </Button>
-          </div>
-        </InputSection>
-
         <InputSection
           multiRow
           oneColumn
@@ -178,6 +146,17 @@ function ContextOverview(props: Props) {
               fetchingCountries={fetchingCountries}
             />
           ))}
+        </InputSection>
+        <InputSection className={styles.addCountryButtonContainer} >
+          <div className={styles.actions}>
+            <Button
+              name={undefined}
+              onClick={handleCountryDistrictAdd}
+              variant="secondary"
+            >
+              {strings.informalUpdateFormContextCountryButton}
+            </Button>
+          </div>
         </InputSection>
       </Container>
 
@@ -341,8 +320,6 @@ function ContextOverview(props: Props) {
             onRemove={onReferenceRemove}
           />
         ))}
-
-
       </Container>
     </>
   );
