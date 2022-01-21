@@ -23,8 +23,7 @@ import styles from './styles.module.scss';
 
 type SetValueArg<T> = T | ((value: T) => T);
 
-const defaultCountryDistrictValue: PartialForm<CountryDistrictType> = {
-};
+const defaultCountryDistrictValue: PartialForm<CountryDistrictType> = {};
 interface Props {
   fetchingCountries?: boolean;
   value: PartialForm<CountryDistrictType>;

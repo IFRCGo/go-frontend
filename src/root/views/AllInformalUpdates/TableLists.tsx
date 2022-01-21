@@ -73,11 +73,11 @@ function TableLists(props: Props) {
               label={strings.projectListTableViewDetails}
               icon={<MdSearch />}
             />
-            <DropdownMenuItem
+            {/*<DropdownMenuItem
               href={`/three-w/${infrl.id}/edit/`}
               icon={<MdEdit />}
               label={strings.projectListTableEdit}
-            />
+            />*/}
           </>
         ),
       }),
@@ -141,7 +141,7 @@ function TableLists(props: Props) {
               <Pager
                 activePage={activePage}
                 onActivePageChange={setActivePage}
-                itemsCount={20}
+                itemsCount={ITEM_PER_PAGE}
                 maxItemsPerPage={ITEM_PER_PAGE}
               />
             </div>

@@ -60,7 +60,7 @@
     background-color: $white;
     
     img {
-      width: 500px;
+      object-fit: contain;
       max-height: 300px;
     }
   }

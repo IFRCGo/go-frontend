@@ -41,6 +41,7 @@ import {
 import
 useInformalUpdateFormOptions,
 {
+  CountryDistrictType,
   schema
 }
   from './useInformalUpdateFormOptions';
@@ -73,8 +74,11 @@ const stepTypesToFieldsMap: {
   focal: focalFields
 };
 
-const defaultFormValues: PartialForm<InformalUpdateFields> = {
-  country_district: [],
+const defaultFormValues: PartialForm<CountryDistrictType> = {
+  country_district: [{
+    country: undefined,
+    district: undefined
+  }]
 };
 
 function InformalUpdateForm(props: Props) {

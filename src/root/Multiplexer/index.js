@@ -91,7 +91,7 @@ const ThreeWEdit = lazy(() => import('../views/ThreeWEdit'));
 const DrefApplicationForm = lazy(() => import('../views/DrefApplicationForm'));
 const DrefPdfPreview = lazy(() => import('../views/DrefPdfPreview'));
 const InformalUpdateApplicationForm = lazy(() => import('../views/InformalUpdateApplicationForm'));
-const InformalUpdateReport = lazy(() => import('../views/InformalUpdateApplicationForm/Report'));
+const InformalUpdateReport = lazy(() => import('../views/InformalUpdateReport'));
 const AllInformalUpdates = lazy(() => import('../views/AllInformalUpdates'));
 
 function LoadingGlobal() {

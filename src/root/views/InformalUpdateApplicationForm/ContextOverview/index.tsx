@@ -119,9 +119,10 @@ function ContextOverview(props: Props) {
 
   }, [onValueChange, value]);
 
-  useEffect(() => {
-    handleCountryDistrictAdd();
-  }, [handleCountryDistrictAdd]);
+  //useEffect(() => {
+  //  handleCountryDistrictAdd();
+  //}, [handleCountryDistrictAdd]);
+  console.log('----', value);
 
   return (
     <>
@@ -214,14 +215,14 @@ function ContextOverview(props: Props) {
         >
           <InformalUpdateFileInput
             accept="image/*"
-            error={error?.graphic}
+            error={error?.graphics}
             fileIdToUrlMap={fileIdToUrlMap}
-            name="graphic"
+            name="graphics"
             onChange={onValueChange}
             setFileIdToUrlMap={setFileIdToUrlMap}
             showStatus
             multiple
-            value={value.graphic}
+            value={value.graphics}
           >
             {strings.informalUpdateFormContextReferenceUrlButtonLabel}
           </InformalUpdateFileInput>

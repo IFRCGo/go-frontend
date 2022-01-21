@@ -43,7 +43,7 @@ export interface Entity {
   id: number;
   name: string;
 }
-export interface CountryDistrict {
+export interface CountryDistrict extends InformalUpdateFields {
   clientId: string;
   country: number | undefined;
   district: number | undefined;
@@ -80,7 +80,7 @@ export interface InformalUpdateFields {
   hazard_type: number;
   title: string;
   situational_overview: string;
-  graphic: number[];
+  graphics: number[];
   map: number[];
   reference_date: string;
   reference_name: string;
@@ -107,20 +107,20 @@ export interface InformalUpdateFields {
   share_with: string;
 
   hazard_type_details: HazardDetails[];
-  graphic_details: ImageDetails;
-  map_details: ImageDetails;
+  graphics_details: ImageDetails[];
+  map_details: ImageDetails[];
 }
 export interface InformalUpdateAPIFields {
   country_district: CountryDistrict[];
   hazard_type: number;
   title: string;
   situational_overview: string;
-  graphic: number[];
+  graphics: number[];
   map: number[];
   references: ReferenceData[];
   hazard_type_details: HazardDetails[];
-  graphic_details: ImageDetails;
-  map_details: ImageDetails;
+  graphics_details: ImageDetails[];
+  map_details: ImageDetails[];
 
   // Actions
   actions_taken: {
@@ -179,7 +179,7 @@ export const contextFields: (keyof InformalUpdateFields)[] = [
   'hazard_type',
   'title',
   'situational_overview',
-  'graphic',
+  'graphics',
   'map',
   'references',
   'country_district',
@@ -220,7 +220,7 @@ export function transformFormFieldsToAPIFields(formValues: InformalUpdateFields)
     hazard_type,
     title,
     situational_overview,
-    graphic,
+    graphics,
     map,
     references,
 
@@ -244,7 +244,7 @@ export function transformFormFieldsToAPIFields(formValues: InformalUpdateFields)
     share_with,
 
     hazard_type_details,
-    graphic_details,
+    graphics_details,
     map_details,
   } = formValues;
 
@@ -287,7 +287,7 @@ export function transformFormFieldsToAPIFields(formValues: InformalUpdateFields)
     hazard_type,
     title,
     situational_overview,
-    graphic,
+    graphics,
     map,
     references,
 
@@ -304,7 +304,7 @@ export function transformFormFieldsToAPIFields(formValues: InformalUpdateFields)
     share_with,
 
     hazard_type_details,
-    graphic_details,
+    graphics_details,
     map_details,
   };
 }

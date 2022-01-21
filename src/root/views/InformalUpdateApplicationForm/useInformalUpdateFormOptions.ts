@@ -72,7 +72,7 @@ export const schema: FormSchema = {
     situational_overview: [requiredCondition],
     title: [requiredCondition],
     references: [],
-    graphic: [],
+    graphics: [],
     map: [],
 
     actions_ntls: [],

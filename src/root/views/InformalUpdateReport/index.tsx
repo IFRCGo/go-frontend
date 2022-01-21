@@ -11,7 +11,7 @@ import { get } from '#utils/utils';
 import ViewSection from './ViewSection';
 
 import styles from './styles.module.scss';
-import { InformalUpdateAPIFields } from '../common';
+import { InformalUpdateAPIFields } from '../InformalUpdateApplicationForm/common';
 import { useRequest } from '#utils/restRequest';
 import { isNotDefined } from '@togglecorp/fujs';
 
@@ -117,7 +117,7 @@ function InformalUpdateReport(props: Props) {
       <Page
         className={styles.situational}
         title='informal report'
-        heading='5.7 Earthquake in Pakistan (Flash Update #1)'
+        heading={informalUpdateData?.title}
         description={
           <Link to='/'>
             <span className='link--with-icon-text'>
@@ -161,7 +161,9 @@ function InformalUpdateReport(props: Props) {
         >
           <div className={styles.graphic}>
             <div className={styles.card}>
-              <img src="https://www.geosp.com/wp-content/uploads/2019/10/2.jpg" alt="" />
+              {informalUpdateData?.map_details?.map((item) => (
+                <img src={item?.file} alt="" />
+              ))}
             </div>
           </div>
         </Container>
@@ -170,12 +172,11 @@ function InformalUpdateReport(props: Props) {
           heading='IMAGES'
         >
           <div className={styles.image}>
-            <div>
-              <img src="https://nepal24hours.com/wp-content/uploads/2021/10/earthquakes.jpg" alt="" />
-            </div>
-            <div>
-              <img src="https://nepal24hours.com/wp-content/uploads/2021/10/earthquakes.jpg" alt="" />
-            </div>
+            {informalUpdateData?.graphics_details?.map((item) => (
+              <div>
+                <img src={item?.file} alt="" />
+              </div>
+            ))}
           </div>
         </Container>
 
