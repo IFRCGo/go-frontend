@@ -3,7 +3,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: node:14
+      - image: node:15
 
     resource_class: large
 
