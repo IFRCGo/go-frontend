@@ -303,17 +303,30 @@ function useInformalUpdateFormOptions(value: PartialForm<InformalUpdateFields>) 
 
   React.useMemo(() => {
     const date = `${(new Date().getMonth() + 1)} / ${(new Date().getFullYear())}`;
-    //const countryTitle = countryOptions.find((x) => x.value === value?.country)?.label ?? ' ';
+
+    const countryNameTitle = value.country_district?.flatMap((item) => {
+      return countryOptions.find((x) => x.value === item?.country)?.label ?? ' ';
+    }).reduce((item, name) => {
+      return `${item}, ${name}`;
+    });
+
+    console.log(countryNameTitle);
+    //const splitCountryName = countryNameList?.reduce((item, name) => {
+    //  return `${item}, ${name}`
+    //}, '');
+    //console.log('split', splitCountryName);
+
+    // const countryTitle = countryOptions.find((x) => x.value === value.country_district?.[0])?.label ?? ' ';
     //const districtTitle = districtOptions.find((x) => x.value === value?.district)?.label ?? ' ';
     const hazardTitle = disasterTypeOptions.find((x) => x.value === value?.hazard_type)?.label ?? ' ';
 
     if (isDefined(value.country_district) && isDefined(value.hazard_type)) {
-      value.title = `${hazardTitle}  ${date}`;
+      value.title = `${countryNameTitle} - ${hazardTitle}  ${date}`;
     } else {
       value.title = '';
     }
 
-  }, [value, disasterTypeOptions]);
+  }, [value, disasterTypeOptions, countryOptions]);
 
   return {
     countryOptions,

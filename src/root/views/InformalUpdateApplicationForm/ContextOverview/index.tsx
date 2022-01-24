@@ -1,9 +1,8 @@
-import React, { useContext, useEffect, } from 'react';
+import React, { useContext } from 'react';
 import { isNotDefined } from '@togglecorp/fujs';
 import {
   EntriesAsList,
   PartialForm,
-  SetBaseValueArg,
   Error,
   useFormArray,
   getErrorObject,
@@ -49,14 +48,12 @@ interface Props {
   districtOptions: NumericValueOption[];
   fileIdToUrlMap: Record<number, string>;
   setFileIdToUrlMap?: React.Dispatch<React.SetStateAction<Record<number, string>>>;
-  onValueSet: (value: SetBaseValueArg<Value>) => void;
   onCreateAndShareButtonClick: () => void;
 }
 
 function ContextOverview(props: Props) {
   const { strings } = useContext(languageContext);
   const {
-    onValueSet,
     error: formError,
     onValueChange,
     value,
@@ -118,11 +115,6 @@ function ContextOverview(props: Props) {
     );
 
   }, [onValueChange, value]);
-
-  //useEffect(() => {
-  //  handleCountryDistrictAdd();
-  //}, [handleCountryDistrictAdd]);
-  console.log('----', value);
 
   return (
     <>

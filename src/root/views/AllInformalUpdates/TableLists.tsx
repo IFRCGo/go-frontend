@@ -73,11 +73,12 @@ function TableLists(props: Props) {
               label={strings.projectListTableViewDetails}
               icon={<MdSearch />}
             />
-            {/*<DropdownMenuItem
-              href={`/three-w/${infrl.id}/edit/`}
+            <DropdownMenuItem
+              // href={`/three-w/${infrl.id}/edit/`}
+              href=''
               icon={<MdEdit />}
               label={strings.projectListTableEdit}
-            />*/}
+            />
           </>
         ),
       }),

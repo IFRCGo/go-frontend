@@ -1,3 +1,4 @@
+import { Country } from '#types/country';
 import { isDefined } from '@togglecorp/fujs';
 
 export const ONSET_IMMINENT = 0;
@@ -31,14 +32,6 @@ export interface HazardDetails {
   name: string;
   summary: string;
 }
-export interface InformalUpdateTableFields {
-  id: number;
-  modified_at: string;
-  title: string;
-  hazard_type: string;
-  country: string;
-  hazard_type_details: HazardDetails;
-}
 export interface Entity {
   id: number;
   name: string;
@@ -47,6 +40,7 @@ export interface CountryDistrict extends InformalUpdateFields {
   clientId: string;
   country: number | undefined;
   district: number | undefined;
+  country_details?: Country | undefined;
 }
 export interface ReferenceData {
   //clientId: string;
@@ -59,6 +53,20 @@ export interface ImageDetails {
   id: number;
   file: string;
   caption: string;
+}
+export interface ActionDetails {
+  id: number;
+  name: string;
+  category: string;
+  organization: OrganizationType
+}
+
+export interface ActionsTaken {
+  organization: OrganizationType;
+  summary?: string;
+  actions: number[];
+  action_details?: ActionDetails[];
+  organization_display?: string;
 }
 
 export type Option = NumericValueOption | BooleanValueOption | StringValueOption;
@@ -73,6 +81,15 @@ export const stringOptionKeySelector = (o: StringValueOption) => o.value;
 export const booleanOptionKeySelector = (o: BooleanValueOption) => o.value;
 export const optionLabelSelector = (o: Option) => o.label;
 export const tableKeySelector = (o: InformalUpdateTableFields) => o.id;
+
+export interface InformalUpdateTableFields {
+  id: number;
+  modified_at: string;
+  title: string;
+  hazard_type: string;
+  country_district: CountryDistrict;
+  hazard_type_details: HazardDetails;
+}
 export interface InformalUpdateFields {
   id: number;
   references: ReferenceData[];
@@ -106,7 +123,7 @@ export interface InformalUpdateFields {
   ifrc_phone: string;
   share_with: string;
 
-  hazard_type_details: HazardDetails[];
+  hazard_type_details: HazardDetails;
   graphics_details: ImageDetails[];
   map_details: ImageDetails[];
 }
@@ -118,16 +135,12 @@ export interface InformalUpdateAPIFields {
   graphics: number[];
   map: number[];
   references: ReferenceData[];
-  hazard_type_details: HazardDetails[];
+  hazard_type_details: HazardDetails;
   graphics_details: ImageDetails[];
   map_details: ImageDetails[];
 
   // Actions
-  actions_taken: {
-    organization: OrganizationType;
-    summary?: string;
-    actions: number[];
-  }[]
+  actions_taken: ActionsTaken[]
 
   originator_title: string;
   originator_name: string;
@@ -138,7 +151,6 @@ export interface InformalUpdateAPIFields {
   ifrc_email: string;
   ifrc_phone: string;
   share_with: string;
-
 }
 
 export type OrganizationType = 'NTLS' | 'PNS' | 'FDRN' | 'IFRC' | 'RCRC' | 'GOV';

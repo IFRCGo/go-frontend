@@ -1,12 +1,8 @@
 import React from 'react';
 import { _cs } from '@togglecorp/fujs';
 
+import { ActionsTaken } from '#views/InformalUpdateApplicationForm/common';
 import styles from './styles.module.scss';
-
-interface Data {
-  actions?: string[] | undefined;
-  description?: string | undefined;
-}
 
 export interface BaseProps {
   className?: string;
@@ -16,7 +12,7 @@ export interface BaseProps {
   tooltip?: string;
   multiRow?: boolean;
   normalDescription?: boolean;
-  data?: Data[];
+  data?: ActionsTaken;
 }
 
 type Props = BaseProps & ({
@@ -47,6 +43,7 @@ function ViewSection(props: Props) {
     normalDescription,
     data,
   } = props;
+  console.log({ data });
 
   return (
     <div
@@ -63,32 +60,36 @@ function ViewSection(props: Props) {
           title={tooltip}
         >
           <div className={styles.title}>
-            {title}
+            {title} {data?.organization_display}
           </div>
         </div>
       )}
       <div className={styles.sectionContent}>
-        {data && data.map((el) => (
-          <>
-            <div className={styles.sectionContentDescription}>
-              <div className={styles.label}>
-                Description
-              </div>
-              <div className={styles.value}>
-                {el.description}
-              </div>
-            </div>
 
-            <div className={styles.sectionContentActions}>
-              <div className={styles.label}>
-                Actions
-              </div>
-              <div className={styles.value}>
-                {el.actions}
-              </div>
+        <>
+          <div className={styles.sectionContentDescription}>
+            <div className={styles.label}>
+              Description
             </div>
-          </>
-        ))}
+            <div className={styles.value}>
+              {data?.summary}
+            </div>
+          </div>
+
+          <div className={styles.sectionContentActions}>
+            <div className={styles.label}>
+              Actions
+            </div>
+            <div className={styles.value}>
+              {data?.action_details?.map((item) =>
+                <div key={item?.id}>
+                  {item.name}
+                </div>
+              )}
+            </div>
+          </div>
+        </>
+
       </div>
       {children && (
         <div className={_cs(styles.sectionContent, contentSectionClassName)}>

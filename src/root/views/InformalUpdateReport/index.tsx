@@ -1,19 +1,22 @@
-import React, { useContext, useMemo } from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import type { History, Location } from 'history';
 import type { match as Match } from 'react-router-dom';
+import { isNotDefined } from '@togglecorp/fujs';
 
 import Container from '#components/Container';
 import Page from '#components/Page';
 import BreadCrumb from '#components/breadcrumb';
 import languageContext from '#root/languageContext';
 import { get } from '#utils/utils';
-import ViewSection from './ViewSection';
-
-import styles from './styles.module.scss';
-import { InformalUpdateAPIFields } from '../InformalUpdateApplicationForm/common';
 import { useRequest } from '#utils/restRequest';
-import { isNotDefined } from '@togglecorp/fujs';
+
+import ViewSection from './ViewSection';
+import {
+  ActionsTaken,
+  InformalUpdateAPIFields
+} from '../InformalUpdateApplicationForm/common';
+import styles from './styles.module.scss';
 
 interface Props {
   match: Match<{ id?: string }>
@@ -30,7 +33,7 @@ function InformalUpdateReport(props: Props) {
       }
     }
   } = props;
-  console.log({ id });
+
   const [informalUpdateData, setInformalUpdateData] = React.useState<InformalUpdateAPIFields | undefined>();
   const { strings } = useContext(languageContext);
   const data = undefined;
@@ -54,11 +57,13 @@ function InformalUpdateReport(props: Props) {
     }
   });
 
-  const handleInformalDataLoad = React.useCallback((informalUpdateData: InformalUpdateAPIFields) => {
-    setInformalUpdateData(informalUpdateData);
-  }, []);
+  const renderActionTaken = (org: string) => {
+    const actions: ActionsTaken | undefined = informalUpdateData?.actions_taken.find(d => d.organization === org);
+    return (
 
-  console.log('object------', informalUpdateData);
+      <ViewSection title='Actions taken by' data={actions} />
+    );
+  };
   const situationalData = [
     {
       name: 'Magnitude',
@@ -89,28 +94,6 @@ function InformalUpdateReport(props: Props) {
       description: 'The 5.7 magnitude earthquake hit at 03 o’clock in the morning local time as people were sleeping. At least 20 persons are reported dead and 150 injured with many rushed to the hospital in critical condition and fractures. Approximately a hundred mud houses have reported collapsed leaving hundreds of persons without shelter. Much of the damage seems to have taken place in Hernai district according to local authority interviewed in news report. Hernai is a fairly remote, mountainous city and the area hosts a lot of coal mines. Health workers and rescue efforts were hampered by a power cut caused by the earthquake – hospital workers reported having to do with torches for light - and by a lack of paved roads and mobile phone coverage. The tremor caused also a lot of landslides according to Al Jazeera report, blocking roads that need to be opened for rescuers to get to the area.'
     }
   ];
-  const actionTakenByIfrc = useMemo(() => [{
-    description: 'IFRC CD is in close contact with PRCS on the situation and monitoring the situation. ',
-    actions: ['Others', 'Food and Security']
-  }], []);
-
-  const actionTakenByRcrc = useMemo(() => [{
-    description: `As soon as reports emerged in Media about the EQ in early hours, PRCS NHQ contacted the provincial HQ and started mobilising their resources, PRCS PHQ has deployed a 
-        team consisting of Doctor, Paramedic and Provincial Disaster Management Manager (PDMM) and Volunteers, 3 Ambulances along with basic medicines on their way to the 
-        affected areas. The team is led by Chairman of PRCS Balochistan Branch. Apart from medicines some basic NFIs are also on the way to Harnai district to assist the affected 
-        families. The team will also assess the situation and needs of the affected population. PRCS Balochistan Branch is ready with more stocks in the warehouses if required to be 
-        dispatched.
-        PRCS NHQ is closely monitoring the situation and in contact with the Provincial Branch Balochistan.
-        PRCS NHQ is waiting for Primary Incident Report (PIR) from the Branch on the basis of that PRCS NHQ will assess the needs to decide on whether they will request for DREF.`,
-    actions: ['Others', 'Food and Security']
-  }], []);
-
-  const actionTakenByGovernment = useMemo(() => [{
-    description: `As per Chief Minister of the Province, all assistance and evacuations are underway for the affected areas, Medical, local administration and disaster management teams are on high alert and mobilized, emergency services had been dispatched to the area.
-        Rescue operations are still underway.
-        There has been quite a lot of land sliding, and the teams are currently working to clear the roads to the area.`,
-    actions: ['Others', 'Food and Security']
-  }], []);
 
   return (
     <>
@@ -155,14 +138,13 @@ function InformalUpdateReport(props: Props) {
             </div>
           </ViewSection>
         </Container>
-
         <Container
           heading='MAPS'
         >
           <div className={styles.graphic}>
             <div className={styles.card}>
               {informalUpdateData?.map_details?.map((item) => (
-                <img src={item?.file} alt="" />
+                <img key={item.id} src={item?.file} alt="" />
               ))}
             </div>
           </div>
@@ -173,23 +155,17 @@ function InformalUpdateReport(props: Props) {
         >
           <div className={styles.image}>
             {informalUpdateData?.graphics_details?.map((item) => (
-              <div>
+              <div key={item.id}>
                 <img src={item?.file} alt="" />
               </div>
             ))}
           </div>
         </Container>
-
         <Container heading='ACTIONS TAKEN' className={styles.actionTaken}>
-          <ViewSection title='Actions taken by IFRC' data={actionTakenByIfrc} />
+          {renderActionTaken('NTLS')}
         </Container>
-
         <Container className={styles.actionTaken}>
-          <ViewSection title='Actions taken by RCRC' data={actionTakenByRcrc} />
-        </Container>
-
-        <Container className={styles.actionTaken}>
-          <ViewSection title='Actions taken by Government' data={actionTakenByGovernment} />
+          {renderActionTaken('GOV')}
         </Container>
       </Page>
     </>

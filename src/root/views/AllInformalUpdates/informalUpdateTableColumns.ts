@@ -1,9 +1,9 @@
-import { createStringColumn } from "#components/Table/predefinedColumns";
+import { createDateColumn, createStringColumn } from "#components/Table/predefinedColumns";
 import { InformalUpdateTableFields } from "#views/InformalUpdateApplicationForm/common";
 import { Strings } from "#types";
 
 export const getBaseColumns = (strings: Strings) => ([
-  createStringColumn<InformalUpdateTableFields, string | number>(
+  createDateColumn<InformalUpdateTableFields, string | number>(
     'last_update',
     'Last Update',
     (item) => {
@@ -19,11 +19,12 @@ export const getBaseColumns = (strings: Strings) => ([
   createStringColumn<InformalUpdateTableFields, string | number>(
     'hazard_type',
     'Disaster Type',
-    (item) => item?.hazard_type_details?.name,
+    (item) => item?.hazard_type_details?.name
   ),
   createStringColumn<InformalUpdateTableFields, string | number>(
-    'country',
+    'country_district',
     'Country',
-    (item) => item?.country,
+    (item) => item?.title.split('-')[0]
+
   ),
 ]);

@@ -273,8 +273,6 @@ function InformalUpdateForm(props: Props) {
 
   console.log({ value });
 
-
-
   return (
     <Tabs
       disabled={false}
@@ -346,7 +344,6 @@ function InformalUpdateForm(props: Props) {
             fetchingDisasterTypes={fetchingDisasterTypes}
             fileIdToUrlMap={fileIdToUrlMap}
             setFileIdToUrlMap={setFileIdToUrlMap}
-            onValueSet={onValueSet}
             onCreateAndShareButtonClick={submitInformalUpdate}
             fetchingDistricts={fetchingDistricts}
             districtOptions={districtOptions}
