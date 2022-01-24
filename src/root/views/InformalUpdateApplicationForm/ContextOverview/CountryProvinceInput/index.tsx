@@ -69,8 +69,8 @@ function CountryProvinceInput(props: Props) {
   ), [districtsResponse]);
 
   const onFieldChange = useFormObject(index, onChange, defaultCountryDistrictValue);
-  const error = (value && value.country && errorFromProps)
-    ? getErrorObject(errorFromProps?.[value.country])
+  const error = (value && value.clientId && errorFromProps)
+    ? getErrorObject(errorFromProps?.[value.clientId])
     : undefined;
 
   return (

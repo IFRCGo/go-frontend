@@ -45,7 +45,6 @@ function InformalUpdateReport(props: Props) {
     { link: '/', name: strings.breadCrumbHome }
   ];
 
-
   const {
     pending: projectPending,
     response: DataResponse,

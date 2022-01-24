@@ -36,7 +36,7 @@ export interface Entity {
   id: number;
   name: string;
 }
-export interface CountryDistrict extends InformalUpdateFields {
+export interface CountryDistrict {
   clientId: string;
   country: number | undefined;
   district: number | undefined;

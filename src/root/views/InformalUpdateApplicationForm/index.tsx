@@ -1,5 +1,5 @@
 import React from 'react';
-import { isDefined, listToMap } from '@togglecorp/fujs';
+import { isDefined, listToMap, randomString } from '@togglecorp/fujs';
 import type { match as Match } from 'react-router-dom';
 import type {
   History,
@@ -41,7 +41,6 @@ import {
 import
 useInformalUpdateFormOptions,
 {
-  CountryDistrictType,
   schema
 }
   from './useInformalUpdateFormOptions';
@@ -74,8 +73,9 @@ const stepTypesToFieldsMap: {
   focal: focalFields
 };
 
-const defaultFormValues: PartialForm<CountryDistrictType> = {
+const defaultFormValues: PartialForm<InformalUpdateFields> = {
   country_district: [{
+    clientId: randomString(),
     country: undefined,
     district: undefined
   }]
@@ -171,7 +171,7 @@ function InformalUpdateForm(props: Props) {
 
   const handleTabChange = React.useCallback((newStep: StepTypes) => {
     scrollToTop();
-    const isCurrentTabValid = validateCurrentTab(['title']);
+    const isCurrentTabValid = validateCurrentTab([]);
 
     if (!isCurrentTabValid) {
       return;
@@ -231,7 +231,7 @@ function InformalUpdateForm(props: Props) {
 
   const handleSubmitButtonClick = React.useCallback(() => {
     scrollToTop();
-    const isCurrentTabValid = validateCurrentTab(['title']);
+    const isCurrentTabValid = validateCurrentTab([]);
 
     if (!isCurrentTabValid) {
       return;

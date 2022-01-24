@@ -59,15 +59,17 @@ export function lessThanSixImagesCondition(value: any) {
     : undefined;
 }
 
-export function notDefinedCondition(value: []) {
-  return isDefined(value) && value?.map((x: any, i: number) => x[i] === undefined)
-    ? `${console.log('required')}`
-    : undefined;
-}
-
 export const schema: FormSchema = {
   fields: (value): FormSchemaFields => ({
-    country_district: [requiredCondition],
+    country_district: {
+      keySelector: (c) => c.clientId as string,
+      member: (): CountryDistrictsSchemaMember => ({
+        fields: (): CountryDistrictSchemaFields => ({
+          country: [requiredCondition],
+          district: [requiredCondition]
+        }),
+      }),
+    },
     hazard_type: [requiredCondition],
     situational_overview: [requiredCondition],
     title: [requiredCondition],
@@ -322,8 +324,6 @@ function useInformalUpdateFormOptions(value: PartialForm<InformalUpdateFields>) 
 
     if (isDefined(value.country_district) && isDefined(value.hazard_type)) {
       value.title = `${countryNameTitle} - ${hazardTitle}  ${date}`;
-    } else {
-      value.title = '';
     }
 
   }, [value, disasterTypeOptions, countryOptions]);

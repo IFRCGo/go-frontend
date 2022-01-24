@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { isNotDefined } from '@togglecorp/fujs';
+import { isNotDefined, randomString } from '@togglecorp/fujs';
 import {
   EntriesAsList,
   PartialForm,
@@ -88,6 +88,7 @@ function ContextOverview(props: Props) {
   const handleCountryDistrictAdd = React.useCallback(() => {
 
     const newList: PartialForm<CountryDistrictType> = {
+      clientId: randomString(),
       country: undefined,
       district: undefined
     };
@@ -129,7 +130,7 @@ function ContextOverview(props: Props) {
         >
           {value.country_district?.map((c, i) => (
             <CountryProvinceInput
-              key={i}
+              key={c.clientId}
               index={i}
               value={c}
               onChange={onCountryDistrictChange}
