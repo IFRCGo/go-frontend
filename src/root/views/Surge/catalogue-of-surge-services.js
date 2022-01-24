@@ -250,7 +250,7 @@ export default class CatalogueOfSurgeServices extends React.Component {
                             { this.renderContent('') }
                         </Route>
                         <Route path="/deployments/catalogue/:selectedSelector/:selectedService"
-                            children={({ match, ...rest }) => (
+                            children={({ match }) => (
                                 <div>
                                     <div className="backTo">
                                         <Link to="/deployments/catalogue">
@@ -263,7 +263,7 @@ export default class CatalogueOfSurgeServices extends React.Component {
                             )}
                         />
                         <Route path="/deployments/catalogue/:selectedSelector"
-                            children={({ match, ...rest}) => (
+                            children={({ match }) => (
                                 <>
                                     { this.renderContent('#' + match.params.selectedSelector) }
                                 </>

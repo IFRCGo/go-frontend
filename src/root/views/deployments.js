@@ -368,7 +368,7 @@ class Deployments extends SFPComponent {
                   </div>
                 </Route>
                 <Route path="/deployments/user/:userId"
-                  children={({ match, ...rest }) => (
+                  children={({ match }) => (
                     <div>
                       {match.params.userId}
                     </div>
