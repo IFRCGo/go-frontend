@@ -17,6 +17,17 @@ export const setHashToBrowser = (hash: string | undefined) => {
     }
 };
 
+export function sumSafe(list: (number | undefined | null)[]): number {
+  if (!list || list.length === 0) {
+    return 0;
+  }
+
+  const safeList = list.filter(num => isDefined(num)) as number[];
+  return safeList.reduce((acc, item) => (
+    acc + (+item)
+  ), 0);
+}
+
 export function sum<L, V extends string | number>(list: L[], valueSelector: (item: L) => V) {
   if (!list || !Array.isArray(list)) {
     return 0;

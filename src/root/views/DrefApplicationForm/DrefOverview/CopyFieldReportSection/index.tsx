@@ -11,7 +11,6 @@ import {
 
 import Button from '#components/Button';
 import SearchSelectInput from '#components/SearchSelectInput';
-import Container from '#components/Container';
 import InputSection from '#components/InputSection';
 import LanguageContext from '#root/languageContext';
 import useInputState from '#hooks/useInputState';
@@ -242,32 +241,30 @@ function CopyFieldReportSection (props: Props) {
   }, [fetchedFieldReports]);
 
   return (
-    <Container visibleOverflow>
-      <InputSection
-        title={strings.drefFormEventDetailsTitle}
-        description={strings.drefFormEventDescription}
-      >
-        <SearchSelectInput
-          name={undefined}
-          value={fieldReport}
-          onChange={setFieldReport}
-          loadOptions={handleFieldReportLoad}
-          initialOptions={initialOptions}
-          pending={selectedFrPending}
-          defaultOptions
-        />
-        <div className={styles.actions}>
-          <Button
-            variant="secondary"
-            disabled={isNotDefined(fieldReport) || frDetailPending}
-            onClick={handleCopyButtonClick}
-            name={fieldReport}
-          >
-            {strings.drefFormCopyButtonLabel}
-          </Button>
-        </div>
-      </InputSection>
-    </Container>
+    <InputSection
+      title={strings.drefFormEventDetailsTitle}
+      description={strings.drefFormEventDescription}
+    >
+      <SearchSelectInput
+        name={undefined}
+        value={fieldReport}
+        onChange={setFieldReport}
+        loadOptions={handleFieldReportLoad}
+        initialOptions={initialOptions}
+        pending={selectedFrPending}
+        defaultOptions
+      />
+      <div className={styles.actions}>
+        <Button
+          variant="secondary"
+          disabled={isNotDefined(fieldReport) || frDetailPending}
+          onClick={handleCopyButtonClick}
+          name={fieldReport}
+        >
+          {strings.drefFormCopyButtonLabel}
+        </Button>
+      </div>
+    </InputSection>
   );
 }
 

@@ -28,6 +28,7 @@ import {
   Need,
   NsAction,
   StringValueOption,
+  ONSET_IMMINENT,
 } from '../common';
 
 import NeedInput from './NeedInput';
@@ -131,6 +132,7 @@ function ActionsFields(props: Props) {
     )
   ), [value.national_society_actions]);
   const filteredNsActionOptions = nsActionsMap ? nsActionOptions.filter(n => !nsActionsMap[n.value]) : [];
+  const isImminentOnset = value.type_of_onset === ONSET_IMMINENT;
 
   return (
     <>
@@ -262,7 +264,7 @@ function ActionsFields(props: Props) {
         </InputSection>
       </Container>
       <Container
-        heading={strings.drefFormNeedsIdentified}
+        heading={isImminentOnset ? strings.drefFormImminentNeedsIdentified : strings.drefFormNeedsIdentified}
         className={styles.needsIdentified}
         visibleOverflow
       >
