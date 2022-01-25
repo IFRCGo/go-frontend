@@ -221,6 +221,9 @@ export default {
     },
     passwordConf: {
       const: { '$data': '1/password' }
+    },
+    justification: {
+      type: 'string'
     }
   },
   required: [
@@ -245,21 +248,26 @@ export default {
   },
   then: {
     properties: {
-      contact: {
-        type: 'array',
-        items: {
-          properties: {
-            name: {
-              type: 'string'
-            },
-            email: {
-              type: 'string',
-              format: 'email'
-            }
-          },
-          required: ['name', 'email']
-        }
-      }
+      // contact: {
+      //   type: 'array',
+      //   items: {
+      //     properties: {
+      //       name: {
+      //         type: 'string'
+      //       },
+      //       email: {
+      //         type: 'string',
+      //         format: 'email'
+      //       }
+      //     },
+      //     required: ['name', 'email']
+      //   }
+      // }
+
+      // justification:{
+      //   type: 'string',
+      //   required: ['justification']
+      // }
     }
   }
 };
