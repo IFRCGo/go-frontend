@@ -27,7 +27,6 @@ export default class CatalogueOfSurgeServicesSubPage extends React.Component {
 
     renderContentAdditionalResources(content, title) {
         const { strings } = this.context;
-        console.log('itt', content.listItems);
         return (
             <>
                 <h3 className="margin-4-t">{title}</h3>
@@ -35,8 +34,7 @@ export default class CatalogueOfSurgeServicesSubPage extends React.Component {
                     <ul>
                         {content.listItems.map((listItem, index) => (
                             <li key={index}>
-                                {strings[listItem]}
-                                {strings[listItem] ? ' ' : ''}
+                                {strings[listItem] + ' '}
                                 <a href={content.listItemsUrls[index].url} onClick={e => this.openNewTab(content.listItemsUrls[index].url, e)}>
                                     {strings[content.listItemsUrls[index].text]}
                                 </a>
