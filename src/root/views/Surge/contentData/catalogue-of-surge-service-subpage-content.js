@@ -107,8 +107,8 @@ const CatalogueOfSurgeServiceSubpageContent = [
                 nationalSocieties: 'catalogueWsrSpecifiationNationalSocieties'
             },
             additionalResources: {
-                text: 'catalogueWsrAdditionalResourceText',
-                textUrl: { text: '', url: '' }
+                listItems: ['catalogueWsrAdditionalResourceText1'],
+                listItemsUrls: [{ text: 'catalogueWsrAdditionalResourceUrlText1', url: 'https://rodekors.service-now.com/drm?id=hb_catalog&handbook=d1b744c1db45b810f15e3423f39619c4' }]
             }
         }
     },
@@ -1615,7 +1615,7 @@ const CatalogueOfSurgeServiceSubpageContent = [
                 ],
                 listItemsUrls: [
                     { text: 'catalogueSurveillanceVariationListItem1UrlText', url: 'https://www.cbsrc.org/' },
-                    { text: 'catalogueSurveillanceVariationListItem2UrlText', url: '' }
+                    { text: 'catalogueSurveillanceVariationListItem2UrlText', url: 'https://rodekors.service-now.com/drm?id=hb_catalog&handbook=09f973a8db15f4103408d7b2f39619ee' }
                 ]
             }
         }
@@ -2057,8 +2057,8 @@ const CatalogueOfSurgeServiceSubpageContent = [
                     'catalogueEmergencyHospitalResourceText2'
                 ],
                 listItemsUrls: [
-                    { text: 'catalogueEmergencyHospitalResourceUrlText1', url: '' },
-                    { text: 'catalogueEmergencyHospitalResourceUrlText2', url: '' },
+                    { text: 'catalogueEmergencyHospitalResourceUrlText1', url: 'https://rodekors.service-now.com/drm?id=hb_catalog&handbook=e3cabf24db361810d40e16f35b9619c7' },
+                    { text: 'catalogueEmergencyHospitalResourceUrlText2', url: 'https://www.youtube.com/watch?v=TIW6nf-MPb0' },
                 ],
             }
         }

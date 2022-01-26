@@ -27,6 +27,7 @@ export default class CatalogueOfSurgeServicesSubPage extends React.Component {
 
     renderContentAdditionalResources(content, title) {
         const { strings } = this.context;
+        console.log('itt', content.listItems);
         return (
             <>
                 <h3 className="margin-4-t">{title}</h3>
@@ -155,7 +156,7 @@ export default class CatalogueOfSurgeServicesSubPage extends React.Component {
                             {content.listItems.map((listItem, index) => (
                                 <li key={index}>
                                     <strong>{strings[content.listItemsBoldStart[index]]}</strong>
-                                    {strings[listItem]}
+                                    {' ' + strings[listItem]}
                                 </li>
                             ))}
                         </ul>
