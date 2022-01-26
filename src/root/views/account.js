@@ -46,9 +46,9 @@ import {
   FormCheckboxGroup,
   FormInput
 } from '#components/form-elements/';
+import DrefApplicationList from '#components/DrefApplicationList';
 
 import App from './app';
-import DrefApplicationList from '#components/DrefApplicationList';
 
 const Fragment = React.Fragment;
 

@@ -6,6 +6,7 @@ import Container from '#components/Container';
 import Table from '#components/Table';
 import SelectInput from '#components/SelectInput';
 import Pager from '#components/Pager';
+import DrefExportButton from '#components/DrefExportButton';
 import { useButtonFeatures } from '#components/Button';
 import {
   createStringColumn,
@@ -72,10 +73,6 @@ function DrefApplicationList(props: Props) {
     variant: 'secondary',
     children: strings.drefTableEdit,
   });
-  const exportLinkProps = useButtonFeatures({
-    variant: 'primary',
-    children: strings.drefTableExport,
-  });
 
   const columns = React.useMemo(() => ([
     createDateColumn<DrefApplication, string | number>(
@@ -108,16 +105,15 @@ function DrefApplicationList(props: Props) {
               to={`/dref-application/${rowKey}/edit/`}
               {...editLinkProps}
             />
-            <Link
-              to={`/dref-application/${rowKey}/export/`}
-              {...exportLinkProps}
+            <DrefExportButton
+              drefId={rowKey}
             />
           </>
         ),
       }),
       { cellRendererClassName: styles.actionsCell },
     ),
-  ]), [editLinkProps, strings, exportLinkProps]);
+  ]), [editLinkProps, strings]);
 
   return (
     <Container
