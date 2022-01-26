@@ -1609,9 +1609,13 @@ const CatalogueOfSurgeServiceSubpageContent = [
                 nationalSocieties: 'catalogueSurveillanceSpecifiationNationalSocieties'
             },
             additionalResources: {
-                listItems: ['catalogueSurveillanceVariationListItem1'],
+                listItems: [
+                    'catalogueSurveillanceVariationListItem1',
+                    'catalogueSurveillanceVariationListItem2'
+                ],
                 listItemsUrls: [
-                    { text: 'catalogueSurveillanceVariationListItem1UrlText', url: 'https://www.cbsrc.org/' }
+                    { text: 'catalogueSurveillanceVariationListItem1UrlText', url: 'https://www.cbsrc.org/' },
+                    { text: 'catalogueSurveillanceVariationListItem2UrlText', url: '' }
                 ]
             }
         }
@@ -2046,6 +2050,16 @@ const CatalogueOfSurgeServiceSubpageContent = [
                     'catalogueEmergencyHospitalVariationListItem2',
                     'catalogueEmergencyHospitalVariationListItem3'
                 ]
+            },
+            additionalResources: {
+                listItems: [
+                    'catalogueEmergencyHospitalResourceText1',
+                    'catalogueEmergencyHospitalResourceText2'
+                ],
+                listItemsUrls: [
+                    { text: 'catalogueEmergencyHospitalResourceUrlText1', url: '' },
+                    { text: 'catalogueEmergencyHospitalResourceUrlText2', url: '' },
+                ],
             }
         }
     },
