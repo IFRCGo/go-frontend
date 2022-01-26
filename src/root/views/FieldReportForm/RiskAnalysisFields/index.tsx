@@ -3,6 +3,7 @@ import {
   PartialForm,
   Error,
   EntriesAsList,
+  getErrorObject,
 } from '@togglecorp/toggle-form';
 
 import Container from '#components/Container';
@@ -32,13 +33,17 @@ interface Props {
 
 function RiskAnalysisFields(props: Props) {
   const {
-    error,
+    error: formError,
     onValueChange,
     value,
     sourceOptions,
   } = props;
 
   const { strings } = React.useContext(LanguageContext);
+  const error = React.useMemo(
+    () => getErrorObject(formError),
+    [formError]
+  );
 
   return (
     // FIXME: use translations
@@ -55,12 +60,12 @@ function RiskAnalysisFields(props: Props) {
           name="num_potentially_affected"
           value={value.num_potentially_affected}
           onChange={onValueChange}
-          error={error?.fields?.num_potentially_affected}
+          error={error?.num_potentially_affected}
         />
         <RadioInput
           label={strings.cmpSourceLabel}
           radioListContainerClassName={styles.sourceRadioListContainer}
-          error={error?.fields?.num_potentially_affected_source}
+          error={error?.num_potentially_affected_source}
           name="num_potentially_affected_source"
           onChange={onValueChange}
           options={sourceOptions}
@@ -79,12 +84,12 @@ function RiskAnalysisFields(props: Props) {
           name="num_highest_risk"
           value={value.num_highest_risk}
           onChange={onValueChange}
-          error={error?.fields?.num_highest_risk}
+          error={error?.num_highest_risk}
         />
         <RadioInput
           label={strings.cmpSourceLabel}
           radioListContainerClassName={styles.sourceRadioListContainer}
-          error={error?.fields?.num_highest_risk_source}
+          error={error?.num_highest_risk_source}
           name="num_highest_risk_source"
           onChange={onValueChange}
           options={sourceOptions}
@@ -103,12 +108,12 @@ function RiskAnalysisFields(props: Props) {
           name="affected_pop_centres"
           value={value.affected_pop_centres}
           onChange={onValueChange}
-          error={error?.fields?.affected_pop_centres}
+          error={error?.affected_pop_centres}
         />
         <RadioInput
           label={strings.cmpSourceLabel}
           radioListContainerClassName={styles.sourceRadioListContainer}
-          error={error?.fields?.affected_pop_centres_source}
+          error={error?.affected_pop_centres_source}
           name="affected_pop_centres_source"
           onChange={onValueChange}
           options={sourceOptions}
@@ -126,7 +131,7 @@ function RiskAnalysisFields(props: Props) {
           name="other_sources"
           value={value.other_sources}
           onChange={onValueChange}
-          error={error?.fields?.other_sources}
+          error={error?.other_sources}
           placeholder={strings.fieldReportFormSourceDetailsPlaceholder}
         />
       </InputSection>
@@ -138,7 +143,7 @@ function RiskAnalysisFields(props: Props) {
           name="description"
           value={value.description}
           onChange={onValueChange}
-          error={error?.fields?.description}
+          error={error?.description}
           placeholder={strings.fieldsStep2DescriptionEWPlaceholder}
         />
       </InputSection>

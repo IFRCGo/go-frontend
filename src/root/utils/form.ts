@@ -1,10 +1,16 @@
-import value from '*.png';
 import {
   isValidEmail,
   isInteger,
   isValidUrl as isValidRemoteUrl,
   typeOf,
 } from '@togglecorp/fujs';
+
+import {
+  LeafError,
+  ArrayError,
+  getErrorObject,
+  getErrorString,
+} from '@togglecorp/toggle-form';
 
 const localhostRegex = /(?<=\/\/)localhost(?=[:/]|$)/;
 
@@ -159,4 +165,16 @@ export function idCondition() {
 // it defines that the field should be [] when it is not defined
 export function arrayCondition() {
   return undefined;
+}
+
+export function listErrorToString<T>(error: LeafError | ArrayError<T>) {
+  let errorString = getErrorString(error);
+  const errorObject = getErrorObject(error);
+
+  if (errorObject) {
+    const keys = Object.keys(errorObject);
+    errorString = keys.map((k) => `${k} - ${errorObject[k]}`).join(', ');
+  }
+
+  return errorString;
 }

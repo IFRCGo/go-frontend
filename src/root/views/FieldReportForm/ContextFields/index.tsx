@@ -4,6 +4,7 @@ import {
   PartialForm,
   Error,
   EntriesAsList,
+  getErrorObject,
 } from '@togglecorp/toggle-form';
 
 import Container from '#components/Container';
@@ -61,7 +62,7 @@ function ContextFields(props: Props) {
     fetchingDistricts,
     fetchingDisasterTypes,
     disasterTypeOptions,
-    error,
+    error: formError,
     onValueChange,
     statusOptions,
     value,
@@ -117,6 +118,11 @@ function ContextFields(props: Props) {
     ];
   }, [strings, reportType]);
 
+  const error = React.useMemo(
+    () => getErrorObject(formError),
+    [formError]
+  );
+
   return (
     <Container
       // FIXME: use translation
@@ -133,7 +139,7 @@ function ContextFields(props: Props) {
           radioLabelSelector={optionLabelSelector}
           radioDescriptionSelector={optionDescriptionSelector}
           value={value.status}
-          error={error?.fields?.status}
+          error={error?.status}
           onChange={onValueChange}
         />
       </InputSection>
@@ -148,7 +154,7 @@ function ContextFields(props: Props) {
           radioDescriptionSelector={optionDescriptionSelector}
           value={value.is_covid_report}
           onChange={onValueChange}
-          error={error?.fields?.is_covid_report}
+          error={error?.is_covid_report}
           disabled={value.status === STATUS_EARLY_WARNING}
         />
       </InputSection>
@@ -165,7 +171,7 @@ function ContextFields(props: Props) {
             onChange={onValueChange}
             loadOptions={fetchEventsFromApi}
             initialOptions={initialEventOptions as SearchSelectOption[]}
-            error={error?.fields?.event}
+            error={error?.event}
           />
           <TextInput
             label={strings.fieldReportFormTitleSecondaryLabel}
@@ -173,7 +179,7 @@ function ContextFields(props: Props) {
             name="summary"
             value={value.summary}
             onChange={onValueChange}
-            error={error?.fields?.summary}
+            error={error?.summary}
           />
         </div>
       </InputSection>
@@ -182,7 +188,7 @@ function ContextFields(props: Props) {
         description={countrySectionDescription}
       >
         <SelectInput
-          error={error?.fields?.country}
+          error={error?.country}
           label={strings.projectFormCountryLabel}
           name="country"
           onChange={onValueChange}
@@ -193,7 +199,7 @@ function ContextFields(props: Props) {
         <SelectInput<"districts", number>
           disabled={!isDefined(value.country)}
           pending={fetchingDistricts}
-          error={error?.fields?.districts}
+          error={error?.districts}
           isMulti
           label={strings.projectFormDistrictLabel}
           name="districts"
@@ -213,7 +219,7 @@ function ContextFields(props: Props) {
           options={disasterTypeOptions}
           pending={fetchingDisasterTypes}
           onChange={onValueChange}
-          error={error?.fields?.dtype}
+          error={error?.dtype}
           disabled={value.is_covid_report}
         />
       </InputSection>
@@ -225,7 +231,7 @@ function ContextFields(props: Props) {
           name="start_date"
           value={value.start_date}
           onChange={onValueChange}
-          error={error?.fields?.start_date}
+          error={error?.start_date}
         />
       </InputSection>
       <InputSection
@@ -240,7 +246,7 @@ function ContextFields(props: Props) {
           radioDescriptionSelector={optionDescriptionSelector}
           value={value.request_assistance}
           onChange={onValueChange}
-          error={error?.fields?.request_assistance}
+          error={error?.request_assistance}
           clearable
         />
       </InputSection>
@@ -256,7 +262,7 @@ function ContextFields(props: Props) {
           radioDescriptionSelector={optionDescriptionSelector}
           value={value.ns_request_assistance}
           onChange={onValueChange}
-          error={error?.fields?.ns_request_assistance}
+          error={error?.ns_request_assistance}
           clearable
         />
       </InputSection>

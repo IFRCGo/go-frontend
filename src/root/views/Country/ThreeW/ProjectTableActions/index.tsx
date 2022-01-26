@@ -80,10 +80,9 @@ function ProjectTableActions(props: Props) {
     method: 'DELETE',
     body: ctx => ctx,
     onSuccess: onProjectDeletionSuccess,
-    onFailure: ({ value: { messageForNotification, errors }}) => {
-      console.error(errors);
+    onFailure: ({ value: { messageForNotification }}) => {
       alert.show(
-        'Failed to delete the project',
+        `Failed to delete the project. ${messageForNotification}`,
         { variant: 'danger', }
       );
     },

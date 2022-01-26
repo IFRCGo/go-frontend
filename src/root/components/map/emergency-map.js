@@ -31,15 +31,17 @@ class EmergencyMap extends React.Component {
     $expimg.src = $canvas.toDataURL('png');
     $expimg.style.display = 'block';
     document.getElementsByClassName('mapboxgl-map')[0].style.visibility = 'hidden';
-    html2canvas($container, {useCORS: true}).then((renderedCanvas) => {
-      startDownload(
-        renderedCanvas,
-        `${DateTime.local().toISODate()}-${disasterTypeName}-${country}.png`
-      );
-      $expimg.style.display = 'none';
-      document.getElementsByClassName('mapboxgl-map')[0].style.visibility = 'visible';
-      this.setState({'isExporting': false});
-    });
+    setTimeout(() => {
+      html2canvas($container, {useCORS: true}).then((renderedCanvas) => {
+        startDownload(
+          renderedCanvas,
+          `${DateTime.local().toISODate()}-${disasterTypeName}-${country}.png`
+        );
+        $expimg.style.display = 'none';
+        document.getElementsByClassName('mapboxgl-map')[0].style.visibility = 'visible';
+        this.setState({'isExporting': false});
+      });
+    }, 0);
   }
 
   setupData () {
@@ -130,7 +132,7 @@ class EmergencyMap extends React.Component {
                 <div className='fold__title__linkwrap'>
                   <button className={c('button button--primary-bounded button--small button--export', {
                     disabled: !this.state.ready
-                  })} onClick={this.exportMap.bind(this, countries[0].name, _find(this.props.disasterTypesSelect, {value: String(disasterTypeCode)})?.label)}>
+                  })} onClick={this.exportMap.bind(this, countries[0].name, _find(this.props.disasterTypesSelect, {value: parseInt(disasterTypeCode)})?.label)}>
                     <span className='f-icon-download font-size-sm spacing-half-r'></span>
                     <Translate stringId='emergencyMapExport'/>
                   </button>
