@@ -1,28 +1,43 @@
 @import '~styles/settings/_variables.scss';
 
-.reference-edit {
-    .actions {
-        display: flex;
-        flex-grow: auto;
-        justify-content: center;
-        align-items: center;
-    
-        button {
-            background-color: $danger-color;;
-            color: $white;
-        }
-    }
-    
-    .input-date {
-      flex-grow: 1;
-    }
+.reference {
+  .actions {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+  
+      button {
+          background-color: $danger-color;;
+          color: $white;
+      }
+
+      span {
+          padding: 0 $spacing;
+          color: $grey-silver;
+      }
+  }
+
+  .first-row {
+    display: flex;
+
     .input-name {
-      flex-grow: 1;
-    }
-    .input.url {
       flex-grow: 2;
     }
-    .input-button {
-      display: inline-flex;
+  }
+
+  .second-row {
+    display: flex;
+
+    .input-url {
+      flex-grow: 1;
+      
+      textarea {
+        height: 35px;
+      }
     }
+
+    .actions {
+      flex-grow: 1;
+    }
+  }
 }

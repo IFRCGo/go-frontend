@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { isNotDefined, randomString } from '@togglecorp/fujs';
+import { randomString } from '@togglecorp/fujs';
 import {
   EntriesAsList,
   PartialForm,
@@ -15,7 +15,6 @@ import languageContext from '#root/languageContext';
 import SelectInput from '#components/SelectInput';
 import TextInput from '#components/TextInput';
 import TextArea from '#components/TextArea';
-import DateInput from '#components/DateInput';
 import { CountryDistrictType, ReferenceType } from '../useInformalUpdateFormOptions';
 import CountryProvinceInput from './CountryProvinceInput';
 import {
@@ -27,13 +26,7 @@ import {
 
 import styles from './styles.module.scss';
 import InformalUpdateFileInput from '#components/InformalUpdateFileInput';
-import BulletTextArea from '#components/BulletTextArea';
 import ReferenceInput from './ReferenceInput';
-
-//const defaultFormValues: PartialForm<CountryDistrictType> = {
-//  country: undefined,
-//  district: undefined
-//};
 
 type Value = PartialForm<InformalUpdateFields>;
 interface Props {
@@ -64,9 +57,7 @@ function ContextOverview(props: Props) {
     disasterTypeOptions,
     fetchingDisasterTypes,
   } = props;
-
   const error = getErrorObject(formError);
-
   const {
     setValue: onCountryDistrictChange,
     removeValue: onCountryDistrictRemove,
@@ -86,13 +77,11 @@ function ContextOverview(props: Props) {
   type References = typeof value.references;
 
   const handleCountryDistrictAdd = React.useCallback(() => {
-
     const newList: PartialForm<CountryDistrictType> = {
       clientId: randomString(),
       country: undefined,
       district: undefined
     };
-
     onValueChange(
       (oldValue: PartialForm<CountryDistricts>) => (
         [...(oldValue ?? []), newList]
@@ -103,10 +92,11 @@ function ContextOverview(props: Props) {
 
   const handleAddReference = React.useCallback(() => {
     const newList: PartialForm<ReferenceType> = {
-      date: value.reference_date,
-      source_description: value.reference_name,
-      url: value.reference_url,
-      document: '',
+      clientId: randomString(),
+      date: undefined,
+      source_description: undefined,
+      url: undefined,
+      document: undefined
     };
     onValueChange(
       (oldValue: PartialForm<References>) => (
@@ -114,8 +104,7 @@ function ContextOverview(props: Props) {
       ),
       'references' as const,
     );
-
-  }, [onValueChange, value]);
+  }, [onValueChange]);
 
   return (
     <>
@@ -153,7 +142,6 @@ function ContextOverview(props: Props) {
           </div>
         </InputSection>
       </Container>
-
       <Container
         className={styles.context}
         visibleOverflow
@@ -171,7 +159,6 @@ function ContextOverview(props: Props) {
           />
         </InputSection>
       </Container>
-
       <Container>
         <InputSection
           title={strings.informalUpdateFormContextTitle}
@@ -186,7 +173,6 @@ function ContextOverview(props: Props) {
           />
         </InputSection>
       </Container>
-
       <Container >
         <InputSection
           title={strings.informalUpdateFormContextSituationalTitle}
@@ -200,7 +186,6 @@ function ContextOverview(props: Props) {
           />
         </InputSection>
       </Container>
-
       <Container>
         <InputSection
           title={strings.informalUpdateFormContextGraphicTitle}
@@ -221,7 +206,6 @@ function ContextOverview(props: Props) {
           </InformalUpdateFileInput>
         </InputSection>
       </Container>
-
       <Container>
         <InputSection
           title={strings.informalUpdateFormContextMapTitle}
@@ -242,78 +226,26 @@ function ContextOverview(props: Props) {
           </InformalUpdateFileInput>
         </InputSection>
       </Container>
-
       <Container
-        className={styles.reference}
       >
         <InputSection
           title={strings.informalUpdateFormContextReferenceTitle}
           description={strings.informalUpdateFormContextReferenceDescription}
+          multiRow
+          oneColumn
         >
-          <DateInput
-            className={styles.inputDate}
-            name="reference_date"
-            value={value.reference_date}
-            onChange={onValueChange}
-            error={error?.reference_date}
-            label={strings.informalUpdateFormContextReferenceDateLabel}
-          />
-          <TextInput
-            className={styles.inputName}
-            name="reference_name"
-            value={value.reference_name}
-            onChange={onValueChange}
-            error={error?.reference_name}
-            label={strings.informalUpdateFormContextReferenceNameLabel}
-          />
-          <div className={styles.actions}>
-            <Button
-              name={undefined}
-              variant="secondary"
-              disabled={isNotDefined(value.reference_name)}
-              onClick={handleAddReference}
-            >
-              {strings.informalUpdateFormContextReferenceAddButtonLabel}
-            </Button>
-          </div>
+          {value.references?.map((c, i) => (
+            <ReferenceInput
+              key={c.clientId}
+              index={i}
+              value={c}
+              error={error}
+              onChange={onReferenceChange}
+              onRemove={onReferenceRemove}
+              handleAddReference={handleAddReference}
+            />
+          ))}
         </InputSection>
-        <InputSection
-          className={styles.referenceInput}
-        >
-          <BulletTextArea
-            className={styles.inputUrl}
-            label={strings.informalUpdateFormContextReferenceUrlLabel}
-            name="reference_url"
-            value={value.reference_url}
-            onChange={onValueChange}
-            error={error?.reference_url}
-          />
-          <div className={styles.actions}>
-            <Button
-              name={undefined}
-              variant="secondary"
-              disabled={isNotDefined(value.reference_name)}
-            >
-              {strings.informalUpdateFormContextReferenceUrlButtonLabel}
-            </Button>
-            <span>
-              {isNotDefined(value.reference_image) && (
-                strings.informalUpdateFormContextReferenceUrlPlaceholder
-              )}
-            </span>
-          </div>
-        </InputSection>
-
-        {value.references?.map((c, i) => (
-          <ReferenceInput
-            key={i}
-            index={i}
-            value={c}
-            error={error}
-            onChange={onReferenceChange}
-            onRemove={onReferenceRemove}
-          />
-        ))}
       </Container>
     </>
   );

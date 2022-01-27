@@ -78,6 +78,13 @@ const defaultFormValues: PartialForm<InformalUpdateFields> = {
     clientId: randomString(),
     country: undefined,
     district: undefined
+  }],
+  references: [{
+    clientId: randomString(),
+    date: undefined,
+    source_description: undefined,
+    url: undefined,
+    document: undefined
   }]
 };
 
