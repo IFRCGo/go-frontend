@@ -240,7 +240,7 @@ class PersonnelTable extends SFPComponent {
                         </div>
                         <div class="row-sm spacing-half-b flex">
                           <div class="col-sm">Deployed To</div>
-                          <div class="col-sm base-font-semi-bold">${o.country_to.name}</div>
+                          <div class="col-sm base-font-semi-bold">${o.country_to ? o.country_to.name : o.deployment.country_deployed_to.name}</div>
                         </div>
                       `}
                       //data-for='{`${o.id}`}'         
