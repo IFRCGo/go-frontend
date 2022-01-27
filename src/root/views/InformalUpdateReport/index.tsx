@@ -33,14 +33,16 @@ function InformalUpdateReport(props: Props) {
       }
     }
   } = props;
+  const { strings } = useContext(languageContext);
 
   const [informalUpdateData, setInformalUpdateData] = React.useState<InformalUpdateAPIFields | undefined>();
-  const { strings } = useContext(languageContext);
+  const [breadCrumbReportTitle, setBreadCrumbReportTitle] = React.useState<string | undefined>();
+  const [breadCrumbFlashUpdateNo, setBreadCrumbFlashUpdateNo] = React.useState<number | undefined>();
   const data = undefined;
   const crumbs = [
-    { link: '/flash update 1', name: get(data, 'summary', 'Flash Update #1') },
+    { link: '/flash update 1', name: get(data, 'summary', `${strings.informalUpdateNumber}${breadCrumbFlashUpdateNo}`) },
     // {link: this.props.location.state, name: strings.breadCrumbEmergency},
-    { link: '/Pakistan', name: '5.7 Earthquake in Pakistan' },
+    { link: '/Pakistan', name: breadCrumbReportTitle },
     { link: '/emergencies', name: strings.breadCrumbEmergencies },
     { link: '/', name: strings.breadCrumbHome }
   ];
@@ -59,10 +61,15 @@ function InformalUpdateReport(props: Props) {
   const renderActionTaken = (org: string) => {
     const actions: ActionsTaken | undefined = informalUpdateData?.actions_taken.find(d => d.organization === org);
     return (
-
       <ViewSection title='Actions taken by' data={actions} />
     );
   };
+
+  React.useMemo(() => {
+    setBreadCrumbReportTitle(informalUpdateData?.title);
+    setBreadCrumbFlashUpdateNo(informalUpdateData && informalUpdateData?.id + 1);
+  }, [informalUpdateData]);
+
   const situationalData = [
     {
       name: 'Magnitude',
@@ -100,15 +107,19 @@ function InformalUpdateReport(props: Props) {
         className={styles.situational}
         title='informal report'
         heading={informalUpdateData?.title}
-        description={
-          <Link to='/'>
-            <span className='link--with-icon-text'>
-              Pakistan
-            </span>
-            <span className='collecticon-chevron-right link--with-icon-inner'></span>
-          </Link>
-
+        description={<>
+          {informalUpdateData?.country_district?.map((el) => (
+            <Link to='/'>
+              <span className='link--with-icon-text'>
+                {el?.country_details?.name} -
+              </span>
+            </Link>
+          ))
+          }
+          <span className='collecticon-chevron-right link--with-icon-inner'></span>
+        </>
         }
+
         breadCrumbs={
           <BreadCrumb
             crumbs={crumbs}

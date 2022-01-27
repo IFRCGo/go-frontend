@@ -3470,4 +3470,5 @@ export default {
   informalUpdateRcrcNetworkLabel: 'RCRC Network',
   informalUpdateRcrcNetworkAndDonorsLabel: 'RCRC Network and Donors',
   informalUpdateFormRedirectMessage: 'Informal report updated, redirecting...',
+  informalUpdateNumber: 'Flash Update #',
 };

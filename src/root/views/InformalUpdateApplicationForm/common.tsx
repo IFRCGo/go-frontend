@@ -87,8 +87,9 @@ export interface InformalUpdateTableFields {
   modified_at: string;
   title: string;
   hazard_type: string;
-  country_district: CountryDistrict;
+  country_district: CountryDistrict[];
   hazard_type_details: HazardDetails;
+  tableTitle?: string;
 }
 export interface InformalUpdateFields {
   id: number;
@@ -128,6 +129,7 @@ export interface InformalUpdateFields {
   map_details: ImageDetails[];
 }
 export interface InformalUpdateAPIFields {
+  id: number,
   country_district: CountryDistrict[];
   hazard_type: number;
   title: string;
@@ -228,6 +230,7 @@ export const focalFields: (keyof InformalUpdateFields)[] = [
 
 export function transformFormFieldsToAPIFields(formValues: InformalUpdateFields): InformalUpdateAPIFields {
   const {
+    id,
     country_district,
     hazard_type,
     title,
@@ -295,6 +298,7 @@ export function transformFormFieldsToAPIFields(formValues: InformalUpdateFields)
   }
 
   return {
+    id,
     country_district,
     hazard_type,
     title,

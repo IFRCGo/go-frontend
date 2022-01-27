@@ -62,6 +62,12 @@ function TableLists(props: Props) {
     },
   });
 
+  //React.useMemo(() => {
+  //  const titleTable = response?.results.map((el) => el.country_district?.map((item) => item?.country_details?.name));
+  //  console.log('table---title-----', titleTable);
+
+  //}, [response]);
+
   const columns = useMemo(() => {
     const actionsColumn = createActionColumn(
       'actions',

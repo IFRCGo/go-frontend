@@ -24,7 +24,10 @@ export const getBaseColumns = (strings: Strings) => ([
   createStringColumn<InformalUpdateTableFields, string | number>(
     'country_district',
     'Country',
-    (item) => item?.title.split('-')[0]
+    (item) => {
+      const splitTitle = item?.title.split('-');
+      return splitTitle.slice(0, splitTitle.length - 1).join("-");
 
+    }
   ),
 ]);
