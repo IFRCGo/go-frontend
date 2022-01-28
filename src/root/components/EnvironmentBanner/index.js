@@ -6,9 +6,11 @@ import styles from './styles.module.scss';
 function EnvironmentBanner({
   className,
 }) {
-  const { NODE_ENV: currentEnv } = process.env;
+  //const { NODE_ENV: currentEnv } = process.env;
 
-  if(currentEnv === 'production' || currentEnv === 'development') {
+  const currentEnv = window.environment;
+
+  if(window.showEnvBanner === 'false') {
     return null;
   }
 
