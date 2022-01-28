@@ -7,6 +7,7 @@ import {
   unique,
 } from '@togglecorp/fujs';
 
+import Container from '#components/Container';
 import useReduxState from '#hooks/useReduxState';
 import { useRequest } from '#utils/restRequest';
 import {
@@ -27,9 +28,10 @@ import {
   SeasonalResponse,
   monthKeys,
 } from './common';
-import RiskMap from './Map';
+// import RiskMap from './Map';
 import RiskTable from './RiskTable';
 import ReturnPeriodTable from './ReturnPeriodTable';
+import MonthSelector from './Map/MonthSelector';
 import { ImpactChart, RiskBarChart } from './Charts';
 
 import styles from './styles.module.scss';
@@ -90,7 +92,7 @@ function SeasonalRisk(props: Props) {
   const { response } = useRequest<SeasonalResponse>({
     skip: !country,
     query: { iso3: country?.iso3?.toLocaleLowerCase() },
-    url: 'https://risk-module-api.togglecorp.com/api/v1/seasonal/',
+    url: 'risk://api/v1/seasonal/',
   });
 
   const [selectedMonth, setSelectedMonth] = useInputState(0);
@@ -144,7 +146,7 @@ function SeasonalRisk(props: Props) {
         const maxYear = 2021;
 
         const foodInsecurityRaw = (response?.ipc_displacement_data.filter(
-          d => (isDefined(d.total_displacement) && d.year <= maxYear)
+          d => (isDefined(d.total_displacement) && d.year === maxYear)
         ) ?? []).sort((a, b) => {
           return (a.year - b.year)
             || (a.month - b.month)
@@ -218,9 +220,7 @@ function SeasonalRisk(props: Props) {
 
   return (
     <>
-      <div className={styles.description}>
-        This page displays available information about specific disaster risks for for each month. When you move the slider from month to month, the information in the table and charts below will update automatically.
-      </div>
+      {/*
       <RiskMap
         hazardOptions={hazardOptions}
         countryId={countryId}
@@ -228,10 +228,25 @@ function SeasonalRisk(props: Props) {
         selectedMonth={selectedMonth}
         setSelectedMonth={setSelectedMonth}
       />
-      <RiskTable
-        selectedMonth={selectedMonth}
-        riskData={aggregatedRiskData}
-      />
+      */}
+      <Container
+        className={styles.riskTableContainer}
+        heading="Seasonal Risk Details"
+        sub
+        description="This table displays available information about specific disaster risks for for each month. When you move the slider from month to month, the information in the table will update automatically."
+        descriptionClassName={styles.tableDescription}
+      >
+        <MonthSelector
+          name={undefined}
+          value={selectedMonth}
+          onChange={setSelectedMonth}
+          className={styles.monthSelector}
+        />
+        <RiskTable
+          selectedMonth={selectedMonth}
+          riskData={aggregatedRiskData}
+        />
+      </Container>
       <RiskBarChart
         riskData={aggregatedRiskData}
         hazardOptions={hazardOptions}
@@ -239,7 +254,7 @@ function SeasonalRisk(props: Props) {
       />
       <ReturnPeriodTable
         displacementData={response?.idmc_return_period}
-        economicLossData={response?.gar_return_period_data}
+        economicLossAndExposureData={response?.gar_return_period_data}
         hazardOptions={returnPeriodHazardOptions}
       />
       <ImpactChart countryId={countryId} />

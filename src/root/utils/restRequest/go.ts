@@ -7,7 +7,10 @@ import { resolve as resolveUrl } from 'url';
 import { get as getFromLocalStorage } from 'local-storage';
 import { ContextInterface } from '@togglecorp/toggle-request';
 
-import { api } from '#config';
+import {
+  riskApi,
+  api,
+} from '#config';
 import store from '#utils/store';
 import { isObject } from '#utils/common';
 
@@ -83,9 +86,23 @@ type GoContextInterface = ContextInterface<
   AdditionalOptions
 >;
 
-export const processGoUrls: GoContextInterface['transformUrl'] = (url) => (
-  isFalsyString(url) ? '' : /http/.test(url) ? url : resolveUrl(api, url)
-);
+const riskPrefix = 'risk://';
+export const processGoUrls: GoContextInterface['transformUrl'] = (url) => {
+  if (isFalsyString(url)) {
+    return '';
+  }
+
+  if (url.startsWith(riskPrefix)) {
+    const cleanedUrl = url.slice(riskPrefix.length - 1);
+    return resolveUrl(riskApi, cleanedUrl);
+  }
+
+  if (/^https?:\/\//i.test(url)) {
+    return url;
+  }
+
+  return resolveUrl(api, url);
+};
 
 type Literal = string | number | boolean | File;
 type FormDataCompatibleObj = Record<string, Literal | Literal[] | null | undefined>;

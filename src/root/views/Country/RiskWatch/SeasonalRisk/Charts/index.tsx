@@ -9,7 +9,6 @@ import {
   listToGroupList,
   mapToMap,
 } from '@togglecorp/fujs';
-import { RiDownloadLine } from 'react-icons/ri';
 import {
   ScatterChart,
   Scatter,
@@ -25,7 +24,6 @@ import {
 } from 'recharts';
 import { scalePow } from 'd3-scale';
 
-import Button from '#components/Button';
 import Container from '#components/Container';
 import TextOutput from '#components/TextOutput';
 import DateOutput from '#components/DateOutput';
@@ -351,14 +349,6 @@ function RiskBarChart(props: Props) {
               disabled={hazardType === 'FI'}
             />
           </div>
-          <Button
-            name={undefined}
-            icons={<RiDownloadLine />}
-            variant="secondary"
-            disabled
-          >
-            Export
-          </Button>
         </>
       )}
       sub
@@ -616,27 +606,15 @@ function ImpactChart(props: ImpactChartProps) {
       )}
       descriptionClassName={styles.containerDescription}
       description={(
-        <>
-          <div className={styles.filters}>
-            <SelectInput
-              disabled
-              className={styles.filterInput}
-              value={hazardType}
-              onChange={setHazardType}
-              name="hazardType"
-              options={hazardOptions}
-              isClearable
-            />
-          </div>
-          <Button
-            name={undefined}
-            icons={<RiDownloadLine />}
-            variant="secondary"
-            disabled
-          >
-            Export
-          </Button>
-        </>
+          <SelectInput
+            className={styles.filterInput}
+            value={hazardType}
+            onChange={setHazardType}
+            name="hazardType"
+            options={hazardOptions}
+            isClearable
+            placeholder="All hazards"
+          />
       )}
       sub
       className={styles.pastEventAndHistoricalImpact}

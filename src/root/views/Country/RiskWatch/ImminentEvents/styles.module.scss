@@ -1,22 +1,7 @@
 @import '~styles/settings/variables';
 
 .imminent-events {
-  .description {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-    .filters {
-      display: flex;
-      align-items: center;
-      gap: $spacing;
-
-      .hazard-select-input {
-        width: 20rem;
-      }
-    }
-  }
-
+  margin: $spacing*2 0;
   .map-section {
     position: relative;
     z-index: 0;
@@ -79,12 +64,16 @@
         }
       }
     }
+
+    :global {
+      .mapboxgl-popup {
+        height: 18rem;
+      }
+    }
   }
 }
 
-.tab-description {
-  padding: $spacing * 4;
-  text-align: center;
-  color: $color-text-light;
+.map-description {
+  padding: $spacing;
 }
 

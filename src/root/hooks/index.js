@@ -23,9 +23,9 @@ export function useBlurEffect (
     };
 
     if (shouldWatch) {
-      document.addEventListener('click', handleDocumentClick);
+      document.addEventListener('click', handleDocumentClick, true);
     } else {
-      document.removeEventListener('click', handleDocumentClick);
+      document.removeEventListener('click', handleDocumentClick, true);
     }
 
     return () => { document.removeEventListener('click', handleDocumentClick); };

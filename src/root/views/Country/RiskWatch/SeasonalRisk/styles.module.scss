@@ -1,7 +1,9 @@
 @import '~styles/settings/variables';
 
-.description {
-  padding: $spacing * 4;
-  text-align: center;
-  color: $color-text-light;
+.risk-table-container {
+  margin: $spacing * 2 0;
+
+  .table-description {
+    padding: $spacing;
+  }
 }

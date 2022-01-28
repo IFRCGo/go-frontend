@@ -3,6 +3,10 @@
 .risk-table {
   width: 100%;
   margin: $spacing*2 0;
+
+  .column-heading {
+    display: flex;
+  }
 }
 
 .return-period-table-container {
@@ -21,4 +25,8 @@
 
 .filter-input {
   width: 14rem;
+}
+
+.link {
+  color: $primary-color;
 }

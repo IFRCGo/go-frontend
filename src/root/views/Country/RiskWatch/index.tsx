@@ -2,17 +2,17 @@ import React from 'react';
 import { _cs } from '@togglecorp/fujs';
 
 import Container from '#components/Container';
-import Tab from '#components/Tabs/Tab';
-import TabList from '#components/Tabs/TabList';
-import TabPanel from '#components/Tabs/TabPanel';
-import Tabs from '#components/Tabs';
+// import Tab from '#components/Tabs/Tab';
+// import TabList from '#components/Tabs/TabList';
+// import TabPanel from '#components/Tabs/TabPanel';
+// import Tabs from '#components/Tabs';
 
 import ImminentEvents from './ImminentEvents';
 import SeasonalRisk from './SeasonalRisk';
 
 import styles from './styles.module.scss';
 
-type RiskTabTypes = 'seasonal' | 'imminent';
+// type RiskTabTypes = 'seasonal' | 'imminent';
 
 interface Props {
   countryId: number;
@@ -25,10 +25,11 @@ function RiskWatch(props: Props) {
     countryId,
   } = props;
 
-  const [activeTab, setActiveTab] = React.useState<RiskTabTypes>('seasonal');
+  // const [activeTab, setActiveTab] = React.useState<RiskTabTypes>('seasonal');
 
   return (
     <Container className={_cs(styles.riskWatch, className)}>
+{/*
       <Tabs
         value={activeTab}
         onChange={setActiveTab}
@@ -53,6 +54,13 @@ function RiskWatch(props: Props) {
           />
         </TabPanel>
       </Tabs>
+*/}
+          <ImminentEvents
+            countryId={countryId}
+          />
+          <SeasonalRisk
+            countryId={countryId}
+          />
     </Container>
   );
 }

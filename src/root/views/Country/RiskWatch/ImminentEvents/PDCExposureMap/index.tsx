@@ -201,9 +201,11 @@ function MapPolygon(props: MapPolygonProps) {
 
 const hazardKeys: ImminentHazardTypes[] = [
   'EQ',
+  'CY',
   'TC',
   'SS',
   'FL',
+  'DR',
 ];
 
 interface Props {
@@ -281,12 +283,16 @@ function PDCExposureMap(props: Props) {
         lngLat,
         id: feature.id as number
       });
+
+      if (onActiveEventChange) {
+        onActiveEventChange(feature.id as number | undefined);
+      }
+
     } else {
       setActiveHazard(undefined);
-    }
-
-    if (onActiveEventChange) {
-      onActiveEventChange(feature.id as number | undefined);
+      if (onActiveEventChange) {
+        onActiveEventChange(undefined);
+      }
     }
 
     return false;
@@ -294,7 +300,10 @@ function PDCExposureMap(props: Props) {
 
   const handlePointClose = React.useCallback(() => {
     setActiveHazard(undefined);
-  }, []);
+    if (onActiveEventChange) {
+      onActiveEventChange(undefined);
+    }
+  }, [onActiveEventChange]);
 
   return (
     <Map

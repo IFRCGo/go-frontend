@@ -124,18 +124,29 @@ export interface ReturnPeriodData {
   hazard_type: ReturnPeriodHazardTypes;
   hazard_type_display: string;
   id: number;
-  return_period_20_years: number;
-  return_period_50_years: number;
-  return_period_100_years: number;
-  return_period_250_years: number;
-  return_period_500_years: number;
 }
 
 export interface IDMCReturnPeriodData extends ReturnPeriodData {
   annual_average_displacement: number
+  return_period_20_years: number | null;
+  return_period_50_years: number | null;
+  return_period_100_years: number | null;
+  return_period_250_years: number | null;
+  return_period_500_years: number | null;
 }
 
 export interface GARReturnPeriodData extends ReturnPeriodData {
+  economic_loss_return_period_20_years: number | null;
+  economic_loss_return_period_50_years: number | null;
+  economic_loss_return_period_100_years: number | null;
+  economic_loss_return_period_250_years: number | null;
+  economic_loss_return_period_500_years: number | null;
+  population_exposure_return_period_25_years: number | null;
+  population_exposure_return_period_50_years: number | null;
+  population_exposure_return_period_100_years: number | null;
+  population_exposure_return_period_200_years: number | null;
+  population_exposure_return_period_500_years: number | null;
+  population_exposure_return_period_1000_years: number | null;
 }
 
 export interface ExposureData {

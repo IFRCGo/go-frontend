@@ -8,9 +8,9 @@ import earthquakeIcon from '../icons/earthquake.png';
 import cycloneIcon from '../icons/cyclone.png';
 import stormSurgeIcon from '../icons/storm-surge.png';
 import floodIcon from '../icons/flood.png';
+import droughtIcon from '../icons/drought.png';
 
-
-export type ImminentHazardTypes = 'EQ' | 'FL' | 'CY' | 'TC' | 'SS';
+export type ImminentHazardTypes = 'EQ' | 'FL' | 'CY' | 'TC' | 'SS' | 'DR';
 
 export interface HazardData {
   id: number;
@@ -159,6 +159,7 @@ export const hazardTypeToIconMap: {
   CY: cycloneIcon,
   SS: stormSurgeIcon,
   FL: floodIcon,
+  DR: droughtIcon,
 };
 
 export const geoJsonSourceOptions: mapboxgl.GeoJSONSourceRaw = {
