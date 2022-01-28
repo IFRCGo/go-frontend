@@ -8,6 +8,7 @@ import Ajv from 'ajv';
 import ajvKeywords from 'ajv-keywords';
 import Select from 'react-select';
 import { Helmet } from 'react-helmet';
+import TextArea from '#components/TextArea';
 
 import {
   isValidEmail,
@@ -320,8 +321,9 @@ class Register extends React.Component {
         <p className='form__note'>
           <Translate stringId='registerContactRequest'/>
         </p>
-        <FormInput
-          label={strings.registerJustification}
+        <TextArea
+          // label={strings.registerJustification}
+          placeholder={strings.registerJustification}
           type='text'
           name='register-justification'
           id='register-justification'
@@ -334,7 +336,7 @@ class Register extends React.Component {
             property='phoneNumber'
             errors={this.state.errors}
           />
-        </FormInput>
+        </TextArea>
         
         {/* {[0, 1].map(o => (
           <div key={o} className='form__hascol form__hascol--2'>
