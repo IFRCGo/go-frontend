@@ -151,7 +151,7 @@ class AllPersonnelTable extends SFPComponent {
         role: get(o, 'role', nope),
         type: o.type === 'rr' ? typeLongNames[o.type] : o.type.toUpperCase(),
         country: o.country_from ? <Link to={`/countries/${o.country_from.id}`} className='link--table' title={strings.personnelTableViewCountry}>{o.country_from.society_name || o.country_from.name}</Link> : nope,
-        deployed: o.deployment && o.deployment.country_deployed_to ? <Link to={`/countries/${o.deployment.country_deployed_to.id}`} className='link--table' title={strings.personnelTableViewCountry}>{o.deployment.country_deployed_to.name}</Link> : nope,
+        deployed: o.country_to ? <Link to={`/countries/${o.country_to.id}`} className='link--table' title={strings.personnelTableViewCountry}>{o.country_to.name}</Link> : (o.deployment && o.deployment.country_deployed_to ? <Link to={`/countries/${o.deployment.country_deployed_to.id}`} className='link--table' title={strings.personnelTableViewCountry}>{o.deployment.country_deployed_to.name}</Link> : nope),
         emer: o.deployment && o.deployment.event_deployed_to ? <Link to={`/emergencies/${o.deployment.event_deployed_to.id}`} className='link--table' title={strings.personnelTableViewCountry}>{o.deployment.event_deployed_to.name}</Link> : nope
       }));
 
