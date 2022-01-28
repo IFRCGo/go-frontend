@@ -30,6 +30,9 @@ import {
   ActionsByOrganization,
   OrganizationType,
   ActionsByOrganizationArrayLists,
+  ShareWithOptionsEntity,
+  StringKeyValuePair,
+  emptyStringOptionList,
 } from './common';
 
 export type FormSchema = ObjectSchema<PartialForm<InformalUpdateFields>>;
@@ -192,22 +195,19 @@ function useInformalUpdateFormOptions(value: PartialForm<InformalUpdateFields>) 
     ] as BooleanValueOption[];
   }, [strings]);
 
+  const {
+    pending: fetchingShareWithOptions,
+    response: shareWith
+  } = useRequest<ShareWithOptionsEntity>({
+    url: 'api/v2/informal-options/'
+  });
+
   const shareWithOptions = React.useMemo(() => (
-    [
-      {
-        label: strings.informalUpdateIfrcSecretariatLabel,
-        value: 'ifrc_secretariat'
-      },
-      {
-        label: strings.informalUpdateRcrcNetworkLabel,
-        value: 'rcrc_network'
-      },
-      {
-        label: strings.informalUpdateFormFocalIfrcRcrcNetworkAndDonorsLabel,
-        value: 'rcrc_network_and_donors'
-      }
-    ]
-  ), [strings]);
+    shareWith?.share_with_options.map((el) => ({
+      label: el.value,
+      value: el.key
+    })) ?? emptyStringOptionList
+  ), [shareWith]);
 
   const ntls = true;
   const pns = true;
@@ -319,7 +319,7 @@ function useInformalUpdateFormOptions(value: PartialForm<InformalUpdateFields>) 
 
   }, [value, disasterTypeOptions, countryOptions]);
 
-  
+
 
   return {
     countryOptions,

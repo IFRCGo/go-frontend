@@ -69,6 +69,14 @@ export interface ActionsTaken {
   organization_display?: string;
 }
 
+export interface ShareWithOptionsEntity {
+  share_with_options: [{
+    key: string;
+    value: string;
+
+  }]
+}
+
 export type Option = NumericValueOption | BooleanValueOption | StringValueOption;
 export const emptyOptionList: Option[] = [];
 export const emptyStringOptionList: StringValueOption[] = [];

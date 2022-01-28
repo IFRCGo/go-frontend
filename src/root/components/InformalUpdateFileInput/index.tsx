@@ -12,6 +12,7 @@ import FileInput, { Props as FileInputProps } from '#components/FileInput';
 import useAlert from '#hooks/useAlert';
 
 import styles from './styles.module.scss';
+import TextArea from '#components/TextArea';
 
 interface Option {
   id: number;
@@ -282,6 +283,7 @@ function InformalUpdateFileInput<T extends string>(props: Props<T>) {
             file={fileIdToUrlMap?.[value as number]}
             onRemoveButtonClick={handleFileRemoveButtonClick}
           />
+          {/*<TextArea name={value as unknown as string} value="" />*/}
         </div>
       )}
     </div>
