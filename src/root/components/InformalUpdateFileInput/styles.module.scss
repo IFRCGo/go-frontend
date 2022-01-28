@@ -6,19 +6,23 @@
     flex-wrap: wrap;
     gap: $spacing;
     padding: $spacing;
+    justify-content: space-between;
 
     .preview {
       position: relative;
-      width: 12rem;
+      width: 22rem;
       height: 12rem;
       border: $base-border-width solid $base-border-color;
 
       .image {
         width: 100%;
         height: 100%;
-        object-fit: cover;
+        object-fit: contain;
         object-position: center center;
       }
+    }
+    .caption-text {
+      padding: 0px;
     }
 
     .no-preview {

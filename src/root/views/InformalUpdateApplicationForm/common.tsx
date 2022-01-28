@@ -76,6 +76,10 @@ export interface ShareWithOptionsEntity {
 
   }]
 }
+export interface ImageEntity {
+  id: number;
+  caption?: string;
+}
 
 export type Option = NumericValueOption | BooleanValueOption | StringValueOption;
 export const emptyOptionList: Option[] = [];

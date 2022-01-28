@@ -200,7 +200,7 @@ function ContextOverview(props: Props) {
             setFileIdToUrlMap={setFileIdToUrlMap}
             showStatus
             multiple
-            value={value.graphics}
+            value={value?.graphics}
           >
             {strings.informalUpdateFormContextReferenceUrlButtonLabel}
           </InformalUpdateFileInput>

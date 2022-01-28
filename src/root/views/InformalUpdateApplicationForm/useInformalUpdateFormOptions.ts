@@ -31,7 +31,6 @@ import {
   OrganizationType,
   ActionsByOrganizationArrayLists,
   ShareWithOptionsEntity,
-  StringKeyValuePair,
   emptyStringOptionList,
 } from './common';
 
@@ -332,6 +331,7 @@ function useInformalUpdateFormOptions(value: PartialForm<InformalUpdateFields>) 
     userDetails,
     yesNoOptions,
     nationalSocietyOptions,
+    fetchingShareWithOptions,
     shareWithOptions,
     orgGroupedActionForCurrentReport,
     fetchingActions,

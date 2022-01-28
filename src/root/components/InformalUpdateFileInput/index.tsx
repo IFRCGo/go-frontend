@@ -13,6 +13,7 @@ import useAlert from '#hooks/useAlert';
 
 import styles from './styles.module.scss';
 import TextArea from '#components/TextArea';
+import TextInput from '#components/TextInput';
 
 interface Option {
   id: number;
@@ -102,45 +103,29 @@ function InformalUpdateFileInput<T extends string>(props: Props<T>) {
     context,
   } = useLazyRequest<Option | Option[], { file: FileInputProps<T>['value'] }>({
     formData: true,
-    url: props.multiple ? 'api/v2/informal-file/' : 'api/v2/informal-file/',
+    url: props.multiple ? 'api/v2/informal-file/multiple/' : 'api/v2/informal-file/',
     method: 'POST',
     body: ctx => ctx,
     onSuccess: (response) => {
       if (props.multiple) {
-        const option = response as Option;
-        const { id } = option;
-
+        const ids = (response as Option[]).map(v => v.id);
         if (setFileIdToUrlMap) {
           setFileIdToUrlMap((oldMap) => {
             const newMap = {
               ...oldMap,
             };
 
-            newMap[option.id] = option.file;
+            (response as Option[]).forEach((o) => {
+              newMap[o.id] = o.file;
+            });
+
             return newMap;
           });
         }
-        props.onChange([...(props.value ?? []), id], name);
-
-        //const ids = (response as Option[]).map(v => v.id);
-        //if (setFileIdToUrlMap) {
-        //  setFileIdToUrlMap((oldMap) => {
-        //    const newMap = {
-        //      ...oldMap,
-        //    };
-
-        //    (response as Option[]).forEach((o) => {
-        //      newMap[o.id] = o.file;
-        //    });
-
-        //    return newMap;
-        //  });
-        //}
-        //props.onChange([...(props.value ?? []), ...ids], name);
+        props.onChange([...(props.value ?? []), ...ids], name);
       } else {
         const option = response as Option;
         const { id } = option;
-        console.log("response of file", option);
         props.onChange(id, name);
 
         if (setFileIdToUrlMap) {
@@ -150,7 +135,6 @@ function InformalUpdateFileInput<T extends string>(props: Props<T>) {
             };
 
             newMap[option.id] = option.file;
-            console.log('file value to set --', newMap);
             return newMap;
           });
         }
@@ -236,12 +220,21 @@ function InformalUpdateFileInput<T extends string>(props: Props<T>) {
         />
         <div className={styles.previewList}>
           {props.value?.map((fileId) => (
-            <Preview
-              key={fileId}
-              id={fileId}
-              file={fileIdToUrlMap?.[fileId]}
-              onRemoveButtonClick={handleFileRemoveButtonClick}
-            />
+            <div key={fileId}>
+              <Preview
+                key={fileId}
+                id={fileId}
+                file={fileIdToUrlMap?.[fileId]}
+                onRemoveButtonClick={handleFileRemoveButtonClick}
+              />
+              <TextInput
+                className={styles.captionText}
+                name={fileId as unknown as string}
+                value=""
+                label="Captions"
+                onChange={(e) => console.log('--caption--', e)}
+              />
+            </div>
           ))}
         </div>
       </div>
@@ -277,14 +270,17 @@ function InformalUpdateFileInput<T extends string>(props: Props<T>) {
         onChange={handleChange}
       />
       {isDefined(value) && (
-        <div className={styles.previewList}>
-          <Preview
-            id={value as number}
-            file={fileIdToUrlMap?.[value as number]}
-            onRemoveButtonClick={handleFileRemoveButtonClick}
-          />
-          {/*<TextArea name={value as unknown as string} value="" />*/}
-        </div>
+        <>
+          <div className={styles.previewList}>
+            <Preview
+              id={value as number}
+              file={fileIdToUrlMap?.[value as number]}
+              onRemoveButtonClick={handleFileRemoveButtonClick}
+            />
+          </div>
+
+
+        </>
       )}
     </div>
   );
