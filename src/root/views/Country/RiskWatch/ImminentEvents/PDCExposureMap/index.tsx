@@ -85,6 +85,31 @@ function getHazardFootprint(
   };
 }
 
+function EstimatedOutput({
+  value,
+  attribute,
+}: {
+  value: number;
+  attribute: string;
+}) {
+  return (
+    <TextOutput
+      className={styles.estimatedOutput}
+      labelContainerClassName={styles.label}
+      descriptionContainerClassName={styles.description}
+      label="Est."
+      description={attribute}
+      hideLabelColon
+      value={value}
+      valueType="number"
+      valueProps={{
+        normal: true,
+        precision: 'auto',
+      }}
+    />
+  );
+}
+
 interface PointDetailsProps {
   hazardDetails: PDCExposure;
 }
@@ -99,59 +124,30 @@ function PointDetails(props: PointDetailsProps) {
 
   return (
     <>
-      <TextOutput
-        label="People Exposed / Likely Affected"
+      <EstimatedOutput
+        attribute="People Exposed / Likely Affected"
         value={population_exposure.total.value}
-        valueType="number"
-        valueProps={{
-          normal: true,
-          precision: 'auto',
-        }}
       />
-      <TextOutput
-        label="Estimated Households Exposed"
+      <hr />
+      <EstimatedOutput
+        attribute="Households Exposed"
         value={population_exposure.households.value}
-        valueType="number"
-        valueProps={{
-          normal: true,
-          precision: 'auto',
-        }}
       />
-      <TextOutput
-        label="Exposed vulnerable groups"
+      <EstimatedOutput
+        attribute="Exposed vulnerable groups"
         value={population_exposure.vulnerable.value}
-        valueType="number"
-        valueProps={{
-          normal: true,
-          precision: 'auto',
-        }}
       />
-      <TextOutput
-        label="Estimated Building Damage"
+      <EstimatedOutput
+        attribute="Building Damage"
         value={capital_exposure.total.value}
-        valueType="number"
-        valueProps={{
-          normal: true,
-          precision: 'auto',
-        }}
       />
-      <TextOutput
-        label="Estimated Schools Exposed"
+      <EstimatedOutput
+        attribute="Schools Exposed"
         value={capital_exposure.school.value}
-        valueType="number"
-        valueProps={{
-          normal: true,
-          precision: 'auto',
-        }}
       />
-      <TextOutput
-        label="Estimated Hospitals Exposed"
+      <EstimatedOutput
+        attribute="Hospitals Exposed"
         value={capital_exposure.hospital.value}
-        valueType="number"
-        valueProps={{
-          normal: true,
-          precision: 'auto',
-        }}
       />
     </>
   );

@@ -549,6 +549,7 @@ function ImpactChart(props: ImpactChartProps) {
   ), [strings]);
 
   const { response } = useRequest<ListResponse<HistoricalData>>({
+    skip: !country?.iso3,
     url: 'api/v2/go-historical/',
     query: { iso3: country?.iso3 },
   });
@@ -558,7 +559,7 @@ function ImpactChart(props: ImpactChartProps) {
     hazardOptions,
   ] = React.useMemo(() => {
     const options = unique(
-      response?.results.filter(
+      response?.results?.filter(
         (d) => d.countries.findIndex(
           c => c.iso3.toLowerCase() === country?.iso3?.toLowerCase()
         ) !== -1

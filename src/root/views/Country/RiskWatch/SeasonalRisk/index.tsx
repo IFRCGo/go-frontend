@@ -164,7 +164,7 @@ function SeasonalRisk(props: Props) {
         const months = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12] as const;
         displacements.push({
           annualAverage: avg(foodInsecurity, d => d.total_displacement) ?? null,
-          monthly: months.map(m => avgSafe(groupedMap[m].map(d => d.total_displacement)) ?? null),
+          monthly: months.map(m => avgSafe(groupedMap[m]?.map(d => d.total_displacement)) ?? null),
         });
       }
 
@@ -220,15 +220,6 @@ function SeasonalRisk(props: Props) {
 
   return (
     <>
-      {/*
-      <RiskMap
-        hazardOptions={hazardOptions}
-        countryId={countryId}
-        riskData={aggregatedRiskData}
-        selectedMonth={selectedMonth}
-        setSelectedMonth={setSelectedMonth}
-      />
-      */}
       <Container
         className={styles.riskTableContainer}
         heading="Seasonal Risk Details"

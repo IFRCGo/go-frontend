@@ -2,27 +2,14 @@ import React from 'react';
 
 import { useRequest } from '#utils/restRequest';
 import Container from '#components/Container';
-// import SelectInput from '#components/SelectInput';
-// import Button from '#components/Button';
-// import RadioInput from '#components/RadioInput';
+import BlockLoading from '#components/block-loading';
+import EmptyMessage from '#components/EmptyMessage';
 import useReduxState from '#hooks/useReduxState';
-// import useInputState from '#hooks/useInputState';
-// import { StringValueOption } from '#types';
 
 import PDCExposureMap from './PDCExposureMap';
 
-import {
-  // ImminentHazardTypes,
-  ImminentResponse,
-} from './common';
+import { ImminentResponse } from './common';
 import styles from './styles.module.scss';
-
-/*
-const sourceOptions = [
-  { label: 'PDC', value: 'pdc' },
-  { label: 'ODDRIN', value: 'oddrin' },
-];
-*/
 
 interface EventDetailProps<E extends number> {
   eventId: E;
@@ -50,9 +37,7 @@ function EventDetail<E extends number>(props: EventDetailProps<E>) {
   }, [eventId, onClick]);
 
   return (
-    <div
-      className={styles.eventDetail}
-    >
+    <div className={styles.eventDetail}>
       <div
         className={styles.topSection}
         role="presentation"
@@ -79,8 +64,6 @@ function EventDetail<E extends number>(props: EventDetailProps<E>) {
   );
 }
 
-// const hazardOptions: StringValueOption[] = [];
-
 interface Props {
   className?: string;
   countryId: number;
@@ -94,14 +77,15 @@ function ImminentEvents(props: Props) {
     allCountries?.data.results.find(d => d.id === countryId)
   ), [allCountries, countryId]);
 
-  const { response } = useRequest<ImminentResponse>({
+  const {
+    pending,
+    response,
+  } = useRequest<ImminentResponse>({
     skip: !country,
     url: 'risk://api/v1/imminent/',
     query: { iso3: country?.iso3?.toLocaleLowerCase() },
   });
 
-  // const [selectedHazard, setSelectedHazard] = useInputState<ImminentHazardTypes | undefined>(undefined);
-  // const [selectedSource, setSelectedSource] = useInputState<typeof sourceOptions[number]['value'] | undefined>('pdc');
   const [activeEventId, setActiveEventId] = React.useState<number | undefined>(undefined);
 
   const handleEventDetailClick = React.useCallback((eventId: number | undefined) => {
@@ -122,7 +106,9 @@ function ImminentEvents(props: Props) {
       descriptionClassName={styles.mapDescription}
       sub
     >
-      {response?.pdc_data && (
+      {pending && <BlockLoading /> }
+      {!pending && !response?.pdc_data && <EmptyMessage />}
+      {!pending && response?.pdc_data && (
         <div className={styles.mapSection}>
           <PDCExposureMap
             countryId={countryId}
@@ -130,7 +116,7 @@ function ImminentEvents(props: Props) {
             activeEventId={activeEventId}
             data={response.pdc_data}
             onActiveEventChange={setActiveEventId}
-            />
+          />
           <Container
             className={styles.sideBar}
             contentClassName={styles.eventList}

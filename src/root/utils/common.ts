@@ -162,7 +162,7 @@ export function getFullMonthNameList(strings: Strings) {
 }
 
 export function avgSafe(list: (number|undefined|null)[]) {
-  const listSafe = list.filter((i) => isDefined(i) && !Number.isNaN(i)) as number[];
+  const listSafe = (list ?? []).filter((i) => isDefined(i) && !Number.isNaN(i)) as number[];
   return avg(listSafe, d => d);
 }
 

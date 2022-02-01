@@ -6,5 +6,21 @@
 }
 
 .tooltip-content {
+  display: flex;
+  flex-direction: column;
   padding: $spacing/2 !important;
+
+  hr {
+    margin: $spacing/2 0;
+  }
+}
+
+.estimated-output {
+  .label {
+    font-weight: $base-font-light;
+  }
+
+  .description {
+    color: $color-text-light;
+  }
 }

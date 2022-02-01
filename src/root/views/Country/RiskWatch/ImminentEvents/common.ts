@@ -165,5 +165,3 @@ export const hazardTypeToIconMap: {
 export const geoJsonSourceOptions: mapboxgl.GeoJSONSourceRaw = {
     type: 'geojson',
 };
-
-
