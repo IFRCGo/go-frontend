@@ -4,9 +4,13 @@ Date: 2022-02-01
 
 #### Frontend:
 
- - Permanent URLs for Catalogue of Services: https://github.com/IFRCGo/go-frontend/issues/2125
+ - Permanent URLs for Catalogue of Services: #2125
  - Show deployments for multi-country emergencies correctly
  - Fix Edit Event links on frontend
+ - Fix Map Export issue: #2172
+ - User Registration Changes: 
+ - New links on resources page: https://github.com/IFRCGo/go-api/issues/1243
+ - Fix bug of Surge tab showing on emergency page when there are no surge activities
 
 #### Backend:
 
