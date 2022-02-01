@@ -3,6 +3,7 @@ import {
   PartialForm,
   Error,
   EntriesAsList,
+  getErrorObject,
 } from '@togglecorp/toggle-form';
 
 import Container from '#components/Container';
@@ -12,6 +13,7 @@ import TextArea from '#components/TextArea';
 import RadioInput from '#components/RadioInput';
 import Checklist from '#components/Checklist';
 import LanguageContext from '#root/languageContext';
+import { listErrorToString } from '#utils/form';
 
 import CovidActionFields from './CovidActionFields';
 
@@ -43,7 +45,7 @@ interface Props {
 function ActionsFields(props: Props) {
   const { strings } = React.useContext(LanguageContext);
   const {
-    error,
+    error: formError,
     onValueChange,
     value,
     actionOptions,
@@ -55,6 +57,10 @@ function ActionsFields(props: Props) {
     fetchingSupportedActivities,
   } = props;
 
+  const error = React.useMemo(
+    () => getErrorObject(formError),
+    [formError]
+  );
 
   if (reportType === 'COVID') {
     return (
@@ -84,7 +90,7 @@ function ActionsFields(props: Props) {
             name="gov_num_assisted"
             value={value.gov_num_assisted}
             onChange={onValueChange}
-            error={error?.fields?.gov_num_assisted}
+            error={error?.gov_num_assisted}
           />
         </InputSection>
         <InputSection
@@ -94,7 +100,7 @@ function ActionsFields(props: Props) {
             name="num_assisted"
             value={value.num_assisted}
             onChange={onValueChange}
-            error={error?.fields?.num_assisted}
+            error={error?.num_assisted}
           />
         </InputSection>
         <InputSection
@@ -104,7 +110,7 @@ function ActionsFields(props: Props) {
             name="num_localstaff"
             value={value.num_localstaff}
             onChange={onValueChange}
-            error={error?.fields?.num_localstaff}
+            error={error?.num_localstaff}
           />
         </InputSection>
         <InputSection
@@ -114,7 +120,7 @@ function ActionsFields(props: Props) {
             name="num_volunteers"
             value={value.num_volunteers}
             onChange={onValueChange}
-            error={error?.fields?.num_volunteers}
+            error={error?.num_volunteers}
           />
         </InputSection>
         <InputSection
@@ -125,7 +131,7 @@ function ActionsFields(props: Props) {
             name="num_expats_delegates"
             value={value.num_expats_delegates}
             onChange={onValueChange}
-            error={error?.fields?.num_expats_delegates}
+            error={error?.num_expats_delegates}
           />
         </InputSection>
       </div>
@@ -144,14 +150,14 @@ function ActionsFields(props: Props) {
             keySelector={numericOptionKeySelector}
             tooltipSelector={d => d.description}
             value={value.actions_ntls}
-            error={error?.fields?.actions_ntls?.$internal}
+            error={listErrorToString(error?.actions_ntls)}
           />
           <TextArea
             label={strings.cmpActionDescriptionLabel}
             name="actions_ntls_desc"
             onChange={onValueChange}
             value={value.actions_ntls_desc}
-            error={error?.fields?.actions_ntls_desc}
+            error={error?.actions_ntls_desc}
             placeholder={strings.fieldsStep3CheckboxSectionsNSActionsEVTPlaceholder}
           />
         </InputSection>
@@ -169,14 +175,14 @@ function ActionsFields(props: Props) {
             keySelector={numericOptionKeySelector}
             tooltipSelector={d => d.description}
             value={value.actions_fdrn}
-            error={error?.fields?.actions_fdrn?.$internal}
+            error={listErrorToString(error?.actions_fdrn)}
           />
           <TextArea
             label={strings.cmpActionDescriptionLabel}
             name="actions_fdrn_desc"
             onChange={onValueChange}
             value={value.actions_fdrn_desc}
-            error={error?.fields?.actions_fdrn_desc}
+            error={error?.actions_fdrn_desc}
             placeholder={strings.fieldsStep3CheckboxSectionsFederationActionsEVTEPIEWPlaceholder}
           />
         </InputSection>
@@ -194,14 +200,14 @@ function ActionsFields(props: Props) {
             keySelector={numericOptionKeySelector}
             tooltipSelector={d => d.description}
             value={value.actions_pns}
-            error={error?.fields?.actions_pns?.$internal}
+            error={listErrorToString(error?.actions_pns)}
           />
           <TextArea
             label={strings.cmpActionDescriptionLabel}
             name="actions_pns_desc"
             onChange={onValueChange}
             value={value.actions_pns_desc}
-            error={error?.fields?.actions_pns_desc}
+            error={error?.actions_pns_desc}
             placeholder={strings.fieldsStep3CheckboxSectionsPNSActionsEVTEPIEWPlaceholder}
           />
         </InputSection>
@@ -216,7 +222,7 @@ function ActionsFields(props: Props) {
             radioLabelSelector={optionLabelSelector}
             value={value.bulletin}
             onChange={onValueChange}
-            error={error?.fields?.bulletin}
+            error={error?.bulletin}
           />
         </InputSection>
         <InputSection
@@ -227,7 +233,7 @@ function ActionsFields(props: Props) {
             name="actions_others"
             value={value.actions_others}
             onChange={onValueChange}
-            error={error?.fields?.actions_others}
+            error={error?.actions_others}
             placeholder={strings.fieldReportFormOthersActionsPlaceholder}
           />
         </InputSection>

@@ -8,6 +8,7 @@ import Ajv from 'ajv';
 import ajvKeywords from 'ajv-keywords';
 import Select from 'react-select';
 import { Helmet } from 'react-helmet';
+import TextArea from '#components/TextArea';
 
 import {
   isValidEmail,
@@ -62,7 +63,7 @@ class Register extends React.Component {
         department: undefined,
         position: undefined,
         phoneNumber: undefined,
-
+        jusitification: undefined,
         contact: [0, 1].map(() => ({ name: undefined, email: undefined }))
       },
       whitelist: [],
@@ -303,6 +304,7 @@ class Register extends React.Component {
             errors={this.state.errors}
           />
         </FormInput>
+        
       </div>
     );
   }
@@ -319,7 +321,24 @@ class Register extends React.Component {
         <p className='form__note'>
           <Translate stringId='registerContactRequest'/>
         </p>
-        {[0, 1].map(o => (
+        <TextArea
+          // label={strings.registerJustification}
+          placeholder={strings.registerJustification}
+          type='text'
+          name='register-justification'
+          id='register-justification'
+          classInput={getClassIfError(this.state.errors, 'justification')}
+          value={this.state.data.justification}
+          onChange={this.onFieldChange.bind(this, 'justification')}
+         
+        >
+          <FormError
+            property='phoneNumber'
+            errors={this.state.errors}
+          />
+        </TextArea>
+        
+        {/* {[0, 1].map(o => (
           <div key={o} className='form__hascol form__hascol--2'>
             <FormInput
               label={strings.registerContactName}
@@ -350,7 +369,7 @@ class Register extends React.Component {
               />
             </FormInput>
           </div>
-        ))}
+        ))} */}
       </div>
     );
   }

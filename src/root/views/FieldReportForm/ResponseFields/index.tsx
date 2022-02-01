@@ -3,6 +3,7 @@ import {
   PartialForm,
   Error,
   EntriesAsList,
+  getErrorObject,
 } from '@togglecorp/toggle-form';
 
 import Header from '#components/Header';
@@ -38,11 +39,16 @@ interface Props {
 function ResponseFields(props: Props) {
   const { strings } = React.useContext(LanguageContext);
   const {
-    error,
+    error: formError,
     onValueChange,
     value,
     reportType,
   } = props;
+
+  const error = React.useMemo(
+    () => getErrorObject(formError),
+    [formError]
+  );
 
   const [
     drefOptions,
@@ -92,7 +98,7 @@ function ResponseFields(props: Props) {
               title={strings.fieldsStep4PlannedResponseRowsDREFEVTEPILabel}
             >
               <RadioInput
-                error={error?.fields?.dref}
+                error={error?.dref}
                 name="dref"
                 onChange={onValueChange}
                 options={drefOptions}
@@ -106,14 +112,14 @@ function ResponseFields(props: Props) {
                 name="dref_amount"
                 value={value.dref_amount}
                 onChange={onValueChange}
-                error={error?.fields?.dref_amount}
+                error={error?.dref_amount}
               />
             </InputSection>
             <InputSection
               title={strings.fieldsStep4PlannedResponseRowsEmergencyAppealEVTEPIEWLabel}
             >
               <RadioInput
-                error={error?.fields?.appeal}
+                error={error?.appeal}
                 name="appeal"
                 onChange={onValueChange}
                 options={appealOptions}
@@ -127,14 +133,14 @@ function ResponseFields(props: Props) {
                 name="appeal_amount"
                 value={value.appeal_amount}
                 onChange={onValueChange}
-                error={error?.fields?.appeal_amount}
+                error={error?.appeal_amount}
               />
             </InputSection>
             <InputSection
               title={strings.fieldsStep4PlannedResponseRowsFactEVTEPIEWLabel}
             >
               <RadioInput
-                error={error?.fields?.fact}
+                error={error?.fact}
                 name="fact"
                 onChange={onValueChange}
                 options={responseOptions}
@@ -148,14 +154,14 @@ function ResponseFields(props: Props) {
                 name="num_fact"
                 value={value.num_fact}
                 onChange={onValueChange}
-                error={error?.fields?.num_fact}
+                error={error?.num_fact}
               />
             </InputSection>
             <InputSection
               title={strings.fieldsStep4PlannedResponseRowsIFRCStaffEVTEPIEWLabel}
             >
               <RadioInput
-                error={error?.fields?.ifrc_staff}
+                error={error?.ifrc_staff}
                 name="ifrc_staff"
                 onChange={onValueChange}
                 options={responseOptions}
@@ -169,7 +175,7 @@ function ResponseFields(props: Props) {
                 name="num_ifrc_staff"
                 value={value.num_ifrc_staff}
                 onChange={onValueChange}
-                error={error?.fields?.num_ifrc_staff}
+                error={error?.num_ifrc_staff}
               />
             </InputSection>
           </>
@@ -179,7 +185,7 @@ function ResponseFields(props: Props) {
             title={strings.fieldsStep4PlannedResponseRowsForecastBasedActionEWLabel}
           >
             <RadioInput
-              error={error?.fields?.forecast_based_action}
+              error={error?.forecast_based_action}
               name="forecast_based_action"
               onChange={onValueChange}
               options={responseOptions}
@@ -193,7 +199,7 @@ function ResponseFields(props: Props) {
               name="forecast_based_action_amount"
               value={value.forecast_based_action_amount}
               onChange={onValueChange}
-              error={error?.fields?.forecast_based_action_amount}
+              error={error?.forecast_based_action_amount}
             />
           </InputSection>
         )}
@@ -212,28 +218,28 @@ function ResponseFields(props: Props) {
             name="contact_originator_name"
             value={value.contact_originator_name}
             onChange={onValueChange}
-            error={error?.fields?.contact_originator_name}
+            error={error?.contact_originator_name}
             label={strings.cmpContactName}
           />
           <TextInput
             name="contact_originator_title"
             value={value.contact_originator_title}
             onChange={onValueChange}
-            error={error?.fields?.contact_originator_title}
+            error={error?.contact_originator_title}
             label={strings.cmpContactTitle}
           />
           <TextInput
             name="contact_originator_email"
             value={value.contact_originator_email}
             onChange={onValueChange}
-            error={error?.fields?.contact_originator_email}
+            error={error?.contact_originator_email}
             label={strings.cmpContactEmail}
           />
           <TextInput
             name="contact_originator_phone"
             value={value.contact_originator_phone}
             onChange={onValueChange}
-            error={error?.fields?.contact_originator_phone}
+            error={error?.contact_originator_phone}
             label={strings.cmpContactPhone}
           />
         </InputSection>
@@ -247,28 +253,28 @@ function ResponseFields(props: Props) {
             name="contact_nat_soc_name"
             value={value.contact_nat_soc_name}
             onChange={onValueChange}
-            error={error?.fields?.contact_nat_soc_name}
+            error={error?.contact_nat_soc_name}
             label={strings.cmpContactName}
           />
           <TextInput
             name="contact_nat_soc_title"
             value={value.contact_nat_soc_title}
             onChange={onValueChange}
-            error={error?.fields?.contact_nat_soc_title}
+            error={error?.contact_nat_soc_title}
             label={strings.cmpContactTitle}
           />
           <TextInput
             name="contact_nat_soc_email"
             value={value.contact_nat_soc_email}
             onChange={onValueChange}
-            error={error?.fields?.contact_nat_soc_email}
+            error={error?.contact_nat_soc_email}
             label={strings.cmpContactEmail}
           />
           <TextInput
             name="contact_nat_soc_phone"
             value={value.contact_nat_soc_phone}
             onChange={onValueChange}
-            error={error?.fields?.contact_nat_soc_phone}
+            error={error?.contact_nat_soc_phone}
             label={strings.cmpContactPhone}
           />
         </InputSection>
@@ -282,28 +288,28 @@ function ResponseFields(props: Props) {
             name="contact_federation_name"
             value={value.contact_federation_name}
             onChange={onValueChange}
-            error={error?.fields?.contact_federation_name}
+            error={error?.contact_federation_name}
             label={strings.cmpContactName}
           />
           <TextInput
             name="contact_federation_title"
             value={value.contact_federation_title}
             onChange={onValueChange}
-            error={error?.fields?.contact_federation_title}
+            error={error?.contact_federation_title}
             label={strings.cmpContactTitle}
           />
           <TextInput
             name="contact_federation_email"
             value={value.contact_federation_email}
             onChange={onValueChange}
-            error={error?.fields?.contact_federation_email}
+            error={error?.contact_federation_email}
             label={strings.cmpContactEmail}
           />
           <TextInput
             name="contact_federation_phone"
             value={value.contact_federation_phone}
             onChange={onValueChange}
-            error={error?.fields?.contact_federation_phone}
+            error={error?.contact_federation_phone}
             label={strings.cmpContactPhone}
           />
         </InputSection>
@@ -317,28 +323,28 @@ function ResponseFields(props: Props) {
             name="contact_media_name"
             value={value.contact_media_name}
             onChange={onValueChange}
-            error={error?.fields?.contact_media_name}
+            error={error?.contact_media_name}
             label={strings.cmpContactName}
           />
           <TextInput
             name="contact_media_title"
             value={value.contact_media_title}
             onChange={onValueChange}
-            error={error?.fields?.contact_media_title}
+            error={error?.contact_media_title}
             label={strings.cmpContactTitle}
           />
           <TextInput
             name="contact_media_email"
             value={value.contact_media_email}
             onChange={onValueChange}
-            error={error?.fields?.contact_media_email}
+            error={error?.contact_media_email}
             label={strings.cmpContactEmail}
           />
           <TextInput
             name="contact_media_phone"
             value={value.contact_media_phone}
             onChange={onValueChange}
-            error={error?.fields?.contact_media_phone}
+            error={error?.contact_media_phone}
             label={strings.cmpContactPhone}
           />
         </InputSection>
@@ -364,7 +370,7 @@ function ResponseFields(props: Props) {
           )}
         >
           <RadioInput
-            error={error?.fields?.visibility}
+            error={error?.visibility}
             name="visibility"
             onChange={onValueChange}
             options={visibilityOptions}

@@ -3,10 +3,9 @@ import { connect } from 'react-redux';
 import { PropTypes as T } from 'prop-types';
 import c from 'classnames';
 import { Helmet } from 'react-helmet';
-
+import {  withRouter, Route, Switch } from 'react-router-dom';
 import BlockLoading from '#components/block-loading';
 import { TimeLineChart } from '#components/Charts';
-
 import {
   enterFullscreen,
   exitFullscreen,
@@ -39,12 +38,12 @@ import DeploymentsMap from '#components/map/deployments-map';
 import Readiness from '#components/deployments/readiness';
 import BreadCrumb from '#components/breadcrumb';
 import LanguageContext from '#root/languageContext';
+import RouterTabs from '#components/RouterTabs';
 import Translate from '#components/Translate';
 import { countriesGeojsonSelector } from '../selectors';
-import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
-import TabContent from '#components/tab-content';
-//import OperationalTimeline from './Surge/operational-timeline';
+import OperationalTimeline from './Surge/operational-timeline';
 import CatalogueOfSurgeServices from './Surge/catalogue-of-surge-services';
+
 
 const DeploymentsByMonth = () => {
   const { pending, response } = useRequest({url: 'api/v2/deployment/aggregated_by_month/'});
@@ -148,17 +147,18 @@ class Deployments extends SFPComponent {
   getTabDetails() {
     const { strings } = this.context;
     return [
-      { title: strings.deploymentsSurgeOverViewTab, hash: '#overview' },
-//    { title: strings.deploymentsOperationalToolboxTab, hash: '#operational-toolbox' },
-      { title: strings.deploymentsCatalogueOfSurgeServicesTab, hash: '#catalogue' }
+      { title: strings.deploymentsSurgeOverViewTab, link: '/deployments/overview' },
+      { title: strings.deploymentsOperationalToolboxTab, link: '/deployments/operational-toolbox' },
+      { title: strings.deploymentsCatalogueOfSurgeServicesTab, link: '/deployments/catalogue' }
     ];
   }
 
   // Sets default tab if url param is blank or incorrect
   displayTabContent () {
-    const tabHashArray = this.getTabDetails().map(({ hash }) => hash);
-    if (!tabHashArray.find(hash => hash === this.props.location.hash)) {
-      this.props.history.replace(`${this.props.location.pathname}${tabHashArray[0]}`);
+    const tabLinksArray = this.getTabDetails().map(({ link }) => link);
+    const currentUrl = this.props.location.pathname;
+    if (currentUrl === '/deployments') {
+      this.props.history.replace(tabLinksArray[0]);
     }
   }
 
@@ -279,13 +279,14 @@ class Deployments extends SFPComponent {
     }
 
     const tabDetails = [...this.getTabDetails()];
-    const handleTabChange = index => {
-      const tabHashArray = tabDetails.map(({ hash }) => hash);
-      const url = this.props.location.pathname;
-      this.props.history.replace(`${url}${tabHashArray[index]}`);
-    };
-    const hashes = tabDetails.map(t => t.hash);
-    const selectedIndex = hashes.indexOf(this.props.location.hash) !== -1 ? hashes.indexOf(this.props.location.hash) : 0;
+
+    // const handleTabChange = index => {
+    //   const tabHashArray = tabDetails.map(({ hash }) => hash);
+    //   const url = this.props.location.pathname;
+    //   this.props.history.replace(`${url}${tabHashArray[index]}`);
+    // };
+    // const hashes = tabDetails.map(t => t.hash);
+    // const selectedIndex = hashes.indexOf(this.props.location.hash) !== -1 ? hashes.indexOf(this.props.location.hash) : 0;
 
     return (
       <section>
@@ -307,78 +308,74 @@ class Deployments extends SFPComponent {
               </div>
             </div>
           </header>
-          <div className='tab__wrap tab__wrap--3W'>
-            <Tabs selectedIndex={selectedIndex} onSelect={index => handleTabChange(index)}>
-              <TabList>
-                {tabDetails.map(tab => (
-                  <Tab key={tab.title}>{tab.title}</Tab>
-                ))}
-              </TabList>
-              <div className='inpage__body'>
-                <div className='inner'>
-                  {/* Surge overview tab */}
-                  <TabPanel>
-                    <TabContent>
-                      <div className='container-lg'>
-                        {this.props.eru.fetched && this.props.activePersonnel.fetched ?
-                          <DeploymentsMap
-                            data={deployData}
-                            countriesGeojson={this.props.countriesGeojson}
-                          /> : <BlockLoading />
-                        }
+          <div className='tab__wrap margin-2-t'>
+            <RouterTabs
+              tabs={tabDetails}
+              currentUrl={this.props.location.pathname}
+            />
+            <div className="inpage__body">
+              <Switch>
+                <Route exact path="/deployments/overview">
+                  <div>
+                    <div className='container-lg'>
+                      {this.props.eru.fetched && this.props.activePersonnel.fetched ?
+                        <DeploymentsMap
+                          data={deployData}
+                          countriesGeojson={this.props.countriesGeojson}
+                        /> : <BlockLoading />
+                      }
+                    </div>
+                    <div className='inpage__body container-lg'>
+                      <div className='inner'>
+                        {this.renderCharts()}
                       </div>
-                      <div className='inpage__body container-lg'>
-                        <div className='inner'>
-                          {this.renderCharts()}
-                        </div>
-                      </div>
-                      <div className='inpage__body'>
-                        <div className='inner margin-4-t'>
-                          <div>
-                            <AlertsTable
-                              title={strings.homeSurgeAlerts}
-                              limit={5}
-                              isActive={true}
-                              viewAll={'/alerts/all'}
-                              showRecent={true}
-                            />
-                          </div>
-                          <div className='table-deployed-personnel-block'>
-                            <PersonnelByEventTable data={this.props.personnelByEvent} />
-                          </div>
-                          <div className='inner'>
-                          <EruTable
+                    </div>
+                    <div className='inpage__body'>
+                      <div className='inner margin-4-t'>
+                        <div>
+                          <AlertsTable
+                            title={strings.homeSurgeAlerts}
                             limit={5}
-                            viewAll={'/deployments/erus/all'}
+                            isActive={true}
+                            viewAll={'/alerts/all'}
+                            showRecent={true}
                           />
-                          </div>
-                          <div className='readiness__container container-lg'>
-                            <Readiness eruOwners={this.props.eruOwners} />
-                          </div>
+                        </div>
+                        <div className='table-deployed-personnel-block'>
+                          <PersonnelByEventTable data={this.props.personnelByEvent} />
+                        </div>
+                        <div className='inner'>
+                        <EruTable
+                          limit={5}
+                          viewAll={'/deployments/erus/all'}
+                        />
+                        </div>
+                        <div className='readiness__container container-lg'>
+                          <Readiness eruOwners={this.props.eruOwners} />
                         </div>
                       </div>
-                    </TabContent>
-                  </TabPanel>
-                  {/* Surge Operational toolbox tab
-                  <TabPanel>
-                    <TabContent>
-                      <div className='container-lg margin-4-t'>
-                        <OperationalTimeline />
-                      </div>
-                    </TabContent>
-                  </TabPanel>
-                  Put me 8 rows earlier (to row end) if you need Catalogue tab:  */}
-                  {/* Surge Catalogue of surge services tab */}
-                  <TabPanel>
-                    <TabContent>
-                      <div className='container-lg'>
-                        <CatalogueOfSurgeServices />
-                      </div>
-                    </TabContent>
-                  </TabPanel>
-                </div>
-              </div>
-            </Tabs>
+                    </div>
+                  </div>
+                </Route>
+                <Route exact path="/deployments/operational-toolbox">
+                  <div className='container-lg margin-4-t'>
+                    <OperationalTimeline />
+                  </div>
+                </Route>
+                <Route path="/deployments/catalogue">
+                  <div className='container-lg'>
+                    <CatalogueOfSurgeServices history={this.props.history} />
+                  </div>
+                </Route>
+                <Route path="/deployments/user/:userId"
+                  children={({ match }) => (
+                    <div>
+                      {match.params.userId}
+                    </div>
+                  )}
+                />
+              </Switch>
+            </div>
           </div>
         </section>
       </section>
@@ -415,7 +412,8 @@ if (environment !== 'production') {
     eru: T.object,
     activePersonnel: T.object,
     allEru: T.object,
-    countriesGeojson: T.object
+    countriesGeojson: T.object,
+    history: T.object
   };
 }
 
@@ -439,4 +437,4 @@ const dispatcher = (dispatch) => ({
   _getAggrSurgeKeyFigures: () => dispatch(getAggrSurgeKeyFigures())
 });
 
-export default connect(selector, dispatcher)(Deployments);
+export default withRouter(connect(selector, dispatcher)(Deployments));

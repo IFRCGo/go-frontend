@@ -4,6 +4,7 @@ import {
   PartialForm,
   ArrayError,
   useFormObject,
+  getErrorObject,
 } from '@togglecorp/toggle-form';
 import { IoTrash } from 'react-icons/io5';
 
@@ -35,8 +36,6 @@ interface Props {
 }
 
 function NeedInput(props: Props) {
-  // const { strings } = React.useContext(LanguageContext);
-
   const {
     error: errorFromProps,
     onChange,
@@ -52,7 +51,7 @@ function NeedInput(props: Props) {
 
   const onFieldChange = useFormObject(index, onChange, defaultNeedValue);
   const error = (value && value.clientId && errorFromProps)
-    ? errorFromProps.members?.[value.clientId]
+    ? getErrorObject(errorFromProps?.[value.clientId])
     : undefined;
 
   return (
@@ -64,7 +63,7 @@ function NeedInput(props: Props) {
         name="description"
         value={value.description}
         onChange={onFieldChange}
-        error={error?.fields?.description}
+        error={error?.description}
       />
       <Button
         className={styles.removeButton}

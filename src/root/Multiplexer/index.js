@@ -279,9 +279,9 @@ function Multiplexer(props) {
               <Route exact path='/regions/:id' render={props => <Region {...props} type='region' />} />
               <Route exact path='/countries/:id' render={props => <Country {...props} type='country' />} />
               <Route exact path='/alerts/all' render={props => <Table {...props} type='alert' />} />
-              <Route exact path='/deployments' component={Deployments}/>
               <Route exact path='/deployments/personnel/all' render={props => <Table {...props} type='personnel' />} />
               <Route exact path='/deployments/erus/all' render={props => <Table {...props} type='eru' />} />
+              <Route path='/deployments' component={Deployments}/>
               <Route exact path='/per-form/:form_id' component={PerForm} />
               <Route exact path='/per-form/:form_id/edit' render={props => <PerForm {...props} isEdit={true} />} />
               <Route path='/per-assessment/create' render={props => <PerAssessment {...props} isCreate={true} />} />

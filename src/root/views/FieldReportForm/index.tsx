@@ -111,11 +111,11 @@ function FieldReportForm(props: Props) {
   const {
     value,
     error,
-    onValueChange,
+    setFieldValue: onValueChange,
     validate,
-    onErrorSet,
-    onValueSet,
-  } = useForm(defaultFormValues, schema);
+    setError: onErrorSet,
+    setValue: onValueSet,
+  } = useForm(schema, defaultFormValues);
 
    React.useEffect(() => {
     if (fieldReportResponse) {
@@ -147,10 +147,13 @@ function FieldReportForm(props: Props) {
       );
     },
     onFailure: ({
-      value: { messageForNotification, errors },
+      value: {
+        messageForNotification,
+        formErrors,
+      },
       debugMessage,
     }) => {
-      console.error(errors);
+      onErrorSet(formErrors);
       alert.show(
         <p>
           {strings.fieldReportFormErrorLabel}

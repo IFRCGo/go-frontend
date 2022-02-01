@@ -242,8 +242,8 @@ export default class OperationalTimeline extends React.Component {
         </div>
         <div className="margin-2-t">
           <p>{strings.operationalToolboxFooterText}</p>
-          <p><a href="mailto:antoine.belair@ifrc.go">antoine.belair@ifrc.go</a></p>
-          <p><a href="mailto:betisa.egea@ifrc.go">betisa.egea@ifrc.go</a></p>
+          <p><a href="mailto:antoine.belair@ifrc.go">antoine.belair@ifrc.org</a></p>
+          <p><a href="mailto:betisa.egea@ifrc.go">betisa.egea@ifrc.org</a></p>
         </div>
 
         <div className="margin-2-t">

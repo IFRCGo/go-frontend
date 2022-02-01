@@ -9,6 +9,7 @@ import {
   useForm,
   createSubmitHandler,
   PartialForm,
+  getErrorObject,
 } from '@togglecorp/toggle-form';
 import { MdDoneAll } from 'react-icons/md';
 
@@ -74,15 +75,17 @@ function ThreeWForm(props: Props) {
 
   const {
     value,
-    error,
-    onValueChange,
+    error: formError,
+    setFieldValue: onValueChange,
     validate,
-    onErrorSet,
-    onValueSet,
-  } = useForm({
+    setError: onErrorSet,
+    setValue: onValueSet,
+  } = useForm(schema, {
     ...defaultFormValues,
     ...initialValue,
-  }, schema);
+  });
+
+  const error = React.useMemo(() => getErrorObject(formError), [formError]);
 
   const {
     pending: projectDetailsPending,
@@ -109,10 +112,9 @@ function ThreeWForm(props: Props) {
     body: ctx => ctx,
     onSuccess: onSubmitSuccess,
     onFailure: ({
-      value: { messageForNotification, errors },
+      value: { messageForNotification },
       debugMessage,
     }) => {
-      console.error(errors);
       alert.show(
         (
           <Translate
@@ -307,7 +309,7 @@ function ThreeWForm(props: Props) {
             tooltip={strings.projectFormReportingTooltip}
           >
             <SelectInput
-              error={error?.fields?.reporting_ns}
+              error={error?.reporting_ns}
               name="reporting_ns"
               onChange={onValueChange}
               options={nationalSocietyOptions}
@@ -321,7 +323,7 @@ function ThreeWForm(props: Props) {
             tooltip={strings.projectFormCountryTooltip}
           >
             <SelectInput
-              error={error?.fields?.project_country}
+              error={error?.project_country}
               label={strings.projectFormCountryLabel}
               name="project_country"
               onChange={handleProjectCountryChange}
@@ -332,7 +334,7 @@ function ThreeWForm(props: Props) {
             <SelectInput<"project_districts", number>
               disabled={shouldDisableDistrictInput}
               pending={fetchingDistricts}
-              error={error?.fields?.project_districts}
+              error={error?.project_districts}
               isMulti
               label={strings.projectFormDistrictLabel}
               name="project_districts"
@@ -369,7 +371,7 @@ function ThreeWForm(props: Props) {
             }
           >
             <SelectInput
-              error={error?.fields?.operation_type}
+              error={error?.operation_type}
               label={strings.projectFormOperationType}
               name='operation_type'
               onChange={onValueChange}
@@ -377,7 +379,7 @@ function ThreeWForm(props: Props) {
               value={value.operation_type}
             />
             <SelectInput
-              error={error?.fields?.programme_type}
+              error={error?.programme_type}
               label={strings.projectFormProgrammeTypeLabel}
               name='programme_type'
               onChange={onValueChange}
@@ -388,7 +390,7 @@ function ThreeWForm(props: Props) {
           { shouldShowCurrentOperation && (
             <InputSection title={strings.projectFormCurrentOperation}>
               <SelectInput
-                error={error?.fields?.event}
+                error={error?.event}
                 name='event'
                 options={currentOperationOptions}
                 pending={fetchingEvents}
@@ -404,7 +406,7 @@ function ThreeWForm(props: Props) {
               description={strings.projectFormCurrentEmergencyHelpText}
             >
               <SelectInput
-                error={error?.fields?.event}
+                error={error?.event}
                 name='event'
                 options={currentEmergencyOperationOptions}
                 pending={fetchingEvents}
@@ -418,7 +420,7 @@ function ThreeWForm(props: Props) {
             title={disasterTypeLabel}
           >
             <SelectInput
-              error={error?.fields?.dtype}
+              error={error?.dtype}
               name="dtype"
               options={disasterTypeOptions}
               pending={fetchingDisasterTypes}
@@ -434,7 +436,7 @@ function ThreeWForm(props: Props) {
             tooltip={strings.projectFormTooltip}
           >
             <TextInput
-              error={error?.fields?.name}
+              error={error?.name}
               name='name'
               onChange={onValueChange}
               value={value.name}
@@ -464,7 +466,7 @@ function ThreeWForm(props: Props) {
             tooltip={strings.projectFormTaggingTooltip}
           >
             <SelectInput
-              error={error?.fields?.primary_sector}
+              error={error?.primary_sector}
               label={strings.projectFormPrimarySectorSelect}
               name='primary_sector'
               onChange={onValueChange}
@@ -472,7 +474,7 @@ function ThreeWForm(props: Props) {
               value={value.primary_sector}
             />
             <SelectInput<"secondary_sectors", number>
-              error={error?.fields?.secondary_sectors}
+              error={error?.secondary_sectors}
               isMulti
               label={strings.projectFormSecondarySectorLabel}
               name='secondary_sectors'
@@ -487,14 +489,14 @@ function ThreeWForm(props: Props) {
             tooltip={strings.projectFormMultiLabelTooltip}
           >
             <DateInput
-              error={error?.fields?.start_date}
+              error={error?.start_date}
               label={strings.projectFormStartDate}
               name='start_date'
               onChange={onValueChange}
               value={value.start_date}
             />
             <DateInput
-              error={error?.fields?.end_date}
+              error={error?.end_date}
               label={strings.projectFormEndDate}
               name='end_date'
               onChange={onValueChange}
@@ -526,7 +528,7 @@ function ThreeWForm(props: Props) {
           >
             { value.is_project_completed ? (
               <NumberInput
-                error={error?.fields?.actual_expenditure}
+                error={error?.actual_expenditure}
                 label={strings.projectFormActualExpenditure}
                 name='actual_expenditure'
                 value={value.actual_expenditure}
@@ -534,7 +536,7 @@ function ThreeWForm(props: Props) {
               />
             ) : (
               <NumberInput
-                error={error?.fields?.budget_amount}
+                error={error?.budget_amount}
                 label={strings.projectFormProjectBudget}
                 name='budget_amount'
                 value={value.budget_amount}
@@ -563,21 +565,21 @@ function ThreeWForm(props: Props) {
               name='target_male'
               label={strings.projectFormMale}
               value={value.target_male}
-              error={error?.fields?.target_male}
+              error={error?.target_male}
               onChange={onValueChange}
             />
             <NumberInput
               name='target_female'
               label={strings.projectFormFemale}
               value={value.target_female}
-              error={error?.fields?.target_female}
+              error={error?.target_female}
               onChange={onValueChange}
             />
             <NumberInput
               name='target_other'
               label={strings.projectFormOther}
               value={value.target_other}
-              error={error?.fields?.target_other}
+              error={error?.target_other}
               onChange={onValueChange}
             />
             <NumberInput
@@ -585,7 +587,7 @@ function ThreeWForm(props: Props) {
               name='target_total'
               label="Total*"
               value={value.target_total}
-              error={error?.fields?.target_total}
+              error={error?.target_total}
               onChange={onValueChange}
             />
           </InputSection>
@@ -598,21 +600,21 @@ function ThreeWForm(props: Props) {
               name='reached_male'
               label={strings.projectFormPeopleReachedMale}
               value={value.reached_male}
-              error={error?.fields?.reached_male}
+              error={error?.reached_male}
               onChange={onValueChange}
             />
             <NumberInput
               name='reached_female'
               label={strings.projectFormPeopleReachedFemale}
               value={value.reached_female}
-              error={error?.fields?.reached_female}
+              error={error?.reached_female}
               onChange={onValueChange}
             />
             <NumberInput
               name='reached_other'
               label={strings.projectFormPeopleReachedOther}
               value={value.reached_other}
-              error={error?.fields?.reached_other}
+              error={error?.reached_other}
               onChange={onValueChange}
             />
             <NumberInput
@@ -620,7 +622,7 @@ function ThreeWForm(props: Props) {
               name='reached_total'
               label={isReachedTotalRequired ? strings.projectFormTotalRequired : strings.projectFormTotal}
               value={value.reached_total}
-              error={error?.fields?.reached_total}
+              error={error?.reached_total}
               onChange={onValueChange}
             />
           </InputSection>
@@ -633,7 +635,7 @@ function ThreeWForm(props: Props) {
               name='visibility'
               value={value.visibility}
               onChange={onValueChange}
-              error={error?.fields?.visibility}
+              error={error?.visibility}
               options={projectVisibilityOptions}
               radioKeySelector={d => d.value}
               radioLabelSelector={d => d.label}

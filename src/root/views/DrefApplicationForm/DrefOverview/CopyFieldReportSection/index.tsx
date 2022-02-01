@@ -6,7 +6,7 @@ import {
 } from '@togglecorp/fujs';
 import {
   PartialForm,
-  StateArg,
+  SetBaseValueArg,
 } from '@togglecorp/toggle-form';
 
 import Button from '#components/Button';
@@ -36,7 +36,7 @@ type Value = PartialForm<DrefFields>;
 type FieldReportListItem = Omit<FieldReportAPIResponseFields, 'districts'> & { districts: number[]};
 interface Props {
   value: Value;
-  onValueSet: (value: StateArg<Value>) => void;
+  onValueSet: (value: SetBaseValueArg<Value>) => void;
 }
 
 function CopyFieldReportSection (props: Props) {
