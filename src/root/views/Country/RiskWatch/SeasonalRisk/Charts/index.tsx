@@ -300,7 +300,7 @@ function RiskBarChart(props: Props) {
 
   const { strings } = React.useContext(languageContext);
   const [hazardType, setHazardType] = useInputState<HazardTypes | undefined>(undefined);
-  const [riskMetric, setRiskMetric] = useInputState<RiskMetricType>('displacement');
+  const [riskMetric, setRiskMetric] = useInputState<RiskMetricType>('exposure');
   const [showHistoricalValues, setShowHistoricalValues] = useInputState(false);
   const hazardIdToNameMap = React.useMemo(() => (
     listToMap(hazardOptions, d => d.value, d => d.label)
@@ -376,6 +376,7 @@ function RiskBarChart(props: Props) {
               name="hazardType"
               options={hazardOptions}
               isClearable
+              placeholder="All hazards"
             />
             {hazardType !== 'FI' && (
               <SelectInput

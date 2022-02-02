@@ -3,7 +3,6 @@ import React from 'react';
 import { useRequest } from '#utils/restRequest';
 import Container from '#components/Container';
 import BlockLoading from '#components/block-loading';
-import EmptyMessage from '#components/EmptyMessage';
 import useReduxState from '#hooks/useReduxState';
 
 import PDCExposureMap from './PDCExposureMap';
