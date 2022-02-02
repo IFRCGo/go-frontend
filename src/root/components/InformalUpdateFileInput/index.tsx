@@ -127,13 +127,13 @@ function InformalUpdateFileInput<T extends string>(props: Props<T>) {
   } = props;
   const alert = useAlert();
 
-  type ImageDetails = typeof allValue.graphics;
+  type ImageDetails = typeof allValue.graphics_details;
 
   const {
     setValue: onImageChange,
     removeValue: onImageRemove,
-  } = useFormArray<'graphics', PartialForm<ImageData>>(
-    'graphics',
+  } = useFormArray<'graphics_details', PartialForm<ImageData>>(
+    'graphics_details',
     onCaptionValueChange,
   );
 
@@ -175,7 +175,7 @@ function InformalUpdateFileInput<T extends string>(props: Props<T>) {
           (oldValue: PartialForm<ImageDetails>) => (
             [...(oldValue ?? []), ...(newList ?? [])]
           ),
-          'graphics' as const,
+          'graphics_details' as const,
         );
       } else {
         const option = response as Option;
@@ -216,14 +216,14 @@ function InformalUpdateFileInput<T extends string>(props: Props<T>) {
   let currentStatus;
   if (pending) {
     currentStatus = 'Uploading file(s)...';
-  } else if (!allValue.graphics) {
+  } else if (!allValue.graphics_details) {
     currentStatus = 'No file selected';
   } else {
-    currentStatus = Array.isArray(allValue?.graphics) ? `${allValue?.graphics.length} files selected` : '1 file selected';
+    currentStatus = Array.isArray(allValue?.graphics_details) ? `${allValue?.graphics_details.length} files selected` : '1 file selected';
   }
 
   const handleClear = useCallback(() => {
-    onCaptionValueChange([], 'graphics');
+    onCaptionValueChange([], 'graphics_details');
     // props.onChange(undefined, name);
     //eslint-disable-next-line  react-hooks/exhaustive-deps
   }, [props.onChange, name]);
@@ -274,7 +274,7 @@ function InformalUpdateFileInput<T extends string>(props: Props<T>) {
           onChange={handleChange}
         />
         <div className={styles.previewList}>
-          {allValue?.graphics?.filter(item => item.file !== undefined || null)?.map((el, i) => (
+          {allValue?.graphics_details?.filter(item => item.file !== undefined || null)?.map((el, i) => (
             <Preview
               key={i}
               index={i}

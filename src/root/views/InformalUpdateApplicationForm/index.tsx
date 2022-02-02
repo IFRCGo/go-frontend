@@ -80,8 +80,8 @@ const defaultFormValues: PartialForm<InformalUpdateFields> = {
     district: undefined
   }],
   reference: [{}],
-  map: [],
-  graphics: []
+  map_details: [],
+  graphics_details: []
 };
 
 function InformalUpdateForm(props: Props) {

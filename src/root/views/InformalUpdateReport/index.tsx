@@ -153,9 +153,9 @@ function InformalUpdateReport(props: Props) {
         >
           <div className={styles.graphic}>
             <div className={styles.card}>
-              {informalUpdateData?.map_details?.map((item) => (
+              {/*{informalUpdateData?.map_details?.map((item) => (
                 <img key={item.id} src={item?.file} alt="" />
-              ))}
+              ))}*/}
             </div>
           </div>
         </Container>
@@ -164,11 +164,11 @@ function InformalUpdateReport(props: Props) {
           heading='IMAGES'
         >
           <div className={styles.image}>
-            {informalUpdateData?.graphics_details?.map((item) => (
+            {/*{informalUpdateData?.graphics_details?.map((item) => (
               <div key={item.id}>
                 <img src={item?.file} alt="" />
               </div>
-            ))}
+            ))}*/}
           </div>
         </Container>
         <Container heading='ACTIONS TAKEN' className={styles.actionTaken}>

@@ -128,13 +128,13 @@ function MapFileUpload<T extends string>(props: Props<T>) {
   } = props;
   const alert = useAlert();
 
-  type ImageDetails = typeof allValue.map;
+  type ImageDetails = typeof allValue.map_details;
 
   const {
     setValue: onImageChange,
     removeValue: onImageRemove,
-  } = useFormArray<'map', PartialForm<ImageData>>(
-    'map',
+  } = useFormArray<'map_details', PartialForm<ImageData>>(
+    'map_details',
     onCaptionValueChange,
   );
 
@@ -176,7 +176,7 @@ function MapFileUpload<T extends string>(props: Props<T>) {
           (oldValue: PartialForm<ImageDetails>) => (
             [...(oldValue ?? []), ...(newList ?? [])]
           ),
-          'map' as const,
+          'map_details' as const,
         );
 
       } else {
@@ -218,14 +218,14 @@ function MapFileUpload<T extends string>(props: Props<T>) {
   let currentStatus;
   if (pending) {
     currentStatus = 'Uploading file(s)...';
-  } else if (!allValue.map) {
+  } else if (!allValue.map_details) {
     currentStatus = 'No file selected';
   } else {
-    currentStatus = Array.isArray(allValue?.map) ? `${allValue?.map?.length} files selected` : '1 file selected';
+    currentStatus = Array.isArray(allValue?.map_details) ? `${allValue?.map_details?.length} files selected` : '1 file selected';
   }
 
   const handleClear = useCallback(() => {
-    onCaptionValueChange([], 'map');
+    onCaptionValueChange([], 'map_details');
     // props.onChange(undefined, name);
     //eslint-disable-next-line  react-hooks/exhaustive-deps
   }, [props.onChange, name]);
@@ -276,7 +276,7 @@ function MapFileUpload<T extends string>(props: Props<T>) {
           onChange={handleChange}
         />
         <div className={styles.previewList}>
-          {allValue?.map?.filter(item => item.file !== undefined || null)?.map((el, i) => (
+          {allValue?.map_details?.filter(item => item.file !== undefined || null)?.map((el, i) => (
             <Preview
               key={i}
               index={i}

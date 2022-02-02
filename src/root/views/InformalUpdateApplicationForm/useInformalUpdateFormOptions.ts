@@ -104,8 +104,8 @@ export const schema: FormSchema = {
     ifrc_title: [],
     share_with: [],
     imageData: [],
-    map: [],
-    graphics: []
+    map_details: [],
+    graphics_details: []
 
   }),
   fieldDependencies: () => ({

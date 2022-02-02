@@ -81,6 +81,11 @@ export interface ImageData {
   pk: number;
   file: string;
 }
+export interface ImageDataToSave {
+  caption?: string;
+  pk: number;
+}
+
 
 export type Option = NumericValueOption | BooleanValueOption | StringValueOption;
 export const emptyOptionList: Option[] = [];
@@ -106,8 +111,6 @@ export interface InformalUpdateTableFields {
   tableTitle?: string;
 }
 export interface InformalUpdateFields {
-  map: ImageData[];
-  graphics: ImageData[];
   imageData: ImageData[];
   id: number;
   reference: ReferenceData[] | [];
@@ -138,8 +141,8 @@ export interface InformalUpdateFields {
   share_with: string;
 
   hazard_type_details: HazardDetails;
-  graphics_details: ImageDetails[];
-  map_details: ImageDetails[];
+  graphics_details: ImageData[];
+  map_details: ImageData[];
 }
 export interface InformalUpdateAPIFields {
   id: number,
@@ -147,11 +150,9 @@ export interface InformalUpdateAPIFields {
   hazard_type: number;
   title: string;
   situational_overview: string;
-  //graphics_id: number[];
-  //map_id: number[];
   hazard_type_details: HazardDetails;
-  graphics_details: ImageDetails[];
-  map_details: ImageDetails[];
+  //graphics_details: ImageData[];
+  //map_details: ImageData[];
 
   // Actions
   actions_taken: ActionsTaken[];
@@ -165,8 +166,8 @@ export interface InformalUpdateAPIFields {
   ifrc_email: string;
   ifrc_phone: string;
   share_with: string;
-  graphics: ImageData[];
-  map: ImageData[];
+  graphics: ImageDataToSave[];
+  map: ImageDataToSave[];
   references: ReferenceData[];
 }
 
@@ -241,8 +242,6 @@ export const focalFields: (keyof InformalUpdateFields)[] = [
 
 export function transformFormFieldsToAPIFields(formValues: InformalUpdateFields): InformalUpdateAPIFields {
   const {
-    graphics,
-    map,
     id,
     country_district,
     hazard_type,
@@ -270,15 +269,14 @@ export function transformFormFieldsToAPIFields(formValues: InformalUpdateFields)
     share_with,
 
     hazard_type_details,
-    graphics_details,
     map_details,
+    graphics_details,
   } = formValues;
 
   const actions_taken: InformalUpdateAPIFields['actions_taken'] = [];
   const references: InformalUpdateAPIFields['references'] = [];
-  //if (typeof reference === "object" && Array.isArray(reference) && reference !== null || {}) {
-  //  references.push();
-  //}
+  const map: InformalUpdateAPIFields['map'] = [];
+  const graphics: InformalUpdateAPIFields['graphics'] = [];
 
   for (var i in reference) {
     if (reference[i].source_description === undefined && reference[i].date === undefined) references.push();
@@ -291,6 +289,20 @@ export function transformFormFieldsToAPIFields(formValues: InformalUpdateFields)
         document: el.document
       }));
     }
+  }
+
+  if (isDefined(map_details)) {
+    map_details.map((el) => map.push({
+      pk: el.pk,
+      caption: el.caption
+    }));
+  }
+
+  if (isDefined(graphics_details)) {
+    graphics_details.map((el) => graphics.push({
+      pk: el.pk,
+      caption: el.caption
+    }));
   }
 
   if (isDefined(actions_ntls_desc) || (actions_ntls ?? [].length > 0)) {
@@ -331,8 +343,6 @@ export function transformFormFieldsToAPIFields(formValues: InformalUpdateFields)
     hazard_type,
     title,
     situational_overview,
-    graphics,
-    map,
 
     actions_taken,
     originator_name,
@@ -347,8 +357,8 @@ export function transformFormFieldsToAPIFields(formValues: InformalUpdateFields)
     share_with,
 
     hazard_type_details,
-    graphics_details,
-    map_details,
-    references
+    references,
+    map,
+    graphics,
   };
 }
