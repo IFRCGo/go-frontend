@@ -85,7 +85,7 @@ const defaultFormValues: PartialForm<InformalUpdateFields> = {
     source_description: undefined,
     url: undefined,
     document: undefined
-  }]
+  }],
 };
 
 function InformalUpdateForm(props: Props) {

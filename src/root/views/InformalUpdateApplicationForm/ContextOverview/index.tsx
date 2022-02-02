@@ -201,6 +201,8 @@ function ContextOverview(props: Props) {
             showStatus
             multiple
             value={value?.graphics}
+            allValue={value && value}
+            onCaptionValueChange={onValueChange}
           >
             {strings.informalUpdateFormContextReferenceUrlButtonLabel}
           </InformalUpdateFileInput>
@@ -221,6 +223,8 @@ function ContextOverview(props: Props) {
             multiple
             showStatus
             value={value.map}
+            allValue={value && value}
+            onCaptionValueChange={onValueChange}
           >
             {strings.informalUpdateFormContextReferenceUrlButtonLabel}
           </InformalUpdateFileInput>

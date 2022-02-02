@@ -49,6 +49,12 @@ export type ReferenceSchemaFields = ReturnType<ReferenceSchema['fields']>;
 export type ReferencesSchema = ArraySchema<PartialForm<ReferenceType>>;
 export type ReferencesSchemaMember = ReturnType<ReferencesSchema['member']>;
 
+export type ImageDataType = NonNullable<NonNullable<InformalUpdateFields['imageData']>>[number];
+export type ImageDataSchema = ObjectSchema<PartialForm<ImageDataType>>;
+export type ImageDataSchemaFields = ReturnType<ImageDataSchema['fields']>;
+export type ImagesDataSchema = ArraySchema<PartialForm<ImageDataType>>;
+export type ImagesDataSchemaMember = ReturnType<ImagesDataSchema['member']>;
+
 export function max10CharCondition(value: any) {
   return isDefined(value) && value.length > 10
     ? 'only 10 characters are allowed'
@@ -96,7 +102,8 @@ export const schema: FormSchema = {
     ifrc_name: [],
     ifrc_phone: [],
     ifrc_title: [],
-    share_with: []
+    share_with: [],
+    imageData: []
 
   }),
   fieldDependencies: () => ({

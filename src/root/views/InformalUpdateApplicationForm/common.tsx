@@ -76,9 +76,11 @@ export interface ShareWithOptionsEntity {
 
   }]
 }
-export interface ImageEntity {
-  id: number;
+export interface ImageData {
+  clientId: string;
   caption?: string;
+  id: number;
+  file: string;
 }
 
 export type Option = NumericValueOption | BooleanValueOption | StringValueOption;
@@ -94,6 +96,7 @@ export const booleanOptionKeySelector = (o: BooleanValueOption) => o.value;
 export const optionLabelSelector = (o: Option) => o.label;
 export const tableKeySelector = (o: InformalUpdateTableFields) => o.id;
 
+
 export interface InformalUpdateTableFields {
   id: number;
   modified_at: string;
@@ -104,6 +107,7 @@ export interface InformalUpdateTableFields {
   tableTitle?: string;
 }
 export interface InformalUpdateFields {
+  imageData: ImageData[];
   id: number;
   references: ReferenceData[];
   country_district: CountryDistrict[];
@@ -210,11 +214,7 @@ export const contextFields: (keyof InformalUpdateFields)[] = [
   'references',
   'country_district',
   'title',
-  'reference_name',
-  'reference_date',
-  'reference_url',
-  'reference_image',
-
+  'imageData'
 ];
 
 export const actionsFields: (keyof InformalUpdateFields)[] = [
