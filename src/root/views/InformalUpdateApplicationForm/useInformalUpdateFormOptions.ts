@@ -43,7 +43,7 @@ export type CountryDistrictSchemaFields = ReturnType<CountryDistrictSchema['fiel
 export type CountryDistrictsSchema = ArraySchema<PartialForm<CountryDistrictType>>;
 export type CountryDistrictsSchemaMember = ReturnType<CountryDistrictsSchema['member']>;
 
-export type ReferenceType = NonNullable<NonNullable<InformalUpdateFields['references']>>[number];
+export type ReferenceType = NonNullable<NonNullable<InformalUpdateFields['reference']>>[number];
 export type ReferenceSchema = ObjectSchema<PartialForm<ReferenceType>>;
 export type ReferenceSchemaFields = ReturnType<ReferenceSchema['fields']>;
 export type ReferencesSchema = ArraySchema<PartialForm<ReferenceType>>;
@@ -81,7 +81,7 @@ export const schema: FormSchema = {
     hazard_type: [requiredCondition],
     situational_overview: [requiredCondition],
     title: [requiredCondition],
-    references: [],
+    reference: [],
     //graphics_id: [],
     //map_id: [],
 

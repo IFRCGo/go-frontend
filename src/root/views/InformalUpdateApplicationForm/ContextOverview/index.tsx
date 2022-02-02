@@ -69,13 +69,13 @@ function ContextOverview(props: Props) {
   const {
     setValue: onReferenceChange,
     removeValue: onReferenceRemove,
-  } = useFormArray<'references', PartialForm<ReferenceData>>(
-    'references',
+  } = useFormArray<'reference', PartialForm<ReferenceData>>(
+    'reference',
     onValueChange,
   );
 
   type CountryDistricts = typeof value.country_district;
-  type References = typeof value.references;
+  type References = typeof value.reference;
 
   const handleCountryDistrictAdd = React.useCallback(() => {
     const newList: PartialForm<CountryDistrictType> = {
@@ -103,7 +103,7 @@ function ContextOverview(props: Props) {
       (oldValue: PartialForm<References>) => (
         [...(oldValue ?? []), newList]
       ),
-      'references' as const,
+      'reference' as const,
     );
   }, [onValueChange]);
 
@@ -241,7 +241,7 @@ function ContextOverview(props: Props) {
           multiRow
           oneColumn
         >
-          {value.references?.map((c, i) => (
+          {value.reference?.map((c, i) => (
             <ReferenceInput
               key={c.clientId}
               index={i}

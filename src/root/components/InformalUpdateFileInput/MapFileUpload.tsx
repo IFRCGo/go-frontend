@@ -168,7 +168,7 @@ function MapFileUpload<T extends string>(props: Props<T>) {
         const newList = (response as Option[])?.map((el) => ({
           clientId: randomString(),
           caption: undefined,
-          id: el.id,
+          pk: el.id,
           file: el.file
         }));
 
