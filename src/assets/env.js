@@ -1,4 +1,4 @@
-window.environment = 'development';
+window.environmentDisplayName = 'Staging site';
 window.api = 'https://dsgocdnapi.azureedge.net/';
 window.adminUrl = 'https://dscgocdnapi.azureedge.net/';
 window.fdrsAuth = '';
