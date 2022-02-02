@@ -317,21 +317,6 @@ export const convertJsonToCsv = (data, columnDelimiter = ',', lineDelimiter = '\
   return result;
 };
 
-export const getFullMonthNameList = (strings) => ([
-  strings.monthNameJanuary,
-  strings.monthNameFebruary,
-  strings.monthNameMarch,
-  strings.monthNameApril,
-  strings.monthNameMay,
-  strings.monthNameJune,
-  strings.monthNameJuly,
-  strings.monthNameAugust,
-  strings.monthNameSeptember,
-  strings.monthNameOctober,
-  strings.monthNameNovember,
-  strings.monthNameDecember,
-]);
-
 export const compareString = (a, b) => a.label?.localeCompare(b.label);
 
 // Formats a luxon DateTime object to:

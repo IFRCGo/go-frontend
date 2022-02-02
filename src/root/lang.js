@@ -3218,7 +3218,7 @@ export default {
   drefFormBackButtonLabel: 'Back',
   drefFormSaveButtonLabel: 'Save',
 
-  //dref pdf
+  // dref pdf
   drefFormPdfTitle: 'DREF APPLICATION',
   drefFormPdfDrefAllocated: 'DREF Allocated',
   drefFormPdfGlideNum: 'Glide No:',
@@ -3293,4 +3293,7 @@ export default {
   drefFormPdfTargetPersons: 'Targeted Persons',
   drefFormPdfIndicators: 'Indicators:',
   drefFormPdfPriorityActions: 'Priority Actions:',
+
+  // Country Risk Watch
+  riskModulePastAndHistoricEvent: 'Past Events And Historical Impact',
 };

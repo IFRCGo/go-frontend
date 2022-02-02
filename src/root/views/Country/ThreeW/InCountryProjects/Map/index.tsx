@@ -194,7 +194,7 @@ function ThreeWMap(props: Props) {
   const [
     clickedPointProperties,
     setClickedPointProperties,
-  ] = React.useState<ClickedPoint| undefined>();
+  ] = React.useState<ClickedPoint | undefined>();
 
   const [
     programmesGeo,
