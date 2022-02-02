@@ -1,7 +1,9 @@
 @import '~styles/settings/variables';
 
 .imminent-events {
+  min-height: 20rem;
   margin: $spacing*2 0;
+
   .map-section {
     position: relative;
     z-index: 0;

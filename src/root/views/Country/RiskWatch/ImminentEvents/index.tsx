@@ -98,6 +98,10 @@ function ImminentEvents(props: Props) {
     });
   }, []);
 
+  if((!pending && !response?.pdc_data) || response?.pdc_data.length === 0) {
+    return null;
+  }
+
   return (
     <Container
       heading="Imminent events"
@@ -107,8 +111,7 @@ function ImminentEvents(props: Props) {
       sub
     >
       {pending && <BlockLoading /> }
-      {!pending && !response?.pdc_data && <EmptyMessage />}
-      {!pending && response?.pdc_data && (
+      {!pending && response?.pdc_data && response?.pdc_data.length > 0 && (
         <div className={styles.mapSection}>
           <PDCExposureMap
             countryId={countryId}

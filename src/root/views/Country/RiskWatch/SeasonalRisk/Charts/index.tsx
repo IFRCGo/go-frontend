@@ -16,14 +16,16 @@ import {
   YAxis,
   CartesianGrid,
   ResponsiveContainer,
-  Area,
-  AreaChart,
+  Bar,
+  BarChart,
   Tooltip,
-  LineChart,
+  ComposedChart,
   Line,
 } from 'recharts';
 import { scalePow } from 'd3-scale';
+import { IoBarChart } from 'react-icons/io5';
 
+import Checkbox from '#components/Checkbox';
 import Container from '#components/Container';
 import TextOutput from '#components/TextOutput';
 import DateOutput from '#components/DateOutput';
@@ -167,12 +169,14 @@ const estimationPriorityMap: {
 interface DetailedChartProps {
   ipcData: IPCData[],
   label?: string;
+  showHistoricalValues: boolean;
 }
 
 function DetailedChart(props: DetailedChartProps) {
   const {
     ipcData,
     label,
+    showHistoricalValues,
   } = props;
   const { strings } = React.useContext(languageContext);
 
@@ -217,9 +221,10 @@ function DetailedChart(props: DetailedChartProps) {
     });
   }, [ipcData]);
 
+
   return (
     <ResponsiveContainer>
-      <LineChart
+      <ComposedChart
         data={chartData}
         margin={chartMargin}
       >
@@ -230,6 +235,10 @@ function DetailedChart(props: DetailedChartProps) {
           tickCount={12}
           domain={['dataMin', 'dataMax']}
           tickFormatter={(m: number) => monthNameList[m-1]}
+          padding={{
+            left: 10,
+            right: 10,
+          }}
         />
         <YAxis
           tickFormatter={formatNumber}
@@ -239,21 +248,38 @@ function DetailedChart(props: DetailedChartProps) {
             position: 'insideLeft',
           }}
         />
-        <Line type="monotone" dataKey="2017" stroke="#a2a5b4" strokeWidth={1} />
-        <Line type="monotone" dataKey="2018" stroke="#82879c" strokeWidth={1} />
-        <Line type="monotone" dataKey="2019" stroke="#646b84" strokeWidth={1} />
-        <Line type="monotone" dataKey="2020" stroke="#464f6d" strokeWidth={1} />
-        <Line type="monotone" dataKey="2021" stroke="#273657" strokeWidth={1} />
+        <Bar
+          dataKey="average"
+          name="Average-Bar"
+          fill="#011e41"
+          opacity={showHistoricalValues ? 0.3 : 0.8}
+          barSize={10}
+          radius={5}
+        />
+        {showHistoricalValues && (
+          <>
+            <Line type="monotone" dataKey="2017" stroke="#a2a5b4" strokeWidth={1} />
+            <Line type="monotone" dataKey="2018" stroke="#82879c" strokeWidth={1} />
+            <Line type="monotone" dataKey="2019" stroke="#646b84" strokeWidth={1} />
+            <Line type="monotone" dataKey="2020" stroke="#464f6d" strokeWidth={1} />
+            <Line type="monotone" dataKey="2021" stroke="#273657" strokeWidth={1} />
+          </>
+        )}
         <Line type="monotone" dataKey="average" stroke="#011e41" strokeWidth={3} name="Average" />
         <Line type="monotone" dataKey="prediction" stroke="#f04355" strokeWidth={2} name="Prediction" />
         <Tooltip
+          filterNull
           isAnimationActive={false}
           formatter={(value: string | number, label: string) => {
+            if (label === 'Average-Bar') {
+              return [null, null];
+            }
+
             return [formatNumber(+value), label];
           }}
           labelFormatter={(m) => monthNameList[+m-1]}
         />
-      </LineChart>
+      </ComposedChart>
     </ResponsiveContainer>
   );
 }
@@ -271,16 +297,18 @@ function RiskBarChart(props: Props) {
     hazardOptions,
     ipcData,
   } = props;
+
   const { strings } = React.useContext(languageContext);
   const [hazardType, setHazardType] = useInputState<HazardTypes | undefined>(undefined);
   const [riskMetric, setRiskMetric] = useInputState<RiskMetricType>('displacement');
+  const [showHistoricalValues, setShowHistoricalValues] = useInputState(false);
   const hazardIdToNameMap = React.useMemo(() => (
     listToMap(hazardOptions, d => d.value, d => d.label)
   ), [hazardOptions]);
 
   React.useEffect(() => {
     if (hazardType === 'FI') {
-      setRiskMetric('displacement');
+      setRiskMetric('exposure');
     }
   }, [hazardType, setRiskMetric]);
 
@@ -325,6 +353,15 @@ function RiskBarChart(props: Props) {
     [],
   );
 
+  const isEmpty = !chartData.some(c => {
+    const keys = Object.keys(c) as (keyof typeof c)[];
+    if (keys.length <= 1) {
+      return false;
+    }
+
+    return keys.some(k => k !== 'month' && !!c[k]);
+  });
+
   return (
     <Container
       heading="Risk by Month"
@@ -340,14 +377,23 @@ function RiskBarChart(props: Props) {
               options={hazardOptions}
               isClearable
             />
-            <SelectInput
-              className={styles.filterInput}
-              value={riskMetric}
-              onChange={setRiskMetric}
-              name="riskMetric"
-              options={riskMetricOptions as Writable<typeof riskMetricOptions>}
-              disabled={hazardType === 'FI'}
-            />
+            {hazardType !== 'FI' && (
+              <SelectInput
+                className={styles.filterInput}
+                value={riskMetric}
+                onChange={setRiskMetric}
+                name="riskMetric"
+                options={riskMetricOptions as Writable<typeof riskMetricOptions>}
+              />
+            )}
+            {hazardType === 'FI' && (
+              <Checkbox
+                name="showHistoricalValues"
+                value={showHistoricalValues}
+                onChange={setShowHistoricalValues}
+                label="Show historical values"
+              />
+            )}
           </div>
         </>
       )}
@@ -355,47 +401,58 @@ function RiskBarChart(props: Props) {
       contentClassName={styles.content}
       className={styles.riskByMonth}
     >
-      <div
-        className={styles.chartContainer}
-      >
+      <div className={styles.chartContainer}>
         {hazardType === 'FI' ? (
           <DetailedChart
+            showHistoricalValues={showHistoricalValues}
             label={riskMetricMap[riskMetric]}
             ipcData={ipcData}
           />
         ) : (
-          <ResponsiveContainer>
-            <AreaChart
-              data={chartData}
-              margin={chartMargin}
-            >
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis
-                dataKey="month"
-              />
-              <YAxis
-                scale={scaleCbrt}
-                type="number"
-                label={{
-                  value: riskMetricMap[riskMetric],
-                  angle: -90,
-                  position: 'insideLeft',
-                }}
-                tickFormatter={formatNumber}
-              />
-              <Area type="step" dataKey="FI" stroke="#ffab8e" fill="#ffab8e" />
-              <Area type="step" dataKey="DR" stroke="#b09db2" fill="#b09db2" />
-              <Area type="step" dataKey="CY" stroke="#c8ccb7" fill="#c8ccb7" />
-              <Area type="step" dataKey="FL" stroke="#85d1ee" fill="#85d1ee" />
-              <Tooltip
-                isAnimationActive={false}
-                formatter={(value: string | number, label: string) => {
-                  return [formatNumber(+value), hazardIdToNameMap[label]];
-                }}
-                // labelFormatter={(m) => monthNameList[+m-1]}
-              />
-            </AreaChart>
-          </ResponsiveContainer>
+          isEmpty ? (
+            <div className={styles.emptyMessage}>
+              <IoBarChart className={styles.icon} />
+              <div className={styles.text}>
+                Not enough data in the selected criteria to show the chart
+              </div>
+            </div>
+          ) : (
+            <ResponsiveContainer>
+              <BarChart
+                data={chartData}
+                margin={chartMargin}
+                barGap={0}
+                barCategoryGap={10}
+                barSize={8}
+              >
+                <Tooltip
+                  cursor={{ fill: '#f0f0f0' }}
+                  isAnimationActive={false}
+                  formatter={(value: string | number, label: string) => {
+                    return [formatNumber(+value), hazardIdToNameMap[label]];
+                  }}
+                />
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis
+                  dataKey="month"
+                />
+                <YAxis
+                  scale={riskMetric === 'informRiskScore' ? 'linear' : scaleCbrt}
+                  type="number"
+                  label={{
+                    value: riskMetricMap[riskMetric],
+                    angle: -90,
+                    position: 'insideLeft',
+                  }}
+                  tickFormatter={formatNumber}
+                />
+                <Bar dataKey="FL" fill="#85d1ee" radius={4} />
+                <Bar dataKey="CY" fill="#c8ccb7" radius={4} />
+                <Bar dataKey="DR" fill="#b09db2" radius={4} />
+                <Bar dataKey="FI" fill="#ffab8e" radius={4} />
+              </BarChart>
+            </ResponsiveContainer>
+          )
         )}
       </div>
       <Container
@@ -406,11 +463,15 @@ function RiskBarChart(props: Props) {
       >
         {hazardType === 'FI' ? (
           <>
-            <FILegendItem color="#a2a5b4" label="2017" />
-            <FILegendItem color="#82879c" label="2018" />
-            <FILegendItem color="#646b84" label="2019" />
-            <FILegendItem color="#464f6d" label="2020" />
-            <FILegendItem color="#273657" label="2021" />
+            {showHistoricalValues && (
+              <>
+                <FILegendItem color="#a2a5b4" label="2017" />
+                <FILegendItem color="#82879c" label="2018" />
+                <FILegendItem color="#646b84" label="2019" />
+                <FILegendItem color="#464f6d" label="2020" />
+                <FILegendItem color="#273657" label="2021" />
+              </>
+            )}
             <FILegendItem color="#011e41" label="Average" />
             <FILegendItem color="#f04355" label="Prediction" />
           </>
@@ -467,6 +528,13 @@ interface HistoricalData {
   num_affected: number;
 }
 
+const historicalIconMap: Record<string, string> = {
+  Cyclone: cycloneIcon,
+  Drought: droughtIcon,
+  Flood: floodIcon,
+  'Food Insecurity': foodInsecurityIcon,
+  'Flash Flood': floodIcon,
+};
 const ICONSIZE = 20;
 interface IconShapeProps {
   dtype: string;
@@ -479,19 +547,11 @@ function IconShape(props: IconShapeProps) {
     cx,
     cy
   } = props;
-  const iconMap: Record<string, string> = {
-    Cyclone: cycloneIcon,
-    Drought: droughtIcon,
-    Flood: floodIcon,
-    'Food Insecurity': foodInsecurityIcon,
-    'Flash Flood': floodIcon,
-  };
-
   if (!dtype) {
     return null;
   }
 
-  const iconSrc = iconMap[dtype];
+  const iconSrc = historicalIconMap[dtype];
   if (!iconSrc) {
     return null;
   }
@@ -554,22 +614,18 @@ function ImpactChart(props: ImpactChartProps) {
     query: { iso3: country?.iso3 },
   });
 
-  const [
-    chartData,
-    hazardOptions,
-  ] = React.useMemo(() => {
-    const options = unique(
-      response?.results?.filter(
-        (d) => d.countries.findIndex(
-          c => c.iso3.toLowerCase() === country?.iso3?.toLowerCase()
-        ) !== -1
-      ).map((d) => ({
-        label: d.dtype.name,
-        value: d.dtype.id,
-      })) ?? [],
-      d => d.value,
-    );
+  const hazardOptions = React.useMemo(() => (
+    unique(
+      response?.results?.filter(d => !!historicalIconMap[d.dtype.name])
+        .map((d) => ({
+          label: d.dtype.name,
+          value: d.dtype.id,
+        })) ?? [],
+        d => d.value,
+    )
+  ), [response]);
 
+  const chartData = React.useMemo(() => {
     const monthOrderMap = listToMap(
       monthNameList,
       d => d,
@@ -577,28 +633,25 @@ function ImpactChart(props: ImpactChartProps) {
     );
 
     const data = [
-      ...(response?.results.filter(
-        (d) => d.countries.findIndex(
-          c => c.iso3.toLowerCase() === country?.iso3?.toLowerCase()
-        ) !== -1
-      ).map((d) => {
+      ...(response?.results.filter(d => !hazardType || d.dtype.id === hazardType).map((d) => {
         const date = new Date(d.disaster_start_date);
 
         return {
           dtype: d.dtype.name,
           details: d,
-          affected: d.num_affected,
+          affected: d.num_affected ?? sum(d.appeals, d => d.num_beneficiaries) ?? 0,
           date,
           month: dateToFractionalMonth(date),
         };
       }) ?? []),
     ].sort((a, b) => (+monthOrderMap[a.month]) - (+monthOrderMap[b.month]));
 
-    return [
-      data,
-      options,
-    ];
-  }, [response, monthNameList, country]);
+    return data;
+  }, [response, monthNameList, hazardType]);
+
+  if (!chartData || chartData.length === 0) {
+    return null;
+  }
 
   return (
     <Container
@@ -629,6 +682,7 @@ function ImpactChart(props: ImpactChartProps) {
           >
             <CartesianGrid />
             <Tooltip
+              cursor={false}
               isAnimationActive={false}
               content={(data) => {
                 if (!data.active) {
@@ -640,8 +694,9 @@ function ImpactChart(props: ImpactChartProps) {
                   return null;
                 }
 
-                const requested = sum(details.appeals.map(d => d.amount_requested), d => d);
-                const funded = sum(details.appeals.map(d => d.amount_funded), d => d);
+                const affected = details.num_affected ?? sum(details.appeals, d => d.num_beneficiaries);
+                const requested = sum(details.appeals, d => (+d.amount_requested));
+                const funded = sum(details.appeals, d => +(d.amount_funded));
                 const coverage = requested === 0 ? undefined : 100 * funded / requested;
 
                 return (
@@ -655,7 +710,7 @@ function ImpactChart(props: ImpactChartProps) {
                   >
                     <TextOutput
                       label="People Affected"
-                      value={details.num_affected}
+                      value={affected}
                       valueType="number"
                     />
                     <TextOutput
@@ -679,7 +734,8 @@ function ImpactChart(props: ImpactChartProps) {
               domain={[0, 11]}
               interval={0}
               tickCount={12}
-              tickFormatter={(m: number) => monthNameList[m]}
+              ticks={[0,1,2,3,4,5,6,7,8,9,10,11]}
+              tickFormatter={(m: number) => monthNameList[Math.floor(m)]}
               padding={{
                 left: 10,
                 right: 10,
