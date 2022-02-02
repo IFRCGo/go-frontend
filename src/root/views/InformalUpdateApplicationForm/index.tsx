@@ -86,6 +86,8 @@ const defaultFormValues: PartialForm<InformalUpdateFields> = {
     url: undefined,
     document: undefined
   }],
+  map: [],
+  graphics: []
 };
 
 function InformalUpdateForm(props: Props) {

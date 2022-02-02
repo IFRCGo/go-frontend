@@ -27,6 +27,7 @@ import {
 import styles from './styles.module.scss';
 import InformalUpdateFileInput from '#components/InformalUpdateFileInput';
 import ReferenceInput from './ReferenceInput';
+import MapFileUpload from '#components/InformalUpdateFileInput/MapFileUpload';
 
 type Value = PartialForm<InformalUpdateFields>;
 interface Props {
@@ -114,6 +115,8 @@ function ContextOverview(props: Props) {
         visibleOverflow
       >
         <InputSection
+          title={strings.informalUpdateFormContextCountryTitle}
+          description={strings.informalUpdateFormContextCountryDescription}
           multiRow
           oneColumn
         >
@@ -193,14 +196,14 @@ function ContextOverview(props: Props) {
         >
           <InformalUpdateFileInput
             accept="image/*"
-            error={error?.graphics}
+            error={error?.graphics_id}
             fileIdToUrlMap={fileIdToUrlMap}
-            name="graphics"
+            name="graphics_id"
             onChange={onValueChange}
             setFileIdToUrlMap={setFileIdToUrlMap}
             showStatus
             multiple
-            value={value?.graphics}
+            value={value?.graphics_id}
             allValue={value && value}
             onCaptionValueChange={onValueChange}
           >
@@ -213,21 +216,21 @@ function ContextOverview(props: Props) {
           title={strings.informalUpdateFormContextMapTitle}
           description={strings.informalUpdateFormContextMapDescription}
         >
-          <InformalUpdateFileInput
+          <MapFileUpload
             accept="image/*"
-            error={error?.map}
+            error={error?.map_id}
             fileIdToUrlMap={fileIdToUrlMap}
-            name="map"
+            name="map_id"
             onChange={onValueChange}
             setFileIdToUrlMap={setFileIdToUrlMap}
             multiple
             showStatus
-            value={value.map}
+            value={value.map_id}
             allValue={value && value}
             onCaptionValueChange={onValueChange}
           >
             {strings.informalUpdateFormContextReferenceUrlButtonLabel}
-          </InformalUpdateFileInput>
+          </MapFileUpload>
         </InputSection>
       </Container>
       <Container

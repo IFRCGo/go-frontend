@@ -71,9 +71,8 @@ export interface ActionsTaken {
 
 export interface ShareWithOptionsEntity {
   share_with_options: [{
-    key: string;
+    label: string;
     value: string;
-
   }]
 }
 export interface ImageData {
@@ -107,6 +106,8 @@ export interface InformalUpdateTableFields {
   tableTitle?: string;
 }
 export interface InformalUpdateFields {
+  map: ImageData[];
+  graphics: ImageData[];
   imageData: ImageData[];
   id: number;
   references: ReferenceData[];
@@ -114,8 +115,8 @@ export interface InformalUpdateFields {
   hazard_type: number;
   title: string;
   situational_overview: string;
-  graphics: number[];
-  map: number[];
+  graphics_id: number[];
+  map_id: number[];
   reference_date: string;
   reference_name: string;
   reference_url: string;
@@ -150,8 +151,8 @@ export interface InformalUpdateAPIFields {
   hazard_type: number;
   title: string;
   situational_overview: string;
-  graphics: number[];
-  map: number[];
+  //graphics_id: number[];
+  //map_id: number[];
   references: ReferenceData[];
   hazard_type_details: HazardDetails;
   graphics_details: ImageDetails[];
@@ -169,6 +170,8 @@ export interface InformalUpdateAPIFields {
   ifrc_email: string;
   ifrc_phone: string;
   share_with: string;
+  graphics: ImageData[];
+  map: ImageData[];
 }
 
 export type OrganizationType = 'NTLS' | 'PNS' | 'FDRN' | 'IFRC' | 'RCRC' | 'GOV';
@@ -209,8 +212,8 @@ export const contextFields: (keyof InformalUpdateFields)[] = [
   'hazard_type',
   'title',
   'situational_overview',
-  'graphics',
-  'map',
+  'graphics_id',
+  'map_id',
   'references',
   'country_district',
   'title',
@@ -242,13 +245,13 @@ export const focalFields: (keyof InformalUpdateFields)[] = [
 
 export function transformFormFieldsToAPIFields(formValues: InformalUpdateFields): InformalUpdateAPIFields {
   const {
+    graphics,
+    map,
     id,
     country_district,
     hazard_type,
     title,
     situational_overview,
-    graphics,
-    map,
     references,
 
     actions_ntls,
@@ -315,9 +318,9 @@ export function transformFormFieldsToAPIFields(formValues: InformalUpdateFields)
     hazard_type,
     title,
     situational_overview,
+    references,
     graphics,
     map,
-    references,
 
     actions_taken,
     originator_name,

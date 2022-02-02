@@ -82,8 +82,8 @@ export const schema: FormSchema = {
     situational_overview: [requiredCondition],
     title: [requiredCondition],
     references: [],
-    graphics: [],
-    map: [],
+    //graphics_id: [],
+    //map_id: [],
 
     actions_ntls: [],
     actions_ntls_desc: [],
@@ -103,7 +103,9 @@ export const schema: FormSchema = {
     ifrc_phone: [],
     ifrc_title: [],
     share_with: [],
-    imageData: []
+    imageData: [],
+    map: [],
+    graphics: []
 
   }),
   fieldDependencies: () => ({
@@ -210,9 +212,9 @@ function useInformalUpdateFormOptions(value: PartialForm<InformalUpdateFields>) 
 
   const shareWithOptions = React.useMemo(() => (
     shareWith?.share_with_options.map((el) => ({
-      label: el.value,
-      value: el.key
-    })) ?? emptyStringOptionList
+      label: el.label,
+      value: el.value
+    })).sort(compareString) ?? emptyStringOptionList
   ), [shareWith]);
 
   const ntls = true;

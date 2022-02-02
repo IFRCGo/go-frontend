@@ -84,6 +84,7 @@ function Preview(props: PreviewProps) {
           className={styles.image}
           src={value?.file}
         />
+
         {removeButton}
       </div>
       <TextInput
@@ -112,7 +113,7 @@ type Props<T extends string> = Omit<FileInputProps<T>, 'overrideStatus' | 'statu
   onChange: (value: number | undefined, name: T) => void;
 })
 
-function InformalUpdateFileInput<T extends string>(props: Props<T>) {
+function MapFileUpload<T extends string>(props: Props<T>) {
   const {
     onCaptionValueChange,
     allValue,
@@ -127,13 +128,13 @@ function InformalUpdateFileInput<T extends string>(props: Props<T>) {
   } = props;
   const alert = useAlert();
 
-  type ImageDetails = typeof allValue.graphics;
+  type ImageDetails = typeof allValue.map;
 
   const {
     setValue: onImageChange,
     removeValue: onImageRemove,
-  } = useFormArray<'graphics', PartialForm<ImageData>>(
-    'graphics',
+  } = useFormArray<'map', PartialForm<ImageData>>(
+    'map',
     onCaptionValueChange,
   );
 
@@ -175,8 +176,9 @@ function InformalUpdateFileInput<T extends string>(props: Props<T>) {
           (oldValue: PartialForm<ImageDetails>) => (
             [...(oldValue ?? []), ...(newList ?? [])]
           ),
-          'graphics' as const,
+          'map' as const,
         );
+
       } else {
         const option = response as Option;
         const { id } = option;
@@ -216,14 +218,14 @@ function InformalUpdateFileInput<T extends string>(props: Props<T>) {
   let currentStatus;
   if (pending) {
     currentStatus = 'Uploading file(s)...';
-  } else if (!allValue.graphics) {
+  } else if (!allValue.map) {
     currentStatus = 'No file selected';
   } else {
-    currentStatus = Array.isArray(allValue?.graphics) ? `${allValue?.graphics.length} files selected` : '1 file selected';
+    currentStatus = Array.isArray(allValue?.map) ? `${allValue?.map?.length} files selected` : '1 file selected';
   }
 
   const handleClear = useCallback(() => {
-    onCaptionValueChange([], 'graphics');
+    onCaptionValueChange([], 'map');
     // props.onChange(undefined, name);
     //eslint-disable-next-line  react-hooks/exhaustive-deps
   }, [props.onChange, name]);
@@ -274,7 +276,7 @@ function InformalUpdateFileInput<T extends string>(props: Props<T>) {
           onChange={handleChange}
         />
         <div className={styles.previewList}>
-          {allValue?.graphics?.filter(item => item.file !== undefined || null)?.map((el, i) => (
+          {allValue?.map?.filter(item => item.file !== undefined || null)?.map((el, i) => (
             <Preview
               key={i}
               index={i}
@@ -334,4 +336,4 @@ function InformalUpdateFileInput<T extends string>(props: Props<T>) {
     </div>
   );
 }
-export default InformalUpdateFileInput;
+export default MapFileUpload;
