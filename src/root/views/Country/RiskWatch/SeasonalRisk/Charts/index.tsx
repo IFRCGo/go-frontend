@@ -617,10 +617,10 @@ function ImpactChart(props: ImpactChartProps) {
 
   const hazardOptions = React.useMemo(() => (
     unique(
-      response?.results?.filter(d => !!historicalIconMap[d.dtype.name])
+      response?.results?.filter(d => d.dtype?.name && !!historicalIconMap[d.dtype?.name])
         .map((d) => ({
-          label: d.dtype.name,
-          value: d.dtype.id,
+          label: d.dtype?.name,
+          value: d.dtype?.id,
         })) ?? [],
         d => d.value,
     )
@@ -634,7 +634,7 @@ function ImpactChart(props: ImpactChartProps) {
     );
 
     const data = [
-      ...(response?.results.filter(d => !hazardType || d.dtype.id === hazardType).map((d) => {
+      ...(response?.results.filter(d => d.dtype && (!hazardType || d.dtype.id === hazardType)).map((d) => {
         const date = new Date(d.disaster_start_date);
 
         return {
