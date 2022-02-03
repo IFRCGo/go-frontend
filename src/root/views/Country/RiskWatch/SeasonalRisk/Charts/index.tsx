@@ -422,7 +422,7 @@ function RiskBarChart(props: Props) {
               <BarChart
                 data={chartData}
                 margin={chartMargin}
-                barGap={0}
+                barGap={1}
                 barCategoryGap={10}
                 barSize={8}
               >
@@ -448,7 +448,8 @@ function RiskBarChart(props: Props) {
                   tickFormatter={formatNumber}
                 />
                 <Bar dataKey="FL" fill="#85d1ee" radius={4} />
-                <Bar dataKey="CY" fill="#c8ccb7" radius={4} />
+                {/* <Bar dataKey="CY" fill="#c8ccb7" radius={4} /> */}
+                <Bar dataKey="TC" fill="#c8ccb7" radius={4} />
                 <Bar dataKey="DR" fill="#b09db2" radius={4} />
                 <Bar dataKey="FI" fill="#ffab8e" radius={4} />
               </BarChart>
