@@ -102,9 +102,9 @@ const getReturnPeriodColumns = () => ([
   createNumberColumn<TransformedReturnPeriodData, string | number>(
     'economicLosses',
     <div className={styles.columnHeading}>
-      Economic Losses (USD)
+      Economic Losses (Million USD)
       <InfoPopup
-        title="Economic Lossed (USD)"
+        title="Economic Losses (Million USD)"
         description={(
           <>
           Figures provided by UNDRR from &nbsp;

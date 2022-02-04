@@ -422,7 +422,7 @@ function RiskBarChart(props: Props) {
               <BarChart
                 data={chartData}
                 margin={chartMargin}
-                barGap={0}
+                barGap={1}
                 barCategoryGap={10}
                 barSize={8}
               >
@@ -448,7 +448,8 @@ function RiskBarChart(props: Props) {
                   tickFormatter={formatNumber}
                 />
                 <Bar dataKey="FL" fill="#85d1ee" radius={4} />
-                <Bar dataKey="CY" fill="#c8ccb7" radius={4} />
+                {/* <Bar dataKey="CY" fill="#c8ccb7" radius={4} /> */}
+                <Bar dataKey="TC" fill="#c8ccb7" radius={4} />
                 <Bar dataKey="DR" fill="#b09db2" radius={4} />
                 <Bar dataKey="FI" fill="#ffab8e" radius={4} />
               </BarChart>
@@ -617,10 +618,10 @@ function ImpactChart(props: ImpactChartProps) {
 
   const hazardOptions = React.useMemo(() => (
     unique(
-      response?.results?.filter(d => !!historicalIconMap[d.dtype.name])
+      response?.results?.filter(d => d.dtype?.name && !!historicalIconMap[d.dtype?.name])
         .map((d) => ({
-          label: d.dtype.name,
-          value: d.dtype.id,
+          label: d.dtype?.name,
+          value: d.dtype?.id,
         })) ?? [],
         d => d.value,
     )
@@ -634,7 +635,7 @@ function ImpactChart(props: ImpactChartProps) {
     );
 
     const data = [
-      ...(response?.results.filter(d => !hazardType || d.dtype.id === hazardType).map((d) => {
+      ...(response?.results.filter(d => d.dtype && (!hazardType || d.dtype.id === hazardType)).map((d) => {
         const date = new Date(d.disaster_start_date);
 
         return {
