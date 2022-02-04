@@ -27,14 +27,14 @@ function AllInformalUpdates(props: Props) {
   const { strings } = useContext(languageContext);
 
   const crumbs = useMemo(() => [
-    { link: location?.pathname, name: strings.informalUpdateReportsTableViewAllReportsBreadcrumTitle },
+    { link: location?.pathname, name: strings.informalUpdateReportsTableViewAllReportsBreadcrumbTitle },
     { link: '/', name: strings.breadCrumbHome },
-  ], [strings.breadCrumbHome, strings.informalUpdateReportsTableViewAllReportsBreadcrumTitle, location]);
+  ], [strings, location]);
 
   return (
     <Page
       className={_cs(styles.allInformalUpdates, className)}
-      title={strings.informalUpdateReportsTableViewAllReportsBreadcrumTitle}
+      title={strings.informalUpdateReportsTableViewAllReportsBreadcrumbTitle}
       breadCrumbs={<BreadCrumb crumbs={crumbs} compact />}
     >
       <TableLists

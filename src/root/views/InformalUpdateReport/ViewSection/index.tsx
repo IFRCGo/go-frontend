@@ -2,6 +2,7 @@ import React from 'react';
 import { _cs } from '@togglecorp/fujs';
 
 import { ActionsTaken } from '#views/InformalUpdateApplicationForm/common';
+
 import styles from './styles.module.scss';
 
 export interface BaseProps {
@@ -43,7 +44,6 @@ function ViewSection(props: Props) {
     normalDescription,
     data,
   } = props;
-  console.log({ data });
 
   return (
     <div

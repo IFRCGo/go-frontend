@@ -3464,11 +3464,14 @@ export default {
   informalUpdateReportsTableTitle: 'LATEST FLASH UPDATES',
   informalUpdateReportsTableViewAllReports: 'View All Flash Updates',
   informalUpdateReportsTableViewAllReportsTitle: 'All Flash Updates',
-  informalUpdateReportsTableViewAllReportsBreadcrumTitle: 'Flash Updates',
+  informalUpdateReportsTableViewAllReportsBreadcrumbTitle: 'Flash Updates',
   allFlashUpdatePageHeading: 'All Flash Updates',
   informalUpdateIfrcSecretariatLabel: 'IFRC Secretariat',
   informalUpdateRcrcNetworkLabel: 'RCRC Network',
   informalUpdateRcrcNetworkAndDonorsLabel: 'RCRC Network and Donors',
   informalUpdateFormRedirectMessage: 'Informal report updated, redirecting...',
   informalUpdateNumber: 'Flash Update #',
+  informalUpdateActionTakenLabel: 'ACTIONS TAKEN',
+  informalUpdateMapLabel: 'MAPS',
+  informalUpdateSituationalOverviewLabel: 'SITAUTIONAL OVERVIEWS'
 };

@@ -8,7 +8,6 @@ import Container from '#components/Container';
 import Page from '#components/Page';
 import BreadCrumb from '#components/breadcrumb';
 import languageContext from '#root/languageContext';
-import { get } from '#utils/utils';
 import { useRequest } from '#utils/restRequest';
 
 import ViewSection from './ViewSection';
@@ -26,6 +25,7 @@ interface Props {
 
 function InformalUpdateReport(props: Props) {
   const {
+    location,
     //history,
     match: {
       params: {
@@ -38,14 +38,12 @@ function InformalUpdateReport(props: Props) {
   const [informalUpdateData, setInformalUpdateData] = React.useState<InformalUpdateAPIFields | undefined>();
   const [breadCrumbReportTitle, setBreadCrumbReportTitle] = React.useState<string | undefined>();
   const [breadCrumbFlashUpdateNo, setBreadCrumbFlashUpdateNo] = React.useState<number | undefined>();
-  const data = undefined;
-  const crumbs = [
-    { link: '/flash update 1', name: get(data, 'summary', `${strings.informalUpdateNumber}${breadCrumbFlashUpdateNo}`) },
-    // {link: this.props.location.state, name: strings.breadCrumbEmergency},
-    { link: '/Pakistan', name: breadCrumbReportTitle },
+  const crumbs = React.useMemo(() => [
+    { link: strings.informalUpdateNumber, name: `${strings.informalUpdateNumber}${breadCrumbFlashUpdateNo}` },
+    { link: location?.pathname, name: breadCrumbReportTitle },
     { link: '/emergencies', name: strings.breadCrumbEmergencies },
     { link: '/', name: strings.breadCrumbHome }
-  ];
+  ], [strings, breadCrumbFlashUpdateNo, breadCrumbReportTitle, location]);
 
   const {
     pending: projectPending,
@@ -105,19 +103,17 @@ function InformalUpdateReport(props: Props) {
     <>
       <Page
         className={styles.situational}
-        title='informal report'
+        title={breadCrumbReportTitle}
         heading={informalUpdateData?.title}
-        description={<>
-          {informalUpdateData?.country_district?.map((el) => (
-            <Link to='/'>
-              <span className='link--with-icon-text'>
-                {el?.country_details?.name} -
-              </span>
-            </Link>
-          ))
-          }
-          <span className='collecticon-chevron-right link--with-icon-inner'></span>
-        </>
+        description={
+          <Link
+            to={location?.pathname}
+          >
+            <span className='link--with-icon-text'>
+              {informalUpdateData?.country_district?.map((item) => (item?.country_details?.name)).join('-')}
+            </span>
+            <span className='collecticon-chevron-right link--with-icon-inner'></span>
+          </Link>
         }
 
         breadCrumbs={
@@ -127,11 +123,11 @@ function InformalUpdateReport(props: Props) {
           />
         }
       >
-        <Container heading="SITUATIONAL OVERVIEW">
+        <Container heading={strings.informalUpdateSituationalOverviewLabel} >
           <ViewSection>
             <div>
-              {situationalData.map((item) => (
-                <>
+              {situationalData.map((item, i) => (
+                <div key={i}>
                   <div className={styles.overviewContainer}>
                     <div className={styles.overviewLabel}>
                       {item.name}
@@ -143,19 +139,22 @@ function InformalUpdateReport(props: Props) {
                   <div className={styles.overviewDescription}>
                     {item.description}
                   </div>
-                </>
+                </div>
               ))}
             </div>
           </ViewSection>
         </Container>
         <Container
-          heading='MAPS'
+          heading={strings.informalUpdateMapLabel}
         >
           <div className={styles.graphic}>
             <div className={styles.card}>
-              {/*{informalUpdateData?.map_details?.map((item) => (
-                <img key={item.id} src={item?.file} alt="" />
-              ))}*/}
+              {informalUpdateData?.map?.map((item) => (
+                <img
+                  key={item?.id}
+                  src={item?.file} alt=""
+                />
+              ))}
             </div>
           </div>
         </Container>
@@ -164,14 +163,14 @@ function InformalUpdateReport(props: Props) {
           heading='IMAGES'
         >
           <div className={styles.image}>
-            {/*{informalUpdateData?.graphics_details?.map((item) => (
-              <div key={item.id}>
+            {informalUpdateData?.graphics?.map((item) => (
+              <div key={item?.id}>
                 <img src={item?.file} alt="" />
               </div>
-            ))}*/}
+            ))}
           </div>
         </Container>
-        <Container heading='ACTIONS TAKEN' className={styles.actionTaken}>
+        <Container heading={strings.informalUpdateActionTakenLabel} className={styles.actionTaken}>
           {renderActionTaken('NTLS')}
         </Container>
         <Container className={styles.actionTaken}>

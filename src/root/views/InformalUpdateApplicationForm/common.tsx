@@ -84,6 +84,8 @@ export interface ImageData {
 export interface ImageDataToSave {
   caption?: string;
   pk: number;
+  file?: string;
+  id?: number;
 }
 
 
