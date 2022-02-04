@@ -276,7 +276,7 @@ const OperationTimelineContent = [
     },
     {
         id: 'surge_table/element1_14',
-        url: 'https://ifrcorg.sharepoint.com/:f:/s/IFRCSharing/En5YvMR_WRpPsWgkZNI4ZbkBOA06HozggF2D9KUlVZUIQg',
+        url: 'https://smcctoolkit.org/tool-kit/#x-section-4',
         name: 'Produce Movement picture'
     },
     {

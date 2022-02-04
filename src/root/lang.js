@@ -92,7 +92,7 @@ export default {
   registerJustification: 'Please justify that you are part of RCRC Movement.',
   registerPassword: 'Password *',
   registerConfirmPassword: 'Confirm Password *',
-  registerContactRequest: 'It appears you do not have an official Red Cross Red Crescent email, we will need to verify your status. Please note, this may take some time.',
+  registerJustify: 'It appears you do not have an official Red Cross Red Crescent email, we will need to verify your status. Please note, this may take some time.',
   registerContactName: 'Contact name',
   registerContactEmail: 'Contact email',
   registerRequestAccess: 'Request Access',

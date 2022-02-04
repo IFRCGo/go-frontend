@@ -319,7 +319,7 @@ class Register extends React.Component {
     return (
       <div>
         <p className='form__note'>
-          <Translate stringId='registerContactRequest'/>
+          <Translate stringId='registerJustify'/>
         </p>
         <TextArea
           // label={strings.registerJustification}
