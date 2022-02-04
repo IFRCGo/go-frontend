@@ -950,8 +950,8 @@ class Emergency extends React.Component {
 
   hasRRTab () {
     return this.state.hasPersonnel ||
-      // If we use this, '0, 0' case also shows the Surge tab:
-      // this.state.hasSurgeAlerts ||
+      // If we use this, '0, 0' case also shows the Surge tab. Needed, 2022.02.04
+      this.state.hasSurgeAlerts ||
       get(this.props.eru, 'data.results.length');
   }
 
