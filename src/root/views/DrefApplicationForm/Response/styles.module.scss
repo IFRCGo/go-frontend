@@ -41,3 +41,11 @@
     display: flex;
   }
 }
+
+.warning {
+  display: flex;
+  gap: $spacing / 2;
+  color: $warning-color;
+  font-weight: $base-font-medium;
+  align-items: baseline;
+}
