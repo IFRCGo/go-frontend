@@ -9,13 +9,17 @@ import Page from '#components/Page';
 import BreadCrumb from '#components/breadcrumb';
 import languageContext from '#root/languageContext';
 import { useRequest } from '#utils/restRequest';
+import BlockLoading from '#components/block-loading';
 
 import ViewSection from './ViewSection';
 import {
   ActionsTaken,
   InformalUpdateAPIFields
 } from '../InformalUpdateApplicationForm/common';
+
 import styles from './styles.module.scss';
+import Button from '#components/Button';
+import { IoShareSocialOutline } from 'react-icons/io5';
 
 interface Props {
   match: Match<{ id?: string }>
@@ -34,39 +38,27 @@ function InformalUpdateReport(props: Props) {
     }
   } = props;
   const { strings } = useContext(languageContext);
-
-  const [informalUpdateData, setInformalUpdateData] = React.useState<InformalUpdateAPIFields | undefined>();
-  const [breadCrumbReportTitle, setBreadCrumbReportTitle] = React.useState<string | undefined>();
-  const [breadCrumbFlashUpdateNo, setBreadCrumbFlashUpdateNo] = React.useState<number | undefined>();
-  const crumbs = React.useMemo(() => [
-    { link: strings.informalUpdateNumber, name: `${strings.informalUpdateNumber}${breadCrumbFlashUpdateNo}` },
-    { link: location?.pathname, name: breadCrumbReportTitle },
-    { link: '/emergencies', name: strings.breadCrumbEmergencies },
-    { link: '/', name: strings.breadCrumbHome }
-  ], [strings, breadCrumbFlashUpdateNo, breadCrumbReportTitle, location]);
-
   const {
     pending: projectPending,
-    response: DataResponse,
+    response: reportResponse
   } = useRequest<InformalUpdateAPIFields>({
     skip: isNotDefined(id),
     url: `api/v2/informal-update/${id}/`,
-    onSuccess: (response) => {
-      setInformalUpdateData(response);
-    }
   });
 
+  const crumbs = React.useMemo(() => [
+    { link: strings.informalUpdateNumber, name: `${strings.informalUpdateNumber}${reportResponse && reportResponse.id + 1}` },
+    { link: location?.pathname, name: reportResponse?.title },
+    { link: '/emergencies', name: strings.breadCrumbEmergencies },
+    { link: '/', name: strings.breadCrumbHome }
+  ], [strings, location, reportResponse]);
+
   const renderActionTaken = (org: string) => {
-    const actions: ActionsTaken | undefined = informalUpdateData?.actions_taken.find(d => d.organization === org);
+    const actions: ActionsTaken | undefined = reportResponse?.actions_taken.find(d => d.organization === org);
     return (
       <ViewSection title='Actions taken by' data={actions} />
     );
   };
-
-  React.useMemo(() => {
-    setBreadCrumbReportTitle(informalUpdateData?.title);
-    setBreadCrumbFlashUpdateNo(informalUpdateData && informalUpdateData?.id + 1);
-  }, [informalUpdateData]);
 
   const situationalData = [
     {
@@ -103,14 +95,14 @@ function InformalUpdateReport(props: Props) {
     <>
       <Page
         className={styles.situational}
-        title={breadCrumbReportTitle}
-        heading={informalUpdateData?.title}
+        title={reportResponse?.title}
+        heading={reportResponse?.title}
         description={
           <Link
             to={location?.pathname}
           >
             <span className='link--with-icon-text'>
-              {informalUpdateData?.country_district?.map((item) => (item?.country_details?.name)).join('-')}
+              {reportResponse?.country_district?.map((item) => (item?.country_details?.name)).join('-')}
             </span>
             <span className='collecticon-chevron-right link--with-icon-inner'></span>
           </Link>
@@ -122,60 +114,74 @@ function InformalUpdateReport(props: Props) {
             compact={undefined}
           />
         }
+        actions={
+          <Button
+            variant='secondary'
+            name={undefined}
+            icons={<IoShareSocialOutline />}
+          >
+            Share
+          </Button>
+        }
       >
-        <Container heading={strings.informalUpdateSituationalOverviewLabel} >
-          <ViewSection>
-            <div>
-              {situationalData.map((item, i) => (
-                <div key={i}>
-                  <div className={styles.overviewContainer}>
-                    <div className={styles.overviewLabel}>
-                      {item.name}
-                    </div>
-                    <div className={styles.overviewValue}>
-                      {item.value}
-                    </div>
+        {projectPending ?
+          <BlockLoading />
+          : (
+            <>
+              <Container heading={strings.informalUpdateSituationalOverviewLabel} >
+                <ViewSection>
+                  <div>
+                    {situationalData.map((item, i) => (
+                      <div key={i}>
+                        <div className={styles.overviewContainer}>
+                          <div className={styles.overviewLabel}>
+                            {item.name}
+                          </div>
+                          <div className={styles.overviewValue}>
+                            {item.value}
+                          </div>
+                        </div>
+                        <div className={styles.overviewDescription}>
+                          {item.description}
+                        </div>
+                      </div>
+                    ))}
                   </div>
-                  <div className={styles.overviewDescription}>
-                    {item.description}
+                </ViewSection>
+              </Container>
+              <Container
+                heading={strings.informalUpdateMapLabel}
+              >
+                <div className={styles.graphic}>
+                  <div className={styles.card}>
+                    {reportResponse?.map?.map((item) => (
+                      <img
+                        key={item?.id}
+                        src={item?.file} alt=""
+                      />
+                    ))}
                   </div>
                 </div>
-              ))}
-            </div>
-          </ViewSection>
-        </Container>
-        <Container
-          heading={strings.informalUpdateMapLabel}
-        >
-          <div className={styles.graphic}>
-            <div className={styles.card}>
-              {informalUpdateData?.map?.map((item) => (
-                <img
-                  key={item?.id}
-                  src={item?.file} alt=""
-                />
-              ))}
-            </div>
-          </div>
-        </Container>
-
-        <Container
-          heading='IMAGES'
-        >
-          <div className={styles.image}>
-            {informalUpdateData?.graphics?.map((item) => (
-              <div key={item?.id}>
-                <img src={item?.file} alt="" />
-              </div>
-            ))}
-          </div>
-        </Container>
-        <Container heading={strings.informalUpdateActionTakenLabel} className={styles.actionTaken}>
-          {renderActionTaken('NTLS')}
-        </Container>
-        <Container className={styles.actionTaken}>
-          {renderActionTaken('GOV')}
-        </Container>
+              </Container>
+              <Container
+                heading='IMAGES'
+              >
+                <div className={styles.image}>
+                  {reportResponse?.graphics?.map((item) => (
+                    <div key={item?.id}>
+                      <img src={item?.file} alt="" />
+                    </div>
+                  ))}
+                </div>
+              </Container>
+              <Container heading={strings.informalUpdateActionTakenLabel} className={styles.actionTaken}>
+                {renderActionTaken('NTLS')}
+              </Container>
+              <Container className={styles.actionTaken}>
+                {renderActionTaken('GOV')}
+              </Container>
+            </>
+          )}
       </Page>
     </>
   );
