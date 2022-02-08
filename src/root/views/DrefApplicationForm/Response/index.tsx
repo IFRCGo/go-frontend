@@ -95,13 +95,13 @@ function Response(props: Props) {
   ), [value.planned_interventions]);
 
   const warnings = React.useMemo(() => {
-    if (isNotDefined(value?.total_targated_population)) {
+    if (isNotDefined(value?.total_targeted_population)) {
       return emptyList;
     }
 
     const w = [];
 
-    if (value?.num_assisted !== value?.total_targated_population) {
+    if (value?.num_assisted !== value?.total_targeted_population) {
       w.push('Total targeted population is different from that in Operation Overview');
     }
 
@@ -111,7 +111,7 @@ function Response(props: Props) {
       value?.men,
       value?.girls,
       value?.boys,
-    ]) !== value?.total_targated_population) {
+    ]) !== value?.total_targeted_population) {
       w.push('Total targeted population is not equal to sum of other population fields');
     }
 
@@ -122,7 +122,7 @@ function Response(props: Props) {
       value?.men,
       value?.girls,
       value?.boys,
-      value?.total_targated_population,
+      value?.total_targeted_population,
   ]);
 
   const filteredInterventionOptions = interventionsIdentifiedMap ? interventionOptions.filter(n => !interventionsIdentifiedMap[n.value]) : [];
@@ -215,10 +215,10 @@ function Response(props: Props) {
           />
           <NumberInput
             label={strings.drefFormTotal}
-            name="total_targated_population"
-            value={value.total_targated_population}
+            name="total_targeted_population"
+            value={value.total_targeted_population}
             onChange={onValueChange}
-            error={error?.total_targated_population}
+            error={error?.total_targeted_population}
           />
         </InputSection>
         <InputSection

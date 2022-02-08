@@ -717,7 +717,7 @@ function DrefPdfDocument(props: Props) {
                   <Text>{strings.drefExportTotal}</Text>
                 </View>
                 <View style={[pdfStyles.tpSubCell, { flexBasis: '75%' }]}>
-                  <Text>{dref?.total_targated_population}</Text>
+                  <Text>{dref?.total_targeted_population}</Text>
                 </View>
               </View>
             </View>

@@ -200,7 +200,7 @@ export interface DrefFields {
   un_or_other_actor : string;
   women: number;
   dref_recurrent_text: string;
-  total_targated_population: number;
+  total_targeted_population: number;
   users: number[];
 }
 
