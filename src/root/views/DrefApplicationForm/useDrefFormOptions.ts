@@ -183,7 +183,7 @@ export const schema: FormSchema = {
     people_per_local: [positiveNumberCondition, lessThanOrEqualToCondition(100)],
     displaced_people: [positiveIntegerCondition],
     people_targeted_with_early_actions: [positiveIntegerCondition],
-    total_targated_population: [positiveIntegerCondition],
+    total_targeted_population: [positiveIntegerCondition],
     operation_objective: [],
     response_strategy: [],
 
