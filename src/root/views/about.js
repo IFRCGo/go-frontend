@@ -402,6 +402,9 @@ function About (props) {
                   <a href='https://www.redcross.ca/' target='_blank'>
                     <img src='/assets/graphics/content/crc_logo.png' alt='Visit Canadian Red Cross Page' width='120'/>
                   </a>
+                  <a href='https://en.rodekors.dk/' target='_blank'>
+                    <img src='/assets/graphics/content/dnk_logo.png' alt='Visit Danish Red Cross Page' width='100'/>
+                  </a>
                   <a href='https://www.redcross.fi/' target='_blank'>
                     <img src='/assets/graphics/content/frc_logo.png' alt='Visit Finnish Red Cross Page' width='200'/>
                   </a>
@@ -416,6 +419,12 @@ function About (props) {
                   </a>
                   <a href='https://www.ericsson.com/en' target='_blank'>
                     <img src='/assets/graphics/content/ericsson_logo.png' alt='Visit Ericsson Page' width='140'/>
+                  </a>
+                  <a href='https://www.admin.ch/gov/de/start.html' target='_blank'>
+                    <img src='/assets/graphics/content/swiss.svg' alt='Visit Swiss Confederation' width='254'/>
+                  </a>
+                  <a href='https://www.usaid.gov/' target='_blank'>
+                    <img src='/assets/graphics/content/us_aid.svg' alt='Visit US Aid' width='189'/>
                   </a>
                 </div>
               </div>
