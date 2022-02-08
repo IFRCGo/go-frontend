@@ -62,12 +62,6 @@ function TableLists(props: Props) {
     },
   });
 
-  //React.useMemo(() => {
-  //  const titleTable = response?.results.map((el) => el.country_district?.map((item) => item?.country_details?.name));
-  //  console.log('table---title-----', titleTable);
-
-  //}, [response]);
-
   const columns = useMemo(() => {
     const actionsColumn = createActionColumn(
       'actions',
@@ -143,16 +137,16 @@ function TableLists(props: Props) {
               keySelector={tableKeySelector}
               variant="large"
             />
-            {/*{response && (*/}
-            <div className={styles.footer}>
-              <Pager
-                activePage={activePage}
-                onActivePageChange={setActivePage}
-                itemsCount={ITEM_PER_PAGE}
-                maxItemsPerPage={ITEM_PER_PAGE}
-              />
-            </div>
-            {/*)}*/}
+            {response && (
+              <div className={styles.footer}>
+                <Pager
+                  activePage={activePage}
+                  onActivePageChange={setActivePage}
+                  itemsCount={response.count}
+                  maxItemsPerPage={ITEM_PER_PAGE}
+                />
+              </div>
+            )}
           </>
         )}
       </Container>

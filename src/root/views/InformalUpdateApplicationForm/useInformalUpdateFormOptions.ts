@@ -218,18 +218,12 @@ function useInformalUpdateFormOptions(value: PartialForm<InformalUpdateFields>) 
   ), [shareWith]);
 
   const ntls = true;
-  const pns = true;
   const ifrc = true;
   const rcrc = true;
-  const government = true;
 
   const organizationsType: OrganizationType = React.useMemo(() => {
     if (ntls) {
       return 'NTLS';
-    }
-
-    if (pns) {
-      return 'PNS';
     }
 
     if (ifrc) {
@@ -239,11 +233,9 @@ function useInformalUpdateFormOptions(value: PartialForm<InformalUpdateFields>) 
     if (rcrc) {
       return "RCRC";
     }
-    if (government) {
-      return "GOV";
-    }
-    return 'FDRN';
-  }, [ntls, pns, ifrc, rcrc, government]);
+
+    return 'GOV';
+  }, [ntls, ifrc, rcrc]);
 
   const {
     pending: fetchingActions,
@@ -257,8 +249,6 @@ function useInformalUpdateFormOptions(value: PartialForm<InformalUpdateFields>) 
     if (!actionsResponse?.results?.length) {
       return {
         NTLS: emptyActionList,
-        FDRN: emptyActionList,
-        PNS: emptyActionList,
         IFRC: emptyActionList,
         RCRC: emptyActionList,
         GOV: emptyActionList,
@@ -274,8 +264,6 @@ function useInformalUpdateFormOptions(value: PartialForm<InformalUpdateFields>) 
 
     const actionMap = {
       NTLS: actionList.filter(getFilterOrganization('NTLS')),
-      FDRN: actionList.filter(getFilterOrganization('FDRN')),
-      PNS: actionList.filter(getFilterOrganization('PNS')),
       IFRC: actionList.filter(getFilterOrganization('IFRC')),
       RCRC: actionList.filter(getFilterOrganization('RCRC')),
       GOV: actionList.filter(getFilterOrganization('GOV')),
@@ -303,8 +291,6 @@ function useInformalUpdateFormOptions(value: PartialForm<InformalUpdateFields>) 
       return newAcc;
     }, {
       NTLS: [],
-      PNS: [],
-      FDRN: [],
       IFRC: [],
       RCRC: [],
       GOV: [],

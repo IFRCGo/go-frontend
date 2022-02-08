@@ -173,7 +173,7 @@ export interface InformalUpdateAPIFields {
   references: ReferenceData[];
 }
 
-export type OrganizationType = 'NTLS' | 'PNS' | 'FDRN' | 'IFRC' | 'RCRC' | 'GOV';
+export type OrganizationType = 'NTLS' | 'IFRC' | 'RCRC' | 'GOV';
 export type ReportType = 'EW' | 'EVT';
 
 export type Action = {

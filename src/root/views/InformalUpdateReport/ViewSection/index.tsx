@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { _cs } from '@togglecorp/fujs';
 
 import { ActionsTaken } from '#views/InformalUpdateApplicationForm/common';
+import languageContext from '#root/languageContext';
 
 import styles from './styles.module.scss';
 
@@ -44,6 +45,7 @@ function ViewSection(props: Props) {
     normalDescription,
     data,
   } = props;
+  const { strings } = useContext(languageContext);
 
   return (
     <div
@@ -69,7 +71,7 @@ function ViewSection(props: Props) {
         <>
           <div className={styles.sectionContentDescription}>
             <div className={styles.label}>
-              Description
+              {strings.informalUpdateDescriptionTitle}
             </div>
             <div className={styles.value}>
               {data?.summary}
@@ -78,7 +80,7 @@ function ViewSection(props: Props) {
 
           <div className={styles.sectionContentActions}>
             <div className={styles.label}>
-              Actions
+              {strings.informalUpdateActionsTitle}
             </div>
             <div className={styles.value}>
               {data?.action_details?.map((item) =>

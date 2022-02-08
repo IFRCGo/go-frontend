@@ -3471,7 +3471,11 @@ export default {
   informalUpdateRcrcNetworkAndDonorsLabel: 'RCRC Network and Donors',
   informalUpdateFormRedirectMessage: 'Informal report updated, redirecting...',
   informalUpdateNumber: 'Flash Update #',
-  informalUpdateActionTakenLabel: 'ACTIONS TAKEN',
-  informalUpdateMapLabel: 'MAPS',
-  informalUpdateSituationalOverviewLabel: 'SITAUTIONAL OVERVIEWS'
+  informalUpdateActionTakenTitle: 'ACTIONS TAKEN',
+  informalUpdateSituationalOverviewTitle: 'SITAUTIONAL OVERVIEWS',
+  informalUpdateMapTitle: 'MAPS',
+  informalUpdateImageTitle: 'Images',
+  informalUpdateDescriptionTitle: 'Description',
+  informalUpdateActionsTitle: 'Actions',
+  informalUpdateResourcesTitle: 'Resources',
 };

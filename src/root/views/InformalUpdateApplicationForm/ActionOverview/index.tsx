@@ -92,7 +92,7 @@ function ActionsOverview(props: Props) {
           <Checklist
             name="actions_ifrc"
             onChange={onValueChange}
-            options={actionOptions.FDRN}
+            options={actionOptions.IFRC}
             labelSelector={optionLabelSelector}
             keySelector={numericOptionKeySelector}
             tooltipSelector={d => d.description}
@@ -118,7 +118,7 @@ function ActionsOverview(props: Props) {
           <Checklist
             name="actions_rcrc"
             onChange={onValueChange}
-            options={actionOptions.PNS}
+            options={actionOptions.RCRC}
             labelSelector={optionLabelSelector}
             keySelector={numericOptionKeySelector}
             tooltipSelector={d => d.description}

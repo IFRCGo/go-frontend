@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import type { History, Location } from 'history';
 import type { match as Match } from 'react-router-dom';
 import { isNotDefined } from '@togglecorp/fujs';
+import { IoShareSocialOutline } from 'react-icons/io5';
 
 import Container from '#components/Container';
 import Page from '#components/Page';
@@ -10,7 +11,7 @@ import BreadCrumb from '#components/breadcrumb';
 import languageContext from '#root/languageContext';
 import { useRequest } from '#utils/restRequest';
 import BlockLoading from '#components/block-loading';
-
+import Button from '#components/Button';
 import ViewSection from './ViewSection';
 import {
   ActionsTaken,
@@ -18,8 +19,6 @@ import {
 } from '../InformalUpdateApplicationForm/common';
 
 import styles from './styles.module.scss';
-import Button from '#components/Button';
-import { IoShareSocialOutline } from 'react-icons/io5';
 
 interface Props {
   match: Match<{ id?: string }>
@@ -128,7 +127,7 @@ function InformalUpdateReport(props: Props) {
           <BlockLoading />
           : (
             <>
-              <Container heading={strings.informalUpdateSituationalOverviewLabel} >
+              <Container heading={strings.informalUpdateSituationalOverviewTitle} >
                 <ViewSection>
                   <div>
                     {situationalData.map((item, i) => (
@@ -150,7 +149,7 @@ function InformalUpdateReport(props: Props) {
                 </ViewSection>
               </Container>
               <Container
-                heading={strings.informalUpdateMapLabel}
+                heading={strings.informalUpdateMapTitle}
               >
                 <div className={styles.graphic}>
                   <div className={styles.card}>
@@ -164,21 +163,49 @@ function InformalUpdateReport(props: Props) {
                 </div>
               </Container>
               <Container
-                heading='IMAGES'
+                heading={strings.informalUpdateImageTitle}
               >
                 <div className={styles.image}>
                   {reportResponse?.graphics?.map((item) => (
-                    <div key={item?.id}>
-                      <img src={item?.file} alt="" />
+                    <div key={item.id} className={styles.imageWithCaption}>
+                      <img
+                        src={item?.file} alt=""
+                      />
+                      <div>
+                        {item?.caption}
+                      </div>
                     </div>
                   ))}
                 </div>
               </Container>
-              <Container heading={strings.informalUpdateActionTakenLabel} className={styles.actionTaken}>
+              <Container heading={strings.informalUpdateActionTakenTitle} className={styles.actionTaken}>
                 {renderActionTaken('NTLS')}
               </Container>
               <Container className={styles.actionTaken}>
                 {renderActionTaken('GOV')}
+              </Container>
+              <Container
+                heading={strings.informalUpdateResourcesTitle}
+              >
+                {reportResponse?.references?.map((item) => (
+                  <div className={styles.resources}>
+                    <div className={styles.column}>
+                      <div>
+                        {item?.date}
+                      </div>
+                      <div>
+                        {item?.source_description}
+                      </div>
+                    </div>
+                    <div className={styles.column}>
+                      <p>
+                        {item?.url}
+                      </p>
+                    </div>
+
+                  </div>
+                ))}
+
               </Container>
             </>
           )}

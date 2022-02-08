@@ -7,10 +7,6 @@
         background-color: $white;
         padding: $spacing $spacing-2 !important;
       }
-     
-      /*.styles_content__3hMfk {
-        padding: 0px;
-      }*/
     }
   }
 
@@ -27,15 +23,6 @@
   .overview-description {
       margin: $spacing-3/2 0;
   }
-
-  /*.action-taken {
-    :global {
-      .styles_content__3hMfk{
-        background-color: $white;
-        padding: $spacing-2 !important;
-      }
-    }
-  }*/
 
   .graphic {
     display: flex;
@@ -62,6 +49,32 @@
     img {
       object-fit: contain;
       max-height: 300px;
+    }
+  }
+
+  .image-with-caption {
+    display: flex;
+    flex-direction: column;
+    grid-gap: $grid-gutter;
+
+  }
+
+  .resources {
+    display: flex;
+    background-color: $white;
+    padding: $spacing;
+    color: $grey-gravel ;
+    
+    .column {
+      display: flex;
+      flex-grow: 1;
+      padding: 0 $spacing-3;
+      gap: $spacing-5;
+
+      p {
+        font-weight: $base-font-medium;
+        color: $base-color;
+      }
     }
   }
 }

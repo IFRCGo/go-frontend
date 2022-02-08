@@ -40,7 +40,8 @@ function AllInformalUpdates(props: Props) {
       <TableLists
         title={title}
         showExport={true}
-        ITEM_PER_PAGE={10} />
+        ITEM_PER_PAGE={10}
+      />
     </Page>
   );
 }
