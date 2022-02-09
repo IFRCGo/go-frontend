@@ -26,7 +26,7 @@ const ModuleNotFoundPlugin = require('react-dev-utils/ModuleNotFoundPlugin');
 const ForkTsCheckerWebpackPlugin = require('react-dev-utils/ForkTsCheckerWebpackPlugin');
 const typescriptFormatter = require('react-dev-utils/typescriptFormatter');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-const HtmlReplaceWebpackPlugin = require('html-replace-webpack-plugin')
+
 
 const postcssNormalize = require('postcss-normalize');
 
@@ -61,6 +61,27 @@ const appSrc = path.resolve(appBase, 'src/');
 module.exports = function(webpackEnv) {
   const isEnvDevelopment = webpackEnv === 'development';
   const isEnvProduction = webpackEnv === 'production';
+
+  var strpath = '';
+  var strfilename = '';
+
+  if(isEnvProduction){
+    //console.log(prefix);
+    if(prefix === undefined){
+      strpath = paths.appBuild;
+    } else {
+      strpath = paths.appBuild+'/' +prefix+'/';
+    }
+  } else {
+    strpath = undefined;
+  }
+
+  if(prefix === undefined){
+    strfilename = './index.html';
+  } else {
+    strfilename = './../index.html';
+  }
+
 
   // Variable used for enabling profiling in Production
   // passed into alias object. Uses a flag if passed into the build command
@@ -169,7 +190,7 @@ module.exports = function(webpackEnv) {
     ].filter(Boolean),
     output: {
       // The build folder.
-      path: isEnvProduction ? paths.appBuild+'/' +prefix+'/' : undefined,
+      path: strpath,// isEnvProduction ? paths.appBuild+'/' +prefix+'/' : undefined,
       // Add /* filename */ comments to generated require()s in the output.
       pathinfo: isEnvDevelopment,
       // There will be one main bundle, and one file per asynchronous chunk.
@@ -482,7 +503,7 @@ module.exports = function(webpackEnv) {
       // Generates an `index.html` file with the <script> injected.
       new HtmlWebpackPlugin(
         Object.assign(
-          {filename: './../index.html'},
+          {filename: strfilename},
           {
             inject: true,
             template: paths.appHtml,
