@@ -16,6 +16,7 @@ function EmptyMessage(props: Props) {
   return (
     <Container
       className={_cs(styles.emptyMessage, className)}
+      sub
     >
       <p>
         {strings.emptyMessage}

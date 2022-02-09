@@ -1,3 +1,33 @@
+### Release 5.7.0
+
+Date: 2022-02-01
+
+#### Frontend:
+
+ - Permanent URLs for Catalogue of Services: #2125
+ - Show deployments for multi-country emergencies correctly
+ - Fix Edit Event links on frontend
+ - Fix Map Export issue: #2172
+ - User Registration Changes: 
+ - New links on resources page: https://github.com/IFRCGo/go-api/issues/1243
+ - Fix bug of Surge tab showing on emergency page when there are no surge activities
+
+#### Backend:
+
+ - Safelink Outlook link checking caused double run - fixed
+ - TriggeringAmount – better triggering appeal change
+ - Fixing appeal-docs ingesting (urllib3)
+ - New registration method (without 2 gate-keepers)
+ - Deployments/personnel country_to (to model, test and API endpoints)
+ - Filling the country_to field with related event first country
+ - Timezone into end_date comparison (personnel_by_event)
+ - Using https before resource_uri
+ - Bump up the necessary packages to use python 3.8 due to Pillow must-upgrade:
+ - Pillow 9.0.0, boto3==1.20.38, ipython==8.0.0, pandas==1.3.5, psycopg2==2.8.6 (!),
+ - python-Levenshtein==0.12.1, requests==2.27.1, urllib3==1.26.8
+ - Adding ordering (by id) to events KeyFigures
+ - Fixing moved snapshot tests
+
 ### Release 5.6.0
 
 Date: 2021-12-01

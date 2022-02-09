@@ -402,10 +402,8 @@ function DrefApplication(props: Props) {
       if (value.type_of_onset !== ONSET_IMMINENT) {
         return {
           ...oldValue,
-          event_text: undefined,
           anticipatory_actions: undefined,
           people_targeted_with_early_actions: undefined,
-          event_date: undefined,
         };
       }
 
@@ -596,7 +594,6 @@ function DrefApplication(props: Props) {
                   value={value}
                   fileIdToUrlMap={fileIdToUrlMap}
                   setFileIdToUrlMap={setFileIdToUrlMap}
-                  needOptions={needOptions}
                 />
               </TabPanel>
               <TabPanel name="submission">

@@ -1,7 +1,9 @@
 import React from 'react';
-import { Helmet } from 'react-helmet';
 import { ThroughProvider } from 'react-through';
-import { _cs } from '@togglecorp/fujs';
+import {
+  _cs,
+  isDefined,
+} from '@togglecorp/fujs';
 
 import Navbar from '#components/navbar';
 import MobileNavbar from '#components/mobile-navbar';
@@ -20,7 +22,7 @@ import styles from './styles.module.scss';
 
 interface Props {
   className?: string;
-  title?: React.ReactNode;
+  title?: string;
   actions?: React.ReactNode;
   heading?: React.ReactNode;
   description?: React.ReactNode;
@@ -59,6 +61,12 @@ function Page(props: Props) {
     setLoading: setGlobalLoading as () => void,
   }), [loading, setGlobalLoading]);
 
+  React.useEffect(() => {
+    if (isDefined(title)) {
+      document.title = title;
+    }
+  }, [title]);
+
   return (
     <div
       className={_cs(
@@ -70,13 +78,6 @@ function Page(props: Props) {
     >
       <ThroughProvider>
         <GlobalLoadingContext.Provider value={loadingContextValue}>
-          {title && (
-            <Helmet>
-              <title>
-                { title }
-              </title>
-            </Helmet>
-          )}
           <Navbar />
           <MobileNavbar />
           <GlobalLoading />

@@ -20,7 +20,7 @@ const tableVariantToStyleMap: { [key in TableVariant]: string; } = {
 
 export interface Column<D, K, C, H> {
   id: string;
-  title: string;
+  title: React.ReactNode;
 
   headerCellRenderer: React.ComponentType<H>;
   headerCellRendererParams: Omit<H, keyof BaseHeader>;

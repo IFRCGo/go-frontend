@@ -253,7 +253,7 @@ export default class CatalogueOfSurgeServices extends React.Component {
                             children={({ match }) => (
                                 <div>
                                     <div className="backTo">
-                                        <Link to="/deployments/catalogue">
+                                        <Link to={`/deployments/catalogue/${match.params.selectedSelector}`}>
                                             <span className="collecticon-chevron-left icon"></span>
                                             <span>{backToSelectedCatalogue}</span>
                                         </Link>

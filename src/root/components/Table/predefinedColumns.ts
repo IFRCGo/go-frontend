@@ -20,7 +20,7 @@ import { SortDirection, FilterType } from './types';
 
 export function createStringColumn<D, K>(
   id: string,
-  title: string,
+  title: React.ReactNode,
   accessor: (item: D) => string | undefined | null,
   options?: {
     cellAsHeader?: boolean,
@@ -31,7 +31,7 @@ export function createStringColumn<D, K>(
     hideable?: boolean;
   },
 ) {
-  const item: Column<D, K, CellProps<string>, HeaderCellProps> & {
+  const item: Column<D, K, CellProps<React.ReactNode>, HeaderCellProps> & {
     valueSelector: (item: D) => string | undefined | null,
     valueComparator: (foo: D, bar: D) => number,
   } = {
@@ -46,7 +46,7 @@ export function createStringColumn<D, K>(
       hideable: options?.hideable,
     },
     cellRenderer: Cell,
-    cellRendererParams: (_: K, datum: D): CellProps<string> => ({
+    cellRendererParams: (_: K, datum: D): CellProps<React.ReactNode> => ({
       value: accessor(datum),
     }),
     valueSelector: accessor,
@@ -57,7 +57,7 @@ export function createStringColumn<D, K>(
 
 export function createNumberColumn<D, K>(
   id: string,
-  title: string,
+  title: React.ReactNode,
   accessor: (item: D) => number | undefined | null,
   options?: {
     cellAsHeader?: boolean,
@@ -98,7 +98,7 @@ export function createNumberColumn<D, K>(
 
 export function createDateColumn<D, K>(
   id: string,
-  title: string,
+  title: React.ReactNode,
   accessor: (item: D) => string | undefined | null,
   options?: {
     cellAsHeader?: boolean,
