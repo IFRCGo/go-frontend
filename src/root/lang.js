@@ -2972,7 +2972,7 @@ export default {
   emergencyFieldReportStatsHeading: 'Key Figures',
 
   recoverAccountErrorMessage: 'Error: {message}',
-  // not used -   recoverAccountSuccessMessage: 'We have sent an email to your inbox. Redirecting...',
+  recoverAccountSuccessMessage: 'We have sent an email to your inbox. Redirecting...',
 
   recoverAccountInvalidEmailMessage: 'Please enter a valid email',
 
