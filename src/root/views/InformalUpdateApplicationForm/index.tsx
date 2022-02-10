@@ -24,7 +24,7 @@ import Container from '#components/Container';
 import NonFieldError from '#components/NonFieldError';
 import TabPanel from '#components/Tabs/TabPanel';
 import useAlert from '#hooks/useAlert';
-import { useLazyRequest } from '#utils/restRequest';
+import { useLazyRequest, useRequest } from '#utils/restRequest';
 
 import ContextOverview from './ContextOverview';
 import FocalPoints from './FocalPoint';
@@ -46,6 +46,7 @@ useInformalUpdateFormOptions,
   from './useInformalUpdateFormOptions';
 
 import styles from './styles.module.scss';
+import BlockLoading from '#components/block-loading';
 
 interface Props {
   className?: string;
@@ -122,6 +123,67 @@ function InformalUpdateForm(props: Props) {
   const submitButtonLabel = currentStep === 'focal' ? strings.informalUpdateSaveButtonLabel : strings.informalUpdateContinueButtonLabel;
   const shouldDisabledBackButton = currentStep === 'context';
 
+  const {
+    pending: informalUpdatePending,
+    response: InformalUpdateResponse
+  } = useRequest<InformalUpdateAPIFields>({
+    skip: !id,
+    url: `api/v2/informal-update/${id}`,
+    onSuccess: (response) => {
+
+      onValueSet({
+        ...response,
+        country_district: response?.country_district?.map((cd) => ({
+          ...cd,
+          clientId: String(cd.id)
+        })),
+        reference: response?.references?.map((refs) => ({
+          ...refs,
+          clientId: String(refs.id)
+        })),
+        actions_ntls: response?.actions_taken?.find(o => o.organization === 'NTLS')?.actions,
+        actions_ntls_desc: response?.actions_taken?.find(o => o.organization === 'NTLS')?.summary,
+
+        actions_ifrc: response?.actions_taken?.find(o => o.organization === 'IFRC')?.actions,
+        actions_ifrc_desc: response?.actions_taken?.find(o => o.organization === 'IFRC')?.summary,
+
+        actions_rcrc: response?.actions_taken?.find(o => o.organization === 'RCRC')?.actions,
+        actions_rcrc_desc: response?.actions_taken?.find(o => o.organization === 'RCRC')?.summary,
+
+        actions_government: response?.actions_taken?.find(o => o.organization === 'GOV')?.actions,
+        actions_government_desc: response?.actions_taken?.find(o => o.organization === 'GOV')?.summary,
+
+        map_details: response?.map?.map((m) => ({
+          ...m,
+          clientId: String(m.pk)
+        })),
+        graphics_details: response?.graphics.map((el) => ({
+          ...el,
+          clientId: String(el.pk)
+        }))
+
+      });
+    },
+    onFailure: ({
+      value: { messageForNotification },
+      debugMessage,
+    }) => {
+      alert.show(
+        <p>
+          {strings.informalUpdateFormLoadRequestFailureMessage}
+          &nbsp;
+          <strong>
+            {messageForNotification}
+          </strong>
+        </p>,
+        {
+          variant: 'danger',
+          debugMessage,
+        },
+      );
+    }
+  });
+
   const erroredTabs = React.useMemo(() => {
     const tabs: {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -186,8 +248,8 @@ function InformalUpdateForm(props: Props) {
     pending: informalUpdateSubmitPending,
     trigger: submitRequest,
   } = useLazyRequest<InformalUpdateAPIFields, Partial<InformalUpdateAPIFields>>({
-    url: 'api/v2/informal-update/',
-    method: 'POST',
+    url: id ? `api/v2/informal-update/${id}/` : 'api/v2/informal-update/',
+    method: id ? 'PUT' : 'POST',
     body: ctx => ctx,
     onSuccess: (response) => {
       alert.show(
@@ -195,7 +257,7 @@ function InformalUpdateForm(props: Props) {
         { variant: 'success' },
       );
       window.setTimeout(
-        () => history.push('/emergencies'),
+        () => window.location.reload(),
         250,
       );
     },
@@ -205,7 +267,7 @@ function InformalUpdateForm(props: Props) {
     }) => {
       alert.show(
         <p>
-          {strings.fieldReportFormErrorLabel}
+          {strings.informalUpdateFormSaveRequestFailureMessage}
           &nbsp;
           <strong>
             {messageForNotification}
@@ -274,11 +336,18 @@ function InformalUpdateForm(props: Props) {
     children: strings.informalUpdateFormExportLabel,
   });
 
-  console.log({ value });
+  const pending = fetchingCountries
+    || fetchingCountries
+    || fetchingDistricts
+    || fetchingDisasterTypes
+    || informalUpdateSubmitPending
+    || informalUpdatePending;
+
+  const failedToLoadInformalUpdate = !pending && isDefined(id) && !InformalUpdateResponse;
 
   return (
     <Tabs
-      disabled={false}
+      disabled={failedToLoadInformalUpdate}
       onChange={handleTabChange}
       value={currentStep}
       variant="step"
@@ -330,67 +399,92 @@ function InformalUpdateForm(props: Props) {
           </TabList>
         )}
       >
-        <Container>
-          <NonFieldError
-            error={error}
-            message={strings.informalUpdateFormFieldGeneralError}
-          />
-        </Container>
-        <TabPanel name="context">
-          <ContextOverview
-            error={error}
-            onValueChange={onValueChange}
-            value={value}
-            disasterTypeOptions={disasterTypeOptions}
-            countryOptions={countryOptions}
-            fetchingCountries={fetchingCountries}
-            fetchingDisasterTypes={fetchingDisasterTypes}
-            fileIdToUrlMap={fileIdToUrlMap}
-            setFileIdToUrlMap={setFileIdToUrlMap}
-            onCreateAndShareButtonClick={submitInformalUpdate}
-            fetchingDistricts={fetchingDistricts}
-            districtOptions={districtOptions}
-          />
-        </TabPanel>
-        <TabPanel name="action">
-          <ActionsOverview
-            error={error}
-            onValueChange={onValueChange}
-            value={value}
-            yesNoOptions={yesNoOptions}
-            onValueSet={onValueSet}
-            actionOptions={orgGroupedActionForCurrentReport}
-          />
-        </TabPanel>
-        <TabPanel name="focal">
-          <FocalPoints
-            error={error}
-            onValueChange={onValueChange}
-            value={value}
-            yesNoOptions={yesNoOptions}
-            onValueSet={onValueSet}
-            shareWithOptions={shareWithOptions}
-          />
-        </TabPanel>
-        <div className={styles.actions}>
-          <Button
-            name={undefined}
-            variant="secondary"
-            onClick={handleBackButtonClick}
-            disabled={shouldDisabledBackButton}
-          >
-            {strings.informalUpdateBackButtonLabel}
-          </Button>
-          <Button
-            name={undefined}
-            variant="secondary"
-            onClick={handleSubmitButtonClick}
-            type="submit"
-            disabled={informalUpdateSubmitPending}
-          >
-            {submitButtonLabel}
-          </Button>
-        </div>
+        {pending ? (
+          <Container>
+            <BlockLoading />
+          </Container>
+        ) :
+          failedToLoadInformalUpdate ? (
+            <Container
+              contentClassName={styles.errorMessage}
+            >
+              <h3>
+                {strings.informalUpdateFormLoadErrorTitle}
+              </h3>
+              <p>
+                {strings.informalUpdateFormLoadErrorDescription}
+              </p>
+              <p>
+                {strings.informalUpdateFormLoadErrorHelpText}
+              </p>
+            </Container>
+
+          ) : (
+            <>
+              <Container>
+                <NonFieldError
+                  error={error}
+                  message={strings.informalUpdateFormFieldGeneralError}
+                />
+              </Container>
+              <TabPanel name="context">
+                <ContextOverview
+                  error={error}
+                  onValueChange={onValueChange}
+                  value={value}
+                  disasterTypeOptions={disasterTypeOptions}
+                  countryOptions={countryOptions}
+                  fetchingCountries={fetchingCountries}
+                  fetchingDisasterTypes={fetchingDisasterTypes}
+                  fileIdToUrlMap={fileIdToUrlMap}
+                  setFileIdToUrlMap={setFileIdToUrlMap}
+                  onCreateAndShareButtonClick={submitInformalUpdate}
+                  fetchingDistricts={fetchingDistricts}
+                  districtOptions={districtOptions}
+                />
+              </TabPanel>
+              <TabPanel name="action">
+                <ActionsOverview
+                  error={error}
+                  onValueChange={onValueChange}
+                  value={value}
+                  yesNoOptions={yesNoOptions}
+                  onValueSet={onValueSet}
+                  actionOptions={orgGroupedActionForCurrentReport}
+                />
+              </TabPanel>
+              <TabPanel name="focal">
+                <FocalPoints
+                  error={error}
+                  onValueChange={onValueChange}
+                  value={value}
+                  yesNoOptions={yesNoOptions}
+                  onValueSet={onValueSet}
+                  shareWithOptions={shareWithOptions}
+                />
+              </TabPanel>
+              <div className={styles.actions}>
+                <Button
+                  name={undefined}
+                  variant="secondary"
+                  onClick={handleBackButtonClick}
+                  disabled={shouldDisabledBackButton}
+                >
+                  {strings.informalUpdateBackButtonLabel}
+                </Button>
+                <Button
+                  name={undefined}
+                  variant="secondary"
+                  onClick={handleSubmitButtonClick}
+                  type="submit"
+                  disabled={informalUpdateSubmitPending}
+                >
+                  {submitButtonLabel}
+                </Button>
+              </div>
+            </>
+          )
+        }
       </Page>
     </Tabs>
   );

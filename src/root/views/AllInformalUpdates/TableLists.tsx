@@ -74,8 +74,7 @@ function TableLists(props: Props) {
               icon={<MdSearch />}
             />
             <DropdownMenuItem
-              // href={`/three-w/${infrl.id}/edit/`}
-              href=''
+              href={`/informal-update-application/${infrl.id}/edit/`}
               icon={<MdEdit />}
               label={strings.projectListTableEdit}
             />

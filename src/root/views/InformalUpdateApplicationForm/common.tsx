@@ -1,5 +1,5 @@
 import { Country } from '#types/country';
-import { isDefined } from '@togglecorp/fujs';
+import { isDefined, isNotDefined } from '@togglecorp/fujs';
 
 export const ONSET_IMMINENT = 0;
 export const ONSET_SLOW = 1;
@@ -41,6 +41,7 @@ export interface CountryDistrict {
   country: number | undefined;
   district: number | undefined;
   country_details?: Country | undefined;
+  id?: number;
 }
 export interface ReferenceData {
   clientId: string;
@@ -48,6 +49,7 @@ export interface ReferenceData {
   source_description: string;
   url?: string;
   document?: string;
+  id?: number;
 }
 export interface ImageDetails {
   id: number;
@@ -276,21 +278,20 @@ export function transformFormFieldsToAPIFields(formValues: InformalUpdateFields)
   } = formValues;
 
   const actions_taken: InformalUpdateAPIFields['actions_taken'] = [];
-  const references: InformalUpdateAPIFields['references'] = [];
+  let references: InformalUpdateAPIFields['references'] = [];
   const map: InformalUpdateAPIFields['map'] = [];
   const graphics: InformalUpdateAPIFields['graphics'] = [];
 
-  for (var i in reference) {
-    if (reference[i].source_description === undefined && reference[i].date === undefined) references.push();
-    else {
-      reference.map((el) => references.push({
-        clientId: el.clientId,
-        date: el.date,
-        source_description: el.source_description,
-        url: el.url,
-        document: el.document
-      }));
-    }
+  references = reference?.filter(o => isDefined(o.date) || isDefined(o.source_description));
+
+  if (references.length > 1) {
+    references.filter((o) => o.clientId !== o.clientId).map((el) => references.push({
+      clientId: el.clientId,
+      date: el.date,
+      source_description: el.source_description,
+      url: el.url,
+      document: el.document
+    }));
   }
 
   if (isDefined(map_details)) {

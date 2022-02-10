@@ -93,11 +93,11 @@ function ContextOverview(props: Props) {
 
   const handleAddReference = React.useCallback(() => {
     const newList: PartialForm<ReferenceType> = {
-      clientId: randomString(),
+      // clientId: randomString(),
       date: undefined,
       source_description: undefined,
-      url: undefined,
-      document: undefined
+      url: '',
+      document: '',
     };
     onValueChange(
       (oldValue: PartialForm<References>) => (
@@ -243,7 +243,7 @@ function ContextOverview(props: Props) {
         >
           {value.reference?.map((c, i) => (
             <ReferenceInput
-              key={c.clientId}
+              key={i}
               index={i}
               value={c}
               error={error}

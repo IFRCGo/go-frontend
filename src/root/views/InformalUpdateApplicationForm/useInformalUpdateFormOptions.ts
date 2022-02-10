@@ -67,6 +67,14 @@ export function lessThanSixImagesCondition(value: any) {
     : undefined;
 }
 
+//export function nonEmptyArrayValue(value: any) {
+//  for (var i in value) {
+//    if (value[i].source_description === undefined && value[i].date === undefined) {
+//      return 'enter source name or delete';
+//    }
+//  }
+//}
+
 export const schema: FormSchema = {
   fields: (value): FormSchemaFields => ({
     country_district: {

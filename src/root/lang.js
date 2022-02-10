@@ -3469,7 +3469,6 @@ export default {
   informalUpdateIfrcSecretariatLabel: 'IFRC Secretariat',
   informalUpdateRcrcNetworkLabel: 'RCRC Network',
   informalUpdateRcrcNetworkAndDonorsLabel: 'RCRC Network and Donors',
-  informalUpdateFormRedirectMessage: 'Informal report updated, redirecting...',
   informalUpdateNumber: 'Flash Update #',
   informalUpdateActionTakenTitle: 'ACTIONS TAKEN',
   informalUpdateSituationalOverviewTitle: 'SITAUTIONAL OVERVIEWS',
@@ -3478,4 +3477,13 @@ export default {
   informalUpdateDescriptionTitle: 'Description',
   informalUpdateActionsTitle: 'Actions',
   informalUpdateResourcesTitle: 'Resources',
+
+  //Informal messages
+  informalUpdateFormRedirectMessage: 'Informal report updated, redirecting...',
+  informalUpdateFormSaveRequestSuccessMessage: 'Informal update Application created/updated successfully',
+  informalUpdateFormSaveRequestFailureMessage: 'Failed to create/update informal update Application',
+  informalUpdateFormLoadRequestFailureMessage: 'Failed to load informal update Application',
+  informalUpdateFormLoadErrorTitle: 'Failed to load informal update Application',
+  informalUpdateFormLoadErrorDescription: 'There was an error loading the informal update Application',
+  informalUpdateFormLoadErrorHelpText: 'Please make sure that the application with given id exists and you have the permission to view it',
 };

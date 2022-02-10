@@ -284,7 +284,7 @@ function Multiplexer(props) {
               <Route exact path='/deployments' component={Deployments} />
               <Route exact path='/deployments/personnel/all' render={props => <Table {...props} type='personnel' />} />
               <Route exact path='/deployments/erus/all' render={props => <Table {...props} type='eru' />} />
-              <Route path='/deployments' component={Deployments}/>
+              <Route path='/deployments' component={Deployments} />
               <Route exact path='/per-form/:form_id' component={PerForm} />
               <Route exact path='/per-form/:form_id/edit' render={props => <PerForm {...props} isEdit={true} />} />
               <Route path='/per-assessment/create' render={props => <PerAssessment {...props} isCreate={true} />} />
@@ -305,6 +305,7 @@ function Multiplexer(props) {
               <PrivateRoute key="new-informal-update-application-form" exact path='/informal-update-application/new/' component={InformalUpdateApplicationForm} />
               <Route exact path='/informal-update-report/:id' component={InformalUpdateReport} />
               <Route exact path='/informal-updates/all/' component={AllInformalUpdates} />
+              <Route exact path='/informal-update-application/:id/edit/' component={InformalUpdateApplicationForm} />
               <Route component={FourHundredFour} />
             </Switch>
           </BreadcrumbsProvider>
