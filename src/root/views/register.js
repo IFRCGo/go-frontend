@@ -8,7 +8,6 @@ import Ajv from 'ajv';
 import ajvKeywords from 'ajv-keywords';
 import Select from 'react-select';
 import { Helmet } from 'react-helmet';
-import TextArea from '#components/TextArea';
 
 import {
   isValidEmail,
@@ -321,56 +320,26 @@ class Register extends React.Component {
         <p className='form__note'>
           <Translate stringId='registerJustify'/>
         </p>
-        <TextArea
-          // label={strings.registerJustification}
+        <FormInput
+          label={strings.registerJustificationLabel}
           placeholder={strings.registerJustification}
-          type='text'
+          type='textarea'
           name='register-justification'
           id='register-justification'
+          
           classInput={getClassIfError(this.state.errors, 'justification')}
+          //className={c('form__control form__control--medium', classInput)}
           value={this.state.data.justification}
           onChange={this.onFieldChange.bind(this, 'justification')}
          
         >
           <FormError
-            property='phoneNumber'
+            property='justification'
             errors={this.state.errors}
           />
-        </TextArea>
+        </FormInput>
         
-        {/* {[0, 1].map(o => (
-          <div key={o} className='form__hascol form__hascol--2'>
-            <FormInput
-              label={strings.registerContactName}
-              type='text'
-              name={`register-contact[${o}][name]`}
-              id={`register-contact-name-${o}`}
-              classInput={getClassIfError(this.state.errors, `contact[${o}].name`)}
-              value={this.state.data.contact[o].name}
-              onChange={this.onFieldChange.bind(this, `contact[${o}].name`)}
-            >
-              <FormError
-                errors={this.state.errors}
-                property={`contact[${o}].name`}
-              />
-            </FormInput>
-            <FormInput
-              label={strings.registerContactEmail}
-              type='text'
-              name={`register-contact[${o}][email]`}
-              id={`register-contact-email-${o}`}
-              classInput={getClassIfError(this.state.errors, `contact[${o}].email`)}
-              value={this.state.data.contact[o].email}
-              onChange={this.onFieldChange.bind(this, `contact[${o}].email`)}
-            >
-              <FormError
-                errors={this.state.errors}
-                property={`contact[${o}].email`}
-              />
-            </FormInput>
-          </div>
-        ))} */}
-      </div>
+             </div>
     );
   }
 
@@ -432,7 +401,7 @@ class Register extends React.Component {
                   >
                     <FormError
                       errors={this.state.errors}
-                      property='department'
+                      property='firstname'
                     />
                   </FormInput>
                   <FormInput
@@ -446,7 +415,7 @@ class Register extends React.Component {
                   >
                     <FormError
                       errors={this.state.errors}
-                      property='department'
+                      property='lastname'
                     />
                   </FormInput>
                 </div>
