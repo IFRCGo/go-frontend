@@ -25,9 +25,9 @@ import {
 } from '../common';
 
 import styles from './styles.module.scss';
-import InformalUpdateFileInput from '#components/InformalUpdateFileInput';
 import ReferenceInput from './ReferenceInput';
-import MapFileUpload from '#components/InformalUpdateFileInput/MapFileUpload';
+import GraphicFileInput from '#components/InformalUpdateFileInput/GraphicFileInput';
+import MapFileInput from '#components/InformalUpdateFileInput/MapFileInput';
 
 type Value = PartialForm<InformalUpdateFields>;
 interface Props {
@@ -194,7 +194,7 @@ function ContextOverview(props: Props) {
           title={strings.informalUpdateFormContextGraphicTitle}
           description={strings.informalUpdateFormContextGraphicDescription}
         >
-          <InformalUpdateFileInput
+          <GraphicFileInput
             accept="image/*"
             error={error?.graphics_id}
             fileIdToUrlMap={fileIdToUrlMap}
@@ -208,7 +208,7 @@ function ContextOverview(props: Props) {
             onCaptionValueChange={onValueChange}
           >
             {strings.informalUpdateFormContextReferenceUrlButtonLabel}
-          </InformalUpdateFileInput>
+          </GraphicFileInput>
         </InputSection>
       </Container>
       <Container>
@@ -216,7 +216,7 @@ function ContextOverview(props: Props) {
           title={strings.informalUpdateFormContextMapTitle}
           description={strings.informalUpdateFormContextMapDescription}
         >
-          <MapFileUpload
+          <MapFileInput
             accept="image/*"
             error={error?.map_id}
             fileIdToUrlMap={fileIdToUrlMap}
@@ -230,7 +230,7 @@ function ContextOverview(props: Props) {
             onCaptionValueChange={onValueChange}
           >
             {strings.informalUpdateFormContextReferenceUrlButtonLabel}
-          </MapFileUpload>
+          </MapFileInput>
         </InputSection>
       </Container>
       <Container

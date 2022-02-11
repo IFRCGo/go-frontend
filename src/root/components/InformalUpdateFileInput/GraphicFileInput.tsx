@@ -112,7 +112,7 @@ type Props<T extends string> = Omit<FileInputProps<T>, 'overrideStatus' | 'statu
   onChange: (value: number | undefined, name: T) => void;
 })
 
-function InformalUpdateFileInput<T extends string>(props: Props<T>) {
+function GraphicFileInput<T extends string>(props: Props<T>) {
   const {
     onCaptionValueChange,
     allValue,
@@ -334,4 +334,4 @@ function InformalUpdateFileInput<T extends string>(props: Props<T>) {
     </div>
   );
 }
-export default InformalUpdateFileInput;
+export default GraphicFileInput;
