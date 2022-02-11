@@ -11,6 +11,10 @@
         justify-content: flex-end;
     }
 
+    .svgHeader div:first-child {
+        width: 100%;
+    }
+
     .svgHeader:after {
         content: "";
         overflow-y: scroll;
