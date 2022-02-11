@@ -28,7 +28,7 @@ export default class CatalogueOfSurgeServices extends React.Component {
             { title: strings.catalogueOfSurgeServicesSelectorCommunity, hash: '#community', icon: 'collecticon-humanitarian-cea' },
             { title: strings.catalogueOfSurgeServicesSelectorCommunications, hash: '#communications', icon: 'collecticon-humanitarian-comms' },
             { title: strings.catalogueOfSurgeServicesSelectorHealth, hash: '#health', icon: 'collecticon-humanitarian-health' },
-            { title: strings.catalogueOfSurgeServicesSelectorInformationMan, hash: '#informationMan', icon: 'collecticon-humanitarian-im' },
+            { title: strings.catalogueOfSurgeServicesSelectorInformationMan, hash: '#informationM', icon: 'collecticon-humanitarian-im' },
             { title: strings.catalogueOfSurgeServicesSelectorInformationTech, hash: '#informationTech', icon: 'collecticon-humanitarian-itt' },
             { title: strings.catalogueOfSurgeServicesSelectorLivelihoods, hash: '#livelihoods', icon: 'collecticon-humanitarian-livelihood' },
             { title: strings.catalogueOfSurgeServicesSelectorLogistics, hash: '#logistics', icon: 'collecticon-humanitarian-logs' },
