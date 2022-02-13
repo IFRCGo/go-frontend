@@ -494,7 +494,7 @@ const CatalogueOfSurgeServicesContent = [
         ]
     },
     {
-        hash: "#informationM",
+        hash: "#infoMgt",
         sectionTitle: "catalogueOfSurgeServicesSelectorInformationMan",
         sectionText: "",
         sectionCards: [
