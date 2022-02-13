@@ -60,21 +60,9 @@
   }
 
   .resources {
-    display: flex;
+    columns: 3;
     background-color: $white;
     padding: $spacing;
     color: $grey-gravel ;
-    
-    .column {
-      display: flex;
-      flex-grow: 1;
-      padding: 0 $spacing-3;
-      gap: $spacing-5;
-
-      p {
-        font-weight: $base-font-medium;
-        color: $base-color;
-      }
-    }
   }
 }

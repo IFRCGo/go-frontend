@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import type { History, Location } from 'history';
 import type { match as Match } from 'react-router-dom';
@@ -39,17 +39,29 @@ function InformalUpdateReport(props: Props) {
   const { strings } = useContext(languageContext);
   const {
     pending: projectPending,
-    response: reportResponse
+    response: reportResponse,
   } = useRequest<InformalUpdateAPIFields>({
     skip: isNotDefined(id),
     url: `api/v2/informal-update/${id}/`,
   });
 
-  const crumbs = React.useMemo(() => [
-    { link: strings.informalUpdateNumber, name: `${strings.informalUpdateNumber}${reportResponse && reportResponse.id + 1}` },
-    { link: location?.pathname, name: reportResponse?.title },
-    { link: '/emergencies', name: strings.breadCrumbEmergencies },
-    { link: '/', name: strings.breadCrumbHome }
+  const crumbs = useMemo(() => [
+    {
+      link: strings.informalUpdateNumber,
+      name: `${strings.informalUpdateNumber}${reportResponse && reportResponse.id + 1}`
+    },
+    {
+      link: location?.pathname,
+      name: reportResponse?.title
+    },
+    {
+      link: '/emergencies',
+      name: strings.breadCrumbEmergencies
+    },
+    {
+      link: '/',
+      name: strings.breadCrumbHome
+    },
   ], [strings, location, reportResponse]);
 
   const renderActionTaken = (org: string) => {
@@ -59,7 +71,11 @@ function InformalUpdateReport(props: Props) {
     );
   };
 
-  const situationalData = [
+  const countryTitle = useMemo(() => (
+    reportResponse?.country_district?.map((item) => (item?.country_details?.name)).join('-')
+  ), [reportResponse]);
+
+  const situationalData = useMemo(() => [
     {
       name: 'Magnitude',
       value: 'Mw 5.7'
@@ -88,7 +104,27 @@ function InformalUpdateReport(props: Props) {
     {
       description: 'The 5.7 magnitude earthquake hit at 03 o’clock in the morning local time as people were sleeping. At least 20 persons are reported dead and 150 injured with many rushed to the hospital in critical condition and fractures. Approximately a hundred mud houses have reported collapsed leaving hundreds of persons without shelter. Much of the damage seems to have taken place in Hernai district according to local authority interviewed in news report. Hernai is a fairly remote, mountainous city and the area hosts a lot of coal mines. Health workers and rescue efforts were hampered by a power cut caused by the earthquake – hospital workers reported having to do with torches for light - and by a lack of paved roads and mobile phone coverage. The tremor caused also a lot of landslides according to Al Jazeera report, blocking roads that need to be opened for rescuers to get to the area.'
     }
-  ];
+  ], []);
+
+  const renderSituationalOverview = useMemo(() => (
+    <div>
+      {situationalData.map((item, i) => (
+        <div key={i}>
+          <div className={styles.overviewContainer}>
+            <div className={styles.overviewLabel}>
+              {item.name}
+            </div>
+            <div className={styles.overviewValue}>
+              {item.value}
+            </div>
+          </div>
+          <div className={styles.overviewDescription}>
+            {item.description}
+          </div>
+        </div>
+      ))}
+    </div>
+  ), [situationalData]);
 
   return (
     <>
@@ -101,12 +137,11 @@ function InformalUpdateReport(props: Props) {
             to={location?.pathname}
           >
             <span className='link--with-icon-text'>
-              {reportResponse?.country_district?.map((item) => (item?.country_details?.name)).join('-')}
+              {countryTitle}
             </span>
             <span className='collecticon-chevron-right link--with-icon-inner'></span>
           </Link>
         }
-
         breadCrumbs={
           <BreadCrumb
             crumbs={crumbs}
@@ -114,6 +149,7 @@ function InformalUpdateReport(props: Props) {
           />
         }
         actions={
+          //--TODO--
           <Button
             variant='secondary'
             name={undefined}
@@ -127,25 +163,11 @@ function InformalUpdateReport(props: Props) {
           <BlockLoading />
           : (
             <>
-              <Container heading={strings.informalUpdateSituationalOverviewTitle} >
+              <Container
+                heading={strings.informalUpdateSituationalOverviewTitle}
+              >
                 <ViewSection>
-                  <div>
-                    {situationalData.map((item, i) => (
-                      <div key={i}>
-                        <div className={styles.overviewContainer}>
-                          <div className={styles.overviewLabel}>
-                            {item.name}
-                          </div>
-                          <div className={styles.overviewValue}>
-                            {item.value}
-                          </div>
-                        </div>
-                        <div className={styles.overviewDescription}>
-                          {item.description}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
+                  {renderSituationalOverview}
                 </ViewSection>
               </Container>
               <Container
@@ -167,9 +189,13 @@ function InformalUpdateReport(props: Props) {
               >
                 <div className={styles.image}>
                   {reportResponse?.graphics?.map((item) => (
-                    <div key={item.id} className={styles.imageWithCaption}>
+                    <div
+                      key={item.id}
+                      className={styles.imageWithCaption}
+                    >
                       <img
-                        src={item?.file} alt=""
+                        src={item?.file}
+                        alt=""
                       />
                       <div>
                         {item?.caption}
@@ -178,7 +204,10 @@ function InformalUpdateReport(props: Props) {
                   ))}
                 </div>
               </Container>
-              <Container heading={strings.informalUpdateActionTakenTitle} className={styles.actionTaken}>
+              <Container
+                heading={strings.informalUpdateActionTakenTitle}
+                className={styles.actionTaken}
+              >
                 {renderActionTaken('NTLS')}
               </Container>
               <Container className={styles.actionTaken}>
@@ -189,20 +218,15 @@ function InformalUpdateReport(props: Props) {
               >
                 {reportResponse?.references?.map((item) => (
                   <div className={styles.resources}>
-                    <div className={styles.column}>
-                      <div>
-                        {item?.date}
-                      </div>
-                      <div>
-                        {item?.source_description}
-                      </div>
+                    <div>
+                      {item?.date}
                     </div>
-                    <div className={styles.column}>
-                      <p>
-                        {item?.url}
-                      </p>
+                    <div>
+                      {item?.source_description}
                     </div>
-
+                    <div>
+                      {item?.url}
+                    </div>
                   </div>
                 ))}
 

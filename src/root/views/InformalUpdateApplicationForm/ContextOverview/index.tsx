@@ -15,6 +15,8 @@ import languageContext from '#root/languageContext';
 import SelectInput from '#components/SelectInput';
 import TextInput from '#components/TextInput';
 import TextArea from '#components/TextArea';
+import GraphicFileInput from '#components/InformalUpdateFileInput/GraphicFileInput';
+import MapFileInput from '#components/InformalUpdateFileInput/MapFileInput';
 import { CountryDistrictType, ReferenceType } from '../useInformalUpdateFormOptions';
 import CountryProvinceInput from './CountryProvinceInput';
 import {
@@ -26,8 +28,6 @@ import {
 
 import styles from './styles.module.scss';
 import ReferenceInput from './ReferenceInput';
-import GraphicFileInput from '#components/InformalUpdateFileInput/GraphicFileInput';
-import MapFileInput from '#components/InformalUpdateFileInput/MapFileInput';
 
 type Value = PartialForm<InformalUpdateFields>;
 interface Props {
