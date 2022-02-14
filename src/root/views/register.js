@@ -321,22 +321,24 @@ class Register extends React.Component {
         <p className='form__note'>
           <Translate stringId='registerJustify'/>
         </p>
-        <TextArea
-          // label={strings.registerJustification}
+        <FormInput
+          label={strings.registerJustificationLabel}
           placeholder={strings.registerJustification}
-          type='text'
+          type='textarea'
           name='register-justification'
           id='register-justification'
+          
           classInput={getClassIfError(this.state.errors, 'justification')}
+          //className={c('form__control form__control--medium', classInput)}
           value={this.state.data.justification}
           onChange={this.onFieldChange.bind(this, 'justification')}
          
         >
           <FormError
-            property='phoneNumber'
+            property='justification'
             errors={this.state.errors}
           />
-        </TextArea>
+        </FormInput>
         
         {/* {[0, 1].map(o => (
           <div key={o} className='form__hascol form__hascol--2'>
@@ -432,7 +434,7 @@ class Register extends React.Component {
                   >
                     <FormError
                       errors={this.state.errors}
-                      property='department'
+                      property='firstname'
                     />
                   </FormInput>
                   <FormInput
@@ -446,7 +448,7 @@ class Register extends React.Component {
                   >
                     <FormError
                       errors={this.state.errors}
-                      property='department'
+                      property='lastname'
                     />
                   </FormInput>
                 </div>

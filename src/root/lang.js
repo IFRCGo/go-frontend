@@ -89,6 +89,7 @@ export default {
   registerDepartment: 'Department',
   registerPosition: 'Position',
   registerPhoneNumber: 'Phone Number',
+  registerJustificationLabel: 'Justification *',
   registerJustification: 'Please justify that you are part of RCRC Movement.',
   registerPassword: 'Password *',
   registerConfirmPassword: 'Confirm Password *',
