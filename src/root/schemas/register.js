@@ -250,6 +250,27 @@ export default {
     required: [
       'justification'
     ],
-    
+    properties: {
+      // contact: {
+      //   type: 'array',
+      //   items: {
+      //     properties: {
+      //       name: {
+      //         type: 'string'
+      //       },
+      //       email: {
+      //         type: 'string',
+      //         format: 'email'
+      //       }
+      //     },
+      //     required: ['name', 'email']
+      //   }
+      // }
+
+      // justification:{
+      //   type: 'string',
+      //   required: ['justification']
+      // }
+    }
   }
 };

@@ -64,10 +64,12 @@ function FormInput (props) {
               </div>
             )
             : 
+            
             type=='textarea'
             ?
             (
               <React.Fragment>
+                
                 {labelSecondary ? (<label htmlFor={id} className='label-secondary'>{labelSecondary}</label>) : null}
                 <textarea
                   type={type}
@@ -89,6 +91,7 @@ function FormInput (props) {
             :
             (
               <React.Fragment>
+                
                 {labelSecondary ? (<label htmlFor={id} className='label-secondary'>{labelSecondary}</label>) : null}
                 <input
                   type={type}
