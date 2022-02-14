@@ -247,6 +247,9 @@ export default {
     }
   },
   then: {
+    required: [
+      'justification'
+    ],
     properties: {
       // contact: {
       //   type: 'array',

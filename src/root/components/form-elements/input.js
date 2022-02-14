@@ -63,8 +63,35 @@ function FormInput (props) {
                 {children || null}
               </div>
             )
-            : (
+            : 
+            
+            type=='textarea'
+            ?
+            (
               <React.Fragment>
+                
+                {labelSecondary ? (<label htmlFor={id} className='label-secondary'>{labelSecondary}</label>) : null}
+                <textarea
+                  type={type}
+                  id={id}
+                  name={name}
+                  placeholder={placeholder}
+                  className={c('form__control form__control--medium', classInput)}
+                  value={value || ''}
+                  onChange={onChange}
+                  disabled={disabled}
+                  autoFocus={autoFocus}
+                  maxLength={maxLength}
+                  rows={5}
+                />
+                {children || null}
+              </React.Fragment>
+            )
+            
+            :
+            (
+              <React.Fragment>
+                
                 {labelSecondary ? (<label htmlFor={id} className='label-secondary'>{labelSecondary}</label>) : null}
                 <input
                   type={type}
