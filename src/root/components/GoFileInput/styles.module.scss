@@ -1,0 +1,54 @@
+@import '~styles/settings/_variables.scss';
+
+.go-file-input {
+  .preview-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $spacing;
+    padding: $spacing;
+
+  }
+}
+
+.preview {
+  position: relative;
+  width: 12rem;
+  height: 12rem;
+  border: $base-border-width solid $base-border-color;
+
+  .image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center center;
+  }
+
+  .remove-button {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    right: 0;
+    top: 0;
+    height: $font-size-xxl;
+    width: $font-size-xxl;
+    transform: translate(50%, -50%);
+    background-color: $color-foreground;
+    border: $base-border-width solid $danger-color;
+    color: $danger-color;
+    border-radius: 50%;
+  }
+
+  .no-preview {
+    position: relative;
+    border: $base-border-width solid $base-border-color;
+    padding: $spacing;
+    width: 8rem;
+    height: 8rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+}
+

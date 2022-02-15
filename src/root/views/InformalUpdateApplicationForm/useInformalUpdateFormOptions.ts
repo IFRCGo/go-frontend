@@ -8,7 +8,6 @@ import {
 } from '@togglecorp/toggle-form';
 import { isDefined } from '@togglecorp/fujs';
 import { compareString } from '#utils/utils';
-import LanguageContext from '#root/languageContext';
 import {
   useRequest,
   ListResponse,
@@ -17,21 +16,17 @@ import {
   Country,
   Disaster,
   DistrictMini,
+  NumericValueOption,
+  StringValueOption,
 } from '#types';
 
 import {
-  BooleanValueOption,
-  NumericValueOption,
   emptyNumericOptionList,
-  User,
   InformalUpdateFields,
-  ActionFields,
-  emptyActionList,
-  ActionsByOrganization,
+  emptyActionOptionItemList,
   OrganizationType,
-  ActionsByOrganizationArrayLists,
-  ShareWithOptionsEntity,
   emptyStringOptionList,
+  ActionOptionItem,
 } from './common';
 
 export type FormSchema = ObjectSchema<PartialForm<InformalUpdateFields>>;
@@ -43,17 +38,29 @@ export type CountryDistrictSchemaFields = ReturnType<CountryDistrictSchema['fiel
 export type CountryDistrictsSchema = ArraySchema<PartialForm<CountryDistrictType>>;
 export type CountryDistrictsSchemaMember = ReturnType<CountryDistrictsSchema['member']>;
 
-export type ReferenceType = NonNullable<NonNullable<InformalUpdateFields['reference']>>[number];
+export type ReferenceType = NonNullable<NonNullable<InformalUpdateFields['references']>>[number];
 export type ReferenceSchema = ObjectSchema<PartialForm<ReferenceType>>;
 export type ReferenceSchemaFields = ReturnType<ReferenceSchema['fields']>;
 export type ReferencesSchema = ArraySchema<PartialForm<ReferenceType>>;
 export type ReferencesSchemaMember = ReturnType<ReferencesSchema['member']>;
 
-export type ImageDataType = NonNullable<NonNullable<InformalUpdateFields['imageData']>>[number];
-export type ImageDataSchema = ObjectSchema<PartialForm<ImageDataType>>;
-export type ImageDataSchemaFields = ReturnType<ImageDataSchema['fields']>;
-export type ImagesDataSchema = ArraySchema<PartialForm<ImageDataType>>;
-export type ImagesDataSchemaMember = ReturnType<ImagesDataSchema['member']>;
+export type MapType = NonNullable<NonNullable<InformalUpdateFields['map']>>[number];
+export type MapSchema = ObjectSchema<PartialForm<MapType>>;
+export type MapSchemaFields = ReturnType<MapSchema['fields']>;
+export type MapsSchema = ArraySchema<PartialForm<MapType>>;
+export type MapsSchemaMember = ReturnType<MapsSchema['member']>;
+
+export type GraphicType = NonNullable<NonNullable<InformalUpdateFields['graphics']>>[number];
+export type GraphicSchema = ObjectSchema<PartialForm<GraphicType>>;
+export type GraphicSchemaFields = ReturnType<GraphicSchema['fields']>;
+export type GraphicsSchema = ArraySchema<PartialForm<GraphicType>>;
+export type GraphicsSchemaMember = ReturnType<GraphicsSchema['member']>;
+
+export type ActionType = NonNullable<NonNullable<InformalUpdateFields['actions_taken']>>[number];
+export type ActionSchema = ObjectSchema<PartialForm<ActionType>>;
+export type ActionSchemaFields = ReturnType<ActionSchema['fields']>;
+export type ActionsSchema = ArraySchema<PartialForm<ActionType>>;
+export type ActionsSchemaMember = ReturnType<ActionsSchema['member']>;
 
 export function max10CharCondition(value: any) {
   return isDefined(value) && value.length > 10
@@ -67,14 +74,6 @@ export function lessThanSixImagesCondition(value: any) {
     : undefined;
 }
 
-//export function nonEmptyArrayValue(value: any) {
-//  for (var i in value) {
-//    if (value[i].source_description === undefined && value[i].date === undefined) {
-//      return 'enter source name or delete';
-//    }
-//  }
-//}
-
 export const schema: FormSchema = {
   fields: (value): FormSchemaFields => ({
     country_district: {
@@ -87,21 +86,47 @@ export const schema: FormSchema = {
       }),
     },
     hazard_type: [requiredCondition],
-    situational_overview: [requiredCondition],
     title: [requiredCondition],
-    reference: [],
-    //graphics_id: [],
-    //map_id: [],
-
-    actions_ntls: [],
-    actions_ntls_desc: [],
-    actions_ifrc: [],
-    actions_ifrc_desc: [],
-    actions_rcrc: [],
-    actions_rcrc_desc: [],
-    actions_government: [],
-    actions_government_desc: [],
-
+    situational_overview: [requiredCondition],
+    graphics: {
+      keySelector: (c) => c.clientId as string,
+      member: (): GraphicsSchemaMember => ({
+        fields: (): GraphicSchemaFields => ({
+          file: [],
+          caption: [],
+        }),
+      }),
+    },
+    map: {
+      keySelector: (c) => c.clientId as string,
+      member: (): MapsSchemaMember => ({
+        fields: (): MapSchemaFields => ({
+          file: [],
+          caption: [],
+        }),
+      }),
+    },
+    references: {
+      keySelector: (c) => c.clientId as string,
+      member: (): ReferencesSchemaMember => ({
+        fields: (): ReferenceSchemaFields => ({
+          date: [requiredCondition],
+          source_description: [requiredCondition],
+          url: [],
+          document: [],
+        }),
+      }),
+    },
+    actions_taken: {
+      keySelector: (c) => c.organization as OrganizationType,
+      member: (): ActionsSchemaMember => ({
+        fields: (): ActionSchemaFields => ({
+          organization: [],
+          actions: [],
+          summary: [],
+        }),
+      }),
+    },
     originator_name: [requiredCondition],
     originator_email: [requiredCondition, emailCondition],
     originator_phone: [],
@@ -111,10 +136,6 @@ export const schema: FormSchema = {
     ifrc_phone: [],
     ifrc_title: [],
     share_with: [],
-    imageData: [],
-    map_details: [],
-    graphics_details: []
-
   }),
   fieldDependencies: () => ({
   }),
@@ -128,15 +149,6 @@ const limitQuery = {
 };
 
 function useInformalUpdateFormOptions(value: PartialForm<InformalUpdateFields>) {
-  const { strings } = React.useContext(LanguageContext);
-
-  const {
-    pending: fetchingUserDetails,
-    response: userDetails,
-  } = useRequest<User>({
-    url: 'api/v2/user/me/',
-  });
-
   const {
     pending: fetchingCountries,
     response: countriesResponse,
@@ -145,20 +157,10 @@ function useInformalUpdateFormOptions(value: PartialForm<InformalUpdateFields>) 
     query: limitQuery,
   });
 
-  const [
-    nationalSocietyOptions,
-    countryOptions,
-  ] = React.useMemo(() => {
+  const countryOptions = React.useMemo(() => {
     if (!countriesResponse) {
-      return [emptyNumericOptionList, emptyNumericOptionList];
+      return emptyNumericOptionList;
     }
-
-    const ns: NumericValueOption[] = countriesResponse.results
-      .filter(d => d.independent && d.society_name)
-      .map(d => ({
-        value: d.id,
-        label: d.society_name,
-      })).sort(compareString);
 
     const c: NumericValueOption[] = countriesResponse.results
       .filter(d => d.independent && d.iso)
@@ -167,7 +169,7 @@ function useInformalUpdateFormOptions(value: PartialForm<InformalUpdateFields>) 
         label: d.name,
       })).sort(compareString);
 
-    return [ns, c] as const;
+    return c;
   }, [countriesResponse]);
 
   const countryQuery = React.useMemo(() => ({
@@ -204,17 +206,10 @@ function useInformalUpdateFormOptions(value: PartialForm<InformalUpdateFields>) 
     })) ?? emptyNumericOptionList
   ), [disasterTypesResponse]);
 
-  const yesNoOptions = React.useMemo(() => {
-    return [
-      { value: true, label: strings.yesLabel },
-      { value: false, label: strings.noLabel },
-    ] as BooleanValueOption[];
-  }, [strings]);
-
   const {
     pending: fetchingShareWithOptions,
     response: shareWith
-  } = useRequest<ShareWithOptionsEntity>({
+  } = useRequest<{ share_with_options: StringValueOption[] }>({
     url: 'api/v2/informal-options/'
   });
 
@@ -225,46 +220,26 @@ function useInformalUpdateFormOptions(value: PartialForm<InformalUpdateFields>) 
     })).sort(compareString) ?? emptyStringOptionList
   ), [shareWith]);
 
-  const ntls = true;
-  const ifrc = true;
-  const rcrc = true;
-
-  const organizationsType: OrganizationType = React.useMemo(() => {
-    if (ntls) {
-      return 'NTLS';
-    }
-
-    if (ifrc) {
-      return "IFRC";
-    }
-
-    if (rcrc) {
-      return "RCRC";
-    }
-
-    return 'GOV';
-  }, [ntls, ifrc, rcrc]);
-
   const {
     pending: fetchingActions,
     response: actionsResponse,
-  } = useRequest<ListResponse<ActionFields>>({
+  } = useRequest<ListResponse<ActionOptionItem>>({
     url: 'api/v2/informal_action/',
     query: limitQuery,
   });
 
-  const actionOptionsMap: ActionsByOrganizationArrayLists = React.useMemo(() => {
+  const actionOptionsMap: Record<OrganizationType, ActionOptionItem[]> = React.useMemo(() => {
     if (!actionsResponse?.results?.length) {
       return {
-        NTLS: emptyActionList,
-        IFRC: emptyActionList,
-        RCRC: emptyActionList,
-        GOV: emptyActionList,
-      } as ActionsByOrganizationArrayLists;
+        NTLS: emptyActionOptionItemList,
+        IFRC: emptyActionOptionItemList,
+        RCRC: emptyActionOptionItemList,
+        GOV: emptyActionOptionItemList,
+      };
     }
 
     const actionList = actionsResponse.results;
-    const getFilterOrganization = (organizationType: string) => (a: ActionFields) => (
+    const getFilterOrganization = (organizationType: string) => (a: ActionOptionItem) => (
       a.organizations.findIndex(
         (frt: string) => frt === organizationType
       ) !== -1
@@ -280,64 +255,17 @@ function useInformalUpdateFormOptions(value: PartialForm<InformalUpdateFields>) 
     return actionMap;
   }, [actionsResponse]);
 
-  const orgGroupedActionForCurrentReport = React.useMemo(() => {
-    const options = actionOptionsMap[organizationsType];
-
-    return options.reduce((acc, val) => {
-      const newAcc = { ...acc } as ActionsByOrganization;
-      (Object.keys(newAcc) as OrganizationType[]).forEach((org) => {
-        if (val.organizations.findIndex((o) => o === org) !== -1) {
-          newAcc[org].push({
-            value: val.id,
-            label: val.name,
-            description: val.tooltip_text ?? undefined,
-            category: val.category,
-            organization: org,
-          });
-        }
-      });
-      return newAcc;
-    }, {
-      NTLS: [],
-      IFRC: [],
-      RCRC: [],
-      GOV: [],
-    } as ActionsByOrganization);
-  }, [actionOptionsMap, organizationsType]);
-
-  React.useMemo(() => {
-    const date = `${(new Date().getMonth() + 1)} / ${(new Date().getFullYear())}`;
-
-    const countryNameTitle = value.country_district?.flatMap((item) => {
-      return countryOptions.find((x) => x.value === item?.country)?.label ?? ' ';
-    }).reduce((item, name) => {
-      return `${item} - ${name}`;
-    });
-    const hazardTitle = disasterTypeOptions.find((x) => x.value === value?.hazard_type)?.label ?? ' ';
-
-    if (isDefined(value.country_district) && isDefined(value.hazard_type)) {
-      value.title = `${countryNameTitle} - ${hazardTitle}  ${date}`;
-    }
-
-  }, [value, disasterTypeOptions, countryOptions]);
-
-
-
   return {
+    actionOptionsMap,
     countryOptions,
-    districtOptions,
-    fetchingDistricts,
     disasterTypeOptions,
+    districtOptions,
+    fetchingActions,
     fetchingCountries,
     fetchingDisasterTypes,
-    fetchingUserDetails,
-    userDetails,
-    yesNoOptions,
-    nationalSocietyOptions,
+    fetchingDistricts,
     fetchingShareWithOptions,
     shareWithOptions,
-    orgGroupedActionForCurrentReport,
-    fetchingActions,
   };
 }
 

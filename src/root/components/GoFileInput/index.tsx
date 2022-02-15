@@ -2,70 +2,51 @@ import React, { useCallback } from 'react';
 import {
   _cs,
   isDefined,
-  randomString,
 } from '@togglecorp/fujs';
 import { IoClose } from 'react-icons/io5';
-import {
-  EntriesAsList,
-  PartialForm,
-  SetValueArg,
-  useFormArray,
-  useFormObject
-} from '@togglecorp/toggle-form';
 
 import { useLazyRequest } from '#utils/restRequest';
 import Button from '#components/Button';
-import FileInput, { Props as FileInputProps } from '#components/FileInput';
+import RawButton from '#components/RawButton';
+import FileInput, {
+  Props as FileInputProps
+} from '#components/FileInput';
 import useAlert from '#hooks/useAlert';
-import TextInput from '#components/TextInput';
-import {
-  ImageData,
-  InformalUpdateFields
-} from '#views/InformalUpdateApplicationForm/common';
-import { ImageDataType } from '#views/InformalUpdateApplicationForm/useInformalUpdateFormOptions';
 
 import styles from './styles.module.scss';
 
-type Value = PartialForm<InformalUpdateFields>;
-const defaultFormValues: PartialForm<ImageData> = {};
 interface Option {
   id: number;
   file: string; // this is a url
 }
 
-interface PreviewProps {
-  file: string;
-  value: PartialForm<ImageDataType>;
-  index: number;
-  onChange: (value: SetValueArg<PartialForm<ImageData>>, index: number) => void;
-  onRemove?: (index: number) => void;
+interface PreviewProps<ID extends number> {
+  id: ID,
+  file?: string;
+  onRemoveButtonClick?: (id: ID) => void;
 }
 
-// TODO: verify the file is an image before preview
-function Preview(props: PreviewProps) {
+export function Preview<ID extends number>(props: PreviewProps<ID>) {
   const {
-    onRemove,
-    value,
-    index,
-    onChange
+    id,
+    file,
+    onRemoveButtonClick,
   } = props;
 
-  const onValueChange = useFormObject(index, onChange, defaultFormValues);
-
-  if (!value?.file) {
+  if (!file) {
     return null;
   }
 
-  const isPreviewable = value?.file.match(/.(jpg|jpeg|png|gif)$/i);
+  const isPreviewable = file.match(/.(jpg|jpeg|png|gif)$/i);
 
   const removeButton = (
-    <Button
-      name={index}
-      onClick={onRemove}
-      className={styles.removeButton}
-    >
-      <IoClose />
-    </Button>
+      <RawButton
+        name={id}
+        onClick={onRemoveButtonClick}
+        className={styles.removeButton}
+      >
+        <IoClose />
+      </RawButton>
   );
 
   if (!isPreviewable) {
@@ -78,45 +59,33 @@ function Preview(props: PreviewProps) {
   }
 
   return (
-    <div>
-      <div className={styles.preview}>
-        <img
-          className={styles.image}
-          src={value?.file}
-        />
-
-        {removeButton}
-      </div>
-      <TextInput
-        className={styles.captionText}
-        name="caption"
-        value={value.caption}
-        label="Captions"
-        onChange={onValueChange}
+    <div className={styles.preview}>
+      <img
+        className={styles.image}
+        src={file}
       />
+      {removeButton}
     </div>
   );
 }
 
-type Props<T extends string> = Omit<FileInputProps<T>, 'overrideStatus' | 'status' | 'value' | 'onChange' | 'multiple' | 'onCaptionValueChange'> & {
+export type Props<T extends string, OMISSION extends string = never> = Omit<FileInputProps<T>, 'overrideStatus' | 'status' | 'value' | 'onChange' | 'multiple'> & Omit<{
   fileIdToUrlMap?: Record<number, string>;
   setFileIdToUrlMap?: React.Dispatch<React.SetStateAction<Record<number, string>>>;
-  allValue: Value;
-  onCaptionValueChange: (...entries: EntriesAsList<Value>) => void;
-} & ({
+  url: string;
+  hidePreview?: boolean;
+}, OMISSION> & ({
   multiple: true;
-  value?: number[];
+  value: number[] | undefined | null;
   onChange: (value: number[] | undefined, name: T) => void;
 } | {
   multiple?: false;
-  value?: number;
+  value: number | undefined | null;
   onChange: (value: number | undefined, name: T) => void;
 })
 
-function MapFileUpload<T extends string>(props: Props<T>) {
+function GoFileInput<T extends string>(props: Props<T>) {
   const {
-    onCaptionValueChange,
-    allValue,
     value,
     disabled,
     name,
@@ -124,19 +93,12 @@ function MapFileUpload<T extends string>(props: Props<T>) {
     fileIdToUrlMap,
     setFileIdToUrlMap,
     className,
+    url,
+    hidePreview,
     ...otherProps
   } = props;
+
   const alert = useAlert();
-
-  type ImageDetails = typeof allValue.map_details;
-
-  const {
-    setValue: onImageChange,
-    removeValue: onImageRemove,
-  } = useFormArray<'map_details', PartialForm<ImageData>>(
-    'map_details',
-    onCaptionValueChange,
-  );
 
   const {
     pending,
@@ -144,7 +106,7 @@ function MapFileUpload<T extends string>(props: Props<T>) {
     context,
   } = useLazyRequest<Option | Option[], { file: FileInputProps<T>['value'] }>({
     formData: true,
-    url: props.multiple ? 'api/v2/informal-file/multiple/' : 'api/v2/informal-file/',
+    url,
     method: 'POST',
     body: ctx => ctx,
     onSuccess: (response) => {
@@ -164,21 +126,6 @@ function MapFileUpload<T extends string>(props: Props<T>) {
           });
         }
         props.onChange([...(props.value ?? []), ...ids], name);
-
-        const newList = (response as Option[])?.map((el) => ({
-          clientId: randomString(),
-          caption: undefined,
-          pk: el.id,
-          file: el.file
-        }));
-
-        onCaptionValueChange(
-          (oldValue: PartialForm<ImageDetails>) => (
-            [...(oldValue ?? []), ...(newList ?? [])]
-          ),
-          'map_details' as const,
-        );
-
       } else {
         const option = response as Option;
         const { id } = option;
@@ -218,33 +165,32 @@ function MapFileUpload<T extends string>(props: Props<T>) {
   let currentStatus;
   if (pending) {
     currentStatus = 'Uploading file(s)...';
-  } else if (!allValue.map_details) {
+  } else if (!value) {
     currentStatus = 'No file selected';
-  } else {
-    currentStatus = Array.isArray(allValue?.map_details) ? `${allValue?.map_details?.length} files selected` : '1 file selected';
+  }  else {
+    currentStatus = Array.isArray(value) ? `${value.length} files selected` : '1 file selected';
   }
 
   const handleClear = useCallback(() => {
-    onCaptionValueChange([], 'map_details');
-    // props.onChange(undefined, name);
+    props.onChange(undefined, name);
     //eslint-disable-next-line  react-hooks/exhaustive-deps
   }, [props.onChange, name]);
 
-  //const handleFileRemoveButtonClick = useCallback((id: number) => {
-  //  if (props.multiple) {
-  //    const newValue = [...(props.value ?? [])];
-  //    const i = newValue.findIndex(f => f === id);
-  //    if (i === -1) {
-  //      return;
-  //    }
+  const handleFileRemoveButtonClick = useCallback((id: number) => {
+    if (props.multiple) {
+      const newValue = [...(props.value ?? [])];
+      const i = newValue.findIndex(f => f === id);
+      if (i === -1) {
+        return;
+      }
 
-  //    newValue.splice(i, 1);
-  //    props.onChange(newValue, name);
-  //  } else {
-  //    props.onChange(undefined, name);
-  //  }
-  //  //eslint-disable-next-line  react-hooks/exhaustive-deps
-  //}, [props.value, props.onChange, props.multiple, name]);
+      newValue.splice(i, 1);
+      props.onChange(newValue, name);
+    } else {
+      props.onChange(undefined, name);
+    }
+    //eslint-disable-next-line  react-hooks/exhaustive-deps
+  }, [props.value, props.onChange, props.multiple, name]);
 
   if (props.multiple) {
     return (
@@ -265,7 +211,7 @@ function MapFileUpload<T extends string>(props: Props<T>) {
                 >
                   <IoClose />
                 </Button>
-              )}
+            )}
             </>
           )}
           disabled={disabled || pending}
@@ -276,15 +222,12 @@ function MapFileUpload<T extends string>(props: Props<T>) {
           onChange={handleChange}
         />
         <div className={styles.previewList}>
-          {allValue?.map_details?.filter(item => item.file !== undefined || null)?.map((el, i) => (
+          {props.value?.map((fileId) => (
             <Preview
-              key={i}
-              index={i}
-              value={el}
-              //file={fileIdToUrlMap?.[el.id]}
-              onRemove={onImageRemove}
-              onChange={onImageChange}
-              file={''}
+              key={fileId}
+              id={fileId}
+              file={fileIdToUrlMap?.[fileId]}
+              onRemoveButtonClick={handleFileRemoveButtonClick}
             />
           ))}
         </div>
@@ -310,7 +253,7 @@ function MapFileUpload<T extends string>(props: Props<T>) {
               >
                 <IoClose />
               </Button>
-            )}
+          )}
           </>
         )}
         disabled={disabled || pending}
@@ -320,20 +263,16 @@ function MapFileUpload<T extends string>(props: Props<T>) {
         value={context?.file as (File | null | undefined)}
         onChange={handleChange}
       />
-      {isDefined(value) && (
-        <>
-          <div className={styles.previewList}>
-            {/*<Preview
-              id={value as number}
-              file={fileIdToUrlMap?.[value as number]}
-              onRemoveButtonClick={handleFileRemoveButtonClick}
-            />*/}
-          </div>
-
-
-        </>
+      {isDefined(value) && !hidePreview && (
+        <div className={styles.previewList}>
+          <Preview
+            id={value as number}
+            file={fileIdToUrlMap?.[value as number]}
+            onRemoveButtonClick={handleFileRemoveButtonClick}
+          />
+        </div>
       )}
     </div>
   );
 }
-export default MapFileUpload;
+export default GoFileInput;

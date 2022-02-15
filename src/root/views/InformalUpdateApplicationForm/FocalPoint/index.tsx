@@ -3,7 +3,6 @@ import {
   EntriesAsList,
   PartialForm,
   Error,
-  SetBaseValueArg,
   getErrorObject,
 } from '@togglecorp/toggle-form';
 
@@ -14,11 +13,12 @@ import TextInput from '#components/TextInput';
 import languageContext from '#root/languageContext';
 import { optionDescriptionSelector } from '#views/FieldReportForm/common';
 import {
-  BooleanValueOption,
+  StringValueOption
+} from '#types';
+import {
   InformalUpdateFields,
   optionLabelSelector,
   stringOptionKeySelector,
-  StringValueOption
 } from '../common';
 
 type Value = PartialForm<InformalUpdateFields>;
@@ -26,10 +26,8 @@ type Value = PartialForm<InformalUpdateFields>;
 interface Props {
   error: Error<Value> | undefined;
   onValueChange: (...entries: EntriesAsList<Value>) => void;
-  yesNoOptions: BooleanValueOption[];
   value: Value;
   shareWithOptions: StringValueOption[];
-  onValueSet: (value: SetBaseValueArg<Value>) => void;
 }
 
 function FocalPoints(props: Props) {

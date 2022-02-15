@@ -15,19 +15,23 @@ import languageContext from '#root/languageContext';
 import SelectInput from '#components/SelectInput';
 import TextInput from '#components/TextInput';
 import TextArea from '#components/TextArea';
-import GraphicFileInput from '#components/InformalUpdateFileInput/GraphicFileInput';
-import MapFileInput from '#components/InformalUpdateFileInput/MapFileInput';
-import { CountryDistrictType, ReferenceType } from '../useInformalUpdateFormOptions';
-import CountryProvinceInput from './CountryProvinceInput';
+import InformalUpdateFileInput from '#components/InformalUpdateFileInput';
+
+import { NumericValueOption } from '#types';
+
 import {
   InformalUpdateFields,
-  NumericValueOption,
   CountryDistrict,
-  ReferenceData,
+  Reference,
+  FileWithCaption,
 } from '../common';
 
-import styles from './styles.module.scss';
+import CountryProvinceInput from './CountryProvinceInput';
 import ReferenceInput from './ReferenceInput';
+import GraphicInput from './GraphicInput';
+import MapInput from './MapInput';
+
+import styles from './styles.module.scss';
 
 type Value = PartialForm<InformalUpdateFields>;
 interface Props {
@@ -45,7 +49,7 @@ interface Props {
   onCreateAndShareButtonClick: () => void;
 }
 
-function ContextOverview(props: Props) {
+function Context(props: Props) {
   const { strings } = useContext(languageContext);
   const {
     error: formError,
@@ -66,23 +70,39 @@ function ContextOverview(props: Props) {
     'country_district',
     onValueChange,
   );
+
   const {
     setValue: onReferenceChange,
     removeValue: onReferenceRemove,
-  } = useFormArray<'reference', PartialForm<ReferenceData>>(
-    'reference',
+  } = useFormArray<'references', PartialForm<Reference>>(
+    'references',
+    onValueChange,
+  );
+
+  const {
+    setValue: onMapChange,
+    removeValue: onMapRemove,
+  } = useFormArray<'map', PartialForm<FileWithCaption>>(
+    'map',
+    onValueChange,
+  );
+
+  const {
+    setValue: onGraphicChange,
+    removeValue: onGraphicRemove,
+  } = useFormArray<'graphics', PartialForm<FileWithCaption>>(
+    'graphics',
     onValueChange,
   );
 
   type CountryDistricts = typeof value.country_district;
-  type References = typeof value.reference;
+  type References = typeof value.references;
 
   const handleCountryDistrictAdd = React.useCallback(() => {
-    const newList: PartialForm<CountryDistrictType> = {
+    const newList: PartialForm<CountryDistrict> = {
       clientId: randomString(),
-      country: undefined,
-      district: undefined
     };
+
     onValueChange(
       (oldValue: PartialForm<CountryDistricts>) => (
         [...(oldValue ?? []), newList]
@@ -92,20 +112,43 @@ function ContextOverview(props: Props) {
   }, [onValueChange,]);
 
   const handleAddReference = React.useCallback(() => {
-    const newList: PartialForm<ReferenceType> = {
-      // clientId: randomString(),
-      date: undefined,
-      source_description: undefined,
-      url: '',
-      document: '',
+    const newList: PartialForm<Reference> = {
+      clientId: randomString(),
     };
+
     onValueChange(
       (oldValue: PartialForm<References>) => (
         [...(oldValue ?? []), newList]
       ),
-      'reference' as const,
+      'references' as const,
     );
   }, [onValueChange]);
+
+  const handleGraphicsInputChange = React.useCallback((newValue: number[] | undefined) => {
+    const newList: undefined | PartialForm<FileWithCaption[]> = newValue?.map((v) => ({
+      clientId: randomString(),
+      file: v,
+    }));
+
+    onValueChange(newList, 'graphics' as const);
+  }, [onValueChange]);
+
+  const handleMapInputChange = React.useCallback((newValue: number[] | undefined) => {
+    const newList: undefined | PartialForm<FileWithCaption[]> = newValue?.map((v) => ({
+      clientId: randomString(),
+      file: v,
+    }));
+
+    onValueChange(newList, 'map' as const);
+  }, [onValueChange]);
+
+  const mapValue = React.useMemo(() => (
+    value?.map?.map(d => d.file).filter(d => !!d) as number[] | undefined
+  ), [value?.map]);
+
+  const graphicsValue = React.useMemo(() => (
+    value?.graphics?.map(d => d.file).filter(d => !!d) as number[] | undefined
+  ), [value?.graphics]);
 
   return (
     <>
@@ -144,11 +187,6 @@ function ContextOverview(props: Props) {
             </Button>
           </div>
         </InputSection>
-      </Container>
-      <Container
-        className={styles.context}
-        visibleOverflow
-      >
         <InputSection
           title={strings.informalUpdateFormContextHazardTypeTitle}
         >
@@ -161,8 +199,6 @@ function ContextOverview(props: Props) {
             value={value.hazard_type}
           />
         </InputSection>
-      </Container>
-      <Container>
         <InputSection
           title={strings.informalUpdateFormContextTitle}
           description={strings.informalUpdateFormContextTitleDescription}
@@ -175,8 +211,6 @@ function ContextOverview(props: Props) {
             placeholder={strings.informalUpdateFormContextTitlePlaceholder}
           />
         </InputSection>
-      </Container>
-      <Container >
         <InputSection
           title={strings.informalUpdateFormContextSituationalTitle}
           description={strings.informalUpdateFormContextSituationalDescription}
@@ -188,74 +222,95 @@ function ContextOverview(props: Props) {
             error={error?.situational_overview}
           />
         </InputSection>
-      </Container>
-      <Container>
         <InputSection
           title={strings.informalUpdateFormContextGraphicTitle}
           description={strings.informalUpdateFormContextGraphicDescription}
         >
-          <GraphicFileInput
+          <InformalUpdateFileInput
             accept="image/*"
-            error={error?.graphics_id}
+            error={error?.graphics}
             fileIdToUrlMap={fileIdToUrlMap}
-            name="graphics_id"
-            onChange={onValueChange}
+            name="graphics"
+            onChange={handleGraphicsInputChange}
             setFileIdToUrlMap={setFileIdToUrlMap}
             showStatus
             multiple
-            value={value?.graphics_id}
-            allValue={value && value}
-            onCaptionValueChange={onValueChange}
+            value={graphicsValue}
           >
             {strings.informalUpdateFormContextReferenceUrlButtonLabel}
-          </GraphicFileInput>
+          </InformalUpdateFileInput>
+          {value?.graphics?.map((g, i) => (
+            <GraphicInput
+              key={g.clientId}
+              index={i}
+              value={g}
+              onChange={onGraphicChange}
+              onRemove={onGraphicRemove}
+              error={getErrorObject(error?.graphics)}
+              fileIdToUrlMap={fileIdToUrlMap}
+            />
+          ))}
         </InputSection>
-      </Container>
-      <Container>
         <InputSection
           title={strings.informalUpdateFormContextMapTitle}
           description={strings.informalUpdateFormContextMapDescription}
         >
-          <MapFileInput
+          <InformalUpdateFileInput
             accept="image/*"
-            error={error?.map_id}
+            error={error?.map}
             fileIdToUrlMap={fileIdToUrlMap}
-            name="map_id"
-            onChange={onValueChange}
+            name="map"
+            onChange={handleMapInputChange}
             setFileIdToUrlMap={setFileIdToUrlMap}
             multiple
             showStatus
-            value={value.map_id}
-            allValue={value && value}
-            onCaptionValueChange={onValueChange}
+            value={mapValue}
           >
             {strings.informalUpdateFormContextReferenceUrlButtonLabel}
-          </MapFileInput>
+          </InformalUpdateFileInput>
+          {value?.map?.map((m, i) => (
+            <MapInput
+              key={m.clientId}
+              index={i}
+              value={m}
+              onChange={onMapChange}
+              onRemove={onMapRemove}
+              error={getErrorObject(error?.map)}
+              fileIdToUrlMap={fileIdToUrlMap}
+            />
+          ))}
         </InputSection>
-      </Container>
-      <Container
-      >
         <InputSection
           title={strings.informalUpdateFormContextReferenceTitle}
           description={strings.informalUpdateFormContextReferenceDescription}
           multiRow
           oneColumn
         >
-          {value.reference?.map((c, i) => (
+          {value.references?.map((c, i) => (
             <ReferenceInput
               key={i}
               index={i}
               value={c}
-              error={error}
+              error={getErrorObject(error?.references)}
               onChange={onReferenceChange}
               onRemove={onReferenceRemove}
-              handleAddReference={handleAddReference}
+              fileIdToUrlMap={fileIdToUrlMap}
+              setFileIdToUrlMap={setFileIdToUrlMap}
             />
           ))}
+          <div className={styles.actions}>
+            <Button
+              name={undefined}
+              variant="secondary"
+              onClick={handleAddReference}
+            >
+              {strings.informalUpdateFormContextReferenceAddButtonLabel}
+            </Button>
+          </div>
         </InputSection>
       </Container>
     </>
   );
 }
 
-export default ContextOverview;
+export default Context;

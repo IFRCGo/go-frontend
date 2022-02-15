@@ -26,13 +26,14 @@ import TabPanel from '#components/Tabs/TabPanel';
 import useAlert from '#hooks/useAlert';
 import { useLazyRequest, useRequest } from '#utils/restRequest';
 
-import ContextOverview from './ContextOverview';
+import Context from './Context';
 import FocalPoints from './FocalPoint';
-import ActionsOverview from './ActionOverview';
+import ActionsInput from './ActionsInput';
 
 import {
   InformalUpdateFields,
   InformalUpdateAPIFields,
+  InformalUpdateAPIResponseFields,
   transformFormFieldsToAPIFields,
   contextFields,
   actionsFields,
@@ -77,19 +78,21 @@ const stepTypesToFieldsMap: {
 const defaultFormValues: PartialForm<InformalUpdateFields> = {
   country_district: [{
     clientId: randomString(),
-    country: undefined,
-    district: undefined
   }],
-  reference: [{}],
-  map_details: [],
-  graphics_details: []
+  references: [{
+    clientId: randomString(),
+  }],
+  actions_taken: [
+    { organization: 'NTLS' },
+    { organization: 'IFRC' },
+    { organization: 'RCRC' },
+    { organization: 'GOV' },
+  ],
 };
 
 function InformalUpdateForm(props: Props) {
   const {
     className,
-    // location,
-    history,
     match,
   } = props;
   const alert = useAlert();
@@ -107,15 +110,16 @@ function InformalUpdateForm(props: Props) {
   } = useForm(schema, defaultFormValues);
 
   const {
+    actionOptionsMap,
     countryOptions,
     disasterTypeOptions,
-    fetchingCountries,
-    fetchingDistricts,
     districtOptions,
+    fetchingActions,
+    fetchingCountries,
     fetchingDisasterTypes,
-    yesNoOptions,
+    fetchingDistricts,
+    fetchingShareWithOptions,
     shareWithOptions,
-    orgGroupedActionForCurrentReport,
   } = useInformalUpdateFormOptions(value);
 
   const [currentStep, setCurrentStep] = React.useState<StepTypes>('context');
@@ -126,44 +130,25 @@ function InformalUpdateForm(props: Props) {
   const {
     pending: informalUpdatePending,
     response: InformalUpdateResponse
-  } = useRequest<InformalUpdateAPIFields>({
+  } = useRequest<InformalUpdateAPIResponseFields>({
     skip: !id,
     url: `api/v2/informal-update/${id}`,
     onSuccess: (response) => {
-
       onValueSet({
         ...response,
+
         country_district: response?.country_district?.map((cd) => ({
           ...cd,
           clientId: String(cd.id)
         })),
-        reference: response?.references?.map((refs) => ({
-          ...refs,
-          clientId: String(refs.id)
+
+        references: response?.references?.map((ref) => ({
+          ...ref,
+          clientId: String(ref.id)
         })),
-        actions_ntls: response?.actions_taken?.find(o => o.organization === 'NTLS')?.actions,
-        actions_ntls_desc: response?.actions_taken?.find(o => o.organization === 'NTLS')?.summary,
-
-        actions_ifrc: response?.actions_taken?.find(o => o.organization === 'IFRC')?.actions,
-        actions_ifrc_desc: response?.actions_taken?.find(o => o.organization === 'IFRC')?.summary,
-
-        actions_rcrc: response?.actions_taken?.find(o => o.organization === 'RCRC')?.actions,
-        actions_rcrc_desc: response?.actions_taken?.find(o => o.organization === 'RCRC')?.summary,
-
-        actions_government: response?.actions_taken?.find(o => o.organization === 'GOV')?.actions,
-        actions_government_desc: response?.actions_taken?.find(o => o.organization === 'GOV')?.summary,
-
-        map_details: response?.map?.map((m) => ({
-          ...m,
-          clientId: String(m.pk)
-        })),
-        graphics_details: response?.graphics.map((el) => ({
-          ...el,
-          clientId: String(el.pk)
-        }))
-
       });
     },
+
     onFailure: ({
       value: { messageForNotification },
       debugMessage,
@@ -247,7 +232,7 @@ function InformalUpdateForm(props: Props) {
   const {
     pending: informalUpdateSubmitPending,
     trigger: submitRequest,
-  } = useLazyRequest<InformalUpdateAPIFields, Partial<InformalUpdateAPIFields>>({
+  } = useLazyRequest<InformalUpdateAPIResponseFields, Partial<InformalUpdateAPIFields>>({
     url: id ? `api/v2/informal-update/${id}/` : 'api/v2/informal-update/',
     method: id ? 'PUT' : 'POST',
     body: ctx => ctx,
@@ -262,9 +247,13 @@ function InformalUpdateForm(props: Props) {
       );
     },
     onFailure: ({
-      value: { messageForNotification },
+      value: {
+        messageForNotification,
+        formErrors,
+      },
       debugMessage,
     }) => {
+      onErrorSet(formErrors);
       alert.show(
         <p>
           {strings.informalUpdateFormSaveRequestFailureMessage}
@@ -287,9 +276,8 @@ function InformalUpdateForm(props: Props) {
     if (result.errored) {
       onErrorSet(result.error);
     } else {
-      const apiFields = transformFormFieldsToAPIFields(result.value as InformalUpdateFields);
-
-      submitRequest(apiFields);
+      const finalValue = transformFormFieldsToAPIFields(result.value);
+      submitRequest(finalValue);
     }
 
   }, [validate, onErrorSet, submitRequest]);
@@ -336,10 +324,32 @@ function InformalUpdateForm(props: Props) {
     children: strings.informalUpdateFormExportLabel,
   });
 
+  // Auto generate title
+  React.useEffect(() => {
+    if (!isDefined(value.country_district) || !isDefined(value.hazard_type)) {
+      return;
+    }
+
+    const date = `${(new Date().getMonth() + 1)} / ${(new Date().getFullYear())}`;
+
+    // TODO: simplify this
+    const countryNameTitle = value.country_district?.flatMap((item) => {
+      return countryOptions.find((x) => x.value === item?.country)?.label ?? ' ';
+    }).reduce((item, name) => {
+      return `${item} - ${name}`;
+    });
+
+    const hazardTitle = disasterTypeOptions.find((x) => x.value === value?.hazard_type)?.label ?? ' ';
+    const title = `${countryNameTitle} - ${hazardTitle}  ${date}`;
+
+    onValueChange(title, 'title' as const);
+  }, [value, disasterTypeOptions, countryOptions, onValueChange]);
+
   const pending = fetchingCountries
-    || fetchingCountries
     || fetchingDistricts
     || fetchingDisasterTypes
+    || fetchingActions
+    || fetchingShareWithOptions
     || informalUpdateSubmitPending
     || informalUpdatePending;
 
@@ -428,7 +438,7 @@ function InformalUpdateForm(props: Props) {
                 />
               </Container>
               <TabPanel name="context">
-                <ContextOverview
+                <Context
                   error={error}
                   onValueChange={onValueChange}
                   value={value}
@@ -444,13 +454,11 @@ function InformalUpdateForm(props: Props) {
                 />
               </TabPanel>
               <TabPanel name="action">
-                <ActionsOverview
+                <ActionsInput
                   error={error}
                   onValueChange={onValueChange}
                   value={value}
-                  yesNoOptions={yesNoOptions}
-                  onValueSet={onValueSet}
-                  actionOptions={orgGroupedActionForCurrentReport}
+                  actionOptionsMap={actionOptionsMap}
                 />
               </TabPanel>
               <TabPanel name="focal">
@@ -458,8 +466,6 @@ function InformalUpdateForm(props: Props) {
                   error={error}
                   onValueChange={onValueChange}
                   value={value}
-                  yesNoOptions={yesNoOptions}
-                  onValueSet={onValueSet}
                   shareWithOptions={shareWithOptions}
                 />
               </TabPanel>

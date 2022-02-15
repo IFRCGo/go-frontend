@@ -27,3 +27,5 @@ export interface StringValueOption {
   value: string;
   label: string;
 }
+
+export type SetValueArg<T> = T | ((value: T) => T);

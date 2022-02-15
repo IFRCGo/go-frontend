@@ -14,14 +14,17 @@ import {
 import { compareString } from '#utils/utils';
 import SelectInput from '#components/SelectInput';
 import Button from '#components/Button';
-import { DistrictMini } from '#types';
+import {
+  DistrictMini,
+  NumericValueOption,
+  SetValueArg,
+} from '#types';
 import LanguageContext from '#root/languageContext';
 import { CountryDistrictType } from '#views/InformalUpdateApplicationForm/useInformalUpdateFormOptions';
-import { emptyNumericOptionList, NumericValueOption } from '#views/InformalUpdateApplicationForm/common';
+import { emptyNumericOptionList } from '#views/InformalUpdateApplicationForm/common';
 
 import styles from './styles.module.scss';
 
-type SetValueArg<T> = T | ((value: T) => T);
 
 const defaultCountryDistrictValue: PartialForm<CountryDistrictType> = {};
 interface Props {
