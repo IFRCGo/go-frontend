@@ -1,68 +1,92 @@
 @import '~styles/settings/variables';
 
-.situational {
-  :global {
-    .go-container {
-      header {
-        background-color: $white;
-        padding: $spacing $spacing-2 !important;
-      }
-    }
-  }
-
-  .overview-container {
-      display: flex;
-
-      .overview-label {
-          font-weight: $base-font-semi-bold;
-      }
-      .overview-value {
-          padding: 0 $spacing-2;
-      }
-  }
-  .overview-description {
-      margin: $spacing-3/2 0;
-  }
-
-  .graphic {
-    display: flex;
-    justify-content: space-around;
-    padding: $spacing-2;
-
-    .card {
-      padding: $spacing;
-      background-color: $white;
-
-      img {
-        width: 350px;
-        max-height: 500px;
-      }
-    }
-  }
+%image-item {
+  flex-basis: 33%;
+  border: $base-border-color solid $base-border-width;
 
   .image {
-    display: flex;
-    justify-content: space-around;
-    padding: $spacing-2;
-    background-color: $white;
-    
-    img {
-      object-fit: contain;
-      max-height: 300px;
-    }
+    width: 100%;
+    height: 20rem;
+    object-fit: contain;
+    object-position: center center;
+    background-color: $grey-fog;
   }
 
-  .image-with-caption {
+  .caption {
+    padding: $spacing;
+  }
+}
+
+.informal-update {
+  .country-list {
+    display: flex;
+    justify-content: center;
+    gap: $spacing;
+  }
+
+  .main-content {
     display: flex;
     flex-direction: column;
-    grid-gap: $grid-gutter;
+    gap: $spacing*3;
 
-  }
+    .maps {
+      display: flex;
+      flex-wrap: wrap;
 
-  .resources {
-    columns: 3;
-    background-color: $white;
-    padding: $spacing;
-    color: $grey-gravel ;
+      .map-item {
+        @extend %image-item;
+      }
+    }
+
+    .graphics {
+      display: flex;
+      flex-wrap: wrap;
+
+      .graphic-item {
+        @extend %image-item;
+      }
+    }
+
+    .actions-taken {
+      display: flex;
+      flex-direction: column;
+      gap: $spacing * 2;
+
+      .action-taken-content {
+        padding: $spacing/2 $spacing;
+
+        .action-list {
+          padding: $spacing/2 0;
+          display: flex;
+          flex-direction: column;
+          gap: $spacing/4;
+
+          .action {
+            font-weight: $base-font-medium;
+            font-size: $font-size-sm;
+          }
+        }
+      }
+    }
+
+    .reference {
+      padding: $spacing;
+      gap: $spacing;
+      display: flex;
+
+      .date {
+        flex-basis: 10rem;
+        flex-shink: 0;
+      }
+
+      .url {
+        flex-basis: 20rem;
+        word-break: break-all;
+      }
+
+      .download-link {
+        flex-shrink: 0;
+      }
+    }
   }
 }

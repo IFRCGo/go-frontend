@@ -259,7 +259,7 @@ function InformalUpdateForm(props: Props) {
         { variant: 'success' },
       );
       window.setTimeout(
-        () => history.push(`/informal-update-report/${response?.id}/`),
+        () => history.push(`/informal-update/${response?.id}/`),
         250,
       );
     },
@@ -293,7 +293,7 @@ function InformalUpdateForm(props: Props) {
     if (result.errored) {
       onErrorSet(result.error);
     } else {
-      const finalValue = transformFormFieldsToAPIFields(result.value);
+      const finalValue = transformFormFieldsToAPIFields(result.value as InformalUpdateFields);
       submitRequest(finalValue);
     }
 

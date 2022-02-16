@@ -39,6 +39,15 @@ export interface FileWithCaption {
   caption: string;
 }
 
+export type OrganizationType = 'NTLS' | 'PNS' | 'FDRN' | 'GOV';
+export interface ActionOptionItem {
+  id: number;
+  category: string;
+  name: string;
+  organizations: OrganizationType[];
+  tooltip_text: string;
+}
+
 export interface Action {
   client_id: string;
   actions: number[];
@@ -98,7 +107,7 @@ type TransformToApiFields<FIELDS extends {}, ADDITION extends {}> =  FIELDS & {
   id: number;
 } & ADDITION;
 
-export interface InformalUpdateAPIResponseFields extends Omit<InformalUpdateFields, 'country_district' | 'references' | 'graphics_files' | 'map_files'> {
+export interface InformalUpdateAPIResponseFields extends Omit<InformalUpdateFields, 'country_district' | 'references' | 'graphics_files' | 'map_files' | 'actions_taken'> {
   id: number,
   country_district: TransformToApiFields<CountryDistrict, {
     country_details: Country;
@@ -123,17 +132,16 @@ export interface InformalUpdateAPIResponseFields extends Omit<InformalUpdateFiel
     file: string;
   }[];
   hazard_type_details: HazardDetails;
+  actions_taken: (Action & {
+    id: number;
+    action_details: (ActionOptionItem & {
+      client_id: string | null;
+    })[];
+    organization_display: string;
+  })[];
 }
 
 export type InformalUpdateAPIFields = InformalUpdateFields;
-export type OrganizationType = 'NTLS' | 'PNS' | 'FDRN' | 'GOV';
-export interface ActionOptionItem {
-  id: number;
-  category: string;
-  name: string;
-  organizations: OrganizationType[];
-  tooltip_text: string;
-}
 
 export const emptyActionOptionItemList: ActionOptionItem[] = [];
 

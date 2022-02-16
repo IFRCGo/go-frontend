@@ -1,4 +1,8 @@
-import { createDateColumn, createStringColumn } from "#components/Table/predefinedColumns";
+import {
+  createDateColumn,
+  createStringColumn,
+  createLinkColumn,
+} from "#components/Table/predefinedColumns";
 import { InformalUpdateTableFields } from "#views/InformalUpdateApplicationForm/common";
 import { Strings } from "#types";
 
@@ -11,10 +15,13 @@ export const getBaseColumns = (strings: Strings) => ([
       return date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
     },
   ),
-  createStringColumn<InformalUpdateTableFields, string | number>(
+  createLinkColumn<InformalUpdateTableFields, string | number>(
     'report',
     'Report',
     (item) => item?.title,
+    (item) => ({
+      to: `/informal-update/${item.id}`,
+    }),
   ),
   createStringColumn<InformalUpdateTableFields, string | number>(
     'hazard_type',
@@ -27,7 +34,6 @@ export const getBaseColumns = (strings: Strings) => ([
     (item) => {
       const splitTitle = item?.title.split('-');
       return splitTitle.slice(0, splitTitle.length - 1).join("-");
-
     }
   ),
 ]);

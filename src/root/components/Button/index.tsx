@@ -40,8 +40,9 @@ React.HTMLProps<HTMLButtonElement>,
 }
 
 type ButtonFeatureKeys = 'variant' | 'className' | 'actionsClassName' | 'iconsClassName' | 'childrenClassName' | 'children' | 'icons' | 'actions' | 'disabled';
+export type ButtonFeatureProps = Pick<Props<number | string | undefined>, ButtonFeatureKeys>;
 export function useButtonFeatures(
-  props: Pick<Props<number | string | undefined>, ButtonFeatureKeys>,
+  props: ButtonFeatureProps,
 ) {
   const {
     variant = 'primary',
