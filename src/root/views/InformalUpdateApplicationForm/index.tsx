@@ -5,7 +5,6 @@ import type {
   History,
   Location
 } from 'history';
-import { Link } from 'react-router-dom';
 import {
   getErrorObject,
   PartialForm,
@@ -15,7 +14,7 @@ import {
 } from '@togglecorp/toggle-form';
 
 import Page from '#components/Page';
-import Button, { useButtonFeatures } from '#components/Button';
+import Button from '#components/Button';
 import LanguageContext from '#root/languageContext';
 import TabList from '#components/Tabs/TabList';
 import Tab from '#components/Tabs/Tab';
@@ -39,12 +38,8 @@ import {
   actionsFields,
   focalFields
 } from './common';
-import
-useInformalUpdateFormOptions,
-{
-  schema
-}
-  from './useInformalUpdateFormOptions';
+import useInformalUpdateFormOptions, {
+  schema } from './useInformalUpdateFormOptions';
 
 import styles from './styles.module.scss';
 import BlockLoading from '#components/block-loading';
@@ -77,22 +72,23 @@ const stepTypesToFieldsMap: {
 
 const defaultFormValues: PartialForm<InformalUpdateFields> = {
   country_district: [{
-    clientId: randomString(),
+    client_id: randomString(),
   }],
   references: [{
-    clientId: randomString(),
+    client_id: randomString(),
   }],
   actions_taken: [
-    { organization: 'NTLS' },
-    { organization: 'IFRC' },
-    { organization: 'RCRC' },
-    { organization: 'GOV' },
+    { client_id: randomString(), organization: 'NTLS', actions: [] },
+    { client_id: randomString(), organization: 'PNS', actions: [] },
+    { client_id: randomString(), organization: 'FDRN', actions: [] },
+    { client_id: randomString(), organization: 'GOV', actions: [] },
   ],
 };
 
 function InformalUpdateForm(props: Props) {
   const {
     className,
+    history,
     match,
   } = props;
   const alert = useAlert();
@@ -134,19 +130,40 @@ function InformalUpdateForm(props: Props) {
     skip: !id,
     url: `api/v2/informal-update/${id}`,
     onSuccess: (response) => {
+      if (!response) {
+        // TODO: handle error
+        return;
+      }
+
       onValueSet({
         ...response,
-
-        country_district: response?.country_district?.map((cd) => ({
+        country_district: response.country_district?.map((cd) => ({
           ...cd,
-          clientId: String(cd.id)
+          client_id: String(cd.id)
         })),
-
-        references: response?.references?.map((ref) => ({
+        references: response.references?.map((ref) => ({
           ...ref,
-          clientId: String(ref.id)
+          client_id: String(ref.id)
+        })),
+        graphics_files: response.graphics_files.map((gf) => ({
+          id: gf.id,
+          client_id: gf.client_id ?? String(gf.id),
+          caption: gf.caption ?? '',
+        })),
+        map_files: response.map_files.map((mf) => ({
+          id: mf.id,
+          client_id: mf.client_id ?? String(mf.id),
+          caption: mf.caption ?? '',
         })),
       });
+
+      setFileIdToUrlMap((prevValue) => ({
+        ...prevValue,
+        ...listToMap(response.graphics_files ?? [], d => d.id, d => d.file),
+        ...listToMap(response.map_files ?? [], d => d.id, d => d.file),
+        ...listToMap(response.references ?? [], d => d.document, d => d.document_details?.file),
+      }));
+
     },
 
     onFailure: ({
@@ -242,7 +259,7 @@ function InformalUpdateForm(props: Props) {
         { variant: 'success' },
       );
       window.setTimeout(
-        () => window.location.reload(),
+        () => history.push(`/informal-update-report/${response?.id}/`),
         250,
       );
     },
@@ -319,11 +336,6 @@ function InformalUpdateForm(props: Props) {
     }
   }, [handleTabChange, currentStep]);
 
-  const exportLinkProps = useButtonFeatures({
-    variant: 'secondary',
-    children: strings.informalUpdateFormExportLabel,
-  });
-
   // Auto generate title
   React.useEffect(() => {
     if (!isDefined(value.country_district) || !isDefined(value.hazard_type)) {
@@ -365,21 +377,13 @@ function InformalUpdateForm(props: Props) {
       <Page
         className={className}
         actions={(
-          <>
-            {isDefined(id) && (
-              <Link
-                to={`/dref-application/${id}/export/`}
-                {...exportLinkProps}
-              />
-            )}
-            <Button
-              name={undefined}
-              onClick={submitInformalUpdate}
-              type="submit"
-            >
-              {strings.informalUpdateFormSaveButtonLabel}
-            </Button>
-          </>
+          <Button
+            name={undefined}
+            onClick={submitInformalUpdate}
+            type="submit"
+          >
+            {strings.informalUpdateFormSaveButtonLabel}
+          </Button>
         )}
         title={strings.informalUpdateFormPageTitle}
         heading={strings.informalUpdateFormPageHeading}

@@ -20,13 +20,13 @@ export interface HazardDetails {
 }
 
 export interface CountryDistrict {
-  clientId: string;
+  client_id: string;
   country: number;
   district: number;
 }
 
 export interface Reference {
-  clientId: string;
+  client_id: string;
   date: string;
   source_description: string;
   url: string;
@@ -34,13 +34,13 @@ export interface Reference {
 }
 
 export interface FileWithCaption {
-  clientId: string;
-  file: number;
+  client_id: string;
+  id: number;
   caption: string;
 }
 
 export interface Action {
-  clientId: string;
+  client_id: string;
   actions: number[];
   organization: OrganizationType;
   summary: string;
@@ -74,8 +74,8 @@ export interface InformalUpdateFields {
   country_district: CountryDistrict[];
   references: Reference[];
   actions_taken: Action[];
-  map: FileWithCaption[];
-  graphics: FileWithCaption[];
+  map_files: FileWithCaption[];
+  graphics_files: FileWithCaption[];
 
   title: string;
   situational_overview: string;
@@ -94,24 +94,39 @@ export interface InformalUpdateFields {
   hazard_type: number;
 }
 
-type TransformToApiFields<FIELDS extends { clientId: string }, ADDITION extends {}> = Omit<FIELDS, 'clientId'> & {
+type TransformToApiFields<FIELDS extends {}, ADDITION extends {}> =  FIELDS & {
   id: number;
 } & ADDITION;
 
-export interface InformalUpdateAPIResponseFields extends Omit<InformalUpdateFields, 'country_district' | 'references' | 'graphics' | 'map'> {
+export interface InformalUpdateAPIResponseFields extends Omit<InformalUpdateFields, 'country_district' | 'references' | 'graphics_files' | 'map_files'> {
   id: number,
   country_district: TransformToApiFields<CountryDistrict, {
     country_details: Country;
     district_details: DistrictMini;
   }>[];
-  references: TransformToApiFields<Reference, {}>[];
-  graphics: TransformToApiFields<FileWithCaption, {}>[];
-  map: TransformToApiFields<FileWithCaption, {}>[];
+  references: TransformToApiFields<Reference, {
+    document_details: {
+      id: number;
+      file: string;
+    }
+  }>[];
+  graphics_files: {
+    id: number,
+    caption: string | null,
+    client_id: string | null,
+    file: string;
+  }[];
+  map_files: {
+    id: number,
+    caption: string | null,
+    client_id: string | null,
+    file: string;
+  }[];
   hazard_type_details: HazardDetails;
 }
 
 export type InformalUpdateAPIFields = InformalUpdateFields;
-export type OrganizationType = 'NTLS' | 'IFRC' | 'RCRC' | 'GOV';
+export type OrganizationType = 'NTLS' | 'PNS' | 'FDRN' | 'GOV';
 export interface ActionOptionItem {
   id: number;
   category: string;
@@ -126,8 +141,8 @@ export const contextFields: (keyof InformalUpdateFields)[] = [
   'hazard_type',
   'title',
   'situational_overview',
-  'graphics',
-  'map',
+  'graphics_files',
+  'map_files',
   'references',
   'country_district',
   'title',
@@ -168,8 +183,8 @@ export function transformFormFieldsToAPIFields(formValues: InformalUpdateFields)
     ifrc_title,
     share_with,
 
-    map,
-    graphics,
+    map_files,
+    graphics_files,
   } = formValues;
 
   return {
@@ -191,7 +206,7 @@ export function transformFormFieldsToAPIFields(formValues: InformalUpdateFields)
     share_with,
 
     references,
-    map,
-    graphics,
+    map_files,
+    graphics_files,
   };
 }

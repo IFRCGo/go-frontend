@@ -44,13 +44,13 @@ export type ReferenceSchemaFields = ReturnType<ReferenceSchema['fields']>;
 export type ReferencesSchema = ArraySchema<PartialForm<ReferenceType>>;
 export type ReferencesSchemaMember = ReturnType<ReferencesSchema['member']>;
 
-export type MapType = NonNullable<NonNullable<InformalUpdateFields['map']>>[number];
+export type MapType = NonNullable<NonNullable<InformalUpdateFields['map_files']>>[number];
 export type MapSchema = ObjectSchema<PartialForm<MapType>>;
 export type MapSchemaFields = ReturnType<MapSchema['fields']>;
 export type MapsSchema = ArraySchema<PartialForm<MapType>>;
 export type MapsSchemaMember = ReturnType<MapsSchema['member']>;
 
-export type GraphicType = NonNullable<NonNullable<InformalUpdateFields['graphics']>>[number];
+export type GraphicType = NonNullable<NonNullable<InformalUpdateFields['graphics_files']>>[number];
 export type GraphicSchema = ObjectSchema<PartialForm<GraphicType>>;
 export type GraphicSchemaFields = ReturnType<GraphicSchema['fields']>;
 export type GraphicsSchema = ArraySchema<PartialForm<GraphicType>>;
@@ -77,7 +77,7 @@ export function lessThanSixImagesCondition(value: any) {
 export const schema: FormSchema = {
   fields: (value): FormSchemaFields => ({
     country_district: {
-      keySelector: (c) => c.clientId as string,
+      keySelector: (c) => c.client_id as string,
       member: (): CountryDistrictsSchemaMember => ({
         fields: (): CountryDistrictSchemaFields => ({
           country: [requiredCondition],
@@ -88,26 +88,26 @@ export const schema: FormSchema = {
     hazard_type: [requiredCondition],
     title: [requiredCondition],
     situational_overview: [requiredCondition],
-    graphics: {
-      keySelector: (c) => c.clientId as string,
+    graphics_files: {
+      keySelector: (c) => c.client_id as string,
       member: (): GraphicsSchemaMember => ({
         fields: (): GraphicSchemaFields => ({
-          file: [],
+          id: [],
           caption: [],
         }),
       }),
     },
-    map: {
-      keySelector: (c) => c.clientId as string,
+    map_files: {
+      keySelector: (c) => c.client_id as string,
       member: (): MapsSchemaMember => ({
         fields: (): MapSchemaFields => ({
-          file: [],
+          id: [],
           caption: [],
         }),
       }),
     },
     references: {
-      keySelector: (c) => c.clientId as string,
+      keySelector: (c) => c.client_id as string,
       member: (): ReferencesSchemaMember => ({
         fields: (): ReferenceSchemaFields => ({
           date: [requiredCondition],
@@ -118,7 +118,7 @@ export const schema: FormSchema = {
       }),
     },
     actions_taken: {
-      keySelector: (c) => c.organization as OrganizationType,
+      keySelector: (c) => c.client_id as string,
       member: (): ActionsSchemaMember => ({
         fields: (): ActionSchemaFields => ({
           organization: [],
@@ -232,8 +232,8 @@ function useInformalUpdateFormOptions(value: PartialForm<InformalUpdateFields>) 
     if (!actionsResponse?.results?.length) {
       return {
         NTLS: emptyActionOptionItemList,
-        IFRC: emptyActionOptionItemList,
-        RCRC: emptyActionOptionItemList,
+        PNS: emptyActionOptionItemList,
+        FDRN: emptyActionOptionItemList,
         GOV: emptyActionOptionItemList,
       };
     }
@@ -247,8 +247,8 @@ function useInformalUpdateFormOptions(value: PartialForm<InformalUpdateFields>) 
 
     const actionMap = {
       NTLS: actionList.filter(getFilterOrganization('NTLS')),
-      IFRC: actionList.filter(getFilterOrganization('IFRC')),
-      RCRC: actionList.filter(getFilterOrganization('RCRC')),
+      PNS: actionList.filter(getFilterOrganization('PNS')),
+      FDRN: actionList.filter(getFilterOrganization('FDRN')),
       GOV: actionList.filter(getFilterOrganization('GOV')),
     };
 

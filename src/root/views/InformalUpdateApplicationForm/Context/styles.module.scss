@@ -7,19 +7,16 @@
     flex-grow: unset;
     padding: 0 $spacing;
   }
-}
 
-.addCountryButtonContainer {
-  :global {
-    padding: 0px $spacing;
-    
-    .styles_section-title__2CZN8 {
-      padding: 0px;
-    }
-    
-    .styles_section-content__3E58e {
-      justify-content: flex-end;
-      padding: 0px;
+  .map-input-content,
+  .graphics-input-content {
+    display: flex;
+    flex-direction: column;
+
+    .preview-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: $spacing;
     }
   }
 }

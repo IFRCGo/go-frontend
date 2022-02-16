@@ -43,13 +43,13 @@ function ReferenceInput(props: Props) {
 
   const { strings } = useContext(languageContext);
   const onValueChange = useFormObject(index, onChange, defaultFormValues);
-  const error = (value && value?.clientId && errorFromProps)
-    ? getErrorObject(errorFromProps?.[value?.clientId])
+  const error = (value && value?.client_id && errorFromProps)
+    ? getErrorObject(errorFromProps?.[value?.client_id])
     : undefined;
 
   return (
     <div className={styles.reference}>
-      <div className={styles.firstRow}>
+      <div className={styles.firstColumn}>
         <DateInput
           className={styles.inputDate}
           name="date"
@@ -66,27 +66,6 @@ function ReferenceInput(props: Props) {
           error={error?.source_description}
           label={strings.informalUpdateFormContextReferenceNameLabel}
         />
-        <div className={styles.actions}>
-          <Button
-            className={styles.removeButton}
-            name={index}
-            onClick={onRemove}
-            variant="action"
-          >
-            <IoTrash />
-          </Button>
-        </div>
-      </div>
-      <div className={styles.secondRow}>
-        <InformalUpdateFileInput
-          name="document"
-          value={value?.document}
-          onChange={onValueChange}
-          fileIdToUrlMap={fileIdToUrlMap}
-          setFileIdToUrlMap={setFileIdToUrlMap}
-        >
-          Upload a document
-        </InformalUpdateFileInput>
         <TextInput
           className={styles.inputUrl}
           label={strings.informalUpdateFormContextReferenceUrlLabel}
@@ -95,6 +74,28 @@ function ReferenceInput(props: Props) {
           onChange={onValueChange}
           error={error?.url}
         />
+      </div>
+      <div className={styles.secondColumn}>
+        <InformalUpdateFileInput
+          name="document"
+          value={value?.document}
+          onChange={onValueChange}
+          fileIdToUrlMap={fileIdToUrlMap}
+          setFileIdToUrlMap={setFileIdToUrlMap}
+          hideClearButton
+        >
+          Upload a document
+        </InformalUpdateFileInput>
+      </div>
+      <div className={styles.actions}>
+        <Button
+          className={styles.removeButton}
+          name={index}
+          onClick={onRemove}
+          variant="action"
+        >
+          <IoTrash />
+        </Button>
       </div>
     </div>
   );

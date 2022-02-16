@@ -74,6 +74,7 @@ export type Props<T extends string, OMISSION extends string = never> = Omit<File
   setFileIdToUrlMap?: React.Dispatch<React.SetStateAction<Record<number, string>>>;
   url: string;
   hidePreview?: boolean;
+  hideClearButton?: boolean;
 }, OMISSION> & ({
   multiple: true;
   value: number[] | undefined | null;
@@ -95,6 +96,7 @@ function GoFileInput<T extends string>(props: Props<T>) {
     className,
     url,
     hidePreview,
+    hideClearButton,
     ...otherProps
   } = props;
 
@@ -201,7 +203,7 @@ function GoFileInput<T extends string>(props: Props<T>) {
           actions={(
             <>
               {actions}
-              {value && (
+              {!hideClearButton && value && (
                 <Button
                   onClick={handleClear}
                   disabled={disabled}
@@ -221,16 +223,18 @@ function GoFileInput<T extends string>(props: Props<T>) {
           value={context?.file as (File[] | null | undefined)}
           onChange={handleChange}
         />
-        <div className={styles.previewList}>
-          {props.value?.map((fileId) => (
-            <Preview
-              key={fileId}
-              id={fileId}
-              file={fileIdToUrlMap?.[fileId]}
-              onRemoveButtonClick={handleFileRemoveButtonClick}
-            />
-          ))}
-        </div>
+        {!hidePreview && (
+          <div className={styles.previewList}>
+            {props.value?.map((fileId) => (
+              <Preview
+                key={fileId}
+                id={fileId}
+                file={fileIdToUrlMap?.[fileId]}
+                onRemoveButtonClick={handleFileRemoveButtonClick}
+              />
+            ))}
+          </div>
+        )}
       </div>
     );
   }
@@ -243,7 +247,7 @@ function GoFileInput<T extends string>(props: Props<T>) {
         actions={(
           <>
             {actions}
-            {value && (
+            {!hideClearButton && value && (
               <Button
                 onClick={handleClear}
                 disabled={disabled}

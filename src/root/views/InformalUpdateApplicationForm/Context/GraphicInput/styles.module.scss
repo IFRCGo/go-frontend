@@ -1,0 +1,10 @@
+.graphic-input {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .caption-input {
+    max-width: 12rem;
+    padding: 0;
+  }
+}

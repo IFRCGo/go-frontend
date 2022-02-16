@@ -1,44 +1,20 @@
 @import '~styles/settings/_variables.scss';
 
 .reference {
+  display: flex;
+  flex-wrap: wrap;
+
+  .first-column {
+    flex-grow: 1;
+  }
+
+  .second-column {
+    flex-basis: 16rem;
+    flex-shrink: 0;
+  }
+
   .actions {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-
-      button {
-          background-color: $danger-color;;
-          color: $white;
-      }
-
-      span {
-          padding: 0 $spacing;
-          color: $grey-silver;
-      }
-  }
-
-  .first-row {
-    display: flex;
-
-    .input-name {
-      flex-grow: 2;
-    }
-  }
-
-  .second-row {
-    display: flex;
-    align-items: flex-start;
-
-    .input-url {
-      flex-grow: 1;
-
-      textarea {
-        height: 35px;
-      }
-    }
-
-    .actions {
-      flex-grow: 1;
-    }
+    flex-shrink: 0;
+    padding: $spacing;
   }
 }

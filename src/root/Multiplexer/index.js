@@ -302,10 +302,10 @@ function Multiplexer(props) {
               <PrivateRoute exact path='/three-w/:projectId/edit/' component={ThreeWEdit} />
               <Route exact path='/three-w/' component={GlobalThreeW} />
 
-              <PrivateRoute key="new-informal-update-application-form" exact path='/informal-update-application/new/' component={InformalUpdateApplicationForm} />
-              <Route exact path='/informal-update-report/:id' component={InformalUpdateReport} />
-              <Route exact path='/informal-updates/all/' component={AllInformalUpdates} />
-              <Route exact path='/informal-update-application/:id/edit/' component={InformalUpdateApplicationForm} />
+              <PrivateRoute key="new-informal-update-application-form" exact path='/informal-update/new/' component={InformalUpdateApplicationForm} />
+              <Route exact path='/informal-update/all/' component={AllInformalUpdates} />
+              <Route exact path='/informal-update/:id/edit/' component={InformalUpdateApplicationForm} />
+              <Route exact path='/informal-update/:id/' component={InformalUpdateReport} />
               <Route component={FourHundredFour} />
             </Switch>
           </BreadcrumbsProvider>

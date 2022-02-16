@@ -45,8 +45,8 @@ function ActionInput(props: Props) {
   } = props;
 
   const onFieldChange = useFormObject(index, onChange, defaultValue);
-  const error = (value && value.clientId && errorFromProps)
-    ? getErrorObject(errorFromProps?.[value.clientId])
+  const error = (value && value.client_id && errorFromProps)
+    ? getErrorObject(errorFromProps?.[value.client_id])
     : undefined;
 
   return (

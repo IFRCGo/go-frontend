@@ -54,20 +54,20 @@ function ActionsInput(props: Props) {
   ] = React.useMemo(() => ([
     {
       NTLS: strings.informalUpdateFormActionTakenByNationalSocietyPlaceholder,
-      IFRC: strings.informalUpdateFormActionTakenByIfrcPlaceholder,
-      RCRC: strings.informalUpdateFormActionTakenByRcrcPlaceholder,
+      PNS: strings.informalUpdateFormActionTakenByIfrcPlaceholder,
+      FDRN: strings.informalUpdateFormActionTakenByRcrcPlaceholder,
       GOV: strings.informalUpdateFormActionTakenByGovernmentPlaceholder,
     },
     {
       NTLS: strings.informalUpdateFormActionTakenByNationalSocietyLabel,
-      IFRC: strings.informalUpdateFormActionTakenByIfrcLabel,
-      RCRC: strings.informalUpdateFormActionTakenByRcrcLabel,
+      PNS: strings.informalUpdateFormActionTakenByIfrcLabel,
+      FDRN: strings.informalUpdateFormActionTakenByRcrcLabel,
       GOV: strings.informalUpdateFormActionTakenByGovernmentLabel,
     },
     {
       NTLS: strings.informalUpdateFormActionTakenByNationalSocietyDescription,
-      IFRC: strings.informalUpdateFormActionTakenByIfrcDescription,
-      RCRC: strings.informalUpdateFormActionTakenByRcrcDescription,
+      PNS: strings.informalUpdateFormActionTakenByIfrcDescription,
+      FDRN: strings.informalUpdateFormActionTakenByRcrcDescription,
       GOV: strings.informalUpdateFormActionTakenByGovernmentDescription,
     },
   ] as const), [strings]);
@@ -78,6 +78,7 @@ function ActionsInput(props: Props) {
     >
       {value?.actions_taken?.map((a, i) => (
         <InputSection
+          key={a.client_id}
           title={title[a.organization as OrganizationType]}
           description={description[a.organization as OrganizationType]}
         >

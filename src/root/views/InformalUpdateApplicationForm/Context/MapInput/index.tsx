@@ -1,4 +1,5 @@
 import React from 'react';
+import { _cs } from '@togglecorp/fujs';
 import {
   PartialForm,
   ArrayError,
@@ -26,6 +27,7 @@ interface Props {
   onRemove: (index: number) => void;
   index: number;
   fileIdToUrlMap: Record<number, string>
+  className?: string;
 }
 
 function MapInput(props: Props) {
@@ -36,23 +38,25 @@ function MapInput(props: Props) {
     onRemove,
     index,
     fileIdToUrlMap,
+    className,
   } = props;
 
   const onFieldChange = useFormObject(index, onChange, defaultValue);
-  const error = (value && value.clientId && errorFromProps)
-    ? getErrorObject(errorFromProps?.[value.clientId])
+  const error = (value && value.client_id && errorFromProps)
+    ? getErrorObject(errorFromProps?.[value.client_id])
     : undefined;
 
-  const fileUrl = value?.file ? fileIdToUrlMap[value.file] : undefined;
+  const fileUrl = value?.id ? fileIdToUrlMap[value.id] : undefined;
 
   return (
-    <div className={styles.mapInput}>
+    <div className={_cs(styles.mapInput, className)}>
       <Preview
         id={index}
         file={fileUrl}
         onRemoveButtonClick={onRemove}
       />
       <TextInput
+        className={styles.captionInput}
         name="caption"
         value={value?.caption}
         error={error?.caption}

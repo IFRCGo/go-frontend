@@ -1,4 +1,5 @@
 import React from 'react';
+import { _cs } from '@togglecorp/fujs';
 import {
   PartialForm,
   ArrayError,
@@ -20,6 +21,7 @@ type GraphicsType = PartialForm<FileWithCaption>;
 const defaultValue: GraphicsType = {};
 
 interface Props {
+  className?: string;
   value: GraphicsType;
   error: ArrayError<FileWithCaption> | undefined;
   onChange: (value: SetValueArg<GraphicsType>, index: number) => void;
@@ -35,28 +37,31 @@ function GraphicsInput(props: Props) {
     onChange,
     onRemove,
     index,
+    className,
     fileIdToUrlMap,
   } = props;
 
   const onFieldChange = useFormObject(index, onChange, defaultValue);
-  const error = (value && value.clientId && errorFromProps)
-    ? getErrorObject(errorFromProps?.[value.clientId])
+  const error = (value && value.client_id && errorFromProps)
+    ? getErrorObject(errorFromProps?.[value.client_id])
     : undefined;
 
-  const fileUrl = value?.file ? fileIdToUrlMap[value.file] : undefined;
+  const fileUrl = value?.id ? fileIdToUrlMap[value.id] : undefined;
 
   return (
-    <div className={styles.mapInput}>
+    <div className={_cs(styles.graphicInput, className)}>
       <Preview
         id={index}
         file={fileUrl}
         onRemoveButtonClick={onRemove}
       />
       <TextInput
+        className={styles.captionInput}
         name="caption"
         value={value?.caption}
         error={error?.caption}
         onChange={onFieldChange}
+        placeholder="Enter a caption"
       />
     </div>
   );

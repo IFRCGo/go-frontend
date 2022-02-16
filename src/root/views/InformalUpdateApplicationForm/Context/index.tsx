@@ -82,16 +82,16 @@ function Context(props: Props) {
   const {
     setValue: onMapChange,
     removeValue: onMapRemove,
-  } = useFormArray<'map', PartialForm<FileWithCaption>>(
-    'map',
+  } = useFormArray<'map_files', PartialForm<FileWithCaption>>(
+    'map_files',
     onValueChange,
   );
 
   const {
     setValue: onGraphicChange,
     removeValue: onGraphicRemove,
-  } = useFormArray<'graphics', PartialForm<FileWithCaption>>(
-    'graphics',
+  } = useFormArray<'graphics_files', PartialForm<FileWithCaption>>(
+    'graphics_files',
     onValueChange,
   );
 
@@ -100,7 +100,7 @@ function Context(props: Props) {
 
   const handleCountryDistrictAdd = React.useCallback(() => {
     const newList: PartialForm<CountryDistrict> = {
-      clientId: randomString(),
+      client_id: randomString(),
     };
 
     onValueChange(
@@ -113,7 +113,7 @@ function Context(props: Props) {
 
   const handleAddReference = React.useCallback(() => {
     const newList: PartialForm<Reference> = {
-      clientId: randomString(),
+      client_id: randomString(),
     };
 
     onValueChange(
@@ -126,29 +126,29 @@ function Context(props: Props) {
 
   const handleGraphicsInputChange = React.useCallback((newValue: number[] | undefined) => {
     const newList: undefined | PartialForm<FileWithCaption[]> = newValue?.map((v) => ({
-      clientId: randomString(),
-      file: v,
+      client_id: randomString(),
+      id: v,
     }));
 
-    onValueChange(newList, 'graphics' as const);
+    onValueChange(newList, 'graphics_files' as const);
   }, [onValueChange]);
 
   const handleMapInputChange = React.useCallback((newValue: number[] | undefined) => {
     const newList: undefined | PartialForm<FileWithCaption[]> = newValue?.map((v) => ({
-      clientId: randomString(),
-      file: v,
+      client_id: randomString(),
+      id: v,
     }));
 
-    onValueChange(newList, 'map' as const);
+    onValueChange(newList, 'map_files' as const);
   }, [onValueChange]);
 
   const mapValue = React.useMemo(() => (
-    value?.map?.map(d => d.file).filter(d => !!d) as number[] | undefined
-  ), [value?.map]);
+    value?.map_files?.map(d => d.id).filter(d => !!d) as number[] | undefined
+  ), [value?.map_files]);
 
   const graphicsValue = React.useMemo(() => (
-    value?.graphics?.map(d => d.file).filter(d => !!d) as number[] | undefined
-  ), [value?.graphics]);
+    value?.graphics_files?.map(d => d.id).filter(d => !!d) as number[] | undefined
+  ), [value?.graphics_files]);
 
   return (
     <>
@@ -165,7 +165,7 @@ function Context(props: Props) {
         >
           {value.country_district?.map((c, i) => (
             <CountryProvinceInput
-              key={c.clientId}
+              key={c.client_id}
               index={i}
               value={c}
               onChange={onCountryDistrictChange}
@@ -225,10 +225,11 @@ function Context(props: Props) {
         <InputSection
           title={strings.informalUpdateFormContextGraphicTitle}
           description={strings.informalUpdateFormContextGraphicDescription}
+          contentSectionClassName={styles.graphicsInputContent}
         >
           <InformalUpdateFileInput
             accept="image/*"
-            error={error?.graphics}
+            error={error?.graphics_files}
             fileIdToUrlMap={fileIdToUrlMap}
             name="graphics"
             onChange={handleGraphicsInputChange}
@@ -236,28 +237,32 @@ function Context(props: Props) {
             showStatus
             multiple
             value={graphicsValue}
+            hidePreview
           >
             {strings.informalUpdateFormContextReferenceUrlButtonLabel}
           </InformalUpdateFileInput>
-          {value?.graphics?.map((g, i) => (
-            <GraphicInput
-              key={g.clientId}
-              index={i}
-              value={g}
-              onChange={onGraphicChange}
-              onRemove={onGraphicRemove}
-              error={getErrorObject(error?.graphics)}
-              fileIdToUrlMap={fileIdToUrlMap}
-            />
-          ))}
+          <div className={styles.previewList}>
+            {value?.graphics_files?.map((g, i) => (
+              <GraphicInput
+                key={g.client_id}
+                index={i}
+                value={g}
+                onChange={onGraphicChange}
+                onRemove={onGraphicRemove}
+                error={getErrorObject(error?.graphics_files)}
+                fileIdToUrlMap={fileIdToUrlMap}
+              />
+            ))}
+          </div>
         </InputSection>
         <InputSection
           title={strings.informalUpdateFormContextMapTitle}
           description={strings.informalUpdateFormContextMapDescription}
+          contentSectionClassName={styles.mapInputContent}
         >
           <InformalUpdateFileInput
             accept="image/*"
-            error={error?.map}
+            error={error?.map_files}
             fileIdToUrlMap={fileIdToUrlMap}
             name="map"
             onChange={handleMapInputChange}
@@ -265,20 +270,23 @@ function Context(props: Props) {
             multiple
             showStatus
             value={mapValue}
+            hidePreview
           >
             {strings.informalUpdateFormContextReferenceUrlButtonLabel}
           </InformalUpdateFileInput>
-          {value?.map?.map((m, i) => (
-            <MapInput
-              key={m.clientId}
-              index={i}
-              value={m}
-              onChange={onMapChange}
-              onRemove={onMapRemove}
-              error={getErrorObject(error?.map)}
-              fileIdToUrlMap={fileIdToUrlMap}
-            />
-          ))}
+          <div className={styles.previewList}>
+            {value?.map_files?.map((m, i) => (
+              <MapInput
+                key={m.client_id}
+                index={i}
+                value={m}
+                onChange={onMapChange}
+                onRemove={onMapRemove}
+                error={getErrorObject(error?.map_files)}
+                fileIdToUrlMap={fileIdToUrlMap}
+              />
+            ))}
+          </div>
         </InputSection>
         <InputSection
           title={strings.informalUpdateFormContextReferenceTitle}

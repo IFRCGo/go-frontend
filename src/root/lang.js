@@ -3385,7 +3385,7 @@ export default {
   //Infromal Update
   informalUpdateFormPageTitle: 'IFRC GO - Informal Update Request',
   informalUpdateFormExportLabel: 'Export',
-  informalUpdateFormSaveButtonLabel: 'Save and Close',
+  informalUpdateFormSaveButtonLabel: 'Save',
   informalUpdateFormPageHeading: 'Flash Update',
   informalUpdateTabContextLabel: 'Context',
   informalUpdateTabActionLabel: 'Actions',
@@ -3423,7 +3423,7 @@ export default {
   informalUpdateFormContextReferenceUrlDragLabel: 'Drag & Drop Files Here',
   informalUpdateFormContextReferenceUrlOrLabel: 'or',
   informalUpdateFormContextReferenceUrlButtonLabel: 'Upload',
-  informalUpdateFormContextReferenceAddButtonLabel: 'Add',
+  informalUpdateFormContextReferenceAddButtonLabel: 'Add Reference',
   informalUpdateFormContextReferenceUrlPlaceholder: 'No document selected',
 
   // Actions

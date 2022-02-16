@@ -110,7 +110,7 @@ function Navbar(props) {
                       New 3W project
                     </Link>
                     <Link
-                      to='/informal-update-application/new'
+                      to='/informal-update/new'
                       className='drop__menu-item'
                     >
                       {/* FIXME: use strings */}
