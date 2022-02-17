@@ -71,6 +71,7 @@ const FourHundredFour = lazy(() => import('../views/FourHundredFour'));
 const FieldReport = lazy(() => import('../views/field-report'));
 const Emergencies = lazy(() => import('../views/emergencies'));
 const Emergency = lazy(() => import('../views/emergency'));
+const EmergencyWrapper = lazy(() => import('../views/emergencyWrapper'));
 const Region = lazy(() => import('../views/region'));
 const Country = lazy(() => import('../views/Country'));
 const Deployments = lazy(() => import('../views/deployments'));
@@ -273,6 +274,7 @@ function Multiplexer(props) {
               <Route exact path='/emergencies/all' render={props => <Table {...props} type='emergency' />} />
               <Route exact path='/emergencies/:id/follow' component={Emergency}/>
               <Route exact path='/emergencies/:id' component={Emergency}/>
+              <Route exact path='/emergency/:slug' component={EmergencyWrapper}/>
               <Route exact path='/regions/:id' render={props => <Region {...props} type='region' />} />
               <Route exact path='/countries/:id' render={props => <Country {...props} type='country' />} />
               <Route exact path='/alerts/all' render={props => <Table {...props} type='alert' />} />
