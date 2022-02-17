@@ -20,7 +20,7 @@ const FONT_SIZE_ULTRA_LARGE = 40;
 const SPACING_SMALL = 6;
 const SPACING_MEDIUM = 10;
 const SPACING_LARGE = 16;
-const SPACING_EXTRA_LARGE = 24;
+// const SPACING_EXTRA_LARGE = 24;
 const SPACING_SUPER_LARGE = 32;
 const SECTION_PADDING = SPACING_LARGE;
 
@@ -116,6 +116,10 @@ const pdfStyles = StyleSheet.create({
     marginTop: SPACING_MEDIUM,
   },
 
+  strong: {
+    fontWeight: 'bold',
+  },
+
   titleSection: {
     ...section.style,
   },
@@ -131,16 +135,17 @@ const pdfStyles = StyleSheet.create({
     height: FONT_SIZE_ULTRA_LARGE,
   },
 
-
   mapImage: {
     width: '100%',
     height: 200,
     objectFit: 'contain',
     objectPosition: 'center',
   },
+
   basicInfoTable: {
     width: '100%',
   },
+
   compactSection: {
     display: 'flex',
     justifyItem: 'stretch',
@@ -197,13 +202,13 @@ const pdfStyles = StyleSheet.create({
     padding: TABLE_CELL_PADDING,
   },
   oneByThree: {
-    width: '33%',
+    width: '33.33%',
   },
   twoByThree: {
-    width: '66%',
+    width: '66.66%',
   },
   threeByThree: {
-    width: '99%',
+    width: '99.99%',
   },
   oneByTwo: {
     width: '50%',
@@ -242,6 +247,14 @@ const pdfStyles = StyleSheet.create({
     justifyContent: 'space-between',
     padding: SPACING_SMALL,
     width: '50%',
+  },
+  strongCell: {
+    border: TABLE_BORDER,
+    display: 'flex',
+    justifyContent: 'space-between',
+    padding: SPACING_SMALL,
+    width: '50%',
+    fontWeight: 'bold',
   },
   cellTitle: {
     border: TABLE_BORDER,
@@ -351,6 +364,7 @@ const pdfStyles = StyleSheet.create({
   piSubContentCell: {
     padding: SMALL_PADDING,
     border: TABLE_BORDER,
+    fontWeight: 'bold',
     flexBasis: '70%',
   },
   piBorderCell: {

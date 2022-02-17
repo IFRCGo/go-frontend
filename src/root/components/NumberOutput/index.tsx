@@ -1,7 +1,6 @@
 import React from 'react';
 import {
   addSeparator,
-  isFalsy,
   isTruthy,
   isDefined,
   formattedNormalize,
@@ -9,23 +8,9 @@ import {
   Lang,
 } from '@togglecorp/fujs';
 
+import { isValidNumber } from '#utils/common';
+
 import styles from './styles.module.scss';
-
-function isValidNumber(value: unknown): value is number  {
-    if (isFalsy(value)) {
-      return false;
-    }
-
-    if (Number.isNaN(+(value as number))) {
-      return false;
-    }
-
-    if (value === null) {
-      return false;
-    }
-
-    return true;
-}
 
 export interface Props {
   className?: string;

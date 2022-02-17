@@ -1,6 +1,7 @@
 import { memo } from 'react';
 import {
   isDefined,
+  isFalsy,
   isFalsyString,
   caseInsensitiveSubmatch,
   compareStringSearch,
@@ -175,5 +176,21 @@ export function getFullMonthNameList(strings: Strings) {
 export function avgSafe(list: (number|undefined|null)[]) {
   const listSafe = (list ?? []).filter((i) => isDefined(i) && !Number.isNaN(i)) as number[];
   return avg(listSafe, d => d);
+}
+
+export function isValidNumber(value: unknown): value is number  {
+  if (isFalsy(value)) {
+    return false;
+  }
+
+  if (Number.isNaN(+(value as number))) {
+    return false;
+  }
+
+  if (value === null) {
+    return false;
+  }
+
+  return true;
 }
 

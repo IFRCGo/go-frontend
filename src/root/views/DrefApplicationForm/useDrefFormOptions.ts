@@ -110,7 +110,7 @@ export const schema: FormSchema = {
 
             return undefined;
           }],
-          district: [],
+          district: [requiredCondition],
         }),
       }),
     },
