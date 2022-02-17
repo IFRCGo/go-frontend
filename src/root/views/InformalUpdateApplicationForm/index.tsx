@@ -33,13 +33,15 @@ import {
   InformalUpdateFields,
   InformalUpdateAPIFields,
   InformalUpdateAPIResponseFields,
+  OrganizationType,
   transformFormFieldsToAPIFields,
   contextFields,
   actionsFields,
   focalFields
 } from './common';
 import useInformalUpdateFormOptions, {
-  schema } from './useInformalUpdateFormOptions';
+  schema
+} from './useInformalUpdateFormOptions';
 
 import styles from './styles.module.scss';
 import BlockLoading from '#components/block-loading';
@@ -50,6 +52,15 @@ interface Props {
   history: History;
   location: Location;
 }
+
+type ActionWithoutSummary = Omit<InformalUpdateFields['actions_taken'][number], 'summary'>;
+const defaultActionsTaken: ActionWithoutSummary[] = [
+  { client_id: randomString(), organization: 'NTLS', actions: [] },
+  { client_id: randomString(), organization: 'PNS', actions: [] },
+  { client_id: randomString(), organization: 'FDRN', actions: [] },
+  { client_id: randomString(), organization: 'GOV', actions: [] },
+];
+
 function scrollToTop() {
   window.setTimeout(() => {
     window.scrollTo({
@@ -74,15 +85,7 @@ const defaultFormValues: PartialForm<InformalUpdateFields> = {
   country_district: [{
     client_id: randomString(),
   }],
-  references: [{
-    client_id: randomString(),
-  }],
-  actions_taken: [
-    { client_id: randomString(), organization: 'NTLS', actions: [] },
-    { client_id: randomString(), organization: 'PNS', actions: [] },
-    { client_id: randomString(), organization: 'FDRN', actions: [] },
-    { client_id: randomString(), organization: 'GOV', actions: [] },
-  ],
+  actions_taken: defaultActionsTaken,
 };
 
 function InformalUpdateForm(props: Props) {
@@ -135,6 +138,28 @@ function InformalUpdateForm(props: Props) {
         return;
       }
 
+      const defaultActionsMapByOrganization = listToMap(
+        defaultActionsTaken,
+        d => d.organization as string,
+        d => d
+      );
+
+      const actionMapByOrganization: {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        [key in OrganizationType]: PartialForm<InformalUpdateFields['actions_taken'][number]>
+      } = listToMap(
+        response.actions_taken ?? [],
+        d => d.organization,
+        d => d,
+      );
+
+      const allActionOrgs = Object.keys(defaultActionsMapByOrganization) as OrganizationType[];
+      allActionOrgs.forEach((org) => {
+        if (!actionMapByOrganization[org]) {
+          actionMapByOrganization[org] = defaultActionsMapByOrganization[org];
+        }
+      });
+
       onValueSet({
         ...response,
         country_district: response.country_district?.map((cd) => ({
@@ -155,6 +180,7 @@ function InformalUpdateForm(props: Props) {
           client_id: mf.client_id ?? String(mf.id),
           caption: mf.caption ?? '',
         })),
+        actions_taken: Object.values(actionMapByOrganization),
       });
 
       setFileIdToUrlMap((prevValue) => ({

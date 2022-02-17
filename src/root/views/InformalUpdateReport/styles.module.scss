@@ -52,6 +52,10 @@
       flex-direction: column;
       gap: $spacing * 2;
 
+      .summary {
+        white-space: pre-wrap;
+      }
+
       .action-taken-content {
         padding: $spacing/2 $spacing;
 

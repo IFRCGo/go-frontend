@@ -1,5 +1,8 @@
 import React, { useContext } from 'react';
-import { randomString } from '@togglecorp/fujs';
+import {
+  randomString,
+  listToMap,
+} from '@togglecorp/fujs';
 import {
   EntriesAsList,
   PartialForm,
@@ -125,22 +128,36 @@ function Context(props: Props) {
   }, [onValueChange]);
 
   const handleGraphicsInputChange = React.useCallback((newValue: number[] | undefined) => {
+    const graphicsCaptionByIdMap = listToMap(
+      value?.graphics_files ?? [],
+      d => d.id as number,
+      d => d.caption,
+    );
+
     const newList: undefined | PartialForm<FileWithCaption[]> = newValue?.map((v) => ({
-      client_id: randomString(),
+      client_id: String(v),
       id: v,
+      caption: graphicsCaptionByIdMap[v],
     }));
 
     onValueChange(newList, 'graphics_files' as const);
-  }, [onValueChange]);
+  }, [value?.graphics_files, onValueChange]);
 
   const handleMapInputChange = React.useCallback((newValue: number[] | undefined) => {
+    const mapCaptionByIdMap = listToMap(
+      value?.map_files ?? [],
+      d => d.id as number,
+      d => d.caption,
+    );
+
     const newList: undefined | PartialForm<FileWithCaption[]> = newValue?.map((v) => ({
-      client_id: randomString(),
+      client_id: String(v),
       id: v,
+      caption: mapCaptionByIdMap[v],
     }));
 
     onValueChange(newList, 'map_files' as const);
-  }, [onValueChange]);
+  }, [value?.map_files, onValueChange]);
 
   const mapValue = React.useMemo(() => (
     value?.map_files?.map(d => d.id).filter(d => !!d) as number[] | undefined
@@ -149,6 +166,8 @@ function Context(props: Props) {
   const graphicsValue = React.useMemo(() => (
     value?.graphics_files?.map(d => d.id).filter(d => !!d) as number[] | undefined
   ), [value?.graphics_files]);
+
+  console.info('graphics value', graphicsValue);
 
   return (
     <>
