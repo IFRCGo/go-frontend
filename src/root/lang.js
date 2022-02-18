@@ -2782,7 +2782,7 @@ export default {
   fieldReportFormPageTitle: 'IFRC GO - New Field Report',
   fieldReportUpdateFormPageTitle: 'IFRC GO - Update Field Report',
 
-  VerboseUrlLoadingMessage: 'Loading page...'
+  VerboseUrlLoadingMessage: 'Loading page...',
 
   breadCrumbLogin: 'Login',
   breadCrumbResources: 'Resources',
