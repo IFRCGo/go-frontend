@@ -152,6 +152,7 @@ export default {
   regionContacts: 'Contacts',
   regionOperationsTab: 'Operations',
   region3WTab: '3w',
+  regionRiskTab: 'Risk Watch',
   regionProfileTab: 'Regional Profile',
   regionPreparednessTab: 'Preparedness',
   regionAdditionalInfoTab: 'Additional Data',

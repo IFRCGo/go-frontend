@@ -214,7 +214,7 @@ const mapPadding = {
 interface Props {
   data: PDCExposure[];
   className?: string;
-  countryId: number;
+  regionId: number;
   activeEventId: number | undefined;
   onActiveEventChange: (eventId: number | undefined) => void;
 }
@@ -223,18 +223,18 @@ function PDCExposureMap(props: Props) {
   const {
     data,
     className,
-    countryId,
+    regionId,
     activeEventId,
     onActiveEventChange,
   } = props;
 
-  const allCountries = useReduxState('allCountries');
-  const country = React.useMemo(() => (
-    allCountries?.data.results.find(d => d.id === countryId)
-  ), [allCountries, countryId]);
-  const countryBounds = React.useMemo(
-    () => turfBbox(country?.bbox ?? []),
-    [country],
+  const allRegions = useReduxState('allRegions');
+  const region = React.useMemo(() => (
+    allRegions?.data.results.find(d => d.id === regionId)
+  ), [allRegions, regionId]);
+  const regionBounds = React.useMemo(
+    () => turfBbox(region?.bbox ?? []),
+    [region],
   );
 
   const [activeHazard, setActiveHazard] = React.useState<{
@@ -357,7 +357,7 @@ function PDCExposureMap(props: Props) {
       )}
       <MapBounds
         // @ts-ignore
-        bounds={countryBounds}
+        bounds={regionBounds}
         padding={mapPadding}
       />
     </Map>
