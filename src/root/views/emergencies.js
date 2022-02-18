@@ -3,9 +3,12 @@ import { connect } from 'react-redux';
 import { DateTime } from 'luxon';
 import { PropTypes as T } from 'prop-types';
 import { Helmet } from 'react-helmet';
-import BreadCrumb from '../components/breadcrumb';
+import { Link } from 'react-router-dom';
+
+import App from '#views/app';
+
+import BreadCrumb from '#components/breadcrumb';
 import BlockLoading from '#components/block-loading';
-import App from './app';
 import FieldReportsTable from '#components/connected/field-reports-table';
 import EmergenciesDash from '#components/connected/emergencies-dash';
 import EmergenciesTable from '#components/connected/emergencies-table';
@@ -15,14 +18,15 @@ import { getLastMonthsEmergencies, getAggregateEmergencies } from '#actions';
 import { environment } from '#config';
 
 import LanguageContext from '#root/languageContext';
+import TableLists from '#views/AllInformalUpdates/TableLists';
 
 class Emergencies extends React.Component {
-  componentDidMount () {
+  componentDidMount() {
     this.props._getLastMonthsEmergencies();
-    this.props._getAggregateEmergencies(DateTime.local().minus({months: 11}).startOf('day').toISODate(), 'month');
+    this.props._getAggregateEmergencies(DateTime.local().minus({ months: 11 }).startOf('day').toISODate(), 'month');
   }
 
-  render () {
+  render() {
     const {
       lastMonth,
     } = this.props;
@@ -39,8 +43,8 @@ class Emergencies extends React.Component {
           </title>
         </Helmet>
         <section className='inpage'>
-          <BreadCrumb crumbs={[{link: '/emergencies', name: strings.breadCrumbEmergencies}, {link: '/', name: strings.breadCrumbHome }]} />
-          { pending ? (
+          <BreadCrumb crumbs={[{ link: '/emergencies', name: strings.breadCrumbEmergencies }, { link: '/', name: strings.breadCrumbHome }]} />
+          {pending ? (
             <BlockLoading />
           ) : (
             <>
@@ -54,6 +58,22 @@ class Emergencies extends React.Component {
                     limit={10}
                     showRecent={true}
                     showHeader={false}
+                  />
+                </div>
+                <div className='inner inner--field-reports-emergencies'>
+                  <TableLists
+                    itemPerPage={4}
+                    actions={(
+                      <div className="fold__title__linkwrap">
+                        <Link
+                          className="fold__title__link"
+                          to="/informal-update/all/"
+                        >
+                          {strings.informalUpdateReportsTableViewAllReports}
+                        </Link>
+                        <span className="collecticon-chevron-right" />
+                      </div>
+                    )}
                   />
                 </div>
                 <div className='inner inner--field-reports-emergencies'>

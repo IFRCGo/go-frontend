@@ -142,6 +142,13 @@ class MobileNavbar extends React.PureComponent {
                       {/* FIXME: use strings */}
                       New 3W Activity
                     </Link>
+                    <Link
+                      to='/informal-update/new'
+                      className='drop__menu-item'
+                    >
+                      {/* FIXME: use strings */}
+                      New Informal Update Request
+                    </Link>
                   </li>
                 </ul>
               </DropdownMenu>

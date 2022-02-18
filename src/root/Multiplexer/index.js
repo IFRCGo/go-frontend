@@ -90,6 +90,9 @@ const ThreeW = lazy(() => import('../views/ThreeW'));
 const ThreeWEdit = lazy(() => import('../views/ThreeWEdit'));
 const DrefApplicationForm = lazy(() => import('../views/DrefApplicationForm'));
 const DrefPdfPreview = lazy(() => import('../views/DrefPdfPreview'));
+const InformalUpdateApplicationForm = lazy(() => import('../views/InformalUpdateApplicationForm'));
+const InformalUpdateReport = lazy(() => import('../views/InformalUpdateReport'));
+const AllInformalUpdates = lazy(() => import('../views/AllInformalUpdates'));
 
 function LoadingGlobal() {
   return (
@@ -252,25 +255,25 @@ function Multiplexer(props) {
         <Suspense fallback={<InitialLoading />}>
           <BreadcrumbsProvider>
             <Switch>
-              <Route exact path='/' component={Home}/>
+              <Route exact path='/' component={Home} />
               <Route path='/clear-init-cache' component={ClearInitCache} />
-              <Route exact path='/covid19-3w-sankey' component={Covid19ThreeWSankey}/>
-              <PrivateRoute exact path='/translation-dashboard' component={TranslationDashboard}/>
-              <Route exact path='/about' component={About}/>
-              <PrivateRoute exact path='/account' component={Account}/>
-              <PrivateRoute exact path='/account/password-change' component={PasswordChange}/>
+              <Route exact path='/covid19-3w-sankey' component={Covid19ThreeWSankey} />
+              <PrivateRoute exact path='/translation-dashboard' component={TranslationDashboard} />
+              <Route exact path='/about' component={About} />
+              <PrivateRoute exact path='/account' component={Account} />
+              <PrivateRoute exact path='/account/password-change' component={PasswordChange} />
               <Route exact path='/appeals/all' render={props => <Table {...props} type='appeal' />} />
-              <AnonymousRoute exact path='/login' component={Login}/>
-              <AnonymousRoute exact path='/register' component={Register}/>
-              <AnonymousRoute exact path='/recover-account' component={RecoverAccount}/>
-              <AnonymousRoute exact path='/recover-account/:username/:token' component={RecoverAccount}/>
-              <AnonymousRoute exact path='/recover-username' component={RecoverUsername}/>
+              <AnonymousRoute exact path='/login' component={Login} />
+              <AnonymousRoute exact path='/register' component={Register} />
+              <AnonymousRoute exact path='/recover-account' component={RecoverAccount} />
+              <AnonymousRoute exact path='/recover-account/:username/:token' component={RecoverAccount} />
+              <AnonymousRoute exact path='/recover-username' component={RecoverUsername} />
               <AnonymousRoute exact path='/resend-validation' component={ResendValidation} />
-              <PrivateRoute key="new-field-report-form" exact path='/reports/new' component={FieldReportForm}/>
+              <PrivateRoute key="new-field-report-form" exact path='/reports/new' component={FieldReportForm} />
               <Route exact path='/reports/all' render={props => <Table {...props} type='report' />} />
-              <PrivateRoute exact path='/reports/:reportId/edit' component={FieldReportForm}/>
-              <Route exact path='/reports/:id' component={FieldReport}/>
-              <Route exact path='/emergencies' component={Emergencies}/>
+              <PrivateRoute exact path='/reports/:reportId/edit' component={FieldReportForm} />
+              <Route exact path='/reports/:id' component={FieldReport} />
+              <Route exact path='/emergencies' component={Emergencies} />
               <Route exact path='/emergencies/all' render={props => <Table {...props} type='emergency' />} />
               <Route exact path='/emergencies/:id/follow' component={Emergency}/>
               <Route exact path='/emergencies/:id' component={Emergency}/>
@@ -278,9 +281,10 @@ function Multiplexer(props) {
               <Route exact path='/regions/:id' render={props => <Region {...props} type='region' />} />
               <Route exact path='/countries/:id' render={props => <Country {...props} type='country' />} />
               <Route exact path='/alerts/all' render={props => <Table {...props} type='alert' />} />
+              <Route exact path='/deployments' component={Deployments} />
               <Route exact path='/deployments/personnel/all' render={props => <Table {...props} type='personnel' />} />
               <Route exact path='/deployments/erus/all' render={props => <Table {...props} type='eru' />} />
-              <Route path='/deployments' component={Deployments}/>
+              <Route path='/deployments' component={Deployments} />
               <Route exact path='/per-form/:form_id' component={PerForm} />
               <Route exact path='/per-form/:form_id/edit' render={props => <PerForm {...props} isEdit={true} />} />
               <Route path='/per-assessment/create' render={props => <PerAssessment {...props} isCreate={true} />} />
@@ -297,7 +301,12 @@ function Multiplexer(props) {
               <Route exact path='/three-w/:projectId/' component={ThreeW} />
               <PrivateRoute exact path='/three-w/:projectId/edit/' component={ThreeWEdit} />
               <Route exact path='/three-w/' component={GlobalThreeW} />
-              <Route component={FourHundredFour}/>
+
+              <PrivateRoute key="new-informal-update-application-form" exact path='/informal-update/new/' component={InformalUpdateApplicationForm} />
+              <Route exact path='/informal-update/all/' component={AllInformalUpdates} />
+              <Route exact path='/informal-update/:id/edit/' component={InformalUpdateApplicationForm} />
+              <Route exact path='/informal-update/:id/' component={InformalUpdateReport} />
+              <Route component={FourHundredFour} />
             </Switch>
           </BreadcrumbsProvider>
         </Suspense>

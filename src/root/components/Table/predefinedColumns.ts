@@ -2,6 +2,10 @@ import {
   compareString,
   compareNumber,
 } from '@togglecorp/fujs';
+import {
+  Link,
+  LinkProps,
+} from 'react-router-dom';
 
 import HeaderCell, { HeaderCellProps } from './HeaderCell';
 import Cell, { CellProps } from './Cell';
@@ -132,6 +136,36 @@ export function createDateColumn<D, K>(
     }),
     valueSelector: accessor,
     valueComparator: (foo: D, bar: D) => compareString(accessor(foo), accessor(bar)),
+  };
+
+  return item;
+}
+
+export function createLinkColumn<D, K>(
+  id: string,
+  title: React.ReactNode,
+  accessor: (item: D) => React.ReactNode,
+  rendererParams: (item: D) => LinkProps,
+) {
+  const item: Column<D, K, LinkProps, HeaderCellProps> & {
+    valueSelector: (item: D) => string | undefined | null,
+    valueComparator: (foo: D, bar: D) => number,
+  } = {
+    id,
+    title,
+    headerCellRenderer: HeaderCell,
+    headerCellRendererParams: {
+      sortable: false,
+      orderable: false,
+      hideable: false,
+    },
+    cellRenderer: Link,
+    cellRendererParams: (_: K, datum: D): LinkProps => ({
+      children: accessor(datum),
+      ...rendererParams(datum),
+    }),
+    valueSelector: () => '',
+    valueComparator: () => 0,
   };
 
   return item;

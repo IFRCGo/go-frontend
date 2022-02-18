@@ -1,11 +1,16 @@
+import { resolve as resolveUrl } from 'url';
+import { get as getFromLocalStorage } from 'local-storage';
 import {
   isDefined,
   mapToMap,
   isFalsyString,
 } from '@togglecorp/fujs';
-import { resolve as resolveUrl } from 'url';
-import { get as getFromLocalStorage } from 'local-storage';
 import { ContextInterface } from '@togglecorp/toggle-request';
+import {
+  Error as FormError,
+  internal,
+  getErrorString,
+} from '@togglecorp/toggle-form';
 
 import {
   riskApi,
@@ -25,9 +30,7 @@ export type ResponseError = {
 
 export interface TransformedError {
   value: {
-    formErrors: {
-      [key: string]: string | undefined;
-    },
+    formErrors: FormError<Record<string, any>>,
     messageForNotification: string,
   };
   status: number | undefined;
@@ -57,7 +60,7 @@ function transformError(response: ResponseError): TransformedError['value']['for
       const json = JSON.parse(responseText);
 
       if (Array.isArray(json)) {
-        return { $internal: json.join(', ') };
+        return { [internal]: json.join(', ') };
       }
 
       if (isObject(json)) {
@@ -70,13 +73,13 @@ function transformError(response: ResponseError): TransformedError['value']['for
         return errorMap;
       }
 
-      return { $internal: 'Response content type mismatch' };
+      return { [internal]: 'Response content type mismatch' };
     } catch(e) {
-      return { $internal: responseText };
+      return { [internal]: responseText };
     }
   }
 
-  return { $internal: responseText };
+  return { [internal]: responseText };
 }
 
 type GoContextInterface = ContextInterface<
@@ -260,7 +263,7 @@ export const processGoError: GoContextInterface['transformError'] = (
     ? 'Failed to load data'
     : 'Some error occurred while performing this action.';
 
-  let messageForNotification = formErrors?.$internal ?? finalMessage;
+  let messageForNotification = getErrorString(formErrors) ?? finalMessage;
 
   if (method === 'POST' && responseError?.status === 401) {
     messageForNotification = 'You do not have enough permission to perform this action';

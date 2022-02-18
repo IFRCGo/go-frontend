@@ -218,6 +218,14 @@ export interface ActionFields {
   tooltip_text: string | null;
 }
 
+export interface Action {
+  category: string;
+  description: string | undefined;
+  label: string;
+  organization: OrganizationType;
+  value: number;
+}
+
 export type ActionByReportType = {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   [key in FieldReportType]: ActionFields[];
@@ -229,14 +237,6 @@ export type ActionsByOrganization = {
 };
 
 export const emptyActionList: ActionFields[] = [];
-
-export type Action = {
-  value: number;
-  label: string;
-  category: string;
-  description: string | undefined;
-  organization: OrganizationType;
-}
 
 
 export interface FieldReportAPIFields {
