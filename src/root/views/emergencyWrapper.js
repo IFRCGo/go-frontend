@@ -11,7 +11,11 @@ function EmergencyWrapper(props) {
   if (!pending && response) {
     props.match.params.id = response.id;
   }
-  return !pending && response ? <Emergency/> : <div className='container-mid'><br/><Translate stringId='uhohPageDescription'/></div>;
+  return !pending && response ?
+    <Emergency/> :
+    <div className='container-mid'><br/>
+    <Translate stringId='VerboseUrlLoadingMessage'/></div>;
+    // instead of uhohPageDescription ^ FIXME
 }
 
 export default withLanguage(withRouter(EmergencyWrapper));
