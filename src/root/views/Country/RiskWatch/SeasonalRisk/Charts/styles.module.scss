@@ -21,19 +21,29 @@
   margin: $spacing*2 0;
 
   .content {
-    display: flex;
-    overflow: auto;
-
     .chart-container {
-      flex-grow: 1;
       height: 24rem;
-      width: 40rem!important;
       overflow: hidden;
     }
 
-    .legend {
-      width: 16rem;
-      flex-shrink: 0;
+    .impact-legend {
+      display: flex;
+      align-items: center;
+      background-color: $grey-mist;
+      border-top: $base-border-width solid $base-border-color;
+      padding: $spacing $spacing*2;
+      gap: $spacing*2;
+
+      .heading {
+        font-weight: $base-font-medium;
+      }
+
+      .separator {
+        flex-shrink: 0;
+        align-self: stretch;
+        width: $base-border-width * 2;
+        background-color: $base-border-color;
+      }
     }
   }
 }
@@ -42,9 +52,6 @@
   margin: $spacing*2 0;
 
   .content {
-    display: flex;
-    overflow: auto;
-
     .chart-container {
       flex-grow: 1;
       height: 24rem;
@@ -72,21 +79,66 @@
     }
 
     .legend {
-      width: 16rem;
-      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      background-color: $grey-mist;
+      border-top: $base-border-width solid $base-border-color;
+      padding: $spacing;
+
+      .heading {
+        font-weight: $base-font-medium;
+        padding: 0 $spacing*2;
+      }
+
+      .content {
+        display: flex;
+        flex-wrap: wrap;
+        padding: 0 $spacing*2;
+        border-left: $base-border-width * 2 solid $base-border-color;
+        display: flex;
+        gap: $spacing*2;
+
+        .hazard-legend-items {
+          display: flex;
+          gap: $spacing*2;
+        }
+
+        .fi-legend-items {
+          display: flex;
+          gap: $spacing*2;
+        }
+      }
     }
   }
 }
 
 .legend-item {
   display: flex;
+  flex-shrink: 0;
   align-items: center;
-  gap: $spacing*3/2;
-  padding: $spacing*3/2;
+  gap: $spacing*2/3;
+  opacity: 0.2;
 
-  .icon {
-    height: 2rem;
-    width: 2rem;
+  &.active {
+    opacity: 0.8;
+  }
+
+
+  .icon-container {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    border-radius: 50%;
+    padding: $spacing/2;
+    height: 1.6rem;
+    width: 1.6rem;
+
+    .icon {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      object-position: center center;
+    }
   }
 
   .label {
@@ -103,22 +155,15 @@
 .fi-legend-item {
   display: flex;
   align-items: center;
-  gap: $spacing*3/2;
-  padding: $spacing/2 $spacing*3/2;
-
-  .icon {
-    height: 2rem;
-    width: 2rem;
-  }
+  gap: $spacing*2/3;
 
   .label {
     font-weight: $base-font-medium;
   }
 
   .circle {
-    height: 0.6rem;
-    width: 0.6rem;
-    border-radius: 50%;
+    height: 2px;
+    width: 1rem;
   }
 }
 

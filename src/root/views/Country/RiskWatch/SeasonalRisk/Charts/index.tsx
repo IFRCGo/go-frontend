@@ -8,6 +8,7 @@ import {
   listToMap,
   listToGroupList,
   mapToMap,
+  _cs,
 } from '@togglecorp/fujs';
 import {
   ScatterChart,
@@ -71,6 +72,10 @@ const chartMargin = {
   bottom: 0,
 };
 
+const COLOR_FLOOD = '#85d1ee';
+const COLOR_CYCLONE = '#c8ccb7';
+const COLOR_DROUGHT = '#b09db2';
+const COLOR_FOOD_INSECURITY = '#ffab8e';
 
 function formatNumber (value: number) {
   const {
@@ -134,6 +139,8 @@ interface LegendItemProps {
   icon: string;
   label: React.ReactNode;
   value?: number;
+  color: string;
+  isActive?: boolean,
 }
 
 function LegendItem(props: LegendItemProps) {
@@ -141,11 +148,21 @@ function LegendItem(props: LegendItemProps) {
     icon,
     label,
     value,
+    color,
+    isActive,
   } = props;
 
   return (
-    <div className={styles.legendItem}>
-      <img className={styles.icon} src={icon} />
+    <div className={_cs(styles.legendItem, isActive && styles.active)}>
+      <div
+        className={styles.iconContainer}
+        style={{ backgroundColor: color }}
+      >
+        <img
+          className={styles.icon}
+          src={icon}
+        />
+      </div>
       <div className={styles.label}>
         {label}
       </div>
@@ -251,7 +268,7 @@ function DetailedChart(props: DetailedChartProps) {
         <Bar
           dataKey="average"
           name="Average-Bar"
-          fill="#011e41"
+          fill={COLOR_FOOD_INSECURITY}
           opacity={showHistoricalValues ? 0.3 : 0.8}
           barSize={10}
           radius={5}
@@ -447,57 +464,67 @@ function RiskBarChart(props: Props) {
                   }}
                   tickFormatter={formatNumber}
                 />
-                <Bar dataKey="FL" fill="#85d1ee" radius={4} />
+                <Bar dataKey="FL" fill={COLOR_FLOOD} radius={4} />
                 {/* <Bar dataKey="CY" fill="#c8ccb7" radius={4} /> */}
-                <Bar dataKey="TC" fill="#c8ccb7" radius={4} />
-                <Bar dataKey="DR" fill="#b09db2" radius={4} />
-                <Bar dataKey="FI" fill="#ffab8e" radius={4} />
+                <Bar dataKey="TC" fill={COLOR_CYCLONE} radius={4} />
+                <Bar dataKey="DR" fill={COLOR_DROUGHT} radius={4} />
+                <Bar dataKey="FI" fill={COLOR_FOOD_INSECURITY} radius={4} />
               </BarChart>
             </ResponsiveContainer>
           )
         )}
       </div>
-      <Container
-        className={styles.legend}
-        headingSize="small"
-        heading={hazardType === 'FI' ? 'Legend' : 'Hazard Type'}
-        sub
-      >
-        {hazardType === 'FI' ? (
-          <>
-            {showHistoricalValues && (
-              <>
-                <FILegendItem color="#a2a5b4" label="2017" />
-                <FILegendItem color="#82879c" label="2018" />
-                <FILegendItem color="#646b84" label="2019" />
-                <FILegendItem color="#464f6d" label="2020" />
-                <FILegendItem color="#273657" label="2021" />
-              </>
-            )}
-            <FILegendItem color="#011e41" label="Average" />
-            <FILegendItem color="#f04355" label="Prediction" />
-          </>
-        ) : (
-          <>
+      <div className={styles.legend}>
+        <div className={styles.heading}>
+          Legend
+        </div>
+        <div className={styles.content}>
+          <div className={styles.hazardLegendItems}>
             <LegendItem
+              color={COLOR_FLOOD}
               icon={floodIcon}
               label="Floods"
+              isActive={!hazardType || hazardType === 'FL'}
             />
             <LegendItem
+              color={COLOR_CYCLONE}
               icon={cycloneIcon}
               label="Cyclone"
+              isActive={!hazardType || hazardType === 'TC'}
             />
             <LegendItem
+              color={COLOR_DROUGHT}
               icon={droughtIcon}
               label="Drought"
+              isActive={!hazardType || hazardType === 'DR'}
             />
             <LegendItem
+              color={COLOR_FOOD_INSECURITY}
               icon={foodInsecurityIcon}
               label="Food Insecurity"
+              isActive={!hazardType || hazardType === 'FI'}
             />
-          </>
-        )}
-      </Container>
+          </div>
+          {hazardType === 'FI' && (
+            <>
+              <div className={styles.separator} />
+              <div className={styles.fiLegendItems}>
+                <FILegendItem color="#011e41" label="Average" />
+                <FILegendItem color="#f04355" label="Prediction" />
+                {showHistoricalValues && (
+                  <>
+                    <FILegendItem color="#a2a5b4" label="2017" />
+                    <FILegendItem color="#82879c" label="2018" />
+                    <FILegendItem color="#646b84" label="2019" />
+                    <FILegendItem color="#464f6d" label="2020" />
+                    <FILegendItem color="#273657" label="2021" />
+                  </>
+                )}
+              </div>
+            </>
+          )}
+        </div>
+      </div>
     </Container>
   );
 }
@@ -537,7 +564,25 @@ const historicalIconMap: Record<string, string> = {
   'Food Insecurity': foodInsecurityIcon,
   'Flash Flood': floodIcon,
 };
-const ICONSIZE = 20;
+const hazardTypeToColorMap: {
+  [key in HazardTypes]: string;
+} = {
+  TC: COLOR_CYCLONE,
+  DR: COLOR_DROUGHT,
+  FL: COLOR_FLOOD,
+  FI: COLOR_FOOD_INSECURITY,
+};
+const historicalHazardTypeToIconMap: {
+  [key: string]: string;
+} = {
+  Cyclone: COLOR_CYCLONE,
+  Drought: COLOR_DROUGHT,
+  Flood: COLOR_FLOOD,
+  'Food Insecurity': COLOR_FOOD_INSECURITY,
+  'Flash Flood': COLOR_FLOOD,
+};
+
+const ICONSIZE = 22;
 interface IconShapeProps {
   dtype: string;
   cx: number;
@@ -565,15 +610,27 @@ function IconShape(props: IconShapeProps) {
       x={cx - (ICONSIZE / 2)}
       y={cy - (ICONSIZE / 2)}
     >
-      <img
-        src={iconSrc}
+      <div
         style={{
-          objectFit: 'contain',
-          objectPosition: 'center center',
+          backgroundColor: historicalHazardTypeToIconMap[dtype],
+          borderRadius: '50%',
           width: `${ICONSIZE}px`,
           height: `${ICONSIZE}px`,
+          padding: '5px',
+          display: 'flex',
+          alignItems: 'center',
         }}
+      >
+        <img
+          src={iconSrc}
+          style={{
+            objectFit: 'contain',
+            objectPosition: 'center center',
+            width: '100%',
+            height: '100%',
+          }}
         />
+      </div>
     </foreignObject>
   );
 }
@@ -772,29 +829,36 @@ function ImpactChart(props: ImpactChartProps) {
           </ScatterChart>
         </ResponsiveContainer>
       </div>
-      <Container
-        className={styles.legend}
-        headingSize="small"
-        heading="Hazard Type"
-        sub
-      >
+      <div className={styles.impactLegend}>
+        <div className={styles.heading}>
+          Legend
+        </div>
+        <div className={styles.separator} />
         <LegendItem
-          icon={cycloneIcon}
-          label="Cyclone"
-        />
-        <LegendItem
-          icon={droughtIcon}
-          label="Drought"
-        />
-        <LegendItem
+          color={COLOR_FLOOD}
           icon={floodIcon}
           label="Floods"
+          isActive
         />
         <LegendItem
+          color={COLOR_CYCLONE}
+          icon={cycloneIcon}
+          label="Cyclone"
+          isActive
+        />
+        <LegendItem
+          color={COLOR_DROUGHT}
+          icon={droughtIcon}
+          label="Drought"
+          isActive
+        />
+        <LegendItem
+          color={COLOR_FOOD_INSECURITY}
           icon={foodInsecurityIcon}
           label="Food Insecurity"
+          isActive
         />
-      </Container>
+      </div>
     </Container>
   );
 }
