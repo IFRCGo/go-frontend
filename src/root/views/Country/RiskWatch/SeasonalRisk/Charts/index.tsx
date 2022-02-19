@@ -72,10 +72,10 @@ const chartMargin = {
   bottom: 0,
 };
 
-const COLOR_FLOOD = '#85d1ee';
-const COLOR_CYCLONE = '#c8ccb7';
+const COLOR_FLOOD = '#7d8b9d';
+const COLOR_CYCLONE = '#aeb7c2';
 const COLOR_DROUGHT = '#b09db2';
-const COLOR_FOOD_INSECURITY = '#ffab8e';
+const COLOR_FOOD_INSECURITY = '#c9ccb7';
 
 function formatNumber (value: number) {
   const {
