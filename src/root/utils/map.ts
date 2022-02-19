@@ -1,6 +1,6 @@
 export const defaultMapStyle = 'mapbox://styles/go-ifrc/ckrfe16ru4c8718phmckdfjh0';
 
-export const defaultMapOptions = {
+export const defaultMapOptions: Omit<mapboxgl.MapboxOptions, 'style' | 'container'> = {
   logoPosition: 'bottom-left' as const,
   zoom: 1.5,
   minZoom: 0,

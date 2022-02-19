@@ -16,18 +16,24 @@
     }
 
     .side-bar {
-      height: 40rem;
+      background-color: #fff;
+      position: absolute;
+      right: 1rem;
+      top: 1rem;
+      max-height: calc(40rem - 2rem);
       width: 20rem;
       box-shadow: $base-box-shadow;
       z-index: 1;
       overflow: auto;
+      padding-bottom: $spacing;
+      border-radius: $base-border-radius;
 
       .event-list {
         overflow: auto;
         display: flex;
         flex-direction: column;
         gap: $base-border-width;
-        padding: $spacing;
+        padding: 0 $spacing;
 
         .event-detail {
           background-color: $color-background;
@@ -37,9 +43,21 @@
             cursor: pointer;
             padding: $spacing / 2;
 
-            .title {
-              font-size: $font-size-sm;
-              font-weight: $base-font-medium;
+            .header {
+              display: flex;
+              gap: $spacing / 2;
+
+              .title {
+                flex-grow: 1;
+                font-size: $font-size-sm;
+                font-weight: $base-font-medium;
+              }
+
+              .icon {
+                flex-shrink: 0;
+                opacity: 0.5;
+                font-size: $font-size-sm;
+              }
             }
 
             .sub-title {

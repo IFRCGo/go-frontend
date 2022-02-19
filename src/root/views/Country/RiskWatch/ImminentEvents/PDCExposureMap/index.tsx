@@ -306,7 +306,7 @@ function PDCExposureMap(props: Props) {
       mapStyle={defaultMapStyle}
       mapOptions={defaultMapOptions}
       navControlShown
-      navControlPosition="top-right"
+      navControlPosition="top-left"
     >
       <MapContainer className={_cs(styles.mapContainer, className)} />
       {hazardKeys.map(d => (
@@ -351,6 +351,12 @@ function PDCExposureMap(props: Props) {
       <MapBounds
         // @ts-ignore
         bounds={countryBounds}
+        padding={{
+          left: 20,
+          top: 20,
+          right: 100,
+          bottom: 20,
+        }}
       />
     </Map>
   );

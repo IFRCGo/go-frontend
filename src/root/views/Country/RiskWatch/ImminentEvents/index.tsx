@@ -1,4 +1,8 @@
 import React from 'react';
+import {
+  IoCaretUp,
+  IoCaretDown,
+} from 'react-icons/io5';
 
 import { useRequest } from '#utils/restRequest';
 import Container from '#components/Container';
@@ -42,8 +46,13 @@ function EventDetail<E extends number>(props: EventDetailProps<E>) {
         role="presentation"
         onClick={handleClick}
       >
-        <div className={styles.title}>
-          {title}
+        <div className={styles.header}>
+          <div className={styles.title}>
+            {title}
+          </div>
+          <div className={styles.icon}>
+            {isActive ? <IoCaretUp /> : <IoCaretDown />}
+          </div>
         </div>
         <div className={styles.subTitle}>
           <div className={styles.type}>
@@ -123,6 +132,8 @@ function ImminentEvents(props: Props) {
             className={styles.sideBar}
             contentClassName={styles.eventList}
             heading={country?.name}
+            headingSize="small"
+            hideHeaderBorder
             sub
           >
             {response?.pdc_data?.map((hazard) => (
