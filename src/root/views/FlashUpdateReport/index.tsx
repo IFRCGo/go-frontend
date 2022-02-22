@@ -17,7 +17,7 @@ import BlockLoading from '#components/block-loading';
 import Button, { useButtonFeatures, ButtonFeatureProps } from '#components/Button';
 import DateOutput from '#components/DateOutput';
 
-import { InformalUpdateAPIResponseFields } from '../InformalUpdateApplicationForm/common';
+import { FlashUpdateAPIResponseFields } from '../FlashUpdateApplicationForm/common';
 
 import styles from './styles.module.scss';
 
@@ -44,7 +44,7 @@ interface Props {
   location: Location;
 }
 
-function InformalUpdateReport(props: Props) {
+function FlashUpdateReport(props: Props) {
   const {
     location,
     match: {
@@ -57,15 +57,16 @@ function InformalUpdateReport(props: Props) {
   const {
     pending,
     response,
-  } = useRequest<InformalUpdateAPIResponseFields>({
+  } = useRequest<FlashUpdateAPIResponseFields>({
     skip: isNotDefined(id),
+    // FIXME: update URL
     url: `api/v2/informal-update/${id}/`,
   });
 
   const crumbs = useMemo(() => [
     {
-      link: strings.informalUpdateNumber,
-      name: `${strings.informalUpdateNumber}${response && response.id + 1}`
+      link: strings.flashUpdateNumber,
+      name: `${strings.flashUpdateNumber}${response && response.id + 1}`
     },
     {
       link: location?.pathname,
@@ -83,7 +84,7 @@ function InformalUpdateReport(props: Props) {
 
   return (
     <Page
-      className={styles.informalUpdate}
+      className={styles.flashUpdate}
       title={response?.title}
       heading={response?.title}
       description={(
@@ -115,7 +116,7 @@ function InformalUpdateReport(props: Props) {
           {response && (
             <ButtonLikeLink
               variant="primary"
-              to={`/informal-update/${response.id}/edit/`}
+              to={`/flash-update/${response.id}/edit/`}
             >
               Edit
             </ButtonLikeLink>
@@ -128,7 +129,7 @@ function InformalUpdateReport(props: Props) {
       {!pending && response && (
         <>
           <Container
-            heading={strings.informalUpdateMapTitle}
+            heading={strings.flashUpdateMapTitle}
             contentClassName={styles.maps}
           >
               {response?.map_files?.map((item) => (
@@ -148,7 +149,7 @@ function InformalUpdateReport(props: Props) {
               ))}
           </Container>
           <Container
-            heading={strings.informalUpdateImageTitle}
+            heading={strings.flashUpdateImageTitle}
             contentClassName={styles.graphics}
           >
             {response?.graphics_files?.map((item) => (
@@ -168,7 +169,7 @@ function InformalUpdateReport(props: Props) {
             ))}
           </Container>
           <Container
-            heading={strings.informalUpdateActionTakenTitle}
+            heading={strings.flashUpdateActionTakenTitle}
             contentClassName={styles.actionsTaken}
           >
             {response.actions_taken.map((at) => (
@@ -198,7 +199,7 @@ function InformalUpdateReport(props: Props) {
               </Container>
             ))}
           </Container>
-          <Container heading={strings.informalUpdateResourcesTitle}>
+          <Container heading={strings.flashUpdateResourcesTitle}>
             {response.references.map((r) => (
               <div
                 className={styles.reference}
@@ -238,4 +239,4 @@ function InformalUpdateReport(props: Props) {
   );
 }
 
-export default InformalUpdateReport;
+export default FlashUpdateReport;

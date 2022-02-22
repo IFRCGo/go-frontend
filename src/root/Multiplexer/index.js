@@ -27,37 +27,6 @@ import {
 
 import styles from './styles.module.scss';
 
-// Views.
-// import Home from '#views/home';
-// import About from '#views/about';
-// import Account from '#views/account';
-// import PasswordChange from '#views/password-change';
-// import Login from '#views/login';
-// import Register from '#views/register';
-// import RecoverAccount from '#views/recover-account';
-// import RecoverUsername from '#views/recover-username';
-// import ResendValidation from '#views/resend-validation';
-// import FourHundredFour from '#views/FourHundredFour';
-// import FieldReport from '#views/field-report';
-// import Emergencies from '#views/emergencies';
-// import Emergency from '#views/emergency';
-// import Region from '#views/region';
-// import Country from '#views/Country';
-// import Deployments from '#views/deployments';
-// import Table from '#views/table';
-// import Covid19ThreeWSankey from '#views/Covid19ThreeWSankey';
-// import PerForm from '#components/per-forms/per-form';
-// import PerAssessment from '#views/per-assessment';
-// import Preparedness from '#views/preparedness';
-// import TranslationDashboard from '#views/TranslationDashboard';
-// import ClearInitCache from '#views/ClearInitCache';
-// import NewThreeW from '#views/NewThreeW';
-// import FieldReportForm from '#views/FieldReportForm';
-// import GlobalThreeW from '#views/GlobalThreeW';
-// import AllThreeW from '#views/AllThreeW';
-// import ThreeW from '#views/ThreeW';
-// import ThreeWEdit from '#views/ThreeWEdit';
-
 const Home = lazy(() => import('../views/home'));
 const About = lazy(() => import('../views/about'));
 const Account = lazy(() => import('../views/account'));
@@ -90,9 +59,9 @@ const ThreeW = lazy(() => import('../views/ThreeW'));
 const ThreeWEdit = lazy(() => import('../views/ThreeWEdit'));
 const DrefApplicationForm = lazy(() => import('../views/DrefApplicationForm'));
 const DrefPdfPreview = lazy(() => import('../views/DrefPdfPreview'));
-const InformalUpdateApplicationForm = lazy(() => import('../views/InformalUpdateApplicationForm'));
-const InformalUpdateReport = lazy(() => import('../views/InformalUpdateReport'));
-const AllInformalUpdates = lazy(() => import('../views/AllInformalUpdates'));
+const FlashUpdateApplicationForm = lazy(() => import('../views/FlashUpdateApplicationForm'));
+const FlashUpdateReport = lazy(() => import('../views/FlashUpdateReport'));
+const AllFlashUpdates = lazy(() => import('../views/AllFlashUpdates'));
 
 function LoadingGlobal() {
   return (
@@ -302,10 +271,10 @@ function Multiplexer(props) {
               <PrivateRoute exact path='/three-w/:projectId/edit/' component={ThreeWEdit} />
               <Route exact path='/three-w/' component={GlobalThreeW} />
 
-              <PrivateRoute key="new-informal-update-application-form" exact path='/informal-update/new/' component={InformalUpdateApplicationForm} />
-              <Route exact path='/informal-update/all/' component={AllInformalUpdates} />
-              <Route exact path='/informal-update/:id/edit/' component={InformalUpdateApplicationForm} />
-              <Route exact path='/informal-update/:id/' component={InformalUpdateReport} />
+              <PrivateRoute key="new-flash-update-application-form" exact path='/flash-update/new/' component={FlashUpdateApplicationForm} />
+              <Route exact path='/flash-update/all/' component={AllFlashUpdates} />
+              <Route exact path='/flash-update/:id/edit/' component={FlashUpdateApplicationForm} />
+              <Route exact path='/flash-update/:id/' component={FlashUpdateReport} />
               <Route component={FourHundredFour} />
             </Switch>
           </BreadcrumbsProvider>

@@ -17,7 +17,7 @@ interface Props {
   ITEM_PER_PAGE: number;
 }
 
-function AllInformalUpdates(props: Props) {
+function AllFlashUpdates(props: Props) {
   const {
     className,
     location,
@@ -27,14 +27,14 @@ function AllInformalUpdates(props: Props) {
   const { strings } = useContext(languageContext);
 
   const crumbs = useMemo(() => [
-    { link: location?.pathname, name: strings.informalUpdateReportsTableViewAllReportsBreadcrumbTitle },
+    { link: location?.pathname, name: strings.flashUpdateReportsTableViewAllReportsBreadcrumbTitle },
     { link: '/', name: strings.breadCrumbHome },
   ], [strings, location]);
 
   return (
     <Page
-      className={_cs(styles.allInformalUpdates, className)}
-      title={strings.informalUpdateReportsTableViewAllReportsBreadcrumbTitle}
+      className={_cs(styles.allFlashUpdates, className)}
+      title={strings.flashUpdateReportsTableViewAllReportsBreadcrumbTitle}
       breadCrumbs={<BreadCrumb crumbs={crumbs} compact />}
     >
       <TableLists
@@ -46,4 +46,4 @@ function AllInformalUpdates(props: Props) {
   );
 }
 
-export default AllInformalUpdates;
+export default AllFlashUpdates;

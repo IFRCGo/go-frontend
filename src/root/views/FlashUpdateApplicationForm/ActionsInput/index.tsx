@@ -12,7 +12,7 @@ import InputSection from '#components/InputSection';
 import languageContext from '#root/languageContext';
 
 import {
-  InformalUpdateFields,
+  FlashUpdateFields,
   OrganizationType,
   ActionOptionItem,
   Action,
@@ -20,7 +20,7 @@ import {
 
 import ActionInput from './ActionInput';
 
-type Value = PartialForm<InformalUpdateFields>;
+type Value = PartialForm<FlashUpdateFields>;
 interface Props {
   error: Error<Value> | undefined;
   onValueChange: (...entries: EntriesAsList<Value>) => void;
@@ -53,28 +53,28 @@ function ActionsInput(props: Props) {
     description,
   ] = React.useMemo(() => ([
     {
-      NTLS: strings.informalUpdateFormActionTakenByNationalSocietyPlaceholder,
-      PNS: strings.informalUpdateFormActionTakenByIfrcPlaceholder,
-      FDRN: strings.informalUpdateFormActionTakenByRcrcPlaceholder,
-      GOV: strings.informalUpdateFormActionTakenByGovernmentPlaceholder,
+      NTLS: strings.flashUpdateFormActionTakenByNationalSocietyPlaceholder,
+      PNS: strings.flashUpdateFormActionTakenByIfrcPlaceholder,
+      FDRN: strings.flashUpdateFormActionTakenByRcrcPlaceholder,
+      GOV: strings.flashUpdateFormActionTakenByGovernmentPlaceholder,
     },
     {
-      NTLS: strings.informalUpdateFormActionTakenByNationalSocietyLabel,
-      PNS: strings.informalUpdateFormActionTakenByIfrcLabel,
-      FDRN: strings.informalUpdateFormActionTakenByRcrcLabel,
-      GOV: strings.informalUpdateFormActionTakenByGovernmentLabel,
+      NTLS: strings.flashUpdateFormActionTakenByNationalSocietyLabel,
+      PNS: strings.flashUpdateFormActionTakenByIfrcLabel,
+      FDRN: strings.flashUpdateFormActionTakenByRcrcLabel,
+      GOV: strings.flashUpdateFormActionTakenByGovernmentLabel,
     },
     {
-      NTLS: strings.informalUpdateFormActionTakenByNationalSocietyDescription,
-      PNS: strings.informalUpdateFormActionTakenByIfrcDescription,
-      FDRN: strings.informalUpdateFormActionTakenByRcrcDescription,
-      GOV: strings.informalUpdateFormActionTakenByGovernmentDescription,
+      NTLS: strings.flashUpdateFormActionTakenByNationalSocietyDescription,
+      PNS: strings.flashUpdateFormActionTakenByIfrcDescription,
+      FDRN: strings.flashUpdateFormActionTakenByRcrcDescription,
+      GOV: strings.flashUpdateFormActionTakenByGovernmentDescription,
     },
   ] as const), [strings]);
 
   return (
     <Container
-      heading={strings.informalUpdateFormActionTakenTitle}
+      heading={strings.flashUpdateFormActionTakenTitle}
     >
       {value?.actions_taken?.map((a, i) => (
         <InputSection

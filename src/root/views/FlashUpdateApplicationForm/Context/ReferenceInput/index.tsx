@@ -11,7 +11,7 @@ import languageContext from '#root/languageContext';
 import DateInput from '#components/DateInput';
 import TextInput from '#components/TextInput';
 import Button from '#components/Button';
-import InformalUpdateFileInput from '#components/InformalUpdateFileInput';
+import FlashUpdateFileInput from '#components/FlashUpdateFileInput';
 
 import { Reference } from '../../common';
 
@@ -56,7 +56,7 @@ function ReferenceInput(props: Props) {
           value={value?.date}
           onChange={onValueChange}
           error={error?.date}
-          label={strings.informalUpdateFormContextReferenceDateLabel}
+          label={strings.flashUpdateFormContextReferenceDateLabel}
         />
         <TextInput
           className={styles.inputName}
@@ -64,11 +64,11 @@ function ReferenceInput(props: Props) {
           value={value?.source_description}
           onChange={onValueChange}
           error={error?.source_description}
-          label={strings.informalUpdateFormContextReferenceNameLabel}
+          label={strings.flashUpdateFormContextReferenceNameLabel}
         />
         <TextInput
           className={styles.inputUrl}
-          label={strings.informalUpdateFormContextReferenceUrlLabel}
+          label={strings.flashUpdateFormContextReferenceUrlLabel}
           name="url"
           value={value?.url}
           onChange={onValueChange}
@@ -76,7 +76,7 @@ function ReferenceInput(props: Props) {
         />
       </div>
       <div className={styles.secondColumn}>
-        <InformalUpdateFileInput
+        <FlashUpdateFileInput
           name="document"
           value={value?.document}
           onChange={onValueChange}
@@ -85,7 +85,7 @@ function ReferenceInput(props: Props) {
           hideClearButton
         >
           Upload a document
-        </InformalUpdateFileInput>
+        </FlashUpdateFileInput>
       </div>
       <div className={styles.actions}>
         <Button

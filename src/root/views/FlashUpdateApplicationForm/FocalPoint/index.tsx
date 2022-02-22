@@ -16,12 +16,12 @@ import {
   StringValueOption
 } from '#types';
 import {
-  InformalUpdateFields,
+  FlashUpdateFields,
   optionLabelSelector,
   stringOptionKeySelector,
 } from '../common';
 
-type Value = PartialForm<InformalUpdateFields>;
+type Value = PartialForm<FlashUpdateFields>;
 
 interface Props {
   error: Error<Value> | undefined;
@@ -45,22 +45,22 @@ function FocalPoints(props: Props) {
     <>
       <Container>
         <InputSection
-          title={strings.informalUpdateFormFocalOriginatorTitle}
-          description={strings.informalUpdateFormFocalOriginatorDescription}
+          title={strings.flashUpdateFormFocalOriginatorTitle}
+          description={strings.flashUpdateFormFocalOriginatorDescription}
         >
           <TextInput
             name="originator_name"
             value={value.originator_name}
             onChange={onValueChange}
             error={error?.originator_name}
-            label={strings.informalUpdateFormFocalOriginatorNameLabel}
+            label={strings.flashUpdateFormFocalOriginatorNameLabel}
           />
           <TextInput
             name="originator_title"
             value={value.originator_title}
             onChange={onValueChange}
             error={error?.originator_title}
-            label={strings.informalUpdateFormFocalOriginatorTitleLabel}
+            label={strings.flashUpdateFormFocalOriginatorTitleLabel}
           />
         </InputSection>
         <InputSection>
@@ -69,34 +69,34 @@ function FocalPoints(props: Props) {
             value={value.originator_email}
             onChange={onValueChange}
             error={error?.originator_email}
-            label={strings.informalUpdateFormFocalOriginatorEmailLabel}
+            label={strings.flashUpdateFormFocalOriginatorEmailLabel}
           />
           <TextInput
             name="originator_phone"
             value={value.originator_phone}
             onChange={onValueChange}
             error={error?.originator_phone}
-            label={strings.informalUpdateFormFocalOriginatorPhoneLabel}
+            label={strings.flashUpdateFormFocalOriginatorPhoneLabel}
           />
         </InputSection>
 
         <InputSection
-          title={strings.informalUpdateFormFocalIfrcTitle}
-          description={strings.informalUpdateFormFocalIfrcDescription}
+          title={strings.flashUpdateFormFocalIfrcTitle}
+          description={strings.flashUpdateFormFocalIfrcDescription}
         >
           <TextInput
             name="ifrc_name"
             value={value.ifrc_name}
             onChange={onValueChange}
             error={error?.ifrc_name}
-            label={strings.informalUpdateFormFocalIfrcNameLabel}
+            label={strings.flashUpdateFormFocalIfrcNameLabel}
           />
           <TextInput
             name="ifrc_title"
             value={value.ifrc_title}
             onChange={onValueChange}
             error={error?.ifrc_title}
-            label={strings.informalUpdateFormFocalIfrcTitleLabel}
+            label={strings.flashUpdateFormFocalIfrcTitleLabel}
           />
         </InputSection>
         <InputSection>
@@ -105,21 +105,21 @@ function FocalPoints(props: Props) {
             value={value.ifrc_email}
             onChange={onValueChange}
             error={error?.ifrc_email}
-            label={strings.informalUpdateFormFocalIfrcEmailLabel}
+            label={strings.flashUpdateFormFocalIfrcEmailLabel}
           />
           <TextInput
             name="ifrc_phone"
             value={value.ifrc_phone}
             onChange={onValueChange}
             error={error?.ifrc_phone}
-            label={strings.informalUpdateFormFocalIfrcPhoneLabel}
+            label={strings.flashUpdateFormFocalIfrcPhoneLabel}
           />
         </InputSection>
       </Container>
       <Container>
         <InputSection
-          title={strings.informalUpdateFormFocalIfrcShareWithTitle}
-          description={strings.informalUpdateFormFocalIfrcShareWithDescription}
+          title={strings.flashUpdateFormFocalIfrcShareWithTitle}
+          description={strings.flashUpdateFormFocalIfrcShareWithDescription}
         >
           <RadioInput
             name="share_with"

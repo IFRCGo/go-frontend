@@ -1,4 +1,5 @@
 import React from 'react';
+import { isNotDefined } from '@togglecorp/fujs';
 import {
   PartialForm,
   ObjectSchema,
@@ -6,7 +7,6 @@ import {
   emailCondition,
   requiredCondition,
 } from '@togglecorp/toggle-form';
-import { isDefined } from '@togglecorp/fujs';
 import { compareString } from '#utils/utils';
 import {
   useRequest,
@@ -22,57 +22,45 @@ import {
 
 import {
   emptyNumericOptionList,
-  InformalUpdateFields,
+  FlashUpdateFields,
   emptyActionOptionItemList,
   OrganizationType,
   emptyStringOptionList,
   ActionOptionItem,
 } from './common';
 
-export type FormSchema = ObjectSchema<PartialForm<InformalUpdateFields>>;
+export type FormSchema = ObjectSchema<PartialForm<FlashUpdateFields>>;
 export type FormSchemaFields = ReturnType<FormSchema['fields']>;
 
-export type CountryDistrictType = NonNullable<NonNullable<InformalUpdateFields['country_district']>>[number];
+export type CountryDistrictType = NonNullable<NonNullable<FlashUpdateFields['country_district']>>[number];
 export type CountryDistrictSchema = ObjectSchema<PartialForm<CountryDistrictType>>;
 export type CountryDistrictSchemaFields = ReturnType<CountryDistrictSchema['fields']>;
 export type CountryDistrictsSchema = ArraySchema<PartialForm<CountryDistrictType>>;
 export type CountryDistrictsSchemaMember = ReturnType<CountryDistrictsSchema['member']>;
 
-export type ReferenceType = NonNullable<NonNullable<InformalUpdateFields['references']>>[number];
+export type ReferenceType = NonNullable<NonNullable<FlashUpdateFields['references']>>[number];
 export type ReferenceSchema = ObjectSchema<PartialForm<ReferenceType>>;
 export type ReferenceSchemaFields = ReturnType<ReferenceSchema['fields']>;
 export type ReferencesSchema = ArraySchema<PartialForm<ReferenceType>>;
 export type ReferencesSchemaMember = ReturnType<ReferencesSchema['member']>;
 
-export type MapType = NonNullable<NonNullable<InformalUpdateFields['map_files']>>[number];
+export type MapType = NonNullable<NonNullable<FlashUpdateFields['map_files']>>[number];
 export type MapSchema = ObjectSchema<PartialForm<MapType>>;
 export type MapSchemaFields = ReturnType<MapSchema['fields']>;
 export type MapsSchema = ArraySchema<PartialForm<MapType>>;
 export type MapsSchemaMember = ReturnType<MapsSchema['member']>;
 
-export type GraphicType = NonNullable<NonNullable<InformalUpdateFields['graphics_files']>>[number];
+export type GraphicType = NonNullable<NonNullable<FlashUpdateFields['graphics_files']>>[number];
 export type GraphicSchema = ObjectSchema<PartialForm<GraphicType>>;
 export type GraphicSchemaFields = ReturnType<GraphicSchema['fields']>;
 export type GraphicsSchema = ArraySchema<PartialForm<GraphicType>>;
 export type GraphicsSchemaMember = ReturnType<GraphicsSchema['member']>;
 
-export type ActionType = NonNullable<NonNullable<InformalUpdateFields['actions_taken']>>[number];
+export type ActionType = NonNullable<NonNullable<FlashUpdateFields['actions_taken']>>[number];
 export type ActionSchema = ObjectSchema<PartialForm<ActionType>>;
 export type ActionSchemaFields = ReturnType<ActionSchema['fields']>;
 export type ActionsSchema = ArraySchema<PartialForm<ActionType>>;
 export type ActionsSchemaMember = ReturnType<ActionsSchema['member']>;
-
-export function max10CharCondition(value: any) {
-  return isDefined(value) && value.length > 10
-    ? 'only 10 characters are allowed'
-    : undefined;
-}
-
-export function lessThanSixImagesCondition(value: any) {
-  return isDefined(value) && Array.isArray(value) && value.length > 6
-    ? 'Only six images are allowed'
-    : undefined;
-}
 
 export const schema: FormSchema = {
   fields: (value): FormSchemaFields => ({
@@ -80,7 +68,21 @@ export const schema: FormSchema = {
       keySelector: (c) => c.client_id as string,
       member: (): CountryDistrictsSchemaMember => ({
         fields: (): CountryDistrictSchemaFields => ({
-          country: [requiredCondition],
+          client_id: [],
+          country: [requiredCondition, (value, allValues) => {
+            if (isNotDefined(value)) {
+              return undefined;
+            }
+            const countriesWithCurrentId = (allValues as unknown as FlashUpdateFields)?.country_district?.filter(
+              d => d.country === value
+            );
+
+            if (countriesWithCurrentId.length > 1) {
+              return 'Duplicate countries not allowed';
+            }
+
+            return undefined;
+          }],
           district: [requiredCondition]
         }),
       }),
@@ -137,9 +139,24 @@ export const schema: FormSchema = {
     ifrc_title: [],
     share_with: [],
   }),
-  fieldDependencies: () => ({
-  }),
   validation: (value) => {
+    const errors = [];
+    if ((value?.country_district?.length ?? 0) > 10) {
+      errors.push('More that 10 countires are not allowed');
+    }
+
+    if ((value?.graphics_files?.length ?? 0) > 3) {
+      errors.push('More that 3 graphics are not allowed');
+    }
+
+    if ((value?.map_files?.length ?? 0) > 3) {
+      errors.push('More that 3 maps are not allowed');
+    }
+
+    if (errors.length > 0) {
+      return errors.join(', ');
+    }
+
     return undefined;
   },
 };
@@ -148,7 +165,7 @@ const limitQuery = {
   limit: 500,
 };
 
-function useInformalUpdateFormOptions(value: PartialForm<InformalUpdateFields>) {
+function useFlashUpdateFormOptions(value: PartialForm<FlashUpdateFields>) {
   const {
     pending: fetchingCountries,
     response: countriesResponse,
@@ -210,6 +227,7 @@ function useInformalUpdateFormOptions(value: PartialForm<InformalUpdateFields>) 
     pending: fetchingShareWithOptions,
     response: shareWith
   } = useRequest<{ share_with_options: StringValueOption[] }>({
+    // FIXME: update url
     url: 'api/v2/informal-options/'
   });
 
@@ -224,6 +242,7 @@ function useInformalUpdateFormOptions(value: PartialForm<InformalUpdateFields>) 
     pending: fetchingActions,
     response: actionsResponse,
   } = useRequest<ListResponse<ActionOptionItem>>({
+    // FIXME: update url
     url: 'api/v2/informal_action/',
     query: limitQuery,
   });
@@ -269,4 +288,4 @@ function useInformalUpdateFormOptions(value: PartialForm<InformalUpdateFields>) 
   };
 }
 
-export default useInformalUpdateFormOptions;
+export default useFlashUpdateFormOptions;

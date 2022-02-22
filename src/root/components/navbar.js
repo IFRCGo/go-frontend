@@ -95,26 +95,23 @@ function Navbar(props) {
                     >
                       {strings.headerDropdownCovid19NSFinancialOverview}
                     </a>
-                    {/* FIXME: use strings */}
                     <Link
                       to='/dref-application/new'
                       className='drop__menu-item'
                     >
-                      New Dref Application
+                      {strings.headerDropdownNewDrefApplication}
                     </Link>
                     <Link
                       to='/three-w/new'
                       className='drop__menu-item'
                     >
-                      {/* FIXME: use strings */}
-                      New 3W project
+                      {strings.headerDropdownNew3WActivity}
                     </Link>
                     <Link
-                      to='/informal-update/new'
+                      to='/flash-update/new'
                       className='drop__menu-item'
                     >
-                      {/* FIXME: use strings */}
-                      New Informal Update Request
+                      {strings.headerDropdownNewFlashUpdate}
                     </Link>
                   </div>
                 </DropdownMenu>

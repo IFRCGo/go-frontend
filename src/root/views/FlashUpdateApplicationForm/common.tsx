@@ -67,9 +67,9 @@ export const numericOptionKeySelector = (o: NumericValueOption) => o.value;
 export const stringOptionKeySelector = (o: StringValueOption) => o.value;
 export const booleanOptionKeySelector = (o: BooleanValueOption) => o.value;
 export const optionLabelSelector = (o: Option) => o.label;
-export const tableKeySelector = (o: InformalUpdateTableFields) => o.id;
+export const tableKeySelector = (o: FlashUpdateTableFields) => o.id;
 
-export interface InformalUpdateTableFields {
+export interface FlashUpdateTableFields {
   id: number;
   modified_at: string;
   title: string;
@@ -79,15 +79,17 @@ export interface InformalUpdateTableFields {
   tableTitle?: string;
 }
 
-export interface InformalUpdateFields {
+export interface FlashUpdateFields {
   country_district: CountryDistrict[];
-  references: Reference[];
-  actions_taken: Action[];
-  map_files: FileWithCaption[];
-  graphics_files: FileWithCaption[];
-
+  hazard_type: number;
   title: string;
   situational_overview: string;
+  map_files: FileWithCaption[];
+  graphics_files: FileWithCaption[];
+  references: Reference[];
+
+  actions_taken: Action[];
+
 
   originator_name: string;
   originator_title: string;
@@ -100,14 +102,13 @@ export interface InformalUpdateFields {
   ifrc_phone: string;
 
   share_with: string;
-  hazard_type: number;
 }
 
 type TransformToApiFields<FIELDS extends {}, ADDITION extends {}> =  FIELDS & {
   id: number;
 } & ADDITION;
 
-export interface InformalUpdateAPIResponseFields extends Omit<InformalUpdateFields, 'country_district' | 'references' | 'graphics_files' | 'map_files' | 'actions_taken'> {
+export interface FlashUpdateAPIResponseFields extends Omit<FlashUpdateFields, 'country_district' | 'references' | 'graphics_files' | 'map_files' | 'actions_taken'> {
   id: number,
   country_district: TransformToApiFields<CountryDistrict, {
     country_details: Country;
@@ -141,11 +142,11 @@ export interface InformalUpdateAPIResponseFields extends Omit<InformalUpdateFiel
   })[];
 }
 
-export type InformalUpdateAPIFields = InformalUpdateFields;
+export type FlashUpdateAPIFields = FlashUpdateFields;
 
 export const emptyActionOptionItemList: ActionOptionItem[] = [];
 
-export const contextFields: (keyof InformalUpdateFields)[] = [
+export const contextFields: (keyof FlashUpdateFields)[] = [
   'hazard_type',
   'title',
   'situational_overview',
@@ -156,23 +157,23 @@ export const contextFields: (keyof InformalUpdateFields)[] = [
   'title',
 ];
 
-export const actionsFields: (keyof InformalUpdateFields)[] = [
+export const actionsFields: (keyof FlashUpdateFields)[] = [
   'actions_taken',
 ];
 
-export const focalFields: (keyof InformalUpdateFields)[] = [
+export const focalFields: (keyof FlashUpdateFields)[] = [
   'originator_name',
   'originator_title',
   'originator_email',
   'originator_phone',
-  'ifrc_title',
   'ifrc_name',
+  'ifrc_title',
   'ifrc_email',
   'ifrc_phone',
   'share_with'
 ];
 
-export function transformFormFieldsToAPIFields(formValues: InformalUpdateFields): InformalUpdateAPIFields {
+export function transformFormFieldsToAPIFields(formValues: FlashUpdateFields): FlashUpdateAPIFields {
   const {
     country_district,
     hazard_type,
@@ -201,7 +202,8 @@ export function transformFormFieldsToAPIFields(formValues: InformalUpdateFields)
     title,
     situational_overview,
 
-    actions_taken: actions_taken.filter(a => a.actions?.length !== 0),
+    // actions_taken: actions_taken.filter(a => a.actions?.length !== 0),
+    actions_taken,
     originator_name,
     originator_title,
     originator_email,

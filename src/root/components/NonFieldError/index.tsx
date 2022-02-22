@@ -32,6 +32,10 @@ function NonFieldError<T>(props: Props<T>) {
     return null;
   }
 
+  if (!stringError && Object.keys(errorObject).length !== 0) {
+    return null;
+  }
+
 
   return (
     <div className={_cs(
