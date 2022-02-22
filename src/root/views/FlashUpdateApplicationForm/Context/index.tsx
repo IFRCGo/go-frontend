@@ -18,12 +18,12 @@ import languageContext from '#root/languageContext';
 import SelectInput from '#components/SelectInput';
 import TextInput from '#components/TextInput';
 import TextArea from '#components/TextArea';
-import InformalUpdateFileInput from '#components/InformalUpdateFileInput';
+import FlashUpdateFileInput from '#components/FlashUpdateFileInput';
 
 import { NumericValueOption } from '#types';
 
 import {
-  InformalUpdateFields,
+  FlashUpdateFields,
   CountryDistrict,
   Reference,
   FileWithCaption,
@@ -36,7 +36,7 @@ import MapInput from './MapInput';
 
 import styles from './styles.module.scss';
 
-type Value = PartialForm<InformalUpdateFields>;
+type Value = PartialForm<FlashUpdateFields>;
 interface Props {
   error: Error<Value> | undefined;
   onValueChange: (...entries: EntriesAsList<Value>) => void;
@@ -167,18 +167,16 @@ function Context(props: Props) {
     value?.graphics_files?.map(d => d.id).filter(d => !!d) as number[] | undefined
   ), [value?.graphics_files]);
 
-  console.info('graphics value', graphicsValue);
-
   return (
     <>
       <Container
         className={styles.context}
-        heading={strings.informalUpdateFormContextHeading}
+        heading={strings.flashUpdateFormContextHeading}
         visibleOverflow
       >
         <InputSection
-          title={strings.informalUpdateFormContextCountryTitle}
-          description={strings.informalUpdateFormContextCountryDescription}
+          title={strings.flashUpdateFormContextCountryTitle}
+          description={strings.flashUpdateFormContextCountryDescription}
           multiRow
           oneColumn
         >
@@ -202,12 +200,12 @@ function Context(props: Props) {
               onClick={handleCountryDistrictAdd}
               variant="secondary"
             >
-              {strings.informalUpdateFormContextCountryButton}
+              {strings.flashUpdateFormContextCountryButton}
             </Button>
           </div>
         </InputSection>
         <InputSection
-          title={strings.informalUpdateFormContextHazardTypeTitle}
+          title={strings.flashUpdateFormContextHazardTypeTitle}
         >
           <SelectInput
             error={error?.hazard_type}
@@ -219,20 +217,20 @@ function Context(props: Props) {
           />
         </InputSection>
         <InputSection
-          title={strings.informalUpdateFormContextTitle}
-          description={strings.informalUpdateFormContextTitleDescription}
+          title={strings.flashUpdateFormContextTitle}
+          description={strings.flashUpdateFormContextTitleDescription}
         >
           <TextInput
             name="title"
             value={value.title}
             onChange={onValueChange}
             error={error?.title}
-            placeholder={strings.informalUpdateFormContextTitlePlaceholder}
+            placeholder={strings.flashUpdateFormContextTitlePlaceholder}
           />
         </InputSection>
         <InputSection
-          title={strings.informalUpdateFormContextSituationalTitle}
-          description={strings.informalUpdateFormContextSituationalDescription}
+          title={strings.flashUpdateFormContextSituationalTitle}
+          description={strings.flashUpdateFormContextSituationalDescription}
         >
           <TextArea
             name="situational_overview"
@@ -242,11 +240,11 @@ function Context(props: Props) {
           />
         </InputSection>
         <InputSection
-          title={strings.informalUpdateFormContextGraphicTitle}
-          description={strings.informalUpdateFormContextGraphicDescription}
+          title={strings.flashUpdateFormContextGraphicTitle}
+          description={strings.flashUpdateFormContextGraphicDescription}
           contentSectionClassName={styles.graphicsInputContent}
         >
-          <InformalUpdateFileInput
+          <FlashUpdateFileInput
             accept="image/*"
             error={error?.graphics_files}
             fileIdToUrlMap={fileIdToUrlMap}
@@ -258,8 +256,8 @@ function Context(props: Props) {
             value={graphicsValue}
             hidePreview
           >
-            {strings.informalUpdateFormContextReferenceUrlButtonLabel}
-          </InformalUpdateFileInput>
+            {strings.flashUpdateFormContextReferenceUrlButtonLabel}
+          </FlashUpdateFileInput>
           <div className={styles.previewList}>
             {value?.graphics_files?.map((g, i) => (
               <GraphicInput
@@ -275,11 +273,11 @@ function Context(props: Props) {
           </div>
         </InputSection>
         <InputSection
-          title={strings.informalUpdateFormContextMapTitle}
-          description={strings.informalUpdateFormContextMapDescription}
+          title={strings.flashUpdateFormContextMapTitle}
+          description={strings.flashUpdateFormContextMapDescription}
           contentSectionClassName={styles.mapInputContent}
         >
-          <InformalUpdateFileInput
+          <FlashUpdateFileInput
             accept="image/*"
             error={error?.map_files}
             fileIdToUrlMap={fileIdToUrlMap}
@@ -291,8 +289,8 @@ function Context(props: Props) {
             value={mapValue}
             hidePreview
           >
-            {strings.informalUpdateFormContextReferenceUrlButtonLabel}
-          </InformalUpdateFileInput>
+            {strings.flashUpdateFormContextReferenceUrlButtonLabel}
+          </FlashUpdateFileInput>
           <div className={styles.previewList}>
             {value?.map_files?.map((m, i) => (
               <MapInput
@@ -308,8 +306,8 @@ function Context(props: Props) {
           </div>
         </InputSection>
         <InputSection
-          title={strings.informalUpdateFormContextReferenceTitle}
-          description={strings.informalUpdateFormContextReferenceDescription}
+          title={strings.flashUpdateFormContextReferenceTitle}
+          description={strings.flashUpdateFormContextReferenceDescription}
           multiRow
           oneColumn
         >
@@ -331,7 +329,7 @@ function Context(props: Props) {
               variant="secondary"
               onClick={handleAddReference}
             >
-              {strings.informalUpdateFormContextReferenceAddButtonLabel}
+              {strings.flashUpdateFormContextReferenceAddButtonLabel}
             </Button>
           </div>
         </InputSection>

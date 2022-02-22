@@ -18,7 +18,7 @@ import { getLastMonthsEmergencies, getAggregateEmergencies } from '#actions';
 import { environment } from '#config';
 
 import LanguageContext from '#root/languageContext';
-import TableLists from '#views/AllInformalUpdates/TableLists';
+import TableLists from '#views/AllFlashUpdates/TableLists';
 
 class Emergencies extends React.Component {
   componentDidMount() {
@@ -67,9 +67,9 @@ class Emergencies extends React.Component {
                       <div className="fold__title__linkwrap">
                         <Link
                           className="fold__title__link"
-                          to="/informal-update/all/"
+                          to="/flash-update/all/"
                         >
-                          {strings.informalUpdateReportsTableViewAllReports}
+                          {strings.flashUpdateReportsTableViewAllReports}
                         </Link>
                         <span className="collecticon-chevron-right" />
                       </div>

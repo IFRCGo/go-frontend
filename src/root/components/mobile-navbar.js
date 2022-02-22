@@ -125,13 +125,12 @@ class MobileNavbar extends React.PureComponent {
                       {strings.headerDropdownCovid19NSFinancialOverview}
                     </a>
                   </li>
-                  {/* FIXME: use strings */}
                   <li className='drop__menu-item'>
                     <Link
                         to='/dref-application/new'
                         className='drop__menu-item'
                     >
-                      New Dref Application
+                      {strings.headerDropdownNewDrefApplication}
                     </Link>
                   </li>
                   <li className='drop__menu-item'>
@@ -139,15 +138,13 @@ class MobileNavbar extends React.PureComponent {
                       to='/three-w/new'
                       className='drop__menu-item'
                     >
-                      {/* FIXME: use strings */}
-                      New 3W Activity
+                      {strings.headerDropdownNew3WActivity}
                     </Link>
                     <Link
-                      to='/informal-update/new'
+                      to='/flash-update/new'
                       className='drop__menu-item'
                     >
-                      {/* FIXME: use strings */}
-                      New Informal Update Request
+                      {strings.headerDropdownNewFlashUpdate}
                     </Link>
                   </li>
                 </ul>

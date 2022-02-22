@@ -20,18 +20,20 @@ import {
   SetValueArg,
 } from '#types';
 import LanguageContext from '#root/languageContext';
-import { CountryDistrictType } from '#views/InformalUpdateApplicationForm/useInformalUpdateFormOptions';
-import { emptyNumericOptionList } from '#views/InformalUpdateApplicationForm/common';
+import {
+  emptyNumericOptionList,
+  CountryDistrict,
+} from '#views/FlashUpdateApplicationForm/common';
 
 import styles from './styles.module.scss';
 
 
-const defaultCountryDistrictValue: PartialForm<CountryDistrictType> = {};
+const defaultCountryDistrictValue: PartialForm<CountryDistrict> = {};
 interface Props {
   fetchingCountries?: boolean;
-  value: PartialForm<CountryDistrictType>;
-  error: ArrayError<CountryDistrictType> | undefined;
-  onChange: (value: SetValueArg<PartialForm<CountryDistrictType>>, index: number) => void;
+  value: PartialForm<CountryDistrict>;
+  error: ArrayError<CountryDistrict> | undefined;
+  onChange: (value: SetValueArg<PartialForm<CountryDistrict>>, index: number) => void;
   onRemove: (index: number) => void;
   index: number;
   countryOptions: NumericValueOption[];
@@ -55,6 +57,7 @@ function CountryProvinceInput(props: Props) {
     limit: 500,
   }), [value.country]);
 
+
   const {
     pending: fetchingDistricts,
     response: districtsResponse,
@@ -76,19 +79,24 @@ function CountryProvinceInput(props: Props) {
     ? getErrorObject(errorFromProps?.[value.client_id])
     : undefined;
 
+  const handleCountryChange = React.useCallback((newValue: number | undefined) => {
+    onFieldChange(newValue, 'country' as const);
+    onFieldChange(undefined, 'district' as const);
+  }, [onFieldChange]);
+
   return (
     <div className={styles.countryDistrictInput}>
       <SelectInput
-        label={strings.informalUpdateFormContextCountryLabel}
+        label={strings.flashUpdateFormContextCountryLabel}
         pending={fetchingCountries}
         error={error?.country}
         name="country"
-        onChange={onFieldChange}
+        onChange={handleCountryChange}
         options={countryOptions}
         value={value.country}
       />
       <SelectInput
-        label={strings.informalUpdateFormContextProvinceLabel}
+        label={strings.flashUpdateFormContextProvinceLabel}
         pending={fetchingDistricts}
         error={error?.district}
         name="district"

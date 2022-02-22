@@ -30,18 +30,19 @@ import FocalPoints from './FocalPoint';
 import ActionsInput from './ActionsInput';
 
 import {
-  InformalUpdateFields,
-  InformalUpdateAPIFields,
-  InformalUpdateAPIResponseFields,
+  FlashUpdateFields,
+  FlashUpdateAPIFields,
+  FlashUpdateAPIResponseFields,
   OrganizationType,
   transformFormFieldsToAPIFields,
   contextFields,
   actionsFields,
   focalFields
 } from './common';
-import useInformalUpdateFormOptions, {
+
+import useFlashUpdateFormOptions, {
   schema
-} from './useInformalUpdateFormOptions';
+} from './useFlashUpdateFormOptions';
 
 import styles from './styles.module.scss';
 import BlockLoading from '#components/block-loading';
@@ -53,7 +54,7 @@ interface Props {
   location: Location;
 }
 
-type ActionWithoutSummary = Omit<InformalUpdateFields['actions_taken'][number], 'summary'>;
+type ActionWithoutSummary = Omit<FlashUpdateFields['actions_taken'][number], 'summary'>;
 const defaultActionsTaken: ActionWithoutSummary[] = [
   { client_id: randomString(), organization: 'NTLS', actions: [] },
   { client_id: randomString(), organization: 'PNS', actions: [] },
@@ -74,21 +75,21 @@ function scrollToTop() {
 type StepTypes = 'context' | 'action' | 'focal';
 const stepTypesToFieldsMap: {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  [key in StepTypes]: (keyof InformalUpdateFields)[];
+  [key in StepTypes]: (keyof FlashUpdateFields)[];
 } = {
   context: contextFields,
   action: actionsFields,
   focal: focalFields
 };
 
-const defaultFormValues: PartialForm<InformalUpdateFields> = {
+const defaultFormValues: PartialForm<FlashUpdateFields> = {
   country_district: [{
     client_id: randomString(),
   }],
   actions_taken: defaultActionsTaken,
 };
 
-function InformalUpdateForm(props: Props) {
+function FlashUpdateForm(props: Props) {
   const {
     className,
     history,
@@ -102,10 +103,10 @@ function InformalUpdateForm(props: Props) {
   const {
     value,
     error,
-    setFieldValue: onValueChange,
+    setFieldValue,
     validate,
-    setError: onErrorSet,
-    setValue: onValueSet,
+    setError,
+    setValue,
   } = useForm(schema, defaultFormValues);
 
   const {
@@ -119,18 +120,19 @@ function InformalUpdateForm(props: Props) {
     fetchingDistricts,
     fetchingShareWithOptions,
     shareWithOptions,
-  } = useInformalUpdateFormOptions(value);
+  } = useFlashUpdateFormOptions(value);
 
   const [currentStep, setCurrentStep] = React.useState<StepTypes>('context');
   const [fileIdToUrlMap, setFileIdToUrlMap] = React.useState<Record<number, string>>({});
-  const submitButtonLabel = currentStep === 'focal' ? strings.informalUpdateSaveButtonLabel : strings.informalUpdateContinueButtonLabel;
+  const submitButtonLabel = currentStep === 'focal' ? strings.flashUpdateSaveButtonLabel : strings.flashUpdateContinueButtonLabel;
   const shouldDisabledBackButton = currentStep === 'context';
 
   const {
-    pending: informalUpdatePending,
-    response: InformalUpdateResponse
-  } = useRequest<InformalUpdateAPIResponseFields>({
+    pending: flashUpdatePending,
+    response: FlashUpdateResponse
+  } = useRequest<FlashUpdateAPIResponseFields>({
     skip: !id,
+    // FIXME: update URL
     url: `api/v2/informal-update/${id}`,
     onSuccess: (response) => {
       if (!response) {
@@ -146,7 +148,7 @@ function InformalUpdateForm(props: Props) {
 
       const actionMapByOrganization: {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        [key in OrganizationType]: PartialForm<InformalUpdateFields['actions_taken'][number]>
+        [key in OrganizationType]: PartialForm<FlashUpdateFields['actions_taken'][number]>
       } = listToMap(
         response.actions_taken ?? [],
         d => d.organization,
@@ -160,7 +162,7 @@ function InformalUpdateForm(props: Props) {
         }
       });
 
-      onValueSet({
+      setValue({
         ...response,
         country_district: response.country_district?.map((cd) => ({
           ...cd,
@@ -198,7 +200,7 @@ function InformalUpdateForm(props: Props) {
     }) => {
       alert.show(
         <p>
-          {strings.informalUpdateFormLoadRequestFailureMessage}
+          {strings.flashUpdateFormLoadRequestFailureMessage}
           &nbsp;
           <strong>
             {messageForNotification}
@@ -227,7 +229,10 @@ function InformalUpdateForm(props: Props) {
       const currentFields = stepTypesToFieldsMap[tabKey];
       const currentFieldsMap = listToMap(currentFields, d => d, d => true);
 
-      const erroredFields = Object.keys(getErrorObject(error) ?? {}) as (keyof InformalUpdateFields)[];
+      const erroredFields = Object.keys(
+        getErrorObject(error) ?? {}
+      ) as (keyof FlashUpdateFields)[];
+
       const hasError = erroredFields.some(d => currentFieldsMap[d]);
       tabs[tabKey] = hasError;
     });
@@ -236,7 +241,7 @@ function InformalUpdateForm(props: Props) {
   }, [error]);
 
 
-  const validateCurrentTab = React.useCallback((exceptions: (keyof InformalUpdateFields)[] = []) => {
+  const validateCurrentTab = React.useCallback((exceptions: (keyof FlashUpdateFields)[] = []) => {
     const validationError = getErrorObject(accumulateErrors(value, schema));
     const currentFields = stepTypesToFieldsMap[currentStep];
     const exceptionsMap = listToMap(exceptions, d => d, d => true);
@@ -249,17 +254,17 @@ function InformalUpdateForm(props: Props) {
       currentFields.filter(field => (!exceptionsMap[field] && !!validationError?.[field])),
       field => field,
       field => validationError?.[field]
-    ) as ObjectError<InformalUpdateFields>;
+    ) as ObjectError<FlashUpdateFields>;
 
     const newError: typeof error = {
       ...currentTabErrors,
     };
 
-    onErrorSet(newError);
+    setError(newError);
 
     const hasError = Object.keys(currentTabErrors).some(d => !!d);
     return !hasError;
-  }, [value, currentStep, onErrorSet]);
+  }, [value, currentStep, setError]);
 
 
   const handleTabChange = React.useCallback((newStep: StepTypes) => {
@@ -273,19 +278,20 @@ function InformalUpdateForm(props: Props) {
   }, [validateCurrentTab]);
 
   const {
-    pending: informalUpdateSubmitPending,
+    pending: flashUpdateSubmitPending,
     trigger: submitRequest,
-  } = useLazyRequest<InformalUpdateAPIResponseFields, Partial<InformalUpdateAPIFields>>({
+  } = useLazyRequest<FlashUpdateAPIResponseFields, Partial<FlashUpdateAPIFields>>({
+    // FIXME: update URL
     url: id ? `api/v2/informal-update/${id}/` : 'api/v2/informal-update/',
     method: id ? 'PUT' : 'POST',
     body: ctx => ctx,
     onSuccess: (response) => {
       alert.show(
-        strings.informalUpdateFormRedirectMessage,
+        strings.flashUpdateFormRedirectMessage,
         { variant: 'success' },
       );
       window.setTimeout(
-        () => history.push(`/informal-update/${response?.id}/`),
+        () => history.push(`/flash-update/${response?.id}/`),
         250,
       );
     },
@@ -296,10 +302,10 @@ function InformalUpdateForm(props: Props) {
       },
       debugMessage,
     }) => {
-      onErrorSet(formErrors);
+      setError(formErrors);
       alert.show(
         <p>
-          {strings.informalUpdateFormSaveRequestFailureMessage}
+          {strings.flashUpdateFormSaveRequestFailureMessage}
           &nbsp;
           <strong>
             {messageForNotification}
@@ -313,17 +319,17 @@ function InformalUpdateForm(props: Props) {
     },
   });
 
-  const submitInformalUpdate = React.useCallback(() => {
+  const submitFlashUpdate = React.useCallback(() => {
     const result = validate();
 
     if (result.errored) {
-      onErrorSet(result.error);
+      setError(result.error);
     } else {
-      const finalValue = transformFormFieldsToAPIFields(result.value as InformalUpdateFields);
+      const finalValue = transformFormFieldsToAPIFields(result.value as FlashUpdateFields);
       submitRequest(finalValue);
     }
 
-  }, [validate, onErrorSet, submitRequest]);
+  }, [validate, setError, submitRequest]);
 
   const handleSubmitButtonClick = React.useCallback(() => {
     scrollToTop();
@@ -334,7 +340,7 @@ function InformalUpdateForm(props: Props) {
     }
 
     if (currentStep === 'focal') {
-      submitInformalUpdate();
+      submitFlashUpdate();
     } else {
       const nextStepMap: {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -346,7 +352,7 @@ function InformalUpdateForm(props: Props) {
 
       handleTabChange(nextStepMap[currentStep]);
     }
-  }, [validateCurrentTab, currentStep, handleTabChange, submitInformalUpdate]);
+  }, [validateCurrentTab, currentStep, handleTabChange, submitFlashUpdate]);
 
   const handleBackButtonClick = React.useCallback(() => {
     if (currentStep !== 'context') {
@@ -380,22 +386,22 @@ function InformalUpdateForm(props: Props) {
     const hazardTitle = disasterTypeOptions.find((x) => x.value === value?.hazard_type)?.label ?? ' ';
     const title = `${countryNameTitle} - ${hazardTitle}  ${date}`;
 
-    onValueChange(title, 'title' as const);
-  }, [value, disasterTypeOptions, countryOptions, onValueChange]);
+    setFieldValue(title, 'title' as const);
+  }, [value, disasterTypeOptions, countryOptions, setFieldValue]);
 
   const pending = fetchingCountries
     || fetchingDistricts
     || fetchingDisasterTypes
     || fetchingActions
     || fetchingShareWithOptions
-    || informalUpdateSubmitPending
-    || informalUpdatePending;
+    || flashUpdateSubmitPending
+    || flashUpdatePending;
 
-  const failedToLoadInformalUpdate = !pending && isDefined(id) && !InformalUpdateResponse;
+  const failedToLoadFlashUpdate = !pending && isDefined(id) && !FlashUpdateResponse;
 
   return (
     <Tabs
-      disabled={failedToLoadInformalUpdate}
+      disabled={failedToLoadFlashUpdate}
       onChange={handleTabChange}
       value={currentStep}
       variant="step"
@@ -405,14 +411,14 @@ function InformalUpdateForm(props: Props) {
         actions={(
           <Button
             name={undefined}
-            onClick={submitInformalUpdate}
+            onClick={submitFlashUpdate}
             type="submit"
           >
-            {strings.informalUpdateFormSaveButtonLabel}
+            {strings.flashUpdateFormSaveButtonLabel}
           </Button>
         )}
-        title={strings.informalUpdateFormPageTitle}
-        heading={strings.informalUpdateFormPageHeading}
+        title={strings.flashUpdateFormPageTitle}
+        heading={strings.flashUpdateFormPageHeading}
         info={(
           <TabList className={styles.tableList}>
             <Tab
@@ -420,21 +426,21 @@ function InformalUpdateForm(props: Props) {
               step={1}
               errored={erroredTabs['context']}
             >
-              {strings.informalUpdateTabContextLabel}
+              {strings.flashUpdateTabContextLabel}
             </Tab>
             <Tab
               name="action"
               step={2}
               errored={erroredTabs['action']}
             >
-              {strings.informalUpdateTabActionLabel}
+              {strings.flashUpdateTabActionLabel}
             </Tab>
             <Tab
               name="focal"
               step={3}
               errored={erroredTabs['focal']}
             >
-              {strings.informalUpdateTabFocalLabel}
+              {strings.flashUpdateTabFocalLabel}
             </Tab>
           </TabList>
         )}
@@ -444,18 +450,18 @@ function InformalUpdateForm(props: Props) {
             <BlockLoading />
           </Container>
         ) :
-          failedToLoadInformalUpdate ? (
+          failedToLoadFlashUpdate ? (
             <Container
               contentClassName={styles.errorMessage}
             >
               <h3>
-                {strings.informalUpdateFormLoadErrorTitle}
+                {strings.flashUpdateFormLoadErrorTitle}
               </h3>
               <p>
-                {strings.informalUpdateFormLoadErrorDescription}
+                {strings.flashUpdateFormLoadErrorDescription}
               </p>
               <p>
-                {strings.informalUpdateFormLoadErrorHelpText}
+                {strings.flashUpdateFormLoadErrorHelpText}
               </p>
             </Container>
 
@@ -464,13 +470,13 @@ function InformalUpdateForm(props: Props) {
               <Container>
                 <NonFieldError
                   error={error}
-                  message={strings.informalUpdateFormFieldGeneralError}
+                  message={strings.flashUpdateFormFieldGeneralError}
                 />
               </Container>
               <TabPanel name="context">
                 <Context
                   error={error}
-                  onValueChange={onValueChange}
+                  onValueChange={setFieldValue}
                   value={value}
                   disasterTypeOptions={disasterTypeOptions}
                   countryOptions={countryOptions}
@@ -478,7 +484,7 @@ function InformalUpdateForm(props: Props) {
                   fetchingDisasterTypes={fetchingDisasterTypes}
                   fileIdToUrlMap={fileIdToUrlMap}
                   setFileIdToUrlMap={setFileIdToUrlMap}
-                  onCreateAndShareButtonClick={submitInformalUpdate}
+                  onCreateAndShareButtonClick={submitFlashUpdate}
                   fetchingDistricts={fetchingDistricts}
                   districtOptions={districtOptions}
                 />
@@ -486,7 +492,7 @@ function InformalUpdateForm(props: Props) {
               <TabPanel name="action">
                 <ActionsInput
                   error={error}
-                  onValueChange={onValueChange}
+                  onValueChange={setFieldValue}
                   value={value}
                   actionOptionsMap={actionOptionsMap}
                 />
@@ -494,7 +500,7 @@ function InformalUpdateForm(props: Props) {
               <TabPanel name="focal">
                 <FocalPoints
                   error={error}
-                  onValueChange={onValueChange}
+                  onValueChange={setFieldValue}
                   value={value}
                   shareWithOptions={shareWithOptions}
                 />
@@ -506,14 +512,14 @@ function InformalUpdateForm(props: Props) {
                   onClick={handleBackButtonClick}
                   disabled={shouldDisabledBackButton}
                 >
-                  {strings.informalUpdateBackButtonLabel}
+                  {strings.flashUpdateBackButtonLabel}
                 </Button>
                 <Button
                   name={undefined}
                   variant="secondary"
                   onClick={handleSubmitButtonClick}
                   type="submit"
-                  disabled={informalUpdateSubmitPending}
+                  disabled={flashUpdateSubmitPending}
                 >
                   {submitButtonLabel}
                 </Button>
@@ -526,4 +532,4 @@ function InformalUpdateForm(props: Props) {
   );
 }
 
-export default InformalUpdateForm;
+export default FlashUpdateForm;

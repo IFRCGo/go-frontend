@@ -6,23 +6,23 @@ import {
 } from 'react-icons/md';
 
 import BlockLoading from '#components/block-loading';
-import Translate from '#components/Translate';
 import Pager from '#components/Pager';
 import Container from '#components/Container';
 import DropdownMenuItem from '#components/DropdownMenuItem';
 import Table from '#components/Table';
 import { createActionColumn } from '#components/Table/predefinedColumns';
 import LanguageContext from '#root/languageContext';
-import { InformalUpdateTableFields, tableKeySelector } from '#views/InformalUpdateApplicationForm/common';
+import {
+  FlashUpdateTableFields,
+  tableKeySelector,
+} from '#views/FlashUpdateApplicationForm/common';
 import {
   ListResponse,
   useRequest,
 } from '#utils/restRequest';
-import { Strings } from '#types';
-import { getBaseColumns } from './informalUpdateTableColumns';
+import { getBaseColumns } from './flashUpdateTableColumns';
 
 import styles from './styles.module.scss';
-
 
 interface Props {
   className?: string;
@@ -45,7 +45,8 @@ function TableLists(props: Props) {
   const {
     pending,
     response,
-  } = useRequest<ListResponse<InformalUpdateTableFields>>({
+  } = useRequest<ListResponse<FlashUpdateTableFields>>({
+    // FIXME: update URL
     url: 'api/v2/informal-update/',
     query: {
       limit: itemPerPage,
@@ -56,7 +57,7 @@ function TableLists(props: Props) {
   const columns = useMemo(() => {
     const actionsColumn = createActionColumn(
       'actions',
-      (rowKey: number | string, infrl: InformalUpdateTableFields) => ({
+      (rowKey: number | string, infrl: FlashUpdateTableFields) => ({
         extraActions: (
           <>
             <DropdownMenuItem
@@ -80,20 +81,13 @@ function TableLists(props: Props) {
     ];
   }, [strings]);
 
-  const headingStringId: keyof Strings = useMemo(() => {
-    if (pending) {
-      return 'allFlashUpdatePageHeading';
-    }
-    return 'allFlashUpdatePageHeading';
-  }, [pending]);
-
   return (
 
-    <div className={_cs(styles.allInformalUpdates, className)}>
+    <div className={_cs(styles.allFlashUpdates, className)}>
 
       <Container
         className={styles.mainContent}
-        heading={<Translate stringId={headingStringId} />}
+        heading={strings.flashUpdateAllFlashUpdatePageHeading}
         actions={actions}
       >
         {pending ? (
