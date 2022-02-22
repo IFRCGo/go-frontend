@@ -65,7 +65,7 @@ function FormInput (props) {
             )
             : 
             
-            type=='textarea'
+            type==='textarea'
             ?
             (
               <React.Fragment>

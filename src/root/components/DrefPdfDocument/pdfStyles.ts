@@ -162,7 +162,7 @@ const pdfStyles = StyleSheet.create({
     objectPosition: 'center',
   },
   textLabelSection: {
-    color: COLOR_SECONDARY,
+    color: COLOR_PRIMARY,
     fontWeight: 'bold',
   },
   logo: {
@@ -262,7 +262,6 @@ const pdfStyles = StyleSheet.create({
     justifyContent: 'center',
     width: '50%',
     padding: SPACING_SMALL,
-    fontWeight: 'bold',
   },
   cellDescription: {
     fontWeight: 'medium',

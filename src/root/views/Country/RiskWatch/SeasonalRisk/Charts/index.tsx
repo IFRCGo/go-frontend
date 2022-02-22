@@ -564,14 +564,6 @@ const historicalIconMap: Record<string, string> = {
   'Food Insecurity': foodInsecurityIcon,
   'Flash Flood': floodIcon,
 };
-const hazardTypeToColorMap: {
-  [key in HazardTypes]: string;
-} = {
-  TC: COLOR_CYCLONE,
-  DR: COLOR_DROUGHT,
-  FL: COLOR_FLOOD,
-  FI: COLOR_FOOD_INSECURITY,
-};
 const historicalHazardTypeToIconMap: {
   [key: string]: string;
 } = {
