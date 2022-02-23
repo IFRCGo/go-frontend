@@ -23,7 +23,8 @@ const defaultUrls = {
 const defaultMapboxToken =  'pk.eyJ1IjoiZ28taWZyYyIsImEiOiJjams3b2ZhZWswMGFvM3hxeHp2ZHFhOTRrIn0._pqO9OQ2iNeDGrpopJNjpg';
 
 export const environment = process.env.REACT_APP_ENVIRONMENT || process.env.NODE_ENV || 'development';
-const defaultUrl = defaultUrls[environment];
+// FIXME: this should never happen
+const defaultUrl = defaultUrls[environment] ?? defaultUrls['staging'];
 
 export const api = process.env.REACT_APP_API_ENDPOINT ?? defaultUrl?.apiServer;
 export const adminUrl = process.env.REACT_APP_ADMIN_URL ?? defaultUrl?.adminPanel;

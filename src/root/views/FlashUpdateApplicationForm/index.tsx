@@ -1,5 +1,11 @@
 import React from 'react';
-import { isDefined, listToMap, randomString } from '@togglecorp/fujs';
+import {
+  isDefined,
+  listToMap,
+  randomString,
+  mapToMap,
+  isNotDefined,
+} from '@togglecorp/fujs';
 import type { match as Match } from 'react-router-dom';
 import type {
   History,
@@ -9,8 +15,7 @@ import {
   getErrorObject,
   PartialForm,
   useForm,
-  accumulateErrors,
-  ObjectError,
+  analyzeErrors,
 } from '@togglecorp/toggle-form';
 
 import Page from '#components/Page';
@@ -166,11 +171,11 @@ function FlashUpdateForm(props: Props) {
         ...response,
         country_district: response.country_district?.map((cd) => ({
           ...cd,
-          client_id: String(cd.id)
+          client_id: cd.client_id ?? String(cd.id)
         })),
         references: response.references?.map((ref) => ({
           ...ref,
-          client_id: String(ref.id)
+          client_id: ref.client_id ?? String(ref.id)
         })),
         graphics_files: response.graphics_files.map((gf) => ({
           id: gf.id,
@@ -182,7 +187,10 @@ function FlashUpdateForm(props: Props) {
           client_id: mf.client_id ?? String(mf.id),
           caption: mf.caption ?? '',
         })),
-        actions_taken: Object.values(actionMapByOrganization),
+        actions_taken: (Object.values(actionMapByOrganization)).map((at) => ({
+          ...at,
+          client_id: at.client_id ?? at.organization,
+        })),
       });
 
       setFileIdToUrlMap((prevValue) => ({
@@ -215,67 +223,81 @@ function FlashUpdateForm(props: Props) {
   });
 
   const erroredTabs = React.useMemo(() => {
+    const safeErrors = getErrorObject(error) ?? {};
+
     const tabs: {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       [key in StepTypes]: boolean;
     } = {
       context: false,
       action: false,
-      focal: false
+      focal: false,
     };
 
-    const tabKeys = (Object.keys(tabs)) as StepTypes[];
-    tabKeys.forEach((tabKey) => {
-      const currentFields = stepTypesToFieldsMap[tabKey];
-      const currentFieldsMap = listToMap(currentFields, d => d, d => true);
+    return mapToMap(
+      tabs,
+      (key) => key,
+      (_, tabKey) => {
+        const currentFields = stepTypesToFieldsMap[tabKey as StepTypes];
+        const currentFieldsMap = listToMap(
+          currentFields,
+          d => d,
+          d => true,
+        );
 
-      const erroredFields = Object.keys(
-        getErrorObject(error) ?? {}
-      ) as (keyof FlashUpdateFields)[];
+        const partialErrors: typeof error = mapToMap(
+          safeErrors,
+          (key) => key,
+          (value, key) => currentFieldsMap[key as keyof FlashUpdateFields] ? value : undefined,
+        );
 
-      const hasError = erroredFields.some(d => currentFieldsMap[d]);
-      tabs[tabKey] = hasError;
-    });
-
-    return tabs;
+        return analyzeErrors(partialErrors);
+      }
+    );
   }, [error]);
-
-
-  const validateCurrentTab = React.useCallback((exceptions: (keyof FlashUpdateFields)[] = []) => {
-    const validationError = getErrorObject(accumulateErrors(value, schema));
-    const currentFields = stepTypesToFieldsMap[currentStep];
-    const exceptionsMap = listToMap(exceptions, d => d, d => true);
-
-    if (!validationError) {
-      return true;
-    }
-
-    const currentTabErrors = listToMap(
-      currentFields.filter(field => (!exceptionsMap[field] && !!validationError?.[field])),
-      field => field,
-      field => validationError?.[field]
-    ) as ObjectError<FlashUpdateFields>;
-
-    const newError: typeof error = {
-      ...currentTabErrors,
-    };
-
-    setError(newError);
-
-    const hasError = Object.keys(currentTabErrors).some(d => !!d);
-    return !hasError;
-  }, [value, currentStep, setError]);
-
 
   const handleTabChange = React.useCallback((newStep: StepTypes) => {
     scrollToTop();
-    const isCurrentTabValid = validateCurrentTab([]);
-
-    if (!isCurrentTabValid) {
-      return;
-    }
     setCurrentStep(newStep);
-  }, [validateCurrentTab]);
+  }, []);
+
+  type ErrorObj = {
+    country_district?: {
+      district?: string[];
+      country?: string[];
+    }[],
+    hazard_type?: string[];
+    title?: string[];
+    situational_overview?: string[];
+    map_files?: {
+      id: string[],
+      caption: string[]
+    }[],
+    graphics_files?: {
+      id: string[],
+      caption: string[]
+    }[],
+    references?: {
+      date?: string[],
+      source_description?: string[],
+      url?: string[],
+      document?: string[],
+    }[],
+    actions_taken?: {
+      actions?: string[],
+      organization?: string[],
+      summary?: string[],
+    }[],
+    originator_name?: string[];
+    originator_title?: string[];
+    originator_email?: string[];
+    originator_phone?: string[];
+    ifrc_name?: string[];
+    ifrc_title?: string[];
+    ifrc_email?: string[];
+    ifrc_phone?: string[];
+    share_with?: string[];
+  };
 
   const {
     pending: flashUpdateSubmitPending,
@@ -302,7 +324,164 @@ function FlashUpdateForm(props: Props) {
       },
       debugMessage,
     }) => {
-      setError(formErrors);
+      const formErrorWithTyping = formErrors as unknown as ErrorObj;
+      const transformedError: typeof error = {
+        country_district: listToMap(
+          value?.country_district ?? [],
+          (d) => d.client_id as string,
+          (_, __, i) => {
+            const err = formErrorWithTyping?.country_district?.[i];
+            if (!err) {
+              return undefined;
+            }
+
+            let finalErr: {
+              country?: string;
+              district?: string;
+            } = {};
+
+            if (err.country) {
+              finalErr['country'] = err.country.join(' ,');
+            }
+
+            if (err.district) {
+              finalErr['district'] = err.district.join(' ,');
+            }
+
+            return finalErr;
+          },
+        ),
+        hazard_type: formErrorWithTyping?.hazard_type?.join(', '),
+        title: formErrorWithTyping?.title?.join(', '),
+        situational_overview: formErrorWithTyping?.situational_overview?.join(', '),
+        map_files: listToMap(
+          value?.map_files ?? [],
+          (d) => d.client_id as string,
+          (_, __, i) => {
+            const err = formErrorWithTyping?.map_files?.[i];
+            if (!err) {
+              return undefined;
+            }
+
+            let finalErr: {
+              id?: string;
+              caption?: string;
+            } = {};
+
+            if (err.id) {
+              finalErr['id'] = err.id.join(' ,');
+            }
+
+            if (err.caption) {
+              finalErr['caption'] = err.caption.join(' ,');
+            }
+
+            return finalErr;
+          },
+        ),
+        graphics_files: listToMap(
+          value?.graphics_files ?? [],
+          (d) => d.client_id as string,
+          (_, __, i) => {
+            const err = formErrorWithTyping?.graphics_files?.[i];
+            if (!err) {
+              return undefined;
+            }
+
+            let finalErr: {
+              id?: string;
+              caption?: string;
+            } = {};
+
+            if (err.id) {
+              finalErr['id'] = err.id.join(' ,');
+            }
+
+            if (err.caption) {
+              finalErr['caption'] = err.caption.join(' ,');
+            }
+
+            return finalErr;
+          },
+        ),
+        references: listToMap(
+          value?.references ?? [],
+          (d) => d.client_id as string,
+          (_, __, i) => {
+            const err = formErrorWithTyping?.references?.[i];
+            if (!err) {
+              return undefined;
+            }
+
+            let finalErr: {
+              date?: string;
+              source_description?: string;
+              url?: string;
+              document?: string;
+            } = {};
+
+            if (err.date) {
+              finalErr['date'] = err.date.join(' ,');
+            }
+
+            if (err.source_description) {
+              finalErr['source_description'] = err.source_description.join(' ,');
+            }
+
+            if (err.url) {
+              finalErr['url'] = err.url.join(' ,');
+            }
+
+            if (err.document) {
+              finalErr['document'] = err.document.join(' ,');
+            }
+
+            return finalErr;
+          },
+        ),
+        actions_taken: listToMap(
+          value?.actions_taken ?? [],
+          (d) => d.client_id as string,
+          (_, __, i) => {
+            const err = formErrorWithTyping?.actions_taken?.[i];
+            if (!err) {
+              return undefined;
+            }
+
+            let finalErr: {
+              actions?: string;
+              organization?: string;
+              summary?: string;
+            } = {};
+
+            if (err.actions) {
+              finalErr['actions'] = err.actions.join(' ,');
+            }
+
+            if (err.organization) {
+              finalErr['organization'] = err.organization.join(' ,');
+            }
+
+            if (err.summary) {
+              finalErr['summary'] = err.summary.join(' ,');
+            }
+
+            return finalErr;
+          },
+        ),
+        originator_name: formErrorWithTyping?.originator_name?.join(', '),
+        originator_title: formErrorWithTyping?.originator_title?.join(', '),
+        originator_email: formErrorWithTyping?.originator_email?.join(', '),
+        originator_phone: formErrorWithTyping?.originator_phone?.join(', '),
+        ifrc_name: formErrorWithTyping?.ifrc_name?.join(', '),
+        ifrc_title: formErrorWithTyping?.ifrc_title?.join(', '),
+        ifrc_email: formErrorWithTyping?.ifrc_email?.join(', '),
+        ifrc_phone: formErrorWithTyping?.ifrc_phone?.join(', '),
+        share_with: formErrorWithTyping?.share_with?.join(', '),
+      };
+
+      setError(transformedError);
+
       alert.show(
         <p>
           {strings.flashUpdateFormSaveRequestFailureMessage}
@@ -333,12 +512,6 @@ function FlashUpdateForm(props: Props) {
 
   const handleSubmitButtonClick = React.useCallback(() => {
     scrollToTop();
-    const isCurrentTabValid = validateCurrentTab([]);
-
-    if (!isCurrentTabValid) {
-      return;
-    }
-
     if (currentStep === 'focal') {
       submitFlashUpdate();
     } else {
@@ -352,7 +525,7 @@ function FlashUpdateForm(props: Props) {
 
       handleTabChange(nextStepMap[currentStep]);
     }
-  }, [validateCurrentTab, currentStep, handleTabChange, submitFlashUpdate]);
+  }, [currentStep, handleTabChange, submitFlashUpdate]);
 
   const handleBackButtonClick = React.useCallback(() => {
     if (currentStep !== 'context') {
@@ -370,21 +543,43 @@ function FlashUpdateForm(props: Props) {
 
   // Auto generate title
   React.useEffect(() => {
-    if (!isDefined(value.country_district) || !isDefined(value.hazard_type)) {
+    if (!value) {
       return;
     }
 
-    const date = `${(new Date().getMonth() + 1)} / ${(new Date().getFullYear())}`;
+    if (isNotDefined(value.country_district) || isNotDefined(value.hazard_type)) {
+      return;
+    }
 
-    // TODO: simplify this
-    const countryNameTitle = value.country_district?.flatMap((item) => {
-      return countryOptions.find((x) => x.value === item?.country)?.label ?? ' ';
-    }).reduce((item, name) => {
-      return `${item} - ${name}`;
-    });
+    const countryTitleMap = listToMap(
+      countryOptions,
+      d => d.value,
+      d => d.label,
+    );
 
-    const hazardTitle = disasterTypeOptions.find((x) => x.value === value?.hazard_type)?.label ?? ' ';
-    const title = `${countryNameTitle} - ${hazardTitle}  ${date}`;
+    const countryTitle = value.country_district
+      .map(d => isDefined(d.country) && countryTitleMap[d.country])
+      .filter(Boolean)
+      .join(' - ');
+
+    if (!countryTitle) {
+      return;
+    }
+
+    const selectedHazard = disasterTypeOptions.find(
+      (d) => d.value === value?.hazard_type,
+    );
+
+    if (!selectedHazard) {
+      return;
+    }
+
+    const now = new Date();
+    const mm = (now.getMonth() + 1).toString().padStart(2, '0');
+    const yyyy = now.getFullYear().toString();
+
+    const date = `${mm}/${yyyy}`;
+    const title = `${countryTitle} - ${selectedHazard.label}  ${date}`;
 
     setFieldValue(title, 'title' as const);
   }, [value, disasterTypeOptions, countryOptions, setFieldValue]);

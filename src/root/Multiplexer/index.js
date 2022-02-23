@@ -273,7 +273,7 @@ function Multiplexer(props) {
 
               <PrivateRoute key="new-flash-update-application-form" exact path='/flash-update/new/' component={FlashUpdateApplicationForm} />
               <Route exact path='/flash-update/all/' component={AllFlashUpdates} />
-              <Route exact path='/flash-update/:id/edit/' component={FlashUpdateApplicationForm} />
+              <PrivateRoute exact path='/flash-update/:id/edit/' component={FlashUpdateApplicationForm} />
               <Route exact path='/flash-update/:id/' component={FlashUpdateReport} />
               <Route component={FourHundredFour} />
             </Switch>

@@ -83,7 +83,7 @@ export const schema: FormSchema = {
 
             return undefined;
           }],
-          district: [requiredCondition]
+          district: []
         }),
       }),
     },
