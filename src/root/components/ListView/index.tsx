@@ -30,7 +30,6 @@ function ListView<
   GP extends GroupCommonProps,
   GK extends OptionKey
 >(props: Props<D, P, K, GP, GK>) {
-
   const {
     className,
     errored,
@@ -41,7 +40,6 @@ function ListView<
     erroredMessage,
     ...otherListProps
   } = props;
-
   const empty = !(data?.length && data.length > 0);
 
   return (

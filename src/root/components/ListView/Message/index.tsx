@@ -1,18 +1,14 @@
 import React from 'react';
-import BlockLoading from '#components/block-loading';
+import { _cs } from '@togglecorp/fujs';
 
-function PendingMessage() {
-  return (
-    <BlockLoading />
-  );
-}
+import BlockLoading from '#components/block-loading';
+import styles from './styles.module.scss';
 
 export interface Props {
   className?: string;
   empty?: boolean;
   pending?: boolean;
   errored?: boolean;
-  messageHidden?: boolean;
   message?: React.ReactNode;
   pendingMessage?: React.ReactNode;
   emptyMessage?: React.ReactNode;
@@ -21,20 +17,21 @@ export interface Props {
 
 function Message(props: Props) {
   const {
+    className,
     empty,
     pending,
     errored,
     message: messageFromProps,
     emptyMessage = 'No data available',
     erroredMessage = 'Oops! We ran into an issue',
-    messageHidden = false,
   } = props;
+  console.log(props);
 
   let message: React.ReactNode = messageFromProps;
 
   if (pending) {
     return (
-      <PendingMessage />
+      <BlockLoading />
     );
   }
 
@@ -46,13 +43,13 @@ function Message(props: Props) {
     message = erroredMessage;
   }
 
+  if (!message) {
+    return null;
+  }
+
   return (
-    <div>
-      {!messageHidden && (
-        <div>
-          {message}
-        </div>
-      )}
+    <div className={_cs(styles.message, className)}>
+      {message}
     </div>
   );
 }
