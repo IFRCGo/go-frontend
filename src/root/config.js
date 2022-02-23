@@ -1,7 +1,7 @@
-// FIXME: We should not put up default values like this
+// FIXME: We should not put up default values like this + redundant apiServer/adminPanel (equal always)
 const defaultUrls = {
   production: {
-    apiServer: 'https://prddsgocdnapi.azureedge.net/',
+    apiServer: 'https://goadmin.ifrc.org/',
     adminPanel: 'https://goadmin.ifrc.org/',
     riskApiServer: 'https://go-risk-staging.northeurope.cloudapp.azure.com/',
     riskAdminPanel: 'https://go-risk-staging.northeurope.cloudapp.azure.com/',
