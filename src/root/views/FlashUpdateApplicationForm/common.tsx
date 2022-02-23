@@ -90,7 +90,6 @@ export interface FlashUpdateFields {
 
   actions_taken: Action[];
 
-
   originator_name: string;
   originator_title: string;
   originator_email: string;

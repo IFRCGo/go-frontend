@@ -246,7 +246,7 @@ function Context(props: Props) {
         >
           <FlashUpdateFileInput
             accept="image/*"
-            error={error?.graphics_files}
+            error={getErrorObject(error?.graphics_files)?.id}
             fileIdToUrlMap={fileIdToUrlMap}
             name="graphics"
             onChange={handleGraphicsInputChange}
@@ -279,7 +279,7 @@ function Context(props: Props) {
         >
           <FlashUpdateFileInput
             accept="image/*"
-            error={error?.map_files}
+            error={getErrorObject(error?.map_files)?.id}
             fileIdToUrlMap={fileIdToUrlMap}
             name="map"
             onChange={handleMapInputChange}

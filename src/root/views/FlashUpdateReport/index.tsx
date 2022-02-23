@@ -2,20 +2,27 @@ import React, { useContext, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import type { History, Location } from 'history';
 import type { match as Match } from 'react-router-dom';
-import { isNotDefined } from '@togglecorp/fujs';
+import {
+  isNotDefined,
+  isDefined,
+} from '@togglecorp/fujs';
 import {
   IoShareSocialOutline,
   IoDownload,
 } from 'react-icons/io5';
 
+import { useRequest } from '#utils/restRequest';
+// import { resolveToString } from '#utils/lang';
 import Container from '#components/Container';
 import Page from '#components/Page';
 import BreadCrumb from '#components/breadcrumb';
 import languageContext from '#root/languageContext';
-import { useRequest } from '#utils/restRequest';
 import BlockLoading from '#components/block-loading';
-import Button, { useButtonFeatures, ButtonFeatureProps } from '#components/Button';
 import DateOutput from '#components/DateOutput';
+import Button, {
+  useButtonFeatures,
+  ButtonFeatureProps
+} from '#components/Button';
 
 import { FlashUpdateAPIResponseFields } from '../FlashUpdateApplicationForm/common';
 
@@ -63,24 +70,34 @@ function FlashUpdateReport(props: Props) {
     url: `api/v2/informal-update/${id}/`,
   });
 
-  const crumbs = useMemo(() => [
-    {
-      link: strings.flashUpdateNumber,
-      name: `${strings.flashUpdateNumber}${response && response.id + 1}`
-    },
-    {
-      link: location?.pathname,
-      name: response?.title
-    },
-    {
-      link: '/emergencies',
-      name: strings.breadCrumbEmergencies
-    },
-    {
-      link: '/',
-      name: strings.breadCrumbHome
-    },
-  ], [strings, location, response]);
+  const crumbs = useMemo(() => {
+    if (location && location.pathname && response && isDefined(response.id)) {
+      return [
+        /*
+        {
+          link: '#',
+          name: resolveToString(strings.flashUpdateNumber, {
+            number: response.id,
+          }),
+        },
+        */
+        {
+          link: location?.pathname,
+          name: response?.title
+        },
+        {
+          link: '/emergencies',
+          name: strings.breadCrumbEmergencies
+        },
+        {
+          link: '/',
+          name: strings.breadCrumbHome
+        },
+      ];
+    }
+
+    return [];
+  }, [strings, location, response]);
 
   return (
     <Page
@@ -90,7 +107,10 @@ function FlashUpdateReport(props: Props) {
       description={(
         <div className={styles.countryList}>
           {response?.country_district?.map((c) => (
-            <Link to={`/countries/${c.country}/`}>
+            <Link
+              key={c.id}
+              to={`/countries/${c.country}/`}
+            >
               {c.country_details?.name}
             </Link>
           ))}
@@ -128,14 +148,37 @@ function FlashUpdateReport(props: Props) {
       {pending && <BlockLoading />}
       {!pending && response && (
         <>
-          <Container
-            heading={strings.flashUpdateMapTitle}
-            contentClassName={styles.maps}
-          >
-              {response?.map_files?.map((item) => (
+          {response.map_files && response.map_files.length > 0 && (
+            <Container
+              heading={strings.flashUpdateMapTitle}
+              contentClassName={styles.maps}
+            >
+                {response.map_files.map((item) => (
+                  <div
+                    className={styles.mapItem}
+                    key={item.id}
+                  >
+                    <img
+                      className={styles.image}
+                      src={item.file}
+                      alt=""
+                    />
+                    <div className={styles.caption}>
+                      {item.caption}
+                    </div>
+                  </div>
+                ))}
+            </Container>
+          )}
+          {response.graphics_files && response.graphics_files.length > 0 && (
+            <Container
+              heading={strings.flashUpdateImageTitle}
+              contentClassName={styles.graphics}
+            >
+              {response?.graphics_files?.map((item) => (
                 <div
-                  className={styles.mapItem}
                   key={item.id}
+                  className={styles.graphicItem}
                 >
                   <img
                     className={styles.image}
@@ -147,27 +190,8 @@ function FlashUpdateReport(props: Props) {
                   </div>
                 </div>
               ))}
-          </Container>
-          <Container
-            heading={strings.flashUpdateImageTitle}
-            contentClassName={styles.graphics}
-          >
-            {response?.graphics_files?.map((item) => (
-              <div
-                key={item.id}
-                className={styles.graphicItem}
-              >
-                <img
-                  className={styles.image}
-                  src={item.file}
-                  alt=""
-                />
-                <div className={styles.caption}>
-                  {item.caption}
-                </div>
-              </div>
-            ))}
-          </Container>
+            </Container>
+          )}
           <Container
             heading={strings.flashUpdateActionTakenTitle}
             contentClassName={styles.actionsTaken}
@@ -199,40 +223,42 @@ function FlashUpdateReport(props: Props) {
               </Container>
             ))}
           </Container>
-          <Container heading={strings.flashUpdateResourcesTitle}>
-            {response.references.map((r) => (
-              <div
-                className={styles.reference}
-                key={r.id}
-              >
-                <div className={styles.date}>
-                  <DateOutput
-                    value={r.date}
-                  />
-                </div>
-                <div className={styles.description}>
-                  {r.source_description}
-                </div>
-                <a
-                  target="_blank"
-                  href={r.url}
-                  className={styles.url}
+          {response.references && response.references.length > 0 && (
+            <Container heading={strings.flashUpdateResourcesTitle}>
+              {response.references.map((r) => (
+                <div
+                  className={styles.reference}
+                  key={r.id}
                 >
-                  {r.url}
-                </a>
-                {r.document_details?.file && (
-                  <ButtonLikeLink
-                    variant="secondary"
-                    to={r.document_details?.file}
-                    className={styles.downloadLink}
-                    icons={<IoDownload />}
+                  <div className={styles.date}>
+                    <DateOutput
+                      value={r.date}
+                      />
+                  </div>
+                  <div className={styles.description}>
+                    {r.source_description}
+                  </div>
+                  <a
+                    target="_blank"
+                    href={r.url}
+                    className={styles.url}
                   >
-                    Download document
-                  </ButtonLikeLink>
-                )}
-              </div>
-            ))}
-          </Container>
+                    {r.url}
+                  </a>
+                  {r.document_details?.file && (
+                    <ButtonLikeLink
+                      variant="secondary"
+                      to={r.document_details?.file}
+                      className={styles.downloadLink}
+                      icons={<IoDownload />}
+                    >
+                      Download document
+                    </ButtonLikeLink>
+                  )}
+                </div>
+              ))}
+            </Container>
+          )}
         </>
       )}
     </Page>

@@ -4,6 +4,7 @@ import {
   isDefined,
 } from '@togglecorp/fujs';
 import { IoClose } from 'react-icons/io5';
+import { internal } from '@togglecorp/toggle-form';
 
 import { useLazyRequest } from '#utils/restRequest';
 import Button from '#components/Button';
@@ -146,9 +147,15 @@ function GoFileInput<T extends string>(props: Props<T>) {
       }
     },
     onFailure: (e) => {
-      const serverError = e?.value?.formErrors as { file: string };
-      const message = serverError?.file ?? 'Failed to upload the file!';
-      alert.show(message, { variant: 'danger' });
+      const serverError = e?.value?.formErrors as {
+        file: string,
+        [internal]: string,
+      } | undefined;
+      const message = `Failed to upload the file! ${serverError?.file ?? serverError?.[internal] ?? ''}`;
+      alert.show(
+        message,
+        { variant: 'danger' },
+      );
       console.error('Could not upload file!', e);
     },
   });

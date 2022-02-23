@@ -3463,7 +3463,7 @@ export default {
   flashUpdateIfrcSecretariatLabel: 'IFRC Secretariat',
   flashUpdateRcrcNetworkLabel: 'RCRC Network',
   flashUpdateRcrcNetworkAndDonorsLabel: 'RCRC Network and Donors',
-  flashUpdateNumber: 'Flash Update #',
+  flashUpdateNumber: 'Flash Update #{number}',
   flashUpdateActionTakenTitle: 'ACTIONS TAKEN',
   flashUpdateSituationalOverviewTitle: 'SITAUTIONAL OVERVIEWS',
   flashUpdateMapTitle: 'MAPS',
