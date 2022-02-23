@@ -19,7 +19,6 @@ export type Props<
   > = ListProps<D, P, K, GP, GK> &
   Omit<MessageProps, MessagePropOmission> & {
     className?: string;
-    messageShown?: boolean;
     errored: boolean;
     pending: boolean;
   };
@@ -34,7 +33,6 @@ function ListView<
 
   const {
     className,
-    messageShown,
     errored,
     pending,
     data,
