@@ -86,26 +86,26 @@ checkBrowsers(paths.appPath, isInteractive)
       }
 
       console.log('File sizes after gzip:\n');
-      printFileSizesAfterBuild(
-        stats,
-        previousFileSizes,
-        paths.appBuild,
-        WARN_AFTER_BUNDLE_GZIP_SIZE,
-        WARN_AFTER_CHUNK_GZIP_SIZE
-      );
-      console.log();
+      // printFileSizesAfterBuild(
+      //   stats,
+      //   previousFileSizes,
+      //   paths.appBuild,
+      //   WARN_AFTER_BUNDLE_GZIP_SIZE,
+      //   WARN_AFTER_CHUNK_GZIP_SIZE
+      // );
+      // console.log();
 
-      const appPackage = require(paths.appPackageJson);
-      const publicUrl = paths.publicUrlOrPath;
-      const publicPath = config.output.publicPath;
-      const buildFolder = path.relative(process.cwd(), paths.appBuild);
-      printHostingInstructions(
-        appPackage,
-        publicUrl,
-        publicPath,
-        buildFolder,
-        useYarn
-      );
+      // const appPackage = require(paths.appPackageJson);
+      // const publicUrl = paths.publicUrlOrPath;
+      // const publicPath = config.output.publicPath;
+      // const buildFolder = path.relative(process.cwd(), paths.appBuild);
+      // printHostingInstructions(
+      //   appPackage,
+      //   publicUrl,
+      //   publicPath,
+      //   buildFolder,
+      //   useYarn
+      // );
     },
     err => {
       const tscCompileOnError = (process.env.TSC_COMPILE_ON_ERROR === 'true') || true;
