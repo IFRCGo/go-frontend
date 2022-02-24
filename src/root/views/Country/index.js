@@ -1,6 +1,6 @@
 import React from 'react';
 import memoize from 'memoize-one'; import { PropTypes as T } from 'prop-types';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { DateTime } from 'luxon';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
@@ -562,6 +562,22 @@ class AdminArea extends SFPComponent {
       data
     } = this.props.adminArea;
     if (!fetched || error) return null;
+
+    if (this.props.country.id === 282) { // Americas
+      return (<Redirect to='/regions/1'/>);
+    }
+    if (this.props.country.id === 283) { // Asia
+      return (<Redirect to='/regions/2'/>);
+    }
+    if (this.props.country.id === 285) { // Africa
+      return (<Redirect to='/regions/0'/>);
+    }
+    if (this.props.country.id === 286) { // Europe
+      return (<Redirect to='/regions/3'/>);
+    }
+    if (this.props.country.id === 287) { // MENA
+      return (<Redirect to='/regions/4'/>);
+    }
 
     // const bbox = getBoundingBox(data.iso);
     // const mapContainerClass = 'country__map';
