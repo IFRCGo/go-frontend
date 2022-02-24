@@ -5,6 +5,7 @@ import {
   listToGroupList,
   mapToMap,
   unique,
+  isNotDefined,
 } from '@togglecorp/fujs';
 
 import { useRequest } from '#utils/restRequest';
@@ -67,7 +68,7 @@ function SeasonalRisk(props: Props) {
   const { regionId } = props;
 
   const { response } = useRequest<SeasonalResponse>({
-    skip: !regionId,
+    skip: isNotDefined(regionId),
     query: { region: regionId },
     url: 'risk://api/v1/seasonal/',
   });
