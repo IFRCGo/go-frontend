@@ -32,6 +32,18 @@
       overflow: auto;
       padding: $spacing 0;
     }
+
+    .footer {
+      display: flex;
+
+      .footer-content {
+        flex-grow: 1;
+      }
+
+      .footer-actions {
+        flex-shrink: 0;
+      }
+    }
   }
 
   &.sub {

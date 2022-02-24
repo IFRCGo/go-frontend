@@ -564,6 +564,7 @@ const historicalIconMap: Record<string, string> = {
   'Food Insecurity': foodInsecurityIcon,
   'Flash Flood': floodIcon,
 };
+
 const historicalHazardTypeToIconMap: {
   [key: string]: string;
 } = {

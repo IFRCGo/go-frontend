@@ -1,0 +1,53 @@
+@import "~styles/settings/variables";
+
+.month-selector {
+  display: flex;
+  border-bottom: $base-border-width solid rgba(0, 0, 0, .3);
+
+  .tick-item {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex-basis: 0;
+    flex-grow: 1;
+    cursor: pointer;
+
+    .month-name {
+      text-transform: uppercase;
+      font-weight: $base-font-medium;
+      font-size: $font-size-xs;
+      padding: $spacing;
+    }
+
+    $month-selector-tick-height: 1em;
+
+    .tick {
+      position: absolute;
+      height: $month-selector-tick-height;
+      width: $base-border-width;
+      background-color: rgba(0, 0, 0, .3);
+      bottom: 0;
+      transform: translateY(50%);
+      transition: .2s all ease-in-out;
+    }
+
+    &:hover {
+      .tick {
+        width: $month-selector-tick-height;
+        height: $month-selector-tick-height;
+        border-radius: 50%;
+      }
+    }
+
+    &.active {
+      .tick {
+        width: $month-selector-tick-height;
+        border-radius: 50%;
+        height: $month-selector-tick-height;
+        background-color: $primary-color;
+      }
+    }
+  }
+}

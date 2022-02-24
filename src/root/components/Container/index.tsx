@@ -21,6 +21,8 @@ export interface Props {
   hideHeaderBorder?: boolean;
   headerElementRef?: HeaderProps['elementRef'];
   visibleOverflow?: boolean;
+  footer?: React.ReactNode;
+  footerActions?: React.ReactNode;
 }
 
 function Container(props: Props) {
@@ -39,6 +41,8 @@ function Container(props: Props) {
     hideHeaderBorder,
     headerElementRef,
     visibleOverflow,
+    footer,
+    footerActions,
   } = props;
 
   return (
@@ -70,6 +74,16 @@ function Container(props: Props) {
         {children && (
           <div className={_cs(styles.content, contentClassName)}>
             { children }
+          </div>
+        )}
+        {(footer || footerActions) && (
+          <div className={styles.footer}>
+            <div className={styles.footerContent}>
+              {footer}
+            </div>
+            <div className={styles.footerActions}>
+              {footerActions}
+            </div>
           </div>
         )}
       </div>
