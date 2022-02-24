@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+  isNotDefined,
   addSeparator,
   formattedNormalize,
   Lang,
@@ -257,7 +258,7 @@ function ImpactChart(props: ImpactChartProps) {
   ), [strings]);
 
   const { response } = useRequest<ListResponse<HistoricalData>>({
-    skip: !regionId,
+    skip: isNotDefined(regionId),
     url: 'api/v2/go-historical/',
     query: { region: regionId },
   });

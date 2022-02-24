@@ -98,9 +98,7 @@ function ImminentEvents(props: Props) {
     });
   }, []);
 
-  if((!pending && !response?.pdc_data) || response?.pdc_data.length === 0) {
-    return null;
-  }
+  const hasImminentEvents = response && response.pdc_data && response.pdc_data.length > 0;
 
   return (
     <Container
@@ -108,9 +106,10 @@ function ImminentEvents(props: Props) {
       className={styles.imminentEvents}
       description="This map displays information about the modeled impact of specific forecasted or detected natural hazards. By hovering over the icons, if available, you can see the forecasted/observed footprint of the hazard; when you click on it, the table of modeled impact estimates will appear, as well as an information about who produced the impact estimate."
       descriptionClassName={styles.mapDescription}
+      contentClassName={styles.mainContent}
     >
       {pending && <BlockLoading /> }
-      {!pending && response?.pdc_data && response?.pdc_data.length > 0 && (
+      {!pending && response?.pdc_data && (
         <div className={styles.mapSection}>
           <PDCExposureMap
             regionId={regionId}
@@ -119,25 +118,34 @@ function ImminentEvents(props: Props) {
             data={response.pdc_data}
             onActiveEventChange={setActiveEventId}
           />
-          <Container
-            className={styles.sideBar}
-            contentClassName={styles.eventList}
-            heading={region?.region_name}
-            sub
-          >
-            {response?.pdc_data?.map((hazard) => (
-              <EventDetail
-                eventId={hazard.id}
-                key={hazard.id}
-                title={hazard.pdc_details.hazard_name}
-                type={hazard.hazard_type_display}
-                description={hazard.pdc_details.description}
-                startDate={hazard.pdc_details.start_date}
-                onClick={handleEventDetailClick}
-                isActive={activeEventId === hazard.id}
-              />
-            ))}
-          </Container>
+          {hasImminentEvents && (
+            <Container
+              className={styles.sideBar}
+              contentClassName={styles.eventList}
+              heading={region?.region_name}
+              sub
+            >
+              {response.pdc_data.map((hazard) => (
+                <EventDetail
+                  eventId={hazard.id}
+                  key={hazard.id}
+                  title={hazard.pdc_details.hazard_name}
+                  type={hazard.hazard_type_display}
+                  description={hazard.pdc_details.description}
+                  startDate={hazard.pdc_details.start_date}
+                  onClick={handleEventDetailClick}
+                  isActive={activeEventId === hazard.id}
+                />
+              ))}
+            </Container>
+          )}
+        </div>
+      )}
+      {!pending && !hasImminentEvents && (
+        <div className={styles.emptyMessage}>
+          <div className={styles.text}>
+            No imminent events
+          </div>
         </div>
       )}
     </Container>
