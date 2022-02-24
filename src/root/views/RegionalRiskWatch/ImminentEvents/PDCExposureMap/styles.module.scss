@@ -16,6 +16,12 @@
 }
 
 .estimated-output {
+  align-items: flex-start!important;
+
+  .value {
+    font-weight: $base-font-bold;
+  }
+
   .label {
     font-weight: $base-font-light;
   }

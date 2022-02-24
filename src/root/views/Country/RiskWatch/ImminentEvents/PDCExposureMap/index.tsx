@@ -95,6 +95,7 @@ function EstimatedOutput({
   return (
     <TextOutput
       className={styles.estimatedOutput}
+      valueContainerClassName={styles.value}
       labelContainerClassName={styles.label}
       descriptionContainerClassName={styles.description}
       label="Est."
@@ -134,7 +135,7 @@ function PointDetails(props: PointDetailsProps) {
         value={population_exposure.households.value}
       />
       <EstimatedOutput
-        attribute="Exposed vulnerable groups"
+        attribute="People in vulnerable groups exposed to the hazard"
         value={population_exposure.vulnerable.value}
       />
       <EstimatedOutput

@@ -185,14 +185,12 @@ const estimationPriorityMap: {
 
 interface DetailedChartProps {
   ipcData: IPCData[],
-  label?: string;
   showHistoricalValues: boolean;
 }
 
 function DetailedChart(props: DetailedChartProps) {
   const {
     ipcData,
-    label,
     showHistoricalValues,
   } = props;
   const { strings } = React.useContext(languageContext);
@@ -260,9 +258,10 @@ function DetailedChart(props: DetailedChartProps) {
         <YAxis
           tickFormatter={formatNumber}
           label={{
-            value: label,
+            value: 'Number of people in IPC 3 or above',
             angle: -90,
             position: 'insideLeft',
+            className: styles.label,
           }}
         />
         <Bar
@@ -423,7 +422,6 @@ function RiskBarChart(props: Props) {
         {hazardType === 'FI' ? (
           <DetailedChart
             showHistoricalValues={showHistoricalValues}
-            label={riskMetricMap[riskMetric]}
             ipcData={ipcData}
           />
         ) : (
