@@ -546,7 +546,7 @@ class Emergency extends React.Component {
                       </div>
                     </li>
                   ) : null}
-                  {stats.funded > 0 ? (
+                  {stats.funded >= 0 ? (
                     <li className="sumstats__item__wrap">
                       <div className='sumstats__item'>
                         <span className='sumstats__icon_wrapper'>
