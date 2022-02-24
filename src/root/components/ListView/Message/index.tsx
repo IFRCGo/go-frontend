@@ -25,8 +25,6 @@ function Message(props: Props) {
     emptyMessage = 'No data available',
     erroredMessage = 'Oops! We ran into an issue',
   } = props;
-  console.log(props);
-
   let message: React.ReactNode = messageFromProps;
 
   if (pending) {
