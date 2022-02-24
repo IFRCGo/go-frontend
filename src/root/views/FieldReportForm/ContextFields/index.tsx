@@ -178,6 +178,7 @@ function ContextFields(props: Props) {
             placeholder={strings.fieldReportFormTitleInputPlaceholder}
             name="summary"
             value={value.summary}
+            maxLength={100}
             onChange={onValueChange}
             error={error?.summary}
           />
