@@ -13,19 +13,23 @@ const CatalogueOfSurgeServicesContent = [
                         elements: [
                             {
                                 name: "catalogueOfSurgeServicesEmergencyCards1Card1Element1",
-                                url: "https://ifrcgo.org/global-services/assets/docs/assessment/Rapid%20Response%20Profile%20Assessment%20Coordinator.pdf"
+                                old: "https://ifrcgo.org/global-services/assets/docs/assessment/Rapid%20Response%20Profile%20Assessment%20Coordinator.pdf",
+                                url: "https://ifrcorg.sharepoint.com/:b:/s/IFRCSharing/EQ9QFbNL6cxNnLmDUT166lYBFZ-nDf5Pn6Z79NnrAJAuSw"
                             },
                             {
                                 name: "catalogueOfSurgeServicesEmergencyCards1Card1Element2",
-                                url: "https://ifrcgo.org/global-services/assets/docs/assessment/Rapid%20Response%20Profile%20Humanitarian%20Information%20Analysis%20Officer.pdf"
+                                old: "https://ifrcgo.org/global-services/assets/docs/assessment/Rapid%20Response%20Profile%20Humanitarian%20Information%20Analysis%20Officer.pdf",
+                                url: "https://ifrcorg.sharepoint.com/:b:/s/IFRCSharing/EWavntSyEd9CsehUObMQOJ0B9R8xDouAJOgTAgPvzcLOpw"
                             },
                             {
                                 name: "catalogueOfSurgeServicesEmergencyCards1Card1Element3",
-                                url: "https://ifrcgo.org/global-services/assets/docs/assessment/Rapid%20Response%20Profile%20Primary%20Data%20Collection%20Officer.pdf"
+                                old: "https://ifrcgo.org/global-services/assets/docs/assessment/Rapid%20Response%20Profile%20Primary%20Data%20Collection%20Officer.pdf",
+                                url: "https://ifrcorg.sharepoint.com/:b:/s/IFRCSharing/ETQ2bJvxaQNGoXzEjf2IjNcB16FwnTxS-Jct1yf539FZ3A"
                             },
                             {
                                 name: "catalogueOfSurgeServicesEmergencyCards1Card1Element4",
-                                url: "https://ifrcgo.org/global-services/assets/docs/assessment/Rapid%20Response%20Profile%20Mapping%20and%20Visualization%20Officer.pdf"
+                                old: "https://ifrcgo.org/global-services/assets/docs/assessment/Rapid%20Response%20Profile%20Mapping%20and%20Visualization%20Officer.pdf",
+                                url: "https://ifrcorg.sharepoint.com/:b:/s/IFRCSharing/EfRPUaQzIH1Emzi0mrJq5S8BzQZs4vvXQjKq3gfAzqMrJg"
                             }
                         ]
                     },
@@ -36,7 +40,7 @@ const CatalogueOfSurgeServicesContent = [
                         buttons: [
                             {
                                 btnText: 'catalogueOfSurgeServicesEmergencyCards1Card2BtnText',
-                                url: 'https://ifrcgo.org/global-services/assets/docs/assessment/Assessment%20technical%20competency%20framework%20March%202020.pdf'
+                                url: 'https://prddsgofilestorage.blob.core.windows.net/api/documents/cos/Assessment_technical_competency_framework_March_2020.pdf'
                             }
                         ]
                     }
