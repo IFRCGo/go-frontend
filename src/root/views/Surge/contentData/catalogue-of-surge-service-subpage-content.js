@@ -117,46 +117,46 @@ const CatalogueOfSurgeServiceSubpageContent = [
         other: false,
         title: 'catalogueM40Title',
         // images: [
-        //     'https://ifrcgo.org/global-services/assets/img/wash/wash-m40_01.jpg',
-        //     'https://ifrcgo.org/global-services/assets/img/wash/wash-m40_02.jpg',
-        //     'https://ifrcgo.org/global-services/assets/img/wash/wash-m40_03.jpg',
-        //     'https://ifrcgo.org/global-services/assets/img/wash/wash-m40_04.jpg',
-        //     'https://ifrcgo.org/global-services/assets/img/wash/wash-m40_05.jpg',
-        //     'https://ifrcgo.org/global-services/assets/img/wash/wash-m40_06.jpg'
+        //     'https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/wash-m40_01.jpg',
+        //     'https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/wash-m40_02.jpg',
+        //     'https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/wash-m40_03.jpg',
+        //     'https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/wash-m40_04.jpg',
+        //     'https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/wash-m40_05.jpg',
+        //     'https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/wash-m40_06.jpg'
         // ],
         imgs :
         [{
-        src: "https://ifrcgo.org/global-services/assets/img/wash/wash-m40_01.jpg",
-        thumbnail: "https://ifrcgo.org/global-services/assets/img/wash/wash-m40_01.jpg",
+        src: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/wash-m40_01.jpg",
+        thumbnail: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/wash-m40_01.jpg",
         thumbnailWidth: 300,
         thumbnailHeight: 200,
         caption: 'RCRC personnel working with pumps and pipes'
         },
         {
-        src: "https://ifrcgo.org/global-services/assets/img/wash/wash-m40_02.jpg",
-        thumbnail: "https://ifrcgo.org/global-services/assets/img/wash/wash-m40_02.jpg",
+        src: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/wash-m40_02.jpg",
+        thumbnail: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/wash-m40_02.jpg",
         thumbnailWidth: 267,
         thumbnailHeight: 200,
         caption: 'Rigid steel tanks'
         },
 
         {
-        src: "https://ifrcgo.org/global-services/assets/img/wash/wash-m40_03.jpg",
-        thumbnail: "https://ifrcgo.org/global-services/assets/img/wash/wash-m40_03.jpg",
+        src: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/wash-m40_03.jpg",
+        thumbnail: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/wash-m40_03.jpg",
         thumbnailWidth: 300,
         thumbnailHeight: 200,
         caption: 'RCRC personnel and rigid tank'
         },
         {
-        src: "https://ifrcgo.org/global-services/assets/img/wash/wash-m40_04.jpg",
-        thumbnail: "https://ifrcgo.org/global-services/assets/img/wash/wash-m40_04.jpg",
+        src: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/wash-m40_04.jpg",
+        thumbnail: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/wash-m40_04.jpg",
         thumbnailWidth: 267,
         thumbnailHeight: 200,
         caption: 'Setting up tanks'
         },
         {
-        src: "https://ifrcgo.org/global-services/assets/img/wash/wash-m40_05.jpg",
-        thumbnail: "https://ifrcgo.org/global-services/assets/img/wash/wash-m40_05.jpg",
+        src: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/wash-m40_05.jpg",
+        thumbnail: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/wash-m40_05.jpg",
         thumbnailWidth: 300,
         thumbnailHeight: 200,
         caption: 'Tank filling with raw water'
@@ -199,69 +199,69 @@ const CatalogueOfSurgeServiceSubpageContent = [
         other: false,
         title: 'catalogueMsm20Title',
         // images: [
-        //     'https://ifrcgo.org/global-services/assets/img/wash/wash-msm20_01.jpg',
-        //     'https://ifrcgo.org/global-services/assets/img/wash/wash-msm20_02.jpg',
-        //     'https://ifrcgo.org/global-services/assets/img/wash/wash-msm20_03.jpg',
-        //     'https://ifrcgo.org/global-services/assets/img/wash/wash-msm20_04.jpg',
-        //     'https://ifrcgo.org/global-services/assets/img/wash/wash-msm20_05.jpg',
-        //     'https://ifrcgo.org/global-services/assets/img/wash/wash-msm20_06.jpg',
-        //     'https://ifrcgo.org/global-services/assets/img/wash/wash-msm20_07.jpg',
-        //     'https://ifrcgo.org/global-services/assets/img/wash/wash-msm20_08.jpg'
+        //     'https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/wash-msm20_01.jpg',
+        //     'https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/wash-msm20_02.jpg',
+        //     'https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/wash-msm20_03.jpg',
+        //     'https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/wash-msm20_04.jpg',
+        //     'https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/wash-msm20_05.jpg',
+        //     'https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/wash-msm20_06.jpg',
+        //     'https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/wash-msm20_07.jpg',
+        //     'https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/wash-msm20_08.jpg'
         // ],
         imgs :
         [
         {
-        src: "https://ifrcgo.org/global-services/assets/img/wash/wash-msm20_01.jpg",
-        thumbnail: "https://ifrcgo.org/global-services/assets/img/wash/wash-msm20_01.jpg",
+        src: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/wash-msm20_01.jpg",
+        thumbnail: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/wash-msm20_01.jpg",
         thumbnailWidth: 267,
         thumbnailHeight: 200,
         caption: 'Cleaned latrines made by timber and plastic in an IDP camp'
         },
         {
-        src: "https://ifrcgo.org/global-services/assets/img/wash/wash-msm20_02.jpg",
-        thumbnail: "https://ifrcgo.org/global-services/assets/img/wash/wash-msm20_02.jpg",
+        src: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/wash-msm20_02.jpg",
+        thumbnail: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/wash-msm20_02.jpg",
         thumbnailWidth: 267,
         thumbnailHeight: 200,
         caption: 'Elevated latrines set up in an IDP camp'
         },
         {
-        src: "https://ifrcgo.org/global-services/assets/img/wash/wash-msm20_03.jpg",
-        thumbnail: "https://ifrcgo.org/global-services/assets/img/wash/wash-msm20_03.jpg",
+        src: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/wash-msm20_03.jpg",
+        thumbnail: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/wash-msm20_03.jpg",
         thumbnailWidth: 300,
         thumbnailHeight: 200,
         caption: 'Latrines built timber and plastic sheets'
         },
         {
-        src: "https://ifrcgo.org/global-services/assets/img/wash/wash-msm20_04.jpg",
-        thumbnail: "https://ifrcgo.org/global-services/assets/img/wash/wash-msm20_04.jpg",
+        src: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/wash-msm20_04.jpg",
+        thumbnail: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/wash-msm20_04.jpg",
         thumbnailWidth: 267,
         thumbnailHeight: 200,
         caption: 'Latrines built with corrugated sheets'
         },
         {
-        src: "https://ifrcgo.org/global-services/assets/img/wash/wash-msm20_05.jpg",
-        thumbnail: "https://ifrcgo.org/global-services/assets/img/wash/wash-msm20_05.jpg",
+        src: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/wash-msm20_05.jpg",
+        thumbnail: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/wash-msm20_05.jpg",
         thumbnailWidth: 267,
         thumbnailHeight: 200,
         caption: 'Population looking at hygiene promotion material'
         },
         {
-        src: "https://ifrcgo.org/global-services/assets/img/wash/wash-msm20_06.jpg",
-        thumbnail: "https://ifrcgo.org/global-services/assets/img/wash/wash-msm20_06.jpg",
+        src: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/wash-msm20_06.jpg",
+        thumbnail: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/wash-msm20_06.jpg",
         thumbnailWidth: 300,
         thumbnailHeight: 200,
         caption: 'RCRC personnel maintaining set up latrines'
         },
         {
-        src: "https://ifrcgo.org/global-services/assets/img/wash/wash-msm20_07.jpg",
-        thumbnail: "https://ifrcgo.org/global-services/assets/img/wash/wash-msm20_07.jpg",
+        src: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/wash-msm20_07.jpg",
+        thumbnail: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/wash-msm20_07.jpg",
         thumbnailWidth: 267,
         thumbnailHeight: 200,
         caption: 'RCRC personnel performing hygiene promotion activities with the community'
         },
         {
-        src: "https://ifrcgo.org/global-services/assets/img/wash/wash-msm20_08.jpg",
-        thumbnail: "https://ifrcgo.org/global-services/assets/img/wash/wash-msm20_08.jpg",
+        src: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/wash-msm20_08.jpg",
+        thumbnail: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/wash-msm20_08.jpg",
         thumbnailWidth: 300,
         thumbnailHeight: 200,
         caption: 'RCRC personnel setting up latrines'
@@ -299,61 +299,61 @@ const CatalogueOfSurgeServiceSubpageContent = [
         other: false,
         title: 'catalogueM15Title',
         // images: [
-        //     'https://ifrcgo.org/global-services/assets/img/wash/wash-m15_01.jpg',
-        //     'https://ifrcgo.org/global-services/assets/img/wash/wash-m15_02.jpg',
-        //     'https://ifrcgo.org/global-services/assets/img/wash/wash-m15_03.jpg',
-        //     'https://ifrcgo.org/global-services/assets/img/wash/wash-m15_04.jpg',
-        //     'https://ifrcgo.org/global-services/assets/img/wash/wash-m15_05.jpg',
-        //     'https://ifrcgo.org/global-services/assets/img/wash/wash-m15_06.jpg',
-        //     'https://ifrcgo.org/global-services/assets/img/wash/wash-m15_07.jpg'
+        //     'https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/wash-m15_01.jpg',
+        //     'https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/wash-m15_02.jpg',
+        //     'https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/wash-m15_03.jpg',
+        //     'https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/wash-m15_04.jpg',
+        //     'https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/wash-m15_05.jpg',
+        //     'https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/wash-m15_06.jpg',
+        //     'https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/wash-m15_07.jpg'
         // ],
         imgs :
         [
         {
-        src: "https://ifrcgo.org/global-services/assets/img/wash/wash-m15_01.jpg",
-        thumbnail: "https://ifrcgo.org/global-services/assets/img/wash/wash-m15_01.jpg",
+        src: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/wash-m15_01.jpg",
+        thumbnail: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/wash-m15_01.jpg",
         thumbnailWidth: 267,
         thumbnailHeight: 200,
         caption: 'Water treatment camp in Mozambique'
         },
         {
-        src: "https://ifrcgo.org/global-services/assets/img/wash/wash-m15_02.jpg",
-        thumbnail: "https://ifrcgo.org/global-services/assets/img/wash/wash-m15_02.jpg",
+        src: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/wash-m15_02.jpg",
+        thumbnail: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/wash-m15_02.jpg",
         thumbnailWidth: 300,
         thumbnailHeight: 200,
         caption: 'Water treatment camp in Indonesia'
         },
         {
-        src: "https://ifrcgo.org/global-services/assets/img/wash/wash-m15_03.jpg",
-        thumbnail: "https://ifrcgo.org/global-services/assets/img/wash/wash-m15_03.jpg",
+        src: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/wash-m15_03.jpg",
+        thumbnail: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/wash-m15_03.jpg",
         thumbnailWidth: 267,
         thumbnailHeight: 200,
         caption: 'Water treatment line'
         },
         {
-        src: "https://ifrcgo.org/global-services/assets/img/wash/wash-m15_04.jpg",
-        thumbnail: "https://ifrcgo.org/global-services/assets/img/wash/wash-m15_04.jpg",
+        src: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/wash-m15_04.jpg",
+        thumbnail: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/wash-m15_04.jpg",
         thumbnailWidth: 410,
         thumbnailHeight: 200,
         caption: 'M15 water treatment process'
         },
         {
-        src: "https://ifrcgo.org/global-services/assets/img/wash/wash-m15_05.jpg",
-        thumbnail: "https://ifrcgo.org/global-services/assets/img/wash/wash-m15_05.jpg",
+        src: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/wash-m15_05.jpg",
+        thumbnail: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/wash-m15_05.jpg",
         thumbnailWidth: 300,
         thumbnailHeight: 200,
         caption: 'Making analysis of the purified water'
         },
         {
-        src: "https://ifrcgo.org/global-services/assets/img/wash/wash-m15_06.jpg",
-        thumbnail: "https://ifrcgo.org/global-services/assets/img/wash/wash-m15_06.jpg",
+        src: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/wash-m15_06.jpg",
+        thumbnail: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/wash-m15_06.jpg",
         thumbnailWidth: 267,
         thumbnailHeight: 200,
         caption: 'Tap stand in China'
         },
         {
-        src: "https://ifrcgo.org/global-services/assets/img/wash/wash-m15_07.jpg",
-        thumbnail: "https://ifrcgo.org/global-services/assets/img/wash/wash-m15_07.jpg",
+        src: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/wash-m15_07.jpg",
+        thumbnail: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/wash-m15_07.jpg",
         thumbnailWidth: 133,
         thumbnailHeight: 200,
         caption: 'Tap stand in Haiti'
@@ -417,12 +417,12 @@ const CatalogueOfSurgeServiceSubpageContent = [
         hash: '#kit-5',
         other: false,
         title: 'catalogueKit5Title',
-        // images: ['https://ifrcgo.org/global-services/assets/img/wash/wash-kit5_01.jpg'],
+        // images: ['https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/wash-kit5_01.jpg'],
         imgs :
         [
         {
-        src: "https://ifrcgo.org/global-services/assets/img/wash/wash-kit5_01.jpg",
-        thumbnail: "https://ifrcgo.org/global-services/assets/img/wash/wash-kit5_01.jpg",
+        src: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/wash-kit5_01.jpg",
+        thumbnail: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/wash-kit5_01.jpg",
         thumbnailWidth: 300,
         thumbnailHeight: 200,
         caption: 'WASH Kit 5'
@@ -446,12 +446,12 @@ const CatalogueOfSurgeServiceSubpageContent = [
         hash: '#kit-2',
         other: false,
         title: 'catalogueKit2Title',
-        // images: ['https://ifrcgo.org/global-services/assets/img/wash/wash-kit2_01.jpg'],
+        // images: ['https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/wash-kit2_01.jpg'],
         imgs :
         [
         {
-        src: "https://ifrcgo.org/global-services/assets/img/wash/wash-kit2_01.jpg",
-        thumbnail: "https://ifrcgo.org/global-services/assets/img/wash/wash-kit2_01.jpg",
+        src: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/wash-kit2_01.jpg",
+        thumbnail: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/wash-kit2_01.jpg",
         thumbnailWidth: 300,
         thumbnailHeight: 200,
         caption: 'WASH Kit 2'
@@ -476,85 +476,85 @@ const CatalogueOfSurgeServiceSubpageContent = [
         other: false,
         title: 'catalogueSttTitle',
         // images: [
-        //     'https://ifrcgo.org/global-services/assets/img/shelter/shelter-stt_01.jpg',
-        //     'https://ifrcgo.org/global-services/assets/img/shelter/shelter-stt_06.jpg',
-        //     'https://ifrcgo.org/global-services/assets/img/shelter/shelter-stt_07.jpg',
-        //     'https://ifrcgo.org/global-services/assets/img/shelter/shelter-stt_08.jpg',
-        //     'https://ifrcgo.org/global-services/assets/img/shelter/shelter-stt_12.jpg',
-        //     'https://ifrcgo.org/global-services/assets/img/shelter/shelter-stt_14.jpg',
-        //     'https://ifrcgo.org/global-services/assets/img/shelter/shelter-stt_16.jpg',
-        //     'https://ifrcgo.org/global-services/assets/img/shelter/shelter-stt_17.jpg',
-        //     'https://ifrcgo.org/global-services/assets/img/shelter/shelter-stt_23.jpg',
-        //     'https://ifrcgo.org/global-services/assets/img/shelter/shelter-stt_24.jpg',
+        //     'https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/shelter-stt_01.jpg',
+        //     'https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/shelter-stt_06.jpg',
+        //     'https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/shelter-stt_07.jpg',
+        //     'https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/shelter-stt_08.jpg',
+        //     'https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/shelter-stt_12.jpg',
+        //     'https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/shelter-stt_14.jpg',
+        //     'https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/shelter-stt_16.jpg',
+        //     'https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/shelter-stt_17.jpg',
+        //     'https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/shelter-stt_23.jpg',
+        //     'https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/shelter-stt_24.jpg',
         // ],
         imgs :
         [
         {
-        src: "https://ifrcgo.org/global-services/assets/img/shelter/shelter-stt_01.jpg",
-        thumbnail: "https://ifrcgo.org/global-services/assets/img/shelter/shelter-stt_01.jpg",
+        src: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/shelter-stt_01.jpg",
+        thumbnail: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/shelter-stt_01.jpg",
         thumbnailWidth: 354,
         thumbnailHeight: 200,
         caption: 'Build Back Safer - Bangladesh'
         },
         {
-        src: "https://ifrcgo.org/global-services/assets/img/shelter/shelter-stt_06.jpg",
-        thumbnail: "https://ifrcgo.org/global-services/assets/img/shelter/shelter-stt_06.jpg",
+        src: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/shelter-stt_06.jpg",
+        thumbnail: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/shelter-stt_06.jpg",
         thumbnailWidth: 267,
         thumbnailHeight: 200,
         caption: 'Tabon Tabon, Eastern Leyte, Philippines - Over one million homes were damaged and destroyed by Typhoon Haiyan. Sensitisation sessions provide communities with practical tips including proper fixings of tarpaulins, building stronger foundations and improving bracing. Each community is also provided with flyers that cover all of the learning.'
         },
         {
-        src: "https://ifrcgo.org/global-services/assets/img/shelter/shelter-stt_07.jpg",
-        thumbnail: "https://ifrcgo.org/global-services/assets/img/shelter/shelter-stt_07.jpg",
+        src: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/shelter-stt_07.jpg",
+        thumbnail: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/shelter-stt_07.jpg",
         thumbnailWidth: 267,
         thumbnailHeight: 200,
         caption: 'Focus Group Discussion - Greece'
         },
         {
-        src: "https://ifrcgo.org/global-services/assets/img/shelter/shelter-stt_08.jpg",
-        thumbnail: "https://ifrcgo.org/global-services/assets/img/shelter/shelter-stt_08.jpg",
+        src: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/shelter-stt_08.jpg",
+        thumbnail: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/shelter-stt_08.jpg",
         thumbnailWidth: 267,
         thumbnailHeight: 200,
         caption: 'PASSA - Haiti'
         },
         {
-        src: "https://ifrcgo.org/global-services/assets/img/shelter/shelter-stt_12.jpg",
-        thumbnail: "https://ifrcgo.org/global-services/assets/img/shelter/shelter-stt_12.jpg",
+        src: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/shelter-stt_12.jpg",
+        thumbnail: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/shelter-stt_12.jpg",
         thumbnailWidth: 300,
         thumbnailHeight: 200,
         caption: 'Reconstruction - Haiti'
         },
         {
-        src: "https://ifrcgo.org/global-services/assets/img/shelter/shelter-stt_14.jpg",
-        thumbnail: "https://ifrcgo.org/global-services/assets/img/shelter/shelter-stt_14.jpg",
+        src: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/shelter-stt_14.jpg",
+        thumbnail: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/shelter-stt_14.jpg",
         thumbnailWidth: 267,
         thumbnailHeight: 200,
         caption: 'Shelter kits, tarpaulins, and other kits for distribution at Lay Htet Gyi village, Mawlamying Gyun district, Myanmar.'
         },
         {
-        src: "https://ifrcgo.org/global-services/assets/img/shelter/shelter-stt_16.jpg",
-        thumbnail: "https://ifrcgo.org/global-services/assets/img/shelter/shelter-stt_16.jpg",
+        src: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/shelter-stt_16.jpg",
+        thumbnail: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/shelter-stt_16.jpg",
         thumbnailWidth: 267,
         thumbnailHeight: 200,
         caption: 'Dzaipi Refugee camp, Adjumani, Uganda. 16/02/2014 - A man from South Sudan is building a house in the oldest camp in Dzaipi.'
         },
         {
-        src: "https://ifrcgo.org/global-services/assets/img/shelter/shelter-stt_17.jpg",
-        thumbnail: "https://ifrcgo.org/global-services/assets/img/shelter/shelter-stt_17.jpg",
+        src: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/shelter-stt_17.jpg",
+        thumbnail: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/shelter-stt_17.jpg",
         thumbnailWidth: 267,
         thumbnailHeight: 200,
         caption: 'Zimbabwe, Chingwizi, 2014 - William Banda, a Zimbabwe Red Cross volunteer helps construct shelter for flood-displaced families of the Masvingo province at Chingwizi transit camp. The camp will house 20,000 people over the next few months. Zimbabwe Red Cross is at the camp registering new arrivals, providing shelter, first aid and psychosocial support.'
         },
         {
-        src: "https://ifrcgo.org/global-services/assets/img/shelter/shelter-stt_23.jpg",
-        thumbnail: "https://ifrcgo.org/global-services/assets/img/shelter/shelter-stt_23.jpg",
+        src: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/shelter-stt_23.jpg",
+        thumbnail: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/shelter-stt_23.jpg",
         thumbnailWidth: 267,
         thumbnailHeight: 200,
         caption: 'On August 15, 2007, an earthquake of great intensity caused serious damage mainly on the coast of the Ica region of Peru, thousands of buildings were destroyed or affected, thousands of families lost their homes, leaving them in the open. The activity of the Red Cross is focused on supporting the construction of temporary accommodation in rural areas where the situation is extremely vulnerable.'
         },
         {
-        src: "https://ifrcgo.org/global-services/assets/img/shelter/shelter-stt_24.jpg",
-        thumbnail: "https://ifrcgo.org/global-services/assets/img/shelter/shelter-stt_24.jpg",
+        src: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/shelter-stt_24.jpg",
+        thumbnail: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/shelter-stt_24.jpg",
         thumbnailWidth: 267,
         thumbnailHeight: 200,
         caption: 'Tanuan , Eastern Leyte, Philippines - Over one million homes were damaged and destroyed by Typhoon Haiyan. The Red Cross is targeting support mainly at families who are rebuilding their homes or making temporary shelters by providing toolkits, materials and technical advice on how to build back safer.'
@@ -612,37 +612,37 @@ const CatalogueOfSurgeServiceSubpageContent = [
         other: false,
         title: 'catalogueSctTitle',
         // images: [
-        //     'https://ifrcgo.org/global-services/assets/img/shelter/shelter-sct_01.jpg',
-        //     'https://ifrcgo.org/global-services/assets/img/shelter/shelter-sct_02.jpg',
-        //     'https://ifrcgo.org/global-services/assets/img/shelter/shelter-sct_03.jpg',
-        //     'https://ifrcgo.org/global-services/assets/img/shelter/shelter-sct_04.jpg'
+        //     'https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/shelter-sct_01.jpg',
+        //     'https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/shelter-sct_02.jpg',
+        //     'https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/shelter-sct_03.jpg',
+        //     'https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/shelter-sct_04.jpg'
         // ],
         imgs :
         [
         {
-        src: "https://ifrcgo.org/global-services/assets/img/shelter/shelter-sct_01.jpg",
-        thumbnail: "https://ifrcgo.org/global-services/assets/img/shelter/shelter-sct_01.jpg",
+        src: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/shelter-sct_01.jpg",
+        thumbnail: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/shelter-sct_01.jpg",
         thumbnailWidth: 300,
         thumbnailHeight: 200,
         caption: 'East Cameroon, May 2014 - With civil unrest continuing to cause an upheaval in people`s daily routines in the Central African Republic, neighbouring Cameroon has become a haven for tens of thousands of men, women and children seeking safety. Supported by IFRC through an emergency appeal, the Cameroon Red Cross Society has deployed a large number of volunteers who provide diversified and substantial assistance to families affected by the on-going crisis.'
         },
         {
-        src: "https://ifrcgo.org/global-services/assets/img/shelter/shelter-sct_02.jpg",
-        thumbnail: "https://ifrcgo.org/global-services/assets/img/shelter/shelter-sct_02.jpg",
+        src: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/shelter-sct_02.jpg",
+        thumbnail: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/shelter-sct_02.jpg",
         thumbnailWidth: 400,
         thumbnailHeight: 200,
         caption: 'Petit Goave Meeting, June 2010'
         },
         {
-        src: "https://ifrcgo.org/global-services/assets/img/shelter/shelter-sct_03.jpg",
-        thumbnail: "https://ifrcgo.org/global-services/assets/img/shelter/shelter-sct_03.jpg",
+        src: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/shelter-sct_03.jpg",
+        thumbnail: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/shelter-sct_03.jpg",
         thumbnailWidth: 300,
         thumbnailHeight: 200,
         caption: 'SCT Philippines'
         },
         {
-        src: "https://ifrcgo.org/global-services/assets/img/shelter/shelter-sct_04.jpg",
-        thumbnail: "https://ifrcgo.org/global-services/assets/img/shelter/shelter-sct_04.jpg",
+        src: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/shelter-sct_04.jpg",
+        thumbnail: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/shelter-sct_04.jpg",
         thumbnailWidth: 670,
         thumbnailHeight: 200,
         caption: 'Shelter Cluster Coordination Meeting at OSOCC Tent, Haiti, 9 March 2010'
@@ -705,37 +705,37 @@ const CatalogueOfSurgeServiceSubpageContent = [
         other: false,
         title: 'catalogueSecurityTitle',
         // images: [
-        //     'https://ifrcgo.org/global-services/assets/img/security/security-management_01.jpg',
-        //     'https://ifrcgo.org/global-services/assets/img/security/security-management_02.jpg',
-        //     'https://ifrcgo.org/global-services/assets/img/security/security-management_03.jpg',
-        //     'https://ifrcgo.org/global-services/assets/img/security/security-management_04.jpg'
+        //     'https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/security-management_01.jpg',
+        //     'https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/security-management_02.jpg',
+        //     'https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/security-management_03.jpg',
+        //     'https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/security-management_04.jpg'
         // ],
         imgs :
         [
         {
-        src: "https://ifrcgo.org/global-services/assets/img/security/security-management_01.jpg",
-        thumbnail: "https://ifrcgo.org/global-services/assets/img/security/security-management_01.jpg",
+        src: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/security-management_01.jpg",
+        thumbnail: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/security-management_01.jpg",
         thumbnailWidth: 267,
         thumbnailHeight: 200,
         caption: ''
         },
         {
-        src: "https://ifrcgo.org/global-services/assets/img/security/security-management_02.jpg",
-        thumbnail: "https://ifrcgo.org/global-services/assets/img/security/security-management_02.jpg",
+        src: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/security-management_02.jpg",
+        thumbnail: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/security-management_02.jpg",
         thumbnailWidth: 267,
         thumbnailHeight: 200,
         caption: ''
         },
         {
-        src: "https://ifrcgo.org/global-services/assets/img/security/security-management_03.jpg",
-        thumbnail: "https://ifrcgo.org/global-services/assets/img/security/security-management_03.jpg",
+        src: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/security-management_03.jpg",
+        thumbnail: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/security-management_03.jpg",
         thumbnailWidth: 267,
         thumbnailHeight: 200,
         caption: ''
         },
         {
-        src: "https://ifrcgo.org/global-services/assets/img/security/security-management_04.jpg",
-        thumbnail: "https://ifrcgo.org/global-services/assets/img/security/security-management_04.jpg",
+        src: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/security-management_04.jpg",
+        thumbnail: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/security-management_04.jpg",
         thumbnailWidth: 267,
         thumbnailHeight: 200,
         caption: ''
@@ -774,85 +774,85 @@ const CatalogueOfSurgeServiceSubpageContent = [
         other: false,
         title: 'catalogueReliefTitle',
         // images: [
-        //     'https://ifrcgo.org/global-services/assets/img/relief/relief-eru_01.jpg',
-        //     'https://ifrcgo.org/global-services/assets/img/relief/relief-eru_02.jpg',
-        //     'https://ifrcgo.org/global-services/assets/img/relief/relief-eru_03.jpg',
-        //     'https://ifrcgo.org/global-services/assets/img/relief/relief-eru_04.jpg',
-        //     'https://ifrcgo.org/global-services/assets/img/relief/relief-eru_05.jpg',
-        //     'https://ifrcgo.org/global-services/assets/img/relief/relief-eru_06.jpg',
-        //     'https://ifrcgo.org/global-services/assets/img/relief/relief-eru_07.jpg',
-        //     'https://ifrcgo.org/global-services/assets/img/relief/relief-eru_08.jpg',
-        //     'https://ifrcgo.org/global-services/assets/img/relief/relief-eru_09.jpg',
-        //     'https://ifrcgo.org/global-services/assets/img/relief/relief-eru_10.jpg'
+        //     'https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/relief-eru_01.jpg',
+        //     'https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/relief-eru_02.jpg',
+        //     'https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/relief-eru_03.jpg',
+        //     'https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/relief-eru_04.jpg',
+        //     'https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/relief-eru_05.jpg',
+        //     'https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/relief-eru_06.jpg',
+        //     'https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/relief-eru_07.jpg',
+        //     'https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/relief-eru_08.jpg',
+        //     'https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/relief-eru_09.jpg',
+        //     'https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/relief-eru_10.jpg'
         // ],
         imgs :
         [
         {
-        src: "https://ifrcgo.org/global-services/assets/img/relief/relief-eru_01.jpg",
-        thumbnail: "https://ifrcgo.org/global-services/assets/img/relief/relief-eru_01.jpg",
+        src: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/relief-eru_01.jpg",
+        thumbnail: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/relief-eru_01.jpg",
         thumbnailWidth: 200,
         thumbnailHeight: 200,
         caption: 'Distribution 17.09.2019 of relief items in Abaco, the Bahamas; Hygiene kits, kitchen set, shelter toolkits, buckets, jerry cans and blankets. Hygiene and health promoted.'
         },
         {
-        src: "https://ifrcgo.org/global-services/assets/img/relief/relief-eru_02.jpg",
-        thumbnail: "https://ifrcgo.org/global-services/assets/img/relief/relief-eru_02.jpg",
+        src: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/relief-eru_02.jpg",
+        thumbnail: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/relief-eru_02.jpg",
         thumbnailWidth: 300,
         thumbnailHeight: 200,
         caption: 'Red Cross relief distribution on Abaco, the Bahamas, after Hurricane Dorian'
         },
         {
-        src: "https://ifrcgo.org/global-services/assets/img/relief/relief-eru_03.jpg",
-        thumbnail: "https://ifrcgo.org/global-services/assets/img/relief/relief-eru_03.jpg",
+        src: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/relief-eru_03.jpg",
+        thumbnail: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/relief-eru_03.jpg",
         thumbnailWidth: 300,
         thumbnailHeight: 200,
         caption: 'Philippines - Distribution check list'
         },
         {
-        src: "https://ifrcgo.org/global-services/assets/img/relief/relief-eru_04.jpg",
-        thumbnail: "https://ifrcgo.org/global-services/assets/img/relief/relief-eru_04.jpg",
+        src: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/relief-eru_04.jpg",
+        thumbnail: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/relief-eru_04.jpg",
         thumbnailWidth: 300,
         thumbnailHeight: 200,
         caption: '23 September 2018. Philippines, Cagayan province, in the town of Baggao. One week since deadly Typhoon Mangkhut (locally known as Ompong) hit the Philippines, Philippine Red Cross led the distribution of non-food items, hygiene kits, emergency shelter kits, and corrugated iron sheets to hundreds of families.'
         },
         {
-        src: "https://ifrcgo.org/global-services/assets/img/relief/relief-eru_05.jpg",
-        thumbnail: "https://ifrcgo.org/global-services/assets/img/relief/relief-eru_05.jpg",
+        src: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/relief-eru_05.jpg",
+        thumbnail: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/relief-eru_05.jpg",
         thumbnailWidth: 267,
         thumbnailHeight: 200,
         caption: 'Tropical storm Podul caused extensive floods in Lao People’s Democratic Republic that have affected more than 300,000 people. Lao Red Cross teams have carried out search and rescue activities and evacuations, provided first aid and distributed food and water.'
         },
         {
-        src: "https://ifrcgo.org/global-services/assets/img/relief/relief-eru_06.jpg",
-        thumbnail: "https://ifrcgo.org/global-services/assets/img/relief/relief-eru_06.jpg",
+        src: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/relief-eru_06.jpg",
+        thumbnail: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/relief-eru_06.jpg",
         thumbnailWidth: 300,
         thumbnailHeight: 200,
         caption: 'Refugees in Sinjar take support from Iraq Red Crescent volunteers. The refugees are in need of the most basic items for their survival, so the Iraq Red Crescent is distributing food and non-food items, particularly water, ice, milk for babies and hot meals every day.'
         },
         {
-        src: "https://ifrcgo.org/global-services/assets/img/relief/relief-eru_07.jpg",
-        thumbnail: "https://ifrcgo.org/global-services/assets/img/relief/relief-eru_07.jpg",
+        src: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/relief-eru_07.jpg",
+        thumbnail: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/relief-eru_07.jpg",
         thumbnailWidth: 267,
         thumbnailHeight: 200,
         caption: 'Kenya Red Cross is working with the Government of Kenya to support those affected by floods, delivering emergency relief items and essential supplies like household items and water and sanitation in evacuation centres for people already displaced.'
         },
         {
-        src: "https://ifrcgo.org/global-services/assets/img/relief/relief-eru_08.jpg",
-        thumbnail: "https://ifrcgo.org/global-services/assets/img/relief/relief-eru_08.jpg",
+        src: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/relief-eru_08.jpg",
+        thumbnail: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/relief-eru_08.jpg",
         thumbnailWidth: 300,
         thumbnailHeight: 200,
         caption: 'Distribution organized by the Danish Red Cross of shelter items in camps in Port au Prince, Haiti.'
         },
         {
-        src: "https://ifrcgo.org/global-services/assets/img/relief/relief-eru_09.jpg",
-        thumbnail: "https://ifrcgo.org/global-services/assets/img/relief/relief-eru_09.jpg",
+        src: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/relief-eru_09.jpg",
+        thumbnail: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/relief-eru_09.jpg",
         thumbnailWidth: 300,
         thumbnailHeight: 200,
         caption: 'Food distribution organized by the Mexican and Colombian Red Cross in Camp Bzotun, Haiti.'
         },
         {
-        src: "https://ifrcgo.org/global-services/assets/img/relief/relief-eru_10.jpg",
-        thumbnail: "https://ifrcgo.org/global-services/assets/img/relief/relief-eru_10.jpg",
+        src: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/relief-eru_10.jpg",
+        thumbnail: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/relief-eru_10.jpg",
         thumbnailWidth: 300,
         thumbnailHeight: 200,
         caption: 'Relief in Haiti.'
@@ -964,37 +964,37 @@ const CatalogueOfSurgeServiceSubpageContent = [
         other: false,
         title: 'catalogueProtectionTitle',
         // images: [
-        //     'https://ifrcgo.org/global-services/assets/img/pgi/pgi-pgi_01.jpg',
-        //     'https://ifrcgo.org/global-services/assets/img/pgi/pgi-pgi_02.jpg',
-        //     'https://ifrcgo.org/global-services/assets/img/pgi/pgi-pgi_05.jpg',
-        //     'https://ifrcgo.org/global-services/assets/img/pgi/pgi-pgi_04.jpg'
+        //     'https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/pgi-pgi_01.jpg',
+        //     'https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/pgi-pgi_02.jpg',
+        //     'https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/pgi-pgi_05.jpg',
+        //     'https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/pgi-pgi_04.jpg'
         // ],
         imgs :
         [
         {
-        src: "https://ifrcgo.org/global-services/assets/img/pgi/pgi-pgi_01.jpg",
-        thumbnail: "https://ifrcgo.org/global-services/assets/img/pgi/pgi-pgi_01.jpg",
+        src: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/pgi-pgi_01.jpg",
+        thumbnail: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/pgi-pgi_01.jpg",
         thumbnailWidth: 300,
         thumbnailHeight: 200,
         caption: '23 September 2018. Philippines, Cagayan province, in the towns of Gattaran and Baggao. One week since deadly Typhoon Mangkhut (locally known as Ompong) hit the Philippines, Philippine Red Cross led the distribution of non-food items, hygiene kits, emergency shelter kits, and corrugated iron sheets to hundreds of families.'
         },
         {
-        src: "https://ifrcgo.org/global-services/assets/img/pgi/pgi-pgi_02.jpg",
-        thumbnail: "https://ifrcgo.org/global-services/assets/img/pgi/pgi-pgi_02.jpg",
+        src: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/pgi-pgi_02.jpg",
+        thumbnail: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/pgi-pgi_02.jpg",
         thumbnailWidth: 267,
         thumbnailHeight: 200,
         caption: 'Indonesia'
         },
         {
-        src: "https://ifrcgo.org/global-services/assets/img/pgi/pgi-pgi_05.jpg",
-        thumbnail: "https://ifrcgo.org/global-services/assets/img/pgi/pgi-pgi_05.jpg",
+        src: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/pgi-pgi_05.jpg",
+        thumbnail: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/pgi-pgi_05.jpg",
         thumbnailWidth: 267,
         thumbnailHeight: 200,
         caption: 'Chikwawa, Malawi. Floods in Malawi early 2019 have had widespread devastation. Malawi Red Cross is providing critical life-saving support, ensuring communities are evacuated safely and provided emergency relief items, including food, non-food items and shelter kits.'
         },
         {
-        src: "https://ifrcgo.org/global-services/assets/img/pgi/pgi-pgi_04.jpg",
-        thumbnail: "https://ifrcgo.org/global-services/assets/img/pgi/pgi-pgi_04.jpg",
+        src: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/pgi-pgi_04.jpg",
+        thumbnail: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/pgi-pgi_04.jpg",
         thumbnailWidth: 300,
         thumbnailHeight: 200,
         caption: '16 October 2018. Philippines, Kalinga province. Community leaders participate in a social mapping activity facilitated by the Philippine Red Cross in the village of Cudal in Tabuk, Kalinga province.'
@@ -1157,93 +1157,93 @@ const CatalogueOfSurgeServiceSubpageContent = [
         other: false,
         title: 'catalogueLogisticsTitle',
         // images: [
-        //     'https://ifrcgo.org/global-services/assets/img/logs/logs_01.jpg',
-        //     'https://ifrcgo.org/global-services/assets/img/logs/logs_02.jpg',
-        //     'https://ifrcgo.org/global-services/assets/img/logs/logs_03.jpg',
-        //     'https://ifrcgo.org/global-services/assets/img/logs/logs_04.jpg',
-        //     'https://ifrcgo.org/global-services/assets/img/logs/logs_05.jpg',
-        //     'https://ifrcgo.org/global-services/assets/img/logs/logs_06.jpg',
-        //     'https://ifrcgo.org/global-services/assets/img/logs/logs_07.jpg',
-        //     'https://ifrcgo.org/global-services/assets/img/logs/logs_08.jpg',
-        //     'https://ifrcgo.org/global-services/assets/img/logs/logs_09.jpg',
-        //     'https://ifrcgo.org/global-services/assets/img/logs/logs_10.jpg',
-        //     'https://ifrcgo.org/global-services/assets/img/logs/logs_11.jpg',
+        //     'https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/logs_01.jpg',
+        //     'https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/logs_02.jpg',
+        //     'https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/logs_03.jpg',
+        //     'https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/logs_04.jpg',
+        //     'https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/logs_05.jpg',
+        //     'https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/logs_06.jpg',
+        //     'https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/logs_07.jpg',
+        //     'https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/logs_08.jpg',
+        //     'https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/logs_09.jpg',
+        //     'https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/logs_10.jpg',
+        //     'https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/logs_11.jpg',
         // ],
         imgs :
         [
         {
-        src: "https://ifrcgo.org/global-services/assets/img/logs/logs_01.jpg",
-        thumbnail: "https://ifrcgo.org/global-services/assets/img/logs/logs_01.jpg",
+        src: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/logs_01.jpg",
+        thumbnail: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/logs_01.jpg",
         thumbnailWidth: 300,
         thumbnailHeight: 200,
         caption: 'The IFRC warehouse in Panama is where relief items are prepositioned for deployment across the Americans in case of disaster.'
         },
         {
-        src: "https://ifrcgo.org/global-services/assets/img/logs/logs_02.jpg",
-        thumbnail: "https://ifrcgo.org/global-services/assets/img/logs/logs_02.jpg",
+        src: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/logs_02.jpg",
+        thumbnail: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/logs_02.jpg",
         thumbnailWidth: 300,
         thumbnailHeight: 200,
         caption: 'The IFRC warehouse in Panama is where relief items are prepositioned for deployment across the Americans in case of disaster.'
         },
         {
-        src: "https://ifrcgo.org/global-services/assets/img/logs/logs_03.jpg",
-        thumbnail: "https://ifrcgo.org/global-services/assets/img/logs/logs_03.jpg",
+        src: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/logs_03.jpg",
+        thumbnail: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/logs_03.jpg",
         thumbnailWidth: 300,
         thumbnailHeight: 200,
         caption: 'Nassau, Bahamas - Red Cross logistics delegates Maureen Koch and Annahita Nikpour, oversee the loading of food supplies and cooking kits on to a ship at the port in Nassau. This humanitarian relief was shipped to Abaco and Grand Bahama as part of the response to Hurricane Dorian, which hit the Bahamas on Sept. 1, 2019.'
         },
         {
-        src: "https://ifrcgo.org/global-services/assets/img/logs/logs_04.jpg",
-        thumbnail: "https://ifrcgo.org/global-services/assets/img/logs/logs_04.jpg",
+        src: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/logs_04.jpg",
+        thumbnail: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/logs_04.jpg",
         thumbnailWidth: 300,
         thumbnailHeight: 200,
         caption: ''
         },
         {
-        src: "https://ifrcgo.org/global-services/assets/img/logs/logs_05.jpg",
-        thumbnail: "https://ifrcgo.org/global-services/assets/img/logs/logs_05.jpg",
+        src: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/logs_05.jpg",
+        thumbnail: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/logs_05.jpg",
         thumbnailWidth: 300,
         thumbnailHeight: 200,
         caption: ''
         },
         {
-        src: "https://ifrcgo.org/global-services/assets/img/logs/logs_06.jpg",
-        thumbnail: "https://ifrcgo.org/global-services/assets/img/logs/logs_06.jpg",
+        src: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/logs_06.jpg",
+        thumbnail: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/logs_06.jpg",
         thumbnailWidth: 333,
         thumbnailHeight: 200,
         caption: ''
         },
         {
-        src: "https://ifrcgo.org/global-services/assets/img/logs/logs_07.jpg",
-        thumbnail: "https://ifrcgo.org/global-services/assets/img/logs/logs_07.jpg",
+        src: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/logs_07.jpg",
+        thumbnail: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/logs_07.jpg",
         thumbnailWidth: 267,
         thumbnailHeight: 200,
         caption: ''
         },
         {
-        src: "https://ifrcgo.org/global-services/assets/img/logs/logs_08.jpg",
-        thumbnail: "https://ifrcgo.org/global-services/assets/img/logs/logs_08.jpg",
+        src: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/logs_08.jpg",
+        thumbnail: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/logs_08.jpg",
         thumbnailWidth: 300,
         thumbnailHeight: 200,
         caption: ''
         },
         {
-        src: "https://ifrcgo.org/global-services/assets/img/logs/logs_09.jpg",
-        thumbnail: "https://ifrcgo.org/global-services/assets/img/logs/logs_09.jpg",
+        src: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/logs_09.jpg",
+        thumbnail: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/logs_09.jpg",
         thumbnailWidth: 267,
         thumbnailHeight: 200,
         caption: 'A plane with relief supplies from Panama arrived to the Bahamas on Thursday 5 September 2019.'
         },
         {
-        src: "https://ifrcgo.org/global-services/assets/img/logs/logs_10.jpg",
-        thumbnail: "https://ifrcgo.org/global-services/assets/img/logs/logs_10.jpg",
+        src: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/logs_10.jpg",
+        thumbnail: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/logs_10.jpg",
         thumbnailWidth: 333,
         thumbnailHeight: 200,
         caption: 'October 2018. Palu, Indonesia - Indonesian Red Cross is focusing on relief distributions, evacuations, water distribution, medical aid and restoring family links.'
         },
         {
-        src: "https://ifrcgo.org/global-services/assets/img/logs/logs_11.jpg",
-        thumbnail: "https://ifrcgo.org/global-services/assets/img/logs/logs_11.jpg",
+        src: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/logs_11.jpg",
+        thumbnail: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/logs_11.jpg",
         thumbnailWidth: 267,
         thumbnailHeight: 200,
         caption: 'July 29, 2019 - Brindisi airport, Italy - Relief items being loaded on a cargo plane for delivery to Venezuela.'
@@ -1291,45 +1291,45 @@ const CatalogueOfSurgeServiceSubpageContent = [
         other: false,
         title: 'catalogueLivelihoodsTitle',
         // images: [
-        //     'https://ifrcgo.org/global-services/assets/img/livelihoods/livelihoods-basic-needs_01.jpg',
-        //     'https://ifrcgo.org/global-services/assets/img/livelihoods/livelihoods-basic-needs_02.jpg',
-        //     'https://ifrcgo.org/global-services/assets/img/livelihoods/livelihoods-basic-needs_03.jpg',
-        //     'https://ifrcgo.org/global-services/assets/img/livelihoods/livelihoods-basic-needs_04.jpg',
-        //     'https://ifrcgo.org/global-services/assets/img/livelihoods/livelihoods-basic-needs_05.jpg'
+        //     'https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/livelihoods-basic-needs_01.jpg',
+        //     'https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/livelihoods-basic-needs_02.jpg',
+        //     'https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/livelihoods-basic-needs_03.jpg',
+        //     'https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/livelihoods-basic-needs_04.jpg',
+        //     'https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/livelihoods-basic-needs_05.jpg'
         // ],
         imgs :
         [
         {
-        src: "https://ifrcgo.org/global-services/assets/img/livelihoods/livelihoods-basic-needs_01.jpg",
-        thumbnail: "https://ifrcgo.org/global-services/assets/img/livelihoods/livelihoods-basic-needs_01.jpg",
+        src: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/livelihoods-basic-needs_01.jpg",
+        thumbnail: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/livelihoods-basic-needs_01.jpg",
         thumbnailWidth: 366,
         thumbnailHeight: 200,
         caption: 'The Indonesia Red Cross implemented a fishery-based livelihoods programme for women in tsunami-affected areas who could no longer plant rice due to drought. Credit: Musfarayani/Dok, ©IFRC'
         },
         {
-        src: "https://ifrcgo.org/global-services/assets/img/livelihoods/livelihoods-basic-needs_02.jpg",
-        thumbnail: "https://ifrcgo.org/global-services/assets/img/livelihoods/livelihoods-basic-needs_02.jpg",
+        src: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/livelihoods-basic-needs_02.jpg",
+        thumbnail: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/livelihoods-basic-needs_02.jpg",
         thumbnailWidth: 300,
         thumbnailHeight: 200,
         caption: 'The Bangladesh Red Crescent Society’s (BDRCS) Dignity, Access, Participation, Safety Centre (DAPS) in the camps of Cox’s Bazar provides a space to meet new people, share thoughts and learn new skills such as fishing net making and repair or sewing. Credit: Ibrahim Mollik, ©IFRC'
         },
         {
-        src: "https://ifrcgo.org/global-services/assets/img/livelihoods/livelihoods-basic-needs_03.jpg",
-        thumbnail: "https://ifrcgo.org/global-services/assets/img/livelihoods/livelihoods-basic-needs_03.jpg",
+        src: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/livelihoods-basic-needs_03.jpg",
+        thumbnail: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/livelihoods-basic-needs_03.jpg",
         thumbnailWidth: 300,
         thumbnailHeight: 200,
         caption: 'A bakery in Port-au-Prince that was supported by the Italian Red Cross provides food and employment opportunities to the local community. Credit: Samuel Dameus, ©IFRC'
         },
         {
-        src: "https://ifrcgo.org/global-services/assets/img/livelihoods/livelihoods-basic-needs_04.jpg",
-        thumbnail: "https://ifrcgo.org/global-services/assets/img/livelihoods/livelihoods-basic-needs_04.jpg",
+        src: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/livelihoods-basic-needs_04.jpg",
+        thumbnail: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/livelihoods-basic-needs_04.jpg",
         thumbnailWidth: 300,
         thumbnailHeight: 200,
         caption: 'The Philippine Red Cross responded to the immediate needs of the earthquake-affected communities by amongst others providing food items. Credit: France Noguera, ©IFRC'
         },
         {
-        src: "https://ifrcgo.org/global-services/assets/img/livelihoods/livelihoods-basic-needs_05.jpg",
-        thumbnail: "https://ifrcgo.org/global-services/assets/img/livelihoods/livelihoods-basic-needs_05.jpg",
+        src: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/livelihoods-basic-needs_05.jpg",
+        thumbnail: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/livelihoods-basic-needs_05.jpg",
         thumbnailWidth: 133,
         thumbnailHeight: 200,
         caption: 'A South Sudan Red Cross volunteer speaks with a farmer who received nutritionally rich seeds and farming implements from the Red Cross in May 2018. Credit: Corrie Butler, ©IFRC'
@@ -1624,12 +1624,12 @@ const CatalogueOfSurgeServiceSubpageContent = [
         hash: '#community-case-management-of-cholera-ccmc',
         other: false,
         title: 'catalogueManagementCholeraTitle',
-        // images: ['https://ifrcgo.org/global-services/assets/img/health/health-ccmc_01.jpg'],
+        // images: ['https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/health-ccmc_01.jpg'],
         imgs :
         [
         {
-        src: "https://ifrcgo.org/global-services/assets/img/health/health-ccmc_01.jpg",
-        thumbnail: "https://ifrcgo.org/global-services/assets/img/health/health-ccmc_01.jpg",
+        src: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/health-ccmc_01.jpg",
+        thumbnail: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/health-ccmc_01.jpg",
         thumbnailWidth: 333,
         thumbnailHeight: 200,
         caption: 'ORP in Somaliland'
@@ -1763,21 +1763,21 @@ const CatalogueOfSurgeServiceSubpageContent = [
         other: false,
         title: 'catalogueMobileClinicTitle',
         // images: [
-        //     'https://ifrcgo.org/global-services/assets/img/health/health-mobile-clinic_01.jpg',
-        //     'https://ifrcgo.org/global-services/assets/img/health/health-mobile-clinic_02.jpg'
+        //     'https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/health-mobile-clinic_01.jpg',
+        //     'https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/health-mobile-clinic_02.jpg'
         // ],
         imgs :
         [
         {
-        src: "https://ifrcgo.org/global-services/assets/img/health/health-mobile-clinic_01.jpg",
-        thumbnail: "https://ifrcgo.org/global-services/assets/img/health/health-mobile-clinic_01.jpg",
+        src: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/health-mobile-clinic_01.jpg",
+        thumbnail: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/health-mobile-clinic_01.jpg",
         thumbnailWidth: 300,
         thumbnailHeight: 200,
         caption: 'Mobile clinic distributing medicines in Sulawesi, Indonesia.'
         },
         {
-        src: "https://ifrcgo.org/global-services/assets/img/health/health-mobile-clinic_02.jpg",
-        thumbnail: "https://ifrcgo.org/global-services/assets/img/health/health-mobile-clinic_02.jpg",
+        src: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/health-mobile-clinic_02.jpg",
+        thumbnail: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/health-mobile-clinic_02.jpg",
         thumbnailWidth: 300,
         thumbnailHeight: 200,
         caption: 'Mobile clinic in Cox`s Bazar, Bangladesh.'
@@ -1937,53 +1937,53 @@ const CatalogueOfSurgeServiceSubpageContent = [
         other: false,
         title: 'catalogueEmergencyHospitalTitle',
         // images: [
-        //     'https://ifrcgo.org/global-services/assets/img/health/health-emt2_01.jpg',
-        //     'https://ifrcgo.org/global-services/assets/img/health/health-emt2_02.jpg',
-        //     'https://ifrcgo.org/global-services/assets/img/health/health-emt2_03.jpg',
-        //     'https://ifrcgo.org/global-services/assets/img/health/health-emt2_04.jpg',
-        //     'https://ifrcgo.org/global-services/assets/img/health/health-emt2_05.jpg',
-        //     'https://ifrcgo.org/global-services/assets/img/health/health-emt2_06.jpg'
+        //     'https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/health-emt2_01.jpg',
+        //     'https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/health-emt2_02.jpg',
+        //     'https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/health-emt2_03.jpg',
+        //     'https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/health-emt2_04.jpg',
+        //     'https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/health-emt2_05.jpg',
+        //     'https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/health-emt2_06.jpg'
         // ],
         imgs :
         [{
-        src: "https://ifrcgo.org/global-services/assets/img/health/health-emt2_01.jpg",
-        thumbnail: "https://ifrcgo.org/global-services/assets/img/health/health-emt2_01.jpg",
+        src: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/health-emt2_01.jpg",
+        thumbnail: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/health-emt2_01.jpg",
         thumbnailWidth: 569,
         thumbnailHeight: 200,
         caption: 'Ormoc, Philippines - Typhoon Haiyan, 1 Dec 2013'
         },
         {
-        src: "https://ifrcgo.org/global-services/assets/img/health/health-emt2_02.jpg",
-        thumbnail: "https://ifrcgo.org/global-services/assets/img/health/health-emt2_02.jpg",
+        src: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/health-emt2_02.jpg",
+        thumbnail: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/health-emt2_02.jpg",
         thumbnailWidth: 266,
         thumbnailHeight: 200,
         caption: 'NS staff in the operating theatre'
         },
 
         {
-        src: "https://ifrcgo.org/global-services/assets/img/health/health-emt2_03.jpg",
-        thumbnail: "https://ifrcgo.org/global-services/assets/img/health/health-emt2_03.jpg",
+        src: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/health-emt2_03.jpg",
+        thumbnail: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/health-emt2_03.jpg",
         thumbnailWidth: 300,
         thumbnailHeight: 200,
         caption: ''
         },
         {
-        src: "https://ifrcgo.org/global-services/assets/img/health/health-emt2_04.jpg",
-        thumbnail: "https://ifrcgo.org/global-services/assets/img/health/health-emt2_04.jpg",
+        src: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/health-emt2_04.jpg",
+        thumbnail: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/health-emt2_04.jpg",
         thumbnailWidth: 300,
         thumbnailHeight: 200,
         caption: 'RCRC Hospital in Haiti'
         },
         {
-        src: "https://ifrcgo.org/global-services/assets/img/health/health-emt2_05.jpg",
-        thumbnail: "https://ifrcgo.org/global-services/assets/img/health/health-emt2_05.jpg",
+        src: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/health-emt2_05.jpg",
+        thumbnail: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/health-emt2_05.jpg",
         thumbnailWidth: 400,
         thumbnailHeight: 200,
         caption: 'RCRC Hospital in India'
         },
         {
-        src: "https://ifrcgo.org/global-services/assets/img/health/health-emt2_06.jpg",
-        thumbnail: "https://ifrcgo.org/global-services/assets/img/health/health-emt2_06.jpg",
+        src: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/health-emt2_06.jpg",
+        thumbnail: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/health-emt2_06.jpg",
         thumbnailWidth: 333,
         thumbnailHeight: 200,
         caption: 'RCRC Hospital'
@@ -2068,39 +2068,39 @@ const CatalogueOfSurgeServiceSubpageContent = [
         other: false,
         title: 'catalogueEmergencyClinicTitle',
         // images: [
-        //     'https://ifrcgo.org/global-services/assets/img/health/health-emergency-clinic_01.jpg',
-        //     'https://ifrcgo.org/global-services/assets/img/health/health-emergency-clinic_02.jpg',
-        //     'https://ifrcgo.org/global-services/assets/img/health/health-emergency-clinic_03.jpg',
-        //     'https://ifrcgo.org/global-services/assets/img/health/health-emergency-clinic_04.jpg',
-        //     'https://ifrcgo.org/global-services/assets/img/health/health-emergency-clinic_05.jpg'
+        //     'https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/health-emergency-clinic_01.jpg',
+        //     'https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/health-emergency-clinic_02.jpg',
+        //     'https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/health-emergency-clinic_03.jpg',
+        //     'https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/health-emergency-clinic_04.jpg',
+        //     'https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/health-emergency-clinic_05.jpg'
         // ],
         
         imgs :
         [{
-        src: "https://ifrcgo.org/global-services/assets/img/health/health-emergency-clinic_01.jpg",
-        thumbnail: "https://ifrcgo.org/global-services/assets/img/health/health-emergency-clinic_01.jpg",
+        src: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/health-emergency-clinic_01.jpg",
+        thumbnail: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/health-emergency-clinic_01.jpg",
         thumbnailWidth: 263,
         thumbnailHeight: 200,
         caption: 'RCRC Emergency clinic'
         },
         {
-        src: "https://ifrcgo.org/global-services/assets/img/health/health-emergency-clinic_02.jpg",
-        thumbnail: "https://ifrcgo.org/global-services/assets/img/health/health-emergency-clinic_02.jpg",
+        src: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/health-emergency-clinic_02.jpg",
+        thumbnail: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/health-emergency-clinic_02.jpg",
         thumbnailWidth: 300,
         thumbnailHeight: 200,
         caption: 'RCRC Clinic in Philippines'
         },
 
         {
-        src: "https://ifrcgo.org/global-services/assets/img/health/health-emergency-clinic_03.jpg",
-        thumbnail: "https://ifrcgo.org/global-services/assets/img/health/health-emergency-clinic_03.jpg",
+        src: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/health-emergency-clinic_03.jpg",
+        thumbnail: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/health-emergency-clinic_03.jpg",
         thumbnailWidth: 300,
         thumbnailHeight: 200,
         caption: 'RCRC Clinic in Sulawesi, Indonesia'
         },
         {
-        src: "https://ifrcgo.org/global-services/assets/img/health/health-emergency-clinic_05.jpg",
-        thumbnail: "https://ifrcgo.org/global-services/assets/img/health/health-emergency-clinic_05.jpg",
+        src: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/health-emergency-clinic_05.jpg",
+        thumbnail: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/health-emergency-clinic_05.jpg",
         thumbnailWidth: 150,
         thumbnailHeight: 200,
         caption: 'RCRC member with patients in Cox`s Bazar'
@@ -2190,29 +2190,29 @@ const CatalogueOfSurgeServiceSubpageContent = [
         other: false,
         title: 'catalogueCert3Title',
         // images: [
-        //     'https://ifrcgo.org/global-services/assets/img/comms/comms-comms_01.jpg',
-        //     'https://ifrcgo.org/global-services/assets/img/comms/comms-comms_02.jpg',
-        //     'https://ifrcgo.org/global-services/assets/img/comms/comms-comms_03.jpg'
+        //     'https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/comms-comms_01.jpg',
+        //     'https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/comms-comms_02.jpg',
+        //     'https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/comms-comms_03.jpg'
         // ],
         imgs :
         [{
-        src: "https://ifrcgo.org/global-services/assets/img/comms/comms-comms_01.jpg",
-        thumbnail: "https://ifrcgo.org/global-services/assets/img/comms/comms-comms_01.jpg",
+        src: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/comms-comms_01.jpg",
+        thumbnail: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/comms-comms_01.jpg",
         thumbnailWidth: 300,
         thumbnailHeight: 200,
         caption: 'June 27, 2019. Cox`s Bazar, Bangladesh. "We go door-to-door giving people information about what to do if a storm hits," says Nurjahan (center) a cyclone preparedness volunteer in Cox`s Bazar, Bangladesh.'
         },
         {
-        src: "https://ifrcgo.org/global-services/assets/img/comms/comms-comms_02.jpg",
-        thumbnail: "https://ifrcgo.org/global-services/assets/img/comms/comms-comms_02.jpg",
+        src: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/comms-comms_02.jpg",
+        thumbnail: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/comms-comms_02.jpg",
         thumbnailWidth: 300,
         thumbnailHeight: 200,
         caption: 'Gennike Mayers, communications delegate at the IFRC is interviewing 24 year old James Aloute who lives in a tent with his brothers and sisters since the earthquake. He has just received new tarpaulins from the Red Cross to be able to replace the old ones in preparation for the hurricanes.'
         },
 
         {
-        src: "https://ifrcgo.org/global-services/assets/img/comms/comms-comms_03.jpg",
-        thumbnail: "https://ifrcgo.org/global-services/assets/img/comms/comms-comms_03.jpg",
+        src: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/comms-comms_03.jpg",
+        thumbnail: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/comms-comms_03.jpg",
         thumbnailWidth: 300,
         thumbnailHeight: 200,
         caption: 'FACT Team leader doing a live interview on the situation for BBC'
@@ -2279,29 +2279,29 @@ const CatalogueOfSurgeServiceSubpageContent = [
         other: false,
         title: 'catalogueCert2Title',
         // images: [
-        //     'https://ifrcgo.org/global-services/assets/img/comms/comms-comms_01.jpg',
-        //     'https://ifrcgo.org/global-services/assets/img/comms/comms-comms_02.jpg',
-        //     'https://ifrcgo.org/global-services/assets/img/comms/comms-comms_03.jpg'
+        //     'https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/comms-comms_01.jpg',
+        //     'https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/comms-comms_02.jpg',
+        //     'https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/comms-comms_03.jpg'
         // ],
         imgs :
         [{
-        src: "https://ifrcgo.org/global-services/assets/img/comms/comms-comms_01.jpg",
-        thumbnail: "https://ifrcgo.org/global-services/assets/img/comms/comms-comms_01.jpg",
+        src: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/comms-comms_01.jpg",
+        thumbnail: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/comms-comms_01.jpg",
         thumbnailWidth: 300,
         thumbnailHeight: 200,
         caption: 'June 27, 2019. Cox`s Bazar, Bangladesh. "We go door-to-door giving people information about what to do if a storm hits," says Nurjahan (center) a cyclone preparedness volunteer in Cox`s Bazar, Bangladesh.'
         },
         {
-        src: "https://ifrcgo.org/global-services/assets/img/comms/comms-comms_02.jpg",
-        thumbnail: "https://ifrcgo.org/global-services/assets/img/comms/comms-comms_02.jpg",
+        src: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/comms-comms_02.jpg",
+        thumbnail: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/comms-comms_02.jpg",
         thumbnailWidth: 300,
         thumbnailHeight: 200,
         caption: 'Gennike Mayers, communications delegate at the IFRC is interviewing 24 year old James Aloute who lives in a tent with his brothers and sisters since the earthquake. He has just received new tarpaulins from the Red Cross to be able to replace the old ones in preparation for the hurricanes.'
         },
 
         {
-        src: "https://ifrcgo.org/global-services/assets/img/comms/comms-comms_03.jpg",
-        thumbnail: "https://ifrcgo.org/global-services/assets/img/comms/comms-comms_03.jpg",
+        src: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/comms-comms_03.jpg",
+        thumbnail: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/comms-comms_03.jpg",
         thumbnailWidth: 300,
         thumbnailHeight: 200,
         caption: 'FACT Team leader doing a live interview on the situation for BBC'
@@ -2363,29 +2363,29 @@ const CatalogueOfSurgeServiceSubpageContent = [
         other: false,
         title: 'catalogueCert1Title',
         // images: [
-        //     'https://ifrcgo.org/global-services/assets/img/comms/comms-comms_01.jpg',
-        //     'https://ifrcgo.org/global-services/assets/img/comms/comms-comms_02.jpg',
-        //     'https://ifrcgo.org/global-services/assets/img/comms/comms-comms_03.jpg'
+        //     'https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/comms-comms_01.jpg',
+        //     'https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/comms-comms_02.jpg',
+        //     'https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/comms-comms_03.jpg'
         // ],
         imgs :
         [{
-        src: "https://ifrcgo.org/global-services/assets/img/comms/comms-comms_01.jpg",
-        thumbnail: "https://ifrcgo.org/global-services/assets/img/comms/comms-comms_01.jpg",
+        src: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/comms-comms_01.jpg",
+        thumbnail: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/comms-comms_01.jpg",
         thumbnailWidth: 300,
         thumbnailHeight: 200,
         caption: 'June 27, 2019. Cox`s Bazar, Bangladesh. "We go door-to-door giving people information about what to do if a storm hits," says Nurjahan (center) a cyclone preparedness volunteer in Cox`s Bazar, Bangladesh.'
         },
         {
-        src: "https://ifrcgo.org/global-services/assets/img/comms/comms-comms_02.jpg",
-        thumbnail: "https://ifrcgo.org/global-services/assets/img/comms/comms-comms_02.jpg",
+        src: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/comms-comms_02.jpg",
+        thumbnail: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/comms-comms_02.jpg",
         thumbnailWidth: 300,
         thumbnailHeight: 200,
         caption: 'Gennike Mayers, communications delegate at the IFRC is interviewing 24 year old James Aloute who lives in a tent with his brothers and sisters since the earthquake. He has just received new tarpaulins from the Red Cross to be able to replace the old ones in preparation for the hurricanes.'
         },
 
         {
-        src: "https://ifrcgo.org/global-services/assets/img/comms/comms-comms_03.jpg",
-        thumbnail: "https://ifrcgo.org/global-services/assets/img/comms/comms-comms_03.jpg",
+        src: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/comms-comms_03.jpg",
+        thumbnail: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/comms-comms_03.jpg",
         thumbnailWidth: 300,
         thumbnailHeight: 200,
         caption: 'FACT Team leader doing a live interview on the situation for BBC'
@@ -2439,44 +2439,44 @@ const CatalogueOfSurgeServiceSubpageContent = [
         other: false,
         title: 'catalogueCommunityEngagementTitle',
         // images: [
-        //     'https://ifrcgo.org/global-services/assets/img/cea/cea-cea_01.jpg',
-        //     'https://ifrcgo.org/global-services/assets/img/cea/cea-cea_02.jpg',
-        //     'https://ifrcgo.org/global-services/assets/img/cea/cea-cea_03.jpg',
-        //     'https://ifrcgo.org/global-services/assets/img/cea/cea-cea_04.jpg',
-        //     'https://ifrcgo.org/global-services/assets/img/cea/cea-cea_05.jpg',
+        //     'https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/cea-cea_01.jpg',
+        //     'https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/cea-cea_02.jpg',
+        //     'https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/cea-cea_03.jpg',
+        //     'https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/cea-cea_04.jpg',
+        //     'https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/cea-cea_05.jpg',
         // ],
         imgs :
         [{
-        src: "https://ifrcgo.org/global-services/assets/img/cea/cea-cea_01.jpg",
-        thumbnail: "https://ifrcgo.org/global-services/assets/img/cea/cea-cea_01.jpg",
+        src: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/cea-cea_01.jpg",
+        thumbnail: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/cea-cea_01.jpg",
         thumbnailWidth: 300,
         thumbnailHeight: 200,
         caption: '20-21 September 2018. Philippines, Cagayan province, village of Santa Margarita in the town of Baggao. Barely a week since deadly Typhoon Mangkhut (locally known as Ompong) hit the Philippines, Philippine Red Cross led the distribution of non-food items and hygiene kits to over 400 families. Before the distribution, families were oriented on the proper use of each item.'
         },
         {
-        src: "https://ifrcgo.org/global-services/assets/img/cea/cea-cea_02.jpg",
-        thumbnail: "https://ifrcgo.org/global-services/assets/img/cea/cea-cea_02.jpg",
+        src: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/cea-cea_02.jpg",
+        thumbnail: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/cea-cea_02.jpg",
         thumbnailWidth: 300,
         thumbnailHeight: 200,
         caption: ''
         },
         {
-        src: "https://ifrcgo.org/global-services/assets/img/cea/cea-cea_03.jpg",
-        thumbnail: "https://ifrcgo.org/global-services/assets/img/cea/cea-cea_03.jpg",
+        src: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/cea-cea_03.jpg",
+        thumbnail: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/cea-cea_03.jpg",
         thumbnailWidth: 300,
         thumbnailHeight: 200,
         caption: 'Bangladesh, 2 December 2018 - Children are attending the radio listening programme where information is being provided highlighting particularly Cholera related issues faced by children and the necessary steps for preventing and treating the virus.'
         },
         {
-        src: "https://ifrcgo.org/global-services/assets/img/cea/cea-cea_04.jpg",
-        thumbnail: "https://ifrcgo.org/global-services/assets/img/cea/cea-cea_04.jpg",
+        src: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/cea-cea_04.jpg",
+        thumbnail: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/cea-cea_04.jpg",
         thumbnailWidth: 356,
         thumbnailHeight: 200,
         caption: 'Bangladesh, Kurigram, October 2019 - A BDRCS volunteer with IFRC colleague giving a simple orientation to the flood-affected people who gathered to receive multi-purpose cash grant and seeds support from BDRCS in Kurigram district.'
         },
         {
-        src: "https://ifrcgo.org/global-services/assets/img/cea/cea-cea_05.jpg",
-        thumbnail: "https://ifrcgo.org/global-services/assets/img/cea/cea-cea_05.jpg",
+        src: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/cea-cea_05.jpg",
+        thumbnail: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/cea-cea_05.jpg",
         thumbnailWidth: 300,
         thumbnailHeight: 200,
         caption: 'A mobile cinema takes place near the border between Uganda and DRC. The cinema provides a unique and engaging way for communities to get more information about Ebola and how to prevent and protect themselves from its spread. According to polls in this first mobile cinema, there was an average 40 per cent increase in the knowledge about Ebola.'
@@ -2509,44 +2509,44 @@ const CatalogueOfSurgeServiceSubpageContent = [
         other: false,
         title: 'catalogueCvaTitle',
         // images: [
-        //     'https://ifrcgo.org/global-services/assets/img/cash/cash-cva_01.jpg',
-        //     'https://ifrcgo.org/global-services/assets/img/cash/cash-cva_03.jpg',
-        //     'https://ifrcgo.org/global-services/assets/img/cash/cash-cva_04.jpg',
-        //     'https://ifrcgo.org/global-services/assets/img/cash/cash-cva_05.jpg',
-        //     'https://ifrcgo.org/global-services/assets/img/cash/cash-cva_02.jpg'
+        //     'https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/cash-cva_01.jpg',
+        //     'https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/cash-cva_03.jpg',
+        //     'https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/cash-cva_04.jpg',
+        //     'https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/cash-cva_05.jpg',
+        //     'https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/cash-cva_02.jpg'
         // ],
         imgs :
         [{
-        src: "https://ifrcgo.org/global-services/assets/img/cash/cash-cva_01.jpg",
-        thumbnail: "https://ifrcgo.org/global-services/assets/img/cash/cash-cva_01.jpg",
+        src: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/cash-cva_01.jpg",
+        thumbnail: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/cash-cva_01.jpg",
         thumbnailWidth: 300,
         thumbnailHeight: 200,
         caption: 'Lao Red Cross distributed unconditional cash grants in January 2019 to 1,464 households whose houses were totally destroyed by flash floods in Attapeu after a dam collapse.'
         },
         {
-        src: "https://ifrcgo.org/global-services/assets/img/cash/cash-cva_02.jpg",
-        thumbnail: "https://ifrcgo.org/global-services/assets/img/cash/cash-cva_02.jpg",
+        src: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/cash-cva_02.jpg",
+        thumbnail: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/cash-cva_02.jpg",
         thumbnailWidth: 133,
         thumbnailHeight: 200,
         caption: 'Bangladesh, Sirajganj, 9 Oct 2019 - Morjina, who came to the distribution point with her little granddaughter and daughter, received 4500 Bangladeshi Taka (53 US dollars) and vegetable seeds. More than 28 districts of Bangladesh faced extensive flooding due to heavy monsoon rain and water from upstream regions.'
         },
         {
-        src: "https://ifrcgo.org/global-services/assets/img/cash/cash-cva_03.jpg",
-        thumbnail: "https://ifrcgo.org/global-services/assets/img/cash/cash-cva_03.jpg",
+        src: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/cash-cva_03.jpg",
+        thumbnail: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/cash-cva_03.jpg",
         thumbnailWidth: 300,
         thumbnailHeight: 200,
         caption: 'Bangladesh, Sirajganj, 9 Oct 2019 - Bangladesh Red Crescent Society distributing cash grants and vegetable seeds to the flood-affected families in Sirajganj. A total of 209 families received 4,500 Bangladeshi Taka (53 US dollars) and eight kinds of vegetable seeds.'
         },
         {
-        src: "https://ifrcgo.org/global-services/assets/img/cash/cash-cva_04.jpg",
-        thumbnail: "https://ifrcgo.org/global-services/assets/img/cash/cash-cva_04.jpg",
+        src: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/cash-cva_04.jpg",
+        thumbnail: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/cash-cva_04.jpg",
         thumbnailWidth: 300,
         thumbnailHeight: 200,
         caption: 'Lombok, Indonesia, 2019 - One year after a series of earthquakes struck Lombok, Indonesia, the Indonesian Red Cross (Palang Merah Indonesia) has reached over 6,000 families with unconditional cash grants to help with shelter repairs.'
         },
         {
-        src: "https://ifrcgo.org/global-services/assets/img/cash/cash-cva_05.jpg",
-        thumbnail: "https://ifrcgo.org/global-services/assets/img/cash/cash-cva_05.jpg",
+        src: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/cash-cva_05.jpg",
+        thumbnail: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/cash-cva_05.jpg",
         thumbnailWidth: 300,
         thumbnailHeight: 200,
         caption: 'Vietnam, Da Teh, Oct 2019 - In August 2019, the Da Teh district faced extensive flooding due to heavy monsoon rains. Red Cross teams are providing cash grants to the most vulnerable families to rebuild their lives.'
@@ -2593,40 +2593,40 @@ const CatalogueOfSurgeServiceSubpageContent = [
         other: false,
         title: 'catalogueBaseCampSmallTitle',
         // images: [
-        //     'https://ifrcgo.org/global-services/assets/img/basecamp/basecamp-basecamp_01.jpg',
-        //     'https://ifrcgo.org/global-services/assets/img/basecamp/basecamp-basecamp_02.jpg',
-        //     'https://ifrcgo.org/global-services/assets/img/basecamp/basecamp-basecamp_03.jpg',
-        //     'https://ifrcgo.org/global-services/assets/img/basecamp/basecamp-basecamp_04.jpg',
-        //     'https://ifrcgo.org/global-services/assets/img/basecamp/basecamp-basecamp_05.jpg',
+        //     'https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/basecamp-basecamp_01.jpg',
+        //     'https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/basecamp-basecamp_02.jpg',
+        //     'https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/basecamp-basecamp_03.jpg',
+        //     'https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/basecamp-basecamp_04.jpg',
+        //     'https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/basecamp-basecamp_05.jpg',
         // ],
         imgs :
         [{
-        src: "https://ifrcgo.org/global-services/assets/img/basecamp/basecamp-basecamp_01.jpg",
-        thumbnail: "https://ifrcgo.org/global-services/assets/img/basecamp/basecamp-basecamp_01.jpg",
+        src: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/basecamp-basecamp_01.jpg",
+        thumbnail: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/basecamp-basecamp_01.jpg",
         thumbnailHeight: 200,
         caption: 'Basecamp in Philippines.'
         },
         {
-        src: "https://ifrcgo.org/global-services/assets/img/basecamp/basecamp-basecamp_02.jpg",
-        thumbnail: "https://ifrcgo.org/global-services/assets/img/basecamp/basecamp-basecamp_02.jpg",
+        src: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/basecamp-basecamp_02.jpg",
+        thumbnail: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/basecamp-basecamp_02.jpg",
         thumbnailHeight: 200,
         caption: 'The Italian Red Cross works to set up the basecamp in Beira, Mozambique one month after Cyclone Idai hit. 22 April / Beira, Mozambique.'
         },
         {
-        src: "https://ifrcgo.org/global-services/assets/img/basecamp/basecamp-basecamp_03.jpg",
-        thumbnail: "https://ifrcgo.org/global-services/assets/img/basecamp/basecamp-basecamp_03.jpg",
+        src: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/basecamp-basecamp_03.jpg",
+        thumbnail: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/basecamp-basecamp_03.jpg",
         thumbnailHeight: 200,
         caption: 'The Italian Red Cross works to set up the basecamp in Beira, Mozambique one month after Cyclone Idai hit. 22 April 2019 / Beira, Mozambique.'
         },
         {
-        src: "https://ifrcgo.org/global-services/assets/img/basecamp/basecamp-basecamp_04.jpg",
-        thumbnail: "https://ifrcgo.org/global-services/assets/img/basecamp/basecamp-basecamp_04.jpg",
+        src: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/basecamp-basecamp_04.jpg",
+        thumbnail: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/basecamp-basecamp_04.jpg",
         thumbnailHeight: 200,
         caption: 'Earthquake in Haiti 2010, Danish relief ERU team arrives to the Red Cross Headquarters where the basecamp is set up (picture by Jakob Dall).'
         },
         {
-        src: "https://ifrcgo.org/global-services/assets/img/basecamp/basecamp-basecamp_05.jpg",
-        thumbnail: "https://ifrcgo.org/global-services/assets/img/basecamp/basecamp-basecamp_05.jpg",
+        src: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/basecamp-basecamp_05.jpg",
+        thumbnail: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/basecamp-basecamp_05.jpg",
         thumbnailHeight: 200,
         caption: 'Basecamp in Philippines.'
         }
@@ -2681,40 +2681,40 @@ const CatalogueOfSurgeServiceSubpageContent = [
         other: false,
         title: 'catalogueBaseCampMediumTitle',
         // images: [
-        //     'https://ifrcgo.org/global-services/assets/img/basecamp/basecamp-basecamp_01.jpg',
-        //     'https://ifrcgo.org/global-services/assets/img/basecamp/basecamp-basecamp_02.jpg',
-        //     'https://ifrcgo.org/global-services/assets/img/basecamp/basecamp-basecamp_03.jpg',
-        //     'https://ifrcgo.org/global-services/assets/img/basecamp/basecamp-basecamp_04.jpg',
-        //     'https://ifrcgo.org/global-services/assets/img/basecamp/basecamp-basecamp_05.jpg',
+        //     'https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/basecamp-basecamp_01.jpg',
+        //     'https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/basecamp-basecamp_02.jpg',
+        //     'https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/basecamp-basecamp_03.jpg',
+        //     'https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/basecamp-basecamp_04.jpg',
+        //     'https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/basecamp-basecamp_05.jpg',
         // ],
         imgs :
         [{
-        src: "https://ifrcgo.org/global-services/assets/img/basecamp/basecamp-basecamp_01.jpg",
-        thumbnail: "https://ifrcgo.org/global-services/assets/img/basecamp/basecamp-basecamp_01.jpg",
+        src: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/basecamp-basecamp_01.jpg",
+        thumbnail: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/basecamp-basecamp_01.jpg",
         thumbnailHeight: 200,
         caption: 'Basecamp in Philippines.'
         },
         {
-        src: "https://ifrcgo.org/global-services/assets/img/basecamp/basecamp-basecamp_02.jpg",
-        thumbnail: "https://ifrcgo.org/global-services/assets/img/basecamp/basecamp-basecamp_02.jpg",
+        src: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/basecamp-basecamp_02.jpg",
+        thumbnail: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/basecamp-basecamp_02.jpg",
         thumbnailHeight: 200,
         caption: 'The Italian Red Cross works to set up the basecamp in Beira, Mozambique one month after Cyclone Idai hit. 22 April / Beira, Mozambique.'
         },
         {
-        src: "https://ifrcgo.org/global-services/assets/img/basecamp/basecamp-basecamp_03.jpg",
-        thumbnail: "https://ifrcgo.org/global-services/assets/img/basecamp/basecamp-basecamp_03.jpg",
+        src: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/basecamp-basecamp_03.jpg",
+        thumbnail: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/basecamp-basecamp_03.jpg",
         thumbnailHeight: 200,
         caption: 'The Italian Red Cross works to set up the basecamp in Beira, Mozambique one month after Cyclone Idai hit. 22 April 2019 / Beira, Mozambique.'
         },
         {
-        src: "https://ifrcgo.org/global-services/assets/img/basecamp/basecamp-basecamp_04.jpg",
-        thumbnail: "https://ifrcgo.org/global-services/assets/img/basecamp/basecamp-basecamp_04.jpg",
+        src: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/basecamp-basecamp_04.jpg",
+        thumbnail: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/basecamp-basecamp_04.jpg",
         thumbnailHeight: 200,
         caption: 'Earthquake in Haiti 2010, Danish relief ERU team arrives to the Red Cross Headquarters where the basecamp is set up (picture by Jakob Dall).'
         },
         {
-        src: "https://ifrcgo.org/global-services/assets/img/basecamp/basecamp-basecamp_05.jpg",
-        thumbnail: "https://ifrcgo.org/global-services/assets/img/basecamp/basecamp-basecamp_05.jpg",
+        src: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/basecamp-basecamp_05.jpg",
+        thumbnail: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/basecamp-basecamp_05.jpg",
         thumbnailHeight: 200,
         caption: 'Basecamp in Philippines.'
         }
@@ -2780,40 +2780,40 @@ const CatalogueOfSurgeServiceSubpageContent = [
         other: false,
         title: 'catalogueBaseCampLargeTitle',
         // images: [
-        //     'https://ifrcgo.org/global-services/assets/img/basecamp/basecamp-basecamp_01.jpg',
-        //     'https://ifrcgo.org/global-services/assets/img/basecamp/basecamp-basecamp_02.jpg',
-        //     'https://ifrcgo.org/global-services/assets/img/basecamp/basecamp-basecamp_03.jpg',
-        //     'https://ifrcgo.org/global-services/assets/img/basecamp/basecamp-basecamp_04.jpg',
-        //     'https://ifrcgo.org/global-services/assets/img/basecamp/basecamp-basecamp_05.jpg',
+        //     'https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/basecamp-basecamp_01.jpg',
+        //     'https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/basecamp-basecamp_02.jpg',
+        //     'https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/basecamp-basecamp_03.jpg',
+        //     'https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/basecamp-basecamp_04.jpg',
+        //     'https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/basecamp-basecamp_05.jpg',
         // ],
         imgs :
         [{
-        src: "https://ifrcgo.org/global-services/assets/img/basecamp/basecamp-basecamp_01.jpg",
-        thumbnail: "https://ifrcgo.org/global-services/assets/img/basecamp/basecamp-basecamp_01.jpg",
+        src: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/basecamp-basecamp_01.jpg",
+        thumbnail: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/basecamp-basecamp_01.jpg",
         thumbnailHeight: 200,
         caption: 'Basecamp in Philippines.'
         },
         {
-        src: "https://ifrcgo.org/global-services/assets/img/basecamp/basecamp-basecamp_02.jpg",
-        thumbnail: "https://ifrcgo.org/global-services/assets/img/basecamp/basecamp-basecamp_02.jpg",
+        src: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/basecamp-basecamp_02.jpg",
+        thumbnail: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/basecamp-basecamp_02.jpg",
         thumbnailHeight: 200,
         caption: 'The Italian Red Cross works to set up the basecamp in Beira, Mozambique one month after Cyclone Idai hit. 22 April / Beira, Mozambique.'
         },
         {
-        src: "https://ifrcgo.org/global-services/assets/img/basecamp/basecamp-basecamp_03.jpg",
-        thumbnail: "https://ifrcgo.org/global-services/assets/img/basecamp/basecamp-basecamp_03.jpg",
+        src: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/basecamp-basecamp_03.jpg",
+        thumbnail: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/basecamp-basecamp_03.jpg",
         thumbnailHeight: 200,
         caption: 'The Italian Red Cross works to set up the basecamp in Beira, Mozambique one month after Cyclone Idai hit. 22 April 2019 / Beira, Mozambique.'
         },
         {
-        src: "https://ifrcgo.org/global-services/assets/img/basecamp/basecamp-basecamp_04.jpg",
-        thumbnail: "https://ifrcgo.org/global-services/assets/img/basecamp/basecamp-basecamp_04.jpg",
+        src: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/basecamp-basecamp_04.jpg",
+        thumbnail: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/basecamp-basecamp_04.jpg",
         thumbnailHeight: 200,
         caption: 'Earthquake in Haiti 2010, Danish relief ERU team arrives to the Red Cross Headquarters where the basecamp is set up (picture by Jakob Dall).'
         },
         {
-        src: "https://ifrcgo.org/global-services/assets/img/basecamp/basecamp-basecamp_05.jpg",
-        thumbnail: "https://ifrcgo.org/global-services/assets/img/basecamp/basecamp-basecamp_05.jpg",
+        src: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/basecamp-basecamp_05.jpg",
+        thumbnail: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/basecamp-basecamp_05.jpg",
         thumbnailHeight: 200,
         caption: 'Basecamp in Philippines.'
         }
@@ -2910,33 +2910,33 @@ const CatalogueOfSurgeServiceSubpageContent = [
         other: false,
         title: 'catalogueAssesmentTitle',
         // images: [
-        //     'https://ifrcgo.org/global-services/assets/img/assessment/assessment-cell_01.jpg',
-        //     'https://ifrcgo.org/global-services/assets/img/assessment/assessment-cell_02.jpg',
-        //     'https://ifrcgo.org/global-services/assets/img/assessment/assessment-cell_03.jpg',
-        //     'https://ifrcgo.org/global-services/assets/img/assessment/assessment-cell_04.jpg'
+        //     'https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/assessment-cell_01.jpg',
+        //     'https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/assessment-cell_02.jpg',
+        //     'https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/assessment-cell_03.jpg',
+        //     'https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/assessment-cell_04.jpg'
         // ],
         imgs :
         [{
-        src: "https://ifrcgo.org/global-services/assets/img/assessment/assessment-cell_01.jpg",
-        thumbnail: "https://ifrcgo.org/global-services/assets/img/assessment/assessment-cell_01.jpg",
+        src: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/assessment-cell_01.jpg",
+        thumbnail: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/assessment-cell_01.jpg",
         thumbnailHeight: 200,
         caption: 'Samoa RC Volunteer getting primary data from a community member.'
         },
         {
-        src: "https://ifrcgo.org/global-services/assets/img/assessment/assessment-cell_02.jpg",
-        thumbnail: "https://ifrcgo.org/global-services/assets/img/assessment/assessment-cell_02.jpg",
+        src: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/assessment-cell_02.jpg",
+        thumbnail: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/assessment-cell_02.jpg",
         thumbnailHeight: 200,
         caption: 'Bangladesh, Khulna, 12 Nov 2019 - After extreme severe tropical cyclonic storm `Bulbul`, Bangladesh Red Crescent Society and its Movement partners including the IFRC conducting rapid needs assessment.'
         },
         {
-        src: "https://ifrcgo.org/global-services/assets/img/assessment/assessment-cell_03.jpg",
-        thumbnail: "https://ifrcgo.org/global-services/assets/img/assessment/assessment-cell_03.jpg",
+        src: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/assessment-cell_03.jpg",
+        thumbnail: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/assessment-cell_03.jpg",
         thumbnailHeight: 200,
         caption: 'Mozambique TC Idai operation. Sharing information with stakeholders.'
         },
         {
-        src: "https://ifrcgo.org/global-services/assets/img/assessment/assessment-cell_04.jpg",
-        thumbnail: "https://ifrcgo.org/global-services/assets/img/assessment/assessment-cell_04.jpg",
+        src: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/assessment-cell_04.jpg",
+        thumbnail: "https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/assessment-cell_04.jpg",
         thumbnailHeight: 200,
         caption: 'Bangladesh Red Crescent and Movement partners conducting key informants interviews.'
         },
