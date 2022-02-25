@@ -52,7 +52,7 @@ function TableLists(props: Props) {
     response,
   } = useRequest<ListResponse<FlashUpdateTableFields>>({
     // FIXME: update URL
-    url: 'api/v2/informal-update/',
+    url: 'api/v2/flash-update/',
     query: {
       limit: itemPerPage,
       offset: itemPerPage * (activePage - 1),
@@ -66,12 +66,12 @@ function TableLists(props: Props) {
         extraActions: (
           <>
             <DropdownMenuItem
-              href={`/informal-update/${infrl.id}/`}
+              href={`/flash-update/${infrl.id}/`}
               label={strings.projectListTableViewDetails}
               icon={<MdSearch />}
             />
             <DropdownMenuItem
-              href={`/informal-update/${infrl.id}/edit/`}
+              href={`/flash-update/${infrl.id}/edit/`}
               icon={<MdEdit />}
               label={strings.projectListTableEdit}
             />
