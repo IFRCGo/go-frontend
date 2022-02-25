@@ -11,7 +11,7 @@ function InformalUpdateFileInput<T extends string>(props: Props<T>) {
       <GoFileInput
         {...props}
         multiple
-        url={'api/v2/informal-file/multiple/'}
+        url={'api/v2/flash-update-file/multiple/'}
         onChange={props.onChange}
       />
     );
@@ -21,7 +21,7 @@ function InformalUpdateFileInput<T extends string>(props: Props<T>) {
     <GoFileInput
       {...props}
       onChange={props.onChange}
-      url={'api/v2/informal-file/'}
+      url={'api/v2/flash-update-file/'}
     />
   );
 }

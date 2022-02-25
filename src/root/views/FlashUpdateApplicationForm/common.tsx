@@ -22,7 +22,7 @@ export interface HazardDetails {
 export interface CountryDistrict {
   client_id: string;
   country: number;
-  district: number;
+  district: number[];
 }
 
 export interface Reference {

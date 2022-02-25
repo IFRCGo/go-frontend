@@ -137,8 +137,7 @@ function FlashUpdateForm(props: Props) {
     response: FlashUpdateResponse
   } = useRequest<FlashUpdateAPIResponseFields>({
     skip: !id,
-    // FIXME: update URL
-    url: `api/v2/informal-update/${id}`,
+    url: `api/v2/flash-update/${id}`,
     onSuccess: (response) => {
       if (!response) {
         // TODO: handle error
@@ -304,7 +303,7 @@ function FlashUpdateForm(props: Props) {
     trigger: submitRequest,
   } = useLazyRequest<FlashUpdateAPIResponseFields, Partial<FlashUpdateAPIFields>>({
     // FIXME: update URL
-    url: id ? `api/v2/informal-update/${id}/` : 'api/v2/informal-update/',
+    url: id ? `api/v2/flash-update/${id}/` : 'api/v2/flash-update/',
     method: id ? 'PUT' : 'POST',
     body: ctx => ctx,
     onSuccess: (response) => {
@@ -543,11 +542,7 @@ function FlashUpdateForm(props: Props) {
 
   // Auto generate title
   React.useEffect(() => {
-    if (!value) {
-      return;
-    }
-
-    if (isNotDefined(value.country_district) || isNotDefined(value.hazard_type)) {
+    if (isNotDefined(value?.country_district) || isNotDefined(value?.hazard_type)) {
       return;
     }
 
@@ -582,7 +577,13 @@ function FlashUpdateForm(props: Props) {
     const title = `${countryTitle} - ${selectedHazard.label}  ${date}`;
 
     setFieldValue(title, 'title' as const);
-  }, [value, disasterTypeOptions, countryOptions, setFieldValue]);
+  }, [
+      value?.country_district,
+      value?.hazard_type,
+      disasterTypeOptions,
+      countryOptions,
+      setFieldValue,
+    ]);
 
   const pending = fetchingCountries
     || fetchingDistricts

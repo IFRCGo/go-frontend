@@ -12,7 +12,6 @@ import {
 } from 'react-icons/io5';
 
 import { useRequest } from '#utils/restRequest';
-// import { resolveToString } from '#utils/lang';
 import Container from '#components/Container';
 import Page from '#components/Page';
 import BreadCrumb from '#components/breadcrumb';
@@ -30,12 +29,26 @@ import styles from './styles.module.scss';
 
 function ButtonLikeLink(props: ButtonFeatureProps & {
   to: string;
+  external?: boolean;
 }) {
   const {
+    external,
     to,
     ...buttonFeatureProps
   } = props;
+
   const linkProps = useButtonFeatures(buttonFeatureProps);
+
+  if (external) {
+    return (
+      <a
+        target="_blank"
+        rel="noopener noreferrer"
+        href={to}
+        {...linkProps}
+      />
+    );
+  }
 
   return (
     <Link
@@ -66,8 +79,7 @@ function FlashUpdateReport(props: Props) {
     response,
   } = useRequest<FlashUpdateAPIResponseFields>({
     skip: isNotDefined(id),
-    // FIXME: update URL
-    url: `api/v2/informal-update/${id}/`,
+    url: `api/v2/flash-update/${id}/`,
   });
 
   const crumbs = useMemo(() => {
@@ -98,6 +110,10 @@ function FlashUpdateReport(props: Props) {
 
     return [];
   }, [strings, location, response]);
+
+  const hasActions = response?.actions_taken?.some(
+    (at) => (at.actions.length !== 0 || at.summary)
+  );
 
   return (
     <Page
@@ -147,9 +163,12 @@ function FlashUpdateReport(props: Props) {
     >
       {pending && <BlockLoading />}
       {!pending && response && (
-        <>
+        <Container
+          contentClassName={styles.reportDetails}
+        >
           {response.map_files && response.map_files.length > 0 && (
             <Container
+              sub
               heading={strings.flashUpdateMapTitle}
               contentClassName={styles.maps}
             >
@@ -172,6 +191,7 @@ function FlashUpdateReport(props: Props) {
           )}
           {response.graphics_files && response.graphics_files.length > 0 && (
             <Container
+              sub
               heading={strings.flashUpdateImageTitle}
               contentClassName={styles.graphics}
             >
@@ -192,48 +212,64 @@ function FlashUpdateReport(props: Props) {
               ))}
             </Container>
           )}
-          <Container
-            heading={strings.flashUpdateActionTakenTitle}
-            contentClassName={styles.actionsTaken}
-          >
-            {response.actions_taken.map((at) => (
-              <Container
-                sub
-                heading={at.organization_display}
-                headingSize="small"
-                hideHeaderBorder
-                contentClassName={styles.actionTakenContent}
-                key={at.id}
-              >
-                {at.summary && (
-                  <div className={styles.summary}>
-                    {at.summary}
-                  </div>
-                )}
-                <div className={styles.actionList}>
-                  {at.action_details.map((ad) => (
-                    <div
-                      key={ad.id}
-                      className={styles.action}
-                    >
-                      {ad.name}
+          {hasActions && (
+            <Container
+              sub
+              heading={strings.flashUpdateActionTakenTitle}
+              contentClassName={styles.actionsTaken}
+            >
+              {response.actions_taken.map((at) => (
+                (at?.actions?.length !== 0 || isDefined(at?.summary)) && (
+                  <Container
+                    sub
+                    heading={at.organization_display}
+                    headingSize="small"
+                    hideHeaderBorder
+                    contentClassName={styles.actionTakenContent}
+                    key={at.id}
+                  >
+                    {at.summary && (
+                      <div className={styles.summary}>
+                        <div className={styles.title}>
+                          Description
+                        </div>
+                        <div className={styles.text}>
+                          {at.summary}
+                        </div>
+                      </div>
+                    )}
+                    <div className={styles.actions}>
+                      <div className={styles.title}>
+                        Actions
+                      </div>
+                      <div className={styles.list}>
+                        {at.action_details.map((ad) => (
+                          <div
+                            key={ad.id}
+                            className={styles.action}
+                          >
+                            {ad.name}
+                          </div>
+                        ))}
+                      </div>
                     </div>
-                  ))}
-                </div>
-              </Container>
-            ))}
-          </Container>
+                  </Container>
+                )
+              ))}
+            </Container>
+          )}
           {response.references && response.references.length > 0 && (
-            <Container heading={strings.flashUpdateResourcesTitle}>
+            <Container
+              heading={strings.flashUpdateResourcesTitle}
+              sub
+            >
               {response.references.map((r) => (
                 <div
                   className={styles.reference}
                   key={r.id}
                 >
                   <div className={styles.date}>
-                    <DateOutput
-                      value={r.date}
-                      />
+                    <DateOutput value={r.date} />
                   </div>
                   <div className={styles.description}>
                     {r.source_description}
@@ -247,6 +283,7 @@ function FlashUpdateReport(props: Props) {
                   </a>
                   {r.document_details?.file && (
                     <ButtonLikeLink
+                      external
                       variant="secondary"
                       to={r.document_details?.file}
                       className={styles.downloadLink}
@@ -259,7 +296,7 @@ function FlashUpdateReport(props: Props) {
               ))}
             </Container>
           )}
-        </>
+        </Container>
       )}
     </Page>
   );

@@ -95,7 +95,7 @@ function CountryProvinceInput(props: Props) {
         options={countryOptions}
         value={value.country}
       />
-      <SelectInput
+      <SelectInput<"district", number>
         label={strings.flashUpdateFormContextProvinceLabel}
         pending={fetchingDistricts}
         error={error?.district}
@@ -103,6 +103,7 @@ function CountryProvinceInput(props: Props) {
         onChange={onFieldChange}
         options={districtOptions}
         value={value.district}
+        isMulti
       />
 
       <Button
