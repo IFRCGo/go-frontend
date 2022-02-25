@@ -542,11 +542,7 @@ function FlashUpdateForm(props: Props) {
 
   // Auto generate title
   React.useEffect(() => {
-    if (!value) {
-      return;
-    }
-
-    if (isNotDefined(value.country_district) || isNotDefined(value.hazard_type)) {
+    if (isNotDefined(value?.country_district) || isNotDefined(value?.hazard_type)) {
       return;
     }
 
@@ -581,7 +577,13 @@ function FlashUpdateForm(props: Props) {
     const title = `${countryTitle} - ${selectedHazard.label}  ${date}`;
 
     setFieldValue(title, 'title' as const);
-  }, [value, disasterTypeOptions, countryOptions, setFieldValue]);
+  }, [
+      value?.country_district,
+      value?.hazard_type,
+      disasterTypeOptions,
+      countryOptions,
+      setFieldValue,
+    ]);
 
   const pending = fetchingCountries
     || fetchingDistricts
