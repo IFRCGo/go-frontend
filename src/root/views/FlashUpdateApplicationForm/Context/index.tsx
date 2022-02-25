@@ -199,6 +199,7 @@ function Context(props: Props) {
               name={undefined}
               onClick={handleCountryDistrictAdd}
               variant="secondary"
+              disabled={(value.country_district?.length ?? 0) >= 10}
             >
               {strings.flashUpdateFormContextCountryButton}
             </Button>
