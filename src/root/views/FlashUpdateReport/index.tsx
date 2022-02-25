@@ -12,7 +12,6 @@ import {
 } from 'react-icons/io5';
 
 import { useRequest } from '#utils/restRequest';
-// import { resolveToString } from '#utils/lang';
 import Container from '#components/Container';
 import Page from '#components/Page';
 import BreadCrumb from '#components/breadcrumb';
@@ -66,8 +65,7 @@ function FlashUpdateReport(props: Props) {
     response,
   } = useRequest<FlashUpdateAPIResponseFields>({
     skip: isNotDefined(id),
-    // FIXME: update URL
-    url: `api/v2/informal-update/${id}/`,
+    url: `api/v2/flash-update/${id}/`,
   });
 
   const crumbs = useMemo(() => {

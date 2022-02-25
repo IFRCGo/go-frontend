@@ -1,4 +1,8 @@
-import React, { useContext, useMemo, useState } from 'react';
+import React, {
+  useContext,
+  useMemo,
+  useState,
+} from 'react';
 import { _cs } from '@togglecorp/fujs';
 import {
   MdSearch,
@@ -6,6 +10,7 @@ import {
 } from 'react-icons/md';
 
 import BlockLoading from '#components/block-loading';
+import EmptyMessage from '#components/EmptyMessage';
 import Pager from '#components/Pager';
 import Container from '#components/Container';
 import DropdownMenuItem from '#components/DropdownMenuItem';
@@ -101,6 +106,9 @@ function TableLists(props: Props) {
               keySelector={tableKeySelector}
               variant="large"
             />
+            {(!response || !response.results || response.results.length === 0) && (
+              <EmptyMessage />
+            )}
             {response && (
               <div className={styles.footer}>
                 <Pager

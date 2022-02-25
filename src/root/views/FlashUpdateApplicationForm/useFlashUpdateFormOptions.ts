@@ -227,8 +227,7 @@ function useFlashUpdateFormOptions(value: PartialForm<FlashUpdateFields>) {
     pending: fetchingShareWithOptions,
     response: shareWith
   } = useRequest<{ share_with_options: StringValueOption[] }>({
-    // FIXME: update url
-    url: 'api/v2/informal-options/'
+    url: 'api/v2/flash-update-options/'
   });
 
   const shareWithOptions = React.useMemo(() => (
@@ -242,8 +241,7 @@ function useFlashUpdateFormOptions(value: PartialForm<FlashUpdateFields>) {
     pending: fetchingActions,
     response: actionsResponse,
   } = useRequest<ListResponse<ActionOptionItem>>({
-    // FIXME: update url
-    url: 'api/v2/informal_action/',
+    url: 'api/v2/flash-update-action/',
     query: limitQuery,
   });
 

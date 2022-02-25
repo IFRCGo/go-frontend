@@ -137,8 +137,7 @@ function FlashUpdateForm(props: Props) {
     response: FlashUpdateResponse
   } = useRequest<FlashUpdateAPIResponseFields>({
     skip: !id,
-    // FIXME: update URL
-    url: `api/v2/informal-update/${id}`,
+    url: `api/v2/flash-update/${id}`,
     onSuccess: (response) => {
       if (!response) {
         // TODO: handle error
@@ -304,7 +303,7 @@ function FlashUpdateForm(props: Props) {
     trigger: submitRequest,
   } = useLazyRequest<FlashUpdateAPIResponseFields, Partial<FlashUpdateAPIFields>>({
     // FIXME: update URL
-    url: id ? `api/v2/informal-update/${id}/` : 'api/v2/informal-update/',
+    url: id ? `api/v2/flash-update/${id}/` : 'api/v2/flash-update/',
     method: id ? 'PUT' : 'POST',
     body: ctx => ctx,
     onSuccess: (response) => {
