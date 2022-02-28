@@ -1,3 +1,4 @@
+import SharepointLink from './map-pdf-to-sharepoint';
 const fileStorage = 'https://prddsgofilestorage.blob.core.windows.net/api/documents/surge/';
 const CatalogueOfSurgeServiceSubpageContent = [
     {

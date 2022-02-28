@@ -496,7 +496,7 @@ class Emergency extends React.Component {
     };
     stats = appeals
       .filter((o) => {
-        return selected ? o.id === selected : (o.status === 0 ? true : false);
+        return selected ? o.id === selected : true;
       })
       .reduce((acc, o) => {
         acc.beneficiaries += _toNumber(o.num_beneficiaries);
