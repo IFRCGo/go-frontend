@@ -1088,7 +1088,7 @@ const CatalogueOfSurgeServiceSubpageContent = [
                 ],
                 listItemsUrls: [
                     { text: 'catalogueHeopsAdditionalResourceUrlText1', url: 'https://fednet.ifrc.org/en/resources/disasters/disaster-and-crisis-mangement/disaster-response/surge-capacity/heops/' },
-                    { text: 'catalogueHeopsAdditionalResourceUrlText2', url: 'https://ifrcgo.org/global-services/assets/docs/opsmanagement/HeOps%20bios%20-%202020%2002.pdf' }
+                    { text: 'catalogueHeopsAdditionalResourceUrlText2', url: SharepointLink['HeOps biographies.pdf'] }
                 ],
             }
         }
@@ -2948,18 +2948,18 @@ const CatalogueOfSurgeServiceSubpageContent = [
                 text: 'catalogueAssesmentCapacityText'
             },
             emergencyServices: {
-                text: 'catalogueAssesmentEmergencyText',
+                text: 'catalogueAssessmentEmergencyText',
                 listItems: [
-                    'catalogueAssesmentEmergencyListItem1',
-                    'catalogueAssesmentEmergencyListItem2',
-                    'catalogueAssesmentEmergencyListItem3',
-                    'catalogueAssesmentEmergencyListItem4',
-                    'catalogueAssesmentEmergencyListItem5',
-                    'catalogueAssesmentEmergencyListItem6',
-                    'catalogueAssesmentEmergencyListItem7',
-                    'catalogueAssesmentEmergencyListItem8',
-                    'catalogueAssesmentEmergencyListItem9',
-                    'catalogueAssesmentEmergencyListItem10'
+                    'catalogueAssessmentEmergencyListItem1',
+                    'catalogueAssessmentEmergencyListItem2',
+                    'catalogueAssessmentEmergencyListItem3',
+                    'catalogueAssessmentEmergencyListItem4',
+                    'catalogueAssessmentEmergencyListItem5',
+                    'catalogueAssessmentEmergencyListItem6',
+                    'catalogueAssessmentEmergencyListItem7',
+                    'catalogueAssessmentEmergencyListItem8',
+                    'catalogueAssessmentEmergencyListItem9',
+                    'catalogueAssessmentEmergencyListItem10'
                 ]
             },
             designedFor: {
@@ -2988,7 +2988,7 @@ const CatalogueOfSurgeServiceSubpageContent = [
                 title: 'catalogueOtherServiceTextTitle2',
                 text: 'catalogueOtherService1Text2',
                 urls: [
-                    { text: 'catalogueOtherService1Text2Url', url: 'https://ifrcgo.org/global-services/assets/docs/other/Rapid%20Response%20Profile%20Civ-Mil%20Relations%20Coordinator.pdf' }
+                    { text: 'catalogueOtherService1Text2Url', url: SharepointLink['Civ-Mil Relations Coordinator.pdf'] }
                 ]
             }
         ]
@@ -3007,7 +3007,7 @@ const CatalogueOfSurgeServiceSubpageContent = [
                 title: 'catalogueOtherServiceTextTitle2',
                 text: 'catalogueOtherService2Text2',
                 urls: [
-                    { text: 'catalogueOtherService2Text2Url', url: 'https://ifrcgo.org/global-services/assets/docs/other/Rapid%20Response%20Profile%20Disaster%20Risk%20Reduction%20and%20Climate%20Action%20Coordinator.pdf' }
+                    { text: 'catalogueOtherService2Text2Url', url: SharepointLink['Disaster Risk Reduction and Climate Action Coordinator.pdf'] }
                 ]
             }
         ]
@@ -3026,7 +3026,7 @@ const CatalogueOfSurgeServiceSubpageContent = [
                 title: 'catalogueOtherServiceTextTitle2',
                 text: 'catalogueOtherService3Text2',
                 urls: [
-                    { text: 'catalogueOtherService3Text2Url', url: 'https://ifrcgo.org/global-services/assets/docs/other/Rapid%20Response%20Profile%20Human%20Resources%20Coordinator.pdf' },
+                    { text: 'catalogueOtherService3Text2Url', url: SharepointLink['Human Resources Coordinator.pdf'] },
                     /* coming soon not wanted 6
                     { text: 'catalogueOfSurgeServicesHealthCards1Card1Element5', url: '' }
                     */
@@ -3048,7 +3048,7 @@ const CatalogueOfSurgeServiceSubpageContent = [
                 title: 'catalogueOtherServiceTextTitle2',
                 text: 'catalogueOtherService4Text2',
                 urls: [
-                    { text: 'catalogueOtherService4Text2Url', url: 'https://ifrcgo.org/global-services/assets/docs/other/Rapid%20Response%20Profile%20International%20Disaster%20Response%20Law%20Coordinator%20-%20Emergency%20Phase.pdf' }
+                    { text: 'catalogueOtherService4Text2Url', url: SharepointLink['International Disaster Response Law Coordinator - Emergency Phase.pdf'] }
                 ]
             }
         ]
@@ -3067,7 +3067,7 @@ const CatalogueOfSurgeServiceSubpageContent = [
                 title: 'catalogueOtherServiceTextTitle2',
                 text: 'catalogueOtherService5Text2',
                 urls: [
-                    { text: 'catalogueOtherService5Text2Url', url: 'https://ifrcgo.org/global-services/assets/docs/other/Rapid%20Response%20Profile%20Migration%20and%20Displacement%20Coordinator.pdf' }
+                    { text: 'catalogueOtherService5Text2Url', url: SharepointLink['Migration and Displacement Coordinator.pdf'] }
                 ]
             }
         ]
@@ -3086,8 +3086,8 @@ const CatalogueOfSurgeServiceSubpageContent = [
                 title: 'catalogueOtherServiceTextTitle2',
                 text: 'catalogueOtherService6Text2',
                 urls: [
-                    { text: 'catalogueOtherService6Text2Url1', url: 'https://ifrcgo.org/global-services/assets/docs/other/Rapid%20Response%20Profile%20NS%20Development%20in%20Emergencies%20Coordinator.pdf' },
-                    { text: 'catalogueOtherService6Text2Url2', url: 'https://ifrcgo.org/global-services/assets/docs/other/Rapid%20Response%20Profile%20Volunteer%20Management%20in%20Emergencies%20Officer.pdf' }
+                    { text: 'catalogueOtherService6Text2Url1', url: SharepointLink['NS Development in Emergencies Coordinator.pdf'] },
+                    { text: 'catalogueOtherService6Text2Url2', url: SharepointLink['Volunteer Management in Emergencies Officer.pdf'] }
                 ]
             }
         ]
@@ -3106,8 +3106,8 @@ const CatalogueOfSurgeServiceSubpageContent = [
                 title: 'catalogueOtherServiceTextTitle2',
                 text: 'catalogueOtherService7Text2',
                 urls: [
-                    { text: 'catalogueOtherService7Text2Url1', url: 'https://ifrcgo.org/global-services/assets/docs/other/Rapid%20Response%20Profile%20Partnerships%20and%20Resource%20Development%20Officer.pdf' },
-                    { text: 'catalogueOtherService7Text2Url2', url: 'https://ifrcgo.org/global-services/assets/docs/other/Rapid%20Response%20Profile%20PRD%20Officer%20National%20Society%20Support.pdf' }
+                    { text: 'catalogueOtherService7Text2Url1', url: SharepointLink['Partnerships and Resource Development Officer.pdf'] },
+                    { text: 'catalogueOtherService7Text2Url2', url: SharepointLink['PRD Officer National Society Support.pdf'] }
                 ]
             }
         ]
@@ -3126,8 +3126,8 @@ const CatalogueOfSurgeServiceSubpageContent = [
                 title: 'catalogueOtherServiceTextTitle2',
                 text: 'catalogueOtherService8Text2',
                 urls: [
-                    { text: 'catalogueOtherService8Text2Url1', url: 'https://ifrcgo.org/global-services/assets/docs/other/Rapid%20Response%20Profile%20Preparedness%20for%20Effective%20Response%20Coordinator.pdf' },
-                    { text: 'catalogueOtherService8Text2Url2', url: 'https://ifrcgo.org/global-services/assets/docs/other/Rapid%20Response%20Profile%20National%20Society%20Preparedness%20for%20Effective%20Response%20Officer.pdf' }
+                    { text: 'catalogueOtherService8Text2Url1', url: SharepointLink['Preparedness for Effective Response Coordinator.pdf'] },
+                    { text: 'catalogueOtherService8Text2Url2', url: SharepointLink['National Society Preparedness for Effective Response Officer.pdf'] }
                 ]
             }
         ]
@@ -3146,15 +3146,15 @@ const CatalogueOfSurgeServiceSubpageContent = [
                 title: 'catalogueOtherServiceTextTitle3',
                 text: 'catalogueOtherService9Text2',
                 urls: [
-                    { text: 'catalogueOtherService9Text2Url', url: 'https://ifrcgo.org/global-services/assets/docs/other/Recovery%20Technical%20Competency%20Framework%20March%202020.pdf' }
+                    { text: 'catalogueOtherService9Text2Url', url: SharepointLink['Recovery Technical Competency Framework.pdf'] }
                 ]
             },
             {
                 title: 'catalogueOtherServiceTextTitle2',
                 text: 'catalogueOtherService9Text3',
                 urls: [
-                    { text: 'catalogueOtherService9Text3Url1', url: 'https://ifrcgo.org/global-services/assets/docs/other/Rapid%20Response%20Profile%20Recovery%20Coordinator.pdf' },
-                    { text: 'catalogueOtherService9Text3Url2', url: 'https://ifrcgo.org/global-services/assets/docs/other/Rapid%20Response%20Profile%20Early%20Recovery%20Officer.pdf' }
+                    { text: 'catalogueOtherService9Text3Url1', url: SharepointLink['Recovery Coordinator.pdf'] },
+                    { text: 'catalogueOtherService9Text3Url2', url: SharepointLink['Early Recovery Officer.pdf'] }
                 ]
             }
         ]
@@ -3180,7 +3180,7 @@ const CatalogueOfSurgeServiceSubpageContent = [
                 title: 'catalogueOtherServiceTextTitle2',
                 text: 'catalogueOtherService10Text3',
                 urls: [
-                    { text: 'catalogueOtherService10Text3Url1', url: 'https://ifrcorg.sharepoint.com/:b:/s/IFRCSharing/Eadht7nkd0BGj2Hl_QUyvOMBJrIGZdgotLzPjGs6rJrXDA?e=Vay5KV' },
+                    { text: 'catalogueOtherService10Text3Url1', url: SharepointLink['Environmental Field Advisor.pdf'] },
                     
                 ]
             }
