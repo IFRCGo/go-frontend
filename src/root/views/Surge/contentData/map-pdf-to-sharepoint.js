@@ -1,5 +1,4 @@
 const pre = 'https://ifrcorg.sharepoint.com/:b:/s/IFRCSharing/';
-// don't read the whole map if only one of them is needed, so we split:
 const SharepointLink = {
     'Core competency framework.pdf':
         pre + 'EZgW1LWU_rpOpbe9pT7NnFQBVL8GL9r0JGjlJmleC4ujuA',
@@ -69,128 +68,133 @@ const SharepointLink = {
     'Health PSS.pdf':
         pre + 'Eb-Q-qToQQxAj6mZZ6RXs74BJXbj1-8PUODAscOIVxVv8g',
 
-    'Humanitarian Information Analysis Officer.pdf':
-        pre + 'EYUNi8qR395Oq3Ng3SHbsXMBUbS4XdfVw03tECGEb828Nw',
     'IM Coordinator.pdf':
         pre + 'Ea_YRhCI_IJHkhISEh5zH2YBCUtMAdWUqiC8JH7g1Jj8AQ',
-    'Mapping and Visualization Officer.pdf':
-        pre + 'ER92aBZKBpxHrH61MJf4hLEBxwEnqzfqjLVR7cscPlxDKA',
+    'Humanitarian Information Analysis Officer.pdf':
+        pre + 'EYUNi8qR395Oq3Ng3SHbsXMBUbS4XdfVw03tECGEb828Nw',
     'Primary Data Collection Officer.pdf':
         pre + 'EdB7tgvjH5dApy5PcFNZcx0BzGKQJfS2nP-L3CFKRdr5Ow',
+    'Mapping and Visualization Officer.pdf':
+        pre + 'ER92aBZKBpxHrH61MJf4hLEBxwEnqzfqjLVR7cscPlxDKA',
+    // instead of 'IM Technical Competency Framework.pdf':
+    // we use the Assessment's one
+
     'IT and Telecom Coordinator.pdf':
         pre + 'EdRtpzYtoFhNnrXHDiEc74ABKv7njX3cz1-jPl1SxWqWSg',
     'IT and Telecom Officer.pdf':
         pre + 'ETEdR5wmWSdHqw2o2nJRMeYBN9M7VZBZJ5blIgn67vFdzQ',
-    'IFRC Logistics Technical Competency Framework v 5 (003).pdf':
-        pre + 'Eb3r3PF2eWpAk_tNLRQwyHoB_zJJRYshXYw9Kd3YSwrNjQ',
-    'IFRC Logistics Technical Competency Framework v 5 March 2020.pdf':
-        pre + 'Ea8ArRmA5kZMlxNoDyGHUZ0BuwNJGkDCMlZHw-NzE8n9jA',
+
+    'Supply Chain Coordinator.pdf':
+        pre + 'ETRk5roTyxpGu2HPqfkLbpMBbeOkEaT9s9DPYZ51Noy0UQ',
+    'Logistics ERU Team Leader.pdf':
+        pre + 'EfcAEr1nBFFNk3QP8ua2jgsBBaDL0_NuHQOFg7BZupd_PA',
     'Airops Officer .pdf':
         pre + 'ETM7ujekPvNJoWcbtS6RInABsV_dyosFDLoPWWt_MAUduQ',
     'Cash Logistics Officer.pdf':
         pre + 'EZpGoAagDcdMg2ZNaMBU490BowF4HzWtRsB7R0ICoTCm0w',
     'Fleet Officer.pdf':
         pre + 'EcGXWeVvcDhHmoN7oNC0_OYB58AaKzD_vCv_-Elio2bn0g',
-    'Logistics ERU Team Leader.pdf':
-        pre + 'EfcAEr1nBFFNk3QP8ua2jgsBBaDL0_NuHQOFg7BZupd_PA',
     'Logistics Officer.pdf':
         pre + 'EcO7pbdSG4tFsqiCFfPqs1cBdymaJMSB08kw7QWMyMeIgA',
-    'Logistics Pipeline Management Officer.pdf':
-        pre + 'ET-zqWDMVgpAqlviy2ZNXNkBndCVtu0vj2cfFXVbSkc4wA',
     'Medical Logistics Officer.pdf':
         pre + 'EfqRwUiHJVFMvhyQyUa9E7ABceClyPx8tsqhMBL9skqDjQ',
+    'Logistics Pipeline Management Officer.pdf':
+        pre + 'ET-zqWDMVgpAqlviy2ZNXNkBndCVtu0vj2cfFXVbSkc4wA',
     'Procurement Officer.pdf':
         pre + 'EUKgWdUOCLNAu0qEJmlUdUwBfnrU12iYljd4dB1VCifrLg',
     'Supply Chain Admin Officer .pdf':
         pre + 'EVisch-yFKNFjnr3YyQvsVYBN_lXDoGSsy_WDqT1Gr9_Ww',
-    'Supply Chain Coordinator .pdf':
-        pre + 'EXRTRZlMJAlJiKB8B5CTT24BgKrnAkCgV927xXJwN98yKQ',
-    'Supply Chain Coordinator.pdf':
-        pre + 'ETRk5roTyxpGu2HPqfkLbpMBbeOkEaT9s9DPYZ51Noy0UQ',
     'Warehouse Officer.pdf':
         pre + 'ERrzk5zy9TNKp6GUOlJqJ0QBhVUFo18-n7sW4MwE5vKDFw',
-    'Head of Emergency Operations Role Profile.pdf':
+    'Logistics Technical Competency Framework.pdf':
+        pre + 'Eb3r3PF2eWpAk_tNLRQwyHoB_zJJRYshXYw9Kd3YSwrNjQ',
+
+    'Head of Emergency Operations.pdf':
         pre + 'EXmRSeiCej5FlHSHdKs_n6IBvNwGxdq8CgtcLJylpx6bLw',
-    'HeOps bios - 2020 02.pdf':
-        pre + 'EcMxBMin_YBLnyvZX9fqapwBo1W4KIVqvDfVH98Y2gy_2A',
-    'Movement Coordination Officer Role Profile.pdf':
-        pre + 'EbdT87auio1KuOgx6Ibkb4MBxM7Al1a36Jm_RR0DGA_vnQ',
+    'Operations Manager.pdf':
+        pre + 'EWrzsdwVG6pEhbhNv5PlsDEBLSaG5q6YFqPKFTBGlKHQoQ',
     'Deputy Operations Manager.pdf':
         pre + 'EVvCVFM_cU1Ouwt6iymFoM0Bmj2JPD6NM0UpBm8hXsrirA',
     'Field Coordinator.pdf':
         pre + 'ESBim_zWozdBh09lcTgzHPYBhIWBQ0PSGwttOhirgja1XA',
-    'Operations Manager.pdf':
-        pre + 'EWrzsdwVG6pEhbhNv5PlsDEBLSaG5q6YFqPKFTBGlKHQoQ',
-    'OpsManagement Recovery Coordinator.pdf':
+    'Movement Coordination Officer.pdf':
+        pre + 'EbdT87auio1KuOgx6Ibkb4MBxM7Al1a36Jm_RR0DGA_vnQ',
+    'Recovery Coordinator.pdf':
         pre + 'EVN6HhU7YJxOilcAxOGWiLwBxyAZhqJlgYmMw7OFdPPD2w',
-    'Civ-Mil Relations Coordinator.pdf':
-        pre + 'EViKjU_w21dBpQtGEr9CtgQBvljB_2I52J51BhljrUg8Ow',
-    'Disaster Risk Reduction and Climate Action Coordinator.pdf':
-        pre + 'EbivNvjEqjxLkiJA3xeaLlUBDCyH8Oh4U8Y7gaRA3XROUQ',
-    'Early Recovery Officer.pdf':
-        pre + 'Ebi1UtwPTMtKhNoPY0fh9QYBuzsLVRy_nGLss1E0NCSkSA',
-    'Environmental Field Advisor.pdf':
-        pre + 'EU67oavNUyVKocifjDl__VUBnh16k2SxzF_AiPUWJJGF_g',
-    'Human Resources Coordinator.pdf':
-        pre + 'Ebd935X260FFuCsCh5ujYTkBDjPnZI2fWz-3zTfSPeCNJw',
-    'International Disaster Response Law Coordinator - Emergency Phase.pdf':
-        pre + 'EbPlgWopXL9JmKb6Pz0didgB8XKBb3RhIo6g--XB9wD5sw',
-    'Migration and Displacement Coordinator.pdf':
-        pre + 'ERx4Z-jYA-xMitizZbmbsnABWkZPy3Ivh59hXneO4XYY4Q',
-    'National Society Preparedness for Effective Response Officer.pdf':
-        pre + 'EVOb9psRxttGmVi3i3u89IABALc8e0x1Lm7_eU8UkvLgLw',
-    'NS Development in Emergencies Coordinator.pdf':
-        pre + 'EWKlMwewWThHg7IHiTsuUYcBt5CfR_5KvaWLaDGUbETEvw',
-    'Partnerships and Resource Development Officer.pdf':
-        pre + 'Edmrzb9F4oxHk7KzhoZVYfEBRuy8C6_aVekgB-essnzNFw',
-    'PRD Officer National Society Support.pdf':
-        pre + 'EXZPVgHffW9Dludcn9HZlaABn4Ppg37CGuoGgeGjOxKkVw',
-    'Preparedness for Effective Response Coordinator.pdf':
-        pre + 'EcMjFBhVBLNBl6b39z5iQLIBgcEzZkk1Szn7mlpffie5bg',
-    'Other Recovery Coordinator.pdf':
-        pre + 'EUbjt_mT-4tIr9UcmCRhLs4B71WUl7dazEtiTGccC-3rsQ',
-    'Volunteer Management in Emergencies Officer.pdf':
-        pre + 'Ef5VINFI_29Mkjh9ccWS-_wBrenVKw4wYi5ZgJea7GQ2Vg',
-    'Recovery Technical Competency Framework March 2020.pdf':
-        pre + 'EVGjsDkuPN1AjuiHEIPBAtIBeylQYJbOGqrUKoYZGBBsRg',
-    'role profile.pdf':
-        pre + 'EV7sVuEk6ZpMtnLT37yyL24BYzudjemv42W4O1a-7TLouw',
-    'PGI Technical Competency Framework March 2020.pdf':
-        pre + 'EbXcICqULRhBss7nNlI-YUwB0JMTv-_fqTQlUpT2H0Cr7g',
+    'HeOps biographies.pdf': // subpage
+        pre + 'EcMxBMin_YBLnyvZX9fqapwBo1W4KIVqvDfVH98Y2gy_2A',
+
     'Protection, Gender and Inclusion Coordinator.pdf':
         pre + 'EU4km4Q5WBFIltLi-YiN4oQBPyI_sGUoOKNL_thTbCc-BQ',
     'Protection, Gender and Inclusion Officer.pdf':
         pre + 'EXAvSIocmO9HuTVxaSKchzQBajb88vIfI9_2K_Od2HN-kg',
-    'Rapid Respone Profile PMER Coordinator.pdf':
-        pre + 'EbCISbxWbNZCv5ebP8eyMVMBbCJGHz7336oL6mIw6miUmw',
+    'PGI Technical Competency Framework.pdf':
+        pre + 'EbXcICqULRhBss7nNlI-YUwB0JMTv-_fqTQlUpT2H0Cr7g',
+
     'PMER Coordinator.pdf':
         pre + 'EagyYJ2dxJtJodnkN7u-KGABUEDjjQR8iGbFP3_BNl3Fgw',
     'PMER Officer.pdf':
         pre + 'ESQt4ETNFoJKlgdxpZsN-0ABhzfPBsBZzWHGnn1Cl923JA',
-    '201115 Relief (CVA and NFIs) competency framework_V7.pdf':
+
+    'Relief Technical Competency Framework.pdf':
         pre + 'EfyJmGf6d9NEniDFNg3KqAMBK9J0_iE2Ff-hAdR4HGJKgw',
+
     'Security Coordinator.pdf':
         pre + 'EaX7SnxsiU5Mq0YLUPQx-mIBzbFVntIQb0gkDDi42ulQ8w',
-    'Shelter Cluster Coordinator.pdf':
-        pre + 'EXP0VQ7Tpn1Er_QH8bOk-IYBdqlK7oVvx470Vi9v-7YNAg',
+
     'Shelter Programme Coordinator.pdf':
         pre + 'EYHx8KJbzVxIqAwtECnKMFcBNXyLPfKyn73kN1mTPBCKJQ',
     'Shelter Programme Team Leader.pdf':
         pre + 'EY7PPODOBZtPjywd_TVgFEcBmd3r0IAQj-6FKEz4tO00zA',
     'Shelter Programme Technical Officer.pdf':
         pre + 'EUBrQE-_aatMvfUaBR69XWMBMuR6n3YEFoUgyhbsOayvhQ',
-    'Shelter and Settlements Technical Competency Framework March 2020.pdf':
+    'Shelter Cluster Coordinator.pdf':
+        pre + 'EXP0VQ7Tpn1Er_QH8bOk-IYBdqlK7oVvx470Vi9v-7YNAg',
+    'Shelter and Settlements Technical Competency Framework.pdf':
         pre + 'ERITTj_9ea5Iq4tJs58uSnEBqNhkHiAjBP18u9s1NRWt8Q',
-    'IFRC WASH Competency Framework March 2020.pdf':
-        pre + 'Efan8Jv59RBLsNVfYvdCQTUBiG3ddAPkJkwxQq1PYyrlXw',
+
     'WASH Coordinator.pdf':
         pre + 'Ea1oxcI_tcdGqisMk7IDnawBRBn5eDX9kKbW8ciNO6AgHw',
+    'WASH Officer.pdf':
+        pre + 'EftnI72a0LtPqfT6ukpqEv8Bqi8DN83FTw9oFXhYIkC1EA',
     'WASH Officer - Hygiene Promotion.pdf':
         pre + 'EaOPwYRaFehOmcfw5Tnaq5MBppJ1wZ7VwkxeRjN-G0-DKA',
     'WASH Officer - Sanitation Engineer.pdf':
         pre + 'EWM7iFH2papCtEWNJZtHZaQB44rAuE8d6l3M8G4_BmCGiw',
-    'WASH Officer.pdf':
-        pre + 'EftnI72a0LtPqfT6ukpqEv8Bqi8DN83FTw9oFXhYIkC1EA',
+    'WASH Technical Competency Framework.pdf':
+        pre + 'Efan8Jv59RBLsNVfYvdCQTUBiG3ddAPkJkwxQq1PYyrlXw',
+
+    // 'Other' subpages:
+    'Civ-Mil Relations Coordinator.pdf':
+        pre + 'EViKjU_w21dBpQtGEr9CtgQBvljB_2I52J51BhljrUg8Ow',
+    'Disaster Risk Reduction and Climate Action Coordinator.pdf':
+        pre + 'EbivNvjEqjxLkiJA3xeaLlUBDCyH8Oh4U8Y7gaRA3XROUQ',
+    'Human Resources Coordinator.pdf':
+        pre + 'Ebd935X260FFuCsCh5ujYTkBDjPnZI2fWz-3zTfSPeCNJw',
+    'International Disaster Response Law Coordinator - Emergency Phase.pdf':
+        pre + 'EbPlgWopXL9JmKb6Pz0didgB8XKBb3RhIo6g--XB9wD5sw',
+    'Migration and Displacement Coordinator.pdf':
+        pre + 'ERx4Z-jYA-xMitizZbmbsnABWkZPy3Ivh59hXneO4XYY4Q',
+    'NS Development in Emergencies Coordinator.pdf':
+        pre + 'EWKlMwewWThHg7IHiTsuUYcBt5CfR_5KvaWLaDGUbETEvw',
+    'Volunteer Management in Emergencies Officer.pdf':
+        pre + 'Ef5VINFI_29Mkjh9ccWS-_wBrenVKw4wYi5ZgJea7GQ2Vg',
+    'Partnerships and Resource Development Officer.pdf':
+        pre + 'Edmrzb9F4oxHk7KzhoZVYfEBRuy8C6_aVekgB-essnzNFw',
+    'PRD Officer National Society Support.pdf':
+        pre + 'EXZPVgHffW9Dludcn9HZlaABn4Ppg37CGuoGgeGjOxKkVw',
+    'Preparedness for Effective Response Coordinator.pdf':
+        pre + 'EcMjFBhVBLNBl6b39z5iQLIBgcEzZkk1Szn7mlpffie5bg',
+    'National Society Preparedness for Effective Response Officer.pdf':
+        pre + 'EVOb9psRxttGmVi3i3u89IABALc8e0x1Lm7_eU8UkvLgLw',
+    'Recovery Technical Competency Framework.pdf':
+        pre + 'EVGjsDkuPN1AjuiHEIPBAtIBeylQYJbOGqrUKoYZGBBsRg',
+    'Recovery Coordinator.pdf':
+        pre + 'EUbjt_mT-4tIr9UcmCRhLs4B71WUl7dazEtiTGccC-3rsQ',
+    'Early Recovery Officer.pdf':
+        pre + 'Ebi1UtwPTMtKhNoPY0fh9QYBuzsLVRy_nGLss1E0NCSkSA',
+    'Environmental Field Advisor.pdf':
+        pre + 'EU67oavNUyVKocifjDl__VUBnh16k2SxzF_AiPUWJJGF_g',
 };
 
 export default SharepointLink;
