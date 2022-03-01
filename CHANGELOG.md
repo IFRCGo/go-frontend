@@ -1,3 +1,9 @@
+### Release 5.8.1 - Hotfix for Today Line
+
+Date: 2022-03-01
+
+Hotfix release to fix Today Line on Deployments table.
+
 ### Release 5.8.0
 
 Date: 2022-03-01
