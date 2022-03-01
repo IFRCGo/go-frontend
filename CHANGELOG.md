@@ -1,3 +1,9 @@
+### Release 5.8.2 - Hotfix for Name Undefined
+
+Date: 2022-03-01
+
+Hotfix release for #2261
+
 ### Release 5.8.1 - Hotfix for Today Line
 
 Date: 2022-03-01
