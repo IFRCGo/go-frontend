@@ -96,16 +96,17 @@ function Navbar(props) {
                       {strings.headerDropdownCovid19NSFinancialOverview}
                     </a>
                     <Link
-                      to='/dref-application/new'
-                      className='drop__menu-item'
-                    >
-                      {strings.headerDropdownNewDrefApplication}
-                    </Link>
-                    <Link
                       to='/three-w/new'
                       className='drop__menu-item'
                     >
                       {strings.headerDropdownNew3WActivity}
+                    </Link>
+                    {/* NOTE: Temporary
+                    <Link
+                      to='/dref-application/new'
+                      className='drop__menu-item'
+                    >
+                      {strings.headerDropdownNewDrefApplication}
                     </Link>
                     <Link
                       to='/flash-update/new'
@@ -113,6 +114,7 @@ function Navbar(props) {
                     >
                       {strings.headerDropdownNewFlashUpdate}
                     </Link>
+                    */}
                   </div>
                 </DropdownMenu>
               </nav>

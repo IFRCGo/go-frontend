@@ -127,19 +127,22 @@ class MobileNavbar extends React.PureComponent {
                   </li>
                   <li className='drop__menu-item'>
                     <Link
+                      to='/three-w/new'
+                      className='drop__menu-item'
+                    >
+                      {strings.headerDropdownNew3WActivity}
+                    </Link>
+                  </li>
+                  {/* NOTE: Temporary
+                  <li className='drop__menu-item'>
+                    <Link
                         to='/dref-application/new'
                         className='drop__menu-item'
                     >
                       {strings.headerDropdownNewDrefApplication}
                     </Link>
                   </li>
-                  <li className='drop__menu-item'>
-                    <Link
-                      to='/three-w/new'
-                      className='drop__menu-item'
-                    >
-                      {strings.headerDropdownNew3WActivity}
-                    </Link>
+                  <li>
                     <Link
                       to='/flash-update/new'
                       className='drop__menu-item'
@@ -147,6 +150,7 @@ class MobileNavbar extends React.PureComponent {
                       {strings.headerDropdownNewFlashUpdate}
                     </Link>
                   </li>
+                  */}
                 </ul>
               </DropdownMenu>
               <button className='button button--small button--close button--text-hidden' onClick={this.toggleMenu}>

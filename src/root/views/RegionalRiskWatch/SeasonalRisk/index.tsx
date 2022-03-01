@@ -135,12 +135,15 @@ function SeasonalRisk(props: Props) {
           d => d,
           (data) => unique(data, d => d.year)
         );
-        const foodInsecurity = Object.values(groupedMap).map(d => d[0]);
+
+        const foodInsecurity = Object.values(groupedMap).map(d => d?.[0]).filter(isDefined);
 
         const months = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12] as const;
         exposures.push({
           annualAverage: avg(foodInsecurity, d => d.total_displacement) ?? null,
-          monthly: months.map(m => avgSafe(groupedMap[m]?.map(d => d.total_displacement)) ?? null),
+          monthly: months.map(m => avgSafe(
+            groupedMap[m]?.map(d => d.total_displacement)
+          ) ?? null),
         });
       }
 

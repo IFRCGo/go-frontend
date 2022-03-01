@@ -222,9 +222,11 @@ function formatBoolean(value: boolean | undefined | null) {
   return '-';
 }
 
-function formatNumber(value: number | undefined | null, prefix?: string) {
+function formatNumber(value: number | undefined | null, prefix?: string): string {
+  const defaultValue = '-';
+
   if (isValidNumber(value)) {
-    const formattedNumber = addSeparator(value);
+    const formattedNumber = addSeparator(value) ?? defaultValue;
 
     if (prefix) {
       return `${prefix}${formattedNumber}`;
@@ -233,7 +235,7 @@ function formatNumber(value: number | undefined | null, prefix?: string) {
     return formattedNumber;
   }
 
-  return '-';
+  return defaultValue;
 }
 
 function TextOutput(props: {
