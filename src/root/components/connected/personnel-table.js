@@ -29,6 +29,9 @@ const typeLongNames = {
   'rr': 'Rapid Response'
 };
 
+// what to display when there is no "name" available due to permissions
+const NO_NAME = '***';
+
 // Takes millisecond values for min, max, start and end
 // Returns object with start, value as starting point and length of deployment
 // as percentage values
@@ -203,7 +206,8 @@ class PersonnelTable extends SFPComponent {
       const currPercent = parseInt(((currDate.ts - minDate.ts) / totalDuration) * 100);
       const rows = data.results.map(o => {
       const progressValues = getProgressValues(minDate.ts, maxDate.ts, DateTime.fromISO(o.start_date).ts, DateTime.fromISO(o.end_date).ts);
-        return {
+      const nameString = o.name ? o.name : NO_NAME;
+      return {
           id: o.id,
           //startDateInterval: DateTime.fromISO(o.start_date).toISODate(),
           //endDate: DateTime.fromISO(o.end_date).toISODate(),
@@ -211,13 +215,13 @@ class PersonnelTable extends SFPComponent {
           role: o.role ? o.role.split(',')[0] : nope,
           type: o.type === 'rr' ? typeLongNames[o.type] : o.type.toUpperCase(),
           country: o.country_from ? getCountryDisplay(o.country_from, strings)  : nope,
-          name: o.name ? o.name : '***',
+          name: nameString,
           progress__personnel: 
                     <div className='progress__block__personnel'
                       data-html={true}
                       data-tip={`
                         <div class="row-sm flex flex-align-center progress__block__tooltip__heading">
-                          <div class="col-sm text-uppercase base-font-medium">${o.name}</div>
+                          <div class="col-sm text-uppercase base-font-medium">${nameString}</div>
                           <div class="col-sm margin-left-auto"><span class="collecticon-sm-xmark font-size-lg"></span></div>
                         </div>
                         <div class="row-sm spacing-half-b flex">
