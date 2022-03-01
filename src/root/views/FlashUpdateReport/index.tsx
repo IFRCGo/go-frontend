@@ -23,7 +23,9 @@ import Button, {
   ButtonFeatureProps
 } from '#components/Button';
 
-import { FlashUpdateAPIResponseFields } from '../FlashUpdateApplicationForm/common';
+import { FlashUpdateAPIResponseFields } from '#views/FlashUpdateApplicationForm/common';
+
+import ShareButton from './ShareButton';
 
 import styles from './styles.module.scss';
 
@@ -138,25 +140,17 @@ function FlashUpdateReport(props: Props) {
           compact
         />
       }
-      actions={(
+      actions={response && (
         <>
-          <Button
-            variant="secondary"
-            name={undefined}
-            icons={<IoShareSocialOutline />}
-            disabled
-            // TODO: Implement share
-          >
-            Share
-          </Button>
-          {response && (
+            <ShareButton
+              flashUpdateId={response.id}
+            />
             <ButtonLikeLink
               variant="primary"
               to={`/flash-update/${response.id}/edit/`}
             >
               Edit
             </ButtonLikeLink>
-          )}
         </>
       )}
       mainSectionClassName={styles.mainContent}

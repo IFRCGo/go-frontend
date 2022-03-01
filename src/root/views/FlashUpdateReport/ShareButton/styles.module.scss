@@ -1,0 +1,25 @@
+@import '~styles/settings/variables';
+
+.backdrop {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 11;
+
+  .share-modal {
+    width: 30rem;
+    height: 30rem;
+    max-width: 100vw;
+    max-height: 96vh;
+    background-color: #fff;
+    padding: $spacing;
+    border-radius: .3rem;
+
+    .body {
+      padding: $spacing*2 0;
+      display: flex;
+      flex-direction: column;
+      gap: $spacing;
+    }
+  }
+}

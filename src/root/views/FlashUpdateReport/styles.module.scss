@@ -97,6 +97,10 @@
           flex-shink: 0;
         }
 
+        .description {
+          flex-grow: 1;
+        }
+
         .url {
           flex-basis: 20rem;
           word-break: break-all;
