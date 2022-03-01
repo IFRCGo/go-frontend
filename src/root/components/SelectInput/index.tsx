@@ -28,10 +28,10 @@ interface BaseProps<N> {
   pending?: boolean;
   readOnly?: boolean;
   name: N;
-  isMulti?: boolean,
   options?: Option[];
   placeholder?: string;
   isOptionDisabled?: SelectProps<Option>['isOptionDisabled'];
+  isClearable?: boolean;
 }
 
 type Props<N extends Key, V extends Key> = BaseProps<N> & ({

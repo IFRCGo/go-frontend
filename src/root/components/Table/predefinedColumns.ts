@@ -2,6 +2,10 @@ import {
   compareString,
   compareNumber,
 } from '@togglecorp/fujs';
+import {
+  Link,
+  LinkProps,
+} from 'react-router-dom';
 
 import HeaderCell, { HeaderCellProps } from './HeaderCell';
 import Cell, { CellProps } from './Cell';
@@ -20,7 +24,7 @@ import { SortDirection, FilterType } from './types';
 
 export function createStringColumn<D, K>(
   id: string,
-  title: string,
+  title: React.ReactNode,
   accessor: (item: D) => string | undefined | null,
   options?: {
     cellAsHeader?: boolean,
@@ -31,7 +35,7 @@ export function createStringColumn<D, K>(
     hideable?: boolean;
   },
 ) {
-  const item: Column<D, K, CellProps<string>, HeaderCellProps> & {
+  const item: Column<D, K, CellProps<React.ReactNode>, HeaderCellProps> & {
     valueSelector: (item: D) => string | undefined | null,
     valueComparator: (foo: D, bar: D) => number,
   } = {
@@ -46,7 +50,7 @@ export function createStringColumn<D, K>(
       hideable: options?.hideable,
     },
     cellRenderer: Cell,
-    cellRendererParams: (_: K, datum: D): CellProps<string> => ({
+    cellRendererParams: (_: K, datum: D): CellProps<React.ReactNode> => ({
       value: accessor(datum),
     }),
     valueSelector: accessor,
@@ -57,7 +61,7 @@ export function createStringColumn<D, K>(
 
 export function createNumberColumn<D, K>(
   id: string,
-  title: string,
+  title: React.ReactNode,
   accessor: (item: D) => number | undefined | null,
   options?: {
     cellAsHeader?: boolean,
@@ -98,7 +102,7 @@ export function createNumberColumn<D, K>(
 
 export function createDateColumn<D, K>(
   id: string,
-  title: string,
+  title: React.ReactNode,
   accessor: (item: D) => string | undefined | null,
   options?: {
     cellAsHeader?: boolean,
@@ -132,6 +136,36 @@ export function createDateColumn<D, K>(
     }),
     valueSelector: accessor,
     valueComparator: (foo: D, bar: D) => compareString(accessor(foo), accessor(bar)),
+  };
+
+  return item;
+}
+
+export function createLinkColumn<D, K>(
+  id: string,
+  title: React.ReactNode,
+  accessor: (item: D) => React.ReactNode,
+  rendererParams: (item: D) => LinkProps,
+) {
+  const item: Column<D, K, LinkProps, HeaderCellProps> & {
+    valueSelector: (item: D) => string | undefined | null,
+    valueComparator: (foo: D, bar: D) => number,
+  } = {
+    id,
+    title,
+    headerCellRenderer: HeaderCell,
+    headerCellRendererParams: {
+      sortable: false,
+      orderable: false,
+      hideable: false,
+    },
+    cellRenderer: Link,
+    cellRendererParams: (_: K, datum: D): LinkProps => ({
+      children: accessor(datum),
+      ...rendererParams(datum),
+    }),
+    valueSelector: () => '',
+    valueComparator: () => 0,
   };
 
   return item;

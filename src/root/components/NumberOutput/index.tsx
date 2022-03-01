@@ -1,13 +1,14 @@
 import React from 'react';
 import {
   addSeparator,
-  isFalsy,
   isTruthy,
   isDefined,
   formattedNormalize,
   _cs,
   Lang,
 } from '@togglecorp/fujs';
+
+import { isValidNumber } from '#utils/common';
 
 import styles from './styles.module.scss';
 
@@ -77,7 +78,7 @@ function NumberOutput(props: Props) {
   } = props;
 
   const [number, normalizationSuffix] = React.useMemo(() => {
-    if (isFalsy(value)) {
+    if (!isValidNumber(value)) {
       return [];
     }
 
@@ -108,20 +109,24 @@ function NumberOutput(props: Props) {
 
       if (precision === 'auto') {
         const absoluteValue = Math.abs(num);
+
         if (absoluteValue < 1) {
           p = Math.ceil(-Math.log10(absoluteValue)) + 1;
         }
-
         if (integer > 100) {
           // 140.1234M -> 140 M
           p = 0;
         } else {
-          // 96.0334M -> 96.03 M
-          if (fraction > 0.01) {
-            p = 2;
+          // 96.96834M -> 97 M
+          if (fraction > 0.95) {
+            p = 0;
           }
-
-          p = 0;
+          // 96.0334M -> 96.03 M
+          else if (fraction > 0.01) {
+            p = 2;
+          } else {
+            p = 0;
+          }
         }
       } else {
         p = precision;
@@ -149,7 +154,7 @@ function NumberOutput(props: Props) {
 
   return (
     <div className={_cs(styles.numeral, className)}>
-      { isFalsy(value) ? (
+      { !isValidNumber(value) ? (
         invalidText
       ) : (
         <>

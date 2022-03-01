@@ -156,7 +156,10 @@ export interface DrefFields {
   men: number;
   modified_at: string;
   modified_by: number;
+
+  // FIXME: this typeing for details should not be here
   modified_by_details: {};
+
   national_authorities: string;
   national_society: number;
   national_society_actions: NsAction[];
@@ -200,7 +203,7 @@ export interface DrefFields {
   un_or_other_actor : string;
   women: number;
   dref_recurrent_text: string;
-  total_targated_population: number;
+  total_targeted_population: number;
   users: number[];
 }
 

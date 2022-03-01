@@ -125,26 +125,32 @@ class MobileNavbar extends React.PureComponent {
                       {strings.headerDropdownCovid19NSFinancialOverview}
                     </a>
                   </li>
-                  {/* FIXME: use strings */}
-                  {/* @DREF
-                  <li className='drop__menu-item'>
-                    <Link
-                        to='/dref-application/new'
-                        className='drop__menu-item'
-                      >
-                      New Dref Application
-                    </Link>
-                  </li>
-                  */}
                   <li className='drop__menu-item'>
                     <Link
                       to='/three-w/new'
                       className='drop__menu-item'
                     >
-                      {/* FIXME: use strings */}
-                      New 3W Activity
+                      {strings.headerDropdownNew3WActivity}
                     </Link>
                   </li>
+                  {/* NOTE: Temporary
+                  <li className='drop__menu-item'>
+                    <Link
+                        to='/dref-application/new'
+                        className='drop__menu-item'
+                    >
+                      {strings.headerDropdownNewDrefApplication}
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      to='/flash-update/new'
+                      className='drop__menu-item'
+                    >
+                      {strings.headerDropdownNewFlashUpdate}
+                    </Link>
+                  </li>
+                  */}
                 </ul>
               </DropdownMenu>
               <button className='button button--small button--close button--text-hidden' onClick={this.toggleMenu}>

@@ -12,11 +12,11 @@ import {
   listToMap,
   isNotDefined,
 } from '@togglecorp/fujs';
+import { IoHelpCircle } from 'react-icons/io5';
 
 import Container from '#components/Container';
 import InputSection from '#components/InputSection';
 import Button from '#components/Button';
-import TextArea from '#components/TextArea';
 import TextInput from '#components/TextInput';
 import SelectInput from '#components/SelectInput';
 import SearchSelectInput from '#components/SearchSelectInput';
@@ -169,10 +169,6 @@ function DrefOverview(props: Props) {
           )}
         </InputSection>
       </Container>
-      <CopyFieldReportSection
-        value={value}
-        onValueSet={onValueSet}
-      />
       <Container
         heading={strings.drefFormEssentialInformation}
         className={styles.essentialInformation}
@@ -198,14 +194,18 @@ function DrefOverview(props: Props) {
             value={value.national_society}
           />
         </InputSection>
+        <CopyFieldReportSection
+          value={value}
+          onValueSet={onValueSet}
+          />
         <InputSection
-          title={strings.drefFormDisasterDetails}
+          title={isImminentOnset ? strings.drefFormImminentDisasterDetails : strings.drefFormDisasterDetails}
           multiRow
           twoColumn
         >
           <SelectInput
             error={error?.disaster_type}
-            label={strings.drefFormDisasterTypeLabel}
+            label={isImminentOnset ? strings.drefFormImminentDisasterTypeLabel : strings.drefFormDisasterTypeLabel}
             name="disaster_type"
             onChange={onValueChange}
             options={disasterTypeOptions}
@@ -222,7 +222,19 @@ function DrefOverview(props: Props) {
           />
           <SelectInput
             error={error?.disaster_category}
-            label={strings.drefFormDisasterCategoryLabel}
+            label={(
+                <>
+                  {strings.drefFormDisasterCategoryLabel}
+                  <a
+                    className={styles.disasterCategoryHelpLink}
+                    target="_blank"
+                    title="Click to view Emergency Response Framework"
+                    href="https://www.ifrc.org/sites/default/files/2021-07/IFRC%20Emergency%20Response%20Framework%20-%202017.pdf"
+                  >
+                    <IoHelpCircle />
+                  </a>
+                </>
+            )}
             name="disaster_category"
             onChange={onValueChange}
             options={disasterCategoryOptions}
@@ -340,22 +352,12 @@ function DrefOverview(props: Props) {
         <InputSection
           title={!isImminentOnset ? strings.drefFormEventDate : strings.drefFormDateOfImpact}
         >
-          {!isImminentOnset &&
-            <DateInput
-              name="event_date"
-              value={value.event_date}
-              onChange={onValueChange}
-              error={error?.event_date}
-            />
-          }
-          {isImminentOnset && (
-            <TextArea
-              name="event_text"
-              value={value.event_text}
-              onChange={onValueChange}
-              error={error?.event_text}
-            />
-          )}
+          <DateInput
+            name="event_date"
+            value={value.event_date}
+            onChange={onValueChange}
+            error={error?.event_date}
+          />
         </InputSection>
         <InputSection
           title={strings.drefFormGoFieldReportDate}

@@ -47,9 +47,10 @@ import {
   FormInput
 } from '#components/form-elements/';
 
-import App from './app';
-// @DREF
+// NOTE: Temporary
 // import DrefApplicationList from '#components/DrefApplicationList';
+
+import App from './app';
 
 const Fragment = React.Fragment;
 
@@ -164,7 +165,8 @@ class Account extends React.Component {
     { title: strings.accountInformation, hash: '#account-information' },
     { title: strings.accountNotification, hash: '#notifications' },
     { title: strings.accountPerForms, hash: '#per-forms' },
-    // @DREF
+
+    // NOTE: Temporary
     // { title: strings.accountMyDrefApplications, hash: '#my-dref-applications' }
   ])
 
@@ -892,7 +894,7 @@ class Account extends React.Component {
                       <PerAccount user={this.props.user} />
                     </TabContent>
                   </TabPanel>
-                  {/* @DREF
+                  {/* NOTE: Temporary
                   <TabPanel>
                     <TabContent title={strings.accountPerTitle}>
                       <DrefApplicationList />

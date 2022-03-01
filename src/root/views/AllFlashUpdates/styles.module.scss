@@ -1,0 +1,28 @@
+@import '~styles/settings/variables';
+
+.all-flash-updates {
+  :global {
+    background-color: $white;
+  }
+  .main-content {
+    padding: $spacing*4 0;
+    margin: 0 -$spacing;
+    width: calc(100% + #{$spacing});
+  }
+
+  .footer {
+    display: flex;
+    justify-content: flex-end;
+    padding: $spacing*3 $spacing;
+  }
+
+  .projects-table {
+    width: 100%;
+    background-color: inherit;
+  }
+  :global {
+    .styles_table__18cyw {
+      table-layout: inherit;
+    }
+  }
+}

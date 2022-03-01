@@ -1,0 +1,31 @@
+@import '~styles/settings/variables';
+
+.map-contaier {
+  padding: 0;
+}
+
+.tooltip-content {
+  display: flex;
+  flex-direction: column;
+  padding: $spacing/2 !important;
+
+  hr {
+    margin: $spacing/2 0;
+  }
+}
+
+.estimated-output {
+  align-items: flex-start!important;
+
+  .value {
+    font-weight: $base-font-bold;
+  }
+
+  .label {
+    font-weight: $base-font-light;
+  }
+
+  .description {
+    color: $color-text-light;
+  }
+}

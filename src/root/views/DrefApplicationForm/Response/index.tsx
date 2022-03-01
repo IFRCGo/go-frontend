@@ -11,10 +11,7 @@ import {
   useFormArray,
   getErrorObject,
 } from '@togglecorp/toggle-form';
-import {
-  IoInformationCircle,
-  IoChevronForward,
-} from 'react-icons/io5';
+import { IoWarning } from 'react-icons/io5';
 
 import Button from '#components/Button';
 import Container from '#components/Container';
@@ -26,6 +23,7 @@ import InputLabel from '#components/InputLabel';
 import DREFFileInput from '#components/DREFFileInput';
 import LanguageContext from '#root/languageContext';
 
+import { sumSafe } from '#utils/common';
 import InterventionInput from './InterventionInput';
 import {
   DrefFields,
@@ -37,7 +35,7 @@ import { InterventionType } from '../useDrefFormOptions';
 
 import styles from './styles.module.scss';
 
-
+const emptyList: string[] = [];
 type Value = PartialForm<DrefFields>;
 interface Props {
   error: Error<Value> | undefined;
@@ -46,7 +44,6 @@ interface Props {
   interventionOptions: StringValueOption[];
   fileIdToUrlMap: Record<number, string>;
   setFileIdToUrlMap?: React.Dispatch<React.SetStateAction<Record<number, string>>>;
-  needOptions: StringValueOption[];
 }
 
 function Response(props: Props) {
@@ -58,7 +55,6 @@ function Response(props: Props) {
     interventionOptions,
     fileIdToUrlMap,
     setFileIdToUrlMap,
-    needOptions,
     value,
   } = props;
 
@@ -97,17 +93,40 @@ function Response(props: Props) {
       d => true
     )
   ), [value.planned_interventions]);
+
+  const warnings = React.useMemo(() => {
+    if (isNotDefined(value?.total_targeted_population)) {
+      return emptyList;
+    }
+
+    const w = [];
+
+    if (value?.num_assisted !== value?.total_targeted_population) {
+      w.push('Total targeted population is different from that in Operation Overview');
+    }
+
+
+    if (sumSafe([
+      value?.women,
+      value?.men,
+      value?.girls,
+      value?.boys,
+    ]) !== value?.total_targeted_population) {
+      w.push('Total targeted population is not equal to sum of other population fields');
+    }
+
+    return w;
+  }, [
+      value?.num_assisted,
+      value?.women,
+      value?.men,
+      value?.girls,
+      value?.boys,
+      value?.total_targeted_population,
+  ]);
+
   const filteredInterventionOptions = interventionsIdentifiedMap ? interventionOptions.filter(n => !interventionsIdentifiedMap[n.value]) : [];
   const isImminentOnset = value.type_of_onset === ONSET_IMMINENT;
-
-  const needsMap = React.useMemo(() => (
-    listToMap(
-      needOptions,
-      d => d.value,
-      d => d.label,
-    )
-  ), [needOptions]);
-
 
   return (
     <>
@@ -152,6 +171,14 @@ function Response(props: Props) {
       <Container
         heading={strings.drefFormAssistedPopulation}
         className={styles.assistedPopulation}
+        description={(
+          warnings?.map((w) => (
+            <div className={styles.warning}>
+              <IoWarning />
+              {w}
+            </div>
+          ))
+        )}
       >
         <InputSection
           title={strings.drefFormTargetedPopulation}
@@ -188,10 +215,10 @@ function Response(props: Props) {
           />
           <NumberInput
             label={strings.drefFormTotal}
-            name="total_targated_population"
-            value={value.total_targated_population}
+            name="total_targeted_population"
+            value={value.total_targeted_population}
             onChange={onValueChange}
-            error={error?.total_targated_population}
+            error={error?.total_targeted_population}
           />
         </InputSection>
         <InputSection
@@ -347,39 +374,6 @@ function Response(props: Props) {
         className={styles.plannedIntervention}
         visibleOverflow
       >
-        {value.needs_identified?.length !== 0 && (
-          <InputSection
-            title={strings.drefFormNeedsIdentified}
-          >
-            <div className={styles.identifiedNeeds}>
-              {value.needs_identified?.map((need) => (
-                need && need.title && (
-                  <div
-                    key={need.clientId}
-                    title={need.description}
-                    className={styles.need}
-                  >
-                    <div
-                      className={styles.icon}
-                      title={need.description}
-                    >
-                      <IoChevronForward />
-                    </div>
-                    <div className={styles.title}>
-                      {needsMap[need.title]}
-                    </div>
-                    <div
-                      className={styles.icon}
-                      title={need.description}
-                    >
-                      <IoInformationCircle />
-                    </div>
-                  </div>
-                )
-              ))}
-            </div>
-          </InputSection>
-        )}
         <InputSection>
           <DREFFileInput
             accept=".pdf"

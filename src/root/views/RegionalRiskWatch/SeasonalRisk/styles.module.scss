@@ -1,0 +1,9 @@
+@import '~styles/settings/variables';
+
+.risk-table-container {
+  margin: $spacing * 2 0;
+
+  .table-description {
+    padding: $spacing;
+  }
+}

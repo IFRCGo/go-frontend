@@ -27,42 +27,6 @@ import {
 
 import styles from './styles.module.scss';
 
-// Views.
-// import Home from '#views/home';
-// import About from '#views/about';
-// import Account from '#views/account';
-// import PasswordChange from '#views/password-change';
-// import Login from '#views/login';
-// import Register from '#views/register';
-// import RecoverAccount from '#views/recover-account';
-// import RecoverUsername from '#views/recover-username';
-// import ResendValidation from '#views/resend-validation';
-// import FourHundredFour from '#views/FourHundredFour';
-// import FieldReport from '#views/field-report';
-// import Emergencies from '#views/emergencies';
-// import Emergency from '#views/emergency';
-// import Region from '#views/region';
-// import Country from '#views/Country';
-// import Deployments from '#views/deployments';
-// import Table from '#views/table';
-// import Covid19ThreeWSankey from '#views/Covid19ThreeWSankey';
-// import PerForm from '#components/per-forms/per-form';
-// import PerAssessment from '#views/per-assessment';
-// import Preparedness from '#views/preparedness';
-// import TranslationDashboard from '#views/TranslationDashboard';
-// import ClearInitCache from '#views/ClearInitCache';
-// import NewThreeW from '#views/NewThreeW';
-// import FieldReportForm from '#views/FieldReportForm';
-// import GlobalThreeW from '#views/GlobalThreeW';
-// import AllThreeW from '#views/AllThreeW';
-// import ThreeW from '#views/ThreeW';
-// import ThreeWEdit from '#views/ThreeWEdit';
-
-
-// @DREF
-// import DrefApplicationForm from '#views/DrefApplicationForm';
-// import DrefPdfExport from '#components/DrefPdfExport';
-
 const Home = lazy(() => import('../views/home'));
 const About = lazy(() => import('../views/about'));
 const Account = lazy(() => import('../views/account'));
@@ -76,6 +40,7 @@ const FourHundredFour = lazy(() => import('../views/FourHundredFour'));
 const FieldReport = lazy(() => import('../views/field-report'));
 const Emergencies = lazy(() => import('../views/emergencies'));
 const Emergency = lazy(() => import('../views/emergency'));
+const EmergencyWrapper = lazy(() => import('../views/emergencyWrapper'));
 const Region = lazy(() => import('../views/region'));
 const Country = lazy(() => import('../views/Country'));
 const Deployments = lazy(() => import('../views/deployments'));
@@ -92,6 +57,13 @@ const GlobalThreeW = lazy(() => import('../views/GlobalThreeW'));
 const AllThreeW = lazy(() => import('../views/AllThreeW'));
 const ThreeW = lazy(() => import('../views/ThreeW'));
 const ThreeWEdit = lazy(() => import('../views/ThreeWEdit'));
+
+// NOTE: Temporary
+// const DrefApplicationForm = lazy(() => import('../views/DrefApplicationForm'));
+// const DrefPdfPreview = lazy(() => import('../views/DrefPdfPreview'));
+// const FlashUpdateApplicationForm = lazy(() => import('../views/FlashUpdateApplicationForm'));
+// const FlashUpdateReport = lazy(() => import('../views/FlashUpdateReport'));
+// const AllFlashUpdates = lazy(() => import('../views/AllFlashUpdates'));
 
 function LoadingGlobal() {
   return (
@@ -254,34 +226,36 @@ function Multiplexer(props) {
         <Suspense fallback={<InitialLoading />}>
           <BreadcrumbsProvider>
             <Switch>
-              <Route exact path='/' component={Home}/>
+              <Route exact path='/' component={Home} />
               <Route path='/clear-init-cache' component={ClearInitCache} />
-              <Route exact path='/covid19-3w-sankey' component={Covid19ThreeWSankey}/>
-              <PrivateRoute exact path='/translation-dashboard' component={TranslationDashboard}/>
-              <Route exact path='/about' component={About}/>
-              <PrivateRoute exact path='/account' component={Account}/>
-              <PrivateRoute exact path='/account/password-change' component={PasswordChange}/>
+              <Route exact path='/covid19-3w-sankey' component={Covid19ThreeWSankey} />
+              <PrivateRoute exact path='/translation-dashboard' component={TranslationDashboard} />
+              <Route exact path='/about' component={About} />
+              <PrivateRoute exact path='/account' component={Account} />
+              <PrivateRoute exact path='/account/password-change' component={PasswordChange} />
               <Route exact path='/appeals/all' render={props => <Table {...props} type='appeal' />} />
-              <AnonymousRoute exact path='/login' component={Login}/>
-              <AnonymousRoute exact path='/register' component={Register}/>
-              <AnonymousRoute exact path='/recover-account' component={RecoverAccount}/>
-              <AnonymousRoute exact path='/recover-account/:username/:token' component={RecoverAccount}/>
-              <AnonymousRoute exact path='/recover-username' component={RecoverUsername}/>
+              <AnonymousRoute exact path='/login' component={Login} />
+              <AnonymousRoute exact path='/register' component={Register} />
+              <AnonymousRoute exact path='/recover-account' component={RecoverAccount} />
+              <AnonymousRoute exact path='/recover-account/:username/:token' component={RecoverAccount} />
+              <AnonymousRoute exact path='/recover-username' component={RecoverUsername} />
               <AnonymousRoute exact path='/resend-validation' component={ResendValidation} />
-              <PrivateRoute key="new-field-report-form" exact path='/reports/new' component={FieldReportForm}/>
+              <PrivateRoute key="new-field-report-form" exact path='/reports/new' component={FieldReportForm} />
               <Route exact path='/reports/all' render={props => <Table {...props} type='report' />} />
-              <PrivateRoute exact path='/reports/:reportId/edit' component={FieldReportForm}/>
-              <Route exact path='/reports/:id' component={FieldReport}/>
-              <Route exact path='/emergencies' component={Emergencies}/>
+              <PrivateRoute exact path='/reports/:reportId/edit' component={FieldReportForm} />
+              <Route exact path='/reports/:id' component={FieldReport} />
+              <Route exact path='/emergencies' component={Emergencies} />
               <Route exact path='/emergencies/all' render={props => <Table {...props} type='emergency' />} />
               <Route exact path='/emergencies/:id/follow' component={Emergency}/>
               <Route exact path='/emergencies/:id' component={Emergency}/>
+              <Route exact path='/emergency/:slug' component={EmergencyWrapper}/>
               <Route exact path='/regions/:id' render={props => <Region {...props} type='region' />} />
               <Route exact path='/countries/:id' render={props => <Country {...props} type='country' />} />
               <Route exact path='/alerts/all' render={props => <Table {...props} type='alert' />} />
+              <Route exact path='/deployments' component={Deployments} />
               <Route exact path='/deployments/personnel/all' render={props => <Table {...props} type='personnel' />} />
               <Route exact path='/deployments/erus/all' render={props => <Table {...props} type='eru' />} />
-              <Route path='/deployments' component={Deployments}/>
+              <Route path='/deployments' component={Deployments} />
               <Route exact path='/per-form/:form_id' component={PerForm} />
               <Route exact path='/per-form/:form_id/edit' render={props => <PerForm {...props} isEdit={true} />} />
               <Route path='/per-assessment/create' render={props => <PerAssessment {...props} isCreate={true} />} />
@@ -289,18 +263,22 @@ function Multiplexer(props) {
               <Route exact path='/per-assessment/:id/edit' render={props => <PerAssessment {...props} isEdit={true} />} />
               <Route path='/preparedness' component={Preparedness} />
               <Route key="new-three-w" exact path='/three-w/new/' component={NewThreeW} />
-
-              {/* @DREF
-              <PrivateRoute key="new-dref-application-form" exact path='/dref-application/new/' component={DrefApplicationForm} />
-              <PrivateRoute exact path='/dref-application/:drefId/edit/' component={DrefApplicationForm} />
-              <PrivateRoute exact path='/dref-application/:drefId/export/' component={DrefPdfExport} />
-              */}
-
               <Route exact path='/three-w/all/' component={AllThreeW} />
               <Route exact path='/three-w/:projectId/' component={ThreeW} />
               <PrivateRoute exact path='/three-w/:projectId/edit/' component={ThreeWEdit} />
               <Route exact path='/three-w/' component={GlobalThreeW} />
-              <Route component={FourHundredFour}/>
+
+              {/* NOTE: Temporary
+              <PrivateRoute key="new-dref-application-form" exact path='/dref-application/new/' component={DrefApplicationForm} />
+              <PrivateRoute exact path='/dref-application/:drefId/edit/' component={DrefApplicationForm} />
+              <PrivateRoute exact path='/dref-application/:drefId/export/' component={DrefPdfPreview} />
+              <PrivateRoute key="new-flash-update-application-form" exact path='/flash-update/new/' component={FlashUpdateApplicationForm} />
+              <Route exact path='/flash-update/all/' component={AllFlashUpdates} />
+              <PrivateRoute exact path='/flash-update/:id/edit/' component={FlashUpdateApplicationForm} />
+              <Route exact path='/flash-update/:id/' component={FlashUpdateReport} />
+              */}
+
+              <Route component={FourHundredFour} />
             </Switch>
           </BreadcrumbsProvider>
         </Suspense>

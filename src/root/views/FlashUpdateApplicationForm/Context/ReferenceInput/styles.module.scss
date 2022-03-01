@@ -1,0 +1,20 @@
+@import '~styles/settings/_variables.scss';
+
+.reference {
+  display: flex;
+  flex-wrap: wrap;
+
+  .first-column {
+    flex-grow: 1;
+  }
+
+  .second-column {
+    flex-basis: 16rem;
+    flex-shrink: 0;
+  }
+
+  .actions {
+    flex-shrink: 0;
+    padding: $spacing;
+  }
+}

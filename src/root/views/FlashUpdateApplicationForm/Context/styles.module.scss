@@ -1,0 +1,22 @@
+@import '~styles/settings/_variables.scss';
+
+.context {
+  .actions {
+    justify-content: flex-end;
+    flex-basis: unset;
+    flex-grow: unset;
+    padding: 0 $spacing;
+  }
+
+  .map-input-content,
+  .graphics-input-content {
+    display: flex;
+    flex-direction: column;
+
+    .preview-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: $spacing;
+    }
+  }
+}

@@ -1,6 +1,6 @@
 import React from 'react';
 import memoize from 'memoize-one'; import { PropTypes as T } from 'prop-types';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { DateTime } from 'luxon';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
@@ -65,8 +65,11 @@ import PreparednessOverview from '#components/country/preparedness-overview';
 import KeyFiguresHeader from '#components/common/key-figures-header';
 import { SFPComponent } from '#utils/extendables';
 
+// NOTE: Temporary
+// import RiskWatch from './RiskWatch';
 import ThreeW from './ThreeW';
 // import CountryProfile from './CountryProfile';
+
 import { countryByIdOrNameSelector, regionsByIdSelector, disasterTypesSelectSelector } from '#selectors';
 
 const emptyObject = {};
@@ -159,6 +162,12 @@ class AdminArea extends SFPComponent {
         title: strings.country3WTab,
         hash: '#3w'
       },
+      /*
+      {
+        title: 'Risk Watch',
+        hash: '#risk',
+      },
+      */
       /*
       {
         title: strings.countryOverviewTab,
@@ -558,6 +567,18 @@ class AdminArea extends SFPComponent {
     } = this.props.adminArea;
     if (!fetched || error) return null;
 
+    const countryRegionMapping = {
+      '282': '1', // Americas
+      '283': '2', // Asia
+      '285': '0', // Africa
+      '286': '3', // Europe
+      '287': '4', // MENA
+    };
+
+    if (this.props.country.id in countryRegionMapping) {
+      return (<Redirect to={'/regions/' + countryRegionMapping[this.props.country.id] } />);
+    }
+
     // const bbox = getBoundingBox(data.iso);
     // const mapContainerClass = 'country__map';
 
@@ -705,6 +726,13 @@ class AdminArea extends SFPComponent {
                     </TabContent>
                   </div>
                 </TabPanel>
+                {/* NOTE: Temporary
+                <TabPanel>
+                  <TabContent>
+                    <RiskWatch countryId={this.props.country?.id} />
+                  </TabContent>
+                </TabPanel>
+                */}
                 {/*
                 <TabPanel>
                   <TabContent title='Overview'>

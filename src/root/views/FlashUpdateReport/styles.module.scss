@@ -1,0 +1,112 @@
+@import '~styles/settings/variables';
+
+%image-item {
+  flex-basis: 33%;
+  border: $base-border-color solid $base-border-width;
+
+  .image {
+    width: 100%;
+    height: 20rem;
+    object-fit: contain;
+    object-position: center center;
+    background-color: $grey-fog;
+  }
+
+  .caption {
+    padding: $spacing;
+  }
+}
+
+.flash-update {
+  .country-list {
+    display: flex;
+    justify-content: center;
+    gap: $spacing;
+  }
+
+  .main-content {
+    .report-details {
+      background-color: #fff;
+      padding: $spacing*2;
+      box-shadow: $base-box-shadow;
+      margin: $spacing/2 0 $spacing*4 0;
+      display: flex;
+      flex-direction: column;
+      gap: $spacing*4;
+
+      .maps {
+        display: flex;
+        flex-wrap: wrap;
+
+        .map-item {
+          @extend %image-item;
+        }
+      }
+
+      .graphics {
+        display: flex;
+        flex-wrap: wrap;
+
+        .graphic-item {
+          @extend %image-item;
+        }
+      }
+
+      .actions-taken {
+        display: flex;
+        flex-direction: column;
+        gap: $spacing * 3;
+
+        .title {
+          font-size: $font-size-sm;
+          color: $color-text-light;
+        }
+
+        .summary {
+          .text {
+            white-space: pre-wrap;
+          }
+        }
+
+        .action-taken-content {
+          display: flex;
+          flex-direction: column;
+          gap: $spacing*2;
+          padding: $spacing/2 $spacing;
+
+          .actions {
+            padding: $spacing/2 0;
+            display: flex;
+            flex-direction: column;
+            gap: $spacing/4;
+
+            .action {
+              font-weight: $base-font-medium;
+            }
+          }
+        }
+      }
+
+      .reference {
+        padding: $spacing;
+        gap: $spacing;
+        display: flex;
+
+        .date {
+          flex-basis: 10rem;
+          flex-shink: 0;
+        }
+
+        .url {
+          flex-basis: 20rem;
+          word-break: break-all;
+        }
+
+        .download-link {
+          flex-shrink: 0;
+        }
+      }
+    }
+
+  }
+}

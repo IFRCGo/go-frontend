@@ -1,6 +1,8 @@
 @import '~styles/settings/variables';
 
 .input-label {
+  display: flex;
+  align-items: center;
   font-weight: $base-font-medium;
   font-size: $font-size-sm;
   opacity: .7;

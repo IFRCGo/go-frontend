@@ -1,3 +1,31 @@
+### Release 5.8.0
+
+Date: 2022-03-01
+
+This release includes several improvements to the backend deployments process, as well as several bugfixes. It includes large code changes and updates preparing for upcoming releases of several new features: Risk Module, DREF and Flash Updates.
+
+Frontend:
+
+ - Code for Risk Module frontend (hidden)
+ - Code for DREF forms (hidden)
+ - Code for Flash Updates (hidden)
+ - Implementation for Pretty URLs for emergencies
+
+Backend:
+
+ - Backend implementation for new Flash Updates feature: models, APIs, tests.
+ - Configuration to manage Documents and uploads better
+ - Adding poetry as Python package manager
+ - Enable buildx for docker build
+ - Enable docker layer caching in Circle-CI
+ - Update README.md for poetry
+ - Add migration check to Circle-CI
+ - Provide empty default value for docker-compose env vars to disable warnings
+ - Enable editable slugs for Pretty URLs for emergencies
+ - Better reporting for erroneous CronJob runs
+ - Fix to handle rapid response deployments for multi-country emergencies
+
+
 ### Release 5.7.0
 
 Date: 2022-02-01

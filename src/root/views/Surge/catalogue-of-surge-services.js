@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import {  Route, Switch } from 'react-router-dom';
 import CatalogueOfSurgeServicesSubpage from "./catalogue-of-surge-services-subpage";
 import CatalogueOfSurgeServicesContent from './contentData/catalogue-of-surge-services-content';
+import SharepointLink from './contentData/map-pdf-to-sharepoint';
 
 export default class CatalogueOfSurgeServices extends React.Component {
 
@@ -159,7 +160,7 @@ export default class CatalogueOfSurgeServices extends React.Component {
                     <p>{strings.catalogueOfSurgeServicesTitleSubtitle1Text1}</p>
                     <p>{strings.catalogueOfSurgeServicesTitleSubtitle1Text2}</p>
                     <h3>{strings.catalogueOfSurgeServicesTitleSubtitle2}</h3>
-                    <a href={strings.catalogueOfSurgeServicesTitleSubtitle2LinkUrl1} > <u>{strings.catalogueOfSurgeServicesTitleSubtitle2Link1} </u> </a> {strings.catalogueOfSurgeServicesTitleSubtitle2Text1}
+                    <a href={SharepointLink['Core competency framework.pdf']} > <u>{strings.catalogueOfSurgeServicesTitleSubtitle2Link1} </u> </a> {strings.catalogueOfSurgeServicesTitleSubtitle2Text1}
                     {/* <p>{strings.catalogueOfSurgeServicesTitleSubtitle2Text1}</p> */}
                 </section>
             );

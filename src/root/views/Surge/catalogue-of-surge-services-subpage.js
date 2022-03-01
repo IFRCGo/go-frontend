@@ -500,7 +500,7 @@ export default class CatalogueOfSurgeServicesSubPage extends React.Component {
                             <div key={sectionIndex}>
                                 <h3 className="margin-4-t">{strings[section.title]}</h3>
                                 <p>
-                                    {strings[section.text]}
+                                    {strings[section.text] + ' '}
                                     <a href={section.urls[0].url} onClick={e => this.openNewTab(section.urls[0].url, e)}>{strings[section.urls[0].text]}</a>
                                 </p>
                             </div>

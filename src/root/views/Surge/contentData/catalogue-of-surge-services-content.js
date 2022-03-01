@@ -1,3 +1,4 @@
+import SharepointLink from './map-pdf-to-sharepoint';
 const CatalogueOfSurgeServicesContent = [
     {
         hash: "#emergency",
@@ -13,19 +14,19 @@ const CatalogueOfSurgeServicesContent = [
                         elements: [
                             {
                                 name: "catalogueOfSurgeServicesEmergencyCards1Card1Element1",
-                                url: "https://ifrcgo.org/global-services/assets/docs/assessment/Rapid%20Response%20Profile%20Assessment%20Coordinator.pdf"
+                                url: SharepointLink['Assessment Coordinator.pdf'],
                             },
                             {
                                 name: "catalogueOfSurgeServicesEmergencyCards1Card1Element2",
-                                url: "https://ifrcgo.org/global-services/assets/docs/assessment/Rapid%20Response%20Profile%20Humanitarian%20Information%20Analysis%20Officer.pdf"
+                                url: SharepointLink["Assessment Humanitarian Information Analysis Officer.pdf"],
                             },
                             {
                                 name: "catalogueOfSurgeServicesEmergencyCards1Card1Element3",
-                                url: "https://ifrcgo.org/global-services/assets/docs/assessment/Rapid%20Response%20Profile%20Primary%20Data%20Collection%20Officer.pdf"
+                                url: SharepointLink["Assessment Primary Data Collection Officer.pdf"],
                             },
                             {
                                 name: "catalogueOfSurgeServicesEmergencyCards1Card1Element4",
-                                url: "https://ifrcgo.org/global-services/assets/docs/assessment/Rapid%20Response%20Profile%20Mapping%20and%20Visualization%20Officer.pdf"
+                                url: SharepointLink["Assessment Mapping and Visualization Officer.pdf"],
                             }
                         ]
                     },
@@ -36,7 +37,7 @@ const CatalogueOfSurgeServicesContent = [
                         buttons: [
                             {
                                 btnText: 'catalogueOfSurgeServicesEmergencyCards1Card2BtnText',
-                                url: 'https://ifrcgo.org/global-services/assets/docs/assessment/Assessment%20technical%20competency%20framework%20March%202020.pdf'
+                                url: SharepointLink["Assessment Technical Competency Framework.pdf"]
                             }
                         ]
                     }
@@ -122,15 +123,15 @@ const CatalogueOfSurgeServicesContent = [
                         elements: [
                             {
                                 name: "catalogueOfSurgeServicesCashCards1Card1Element1",
-                                url: 'https://ifrcgo.org/global-services/assets/docs/cash/Rapid%20Response%20Profile%20Cash%20and%20Vouchers%20Assistance%20Coordinator.pdf'
+                                url: SharepointLink['Cash and Voucher Assistance Coordinator.pdf']
                             },
                             {
                                 name: "catalogueOfSurgeServicesCashCards1Card1Element2",
-                                url: 'https://ifrcgo.org/global-services/assets/docs/cash/Rapid%20Response%20Profile%20Cash%20and%20Vouchers%20Assistance%20Officer.pdf'
+                                url: SharepointLink['Cash and Voucher Assistance Officer.pdf']
                             },
                             {
                                 name: "catalogueOfSurgeServicesCashCards1Card1Element3",
-                                url: 'https://ifrcgo.org/global-services/assets/docs/cash/Rapid%20Response%20Profile%20CVA%20IM%20Officer.pdf'
+                                url: SharepointLink['Cash and Voucher Assistance IM Officer.pdf']
                             }
                         ]
                     },
@@ -141,7 +142,7 @@ const CatalogueOfSurgeServicesContent = [
                         buttons: [
                             {
                                 btnText: 'catalogueOfSurgeServicesCashCards1Card2BtnText',
-                                url: 'https://ifrcgo.org/global-services/assets/docs/cash/CVA%20Technical%20Competency%20Framework%202019-11.pdf'
+                                url: SharepointLink['CVA Technical Competency Framework.pdf']
                             }
                         ]
                     }
@@ -194,15 +195,15 @@ const CatalogueOfSurgeServicesContent = [
                         elements: [
                             {
                                 name: "catalogueOfSurgeServicesCommunityCards1Card1Element1",
-                                url: 'https://ifrcgo.org/global-services/assets/docs/cea/Rapid%20Response%20Profile%20CEA%20Coordinator.pdf'
+                                url: SharepointLink['CEA Coordinator.pdf']
                             },
                             {
                                 name: "catalogueOfSurgeServicesCommunityCards1Card1Element2",
-                                url: 'https://ifrcgo.org/global-services/assets/docs/cea/Rapid%20Response%20Profile%20CEA%20Officer%20(Accountability).pdf'
+                                url: SharepointLink['CEA Officer (Accountability).pdf']
                             },
                             {
                                 name: "catalogueOfSurgeServicesCommunityCards1Card1Element3",
-                                url: 'https://ifrcgo.org/global-services/assets/docs/cea/Rapid%20Response%20Profile%20CEA%20Officer%20(RCCE).pdf'
+                                url: SharepointLink['CEA Officer (RCCE).pdf']
                             }
                         ]
                     },
@@ -213,7 +214,7 @@ const CatalogueOfSurgeServicesContent = [
                         buttons: [
                             {
                                 btnText: 'catalogueOfSurgeServicesCommunityCards1Card2BtnText',
-                                url: 'https://ifrcgo.org/global-services/assets/docs/cea/CEA%20surge%20competency%20framework%20March%202020.pdf'
+                                url: SharepointLink['CEA Technical Competency Framework.pdf']
                             }
                         ]
                     }
@@ -266,27 +267,27 @@ const CatalogueOfSurgeServicesContent = [
                         elements: [
                             {
                                 name: "catalogueOfSurgeServicesCommunicationCards1Card1Element1",
-                                url: 'https://ifrcgo.org/global-services/assets/docs/comms/Rapid%20Response%20Profile%20Communications%20Coordinator.pdf'
+                                url: SharepointLink['Communications Coordinator.pdf']
                             },
                             {
                                 name: "catalogueOfSurgeServicesCommunicationCards1Card1Element2",
-                                url: 'https://ifrcgo.org/global-services/assets/docs/comms/Rapid%20Response%20Profile%20Communications%20Team%20Leader.pdf'
+                                url: SharepointLink['Communications Team Leader.pdf']
                             },
                             {
                                 name: "catalogueOfSurgeServicesCommunicationCards1Card1Element6",
-                                url: 'https://ifrcgo.org/global-services/assets/docs/comms/AV%20Officer%20Role%20Profile.pdf'
+                                url: SharepointLink['AV Officer Role Profile.pdf']
                             },
                             {
                                 name: "catalogueOfSurgeServicesCommunicationCards1Card1Element3",
-                                url: 'https://ifrcgo.org/global-services/assets/docs/comms/Rapid%20Response%20Profile%20AV%20Officer%20-%20Videographer.pdf'
+                                url: SharepointLink['AV Officer - Photographer.pdf']
                             },
                             {
                                 name: "catalogueOfSurgeServicesCommunicationCards1Card1Element4",
-                                url: 'https://ifrcgo.org/global-services/assets/docs/comms/Rapid%20Response%20Profile%20AV%20Officer%20-%20Photographer.pdf'
+                                url: SharepointLink['AV Officer - Videographer.pdf']
                             },
                             {
                                 name: "catalogueOfSurgeServicesCommunicationCards1Card1Element5",
-                                url: 'https://ifrcgo.org/global-services/assets/docs/comms/Rapid%20Response%20Profile%20Communications%20Officer.pdf'
+                                url: SharepointLink['Communications Officer.pdf']
                             }
                         ]
                     },
@@ -297,7 +298,7 @@ const CatalogueOfSurgeServicesContent = [
                         buttons: [
                             {
                                 btnText: 'catalogueOfSurgeServicesSelectorCommunications',
-                                url: 'https://ifrcgo.org/global-services/assets/docs/comms/Technical%20competencies%20for%20communications%20surge%20personnel%20March%202020.pdf'
+                                url: SharepointLink['Communications Technical Competency Framework.pdf']
                             }
                         ]
                     }
@@ -345,36 +346,36 @@ const CatalogueOfSurgeServicesContent = [
                         elements: [
                             {
                                 name: "catalogueOfSurgeServicesHealthCards1Card1Element1",
-                                url: 'https://ifrcgo.org/global-services/assets/docs/health/Rapid%20Response%20Profile%20Health%20Coordinator.pdf'
+                                url: SharepointLink['Health Coordinator.pdf']
                             },
                             {
                                 name: "catalogueOfSurgeServicesHealthCards1Card1Element2",
-                                url: 'https://ifrcgo.org/global-services/assets/docs/health/Rapid%20Response%20Profile%20Medical%20Coordinator.pdf'
+                                url: SharepointLink['Medical Coordinator.pdf']
                             },
                             {
                                 name: "catalogueOfSurgeServicesHealthCards1Card1Element3",
-                                url: 'https://ifrcgo.org/global-services/assets/docs/health/Rapid%20Response%20Profile%20Public%20Health%20in%20Emergencies%20Coordinator.pdf'
+                                url: SharepointLink['Public Health in Emergencies Coordinator.pdf']
                             },
                             {
                                 name: "catalogueOfSurgeServicesHealthCards1Card1Element4",
-                                url: 'https://ifrcgo.org/global-services/assets/docs/health/Rapid%20Response%20Profile%20Safe%20and%20Dignified%20Burials%20Coordinator.pdf'
+                                url: SharepointLink['Safe and Dignified Burials Coordinator.pdf']
                             },
                             
                             {
                                 name: "catalogueOfSurgeServicesHealthCards1Card1Element6",
-                                url: 'https://ifrcgo.org/global-services/assets/docs/health/Rapid%20Response%20Profile%20Mental%20Health%20and%20Psychosocial%20Support%20Coordinator.pdf'
+                                url: SharepointLink['Mental Health and Psychosocial Support Coordinator.pdf']
                             },
                             {
                                 name: "catalogueOfSurgeServicesHealthCards1Card1Element7",
-                                url: 'https://ifrcgo.org/global-services/assets/docs/health/Rapid%20Response%20Profile%20Mental%20Health%20and%20Psychosocial%20Support%20Officer.pdf'
+                                url: SharepointLink['MHPSS Officer.pdf']
                             },
                             {
                                 name: "catalogueOfSurgeServicesHealthCards1Card1Element8",
-                                url: 'https://ifrcgo.org/global-services/assets/docs/health/Rapid%20Response%20Profile%20MHPSS%20Community%20Outreach%20Officer.pdf'
+                                url: SharepointLink['MHPSS Community Outreach Officer.pdf']
                             },
                             {
                                 name: "catalogueOfSurgeServicesHealthCards1Card1Element9",
-                                url: 'https://ifrcgo.org/global-services/assets/docs/health/Rapid%20Response%20Profile%20ERU%20health%20facility%20MHPSS%20Officer.pdf'
+                                url: SharepointLink['ERU health facility MHPSS Officer.pdf']
                             }
                         ]
                     },
@@ -385,11 +386,11 @@ const CatalogueOfSurgeServicesContent = [
                         buttons: [
                             {
                                 btnText: 'catalogueOfSurgeServicesSelectorHealth',
-                                url: 'https://ifrcgo.org/global-services/assets/docs/health/Health%20CF.pdf'
+                                url: SharepointLink['Health Technical Competency Framework.pdf']
                             },
                             {
                                 btnText: 'catalogueOfSurgeServicesHealthCards1Card2BtnText',
-                                url: 'https://ifrcgo.org/global-services/assets/docs/health/PSS%20Final%20version%20CF%20September%2016.pdf'
+                                url: SharepointLink['Health PSS.pdf']
                             }
                         ]
                     }
@@ -506,23 +507,23 @@ const CatalogueOfSurgeServicesContent = [
                         cardTitle: "catalogueOfSurgeServicesCardTitleRoleProfiles",
                         elements: [
                             {
-                                name: "catalogueOfSurgeServicesIformationManCards1Card1Element1",
-                                url: 'https://ifrcgo.org/global-services/assets/docs/im/Rapid%20Response%20Profile%20IM%20Coordinator.pdf'
+                                name: "catalogueOfSurgeServicesInformationManCards1Card1Element1",
+                                url: SharepointLink['IM Coordinator.pdf']
                             },
                             {
-                                name: "catalogueOfSurgeServicesIformationManCards1Card1Element2",
-                                url: 'https://ifrcgo.org/global-services/assets/docs/im/Rapid%20Response%20Profile%20Humanitarian%20Information%20Analysis%20Officer.pdf'
+                                name: "catalogueOfSurgeServicesInformationManCards1Card1Element2",
+                                url: SharepointLink['Humanitarian Information Analysis Officer.pdf']
                             },
                             {
-                                name: "catalogueOfSurgeServicesIformationManCards1Card1Element3",
-                                url: 'https://ifrcgo.org/global-services/assets/docs/im/Rapid%20Response%20Profile%20Primary%20Data%20Collection%20Officer.pdf'
+                                name: "catalogueOfSurgeServicesInformationManCards1Card1Element3",
+                                url: SharepointLink['Primary Data Collection Officer.pdf']
                             },
                             {
-                                name: "catalogueOfSurgeServicesIformationManCards1Card1Element4",
-                                url: 'https://ifrcgo.org/global-services/assets/docs/im/Rapid%20Response%20Profile%20Mapping%20and%20Visualization%20Officer.pdf'
+                                name: "catalogueOfSurgeServicesInformationManCards1Card1Element4",
+                                url: SharepointLink['Mapping and Visualization Officer.pdf']
                             },
-                            
-                           
+
+
                         ]
                     },
                     {
@@ -530,16 +531,16 @@ const CatalogueOfSurgeServicesContent = [
                         cardTitle: 'catalogueOfSurgeServicesCardsTitleTechnicalCompetencyFramework',
                         cardText: 'catalogueOfSurgeServicesCardsTitleTechnicalCompetencyFrameworkText',
                         buttons: [
-                        
+
                             {
-                                btnText: 'catalogueOfSurgeServicesIformationManCards1Card1Element5',
-                                url: 'https://ifrcgo.org/global-services/assets/docs/assessment/Assessment%20technical%20competency%20framework%20March%202020.pdf'
+                                btnText: 'catalogueOfSurgeServicesInformationManCards1Card1Element5',
+                                url: SharepointLink["Assessment Technical Competency Framework.pdf"]
                             }
                         ]
                     }
                 ]
             },
-            
+
             {
                 cardsTitle: "catalogueOfSurgeServicesCardsTitleServices",
                 cards: [
@@ -613,13 +614,13 @@ const CatalogueOfSurgeServicesContent = [
                     }
                 ]
             }
-          
+
         ]
     },
     {
         hash: "#informationTech",
         sectionTitle: "catalogueOfSurgeServicesSelectorInformationTech",
-        sectionText: "catalogueOfSurgeServicesIformationTechSectionText",
+        sectionText: "catalogueOfSurgeServicesInformationTechSectionText",
         sectionCards: [
             {
                 cardsTitle: "catalogueOfSurgeServicesCardsTitleRapidResponsePersonnel",
@@ -629,12 +630,12 @@ const CatalogueOfSurgeServicesContent = [
                         cardTitle: "catalogueOfSurgeServicesCardTitleRoleProfiles",
                         elements: [
                             {
-                                name: "catalogueOfSurgeServicesIformationTechCards1Card1Element1",
-                                url: 'https://ifrcgo.org/global-services/assets/docs/itt/Rapid%20Response%20Profile%20IT%20and%20Telecom%20Coordinator.pdf'
+                                name: "catalogueOfSurgeServicesInformationTechCards1Card1Element1",
+                                url: SharepointLink['IT and Telecom Coordinator.pdf']
                             },
                             {
-                                name: "catalogueOfSurgeServicesIformationTechCards1Card1Element2",
-                                url: 'https://ifrcgo.org/global-services/assets/docs/itt/Rapid%20Response%20Profile%20IT%20and%20Telecom%20Officer.pdf'
+                                name: "catalogueOfSurgeServicesInformationTechCards1Card1Element2",
+                                url: SharepointLink['IT and Telecom Officer.pdf']
                             }
                         ]
                     }
@@ -646,7 +647,7 @@ const CatalogueOfSurgeServicesContent = [
                     {
                         cardType: 'textBtn',
                         cardTitle: 'catalogueOfSurgeServicesCardsTitleEmergencyResponseUnit',
-                        cardText: 'catalogueOfSurgeServicesIformationTechCards2Card1Text',
+                        cardText: 'catalogueOfSurgeServicesInformationTechCards2Card1Text',
                         cardBtnText: 'catalogueOfSurgeServicesCardBtnTextLearnMore',
                         url: '#eru-it-telecom'
                     }
@@ -766,47 +767,47 @@ const CatalogueOfSurgeServicesContent = [
                         elements: [
                             {
                                 name: "catalogueOfSurgeServicesLogisticsCards1Card1Element1",
-                                url: 'https://ifrcgo.org/global-services/assets/docs/logs/Rapid%20Response%20Profile%20Supply%20Chain%20Coordinator.pdf'
+                                url: SharepointLink['Supply Chain Coordinator.pdf']
                             },
                             {
                                 name: "catalogueOfSurgeServicesLogisticsCards1Card1Element2",
-                                url: 'https://ifrcgo.org/global-services/assets/docs/logs/Rapid%20Response%20Profile%20Logistics%20ERU%20Team%20Leader.pdf'
+                                url: SharepointLink['Logistics ERU Team Leader.pdf']
                             },
                             {
                                 name: "catalogueOfSurgeServicesLogisticsCards1Card1Element3",
-                                url: 'https://ifrcgo.org/global-services/assets/docs/logs/Rapid%20Response%20Profile%20Airops%20Officer%20.pdf'
+                                url: SharepointLink['Airops Officer .pdf']
                             },
                             {
                                 name: "catalogueOfSurgeServicesLogisticsCards1Card1Element4",
-                                url: 'https://ifrcgo.org/global-services/assets/docs/logs/Rapid%20Response%20Profile%20Cash%20Logistics%20Officer.pdf'
+                                url: SharepointLink['Cash Logistics Officer.pdf']
                             },
                             {
                                 name: "catalogueOfSurgeServicesLogisticsCards1Card1Element5",
-                                url: 'https://ifrcgo.org/global-services/assets/docs/logs/Rapid%20Response%20Profile%20Fleet%20Officer.pdf'
+                                url: SharepointLink['Fleet Officer.pdf']
                             },
                             {
                                 name: "catalogueOfSurgeServicesLogisticsCards1Card1Element6",
-                                url: 'https://ifrcgo.org/global-services/assets/docs/logs/Rapid%20Response%20Profile%20Logistics%20Officer.pdf'
+                                url: SharepointLink['Logistics Officer.pdf']
                             },
                             {
                                 name: "catalogueOfSurgeServicesLogisticsCards1Card1Element7",
-                                url: 'https://ifrcgo.org/global-services/assets/docs/logs/Rapid%20Response%20Profile%20Medical%20Logistics%20Officer.pdf'
+                                url: SharepointLink['Medical Logistics Officer.pdf']
                             },
                             {
                                 name: "catalogueOfSurgeServicesLogisticsCards1Card1Element8",
-                                url: 'https://ifrcgo.org/global-services/assets/docs/logs/Rapid%20Response%20Profile%20Logistics%20Pipeline%20Management%20Officer.pdf'
+                                url: SharepointLink['Logistics Pipeline Management Officer.pdf']
                             },
                             {
                                 name: "catalogueOfSurgeServicesLogisticsCards1Card1Element9",
-                                url: 'https://ifrcgo.org/global-services/assets/docs/logs/Rapid%20Response%20Profile%20Procurement%20Officer.pdf'
+                                url: SharepointLink['Procurement Officer.pdf']
                             },
                             {
                                 name: "catalogueOfSurgeServicesLogisticsCards1Card1Element10",
-                                url: 'https://ifrcgo.org/global-services/assets/docs/logs/Rapid%20Response%20Profile%20Supply%20Chain%20Admin%20Officer%20.pdf'
+                                url: SharepointLink['Supply Chain Admin Officer .pdf']
                             },
                             {
                                 name: "catalogueOfSurgeServicesLogisticsCards1Card1Element11",
-                                url: 'https://ifrcgo.org/global-services/assets/docs/logs/Rapid%20Response%20Profile%20Warehouse%20Officer.pdf'
+                                url: SharepointLink['Warehouse Officer.pdf']
                             }
                         ]
                     },
@@ -817,7 +818,7 @@ const CatalogueOfSurgeServicesContent = [
                         buttons: [
                             {
                                 btnText: 'catalogueOfSurgeServicesSelectorLogistics',
-                                url: 'https://ifrcgo.org/global-services/assets/docs/logs/IFRC%20Logistics%20Technical%20Competency%20Framework%20v%205%20March%202020.pdf'
+                                url: SharepointLink['Logistics Technical Competency Framework.pdf']
                             }
                         ]
                     }
@@ -877,27 +878,27 @@ const CatalogueOfSurgeServicesContent = [
                         elements: [
                             {
                                 name: "catalogueOfSurgeServicesOperationsCards1Card1Element1",
-                                url: 'https://ifrcgo.org/global-services/assets/docs/opsmanagement/Head%20of%20Emergency%20Operations%20Role%20Profile.pdf'
+                                url: SharepointLink['Head of Emergency Operations.pdf']
                             },
                             {
                                 name: "catalogueOfSurgeServicesOperationsCards1Card1Element2",
-                                url: 'https://ifrcgo.org/global-services/assets/docs/opsmanagement/Rapid%20Response%20Profile%20Operations%20Manager.pdf'
+                                url: SharepointLink['Operations Manager.pdf']
                             },
                             {
                                 name: "catalogueOfSurgeServicesOperationsCards1Card1Element3",
-                                url: 'https://ifrcgo.org/global-services/assets/docs/opsmanagement/Rapid%20Response%20Profile%20Deputy%20Operations%20Manager.pdf'
+                                url: SharepointLink['Deputy Operations Manager.pdf']
                             },
                             {
                                 name: "catalogueOfSurgeServicesOperationsCards1Card1Element4",
-                                url: 'https://ifrcgo.org/global-services/assets/docs/opsmanagement/Rapid%20Response%20Profile%20Field%20Coordinator.pdf'
+                                url: SharepointLink['Field Coordinator.pdf']
                             },
                             {
                                 name: "catalogueOfSurgeServicesOperationsCards1Card1Element5",
-                                url: 'https://ifrcgo.org/global-services/assets/docs/opsmanagement/Movement%20Coordination%20Officer%20Role%20Profile.pdf'
+                                url: SharepointLink['Movement Coordination Officer.pdf']
                             },
                             {
                                 name: "catalogueOfSurgeServicesOperationsCards1Card1Element7",
-                                url: 'https://ifrcgo.org/global-services/assets/docs/opsmanagement/Rapid%20Response%20Profile%20Recovery%20Coordinator.pdf'
+                                url: SharepointLink['OM Recovery Coordinator.pdf']
                             },
                             /* coming soon not wanted 2
                             {
@@ -937,11 +938,11 @@ const CatalogueOfSurgeServicesContent = [
                         elements: [
                             {
                                 name: "catalogueOfSurgeServicesProtectionCards1Card1Element1",
-                                url: 'https://ifrcgo.org/global-services/assets/docs/pgi/Rapid%20Response%20Profile%20Protection,%20Gender%20and%20Inclusion%20Coordinator.pdf'
+                                url: SharepointLink['Protection, Gender and Inclusion Coordinator.pdf']
                             },
                             {
                                 name: "catalogueOfSurgeServicesProtectionCards1Card1Element2",
-                                url: 'https://ifrcgo.org/global-services/assets/docs/pgi/Rapid%20Response%20Profile%20Protection,%20Gender%20and%20Inclusion%20Officer.pdf'
+                                url: SharepointLink['Protection, Gender and Inclusion Officer.pdf']
                             }
                         ]
                     },
@@ -952,7 +953,7 @@ const CatalogueOfSurgeServicesContent = [
                         buttons: [
                             {
                                 btnText: 'catalogueOfSurgeServicesProtectionCards1Card2BtnText',
-                                url: 'https://ifrcgo.org/global-services/assets/docs/pgi/PGI%20Technical%20Competency%20Framework%20March%202020.pdf'
+                                url: SharepointLink['PGI Technical Competency Framework.pdf']
                             }
                         ]
                     }
@@ -1005,11 +1006,11 @@ const CatalogueOfSurgeServicesContent = [
                         elements: [
                             {
                                 name: "catalogueOfSurgeServicesPlanningCards1Card1Element3",
-                                url: 'https://ifrcgo.org/global-services/assets/docs/pmer/Rapid%20Response%20Profile%20PMER%20Coordinator.pdf'
+                                url: SharepointLink['PMER Coordinator.pdf']
                             },
                             {
                                 name: "catalogueOfSurgeServicesPlanningCards1Card1Element2",
-                                url: 'https://ifrcgo.org/global-services/assets/docs/pmer/Rapid%20Response%20Profile%20PMER%20Officer.pdf'
+                                url: SharepointLink['PMER Officer.pdf']
                             }
                         ]
                     }
@@ -1063,7 +1064,7 @@ const CatalogueOfSurgeServicesContent = [
                         buttons: [
                             {
                                 btnText: 'catalogueOfSurgeServicesSelectorRelief',
-                                url: 'https://ifrcgo.org/global-services/assets/docs/relief/201115%20Relief%20(CVA%20and%20NFIs)%20competency%20framework_V7.pdf'
+                                url: SharepointLink['Relief Technical Competency Framework.pdf']
                             }
                         ]
                     }
@@ -1097,7 +1098,7 @@ const CatalogueOfSurgeServicesContent = [
                         elements: [
                             {
                                 name: "catalogueOfSurgeServicesPlanningCards1Card1Element1",
-                                url: 'https://ifrcgo.org/global-services/assets/docs/security/Rapid%20Response%20Profile%20Security%20Coordinator.pdf'
+                                url: SharepointLink['Security Coordinator.pdf']
                             }
                         ]
                     }
@@ -1131,19 +1132,19 @@ const CatalogueOfSurgeServicesContent = [
                         elements: [
                             {
                                 name: "catalogueOfSurgeServicesShelterCards1Card1Element1",
-                                url: 'https://ifrcgo.org/global-services/assets/docs/shelter/Rapid%20Response%20Profile%20Shelter%20Programme%20Coordinator.pdf'
+                                url: SharepointLink['Shelter Programme Coordinator.pdf']
                             },
                             {
                                 name: "catalogueOfSurgeServicesShelterCards1Card1Element2",
-                                url: 'https://ifrcgo.org/global-services/assets/docs/shelter/Rapid%20Response%20Profile%20Shelter%20Programme%20Team%20Leader.pdf'
+                                url: SharepointLink['Shelter Programme Team Leader.pdf']
                             },
                             {
                                 name: "catalogueOfSurgeServicesShelterCards1Card1Element3",
-                                url: 'https://ifrcgo.org/global-services/assets/docs/shelter/Rapid%20Response%20Profile%20Shelter%20Programme%20Technical%20Officer.pdf'
+                                url: SharepointLink['Shelter Programme Technical Officer.pdf']
                             },
                             {
                                 name: "catalogueOfSurgeServicesShelterCards1Card1Element4",
-                                url: 'https://ifrcgo.org/global-services/assets/docs/shelter/Rapid%20Response%20Profile%20Shelter%20Cluster%20Coordinator.pdf'
+                                url: SharepointLink['Shelter Cluster Coordinator.pdf']
                             },
                             /* coming soon not wanted 4
                             {
@@ -1188,7 +1189,7 @@ const CatalogueOfSurgeServicesContent = [
                         buttons: [
                             {
                                 btnText: 'catalogueOfSurgeServicesShelterCards1Card2BtnText',
-                                url: 'https://ifrcgo.org/global-services/assets/docs/shelter/Shelter%20and%20Settlements%20Technical%20Competency%20Framework%20March%202020.pdf'
+                                url: SharepointLink['Shelter and Settlements Technical Competency Framework.pdf']
                             }
                         ]
                     }
@@ -1229,19 +1230,19 @@ const CatalogueOfSurgeServicesContent = [
                         elements: [
                             {
                                 name: "catalogueOfSurgeServicesWaterCards1Card1Element1",
-                                url: 'https://ifrcgo.org/global-services/assets/docs/wash/Rapid%20Response%20Profile%20WASH%20Coordinator.pdf'
+                                url: SharepointLink['WASH Coordinator.pdf']
                             },
                             {
                                 name: "catalogueOfSurgeServicesWaterCards1Card1Element2",
-                                url: 'https://ifrcgo.org/global-services/assets/docs/wash/Rapid%20Response%20Profile%20WASH%20Officer.pdf'
+                                url: SharepointLink['WASH Officer.pdf']
                             },
                             {
                                 name: "catalogueOfSurgeServicesWaterCards1Card1Element3",
-                                url: 'https://ifrcgo.org/global-services/assets/docs/wash/Rapid%20Response%20Profile%20WASH%20Officer%20-%20Hygiene%20Promotion.pdf'
+                                url: SharepointLink['WASH Officer - Hygiene Promotion.pdf']
                             },
                             {
                                 name: "catalogueOfSurgeServicesWaterCards1Card1Element4",
-                                url: 'https://ifrcgo.org/global-services/assets/docs/wash/Rapid%20Response%20Profile%20WASH%20Officer%20-%20Sanitation%20Engineer.pdf'
+                                url: SharepointLink['WASH Officer - Sanitation Engineer.pdf']
                             },
                         ]
                     },
@@ -1252,7 +1253,7 @@ const CatalogueOfSurgeServicesContent = [
                         buttons: [
                             {
                                 btnText: 'catalogueOfSurgeServicesWaterCards1Card2BtnText',
-                                url: 'https://ifrcgo.org/global-services/assets/docs/wash/IFRC%20WASH%20Competency%20Framework%20March%202020.pdf'
+                                url: SharepointLink['WASH Technical Competency Framework.pdf']
                             }
                         ]
                     }

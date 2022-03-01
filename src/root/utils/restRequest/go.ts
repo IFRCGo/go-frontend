@@ -1,13 +1,16 @@
-import {
-  isDefined,
-  mapToMap,
-  isFalsyString,
-} from '@togglecorp/fujs';
 import { resolve as resolveUrl } from 'url';
 import { get as getFromLocalStorage } from 'local-storage';
+import {
+  isDefined,
+  isFalsyString,
+} from '@togglecorp/fujs';
 import { ContextInterface } from '@togglecorp/toggle-request';
+import { internal } from '@togglecorp/toggle-form';
 
-import { api } from '#config';
+import {
+  riskApi,
+  api,
+} from '#config';
 import store from '#utils/store';
 import { isObject } from '#utils/common';
 
@@ -22,9 +25,7 @@ export type ResponseError = {
 
 export interface TransformedError {
   value: {
-    formErrors: {
-      [key: string]: string | undefined;
-    },
+    formErrors: Record<string, unknown> & { [internal]: string },
     messageForNotification: string,
   };
   status: number | undefined;
@@ -38,42 +39,33 @@ export interface AdditionalOptions {
 }
 
 
-function transformError(response: ResponseError): TransformedError['value']['formErrors'] {
+function transformError(response: ResponseError, fallbackMessage: string): TransformedError['value']['formErrors'] {
   const {
     originalReponse,
     responseText,
   } = response;
 
-  let errors = {};
   if (!response) {
-    return errors;
+      return { [internal]: 'Empty error response from server' };
   }
-
   if (originalReponse.headers.get('content-type') === CONTENT_TYPE_JSON) {
     try {
       const json = JSON.parse(responseText);
-
-      if (Array.isArray(json)) {
-        return { $internal: json.join(', ') };
-      }
-
       if (isObject(json)) {
-        const errorMap = mapToMap(
-          (json) as Record<string, string>,
-          item => item,
-          item => (Array.isArray(item) ? item.join(' ') : item),
-        );
-
-        return errorMap;
+        // NOTE: this case may not occur
+        return {
+          [internal]: fallbackMessage,
+          ...json,
+        };
       }
-
-      return { $internal: 'Response content type mismatch' };
+      // FIXME: rename error message
+      return { [internal]: 'Response content type mismatch' };
     } catch(e) {
-      return { $internal: responseText };
+      return { [internal]: responseText };
     }
   }
 
-  return { $internal: responseText };
+  return { [internal]: responseText };
 }
 
 type GoContextInterface = ContextInterface<
@@ -83,9 +75,23 @@ type GoContextInterface = ContextInterface<
   AdditionalOptions
 >;
 
-export const processGoUrls: GoContextInterface['transformUrl'] = (url) => (
-  isFalsyString(url) ? '' : /http/.test(url) ? url : resolveUrl(api, url)
-);
+const riskPrefix = 'risk://';
+export const processGoUrls: GoContextInterface['transformUrl'] = (url) => {
+  if (isFalsyString(url)) {
+    return '';
+  }
+
+  if (url.startsWith(riskPrefix)) {
+    const cleanedUrl = url.slice(riskPrefix.length - 1);
+    return resolveUrl(riskApi, cleanedUrl);
+  }
+
+  if (/^https?:\/\//i.test(url)) {
+    return url;
+  }
+
+  return resolveUrl(api, url);
+};
 
 type Literal = string | number | boolean | File;
 type FormDataCompatibleObj = Record<string, Literal | Literal[] | null | undefined>;
@@ -204,7 +210,7 @@ export const processGoError: GoContextInterface['transformError'] = (
       value: {
         messageForNotification: 'Cannot communicate with the server! Please, make sure you have an active internet connection and try again!',
         formErrors: {
-          $internal: 'Network error',
+          [internal]: 'Network error',
         },
       },
       status: undefined,
@@ -223,7 +229,7 @@ export const processGoError: GoContextInterface['transformError'] = (
       value: {
         messageForNotification: 'There was a problem parsing the response from server',
         formErrors: {
-          $internal: 'Response parse error',
+          [internal]: 'Response parse error',
         },
       },
       status: undefined,
@@ -237,23 +243,31 @@ export const processGoError: GoContextInterface['transformError'] = (
   }
 
   const { method } = requestOptions;
-  const formErrors = transformError(responseError);
 
-  let finalMessage = method === 'GET'
-    ? 'Failed to load data'
-    : 'Some error occurred while performing this action.';
+  // default fallback message for GET
+  let fallbackMessage = 'Failed to load data';
 
-  let messageForNotification = formErrors?.$internal ?? finalMessage;
-
-  if (method === 'POST' && responseError?.status === 401) {
-    messageForNotification = 'You do not have enough permission to perform this action';
+  if (method !== 'GET') {
+    switch (responseError?.status) {
+      case 401:
+        fallbackMessage = 'You do not have enough permission to perform this action';
+        break;
+      case 413:
+        fallbackMessage = 'Your request was refused because the payload was too large';
+        break;
+      default:
+        fallbackMessage = 'Some error occurred while performing this action.';
+        break;
+    }
   }
+
+  const formErrors = transformError(responseError, fallbackMessage);
 
   return {
     reason: 'server',
     value: {
       formErrors,
-      messageForNotification,
+      messageForNotification: formErrors[internal],
       errorText: responseError.responseText,
     },
     status: responseError?.status,

@@ -1,0 +1,11 @@
+@import '~styles/settings/variables';
+
+.dropdown-container {
+  padding: $spacing/2;
+  max-width: 24rem;
+
+  .content {
+    padding: $spacing/2 $spacing!important;
+    font-size: $font-size-sm;
+  }
+}

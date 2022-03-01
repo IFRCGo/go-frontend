@@ -1,10 +1,13 @@
 import { memo } from 'react';
 import {
   isDefined,
+  isFalsy,
   isFalsyString,
   caseInsensitiveSubmatch,
   compareStringSearch,
 } from '@togglecorp/fujs';
+
+import { Strings } from '#types';
 
 export const getHashFromBrowser = () => window.location.hash.substr(1);
 export const setHashToBrowser = (hash: string | undefined) => {
@@ -15,9 +18,20 @@ export const setHashToBrowser = (hash: string | undefined) => {
     }
 };
 
+export function sumSafe(list: (number | undefined | null)[]): number {
+  if (!list || list.length === 0) {
+    return 0;
+  }
+
+  const safeList = list.filter(num => isDefined(num)) as number[];
+  return safeList.reduce((acc, item) => (
+    acc + (+item)
+  ), 0);
+}
+
 export function sum<L, V extends string | number>(list: L[], valueSelector: (item: L) => V) {
   if (!list || !Array.isArray(list)) {
-    return undefined;
+    return 0;
   }
 
   const values = list
@@ -42,6 +56,24 @@ export function max<L, V extends string | number>(list: L[], valueSelector: (ite
   return values.reduce((acc, item) => (
     Math.max(acc, +item)
   ), 0);
+}
+
+export function avg<L, V extends string | number>(list: L[], valueSelector: (item: L) => V) {
+  if (!list || !Array.isArray(list)) {
+    return undefined;
+  }
+
+  if (list.length === 0) {
+    return 0;
+  }
+
+  const total = sum(list, valueSelector);
+
+  if (!isDefined(total)) {
+    return 0;
+  }
+
+  return total / list.length;
 }
 
 export function aggregateList<T, R>(
@@ -124,3 +156,40 @@ export function rankedSearchOnList<T>(
   ));
 }
 
+export function getFullMonthNameList(strings: Strings) {
+  return [
+    strings.monthNameJanuary,
+    strings.monthNameFebruary,
+    strings.monthNameMarch,
+    strings.monthNameApril,
+    strings.monthNameMay,
+    strings.monthNameJune,
+    strings.monthNameJuly,
+    strings.monthNameAugust,
+    strings.monthNameSeptember,
+    strings.monthNameOctober,
+    strings.monthNameNovember,
+    strings.monthNameDecember,
+  ] as const;
+}
+
+export function avgSafe(list: (number|undefined|null)[]) {
+  const listSafe = (list ?? []).filter((i) => isDefined(i) && !Number.isNaN(i)) as number[];
+  return avg(listSafe, d => d);
+}
+
+export function isValidNumber(value: unknown): value is number  {
+  if (isFalsy(value)) {
+    return false;
+  }
+
+  if (Number.isNaN(+(value as number))) {
+    return false;
+  }
+
+  if (value === null) {
+    return false;
+  }
+
+  return true;
+}

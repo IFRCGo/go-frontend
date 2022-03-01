@@ -22,7 +22,7 @@ import DropdownMenu from './dropdown-menu';
 
 const noFilter = options => options;
 
-function Navbar (props) {
+function Navbar(props) {
   const {
     history,
     match,
@@ -61,7 +61,7 @@ function Navbar (props) {
                 </h1>
               </div>
               <nav className='page__meta-nav col' role='navigation'>
-                { <LanguageSelect className="page__meta-nav-elements page__meta-nav-elements--lang" /> }
+                {<LanguageSelect className="page__meta-nav-elements page__meta-nav-elements--lang" />}
                 <Link to='/about' title={strings.headerMenuResourceTooltip} className='page__meta-nav-elements'>
                   <Translate stringId="headerMenuResources" />
                 </Link>
@@ -79,14 +79,14 @@ function Navbar (props) {
                       to='/reports/new'
                       className='drop__menu-item'
                     >
-                        {strings.headerDropdownNewFieldReport}
+                      {strings.headerDropdownNewFieldReport}
                     </Link>
                     <a
                       href='https://eenew.ifrc.org/single/y300V3lY?returnURL=https://go.ifrc.org/emergencies/3972#actions'
                       target='_blank'
                       className='drop__menu-item'
                     >
-                        {strings.headerDropdownCovid19IndicatorTracking}
+                      {strings.headerDropdownCovid19IndicatorTracking}
                     </a>
                     <a
                       className='drop__menu-item'
@@ -95,22 +95,26 @@ function Navbar (props) {
                     >
                       {strings.headerDropdownCovid19NSFinancialOverview}
                     </a>
-                    {/* FIXME: use strings */}
-                    {/* @DREF
-                    <Link
-                      to='/dref-application/new'
-                      className='drop__menu-item'
-                    >
-                      New Dref Application
-                    </Link>
-                    */}
                     <Link
                       to='/three-w/new'
                       className='drop__menu-item'
                     >
-                      {/* FIXME: use strings */}
-                      New 3W project
+                      {strings.headerDropdownNew3WActivity}
                     </Link>
+                    {/* NOTE: Temporary
+                    <Link
+                      to='/dref-application/new'
+                      className='drop__menu-item'
+                    >
+                      {strings.headerDropdownNewDrefApplication}
+                    </Link>
+                    <Link
+                      to='/flash-update/new'
+                      className='drop__menu-item'
+                    >
+                      {strings.headerDropdownNewFlashUpdate}
+                    </Link>
+                    */}
                   </div>
                 </DropdownMenu>
               </nav>
