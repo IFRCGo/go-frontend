@@ -195,6 +195,7 @@
     "build-prod": "NODE_ENV=production node scripts/build.js",
     "collecticons": "collecticons compile src/assets/icons/collecticons/ --rescale --font-name Collecticons --font-types woff --style-formats sass --style-dest src/styles/core/ --style-name _collecticons --class-name collecticon --author-name 'IFRC' --author-url 'https://go.ifrc.org' --no-preview",
     "test": "echo 'No tests' && exit 0",
+    "cypress-test": "echo 'Running CyPress test – choose from Recent projects (or select manually), then: go.spec.js' && ./cypress-test.sh && exit 0",
     "lint": "eslint src/ --ext .js",
     "deploy-surge": "branch=$(git rev-parse --symbolic-full-name --abbrev-ref HEAD); branch=$(echo $branch  | tr ./ -); cp build/index.html build/200.html; surge -p build/ -d https://ifrc-go-$branch.surge.sh",
     "teardown-surge": "branch=$(git rev-parse --symbolic-full-name --abbrev-ref HEAD); branch=$(echo $branch  | tr ./ -); surge teardown https://ifrc-go-$branch.surge.sh",
