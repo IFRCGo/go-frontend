@@ -164,13 +164,17 @@ export function getDefinedValues<T extends Record<string, any>>(o: T): Partial<T
       definedValues[key] = o[key];
     }
   });
-
   return definedValues;
 }
 
 export interface Entity {
   id: number;
   name: string;
+}
+
+export interface FREvent {
+  id: number;
+  field_reports: any[];
 }
 
 export const optionKeySelector = (o: Option) => o.value;

@@ -2782,6 +2782,9 @@ export default {
   fieldReportFormPageTitle: 'IFRC GO - New Field Report',
   fieldReportUpdateFormPageTitle: 'IFRC GO - Update Field Report',
 
+  fieldReportCOVID19: 'COVID-19',
+  fieldReportUpdateNo: 'Update #',
+
   VerboseUrlLoadingMessage: 'Loading page...',
 
   breadCrumbLogin: 'Login',

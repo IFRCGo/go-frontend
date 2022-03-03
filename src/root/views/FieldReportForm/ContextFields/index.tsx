@@ -45,11 +45,13 @@ interface Props {
   yesNoOptions: BooleanValueOption[];
   reportType: ReportType;
   countryOptions: NumericValueOption[];
+  countryIsoOptions: NumericValueOption[];
   districtOptions: NumericValueOption[];
   fetchingCountries?: boolean;
   fetchingDistricts?: boolean;
   fetchingDisasterTypes?: boolean;
   initialEventOptions?: Option[];
+  eventOptions: NumericValueOption[];
 }
 
 function ContextFields(props: Props) {
@@ -69,6 +71,7 @@ function ContextFields(props: Props) {
     yesNoOptions,
     reportType,
     initialEventOptions,
+    eventOptions,
   } = props;
 
   const [
@@ -161,28 +164,48 @@ function ContextFields(props: Props) {
       <InputSection
         title={strings.fieldsStep1SummaryLabel}
         description={strings.fieldsStep1SummaryDescription}
-      >
-        <div>
-          <SearchSelectInput
-            label={strings.fieldReportFormTitleSelectLabel}
-            placeholder={strings.fieldReportFormTitleSelectPlaceholder}
-            name="event"
-            value={value.event}
-            onChange={onValueChange}
-            loadOptions={fetchEventsFromApi}
-            initialOptions={initialEventOptions as SearchSelectOption[]}
-            error={error?.event}
-          />
-          <TextInput
-            label={strings.fieldReportFormTitleSecondaryLabel}
-            placeholder={strings.fieldReportFormTitleInputPlaceholder}
-            name="summary"
-            value={value.summary}
-            maxLength={100}
-            onChange={onValueChange}
-            error={error?.summary}
-          />
-        </div>
+      >     
+        <table>
+          <tbody>
+           <tr>
+             <td>
+                <SearchSelectInput
+                  label={strings.fieldReportFormTitleSelectLabel}
+                  placeholder={strings.fieldReportFormTitleSelectPlaceholder}
+                  name="event"
+                  value={value.event}
+                  onChange={onValueChange}
+                  loadOptions={fetchEventsFromApi}
+                  initialOptions={initialEventOptions as SearchSelectOption[]}
+                  error={error?.event}
+                />
+             </td>
+           </tr>
+           <tr>
+             <td>
+                <TextInput
+                  disabled={value.is_covid_report}
+                  label={strings.fieldReportFormTitleSecondaryLabel}
+                  placeholder={strings.fieldReportFormTitleInputPlaceholder}
+                  name="summary"
+                  value={value.summary}
+                  maxLength={100}
+                  onChange={onValueChange}
+                  error={error?.summary}
+                />
+             </td>
+             <td>
+                <TextInput
+                  label={strings.fieldReportUpdateNo}
+                  placeholder="1"
+                  name="event"
+                  value={eventOptions.find(x => x.value===value.event)?.label}
+                  error={error?.event}
+                />
+             </td>
+           </tr>
+          </tbody>
+        </table>   
       </InputSection>
       <InputSection
         title={countrySectionTitle}

@@ -173,6 +173,7 @@ function FieldReportForm(props: Props) {
   const {
     bulletinOptions,
     countryOptions,
+    countryIsoOptions,
     disasterTypeOptions,
     districtOptions,
     externalPartnerOptions,
@@ -190,6 +191,7 @@ function FieldReportForm(props: Props) {
     supportedActivityOptions,
     userDetails,
     yesNoOptions,
+    eventOptions,
   } = useFieldReportOptions(value);
 
   React.useEffect(() => {
@@ -248,9 +250,33 @@ function FieldReportForm(props: Props) {
       return;
     }
 
-    if (currentStep === 'step4') {
+      if (currentStep === 'step4') {
       const apiFields = transformFormFieldsToAPIFields(finalValues as FormType);
       const definedValues = getDefinedValues(apiFields);
+     
+      if(definedValues.is_covid_report)
+      {
+        if (eventOptions.find(x => x.value===value.event)?.label === undefined)
+        {
+          definedValues.summary = countryIsoOptions.find(x => x.value===value.country)?.label + ': ' + strings.fieldReportCOVID19; 
+        }
+        else
+        {
+          definedValues.summary = countryIsoOptions.find(x => x.value===value.country)?.label + ': ' + strings.fieldReportCOVID19 + ' #'+ eventOptions.find(x => x.value===value.event)?.label + ' (' + new Date().toISOString().slice(0, 10) + ')'; 
+        }
+      }
+      else
+      {
+        console.log(eventOptions.find(x => x.value===value.event)?.label);
+        if (eventOptions.find(x => x.value===value.event)?.label === undefined)
+        {
+          definedValues.summary = countryIsoOptions.find(x => x.value===value.country)?.label + ': ' + disasterTypeOptions.find( x=> x.value === definedValues.dtype)?.label + ' - ' + definedValues.start_date?.substring(0,7) + ' - ' + definedValues.summary;
+        }
+        else
+        {
+          definedValues.summary = countryIsoOptions.find(x => x.value===value.country)?.label + ': ' + disasterTypeOptions.find( x=> x.value === definedValues.dtype)?.label + ' - ' + definedValues.start_date?.substring(0,7) + ' - ' + definedValues.summary + ' #'+ eventOptions.find(x => x.value===value.event)?.label + ' (' + new Date().toISOString().slice(0, 10) + ')';
+        }
+      }
 
       if (userDetails && userDetails.id) {
         const body = {
@@ -272,7 +298,7 @@ function FieldReportForm(props: Props) {
 
       setCurrentStep(nextStepMap[currentStep]);
     }
-  }, [submitRequest, userDetails, currentStep, setCurrentStep, validate, onErrorSet]);
+  }, [submitRequest, userDetails, currentStep, setCurrentStep, validate, onErrorSet,countryIsoOptions, disasterTypeOptions, eventOptions, strings.fieldReportCOVID19, value.country, value.event]);
 
   const handleBackButtonClick = React.useCallback(() => {
     scrollToTop();
@@ -361,11 +387,13 @@ function FieldReportForm(props: Props) {
                 disasterTypeOptions={disasterTypeOptions}
                 reportType={reportType}
                 countryOptions={countryOptions}
+                countryIsoOptions={countryIsoOptions}
                 districtOptions={districtOptions}
                 fetchingCountries={fetchingCountries}
                 fetchingDistricts={fetchingDistricts}
                 fetchingDisasterTypes={fetchingDisasterTypes}
                 initialEventOptions={initialEventOptions}
+                eventOptions={eventOptions}
               />
             </TabPanel>
             <TabPanel name="step2">
