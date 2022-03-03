@@ -298,7 +298,7 @@ function FieldReportForm(props: Props) {
 
       setCurrentStep(nextStepMap[currentStep]);
     }
-  }, [submitRequest, userDetails, currentStep, setCurrentStep, validate, onErrorSet]);
+  }, [submitRequest, userDetails, currentStep, setCurrentStep, validate, onErrorSet,countryIsoOptions, disasterTypeOptions, eventOptions, strings.fieldReportCOVID19, value.country, value.event]);
 
   const handleBackButtonClick = React.useCallback(() => {
     scrollToTop();
