@@ -47,8 +47,7 @@ import {
   FormInput
 } from '#components/form-elements/';
 
-// NOTE: Temporary
-// import DrefApplicationList from '#components/DrefApplicationList';
+import DrefApplicationList from '#components/DrefApplicationList';
 
 import App from './app';
 
@@ -165,9 +164,7 @@ class Account extends React.Component {
     { title: strings.accountInformation, hash: '#account-information' },
     { title: strings.accountNotification, hash: '#notifications' },
     { title: strings.accountPerForms, hash: '#per-forms' },
-
-    // NOTE: Temporary
-    // { title: strings.accountMyDrefApplications, hash: '#my-dref-applications' }
+    { title: strings.accountMyDrefApplications, hash: '#my-dref-applications' }
   ])
 
   getBasicTypes = memoize((strings) => [
@@ -894,13 +891,11 @@ class Account extends React.Component {
                       <PerAccount user={this.props.user} />
                     </TabContent>
                   </TabPanel>
-                  {/* NOTE: Temporary
                   <TabPanel>
                     <TabContent title={strings.accountPerTitle}>
                       <DrefApplicationList />
                     </TabContent>
                   </TabPanel>
-                  */}
                 </div>
               </div>
             </Tabs>

@@ -58,12 +58,11 @@ const AllThreeW = lazy(() => import('../views/AllThreeW'));
 const ThreeW = lazy(() => import('../views/ThreeW'));
 const ThreeWEdit = lazy(() => import('../views/ThreeWEdit'));
 
-// NOTE: Temporary
-// const DrefApplicationForm = lazy(() => import('../views/DrefApplicationForm'));
-// const DrefPdfPreview = lazy(() => import('../views/DrefPdfPreview'));
-// const FlashUpdateApplicationForm = lazy(() => import('../views/FlashUpdateApplicationForm'));
-// const FlashUpdateReport = lazy(() => import('../views/FlashUpdateReport'));
-// const AllFlashUpdates = lazy(() => import('../views/AllFlashUpdates'));
+const DrefApplicationForm = lazy(() => import('../views/DrefApplicationForm'));
+const DrefPdfPreview = lazy(() => import('../views/DrefPdfPreview'));
+const FlashUpdateApplicationForm = lazy(() => import('../views/FlashUpdateApplicationForm'));
+const FlashUpdateReport = lazy(() => import('../views/FlashUpdateReport'));
+const AllFlashUpdates = lazy(() => import('../views/AllFlashUpdates'));
 
 function LoadingGlobal() {
   return (
@@ -268,7 +267,6 @@ function Multiplexer(props) {
               <PrivateRoute exact path='/three-w/:projectId/edit/' component={ThreeWEdit} />
               <Route exact path='/three-w/' component={GlobalThreeW} />
 
-              {/* NOTE: Temporary
               <PrivateRoute key="new-dref-application-form" exact path='/dref-application/new/' component={DrefApplicationForm} />
               <PrivateRoute exact path='/dref-application/:drefId/edit/' component={DrefApplicationForm} />
               <PrivateRoute exact path='/dref-application/:drefId/export/' component={DrefPdfPreview} />
@@ -276,7 +274,6 @@ function Multiplexer(props) {
               <Route exact path='/flash-update/all/' component={AllFlashUpdates} />
               <PrivateRoute exact path='/flash-update/:id/edit/' component={FlashUpdateApplicationForm} />
               <Route exact path='/flash-update/:id/' component={FlashUpdateReport} />
-              */}
 
               <Route component={FourHundredFour} />
             </Switch>
