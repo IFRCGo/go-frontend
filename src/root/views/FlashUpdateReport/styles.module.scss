@@ -34,9 +34,14 @@
       flex-direction: column;
       gap: $spacing*4;
 
+      .overview-content {
+        padding: $spacing;
+      }
+
       .maps {
         display: flex;
         flex-wrap: wrap;
+        gap: $spacing;
 
         .map-item {
           @extend %image-item;
@@ -46,6 +51,7 @@
       .graphics {
         display: flex;
         flex-wrap: wrap;
+        gap: $spacing;
 
         .graphic-item {
           @extend %image-item;
@@ -95,6 +101,10 @@
         .date {
           flex-basis: 10rem;
           flex-shink: 0;
+        }
+
+        .description {
+          flex-grow: 1;
         }
 
         .url {
