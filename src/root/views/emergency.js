@@ -1,10 +1,10 @@
 import * as url from 'url';
 import React from 'react';
-import { connect } from 'react-redux';
 import memoize from 'memoize-one';
+import _toNumber from 'lodash.tonumber';
+import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
 import { PropTypes as T } from 'prop-types';
-import _toNumber from 'lodash.tonumber';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import { isDefined } from '@togglecorp/fujs';
 import { Helmet } from 'react-helmet';
