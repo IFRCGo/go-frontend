@@ -161,12 +161,10 @@ class AdminArea extends SFPComponent {
         title: strings.country3WTab,
         hash: '#3w'
       },
-      /*
       {
         title: 'Risk Watch',
         hash: '#risk',
       },
-      */
       /*
       {
         title: strings.countryOverviewTab,
