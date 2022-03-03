@@ -1,14 +1,27 @@
 import React from 'react';
+import { Editor } from '@tinymce/tinymce-react';
+import { RawEditorSettings } from 'tinymce';
 
 import InputContainer, { Props as InputContainerProps } from '#components/InputContainer';
 
-type InheritedProps<T> = Omit<InputContainerProps, 'input'>;
+const editorSettings: Omit<RawEditorSettings, 'selector' | 'target'> = {
+  menubar: false,
+};
+
+type InheritedProps<T> = Omit<InputContainerProps, 'input'> & {
+  value: string | undefined;
+  name: T;
+  onChange?: (
+    value: string | undefined,
+    name: T,
+  ) => void;
+}
 export interface Props<T extends string | undefined> extends InheritedProps<T> {
     inputElementRef?: React.RefObject<HTMLInputElement>;
     inputClassName?: string;
 }
 
-function TextArea<T extends string | undefined>(props: Props<T>) {
+function RichTextArea<T extends string | undefined>(props: Props<T>) {
   const {
     className,
     actions,
@@ -18,8 +31,17 @@ function TextArea<T extends string | undefined>(props: Props<T>) {
     disabled,
     readOnly,
     inputClassName,
+    name,
+    value,
+    onChange,
     ...otherInputProps
   } = props;
+
+  const handleChange = React.useCallback((newValue: string | undefined) => {
+    if (onChange) {
+      onChange(newValue, name);
+    }
+  }, [onChange, name]);
 
   return (
     <InputContainer
@@ -30,12 +52,16 @@ function TextArea<T extends string | undefined>(props: Props<T>) {
       label={label}
       disabled={disabled}
       input={(
-        <div className={inputClassName}>
-          Woo hoo
-        </div>
+        <Editor
+          {...otherInputProps}
+          apiKey={process.env.REACT_APP_TINY_API_KEY}
+          init={editorSettings}
+          value={value}
+          onEditorChange={handleChange}
+        />
       )}
     />
   );
 }
 
-export default TextArea;
+export default RichTextArea;

@@ -6,19 +6,17 @@ import {
   isNotDefined,
   isDefined,
 } from '@togglecorp/fujs';
-import {
-  IoShareSocialOutline,
-  IoDownload,
-} from 'react-icons/io5';
+import { IoDownload } from 'react-icons/io5';
 
 import { useRequest } from '#utils/restRequest';
 import Container from '#components/Container';
 import Page from '#components/Page';
+import Heading from '#components/Heading';
 import BreadCrumb from '#components/breadcrumb';
 import languageContext from '#root/languageContext';
 import BlockLoading from '#components/block-loading';
 import DateOutput from '#components/DateOutput';
-import Button, {
+import {
   useButtonFeatures,
   ButtonFeatureProps
 } from '#components/Button';
@@ -160,6 +158,19 @@ function FlashUpdateReport(props: Props) {
         <Container
           contentClassName={styles.reportDetails}
         >
+          {response.situational_overview && (
+            <Container
+              heading="Situational Overview"
+              sub
+            >
+              <div
+                className={styles.overviewContent}
+                dangerouslySetInnerHTML={{
+                  __html: response.situational_overview
+                }}
+              />
+            </Container>
+          )}
           {response.map_files && response.map_files.length > 0 && (
             <Container
               sub
