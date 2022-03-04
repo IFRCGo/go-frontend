@@ -3,6 +3,7 @@
 %image-item {
   flex-basis: 33%;
   border: $base-border-color solid $base-border-width;
+  border-radius: $base-border-radius;
 
   .image {
     width: 100%;
@@ -42,6 +43,7 @@
         display: flex;
         flex-wrap: wrap;
         gap: $spacing;
+        padding: $spacing;
 
         .map-item {
           @extend %image-item;
@@ -52,6 +54,7 @@
         display: flex;
         flex-wrap: wrap;
         gap: $spacing;
+        padding: $spacing;
 
         .graphic-item {
           @extend %image-item;

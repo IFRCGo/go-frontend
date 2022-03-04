@@ -47,3 +47,13 @@
     fill: $color-text!important;
   }
 }
+
+.pie-chart {
+  justify-content: flex-start;
+
+  :global {
+    .recharts-pie {
+      transform: translateX(-10%);
+    }
+  }
+}

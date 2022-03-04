@@ -5,6 +5,7 @@ import {
   IoClose,
 } from 'react-icons/io5';
 
+import BlockLoading from '#components/block-loading';
 import Button from '#components/Button';
 import SelectInput from '#components/SelectInput';
 import Backdrop from '#components/backdrop';
@@ -63,6 +64,7 @@ function ShareButton(props: Props) {
   const [donorGroups, setDonorGroups] = useInputState<number[] | undefined>(undefined);
 
   const {
+    pending: donorResponsePending,
     response: donorResponse,
   } = useRequest<ListResponse<Donor>>({
     skip: !showShareModal,
@@ -70,6 +72,7 @@ function ShareButton(props: Props) {
   });
 
   const {
+    pending: donorGroupResponsePending,
     response: donorGroupResponse,
   } = useRequest<ListResponse<DonorGroup>>({
     skip: !showShareModal,
@@ -154,12 +157,15 @@ function ShareButton(props: Props) {
               <Button
                 name={undefined}
                 onClick={handleShareNowButtonClick}
-                disabled={!hasDonorOrDonorGroup || shareRequestPending}
+                disabled={!hasDonorOrDonorGroup || shareRequestPending || donorResponsePending || donorGroupResponsePending}
               >
                 Share Now
               </Button>
             )}
           >
+            {(donorResponsePending || donorGroupResponsePending) && (
+              <BlockLoading className={styles.loading} />
+            )}
             <SelectInput<undefined, number>
               label="Select Donors"
               value={donors}

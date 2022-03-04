@@ -39,7 +39,11 @@ function RichTextArea<T extends string | undefined>(props: Props<T>) {
 
   const handleChange = React.useCallback((newValue: string | undefined) => {
     if (onChange) {
-      onChange(newValue, name);
+      if (newValue === '') {
+        onChange(undefined, name);
+      } else {
+        onChange(newValue, name);
+      }
     }
   }, [onChange, name]);
 

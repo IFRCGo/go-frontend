@@ -48,10 +48,11 @@ function ThreeWPieChart(props: PieChartProps) {
       className={_cs(styles.chartContainer, className)}
     >
       <PieChart
+        className={styles.pieChart}
         margin={{
           right: 50,
           bottom: 30,
-          left: 30,
+          left: 0,
           top: 30,
         }}
       >
