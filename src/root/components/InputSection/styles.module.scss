@@ -75,4 +75,17 @@
       }
     }
   }
+
+  @media (max-width: $media-medium) {
+    flex-wrap: wrap;
+
+    .section-title {
+      flex-basis: 100%;
+      max-width: unset;
+    }
+
+    .section-content {
+      flex-basis: 100%;
+    }
+  }
 }

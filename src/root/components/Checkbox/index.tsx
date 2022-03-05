@@ -76,7 +76,7 @@ function Checkbox<N extends OptionKey>(props: Props<N>) {
         {...otherProps}
         readOnly
       />
-      <div className={_cs(styles.label, labelContainerClassName)}>
+      <div className={labelContainerClassName}>
         { label }
       </div>
     </label>

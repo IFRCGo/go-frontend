@@ -1,0 +1,54 @@
+@import '~styles/settings/variables';
+
+.activity {
+  background-color: $color-background;
+
+  .title {
+    color: $primary-color;
+    padding: $spacing/2 $spacing;
+    font-size: $font-size-xxl;
+  }
+
+  %list {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing;
+    padding: $spacing*2 $spacing;
+
+    .empty-message {
+      color: $color-text-light;
+    }
+  }
+
+  %list-title {
+    font-weight: $base-font-bold;
+  }
+
+  .supply-list {
+    @extend %list;
+
+    .supply-title {
+      @extend %list-title;
+    }
+  }
+
+  .custom-supply-list {
+    @extend %list;
+
+    .custom-supply-title {
+      @extend %list-title;
+    }
+  }
+
+  .point-list {
+    @extend %list;
+
+    .point-title {
+      @extend %list-title;
+    }
+  }
+
+  .point-count-input {
+    width: 10rem;
+  }
+}

@@ -59,7 +59,7 @@ function ActionInput(props: Props) {
           placeholder={placeholder}
         />
         <Checklist
-          name="actions"
+          name={"actions" as const}
           onChange={onFieldChange}
           options={actionOptions}
           labelSelector={d => d.name}

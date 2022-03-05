@@ -38,6 +38,7 @@ import {
 } from '#types';
 import LanguageContext from '#root/languageContext';
 
+// TODO: make it common
 export const OPERATION_TYPE_PROGRAMME = 0;
 export const OPERATION_TYPE_EMERGENCY = 1;
 

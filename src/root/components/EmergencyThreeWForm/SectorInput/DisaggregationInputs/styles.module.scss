@@ -1,0 +1,53 @@
+@import '~styles/settings/variables';
+
+.actions {
+  padding: $spacing/2 0;
+}
+
+
+.disaggregation {
+  display: flex;
+
+  .simplified {
+    display: flex;
+    flex-wrap: wrap;
+
+    >* {
+      flex-basis: calc(100% / 5);
+      min-width: 10rem;
+    }
+  }
+
+  .detailed {
+    display: table;
+    border-collapse: collapse;
+    margin: $spacing;
+
+    :global {
+      .go-input-container {
+        padding: 0;
+
+        .go-input-internal-input-section {
+          border: 0;
+        }
+      }
+    }
+
+    .other,
+    .female,
+    .male,
+    .labels {
+      display: table-row;
+
+      >* {
+        display: table-cell;
+        border: $base-border-width solid $base-border-color;
+      }
+    }
+
+    .label {
+      padding: $spacing/2;
+      background-color: #ffffff;
+    }
+  }
+}

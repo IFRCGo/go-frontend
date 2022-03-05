@@ -216,10 +216,10 @@ function ActionsFields(props: Props) {
           title={strings.drefFormInternationalAssistance}
         >
           <RadioInput
-            name="government_requested_assistance"
+            name={"government_requested_assistance" as const}
             options={yesNoOptions}
-            radioKeySelector={booleanOptionKeySelector}
-            radioLabelSelector={optionLabelSelector}
+            keySelector={booleanOptionKeySelector}
+            labelSelector={optionLabelSelector}
             value={value.government_requested_assistance}
             onChange={onValueChange}
             error={error?.government_requested_assistance}

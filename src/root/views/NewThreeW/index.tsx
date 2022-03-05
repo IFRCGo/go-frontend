@@ -4,12 +4,26 @@ import type { Location, History } from 'history';
 
 import Page from '#components/Page';
 import BreadCrumb from '#components/breadcrumb';
+import InputSection from '#components/InputSection';
 import Container from '#components/Container';
 import ThreeWForm from '#components/ThreeWForm';
+import EmergencyThreeWForm from '#components/EmergencyThreeWForm';
+import SegmentInput from '#components/SegmentInput';
+import useInputState from '#hooks/useInputState';
+
 import LanguageContext from '#root/languageContext';
-import { Project } from '#types';
+import {
+  Project,
+  EmergencyProjectResponse,
+  StringValueOption,
+} from '#types';
 
 import styles from './styles.module.scss';
+
+const operationTypeOptions: StringValueOption[] = [
+  { value: 'program', label: 'Program' },
+  { value: 'disaster_response', label: 'DisasterResponse' },
+];
 
 interface Props {
   className?: string;
@@ -25,12 +39,18 @@ function NewThreeW(props: Props) {
     location,
   } = props;
 
-  const handleSubmitSuccess = React.useCallback((result: Project) => {
-    if (history?.push) {
-      const {
-        project_country: countryId,
-      } = result;
+  const [operationType, setOperationType] = useInputState<string | undefined>('program');
 
+  const handleProgramSubmitSuccess = React.useCallback((result: Project) => {
+    if (history?.push) {
+      const { project_country: countryId } = result;
+      history.push(`/countries/${countryId}#3w`);
+    }
+  }, [history]);
+
+  const handleDisasterResponseSubmitSuccess = React.useCallback((result: EmergencyProjectResponse) => {
+    if (history?.push) {
+      const { country: countryId } = result;
       history.push(`/countries/${countryId}#3w`);
     }
   }, [history]);
@@ -39,6 +59,7 @@ function NewThreeW(props: Props) {
     {link: location?.pathname, name: strings.breadCrumbNewThreeW},
     {link: '/', name: strings.breadCrumbHome},
   ], [strings.breadCrumbHome, strings.breadCrumbNewThreeW, location]);
+
   return (
     <Page
       className={_cs(styles.newThreeW, className)}
@@ -47,7 +68,29 @@ function NewThreeW(props: Props) {
       breadCrumbs={<BreadCrumb crumbs={crumbs} compact />}
     >
       <Container>
-        <ThreeWForm onSubmitSuccess={handleSubmitSuccess} />
+        <InputSection
+          title="Type of Operation"
+        >
+          <SegmentInput
+            name={undefined}
+            options={operationTypeOptions}
+            keySelector={d => d.value}
+            labelSelector={d => d.label}
+            value={operationType}
+            onChange={setOperationType}
+          />
+        </InputSection>
+        {operationType === 'program' && (
+          <ThreeWForm
+            onSubmitSuccess={handleProgramSubmitSuccess}
+            className={styles.threeWProgram}
+          />
+        )}
+        {operationType === 'disaster_response' && (
+          <EmergencyThreeWForm
+            onSubmitSuccess={handleDisasterResponseSubmitSuccess}
+          />
+        )}
       </Container>
     </Page>
   );

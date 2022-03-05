@@ -64,13 +64,13 @@ function RiskAnalysisFields(props: Props) {
         />
         <RadioInput
           label={strings.cmpSourceLabel}
-          radioListContainerClassName={styles.sourceRadioListContainer}
+          listContainerClassName={styles.sourceRadioListContainer}
           error={error?.num_potentially_affected_source}
-          name="num_potentially_affected_source"
+          name={"num_potentially_affected_source" as const}
           onChange={onValueChange}
           options={sourceOptions}
-          radioKeySelector={stringOptionKeySelector}
-          radioLabelSelector={optionLabelSelector}
+          keySelector={stringOptionKeySelector}
+          labelSelector={optionLabelSelector}
           value={value.num_potentially_affected_source}
           clearable
         />
@@ -88,13 +88,13 @@ function RiskAnalysisFields(props: Props) {
         />
         <RadioInput
           label={strings.cmpSourceLabel}
-          radioListContainerClassName={styles.sourceRadioListContainer}
+          listContainerClassName={styles.sourceRadioListContainer}
           error={error?.num_highest_risk_source}
-          name="num_highest_risk_source"
+          name={"num_highest_risk_source" as const}
           onChange={onValueChange}
           options={sourceOptions}
-          radioKeySelector={stringOptionKeySelector}
-          radioLabelSelector={optionLabelSelector}
+          keySelector={stringOptionKeySelector}
+          labelSelector={optionLabelSelector}
           value={value.num_highest_risk_source}
           clearable
         />
@@ -112,13 +112,13 @@ function RiskAnalysisFields(props: Props) {
         />
         <RadioInput
           label={strings.cmpSourceLabel}
-          radioListContainerClassName={styles.sourceRadioListContainer}
+          listContainerClassName={styles.sourceRadioListContainer}
           error={error?.affected_pop_centres_source}
-          name="affected_pop_centres_source"
+          name={"affected_pop_centres_source" as const}
           onChange={onValueChange}
           options={sourceOptions}
-          radioKeySelector={stringOptionKeySelector}
-          radioLabelSelector={optionLabelSelector}
+          keySelector={stringOptionKeySelector}
+          labelSelector={optionLabelSelector}
           value={value.affected_pop_centres_source}
           clearable
         />

@@ -21,9 +21,9 @@ const buttonVariantToStyleMap: { [key in ButtonVariant]: string; } = {
   transparent: styles.transparent,
 };
 
-export interface Props<N extends string | number | undefined> extends Omit<
-React.HTMLProps<HTMLButtonElement>,
-'ref' | 'onClick' | 'name' | 'type'
+export interface Props<N> extends Omit<
+  React.HTMLProps<HTMLButtonElement>,
+  'ref' | 'onClick' | 'name' | 'type'
 > {
   type?: 'button' | 'submit' | 'reset';
   variant?: ButtonVariant;
@@ -40,9 +40,9 @@ React.HTMLProps<HTMLButtonElement>,
 }
 
 type ButtonFeatureKeys = 'variant' | 'className' | 'actionsClassName' | 'iconsClassName' | 'childrenClassName' | 'children' | 'icons' | 'actions' | 'disabled';
-export type ButtonFeatureProps = Pick<Props<number | string | undefined>, ButtonFeatureKeys>;
-export function useButtonFeatures(
-  props: ButtonFeatureProps,
+export type ButtonFeatureProps<N> = Pick<Props<N>, ButtonFeatureKeys>;
+export function useButtonFeatures<N>(
+  props: ButtonFeatureProps<N>,
 ) {
   const {
     variant = 'primary',
@@ -91,7 +91,7 @@ export function useButtonFeatures(
   };
 }
 
-function Button<N extends number | string | undefined>(props: Props<N>) {
+function Button<N>(props: Props<N>) {
   const {
     variant,
     className,
@@ -108,7 +108,7 @@ function Button<N extends number | string | undefined>(props: Props<N>) {
     ...otherProps
   } = props;
 
-  const handleButtonClick: RawButtonProps<undefined>['onClick'] = React.useCallback((n, e) => {
+  const handleButtonClick: RawButtonProps<N>['onClick'] = React.useCallback((n, e) => {
     if (onClick && !readOnly) {
       onClick(name, e);
     }
@@ -128,7 +128,7 @@ function Button<N extends number | string | undefined>(props: Props<N>) {
 
   return (
     <RawButton
-      name={undefined}
+      name={name}
       type="button"
       onClick={handleButtonClick}
       {...otherProps}

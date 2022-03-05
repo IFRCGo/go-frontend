@@ -12,6 +12,7 @@ export interface BaseProps {
   tooltip?: string;
   multiRow?: boolean;
   normalDescription?: boolean;
+  descriptionContainerClassName?: string;
 }
 
 type Props = BaseProps & ({
@@ -41,6 +42,7 @@ function InputSection(props: Props) {
     tooltip,
     multiRow,
     contentSectionClassName,
+    descriptionContainerClassName,
     normalDescription,
   } = props;
 
@@ -64,7 +66,7 @@ function InputSection(props: Props) {
         <div className={styles.title}>
           { title }
         </div>
-        <div className={styles.description}>
+        <div className={_cs(styles.description, descriptionContainerClassName)}>
           { description }
         </div>
       </div>

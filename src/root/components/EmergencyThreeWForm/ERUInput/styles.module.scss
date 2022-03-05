@@ -1,0 +1,55 @@
+@import '~styles/settings/variables';
+
+.eru-input {
+  .eru-list {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+%eru-item {
+  display: flex;
+  align-items: center;
+  gap: $spacing;
+
+  .icon {
+    width: 8%;
+    font-size: 1.3em;
+  }
+
+  .national-society {
+    width: 42%;
+  }
+
+  .type {
+    width: 22%;
+  }
+
+  .personnel-units {
+    width: 14%;
+  }
+
+  .equipment-units {
+    width: 14%;
+  }
+}
+
+.eru-item-header {
+  @extend %eru-item;
+  padding: 0;
+}
+
+.eru-item {
+  @extend %eru-item;
+  cursor: pointer;
+
+  &:hover {
+    background-color: lighten($primary-color, 35%);
+  }
+
+  &.active {
+    .icon {
+      color: $primary-color;
+    }
+  }
+}

@@ -1,0 +1,10 @@
+@import '~styles/settings/variables';
+
+.emergency-three-w-form {
+  .actions {
+    padding: $spacing*2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}

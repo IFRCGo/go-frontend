@@ -64,6 +64,8 @@ const FlashUpdateApplicationForm = lazy(() => import('../views/FlashUpdateApplic
 const FlashUpdateReport = lazy(() => import('../views/FlashUpdateReport'));
 const AllFlashUpdates = lazy(() => import('../views/AllFlashUpdates'));
 
+const EmergencyThreeWForm = lazy(() => import('../components/EmergencyThreeWForm'));
+
 function LoadingGlobal() {
   return (
     <div className={styles.loadingGlobal}>
@@ -261,7 +263,7 @@ function Multiplexer(props) {
               <Route exact path='/per-assessment/:id' component={PerAssessment} />
               <Route exact path='/per-assessment/:id/edit' render={props => <PerAssessment {...props} isEdit={true} />} />
               <Route path='/preparedness' component={Preparedness} />
-              <Route key="new-three-w" exact path='/three-w/new/' component={NewThreeW} />
+              <PrivateRoute key="new-three-w" exact path='/three-w/new/' component={NewThreeW} />
               <Route exact path='/three-w/all/' component={AllThreeW} />
               <Route exact path='/three-w/:projectId/' component={ThreeW} />
               <PrivateRoute exact path='/three-w/:projectId/edit/' component={ThreeWEdit} />
@@ -274,6 +276,7 @@ function Multiplexer(props) {
               <Route exact path='/flash-update/all/' component={AllFlashUpdates} />
               <PrivateRoute exact path='/flash-update/:id/edit/' component={FlashUpdateApplicationForm} />
               <Route exact path='/flash-update/:id/' component={FlashUpdateReport} />
+              <PrivateRoute exact path='/emergency-three-w-form/' component={EmergencyThreeWForm} />
 
               <Route component={FourHundredFour} />
             </Switch>

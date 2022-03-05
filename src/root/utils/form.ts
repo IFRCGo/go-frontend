@@ -149,24 +149,6 @@ export function urlCondition(value: Maybe<string>) {
     : undefined;
 }
 
-// NOTE: this is a special condition function,
-// it defines that the field should be null
-export function nullCondition() {
-  return undefined;
-}
-
-// NOTE: this is a special condition function,
-// it defines that the field is non-nullable
-export function idCondition() {
-  return undefined;
-}
-
-// NOTE: this is a special condition function,
-// it defines that the field should be [] when it is not defined
-export function arrayCondition() {
-  return undefined;
-}
-
 export function listErrorToString<T>(error: LeafError | ArrayError<T>) {
   let errorString = getErrorString(error);
   const errorObject = getErrorObject(error);

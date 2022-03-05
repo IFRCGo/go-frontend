@@ -1,0 +1,32 @@
+@import '~styles/settings/_variables.scss';
+
+.segment-input {
+  padding: $spacing/2 $spacing;
+  .list {
+    gap: 0;
+    background-color: $color-background;
+    width: fit-content;
+    border: $base-border-width solid $base-border-color--light;
+    border-radius: calc(#{$spacing} + 1em);
+    padding: 0;
+  }
+
+  .segment {
+    border-color: transparent;
+    padding: $spacing/2 $spacing*2;
+
+    &.active {
+      background-color: $primary-color;
+      color: $color-text-on-dark;
+    }
+  }
+
+  &.secondary-variant {
+    .segment {
+      &.active {
+        background-color: $secondary-color;
+        color: $color-text-on-dark;
+      }
+    }
+  }
+}

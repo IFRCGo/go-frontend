@@ -1,0 +1,48 @@
+@import '~styles/settings/variables';
+
+.sector-input {
+  background-color: #ffffff;
+  padding: $spacing;
+
+  .content {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing;
+
+    .activity-list-container {
+      display: flex;
+      flex-direction: column;
+      gap: $spacing;
+
+      .activity-list {
+        padding: 0;
+
+        .list-container {
+          padding: 0;
+          flex-direction: column;
+
+          .checkbox {
+            padding: $spacing/2;
+          }
+        }
+      }
+    }
+
+    .activity-form-list {
+      gap: $spacing;
+    }
+
+    .actions {
+      display: flex;
+      justify-content: flex-end;
+      padding: $spacing $spacing*2;
+    }
+
+    .custom-activity-list,
+    .activity-list {
+      display: flex;
+      flex-direction: column;
+      gap: $spacing;
+    }
+  }
+}
