@@ -184,7 +184,6 @@ function ContextFields(props: Props) {
            <tr>
              <td>
                 <TextInput
-                  disabled={value.is_covid_report}
                   label={strings.fieldReportFormTitleSecondaryLabel}
                   placeholder={strings.fieldReportFormTitleInputPlaceholder}
                   name="summary"

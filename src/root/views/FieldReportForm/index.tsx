@@ -253,18 +253,24 @@ function FieldReportForm(props: Props) {
       if (currentStep === 'step4') {
       const apiFields = transformFormFieldsToAPIFields(finalValues as FormType);
       const definedValues = getDefinedValues(apiFields);
-         
+      
+      // COVID-19
       if(definedValues.is_covid_report)
       {
         if (eventOptions.find(x => x.value===value.event)?.label === undefined)
-        {         
-          definedValues.summary = countryIsoOptions.find(x => x.value===value.country)?.label + ': ' + strings.fieldReportCOVID19; 
+        {      
+          if(reportId === undefined){   
+            definedValues.summary = countryIsoOptions.find(x => x.value===value.country)?.label + ': ' + strings.fieldReportCOVID19; 
+          }
         }
         else
         {
-          definedValues.summary = countryIsoOptions.find(x => x.value===value.country)?.label + ': ' + strings.fieldReportCOVID19 + ' #'+ eventOptions.find(x => x.value===value.event)?.label + ' (' + new Date().toISOString().slice(0, 10) + ')'; 
+          if(reportId === undefined){
+            definedValues.summary = countryIsoOptions.find(x => x.value===value.country)?.label + ': ' + strings.fieldReportCOVID19 + ' #'+ eventOptions.find(x => x.value===value.event)?.label + ' (' + new Date().toISOString().slice(0, 10) + ')'; 
+          }
         }
       }
+      // NON-COVID-19
       else
       {
         if (eventOptions.find(x => x.value===value.event)?.label === undefined)
