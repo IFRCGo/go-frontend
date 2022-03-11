@@ -22,16 +22,16 @@ const defaultUrls = {
 
 const defaultMapboxToken =  'pk.eyJ1IjoiZ28taWZyYyIsImEiOiJjams3b2ZhZWswMGFvM3hxeHp2ZHFhOTRrIn0._pqO9OQ2iNeDGrpopJNjpg';
 
-export const environment = process.env.REACT_APP_ENVIRONMENT || process.env.NODE_ENV || 'development';
-// FIXME: this should never happen
-const defaultUrl = defaultUrls[environment] ?? defaultUrls['staging'];
 
-export const api = process.env.REACT_APP_API_ENDPOINT ?? defaultUrl?.apiServer;
-export const adminUrl = process.env.REACT_APP_ADMIN_URL ?? defaultUrl?.adminPanel;
-export const riskApi = process.env.REACT_APP_RISK_API_ENDPOINT ?? defaultUrl?.riskApiServer;
-export const riskAdminUrl = process.env.REACT_APP_RISK_ADMIN_URL ?? defaultUrl?.riskAdminUrl;
-export const fdrsAuth = process.env.REACT_APP_FDRS_AUTH ?? process.env['fdrsAuth'] ?? '';
-export const mbtoken = process.env.REACT_APP_MAPBOX_ACCESS_TOKEN ?? defaultMapboxToken;
+export const riskApi = window.appSettings.riskApiUrl;
+export const riskAdminUrl = window.appSettings.riskAdminUrl;
+export const environment = window.appSettings.environmentDisplayName;
+export const api = window.appSettings.apiUrl;
+export const adminUrl = window.appSettings.adminUrl;
+export const fdrsAuth = window.appSettings.fdrsAuth;
+export const mbtoken = window.appSettings.mbtoken;
+export const showEnvBanner = window.appSettings.showEnvBanner;
+
 
 const config = {
   api,

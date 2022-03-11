@@ -4,27 +4,29 @@ import _cs from 'classnames';
 import styles from './styles.module.scss';
 
 function EnvironmentBanner({
-  className,
+    className,
 }) {
-  const { NODE_ENV: currentEnv } = process.env;
+    //const { NODE_ENV: currentEnv } = process.env;
 
-  if(currentEnv === 'production' || currentEnv === 'development') {
-    return null;
-  }
+    const currentEnv = window.environment;
 
-  const bannerDescription = currentEnv === 'staging' ? 'Staging site' : 'Testing (Surge) site';
+    if (window.showEnvBanner === 'false') {
+        return null;
+    }
 
-   return (
-     <div
-       className={_cs(
-         'sticky-banner staging-footer',
-         styles.environmentBanner,
-         className,
-       )}
-     >
-       { bannerDescription }
-     </div>
-   );
+    const bannerDescription = window.environmentDisplayName;
+
+    return (
+        <div
+            className={_cs(
+                'sticky-banner staging-footer',
+                styles.environmentBanner,
+                className,
+            )}
+        >
+            {bannerDescription}
+        </div>
+    );
 }
 
 export default EnvironmentBanner;
