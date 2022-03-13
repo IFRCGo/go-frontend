@@ -7,14 +7,22 @@
 
 .disaggregation {
   display: flex;
+  overflow-x: auto;
 
   .simplified {
     display: flex;
     flex-wrap: wrap;
+    gap: $spacing;
 
-    >* {
-      flex-basis: calc(100% / 5);
-      min-width: 10rem;
+    .total-values {
+      flex-basis: calc(50% - #{$spacing});
+      display: flex;
+    }
+
+    .gender-disaggregation {
+      flex-basis: 50%;
+      display: flex;
+      background-color: $grey-fog;
     }
   }
 
@@ -22,13 +30,30 @@
     display: table;
     border-collapse: collapse;
     margin: $spacing;
+    overflow-x: auto;
 
     :global {
       .go-input-container {
+        font-size: $font-size-sm;
         padding: 0;
 
         .go-input-internal-input-section {
-          border: 0;
+          border-radius: 0;
+
+          input {
+            padding: $spacing/2 $spacing/4;
+            text-align: right;
+          }
+
+          input::-webkit-outer-spin-button,
+          input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+          }
+
+          input[type=number] {
+            -moz-appearance: textfield;
+          }
         }
       }
     }
@@ -38,16 +63,17 @@
     .male,
     .labels {
       display: table-row;
+      font-size: $font-size-sm;
 
       >* {
         display: table-cell;
-        border: $base-border-width solid $base-border-color;
       }
     }
 
     .label {
-      padding: $spacing/2;
-      background-color: #ffffff;
+      text-align: right;
+      padding: $spacing/2 $spacing/4;
+      background-color: $white;
     }
   }
 }

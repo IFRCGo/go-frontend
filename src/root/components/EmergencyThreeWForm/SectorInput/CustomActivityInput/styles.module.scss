@@ -3,6 +3,10 @@
 .custom-activity {
   background-color: $color-background;
 
+  .content {
+    overflow-x: auto;
+  }
+
   .actions {
     display: flex;
     justify-content: flex-end;

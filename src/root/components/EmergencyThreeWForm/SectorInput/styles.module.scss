@@ -1,8 +1,9 @@
 @import '~styles/settings/variables';
 
 .sector-input {
-  background-color: #ffffff;
+  background-color: $white;
   padding: $spacing;
+  overflow-x: auto;
 
   .content {
     display: flex;

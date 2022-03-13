@@ -22,7 +22,7 @@ import styles from './styles.module.scss';
 
 const operationTypeOptions: StringValueOption[] = [
   { value: 'program', label: 'Program' },
-  { value: 'disaster_response', label: 'DisasterResponse' },
+  { value: 'emergency_response', label: 'Emergency Response' },
 ];
 
 interface Props {
@@ -48,10 +48,10 @@ function NewThreeW(props: Props) {
     }
   }, [history]);
 
-  const handleDisasterResponseSubmitSuccess = React.useCallback((result: EmergencyProjectResponse) => {
+  const handleEmergencyResponseSubmitSuccess = React.useCallback((result: EmergencyProjectResponse) => {
     if (history?.push) {
-      const { country: countryId } = result;
-      history.push(`/countries/${countryId}#3w`);
+      const { event: eventId } = result;
+      history.push(`/emergency/${eventId}#activities`);
     }
   }, [history]);
 
@@ -86,9 +86,9 @@ function NewThreeW(props: Props) {
             className={styles.threeWProgram}
           />
         )}
-        {operationType === 'disaster_response' && (
+        {operationType === 'emergency_response' && (
           <EmergencyThreeWForm
-            onSubmitSuccess={handleDisasterResponseSubmitSuccess}
+            onSubmitSuccess={handleEmergencyResponseSubmitSuccess}
           />
         )}
       </Container>

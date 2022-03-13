@@ -101,6 +101,7 @@ function CustomActivityInput(props: Props) {
       className={styles.customActivity}
       multiRow
       oneColumn
+      contentSectionClassName={styles.content}
     >
       <div className={styles.actions}>
         <Button
@@ -127,7 +128,7 @@ function CustomActivityInput(props: Props) {
       />
       <div className={styles.supplyList}>
         <div className={styles.supplyTitle}>
-          Supplies
+          Custom Supplies
         </div>
         {value?.custom_supplies?.map((s, i) => (
           <CustomSupplyInput
@@ -154,7 +155,7 @@ function CustomActivityInput(props: Props) {
         </Button>
       </div>
       <div className={styles.points}>
-        {value?.simplified ? (
+        {value?.is_simplified_report ? (
           <NumberInput
             className={styles.pointCountInput}
             name="point_count"
@@ -195,7 +196,7 @@ function CustomActivityInput(props: Props) {
       </div>
       <TextArea
         name="details"
-        label="Custom Activity Details"
+        label="Activity Details"
         value={value?.details}
         onChange={setFieldValue}
         error={error?.details}

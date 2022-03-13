@@ -27,15 +27,10 @@ function NonFieldError<T>(props: Props<T>) {
     return null;
   }
 
-  const stringError = errorObject?.[internal];
-  if (!stringError && !message) {
+  const stringError = errorObject?.[internal] ?? message;
+  if (!stringError && Object.keys(errorObject).length === 0) {
     return null;
   }
-
-  if (!stringError && Object.keys(errorObject).length !== 0) {
-    return null;
-  }
-
 
   return (
     <div className={_cs(

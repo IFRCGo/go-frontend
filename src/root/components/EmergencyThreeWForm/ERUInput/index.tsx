@@ -48,12 +48,6 @@ function ERUItem<N, IN>(props: ERUItemProps<N, IN>) {
       <div className={styles.type}>
         {eru?.type_display}
       </div>
-      <div className={styles.personnelUnits}>
-        {eru?.units}
-      </div>
-      <div className={styles.equipmentUnits}>
-        {eru?.equipment_units}
-      </div>
     </div>
   );
 }
@@ -94,16 +88,10 @@ function ERUInput<N> (props: Props<N>) {
         <>
           <div className={styles.icon} />
           <div className={styles.nationalSociety}>
-            Owner
+            Lead National Society
           </div>
           <div className={styles.type}>
             Type
-          </div>
-          <div className={styles.personnelUnits}>
-            Persons
-          </div>
-          <div className={styles.equipmentUnits}>
-            Equipments
           </div>
         </>
       )}

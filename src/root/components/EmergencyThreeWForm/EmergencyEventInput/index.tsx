@@ -19,6 +19,7 @@ interface Props<N, V extends ValueType> {
   value: V | undefined | null;
   onChange: (newValue: V | undefined, name: N) => void;
   error?: React.ReactNode;
+  selectedEventDetails?: Pick<EventMini, 'id' | 'name'>;
 }
 
 function CopyEventSection<N, V extends ValueType> (props: Props<N, V>) {
@@ -27,12 +28,29 @@ function CopyEventSection<N, V extends ValueType> (props: Props<N, V>) {
     value,
     onChange,
     error,
+    selectedEventDetails,
   } = props;
 
   type EventCallback = (options: NumericValueOption[]) => void;
   const [eventSearch, setEventSearch] = React.useState<string | undefined>();
-  const [fetchedEvents, setFetchedEvents] = React.useState<EventMini[]>([]);
+  const [fetchedEvents, setFetchedEvents] = React.useState<Pick<EventMini, 'id' | 'name'>[]>([]);
   const eventCallbackRef = React.useRef<EventCallback>();
+
+  React.useEffect(() => {
+    if (selectedEventDetails) {
+      setFetchedEvents((oldEvents) => {
+        const newEvents = unique(
+          [
+            ...oldEvents,
+            selectedEventDetails,
+          ],
+          d => d.id
+        ) ?? [];
+
+        return newEvents;
+      });
+    }
+  }, [selectedEventDetails]);
 
   useRequest<ListResponse<EventMini>>({
     skip: (eventSearch?.length ?? 0) < 3,
@@ -94,6 +112,7 @@ function CopyEventSection<N, V extends ValueType> (props: Props<N, V>) {
       initialOptions={initialOptions}
       defaultOptions
       error={error}
+      placeholder="Type at least 3 characters to search"
     />
   );
 }

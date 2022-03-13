@@ -5,6 +5,9 @@ import {
   isDefined,
   isNotDefined,
   mapToMap,
+  listToGroupList,
+  mapToList,
+  randomString,
 } from '@togglecorp/fujs';
 import {
   useForm,
@@ -13,6 +16,7 @@ import {
   useFormArray,
 } from '@togglecorp/toggle-form';
 
+import NonFieldError from '#components/NonFieldError';
 import BlockLoading from '#components/block-loading';
 import Translate from '#components/Translate';
 import Button from '#components/Button';
@@ -23,9 +27,15 @@ import SelectInput from '#components/SelectInput';
 import SegmentInput from '#components/SegmentInput';
 import DateInput from '#components/DateInput';
 import RadioInput from '#components/RadioInput';
-import { useLazyRequest } from '#utils/restRequest';
+import {
+  useLazyRequest,
+  useRequest,
+} from '#utils/restRequest';
 import useAlert from '#hooks/useAlert';
-import { EmergencyProjectResponse } from '#types';
+import {
+  EmergencyProjectResponse,
+  EventMini,
+} from '#types';
 import {
   schema,
   useEmergencyThreeWoptions,
@@ -50,7 +60,7 @@ const stringValueSelector = (d: { value: string }) => d.value;
 type ActivityPayload = Partial<Omit<ActivityBase, 'points'> & {
   client_id: string;
   sector: number;
-  action: number;
+  action: number | null;
   points: Partial<Point>[];
   custom_activity: string;
   supplies: Partial<Record<number, number | string>>;
@@ -103,12 +113,14 @@ const defaultFormValues: PartialForm<EmergencyThreeWFormFields> = {
 };
 
 interface Props {
+  projectId?: number;
   className?: string;
   onSubmitSuccess?: (result: EmergencyProjectResponse) => void;
 }
 
 function EmergencyThreeWForm(props: Props) {
   const {
+    projectId,
     className,
     onSubmitSuccess,
   } = props;
@@ -121,16 +133,99 @@ function EmergencyThreeWForm(props: Props) {
     setFieldValue,
     validate,
     setError,
+    setValue,
   } = useForm(schema, { value: defaultFormValues });
 
   const error = React.useMemo(() => getErrorObject(formError), [formError]);
+  const [selectedEventDetails, setSelectedEventDetails] = React.useState<Pick<EventMini, 'id' | 'name'> | undefined>();
+
+  const {
+    pending: projectResponsePending,
+  } = useRequest<EmergencyProjectResponse>({
+    skip: isNotDefined(projectId),
+    url: `api/v2/emergency-project/${projectId}/`,
+    onSuccess: (response) => {
+      const formValues: PartialForm<EmergencyThreeWFormFields> = {
+        title: response.title,
+        country: response.country,
+        districts: response.districts,
+        status: response.status,
+        event: response.event,
+        start_date: response.start_date,
+        activity_lead: response.activity_lead,
+        deployed_eru: response.deployed_eru,
+        reporting_ns: response.reporting_ns,
+        reporting_ns_contact_email: response.reporting_ns_contact_email,
+        reporting_ns_contact_role: response.reporting_ns_contact_role,
+        reporting_ns_contact_name: response.reporting_ns_contact_name,
+      };
+
+      setSelectedEventDetails(response.event_details);
+      const sectorGroupedActivities = listToGroupList(
+        response.activities,
+        a => a.sector,
+        a => a,
+      );
+
+      const sectorKeys = Object.keys(sectorGroupedActivities);
+
+      const sectors: (typeof formValues)['sectors'] = sectorKeys.map((sk) => {
+        const allActivities = sectorGroupedActivities[sk];
+        const activities = allActivities.filter(a => isDefined(a.action)).map(
+          a => ({
+            ...a,
+            sector: +sk,
+            supplies: mapToList(
+              a.supplies,
+              (k, v) => ({
+                item: +v,
+                count: k,
+              }),
+            ),
+            custom_supplies: mapToList(
+              a.custom_supplies,
+              (k, v) => ({
+                client_id: randomString(),
+                item: v,
+                count: k,
+              }),
+            ),
+          }),
+        );
+        const custom_activities = allActivities.filter(a => isNotDefined(a.action)).map(
+          a => ({
+            ...a,
+            client_id: String(a.id),
+            sector: +sk,
+            custom_supplies: mapToList(
+              a.custom_supplies,
+              (k, v) => ({
+                client_id: randomString(),
+                item: v,
+                count: k,
+              }),
+            ),
+          }),
+        );
+
+        return {
+          sector: +sk,
+          activities,
+          custom_activities,
+        };
+      }, []);
+
+      formValues['sectors'] = sectors;
+      setValue(formValues);
+    },
+  });
 
   const {
     trigger: postEmergencyThreeW,
     pending: postEmergencyPending,
   } = useLazyRequest({
-    method: 'POST',
-    url: 'api/v2/emergency-project/',
+    method: isDefined(projectId) ? 'PUT' : 'POST',
+    url: isDefined(projectId) ? `api/v2/emergency-project/${projectId}` : 'api/v2/emergency-project/',
     body: ctx => ctx,
     onSuccess: onSubmitSuccess,
     onFailure: ({
@@ -239,6 +334,7 @@ function EmergencyThreeWForm(props: Props) {
               'other_50_59_count',
               'other_60_69_count',
               'other_70_plus_count',
+              'details',
             ] as const;
 
             baseActivityKeys.forEach((bak) => {
@@ -394,7 +490,7 @@ function EmergencyThreeWForm(props: Props) {
     <div
       className={_cs(styles.emergencyThreeWForm, className)}
     >
-      {fetchingOptions ? (
+      {(fetchingOptions || projectResponsePending) ? (
         <BlockLoading />
       ) : (
         <>
@@ -411,18 +507,19 @@ function EmergencyThreeWForm(props: Props) {
           </InputSection>
           <InputSection
             title="Current IFRC Operation"
-            description="If you can't find the operation, that means the disaster does not yet exist in GO. In that case, create a new Field Report to generate the disaster, then come back to this form"
+            description="If operation does not appear in the dropdown, the operation does not yet exist in GO. In that case, please submit a new Field Report to generate the operation, then come back to this form"
           >
             <EmergencyEventInput
               name={"event" as const}
               value={value?.event}
               onChange={setFieldValue}
               error={error?.event}
-            />
+              selectedEventDetails={selectedEventDetails}
+          />
           </InputSection>
           <InputSection
             title="Country and Province/Region"
-            description="Select the locations where the activities listed further in the form are occuring"
+            description="Select areas where activities reported in this form are occuring "
           >
             <SelectInput
               label="Country"
@@ -444,7 +541,7 @@ function EmergencyThreeWForm(props: Props) {
               placeholder={isDefined(value?.country) ? 'Select one or more region' : 'Select a country first'}
               disabled={inputsDisabled || isNotDefined(value?.country)}
               isMulti
-            />
+          />
           </InputSection>
           <InputSection
             title="Estimated Start of Response Activities"
@@ -466,7 +563,7 @@ function EmergencyThreeWForm(props: Props) {
               onChange={setFieldValue}
               keySelector={stringValueSelector}
               labelSelector={labelSelector}
-            />
+          />
           </InputSection>
           <InputSection title="Who is Leading the Activity?">
             <SegmentInput
@@ -566,6 +663,11 @@ function EmergencyThreeWForm(props: Props) {
 
             return null;
           })}
+          <NonFieldError
+            className={styles.nonFieldError}
+            error={error}
+            message="Please correct all errors above before submission"
+          />
           <div className={styles.actions}>
             <Button
               name={undefined}

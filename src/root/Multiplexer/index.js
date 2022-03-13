@@ -39,7 +39,7 @@ const ResendValidation = lazy(() => import('../views/resend-validation'));
 const FourHundredFour = lazy(() => import('../views/FourHundredFour'));
 const FieldReport = lazy(() => import('../views/field-report'));
 const Emergencies = lazy(() => import('../views/emergencies'));
-const Emergency = lazy(() => import('../views/emergency'));
+const Emergency = lazy(() => import('../views/Emergency'));
 const EmergencyWrapper = lazy(() => import('../views/emergencyWrapper'));
 const Region = lazy(() => import('../views/region'));
 const Country = lazy(() => import('../views/Country'));
@@ -57,6 +57,7 @@ const GlobalThreeW = lazy(() => import('../views/GlobalThreeW'));
 const AllThreeW = lazy(() => import('../views/AllThreeW'));
 const ThreeW = lazy(() => import('../views/ThreeW'));
 const ThreeWEdit = lazy(() => import('../views/ThreeWEdit'));
+const EmergencyThreeWEdit = lazy(() => import('../views/EmergencyThreeWEdit'));
 
 const DrefApplicationForm = lazy(() => import('../views/DrefApplicationForm'));
 const DrefPdfPreview = lazy(() => import('../views/DrefPdfPreview'));
@@ -267,6 +268,7 @@ function Multiplexer(props) {
               <Route exact path='/three-w/all/' component={AllThreeW} />
               <Route exact path='/three-w/:projectId/' component={ThreeW} />
               <PrivateRoute exact path='/three-w/:projectId/edit/' component={ThreeWEdit} />
+              <PrivateRoute exact path='/emergency-three-w/:projectId/edit/' component={EmergencyThreeWEdit} />
               <Route exact path='/three-w/' component={GlobalThreeW} />
 
               <PrivateRoute key="new-dref-application-form" exact path='/dref-application/new/' component={DrefApplicationForm} />

@@ -10,6 +10,7 @@ import {
   ArraySchema,
   forceUndefinedType,
   requiredCondition,
+  emailCondition,
 } from '@togglecorp/toggle-form';
 
 import {
@@ -25,6 +26,7 @@ import {
   DistrictMini,
 } from '#types';
 import { compareString } from '#utils/utils';
+import { positiveIntegerCondition } from '#utils/form';
 
 export const ACTIVITY_LEADER_NS = 'national_society';
 export const ACTIVITY_LEADER_ERU = 'deployed_eru';
@@ -38,6 +40,7 @@ interface EmergencyThreeWOptionsResponse {
     sector: number;
     order: number;
     title: string;
+    description: string;
     supplies_details: {
       id: number;
       title: string;
@@ -73,51 +76,51 @@ export interface Point {
 export interface ActivityBase {
   sector: number;
   details: string;
-  simplified: boolean;
+  is_simplified_report: boolean;
 
   people_households: 'people' | 'households';
-  household_count: number;
-  people_count: number;
-  male_count: number;
-  female_count: number;
+  household_count: number | null;
+  people_count: number | null;
+  male_count: number | null;
+  female_count: number | null;
 
-  male_0_5_count: number;
-  male_6_12_count: number;
-  male_13_17_count: number;
-  male_18_29_count: number;
-  male_30_39_count: number;
-  male_40_49_count: number;
-  male_50_59_count: number;
-  male_60_69_count: number;
-  male_70_plus_count: number;
+  male_0_5_count: number | null;
+  male_6_12_count: number | null;
+  male_13_17_count: number | null;
+  male_18_29_count: number | null;
+  male_30_39_count: number | null;
+  male_40_49_count: number | null;
+  male_50_59_count: number | null;
+  male_60_69_count: number | null;
+  male_70_plus_count: number | null;
 
-  female_0_5_count: number;
-  female_6_12_count: number;
-  female_13_17_count: number;
-  female_18_29_count: number;
-  female_30_39_count: number;
-  female_40_49_count: number;
-  female_50_59_count: number;
-  female_60_69_count: number;
-  female_70_plus_count: number;
+  female_0_5_count: number | null;
+  female_6_12_count: number | null;
+  female_13_17_count: number | null;
+  female_18_29_count: number | null;
+  female_30_39_count: number | null;
+  female_40_49_count: number | null;
+  female_50_59_count: number | null;
+  female_60_69_count: number | null;
+  female_70_plus_count: number | null;
 
-  other_0_5_count: number;
-  other_6_12_count: number;
-  other_13_17_count: number;
-  other_18_29_count: number;
-  other_30_39_count: number;
-  other_40_49_count: number;
-  other_50_59_count: number;
-  other_60_69_count: number;
-  other_70_plus_count: number;
+  other_0_5_count: number | null;
+  other_6_12_count: number | null;
+  other_13_17_count: number | null;
+  other_18_29_count: number | null;
+  other_30_39_count: number | null;
+  other_40_49_count: number | null;
+  other_50_59_count: number | null;
+  other_60_69_count: number | null;
+  other_70_plus_count: number | null;
 
-  point_count: number;
+  point_count: number | null;
   points: Point[];
 }
 
 export interface Activity extends ActivityBase {
   // NOTE: we call this activity in client
-  action: number;
+  action?: number | null;
   supplies: Supply[];
   custom_supplies: CustomSupply[];
 }
@@ -125,7 +128,7 @@ export interface Activity extends ActivityBase {
 export interface CustomActivity extends ActivityBase {
   client_id: string;
   // NOTE: we call this custom activity in client
-  custom_action: string;
+  custom_action: string | null;
   custom_supplies: CustomSupply[];
 }
 
@@ -144,12 +147,12 @@ export interface EmergencyThreeWFormFields {
   start_date: string;
   activity_lead: string;
 
-  reporting_ns: number;
-  reporting_ns_contact_name: string;
-  reporting_ns_contact_role: string;
-  reporting_ns_contact_email: string;
+  reporting_ns: number | null;
+  reporting_ns_contact_name: string | null;
+  reporting_ns_contact_role: string | null;
+  reporting_ns_contact_email: string | null;
 
-  deployed_eru: number;
+  deployed_eru: number | null;
 
   sectors: Sector[];
 }
@@ -205,7 +208,7 @@ export const schema: FormSchema = {
       reporting_ns: isNS ? [requiredCondition] : [forceUndefinedType],
       reporting_ns_contact_name: isNS ? [] : [forceUndefinedType],
       reporting_ns_contact_role: isNS? [] : [forceUndefinedType],
-      reporting_ns_contact_email: isNS? [] : [forceUndefinedType],
+      reporting_ns_contact_email: isNS? [emailCondition] : [forceUndefinedType],
       deployed_eru: isERU ? [requiredCondition] : [forceUndefinedType],
       sectors: {
         keySelector: (s) => s.sector as number,
@@ -220,50 +223,50 @@ export const schema: FormSchema = {
                 return {
                   ...currentValue,
                   people_households: [requiredCondition],
-                  household_count: peopleHouseholds === 'households' ? [] : [forceUndefinedType],
-                  people_count: peopleHouseholds === 'people' ? [] : [forceUndefinedType],
-                  male_count: [],
-                  female_count: [],
-                  point_count: [],
+                  household_count: peopleHouseholds === 'households' ? [requiredCondition, positiveIntegerCondition] : [forceUndefinedType],
+                  people_count: peopleHouseholds === 'people' ? [requiredCondition, positiveIntegerCondition] : [forceUndefinedType],
+                  male_count: peopleHouseholds === 'people' ? [positiveIntegerCondition] : [forceUndefinedType],
+                  female_count: peopleHouseholds === 'people' ? [positiveIntegerCondition]: [forceUndefinedType],
+                  point_count: [positiveIntegerCondition],
                 };
               } else {
                 return {
                   ...currentValue,
-                  male_0_5_count: [],
-                  male_6_12_count: [],
-                  male_13_17_count: [],
-                  male_18_29_count: [],
-                  male_30_39_count: [],
-                  male_40_49_count: [],
-                  male_50_59_count: [],
-                  male_60_69_count: [],
-                  male_70_plus_count: [],
-                  female_0_5_count: [],
-                  female_6_12_count: [],
-                  female_13_17_count: [],
-                  female_18_29_count: [],
-                  female_30_39_count: [],
-                  female_40_49_count: [],
-                  female_50_59_count: [],
-                  female_60_69_count: [],
-                  female_70_plus_count: [],
-                  other_0_5_count: [],
-                  other_6_12_count: [],
-                  other_13_17_count: [],
-                  other_18_29_count: [],
-                  other_30_39_count: [],
-                  other_40_49_count: [],
-                  other_50_59_count: [],
-                  other_60_69_count: [],
-                  other_70_plus_count: [],
+                  male_0_5_count: [positiveIntegerCondition],
+                  male_6_12_count: [positiveIntegerCondition],
+                  male_13_17_count: [positiveIntegerCondition],
+                  male_18_29_count: [positiveIntegerCondition],
+                  male_30_39_count: [positiveIntegerCondition],
+                  male_40_49_count: [positiveIntegerCondition],
+                  male_50_59_count: [positiveIntegerCondition],
+                  male_60_69_count: [positiveIntegerCondition],
+                  male_70_plus_count: [positiveIntegerCondition],
+                  female_0_5_count: [positiveIntegerCondition],
+                  female_6_12_count: [positiveIntegerCondition],
+                  female_13_17_count: [positiveIntegerCondition],
+                  female_18_29_count: [positiveIntegerCondition],
+                  female_30_39_count: [positiveIntegerCondition],
+                  female_40_49_count: [positiveIntegerCondition],
+                  female_50_59_count: [positiveIntegerCondition],
+                  female_60_69_count: [positiveIntegerCondition],
+                  female_70_plus_count: [positiveIntegerCondition],
+                  other_0_5_count: [positiveIntegerCondition],
+                  other_6_12_count: [positiveIntegerCondition],
+                  other_13_17_count: [positiveIntegerCondition],
+                  other_18_29_count: [positiveIntegerCondition],
+                  other_30_39_count: [positiveIntegerCondition],
+                  other_40_49_count: [positiveIntegerCondition],
+                  other_50_59_count: [positiveIntegerCondition],
+                  other_60_69_count: [positiveIntegerCondition],
+                  other_70_plus_count: [positiveIntegerCondition],
                   points: {
                     keySelector: (p) => p.client_id as string,
                     member: (): PointsSchemaMember => ({
                       fields: (): PointSchemaFields => ({
                         client_id: [],
-                        description: [],
+                        description: [requiredCondition],
                         latitude: [requiredCondition],
-                        longitude: [],
+                        longitude: [requiredCondition],
                       }),
                     }),
                   },
@@ -279,13 +282,14 @@ export const schema: FormSchema = {
                   fields: (activity): ActivitySchemaFields => {
                     let activitySchemaFields: ActivitySchemaFields = {
                       action: [],
-                      simplified: [],
+                      is_simplified_report: [],
+                      details: [],
                       supplies: {
                         keySelector: (s) => s.client_id as string,
                         member: (): SuppliesSchemaMember => ({
                           fields: (): SupplySchemaFields => ({
-                            item: [],
-                            count: [],
+                            item: [requiredCondition],
+                            count: [requiredCondition],
                           }),
                         }),
                       },
@@ -294,8 +298,8 @@ export const schema: FormSchema = {
                         member: (): CustomSuppliesSchemaMember => ({
                           fields: (): CustomSupplySchemaFields => ({
                             client_id: [],
-                            item: [],
-                            count: [],
+                            item: [requiredCondition],
+                            count: [requiredCondition],
                           }),
                         }),
                       },
@@ -303,7 +307,7 @@ export const schema: FormSchema = {
 
                     activitySchemaFields = getDisaggregationAndPoints(
                       activitySchemaFields,
-                      activity?.simplified,
+                      activity?.is_simplified_report,
                       activity?.people_households
                     );
 
@@ -318,14 +322,15 @@ export const schema: FormSchema = {
                     let customActivitySchemaFields: CustomActivitySchemaFields = {
                       client_id: [],
                       custom_action: [],
-                      simplified: [],
+                      is_simplified_report: [],
+                      details: [],
                       custom_supplies: {
                         keySelector: (s) => s.client_id as string,
                         member: (): CustomSuppliesSchemaMember => ({
                           fields: (): CustomSupplySchemaFields => ({
                             client_id: [],
-                            item: [],
-                            count: [],
+                            item: [requiredCondition],
+                            count: [requiredCondition],
                           }),
                         }),
                       },
@@ -333,7 +338,7 @@ export const schema: FormSchema = {
 
                     customActivitySchemaFields = getDisaggregationAndPoints(
                       customActivitySchemaFields,
-                      customActivity?.simplified,
+                      customActivity?.is_simplified_report,
                       customActivity?.people_households
                     );
 
@@ -470,6 +475,7 @@ export function useEmergencyThreeWoptions(
       (d) => (activityListBySectorMap?.[d.id])?.map((a) => ({
         label: a.title,
         value: a.id,
+        description: a.description,
       })) ?? []
     ) ?? {}
   ), [optionsResponse?.sectors, activityListBySectorMap]);

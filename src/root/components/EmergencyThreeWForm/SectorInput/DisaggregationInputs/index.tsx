@@ -71,63 +71,71 @@ function DisaggregationInputs (props: Props) {
     }
   }, [props.customActivity, props.value, errorFromProps]);
 
+  const genderDisaggregationDisabled = value?.people_households !== 'people';
+
   return (
     <>
       <div className={styles.actions}>
         <SegmentInput
-          name={"simplified" as const}
+          name={"is_simplified_report" as const}
           options={reportingTypeOptions}
           keySelector={d => d.value}
           labelSelector={d => d.label}
-          value={value?.simplified}
+          value={value?.is_simplified_report}
           onChange={setFieldValue}
-          error={error?.simplified}
+          error={error?.is_simplified_report}
         />
       </div>
       <div className={styles.disaggregation}>
-        {value?.simplified ? (
+        {value?.is_simplified_report ? (
           <div className={styles.simplified}>
-            <RadioInput
-              name={"people_households" as const}
-              options={peopleHouseholdsOptions}
-              value={value?.people_households}
-              error={error?.people_households}
-              keySelector={d => d.value}
-              labelSelector={d => d.label}
-              onChange={setFieldValue}
-            />
-            {value?.people_households === 'households' && (
-              <NumberInput
-                name="household_count"
-                label="Households"
-                value={value?.household_count}
+            <div className={styles.totalValues}>
+              <RadioInput
+                name={"people_households" as const}
+                options={peopleHouseholdsOptions}
+                value={value?.people_households}
+                error={error?.people_households}
+                keySelector={d => d.value}
+                labelSelector={d => d.label}
                 onChange={setFieldValue}
-                error={error?.household_count}
               />
-            )}
-            {value?.people_households === 'people' && (
+              {value?.people_households === 'households' && (
+                <NumberInput
+                  name="household_count"
+                  label="Households"
+                  value={value?.household_count}
+                  onChange={setFieldValue}
+                  error={error?.household_count}
+                />
+              )}
+              {value?.people_households === 'people' && (
+                <NumberInput
+                  name="people_count"
+                  label="People"
+                  value={value?.people_count}
+                  onChange={setFieldValue}
+                  error={error?.people_count}
+                />
+              )}
+            </div>
+            <div className={styles.genderDisaggregation}>
               <NumberInput
-                name="people_count"
-                label="People"
-                value={value?.people_count}
+                name="male_count"
+                label="Male"
+                value={value?.male_count}
                 onChange={setFieldValue}
-                error={error?.people_count}
+                error={error?.male_count}
+                disabled={genderDisaggregationDisabled}
               />
-            )}
-            <NumberInput
-              name="male_count"
-              label="Men"
-              value={value?.male_count}
-              onChange={setFieldValue}
-              error={error?.male_count}
-            />
-            <NumberInput
-              name="female_count"
-              label="Women"
-              value={value?.female_count}
-              onChange={setFieldValue}
-              error={error?.female_count}
-            />
+              <NumberInput
+                name="female_count"
+                label="Female"
+                value={value?.female_count}
+                onChange={setFieldValue}
+                error={error?.female_count}
+                disabled={genderDisaggregationDisabled}
+              />
+            </div>
           </div>
         ) : (
           <div className={styles.detailed}>

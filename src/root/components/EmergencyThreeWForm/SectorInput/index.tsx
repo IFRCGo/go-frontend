@@ -59,8 +59,8 @@ function SectorInput(props: Props) {
     [value?.sector],
   );
 
-  const actionLabelMap = React.useMemo(() => (
-    listToMap(actionOptions, d => d.value, d => d.label)
+  const actionMap = React.useMemo(() => (
+    listToMap(actionOptions, d => d.value, d => d)
   ), [actionOptions]);
 
   const setFieldValue = useFormObject(index, onChange, defaultValue);
@@ -77,13 +77,13 @@ function SectorInput(props: Props) {
         d => d,
       );
 
-      const newValue = newActivityList?.map((a) => (
+      const newValue: PartialForm<Activity>[] = newActivityList?.map((a) => (
         activityMap?.[a] ?? {
           action: a,
-          simplified: true,
+          is_simplified_report: true,
           people_households: 'people' as const,
         }
-      ));
+      )) ?? [];
 
       return newValue;
     }, 'activities');
@@ -106,7 +106,7 @@ function SectorInput(props: Props) {
     const client_id = randomString();
     const newCustomActivity : PartialForm<CustomActivity> = {
       client_id,
-      simplified: true,
+      is_simplified_report: true,
       people_households: 'people',
     };
 
@@ -159,7 +159,8 @@ function SectorInput(props: Props) {
             if (isDefined(a.action)) {
               return (
                 <ActivityInput
-                  actionTitle={actionLabelMap[a.action]}
+                  actionTitle={actionMap[a.action]?.label ?? 'Unknown Action'}
+                  actionDescription={actionMap[a.action]?.description}
                   key={a.action}
                   index={i}
                   onChange={setActivity}

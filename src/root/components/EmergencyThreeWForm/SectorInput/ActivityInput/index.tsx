@@ -7,12 +7,14 @@ import {
   useFormObject,
   getErrorObject,
 } from '@togglecorp/toggle-form';
+import { IoAdd } from 'react-icons/io5';
 
 import {
   NumericValueOption,
   SetValueArg,
 } from '#types';
 
+import Container from '#components/Container';
 import InputSection from '#components/InputSection';
 import TextArea from '#components/TextArea';
 import NumberInput from '#components/NumberInput';
@@ -40,12 +42,14 @@ interface Props {
   index: number;
   value: Value;
   error: ArrayError<Activity> | undefined;
+  actionDescription?: string;
 }
 
 function ActivityInput(props: Props) {
   const {
     index,
     actionTitle,
+    actionDescription,
     value,
     onChange,
     supplyOptionList,
@@ -125,9 +129,11 @@ function ActivityInput(props: Props) {
   return (
     <InputSection
       title={actionTitle}
+      description={actionDescription}
       className={styles.activity}
       multiRow
       oneColumn
+      contentSectionClassName={styles.content}
     >
       <DisaggregationInputs
         index={index}
@@ -137,10 +143,22 @@ function ActivityInput(props: Props) {
         error={errorFromProps}
       />
       {supplyOptionList && supplyOptionList.length > 0 && (
-        <div className={styles.supplyList}>
-          <div className={styles.supplyTitle}>
-            Supplies
-          </div>
+        <Container
+          className={styles.container}
+          sub
+          heading="Supplies"
+          headingSize="small"
+          visibleOverflow
+          actions={(
+            <Button
+              name={undefined}
+              variant="action"
+              onClick={handleAddSupplyButtonClick}
+            >
+              <IoAdd />
+            </Button>
+          )}
+        >
           {value?.supplies?.map((s, i) => (
             <SupplyInput
               index={i}
@@ -157,19 +175,24 @@ function ActivityInput(props: Props) {
               No supplies yet.
             </div>
           )}
+        </Container>
+      )}
+      <Container
+        className={styles.container}
+        heading="Custom Supplies"
+        sub
+        visibleOverflow
+        headingSize="small"
+        actions={(
           <Button
             name={undefined}
-            variant="secondary"
-            onClick={handleAddSupplyButtonClick}
+            variant="action"
+            onClick={handleAddCustomSupplyButtonClick}
           >
-            Add Supply
+            <IoAdd />
           </Button>
-        </div>
-      )}
-      <div className={styles.customSupplyList}>
-        <div className={styles.customSupplyTitle}>
-          Supplies
-        </div>
+        )}
+      >
         {value?.custom_supplies?.map((s, i) => (
           <CustomSupplyInput
             index={i}
@@ -185,16 +208,9 @@ function ActivityInput(props: Props) {
             No custom supplies yet.
           </div>
         )}
-        <Button
-          name={undefined}
-          variant="secondary"
-          onClick={handleAddCustomSupplyButtonClick}
-        >
-          Add Custom Supply
-        </Button>
-      </div>
+      </Container>
       <div className={styles.points}>
-        {value?.simplified ? (
+        {value?.is_simplified_report ? (
           <NumberInput
             className={styles.pointCountInput}
             name="point_count"
@@ -204,10 +220,22 @@ function ActivityInput(props: Props) {
             error={error?.point_count}
           />
         ) : (
-          <div className={styles.pointList}>
-            <div className={styles.pointTitle}>
-              Points
-            </div>
+          <Container
+            className={styles.container}
+            heading="Points"
+            sub
+            visibleOverflow
+            headingSize="small"
+            actions={(
+              <Button
+                name={undefined}
+                variant="action"
+                onClick={handleAddPointButtonClick}
+              >
+                <IoAdd />
+              </Button>
+            )}
+          >
             {value?.points?.map((p, i) => (
               <PointInput
                 index={i}
@@ -223,14 +251,7 @@ function ActivityInput(props: Props) {
                 No points yet.
               </div>
             )}
-            <Button
-              name={undefined}
-              variant="secondary"
-              onClick={handleAddPointButtonClick}
-            >
-              Add Point
-            </Button>
-          </div>
+          </Container>
         )}
       </div>
       <TextArea
