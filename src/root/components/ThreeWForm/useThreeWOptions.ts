@@ -199,7 +199,7 @@ export function useThreeWOptions(value: Partial<FormType>) {
       })).sort(compareString);
 
     const c: LabelValue[] = countriesResponse.results
-      .filter(d => d.independent !== false && d.iso)
+      .filter(d => d.independent && d.iso)
       .map(d => ({
         value: d.id,
         label: d.name,
