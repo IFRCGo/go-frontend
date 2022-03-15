@@ -1,3 +1,9 @@
+### Release 5.8.4 - Hotfix for #1934
+
+Date: 2022-03-15
+
+Fix filter for Reporting NS in 3w form to include IFRC + ICRC
+
 ### Release 5.8.3 - Hotfix for #2282
 
 Date: 2022-03-04
