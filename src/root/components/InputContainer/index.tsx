@@ -6,6 +6,7 @@ import InputError from '#components/InputError';
 
 import styles from './styles.module.scss';
 
+
 export interface Props {
   className?: string;
   actions?: React.ReactNode;
@@ -78,7 +79,10 @@ function InputContainer(props: Props) {
           </div>
         )}
       </div>
-      <InputError disabled={disabled}>
+      <InputError
+        disabled={disabled}
+        className={styles.inputError}
+      >
         { error }
       </InputError>
     </div>

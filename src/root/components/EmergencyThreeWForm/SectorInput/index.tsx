@@ -34,7 +34,7 @@ type Value = PartialForm<Sector>;
 interface Props {
   className?: string;
   sectorTitle: string;
-  actionOptions: NumericValueOption[];
+  actionOptions: (NumericValueOption & { isCashType?: boolean})[];
   supplyOptionListByActivity: Record<number, NumericValueOption[]>;
   onChange: (value: SetValueArg<Value>, index: number) => void;
   index: number;
@@ -133,7 +133,6 @@ function SectorInput(props: Props) {
       sub
     >
       <Checklist
-        className={styles.activityList}
         onChange={handleActivityListChange}
         checkboxListContainerClassName={styles.listContainer}
         checkboxClassName={styles.checkbox}
@@ -159,6 +158,7 @@ function SectorInput(props: Props) {
             if (isDefined(a.action)) {
               return (
                 <ActivityInput
+                  isCashType={actionMap[a.action]?.isCashType}
                   actionTitle={actionMap[a.action]?.label ?? 'Unknown Action'}
                   actionDescription={actionMap[a.action]?.description}
                   key={a.action}

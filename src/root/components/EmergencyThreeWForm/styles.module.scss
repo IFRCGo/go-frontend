@@ -1,6 +1,17 @@
 @import '~styles/settings/variables';
 
 .emergency-three-w-form {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing*2;
+
+  .activity-reporting-content,
+  .operation-detail-content {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing;
+  }
+
   .actions {
     padding: $spacing*2;
     display: flex;

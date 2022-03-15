@@ -7,6 +7,10 @@ import {
   useFormObject,
   getErrorObject,
 } from '@togglecorp/toggle-form';
+import {
+  IoAdd,
+  IoTrash,
+} from 'react-icons/io5';
 
 import { SetValueArg } from '#types';
 import {
@@ -15,6 +19,8 @@ import {
   Point,
 } from '../../useEmergencyThreeWOptions';
 
+import ExpandableContainer from '#components/ExpandableContainer';
+import Container from '#components/Container';
 import InputSection from '#components/InputSection';
 import TextInput from '#components/TextInput';
 import TextArea from '#components/TextArea';
@@ -56,8 +62,8 @@ function CustomActivityInput(props: Props) {
     : undefined;
 
   const {
-    setValue: setSupply,
-    removeValue: removeSupply,
+    setValue: setCustomSupply,
+    removeValue: removeCustomSupply,
   } = useFormArray<'custom_supplies', PartialForm<CustomSupply>>(
     'custom_supplies',
     setFieldValue,
@@ -71,7 +77,7 @@ function CustomActivityInput(props: Props) {
     setFieldValue,
   );
 
-  const handleAddSupplyButtonClick = React.useCallback(() => {
+  const handleAddCustomSupplyButtonClick = React.useCallback(() => {
     const client_id = randomString();
     const newSupply: PartialForm<CustomSupply> = { client_id };
 
@@ -96,113 +102,128 @@ function CustomActivityInput(props: Props) {
   }, [setFieldValue]);
 
   return (
-    <InputSection
-      title={`Custom Activity #${index + 1}`}
+    <ExpandableContainer
       className={styles.customActivity}
-      multiRow
-      oneColumn
-      contentSectionClassName={styles.content}
-    >
-      <div className={styles.actions}>
+      heading={`Custom Activity #${index + 1}`}
+      headingSize="small"
+      sub
+      actions={(
         <Button
           name={index}
           onClick={onRemove}
-          variant="secondary"
+          variant="action"
         >
-          Remove
+          <IoTrash />
         </Button>
-      </div>
-      <TextInput
-        label="Activity Title"
-        name="custom_action"
-        value={value.custom_action}
-        onChange={setFieldValue}
-        error={error?.custom_action}
-      />
-      <DisaggregationInputs
-        index={index}
-        customActivity={true}
-        onChange={onChange}
-        value={value}
-        error={errorFromProps}
-      />
-      <div className={styles.supplyList}>
-        <div className={styles.supplyTitle}>
-          Custom Supplies
-        </div>
-        {value?.custom_supplies?.map((s, i) => (
-          <CustomSupplyInput
-            index={i}
-            key={s.client_id}
-            value={s}
-            onChange={setSupply}
-            error={getErrorObject(error?.custom_supplies)}
-            onRemove={removeSupply}
-          />
-        ))}
-        {!value?.custom_supplies?.length && (
-          <div className={styles.emptyMessage}>
-            No supplies yet.
-          </div>
-        )}
-        <Button
-          className={styles.addSupplyButton}
-          name={undefined}
-          variant="secondary"
-          onClick={handleAddSupplyButtonClick}
-        >
-          Add Supply
-        </Button>
-      </div>
-      <div className={styles.points}>
-        {value?.is_simplified_report ? (
-          <NumberInput
-            className={styles.pointCountInput}
-            name="point_count"
-            label="Point Count"
-            value={value?.point_count}
-            onChange={setFieldValue}
-            error={error?.point_count}
-          />
-        ) : (
-          <div className={styles.pointList}>
-            <div className={styles.pointTitle}>
-              Points
-            </div>
-            {value?.points?.map((p, i) => (
-              <PointInput
-                index={i}
-                key={p.client_id}
-                value={p}
-                onChange={setPoint}
-                error={getErrorObject(error?.points)}
-                onRemove={removePoint}
-              />
-            ))}
-            {!value?.points?.length && (
-              <div className={styles.emptyMessage}>
-                No points yet.
-              </div>
-            )}
+      )}
+    >
+      <InputSection
+        className={styles.inputSection}
+        multiRow
+        oneColumn
+        contentSectionClassName={styles.content}
+      >
+        <TextInput
+          label="Activity Title"
+          name="custom_action"
+          value={value.custom_action}
+          onChange={setFieldValue}
+          error={error?.custom_action}
+        />
+        <DisaggregationInputs
+          index={index}
+          customActivity={true}
+          onChange={onChange}
+          value={value}
+          error={errorFromProps}
+        />
+        <Container
+          className={styles.container}
+          heading="Custom Supplies"
+          sub
+          visibleOverflow
+          headingSize="small"
+          actions={(
             <Button
               name={undefined}
-              variant="secondary"
-              onClick={handleAddPointButtonClick}
+              variant="action"
+              onClick={handleAddCustomSupplyButtonClick}
             >
-              Add Point
+              <IoAdd />
             </Button>
-          </div>
-        )}
-      </div>
-      <TextArea
-        name="details"
-        label="Activity Details"
-        value={value?.details}
-        onChange={setFieldValue}
-        error={error?.details}
-        rows={2}
-      />
-    </InputSection>
+          )}
+        >
+          {value?.custom_supplies?.map((s, i) => (
+            <CustomSupplyInput
+              index={i}
+              key={s.client_id}
+              value={s}
+              onChange={setCustomSupply}
+              error={getErrorObject(error?.custom_supplies)}
+              onRemove={removeCustomSupply}
+            />
+          ))}
+          {!value?.custom_supplies?.length && (
+            <div className={styles.emptyMessage}>
+              No custom supplies yet.
+            </div>
+          )}
+        </Container>
+        <div className={styles.points}>
+          {value?.is_simplified_report ? (
+            <NumberInput
+              className={styles.pointCountInput}
+              name="point_count"
+              label="Point Count"
+              value={value?.point_count}
+              onChange={setFieldValue}
+              error={error?.point_count}
+            />
+          ) : (
+            <Container
+              className={styles.container}
+              heading="Points"
+              sub
+              visibleOverflow
+              headingSize="small"
+              actions={(
+                <Button
+                  name={undefined}
+                  variant="action"
+                  onClick={handleAddPointButtonClick}
+                >
+                  <IoAdd />
+                </Button>
+              )}
+            >
+              {value?.points?.map((p, i) => (
+                <PointInput
+                  index={i}
+                  key={p.client_id}
+                  value={p}
+                  onChange={setPoint}
+                  error={getErrorObject(error?.points)}
+                  onRemove={removePoint}
+                />
+              ))}
+              {!value?.points?.length && (
+                <div className={styles.emptyMessage}>
+                  No points yet.
+                </div>
+              )}
+            </Container>
+          )}
+        </div>
+        <TextArea
+          name="details"
+          label="Activity Details"
+          value={value?.details}
+          onChange={setFieldValue}
+          error={error?.details}
+          rows={2}
+        />
+      </InputSection>
+    </ExpandableContainer>
   );
 }
 

@@ -1,7 +1,9 @@
 @import '~styles/settings/_variables.scss';
 
 .segment-input {
+  width: fit-content;
   padding: $spacing/2 $spacing;
+
   .list {
     gap: 0;
     background-color: $color-background;

@@ -8,6 +8,7 @@ export interface Props {
   className?: string;
   children?: React.ReactNode;
   disabled?: boolean;
+  style?: React.CSSProperties;
 }
 
 function InputError(props: Props) {
@@ -15,6 +16,7 @@ function InputError(props: Props) {
     children,
     className,
     disabled,
+    style,
   } = props;
 
   if (!children) {
@@ -23,6 +25,7 @@ function InputError(props: Props) {
 
   return (
     <div
+      style={style}
       className={_cs(
         'go-input-error',
         styles.inputError,

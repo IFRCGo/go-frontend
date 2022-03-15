@@ -12,68 +12,93 @@
   .simplified {
     display: flex;
     flex-wrap: wrap;
+    width: 100%;
     gap: $spacing;
 
     .total-values {
-      flex-basis: calc(50% - #{$spacing});
       display: flex;
+      flex-basis: 50%;
+
+      >* {
+        flex-basis: 50%;
+      }
     }
 
     .gender-disaggregation {
-      flex-basis: 50%;
+      flex-basis: calc(50% - #{$spacing});
       display: flex;
       background-color: $grey-fog;
     }
   }
 
   .detailed {
-    display: table;
-    border-collapse: collapse;
-    margin: $spacing;
+    display: flex;
+    flex-direction: column;
+    gap: $spacing;
     overflow-x: auto;
 
-    :global {
-      .go-input-container {
-        font-size: $font-size-sm;
-        padding: 0;
+    .gender-and-age-disaggregation-for-disabled,
+    .gender-and-age-disaggregation{
+      display: table;
+      border-collapse: collapse;
+      margin: $spacing;
 
-        .go-input-internal-input-section {
-          border-radius: 0;
+      :global {
+        .go-input-container {
+          font-size: $font-size-sm;
+          padding: 0;
 
-          input {
-            padding: $spacing/2 $spacing/4;
-            text-align: right;
-          }
+          .go-input-internal-input-section {
+            border-radius: 0;
 
-          input::-webkit-outer-spin-button,
-          input::-webkit-inner-spin-button {
-            -webkit-appearance: none;
-            margin: 0;
-          }
+            input {
+              padding: $spacing/2 $spacing/4;
+              text-align: right;
+            }
 
-          input[type=number] {
-            -moz-appearance: textfield;
+            input::-webkit-outer-spin-button,
+            input::-webkit-inner-spin-button {
+              -webkit-appearance: none;
+              margin: 0;
+            }
+
+            input[type=number] {
+              -moz-appearance: textfield;
+            }
           }
         }
       }
-    }
 
-    .other,
-    .female,
-    .male,
-    .labels {
-      display: table-row;
-      font-size: $font-size-sm;
+      .total,
+      .other,
+      .female,
+      .male,
+      .labels {
+        display: table-row;
+        font-size: $font-size-sm;
 
-      >* {
-        display: table-cell;
+        >* {
+          display: table-cell;
+        }
+      }
+
+      .label {
+        text-align: right;
+        padding: $spacing/2 $spacing;
+        background-color: $white;
+        min-width: 4rem;
       }
     }
 
-    .label {
-      text-align: right;
-      padding: $spacing/2 $spacing/4;
-      background-color: $white;
+    .table-container ,
+    .disabled-container {
+      position: relative;
+      overflow-x: auto;
+    }
+
+    .title {
+      padding: 0 $spacing;
+      font-weight: $base-font-medium;
     }
   }
 }

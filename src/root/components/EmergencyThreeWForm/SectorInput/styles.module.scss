@@ -2,13 +2,13 @@
 
 .sector-input {
   background-color: $white;
-  padding: $spacing;
   overflow-x: auto;
 
   .content {
     display: flex;
     flex-direction: column;
-    gap: $spacing;
+    gap: $spacing/2;
+    padding-bottom: $spacing!important;
 
     .activity-list-container {
       display: flex;
@@ -43,7 +43,8 @@
     .activity-list {
       display: flex;
       flex-direction: column;
-      gap: $spacing;
+      gap: $spacing/2;
+      padding: 0 $spacing;
     }
   }
 }

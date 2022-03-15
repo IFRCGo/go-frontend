@@ -3,6 +3,7 @@ import {
   listToMap,
   listToGroupList,
   isNotDefined,
+  isDefined,
 } from '@togglecorp/fujs';
 import {
   PartialForm,
@@ -11,6 +12,7 @@ import {
   forceUndefinedType,
   requiredCondition,
   emailCondition,
+  lessThanOrEqualToCondition,
 } from '@togglecorp/toggle-form';
 
 import {
@@ -20,13 +22,14 @@ import {
 import {
   NumericValueOption,
   StringValueOption,
-  Country,
+  CountryMini,
   ERU,
   Event,
   DistrictMini,
 } from '#types';
 import { compareString } from '#utils/utils';
 import { positiveIntegerCondition } from '#utils/form';
+import { lessThanSixImagesCondition } from '#views/DrefApplicationForm/useDrefFormOptions';
 
 export const ACTIVITY_LEADER_NS = 'national_society';
 export const ACTIVITY_LEADER_ERU = 'deployed_eru';
@@ -41,6 +44,7 @@ interface EmergencyThreeWOptionsResponse {
     order: number;
     title: string;
     description: string;
+    is_cash_type: boolean;
     supplies_details: {
       id: number;
       title: string;
@@ -78,41 +82,64 @@ export interface ActivityBase {
   details: string;
   is_simplified_report: boolean;
 
+  beneficiaries_count?: number | null;
+  amount?: number | null;
+
   people_households: 'people' | 'households';
   household_count: number | null;
   people_count: number | null;
   male_count: number | null;
   female_count: number | null;
 
-  male_0_5_count: number | null;
+  male_0_1_count: number | null;
+  male_2_5_count: number | null;
   male_6_12_count: number | null;
   male_13_17_count: number | null;
-  male_18_29_count: number | null;
-  male_30_39_count: number | null;
-  male_40_49_count: number | null;
-  male_50_59_count: number | null;
-  male_60_69_count: number | null;
-  male_70_plus_count: number | null;
+  male_18_59_count: number | null;
+  male_60_plus_count: number | null;
+  male_unknown_age_count: number | null;
 
-  female_0_5_count: number | null;
+  female_0_1_count: number | null;
+  female_2_5_count: number | null;
   female_6_12_count: number | null;
   female_13_17_count: number | null;
-  female_18_29_count: number | null;
-  female_30_39_count: number | null;
-  female_40_49_count: number | null;
-  female_50_59_count: number | null;
-  female_60_69_count: number | null;
-  female_70_plus_count: number | null;
+  female_18_59_count: number | null;
+  female_60_plus_count: number | null;
+  female_unknown_age_count: number | null;
 
-  other_0_5_count: number | null;
+  other_0_1_count: number | null;
+  other_2_5_count: number | null;
   other_6_12_count: number | null;
   other_13_17_count: number | null;
-  other_18_29_count: number | null;
-  other_30_39_count: number | null;
-  other_40_49_count: number | null;
-  other_50_59_count: number | null;
-  other_60_69_count: number | null;
-  other_70_plus_count: number | null;
+  other_18_59_count: number | null;
+  other_60_plus_count: number | null;
+  other_unknown_age_count: number | null;
+
+  is_disaggregated_for_disabled: boolean;
+
+  disabled_male_0_1_count: number | null;
+  disabled_male_2_5_count: number | null;
+  disabled_male_6_12_count: number | null;
+  disabled_male_13_17_count: number | null;
+  disabled_male_18_59_count: number | null;
+  disabled_male_60_plus_count: number | null;
+  disabled_male_unknown_age_count: number | null;
+
+  disabled_female_0_1_count: number | null;
+  disabled_female_2_5_count: number | null;
+  disabled_female_6_12_count: number | null;
+  disabled_female_13_17_count: number | null;
+  disabled_female_18_59_count: number | null;
+  disabled_female_60_plus_count: number | null;
+  disabled_female_unknown_age_count: number | null;
+
+  disabled_other_0_1_count: number | null;
+  disabled_other_2_5_count: number | null;
+  disabled_other_6_12_count: number | null;
+  disabled_other_13_17_count: number | null;
+  disabled_other_18_59_count: number | null;
+  disabled_other_60_plus_count: number | null;
+  disabled_other_unknown_age_count: number | null;
 
   point_count: number | null;
   points: Point[];
@@ -157,39 +184,43 @@ export interface EmergencyThreeWFormFields {
   sectors: Sector[];
 }
 
-type FormSchema = ObjectSchema<PartialForm<EmergencyThreeWFormFields>>;
+type BaseValue = PartialForm<EmergencyThreeWFormFields>;
+
+type FormSchema = ObjectSchema<BaseValue>;
+
 type FormSchemaFields = ReturnType<FormSchema['fields']>;
 const emptyNumericOptionList: NumericValueOption[] = [];
 const emptyERUList: ERU[] = [];
 
-type SectorSchema = ObjectSchema<PartialForm<Sector>>;
+type SectorSchema = ObjectSchema<PartialForm<Sector>, BaseValue>;
 type SectorSchemaFields = ReturnType<SectorSchema['fields']>;
-type SectorsSchema = ArraySchema<PartialForm<Sector>>;
+
+type SectorsSchema = ArraySchema<PartialForm<Sector>, BaseValue>;
 type SectorsSchemaMember = ReturnType<SectorsSchema['member']>;
 
-type ActivitySchema = ObjectSchema<PartialForm<Activity>>;
+type ActivitySchema = ObjectSchema<PartialForm<Activity>, BaseValue>;
 type ActivitySchemaFields = ReturnType<ActivitySchema['fields']>;
-type ActivitiesSchema = ArraySchema<PartialForm<Activity>>;
+type ActivitiesSchema = ArraySchema<PartialForm<Activity>, BaseValue>;
 type ActivitiesSchemaMember = ReturnType<ActivitiesSchema['member']>;
 
-type SupplySchema = ObjectSchema<PartialForm<Supply>>;
+type SupplySchema = ObjectSchema<PartialForm<Supply>, BaseValue>;
 type SupplySchemaFields = ReturnType<SupplySchema['fields']>;
-type SuppliesSchema = ArraySchema<PartialForm<Supply>>;
+type SuppliesSchema = ArraySchema<PartialForm<Supply>, BaseValue>;
 type SuppliesSchemaMember = ReturnType<SuppliesSchema['member']>;
 
-type CustomActivitySchema = ObjectSchema<PartialForm<CustomActivity>>;
+type CustomActivitySchema = ObjectSchema<PartialForm<CustomActivity>, BaseValue>;
 type CustomActivitySchemaFields = ReturnType<CustomActivitySchema['fields']>;
-type CustomActivitiesSchema = ArraySchema<PartialForm<CustomActivity>>;
+type CustomActivitiesSchema = ArraySchema<PartialForm<CustomActivity>, BaseValue>;
 type CustomActivitiesSchemaMember = ReturnType<CustomActivitiesSchema['member']>;
 
-type CustomSupplySchema = ObjectSchema<PartialForm<CustomSupply>>;
+type CustomSupplySchema = ObjectSchema<PartialForm<CustomSupply>, BaseValue>;
 type CustomSupplySchemaFields = ReturnType<CustomSupplySchema['fields']>;
-type CustomSuppliesSchema = ArraySchema<PartialForm<CustomSupply>>;
+type CustomSuppliesSchema = ArraySchema<PartialForm<CustomSupply>, BaseValue>;
 type CustomSuppliesSchemaMember = ReturnType<CustomSuppliesSchema['member']>;
 
-type PointSchema = ObjectSchema<PartialForm<Point>>;
+type PointSchema = ObjectSchema<PartialForm<Point>, BaseValue>;
 type PointSchemaFields = ReturnType<PointSchema['fields']>;
-type PointsSchema = ArraySchema<PartialForm<Point>>;
+type PointsSchema = ArraySchema<PartialForm<Point>, BaseValue>;
 type PointsSchemaMember = ReturnType<PointsSchema['member']>;
 
 export const schema: FormSchema = {
@@ -215,50 +246,98 @@ export const schema: FormSchema = {
         member: (): SectorsSchemaMember => ({
           fields: (): SectorSchemaFields => {
             function getDisaggregationAndPoints<F extends ActivitySchemaFields | CustomActivitiesSchemaMember> (
-              currentValue: F,
-              simplified?: boolean,
-              peopleHouseholds?: string
+              currentFields: F,
+              activity: PartialForm<Activity> | PartialForm<CustomActivity> | undefined,
             ): F {
-              if (simplified) {
+              const isPeople = activity?.people_households === 'people';
+              const isHouseholds = activity?.people_households === 'households';
+
+              type GetKeysForType<T extends object, X> = NonNullable<{
+                [key in keyof T]: NonNullable<T[key]> extends X ? key : never;
+              }[keyof T]>;
+
+              // NOTE: IDK why action cannot be used here? @ankit?
+              type KeysForNumericValue = Exclude<GetKeysForType<Activity, number>, 'action'>;
+
+              const specialLessThanOrEqualToCondition = (key: KeysForNumericValue) => {
+                const foreignValue = activity?.[key];
+                return (value: number) => {
+                  if (isDefined(value)) {
+                    if (isDefined(foreignValue)) {
+                      return lessThanOrEqualToCondition(foreignValue)(value);
+                    } else {
+                      return 'Please enter the main disaggregation above first';
+                    }
+                  }
+
+                  return undefined;
+                };
+              };
+
+              if (activity?.is_simplified_report) {
                 return {
-                  ...currentValue,
+                  ...currentFields,
                   people_households: [requiredCondition],
-                  household_count: peopleHouseholds === 'households' ? [requiredCondition, positiveIntegerCondition] : [forceUndefinedType],
-                  people_count: peopleHouseholds === 'people' ? [requiredCondition, positiveIntegerCondition] : [forceUndefinedType],
-                  male_count: peopleHouseholds === 'people' ? [positiveIntegerCondition] : [forceUndefinedType],
-                  female_count: peopleHouseholds === 'people' ? [positiveIntegerCondition]: [forceUndefinedType],
+                  household_count: isPeople ? [requiredCondition, positiveIntegerCondition] : [forceUndefinedType],
+                  people_count: isHouseholds ? [requiredCondition, positiveIntegerCondition] : [forceUndefinedType],
+                  male_count: isHouseholds ? [positiveIntegerCondition] : [forceUndefinedType],
+                  female_count: isHouseholds ? [positiveIntegerCondition]: [forceUndefinedType],
                   point_count: [positiveIntegerCondition],
                 };
               } else {
                 return {
-                  ...currentValue,
-                  male_0_5_count: [positiveIntegerCondition],
+                  ...currentFields,
+
+                  male_0_1_count: [positiveIntegerCondition],
+                  male_2_5_count: [positiveIntegerCondition],
                   male_6_12_count: [positiveIntegerCondition],
                   male_13_17_count: [positiveIntegerCondition],
-                  male_18_29_count: [positiveIntegerCondition],
-                  male_30_39_count: [positiveIntegerCondition],
-                  male_40_49_count: [positiveIntegerCondition],
-                  male_50_59_count: [positiveIntegerCondition],
-                  male_60_69_count: [positiveIntegerCondition],
-                  male_70_plus_count: [positiveIntegerCondition],
-                  female_0_5_count: [positiveIntegerCondition],
+                  male_18_59_count: [positiveIntegerCondition],
+                  male_60_plus_count: [positiveIntegerCondition],
+                  male_unknown_age_count: [positiveIntegerCondition],
+
+                  female_0_1_count: [positiveIntegerCondition],
+                  female_2_5_count: [positiveIntegerCondition],
                   female_6_12_count: [positiveIntegerCondition],
                   female_13_17_count: [positiveIntegerCondition],
-                  female_18_29_count: [positiveIntegerCondition],
-                  female_30_39_count: [positiveIntegerCondition],
-                  female_40_49_count: [positiveIntegerCondition],
-                  female_50_59_count: [positiveIntegerCondition],
-                  female_60_69_count: [positiveIntegerCondition],
-                  female_70_plus_count: [positiveIntegerCondition],
-                  other_0_5_count: [positiveIntegerCondition],
+                  female_18_59_count: [positiveIntegerCondition],
+                  female_60_plus_count: [positiveIntegerCondition],
+                  female_unknown_age_count: [positiveIntegerCondition],
+
+                  other_0_1_count: [positiveIntegerCondition],
+                  other_2_5_count: [positiveIntegerCondition],
                   other_6_12_count: [positiveIntegerCondition],
                   other_13_17_count: [positiveIntegerCondition],
-                  other_18_29_count: [positiveIntegerCondition],
-                  other_30_39_count: [positiveIntegerCondition],
-                  other_40_49_count: [positiveIntegerCondition],
-                  other_50_59_count: [positiveIntegerCondition],
-                  other_60_69_count: [positiveIntegerCondition],
-                  other_70_plus_count: [positiveIntegerCondition],
+                  other_18_59_count: [positiveIntegerCondition],
+                  other_60_plus_count: [positiveIntegerCondition],
+                  other_unknown_age_count: [positiveIntegerCondition],
+
+                  is_disaggregated_for_disabled: [],
+
+                  disabled_male_0_1_count: [positiveIntegerCondition, specialLessThanOrEqualToCondition('male_0_1_count')],
+                  disabled_male_2_5_count: [positiveIntegerCondition, specialLessThanOrEqualToCondition('male_2_5_count')],
+                  disabled_male_6_12_count: [positiveIntegerCondition, specialLessThanOrEqualToCondition('male_6_12_count')],
+                  disabled_male_13_17_count: [positiveIntegerCondition, specialLessThanOrEqualToCondition('male_13_17_count')],
+                  disabled_male_18_59_count: [positiveIntegerCondition, specialLessThanOrEqualToCondition('male_18_59_count')],
+                  disabled_male_60_plus_count: [positiveIntegerCondition, specialLessThanOrEqualToCondition('male_60_plus_count')],
+                  disabled_male_unknown_age_count: [positiveIntegerCondition, specialLessThanOrEqualToCondition('male_unknown_age_count')],
+
+                  disabled_female_0_1_count: [positiveIntegerCondition, specialLessThanOrEqualToCondition('female_0_1_count')],
+                  disabled_female_2_5_count: [positiveIntegerCondition, specialLessThanOrEqualToCondition('female_2_5_count')],
+                  disabled_female_6_12_count: [positiveIntegerCondition, specialLessThanOrEqualToCondition('female_6_12_count')],
+                  disabled_female_13_17_count: [positiveIntegerCondition, specialLessThanOrEqualToCondition('female_13_17_count')],
+                  disabled_female_18_59_count: [positiveIntegerCondition, specialLessThanOrEqualToCondition('female_18_59_count')],
+                  disabled_female_60_plus_count: [positiveIntegerCondition, specialLessThanOrEqualToCondition('female_60_plus_count')],
+                  disabled_female_unknown_age_count: [positiveIntegerCondition, specialLessThanOrEqualToCondition('female_unknown_age_count')],
+
+                  disabled_other_0_1_count: [positiveIntegerCondition, specialLessThanOrEqualToCondition('other_0_1_count')],
+                  disabled_other_2_5_count: [positiveIntegerCondition, specialLessThanOrEqualToCondition('other_2_5_count')],
+                  disabled_other_6_12_count: [positiveIntegerCondition, specialLessThanOrEqualToCondition('other_6_12_count')],
+                  disabled_other_13_17_count: [positiveIntegerCondition, specialLessThanOrEqualToCondition('other_13_17_count')],
+                  disabled_other_18_59_count: [positiveIntegerCondition, specialLessThanOrEqualToCondition('other_18_59_count')],
+                  disabled_other_60_plus_count: [positiveIntegerCondition, specialLessThanOrEqualToCondition('other_60_plus_count')],
+                  disabled_other_unknown_age_count: [positiveIntegerCondition, specialLessThanOrEqualToCondition('other_unknown_age_count')],
+
                   points: {
                     keySelector: (p) => p.client_id as string,
                     member: (): PointsSchemaMember => ({
@@ -283,6 +362,8 @@ export const schema: FormSchema = {
                     let activitySchemaFields: ActivitySchemaFields = {
                       action: [],
                       is_simplified_report: [],
+                      beneficiaries_count: [positiveIntegerCondition],
+                      amount: [positiveIntegerCondition],
                       details: [],
                       supplies: {
                         keySelector: (s) => s.client_id as string,
@@ -307,12 +388,36 @@ export const schema: FormSchema = {
 
                     activitySchemaFields = getDisaggregationAndPoints(
                       activitySchemaFields,
-                      activity?.is_simplified_report,
-                      activity?.people_households
+                      activity,
                     );
 
                     return activitySchemaFields;
                   },
+                  fieldDependencies: () => ({
+                    disabled_male_0_1_count: ['male_0_1_count'],
+                    disabled_male_2_5_count: ['male_2_5_count'],
+                    disabled_male_6_12_count: ['male_6_12_count'],
+                    disabled_male_13_17_count: ['male_13_17_count'],
+                    disabled_male_18_59_count: ['male_18_59_count'],
+                    disabled_male_60_plus_count: ['male_60_plus_count'],
+                    disabled_male_unknown_age_count: ['male_unknown_age_count'],
+
+                    disabled_female_0_1_count: ['female_0_1_count'],
+                    disabled_female_2_5_count: ['female_2_5_count'],
+                    disabled_female_6_12_count: ['female_6_12_count'],
+                    disabled_female_13_17_count: ['female_13_17_count'],
+                    disabled_female_18_59_count: ['female_18_59_count'],
+                    disabled_female_60_plus_count: ['female_60_plus_count'],
+                    disabled_female_unknown_age_count: ['female_unknown_age_count'],
+
+                    disabled_other_0_1_count: ['other_0_1_count'],
+                    disabled_other_2_5_count: ['other_2_5_count'],
+                    disabled_other_6_12_count: ['other_6_12_count'],
+                    disabled_other_13_17_count: ['other_13_17_count'],
+                    disabled_other_18_59_count: ['other_18_59_count'],
+                    disabled_other_60_plus_count: ['other_60_plus_count'],
+                    disabled_other_unknown_age_count: ['other_unknown_age_count'],
+                  }),
                 }),
               },
               custom_activities: {
@@ -322,6 +427,8 @@ export const schema: FormSchema = {
                     let customActivitySchemaFields: CustomActivitySchemaFields = {
                       client_id: [],
                       custom_action: [],
+                      beneficiaries_count: [],
+                      amount: [],
                       is_simplified_report: [],
                       details: [],
                       custom_supplies: {
@@ -338,8 +445,7 @@ export const schema: FormSchema = {
 
                     customActivitySchemaFields = getDisaggregationAndPoints(
                       customActivitySchemaFields,
-                      customActivity?.is_simplified_report,
-                      customActivity?.people_households
+                      customActivity,
                     );
 
                     return customActivitySchemaFields;
@@ -362,9 +468,12 @@ export function useEmergencyThreeWoptions(
   const {
     pending: fetchingCountries,
     response: countriesResponse,
-  } = useRequest<ListResponse<Country>>({
+  } = useRequest<ListResponse<CountryMini>>({
     url: 'api/v2/country/',
-    query: { limit: 500 },
+    query: {
+      limit: 500,
+      mini: true,
+    },
   });
 
   const {
@@ -468,7 +577,7 @@ export function useEmergencyThreeWoptions(
     listToMap(optionsResponse?.sectors, d => d.id, d => d.title)
   ), [optionsResponse?.sectors]);
 
-  const activityOptionListBySector: Record<number, NumericValueOption[]> = React.useMemo(() => (
+  const activityOptionListBySector: Record<number, (NumericValueOption & { isCashType?: boolean })[]> = React.useMemo(() => (
     listToMap(
       optionsResponse?.sectors,
       (d) => d.id,
@@ -476,6 +585,7 @@ export function useEmergencyThreeWoptions(
         label: a.title,
         value: a.id,
         description: a.description,
+        isCashType: a.is_cash_type,
       })) ?? []
     ) ?? {}
   ), [optionsResponse?.sectors, activityListBySectorMap]);

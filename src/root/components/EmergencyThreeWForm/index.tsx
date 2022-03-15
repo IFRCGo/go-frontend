@@ -17,6 +17,7 @@ import {
 } from '@togglecorp/toggle-form';
 
 import NonFieldError from '#components/NonFieldError';
+import Container from '#components/Container';
 import BlockLoading from '#components/block-loading';
 import Translate from '#components/Translate';
 import Button from '#components/Button';
@@ -301,39 +302,67 @@ function EmergencyThreeWForm(props: Props) {
 
             let baseActivityError: Record<string, string | string[] | {} | undefined> = {};
             const baseActivityKeys = [
+              'is_simplified_report',
+              'beneficiaries_count',
+              'amount',
+
               'people_households',
               'household_count',
               'people_count',
               'male_count',
               'female_count',
               'point_count',
-              'female_0_5_count',
+
+              'female_0_1_count',
+              'female_1_5_count',
               'female_6_12_count',
               'female_13_17_count',
-              'female_18_29_count',
-              'female_30_39_count',
-              'female_40_49_count',
-              'female_50_59_count',
-              'female_60_69_count',
-              'female_70_plus_count',
-              'male_0_5_count',
+              'female_18_59_count',
+              'female_50_plus_count',
+              'female_unknown_age_count',
+
+              'male_0_1_count',
+              'male_1_5_count',
               'male_6_12_count',
               'male_13_17_count',
-              'male_18_29_count',
-              'male_30_39_count',
-              'male_40_49_count',
-              'male_50_59_count',
-              'male_60_69_count',
-              'male_70_plus_count',
-              'other_0_5_count',
+              'male_18_59_count',
+              'male_50_plus_count',
+              'male_unknown_age_count',
+
+              'other_0_1_count',
+              'other_1_5_count',
               'other_6_12_count',
               'other_13_17_count',
-              'other_18_29_count',
-              'other_30_39_count',
-              'other_40_49_count',
-              'other_50_59_count',
-              'other_60_69_count',
-              'other_70_plus_count',
+              'other_18_59_count',
+              'other_50_plus_count',
+              'other_unknown_age_count',
+
+              'is_disaggregated_for_disabled',
+
+              'disabled_female_0_1_count',
+              'disabled_female_1_5_count',
+              'disabled_female_6_12_count',
+              'disabled_female_13_17_count',
+              'disabled_female_18_59_count',
+              'disabled_female_50_plus_count',
+              'disabled_female_unknown_age_count',
+
+              'disabled_male_0_1_count',
+              'disabled_male_1_5_count',
+              'disabled_male_6_12_count',
+              'disabled_male_13_17_count',
+              'disabled_male_18_59_count',
+              'disabled_male_50_plus_count',
+              'disabled_male_unknown_age_count',
+
+              'disabled_other_0_1_count',
+              'disabled_other_1_5_count',
+              'disabled_other_6_12_count',
+              'disabled_other_13_17_count',
+              'disabled_other_18_59_count',
+              'disabled_other_50_plus_count',
+              'disabled_other_unknown_age_count',
+
               'details',
             ] as const;
 
@@ -494,189 +523,203 @@ function EmergencyThreeWForm(props: Props) {
         <BlockLoading />
       ) : (
         <>
-          <InputSection
-            title="Activity Description"
+          <Container
+            sub
+            contentClassName={styles.operationDetailContent}
+            visibleOverflow
+            heading="Operation Details"
           >
-            <TextInput
-              name="title"
-              value={value?.title}
-              error={error?.title}
-              onChange={setFieldValue}
-              placeholder="Enter brief description"
-            />
-          </InputSection>
-          <InputSection
-            title="Current IFRC Operation"
-            description="If operation does not appear in the dropdown, the operation does not yet exist in GO. In that case, please submit a new Field Report to generate the operation, then come back to this form"
-          >
-            <EmergencyEventInput
-              name={"event" as const}
-              value={value?.event}
-              onChange={setFieldValue}
-              error={error?.event}
-              selectedEventDetails={selectedEventDetails}
-          />
-          </InputSection>
-          <InputSection
-            title="Country and Province/Region"
-            description="Select areas where activities reported in this form are occuring "
-          >
-            <SelectInput
-              label="Country"
-              name={"country" as const}
-              options={countryOptions}
-              value={value?.country}
-              onChange={setFieldValue}
-              error={error?.country}
-              placeholder={isDefined(value?.event) ? 'Select a country' : 'Please select an IFRC Operation first'}
-              disabled={inputsDisabled || isNotDefined(value?.event)}
-            />
-            <SelectInput
-              label="Region/Province"
-              name={"districts" as const}
-              options={districtOptions}
-              value={value?.districts}
-              onChange={setFieldValue}
-              error={error?.districts}
-              placeholder={isDefined(value?.country) ? 'Select one or more region' : 'Select a country first'}
-              disabled={inputsDisabled || isNotDefined(value?.country)}
-              isMulti
-          />
-          </InputSection>
-          <InputSection
-            title="Estimated Start of Response Activities"
-            twoColumn
-          >
-            <DateInput
-              name="start_date"
-              label="Start date"
-              value={value?.start_date}
-              error={error?.start_date}
-              onChange={setFieldValue}
-            />
-            <RadioInput
-              label="Status"
-              name={"status" as const}
-              options={statusOptions}
-              value={value?.status}
-              error={error?.status}
-              onChange={setFieldValue}
-              keySelector={stringValueSelector}
-              labelSelector={labelSelector}
-          />
-          </InputSection>
-          <InputSection title="Who is Leading the Activity?">
-            <SegmentInput
-              name={"activity_lead" as const}
-              onChange={setFieldValue}
-              options={activityLeaderOptions}
-              labelSelector={labelSelector}
-              keySelector={stringValueSelector}
-              value={value?.activity_lead}
-              error={error?.activity_lead}
-            />
-          </InputSection>
-          {value?.activity_lead === ACTIVITY_LEADER_NS && (
-            <>
-              <InputSection
-                title="National Society"
-                description="Which National Society is conducting the activity?"
-              >
-                <SelectInput
-                  name={"reporting_ns" as const}
-                  options={nationalSocietyOptions}
-                  onChange={setFieldValue}
-                  value={value?.reporting_ns}
-                  error={error?.reporting_ns}
-                />
-              </InputSection>
-              <InputSection
-                title="Contact Information"
-                description="Who should be contacted for any coordination matters related to this response activity?"
-              >
-                <TextInput
-                  name="reporting_ns_contact_name"
-                  label="Name"
-                  value={value?.reporting_ns_contact_name}
-                  onChange={setFieldValue}
-                  error={error?.reporting_ns_contact_name}
-                />
-                <TextInput
-                  name="reporting_ns_contact_role"
-                  label="Role"
-                  value={value?.reporting_ns_contact_role}
-                  onChange={setFieldValue}
-                  error={error?.reporting_ns_contact_role}
-                />
-                <TextInput
-                  name="reporting_ns_contact_email"
-                  label="Email"
-                  value={value?.reporting_ns_contact_email}
-                  onChange={setFieldValue}
-                  error={error?.reporting_ns_contact_email}
-                />
-              </InputSection>
-            </>
-          )}
-          {value?.activity_lead === ACTIVITY_LEADER_ERU && (
             <InputSection
-              title="ERU"
-              description="Which ERU is conducting the response activity?"
+              title="Current IFRC Operation"
+              description="If operation does not appear in the dropdown, the operation does not yet exist in GO. In that case, please submit a new Field Report to generate the operation, then come back to this form"
             >
-              <ERUInput
-                name={"deployed_eru" as const}
-                value={value?.deployed_eru}
+              <EmergencyEventInput
+                name={"event" as const}
+                value={value?.event}
                 onChange={setFieldValue}
-                options={eruOptions}
-                error={error?.deployed_eru}
+                error={error?.event}
+                selectedEventDetails={selectedEventDetails}
+            />
+            </InputSection>
+            <InputSection
+              title="Country and Province/Region"
+              description="Select areas where activities reported in this form are occuring "
+            >
+              <SelectInput
+                label="Country"
+                name={"country" as const}
+                options={countryOptions}
+                value={value?.country}
+                onChange={setFieldValue}
+                error={error?.country}
+                placeholder={isDefined(value?.event) ? 'Select a country' : 'Please select an IFRC Operation first'}
+                disabled={inputsDisabled || isNotDefined(value?.event)}
+              />
+              <SelectInput
+                label="Region/Province"
+                name={"districts" as const}
+                options={districtOptions}
+                value={value?.districts}
+                onChange={setFieldValue}
+                error={error?.districts}
+                placeholder={isDefined(value?.country) ? 'Select one or more region' : 'Select a country first'}
+                disabled={inputsDisabled || isNotDefined(value?.country)}
+                isMulti
+            />
+            </InputSection>
+            <InputSection
+              title="Estimated Start of Response Activities"
+              twoColumn
+            >
+              <DateInput
+                name="start_date"
+                label="Start date"
+                value={value?.start_date}
+                error={error?.start_date}
+                onChange={setFieldValue}
+              />
+              <RadioInput
+                label="Status"
+                name={"status" as const}
+                options={statusOptions}
+                value={value?.status}
+                error={error?.status}
+                onChange={setFieldValue}
+                keySelector={stringValueSelector}
+                labelSelector={labelSelector}
+            />
+            </InputSection>
+            <InputSection
+              title="Activity Description"
+            >
+              <TextInput
+                name="title"
+                value={value?.title}
+                error={error?.title}
+                onChange={setFieldValue}
+                placeholder="Enter brief description"
               />
             </InputSection>
-          )}
-          <InputSection
-            title="Types of Actions Taken"
-            description="Select the actions that are being across all of the locations tagged above"
-          >
-            <Checklist
-              name="sectors"
-              options={sectorOptions}
-              onChange={handleSectorChange}
-              value={sectorValue}
-              keySelector={numericValueSelector}
-              labelSelector={labelSelector}
-            />
-          </InputSection>
-          {value?.sectors?.map((s, i) => {
-            if (isDefined(s.sector)) {
-              return (
-                <SectorInput
-                  key={s.sector}
-                  index={i}
-                  sectorTitle={sectorIdToLabelMap?.[s.sector] ?? ''}
-                  actionOptions={activityOptionListBySector[s.sector]}
-                  onChange={setSector}
-                  value={s}
-                  supplyOptionListByActivity={supplyOptionListByActivity}
-                  error={getErrorObject(error?.sectors)}
+            <InputSection title="Who is Leading the Activity?">
+              <SegmentInput
+                name={"activity_lead" as const}
+                onChange={setFieldValue}
+                options={activityLeaderOptions}
+                labelSelector={labelSelector}
+                keySelector={stringValueSelector}
+                value={value?.activity_lead}
+                error={error?.activity_lead}
+              />
+            </InputSection>
+            {value?.activity_lead === ACTIVITY_LEADER_NS && (
+              <>
+                <InputSection
+                  title="National Society"
+                  description="Which National Society is conducting the activity?"
+                >
+                  <SelectInput
+                    name={"reporting_ns" as const}
+                    options={nationalSocietyOptions}
+                    onChange={setFieldValue}
+                    value={value?.reporting_ns}
+                    error={error?.reporting_ns}
+                  />
+                </InputSection>
+                <InputSection
+                  title="Contact Information"
+                  description="Who should be contacted for any coordination matters related to this response activity?"
+                >
+                  <TextInput
+                    name="reporting_ns_contact_name"
+                    label="Name"
+                    value={value?.reporting_ns_contact_name}
+                    onChange={setFieldValue}
+                    error={error?.reporting_ns_contact_name}
+                  />
+                  <TextInput
+                    name="reporting_ns_contact_role"
+                    label="Role"
+                    value={value?.reporting_ns_contact_role}
+                    onChange={setFieldValue}
+                    error={error?.reporting_ns_contact_role}
+                  />
+                  <TextInput
+                    name="reporting_ns_contact_email"
+                    label="Email"
+                    value={value?.reporting_ns_contact_email}
+                    onChange={setFieldValue}
+                    error={error?.reporting_ns_contact_email}
+                  />
+                </InputSection>
+              </>
+            )}
+            {value?.activity_lead === ACTIVITY_LEADER_ERU && (
+              <InputSection
+                title="ERU"
+                description="Which ERU is conducting the response activity?"
+              >
+                <ERUInput
+                  name={"deployed_eru" as const}
+                  value={value?.deployed_eru}
+                  onChange={setFieldValue}
+                  options={eruOptions}
+                  error={error?.deployed_eru}
                 />
-              );
-            }
-
-            return null;
-          })}
-          <NonFieldError
-            className={styles.nonFieldError}
-            error={error}
-            message="Please correct all errors above before submission"
-          />
-          <div className={styles.actions}>
-            <Button
-              name={undefined}
-              onClick={submitForm}
-              disabled={postEmergencyPending}
+              </InputSection>
+            )}
+          </Container>
+          <Container
+            heading="Activity Reporting"
+            sub
+            visibleOverflow
+            contentClassName={styles.activityReportingContent}
+          >
+            <InputSection
+              title="Types of Actions Taken"
+              description="Select the actions that are being across all of the locations tagged above"
             >
-              {postEmergencyPending ? 'Submitting...' : 'Submit'}
-            </Button>
-          </div>
+              <Checklist
+                name="sectors"
+                options={sectorOptions}
+                onChange={handleSectorChange}
+                value={sectorValue}
+                keySelector={numericValueSelector}
+                labelSelector={labelSelector}
+              />
+            </InputSection>
+            {value?.sectors?.map((s, i) => {
+              if (isDefined(s.sector)) {
+                return (
+                  <SectorInput
+                    key={s.sector}
+                    index={i}
+                    sectorTitle={sectorIdToLabelMap?.[s.sector] ?? ''}
+                    actionOptions={activityOptionListBySector[s.sector]}
+                    onChange={setSector}
+                    value={s}
+                    supplyOptionListByActivity={supplyOptionListByActivity}
+                    error={getErrorObject(error?.sectors)}
+                  />
+                );
+              }
+
+              return null;
+            })}
+            <NonFieldError
+              className={styles.nonFieldError}
+              error={error}
+              message="Please correct all errors above before submission"
+            />
+            <div className={styles.actions}>
+              <Button
+                name={undefined}
+                onClick={submitForm}
+                disabled={postEmergencyPending}
+              >
+                {postEmergencyPending ? 'Submitting...' : 'Submit'}
+              </Button>
+            </div>
+          </Container>
         </>
       )}
     </div>

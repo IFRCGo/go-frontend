@@ -39,7 +39,9 @@ export type CountryMini = Pick<
     | 'record_type_display'
     | 'region'
     | 'society_name'
->
+> & {
+  average_household_size: number | null;
+}
 
 export type DistrictMini = Pick<
   District,

@@ -66,11 +66,8 @@ function NewThreeW(props: Props) {
       title={strings.newThreeWPageTitle}
       heading={strings.newThreeWPageHeading}
       breadCrumbs={<BreadCrumb crumbs={crumbs} compact />}
-    >
-      <Container>
-        <InputSection
-          title="Type of Operation"
-        >
+      description={(
+        <div className={styles.segmentInputWrapper}>
           <SegmentInput
             name={undefined}
             options={operationTypeOptions}
@@ -79,7 +76,10 @@ function NewThreeW(props: Props) {
             value={operationType}
             onChange={setOperationType}
           />
-        </InputSection>
+        </div>
+      )}
+    >
+      <Container visibleOverflow>
         {operationType === 'program' && (
           <ThreeWForm
             onSubmitSuccess={handleProgramSubmitSuccess}

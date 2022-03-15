@@ -4,6 +4,12 @@
   background-color: $color-background;
   overflow-x: auto;
 
+  .input-section {
+    background-color: $color-background;
+    overflow-x: auto;
+    overflow-y: visible;
+  }
+
   .content {
     overflow-x: auto;
   }
@@ -12,6 +18,10 @@
     color: $primary-color;
     padding: $spacing/2 $spacing;
     font-size: $font-size-xxl;
+  }
+
+  .cash-input {
+    display: flex;
   }
 
   .empty-message {

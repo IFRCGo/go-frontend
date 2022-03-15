@@ -36,6 +36,7 @@
 
   .section-content {
     display: flex;
+    align-items: flex-start;
     flex-grow: 1;
     padding: $spacing/2;
 

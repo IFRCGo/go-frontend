@@ -14,6 +14,7 @@ import {
   SetValueArg,
 } from '#types';
 
+import ExpandableContainer from '#components/ExpandableContainer';
 import Container from '#components/Container';
 import InputSection from '#components/InputSection';
 import TextArea from '#components/TextArea';
@@ -36,6 +37,7 @@ import styles from './styles.module.scss';
 type Value = PartialForm<Activity>;
 
 interface Props {
+  isCashType?: boolean;
   actionTitle: string;
   supplyOptionList: NumericValueOption[];
   onChange: (value: SetValueArg<Value>, index: number) => void;
@@ -54,6 +56,7 @@ function ActivityInput(props: Props) {
     onChange,
     supplyOptionList,
     error: errorFromProps,
+    isCashType,
   } = props;
 
   const defaultValue = React.useMemo(
@@ -127,142 +130,170 @@ function ActivityInput(props: Props) {
   }, [setFieldValue]);
 
   return (
-    <InputSection
-      title={actionTitle}
-      description={actionDescription}
+    <ExpandableContainer
       className={styles.activity}
-      multiRow
-      oneColumn
-      contentSectionClassName={styles.content}
+      heading={actionTitle}
+      headingSize="small"
+      sub
     >
-      <DisaggregationInputs
-        index={index}
-        customActivity={false}
-        onChange={onChange}
-        value={value}
-        error={errorFromProps}
-      />
-      {supplyOptionList && supplyOptionList.length > 0 && (
-        <Container
-          className={styles.container}
-          sub
-          heading="Supplies"
-          headingSize="small"
-          visibleOverflow
-          actions={(
-            <Button
-              name={undefined}
-              variant="action"
-              onClick={handleAddSupplyButtonClick}
-            >
-              <IoAdd />
-            </Button>
-          )}
-        >
-          {value?.supplies?.map((s, i) => (
-            <SupplyInput
-              index={i}
-              key={s.client_id}
-              value={s}
-              onChange={setSupply}
-              error={getErrorObject(error?.supplies)}
-              supplyOptions={supplyOptionList}
-              onRemove={removeSupply}
-            />
-          ))}
-          {!value?.supplies?.length && (
-            <div className={styles.emptyMessage}>
-              No supplies yet.
-            </div>
-          )}
-        </Container>
-      )}
-      <Container
-        className={styles.container}
-        heading="Custom Supplies"
-        sub
-        visibleOverflow
-        headingSize="small"
-        actions={(
-          <Button
-            name={undefined}
-            variant="action"
-            onClick={handleAddCustomSupplyButtonClick}
-          >
-            <IoAdd />
-          </Button>
-        )}
+      <InputSection
+        description={actionDescription}
+        className={styles.inputSection}
+        multiRow
+        oneColumn
+        contentSectionClassName={styles.content}
+        normalDescription
       >
-        {value?.custom_supplies?.map((s, i) => (
-          <CustomSupplyInput
-            index={i}
-            key={s.client_id}
-            value={s}
-            onChange={setCustomSupply}
-            error={getErrorObject(error?.custom_supplies)}
-            onRemove={removeCustomSupply}
-          />
-        ))}
-        {!value?.custom_supplies?.length && (
-          <div className={styles.emptyMessage}>
-            No custom supplies yet.
+        <DisaggregationInputs
+          index={index}
+          customActivity={false}
+          onChange={onChange}
+          value={value}
+          error={errorFromProps}
+        />
+        {isCashType ? (
+          <div className={styles.cashInput}>
+            <NumberInput
+              label="Number of Beneficiaries"
+              name="beneficiaries_count"
+              value={value?.beneficiaries_count}
+              onChange={setFieldValue}
+              error={error?.beneficiaries_count}
+            />
+            <NumberInput
+              label="Amount in CHF"
+              name="amount"
+              value={value?.amount}
+              onChange={setFieldValue}
+              error={error?.amount}
+            />
           </div>
-        )}
-      </Container>
-      <div className={styles.points}>
-        {value?.is_simplified_report ? (
-          <NumberInput
-            className={styles.pointCountInput}
-            name="point_count"
-            label="Point Count"
-            value={value?.point_count}
-            onChange={setFieldValue}
-            error={error?.point_count}
-          />
         ) : (
-          <Container
-            className={styles.container}
-            heading="Points"
-            sub
-            visibleOverflow
-            headingSize="small"
-            actions={(
-              <Button
-                name={undefined}
-                variant="action"
-                onClick={handleAddPointButtonClick}
+          <>
+            {supplyOptionList && supplyOptionList.length > 0 && (
+              <Container
+                className={styles.container}
+                sub
+                heading="Supplies"
+                headingSize="small"
+                visibleOverflow
+                actions={(
+                  <Button
+                    name={undefined}
+                    variant="action"
+                    onClick={handleAddSupplyButtonClick}
+                  >
+                    <IoAdd />
+                  </Button>
+                )}
               >
-                <IoAdd />
-              </Button>
+                {value?.supplies?.map((s, i) => (
+                  <SupplyInput
+                    index={i}
+                    key={s.client_id}
+                    value={s}
+                    onChange={setSupply}
+                    error={getErrorObject(error?.supplies)}
+                    supplyOptions={supplyOptionList}
+                    onRemove={removeSupply}
+                  />
+                ))}
+                {!value?.supplies?.length && (
+                  <div className={styles.emptyMessage}>
+                    No supplies yet.
+                  </div>
+                )}
+              </Container>
             )}
-          >
-            {value?.points?.map((p, i) => (
-              <PointInput
-                index={i}
-                key={p.client_id}
-                value={p}
-                onChange={setPoint}
-                error={getErrorObject(error?.points)}
-                onRemove={removePoint}
-              />
-            ))}
-            {!value?.points?.length && (
-              <div className={styles.emptyMessage}>
-                No points yet.
-              </div>
-            )}
-          </Container>
+            <Container
+              className={styles.container}
+              heading="Custom Supplies"
+              sub
+              visibleOverflow
+              headingSize="small"
+              actions={(
+                <Button
+                  name={undefined}
+                  variant="action"
+                  onClick={handleAddCustomSupplyButtonClick}
+                >
+                  <IoAdd />
+                </Button>
+              )}
+            >
+              {value?.custom_supplies?.map((s, i) => (
+                <CustomSupplyInput
+                  index={i}
+                  key={s.client_id}
+                  value={s}
+                  onChange={setCustomSupply}
+                  error={getErrorObject(error?.custom_supplies)}
+                  onRemove={removeCustomSupply}
+                />
+              ))}
+              {!value?.custom_supplies?.length && (
+                <div className={styles.emptyMessage}>
+                  No custom supplies yet.
+                </div>
+              )}
+            </Container>
+            <div className={styles.points}>
+              {value?.is_simplified_report ? (
+                <NumberInput
+                  className={styles.pointCountInput}
+                  name="point_count"
+                  label="Point Count"
+                  value={value?.point_count}
+                  onChange={setFieldValue}
+                  error={error?.point_count}
+                />
+              ) : (
+                <Container
+                  className={styles.container}
+                  heading="Points"
+                  sub
+                  visibleOverflow
+                  headingSize="small"
+                  actions={(
+                    <Button
+                      name={undefined}
+                      variant="action"
+                      onClick={handleAddPointButtonClick}
+                    >
+                      <IoAdd />
+                    </Button>
+                  )}
+                >
+                  {value?.points?.map((p, i) => (
+                    <PointInput
+                      index={i}
+                      key={p.client_id}
+                      value={p}
+                      onChange={setPoint}
+                      error={getErrorObject(error?.points)}
+                      onRemove={removePoint}
+                    />
+                  ))}
+                  {!value?.points?.length && (
+                    <div className={styles.emptyMessage}>
+                      No points yet.
+                    </div>
+                  )}
+                </Container>
+              )}
+            </div>
+          </>
         )}
-      </div>
-      <TextArea
-        name="details"
-        label="Activity Details"
-        value={value?.details}
-        onChange={setFieldValue}
-        error={error?.details}
-        rows={2}
-      />
-    </InputSection>
+        <TextArea
+          name="details"
+          label="Activity Details"
+          value={value?.details}
+          onChange={setFieldValue}
+          error={error?.details}
+          rows={2}
+        />
+      </InputSection>
+    </ExpandableContainer>
   );
 }
 
