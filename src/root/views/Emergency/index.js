@@ -939,6 +939,10 @@ class Emergency extends React.Component {
     projectForm.fetching || eventForm.fetching || siteRepForm.fetching
   ))
 
+  getCountryIdList = memoize((event) => (
+    event?.data?.countries?.map(d => d.id) ?? []
+  ))
+
   hasReportsTab () {
     const {
       event,
@@ -1464,6 +1468,7 @@ class Emergency extends React.Component {
                 <TabPanel>
                   <Activities
                     emergencyId={this.props.match.params.id}
+                    eventCountryIdList={this.getCountryIdList(this.props.event)}
                   />
                 </TabPanel>
                 {this.hasRRTab() && (

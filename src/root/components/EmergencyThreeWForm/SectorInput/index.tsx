@@ -40,6 +40,7 @@ interface Props {
   index: number;
   value: Value;
   error: ArrayError<Sector> | undefined;
+  averageHouseholdSizeForSelectedCountry: number | undefined | null;
 }
 
 function SectorInput(props: Props) {
@@ -52,6 +53,7 @@ function SectorInput(props: Props) {
     index,
     actionOptions,
     supplyOptionListByActivity,
+    averageHouseholdSizeForSelectedCountry,
   } = props;
 
   const defaultValue = React.useMemo(
@@ -130,7 +132,9 @@ function SectorInput(props: Props) {
       className={_cs(styles.sectorInput, className)}
       contentClassName={styles.content}
       heading={sectorTitle}
+      headingSize="small"
       sub
+      visibleOverflow
     >
       <Checklist
         onChange={handleActivityListChange}
@@ -158,6 +162,7 @@ function SectorInput(props: Props) {
             if (isDefined(a.action)) {
               return (
                 <ActivityInput
+                  averageHouseholdSizeForSelectedCountry={averageHouseholdSizeForSelectedCountry}
                   isCashType={actionMap[a.action]?.isCashType}
                   actionTitle={actionMap[a.action]?.label ?? 'Unknown Action'}
                   actionDescription={actionMap[a.action]?.description}
@@ -180,6 +185,7 @@ function SectorInput(props: Props) {
             if (isDefined(a.client_id)) {
               return (
                 <CustomActivityInput
+                  averageHouseholdSizeForSelectedCountry={averageHouseholdSizeForSelectedCountry}
                   key={a.client_id}
                   index={i}
                   onChange={setCustomActivity}

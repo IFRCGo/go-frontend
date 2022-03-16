@@ -3,51 +3,66 @@ import {
   _cs,
   isNotDefined,
 } from '@togglecorp/fujs';
-import { IoPencil } from 'react-icons/io5';
+import {
+  IoPencil,
+  IoCopy,
+} from 'react-icons/io5';
 
+import Table from '#components/Table';
+import Pager from '#components/Pager';
+import Container from '#components/Container';
+import DropdownMenuItem from '#components/DropdownMenuItem';
+import { createActionColumn } from '#components/Table/predefinedColumns';
+import { EmergencyProjectResponse } from '#types';
 import {
   useRequest,
   ListResponse,
 } from '#utils/restRequest';
 
-import {
-  EmergencyProjectResponse,
-} from '#types';
-import Table from '#components/Table';
-// import Pager from '#components/Pager';
-import Container from '#components/Container';
-import { createActionColumn } from '#components/Table/predefinedColumns';
-import DropdownMenuItem from '#components/DropdownMenuItem';
-
+import ActivityMap from './ActivityMap';
 import { getColumns } from './projectTableColumns';
 import styles from './styles.module.scss';
 
-// const ITEM_PER_PAGE = 10;
+const ITEM_PER_PAGE = 10;
 
 interface Props {
   className?: string;
   emergencyId: number;
+  eventCountryIdList: number[];
 }
 
 function Activities(props: Props) {
   const {
     className,
     emergencyId,
+    eventCountryIdList,
   } = props;
 
-  // const [activePage, setActivePage] = React.useState(1);
-
+  const [activePage, setActivePage] = React.useState(1);
   const {
     response: projectListResponse,
   } = useRequest<ListResponse<EmergencyProjectResponse>>({
     skip: isNotDefined(emergencyId),
     url: 'api/v2/emergency-project/',
     query: {
-      // event: emergencyId,
-      // limit: ITEM_PER_PAGE,
-      // offset: ITEM_PER_PAGE * (activePage - 1),
+      event: emergencyId,
+      limit: ITEM_PER_PAGE,
+      offset: ITEM_PER_PAGE * (activePage - 1),
     },
   });
+
+  const projectCountByDistrict = React.useMemo(() => {
+    const districtList = projectListResponse?.results.map((c) => c.districts).flat(1) ?? [];
+    return districtList.reduce((acc, val) => {
+      const newAcc = {...acc};
+      if (!newAcc[val]) {
+        newAcc[val] = 0;
+      }
+
+      newAcc[val] += 1;
+      return newAcc;
+    }, {} as Record<number, number>);
+  }, [projectListResponse]);
 
   const columns = React.useMemo(
     () => [
@@ -62,6 +77,15 @@ function Activities(props: Props) {
                 icon={<IoPencil />}
                 label="Edit"
               />
+              <DropdownMenuItem
+                href={`/three-w/new/`}
+                icon={<IoCopy />}
+                label="Duplicate"
+                state={{
+                  initialValue: p,
+                  operationType: 'emergency_response',
+                }}
+              />
             </>
           ),
         })
@@ -70,16 +94,9 @@ function Activities(props: Props) {
     []
   );
 
-  const projectList = React.useMemo(() => {
-    return projectListResponse
-      ?.results
-      ?.filter(d => String(d.event) === String(emergencyId)) ?? [];
-  }, [projectListResponse, emergencyId]);
-
   return (
     <Container
       className={_cs(styles.activities, className)}
-      /*
       footerActions={projectListResponse && (
         <Pager
           activePage={activePage}
@@ -88,11 +105,15 @@ function Activities(props: Props) {
           maxItemsPerPage={ITEM_PER_PAGE}
         />
       )}
-      */
+      contentClassName={styles.content}
     >
+      <ActivityMap
+        projectCountByDistrict={projectCountByDistrict}
+        countryIdList={eventCountryIdList}
+      />
       <Table
         className={styles.projectsTable}
-        data={projectList}
+        data={projectListResponse?.results}
         columns={columns}
         keySelector={d => d.id}
         variant="large"

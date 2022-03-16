@@ -20,6 +20,7 @@ import Checkbox from '#components/Checkbox';
 import NumberInput from '#components/NumberInput';
 import SegmentInput from '#components/SegmentInput';
 import RadioInput from '#components/RadioInput';
+import TextOutput from '#components/TextOutput';
 import {
   Activity,
   CustomActivity,
@@ -57,12 +58,14 @@ type Props  = {
   onChange: (value: SetValueArg<PartialForm<Activity>>, index: number) => void;
   value: PartialForm<Activity>;
   error: ArrayError<Activity> | undefined;
+  averageHouseholdSizeForSelectedCountry: number | undefined | null;
 } | {
   customActivity: true;
   index: number;
   onChange: (value: SetValueArg<PartialForm<CustomActivity>>, index: number) => void;
   value: PartialForm<CustomActivity>;
   error: ArrayError<CustomActivity> | undefined;
+  averageHouseholdSizeForSelectedCountry: number | undefined | null;
 }
 
 function DisaggregationInputs (props: Props) {
@@ -71,6 +74,7 @@ function DisaggregationInputs (props: Props) {
     onChange,
     value,
     error: errorFromProps,
+    averageHouseholdSizeForSelectedCountry,
   } = props;
 
   const setFieldValue = useFormObject(index, onChange, defaultValue);
@@ -261,20 +265,17 @@ function DisaggregationInputs (props: Props) {
 
   return (
     <>
-      <div className={styles.actions}>
-        <SegmentInput
-          name={"is_simplified_report" as const}
-          options={reportingTypeOptions}
-          keySelector={d => d.value}
-          labelSelector={d => d.label}
-          value={value?.is_simplified_report}
-          onChange={setFieldValue}
-          error={error?.is_simplified_report}
-        />
-      </div>
-      <NonFieldError
-        error={error}
+      <SegmentInput
+        className={styles.simplifiedInput}
+        name={"is_simplified_report" as const}
+        options={reportingTypeOptions}
+        keySelector={d => d.value}
+        labelSelector={d => d.label}
+        value={value?.is_simplified_report}
+        onChange={setFieldValue}
+        error={error?.is_simplified_report}
       />
+      <NonFieldError error={error} />
       <div className={styles.disaggregation}>
         {value?.is_simplified_report ? (
           <div className={styles.simplified}>
@@ -289,13 +290,15 @@ function DisaggregationInputs (props: Props) {
                 onChange={setFieldValue}
               />
               {value?.people_households === 'households' && (
-                <NumberInput
-                  name="household_count"
-                  label="Households"
-                  value={value?.household_count}
-                  onChange={setFieldValue}
-                  error={error?.household_count}
-                />
+                <>
+                  <NumberInput
+                    name="household_count"
+                    label="Households"
+                    value={value?.household_count}
+                    onChange={setFieldValue}
+                    error={error?.household_count}
+                  />
+                </>
               )}
               {value?.people_households === 'people' && (
                 <NumberInput
@@ -308,6 +311,13 @@ function DisaggregationInputs (props: Props) {
                 />
               )}
             </div>
+            {value?.people_households === 'households' && isDefined(averageHouseholdSizeForSelectedCountry) && (
+              <TextOutput
+                className={styles.info}
+                label="Average household size for selected country"
+                value={averageHouseholdSizeForSelectedCountry}
+              />
+            )}
             {value?.people_households === 'people' && (
               <div className={styles.genderDisaggregation}>
                 <NumberInput

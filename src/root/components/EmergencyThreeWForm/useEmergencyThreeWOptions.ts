@@ -29,7 +29,6 @@ import {
 } from '#types';
 import { compareString } from '#utils/utils';
 import { positiveIntegerCondition } from '#utils/form';
-import { lessThanSixImagesCondition } from '#views/DrefApplicationForm/useDrefFormOptions';
 
 export const ACTIVITY_LEADER_NS = 'national_society';
 export const ACTIVITY_LEADER_ERU = 'deployed_eru';
@@ -278,10 +277,10 @@ export const schema: FormSchema = {
                 return {
                   ...currentFields,
                   people_households: [requiredCondition],
-                  household_count: isPeople ? [requiredCondition, positiveIntegerCondition] : [forceUndefinedType],
-                  people_count: isHouseholds ? [requiredCondition, positiveIntegerCondition] : [forceUndefinedType],
-                  male_count: isHouseholds ? [positiveIntegerCondition] : [forceUndefinedType],
-                  female_count: isHouseholds ? [positiveIntegerCondition]: [forceUndefinedType],
+                  household_count: isHouseholds ? [requiredCondition, positiveIntegerCondition] : [forceUndefinedType],
+                  people_count: isPeople ? [requiredCondition, positiveIntegerCondition] : [forceUndefinedType],
+                  male_count: isPeople ? [positiveIntegerCondition] : [forceUndefinedType],
+                  female_count: isPeople ? [positiveIntegerCondition]: [forceUndefinedType],
                   point_count: [positiveIntegerCondition],
                 };
               } else {
@@ -603,6 +602,13 @@ export function useEmergencyThreeWoptions(
     ) ?? {}
   ), [optionsResponse?.actions]);
 
+  const averageHouseholdSizeForSelectedCountry = React.useMemo(() => {
+    if (isNotDefined(value?.country)) {
+      return undefined;
+    }
+    return eventDetailResponse?.countries?.find(d => d.id === value?.country)?.average_household_size;
+  }, [value?.country, eventDetailResponse]);
+
   return {
     fetchingOptions,
     activityLeaderOptions,
@@ -619,5 +625,6 @@ export function useEmergencyThreeWoptions(
     statusOptions,
     eventDetailPending,
     fetchingDistricts,
+    averageHouseholdSizeForSelectedCountry,
   };
 }

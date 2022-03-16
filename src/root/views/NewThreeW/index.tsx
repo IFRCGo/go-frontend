@@ -4,7 +4,6 @@ import type { Location, History } from 'history';
 
 import Page from '#components/Page';
 import BreadCrumb from '#components/breadcrumb';
-import InputSection from '#components/InputSection';
 import Container from '#components/Container';
 import ThreeWForm from '#components/ThreeWForm';
 import EmergencyThreeWForm from '#components/EmergencyThreeWForm';
@@ -28,7 +27,10 @@ const operationTypeOptions: StringValueOption[] = [
 interface Props {
   className?: string;
   history: History;
-  location: Location,
+  location: Location<{
+    operationType?: string;
+    initialValue?: EmergencyProjectResponse;
+  }>,
 }
 
 function NewThreeW(props: Props) {
@@ -39,7 +41,9 @@ function NewThreeW(props: Props) {
     location,
   } = props;
 
-  const [operationType, setOperationType] = useInputState<string | undefined>('program');
+  const { state } = location;
+
+  const [operationType, setOperationType] = useInputState<string | undefined>(state?.operationType ?? 'program');
 
   const handleProgramSubmitSuccess = React.useCallback((result: Project) => {
     if (history?.push) {
@@ -89,6 +93,7 @@ function NewThreeW(props: Props) {
         {operationType === 'emergency_response' && (
           <EmergencyThreeWForm
             onSubmitSuccess={handleEmergencyResponseSubmitSuccess}
+            initialValue={state?.initialValue}
           />
         )}
       </Container>

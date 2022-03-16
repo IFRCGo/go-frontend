@@ -6,8 +6,10 @@ import {
   useFormArray,
   useFormObject,
   getErrorObject,
+  analyzeErrors,
 } from '@togglecorp/toggle-form';
 import { IoAdd } from 'react-icons/io5';
+import { _cs } from '@togglecorp/fujs';
 
 import {
   NumericValueOption,
@@ -45,6 +47,7 @@ interface Props {
   value: Value;
   error: ArrayError<Activity> | undefined;
   actionDescription?: string;
+  averageHouseholdSizeForSelectedCountry: number | undefined | null;
 }
 
 function ActivityInput(props: Props) {
@@ -57,6 +60,7 @@ function ActivityInput(props: Props) {
     supplyOptionList,
     error: errorFromProps,
     isCashType,
+    averageHouseholdSizeForSelectedCountry,
   } = props;
 
   const defaultValue = React.useMemo(
@@ -68,6 +72,8 @@ function ActivityInput(props: Props) {
   const error = (value && value.action && errorFromProps)
     ? getErrorObject(errorFromProps[value.action])
     : undefined;
+
+  const hasError = analyzeErrors(error);
 
   const {
     setValue: setSupply,
@@ -131,7 +137,7 @@ function ActivityInput(props: Props) {
 
   return (
     <ExpandableContainer
-      className={styles.activity}
+      className={_cs(styles.activity, hasError && styles.errored)}
       heading={actionTitle}
       headingSize="small"
       sub
@@ -150,6 +156,7 @@ function ActivityInput(props: Props) {
           onChange={onChange}
           value={value}
           error={errorFromProps}
+          averageHouseholdSizeForSelectedCountry={averageHouseholdSizeForSelectedCountry}
         />
         {isCashType ? (
           <div className={styles.cashInput}>
@@ -172,7 +179,6 @@ function ActivityInput(props: Props) {
           <>
             {supplyOptionList && supplyOptionList.length > 0 && (
               <Container
-                className={styles.container}
                 sub
                 heading="Supplies"
                 headingSize="small"
@@ -206,7 +212,6 @@ function ActivityInput(props: Props) {
               </Container>
             )}
             <Container
-              className={styles.container}
               heading="Custom Supplies"
               sub
               visibleOverflow
@@ -249,7 +254,6 @@ function ActivityInput(props: Props) {
                 />
               ) : (
                 <Container
-                  className={styles.container}
                   heading="Points"
                   sub
                   visibleOverflow

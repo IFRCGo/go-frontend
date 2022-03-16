@@ -2,16 +2,14 @@
 
 .custom-activity {
   background-color: $color-background;
-  overflow-x: auto;
+  border-top: 2px solid transparent;
 
   .input-section {
     background-color: $color-background;
-    overflow-x: auto;
     overflow-y: visible;
   }
 
   .content {
-    overflow-x: auto;
     overflow-y: visible;
   }
 
@@ -29,7 +27,7 @@
     width: 10rem;
   }
 
-  .container {
-    padding: $spacing;
+  &.errored {
+    border-top-color: $primary-color;
   }
 }

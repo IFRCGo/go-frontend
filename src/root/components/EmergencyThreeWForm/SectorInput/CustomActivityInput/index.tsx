@@ -6,11 +6,13 @@ import {
   useFormArray,
   useFormObject,
   getErrorObject,
+  analyzeErrors,
 } from '@togglecorp/toggle-form';
 import {
   IoAdd,
   IoTrash,
 } from 'react-icons/io5';
+import { _cs } from '@togglecorp/fujs';
 
 import { SetValueArg } from '#types';
 import {
@@ -40,6 +42,7 @@ interface Props {
   value: Value;
   error: ArrayError<CustomActivity> | undefined;
   onRemove: (index: number) => void;
+  averageHouseholdSizeForSelectedCountry: number | undefined | null;
 }
 
 function CustomActivityInput(props: Props) {
@@ -49,6 +52,7 @@ function CustomActivityInput(props: Props) {
     onChange,
     error: errorFromProps,
     onRemove,
+    averageHouseholdSizeForSelectedCountry,
   } = props;
 
   const defaultValue = React.useMemo(
@@ -60,6 +64,8 @@ function CustomActivityInput(props: Props) {
   const error = (value && value.client_id && errorFromProps)
     ? getErrorObject(errorFromProps[value.client_id])
     : undefined;
+
+  const hasError = analyzeErrors(error);
 
   const {
     setValue: setCustomSupply,
@@ -103,7 +109,7 @@ function CustomActivityInput(props: Props) {
 
   return (
     <ExpandableContainer
-      className={styles.customActivity}
+      className={_cs(styles.customActivity, hasError && styles.errored)}
       heading={`Custom Activity #${index + 1}`}
       headingSize="small"
       sub
@@ -136,9 +142,9 @@ function CustomActivityInput(props: Props) {
           onChange={onChange}
           value={value}
           error={errorFromProps}
+          averageHouseholdSizeForSelectedCountry={averageHouseholdSizeForSelectedCountry}
         />
         <Container
-          className={styles.container}
           heading="Custom Supplies"
           sub
           visibleOverflow
@@ -181,7 +187,6 @@ function CustomActivityInput(props: Props) {
             />
           ) : (
             <Container
-              className={styles.container}
               heading="Points"
               sub
               visibleOverflow

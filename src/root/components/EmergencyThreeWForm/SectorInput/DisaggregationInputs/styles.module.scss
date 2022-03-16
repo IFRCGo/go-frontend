@@ -1,19 +1,14 @@
 @import '~styles/settings/variables';
 
-.actions {
-  padding: $spacing/2 0;
-}
-
-
 .disaggregation {
   display: flex;
-  overflow-x: auto;
 
   .simplified {
     display: flex;
     flex-wrap: wrap;
     width: 100%;
-    gap: $spacing;
+    gap: $spacing*2;
+    align-items: center;
 
     .total-values {
       display: flex;
@@ -25,9 +20,13 @@
     }
 
     .gender-disaggregation {
-      flex-basis: calc(50% - #{$spacing});
+      flex-basis: calc(50% - #{$spacing*2});
+      gap: $spacing;
       display: flex;
-      background-color: $grey-fog;
+    }
+
+    .info {
+      padding: 0 $spacing;
     }
   }
 
@@ -35,13 +34,11 @@
     display: flex;
     flex-direction: column;
     gap: $spacing;
-    overflow-x: auto;
 
     .gender-and-age-disaggregation-for-disabled,
     .gender-and-age-disaggregation{
       display: table;
       border-collapse: collapse;
-      margin: $spacing;
 
       :global {
         .go-input-container {
@@ -86,14 +83,13 @@
         text-align: right;
         padding: $spacing/2 $spacing;
         background-color: $white;
-        min-width: 4rem;
+        min-width: 3rem;
       }
     }
 
     .table-container ,
     .disabled-container {
       position: relative;
-      overflow-x: auto;
     }
 
     .title {

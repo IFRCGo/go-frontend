@@ -62,7 +62,7 @@ function EmergencyThreeWEdit(props: Props) {
 
   return (
     <Page
-      className={_cs(styles.threeWDetails, className)}
+      className={_cs(styles.emergencyThreeWEdit, className)}
       title={strings.threeWEditPageTitle}
       breadCrumbs={<BreadCrumb crumbs={crumbs} compact />}
     >

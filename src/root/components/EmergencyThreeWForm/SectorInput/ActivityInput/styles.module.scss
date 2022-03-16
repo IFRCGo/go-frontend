@@ -2,22 +2,20 @@
 
 .activity {
   background-color: $color-background;
-  overflow-x: auto;
+  border-top: 2px solid transparent;
 
   .input-section {
+    padding: 0!important;
+    margin: 0!important;
+    box-shadow: unset;
     background-color: $color-background;
-    overflow-x: auto;
     overflow-y: visible;
   }
 
   .content {
-    overflow-x: auto;
-  }
-
-  .title {
-    color: $primary-color;
-    padding: $spacing/2 $spacing;
-    font-size: $font-size-xxl;
+    overflow-y: visible;
+    padding: $spacing;
+    gap: $spacing*2!important;
   }
 
   .cash-input {
@@ -33,7 +31,7 @@
     width: 10rem;
   }
 
-  .container {
-    padding: $spacing;
+  &.errored {
+    border-top-color: $primary-color;
   }
 }

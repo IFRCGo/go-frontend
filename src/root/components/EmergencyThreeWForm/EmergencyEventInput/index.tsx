@@ -13,44 +13,30 @@ import {
 } from '#types';
 
 type ValueType = string | number;
+type StoredEventMini = Pick<EventMini, 'id' | 'name'>;
 
 interface Props<N, V extends ValueType> {
   name: N;
   value: V | undefined | null;
   onChange: (newValue: V | undefined, name: N) => void;
   error?: React.ReactNode;
-  selectedEventDetails?: Pick<EventMini, 'id' | 'name'>;
+  fetchedEvents: StoredEventMini[];
+  setFetchedEvents: React.Dispatch<React.SetStateAction<StoredEventMini[]>>;
 }
 
-function CopyEventSection<N, V extends ValueType> (props: Props<N, V>) {
+function EmergencyEventInput<N, V extends ValueType> (props: Props<N, V>) {
   const {
     name,
     value,
     onChange,
     error,
-    selectedEventDetails,
+    fetchedEvents,
+    setFetchedEvents,
   } = props;
 
   type EventCallback = (options: NumericValueOption[]) => void;
   const [eventSearch, setEventSearch] = React.useState<string | undefined>();
-  const [fetchedEvents, setFetchedEvents] = React.useState<Pick<EventMini, 'id' | 'name'>[]>([]);
   const eventCallbackRef = React.useRef<EventCallback>();
-
-  React.useEffect(() => {
-    if (selectedEventDetails) {
-      setFetchedEvents((oldEvents) => {
-        const newEvents = unique(
-          [
-            ...oldEvents,
-            selectedEventDetails,
-          ],
-          d => d.id
-        ) ?? [];
-
-        return newEvents;
-      });
-    }
-  }, [selectedEventDetails]);
 
   useRequest<ListResponse<EventMini>>({
     skip: (eventSearch?.length ?? 0) < 3,
@@ -117,4 +103,4 @@ function CopyEventSection<N, V extends ValueType> (props: Props<N, V>) {
   );
 }
 
-export default CopyEventSection;
+export default EmergencyEventInput;

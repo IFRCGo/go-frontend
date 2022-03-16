@@ -63,9 +63,11 @@ function InputSection(props: Props) {
         className={styles.sectionTitle}
         title={tooltip}
       >
-        <div className={styles.title}>
+        {title && (
+          <div className={styles.title}>
           { title }
-        </div>
+          </div>
+        )}
         <div className={_cs(styles.description, descriptionContainerClassName)}>
           { description }
         </div>

@@ -8,6 +8,7 @@ import {
   listToGroupList,
   mapToList,
   randomString,
+  unique,
 } from '@togglecorp/fujs';
 import {
   useForm,
@@ -15,7 +16,13 @@ import {
   getErrorObject,
   useFormArray,
 } from '@togglecorp/toggle-form';
+import {
+  IoClose,
+  IoEllipse,
+} from 'react-icons/io5';
 
+import Backdrop from '#components/backdrop';
+import TextOutput from '#components/TextOutput';
 import NonFieldError from '#components/NonFieldError';
 import Container from '#components/Container';
 import BlockLoading from '#components/block-loading';
@@ -33,6 +40,7 @@ import {
   useRequest,
 } from '#utils/restRequest';
 import useAlert from '#hooks/useAlert';
+import useBooleanState from '#hooks/useBooleanState';
 import {
   EmergencyProjectResponse,
   EventMini,
@@ -113,10 +121,85 @@ const defaultFormValues: PartialForm<EmergencyThreeWFormFields> = {
   activity_lead: ACTIVITY_LEADER_NS,
 };
 
+function transformResponseToFormFields(response: EmergencyProjectResponse) {
+  const formValues: PartialForm<EmergencyThreeWFormFields> = {
+    title: response.title,
+    country: response.country,
+    districts: response.districts,
+    status: response.status,
+    event: response.event,
+    start_date: response.start_date,
+    activity_lead: response.activity_lead,
+    deployed_eru: response.deployed_eru,
+    reporting_ns: response.reporting_ns,
+    reporting_ns_contact_email: response.reporting_ns_contact_email,
+    reporting_ns_contact_role: response.reporting_ns_contact_role,
+    reporting_ns_contact_name: response.reporting_ns_contact_name,
+  };
+
+  const sectorGroupedActivities = listToGroupList(
+    response.activities,
+    a => a.sector,
+    a => a,
+  );
+
+  const sectorKeys = Object.keys(sectorGroupedActivities);
+
+  const sectors: (typeof formValues)['sectors'] = sectorKeys.map((sk) => {
+    const allActivities = sectorGroupedActivities[sk];
+    const activities = allActivities.filter(a => isDefined(a.action)).map(
+      a => ({
+        ...a,
+        sector: +sk,
+        supplies: mapToList(
+          a.supplies,
+          (k, v) => ({
+            item: +v,
+            count: k,
+          }),
+        ),
+        custom_supplies: mapToList(
+          a.custom_supplies,
+          (k, v) => ({
+            client_id: randomString(),
+            item: v,
+            count: k,
+          }),
+        ),
+      }),
+    );
+    const custom_activities = allActivities.filter(a => isNotDefined(a.action)).map(
+      a => ({
+        ...a,
+        client_id: String(a.id),
+        sector: +sk,
+        custom_supplies: mapToList(
+          a.custom_supplies,
+          (k, v) => ({
+            client_id: randomString(),
+            item: v,
+            count: k,
+          }),
+        ),
+      }),
+    );
+
+    return {
+      sector: +sk,
+      activities,
+      custom_activities,
+    };
+  }, []);
+
+  formValues['sectors'] = sectors;
+  return formValues;
+}
+
 interface Props {
   projectId?: number;
   className?: string;
   onSubmitSuccess?: (result: EmergencyProjectResponse) => void;
+  initialValue?: EmergencyProjectResponse;
 }
 
 function EmergencyThreeWForm(props: Props) {
@@ -124,9 +207,17 @@ function EmergencyThreeWForm(props: Props) {
     projectId,
     className,
     onSubmitSuccess,
+    initialValue,
   } = props;
 
   const alert = useAlert();
+  const [
+    showSubmitConfirmation,
+    setShowSubmitConfirmationTrue,
+    setShowSubmitConfirmationFalse,
+  ] = useBooleanState(false);
+
+  const [finalValue, setFinalValue] = React.useState<PartialForm<EmergencyThreeWFormFields> | undefined>();
 
   const {
     value,
@@ -135,10 +226,38 @@ function EmergencyThreeWForm(props: Props) {
     validate,
     setError,
     setValue,
-  } = useForm(schema, { value: defaultFormValues });
+  } = useForm(
+    schema,
+    {
+      value: {
+        ...defaultFormValues,
+        ...(initialValue ? transformResponseToFormFields(initialValue) : undefined),
+      }
+    },
+  );
 
   const error = React.useMemo(() => getErrorObject(formError), [formError]);
-  const [selectedEventDetails, setSelectedEventDetails] = React.useState<Pick<EventMini, 'id' | 'name'> | undefined>();
+  const [
+    selectedEventDetails,
+    setSelectedEventDetails,
+  ] = React.useState<Pick<EventMini, 'id' | 'name'> | undefined>(initialValue?.event_details);
+  const [fetchedEvents, setFetchedEvents] = React.useState<Pick<EventMini, 'id' | 'name'>[]>([]);
+
+  React.useEffect(() => {
+    if (selectedEventDetails) {
+      setFetchedEvents((oldEvents) => {
+        const newEvents = unique(
+          [
+            ...oldEvents,
+            selectedEventDetails,
+          ],
+          d => d.id
+        ) ?? [];
+
+        return newEvents;
+      });
+    }
+  }, [selectedEventDetails]);
 
   const {
     pending: projectResponsePending,
@@ -146,77 +265,8 @@ function EmergencyThreeWForm(props: Props) {
     skip: isNotDefined(projectId),
     url: `api/v2/emergency-project/${projectId}/`,
     onSuccess: (response) => {
-      const formValues: PartialForm<EmergencyThreeWFormFields> = {
-        title: response.title,
-        country: response.country,
-        districts: response.districts,
-        status: response.status,
-        event: response.event,
-        start_date: response.start_date,
-        activity_lead: response.activity_lead,
-        deployed_eru: response.deployed_eru,
-        reporting_ns: response.reporting_ns,
-        reporting_ns_contact_email: response.reporting_ns_contact_email,
-        reporting_ns_contact_role: response.reporting_ns_contact_role,
-        reporting_ns_contact_name: response.reporting_ns_contact_name,
-      };
-
       setSelectedEventDetails(response.event_details);
-      const sectorGroupedActivities = listToGroupList(
-        response.activities,
-        a => a.sector,
-        a => a,
-      );
-
-      const sectorKeys = Object.keys(sectorGroupedActivities);
-
-      const sectors: (typeof formValues)['sectors'] = sectorKeys.map((sk) => {
-        const allActivities = sectorGroupedActivities[sk];
-        const activities = allActivities.filter(a => isDefined(a.action)).map(
-          a => ({
-            ...a,
-            sector: +sk,
-            supplies: mapToList(
-              a.supplies,
-              (k, v) => ({
-                item: +v,
-                count: k,
-              }),
-            ),
-            custom_supplies: mapToList(
-              a.custom_supplies,
-              (k, v) => ({
-                client_id: randomString(),
-                item: v,
-                count: k,
-              }),
-            ),
-          }),
-        );
-        const custom_activities = allActivities.filter(a => isNotDefined(a.action)).map(
-          a => ({
-            ...a,
-            client_id: String(a.id),
-            sector: +sk,
-            custom_supplies: mapToList(
-              a.custom_supplies,
-              (k, v) => ({
-                client_id: randomString(),
-                item: v,
-                count: k,
-              }),
-            ),
-          }),
-        );
-
-        return {
-          sector: +sk,
-          activities,
-          custom_activities,
-        };
-      }, []);
-
-      formValues['sectors'] = sectors;
+      const formValues = transformResponseToFormFields(response);
       setValue(formValues);
     },
   });
@@ -224,7 +274,7 @@ function EmergencyThreeWForm(props: Props) {
   const {
     trigger: postEmergencyThreeW,
     pending: postEmergencyPending,
-  } = useLazyRequest({
+  } = useLazyRequest<EmergencyProjectResponse>({
     method: isDefined(projectId) ? 'PUT' : 'POST',
     url: isDefined(projectId) ? `api/v2/emergency-project/${projectId}` : 'api/v2/emergency-project/',
     body: ctx => ctx,
@@ -454,22 +504,35 @@ function EmergencyThreeWForm(props: Props) {
     },
   });
 
-  const submitForm = React.useCallback(() => {
+  const validateAndConfirmSubmission = React.useCallback(() => {
     const result = validate();
     if (result.errored || !result.value) {
       setError(result.error);
       return;
     }
 
-    const activities: ActivityPayload[] = transformFormValueToActivityPayload(result.value);
-    const finalValue = { ...result.value };
-    delete finalValue.sectors;
+    setShowSubmitConfirmationTrue();
+    setFinalValue(result.value);
 
-    postEmergencyThreeW({
-      ...finalValue,
-      activities,
-    });
-  }, [validate, postEmergencyThreeW, setError]);
+  }, [validate, setError, setShowSubmitConfirmationTrue]);
+
+  const submitForm = React.useCallback(() => {
+    if (finalValue) {
+      const activities: ActivityPayload[] = transformFormValueToActivityPayload(finalValue);
+      const payload = { ...finalValue };
+      delete payload.sectors;
+
+      postEmergencyThreeW({
+        ...payload,
+        activities,
+      });
+
+      setShowSubmitConfirmationFalse();
+    } else {
+      // Should never happen
+      console.error('Unknown error occured');
+    }
+  }, [finalValue, postEmergencyThreeW, setShowSubmitConfirmationFalse]);
 
   const {
     activityLeaderOptions,
@@ -483,6 +546,7 @@ function EmergencyThreeWForm(props: Props) {
     countryOptions,
     districtOptions,
     fetchingOptions,
+    averageHouseholdSizeForSelectedCountry,
   } = useEmergencyThreeWoptions(value);
 
   const handleSectorChange = React.useCallback((newSectorList: number[] | undefined) => {
@@ -538,7 +602,8 @@ function EmergencyThreeWForm(props: Props) {
                 value={value?.event}
                 onChange={setFieldValue}
                 error={error?.event}
-                selectedEventDetails={selectedEventDetails}
+                fetchedEvents={fetchedEvents}
+                setFetchedEvents={setFetchedEvents}
             />
             </InputSection>
             <InputSection
@@ -699,6 +764,7 @@ function EmergencyThreeWForm(props: Props) {
                     value={s}
                     supplyOptionListByActivity={supplyOptionListByActivity}
                     error={getErrorObject(error?.sectors)}
+                    averageHouseholdSizeForSelectedCountry={averageHouseholdSizeForSelectedCountry}
                   />
                 );
               }
@@ -713,7 +779,7 @@ function EmergencyThreeWForm(props: Props) {
             <div className={styles.actions}>
               <Button
                 name={undefined}
-                onClick={submitForm}
+                onClick={validateAndConfirmSubmission}
                 disabled={postEmergencyPending}
               >
                 {postEmergencyPending ? 'Submitting...' : 'Submit'}
@@ -721,6 +787,142 @@ function EmergencyThreeWForm(props: Props) {
             </div>
           </Container>
         </>
+      )}
+      {showSubmitConfirmation && (
+        <Backdrop className={styles.submitConfirmationBackdrop}>
+          <Container
+            className={styles.submitConfirmation}
+            heading="3W Monitoring Form"
+            sub
+            actions={(
+              <Button
+                name={undefined}
+                variant="action"
+                onClick={setShowSubmitConfirmationFalse}
+              >
+                <IoClose />
+              </Button>
+            )}
+            contentClassName={styles.content}
+            footer={(
+              <div className={styles.footer}>
+                <div className={styles.actions}>
+                  <Button
+                    name={undefined}
+                    variant="primary"
+                    onClick={submitForm}
+                  >
+                    Submit
+                  </Button>
+                </div>
+                <div className={styles.note}>
+                  If you have any questions, contact the IM team &nbsp;
+                  <a
+                    href="mailto:im@ifrc.org"
+                    target="_blank"
+                    className={styles.link}
+                  >
+                    im@ifrc.org
+                  </a>
+                </div>
+              </div>
+            )}
+          >
+            <div className={styles.message}>
+              You are about to submit your entry for 3W for &nbsp;
+              <span className={styles.eventName}>
+                {fetchedEvents.find(e => e.id === value?.event)?.name}
+              </span> emergency. Please review your selections below before submission.
+            </div>
+            <div className={styles.meta}>
+              <TextOutput
+                labelContainerClassName={styles.metaLabel}
+                label="Country"
+                value={countryOptions.find(c => c.value === value?.country)?.label}
+                strongValue
+              />
+              <TextOutput
+                labelContainerClassName={styles.metaLabel}
+                label="Start date"
+                value={value?.start_date}
+                valueType="date"
+                strongValue
+              />
+              <TextOutput
+                labelContainerClassName={styles.metaLabel}
+                label="Who is leading the Activity?"
+                strongValue
+                value={(value?.activity_lead === ACTIVITY_LEADER_ERU) ? (
+                  eruOptions.find((e) => e.id === value?.deployed_eru)?.eru_owner?.national_society_country
+                ) : (
+                  nationalSocietyOptions.find((ns) => ns.value === value?.reporting_ns)?.label
+                )}
+              />
+              <TextOutput
+                labelContainerClassName={styles.metaLabel}
+                className={styles.actionsOutput}
+                label="Actions Taken"
+                valueContainerClassName={styles.actions}
+                value={value?.sectors?.map(
+                  (sector) => {
+                    if (!sector || !sector.sector) {
+                      return null;
+                    }
+
+                    return (
+                      <div
+                        className={styles.sectorOutput}
+                        key={sector.sector}
+                      >
+                        <div className={styles.title}>
+                          {sectorIdToLabelMap?.[sector.sector]}
+                        </div>
+                        <div className={styles.activityList}>
+                          {sector.activities?.map((activity) => {
+                            if (!sector || !sector.sector) {
+                              return null;
+                            }
+
+                            const activityDisplay = activityOptionListBySector[sector.sector].find(
+                              (a) => a.value === activity.action
+                            )?.label;
+
+                            return (
+                              <div
+                                key={activity.action}
+                                className={styles.listItem}
+                              >
+                                <IoEllipse className={styles.icon} />
+                                <div className={styles.label}>
+                                  {activityDisplay}
+                                </div>
+                              </div>
+                            );
+                          })}
+                        </div>
+                        <div className={styles.customActivityList}>
+                          {sector.custom_activities?.map((customActivity) => {
+                            return (
+                              <div
+                                key={customActivity.client_id}
+                                className={styles.listItem}
+                              >
+                                <IoEllipse className={styles.icon} />
+                                <div className={styles.label}>
+                                  {customActivity?.custom_action}
+                                </div>
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
+                    );
+                  }
+                )}
+              />
+            </div>
+          </Container>
+        </Backdrop>
       )}
     </div>
   );

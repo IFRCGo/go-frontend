@@ -1,11 +1,14 @@
+@import '~styles/settings/variables';
+
 .checklist {
   .checkbox-list-container {
     display: flex;
     align-items: flex-start;
     flex-wrap: wrap;
+    gap: $spacing;
 
     >* {
-      flex-basis: calc(100% / 4);
+      flex-basis: calc(100% / 4 - #{$spacing});
     }
   }
 }

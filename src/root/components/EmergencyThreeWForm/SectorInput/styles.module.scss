@@ -2,41 +2,18 @@
 
 .sector-input {
   background-color: $white;
+  padding: $spacing;
   overflow-x: auto;
 
   .content {
     display: flex;
     flex-direction: column;
-    gap: $spacing/2;
-    padding-bottom: $spacing!important;
-
-    .activity-list-container {
-      display: flex;
-      flex-direction: column;
-      gap: $spacing;
-
-      .activity-list {
-        padding: 0;
-
-        .list-container {
-          padding: 0;
-          flex-direction: column;
-
-          .checkbox {
-            padding: $spacing/2;
-          }
-        }
-      }
-    }
-
-    .activity-form-list {
-      gap: $spacing;
-    }
+    gap: $spacing;
+    padding: $spacing!important;
 
     .actions {
       display: flex;
       justify-content: flex-end;
-      padding: $spacing $spacing*2;
     }
 
     .custom-activity-list,
@@ -44,7 +21,6 @@
       display: flex;
       flex-direction: column;
       gap: $spacing/2;
-      padding: 0 $spacing;
     }
   }
 }
