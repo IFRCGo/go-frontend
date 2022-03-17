@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import _cs from 'classnames';
 
 import styles from './styles.module.scss';
@@ -8,13 +8,11 @@ function EnvironmentBanner({
 }) {
     //const { NODE_ENV: currentEnv } = process.env;
 
-    const currentEnv = window.environment;
-
-    if (window.showEnvBanner === 'false') {
+    if (window.appSettings.showEnvBanner === 'false') {
         return null;
     }
 
-    const bannerDescription = window.environmentDisplayName;
+    const bannerDescription = window.appSettings.environmentDisplayName;
 
     return (
         <div
