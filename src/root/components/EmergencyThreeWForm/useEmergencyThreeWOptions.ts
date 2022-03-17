@@ -35,8 +35,9 @@ export const ACTIVITY_LEADER_ERU = 'deployed_eru';
 
 export const STATUS_COMPLETE = 'complete';
 export const STATUS_ONGOING = 'on_going';
+export const STATUS_PLANNED = 'planned';
 
-interface EmergencyThreeWOptionsResponse {
+export interface EmergencyThreeWOptionsResponse {
   actions: {
     id: number;
     sector: number;
@@ -171,6 +172,7 @@ export interface EmergencyThreeWFormFields {
   status: string;
   event: number;
   start_date: string;
+  end_date: string | null;
   activity_lead: string;
 
   reporting_ns: number | null;
@@ -234,7 +236,8 @@ export const schema: FormSchema = {
       country: [requiredCondition],
       districts: [],
       start_date: [requiredCondition],
-      status: [requiredCondition],
+      end_date: [],
+      status: [],
       reporting_ns: isNS ? [requiredCondition] : [forceUndefinedType],
       reporting_ns_contact_name: isNS ? [] : [forceUndefinedType],
       reporting_ns_contact_role: isNS? [] : [forceUndefinedType],
@@ -425,7 +428,7 @@ export const schema: FormSchema = {
                   fields: (customActivity): CustomActivitySchemaFields => {
                     let customActivitySchemaFields: CustomActivitySchemaFields = {
                       client_id: [],
-                      custom_action: [],
+                      custom_action: [requiredCondition],
                       beneficiaries_count: [],
                       amount: [],
                       is_simplified_report: [],
@@ -547,15 +550,20 @@ export function useEmergencyThreeWoptions(
     })).sort(compareString) ?? emptyNumericOptionList
   ), [districtsResponse]);
 
-  const activityLeaderOptions: StringValueOption[] = [
+  const activityLeaderOptions: StringValueOption[] = React.useMemo(() => ([
     { value: ACTIVITY_LEADER_NS, label: 'National Society' },
     { value: ACTIVITY_LEADER_ERU, label: 'Deployed ERUs' },
-  ];
+  ]), []);
 
-  const statusOptions: StringValueOption[] = [
-    { value: STATUS_ONGOING, label: 'Activity On-Going' },
-    { value: STATUS_COMPLETE, label: 'Activity Complete' },
-  ];
+  const statusOptions: StringValueOption[] = React.useMemo(() => ([
+    { value: STATUS_PLANNED, label: 'Planned' },
+    { value: STATUS_ONGOING, label: 'On-Going' },
+    { value: STATUS_COMPLETE, label: 'Complete' },
+  ]), []);
+
+  const statusMap = React.useMemo(() => (
+    listToMap(statusOptions, d => d.value, d => d.label)
+  ), [statusOptions]);
 
   const activityListBySectorMap = React.useMemo(() => (
     listToGroupList(
@@ -626,5 +634,6 @@ export function useEmergencyThreeWoptions(
     eventDetailPending,
     fetchingDistricts,
     averageHouseholdSizeForSelectedCountry,
+    statusMap,
   };
 }

@@ -180,14 +180,14 @@ function CustomActivityInput(props: Props) {
             <NumberInput
               className={styles.pointCountInput}
               name="point_count"
-              label="Point Count"
+              label="Number of locations"
               value={value?.point_count}
               onChange={setFieldValue}
               error={error?.point_count}
             />
           ) : (
             <Container
-              heading="Points"
+              heading="Locations"
               sub
               visibleOverflow
               headingSize="small"

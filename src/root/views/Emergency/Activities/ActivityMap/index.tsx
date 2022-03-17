@@ -53,20 +53,20 @@ function Choropleth(props: ChoroplethProps) {
   ];
 
   const getColorForValue = (value: number) => {
-    if (value > 0) {
-      return COLOR_BLUE;
+    if (value >= 10) {
+      return COLOR_RED;
     }
 
-    if (value > 3) {
-      return COLOR_YELLOW;
-    }
-
-    if (value > 10) {
+    if (value >= 5) {
       return COLOR_ORANGE;
     }
 
-    if (value > 50) {
-      return COLOR_RED;
+    if (value >= 2) {
+      return COLOR_YELLOW;
+    }
+
+    if (value > 0) {
+      return COLOR_BLUE;
     }
 
     return COLOR_LIGHT_GREY;

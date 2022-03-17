@@ -1,7 +1,6 @@
 import React, { Suspense, lazy } from 'react';
 import { connect } from 'react-redux';
 import { unique } from '@togglecorp/fujs';
-
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { BreadcrumbsProvider } from 'react-breadcrumbs-dynamic';
 
@@ -58,6 +57,7 @@ const AllThreeW = lazy(() => import('../views/AllThreeW'));
 const ThreeW = lazy(() => import('../views/ThreeW'));
 const ThreeWEdit = lazy(() => import('../views/ThreeWEdit'));
 const EmergencyThreeWEdit = lazy(() => import('../views/EmergencyThreeWEdit'));
+const EmergencyThreeW = lazy(() => import('../views/EmergencyThreeW'));
 
 const DrefApplicationForm = lazy(() => import('../views/DrefApplicationForm'));
 const DrefPdfPreview = lazy(() => import('../views/DrefPdfPreview'));
@@ -267,6 +267,7 @@ function Multiplexer(props) {
               <PrivateRoute key="new-three-w" exact path='/three-w/new/' component={NewThreeW} />
               <Route exact path='/three-w/all/' component={AllThreeW} />
               <Route exact path='/three-w/:projectId/' component={ThreeW} />
+              <Route exact path='/emergency-three-w/:projectId/' component={EmergencyThreeW} />
               <PrivateRoute exact path='/three-w/:projectId/edit/' component={ThreeWEdit} />
               <PrivateRoute exact path='/emergency-three-w/:projectId/edit/' component={EmergencyThreeWEdit} />
               <Route exact path='/three-w/' component={GlobalThreeW} />

@@ -1,0 +1,30 @@
+@import '~styles/settings/variables';
+
+.emergency-three-w-details {
+  padding: $spacing;
+  background-color: $white;
+
+  .operation-details {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing;
+    padding: $spacing*2;
+  }
+
+  .activities {
+    padding: $spacing;
+  }
+}
+
+.field {
+  padding: 0;
+
+  .label {
+    padding: 0;
+    width: 12rem;
+  }
+
+  .value {
+    padding: 0;
+  }
+}

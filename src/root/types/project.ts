@@ -114,12 +114,13 @@ interface Activity {
     title: string;
     order: number;
   },
-  action_detail: {
+  action_details: {
     id: number;
     title: string;
     order: number;
   } | null;
   is_simplified_report: boolean;
+  people_households: 'people' | 'households';
   household_count: number | null;
   amount: number | null;
   item_count: number | null;
@@ -197,6 +198,7 @@ export interface EmergencyProjectResponse {
   reporting_ns_contact_role: string | null;
   reporting_ns_contact_email: string | null;
   start_date: string;
+  end_date: string | null;
   status: string;
   created_by: number;
   modified_by: number | null;

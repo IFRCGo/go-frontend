@@ -1,0 +1,38 @@
+@import '~styles/settings/_variables.scss';
+
+.switch-icon {
+  --gap: .05em;
+  --border-width: #{$base-border-width};
+  --knob-diameter: calc(1em - 2 * var(--gap) - 2 * var(--border-width));
+  --background-color: #{$grey-fog};
+  --border-color: #{$base-border-color};
+  --knob-color: #{$white};
+
+  display: flex;
+  align-items: center;
+  transition: .2s background-color ease-in-out;
+  border: var(--border-width) solid var(--border-color);
+  border-radius: .5em;
+  background-color: var(--background-color);
+  padding: var(--gap);
+  width: calc(1em + var(--knob-diameter));
+  height: 1em;
+
+  .knob {
+    transition: .2s transform ease-in-out, .2s background-color ease-in-out;
+    border: var(--border-width) solid $grey-titanium;
+    border-radius: calc(calc(1em - var(--gap) * 2) / 2);
+    background-color: var(--knob-color);
+    width: var(--knob-diameter);
+    height: var(--knob-diameter);
+  }
+
+  &.on {
+    background-color: $primary-color;
+
+    .knob {
+      transform: translateX(100%);
+    }
+  }
+
+}

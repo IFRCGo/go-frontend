@@ -34,7 +34,7 @@ import TextInput from '#components/TextInput';
 import SelectInput from '#components/SelectInput';
 import SegmentInput from '#components/SegmentInput';
 import DateInput from '#components/DateInput';
-import RadioInput from '#components/RadioInput';
+import Checkbox from '#components/Checkbox';
 import {
   useLazyRequest,
   useRequest,
@@ -52,6 +52,8 @@ import {
   ACTIVITY_LEADER_ERU,
   ACTIVITY_LEADER_NS,
   STATUS_COMPLETE,
+  STATUS_ONGOING,
+  STATUS_PLANNED,
   Sector,
   ActivityBase,
   Point,
@@ -129,6 +131,7 @@ function transformResponseToFormFields(response: EmergencyProjectResponse) {
     status: response.status,
     event: response.event,
     start_date: response.start_date,
+    end_date: response.end_date,
     activity_lead: response.activity_lead,
     deployed_eru: response.deployed_eru,
     reporting_ns: response.reporting_ns,
@@ -154,6 +157,7 @@ function transformResponseToFormFields(response: EmergencyProjectResponse) {
         supplies: mapToList(
           a.supplies,
           (k, v) => ({
+            client_id: v,
             item: +v,
             count: k,
           }),
@@ -235,6 +239,32 @@ function EmergencyThreeWForm(props: Props) {
       }
     },
   );
+
+  const calculateStatus = React.useCallback((startDate: string | undefined) => {
+    if (isNotDefined(startDate)) {
+      return STATUS_PLANNED;
+    }
+
+    const start = new Date(startDate);
+    const now = new Date();
+
+    if (start.getTime() > now.getTime()) {
+      return STATUS_PLANNED;
+    }
+
+    return STATUS_ONGOING;
+  }, []);
+
+  const handleCompleteActivityChange = React.useCallback((isComplete: boolean | undefined) => {
+    if (isComplete) {
+      setFieldValue(STATUS_COMPLETE, 'status');
+    } else {
+      setFieldValue(
+        calculateStatus(value?.start_date),
+        'status'
+      );
+    }
+  }, [value?.start_date, setFieldValue, calculateStatus]);
 
   const error = React.useMemo(() => getErrorObject(formError), [formError]);
   const [
@@ -542,11 +572,11 @@ function EmergencyThreeWForm(props: Props) {
     activityOptionListBySector,
     sectorIdToLabelMap,
     supplyOptionListByActivity,
-    statusOptions,
     countryOptions,
     districtOptions,
     fetchingOptions,
     averageHouseholdSizeForSelectedCountry,
+    statusMap,
   } = useEmergencyThreeWoptions(value);
 
   const handleSectorChange = React.useCallback((newSectorList: number[] | undefined) => {
@@ -633,8 +663,19 @@ function EmergencyThreeWForm(props: Props) {
             />
             </InputSection>
             <InputSection
-              title="Estimated Start of Response Activities"
+              title="Estimated Start and End Dates"
+              description={(
+                <>
+                  <p>
+                    Select the date when the work on the activity begins.
+                  </p>
+                  <p>
+                    The project status (planned and ongoing) is automatically defined by the entered dates. If there is no End Date, it can be left empty
+                  </p>
+                </>
+              )}
               twoColumn
+              multiRow
             >
               <DateInput
                 name="start_date"
@@ -643,16 +684,27 @@ function EmergencyThreeWForm(props: Props) {
                 error={error?.start_date}
                 onChange={setFieldValue}
               />
-              <RadioInput
-                label="Status"
-                name={"status" as const}
-                options={statusOptions}
-                value={value?.status}
-                error={error?.status}
+              <DateInput
+                name="end_date"
+                label="End date"
+                value={value?.end_date}
+                error={error?.end_date}
                 onChange={setFieldValue}
-                keySelector={stringValueSelector}
-                labelSelector={labelSelector}
-            />
+              />
+              {value?.status && (
+                <TextOutput
+                  className={styles.statusDisplay}
+                  label="Project Status"
+                  value={statusMap[value?.status]}
+                  strongValue
+                />
+              )}
+              <Checkbox
+                label="Activity Complete"
+                name={undefined}
+                onChange={handleCompleteActivityChange}
+                value={value?.status === STATUS_COMPLETE}
+              />
             </InputSection>
             <InputSection
               title="Activity Description"
@@ -853,7 +905,7 @@ function EmergencyThreeWForm(props: Props) {
                 label="Who is leading the Activity?"
                 strongValue
                 value={(value?.activity_lead === ACTIVITY_LEADER_ERU) ? (
-                  eruOptions.find((e) => e.id === value?.deployed_eru)?.eru_owner?.national_society_country
+                  eruOptions.find((e) => e.id === value?.deployed_eru)?.eru_owner?.national_society_country?.society_name
                 ) : (
                   nationalSocietyOptions.find((ns) => ns.value === value?.reporting_ns)?.label
                 )}

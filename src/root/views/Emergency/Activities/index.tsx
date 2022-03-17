@@ -6,6 +6,7 @@ import {
 import {
   IoPencil,
   IoCopy,
+  IoOpenOutline,
 } from 'react-icons/io5';
 
 import Table from '#components/Table';
@@ -72,6 +73,11 @@ function Activities(props: Props) {
         (rowKey: number | string, p: EmergencyProjectResponse) => ({
           extraActions: (
             <>
+              <DropdownMenuItem
+                href={`/emergency-three-w/${rowKey}/`}
+                icon={<IoOpenOutline />}
+                label="View Details"
+              />
               <DropdownMenuItem
                 href={`/emergency-three-w/${rowKey}/edit/`}
                 icon={<IoPencil />}

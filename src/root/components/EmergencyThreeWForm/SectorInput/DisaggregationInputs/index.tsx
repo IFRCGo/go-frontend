@@ -19,6 +19,7 @@ import NonFieldError from '#components/NonFieldError';
 import Checkbox from '#components/Checkbox';
 import NumberInput from '#components/NumberInput';
 import SegmentInput from '#components/SegmentInput';
+import Switch from '#components/Switch';
 import RadioInput from '#components/RadioInput';
 import TextOutput from '#components/TextOutput';
 import {
@@ -265,6 +266,13 @@ function DisaggregationInputs (props: Props) {
 
   return (
     <>
+      <Switch
+        label="Detailed Reporting"
+        name="is_simplified_report"
+        value={value?.is_simplified_report}
+        onChange={setFieldValue}
+        invertedLogic
+      />
       <SegmentInput
         className={styles.simplifiedInput}
         name={"is_simplified_report" as const}

@@ -5,9 +5,7 @@ import DefaultCheckmark, { CheckmarkProps } from './Checkmark';
 
 import styles from './styles.module.scss';
 
-type OptionKey = string | number;
-
-export interface Props<N extends OptionKey> {
+export interface Props<N> {
   className?: string;
   labelContainerClassName?: string;
   checkmark?: (p: CheckmarkProps) => React.ReactElement;
@@ -20,9 +18,10 @@ export interface Props<N extends OptionKey> {
   value: boolean | undefined | null;
   onChange: (value: boolean, name: N) => void;
   name: N;
+  invertedLogic?: boolean;
 }
 
-function Checkbox<N extends OptionKey>(props: Props<N>) {
+function Checkbox<N>(props: Props<N>) {
   const {
     label,
     tooltip,
@@ -36,26 +35,33 @@ function Checkbox<N extends OptionKey>(props: Props<N>) {
     labelContainerClassName,
     indeterminate,
     name,
+    invertedLogic = false,
     ...otherProps
   } = props;
 
   const handleChange = useCallback(
     (e: React.FormEvent<HTMLInputElement>) => {
       const v = e.currentTarget.checked;
-      onChange(v, name);
+      onChange(
+        invertedLogic ? !v : v,
+        name,
+      );
     },
-    [name, onChange],
+    [name, onChange, invertedLogic],
   );
+
+  const checked = invertedLogic ? !value : value;
 
   const className = _cs(
     'go-checkbox',
     styles.checkbox,
     classNameFromProps,
     indeterminate && styles.indeterminate,
-    !indeterminate && value && styles.checked,
+    !indeterminate && checked && styles.checked,
     disabled && styles.disabled,
     readOnly && styles.readOnly,
   );
+
 
   return (
     <label // eslint-disable-line jsx-a11y/label-has-associated-control, jsx-a11y/label-has-for
@@ -64,14 +70,14 @@ function Checkbox<N extends OptionKey>(props: Props<N>) {
     >
       <Checkmark
         className={_cs(checkmarkClassName, styles.checkmark)}
-        value={value ?? false}
+        value={checked ?? false}
         indeterminate={indeterminate}
       />
       <input
         onChange={handleChange}
         className={styles.input}
         type="checkbox"
-        checked={value ?? false}
+        checked={checked ?? false}
         disabled={disabled || readOnly}
         {...otherProps}
         readOnly
