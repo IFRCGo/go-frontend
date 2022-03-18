@@ -104,6 +104,7 @@ function EmergencyThreeWDetails(props: Props) {
         className={styles.activities}
         heading="Activities"
         sub
+        contentClassName={styles.activityContent}
       >
         {project?.activities?.map((a) => (
           <Container
@@ -112,6 +113,7 @@ function EmergencyThreeWDetails(props: Props) {
             sub
             headingSize="small"
             hideHeaderBorder
+            contentClassName={styles.actionContent}
           >
             <TextOutput
               label="Sector"
@@ -157,6 +159,8 @@ function EmergencyThreeWDetails(props: Props) {
                 heading="Supplies"
                 headingSize="small"
                 hideHeaderBorder
+                headerClassName={styles.supplyHeader}
+                contentClassName={styles.supplyContent}
               >
                 {(Object.keys(a?.supplies) as unknown as number[]).map((k) => (
                   <TextOutput
@@ -172,7 +176,9 @@ function EmergencyThreeWDetails(props: Props) {
                 sub
                 heading="Custom supplies"
                 headingSize="small"
+                headerClassName={styles.customSupplyHeader}
                 hideHeaderBorder
+                contentClassName={styles.customSupplyContent}
               >
                 {(Object.keys(a?.custom_supplies) as unknown as number[]).map((k) => (
                   <TextOutput

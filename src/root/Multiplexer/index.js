@@ -54,6 +54,7 @@ const NewThreeW = lazy(() => import('../views/NewThreeW'));
 const FieldReportForm = lazy(() => import('../views/FieldReportForm'));
 const GlobalThreeW = lazy(() => import('../views/GlobalThreeW'));
 const AllThreeW = lazy(() => import('../views/AllThreeW'));
+const AllEmergencyThreeW = lazy(() => import('../views/AllEmergencyThreeW'));
 const ThreeW = lazy(() => import('../views/ThreeW'));
 const ThreeWEdit = lazy(() => import('../views/ThreeWEdit'));
 const EmergencyThreeWEdit = lazy(() => import('../views/EmergencyThreeWEdit'));
@@ -266,6 +267,7 @@ function Multiplexer(props) {
               <Route path='/preparedness' component={Preparedness} />
               <PrivateRoute key="new-three-w" exact path='/three-w/new/' component={NewThreeW} />
               <Route exact path='/three-w/all/' component={AllThreeW} />
+              <Route exact path='/emergency-three-w/all/' component={AllEmergencyThreeW} />
               <Route exact path='/three-w/:projectId/' component={ThreeW} />
               <Route exact path='/emergency-three-w/:projectId/' component={EmergencyThreeW} />
               <PrivateRoute exact path='/three-w/:projectId/edit/' component={ThreeWEdit} />

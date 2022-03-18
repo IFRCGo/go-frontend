@@ -10,15 +10,11 @@ import {
   isNotDefined,
 } from '@togglecorp/fujs';
 
-import {
-  SetValueArg,
-  BooleanValueOption,
-} from '#types';
+import { SetValueArg } from '#types';
 
 import NonFieldError from '#components/NonFieldError';
 import Checkbox from '#components/Checkbox';
 import NumberInput from '#components/NumberInput';
-import SegmentInput from '#components/SegmentInput';
 import Switch from '#components/Switch';
 import RadioInput from '#components/RadioInput';
 import TextOutput from '#components/TextOutput';
@@ -28,11 +24,6 @@ import {
 } from '../../useEmergencyThreeWOptions';
 
 import styles from './styles.module.scss';
-
-const reportingTypeOptions: BooleanValueOption[] = [
-  { label: 'Simplified reporting', value: true },
-  { label: 'Detailed reporting', value: false },
-];
 
 const peopleHouseholdsOptions: {
   label: string;
@@ -51,6 +42,12 @@ const sumSafe = (nums: (number | undefined | null)[]) => {
   return safeNums.reduce((acc, val) => acc + val, 0);
 };
 
+function valueSelector<T>(d: { value: T }) {
+  return d.value;
+}
+function labelSelector<T>(d: { label: T }) {
+  return d.label;
+}
 const defaultValue: PartialForm<Activity> | PartialForm<CustomActivity> = {};
 
 type Props  = {
@@ -273,16 +270,6 @@ function DisaggregationInputs (props: Props) {
         onChange={setFieldValue}
         invertedLogic
       />
-      <SegmentInput
-        className={styles.simplifiedInput}
-        name={"is_simplified_report" as const}
-        options={reportingTypeOptions}
-        keySelector={d => d.value}
-        labelSelector={d => d.label}
-        value={value?.is_simplified_report}
-        onChange={setFieldValue}
-        error={error?.is_simplified_report}
-      />
       <NonFieldError error={error} />
       <div className={styles.disaggregation}>
         {value?.is_simplified_report ? (
@@ -293,8 +280,8 @@ function DisaggregationInputs (props: Props) {
                 options={peopleHouseholdsOptions}
                 value={value?.people_households}
                 error={error?.people_households}
-                keySelector={d => d.value}
-                labelSelector={d => d.label}
+                keySelector={valueSelector}
+                labelSelector={labelSelector}
                 onChange={setFieldValue}
               />
               {value?.people_households === 'households' && (
@@ -376,7 +363,7 @@ function DisaggregationInputs (props: Props) {
                   <div className={styles.label}>
                     Unknown
                   </div>
-                  <div className={styles.label}>
+                  <div className={styles.totalLabel}>
                     Total
                   </div>
                 </div>
@@ -426,7 +413,7 @@ function DisaggregationInputs (props: Props) {
                     error={error?.male_unknown_age_count}
                     onChange={setFieldValue}
                   />
-                  <div className={styles.label}>
+                  <div className={styles.totalLabel}>
                     {total_male}
                   </div>
                 </div>
@@ -476,7 +463,7 @@ function DisaggregationInputs (props: Props) {
                     error={error?.female_unknown_age_count}
                     onChange={setFieldValue}
                   />
-                  <div className={styles.label}>
+                  <div className={styles.totalLabel}>
                     {total_female}
                   </div>
                 </div>
@@ -526,7 +513,7 @@ function DisaggregationInputs (props: Props) {
                     error={error?.other_unknown_age_count}
                     onChange={setFieldValue}
                   />
-                  <div className={styles.label}>
+                  <div className={styles.totalLabel}>
                     {total_other}
                   </div>
                 </div>
@@ -555,7 +542,7 @@ function DisaggregationInputs (props: Props) {
                   <div className={styles.label}>
                     {total_unknown_age}
                   </div>
-                  <div className={styles.label}>
+                  <div className={styles.totalLabel}>
                     {total_total}
                   </div>
                 </div>
@@ -563,7 +550,7 @@ function DisaggregationInputs (props: Props) {
             </div>
             <Checkbox
               label="Are you able to break this down to identify those with disabilities?"
-              name="is_disaggregated_for_disabled"
+              name={"is_disaggregated_for_disabled" as const}
               value={value?.is_disaggregated_for_disabled}
               // error={error?.is_disaggregated_for_disabled}
               onChange={setFieldValue}

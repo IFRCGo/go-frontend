@@ -26,6 +26,8 @@ import styles from './styles.module.scss';
 
 const ITEM_PER_PAGE = 10;
 
+const idSelector = (d: {id: number}) => d.id;
+
 interface Props {
   className?: string;
   emergencyId: number;
@@ -121,7 +123,7 @@ function Activities(props: Props) {
         className={styles.projectsTable}
         data={projectListResponse?.results}
         columns={columns}
-        keySelector={d => d.id}
+        keySelector={idSelector}
         variant="large"
       />
     </Container>

@@ -39,15 +39,10 @@ function EmergencyThreeWEdit(props: Props) {
   const alert = useAlert();
   const { strings } = React.useContext(LanguageContext);
   const crumbs = React.useMemo(() => [
-    {link: location?.pathname, name: strings.breadCrumbEditProject},
-    {link: '/three-w/all/', name: strings.breadCrumbThreeW},
-    {link: '/', name: strings.breadCrumbHome},
-  ], [
-    strings.breadCrumbHome,
-    strings.breadCrumbThreeW,
-    strings.breadCrumbEditProject,
-    location,
-  ]);
+    {link: location?.pathname, name: 'Edit Project'},
+    {link: '/emergency-three-w/all/', name: 'Emergency-3W'},
+    {link: '/', name: 'Home'},
+  ], [location]);
 
   const handleSubmitSuccess = React.useCallback((project: EmergencyProjectResponse) => {
     alert.show(

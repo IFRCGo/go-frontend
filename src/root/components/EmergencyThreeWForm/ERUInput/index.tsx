@@ -16,9 +16,11 @@ export interface ERUItemProps<N, IN> extends RadioProps<N, IN> {
   eru: ERU;
 }
 
+const idSelector = (d: {id: number}) => d.id;
+const nullSelector = () => null;
+
 function ERUItem<N, IN>(props: ERUItemProps<N, IN>) {
   const {
-    // label,
     name,
     onClick,
     value,
@@ -99,8 +101,8 @@ function ERUInput<N> (props: Props<N>) {
       className={styles.eruInput}
       name={name}
       options={options}
-      keySelector={d => d.id}
-      labelSelector={d => null}
+      keySelector={idSelector}
+      labelSelector={nullSelector}
       onChange={onChange}
       renderer={ERUItem}
       rendererParams={rendererParams}

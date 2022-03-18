@@ -40,6 +40,7 @@ type Value = PartialForm<Activity>;
 
 interface Props {
   isCashType?: boolean;
+  hasLocation?: boolean;
   actionTitle: string;
   supplyOptionList: NumericValueOption[];
   onChange: (value: SetValueArg<Value>, index: number) => void;
@@ -60,6 +61,7 @@ function ActivityInput(props: Props) {
     supplyOptionList,
     error: errorFromProps,
     isCashType,
+    hasLocation,
     averageHouseholdSizeForSelectedCountry,
   } = props;
 
@@ -158,7 +160,7 @@ function ActivityInput(props: Props) {
           error={errorFromProps}
           averageHouseholdSizeForSelectedCountry={averageHouseholdSizeForSelectedCountry}
         />
-        {isCashType ? (
+        {isCashType && (
           <div className={styles.cashInput}>
             <NumberInput
               label="Number of Beneficiaries"
@@ -175,42 +177,43 @@ function ActivityInput(props: Props) {
               error={error?.amount}
             />
           </div>
-        ) : (
-          <>
-            {supplyOptionList && supplyOptionList.length > 0 && (
-              <Container
-                sub
-                heading="Supplies"
-                headingSize="small"
-                visibleOverflow
-                actions={(
-                  <Button
-                    name={undefined}
-                    variant="action"
-                    onClick={handleAddSupplyButtonClick}
-                  >
-                    <IoAdd />
-                  </Button>
-                )}
+        )}
+        {!isCashType && supplyOptionList && supplyOptionList.length > 0 && (
+          <Container
+            sub
+            heading="Supplies"
+            headingSize="small"
+            visibleOverflow
+            actions={(
+              <Button
+                name={undefined}
+                variant="action"
+                onClick={handleAddSupplyButtonClick}
               >
-                {value?.supplies?.map((s, i) => (
-                  <SupplyInput
-                    index={i}
-                    key={s.client_id}
-                    value={s}
-                    onChange={setSupply}
-                    error={getErrorObject(error?.supplies)}
-                    supplyOptions={supplyOptionList}
-                    onRemove={removeSupply}
-                  />
-                ))}
-                {!value?.supplies?.length && (
-                  <div className={styles.emptyMessage}>
-                    No supplies yet.
-                  </div>
-                )}
-              </Container>
+                <IoAdd />
+              </Button>
             )}
+          >
+            {value?.supplies?.map((s, i) => (
+              <SupplyInput
+                index={i}
+                key={s.client_id}
+                value={s}
+                onChange={setSupply}
+                error={getErrorObject(error?.supplies)}
+                supplyOptions={supplyOptionList}
+                onRemove={removeSupply}
+              />
+            ))}
+            {!value?.supplies?.length && (
+              <div className={styles.emptyMessage}>
+                No supplies yet.
+              </div>
+            )}
+          </Container>
+        )}
+        {!isCashType && hasLocation && (
+          <>
             <Container
               heading="Custom Supplies"
               sub

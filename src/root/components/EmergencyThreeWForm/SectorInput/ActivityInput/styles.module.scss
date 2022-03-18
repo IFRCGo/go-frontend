@@ -1,14 +1,14 @@
 @import '~styles/settings/variables';
 
 .activity {
-  background-color: $color-background;
+  background-color: $grey-fog;
   border-top: 2px solid transparent;
 
   .input-section {
-    padding: 0!important;
+    padding: 0 $spacing!important;
     margin: 0!important;
     box-shadow: unset;
-    background-color: $color-background;
+    background-color: $grey-fog;
     overflow-y: visible;
   }
 
@@ -20,6 +20,7 @@
 
   .cash-input {
     display: flex;
+    gap: $spacing*2;
   }
 
   .empty-message {

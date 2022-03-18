@@ -19,6 +19,7 @@ import {
 import {
   IoClose,
   IoEllipse,
+  IoCheckmarkDone,
 } from 'react-icons/io5';
 
 import Backdrop from '#components/backdrop';
@@ -607,6 +608,13 @@ function EmergencyThreeWForm(props: Props) {
     setFieldValue,
   );
 
+  const handleSelectAllRegionClick = React.useCallback(() => {
+    setFieldValue(
+      districtOptions?.map(d => d.value),
+      'districts',
+    );
+  }, [districtOptions, setFieldValue]);
+
   const inputsDisabled = postEmergencyPending;
 
   return (
@@ -660,6 +668,16 @@ function EmergencyThreeWForm(props: Props) {
                 placeholder={isDefined(value?.country) ? 'Select one or more region' : 'Select a country first'}
                 disabled={inputsDisabled || isNotDefined(value?.country)}
                 isMulti
+                actions={(
+                  <Button
+                    variant="action"
+                    name={undefined}
+                    title="Select all"
+                    onClick={handleSelectAllRegionClick}
+                  >
+                    <IoCheckmarkDone />
+                  </Button>
+                )}
             />
             </InputSection>
             <InputSection

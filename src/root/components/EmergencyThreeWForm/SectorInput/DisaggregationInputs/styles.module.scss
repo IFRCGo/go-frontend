@@ -85,6 +85,20 @@
         background-color: $white;
         min-width: 3rem;
       }
+
+      .total-label {
+        text-align: right;
+        padding: $spacing/2 $spacing;
+        background-color: $grey-mist;
+        min-width: 3rem;
+      }
+
+      .total {
+        .label {
+          background-color: $grey-mist;
+        }
+      }
+
     }
 
     .table-container ,

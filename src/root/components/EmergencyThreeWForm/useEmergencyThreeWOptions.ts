@@ -45,6 +45,7 @@ export interface EmergencyThreeWOptionsResponse {
     title: string;
     description: string;
     is_cash_type: boolean;
+    has_location: boolean;
     supplies_details: {
       id: number;
       title: string;
@@ -584,7 +585,12 @@ export function useEmergencyThreeWoptions(
     listToMap(optionsResponse?.sectors, d => d.id, d => d.title)
   ), [optionsResponse?.sectors]);
 
-  const activityOptionListBySector: Record<number, (NumericValueOption & { isCashType?: boolean })[]> = React.useMemo(() => (
+  const activityOptionListBySector: Record<number, (
+    NumericValueOption & {
+      isCashType?: boolean,
+      hasLocation?: boolean,
+    }
+  )[]> = React.useMemo(() => (
     listToMap(
       optionsResponse?.sectors,
       (d) => d.id,
@@ -593,6 +599,7 @@ export function useEmergencyThreeWoptions(
         value: a.id,
         description: a.description,
         isCashType: a.is_cash_type,
+        hasLocation: a.has_location,
       })) ?? []
     ) ?? {}
   ), [optionsResponse?.sectors, activityListBySectorMap]);

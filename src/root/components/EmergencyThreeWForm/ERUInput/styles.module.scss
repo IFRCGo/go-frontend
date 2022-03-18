@@ -4,6 +4,7 @@
   .eru-list {
     display: flex;
     flex-direction: column;
+    gap: 0;
   }
 }
 
@@ -37,6 +38,7 @@
 .eru-item-header {
   @extend %eru-item;
   padding: 0;
+  margin-bottom: $spacing;
 }
 
 .eru-item {

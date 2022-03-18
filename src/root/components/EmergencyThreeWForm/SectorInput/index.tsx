@@ -34,7 +34,10 @@ type Value = PartialForm<Sector>;
 interface Props {
   className?: string;
   sectorTitle: string;
-  actionOptions: (NumericValueOption & { isCashType?: boolean})[];
+  actionOptions: (NumericValueOption & {
+    isCashType?: boolean,
+    hasLocation?: boolean,
+  })[];
   supplyOptionListByActivity: Record<number, NumericValueOption[]>;
   onChange: (value: SetValueArg<Value>, index: number) => void;
   index: number;

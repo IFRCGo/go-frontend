@@ -1,0 +1,12 @@
+@import '~styles/settings/variables';
+
+.all-emergency-three-w {
+  .main-content {
+    padding: $spacing*4 0;
+    margin: 0 -$spacing;
+
+    .projects-table {
+      width: 100%;
+    }
+  }
+}

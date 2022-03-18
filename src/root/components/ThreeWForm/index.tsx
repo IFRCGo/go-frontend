@@ -552,7 +552,7 @@ function ThreeWForm(props: Props) {
             <div>
               <Checkbox
                 label={strings.projectFormProjectCompleted}
-                name="is_project_completed"
+                name={"is_project_completed" as const}
                 value={value?.is_project_completed}
                 onChange={onValueChange}
               />
