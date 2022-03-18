@@ -167,6 +167,7 @@ function SectorInput(props: Props) {
                 <ActivityInput
                   averageHouseholdSizeForSelectedCountry={averageHouseholdSizeForSelectedCountry}
                   isCashType={actionMap[a.action]?.isCashType}
+                  hasLocation={actionMap[a.action]?.hasLocation}
                   actionTitle={actionMap[a.action]?.label ?? 'Unknown Action'}
                   actionDescription={actionMap[a.action]?.description}
                   key={a.action}
