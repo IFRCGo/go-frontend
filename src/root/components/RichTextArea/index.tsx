@@ -1,8 +1,11 @@
 import React from 'react';
 import { Editor } from '@tinymce/tinymce-react';
 import { RawEditorSettings } from 'tinymce';
+import { _cs } from '@togglecorp/fujs';
 
 import InputContainer, { Props as InputContainerProps } from '#components/InputContainer';
+
+import styles from './styles.module.scss';
 
 const editorSettings: Omit<RawEditorSettings, 'selector' | 'target'> = {
   menubar: false,
@@ -49,7 +52,7 @@ function RichTextArea<T extends string | undefined>(props: Props<T>) {
 
   return (
     <InputContainer
-      className={className}
+      className={_cs(styles.richTextArea, className)}
       actions={actions}
       icons={icons}
       error={error}

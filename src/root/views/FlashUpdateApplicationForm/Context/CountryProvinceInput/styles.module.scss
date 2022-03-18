@@ -3,6 +3,7 @@
 .country-district-input {
   display: flex;
   align-items: flex-start;
+  gap: $spacing;
 
   >* {
     flex-basis: 0;
