@@ -15,7 +15,7 @@ export interface Props<V, O, N> {
   name: N;
   options: O[];
   onChange: (value: V[] | undefined, name: N) => void;
-  value: V[] | undefined;
+  value: V[] | undefined | null;
   label?: React.ReactNode;
   hint?: React.ReactNode;
   error?: string;
@@ -23,6 +23,7 @@ export interface Props<V, O, N> {
   hintContainerClassName?: string;
   errorContainerClassName?: string;
   checkboxListContainerClassName?: string;
+  checkboxClassName?: string;
   keySelector: (option: O) => V;
   labelSelector: (option: O) => React.ReactNode;
   tooltipSelector?: (option: O) => string | undefined;
@@ -33,7 +34,7 @@ export interface Props<V, O, N> {
 function Checklist<
   V extends OptionKey,
   O extends object,
-  N extends string | number,
+  N,
 >(props: Props<V, O, N>) {
   const {
     className,
@@ -46,6 +47,7 @@ function Checklist<
     labelSelector,
     labelContainerClassName,
     checkboxListContainerClassName,
+    checkboxClassName,
     error,
     errorContainerClassName,
     disabled,
@@ -84,7 +86,8 @@ function Checklist<
     onChange: handleChange,
     value: value ? value.findIndex(k => k === key) !== -1 : false,
     tooltip: tooltipSelector ? tooltipSelector(option): undefined,
-  }), [value, labelSelector, handleChange, tooltipSelector]);
+    className: checkboxClassName,
+  }), [value, labelSelector, handleChange, tooltipSelector, checkboxClassName]);
 
   return (
     <div

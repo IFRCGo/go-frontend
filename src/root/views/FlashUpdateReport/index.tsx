@@ -26,7 +26,7 @@ import ShareButton from './ShareButton';
 
 import styles from './styles.module.scss';
 
-function ButtonLikeLink(props: ButtonFeatureProps & {
+function ButtonLikeLink(props: ButtonFeatureProps<undefined> & {
   to: string;
   external?: boolean;
 }) {

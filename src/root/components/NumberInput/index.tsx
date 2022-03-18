@@ -27,6 +27,7 @@ function NumberInput<T extends string | undefined>(props: Props<T>) {
     readOnly,
     inputClassName,
     value: valueFromProps,
+    errorOnTooltip,
     onChange,
     ...otherInputProps
   } = props;
@@ -62,6 +63,7 @@ function NumberInput<T extends string | undefined>(props: Props<T>) {
       error={error}
       label={label}
       disabled={disabled}
+      errorOnTooltip={errorOnTooltip}
       input={(
         <RawInput
           {...otherInputProps}

@@ -122,11 +122,11 @@ function FocalPoints(props: Props) {
           description={strings.flashUpdateFormFocalIfrcShareWithDescription}
         >
           <RadioInput
-            name="share_with"
+            name={"share_with" as const}
             options={shareWithOptions}
-            radioKeySelector={stringOptionKeySelector}
-            radioLabelSelector={optionLabelSelector}
-            radioDescriptionSelector={optionDescriptionSelector}
+            keySelector={stringOptionKeySelector}
+            labelSelector={optionLabelSelector}
+            descriptionSelector={optionDescriptionSelector}
             value={value.share_with}
             error={error?.share_with}
             onChange={onValueChange}

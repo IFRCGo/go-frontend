@@ -1,0 +1,134 @@
+@import '~styles/settings/variables';
+
+.emergency-three-w-form {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing*2;
+
+  .activity-reporting-content,
+  .operation-detail-content {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing;
+  }
+
+  .actions {
+    padding: $spacing*2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .non-field-error {
+    padding: $spacing;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+.submit-confirmation-backdrop {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .submit-confirmation {
+    width: 100%;
+    height: 100%;
+    max-width: 38rem;
+    max-height: 44rem;
+    background-color: $white;
+    border-radius: $base-border-radius;
+
+    .content {
+      padding: $spacing*2!important;
+
+      .message {
+        background-color: $grey-fog;
+        padding: $spacing;
+        border-radius: $base-border-radius;
+
+        .event-name {
+          font-weight: $base-font-medium;
+          color: $primary-color;
+        }
+      }
+
+      .meta {
+        display: flex;
+        flex-direction: column;
+        gap: $spacing/2;
+        padding: $spacing 0;
+
+        .meta-label {
+          width: 40%;
+          flex-shrink: 0;
+        }
+
+        .actions-output {
+          align-items: flex-start;
+
+          .actions {
+            display: flex;
+            flex-direction: column;
+            gap: $spacing;
+
+            .sector-output {
+              display: flex;
+              flex-direction: column;
+              gap: $spacing/2;
+
+              .title {
+                font-weight: $base-font-medium;
+              }
+
+              .activity-list {
+                display: flex;
+                flex-direction: column;
+              }
+
+              .custom-activity-list {
+                display: flex;
+                flex-direction: column;
+              }
+
+              .list-item {
+                display: flex;
+                align-items: baseline;
+                gap: $spacing/2;
+
+                .icon {
+                  flex-shrink: 0;
+                  font-size: 0.6em;
+                }
+
+                .label {
+                  font-size: $font-size-sm;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+
+    .footer {
+      display: flex;
+      flex-direction: column;
+      padding: $spacing*2;
+      gap: $spacing;
+
+      .actions {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .note {
+        .link {
+          font-weight: $base-font-medium;
+        }
+      }
+    }
+  }
+}

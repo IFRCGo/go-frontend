@@ -1,0 +1,38 @@
+@import '~styles/settings/variables';
+
+.activity {
+  background-color: $grey-fog;
+  border-top: 2px solid transparent;
+
+  .input-section {
+    padding: 0 $spacing!important;
+    margin: 0!important;
+    box-shadow: unset;
+    background-color: $grey-fog;
+    overflow-y: visible;
+  }
+
+  .content {
+    overflow-y: visible;
+    padding: $spacing;
+    gap: $spacing*2!important;
+  }
+
+  .cash-input {
+    display: flex;
+    gap: $spacing*2;
+  }
+
+  .empty-message {
+    padding: 0 $spacing;
+    color: $color-text-light;
+  }
+
+  .point-count-input {
+    width: 10rem;
+  }
+
+  &.errored {
+    border-top-color: $primary-color;
+  }
+}

@@ -128,7 +128,7 @@ function DrefApplication(props: Props) {
     validate,
     setError: onErrorSet,
     setValue: onValueSet,
-  } = useForm(schema, defaultFormValues);
+  } = useForm(schema, { value: defaultFormValues });
 
   const {
     countryOptions,
@@ -298,7 +298,7 @@ function DrefApplication(props: Props) {
   });
 
   const validateCurrentTab = React.useCallback((exceptions: (keyof DrefFields)[] = []) => {
-    const validationError = getErrorObject(accumulateErrors(value, schema));
+    const validationError = getErrorObject(accumulateErrors(value, schema, value, undefined));
     const currentFields = stepTypesToFieldsMap[currentStep];
     const exceptionsMap = listToMap(exceptions, d => d, d => true);
 
@@ -469,7 +469,6 @@ function DrefApplication(props: Props) {
             <Button
               name={undefined}
               onClick={submitDref}
-              type="submit"
             >
               {strings.drefFormSaveButtonLabel}
             </Button>
@@ -616,7 +615,6 @@ function DrefApplication(props: Props) {
                   name={undefined}
                   variant="secondary"
                   onClick={handleSubmitButtonClick}
-                  type="submit"
                 >
                   {submitButtonLabel}
                 </Button>

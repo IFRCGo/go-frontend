@@ -1,0 +1,12 @@
+@import '~styles/settings/variables';
+
+.three-w-details {
+  .content {
+    padding: 0;
+  }
+
+  .last-modified {
+    display: flex;
+    justify-content: center;
+  }
+}

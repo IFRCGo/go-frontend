@@ -193,3 +193,5 @@ export function isValidNumber(value: unknown): value is number  {
 
   return true;
 }
+
+export type SetValueArg<T> = T | ((value: T) => T);

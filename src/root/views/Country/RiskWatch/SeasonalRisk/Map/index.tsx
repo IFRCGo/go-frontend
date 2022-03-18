@@ -213,13 +213,13 @@ function Choropleth(props: ChoroplethProps) {
     selectedRiskMetric,
   } = props;
 
-  const c = React.useContext(MapChildContext);
+  const mc = React.useContext(MapChildContext);
 
   if (selectedRiskMetric === 'displacement') {
     const riskForSelectedHazard = riskData?.find(r => r.hazardType === selectedHazard);
     if (!riskForSelectedHazard) {
-      if (c?.map && c.map.isStyleLoaded()) {
-        c.map.setPaintProperty(
+      if (mc?.map && mc.map.isStyleLoaded()) {
+        mc.map.setPaintProperty(
           'admin-0',
           'fill-color',
           COLOR_LIGHT_GREY,
@@ -250,7 +250,7 @@ function Choropleth(props: ChoroplethProps) {
       }
     }
 
-    if (c?.map && c.map.isStyleLoaded()) {
+    if (mc?.map && mc.map.isStyleLoaded()) {
       const colorProperty = [
         'match',
         ['get', 'iso3'],
@@ -259,7 +259,7 @@ function Choropleth(props: ChoroplethProps) {
         COLOR_LIGHT_GREY,
       ];
 
-      c.map.setPaintProperty(
+      mc.map.setPaintProperty(
         'admin-0',
         'fill-color',
         colorProperty,
@@ -270,8 +270,8 @@ function Choropleth(props: ChoroplethProps) {
   if (selectedRiskMetric === 'exposure') {
     const riskForSelectedHazard = riskData?.find(r => r.hazardType === selectedHazard);
     if (!riskForSelectedHazard) {
-      if (c?.map && c.map.isStyleLoaded()) {
-        c.map.setPaintProperty(
+      if (mc?.map && mc.map.isStyleLoaded()) {
+        mc.map.setPaintProperty(
           'admin-0',
           'fill-color',
           COLOR_LIGHT_GREY,
@@ -302,7 +302,7 @@ function Choropleth(props: ChoroplethProps) {
       }
     }
 
-    if (c?.map && c.map.isStyleLoaded()) {
+    if (mc?.map && mc.map.isStyleLoaded()) {
       const colorProperty = [
         'match',
         ['get', 'iso3'],
@@ -311,7 +311,7 @@ function Choropleth(props: ChoroplethProps) {
         COLOR_LIGHT_GREY,
       ];
 
-      c.map.setPaintProperty(
+      mc.map.setPaintProperty(
         'admin-0',
         'fill-color',
         colorProperty,
@@ -337,7 +337,7 @@ function Choropleth(props: ChoroplethProps) {
       }
     }
 
-    if (c?.map && c.map.isStyleLoaded()) {
+    if (mc?.map && mc.map.isStyleLoaded()) {
       const colorProperty = [
         'match',
         ['get', 'iso3'],
@@ -346,7 +346,7 @@ function Choropleth(props: ChoroplethProps) {
         COLOR_LIGHT_GREY,
       ];
 
-      c.map.setPaintProperty(
+      mc.map.setPaintProperty(
         'admin-0',
         'fill-color',
         colorProperty,

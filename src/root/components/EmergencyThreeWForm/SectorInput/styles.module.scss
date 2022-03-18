@@ -1,0 +1,26 @@
+@import '~styles/settings/variables';
+
+.sector-input {
+  background-color: $white;
+  padding: $spacing;
+  overflow-x: auto;
+
+  .content {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing;
+    padding: $spacing!important;
+
+    .actions {
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .custom-activity-list,
+    .activity-list {
+      display: flex;
+      flex-direction: column;
+      gap: $spacing/2;
+    }
+  }
+}

@@ -99,11 +99,11 @@ function ResponseFields(props: Props) {
             >
               <RadioInput
                 error={error?.dref}
-                name="dref"
+                name={"dref" as const}
                 onChange={onValueChange}
                 options={drefOptions}
-                radioKeySelector={numericOptionKeySelector}
-                radioLabelSelector={optionLabelSelector}
+                keySelector={numericOptionKeySelector}
+                labelSelector={optionLabelSelector}
                 value={value.dref}
                 clearable
               />
@@ -120,11 +120,11 @@ function ResponseFields(props: Props) {
             >
               <RadioInput
                 error={error?.appeal}
-                name="appeal"
+                name={"appeal" as const}
                 onChange={onValueChange}
                 options={appealOptions}
-                radioKeySelector={numericOptionKeySelector}
-                radioLabelSelector={optionLabelSelector}
+                keySelector={numericOptionKeySelector}
+                labelSelector={optionLabelSelector}
                 value={value.appeal}
                 clearable
               />
@@ -141,11 +141,11 @@ function ResponseFields(props: Props) {
             >
               <RadioInput
                 error={error?.fact}
-                name="fact"
+                name={"fact" as const}
                 onChange={onValueChange}
                 options={responseOptions}
-                radioKeySelector={numericOptionKeySelector}
-                radioLabelSelector={optionLabelSelector}
+                keySelector={numericOptionKeySelector}
+                labelSelector={optionLabelSelector}
                 value={value.fact}
                 clearable
               />
@@ -162,11 +162,11 @@ function ResponseFields(props: Props) {
             >
               <RadioInput
                 error={error?.ifrc_staff}
-                name="ifrc_staff"
+                name={"ifrc_staff" as const}
                 onChange={onValueChange}
                 options={responseOptions}
-                radioKeySelector={numericOptionKeySelector}
-                radioLabelSelector={optionLabelSelector}
+                keySelector={numericOptionKeySelector}
+                labelSelector={optionLabelSelector}
                 value={value.ifrc_staff}
                 clearable
               />
@@ -186,11 +186,11 @@ function ResponseFields(props: Props) {
           >
             <RadioInput
               error={error?.forecast_based_action}
-              name="forecast_based_action"
+              name={"forecast_based_action" as const}
               onChange={onValueChange}
               options={responseOptions}
-              radioKeySelector={numericOptionKeySelector}
-              radioLabelSelector={optionLabelSelector}
+              keySelector={numericOptionKeySelector}
+              labelSelector={optionLabelSelector}
               value={value.forecast_based_action}
               clearable
             />
@@ -371,11 +371,11 @@ function ResponseFields(props: Props) {
         >
           <RadioInput
             error={error?.visibility}
-            name="visibility"
+            name={"visibility" as const}
             onChange={onValueChange}
             options={visibilityOptions}
-            radioKeySelector={numericOptionKeySelector}
-            radioLabelSelector={optionLabelSelector}
+            keySelector={numericOptionKeySelector}
+            labelSelector={optionLabelSelector}
             value={value.visibility}
           />
         </InputSection>
