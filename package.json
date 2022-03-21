@@ -101,6 +101,7 @@
     "@brainhubeu/react-carousel": "^1.13.40",
     "@mapbox/mapbox-gl-draw": "^1.2.0",
     "@react-pdf/renderer": "^2.0.21",
+    "@tinymce/tinymce-react": "^3.13.1",
     "@togglecorp/faram": "^1.2.1",
     "@togglecorp/fujs": "^1.9.3",
     "@togglecorp/re-map": "^0.1.3",

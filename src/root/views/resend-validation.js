@@ -34,7 +34,7 @@ class ResendValidation extends React.Component {
   UNSAFE_componentWillReceiveProps (nextProps) {
     if (this.state.hasTokens) { return; }
     hideGlobalLoading();
-    if (nextProps.resendValidation.fetched) {
+    if (nextProps.resendValidation.fetched && !this.props.resendValidation.fetched) {
       if (nextProps.resendValidation.error) {   
         showAlert('danger', <p><Translate stringId="resendValidationErrorMessage" params={{message: nextProps.resendValidation.error.error_message}} /></p>, true, 7000);
       } else {
