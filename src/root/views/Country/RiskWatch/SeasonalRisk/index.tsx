@@ -222,7 +222,7 @@ function SeasonalRisk(props: Props) {
     <>
       <Container
         className={styles.riskTableContainer}
-        heading="Seasonal Risk Details"
+        heading="Risks by Month"
         sub
         description="This table displays available information about specific disaster risks for for each month. When you move the slider from month to month, the information in the table will update automatically."
         descriptionClassName={styles.tableDescription}
@@ -237,12 +237,12 @@ function SeasonalRisk(props: Props) {
           selectedMonth={selectedMonth}
           riskData={aggregatedRiskData}
         />
+        <RiskBarChart
+          riskData={aggregatedRiskData}
+          hazardOptions={hazardOptions}
+          ipcData={response?.ipc_displacement_data?? []}
+        />
       </Container>
-      <RiskBarChart
-        riskData={aggregatedRiskData}
-        hazardOptions={hazardOptions}
-        ipcData={response?.ipc_displacement_data?? []}
-      />
       <ReturnPeriodTable
         displacementData={response?.idmc_return_period}
         economicLossAndExposureData={response?.gar_return_period_data}

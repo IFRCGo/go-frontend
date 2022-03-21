@@ -379,45 +379,35 @@ function RiskBarChart(props: Props) {
   });
 
   return (
-    <Container
-      heading="Risk by Month"
-      descriptionClassName={styles.containerDescription}
-      description={(
-        <>
-          <div className={styles.filters}>
-            <SelectInput
-              className={styles.filterInput}
-              value={hazardType}
-              onChange={setHazardType}
-              name="hazardType"
-              options={hazardOptions}
-              isClearable
-              placeholder="All hazards"
-            />
-            {hazardType !== 'FI' && (
-              <SelectInput
-                className={styles.filterInput}
-                value={riskMetric}
-                onChange={setRiskMetric}
-                name="riskMetric"
-                options={riskMetricOptions as Writable<typeof riskMetricOptions>}
-              />
-            )}
-            {hazardType === 'FI' && (
-              <Checkbox
-                name="showHistoricalValues"
-                value={showHistoricalValues}
-                onChange={setShowHistoricalValues}
-                label="Show historical values"
-              />
-            )}
-          </div>
-        </>
-      )}
-      sub
-      contentClassName={styles.content}
-      className={styles.riskByMonth}
-    >
+    <div className={styles.riskChart}>
+      <div className={styles.filters}>
+        <SelectInput
+          className={styles.filterInput}
+          value={hazardType}
+          onChange={setHazardType}
+          name="hazardType"
+          options={hazardOptions}
+          isClearable
+          placeholder="All hazards"
+        />
+        {hazardType !== 'FI' && (
+          <SelectInput
+            className={styles.filterInput}
+            value={riskMetric}
+            onChange={setRiskMetric}
+            name="riskMetric"
+            options={riskMetricOptions as Writable<typeof riskMetricOptions>}
+          />
+        )}
+        {hazardType === 'FI' && (
+          <Checkbox
+            name="showHistoricalValues"
+            value={showHistoricalValues}
+            onChange={setShowHistoricalValues}
+            label="Show historical values"
+          />
+        )}
+      </div>
       <div className={styles.chartContainer}>
         {hazardType === 'FI' ? (
           <DetailedChart
@@ -523,7 +513,7 @@ function RiskBarChart(props: Props) {
           )}
         </div>
       </div>
-    </Container>
+    </div>
   );
 }
 
