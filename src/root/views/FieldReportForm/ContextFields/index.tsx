@@ -139,11 +139,11 @@ function ContextFields(props: Props) {
         title={strings.fieldReportFormStatusLabel}
       >
         <RadioInput
-          name="status"
+          name={"status" as const}
           options={statusOptions}
-          radioKeySelector={numericOptionKeySelector}
-          radioLabelSelector={optionLabelSelector}
-          radioDescriptionSelector={optionDescriptionSelector}
+          keySelector={numericOptionKeySelector}
+          labelSelector={optionLabelSelector}
+          descriptionSelector={optionDescriptionSelector}
           value={value.status}
           error={error?.status}
           onChange={onValueChange}
@@ -153,11 +153,11 @@ function ContextFields(props: Props) {
         title={strings.fieldReportFormCovidLabel}
       >
         <RadioInput
-          name="is_covid_report"
+          name={"is_covid_report" as const}
           options={yesNoOptions}
-          radioKeySelector={booleanOptionKeySelector}
-          radioLabelSelector={optionLabelSelector}
-          radioDescriptionSelector={optionDescriptionSelector}
+          keySelector={booleanOptionKeySelector}
+          labelSelector={optionLabelSelector}
+          descriptionSelector={optionDescriptionSelector}
           value={value.is_covid_report}
           onChange={onValueChange}
           error={error?.is_covid_report}
@@ -173,19 +173,19 @@ function ContextFields(props: Props) {
         //className={reportId === undefined ? 'visually-hidden' : ''}
           error={error?.country}
           label={strings.projectFormCountryLabel}
-          name="country"
+          name={"country" as const}
           onChange={onValueChange}
           options={countryOptions}
           pending={fetchingCountries}
           value={value.country}
         />
-        <SelectInput<"districts", number>
+        <SelectInput
           disabled={!isDefined(value.country)}
           pending={fetchingDistricts}
           error={error?.districts}
           isMulti
           label={strings.projectFormDistrictLabel}
-          name="districts"
+          name={"districts" as const}
           onChange={onValueChange}
           options={districtOptions}
           value={value.districts}
@@ -196,7 +196,7 @@ function ContextFields(props: Props) {
         description={strings.fieldsStep1DisasterTypeDescription}
       >
         <SelectInput
-          name="dtype"
+          name={"dtype" as const}
           isOptionDisabled={value.status === STATUS_EARLY_WARNING ? isEpidemic : undefined}
           value={value.dtype}
           options={disasterTypeOptions}
@@ -328,11 +328,11 @@ function ContextFields(props: Props) {
         description={strings.fieldsStep1AssistanceDescription}
       >
         <RadioInput
-          name="request_assistance"
+          name={"request_assistance" as const}
           options={yesNoOptions}
-          radioKeySelector={booleanOptionKeySelector}
-          radioLabelSelector={optionLabelSelector}
-          radioDescriptionSelector={optionDescriptionSelector}
+          keySelector={booleanOptionKeySelector}
+          labelSelector={optionLabelSelector}
+          descriptionSelector={optionDescriptionSelector}
           value={value.request_assistance}
           onChange={onValueChange}
           error={error?.request_assistance}
@@ -344,11 +344,11 @@ function ContextFields(props: Props) {
         description={strings.fieldsStep1NSAssistanceDescription}
       >
         <RadioInput
-          name="ns_request_assistance"
+          name={"ns_request_assistance" as const}
           options={yesNoOptions}
-          radioKeySelector={booleanOptionKeySelector}
-          radioLabelSelector={optionLabelSelector}
-          radioDescriptionSelector={optionDescriptionSelector}
+          keySelector={booleanOptionKeySelector}
+          labelSelector={optionLabelSelector}
+          descriptionSelector={optionDescriptionSelector}
           value={value.ns_request_assistance}
           onChange={onValueChange}
           error={error?.ns_request_assistance}

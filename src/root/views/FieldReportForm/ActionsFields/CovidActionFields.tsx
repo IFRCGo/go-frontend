@@ -138,7 +138,7 @@ function CovidActionFields(props: Props) {
                 { category }
               </div>
               <Checklist
-                name="actions_ntls"
+                name={"actions_ntls" as const}
                 onChange={onValueChange}
                 options={categoryGroupedOptions[category]}
                 labelSelector={d => d.label}

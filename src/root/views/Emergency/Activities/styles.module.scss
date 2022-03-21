@@ -1,0 +1,13 @@
+@import '~styles/settings/variables';
+
+.activities {
+  .content {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing*4;
+
+    .projects-table {
+      width: 100%;
+    }
+  }
+}

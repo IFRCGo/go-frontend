@@ -210,7 +210,7 @@ function Context(props: Props) {
         >
           <SelectInput
             error={error?.hazard_type}
-            name="hazard_type"
+            name={"hazard_type" as const}
             onChange={onValueChange}
             options={disasterTypeOptions}
             pending={fetchingDisasterTypes}

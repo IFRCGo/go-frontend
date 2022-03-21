@@ -1,8 +1,5 @@
 import React from 'react';
-import {
-  _cs,
-  isDefined,
-} from '@togglecorp/fujs';
+import { _cs } from '@togglecorp/fujs';
 
 import styles from './styles.module.scss';
 
@@ -18,7 +15,7 @@ export interface Props<N> extends Omit<React.HTMLProps<HTMLInputElement>, 'ref' 
     elementRef?: React.Ref<HTMLInputElement>;
 }
 
-function RawInput<N extends number | string | undefined>(props: Props<N>) {
+function RawInput<N>(props: Props<N>) {
   const {
     className,
     onChange,
@@ -49,7 +46,7 @@ function RawInput<N extends number | string | undefined>(props: Props<N>) {
         styles.rawInput,
         className,
       )}
-      name={isDefined(name) ? String(name) : undefined}
+      name={typeof name === 'string' ? name : undefined}
       onChange={handleChange}
       value={value ?? ''}
     />

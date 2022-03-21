@@ -9,8 +9,13 @@
   &:not(.sub) {
     >.inner-container {
       padding: 0 $spacing*8;
+
+      @media (max-width: $media-medium) {
+        padding: 0 $spacing;
+      }
     }
   }
+
 
   >.inner-container {
     width: 100%;

@@ -1,0 +1,114 @@
+@import '~styles/settings/variables';
+
+.disaggregation {
+  display: flex;
+
+  .simplified {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    gap: $spacing*2;
+    align-items: center;
+
+    .total-values {
+      display: flex;
+      flex-basis: 50%;
+
+      >* {
+        flex-basis: 50%;
+      }
+    }
+
+    .gender-disaggregation {
+      flex-basis: calc(50% - #{$spacing*2});
+      gap: $spacing;
+      display: flex;
+    }
+
+    .info {
+      padding: 0 $spacing;
+    }
+  }
+
+  .detailed {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing;
+
+    .gender-and-age-disaggregation-for-disabled,
+    .gender-and-age-disaggregation{
+      display: table;
+      border-collapse: collapse;
+
+      :global {
+        .go-input-container {
+          font-size: $font-size-sm;
+          padding: 0;
+
+          .go-input-internal-input-section {
+            border-radius: 0;
+
+            input {
+              padding: $spacing/2 $spacing/4;
+              text-align: right;
+            }
+
+            input::-webkit-outer-spin-button,
+            input::-webkit-inner-spin-button {
+              -webkit-appearance: none;
+              margin: 0;
+            }
+
+            input[type=number] {
+              -moz-appearance: textfield;
+            }
+          }
+        }
+      }
+
+      .total,
+      .other,
+      .female,
+      .male,
+      .labels {
+        display: table-row;
+        font-size: $font-size-sm;
+
+        >* {
+          display: table-cell;
+        }
+      }
+
+      .label {
+        text-align: right;
+        padding: $spacing/2 $spacing;
+        background-color: $white;
+        min-width: 3rem;
+      }
+
+      .total-label {
+        text-align: right;
+        padding: $spacing/2 $spacing;
+        background-color: $grey-mist;
+        min-width: 3rem;
+      }
+
+      .total {
+        .label {
+          background-color: $grey-mist;
+        }
+      }
+
+    }
+
+    .table-container ,
+    .disabled-container {
+      position: relative;
+    }
+
+    .title {
+      padding: 0 $spacing;
+      font-weight: $base-font-medium;
+    }
+  }
+}

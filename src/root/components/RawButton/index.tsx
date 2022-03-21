@@ -22,7 +22,7 @@ export interface Props<N> extends Omit<React.HTMLProps<HTMLButtonElement>, 'ref'
  * we use raw button as a base component for other types of buttons or
  * clickable elements
  */
-function RawButton<N extends number | string | undefined>(props: Props<N>) {
+function RawButton<N>(props: Props<N>) {
   const {
     className,
     onClick,
@@ -46,6 +46,7 @@ function RawButton<N extends number | string | undefined>(props: Props<N>) {
   return (
     <button
       ref={elementRef}
+      name={typeof name === 'string' ? name : undefined}
       type="button"
       className={_cs(
         styles.rawButton,
@@ -54,7 +55,6 @@ function RawButton<N extends number | string | undefined>(props: Props<N>) {
       )}
       disabled={disabled}
       onClick={onClick ? handleClick : undefined}
-      // eslint-disable-next-line react/jsx-props-no-spreading
       {...otherProps}
     >
       { children }

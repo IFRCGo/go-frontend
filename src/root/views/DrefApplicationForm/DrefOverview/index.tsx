@@ -148,7 +148,7 @@ function DrefOverview(props: Props) {
           description={strings.drefFormSharingDescription}
         >
           <SearchSelectInput
-            name="users"
+            name={"users" as const}
             isMulti
             initialOptions={initialOptions}
             value={value.users}
@@ -187,7 +187,7 @@ function DrefOverview(props: Props) {
         >
           <SelectInput
             error={error?.national_society}
-            name="national_society"
+            name={"national_society" as const}
             onChange={onValueChange}
             options={nationalSocietyOptions}
             pending={fetchingNationalSociety}
@@ -206,7 +206,7 @@ function DrefOverview(props: Props) {
           <SelectInput
             error={error?.disaster_type}
             label={isImminentOnset ? strings.drefFormImminentDisasterTypeLabel : strings.drefFormDisasterTypeLabel}
-            name="disaster_type"
+            name={"disaster_type" as const}
             onChange={onValueChange}
             options={disasterTypeOptions}
             pending={fetchingDisasterTypes}
@@ -215,7 +215,7 @@ function DrefOverview(props: Props) {
           <SelectInput
             error={error?.type_of_onset}
             label={strings.drefFormTypeOfOnsetLabel}
-            name="type_of_onset"
+            name={"type_of_onset" as const}
             onChange={onValueChange}
             options={onsetOptions}
             value={value.type_of_onset}
@@ -235,7 +235,7 @@ function DrefOverview(props: Props) {
                   </a>
                 </>
             )}
-            name="disaster_category"
+            name={"disaster_category" as const}
             onChange={onValueChange}
             options={disasterCategoryOptions}
             value={value.disaster_category}
@@ -303,10 +303,10 @@ function DrefOverview(props: Props) {
           title={strings.drefFormEmergencyAppealPlanned}
         >
           <RadioInput
-            name="emergency_appeal_planned"
+            name={"emergency_appeal_planned" as const}
             options={yesNoOptions}
-            radioKeySelector={booleanOptionKeySelector}
-            radioLabelSelector={optionLabelSelector}
+            keySelector={booleanOptionKeySelector}
+            labelSelector={optionLabelSelector}
             value={value.emergency_appeal_planned}
             onChange={onValueChange}
             error={error?.emergency_appeal_planned}

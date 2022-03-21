@@ -20,6 +20,7 @@ function TextArea<T extends string | undefined>(props: Props<T>) {
     disabled,
     readOnly,
     inputClassName,
+    errorOnTooltip,
     ...otherInputProps
   } = props;
 
@@ -31,6 +32,7 @@ function TextArea<T extends string | undefined>(props: Props<T>) {
       error={error}
       label={label}
       disabled={disabled}
+      errorOnTooltip={errorOnTooltip}
       input={(
         <RawTextArea
           rows={5}

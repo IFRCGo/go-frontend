@@ -143,7 +143,7 @@ function ActionsFields(props: Props) {
           multiRow
         >
           <Checklist
-            name="actions_ntls"
+            name={"actions_ntls" as const}
             onChange={onValueChange}
             options={actionOptions.NTLS}
             labelSelector={optionLabelSelector}
@@ -168,7 +168,7 @@ function ActionsFields(props: Props) {
           multiRow
         >
           <Checklist
-            name="actions_fdrn"
+            name={"actions_fdrn" as const}
             onChange={onValueChange}
             options={actionOptions.FDRN}
             labelSelector={optionLabelSelector}
@@ -193,7 +193,7 @@ function ActionsFields(props: Props) {
           multiRow
         >
           <Checklist
-            name="actions_pns"
+            name={"actions_pns" as const}
             onChange={onValueChange}
             options={actionOptions.PNS}
             labelSelector={optionLabelSelector}
@@ -216,10 +216,10 @@ function ActionsFields(props: Props) {
           description={strings.fieldReportFormInformationBulletinDescription}
         >
           <RadioInput
-            name="bulletin"
+            name={"bulletin" as const}
             options={bulletinOptions}
-            radioKeySelector={numericOptionKeySelector}
-            radioLabelSelector={optionLabelSelector}
+            keySelector={numericOptionKeySelector}
+            labelSelector={optionLabelSelector}
             value={value.bulletin}
             onChange={onValueChange}
             error={error?.bulletin}

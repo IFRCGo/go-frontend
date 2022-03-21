@@ -33,6 +33,7 @@
   }
 
   &.primary {
+    border: $base-border-width solid $primary-color;
     background-color: $primary-color;
     color: $color-text-on-dark;
 

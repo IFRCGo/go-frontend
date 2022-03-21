@@ -80,10 +80,15 @@ function ThreeWForm(props: Props) {
     validate,
     setError: onErrorSet,
     setValue: onValueSet,
-  } = useForm(schema, {
-    ...defaultFormValues,
-    ...initialValue,
-  });
+  } = useForm(
+    schema,
+    {
+      value: {
+        ...defaultFormValues,
+        ...initialValue,
+      },
+    },
+  );
 
   const error = React.useMemo(() => getErrorObject(formError), [formError]);
 
@@ -106,6 +111,7 @@ function ThreeWForm(props: Props) {
   const {
     pending: submitRequestPending,
     trigger: submitRequest,
+    // FIXME: add types for payload and response
   } = useLazyRequest({
     url: projectId ? `api/v2/project/${projectId}/` : 'api/v2/project/',
     method: projectId ? 'PUT' : 'POST',
@@ -310,7 +316,7 @@ function ThreeWForm(props: Props) {
           >
             <SelectInput
               error={error?.reporting_ns}
-              name="reporting_ns"
+              name={"reporting_ns" as const}
               onChange={onValueChange}
               options={nationalSocietyOptions}
               pending={fetchingCountries}
@@ -373,7 +379,7 @@ function ThreeWForm(props: Props) {
             <SelectInput
               error={error?.operation_type}
               label={strings.projectFormOperationType}
-              name='operation_type'
+              name={"operation_type" as const}
               onChange={onValueChange}
               options={operationTypeOptions}
               value={value.operation_type}
@@ -381,7 +387,7 @@ function ThreeWForm(props: Props) {
             <SelectInput
               error={error?.programme_type}
               label={strings.projectFormProgrammeTypeLabel}
-              name='programme_type'
+              name={"programme_type" as const}
               onChange={onValueChange}
               options={programmeTypeOptions}
               value={value.programme_type}
@@ -391,7 +397,7 @@ function ThreeWForm(props: Props) {
             <InputSection title={strings.projectFormCurrentOperation}>
               <SelectInput
                 error={error?.event}
-                name='event'
+                name={"event" as const}
                 options={currentOperationOptions}
                 pending={fetchingEvents}
                 placeholder={currentOperationPlaceholder}
@@ -407,7 +413,7 @@ function ThreeWForm(props: Props) {
             >
               <SelectInput
                 error={error?.event}
-                name='event'
+                name={"event" as const}
                 options={currentEmergencyOperationOptions}
                 pending={fetchingEvents}
                 placeholder={currentOperationPlaceholder}
@@ -421,7 +427,7 @@ function ThreeWForm(props: Props) {
           >
             <SelectInput
               error={error?.dtype}
-              name="dtype"
+              name={"dtype" as const}
               options={disasterTypeOptions}
               pending={fetchingDisasterTypes}
               disabled={shouldDisableDisasterType}
@@ -468,16 +474,16 @@ function ThreeWForm(props: Props) {
             <SelectInput
               error={error?.primary_sector}
               label={strings.projectFormPrimarySectorSelect}
-              name='primary_sector'
+              name={"primary_sector" as const}
               onChange={onValueChange}
               options={sectorOptions}
               value={value.primary_sector}
             />
-            <SelectInput<"secondary_sectors", number>
+            <SelectInput
               error={error?.secondary_sectors}
               isMulti
               label={strings.projectFormSecondarySectorLabel}
-              name='secondary_sectors'
+              name={"secondary_sectors" as const}
               onChange={onValueChange}
               options={secondarySectorOptions}
               value={value.secondary_sectors}
@@ -546,7 +552,7 @@ function ThreeWForm(props: Props) {
             <div>
               <Checkbox
                 label={strings.projectFormProjectCompleted}
-                name="is_project_completed"
+                name={"is_project_completed" as const}
                 value={value?.is_project_completed}
                 onChange={onValueChange}
               />
@@ -632,13 +638,13 @@ function ThreeWForm(props: Props) {
             tooltip={strings.projectFormProjectVisibilityTooltip}
           >
             <RadioInput
-              name='visibility'
+              name={"visibility" as const}
               value={value.visibility}
               onChange={onValueChange}
               error={error?.visibility}
               options={projectVisibilityOptions}
-              radioKeySelector={d => d.value}
-              radioLabelSelector={d => d.label}
+              keySelector={d => d.value}
+              labelSelector={d => d.label}
             />
           </InputSection>
           <div className={styles.formActions}>

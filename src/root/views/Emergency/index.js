@@ -44,6 +44,8 @@ import {
 } from '#utils/utils';
 
 import App from '#views/app';
+import ProjectFormModal from '#views/Country/ThreeW/ProjectFormModal';
+
 import Fold from '#components/fold';
 import TabContent from '#components/tab-content';
 import ErrorPanel from '#components/error-panel';
@@ -54,9 +56,11 @@ import SurgeAlertsTable from '#components/connected/alerts-table';
 import PersonnelTable from '#components/connected/personnel-table';
 import EruTable from '#components/connected/eru-table';
 import EmergencyMap from '#components/map/emergency-map';
+
 import { epiSources } from '#utils/field-report-constants';
-import ProjectFormModal from '#views/Country/ThreeW/ProjectFormModal';
 import { regionsByIdSelector, disasterTypesSelector, countriesByIso } from '#selectors';
+
+import Activities from './Activities';
 
 class Emergency extends React.Component {
   constructor (props) {
@@ -532,7 +536,7 @@ class Emergency extends React.Component {
 
                   {stats.requested > 0 ? (
                     <li className="sumstats__item__wrap">
-                      <div className='sumstats__item'>                  
+                      <div className='sumstats__item'>
                         <span className='sumstats__icon_wrapper'>
                           <img className='sumstats__icon_2020' src="/assets/graphics/layout/funding-requirements.svg" />
                         </span>
@@ -935,6 +939,10 @@ class Emergency extends React.Component {
     projectForm.fetching || eventForm.fetching || siteRepForm.fetching
   ))
 
+  getCountryIdList = memoize((event) => (
+    event?.data?.countries?.map(d => d.id) ?? []
+  ))
+
   hasReportsTab () {
     const {
       event,
@@ -942,16 +950,16 @@ class Emergency extends React.Component {
       situationReports,
     } = this.props;
 
-    return get(event, 'data.field_reports.length') ||
+    return !!(get(event, 'data.field_reports.length') ||
       get(event, 'data.featured_documents.length') ||
       get(appealDocuments, 'data.results.length') ||
-      get(situationReports, 'data.results.length');
+      get(situationReports, 'data.results.length'));
   }
 
   hasRRTab () {
-    return this.state.hasPersonnel ||
+    return !!(this.state.hasPersonnel ||
       get(this.props.eru, 'data.results.length') ||
-      get(this.props.surgeAlerts, 'data.count');
+      get(this.props.surgeAlerts, 'data.count'));
   }
 
   hasSnippets () {
@@ -963,14 +971,23 @@ class Emergency extends React.Component {
     const tabs = [
       { title: strings.emergencyTabDetails, hash: '#details' },
     ];
+
     if (this.hasReportsTab()) {
       tabs.push({
-        title: strings.emergencyTabReports, hash: '#reports'
+        title: strings.emergencyTabReports,
+        hash: '#reports',
       });
     }
+
+    tabs.push({
+      title: 'Activities',
+      hash: '#activities',
+    });
+
     if (this.hasRRTab()) {
       tabs.push({
-        title: strings.emergencyTabSurge, hash: '#surge'
+        title: strings.emergencyTabSurge,
+        hash: '#surge',
       });
     }
     return tabs.concat(this.getAdditionalTabs());
@@ -999,46 +1016,43 @@ class Emergency extends React.Component {
   renderContent () {
     const { fetched, error, data } = this.props.event;
     const { disasterTypes } = this.props;
-    if (!fetched || !data)
-    {
-      if (error) 
-      {
+    if (!fetched || !data) {
+      if (error) {
         return (
-        <section className='inpage'>
-              <header className='inpage__header'>
-                <div className='inner'>
-                  <div className='inpage__headline-content'>
-                    <h1 className='inpage__title'>
-                      <Translate stringId='fieldReportResourceNotFound'/>
-                    </h1>
-                  </div>
+          <section className='inpage'>
+            <header className='inpage__header'>
+              <div className='inner'>
+                <div className='inpage__headline-content'>
+                  <h1 className='inpage__title'>
+                    <Translate stringId='fieldReportResourceNotFound'/>
+                  </h1>
                 </div>
-              </header>
-              <div className='inpage__body'>
-                <div className='inner'>
-                  <div className='prose fold prose--responsive'>
-                    <div className='inner'>
-                      <p className='inpage_note'>
-                        <Translate stringId='fieldReportResourceDescription'/>
-                      </p>
-                    </div>
+              </div>
+            </header>
+            <div className='inpage__body'>
+              <div className='inner'>
+                <div className='prose fold prose--responsive'>
+                  <div className='inner'>
+                    <p className='inpage_note'>
+                      <Translate stringId='fieldReportResourceDescription'/>
+                    </p>
                   </div>
                 </div>
               </div>
+            </div>
           </section>
-      );
+        );
       } else {
         return null;
       }
+    }
 
-    } 
-
-    const report =
-      mostRecentReport(get(this.props, 'event.data.field_reports')) || {};
+    const report = mostRecentReport(
+      get(this.props, 'event.data.field_reports')
+    ) || {};
     const summary = data.summary || report.description || null;
     const tabs = this.getTabs();
-    const contacts =
-      Array.isArray(data.contacts) && data.contacts.length
+    const contacts = Array.isArray(data.contacts) && data.contacts.length
         ? data.contacts
         : Array.isArray(report.contacts) && report.contacts.length
           ? report.contacts
@@ -1056,30 +1070,30 @@ class Emergency extends React.Component {
         }
       });
     }
-    const subscribeButton = () =>
-      this.state.subscribed ? (
-        <React.Fragment>
-          <div className='col-sm spacing-half-v'>
-            <button
-              className="button button--primary-bounded button--xsmall"
-              onClick={this.delSubscription}
-            >
-              <Translate stringId="emergencyActionUnsubscribeLabel" />
-            </button>
-          </div>
-        </React.Fragment>
-      ) : (
-        <React.Fragment>
-          <div className='col-sm spacing-half-v'>
-            <button
-              className="button button--primary-filled button--xsmall"
-              onClick={this.addSubscription}
-            >
-              <Translate stringId="emergencyActionSubscribeLabel" />
-            </button>
-          </div>
-        </React.Fragment>
-      );
+
+    const subscribeButton = () => this.state.subscribed ? (
+      <React.Fragment>
+        <div className='col-sm spacing-half-v'>
+          <button
+            className="button button--primary-bounded button--xsmall"
+            onClick={this.delSubscription}
+          >
+            <Translate stringId="emergencyActionUnsubscribeLabel" />
+          </button>
+        </div>
+      </React.Fragment>
+    ) : (
+      <React.Fragment>
+        <div className='col-sm spacing-half-v'>
+          <button
+            className="button button--primary-filled button--xsmall"
+            onClick={this.addSubscription}
+          >
+            <Translate stringId="emergencyActionSubscribeLabel" />
+          </button>
+        </div>
+      </React.Fragment>
+    );
 
     const showExportMap = () => {
       // Show the export map if exactly one country is selected, and at least 1 district is selected.
@@ -1090,14 +1104,14 @@ class Emergency extends React.Component {
         !data.hide_field_report_map
       ) {
         return (
-            <EmergencyMap
-              countries={data.countries}
-              districts={data.districts}
-              name={data.name}
-              date={data.updated_at}
-              disasterTypeCode={data.dtype.toString()}
-              countriesByIsoData={this.props.countriesByIsoData}
-            />
+          <EmergencyMap
+            countries={data.countries}
+            districts={data.districts}
+            name={data.name}
+            date={data.updated_at}
+            disasterTypeCode={data.dtype.toString()}
+            countriesByIsoData={this.props.countriesByIsoData}
+          />
         );
       } else {
         return null;
@@ -1167,7 +1181,6 @@ class Emergency extends React.Component {
                 crumbs={crumbs}
               />
             </div>
-
             <div className='col col-6-sm col-5-mid spacing-half-t'>
               <div className='row-sm flex flex-justify-flex-end'>
                 {this.props.isLogged ? subscribeButton() : null}
@@ -1182,35 +1195,17 @@ class Emergency extends React.Component {
                     />
                   </a>
                 </div>
-                {/*
-                <div className='col-sm spacing-half-v flex'>
-                  {this.props.isLogged && (
-                    <button
-                      onClick={() => {
-                        this.setState({
-                          showProjectForm: true,
-                        });
-                      }}
-                      className="button button--xsmall button--primary-bounded"
-                    >
-                        <Translate
-                          stringId="emergencyActionCreateThreeWActivityLabel"
-                        />
-                    </button>
-                  )}
-                </div>
-                    */}
-              </div>
               </div>
             </div>
           </div>
-          {this.state.showProjectForm && (
-            <ProjectFormModal
-              onCloseButtonClick={() => {
-                this.setState({ showProjectForm: false });
-              }}
-            />
-          )}
+        </div>
+        {this.state.showProjectForm && (
+          <ProjectFormModal
+            onCloseButtonClick={() => {
+              this.setState({ showProjectForm: false });
+            }}
+          />
+        )}
         <header className="inpage__header inpage__header--action">
           <div className="container-lg">
             <div>
@@ -1230,16 +1225,16 @@ class Emergency extends React.Component {
                     </div>
                   ) : null }
                   { country ? (
-                  <div className='col spacing-half-v flex'>
-                    <Link to={countryLink}
-                      className="link link--with-icon"
-                    >
-                      <span className='link--with-icon-text'>
-                        {country.name}
-                      </span>
-                      <span className='collecticon-chevron-right link--with-icon-inner'></span>
-                    </Link>
-                  </div>
+                    <div className='col spacing-half-v flex'>
+                      <Link to={countryLink}
+                        className="link link--with-icon"
+                      >
+                        <span className='link--with-icon-text'>
+                          {country.name}
+                        </span>
+                        <span className='collecticon-chevron-right link--with-icon-inner'></span>
+                      </Link>
+                    </div>
                   ) : null }
                 </div>
                 {this.renderHeaderStats()}
@@ -1254,13 +1249,18 @@ class Emergency extends React.Component {
           >
             <TabList>
               {tabs.map((tab) => (
-                <Tab key={tab.title}>{tab.title}</Tab>
+                <Tab key={tab.title}>
+                  {tab.title}
+                </Tab>
               ))}
             </TabList>
             <div className="inpage__body">
               <div className="inner">
                 <TabPanel>
-                  <TabContent isError={!this.hasKeyFigures()} title={strings.emergencyKeyFiguresTitle}>
+                  <TabContent
+                    isError={!this.hasKeyFigures()}
+                    title={strings.emergencyKeyFiguresTitle}
+                  >
                     <div className='container-lg'>
                       {this.renderKeyFigures()}
                     </div>
@@ -1268,7 +1268,7 @@ class Emergency extends React.Component {
                   <TabContent>
                     <EmergencyOverview
                       data={data}
-                      disasterTypes={disasterTypes} 
+                      disasterTypes={disasterTypes}
                     />
                   </TabContent>
                   <TabContent
@@ -1353,7 +1353,7 @@ class Emergency extends React.Component {
                                   {contactsByType.ifrc.map((o) => (
                                     <ContactRow contact={o} key={o.id} />
                                   ))}
-                                </tbody>                            
+                                </tbody>
                               </table>
                             </div>
                           ) : null}
@@ -1389,141 +1389,146 @@ class Emergency extends React.Component {
                     </div>
                   )}
                 </TabPanel>
-                { this.hasReportsTab() ? (
-                <TabPanel>
-                  {(data?.featured_documents?.length ?? 0) > 0 && (
-                    <TabContent>
-                      <Fold
-                        title={strings.emergencyFeaturedDocumentsTitle}
-                        foldWrapperClass="featured-documents fold--main"
-                      >
-                        <div className="feature-document-list">
-                          {data.featured_documents.map((featuredDocument) => {
-                            const {
-                              id,
-                              title,
-                              description,
-                              file,
-                              thumbnail,
-                            } = featuredDocument;
+                { this.hasReportsTab() && (
+                  <TabPanel>
+                    {(data?.featured_documents?.length ?? 0) > 0 && (
+                      <TabContent>
+                        <Fold
+                          title={strings.emergencyFeaturedDocumentsTitle}
+                          foldWrapperClass="featured-documents fold--main"
+                        >
+                          <div className="feature-document-list">
+                            {data.featured_documents.map((featuredDocument) => {
+                              const {
+                                id,
+                                title,
+                                description,
+                                file,
+                                thumbnail,
+                              } = featuredDocument;
 
-                            return (
-                              <div
-                                key={id}
-                                className="featured-document"
-                              >
-                                <div className="featured-document-thumbnail">
-                                  <img
-                                    src={thumbnail}
-                                    alt="Preview not available"
-                                  />
-                                </div>
-                                <div className="featured-document-details">
-                                  <a
-                                    href={file}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="featured-document-title"
-                                  >
-                                    {title}
-                                  </a>
-                                  <div className="featured-document-description">
-                                    {description}
+                              return (
+                                <div
+                                  key={id}
+                                  className="featured-document"
+                                >
+                                  <div className="featured-document-thumbnail">
+                                    <img
+                                      src={thumbnail}
+                                      alt="Preview not available"
+                                    />
+                                  </div>
+                                  <div className="featured-document-details">
+                                    <a
+                                      href={file}
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                      className="featured-document-title"
+                                    >
+                                      {title}
+                                    </a>
+                                    <div className="featured-document-description">
+                                      {description}
+                                    </div>
                                   </div>
                                 </div>
-                              </div>
-                            );
-                          })}
-                        </div>
-                      </Fold>
+                              );
+                            })}
+                          </div>
+                        </Fold>
+                      </TabContent>
+                    )}
+                    <TabContent
+                      isError={
+                        !get(this.props.situationReports, 'data.results.length')
+                      }
+                      errorMessage={strings.noDataMessage}
+                      title={strings.emergencyResponseDocumentsTitle}
+                    >
+                      {this.renderResponseDocuments()}
                     </TabContent>
-                  )}
-                  <TabContent
-                    isError={
-                      !get(this.props.situationReports, 'data.results.length')
-                    }
-                    errorMessage={strings.noDataMessage}
-                    title={strings.emergencyResponseDocumentsTitle}
-                  >
-                    {this.renderResponseDocuments()}
-                  </TabContent>
-                  <TabContent
-                    isError={!get(this.props.event, 'data.field_reports.length')}
-                    errorMessage={strings.noDataMessage}
-                    title={strings.emergencyFieldReportsTitle}
-                  >
-                    {this.renderFieldReports()}
-                  </TabContent>
-                  <TabContent
-                    isError={
-                      !get(this.props.appealDocuments, 'data.results.length')
-                    }
-                    errorMessage={strings.noDataMessage}
-                    title={strings.emergencyAppealDocumentsTitle}
-                  >
-                    {this.renderAppealDocuments()}
-                  </TabContent>
-                </TabPanel>
-                ) : null }
-
-                { this.hasRRTab() ? (
+                    <TabContent
+                      isError={!get(this.props.event, 'data.field_reports.length')}
+                      errorMessage={strings.noDataMessage}
+                      title={strings.emergencyFieldReportsTitle}
+                    >
+                      {this.renderFieldReports()}
+                    </TabContent>
+                    <TabContent
+                      isError={
+                        !get(this.props.appealDocuments, 'data.results.length')
+                      }
+                      errorMessage={strings.noDataMessage}
+                      title={strings.emergencyAppealDocumentsTitle}
+                    >
+                      {this.renderAppealDocuments()}
+                    </TabContent>
+                  </TabPanel>
+                )}
                 <TabPanel>
-                  <div>
-                    <div className='header-stats container-lg'>
-                      <div className='sumstats__wrap'>
-                        <ul className='sumstats'>
-                          <li className='sumstats__item__wrap'>
-                            <div className='sumstats__item'>
-                              <img className='sumstats__icon_2020' src='/assets/graphics/layout/heops-brand.svg' />
-                              <span className='sumstats__value'>
-                                {n(this.props.aggregated.data.active_deployments)}
-                              </span>
-                              <Translate className='sumstats__key' stringId='deploymentsOngoingRR'/>
-                            </div>
-                          </li>
-                          <li className='sumstats__item__wrap'>
-                            <div className='sumstats__item'>
-                              <img className='sumstats__icon_2020' src='/assets/graphics/layout/eru-brand.svg'/>
-                              <span className='sumstats__value'>
-                                {n(this.props.aggregated.data.active_erus)}
-                              </span>
-                              <Translate className='sumstats__key' stringId='deploymentsDeployedERU'/> &nbsp;
-                            </div>
-                          </li>
-                        </ul>
+                  <Activities
+                    emergencyId={this.props.match.params.id}
+                    eventCountryIdList={this.getCountryIdList(this.props.event)}
+                  />
+                </TabPanel>
+                {this.hasRRTab() && (
+                  <TabPanel>
+                    <div>
+                      <div className='header-stats container-lg'>
+                        <div className='sumstats__wrap'>
+                          <ul className='sumstats'>
+                            <li className='sumstats__item__wrap'>
+                              <div className='sumstats__item'>
+                                <img className='sumstats__icon_2020' src='/assets/graphics/layout/heops-brand.svg' />
+                                <span className='sumstats__value'>
+                                  {n(this.props.aggregated.data.active_deployments)}
+                                </span>
+                                <Translate className='sumstats__key' stringId='deploymentsOngoingRR'/>
+                              </div>
+                            </li>
+                            <li className='sumstats__item__wrap'>
+                              <div className='sumstats__item'>
+                                <img className='sumstats__icon_2020' src='/assets/graphics/layout/eru-brand.svg'/>
+                                <span className='sumstats__value'>
+                                  {n(this.props.aggregated.data.active_erus)}
+                                </span>
+                                <Translate className='sumstats__key' stringId='deploymentsDeployedERU'/> &nbsp;
+                              </div>
+                            </li>
+                          </ul>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  <TabContent title={strings.emergencyAlertsTitle}>
-                    <SurgeAlertsTable
-                      id="alerts"
-                      isActive={true}
-                      title={strings.emergencyAlertsTitle}
-                      emergency={this.props.match.params.id}
-                      returnNullForEmpty={true}
-                      viewAll='/alerts/all'
-                    />
-                  </TabContent>
-                  <TabContent title={strings.emergencyPersonnelTitle}>
-                    { this.state.hasPersonnel ? (
-                      <PersonnelTable
-                        id="personnel"
+                    <TabContent title={strings.emergencyAlertsTitle}>
+                      <SurgeAlertsTable
+                        id="alerts"
+                        isActive={true}
+                        title={strings.emergencyAlertsTitle}
                         emergency={this.props.match.params.id}
-                        viewAll='/deployments/personnel/all'
+                        returnNullForEmpty={true}
+                        viewAll='/alerts/all'
                       />
-                    ) : null }
-                  </TabContent>
-                  <TabContent
-                    title={strings.emergencyERUTitle}
-                  >
-                    <EruTable
-                      id="erus"
-                      emergency={this.props.match.params.id}
-                      viewAll='/deployments/erus/all'
-                    />
-                  </TabContent>
-                </TabPanel>
-                ) : null }
+                    </TabContent>
+                    <TabContent title={strings.emergencyPersonnelTitle}>
+                      { this.state.hasPersonnel ? (
+                        <PersonnelTable
+                          id="personnel"
+                          emergency={this.props.match.params.id}
+                          viewAll='/deployments/personnel/all'
+                        />
+                      ) : null }
+                    </TabContent>
+                    <TabContent
+                      title={strings.emergencyERUTitle}
+                    >
+                      <EruTable
+                        id="erus"
+                        emergency={this.props.match.params.id}
+                        viewAll='/deployments/erus/all'
+                      />
+                    </TabContent>
+                  </TabPanel>
+                )}
                 {this.renderAdditionalTabPanels()}
               </div>
             </div>

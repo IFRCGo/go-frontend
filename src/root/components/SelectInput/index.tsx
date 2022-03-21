@@ -9,16 +9,16 @@ import InputContainer from '#components/InputContainer';
 
 import styles from './styles.module.scss';
 
+type ValueType = string | number;
 
 interface Option {
-  value: string | number;
+  value: ValueType;
   label: string;
 }
 
 const emptyOptionList: Option[] = [];
-type Key = string | number | undefined;
 
-interface BaseProps<N> {
+interface BaseProps {
   className?: string;
   actions?: React.ReactNode;
   icons?: React.ReactNode;
@@ -27,24 +27,25 @@ interface BaseProps<N> {
   disabled?: boolean;
   pending?: boolean;
   readOnly?: boolean;
-  name: N;
   options?: Option[];
   placeholder?: string;
   isOptionDisabled?: SelectProps<Option>['isOptionDisabled'];
   isClearable?: boolean;
 }
 
-type Props<N extends Key, V extends Key> = BaseProps<N> & ({
+type Props<N, V extends ValueType> = BaseProps & ({
   isMulti?: false;
-  value: V | null;
+  name: N;
   onChange: (newValue: V, name: N) => void;
+  value: V | undefined | null;
 } | {
   isMulti: true;
-  value: V[] | undefined | null;
+  name: N;
   onChange: (newValue: V[], name: N) => void;
+  value: V[] | undefined | null;
 })
 
-function SelectInput<N extends Key, V extends Key>(props: Props<N, V>) {
+function SelectInput<N, V extends ValueType>(props: Props<N, V>) {
   const {
     className,
     actions,
