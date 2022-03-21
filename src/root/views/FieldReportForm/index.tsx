@@ -403,6 +403,7 @@ function FieldReportForm(props: Props) {
                 fetchingDisasterTypes={fetchingDisasterTypes}
                 initialEventOptions={initialEventOptions}
                 eventOptions={eventOptions}
+                reportId={reportId}
               />
             </TabPanel>
             <TabPanel name="step2">

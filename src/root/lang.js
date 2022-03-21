@@ -2755,6 +2755,10 @@ export default {
   fieldReportFormTitleInputPlaceholder: 'Example: Malawi - Central Region: Floods 03/2019',
   fieldReportFormTitleSelectPlaceholder: 'Click here to link to an existing hazard alert (if one exists)',
 
+  fieldReportFormCountryLabel: 'Country',
+  fieldReportFormStartDateLabel: 'Start date',
+  fieldReportFormDisasterTypeLabel: 'Disaster type',
+
   // not used -   fieldReportFormCountrySelectPlaceholder: 'Select a country',
   // not used -   fieldReportFormRegionSelectPlaceholder: 'Select Provinces / Regions',
 
