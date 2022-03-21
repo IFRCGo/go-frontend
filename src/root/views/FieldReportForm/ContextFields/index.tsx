@@ -52,7 +52,8 @@ interface Props {
   fetchingDisasterTypes?: boolean;
   initialEventOptions?: Option[];
   eventOptions: NumericValueOption[];
-}
+  reportId: any;
+ }
 
 function ContextFields(props: Props) {
   const { strings } = React.useContext(LanguageContext);
@@ -72,6 +73,8 @@ function ContextFields(props: Props) {
     reportType,
     initialEventOptions,
     eventOptions,
+    reportId,
+    countryIsoOptions,
   } = props;
 
   const [
@@ -161,56 +164,13 @@ function ContextFields(props: Props) {
           disabled={value.status === STATUS_EARLY_WARNING}
         />
       </InputSection>
-      <InputSection
-        title={strings.fieldsStep1SummaryLabel}
-        description={strings.fieldsStep1SummaryDescription}
-      >     
-        <table>
-          <tbody>
-           <tr>
-             <td>
-                <SearchSelectInput
-                  label={strings.fieldReportFormTitleSelectLabel}
-                  placeholder={strings.fieldReportFormTitleSelectPlaceholder}
-                  name="event"
-                  value={value.event}
-                  onChange={onValueChange}
-                  loadOptions={fetchEventsFromApi}
-                  initialOptions={initialEventOptions as SearchSelectOption[]}
-                  error={error?.event}
-                />
-             </td>
-           </tr>
-           <tr>
-             <td>
-                <TextInput
-                  label={strings.fieldReportFormTitleSecondaryLabel}
-                  placeholder={strings.fieldReportFormTitleInputPlaceholder}
-                  name="summary"
-                  value={value.summary}
-                  maxLength={100}
-                  onChange={onValueChange}
-                  error={error?.summary}
-                />
-             </td>
-             <td>
-                <TextInput
-                  label={strings.fieldReportUpdateNo}
-                  placeholder="1"
-                  name="event"
-                  value={eventOptions.find(x => x.value===value.event)?.label}
-                  error={error?.event}
-                />
-             </td>
-           </tr>
-          </tbody>
-        </table>   
-      </InputSection>
+      
       <InputSection
         title={countrySectionTitle}
         description={countrySectionDescription}
       >
         <SelectInput
+        //className={reportId === undefined ? 'visually-hidden' : ''}
           error={error?.country}
           label={strings.projectFormCountryLabel}
           name="country"
@@ -257,6 +217,112 @@ function ContextFields(props: Props) {
           error={error?.start_date}
         />
       </InputSection>
+
+      <InputSection
+        title={strings.fieldsStep1SummaryLabel}
+        description={strings.fieldsStep1SummaryDescription}
+      >     
+        <table cellSpacing={0} cellPadding={0}>
+          <tbody>
+           <tr>
+             <td colSpan={5}>
+                <SearchSelectInput
+                  label={strings.fieldReportFormTitleSelectLabel}
+                  placeholder={strings.fieldReportFormTitleSelectPlaceholder}
+                  name="event"
+                  value={value.event}
+                  onChange={onValueChange}
+                  loadOptions={fetchEventsFromApi}
+                  initialOptions={initialEventOptions as SearchSelectOption[]}
+                  error={error?.event}
+                />
+             </td>
+           </tr>
+           <tr>
+           {
+              reportId === undefined ? (
+                <>
+              <td style={{width: '10%'}} >
+                <TextInput
+                  style={{ backgroundColor: '#E0DDDD', borderRadius: 5, padding:'offset' }}
+                  label={strings.fieldReportFormCountryLabel}
+                  placeholder=""
+                  name="pref2"
+                  value={countryIsoOptions.find(x=> x.value === value.country)?.label}
+                  error={error?.event}
+                />
+              </td>
+              </>
+              ) : null
+            }
+
+              {
+              reportId === undefined ? (
+                <>
+              <td style={{width: '15%'}}>
+                <TextInput
+                  style={{ backgroundColor: '#E0DDDD', borderRadius: 5, padding:'offset' }}
+                  label={strings.fieldReportFormStartDateLabel}
+                  placeholder=""
+                  name="pref2"
+                  value={value.start_date}
+                  error={error?.event}
+                />
+              </td>
+              </>
+              ) : null
+            }
+
+            {
+              reportId === undefined ? (
+                <>
+              <td style={{width: '25%'}}>
+                <TextInput
+                  style={{ backgroundColor: '#E0DDDD', borderRadius: 5, padding:'offset' }}
+                  label={strings.fieldReportFormDisasterTypeLabel}
+                  placeholder=""
+                  name="pref3"
+                  value={disasterTypeOptions.find(x=>x.value === value.dtype)?.label}
+                  error={error?.event}
+                />
+              </td>
+              </>
+              ) : null
+            }
+
+              <td style={{width: '43%'}}>
+            
+                <TextInput
+                  label={strings.fieldReportFormTitleSecondaryLabel}
+                  placeholder={strings.fieldReportFormTitleInputPlaceholder}
+                  name="summary"
+                  value={value.summary}
+                  maxLength={100}
+                  onChange={onValueChange}
+                  error={error?.summary}
+                />
+             </td>
+             {
+              reportId === undefined ? (
+                <>
+             <td style={{width: '7%'}}>
+                <TextInput
+                  style={{ backgroundColor: '#E0DDDD', borderRadius: 5, padding:'offset' }}
+                  label= "#" // {strings.fieldReportUpdateNo}
+                  placeholder="1"
+                  name="event"
+                  value={eventOptions.find(x => x.value===value.event)?.label}
+                  error={error?.event}
+                />
+             </td>
+             </>
+              ) : null
+            }
+           </tr>
+          </tbody>
+        </table>   
+      </InputSection>
+
       <InputSection
         title={strings.fieldsStep1AssistanceLabel}
         description={strings.fieldsStep1AssistanceDescription}
