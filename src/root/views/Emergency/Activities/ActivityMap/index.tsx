@@ -12,6 +12,11 @@ import {
   listToMap,
 } from '@togglecorp/fujs';
 import turfBbox from '@turf/bbox';
+import {
+  IoCaretDown,
+  IoCaretUp,
+} from 'react-icons/io5';
+
 import useReduxState from '#hooks/useReduxState';
 import {
   defaultMapStyle,
@@ -21,9 +26,50 @@ import {
   COLOR_BLUE,
   COLOR_ORANGE,
   COLOR_YELLOW,
+  COLOR_WHITE,
+  COLOR_TEXT,
 } from '#utils/map';
+import { EmergencyProjectResponse } from '#types';
+import Container from '#components/Container';
+import DateOutput from '#components/DateOutput';
+import TextOutput from '#components/TextOutput';
+import Button from '#components/Button';
+
+import { getPeopleReachedInActivity } from '../useProjectStats';
 
 import styles from './styles.module.scss';
+
+const SEVERITY_SMALL = 2;
+const SEVERITY_MEDIUM = 5;
+const SEVERITY_LARGE = 10;
+
+const getColorForValue = (value: number) => {
+  if (value >= SEVERITY_LARGE) {
+    return COLOR_RED;
+  }
+
+  if (value >= SEVERITY_MEDIUM) {
+    return COLOR_ORANGE;
+  }
+
+  if (value >= SEVERITY_SMALL) {
+    return COLOR_YELLOW;
+  }
+
+  if (value > 0) {
+    return COLOR_BLUE;
+  }
+
+  return COLOR_LIGHT_GREY;
+};
+
+const legendItems = [
+  { color: COLOR_BLUE, label: `less than ${SEVERITY_SMALL}` },
+  { color: COLOR_YELLOW, label: `${SEVERITY_SMALL} to ${SEVERITY_MEDIUM-1}` },
+  { color: COLOR_ORANGE, label: `${SEVERITY_MEDIUM} to ${SEVERITY_LARGE-1}` },
+  { color: COLOR_RED, label: `${SEVERITY_LARGE} or more` },
+];
+
 
 interface ChoroplethProps {
   projectCountByDistrict: Record<number, number>;
@@ -52,41 +98,42 @@ function Choropleth(props: ChoroplethProps) {
     ['get', 'district_id'],
   ];
 
-  const getColorForValue = (value: number) => {
-    if (value >= 10) {
-      return COLOR_RED;
-    }
-
-    if (value >= 5) {
-      return COLOR_ORANGE;
-    }
-
-    if (value >= 2) {
-      return COLOR_YELLOW;
-    }
-
-    if (value > 0) {
-      return COLOR_BLUE;
-    }
-
-    return COLOR_LIGHT_GREY;
-  };
-
   const districtKeys = Object.keys(projectCountByDistrict) as string[];
+
+  if (districtKeys.length === 0) {
+    mc.map.setPaintProperty(
+      'admin-1-highlight',
+      'fill-color',
+      COLOR_LIGHT_GREY,
+    );
+
+    mc.map.setPaintProperty(
+      'admin-1-label',
+      'text-color',
+      COLOR_TEXT,
+    );
+
+    mc.map.setPaintProperty(
+      'admin-1-label',
+      'text-halo-width',
+      1,
+    );
+  }
+
   districtKeys.forEach((dk) => {
     colorProperty.push(+dk);
     colorProperty.push(
       getColorForValue(projectCountByDistrict[+dk])
     );
     labelColorProperty.push(+dk);
-    labelColorProperty.push('#ffffff');
+    labelColorProperty.push(COLOR_WHITE);
 
     labelHaloWidthProperty.push(+dk);
     labelHaloWidthProperty.push(0);
   });
 
   colorProperty.push(COLOR_LIGHT_GREY);
-  labelColorProperty.push('#707070');
+  labelColorProperty.push(COLOR_TEXT);
   labelHaloWidthProperty.push(1);
 
   mc.map.setPaintProperty(
@@ -113,12 +160,6 @@ function Choropleth(props: ChoroplethProps) {
     labelHaloWidthProperty,
   );
 
-  mc.map.setPaintProperty(
-    'admin-1-label',
-    'text-halo-blur',
-    labelHaloWidthProperty,
-  );
-
   mc.map.setLayoutProperty(
     'admin-1-highlight',
     'visibility',
@@ -128,10 +169,145 @@ function Choropleth(props: ChoroplethProps) {
   return null;
 }
 
+interface ActivityDetailProps {
+  className?: string;
+  sectorDetails: EmergencyProjectResponse['activities'][number]['sector_details'];
+  projects: EmergencyProjectResponse[];
+  showDetails?: boolean;
+  onClick?: (sectorId: number) => void;
+}
+
+function ActivityDetail(props: ActivityDetailProps) {
+  const {
+    className,
+    sectorDetails,
+    projects,
+    showDetails,
+    onClick,
+  } = props;
+
+  const [activeProject, setActiveProject] = React.useState<number | undefined>();
+
+  const projectCount = projects.length;
+  const completeProjectCount = projects.filter(p => p.status === 'complete').length;
+  const completion = projectCount === 0 ? 100 : 100 * completeProjectCount / projectCount;
+
+  const handleClick = React.useCallback(() => {
+    if (onClick) {
+      onClick(sectorDetails.id);
+    }
+  }, [onClick, sectorDetails.id]);
+
+  return (
+    <div className={_cs(styles.activityDetail, className)}>
+      <div
+        className={styles.header}
+        onClick={handleClick}
+      >
+        <div className={styles.heading}>
+          <div className={styles.title}>
+            {sectorDetails.title}
+          </div>
+          {showDetails ? <IoCaretUp className={styles.icon} /> : <IoCaretDown className={styles.icon} />}
+        </div>
+        <div className={styles.progressBarWithCount}>
+          <div className={styles.progressBar}>
+            <div
+              className={styles.progress}
+              style={{ width: `${completion}%` }}
+            />
+          </div>
+          <div className={styles.count}>
+            {projectCount}
+          </div>
+        </div>
+      </div>
+      {showDetails && (
+        <div className={styles.details}>
+          {projects.map((p) => {
+            const nsName = p.activity_lead === 'national_society'
+              ? p.reporting_ns_details?.society_name
+              : p.deployed_eru_details?.eru_owner_details?.national_society_country_details?.society_name;
+
+            const relatedActivities = p.activities.filter(a => a.sector === sectorDetails.id);
+
+            return (
+              <div className={styles.project}>
+                <div className={styles.projectHeading}>
+                  <div className={styles.nsName}>
+                    {nsName}
+                  </div>
+                  <div className={styles.status}>
+                    {p.status_display}
+                  </div>
+                </div>
+                {p.districts_details && (
+                  <div className={styles.districtList}>
+                    {p.districts_details.map(d => d.name).join(', ')}
+                  </div>
+                )}
+                <div className={styles.startEndDate}>
+                  {[
+                    <DateOutput value={p.start_date} />,
+                    <DateOutput value={p.end_date} />
+                  ]}
+                </div>
+                {p.id === activeProject && (
+                  <div className={styles.relatedActivityList}>
+                    {relatedActivities.map((a) => (
+                      <div className={styles.relatedActivity}>
+                        <div className={styles.action}>
+                          {a.action_details?.title ?? a.custom_action}
+                        </div>
+                        <TextOutput
+                          className={styles.peopleReached}
+                          label="People reached"
+                          value={getPeopleReachedInActivity(a)}
+                          strongValue
+                        />
+                      </div>
+                    ))}
+                  </div>
+                )}
+                <div className={styles.actions}>
+                  {p.id === activeProject ? (
+                    <Button
+                      name={undefined}
+                      onClick={setActiveProject}
+                      variant="transparent"
+                    >
+                      Less
+                    </Button>
+                  ) : (
+                    <Button
+                      name={p.id}
+                      onClick={setActiveProject}
+                      variant="transparent"
+                    >
+                      More
+                    </Button>
+                  )}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  );
+}
+
 interface Props {
   className?: string;
   countryIdList: number[];
   projectCountByDistrict: Record<number, number>;
+  sectorGroupedProjectList: Record<
+    number,
+    {
+      sectorDetails: EmergencyProjectResponse['activities'][number]['sector_details'];
+      projects: EmergencyProjectResponse[];
+    }
+  >;
 }
 
 function ActivityMap(props: Props) {
@@ -139,8 +315,10 @@ function ActivityMap(props: Props) {
     className,
     countryIdList = [],
     projectCountByDistrict,
+    sectorGroupedProjectList,
   } = props;
 
+  const [activeSector, setActiveSector] = React.useState<number | undefined>();
   const allCountries = useReduxState('allCountries');
   const activityBounds= React.useMemo(() => {
     const countryIdMap = listToMap(countryIdList, d => d, d => true);
@@ -157,6 +335,20 @@ function ActivityMap(props: Props) {
     return bbox as [number, number, number, number];
   }, [allCountries, countryIdList]);
 
+  const sectorKeys = React.useMemo(
+    () => Object.keys(sectorGroupedProjectList) as unknown as number[],
+    [sectorGroupedProjectList],
+  );
+
+  const handleSectorClick = React.useCallback((sectorId: number) => {
+    setActiveSector((prevSectorId) => {
+      if (prevSectorId === sectorId) {
+        return undefined;
+      }
+
+      return sectorId;
+    });
+  }, []);
 
   return (
     <div className={_cs(styles.activityMap, className)}>
@@ -174,6 +366,42 @@ function ActivityMap(props: Props) {
           projectCountByDistrict={projectCountByDistrict}
         />
       </Map>
+      <Container
+        sub
+        className={styles.sectorGroupedActivities}
+        contentClassName={styles.activityList}
+        heading="Activities by Sector"
+      >
+        {sectorKeys.map((sector) => {
+          const sectorGroup = sectorGroupedProjectList[sector];
+
+          return (
+            <ActivityDetail
+              showDetails={activeSector === sectorGroup.sectorDetails.id}
+              onClick={handleSectorClick}
+              key={sectorGroup.sectorDetails.id}
+              sectorDetails={sectorGroup.sectorDetails}
+              projects={sectorGroup.projects}
+            />
+          );
+        })}
+      </Container>
+      <div className={styles.legend}>
+        {legendItems.map((li) => (
+          <div
+            key={li.label}
+            className={styles.legendItem}
+          >
+            <div
+              className={styles.color}
+              style={{ backgroundColor: li.color }}
+            />
+            <div className={styles.label}>
+              {li.label}
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

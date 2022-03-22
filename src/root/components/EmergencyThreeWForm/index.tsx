@@ -398,6 +398,7 @@ function EmergencyThreeWForm(props: Props) {
             let baseActivityError: Record<string, string | string[] | {} | undefined> = {};
             const baseActivityKeys = [
               'is_simplified_report',
+              'has_no_data_on_people_reached',
               'beneficiaries_count',
               'amount',
 
@@ -695,6 +696,7 @@ function EmergencyThreeWForm(props: Props) {
                     name={undefined}
                     title="Select all"
                     onClick={handleSelectAllRegionClick}
+                    disabled={inputsDisabled || isNotDefined(value?.country)}
                   >
                     <IoCheckmarkDone />
                   </Button>

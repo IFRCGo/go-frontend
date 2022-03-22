@@ -109,7 +109,7 @@ function EmergencyThreeWDetails(props: Props) {
         {project?.activities?.map((a) => (
           <Container
             key={a.id}
-            heading={a?.action_details?.title}
+            heading={a?.action_details?.title ?? a?.custom_action}
             sub
             headingSize="small"
             hideHeaderBorder

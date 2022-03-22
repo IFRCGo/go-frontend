@@ -1,10 +1,6 @@
 import React from 'react';
 import { _cs } from '@togglecorp/fujs';
 import type { Location } from 'history';
-import {
-  IoPencil,
-  IoOpenOutline,
-} from 'react-icons/io5';
 
 import { getColumns } from '#views/Emergency/Activities/projectTableColumns';
 import BlockLoading from '#components/block-loading';
@@ -12,9 +8,7 @@ import Page from '#components/Page';
 import Pager from '#components/Pager';
 import BreadCrumb from '#components/breadcrumb';
 import Container from '#components/Container';
-import DropdownMenuItem from '#components/DropdownMenuItem';
 import Table from '#components/Table';
-import { createActionColumn } from '#components/Table/predefinedColumns';
 import {
   ListResponse,
   useRequest,
@@ -54,32 +48,10 @@ function AllThreeW(props: Props) {
     },
   });
 
-  const columns = React.useMemo(() => {
-    const actionsColumn = createActionColumn(
-      'actions',
-      (rowKey: number | string, prj: EmergencyProjectResponse) => ({
-        extraActions: (
-          <>
-            <DropdownMenuItem
-              href={`/emergency-three-w/${rowKey}/`}
-              icon={<IoOpenOutline />}
-              label="View Details"
-            />
-            <DropdownMenuItem
-              href={`/emergency-three-w/${rowKey}/edit/`}
-              icon={<IoPencil />}
-              label="Edit"
-            />
-          </>
-        ),
-      }),
-    );
-
-    return [
-      ...getColumns(),
-      actionsColumn,
-    ];
-  }, []);
+  const columns = React.useMemo(
+    () => getColumns(),
+    [],
+  );
 
 
   return (

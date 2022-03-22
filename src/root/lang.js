@@ -454,6 +454,7 @@ export default {
   accountInformation: 'Account Information',
   accountNotification: 'Notifications',
   accountPerForms: 'PER forms',
+  accountThreeWForms: '3W forms',
   accountMyDrefApplications: 'My Dref Applications',
   accountWeeklyDigest: 'Weekly Digest',
   accountWeeklyDigestDescription: 'Select to get a weekly compilation of emergency events based on your preferences.',

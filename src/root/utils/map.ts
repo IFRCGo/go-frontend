@@ -15,6 +15,7 @@ export const defaultMapOptions: Omit<mapboxgl.MapboxOptions, 'style' | 'containe
 };
 
 export const COLOR_WHITE = '#ffffff';
+export const COLOR_TEXT = '#707070';
 export const COLOR_LIGHT_GREY = '#e0e0e0';
 export const COLOR_BLACK = '#000000';
 export const COLOR_RED = '#f5333f';

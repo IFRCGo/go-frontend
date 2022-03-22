@@ -33,6 +33,7 @@ const peopleHouseholdsOptions: {
   { label: 'Households', value: 'households' },
 ];
 
+// TODO merge with one in utils
 const sumSafe = (nums: (number | undefined | null)[]) => {
   const safeNums = nums.filter(isDefined);
   if (safeNums.length === 0) {
@@ -261,13 +262,15 @@ function DisaggregationInputs (props: Props) {
     }
   }, [value?.male_count, value?.female_count, setFieldValue]);
 
+  const showNoDataAvailableOption = value?.is_simplified_report === true
+        && value?.people_households === 'people'
+        && error?.people_count
+        && !value?.has_no_data_on_people_reached;
+
   return (
     <>
       <NonFieldError error={error} />
-      {value?.is_simplified_report === true
-        && value?.people_households === 'people'
-        && error?.people_count
-        && !value?.has_no_data_on_people_reached && (
+      {showNoDataAvailableOption && (
         <div className={styles.tip}>
           If data is not available for people, please check &quot;No data on people reached&quot;
         </div>
@@ -280,12 +283,14 @@ function DisaggregationInputs (props: Props) {
           onChange={setFieldValue}
           invertedLogic
         />
-        <Checkbox
-          label="No data on people reached"
-          name={"has_no_data_on_people_reached" as const}
-          value={value?.has_no_data_on_people_reached}
-          onChange={setFieldValue}
-        />
+        {showNoDataAvailableOption && (
+          <Checkbox
+            label="No data on people reached"
+            name={"has_no_data_on_people_reached" as const}
+            value={value?.has_no_data_on_people_reached}
+            onChange={setFieldValue}
+          />
+        )}
       </div>
       <div className={styles.disaggregation}>
         {value?.is_simplified_report === true && (
