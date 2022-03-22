@@ -107,9 +107,20 @@ function CustomActivityInput(props: Props) {
     );
   }, [setFieldValue]);
 
+  const expandableContainerRef = React.useRef<{
+      setIsExpanded: React.Dispatch<React.SetStateAction<boolean>>
+  }>(null);
+
+  React.useEffect(() => {
+    if (hasError && expandableContainerRef.current) {
+      expandableContainerRef.current.setIsExpanded(true);
+    }
+  }, [hasError]);
+
   return (
     <ExpandableContainer
       className={_cs(styles.customActivity, hasError && styles.errored)}
+      componentRef={expandableContainerRef}
       heading={`Custom Activity #${index + 1}`}
       headingSize="small"
       sub

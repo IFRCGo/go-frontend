@@ -263,16 +263,32 @@ function DisaggregationInputs (props: Props) {
 
   return (
     <>
-      <Switch
-        label="Detailed Reporting"
-        name="is_simplified_report"
-        value={value?.is_simplified_report}
-        onChange={setFieldValue}
-        invertedLogic
-      />
       <NonFieldError error={error} />
+      {value?.is_simplified_report === true
+        && value?.people_households === 'people'
+        && error?.people_count
+        && !value?.has_no_data_on_people_reached && (
+        <div className={styles.tip}>
+          If data is not available for people, please check &quot;No data on people reached&quot;
+        </div>
+      )}
+      <div className={styles.top}>
+        <Switch
+          label="Detailed Reporting"
+          name="is_simplified_report"
+          value={value?.is_simplified_report}
+          onChange={setFieldValue}
+          invertedLogic
+        />
+        <Checkbox
+          label="No data on people reached"
+          name={"has_no_data_on_people_reached" as const}
+          value={value?.has_no_data_on_people_reached}
+          onChange={setFieldValue}
+        />
+      </div>
       <div className={styles.disaggregation}>
-        {value?.is_simplified_report ? (
+        {value?.is_simplified_report === true && (
           <div className={styles.simplified}>
             <div className={styles.totalValues}>
               <RadioInput
@@ -314,27 +330,33 @@ function DisaggregationInputs (props: Props) {
               />
             )}
             {value?.people_households === 'people' && (
-              <div className={styles.genderDisaggregation}>
-                <NumberInput
-                  name="male_count"
-                  label="Male"
-                  value={value?.male_count}
-                  onChange={setFieldValue}
-                  error={error?.male_count}
-                  disabled={genderDisaggregationDisabled}
-                />
-                <NumberInput
-                  name="female_count"
-                  label="Female"
-                  value={value?.female_count}
-                  onChange={setFieldValue}
-                  error={error?.female_count}
-                  disabled={genderDisaggregationDisabled}
-                />
-              </div>
+              <>
+                <div className={styles.separator}>
+                  OR
+                </div>
+                <div className={styles.genderDisaggregation}>
+                  <NumberInput
+                    name="male_count"
+                    label="Male"
+                    value={value?.male_count}
+                    onChange={setFieldValue}
+                    error={error?.male_count}
+                    disabled={genderDisaggregationDisabled}
+                  />
+                  <NumberInput
+                    name="female_count"
+                    label="Female"
+                    value={value?.female_count}
+                    onChange={setFieldValue}
+                    error={error?.female_count}
+                    disabled={genderDisaggregationDisabled}
+                  />
+                </div>
+              </>
             )}
           </div>
-        ) : (
+        )}
+        {value?.is_simplified_report === false && (
           <div className={styles.detailed}>
             <div className={styles.tableContainer}>
               <div className={styles.genderAndAgeDisaggregation}>
