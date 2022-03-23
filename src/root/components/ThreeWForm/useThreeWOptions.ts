@@ -38,6 +38,8 @@ import {
 } from '#types';
 import LanguageContext from '#root/languageContext';
 
+import useReduxState from '#hooks/useReduxState';
+
 // TODO: make it common
 export const OPERATION_TYPE_PROGRAMME = 0;
 export const OPERATION_TYPE_EMERGENCY = 1;
@@ -77,7 +79,7 @@ const operationTypeOptions = operationTypeList.map((o) => ({
   label: o.label,
 })).sort(compareString);
 
-const projectVisibilityOptions = [...projectVisibilityList].sort(compareString);
+var projectVisibilityOptions = [...projectVisibilityList].sort(compareString);
 
 export interface FormType extends ProjectFormFields {
   is_project_completed: boolean;
@@ -172,6 +174,7 @@ const limitQuery = {
 
 export function useThreeWOptions(value: Partial<FormType>) {
   const { strings } = React.useContext(LanguageContext);
+  const user = useReduxState('me');
   const {
     pending: fetchingCountries,
     response: countriesResponse,
@@ -180,7 +183,19 @@ export function useThreeWOptions(value: Partial<FormType>) {
     query: limitQuery,
   });
 
-  const [
+
+  
+
+  if(user?.data.profile?.org_type==='OTHR')
+    {
+      projectVisibilityOptions = projectVisibilityOptions.filter(x => x.value === 'public' || x.value === 'logged_in_user');    
+    } 
+      else if(user?.data.profile?.org_type==='NTLS')
+    {
+      projectVisibilityOptions = projectVisibilityOptions.filter(x => x.value === 'public' || x.value === 'logged_in_user' || x.value === 'ifrc_ns');
+    }
+    
+   const [
     nationalSocietyOptions,
     countryOptions,
   ] = React.useMemo(() => {
