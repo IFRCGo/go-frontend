@@ -118,6 +118,8 @@ function Choropleth(props: ChoroplethProps) {
       'text-halo-width',
       1,
     );
+
+    return null;
   }
 
   districtKeys.forEach((dk) => {

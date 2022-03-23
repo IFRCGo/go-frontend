@@ -173,6 +173,7 @@ export interface EmergencyProjectResponse {
     parent_event: number | null;
     name: string;
     slug: string | null;
+    emergency_response_contact_email: string | null;
   };
   reporting_ns_details: CountryMini;
   deployed_eru_details: {

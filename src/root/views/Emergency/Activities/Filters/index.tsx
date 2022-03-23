@@ -34,19 +34,19 @@ function Filters(props: Props) {
   const [country, setCountry] = useInputState<number | undefined>(undefined);
   const [district, setDistrict] = useInputState<number | undefined>(undefined);
 
-  React.useLayoutEffect(() => {
+  React.useEffect(() => {
     if (isDefined(ns)) {
       setEru(undefined);
     }
   }, [ns, setEru]);
 
-  React.useLayoutEffect(() => {
+  React.useEffect(() => {
     if (isDefined(eru)) {
       setNs(undefined);
     }
   }, [eru, setNs]);
 
-  React.useLayoutEffect(() => {
+  React.useEffect(() => {
     if (isDefined(country)) {
       setDistrict(undefined);
     }
