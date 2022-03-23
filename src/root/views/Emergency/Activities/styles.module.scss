@@ -1,13 +1,61 @@
 @import '~styles/settings/variables';
 
 .activities {
-  .content {
+  .activity-content {
     display: flex;
     flex-direction: column;
-    gap: $spacing*4;
+    gap: $spacing*3;
+    padding: $spacing*2 0!important;
 
-    .projects-table {
-      width: 100%;
+    .stats-content {
+      display: flex;
+      flex-direction: column;
+      gap: $spacing;
     }
+
+    .stats {
+      display: flex;
+      gap: $spacing*2;
+      flex-wrap: wrap;
+      justify-content: center;
+
+      >* {
+        flex-basis: 0;
+        flex-grow: 1;
+        max-width: 30rem;
+      }
+
+      .stats-pie {
+        flex-grow: 1.5;
+        min-width: 15rem;
+      }
+    }
+
+    .disclaimer {
+      display: flex;
+      align-items: center;
+
+      .icon {
+        font-size: 1.2em;
+      }
+    }
+
+    .response-activity-content {
+      display: flex;
+      flex-direction: column;
+      gap: $spacing;
+
+      .projects-table {
+        width: 100%;
+
+        .action-column {
+          width: 3rem;
+        }
+      }
+    }
+  }
+
+  .sankey {
+    height: 40rem;
   }
 }

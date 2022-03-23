@@ -9,7 +9,7 @@ import styles from './styles.module.scss';
 
 export interface Props {
   className?: string;
-  value?: string | number;
+  value?: string | number | null;
   format?: string;
 }
 

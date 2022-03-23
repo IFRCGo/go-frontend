@@ -38,7 +38,7 @@ function Container(props: Props) {
     descriptionClassName,
     sub,
     headingSize,
-    hideHeaderBorder,
+    hideHeaderBorder = false,
     headerElementRef,
     visibleOverflow,
     footer,
@@ -52,7 +52,7 @@ function Container(props: Props) {
         styles.container,
         sub && styles.sub,
         className,
-        hideHeaderBorder && styles.withoutHeaderBorder,
+        !hideHeaderBorder && styles.withHeaderBorder,
         visibleOverflow && styles.visibleOverflow,
       )}
     >

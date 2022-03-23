@@ -175,7 +175,8 @@ export function createActionColumn<D, K>(
   id: string,
   rendererParams: (_: K, datum: D) => TableActionsProps,
   options?: {
-    cellRendererClassName: string;
+    cellRendererClassName?: string;
+    headerContainerClassName?: string;
   },
 ) {
   const item: Column<D, K, TableActionsProps, HeaderCellProps> = {
@@ -187,6 +188,7 @@ export function createActionColumn<D, K>(
       orderable: false,
       hideable: false,
     },
+    headerContainerClassName: options?.headerContainerClassName,
     cellRenderer: TableActions,
     cellRendererParams: rendererParams,
     cellRendererClassName: options?.cellRendererClassName,

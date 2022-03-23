@@ -99,7 +99,9 @@ function GlobalThreeWSankey (p) {
             link={SankeyLink}
             node={SankeyNode}
           >
-            <Tooltip />
+            <Tooltip
+              isAnimationActive={false}
+            />
             <Label />
           </Sankey>
         </ResponsiveContainer>

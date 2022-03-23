@@ -15,6 +15,7 @@ import {
 import { IoAdd } from 'react-icons/io5';
 
 import Button from '#components/Button';
+import NonFieldError from '#components/NonFieldError';
 import Container from '#components/Container';
 import Checklist from '#components/Checklist';
 import { NumericValueOption } from '#types';
@@ -138,6 +139,7 @@ function SectorInput(props: Props) {
       headingSize="small"
       sub
       visibleOverflow
+      description={<NonFieldError error={error} />}
     >
       <Checklist
         onChange={handleActivityListChange}

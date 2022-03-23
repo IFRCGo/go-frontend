@@ -35,7 +35,6 @@ import TextInput from '#components/TextInput';
 import SelectInput from '#components/SelectInput';
 import SegmentInput from '#components/SegmentInput';
 import DateInput from '#components/DateInput';
-import Checkbox from '#components/Checkbox';
 import {
   useLazyRequest,
   useRequest,
@@ -200,6 +199,42 @@ function transformResponseToFormFields(response: EmergencyProjectResponse) {
   return formValues;
 }
 
+function scrollToTop () {
+  window.setTimeout(() => {
+    window.scrollTo({
+      top: Math.min(145, window.scrollY),
+      left: 0,
+      behavior: 'smooth',
+    });
+  }, 0);
+}
+
+function calculateStatus (
+  startDate: string | undefined,
+  endDate: string | undefined | null,
+) {
+  if (isNotDefined(startDate)) {
+    return undefined;
+  }
+
+  const start = new Date(startDate);
+  const now = new Date();
+
+  if (start.getTime() > now.getTime()) {
+    return STATUS_PLANNED;
+  }
+
+  if (isDefined(endDate)) {
+    const end = new Date(endDate);
+    if (end.getTime() < now.getTime()) {
+      return STATUS_COMPLETE;
+    }
+  }
+
+  return STATUS_ONGOING;
+}
+
+
 interface Props {
   projectId?: number;
   className?: string;
@@ -241,31 +276,10 @@ function EmergencyThreeWForm(props: Props) {
     },
   );
 
-  const calculateStatus = React.useCallback((startDate: string | undefined) => {
-    if (isNotDefined(startDate)) {
-      return STATUS_PLANNED;
-    }
-
-    const start = new Date(startDate);
-    const now = new Date();
-
-    if (start.getTime() > now.getTime()) {
-      return STATUS_PLANNED;
-    }
-
-    return STATUS_ONGOING;
-  }, []);
-
-  const handleCompleteActivityChange = React.useCallback((isComplete: boolean | undefined) => {
-    if (isComplete) {
-      setFieldValue(STATUS_COMPLETE, 'status');
-    } else {
-      setFieldValue(
-        calculateStatus(value?.start_date),
-        'status'
-      );
-    }
-  }, [value?.start_date, setFieldValue, calculateStatus]);
+  React.useEffect(() => {
+    const status = calculateStatus(value?.start_date, value?.end_date);
+    setFieldValue(status, 'status');
+  }, [setFieldValue, value?.start_date, value?.end_date]);
 
   const error = React.useMemo(() => getErrorObject(formError), [formError]);
   const [
@@ -384,6 +398,7 @@ function EmergencyThreeWForm(props: Props) {
             let baseActivityError: Record<string, string | string[] | {} | undefined> = {};
             const baseActivityKeys = [
               'is_simplified_report',
+              'has_no_data_on_people_reached',
               'beneficiaries_count',
               'amount',
 
@@ -515,6 +530,7 @@ function EmergencyThreeWForm(props: Props) {
         };
 
         setError(transformedError);
+        scrollToTop();
       }
       alert.show(
         (
@@ -539,6 +555,7 @@ function EmergencyThreeWForm(props: Props) {
     const result = validate();
     if (result.errored || !result.value) {
       setError(result.error);
+      scrollToTop();
       return;
     }
 
@@ -625,6 +642,11 @@ function EmergencyThreeWForm(props: Props) {
         <BlockLoading />
       ) : (
         <>
+          <NonFieldError
+            className={styles.nonFieldError}
+            error={error}
+            message="Please correct all errors below before submission"
+          />
           <Container
             sub
             contentClassName={styles.operationDetailContent}
@@ -674,6 +696,7 @@ function EmergencyThreeWForm(props: Props) {
                     name={undefined}
                     title="Select all"
                     onClick={handleSelectAllRegionClick}
+                    disabled={inputsDisabled || isNotDefined(value?.country)}
                   >
                     <IoCheckmarkDone />
                   </Button>
@@ -709,19 +732,11 @@ function EmergencyThreeWForm(props: Props) {
                 error={error?.end_date}
                 onChange={setFieldValue}
               />
-              {value?.status && (
-                <TextOutput
-                  className={styles.statusDisplay}
-                  label="Project Status"
-                  value={statusMap[value?.status]}
-                  strongValue
-                />
-              )}
-              <Checkbox
-                label="Activity Complete"
-                name={undefined}
-                onChange={handleCompleteActivityChange}
-                value={value?.status === STATUS_COMPLETE}
+              <TextOutput
+                className={styles.statusDisplay}
+                label="Project Status"
+                value={isDefined(value?.status) ? statusMap[value?.status] : '--'}
+                strongValue
               />
             </InputSection>
             <InputSection
@@ -812,7 +827,10 @@ function EmergencyThreeWForm(props: Props) {
             <InputSection
               title="Types of Actions Taken"
               description="Select the actions that are being across all of the locations tagged above"
+              multiRow
+              oneColumn
             >
+              <NonFieldError error={getErrorObject(error?.sectors)} />
               <Checklist
                 name="sectors"
                 options={sectorOptions}

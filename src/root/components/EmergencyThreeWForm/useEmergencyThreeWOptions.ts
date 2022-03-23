@@ -82,6 +82,7 @@ export interface ActivityBase {
   sector: number;
   details: string;
   is_simplified_report: boolean;
+  has_no_data_on_people_reached: boolean;
 
   beneficiaries_count?: number | null;
   amount?: number | null;
@@ -277,18 +278,32 @@ export const schema: FormSchema = {
                 };
               };
 
+              const baseFields: ActivitySchemaFields | CustomActivitySchemaFields = {
+                is_simplified_report: [],
+                has_no_data_on_people_reached: [],
+                beneficiaries_count: [positiveIntegerCondition],
+                amount: [positiveIntegerCondition],
+                details: [],
+              };
+
+              const positiveIntegerAndMaybeRequired = activity?.has_no_data_on_people_reached
+                ? [positiveIntegerCondition]
+                : [requiredCondition, positiveIntegerCondition];
+
               if (activity?.is_simplified_report) {
                 return {
+                  ...baseFields,
                   ...currentFields,
                   people_households: [requiredCondition],
                   household_count: isHouseholds ? [requiredCondition, positiveIntegerCondition] : [forceUndefinedType],
-                  people_count: isPeople ? [requiredCondition, positiveIntegerCondition] : [forceUndefinedType],
+                  people_count: isPeople ? positiveIntegerAndMaybeRequired : [forceUndefinedType],
                   male_count: isPeople ? [positiveIntegerCondition] : [forceUndefinedType],
                   female_count: isPeople ? [positiveIntegerCondition]: [forceUndefinedType],
                   point_count: [positiveIntegerCondition],
                 };
               } else {
                 return {
+                  ...baseFields,
                   ...currentFields,
 
                   male_0_1_count: [positiveIntegerCondition],
@@ -364,10 +379,6 @@ export const schema: FormSchema = {
                   fields: (activity): ActivitySchemaFields => {
                     let activitySchemaFields: ActivitySchemaFields = {
                       action: [],
-                      is_simplified_report: [],
-                      beneficiaries_count: [positiveIntegerCondition],
-                      amount: [positiveIntegerCondition],
-                      details: [],
                       supplies: {
                         keySelector: (s) => s.client_id as string,
                         member: (): SuppliesSchemaMember => ({
@@ -420,6 +431,8 @@ export const schema: FormSchema = {
                     disabled_other_18_59_count: ['other_18_59_count'],
                     disabled_other_60_plus_count: ['other_60_plus_count'],
                     disabled_other_unknown_age_count: ['other_unknown_age_count'],
+
+                    people_count: ['has_no_data_on_people_reached'],
                   }),
                 }),
               },
@@ -430,10 +443,6 @@ export const schema: FormSchema = {
                     let customActivitySchemaFields: CustomActivitySchemaFields = {
                       client_id: [],
                       custom_action: [requiredCondition],
-                      beneficiaries_count: [],
-                      amount: [],
-                      is_simplified_report: [],
-                      details: [],
                       custom_supplies: {
                         keySelector: (s) => s.client_id as string,
                         member: (): CustomSuppliesSchemaMember => ({
@@ -457,7 +466,24 @@ export const schema: FormSchema = {
               },
             };
           },
+          validation: (sectorValue) => {
+            if (sectorValue
+              && (!sectorValue.activities || sectorValue.activities.length === 0)
+              && (!sectorValue.custom_activities || sectorValue.custom_activities.length === 0)
+            ) {
+              return 'There should be at least one activity selected or one custom activity for selected sector';
+            }
+
+            return undefined;
+          }
         }),
+        validation: (sectorList) => {
+          if (!sectorList || sectorList.length === 0) {
+            return 'At least one sector should be selected';
+          }
+
+          return undefined;
+        }
       }
     };
 

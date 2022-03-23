@@ -15,6 +15,9 @@ import Container, {
 
 export type Props = Omit<ContainerProps, 'headerElementRef'> & {
   initiallyExpanded?: boolean;
+  componentRef?: React.MutableRefObject<{
+      setIsExpanded: React.Dispatch<React.SetStateAction<boolean>>;
+  } | null>;
 };
 
 function ExpandableContainer(props: Props) {
@@ -22,13 +25,28 @@ function ExpandableContainer(props: Props) {
     className,
     children,
     actions,
-    initiallyExpanded,
+    initiallyExpanded = false,
     headerClassName,
+    componentRef,
     ...otherProps
   } = props;
 
   const headerRef = React.useRef<HTMLDivElement>(null);
-  const [showChildren,,,,toggleShowChildren] = useBooleanState(!!initiallyExpanded);
+  const [
+    showChildren,
+    ,
+    ,
+    setShowChildren,
+    toggleShowChildren,
+  ] = useBooleanState(!!initiallyExpanded);
+
+  React.useEffect(() => {
+    if (componentRef) {
+      componentRef.current = {
+        setIsExpanded: setShowChildren,
+      };
+    }
+  }, [componentRef, setShowChildren]);
 
   React.useEffect(() => {
     const { current: headerElement } = headerRef;

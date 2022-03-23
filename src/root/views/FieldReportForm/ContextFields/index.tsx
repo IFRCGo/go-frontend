@@ -164,7 +164,6 @@ function ContextFields(props: Props) {
           disabled={value.status === STATUS_EARLY_WARNING}
         />
       </InputSection>
-      
       <InputSection
         title={countrySectionTitle}
         description={countrySectionDescription}
@@ -221,7 +220,7 @@ function ContextFields(props: Props) {
       <InputSection
         title={strings.fieldsStep1SummaryLabel}
         description={strings.fieldsStep1SummaryDescription}
-      >     
+      >
         <table cellSpacing={0} cellPadding={0}>
           <tbody>
            <tr>
@@ -229,7 +228,7 @@ function ContextFields(props: Props) {
                 <SearchSelectInput
                   label={strings.fieldReportFormTitleSelectLabel}
                   placeholder={strings.fieldReportFormTitleSelectPlaceholder}
-                  name="event"
+                  name={"event" as const}
                   value={value.event}
                   onChange={onValueChange}
                   loadOptions={fetchEventsFromApi}
@@ -239,90 +238,69 @@ function ContextFields(props: Props) {
              </td>
            </tr>
            <tr>
-           {
-              reportId === undefined ? (
+             {reportId === undefined && (
                 <>
-              <td style={{width: '10%'}} >
-                <TextInput
-                  style={{ backgroundColor: '#E0DDDD', borderRadius: 5, padding:'offset' }}
-                  label={strings.fieldReportFormCountryLabel}
-                  placeholder=""
-                  name="pref2"
-                  value={countryIsoOptions.find(x=> x.value === value.country)?.label}
-                  error={error?.event}
-                />
-              </td>
-              </>
-              ) : null
-            }
-
-              {
-              reportId === undefined ? (
-                <>
-              <td style={{width: '15%'}}>
-                <TextInput
-                  style={{ backgroundColor: '#E0DDDD', borderRadius: 5, padding:'offset' }}
-                  label={strings.fieldReportFormStartDateLabel}
-                  placeholder=""
-                  name="pref2"
-                  value={value.start_date}
-                  error={error?.event}
-                />
-              </td>
-              </>
-              ) : null
-            }
-
-            {
-              reportId === undefined ? (
-                <>
-              <td style={{width: '25%'}}>
-                <TextInput
-                  style={{ backgroundColor: '#E0DDDD', borderRadius: 5, padding:'offset' }}
-                  label={strings.fieldReportFormDisasterTypeLabel}
-                  placeholder=""
-                  name="pref3"
-                  value={disasterTypeOptions.find(x=>x.value === value.dtype)?.label}
-                  error={error?.event}
-                />
-              </td>
-              </>
-              ) : null
-            }
-
-              <td style={{width: '43%'}}>
-            
-                <TextInput
-                  label={strings.fieldReportFormTitleSecondaryLabel}
-                  placeholder={strings.fieldReportFormTitleInputPlaceholder}
-                  name="summary"
-                  value={value.summary}
-                  maxLength={100}
-                  onChange={onValueChange}
-                  error={error?.summary}
-                />
+                  <td style={{width: '10%'}} >
+                    <TextInput
+                      style={{ backgroundColor: '#E0DDDD', borderRadius: 5, padding:'offset' }}
+                      label={strings.fieldReportFormCountryLabel}
+                      placeholder=""
+                      name="pref2"
+                      value={countryIsoOptions.find(x=> x.value === value.country)?.label}
+                      error={error?.event}
+                    />
+                  </td>
+                  <td style={{width: '15%'}}>
+                    <TextInput
+                      style={{ backgroundColor: '#E0DDDD', borderRadius: 5, padding:'offset' }}
+                      label={strings.fieldReportFormStartDateLabel}
+                      placeholder=""
+                      name="pref2"
+                      value={value.start_date}
+                      error={error?.event}
+                    />
+                  </td>
+                  <td style={{width: '25%'}}>
+                    <TextInput
+                      style={{ backgroundColor: '#E0DDDD', borderRadius: 5, padding:'offset' }}
+                      label={strings.fieldReportFormDisasterTypeLabel}
+                      placeholder=""
+                      name="pref3"
+                      value={disasterTypeOptions.find(x=>x.value === value.dtype)?.label}
+                      error={error?.event}
+                    />
+                  </td>
+                </>
+             )}
+             <td style={{width: '43%'}}>
+               <TextInput
+                 label={strings.fieldReportFormTitleSecondaryLabel}
+                 placeholder={strings.fieldReportFormTitleInputPlaceholder}
+                 name="summary"
+                 value={value.summary}
+                 maxLength={100}
+                 onChange={onValueChange}
+                 error={error?.summary}
+               />
              </td>
-             {
-              reportId === undefined ? (
+             {reportId === undefined && (
                 <>
-             <td style={{width: '7%'}}>
-                <TextInput
-                  style={{ backgroundColor: '#E0DDDD', borderRadius: 5, padding:'offset' }}
-                  label= "#" // {strings.fieldReportUpdateNo}
-                  placeholder="1"
-                  name="event"
-                  value={eventOptions.find(x => x.value===value.event)?.label}
-                  error={error?.event}
-                />
-             </td>
-             </>
-              ) : null
-            }
+                 <td style={{width: '7%'}}>
+                    <TextInput
+                      style={{ backgroundColor: '#E0DDDD', borderRadius: 5, padding:'offset' }}
+                      label= "#" // {strings.fieldReportUpdateNo}
+                      placeholder="1"
+                      name="event"
+                      value={eventOptions.find(x => x.value===value.event)?.label}
+                      error={error?.event}
+                    />
+                 </td>
+               </>
+             )}
            </tr>
           </tbody>
-        </table>   
+        </table>
       </InputSection>
-
       <InputSection
         title={strings.fieldsStep1AssistanceLabel}
         description={strings.fieldsStep1AssistanceDescription}

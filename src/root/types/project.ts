@@ -104,7 +104,7 @@ interface Point {
   longitude: number;
 }
 
-interface Activity {
+export interface ActivityInEmergencyProjectResponse {
   id: number;
   supplies: Record<number, number>;
   custom_supplies: Record<string, number>;
@@ -120,6 +120,7 @@ interface Activity {
     order: number;
   } | null;
   is_simplified_report: boolean;
+  has_no_data_on_people_reached: boolean;
   people_households: 'people' | 'households';
   household_count: number | null;
   amount: number | null;
@@ -186,7 +187,7 @@ export interface EmergencyProjectResponse {
     }
   }
   districts_details: DistrictMini[];
-  activities: Activity[];
+  activities: ActivityInEmergencyProjectResponse[];
   activity_lead_display: string;
   status_display: string;
   country_details: CountryMini;

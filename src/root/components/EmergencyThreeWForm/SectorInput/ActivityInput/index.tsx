@@ -137,11 +137,22 @@ function ActivityInput(props: Props) {
     );
   }, [setFieldValue]);
 
+  const expandableContainerRef = React.useRef<{
+      setIsExpanded: React.Dispatch<React.SetStateAction<boolean>>
+  }>(null);
+
+  React.useEffect(() => {
+    if (hasError && expandableContainerRef.current) {
+      expandableContainerRef.current.setIsExpanded(true);
+    }
+  }, [hasError]);
+
   return (
     <ExpandableContainer
       className={_cs(styles.activity, hasError && styles.errored)}
       heading={actionTitle}
       headingSize="small"
+      componentRef={expandableContainerRef}
       sub
     >
       <InputSection
