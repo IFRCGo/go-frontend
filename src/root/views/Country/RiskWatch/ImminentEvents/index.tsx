@@ -7,6 +7,8 @@ import {
 import { useRequest } from '#utils/restRequest';
 import Container from '#components/Container';
 import BlockLoading from '#components/block-loading';
+import InfoPopup from '#components/InfoPopup';
+import TextOutput from '#components/TextOutput';
 import useReduxState from '#hooks/useReduxState';
 
 import PDCExposureMap from './PDCExposureMap';
@@ -117,6 +119,27 @@ function ImminentEvents(props: Props) {
       description="This map displays information about the modeled impact of specific forecasted or detected natural hazards. By hovering over the icons, if available, you can see the forecasted/observed footprint of the hazard; when you click on it, the table of modeled impact estimates will appear, as well as an information about who produced the impact estimate."
       descriptionClassName={styles.mapDescription}
       sub
+      footer={(
+        <TextOutput
+          label="Source"
+          value="Pacific Disaster Center"
+          description={(
+            <InfoPopup
+              title="Source: Pacific Disaster Center"
+              description={(
+                <>
+                  <p>
+                    These impacts are produced by the Pacific Disaster Center's All-hazards Impact Model (AIM) 3.0.
+                  </p>
+                  <div>
+                    Click <a className={styles.pdcLink} target="_blank" href="https://www.pdc.org/wp-content/uploads/AIM-3-Fact-Sheet-Screen.pdf#:~:text=PDC's%20All%2Dhazard%20Impact%20Model,and%20infrastructure%20to%20natural%20hazards">here</a> for more information about the model and its inputs.
+                  </div>
+                </>
+              )}
+            />
+          )}
+        />
+      )}
     >
       {pending && <BlockLoading /> }
       {!pending && response?.pdc_data && response?.pdc_data.length > 0 && (

@@ -8,6 +8,7 @@
 
     .filters {
       display: flex;
+      gap: $spacing;
 
       .filter-input {
         width: 20rem;

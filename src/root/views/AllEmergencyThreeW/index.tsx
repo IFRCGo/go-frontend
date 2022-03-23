@@ -49,7 +49,7 @@ function AllThreeW(props: Props) {
   });
 
   const columns = React.useMemo(
-    () => getColumns(),
+    () => getColumns(styles.actionColumn),
     [],
   );
 

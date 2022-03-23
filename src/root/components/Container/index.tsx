@@ -23,6 +23,7 @@ export interface Props {
   visibleOverflow?: boolean;
   footer?: React.ReactNode;
   footerActions?: React.ReactNode;
+  footerClassName?: string,
 }
 
 function Container(props: Props) {
@@ -42,6 +43,7 @@ function Container(props: Props) {
     headerElementRef,
     visibleOverflow,
     footer,
+    footerClassName,
     footerActions,
   } = props;
 
@@ -77,7 +79,7 @@ function Container(props: Props) {
           </div>
         )}
         {(footer || footerActions) && (
-          <div className={styles.footer}>
+          <div className={_cs(styles.footer, footerClassName)}>
             <div className={styles.footerContent}>
               {footer}
             </div>

@@ -92,7 +92,7 @@ function ThreeWList(props: Props) {
   }, [strings]);
 
   const activityColumns = React.useMemo(
-    () => getActivityColumns(),
+    () => getActivityColumns(styles.actionColumn),
     [],
   );
 

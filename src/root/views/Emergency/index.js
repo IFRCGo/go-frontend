@@ -940,7 +940,9 @@ class Emergency extends React.Component {
   ))
 
   getCountryIdList = memoize((event) => (
-    event?.data?.countries?.map(d => d.id) ?? []
+    event?.data?.countries_for_preview?.map(d => d.id)
+    ?? event?.data?.countries?.map(d => d.id)
+    ?? []
   ))
 
   hasReportsTab () {

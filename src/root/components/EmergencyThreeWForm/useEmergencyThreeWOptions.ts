@@ -13,6 +13,7 @@ import {
   requiredCondition,
   emailCondition,
   lessThanOrEqualToCondition,
+  defaultUndefinedType,
 } from '@togglecorp/toggle-form';
 
 import {
@@ -279,8 +280,8 @@ export const schema: FormSchema = {
               };
 
               const baseFields: ActivitySchemaFields | CustomActivitySchemaFields = {
-                is_simplified_report: [],
-                has_no_data_on_people_reached: [],
+                is_simplified_report: [defaultUndefinedType],
+                has_no_data_on_people_reached: [defaultUndefinedType],
                 beneficiaries_count: [positiveIntegerCondition],
                 amount: [positiveIntegerCondition],
                 details: [],
@@ -330,7 +331,7 @@ export const schema: FormSchema = {
                   other_60_plus_count: [positiveIntegerCondition],
                   other_unknown_age_count: [positiveIntegerCondition],
 
-                  is_disaggregated_for_disabled: [],
+                  is_disaggregated_for_disabled: [defaultUndefinedType],
 
                   disabled_male_0_1_count: [positiveIntegerCondition, specialLessThanOrEqualToCondition('male_0_1_count')],
                   disabled_male_2_5_count: [positiveIntegerCondition, specialLessThanOrEqualToCondition('male_2_5_count')],
@@ -394,7 +395,7 @@ export const schema: FormSchema = {
                           fields: (): CustomSupplySchemaFields => ({
                             client_id: [],
                             item: [requiredCondition],
-                            count: [requiredCondition],
+                            count: [requiredCondition, positiveIntegerCondition],
                           }),
                         }),
                       },
@@ -449,7 +450,7 @@ export const schema: FormSchema = {
                           fields: (): CustomSupplySchemaFields => ({
                             client_id: [],
                             item: [requiredCondition],
-                            count: [requiredCondition],
+                            count: [requiredCondition, positiveIntegerCondition],
                           }),
                         }),
                       },
@@ -527,7 +528,6 @@ export function useEmergencyThreeWoptions(
     url: 'api/v2/eru/',
     query: {
       limit: 500,
-      available: true,
       deployed_to__isnull: false,
     },
   });
@@ -657,7 +657,7 @@ export function useEmergencyThreeWoptions(
     nationalSocietyOptions,
     countryOptions,
     districtOptions,
-    eruOptions: erusResponse?.results ?? emptyERUList,
+    eruOptions: erusResponse?.results?.filter((eru) => isDefined(eru.deployed_to)) ?? emptyERUList,
     fetchingERUs,
     sectorOptions,
     activityOptionListBySector,

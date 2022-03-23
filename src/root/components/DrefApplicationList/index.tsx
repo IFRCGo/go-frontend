@@ -62,7 +62,6 @@ function DrefApplicationList(props: Props) {
   const {
     pending,
     response,
-    error,
   } = useRequest<ListResponse<DrefApplication>>({
     url: 'api/v2/dref/',
     query: {

@@ -6,6 +6,7 @@
 
   .map-description {
     padding: $spacing;
+    font-size: $font-size-lg;
   }
 
   .main-content {
@@ -120,4 +121,7 @@
   }
 }
 
+.pdc-link {
+  text-decoration: underline;
+}
 

@@ -20,7 +20,10 @@ function RiskWatch(props: Props) {
   } = props;
 
   return (
-    <Container className={_cs(styles.riskWatch, className)}>
+    <Container
+      className={_cs(styles.riskWatch, className)}
+      contentClassName={styles.content}
+    >
       <ImminentEvents
         countryId={countryId}
       />
