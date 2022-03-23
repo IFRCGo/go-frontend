@@ -13,6 +13,8 @@ import NumberInput from '#components/NumberInput';
 import TextInput from '#components/TextInput';
 import RadioInput from '#components/RadioInput';
 import LanguageContext from '#root/languageContext';
+import useReduxState from '#hooks/useReduxState';
+import { useCallback } from 'react';
 
 import {
   FormType,
@@ -50,12 +52,13 @@ function ResponseFields(props: Props) {
     [formError]
   );
 
+  const user = useReduxState('me');
+
   const [
     drefOptions,
     appealOptions,
     responseOptions,
-    visibilityOptions,
-  ] = React.useMemo(() => [
+    ] = React.useMemo(() => [
     // FIXME: use translations
     [
       { label: 'Planned', value: 2 },
@@ -72,13 +75,40 @@ function ResponseFields(props: Props) {
       { label: 'Requested', value: 1 },
       { label: 'Deployed', value: 3 },
     ] as NumericValueOption[],
-    [
-      { label: strings.fieldReportConstantVisibilityPublicLabel, value: VISIBILITY_PUBLIC },
-      { label: strings.fieldReportConstantVisibilityRCRCMovementLabel, value: VISIBILITY_RCRC_MOVEMENT },
-      { label: strings.fieldReportConstantVisibilityIFRCSecretariatLabel, value: VISIBILITY_IFRC_SECRETARIAT },
-      { label: strings.fieldReportConstantVisibilityIFRCandNSLabel, value: VISIBILITY_IFRC_NS },
-    ] as NumericValueOption[],
-  ], [strings]);
+  ], []);
+
+  const visibilityOptions = useCallback(() => {
+    var r = [] as NumericValueOption[];
+    
+ 
+  if(user?.data.profile.org_type==='OTHR')
+  {
+    r = [
+        { label: strings.fieldReportConstantVisibilityPublicLabel, value: VISIBILITY_PUBLIC },
+        { label: strings.fieldReportConstantVisibilityRCRCMovementLabel, value: VISIBILITY_RCRC_MOVEMENT },
+      ];
+  } 
+    else if(user?.data.profile.org_type==='NTLS')
+  {
+    r =  [
+        { label: strings.fieldReportConstantVisibilityPublicLabel, value: VISIBILITY_PUBLIC },
+        { label: strings.fieldReportConstantVisibilityRCRCMovementLabel, value: VISIBILITY_RCRC_MOVEMENT },
+        { label: strings.fieldReportConstantVisibilityIFRCandNSLabel, value: VISIBILITY_IFRC_NS },
+      ];
+  }
+   else
+   {
+    r =  [
+        { label: strings.fieldReportConstantVisibilityPublicLabel, value: VISIBILITY_PUBLIC },
+        { label: strings.fieldReportConstantVisibilityRCRCMovementLabel, value: VISIBILITY_RCRC_MOVEMENT },
+        { label: strings.fieldReportConstantVisibilityIFRCSecretariatLabel, value: VISIBILITY_IFRC_SECRETARIAT },
+        { label: strings.fieldReportConstantVisibilityIFRCandNSLabel, value: VISIBILITY_IFRC_NS },
+      ];
+  }
+
+  return  r;
+    
+  }, [strings, user.data.profile.org_type]);
 
   return (
     <>
@@ -360,12 +390,18 @@ function ResponseFields(props: Props) {
               <p>
                 {strings.fieldReportConstantVisibilityRCRCMovementLabel} - {strings.fieldReportConstantVisibilityRCRCMovementTooltipTitle}<br/>
               </p>
+              {
+              user?.data.profile.org_type === 'OTHR' || user?.data.profile.org_type === 'NTLS' ? null :
               <p>
                 {strings.fieldReportConstantVisibilityIFRCSecretariatLabel} - {strings.fieldReportConstantVisibilityIFRCSecretariatTooltipTitle}
               </p>
+              }
+              {
+              user?.data.profile.org_type === 'OTHR'  ? null :
               <p>
                 {strings.fieldReportConstantVisibilityIFRCandNSLabel} - {strings.fieldReportConstantVisibilityIFRCandNSTooltipTitle}
               </p>
+              }
             </>
           )}
         >
@@ -373,7 +409,7 @@ function ResponseFields(props: Props) {
             error={error?.visibility}
             name={"visibility" as const}
             onChange={onValueChange}
-            options={visibilityOptions}
+            options={visibilityOptions()}
             keySelector={numericOptionKeySelector}
             labelSelector={optionLabelSelector}
             value={value.visibility}

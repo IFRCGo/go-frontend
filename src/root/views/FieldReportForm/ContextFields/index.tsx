@@ -178,7 +178,7 @@ function ContextFields(props: Props) {
           pending={fetchingCountries}
           value={value.country}
         />
-        <SelectInput
+        <SelectInput<"districts", number>
           disabled={!isDefined(value.country)}
           pending={fetchingDistricts}
           error={error?.districts}
