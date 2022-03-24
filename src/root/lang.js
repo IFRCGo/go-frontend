@@ -2341,6 +2341,7 @@ export default {
   globalHeaderBannerHere: 'here',
   globalHeaderBannerSurveyTitle: 'Take 5 mins to tell us what you think - {link}',
   globalHeaderBannerSurveyLink: 'GO SURVEY',
+  globalHeaderBanner3w: 'Emergency activity Who-What-Where-When (3w) form and data visualisation available for all IFRC-supported operations',
 
   // not used -   threeWFilterReportingNs: 'National Societies',
   // not used -   threeWFilterReportingNsPlaceholer: 'All National Societies',
