@@ -4,31 +4,39 @@ import Translate from '#components/Translate';
 class GlobalHeaderBanner extends React.PureComponent {
   render () {
     return (
-      // // COVID banner
+      // COVID banner
+      // <div className='global__banner global__banner--danger text-center'>
+      //  <Translate
+      //    stringId='globalHeaderBannerTitle'
+      //    params={{
+      //      link: (
+      //        <a href='https://go.ifrc.org/emergencies/3972'>
+      //          <Translate stringId='globalHeaderBannerHere'/>
+      //        </a>
+      //      )
+      //    }}
+      //  />
+      // </div>
+      //
+      // // Survey banner
       // <div className='global__banner global__banner--danger text-center'>
       //   <Translate
-      //     stringId='globalHeaderBannerTitle'
+      //     stringId='globalHeaderBannerSurveyTitle'
       //     params={{
       //       link: (
-      //         <a href='https://go.ifrc.org/emergencies/3972'>
-      //           <Translate stringId='globalHeaderBannerHere'/>
+      //         <a href='https://forms.gle/AWzRXKLyfzM6Tnmi9' target='_blank'>
+      //           <Translate stringId='globalHeaderBannerSurveyLink'/>
       //         </a>
       //       )
       //     }}
       //   />
       // </div>
-      // // Survey banner
+      //
+      // Emercency 3w banner
       <div className='global__banner global__banner--danger text-center'>
-        <Translate
-          stringId='globalHeaderBannerSurveyTitle'
-          params={{
-            link: (
-              <a href='https://forms.gle/AWzRXKLyfzM6Tnmi9' target='_blank'>
-                <Translate stringId='globalHeaderBannerSurveyLink'/>
-              </a>
-            )
-          }}
-        />
+       <Translate
+         stringId='globalHeaderBanner3w'
+       />
       </div>
     );
   }
