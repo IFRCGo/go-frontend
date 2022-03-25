@@ -35,7 +35,14 @@ class GlobalHeaderBanner extends React.PureComponent {
       // Emercency 3w banner
       <div className='global__banner global__banner--danger text-center'>
        <Translate
-         stringId='globalHeaderBanner3w'
+         stringId='globalHeaderBanner3wTitle'
+           params={{
+             link: (
+               <a href='/three-w/new' target='_blank'>
+                 <Translate stringId='globalHeaderBanner3wLink'/>
+               </a>
+             )
+           }}
        />
       </div>
     );
