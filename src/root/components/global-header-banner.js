@@ -1,4 +1,6 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+
 import Translate from '#components/Translate';
 
 class GlobalHeaderBanner extends React.PureComponent {
@@ -38,9 +40,14 @@ class GlobalHeaderBanner extends React.PureComponent {
          stringId='globalHeaderBanner3wTitle'
            params={{
              link: (
-               <a href='/three-w/new'>
+               <Link
+                 to={{
+                   pathname: '/three-w/new',
+                   state: { operationType: 'response_activity' },
+                 }}
+               >
                  <Translate stringId='globalHeaderBanner3wLink'/>
-               </a>
+               </Link>
              )
            }}
        />
