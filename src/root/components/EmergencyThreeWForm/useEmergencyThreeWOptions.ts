@@ -239,7 +239,23 @@ export const schema: FormSchema = {
       country: [requiredCondition],
       districts: [],
       start_date: [requiredCondition],
-      end_date: [],
+      end_date: [(endDateValue) => {
+        const start = value?.start_date;
+        const end = endDateValue;
+
+        if (!start || !end) {
+          return undefined;
+        }
+
+        const startDate = new Date(start);
+        const endDate = new Date(end);
+
+        if (startDate.getTime() >= endDate.getTime()) {
+          return 'End date must be greater than start date';
+        }
+
+        return undefined;
+      }],
       status: [],
       reporting_ns: isNS ? [requiredCondition] : [forceUndefinedType],
       reporting_ns_contact_name: isNS ? [] : [forceUndefinedType],
@@ -490,6 +506,9 @@ export const schema: FormSchema = {
 
     return baseFields;
   },
+  fieldDependencies: () => ({
+    end_date: ['start_date'],
+  }),
 };
 
 export function useEmergencyThreeWoptions(
