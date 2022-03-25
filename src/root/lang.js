@@ -2237,6 +2237,8 @@ export default {
   videoCarouselSubHeadingSubscribe: 'View this video tutorial on how to "Subscribe to User Notifications" on the GO Platform - International Federation of Red Cross Red Crescent (IFRC).',
   videoCarouselHeadingTranslations: 'Translation feature',
   videoCarouselSubHeadingTranslations: 'View this video tutorial on how to use the translation feature on the GO Platform - International Federation of Red Cross Red Crecent (IFRC).',
+  videoCarouselHeading3w: '3W (who-what-where) data collection for emergencies',
+  videoCarouselHeading3wsub: 'View this video tutorial about the 3W for emergencies tool. The video demonstrates the data collection and display activity of who-what-where data.',
   emergenciesDashHeading: 'Emergencies by Type',
   emergenciesDashDate: 'Date',
   emergenciesDashTotal: 'Total',
