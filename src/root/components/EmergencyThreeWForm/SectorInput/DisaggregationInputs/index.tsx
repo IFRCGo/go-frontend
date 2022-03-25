@@ -33,6 +33,15 @@ const peopleHouseholdsOptions: {
   { label: 'Households', value: 'households' },
 ];
 
+const disaggregationByDisabledOptions: {
+  label: string;
+  value: boolean;
+}[] = [
+  { label: 'Yes', value: true },
+  { label: 'No', value: false },
+];
+
+// TODO merge with one in utils
 const sumSafe = (nums: (number | undefined | null)[]) => {
   const safeNums = nums.filter(isDefined);
   if (safeNums.length === 0) {
@@ -53,6 +62,7 @@ const defaultValue: PartialForm<Activity> | PartialForm<CustomActivity> = {};
 type Props  = {
   customActivity: false;
   index: number;
+  isFirstSubmission?: boolean;
   onChange: (value: SetValueArg<PartialForm<Activity>>, index: number) => void;
   value: PartialForm<Activity>;
   error: ArrayError<Activity> | undefined;
@@ -60,6 +70,7 @@ type Props  = {
 } | {
   customActivity: true;
   index: number;
+  isFirstSubmission?: boolean;
   onChange: (value: SetValueArg<PartialForm<CustomActivity>>, index: number) => void;
   value: PartialForm<CustomActivity>;
   error: ArrayError<CustomActivity> | undefined;
@@ -73,6 +84,7 @@ function DisaggregationInputs (props: Props) {
     value,
     error: errorFromProps,
     averageHouseholdSizeForSelectedCountry,
+    isFirstSubmission,
   } = props;
 
   const setFieldValue = useFormObject(index, onChange, defaultValue);
@@ -261,18 +273,39 @@ function DisaggregationInputs (props: Props) {
     }
   }, [value?.male_count, value?.female_count, setFieldValue]);
 
+  const showNoDataAvailableOption = isFirstSubmission === false
+        && value?.is_simplified_report === true
+        && value?.people_households === 'people'
+        && error?.people_count
+        && !value?.has_no_data_on_people_reached;
+
   return (
     <>
-      <Switch
-        label="Detailed Reporting"
-        name="is_simplified_report"
-        value={value?.is_simplified_report}
-        onChange={setFieldValue}
-        invertedLogic
-      />
       <NonFieldError error={error} />
+      {showNoDataAvailableOption && (
+        <div className={styles.tip}>
+          If data is not available for people, please check &quot;No data on people reached&quot;
+        </div>
+      )}
+      <div className={styles.top}>
+        <Switch
+          label="Detailed Reporting"
+          name="is_simplified_report"
+          value={value?.is_simplified_report}
+          onChange={setFieldValue}
+          invertedLogic
+        />
+        {showNoDataAvailableOption && (
+          <Checkbox
+            label="No data on people reached"
+            name={"has_no_data_on_people_reached" as const}
+            value={value?.has_no_data_on_people_reached}
+            onChange={setFieldValue}
+          />
+        )}
+      </div>
       <div className={styles.disaggregation}>
-        {value?.is_simplified_report ? (
+        {value?.is_simplified_report === true && (
           <div className={styles.simplified}>
             <div className={styles.totalValues}>
               <RadioInput
@@ -288,7 +321,7 @@ function DisaggregationInputs (props: Props) {
                 <>
                   <NumberInput
                     name="household_count"
-                    label="Households"
+                    // label="Households"
                     value={value?.household_count}
                     onChange={setFieldValue}
                     error={error?.household_count}
@@ -298,7 +331,7 @@ function DisaggregationInputs (props: Props) {
               {value?.people_households === 'people' && (
                 <NumberInput
                   name="people_count"
-                  label="People"
+                  // label="People"
                   value={value?.people_count}
                   onChange={setFieldValue}
                   error={error?.people_count}
@@ -314,27 +347,33 @@ function DisaggregationInputs (props: Props) {
               />
             )}
             {value?.people_households === 'people' && (
-              <div className={styles.genderDisaggregation}>
-                <NumberInput
-                  name="male_count"
-                  label="Male"
-                  value={value?.male_count}
-                  onChange={setFieldValue}
-                  error={error?.male_count}
-                  disabled={genderDisaggregationDisabled}
-                />
-                <NumberInput
-                  name="female_count"
-                  label="Female"
-                  value={value?.female_count}
-                  onChange={setFieldValue}
-                  error={error?.female_count}
-                  disabled={genderDisaggregationDisabled}
-                />
-              </div>
+              <>
+                <div className={styles.separator}>
+                  OR
+                </div>
+                <div className={styles.genderDisaggregation}>
+                  <NumberInput
+                    name="male_count"
+                    label="Male"
+                    value={value?.male_count}
+                    onChange={setFieldValue}
+                    error={error?.male_count}
+                    disabled={genderDisaggregationDisabled}
+                  />
+                  <NumberInput
+                    name="female_count"
+                    label="Female"
+                    value={value?.female_count}
+                    onChange={setFieldValue}
+                    error={error?.female_count}
+                    disabled={genderDisaggregationDisabled}
+                  />
+                </div>
+              </>
             )}
           </div>
-        ) : (
+        )}
+        {value?.is_simplified_report === false && (
           <div className={styles.detailed}>
             <div className={styles.tableContainer}>
               <div className={styles.genderAndAgeDisaggregation}>
@@ -548,6 +587,20 @@ function DisaggregationInputs (props: Props) {
                 </div>
               </div>
             </div>
+            <div className={styles.disaggregatedForDisabledInput}>
+              <div className={styles.label}>
+                Are you able to break this down to identify those with disabilities?
+              </div>
+              <RadioInput
+                name={"is_disaggregated_for_disabled" as const}
+                value={value?.is_disaggregated_for_disabled}
+                keySelector={d => d.value}
+                labelSelector={d => d.label}
+                options={disaggregationByDisabledOptions}
+                onChange={setFieldValue}
+              />
+            </div>
+            {/*
             <Checkbox
               label="Are you able to break this down to identify those with disabilities?"
               name={"is_disaggregated_for_disabled" as const}
@@ -555,6 +608,7 @@ function DisaggregationInputs (props: Props) {
               // error={error?.is_disaggregated_for_disabled}
               onChange={setFieldValue}
             />
+            */}
             {value?.is_disaggregated_for_disabled && (
               <div className={styles.disabledContainer}>
                 <div className={styles.title}>

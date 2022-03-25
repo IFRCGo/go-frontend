@@ -239,7 +239,7 @@ function ContextFields(props: Props) {
       <InputSection
         title={strings.fieldsStep1SummaryLabel}
         description={strings.fieldsStep1SummaryDescription}
-      >     
+      >
         <table cellSpacing={0} cellPadding={0}>
           <tbody>
            
@@ -279,24 +279,22 @@ function ContextFields(props: Props) {
              {
               reportId === undefined && value.event !==undefined ? (
                 <>
-             <td style={{width: '7%'}}>
-                <TextInput
-                  style={{ backgroundColor: '#E0DDDD', borderRadius: 5, padding:'offset' }}
-                  label= "#" // {strings.fieldReportUpdateNo}
-                  placeholder="1"
-                  name="event"
-                  value={eventOptions.find(x => x.value===value.event)?.label}
-                  error={error?.event}
-                />
-             </td>
-             </>
-              ) : null
-            }
+                 <td style={{width: '7%'}}>
+                    <TextInput
+                      style={{ backgroundColor: '#E0DDDD', borderRadius: 5, padding:'offset' }}
+                      label= "#" // {strings.fieldReportUpdateNo}
+                      placeholder="1"
+                      name="event"
+                      value={eventOptions.find(x => x.value===value.event)?.label}
+                      error={error?.event}
+                    />
+                 </td>
+               </>
+             )}
            </tr>
           </tbody>
-        </table>   
+        </table>
       </InputSection>
-
       <InputSection
         title={strings.fieldsStep1AssistanceLabel}
         description={strings.fieldsStep1AssistanceDescription}

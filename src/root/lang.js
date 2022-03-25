@@ -454,6 +454,7 @@ export default {
   accountInformation: 'Account Information',
   accountNotification: 'Notifications',
   accountPerForms: 'PER forms',
+  accountThreeWForms: '3W forms',
   accountMyDrefApplications: 'My Dref Applications',
   accountWeeklyDigest: 'Weekly Digest',
   accountWeeklyDigestDescription: 'Select to get a weekly compilation of emergency events based on your preferences.',
@@ -2340,6 +2341,8 @@ export default {
   globalHeaderBannerHere: 'here',
   globalHeaderBannerSurveyTitle: 'Take 5 mins to tell us what you think - {link}',
   globalHeaderBannerSurveyLink: 'GO SURVEY',
+  globalHeaderBanner3wTitle: 'NEW: Emergency activity Who-What-Where-When (3w) {link} and data visualisation available for all IFRC-supported operations',
+  globalHeaderBanner3wLink: 'form',
 
   // not used -   threeWFilterReportingNs: 'National Societies',
   // not used -   threeWFilterReportingNsPlaceholer: 'All National Societies',

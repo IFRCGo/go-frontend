@@ -126,7 +126,7 @@ function PointDetails(props: PointDetailsProps) {
   return (
     <>
       <EstimatedOutput
-        attribute="People Exposed / Likely Affected"
+        attribute="People Exposed / Potentially Affected"
         value={population_exposure.total.value}
       />
       <hr />
@@ -139,7 +139,7 @@ function PointDetails(props: PointDetailsProps) {
         value={population_exposure.vulnerable.value}
       />
       <EstimatedOutput
-        attribute="Building Damage"
+        attribute="value (USD) of exposed buildings"
         value={capital_exposure.total.value}
       />
       <EstimatedOutput

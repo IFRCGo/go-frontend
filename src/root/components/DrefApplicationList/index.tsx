@@ -3,9 +3,11 @@ import { Link } from 'react-router-dom';
 
 import LanguageContext from '#root/languageContext';
 import Container from '#components/Container';
+import BlockLoading from '#components/block-loading';
 import Table from '#components/Table';
 import SelectInput from '#components/SelectInput';
 import Pager from '#components/Pager';
+import EmptyMessage from '#components/EmptyMessage';
 import DrefExportButton from '#components/DrefExportButton';
 import { useButtonFeatures } from '#components/Button';
 import {
@@ -58,6 +60,7 @@ function DrefApplicationList(props: Props) {
   );
   const [activePage, setActivePage] = React.useState(1);
   const {
+    pending,
     response,
   } = useRequest<ListResponse<DrefApplication>>({
     url: 'api/v2/dref/',
@@ -119,37 +122,52 @@ function DrefApplicationList(props: Props) {
     <Container
       className={styles.drefApplicationList}
     >
-      <div className={styles.filters}>
-        <SelectInput
-          name={undefined}
-          placeholder="Select Country"
-          options={countryOptions}
-          value={country}
-          onChange={setCountry}
-        />
-      </div>
-      <Container
-        heading="In-progress Applications"
-        sub
-      >
-        <Table
-          className={styles.table}
-          data={response?.results}
-          columns={columns}
-          keySelector={drefKeySelector}
-          variant="large"
-        />
-        {response && (
-          <div className={styles.footer}>
-            <Pager
-              activePage={activePage}
-              onActivePageChange={setActivePage}
-              itemsCount={response.count}
-              maxItemsPerPage={ITEM_PER_PAGE}
+      {pending && <BlockLoading />}
+      {!pending && response && (
+        <>
+          <div className={styles.filters}>
+            <SelectInput
+              name={undefined}
+              placeholder="Select Country"
+              options={countryOptions}
+              value={country}
+              onChange={setCountry}
             />
           </div>
-        )}
-      </Container>
+          <Container
+            heading="In-progress Applications"
+            sub
+          >
+            <Table
+              className={styles.table}
+              data={response?.results}
+              columns={columns}
+              keySelector={drefKeySelector}
+              variant="large"
+            />
+            {response && (
+              <div className={styles.footer}>
+                <Pager
+                  activePage={activePage}
+                  onActivePageChange={setActivePage}
+                  itemsCount={response.count}
+                  maxItemsPerPage={ITEM_PER_PAGE}
+                />
+              </div>
+            )}
+          </Container>
+        </>
+      )}
+      {!pending && response?.results?.length === 0 && (
+        <EmptyMessage />
+      )}
+      {!pending && !response && (
+        <div className={styles.error}>
+          <p>
+            There was an error fetching the DREF application list
+          </p>
+        </div>
+      )}
     </Container>
   );
 }

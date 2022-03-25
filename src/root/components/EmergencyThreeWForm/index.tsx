@@ -35,7 +35,6 @@ import TextInput from '#components/TextInput';
 import SelectInput from '#components/SelectInput';
 import SegmentInput from '#components/SegmentInput';
 import DateInput from '#components/DateInput';
-import Checkbox from '#components/Checkbox';
 import {
   useLazyRequest,
   useRequest,
@@ -120,7 +119,8 @@ function transformFormValueToActivityPayload(
 
 
 const defaultFormValues: PartialForm<EmergencyThreeWFormFields> = {
-  status: STATUS_COMPLETE,
+  _firstSubmission: true,
+  status: STATUS_ONGOING,
   activity_lead: ACTIVITY_LEADER_NS,
 };
 
@@ -200,6 +200,42 @@ function transformResponseToFormFields(response: EmergencyProjectResponse) {
   return formValues;
 }
 
+function scrollToTop () {
+  window.setTimeout(() => {
+    window.scrollTo({
+      top: Math.min(145, window.scrollY),
+      left: 0,
+      behavior: 'smooth',
+    });
+  }, 0);
+}
+
+function calculateStatus (
+  startDate: string | undefined,
+  endDate: string | undefined | null,
+) {
+  if (isNotDefined(startDate)) {
+    return undefined;
+  }
+
+  const start = new Date(startDate);
+  const now = new Date();
+
+  if (start.getTime() > now.getTime()) {
+    return STATUS_PLANNED;
+  }
+
+  if (isDefined(endDate)) {
+    const end = new Date(endDate);
+    if (end.getTime() < now.getTime()) {
+      return STATUS_COMPLETE;
+    }
+  }
+
+  return STATUS_ONGOING;
+}
+
+
 interface Props {
   projectId?: number;
   className?: string;
@@ -241,46 +277,25 @@ function EmergencyThreeWForm(props: Props) {
     },
   );
 
-  const calculateStatus = React.useCallback((startDate: string | undefined) => {
-    if (isNotDefined(startDate)) {
-      return STATUS_PLANNED;
-    }
-
-    const start = new Date(startDate);
-    const now = new Date();
-
-    if (start.getTime() > now.getTime()) {
-      return STATUS_PLANNED;
-    }
-
-    return STATUS_ONGOING;
-  }, []);
-
-  const handleCompleteActivityChange = React.useCallback((isComplete: boolean | undefined) => {
-    if (isComplete) {
-      setFieldValue(STATUS_COMPLETE, 'status');
-    } else {
-      setFieldValue(
-        calculateStatus(value?.start_date),
-        'status'
-      );
-    }
-  }, [value?.start_date, setFieldValue, calculateStatus]);
+  React.useEffect(() => {
+    const status = calculateStatus(value?.start_date, value?.end_date);
+    setFieldValue(status, 'status');
+  }, [setFieldValue, value?.start_date, value?.end_date]);
 
   const error = React.useMemo(() => getErrorObject(formError), [formError]);
   const [
-    selectedEventDetails,
-    setSelectedEventDetails,
-  ] = React.useState<Pick<EventMini, 'id' | 'name'> | undefined>(initialValue?.event_details);
-  const [fetchedEvents, setFetchedEvents] = React.useState<Pick<EventMini, 'id' | 'name'>[]>([]);
+    initialEventDetails,
+    setInitialEventDetails,
+  ] = React.useState<Pick<EventMini, 'id' | 'name' | 'emergency_response_contact_email' > | undefined>(initialValue?.event_details);
+  const [fetchedEvents, setFetchedEvents] = React.useState<Pick<EventMini, 'id' | 'name' | 'emergency_response_contact_email'>[]>([]);
 
   React.useEffect(() => {
-    if (selectedEventDetails) {
+    if (initialEventDetails) {
       setFetchedEvents((oldEvents) => {
         const newEvents = unique(
           [
             ...oldEvents,
-            selectedEventDetails,
+            initialEventDetails,
           ],
           d => d.id
         ) ?? [];
@@ -288,7 +303,7 @@ function EmergencyThreeWForm(props: Props) {
         return newEvents;
       });
     }
-  }, [selectedEventDetails]);
+  }, [initialEventDetails]);
 
   const {
     pending: projectResponsePending,
@@ -296,7 +311,7 @@ function EmergencyThreeWForm(props: Props) {
     skip: isNotDefined(projectId),
     url: `api/v2/emergency-project/${projectId}/`,
     onSuccess: (response) => {
-      setSelectedEventDetails(response.event_details);
+      setInitialEventDetails(response.event_details);
       const formValues = transformResponseToFormFields(response);
       setValue(formValues);
     },
@@ -384,6 +399,7 @@ function EmergencyThreeWForm(props: Props) {
             let baseActivityError: Record<string, string | string[] | {} | undefined> = {};
             const baseActivityKeys = [
               'is_simplified_report',
+              'has_no_data_on_people_reached',
               'beneficiaries_count',
               'amount',
 
@@ -515,6 +531,7 @@ function EmergencyThreeWForm(props: Props) {
         };
 
         setError(transformedError);
+        scrollToTop();
       }
       alert.show(
         (
@@ -536,16 +553,18 @@ function EmergencyThreeWForm(props: Props) {
   });
 
   const validateAndConfirmSubmission = React.useCallback(() => {
+    setFieldValue(false, '_firstSubmission');
     const result = validate();
     if (result.errored || !result.value) {
       setError(result.error);
+      scrollToTop();
       return;
     }
 
     setShowSubmitConfirmationTrue();
     setFinalValue(result.value);
 
-  }, [validate, setError, setShowSubmitConfirmationTrue]);
+  }, [validate, setFieldValue, setError, setShowSubmitConfirmationTrue]);
 
   const submitForm = React.useCallback(() => {
     if (finalValue) {
@@ -617,6 +636,11 @@ function EmergencyThreeWForm(props: Props) {
 
   const inputsDisabled = postEmergencyPending;
 
+  const eventDetail = React.useMemo(
+    () => fetchedEvents.find(e => e.id === value?.event),
+    [fetchedEvents, value?.event],
+  );
+
   return (
     <div
       className={_cs(styles.emergencyThreeWForm, className)}
@@ -625,11 +649,15 @@ function EmergencyThreeWForm(props: Props) {
         <BlockLoading />
       ) : (
         <>
+          <NonFieldError
+            className={styles.nonFieldError}
+            error={error}
+            message="Please correct all errors below before submission"
+          />
           <Container
             sub
             contentClassName={styles.operationDetailContent}
             visibleOverflow
-            heading="Operation Details"
           >
             <InputSection
               title="Current IFRC Operation"
@@ -674,6 +702,7 @@ function EmergencyThreeWForm(props: Props) {
                     name={undefined}
                     title="Select all"
                     onClick={handleSelectAllRegionClick}
+                    disabled={inputsDisabled || isNotDefined(value?.country)}
                   >
                     <IoCheckmarkDone />
                   </Button>
@@ -709,19 +738,11 @@ function EmergencyThreeWForm(props: Props) {
                 error={error?.end_date}
                 onChange={setFieldValue}
               />
-              {value?.status && (
-                <TextOutput
-                  className={styles.statusDisplay}
-                  label="Project Status"
-                  value={statusMap[value?.status]}
-                  strongValue
-                />
-              )}
-              <Checkbox
-                label="Activity Complete"
-                name={undefined}
-                onChange={handleCompleteActivityChange}
-                value={value?.status === STATUS_COMPLETE}
+              <TextOutput
+                className={styles.statusDisplay}
+                label="Project Status"
+                value={isDefined(value?.status) ? statusMap[value?.status] : '--'}
+                strongValue
               />
             </InputSection>
             <InputSection
@@ -812,7 +833,10 @@ function EmergencyThreeWForm(props: Props) {
             <InputSection
               title="Types of Actions Taken"
               description="Select the actions that are being across all of the locations tagged above"
+              multiRow
+              oneColumn
             >
+              <NonFieldError error={getErrorObject(error?.sectors)} />
               <Checklist
                 name="sectors"
                 options={sectorOptions}
@@ -826,6 +850,7 @@ function EmergencyThreeWForm(props: Props) {
               if (isDefined(s.sector)) {
                 return (
                   <SectorInput
+                    isFirstSubmission={value?._firstSubmission}
                     key={s.sector}
                     index={i}
                     sectorTitle={sectorIdToLabelMap?.[s.sector] ?? ''}
@@ -888,11 +913,11 @@ function EmergencyThreeWForm(props: Props) {
                 <div className={styles.note}>
                   If you have any questions, contact the IM team &nbsp;
                   <a
-                    href="mailto:im@ifrc.org"
+                    href={`mailto:${eventDetail?.emergency_response_contact_email ?? 'im@ifrc.org'}`}
                     target="_blank"
                     className={styles.link}
                   >
-                    im@ifrc.org
+                    {eventDetail?.emergency_response_contact_email ?? 'im@ifrc.org'}
                   </a>
                 </div>
               </div>
@@ -901,7 +926,7 @@ function EmergencyThreeWForm(props: Props) {
             <div className={styles.message}>
               You are about to submit your entry for 3W for &nbsp;
               <span className={styles.eventName}>
-                {fetchedEvents.find(e => e.id === value?.event)?.name}
+                {eventDetail?.name}
               </span> emergency. Please review your selections below before submission.
             </div>
             <div className={styles.meta}>

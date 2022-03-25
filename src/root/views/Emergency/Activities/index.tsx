@@ -3,28 +3,32 @@ import {
   _cs,
   isNotDefined,
 } from '@togglecorp/fujs';
-import {
-  IoPencil,
-  IoCopy,
-  IoOpenOutline,
-} from 'react-icons/io5';
+import { IoInformationCircleOutline } from 'react-icons/io5';
+import { Link } from 'react-router-dom';
 
+import BlockLoading from '#components/block-loading';
+import EmptyMessage from '#components/EmptyMessage';
 import Table from '#components/Table';
 import Pager from '#components/Pager';
 import Container from '#components/Container';
-import DropdownMenuItem from '#components/DropdownMenuItem';
-import { createActionColumn } from '#components/Table/predefinedColumns';
+import Card from '#components/Card';
+import KeyFigure from '#components/KeyFigure';
+import ThreeWSankey from '#components/ThreeWSankey';
+import { useButtonFeatures } from '#components/Button';
 import { EmergencyProjectResponse } from '#types';
 import {
   useRequest,
   ListResponse,
 } from '#utils/restRequest';
 
+import useProjectStats from './useProjectStats';
+import StatsPie from './StatsPie';
 import ActivityMap from './ActivityMap';
 import { getColumns } from './projectTableColumns';
+import Filters from './Filters';
 import styles from './styles.module.scss';
 
-const ITEM_PER_PAGE = 10;
+const ITEM_PER_PAGE = 5;
 
 const idSelector = (d: {id: number}) => d.id;
 
@@ -41,91 +45,162 @@ function Activities(props: Props) {
     eventCountryIdList,
   } = props;
 
+  const linkProps = useButtonFeatures({ variant: 'primary' });
+
   const [activePage, setActivePage] = React.useState(1);
   const {
+    pending: projectListPending,
     response: projectListResponse,
   } = useRequest<ListResponse<EmergencyProjectResponse>>({
     skip: isNotDefined(emergencyId),
     url: 'api/v2/emergency-project/',
     query: {
       event: emergencyId,
-      limit: ITEM_PER_PAGE,
-      offset: ITEM_PER_PAGE * (activePage - 1),
+      // TODO: paginate and calculate stats in server side
+      limit: 100,
+      // limit: ITEM_PER_PAGE,
+      // offset: ITEM_PER_PAGE * (activePage - 1),
     },
   });
 
-  const projectCountByDistrict = React.useMemo(() => {
-    const districtList = projectListResponse?.results.map((c) => c.districts).flat(1) ?? [];
-    return districtList.reduce((acc, val) => {
-      const newAcc = {...acc};
-      if (!newAcc[val]) {
-        newAcc[val] = 0;
-      }
+  const [filteredProjectList, setFilteredProjectList] = React.useState<EmergencyProjectResponse[]>([]);
 
-      newAcc[val] += 1;
-      return newAcc;
-    }, {} as Record<number, number>);
-  }, [projectListResponse]);
+  const {
+    projectCountByDistrict,
+    uniqueEruCount,
+    uniqueNsCount,
+    uniqueSectorCount,
+    peopleReached,
+    projectCountListBySector,
+    projectCountListByStatus,
+    sectorGroupedProjectList,
+    sankeyData,
+  } = useProjectStats(
+    projectListResponse?.results,
+    filteredProjectList,
+  );
 
   const columns = React.useMemo(
-    () => [
-      ...getColumns(),
-      createActionColumn(
-        'project_actions',
-        (rowKey: number | string, p: EmergencyProjectResponse) => ({
-          extraActions: (
-            <>
-              <DropdownMenuItem
-                href={`/emergency-three-w/${rowKey}/`}
-                icon={<IoOpenOutline />}
-                label="View Details"
-              />
-              <DropdownMenuItem
-                href={`/emergency-three-w/${rowKey}/edit/`}
-                icon={<IoPencil />}
-                label="Edit"
-              />
-              <DropdownMenuItem
-                href={`/three-w/new/`}
-                icon={<IoCopy />}
-                label="Duplicate"
-                state={{
-                  initialValue: p,
-                  operationType: 'emergency_response',
-                }}
-              />
-            </>
-          ),
-        })
-      ),
-    ],
-    []
+    () => getColumns(styles.actionColumn),
+    [],
   );
+
+  const projectListDisplay = React.useMemo(() => {
+    const offset = ITEM_PER_PAGE * (activePage - 1);
+    return filteredProjectList.slice(offset, offset + ITEM_PER_PAGE);
+  }, [filteredProjectList, activePage]);
 
   return (
     <Container
       className={_cs(styles.activities, className)}
-      footerActions={projectListResponse && (
-        <Pager
-          activePage={activePage}
-          onActivePageChange={setActivePage}
-          itemsCount={projectListResponse.count}
-          maxItemsPerPage={ITEM_PER_PAGE}
-        />
+      contentClassName={styles.activityContent}
+      visibleOverflow
+      hideHeaderBorder
+      actions={(
+        <Link
+          to={{
+            pathname: '/three-w/new',
+            state: {
+              operationType: 'response_activity',
+            },
+          }}
+          {...linkProps}
+        >
+          Add 3W Activity
+        </Link>
       )}
-      contentClassName={styles.content}
     >
-      <ActivityMap
-        projectCountByDistrict={projectCountByDistrict}
-        countryIdList={eventCountryIdList}
-      />
-      <Table
-        className={styles.projectsTable}
-        data={projectListResponse?.results}
-        columns={columns}
-        keySelector={idSelector}
-        variant="large"
-      />
+      {projectListPending && (
+        <BlockLoading />
+      )}
+      {!projectListPending && !projectListResponse && (
+        <EmptyMessage />
+      )}
+      {!projectListPending && projectListResponse && (
+        <>
+          <div className={styles.statsContent}>
+            <div className={styles.stats}>
+              <Card multiColumn>
+                <KeyFigure
+                  value={uniqueEruCount+uniqueNsCount}
+                  description="Active National Societies / ERUs"
+                />
+                <KeyFigure
+                  value={peopleReached}
+                  description="People Reached"
+                />
+              </Card>
+              <Card multiColumn>
+                <KeyFigure
+                  value={uniqueSectorCount}
+                  description="Sectors"
+                />
+                <StatsPie
+                  className={styles.statsPie}
+                  data={projectCountListBySector}
+                  title="Activity Sectors"
+                />
+              </Card>
+              <Card multiColumn>
+                <KeyFigure
+                  value={projectListResponse?.count}
+                  description="Total Activities"
+                />
+                <StatsPie
+                  className={styles.statsPie}
+                  data={projectCountListByStatus}
+                  title="Activities Status"
+                />
+              </Card>
+            </div>
+            <div className={styles.disclaimer}>
+              <IoInformationCircleOutline className={styles.icon} />
+              &nbsp;
+              The data represents the added projects and may not reflect all of the ongoing projects.
+            </div>
+          </div>
+          <Container
+            heading="All Response Activities"
+            footerActions={projectListResponse && (
+              <Pager
+                activePage={activePage}
+                onActivePageChange={setActivePage}
+                itemsCount={filteredProjectList.length}
+                maxItemsPerPage={ITEM_PER_PAGE}
+              />
+            )}
+            contentClassName={styles.responseActivityContent}
+            visibleOverflow
+            sub
+          >
+            <Filters
+              allProjects={projectListResponse?.results}
+              onFilterChange={setFilteredProjectList}
+            />
+            <ActivityMap
+              projectCountByDistrict={projectCountByDistrict}
+              countryIdList={eventCountryIdList}
+              sectorGroupedProjectList={sectorGroupedProjectList}
+            />
+            <Table
+              className={styles.projectsTable}
+              data={projectListDisplay}
+              columns={columns}
+              keySelector={idSelector}
+              variant="large"
+            />
+          </Container>
+          <Container
+            heading="Overview of Activities"
+            sub
+          >
+            <ThreeWSankey
+              className={styles.sankey}
+              data={sankeyData}
+            />
+          </Container>
+        </>
+      )}
     </Container>
   );
 }

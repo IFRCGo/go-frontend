@@ -1,8 +1,9 @@
 @import '~styles/settings/variables';
 
 .risk-watch {
-  .tab-list {
-    padding: $spacing;
-    margin-bottom: $spacing*2;
+  .content {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing*2;
   }
 }

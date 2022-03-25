@@ -39,6 +39,7 @@ import styles from './styles.module.scss';
 type Value = PartialForm<Activity>;
 
 interface Props {
+  isFirstSubmission?: boolean;
   isCashType?: boolean;
   hasLocation?: boolean;
   actionTitle: string;
@@ -63,6 +64,7 @@ function ActivityInput(props: Props) {
     isCashType,
     hasLocation,
     averageHouseholdSizeForSelectedCountry,
+    isFirstSubmission,
   } = props;
 
   const defaultValue = React.useMemo(
@@ -137,11 +139,22 @@ function ActivityInput(props: Props) {
     );
   }, [setFieldValue]);
 
+  const expandableContainerRef = React.useRef<{
+      setIsExpanded: React.Dispatch<React.SetStateAction<boolean>>
+  }>(null);
+
+  React.useEffect(() => {
+    if (hasError && expandableContainerRef.current) {
+      expandableContainerRef.current.setIsExpanded(true);
+    }
+  }, [hasError]);
+
   return (
     <ExpandableContainer
       className={_cs(styles.activity, hasError && styles.errored)}
       heading={actionTitle}
       headingSize="small"
+      componentRef={expandableContainerRef}
       sub
     >
       <InputSection
@@ -153,6 +166,7 @@ function ActivityInput(props: Props) {
         normalDescription
       >
         <DisaggregationInputs
+          isFirstSubmission={isFirstSubmission}
           index={index}
           customActivity={false}
           onChange={onChange}

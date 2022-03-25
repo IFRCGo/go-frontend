@@ -1,0 +1,20 @@
+@import '~styles/settings/variables';
+
+.three-w-list {
+  min-height: 50vh;
+
+  .main-content {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing*4;
+
+    .project-table,
+    .activity-table {
+      width: 100%;
+    }
+
+    .action-column {
+      width: 3rem;
+    }
+  }
+}

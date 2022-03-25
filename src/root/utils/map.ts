@@ -15,6 +15,7 @@ export const defaultMapOptions: Omit<mapboxgl.MapboxOptions, 'style' | 'containe
 };
 
 export const COLOR_WHITE = '#ffffff';
+export const COLOR_TEXT = '#707070';
 export const COLOR_LIGHT_GREY = '#e0e0e0';
 export const COLOR_BLACK = '#000000';
 export const COLOR_RED = '#f5333f';
@@ -114,3 +115,17 @@ export const defaultTooltipOptions: mapboxgl.PopupOptions = {
   closeButton: false,
   offset: 10,
 };
+
+export type BBOXType = [number, number, number, number];
+export function fixBounds(bounds: BBOXType) {
+  let newBounds = [...bounds];
+  if (newBounds[0] < 0) {
+    newBounds[0] = 360 + newBounds[0];
+  }
+  if (newBounds[2] < 0) {
+    newBounds[2] = 360 + newBounds[2];
+  }
+
+  return newBounds;
+}
+

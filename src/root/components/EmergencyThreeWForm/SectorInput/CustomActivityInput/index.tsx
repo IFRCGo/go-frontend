@@ -37,6 +37,7 @@ import styles from './styles.module.scss';
 type Value = PartialForm<CustomActivity>;
 
 interface Props {
+  isFirstSubmission?: boolean;
   onChange: (value: SetValueArg<Value>, index: number) => void;
   index: number;
   value: Value;
@@ -53,6 +54,7 @@ function CustomActivityInput(props: Props) {
     error: errorFromProps,
     onRemove,
     averageHouseholdSizeForSelectedCountry,
+    isFirstSubmission,
   } = props;
 
   const defaultValue = React.useMemo(
@@ -107,9 +109,20 @@ function CustomActivityInput(props: Props) {
     );
   }, [setFieldValue]);
 
+  const expandableContainerRef = React.useRef<{
+      setIsExpanded: React.Dispatch<React.SetStateAction<boolean>>
+  }>(null);
+
+  React.useEffect(() => {
+    if (hasError && expandableContainerRef.current) {
+      expandableContainerRef.current.setIsExpanded(true);
+    }
+  }, [hasError]);
+
   return (
     <ExpandableContainer
       className={_cs(styles.customActivity, hasError && styles.errored)}
+      componentRef={expandableContainerRef}
       heading={`Custom Activity #${index + 1}`}
       headingSize="small"
       sub
@@ -137,6 +150,7 @@ function CustomActivityInput(props: Props) {
           error={error?.custom_action}
         />
         <DisaggregationInputs
+          isFirstSubmission={isFirstSubmission}
           index={index}
           customActivity={true}
           onChange={onChange}

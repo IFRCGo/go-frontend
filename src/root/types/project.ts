@@ -24,6 +24,7 @@ export interface EventMini {
   dtype: Disaster;
   slug: string | null;
   auto_generated_source: string | null;
+  emergency_response_contact_email: string | null;
 }
 
 export interface ProjectFormFields {
@@ -104,7 +105,7 @@ interface Point {
   longitude: number;
 }
 
-interface Activity {
+export interface ActivityInEmergencyProjectResponse {
   id: number;
   supplies: Record<number, number>;
   custom_supplies: Record<string, number>;
@@ -120,6 +121,7 @@ interface Activity {
     order: number;
   } | null;
   is_simplified_report: boolean;
+  has_no_data_on_people_reached: boolean;
   people_households: 'people' | 'households';
   household_count: number | null;
   amount: number | null;
@@ -172,6 +174,7 @@ export interface EmergencyProjectResponse {
     parent_event: number | null;
     name: string;
     slug: string | null;
+    emergency_response_contact_email: string | null;
   };
   reporting_ns_details: CountryMini;
   deployed_eru_details: {
@@ -186,7 +189,7 @@ export interface EmergencyProjectResponse {
     }
   }
   districts_details: DistrictMini[];
-  activities: Activity[];
+  activities: ActivityInEmergencyProjectResponse[];
   activity_lead_display: string;
   status_display: string;
   country_details: CountryMini;

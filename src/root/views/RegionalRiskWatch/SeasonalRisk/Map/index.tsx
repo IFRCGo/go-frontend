@@ -91,11 +91,11 @@ const displacementLegendData = [
   },
   {
     color: COLOR_YELLOW,
-    label: `${addSeparator(DISPLACEMENT_LOW)} to ${addSeparator(DISPLACEMENT_MEDIUM)}`
+    label: `${addSeparator(DISPLACEMENT_LOW+1)} to ${addSeparator(DISPLACEMENT_MEDIUM)}`
   },
   {
     color: COLOR_ORANGE,
-    label: `${addSeparator(DISPLACEMENT_MEDIUM)} to ${addSeparator(DISPLACEMENT_HIGH)}`
+    label: `${addSeparator(DISPLACEMENT_MEDIUM+1)} to ${addSeparator(DISPLACEMENT_HIGH)}`
   },
   {
     color: COLOR_RED,
@@ -110,11 +110,11 @@ const exposureLegendData = [
   },
   {
     color: COLOR_YELLOW,
-    label: `${addSeparator(EXPOSURE_LOW)} to ${addSeparator(EXPOSURE_MEDIUM)}`,
+    label: `${addSeparator(EXPOSURE_LOW+1)} to ${addSeparator(EXPOSURE_MEDIUM)}`,
   },
   {
     color: COLOR_ORANGE,
-    label: `${addSeparator(EXPOSURE_MEDIUM)} to ${addSeparator(EXPOSURE_HIGH)}`,
+    label: `${addSeparator(EXPOSURE_MEDIUM+1)} to ${addSeparator(EXPOSURE_HIGH)}`,
   },
   {
     color: COLOR_RED,
@@ -125,7 +125,7 @@ const exposureLegendData = [
 const informLegendData = [
   {
     color: COLOR_YELLOW,
-    label: `${INFORM_RISK_LOW} to ${INFORM_RISK_MEDIUM}`,
+    label: `${INFORM_RISK_LOW} to ${INFORM_RISK_MEDIUM-0.1}`,
   },
   {
     color: COLOR_ORANGE,

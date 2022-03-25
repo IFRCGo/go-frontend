@@ -939,9 +939,13 @@ class Emergency extends React.Component {
     projectForm.fetching || eventForm.fetching || siteRepForm.fetching
   ))
 
-  getCountryIdList = memoize((event) => (
-    event?.data?.countries?.map(d => d.id) ?? []
-  ))
+  getCountryIdList = memoize((event) => {
+    if ((event?.data?.countries_for_preview?.length ?? 0) > 0) {
+      return event?.data?.countries_for_preview?.map(d => d.id);
+    }
+
+    return event?.data?.countries?.map(d => d.id);
+  })
 
   hasReportsTab () {
     const {

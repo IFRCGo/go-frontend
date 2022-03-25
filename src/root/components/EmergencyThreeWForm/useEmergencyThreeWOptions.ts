@@ -13,6 +13,7 @@ import {
   requiredCondition,
   emailCondition,
   lessThanOrEqualToCondition,
+  defaultUndefinedType,
 } from '@togglecorp/toggle-form';
 
 import {
@@ -82,6 +83,7 @@ export interface ActivityBase {
   sector: number;
   details: string;
   is_simplified_report: boolean;
+  has_no_data_on_people_reached: boolean;
 
   beneficiaries_count?: number | null;
   amount?: number | null;
@@ -167,6 +169,7 @@ export interface Sector {
 }
 
 export interface EmergencyThreeWFormFields {
+  _firstSubmission: boolean;
   title: string;
   country: number;
   districts: number[];
@@ -231,13 +234,30 @@ export const schema: FormSchema = {
     const isERU = value?.activity_lead === ACTIVITY_LEADER_ERU;
 
     const baseFields: FormSchemaFields = {
+      _firstSubmission: [forceUndefinedType],
       title: [requiredCondition],
       event: [requiredCondition],
       activity_lead: [requiredCondition],
       country: [requiredCondition],
       districts: [],
       start_date: [requiredCondition],
-      end_date: [],
+      end_date: [(endDateValue) => {
+        const start = value?.start_date;
+        const end = endDateValue;
+
+        if (!start || !end) {
+          return undefined;
+        }
+
+        const startDate = new Date(start);
+        const endDate = new Date(end);
+
+        if (startDate.getTime() >= endDate.getTime()) {
+          return 'End date must be greater than start date';
+        }
+
+        return undefined;
+      }],
       status: [],
       reporting_ns: isNS ? [requiredCondition] : [forceUndefinedType],
       reporting_ns_contact_name: isNS ? [] : [forceUndefinedType],
@@ -277,18 +297,32 @@ export const schema: FormSchema = {
                 };
               };
 
+              const baseFields: ActivitySchemaFields | CustomActivitySchemaFields = {
+                is_simplified_report: [defaultUndefinedType],
+                has_no_data_on_people_reached: [defaultUndefinedType],
+                beneficiaries_count: [positiveIntegerCondition],
+                amount: [positiveIntegerCondition],
+                details: [],
+              };
+
+              const positiveIntegerAndMaybeRequired = activity?.has_no_data_on_people_reached
+                ? [positiveIntegerCondition]
+                : [requiredCondition, positiveIntegerCondition];
+
               if (activity?.is_simplified_report) {
                 return {
+                  ...baseFields,
                   ...currentFields,
                   people_households: [requiredCondition],
                   household_count: isHouseholds ? [requiredCondition, positiveIntegerCondition] : [forceUndefinedType],
-                  people_count: isPeople ? [requiredCondition, positiveIntegerCondition] : [forceUndefinedType],
+                  people_count: isPeople ? positiveIntegerAndMaybeRequired : [forceUndefinedType],
                   male_count: isPeople ? [positiveIntegerCondition] : [forceUndefinedType],
                   female_count: isPeople ? [positiveIntegerCondition]: [forceUndefinedType],
                   point_count: [positiveIntegerCondition],
                 };
               } else {
                 return {
+                  ...baseFields,
                   ...currentFields,
 
                   male_0_1_count: [positiveIntegerCondition],
@@ -315,7 +349,7 @@ export const schema: FormSchema = {
                   other_60_plus_count: [positiveIntegerCondition],
                   other_unknown_age_count: [positiveIntegerCondition],
 
-                  is_disaggregated_for_disabled: [],
+                  is_disaggregated_for_disabled: [defaultUndefinedType],
 
                   disabled_male_0_1_count: [positiveIntegerCondition, specialLessThanOrEqualToCondition('male_0_1_count')],
                   disabled_male_2_5_count: [positiveIntegerCondition, specialLessThanOrEqualToCondition('male_2_5_count')],
@@ -364,16 +398,12 @@ export const schema: FormSchema = {
                   fields: (activity): ActivitySchemaFields => {
                     let activitySchemaFields: ActivitySchemaFields = {
                       action: [],
-                      is_simplified_report: [],
-                      beneficiaries_count: [positiveIntegerCondition],
-                      amount: [positiveIntegerCondition],
-                      details: [],
                       supplies: {
                         keySelector: (s) => s.client_id as string,
                         member: (): SuppliesSchemaMember => ({
                           fields: (): SupplySchemaFields => ({
                             item: [requiredCondition],
-                            count: [requiredCondition],
+                            count: [requiredCondition, positiveIntegerCondition],
                           }),
                         }),
                       },
@@ -383,7 +413,7 @@ export const schema: FormSchema = {
                           fields: (): CustomSupplySchemaFields => ({
                             client_id: [],
                             item: [requiredCondition],
-                            count: [requiredCondition],
+                            count: [requiredCondition, positiveIntegerCondition],
                           }),
                         }),
                       },
@@ -420,6 +450,8 @@ export const schema: FormSchema = {
                     disabled_other_18_59_count: ['other_18_59_count'],
                     disabled_other_60_plus_count: ['other_60_plus_count'],
                     disabled_other_unknown_age_count: ['other_unknown_age_count'],
+
+                    people_count: ['has_no_data_on_people_reached'],
                   }),
                 }),
               },
@@ -430,17 +462,13 @@ export const schema: FormSchema = {
                     let customActivitySchemaFields: CustomActivitySchemaFields = {
                       client_id: [],
                       custom_action: [requiredCondition],
-                      beneficiaries_count: [],
-                      amount: [],
-                      is_simplified_report: [],
-                      details: [],
                       custom_supplies: {
                         keySelector: (s) => s.client_id as string,
                         member: (): CustomSuppliesSchemaMember => ({
                           fields: (): CustomSupplySchemaFields => ({
                             client_id: [],
                             item: [requiredCondition],
-                            count: [requiredCondition],
+                            count: [requiredCondition, positiveIntegerCondition],
                           }),
                         }),
                       },
@@ -457,12 +485,32 @@ export const schema: FormSchema = {
               },
             };
           },
+          validation: (sectorValue) => {
+            if (sectorValue
+              && (!sectorValue.activities || sectorValue.activities.length === 0)
+              && (!sectorValue.custom_activities || sectorValue.custom_activities.length === 0)
+            ) {
+              return 'There should be at least one activity selected or one custom activity for selected sector';
+            }
+
+            return undefined;
+          }
         }),
+        validation: (sectorList) => {
+          if (!sectorList || sectorList.length === 0) {
+            return 'At least one sector should be selected';
+          }
+
+          return undefined;
+        }
       }
     };
 
     return baseFields;
   },
+  fieldDependencies: () => ({
+    end_date: ['start_date'],
+  }),
 };
 
 export function useEmergencyThreeWoptions(
@@ -501,7 +549,6 @@ export function useEmergencyThreeWoptions(
     url: 'api/v2/eru/',
     query: {
       limit: 500,
-      available: true,
       deployed_to__isnull: false,
     },
   });
@@ -631,7 +678,7 @@ export function useEmergencyThreeWoptions(
     nationalSocietyOptions,
     countryOptions,
     districtOptions,
-    eruOptions: erusResponse?.results ?? emptyERUList,
+    eruOptions: erusResponse?.results?.filter((eru) => isDefined(eru.deployed_to)) ?? emptyERUList,
     fetchingERUs,
     sectorOptions,
     activityOptionListBySector,
