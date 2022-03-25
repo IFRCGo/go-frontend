@@ -3,6 +3,7 @@ import { _cs } from '@togglecorp/fujs';
 import type { Location, History } from 'history';
 
 import Page from '#components/Page';
+import InputSection from '#components/InputSection';
 import BreadCrumb from '#components/breadcrumb';
 import Container from '#components/Container';
 import ThreeWForm from '#components/ThreeWForm';
@@ -21,7 +22,7 @@ import styles from './styles.module.scss';
 
 const operationTypeOptions: StringValueOption[] = [
   { value: 'program', label: 'Program' },
-  { value: 'emergency_response', label: 'Emergency Response' },
+  { value: 'response_activity', label: 'Response Activity' },
 ];
 
 interface Props {
@@ -70,8 +71,12 @@ function NewThreeW(props: Props) {
       title={strings.newThreeWPageTitle}
       heading={strings.newThreeWPageHeading}
       breadCrumbs={<BreadCrumb crumbs={crumbs} compact />}
-      description={(
-        <div className={styles.segmentInputWrapper}>
+    >
+      <Container
+        visibleOverflow
+        heading="Operation Details"
+      >
+        <InputSection className={styles.segementInputWrapper}>
           <SegmentInput
             name={undefined}
             options={operationTypeOptions}
@@ -80,17 +85,14 @@ function NewThreeW(props: Props) {
             value={operationType}
             onChange={setOperationType}
           />
-        </div>
-      )}
-    >
-      <Container visibleOverflow>
+        </InputSection>
         {operationType === 'program' && (
           <ThreeWForm
             onSubmitSuccess={handleProgramSubmitSuccess}
             className={styles.threeWProgram}
           />
         )}
-        {operationType === 'emergency_response' && (
+        {operationType === 'response_activity' && (
           <EmergencyThreeWForm
             onSubmitSuccess={handleEmergencyResponseSubmitSuccess}
             initialValue={state?.initialValue}

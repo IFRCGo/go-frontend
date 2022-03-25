@@ -17,10 +17,10 @@ import styles from './styles.module.scss';
 
 // FIXME: use from common
 const colors = [
-  '#011e41',
-  '#39486c',
-  '#6b789b',
-  '#a0abcc',
+  '#f64752',
+  '#f87674',
+  '#fea49f',
+  '#ffccc8',
 ];
 
 interface Props {
@@ -72,7 +72,7 @@ function ProjectStatPieChart(props: Props) {
             endAngle={90}
             cx={40}
           >
-            { data.map((entry, i) => {
+            {data.map((entry, i) => {
               return (
                 <Cell
                   key={entry.title}

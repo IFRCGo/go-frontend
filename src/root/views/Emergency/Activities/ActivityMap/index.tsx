@@ -1,10 +1,7 @@
 import React from 'react';
 import Map, {
   MapContainer,
-  // MapSource,
-  // MapLayer,
   MapBounds,
-  // MapTooltip
   MapChildContext,
 } from '@togglecorp/re-map';
 import {
@@ -21,11 +18,7 @@ import useReduxState from '#hooks/useReduxState';
 import {
   defaultMapStyle,
   defaultMapOptions,
-  COLOR_RED,
   COLOR_LIGHT_GREY,
-  COLOR_BLUE,
-  COLOR_ORANGE,
-  COLOR_YELLOW,
   COLOR_WHITE,
   COLOR_TEXT,
 } from '#utils/map';
@@ -36,6 +29,7 @@ import TextOutput from '#components/TextOutput';
 import Button from '#components/Button';
 
 import { getPeopleReachedInActivity } from '../useProjectStats';
+import { reduceListDisplay } from '../projectTableColumns';
 
 import styles from './styles.module.scss';
 
@@ -43,33 +37,33 @@ const SEVERITY_SMALL = 2;
 const SEVERITY_MEDIUM = 5;
 const SEVERITY_LARGE = 10;
 
+
 const getColorForValue = (value: number) => {
   if (value >= SEVERITY_LARGE) {
-    return COLOR_RED;
+    return '#344b67';
   }
 
   if (value >= SEVERITY_MEDIUM) {
-    return COLOR_ORANGE;
+    return '#67788d';
   }
 
   if (value >= SEVERITY_SMALL) {
-    return COLOR_YELLOW;
+    return '#99a5b4';
   }
 
   if (value > 0) {
-    return COLOR_BLUE;
+    return '#ccd2d9';
   }
 
   return COLOR_LIGHT_GREY;
 };
 
 const legendItems = [
-  { color: COLOR_BLUE, label: `less than ${SEVERITY_SMALL}` },
-  { color: COLOR_YELLOW, label: `${SEVERITY_SMALL} to ${SEVERITY_MEDIUM-1}` },
-  { color: COLOR_ORANGE, label: `${SEVERITY_MEDIUM} to ${SEVERITY_LARGE-1}` },
-  { color: COLOR_RED, label: `${SEVERITY_LARGE} or more` },
+  { color: '#ccd2d9', label: `less than ${SEVERITY_SMALL}` },
+  { color: '#99a5b4', label: `${SEVERITY_SMALL} to ${SEVERITY_MEDIUM-1}` },
+  { color: '#67788d', label: `${SEVERITY_MEDIUM} to ${SEVERITY_LARGE-1}` },
+  { color: '#344b67', label: `${SEVERITY_LARGE} or more` },
 ];
-
 
 interface ChoroplethProps {
   projectCountByDistrict: Record<number, number>;
@@ -127,8 +121,11 @@ function Choropleth(props: ChoroplethProps) {
     colorProperty.push(
       getColorForValue(projectCountByDistrict[+dk])
     );
-    labelColorProperty.push(+dk);
-    labelColorProperty.push(COLOR_WHITE);
+
+    if (projectCountByDistrict[+dk] >= SEVERITY_SMALL) {
+      labelColorProperty.push(+dk);
+      labelColorProperty.push(COLOR_WHITE);
+    }
 
     labelHaloWidthProperty.push(+dk);
     labelHaloWidthProperty.push(0);
@@ -234,7 +231,10 @@ function ActivityDetail(props: ActivityDetailProps) {
             const relatedActivities = p.activities.filter(a => a.sector === sectorDetails.id);
 
             return (
-              <div className={styles.project}>
+              <div
+                key={p.id}
+                className={styles.project}
+              >
                 <div className={styles.projectHeading}>
                   <div className={styles.nsName}>
                     {nsName}
@@ -245,19 +245,20 @@ function ActivityDetail(props: ActivityDetailProps) {
                 </div>
                 {p.districts_details && (
                   <div className={styles.districtList}>
-                    {p.districts_details.map(d => d.name).join(', ')}
+                    {reduceListDisplay(p.districts_details.map(d => d.name))}
                   </div>
                 )}
                 <div className={styles.startEndDate}>
-                  {[
-                    <DateOutput value={p.start_date} />,
-                    <DateOutput value={p.end_date} />
-                  ]}
+                  <DateOutput value={p.start_date} />
+                  <DateOutput value={p.end_date} />
                 </div>
                 {p.id === activeProject && (
                   <div className={styles.relatedActivityList}>
                     {relatedActivities.map((a) => (
-                      <div className={styles.relatedActivity}>
+                      <div
+                        key={a.id}
+                        className={styles.relatedActivity}
+                      >
                         <div className={styles.action}>
                           {a.action_details?.title ?? a.custom_action}
                         </div>
@@ -267,6 +268,11 @@ function ActivityDetail(props: ActivityDetailProps) {
                           value={getPeopleReachedInActivity(a)}
                           strongValue
                         />
+                        {a.details && (
+                          <div className={styles.activityDetails}>
+                            {a.details}
+                          </div>
+                        )}
                       </div>
                     ))}
                   </div>
@@ -274,6 +280,7 @@ function ActivityDetail(props: ActivityDetailProps) {
                 <div className={styles.actions}>
                   {p.id === activeProject ? (
                     <Button
+                      className={styles.moreLessButton}
                       name={undefined}
                       onClick={setActiveProject}
                       variant="transparent"
@@ -282,6 +289,7 @@ function ActivityDetail(props: ActivityDetailProps) {
                     </Button>
                   ) : (
                     <Button
+                      className={styles.moreLessButton}
                       name={p.id}
                       onClick={setActiveProject}
                       variant="transparent"
@@ -373,6 +381,7 @@ function ActivityMap(props: Props) {
         className={styles.sectorGroupedActivities}
         contentClassName={styles.activityList}
         heading="Activities by Sector"
+        headingSize="small"
       >
         {sectorKeys.map((sector) => {
           const sectorGroup = sectorGroupedProjectList[sector];
@@ -389,6 +398,9 @@ function ActivityMap(props: Props) {
         })}
       </Container>
       <div className={styles.legend}>
+        <div className={styles.legendTitle}>
+          Number of Projects:
+        </div>
         {legendItems.map((li) => (
           <div
             key={li.label}

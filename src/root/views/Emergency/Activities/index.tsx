@@ -6,6 +6,8 @@ import {
 import { IoInformationCircleOutline } from 'react-icons/io5';
 import { Link } from 'react-router-dom';
 
+import BlockLoading from '#components/block-loading';
+import EmptyMessage from '#components/EmptyMessage';
 import Table from '#components/Table';
 import Pager from '#components/Pager';
 import Container from '#components/Container';
@@ -47,6 +49,7 @@ function Activities(props: Props) {
 
   const [activePage, setActivePage] = React.useState(1);
   const {
+    pending: projectListPending,
     response: projectListResponse,
   } = useRequest<ListResponse<EmergencyProjectResponse>>({
     skip: isNotDefined(emergencyId),
@@ -98,7 +101,7 @@ function Activities(props: Props) {
           to={{
             pathname: '/three-w/new',
             state: {
-              operationType: 'emergency_response',
+              operationType: 'response_activity',
             },
           }}
           {...linkProps}
@@ -107,87 +110,97 @@ function Activities(props: Props) {
         </Link>
       )}
     >
-      <div className={styles.statsContent}>
-        <div className={styles.stats}>
-          <Card multiColumn>
-            <KeyFigure
-              value={uniqueEruCount+uniqueNsCount}
-              description="Active National Societies / ERUs"
+      {projectListPending && (
+        <BlockLoading />
+      )}
+      {!projectListPending && !projectListResponse && (
+        <EmptyMessage />
+      )}
+      {!projectListPending && projectListResponse && (
+        <>
+          <div className={styles.statsContent}>
+            <div className={styles.stats}>
+              <Card multiColumn>
+                <KeyFigure
+                  value={uniqueEruCount+uniqueNsCount}
+                  description="Active National Societies / ERUs"
+                />
+                <KeyFigure
+                  value={peopleReached}
+                  description="People Reached"
+                />
+              </Card>
+              <Card multiColumn>
+                <KeyFigure
+                  value={uniqueSectorCount}
+                  description="Sectors"
+                />
+                <StatsPie
+                  className={styles.statsPie}
+                  data={projectCountListBySector}
+                  title="Activity Sectors"
+                />
+              </Card>
+              <Card multiColumn>
+                <KeyFigure
+                  value={projectListResponse?.count}
+                  description="Total Activities"
+                />
+                <StatsPie
+                  className={styles.statsPie}
+                  data={projectCountListByStatus}
+                  title="Activities Status"
+                />
+              </Card>
+            </div>
+            <div className={styles.disclaimer}>
+              <IoInformationCircleOutline className={styles.icon} />
+              &nbsp;
+              The data represents the added projects and may not reflect all of the ongoing projects.
+            </div>
+          </div>
+          <Container
+            heading="All Response Activities"
+            footerActions={projectListResponse && (
+              <Pager
+                activePage={activePage}
+                onActivePageChange={setActivePage}
+                itemsCount={filteredProjectList.length}
+                maxItemsPerPage={ITEM_PER_PAGE}
+              />
+            )}
+            contentClassName={styles.responseActivityContent}
+            visibleOverflow
+            sub
+          >
+            <Filters
+              allProjects={projectListResponse?.results}
+              onFilterChange={setFilteredProjectList}
             />
-            <KeyFigure
-              value={peopleReached}
-              description="People Reached"
+            <ActivityMap
+              projectCountByDistrict={projectCountByDistrict}
+              countryIdList={eventCountryIdList}
+              sectorGroupedProjectList={sectorGroupedProjectList}
             />
-          </Card>
-          <Card multiColumn>
-            <KeyFigure
-              value={uniqueSectorCount}
-              description="Sectors"
+            <Table
+              className={styles.projectsTable}
+              data={projectListDisplay}
+              columns={columns}
+              keySelector={idSelector}
+              variant="large"
             />
-            <StatsPie
-              className={styles.statsPie}
-              data={projectCountListBySector}
-              title="Activity Sectors"
+          </Container>
+          <Container
+            heading="Overview of Activities"
+            sub
+          >
+            <ThreeWSankey
+              className={styles.sankey}
+              data={sankeyData}
             />
-          </Card>
-          <Card multiColumn>
-            <KeyFigure
-              value={projectListResponse?.count}
-              description="Total Activities"
-            />
-            <StatsPie
-              className={styles.statsPie}
-              data={projectCountListByStatus}
-              title="Activities Status"
-            />
-          </Card>
-        </div>
-        <div className={styles.disclaimer}>
-          <IoInformationCircleOutline className={styles.icon} />
-          &nbsp;
-          The data represents the added projects and may not reflect all of the ongoing projects.
-        </div>
-      </div>
-      <Container
-        heading="All Response Activities"
-        footerActions={projectListResponse && (
-          <Pager
-            activePage={activePage}
-            onActivePageChange={setActivePage}
-            itemsCount={filteredProjectList.length}
-            maxItemsPerPage={ITEM_PER_PAGE}
-          />
-        )}
-        contentClassName={styles.responseActivityContent}
-        visibleOverflow
-        sub
-      >
-        <Filters
-          allProjects={projectListResponse?.results}
-          onFilterChange={setFilteredProjectList}
-        />
-        <ActivityMap
-          projectCountByDistrict={projectCountByDistrict}
-          countryIdList={eventCountryIdList}
-          sectorGroupedProjectList={sectorGroupedProjectList}
-        />
-        <Table
-          className={styles.projectsTable}
-          data={projectListDisplay}
-          columns={columns}
-          keySelector={idSelector}
-          variant="large"
-        />
-      </Container>
-      <Container
-        heading="Overview of Activities"
-        sub
-      >
-        <ThreeWSankey
-          className={styles.sankey}
-          data={sankeyData}
-        />
-      </Container>
+          </Container>
+        </>
+      )}
     </Container>
   );
 }

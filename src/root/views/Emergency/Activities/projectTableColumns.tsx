@@ -11,8 +11,32 @@ import {
   IoOpenOutline,
 } from 'react-icons/io5';
 import DropdownMenuItem from '#components/DropdownMenuItem';
+import InfoPopup from '#components/InfoPopup';
 import { EmergencyProjectResponse } from '#types';
 import { getPeopleReached } from './useProjectStats';
+
+export function reduceListDisplay(list?: string[]) {
+  if (!list) {
+    return undefined;
+  }
+
+  if (list.length < 4) {
+    return list.join(', ');
+  }
+
+  const newList = list.slice(0, 2);
+  return (
+    <>
+      {newList.join(', ')}
+      <InfoPopup
+        className="go-reduced-list-label"
+        infoLabel={`... and ${list.length - 2} more`}
+        title="Province / Region"
+        description={list.join(', ')}
+      />
+    </>
+  );
+}
 
 type P = EmergencyProjectResponse;
 type K = string | number;
@@ -48,7 +72,8 @@ export const getColumns = (actionColumnHeaderClassName?: string) => ([
   createStringColumn<P, K>(
     'districts',
     'Province/Region',
-    (item) => item.districts_details?.map(d => d.name).join(', '),
+    // TODO: fix this
+    (item) => (reduceListDisplay(item.districts_details?.map(d => d.name)) as unknown as string),
   ),
   createStringColumn<P, K>(
     'status',
@@ -81,7 +106,7 @@ export const getColumns = (actionColumnHeaderClassName?: string) => ([
             label="Duplicate"
             state={{
               initialValue: p,
-              operationType: 'emergency_response',
+              operationType: 'response_activity',
             }}
           />
         </>

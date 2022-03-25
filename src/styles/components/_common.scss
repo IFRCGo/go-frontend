@@ -385,3 +385,10 @@
   @include link-underline;
   padding-left: $spacing / 2;
 }
+
+.go-reduced-list-label {
+  @include link-underline;
+  color: $secondary-color;
+  font-weight: $base-font-medium;
+  padding: 0;
+}

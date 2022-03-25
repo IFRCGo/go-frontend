@@ -28,7 +28,13 @@
     display: flex;
     gap: $spacing*3;
     padding: $spacing;
+    background-color: $grey-mist;
     flex-basis: 100%;
+
+    .legend-title {
+      color: $secondary-color;
+      font-weight: $base-font-bold;
+    }
 
     .legend-item {
       display: flex;
@@ -111,11 +117,12 @@
     .project {
       display: flex;
       flex-direction: column;
-      padding: $spacing $spacing*2;
+      padding: $spacing $spacing;
       border-top: $base-border-width solid $base-border-color;
 
       .project-heading {
         display: flex;
+        align-items: flex-start;
 
         .ns-name {
           flex-grow: 1;
@@ -124,14 +131,21 @@
 
         .status {
           flex-shrink: 0;
-          color: rgba(0, 0, 0, .5);
+          color: $secondary-color;
+          font-weight: $base-font-medium;
           font-size: $font-size-sm;
+          padding: $spacing/4 $spacing;
+          background-color: $grey-fog;
+          border-radius: 1em;
         }
       }
 
       .start-end-date {
         display: flex;
         gap: $spacing;
+        color: rgba(0, 0, 0, .5);
+        font-size: $font-size-sm;
+        margin-top: $spacing/2;
       }
 
       .related-activity-list {
@@ -142,16 +156,21 @@
 
         .related-activity {
           background-color: $grey-mist;
-          padding: $spacing/2;
+          padding-bottom: $spacing;
 
           .action {
-            padding: 0 $spacing/4;
-            color: $primary-color;
+            padding: $spacing/2 $spacing;
+            background-color: $grey-titanium;
             font-weight: $base-font-medium;
           }
 
           .people-reached {
-            padding: 0;
+            padding: $spacing/4 $spacing*2/3;
+            margin-top: $spacing/2;
+          }
+
+          .activity-details {
+            padding: $spacing/4 $spacing;
           }
         }
       }
@@ -159,6 +178,10 @@
       .actions {
         display: flex;
         justify-content: flex-end;
+
+        .more-less-button {
+          color: $primary-color;
+        }
       }
     }
   }

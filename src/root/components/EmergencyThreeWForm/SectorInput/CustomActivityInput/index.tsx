@@ -37,6 +37,7 @@ import styles from './styles.module.scss';
 type Value = PartialForm<CustomActivity>;
 
 interface Props {
+  isFirstSubmission?: boolean;
   onChange: (value: SetValueArg<Value>, index: number) => void;
   index: number;
   value: Value;
@@ -53,6 +54,7 @@ function CustomActivityInput(props: Props) {
     error: errorFromProps,
     onRemove,
     averageHouseholdSizeForSelectedCountry,
+    isFirstSubmission,
   } = props;
 
   const defaultValue = React.useMemo(
@@ -148,6 +150,7 @@ function CustomActivityInput(props: Props) {
           error={error?.custom_action}
         />
         <DisaggregationInputs
+          isFirstSubmission={isFirstSubmission}
           index={index}
           customActivity={true}
           onChange={onChange}

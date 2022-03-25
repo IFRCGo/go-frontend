@@ -169,6 +169,7 @@ export interface Sector {
 }
 
 export interface EmergencyThreeWFormFields {
+  _firstSubmission: boolean;
   title: string;
   country: number;
   districts: number[];
@@ -233,6 +234,7 @@ export const schema: FormSchema = {
     const isERU = value?.activity_lead === ACTIVITY_LEADER_ERU;
 
     const baseFields: FormSchemaFields = {
+      _firstSubmission: [forceUndefinedType],
       title: [requiredCondition],
       event: [requiredCondition],
       activity_lead: [requiredCondition],
@@ -401,7 +403,7 @@ export const schema: FormSchema = {
                         member: (): SuppliesSchemaMember => ({
                           fields: (): SupplySchemaFields => ({
                             item: [requiredCondition],
-                            count: [requiredCondition],
+                            count: [requiredCondition, positiveIntegerCondition],
                           }),
                         }),
                       },
