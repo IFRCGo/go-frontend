@@ -1,0 +1,34 @@
+@import '~styles/settings/variables';
+
+.map-container {
+  outline: none;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+
+  :global {
+    .mapboxgl-popup {
+      height: 18rem;
+    }
+  }
+
+  .map {
+    flex-grow: 1;
+  }
+
+  .sidebar {
+    background-color: $white;
+    box-shadow: $base-box-shadow;
+    position: absolute;
+    width: 20rem;
+    max-height: calc(100% - #{$spacing*2} - 4rem);
+    right: $spacing;
+    top: $spacing;
+  }
+
+  .source-details {
+    background-color: $grey-mist;
+    padding: $spacing;
+  }
+}
+
