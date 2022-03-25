@@ -48,7 +48,8 @@ import { SFPComponent } from '#utils/extendables';
 import RegionalThreeW from './RegionalThreeW';
 import MainMap from '#components/map/main-map';
 
-import RegionalRiskWatch from './RegionalRiskWatch';
+// @NOTE: Temporary
+// import RegionalRiskWatch from './RegionalRiskWatch';
 
 import LanguageContext from '#root/languageContext';
 import { resolveToString } from '#utils/lang';
@@ -79,7 +80,8 @@ class AdminArea extends SFPComponent {
     return [
       { title: strings.regionOperationsTab, hash: '#operations' },
       { title: strings.region3WTab, hash: '#3w' },
-      { title: strings.regionRiskTab, hash: '#risk-watch' },
+      // @NOTE: Temporary
+      // { title: strings.regionRiskTab, hash: '#risk-watch' },
       { title: strings.regionProfileTab, hash: '#regional-profile' },
 
       // { title: strings.regionPreparednessTab, hash: '#preparedness' },
@@ -379,6 +381,7 @@ class AdminArea extends SFPComponent {
                     />
                   </TabContent>
                 </TabPanel>
+                {/* @NOTE: Temporary
                 <TabPanel>
                   <TabContent title={strings.region3WTitle}>
                     <RegionalRiskWatch
@@ -387,6 +390,7 @@ class AdminArea extends SFPComponent {
                     />
                   </TabContent>
                 </TabPanel>
+                */}
                 <TabPanel>
                   {
                     this.state.regionAdditionalInfoTabIframe 

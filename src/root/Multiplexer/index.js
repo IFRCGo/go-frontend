@@ -60,11 +60,12 @@ const ThreeWEdit = lazy(() => import('../views/ThreeWEdit'));
 const EmergencyThreeWEdit = lazy(() => import('../views/EmergencyThreeWEdit'));
 const EmergencyThreeW = lazy(() => import('../views/EmergencyThreeW'));
 
-const DrefApplicationForm = lazy(() => import('../views/DrefApplicationForm'));
-const DrefPdfPreview = lazy(() => import('../views/DrefPdfPreview'));
-const FlashUpdateApplicationForm = lazy(() => import('../views/FlashUpdateApplicationForm'));
-const FlashUpdateReport = lazy(() => import('../views/FlashUpdateReport'));
-const AllFlashUpdates = lazy(() => import('../views/AllFlashUpdates'));
+// @NOTE: Temporary
+// const DrefApplicationForm = lazy(() => import('../views/DrefApplicationForm'));
+// const DrefPdfPreview = lazy(() => import('../views/DrefPdfPreview'));
+// const FlashUpdateApplicationForm = lazy(() => import('../views/FlashUpdateApplicationForm'));
+// const FlashUpdateReport = lazy(() => import('../views/FlashUpdateReport'));
+// const AllFlashUpdates = lazy(() => import('../views/AllFlashUpdates'));
 
 const EmergencyThreeWForm = lazy(() => import('../components/EmergencyThreeWForm'));
 
@@ -273,7 +274,9 @@ function Multiplexer(props) {
               <PrivateRoute exact path='/three-w/:projectId/edit/' component={ThreeWEdit} />
               <PrivateRoute exact path='/emergency-three-w/:projectId/edit/' component={EmergencyThreeWEdit} />
               <Route exact path='/three-w/' component={GlobalThreeW} />
+              <PrivateRoute exact path='/emergency-three-w-form/' component={EmergencyThreeWForm} />
 
+              {/* @NOTE: Temporary
               <PrivateRoute key="new-dref-application-form" exact path='/dref-application/new/' component={DrefApplicationForm} />
               <PrivateRoute exact path='/dref-application/:drefId/edit/' component={DrefApplicationForm} />
               <PrivateRoute exact path='/dref-application/:drefId/export/' component={DrefPdfPreview} />
@@ -281,7 +284,7 @@ function Multiplexer(props) {
               <Route exact path='/flash-update/all/' component={AllFlashUpdates} />
               <PrivateRoute exact path='/flash-update/:id/edit/' component={FlashUpdateApplicationForm} />
               <Route exact path='/flash-update/:id/' component={FlashUpdateReport} />
-              <PrivateRoute exact path='/emergency-three-w-form/' component={EmergencyThreeWForm} />
+              */}
 
               <Route component={FourHundredFour} />
             </Switch>
