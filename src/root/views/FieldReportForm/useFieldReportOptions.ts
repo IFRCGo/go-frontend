@@ -297,12 +297,35 @@ function useFieldReportOptions(value: Partial<FormType>) {
     query: eventQuery,
   });
 
-  const eventOptions = React.useMemo(() => (
+  var updateNo = React.useMemo(() => {  
+    let i = 1;
+    let fr = eventsResponse?.results[0];
+    if (fr !== undefined)
+    {
+    fr.field_reports.forEach(fr => {
+      fr.countries.forEach(c => {     
+        if(c.id === value.country) 
+        {
+          i++;
+        }
+      });
+    });
+  }
+
+    return i;
+  }, [ eventsResponse, value.country]);
+
+
+
+  var eventOptions = React.useMemo(() => (
+    
     eventsResponse?.results?.map(e => ({
       value: e.id,
-      label: (e.field_reports.length+1).toString(),
+      label: (updateNo).toString(),
+      
     })).sort(compareString) ?? emptyNumericOptionList
-  ), [eventsResponse]);
+  ), [eventsResponse, updateNo]);
+
 
 
 
@@ -480,6 +503,7 @@ function useFieldReportOptions(value: Partial<FormType>) {
     userDetails,
     yesNoOptions,
     eventOptions,
+    updateNo,
   };
 }
 

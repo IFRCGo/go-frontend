@@ -172,9 +172,19 @@ export interface Entity {
   name: string;
 }
 
+export interface FR {
+  id: number;
+  countries: Country[];
+}
+
+export interface Country {
+  id: number;
+  name: string;
+}
+
 export interface FREvent {
   id: number;
-  field_reports: any[];
+  field_reports: FR[];
 }
 
 export const optionKeySelector = (o: Option) => o.value;

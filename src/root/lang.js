@@ -2237,6 +2237,8 @@ export default {
   videoCarouselSubHeadingSubscribe: 'View this video tutorial on how to "Subscribe to User Notifications" on the GO Platform - International Federation of Red Cross Red Crescent (IFRC).',
   videoCarouselHeadingTranslations: 'Translation feature',
   videoCarouselSubHeadingTranslations: 'View this video tutorial on how to use the translation feature on the GO Platform - International Federation of Red Cross Red Crecent (IFRC).',
+  videoCarouselHeading3w: '3W (who-what-where) data collection for emergencies',
+  videoCarouselHeading3wsub: 'View this video tutorial about the 3W for emergencies tool. The video demonstrates the data collection and display activity of who-what-where data.',
   emergenciesDashHeading: 'Emergencies by Type',
   emergenciesDashDate: 'Date',
   emergenciesDashTotal: 'Total',
@@ -2573,7 +2575,7 @@ export default {
   socialEventsTitle: 'Social events',
 
   fieldsStep1SummaryLabel: 'Title *',
-  fieldsStep1SummaryDescription: 'For Covid-19 Field Reports, please link to the existing country specific emergency page. Please do not link to the Global emergency page.',
+  fieldsStep1SummaryDescription: 'The title is automatically populated based on your selection above with the date of this report. You may edit it with any required details. The report number will be automatically generated and added to the end of the title.',
   fieldsStep1DisasterTypeLabel: 'Disaster Type *',
   fieldsStep1DisasterTypeDescription: 'If Covid-19 select “Epidemic” as the disaster type',
   fieldsStep1StartDateLabelStartDate: 'Start Date *',
@@ -2755,7 +2757,7 @@ export default {
 
   fieldReportFormTitleSecondaryLabel: 'Add Title',
   fieldReportFormTitleSelectLabel: 'Please check for, and link to an existing emergency if available',
-  fieldReportFormTitleInputPlaceholder: 'Example: Malawi - Central Region: Floods 03/2019',
+  fieldReportFormTitleInputPlaceholder: 'Example: Cyclone Cody',
   fieldReportFormTitleSelectPlaceholder: 'Click here to link to an existing hazard alert (if one exists)',
 
   fieldReportFormCountryLabel: 'Country',
