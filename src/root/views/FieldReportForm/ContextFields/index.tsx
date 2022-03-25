@@ -75,7 +75,7 @@ function ContextFields(props: Props) {
     eventOptions,
     reportId,
     countryIsoOptions,
-  } = props;
+    } = props;
 
   const [
     startDateSectionDescription,
@@ -164,6 +164,24 @@ function ContextFields(props: Props) {
           disabled={value.status === STATUS_EARLY_WARNING}
         />
       </InputSection>
+
+      <InputSection
+        title='Search for existing emergency *'
+        description='Type the name of the country you want to report on in the box above to begin the search.'
+       >     
+        
+                <SearchSelectInput
+                  label={strings.fieldReportFormTitleSelectLabel}
+                  placeholder={strings.fieldReportFormTitleSelectPlaceholder}
+                  name={"event" as const}
+                  value={value.event}
+                  onChange={onValueChange}
+                  loadOptions={fetchEventsFromApi}
+                  initialOptions={initialEventOptions as SearchSelectOption[]}
+                  error={error?.event}
+                />
+        </InputSection>
+
       
       <InputSection
         title={countrySectionTitle}
@@ -224,31 +242,19 @@ function ContextFields(props: Props) {
       >     
         <table cellSpacing={0} cellPadding={0}>
           <tbody>
-           <tr>
-             <td colSpan={5}>
-                <SearchSelectInput
-                  label={strings.fieldReportFormTitleSelectLabel}
-                  placeholder={strings.fieldReportFormTitleSelectPlaceholder}
-                  name={"event" as const}
-                  value={value.event}
-                  onChange={onValueChange}
-                  loadOptions={fetchEventsFromApi}
-                  initialOptions={initialEventOptions as SearchSelectOption[]}
-                  error={error?.event}
-                />
-             </td>
-           </tr>
+           
            <tr>
            {
               reportId === undefined ? (
                 <>
-              <td style={{width: '10%'}} >
+              <td style={{width: '35%'}} >
                 <TextInput
-                  style={{ backgroundColor: '#E0DDDD', borderRadius: 5, padding:'offset' }}
-                  label={strings.fieldReportFormCountryLabel}
+                  style={{ backgroundColor: '#E0DDDD', borderRadius: 0, padding:'offset' }}
+                  label='prefix '//{strings.fieldReportFormCountryLabel}
                   placeholder=""
                   name="pref2"
-                  value={countryIsoOptions.find(x=> x.value === value.country)?.label}
+                  //value={(countryIsoOptions.find(x=> x.value === value.country)?.label + ': ' +  disasterTypeOptions.find(x=>x.value === value.dtype)?.label + ' -' + value.start_date?.substring(0,7)).replaceAll('undefined',' ' )}
+                  value={value.country !== undefined && value.dtype !== undefined && value.start_date !== undefined ? countryIsoOptions.find(x=> x.value === value.country)?.label + ': ' +  disasterTypeOptions.find(x=>x.value === value.dtype)?.label + ' -' + value.start_date?.substring(0,7) : ' '}
                   error={error?.event}
                 />
               </td>
@@ -256,41 +262,9 @@ function ContextFields(props: Props) {
               ) : null
             }
 
-              {
-              reportId === undefined ? (
-                <>
-              <td style={{width: '15%'}}>
-                <TextInput
-                  style={{ backgroundColor: '#E0DDDD', borderRadius: 5, padding:'offset' }}
-                  label={strings.fieldReportFormStartDateLabel}
-                  placeholder=""
-                  name="pref2"
-                  value={value.start_date}
-                  error={error?.event}
-                />
-              </td>
-              </>
-              ) : null
-            }
+           
 
-            {
-              reportId === undefined ? (
-                <>
-              <td style={{width: '25%'}}>
-                <TextInput
-                  style={{ backgroundColor: '#E0DDDD', borderRadius: 5, padding:'offset' }}
-                  label={strings.fieldReportFormDisasterTypeLabel}
-                  placeholder=""
-                  name="pref3"
-                  value={disasterTypeOptions.find(x=>x.value === value.dtype)?.label}
-                  error={error?.event}
-                />
-              </td>
-              </>
-              ) : null
-            }
-
-              <td style={{width: '43%'}}>
+              <td> 
             
                 <TextInput
                   label={strings.fieldReportFormTitleSecondaryLabel}
@@ -303,7 +277,7 @@ function ContextFields(props: Props) {
                 />
              </td>
              {
-              reportId === undefined ? (
+              reportId === undefined && value.event !==undefined ? (
                 <>
              <td style={{width: '7%'}}>
                 <TextInput
