@@ -45,12 +45,15 @@ interface Props {
   yesNoOptions: BooleanValueOption[];
   reportType: ReportType;
   countryOptions: NumericValueOption[];
+  countryIsoOptions: NumericValueOption[];
   districtOptions: NumericValueOption[];
   fetchingCountries?: boolean;
   fetchingDistricts?: boolean;
   fetchingDisasterTypes?: boolean;
   initialEventOptions?: Option[];
-}
+  eventOptions: NumericValueOption[];
+  reportId: any;
+ }
 
 function ContextFields(props: Props) {
   const { strings } = React.useContext(LanguageContext);
@@ -69,7 +72,10 @@ function ContextFields(props: Props) {
     yesNoOptions,
     reportType,
     initialEventOptions,
-  } = props;
+    eventOptions,
+    reportId,
+    countryIsoOptions,
+    } = props;
 
   const [
     startDateSectionDescription,
@@ -133,11 +139,11 @@ function ContextFields(props: Props) {
         title={strings.fieldReportFormStatusLabel}
       >
         <RadioInput
-          name="status"
+          name={"status" as const}
           options={statusOptions}
-          radioKeySelector={numericOptionKeySelector}
-          radioLabelSelector={optionLabelSelector}
-          radioDescriptionSelector={optionDescriptionSelector}
+          keySelector={numericOptionKeySelector}
+          labelSelector={optionLabelSelector}
+          descriptionSelector={optionDescriptionSelector}
           value={value.status}
           error={error?.status}
           onChange={onValueChange}
@@ -147,51 +153,45 @@ function ContextFields(props: Props) {
         title={strings.fieldReportFormCovidLabel}
       >
         <RadioInput
-          name="is_covid_report"
+          name={"is_covid_report" as const}
           options={yesNoOptions}
-          radioKeySelector={booleanOptionKeySelector}
-          radioLabelSelector={optionLabelSelector}
-          radioDescriptionSelector={optionDescriptionSelector}
+          keySelector={booleanOptionKeySelector}
+          labelSelector={optionLabelSelector}
+          descriptionSelector={optionDescriptionSelector}
           value={value.is_covid_report}
           onChange={onValueChange}
           error={error?.is_covid_report}
           disabled={value.status === STATUS_EARLY_WARNING}
         />
       </InputSection>
+
       <InputSection
-        title={strings.fieldsStep1SummaryLabel}
-        description={strings.fieldsStep1SummaryDescription}
-      >
-        <div>
-          <SearchSelectInput
-            label={strings.fieldReportFormTitleSelectLabel}
-            placeholder={strings.fieldReportFormTitleSelectPlaceholder}
-            name="event"
-            value={value.event}
-            onChange={onValueChange}
-            loadOptions={fetchEventsFromApi}
-            initialOptions={initialEventOptions as SearchSelectOption[]}
-            error={error?.event}
-          />
-          <TextInput
-            label={strings.fieldReportFormTitleSecondaryLabel}
-            placeholder={strings.fieldReportFormTitleInputPlaceholder}
-            name="summary"
-            value={value.summary}
-            maxLength={100}
-            onChange={onValueChange}
-            error={error?.summary}
-          />
-        </div>
-      </InputSection>
+        title='Search for existing emergency *'
+        description='Type the name of the country you want to report on in the box above to begin the search.'
+       >     
+        
+                <SearchSelectInput
+                  label={strings.fieldReportFormTitleSelectLabel}
+                  placeholder={strings.fieldReportFormTitleSelectPlaceholder}
+                  name={"event" as const}
+                  value={value.event}
+                  onChange={onValueChange}
+                  loadOptions={fetchEventsFromApi}
+                  initialOptions={initialEventOptions as SearchSelectOption[]}
+                  error={error?.event}
+                />
+        </InputSection>
+
+      
       <InputSection
         title={countrySectionTitle}
         description={countrySectionDescription}
       >
         <SelectInput
+        //className={reportId === undefined ? 'visually-hidden' : ''}
           error={error?.country}
           label={strings.projectFormCountryLabel}
-          name="country"
+          name={"country" as const}
           onChange={onValueChange}
           options={countryOptions}
           pending={fetchingCountries}
@@ -203,7 +203,7 @@ function ContextFields(props: Props) {
           error={error?.districts}
           isMulti
           label={strings.projectFormDistrictLabel}
-          name="districts"
+          name={"districts" as const}
           onChange={onValueChange}
           options={districtOptions}
           value={value.districts}
@@ -214,7 +214,7 @@ function ContextFields(props: Props) {
         description={strings.fieldsStep1DisasterTypeDescription}
       >
         <SelectInput
-          name="dtype"
+          name={"dtype" as const}
           isOptionDisabled={value.status === STATUS_EARLY_WARNING ? isEpidemic : undefined}
           value={value.dtype}
           options={disasterTypeOptions}
@@ -235,16 +235,76 @@ function ContextFields(props: Props) {
           error={error?.start_date}
         />
       </InputSection>
+
+      <InputSection
+        title={strings.fieldsStep1SummaryLabel}
+        description={strings.fieldsStep1SummaryDescription}
+      >
+        <table cellSpacing={0} cellPadding={0}>
+          <tbody>
+           
+           <tr>
+           {
+              reportId === undefined ? (
+                <>
+              <td style={{width: '35%'}} >
+                <TextInput
+                  style={{ backgroundColor: '#E0DDDD', borderRadius: 0, padding:'offset' }}
+                  label='prefix '//{strings.fieldReportFormCountryLabel}
+                  placeholder=""
+                  name="pref2"
+                  //value={(countryIsoOptions.find(x=> x.value === value.country)?.label + ': ' +  disasterTypeOptions.find(x=>x.value === value.dtype)?.label + ' -' + value.start_date?.substring(0,7)).replaceAll('undefined',' ' )}
+                  value={value.country !== undefined && value.dtype !== undefined && value.start_date !== undefined ? countryIsoOptions.find(x=> x.value === value.country)?.label + ': ' +  (value.is_covid_report ? strings.fieldReportCOVID19 : disasterTypeOptions.find(x=>x.value === value.dtype)?.label) + ' -' + value.start_date?.substring(0,7) : ' '}
+                  error={error?.event}
+                />
+              </td>
+              </>
+              ) : null
+            }
+
+           
+
+              <td> 
+            
+                <TextInput
+                  label={strings.fieldReportFormTitleSecondaryLabel}
+                  placeholder={strings.fieldReportFormTitleInputPlaceholder}
+                  name="summary"
+                  value={value.summary}
+                  maxLength={100}
+                  onChange={onValueChange}
+                  error={error?.summary}
+                />
+             </td>
+             {
+              reportId === undefined && value.event !==undefined ? (
+                <>
+                 <td style={{width: '7%'}}>
+                    <TextInput
+                      style={{ backgroundColor: '#E0DDDD', borderRadius: 5, padding:'offset' }}
+                      label= "#" // {strings.fieldReportUpdateNo}
+                      placeholder="1"
+                      name="event"
+                      value={eventOptions.find(x => x.value===value.event)?.label}
+                      error={error?.event}
+                    />
+                 </td>
+               </>
+             ): null}
+           </tr>
+          </tbody>
+        </table>
+      </InputSection>
       <InputSection
         title={strings.fieldsStep1AssistanceLabel}
         description={strings.fieldsStep1AssistanceDescription}
       >
         <RadioInput
-          name="request_assistance"
+          name={"request_assistance" as const}
           options={yesNoOptions}
-          radioKeySelector={booleanOptionKeySelector}
-          radioLabelSelector={optionLabelSelector}
-          radioDescriptionSelector={optionDescriptionSelector}
+          keySelector={booleanOptionKeySelector}
+          labelSelector={optionLabelSelector}
+          descriptionSelector={optionDescriptionSelector}
           value={value.request_assistance}
           onChange={onValueChange}
           error={error?.request_assistance}
@@ -256,11 +316,11 @@ function ContextFields(props: Props) {
         description={strings.fieldsStep1NSAssistanceDescription}
       >
         <RadioInput
-          name="ns_request_assistance"
+          name={"ns_request_assistance" as const}
           options={yesNoOptions}
-          radioKeySelector={booleanOptionKeySelector}
-          radioLabelSelector={optionLabelSelector}
-          radioDescriptionSelector={optionDescriptionSelector}
+          keySelector={booleanOptionKeySelector}
+          labelSelector={optionLabelSelector}
+          descriptionSelector={optionDescriptionSelector}
           value={value.ns_request_assistance}
           onChange={onValueChange}
           error={error?.ns_request_assistance}

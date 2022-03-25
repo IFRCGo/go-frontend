@@ -1,10 +1,14 @@
 import React from 'react';
-import { _cs } from '@togglecorp/fujs';
+import {
+  _cs,
+  isDefined,
+} from '@togglecorp/fujs';
 
 import InputLabel from '#components/InputLabel';
 import InputError from '#components/InputError';
 
 import styles from './styles.module.scss';
+
 
 export interface Props {
   className?: string;
@@ -15,6 +19,7 @@ export interface Props {
   label?: React.ReactNode;
   readOnly?: boolean;
   input: React.ReactNode;
+  errorOnTooltip?: boolean;
 }
 
 function InputContainer(props: Props) {
@@ -27,6 +32,7 @@ function InputContainer(props: Props) {
     label,
     readOnly,
     input,
+    errorOnTooltip = false,
   } = props;
 
   return (
@@ -39,6 +45,7 @@ function InputContainer(props: Props) {
         disabled && styles.disabled,
         readOnly && styles.readOnly,
       )}
+      title={(errorOnTooltip && isDefined(error) && typeof error === 'string') ? error : undefined}
     >
       <InputLabel disabled={disabled}>
         { label }
@@ -78,9 +85,14 @@ function InputContainer(props: Props) {
           </div>
         )}
       </div>
-      <InputError disabled={disabled}>
-        { error }
-      </InputError>
+      {!errorOnTooltip && (
+        <InputError
+          disabled={disabled}
+          className={styles.inputError}
+        >
+          { error }
+        </InputError>
+      )}
     </div>
   );
 }

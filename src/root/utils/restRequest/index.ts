@@ -18,7 +18,7 @@ export type ListResponse<T> = {
 };
 
 // eslint-disable-next-line max-len
-const useGoLazyRequest: <R, C = null>(requestOptions: LazyRequestOptions<R, TransformedError, C, AdditionalOptions>) => {
+const useGoLazyRequest: <R, C = unknown>(requestOptions: LazyRequestOptions<R, TransformedError, C, AdditionalOptions>) => {
     response: R | undefined;
     pending: boolean;
     error: TransformedError | undefined;

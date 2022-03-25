@@ -10,36 +10,42 @@ export default class VideoCarousel2 extends React.Component {
     const videoLinks = [
       {
         'id': 1,
+        'embedID': 'https://www.youtube.com/embed/7PvsxM_nzBo',
+        'heading': strings.videoCarouselHeading3w,
+        'subHeading': strings.videoCarouselHeading3wsub,
+      },
+      {
+        'id': 2,
         'embedID': 'https://www.youtube.com/embed/RzP9jZqt-Zk',
         'heading': strings.videoCarouselHeadingTranslations,
         'subHeading': strings.videoCarouselSubHeadingTranslations
       },
       {
-        'id': 2,
+        'id': 3,
         'embedID': 'https://www.youtube.com/embed/E1TuUEEMBRM',
         'heading': strings.videoCarouselHeading3W,
         'subHeading': strings.videoCarouselSubHeading3W,
       },
       {
-        'id': 3,
+        'id': 4,
         'embedID': 'https://www.youtube.com/embed/QiDwKVr5pxg',
         'heading': strings.videoCarouselHeading3WInstructional,
         'subHeading': strings.videoCarouselSubHeading3WInstructional,
       },
       {
-        'id': 4,
+        'id': 5,
         'embedID': 'https://www.youtube.com/embed/adBR-U26XZs',
         'heading': strings.videoCarouselHeadingFieldReport,
         'subHeading': strings.videoCarouselSubHeadingFieldReport,
       },
       {
-        'id': 5,
+        'id': 6,
         'embedID': 'https://www.youtube.com/embed/JAQ_yixX57A',
         'heading': strings.videoCarouselHeadingPER,
         'subHeading': strings.videoCarouselSubHeadingPER,
       },
       {
-        'id': 6,
+        'id': 7,
         'embedID': 'https://www.youtube.com/embed/wEz70tcwWx8',
         'heading': strings.videoCarouselHeadingSubscribe,
         'subHeading': strings.videoCarouselSubHeadingSubscribe,

@@ -1,0 +1,22 @@
+@import '~styles/settings/variables';
+
+.point-input {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $spacing;
+
+  .description-input {
+    width: 20rem;
+    padding: 0;
+  }
+
+  .location-input {
+    width: 7rem;
+    padding: 0;
+  }
+
+  .remove-button {
+    flex-shrink: 0;
+    margin-top: $spacing;
+  }
+}

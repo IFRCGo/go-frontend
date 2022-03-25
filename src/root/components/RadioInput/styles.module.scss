@@ -6,7 +6,7 @@
   .radio-list-container {
     display: flex;
     flex-wrap: wrap;
-    padding: $spacing/2 0;
+    gap: $spacing;
   }
 
   &.disabled {

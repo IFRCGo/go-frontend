@@ -122,7 +122,7 @@ function SituationFields(props: Props) {
             title={strings.fieldsStep2SourceOfFiguresLabel}
           >
             <SelectInput
-              name="epi_figures_source"
+              name={"epi_figures_source" as const}
               value={value.epi_figures_source}
               onChange={onValueChange}
               error={error?.epi_figures_source}
@@ -250,7 +250,7 @@ function SituationFields(props: Props) {
           title={strings.fieldsStep2SourceOfFiguresLabel}
         >
           <SelectInput
-            name="epi_figures_source"
+            name={"epi_figures_source" as const}
             value={value.epi_figures_source}
             onChange={onValueChange}
             error={error?.epi_figures_source}
@@ -325,13 +325,13 @@ function SituationFields(props: Props) {
         />
         <RadioInput
           label={strings.cmpSourceLabel}
-          radioListContainerClassName={styles.sourceRadioListContainer}
+          listContainerClassName={styles.sourceRadioListContainer}
           error={error?.num_injured_source}
-          name="num_injured_source"
+          name={"num_injured_source" as const}
           onChange={onValueChange}
           options={sourceOptions}
-          radioKeySelector={stringOptionKeySelector}
-          radioLabelSelector={optionLabelSelector}
+          keySelector={stringOptionKeySelector}
+          labelSelector={optionLabelSelector}
           value={value.num_injured_source}
           clearable
         />
@@ -349,13 +349,13 @@ function SituationFields(props: Props) {
         />
         <RadioInput
           label={strings.cmpSourceLabel}
-          radioListContainerClassName={styles.sourceRadioListContainer}
+          listContainerClassName={styles.sourceRadioListContainer}
           error={error?.num_dead_source}
-          name="num_dead_source"
+          name={"num_dead_source" as const}
           onChange={onValueChange}
           options={sourceOptions}
-          radioKeySelector={stringOptionKeySelector}
-          radioLabelSelector={optionLabelSelector}
+          keySelector={stringOptionKeySelector}
+          labelSelector={optionLabelSelector}
           value={value.num_dead_source}
           clearable
         />
@@ -373,13 +373,13 @@ function SituationFields(props: Props) {
         />
         <RadioInput
           label={strings.cmpSourceLabel}
-          radioListContainerClassName={styles.sourceRadioListContainer}
+          listContainerClassName={styles.sourceRadioListContainer}
           error={error?.num_missing_source}
-          name="num_missing_source"
+          name={"num_missing_source" as const}
           onChange={onValueChange}
           options={sourceOptions}
-          radioKeySelector={stringOptionKeySelector}
-          radioLabelSelector={optionLabelSelector}
+          keySelector={stringOptionKeySelector}
+          labelSelector={optionLabelSelector}
           value={value.num_missing_source}
           clearable
         />
@@ -397,13 +397,13 @@ function SituationFields(props: Props) {
         />
         <RadioInput
           label={strings.cmpSourceLabel}
-          radioListContainerClassName={styles.sourceRadioListContainer}
+          listContainerClassName={styles.sourceRadioListContainer}
           error={error?.num_affected_source}
-          name="num_affected_source"
+          name={"num_affected_source" as const}
           onChange={onValueChange}
           options={sourceOptions}
-          radioKeySelector={stringOptionKeySelector}
-          radioLabelSelector={optionLabelSelector}
+          keySelector={stringOptionKeySelector}
+          labelSelector={optionLabelSelector}
           value={value.num_affected_source}
           clearable
         />
@@ -421,13 +421,13 @@ function SituationFields(props: Props) {
         />
         <RadioInput
           label={strings.cmpSourceLabel}
-          radioListContainerClassName={styles.sourceRadioListContainer}
+          listContainerClassName={styles.sourceRadioListContainer}
           error={error?.num_displaced_source}
-          name="num_displaced_source"
+          name={"num_displaced_source" as const}
           onChange={onValueChange}
           options={sourceOptions}
-          radioKeySelector={stringOptionKeySelector}
-          radioLabelSelector={optionLabelSelector}
+          keySelector={stringOptionKeySelector}
+          labelSelector={optionLabelSelector}
           value={value.num_displaced_source}
           clearable
         />

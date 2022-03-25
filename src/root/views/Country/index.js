@@ -65,8 +65,9 @@ import PreparednessOverview from '#components/country/preparedness-overview';
 import KeyFiguresHeader from '#components/common/key-figures-header';
 import { SFPComponent } from '#utils/extendables';
 
-// NOTE: Temporary
+// @NOTE: Temporary
 // import RiskWatch from './RiskWatch';
+
 import ThreeW from './ThreeW';
 // import CountryProfile from './CountryProfile';
 
@@ -162,7 +163,7 @@ class AdminArea extends SFPComponent {
         title: strings.country3WTab,
         hash: '#3w'
       },
-      /*
+      /* @NOTE: Temporary
       {
         title: 'Risk Watch',
         hash: '#risk',
@@ -726,12 +727,14 @@ class AdminArea extends SFPComponent {
                     </TabContent>
                   </div>
                 </TabPanel>
-                {/* NOTE: Temporary
+
+                {/* @NOTE: Temporary
                 <TabPanel>
                   <TabContent>
                     <RiskWatch countryId={this.props.country?.id} />
                   </TabContent>
                 </TabPanel>
+
                 */}
                 {/*
                 <TabPanel>

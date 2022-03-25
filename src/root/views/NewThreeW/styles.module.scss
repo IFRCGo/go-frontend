@@ -1,10 +1,16 @@
 @import '~styles/settings/variables';
 
 .new-three-w {
-  :global {
-    .go-input-section {
-      margin: $spacing 0;
-      box-shadow: $box-shadow-component;
+  .three-w-program {
+    :global {
+      .go-input-section {
+        margin: $spacing 0;
+        box-shadow: $box-shadow-component;
+      }
     }
+  }
+
+  .segment-input-wrapper {
+    margin-bottom: $spacing;
   }
 }

@@ -40,15 +40,16 @@ import PerAccount from '#components/per-forms/per-account';
 import BreadCrumb from '../components/breadcrumb';
 import LanguageContext from '#root/languageContext';
 import Translate from '#components/Translate';
-import { countriesSelector, disasterTypesSelectSelector } from '#selectors';
-
 import {
   FormCheckboxGroup,
   FormInput
 } from '#components/form-elements/';
+import ThreeWList from '#components/ThreeWList';
 
-// NOTE: Temporary
+// @NOTE: Temporary
 // import DrefApplicationList from '#components/DrefApplicationList';
+
+import { countriesSelector, disasterTypesSelectSelector } from '#selectors';
 
 import App from './app';
 
@@ -165,9 +166,9 @@ class Account extends React.Component {
     { title: strings.accountInformation, hash: '#account-information' },
     { title: strings.accountNotification, hash: '#notifications' },
     { title: strings.accountPerForms, hash: '#per-forms' },
-
-    // NOTE: Temporary
-    // { title: strings.accountMyDrefApplications, hash: '#my-dref-applications' }
+    // @NOTE: Temporary
+    // { title: strings.accountMyDrefApplications, hash: '#my-dref-applications' },
+    { title: strings.accountThreeWForms, hash: '#three-w-forms' }
   ])
 
   getBasicTypes = memoize((strings) => [
@@ -894,13 +895,18 @@ class Account extends React.Component {
                       <PerAccount user={this.props.user} />
                     </TabContent>
                   </TabPanel>
-                  {/* NOTE: Temporary
+                  {/* @NOTE: Temporary
                   <TabPanel>
                     <TabContent title={strings.accountPerTitle}>
                       <DrefApplicationList />
                     </TabContent>
                   </TabPanel>
                   */}
+                  <TabPanel>
+                    <TabContent>
+                      <ThreeWList />
+                    </TabContent>
+                  </TabPanel>
                 </div>
               </div>
             </Tabs>

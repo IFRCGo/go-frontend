@@ -21,8 +21,10 @@ type Props<N extends string | number> = BaseProps & ({
   name?: N;
   onClick: RawButtonProps<N>['onClick'];
   href?: never;
+  state?: never;
 } | {
   href: string;
+  state?: unknown;
   onClick?: never;
   name?: never;
 })
@@ -70,7 +72,10 @@ function DropdownMenuItem<N extends string | number>(props: Props<N>) {
     return (
       <Link
         className={className}
-        to={props.href}
+        to={{
+          pathname: props.href,
+          state: props.state,
+        }}
       >
         {children}
       </Link>

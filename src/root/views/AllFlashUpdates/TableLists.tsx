@@ -122,7 +122,6 @@ function TableLists(props: Props) {
           </>
         )}
       </Container>
-
     </div>
   );
 }

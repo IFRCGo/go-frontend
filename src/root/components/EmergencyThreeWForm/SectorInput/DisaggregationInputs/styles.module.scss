@@ -1,0 +1,141 @@
+@import '~styles/settings/variables';
+
+.tip {
+  color: $primary-color;
+  font-weight: $base-font-medium;
+}
+
+.top {
+  display: flex;
+  justify-content: space-between;
+}
+
+.disaggregation {
+  display: flex;
+
+  .simplified {
+    display: flex;
+    align-items: flex-end;
+    width: 100%;
+    gap: $spacing*2;
+
+    .total-values {
+      display: flex;
+      flex-direction: column;
+      gap: $spacing;
+      flex-basis: 50%;
+    }
+
+    .gender-disaggregation {
+      flex-basis: calc(50% - #{$spacing*2});
+      gap: $spacing;
+      display: flex;
+    }
+
+    .separator {
+      padding: $spacing/2 0;
+      font-size: $font-size-lg;
+    }
+
+    .info {
+      padding: 0 $spacing;
+    }
+  }
+
+  .detailed {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing;
+
+    .disaggregated-for-disabled-input {
+      display: flex;
+      flex-direction: column;
+      gap: $spacing/2;
+      padding: $spacing 0;
+
+      .label {
+        padding: 0 $spacing/2
+      }
+    }
+
+    .gender-and-age-disaggregation-for-disabled,
+    .gender-and-age-disaggregation {
+      display: table;
+      border-collapse: collapse;
+
+      :global {
+        .go-input-container {
+          font-size: $font-size-sm;
+          padding: 0;
+
+          .go-input-internal-input-section {
+            border-radius: 0;
+
+            input {
+              padding: $spacing/2 $spacing/4;
+              text-align: right;
+            }
+
+            input::-webkit-outer-spin-button,
+            input::-webkit-inner-spin-button {
+              -webkit-appearance: none;
+              margin: 0;
+            }
+
+            input[type=number] {
+              -moz-appearance: textfield;
+            }
+          }
+        }
+
+        .go-input-error {
+          z-index: 1;
+        }
+      }
+
+      .total,
+      .other,
+      .female,
+      .male,
+      .labels {
+        display: table-row;
+        font-size: $font-size-sm;
+
+        >* {
+          display: table-cell;
+        }
+      }
+
+      .label {
+        text-align: right;
+        padding: $spacing/2 $spacing;
+        background-color: $white;
+        min-width: 3rem;
+      }
+
+      .total-label {
+        text-align: right;
+        padding: $spacing/2 $spacing;
+        background-color: $grey-mist;
+        min-width: 3rem;
+      }
+
+      .total {
+        .label {
+          background-color: $grey-mist;
+        }
+      }
+
+    }
+
+    .table-container ,
+    .disabled-container {
+      position: relative;
+    }
+
+    .title {
+      padding: $spacing/2 $spacing;
+      font-weight: $base-font-medium;
+    }
+  }
+}

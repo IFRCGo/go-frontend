@@ -1,0 +1,10 @@
+@import '~styles/settings/variables';
+
+.filters {
+  display: flex;
+  gap: $spacing;
+
+  .filter {
+    flex-basis: 16rem;
+  }
+}

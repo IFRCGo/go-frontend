@@ -9,8 +9,21 @@
   &:not(.sub) {
     >.inner-container {
       padding: 0 $spacing*8;
+
+      @media (max-width: $media-medium) {
+        padding: 0 $spacing;
+      }
     }
   }
+
+  &.with-header-border {
+    >.inner-container {
+      .header {
+        border-bottom: $base-border-width solid $base-border-color;
+      }
+    }
+  }
+
 
   >.inner-container {
     width: 100%;
@@ -24,7 +37,6 @@
     .header {
       flex-shrink: 0;
       padding: $spacing * 3/4;
-      border-bottom: $base-border-width solid $base-border-color;
     }
 
     .content {
@@ -50,14 +62,6 @@
     >.inner-container {
       .content {
         padding: $spacing/2 0;
-      }
-    }
-  }
-
-  &.without-header-border {
-    >.inner-container {
-      .header {
-        border-bottom: none;
       }
     }
   }

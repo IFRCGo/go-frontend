@@ -2,6 +2,7 @@ import React from 'react';
 import { _cs } from '@togglecorp/fujs';
 import {
   getErrorObject,
+  analyzeErrors,
   internal,
   Error,
 } from '@togglecorp/toggle-form';
@@ -27,15 +28,15 @@ function NonFieldError<T>(props: Props<T>) {
     return null;
   }
 
-  const stringError = errorObject?.[internal];
-  if (!stringError && !message) {
+  const hasError = analyzeErrors(errorObject);
+  if (!hasError) {
     return null;
   }
 
-  if (!stringError && Object.keys(errorObject).length !== 0) {
+  const stringError = errorObject?.[internal] ?? message;
+  if (!stringError) {
     return null;
   }
-
 
   return (
     <div className={_cs(
@@ -45,7 +46,6 @@ function NonFieldError<T>(props: Props<T>) {
       )}
     >
       {stringError}
-      {error && !stringError && message}
     </div>
   );
 }

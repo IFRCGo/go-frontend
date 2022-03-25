@@ -2,7 +2,6 @@
 
 .imminent-events {
   min-height: 20rem;
-  margin: $spacing*2 0;
 
   .map-section {
     position: relative;
@@ -96,5 +95,9 @@
 
 .map-description {
   padding: $spacing;
+  font-size: $font-size-lg;
 }
 
+.pdc-link {
+  text-decoration: underline;
+}

@@ -112,7 +112,7 @@ function FlashUpdateForm(props: Props) {
     validate,
     setError,
     setValue,
-  } = useForm(schema, defaultFormValues);
+  } = useForm(schema, { value: defaultFormValues });
 
   const {
     actionOptionsMap,

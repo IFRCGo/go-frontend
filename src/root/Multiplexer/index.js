@@ -1,7 +1,6 @@
 import React, { Suspense, lazy } from 'react';
 import { connect } from 'react-redux';
 import { unique } from '@togglecorp/fujs';
-
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { BreadcrumbsProvider } from 'react-breadcrumbs-dynamic';
 
@@ -39,7 +38,7 @@ const ResendValidation = lazy(() => import('../views/resend-validation'));
 const FourHundredFour = lazy(() => import('../views/FourHundredFour'));
 const FieldReport = lazy(() => import('../views/field-report'));
 const Emergencies = lazy(() => import('../views/emergencies'));
-const Emergency = lazy(() => import('../views/emergency'));
+const Emergency = lazy(() => import('../views/Emergency'));
 const EmergencyWrapper = lazy(() => import('../views/emergencyWrapper'));
 const Region = lazy(() => import('../views/region'));
 const Country = lazy(() => import('../views/Country'));
@@ -55,15 +54,20 @@ const NewThreeW = lazy(() => import('../views/NewThreeW'));
 const FieldReportForm = lazy(() => import('../views/FieldReportForm'));
 const GlobalThreeW = lazy(() => import('../views/GlobalThreeW'));
 const AllThreeW = lazy(() => import('../views/AllThreeW'));
+const AllEmergencyThreeW = lazy(() => import('../views/AllEmergencyThreeW'));
 const ThreeW = lazy(() => import('../views/ThreeW'));
 const ThreeWEdit = lazy(() => import('../views/ThreeWEdit'));
+const EmergencyThreeWEdit = lazy(() => import('../views/EmergencyThreeWEdit'));
+const EmergencyThreeW = lazy(() => import('../views/EmergencyThreeW'));
 
-// NOTE: Temporary
+// @NOTE: Temporary
 // const DrefApplicationForm = lazy(() => import('../views/DrefApplicationForm'));
 // const DrefPdfPreview = lazy(() => import('../views/DrefPdfPreview'));
 // const FlashUpdateApplicationForm = lazy(() => import('../views/FlashUpdateApplicationForm'));
 // const FlashUpdateReport = lazy(() => import('../views/FlashUpdateReport'));
 // const AllFlashUpdates = lazy(() => import('../views/AllFlashUpdates'));
+
+const EmergencyThreeWForm = lazy(() => import('../components/EmergencyThreeWForm'));
 
 function LoadingGlobal() {
   return (
@@ -262,13 +266,17 @@ function Multiplexer(props) {
               <Route exact path='/per-assessment/:id' component={PerAssessment} />
               <Route exact path='/per-assessment/:id/edit' render={props => <PerAssessment {...props} isEdit={true} />} />
               <Route path='/preparedness' component={Preparedness} />
-              <Route key="new-three-w" exact path='/three-w/new/' component={NewThreeW} />
+              <PrivateRoute key="new-three-w" exact path='/three-w/new/' component={NewThreeW} />
               <Route exact path='/three-w/all/' component={AllThreeW} />
+              <Route exact path='/emergency-three-w/all/' component={AllEmergencyThreeW} />
               <Route exact path='/three-w/:projectId/' component={ThreeW} />
+              <Route exact path='/emergency-three-w/:projectId/' component={EmergencyThreeW} />
               <PrivateRoute exact path='/three-w/:projectId/edit/' component={ThreeWEdit} />
+              <PrivateRoute exact path='/emergency-three-w/:projectId/edit/' component={EmergencyThreeWEdit} />
               <Route exact path='/three-w/' component={GlobalThreeW} />
+              <PrivateRoute exact path='/emergency-three-w-form/' component={EmergencyThreeWForm} />
 
-              {/* NOTE: Temporary
+              {/* @NOTE: Temporary
               <PrivateRoute key="new-dref-application-form" exact path='/dref-application/new/' component={DrefApplicationForm} />
               <PrivateRoute exact path='/dref-application/:drefId/edit/' component={DrefApplicationForm} />
               <PrivateRoute exact path='/dref-application/:drefId/export/' component={DrefPdfPreview} />

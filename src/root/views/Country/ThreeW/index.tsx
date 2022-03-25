@@ -59,7 +59,7 @@ function ThreeW(props: Props) {
         onChange={setActiveTab}
         variant="secondary"
       >
-        { isDefined(userDetails?.id) && (
+        {isDefined(userDetails?.id) && (
           <div className={styles.headerActions}>
             <Button
               onClick={setShowProjectFormModalTrue}

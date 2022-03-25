@@ -86,7 +86,7 @@ function CountryDistrictInput(props: Props) {
         label={strings.drefFormAddCountry}
         pending={fetchingCountries}
         error={error?.country}
-        name="country"
+        name={"country" as const}
         onChange={onFieldChange}
         options={countryOptions}
         value={value.country}

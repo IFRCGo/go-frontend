@@ -1,0 +1,23 @@
+@import '~styles/settings/variables';
+
+.supply-input {
+  display: flex;
+  gap: $spacing;
+
+  .item {
+    width: 20rem;
+    padding: 0;
+  }
+
+  .count {
+    flex-shrink: 0;
+    width: 10rem;
+    padding: 0;
+  }
+
+  .remove-button {
+    flex-shrink: 0;
+    margin-top: $spacing*2;
+  }
+
+}

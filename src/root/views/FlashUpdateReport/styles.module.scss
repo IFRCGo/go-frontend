@@ -3,6 +3,7 @@
 %image-item {
   flex-basis: 33%;
   border: $base-border-color solid $base-border-width;
+  border-radius: $base-border-radius;
 
   .image {
     width: 100%;
@@ -34,9 +35,15 @@
       flex-direction: column;
       gap: $spacing*4;
 
+      .overview-content {
+        padding: $spacing;
+      }
+
       .maps {
         display: flex;
         flex-wrap: wrap;
+        gap: $spacing;
+        padding: $spacing;
 
         .map-item {
           @extend %image-item;
@@ -46,6 +53,8 @@
       .graphics {
         display: flex;
         flex-wrap: wrap;
+        gap: $spacing;
+        padding: $spacing;
 
         .graphic-item {
           @extend %image-item;
@@ -95,6 +104,10 @@
         .date {
           flex-basis: 10rem;
           flex-shink: 0;
+        }
+
+        .description {
+          flex-grow: 1;
         }
 
         .url {

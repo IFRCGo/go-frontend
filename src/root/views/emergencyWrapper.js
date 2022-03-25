@@ -4,7 +4,7 @@ import { withLanguage } from '#root/languageContext';
 import { useRequest } from '#utils/restRequest';
 import Translate from '#components/Translate';
 
-const Emergency = lazy(() => import('../views/emergency'));
+const Emergency = lazy(() => import('../views/Emergency'));
 
 function EmergencyWrapper(props) {
   const { pending, response } = useRequest({url: 'api/v2/event/' + props.match.params.slug});

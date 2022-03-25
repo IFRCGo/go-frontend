@@ -2,7 +2,8 @@
 
 .country-district-input {
   display: flex;
-  align-items: flex-end;
+  align-items: flex-start;
+  gap: $spacing;
 
   >* {
     flex-basis: 0;
@@ -13,7 +14,7 @@
     flex-basis: unset;
     flex-grow: unset;
     flex-shrink: 0;
-    margin-bottom: 0.5em;
+    margin-top: 2rem;
     padding: $spacing/2 $spacing;
   }
 }

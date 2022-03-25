@@ -1,0 +1,58 @@
+@import '~styles/settings/variables';
+
+.emergency-three-w-details {
+  padding: $spacing;
+  background-color: $white;
+
+  .operation-details {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing;
+    padding: $spacing*2;
+  }
+
+  .activities {
+    padding: $spacing;
+  }
+
+  .custom-supply-content,
+  .supply-content {
+    padding: 0 $spacing!important;
+    margin: 0 calc(-1 * #{$spacing});
+    width: calc(100% - #{$spacing});
+  }
+
+  .custom-supply-header,
+  .supply-header {
+    color: blue;
+    padding: $spacing 0 $spacing/4 0!important;
+
+    h4 {
+      font-weight: $base-font-light;
+      color: $primary-color;
+    }
+  }
+
+  .activity-content {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing;
+  }
+
+  .action-content {
+    padding: 0 $spacing!important;
+  }
+}
+
+.field {
+  padding: 0;
+
+  .label {
+    padding: 0;
+    width: 12rem;
+  }
+
+  .value {
+    padding: 0;
+  }
+}

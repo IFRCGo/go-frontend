@@ -17,7 +17,7 @@ import InputSection from '#components/InputSection';
 import languageContext from '#root/languageContext';
 import SelectInput from '#components/SelectInput';
 import TextInput from '#components/TextInput';
-import TextArea from '#components/TextArea';
+import RichTextArea from '#components/RichTextArea';
 import FlashUpdateFileInput from '#components/FlashUpdateFileInput';
 
 import { NumericValueOption } from '#types';
@@ -210,7 +210,7 @@ function Context(props: Props) {
         >
           <SelectInput
             error={error?.hazard_type}
-            name="hazard_type"
+            name={"hazard_type" as const}
             onChange={onValueChange}
             options={disasterTypeOptions}
             pending={fetchingDisasterTypes}
@@ -233,7 +233,7 @@ function Context(props: Props) {
           title={strings.flashUpdateFormContextSituationalTitle}
           description={strings.flashUpdateFormContextSituationalDescription}
         >
-          <TextArea
+          <RichTextArea
             name="situational_overview"
             onChange={onValueChange}
             value={value.situational_overview}

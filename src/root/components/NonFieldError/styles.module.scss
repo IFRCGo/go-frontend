@@ -3,7 +3,7 @@
 .non-field-error {
   color: $danger-color;
   font-weight: $base-font-bold;
-  padding: $spacing;
+  padding: $spacing/2;
 
   animation: flash $duration-animation-fast 5 ease-in-out;
   animation-delay: $duration-animation-medium;

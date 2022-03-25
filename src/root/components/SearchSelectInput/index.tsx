@@ -19,7 +19,7 @@ const emptyOptionList: Option[] = [];
 
 type Key = string | number;
 
-interface BaseProps<N extends Key | undefined> {
+interface BaseProps<N> {
   className?: string;
   actions?: React.ReactNode;
   icons?: React.ReactNode;
@@ -35,7 +35,7 @@ interface BaseProps<N extends Key | undefined> {
   defaultOptions?: boolean;
 }
 
-type Props<N extends Key | undefined, V extends Key | undefined> = BaseProps<N> & ({
+type Props<N, V extends Key> = BaseProps<N> & ({
   isMulti: true;
   value: V[] | undefined | null;
   onChange: (newValue: NonNullable<V>[] | undefined, name: N) => void;
@@ -45,7 +45,7 @@ type Props<N extends Key | undefined, V extends Key | undefined> = BaseProps<N> 
   onChange: (newValue: V, name: N) => void;
 })
 
-function SearchSelectInput<N extends Key | undefined, V extends Key | undefined>(props: Props<N, V>) {
+function SearchSelectInput<N, V extends Key>(props: Props<N, V>) {
   const {
     className,
     actions,

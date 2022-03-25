@@ -59,10 +59,10 @@ function EventDetails(props: Props) {
           title={strings.drefFormAffectSameArea}
         >
           <RadioInput
-            name="affect_same_area"
+            name={"affect_same_area" as const}
             options={yesNoOptions}
-            radioKeySelector={booleanOptionKeySelector}
-            radioLabelSelector={optionLabelSelector}
+            keySelector={booleanOptionKeySelector}
+            labelSelector={optionLabelSelector}
             value={value.affect_same_area}
             onChange={onValueChange}
             error={error?.affect_same_area}
@@ -72,10 +72,10 @@ function EventDetails(props: Props) {
           title={strings.drefFormAffectedthePopulationTitle}
         >
           <RadioInput
-            name="affect_same_population"
+            name={"affect_same_population" as const}
             options={yesNoOptions}
-            radioKeySelector={booleanOptionKeySelector}
-            radioLabelSelector={optionLabelSelector}
+            keySelector={booleanOptionKeySelector}
+            labelSelector={optionLabelSelector}
             value={value.affect_same_population}
             onChange={onValueChange}
             error={error?.affect_same_population}
@@ -85,10 +85,10 @@ function EventDetails(props: Props) {
           title={strings.drefFormNsRespond}
         >
           <RadioInput
-            name="ns_respond"
+            name={"ns_respond" as const}
             options={yesNoOptions}
-            radioKeySelector={booleanOptionKeySelector}
-            radioLabelSelector={optionLabelSelector}
+            keySelector={booleanOptionKeySelector}
+            labelSelector={optionLabelSelector}
             value={value.ns_respond}
             onChange={onValueChange}
             error={error?.ns_respond}
@@ -98,10 +98,10 @@ function EventDetails(props: Props) {
           title={strings.drefFormNsRequest}
         >
           <RadioInput
-            name="ns_request_fund"
+            name={"ns_request_fund" as const}
             options={yesNoOptions}
-            radioKeySelector={booleanOptionKeySelector}
-            radioLabelSelector={optionLabelSelector}
+            keySelector={booleanOptionKeySelector}
+            labelSelector={optionLabelSelector}
             value={value.ns_request_fund}
             onChange={onValueChange}
             error={error?.ns_request_fund}

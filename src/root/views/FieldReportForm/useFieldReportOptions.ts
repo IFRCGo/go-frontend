@@ -47,6 +47,7 @@ import {
   SOURCE_GOV,
   SOURCE_OTHER,
   User,
+  FREvent,
 } from './common';
 
 type FormSchema = ObjectSchema<PartialForm<FormType>>;
@@ -251,6 +252,16 @@ function useFieldReportOptions(value: Partial<FormType>) {
     })) ?? emptyNumericOptionList
   ), [countriesResponse]);
 
+  const countryIsoOptions = React.useMemo(() => (
+    countriesResponse?.results?.filter(
+      c => c.independent && c.record_type === 1
+    ).map((c) => ({
+      value: c.id,
+      label: c.iso3+'',
+   
+    })) ?? emptyNumericOptionList
+  ), [countriesResponse]);
+
   const countryQuery = React.useMemo(() => ({
     country: value.country,
     limit: 500,
@@ -271,6 +282,52 @@ function useFieldReportOptions(value: Partial<FormType>) {
       label: d.name,
     })).sort(compareString) ?? emptyNumericOptionList
   ), [districtsResponse]);
+
+
+  const eventQuery = React.useMemo(() => ({
+    id: value.event,
+    limit: 500,
+  }), [value.event]);
+
+  const {
+      response: eventsResponse,
+    } = useRequest<ListResponse<FREvent>>({
+    skip: !value.event,
+    url: 'api/v2/event/',
+    query: eventQuery,
+  });
+
+  var updateNo = React.useMemo(() => {  
+    let i = 1;
+    let fr = eventsResponse?.results[0];
+    if (fr !== undefined)
+    {
+    fr.field_reports.forEach(fr => {
+      fr.countries.forEach(c => {     
+        if(c.id === value.country) 
+        {
+          i++;
+        }
+      });
+    });
+  }
+
+    return i;
+  }, [ eventsResponse, value.country]);
+
+
+
+  var eventOptions = React.useMemo(() => (
+    
+    eventsResponse?.results?.map(e => ({
+      value: e.id,
+      label: (updateNo).toString(),
+      
+    })).sort(compareString) ?? emptyNumericOptionList
+  ), [eventsResponse, updateNo]);
+
+
+
 
   const {
     pending: fetchingDisasterTypes,
@@ -427,6 +484,7 @@ function useFieldReportOptions(value: Partial<FormType>) {
   return {
     bulletinOptions,
     countryOptions,
+    countryIsoOptions,
     disasterTypeOptions,
     districtOptions,
     externalPartnerOptions,
@@ -444,6 +502,8 @@ function useFieldReportOptions(value: Partial<FormType>) {
     supportedActivityOptions,
     userDetails,
     yesNoOptions,
+    eventOptions,
+    updateNo,
   };
 }
 
