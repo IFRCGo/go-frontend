@@ -1,3 +1,22 @@
+### Release 6.0.0 - 3w for Emergencies
+
+Date: 2022-03-25
+
+Frontend:
+
+ - Adds 3w forms and frontend for Disaster Response / Emergencies: #2233
+ - Adds auto-prefixing to title for Field Reports: #2112
+ - Fix shown visibility levels in field report: #2203
+ - Unreleased changes to Risk Module and Flash Update implementations
+
+Backend:
+
+ - Backend to support new Disaster Response 3w
+ - API CHANGE: Changes CSV format for Personnel Deployments CSV endpoint: https://github.com/IFRCGo/go-api/issues/1358
+ - Add `molnix_status` field to track inactive deployments
+ - Adds model, API endpoint and import script for Admin2 entities
+
+
 ### Release 5.8.4 - Hotfix for #1934
 
 Date: 2022-03-15
