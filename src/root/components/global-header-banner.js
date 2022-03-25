@@ -38,7 +38,7 @@ class GlobalHeaderBanner extends React.PureComponent {
          stringId='globalHeaderBanner3wTitle'
            params={{
              link: (
-               <a href='/three-w/new' target='_blank'>
+               <a href='/three-w/new'>
                  <Translate stringId='globalHeaderBanner3wLink'/>
                </a>
              )
