@@ -37,10 +37,10 @@ import {
   ListResponse,
 } from '#utils/restRequest';
 
-import cycloneIcon from '../../icons/cyclone.svg';
-import droughtIcon from '../../icons/drought.svg';
-import floodIcon from '../../icons/flood.svg';
-import foodInsecurityIcon from '../../icons/food-insecurity.svg';
+import cycloneIcon from '#utils/risk-icons/cyclone.svg';
+import droughtIcon from '#utils/risk-icons/drought.svg';
+import floodIcon from '#utils/risk-icons/flood.svg';
+import foodInsecurityIcon from '#utils/risk-icons/food-insecurity.svg';
 
 import styles from './styles.module.scss';
 

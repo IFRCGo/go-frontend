@@ -1,0 +1,50 @@
+@import '~styles/settings/variables';
+
+.event-detail {
+  background-color: $color-background;
+  padding: $spacing / 2;
+
+  .top-section {
+    cursor: pointer;
+    padding: $spacing / 2;
+
+    .header {
+      display: flex;
+      gap: $spacing / 2;
+
+      .title {
+        flex-grow: 1;
+        font-size: $font-size-sm;
+        font-weight: $base-font-medium;
+      }
+
+      .icon {
+        flex-shrink: 0;
+        opacity: 0.5;
+        font-size: $font-size-sm;
+      }
+    }
+
+    .sub-title {
+      display: flex;
+      gap: $spacing;
+
+      .type {
+        font-size: $font-size-sm;
+        color: $primary-color;
+      }
+
+      .start-date {
+        font-size: $font-size-sm;
+      }
+    }
+  }
+
+  .description {
+    padding: $spacing / 2;
+    font-size: $font-size-sm;
+    color: $color-text-light;
+    text-align: justify;
+    word-break: break-all;
+  }
+}
