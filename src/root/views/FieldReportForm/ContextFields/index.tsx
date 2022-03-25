@@ -242,7 +242,6 @@ function ContextFields(props: Props) {
       >
         <table cellSpacing={0} cellPadding={0}>
           <tbody>
-           
            <tr>
            {
               reportId === undefined ? (
@@ -261,11 +260,7 @@ function ContextFields(props: Props) {
               </>
               ) : null
             }
-
-           
-
-              <td> 
-            
+              <td>        
                 <TextInput
                   label={strings.fieldReportFormTitleSecondaryLabel}
                   placeholder={strings.fieldReportFormTitleInputPlaceholder}

@@ -311,8 +311,7 @@ function useFieldReportOptions(value: Partial<FormType>) {
       });
     });
   }
-
-    return i;
+   return i;
   }, [ eventsResponse, value.country]);
 
 
