@@ -119,6 +119,9 @@ function EmergencyThreeWDetails(props: Props) {
               label="Sector"
               value={a?.sector_details?.title}
             />
+            <div className={styles.activityDescription}>
+              {a?.details}
+            </div>
             {a?.is_simplified_report ? (
               <div className={styles.simplified}>
                 {a?.people_households === 'people' && (

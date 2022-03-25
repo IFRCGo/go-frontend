@@ -33,6 +33,14 @@ const peopleHouseholdsOptions: {
   { label: 'Households', value: 'households' },
 ];
 
+const disaggregationByDisabledOptions: {
+  label: string;
+  value: boolean;
+}[] = [
+  { label: 'Yes', value: true },
+  { label: 'No', value: false },
+];
+
 // TODO merge with one in utils
 const sumSafe = (nums: (number | undefined | null)[]) => {
   const safeNums = nums.filter(isDefined);
@@ -54,6 +62,7 @@ const defaultValue: PartialForm<Activity> | PartialForm<CustomActivity> = {};
 type Props  = {
   customActivity: false;
   index: number;
+  isFirstSubmission?: boolean;
   onChange: (value: SetValueArg<PartialForm<Activity>>, index: number) => void;
   value: PartialForm<Activity>;
   error: ArrayError<Activity> | undefined;
@@ -61,6 +70,7 @@ type Props  = {
 } | {
   customActivity: true;
   index: number;
+  isFirstSubmission?: boolean;
   onChange: (value: SetValueArg<PartialForm<CustomActivity>>, index: number) => void;
   value: PartialForm<CustomActivity>;
   error: ArrayError<CustomActivity> | undefined;
@@ -74,6 +84,7 @@ function DisaggregationInputs (props: Props) {
     value,
     error: errorFromProps,
     averageHouseholdSizeForSelectedCountry,
+    isFirstSubmission,
   } = props;
 
   const setFieldValue = useFormObject(index, onChange, defaultValue);
@@ -262,7 +273,8 @@ function DisaggregationInputs (props: Props) {
     }
   }, [value?.male_count, value?.female_count, setFieldValue]);
 
-  const showNoDataAvailableOption = value?.is_simplified_report === true
+  const showNoDataAvailableOption = isFirstSubmission === false
+        && value?.is_simplified_report === true
         && value?.people_households === 'people'
         && error?.people_count
         && !value?.has_no_data_on_people_reached;
@@ -309,7 +321,7 @@ function DisaggregationInputs (props: Props) {
                 <>
                   <NumberInput
                     name="household_count"
-                    label="Households"
+                    // label="Households"
                     value={value?.household_count}
                     onChange={setFieldValue}
                     error={error?.household_count}
@@ -319,7 +331,7 @@ function DisaggregationInputs (props: Props) {
               {value?.people_households === 'people' && (
                 <NumberInput
                   name="people_count"
-                  label="People"
+                  // label="People"
                   value={value?.people_count}
                   onChange={setFieldValue}
                   error={error?.people_count}
@@ -575,6 +587,20 @@ function DisaggregationInputs (props: Props) {
                 </div>
               </div>
             </div>
+            <div className={styles.disaggregatedForDisabledInput}>
+              <div className={styles.label}>
+                Are you able to break this down to identify those with disabilities?
+              </div>
+              <RadioInput
+                name={"is_disaggregated_for_disabled" as const}
+                value={value?.is_disaggregated_for_disabled}
+                keySelector={d => d.value}
+                labelSelector={d => d.label}
+                options={disaggregationByDisabledOptions}
+                onChange={setFieldValue}
+              />
+            </div>
+            {/*
             <Checkbox
               label="Are you able to break this down to identify those with disabilities?"
               name={"is_disaggregated_for_disabled" as const}
@@ -582,6 +608,7 @@ function DisaggregationInputs (props: Props) {
               // error={error?.is_disaggregated_for_disabled}
               onChange={setFieldValue}
             />
+            */}
             {value?.is_disaggregated_for_disabled && (
               <div className={styles.disabledContainer}>
                 <div className={styles.title}>

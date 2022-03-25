@@ -10,5 +10,7 @@ export interface Event {
   created_at: string;
   disaster_start_date: string;
 
+  emergency_response_contact_email: string | null;
+
   // TODO: Complete this
 }

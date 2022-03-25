@@ -13,7 +13,7 @@ import {
 } from '#types';
 
 type ValueType = string | number;
-type StoredEventMini = Pick<EventMini, 'id' | 'name'>;
+type StoredEventMini = Pick<EventMini, 'id' | 'name' | 'emergency_response_contact_email'>;
 
 interface Props<N, V extends ValueType> {
   name: N;

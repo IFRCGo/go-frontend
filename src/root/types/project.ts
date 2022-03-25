@@ -24,6 +24,7 @@ export interface EventMini {
   dtype: Disaster;
   slug: string | null;
   auto_generated_source: string | null;
+  emergency_response_contact_email: string | null;
 }
 
 export interface ProjectFormFields {

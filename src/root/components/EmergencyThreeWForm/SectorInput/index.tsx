@@ -45,6 +45,7 @@ interface Props {
   value: Value;
   error: ArrayError<Sector> | undefined;
   averageHouseholdSizeForSelectedCountry: number | undefined | null;
+  isFirstSubmission?: boolean;
 }
 
 function SectorInput(props: Props) {
@@ -58,6 +59,7 @@ function SectorInput(props: Props) {
     actionOptions,
     supplyOptionListByActivity,
     averageHouseholdSizeForSelectedCountry,
+    isFirstSubmission,
   } = props;
 
   const defaultValue = React.useMemo(
@@ -167,6 +169,7 @@ function SectorInput(props: Props) {
             if (isDefined(a.action)) {
               return (
                 <ActivityInput
+                  isFirstSubmission={isFirstSubmission}
                   averageHouseholdSizeForSelectedCountry={averageHouseholdSizeForSelectedCountry}
                   isCashType={actionMap[a.action]?.isCashType}
                   hasLocation={actionMap[a.action]?.hasLocation}
@@ -191,6 +194,7 @@ function SectorInput(props: Props) {
             if (isDefined(a.client_id)) {
               return (
                 <CustomActivityInput
+                  isFirstSubmission={isFirstSubmission}
                   averageHouseholdSizeForSelectedCountry={averageHouseholdSizeForSelectedCountry}
                   key={a.client_id}
                   index={i}

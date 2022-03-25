@@ -39,6 +39,7 @@ import styles from './styles.module.scss';
 type Value = PartialForm<Activity>;
 
 interface Props {
+  isFirstSubmission?: boolean;
   isCashType?: boolean;
   hasLocation?: boolean;
   actionTitle: string;
@@ -63,6 +64,7 @@ function ActivityInput(props: Props) {
     isCashType,
     hasLocation,
     averageHouseholdSizeForSelectedCountry,
+    isFirstSubmission,
   } = props;
 
   const defaultValue = React.useMemo(
@@ -164,6 +166,7 @@ function ActivityInput(props: Props) {
         normalDescription
       >
         <DisaggregationInputs
+          isFirstSubmission={isFirstSubmission}
           index={index}
           customActivity={false}
           onChange={onChange}

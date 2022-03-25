@@ -183,18 +183,12 @@ export function useThreeWOptions(value: Partial<FormType>) {
     query: limitQuery,
   });
 
+  if(user?.data.profile?.org_type==='OTHR') {
+    projectVisibilityOptions = projectVisibilityOptions.filter(x => x.value === 'public' || x.value === 'logged_in_user');    
+  } else if(user?.data.profile?.org_type==='NTLS') {
+    projectVisibilityOptions = projectVisibilityOptions.filter(x => x.value === 'public' || x.value === 'logged_in_user' || x.value === 'ifrc_ns');
+  }
 
-  
-
-  if(user?.data.profile?.org_type==='OTHR')
-    {
-      projectVisibilityOptions = projectVisibilityOptions.filter(x => x.value === 'public' || x.value === 'logged_in_user');    
-    } 
-      else if(user?.data.profile?.org_type==='NTLS')
-    {
-      projectVisibilityOptions = projectVisibilityOptions.filter(x => x.value === 'public' || x.value === 'logged_in_user' || x.value === 'ifrc_ns');
-    }
-    
    const [
     nationalSocietyOptions,
     countryOptions,
@@ -205,7 +199,7 @@ export function useThreeWOptions(value: Partial<FormType>) {
 
     const ns: LabelValue[] = countriesResponse.results
       // d.independent can be either `null`, `false` or `true`.
-      // here, we want to include all countries where 
+      // here, we want to include all countries where
       // independent is either null or true (but exclude false)
       // see https://github.com/IFRCGo/go-frontend/issues/1934
       .filter(d => d.independent !== false && d.society_name)
