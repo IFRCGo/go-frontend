@@ -297,18 +297,14 @@ function useFieldReportOptions(value: Partial<FormType>) {
     query: eventQuery,
   });
 
-  var updateNo = React.useMemo(() => {
-    console.log(eventsResponse);
-   
+  var updateNo = React.useMemo(() => {  
     let i = 1;
     let fr = eventsResponse?.results[0];
-    if (fr!== undefined)
+    if (fr !== undefined)
     {
     fr.field_reports.forEach(fr => {
-      console.log(fr);
-      fr.countries.forEach(c => {
-        console.log(c);
-        if(c.id===value.country) 
+      fr.countries.forEach(c => {     
+        if(c.id === value.country) 
         {
           i++;
         }

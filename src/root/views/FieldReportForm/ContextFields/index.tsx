@@ -290,7 +290,7 @@ function ContextFields(props: Props) {
                     />
                  </td>
                </>
-             )}
+             ): null}
            </tr>
           </tbody>
         </table>
