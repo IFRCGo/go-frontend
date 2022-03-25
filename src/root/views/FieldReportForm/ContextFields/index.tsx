@@ -254,7 +254,7 @@ function ContextFields(props: Props) {
                   placeholder=""
                   name="pref2"
                   //value={(countryIsoOptions.find(x=> x.value === value.country)?.label + ': ' +  disasterTypeOptions.find(x=>x.value === value.dtype)?.label + ' -' + value.start_date?.substring(0,7)).replaceAll('undefined',' ' )}
-                  value={value.country !== undefined && value.dtype !== undefined && value.start_date !== undefined ? countryIsoOptions.find(x=> x.value === value.country)?.label + ': ' +  disasterTypeOptions.find(x=>x.value === value.dtype)?.label + ' -' + value.start_date?.substring(0,7) : ' '}
+                  value={value.country !== undefined && value.dtype !== undefined && value.start_date !== undefined ? countryIsoOptions.find(x=> x.value === value.country)?.label + ': ' +  (value.is_covid_report ? strings.fieldReportCOVID19 : disasterTypeOptions.find(x=>x.value === value.dtype)?.label) + ' -' + value.start_date?.substring(0,7) : ' '}
                   error={error?.event}
                 />
               </td>
