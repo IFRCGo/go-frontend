@@ -26,9 +26,46 @@
     top: $spacing;
   }
 
-  .source-details {
+  .footer {
+    display: flex;
     background-color: $grey-mist;
     padding: $spacing;
+
+    .legend {
+      flex-grow: 1;
+      display: flex;
+      gap: $spacing*3;
+      flex-wrap: wrap;
+      padding: $spacing;
+      background-color: $grey-mist;
+      flex-basis: 100%;
+
+      .legend-title {
+        color: $secondary-color;
+        font-weight: $base-font-bold;
+      }
+
+      .legend-item {
+        display: flex;
+        align-items: center;
+        gap: $spacing;
+
+        .color {
+          height: 1em;
+          width: 1em;
+          opacity: 0.5;
+        }
+
+        .label {
+          font-weight: $base-font-medium;
+        }
+      }
+    }
+
+    .source {
+      flex-shrink: 0;
+    }
   }
+
 }
 

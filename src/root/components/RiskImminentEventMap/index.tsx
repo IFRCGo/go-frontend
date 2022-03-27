@@ -20,6 +20,7 @@ import {
   defaultTooltipOptions,
   fixBounds,
   BBOXType,
+  COLOR_WHITE,
   COLOR_BLACK,
   COLOR_RED,
   COLOR_BLUE,
@@ -46,6 +47,12 @@ import {
 
 import styles from './styles.module.scss';
 
+const legendItems = [
+  { color: COLOR_RED, label: 'Warning'},
+  { color: COLOR_YELLOW, label: 'Watch'},
+  { color: COLOR_BLUE, label: 'Advisory / Information'},
+  { color: COLOR_BLACK, label: 'Unknown' },
+];
 
 const hazardKeys: ImminentHazardTypes[] = [
   'EQ',
@@ -114,7 +121,7 @@ function PDCExposureMap(props: Props) {
   const footprintGeoJson = React.useMemo(() => {
     const dataWithFootprint = hazardList.filter((d) => d.pdc_details.footprint_geojson);
 
-    const featureListForFootprint = dataWithFootprint 
+    const featureListForFootprint = dataWithFootprint
       .map((d) => ({
         ...d.pdc_details.footprint_geojson as NonNullable<typeof d.pdc_details.footprint_geojson>,
         properties: {
@@ -333,8 +340,28 @@ function PDCExposureMap(props: Props) {
           onActiveEventChange={onActiveEventChange}
           activeEventUuid={activeEventUuid}
         />
-        <div className={styles.sourceDetails}>
+        <div className={styles.footer}>
+          <div className={styles.legend}>
+            <div className={styles.legendTitle}>
+              Severity:
+            </div>
+            {legendItems.map((li) => (
+              <div
+                key={li.label}
+                className={styles.legendItem}
+              >
+                <div
+                  className={styles.color}
+                  style={{ backgroundColor: li.color }}
+                />
+                <div className={styles.label}>
+                  {li.label}
+                </div>
+              </div>
+            ))}
+          </div>
           <TextOutput
+            className={styles.source}
             label="Source"
             value="Pacific Disaster Center"
             description={(
@@ -398,11 +425,13 @@ function PDCExposureMap(props: Props) {
               type: 'symbol',
               paint: {
                 'text-color': COLOR_BLACK,
-                'text-halo-color': '#ffffff',
+                'text-halo-color': COLOR_WHITE,
                 'text-halo-width': 2,
                 'text-halo-blur': 1,
               },
               layout: {
+                // FIXME: check the actual problem here
+                // @ts-ignore
                 'text-size': 10,
                 'text-field': ['get', 'forecast_date_time'],
                 'text-anchor': 'left',

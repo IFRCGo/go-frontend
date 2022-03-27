@@ -4,6 +4,7 @@ import {
   IoCaretDown,
 } from 'react-icons/io5';
 
+import TextOutput from '#components/TextOutput';
 import styles from './styles.module.scss';
 
 interface EventDetailProps<E extends string> {
@@ -36,6 +37,7 @@ function EventDetail<E extends string>(props: EventDetailProps<E>) {
     if (isActive && ref.current) {
       ref.current.scrollIntoView({
         behavior: 'smooth',
+        block: 'nearest',
       });
     }
   }, [isActive]);
@@ -59,12 +61,12 @@ function EventDetail<E extends string>(props: EventDetailProps<E>) {
           </div>
         </div>
         <div className={styles.subTitle}>
-          <div className={styles.type}>
-            {type}
-          </div>
-          <div className={styles.startDate}>
-            {startDate}
-          </div>
+          <TextOutput
+            className={styles.startDate}
+            label="Start date"
+            value={startDate}
+            valueType="date"
+          />
         </div>
       </div>
       {isActive && (
