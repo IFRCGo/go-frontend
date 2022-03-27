@@ -97,6 +97,7 @@ function ImminentEvents(props: Props) {
       {pending && <BlockLoading /> }
       {!pending && data && (
         <RiskImminentEventMap
+          sidebarHeading={region?.name}
           className={styles.map}
           hazardList={data}
           defaultBounds={regionBounds}
