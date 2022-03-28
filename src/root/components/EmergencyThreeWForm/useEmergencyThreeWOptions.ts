@@ -581,6 +581,23 @@ export function useEmergencyThreeWoptions(
   }, [countriesResponse]);
 
   const countryOptions = React.useMemo(() => {
+    if (!countriesResponse) {
+      return emptyNumericOptionList;
+    }
+
+    const co: NumericValueOption[] = countriesResponse.results
+      .filter(d => d.independent && isDefined(d.iso))
+      .map(d => ({
+        value: d.id,
+        label: d.name,
+      })).sort(compareString);
+
+
+    return co;
+  }, [countriesResponse]);
+
+  /*
+  const countryOptions = React.useMemo(() => {
     if (!eventDetailResponse) {
       return emptyNumericOptionList;
     }
@@ -590,6 +607,7 @@ export function useEmergencyThreeWoptions(
       value: c.id,
     }));
   }, [eventDetailResponse]);
+  */
 
   const districtOptions = React.useMemo(() => (
     districtsResponse?.results?.map(d => ({
