@@ -1,9 +1,5 @@
 @import '~styles/settings/variables';
 
-.map-contaier {
-  padding: 0;
-}
-
 .tooltip-content {
   display: flex;
   flex-direction: column;
@@ -11,11 +7,31 @@
 
   hr {
     margin: $spacing/2 0;
+    border-bottom: $base-border-width solid $base-border-color;
+  }
+
+  .event-dates {
+    padding: 0 $spacing/2;
+    margin-bottom: $spacing;
+
+    >* {
+      padding: 0;
+      gap: $spacing/2;
+
+      >* {
+        padding: 0;
+
+        &:first-child {
+          width: 7rem;
+        }
+      }
+    }
   }
 }
 
 .estimated-output {
   align-items: flex-start!important;
+  padding: 0 $spacing/4;
 
   .value {
     font-weight: $base-font-bold;

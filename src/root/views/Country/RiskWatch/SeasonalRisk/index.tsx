@@ -95,6 +95,8 @@ function SeasonalRisk(props: Props) {
     url: 'risk://api/v1/seasonal/',
   });
 
+  console.info(response);
+
   const [selectedMonth, setSelectedMonth] = useInputState(0);
 
   const [
@@ -226,6 +228,7 @@ function SeasonalRisk(props: Props) {
         sub
         description="This table displays available information about specific disaster risks for for each month. When you move the slider from month to month, the information in the table will update automatically."
         descriptionClassName={styles.tableDescription}
+        contentClassName={styles.content}
       >
         <MonthSelector
           name={undefined}

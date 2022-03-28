@@ -1,103 +1,20 @@
 @import '~styles/settings/variables';
 
 .imminent-events {
-  min-height: 20rem;
+  margin: $spacing*2 0;
 
-  .map-section {
+  .map-description {
+    padding: $spacing;
+  }
+
+  .main-content {
     position: relative;
-    z-index: 0;
-    display: flex;
+    min-height: 20rem;
 
     .map {
       z-index: 0;
       flex-grow: 1;
-      height: 40rem;
-    }
-
-    .side-bar {
-      background-color: #fff;
-      position: absolute;
-      right: 1rem;
-      top: 1rem;
-      max-height: calc(40rem - 2rem);
-      width: 20rem;
-      box-shadow: $base-box-shadow;
-      z-index: 1;
-      overflow: auto;
-      padding-bottom: $spacing;
-      border-radius: $base-border-radius;
-
-      .event-list {
-        overflow: auto;
-        display: flex;
-        flex-direction: column;
-        gap: $base-border-width;
-        padding: 0 $spacing;
-
-        .event-detail {
-          background-color: $color-background;
-          padding: $spacing / 2;
-
-          .top-section {
-            cursor: pointer;
-            padding: $spacing / 2;
-
-            .header {
-              display: flex;
-              gap: $spacing / 2;
-
-              .title {
-                flex-grow: 1;
-                font-size: $font-size-sm;
-                font-weight: $base-font-medium;
-              }
-
-              .icon {
-                flex-shrink: 0;
-                opacity: 0.5;
-                font-size: $font-size-sm;
-              }
-            }
-
-            .sub-title {
-              display: flex;
-              gap: $spacing;
-
-              .type {
-                font-size: $font-size-sm;
-                color: $primary-color;
-              }
-
-              .start-date {
-                font-size: $font-size-sm;
-              }
-            }
-          }
-
-          .description {
-            padding: $spacing / 2;
-            font-size: $font-size-sm;
-            color: $color-text-light;
-            text-align: justify;
-            word-break: break-all;
-          }
-        }
-      }
-    }
-
-    :global {
-      .mapboxgl-popup {
-        height: 18rem;
-      }
+      height: 50rem;
     }
   }
-}
-
-.map-description {
-  padding: $spacing;
-  font-size: $font-size-lg;
-}
-
-.pdc-link {
-  text-decoration: underline;
 }

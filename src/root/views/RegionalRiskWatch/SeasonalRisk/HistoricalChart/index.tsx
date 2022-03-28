@@ -37,10 +37,10 @@ import {
   ListResponse,
 } from '#utils/restRequest';
 
-import cycloneIcon from '../../icons/cyclone.svg';
-import droughtIcon from '../../icons/drought.svg';
-import floodIcon from '../../icons/flood.svg';
-import foodInsecurityIcon from '../../icons/food-insecurity.svg';
+import cycloneIcon from '#utils/risk-icons/cyclone.svg';
+import droughtIcon from '#utils/risk-icons/drought.svg';
+import floodIcon from '#utils/risk-icons/flood.svg';
+import foodInsecurityIcon from '#utils/risk-icons/food-insecurity.svg';
 
 import styles from './styles.module.scss';
 
@@ -177,7 +177,7 @@ const historicalHazardTypeToIconMap: {
   'Flash Flood': COLOR_FLOOD,
 };
 
-const ICONSIZE = 22;
+const SCATTER_ICON_SIZE = 26;
 interface IconShapeProps {
   dtype: string;
   cx: number;
@@ -200,17 +200,17 @@ function IconShape(props: IconShapeProps) {
 
   return (
     <foreignObject
-      width={ICONSIZE}
-      height={ICONSIZE}
-      x={cx - (ICONSIZE / 2)}
-      y={cy - (ICONSIZE / 2)}
+      width={SCATTER_ICON_SIZE}
+      height={SCATTER_ICON_SIZE}
+      x={cx - (SCATTER_ICON_SIZE / 2)}
+      y={cy - (SCATTER_ICON_SIZE / 2)}
     >
       <div
         style={{
           backgroundColor: historicalHazardTypeToIconMap[dtype],
           borderRadius: '50%',
-          width: `${ICONSIZE}px`,
-          height: `${ICONSIZE}px`,
+          width: `${SCATTER_ICON_SIZE}px`,
+          height: `${SCATTER_ICON_SIZE}px`,
           padding: '5px',
           display: 'flex',
           alignItems: 'center',
@@ -404,8 +404,8 @@ function ImpactChart(props: ImpactChartProps) {
             />
             <Scatter
               isAnimationActive={false}
-              width={20}
-              height={20}
+              width={SCATTER_ICON_SIZE}
+              height={SCATTER_ICON_SIZE}
               dataKey="affected"
               shape={(arg) => (
                 <IconShape

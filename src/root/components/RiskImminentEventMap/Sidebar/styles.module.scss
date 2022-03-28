@@ -1,0 +1,11 @@
+@import '~styles/settings/variables';
+
+.sidebar {
+  .event-list {
+    padding: 0 $spacing/2!important;
+    margin: $spacing/2 0;
+    display: flex;
+    flex-direction: column;
+    gap: $spacing/4;
+  }
+}
