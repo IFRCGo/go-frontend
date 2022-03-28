@@ -970,11 +970,18 @@ class Emergency extends React.Component {
     return this.state.hasSnippets;
   }
 
+  hasActivities = () => {
+    const { event } = this.props;
+    return (event?.data?.response_activity_count ?? 0) > 0;
+  }
+
   getTabs () {
     const { strings } = this.props;
+
     const tabs = [
       { title: strings.emergencyTabDetails, hash: '#details' },
     ];
+
 
     if (this.hasReportsTab()) {
       tabs.push({
@@ -983,10 +990,12 @@ class Emergency extends React.Component {
       });
     }
 
-    tabs.push({
-      title: 'Activities',
-      hash: '#activities',
-    });
+    if (this.hasActivities()) {
+      tabs.push({
+        title: 'Activities',
+        hash: '#activities',
+      });
+    }
 
     if (this.hasRRTab()) {
       tabs.push({
@@ -1469,12 +1478,14 @@ class Emergency extends React.Component {
                     </TabContent>
                   </TabPanel>
                 )}
-                <TabPanel>
-                  <Activities
-                    emergencyId={this.props.match.params.id}
-                    eventCountryIdList={this.getCountryIdList(this.props.event)}
-                  />
-                </TabPanel>
+                {this.hasActivities() && (
+                    <TabPanel>
+                      <Activities
+                        emergencyId={this.props.match.params.id}
+                        eventCountryIdList={this.getCountryIdList(this.props.event)}
+                      />
+                    </TabPanel>
+                )}
                 {this.hasRRTab() && (
                   <TabPanel>
                     <div>

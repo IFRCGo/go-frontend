@@ -595,6 +595,7 @@ function EmergencyThreeWForm(props: Props) {
     countryOptions,
     districtOptions,
     fetchingOptions,
+    fetchingDistricts,
     averageHouseholdSizeForSelectedCountry,
     statusMap,
   } = useEmergencyThreeWoptions(value);
@@ -683,8 +684,8 @@ function EmergencyThreeWForm(props: Props) {
                 value={value?.country}
                 onChange={setFieldValue}
                 error={error?.country}
-                placeholder={isDefined(value?.event) ? 'Select a country' : 'Please select an IFRC Operation first'}
-                disabled={inputsDisabled || isNotDefined(value?.event)}
+                placeholder="Select a country"
+                disabled={inputsDisabled}
               />
               <SelectInput
                 label="Region/Province"
@@ -692,6 +693,7 @@ function EmergencyThreeWForm(props: Props) {
                 options={districtOptions}
                 value={value?.districts}
                 onChange={setFieldValue}
+                pending={fetchingDistricts}
                 error={error?.districts}
                 placeholder={isDefined(value?.country) ? 'Select one or more region' : 'Select a country first'}
                 disabled={inputsDisabled || isNotDefined(value?.country)}
