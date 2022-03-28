@@ -2,7 +2,13 @@
 
 .risk-table-container {
   .table-description {
+    gap: $spacing;
     padding: $spacing;
-    font-size: $font-size-lg;
+  }
+
+  .content {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing*2;
   }
 }

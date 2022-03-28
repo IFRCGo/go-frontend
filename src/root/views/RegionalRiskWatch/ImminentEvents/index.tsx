@@ -60,7 +60,32 @@ function ImminentEvents(props: Props) {
         return date2.getTime() - date1.getTime();
       });
 
-      return sortedList[0];
+      let latestData = sortedList[0];
+
+      const latestFootprint = sortedList.find(h => !!h.pdc_details.footprint_geojson)?.pdc_details?.footprint_geojson;
+      const latestTrack = sortedList.find(h => !!h.pdc_details.storm_position_geojson)?.pdc_details?.storm_position_geojson;
+
+      if (!latestData.pdc_details.footprint_geojson && latestFootprint) {
+        latestData = {
+          ...latestData,
+          pdc_details: {
+            ...latestData.pdc_details,
+            footprint_geojson: latestFootprint,
+          },
+        };
+      }
+
+      if (!latestData.pdc_details.storm_position_geojson && latestTrack) {
+        latestData = {
+          ...latestData,
+          pdc_details: {
+            ...latestData.pdc_details,
+            storm_position_geojson: latestTrack,
+          },
+        };
+      }
+
+      return latestData;
     });
 
     return uniqueList;
@@ -97,7 +122,7 @@ function ImminentEvents(props: Props) {
       {pending && <BlockLoading /> }
       {!pending && data && (
         <RiskImminentEventMap
-          sidebarHeading={region?.name}
+          sidebarHeading={region?.region_name}
           className={styles.map}
           hazardList={data}
           defaultBounds={regionBounds}

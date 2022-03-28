@@ -35,14 +35,10 @@ function Sidebar(props: Props) {
     >
       {hazardList?.map((hazard) => (
         <EventDetail
-          eventUuid={hazard.pdc_details.uuid}
           key={hazard.id}
-          title={hazard.pdc_details.hazard_name}
-          type={hazard.hazard_type_display}
-          description={hazard.pdc_details.description}
-          startDate={hazard.pdc_details.start_date}
           onClick={onActiveEventChange}
           isActive={activeEventUuid === hazard.pdc_details.uuid}
+          hazardDetails={hazard}
         />
       ))}
     </Container>
