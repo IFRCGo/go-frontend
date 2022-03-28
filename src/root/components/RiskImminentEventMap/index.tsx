@@ -47,6 +47,20 @@ import {
 
 import styles from './styles.module.scss';
 
+const severityFillColorPaint = [
+  'match',
+  ['get', 'severity'],
+  'warning',
+  COLOR_RED,
+  'watch',
+  COLOR_YELLOW,
+  'advisory',
+  COLOR_BLUE,
+  'information',
+  COLOR_BLUE,
+  COLOR_BLACK,
+];
+
 const legendItems = [
   { color: COLOR_RED, label: 'Warning'},
   { color: COLOR_YELLOW, label: 'Watch'},
@@ -306,19 +320,7 @@ function PDCExposureMap(props: Props) {
   const footprintLayerOptions = React.useMemo(() => ({
     type: 'fill',
     paint: {
-      'fill-color': [
-        'match',
-        ['get', 'severity'],
-        'warning',
-        COLOR_RED,
-        'watch',
-        COLOR_YELLOW,
-        'advisory',
-        COLOR_BLUE,
-        'information',
-        COLOR_BLUE,
-        COLOR_BLACK,
-      ],
+      'fill-color': severityFillColorPaint,
       'fill-opacity': 0.3,
     },
     filter: ['==', ['get', 'hazardUuid'], activeHazard?.uuid ?? ''],
@@ -332,14 +334,16 @@ function PDCExposureMap(props: Props) {
       navControlPosition="top-left"
     >
       <div className={_cs(styles.mapContainer, className)}>
-        <MapContainer className={styles.map} />
-        <Sidebar
-          heading={sidebarHeading}
-          className={styles.sidebar}
-          hazardList={hazardList}
-          onActiveEventChange={onActiveEventChange}
-          activeEventUuid={activeEventUuid}
-        />
+        <div className={styles.wrapperForSidebar}>
+          <MapContainer className={styles.map} />
+          <Sidebar
+            heading={sidebarHeading}
+            className={styles.sidebar}
+            hazardList={hazardList}
+            onActiveEventChange={onActiveEventChange}
+            activeEventUuid={activeEventUuid}
+          />
+        </div>
         <div className={styles.footer}>
           <div className={styles.legend}>
             <div className={styles.legendTitle}>
@@ -412,7 +416,7 @@ function PDCExposureMap(props: Props) {
             layerOptions={{
               type: 'circle',
               paint: {
-                'circle-color': '#ff0000',
+                'circle-color': severityFillColorPaint,
                 'circle-radius': 6,
                 'circle-opacity': 0.5,
               },

@@ -61,16 +61,23 @@ function PointDetails(props: PointDetailsProps) {
       onCloseButtonClick={onCloseButtonClick}
       contentClassName={styles.tooltipContent}
     >
-      <TextOutput
-        label="Start date"
-        value={pdc_details.start_date}
-        valueType="date"
-      />
-      <TextOutput
-        label="Last updated on"
-        value={pdc_details.pdc_updated_at}
-        valueType="date"
-      />
+      <div className={styles.eventDates}>
+        <TextOutput
+          label="Event start date"
+          value={pdc_details.start_date}
+          valueType="date"
+        />
+        <TextOutput
+          label="Created on"
+          value={pdc_details.start_date}
+          valueType="date"
+        />
+        <TextOutput
+          label="Updated on"
+          value={pdc_details.pdc_updated_at}
+          valueType="date"
+        />
+      </div>
       <EstimatedOutput
         attribute="People Exposed / Potentially Affected"
         value={population_exposure?.total?.value}

@@ -12,18 +12,24 @@
     }
   }
 
-  .map {
+  .wrapper-for-sidebar {
+    display: flex;
     flex-grow: 1;
-  }
+    position: relative;
 
-  .sidebar {
-    background-color: $white;
-    box-shadow: $base-box-shadow;
-    position: absolute;
-    width: 20rem;
-    max-height: calc(100% - #{$spacing*2} - 4rem);
-    right: $spacing;
-    top: $spacing;
+    .map {
+      flex-grow: 1;
+    }
+
+    .sidebar {
+      background-color: $white;
+      box-shadow: $base-box-shadow;
+      position: absolute;
+      width: 20rem;
+      max-height: calc(100% - #{$spacing*2} - 1rem);
+      right: $spacing;
+      top: $spacing;
+    }
   }
 
   .footer {

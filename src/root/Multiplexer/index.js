@@ -63,10 +63,10 @@ const EmergencyThreeW = lazy(() => import('../views/EmergencyThreeW'));
 // @NOTE: Temporary
 // const DrefApplicationForm = lazy(() => import('../views/DrefApplicationForm'));
 // const DrefPdfPreview = lazy(() => import('../views/DrefPdfPreview'));
-// const FlashUpdateApplicationForm = lazy(() => import('../views/FlashUpdateApplicationForm'));
-// const FlashUpdateReport = lazy(() => import('../views/FlashUpdateReport'));
-// const AllFlashUpdates = lazy(() => import('../views/AllFlashUpdates'));
 
+const FlashUpdateApplicationForm = lazy(() => import('../views/FlashUpdateApplicationForm'));
+const FlashUpdateReport = lazy(() => import('../views/FlashUpdateReport'));
+const AllFlashUpdates = lazy(() => import('../views/AllFlashUpdates'));
 const EmergencyThreeWForm = lazy(() => import('../components/EmergencyThreeWForm'));
 
 function LoadingGlobal() {
@@ -275,15 +275,15 @@ function Multiplexer(props) {
               <PrivateRoute exact path='/emergency-three-w/:projectId/edit/' component={EmergencyThreeWEdit} />
               <Route exact path='/three-w/' component={GlobalThreeW} />
               <PrivateRoute exact path='/emergency-three-w-form/' component={EmergencyThreeWForm} />
+              <PrivateRoute key="new-flash-update-application-form" exact path='/flash-update/new/' component={FlashUpdateApplicationForm} />
+              <Route exact path='/flash-update/all/' component={AllFlashUpdates} />
+              <PrivateRoute exact path='/flash-update/:id/edit/' component={FlashUpdateApplicationForm} />
+              <Route exact path='/flash-update/:id/' component={FlashUpdateReport} />
 
               {/* @NOTE: Temporary
               <PrivateRoute key="new-dref-application-form" exact path='/dref-application/new/' component={DrefApplicationForm} />
               <PrivateRoute exact path='/dref-application/:drefId/edit/' component={DrefApplicationForm} />
               <PrivateRoute exact path='/dref-application/:drefId/export/' component={DrefPdfPreview} />
-              <PrivateRoute key="new-flash-update-application-form" exact path='/flash-update/new/' component={FlashUpdateApplicationForm} />
-              <Route exact path='/flash-update/all/' component={AllFlashUpdates} />
-              <PrivateRoute exact path='/flash-update/:id/edit/' component={FlashUpdateApplicationForm} />
-              <Route exact path='/flash-update/:id/' component={FlashUpdateReport} />
               */}
 
               <Route component={FourHundredFour} />

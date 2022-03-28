@@ -44,11 +44,27 @@
     }
   }
 
-  .description {
-    padding: $spacing / 2;
-    font-size: $font-size-sm;
-    color: $color-text-light;
-    text-align: justify;
-    word-break: break-all;
+  .details {
+    .dates {
+      font-size: $font-size-sm;
+      padding: $spacing/2;
+
+      >* {
+        padding: 0;
+        gap: $spacing/2;
+
+        >* {
+          padding: 0;
+        }
+      }
+    }
+
+    .description {
+      padding: $spacing / 2;
+      font-size: $font-size-sm;
+      color: $color-text-light;
+      text-align: justify;
+      word-break: break-all;
+    }
   }
 }
