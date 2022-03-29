@@ -133,6 +133,14 @@ class MobileNavbar extends React.PureComponent {
                       {strings.headerDropdownNew3WActivity}
                     </Link>
                   </li>
+                  <li>
+                    <Link
+                      to='/flash-update/new'
+                      className='drop__menu-item'
+                    >
+                      {strings.headerDropdownNewFlashUpdate}
+                    </Link>
+                  </li>
                   {/* @NOTE: Temporary
                   <li className='drop__menu-item'>
                     <Link
@@ -140,14 +148,6 @@ class MobileNavbar extends React.PureComponent {
                         className='drop__menu-item'
                     >
                       {strings.headerDropdownNewDrefApplication}
-                    </Link>
-                  </li>
-                  <li>
-                    <Link
-                      to='/flash-update/new'
-                      className='drop__menu-item'
-                    >
-                      {strings.headerDropdownNewFlashUpdate}
                     </Link>
                   </li>
                   */}
