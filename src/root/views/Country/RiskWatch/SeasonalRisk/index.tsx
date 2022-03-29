@@ -95,8 +95,6 @@ function SeasonalRisk(props: Props) {
     url: 'risk://api/v1/seasonal/',
   });
 
-  console.info(response);
-
   const [selectedMonth, setSelectedMonth] = useInputState(0);
 
   const [

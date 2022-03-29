@@ -149,6 +149,27 @@ export interface GARReturnPeriodData extends ReturnPeriodData {
   population_exposure_return_period_1000_years: number | null;
 }
 
+interface ReturnPeriodAttributes {
+  economic_loss: number;
+  population_exposure: number;
+  population_displacement: number;
+}
+
+export interface NewReturnPeriodData {
+  country: number;
+  country_details: CountryDetail;
+  hazard_type: HazardTypes;
+  hazard_type_display: string;
+  id: number;
+  ten_years: ReturnPeriodAttributes;
+  twenty_years: ReturnPeriodAttributes;
+  fifty_years: ReturnPeriodAttributes;
+  hundred_years: ReturnPeriodAttributes;
+  two_hundred_fifty_years: ReturnPeriodAttributes;
+  five_hundred_years: ReturnPeriodAttributes;
+  one_thousand_years: ReturnPeriodAttributes;
+}
+
 export interface ExposureData {
   id: number;
   hazard_type_display: string;
@@ -183,7 +204,7 @@ interface THReport {
 }
 
 export interface SeasonalResponse {
-  gar_return_period_data: GARReturnPeriodData[];
+  gar_return_period_data: NewReturnPeriodData[];
   hazard_info: THReport[];
   idmc: IDMCData[];
   idmc_return_period: IDMCReturnPeriodData[];

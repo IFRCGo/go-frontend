@@ -17,7 +17,7 @@ import InfoPopup from '#components/InfoPopup';
 
 import {
   IDMCReturnPeriodData,
-  GARReturnPeriodData,
+  NewReturnPeriodData,
 } from '../common';
 
 import styles from './styles.module.scss';
@@ -130,7 +130,7 @@ const getReturnPeriodColumns = () => ([
 
 interface Props {
   displacementData?: IDMCReturnPeriodData[];
-  economicLossAndExposureData?: GARReturnPeriodData[];
+  economicLossAndExposureData?: NewReturnPeriodData[];
   hazardOptions: StringValueOption[];
 }
 
@@ -159,36 +159,36 @@ function ReturnPeriodTable(props: Props) {
         ...defaultNullValues,
         frequencyDisplay: '1-in-20-year event',
         displacement: selectedHazardDisplacementData?.[0]?.return_period_20_years ?? null,
-        economicLosses: selectedHazardEconomicLossData?.[0]?.economic_loss_return_period_20_years ?? null,
-        exposure: selectedHazardEconomicLossData?.[0]?.population_exposure_return_period_25_years ?? null,
+        economicLosses: selectedHazardEconomicLossData?.[0]?.twenty_years?.economic_loss ?? null,
+        exposure: selectedHazardEconomicLossData?.[0]?.twenty_years?.economic_loss ?? null,
       },
       {
         ...defaultNullValues,
         frequencyDisplay: '1-in-50-year event',
         displacement: selectedHazardDisplacementData?.[0]?.return_period_50_years ?? null,
-        economicLosses: selectedHazardEconomicLossData?.[0]?.economic_loss_return_period_50_years ?? null,
-        exposure: selectedHazardEconomicLossData?.[0]?.population_exposure_return_period_50_years ?? null,
+        economicLosses: selectedHazardEconomicLossData?.[0]?.fifty_years?.economic_loss ?? null,
+        exposure: selectedHazardEconomicLossData?.[0]?.fifty_years?.population_exposure ?? null,
       },
       {
         ...defaultNullValues,
         frequencyDisplay: '1-in-100-year event',
         displacement: selectedHazardDisplacementData?.[0]?.return_period_100_years ?? null,
-        economicLosses: selectedHazardEconomicLossData?.[0]?.economic_loss_return_period_100_years ?? null,
-        exposure: selectedHazardEconomicLossData?.[0]?.population_exposure_return_period_100_years ?? null,
+        economicLosses: selectedHazardEconomicLossData?.[0]?.hundred_years?.economic_loss ?? null,
+        exposure: selectedHazardEconomicLossData?.[0]?.hundred_years?.population_exposure ?? null,
       },
       {
         ...defaultNullValues,
         frequencyDisplay: '1-in-250-year event',
         displacement: selectedHazardDisplacementData?.[0]?.return_period_250_years ?? null,
-        economicLosses: selectedHazardEconomicLossData?.[0]?.economic_loss_return_period_250_years ?? null,
-        exposure: selectedHazardEconomicLossData?.[0]?.population_exposure_return_period_200_years ?? null,
+        economicLosses: selectedHazardEconomicLossData?.[0]?.two_hundred_fifty_years?.economic_loss ?? null,
+        exposure: selectedHazardEconomicLossData?.[0]?.two_hundred_fifty_years?.population_exposure ?? null,
       },
       {
         ...defaultNullValues,
         frequencyDisplay: '1-in-500-year event',
         displacement: selectedHazardDisplacementData?.[0]?.return_period_500_years ?? null,
-        economicLosses: selectedHazardEconomicLossData?.[0]?.economic_loss_return_period_500_years ?? null,
-        exposure: selectedHazardEconomicLossData?.[0]?.population_exposure_return_period_500_years ?? null,
+        economicLosses: selectedHazardEconomicLossData?.[0]?.five_hundred_years?.economic_loss ?? null,
+        exposure: selectedHazardEconomicLossData?.[0]?.five_hundred_years?.population_exposure ?? null,
       },
     ];
   }, [economicLossAndExposureData, displacementData, hazardType]);
