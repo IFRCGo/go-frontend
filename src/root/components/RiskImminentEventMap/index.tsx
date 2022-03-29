@@ -11,7 +11,13 @@ import Map, {
   MapBounds,
   MapTooltip,
 } from '@togglecorp/re-map';
-import turfBbox from '@turf/bbox';
+import {
+  point as turfPoint,
+  bbox as turfBbox,
+  buffer as turfBuffer,
+  bboxPolygon as turfBboxPolygon,
+} from '@turf/turf';
+
 import { LngLat } from 'mapbox-gl';
 
 import {
@@ -177,25 +183,17 @@ function PDCExposureMap(props: Props) {
         return defaultBounds;
       }
 
-      if (!ah.pdc_details.footprint_geojson && !ah.pdc_details.storm_position_geojson) {
-        return defaultBounds;
-      }
-
       const stormPoints = ah.pdc_details.storm_position_geojson;
+      const point = turfPoint([
+        ah.pdc_details.longitude,
+        ah.pdc_details.latitude,
+      ]);
+      const pointBuffer = turfBuffer(point, 50, { units: 'kilometers' });
 
       const geojson = {
         type: 'FeatureCollection',
         features: [
-          {
-            type: 'Feature',
-            geometry: {
-              type: 'Point',
-              coordinates: [
-                ah.pdc_details.longitude,
-                ah.pdc_details.latitude,
-              ],
-            },
-          },
+          pointBuffer,
           ah.pdc_details.footprint_geojson,
           stormPoints ? ({
             type: 'Feature',
