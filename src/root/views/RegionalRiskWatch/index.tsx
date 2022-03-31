@@ -35,7 +35,7 @@ function RegionalRiskWatch(props: Props) {
         value={activeTab}
         onChange={setActiveTab}
       >
-        <TabList>
+        <TabList className={styles.tabList}>
           <Tab name="imminent">
             Imminent
           </Tab>

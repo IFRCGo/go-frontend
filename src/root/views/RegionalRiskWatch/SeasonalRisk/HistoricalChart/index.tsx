@@ -33,6 +33,12 @@ import {
   sum,
 } from '#utils/common';
 import {
+  COLOR_FLOOD,
+  COLOR_CYCLONE,
+  COLOR_DROUGHT,
+  COLOR_FOOD_INSECURITY,
+} from '#utils/risk';
+import {
   useRequest,
   ListResponse,
 } from '#utils/restRequest';
@@ -51,10 +57,6 @@ const chartMargin = {
   bottom: 0,
 };
 
-const COLOR_FLOOD = '#7d8b9d';
-const COLOR_CYCLONE = '#aeb7c2';
-const COLOR_DROUGHT = '#b09db2';
-const COLOR_FOOD_INSECURITY = '#c9ccb7';
 
 function formatNumber (value: number) {
   const {

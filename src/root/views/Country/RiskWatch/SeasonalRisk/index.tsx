@@ -24,7 +24,7 @@ import useInputState from '#hooks/useInputState';
 import {
   RiskData,
   IPCData,
-  ReturnPeriodHazardTypes,
+  ReturnPeriodHazardType,
   SeasonalResponse,
   monthKeys,
 } from './common';
@@ -48,7 +48,7 @@ const visibleHazardTypeMap: {
 
 const visibleReturnPeriodHazardTypeMap: {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  [key in ReturnPeriodHazardTypes]: boolean;
+  [key in ReturnPeriodHazardType]: boolean;
 } = {
   SS: true,
   FL: true,
@@ -193,14 +193,11 @@ function SeasonalRisk(props: Props) {
       };
     });
 
-    type ReturnPeriodHazardTypes = 'SS' | 'FL' | 'WD';
-
     const rpHazardTitleMap = {
-      ...listToMap(response?.idmc_return_period, d => d.hazard_type, d => d.hazard_type_display),
-      ...listToMap(response?.gar_return_period_data, d => d.hazard_type, d => d.hazard_type_display),
+      ...listToMap(response?.return_period_data, d => d.hazard_type, d => d.hazard_type_display),
     };
 
-    const allRpHazardKeys = Object.keys(rpHazardTitleMap) as ReturnPeriodHazardTypes[];
+    const allRpHazardKeys = Object.keys(rpHazardTitleMap) as ReturnPeriodHazardType[];
     const rpHazardKeys = allRpHazardKeys.filter(
       (h) => visibleReturnPeriodHazardTypeMap[h]
     );
@@ -245,8 +242,7 @@ function SeasonalRisk(props: Props) {
         />
       </Container>
       <ReturnPeriodTable
-        displacementData={response?.idmc_return_period}
-        economicLossAndExposureData={response?.gar_return_period_data}
+        data={response?.return_period_data}
         hazardOptions={returnPeriodHazardOptions}
       />
       <ImpactChart countryId={countryId} />
