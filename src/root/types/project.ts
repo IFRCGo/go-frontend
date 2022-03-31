@@ -120,8 +120,8 @@ export interface ActivityInEmergencyProjectResponse {
     title: string;
     order: number;
   } | null;
-  is_simplified_report: boolean;
-  has_no_data_on_people_reached: boolean;
+  is_simplified_report: boolean | null;
+  has_no_data_on_people_reached: boolean | null;
   people_households: 'people' | 'households';
   household_count: number | null;
   amount: number | null;
@@ -129,33 +129,57 @@ export interface ActivityInEmergencyProjectResponse {
   people_count: number | null;
   male_count: number | null;
   female_count: number | null;
-  male_0_5_count: number | null;
+
+  male_0_1_count: number | null;
+  male_2_5_count: number | null;
   male_6_12_count: number | null;
   male_13_17_count: number | null;
-  male_18_29_count: number | null;
-  male_30_39_count: number | null;
-  male_40_49_count: number | null;
-  male_50_59_count: number | null;
-  male_60_69_count: number | null;
-  male_70_plus_count: number | null;
-  female_0_5_count: number | null;
+  male_18_59_count: number | null;
+  male_60_plus_count: number | null;
+  male_unknown_age_count: number | null;
+
+  female_0_1_count: number | null;
+  female_2_5_count: number | null;
   female_6_12_count: number | null;
   female_13_17_count: number | null;
-  female_18_29_count: number | null;
-  female_30_39_count: number | null;
-  female_40_49_count: number | null;
-  female_50_59_count: number | null;
-  female_60_69_count: number | null;
-  female_70_plus_count: number | null;
-  other_0_5_count: number | null;
+  female_18_59_count: number | null;
+  female_60_plus_count: number | null;
+  female_unknown_age_count: number | null;
+
+  other_0_1_count: number | null;
+  other_2_5_count: number | null;
   other_6_12_count: number | null;
   other_13_17_count: number | null;
-  other_18_29_count: number | null;
-  other_30_39_count: number | null;
-  other_40_49_count: number | null;
-  other_50_59_count: number | null;
-  other_60_69_count: number | null;
-  other_70_plus_count: number | null;
+  other_18_59_count: number | null;
+  other_60_plus_count: number | null;
+  other_unknown_age_count: number | null;
+
+  is_disaggregated_for_disabled: boolean | null;
+
+  disabled_male_0_1_count: number | null;
+  disabled_male_2_5_count: number | null;
+  disabled_male_6_12_count: number | null;
+  disabled_male_13_17_count: number | null;
+  disabled_male_18_59_count: number | null;
+  disabled_male_60_plus_count: number | null;
+  disabled_male_unknown_age_count: number | null;
+
+  disabled_female_0_1_count: number | null;
+  disabled_female_2_5_count: number | null;
+  disabled_female_6_12_count: number | null;
+  disabled_female_13_17_count: number | null;
+  disabled_female_18_59_count: number | null;
+  disabled_female_60_plus_count: number | null;
+  disabled_female_unknown_age_count: number | null;
+
+  disabled_other_0_1_count: number | null;
+  disabled_other_2_5_count: number | null;
+  disabled_other_6_12_count: number | null;
+  disabled_other_13_17_count: number | null;
+  disabled_other_18_59_count: number | null;
+  disabled_other_60_plus_count: number | null;
+  disabled_other_unknown_age_count: number | null;
+
   details: string;
   custom_action: string | null;
   point_count: number | null;
