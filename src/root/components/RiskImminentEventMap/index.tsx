@@ -3,6 +3,7 @@ import {
   _cs,
   isDefined,
   isNotDefined,
+  listToMap,
 } from '@togglecorp/fujs';
 import Map, {
   MapContainer,
@@ -15,7 +16,6 @@ import {
   point as turfPoint,
   bbox as turfBbox,
   buffer as turfBuffer,
-  bboxPolygon as turfBboxPolygon,
 } from '@turf/turf';
 
 import { LngLat } from 'mapbox-gl';
@@ -37,6 +37,7 @@ import {
   pointCirclePaint,
   iconPaint,
   hiddenLayout,
+  hazardKeys,
 } from '#utils/risk';
 
 import TextOutput from '#components/TextOutput';
@@ -74,15 +75,6 @@ const legendItems = [
   { color: COLOR_BLACK, label: 'Unknown' },
 ];
 
-const hazardKeys: ImminentHazardTypes[] = [
-  'EQ',
-  'CY',
-  'TC',
-  'SS',
-  'FL',
-  'DR',
-];
-
 const mapPadding = {
   left: 50,
   top: 50,
@@ -101,13 +93,18 @@ interface Props {
 
 function PDCExposureMap(props: Props) {
   const {
-    hazardList,
+    hazardList: hazardListFromProps,
     defaultBounds,
     className,
     activeEventUuid,
     onActiveEventChange,
     sidebarHeading,
   } = props;
+
+  const hazardList = React.useMemo(() => {
+    const supportedHazards = listToMap(hazardKeys, h => h, d => true);
+    return hazardListFromProps.filter(h => supportedHazards[h.hazard_type]);
+  }, [hazardListFromProps]);
 
   const hazardPointGeoJson = React.useMemo(() => {
     if (!hazardList) {
@@ -403,6 +400,45 @@ function PDCExposureMap(props: Props) {
           />
         </MapSource>
       )}
+      {trackLinestringGeoJson && (
+        <MapSource
+          sourceKey="cyclone-tracks-linestring"
+          sourceOptions={geoJsonSourceOptions}
+          geoJson={trackLinestringGeoJson}
+        >
+          <MapLayer
+            layerKey="cyclone-tracks-arrow"
+            layerOptions={{
+              type: 'symbol',
+              paint: {
+                'icon-color': COLOR_BLACK,
+                'icon-opacity': 0.5,
+              },
+              layout: {
+                // @ts-ignore,
+                'icon-allow-overlap': true,
+                'symbol-placement': 'line',
+                'icon-image': 'triangle-11',
+                'icon-size': 0.8,
+                'icon-rotate': 90,
+              },
+              filter: ['==', ['get', 'hazardUuid'], activeHazard?.uuid ?? ''],
+            }}
+          />
+          <MapLayer
+            layerKey="cyclone-tracks-linestring-line"
+            layerOptions={{
+              type: 'line',
+              paint: {
+                'line-color': '#000000',
+                'line-opacity': 0.1,
+                'line-width': 1,
+              },
+              filter: ['==', ['get', 'hazardUuid'], activeHazard?.uuid ?? ''],
+            }}
+          />
+        </MapSource>
+      )}
       {trackPointsGeoJson && (
         <MapSource
           sourceKey="cyclone-tracks"
@@ -438,26 +474,6 @@ function PDCExposureMap(props: Props) {
                 'text-field': ['get', 'forecast_date_time'],
                 'text-anchor': 'left',
                 'text-offset': [1, 0],
-              },
-              filter: ['==', ['get', 'hazardUuid'], activeHazard?.uuid ?? ''],
-            }}
-          />
-        </MapSource>
-      )}
-      {trackLinestringGeoJson && (
-        <MapSource
-          sourceKey="cyclone-tracks-linestring"
-          sourceOptions={geoJsonSourceOptions}
-          geoJson={trackLinestringGeoJson}
-        >
-          <MapLayer
-            layerKey="cyclone-tracks-linestring-circle"
-            layerOptions={{
-              type: 'line',
-              paint: {
-                'line-color': '#000000',
-                'line-opacity': 0.1,
-                'line-width': 1,
               },
               filter: ['==', ['get', 'hazardUuid'], activeHazard?.uuid ?? ''],
             }}

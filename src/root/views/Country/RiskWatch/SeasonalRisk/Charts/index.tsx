@@ -43,6 +43,12 @@ import {
   sum,
 } from '#utils/common';
 import {
+  COLOR_FLOOD,
+  COLOR_CYCLONE,
+  COLOR_DROUGHT,
+  COLOR_FOOD_INSECURITY,
+} from '#utils/risk';
+import {
   useRequest,
   ListResponse,
 } from '#utils/restRequest';
@@ -71,11 +77,6 @@ const chartMargin = {
   left: 20,
   bottom: 0,
 };
-
-const COLOR_FLOOD = '#7d8b9d';
-const COLOR_CYCLONE = '#aeb7c2';
-const COLOR_DROUGHT = '#b09db2';
-const COLOR_FOOD_INSECURITY = '#c9ccb7';
 
 function formatNumber (value: number) {
   const {
@@ -364,6 +365,18 @@ function RiskBarChart(props: Props) {
     return tempChartData;
   }, [monthNameList, riskData, hazardType, riskMetric]);
 
+  const [
+    hasDr,
+    hasTc,
+    hasFi,
+    hasFl,
+  ] = React.useMemo(() => [
+    chartData.some((c) => !!c.DR),
+    chartData.some((c) => !!c.TC),
+    chartData.some((c) => !!c.FI),
+    chartData.some((c) => !!c.FL),
+  ], [chartData]);
+
   const scaleCbrt = React.useMemo(
     () => scalePow().exponent(1/3).nice(),
     [],
@@ -429,7 +442,7 @@ function RiskBarChart(props: Props) {
                 margin={chartMargin}
                 barGap={1}
                 barCategoryGap={10}
-                barSize={8}
+                barSize={14}
               >
                 <Tooltip
                   cursor={{ fill: '#f0f0f0' }}
@@ -452,11 +465,10 @@ function RiskBarChart(props: Props) {
                   }}
                   tickFormatter={formatNumber}
                 />
-                <Bar dataKey="FL" fill={COLOR_FLOOD} radius={4} />
-                {/* <Bar dataKey="CY" fill="#c8ccb7" radius={4} /> */}
-                <Bar dataKey="TC" fill={COLOR_CYCLONE} radius={4} />
-                <Bar dataKey="DR" fill={COLOR_DROUGHT} radius={4} />
-                <Bar dataKey="FI" fill={COLOR_FOOD_INSECURITY} radius={4} />
+                {hasFl && <Bar dataKey="FL" fill={COLOR_FLOOD} />}
+                {hasTc && <Bar dataKey="TC" fill={COLOR_CYCLONE} />}
+                {hasDr && <Bar dataKey="DR" fill={COLOR_DROUGHT} />}
+                {hasFi && <Bar dataKey="FI" fill={COLOR_FOOD_INSECURITY} />}
               </BarChart>
             </ResponsiveContainer>
           )
