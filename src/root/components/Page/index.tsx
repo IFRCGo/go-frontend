@@ -7,7 +7,7 @@ import {
 
 import Navbar from '#components/navbar';
 import MobileNavbar from '#components/mobile-navbar';
-import PageFooter from '#components/footer';
+import PageFooter from '#components/page-footer';
 import PageHeader from '#components/PageHeader';
 import GlobalLoading from '#components/global-loading';
 import SysAlerts from '#components/system-alerts';
@@ -74,8 +74,8 @@ function Page(props: Props) {
       className={_cs(
         'go-page',
         styles.page,
-        className,
         withMainContentBackground && styles.withMainContentBackground,
+        className,
       )}
     >
       <ThroughProvider>

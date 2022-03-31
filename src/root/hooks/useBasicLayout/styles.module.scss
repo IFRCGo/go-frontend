@@ -1,0 +1,23 @@
+@import '~styles/settings/_variables.scss';
+
+.layout-container {
+  display: flex;
+  align-items: center;
+  gap: $spacing;
+
+  .icons-container {
+    display: flex;
+    flex-shrink: 0;
+    gap: $spacing*0.5;
+  }
+
+  .children-container {
+    flex-grow: 1;
+  }
+
+  .actions-container {
+    display: flex;
+    flex-shirnk: 0;
+    gap: $spacing*0.5;
+  }
+}

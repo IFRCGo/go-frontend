@@ -3,6 +3,10 @@
 .page {
   position: relative;
 
+  .main-section {
+      padding: $spacing*2 0;
+  }
+
   &.with-main-content-background {
     .page-header {
       background-color: $color-background;
@@ -10,7 +14,6 @@
 
     .main-section {
       background-color: $color-foreground;
-      padding: $spacing*2 0;
     }
   }
 }

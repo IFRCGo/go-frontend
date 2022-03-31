@@ -9,6 +9,7 @@
 
   .map-container {
     display: flex;
+    padding: $spacing*0.5;
 
     .map {
       flex-grow: 1;
@@ -16,12 +17,12 @@
     }
 
     .bar-chart {
-      z-index: 1;
+      z-index: 11;
       height: 40rem;
       flex-shrink: 0;
       width: calc(5% + 16rem);
       padding: $spacing*0.75 $spacing;
-      box-shadow: 0 0 5px rgba(0, 0, 0, .3);
+      box-shadow: $base-box-shadow;
     }
   }
 

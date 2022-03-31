@@ -2,6 +2,7 @@ import React from 'react';
 import { _cs } from '@togglecorp/fujs';
 
 import Header, { Props as HeaderProps } from '#components/Header';
+import Footer from '#components/Footer';
 import Description from '#components/Description';
 
 import styles from './styles.module.scss';
@@ -15,15 +16,17 @@ export interface Props {
   heading?: React.ReactNode;
   headingSize?: HeaderProps['headingSize'];
   description?: React.ReactNode;
+  icons?: React.ReactNode;
   actions?: React.ReactNode;
   children?: React.ReactNode;
   sub?: boolean;
   hideHeaderBorder?: boolean;
   headerElementRef?: HeaderProps['elementRef'];
-  visibleOverflow?: boolean;
   footer?: React.ReactNode;
+  footerIcons?: React.ReactNode;
   footerActions?: React.ReactNode;
   footerClassName?: string,
+  footerContentClassName?: string;
 }
 
 function Container(props: Props) {
@@ -31,6 +34,7 @@ function Container(props: Props) {
     className,
     heading,
     description,
+    icons,
     actions,
     children,
     contentClassName,
@@ -38,40 +42,41 @@ function Container(props: Props) {
     innerContainerClassName,
     descriptionClassName,
     sub,
-    headingSize,
+    headingSize = 'extraSmall',
     hideHeaderBorder = false,
     headerElementRef,
-    visibleOverflow,
     footer,
     footerClassName,
+    footerContentClassName,
     footerActions,
+    footerIcons,
   } = props;
+
+  const showHeader = icons || heading || actions;
+  const showHeaderBorder = !hideHeaderBorder && showHeader;
+  const showFooter = footerIcons || footer || footerActions;
 
   return (
     <div
       className={_cs(
-        'go-container',
         styles.container,
         sub && styles.sub,
         className,
-        visibleOverflow && styles.visibleOverflow,
       )}
     >
-      <div
-        className={_cs(
-          styles.innerContainer,
-          innerContainerClassName,
-          !hideHeaderBorder && styles.withHeaderBorder,
-        )}
-      >
-        {(heading || actions) && (
+      <div className={_cs(styles.innerContainer, innerContainerClassName)}>
+        {showHeader && (
           <Header
             className={_cs(styles.header, headerClassName)}
             heading={heading}
+            icons={icons}
             actions={actions}
             headingSize={headingSize}
             elementRef={headerElementRef}
           />
+        )}
+        {showHeaderBorder && (
+          <hr className={styles.headerBorder} />
         )}
         {description && (
           <Description className={descriptionClassName}>
@@ -83,15 +88,15 @@ function Container(props: Props) {
             { children }
           </div>
         )}
-        {(footer || footerActions) && (
-          <div className={_cs(styles.footer, footerClassName)}>
-            <div className={styles.footerContent}>
-              {footer}
-            </div>
-            <div className={styles.footerActions}>
-              {footerActions}
-            </div>
-          </div>
+        {showFooter && (
+          <Footer
+            className={_cs(styles.footer, footerClassName)}
+            childrenContainerClassName={footerContentClassName}
+            icons={footerIcons}
+            actions={footerActions}
+          >
+            {footer}
+          </Footer>
         )}
       </div>
     </div>
