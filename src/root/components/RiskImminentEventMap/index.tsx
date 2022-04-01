@@ -11,6 +11,7 @@ import Map, {
   MapLayer,
   MapBounds,
   MapTooltip,
+  MapState,
 } from '@togglecorp/re-map';
 import {
   point as turfPoint,
@@ -101,10 +102,18 @@ function PDCExposureMap(props: Props) {
     sidebarHeading,
   } = props;
 
+
   const hazardList = React.useMemo(() => {
     const supportedHazards = listToMap(hazardKeys, h => h, d => true);
     return hazardListFromProps.filter(h => supportedHazards[h.hazard_type]);
   }, [hazardListFromProps]);
+
+  const pointActiveState = React.useMemo(() => {
+    return hazardList.map((h) => ({
+      id: h.pdc,
+      value: h.pdc_details.uuid === activeEventUuid,
+    }));
+  }, [activeEventUuid, hazardList]);
 
   const hazardPointGeoJson = React.useMemo(() => {
     if (!hazardList) {
@@ -514,6 +523,10 @@ function PDCExposureMap(props: Props) {
                 'icon-allow-overlap': true,
               }: hiddenLayout,
             }}
+          />
+          <MapState
+            attributeKey="active"
+            attributes={pointActiveState}
           />
         </MapSource>
       )}

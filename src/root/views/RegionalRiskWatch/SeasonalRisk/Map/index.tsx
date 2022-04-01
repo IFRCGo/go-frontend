@@ -15,6 +15,7 @@ import Map, {
   MapBounds,
   MapChildContext,
 } from '@togglecorp/re-map';
+import { fixBounds } from '#utils/map';
 import turfBbox from '@turf/bbox';
 
 import {
@@ -336,7 +337,7 @@ function SeasonalRiskMap(props: Props) {
     allRegions?.data.results.find(d => d.id === regionId)
   ), [allRegions, regionId]);
   const regionBounds = React.useMemo(
-    () => turfBbox(region?.bbox ?? []),
+    () => fixBounds(turfBbox(region?.bbox ?? [])),
     [region?.bbox],
   );
 
@@ -425,13 +426,13 @@ function SeasonalRiskMap(props: Props) {
           <MapLegend
             selectedRiskMetric={riskMetric}
           />
+          <MonthSelector
+            name={undefined}
+            value={selectedMonth}
+            onChange={setSelectedMonth}
+            className={styles.monthSelector}
+          />
         </div>
-        <MonthSelector
-          name={undefined}
-          value={selectedMonth}
-          onChange={setSelectedMonth}
-          className={styles.monthSelector}
-        />
       </Container>
       <Container
         className={styles.countryList}
@@ -446,7 +447,10 @@ function SeasonalRiskMap(props: Props) {
         contentClassName={styles.riskTableList}
       >
         {visibleCountryList.map((c) => (
-          <div className={styles.riskTableItem}>
+          <div
+            key={c}
+            className={styles.riskTableItem}
+          >
             <Button
               variant="transparent"
               name={c}

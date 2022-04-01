@@ -1,5 +1,4 @@
 import {
-  COLOR_BLACK,
   COLOR_RED,
   COLOR_WHITE,
   CIRCLE_RADIUS_SUPER_LARGE,
@@ -58,9 +57,10 @@ export const geoJsonSourceOptions: mapboxgl.GeoJSONSourceRaw = {
 };
 
 export const pointCirclePaint: mapboxgl.CirclePaint = {
-  // 'circle-color': COLOR_WHITE,
   'circle-color': [
     'case',
+    ['boolean', ['feature-state', 'active'], false],
+    COLOR_RED,
     ['boolean', ['feature-state', 'hovered'], false],
     COLOR_RED,
     [
