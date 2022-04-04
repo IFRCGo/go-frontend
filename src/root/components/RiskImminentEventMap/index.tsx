@@ -83,6 +83,8 @@ const mapPadding = {
   bottom: 50,
 };
 
+const noOp = () => {};
+
 interface Props {
   defaultBounds: BBOXType;
   hazardList: PDCEvent[];
@@ -496,8 +498,7 @@ function PDCExposureMap(props: Props) {
           geoJson={hazardPointGeoJson}
         >
           <MapLayer
-            onMouseEnter={() => {}}
-            onMouseLeave={() => {}}
+            onMouseEnter={noOp}
             onClick={handlePointMouseClick}
             layerKey="hazard-points-circle"
             layerOptions={{
