@@ -116,38 +116,7 @@ export interface INFORMSeasonalData {
   september: number | null;
 }
 
-export type ReturnPeriodHazardTypes = 'SS' | 'WD' | 'FL' | 'CD';
-
-export interface ReturnPeriodData {
-  country: number;
-  country_details: CountryDetail ;
-  hazard_type: ReturnPeriodHazardTypes;
-  hazard_type_display: string;
-  id: number;
-}
-
-export interface IDMCReturnPeriodData extends ReturnPeriodData {
-  annual_average_displacement: number
-  return_period_20_years: number | null;
-  return_period_50_years: number | null;
-  return_period_100_years: number | null;
-  return_period_250_years: number | null;
-  return_period_500_years: number | null;
-}
-
-export interface GARReturnPeriodData extends ReturnPeriodData {
-  economic_loss_return_period_20_years: number | null;
-  economic_loss_return_period_50_years: number | null;
-  economic_loss_return_period_100_years: number | null;
-  economic_loss_return_period_250_years: number | null;
-  economic_loss_return_period_500_years: number | null;
-  population_exposure_return_period_25_years: number | null;
-  population_exposure_return_period_50_years: number | null;
-  population_exposure_return_period_100_years: number | null;
-  population_exposure_return_period_200_years: number | null;
-  population_exposure_return_period_500_years: number | null;
-  population_exposure_return_period_1000_years: number | null;
-}
+export type ReturnPeriodHazardType = 'SS' | 'WD' | 'FL' | 'CD';
 
 interface ReturnPeriodAttributes {
   economic_loss: number;
@@ -155,14 +124,15 @@ interface ReturnPeriodAttributes {
   population_displacement: number;
 }
 
-export interface NewReturnPeriodData {
+export interface ReturnPeriodData {
   country: number;
   country_details: CountryDetail;
-  hazard_type: HazardTypes;
+  hazard_type: ReturnPeriodHazardType;
   hazard_type_display: string;
   id: number;
   ten_years: ReturnPeriodAttributes;
   twenty_years: ReturnPeriodAttributes;
+  twenty_five_years: ReturnPeriodAttributes;
   fifty_years: ReturnPeriodAttributes;
   hundred_years: ReturnPeriodAttributes;
   two_hundred_fifty_years: ReturnPeriodAttributes;
@@ -204,10 +174,9 @@ interface THReport {
 }
 
 export interface SeasonalResponse {
-  gar_return_period_data: NewReturnPeriodData[];
+  return_period_data: ReturnPeriodData[];
   hazard_info: THReport[];
   idmc: IDMCData[];
-  idmc_return_period: IDMCReturnPeriodData[];
   inform: INFORMData[];
   inform_seasonal: INFORMSeasonalData[];
   ipc_displacement_data: IPCData[];

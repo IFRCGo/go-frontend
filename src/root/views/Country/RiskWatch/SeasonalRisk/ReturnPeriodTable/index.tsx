@@ -15,10 +15,7 @@ import {
 } from '#components/Table/predefinedColumns';
 import InfoPopup from '#components/InfoPopup';
 
-import {
-  IDMCReturnPeriodData,
-  NewReturnPeriodData,
-} from '../common';
+import { ReturnPeriodData } from '../common';
 
 import styles from './styles.module.scss';
 
@@ -102,9 +99,9 @@ const getReturnPeriodColumns = () => ([
   createNumberColumn<TransformedReturnPeriodData, string | number>(
     'economicLosses',
     <div className={styles.columnHeading}>
-      Economic Losses (Million USD)
+      Economic Losses (USD)
       <InfoPopup
-        title="Economic Losses (Million USD)"
+        title="Economic Losses (USD)"
         description={(
           <>
           Figures provided by UNDRR from &nbsp;
@@ -129,15 +126,13 @@ const getReturnPeriodColumns = () => ([
 ]);
 
 interface Props {
-  displacementData?: IDMCReturnPeriodData[];
-  economicLossAndExposureData?: NewReturnPeriodData[];
+  data?: ReturnPeriodData[]
   hazardOptions: StringValueOption[];
 }
 
 function ReturnPeriodTable(props: Props) {
   const {
-    displacementData,
-    economicLossAndExposureData,
+    data,
     hazardOptions,
   } = props;
 
@@ -145,53 +140,41 @@ function ReturnPeriodTable(props: Props) {
   const [hazardType, setHazardType] = useInputState<HazardTypes>('FL');
 
   const transformedReturnPeriods: TransformedReturnPeriodData[] = React.useMemo(() => {
-    const selectedHazardDisplacementData = displacementData?.filter(d => d.hazard_type === hazardType);
-    const selectedHazardEconomicLossData = economicLossAndExposureData?.filter(d => d.hazard_type === hazardType);
-
-    const defaultNullValues = {
-      displacement: null,
-      exposure: null,
-      economicLosses: null,
-    };
+    const selectedHazardData = data?.filter(d => d.hazard_type === hazardType);
 
     return [
       {
-        ...defaultNullValues,
         frequencyDisplay: '1-in-20-year event',
-        displacement: selectedHazardDisplacementData?.[0]?.return_period_20_years ?? null,
-        economicLosses: selectedHazardEconomicLossData?.[0]?.twenty_years?.economic_loss ?? null,
-        exposure: selectedHazardEconomicLossData?.[0]?.twenty_years?.economic_loss ?? null,
+        displacement: selectedHazardData?.[0]?.twenty_years?.population_displacement ?? null,
+        economicLosses: selectedHazardData?.[0]?.twenty_years?.economic_loss ?? null,
+        exposure: selectedHazardData?.[0]?.twenty_years?.economic_loss ?? null,
       },
       {
-        ...defaultNullValues,
         frequencyDisplay: '1-in-50-year event',
-        displacement: selectedHazardDisplacementData?.[0]?.return_period_50_years ?? null,
-        economicLosses: selectedHazardEconomicLossData?.[0]?.fifty_years?.economic_loss ?? null,
-        exposure: selectedHazardEconomicLossData?.[0]?.fifty_years?.population_exposure ?? null,
+        displacement: selectedHazardData?.[0]?.fifty_years?.population_displacement ?? null,
+        economicLosses: selectedHazardData?.[0]?.fifty_years?.economic_loss ?? null,
+        exposure: selectedHazardData?.[0]?.fifty_years?.population_exposure ?? null,
       },
       {
-        ...defaultNullValues,
         frequencyDisplay: '1-in-100-year event',
-        displacement: selectedHazardDisplacementData?.[0]?.return_period_100_years ?? null,
-        economicLosses: selectedHazardEconomicLossData?.[0]?.hundred_years?.economic_loss ?? null,
-        exposure: selectedHazardEconomicLossData?.[0]?.hundred_years?.population_exposure ?? null,
+        displacement: selectedHazardData?.[0]?.hundred_years?.population_displacement ?? null,
+        economicLosses: selectedHazardData?.[0]?.hundred_years?.economic_loss ?? null,
+        exposure: selectedHazardData?.[0]?.hundred_years?.population_exposure ?? null,
       },
       {
-        ...defaultNullValues,
         frequencyDisplay: '1-in-250-year event',
-        displacement: selectedHazardDisplacementData?.[0]?.return_period_250_years ?? null,
-        economicLosses: selectedHazardEconomicLossData?.[0]?.two_hundred_fifty_years?.economic_loss ?? null,
-        exposure: selectedHazardEconomicLossData?.[0]?.two_hundred_fifty_years?.population_exposure ?? null,
+        displacement: selectedHazardData?.[0]?.two_hundred_fifty_years?.population_displacement ?? null,
+        economicLosses: selectedHazardData?.[0]?.two_hundred_fifty_years?.economic_loss ?? null,
+        exposure: selectedHazardData?.[0]?.two_hundred_fifty_years?.population_exposure ?? null,
       },
       {
-        ...defaultNullValues,
         frequencyDisplay: '1-in-500-year event',
-        displacement: selectedHazardDisplacementData?.[0]?.return_period_500_years ?? null,
-        economicLosses: selectedHazardEconomicLossData?.[0]?.five_hundred_years?.economic_loss ?? null,
-        exposure: selectedHazardEconomicLossData?.[0]?.five_hundred_years?.population_exposure ?? null,
+        displacement: selectedHazardData?.[0]?.five_hundred_years?.population_displacement ?? null,
+        economicLosses: selectedHazardData?.[0]?.five_hundred_years?.economic_loss ?? null,
+        exposure: selectedHazardData?.[0]?.five_hundred_years?.population_exposure ?? null,
       },
     ];
-  }, [economicLossAndExposureData, displacementData, hazardType]);
+  }, [data, hazardType]);
 
   return (
     <Container

@@ -52,6 +52,7 @@ export default function TabList(props: Props) {
         styles.tabList,
         disabled && styles.disabled,
         variant === 'primary' && styles.primary,
+        variant === 'secondary' && styles.secondary,
       )}
       role="tablist"
     >

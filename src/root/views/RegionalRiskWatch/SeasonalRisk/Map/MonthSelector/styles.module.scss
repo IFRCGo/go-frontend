@@ -2,7 +2,15 @@
 
 .month-selector {
   display: flex;
-  border-bottom: $base-border-width solid rgba(0, 0, 0, .3);
+  position: relative;
+
+  .track {
+    border-bottom: $base-border-width*2 solid $grey-titanium;
+    position: absolute;
+    left: $spacing*2;
+    width: calc(100% - #{$spacing*4});
+    bottom: 0;
+  }
 
   .tick-item {
     position: relative;
@@ -19,17 +27,18 @@
       font-weight: $base-font-medium;
       font-size: $font-size-xs;
       padding: $spacing;
+      text-shadow: 0 0 5px $white;
     }
 
-    $month-selector-tick-height: 1em;
+    $month-selector-tick-height: 0.7em;
 
     .tick {
       position: absolute;
       height: $month-selector-tick-height;
-      width: $base-border-width;
-      background-color: rgba(0, 0, 0, .3);
+      width: $base-border-width*2;
+      background-color: $grey-titanium;
       bottom: 0;
-      transform: translateY(50%);
+      transform: translateY(30%);
       transition: .2s all ease-in-out;
     }
 
@@ -47,6 +56,7 @@
         border-radius: 50%;
         height: $month-selector-tick-height;
         background-color: $primary-color;
+        transform: translateY(30%) scale(1.21);
       }
     }
   }
