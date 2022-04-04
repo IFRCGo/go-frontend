@@ -3513,6 +3513,19 @@ export default {
   wikiJsLink3WForm: '',
   wikiJsLinkFRForm: '',
   wikiJsLinkCountry3W: '',
-  wikiJsLinkRegister: 'user_guide/account'
+  wikiJsLinkRegister: 'user_guide/account',
 
+  // DREF operational update
+  // button
+  drefOperationalUpdateExportButton: 'Export',
+  drefOperationalUpdateSaveButton: 'Save',
+
+  // Main page
+  drefOperationalUpdatePageTitle: 'IFRC GO - DREF operational update',
+  drefOperationalUpdatePageHeading: 'DREF Operational Update Application',
+  drefOperationalUpdateOverviewLabel: 'Operation Overview',
+  drefOperationalUpdateEventDetailsLabel: 'Event Details',
+  drefOperationalUpdateNeedsLabel: 'Needs',
+  drefOperationalUpdateOperationLabel: 'Operation',
+  drefOperationalUpdateSubmissionLabel: 'Submission',
 };

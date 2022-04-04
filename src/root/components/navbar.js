@@ -131,7 +131,6 @@ function Navbar(props) {
                     >
                       {strings.headerDropdownNewDrefApplication}
                     </Link>
-                    */}
                   </div>
                 </DropdownMenu>
               </nav>
