@@ -11,10 +11,12 @@ import stormSurgeIcon from './risk-icons/storm-surge.png';
 import floodIcon from './risk-icons/flood.png';
 import droughtIcon from './risk-icons/drought.png';
 
-export const COLOR_FLOOD = '#647fa2';
-export const COLOR_CYCLONE = '#93aac5';
-export const COLOR_DROUGHT = '#eca48c';
-export const COLOR_FOOD_INSECURITY = '#b7c992';
+export const COLOR_CYCLONE = '#a4bede';
+export const COLOR_FLOOD = '#5a80b0';
+export const COLOR_DROUGHT = '#dca592';
+export const COLOR_FOOD_INSECURITY = '#c8ccb7';
+export const COLOR_EARTHQUAKE = '#b09db2';
+export const COLOR_STORM = '#97b8c2';
 
 
 export const hazardTypeToIconMap: {
@@ -39,10 +41,10 @@ export const hazardKeys: ImminentHazardTypes[] = [
 ];
 
 export const hazardKeyToColorMap: Record<ImminentHazardTypes, string> = {
-  EQ: COLOR_FOOD_INSECURITY,
+  EQ: COLOR_EARTHQUAKE,
   CY: COLOR_CYCLONE,
   TC: COLOR_CYCLONE,
-  SS: COLOR_CYCLONE,
+  SS: COLOR_STORM,
   FL: COLOR_FLOOD,
   DR: COLOR_DROUGHT,
 };
