@@ -104,13 +104,15 @@ const getReturnPeriodColumns = () => ([
         title="Economic Losses (USD)"
         description={(
           <>
-          Figures provided by UNDRR from &nbsp;
+            <div>
+              Figures taken from
+            </div>
             <a
               className={styles.link}
               target="_blank"
-              href="https://www.preventionweb.net/english/hyogo/gar/2015/en/home/data.html"
+              href="https://www.gfdrr.org/en/disaster-risk-country-profiles"
             >
-              GAR 2015
+              World Bank Disaster Risk Country Profiles
             </a>
           </>
         )}

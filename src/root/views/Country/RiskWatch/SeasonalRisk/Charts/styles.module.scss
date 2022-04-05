@@ -2,7 +2,8 @@
 
 .filters {
   display: flex;
-  gap: $spacing;
+  align-items: center;
+  gap: $spacing*2;
 
   .filter-input {
     width: 20rem;

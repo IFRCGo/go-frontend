@@ -757,24 +757,32 @@ function ImpactChart(props: ImpactChartProps) {
                     sub
                     className={styles.eventDetails}
                     heading={details.name}
-                    description={<DateOutput value={details.disaster_start_date} />}
+                    description={(
+                      <DateOutput
+                        format="MMM yyyy"
+                        value={details.disaster_start_date}
+                      />
+                    )}
                     descriptionClassName={styles.description}
                     contentClassName={styles.eventDetailContent}
                   >
                     <TextOutput
-                      label="People Affected"
+                      description="People Affected"
                       value={affected}
                       valueType="number"
+                      strongValue
                     />
                     <TextOutput
-                      label="Funding (CHF)"
+                      description="Funding (CHF)"
                       value={funded}
                       valueType="number"
+                      strongValue
                     />
                     {isDefined(coverage) && (
                       <TextOutput
-                        label="Funding Coverage"
+                        description="Funding Coverage"
                         value={`${Math.ceil(coverage)}%`}
+                        strongValue
                       />
                     )}
                   </Container>
