@@ -354,7 +354,12 @@ function ImpactChart(props: ImpactChartProps) {
                     sub
                     className={styles.eventDetails}
                     heading={details.name}
-                    description={<DateOutput value={details.disaster_start_date} />}
+                    description={(
+                      <DateOutput
+                        value={details.disaster_start_date}
+                        format="MMM yyyy"
+                      />
+                    )}
                     descriptionClassName={styles.description}
                     contentClassName={styles.eventDetailContent}
                   >
