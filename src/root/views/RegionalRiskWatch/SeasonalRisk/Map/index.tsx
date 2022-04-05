@@ -392,27 +392,25 @@ function SeasonalRiskMap(props: Props) {
       <Container
         className={_cs(styles.seasonalRiskMap, className)}
         heading="Risk map"
-        descriptionClassName={styles.filterSection}
-        description={(
-          <div className={styles.filters}>
-            <SelectInput
-              className={styles.filterInput}
-              value={hazardType}
-              onChange={setHazardType}
-              name="hazardType"
-              options={hazardOptions}
-            />
-            <SelectInput
-              className={styles.filterInput}
-              value={riskMetric}
-              onChange={setRiskMetric}
-              name="riskMetric"
-              options={riskMetricOptions as Writable<typeof riskMetricOptions>}
-            />
-          </div>
-        )}
+        description="The map and table below display available information about specific disaster risks for for each month per country. When you move the slider from month to month, the information in the map  will update automatically."
         contentClassName={styles.mapSection}
       >
+        <div className={styles.filters}>
+          <SelectInput
+            className={styles.filterInput}
+            value={hazardType}
+            onChange={setHazardType}
+            name="hazardType"
+            options={hazardOptions}
+          />
+          <SelectInput
+            className={styles.filterInput}
+            value={riskMetric}
+            onChange={setRiskMetric}
+            name="riskMetric"
+            options={riskMetricOptions as Writable<typeof riskMetricOptions>}
+          />
+        </div>
         <div className={styles.mapContainer}>
           <Map
             mapStyle={defaultMapStyle}
