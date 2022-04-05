@@ -27,73 +27,61 @@ export function getPeopleReachedInActivity(activity: EmergencyProjectResponse['a
     is_simplified_report,
 
     people_count,
-
-    male_0_5_count,
-    male_13_17_count,
-    male_18_29_count,
-    male_30_39_count,
-    male_40_49_count,
-    male_50_59_count,
+    male_0_1_count,
+    male_2_5_count,
     male_6_12_count,
-    male_60_69_count,
-    male_70_plus_count,
+    male_13_17_count,
+    male_18_59_count,
+    male_60_plus_count,
+    male_unknown_age_count,
 
-    female_0_5_count,
-    female_13_17_count,
-    female_18_29_count,
-    female_30_39_count,
-    female_40_49_count,
-    female_50_59_count,
+    female_0_1_count,
+    female_2_5_count,
     female_6_12_count,
-    female_60_69_count,
-    female_70_plus_count,
+    female_13_17_count,
+    female_18_59_count,
+    female_60_plus_count,
+    female_unknown_age_count,
 
-    other_0_5_count,
-    other_13_17_count,
-    other_18_29_count,
-    other_30_39_count,
-    other_40_49_count,
-    other_50_59_count,
+    other_0_1_count,
+    other_2_5_count,
     other_6_12_count,
-    other_60_69_count,
-    other_70_plus_count,
+    other_13_17_count,
+    other_18_59_count,
+    other_60_plus_count,
+    other_unknown_age_count,
   } = activity;
+
 
   if (is_simplified_report === true) {
     return people_count ?? 0;
   }
 
   if (is_simplified_report === false) {
-    sumSafe([
-      male_0_5_count,
-      male_13_17_count,
-      male_18_29_count,
-      male_30_39_count,
-      male_40_49_count,
-      male_50_59_count,
+    return sumSafe([
+      male_0_1_count,
+      male_2_5_count,
       male_6_12_count,
-      male_60_69_count,
-      male_70_plus_count,
+      male_13_17_count,
+      male_18_59_count,
+      male_60_plus_count,
+      male_unknown_age_count,
 
-      female_0_5_count,
-      female_13_17_count,
-      female_18_29_count,
-      female_30_39_count,
-      female_40_49_count,
-      female_50_59_count,
+      female_0_1_count,
+      female_2_5_count,
       female_6_12_count,
-      female_60_69_count,
-      female_70_plus_count,
+      female_13_17_count,
+      female_18_59_count,
+      female_60_plus_count,
+      female_unknown_age_count,
 
-      other_0_5_count,
-      other_13_17_count,
-      other_18_29_count,
-      other_30_39_count,
-      other_40_49_count,
-      other_50_59_count,
+      other_0_1_count,
+      other_2_5_count,
       other_6_12_count,
-      other_60_69_count,
-      other_70_plus_count,
+      other_13_17_count,
+      other_18_59_count,
+      other_60_plus_count,
+      other_unknown_age_count,
     ]);
   }
 
@@ -101,7 +89,9 @@ export function getPeopleReachedInActivity(activity: EmergencyProjectResponse['a
 }
 
 export function getPeopleReached(project: EmergencyProjectResponse) {
-  return sumSafe(project.activities.map(getPeopleReachedInActivity));
+  const peopleReached = sumSafe(project.activities.map(getPeopleReachedInActivity));
+
+  return peopleReached;
 }
 
 function useProjectStats(

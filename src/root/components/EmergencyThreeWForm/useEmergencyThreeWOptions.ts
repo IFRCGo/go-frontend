@@ -82,8 +82,8 @@ export interface Point {
 export interface ActivityBase {
   sector: number;
   details: string;
-  is_simplified_report: boolean;
-  has_no_data_on_people_reached: boolean;
+  is_simplified_report: boolean | null;
+  has_no_data_on_people_reached: boolean | null;
 
   beneficiaries_count?: number | null;
   amount?: number | null;
@@ -118,7 +118,7 @@ export interface ActivityBase {
   other_60_plus_count: number | null;
   other_unknown_age_count: number | null;
 
-  is_disaggregated_for_disabled: boolean;
+  is_disaggregated_for_disabled: boolean | null;
 
   disabled_male_0_1_count: number | null;
   disabled_male_2_5_count: number | null;

@@ -35,6 +35,7 @@ function MonthSelector<T>(props: Props<T>) {
 
   return (
     <div className={_cs(styles.monthSelector, className)}>
+      <div className={styles.track} />
       {monthNameList.map((m, i) => (
         <RawButton
           name={i}

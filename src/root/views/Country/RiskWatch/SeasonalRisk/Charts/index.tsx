@@ -43,6 +43,12 @@ import {
   sum,
 } from '#utils/common';
 import {
+  COLOR_FLOOD,
+  COLOR_CYCLONE,
+  COLOR_DROUGHT,
+  COLOR_FOOD_INSECURITY,
+} from '#utils/risk';
+import {
   useRequest,
   ListResponse,
 } from '#utils/restRequest';
@@ -51,10 +57,10 @@ import {
   StringValueOption,
 } from '#types';
 
-import cycloneIcon from '../../icons/cyclone.svg';
-import droughtIcon from '../../icons/drought.svg';
-import floodIcon from '../../icons/flood.svg';
-import foodInsecurityIcon from '../../icons/food-insecurity.svg';
+import cycloneIcon from '#utils/risk-icons/cyclone.svg';
+import droughtIcon from '#utils/risk-icons/drought.svg';
+import floodIcon from '#utils/risk-icons/flood.svg';
+import foodInsecurityIcon from '#utils/risk-icons/food-insecurity.svg';
 
 import {
   RiskData,
@@ -71,11 +77,6 @@ const chartMargin = {
   left: 20,
   bottom: 0,
 };
-
-const COLOR_FLOOD = '#7d8b9d';
-const COLOR_CYCLONE = '#aeb7c2';
-const COLOR_DROUGHT = '#b09db2';
-const COLOR_FOOD_INSECURITY = '#c9ccb7';
 
 function formatNumber (value: number) {
   const {
@@ -364,6 +365,18 @@ function RiskBarChart(props: Props) {
     return tempChartData;
   }, [monthNameList, riskData, hazardType, riskMetric]);
 
+  const [
+    hasDr,
+    hasTc,
+    hasFi,
+    hasFl,
+  ] = React.useMemo(() => [
+    chartData.some((c) => !!c.DR),
+    chartData.some((c) => !!c.TC),
+    chartData.some((c) => !!c.FI),
+    chartData.some((c) => !!c.FL),
+  ], [chartData]);
+
   const scaleCbrt = React.useMemo(
     () => scalePow().exponent(1/3).nice(),
     [],
@@ -429,7 +442,7 @@ function RiskBarChart(props: Props) {
                 margin={chartMargin}
                 barGap={1}
                 barCategoryGap={10}
-                barSize={8}
+                barSize={14}
               >
                 <Tooltip
                   cursor={{ fill: '#f0f0f0' }}
@@ -452,11 +465,10 @@ function RiskBarChart(props: Props) {
                   }}
                   tickFormatter={formatNumber}
                 />
-                <Bar dataKey="FL" fill={COLOR_FLOOD} radius={4} />
-                {/* <Bar dataKey="CY" fill="#c8ccb7" radius={4} /> */}
-                <Bar dataKey="TC" fill={COLOR_CYCLONE} radius={4} />
-                <Bar dataKey="DR" fill={COLOR_DROUGHT} radius={4} />
-                <Bar dataKey="FI" fill={COLOR_FOOD_INSECURITY} radius={4} />
+                {hasFl && <Bar dataKey="FL" fill={COLOR_FLOOD} />}
+                {hasTc && <Bar dataKey="TC" fill={COLOR_CYCLONE} />}
+                {hasDr && <Bar dataKey="DR" fill={COLOR_DROUGHT} />}
+                {hasFi && <Bar dataKey="FI" fill={COLOR_FOOD_INSECURITY} />}
               </BarChart>
             </ResponsiveContainer>
           )
@@ -563,7 +575,7 @@ const historicalHazardTypeToIconMap: {
   'Flash Flood': COLOR_FLOOD,
 };
 
-const ICONSIZE = 22;
+const SCATTER_ICON_SIZE = 26;
 interface IconShapeProps {
   dtype: string;
   cx: number;
@@ -586,17 +598,17 @@ function IconShape(props: IconShapeProps) {
 
   return (
     <foreignObject
-      width={ICONSIZE}
-      height={ICONSIZE}
-      x={cx - (ICONSIZE / 2)}
-      y={cy - (ICONSIZE / 2)}
+      width={SCATTER_ICON_SIZE}
+      height={SCATTER_ICON_SIZE}
+      x={cx - (SCATTER_ICON_SIZE / 2)}
+      y={cy - (SCATTER_ICON_SIZE / 2)}
     >
       <div
         style={{
           backgroundColor: historicalHazardTypeToIconMap[dtype],
           borderRadius: '50%',
-          width: `${ICONSIZE}px`,
-          height: `${ICONSIZE}px`,
+          width: `${SCATTER_ICON_SIZE}px`,
+          height: `${SCATTER_ICON_SIZE}px`,
           padding: '5px',
           display: 'flex',
           alignItems: 'center',
@@ -693,6 +705,7 @@ function ImpactChart(props: ImpactChartProps) {
     return null;
   }
 
+
   return (
     <Container
       heading={(
@@ -744,24 +757,32 @@ function ImpactChart(props: ImpactChartProps) {
                     sub
                     className={styles.eventDetails}
                     heading={details.name}
-                    description={<DateOutput value={details.disaster_start_date} />}
+                    description={(
+                      <DateOutput
+                        format="MMM yyyy"
+                        value={details.disaster_start_date}
+                      />
+                    )}
                     descriptionClassName={styles.description}
                     contentClassName={styles.eventDetailContent}
                   >
                     <TextOutput
-                      label="People Affected"
+                      description="People Affected"
                       value={affected}
                       valueType="number"
+                      strongValue
                     />
                     <TextOutput
-                      label="Funding (CHF)"
+                      description="Funding (CHF)"
                       value={funded}
                       valueType="number"
+                      strongValue
                     />
                     {isDefined(coverage) && (
                       <TextOutput
-                        label="Funding Coverage"
+                        description="Funding Coverage"
                         value={`${Math.ceil(coverage)}%`}
+                        strongValue
                       />
                     )}
                   </Container>
@@ -796,8 +817,8 @@ function ImpactChart(props: ImpactChartProps) {
             />
             <Scatter
               isAnimationActive={false}
-              width={20}
-              height={20}
+              width={SCATTER_ICON_SIZE}
+              height={SCATTER_ICON_SIZE}
               dataKey="affected"
               shape={(arg) => (
                 <IconShape

@@ -116,37 +116,28 @@ export interface INFORMSeasonalData {
   september: number | null;
 }
 
-export type ReturnPeriodHazardTypes = 'SS' | 'WD' | 'FL' | 'CD';
+export type ReturnPeriodHazardType = 'SS' | 'WD' | 'FL' | 'CD';
+
+interface ReturnPeriodAttributes {
+  economic_loss: number;
+  population_exposure: number;
+  population_displacement: number;
+}
 
 export interface ReturnPeriodData {
   country: number;
-  country_details: CountryDetail ;
-  hazard_type: ReturnPeriodHazardTypes;
+  country_details: CountryDetail;
+  hazard_type: ReturnPeriodHazardType;
   hazard_type_display: string;
   id: number;
-}
-
-export interface IDMCReturnPeriodData extends ReturnPeriodData {
-  annual_average_displacement: number
-  return_period_20_years: number | null;
-  return_period_50_years: number | null;
-  return_period_100_years: number | null;
-  return_period_250_years: number | null;
-  return_period_500_years: number | null;
-}
-
-export interface GARReturnPeriodData extends ReturnPeriodData {
-  economic_loss_return_period_20_years: number | null;
-  economic_loss_return_period_50_years: number | null;
-  economic_loss_return_period_100_years: number | null;
-  economic_loss_return_period_250_years: number | null;
-  economic_loss_return_period_500_years: number | null;
-  population_exposure_return_period_25_years: number | null;
-  population_exposure_return_period_50_years: number | null;
-  population_exposure_return_period_100_years: number | null;
-  population_exposure_return_period_200_years: number | null;
-  population_exposure_return_period_500_years: number | null;
-  population_exposure_return_period_1000_years: number | null;
+  ten_years: ReturnPeriodAttributes;
+  twenty_years: ReturnPeriodAttributes;
+  twenty_five_years: ReturnPeriodAttributes;
+  fifty_years: ReturnPeriodAttributes;
+  hundred_years: ReturnPeriodAttributes;
+  two_hundred_fifty_years: ReturnPeriodAttributes;
+  five_hundred_years: ReturnPeriodAttributes;
+  one_thousand_years: ReturnPeriodAttributes;
 }
 
 export interface ExposureData {
@@ -183,10 +174,9 @@ interface THReport {
 }
 
 export interface SeasonalResponse {
-  gar_return_period_data: GARReturnPeriodData[];
+  return_period_data: ReturnPeriodData[];
   hazard_info: THReport[];
   idmc: IDMCData[];
-  idmc_return_period: IDMCReturnPeriodData[];
   inform: INFORMData[];
   inform_seasonal: INFORMSeasonalData[];
   ipc_displacement_data: IPCData[];

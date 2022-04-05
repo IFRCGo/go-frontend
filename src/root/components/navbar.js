@@ -103,16 +103,16 @@ function Navbar(props) {
                     </Link>
                     {/* @NOTE: Temporary
                     <Link
-                      to='/dref-application/new'
-                      className='drop__menu-item'
-                    >
-                      {strings.headerDropdownNewDrefApplication}
-                    </Link>
-                    <Link
                       to='/flash-update/new'
                       className='drop__menu-item'
                     >
                       {strings.headerDropdownNewFlashUpdate}
+                    </Link>
+                    <Link
+                      to='/dref-application/new'
+                      className='drop__menu-item'
+                    >
+                      {strings.headerDropdownNewDrefApplication}
                     </Link>
                     */}
                   </div>

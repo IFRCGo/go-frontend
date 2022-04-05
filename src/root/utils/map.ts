@@ -42,6 +42,7 @@ export const CIRCLE_RADIUS_SMALL = 3;
 export const CIRCLE_RADIUS_MEDIUM = 5;
 export const CIRCLE_RADIUS_LARGE = 8;
 export const CIRCLE_RADIUS_EXTRA_LARGE = 12;
+export const CIRCLE_RADIUS_SUPER_LARGE = 16;
 
 export function getPointCirclePaint(
   color: string,
@@ -117,15 +118,20 @@ export const defaultTooltipOptions: mapboxgl.PopupOptions = {
 };
 
 export type BBOXType = [number, number, number, number];
-export function fixBounds(bounds: BBOXType) {
-  let newBounds = [...bounds];
-  if (newBounds[0] < 0) {
-    newBounds[0] = 360 + newBounds[0];
-  }
-  if (newBounds[2] < 0) {
-    newBounds[2] = 360 + newBounds[2];
-  }
+export function fixBounds(bounds: number[]) {
+  let newBounds = [...bounds] as BBOXType;
+  /*
+  if (newBounds[0] < -90 || newBounds[2] < -90) {
+    if (newBounds[0] < 0) {
+      newBounds[0] = 360 + newBounds[0];
+    }
 
-  return newBounds;
+    if (newBounds[2] < 0) {
+      newBounds[2] = 360 + newBounds[2];
+    }
+  }
+  */
+
+  return newBounds as BBOXType;
 }
 

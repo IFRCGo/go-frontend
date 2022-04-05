@@ -34,4 +34,10 @@
       opacity: $opacity-disabled-element;
     }
   }
+
+  &.secondary {
+    width: fit-content;
+    background-color: $color-background;
+    border-radius: calc(1em + #{$spacing});
+  }
 }

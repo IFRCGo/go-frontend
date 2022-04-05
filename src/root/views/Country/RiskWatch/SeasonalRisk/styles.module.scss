@@ -2,7 +2,32 @@
 
 .risk-table-container {
   .table-description {
+    gap: $spacing;
     padding: $spacing;
-    font-size: $font-size-lg;
+  }
+
+  .content {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing*2;
+
+    .eap-section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: $spacing*4 0 $spacing*5 0;
+
+      .eap-container {
+        background-color: $grey-mist;
+        max-width: 46rem;
+        padding: $spacing;
+        border-radius: $base-border-radius;
+        box-shadow: $base-box-shadow;
+
+        .eap-description {
+          padding: $spacing;
+        }
+      }
+    }
   }
 }

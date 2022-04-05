@@ -59,6 +59,7 @@ const ThreeW = lazy(() => import('../views/ThreeW'));
 const ThreeWEdit = lazy(() => import('../views/ThreeWEdit'));
 const EmergencyThreeWEdit = lazy(() => import('../views/EmergencyThreeWEdit'));
 const EmergencyThreeW = lazy(() => import('../views/EmergencyThreeW'));
+const EmergencyThreeWForm = lazy(() => import('../components/EmergencyThreeWForm'));
 
 // @NOTE: Temporary
 // const DrefApplicationForm = lazy(() => import('../views/DrefApplicationForm'));
@@ -67,7 +68,6 @@ const EmergencyThreeW = lazy(() => import('../views/EmergencyThreeW'));
 // const FlashUpdateReport = lazy(() => import('../views/FlashUpdateReport'));
 // const AllFlashUpdates = lazy(() => import('../views/AllFlashUpdates'));
 
-const EmergencyThreeWForm = lazy(() => import('../components/EmergencyThreeWForm'));
 
 function LoadingGlobal() {
   return (
@@ -277,13 +277,14 @@ function Multiplexer(props) {
               <PrivateRoute exact path='/emergency-three-w-form/' component={EmergencyThreeWForm} />
 
               {/* @NOTE: Temporary
-              <PrivateRoute key="new-dref-application-form" exact path='/dref-application/new/' component={DrefApplicationForm} />
-              <PrivateRoute exact path='/dref-application/:drefId/edit/' component={DrefApplicationForm} />
-              <PrivateRoute exact path='/dref-application/:drefId/export/' component={DrefPdfPreview} />
               <PrivateRoute key="new-flash-update-application-form" exact path='/flash-update/new/' component={FlashUpdateApplicationForm} />
               <Route exact path='/flash-update/all/' component={AllFlashUpdates} />
               <PrivateRoute exact path='/flash-update/:id/edit/' component={FlashUpdateApplicationForm} />
               <Route exact path='/flash-update/:id/' component={FlashUpdateReport} />
+
+              <PrivateRoute key="new-dref-application-form" exact path='/dref-application/new/' component={DrefApplicationForm} />
+              <PrivateRoute exact path='/dref-application/:drefId/edit/' component={DrefApplicationForm} />
+              <PrivateRoute exact path='/dref-application/:drefId/export/' component={DrefPdfPreview} />
               */}
 
               <Route component={FourHundredFour} />

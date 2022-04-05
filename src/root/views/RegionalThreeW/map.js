@@ -3,15 +3,15 @@ import { Provider } from 'react-redux';
 import { render } from 'react-dom';
 import { BrowserRouter, Link } from 'react-router-dom';
 import mapboxgl from 'mapbox-gl';
+import turfBbox from '@turf/bbox';
 
 import store from '#utils/store';
 import newMap from '#utils/get-new-map';
+import Translate from '#components/Translate';
+import { countryLabels } from '#utils/country-labels';
 
 import ActivityDetails from './activity-details';
-import Translate from '#components/Translate';
 import { getCountryMeta } from '../../utils/get-country-meta';
-import turfBbox from '@turf/bbox';
-import { countryLabels } from '#utils/country-labels';
 
 const emptyList = [];
 

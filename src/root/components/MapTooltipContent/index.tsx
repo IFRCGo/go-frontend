@@ -45,6 +45,7 @@ function MapTooltipContent(props: Props) {
     >
       <Header
         className={styles.header}
+        headingSize="small"
         heading={
           href ? (
             <a

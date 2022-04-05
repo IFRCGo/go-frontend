@@ -1,18 +1,14 @@
 @import "~styles/settings/variables";
 
 .seasonal-risk-map {
-  .filter-section {
+
+  .filters {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    padding: $spacing/2;
+    gap: $spacing;
 
-    .filters {
-      display: flex;
-      gap: $spacing;
-
-      .filter-input {
-        width: 20rem;
-      }
+    .filter-input {
+      width: 20rem;
     }
   }
 
@@ -24,7 +20,12 @@
 
       .map {
         z-index: 0;
-        height: 30rem;
+        height: 40rem;
+      }
+
+      .month-selector {
+        position: absolute;
+        bottom: $spacing*4;
       }
     }
   }

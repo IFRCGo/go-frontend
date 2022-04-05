@@ -54,11 +54,16 @@ function Container(props: Props) {
         styles.container,
         sub && styles.sub,
         className,
-        !hideHeaderBorder && styles.withHeaderBorder,
         visibleOverflow && styles.visibleOverflow,
       )}
     >
-      <div className={_cs(styles.innerContainer, innerContainerClassName)}>
+      <div
+        className={_cs(
+          styles.innerContainer,
+          innerContainerClassName,
+          !hideHeaderBorder && styles.withHeaderBorder,
+        )}
+      >
         {(heading || actions) && (
           <Header
             className={_cs(styles.header, headerClassName)}

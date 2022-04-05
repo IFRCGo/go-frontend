@@ -41,6 +41,8 @@
 
   &.secondary {
     background-color: $color-background;
+    text-transform: uppercase;
+    border-radius: calc(1em + #{$spacing});
 
     &.active {
       color: $color-text-on-dark;
@@ -52,17 +54,6 @@
       color: $color-text-disabled;
     }
 
-    $border-radius: calc(1em + #{$spacing});
-
-    &:first-child {
-      border-top-left-radius: $border-radius;
-      border-bottom-left-radius: $border-radius;
-    }
-
-    &:last-child {
-      border-top-right-radius: $border-radius;
-      border-bottom-right-radius: $border-radius;
-    }
   }
 
   &.step {
