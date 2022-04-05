@@ -120,12 +120,17 @@ export const defaultTooltipOptions: mapboxgl.PopupOptions = {
 export type BBOXType = [number, number, number, number];
 export function fixBounds(bounds: number[]) {
   let newBounds = [...bounds] as BBOXType;
-  if (newBounds[0] < 0) {
-    newBounds[0] = 360 + newBounds[0];
+  /*
+  if (newBounds[0] < -90 || newBounds[2] < -90) {
+    if (newBounds[0] < 0) {
+      newBounds[0] = 360 + newBounds[0];
+    }
+
+    if (newBounds[2] < 0) {
+      newBounds[2] = 360 + newBounds[2];
+    }
   }
-  if (newBounds[2] < 0) {
-    newBounds[2] = 360 + newBounds[2];
-  }
+  */
 
   return newBounds as BBOXType;
 }
