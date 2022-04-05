@@ -6,8 +6,10 @@ import {
   mapToMap,
   unique,
 } from '@togglecorp/fujs';
+import { RiArrowRightUpLine } from 'react-icons/ri';
 
 import Container from '#components/Container';
+import { useButtonFeatures } from '#components/Button';
 import useReduxState from '#hooks/useReduxState';
 import { useRequest } from '#utils/restRequest';
 import {
@@ -83,6 +85,12 @@ interface Props {
 
 function SeasonalRisk(props: Props) {
   const { countryId } = props;
+
+  const eapLinkProps = useButtonFeatures({
+    variant: 'primary',
+    actions: <RiArrowRightUpLine />,
+    children: 'Download the EAP',
+  });
 
   const allCountries = useReduxState('allCountries');
   const country = React.useMemo(() => (
@@ -235,6 +243,25 @@ function SeasonalRisk(props: Props) {
           selectedMonth={selectedMonth}
           riskData={aggregatedRiskData}
         />
+        <div className={styles.eapSection}>
+          <Container
+            innerContainerClassName={styles.eapContainer}
+            heading="Early Action Protocols (EAPs)"
+            headingSize="small"
+            hideHeaderBorder
+            contentClassName={styles.eapDescription}
+            visibleOverflow
+            actions={(
+              <a
+                target="_blank"
+                href="https://www.ifrc.org/appeals?date_from=&date_to=&type%5B%5D=30&appeal_code=&text="
+                {...eapLinkProps}
+              />
+            )}
+          >
+            EAPs are a formal plan that guide timely and effective implementation of early actions for extreme weather events, based on pre-agreed triggers. Download the EAP for Philippines
+          </Container>
+        </div>
         <RiskBarChart
           riskData={aggregatedRiskData}
           hazardOptions={hazardOptions}

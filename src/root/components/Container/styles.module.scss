@@ -16,11 +16,9 @@
     }
   }
 
-  &.with-header-border {
-    >.inner-container {
-      .header {
-        border-bottom: $base-border-width solid $base-border-color;
-      }
+  >.with-header-border {
+    >.header {
+      border-bottom: $base-border-width solid $base-border-color;
     }
   }
 
