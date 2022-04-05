@@ -63,7 +63,6 @@ const EmergencyThreeWForm = lazy(() => import('../components/EmergencyThreeWForm
 
 const DrefApplicationForm = lazy(() => import('../views/DrefApplicationForm'));
 const DrefPdfPreview = lazy(() => import('../views/DrefPdfPreview'));
-*/
 const FlashUpdateApplicationForm = lazy(() => import('../views/FlashUpdateApplicationForm'));
 const FlashUpdateReport = lazy(() => import('../views/FlashUpdateReport'));
 const AllFlashUpdates = lazy(() => import('../views/AllFlashUpdates'));
@@ -280,14 +279,8 @@ function Multiplexer(props) {
               <PrivateRoute key="new-flash-update-application-form" exact path='/flash-update/new/' component={FlashUpdateApplicationForm} />
               <PrivateRoute exact path='/flash-update/all/' component={AllFlashUpdates} />
               <PrivateRoute exact path='/flash-update/:id/edit/' component={FlashUpdateApplicationForm} />
-<<<<<<< HEAD
               <PrivateRoute exact path='/flash-update/:id/' component={FlashUpdateReport} />
-=======
-              <Route exact path='/flash-update/:id/' component={FlashUpdateReport} />
               <Route exact path='/dref-operational-update/new/' component={DrefOperationalUpdate} />
->>>>>>> 90441fb8 (Add tab and dummy page for dref operational update)
-
-              {/* NOTE: Temporary
               <PrivateRoute key="new-dref-application-form" exact path='/dref-application/new/' component={DrefApplicationForm} />
               <PrivateRoute exact path='/dref-application/:drefId/edit/' component={DrefApplicationForm} />
               <PrivateRoute exact path='/dref-application/:drefId/export/' component={DrefPdfPreview} />

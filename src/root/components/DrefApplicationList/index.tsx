@@ -9,7 +9,7 @@ import SelectInput from '#components/SelectInput';
 import Pager from '#components/Pager';
 import EmptyMessage from '#components/EmptyMessage';
 import DrefExportButton from '#components/DrefExportButton';
-import { useButtonFeatures } from '#components/Button';
+import Button, { useButtonFeatures } from '#components/Button';
 import {
   createStringColumn,
   createDateColumn,
@@ -19,9 +19,11 @@ import useReduxState from '#hooks/useReduxState';
 import useInputState from '#hooks/useInputState';
 import {
   ListResponse,
+  useLazyRequest,
   useRequest,
 } from '#utils/restRequest';
 import { compareLabel } from '#utils/common';
+import useAlert from '#hooks/useAlert';
 
 import styles from './styles.module.scss';
 
@@ -38,14 +40,17 @@ interface DrefApplication {
   appeal_code: string;
   title: string;
   submission_to_geneva: string;
+  is_published: boolean;
 }
 
 const drefKeySelector = (d: DrefApplication) => d.id;
-
-interface Props {
+interface Props { }
+interface DrefOperationalResponseFields {
+  id: number;
 }
 
 function DrefApplicationList(props: Props) {
+  const alert = useAlert();
   const { strings } = React.useContext(LanguageContext);
   const allCountries = useReduxState('allCountries');
   const [country, setCountry] = useInputState<number | undefined>(undefined);
@@ -62,6 +67,7 @@ function DrefApplicationList(props: Props) {
   const {
     pending,
     response,
+    retrigger: showALlDref,
   } = useRequest<ListResponse<DrefApplication>>({
     url: 'api/v2/dref/',
     query: {
@@ -76,6 +82,46 @@ function DrefApplicationList(props: Props) {
     variant: 'secondary',
     children: strings.drefTableEdit,
   });
+
+  const operationalUpdateLinkProps = useButtonFeatures({
+    variant: 'secondary',
+    children: strings.drefOperationalUpdateOperationalUpdateButtonLabel,
+  });
+
+  const {
+    pending: publishPending,
+    trigger: submitPublish,
+  } = useLazyRequest<DrefOperationalResponseFields, Partial<DrefApplication>>({
+    url: (ctx) => `api/v2/dref/${ctx.id}/publish/`,
+    body: () => ({}),
+    method: 'POST',
+    onSuccess: (response) => {
+      showALlDref();
+      console.log({ response });
+    },
+    onFailure: ({
+      value: { messageForNotification },
+      debugMessage,
+    }) => {
+      alert.show(
+        <p>
+          {strings.drefFormLoadRequestFailureMessage}
+          &nbsp;
+          <strong>
+            {messageForNotification}
+          </strong>
+        </p>,
+        {
+          variant: 'danger',
+          debugMessage,
+        },
+      );
+    }
+  });
+
+  const handlePublish = React.useCallback((id: number) => {
+    submitPublish({ id });
+  }, [submitPublish]);
 
   const columns = React.useMemo(() => ([
     createDateColumn<DrefApplication, string | number>(
@@ -100,14 +146,29 @@ function DrefApplicationList(props: Props) {
     ),
     createActionColumn(
       'actions',
-      (rowKey: number) => ({
+      (rowKey: number, item: DrefApplication) => ({
         className: styles.actions,
         children: (
           <>
-            <Link
-              to={`/dref-application/${rowKey}/edit/`}
-              {...editLinkProps}
-            />
+            {item?.is_published ?
+              <Link
+                to={`/dref/${rowKey}/op-update/`}
+                {...operationalUpdateLinkProps}
+              />
+              :
+              <>
+                <Button
+                  name={rowKey}
+                  onClick={handlePublish}
+                >
+                  {strings.drefPublishButtonLabel}
+                </Button>
+                <Link
+                  to={`/dref-application/${rowKey}/edit/`}
+                  {...editLinkProps}
+                />
+              </>
+            }
             <DrefExportButton
               drefId={rowKey}
             />
@@ -116,7 +177,7 @@ function DrefApplicationList(props: Props) {
       }),
       { cellRendererClassName: styles.actionsCell },
     ),
-  ]), [editLinkProps, strings]);
+  ]), [editLinkProps, operationalUpdateLinkProps, handlePublish, strings]);
 
   return (
     <Container

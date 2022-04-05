@@ -1,5 +1,8 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import {
+  Link,
+  match,
+} from 'react-router-dom';
 import {
   listToMap,
   mapToMap,
@@ -43,6 +46,12 @@ function scrollToTop() {
   }, 0);
 }
 
+interface Props {
+  match: match<{ drefId?: string }>;
+  history: History;
+  location: Location;
+}
+
 type StepTypes = 'operationOverview' | 'eventDetails' | 'needs' | 'operation' | 'submission';
 
 const stepTypesToFieldsMap: {
@@ -58,7 +67,12 @@ const stepTypesToFieldsMap: {
 
 const defaultFormValues: PartialForm<DrefOperationalUpdateFields> = {};
 
-function DrefOperationalUpdate() {
+function DrefOperationalUpdate(props: Props) {
+  const {
+    match,
+    history,
+  } = props;
+  const { drefId } = match.params;
   const { error } = useForm(schema, { value: defaultFormValues });
   const { strings } = React.useContext(languageContext);
   const [currentStep, setCurrentStep] = React.useState<StepTypes>('operationOverview');
@@ -111,7 +125,7 @@ function DrefOperationalUpdate() {
 
   const exportLinkProps = useButtonFeatures({
     variant: 'secondary',
-    children: strings.drefOperationalUpdateExportButton,
+    children: strings.drefOperationalUpdateExportButtonLabel,
   });
 
   return (
@@ -133,7 +147,7 @@ function DrefOperationalUpdate() {
               onClick={submitDrefOptionalUpdate}
               type='submit'
             >
-              {strings.drefOperationalUpdateSaveButton}
+              {strings.drefOperationalUpdateSaveButtonLabel}
             </Button>
           </>
         )}

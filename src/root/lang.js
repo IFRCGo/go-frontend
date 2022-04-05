@@ -3519,6 +3519,11 @@ export default {
   // button
   drefOperationalUpdateExportButton: 'Export',
   drefOperationalUpdateSaveButton: 'Save',
+  // button 
+  drefPublishButtonLabel: 'Publish',
+  drefOperationalUpdateExportButtonLabel: 'Export',
+  drefOperationalUpdateSaveButtonLabel: 'Save',
+  drefOperationalUpdateOperationalUpdateButtonLabel: 'update',
 
   // Main page
   drefOperationalUpdatePageTitle: 'IFRC GO - DREF operational update',
