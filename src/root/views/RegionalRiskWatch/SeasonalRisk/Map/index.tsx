@@ -21,7 +21,7 @@ import turfBbox from '@turf/bbox';
 import {
   COLOR_RED,
   COLOR_LIGHT_GREY,
-  COLOR_BLUE,
+  // COLOR_BLUE,
   COLOR_ORANGE,
   COLOR_YELLOW,
   defaultMapStyle,
@@ -85,40 +85,50 @@ function LegendItem(props: LegendItemProps) {
   );
 }
 
+// const COLOR_BLUE_GRADIENT_1 = '#e0e3e7';
+// const COLOR_BLUE_GRADIENT_2 = '#ccd2d9';
+const COLOR_BLUE_GRADIENT_3 = '#aeb7c2';
+// const COLOR_BLUE_GRADIENT_4 = '#99a5b3';
+const COLOR_BLUE_GRADIENT_5 = '#7d8b9d';
+// const COLOR_BLUE_GRADIENT_6 = '#67788d';
+const COLOR_BLUE_GRADIENT_7 = '#4d617a';
+// const COLOR_BLUE_GRADIENT_8 = '#344b67';
+const COLOR_BLUE_GRADIENT_9 = '#011e41';
+
 const displacementLegendData = [
   {
-    color: COLOR_BLUE,
+    color: COLOR_BLUE_GRADIENT_3,
     label: `Less than ${addSeparator(DISPLACEMENT_LOW)}`
   },
   {
-    color: COLOR_YELLOW,
+    color: COLOR_BLUE_GRADIENT_5,
     label: `${addSeparator(DISPLACEMENT_LOW+1)} to ${addSeparator(DISPLACEMENT_MEDIUM)}`
   },
   {
-    color: COLOR_ORANGE,
+    color: COLOR_BLUE_GRADIENT_7,
     label: `${addSeparator(DISPLACEMENT_MEDIUM+1)} to ${addSeparator(DISPLACEMENT_HIGH)}`
   },
   {
-    color: COLOR_RED,
+    color: COLOR_BLUE_GRADIENT_9,
     label: `More than ${addSeparator(DISPLACEMENT_HIGH)}`
   },
 ];
 
 const exposureLegendData = [
   {
-    color: COLOR_BLUE,
+    color: COLOR_BLUE_GRADIENT_3,
     label: `Less than ${addSeparator(EXPOSURE_LOW)}`,
   },
   {
-    color: COLOR_YELLOW,
+    color: COLOR_BLUE_GRADIENT_5,
     label: `${addSeparator(EXPOSURE_LOW+1)} to ${addSeparator(EXPOSURE_MEDIUM)}`,
   },
   {
-    color: COLOR_ORANGE,
+    color: COLOR_BLUE_GRADIENT_7,
     label: `${addSeparator(EXPOSURE_MEDIUM+1)} to ${addSeparator(EXPOSURE_HIGH)}`,
   },
   {
-    color: COLOR_RED,
+    color: COLOR_BLUE_GRADIENT_9,
     label: `More than ${addSeparator(EXPOSURE_HIGH)}`,
   },
 ];
@@ -206,6 +216,7 @@ function Choropleth(props: ChoroplethProps) {
       ['get', 'iso3'],
   ];
 
+
   hazardGroupedRiskData.forEach((rd) => {
     const countries = Object.keys(rd);
     countries.forEach((co) => {
@@ -226,19 +237,19 @@ function Choropleth(props: ChoroplethProps) {
 
         if (isDefined(displacement)) {
           if (displacement > 0) {
-            color = COLOR_BLUE;
+            color = COLOR_BLUE_GRADIENT_3;
           }
 
           if (displacement > DISPLACEMENT_LOW) {
-            color = COLOR_YELLOW;
+            color = COLOR_BLUE_GRADIENT_5;
           }
 
           if (displacement > DISPLACEMENT_MEDIUM) {
-            color = COLOR_ORANGE;
+            color = COLOR_BLUE_GRADIENT_7;
           }
 
           if (displacement > DISPLACEMENT_HIGH) {
-            color = COLOR_RED;
+            color = COLOR_BLUE_GRADIENT_9;
           }
         }
 
@@ -252,19 +263,19 @@ function Choropleth(props: ChoroplethProps) {
 
         if (isDefined(exposure)) {
           if (exposure > 0) {
-            color = COLOR_BLUE;
+            color = COLOR_BLUE_GRADIENT_3;
           }
 
           if (exposure > EXPOSURE_LOW) {
-            color = COLOR_YELLOW;
+            color = COLOR_BLUE_GRADIENT_5;
           }
 
           if (exposure > EXPOSURE_MEDIUM) {
-            color = COLOR_ORANGE;
+            color = COLOR_BLUE_GRADIENT_7;
           }
 
           if (exposure > EXPOSURE_HIGH) {
-            color = COLOR_RED;
+            color = COLOR_BLUE_GRADIENT_9;
           }
         }
 
