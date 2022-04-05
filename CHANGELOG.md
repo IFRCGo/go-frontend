@@ -1,3 +1,16 @@
+### Release 6.0.1 - Hotfix for Response Activities (3W for Emergency)
+
+Date: 2022-03-28
+
+Frontend:
+- Remove restriction for country selection in 3W form (Response Activity) (Previously country was limited to the countries in emergency)
+- Only show Activities tab if there is at least one Response Activity in Emergency page
+
+Backend:
+- Remove validation for country to one of the country in emergency for the 3W form (Response Activity)
+- Add `response_activity_count` to support the conditional visibility of "Activities" tab
+
+
 ### Release 6.0.0 - 3w for Emergencies
 
 Date: 2022-03-25
