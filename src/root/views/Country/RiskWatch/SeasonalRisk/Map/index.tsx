@@ -387,7 +387,7 @@ function SeasonalRiskMap(props: Props) {
 
   const { response: thReport } = useRequest<ListResponse<THReport>>({
     skip: !country?.iso3,
-    url: 'https://risk-module-api.togglecorp.com/api/v1/hazard_info/',
+    url: 'https://CHANGE-ME-WHEN-USED/api/v1/hazard_info/',
     query: { iso3: country?.iso3?.toLowerCase() },
   });
 
