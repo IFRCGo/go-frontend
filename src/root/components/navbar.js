@@ -101,7 +101,6 @@ function Navbar(props) {
                     >
                       {strings.headerDropdownNew3WActivity}
                     </Link>
-                    {/* @NOTE: Temporary
                     <Link
                       to='/flash-update/new'
                       className='drop__menu-item'
@@ -114,7 +113,6 @@ function Navbar(props) {
                     >
                       {strings.headerDropdownNewDrefApplication}
                     </Link>
-                    */}
                   </div>
                 </DropdownMenu>
               </nav>
