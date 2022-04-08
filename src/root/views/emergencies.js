@@ -3,8 +3,7 @@ import { connect } from 'react-redux';
 import { DateTime } from 'luxon';
 import { PropTypes as T } from 'prop-types';
 import { Helmet } from 'react-helmet';
-// @NOTE: Temporary
-// import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import App from '#views/app';
 
@@ -20,8 +19,7 @@ import { environment } from '#config';
 
 import LanguageContext from '#root/languageContext';
 
-// @NOTE: Temporary
-// import FlashUpdateTableLists from '#views/AllFlashUpdates/TableLists';
+import FlashUpdateTableLists from '#views/AllFlashUpdates/TableLists';
 
 class Emergencies extends React.Component {
   componentDidMount() {
@@ -63,7 +61,6 @@ class Emergencies extends React.Component {
                     showHeader={false}
                   />
                 </div>
-                {/* @NOTE: Temporary
                 <div className='inner inner--field-reports-emergencies'>
                   <FlashUpdateTableLists
                     itemPerPage={4}
@@ -80,7 +77,6 @@ class Emergencies extends React.Component {
                     )}
                   />
                 </div>
-                */}
                 <div className='inner inner--field-reports-emergencies'>
                   <FieldReportsTable
                     title={strings.fieldReportsTableTitle}
