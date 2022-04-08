@@ -133,7 +133,6 @@ class MobileNavbar extends React.PureComponent {
                       {strings.headerDropdownNew3WActivity}
                     </Link>
                   </li>
-                  {/* @NOTE: Temporary
                   <li>
                     <Link
                       to='/flash-update/new'
@@ -150,7 +149,6 @@ class MobileNavbar extends React.PureComponent {
                       {strings.headerDropdownNewDrefApplication}
                     </Link>
                   </li>
-                  */}
                 </ul>
               </DropdownMenu>
               <button className='button button--small button--close button--text-hidden' onClick={this.toggleMenu}>
