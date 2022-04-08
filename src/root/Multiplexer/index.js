@@ -284,6 +284,7 @@ function Multiplexer(props) {
               <PrivateRoute key="new-dref-application-form" exact path='/dref-application/new/' component={DrefApplicationForm} />
               <PrivateRoute exact path='/dref-application/:drefId/edit/' component={DrefApplicationForm} />
               <PrivateRoute exact path='/dref-application/:drefId/export/' component={DrefPdfPreview} />
+              <PrivateRoute exact path='/dref-operational-update/:id/edit/' component={DrefOperationalUpdate} />
 
               <Route component={FourHundredFour} />
             </Switch>

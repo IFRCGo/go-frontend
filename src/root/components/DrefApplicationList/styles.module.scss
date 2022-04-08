@@ -13,8 +13,25 @@
     }
   }
 
-  .table {
+  .in-progress-dref-table {
     width: 100%;
+
+    .actions-header {
+      width: 20rem;
+    }
+
+    .actions-cell {
+      display: flex;
+      gap: $spacing / 2;
+    }
+  }
+
+  .published-dref-table {
+    width: 100%;
+
+    .actions-header {
+      width: 10rem;
+    }
 
     .actions-cell {
       display: flex;

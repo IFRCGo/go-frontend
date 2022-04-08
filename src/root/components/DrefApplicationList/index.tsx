@@ -1,5 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { History } from 'history';
+import { isDefined } from '@togglecorp/fujs';
 
 import LanguageContext from '#root/languageContext';
 import Container from '#components/Container';
@@ -8,8 +10,10 @@ import Table from '#components/Table';
 import SelectInput from '#components/SelectInput';
 import Pager from '#components/Pager';
 import EmptyMessage from '#components/EmptyMessage';
+import ConfirmButton from '#components/ConfirmButton';
 import DrefExportButton from '#components/DrefExportButton';
-import Button, { useButtonFeatures } from '#components/Button';
+import DropdownMenuItem from '#components/DropdownMenuItem';
+import { useButtonFeatures } from '#components/Button';
 import {
   createStringColumn,
   createDateColumn,
@@ -24,10 +28,12 @@ import {
 } from '#utils/restRequest';
 import { compareLabel } from '#utils/common';
 import useAlert from '#hooks/useAlert';
+import { DrefOperationalUpdateResponse } from '#types';
 
 import styles from './styles.module.scss';
 
-const ITEM_PER_PAGE = 20;
+const ITEM_PER_PAGE = 6;
+
 interface DrefApplication {
   id: number;
   created_at: string;
@@ -43,12 +49,15 @@ interface DrefApplication {
 }
 
 const drefKeySelector = (d: DrefApplication) => d.id;
-interface Props { }
+interface Props {
+  history: History;
+}
 interface DrefOperationalResponseFields {
   id: number;
 }
 
 function DrefApplicationList(props: Props) {
+  const { history } = props;
   const alert = useAlert();
   const { strings } = React.useContext(LanguageContext);
   const allCountries = useReduxState('allCountries');
@@ -62,40 +71,62 @@ function DrefApplicationList(props: Props) {
     })).sort(compareLabel) ?? [],
     [allCountries],
   );
-  const [activePage, setActivePage] = React.useState(1);
+
+  const [inProgressDrefActivePage, setInProgressDrefActivePage] = React.useState(1);
+  const [publishedDrefActivePage, setPublishedDrefActivePage] = React.useState(1);
+
   const {
-    pending,
-    response,
-    retrigger: showALlDref,
+    pending: publishedDrefPending,
+    response: publishedDrefResponse,
+    retrigger: refetchPublishedDrefList,
   } = useRequest<ListResponse<DrefApplication>>({
     url: 'api/v2/dref/',
     query: {
       country,
+      is_published: true,
       limit: ITEM_PER_PAGE,
-      offset: ITEM_PER_PAGE * (activePage - 1),
+      offset: ITEM_PER_PAGE * (publishedDrefActivePage - 1),
     },
   });
 
-  // TODO: use strings
+  const {
+    pending: inProgressDrefPending,
+    response: inProgressDrefResponse,
+    retrigger: refetchInProgressDrefList,
+  } = useRequest<ListResponse<DrefApplication>>({
+    url: 'api/v2/dref/',
+    query: {
+      country,
+      is_published: false,
+      limit: ITEM_PER_PAGE,
+      offset: ITEM_PER_PAGE * (inProgressDrefActivePage - 1),
+    },
+  });
+
+  const publishedApplicationList = React.useMemo(() => (
+    publishedDrefResponse?.results?.filter(d => d.is_published)
+  ), [publishedDrefResponse]);
+
+  const inProgressApplicationList = React.useMemo(() => (
+    inProgressDrefResponse?.results?.filter(d => !d.is_published)
+  ), [inProgressDrefResponse]);
+
+
   const editLinkProps = useButtonFeatures({
     variant: 'secondary',
     children: strings.drefTableEdit,
   });
 
-  const operationalUpdateLinkProps = useButtonFeatures({
-    variant: 'secondary',
-    children: strings.drefOperationalUpdateOperationalUpdateButtonLabel,
-  });
-
   const {
-    pending: publishPending,
-    trigger: submitPublish,
-  } = useLazyRequest<DrefOperationalResponseFields, Partial<DrefApplication>>({
-    url: (ctx) => `api/v2/dref/${ctx.id}/publish/`,
+    pending: drefPublishPending,
+    trigger: postDrefPublishRequest,
+  } = useLazyRequest<DrefOperationalResponseFields, number>({
+    url: (drefId) => drefId ? `api/v2/dref/${drefId}/publish/` : undefined,
     body: () => ({}),
     method: 'POST',
     onSuccess: (response) => {
-      showALlDref();
+      refetchPublishedDrefList();
+      refetchInProgressDrefList();
     },
     onFailure: ({
       value: { messageForNotification },
@@ -117,157 +148,219 @@ function DrefApplicationList(props: Props) {
     }
   });
 
-  //const {
-  //  pending: pendingOpData,
-  //  trigger: submitUpdateData,
-  //} = useLazyRequest<DrefOperationalUpdateFields, Partial<DrefOperationalResponseFields>>({
-  //  url: (ctx) => `api/v2/dref/${ctx.id}/op-update/`,
-  //  body: () => ({}),
-  //  method: 'POST',
-  //  onSuccess: (response) => {
-  //    console.log({ response });
-  //  },
-  //  onFailure: ({
-  //    value: { messageForNotification },
-  //    debugMessage,
-  //  }) => {
-  //    alert.show(
-  //      <p>
-  //        {strings.drefFormLoadRequestFailureMessage}
-  //        &nbsp;
-  //        <strong>
-  //          {messageForNotification}
-  //        </strong>
-  //      </p>,
-  //      {
-  //        variant: 'danger',
-  //        debugMessage,
-  //      },
-  //    );
-  //  }
-  //});
+  const {
+    // TODO: use this
+    // pending: newOperationaUpdatePending,
+    trigger: postDrefNewOperationalUpdate,
+  } = useLazyRequest<DrefOperationalUpdateResponse, number>({
+    url: (drefId) => drefId ? `api/v2/dref/${drefId}/op-update/` : undefined,
+    body: () => ({}),
+    method: 'POST',
+    onSuccess: (response, drefId) => {
+      console.info(response, drefId);
+      if (isDefined(response?.id)) {
+        history.push(`/dref-operational-update/${response.id}/edit/`);
+      }
+      // location.pu
+    },
+    onFailure: ({
+      value: { messageForNotification },
+      debugMessage,
+    }) => {
+      alert.show(
+        <p>
+          Failed to create new operational update
+          &nbsp;
+          <strong>
+            {messageForNotification}
+          </strong>
+        </p>,
+        {
+          variant: 'danger',
+          debugMessage,
+        },
+      );
+    }
+  });
 
-  //const handleUpdate = React.useCallback((id: number) => {
-  //  submitUpdateData({ id });
-  //}, [submitUpdateData]);
+  const handlePublishButtonClick = React.useCallback((drefId: number) => {
+    postDrefPublishRequest(drefId);
+  }, [postDrefPublishRequest]);
 
-  const handlePublish = React.useCallback((id: number) => {
-    submitPublish({ id });
-  }, [submitPublish]);
+  const [
+    inProgressApplicationColumns,
+    publishedApplicationColumns,
+  ] = React.useMemo(() => {
+    const baseColumns = [
+      createDateColumn<DrefApplication, string | number>(
+        'created_at',
+        strings.drefTableCreatedOn,
+        (item) => item.created_at,
+      ),
+      createStringColumn<DrefApplication, string | number>(
+        'appeal_code',
+        strings.drefTableAppealNumber,
+        (item) => item.appeal_code,
+      ),
+      createStringColumn<DrefApplication, string | number>(
+        'title',
+        strings.drefTableName,
+        (item) => item.title,
 
+      ),
+      createStringColumn<DrefApplication, string | number>(
+        'submission_to_geneva',
+        strings.drefTableSubmittedToGeneva,
+        (item) => item.submission_to_geneva,
+      ),
+    ];
 
-  const columns = React.useMemo(() => ([
-    createDateColumn<DrefApplication, string | number>(
-      'created_at',
-      strings.drefTableCreatedOn,
-      (item) => item.created_at,
-    ),
-    createStringColumn<DrefApplication, string | number>(
-      'appeal_code',
-      strings.drefTableAppealNumber,
-      (item) => item.appeal_code,
-    ),
-    createStringColumn<DrefApplication, string | number>(
-      'title',
-      strings.drefTableName,
-      (item) => item.title,
-    ),
-    createStringColumn<DrefApplication, string | number>(
-      'submission_to_geneva',
-      strings.drefTableSubmittedToGeneva,
-      (item) => item.submission_to_geneva,
-    ),
-    createActionColumn(
-      'actions',
-      (rowKey: number, item: DrefApplication) => ({
-        className: styles.actions,
-        children: (
-          <>
-            {item?.is_published ?
-              <Link
-                to={`/dref/${rowKey}/op-update/`}
-                {...operationalUpdateLinkProps}
-              />
-              //<Button
-              //  name={rowKey}
-              //  onClick={handleUpdate}
-              //>
-              //  update
-              //</Button>
-              :
+    return ([
+      [
+        ...baseColumns,
+        createActionColumn(
+          'actions',
+          (rowKey: number, item: DrefApplication) => ({
+            children: (
               <>
-                <Button
+                <ConfirmButton
                   name={rowKey}
-                  onClick={handlePublish}
+                  message="Are you sure you want to publish the DREF?"
+                  onConfirm={handlePublishButtonClick}
+                  variant="secondary"
+                  disabled={drefPublishPending}
                 >
                   {strings.drefPublishButtonLabel}
-                </Button>
+                </ConfirmButton>
                 <Link
                   to={`/dref-application/${rowKey}/edit/`}
                   {...editLinkProps}
                 />
+                <DrefExportButton
+                  drefId={rowKey}
+                />
               </>
-            }
-            <DrefExportButton
-              drefId={rowKey}
-            />
-          </>
+            ),
+          }),
+          {
+            cellRendererClassName: styles.actionsCell,
+            headerContainerClassName: styles.actionsHeader,
+          },
         ),
-      }),
-      { cellRendererClassName: styles.actionsCell },
-    ),
-  ]), [editLinkProps, operationalUpdateLinkProps, handlePublish, strings]);
+      ],
+      [
+        ...baseColumns,
+        createActionColumn(
+          'actions',
+          (rowKey: number, item: DrefApplication) => ({
+            className: styles.actions,
+            extraActions: (
+              <>
+                <DropdownMenuItem
+                  name={rowKey}
+                  onClick={postDrefNewOperationalUpdate}
+                  label="New Operational Update"
+                />
+                <DropdownMenuItem
+                  onClick={() => {}}
+                  label="Edit last Operational Update"
+                />
+                <DropdownMenuItem
+                  onClick={() => {}}
+                  label="View all Operational Updates"
+                />
+              </>
+            ),
+            children: (
+              <DrefExportButton
+                drefId={rowKey}
+              />
+            ),
+          }),
+          {
+            cellRendererClassName: styles.actionsCell,
+            headerContainerClassName: styles.actionsHeader,
+          },
+        ),
+      ],
+    ]);
+  }, [postDrefNewOperationalUpdate, drefPublishPending, editLinkProps, handlePublishButtonClick, strings]);
+
+  const pending = publishedDrefPending || inProgressDrefPending;
 
   return (
     <Container
       className={styles.drefApplicationList}
+      description={(
+        <SelectInput
+          name={undefined}
+          placeholder="Select Country"
+          options={countryOptions}
+          value={country}
+          onChange={setCountry}
+        />
+      )}
     >
-      {pending && <BlockLoading />}
-      {!pending && response && (
-        <>
-          <div className={styles.filters}>
-            <SelectInput
-              name={undefined}
-              placeholder="Select Country"
-              options={countryOptions}
-              value={country}
-              onChange={setCountry}
-            />
-          </div>
-          <Container
-            heading="In-progress Applications"
-            sub
-          >
-            <Table
-              className={styles.table}
-              data={response?.results}
-              columns={columns}
-              keySelector={drefKeySelector}
-              variant="large"
-            />
-            {response && (
-              <div className={styles.footer}>
-                <Pager
-                  activePage={activePage}
-                  onActivePageChange={setActivePage}
-                  itemsCount={response.count}
-                  maxItemsPerPage={ITEM_PER_PAGE}
-                />
-              </div>
-            )}
-          </Container>
-        </>
-      )}
-      {!pending && response?.results?.length === 0 && (
-        <EmptyMessage />
-      )}
-      {!pending && !response && (
-        <div className={styles.error}>
-          <p>
+      <Container
+        heading="In-progress Applications"
+        sub
+        footerActions={inProgressDrefResponse && (
+          <Pager
+            activePage={inProgressDrefActivePage}
+            onActivePageChange={setInProgressDrefActivePage}
+            itemsCount={inProgressDrefResponse.count}
+            maxItemsPerPage={ITEM_PER_PAGE}
+          />
+        )}
+      >
+        {inProgressDrefPending && <BlockLoading />}
+        {!inProgressDrefPending && inProgressDrefResponse?.results?.length === 0 && (
+          <EmptyMessage />
+        )}
+        {!pending && !inProgressDrefResponse && (
+          <div className={styles.error}>
             There was an error fetching the DREF application list
-          </p>
-        </div>
-      )}
+          </div>
+        )}
+        {!inProgressDrefPending && inProgressDrefResponse && (
+          <Table
+            className={styles.inProgressDrefTable}
+            data={inProgressApplicationList}
+            columns={inProgressApplicationColumns}
+            keySelector={drefKeySelector}
+            variant="large"
+          />
+        )}
+      </Container>
+      <Container
+        heading="Published Applications"
+        sub
+        footerActions={publishedDrefResponse && (
+          <Pager
+            activePage={publishedDrefActivePage}
+            onActivePageChange={setPublishedDrefActivePage}
+            itemsCount={publishedDrefResponse.count}
+            maxItemsPerPage={ITEM_PER_PAGE}
+          />
+        )}
+      >
+        {publishedDrefPending && <BlockLoading />}
+        {!publishedDrefPending && publishedDrefResponse?.results?.length === 0 && (
+          <EmptyMessage />
+        )}
+        {!pending && !publishedDrefResponse && (
+          <div className={styles.error}>
+            There was an error fetching the DREF application list
+          </div>
+        )}
+        <Table
+          className={styles.publishedDrefTable}
+          data={publishedApplicationList}
+          columns={publishedApplicationColumns}
+          keySelector={drefKeySelector}
+          variant="large"
+        />
+      </Container>
     </Container>
   );
 }

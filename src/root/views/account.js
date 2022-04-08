@@ -263,7 +263,7 @@ class Account extends React.Component {
   // eslint-disable-next-line camelcase
   UNSAFE_componentWillReceiveProps(nextProps) {
     if (this.props.profile.receivedAt !== nextProps.profile.receivedAt) {
-      if (typeof nextProps.profile.data !== 'undefined' && nextProps.profile.data !== null && typeof nextProps.profile.data.subscription !== 'undefined' && nextProps.profile.data.subscription !== null) {
+      if (typeof nextProps.profile.data !== 'undefined' && nextProps.profile.data !== null && typeof nextProps.profile?.data?.subscription !== 'undefined' && nextProps.profile?.data?.subscription !== null) {
         nextProps.profile.data.subscription.forEach((subscription) => {
           if (typeof subscription.event !== 'undefined' && subscription.event !== null) {
             this.props._getEventById(subscription.event);
@@ -362,7 +362,7 @@ class Account extends React.Component {
     e.preventDefault();
     showGlobalLoading();
     const payload = this.serializeNotifications(this.state.notifications);
-    const id = this.props.profile.data.id;
+    const id = this.props.profile.data?.id;
     this.props._updateSubscriptions(id, payload);
   }
 
@@ -427,7 +427,7 @@ class Account extends React.Component {
   onProfileSubmit(e) {
     e.preventDefault();
     showGlobalLoading();
-    const id = this.props.profile.data.id;
+    const id = this.props.profile.data?.id;
     this.props._updateProfile(id, this.serializeProfile(profileAttributes.slice(1, profileAttributes.length)));
   }
 
@@ -666,7 +666,7 @@ class Account extends React.Component {
   }
 
   renderSubscriptionForm() {
-    this.props.profile.data.subscription.filter(subscription => subscription.event !== null);
+    // this.props.profile.data?.subscription?.filter(subscription => subscription.event !== null);
     const events = [];
     const { strings } = this.context;
     Object.keys(this.props.event.event).forEach(event => {
@@ -916,7 +916,9 @@ class Account extends React.Component {
                   </TabPanel>
                   <TabPanel>
                     <TabContent title={strings.accountPerTitle}>
-                      <DrefApplicationList />
+                      <DrefApplicationList
+                        history={this.props.history}
+                      />
                     </TabContent>
                   </TabPanel>
                   <TabPanel>
