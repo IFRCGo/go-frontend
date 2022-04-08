@@ -3515,6 +3515,8 @@ export default {
   wikiJsLinkCountry3W: '',
   wikiJsLinkRegister: 'user_guide/account',
 
+
+  //TODO
   // DREF operational update
   // button
   drefOperationalUpdateExportButton: 'Export',
@@ -3533,4 +3535,91 @@ export default {
   drefOperationalUpdateNeedsLabel: 'Needs',
   drefOperationalUpdateOperationLabel: 'Operation',
   drefOperationalUpdateSubmissionLabel: 'Submission',
+
+  //overview
+
+  drefOperationalUpdateAdditionalAllocationRequested: 'Additional Allocation Requested',
+  drefOperationalUpdateTotalAllocation: 'Total DREF Allocation',
+  drefOperationalUpdateNumber: 'Operaitonal Update Number',
+
+  //Timeframes
+  drefOperationalUpdateTimeFrameDateOfEvent: 'Date of the update',
+  drefOperationalUpdateTimeFrameReportingTimeFrame: 'Reporting timeframe',
+  drefOperationalUpdateTimeFrameExtensionRequested: 'Is timeframe extension requested?',
+  drefOperationalUpdateTimeFrameExtensionRequestedIfYes: 'If yes, provide a new operational end date',
+  drefOperationalUpdateTimeFrameTotalOperatingTimeFrame: 'Total operationg timeframe',
+  drefOperationalUpdateTimeFrameDateOfApproval: 'Date of approval',
+
+  //summary of changes
+  drefOperationalUpdateSummaryChangeHeading: 'Summary of changes',
+  drefOperationalUpdateSummaryAreYouChangingTimeFrame: 'Are you changing the timeframe of the operation',
+  drefOperationalUpdateSummaryAreYouChangingStrategy: 'Are you changing the operational strategy of the operation',
+  drefOperationalUpdateSummaryAreYouChangingTargetPopulation: 'Are you changing the target population of the operation',
+  drefOperationalUpdateSummaryAreYouChangingGeographicalLocation: 'Are you changing the geographical location',
+  drefOperationalUpdateSummaryAreYouChangingBudget: 'Are you making changes to the budget',
+  drefOperationalUpdateSummaryRequestForSecondAllocation: 'Is this a request for a second allocation',
+  drefOperationalUpdateSummaryExplain: 'Please explain the summary of changes and justification',
+
+  //description of event
+  drefOperationalUpdateDescriptionOfEventHeading: 'Description of the event',
+  drefOperationalUpdateDescriptionOfEventLabel: 'Has anything changed in the context since the request',
+
+  //needs
+  drefOperationalUpdateNationalSocietiesActions: 'Current National Society Actions',
+  drefOperationalUpdateMovementPartnets: 'Movement Partners',
+  drefOperationalUpdateNationalSocietiesActionsLabel: 'Select the actions that apply.',
+  drefOperationalUpdateIfrc: 'IFRC',
+  drefOperationalUpdateIcrc: 'ICRC',
+  drefOperationalUpdatePartnerNationalSociety: 'Partner National Society',
+  drefOperationalUpdateNationalOtherActors: 'Other Actors',
+  drefOperationalUpdateInternationalAssistance: 'Government has requested international assistance',
+  drefOperationalUpdateNationalAuthorities: 'National authorities',
+  drefOperationalUpdateUNorOtherActors: 'UN or other actors',
+  drefOperationalUpdateCoordinationMechanism: 'List major coordination mechanisms in place',
+  drefOperationalUpdateNeedsIdentified: 'Needs (Gaps) Identified',
+  drefOperationalUpdateActionFieldsLabel: 'Select the needs that apply.',
+
+  //targeting strategy
+  drefOperationalUpdateTargetingStrategy: 'Targeting Strategy',
+  drefOperationalUpdatePeopleAssistedThroughOperation: 'Which groups of people will be assisted through this operation?',
+  drefOperationalUpdateSelectionCriteria: ' What selection criteria has been used for targeting affected?',
+  drefOperationalUpdateProtectionGenderAndInclusion: 'How have, community engagement Protection, Gender and Inclusion been considered in planning this operation?',
+
+  //trageted pupulation
+  drefOperationalUpdateTargetPopulation: 'Target Population',
+  drefOperationalUpdateWomen: "Women",
+  drefOperationalUpdateMen: 'Men',
+  drefOperationalUpdateGirls: 'Girls (under 18)',
+  drefOperationalUpdateBoys: 'Boys (under 18)',
+  drefOperationalUpdateEstimatedUrban: 'Urban',
+  drefOperationalUpdateEstimatedLocal: 'Rural',
+  drefOperationalUpdateEstimatePeopleDisability: 'Estimated Percentage People with Disability',
+  drefOperationalUpdateEstimatedPercentage: 'Estimated Percentage Urban/Rural',
+  drefOperationalUpdateEstimatedDisplacedPeople: 'Estimated Number of Displaced People',
+  drefOperationalUpdatePeopleTargetedWithEarlyActions: 'Number of persons targeted with early actions',
+  drefOperationalUpdateEstimateResponse: 'Estimate',
+
+  //objective & strategy rationale
+  drefOperationalUpdateObjectiveAndStrategy: 'Objective and Strategy Rationale',
+  drefOperationalUpdateObjectiveOperation: 'Overall objective of the operation',
+  drefOperationalUpdateObjectiveOperationPlaceholder: 'This DREF allocation aims at supporting ….. of persons affected by ……. Disaster, by providing …..(list sectors) support in the ……(list areas/regions) for …. months',
+  drefOperationalUpdateResponseRationale: 'Response strategy rationale',
+  drefOperationalUpdateResponseRationalePlaceholder: 'To address the needs of the targeted population, this DREF will aim at (please briefly describe the planned activities).',
+
+  //interventions
+  drefOperationalUpdatePlannedIntervention: 'Update on Intervention',
+  drefOperationalUpdateInterventionsLabel: 'Select the interventions that apply.',
+
+  //tracking data
+  drefOperationalUpdateTrackingData: 'Tracking Data',
+  drefOperationalUpdateAppealCode: 'MDR Code',
+  drefOperationalUpdateAppealCodeDescription: 'Added by the regional PMER',
+  drefOperationalUpdateGlideNum: 'GLIDE number',
+  drefOperationalUpdateAppealManager: 'IFRC Appeal Manager:',
+  drefOperationalUpdateAppealManagerDescription: 'Added by the regional office',
+  drefOperationalUpdateProjectManager: 'IFRC Project Manager',
+  drefOperationalUpdateProjectManagerDescription: 'Added by the regional office',
+  drefOperationalUpdateNationalSocietyContact: 'National Society contact:',
+  drefOperationalUpdateIfrcEmergency: 'IFRC focal point for the emergency',
+  drefOperationalUpdateMediaContact: 'Media Contact',
 };

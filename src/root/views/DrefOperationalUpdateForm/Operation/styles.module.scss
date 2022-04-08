@@ -1,0 +1,51 @@
+@import "~styles/settings/_variables.scss";
+
+.assisted-population {
+  .input-section-wrapper {
+    display: flex;
+
+    > * {
+      flex-basis: 0;
+      flex-grow: 1;
+    }
+  }
+}
+
+.planned-intervention {
+  .actions {
+    display: flex;
+    align-items: flex-end;
+    padding: $spacing/2;
+  }
+}
+
+.identified-needs {
+  .need {
+    display: flex;
+    align-items: center;
+    gap: $spacing;
+
+
+    .icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      flex-shrink: 0;
+    }
+  }
+}
+
+.urban-to-rural {
+  .inputs {
+    display: flex;
+  }
+}
+
+.warning {
+  display: flex;
+  gap: $spacing / 2;
+  color: $warning-color;
+  font-weight: $base-font-medium;
+  align-items: baseline;
+}
