@@ -342,7 +342,7 @@ const CatalogueOfSurgeServicesContent = [
                 cards: [
                     {
                         cardType: 'file',
-                        cardTitle: "catalogueOfSurgeServicesCardTitleRoleProfiles",
+                        cardTitle: 'catalogueOfSurgeServicesCardTitleRoleProfiles',
                         elements: [
                             {
                                 name: "catalogueOfSurgeServicesHealthCards1Card1Element1",
@@ -376,7 +376,26 @@ const CatalogueOfSurgeServicesContent = [
                             {
                                 name: "catalogueOfSurgeServicesHealthCards1Card1Element9",
                                 url: SharepointLink['ERU health facility MHPSS Officer.pdf']
+                            },
+                            {
+                                name: "catalogueOfSurgeServicesHealthCards1Card1Element10",
+                                url: SharepointLink['HEALTH Information Management.pdf']
                             }
+                        ]
+                    },
+                    {
+                        cardType: 'textFolder',
+                        cardTitle: 'catalogueOfSurgeServicesCardsTitleEmergencyResponseUnits',
+                        cardText: 'catalogueOfSurgeServicesCardsTitleHealthERU',
+                        folders: [
+                            {
+                                btnText: "catalogueOfSurgeServicesHealthCards1Card1Element11",
+                                url: SharepointLink['Emergency Clinic']
+                            },
+                            {
+                                btnText: "catalogueOfSurgeServicesHealthCards1Card1Element12",
+                                url: SharepointLink['Public Health']
+                            },
                         ]
                     },
                     {
