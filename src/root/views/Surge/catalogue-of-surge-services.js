@@ -91,7 +91,6 @@ export default class CatalogueOfSurgeServices extends React.Component {
         } else if (card.cardType === "textFolder") {
             return (
                 <div className="cardElementContainer">
-                    <span className="cardText">{strings[card.cardText]}</span>
                     {card.folders.map((btn, index) => (
                         <a key={index} href={btn.url} onClick={e => this.openNewTab(hash, btn.url, e)} className="cardElement">
                             <span className="catalogueIcon collecticon-globe"></span>
