@@ -385,8 +385,7 @@ const CatalogueOfSurgeServicesContent = [
                     },
                     {
                         cardType: 'textFolder',
-                        cardTitle: 'catalogueOfSurgeServicesCardsTitleEmergencyResponseUnits',
-                        cardText: 'catalogueOfSurgeServicesCardsTitleHealthERU',
+                        cardTitle: 'catalogueOfSurgeServicesCardsTitleHealthERU',
                         folders: [
                             {
                                 btnText: "catalogueOfSurgeServicesHealthCards1Card1Element11",
