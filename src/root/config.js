@@ -23,7 +23,7 @@ const defaultUrls = {
 const defaultMapboxToken =  'pk.eyJ1IjoiZ28taWZyYyIsImEiOiJjams3b2ZhZWswMGFvM3hxeHp2ZHFhOTRrIn0._pqO9OQ2iNeDGrpopJNjpg';
 
 
-export const riskApi = window.appSettings.riskApiUrl;
+export const riskApi = window.appSettings.riskApi;
 export const riskAdminUrl = window.appSettings.riskAdminUrl;
 export const environment = window.appSettings.environmentDisplayName;
 export const api = window.appSettings.apiUrl;
