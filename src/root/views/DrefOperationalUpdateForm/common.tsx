@@ -1,3 +1,7 @@
+import {
+  Country,
+  DistrictMini,
+} from "#types/country";
 
 export const ONSET_IMMINENT = 0;
 export const ONSET_SLOW = 1;
@@ -85,36 +89,34 @@ export interface DrefOperationalUpdateFields {
   title: string;
   national_society: number;
   disaster_type: number;
-  type_of_onset: number;
   disaster_category: number;
+  type_of_onset: number;
   country_district: CountryDistrict[];
-  num_affected: number;
-  num_assisted: number;
-  additional_amount_requested: number;
-  amount_total: number;
+  number_of_people_affected: number;
+  number_of_people_targeted: number;
+  additional_allocation: number;
+  total_dref_allocation: number;
+  emergency_appeal_planned: boolean;
+  images: number[];
   operational_update_number: number;
 
   //TimeFrames
-  date_of_the_update: string;
+  update_date: string;
   reporting_timeframe: string;
-  timeframe_extension_requested: boolean;
+  is_timeframe_extension_required: boolean;
   new_operational_end_date: string;
-  total_operating_timeframe: number;
+  total_operation_timeframe: number;
   date_of_approval: string;
 
-  //Tracking Data
-
   //summary of changes
-  changing_the_timeframe: boolean;
-  changing_the_operational_strategy: boolean;
-  changing_the_target_population: boolean;
-  changing_the_geographical_location: boolean;
-  changing_the_budget: boolean;
+  changing_timeframe_operation: boolean;
+  changing_operation_strategy: boolean;
+  changing_target_population_of_operation: boolean;
+  changing_geographic_location: boolean;
+  changing_budget: boolean;
   request_for_second_allocation: boolean;
-  explain_summary: string;
-
-  //event
-  has_anything_changed: string;
+  summary_of_change: string;
+  change_since_request: string;
 
   //needs  
   national_society_actions: NsAction[];
@@ -129,35 +131,24 @@ export interface DrefOperationalUpdateFields {
   needs_identified: Need[];
   identified_gaps: string;
 
-  //others
-  un_or_other: string;
-  affect_same_area: boolean;
-  affect_same_population: boolean;
-  affect_same_population_text: string;
-  anticipatory_actions: string,
-  appeal_code: string;
-  boys: number;
-  communication: string;
+  //operation
+  people_assisted: string;
+  selection_criteria: string;
   community_involved: string;
-  cover_image: number;
-  created_at: string;
-  disability_people_per: number;
-  displaced_people: number;
-  emergency_appeal_planned: boolean;
-  end_date: string;
-  entity_affected: string,
-  event_date: string;
-  event_map: number;
-  field_report: number;
-  images: number[];
-  event_description: string;
-  event_scope: string;
-  event_text: string;
+  women: number;
+  men: number;
   girls: number;
-  glide_code: string;
-  go_field_report_date: string;
-  human_resource: string;
-  id: string;
+  boys: number;
+  disability_people_per: number;
+  people_per_urban: number;
+  people_per_local: number;
+  displaced_people: number;
+  people_targeted_with_early_actions: number;
+  operation_objective: string;
+  response_strategy: string;
+  planned_interventions: Intervention[];
+
+  //submission
   ifrc_appeal_manager_email: string;
   ifrc_appeal_manager_name: string;
   ifrc_appeal_manager_phone_number: string;
@@ -170,60 +161,164 @@ export interface DrefOperationalUpdateFields {
   ifrc_project_manager_name: string;
   ifrc_project_manager_phone_number: string;
   ifrc_project_manager_title: string;
-  lessons_learned: string;
-  logistic_capacity_of_ns: string;
+  national_society_contact_email: string;
+  national_society_contact_name: string;
+  national_society_contact_phone_number: string;
+  national_society_contact_title: string;
   media_contact_email: string;
   media_contact_name: string;
   media_contact_phone_number: string;
   media_contact_title: string;
-  men: number;
+  appeal_code: string;
+  glide_code: string;
+
+  //others
+  un_or_other: string;
+  affect_same_area: boolean;
+  affect_same_population: boolean;
+  affect_same_population_text: string;
+  anticipatory_actions: string,
+  communication: string;
+  created_at: string;
+  end_date: string;
+  entity_affected: string,
+  event_date: string;
+  field_report: number;
+  event_description: string;
+  event_scope: string;
+  event_text: string;
+  go_field_report_date: string;
+  human_resource: string;
+  id: string;
+  lessons_learned: string;
+  logistic_capacity_of_ns: string;
   modified_at: string;
   modified_by: number;
 
   // FIXME: this typing for details should not be here
   modified_by_details: {};
-
-  national_society_contact_email: string;
-  national_society_contact_name: string;
-  national_society_contact_phone_number: string;
-  national_society_contact_title: string;
-
   ns_request_date: string;
   ns_request_fund: boolean;
   ns_request_text: string;
   ns_respond: boolean;
   ns_respond_date: string;
-  operation_objective: string;
   operation_timeframe: number;
   originator_email: string;
   originator_name: string;
   originator_phone_number: string;
   originator_title: string;
-
-  people_assisted: string;
-  people_per_urban: number;
-  people_per_local: number;
-  people_targeted_with_early_actions: number;
   budget_file: number;
-  planned_interventions: Intervention[];
+  total_targeted_population: number;
+
   pmer: string;
   publishing_date: string;
-  response_strategy: string;
+
   safety_concerns: string;
-  selection_criteria: string;
   start_date: string;
   status: number;
   submission_to_geneva: string;
   surge_personnel_deployed: string;
 
-  women: number;
   dref_recurrent_text: string;
-  total_targeted_population: number;
   users: number[];
 }
 
-export const overviewFields: (keyof DrefOperationalUpdateFields)[] = [];
-export const eventFields: (keyof DrefOperationalUpdateFields)[] = [];
-export const needsFields: (keyof DrefOperationalUpdateFields)[] = [];
-export const operationFields: (keyof DrefOperationalUpdateFields)[] = [];
+export interface DrefOperationalUpdateApiFields extends Omit<DrefOperationalUpdateFields, 'country_district' | 'planned_interventions' | 'national_society_actions' | 'needs_identified'> {
+  user: number;
+  country_district: (Omit<CountryDistrict, 'clientId'> & {
+    id: number
+    country_details: Country,
+    district_details: DistrictMini[],
+  })[];
+  planned_interventions: (Omit<Intervention, 'clientId'> & {
+    id: number,
+    image_url: string,
+  })[];
+  national_society_actions: (Omit<NsAction, 'clientId'> & { id: number })[];
+  needs_identified: (Omit<Need, 'clientId'> & {
+    id: number,
+    image_url: string,
+  })[];
+  event_map_details: {
+    id: number;
+    file: string;
+  };
+  cover_image_details: {
+    id: number;
+    file: string;
+  } | null;
+  budget_file_details: {
+    id: number;
+    file: string;
+  }
+  budget_file_preview: string,
+  images_details: {
+    id: number;
+    file: string;
+  }[];
+}
+
+
+export const overviewFields: (keyof DrefOperationalUpdateFields)[] = [
+  'title',
+  'national_society',
+  'disaster_type',
+  'disaster_category',
+  'country_district',
+  'type_of_onset',
+  'number_of_people_affected',
+  'number_of_people_targeted',
+  'additional_allocation',
+  'total_dref_allocation',
+  'images',
+  'operational_update_number',
+  'emergency_appeal_planned',
+  'update_date',
+  'reporting_timeframe',
+  'is_timeframe_extension_required',
+  'new_operational_end_date',
+  'total_operation_timeframe',
+  'date_of_approval'
+
+];
+export const eventFields: (keyof DrefOperationalUpdateFields)[] = [
+  'changing_timeframe_operation',
+  'changing_operation_strategy',
+  'changing_target_population_of_operation',
+  'changing_geographic_location',
+  'changing_budget',
+  'request_for_second_allocation',
+  'summary_of_change',
+  'change_since_request',
+];
+export const needsFields: (keyof DrefOperationalUpdateFields)[] = [
+  'national_society_actions',
+  'ifrc',
+  'icrc',
+  'partner_national_society',
+  'government_requested_assistance',
+  'government_requested_assistance_date',
+  'national_authorities',
+  'un_or_other_actor',
+  'major_coordination_mechanism',
+  'needs_identified',
+  'identified_gaps',
+];
+export const operationFields: (keyof DrefOperationalUpdateFields)[] = [
+  'people_assisted',
+  'selection_criteria',
+  'community_involved',
+  'women',
+  'men',
+  'girls',
+  'boys',
+  'disability_people_per',
+  'people_per_urban',
+  'people_per_local',
+  'displaced_people',
+  'people_targeted_with_early_actions',
+  'operation_objective',
+  'response_strategy',
+  'planned_interventions',
+];
 export const submissionFields: (keyof DrefOperationalUpdateFields)[] = [];

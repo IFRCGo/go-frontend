@@ -28,7 +28,6 @@ import useAlert from '#hooks/useAlert';
 import styles from './styles.module.scss';
 
 const ITEM_PER_PAGE = 20;
-
 interface DrefApplication {
   id: number;
   created_at: string;
@@ -97,7 +96,6 @@ function DrefApplicationList(props: Props) {
     method: 'POST',
     onSuccess: (response) => {
       showALlDref();
-      console.log({ response });
     },
     onFailure: ({
       value: { messageForNotification },
@@ -119,9 +117,44 @@ function DrefApplicationList(props: Props) {
     }
   });
 
+  //const {
+  //  pending: pendingOpData,
+  //  trigger: submitUpdateData,
+  //} = useLazyRequest<DrefOperationalUpdateFields, Partial<DrefOperationalResponseFields>>({
+  //  url: (ctx) => `api/v2/dref/${ctx.id}/op-update/`,
+  //  body: () => ({}),
+  //  method: 'POST',
+  //  onSuccess: (response) => {
+  //    console.log({ response });
+  //  },
+  //  onFailure: ({
+  //    value: { messageForNotification },
+  //    debugMessage,
+  //  }) => {
+  //    alert.show(
+  //      <p>
+  //        {strings.drefFormLoadRequestFailureMessage}
+  //        &nbsp;
+  //        <strong>
+  //          {messageForNotification}
+  //        </strong>
+  //      </p>,
+  //      {
+  //        variant: 'danger',
+  //        debugMessage,
+  //      },
+  //    );
+  //  }
+  //});
+
+  //const handleUpdate = React.useCallback((id: number) => {
+  //  submitUpdateData({ id });
+  //}, [submitUpdateData]);
+
   const handlePublish = React.useCallback((id: number) => {
     submitPublish({ id });
   }, [submitPublish]);
+
 
   const columns = React.useMemo(() => ([
     createDateColumn<DrefApplication, string | number>(
@@ -155,6 +188,12 @@ function DrefApplicationList(props: Props) {
                 to={`/dref/${rowKey}/op-update/`}
                 {...operationalUpdateLinkProps}
               />
+              //<Button
+              //  name={rowKey}
+              //  onClick={handleUpdate}
+              //>
+              //  update
+              //</Button>
               :
               <>
                 <Button

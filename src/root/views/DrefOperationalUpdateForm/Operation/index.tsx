@@ -100,7 +100,7 @@ function Operation(props: Props) {
 
     const w = [];
 
-    if (value?.num_assisted !== value?.total_targeted_population) {
+    if (value?.number_of_people_targeted !== value?.total_targeted_population) {
       w.push('Total targeted population is different from that in Operation Overview');
     }
 
@@ -115,7 +115,7 @@ function Operation(props: Props) {
 
     return w;
   }, [
-    value?.num_assisted,
+    value?.number_of_people_targeted,
     value?.women,
     value?.men,
     value?.girls,
@@ -161,10 +161,10 @@ function Operation(props: Props) {
         >
           <TextArea
             label={strings.cmpActionDescriptionLabel}
-            name="entity_affected"
+            name="community_involved"
             onChange={onValueChange}
-            value={value.entity_affected}
-            error={error?.entity_affected}
+            value={value.community_involved}
+            error={error?.community_involved}
           />
         </InputSection>
       </Container>

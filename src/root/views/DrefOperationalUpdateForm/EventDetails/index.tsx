@@ -49,65 +49,65 @@ function EventDetails(props: Props) {
           title={strings.drefOperationalUpdateSummaryAreYouChangingTimeFrame}
         >
           <RadioInput
-            name={"changing_the_timeframe" as const}
+            name={"changing_timeframe_operation" as const}
             options={yesNoOptions}
             keySelector={booleanOptionKeySelector}
             labelSelector={optionLabelSelector}
-            value={value.changing_the_timeframe}
+            value={value.changing_timeframe_operation}
             onChange={onValueChange}
-            error={error?.changing_the_timeframe}
+            error={error?.changing_timeframe_operation}
           />
         </InputSection>
         <InputSection
           title={strings.drefOperationalUpdateSummaryAreYouChangingStrategy}
         >
           <RadioInput
-            name={"changing_the_operational_strategy" as const}
+            name={"changing_operation_strategy" as const}
             options={yesNoOptions}
             keySelector={booleanOptionKeySelector}
             labelSelector={optionLabelSelector}
-            value={value.changing_the_operational_strategy}
+            value={value.changing_operation_strategy}
             onChange={onValueChange}
-            error={error?.changing_the_operational_strategy}
+            error={error?.changing_operation_strategy}
           />
         </InputSection>
         <InputSection
           title={strings.drefOperationalUpdateSummaryAreYouChangingTargetPopulation}
         >
           <RadioInput
-            name={"changing_the_target_population" as const}
+            name={"changing_target_population_of_operation" as const}
             options={yesNoOptions}
             keySelector={booleanOptionKeySelector}
             labelSelector={optionLabelSelector}
-            value={value.changing_the_target_population}
+            value={value.changing_target_population_of_operation}
             onChange={onValueChange}
-            error={error?.changing_the_target_population}
+            error={error?.changing_target_population_of_operation}
           />
         </InputSection>
         <InputSection
           title={strings.drefOperationalUpdateSummaryAreYouChangingGeographicalLocation}
         >
           <RadioInput
-            name={"changing_the_geographical_location" as const}
+            name={"changing_geographic_location" as const}
             options={yesNoOptions}
             keySelector={booleanOptionKeySelector}
             labelSelector={optionLabelSelector}
-            value={value.changing_the_geographical_location}
+            value={value.changing_geographic_location}
             onChange={onValueChange}
-            error={error?.changing_the_geographical_location}
+            error={error?.changing_geographic_location}
           />
         </InputSection>
         <InputSection
           title={strings.drefOperationalUpdateSummaryAreYouChangingBudget}
         >
           <RadioInput
-            name={"changing_the_budget" as const}
+            name={"changing_budget" as const}
             options={yesNoOptions}
             keySelector={booleanOptionKeySelector}
             labelSelector={optionLabelSelector}
-            value={value.changing_the_budget}
+            value={value.changing_budget}
             onChange={onValueChange}
-            error={error?.changing_the_budget}
+            error={error?.changing_budget}
           />
         </InputSection>
         <InputSection
@@ -126,10 +126,10 @@ function EventDetails(props: Props) {
 
         <InputSection title={strings.drefOperationalUpdateSummaryExplain}>
           <TextArea
-            name="explain_summary"
-            value={value.explain_summary}
+            name="summary_of_change"
+            value={value.summary_of_change}
             onChange={onValueChange}
-            error={error?.explain_summary}
+            error={error?.summary_of_change}
             placeholder={strings.drefOperationalUpdateSummaryExplain}
           />
         </InputSection>
@@ -139,10 +139,10 @@ function EventDetails(props: Props) {
         heading={strings.drefOperationalUpdateDescriptionOfEventHeading}>
         <InputSection title={strings.drefOperationalUpdateDescriptionOfEventLabel}>
           <TextArea
-            name="has_anything_changed"
-            value={value.has_anything_changed}
+            name="change_since_request"
+            value={value.change_since_request}
             onChange={onValueChange}
-            error={error?.has_anything_changed}
+            error={error?.change_since_request}
             placeholder={strings.drefOperationalUpdateDescriptionOfEventLabel}
           />
         </InputSection>

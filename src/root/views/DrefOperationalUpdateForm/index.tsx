@@ -4,7 +4,6 @@ import {
   match,
 } from 'react-router-dom';
 import {
-  isDefined,
   listToMap,
   mapToMap,
 } from '@togglecorp/fujs';
@@ -27,6 +26,8 @@ import TabPanel from '#components/Tabs/TabPanel';
 import languageContext from '#root/languageContext';
 import Container from '#components/Container';
 import BlockLoading from '#components/block-loading';
+import { useLazyRequest } from '#utils/restRequest';
+import useAlert from '#hooks/useAlert';
 
 import {
   DrefOperationalUpdateFields,
@@ -35,6 +36,7 @@ import {
   overviewFields,
   operationFields,
   submissionFields,
+  DrefOperationalUpdateApiFields,
 } from './common';
 import useDrefOperationalFormOptions,
 {
@@ -63,6 +65,9 @@ interface Props {
   history: History;
   location: Location;
 }
+interface DrefOperationalResponseFields {
+  drefId: string;
+}
 
 type StepTypes = 'operationOverview' | 'eventDetails' | 'needs' | 'operation' | 'submission';
 
@@ -85,6 +90,7 @@ function DrefOperationalUpdate(props: Props) {
     history,
   } = props;
   const { drefId } = match.params;
+  const alert = useAlert();
   const {
     value,
     error,
@@ -187,7 +193,6 @@ function DrefOperationalUpdate(props: Props) {
     setCurrentStep(newStep);
   }, []);
 
-
   const exportLinkProps = useButtonFeatures({
     variant: 'secondary',
     children: strings.drefOperationalUpdateExportButtonLabel,
@@ -196,15 +201,22 @@ function DrefOperationalUpdate(props: Props) {
   const submitDrefOperationalUpdate = React.useCallback(() => {
     //TODO
     console.log('submit called');
-  }, []);
+    const result = validate();
 
-
+    if (result.errored) {
+      onErrorSet(result.error);
+    } else if (result.value && userDetails && userDetails.id) {
+      const body = {
+        user: userDetails.id,
+        ...result.value,
+      };
+      //submitRequest(body as DrefOperationalUpdateApiFields);
+    }
+  }, [onErrorSet, validate, userDetails]);
 
   const handleSubmitButtonClick = React.useCallback(() => {
     scrollToTop();
-
-    const isCurrentTabValid = validateCurrentTab(['event_map']);
-
+    const isCurrentTabValid = validateCurrentTab(['images']);
     if (!isCurrentTabValid) {
       return;
     }
@@ -242,10 +254,83 @@ function DrefOperationalUpdate(props: Props) {
     }
   }, [handleTabChange, currentStep]);
 
+  const {
+    pending: operationalUpdatePending,
+    trigger: operationalUpdateResponse,
+  } = useLazyRequest<DrefOperationalUpdateApiFields, Partial<DrefOperationalResponseFields>>({
+    url: (ctx) => `api/v2/dref/${ctx.drefId}/op-update/`,
+    body: () => ({}),
+    method: 'POST',
+    onSuccess: (response) => {
+      console.log({ response });
+      setFileIdToUrlMap((prevMap) => {
+        const newMap = {
+          ...prevMap,
+        };
+        if (response.images_details?.length > 0) {
+          response.images_details.forEach((img) => {
+            newMap[img.id] = img.file;
+          });
+        }
+
+        if (response.budget_file_details) {
+          newMap[response.budget_file_details.id] = response.budget_file_details.file;
+        }
+
+        return newMap;
+      });
+      onValueSet({
+        ...response,
+        country_district: response.country_district?.map((cd) => ({
+          ...cd,
+          clientId: String(cd.id),
+        })),
+        planned_interventions: response.planned_interventions?.map((pi) => ({
+          ...pi,
+          clientId: String(pi.id),
+        })),
+        national_society_actions: response.national_society_actions?.map((nsa) => ({
+          ...nsa,
+          clientId: String(nsa.id),
+        })),
+        needs_identified: response.needs_identified?.map((ni) => ({
+          ...ni,
+          clientId: String(ni.id),
+        })),
+        disability_people_per: response.disability_people_per ? +response.disability_people_per : undefined,
+        people_per_urban: response.people_per_urban ? +response.people_per_urban : undefined,
+        people_per_local: response.people_per_local ? +response.people_per_local : undefined,
+      });
+    },
+    onFailure: ({
+      value: { messageForNotification },
+      debugMessage,
+    }) => {
+      alert.show(
+        <p>
+          {strings.drefFormLoadRequestFailureMessage}
+          &nbsp;
+          <strong>
+            {messageForNotification}
+          </strong>
+        </p>,
+        {
+          variant: 'danger',
+          debugMessage,
+        },
+      );
+    }
+  });
+
+  React.useEffect(() => {
+    operationalUpdateResponse({ drefId });
+  }, [drefId, operationalUpdateResponse]);
+
   const pending = fetchingCountries
     || fetchingDisasterTypes
     || fetchingDrefOptions
-    || fetchingUserDetails;
+    || fetchingUserDetails
+    || operationalUpdatePending;
 
   return (
     <>
@@ -397,7 +482,6 @@ function DrefOperationalUpdate(props: Props) {
           )}
         </Page>
       </Tabs>
-
     </>
   );
 }

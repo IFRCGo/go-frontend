@@ -232,40 +232,40 @@ function Overview(props: Props) {
 
         >
           <NumberInput
-            name="num_affected"
-            value={value.num_affected}
+            name="number_of_people_affected"
+            value={value.number_of_people_affected}
             onChange={onValueChange}
-            error={error?.num_affected}
+            error={error?.number_of_people_affected}
           />
         </InputSection>
         <InputSection
           title={strings.drefFormPeopleTargeted}
         >
           <NumberInput
-            name="num_assisted"
-            value={value.num_assisted}
+            name="number_of_people_targeted"
+            value={value.number_of_people_targeted}
             onChange={onValueChange}
-            error={error?.num_assisted}
+            error={error?.number_of_people_targeted}
           />
         </InputSection>
         <InputSection
           title={strings.drefOperationalUpdateAdditionalAllocationRequested}
         >
           <NumberInput
-            name="additional_amount_requested"
-            value={value.additional_amount_requested}
+            name="additional_allocation"
+            value={value.additional_allocation}
             onChange={onValueChange}
-            error={error?.additional_amount_requested}
+            error={error?.additional_allocation}
           />
         </InputSection>
         <InputSection
           title={strings.drefOperationalUpdateTotalAllocation}
         >
           <NumberInput
-            name="amount_total"
-            value={value.amount_total}
+            name="total_dref_allocation"
+            value={value.total_dref_allocation}
             onChange={onValueChange}
-            error={error?.amount_total}
+            error={error?.total_dref_allocation}
           />
         </InputSection>
         <InputSection
@@ -285,32 +285,17 @@ function Overview(props: Props) {
           title={strings.drefFormUploadMap}
         >
           <DREFFileInput
-            accept="image/*"
-            error={error?.event_map}
-            fileIdToUrlMap={fileIdToUrlMap}
-            name="event_map"
+            name="images"
+            value={value.images}
             onChange={onValueChange}
-            setFileIdToUrlMap={setFileIdToUrlMap}
-            showStatus
-            value={value.event_map}
-          >
-            {strings.drefFormUploadImageLabel}
-          </DREFFileInput>
-        </InputSection>
-        <InputSection
-          title={strings.drefFormUploadCoverImage}
-        >
-          <DREFFileInput
             accept="image/*"
-            error={error?.cover_image}
-            fileIdToUrlMap={fileIdToUrlMap}
-            name="cover_image"
-            onChange={onValueChange}
-            setFileIdToUrlMap={setFileIdToUrlMap}
+            multiple
             showStatus
-            value={value.cover_image}
+            error={error?.images}
+            fileIdToUrlMap={fileIdToUrlMap}
+            setFileIdToUrlMap={setFileIdToUrlMap}
           >
-            {strings.drefFormUploadImageLabel}
+            Select images
           </DREFFileInput>
         </InputSection>
         <InputSection
@@ -332,10 +317,10 @@ function Overview(props: Props) {
           title={strings.drefOperationalUpdateTimeFrameDateOfEvent}
         >
           <DateInput
-            name="date_of_the_update"
-            value={value.date_of_the_update}
+            name="update_date"
+            value={value.update_date}
             onChange={onValueChange}
-            error={error?.date_of_the_update}
+            error={error?.update_date}
           />
         </InputSection>
         <InputSection
@@ -352,13 +337,13 @@ function Overview(props: Props) {
           title={strings.drefOperationalUpdateTimeFrameExtensionRequested}
         >
           <RadioInput
-            name={"timeframe_extension_requested" as const}
+            name={"is_timeframe_extension_required" as const}
             options={yesNoOptions}
             keySelector={booleanOptionKeySelector}
             labelSelector={optionLabelSelector}
-            value={value.timeframe_extension_requested}
+            value={value.is_timeframe_extension_required}
             onChange={onValueChange}
-            error={error?.timeframe_extension_requested}
+            error={error?.is_timeframe_extension_required}
           />
         </InputSection>
         <InputSection
@@ -375,10 +360,10 @@ function Overview(props: Props) {
           title={strings.drefOperationalUpdateTimeFrameTotalOperatingTimeFrame}
         >
           <NumberInput
-            name="total_operating_timeframe"
-            value={value.total_operating_timeframe}
+            name="total_operation_timeframe"
+            value={value.total_operation_timeframe}
             onChange={onValueChange}
-            error={error?.total_operating_timeframe}
+            error={error?.total_operation_timeframe}
           />
         </InputSection>
         <InputSection
