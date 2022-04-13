@@ -1,11 +1,7 @@
 import React from 'react';
 
 import Button, { Props as ButtonProps } from '#components/Button';
-import Container from '#components/Container';
-import Backdrop from '#components/backdrop';
-import useBooleanState from '#hooks/useBooleanState';
-
-import styles from './styles.module.scss';
+import useConfirmation from '#hooks/useConfirmation';
 
 
 interface Props<N> extends Omit<ButtonProps<N>, 'onClick'> {
@@ -22,10 +18,10 @@ interface Props<N> extends Omit<ButtonProps<N>, 'onClick'> {
 function ConfirmButton<N> (props: Props<N>) {
   const {
     name,
-    heading = 'Confirmation',
-    message = 'Are you sure?',
-    confirmButtonLabel = 'Yes',
-    denyButtonLabel = 'No',
+    heading,
+    message,
+    confirmButtonLabel,
+    denyButtonLabel,
     onConfirm,
     onDeny,
     onResolve,
@@ -33,70 +29,25 @@ function ConfirmButton<N> (props: Props<N>) {
   } = props;
 
   const [
-    showConfirmationModal,
-    setShowConfirmationModalTrue,
-    setShowConfirmationModalFalse,
-  ] = useBooleanState(false);
+    modal,
+    onTriggerClick,
+  ] = useConfirmation<N>({
+    heading,
+    message,
+    onConfirm,
+    onDeny,
+    onResolve,
+  });
 
-  const handleConfirmButtonClick = React.useCallback(() => {
-    setShowConfirmationModalFalse();
-    if (onConfirm) {
-      onConfirm(name);
-    }
-
-    if (onResolve) {
-      onResolve(true, name);
-    }
-  }, [name, onConfirm, onResolve, setShowConfirmationModalFalse]);
-
-  const handleDenyButtonClick = React.useCallback(() => {
-    setShowConfirmationModalFalse();
-    if (onDeny) {
-      onDeny(name);
-    }
-
-    if (onResolve) {
-      onResolve(true, name);
-    }
-  }, [name, onDeny, onResolve, setShowConfirmationModalFalse]);
 
   return (
     <>
       <Button
         {...otherProps}
         name={name}
-        onClick={setShowConfirmationModalTrue}
+        onClick={onTriggerClick}
       />
-      {showConfirmationModal && (
-        <Backdrop className={styles.confirmationModal}>
-          <Container
-            sub
-            innerContainerClassName={styles.innerContainer}
-            contentClassName={styles.content}
-            heading={heading}
-            headingSize="small"
-            footerActions={(
-              <div className={styles.actions}>
-                <Button
-                  name={undefined}
-                  onClick={handleDenyButtonClick}
-                  variant="secondary"
-                >
-                  {denyButtonLabel}
-                </Button>
-                <Button
-                  name={undefined}
-                  onClick={handleConfirmButtonClick}
-                >
-                  {confirmButtonLabel}
-                </Button>
-              </div>
-            )}
-          >
-            {message}
-          </Container>
-        </Backdrop>
-      )}
+      {modal}
     </>
   );
 }

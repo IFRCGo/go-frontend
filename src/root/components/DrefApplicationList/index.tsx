@@ -1,19 +1,27 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { History } from 'history';
 import { isDefined } from '@togglecorp/fujs';
+import {
+  IoClose,
+  IoAdd,
+  IoList,
+} from 'react-icons/io5';
+import {
+  MdEdit,
+  MdPublish,
+} from 'react-icons/md';
 
 import LanguageContext from '#root/languageContext';
+import Backdrop from '#components/backdrop';
+import Button from '#components/Button';
 import Container from '#components/Container';
 import BlockLoading from '#components/block-loading';
 import Table from '#components/Table';
 import SelectInput from '#components/SelectInput';
 import Pager from '#components/Pager';
 import EmptyMessage from '#components/EmptyMessage';
-import ConfirmButton from '#components/ConfirmButton';
 import DrefExportButton from '#components/DrefExportButton';
 import DropdownMenuItem from '#components/DropdownMenuItem';
-import { useButtonFeatures } from '#components/Button';
 import {
   createStringColumn,
   createDateColumn,
@@ -21,10 +29,10 @@ import {
 } from '#components/Table/predefinedColumns';
 import useReduxState from '#hooks/useReduxState';
 import useInputState from '#hooks/useInputState';
+import useConfirmation from '#hooks/useConfirmation';
 import {
   ListResponse,
-  useLazyRequest,
-  useRequest,
+  useLazyRequest, useRequest,
 } from '#utils/restRequest';
 import { compareLabel } from '#utils/common';
 import useAlert from '#hooks/useAlert';
@@ -34,7 +42,13 @@ import styles from './styles.module.scss';
 
 const ITEM_PER_PAGE = 6;
 
-interface DrefApplication {
+interface OperationalUpdateDetails {
+  id: number;
+  title: string;
+  is_published: boolean;
+}
+
+interface DrefApplicationResponse {
   id: number;
   created_at: string;
   country_district: {
@@ -46,9 +60,10 @@ interface DrefApplication {
   title: string;
   submission_to_geneva: string;
   is_published: boolean;
+  operational_update: OperationalUpdateDetails[];
 }
 
-const drefKeySelector = (d: DrefApplication) => d.id;
+const drefKeySelector = (d: DrefApplicationResponse) => d.id;
 interface Props {
   history: History;
 }
@@ -79,7 +94,7 @@ function DrefApplicationList(props: Props) {
     pending: publishedDrefPending,
     response: publishedDrefResponse,
     retrigger: refetchPublishedDrefList,
-  } = useRequest<ListResponse<DrefApplication>>({
+  } = useRequest<ListResponse<DrefApplicationResponse>>({
     url: 'api/v2/dref/',
     query: {
       country,
@@ -93,7 +108,7 @@ function DrefApplicationList(props: Props) {
     pending: inProgressDrefPending,
     response: inProgressDrefResponse,
     retrigger: refetchInProgressDrefList,
-  } = useRequest<ListResponse<DrefApplication>>({
+  } = useRequest<ListResponse<DrefApplicationResponse>>({
     url: 'api/v2/dref/',
     query: {
       country,
@@ -110,12 +125,6 @@ function DrefApplicationList(props: Props) {
   const inProgressApplicationList = React.useMemo(() => (
     inProgressDrefResponse?.results?.filter(d => !d.is_published)
   ), [inProgressDrefResponse]);
-
-
-  const editLinkProps = useButtonFeatures({
-    variant: 'secondary',
-    children: strings.drefTableEdit,
-  });
 
   const {
     pending: drefPublishPending,
@@ -180,32 +189,41 @@ function DrefApplicationList(props: Props) {
     }
   });
 
+
   const handlePublishButtonClick = React.useCallback((drefId: number) => {
     postDrefPublishRequest(drefId);
   }, [postDrefPublishRequest]);
 
   const [
+    publishDrefConfirmationModal,
+    onDrefPublishClick,
+  ] = useConfirmation({
+    message: "Are you sure you want to publish the DREF?",
+    onConfirm: handlePublishButtonClick,
+  });
+
+  const [
     inProgressApplicationColumns,
     publishedApplicationColumns,
   ] = React.useMemo(() => {
-    const baseColumns = [
-      createDateColumn<DrefApplication, string | number>(
+    const baseDrefColumns = [
+      createDateColumn<DrefApplicationResponse, string | number>(
         'created_at',
         strings.drefTableCreatedOn,
         (item) => item.created_at,
       ),
-      createStringColumn<DrefApplication, string | number>(
+      createStringColumn<DrefApplicationResponse, string | number>(
         'appeal_code',
         strings.drefTableAppealNumber,
         (item) => item.appeal_code,
       ),
-      createStringColumn<DrefApplication, string | number>(
+      createStringColumn<DrefApplicationResponse, string | number>(
         'title',
         strings.drefTableName,
         (item) => item.title,
 
       ),
-      createStringColumn<DrefApplication, string | number>(
+      createStringColumn<DrefApplicationResponse, string | number>(
         'submission_to_geneva',
         strings.drefTableSubmittedToGeneva,
         (item) => item.submission_to_geneva,
@@ -214,27 +232,28 @@ function DrefApplicationList(props: Props) {
 
     return ([
       [
-        ...baseColumns,
+        ...baseDrefColumns,
         createActionColumn(
           'actions',
-          (rowKey: number, item: DrefApplication) => ({
+          (rowKey: number, item: DrefApplicationResponse) => ({
             children: (
+              <DrefExportButton
+                drefId={rowKey}
+              />
+            ),
+            extraActions: (
               <>
-                <ConfirmButton
-                  name={rowKey}
-                  message="Are you sure you want to publish the DREF?"
-                  onConfirm={handlePublishButtonClick}
-                  variant="secondary"
-                  disabled={drefPublishPending}
-                >
-                  {strings.drefPublishButtonLabel}
-                </ConfirmButton>
-                <Link
-                  to={`/dref-application/${rowKey}/edit/`}
-                  {...editLinkProps}
+                <DropdownMenuItem
+                  icon={<MdEdit />}
+                  href={`/dref-application/${rowKey}/edit/`}
+                  label={strings.drefTableEdit}
                 />
-                <DrefExportButton
-                  drefId={rowKey}
+                <DropdownMenuItem
+                  icon={<MdPublish />}
+                  name={rowKey}
+                  label={strings.drefPublishButtonLabel}
+                  onClick={onDrefPublishClick}
+                  disabled={drefPublishPending}
                 />
               </>
             ),
@@ -246,34 +265,48 @@ function DrefApplicationList(props: Props) {
         ),
       ],
       [
-        ...baseColumns,
+        ...baseDrefColumns,
         createActionColumn(
           'actions',
-          (rowKey: number, item: DrefApplication) => ({
-            className: styles.actions,
-            extraActions: (
-              <>
-                <DropdownMenuItem
-                  name={rowKey}
-                  onClick={postDrefNewOperationalUpdate}
-                  label="New Operational Update"
+          (rowKey: number, item: DrefApplicationResponse) => {
+            const hasOperationalUpdate = item.operational_update && item.operational_update.length > 0;
+            const hasUnpublishedOperationalUpdate = item.operational_update?.some(d => d.is_published === false) ?? false;
+            const canAddNewOperationalUpdate = item.is_published && !hasUnpublishedOperationalUpdate;
+
+            const lastOperationalUpdateId = item.operational_update?.find(ou => !ou.is_published)?.id;
+
+            return {
+              extraActions: (
+                <>
+                  <DropdownMenuItem
+                    icon={<IoAdd />}
+                    name={rowKey}
+                    onClick={postDrefNewOperationalUpdate}
+                    label="New Operational Update"
+                    disabled={!canAddNewOperationalUpdate}
+                  />
+                  <DropdownMenuItem
+                    icon={<MdEdit />}
+                    href={`/dref-operational-update/${lastOperationalUpdateId}`}
+                    label="Edit last Operational Update"
+                    disabled={!hasOperationalUpdate || !hasUnpublishedOperationalUpdate}
+                  />
+                  <DropdownMenuItem
+                    icon={<IoList />}
+                    name={item}
+                    onClick={setSelectedDrefForOperationalUpdateList}
+                    label="View all Operational Updates"
+                    disabled={!hasOperationalUpdate}
+                  />
+                </>
+              ),
+              children: (
+                <DrefExportButton
+                  drefId={rowKey}
                 />
-                <DropdownMenuItem
-                  onClick={() => { }}
-                  label="Edit last Operational Update"
-                />
-                <DropdownMenuItem
-                  onClick={() => { }}
-                  label="View all Operational Updates"
-                />
-              </>
-            ),
-            children: (
-              <DrefExportButton
-                drefId={rowKey}
-              />
-            ),
-          }),
+              ),
+            };
+          },
           {
             cellRendererClassName: styles.actionsCell,
             headerContainerClassName: styles.actionsHeader,
@@ -281,13 +314,59 @@ function DrefApplicationList(props: Props) {
         ),
       ],
     ]);
-  }, [postDrefNewOperationalUpdate, drefPublishPending, editLinkProps, handlePublishButtonClick, strings]);
+  }, [
+      postDrefNewOperationalUpdate,
+      drefPublishPending,
+      onDrefPublishClick,
+      strings,
+    ]);
+
+  const operationalUpdateColumns = React.useMemo(() => (
+    [
+      createStringColumn<OperationalUpdateDetails, string | number>(
+        'title',
+        'Title',
+        (item) => item.title,
+      ),
+      createStringColumn<OperationalUpdateDetails, string | number>(
+        'published',
+        'Published',
+        (item) => item.is_published ? 'Yes' : 'No',
+      ),
+      createActionColumn<OperationalUpdateDetails, string | number>(
+        'actions',
+        (rowKey, item) => ({
+          children: (
+            <>
+              <Button name={undefined}>
+                Edit
+              </Button>
+              <Button name={undefined}>
+                Publish
+              </Button>
+            </>
+          ),
+        }),
+        {
+          cellRendererClassName: styles.actionsCell,
+          headerContainerClassName: styles.actionsHeader,
+        }
+      ),
+    ]
+  ), []);
+
+  const [
+    selectedDrefForOperationalUpdateList,
+    setSelectedDrefForOperationalUpdateList,
+  ] = React.useState<DrefApplicationResponse>();
 
   const pending = publishedDrefPending || inProgressDrefPending || newOperationalUpdatePending;
 
   return (
     <Container
       className={styles.drefApplicationList}
+      contentClassName={styles.content}
+      descriptionClassName={styles.filters}
       description={(
         <SelectInput
           name={undefined}
@@ -295,6 +374,7 @@ function DrefApplicationList(props: Props) {
           options={countryOptions}
           value={country}
           onChange={setCountry}
+          isClearable
         />
       )}
     >
@@ -310,6 +390,13 @@ function DrefApplicationList(props: Props) {
           />
         )}
       >
+        <Table
+          className={styles.inProgressDrefTable}
+          data={inProgressApplicationList}
+          columns={inProgressApplicationColumns}
+          keySelector={drefKeySelector}
+          variant="large"
+        />
         {inProgressDrefPending && <BlockLoading />}
         {!inProgressDrefPending && inProgressDrefResponse?.results?.length === 0 && (
           <EmptyMessage />
@@ -318,15 +405,6 @@ function DrefApplicationList(props: Props) {
           <div className={styles.error}>
             There was an error fetching the DREF application list
           </div>
-        )}
-        {!inProgressDrefPending && inProgressDrefResponse && (
-          <Table
-            className={styles.inProgressDrefTable}
-            data={inProgressApplicationList}
-            columns={inProgressApplicationColumns}
-            keySelector={drefKeySelector}
-            variant="large"
-          />
         )}
       </Container>
       <Container
@@ -341,6 +419,13 @@ function DrefApplicationList(props: Props) {
           />
         )}
       >
+        <Table
+          className={styles.publishedDrefTable}
+          data={publishedApplicationList}
+          columns={publishedApplicationColumns}
+          keySelector={drefKeySelector}
+          variant="large"
+        />
         {publishedDrefPending && <BlockLoading />}
         {!publishedDrefPending && publishedDrefResponse?.results?.length === 0 && (
           <EmptyMessage />
@@ -350,14 +435,33 @@ function DrefApplicationList(props: Props) {
             There was an error fetching the DREF application list
           </div>
         )}
-        <Table
-          className={styles.publishedDrefTable}
-          data={publishedApplicationList}
-          columns={publishedApplicationColumns}
-          keySelector={drefKeySelector}
-          variant="large"
-        />
       </Container>
+      {selectedDrefForOperationalUpdateList && (
+        <Backdrop className={styles.operationalUpdateListModalBackdrop}>
+          <Container
+            sub
+            className={styles.operationalUpdateListModal}
+            heading="Operational Updates"
+            actions={(
+              <Button
+                name={undefined}
+                variant="action"
+                onClick={setSelectedDrefForOperationalUpdateList}
+              >
+                <IoClose />
+              </Button>
+            )}
+          >
+            <Table
+              className={styles.operationalUpdateTable}
+              data={selectedDrefForOperationalUpdateList.operational_update}
+              columns={operationalUpdateColumns}
+              keySelector={d => d.id}
+            />
+          </Container>
+        </Backdrop>
+      )}
+      {publishDrefConfirmationModal}
     </Container>
   );
 }
