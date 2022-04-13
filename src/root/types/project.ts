@@ -44,6 +44,9 @@ export interface ProjectFormFields {
   reached_other: number | null;
   reached_total: number | null;
   reporting_ns: number;
+  reporting_ns_contact_name: string | null;
+  reporting_ns_contact_role: string | null;
+  reporting_ns_contact_email: string | null;
   secondary_sectors: number[];
   start_date: string;
   status: number;
@@ -85,6 +88,9 @@ export interface Project {
   regional_project_detail: null;
   reporting_ns: number;
   reporting_ns_detail: CountryMini;
+  reporting_ns_contact_name: string | null;
+  reporting_ns_contact_role: string | null;
+  reporting_ns_contact_email: string | null;
   secondary_sectors: number[];
   secondary_sectors_display: string[];
   start_date: string;

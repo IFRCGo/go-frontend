@@ -150,6 +150,19 @@ function ProjectDetail(props: Props) {
               )}
             />
           </Row>
+          { projectResponse?.reporting_ns_contact_name === null ? '' :
+          <Row>
+            <FieldOutput
+              label={strings.threeWNationalSocietyContact1}
+              value={projectResponse?.reporting_ns_contact_name + ', ' +
+                     projectResponse?.reporting_ns_contact_role}
+            />
+            <FieldOutput
+              label={strings.threeWNationalSocietyContact2}
+              value={projectResponse?.reporting_ns_contact_email}
+            />
+          </Row>
+          }
           <Row>
             <FieldOutput
               label={strings.threeWProjectType}
