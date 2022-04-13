@@ -54,8 +54,6 @@ function ResponseFields(props: Props) {
     [formError]
   );
 
-  console.info('Is this a review country?', isReviewCountry);
-
   const user = useReduxState('me');
 
   const [
