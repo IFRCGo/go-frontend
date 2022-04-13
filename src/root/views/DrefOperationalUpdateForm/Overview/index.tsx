@@ -14,7 +14,7 @@ import DateInput from '#components/DateInput';
 import InputSection from '#components/InputSection';
 import NumberInput from '#components/NumberInput';
 import languageContext from '#root/languageContext';
-import { listToMap, randomString } from '@togglecorp/fujs';
+import { randomString } from '@togglecorp/fujs';
 import Button from '#components/Button';
 import TextInput from '#components/TextInput';
 import SelectInput from '#components/SelectInput';
@@ -74,15 +74,12 @@ function Overview(props: Props) {
     onsetOptions,
     setFileIdToUrlMap,
     fileIdToUrlMap,
-    onValueSet,
-    userOptions,
   } = props;
 
   const error = React.useMemo(
     () => getErrorObject(formError),
     [formError]
   );
-
 
   const {
     setValue: onCountryDistrictChange,
@@ -108,27 +105,7 @@ function Overview(props: Props) {
     );
   }, [onValueChange]);
 
-
   const isImminentOnset = value.type_of_onset === ONSET_IMMINENT;
-  //const handleUserSearch = React.useCallback((input: string | undefined, callback) => {
-  //  if (!input) {
-  //    callback(emptyNumericOptionList);
-  //  }
-
-  //  callback(rankedSearchOnList(
-  //    userOptions,
-  //    input,
-  //    d => d.label,
-  //  ));
-  //}, [userOptions]);
-
-  const userMap = React.useMemo(() => listToMap(userOptions, d => d.value, d => d.label), [userOptions]);
-  //const initialOptions = React.useMemo(() => (
-  //  value.users?.map((u) => ({
-  //    label: userMap[u],
-  //    value: u,
-  //  }))
-  //), [userMap, value.users]);
 
   return (
     <>
@@ -229,7 +206,6 @@ function Overview(props: Props) {
         </InputSection>
         <InputSection
           title={!isImminentOnset ? strings.drefFormPeopleAffected : strings.drefFormRiskPeopleLabel}
-
         >
           <NumberInput
             name="number_of_people_affected"
@@ -376,7 +352,6 @@ function Overview(props: Props) {
             error={error?.date_of_approval}
           />
         </InputSection>
-
       </Container>
     </>
   );

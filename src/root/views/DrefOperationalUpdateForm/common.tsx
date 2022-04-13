@@ -173,53 +173,11 @@ export interface DrefOperationalUpdateFields {
   glide_code: string;
 
   //others
-  un_or_other: string;
-  affect_same_area: boolean;
-  affect_same_population: boolean;
-  affect_same_population_text: string;
-  anticipatory_actions: string,
-  communication: string;
-  created_at: string;
-  end_date: string;
-  entity_affected: string,
-  event_date: string;
-  field_report: number;
-  event_description: string;
-  event_scope: string;
-  event_text: string;
-  go_field_report_date: string;
-  human_resource: string;
   id: string;
-  lessons_learned: string;
-  logistic_capacity_of_ns: string;
+  created_at: string;
   modified_at: string;
   modified_by: number;
-
-  // FIXME: this typing for details should not be here
-  modified_by_details: {};
-  ns_request_date: string;
-  ns_request_fund: boolean;
-  ns_request_text: string;
-  ns_respond: boolean;
-  ns_respond_date: string;
-  operation_timeframe: number;
-  originator_email: string;
-  originator_name: string;
-  originator_phone_number: string;
-  originator_title: string;
-  budget_file: number;
-  total_targeted_population: number;
-
-  pmer: string;
-  publishing_date: string;
-
-  safety_concerns: string;
-  start_date: string;
-  status: number;
-  submission_to_geneva: string;
-  surge_personnel_deployed: string;
-
-  dref_recurrent_text: string;
+ 
   users: number[];
 }
 
@@ -321,4 +279,27 @@ export const operationFields: (keyof DrefOperationalUpdateFields)[] = [
   'response_strategy',
   'planned_interventions',
 ];
-export const submissionFields: (keyof DrefOperationalUpdateFields)[] = [];
+export const submissionFields: (keyof DrefOperationalUpdateFields)[] = [
+  'appeal_code',
+  'glide_code',
+  'ifrc_appeal_manager_name',
+  'ifrc_appeal_manager_email',
+  'ifrc_appeal_manager_phone_number',
+  'ifrc_appeal_manager_title',
+  'ifrc_project_manager_name',
+  'ifrc_project_manager_email',
+  'ifrc_project_manager_phone_number',
+  'ifrc_project_manager_title',
+  'national_society_contact_name',
+  'national_society_contact_email',
+  'national_society_contact_phone_number',
+  'national_society_contact_title',
+  'ifrc_emergency_name',
+  'ifrc_emergency_email',
+  'ifrc_emergency_phone_number',
+  'ifrc_emergency_title',
+  'media_contact_name',
+  'media_contact_email',
+  'media_contact_phone_number',
+  'media_contact_title',
+];

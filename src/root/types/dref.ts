@@ -57,7 +57,7 @@ export interface DrefOperationalUpdateResponse {
   new_operational_end_date: string | null;
   total_operation_timeframe: string | null;
   date_of_approval: string | null;
-  appeal_code: string |null;
+  appeal_code: string | null;
   glide_code: string | null;
   ifrc_appeal_manager_name: string | null;
   ifrc_appeal_manager_email: string | null;

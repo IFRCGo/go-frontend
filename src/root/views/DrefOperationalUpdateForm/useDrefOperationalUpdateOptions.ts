@@ -2,6 +2,8 @@ import React from 'react';
 import { isNotDefined } from '@togglecorp/fujs';
 import {
   ArraySchema,
+  emailCondition,
+  lessThanOrEqualToCondition,
   ObjectSchema,
   PartialForm,
   requiredCondition,
@@ -15,6 +17,7 @@ import languageContext from '#root/languageContext';
 import { compareString } from '#utils/utils';
 import { Disaster } from '#types/project';
 import { Country } from '#types/country';
+import { positiveIntegerCondition } from '#utils/form';
 
 import {
   BooleanValueOption,
@@ -54,9 +57,15 @@ export type InterventionSchemaFields = ReturnType<InterventionSchema['fields']>;
 export type InterventionsSchema = ArraySchema<PartialForm<InterventionType>>;
 export type InterventionsSchemaMember = ReturnType<InterventionsSchema['member']>;
 
+export const MaxIntLimit = 2147483647;
+
 export const schema: FormSchema = {
   fields: (value): FormSchemaFields => ({
-
+    title: [],
+    national_society: [],
+    disaster_type: [],
+    disaster_category: [],
+    type_of_onset: [],
     country_district: {
       keySelector: (c) => c.clientId as string,
       member: (): CountryDistrictsSchemaMember => ({
@@ -81,6 +90,70 @@ export const schema: FormSchema = {
       }),
     },
 
+    number_of_people_affected: [],
+    number_of_people_targeted: [],
+    additional_allocation: [],
+    total_dref_allocation: [],
+    emergency_appeal_planned: [],
+    images: [],
+    operational_update_number: [],
+    update_date: [],
+    reporting_timeframe: [],
+    new_operational_end_date: [],
+    total_operation_timeframe: [],
+    date_of_approval: [],
+    changing_timeframe_operation: [],
+    changing_operation_strategy: [],
+    changing_target_population_of_operation: [],
+    changing_geographic_location: [],
+    changing_budget: [],
+    request_for_second_allocation: [],
+    summary_of_change: [],
+    change_since_request: [],
+    ifrc: [],
+    icrc: [],
+    partner_national_society: [],
+    government_requested_assistance: [],
+    national_authorities: [],
+    un_or_other_actor: [],
+    major_coordination_mechanism: [],
+    people_assisted: [],
+    selection_criteria: [],
+    community_involved: [],
+    women: [],
+    men: [],
+    girls: [],
+    boys: [],
+    disability_people_per: [],
+    people_per_urban: [],
+    people_per_local: [],
+    displaced_people: [],
+    people_targeted_with_early_actions: [],
+    operation_objective: [],
+    response_strategy: [],
+    appeal_code: [],
+    glide_code: [],
+    ifrc_appeal_manager_name: [],
+    ifrc_appeal_manager_email: [emailCondition],
+    ifrc_appeal_manager_phone_number: [],
+    ifrc_appeal_manager_title: [],
+    ifrc_project_manager_name: [],
+    ifrc_project_manager_email: [emailCondition],
+    ifrc_project_manager_title: [],
+    ifrc_project_manager_phone_number: [],
+    national_society_contact_name: [],
+    national_society_contact_title: [],
+    national_society_contact_email: [emailCondition],
+    national_society_contact_phone_number: [],
+    ifrc_emergency_name: [],
+    ifrc_emergency_title: [],
+    ifrc_emergency_email: [emailCondition],
+    ifrc_emergency_phone_number: [],
+    media_contact_name: [],
+    media_contact_title: [],
+    media_contact_email: [emailCondition],
+    media_contact_phone_number: [],
+
     national_society_actions: {
       keySelector: (n) => n.clientId as string,
       member: (): NsActionsSchemaMember => ({
@@ -90,7 +163,6 @@ export const schema: FormSchema = {
         }),
       }),
     },
-
     needs_identified: {
       keySelector: (n) => n.clientId as string,
       member: (): NeedsSchemaMember => ({
@@ -101,7 +173,19 @@ export const schema: FormSchema = {
         }),
       }),
     },
-
+    planned_interventions: {
+      keySelector: (n) => n.clientId as string,
+      member: (): InterventionsSchemaMember => ({
+        fields: (): InterventionSchemaFields => ({
+          clientId: [],
+          title: [requiredCondition],
+          budget: [requiredCondition, positiveIntegerCondition, lessThanOrEqualToCondition(MaxIntLimit)],
+          person_targeted: [requiredCondition, positiveIntegerCondition, lessThanOrEqualToCondition(MaxIntLimit)],
+          indicator: [],
+          description: [],
+        }),
+      }),
+    },
   })
 };
 

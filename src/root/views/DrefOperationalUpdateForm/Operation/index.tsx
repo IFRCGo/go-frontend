@@ -1,7 +1,6 @@
 import React from 'react';
 import {
   isNotDefined,
-  listToMap,
   randomString,
 } from '@togglecorp/fujs';
 import {
@@ -51,8 +50,6 @@ function Operation(props: Props) {
     error: formError,
     onValueChange,
     interventionOptions,
-    fileIdToUrlMap,
-    setFileIdToUrlMap,
     value,
   } = props;
 
@@ -85,31 +82,28 @@ function Operation(props: Props) {
     setIntervention(undefined);
   }, [onValueChange, setIntervention]);
 
-  const interventionsIdentifiedMap = React.useMemo(() => (
-    listToMap(
-      value.planned_interventions,
-      d => d.title ?? '',
-      d => true
-    )
-  ), [value.planned_interventions]);
+  //TODO
+  //const interventionsIdentifiedMap = React.useMemo(() => (
+  //  listToMap(
+  //    value.planned_interventions,
+  //    d => d.title ?? '',
+  //    d => true
+  //  )
+  //), [value.planned_interventions]);
 
   const warnings = React.useMemo(() => {
-    if (isNotDefined(value?.total_targeted_population)) {
+    if (isNotDefined(value?.number_of_people_targeted)) {
       return emptyList;
     }
 
     const w = [];
-
-    if (value?.number_of_people_targeted !== value?.total_targeted_population) {
-      w.push('Total targeted population is different from that in Operation Overview');
-    }
 
     if (sumSafe([
       value?.women,
       value?.men,
       value?.girls,
       value?.boys,
-    ]) !== value?.total_targeted_population) {
+    ]) !== value?.number_of_people_targeted) {
       w.push('Total targeted population is not equal to sum of other population fields');
     }
 
@@ -120,7 +114,6 @@ function Operation(props: Props) {
     value?.men,
     value?.girls,
     value?.boys,
-    value?.total_targeted_population,
   ]);
 
   //TODO:

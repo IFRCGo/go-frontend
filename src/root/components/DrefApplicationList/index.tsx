@@ -153,15 +153,15 @@ function DrefApplicationList(props: Props) {
     // pending: newOperationaUpdatePending,
     trigger: postDrefNewOperationalUpdate,
   } = useLazyRequest<DrefOperationalUpdateResponse, number>({
-    url: (drefId) => drefId ? `api/v2/dref/${drefId}/op-update/` : undefined,
-    body: () => ({}),
+    url: (drefId) => drefId ? `api/v2/dref-op-update` : undefined,
+    body: (drefId) => ({ dref: drefId }),
     method: 'POST',
     onSuccess: (response, drefId) => {
-      console.info(response, drefId);
-      if (isDefined(response?.id)) {
-        history.push(`/dref-operational-update/${response.id}/edit/`);
-      }
-      // location.pu
+      console.log({ response });
+      //TODO
+      //if (isDefined(response?.id)) {
+      //  history.push(`/dref-operational-update/${response.id}/edit/`);
+      //}
     },
     onFailure: ({
       value: { messageForNotification },
@@ -262,11 +262,11 @@ function DrefApplicationList(props: Props) {
                   label="New Operational Update"
                 />
                 <DropdownMenuItem
-                  onClick={() => {}}
+                  onClick={() => { }}
                   label="Edit last Operational Update"
                 />
                 <DropdownMenuItem
-                  onClick={() => {}}
+                  onClick={() => { }}
                   label="View all Operational Updates"
                 />
               </>
