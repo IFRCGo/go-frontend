@@ -21,7 +21,7 @@ import {
 import styles from './styles.module.scss';
 
 const operationTypeOptions: StringValueOption[] = [
-  { value: 'program', label: 'Program' },
+  { value: 'project', label: 'Project' },
   { value: 'response_activity', label: 'Response Activity' },
 ];
 
@@ -44,7 +44,7 @@ function NewThreeW(props: Props) {
 
   const { state } = location;
 
-  const [operationType, setOperationType] = useInputState<string | undefined>(state?.operationType ?? 'program');
+  const [operationType, setOperationType] = useInputState<string | undefined>(state?.operationType ?? 'project');
 
   const handleProgramSubmitSuccess = React.useCallback((result: Project) => {
     if (history?.push) {
@@ -86,7 +86,7 @@ function NewThreeW(props: Props) {
             onChange={setOperationType}
           />
         </InputSection>
-        {operationType === 'program' && (
+        {operationType === 'project' && (
           <ThreeWForm
             onSubmitSuccess={handleProgramSubmitSuccess}
             className={styles.threeWProgram}
