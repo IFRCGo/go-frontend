@@ -78,9 +78,9 @@ function ResponseFields(props: Props) {
   ], []);
 
   const visibilityOptions = useCallback(() => {
-    var r = [] as NumericValueOption[];
-    
- 
+    let r = [] as NumericValueOption[];
+    console.log('vvvv', value); // REMOVE MEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
+
   if(user?.data.profile.org_type==='OTHR')
   {
     r = [
@@ -104,11 +104,15 @@ function ResponseFields(props: Props) {
         { label: strings.fieldReportConstantVisibilityIFRCSecretariatLabel, value: VISIBILITY_IFRC_SECRETARIAT },
         { label: strings.fieldReportConstantVisibilityIFRCandNSLabel, value: VISIBILITY_IFRC_NS },
       ];
-  }
+   }
+   if (value?.country === 1 || value?.country === 142)
+   {
+     r = [ { label: strings.fieldReportConstantVisibilityIFRCandNSLabel, value: VISIBILITY_IFRC_NS } ];
+   }
 
   return  r;
     
-  }, [strings, user.data.profile.org_type]);
+  }, [strings, user.data.profile.org_type, value.country]);
 
   return (
     <>

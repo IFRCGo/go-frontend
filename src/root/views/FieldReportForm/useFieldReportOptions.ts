@@ -92,6 +92,7 @@ export const schema: FormSchema = {
     summary: [requiredStringCondition],
     country: [requiredCondition],
     districts: [],
+    review_country: [],
     start_date: [requiredCondition],
     request_assistance: [],
     ns_request_assistance: [],
@@ -283,6 +284,19 @@ function useFieldReportOptions(value: Partial<FormType>) {
     })).sort(compareString) ?? emptyNumericOptionList
   ), [districtsResponse]);
 
+  const reviewCountryQuery = React.useMemo(() => ({
+  }), [value.country]);
+
+  const {
+    pending: fetchingReviewCountry,
+    response: reviewCountryResponse,
+  } = useRequest<ListResponse<Entity>>({
+    skip: !value.country,
+    url: 'api/v2/review-country/' + value.country + '/',
+    query: reviewCountryQuery,
+  });
+
+  // review_country = reviewCountryResponse === undefined ? false : true;
 
   const eventQuery = React.useMemo(() => ({
     id: value.event,
@@ -480,6 +494,8 @@ function useFieldReportOptions(value: Partial<FormType>) {
     {label: strings.fieldsStep2OrganizationsLabelOther, value: SOURCE_OTHER},
   ]), [strings]);
 
+  console.log('revvv', reviewCountryOptions); // REMOVE MEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
+
   return {
     bulletinOptions,
     countryOptions,
@@ -492,10 +508,12 @@ function useFieldReportOptions(value: Partial<FormType>) {
     fetchingDisasterTypes,
     fetchingDistricts,
     fetchingExternalPartners,
+    fetchingReviewCountry,
     fetchingSupportedActivities,
     fetchingUserDetails,
     orgGroupedActionForCurrentReport,
     reportType,
+    reviewCountryOptions,
     sourceOptions,
     statusOptions,
     supportedActivityOptions,

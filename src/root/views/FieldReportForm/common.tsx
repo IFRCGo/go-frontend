@@ -65,6 +65,7 @@ export interface FormType {
   summary: string;
   country: number;
   districts: number[];
+  review_country: boolean;
   start_date: string;
   request_assistance?: boolean;
   ns_request_assistance?: boolean;
