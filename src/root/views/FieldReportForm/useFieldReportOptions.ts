@@ -284,19 +284,25 @@ function useFieldReportOptions(value: Partial<FormType>) {
     })).sort(compareString) ?? emptyNumericOptionList
   ), [districtsResponse]);
 
-  const reviewCountryQuery = React.useMemo(() => ({
-  }), [value.country]);
-
   const {
     pending: fetchingReviewCountry,
     response: reviewCountryResponse,
-  } = useRequest<ListResponse<Entity>>({
+  } = useRequest<ListResponse<{
+    country: number,
+  }>>({
     skip: !value.country,
-    url: 'api/v2/review-country/' + value.country + '/',
-    query: reviewCountryQuery,
+    url: 'api/v2/review-country/',
   });
 
-  // review_country = reviewCountryResponse === undefined ? false : true;
+  const isReviewCountry = React.useMemo(() => {
+    if (fetchingReviewCountry || !reviewCountryResponse) {
+      return undefined;
+    }
+
+    const reviewCountryIndex = reviewCountryResponse.results.findIndex(d => d.country === value.country);
+
+    return reviewCountryIndex !== -1;
+  }, [fetchingReviewCountry, reviewCountryResponse, value?.country]);
 
   const eventQuery = React.useMemo(() => ({
     id: value.event,
@@ -494,8 +500,6 @@ function useFieldReportOptions(value: Partial<FormType>) {
     {label: strings.fieldsStep2OrganizationsLabelOther, value: SOURCE_OTHER},
   ]), [strings]);
 
-  console.log('revvv', reviewCountryOptions); // REMOVE MEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
-
   return {
     bulletinOptions,
     countryOptions,
@@ -513,7 +517,6 @@ function useFieldReportOptions(value: Partial<FormType>) {
     fetchingUserDetails,
     orgGroupedActionForCurrentReport,
     reportType,
-    reviewCountryOptions,
     sourceOptions,
     statusOptions,
     supportedActivityOptions,
@@ -521,6 +524,7 @@ function useFieldReportOptions(value: Partial<FormType>) {
     yesNoOptions,
     eventOptions,
     updateNo,
+    isReviewCountry,
   };
 }
 

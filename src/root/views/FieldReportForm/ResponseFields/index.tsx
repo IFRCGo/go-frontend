@@ -36,6 +36,7 @@ interface Props {
   onValueChange: (...entries: EntriesAsList<Value>) => void;
   value: Value;
   reportType: ReportType;
+  isReviewCountry?: boolean;
 }
 
 function ResponseFields(props: Props) {
@@ -45,12 +46,15 @@ function ResponseFields(props: Props) {
     onValueChange,
     value,
     reportType,
+    isReviewCountry,
   } = props;
 
   const error = React.useMemo(
     () => getErrorObject(formError),
     [formError]
   );
+
+  console.info('Is this a review country?', isReviewCountry);
 
   const user = useReduxState('me');
 
@@ -79,40 +83,33 @@ function ResponseFields(props: Props) {
 
   const visibilityOptions = useCallback(() => {
     let r = [] as NumericValueOption[];
-    console.log('vvvv', value); // REMOVE MEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
 
-  if(user?.data.profile.org_type==='OTHR')
-  {
-    r = [
-        { label: strings.fieldReportConstantVisibilityPublicLabel, value: VISIBILITY_PUBLIC },
-        { label: strings.fieldReportConstantVisibilityRCRCMovementLabel, value: VISIBILITY_RCRC_MOVEMENT },
-      ];
-  } 
-    else if(user?.data.profile.org_type==='NTLS')
-  {
-    r =  [
-        { label: strings.fieldReportConstantVisibilityPublicLabel, value: VISIBILITY_PUBLIC },
-        { label: strings.fieldReportConstantVisibilityRCRCMovementLabel, value: VISIBILITY_RCRC_MOVEMENT },
-        { label: strings.fieldReportConstantVisibilityIFRCandNSLabel, value: VISIBILITY_IFRC_NS },
-      ];
-  }
-   else
-   {
-    r =  [
-        { label: strings.fieldReportConstantVisibilityPublicLabel, value: VISIBILITY_PUBLIC },
-        { label: strings.fieldReportConstantVisibilityRCRCMovementLabel, value: VISIBILITY_RCRC_MOVEMENT },
-        { label: strings.fieldReportConstantVisibilityIFRCSecretariatLabel, value: VISIBILITY_IFRC_SECRETARIAT },
-        { label: strings.fieldReportConstantVisibilityIFRCandNSLabel, value: VISIBILITY_IFRC_NS },
-      ];
-   }
-   if (value?.country === 1 || value?.country === 142)
-   {
+    if(user?.data.profile.org_type==='OTHR') {
+      r = [
+          { label: strings.fieldReportConstantVisibilityPublicLabel, value: VISIBILITY_PUBLIC },
+          { label: strings.fieldReportConstantVisibilityRCRCMovementLabel, value: VISIBILITY_RCRC_MOVEMENT },
+        ];
+    } else if(user?.data.profile.org_type==='NTLS') {
+      r =  [
+          { label: strings.fieldReportConstantVisibilityPublicLabel, value: VISIBILITY_PUBLIC },
+          { label: strings.fieldReportConstantVisibilityRCRCMovementLabel, value: VISIBILITY_RCRC_MOVEMENT },
+          { label: strings.fieldReportConstantVisibilityIFRCandNSLabel, value: VISIBILITY_IFRC_NS },
+        ];
+    } else {
+      r =  [
+          { label: strings.fieldReportConstantVisibilityPublicLabel, value: VISIBILITY_PUBLIC },
+          { label: strings.fieldReportConstantVisibilityRCRCMovementLabel, value: VISIBILITY_RCRC_MOVEMENT },
+          { label: strings.fieldReportConstantVisibilityIFRCSecretariatLabel, value: VISIBILITY_IFRC_SECRETARIAT },
+          { label: strings.fieldReportConstantVisibilityIFRCandNSLabel, value: VISIBILITY_IFRC_NS },
+        ];
+     }
+
+   if (isReviewCountry) {
      r = [ { label: strings.fieldReportConstantVisibilityIFRCandNSLabel, value: VISIBILITY_IFRC_NS } ];
    }
 
   return  r;
-    
-  }, [strings, user.data.profile.org_type, value.country]);
+  }, [strings, user.data.profile.org_type, isReviewCountry]);
 
   return (
     <>
