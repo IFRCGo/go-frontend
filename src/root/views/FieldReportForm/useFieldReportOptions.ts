@@ -92,7 +92,6 @@ export const schema: FormSchema = {
     summary: [requiredStringCondition],
     country: [requiredCondition],
     districts: [],
-    review_country: [],
     start_date: [requiredCondition],
     request_assistance: [],
     ns_request_assistance: [],
