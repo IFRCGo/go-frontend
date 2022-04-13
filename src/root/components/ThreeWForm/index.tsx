@@ -324,6 +324,29 @@ function ThreeWForm(props: Props) {
             />
           </InputSection>
           <InputSection
+              title={strings.projectFormReportingNationalContact}
+              description={strings.projectFormReportingNationalContactText}
+          >
+            <TextInput
+                name="reporting_ns_contact_name"
+                label="Name"
+                onChange={onValueChange}
+                value={value.reporting_ns_contact_name}
+            />
+            <TextInput
+                name="reporting_ns_contact_role"
+                label="Role"
+                onChange={onValueChange}
+                value={value.reporting_ns_contact_role}
+            />
+            <TextInput
+                name="reporting_ns_contact_email"
+                label="Email"
+                onChange={onValueChange}
+                value={value.reporting_ns_contact_email}
+            />
+          </InputSection>
+          <InputSection
             title={strings.projectFormCountryTitle}
             description={strings.projectFormCountryHelpText}
             tooltip={strings.projectFormCountryTooltip}

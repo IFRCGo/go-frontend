@@ -661,7 +661,7 @@ function EmergencyThreeWForm(props: Props) {
             visibleOverflow
           >
             <InputSection
-              title="Current IFRC Operation"
+              title="IFRC supported Operation"
               description="If operation does not appear in the dropdown, the operation does not yet exist in GO. In that case, please submit a new Field Report to generate the operation, then come back to this form"
             >
               <EmergencyEventInput
@@ -813,7 +813,7 @@ function EmergencyThreeWForm(props: Props) {
             )}
             {value?.activity_lead === ACTIVITY_LEADER_ERU && (
               <InputSection
-                title="ERU"
+                title="Name of ERU"
                 description="Which ERU is conducting the response activity?"
               >
                 <ERUInput

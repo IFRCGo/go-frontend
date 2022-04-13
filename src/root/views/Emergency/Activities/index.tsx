@@ -160,7 +160,7 @@ function Activities(props: Props) {
             </div>
           </div>
           <Container
-            heading="All Response Activities"
+            heading="Response Activities"
             footerActions={projectListResponse && (
               <Pager
                 activePage={activePage}
