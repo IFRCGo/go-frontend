@@ -192,6 +192,7 @@ function FieldReportForm(props: Props) {
     userDetails,
     yesNoOptions,
     eventOptions,
+    isReviewCountry,
   } = useFieldReportOptions(value);
 
   React.useEffect(() => {
@@ -456,6 +457,7 @@ function FieldReportForm(props: Props) {
                 error={error}
                 onValueChange={onValueChange}
                 value={value}
+                isReviewCountry={isReviewCountry}
               />
             </TabPanel>
             <div className={styles.actions}>
