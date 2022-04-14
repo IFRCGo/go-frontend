@@ -26,6 +26,7 @@ import RadioInput from '#components/RadioInput';
 import NonFieldError from '#components/NonFieldError';
 import TextOutput from '#components/text-output';
 import LanguageContext from '#root/languageContext';
+import RichTextArea from '#components/RichTextArea';
 
 import useAlert from '#hooks/useAlert';
 import {
@@ -324,6 +325,29 @@ function ThreeWForm(props: Props) {
             />
           </InputSection>
           <InputSection
+              title={strings.projectFormReportingNationalContact}
+              description={strings.projectFormReportingNationalContactText}
+          >
+            <TextInput
+                name="reporting_ns_contact_name"
+                label="Name"
+                onChange={onValueChange}
+                value={value.reporting_ns_contact_name}
+            />
+            <TextInput
+                name="reporting_ns_contact_role"
+                label="Role"
+                onChange={onValueChange}
+                value={value.reporting_ns_contact_role}
+            />
+            <TextInput
+                name="reporting_ns_contact_email"
+                label="Email"
+                onChange={onValueChange}
+                value={value.reporting_ns_contact_email}
+            />
+          </InputSection>
+          <InputSection
             title={strings.projectFormCountryTitle}
             description={strings.projectFormCountryHelpText}
             tooltip={strings.projectFormCountryTooltip}
@@ -446,6 +470,18 @@ function ThreeWForm(props: Props) {
               name='name'
               onChange={onValueChange}
               value={value.name}
+            />
+          </InputSection>
+          <InputSection
+              title={strings.projectFormDescription}
+              description={strings.projectFormDescriptionHelpText}
+              tooltip={strings.projectFormDescriptionTooltip}
+          >
+            <RichTextArea
+                error={error?.description}
+                name='description'
+                onChange={onValueChange}
+                value={value.description === null ? '' : value.description}
             />
           </InputSection>
           <InputSection

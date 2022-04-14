@@ -101,7 +101,7 @@ function Navbar(props) {
                     >
                       {strings.headerDropdownNew3WActivity}
                     </Link>
-                    {/* @NOTE: Temporary
+                    {/* NOTE: Temporary
                     <Link
                       to='/flash-update/new'
                       className='drop__menu-item'

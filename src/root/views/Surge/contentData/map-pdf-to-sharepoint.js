@@ -63,6 +63,12 @@ const SharepointLink = {
         pre + 'EUmGi0NkR7BMrpiRyCG-JA8Bvgkd_iGRNcgCsspKZ3WzSA',
     'ERU health facility MHPSS Officer.pdf':
         pre + 'ETfznq8SFXJCmfMt7C3145wBjPPorxLNryy9t4YDXgM9VQ',
+    'HEALTH Information Management.pdf':
+        pre + 'EXjPQtXpM7tGpAk6QSaMCAkBMQjlA4EVwZRJT1_zPGVKFw',
+    'Emergency Clinic':
+        pre + 'ElDuDGQxA49PmjfwgXVsJUMBxWdRfhpKt8caXnaTF6NdJA',
+    'Public Health':
+        pre + 'EmuhNZ7JWjNHtwmW6cCWrFYBjklsiPNM4vqHc2PYUOIE2w',
     'Health Technical Competency Framework.pdf':
         pre + 'ETuQ0_ZUXEhEhG4cNFvlQxMBdgYsR3juNpBsB_O5PY608w',
     'Health PSS.pdf':

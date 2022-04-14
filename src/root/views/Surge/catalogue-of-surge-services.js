@@ -61,7 +61,7 @@ export default class CatalogueOfSurgeServices extends React.Component {
         this.setState({ ...this.state, selectedService: ''});
     }
 
-    renderCardContent(hash, card, additionalResoruces) {
+    renderCardContent(hash, card, additionalResources) {
         const { strings } = this.context;
         if (card.cardType === "file") {
             return (
@@ -88,12 +88,23 @@ export default class CatalogueOfSurgeServices extends React.Component {
                     ))}
                 </div>
             );
+        } else if (card.cardType === "textFolder") {
+            return (
+                <div className="cardElementContainer">
+                    {card.folders.map((btn, index) => (
+                        <a key={index} href={btn.url} onClick={e => this.openNewTab(hash, btn.url, e)} className="cardElement">
+                            <span className="catalogueIcon collecticon-globe"></span>
+                            <span className="cardElementText">{strings[btn.btnText]}</span>
+                        </a>
+                    ))}
+                </div>
+            );
         } else if (card.cardType === "textBtn") {
             return (
                 <div className="cardElementContainer">
                     <span className="cardText">{strings[card.cardText]}</span>
                     <button onClick={e => this.openNewTab(hash, card.url, e)} className="cardBtn">
-                        {additionalResoruces ? <span className="f-icon-arrow-right-diagonal"></span> : <></>}
+                        {additionalResources ? <span className="f-icon-arrow-right-diagonal"></span> : <></>}
                         {strings[card.cardBtnText]}
                     </button>
                 </div>
@@ -127,7 +138,7 @@ export default class CatalogueOfSurgeServices extends React.Component {
         }
     }
 
-    renderCards(hash, cards, additionalResoruces) {
+    renderCards(hash, cards, additionalResources) {
         const { strings } = this.context;
         return (
             <div className="cardsContainer row flex-sm">
@@ -138,7 +149,7 @@ export default class CatalogueOfSurgeServices extends React.Component {
                                 <div className="cardTitle">
                                     <span>{strings[card.cardTitle]}</span>
                                 </div>
-                                {this.renderCardContent(hash, card, additionalResoruces)}
+                                {this.renderCardContent(hash, card, additionalResources)}
                             </div>
                         </div>
                     );
@@ -179,11 +190,11 @@ export default class CatalogueOfSurgeServices extends React.Component {
                     <h1> </h1>
                     <p>{strings[queriedData.sectionText]}</p>
                       {queriedData.sectionCards.map((sectionCard, index) => {
-                    const additionalResoruces = sectionCard.cardsTitle === "catalogueOfSurgeServicesCardsTitleAdditionalResources" ? true : false;
+                    const additionalResources = sectionCard.cardsTitle === "catalogueOfSurgeServicesCardsTitleAdditionalResources" ? true : false;
                     return (
                         <div key={index}>
                             <h3 className="cardsTitle fold__header">{strings[sectionCard.cardsTitle]}</h3>
-                            {this.renderCards(hash, sectionCard.cards, additionalResoruces)}
+                            {this.renderCards(hash, sectionCard.cards, additionalResources)}
                         </div>
                     );
                 })}
@@ -203,11 +214,11 @@ export default class CatalogueOfSurgeServices extends React.Component {
                 <h1>{strings[queriedData.sectionTitle]}</h1>
                 <p>{strings[queriedData.sectionText]}</p>
                 {queriedData.sectionCards.map((sectionCard, index) => {
-                    const additionalResoruces = sectionCard.cardsTitle === "catalogueOfSurgeServicesCardsTitleAdditionalResources" ? true : false;
+                    const additionalResources = sectionCard.cardsTitle === "catalogueOfSurgeServicesCardsTitleAdditionalResources" ? true : false;
                     return (
                         <div key={index}>
                             <h3 className="cardsTitle fold__header">{strings[sectionCard.cardsTitle]}</h3>
-                            {this.renderCards(hash, sectionCard.cards, additionalResoruces)}
+                            {this.renderCards(hash, sectionCard.cards, additionalResources)}
                         </div>
                     );
                 })}

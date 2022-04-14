@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { DateTime } from 'luxon';
 import { PropTypes as T } from 'prop-types';
 import { Helmet } from 'react-helmet';
-// @NOTE: Temporary
+// NOTE: Temporary
 // import { Link } from 'react-router-dom';
 
 import App from '#views/app';
@@ -20,7 +20,7 @@ import { environment } from '#config';
 
 import LanguageContext from '#root/languageContext';
 
-// @NOTE: Temporary
+// NOTE: Temporary
 // import FlashUpdateTableLists from '#views/AllFlashUpdates/TableLists';
 
 class Emergencies extends React.Component {
@@ -63,7 +63,7 @@ class Emergencies extends React.Component {
                     showHeader={false}
                   />
                 </div>
-                {/* @NOTE: Temporary
+                {/* NOTE: Temporary
                 <div className='inner inner--field-reports-emergencies'>
                   <FlashUpdateTableLists
                     itemPerPage={4}

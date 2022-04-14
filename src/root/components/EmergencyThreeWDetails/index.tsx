@@ -61,7 +61,7 @@ function EmergencyThreeWDetails(props: Props) {
     <div className={_cs(styles.emergencyThreeWDetails, className)}>
       <div className={styles.operationDetails}>
         <Field
-          label="Current IFRC Operation"
+          label="IFRC supported Operation"
           value={project?.event_details?.name}
         />
         <Field

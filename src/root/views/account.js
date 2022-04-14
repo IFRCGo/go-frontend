@@ -46,7 +46,7 @@ import {
 } from '#components/form-elements/';
 import ThreeWList from '#components/ThreeWList';
 
-// @NOTE: Temporary
+// NOTE: Temporary
 // import DrefApplicationList from '#components/DrefApplicationList';
 
 import { countriesSelector, disasterTypesSelectSelector } from '#selectors';
@@ -166,7 +166,7 @@ class Account extends React.Component {
     { title: strings.accountInformation, hash: '#account-information' },
     { title: strings.accountNotification, hash: '#notifications' },
     { title: strings.accountPerForms, hash: '#per-forms' },
-    // @NOTE: Temporary
+    // Note: Temporary
     // { title: strings.accountMyDrefApplications, hash: '#my-dref-applications' },
     { title: strings.accountThreeWForms, hash: '#three-w-forms' }
   ])
@@ -895,7 +895,7 @@ class Account extends React.Component {
                       <PerAccount user={this.props.user} />
                     </TabContent>
                   </TabPanel>
-                  {/* @NOTE: Temporary
+                  {/* NOTE: Temporary
                   <TabPanel>
                     <TabContent title={strings.accountPerTitle}>
                       <DrefApplicationList />

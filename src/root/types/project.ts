@@ -34,6 +34,7 @@ export interface ProjectFormFields {
   end_date: string;
   event: number | null;
   name: string;
+  description: string | null;
   operation_type: number;
   primary_sector: number;
   programme_type: number;
@@ -44,6 +45,9 @@ export interface ProjectFormFields {
   reached_other: number | null;
   reached_total: number | null;
   reporting_ns: number;
+  reporting_ns_contact_name: string | null;
+  reporting_ns_contact_role: string | null;
+  reporting_ns_contact_email: string | null;
   secondary_sectors: number[];
   start_date: string;
   status: number;
@@ -67,6 +71,7 @@ export interface Project {
   modified_by: number | null;
   modified_by_detail: UserMini | null;
   name: string;
+  description: string | null;
   operation_type: number;
   operation_type_display: string;
   primary_sector: number;
@@ -85,6 +90,9 @@ export interface Project {
   regional_project_detail: null;
   reporting_ns: number;
   reporting_ns_detail: CountryMini;
+  reporting_ns_contact_name: string | null;
+  reporting_ns_contact_role: string | null;
+  reporting_ns_contact_email: string | null;
   secondary_sectors: number[];
   secondary_sectors_display: string[];
   start_date: string;

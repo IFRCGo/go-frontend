@@ -283,6 +283,25 @@ function useFieldReportOptions(value: Partial<FormType>) {
     })).sort(compareString) ?? emptyNumericOptionList
   ), [districtsResponse]);
 
+  const {
+    pending: fetchingReviewCountry,
+    response: reviewCountryResponse,
+  } = useRequest<ListResponse<{
+    country: number,
+  }>>({
+    skip: !value.country,
+    url: 'api/v2/review-country/',
+  });
+
+  const isReviewCountry = React.useMemo(() => {
+    if (fetchingReviewCountry || !reviewCountryResponse) {
+      return undefined;
+    }
+
+    const reviewCountryIndex = reviewCountryResponse.results.findIndex(d => d.country === value.country);
+
+    return reviewCountryIndex !== -1;
+  }, [fetchingReviewCountry, reviewCountryResponse, value?.country]);
 
   const eventQuery = React.useMemo(() => ({
     id: value.event,
@@ -492,6 +511,7 @@ function useFieldReportOptions(value: Partial<FormType>) {
     fetchingDisasterTypes,
     fetchingDistricts,
     fetchingExternalPartners,
+    fetchingReviewCountry,
     fetchingSupportedActivities,
     fetchingUserDetails,
     orgGroupedActionForCurrentReport,
@@ -503,6 +523,7 @@ function useFieldReportOptions(value: Partial<FormType>) {
     yesNoOptions,
     eventOptions,
     updateNo,
+    isReviewCountry,
   };
 }
 
