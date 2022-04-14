@@ -34,6 +34,7 @@ export interface ProjectFormFields {
   end_date: string;
   event: number | null;
   name: string;
+  description: string | null;
   operation_type: number;
   primary_sector: number;
   programme_type: number;
@@ -70,6 +71,7 @@ export interface Project {
   modified_by: number | null;
   modified_by_detail: UserMini | null;
   name: string;
+  description: string | null;
   operation_type: number;
   operation_type_display: string;
   primary_sector: number;

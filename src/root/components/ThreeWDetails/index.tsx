@@ -127,6 +127,11 @@ function ProjectDetail(props: Props) {
           ) : undefined }
         />
       )}
+      { projectResponse?.description
+          ? (<div className='rich-text-section' style=
+              {{textAlign: 'center', backgroundColor: '#faf9f9', paddingTop: '1.5rem', paddingBottom: '1rem'}}
+             dangerouslySetInnerHTML={{__html: projectResponse?.description}}></div>)
+          : null }
       {projectPending ? (
         <BlockLoading />
       ) : (
