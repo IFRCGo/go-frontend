@@ -26,6 +26,7 @@ import RadioInput from '#components/RadioInput';
 import NonFieldError from '#components/NonFieldError';
 import TextOutput from '#components/text-output';
 import LanguageContext from '#root/languageContext';
+import RichTextArea from '#components/RichTextArea';
 
 import useAlert from '#hooks/useAlert';
 import {
@@ -469,6 +470,18 @@ function ThreeWForm(props: Props) {
               name='name'
               onChange={onValueChange}
               value={value.name}
+            />
+          </InputSection>
+          <InputSection
+              title={strings.projectFormDescription}
+              description={strings.projectFormDescriptionHelpText}
+              tooltip={strings.projectFormDescriptionTooltip}
+          >
+            <RichTextArea
+                error={error?.description}
+                name='description'
+                onChange={onValueChange}
+                value={value.description === null ? '' : value.description}
             />
           </InputSection>
           <InputSection
