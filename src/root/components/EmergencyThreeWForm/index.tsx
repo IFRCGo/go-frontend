@@ -773,7 +773,7 @@ function EmergencyThreeWForm(props: Props) {
               <>
                 <InputSection
                   title="National Society"
-                  description="Which National Society is conducting the activity?"
+                  description="Which RCRC actor (NS/IFRC/ICRC) is conducting the activity?"
                 >
                   <SelectInput
                     name={"reporting_ns" as const}

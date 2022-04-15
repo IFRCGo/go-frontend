@@ -2447,7 +2447,7 @@ export default {
   threeWLastModifiedBy: 'by {user}',
 
   projectFormReportingNational: 'Reporting National Society *',
-  projectFormReportingHelpText: 'Select National Society that is carrying out the activity.',
+  projectFormReportingHelpText: 'Select National Society (or other actor) that is carrying out the activity.',
   projectFormReportingTooltip: 'It can be either the National Society where the disaster has taken place or a different National Society that is carrying out an activity in support of the response.',
   projectFormReportingNationalContact: 'Contact Information',
   projectFormReportingNationalContactText: 'Who should be contacted for any coordination matters related to this project?',
