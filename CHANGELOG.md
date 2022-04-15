@@ -6,7 +6,6 @@ Frontend:
 - Add Risk Module to Country Page
 - Add Risk Module to Region Page
 
-
 ### Release 6.0.1 - Hotfix for Response Activities (3W for Emergency)
 
 Date: 2022-03-28
