@@ -119,7 +119,7 @@ export const schema: FormSchema = {
     major_coordination_mechanism: [],
     people_assisted: [],
     selection_criteria: [],
-    community_involved: [],
+    entity_affected: [],
     women: [],
     men: [],
     girls: [],
@@ -153,6 +153,7 @@ export const schema: FormSchema = {
     media_contact_title: [],
     media_contact_email: [emailCondition],
     media_contact_phone_number: [],
+    dref: [],
 
     national_society_actions: {
       keySelector: (n) => n.clientId as string,

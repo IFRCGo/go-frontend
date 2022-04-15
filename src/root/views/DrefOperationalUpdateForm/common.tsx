@@ -7,7 +7,6 @@ export const ONSET_IMMINENT = 0;
 export const ONSET_SLOW = 1;
 export const ONSET_SUDDEN = 2;
 
-
 export interface NumericValueOption {
   value: number;
   label: string;
@@ -84,8 +83,6 @@ export const booleanOptionKeySelector = (o: BooleanValueOption) => o.value;
 export const optionLabelSelector = (o: Option) => o.label;
 
 export interface DrefOperationalUpdateFields {
-  //TODO
-  //Overview
   title: string;
   national_society: number;
   disaster_type: number;
@@ -99,16 +96,12 @@ export interface DrefOperationalUpdateFields {
   emergency_appeal_planned: boolean;
   images: number[];
   operational_update_number: number;
-
-  //TimeFrames
   update_date: string;
   reporting_timeframe: string;
   is_timeframe_extension_required: boolean;
   new_operational_end_date: string;
   total_operation_timeframe: number;
   date_of_approval: string;
-
-  //summary of changes
   changing_timeframe_operation: boolean;
   changing_operation_strategy: boolean;
   changing_target_population_of_operation: boolean;
@@ -117,8 +110,6 @@ export interface DrefOperationalUpdateFields {
   request_for_second_allocation: boolean;
   summary_of_change: string;
   change_since_request: string;
-
-  //needs  
   national_society_actions: NsAction[];
   ifrc: string;
   icrc: string;
@@ -130,11 +121,9 @@ export interface DrefOperationalUpdateFields {
   major_coordination_mechanism: string;
   needs_identified: Need[];
   identified_gaps: string;
-
-  //operation
   people_assisted: string;
   selection_criteria: string;
-  community_involved: string;
+  entity_affected: string;
   women: number;
   men: number;
   girls: number;
@@ -147,8 +136,6 @@ export interface DrefOperationalUpdateFields {
   operation_objective: string;
   response_strategy: string;
   planned_interventions: Intervention[];
-
-  //submission
   ifrc_appeal_manager_email: string;
   ifrc_appeal_manager_name: string;
   ifrc_appeal_manager_phone_number: string;
@@ -171,14 +158,12 @@ export interface DrefOperationalUpdateFields {
   media_contact_title: string;
   appeal_code: string;
   glide_code: string;
-
-  //others
   id: string;
   created_at: string;
   modified_at: string;
   modified_by: number;
- 
   users: number[];
+  dref?: string;
 }
 
 export interface DrefOperationalUpdateApiFields extends Omit<DrefOperationalUpdateFields, 'country_district' | 'planned_interventions' | 'national_society_actions' | 'needs_identified'> {
@@ -265,7 +250,7 @@ export const needsFields: (keyof DrefOperationalUpdateFields)[] = [
 export const operationFields: (keyof DrefOperationalUpdateFields)[] = [
   'people_assisted',
   'selection_criteria',
-  'community_involved',
+  'entity_affected',
   'women',
   'men',
   'girls',

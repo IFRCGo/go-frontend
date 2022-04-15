@@ -68,7 +68,7 @@ function scrollToTop() {
 interface Props {
   match: match<{ id?: string }>;
   history: History;
-  location: Location<{ drefId: string }>;
+  location: Location;
 }
 interface DrefOperationalResponseFields {
   id: string;
@@ -95,7 +95,6 @@ function DrefOperationalUpdate(props: Props) {
     history,
   } = props;
   const { id } = match.params;
-  const { drefId } = props.location.state;
   const alert = useAlert();
   const {
     value,
@@ -208,8 +207,8 @@ function DrefOperationalUpdate(props: Props) {
     pending: drefSubmitPending,
     trigger: submitRequest,
   } = useLazyRequest<DrefOperationalResponseFields, Partial<DrefOperationalUpdateApiFields>>({
-    url: `api/v2/dref/dref-op-update/${id}/`,
-    method: 'PUT',
+    url: `api/v2/dref-op-update/${id}`,
+    method: 'POST',
     body: ctx => ctx,
     onSuccess: (response) => {
       alert.show(
@@ -246,8 +245,8 @@ function DrefOperationalUpdate(props: Props) {
     pending: operationalUpdatePending,
     response: drefOperationalResponse,
   } = useRequest<DrefOperationalUpdateApiFields>({
-    skip: !drefId,
-    url: `api/v2/dref/${drefId}/op-update/${id}/`,
+    skip: !id,
+    url: `api/v2/dref-op-update/${id}/`,
     onSuccess: (response) => {
       setFileIdToUrlMap((prevMap) => {
         const newMap = {
@@ -324,8 +323,6 @@ function DrefOperationalUpdate(props: Props) {
   }, [handleTabChange, currentStep]);
 
   const submitDrefOperationalUpdate = React.useCallback(() => {
-    //TODO
-    console.log('submit called');
     const result = validate();
 
     if (result.errored) {

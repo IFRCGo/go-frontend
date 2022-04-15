@@ -1,6 +1,7 @@
 import React from 'react';
 import {
   isNotDefined,
+  listToMap,
   randomString,
 } from '@togglecorp/fujs';
 import {
@@ -82,14 +83,13 @@ function Operation(props: Props) {
     setIntervention(undefined);
   }, [onValueChange, setIntervention]);
 
-  //TODO
-  //const interventionsIdentifiedMap = React.useMemo(() => (
-  //  listToMap(
-  //    value.planned_interventions,
-  //    d => d.title ?? '',
-  //    d => true
-  //  )
-  //), [value.planned_interventions]);
+  const interventionsIdentifiedMap = React.useMemo(() => (
+    listToMap(
+      value.planned_interventions,
+      d => d.title ?? '',
+      d => true
+    )
+  ), [value.planned_interventions]);
 
   const warnings = React.useMemo(() => {
     if (isNotDefined(value?.number_of_people_targeted)) {
@@ -116,10 +116,7 @@ function Operation(props: Props) {
     value?.boys,
   ]);
 
-  //TODO:
-  //const filteredInterventionOptions = interventionsIdentifiedMap ? interventionOptions.filter(n => !interventionsIdentifiedMap[n.value]) : [];
-  //const isImminentOnset = value.type_of_onset === ONSET_IMMINENT;
-
+  const filteredInterventionOptions = interventionsIdentifiedMap ? interventionOptions.filter(n => !interventionsIdentifiedMap[n.value]) : [];
 
   return (
     <>
@@ -154,10 +151,10 @@ function Operation(props: Props) {
         >
           <TextArea
             label={strings.cmpActionDescriptionLabel}
-            name="community_involved"
+            name="entity_affected"
             onChange={onValueChange}
-            value={value.community_involved}
-            error={error?.community_involved}
+            value={value.entity_affected}
+            error={error?.entity_affected}
           />
         </InputSection>
       </Container>
@@ -294,7 +291,7 @@ function Operation(props: Props) {
             onChange={setIntervention}
             value={intervention}
             label={strings.drefOperationalUpdateInterventionsLabel}
-            options={interventionOptions}
+            options={filteredInterventionOptions}
           />
           <div className={styles.actions}>
             <Button

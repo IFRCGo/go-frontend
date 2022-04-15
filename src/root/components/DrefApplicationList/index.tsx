@@ -149,19 +149,16 @@ function DrefApplicationList(props: Props) {
   });
 
   const {
-    // TODO: use this
-    // pending: newOperationaUpdatePending,
+    pending: newOperationalUpdatePending,
     trigger: postDrefNewOperationalUpdate,
   } = useLazyRequest<DrefOperationalUpdateResponse, number>({
-    url: (drefId) => drefId ? `api/v2/dref-op-update` : undefined,
+    url: (drefId) => drefId ? `api/v2/dref-op-update/` : undefined,
     body: (drefId) => ({ dref: drefId }),
     method: 'POST',
-    onSuccess: (response, drefId) => {
-      console.log({ response });
-      //TODO
-      //if (isDefined(response?.id)) {
-      //  history.push(`/dref-operational-update/${response.id}/edit/`);
-      //}
+    onSuccess: (response) => {
+      if (isDefined(response?.id)) {
+        history.push(`/dref-operational-update/${response.id}/edit/`);
+      }
     },
     onFailure: ({
       value: { messageForNotification },
@@ -286,7 +283,7 @@ function DrefApplicationList(props: Props) {
     ]);
   }, [postDrefNewOperationalUpdate, drefPublishPending, editLinkProps, handlePublishButtonClick, strings]);
 
-  const pending = publishedDrefPending || inProgressDrefPending;
+  const pending = publishedDrefPending || inProgressDrefPending || newOperationalUpdatePending;
 
   return (
     <Container
