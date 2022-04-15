@@ -206,7 +206,7 @@ export function useThreeWOptions(value: Partial<FormType>) {
       // here, we want to include all countries where
       // independent is either null or true (but exclude false)
       // see https://github.com/IFRCGo/go-frontend/issues/1934
-      .filter(d => d.independent !== false && d.society_name)
+      .filter(d => (d.independent !== false && d.society_name) || d.name.substring(2) === 'RC' || d.iso === 'BX')
       .map(d => ({
         value: d.id,
         label: d.society_name,
