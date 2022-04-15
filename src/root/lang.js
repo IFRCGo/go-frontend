@@ -3515,12 +3515,9 @@ export default {
   wikiJsLinkCountry3W: '',
   wikiJsLinkRegister: 'user_guide/account',
 
-
-  //TODO
-  // DREF operational update
-  // button
   drefOperationalUpdateExportButton: 'Export',
   drefOperationalUpdateSaveButton: 'Save',
+
   // button 
   drefPublishButtonLabel: 'Publish',
   drefOperationalUpdateExportButtonLabel: 'Export',
@@ -3537,7 +3534,6 @@ export default {
   drefOperationalUpdateSubmissionLabel: 'Submission',
 
   //overview
-
   drefOperationalUpdateAdditionalAllocationRequested: 'Additional Allocation Requested',
   drefOperationalUpdateTotalAllocation: 'Total DREF Allocation',
   drefOperationalUpdateNumber: 'Operaitonal Update Number',
@@ -3565,61 +3561,8 @@ export default {
   drefOperationalUpdateDescriptionOfEventLabel: 'Has anything changed in the context since the request',
 
   //needs
-  drefOperationalUpdateNationalSocietiesActions: 'Current National Society Actions',
-  drefOperationalUpdateMovementPartnets: 'Movement Partners',
-  drefOperationalUpdateNationalSocietiesActionsLabel: 'Select the actions that apply.',
-  drefOperationalUpdateIfrc: 'IFRC',
-  drefOperationalUpdateIcrc: 'ICRC',
-  drefOperationalUpdatePartnerNationalSociety: 'Partner National Society',
-  drefOperationalUpdateNationalOtherActors: 'Other Actors',
-  drefOperationalUpdateInternationalAssistance: 'Government has requested international assistance',
-  drefOperationalUpdateNationalAuthorities: 'National authorities',
-  drefOperationalUpdateUNorOtherActors: 'UN or other actors',
-  drefOperationalUpdateCoordinationMechanism: 'List major coordination mechanisms in place',
-  drefOperationalUpdateNeedsIdentified: 'Needs (Gaps) Identified',
-  drefOperationalUpdateActionFieldsLabel: 'Select the needs that apply.',
-
-  //targeting strategy
-  drefOperationalUpdateTargetingStrategy: 'Targeting Strategy',
-  drefOperationalUpdatePeopleAssistedThroughOperation: 'Which groups of people will be assisted through this operation?',
-  drefOperationalUpdateSelectionCriteria: ' What selection criteria has been used for targeting affected?',
-  drefOperationalUpdateProtectionGenderAndInclusion: 'How have, community engagement Protection, Gender and Inclusion been considered in planning this operation?',
-
-  //trageted pupulation
-  drefOperationalUpdateTargetPopulation: 'Target Population',
-  drefOperationalUpdateWomen: "Women",
-  drefOperationalUpdateMen: 'Men',
-  drefOperationalUpdateGirls: 'Girls (under 18)',
-  drefOperationalUpdateBoys: 'Boys (under 18)',
-  drefOperationalUpdateEstimatedUrban: 'Urban',
-  drefOperationalUpdateEstimatedLocal: 'Rural',
-  drefOperationalUpdateEstimatePeopleDisability: 'Estimated Percentage People with Disability',
-  drefOperationalUpdateEstimatedPercentage: 'Estimated Percentage Urban/Rural',
-  drefOperationalUpdateEstimatedDisplacedPeople: 'Estimated Number of Displaced People',
-  drefOperationalUpdatePeopleTargetedWithEarlyActions: 'Number of persons targeted with early actions',
-  drefOperationalUpdateEstimateResponse: 'Estimate',
-
-  //objective & strategy rationale
-  drefOperationalUpdateObjectiveAndStrategy: 'Objective and Strategy Rationale',
-  drefOperationalUpdateObjectiveOperation: 'Overall objective of the operation',
-  drefOperationalUpdateObjectiveOperationPlaceholder: 'This DREF allocation aims at supporting ….. of persons affected by ……. Disaster, by providing …..(list sectors) support in the ……(list areas/regions) for …. months',
-  drefOperationalUpdateResponseRationale: 'Response strategy rationale',
-  drefOperationalUpdateResponseRationalePlaceholder: 'To address the needs of the targeted population, this DREF will aim at (please briefly describe the planned activities).',
+  drefOperationalUpdateMovementPartners: 'Movement Partners',
 
   //interventions
   drefOperationalUpdatePlannedIntervention: 'Update on Intervention',
-  drefOperationalUpdateInterventionsLabel: 'Select the interventions that apply.',
-
-  //tracking data
-  drefOperationalUpdateTrackingData: 'Tracking Data',
-  drefOperationalUpdateAppealCode: 'MDR Code',
-  drefOperationalUpdateAppealCodeDescription: 'Added by the regional PMER',
-  drefOperationalUpdateGlideNum: 'GLIDE number',
-  drefOperationalUpdateAppealManager: 'IFRC Appeal Manager:',
-  drefOperationalUpdateAppealManagerDescription: 'Added by the regional office',
-  drefOperationalUpdateProjectManager: 'IFRC Project Manager',
-  drefOperationalUpdateProjectManagerDescription: 'Added by the regional office',
-  drefOperationalUpdateNationalSocietyContact: 'National Society contact:',
-  drefOperationalUpdateIfrcEmergency: 'IFRC focal point for the emergency',
-  drefOperationalUpdateMediaContact: 'Media Contact',
 };

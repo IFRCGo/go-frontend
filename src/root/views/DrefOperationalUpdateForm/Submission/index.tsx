@@ -35,12 +35,12 @@ function Submission(props: Props) {
   return (
     <>
       <Container
-        heading={strings.drefOperationalUpdateTrackingData}
+        heading={strings.drefFormTrackingData}
         className={styles.trackingData}
       >
         <InputSection
-          title={strings.drefOperationalUpdateAppealCode}
-          description={strings.drefOperationalUpdateAppealCodeDescription}
+          title={strings.drefFormAppealCode}
+          description={strings.drefFormAppealCodeDescription}
         >
           <TextInput
             name="appeal_code"
@@ -50,7 +50,7 @@ function Submission(props: Props) {
           />
         </InputSection>
         <InputSection
-          title={strings.drefOperationalUpdateGlideNum}
+          title={strings.drefFormGlideNum}
         >
           <TextInput
             name="glide_code"
@@ -60,8 +60,8 @@ function Submission(props: Props) {
           />
         </InputSection>
         <InputSection
-          title={strings.drefOperationalUpdateAppealManager}
-          description={strings.drefOperationalUpdateAppealManagerDescription}
+          title={strings.drefFormAppealManager}
+          description={strings.drefFormAppealManagerDescription}
           multiRow
           twoColumn
         >
@@ -95,8 +95,8 @@ function Submission(props: Props) {
           />
         </InputSection>
         <InputSection
-          title={strings.drefOperationalUpdateProjectManager}
-          description={strings.drefOperationalUpdateProjectManagerDescription}
+          title={strings.drefFormProjectManager}
+          description={strings.drefFormProjectManagerDescription}
           multiRow
           twoColumn
         >

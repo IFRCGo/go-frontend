@@ -136,13 +136,13 @@ function Needs(props: Props) {
   return (
     <>
       <Container
-        heading={strings.drefOperationalUpdateNationalSocietiesActions}
+        heading={strings.drefFormNationalSocietiesActions}
         className={styles.nationalSocietyActions}
         visibleOverflow
       >
         <InputSection>
           <SelectInput
-            label={strings.drefOperationalUpdateNationalSocietiesActionsLabel}
+            label={strings.drefFormNationalSocietiesActionsLabel}
             name={undefined}
             options={nsActionOptions}
             value={nsAction}
@@ -172,7 +172,7 @@ function Needs(props: Props) {
         ))}
       </Container>
       <Container
-        heading={strings.drefOperationalUpdateMovementPartnets}
+        heading={strings.drefOperationalUpdateMovementPartners}
       >
         <InputSection
           title={strings.drefFormIfrc}
@@ -197,7 +197,7 @@ function Needs(props: Props) {
           />
         </InputSection>
         <InputSection
-          title={strings.drefOperationalUpdatePartnerNationalSociety}
+          title={strings.drefFormPartnerNationalSociety}
         >
           <TextArea
             name="partner_national_society"
@@ -208,11 +208,11 @@ function Needs(props: Props) {
         </InputSection>
       </Container>
       <Container
-        heading={strings.drefOperationalUpdateNationalOtherActors}
+        heading={strings.drefFormNationalOtherActors}
         className={styles.otherActors}
       >
         <InputSection
-          title={strings.drefOperationalUpdateInternationalAssistance}
+          title={strings.drefFormInternationalAssistance}
         >
           <RadioInput
             name={"government_requested_assistance" as const}
@@ -225,7 +225,7 @@ function Needs(props: Props) {
           />
         </InputSection>
         <InputSection
-          title={strings.drefOperationalUpdateNationalAuthorities}
+          title={strings.drefFormNationalAuthorities}
         >
           <TextArea
             label={strings.cmpActionDescriptionLabel}
@@ -236,7 +236,7 @@ function Needs(props: Props) {
           />
         </InputSection>
         <InputSection
-          title={strings.drefOperationalUpdateUNorOtherActors}
+          title={strings.drefFormUNorOtherActors}
           oneColumn
           multiRow
         >
@@ -249,7 +249,7 @@ function Needs(props: Props) {
           />
         </InputSection>
         <InputSection
-          title={strings.drefOperationalUpdateCoordinationMechanism}
+          title={strings.drefFormCoordinationMechanism}
           oneColumn
           multiRow
         >
@@ -263,13 +263,13 @@ function Needs(props: Props) {
         </InputSection>
       </Container>
       <Container
-        heading={strings.drefOperationalUpdateNeedsIdentified}
+        heading={strings.drefFormNeedsIdentified}
         className={styles.needsIdentified}
         visibleOverflow
       >
         <InputSection>
           <SelectInput
-            label={strings.drefOperationalUpdateActionFieldsLabel}
+            label={strings.drefFormActionFieldsLabel}
             name={undefined}
             onChange={setNeed}
             options={needOptions}

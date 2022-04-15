@@ -121,11 +121,11 @@ function Operation(props: Props) {
   return (
     <>
       <Container
-        heading={strings.drefOperationalUpdateTargetingStrategy}
+        heading={strings.drefFormTargetingStrategy}
         className={styles.targetingStrategy}
       >
         <InputSection
-          title={strings.drefOperationalUpdatePeopleAssistedThroughOperation}
+          title={strings.drefFormPeopleAssistedthroughOperation}
         >
           <TextArea
             label={strings.cmpActionDescriptionLabel}
@@ -136,7 +136,7 @@ function Operation(props: Props) {
           />
         </InputSection>
         <InputSection
-          title={strings.drefOperationalUpdateSelectionCriteria}
+          title={strings.drefFormSelectionCriteria}
         >
           <TextArea
             label={strings.cmpActionDescriptionLabel}
@@ -147,7 +147,7 @@ function Operation(props: Props) {
           />
         </InputSection>
         <InputSection
-          title={strings.drefOperationalUpdateProtectionGenderAndInclusion}
+          title={strings.drefFormProtectionGenderAndInclusion}
         >
           <TextArea
             label={strings.cmpActionDescriptionLabel}
@@ -159,7 +159,7 @@ function Operation(props: Props) {
         </InputSection>
       </Container>
       <Container
-        heading={strings.drefOperationalUpdateTargetPopulation}
+        heading={strings.drefFormTargetedPopulation}
         className={styles.assistedPopulation}
         description={(
           warnings?.map((w) => (
@@ -171,33 +171,33 @@ function Operation(props: Props) {
         )}
       >
         <InputSection
-          title={strings.drefOperationalUpdateTargetPopulation}
+          title={strings.drefFormTargetedPopulation}
           multiRow
           twoColumn
         >
           <NumberInput
-            label={strings.drefOperationalUpdateWomen}
+            label={strings.drefFormWomen}
             name="women"
             value={value.women}
             onChange={onValueChange}
             error={error?.women}
           />
           <NumberInput
-            label={strings.drefOperationalUpdateMen}
+            label={strings.drefFormMen}
             name="men"
             value={value.men}
             onChange={onValueChange}
             error={error?.men}
           />
           <NumberInput
-            label={strings.drefOperationalUpdateGirls}
+            label={strings.drefFormGirls}
             name="girls"
             value={value.girls}
             onChange={onValueChange}
             error={error?.girls}
           />
           <NumberInput
-            label={strings.drefOperationalUpdateBoys}
+            label={strings.drefFormBoys}
             name="boys"
             value={value.boys}
             onChange={onValueChange}
@@ -205,12 +205,12 @@ function Operation(props: Props) {
           />
         </InputSection>
         <InputSection
-          title={strings.drefOperationalUpdateEstimateResponse}
+          title={strings.drefFormEstimateResponse}
           multiRow
           twoColumn
         >
           <NumberInput
-            label={strings.drefOperationalUpdateEstimatePeopleDisability}
+            label={strings.drefFormEstimatePeopleDisability}
             name="disability_people_per"
             value={value.disability_people_per}
             onChange={onValueChange}
@@ -218,18 +218,18 @@ function Operation(props: Props) {
           />
           <div className={styles.urbanToRural}>
             <InputLabel>
-              {strings.drefOperationalUpdateEstimatedPercentage}
+              {strings.drefFormEstimatedPercentage}
             </InputLabel>
             <div className={styles.inputs}>
               <NumberInput
-                placeholder={strings.drefOperationalUpdateEstimatedUrban}
+                placeholder={strings.drefFormEstimatedUrban}
                 name="people_per_urban"
                 value={value.people_per_urban}
                 onChange={onValueChange}
                 error={error?.people_per_urban}
               />
               <NumberInput
-                placeholder={strings.drefOperationalUpdateEstimatedLocal}
+                placeholder={strings.drefFormEstimatedLocal}
                 name="people_per_local"
                 value={value.people_per_local}
                 onChange={onValueChange}
@@ -238,14 +238,14 @@ function Operation(props: Props) {
             </div>
           </div>
           <NumberInput
-            label={strings.drefOperationalUpdateEstimatedDisplacedPeople}
+            label={strings.drefFormEstimatedDisplacedPeople}
             name="displaced_people"
             value={value.displaced_people}
             onChange={onValueChange}
             error={error?.displaced_people}
           />
           <NumberInput
-            label={strings.drefOperationalUpdatePeopleTargetedWithEarlyActions}
+            label={strings.drefFormPeopleTargetedWithEarlyActions}
             name="people_targeted_with_early_actions"
             value={value.people_targeted_with_early_actions}
             onChange={onValueChange}
@@ -254,34 +254,34 @@ function Operation(props: Props) {
         </InputSection>
       </Container>
       <Container
-        heading={strings.drefOperationalUpdateObjectiveAndStrategy}
+        heading={strings.drefFormObjectiveAndStrategy}
         className={styles.objectiveRationale}
       >
         <InputSection
-          title={strings.drefOperationalUpdateObjectiveOperation}
+          title={strings.drefFormObjectiveOperation}
         >
           <TextArea
             error={error?.operation_objective}
             name="operation_objective"
             onChange={onValueChange}
             value={value.operation_objective}
-            placeholder={strings.drefOperationalUpdateObjectiveOperationPlaceholder}
+            placeholder={strings.drefFormObjectiveOperationPlaceholder}
           />
         </InputSection>
         <InputSection
-          title={strings.drefOperationalUpdateResponseRationale}
+          title={strings.drefFormResponseRationale}
         >
           <TextArea
             name="response_strategy"
             onChange={onValueChange}
             value={value.response_strategy}
             error={error?.response_strategy}
-            placeholder={strings.drefOperationalUpdateResponseRationalePlaceholder}
+            placeholder={strings.drefFormResponseRationalePlaceholder}
           />
         </InputSection>
       </Container>
       <Container
-        heading={strings.drefOperationalUpdatePlannedIntervention}
+        heading={strings.drefFormPlannedIntervention}
         className={styles.plannedIntervention}
         visibleOverflow
       >
@@ -290,7 +290,7 @@ function Operation(props: Props) {
             name={undefined}
             onChange={setIntervention}
             value={intervention}
-            label={strings.drefOperationalUpdateInterventionsLabel}
+            label={strings.drefFormInterventionsLabel}
             options={filteredInterventionOptions}
           />
           <div className={styles.actions}>

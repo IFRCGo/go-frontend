@@ -1,9 +1,9 @@
 import React from 'react';
+import { match } from 'react-router-dom';
 import {
-  Link,
-  match,
-} from 'react-router-dom';
-import { History, Location } from 'history';
+  History,
+  Location,
+} from 'history';
 import {
   isDefined,
   listToMap,
@@ -22,8 +22,7 @@ import TabList from '#components/Tabs/TabList';
 import Page from '#components/Page';
 import Tabs from '#components/Tabs';
 import Tab from '#components/Tabs/Tab';
-import Button,
-{ useButtonFeatures } from '#components/Button';
+import Button from '#components/Button';
 import TabPanel from '#components/Tabs/TabPanel';
 import languageContext from '#root/languageContext';
 import Container from '#components/Container';
@@ -92,7 +91,6 @@ const defaultFormValues: PartialForm<DrefOperationalUpdateFields> = {};
 function DrefOperationalUpdate(props: Props) {
   const {
     match,
-    history,
   } = props;
   const { id } = match.params;
   const alert = useAlert();
@@ -197,11 +195,6 @@ function DrefOperationalUpdate(props: Props) {
     scrollToTop();
     setCurrentStep(newStep);
   }, []);
-
-  const exportLinkProps = useButtonFeatures({
-    variant: 'secondary',
-    children: strings.drefOperationalUpdateExportButtonLabel,
-  });
 
   const {
     pending: drefSubmitPending,
@@ -363,7 +356,9 @@ function DrefOperationalUpdate(props: Props) {
   const pending = fetchingCountries
     || fetchingDisasterTypes
     || fetchingDrefOptions
-    || fetchingUserDetails;
+    || fetchingUserDetails
+    || operationalUpdatePending
+    || drefSubmitPending;
 
   const failedToLoadDref = !pending && isDefined(id) && !drefOperationalResponse;
 
@@ -377,19 +372,13 @@ function DrefOperationalUpdate(props: Props) {
       >
         <Page
           actions={(
-            <>
-              <Link
-                to=''
-                {...exportLinkProps}
-              />
-              <Button
-                name={undefined}
-                onClick={submitDrefOperationalUpdate}
-                type='submit'
-              >
-                {strings.drefOperationalUpdateSaveButtonLabel}
-              </Button>
-            </>
+            <Button
+              name={undefined}
+              onClick={submitDrefOperationalUpdate}
+              type='submit'
+            >
+              {strings.drefOperationalUpdateSaveButtonLabel}
+            </Button>
           )}
           title={strings.drefOperationalUpdatePageTitle}
           heading={strings.drefOperationalUpdatePageHeading}
@@ -439,81 +428,97 @@ function DrefOperationalUpdate(props: Props) {
               <BlockLoading />
             </Container>
           ) : (
-            <>
-              <TabPanel name='operationOverview'>
-                <Overview
-                  error={error}
-                  onValueChange={onValueChange}
-                  value={value}
-                  yesNoOptions={yesNoOptions}
-                  disasterTypeOptions={disasterTypeOptions}
-                  onsetOptions={onsetOptions}
-                  disasterCategoryOptions={disasterCategoryOptions}
-                  countryOptions={countryOptions}
-                  fetchingCountries={fetchingCountries}
-                  fetchingDisasterTypes={fetchingDisasterTypes}
-                  nationalSocietyOptions={nationalSocietyOptions}
-                  fetchingNationalSociety={fetchingCountries}
-                  fileIdToUrlMap={fileIdToUrlMap}
-                  setFileIdToUrlMap={setFileIdToUrlMap}
-                  onValueSet={onValueSet}
-                  userOptions={userOptions}
-                  onCreateAndShareButtonClick={submitDrefOperationalUpdate}
-                />
-              </TabPanel>
-              <TabPanel name='eventDetails'>
-                <EventDetails
-                  error={error}
-                  onValueChange={onValueChange}
-                  value={value}
-                  yesNoOptions={yesNoOptions}
-                />
-              </TabPanel>
-              <TabPanel name='needs'>
-                <Needs
-                  error={error}
-                  onValueChange={onValueChange}
-                  value={value}
-                  yesNoOptions={yesNoOptions}
-                  needOptions={needOptions}
-                  nsActionOptions={nsActionOptions}
-                />
-              </TabPanel>
-              <TabPanel name='operation'>
-                <Operation
-                  interventionOptions={interventionOptions}
-                  error={error}
-                  onValueChange={onValueChange}
-                  value={value}
-                  fileIdToUrlMap={fileIdToUrlMap}
-                  setFileIdToUrlMap={setFileIdToUrlMap}
-                />
-              </TabPanel>
-              <TabPanel name='submission'>
-                <Submission
-                  error={error}
-                  onValueChange={onValueChange}
-                  value={value}
-                />
-              </TabPanel>
-              <div className={styles.actions}>
-                <Button
-                  name={undefined}
-                  variant="secondary"
-                  onClick={handleBackButtonClick}
-                  disabled={shouldDisabledBackButton}
-                >
-                  {strings.drefFormBackButtonLabel}
-                </Button>
-                <Button
-                  name={undefined}
-                  variant="secondary"
-                  onClick={handleSubmitButtonClick}
-                >
-                  {submitButtonLabel}
-                </Button>
-              </div>
-            </>
+            failedToLoadDref ? (
+              <Container
+                contentClassName={styles.errorMessage}
+              >
+                <h3>
+                  {strings.drefFormLoadErrorTitle}
+                </h3>
+                <p>
+                  {strings.drefFormLoadErrorDescription}
+                </p>
+                <p>
+                  {strings.drefFormLoadErrorHelpText}
+                </p>
+              </Container>
+            ) : (
+              <>
+                <TabPanel name='operationOverview'>
+                  <Overview
+                    error={error}
+                    onValueChange={onValueChange}
+                    value={value}
+                    yesNoOptions={yesNoOptions}
+                    disasterTypeOptions={disasterTypeOptions}
+                    onsetOptions={onsetOptions}
+                    disasterCategoryOptions={disasterCategoryOptions}
+                    countryOptions={countryOptions}
+                    fetchingCountries={fetchingCountries}
+                    fetchingDisasterTypes={fetchingDisasterTypes}
+                    nationalSocietyOptions={nationalSocietyOptions}
+                    fetchingNationalSociety={fetchingCountries}
+                    fileIdToUrlMap={fileIdToUrlMap}
+                    setFileIdToUrlMap={setFileIdToUrlMap}
+                    onValueSet={onValueSet}
+                    userOptions={userOptions}
+                    onCreateAndShareButtonClick={submitDrefOperationalUpdate}
+                  />
+                </TabPanel>
+                <TabPanel name='eventDetails'>
+                  <EventDetails
+                    error={error}
+                    onValueChange={onValueChange}
+                    value={value}
+                    yesNoOptions={yesNoOptions}
+                  />
+                </TabPanel>
+                <TabPanel name='needs'>
+                  <Needs
+                    error={error}
+                    onValueChange={onValueChange}
+                    value={value}
+                    yesNoOptions={yesNoOptions}
+                    needOptions={needOptions}
+                    nsActionOptions={nsActionOptions}
+                  />
+                </TabPanel>
+                <TabPanel name='operation'>
+                  <Operation
+                    interventionOptions={interventionOptions}
+                    error={error}
+                    onValueChange={onValueChange}
+                    value={value}
+                    fileIdToUrlMap={fileIdToUrlMap}
+                    setFileIdToUrlMap={setFileIdToUrlMap}
+                  />
+                </TabPanel>
+                <TabPanel name='submission'>
+                  <Submission
+                    error={error}
+                    onValueChange={onValueChange}
+                    value={value}
+                  />
+                </TabPanel>
+                <div className={styles.actions}>
+                  <Button
+                    name={undefined}
+                    variant="secondary"
+                    onClick={handleBackButtonClick}
+                    disabled={shouldDisabledBackButton}
+                  >
+                    {strings.drefFormBackButtonLabel}
+                  </Button>
+                  <Button
+                    name={undefined}
+                    variant="secondary"
+                    onClick={handleSubmitButtonClick}
+                  >
+                    {submitButtonLabel}
+                  </Button>
+                </div>
+              </>
+            )
           )}
         </Page>
       </Tabs>
