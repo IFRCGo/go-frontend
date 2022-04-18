@@ -24,7 +24,6 @@ export const riskApi = process.env.REACT_APP_RISK_API_ENDPOINT ?? window.appSett
 export const riskAdminUrl = process.env.REACT_APP_RISK_ADMIN_URL ?? window.appSettings.riskAdminUrl;
 export const tinyApiKey = process.env.REACT_APP_TINY_API_KEY ?? window.appSettings.tinyApiKey;
 
-
 const config = {
   api,
   environment,
