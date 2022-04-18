@@ -205,7 +205,7 @@ function DrefOperationalUpdate(props: Props) {
     body: ctx => ctx,
     onSuccess: (response) => {
       alert.show(
-        strings.drefFormSaveRequestSuccessMessage,
+        strings.drefOperationalUpdateSuccessMessage,
         { variant: 'success' },
       );
     },
@@ -286,7 +286,7 @@ function DrefOperationalUpdate(props: Props) {
     }) => {
       alert.show(
         <p>
-          {strings.drefFormLoadRequestFailureMessage}
+          {strings.drefOperationalUpdateFailureMessage}
           &nbsp;
           <strong>
             {messageForNotification}
@@ -433,13 +433,13 @@ function DrefOperationalUpdate(props: Props) {
                 contentClassName={styles.errorMessage}
               >
                 <h3>
-                  {strings.drefFormLoadErrorTitle}
+                  {strings.drefOperationalUpdateFailureMessage}
                 </h3>
                 <p>
                   {strings.drefFormLoadErrorDescription}
                 </p>
                 <p>
-                  {strings.drefFormLoadErrorHelpText}
+                  {strings.drefOperationalUpdateErrorDescription}
                 </p>
               </Container>
             ) : (

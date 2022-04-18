@@ -3518,9 +3518,12 @@ export default {
   drefOperationalUpdateExportButton: 'Export',
   drefOperationalUpdateSaveButton: 'Save',
 
-  // button 
+  // DREF operational update new field only
+
+  drefOperationalUpdateSuccessMessage: 'Operational update created successfully',
+  drefOperationalUpdateFailureMessage: 'Failed to load Operational update',
+  drefOperationalUpdateErrorDescription: 'There is an error loading Dref operational update',
   drefPublishButtonLabel: 'Publish',
-  drefOperationalUpdateExportButtonLabel: 'Export',
   drefOperationalUpdateSaveButtonLabel: 'Save',
   drefOperationalUpdateOperationalUpdateButtonLabel: 'update',
 
