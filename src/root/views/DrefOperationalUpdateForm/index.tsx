@@ -16,6 +16,7 @@ import {
   PartialForm,
   useForm,
   accumulateErrors,
+  internal,
 } from '@togglecorp/toggle-form';
 
 import TabList from '#components/Tabs/TabList';
@@ -23,6 +24,7 @@ import Page from '#components/Page';
 import Tabs from '#components/Tabs';
 import Tab from '#components/Tabs/Tab';
 import Button from '#components/Button';
+import NonFieldError from '#components/NonFieldError';
 import TabPanel from '#components/Tabs/TabPanel';
 import languageContext from '#root/languageContext';
 import Container from '#components/Container';
@@ -42,8 +44,7 @@ import {
   submissionFields,
   DrefOperationalUpdateApiFields,
 } from './common';
-import useDrefOperationalFormOptions,
-{
+import useDrefOperationalFormOptions, {
   schema
 } from './useDrefOperationalUpdateOptions';
 import Overview from './Overview';
@@ -97,10 +98,10 @@ function DrefOperationalUpdate(props: Props) {
   const {
     value,
     error,
-    setFieldValue: onValueChange,
+    setFieldValue,
     validate,
-    setValue: onValueSet,
-    setError: onErrorSet,
+    setValue,
+    setError,
   } = useForm(
     schema,
     { value: defaultFormValues }
@@ -185,11 +186,11 @@ function DrefOperationalUpdate(props: Props) {
       ...currentTabErrors,
     };
 
-    onErrorSet(newError);
+    setError(newError);
 
     const hasError = Object.keys(currentTabErrors).some(d => !!d);
     return !hasError;
-  }, [value, currentStep, onErrorSet]);
+  }, [value, currentStep, setError]);
 
   const handleTabChange = React.useCallback((newStep: StepTypes) => {
     scrollToTop();
@@ -201,11 +202,11 @@ function DrefOperationalUpdate(props: Props) {
     trigger: submitRequest,
   } = useLazyRequest<DrefOperationalResponseFields, Partial<DrefOperationalUpdateApiFields>>({
     url: `api/v2/dref-op-update/${id}`,
-    method: 'POST',
+    method: 'PUT',
     body: ctx => ctx,
     onSuccess: (response) => {
       alert.show(
-        strings.drefOperationalUpdateSuccessMessage,
+        'Operational Update was updated successfully!',
         { variant: 'success' },
       );
     },
@@ -216,7 +217,10 @@ function DrefOperationalUpdate(props: Props) {
       },
       debugMessage,
     }) => {
-      onErrorSet(formErrors);
+      setError({
+        ...formErrors,
+        [internal]: formErrors?.non_field_errors as string | undefined,
+      });
 
       alert.show(
         <p>
@@ -257,7 +261,7 @@ function DrefOperationalUpdate(props: Props) {
 
         return newMap;
       });
-      onValueSet({
+      setValue({
         ...response,
         country_district: response.country_district?.map((cd) => ({
           ...cd,
@@ -319,7 +323,7 @@ function DrefOperationalUpdate(props: Props) {
     const result = validate();
 
     if (result.errored) {
-      onErrorSet(result.error);
+      setError(result.error);
     } else if (result.value && userDetails && userDetails.id) {
       const body = {
         user: userDetails.id,
@@ -327,7 +331,7 @@ function DrefOperationalUpdate(props: Props) {
       };
       submitRequest(body as DrefOperationalUpdateApiFields);
     }
-  }, [submitRequest, onErrorSet, validate, userDetails]);
+  }, [submitRequest, setError, validate, userDetails]);
 
   const handleSubmitButtonClick = React.useCallback(() => {
     scrollToTop();
@@ -363,166 +367,170 @@ function DrefOperationalUpdate(props: Props) {
   const failedToLoadDref = !pending && isDefined(id) && !drefOperationalResponse;
 
   return (
-    <>
-      <Tabs
-        disabled={false}
-        onChange={handleTabChange}
-        value={currentStep}
-        variant='step'
-      >
-        <Page
-          actions={(
-            <Button
-              name={undefined}
-              onClick={submitDrefOperationalUpdate}
-              type='submit'
+    <Tabs
+      disabled={false}
+      onChange={handleTabChange}
+      value={currentStep}
+      variant='step'
+    >
+      <Page
+        actions={(
+          <Button
+            name={undefined}
+            onClick={submitDrefOperationalUpdate}
+            type='submit'
+          >
+            {strings.drefOperationalUpdateSaveButtonLabel}
+          </Button>
+        )}
+        title={strings.drefOperationalUpdatePageTitle}
+        heading={strings.drefOperationalUpdatePageHeading}
+        info={(
+          <TabList>
+            <Tab
+              name='operationOverview'
+              step={1}
+              errored={erroredTabs['operationOverview']}
             >
-              {strings.drefOperationalUpdateSaveButtonLabel}
-            </Button>
-          )}
-          title={strings.drefOperationalUpdatePageTitle}
-          heading={strings.drefOperationalUpdatePageHeading}
-          info={(
-            <TabList>
-              <Tab
-                name='operationOverview'
-                step={1}
-                errored={erroredTabs['operationOverview']}
-              >
-                {strings.drefOperationalUpdateOverviewLabel}
-              </Tab>
-              <Tab
-                name='eventDetails'
-                step={2}
-                errored={erroredTabs['eventDetails']}
-              >
-                {strings.drefOperationalUpdateEventDetailsLabel}
-              </Tab>
-              <Tab
-                name='needs'
-                step={3}
-                errored={erroredTabs['needs']}
-              >
-                {strings.drefOperationalUpdateNeedsLabel}
-              </Tab>
-              <Tab
-                name='operation'
-                step={4}
-                errored={erroredTabs['operation']}
-              >
-                {strings.drefOperationalUpdateOperationLabel}
-              </Tab>
-              <Tab
-                name='submission'
-                step={5}
-                errored={erroredTabs['submission']}
-              >
-                {strings.drefOperationalUpdateSubmissionLabel}
-              </Tab>
+              {strings.drefOperationalUpdateOverviewLabel}
+            </Tab>
+            <Tab
+              name='eventDetails'
+              step={2}
+              errored={erroredTabs['eventDetails']}
+            >
+              {strings.drefOperationalUpdateEventDetailsLabel}
+            </Tab>
+            <Tab
+              name='needs'
+              step={3}
+              errored={erroredTabs['needs']}
+            >
+              {strings.drefOperationalUpdateNeedsLabel}
+            </Tab>
+            <Tab
+              name='operation'
+              step={4}
+              errored={erroredTabs['operation']}
+            >
+              {strings.drefOperationalUpdateOperationLabel}
+            </Tab>
+            <Tab
+              name='submission'
+              step={5}
+              errored={erroredTabs['submission']}
+            >
+              {strings.drefOperationalUpdateSubmissionLabel}
+            </Tab>
 
-            </TabList>
-          )}
-        >
-          {pending ? (
-            <Container>
-              <BlockLoading />
+          </TabList>
+        )}
+      >
+        {pending ? (
+          <Container>
+            <BlockLoading />
+          </Container>
+        ) : (
+          failedToLoadDref ? (
+            <Container
+              contentClassName={styles.errorMessage}
+            >
+              <h3>
+                {strings.drefOperationalUpdateFailureMessage}
+              </h3>
+              <p>
+                {strings.drefFormLoadErrorDescription}
+              </p>
+              <p>
+                {strings.drefOperationalUpdateErrorDescription}
+              </p>
             </Container>
           ) : (
-            failedToLoadDref ? (
-              <Container
-                contentClassName={styles.errorMessage}
-              >
-                <h3>
-                  {strings.drefOperationalUpdateFailureMessage}
-                </h3>
-                <p>
-                  {strings.drefFormLoadErrorDescription}
-                </p>
-                <p>
-                  {strings.drefOperationalUpdateErrorDescription}
-                </p>
+            <>
+              <Container>
+                <NonFieldError
+                  error={error}
+                  message="Please correct all the errors"
+                />
               </Container>
-            ) : (
-              <>
-                <TabPanel name='operationOverview'>
-                  <Overview
-                    error={error}
-                    onValueChange={onValueChange}
-                    value={value}
-                    yesNoOptions={yesNoOptions}
-                    disasterTypeOptions={disasterTypeOptions}
-                    onsetOptions={onsetOptions}
-                    disasterCategoryOptions={disasterCategoryOptions}
-                    countryOptions={countryOptions}
-                    fetchingCountries={fetchingCountries}
-                    fetchingDisasterTypes={fetchingDisasterTypes}
-                    nationalSocietyOptions={nationalSocietyOptions}
-                    fetchingNationalSociety={fetchingCountries}
-                    fileIdToUrlMap={fileIdToUrlMap}
-                    setFileIdToUrlMap={setFileIdToUrlMap}
-                    onValueSet={onValueSet}
-                    userOptions={userOptions}
-                    onCreateAndShareButtonClick={submitDrefOperationalUpdate}
-                  />
-                </TabPanel>
-                <TabPanel name='eventDetails'>
-                  <EventDetails
-                    error={error}
-                    onValueChange={onValueChange}
-                    value={value}
-                    yesNoOptions={yesNoOptions}
-                  />
-                </TabPanel>
-                <TabPanel name='needs'>
-                  <Needs
-                    error={error}
-                    onValueChange={onValueChange}
-                    value={value}
-                    yesNoOptions={yesNoOptions}
-                    needOptions={needOptions}
-                    nsActionOptions={nsActionOptions}
-                  />
-                </TabPanel>
-                <TabPanel name='operation'>
-                  <Operation
-                    interventionOptions={interventionOptions}
-                    error={error}
-                    onValueChange={onValueChange}
-                    value={value}
-                    fileIdToUrlMap={fileIdToUrlMap}
-                    setFileIdToUrlMap={setFileIdToUrlMap}
-                  />
-                </TabPanel>
-                <TabPanel name='submission'>
-                  <Submission
-                    error={error}
-                    onValueChange={onValueChange}
-                    value={value}
-                  />
-                </TabPanel>
-                <div className={styles.actions}>
-                  <Button
-                    name={undefined}
-                    variant="secondary"
-                    onClick={handleBackButtonClick}
-                    disabled={shouldDisabledBackButton}
-                  >
-                    {strings.drefFormBackButtonLabel}
-                  </Button>
-                  <Button
-                    name={undefined}
-                    variant="secondary"
-                    onClick={handleSubmitButtonClick}
-                  >
-                    {submitButtonLabel}
-                  </Button>
-                </div>
-              </>
-            )
-          )}
-        </Page>
-      </Tabs>
-    </>
+              <TabPanel name='operationOverview'>
+                <Overview
+                  error={error}
+                  onValueChange={setFieldValue}
+                  value={value}
+                  yesNoOptions={yesNoOptions}
+                  disasterTypeOptions={disasterTypeOptions}
+                  onsetOptions={onsetOptions}
+                  disasterCategoryOptions={disasterCategoryOptions}
+                  countryOptions={countryOptions}
+                  fetchingCountries={fetchingCountries}
+                  fetchingDisasterTypes={fetchingDisasterTypes}
+                  nationalSocietyOptions={nationalSocietyOptions}
+                  fetchingNationalSociety={fetchingCountries}
+                  fileIdToUrlMap={fileIdToUrlMap}
+                  setFileIdToUrlMap={setFileIdToUrlMap}
+                  onValueSet={setValue}
+                  userOptions={userOptions}
+                  onCreateAndShareButtonClick={submitDrefOperationalUpdate}
+                />
+              </TabPanel>
+              <TabPanel name='eventDetails'>
+                <EventDetails
+                  error={error}
+                  onValueChange={setFieldValue}
+                  value={value}
+                  yesNoOptions={yesNoOptions}
+                />
+              </TabPanel>
+              <TabPanel name='needs'>
+                <Needs
+                  error={error}
+                  onValueChange={setFieldValue}
+                  value={value}
+                  yesNoOptions={yesNoOptions}
+                  needOptions={needOptions}
+                  nsActionOptions={nsActionOptions}
+                />
+              </TabPanel>
+              <TabPanel name='operation'>
+                <Operation
+                  interventionOptions={interventionOptions}
+                  error={error}
+                  onValueChange={setFieldValue}
+                  value={value}
+                  fileIdToUrlMap={fileIdToUrlMap}
+                  setFileIdToUrlMap={setFileIdToUrlMap}
+                />
+              </TabPanel>
+              <TabPanel name='submission'>
+                <Submission
+                  error={error}
+                  onValueChange={setFieldValue}
+                  value={value}
+                />
+              </TabPanel>
+              <div className={styles.actions}>
+                <Button
+                  name={undefined}
+                  variant="secondary"
+                  onClick={handleBackButtonClick}
+                  disabled={shouldDisabledBackButton}
+                >
+                  {strings.drefFormBackButtonLabel}
+                </Button>
+                <Button
+                  name={undefined}
+                  variant="secondary"
+                  onClick={handleSubmitButtonClick}
+                >
+                  {submitButtonLabel}
+                </Button>
+              </div>
+            </>
+          )
+        )}
+      </Page>
+    </Tabs>
   );
 }
 

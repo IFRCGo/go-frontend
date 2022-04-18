@@ -3531,8 +3531,10 @@ export default {
   drefOperationalUpdateSuccessMessage: 'Operational update created successfully',
   drefOperationalUpdateFailureMessage: 'Failed to create/load Operational update',
   drefOperationalUpdateErrorDescription: 'There is an error loading Dref operational update',
-  drefOperationalUpdatePublishConfirmationMessage: 'Are you sure you want to publish the DREF?',
+  drefPublishConfirmationMessage: 'Are you sure you want to publish the DREF?',
+  drefOperationalUpdatePublishConfirmationMessage: 'Are you sure you want to publish the DREF Operational Update?',
 
+  // button
   drefPublishButtonLabel: 'Publish',
   drefOperationalUpdateSaveButtonLabel: 'Save',
   drefOperationalUpdateOperationalUpdateButtonLabel: 'update',
@@ -3547,7 +3549,7 @@ export default {
   drefOperationalUpdateOperationLabel: 'Operation',
   drefOperationalUpdateSubmissionLabel: 'Submission',
 
-  //overview
+  // Overview
   drefOperationalUpdateAdditionalAllocationRequested: 'Additional Allocation Requested',
   drefOperationalUpdateTotalAllocation: 'Total DREF Allocation',
   drefOperationalUpdateNumber: 'Operaitonal Update Number',
@@ -3560,7 +3562,7 @@ export default {
   drefOperationalUpdateTimeFrameTotalOperatingTimeFrame: 'Total operationg timeframe',
   drefOperationalUpdateTimeFrameDateOfApproval: 'Date of approval',
 
-  //summary of changes
+  // Summary of changes
   drefOperationalUpdateSummaryChangeHeading: 'Summary of changes',
   drefOperationalUpdateSummaryAreYouChangingTimeFrame: 'Are you changing the timeframe of the operation',
   drefOperationalUpdateSummaryAreYouChangingStrategy: 'Are you changing the operational strategy of the operation',
@@ -3570,13 +3572,13 @@ export default {
   drefOperationalUpdateSummaryRequestForSecondAllocation: 'Is this a request for a second allocation',
   drefOperationalUpdateSummaryExplain: 'Please explain the summary of changes and justification',
 
-  //description of event
+  // Description of event
   drefOperationalUpdateDescriptionOfEventHeading: 'Description of the event',
   drefOperationalUpdateDescriptionOfEventLabel: 'Has anything changed in the context since the request',
 
-  //needs
+  // Needs
   drefOperationalUpdateMovementPartners: 'Movement Partners',
 
-  //interventions
+  // Interventions
   drefOperationalUpdatePlannedIntervention: 'Update on Intervention',
 };
