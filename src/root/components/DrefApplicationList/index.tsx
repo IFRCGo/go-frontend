@@ -24,6 +24,7 @@ import DrefExportButton from '#components/DrefExportButton';
 import DropdownMenuItem from '#components/DropdownMenuItem';
 import {
   createStringColumn,
+  createNumberColumn,
   createDateColumn,
   createActionColumn,
 } from '#components/Table/predefinedColumns';
@@ -46,6 +47,7 @@ interface OperationalUpdateDetails {
   id: number;
   title: string;
   is_published: boolean;
+  operational_update_number: number;
 }
 
 interface DrefApplicationResponse {
@@ -60,7 +62,7 @@ interface DrefApplicationResponse {
   title: string;
   submission_to_geneva: string;
   is_published: boolean;
-  operational_update: OperationalUpdateDetails[];
+  operational_update_details: OperationalUpdateDetails[];
 }
 
 const drefKeySelector = (d: DrefApplicationResponse) => d.id;
@@ -268,11 +270,11 @@ function DrefApplicationList(props: Props) {
         createActionColumn(
           'actions',
           (rowKey: number, item: DrefApplicationResponse) => {
-            const hasOperationalUpdate = item.operational_update && item.operational_update.length > 0;
-            const hasUnpublishedOperationalUpdate = item.operational_update?.some(d => d.is_published === false) ?? false;
+            const hasOperationalUpdate = item.operational_update_details && item.operational_update_details.length > 0;
+            const hasUnpublishedOperationalUpdate = item.operational_update_details?.some(d => d.is_published === false) ?? false;
             const canAddNewOperationalUpdate = item.is_published && !hasUnpublishedOperationalUpdate;
 
-            const lastOperationalUpdateId = item.operational_update?.find(ou => !ou.is_published)?.id;
+            const lastOperationalUpdateId = item.operational_update_details?.find(ou => !ou.is_published)?.id;
 
             return {
               extraActions: (
@@ -286,7 +288,7 @@ function DrefApplicationList(props: Props) {
                   />
                   <DropdownMenuItem
                     icon={<MdEdit />}
-                    href={`/dref-operational-update/${lastOperationalUpdateId}`}
+                    href={`/dref-operational-update/${lastOperationalUpdateId}/edit/`}
                     label={strings.drefOperationalUpdateEditLastLabel}
                     disabled={!hasOperationalUpdate || !hasUnpublishedOperationalUpdate}
                   />
@@ -322,6 +324,11 @@ function DrefApplicationList(props: Props) {
 
   const operationalUpdateColumns = React.useMemo(() => (
     [
+      createNumberColumn<OperationalUpdateDetails, string | number>(
+        'number',
+        'Update Number',
+        (item) => item.operational_update_number,
+      ),
       createStringColumn<OperationalUpdateDetails, string | number>(
         'title',
         'Title',
@@ -337,10 +344,16 @@ function DrefApplicationList(props: Props) {
         (rowKey, item) => ({
           children: (
             <>
-              <Button name={undefined}>
+              <Button
+                name={undefined}
+                disabled
+              >
                 Edit
               </Button>
-              <Button name={undefined}>
+              <Button
+                name={undefined}
+                disabled
+              >
                 Publish
               </Button>
             </>
@@ -453,7 +466,7 @@ function DrefApplicationList(props: Props) {
           >
             <Table
               className={styles.operationalUpdateTable}
-              data={selectedDrefForOperationalUpdateList.operational_update}
+              data={selectedDrefForOperationalUpdateList.operational_update_details}
               columns={operationalUpdateColumns}
               keySelector={d => d.id}
             />

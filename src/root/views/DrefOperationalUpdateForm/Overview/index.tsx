@@ -278,6 +278,7 @@ function Overview(props: Props) {
           title={strings.drefOperationalUpdateNumber}
         >
           <NumberInput
+            readOnly
             name="operational_update_number"
             value={value.operational_update_number}
             onChange={onValueChange}
