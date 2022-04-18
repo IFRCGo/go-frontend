@@ -3523,6 +3523,8 @@ export default {
   drefOperationalUpdateSuccessMessage: 'Operational update created successfully',
   drefOperationalUpdateFailureMessage: 'Failed to load Operational update',
   drefOperationalUpdateErrorDescription: 'There is an error loading Dref operational update',
+  drefOperationalUpdatePublishConfirmationMessage: 'Are you sure you want to publish the DREF?',
+
   drefPublishButtonLabel: 'Publish',
   drefOperationalUpdateSaveButtonLabel: 'Save',
   drefOperationalUpdateOperationalUpdateButtonLabel: 'update',

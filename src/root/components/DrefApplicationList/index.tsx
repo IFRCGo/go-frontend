@@ -198,7 +198,7 @@ function DrefApplicationList(props: Props) {
     publishDrefConfirmationModal,
     onDrefPublishClick,
   ] = useConfirmation({
-    message: "Are you sure you want to publish the DREF?",
+    message: strings.drefOperationalUpdatePublishConfirmationMessage,
     onConfirm: handlePublishButtonClick,
   });
 
@@ -315,11 +315,11 @@ function DrefApplicationList(props: Props) {
       ],
     ]);
   }, [
-      postDrefNewOperationalUpdate,
-      drefPublishPending,
-      onDrefPublishClick,
-      strings,
-    ]);
+    postDrefNewOperationalUpdate,
+    drefPublishPending,
+    onDrefPublishClick,
+    strings,
+  ]);
 
   const operationalUpdateColumns = React.useMemo(() => (
     [
