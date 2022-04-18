@@ -3519,9 +3519,17 @@ export default {
   drefOperationalUpdateSaveButton: 'Save',
 
   // DREF operational update new field only
+  //Table
+  drefTableInProgressHeading: 'In-progress applications',
+  drefTablePublishedHeading: 'Published applications',
+  drefOperationalUpdateNewLabel: 'New Operaitonal Update',
+  drefOperationalUpdateEditLastLabel: 'Edit last Operational Update',
+  drefOperationalUpdateViewAllLabel: 'View all Operational Update',
 
+  //Messages
+  drefFetchingErrorMessage: 'there was an error fetchig the Dref application list',
   drefOperationalUpdateSuccessMessage: 'Operational update created successfully',
-  drefOperationalUpdateFailureMessage: 'Failed to load Operational update',
+  drefOperationalUpdateFailureMessage: 'Failed to create/load Operational update',
   drefOperationalUpdateErrorDescription: 'There is an error loading Dref operational update',
   drefOperationalUpdatePublishConfirmationMessage: 'Are you sure you want to publish the DREF?',
 
@@ -3530,6 +3538,7 @@ export default {
   drefOperationalUpdateOperationalUpdateButtonLabel: 'update',
 
   // Main page
+  drefOperationalUpdateTitle: 'Operational Updates',
   drefOperationalUpdatePageTitle: 'IFRC GO - DREF operational update',
   drefOperationalUpdatePageHeading: 'DREF Operational Update Application',
   drefOperationalUpdateOverviewLabel: 'Operation Overview',

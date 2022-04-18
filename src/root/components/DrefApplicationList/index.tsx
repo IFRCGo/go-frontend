@@ -175,7 +175,7 @@ function DrefApplicationList(props: Props) {
     }) => {
       alert.show(
         <p>
-          Failed to create new operational update
+          {strings.drefOperationalUpdateFailureMessage}
           &nbsp;
           <strong>
             {messageForNotification}
@@ -188,7 +188,6 @@ function DrefApplicationList(props: Props) {
       );
     }
   });
-
 
   const handlePublishButtonClick = React.useCallback((drefId: number) => {
     postDrefPublishRequest(drefId);
@@ -282,20 +281,20 @@ function DrefApplicationList(props: Props) {
                     icon={<IoAdd />}
                     name={rowKey}
                     onClick={postDrefNewOperationalUpdate}
-                    label="New Operational Update"
+                    label={strings.drefOperationalUpdateNewLabel}
                     disabled={!canAddNewOperationalUpdate}
                   />
                   <DropdownMenuItem
                     icon={<MdEdit />}
                     href={`/dref-operational-update/${lastOperationalUpdateId}`}
-                    label="Edit last Operational Update"
+                    label={strings.drefOperationalUpdateEditLastLabel}
                     disabled={!hasOperationalUpdate || !hasUnpublishedOperationalUpdate}
                   />
                   <DropdownMenuItem
                     icon={<IoList />}
                     name={item}
                     onClick={setSelectedDrefForOperationalUpdateList}
-                    label="View all Operational Updates"
+                    label={strings.drefOperationalUpdateViewAllLabel}
                     disabled={!hasOperationalUpdate}
                   />
                 </>
@@ -379,7 +378,7 @@ function DrefApplicationList(props: Props) {
       )}
     >
       <Container
-        heading="In-progress Applications"
+        heading={strings.drefTableInProgressHeading}
         sub
         footerActions={inProgressDrefResponse && (
           <Pager
@@ -403,12 +402,12 @@ function DrefApplicationList(props: Props) {
         )}
         {!pending && !inProgressDrefResponse && (
           <div className={styles.error}>
-            There was an error fetching the DREF application list
+            {strings.drefFetchingErrorMessage}
           </div>
         )}
       </Container>
       <Container
-        heading="Published Applications"
+        heading={strings.drefTablePublishedHeading}
         sub
         footerActions={publishedDrefResponse && (
           <Pager
@@ -432,7 +431,7 @@ function DrefApplicationList(props: Props) {
         )}
         {!pending && !publishedDrefResponse && (
           <div className={styles.error}>
-            There was an error fetching the DREF application list
+            {strings.drefFetchingErrorMessage}
           </div>
         )}
       </Container>
@@ -441,7 +440,7 @@ function DrefApplicationList(props: Props) {
           <Container
             sub
             className={styles.operationalUpdateListModal}
-            heading="Operational Updates"
+            heading={strings.drefOperationalUpdateTitle}
             actions={(
               <Button
                 name={undefined}
