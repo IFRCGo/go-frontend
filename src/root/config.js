@@ -23,14 +23,15 @@ const defaultUrls = {
 // not used: const defaultMapboxToken =  'pk.eyJ1IjoiZ28taWZyYyIsImEiOiJjams3b2ZhZWswMGFvM3hxeHp2ZHFhOTRrIn0._pqO9OQ2iNeDGrpopJNjpg';
 
 
-export const riskApi = window.appSettings.riskApi;
-export const riskAdminUrl = window.appSettings.riskAdminUrl;
+export const riskApi = process.env.REACT_APP_RISK_API_ENDPOINT ?? window.appSettings.riskApi;
+export const riskAdminUrl = process.env.REACT_APP_RISK_ADMIN_URL ?? window.appSettings.riskAdminUrl;
 export const environment = window.appSettings.environmentDisplayName;
-export const api = window.appSettings.apiUrl;
-export const adminUrl = window.appSettings.adminUrl;
-export const fdrsAuth = window.appSettings.fdrsAuth;
-export const mbtoken = window.appSettings.mbtoken;
+export const api = process.env.REACT_APP_API_ENDPOINT ?? window.appSettings.apiUrl;
+export const adminUrl = process.env.REACT_APP_ADMIN_URL ?? window.appSettings.adminUrl;
+export const fdrsAuth = process.env.REACT_APP_FDRS_AUTH ?? window.appSettings.fdrsAuth;
+export const mbtoken = process.env.REACT_APP_MAPBOX_ACCESS_TOKEN ?? window.appSettings.mbtoken;
 export const showEnvBanner = window.appSettings.showEnvBanner;
+export const tinyApiKey = process.env.REACT_APP_TINY_API_KEY ?? window.appSettings.tinyApiKey;
 
 
 const config = {

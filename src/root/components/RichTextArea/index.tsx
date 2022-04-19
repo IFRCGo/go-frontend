@@ -6,6 +6,7 @@ import { _cs } from '@togglecorp/fujs';
 import InputContainer, { Props as InputContainerProps } from '#components/InputContainer';
 
 import styles from './styles.module.scss';
+import { tinyApiKey } from './../../config';
 
 const editorSettings: Omit<RawEditorSettings, 'selector' | 'target'> = {
   menubar: false,
@@ -61,7 +62,7 @@ function RichTextArea<T extends string | undefined>(props: Props<T>) {
       input={(
         <Editor
           {...otherInputProps}
-          apiKey={process.env.REACT_APP_TINY_API_KEY}
+          apiKey={tinyApiKey}
           init={editorSettings}
           value={value}
           onEditorChange={handleChange}

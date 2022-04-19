@@ -8,5 +8,6 @@ window.appSettings.mbtoken = 'pk.eyJ1IjoiZ28taWZyYyIsImEiOiJjams3b2ZhZWswMGFvM3h
 window.appSettings.showEnvBanner = 'false';
 window.appSettings.riskApi = 'https://go-risk-staging.northeurope.cloudapp.azure.com/';
 window.appSettings.riskAdminUrl = 'https://go-risk-staging.northeurope.cloudapp.azure.com/';
+window.appSettings.tinyApiKey = '0ue5v9a6ax5nue3v5a0emluz8f35mpmgtynd2i3jc4skpv3s';
 
 
