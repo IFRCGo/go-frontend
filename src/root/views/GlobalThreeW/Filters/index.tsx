@@ -53,7 +53,8 @@ function Filters(props: Props) {
   const allCountries = useReduxState('allCountries');
   const nsOptions = React.useMemo(
     () => allCountries?.data?.results.filter((c) => (
-      c.independent && !c.is_deprecated && c.society_name
+     (c.independent !== false && !c.is_deprecated && c.society_name)
+     || c.name.substring(2) === 'RC' || c.iso === 'BX'
     )).map((c) => ({
       value: c.id,
       label: c.society_name,
