@@ -281,7 +281,7 @@ function Operation(props: Props) {
         </InputSection>
       </Container>
       <Container
-        heading={strings.drefFormPlannedIntervention}
+        heading={strings.drefOperationalUpdatePlannedIntervention}
         className={styles.plannedIntervention}
         visibleOverflow
       >

@@ -43,6 +43,7 @@ import {
   operationFields,
   submissionFields,
   DrefOperationalUpdateApiFields,
+  timeframe_extension_requested,
 } from './common';
 import useDrefOperationalFormOptions, {
   schema
@@ -355,6 +356,9 @@ function DrefOperationalUpdate(props: Props) {
     }
   }, [validateCurrentTab, currentStep, handleTabChange, submitDrefOperationalUpdate]);
 
+
+  const timeframeRequested = value?.is_timeframe_extension_required === timeframe_extension_requested;
+
   const pending = fetchingCountries
     || fetchingDisasterTypes
     || fetchingDrefOptions
@@ -470,6 +474,7 @@ function DrefOperationalUpdate(props: Props) {
                   onValueSet={setValue}
                   userOptions={userOptions}
                   onCreateAndShareButtonClick={submitDrefOperationalUpdate}
+                  timeframeRequested={timeframeRequested}
                 />
               </TabPanel>
               <TabPanel name='eventDetails'>

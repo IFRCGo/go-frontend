@@ -54,6 +54,7 @@ interface Props {
   onValueSet: (value: SetBaseValueArg<Value>) => void;
   userOptions: NumericValueOption[];
   onCreateAndShareButtonClick: () => void;
+  timeframeRequested: boolean;
 }
 
 function Overview(props: Props) {
@@ -74,6 +75,7 @@ function Overview(props: Props) {
     onsetOptions,
     setFileIdToUrlMap,
     fileIdToUrlMap,
+    timeframeRequested,
   } = props;
 
   const error = React.useMemo(
@@ -323,16 +325,18 @@ function Overview(props: Props) {
             error={error?.is_timeframe_extension_required}
           />
         </InputSection>
-        <InputSection
-          title={strings.drefOperationalUpdateTimeFrameExtensionRequestedIfYes}
-        >
-          <DateInput
-            name="new_operational_end_date"
-            value={value.new_operational_end_date}
-            onChange={onValueChange}
-            error={error?.new_operational_end_date}
-          />
-        </InputSection>
+        {timeframeRequested &&
+          <InputSection
+            title={strings.drefOperationalUpdateTimeFrameExtensionRequestedIfYes}
+          >
+            <DateInput
+              name="new_operational_end_date"
+              value={value.new_operational_end_date}
+              onChange={onValueChange}
+              error={error?.new_operational_end_date}
+            />
+          </InputSection>
+        }
         <InputSection
           title={strings.drefOperationalUpdateTimeFrameTotalOperatingTimeFrame}
         >

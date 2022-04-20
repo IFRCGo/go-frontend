@@ -6,6 +6,7 @@ import {
 export const ONSET_IMMINENT = 0;
 export const ONSET_SLOW = 1;
 export const ONSET_SUDDEN = 2;
+export const timeframe_extension_requested = true;
 
 export interface NumericValueOption {
   value: number;
