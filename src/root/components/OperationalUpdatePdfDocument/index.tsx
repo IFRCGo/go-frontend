@@ -458,8 +458,6 @@ function OperationalUpdatePdfDocument(props: Props) {
             </View>
           </View>
         </View>
-      </PDFPage>
-      <PDFPage style={pdfStyles.portraitPage} >
         <Text style={pdfStyles.sectionHeading}>
           {strings.drefExportDescriptionOfTheEvent}
         </Text>
@@ -809,8 +807,6 @@ function OperationalUpdatePdfDocument(props: Props) {
             ))}
           </View>
         )}
-      </PDFPage>
-      <PDFPage style={pdfStyles.portraitPage}>
         <View style={pdfStyles.contactSection}>
           <Text style={pdfStyles.sectionHeading}>
             {strings.drefExportContactInformation}

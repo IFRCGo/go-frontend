@@ -258,7 +258,7 @@ function Overview(props: Props) {
           />
         </InputSection>
         <InputSection
-          title={strings.drefFormUploadMap}
+          title={strings.drerfOperationalUpdateImageLabel}
         >
           <DREFFileInput
             name="images"

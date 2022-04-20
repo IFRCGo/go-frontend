@@ -3522,10 +3522,9 @@ export default {
   //Table
   drefTableInProgressHeading: 'In-progress applications',
   drefTablePublishedHeading: 'Published applications',
-  drefOperationalUpdateNewLabel: 'New Operaitonal Update',
+  drefOperationalUpdateNewLabel: 'New Operational Update',
   drefOperationalUpdateEditLastLabel: 'Edit last Operational Update',
   drefOperationalUpdateViewAllLabel: 'View all Operational Update',
-
   //Messages
   drefFetchingErrorMessage: 'there was an error fetchig the Dref application list',
   drefOperationalUpdateSuccessMessage: 'Operational update created successfully',
@@ -3533,12 +3532,10 @@ export default {
   drefOperationalUpdateErrorDescription: 'There is an error loading Dref operational update',
   drefPublishConfirmationMessage: 'Are you sure you want to publish the DREF?',
   drefOperationalUpdatePublishConfirmationMessage: 'Are you sure you want to publish the DREF Operational Update?',
-
   // button
   drefPublishButtonLabel: 'Publish',
   drefOperationalUpdateSaveButtonLabel: 'Save',
-  drefOperationalUpdateOperationalUpdateButtonLabel: 'update',
-
+  drefOperationalUpdateButtonLabel: 'update',
   // Main page
   drefOperationalUpdateTitle: 'Operational Updates',
   drefOperationalUpdatePageTitle: 'IFRC GO - DREF operational update',
@@ -3548,12 +3545,11 @@ export default {
   drefOperationalUpdateNeedsLabel: 'Needs',
   drefOperationalUpdateOperationLabel: 'Operation',
   drefOperationalUpdateSubmissionLabel: 'Submission',
-
   // Overview
   drefOperationalUpdateAdditionalAllocationRequested: 'Additional Allocation Requested',
   drefOperationalUpdateTotalAllocation: 'Total DREF Allocation',
-  drefOperationalUpdateNumber: 'Operaitonal Update Number',
-
+  drefOperationalUpdateNumber: 'Operational Update Number',
+  drerfOperationalUpdateImageLabel: 'Images of any actions taken by the NS',
   //Timeframes
   drefOperationalUpdateTimeFrameDateOfEvent: 'Date of the update',
   drefOperationalUpdateTimeFrameReportingTimeFrame: 'Reporting timeframe',
@@ -3561,7 +3557,6 @@ export default {
   drefOperationalUpdateTimeFrameExtensionRequestedIfYes: 'If yes, provide a new operational end date',
   drefOperationalUpdateTimeFrameTotalOperatingTimeFrame: 'Total operationg timeframe',
   drefOperationalUpdateTimeFrameDateOfApproval: 'Date of approval',
-
   // Summary of changes
   drefOperationalUpdateSummaryChangeHeading: 'Summary of changes',
   drefOperationalUpdateSummaryAreYouChangingTimeFrame: 'Are you changing the timeframe of the operation',
@@ -3571,20 +3566,16 @@ export default {
   drefOperationalUpdateSummaryAreYouChangingBudget: 'Are you making changes to the budget',
   drefOperationalUpdateSummaryRequestForSecondAllocation: 'Is this a request for a second allocation',
   drefOperationalUpdateSummaryExplain: 'Please explain the summary of changes and justification',
-
   // Description of event
   drefOperationalUpdateDescriptionOfEventHeading: 'Description of the event',
   drefOperationalUpdateDescriptionOfEventLabel: 'Has anything changed in the context since the request',
-
   // Needs
   drefOperationalUpdateMovementPartners: 'Movement Partners',
-
   // Interventions
   drefOperationalUpdatePlannedIntervention: 'Update on Intervention',
-
   //pdf export
   operationalUpdateExportTitle: 'operational update',
   operationalUpdateExportPeopleAffected: 'People affected',
   operationalUpdateExportPeopleTargeted: 'People targeted',
-  operationalUpdateExportNewOperationalEndDate: 'New operational end date',
+  operationalUpdateExportNewOperationalEndDate: 'New Operational end date',
 };
