@@ -87,7 +87,9 @@ const stepTypesToFieldsMap: {
   submission: submissionFields,
 };
 
-const defaultFormValues: PartialForm<DrefOperationalUpdateFields> = {};
+const defaultFormValues: PartialForm<DrefOperationalUpdateFields> = {
+  images: []
+};
 
 function DrefOperationalUpdate(props: Props) {
   const {
@@ -255,10 +257,6 @@ function DrefOperationalUpdate(props: Props) {
           });
         }
 
-        if (response.budget_file_details) {
-          newMap[response.budget_file_details.id] = response.budget_file_details.file;
-        }
-
         return newMap;
       });
       setValue({
@@ -335,7 +333,7 @@ function DrefOperationalUpdate(props: Props) {
 
   const handleSubmitButtonClick = React.useCallback(() => {
     scrollToTop();
-    const isCurrentTabValid = validateCurrentTab(['images']);
+    const isCurrentTabValid = validateCurrentTab(['title']);
     if (!isCurrentTabValid) {
       return;
     }

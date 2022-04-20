@@ -8,7 +8,6 @@ import {
   IoClose,
   IoAdd,
   IoList,
-  IoDownload,
 } from 'react-icons/io5';
 import {
   MdEdit,
@@ -42,6 +41,7 @@ import {
 import { compareLabel } from '#utils/common';
 import useAlert from '#hooks/useAlert';
 import { DrefOperationalUpdateResponse } from '#types';
+import OperationalUpdateExport from '#components/OperationalUpdateExport';
 
 import styles from './styles.module.scss';
 
@@ -386,30 +386,27 @@ function DrefApplicationList(props: Props) {
         'Published',
         (item) => item.is_published ? 'Yes' : 'No',
       ),
-      createActionColumn<OperationalUpdateDetails, string | number>(
+      createActionColumn<OperationalUpdateDetails, number>(
         'actions',
-        (rowKey, item) => ({
+        (rowKey: number, item: OperationalUpdateDetails) => ({
           extraActions: (
             <>
-                <DropdownMenuItem
-                  icon={<MdEdit />}
-                  href={`/dref-operational-update/${rowKey}/edit/`}
-                  label="Edit"
-                  disabled={item.is_published}
-                />
-                <DropdownMenuItem
-                  icon={<MdPublish />}
-                  name={+rowKey}
-                  label={strings.drefPublishButtonLabel}
-                  onClick={onOperationalUpdatePublishClick}
-                  disabled={operationalUpdatePublishPending || item.is_published}
-                />
-                <DropdownMenuItem
-                  icon={<IoDownload />}
-                  // TODO: add route to multiplexer and create a view for export
-                  href={`/dref-operational-update/${rowKey}/export/`}
-                  label="Export"
-                />
+              <DropdownMenuItem
+                icon={<MdEdit />}
+                href={`/dref-operational-update/${rowKey}/edit/`}
+                label="Edit"
+                disabled={item.is_published}
+              />
+              <DropdownMenuItem
+                icon={<MdPublish />}
+                name={+rowKey}
+                label={strings.drefPublishButtonLabel}
+                onClick={onOperationalUpdatePublishClick}
+                disabled={operationalUpdatePublishPending || item.is_published}
+              />
+              <OperationalUpdateExport
+                operationalId={rowKey}
+              />
             </>
           ),
         }),
@@ -420,10 +417,10 @@ function DrefApplicationList(props: Props) {
       ),
     ]
   ), [
-      operationalUpdatePublishPending,
-      onOperationalUpdatePublishClick,
-      strings,
-    ]);
+    operationalUpdatePublishPending,
+    onOperationalUpdatePublishClick,
+    strings,
+  ]);
 
   const [
     selectedDrefIdForOperationalUpdateList,
@@ -470,7 +467,7 @@ function DrefApplicationList(props: Props) {
       >
         {inProgressDrefPending && <BlockLoading />}
         {!inProgressDrefPending && (
-            <Table
+          <Table
             className={styles.inProgressDrefTable}
             data={inProgressApplicationList}
             columns={inProgressApplicationColumns}
@@ -540,7 +537,7 @@ function DrefApplicationList(props: Props) {
                 className={styles.operationalUpdateTable}
                 data={selectedDrefForOperationalUpdateList.operational_update_details}
                 columns={operationalUpdateColumns}
-                keySelector={d => d.id}
+                keySelector={(d: OperationalUpdateDetails) => d.id}
                 variant="large"
               />
             )}

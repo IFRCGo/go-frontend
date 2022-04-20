@@ -3581,4 +3581,10 @@ export default {
 
   // Interventions
   drefOperationalUpdatePlannedIntervention: 'Update on Intervention',
+
+  //pdf export
+  operationalUpdateExportTitle: 'operational update',
+  operationalUpdateExportPeopleAffected: 'People affected',
+  operationalUpdateExportPeopleTargeted: 'People targeted',
+  operationalUpdateExportNewOperationalEndDate: 'New operational end date',
 };

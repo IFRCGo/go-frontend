@@ -182,19 +182,6 @@ export interface DrefOperationalUpdateApiFields extends Omit<DrefOperationalUpda
     id: number,
     image_url: string,
   })[];
-  event_map_details: {
-    id: number;
-    file: string;
-  };
-  cover_image_details: {
-    id: number;
-    file: string;
-  } | null;
-  budget_file_details: {
-    id: number;
-    file: string;
-  }
-  budget_file_preview: string,
   images_details: {
     id: number;
     file: string;
