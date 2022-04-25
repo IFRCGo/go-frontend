@@ -38,8 +38,6 @@ function OperationalUpdateExport(props: Props) {
     operationalId,
   } = props;
 
-  const [shouldRender, setShouldRender] = React.useState(false);
-
   const {
     pending: fetchingOperationalUpdate,
     response: operationalUpdateResponse,
@@ -56,14 +54,10 @@ function OperationalUpdateExport(props: Props) {
     url: 'api/v2/dref-options/',
   });
 
-  const handleClick = React.useCallback(() => {
-    setShouldRender(true);
-  }, []);
-
   const pending = fetchingOperationalUpdate || fetchingDrefOptions;
 
-  React.useEffect(() => {
-    if (!pending && operationalUpdateResponse && drefOptions && shouldRender) {
+  const handleExportRender = React.useCallback(() => {
+    if (!pending && operationalUpdateResponse && drefOptions) {
       const exportToPdf = async () => {
         const drefDocument = OperationalUpdatePdfDocument({
           operationalUpdateResponse,
@@ -88,21 +82,19 @@ function OperationalUpdateExport(props: Props) {
           downloadLink.download = fileName;
           downloadLink.click();
           document.body.removeChild(downloadLink);
-          setShouldRender(false);
         }
       };
 
       exportToPdf();
     }
-  }, [pending, operationalUpdateResponse, drefOptions, shouldRender, strings]);
-
+  }, [pending, operationalUpdateResponse, drefOptions, strings]);
 
   return (
     <DropdownMenuItem
       icon={<IoDownload />}
       label="Export"
-      onClick={handleClick}
-      disabled={pending || shouldRender}
+      onClick={handleExportRender}
+      disabled={pending}
     />
   );
 }

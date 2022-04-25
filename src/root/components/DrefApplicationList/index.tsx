@@ -36,7 +36,8 @@ import useInputState from '#hooks/useInputState';
 import useConfirmation from '#hooks/useConfirmation';
 import {
   ListResponse,
-  useLazyRequest, useRequest,
+  useLazyRequest,
+  useRequest,
 } from '#utils/restRequest';
 import { compareLabel } from '#utils/common';
 import useAlert from '#hooks/useAlert';
@@ -70,6 +71,7 @@ interface DrefApplicationResponse {
 }
 
 const drefKeySelector = (d: DrefApplicationResponse) => d.id;
+const operationalUpdateKeySelector = (d: OperationalUpdateDetails) => d.id;
 interface Props {
   history: History;
 }
@@ -537,7 +539,7 @@ function DrefApplicationList(props: Props) {
                 className={styles.operationalUpdateTable}
                 data={selectedDrefForOperationalUpdateList.operational_update_details}
                 columns={operationalUpdateColumns}
-                keySelector={(d: OperationalUpdateDetails) => d.id}
+                keySelector={operationalUpdateKeySelector}
                 variant="large"
               />
             )}

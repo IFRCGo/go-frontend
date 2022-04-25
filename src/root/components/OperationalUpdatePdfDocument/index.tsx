@@ -300,6 +300,8 @@ interface Props {
   strings: Strings;
 }
 
+const logoUrl = '/assets/graphics/layout/go-logo-2020.png';
+
 function OperationalUpdatePdfDocument(props: Props) {
   const {
     operationalUpdateResponse,
@@ -340,12 +342,11 @@ function OperationalUpdatePdfDocument(props: Props) {
 
       return areas;
     }
-
     return undefined;
-  };
-  const affectedAreas = getAffectedAreas();
 
-  const logoUrl = '/assets/graphics/layout/go-logo-2020.png';
+  };
+
+  const affectedAreas = getAffectedAreas();
 
   const isImminentOnset = operationalUpdateResponse?.disaster_type === ONSET_IMMINENT;
   const documentTitle = [
@@ -353,14 +354,12 @@ function OperationalUpdatePdfDocument(props: Props) {
     operationalUpdateResponse?.title
   ].join(' | ');
 
-  const ifrcName: string = "International Federation of Red Cross and Red Crescent Societies (IFRC)";
-
   return (
     <Document
       title={documentTitle}
-      author={ifrcName}
-      creator={ifrcName}
-      producer={ifrcName}
+      author={strings.operationalUpdateExportIfrcName}
+      creator={strings.operationalUpdateExportIfrcName}
+      producer={strings.operationalUpdateExportIfrcName}
       keywords="operationalUpdateResponse"
     >
       <PDFPage
@@ -384,8 +383,11 @@ function OperationalUpdatePdfDocument(props: Props) {
             ].filter(Boolean).join(' | ')}
           </Text>
         </View>
-        {(operationalUpdateResponse.images_details?.map((el) => (
-          <View style={pdfStyles.section}>
+        {(operationalUpdateResponse?.images_details?.map((el) => (
+          <View
+            key={el?.id}
+            style={pdfStyles.section}
+          >
             <PDFImage
               style={pdfStyles.bannerImage}
               src={el?.file}

@@ -42,14 +42,13 @@ function DropdownMenuItem<N>(props: Props<N>) {
     props.href
     && typeof props.href === 'string'
     && (isValidUrl(props.href)
-        || props.href.startsWith('mailto:'))
+      || props.href.startsWith('mailto:'))
   ), [props.href]);
 
   const className = _cs(
     styles.dropdownMenuItem,
     disabled && styles.disabled,
     classNameFromProps,
-
   );
 
   const children = (
@@ -88,7 +87,6 @@ function DropdownMenuItem<N>(props: Props<N>) {
       </Link>
     );
   }
-
 
   if (props.name) {
     return (

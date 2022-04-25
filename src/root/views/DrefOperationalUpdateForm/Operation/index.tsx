@@ -116,7 +116,9 @@ function Operation(props: Props) {
     value?.boys,
   ]);
 
-  const filteredInterventionOptions = interventionsIdentifiedMap ? interventionOptions.filter(n => !interventionsIdentifiedMap[n.value]) : [];
+  const filteredInterventionOptions = React.useMemo(() => (
+    interventionsIdentifiedMap ? interventionOptions.filter(n => !interventionsIdentifiedMap[n.value]) : []
+  ), [interventionsIdentifiedMap, interventionOptions]);
 
   return (
     <>

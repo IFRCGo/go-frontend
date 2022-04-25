@@ -8,6 +8,7 @@ import {
 } from '@togglecorp/toggle-form';
 import {
   isNotDefined,
+  listToMap,
   randomString,
 } from '@togglecorp/fujs';
 
@@ -77,7 +78,7 @@ function Needs(props: Props) {
   );
 
   type Needs = typeof value.needs_identified;
-  const handleNeedAddButtonClick = React.useCallback((title) => {
+  const handleNeedAddButtonClick = React.useCallback((title?: string) => {
     const clientId = randomString();
     const newList: PartialForm<Need> = {
       clientId,
@@ -94,7 +95,7 @@ function Needs(props: Props) {
   }, [onValueChange, setNeed]);
 
   type NsActions = typeof value.needs_identified;
-  const handleNsActionAddButtonClick = React.useCallback((title) => {
+  const handleNsActionAddButtonClick = React.useCallback((title?: string) => {
     const clientId = randomString();
     const newList: PartialForm<NsAction> = {
       clientId,
@@ -110,28 +111,25 @@ function Needs(props: Props) {
     setNsAction(undefined);
   }, [onValueChange, setNsAction]);
 
-  //Note: TODO:
+  const needsIdentifiedMap = React.useMemo(() => (
+    listToMap(
+      value.needs_identified,
+      d => d.title ?? '',
+      d => true,
+    )
+  ), [value.needs_identified]);
 
-  //const needsIdentifiedMap = React.useMemo(() => (
-  //  listToMap(
-  //    value.needs_identified,
-  //    d => d.title ?? '',
-  //    d => true,
-  //  )
-  //), [value.needs_identified]);
+  const filteredNeedOptions = needsIdentifiedMap ? needOptions.filter(n => !needsIdentifiedMap[n.value]) : [];
 
+  const nsActionsMap = React.useMemo(() => (
+    listToMap(
+      value.national_society_actions,
+      d => d.title ?? '',
+      d => true,
+    )
+  ), [value.national_society_actions]);
 
-  //const filteredNeedOptions = needsIdentifiedMap ? needOptions.filter(n => !needsIdentifiedMap[n.value]) : [];
-
-  //const nsActionsMap = React.useMemo(() => (
-  //  listToMap(
-  //    value.national_society_actions,
-  //    d => d.title ?? '',
-  //    d => true,
-  //  )
-  //), [value.national_society_actions]);
-
-  //const filteredNsActionOptions = nsActionsMap ? nsActionOptions.filter(n => !nsActionsMap[n.value]) : [];
+  const filteredNsActionOptions = nsActionsMap ? nsActionOptions.filter(n => !nsActionsMap[n.value]) : [];
 
   return (
     <>
@@ -144,7 +142,7 @@ function Needs(props: Props) {
           <SelectInput
             label={strings.drefFormNationalSocietiesActionsLabel}
             name={undefined}
-            options={nsActionOptions}
+            options={filteredNsActionOptions}
             value={nsAction}
             onChange={setNsAction}
           />
@@ -272,7 +270,7 @@ function Needs(props: Props) {
             label={strings.drefFormActionFieldsLabel}
             name={undefined}
             onChange={setNeed}
-            options={needOptions}
+            options={filteredNeedOptions}
             value={need}
           />
           <div className={styles.actions}>

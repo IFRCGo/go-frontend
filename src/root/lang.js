@@ -3555,7 +3555,7 @@ export default {
   drefOperationalUpdateTimeFrameReportingTimeFrame: 'Reporting timeframe',
   drefOperationalUpdateTimeFrameExtensionRequested: 'Is timeframe extension requested?',
   drefOperationalUpdateTimeFrameExtensionRequestedIfYes: 'If yes, provide a new operational end date',
-  drefOperationalUpdateTimeFrameTotalOperatingTimeFrame: 'Total operationg timeframe',
+  drefOperationalUpdateTimeFrameTotalOperatingTimeFrame: 'Total operating timeframe',
   drefOperationalUpdateTimeFrameDateOfApproval: 'Date of approval',
   // Summary of changes
   drefOperationalUpdateSummaryChangeHeading: 'Summary of changes',
@@ -3574,6 +3574,7 @@ export default {
   // Interventions
   drefOperationalUpdatePlannedIntervention: 'Update on Intervention',
   //pdf export
+  operationalUpdateExportIfrcName: 'International Federation of Red Cross and Red Crescent Societies (IFRC)',
   operationalUpdateExportTitle: 'operational update',
   operationalUpdateExportPeopleAffected: 'People affected',
   operationalUpdateExportPeopleTargeted: 'People targeted',
