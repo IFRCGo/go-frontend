@@ -1,5 +1,4 @@
 import React from 'react';
-import { resolve as resolveUrl } from 'url';
 import {
   Page as PDFPage,
   Text,
@@ -33,6 +32,7 @@ import {
 } from '#types';
 
 import pdfStyles from './pdfStyles';
+import { resolveUrl } from '#utils/resolveUrl';
 
 Font.register({
   family: 'Montserrat',
