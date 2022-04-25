@@ -28,6 +28,7 @@ import montserratFont from './resources/montserrat.bold.ttf';
 import opensansFont from './resources/open-sans.regular.ttf';
 import opensansBoldFont from './resources/open-sans.bold.ttf';
 import pdfStyles from './pdfStyles';
+import { resolveUrl } from '#utils/resolveUrl';
 
 Font.register({
   family: 'Montserrat',
@@ -50,15 +51,6 @@ Font.register({
 interface NationalSocietyActionsProps {
   data: DrefOperationalUpdateApiFields['national_society_actions'][number];
   nsaMap?: Record<string, string>;
-}
-
-function resolve(from: string, to: string) {
-  const resolvedUrl = new URL(to, new URL(from, 'resolve://'));
-  if (resolvedUrl.protocol === 'resolve:') {
-    const { pathname, search, hash } = resolvedUrl;
-    return pathname + search + hash;
-  }
-  return resolvedUrl.toString();
 }
 
 function NationalSocietyActions(props: NationalSocietyActionsProps) {
@@ -865,7 +857,7 @@ function OperationalUpdatePdfDocument(props: Props) {
           </View>
         </View>
         <View style={pdfStyles.section}>
-          <Link src={resolve(window.location.origin, 'emergencies')}>
+          <Link src={resolveUrl(window.location.origin, 'emergencies')}>
             {strings.drefExportReference}
           </Link>
         </View>
