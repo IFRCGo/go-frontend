@@ -6,7 +6,7 @@ import { listToGroupList } from '@togglecorp/fujs';
 
 import { genericMemo } from '#utils/common';
 
-type OptionKey = string | number | boolean;
+export type OptionKey = string | number | boolean;
 
 const emptyList: unknown[] = [];
 
