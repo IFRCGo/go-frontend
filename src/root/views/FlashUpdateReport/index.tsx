@@ -15,6 +15,7 @@ import BreadCrumb from '#components/breadcrumb';
 import languageContext from '#root/languageContext';
 import BlockLoading from '#components/block-loading';
 import DateOutput from '#components/DateOutput';
+import RichTextOutput from '#components/RichTextOutput';
 import {
   useButtonFeatures,
   ButtonFeatureProps
@@ -162,11 +163,9 @@ function FlashUpdateReport(props: Props) {
               heading="Situational Overview"
               sub
             >
-              <div
+              <RichTextOutput
                 className={styles.overviewContent}
-                dangerouslySetInnerHTML={{
-                  __html: response.situational_overview
-                }}
+                value={response.situational_overview}
               />
             </Container>
           )}
