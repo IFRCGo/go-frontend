@@ -22,9 +22,10 @@ function Message(props: Props) {
     pending,
     errored,
     message: messageFromProps,
-    emptyMessage = 'No data available',
+    emptyMessage = 'Data is not available',
     erroredMessage = 'Oops! We ran into an issue',
   } = props;
+
   let message: React.ReactNode = messageFromProps;
 
   if (pending) {
