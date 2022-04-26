@@ -28,6 +28,7 @@ import { InterventionType } from '../useDrefOperationalUpdateOptions';
 import {
   DrefOperationalUpdateFields,
   Intervention,
+  ONSET_IMMINENT,
   StringValueOption,
 } from '../common';
 
@@ -55,7 +56,7 @@ function Operation(props: Props) {
   } = props;
 
   const error = getErrorObject(formError);
-
+  const isImminentOnSet = value.type_of_onset === ONSET_IMMINENT;
 
   const [intervention, setIntervention] = React.useState<number | undefined>();
   const {
@@ -246,13 +247,16 @@ function Operation(props: Props) {
             onChange={onValueChange}
             error={error?.displaced_people}
           />
-          <NumberInput
-            label={strings.drefFormPeopleTargetedWithEarlyActions}
-            name="people_targeted_with_early_actions"
-            value={value.people_targeted_with_early_actions}
-            onChange={onValueChange}
-            error={error?.people_targeted_with_early_actions}
-          />
+          {
+            isImminentOnSet &&
+            <NumberInput
+              label={strings.drefFormPeopleTargetedWithEarlyActions}
+              name="people_targeted_with_early_actions"
+              value={value.people_targeted_with_early_actions}
+              onChange={onValueChange}
+              error={error?.people_targeted_with_early_actions}
+            />
+          }
         </InputSection>
       </Container>
       <Container
