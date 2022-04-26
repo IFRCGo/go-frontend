@@ -29,6 +29,7 @@ import {
   DrefOperationalUpdateFields,
   NumericValueOption,
   ONSET_IMMINENT,
+  ONSET_SUDDEN,
   optionLabelSelector,
 } from '../common';
 import { CountryDistrictType } from '../useDrefOperationalUpdateOptions';
@@ -108,6 +109,9 @@ function Overview(props: Props) {
   }, [onValueChange]);
 
   const isImminentOnset = value.type_of_onset === ONSET_IMMINENT;
+  const isSuddenOnSet = value.type_of_onset === ONSET_SUDDEN ? false : value.emergency_appeal_planned;
+  onValueChange(isSuddenOnSet, 'emergency_appeal_planned');
+  console.log({ value });
 
   return (
     <>
