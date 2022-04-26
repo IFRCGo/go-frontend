@@ -10,9 +10,11 @@ function useSanitizedHtml(rawHtml: string) {
       rawHtml,
       {
         allowedTags: ['b', 'h', 'p', 'bold', 'strong', 'li', 'ul', 'a'],
-        allowedAttributes: {
-          a: ['href'],
-        },
+        // TODO: create comprehensive list of the attributes used
+        // to improve security
+        // allowedAttributes: {
+        //   a: ['href'],
+        // },
       },
     )
   ), [rawHtml]);
@@ -35,6 +37,7 @@ function RichTextOutput(props: Props) {
 
   return (
     <div
+      {...otherProps}
       className={_cs(styles.richTextOutput, className)}
       dangerouslySetInnerHTML={{
         __html: sanitizedValue,
