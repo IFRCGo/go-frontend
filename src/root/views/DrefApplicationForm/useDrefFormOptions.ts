@@ -71,6 +71,11 @@ export function max10CharCondition(value: any) {
     ? 'only 10 characters are allowed'
     : undefined;
 }
+export function max500CharCondition(value: any) {
+  return isDefined(value) && value.length > 500
+    ? 'Maximum 500 characters are allowed'
+    : undefined;
+}
 
 export function lessThanSixImagesCondition(value: any) {
   return isDefined(value) && Array.isArray(value) && value.length > 6
@@ -123,7 +128,7 @@ export const schema: FormSchema = {
     cover_image: [],
 
     event_date: [],
-    event_text: [],
+    event_text: [max500CharCondition],
     anticipatory_actions: [],
 
     go_field_report_date: [],

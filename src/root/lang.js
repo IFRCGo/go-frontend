@@ -3131,6 +3131,7 @@ export default {
   drefFormEventDate: 'Date of event',
   drefFormGoFieldReportDate: 'Date of GO field report',
   drefFormNsResponseStarted: 'National Society response commenced',
+  drefFormApproximateDateOfImpact: 'Approximate date of impact',
 
   // EventDetails
   drefFormEventDetailsTitle: 'Copy data from an existing field report',
