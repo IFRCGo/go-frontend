@@ -157,9 +157,8 @@ class MobileNavbar extends React.PureComponent {
                     </Link>
                   </li>
                   <FlashUpdateLink
-                    label={strings.headerDropdownNewFlashApplication}
+                    label={strings.headerDropdownNewFlashUpdate}
                   />
-                  {/* NOTE: Temporary
                   <li className='drop__menu-item'>
                     <Link
                         to='/dref-application/new'
