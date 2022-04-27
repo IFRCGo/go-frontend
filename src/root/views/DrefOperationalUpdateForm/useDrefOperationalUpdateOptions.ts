@@ -99,6 +99,7 @@ export const schema: FormSchema = {
     operational_update_number: [],
     update_date: [],
     reporting_timeframe: [],
+    is_timeframe_extension_required: [],
     new_operational_end_date: [],
     total_operation_timeframe: [],
     date_of_approval: [],
