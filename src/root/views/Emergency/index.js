@@ -574,7 +574,7 @@ class Emergency extends React.Component {
     );
   }
 
-  userHasPerms (fieldReport) {
+  userHasPerms (fieldReport) {  // similar code as userHasEventPerms
     const userIsAnon = !this.props.isLogged;
     const userIsSuperuser = this.props.profile.fetched && this.props.profile.data.is_superuser;
     const userIsIFRCAdmin = this.props.profile.fetched && this.props.profile.data.is_ifrc_admin;
@@ -975,6 +975,27 @@ class Emergency extends React.Component {
     return (event?.data?.response_activity_count ?? 0) > 0;
   }
 
+  userHasEventPerms () {  // similar code as userHasPerms
+    const { event } = this.props;
+    const userIsAnon = !this.props.isLogged;
+    const userIsSuperuser = this.props.profile.fetched && this.props.profile.data.is_superuser;
+    const userIsIFRCAdmin = this.props.profile.fetched && this.props.profile.data.is_ifrc_admin;
+    const visibility = event?.data?.visibility;
+
+    // superusers can see all
+    if (userIsSuperuser || userIsIFRCAdmin) {
+      return true;
+    }
+
+    // anonymous users can only see public ones
+    if (userIsAnon) {
+      return visibility === 3;
+    }
+
+    // logged in users can see all things not restricted to IFRC
+    return visibility !== 2;
+  }
+
   getTabs () {
     const { strings } = this.props;
 
@@ -990,7 +1011,7 @@ class Emergency extends React.Component {
       });
     }
 
-    if (this.hasActivities()) {
+    if (this.hasActivities() && this.userHasEventPerms()) {
       tabs.push({
         title: 'Activities',
         hash: '#activities',
@@ -1478,7 +1499,7 @@ class Emergency extends React.Component {
                     </TabContent>
                   </TabPanel>
                 )}
-                {this.hasActivities() && (
+                {this.hasActivities() && this.userHasEventPerms() && (
                     <TabPanel>
                       <Activities
                         emergencyId={this.props.match.params.id}
