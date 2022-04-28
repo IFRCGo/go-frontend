@@ -634,7 +634,7 @@ function ThreeWForm(props: Props) {
             />
           </InputSection>
           <InputSection
-            title={strings.projectFormPeopleReached}
+            title={strings.projectFormPeopleReached2}
             description={strings.projectFormPeopleReachedHelpText}
             tooltip={strings.projectFormPeopleReachedTooltip}
           >

@@ -11,6 +11,7 @@ import Translate from '#components/Translate';
 import TextOutput, { Props as TextOutputProps } from '#components/TextOutput';
 import { useRequest } from '#utils/restRequest';
 import { Project } from '#types';
+import Tooltip from '#components/common/tooltip';
 
 import styles from './styles.module.scss';
 
@@ -252,9 +253,10 @@ function ProjectDetail(props: Props) {
           </Row>
           <Row>
             <FieldOutput
-              label={strings.threeWPeopleReached}
+              label={strings.threeWPeopleReached2}
               value={(
                 <Row>
+                  <Tooltip title={strings.threeWTablePeopleReached2} description={strings.threeWTablePeopleReached2HelpText}/>
                   <FieldOutput
                     label={strings.threeWMale}
                     value={projectResponse?.reached_male}

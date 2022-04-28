@@ -220,6 +220,7 @@ function ActivityDetail(props: ActivityDetailProps) {
             {projectCount}
           </div>
         </div>
+        <div className={styles.tooltipText}>{completeProjectCount} from {projectCount} activities are completed</div>
       </div>
       {showDetails && (
         <div className={styles.details}>

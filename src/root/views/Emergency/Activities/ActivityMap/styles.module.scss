@@ -185,4 +185,16 @@
       }
     }
   }
+
+  .header .tooltip-text {
+    padding-left: 10%;
+    visibility: hidden;
+    height: 0;
+    display: block;
+  }
+
+  .header:hover .tooltip-text {
+    visibility: visible;
+    height: 1rem;
+  }
 }
