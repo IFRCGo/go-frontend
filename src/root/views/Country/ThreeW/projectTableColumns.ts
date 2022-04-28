@@ -45,7 +45,7 @@ const getBaseColumns = (strings: Strings) => ([
   ),
   createNumberColumn<Project, string | number>(
     'peopleReached',
-    strings.threeWTablePeopleReached,
+    strings.threeWTablePeopleReached2,
     (item) => item.reached_total,
     undefined,
     { normal: true, precision: 'auto' }
