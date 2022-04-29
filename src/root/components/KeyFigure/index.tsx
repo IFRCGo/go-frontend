@@ -11,6 +11,7 @@ interface Props {
   headerIcon?: React.ReactNode;
   footerIcon?: React.ReactNode;
   source?: React.ReactNode;
+  title?: string;
   inline?: boolean;
 }
 
@@ -22,10 +23,12 @@ function KeyFigure(props: Props) {
     headerIcon,
     footerIcon,
     inline,
+    title,
   } = props;
 
   return (
     <div
+      title={title}
       className={_cs(
         styles.keyFigure,
         inline && styles.inlineMainContent,
