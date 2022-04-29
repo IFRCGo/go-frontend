@@ -27,6 +27,7 @@ import ActivityMap from './ActivityMap';
 import { getColumns } from './projectTableColumns';
 import Filters from './Filters';
 import styles from './styles.module.scss';
+import ExportButton2 from "#components/export-button-container2";
 
 const ITEM_PER_PAGE = 5;
 
@@ -181,6 +182,9 @@ function Activities(props: Props) {
               projectCountByDistrict={projectCountByDistrict}
               countryIdList={eventCountryIdList}
               sectorGroupedProjectList={sectorGroupedProjectList}
+            />
+            <ExportButton2 filename='emergencyprojects'
+              resource={'api/v2/emergency-project/?event=' + props.emergencyId}
             />
             <Table
               className={styles.projectsTable}
