@@ -127,7 +127,8 @@ function Activities(props: Props) {
                 />
                 <KeyFigure
                   value={peopleReached}
-                  description="People Reached"
+                  description="Services provided to people in need"  // People Reached
+                  title="The figure displayed here is a sum of all individual services or interventions delivered as part of this emergency operation to people in need. Some people may have received more than one service or intervention."
                 />
               </Card>
               <Card multiColumn>

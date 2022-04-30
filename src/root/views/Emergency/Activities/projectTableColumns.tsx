@@ -82,7 +82,7 @@ export const getColumns = (actionColumnHeaderClassName?: string) => ([
   ),
   createNumberColumn<P, K>(
     'people_reached',
-    'People Reached',
+    'Services provided to people in need', // People Reached
     (item) => getPeopleReached(item),
   ),
   createActionColumn(
