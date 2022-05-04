@@ -198,6 +198,10 @@ function About (props) {
                                   <Translate stringId='aboutImStrategicDirection'/>
                                   <span className='collecticon-chevron-right icon-about-ref'></span>
                                 </a>
+                                <a href='https://app.powerbi.com/view?r=eyJrIjoiY2RlOTRkOGQtMDU5Yy00OWIwLWE2NmYtNTQ5NTQ3YjEwY2ZmIiwidCI6ImEyYjUzYmU1LTczNGUtNGU2Yy1hYjBkLWQxODRmNjBmZDkxNyIsImMiOjh9&pageName=ReportSectione263ecb5066f3105a8fa' target='_blank' className='box__global__content--ref__link col col-6-xs'>
+                                  <Translate stringId='aboutGOAnalyticsdashboard'/>
+                                  <span className='collecticon-chevron-right icon-about-ref'></span>
+                                </a>
                               </div>
                             </div>
                           </div>

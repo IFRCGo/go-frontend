@@ -52,6 +52,7 @@ export default {
   about3WLessonLearned: '3w lessons learned',
   aboutGoWorkplan2021: 'GO Workplan 2021',
   aboutImStrategicDirection: 'IFRC IM Strategic Direction',
+  aboutGOAnalyticsdashboard: 'GO Analytics dashboard',
   aboutIfrcResources: 'IFRC Resources',
   aboutSurgeEvents: 'Global Surge events and trainings',
   aboutSurgeServices: 'IFRC Surge Services',
