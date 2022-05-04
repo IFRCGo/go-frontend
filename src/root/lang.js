@@ -3499,4 +3499,18 @@ export default {
   flashUpdateFormLoadErrorTitle: 'Failed to load Flash Update Application',
   flashUpdateFormLoadErrorDescription: 'There was an error loading the Flash Update Application',
   flashUpdateFormLoadErrorHelpText: 'Please make sure that the application with given id exists and you have the permission to view it',
+  wikiJsLinkGOWiki: 'https://go-wiki.ifrc.org',
+  wikiJsLinkUserAccount: 'user_guide/account',
+  wikiJsLinkUserContentVisibility: 'user_guide/content_visibility_groups',
+  wikiJsLinkRegion: '',
+  wikiJsLinkEmergencies: '',
+  wikiJsLinkSurge: '',
+  wikiJsLinkPreparedness: '',
+  wikiJsLinkGlobal3W: '',
+  wikiJsLink3WForm: '',
+  wikiJsLinkFRForm: '',
+  wikiJsLinkCountry3W: '',
+  wikiJsLinkRegister:''
+  
+ 
 };

@@ -19,6 +19,9 @@ import LanguageContext from '#root/languageContext';
 import UserMenu from './connected/user-menu';
 import HeaderRegionButton from './header-region-button';
 import DropdownMenu from './dropdown-menu';
+import store from '#utils/store';
+
+const currentLanguage = store.getState().lang.current;
 
 const noFilter = options => options;
 
@@ -66,6 +69,9 @@ function Navbar(props) {
                   <Translate stringId="headerMenuResources" />
                 </Link>
                 <UserMenu />
+                <div style={{paddingRight:'8px'}}>
+                <a href={strings.wikiJsLinkGOWiki+'/'+currentLanguage +'/'+ strings.wikiJsLinkUserAccount} title='GO Wiki' target='_blank' ><img className='' src='/assets/graphics/content/wiki-help-header1.svg' alt='IFRC GO logo'/></a>
+                </div>
                 <DropdownMenu
                   className='drop__toggle--caret button button--primary-bounded button--small drop__toggle--field-report-new'
                   activeClassName='active'

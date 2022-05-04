@@ -13,6 +13,7 @@ interface Props {
   breadCrumbs?: React.ReactNode;
   info?: React.ReactNode;
   infoContainerClassName?: string;
+  wikiLink?: React.ReactNode;
 }
 
 function PageHeader(props: Props) {
@@ -24,6 +25,7 @@ function PageHeader(props: Props) {
     breadCrumbs,
     info,
     infoContainerClassName,
+    wikiLink,
   } = props;
 
   if (!(actions || breadCrumbs || info || description || heading)) {
@@ -40,14 +42,23 @@ function PageHeader(props: Props) {
     >
       <Container>
         {(actions || breadCrumbs) && (
+          <>
+          
+          <div style={{display: 'flex', justifyContent:'flex-end', paddingBottom:'8px'}}>
+             {wikiLink}
+          </div>
+          
           <section className={styles.topSection}>
+            
             <div className={styles.breadCrumbs}>
               { breadCrumbs }
             </div>
+            
             <div className={styles.actions}>
               { actions }
             </div>
           </section>
+          </>
         )}
         {(heading || description) && (
           <section className={styles.middleSection}>

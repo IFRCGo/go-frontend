@@ -52,6 +52,9 @@ import ThreeWList from '#components/ThreeWList';
 import { countriesSelector, disasterTypesSelectSelector } from '#selectors';
 
 import App from './app';
+import store from '#utils/store';
+
+const currentLanguage = store.getState().lang.current;
 
 const Fragment = React.Fragment;
 
@@ -836,10 +839,28 @@ class Account extends React.Component {
             {strings.accountTitle}
           </title>
         </Helmet>
-        <BreadCrumb crumbs={[
-          { link: '/account', name: strings.breadCrumbAccount },
-          { link: '/', name: strings.breadCrumbHome }
-        ]} />
+        <div className='container-lg'>
+          <div className='row flex-sm'>
+            <div className='col col-6-sm col-7-mid'>
+            <BreadCrumb crumbs={[
+              { link: '/account', name: strings.breadCrumbAccount },
+              { link: '/', name: strings.breadCrumbHome }
+              ]} compact />
+            </div>
+            {strings.wikiJsLinkUserAccount !== undefined && strings.wikiJsLinkUserAccount.length>0 ?
+            <>
+            <div className='col col-6-sm col-5-mid spacing-half-t'>
+              <div className='row-sm flex flex-justify-flex-end'>
+                <div className='col-sm spacing-half-v'>
+                <a href={strings.wikiJsLinkGOWiki+'/'+currentLanguage +'/'+ strings.wikiJsLinkUserAccount} title='GO Wiki' target='_blank' ><img className='' src='/assets/graphics/content/wiki-help-section.svg' alt='IFRC GO logo'/></a>
+                </div>
+              </div>
+            </div>
+            </>: null
+            }
+          </div>
+        </div>
+
         <section className='inpage'>
           <header className='inpage__header'>
             <div className='inner'>

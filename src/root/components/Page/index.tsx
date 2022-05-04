@@ -32,6 +32,7 @@ interface Props {
   mainSectionClassName?: string;
   infoContainerClassName?: string;
   withMainContentBackground?: boolean;
+  wikiLink?: React.ReactNode;
 }
 
 
@@ -48,6 +49,7 @@ function Page(props: Props) {
     mainSectionClassName,
     infoContainerClassName,
     withMainContentBackground,
+    wikiLink,
   } = props;
 
   const [loading, setLoading] = React.useState(0);
@@ -92,6 +94,7 @@ function Page(props: Props) {
             breadCrumbs={breadCrumbs}
             info={info}
             infoContainerClassName={infoContainerClassName}
+            wikiLink={wikiLink}
           />
           <main
             className={_cs(

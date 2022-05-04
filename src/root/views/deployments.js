@@ -43,7 +43,9 @@ import Translate from '#components/Translate';
 import { countriesGeojsonSelector } from '../selectors';
 import OperationalTimeline from './Surge/operational-timeline';
 import CatalogueOfSurgeServices from './Surge/catalogue-of-surge-services';
+import store from '#utils/store';
 
+const currentLanguage = store.getState().lang.current;
 
 const DeploymentsByMonth = () => {
   const { pending, response } = useRequest({url: 'api/v2/deployment/aggregated_by_month/'});
@@ -391,10 +393,28 @@ class Deployments extends SFPComponent {
             {strings.deploymentsTitle}
           </title>
         </Helmet>
-        <BreadCrumb crumbs={[
-          {link: this.props.location.pathname, name: strings.breadCrumbSurge},
-          {link: '/', name: strings.breadCrumbHome}
-        ]} />
+        <div className='container-lg'>
+          <div className='row flex-sm'>
+            <div className='col col-6-sm col-7-mid'>
+            <BreadCrumb crumbs={[
+              { link: this.props.location.pathname, name: strings.breadCrumbSurge },
+              { link: '/', name: strings.breadCrumbHome }
+              ]} compact />
+            </div>
+            {strings.wikiJsLinkSurge !== undefined ?
+            <>
+            <div className='col col-6-sm col-5-mid spacing-half-t'>
+              <div className='row-sm flex flex-justify-flex-end'>
+                <div className='col-sm spacing-half-v'>
+                <a href={strings.wikiJsLinkGOWiki+'/'+currentLanguage +'/'+ strings.wikiJsLinkSurge} title='GO Wiki' target='_blank' ><img className='' src='/assets/graphics/content/wiki-help-section.svg' alt='IFRC GO logo'/></a>
+                </div>
+              </div>
+            </div>
+            </>: null
+            }
+          </div>
+        </div>
+
         {this.renderContent()}
       </App>
     );
