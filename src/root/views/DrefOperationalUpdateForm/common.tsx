@@ -6,7 +6,6 @@ import {
 export const ONSET_IMMINENT = 0;
 export const ONSET_SLOW = 1;
 export const ONSET_SUDDEN = 2;
-export const timeframe_extension_requested = true;
 
 export interface NumericValueOption {
   value: number;
@@ -97,7 +96,7 @@ export interface DrefOperationalUpdateFields {
   emergency_appeal_planned: boolean;
   images: number[];
   operational_update_number: number;
-  update_date: string;
+  new_operational_start_date: string;
   reporting_timeframe: string;
   is_timeframe_extension_required: boolean;
   new_operational_end_date: string;
@@ -165,6 +164,8 @@ export interface DrefOperationalUpdateFields {
   modified_by: number;
   users: number[];
   dref?: string;
+
+  dref_allocated_so_far?: number;
 }
 
 export interface DrefOperationalUpdateApiFields extends Omit<DrefOperationalUpdateFields, 'country_district' | 'planned_interventions' | 'national_society_actions' | 'needs_identified'> {
@@ -204,7 +205,7 @@ export const overviewFields: (keyof DrefOperationalUpdateFields)[] = [
   'images',
   'operational_update_number',
   'emergency_appeal_planned',
-  'update_date',
+  'new_operational_start_date',
   'reporting_timeframe',
   'is_timeframe_extension_required',
   'new_operational_end_date',

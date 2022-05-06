@@ -3552,7 +3552,7 @@ export default {
   drefOperationalUpdateNumber: 'Operational Update Number',
   drerfOperationalUpdateImageLabel: 'Images of any actions taken by the NS',
   //Timeframes
-  drefOperationalUpdateTimeFrameDateOfEvent: 'Date of the update',
+  drefOperationalUpdateTimeFrameDateOfEvent: 'Operation start Date',
   drefOperationalUpdateTimeFrameReportingTimeFrame: 'Reporting timeframe',
   drefOperationalUpdateTimeFrameExtensionRequested: 'Is timeframe extension requested?',
   drefOperationalUpdateTimeFrameExtensionRequestedIfYes: 'If yes, provide a new operational end date',
@@ -3561,7 +3561,7 @@ export default {
   // Summary of changes
   drefOperationalUpdateSummaryChangeHeading: 'Summary of changes',
   drefOperationalUpdateSummaryAreYouChangingTimeFrame: 'Are you changing the timeframe of the operation',
-  drefOperationalUpdateSummaryAreYouChangingStrategy: 'Are you changing the operational strategy of the operation',
+  drefOperationalUpdateSummaryAreYouChangingStrategy: 'Are you changing the operational strategy',
   drefOperationalUpdateSummaryAreYouChangingTargetPopulation: 'Are you changing the target population of the operation',
   drefOperationalUpdateSummaryAreYouChangingGeographicalLocation: 'Are you changing the geographical location',
   drefOperationalUpdateSummaryAreYouChangingBudget: 'Are you making changes to the budget',

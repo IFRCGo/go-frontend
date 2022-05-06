@@ -43,7 +43,6 @@ import {
   operationFields,
   submissionFields,
   DrefOperationalUpdateApiFields,
-  timeframe_extension_requested,
 } from './common';
 import useDrefOperationalFormOptions, {
   schema
@@ -101,7 +100,7 @@ function DrefOperationalUpdate(props: Props) {
   const {
     value,
     error,
-    setFieldValue,
+    setFieldValue: onValueChange,
     validate,
     setValue,
     setError,
@@ -356,9 +355,6 @@ function DrefOperationalUpdate(props: Props) {
     }
   }, [validateCurrentTab, currentStep, handleTabChange, submitDrefOperationalUpdate]);
 
-
-  const timeframeRequested = value?.is_timeframe_extension_required === timeframe_extension_requested;
-
   const pending = fetchingCountries
     || fetchingDisasterTypes
     || fetchingDrefOptions
@@ -367,6 +363,18 @@ function DrefOperationalUpdate(props: Props) {
     || drefSubmitPending;
 
   const failedToLoadDref = !pending && isDefined(id) && !drefOperationalResponse;
+
+  React.useEffect(() => {
+    if (isDefined(value.new_operational_start_date) && isDefined(value.new_operational_end_date)) {
+      const startDateYear = new Date(value.new_operational_start_date).getFullYear();
+      const startDateMonth = new Date(value.new_operational_start_date).getMonth();
+      const endDateYear = new Date(value.new_operational_end_date).getFullYear();
+      const endDateMonth = new Date(value.new_operational_end_date).getMonth();
+      const totalOperatingTimeframe = ((endDateMonth + 12 * endDateYear) - (startDateMonth + 12 * startDateYear));
+
+      onValueChange(totalOperatingTimeframe, 'total_operation_timeframe');
+    }
+  }, [onValueChange, value.new_operational_start_date, value.new_operational_end_date]);
 
   return (
     <Tabs
@@ -458,7 +466,7 @@ function DrefOperationalUpdate(props: Props) {
               <TabPanel name='operationOverview'>
                 <Overview
                   error={error}
-                  onValueChange={setFieldValue}
+                  onValueChange={onValueChange}
                   value={value}
                   yesNoOptions={yesNoOptions}
                   disasterTypeOptions={disasterTypeOptions}
@@ -474,13 +482,12 @@ function DrefOperationalUpdate(props: Props) {
                   onValueSet={setValue}
                   userOptions={userOptions}
                   onCreateAndShareButtonClick={submitDrefOperationalUpdate}
-                  timeframeRequested={timeframeRequested}
                 />
               </TabPanel>
               <TabPanel name='eventDetails'>
                 <EventDetails
                   error={error}
-                  onValueChange={setFieldValue}
+                  onValueChange={onValueChange}
                   value={value}
                   yesNoOptions={yesNoOptions}
                 />
@@ -488,7 +495,7 @@ function DrefOperationalUpdate(props: Props) {
               <TabPanel name='needs'>
                 <Needs
                   error={error}
-                  onValueChange={setFieldValue}
+                  onValueChange={onValueChange}
                   value={value}
                   yesNoOptions={yesNoOptions}
                   needOptions={needOptions}
@@ -499,7 +506,7 @@ function DrefOperationalUpdate(props: Props) {
                 <Operation
                   interventionOptions={interventionOptions}
                   error={error}
-                  onValueChange={setFieldValue}
+                  onValueChange={onValueChange}
                   value={value}
                   fileIdToUrlMap={fileIdToUrlMap}
                   setFileIdToUrlMap={setFileIdToUrlMap}
@@ -508,7 +515,7 @@ function DrefOperationalUpdate(props: Props) {
               <TabPanel name='submission'>
                 <Submission
                   error={error}
-                  onValueChange={setFieldValue}
+                  onValueChange={onValueChange}
                   value={value}
                 />
               </TabPanel>

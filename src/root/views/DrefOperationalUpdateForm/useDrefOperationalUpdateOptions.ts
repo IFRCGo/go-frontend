@@ -97,7 +97,7 @@ export const schema: FormSchema = {
     emergency_appeal_planned: [],
     images: [],
     operational_update_number: [],
-    update_date: [],
+    new_operational_start_date: [],
     reporting_timeframe: [],
     is_timeframe_extension_required: [],
     new_operational_end_date: [],

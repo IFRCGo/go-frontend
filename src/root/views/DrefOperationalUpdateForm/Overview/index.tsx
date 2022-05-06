@@ -21,6 +21,7 @@ import SelectInput from '#components/SelectInput';
 import CountryDistrictInput from '#views/DrefApplicationForm/DrefOverview/CountryDistrictInput';
 import RadioInput from '#components/RadioInput';
 import DREFFileInput from '#components/DREFFileInput';
+import { sumSafe } from '#utils/common';
 
 import {
   booleanOptionKeySelector,
@@ -55,7 +56,6 @@ interface Props {
   onValueSet: (value: SetBaseValueArg<Value>) => void;
   userOptions: NumericValueOption[];
   onCreateAndShareButtonClick: () => void;
-  timeframeRequested: boolean;
 }
 
 function Overview(props: Props) {
@@ -76,7 +76,6 @@ function Overview(props: Props) {
     onsetOptions,
     setFileIdToUrlMap,
     fileIdToUrlMap,
-    timeframeRequested,
   } = props;
 
   const error = React.useMemo(
@@ -112,6 +111,15 @@ function Overview(props: Props) {
   const isSuddenOnSet = value.type_of_onset === ONSET_SUDDEN ? false : value.emergency_appeal_planned;
   onValueChange(isSuddenOnSet, 'emergency_appeal_planned');
   console.log({ value });
+
+  const totalDrefAllocation = React.useMemo(() => (
+    sumSafe([
+      value.dref_allocated_so_far,
+      value.additional_allocation,
+    ])
+  ), [value.dref_allocated_so_far, value.additional_allocation]);
+
+  onValueChange(totalDrefAllocation, 'total_dref_allocation');
 
   return (
     <>
@@ -248,6 +256,7 @@ function Overview(props: Props) {
             value={value.total_dref_allocation}
             onChange={onValueChange}
             error={error?.total_dref_allocation}
+            readOnly
           />
         </InputSection>
         <InputSection
@@ -300,10 +309,10 @@ function Overview(props: Props) {
           title={strings.drefOperationalUpdateTimeFrameDateOfEvent}
         >
           <DateInput
-            name="update_date"
-            value={value.update_date}
+            name="new_operational_start_date"
+            value={value.new_operational_start_date}
             onChange={onValueChange}
-            error={error?.update_date}
+            error={error?.new_operational_start_date}
           />
         </InputSection>
         <InputSection
@@ -317,30 +326,15 @@ function Overview(props: Props) {
           />
         </InputSection>
         <InputSection
-          title={strings.drefOperationalUpdateTimeFrameExtensionRequested}
+          title={strings.drefOperationalUpdateTimeFrameExtensionRequestedIfYes}
         >
-          <RadioInput
-            name={"is_timeframe_extension_required" as const}
-            options={yesNoOptions}
-            keySelector={booleanOptionKeySelector}
-            labelSelector={optionLabelSelector}
-            value={value.is_timeframe_extension_required}
+          <DateInput
+            name="new_operational_end_date"
+            value={value.new_operational_end_date}
             onChange={onValueChange}
-            error={error?.is_timeframe_extension_required}
+            error={error?.new_operational_end_date}
           />
         </InputSection>
-        {timeframeRequested &&
-          <InputSection
-            title={strings.drefOperationalUpdateTimeFrameExtensionRequestedIfYes}
-          >
-            <DateInput
-              name="new_operational_end_date"
-              value={value.new_operational_end_date}
-              onChange={onValueChange}
-              error={error?.new_operational_end_date}
-            />
-          </InputSection>
-        }
         <InputSection
           title={strings.drefOperationalUpdateTimeFrameTotalOperatingTimeFrame}
         >
