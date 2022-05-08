@@ -4,14 +4,15 @@ import { _cs } from '@togglecorp/fujs';
 import RawButton from '#components/RawButton';
 import { getFullMonthNameList } from '#utils/common';
 import languageContext from '#root/languageContext';
+import Checkmark from '#components/Checkbox/Checkmark';
 
 import styles from './styles.module.scss';
 
 interface Props<T> {
   className?: string;
-  value: number;
+  value: Record<number, boolean>;
   name: T,
-  onChange: (newValue: number, name: T) => void;
+  onChange: (newValue: Record<number, boolean>, name: T) => void;
 }
 
 function MonthSelector<T>(props: Props<T>) {
@@ -21,17 +22,20 @@ function MonthSelector<T>(props: Props<T>) {
     onChange,
     value,
   } = props;
+
   const { strings } = React.useContext(languageContext);
 
   const monthNameList = React.useMemo(() => (
     getFullMonthNameList(strings).map(m => m.substr(0, 3))
   ), [strings]);
 
-  const handleClick = React.useCallback((newValue) => {
+  const handleClick = React.useCallback((month) => {
     if (onChange) {
+      const newValue = { ...value };
+      newValue[month] = !value[month];
       onChange(newValue, name);
     }
-  }, [onChange, name]);
+  }, [value, onChange, name]);
 
   return (
     <div className={_cs(styles.monthSelector, className)}>
@@ -40,15 +44,15 @@ function MonthSelector<T>(props: Props<T>) {
           name={i}
           className={_cs(
             styles.tickItem,
-            value === i && styles.active,
+            value[i] && styles.active,
           )}
           onClick={handleClick}
           key={m}
         >
+          <Checkmark value={value[i]} />
           <div className={styles.monthName}>
             {m}
           </div>
-          <div className={styles.tick} />
         </RawButton>
       ))}
     </div>

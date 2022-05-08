@@ -1,4 +1,9 @@
-import { listToMap } from '@togglecorp/fujs';
+import {
+  addSeparator,
+  formattedNormalize,
+  Lang,
+  listToMap,
+} from '@togglecorp/fujs';
 import { HazardTypes } from '#types';
 
 export const hazardTypeOptions = [
@@ -197,3 +202,49 @@ export const monthKeys = [
   'november',
   'december',
 ] as const;
+
+export const chartMargin = {
+  top: 20,
+  right: 10,
+  left: 20,
+  bottom: 0,
+};
+
+export function formatNumber (value: number) {
+  const {
+    number,
+    normalizeSuffix,
+  } = formattedNormalize(value, Lang.en);
+
+  const integer = Math.floor(number);
+  const fraction = number - integer;
+
+  let precision = 2;
+  const absoluteValue = Math.abs(number);
+  if (absoluteValue < 1) {
+    precision = Math.ceil(-Math.log10(absoluteValue)) + 1;
+  }
+
+  if (integer > 100) {
+    // 140.1234M -> 140 M
+    precision = 0;
+  } else {
+    // 96.0334M -> 96.03 M
+    if (fraction > 0.01) {
+      precision = 2;
+    } else {
+      precision = 0;
+    }
+  }
+
+  if (normalizeSuffix) {
+    return `${number.toFixed(precision)} ${normalizeSuffix}`;
+  }
+
+  if (fraction) {
+    return String(number.toFixed(precision));
+  }
+
+  return addSeparator(number) ?? '';
+}
+

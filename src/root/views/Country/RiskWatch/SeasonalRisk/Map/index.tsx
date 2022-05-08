@@ -41,7 +41,7 @@ import {
   RiskData,
   riskMetricOptions,
 } from '../common';
-import MonthSelector from './MonthSelector';
+import MonthSelector from '../MonthSelector';
 import styles from './styles.module.scss';
 
 type RiskMetricType = (typeof riskMetricOptions)[number]['value'];

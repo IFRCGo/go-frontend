@@ -1,0 +1,26 @@
+@import "~styles/settings/variables";
+
+.month-selector {
+  display: flex;
+
+  .tick-item {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-basis: 0;
+    flex-grow: 1;
+    cursor: pointer;
+    gap: $spacing/2;
+
+    .month-name {
+      text-transform: uppercase;
+      font-weight: $base-font-medium;
+      font-size: $font-size-xs;
+    }
+
+    &.active {
+      color: $primary-color;
+    }
+  }
+}

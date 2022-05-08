@@ -33,8 +33,9 @@ import {
 // import RiskMap from './Map';
 import RiskTable from './RiskTable';
 import ReturnPeriodTable from './ReturnPeriodTable';
-import MonthSelector from './Map/MonthSelector';
-import { ImpactChart, RiskBarChart } from './Charts';
+import MonthSelector from './MonthSelector';
+import HistoricalDataChart from './HistoricalDataChart';
+import RiskBarChart from './RiskBarChart';
 
 import styles from './styles.module.scss';
 
@@ -103,7 +104,20 @@ function SeasonalRisk(props: Props) {
     url: 'risk://api/v1/seasonal/',
   });
 
-  const [selectedMonth, setSelectedMonth] = useInputState(0);
+  const [selectedMonths, setSelectedMonths] = useInputState<Record<number, boolean>>({
+    0: true,
+    1: false,
+    2: false,
+    3: false,
+    4: false,
+    5: false,
+    6: false,
+    7: false,
+    8: false,
+    9: false,
+    10: false,
+    11: false,
+  });
 
   const [
     aggregatedRiskData,
@@ -235,12 +249,12 @@ function SeasonalRisk(props: Props) {
       >
         <MonthSelector
           name={undefined}
-          value={selectedMonth}
-          onChange={setSelectedMonth}
+          value={selectedMonths}
+          onChange={setSelectedMonths}
           className={styles.monthSelector}
         />
         <RiskTable
-          selectedMonth={selectedMonth}
+          selectedMonths={selectedMonths}
           riskData={aggregatedRiskData}
         />
         <div className={styles.eapSection}>
@@ -272,7 +286,7 @@ function SeasonalRisk(props: Props) {
         data={response?.return_period_data}
         hazardOptions={returnPeriodHazardOptions}
       />
-      <ImpactChart countryId={countryId} />
+      <HistoricalDataChart countryId={countryId} />
     </>
   );
 }
