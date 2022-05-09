@@ -330,12 +330,12 @@ const pdfStyles = StyleSheet.create({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    width: 30,
+    width: 40,
     height: 30,
   },
   piIcon: {
-    width: 20,
-    height: 20,
+    width: 40,
+    height: 50,
   },
   piSubRow: {
     display: 'flex',

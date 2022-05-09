@@ -79,6 +79,12 @@ export interface NsAction {
   clientId: string;
   title: string;
   description: string;
+  title_display: string;
+}
+export interface Indicator {
+  clientId: string;
+  title: string;
+  target: number;
 }
 
 export interface Intervention {
@@ -86,7 +92,7 @@ export interface Intervention {
   title: string;
   budget: number;
   person_targeted: number;
-  indicator: string;
+  indicators: Indicator[];
   description: string;
 }
 
@@ -99,12 +105,12 @@ export const optionLabelSelector = (o: Option) => o.label;
 export interface DrefFields {
   affect_same_area: boolean;
   affect_same_population: boolean;
-  affect_same_population_text : string;
+  affect_same_population_text: string;
   amount_requested: number;
   anticipatory_actions: string,
   appeal_code: string;
   boys: number;
-  communication : string;
+  communication: string;
   community_involved: string;
   country_district: CountryDistrict[];
   cover_image: number;
@@ -126,14 +132,14 @@ export interface DrefFields {
   event_text: string;
   girls: number;
   glide_code: string;
-  go_field_report_date : string;
+  go_field_report_date: string;
   government_requested_assistance: boolean;
   government_requested_assistance_date: string;
-  human_resource : string;
+  human_resource: string;
   icrc: string;
   id: string;
   identified_gaps: string;
-  ifrc : string;
+  ifrc: string;
   ifrc_appeal_manager_email: string;
   ifrc_appeal_manager_name: string;
   ifrc_appeal_manager_phone_number: string;
@@ -147,7 +153,7 @@ export interface DrefFields {
   ifrc_project_manager_phone_number: string;
   ifrc_project_manager_title: string;
   lessons_learned: string;
-  logistic_capacity_of_ns : string;
+  logistic_capacity_of_ns: string;
   major_coordination_mechanism: string;
   media_contact_email: string;
   media_contact_name: string;
@@ -169,7 +175,7 @@ export interface DrefFields {
   national_society_contact_title: string;
   needs_identified: Need[];
   ns_request_date: string;
-  ns_request_fund : boolean;
+  ns_request_fund: boolean;
   ns_request_text: string;
   ns_respond: boolean;
   ns_respond_date: string;
@@ -177,7 +183,7 @@ export interface DrefFields {
   num_assisted: number;
   operation_objective: string;
   operation_timeframe: number;
-  originator_email : string;
+  originator_email: string;
   originator_name: string;
   originator_phone_number: string;
   originator_title: string;
@@ -188,19 +194,19 @@ export interface DrefFields {
   people_targeted_with_early_actions: number;
   budget_file: number;
   planned_interventions: Intervention[];
-  pmer : string;
+  pmer: string;
   publishing_date: string;
   response_strategy: string;
-  safety_concerns : string;
+  safety_concerns: string;
   selection_criteria: string;
   start_date: string;
   status: number;
   submission_to_geneva: string;
-  surge_personnel_deployed : string;
+  surge_personnel_deployed: string;
   title: string;
   type_of_onset: number;
   un_or_other: string;
-  un_or_other_actor : string;
+  un_or_other_actor: string;
   women: number;
   dref_recurrent_text: string;
   total_targeted_population: number;
@@ -215,6 +221,7 @@ export interface DrefApiFields extends Omit<DrefFields, 'country_district' | 'pl
     district_details: DistrictMini[],
   })[];
   planned_interventions: (Omit<Intervention, 'clientId'> & {
+
     id: number,
     image_url: string,
   })[];

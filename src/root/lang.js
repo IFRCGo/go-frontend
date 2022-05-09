@@ -3406,7 +3406,7 @@ export default {
   drefExportTargetPersons: 'Targeted Persons',
   drefExportIndicators: 'Indicators:',
   drefExportPriorityActions: 'Priority Actions:',
-  drefExportBudgetOverview: 'BudgetOverview',
+  drefExportBudgetOverview: 'Budget Overview',
 
   // Flash Update
   flashUpdateFormPageTitle: 'IFRC GO - Flash Update Request',

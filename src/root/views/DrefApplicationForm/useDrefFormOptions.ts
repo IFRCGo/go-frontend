@@ -58,6 +58,12 @@ export type InterventionSchemaFields = ReturnType<InterventionSchema['fields']>;
 export type InterventionsSchema = ArraySchema<PartialForm<InterventionType>>;
 export type InterventionsSchemaMember = ReturnType<InterventionsSchema['member']>;
 
+export type IndicatorType = InterventionType['indicators'][number];
+export type IndicatorSchema = ObjectSchema<PartialForm<IndicatorType>>;
+export type IndicatorSchemaFields = ReturnType<IndicatorSchema['fields']>;
+export type IndicatorsSchema = ArraySchema<PartialForm<IndicatorType>>;
+export type IndicatorsSchemaMember = ReturnType<IndicatorsSchema['member']>;
+
 export type NsActionType = NonNullable<NonNullable<DrefFields['national_society_actions']>>[number];
 export type NsActionSchema = ObjectSchema<PartialForm<NsActionType>>;
 export type NsActionSchemaFields = ReturnType<NsActionSchema['fields']>;
@@ -201,7 +207,16 @@ export const schema: FormSchema = {
           title: [requiredCondition],
           budget: [requiredCondition, positiveIntegerCondition, lessThanOrEqualToCondition(MaxIntLimit)],
           person_targeted: [requiredCondition, positiveIntegerCondition, lessThanOrEqualToCondition(MaxIntLimit)],
-          indicator: [],
+          indicators: {
+            keySelector: (n) => n.clientId as string,
+            member: (): IndicatorsSchemaMember => ({
+              fields: (): IndicatorSchemaFields => ({
+                clientId: [],
+                title: [],
+                target: [],
+              })
+            })
+          },
           description: [],
         }),
       }),

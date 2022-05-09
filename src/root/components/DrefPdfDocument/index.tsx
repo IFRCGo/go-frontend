@@ -54,19 +54,23 @@ Font.register({
 
 interface NationalSocietyActionsProps {
   data: DrefApiFields['national_society_actions'][number];
-  nsaMap?: Record<string, string>;
 }
 
 function NationalSocietyActions(props: NationalSocietyActionsProps) {
   const {
     data,
-    nsaMap = {},
   } = props;
-
   return (
-    <Text style={pdfStyles.nsaOutput}>
-      {'\u2022'} {nsaMap[data.title]}
-    </Text>
+    <View>
+      <View style={pdfStyles.row}>
+        <View style={pdfStyles.niHeaderCell}>
+          <Text>{data.title_display}</Text>
+        </View>
+        <View style={pdfStyles.niContentCell}>
+          <Text>{data.description}</Text>
+        </View>
+      </View>
+    </View>
   );
 }
 
@@ -187,11 +191,11 @@ function PlannedInterventionOutput(props: PlannedInterventionProps) {
             {strings.drefExportIndicators}
           </Text>
         </View>
-        <View style={pdfStyles.piContentCell}>
+        {/*<View style={pdfStyles.piContentCell}>
           <Text style={pdfStyles.piBorderCell}>
-            {data.indicator}
+            {data.indicators}
           </Text>
-        </View>
+        </View>*/}
       </View>
       <View style={pdfStyles.piRow}>
         <View style={pdfStyles.piIconCell} />
@@ -385,7 +389,7 @@ function DrefPdfDocument(props: Props) {
             <PDFImage
               style={pdfStyles.bannerImage}
               src={dref.cover_image_details.file}
-              />
+            />
           </View>
         )}
         <View style={pdfStyles.section}>
@@ -468,7 +472,7 @@ function DrefPdfDocument(props: Props) {
         )}
         <View style={pdfStyles.subSection}>
           <Text style={pdfStyles.subSectionHeading}>
-            {isImminentOnset ? strings.drefExportImminentWhereWhenHow : strings.drefExportWhatWhereWhen }
+            {isImminentOnset ? strings.drefExportImminentWhereWhenHow : strings.drefExportWhatWhereWhen}
           </Text>
           <Text style={pdfStyles.text}>
             {dref.event_description}
@@ -571,7 +575,7 @@ function DrefPdfDocument(props: Props) {
               <NationalSocietyActions
                 key={nsa.id}
                 data={nsa}
-                nsaMap={nsaMap} />
+              />
             ))}
           </View>
         )}
@@ -939,10 +943,10 @@ function DrefPdfDocument(props: Props) {
             <ContactSection
               title={strings.drefExportAppealManager}
               contacts={[
-                  dref.ifrc_appeal_manager_name,
-                  dref.ifrc_appeal_manager_title,
-                  dref.ifrc_appeal_manager_email,
-                  dref.ifrc_appeal_manager_phone_number,
+                dref.ifrc_appeal_manager_name,
+                dref.ifrc_appeal_manager_title,
+                dref.ifrc_appeal_manager_email,
+                dref.ifrc_appeal_manager_phone_number,
               ]}
             />
             <ContactSection

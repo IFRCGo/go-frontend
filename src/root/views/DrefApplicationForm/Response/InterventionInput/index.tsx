@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+  isNotDefined,
   randomString,
 } from '@togglecorp/fujs';
 import {
@@ -7,6 +8,8 @@ import {
   ArrayError,
   useFormObject,
   getErrorObject,
+  useFormArray,
+  EntriesAsList,
 } from '@togglecorp/toggle-form';
 import { IoTrash } from 'react-icons/io5';
 
@@ -18,17 +21,26 @@ import InputSection from '#components/InputSection';
 import LanguageContext from '#root/languageContext';
 
 import {
+  DrefFields,
+  Indicator,
   Intervention,
   StringValueOption,
 } from '../../common';
 
 
 import styles from './styles.module.scss';
+import IndicatorInput from '../IndicatorInput';
+import { IndicatorType } from '#views/DrefApplicationForm/useDrefFormOptions';
 
 type SetValueArg<T> = T | ((value: T) => T);
+type Value = PartialForm<DrefFields>;
 
 const defaultInterventionValue: PartialForm<Intervention> = {
   clientId: randomString(),
+  indicators: [{
+    clientId: randomString(),
+    title: 'test title'
+  }]
 };
 
 interface Props {
@@ -38,10 +50,12 @@ interface Props {
   onRemove: (index: number) => void;
   index: number;
   interventionOptions: StringValueOption[];
+
 }
 
 function InterventionInput(props: Props) {
   const { strings } = React.useContext(LanguageContext);
+  const [indicator, setIndicator] = React.useState<number | undefined>();
 
   const {
     error: errorFromProps,
@@ -61,12 +75,40 @@ function InterventionInput(props: Props) {
     ? getErrorObject(errorFromProps?.[value.clientId])
     : undefined;
 
+  const {
+    setValue: onIndicatorChange,
+    removeValue: onIndicatorRemove,
+  } = useFormArray<'indicators', PartialForm<Indicator>>(
+    'indicators',
+    onFieldChange,
+  );
+
+
+  type Indicators = typeof value.indicators;
+  const handleIndicatorAddButtonClick = React.useCallback((title, target) => {
+    const clientId = randomString();
+    const newList: PartialForm<IndicatorType> = {
+      clientId,
+      title,
+      target,
+    };
+
+    onFieldChange(
+      (oldValue: PartialForm<Indicators>) => (
+        [...(oldValue ?? []), newList]
+      ),
+      'indicators' as const,
+    );
+    setIndicator(undefined);
+  }, [onFieldChange, setIndicator]);
+
+
   return (
     <div className={styles.interventionInput}>
       <InputSection
         className={styles.inputSection}
         title={interventionLabel}
-        multiRow
+        multiRow={false}
         twoColumn
         normalDescription
         description={(
@@ -88,13 +130,29 @@ function InterventionInput(props: Props) {
           </>
         )}
       >
-        <TextArea
-          label="Indicator"
-          name="indicator"
-          value={value.indicator}
-          onChange={onFieldChange}
-          error={error?.indicator}
-        />
+        <div>
+
+          <Button
+            variant="secondary"
+            name={indicator}
+            onClick={handleIndicatorAddButtonClick}
+          //disabled={isNotDefined(indicator)}
+          >
+            Add Indicator
+          </Button>
+          {
+            value?.indicators?.map((n, i) => (
+              <IndicatorInput
+                key={n.clientId}
+                index={i}
+                value={n}
+                onChange={onIndicatorChange}
+                onRemove={onIndicatorRemove}
+                error={getErrorObject(error?.indicators)}
+              />
+            ))
+          }
+        </div>
         <BulletTextArea
           label={strings.drefFormListOfActivities}
           name="description"
