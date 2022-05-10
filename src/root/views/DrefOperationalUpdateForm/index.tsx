@@ -1,5 +1,5 @@
 import React from 'react';
-import { match } from 'react-router-dom';
+import { Link, match } from 'react-router-dom';
 import {
   History,
   Location,
@@ -23,7 +23,7 @@ import TabList from '#components/Tabs/TabList';
 import Page from '#components/Page';
 import Tabs from '#components/Tabs';
 import Tab from '#components/Tabs/Tab';
-import Button from '#components/Button';
+import Button, { useButtonFeatures } from '#components/Button';
 import NonFieldError from '#components/NonFieldError';
 import TabPanel from '#components/Tabs/TabPanel';
 import languageContext from '#root/languageContext';
@@ -376,6 +376,11 @@ function DrefOperationalUpdate(props: Props) {
     }
   }, [onValueChange, value.new_operational_start_date, value.new_operational_end_date]);
 
+  const exportLinkProps = useButtonFeatures({
+    variant: 'secondary',
+    children: strings.drefFormExportLabel,
+  });
+
   return (
     <Tabs
       disabled={false}
@@ -385,13 +390,21 @@ function DrefOperationalUpdate(props: Props) {
     >
       <Page
         actions={(
-          <Button
-            name={undefined}
-            onClick={submitDrefOperationalUpdate}
-            type='submit'
-          >
-            {strings.drefOperationalUpdateSaveButtonLabel}
-          </Button>
+          <>
+            {isDefined(id) && (
+              <Link
+                to={`/dref-operational-update/${id}/export/`}
+                {...exportLinkProps}
+              />
+            )}
+            <Button
+              name={undefined}
+              onClick={submitDrefOperationalUpdate}
+              type='submit'
+            >
+              {strings.drefOperationalUpdateSaveButtonLabel}
+            </Button>
+          </>
         )}
         title={strings.drefOperationalUpdatePageTitle}
         heading={strings.drefOperationalUpdatePageHeading}
