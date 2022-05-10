@@ -3249,6 +3249,10 @@ export default {
   drefFormContinueButtonLabel: 'Continue',
   drefFormBackButtonLabel: 'Back',
   drefFormSaveButtonLabel: 'Save',
+  drefFormInterventionBudgetLabel: 'Budget',
+  drefFormInterventionPersonTargetedLabel: 'Persons Targeted',
+  drefFormIndicatorTitleLabel: 'Title',
+  drefFormIndicatorTargetLabel: 'Target',
 
   // dref pdf
   drefFormPdfTitle: 'DREF APPLICATION',
@@ -3574,6 +3578,11 @@ export default {
   drefOperationalUpdateMovementPartners: 'Movement Partners',
   // Interventions
   drefOperationalUpdatePlannedIntervention: 'Update on Intervention',
+  drefOperationalUpdateProgressTowardsOutcome: 'Progress Towards Outcome',
+  drefOperationalUpdateIndicatorActualLabel: 'Actual',
+  drefOperationalUpdateIndicatorMaleLabel: 'Male',
+  drefOperationalUpdateIndicatorFemaleLabel: 'Female',
+
   //pdf export
   operationalUpdateExportIfrcName: 'International Federation of Red Cross and Red Crescent Societies (IFRC)',
   operationalUpdateExportTitle: 'operational update',

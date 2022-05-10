@@ -27,7 +27,7 @@ interface Props {
   onChange: (value: SetValueArg<PartialForm<Indicator>>, index: number) => void;
   onRemove: (index: number) => void;
   index: number;
-  showActualFieldOperational?: boolean;
+  showNewFieldOperational?: boolean;
 }
 
 function IndicatorInput(props: Props) {
@@ -39,7 +39,7 @@ function IndicatorInput(props: Props) {
     value,
     index,
     onRemove,
-    showActualFieldOperational,
+    showNewFieldOperational,
   } = props;
 
   const onFieldChange = useFormObject(index, onChange, defaultIndicatorValue);
@@ -49,38 +49,43 @@ function IndicatorInput(props: Props) {
 
   return (
     <div className={styles.indicator}>
-      <TextInput
-        label="Title"
-        name="title"
-        value={value.title}
-        onChange={onFieldChange}
-        error={error?.title}
-      />
-      <NumberInput
-        label="Target"
-        name="target"
-        value={value.target}
-        onChange={onFieldChange}
-        error={error?.target}
-      />
-      {
-        showActualFieldOperational && (
-          <NumberInput
-            label="Actual"
-            name="actual"
-            value={value.actual}
-            onChange={onFieldChange}
-            error={error?.actual}
-          />
-        )
-      }
-      <Button
-        name={index}
-        onClick={onRemove}
-        variant="action"
-      >
-        <IoTrash />
-      </Button>
+      <div className={styles.inputs}>
+        <TextInput
+          label={strings.drefFormIndicatorTitleLabel}
+          name="title"
+          value={value.title}
+          onChange={onFieldChange}
+          error={error?.title}
+        />
+        <NumberInput
+          label={strings.drefFormIndicatorTargetLabel}
+          name="target"
+          value={value.target}
+          onChange={onFieldChange}
+          error={error?.target}
+        />
+
+        {
+          showNewFieldOperational && (
+            <NumberInput
+              label={strings.drefOperationalUpdateIndicatorActualLabel}
+              name="actual"
+              value={value.actual}
+              onChange={onFieldChange}
+              error={error?.actual}
+            />
+          )
+        }
+      </div>
+      <div>
+        <Button
+          name={index}
+          onClick={onRemove}
+          variant="action"
+        >
+          <IoTrash />
+        </Button>
+      </div>
     </div>
   );
 }

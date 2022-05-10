@@ -1,15 +1,11 @@
 import React from 'react';
-import {
-  isNotDefined,
-  randomString,
-} from '@togglecorp/fujs';
+import { randomString } from '@togglecorp/fujs';
 import {
   PartialForm,
   ArrayError,
   useFormObject,
   getErrorObject,
   useFormArray,
-  EntriesAsList,
 } from '@togglecorp/toggle-form';
 import { IoTrash } from 'react-icons/io5';
 
@@ -19,21 +15,18 @@ import Button from '#components/Button';
 import NumberInput from '#components/NumberInput';
 import InputSection from '#components/InputSection';
 import LanguageContext from '#root/languageContext';
+import { IndicatorType } from '#views/DrefApplicationForm/useDrefFormOptions';
 
 import {
-  DrefFields,
   Indicator,
   Intervention,
   StringValueOption,
 } from '../../common';
-
+import IndicatorInput from '../IndicatorInput';
 
 import styles from './styles.module.scss';
-import IndicatorInput from '../IndicatorInput';
-import { IndicatorType } from '#views/DrefApplicationForm/useDrefFormOptions';
 
 type SetValueArg<T> = T | ((value: T) => T);
-type Value = PartialForm<DrefFields>;
 
 const defaultInterventionValue: PartialForm<Intervention> = {
   clientId: randomString(),
@@ -49,7 +42,7 @@ interface Props {
   onRemove: (index: number) => void;
   index: number;
   interventionOptions: StringValueOption[];
-  showActualFieldOperational: boolean;
+  showNewFieldOperational: boolean;
 }
 
 function InterventionInput(props: Props) {
@@ -63,7 +56,7 @@ function InterventionInput(props: Props) {
     index,
     interventionOptions,
     onRemove,
-    showActualFieldOperational,
+    showNewFieldOperational,
   } = props;
 
   const interventionLabel = React.useMemo(() => (
@@ -114,53 +107,83 @@ function InterventionInput(props: Props) {
         description={(
           <>
             <NumberInput
-              label="Budget"
+              label={strings.drefFormInterventionBudgetLabel}
               name="budget"
               value={value.budget}
               onChange={onFieldChange}
               error={error?.budget}
             />
             <NumberInput
-              label="Persons Targeted"
+              label={strings.drefFormInterventionPersonTargetedLabel}
               name="person_targeted"
               value={value.person_targeted}
               onChange={onFieldChange}
               error={error?.person_targeted}
             />
+            {showNewFieldOperational && (
+
+              <div className={styles.maleFemale} >
+                <NumberInput
+                  label={strings.drefOperationalUpdateIndicatorMaleLabel}
+                  name='male'
+                  value={value.male}
+                  onChange={onFieldChange}
+                  error={error?.male}
+                />
+                <NumberInput
+                  label={strings.drefOperationalUpdateIndicatorFemaleLabel}
+                  name='female'
+                  value={value.female}
+                  onChange={onFieldChange}
+                  error={error?.female}
+                />
+              </div>
+            )}
           </>
         )}
       >
-        <div>
-          <Button
-            variant="secondary"
-            name={indicator}
-            onClick={handleIndicatorAddButtonClick}
-          //TODO:
-          //disabled={isNotDefined(indicator)}
-          >
-            Add Indicator
-          </Button>
-          {
-            value?.indicators?.map((n, i) => (
-              <IndicatorInput
-                key={n.clientId}
-                index={i}
-                value={n}
-                onChange={onIndicatorChange}
-                onRemove={onIndicatorRemove}
-                error={getErrorObject(error?.indicators)}
-                showActualFieldOperational={showActualFieldOperational}
-              />
-            ))
-          }
+        <div className={styles.addIndicatorContainer}>
+          <BulletTextArea
+            label={strings.drefFormListOfActivities}
+            name="description"
+            value={value.description}
+            onChange={onFieldChange}
+            error={error?.description}
+          />
+          <div>
+            <Button
+              variant="secondary"
+              name={indicator}
+              onClick={handleIndicatorAddButtonClick}
+            //TODO:
+            //disabled={isNotDefined(indicator)}
+            >
+              Add Indicator
+            </Button>
+            {
+              value?.indicators?.map((n, i) => (
+                <IndicatorInput
+                  key={n.clientId}
+                  index={i}
+                  value={n}
+                  onChange={onIndicatorChange}
+                  onRemove={onIndicatorRemove}
+                  error={getErrorObject(error?.indicators)}
+                  showNewFieldOperational={showNewFieldOperational}
+                />
+              ))
+            }
+          </div>
         </div>
-        <BulletTextArea
-          label={strings.drefFormListOfActivities}
-          name="description"
-          value={value.description}
-          onChange={onFieldChange}
-          error={error?.description}
-        />
+        {showNewFieldOperational && (
+          <TextArea
+            label={strings.drefOperationalUpdateProgressTowardsOutcome}
+            name='progress_towards_outcome'
+            value={value.progress_towards_outcome}
+            onChange={onFieldChange}
+            error={error?.progress_towards_outcome}
+          />
+        )}
       </InputSection>
       <Button
         className={styles.removeButton}

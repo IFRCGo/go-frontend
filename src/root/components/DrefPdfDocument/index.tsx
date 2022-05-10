@@ -325,7 +325,6 @@ function DrefPdfDocument(props: Props) {
   const [
     piMap,
     niMap,
-    nsaMap,
   ] = getMaps();
 
   const getAffectedAreas = () => {

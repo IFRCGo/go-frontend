@@ -80,6 +80,9 @@ export interface Intervention {
   person_targeted: number;
   indicators: Indicator[];
   description: string;
+  progress_towards_outcome: string;
+  male: number;
+  female: number;
 }
 
 export const optionKeySelector = (o: Option) => o.value;

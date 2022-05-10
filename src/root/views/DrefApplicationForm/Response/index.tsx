@@ -417,7 +417,7 @@ function Response(props: Props) {
             onRemove={onInterventionRemove}
             error={getErrorObject(error?.planned_interventions)}
             interventionOptions={interventionOptions}
-            showActualFieldOperational={false} />
+            showNewFieldOperational={false} />
         ))}
       </Container>
     </>
