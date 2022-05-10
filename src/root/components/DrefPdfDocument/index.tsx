@@ -186,17 +186,34 @@ function PlannedInterventionOutput(props: PlannedInterventionProps) {
       </View>
       <View style={pdfStyles.piRow}>
         <View style={pdfStyles.piIconCell} />
-        <View style={pdfStyles.piHeaderCell}>
-          <Text>
+        <View style={pdfStyles.piContentCell}>
+          <Text style={[pdfStyles.piBorderCell, pdfStyles.fontWeightBoldAndLarge]}>
             {strings.drefExportIndicators}
           </Text>
         </View>
-        {/*<View style={pdfStyles.piContentCell}>
-          <Text style={pdfStyles.piBorderCell}>
-            {data.indicators}
+        <View style={pdfStyles.piHeaderCell}>
+          <Text>
+            {strings.drefFormIndicatorTargetLabel}
           </Text>
-        </View>*/}
+        </View>
       </View>
+      {
+        data?.indicators?.map((el) => (
+          <View style={pdfStyles.piRow}>
+            <View style={pdfStyles.piIconCell} />
+            <View style={pdfStyles.piContentCell}>
+              <Text style={pdfStyles.piBorderCell}>
+                {el?.title}
+              </Text>
+            </View>
+            <View style={[pdfStyles.piHeaderCell, pdfStyles.fontWeightNormalAndSmall]}>
+              <Text style={pdfStyles.fontWeightNormalAndSmall}>
+                {el?.target}
+              </Text>
+            </View>
+          </View>
+        ))
+      }
       <View style={pdfStyles.piRow}>
         <View style={pdfStyles.piIconCell} />
         <View style={pdfStyles.piHeaderCell}>

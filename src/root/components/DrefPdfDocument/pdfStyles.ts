@@ -443,6 +443,15 @@ const pdfStyles = StyleSheet.create({
   contactDetails: {
     marginLeft: SPACING_SMALL,
   },
+
+  fontWeightNormalAndSmall: {
+    fontWeight: 'light',
+  },
+
+  fontWeightBoldAndLarge: {
+    fontWeight: 'bold',
+    fontSize: FONT_SIZE_LARGE,
+  },
 });
 
 export default pdfStyles;
