@@ -2,25 +2,87 @@
 
 .month-selector {
   display: flex;
+  padding-top: 0.7em;
+  align-items: flex-start;
 
   .tick-item {
     position: relative;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    flex-basis: 0;
-    flex-grow: 1;
+    flex-shrink: 0;
     cursor: pointer;
     gap: $spacing/2;
+
+    .tick {
+      width: 1ch;
+      height: 1ch;
+      background-color: $grey-titanium;
+      border-radius: 50%;
+      position: relative;
+
+      &::before {
+        position: absolute;
+        right: 0;
+        top: 0.5ch;
+        content: ' ';
+        width: 1ch;
+        height: $base-border-width;
+        background-color: $grey-titanium;
+        transform: translateX(-100%);
+      }
+
+      &::after {
+        position: absolute;
+        right: 0;
+        top: 0.5ch;
+        content: ' ';
+        width: 1ch;
+        height: 1px;
+        background-color: $grey-titanium;
+        transform: translateX(100%);
+      }
+    }
 
     .month-name {
       text-transform: uppercase;
       font-weight: $base-font-medium;
-      font-size: $font-size-xs;
+      font-size: $font-size-sm;
+      font-family: $code-font-family;
+      width: 3ch;
     }
 
     &.active {
       color: $primary-color;
+
+      .tick {
+        background-color: $primary-color;
+
+        &::after {
+          background-color: $primary-color;
+        }
+
+        &::before {
+          background-color: $primary-color;
+        }
+      }
+    }
+  }
+
+  .track {
+    flex-grow: 1;
+    height: $base-border-width;
+    background-color: $grey-titanium;
+    margin-top: 0.5ch;
+
+    &.active-track {
+      background-color: $primary-color;
+    }
+
+    &:last-child,
+    &:first-child {
+      flex-grow: 0.2;
     }
   }
 }

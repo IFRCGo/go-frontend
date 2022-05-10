@@ -21,7 +21,6 @@ import turfBbox from '@turf/bbox';
 import {
   COLOR_RED,
   COLOR_LIGHT_GREY,
-  // COLOR_BLUE,
   COLOR_ORANGE,
   COLOR_YELLOW,
   defaultMapStyle,

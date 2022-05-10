@@ -23,7 +23,9 @@ function MonthSelector<T>(props: Props<T>) {
     value,
   } = props;
 
-  const { strings } = React.useContext(languageContext);
+  const {
+    strings,
+  } = React.useContext(languageContext);
 
   const monthNameList = React.useMemo(() => (
     getFullMonthNameList(strings).map(m => m.substr(0, 3))
@@ -31,30 +33,78 @@ function MonthSelector<T>(props: Props<T>) {
 
   const handleClick = React.useCallback((month) => {
     if (onChange) {
+      const numSelection = Object.values(value).filter(Boolean).length;
       const newValue = { ...value };
-      newValue[month] = !value[month];
+
+      if (value[month]) {
+        if (numSelection > 1) {
+          for (let i = 0; i < 12; i = i + 1) {
+            newValue[i] = false;
+          }
+
+          newValue[month] = true;
+        } else {
+          newValue[month] = !value[month];
+        }
+      } else {
+        if (numSelection === 0) {
+          newValue[month] = true;
+        } else if (numSelection === 1) {
+          const prevMonth = Object.values(value).findIndex(Boolean);
+          const startIndex = Math.min(prevMonth, month);
+          const endIndex = Math.max(prevMonth, month);
+
+
+          for (let i = 0; i < 12; i = i + 1) {
+            if (i >= startIndex && i <= endIndex) {
+              newValue[i] = true;
+            } else {
+              newValue[i] = false;
+            }
+          }
+        } else {
+          for (let i = 0; i < 12; i = i + 1) {
+            newValue[i] = false;
+          }
+
+          newValue[month] = true;
+        }
+      }
+
       onChange(newValue, name);
     }
   }, [value, onChange, name]);
 
   return (
     <div className={_cs(styles.monthSelector, className)}>
+      <div className={styles.track} />
       {monthNameList.map((m, i) => (
-        <RawButton
-          name={i}
-          className={_cs(
-            styles.tickItem,
-            value[i] && styles.active,
+        <>
+          <RawButton
+            name={i}
+            className={_cs(
+              styles.tickItem,
+              value[i] && styles.active,
+            )}
+            onClick={handleClick}
+            key={m}
+          >
+            <div className={styles.tick} />
+            <div className={styles.monthName}>
+              {m}
+            </div>
+          </RawButton>
+          {i < (monthNameList.length - 1) && (
+            <div
+              className={_cs(
+                styles.track,
+                i < 11 && value[i] && value[i + 1] && styles.activeTrack,
+              )}
+            />
           )}
-          onClick={handleClick}
-          key={m}
-        >
-          <Checkmark value={value[i]} />
-          <div className={styles.monthName}>
-            {m}
-          </div>
-        </RawButton>
+        </>
       ))}
+      <div className={styles.track} />
     </div>
   );
 }
