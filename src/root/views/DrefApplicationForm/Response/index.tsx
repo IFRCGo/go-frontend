@@ -117,12 +117,12 @@ function Response(props: Props) {
 
     return w;
   }, [
-      value?.num_assisted,
-      value?.women,
-      value?.men,
-      value?.girls,
-      value?.boys,
-      value?.total_targeted_population,
+    value?.num_assisted,
+    value?.women,
+    value?.men,
+    value?.girls,
+    value?.boys,
+    value?.total_targeted_population,
   ]);
 
   const filteredInterventionOptions = interventionsIdentifiedMap ? interventionOptions.filter(n => !interventionsIdentifiedMap[n.value]) : [];
@@ -417,7 +417,7 @@ function Response(props: Props) {
             onRemove={onInterventionRemove}
             error={getErrorObject(error?.planned_interventions)}
             interventionOptions={interventionOptions}
-          />
+            showActualFieldOperational={false} />
         ))}
       </Container>
     </>

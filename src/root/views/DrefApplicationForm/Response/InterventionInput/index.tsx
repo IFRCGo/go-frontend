@@ -39,7 +39,6 @@ const defaultInterventionValue: PartialForm<Intervention> = {
   clientId: randomString(),
   indicators: [{
     clientId: randomString(),
-    title: 'test title'
   }]
 };
 
@@ -50,7 +49,7 @@ interface Props {
   onRemove: (index: number) => void;
   index: number;
   interventionOptions: StringValueOption[];
-
+  showActualFieldOperational: boolean;
 }
 
 function InterventionInput(props: Props) {
@@ -64,6 +63,7 @@ function InterventionInput(props: Props) {
     index,
     interventionOptions,
     onRemove,
+    showActualFieldOperational,
   } = props;
 
   const interventionLabel = React.useMemo(() => (
@@ -131,11 +131,11 @@ function InterventionInput(props: Props) {
         )}
       >
         <div>
-
           <Button
             variant="secondary"
             name={indicator}
             onClick={handleIndicatorAddButtonClick}
+          //TODO:
           //disabled={isNotDefined(indicator)}
           >
             Add Indicator
@@ -149,6 +149,7 @@ function InterventionInput(props: Props) {
                 onChange={onIndicatorChange}
                 onRemove={onIndicatorRemove}
                 error={getErrorObject(error?.indicators)}
+                showActualFieldOperational={showActualFieldOperational}
               />
             ))
           }

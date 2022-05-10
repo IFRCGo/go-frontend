@@ -85,6 +85,7 @@ export interface Indicator {
   clientId: string;
   title: string;
   target: number;
+  actual: number;
 }
 
 export interface Intervention {
@@ -221,7 +222,6 @@ export interface DrefApiFields extends Omit<DrefFields, 'country_district' | 'pl
     district_details: DistrictMini[],
   })[];
   planned_interventions: (Omit<Intervention, 'clientId'> & {
-
     id: number,
     image_url: string,
   })[];

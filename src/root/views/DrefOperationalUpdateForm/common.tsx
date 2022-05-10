@@ -67,12 +67,18 @@ export interface NsAction {
   description: string;
 }
 
+export interface Indicator {
+  clientId: string;
+  title: string;
+  target: number;
+  actual: number;
+}
 export interface Intervention {
   clientId: string;
   title: string;
   budget: number;
   person_targeted: number;
-  indicator: string;
+  indicators: Indicator[];
   description: string;
 }
 

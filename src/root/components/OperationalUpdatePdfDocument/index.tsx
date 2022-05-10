@@ -183,11 +183,11 @@ function PlannedInterventionOutput(props: PlannedInterventionProps) {
             {strings.drefExportIndicators}
           </Text>
         </View>
-        <View style={pdfStyles.piContentCell}>
+        {/*<View style={pdfStyles.piContentCell}>
           <Text style={pdfStyles.piBorderCell}>
             {data.indicator}
           </Text>
-        </View>
+        </View>*/}
       </View>
       <View style={pdfStyles.piRow}>
         <View style={pdfStyles.piIconCell} />

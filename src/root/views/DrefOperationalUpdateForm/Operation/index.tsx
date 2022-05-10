@@ -44,6 +44,7 @@ interface Props {
   fileIdToUrlMap: Record<number, string>;
   setFileIdToUrlMap?: React.Dispatch<React.SetStateAction<Record<number, string>>>;
 }
+const showActualFieldOperational = true;
 
 function Operation(props: Props) {
   const { strings } = React.useContext(languageContext);
@@ -319,6 +320,7 @@ function Operation(props: Props) {
             onRemove={onInterventionRemove}
             error={getErrorObject(error?.planned_interventions)}
             interventionOptions={interventionOptions}
+            showActualFieldOperational={showActualFieldOperational}
           />
         ))}
       </Container>

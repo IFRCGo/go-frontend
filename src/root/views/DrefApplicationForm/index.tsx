@@ -52,11 +52,6 @@ import useDrefFormOptions, { schema } from './useDrefFormOptions';
 import styles from './styles.module.scss';
 
 const defaultFormValues: PartialForm<DrefFields> = {
-  /*
-  country_district: [
-    { clientId: randomString() },
-  ],
-   */
   country_district: [],
   planned_interventions: [],
   national_society_actions: [],
