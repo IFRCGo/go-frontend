@@ -1,16 +1,21 @@
+import React from 'react';
+import { IoTrash } from 'react-icons/io5';
+import {
+  ArrayError,
+  getErrorObject,
+  PartialForm,
+  useFormObject,
+} from '@togglecorp/toggle-form';
+import { randomString } from '@togglecorp/fujs';
+
 import Button from '#components/Button';
-import InputSection from '#components/InputSection';
 import NumberInput from '#components/NumberInput';
 import TextInput from '#components/TextInput';
 import languageContext from '#root/languageContext';
 import { SetValueArg } from '#utils/common';
-import { Indicator, StringValueOption } from '#views/DrefApplicationForm/common';
-import { randomString } from '@togglecorp/fujs';
-import { ArrayError, getErrorObject, PartialForm, useFormObject } from '@togglecorp/toggle-form';
-import React from 'react';
-import { IoTrash } from 'react-icons/io5';
-import styles from './styles.module.scss';
+import { Indicator } from '#views/DrefApplicationForm/common';
 
+import styles from './styles.module.scss';
 
 const defaultIndicatorValue: PartialForm<Indicator> = {
   clientId: randomString(),
