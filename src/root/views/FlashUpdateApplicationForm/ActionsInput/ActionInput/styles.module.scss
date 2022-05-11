@@ -1,0 +1,7 @@
+@import '~styles/settings/_variables.scss';
+
+.action-input {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing*2;
+}
