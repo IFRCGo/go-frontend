@@ -1,3 +1,5 @@
+@use "sass:math";
+
 @import "~styles/settings/variables";
 
 .filters {
@@ -116,7 +118,7 @@
   display: flex;
   flex-shrink: 0;
   align-items: center;
-  gap: $spacing*2/3;
+  gap: math.div($spacing*2, 3);
   opacity: 0.2;
 
   &.active {
@@ -129,7 +131,7 @@
     align-items: center;
     flex-shrink: 0;
     border-radius: 50%;
-    padding: $spacing/2;
+    padding: $spacing*0.5;
     height: 1.6rem;
     width: 1.6rem;
 
@@ -155,7 +157,7 @@
 .fi-legend-item {
   display: flex;
   align-items: center;
-  gap: $spacing*2/3;
+  gap: math.div($spacing*2, 3);
 
   .label {
     font-weight: $base-font-medium;
@@ -176,6 +178,6 @@
   }
 
   .event-detail-content {
-    padding: $spacing/2 !important;
+    padding: $spacing*0.5 !important;
   }
 }

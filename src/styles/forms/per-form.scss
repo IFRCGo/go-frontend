@@ -1,6 +1,8 @@
 /* Per Forms
    ========================================================================== */
 
+@use "sass:math";
+
 .per_form_area {
   font-weight: bold;
   font-size: 25px;
@@ -198,7 +200,7 @@
   }
 
   .progress_value_funding_table {
-    margin-bottom: ($global-spacing / 3);
+    margin-bottom: math.div($global-spacing, 3);
     display: block;
   }
 }

@@ -5,8 +5,8 @@
 
   .map-tooltip {
     .meta {
-      margin: 0 $spacing*3/4;
-      padding: $spacing/2;
+      margin: 0 $spacing*3*0.25;
+      padding: $spacing*0.5;
       border-bottom: $base-border-width solid $base-border-color;
     }
 
@@ -26,17 +26,17 @@
   .legend-item {
     display: flex;
     align-items: center;
-    padding: $spacing/2;
+    padding: $spacing*0.5;
 
     .point {
       height: 1em;
       width: 1em;
-      margin: $spacing/2;
+      margin: $spacing*0.5;
       border-radius: 50%;
     }
 
     .label {
-      padding: $spacing/2;
+      padding: $spacing*0.5;
     }
   }
 }

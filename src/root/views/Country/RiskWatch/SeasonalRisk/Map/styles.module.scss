@@ -83,7 +83,7 @@
 
 .map-legend {
   position: absolute;
-  right: $spacing / 2;
+  right: $spacing * 0.5;
   bottom: $spacing * 2;
   background-color: $color-foreground;
   padding: $spacing;

@@ -35,12 +35,12 @@
 
       .footer-content {
         flex-grow: 1;
-        padding: $spacing/4;
+        padding: $spacing*0.25;
       }
 
       .footer-actions {
         flex-shrink: 0;
-        padding: $spacing/4;
+        padding: $spacing*0.25;
       }
     }
   }

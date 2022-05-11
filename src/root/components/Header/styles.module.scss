@@ -3,7 +3,7 @@
 .header {
   display: flex;
   align-items: center;
-  padding: $spacing / 4;
+  padding: $spacing * 0.25;
 
   .heading-container {
     display: flex;
@@ -14,12 +14,12 @@
 
     .heading {
       flex-grow: 1;
-      padding: $spacing / 4;
+      padding: $spacing * 0.25;
       line-height: 1.25;
     }
 
     .description {
-      padding: $spacing / 4;
+      padding: $spacing * 0.25;
 
       &.small {
         font-size: $font-size-sm;

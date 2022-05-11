@@ -2,6 +2,8 @@
    Forms
    ========================================================================== */
 
+@use "sass:math";
+
 .form {
   margin-bottom: $global-spacing;
 
@@ -527,14 +529,14 @@ select.form__control:focus {
   border: 0;
   float: left;
   width: 100%;
-  margin: 0 0 ($global-spacing / 2) 0;
-  padding: ($global-spacing / 4) 0;
+  margin: 0 0 ($global-spacing * 0.5) 0;
+  padding: ($global-spacing * 0.25) 0;
 }
 
 .form__fieldset-header {
   display: flex;
   width: 100%;
-  margin-bottom: ($global-spacing / 2);
+  margin-bottom: ($global-spacing * 0.5);
 
   > *:last-child {
     margin-bottom: 0;
@@ -558,7 +560,7 @@ select.form__control:focus {
   }
 
   > *:last-child {
-    margin-inline-end: -$global-spacing / 4;
+    margin-inline-end: -$global-spacing * 0.25;
   }
 }
 
@@ -573,7 +575,7 @@ label[for] {
 .form__label {
   display: block;
   font-weight: $base-font-semi-bold;
-  margin: 0 0 ($global-spacing/2) 0;
+  margin: 0 0 ($global-spacing*0.5) 0;
 
   &:only-of-type {
     display: inline-block;
@@ -602,7 +604,7 @@ label[for] {
   display: flex;
   align-items: flex-start;
   cursor: pointer;
-  margin-top: $global-spacing / 2;
+  margin-top: $global-spacing * 0.5;
 
   input {
     flex: none;
@@ -611,15 +613,15 @@ label[for] {
 }
 
 .form__option__text {
-  padding-inline-start: $global-spacing / 2;
+  padding-inline-start: $global-spacing * 0.5;
 
   [dir='rtl'] {
-    padding-inline-end: $global-spacing / 2;
+    padding-inline-end: $global-spacing * 0.5;
     padding-inline-start: 0;
   }
 
   &:not(:last-child) {
-    padding: 0 ($global-spacing / 2) 0 0;
+    padding: 0 ($global-spacing * 0.5) 0 0;
   }
 
   em {
@@ -861,7 +863,7 @@ label[for] {
 
 .form__options-menu {
   display: inline-block;
-  margin: 0 0 ($global-spacing / 2) 0;
+  margin: 0 0 ($global-spacing * 0.5) 0;
 
   > * {
     display: inline-block;
@@ -873,7 +875,7 @@ label[for] {
     font-size: 0.75rem;
     line-height: 1.5rem;
     color: rgba($base-font-color, 0.64);
-    margin: 0 ($global-spacing / 2) 0 0;
+    margin: 0 ($global-spacing * 0.5) 0 0;
   }
 }
 
@@ -917,7 +919,7 @@ label[for] {
 .form__hascol--2 {
   > * {
     $col-group: 2;
-    @include column(6/12, $cycle: $col-group);
+    @include column(math.div(6, 12), $cycle: $col-group);
 
     @for $child from 1 through $col-group {
       &:nth-child(#{$child}) {
@@ -930,7 +932,7 @@ label[for] {
 .form__hascol--3 {
   > * {
     $col-group: 3;
-    @include column(4/12, $cycle: $col-group);
+    @include column(math.div(4, 12), $cycle: $col-group);
 
     @for $child from 1 through $col-group {
       &:nth-child(#{$child}) {
@@ -943,7 +945,7 @@ label[for] {
 .form__hascol--4 {
   > * {
     $col-group: 4;
-    @include column(3/12, $cycle: $col-group);
+    @include column(math.div(3, 12), $cycle: $col-group);
 
     @for $child from 1 through $col-group {
       &:nth-child(#{$child}) {
@@ -1039,7 +1041,7 @@ label[for] {
   }
 
   p {
-    margin-bottom: $global-spacing/2;
+    margin-bottom: $global-spacing*0.5;
   }
 
   ul {
@@ -1051,7 +1053,7 @@ label[for] {
 
     &:after {
       content: ",";
-      margin-inline-end: $global-spacing/2;
+      margin-inline-end: $global-spacing*0.5;
     };
 
     &:last-child {

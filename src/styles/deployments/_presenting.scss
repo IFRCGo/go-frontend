@@ -5,7 +5,7 @@
   }
   .deployments-map {
     height: 40vh;
-    margin-bottom: $global-spacing/2;
+    margin-bottom: $global-spacing*0.5;
   }
   .deployments-map .map-vis {
     height: 40vh;
@@ -30,7 +30,7 @@
     }
     .deployments-map {
       height: 60vh;
-      margin-bottom: $global-spacing/2;
+      margin-bottom: $global-spacing*0.5;
     }
     .deployments-map .map-vis {
       height: 60vh;

@@ -21,11 +21,11 @@
   .title-container {
     display: flex;
     align-items: center;
-    padding: 0 $spacing/8;
+    padding: 0 $spacing*0.125;
 
     .title {
       flex-grow: 1;
-      padding: 0 $spacing/8;
+      padding: 0 $spacing*0.125;
       text-align: left;
     }
 
@@ -37,7 +37,7 @@
     .grip {
       flex-shrink: 0;
       visibility: hidden;
-      margin-left: $spacing/8;
+      margin-left: $spacing*0.125;
       cursor: move;
     }
   }
@@ -55,10 +55,10 @@
 
   .filter-container {
     display: flex;
-    padding: $spacing/8;
+    padding: $spacing*0.125;
 
     >:not(:last-child) {
-      margin-right: $spacing/8;
+      margin-right: $spacing*0.125;
     }
 
     .text-input,
