@@ -213,7 +213,7 @@ export const schema: FormSchema = {
               fields: (): IndicatorSchemaFields => ({
                 clientId: [],
                 title: [],
-                target: [],
+                target: [positiveNumberCondition],
               })
             })
           },

@@ -17,7 +17,10 @@ import languageContext from '#root/languageContext';
 import { compareString } from '#utils/utils';
 import { Disaster } from '#types/project';
 import { Country } from '#types/country';
-import { positiveIntegerCondition } from '#utils/form';
+import {
+  positiveIntegerCondition,
+  positiveNumberCondition,
+} from '#utils/form';
 
 import {
   BooleanValueOption,
@@ -196,7 +199,7 @@ export const schema: FormSchema = {
               fields: (): IndicatorSchemaFields => ({
                 clientId: [],
                 title: [],
-                target: [],
+                target: [positiveNumberCondition],
                 actual: [],
               })
             })
