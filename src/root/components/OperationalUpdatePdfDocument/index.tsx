@@ -50,19 +50,24 @@ Font.register({
 
 interface NationalSocietyActionsProps {
   data: DrefOperationalUpdateApiFields['national_society_actions'][number];
-  nsaMap?: Record<string, string>;
 }
 
 function NationalSocietyActions(props: NationalSocietyActionsProps) {
   const {
     data,
-    nsaMap = {},
   } = props;
 
   return (
-    <Text style={pdfStyles.nsaOutput}>
-      {'\u2022'} {nsaMap[data.title]}
-    </Text>
+    <View>
+      <View style={pdfStyles.row}>
+        <View style={pdfStyles.niHeaderCell}>
+          <Text>{data.title}</Text>
+        </View>
+        <View style={pdfStyles.niContentCell}>
+          <Text>{data.description}</Text>
+        </View>
+      </View>
+    </View>
   );
 }
 
@@ -569,7 +574,7 @@ function OperationalUpdatePdfDocument(props: Props) {
               <NationalSocietyActions
                 key={nsa.id}
                 data={nsa}
-                nsaMap={nsaMap} />
+              />
             ))}
           </View>
         )}
@@ -809,11 +814,6 @@ function OperationalUpdatePdfDocument(props: Props) {
             {strings.drefExportResponseRationale}
           </Text>
           <Text>{operationalUpdateResponse.response_strategy}</Text>
-        </View>
-        <View style={pdfStyles.section}>
-          <Text style={pdfStyles.sectionHeading}>
-            {strings.drefExportSupportServices}
-          </Text>
         </View>
         {operationalUpdateResponse.planned_interventions.length > 0 && (
           <View style={pdfStyles.piSection}>
