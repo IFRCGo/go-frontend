@@ -3409,6 +3409,7 @@ export default {
 
   // Flash Update
   flashUpdateFormPageTitle: 'IFRC GO - Flash Update Request',
+  flashUpdateFormPageDescription: 'The following information is provided for early warning and rapid dissemination and is based upon initial information only. IFRC will obtain more accurate and detailed information as more is known about the event.',
   flashUpdateFormExportLabel: 'Export',
   flashUpdateFormSaveButtonLabel: 'Save',
   flashUpdateFormPageHeading: 'Flash Update',
