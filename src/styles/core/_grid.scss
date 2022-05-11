@@ -15,6 +15,8 @@
 //    - $max-width {number} : Maximum width
 //    - $centered {boolean} : Horizontally centers container
 //    - $grid-gutter {number} : Gutter or horizontal padding
+@use "sass:math";
+
 @mixin container ($max-width: $media-large, $centered: true, $grid-gutter: $grid-gutter) {
   @if $max-width {
     max-width: $max-width;
@@ -210,7 +212,7 @@
 // E.g., .col-1, .col-12
 @for $i from 1 through $grid-column-count {
   .col-#{$i} {
-    width: percentage($i / $grid-column-count);
+    width: percentage(math.div($i, $grid-column-count));
   }
 }
 
@@ -219,7 +221,7 @@
 @include media (xsmall) {
   @for $i from 1 through $grid-column-count {
     .col-#{$i}-xs {
-      width: percentage($i / $grid-column-count);
+      width: percentage(math.div($i, $grid-column-count));
     }
   }
 }
@@ -229,7 +231,7 @@
 @include media(small) {
   @for $i from 1 through $grid-column-count {
     .col-#{$i}-sm {
-      width: percentage($i / $grid-column-count);
+      width: percentage(math.div($i, $grid-column-count));
     }
   }
 }
@@ -239,7 +241,7 @@
 @include media(medium) {
   @for $i from 1 through $grid-column-count {
     .col-#{$i}-mid {
-      width: percentage($i / $grid-column-count);
+      width: percentage(math.div($i, $grid-column-count));
     }
   }
 }
@@ -249,7 +251,7 @@
 @include media(large) {
   @for $i from 1 through $grid-column-count {
     .col-#{$i}-lg {
-      width: percentage($i / $grid-column-count);
+      width: percentage(math.div($i, $grid-column-count));
     }
   }
 }

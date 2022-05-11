@@ -25,7 +25,7 @@
   .custom-supply-header,
   .supply-header {
     color: blue;
-    padding: $spacing 0 $spacing/4 0!important;
+    padding: $spacing 0 $spacing*0.25 0!important;
 
     h4 {
       font-weight: $base-font-light;

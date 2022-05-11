@@ -148,7 +148,7 @@
     color: rgba($base-font-color, 0.64);
     font-size: 0.875rem;
     line-height: 1rem;
-    margin: ($global-spacing / 4) 0;
+    margin: ($global-spacing * 0.25) 0;
 
     &:first-child {
       margin-top: 0;
@@ -185,7 +185,7 @@
     }
 
     .button {
-      margin: 0 ($global-spacing / 4);
+      margin: 0 ($global-spacing * 0.25);
 
       &:first-child {
         margin-inline-start: 0;

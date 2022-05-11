@@ -98,7 +98,7 @@
 .icon-about-ref {
   font-size: 0.55rem;
   font-weight: $base-font-bold;
-  padding: 0 0 0 ($global-spacing/2);
+  padding: 0 0 0 ($global-spacing*0.5);
 }
 
 .box__global--about-guides {
@@ -108,7 +108,7 @@
   }
 
   .icon__circle {
-    margin-inline-end: ($global-spacing / 2);
+    margin-inline-end: ($global-spacing * 0.5);
     flex-shrink: 0;
   }
 }
@@ -191,7 +191,7 @@
 
 .about__video__carousel__each__heading {
   font-weight: $base-font-semi-bold;
-  padding: ($global-spacing/2) 0 0 0;
+  padding: ($global-spacing*0.5) 0 0 0;
 }
 
 .about__video__carousel__each__subheading {

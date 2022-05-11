@@ -3,14 +3,14 @@
    ========================================================================== */
 
 .pills__brand__col {
-  padding: 0 $global-spacing/2;
+  padding: 0 $global-spacing*0.5;
 }
 
 .pill__brand {
   border: 1px solid $base-border-color;
   border-radius: $full-border-radius;
   font-weight: $base-font-semi-bold;
-  padding: $global-spacing/2 $global-spacing;
+  padding: $global-spacing*0.5 $global-spacing;
   display: inline-block;
   vertical-align: baseline;
   margin: 0 0 $global-spacing 0;

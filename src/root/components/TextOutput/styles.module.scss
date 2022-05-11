@@ -17,17 +17,17 @@
   }
 
   >.label {
-    padding: $spacing/4;
+    padding: $spacing*0.25;
     color: $color-text-light;
     font-weight: $base-font-medium;
   }
 
   >.value {
-    padding: $spacing/4;
+    padding: $spacing*0.25;
   }
 
   >.description {
-    padding: $spacing/4;
+    padding: $spacing*0.25;
   }
 
   &.with-label-colon {

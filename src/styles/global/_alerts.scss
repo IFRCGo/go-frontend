@@ -1,6 +1,6 @@
 .alert-container {
   & > * {
     pointer-events: auto;
-    margin: $spacing/2 0;
+    margin: $spacing*0.5 0;
   }
 }

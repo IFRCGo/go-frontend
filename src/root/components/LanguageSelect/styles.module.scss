@@ -1,6 +1,6 @@
 @import '~styles/settings/variables';
 @mixin drop-menu-header-dropdown {
-  padding: $global-spacing/2;
+  padding: $global-spacing*0.5;
   font-weight: $base-font-regular;
   font-size: $font-size-sm;
 

@@ -14,8 +14,8 @@
     border: none;
     @extend .button--text-hidden;
     position: fixed;
-    top: $global-spacing/2;
-    right: $global-spacing/2;
+    top: $global-spacing*0.5;
+    right: $global-spacing*0.5;
 
     &:before {
       content: url('/assets/graphics/layout/x-thin.svg');
@@ -83,7 +83,7 @@
 
 .inpage__title--map-fullscreen {
   padding-inline-start: 400px; // width of logo + some padding
-  margin: ($global-spacing/2) 0 0 0;
+  margin: ($global-spacing*0.5) 0 0 0;
   text-align: center;
   font-size: 1.2rem;
   width: 100%;

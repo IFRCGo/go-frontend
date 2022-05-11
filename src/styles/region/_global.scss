@@ -2,6 +2,8 @@
    Region global
    ========================================================================== */
 
+@use "sass:math";
+
 .page--region {
   .page__body {
     margin-bottom: 0
@@ -61,7 +63,7 @@
   }
 
   .region-countries__linkC {
-    padding: 0 ($global-spacing / 1.5) 0 0;
+    padding: 0 math.div($global-spacing, 1.5) 0 0;
 
   }
 
