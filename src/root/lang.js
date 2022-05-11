@@ -3233,7 +3233,7 @@ export default {
   noLabel: 'No',
 
   drefFormAddInterventionLabel: 'Add',
-  drefFormUploadImageLabel: 'Select and Image',
+  drefFormUploadAnImageLabel: 'Select an Image',
   drefFormAddCountryLabel: 'Add Country',
 
   drefFormSaveRequestSuccessMessage: 'DREF Application created/updated successfully',

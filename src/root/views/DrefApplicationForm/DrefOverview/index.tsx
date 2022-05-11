@@ -330,7 +330,7 @@ function DrefOverview(props: Props) {
             showStatus
             value={value.event_map}
           >
-            {strings.drefFormUploadImageLabel}
+            {strings.drefFormUploadAnImageLabel}
           </DREFFileInput>
         </InputSection>
         <InputSection
@@ -346,7 +346,7 @@ function DrefOverview(props: Props) {
             showStatus
             value={value.cover_image}
           >
-            {strings.drefFormUploadImageLabel}
+            {strings.drefFormUploadAnImageLabel}
           </DREFFileInput>
         </InputSection>
       </Container>
