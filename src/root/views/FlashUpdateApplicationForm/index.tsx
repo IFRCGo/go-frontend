@@ -131,6 +131,7 @@ function FlashUpdateForm(props: Props) {
   const [fileIdToUrlMap, setFileIdToUrlMap] = React.useState<Record<number, string>>({});
   const submitButtonLabel = currentStep === 'focal' ? strings.flashUpdateSaveButtonLabel : strings.flashUpdateContinueButtonLabel;
   const shouldDisabledBackButton = currentStep === 'context';
+  const bypassTitleGeneration = React.useRef<boolean>(false);
 
   const {
     pending: flashUpdatePending,
@@ -140,7 +141,17 @@ function FlashUpdateForm(props: Props) {
     url: `api/v2/flash-update/${id}`,
     onSuccess: (response) => {
       if (!response) {
-        // TODO: handle error
+        alert.show(
+          <p>
+            {strings.flashUpdateFormLoadRequestFailureMessage}
+            &nbsp;
+            <strong>
+              Empty response from server
+            </strong>
+          </p>,
+          { variant: 'danger' },
+        );
+
         return;
       }
 
@@ -191,6 +202,8 @@ function FlashUpdateForm(props: Props) {
           client_id: at.client_id ?? at.organization,
         })),
       });
+
+      bypassTitleGeneration.current = true;
 
       setFileIdToUrlMap((prevValue) => ({
         ...prevValue,
@@ -542,6 +555,17 @@ function FlashUpdateForm(props: Props) {
 
   // Auto generate title
   React.useEffect(() => {
+    // Wait untill disasterTypeOptions and countryOptions are loaded
+    if (disasterTypeOptions.length === 0 || countryOptions.length === 0) {
+      return;
+    }
+
+    // Bypass title generation when initial data is loaded from server
+    if (bypassTitleGeneration.current) {
+      bypassTitleGeneration.current = false;
+      return;
+    }
+
     if (isNotDefined(value?.country_district) || isNotDefined(value?.hazard_type)) {
       return;
     }
@@ -615,6 +639,7 @@ function FlashUpdateForm(props: Props) {
         )}
         title={strings.flashUpdateFormPageTitle}
         heading={strings.flashUpdateFormPageHeading}
+        description={strings.flashUpdateFormPageDescription}
         info={(
           <TabList className={styles.tableList}>
             <Tab

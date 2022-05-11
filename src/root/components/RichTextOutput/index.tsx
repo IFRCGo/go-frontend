@@ -9,12 +9,19 @@ function useSanitizedHtml(rawHtml: string) {
     sanitizeHtml(
       rawHtml,
       {
-        allowedTags: ['b', 'h', 'p', 'bold', 'strong', 'li', 'ul', 'a'],
+        allowedTags: ['b', 'i', 'em', 'h', 'p', 'bold', 'strong', 'li', 'ul', 'a'],
         // TODO: create comprehensive list of the attributes used
         // to improve security
-        // allowedAttributes: {
-        //   a: ['href'],
-        // },
+        allowedAttributes: {
+          p: ['style'],
+          // a: ['href'],
+        },
+        allowedStyles: {
+          '*': {
+            // Allow indentation
+            'padding-left': [/^\d+(?:px)$/],
+          },
+        },
       },
     )
   ), [rawHtml]);
