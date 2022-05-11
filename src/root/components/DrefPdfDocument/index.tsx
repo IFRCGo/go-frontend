@@ -185,14 +185,13 @@ function PlannedInterventionOutput(props: PlannedInterventionProps) {
         </View>
       </View>
       <View style={pdfStyles.piRow}>
-        <View style={pdfStyles.piIconCell} />
         <View style={pdfStyles.piContentCell}>
           <Text style={[pdfStyles.piBorderCell, pdfStyles.fontWeightBoldAndLarge]}>
             {strings.drefExportIndicators}
           </Text>
         </View>
-        <View style={pdfStyles.piHeaderCell}>
-          <Text>
+        <View style={pdfStyles.piContentCell}>
+          <Text style={[pdfStyles.piBorderCell, pdfStyles.fontWeightBoldAndLarge]}>
             {strings.drefFormIndicatorTargetLabel}
           </Text>
         </View>
@@ -200,14 +199,13 @@ function PlannedInterventionOutput(props: PlannedInterventionProps) {
       {
         data?.indicators?.map((el) => (
           <View style={pdfStyles.piRow}>
-            <View style={pdfStyles.piIconCell} />
             <View style={pdfStyles.piContentCell}>
               <Text style={pdfStyles.piBorderCell}>
                 {el?.title}
               </Text>
             </View>
-            <View style={[pdfStyles.piHeaderCell, pdfStyles.fontWeightNormalAndSmall]}>
-              <Text style={pdfStyles.fontWeightNormalAndSmall}>
+            <View style={pdfStyles.piContentCell}>
+              <Text style={pdfStyles.piBorderCell}>
                 {el?.target}
               </Text>
             </View>
@@ -215,7 +213,6 @@ function PlannedInterventionOutput(props: PlannedInterventionProps) {
         ))
       }
       <View style={pdfStyles.piRow}>
-        <View style={pdfStyles.piIconCell} />
         <View style={pdfStyles.piHeaderCell}>
           <Text>
             {strings.drefExportPriorityActions}

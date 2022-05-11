@@ -330,12 +330,13 @@ const pdfStyles = StyleSheet.create({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    width: 30,
-    height: 30,
+    flexBasis: SECTION_WIDTH * 0.3,
+    border: TABLE_BORDER,
+
   },
   piIcon: {
-    width: 20,
-    height: 20,
+    width: 60,
+    height: 60,
   },
   piSubRow: {
     display: 'flex',
@@ -359,11 +360,11 @@ const pdfStyles = StyleSheet.create({
     padding: SMALL_PADDING,
     border: TABLE_BORDER,
     flexBasis: '30%',
+    fontWeight: 'bold',
   },
   piSubContentCell: {
     padding: SMALL_PADDING,
     border: TABLE_BORDER,
-    fontWeight: 'bold',
     flexBasis: '70%',
   },
   piBorderCell: {
@@ -442,6 +443,14 @@ const pdfStyles = StyleSheet.create({
 
   contactDetails: {
     marginLeft: SPACING_SMALL,
+  },
+  fontWeightNormalAndSmall: {
+    fontWeight: 'light',
+  },
+
+  fontWeightBoldAndLarge: {
+    fontWeight: 'bold',
+    fontSize: FONT_SIZE_LARGE,
   },
 });
 

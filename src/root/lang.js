@@ -3408,7 +3408,7 @@ export default {
   drefExportContactDescription: 'For further information, specifically related to this operation please contact:',
   drefExportBudget: 'Budget',
   drefExportTargetPersons: 'Targeted Persons',
-  drefExportIndicators: 'Indicators:',
+  drefExportIndicators: 'Indicators',
   drefExportPriorityActions: 'Priority Actions:',
   drefExportBudgetOverview: 'Budget Overview',
 
@@ -3589,4 +3589,5 @@ export default {
   operationalUpdateExportPeopleAffected: 'People affected',
   operationalUpdateExportPeopleTargeted: 'People targeted',
   operationalUpdateExportNewOperationalEndDate: 'New Operational end date',
+  operationalUpdateExportPersonReachedLabel: 'Persons reached:',
 };

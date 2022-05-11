@@ -330,12 +330,12 @@ const pdfStyles = StyleSheet.create({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    width: 40,
-    height: 30,
+    flexBasis: SECTION_WIDTH * 0.3,
+    border: TABLE_BORDER,
   },
   piIcon: {
-    width: 40,
-    height: 50,
+    width: 60,
+    height: 60,
   },
   piSubRow: {
     display: 'flex',
@@ -344,11 +344,12 @@ const pdfStyles = StyleSheet.create({
   },
   piHeaderCell: {
     flexBasis: SECTION_WIDTH * 0.3,
-    border: TABLE_BORDER,
     padding: SMALL_PADDING,
     color: COLOR_SECONDARY,
     fontSize: FONT_SIZE_LARGE,
     fontWeight: 'bold',
+    justifyContent: 'center',
+    alignSelf: 'center',
   },
   piContentCell: {
     flexBasis: SECTION_WIDTH * 0.7,
@@ -359,11 +360,11 @@ const pdfStyles = StyleSheet.create({
     padding: SMALL_PADDING,
     border: TABLE_BORDER,
     flexBasis: '30%',
+    fontWeight: 'bold'
   },
   piSubContentCell: {
     padding: SMALL_PADDING,
     border: TABLE_BORDER,
-    fontWeight: 'bold',
     flexBasis: '70%',
   },
   piBorderCell: {

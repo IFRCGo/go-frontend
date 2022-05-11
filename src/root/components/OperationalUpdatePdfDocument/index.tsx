@@ -160,47 +160,76 @@ function PlannedInterventionOutput(props: PlannedInterventionProps) {
         <View style={[pdfStyles.piContentCell, { flexDirection: 'column' }]}>
           <View style={pdfStyles.piSubRow}>
             <Text style={pdfStyles.piSubHeadingCell}>
-              {strings.drefExportBudget}
+              {strings.operationalUpdateExportPersonReachedLabel}
+            </Text>
+            <Text style={pdfStyles.piSubHeadingCell}>
+              {strings.drefOperationalUpdateIndicatorMaleLabel}
             </Text>
             <Text style={pdfStyles.piSubContentCell}>
-              {formatNumber(data.budget, 'CHF ')}
+              {data?.male}
             </Text>
           </View>
           <View style={pdfStyles.piSubRow}>
+            <Text style={pdfStyles.piSubHeadingCell} />
             <Text style={pdfStyles.piSubHeadingCell}>
-              {strings.drefExportTargetPersons}
+              {strings.drefOperationalUpdateIndicatorFemaleLabel}
             </Text>
             <Text style={pdfStyles.piSubContentCell}>
-              {data.person_targeted}
+              {data?.female}
             </Text>
           </View>
         </View>
       </View>
+
       <View style={pdfStyles.piRow}>
-        <View style={pdfStyles.piIconCell} />
-        <View style={pdfStyles.piHeaderCell}>
-          <Text>
+        <View style={pdfStyles.piContentCell}>
+          <Text style={[pdfStyles.piBorderCell, pdfStyles.fontWeightBoldAndLarge]}>
             {strings.drefExportIndicators}
           </Text>
         </View>
-        {/*<View style={pdfStyles.piContentCell}>
-          <Text style={pdfStyles.piBorderCell}>
-            {data.indicator}
-          </Text>
-        </View>*/}
-      </View>
-      <View style={pdfStyles.piRow}>
-        <View style={pdfStyles.piIconCell} />
         <View style={pdfStyles.piHeaderCell}>
           <Text>
-            {strings.drefExportPriorityActions}
+            {strings.drefFormIndicatorTargetLabel}
           </Text>
         </View>
-        <View style={pdfStyles.piContentCell}>
-          <Text style={pdfStyles.piBorderCell}>
-            {data.description}
+        <View style={pdfStyles.piHeaderCell}>
+          <Text>
+            {strings.drefOperationalUpdateIndicatorActualLabel}
           </Text>
         </View>
+      </View>
+
+      {
+        data?.indicators?.map((el) => (
+          <View style={pdfStyles.piRow}>
+            <View style={pdfStyles.piContentCell}>
+              <Text style={pdfStyles.piBorderCell}>
+                {el?.title}
+              </Text>
+            </View>
+            <View style={[pdfStyles.piHeaderCell, pdfStyles.fontWeightNormalAndSmall]}>
+              <Text style={pdfStyles.fontWeightNormalAndSmall}>
+                {el?.target}
+              </Text>
+            </View>
+            <View style={[pdfStyles.piHeaderCell, pdfStyles.fontWeightNormalAndSmall]}>
+              <Text style={pdfStyles.fontWeightNormalAndSmall}>
+                {el?.actual}
+              </Text>
+            </View>
+          </View>
+        ))
+      }
+
+      <View style={pdfStyles.piRow}>
+        <Text style={[pdfStyles.piBorderCell, pdfStyles.fontWeightBoldAndLarge]}>
+          {strings.drefOperationalUpdateProgressTowardsOutcome}
+        </Text>
+      </View>
+      <View style={pdfStyles.piRow}>
+        <Text style={pdfStyles.piBorderCell}>
+          {data?.progress_towards_outcome}
+        </Text>
       </View>
     </View>
   );
