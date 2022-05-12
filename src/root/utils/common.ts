@@ -194,4 +194,15 @@ export function isValidNumber(value: unknown): value is number  {
   return true;
 }
 
+export function downloadFromUrl(url: string, downloadFileName: string) {
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = downloadFileName;
+  link.target = '_blank';
+  link.style.display = 'none';
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}
+
 export type SetValueArg<T> = T | ((value: T) => T);

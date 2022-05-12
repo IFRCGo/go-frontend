@@ -24,6 +24,7 @@ import {
 import { FlashUpdateAPIResponseFields } from '#views/FlashUpdateApplicationForm/common';
 
 import ShareButton from './ShareButton';
+import ExportButton from './ExportButton';
 
 import styles from './styles.module.scss';
 
@@ -140,15 +141,19 @@ function FlashUpdateReport(props: Props) {
       }
       actions={response && (
         <>
-            <ShareButton
-              flashUpdateId={response.id}
-            />
-            <ButtonLikeLink
-              variant="primary"
-              to={`/flash-update/${response.id}/edit/`}
-            >
-              Edit
-            </ButtonLikeLink>
+          <ExportButton
+            flashUpdateId={response.id}
+            title={response.title}
+          />
+          <ShareButton
+            flashUpdateId={response.id}
+          />
+          <ButtonLikeLink
+            variant="primary"
+            to={`/flash-update/${response.id}/edit/`}
+          >
+            Edit
+          </ButtonLikeLink>
         </>
       )}
       mainSectionClassName={styles.mainContent}
@@ -224,12 +229,13 @@ function FlashUpdateReport(props: Props) {
               {response.actions_taken.map((at) => (
                 (at?.actions?.length !== 0 || isDefined(at?.summary)) && (
                   <Container
+                    className={styles.containerWithShadow}
                     sub
                     heading={at.organization_display}
                     headingSize="small"
-                    hideHeaderBorder
                     contentClassName={styles.actionTakenContent}
                     key={at.id}
+                    headerClassName={styles.headerWithBackground}
                   >
                     {at.summary && (
                       <div className={styles.summary}>

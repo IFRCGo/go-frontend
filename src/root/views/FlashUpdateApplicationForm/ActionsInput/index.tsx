@@ -54,20 +54,20 @@ function ActionsInput(props: Props) {
   ] = React.useMemo(() => ([
     {
       NTLS: strings.flashUpdateFormActionTakenByNationalSocietyPlaceholder,
-      PNS: strings.flashUpdateFormActionTakenByIfrcPlaceholder,
-      FDRN: strings.flashUpdateFormActionTakenByRcrcPlaceholder,
+      PNS: strings.flashUpdateFormActionTakenByRcrcPlaceholder,
+      FDRN: strings.flashUpdateFormActionTakenByIfrcPlaceholder,
       GOV: strings.flashUpdateFormActionTakenByGovernmentPlaceholder,
     },
     {
       NTLS: strings.flashUpdateFormActionTakenByNationalSocietyLabel,
-      PNS: strings.flashUpdateFormActionTakenByIfrcLabel,
-      FDRN: strings.flashUpdateFormActionTakenByRcrcLabel,
+      PNS: strings.flashUpdateFormActionTakenByRcrcLabel,
+      FDRN: strings.flashUpdateFormActionTakenByIfrcLabel,
       GOV: strings.flashUpdateFormActionTakenByGovernmentLabel,
     },
     {
       NTLS: strings.flashUpdateFormActionTakenByNationalSocietyDescription,
-      PNS: strings.flashUpdateFormActionTakenByIfrcDescription,
-      FDRN: strings.flashUpdateFormActionTakenByRcrcDescription,
+      PNS: strings.flashUpdateFormActionTakenByRcrcDescription,
+      FDRN: strings.flashUpdateFormActionTakenByIfrcDescription,
       GOV: strings.flashUpdateFormActionTakenByGovernmentDescription,
     },
   ] as const), [strings]);
