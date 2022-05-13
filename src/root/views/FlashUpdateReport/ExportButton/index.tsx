@@ -33,7 +33,6 @@ function ExportButton(props: Props) {
 
   const {
     trigger: triggerExportRequest,
-    response,
     pending,
   } = useLazyRequest<Response>({
     url: `/api/v2/export-flash-update/${flashUpdateId}`,

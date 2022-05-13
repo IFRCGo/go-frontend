@@ -6,6 +6,7 @@ import {
   ArraySchema,
   emailCondition,
   requiredCondition,
+  defaultEmptyArrayType,
 } from '@togglecorp/toggle-form';
 import { compareString } from '#utils/utils';
 import {
@@ -83,7 +84,7 @@ export const schema: FormSchema = {
 
             return undefined;
           }],
-          district: [requiredCondition]
+          district: [defaultEmptyArrayType]
         }),
       }),
     },
