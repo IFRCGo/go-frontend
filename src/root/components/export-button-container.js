@@ -92,6 +92,9 @@ class ExportButton extends React.Component {
       limit: 199999,
       offset: 0
     });
+    if (this.props.onlyFromAndSign) {
+      return url.resolve(api, this.props.resource) + '&' + stringify(qs);
+    }
     return url.resolve(api, this.props.resource) + '/?' + stringify(qs);
   }
 
@@ -109,6 +112,7 @@ if (environment !== 'production') {
     filename: T.string,
     qs: T.object,
     resource: T.string,
+    onlyFromAndSign: T.bool,
     csv: T.object
   };
 }
