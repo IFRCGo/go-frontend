@@ -64,7 +64,8 @@
       .actions-taken {
         display: flex;
         flex-direction: column;
-        gap: $spacing * 3;
+        gap: $spacing;
+        padding: $spacing;
 
         .title {
           font-size: $font-size-sm;
@@ -121,5 +122,13 @@
       }
     }
 
+  }
+
+  .container-with-shadow {
+    box-shadow: $base-box-shadow;
+  }
+
+  .header-with-background {
+    background-color: $grey-mist;
   }
 }
