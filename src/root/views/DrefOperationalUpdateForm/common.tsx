@@ -65,6 +65,7 @@ export interface NsAction {
   clientId: string;
   title: string;
   description: string;
+  title_display: string;
 }
 
 export interface Indicator {
@@ -110,7 +111,6 @@ export interface DrefOperationalUpdateFields {
   is_timeframe_extension_required: boolean;
   new_operational_end_date: string;
   total_operation_timeframe: number;
-  date_of_approval: string;
   changing_timeframe_operation: boolean;
   changing_operation_strategy: boolean;
   changing_target_population_of_operation: boolean;
@@ -219,8 +219,6 @@ export const overviewFields: (keyof DrefOperationalUpdateFields)[] = [
   'is_timeframe_extension_required',
   'new_operational_end_date',
   'total_operation_timeframe',
-  'date_of_approval'
-
 ];
 export const eventFields: (keyof DrefOperationalUpdateFields)[] = [
   'changing_timeframe_operation',

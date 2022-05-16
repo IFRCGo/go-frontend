@@ -112,7 +112,6 @@ export const schema: FormSchema = {
     is_timeframe_extension_required: [],
     new_operational_end_date: [],
     total_operation_timeframe: [],
-    date_of_approval: [],
     changing_timeframe_operation: [],
     changing_operation_strategy: [],
     changing_target_population_of_operation: [],
@@ -200,7 +199,7 @@ export const schema: FormSchema = {
                 clientId: [],
                 title: [],
                 target: [positiveNumberCondition],
-                actual: [],
+                actual: [positiveNumberCondition],
               })
             })
           },

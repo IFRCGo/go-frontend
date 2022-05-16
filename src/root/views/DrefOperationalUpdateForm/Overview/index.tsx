@@ -344,16 +344,6 @@ function Overview(props: Props) {
             error={error?.total_operation_timeframe}
           />
         </InputSection>
-        <InputSection
-          title={strings.drefOperationalUpdateTimeFrameDateOfApproval}
-        >
-          <DateInput
-            name="date_of_approval"
-            value={value.date_of_approval}
-            onChange={onValueChange}
-            error={error?.date_of_approval}
-          />
-        </InputSection>
       </Container>
     </>
   );

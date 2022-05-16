@@ -3559,7 +3559,7 @@ export default {
   drefOperationalUpdateTimeFrameDateOfEvent: 'Operation start Date',
   drefOperationalUpdateTimeFrameReportingTimeFrame: 'Reporting timeframe',
   drefOperationalUpdateTimeFrameExtensionRequested: 'Is timeframe extension requested?',
-  drefOperationalUpdateTimeFrameExtensionRequestedIfYes: 'If yes, provide a new operational end date',
+  drefOperationalUpdateTimeFrameExtensionRequestedIfYes: 'New operational end date',
   drefOperationalUpdateTimeFrameTotalOperatingTimeFrame: 'Total operating timeframe',
   drefOperationalUpdateTimeFrameDateOfApproval: 'Date of approval',
   // Summary of changes

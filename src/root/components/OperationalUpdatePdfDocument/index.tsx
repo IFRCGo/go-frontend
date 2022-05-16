@@ -61,7 +61,7 @@ function NationalSocietyActions(props: NationalSocietyActionsProps) {
     <View>
       <View style={pdfStyles.row}>
         <View style={pdfStyles.niHeaderCell}>
-          <Text>{data.title}</Text>
+          <Text>{data.title_display}</Text>
         </View>
         <View style={pdfStyles.niContentCell}>
           <Text>{data.description}</Text>
@@ -353,7 +353,6 @@ function OperationalUpdatePdfDocument(props: Props) {
   const [
     piMap,
     niMap,
-    nsaMap,
   ] = getMaps();
 
   const getAffectedAreas = () => {
@@ -457,8 +456,8 @@ function OperationalUpdatePdfDocument(props: Props) {
                 <View style={pdfStyles.compactSection}>
                   <View style={pdfStyles.compactSection}>
                     <TextOutput
-                      label={strings.drefExportDrefLaunched}
-                      value={operationalUpdateResponse.date_of_approval}
+                      label={strings.drefOperationalUpdateTimeFrameDateOfEvent}
+                      value={operationalUpdateResponse.new_operational_start_date}
                       columns="1/2"
                     />
                     <View style={[pdfStyles.compactSection, pdfStyles.oneByTwo]}>
