@@ -30,9 +30,6 @@ type SetValueArg<T> = T | ((value: T) => T);
 
 const defaultInterventionValue: PartialForm<Intervention> = {
   clientId: randomString(),
-  indicators: [{
-    clientId: randomString(),
-  }]
 };
 
 interface Props {
@@ -75,7 +72,6 @@ function InterventionInput(props: Props) {
     'indicators',
     onFieldChange,
   );
-
 
   type Indicators = typeof value.indicators;
   const handleIndicatorAddButtonClick = React.useCallback((title, target) => {
@@ -155,8 +151,6 @@ function InterventionInput(props: Props) {
               variant="secondary"
               name={indicator}
               onClick={handleIndicatorAddButtonClick}
-            //TODO:
-            //disabled={isNotDefined(indicator)}
             >
               Add Indicator
             </Button>

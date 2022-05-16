@@ -19,7 +19,6 @@ import { Disaster } from '#types/project';
 import { Country } from '#types/country';
 import {
   positiveIntegerCondition,
-  positiveNumberCondition,
 } from '#utils/form';
 
 import {
@@ -100,9 +99,9 @@ export const schema: FormSchema = {
       }),
     },
 
-    number_of_people_affected: [],
-    number_of_people_targeted: [],
-    additional_allocation: [],
+    number_of_people_affected: [positiveIntegerCondition],
+    number_of_people_targeted: [positiveIntegerCondition],
+    additional_allocation: [positiveIntegerCondition],
     total_dref_allocation: [],
     emergency_appeal_planned: [],
     images: [],
@@ -111,7 +110,7 @@ export const schema: FormSchema = {
     reporting_timeframe: [],
     is_timeframe_extension_required: [],
     new_operational_end_date: [],
-    total_operation_timeframe: [],
+    total_operation_timeframe: [positiveIntegerCondition],
     changing_timeframe_operation: [],
     changing_operation_strategy: [],
     changing_target_population_of_operation: [],
@@ -130,15 +129,15 @@ export const schema: FormSchema = {
     people_assisted: [],
     selection_criteria: [],
     entity_affected: [],
-    women: [],
-    men: [],
-    girls: [],
-    boys: [],
-    disability_people_per: [],
-    people_per_urban: [],
-    people_per_local: [],
-    displaced_people: [],
-    people_targeted_with_early_actions: [],
+    women: [positiveIntegerCondition],
+    men: [positiveIntegerCondition],
+    girls: [positiveIntegerCondition],
+    boys: [positiveIntegerCondition],
+    disability_people_per: [positiveIntegerCondition],
+    people_per_urban: [positiveIntegerCondition],
+    people_per_local: [positiveIntegerCondition],
+    displaced_people: [positiveIntegerCondition],
+    people_targeted_with_early_actions: [positiveIntegerCondition],
     operation_objective: [],
     response_strategy: [],
     appeal_code: [],
@@ -197,16 +196,16 @@ export const schema: FormSchema = {
             member: (): IndicatorsSchemaMember => ({
               fields: (): IndicatorSchemaFields => ({
                 clientId: [],
-                title: [],
-                target: [positiveNumberCondition],
-                actual: [positiveNumberCondition],
+                title: [requiredCondition],
+                target: [positiveIntegerCondition],
+                actual: [positiveIntegerCondition],
               })
             })
           },
           description: [],
           progress_towards_outcome: [],
-          male: [],
-          female: [],
+          male: [positiveIntegerCondition],
+          female: [positiveIntegerCondition],
         }),
       }),
     },
