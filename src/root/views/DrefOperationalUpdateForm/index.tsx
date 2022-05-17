@@ -268,6 +268,10 @@ function DrefOperationalUpdate(props: Props) {
         planned_interventions: response.planned_interventions?.map((pi) => ({
           ...pi,
           clientId: String(pi.id),
+          indicators: pi?.indicators?.map((i) => ({
+            ...i,
+            clientId: String(i.id)
+          })),
         })),
         national_society_actions: response.national_society_actions?.map((nsa) => ({
           ...nsa,

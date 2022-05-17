@@ -184,9 +184,12 @@ export interface DrefOperationalUpdateApiFields extends Omit<DrefOperationalUpda
     country_details: Country,
     district_details: DistrictMini[],
   })[];
-  planned_interventions: (Omit<Intervention, 'clientId'> & {
+  planned_interventions: (Omit<Intervention, 'clientId' | 'indicators'> & {
     id: number,
     image_url: string,
+    indicators: (Omit<Indicator, 'clientId'> & {
+      id: number,
+    })[],
   })[];
   national_society_actions: (Omit<NsAction, 'clientId'> & { id: number })[];
   needs_identified: (Omit<Need, 'clientId'> & {

@@ -91,7 +91,6 @@ function InterventionInput(props: Props) {
     setIndicator(undefined);
   }, [onFieldChange, setIndicator]);
 
-
   return (
     <div className={styles.interventionInput}>
       <InputSection
