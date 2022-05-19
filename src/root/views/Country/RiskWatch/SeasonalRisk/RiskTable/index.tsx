@@ -13,7 +13,8 @@ import { RiskData } from '../common';
 
 import styles from './styles.module.scss';
 
-function getAverageForSelectedMonths(data: undefined | (number | null)[], selectedMonths: Record<number, boolean>) {
+// TODO move to utils
+export function getAverageForSelectedMonths(data: undefined | (number | null)[], selectedMonths: Record<number, boolean>) {
   const dataWithSelectedMonths = data?.filter((_, i) => selectedMonths[i]);
   return avgSafe(dataWithSelectedMonths ?? []);
 }

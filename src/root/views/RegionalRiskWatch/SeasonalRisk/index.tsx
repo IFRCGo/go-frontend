@@ -73,7 +73,20 @@ function SeasonalRisk(props: Props) {
     url: 'risk://api/v1/seasonal/',
   });
 
-  const [selectedMonth, setSelectedMonth] = useInputState(0);
+  const [selectedMonths, setSelectedMonths] = useInputState<Record<number, boolean>>({
+    0: true,
+    1: false,
+    2: false,
+    3: false,
+    4: false,
+    5: false,
+    6: false,
+    7: false,
+    8: false,
+    9: false,
+    10: false,
+    11: false,
+  });
 
   const [
     aggregatedRiskData,
@@ -242,8 +255,8 @@ function SeasonalRisk(props: Props) {
     <>
       <RiskMap
         riskData={aggregatedRiskData}
-        selectedMonth={selectedMonth}
-        setSelectedMonth={setSelectedMonth}
+        selectedMonths={selectedMonths}
+        setSelectedMonths={setSelectedMonths}
         hazardOptions={hazardOptions}
         regionId={regionId}
       />

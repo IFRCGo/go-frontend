@@ -4,7 +4,6 @@ import { _cs } from '@togglecorp/fujs';
 import RawButton from '#components/RawButton';
 import { getFullMonthNameList } from '#utils/common';
 import languageContext from '#root/languageContext';
-import Checkmark from '#components/Checkbox/Checkmark';
 
 import styles from './styles.module.scss';
 

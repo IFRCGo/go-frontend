@@ -30,6 +30,8 @@ import Pager from '#components/Pager';
 import Container from '#components/Container';
 import Button from '#components/Button';
 import SelectInput from '#components/SelectInput';
+import MonthSelector from '#views/Country/RiskWatch/SeasonalRisk/MonthSelector';
+import RiskTable, { getAverageForSelectedMonths } from '#views/Country/RiskWatch/SeasonalRisk/RiskTable';
 import useReduxState from '#hooks/useReduxState';
 import useInputState from '#hooks/useInputState';
 import {
@@ -42,8 +44,6 @@ import {
   RiskData,
   riskMetricOptions,
 } from '../common';
-import RiskTable from '../RiskTable';
-import MonthSelector from './MonthSelector';
 import styles from './styles.module.scss';
 
 type RiskMetricType = (typeof riskMetricOptions)[number]['value'];
@@ -186,7 +186,7 @@ function MapLegend(props: MapLegendProps) {
 interface ChoroplethProps {
   riskData: Record<string, RiskData>[];
   selectedHazard: HazardTypes;
-  selectedMonth: number;
+  selectedMonths: Record<number, boolean>;
   selectedRiskMetric: (typeof riskMetricOptions)[number]['value'];
 }
 
@@ -194,7 +194,7 @@ function Choropleth(props: ChoroplethProps) {
   const {
     riskData: hazardGroupedRiskData,
     selectedHazard,
-    selectedMonth,
+    selectedMonths,
     selectedRiskMetric,
   } = props;
 
@@ -231,7 +231,10 @@ function Choropleth(props: ChoroplethProps) {
       }
 
       if (selectedRiskMetric === 'displacement') {
-        const displacement = riskData?.displacement?.monthly?.[selectedMonth];
+        const displacement = getAverageForSelectedMonths(
+          riskData?.displacement?.monthly,
+          selectedMonths,
+        );
         let color = COLOR_LIGHT_GREY;
 
         if (isDefined(displacement)) {
@@ -257,7 +260,11 @@ function Choropleth(props: ChoroplethProps) {
       }
 
       if (selectedRiskMetric === 'exposure') {
-        const exposure = riskData?.exposure?.monthly?.[selectedMonth];
+        const exposure = getAverageForSelectedMonths(
+          riskData?.exposure?.monthly,
+          selectedMonths,
+        );
+
         let color = COLOR_LIGHT_GREY;
 
         if (isDefined(exposure)) {
@@ -283,7 +290,10 @@ function Choropleth(props: ChoroplethProps) {
       }
 
       if (selectedRiskMetric === 'informRiskScore') {
-        const riskScore = riskData?.informRiskScore?.monthly?.[selectedMonth];
+        const riskScore = getAverageForSelectedMonths(
+          riskData?.informRiskScore?.monthly,
+          selectedMonths,
+        );
         let color = COLOR_LIGHT_GREY;
         if (isDefined(riskScore)) {
           if (riskScore >= INFORM_RISK_LOW) {
@@ -325,8 +335,8 @@ interface Props {
   regionId?: number;
   hazardOptions: StringValueOption[];
   riskData: Record<string, RiskData>[];
-  selectedMonth: number;
-  setSelectedMonth: React.Dispatch<React.SetStateAction<number>>;
+  selectedMonths: Record<number, boolean>;
+  setSelectedMonths: React.Dispatch<React.SetStateAction<Record<number, boolean>>>;
 }
 
 function SeasonalRiskMap(props: Props) {
@@ -335,8 +345,8 @@ function SeasonalRiskMap(props: Props) {
     regionId,
     hazardOptions,
     riskData,
-    selectedMonth,
-    setSelectedMonth,
+    selectedMonths,
+    setSelectedMonths,
   } = props;
 
   const [activeIso, setActiveIso] = React.useState<string>();
@@ -386,6 +396,7 @@ function SeasonalRiskMap(props: Props) {
     });
   }, []);
 
+
   return (
     <>
       <Container
@@ -422,7 +433,7 @@ function SeasonalRiskMap(props: Props) {
                 riskData={riskData}
                 selectedHazard={hazardType}
                 selectedRiskMetric={riskMetric}
-                selectedMonth={selectedMonth}
+                selectedMonths={selectedMonths}
               />
             )}
             <MapContainer className={styles.map} />
@@ -436,8 +447,8 @@ function SeasonalRiskMap(props: Props) {
           />
           <MonthSelector
             name={undefined}
-            value={selectedMonth}
-            onChange={setSelectedMonth}
+            value={selectedMonths}
+            onChange={setSelectedMonths}
             className={styles.monthSelector}
           />
         </div>
@@ -475,7 +486,7 @@ function SeasonalRiskMap(props: Props) {
             {activeIso === c && (
               <RiskTable
                 key={c}
-                selectedMonth={selectedMonth}
+                selectedMonths={selectedMonths}
                 riskData={countryGroupedRiskData[c]}
               />
             )}

@@ -25,7 +25,10 @@
 
       .month-selector {
         position: absolute;
-        bottom: $spacing*4;
+        bottom: $spacing*2;
+        width: 100%;
+        max-width: 30rem;
+        padding: $spacing;
       }
     }
   }
