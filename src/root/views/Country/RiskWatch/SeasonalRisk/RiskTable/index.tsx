@@ -1,5 +1,9 @@
 import React  from 'react';
-import { _cs } from '@togglecorp/fujs';
+import {
+  _cs,
+  isNotDefined,
+  isDefined,
+} from '@togglecorp/fujs';
 
 import InfoPopup from '#components/InfoPopup';
 import Table from '#components/Table';
@@ -17,6 +21,56 @@ import styles from './styles.module.scss';
 export function getAverageForSelectedMonths(data: undefined | (number | null)[], selectedMonths: Record<number, boolean>) {
   const dataWithSelectedMonths = data?.filter((_, i) => selectedMonths[i]);
   return avgSafe(dataWithSelectedMonths ?? []);
+}
+
+function getAverageDisplacementValueForSelectedMonths(
+  displacementData: undefined | (number | null)[],
+  exposureData: undefined | (number | null)[],
+  selectedMonths: Record<number, boolean>,
+) {
+  const avgDisplacement = getAverageForSelectedMonths(displacementData, selectedMonths);
+  const avgExposure = getAverageForSelectedMonths(exposureData, selectedMonths);
+
+  // Avoid cases where displacement > exposure
+  if (isDefined(avgExposure) && isDefined(avgDisplacement)) {
+    if (avgDisplacement > avgExposure) {
+      return avgExposure;
+    }
+  }
+
+  return avgDisplacement;
+}
+
+function riskScoreToCategory(score: number | undefined | null) {
+  if (isNotDefined(score)) {
+    return '-';
+  }
+
+  if (score > 10) {
+    return 'N/A';
+  }
+
+  if (score >= 6.5) {
+    return 'Very high';
+  }
+
+  if (score >= 5) {
+    return 'High';
+  }
+
+  if (score >= 3.5) {
+    return 'Medium';
+  }
+
+  if (score >= 2) {
+    return 'Low';
+  }
+
+  if (score >= 0) {
+    return 'Very low';
+  }
+
+  return 'N/A';
 }
 
 interface Props {
@@ -41,7 +95,7 @@ function RiskTable(props: Props) {
 
     return ([
       hazardTypeColumn,
-      createNumberColumn<RiskData, string | number>(
+      createStringColumn<RiskData, string | number>(
         'informRiskScore',
         <div className={styles.columnHeading}>
           Inform Risk Score
@@ -60,12 +114,7 @@ function RiskTable(props: Props) {
             )}
           />
         </div>,
-        (item) => getAverageForSelectedMonths(item.informRiskScore?.monthly, selectedMonths),
-        undefined,
-        {
-          normal: true,
-          precision: 1,
-        },
+        (item) => riskScoreToCategory(getAverageForSelectedMonths(item.informRiskScore?.monthly, selectedMonths)),
       ),
       createNumberColumn<RiskData, string | number>(
         'peopleExposed',
@@ -92,7 +141,11 @@ function RiskTable(props: Props) {
             description="These figures represent the number of people expected to be displaced per month, on average, by each hazard. The estimates are based on the Internal Displacement Monitoring Centre's disaster displacement risk model using estimates for average annual displacement risk. These values were disaggregated by month based on historical displacement data associated with each hazard."
           />
         </div>,
-        (item) => getAverageForSelectedMonths(item.displacement?.monthly, selectedMonths),
+        (item) => getAverageDisplacementValueForSelectedMonths(
+          item.displacement?.monthly,
+          item.exposure?.monthly,
+          selectedMonths,
+        ),
         undefined,
         {
           normal: true,

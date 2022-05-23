@@ -30,7 +30,6 @@ import {
   SeasonalResponse,
   monthKeys,
 } from './common';
-// import RiskMap from './Map';
 import RiskTable from './RiskTable';
 import ReturnPeriodTable from './ReturnPeriodTable';
 import MonthSelector from './MonthSelector';

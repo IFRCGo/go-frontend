@@ -23,6 +23,8 @@ import {
   COLOR_LIGHT_GREY,
   COLOR_ORANGE,
   COLOR_YELLOW,
+  COLOR_LIGHT_YELLOW,
+  COLOR_DARK_RED,
   defaultMapStyle,
   defaultMapOptions,
 } from '#utils/map';
@@ -56,9 +58,12 @@ const EXPOSURE_LOW = 100;
 const EXPOSURE_MEDIUM = 1000;
 const EXPOSURE_HIGH = 10000;
 
+const INFORM_RISK_VERY_LOW = 0;
 const INFORM_RISK_LOW = 2;
 const INFORM_RISK_MEDIUM = 3.5;
 const INFORM_RISK_HIGH = 5;
+const INFORM_RISK_VERY_HIGH = 6.5;
+const INFORM_RISK_MAXIMUM = 10;
 
 interface LegendItemProps {
   color: string;
@@ -134,16 +139,24 @@ const exposureLegendData = [
 
 const informLegendData = [
   {
+    color: COLOR_LIGHT_YELLOW,
+    label: `Very low (${INFORM_RISK_VERY_LOW} - ${INFORM_RISK_LOW-0.1})`,
+  },
+  {
     color: COLOR_YELLOW,
-    label: `${INFORM_RISK_LOW} to ${INFORM_RISK_MEDIUM-0.1}`,
+    label: `Low (${INFORM_RISK_LOW} - ${INFORM_RISK_MEDIUM-0.1})`,
   },
   {
     color: COLOR_ORANGE,
-    label: `${INFORM_RISK_MEDIUM} to ${INFORM_RISK_HIGH}`,
+    label: `Medium (${INFORM_RISK_MEDIUM} - ${INFORM_RISK_HIGH-0.1})`,
   },
   {
     color: COLOR_RED,
-    label: `More than ${INFORM_RISK_HIGH}`,
+    label: `High (${INFORM_RISK_HIGH} - ${INFORM_RISK_VERY_HIGH})`,
+  },
+  {
+    color: COLOR_DARK_RED,
+    label: `Very high (${INFORM_RISK_VERY_HIGH} - ${INFORM_RISK_MAXIMUM})`,
   },
 ];
 
@@ -296,16 +309,18 @@ function Choropleth(props: ChoroplethProps) {
         );
         let color = COLOR_LIGHT_GREY;
         if (isDefined(riskScore)) {
-          if (riskScore >= INFORM_RISK_LOW) {
-            color = COLOR_YELLOW;
-          }
-
-          if (riskScore >= INFORM_RISK_MEDIUM) {
-            color = COLOR_ORANGE;
-          }
-
-          if (riskScore >= INFORM_RISK_HIGH) {
+          if (riskScore > INFORM_RISK_MAXIMUM) {
+            color = COLOR_LIGHT_GREY;
+          } else if (riskScore >= INFORM_RISK_VERY_HIGH) {
+            color = COLOR_DARK_RED;
+          } else if (riskScore >= INFORM_RISK_HIGH) {
             color = COLOR_RED;
+          } else if (riskScore >= INFORM_RISK_MEDIUM) {
+            color = COLOR_ORANGE;
+          } else if (riskScore >= INFORM_RISK_LOW) {
+            color = COLOR_YELLOW;
+          } else if (riskScore >= INFORM_RISK_VERY_LOW) {
+            color = COLOR_LIGHT_YELLOW;
           }
         }
 
