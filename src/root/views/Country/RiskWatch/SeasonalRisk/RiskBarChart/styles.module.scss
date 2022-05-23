@@ -1,3 +1,5 @@
+@use "sass:math";
+
 @import "~styles/settings/variables";
 
 .risk-chart {
@@ -78,7 +80,7 @@
 .fi-legend-item {
   display: flex;
   align-items: center;
-  gap: $spacing*2/3;
+  gap: math.div($spacing*2, 3);
 
   .label {
     font-weight: $base-font-medium;
