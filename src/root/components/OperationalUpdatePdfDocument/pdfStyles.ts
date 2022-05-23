@@ -64,6 +64,7 @@ const pdfStyles = StyleSheet.create({
 
   section: {
     ...section.style,
+    textAlign: 'justify',
   },
 
   subSection: {
@@ -255,6 +256,7 @@ const pdfStyles = StyleSheet.create({
     padding: SPACING_SMALL,
     width: '50%',
     fontWeight: 'bold',
+    textAlign: 'justify',
   },
   cellTitle: {
     border: TABLE_BORDER,
@@ -406,6 +408,7 @@ const pdfStyles = StyleSheet.create({
     padding: SMALL_PADDING,
     border: TABLE_BORDER,
     flexBasis: '70%',
+    textAlign: 'justify',
   },
 
   budgetOverview: {
@@ -435,6 +438,7 @@ const pdfStyles = StyleSheet.create({
     ...subSection.style,
     display: 'flex',
     flexDirection: 'column',
+    textAlign: 'justify',
   },
 
   contactType: {
@@ -455,4 +459,3 @@ const pdfStyles = StyleSheet.create({
 });
 
 export default pdfStyles;
-
