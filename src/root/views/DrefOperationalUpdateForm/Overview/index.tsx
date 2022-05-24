@@ -238,6 +238,17 @@ function Overview(props: Props) {
           />
         </InputSection>
         <InputSection
+          title={strings.drefOperationalUpdateAllocationSoFar}
+        >
+          <NumberInput
+            name="dref_allocated_so_far"
+            value={value.dref_allocated_so_far}
+            onChange={undefined}
+            error={error?.dref_allocated_so_far}
+            readOnly
+          />
+        </InputSection>
+        <InputSection
           title={strings.drefOperationalUpdateAdditionalAllocationRequested}
         >
           <NumberInput
@@ -253,7 +264,7 @@ function Overview(props: Props) {
           <NumberInput
             name="total_dref_allocation"
             value={value.total_dref_allocation}
-            onChange={onValueChange}
+            onChange={undefined}
             error={error?.total_dref_allocation}
             readOnly
           />

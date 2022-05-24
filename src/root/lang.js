@@ -3551,6 +3551,7 @@ export default {
   drefOperationalUpdateOperationLabel: 'Operation',
   drefOperationalUpdateSubmissionLabel: 'Submission',
   // Overview
+  drefOperationalUpdateAllocationSoFar: 'Budget Allocated So far',
   drefOperationalUpdateAdditionalAllocationRequested: 'Additional Allocation Requested',
   drefOperationalUpdateTotalAllocation: 'Total DREF Allocation',
   drefOperationalUpdateNumber: 'Operational Update Number',
