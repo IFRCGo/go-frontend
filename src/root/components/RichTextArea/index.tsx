@@ -2,13 +2,18 @@ import React from 'react';
 import { Editor } from '@tinymce/tinymce-react';
 import { RawEditorSettings } from 'tinymce';
 import { _cs } from '@togglecorp/fujs';
+import { tinyApiKey } from '#config';
 
 import InputContainer, { Props as InputContainerProps } from '#components/InputContainer';
 
 import styles from './styles.module.scss';
 
 const editorSettings: Omit<RawEditorSettings, 'selector' | 'target'> = {
-  menubar: false,
+  menubar: false, // https://www.tiny.cloud/docs/advanced/available-toolbar-buttons
+  plugins: ['advlist autolink lists link help'],
+  toolbar: 'undo redo | formatselect | ' +
+      'bold italic underlined | alignleft aligncenter alignright alignjustify |' +
+      'bullist numlist outdent indent | removeformat | help',
 };
 
 type InheritedProps<T> = Omit<InputContainerProps, 'input'> & {
@@ -61,7 +66,7 @@ function RichTextArea<T extends string | undefined>(props: Props<T>) {
       input={(
         <Editor
           {...otherInputProps}
-          apiKey={process.env.REACT_APP_TINY_API_KEY}
+          apiKey={tinyApiKey}
           init={editorSettings}
           value={value}
           onEditorChange={handleChange}
