@@ -8,7 +8,11 @@ import InputContainer, { Props as InputContainerProps } from '#components/InputC
 import styles from './styles.module.scss';
 
 const editorSettings: Omit<RawEditorSettings, 'selector' | 'target'> = {
-  menubar: false,
+  menubar: false, // https://www.tiny.cloud/docs/advanced/available-toolbar-buttons
+  plugins: ['advlist autolink lists link help'],
+  toolbar: 'undo redo | formatselect | ' +
+      'bold italic underlined | alignleft aligncenter alignright alignjustify |' +
+      'bullist numlist outdent indent | removeformat | help',
 };
 
 type InheritedProps<T> = Omit<InputContainerProps, 'input'> & {
