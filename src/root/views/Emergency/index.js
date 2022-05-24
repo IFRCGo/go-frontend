@@ -737,7 +737,7 @@ class Emergency extends React.Component {
       let t = { ...typ };
       const initialItemsLength = t.items.length;
       t.items = t.items.filter(item => {
-        return item.name.indexOf(search) !== -1;
+        return item.name.toLowerCase().indexOf(search.toLowerCase()) !== -1;
       });
       if (t.items.length === 0 && initialItemsLength > 0) {
         t.noSearchResults = true;
