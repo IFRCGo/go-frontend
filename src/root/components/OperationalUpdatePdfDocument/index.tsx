@@ -501,7 +501,7 @@ function OperationalUpdatePdfDocument(props: Props) {
             {strings.drefOperationalUpdateSummaryChangeHeading}
           </Text>
           <View>
-            <View style={pdfStyles.row}>
+            <View style={pdfStyles.row} wrap={false}>
               <Text style={pdfStyles.cellTitle}>
                 {strings.drefOperationalUpdateSummaryAreYouChangingTimeFrame}
               </Text>
@@ -509,7 +509,7 @@ function OperationalUpdatePdfDocument(props: Props) {
                 {formatBoolean(operationalUpdateResponse.changing_timeframe_operation)}
               </Text>
             </View>
-            <View style={pdfStyles.row}>
+            <View style={pdfStyles.row} wrap={false}>
               <Text style={pdfStyles.cellTitle}>
                 {strings.drefOperationalUpdateSummaryAreYouChangingStrategy}
               </Text>
@@ -517,7 +517,7 @@ function OperationalUpdatePdfDocument(props: Props) {
                 {formatBoolean(operationalUpdateResponse.changing_operation_strategy)}
               </Text>
             </View>
-            <View style={pdfStyles.row}>
+            <View style={pdfStyles.row} wrap={false}>
               <View style={pdfStyles.cellTitle}>
                 <Text>{strings.drefOperationalUpdateSummaryAreYouChangingTargetPopulation}</Text>
               </View>
@@ -525,7 +525,7 @@ function OperationalUpdatePdfDocument(props: Props) {
                 <Text>{formatBoolean(operationalUpdateResponse.changing_target_population_of_operation)}</Text>
               </View>
             </View>
-            <View style={pdfStyles.row}>
+            <View style={pdfStyles.row} wrap={false}>
               <View style={pdfStyles.cellTitle}>
                 <Text>{strings.drefOperationalUpdateSummaryAreYouChangingGeographicalLocation}</Text>
               </View>
@@ -533,7 +533,7 @@ function OperationalUpdatePdfDocument(props: Props) {
                 <Text>{formatBoolean(operationalUpdateResponse.changing_geographic_location)}</Text>
               </View>
             </View>
-            <View style={pdfStyles.row}>
+            <View style={pdfStyles.row} wrap={false}>
               <View style={pdfStyles.cellTitle}>
                 <Text>{strings.drefOperationalUpdateSummaryAreYouChangingBudget}</Text>
               </View>
@@ -541,7 +541,7 @@ function OperationalUpdatePdfDocument(props: Props) {
                 <Text>{formatBoolean(operationalUpdateResponse.changing_budget)}</Text>
               </View>
             </View>
-            <View style={pdfStyles.row}>
+            <View style={pdfStyles.row} wrap={false}>
               <View style={pdfStyles.cellTitle}>
                 <Text> {strings.drefOperationalUpdateSummaryRequestForSecondAllocation}</Text>
               </View>
@@ -549,7 +549,7 @@ function OperationalUpdatePdfDocument(props: Props) {
                 <Text>{formatBoolean(operationalUpdateResponse.request_for_second_allocation)}</Text>
               </View>
             </View>
-            <View style={pdfStyles.row}>
+            <View style={pdfStyles.row} wrap={false}>
               <View style={pdfStyles.cellTitle}>
                 <Text>{strings.drefExportLessonsLearnedTitle}</Text>
                 <Text style={pdfStyles.cellDescription}>
@@ -582,7 +582,7 @@ function OperationalUpdatePdfDocument(props: Props) {
             {strings.drefExportMovementPartnersActions}
           </Text>
           <View>
-            <View style={pdfStyles.row}>
+            <View style={pdfStyles.row} wrap={false}>
               <View style={pdfStyles.niHeaderCell}>
                 <Text>{strings.drefExportIfrc}</Text>
               </View>
@@ -590,7 +590,7 @@ function OperationalUpdatePdfDocument(props: Props) {
                 <Text>{operationalUpdateResponse.ifrc}</Text>
               </View>
             </View>
-            <View style={pdfStyles.row}>
+            <View style={pdfStyles.row} wrap={false}>
               <View style={pdfStyles.niHeaderCell}>
                 <Text>{strings.drefExportIcrc}</Text>
               </View>
@@ -598,7 +598,7 @@ function OperationalUpdatePdfDocument(props: Props) {
                 <Text>{operationalUpdateResponse.icrc}</Text>
               </View>
             </View>
-            <View style={pdfStyles.row}>
+            <View style={pdfStyles.row} wrap={false}>
               <View style={pdfStyles.niHeaderCell}>
                 <Text>{strings.drefExportPartnerNationalSociety}</Text>
               </View>
@@ -613,7 +613,7 @@ function OperationalUpdatePdfDocument(props: Props) {
             {strings.drefExportNationalOtherActors}
           </Text>
           <View>
-            <View style={pdfStyles.row}>
+            <View style={pdfStyles.row} wrap={false}>
               <View style={pdfStyles.niHeaderCell}>
                 <Text>{strings.drefExportInternationalAssistance}</Text>
               </View>
@@ -621,7 +621,7 @@ function OperationalUpdatePdfDocument(props: Props) {
                 <Text>{formatBoolean(operationalUpdateResponse.government_requested_assistance)}</Text>
               </View>
             </View>
-            <View style={pdfStyles.row}>
+            <View style={pdfStyles.row} wrap={false}>
               <View style={pdfStyles.niHeaderCell}>
                 <Text>{strings.drefExportNationalAuthorities}</Text>
               </View>
@@ -629,7 +629,7 @@ function OperationalUpdatePdfDocument(props: Props) {
                 <Text>{operationalUpdateResponse.national_authorities}</Text>
               </View>
             </View>
-            <View style={pdfStyles.row}>
+            <View style={pdfStyles.row} wrap={false}>
               <View style={pdfStyles.niHeaderCell}>
                 <Text>{strings.drefExportUNorOtherActors}</Text>
               </View>
@@ -637,7 +637,7 @@ function OperationalUpdatePdfDocument(props: Props) {
                 <Text>{operationalUpdateResponse.un_or_other_actor}</Text>
               </View>
             </View>
-            <View style={pdfStyles.row}>
+            <View style={pdfStyles.row} wrap={false}>
               <View style={pdfStyles.niHeaderCell}>
                 <Text>{strings.drefExportCoordinationMechanism}</Text>
               </View>
@@ -648,7 +648,7 @@ function OperationalUpdatePdfDocument(props: Props) {
           </View>
         </View>
         {operationalUpdateResponse.needs_identified.length > 0 && (
-          <View style={pdfStyles.niSection}>
+          <View style={pdfStyles.niSection} wrap={false}>
             <Text style={pdfStyles.sectionHeading}>
               {isImminentOnset
                 ? strings.drefExportImminentNeedsGapsIdentified
@@ -702,7 +702,7 @@ function OperationalUpdatePdfDocument(props: Props) {
           <Text style={pdfStyles.sectionHeading}>
             {strings.drefExportAssistedPopulation}
           </Text>
-          <View style={pdfStyles.row}>
+          <View style={pdfStyles.row} wrap={false}>
             <View style={pdfStyles.tpHeaderCell}>
               <Text>{strings.drefExportTargetedPopulation}</Text>
             </View>
@@ -759,7 +759,7 @@ function OperationalUpdatePdfDocument(props: Props) {
               </View>
             </View>
           </View>
-          <View style={pdfStyles.row}>
+          <View style={pdfStyles.row} wrap={false}>
             <View style={pdfStyles.tpHeaderCell}>
               <Text>{strings.drefExportEstimateResponse}</Text>
             </View>
