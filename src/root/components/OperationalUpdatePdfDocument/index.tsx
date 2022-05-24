@@ -58,7 +58,7 @@ function NationalSocietyActions(props: NationalSocietyActionsProps) {
   } = props;
 
   return (
-    <View>
+    <View wrap={false}>
       <View style={pdfStyles.row}>
         <View style={pdfStyles.niHeaderCell}>
           <Text>{data.title_display}</Text>
@@ -89,7 +89,7 @@ function ContactSection(props: ContactionSectionProps) {
   }
 
   return (
-    <View style={pdfStyles.ciRow}>
+    <View style={pdfStyles.ciRow} wrap={false}>
       <Text style={pdfStyles.contactType}>
         {'\u2022'} {title}
       </Text>
@@ -112,7 +112,7 @@ function NeedIdentified(props: NeedIdentifiedProps) {
   } = props;
 
   return (
-    <View style={pdfStyles.niOutput}>
+    <View style={pdfStyles.niOutput} wrap={false}>
       <View style={pdfStyles.niIconCell}>
         {data.image_url && (
           <PDFImage
@@ -149,7 +149,7 @@ function PlannedInterventionOutput(props: PlannedInterventionProps) {
   } = props;
 
   return (
-    <View style={pdfStyles.piOutput}>
+    <View style={pdfStyles.piOutput} wrap={false}>
       <View style={pdfStyles.piRow}>
         <View style={pdfStyles.piIconCell}>
           {data.image_url && (
@@ -422,7 +422,7 @@ function OperationalUpdatePdfDocument(props: Props) {
         }
         <View style={pdfStyles.section}>
           <View style={pdfStyles.basicInfoTable}>
-            <View style={pdfStyles.compactSection}>
+            <View style={pdfStyles.compactSection} wrap={false}>
               <TextOutput
                 label={strings.drefExportAppealNum}
                 value={operationalUpdateResponse.appeal_code}
@@ -433,7 +433,7 @@ function OperationalUpdatePdfDocument(props: Props) {
                 columns="2/3"
               />
             </View>
-            <View style={pdfStyles.compactSection}>
+            <View style={pdfStyles.compactSection} wrap={false}>
               <TextOutput
                 label={strings.drefExportGlideNum}
                 value={operationalUpdateResponse.glide_code}
@@ -890,7 +890,7 @@ function OperationalUpdatePdfDocument(props: Props) {
           </Link>
         </View>
       </PDFPage>
-    </Document >
+    </Document>
   );
 }
 export default OperationalUpdatePdfDocument;

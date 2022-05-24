@@ -61,7 +61,7 @@ function NationalSocietyActions(props: NationalSocietyActionsProps) {
     data,
   } = props;
   return (
-    <View>
+    <View wrap={false}>
       <View style={pdfStyles.row}>
         <View style={pdfStyles.niHeaderCell}>
           <Text>{data.title_display}</Text>
@@ -115,7 +115,7 @@ function NeedIdentified(props: NeedIdentifiedProps) {
   } = props;
 
   return (
-    <View style={pdfStyles.niOutput}>
+    <View style={pdfStyles.niOutput} wrap={false}>
       <View style={pdfStyles.niIconCell}>
         {data.image_url && (
           <PDFImage
@@ -152,7 +152,7 @@ function PlannedInterventionOutput(props: PlannedInterventionProps) {
   } = props;
 
   return (
-    <View style={pdfStyles.piOutput}>
+    <View style={pdfStyles.piOutput} wrap={false}>
       <View style={pdfStyles.piRow}>
         <View style={pdfStyles.piIconCell}>
           {data.image_url && (
@@ -407,7 +407,7 @@ function DrefPdfDocument(props: Props) {
         )}
         <View style={pdfStyles.section}>
           <View style={pdfStyles.basicInfoTable}>
-            <View style={pdfStyles.compactSection}>
+            <View style={pdfStyles.compactSection} wrap={false}>
               <TextOutput
                 label={strings.drefExportAppealNum}
                 value={dref.appeal_code}
@@ -418,7 +418,7 @@ function DrefPdfDocument(props: Props) {
                 columns="2/3"
               />
             </View>
-            <View style={pdfStyles.compactSection}>
+            <View style={pdfStyles.compactSection} wrap={false}>
               <TextOutput
                 label={strings.drefExportGlideNum}
                 value={dref.glide_code}
