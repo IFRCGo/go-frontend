@@ -2,6 +2,7 @@ import React from 'react';
 import { Editor } from '@tinymce/tinymce-react';
 import { RawEditorSettings } from 'tinymce';
 import { _cs } from '@togglecorp/fujs';
+import { tinyApiKey } from '#config';
 
 import InputContainer, { Props as InputContainerProps } from '#components/InputContainer';
 
@@ -65,7 +66,7 @@ function RichTextArea<T extends string | undefined>(props: Props<T>) {
       input={(
         <Editor
           {...otherInputProps}
-          apiKey={process.env.REACT_APP_TINY_API_KEY}
+          apiKey={tinyApiKey}
           init={editorSettings}
           value={value}
           onEditorChange={handleChange}
