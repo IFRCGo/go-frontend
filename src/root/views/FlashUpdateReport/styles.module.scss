@@ -27,8 +27,13 @@
 
   .main-content {
     .report-details {
-      background-color: #fff;
-      padding: $spacing*2;
+      background-color: $white;
+
+      // NOTE: !important override is necessary here,
+      // for production build, the padding
+      // disappears when coming back from the edit page
+      padding: $spacing*2!important;
+
       box-shadow: $base-box-shadow;
       margin: $spacing*0.5 0 $spacing*4 0;
       display: flex;
