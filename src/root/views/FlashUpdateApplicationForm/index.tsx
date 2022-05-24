@@ -129,7 +129,7 @@ function FlashUpdateForm(props: Props) {
 
   const [currentStep, setCurrentStep] = React.useState<StepTypes>('context');
   const [fileIdToUrlMap, setFileIdToUrlMap] = React.useState<Record<number, string>>({});
-  const submitButtonLabel = currentStep === 'focal' ? strings.flashUpdateSaveButtonLabel : strings.flashUpdateContinueButtonLabel;
+  const submitButtonLabel = currentStep === 'focal' ? strings.flashUpdateSubmitButtonLabel : strings.flashUpdateContinueButtonLabel;
   const shouldDisabledBackButton = currentStep === 'context';
   const bypassTitleGeneration = React.useRef<boolean>(false);
 
