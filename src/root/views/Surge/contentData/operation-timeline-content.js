@@ -257,7 +257,7 @@ const OperationTimelineContent = [
     {
         id: 'surge_table/element1_12',
         url: 'https://ifrcorg.sharepoint.com/:b:/s/IFRCSharing/Ed8QtQCbLzxHpp6cm7xR9WkBc8Qz0cx0k0oj1VgoL2aahw',
-        name: 'Maintain Go Emergency Page'
+        name: 'Maintain GO Emergency Page'
     },
     {
         id: 'surge_table/element28',
