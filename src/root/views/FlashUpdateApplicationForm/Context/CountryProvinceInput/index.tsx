@@ -105,17 +105,17 @@ function CountryProvinceInput(props: Props) {
         value={value.district}
         isMulti
       />
-
-      <Button
-        className={styles.removeButton}
-        name={index}
-        onClick={onRemove}
-        variant="action"
-        disabled={index === 0}
-      >
-        <IoTrash />
-      </Button>
-
+      {index !== 0 && (
+        <Button
+          className={styles.removeButton}
+          name={index}
+          onClick={onRemove}
+          variant="action"
+          disabled={index === 0}
+        >
+          <IoTrash />
+        </Button>
+      )}
     </div>
   );
 }

@@ -3420,6 +3420,7 @@ export default {
   flashUpdateContinueButtonLabel: 'Continue',
   flashUpdateBackButtonLabel: 'Back',
   flashUpdateSaveButtonLabel: 'Save',
+  flashUpdateSubmitButtonLabel: 'Submit',
   flashUpdateFormContextHeading: 'Context',
   flashUpdateFormContextCountryTitle: 'Country and Province/Region *',
   flashUpdateFormContextCountryLabel: 'Select a country',

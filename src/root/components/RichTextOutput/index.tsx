@@ -36,6 +36,7 @@ function useSanitizedHtml(rawHtml: string) {
             // Allow indentation
             'padding-left': [/^\d+(?:px)$/],
             'font-size': [/^\d+(?:px)$/],
+            'text-align': [/.+/],
           },
         },
       },
