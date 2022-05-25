@@ -130,7 +130,7 @@ function ProjectDetail(props: Props) {
       )}
       { projectResponse?.description
           ? (<div className='rich-text-section' style=
-              {{textAlign: 'center', backgroundColor: '#faf9f9', paddingTop: '1.5rem', paddingBottom: '1rem'}}
+              {{backgroundColor: '#faf9f9', padding: '1.5rem'}}
              dangerouslySetInnerHTML={{__html: projectResponse?.description}}></div>)
           : null }
       {projectPending ? (
