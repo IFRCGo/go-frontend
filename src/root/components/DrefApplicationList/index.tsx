@@ -43,6 +43,13 @@ import { compareLabel } from '#utils/common';
 import useAlert from '#hooks/useAlert';
 import { DrefOperationalUpdateResponse } from '#types';
 import OperationalUpdateExport from '#components/OperationalUpdateExport';
+import DREFFileImport from '#components/DREFFileImport';
+import {
+  EntriesAsList,
+  Error,
+  getErrorObject,
+  PartialForm,
+} from '@togglecorp/toggle-form';
 
 import styles from './styles.module.scss';
 
@@ -72,16 +79,38 @@ interface DrefApplicationResponse {
 
 const drefKeySelector = (d: DrefApplicationResponse) => d.id;
 const operationalUpdateKeySelector = (d: OperationalUpdateDetails) => d.id;
-interface Props {
-  history: History;
-}
+
 
 interface DrefOperationalResponseFields {
   id: number;
 }
 
+interface DREFFileField {
+  file: number;
+}
+type Value = PartialForm<DREFFileField>;
+
+interface Props {
+  history: History;
+  value: Value,
+  onValueChange: (...entries: EntriesAsList<Value>) => void;
+  fileIdToUrlMap: Record<number, string>;
+  setFileIdToUrlMap?: React.Dispatch<React.SetStateAction<Record<number, string>>>;
+  error: Error<Value> | undefined;
+}
+
 function DrefApplicationList(props: Props) {
-  const { history } = props;
+  const {
+    history,
+    onValueChange,
+    value,
+    setFileIdToUrlMap,
+    fileIdToUrlMap,
+    error: formError,
+  } = props;
+
+  const error = getErrorObject(formError);
+
   const alert = useAlert();
   const { strings } = React.useContext(LanguageContext);
   const allCountries = useReduxState('allCountries');
@@ -445,14 +474,31 @@ function DrefApplicationList(props: Props) {
       contentClassName={styles.content}
       descriptionClassName={styles.filters}
       description={(
-        <SelectInput
-          name={undefined}
-          placeholder="Select Country"
-          options={countryOptions}
-          value={country}
-          onChange={setCountry}
-          isClearable
-        />
+        <>
+          <SelectInput
+            name={undefined}
+            placeholder="Select Country"
+            options={countryOptions}
+            value={country}
+            onChange={setCountry}
+            isClearable
+          />
+          <div className={styles.buttonImport}>
+            <DREFFileImport
+              accept=".docx"
+              error={error?.file}
+              fileIdToUrlMap={fileIdToUrlMap}
+              name="file"
+              onChange={onValueChange}
+              setFileIdToUrlMap={setFileIdToUrlMap}
+              value={value?.file}
+              multiple={false}
+              disabled
+            >
+              {strings.drefFileImportLabel}
+            </DREFFileImport>
+          </div>
+        </>
       )}
     >
       <Container

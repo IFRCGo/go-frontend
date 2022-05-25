@@ -3411,6 +3411,7 @@ export default {
   drefExportIndicators: 'Indicators',
   drefExportPriorityActions: 'Priority Actions:',
   drefExportBudgetOverview: 'Budget Overview',
+  drefFileImportLabel: 'Import File',
 
   // Flash Update
   flashUpdateFormPageTitle: 'IFRC GO - Flash Update Request',

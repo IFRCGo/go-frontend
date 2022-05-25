@@ -9,7 +9,7 @@
     margin-bottom: $spacing*2;
 
     >* {
-      flex-basis: calc(100% / 3);
+      flex-basis: calc(100% / 2);
     }
   }
 
@@ -58,6 +58,12 @@
       justify-content: center;
       padding: $spacing*4;
     }
+  }
+
+  .button-import {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
   }
 }
 
