@@ -493,7 +493,6 @@ function DrefApplicationList(props: Props) {
               setFileIdToUrlMap={setFileIdToUrlMap}
               value={value?.file}
               multiple={false}
-              disabled
             >
               {strings.drefFileImportLabel}
             </DREFFileImport>

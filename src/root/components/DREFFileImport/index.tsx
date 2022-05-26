@@ -11,8 +11,8 @@ function DREFFileImport<T extends string>(props: Props<T>) {
       {...props}
       url={
         props?.multiple ?
-          'TODO:'
-          : 'TODO:'
+          'api/v2/dref-file-upload/'
+          : 'api/v2/dref-file-upload/'
       }
     />
   );
