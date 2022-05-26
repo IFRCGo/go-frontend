@@ -14,12 +14,15 @@ import EmergenciesDash from '#components/connected/emergencies-dash';
 import EmergenciesTable from '#components/connected/emergencies-table';
 import { allCountriesSelector } from '#selectors';
 
-import { getLastMonthsEmergencies, getAggregateEmergencies } from '#actions';
-import { environment } from '#config';
-
-import LanguageContext from '#root/languageContext';
 import store from '#utils/store';
+import {
+  getLastMonthsEmergencies,
+  getAggregateEmergencies,
+} from '#actions';
+
 import FlashUpdateTableLists from '#views/AllFlashUpdates/TableLists';
+import LanguageContext from '#root/languageContext';
+import { environment } from '#config';
 
 const currentLanguage = store.getState().lang.current;
 
@@ -33,6 +36,7 @@ class Emergencies extends React.Component {
     const {
       lastMonth,
     } = this.props;
+
     const { strings } = this.context;
     const pending = !(lastMonth?.fetched);
     const count = lastMonth?.data?.count;
@@ -46,28 +50,34 @@ class Emergencies extends React.Component {
           </title>
         </Helmet>
         <section className='inpage'>
-        <div className='container-lg'>
-          <div className='row flex-sm'>
-            <div className='col col-6-sm col-7-mid'>
-            <BreadCrumb crumbs={[
-              { link: '/emergencies', name: strings.breadCrumbEmergencies },
-              { link: '/', name: strings.breadCrumbHome }
-              ]} compact />
-            </div>
-            {strings.wikiJsLinkEmergencies !== undefined && strings.wikiJsLinkEmergencies.length>0 ?
-            <>
-            <div className='col col-6-sm col-5-mid spacing-half-t'>
-              <div className='row-sm flex flex-justify-flex-end'>
-                <div className='col-sm spacing-half-v'>
-                <a href={strings.wikiJsLinkGOWiki+'/'+currentLanguage +'/'+ strings.wikiJsLinkEmergencies} title='GO Wiki' target='_blank' ><img className='' src='/assets/graphics/content/wiki-help-section.svg' alt='IFRC GO logo'/></a>
-                </div>
+          <div className='container-lg'>
+            <div className='row flex-sm'>
+              <div className='col col-6-sm col-7-mid'>
+              <BreadCrumb crumbs={[
+                { link: '/emergencies', name: strings.breadCrumbEmergencies },
+                { link: '/', name: strings.breadCrumbHome }
+                ]} compact />
               </div>
+              {strings.wikiJsLinkEmergencies && (
+                <div className='col col-6-sm col-5-mid spacing-half-t'>
+                  <div className='row-sm flex flex-justify-flex-end'>
+                    <div className='col-sm spacing-half-v'>
+                      <a
+                        href={`${strings.wikiJsLinkGOWiki}/${currentLanguage}/${strings.wikiJsLinkEmergencies}`}
+                        title='GO Wiki' target='_blank'
+                      >
+                        <img
+                          className=''
+                          src='/assets/graphics/content/wiki-help-section.svg'
+                          alt='IFRC GO logo'
+                        />
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
-            </> : null
-            }
           </div>
-        </div>
-
           {pending ? (
             <BlockLoading />
           ) : (
@@ -109,7 +119,7 @@ class Emergencies extends React.Component {
                 </div>
               </div>
             </>
-          )};
+          )}
         </section>
       </App>
     );
