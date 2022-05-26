@@ -8,10 +8,33 @@ import { api, environment } from '#config';
 import { request } from '#utils/network';
 import { uppercaseFirstLetter as u, isoDate } from '#utils/format';
 import { getSelectInputNoOptionsMessage } from '#utils/utils';
+import { isIfrcUser } from '#utils/common';
+import { withLanguage } from '#root/languageContext';
+import useReduxState from '#hooks/useReduxState';
+import Translate from '#components/Translate';
+
 import UserMenu from './connected/user-menu';
 import DropdownMenu from './dropdown-menu';
-import { withLanguage } from '#root/languageContext';
-import Translate from '#components/Translate';
+
+function FlashUpdateLink(props) {
+  const user = useReduxState('me');
+
+  const ifrcUser = React.useMemo(() => isIfrcUser(user?.data), [user]);
+  if (!ifrcUser) {
+    return null;
+  }
+
+  return (
+    <li>
+      <Link
+        to='/flash-update/new'
+        className='drop__menu-item'
+      >
+        {props?.label}
+      </Link>
+    </li>
+  );
+}
 
 function getUriForType (type, id) {
   switch (type) {
@@ -133,14 +156,9 @@ class MobileNavbar extends React.PureComponent {
                       {strings.headerDropdownNew3WActivity}
                     </Link>
                   </li>
-                  <li>
-                    <Link
-                      to='/flash-update/new'
-                      className='drop__menu-item'
-                    >
-                      {strings.headerDropdownNewFlashUpdate}
-                    </Link>
-                  </li>
+                  <FlashUpdateLink
+                    label={strings.headerDropdownNewFlashApplication}
+                  />
                   {/* NOTE: Temporary
                   <li className='drop__menu-item'>
                     <Link

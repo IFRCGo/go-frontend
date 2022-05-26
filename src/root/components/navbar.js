@@ -15,6 +15,8 @@ import {
 import LanguageSelect from '#components/LanguageSelect';
 import Translate from '#components/Translate';
 import LanguageContext from '#root/languageContext';
+import useReduxState from '#hooks/useReduxState';
+import { isIfrcUser } from '#utils/common';
 
 import UserMenu from './connected/user-menu';
 import HeaderRegionButton from './header-region-button';
@@ -30,6 +32,9 @@ function Navbar(props) {
     history,
     match,
   } = props;
+
+  const user = useReduxState('me');
+  const ifrcUser = React.useMemo(() => isIfrcUser(user?.data), [user]);
 
   const { strings } = React.useContext(LanguageContext);
   const debounceTimeoutRef = React.useRef();
@@ -107,12 +112,14 @@ function Navbar(props) {
                     >
                       {strings.headerDropdownNew3WActivity}
                     </Link>
-                    <Link
-                      to='/flash-update/new'
-                      className='drop__menu-item'
-                    >
-                      {strings.headerDropdownNewFlashUpdate}
-                    </Link>
+                    {ifrcUser && (
+                      <Link
+                        to='/flash-update/new'
+                        className='drop__menu-item'
+                      >
+                        {strings.headerDropdownNewFlashUpdate}
+                      </Link>
+                    )}
                     {/* NOTE: Temporary
                     <Link
                       to='/dref-application/new'
