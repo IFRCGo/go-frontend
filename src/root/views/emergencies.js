@@ -19,10 +19,38 @@ import {
   getLastMonthsEmergencies,
   getAggregateEmergencies,
 } from '#actions';
-
-import FlashUpdateTableLists from '#views/AllFlashUpdates/TableLists';
-import LanguageContext from '#root/languageContext';
 import { environment } from '#config';
+import LanguageContext from '#root/languageContext';
+import FlashUpdateTableLists from '#views/AllFlashUpdates/TableLists';
+import { isIfrcUser } from '#utils/common';
+import useReduxState from '#hooks/useReduxState';
+
+function FlashUpdateLink(props) {
+  const user = useReduxState('me');
+  const ifrcUser = React.useMemo(() => isIfrcUser(user?.data), [user]);
+  if (!ifrcUser) {
+    return null;
+  }
+
+  return (
+    <div className='inner inner--field-reports-emergencies'>
+      <FlashUpdateTableLists
+        itemPerPage={4}
+        actions={(
+          <div className="fold__title__linkwrap">
+            <Link
+              className="fold__title__link"
+              to="/flash-update/all/"
+            >
+              {props.label}
+            </Link>
+            <span className="collecticon-chevron-right" />
+          </div>
+        )}
+      />
+    </div>
+  );
+}
 
 const currentLanguage = store.getState().lang.current;
 
@@ -94,22 +122,9 @@ class Emergencies extends React.Component {
                     showHeader={false}
                   />
                 </div>
-                <div className='inner inner--field-reports-emergencies'>
-                  <FlashUpdateTableLists
-                    itemPerPage={4}
-                    actions={(
-                      <div className="fold__title__linkwrap">
-                        <Link
-                          className="fold__title__link"
-                          to="/flash-update/all/"
-                        >
-                          {strings.flashUpdateReportsTableViewAllReports}
-                        </Link>
-                        <span className="collecticon-chevron-right" />
-                      </div>
-                    )}
-                  />
-                </div>
+                <FlashUpdateLink
+                  label={strings.flashUpdateReportsTableViewAllReports}
+                />
                 <div className='inner inner--field-reports-emergencies'>
                   <FieldReportsTable
                     title={strings.fieldReportsTableTitle}

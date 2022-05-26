@@ -224,7 +224,7 @@ function Multiplexer(props) {
   if (pending) {
     return <InitialLoading />;
   }
-
+  
   return (
     <AlertContext.Provider value={alertContextValue}>
       <Router>
@@ -251,9 +251,9 @@ function Multiplexer(props) {
               <Route exact path='/reports/:id' component={FieldReport} />
               <Route exact path='/emergencies' component={Emergencies} />
               <Route exact path='/emergencies/all' render={props => <Table {...props} type='emergency' />} />
-              <Route exact path='/emergencies/:id/follow' component={Emergency}/>
-              <Route exact path='/emergencies/:id' component={Emergency}/>
-              <Route exact path='/emergency/:slug' component={EmergencyWrapper}/>
+              <Route exact path='/emergencies/:id/follow' component={Emergency} />
+              <Route exact path='/emergencies/:id' component={Emergency} />
+              <Route exact path='/emergency/:slug' component={EmergencyWrapper} />
               <Route exact path='/regions/:id' render={props => <Region {...props} type='region' />} />
               <Route exact path='/countries/:id' render={props => <Country {...props} type='country' />} />
               <Route exact path='/alerts/all' render={props => <Table {...props} type='alert' />} />
@@ -278,9 +278,9 @@ function Multiplexer(props) {
               <PrivateRoute exact path='/emergency-three-w-form/' component={EmergencyThreeWForm} />
 
               <PrivateRoute key="new-flash-update-application-form" exact path='/flash-update/new/' component={FlashUpdateApplicationForm} />
-              <Route exact path='/flash-update/all/' component={AllFlashUpdates} />
+              <PrivateRoute exact path='/flash-update/all/' component={AllFlashUpdates} />
               <PrivateRoute exact path='/flash-update/:id/edit/' component={FlashUpdateApplicationForm} />
-              <Route exact path='/flash-update/:id/' component={FlashUpdateReport} />
+              <PrivateRoute exact path='/flash-update/:id/' component={FlashUpdateReport} />
 
               {/* NOTE: Temporary
               <PrivateRoute key="new-dref-application-form" exact path='/dref-application/new/' component={DrefApplicationForm} />

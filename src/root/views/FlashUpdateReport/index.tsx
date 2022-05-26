@@ -27,6 +27,9 @@ import ShareButton from './ShareButton';
 import ExportButton from './ExportButton';
 
 import styles from './styles.module.scss';
+import { isIfrcUser } from '#utils/common';
+import FourHundredFour from '#views/FourHundredFour';
+import useReduxState from '#hooks/useReduxState';
 
 function ButtonLikeLink(props: ButtonFeatureProps<undefined> & {
   to: string;
@@ -75,6 +78,7 @@ function FlashUpdateReport(props: Props) {
     }
   } = props;
   const { strings } = useContext(languageContext);
+  const user = useReduxState('me');
   const {
     pending,
     response,
@@ -116,6 +120,12 @@ function FlashUpdateReport(props: Props) {
     (at) => (at.actions.length !== 0 || at.summary)
   );
 
+  const ifrcUser = React.useMemo(() => isIfrcUser(user?.data), [user]);
+  if (!ifrcUser) {
+    return (
+      <FourHundredFour />
+    );
+  }
   return (
     <Page
       className={styles.flashUpdate}
@@ -180,21 +190,21 @@ function FlashUpdateReport(props: Props) {
               heading={strings.flashUpdateMapTitle}
               contentClassName={styles.maps}
             >
-                {response.map_files.map((item) => (
-                  <div
-                    className={styles.mapItem}
-                    key={item.id}
-                  >
-                    <img
-                      className={styles.image}
-                      src={item.file}
-                      alt=""
-                    />
-                    <div className={styles.caption}>
-                      {item.caption}
-                    </div>
+              {response.map_files.map((item) => (
+                <div
+                  className={styles.mapItem}
+                  key={item.id}
+                >
+                  <img
+                    className={styles.image}
+                    src={item.file}
+                    alt=""
+                  />
+                  <div className={styles.caption}>
+                    {item.caption}
                   </div>
-                ))}
+                </div>
+              ))}
             </Container>
           )}
           {response.graphics_files && response.graphics_files.length > 0 && (

@@ -51,6 +51,9 @@ import useFlashUpdateFormOptions, {
 
 import styles from './styles.module.scss';
 import BlockLoading from '#components/block-loading';
+import useReduxState from '#hooks/useReduxState';
+import { isIfrcUser } from '#utils/common';
+import FourHundredFour from '#views/FourHundredFour';
 
 interface Props {
   className?: string;
@@ -104,7 +107,7 @@ function FlashUpdateForm(props: Props) {
   const { id } = match.params;
 
   const { strings } = React.useContext(LanguageContext);
-
+  const user = useReduxState('me');
   const {
     value,
     error,
@@ -602,12 +605,12 @@ function FlashUpdateForm(props: Props) {
 
     setFieldValue(title, 'title' as const);
   }, [
-      value?.country_district,
-      value?.hazard_type,
-      disasterTypeOptions,
-      countryOptions,
-      setFieldValue,
-    ]);
+    value?.country_district,
+    value?.hazard_type,
+    disasterTypeOptions,
+    countryOptions,
+    setFieldValue,
+  ]);
 
   const pending = fetchingCountries
     || fetchingDistricts
@@ -619,6 +622,12 @@ function FlashUpdateForm(props: Props) {
 
   const failedToLoadFlashUpdate = !pending && isDefined(id) && !FlashUpdateResponse;
 
+  const ifrcUser = React.useMemo(() => isIfrcUser(user?.data), [user]);
+  if (!ifrcUser) {
+    return (
+      <FourHundredFour />
+    );
+  }
   return (
     <Tabs
       disabled={failedToLoadFlashUpdate}
