@@ -27,6 +27,7 @@ type InheritedProps<T> = Omit<InputContainerProps, 'input'> & {
 export interface Props<T extends string | undefined> extends InheritedProps<T> {
     inputElementRef?: React.RefObject<HTMLInputElement>;
     inputClassName?: string;
+    placeholder?: string;
 }
 
 function RichTextArea<T extends string | undefined>(props: Props<T>) {
@@ -54,6 +55,10 @@ function RichTextArea<T extends string | undefined>(props: Props<T>) {
       }
     }
   }, [onChange, name]);
+
+  if (props.placeholder !== undefined) {
+    editorSettings.placeholder =  props.placeholder;
+  }
 
   return (
     <InputContainer
