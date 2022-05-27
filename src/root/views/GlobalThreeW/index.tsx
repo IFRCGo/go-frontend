@@ -21,6 +21,7 @@ import { useButtonFeatures } from '#components/Button';
 import LanguageContext from '#root/languageContext';
 import { useRequest, ListResponse } from '#utils/restRequest';
 import useReduxState from '#hooks/useReduxState';
+import store from '#utils/store';
 
 import {
   ThreeWBarChart,
@@ -33,6 +34,7 @@ import Filters, { FilterValue } from './Filters';
 import styles from './styles.module.scss';
 
 const emptyNsOngoingProjectStats: NSOngoingProjectStat[] = [];
+const currentLanguage = store.getState().lang.current;
 
 interface ProjectPerProgrammeType {
   programme_type: number;
@@ -75,7 +77,7 @@ function GlobalThreeW(props: Props) {
   const allRegions = useReduxState('allRegions');
 
   const { strings } = useContext(LanguageContext);
-
+  
   const [filters, setFilters] = React.useState<FilterValue>({
     reporting_ns: [],
     programme_type: [],
@@ -154,18 +156,24 @@ function GlobalThreeW(props: Props) {
         name: p.programme_type_display,
       })),
     ];
-  }, [projectsOverviewResponse]);
+  }, [projectsOverviewResponse]); 
 
   return (
-    <Page
+     <Page
       className={_cs(styles.globalThreeW, className)}
       title={strings.globalThreeWPageTitle}
       heading={strings.globalThreeWPageHeading}
+      wikiLink={(
+        strings.wikiJsLinkGlobal3W !== undefined && strings.wikiJsLinkGlobal3W.length>0 ?  
+        <>
+          <a href={strings.wikiJsLinkGOWiki+'/'+currentLanguage +'/'+ strings.wikiJsLinkGlobal3W} title='GO Wiki' target='_blank' ><img className='' src='/assets/graphics/content/wiki-help-section.svg' alt='IFRC GO logo'/></a>
+        </>:null      
+      )}
       actions={(
         <Link
           to="/three-w/new"
           {...addThreeWLinkProps}
-        />
+        /> 
       )}
       description={(
         <>

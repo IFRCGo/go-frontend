@@ -24,6 +24,7 @@ import InCountryProjects from './InCountryProjects';
 import NSProjects from './NSProjects';
 
 import styles from './styles.module.scss';
+import store from '#utils/store';
 
 interface Props {
   className?: string;
@@ -52,15 +53,25 @@ function ThreeW(props: Props) {
     setProjectsUpdatedOn((new Date()).getTime());
   }, [setShowProjectFormModalFalse, setProjectsUpdatedOn]);
 
+  const currentLanguage = store.getState().lang.current;
+
   return (
-    <div className={_cs(styles.threeW, className)}>
+    <div className={_cs(styles.threeW, className)} style={{paddingTop: '1px'}}>
       <Tabs
         value={activeTab}
         onChange={setActiveTab}
         variant="secondary"
       >
         {isDefined(userDetails?.id) && (
-          <div className={styles.headerActions}>
+          
+          <>
+          {
+          strings.wikiJsLinkCountry3W !== undefined && strings.wikiJsLinkCountry3W.length>0 ?
+          <div style={{display: 'flex', justifyContent:'flex-end', paddingBottom:'8px'}}>
+            <a href={strings.wikiJsLinkGOWiki+'/'+currentLanguage +'/'+ strings.wikiJsLinkCountry3W} title='GO Wiki' target='_blank' ><img className='' src='/assets/graphics/content/wiki-help-section.svg' alt='IFRC GO logo'/></a>
+          </div> : null
+          }
+          <div className={styles.headerActions}>           
             <Button
               onClick={setShowProjectFormModalTrue}
               name={undefined}
@@ -68,6 +79,7 @@ function ThreeW(props: Props) {
               { strings.threeWAddProject }
             </Button>
           </div>
+          </>
         )}
         <TabList className={styles.tabList}>
           <Tab name="projectsIn">

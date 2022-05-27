@@ -18,8 +18,10 @@ import { getLastMonthsEmergencies, getAggregateEmergencies } from '#actions';
 import { environment } from '#config';
 
 import LanguageContext from '#root/languageContext';
-
+import store from '#utils/store';
 import FlashUpdateTableLists from '#views/AllFlashUpdates/TableLists';
+
+const currentLanguage = store.getState().lang.current;
 
 class Emergencies extends React.Component {
   componentDidMount() {
@@ -44,7 +46,28 @@ class Emergencies extends React.Component {
           </title>
         </Helmet>
         <section className='inpage'>
-          <BreadCrumb crumbs={[{ link: '/emergencies', name: strings.breadCrumbEmergencies }, { link: '/', name: strings.breadCrumbHome }]} />
+        <div className='container-lg'>
+          <div className='row flex-sm'>
+            <div className='col col-6-sm col-7-mid'>
+            <BreadCrumb crumbs={[
+              { link: '/emergencies', name: strings.breadCrumbEmergencies },
+              { link: '/', name: strings.breadCrumbHome }
+              ]} compact />
+            </div>
+            {strings.wikiJsLinkEmergencies !== undefined ?
+            <>
+            <div className='col col-6-sm col-5-mid spacing-half-t'>
+              <div className='row-sm flex flex-justify-flex-end'>
+                <div className='col-sm spacing-half-v'>
+                <a href={strings.wikiJsLinkGOWiki+'/'+currentLanguage +'/'+ strings.wikiJsLinkEmergencies} title='GO Wiki' target='_blank' ><img className='' src='/assets/graphics/content/wiki-help-section.svg' alt='IFRC GO logo'/></a>
+                </div>
+              </div>
+            </div>
+            </>: null
+            }
+          </div>
+        </div>
+
           {pending ? (
             <BlockLoading />
           ) : (

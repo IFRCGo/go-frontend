@@ -30,6 +30,9 @@ import { countriesSelector } from '#selectors';
 
 import App from './app';
 import registerSchemaDef from '../schemas/register';
+import store from '#utils/store';
+
+const currentLanguage = store.getState().lang.current;
 
 const ajv = new Ajv({ $data: true, allErrors: true, errorDataPath: 'property' });
 ajvKeywords(ajv);
@@ -366,10 +369,29 @@ class Register extends React.Component {
         <Helmet>
           <title>{strings.registerTitle}</title>
         </Helmet>
-        <BreadCrumb crumbs={[
-          {link: '/register', name: strings.breadCrumbRegister},
-          {link: '/', name: strings.breadCrumbHome}
-        ]} />
+        <div className='container-lg'>
+          <div className='row flex-sm'>
+            <div className='col col-6-sm col-7-mid'>
+            <BreadCrumb crumbs={[
+              {link: '/register', name: strings.breadCrumbRegister},
+              {link: '/', name: strings.breadCrumbHome}
+              ]} compact />
+            </div>
+            {
+            strings.wikiJsLinkRegister !== undefined && strings.wikiJsLinkRegister.length>0 ?
+            <>
+            <div className='col col-6-sm col-5-mid spacing-half-t'>
+              <div className='row-sm flex flex-justify-flex-end'>
+                <div className='col-sm spacing-half-v'>
+                <a href={strings.wikiJsLinkGOWiki+'/'+currentLanguage +'/'+ strings.wikiJsLinkRegister} title='GO Wiki' target='_blank' ><img className='' src='/assets/graphics/content/wiki-help-section.svg' alt='IFRC GO logo'/></a>
+                </div>
+              </div>
+            </div>
+            </>:null
+            }
+          </div>
+        </div>
+
         <section className='inpage container-lg'>
           <header className='inpage__header'>
             <div className='inner'>

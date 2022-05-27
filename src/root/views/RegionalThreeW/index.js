@@ -40,6 +40,10 @@ import NSActivitiesFilters from './ns-activities-filters';
 import ExportButton from './export-button';
 import Map from './map';
 import { countriesSelector, regionsByIdSelector, countriesGeojsonSelector } from '../../selectors';
+import LanguageContext from '#root/languageContext';
+import store from '#utils/store';
+
+const currentLanguage = store.getState().lang.current;
 
 const emptyList = [];
 
@@ -129,6 +133,7 @@ function RegionalThreeW (p) {
     countriesGeojson
   } = p;
 
+  const { strings } = React.useContext(LanguageContext);
   const [showProjectForm, setShowProjectForm] = React.useState(false);
   const [refetchKey, setRefetchKey] = React.useState(undefined);
   const [activeCountryId, setActiveCountryId] = React.useState(undefined);
@@ -229,7 +234,14 @@ function RegionalThreeW (p) {
       { projectsOverviewPending ? (
         <BlockLoading />
       ) : (
-        <div className='regional-threew-overview row-lg flex-mid'>
+        <>
+        {
+        strings.wikiJsLinkRegional3W !== undefined && strings.wikiJsLinkRegional3W.length>0 ?
+        <div style={{display: 'flex', justifyContent:'flex-end', paddingBottom:'8px'}}>
+          <a href={strings.wikiJsLinkGOWiki+'/'+currentLanguage +'/'+ strings.wikiJsLinkRegional3W} title='GO Wiki' target='_blank' ><img className='' src='/assets/graphics/content/wiki-help-section.svg' alt='IFRC GO logo'/></a>
+        </div> : null
+        }
+        <div className='regional-threew-overview row-lg flex-mid'>          
           <div className='col-lg col-4-mid'>
             <BudgetOverview
               totalBudget={projectsOverview.total_budget}
@@ -249,6 +261,7 @@ function RegionalThreeW (p) {
             />
           </div>
         </div>
+        </>
       )}
       <div className='regional-movement-activities'>
         { movementActivityListPending && <BlockLoading /> }

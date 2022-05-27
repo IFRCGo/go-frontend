@@ -10,6 +10,9 @@ import { PropTypes as T } from 'prop-types';
 import { environment } from '#config';
 import LanguageContext from '#root/languageContext';
 import Translate from '#components/Translate';
+import store from '#utils/store';
+
+const currentLanguage = store.getState().lang.current;
 
 class Preparedness extends React.Component {
   getTabDetails() {
@@ -44,10 +47,28 @@ class Preparedness extends React.Component {
           <Helmet>
             <title>{strings.preparednessTitle}</title>
           </Helmet>
-          <BreadCrumb crumbs={[
-            {link: '/preparedness', name: strings.breadCrumbPreparedness},
-            {link: '/', name: strings.breadCrumbHome}
-          ]} />
+        <div className='container-lg'>
+          <div className='row flex-sm'>
+            <div className='col col-6-sm col-7-mid'>
+            <BreadCrumb crumbs={[
+              { link: '/preparedness', name: strings.breadCrumbPreparedness },
+              { link: '/', name: strings.breadCrumbHome }
+              ]} compact />
+            </div>
+            {strings.wikiJsLinkPreparedness !== undefined ?
+            <>
+            <div className='col col-6-sm col-5-mid spacing-half-t'>
+              <div className='row-sm flex flex-justify-flex-end'>
+                <div className='col-sm spacing-half-v'>
+                <a href={strings.wikiJsLinkGOWiki+'/'+currentLanguage +'/'+ strings.wikiJsLinkPreparedness} title='GO Wiki' target='_blank' ><img className='' src='/assets/graphics/content/wiki-help-section.svg' alt='IFRC GO logo'/></a>
+                </div>
+              </div>
+            </div>
+            </>: null
+            }
+          </div>
+        </div>
+
           <header className='inpage__header'>
             <div className='inner container-lg'>
               <div className='inpage__headline'>
