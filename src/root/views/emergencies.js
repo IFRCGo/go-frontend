@@ -54,7 +54,7 @@ class Emergencies extends React.Component {
               { link: '/', name: strings.breadCrumbHome }
               ]} compact />
             </div>
-            {strings.wikiJsLinkEmergencies !== undefined ?
+            {strings.wikiJsLinkEmergencies !== undefined && strings.wikiJsLinkEmergencies.length>0 ?
             <>
             <div className='col col-6-sm col-5-mid spacing-half-t'>
               <div className='row-sm flex flex-justify-flex-end'>
@@ -63,7 +63,7 @@ class Emergencies extends React.Component {
                 </div>
               </div>
             </div>
-            </>: null
+            </> : null
             }
           </div>
         </div>
