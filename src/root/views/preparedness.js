@@ -55,7 +55,7 @@ class Preparedness extends React.Component {
               { link: '/', name: strings.breadCrumbHome }
               ]} compact />
             </div>
-            {strings.wikiJsLinkPreparedness !== undefined ?
+            {strings.wikiJsLinkPreparedness !== undefined && strings.wikiJsLinkPreparedness.length>0 ?
             <>
             <div className='col col-6-sm col-5-mid spacing-half-t'>
               <div className='row-sm flex flex-justify-flex-end'>
@@ -64,7 +64,7 @@ class Preparedness extends React.Component {
                 </div>
               </div>
             </div>
-            </>: null
+            </> : null
             }
           </div>
         </div>

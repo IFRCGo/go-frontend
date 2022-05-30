@@ -401,7 +401,7 @@ class Deployments extends SFPComponent {
               { link: '/', name: strings.breadCrumbHome }
               ]} compact />
             </div>
-            {strings.wikiJsLinkSurge !== undefined ?
+            {strings.wikiJsLinkSurge !== undefined && strings.wikiJsLinkSurge.length>0 ?
             <>
             <div className='col col-6-sm col-5-mid spacing-half-t'>
               <div className='row-sm flex flex-justify-flex-end'>
@@ -410,7 +410,7 @@ class Deployments extends SFPComponent {
                 </div>
               </div>
             </div>
-            </>: null
+            </> : null
             }
           </div>
         </div>
