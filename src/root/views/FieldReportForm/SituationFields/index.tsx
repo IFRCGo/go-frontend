@@ -11,6 +11,7 @@ import Container from '#components/Container';
 import InputSection from '#components/InputSection';
 import NumberInput from '#components/NumberInput';
 import TextArea from '#components/TextArea';
+import RichTextArea from '#components/RichTextArea';
 import RadioInput from '#components/RadioInput';
 import DateInput from '#components/DateInput';
 import SelectInput from '#components/SelectInput';
@@ -448,7 +449,7 @@ function SituationFields(props: Props) {
         title={strings.fieldsStep2DescriptionEVTLabel}
         description={strings.fieldsStep2DescriptionEVTDescription}
       >
-        <TextArea
+        <RichTextArea
           name="description"
           value={value.description}
           onChange={onValueChange}
