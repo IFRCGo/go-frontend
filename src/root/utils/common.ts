@@ -205,4 +205,42 @@ export function downloadFromUrl(url: string, downloadFileName: string) {
   document.body.removeChild(link);
 }
 
+export function isIfrcUser(user: {
+  email: string;
+  is_ifrc_admin: boolean;
+} | undefined) {
+  if (!user) {
+    return false;
+  }
+
+  const {
+    email,
+    is_ifrc_admin,
+  } = user;
+
+  if (is_ifrc_admin) {
+    return true;
+  }
+
+  if (!email) {
+    return false;
+  }
+
+  const parts = email.split('@');
+  if (parts.length < 2) {
+    return false;
+  }
+
+  const lastPart = parts[parts.length - 1];
+  if (!lastPart) {
+    return false;
+  }
+
+  if (lastPart.toLowerCase() === 'ifrc.org') {
+    return true;
+  }
+
+  return false;
+}
+
 export type SetValueArg<T> = T | ((value: T) => T);
