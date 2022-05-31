@@ -15,8 +15,9 @@ function EmergencyOverview(props) {
   const hasFieldReports = data.field_reports.length > 0;
 
   // go-frontend/issues/2307:
-  // get only those fieldreports, whose country == emergency location – the 1st one is enough:
-  const ownCountry = data.districts[0].code.substring(0, 2);
+  const ownCountry = data.countries.length === 1 ? data.countries[0].iso :
+      (data.districts.length > 0 ? data.districts[0].code.substring(0, 2) : null );
+  // get only those fieldreports, whose country == ownCountry (emergency location). The 1st one is enough:
   let ownFieldReport = '';
   if (hasFieldReports) {
     data.field_reports.every(f => {
