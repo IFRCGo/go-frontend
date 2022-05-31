@@ -13,7 +13,18 @@ function EmergencyOverview(props) {
   const severityClass = severityLevelToClass[data.ifrc_severity_level];
   const disasterType = disasterTypes.hasOwnProperty(data.dtype) ? disasterTypes[data.dtype] : '';
   const hasFieldReports = data.field_reports.length > 0;
-  const firstFieldReport = hasFieldReports ? data.field_reports[0] : null;
+
+  // go-frontend/issues/2307:
+  // get only those fieldreports, whose country == emergency location – the 1st one is enough:
+  const ownCountry = data.districts[0].code.substring(0, 2);
+  let ownFieldReport = '';
+  if (hasFieldReports) {
+    data.field_reports.every(f => {
+      if (f.countries[0].iso === ownCountry) {ownFieldReport = f; return false;}
+      else {return true;}
+  });}
+  const firstFieldReport = hasFieldReports ? (ownFieldReport !== "" ? ownFieldReport : data.field_reports[0]) : null;
+
   return (
     <div className='container-mid'>
       <div className='box__global emergency__overview'>
