@@ -183,7 +183,7 @@ class Emergency extends React.Component {
     // We fetch the Personnel and Alerts here to know whether to render the Surge tab
     // Ideally, we would pass this down to the personnel-table, currently
     // we only use it to check whether there are personnel. #FIXME
-    this.props._getSurgeAlerts(1, { event: id });
+    this.props._getSurgeAlerts(1, { 'event': id, 'is_active': true });
     this.props._getPersonnel(1, {'event_deployed_to': id});
     this.props._getEventSnippets(id);
     this.props._getDeploymentERU(1, {'event': id});
