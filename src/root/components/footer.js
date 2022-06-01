@@ -8,6 +8,8 @@ import EnvironmentBanner from '#components/EnvironmentBanner';
 class Footer extends React.PureComponent {
   render () {
     const { strings } = this.context;
+    const date = new Date();
+    const year = date.getFullYear();
     return (
       <React.Fragment>
         <footer className='page__footer' role='contentinfo'>
@@ -18,7 +20,7 @@ class Footer extends React.PureComponent {
                 <div className='base-font-medium'>
                   <Translate stringId='footerAboutGoDesc'/>
                 </div>
-                 <div className='footer-copyright footer-copyright--lg'><Translate stringId='footerIFRC'/></div>
+                 <div className='footer-copyright footer-copyright--lg'><Translate stringId='footerIFRC'/> {year}</div>
               </div>
 
               <div className="col col-6-xs col-3-mid">
