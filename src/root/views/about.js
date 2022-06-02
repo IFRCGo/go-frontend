@@ -174,32 +174,28 @@ function About (props) {
                                   <Translate stringId='aboutGoBlog'/>
                                   <span className='collecticon-chevron-right icon-about-ref'></span>
                                 </a>
-                                <a href='https://ifrcorg.sharepoint.com/:b:/s/IFRCSharing/EUV7xJOyEZtDmecIH6uS9SIBwl3gv1cbxVjwS6m79gx7TQ?e=b2AgU3' target='_blank' className='box__global__content--ref__link col col-6-xs'>
-                                  <Translate stringId='aboutUserStudy'/>
+                                <a href='https://app.powerbi.com/view?r=eyJrIjoiY2RlOTRkOGQtMDU5Yy00OWIwLWE2NmYtNTQ5NTQ3YjEwY2ZmIiwidCI6ImEyYjUzYmU1LTczNGUtNGU2Yy1hYjBkLWQxODRmNjBmZDkxNyIsImMiOjh9&pageName=ReportSectione263ecb5066f3105a8fa' target='_blank' className='box__global__content--ref__link col col-6-xs'>
+                                  <Translate stringId='aboutGOUserAnalytics'/>
                                   <span className='collecticon-chevron-right icon-about-ref'></span>
                                 </a>
                                 <a href='https://ifrcorg.sharepoint.com/:b:/s/IFRCSharing/ESX7S_-kp-FAuPP_yXIcLQkB6zE6t2hVhKxGgWbSXZXOFg?e=RsWNSa' target='_blank' className='box__global__content--ref__link col col-6-xs'>
-                                  <Translate stringId='aboutInformationArchitecture'/>
+                                  <Translate stringId='aboutGoInfoArchitecture'/>
                                   <span className='collecticon-chevron-right icon-about-ref'></span>
                                 </a>
-                                <a href='https://ifrcorg.sharepoint.com/:b:/s/IFRCSharing/Eaje4wKVk5pFlqfNSv9HTSMBz-wABgwmlDraa3CtN8I33g?e=zlCAfG' target='_blank' className='box__global__content--ref__link col col-6-xs'>
-                                  <Translate stringId='about3WGuidance'/>
+                                <a href='https://ifrcorg.sharepoint.com/:f:/s/IFRCSharing/ElipxelToqdJpQcJq5HA7LwBidSDhOjkUk5QrccHg0_4Wg?e=4d6Bew' target='_blank' className='box__global__content--ref__link col col-6-xs'>
+                                  <Translate stringId='aboutGoWorkplan2022'/>
                                   <span className='collecticon-chevron-right icon-about-ref'></span>
                                 </a>
-                                <a href='https://ifrcorg.sharepoint.com/:b:/s/IFRCSharing/EUqbJHWGW8xLjFJgwG-x4GABfUD5UCS3DS6uwW74tufs9Q?e=pHcyLH' target='_blank' className='box__global__content--ref__link col col-6-xs'>
-                                  <Translate stringId='about3WLessonLearned'/>
+                                <a href='https://ifrcorg.sharepoint.com/:b:/s/IFRCSharing/EUqbJHWGW8xLjFJgwG-x4GABfUD5UCS3DS6uwW74tufs9Q?e=HwsqbI' target='_blank' className='box__global__content--ref__link col col-6-xs'>
+                                  <Translate stringId='aboutGO3wSystemAnalysis'/>
                                   <span className='collecticon-chevron-right icon-about-ref'></span>
                                 </a>
-                                <a href='https://ifrcorg.sharepoint.com/:f:/s/IFRCSharing/Es9Yv8LsLVBGn_jAkphR4YMBuZOD0eFgKPVCQMvREPw8ig?e=eLaaXF' target='_blank' className='box__global__content--ref__link col col-6-xs'>
-                                  <Translate stringId='aboutGoWorkplan2021'/>
+                                <a href='https://ifrcorg.sharepoint.com/:b:/s/IFRCSharing/EUV7xJOyEZtDmecIH6uS9SIBwl3gv1cbxVjwS6m79gx7TQ?e=b2AgU3' target='_blank' className='box__global__content--ref__link col col-6-xs'>
+                                  <Translate stringId='aboutGoUserStudies'/>
                                   <span className='collecticon-chevron-right icon-about-ref'></span>
                                 </a>
                                 <a href='https://ifrcgoproject.medium.com/information-saves-lives-scaling-data-analytics-in-the-ifrc-network-fd3686718f9c' target='_blank' className='box__global__content--ref__link col col-6-xs'>
                                   <Translate stringId='aboutImStrategicDirection'/>
-                                  <span className='collecticon-chevron-right icon-about-ref'></span>
-                                </a>
-                                <a href='https://app.powerbi.com/view?r=eyJrIjoiY2RlOTRkOGQtMDU5Yy00OWIwLWE2NmYtNTQ5NTQ3YjEwY2ZmIiwidCI6ImEyYjUzYmU1LTczNGUtNGU2Yy1hYjBkLWQxODRmNjBmZDkxNyIsImMiOjh9&pageName=ReportSectione263ecb5066f3105a8fa' target='_blank' className='box__global__content--ref__link col col-6-xs'>
-                                  <Translate stringId='aboutGOAnalyticsdashboard'/>
                                   <span className='collecticon-chevron-right icon-about-ref'></span>
                                 </a>
                               </div>
