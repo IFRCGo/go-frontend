@@ -3513,7 +3513,6 @@ export default {
   wikiJsLink3WForm: '',
   wikiJsLinkFRForm: '',
   wikiJsLinkCountry3W: '',
-  wikiJsLinkRegister:''
-  
- 
+  wikiJsLinkRegister: 'user_guide/account'
+
 };

@@ -2,14 +2,14 @@
 if (!window.appSettings) {
   window.appSettings = {
     environmentDisplayName: 'Staging site',
-    apiUrl: 'https://dsgocdnapi.azureedge.net/',
-    adminUrl: 'https://dsgocdnapi.azureedge.net/',
+    apiUrl: '',
+    adminUrl: '',
     fdrsAuth: '',
-    mbtoken: 'notPublic',
+    mbtoken: '',
     showEnvBanner: 'false',
-    riskApi: 'https://go-risk-staging.northeurope.cloudapp.azure.com/',
-    riskAdminUrl: 'https://go-risk-staging.northeurope.cloudapp.azure.com/',
-    tinyApiKey: 'notPublic',
+    riskApi: '',
+    riskAdminUrl: '',
+    tinyApiKey: '',
   };
 }
 
