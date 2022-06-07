@@ -32,43 +32,6 @@ const getReturnPeriodColumns = () => ([
     'Return Period / Expected Frequency',
     (item) => item.frequencyDisplay,
   ),
-  /*
-  createNumberColumn<TransformedReturnPeriodData, string | number>(
-    'numExposed',
-    <div className={styles.columnHeading}>
-      People Exposed / Affected
-      <InfoPopup
-        title="People Exposed / Affected"
-        description={(
-          <>
-            Based on hazard data from UNDRR &nbsp;
-            <a
-              className={styles.link}
-              target="_blank"
-              href="https://risk.preventionweb.net/"
-            >
-              GAR 2017
-            </a>
-            &nbsp; and population from the &nbsp;
-            <a
-              className={styles.link}
-              target="_blank"
-              href="https://ghsl.jrc.ec.europa.eu/index.php"
-            >
-              Global Human Settlement Layer
-            </a>
-          </>
-        )}
-      />
-    </div>,
-    (item) => item.exposure,
-    undefined,
-    {
-      normal: true,
-      precision: 'auto',
-    },
-  ),
-  */
   createNumberColumn<TransformedReturnPeriodData, string | number>(
     'numRiskOfDisplacement',
     <div className={styles.columnHeading}>

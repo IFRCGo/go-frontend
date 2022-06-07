@@ -33,7 +33,7 @@ import Container from '#components/Container';
 import Button from '#components/Button';
 import SelectInput from '#components/SelectInput';
 import MonthSelector from '#views/Country/RiskWatch/SeasonalRisk/MonthSelector';
-import RiskTable, { getAverageForSelectedMonths } from '#views/Country/RiskWatch/SeasonalRisk/RiskTable';
+import RiskTable, { getSumForSelectedMonths } from '#views/Country/RiskWatch/SeasonalRisk/RiskTable';
 import useReduxState from '#hooks/useReduxState';
 import useInputState from '#hooks/useInputState';
 import {
@@ -244,7 +244,7 @@ function Choropleth(props: ChoroplethProps) {
       }
 
       if (selectedRiskMetric === 'displacement') {
-        const displacement = getAverageForSelectedMonths(
+        const displacement = getSumForSelectedMonths(
           riskData?.displacement?.monthly,
           selectedMonths,
         );
@@ -273,7 +273,7 @@ function Choropleth(props: ChoroplethProps) {
       }
 
       if (selectedRiskMetric === 'exposure') {
-        const exposure = getAverageForSelectedMonths(
+        const exposure = getSumForSelectedMonths(
           riskData?.exposure?.monthly,
           selectedMonths,
         );
@@ -303,7 +303,7 @@ function Choropleth(props: ChoroplethProps) {
       }
 
       if (selectedRiskMetric === 'informRiskScore') {
-        const riskScore = getAverageForSelectedMonths(
+        const riskScore = getSumForSelectedMonths(
           riskData?.informRiskScore?.monthly,
           selectedMonths,
         );
@@ -364,6 +364,17 @@ function SeasonalRiskMap(props: Props) {
     setSelectedMonths,
   } = props;
 
+  const countryGroupedRiskData = React.useMemo(() => (
+    listToGroupList(
+      riskData.reduce((acc, list) => ([
+        ...acc,
+        ...(Object.values(list)),
+      ]), [] as RiskData[]),
+      d => d.countryIso3,
+      d => d,
+    )
+  ), [riskData]);
+
   const [activeIso, setActiveIso] = React.useState<string>();
   const [activePage, setActivePage] = React.useState<number>(1);
   const allRegions = useReduxState('allRegions');
@@ -376,6 +387,13 @@ function SeasonalRiskMap(props: Props) {
     [region?.bbox],
   );
 
+  React.useEffect(() => {
+    const firstCountryIso = Object.keys(countryGroupedRiskData)[0];
+    if (isDefined(firstCountryIso)) {
+      setActiveIso((prevIso) => isDefined(prevIso) ? prevIso : firstCountryIso);
+    }
+  }, [countryGroupedRiskData]);
+
   const countryIsoToNameMap = React.useMemo(
     () => listToMap(allCountries.data.results, d => d.iso3 ?? '', d => d.name),
     [allCountries],
@@ -384,16 +402,6 @@ function SeasonalRiskMap(props: Props) {
   const [hazardType, setHazardType] = useInputState<HazardTypes>('FL');
   const [riskMetric, setRiskMetric] = useInputState<RiskMetricType>('displacement');
 
-  const countryGroupedRiskData = React.useMemo(() => (
-    listToGroupList(
-      riskData.reduce((acc, list) => ([
-        ...acc,
-        ...(Object.values(list)),
-      ]), [] as RiskData[]),
-      d => d.countryIso3,
-      d => d,
-    )
-  ), [riskData]);
 
   const countryList = Object.keys(countryGroupedRiskData);
   const visibleCountryList = React.useMemo(() => {

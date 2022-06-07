@@ -11,25 +11,35 @@ import {
     createStringColumn,
     createNumberColumn,
 } from '#components/Table/predefinedColumns';
-import { avgSafe } from '#utils/common';
+import { sumSafe } from '#utils/common';
 
 import { RiskData } from '../common';
 
 import styles from './styles.module.scss';
 
 // TODO move to utils
-export function getAverageForSelectedMonths(data: undefined | (number | null)[], selectedMonths: Record<number, boolean>) {
+export function getSumForSelectedMonths(data: undefined | (number | null)[], selectedMonths: Record<number, boolean>) {
   const dataWithSelectedMonths = data?.filter((_, i) => selectedMonths[i]);
-  return avgSafe(dataWithSelectedMonths ?? []);
+  return sumSafe(dataWithSelectedMonths ?? []);
 }
 
-function getAverageDisplacementValueForSelectedMonths(
+function getRiskScoreForSelectedMonth(data: undefined | (number | null)[], selectedMonths: Record<number, boolean>) {
+  if (Object.values(selectedMonths).filter(Boolean).length > 1) {
+    return '-';
+  }
+
+  const dataWithSelectedMonth = data?.filter((_, i) => selectedMonths[i])[0];
+
+  return riskScoreToCategory(dataWithSelectedMonth);
+}
+
+function getDisplacementSumForSelectedMonths(
   displacementData: undefined | (number | null)[],
   exposureData: undefined | (number | null)[],
   selectedMonths: Record<number, boolean>,
 ) {
-  const avgDisplacement = getAverageForSelectedMonths(displacementData, selectedMonths);
-  const avgExposure = getAverageForSelectedMonths(exposureData, selectedMonths);
+  const avgDisplacement = getSumForSelectedMonths(displacementData, selectedMonths);
+  const avgExposure = getSumForSelectedMonths(exposureData, selectedMonths);
 
   // Avoid cases where displacement > exposure
   if (isDefined(avgExposure) && isDefined(avgDisplacement)) {
@@ -114,7 +124,7 @@ function RiskTable(props: Props) {
             )}
           />
         </div>,
-        (item) => riskScoreToCategory(getAverageForSelectedMonths(item.informRiskScore?.monthly, selectedMonths)),
+        (item) => getRiskScoreForSelectedMonth(item.informRiskScore?.monthly, selectedMonths),
       ),
       createNumberColumn<RiskData, string | number>(
         'peopleExposed',
@@ -125,7 +135,7 @@ function RiskTable(props: Props) {
             description="These figures represent the number of people exposed to each hazard per month, on average. The population exposure figures are from the 2015 UNDRR Global Risk Model, based on average annual exposure to each hazard. The average annual exposure estimates were disaggregated by month based on recorded impacts of observed hazard events."
           />
         </div>,
-        (item) => getAverageForSelectedMonths(item.exposure?.monthly, selectedMonths),
+        (item) => getSumForSelectedMonths(item.exposure?.monthly, selectedMonths),
         undefined,
         {
           normal: true,
@@ -141,7 +151,7 @@ function RiskTable(props: Props) {
             description="These figures represent the number of people expected to be displaced per month, on average, by each hazard. The estimates are based on the Internal Displacement Monitoring Centre's disaster displacement risk model using estimates for average annual displacement risk. These values were disaggregated by month based on historical displacement data associated with each hazard."
           />
         </div>,
-        (item) => getAverageDisplacementValueForSelectedMonths(
+        (item) => getDisplacementSumForSelectedMonths(
           item.displacement?.monthly,
           item.exposure?.monthly,
           selectedMonths,

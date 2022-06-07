@@ -2,8 +2,10 @@
 
 .month-selector {
   display: flex;
-  padding-top: 0.7em;
   align-items: flex-start;
+
+  $__tick-width: 1.5ch;
+  $__border-width: $base-border-width * 2;
 
   .tick-item {
     position: relative;
@@ -13,40 +15,40 @@
     align-items: center;
     flex-shrink: 0;
     cursor: pointer;
-    gap: $spacing*0.5;
+    gap: $spacing;
 
     .tick {
-      width: 1ch;
-      height: 1ch;
+      width: $__border-width;
+      height: calc(#{$__tick-width * 0.75} + #{$__border-width * 0.5});
       background-color: $grey-titanium;
       border-radius: 50%;
       position: relative;
+      transform: translateY(-$__tick-width * 0.25);
 
       &::before {
         position: absolute;
         right: 0;
-        top: 0.5ch;
-        content: ' ';
-        width: 1ch;
-        height: $base-border-width;
+        top: calc(#{$__tick-width * 0.5} - #{$__border-width * 0.5});
+        content: '';
+        width: $__tick-width;
+        height: $__border-width;
         background-color: $grey-titanium;
-        transform: translateX(-100%);
+        transform: translate(-$__border-width, $__tick-width * 0.25);
       }
 
       &::after {
         position: absolute;
         right: 0;
-        top: 0.5ch;
-        content: ' ';
-        width: 1ch;
-        height: 1px;
+        top: calc(#{$__tick-width * 0.5} - #{$__border-width * 0.5});
+        content: '';
+        width: $__tick-width;
+        height: $__border-width;
         background-color: $grey-titanium;
-        transform: translateX(100%);
+        transform: translate(100%, $__tick-width * 0.25);
       }
     }
 
     .month-name {
-      text-transform: uppercase;
       font-weight: $base-font-medium;
       font-size: $font-size-sm;
       font-family: $code-font-family;
@@ -57,14 +59,21 @@
       color: $primary-color;
 
       .tick {
+        width: $__tick-width;
+        height: $__tick-width;
         background-color: $primary-color;
+        transform: translateY(0);
 
         &::after {
           background-color: $primary-color;
+          width: $__tick-width;
+          transform: translateX(100%);
         }
 
         &::before {
+          transform: translateX(-$__tick-width);
           background-color: $primary-color;
+          width: $__tick-width;
         }
       }
     }
@@ -72,9 +81,10 @@
 
   .track {
     flex-grow: 1;
-    height: $base-border-width;
+    height: $__border-width;
     background-color: $grey-titanium;
-    margin-top: 0.5ch;
+    margin-bottom: calc(#{$__tick-width * 0.5} - #{$__border-width * 0.5});
+    align-self: flex-end;
 
     &.active-track {
       background-color: $primary-color;

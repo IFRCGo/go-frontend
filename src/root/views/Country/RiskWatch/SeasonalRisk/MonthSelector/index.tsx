@@ -78,7 +78,7 @@ function MonthSelector<T>(props: Props<T>) {
     <div className={_cs(styles.monthSelector, className)}>
       <div className={styles.track} />
       {monthNameList.map((m, i) => (
-        <>
+        <React.Fragment key={m}>
           <RawButton
             name={i}
             className={_cs(
@@ -86,12 +86,11 @@ function MonthSelector<T>(props: Props<T>) {
               value[i] && styles.active,
             )}
             onClick={handleClick}
-            key={m}
           >
-            <div className={styles.tick} />
             <div className={styles.monthName}>
               {m}
             </div>
+            <div className={styles.tick} />
           </RawButton>
           {i < (monthNameList.length - 1) && (
             <div
@@ -101,7 +100,7 @@ function MonthSelector<T>(props: Props<T>) {
               )}
             />
           )}
-        </>
+        </React.Fragment>
       ))}
       <div className={styles.track} />
     </div>

@@ -25,10 +25,13 @@
 
       .month-selector {
         position: absolute;
-        bottom: $spacing*2;
+        bottom: $spacing;
+        left: 50%;
+        transform: translateX(-50%);
         width: 100%;
-        max-width: 30rem;
+        max-width: 34rem;
         padding: $spacing;
+        background-color: $white;
       }
     }
   }
