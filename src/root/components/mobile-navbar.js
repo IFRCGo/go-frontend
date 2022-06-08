@@ -74,6 +74,7 @@ class MobileNavbar extends React.PureComponent {
         .then(data => {
           const options = data.hits.map(o => {
             const d = o._source;
+            // TODO: visibility filtering should be here also, like in navbar.js
             const value = getUriForType(d.type, d.id);
             const date = d.date ? ` (${isoDate(d.date)})` : '';
             const label = `${u(d.type)}: ${d.name}${date}`;
