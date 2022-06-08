@@ -19,6 +19,7 @@ import { uppercaseFirstLetter as u, isoDate } from '#utils/format';
 import { appealTypes } from '#utils/appeal-type-constants';
 import { getCountryMeta } from '#utils/get-country-meta';
 
+
 // lodash.get will only return the defaultValue when
 // the path is undefined. We want to also catch null and ''
 export function get (object, path, defaultValue) {
@@ -360,7 +361,42 @@ function getUriForType (type, id, data) {
   }
 }
 
-export function getElasticSearchOptions(input, callback) {
+// 1234 => 7968, so that this linear, comparable order will have:
+//  2IFRC                      9
+//  4IFRC_NS                   8
+//  1MEMBERSHIP (logged in)    7
+//  3PUBLIC                    6
+function line (p) {
+  switch (parseInt(p)) {
+    case NaN:
+      return 6;
+    case 1:
+      return 7;
+    case 2:
+      return 9;
+    default:
+      return p + p;
+
+  }
+}
+
+function nume (p) { // numeric (and linear) representation of orgType
+  switch (p) {
+    case 'OTHR':
+      return 7;
+    case 'NTLS':
+    case 'DLGN':
+      return 8;
+    case 'SCRT':
+    case 'ICRC':
+    case '*': // superuser
+      return 9;
+    default:
+      return 6;
+  }
+}
+
+export function getElasticSearchOptions(input, orgType, callback) {
   if (!input) {
     callback([]);
   }
@@ -369,6 +405,7 @@ export function getElasticSearchOptions(input, callback) {
     .then(data => {
       const options = data.hits.map(o => {
         const d = o._source;
+        if (line(d.visibility) > nume(orgType)) { return false;}
         const value = getUriForType(d.type, d.id, d);
         const date = d.date ? ` (${isoDate(d.date)})` : '';
         const label = `${u(d.type)}: ${d.name}${date}`;
