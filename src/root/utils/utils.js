@@ -405,7 +405,11 @@ export function getElasticSearchOptions(input, orgType, callback) {
     .then(data => {
       const options = data.hits.map(o => {
         const d = o._source;
-        if (line(d.visibility) > nume(orgType)) { return false;}
+        console.log('visibility should be <=',line(d.visibility));
+        console.log('than permission_level',nume(orgType));
+        console.log('visibilityRaw',d.visibility);
+        console.log('orgTypeRaw',orgType);
+        if (line(d.visibility) > nume(orgType)) { return false; }
         const value = getUriForType(d.type, d.id, d);
         const date = d.date ? ` (${isoDate(d.date)})` : '';
         const label = `${u(d.type)}: ${d.name}${date}`;
