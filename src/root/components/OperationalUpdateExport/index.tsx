@@ -1,19 +1,18 @@
 import React from 'react';
 import { pdf } from '@react-pdf/renderer';
+import { IoDownload } from 'react-icons/io5';
 
+import languageContext from '#root/languageContext';
 import { useRequest } from '#utils/restRequest';
-import LanguageContext from '#root/languageContext';
-import { DrefApiFields } from '#views/DrefApplicationForm/common';
-
 import {
   NumericKeyValuePair,
   StringKeyValuePair,
 } from '#types';
+import { DrefOperationalUpdateApiFields } from '#views/DrefOperationalUpdateForm/common';
+import OperationalUpdatePdfDocument from '#components/OperationalUpdatePdfDocument';
+import DropdownMenuItem from '#components/DropdownMenuItem';
 
-import DrefPdfDocument from '#components/DrefPdfDocument';
-import Button from '#components/Button';
-
-interface DrefOptions {
+interface OperationalUpdateOptions {
   disaster_category: NumericKeyValuePair[];
   national_society_actions: StringKeyValuePair[];
   needs_identified: StringKeyValuePair[];
@@ -28,48 +27,40 @@ interface DrefOptions {
     username: string;
   }[];
 }
-
 interface Props {
   className?: string;
-  drefId: number;
+  operationalId: number;
 }
 
-function DrefExportButton(props: Props) {
-  const { strings } = React.useContext(LanguageContext);
+function OperationalUpdateExport(props: Props) {
+  const { strings } = React.useContext(languageContext);
   const {
-    className,
-    drefId,
+    operationalId,
   } = props;
 
-  const [shouldRender, setShouldRender] = React.useState(false);
-
   const {
-    pending: fetchingDref,
-    response: dref,
-  } = useRequest<DrefApiFields>({
-    skip: !drefId || !shouldRender,
-    url: `api/v2/dref/${drefId}/`,
+    pending: fetchingOperationalUpdate,
+    response: operationalUpdateResponse,
+  } = useRequest<DrefOperationalUpdateApiFields>({
+    skip: !operationalId,
+    url: `api/v2/dref-op-update/${operationalId}/`,
   });
 
   const {
     pending: fetchingDrefOptions,
     response: drefOptions,
-  } = useRequest<DrefOptions>({
-    skip: !shouldRender,
+  } = useRequest<OperationalUpdateOptions>({
+    skip: !operationalId,
     url: 'api/v2/dref-options/',
   });
 
-  const handleClick = React.useCallback(() => {
-    setShouldRender(true);
-  }, []);
+  const pending = fetchingOperationalUpdate || fetchingDrefOptions;
 
-  const pending = fetchingDref || fetchingDrefOptions;
-
-  React.useEffect(() => {
-    if (!pending && dref && drefOptions && shouldRender) {
+  const handleExportRender = React.useCallback(() => {
+    if (!pending && operationalUpdateResponse && drefOptions) {
       const exportToPdf = async () => {
-        const drefDocument = DrefPdfDocument({
-          dref,
+        const drefDocument = OperationalUpdatePdfDocument({
+          operationalUpdateResponse,
           drefOptions,
           strings,
         });
@@ -83,7 +74,7 @@ function DrefExportButton(props: Props) {
           const hh = now.getHours();
           const mm = now.getMinutes();
           const ss = now.getSeconds();
-          const fileName = `DREF ${dref?.title ?? 'Export'} (${y}-${m}-${d} ${hh}-${mm}-${ss})`;
+          const fileName = `Operational update ${operationalUpdateResponse?.title ?? 'Export'} (${y}-${m}-${d} ${hh}-${mm}-${ss})`;
           const downloadLink = document.createElement('a');
           downloadLink.style.display = 'none';
           document.body.appendChild(downloadLink);
@@ -91,25 +82,21 @@ function DrefExportButton(props: Props) {
           downloadLink.download = fileName;
           downloadLink.click();
           document.body.removeChild(downloadLink);
-          setShouldRender(false);
         }
       };
 
       exportToPdf();
     }
-  }, [pending, dref, drefOptions, shouldRender, strings]);
-
+  }, [pending, operationalUpdateResponse, drefOptions, strings]);
 
   return (
-    <Button
-      name="dref-export-button"
-      className={className}
-      disabled={pending || shouldRender}
-      onClick={handleClick}
-      variant="secondary"
-    >
-      {shouldRender ? 'Exporting...' : 'Export'}
-    </Button>
+    <DropdownMenuItem
+      icon={<IoDownload />}
+      label="Export"
+      onClick={handleExportRender}
+      disabled={pending}
+    />
   );
 }
-export default DrefExportButton;
+
+export default OperationalUpdateExport;

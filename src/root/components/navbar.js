@@ -124,14 +124,12 @@ function Navbar(props) {
                         {strings.headerDropdownNewFlashUpdate}
                       </Link>
                     )}
-                    {/* NOTE: Temporary
                     <Link
                       to='/dref-application/new'
                       className='drop__menu-item'
                     >
                       {strings.headerDropdownNewDrefApplication}
                     </Link>
-                    */}
                   </div>
                 </DropdownMenu>
               </nav>

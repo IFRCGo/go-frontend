@@ -23,4 +23,9 @@
   &:hover {
     background-color: lighten($primary-color, 40%);
   }
+
+  &.disabled {
+    pointer-events: none;
+    opacity: 0.5;
+  }
 }

@@ -1,50 +1,43 @@
 import React from 'react';
 import {
-  PartialForm,
-  Error,
   EntriesAsList,
-  useFormArray,
+  Error,
   getErrorObject,
+  PartialForm,
   SetBaseValueArg,
+  useFormArray,
 } from '@togglecorp/toggle-form';
-import {
-  randomString,
-  listToMap,
-  isNotDefined,
-} from '@togglecorp/fujs';
 import { IoHelpCircle } from 'react-icons/io5';
 
 import Container from '#components/Container';
+import DateInput from '#components/DateInput';
 import InputSection from '#components/InputSection';
+import NumberInput from '#components/NumberInput';
+import languageContext from '#root/languageContext';
+import { randomString } from '@togglecorp/fujs';
 import Button from '#components/Button';
 import TextInput from '#components/TextInput';
 import SelectInput from '#components/SelectInput';
-import SearchSelectInput from '#components/SearchSelectInput';
-import LanguageContext from '#root/languageContext';
+import CountryDistrictInput from '#views/DrefApplicationForm/DrefOverview/CountryDistrictInput';
 import RadioInput from '#components/RadioInput';
-import DateInput from '#components/DateInput';
-import NumberInput from '#components/NumberInput';
 import DREFFileInput from '#components/DREFFileInput';
-import { rankedSearchOnList } from '#utils/common';
+import { sumSafe } from '#utils/common';
 
 import {
-  optionLabelSelector,
-  DrefFields,
-  NumericValueOption,
-  BooleanValueOption,
   booleanOptionKeySelector,
+  BooleanValueOption,
   CountryDistrict,
+  DrefOperationalUpdateFields,
+  NumericValueOption,
   ONSET_IMMINENT,
-  emptyNumericOptionList,
   ONSET_SUDDEN,
+  optionLabelSelector,
 } from '../common';
-import { CountryDistrictType } from '../useDrefFormOptions';
-import CountryDistrictInput from './CountryDistrictInput';
-import CopyFieldReportSection from './CopyFieldReportSection';
-import styles from './styles.module.scss';
-import TextArea from '#components/TextArea';
+import { CountryDistrictType } from '../useDrefOperationalUpdateOptions';
 
-type Value = PartialForm<DrefFields>;
+import styles from './styles.module.scss';
+
+type Value = PartialForm<DrefOperationalUpdateFields>;
 interface Props {
   disasterTypeOptions: NumericValueOption[];
   error: Error<Value> | undefined;
@@ -65,8 +58,8 @@ interface Props {
   onCreateAndShareButtonClick: () => void;
 }
 
-function DrefOverview(props: Props) {
-  const { strings } = React.useContext(LanguageContext);
+function Overview(props: Props) {
+  const { strings } = React.useContext(languageContext);
 
   const {
     countryOptions,
@@ -83,9 +76,6 @@ function DrefOverview(props: Props) {
     onsetOptions,
     setFileIdToUrlMap,
     fileIdToUrlMap,
-    onValueSet,
-    userOptions,
-    onCreateAndShareButtonClick,
   } = props;
 
   const error = React.useMemo(
@@ -121,59 +111,17 @@ function DrefOverview(props: Props) {
   const isSuddenOnSet = value.type_of_onset === ONSET_SUDDEN ? false : value.emergency_appeal_planned;
   onValueChange(isSuddenOnSet, 'emergency_appeal_planned');
 
-  const handleUserSearch = React.useCallback((input: string | undefined, callback) => {
-    if (!input) {
-      callback(emptyNumericOptionList);
-    }
+  const totalDrefAllocation = React.useMemo(() => (
+    sumSafe([
+      value.dref_allocated_so_far,
+      value.additional_allocation,
+    ])
+  ), [value.dref_allocated_so_far, value.additional_allocation]);
 
-    callback(rankedSearchOnList(
-      userOptions,
-      input,
-      d => d.label,
-    ));
-  }, [userOptions]);
-
-  const userMap = React.useMemo(() => listToMap(userOptions, d => d.value, d => d.label), [userOptions]);
-  const initialOptions = React.useMemo(() => (
-    value.users?.map((u) => ({
-      label: userMap[u],
-      value: u,
-    }))
-  ), [userMap, value.users]);
+  onValueChange(totalDrefAllocation, 'total_dref_allocation');
 
   return (
     <>
-      <Container
-        className={styles.sharing}
-        heading={strings.drefFormSharingHeading}
-        visibleOverflow
-      >
-        <InputSection
-          title={strings.drefFormSharingTitle}
-          description={strings.drefFormSharingDescription}
-        >
-          <SearchSelectInput
-            name={"users" as const}
-            isMulti
-            initialOptions={initialOptions}
-            value={value.users}
-            onChange={onValueChange}
-            loadOptions={handleUserSearch}
-          />
-          {isNotDefined(value.id) && (
-            <div className={styles.actions}>
-              <Button
-                name={undefined}
-                variant="secondary"
-                disabled={isNotDefined(value.users) || value.users.length === 0}
-                onClick={onCreateAndShareButtonClick}
-              >
-                {strings.drefFormInstantShareLabel}
-              </Button>
-            </div>
-          )}
-        </InputSection>
-      </Container>
       <Container
         heading={strings.drefFormEssentialInformation}
         className={styles.essentialInformation}
@@ -191,18 +139,14 @@ function DrefOverview(props: Props) {
           title={strings.drefFormNationalSociety}
         >
           <SelectInput
-            error={error?.national_society}
             name={"national_society" as const}
+            value={value.national_society}
             onChange={onValueChange}
             options={nationalSocietyOptions}
+            error={error?.national_society}
             pending={fetchingNationalSociety}
-            value={value.national_society}
           />
         </InputSection>
-        <CopyFieldReportSection
-          value={value}
-          onValueSet={onValueSet}
-        />
         <InputSection
           title={isImminentOnset ? strings.drefFormImminentDisasterDetails : strings.drefFormDisasterDetails}
           multiRow
@@ -275,33 +219,54 @@ function DrefOverview(props: Props) {
         </InputSection>
         <InputSection
           title={!isImminentOnset ? strings.drefFormPeopleAffected : strings.drefFormRiskPeopleLabel}
-
         >
           <NumberInput
-            name="num_affected"
-            value={value.num_affected}
+            name="number_of_people_affected"
+            value={value.number_of_people_affected}
             onChange={onValueChange}
-            error={error?.num_affected}
+            error={error?.number_of_people_affected}
           />
         </InputSection>
         <InputSection
           title={strings.drefFormPeopleTargeted}
         >
           <NumberInput
-            name="num_assisted"
-            value={value.num_assisted}
+            name="number_of_people_targeted"
+            value={value.number_of_people_targeted}
             onChange={onValueChange}
-            error={error?.num_assisted}
+            error={error?.number_of_people_targeted}
           />
         </InputSection>
         <InputSection
-          title={strings.drefFormRequestAmount}
+          title={strings.drefOperationalUpdateAllocationSoFar}
         >
           <NumberInput
-            name="amount_requested"
-            value={value.amount_requested}
+            name="dref_allocated_so_far"
+            value={value.dref_allocated_so_far}
+            onChange={undefined}
+            error={error?.dref_allocated_so_far}
+            readOnly
+          />
+        </InputSection>
+        <InputSection
+          title={strings.drefOperationalUpdateAdditionalAllocationRequested}
+        >
+          <NumberInput
+            name="additional_allocation"
+            value={value.additional_allocation}
             onChange={onValueChange}
-            error={error?.amount_requested}
+            error={error?.additional_allocation}
+          />
+        </InputSection>
+        <InputSection
+          title={strings.drefOperationalUpdateTotalAllocation}
+        >
+          <NumberInput
+            name="total_dref_allocation"
+            value={value.total_dref_allocation}
+            onChange={undefined}
+            error={error?.total_dref_allocation}
+            readOnly
           />
         </InputSection>
         <InputSection
@@ -318,149 +283,76 @@ function DrefOverview(props: Props) {
           />
         </InputSection>
         <InputSection
-          title={strings.drefFormUploadMap}
+          title={strings.drerfOperationalUpdateImageLabel}
         >
           <DREFFileInput
-            accept="image/*"
-            error={error?.event_map}
-            fileIdToUrlMap={fileIdToUrlMap}
-            name="event_map"
+            name="images"
+            value={value.images}
             onChange={onValueChange}
-            setFileIdToUrlMap={setFileIdToUrlMap}
+            accept="image/*"
+            multiple
             showStatus
-            value={value.event_map}
+            error={error?.images}
+            fileIdToUrlMap={fileIdToUrlMap}
+            setFileIdToUrlMap={setFileIdToUrlMap}
           >
-            {strings.drefFormUploadAnImageLabel}
+            Select images
           </DREFFileInput>
         </InputSection>
         <InputSection
-          title={strings.drefFormUploadCoverImage}
+          title={strings.drefOperationalUpdateNumber}
         >
-          <DREFFileInput
-            accept="image/*"
-            error={error?.cover_image}
-            fileIdToUrlMap={fileIdToUrlMap}
-            name="cover_image"
+          <NumberInput
+            readOnly
+            name="operational_update_number"
+            value={value.operational_update_number}
             onChange={onValueChange}
-            setFileIdToUrlMap={setFileIdToUrlMap}
-            showStatus
-            value={value.cover_image}
-          >
-            {strings.drefFormUploadAnImageLabel}
-          </DREFFileInput>
+            error={error?.operational_update_number}
+          />
         </InputSection>
       </Container>
       <Container
         heading={strings.drefFormTimeFrames}
         className={styles.timeframes}
       >
-        {!isImminentOnset ?
-          <InputSection
-            title={strings.drefFormEventDate}
-          >
-            <DateInput
-              name="event_date"
-              value={value.event_date}
-              onChange={onValueChange}
-              error={error?.event_date}
-            />
-          </InputSection>
-          :
-          <InputSection
-            title={strings.drefFormApproximateDateOfImpact}
-          >
-            <TextArea
-              name="event_text"
-              value={value.event_text}
-              onChange={onValueChange}
-              error={error?.event_text}
-            />
-          </InputSection>
-        }
         <InputSection
-          title={strings.drefFormGoFieldReportDate}
+          title={strings.drefOperationalUpdateTimeFrameDateOfEvent}
         >
           <DateInput
-            name="go_field_report_date"
-            value={value.go_field_report_date}
+            name="new_operational_start_date"
+            value={value.new_operational_start_date}
             onChange={onValueChange}
-            error={error?.go_field_report_date}
+            error={error?.new_operational_start_date}
           />
         </InputSection>
         <InputSection
-          title={!isImminentOnset ? strings.drefFormNsResponseStarted : strings.drefFormNSAnticipatoryAction}
+          title={strings.drefOperationalUpdateTimeFrameReportingTimeFrame}
         >
           <DateInput
-            name="ns_respond_date"
-            value={value.ns_respond_date}
+            name="reporting_timeframe"
+            value={value.reporting_timeframe}
             onChange={onValueChange}
-            error={error?.ns_respond_date}
+            error={error?.reporting_timeframe}
           />
         </InputSection>
         <InputSection
-          title={strings.drefFormNsRequestDate}
+          title={strings.drefOperationalUpdateTimeFrameExtensionRequestedIfYes}
         >
           <DateInput
-            name="ns_request_date"
-            value={value.ns_request_date}
+            name="new_operational_end_date"
+            value={value.new_operational_end_date}
             onChange={onValueChange}
-            error={error?.ns_request_date}
+            error={error?.new_operational_end_date}
           />
         </InputSection>
         <InputSection
-          title={strings.drefFormDateSubmissionToGeneva}
-          description={strings.drefFormDateSubmissionToGenevaDescription}
-        >
-          <DateInput
-            name="submission_to_geneva"
-            value={value.submission_to_geneva}
-            onChange={onValueChange}
-            error={error?.submission_to_geneva}
-          />
-        </InputSection>
-        <InputSection
-          title={strings.drefFormDateOfApproval}
-          description={strings.drefFormDateOfApprovalDescription}
-        >
-          <DateInput
-            name="date_of_approval"
-            value={value.date_of_approval}
-            onChange={onValueChange}
-            error={error?.date_of_approval}
-          />
-        </InputSection>
-        <InputSection
-          title={strings.drefFormPublishingDate}
-          description={strings.drefFormPublishingDateDescription}
-        >
-          <DateInput
-            name="publishing_date"
-            value={value.publishing_date}
-            onChange={onValueChange}
-            error={error?.publishing_date}
-          />
-        </InputSection>
-        <InputSection
-          title={strings.drefFormOperationTimeframeSubmission}
+          title={strings.drefOperationalUpdateTimeFrameTotalOperatingTimeFrame}
         >
           <NumberInput
-            name="operation_timeframe"
-            placeholder={strings.drefFormOperationTimeframeSubmissionDescription}
-            value={value.operation_timeframe}
+            name="total_operation_timeframe"
+            value={value.total_operation_timeframe}
             onChange={onValueChange}
-            error={error?.operation_timeframe}
-          />
-        </InputSection>
-        <InputSection
-          title={strings.drefFormSubmissionEndDate}
-          description={strings.drefFormEndDateSubmissionDescription}
-        >
-          <DateInput
-            name="end_date"
-            value={value.end_date}
-            onChange={onValueChange}
-            error={error?.end_date}
-            readOnly
+            error={error?.total_operation_timeframe}
           />
         </InputSection>
       </Container>
@@ -468,4 +360,4 @@ function DrefOverview(props: Props) {
   );
 }
 
-export default DrefOverview;
+export default Overview;

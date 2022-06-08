@@ -1,64 +1,59 @@
 import React from 'react';
-import type { History, Location } from 'history';
-import { Link } from 'react-router-dom';
+import { Link, match } from 'react-router-dom';
+import {
+  History,
+  Location,
+} from 'history';
 import {
   isDefined,
   listToMap,
+  mapToMap,
 } from '@togglecorp/fujs';
 import {
+  analyzeErrors,
+  getErrorObject,
+  ObjectError,
   PartialForm,
   useForm,
   accumulateErrors,
-  getErrorObject,
-  ObjectError,
+  internal,
 } from '@togglecorp/toggle-form';
-import type { match as Match } from 'react-router-dom';
 
-import BlockLoading from '#components/block-loading';
-import Button from '#components/Button';
-import Container from '#components/Container';
-import NonFieldError from '#components/NonFieldError';
-import Page from '#components/Page';
-import Tab from '#components/Tabs/Tab';
 import TabList from '#components/Tabs/TabList';
-import TabPanel from '#components/Tabs/TabPanel';
+import Page from '#components/Page';
 import Tabs from '#components/Tabs';
-import { useButtonFeatures } from '#components/Button';
+import Tab from '#components/Tabs/Tab';
+import Button, { useButtonFeatures } from '#components/Button';
+import NonFieldError from '#components/NonFieldError';
+import TabPanel from '#components/Tabs/TabPanel';
+import languageContext from '#root/languageContext';
+import Container from '#components/Container';
+import BlockLoading from '#components/block-loading';
+import useAlert from '#hooks/useAlert';
 import {
   useLazyRequest,
   useRequest,
 } from '#utils/restRequest';
-import { ymdToDateString } from '#utils/common';
-import LanguageContext from '#root/languageContext';
-import useAlert from '#hooks/useAlert';
 
-import DrefOverview from './DrefOverview';
-import EventDetails from './EventDetails';
-import ActionsFields from './ActionsFields';
-import Response from './Response';
-import Submission from './Submission';
 import {
-  DrefFields,
-  DrefApiFields,
+  DrefOperationalUpdateFields,
+  eventFields,
+  needsFields,
   overviewFields,
-  eventDetailsFields,
-  actionsFields,
-  responseFields,
+  operationFields,
   submissionFields,
-  ONSET_IMMINENT,
+  DrefOperationalUpdateApiFields,
 } from './common';
-import useDrefFormOptions, { schema } from './useDrefFormOptions';
+import useDrefOperationalFormOptions, {
+  schema
+} from './useDrefOperationalUpdateOptions';
+import Overview from './Overview';
+import EventDetails from './EventDetails';
+import Needs from './Needs';
+import Operation from './Operation';
+import Submission from './Submission';
 
 import styles from './styles.module.scss';
-
-const defaultFormValues: PartialForm<DrefFields> = {
-  country_district: [],
-  planned_interventions: [],
-  national_society_actions: [],
-  needs_identified: [],
-  images: [],
-  users: [],
-};
 
 function scrollToTop() {
   window.setTimeout(() => {
@@ -70,60 +65,49 @@ function scrollToTop() {
   }, 0);
 }
 
-interface DrefResponseFields {
-  id: number;
-}
-
-export function getDefinedValues<T extends Record<string, any>>(o: T): Partial<T> {
-  type Key = keyof T;
-  const keys = Object.keys(o) as Key[];
-  const definedValues: Partial<T> = {};
-  keys.forEach((key) => {
-    if (isDefined(o[key])) {
-      definedValues[key] = o[key];
-    }
-  });
-
-  return definedValues;
-}
-
-type StepTypes = 'operationOverview' | 'eventDetails' | 'action' | 'response' | 'submission';
-const stepTypesToFieldsMap: {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  [key in StepTypes]: (keyof DrefFields)[];
-} = {
-  operationOverview: overviewFields,
-  eventDetails: eventDetailsFields,
-  action: actionsFields,
-  response: responseFields,
-  submission: submissionFields,
-};
-
 interface Props {
-  className?: string;
-  match: Match<{ drefId?: string }>;
+  match: match<{ id?: string }>;
   history: History;
   location: Location;
 }
+interface DrefOperationalResponseFields {
+  id: string;
+}
 
-function DrefApplication(props: Props) {
+type StepTypes = 'operationOverview' | 'eventDetails' | 'needs' | 'operation' | 'submission';
+
+const stepTypesToFieldsMap: {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  [key in StepTypes]: (keyof DrefOperationalUpdateFields)[];
+} = {
+  operationOverview: overviewFields,
+  eventDetails: eventFields,
+  needs: needsFields,
+  operation: operationFields,
+  submission: submissionFields,
+};
+
+const defaultFormValues: PartialForm<DrefOperationalUpdateFields> = {
+  images: []
+};
+
+function DrefOperationalUpdate(props: Props) {
   const {
-    className,
-    history,
     match,
   } = props;
-
+  const { id } = match.params;
   const alert = useAlert();
-  const { drefId } = match.params;
-  const { strings } = React.useContext(LanguageContext);
   const {
     value,
     error,
     setFieldValue: onValueChange,
     validate,
-    setError: onErrorSet,
-    setValue: onValueSet,
-  } = useForm(schema, { value: defaultFormValues });
+    setValue,
+    setError,
+  } = useForm(
+    schema,
+    { value: defaultFormValues }
+  );
 
   const {
     countryOptions,
@@ -141,56 +125,92 @@ function DrefApplication(props: Props) {
     yesNoOptions,
     userDetails,
     userOptions,
-  } = useDrefFormOptions(value);
+  } = useDrefOperationalFormOptions(value);
 
   const [fileIdToUrlMap, setFileIdToUrlMap] = React.useState<Record<number, string>>({});
+  const { strings } = React.useContext(languageContext);
   const [currentStep, setCurrentStep] = React.useState<StepTypes>('operationOverview');
   const submitButtonLabel = currentStep === 'submission' ? strings.drefFormSaveButtonLabel : strings.drefFormContinueButtonLabel;
   const shouldDisabledBackButton = currentStep === 'operationOverview';
 
   const erroredTabs = React.useMemo(() => {
+    const safeErrors = getErrorObject(error) ?? {};
+
     const tabs: {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       [key in StepTypes]: boolean;
     } = {
       operationOverview: false,
       eventDetails: false,
-      action: false,
-      response: false,
+      needs: false,
+      operation: false,
       submission: false,
     };
 
-    const tabKeys = (Object.keys(tabs)) as StepTypes[];
-    tabKeys.forEach((tabKey) => {
-      const currentFields = stepTypesToFieldsMap[tabKey];
-      const currentFieldsMap = listToMap(currentFields, d => d, d => true);
+    return mapToMap(
+      tabs,
+      (key) => key,
+      (_, tabKey) => {
+        const currentFields = stepTypesToFieldsMap[tabKey as StepTypes];
+        const currentFieldsMap = listToMap(
+          currentFields,
+          d => d,
+          d => true,
+        );
 
-      const erroredFields = Object.keys(getErrorObject(error) ?? {}) as (keyof DrefFields)[];
-      const hasError = erroredFields.some(d => currentFieldsMap[d]);
-      tabs[tabKey] = hasError;
-    });
+        const partialErrors: typeof error = mapToMap(
+          safeErrors,
+          (key) => key,
+          (value, key) => currentFieldsMap[key as keyof DrefOperationalUpdateFields] ? value : undefined,
+        );
 
-    return tabs;
+        return analyzeErrors(partialErrors);
+      }
+    );
   }, [error]);
+
+  const validateCurrentTab = React.useCallback((exceptions: (keyof DrefOperationalUpdateFields)[] = []) => {
+    const validationError = getErrorObject(accumulateErrors(value, schema, value, undefined));
+    const currentFields = stepTypesToFieldsMap[currentStep];
+    const exceptionsMap = listToMap(exceptions, d => d, d => true);
+
+    if (!validationError) {
+      return true;
+    }
+
+    const currentTabErrors = listToMap(
+      currentFields.filter(field => (!exceptionsMap[field] && !!validationError?.[field])),
+      field => field,
+      field => validationError?.[field]
+    ) as ObjectError<DrefOperationalUpdateFields>;
+
+    const newError: typeof error = {
+      ...currentTabErrors,
+    };
+
+    setError(newError);
+
+    const hasError = Object.keys(currentTabErrors).some(d => !!d);
+    return !hasError;
+  }, [value, currentStep, setError]);
+
+  const handleTabChange = React.useCallback((newStep: StepTypes) => {
+    scrollToTop();
+    setCurrentStep(newStep);
+  }, []);
 
   const {
     pending: drefSubmitPending,
     trigger: submitRequest,
-  } = useLazyRequest<DrefResponseFields, Partial<DrefApiFields>>({
-    url: drefId ? `api/v2/dref/${drefId}/` : 'api/v2/dref/',
-    method: drefId ? 'PUT' : 'POST',
+  } = useLazyRequest<DrefOperationalResponseFields, Partial<DrefOperationalUpdateApiFields>>({
+    url: `api/v2/dref-op-update/${id}`,
+    method: 'PUT',
     body: ctx => ctx,
     onSuccess: (response) => {
       alert.show(
-        strings.drefFormSaveRequestSuccessMessage,
+        'Operational Update was updated successfully!',
         { variant: 'success' },
       );
-      if (!drefId) {
-        window.setTimeout(
-          () => history.push(`/dref-application/${response?.id}/edit/`),
-          250,
-        );
-      }
     },
     onFailure: ({
       value: {
@@ -199,7 +219,10 @@ function DrefApplication(props: Props) {
       },
       debugMessage,
     }) => {
-      onErrorSet(formErrors);
+      setError({
+        ...formErrors,
+        [internal]: formErrors?.non_field_errors as string | undefined,
+      });
 
       alert.show(
         <p>
@@ -218,38 +241,25 @@ function DrefApplication(props: Props) {
   });
 
   const {
-    pending: drefApplicationPending,
-    response: drefResponse,
-  } = useRequest<DrefApiFields>({
-    skip: !drefId,
-    url: `api/v2/dref/${drefId}/`,
+    pending: operationalUpdatePending,
+    response: drefOperationalResponse,
+  } = useRequest<DrefOperationalUpdateApiFields>({
+    skip: !id,
+    url: `api/v2/dref-op-update/${id}/`,
     onSuccess: (response) => {
       setFileIdToUrlMap((prevMap) => {
         const newMap = {
           ...prevMap,
         };
-
-        if (response.event_map_details) {
-          newMap[response.event_map_details.id] = response.event_map_details.file;
-        }
-
-        if (response.cover_image_details) {
-          newMap[response.cover_image_details.id] = response.cover_image_details.file;
-        }
-
         if (response.images_details?.length > 0) {
           response.images_details.forEach((img) => {
             newMap[img.id] = img.file;
           });
         }
 
-        if (response.budget_file_details) {
-          newMap[response.budget_file_details.id] = response.budget_file_details.file;
-        }
-
         return newMap;
       });
-      onValueSet({
+      setValue({
         ...response,
         country_district: response.country_district?.map((cd) => ({
           ...cd,
@@ -282,7 +292,7 @@ function DrefApplication(props: Props) {
     }) => {
       alert.show(
         <p>
-          {strings.drefFormLoadRequestFailureMessage}
+          {strings.drefOperationalUpdateFailureMessage}
           &nbsp;
           <strong>
             {messageForNotification}
@@ -296,82 +306,6 @@ function DrefApplication(props: Props) {
     }
   });
 
-  const validateCurrentTab = React.useCallback((exceptions: (keyof DrefFields)[] = []) => {
-    const validationError = getErrorObject(accumulateErrors(value, schema, value, undefined));
-    const currentFields = stepTypesToFieldsMap[currentStep];
-    const exceptionsMap = listToMap(exceptions, d => d, d => true);
-
-    if (!validationError) {
-      return true;
-    }
-
-    const currentTabErrors = listToMap(
-      currentFields.filter(field => (!exceptionsMap[field] && !!validationError?.[field])),
-      field => field,
-      field => validationError?.[field]
-    ) as ObjectError<DrefFields>;
-
-    const newError: typeof error = {
-      ...currentTabErrors,
-    };
-
-    onErrorSet(newError);
-
-    const hasError = Object.keys(currentTabErrors).some(d => !!d);
-    return !hasError;
-  }, [value, currentStep, onErrorSet]);
-
-  const handleTabChange = React.useCallback((newStep: StepTypes) => {
-    scrollToTop();
-    const isCurrentTabValid = validateCurrentTab(['event_map']);
-
-    if (!isCurrentTabValid) {
-      return;
-    }
-
-    setCurrentStep(newStep);
-  }, [validateCurrentTab]);
-
-  const submitDref = React.useCallback(() => {
-    const result = validate();
-
-    if (result.errored) {
-      onErrorSet(result.error);
-    } else if (result.value && userDetails && userDetails.id) {
-      const body = {
-        user: userDetails.id,
-        ...result.value,
-      };
-      submitRequest(body as DrefApiFields);
-    }
-  }, [submitRequest, validate, userDetails, onErrorSet]);
-
-  const handleSubmitButtonClick = React.useCallback(() => {
-    scrollToTop();
-
-    const isCurrentTabValid = validateCurrentTab(['event_map']);
-
-    if (!isCurrentTabValid) {
-      return;
-    }
-
-    if (currentStep === 'submission') {
-      submitDref();
-    } else {
-      const nextStepMap: {
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        [key in Exclude<StepTypes, 'submission'>]: Exclude<StepTypes, 'operationOverview'>;
-      } = {
-        operationOverview: 'eventDetails',
-        eventDetails: 'action',
-        action: 'response',
-        response: 'submission',
-      };
-
-      handleTabChange(nextStepMap[currentStep]);
-    }
-  }, [validateCurrentTab, currentStep, handleTabChange, submitDref]);
-
   const handleBackButtonClick = React.useCallback(() => {
     if (currentStep !== 'operationOverview') {
       const prevStepMap: {
@@ -379,139 +313,143 @@ function DrefApplication(props: Props) {
         [key in Exclude<StepTypes, 'operationOverview'>]: Exclude<StepTypes, 'submission'>;
       } = {
         eventDetails: 'operationOverview',
-        action: 'eventDetails',
-        response: 'action',
-        submission: 'response',
+        needs: 'eventDetails',
+        operation: 'needs',
+        submission: 'operation',
       };
-
       handleTabChange(prevStepMap[currentStep]);
     }
   }, [handleTabChange, currentStep]);
+
+  const submitDrefOperationalUpdate = React.useCallback(() => {
+    const result = validate();
+
+    if (result.errored) {
+      setError(result.error);
+    } else if (result.value && userDetails && userDetails.id) {
+      const body = {
+        user: userDetails.id,
+        ...result.value,
+      };
+      submitRequest(body as DrefOperationalUpdateApiFields);
+    }
+  }, [submitRequest, setError, validate, userDetails]);
+
+  const handleSubmitButtonClick = React.useCallback(() => {
+    scrollToTop();
+    const isCurrentTabValid = validateCurrentTab(['title']);
+    if (!isCurrentTabValid) {
+      return;
+    }
+
+    if (currentStep === 'submission') {
+      submitDrefOperationalUpdate();
+    } else {
+      const nextStepMap: {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        [key in Exclude<StepTypes, 'submission'>]: Exclude<StepTypes, 'operationOverview'>;
+      } = {
+        operationOverview: 'eventDetails',
+        eventDetails: 'needs',
+        needs: 'operation',
+        operation: 'submission',
+      };
+
+      handleTabChange(nextStepMap[currentStep]);
+    }
+  }, [validateCurrentTab, currentStep, handleTabChange, submitDrefOperationalUpdate]);
 
   const pending = fetchingCountries
     || fetchingDisasterTypes
     || fetchingDrefOptions
     || fetchingUserDetails
-    || drefSubmitPending
-    || drefApplicationPending;
+    || operationalUpdatePending
+    || drefSubmitPending;
 
-  const isImminentOnset = value?.type_of_onset === ONSET_IMMINENT;
-  React.useEffect(() => {
-    onValueSet((oldValue) => {
-      if (value.type_of_onset !== ONSET_IMMINENT) {
-        return {
-          ...oldValue,
-          anticipatory_actions: undefined,
-          people_targeted_with_early_actions: undefined,
-        };
-      }
-
-      return oldValue;
-    });
-  }, [onValueSet, value.type_of_onset]);
+  const failedToLoadDref = !pending && isDefined(id) && !drefOperationalResponse;
 
   React.useEffect(() => {
-    onValueSet((oldValue) => {
-      if (value.ns_request_fund === false || value.ns_respond === false || value.affect_same_population === false || value.affect_same_area === false) {
-        return {
-          ...oldValue,
-          dref_recurrent_text: undefined,
-        };
-      }
-      return oldValue;
-    });
-  }, [onValueSet, value.ns_request_fund, value.ns_respond, value.affect_same_population, value.affect_same_area]);
+    if (isDefined(value.new_operational_start_date) && isDefined(value.new_operational_end_date)) {
+      const startDateYear = new Date(value.new_operational_start_date).getFullYear();
+      const startDateMonth = new Date(value.new_operational_start_date).getMonth();
+      const endDateYear = new Date(value.new_operational_end_date).getFullYear();
+      const endDateMonth = new Date(value.new_operational_end_date).getMonth();
+      const totalOperatingTimeframe = ((endDateMonth + 12 * endDateYear) - (startDateMonth + 12 * startDateYear));
 
-  React.useEffect(() => {
-    if (isDefined(value.date_of_approval) && isDefined(value.operation_timeframe)) {
-      const approvalDate = new Date(value.date_of_approval);
-      if (!Number.isNaN(approvalDate.getTime())) {
-        approvalDate.setMonth(
-          approvalDate.getMonth()
-          + value.operation_timeframe
-          + 1 // To get last day of the month
-        );
-        approvalDate.setDate(0);
-
-        const yyyy = approvalDate.getFullYear();
-        const mm = approvalDate.getMonth();
-        const dd = approvalDate.getDate();
-        onValueChange(ymdToDateString(yyyy, mm, dd), 'end_date' as const);
-      }
+      onValueChange(totalOperatingTimeframe, 'total_operation_timeframe');
     }
-  }, [onValueChange, value.date_of_approval, value.operation_timeframe]);
+  }, [onValueChange, value.new_operational_start_date, value.new_operational_end_date]);
 
   const exportLinkProps = useButtonFeatures({
     variant: 'secondary',
     children: strings.drefFormExportLabel,
   });
 
-  const failedToLoadDref = !pending && isDefined(drefId) && !drefResponse;
-
   return (
     <Tabs
-      disabled={failedToLoadDref}
+      disabled={false}
       onChange={handleTabChange}
       value={currentStep}
-      variant="step"
+      variant='step'
     >
       <Page
-        className={className}
         actions={(
           <>
-            {isDefined(drefId) && (
+            {isDefined(id) && (
               <Link
-                to={`/dref-application/${drefId}/export/`}
+                to={`/dref-operational-update/${id}/export/`}
                 {...exportLinkProps}
               />
             )}
             <Button
               name={undefined}
-              onClick={submitDref}
+              onClick={submitDrefOperationalUpdate}
+              type='submit'
             >
-              {strings.drefFormSaveButtonLabel}
+              {strings.drefOperationalUpdateSaveButtonLabel}
             </Button>
           </>
         )}
-        title={strings.drefFormPageTitle}
-        heading={strings.drefFormPageHeading}
+        title={strings.drefOperationalUpdatePageTitle}
+        heading={strings.drefOperationalUpdatePageHeading}
         info={(
-          <TabList className={styles.tabList}>
+          <TabList>
             <Tab
-              name="operationOverview"
+              name='operationOverview'
               step={1}
               errored={erroredTabs['operationOverview']}
             >
-              {strings.drefFormTabOperationOverviewLabel}
+              {strings.drefOperationalUpdateOverviewLabel}
             </Tab>
             <Tab
-              name="eventDetails"
+              name='eventDetails'
               step={2}
               errored={erroredTabs['eventDetails']}
             >
-              {strings.drefFormTabEventDetailLabel}
+              {strings.drefOperationalUpdateEventDetailsLabel}
             </Tab>
             <Tab
-              name="action"
+              name='needs'
               step={3}
-              errored={erroredTabs['action']}
+              errored={erroredTabs['needs']}
             >
-              {strings.drefFormTabActionsLabel}
+              {strings.drefOperationalUpdateNeedsLabel}
             </Tab>
             <Tab
-              name="response"
+              name='operation'
               step={4}
-              errored={erroredTabs['response']}
+              errored={erroredTabs['operation']}
             >
-              {strings.drefFormTabResponseLabel}
+              {strings.drefOperationalUpdateOperationLabel}
             </Tab>
             <Tab
-              name="submission"
+              name='submission'
               step={5}
               errored={erroredTabs['submission']}
             >
-              {strings.drefFormTabSubmissionLabel}
+              {strings.drefOperationalUpdateSubmissionLabel}
             </Tab>
+
           </TabList>
         )}
       >
@@ -525,13 +463,13 @@ function DrefApplication(props: Props) {
               contentClassName={styles.errorMessage}
             >
               <h3>
-                {strings.drefFormLoadErrorTitle}
+                {strings.drefOperationalUpdateFailureMessage}
               </h3>
               <p>
                 {strings.drefFormLoadErrorDescription}
               </p>
               <p>
-                {strings.drefFormLoadErrorHelpText}
+                {strings.drefOperationalUpdateErrorDescription}
               </p>
             </Container>
           ) : (
@@ -539,11 +477,11 @@ function DrefApplication(props: Props) {
               <Container>
                 <NonFieldError
                   error={error}
-                  message={strings.drefFormFieldGeneralError}
+                  message="Please correct all the errors"
                 />
               </Container>
-              <TabPanel name="operationOverview">
-                <DrefOverview
+              <TabPanel name='operationOverview'>
+                <Overview
                   error={error}
                   onValueChange={onValueChange}
                   value={value}
@@ -558,24 +496,21 @@ function DrefApplication(props: Props) {
                   fetchingNationalSociety={fetchingCountries}
                   fileIdToUrlMap={fileIdToUrlMap}
                   setFileIdToUrlMap={setFileIdToUrlMap}
-                  onValueSet={onValueSet}
+                  onValueSet={setValue}
                   userOptions={userOptions}
-                  onCreateAndShareButtonClick={submitDref}
+                  onCreateAndShareButtonClick={submitDrefOperationalUpdate}
                 />
               </TabPanel>
-              <TabPanel name="eventDetails">
+              <TabPanel name='eventDetails'>
                 <EventDetails
-                  isImminentOnset={isImminentOnset}
                   error={error}
                   onValueChange={onValueChange}
                   value={value}
                   yesNoOptions={yesNoOptions}
-                  fileIdToUrlMap={fileIdToUrlMap}
-                  setFileIdToUrlMap={setFileIdToUrlMap}
                 />
               </TabPanel>
-              <TabPanel name="action">
-                <ActionsFields
+              <TabPanel name='needs'>
+                <Needs
                   error={error}
                   onValueChange={onValueChange}
                   value={value}
@@ -584,8 +519,8 @@ function DrefApplication(props: Props) {
                   nsActionOptions={nsActionOptions}
                 />
               </TabPanel>
-              <TabPanel name="response">
-                <Response
+              <TabPanel name='operation'>
+                <Operation
                   interventionOptions={interventionOptions}
                   error={error}
                   onValueChange={onValueChange}
@@ -594,7 +529,7 @@ function DrefApplication(props: Props) {
                   setFileIdToUrlMap={setFileIdToUrlMap}
                 />
               </TabPanel>
-              <TabPanel name="submission">
+              <TabPanel name='submission'>
                 <Submission
                   error={error}
                   onValueChange={onValueChange}
@@ -626,4 +561,4 @@ function DrefApplication(props: Props) {
   );
 }
 
-export default DrefApplication;
+export default DrefOperationalUpdate;

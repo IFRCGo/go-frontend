@@ -1,58 +1,59 @@
 import React from 'react';
 import { isNotDefined } from '@togglecorp/fujs';
 import {
-  PartialForm,
-  ObjectSchema,
   ArraySchema,
+  emailCondition,
+  lessThanOrEqualToCondition,
+  ObjectSchema,
+  PartialForm,
+  requiredCondition,
 } from '@togglecorp/toggle-form';
 
 import {
-  positiveNumberCondition,
-  positiveIntegerCondition,
-  requiredCondition,
-  emailCondition,
-  lessThanOrEqualToCondition,
-} from '#utils/form';
-import { compareString } from '#utils/utils';
-import LanguageContext from '#root/languageContext';
-import {
-  useRequest,
   ListResponse,
+  useRequest,
 } from '#utils/restRequest';
-
+import languageContext from '#root/languageContext';
+import { compareString } from '#utils/utils';
+import { Disaster } from '#types/project';
+import { Country } from '#types/country';
 import {
-  Country,
-  Disaster,
-} from '#types';
+  positiveIntegerCondition,
+} from '#utils/form';
 
 import {
   BooleanValueOption,
-  NumericValueOption,
+  DrefOperationalUpdateFields,
   emptyNumericOptionList,
   emptyStringOptionList,
-  User,
-  DrefFields,
   NumericKeyValuePair,
+  NumericValueOption,
   StringKeyValuePair,
+  User,
 } from './common';
-import { isDefined } from '@togglecorp/fujs';
 
-export type FormSchema = ObjectSchema<PartialForm<DrefFields>>;
+export type FormSchema = ObjectSchema<PartialForm<DrefOperationalUpdateFields>>;
 export type FormSchemaFields = ReturnType<FormSchema['fields']>;
 
-export type CountryDistrictType = NonNullable<NonNullable<DrefFields['country_district']>>[number];
+export type CountryDistrictType = NonNullable<NonNullable<DrefOperationalUpdateFields['country_district']>>[number];
 export type CountryDistrictSchema = ObjectSchema<PartialForm<CountryDistrictType>>;
 export type CountryDistrictSchemaFields = ReturnType<CountryDistrictSchema['fields']>;
 export type CountryDistrictsSchema = ArraySchema<PartialForm<CountryDistrictType>>;
 export type CountryDistrictsSchemaMember = ReturnType<CountryDistrictsSchema['member']>;
 
-export type NeedType = NonNullable<NonNullable<DrefFields['needs_identified']>>[number];
+export type NeedType = NonNullable<NonNullable<DrefOperationalUpdateFields['needs_identified']>>[number];
 export type NeedSchema = ObjectSchema<PartialForm<NeedType>>;
 export type NeedSchemaFields = ReturnType<NeedSchema['fields']>;
 export type NeedsSchema = ArraySchema<PartialForm<NeedType>>;
 export type NeedsSchemaMember = ReturnType<NeedsSchema['member']>;
 
-export type InterventionType = NonNullable<NonNullable<DrefFields['planned_interventions']>>[number];
+export type NsActionType = NonNullable<NonNullable<DrefOperationalUpdateFields['national_society_actions']>>[number];
+export type NsActionSchema = ObjectSchema<PartialForm<NsActionType>>;
+export type NsActionSchemaFields = ReturnType<NsActionSchema['fields']>;
+export type NsActionsSchema = ArraySchema<PartialForm<NsActionType>>;
+export type NsActionsSchemaMember = ReturnType<NsActionsSchema['member']>;
+
+export type InterventionType = NonNullable<NonNullable<DrefOperationalUpdateFields['planned_interventions']>>[number];
 export type InterventionSchema = ObjectSchema<PartialForm<InterventionType>>;
 export type InterventionSchemaFields = ReturnType<InterventionSchema['fields']>;
 export type InterventionsSchema = ArraySchema<PartialForm<InterventionType>>;
@@ -64,44 +65,16 @@ export type IndicatorSchemaFields = ReturnType<IndicatorSchema['fields']>;
 export type IndicatorsSchema = ArraySchema<PartialForm<IndicatorType>>;
 export type IndicatorsSchemaMember = ReturnType<IndicatorsSchema['member']>;
 
-export type NsActionType = NonNullable<NonNullable<DrefFields['national_society_actions']>>[number];
-export type NsActionSchema = ObjectSchema<PartialForm<NsActionType>>;
-export type NsActionSchemaFields = ReturnType<NsActionSchema['fields']>;
-export type NsActionsSchema = ArraySchema<PartialForm<NsActionType>>;
-export type NsActionsSchemaMember = ReturnType<NsActionsSchema['member']>;
 
 export const MaxIntLimit = 2147483647;
 
-export function max10CharCondition(value: any) {
-  return isDefined(value) && value.length > 10
-    ? 'only 10 characters are allowed'
-    : undefined;
-}
-export function max500CharCondition(value: any) {
-  return isDefined(value) && value.length > 500
-    ? 'Maximum 500 characters are allowed'
-    : undefined;
-}
-
-export function lessThanSixImagesCondition(value: any) {
-  return isDefined(value) && Array.isArray(value) && value.length > 6
-    ? 'Only six images are allowed'
-    : undefined;
-}
-
 export const schema: FormSchema = {
   fields: (value): FormSchemaFields => ({
-    field_report: [],
-    title: [requiredCondition],
-    national_society: [requiredCondition],
-    // disaster_type: [requiredCondition],
-    // type_of_onset: [requiredCondition],
-    // disaster_category: [requiredCondition],
-
-    disaster_category: [],
+    title: [],
+    national_society: [],
     disaster_type: [],
+    disaster_category: [],
     type_of_onset: [],
-
     country_district: {
       keySelector: (c) => c.clientId as string,
       member: (): CountryDistrictsSchemaMember => ({
@@ -111,7 +84,7 @@ export const schema: FormSchema = {
             if (isNotDefined(value)) {
               return undefined;
             }
-            const countriesWithCurrentId = (allValues as unknown as DrefFields)?.country_district?.filter(
+            const countriesWithCurrentId = (allValues as unknown as DrefOperationalUpdateFields)?.country_district?.filter(
               d => d.country === value
             );
 
@@ -125,113 +98,48 @@ export const schema: FormSchema = {
         }),
       }),
     },
-    num_affected: [positiveIntegerCondition],
-    num_assisted: [positiveIntegerCondition],
-    amount_requested: [positiveNumberCondition],
+
+    number_of_people_affected: [positiveIntegerCondition],
+    number_of_people_targeted: [positiveIntegerCondition],
+    additional_allocation: [positiveIntegerCondition],
+    total_dref_allocation: [],
     emergency_appeal_planned: [],
-    // event_map: [requiredCondition],
-    event_map: [],
-    cover_image: [],
-
-    event_date: [],
-    event_text: [max500CharCondition],
-    anticipatory_actions: [],
-
-    go_field_report_date: [],
-    ns_respond_date: [],
-
-    affect_same_population: [],
-    ns_request_fund: [],
-    ns_respond: [],
-    ns_request_text: [],
-    lessons_learned: [],
-
-    event_description: [],
-    event_scope: [],
-    images: [lessThanSixImagesCondition],
-
-    national_society_actions: {
-      keySelector: (n) => n.clientId as string,
-      member: (): NsActionsSchemaMember => ({
-        fields: (): NsActionSchemaFields => ({
-          title: [requiredCondition],
-          description: [requiredCondition],
-        }),
-      }),
-    },
-    government_requested_assistance: [],
-    government_requested_assistance_date: [],
-    national_authorities: [],
-    partner_national_society: [],
+    images: [],
+    operational_update_number: [],
+    new_operational_start_date: [],
+    reporting_timeframe: [],
+    is_timeframe_extension_required: [],
+    new_operational_end_date: [],
+    total_operation_timeframe: [positiveIntegerCondition],
+    changing_timeframe_operation: [],
+    changing_operation_strategy: [],
+    changing_target_population_of_operation: [],
+    changing_geographic_location: [],
+    changing_budget: [],
+    request_for_second_allocation: [],
+    summary_of_change: [],
+    change_since_request: [],
     ifrc: [],
     icrc: [],
-    affect_same_area: [],
+    partner_national_society: [],
+    government_requested_assistance: [],
+    national_authorities: [],
     un_or_other_actor: [],
     major_coordination_mechanism: [],
-    identified_gaps: [],
-
-    needs_identified: {
-      keySelector: (n) => n.clientId as string,
-      member: (): NeedsSchemaMember => ({
-        fields: (): NeedSchemaFields => ({
-          clientId: [],
-          title: [requiredCondition],
-          description: [requiredCondition],
-        }),
-      }),
-    },
     people_assisted: [],
     selection_criteria: [],
     entity_affected: [],
-    community_involved: [],
-
     women: [positiveIntegerCondition],
     men: [positiveIntegerCondition],
     girls: [positiveIntegerCondition],
     boys: [positiveIntegerCondition],
-    disability_people_per: [positiveNumberCondition, lessThanOrEqualToCondition(100)],
-    people_per_urban: [positiveNumberCondition, lessThanOrEqualToCondition(100)],
-    people_per_local: [positiveNumberCondition, lessThanOrEqualToCondition(100)],
+    disability_people_per: [positiveIntegerCondition],
+    people_per_urban: [positiveIntegerCondition],
+    people_per_local: [positiveIntegerCondition],
     displaced_people: [positiveIntegerCondition],
     people_targeted_with_early_actions: [positiveIntegerCondition],
-    total_targeted_population: [positiveIntegerCondition],
     operation_objective: [],
     response_strategy: [],
-
-    budget_file: [],
-    planned_interventions: {
-      keySelector: (n) => n.clientId as string,
-      member: (): InterventionsSchemaMember => ({
-        fields: (): InterventionSchemaFields => ({
-          clientId: [],
-          title: [requiredCondition],
-          budget: [requiredCondition, positiveIntegerCondition, lessThanOrEqualToCondition(MaxIntLimit)],
-          person_targeted: [requiredCondition, positiveIntegerCondition, lessThanOrEqualToCondition(MaxIntLimit)],
-          indicators: {
-            keySelector: (n) => n.clientId as string,
-            member: (): IndicatorsSchemaMember => ({
-              fields: (): IndicatorSchemaFields => ({
-                clientId: [],
-                title: [],
-                target: [positiveNumberCondition],
-              })
-            })
-          },
-          description: [],
-          progress_towards_outcome: [],
-          male: [],
-          female: [],
-        }),
-      }),
-    },
-    ns_request_date: [],
-    start_date: [],
-    submission_to_geneva: [],
-    end_date: [],
-    date_of_approval: [],
-    operation_timeframe: [positiveIntegerCondition],
-    publishing_date: [],
-    dref_recurrent_text: [],
     appeal_code: [],
     glide_code: [],
     ifrc_appeal_manager_name: [],
@@ -254,19 +162,54 @@ export const schema: FormSchema = {
     media_contact_title: [],
     media_contact_email: [emailCondition],
     media_contact_phone_number: [],
-    human_resource: [],
-    surge_personnel_deployed: [],
-    logistic_capacity_of_ns: [],
-    safety_concerns: [],
-    pmer: [],
-    communication: [],
-    users: [],
-  }),
-  fieldDependencies: () => ({
-  }),
-  validation: (value) => {
-    return undefined;
-  },
+    dref: [],
+
+    national_society_actions: {
+      keySelector: (n) => n.clientId as string,
+      member: (): NsActionsSchemaMember => ({
+        fields: (): NsActionSchemaFields => ({
+          title: [requiredCondition],
+          description: [requiredCondition],
+        }),
+      }),
+    },
+    needs_identified: {
+      keySelector: (n) => n.clientId as string,
+      member: (): NeedsSchemaMember => ({
+        fields: (): NeedSchemaFields => ({
+          clientId: [],
+          title: [requiredCondition],
+          description: [requiredCondition],
+        }),
+      }),
+    },
+    planned_interventions: {
+      keySelector: (n) => n.clientId as string,
+      member: (): InterventionsSchemaMember => ({
+        fields: (): InterventionSchemaFields => ({
+          clientId: [],
+          title: [requiredCondition],
+          budget: [requiredCondition, positiveIntegerCondition, lessThanOrEqualToCondition(MaxIntLimit)],
+          person_targeted: [requiredCondition, positiveIntegerCondition, lessThanOrEqualToCondition(MaxIntLimit)],
+          indicators: {
+            keySelector: (n) => n.clientId as string,
+            member: (): IndicatorsSchemaMember => ({
+              fields: (): IndicatorSchemaFields => ({
+                clientId: [],
+                title: [requiredCondition],
+                target: [positiveIntegerCondition],
+                actual: [positiveIntegerCondition],
+              })
+            })
+          },
+          description: [],
+          progress_towards_outcome: [],
+          male: [positiveIntegerCondition],
+          female: [positiveIntegerCondition],
+        }),
+      }),
+    },
+  })
 };
 
 const limitQuery = {
@@ -281,7 +224,7 @@ interface UserListItem {
   username: string;
 }
 
-interface DrefOptions {
+interface DrefOperationalUpdateOptions {
   disaster_category: NumericKeyValuePair[];
   national_society_actions: StringKeyValuePair[];
   needs_identified: StringKeyValuePair[];
@@ -301,8 +244,8 @@ function transformKeyValueToLabelValue<O extends NumericKeyValuePair | StringKey
   };
 }
 
-function useDrefFormOptions(value: PartialForm<DrefFields>) {
-  const { strings } = React.useContext(LanguageContext);
+function useDrefOperationalFormOptions(value: PartialForm<DrefOperationalUpdateFields>) {
+  const { strings } = React.useContext(languageContext);
 
   const {
     pending: fetchingUserDetails,
@@ -314,7 +257,7 @@ function useDrefFormOptions(value: PartialForm<DrefFields>) {
   const {
     pending: fetchingDrefOptions,
     response: drefOptions,
-  } = useRequest<DrefOptions>({
+  } = useRequest<DrefOperationalUpdateOptions>({
     url: 'api/v2/dref-options/',
   });
 
@@ -421,5 +364,4 @@ function useDrefFormOptions(value: PartialForm<DrefFields>) {
     userOptions,
   };
 }
-
-export default useDrefFormOptions;
+export default useDrefOperationalFormOptions;

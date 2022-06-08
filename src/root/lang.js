@@ -3131,6 +3131,7 @@ export default {
   drefFormEventDate: 'Date of event',
   drefFormGoFieldReportDate: 'Date of GO field report',
   drefFormNsResponseStarted: 'National Society response commenced',
+  drefFormApproximateDateOfImpact: 'Approximate date of impact',
 
   // EventDetails
   drefFormEventDetailsTitle: 'Copy data from an existing field report',
@@ -3232,7 +3233,7 @@ export default {
   noLabel: 'No',
 
   drefFormAddInterventionLabel: 'Add',
-  drefFormUploadImageLabel: 'Select and Image',
+  drefFormUploadAnImageLabel: 'Select an Image',
   drefFormAddCountryLabel: 'Add Country',
 
   drefFormSaveRequestSuccessMessage: 'DREF Application created/updated successfully',
@@ -3248,6 +3249,10 @@ export default {
   drefFormContinueButtonLabel: 'Continue',
   drefFormBackButtonLabel: 'Back',
   drefFormSaveButtonLabel: 'Save',
+  drefFormInterventionBudgetLabel: 'Budget',
+  drefFormInterventionPersonTargetedLabel: 'Persons Targeted',
+  drefFormIndicatorTitleLabel: 'Title',
+  drefFormIndicatorTargetLabel: 'Target',
 
   // dref pdf
   drefFormPdfTitle: 'DREF APPLICATION',
@@ -3403,9 +3408,10 @@ export default {
   drefExportContactDescription: 'For further information, specifically related to this operation please contact:',
   drefExportBudget: 'Budget',
   drefExportTargetPersons: 'Targeted Persons',
-  drefExportIndicators: 'Indicators:',
+  drefExportIndicators: 'Indicators',
   drefExportPriorityActions: 'Priority Actions:',
-  drefExportBudgetOverview: 'BudgetOverview',
+  drefExportBudgetOverview: 'Budget Overview',
+  drefFileImportLabel: 'Import File',
 
   // Flash Update
   flashUpdateFormPageTitle: 'IFRC GO - Flash Update Request',
@@ -3513,6 +3519,77 @@ export default {
   wikiJsLink3WForm: '',
   wikiJsLinkFRForm: '',
   wikiJsLinkCountry3W: '',
-  wikiJsLinkRegister: 'user_guide/account'
+  wikiJsLinkRegister: 'user_guide/account',
 
+  drefOperationalUpdateExportButton: 'Export',
+  drefOperationalUpdateSaveButton: 'Save',
+
+  // DREF operational update new field only
+  //Table
+  drefTableInProgressHeading: 'In-progress applications',
+  drefTablePublishedHeading: 'Published applications',
+  drefOperationalUpdateNewLabel: 'New Operational Update',
+  drefOperationalUpdateEditLastLabel: 'Edit last Operational Update',
+  drefOperationalUpdateViewAllLabel: 'View all Operational Update',
+  //Messages
+  drefFetchingErrorMessage: 'there was an error fetchig the Dref application list',
+  drefOperationalUpdateSuccessMessage: 'Operational update created successfully',
+  drefOperationalUpdateFailureMessage: 'Failed to create/load Operational update',
+  drefOperationalUpdateErrorDescription: 'There is an error loading Dref operational update',
+  drefPublishConfirmationMessage: 'Are you sure you want to publish the DREF?',
+  drefOperationalUpdatePublishConfirmationMessage: 'Are you sure you want to publish the DREF Operational Update?',
+  // button
+  drefPublishButtonLabel: 'Publish',
+  drefOperationalUpdateSaveButtonLabel: 'Save',
+  drefOperationalUpdateButtonLabel: 'update',
+  // Main page
+  drefOperationalUpdateTitle: 'Operational Updates',
+  drefOperationalUpdatePageTitle: 'IFRC GO - DREF operational update',
+  drefOperationalUpdatePageHeading: 'DREF Operational Update Application',
+  drefOperationalUpdateOverviewLabel: 'Operation Overview',
+  drefOperationalUpdateEventDetailsLabel: 'Event Details',
+  drefOperationalUpdateNeedsLabel: 'Needs',
+  drefOperationalUpdateOperationLabel: 'Operation',
+  drefOperationalUpdateSubmissionLabel: 'Submission',
+  // Overview
+  drefOperationalUpdateAllocationSoFar: 'Budget Allocated So far',
+  drefOperationalUpdateAdditionalAllocationRequested: 'Additional Allocation Requested',
+  drefOperationalUpdateTotalAllocation: 'Total DREF Allocation',
+  drefOperationalUpdateNumber: 'Operational Update Number',
+  drerfOperationalUpdateImageLabel: 'Images of any actions taken by the NS',
+  //Timeframes
+  drefOperationalUpdateTimeFrameDateOfEvent: 'Operation start Date',
+  drefOperationalUpdateTimeFrameReportingTimeFrame: 'Reporting timeframe',
+  drefOperationalUpdateTimeFrameExtensionRequested: 'Is timeframe extension requested?',
+  drefOperationalUpdateTimeFrameExtensionRequestedIfYes: 'New operational end date',
+  drefOperationalUpdateTimeFrameTotalOperatingTimeFrame: 'Total operating timeframe',
+  drefOperationalUpdateTimeFrameDateOfApproval: 'Date of approval',
+  // Summary of changes
+  drefOperationalUpdateSummaryChangeHeading: 'Summary of changes',
+  drefOperationalUpdateSummaryAreYouChangingTimeFrame: 'Are you changing the timeframe of the operation',
+  drefOperationalUpdateSummaryAreYouChangingStrategy: 'Are you changing the operational strategy',
+  drefOperationalUpdateSummaryAreYouChangingTargetPopulation: 'Are you changing the target population of the operation',
+  drefOperationalUpdateSummaryAreYouChangingGeographicalLocation: 'Are you changing the geographical location',
+  drefOperationalUpdateSummaryAreYouChangingBudget: 'Are you making changes to the budget',
+  drefOperationalUpdateSummaryRequestForSecondAllocation: 'Is this a request for a second allocation',
+  drefOperationalUpdateSummaryExplain: 'Please explain the summary of changes and justification',
+  // Description of event
+  drefOperationalUpdateDescriptionOfEventHeading: 'Description of the event',
+  drefOperationalUpdateDescriptionOfEventLabel: 'Has anything changed in the context since the request',
+  // Needs
+  drefOperationalUpdateMovementPartners: 'Movement Partners',
+  // Interventions
+  drefOperationalUpdatePlannedIntervention: 'Update on Intervention',
+  drefOperationalUpdateProgressTowardsOutcome: 'Progress Towards Outcome',
+  drefOperationalUpdateIndicatorActualLabel: 'Actual',
+  drefOperationalUpdateIndicatorMaleLabel: 'Male',
+  drefOperationalUpdateIndicatorFemaleLabel: 'Female',
+
+  //pdf export
+  operationalUpdateExportIfrcName: 'International Federation of Red Cross and Red Crescent Societies (IFRC)',
+  operationalUpdateExportTitle: 'operational update',
+  operationalUpdateExportPeopleAffected: 'People affected',
+  operationalUpdateExportPeopleTargeted: 'People targeted',
+  operationalUpdateExportNewOperationalEndDate: 'New Operational end date',
+  operationalUpdateExportPersonReachedLabel: 'Persons reached:',
 };

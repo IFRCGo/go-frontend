@@ -1,0 +1,12 @@
+@import '~styles/settings/_variables.scss';
+
+.indicator {
+  display: flex;
+  gap: $spacing ;
+  align-items: center;
+
+  .inputs {
+    display: flex;
+    gap: $spacing ;
+  }
+}

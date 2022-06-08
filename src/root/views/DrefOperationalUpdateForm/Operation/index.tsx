@@ -1,42 +1,41 @@
 import React from 'react';
 import {
-  randomString,
   isNotDefined,
   listToMap,
+  randomString,
 } from '@togglecorp/fujs';
 import {
   PartialForm,
   Error,
   EntriesAsList,
-  useFormArray,
   getErrorObject,
+  useFormArray,
 } from '@togglecorp/toggle-form';
-import { IoWarning } from 'react-icons/io5';
 
-import Button from '#components/Button';
 import Container from '#components/Container';
-import InputSection from '#components/InputSection';
-import NumberInput from '#components/NumberInput';
-import SelectInput from '#components/SelectInput';
-import TextArea from '#components/TextArea';
-import InputLabel from '#components/InputLabel';
-import DREFFileInput from '#components/DREFFileInput';
-import LanguageContext from '#root/languageContext';
-
+import languageContext from '#root/languageContext';
 import { sumSafe } from '#utils/common';
-import InterventionInput from './InterventionInput';
+import InputSection from '#components/InputSection';
+import TextArea from '#components/TextArea';
+import NumberInput from '#components/NumberInput';
+import InputLabel from '#components/InputLabel';
+import { IoWarning } from 'react-icons/io5';
+import SelectInput from '#components/SelectInput';
+import Button from '#components/Button';
+import InterventionInput from '#views/DrefApplicationForm/Response/InterventionInput';
+
+import { InterventionType } from '../useDrefOperationalUpdateOptions';
 import {
-  DrefFields,
-  StringValueOption,
+  DrefOperationalUpdateFields,
   Intervention,
   ONSET_IMMINENT,
+  StringValueOption,
 } from '../common';
-import { InterventionType } from '../useDrefFormOptions';
 
 import styles from './styles.module.scss';
 
 const emptyList: string[] = [];
-type Value = PartialForm<DrefFields>;
+type Value = PartialForm<DrefOperationalUpdateFields>;
 interface Props {
   error: Error<Value> | undefined;
   onValueChange: (...entries: EntriesAsList<Value>) => void;
@@ -45,20 +44,20 @@ interface Props {
   fileIdToUrlMap: Record<number, string>;
   setFileIdToUrlMap?: React.Dispatch<React.SetStateAction<Record<number, string>>>;
 }
+const showNewFieldOperational = true;
 
-function Response(props: Props) {
-  const { strings } = React.useContext(LanguageContext);
+function Operation(props: Props) {
+  const { strings } = React.useContext(languageContext);
 
   const {
     error: formError,
     onValueChange,
     interventionOptions,
-    fileIdToUrlMap,
-    setFileIdToUrlMap,
     value,
   } = props;
 
   const error = getErrorObject(formError);
+  const isImminentOnSet = value.type_of_onset === ONSET_IMMINENT;
 
   const [intervention, setIntervention] = React.useState<number | undefined>();
   const {
@@ -95,38 +94,33 @@ function Response(props: Props) {
   ), [value.planned_interventions]);
 
   const warnings = React.useMemo(() => {
-    if (isNotDefined(value?.total_targeted_population)) {
+    if (isNotDefined(value?.number_of_people_targeted)) {
       return emptyList;
     }
 
     const w = [];
-
-    if (value?.num_assisted !== value?.total_targeted_population) {
-      w.push('Total targeted population is different from that in Operation Overview');
-    }
-
 
     if (sumSafe([
       value?.women,
       value?.men,
       value?.girls,
       value?.boys,
-    ]) !== value?.total_targeted_population) {
+    ]) !== value?.number_of_people_targeted) {
       w.push('Total targeted population is not equal to sum of other population fields');
     }
 
     return w;
   }, [
-    value?.num_assisted,
+    value?.number_of_people_targeted,
     value?.women,
     value?.men,
     value?.girls,
     value?.boys,
-    value?.total_targeted_population,
   ]);
 
-  const filteredInterventionOptions = interventionsIdentifiedMap ? interventionOptions.filter(n => !interventionsIdentifiedMap[n.value]) : [];
-  const isImminentOnset = value.type_of_onset === ONSET_IMMINENT;
+  const filteredInterventionOptions = React.useMemo(() => (
+    interventionsIdentifiedMap ? interventionOptions.filter(n => !interventionsIdentifiedMap[n.value]) : []
+  ), [interventionsIdentifiedMap, interventionOptions]);
 
   return (
     <>
@@ -146,7 +140,7 @@ function Response(props: Props) {
           />
         </InputSection>
         <InputSection
-          title={!isImminentOnset ? strings.drefFormSelectionCriteria : strings.drefFormSelectionCriteriaRisk}
+          title={strings.drefFormSelectionCriteria}
         >
           <TextArea
             label={strings.cmpActionDescriptionLabel}
@@ -169,7 +163,7 @@ function Response(props: Props) {
         </InputSection>
       </Container>
       <Container
-        heading={strings.drefFormAssistedPopulation}
+        heading={strings.drefFormTargetedPopulation}
         className={styles.assistedPopulation}
         description={(
           warnings?.map((w) => (
@@ -213,13 +207,6 @@ function Response(props: Props) {
             onChange={onValueChange}
             error={error?.boys}
           />
-          <NumberInput
-            label={strings.drefFormTotal}
-            name="total_targeted_population"
-            value={value.total_targeted_population}
-            onChange={onValueChange}
-            error={error?.total_targeted_population}
-          />
         </InputSection>
         <InputSection
           title={strings.drefFormEstimateResponse}
@@ -261,7 +248,8 @@ function Response(props: Props) {
             onChange={onValueChange}
             error={error?.displaced_people}
           />
-          {isImminentOnset &&
+          {
+            isImminentOnSet &&
             <NumberInput
               label={strings.drefFormPeopleTargetedWithEarlyActions}
               name="people_targeted_with_early_actions"
@@ -300,95 +288,10 @@ function Response(props: Props) {
         </InputSection>
       </Container>
       <Container
-        heading={strings.drefFormSupportServices}
-      >
-        <InputSection
-          title={strings.drefFormHumanResourceDescription}
-        >
-          <TextArea
-            label={strings.cmpActionDescriptionLabel}
-            name="human_resource"
-            onChange={onValueChange}
-            value={value.human_resource}
-            error={error?.human_resource}
-          />
-        </InputSection>
-        <InputSection
-          title={strings.drefFormSurgePersonnelDeployed}
-        >
-          <TextArea
-            label={strings.cmpActionDescriptionLabel}
-            name="surge_personnel_deployed"
-            onChange={onValueChange}
-            value={value.surge_personnel_deployed}
-            error={error?.surge_personnel_deployed}
-          />
-        </InputSection>
-        <InputSection
-          title={strings.drefFormLogisticCapacityOfNs}
-        >
-          <TextArea
-            label={strings.cmpActionDescriptionLabel}
-            name="logistic_capacity_of_ns"
-            onChange={onValueChange}
-            value={value.logistic_capacity_of_ns}
-            error={error?.logistic_capacity_of_ns}
-          />
-        </InputSection>
-        <InputSection
-          title={strings.drefFormSafetyConcerns}
-        >
-          <TextArea
-            label={strings.cmpActionDescriptionLabel}
-            name="safety_concerns"
-            onChange={onValueChange}
-            value={value.safety_concerns}
-            error={error?.safety_concerns}
-          />
-        </InputSection>
-        <InputSection
-          title={strings.drefFormPmerDescription}
-        >
-          <TextArea
-            label={strings.cmpActionDescriptionLabel}
-            name="pmer"
-            onChange={onValueChange}
-            value={value.pmer}
-            error={error?.pmer}
-          />
-        </InputSection>
-        <InputSection
-          title={strings.drefFormCommunicationDescription}
-        >
-          <TextArea
-            label={strings.cmpActionDescriptionLabel}
-            name="communication"
-            onChange={onValueChange}
-            value={value.communication}
-            error={error?.communication}
-          />
-        </InputSection>
-      </Container>
-      <Container
-        heading={strings.drefFormPlannedIntervention}
+        heading={strings.drefOperationalUpdatePlannedIntervention}
         className={styles.plannedIntervention}
         visibleOverflow
       >
-        <InputSection>
-          <DREFFileInput
-            accept=".pdf"
-            error={error?.budget_file}
-            fileIdToUrlMap={fileIdToUrlMap}
-            label={strings.drefFormBudgetTemplateLabel}
-            name="budget_file"
-            onChange={onValueChange}
-            setFileIdToUrlMap={setFileIdToUrlMap}
-            showStatus
-            value={value.budget_file}
-          >
-            {strings.drefFormBudgetTemplateUploadButtonLabel}
-          </DREFFileInput>
-        </InputSection>
         <InputSection>
           <SelectInput
             name={undefined}
@@ -417,11 +320,12 @@ function Response(props: Props) {
             onRemove={onInterventionRemove}
             error={getErrorObject(error?.planned_interventions)}
             interventionOptions={interventionOptions}
-            showNewFieldOperational={false} />
+            showNewFieldOperational={showNewFieldOperational}
+          />
         ))}
       </Container>
     </>
   );
 }
 
-export default Response;
+export default Operation;
