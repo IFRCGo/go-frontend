@@ -1,0 +1,53 @@
+@import "~styles/settings/variables";
+
+.historical-data-chart {
+  .container-description {
+    padding: $spacing 0;
+    display: flex;
+
+    .filter-input {
+      width: 20rem;
+    }
+  }
+
+  .content {
+    .chart-container {
+      height: 24rem;
+      overflow: hidden;
+    }
+
+    .impact-legend {
+      display: flex;
+      align-items: center;
+      background-color: $grey-mist;
+      border-top: $base-border-width solid $base-border-color;
+      padding: $spacing $spacing*2;
+      gap: $spacing*2;
+
+      .heading {
+        font-weight: $base-font-medium;
+      }
+
+      .separator {
+        flex-shrink: 0;
+        align-self: stretch;
+        width: $base-border-width * 2;
+        background-color: $base-border-color;
+      }
+    }
+  }
+
+  .event-details {
+    background-color: $white;
+    box-shadow: $base-box-shadow;
+
+    .description {
+      padding: $spacing;
+    }
+
+    .event-detail-content {
+      padding: $spacing*0.5 !important;
+    }
+  }
+}
+

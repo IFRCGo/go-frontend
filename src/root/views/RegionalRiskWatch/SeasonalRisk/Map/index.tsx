@@ -21,9 +21,10 @@ import turfBbox from '@turf/bbox';
 import {
   COLOR_RED,
   COLOR_LIGHT_GREY,
-  // COLOR_BLUE,
   COLOR_ORANGE,
   COLOR_YELLOW,
+  COLOR_LIGHT_YELLOW,
+  COLOR_DARK_RED,
   defaultMapStyle,
   defaultMapOptions,
 } from '#utils/map';
@@ -31,6 +32,8 @@ import Pager from '#components/Pager';
 import Container from '#components/Container';
 import Button from '#components/Button';
 import SelectInput from '#components/SelectInput';
+import MonthSelector from '#views/Country/RiskWatch/SeasonalRisk/MonthSelector';
+import RiskTable, { getSumForSelectedMonths } from '#views/Country/RiskWatch/SeasonalRisk/RiskTable';
 import useReduxState from '#hooks/useReduxState';
 import useInputState from '#hooks/useInputState';
 import {
@@ -43,8 +46,6 @@ import {
   RiskData,
   riskMetricOptions,
 } from '../common';
-import RiskTable from '../RiskTable';
-import MonthSelector from './MonthSelector';
 import styles from './styles.module.scss';
 
 type RiskMetricType = (typeof riskMetricOptions)[number]['value'];
@@ -57,9 +58,12 @@ const EXPOSURE_LOW = 100;
 const EXPOSURE_MEDIUM = 1000;
 const EXPOSURE_HIGH = 10000;
 
+const INFORM_RISK_VERY_LOW = 0;
 const INFORM_RISK_LOW = 2;
 const INFORM_RISK_MEDIUM = 3.5;
 const INFORM_RISK_HIGH = 5;
+const INFORM_RISK_VERY_HIGH = 6.5;
+const INFORM_RISK_MAXIMUM = 10;
 
 interface LegendItemProps {
   color: string;
@@ -135,16 +139,24 @@ const exposureLegendData = [
 
 const informLegendData = [
   {
+    color: COLOR_LIGHT_YELLOW,
+    label: `Very low (${INFORM_RISK_VERY_LOW} - ${INFORM_RISK_LOW-0.1})`,
+  },
+  {
     color: COLOR_YELLOW,
-    label: `${INFORM_RISK_LOW} to ${INFORM_RISK_MEDIUM-0.1}`,
+    label: `Low (${INFORM_RISK_LOW} - ${INFORM_RISK_MEDIUM-0.1})`,
   },
   {
     color: COLOR_ORANGE,
-    label: `${INFORM_RISK_MEDIUM} to ${INFORM_RISK_HIGH}`,
+    label: `Medium (${INFORM_RISK_MEDIUM} - ${INFORM_RISK_HIGH-0.1})`,
   },
   {
     color: COLOR_RED,
-    label: `More than ${INFORM_RISK_HIGH}`,
+    label: `High (${INFORM_RISK_HIGH} - ${INFORM_RISK_VERY_HIGH})`,
+  },
+  {
+    color: COLOR_DARK_RED,
+    label: `Very high (${INFORM_RISK_VERY_HIGH} - ${INFORM_RISK_MAXIMUM})`,
   },
 ];
 
@@ -187,7 +199,7 @@ function MapLegend(props: MapLegendProps) {
 interface ChoroplethProps {
   riskData: Record<string, RiskData>[];
   selectedHazard: HazardTypes;
-  selectedMonth: number;
+  selectedMonths: Record<number, boolean>;
   selectedRiskMetric: (typeof riskMetricOptions)[number]['value'];
 }
 
@@ -195,7 +207,7 @@ function Choropleth(props: ChoroplethProps) {
   const {
     riskData: hazardGroupedRiskData,
     selectedHazard,
-    selectedMonth,
+    selectedMonths,
     selectedRiskMetric,
   } = props;
 
@@ -232,7 +244,10 @@ function Choropleth(props: ChoroplethProps) {
       }
 
       if (selectedRiskMetric === 'displacement') {
-        const displacement = riskData?.displacement?.monthly?.[selectedMonth];
+        const displacement = getSumForSelectedMonths(
+          riskData?.displacement?.monthly,
+          selectedMonths,
+        );
         let color = COLOR_LIGHT_GREY;
 
         if (isDefined(displacement)) {
@@ -258,7 +273,11 @@ function Choropleth(props: ChoroplethProps) {
       }
 
       if (selectedRiskMetric === 'exposure') {
-        const exposure = riskData?.exposure?.monthly?.[selectedMonth];
+        const exposure = getSumForSelectedMonths(
+          riskData?.exposure?.monthly,
+          selectedMonths,
+        );
+
         let color = COLOR_LIGHT_GREY;
 
         if (isDefined(exposure)) {
@@ -284,19 +303,24 @@ function Choropleth(props: ChoroplethProps) {
       }
 
       if (selectedRiskMetric === 'informRiskScore') {
-        const riskScore = riskData?.informRiskScore?.monthly?.[selectedMonth];
+        const riskScore = getSumForSelectedMonths(
+          riskData?.informRiskScore?.monthly,
+          selectedMonths,
+        );
         let color = COLOR_LIGHT_GREY;
         if (isDefined(riskScore)) {
-          if (riskScore >= INFORM_RISK_LOW) {
-            color = COLOR_YELLOW;
-          }
-
-          if (riskScore >= INFORM_RISK_MEDIUM) {
-            color = COLOR_ORANGE;
-          }
-
-          if (riskScore >= INFORM_RISK_HIGH) {
+          if (riskScore > INFORM_RISK_MAXIMUM) {
+            color = COLOR_LIGHT_GREY;
+          } else if (riskScore >= INFORM_RISK_VERY_HIGH) {
+            color = COLOR_DARK_RED;
+          } else if (riskScore >= INFORM_RISK_HIGH) {
             color = COLOR_RED;
+          } else if (riskScore >= INFORM_RISK_MEDIUM) {
+            color = COLOR_ORANGE;
+          } else if (riskScore >= INFORM_RISK_LOW) {
+            color = COLOR_YELLOW;
+          } else if (riskScore >= INFORM_RISK_VERY_LOW) {
+            color = COLOR_LIGHT_YELLOW;
           }
         }
 
@@ -326,8 +350,8 @@ interface Props {
   regionId?: number;
   hazardOptions: StringValueOption[];
   riskData: Record<string, RiskData>[];
-  selectedMonth: number;
-  setSelectedMonth: React.Dispatch<React.SetStateAction<number>>;
+  selectedMonths: Record<number, boolean>;
+  setSelectedMonths: React.Dispatch<React.SetStateAction<Record<number, boolean>>>;
 }
 
 function SeasonalRiskMap(props: Props) {
@@ -336,9 +360,20 @@ function SeasonalRiskMap(props: Props) {
     regionId,
     hazardOptions,
     riskData,
-    selectedMonth,
-    setSelectedMonth,
+    selectedMonths,
+    setSelectedMonths,
   } = props;
+
+  const countryGroupedRiskData = React.useMemo(() => (
+    listToGroupList(
+      riskData.reduce((acc, list) => ([
+        ...acc,
+        ...(Object.values(list)),
+      ]), [] as RiskData[]),
+      d => d.countryIso3,
+      d => d,
+    )
+  ), [riskData]);
 
   const [activeIso, setActiveIso] = React.useState<string>();
   const [activePage, setActivePage] = React.useState<number>(1);
@@ -352,6 +387,13 @@ function SeasonalRiskMap(props: Props) {
     [region?.bbox],
   );
 
+  React.useEffect(() => {
+    const firstCountryIso = Object.keys(countryGroupedRiskData)[0];
+    if (isDefined(firstCountryIso)) {
+      setActiveIso((prevIso) => isDefined(prevIso) ? prevIso : firstCountryIso);
+    }
+  }, [countryGroupedRiskData]);
+
   const countryIsoToNameMap = React.useMemo(
     () => listToMap(allCountries.data.results, d => d.iso3 ?? '', d => d.name),
     [allCountries],
@@ -360,16 +402,6 @@ function SeasonalRiskMap(props: Props) {
   const [hazardType, setHazardType] = useInputState<HazardTypes>('FL');
   const [riskMetric, setRiskMetric] = useInputState<RiskMetricType>('displacement');
 
-  const countryGroupedRiskData = React.useMemo(() => (
-    listToGroupList(
-      riskData.reduce((acc, list) => ([
-        ...acc,
-        ...(Object.values(list)),
-      ]), [] as RiskData[]),
-      d => d.countryIso3,
-      d => d,
-    )
-  ), [riskData]);
 
   const countryList = Object.keys(countryGroupedRiskData);
   const visibleCountryList = React.useMemo(() => {
@@ -386,6 +418,7 @@ function SeasonalRiskMap(props: Props) {
       return iso;
     });
   }, []);
+
 
   return (
     <>
@@ -423,7 +456,7 @@ function SeasonalRiskMap(props: Props) {
                 riskData={riskData}
                 selectedHazard={hazardType}
                 selectedRiskMetric={riskMetric}
-                selectedMonth={selectedMonth}
+                selectedMonths={selectedMonths}
               />
             )}
             <MapContainer className={styles.map} />
@@ -437,8 +470,8 @@ function SeasonalRiskMap(props: Props) {
           />
           <MonthSelector
             name={undefined}
-            value={selectedMonth}
-            onChange={setSelectedMonth}
+            value={selectedMonths}
+            onChange={setSelectedMonths}
             className={styles.monthSelector}
           />
         </div>
@@ -476,7 +509,7 @@ function SeasonalRiskMap(props: Props) {
             {activeIso === c && (
               <RiskTable
                 key={c}
-                selectedMonth={selectedMonth}
+                selectedMonths={selectedMonths}
                 riskData={countryGroupedRiskData[c]}
               />
             )}

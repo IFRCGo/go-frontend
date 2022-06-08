@@ -383,7 +383,7 @@ function PDCExposureMap(props: Props) {
                       These impacts are produced by the Pacific Disaster Center's All-hazards Impact Model (AIM) 3.0.
                     </p>
                     <div>
-                      Click <a className={styles.pdcLink} target="_blank" href="https://www.pdc.org/wp-content/uploads/AIM-3-Fact-Sheet-Screen.pdf#:~:text=PDC's%20All%2Dhazard%20Impact%20Model,and%20infrastructure%20to%20natural%20hazards">here</a> for more information about the model and its inputs.
+                      Click <a className={styles.pdcLink} target="_blank" href="https://www.pdc.org/wp-content/uploads/AIM-3-Fact-Sheet-Screen-1.pdf">here</a> for more information about the model and its inputs.
                     </div>
                   </>
                 )}

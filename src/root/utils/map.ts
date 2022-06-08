@@ -18,10 +18,12 @@ export const COLOR_WHITE = '#ffffff';
 export const COLOR_TEXT = '#707070';
 export const COLOR_LIGHT_GREY = '#e0e0e0';
 export const COLOR_BLACK = '#000000';
-export const COLOR_RED = '#f5333f';
+export const COLOR_LIGHT_YELLOW = '#ffd470';
 export const COLOR_YELLOW = '#ff9e00';
 export const COLOR_BLUE = '#4c5d9b';
 export const COLOR_ORANGE = '#ff6b00';
+export const COLOR_RED = '#f5333f';
+export const COLOR_DARK_RED = '#730413';
 
 export const OPERATION_TYPE_PROGRAMME = 0;
 export const OPERATION_TYPE_EMERGENCY = 1;
