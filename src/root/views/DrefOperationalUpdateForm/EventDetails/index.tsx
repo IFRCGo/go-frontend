@@ -146,12 +146,14 @@ function EventDetails(props: Props) {
       <Container
         heading={strings.drefOperationalUpdateDescriptionOfEventHeading}>
         <InputSection title={strings.drefOperationalUpdateDescriptionOfEventLabel}>
-          <TextArea
-            name="change_since_request"
+          <RadioInput
+            name={"change_since_request" as const}
+            options={yesNoOptions}
+            keySelector={booleanOptionKeySelector}
+            labelSelector={optionLabelSelector}
             value={value.change_since_request}
             onChange={onValueChange}
             error={error?.change_since_request}
-            placeholder={strings.drefOperationalUpdateDescriptionOfEventLabel}
           />
         </InputSection>
         <InputSection

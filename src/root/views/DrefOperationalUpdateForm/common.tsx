@@ -118,7 +118,7 @@ export interface DrefOperationalUpdateFields {
   changing_budget: boolean;
   request_for_second_allocation: boolean;
   summary_of_change: string;
-  change_since_request: string;
+  change_since_request: boolean;
   national_society_actions: NsAction[];
   ifrc: string;
   icrc: string;
