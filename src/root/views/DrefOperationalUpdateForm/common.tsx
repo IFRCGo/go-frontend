@@ -175,6 +175,12 @@ export interface DrefOperationalUpdateFields {
   dref?: string;
 
   dref_allocated_so_far?: number;
+  budget_file: number;
+
+  event_map: number;
+  event_description: string;
+  event_scope: string;
+  anticipatory_actions: string;
 }
 
 export interface DrefOperationalUpdateApiFields extends Omit<DrefOperationalUpdateFields, 'country_district' | 'planned_interventions' | 'national_society_actions' | 'needs_identified'> {
@@ -200,6 +206,15 @@ export interface DrefOperationalUpdateApiFields extends Omit<DrefOperationalUpda
     id: number;
     file: string;
   }[];
+  budget_file_details: {
+    id: number;
+    file: string;
+  };
+  budget_file_preview: string;
+  event_map_details: {
+    id: number;
+    file: string;
+  };
 }
 
 
@@ -232,6 +247,8 @@ export const eventFields: (keyof DrefOperationalUpdateFields)[] = [
   'request_for_second_allocation',
   'summary_of_change',
   'change_since_request',
+  'event_description',
+  'event_scope',
 ];
 export const needsFields: (keyof DrefOperationalUpdateFields)[] = [
   'national_society_actions',

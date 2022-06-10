@@ -43,6 +43,7 @@ import {
   operationFields,
   submissionFields,
   DrefOperationalUpdateApiFields,
+  ONSET_IMMINENT,
 } from './common';
 import useDrefOperationalFormOptions, {
   schema
@@ -385,6 +386,8 @@ function DrefOperationalUpdate(props: Props) {
     children: strings.drefFormExportLabel,
   });
 
+  const isImminentOnset = value?.type_of_onset === ONSET_IMMINENT;
+
   return (
     <Tabs
       disabled={false}
@@ -507,6 +510,9 @@ function DrefOperationalUpdate(props: Props) {
                   onValueChange={onValueChange}
                   value={value}
                   yesNoOptions={yesNoOptions}
+                  isImminentOnset={isImminentOnset}
+                  fileIdToUrlMap={fileIdToUrlMap}
+                  setFileIdToUrlMap={setFileIdToUrlMap}
                 />
               </TabPanel>
               <TabPanel name='needs'>
