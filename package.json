@@ -148,7 +148,7 @@
     "lodash.isundefined": "^3.0.1",
     "lodash.set": "^4.3.2",
     "lodash.tonumber": "^4.0.3",
-    "luxon": "^0.2.6",
+    "luxon": "^2.4.0",
     "mapbox-gl": "^1.13.0",
     "memoize-one": "^5.0.0",
     "minimatch": "^3.0.4",
