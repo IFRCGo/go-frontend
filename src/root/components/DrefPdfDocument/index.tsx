@@ -447,7 +447,7 @@ function DrefPdfDocument(props: Props) {
                     />
                     <View style={[pdfStyles.compactSection, pdfStyles.oneByTwo]}>
                       <TextOutput
-                        label={strings.drefExportDrefEnds}
+                        label={strings.drefExportDrefEndDateOfOperation}
                         value={dref.end_date}
                         columns="1/2"
                       />
@@ -515,6 +515,13 @@ function DrefPdfDocument(props: Props) {
           <Text style={pdfStyles.sectionHeading}>
             {strings.drefExportPreviousOperations}
           </Text>
+          <View>
+            <Text>
+              <Link src={resolveUrl(window.location.origin, 'emergencies')}>
+                {strings.drefOperationalLearningPlatformLabel}
+              </Link>
+            </Text>
+          </View>
           <View>
             <View style={pdfStyles.row}>
               <Text style={pdfStyles.cellTitle}>
