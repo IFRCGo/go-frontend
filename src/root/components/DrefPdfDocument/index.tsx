@@ -517,7 +517,7 @@ function DrefPdfDocument(props: Props) {
           </Text>
           <View>
             <Text>
-              <Link src={resolveUrl(window.location.origin, 'emergencies')}>
+              <Link src={resolveUrl(window.location.origin, 'https://go.ifrc.org/preparedness#operational-learning')}>
                 {strings.drefOperationalLearningPlatformLabel}
               </Link>
             </Text>
