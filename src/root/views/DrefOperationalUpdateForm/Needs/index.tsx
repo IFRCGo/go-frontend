@@ -32,6 +32,7 @@ import {
   StringValueOption,
 } from '../common';
 import styles from './styles.module.scss';
+import DREFFileInput from '#components/DREFFileInput';
 
 type Value = PartialForm<DrefOperationalUpdateFields>;
 interface Props {
@@ -41,6 +42,8 @@ interface Props {
   yesNoOptions: BooleanValueOption[];
   needOptions: StringValueOption[];
   nsActionOptions: StringValueOption[];
+  fileIdToUrlMap: Record<number, string>;
+  setFileIdToUrlMap?: React.Dispatch<React.SetStateAction<Record<number, string>>>;
 }
 
 function Needs(props: Props) {
@@ -53,6 +56,8 @@ function Needs(props: Props) {
     yesNoOptions,
     needOptions,
     nsActionOptions,
+    fileIdToUrlMap,
+    setFileIdToUrlMap
   } = props;
 
   const error = React.useMemo(
@@ -138,6 +143,20 @@ function Needs(props: Props) {
         className={styles.nationalSocietyActions}
         visibleOverflow
       >
+        <InputSection>
+          <DREFFileInput
+            accept='image/*'
+            name='photos'
+            onChange={onValueChange}
+            value={value?.photos}
+            error={error?.photos}
+            fileIdToUrlMap={fileIdToUrlMap}
+            setFileIdToUrlMap={setFileIdToUrlMap}
+            multiple
+          >
+            {strings.operationalUpdateCurrentNsImageLabel}
+          </DREFFileInput>
+        </InputSection>
         <InputSection>
           <SelectInput
             label={strings.drefFormNationalSocietiesActionsLabel}

@@ -11,6 +11,7 @@ import Container from '#components/Container';
 import languageContext from '#root/languageContext';
 import InputSection from '#components/InputSection';
 import TextArea from '#components/TextArea';
+import DREFFileInput from '#components/DREFFileInput';
 
 import {
   booleanOptionKeySelector,
@@ -18,8 +19,6 @@ import {
   DrefOperationalUpdateFields,
   optionLabelSelector,
 } from '../common';
-
-import DREFFileInput from '#components/DREFFileInput';
 
 type Value = PartialForm<DrefOperationalUpdateFields>;
 interface Props {
@@ -186,12 +185,13 @@ function EventDetails(props: Props) {
           title={strings.drefFormUploadPhotos}
         >
           <DREFFileInput
-            name="event_map"
-            value={value.event_map}
-            onChange={onValueChange}
             accept="image/*"
+            name="images"
+            value={value.images}
+            onChange={onValueChange}
             showStatus
-            error={error?.event_map}
+            multiple
+            error={error?.images}
             fileIdToUrlMap={fileIdToUrlMap}
             setFileIdToUrlMap={setFileIdToUrlMap}
           >

@@ -257,7 +257,15 @@ function DrefOperationalUpdate(props: Props) {
             newMap[img.id] = img.file;
           });
         }
-
+        if (response.budget_file_details) {
+          newMap[response.budget_file_details.id] = response.budget_file_details.file;
+        }
+        if (response.cover_image_details) {
+          newMap[response.cover_image_details.id] = response.cover_image_details.file;
+        }
+        //if (response.photos) {
+        //  newMap[response.photos.id] = response.photos.file;
+        //}
         return newMap;
       });
       setValue({
@@ -523,6 +531,8 @@ function DrefOperationalUpdate(props: Props) {
                   yesNoOptions={yesNoOptions}
                   needOptions={needOptions}
                   nsActionOptions={nsActionOptions}
+                  fileIdToUrlMap={fileIdToUrlMap}
+                  setFileIdToUrlMap={setFileIdToUrlMap}
                 />
               </TabPanel>
               <TabPanel name='operation'>

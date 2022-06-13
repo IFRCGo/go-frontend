@@ -3566,7 +3566,7 @@ export default {
   drefOperationalUpdateAdditionalAllocationRequested: 'Additional Allocation Requested',
   drefOperationalUpdateTotalAllocation: 'Total DREF Allocation',
   drefOperationalUpdateNumber: 'Operational Update Number',
-  drerfOperationalUpdateImageLabel: 'Images of any actions taken by the NS',
+  drerfOperationalUpdateCoverImageLabel: 'Cover image',
   //Timeframes
   drefOperationalUpdateTimeFrameDateOfEvent: 'Operation start Date',
   drefOperationalUpdateTimeFrameReportingTimeFrame: 'Reporting timeframe',
@@ -3602,4 +3602,5 @@ export default {
   operationalUpdateExportPeopleTargeted: 'People targeted',
   operationalUpdateExportNewOperationalEndDate: 'New Operational end date',
   operationalUpdateExportPersonReachedLabel: 'Persons reached:',
+  operationalUpdateCurrentNsImageLabel: 'Add photos of National Society Operation',
 };

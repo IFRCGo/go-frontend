@@ -163,6 +163,11 @@ export const schema: FormSchema = {
     media_contact_email: [emailCondition],
     media_contact_phone_number: [],
     dref: [],
+    photos: [],
+    budget_file: [],
+    cover_image: [],
+    anticipatory_actions: [],
+    event_scope: [],
 
     national_society_actions: {
       keySelector: (n) => n.clientId as string,
