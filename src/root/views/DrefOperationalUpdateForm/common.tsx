@@ -217,10 +217,10 @@ export interface DrefOperationalUpdateApiFields extends Omit<DrefOperationalUpda
     id: number;
     file: string;
   };
-  //photos: {
-  //  id: number;
-  //  file: string;
-  //};
+  photos_details: {
+    id: number;
+    file: string;
+  }[];
 }
 
 export const overviewFields: (keyof DrefOperationalUpdateFields)[] = [

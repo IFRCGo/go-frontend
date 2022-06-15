@@ -3344,7 +3344,7 @@ export default {
   riskModulePastAndHistoricEvent: 'Past Events And Historical Impact',
   //dref pdf
   drefExportTitle: 'DREF Application',
-  drefExportDrefAllocated: 'DREF allocated',
+  drefExportDrefAllocated: 'DREF allocated:',
   drefExportGlideNum: 'Glide no:',
   drefExportAppealNum: 'Appeal no:',
   drefExportPeopleAffected: 'People [affected / at risk]:',

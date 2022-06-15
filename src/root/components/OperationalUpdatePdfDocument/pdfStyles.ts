@@ -137,7 +137,8 @@ const pdfStyles = StyleSheet.create({
   },
 
   mapImage: {
-    width: '100%',
+    //display: 'flex',
+    width: 'auto',
     height: 200,
     objectFit: 'contain',
     objectPosition: 'center',

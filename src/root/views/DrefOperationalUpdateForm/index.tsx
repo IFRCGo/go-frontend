@@ -263,9 +263,11 @@ function DrefOperationalUpdate(props: Props) {
         if (response.cover_image_details) {
           newMap[response.cover_image_details.id] = response.cover_image_details.file;
         }
-        //if (response.photos) {
-        //  newMap[response.photos.id] = response.photos.file;
-        //}
+        if (response.photos_details?.length > 0) {
+          response.photos_details.forEach((img) => {
+            newMap[img.id] = img.file;
+          });
+        }
         return newMap;
       });
       setValue({

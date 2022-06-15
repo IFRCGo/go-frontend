@@ -408,18 +408,14 @@ function OperationalUpdatePdfDocument(props: Props) {
             ].filter(Boolean).join(' | ')}
           </Text>
         </View>
-        {(operationalUpdateResponse?.images_details?.map((el) => (
-          <View
-            key={el?.id}
-            style={pdfStyles.section}
-          >
-            <PDFImage
-              style={pdfStyles.bannerImage}
-              src={el?.file}
-            />
-          </View>
-        )))
-        }
+        <View
+          style={pdfStyles.section}
+        >
+          <PDFImage
+            style={pdfStyles.bannerImage}
+            src={operationalUpdateResponse?.cover_image_details?.file}
+          />
+        </View>
         <View style={pdfStyles.section}>
           <View style={pdfStyles.basicInfoTable}>
             <View style={pdfStyles.compactSection} wrap={false}>
@@ -488,12 +484,46 @@ function OperationalUpdatePdfDocument(props: Props) {
         <Text style={pdfStyles.sectionHeading}>
           {strings.drefExportDescriptionOfTheEvent}
         </Text>
+        {operationalUpdateResponse.images_details?.map((el) => (
+          <View style={pdfStyles.subSection}>
+            <PDFImage
+              style={pdfStyles.mapImage}
+              src={el.file}
+            />
+          </View>
+        ))}
         <View style={pdfStyles.subSection}>
           <Text style={pdfStyles.subSectionHeading}>
             {strings.drefOperationalUpdateDescriptionOfEventLabel}
           </Text>
           <Text style={pdfStyles.text}>
             {operationalUpdateResponse.change_since_request}
+          </Text>
+        </View>
+        <View style={pdfStyles.subSection}>
+          <Text style={pdfStyles.subSectionHeading}>
+            {isImminentOnset ? strings.drefExportImminentWhereWhenHow : strings.drefExportWhatWhereWhen}
+          </Text>
+          <Text style={pdfStyles.text}>
+            {operationalUpdateResponse.event_description}
+          </Text>
+        </View>
+        {operationalUpdateResponse.anticipatory_actions && (
+          <View style={pdfStyles.subSection}>
+            <Text style={pdfStyles.subSectionHeading}>
+              {strings.drefExportTargetCommunities}
+            </Text>
+            <Text style={pdfStyles.text}>
+              {operationalUpdateResponse.anticipatory_actions}
+            </Text>
+          </View>
+        )}
+        <View style={pdfStyles.subSection}>
+          <Text style={pdfStyles.subSectionHeading}>
+            {strings.drefExportScopeAndScale}
+          </Text>
+          <Text style={pdfStyles.text}>
+            {operationalUpdateResponse.event_scope}
           </Text>
         </View>
         <View style={pdfStyles.poSection}>
@@ -569,6 +599,14 @@ function OperationalUpdatePdfDocument(props: Props) {
             <Text style={pdfStyles.sectionHeading}>
               {strings.drefExportCurrentNationalSocietyAction}
             </Text>
+            <View style={[pdfStyles.subSection, { display: 'flex', flexDirection: 'row', justifyContent: 'center' }]}>
+              {operationalUpdateResponse?.photos_details?.map((el) => (
+                <PDFImage
+                  style={pdfStyles.mapImage}
+                  src={el.file}
+                />
+              ))}
+            </View>
             {operationalUpdateResponse.national_society_actions.map((nsa) => (
               <NationalSocietyActions
                 key={nsa.id}
@@ -828,6 +866,23 @@ function OperationalUpdatePdfDocument(props: Props) {
               />
             ))}
           </View>
+        )}
+        {operationalUpdateResponse?.budget_file && (
+          <>
+            <Text style={pdfStyles.sectionHeading}>
+              {strings.drefExportBudgetOverview}
+            </Text>
+            <View style={pdfStyles.subSection}>
+              <Text style={pdfStyles.text}>
+                <a
+                  href={operationalUpdateResponse?.budget_file_details?.file}
+                  target='_blank'
+                >
+                  {operationalUpdateResponse?.budget_file_details?.file}
+                </a>
+              </Text>
+            </View>
+          </>
         )}
         <View style={pdfStyles.contactSection}>
           <Text style={pdfStyles.sectionHeading}>

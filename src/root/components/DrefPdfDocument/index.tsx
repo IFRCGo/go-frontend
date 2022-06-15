@@ -198,7 +198,10 @@ function PlannedInterventionOutput(props: PlannedInterventionProps) {
       </View>
       {
         data?.indicators?.map((el) => (
-          <View style={pdfStyles.piRow}>
+          <View
+            key={el?.id}
+            style={pdfStyles.piRow}
+          >
             <View style={pdfStyles.piContentCell}>
               <Text style={pdfStyles.piBorderCell}>
                 {el?.title}
@@ -470,19 +473,20 @@ function DrefPdfDocument(props: Props) {
             </View>
           </View>
         </View>
-      </PDFPage>
-      <PDFPage style={pdfStyles.portraitPage} >
         <Text style={pdfStyles.sectionHeading}>
           {strings.drefExportDescriptionOfTheEvent}
         </Text>
-        {dref.event_map_details?.file && (
-          <View style={pdfStyles.subSection}>
+        {dref.images_details?.map((el) => (
+          <View
+            key={el?.id}
+            style={pdfStyles.subSection}
+          >
             <PDFImage
               style={pdfStyles.mapImage}
-              src={dref.event_map_details.file}
+              src={el?.file}
             />
           </View>
-        )}
+        ))}
         <View style={pdfStyles.subSection}>
           <Text style={pdfStyles.subSectionHeading}>
             {isImminentOnset ? strings.drefExportImminentWhereWhenHow : strings.drefExportWhatWhereWhen}
@@ -509,8 +513,6 @@ function DrefPdfDocument(props: Props) {
             {dref.event_scope}
           </Text>
         </View>
-      </PDFPage>
-      <PDFPage style={pdfStyles.portraitPage}>
         <View style={pdfStyles.poSection}>
           <Text style={pdfStyles.sectionHeading}>
             {strings.drefExportPreviousOperations}
@@ -928,21 +930,23 @@ function DrefPdfDocument(props: Props) {
             ))}
           </View>
         )}
-      </PDFPage>
-      {dref.budget_file_preview && (
-        <PDFPage style={pdfStyles.portraitPage}>
-          <View style={pdfStyles.section}>
+        {dref?.budget_file && (
+          <>
             <Text style={pdfStyles.sectionHeading}>
               {strings.drefExportBudgetOverview}
             </Text>
-            <PDFImage
-              style={pdfStyles.budgetOverview}
-              src={dref.budget_file_preview}
-            />
-          </View>
-        </PDFPage>
-      )}
-      <PDFPage style={pdfStyles.portraitPage}>
+            <View style={pdfStyles.subSection}>
+              <Text style={pdfStyles.text}>
+                <a
+                  href={dref?.budget_file_details?.file}
+                  target='_blank'
+                >
+                  {dref?.budget_file_details?.file}
+                </a>
+              </Text>
+            </View>
+          </>
+        )}
         <View style={pdfStyles.contactSection}>
           <Text style={pdfStyles.sectionHeading}>
             {strings.drefExportContactInformation}
