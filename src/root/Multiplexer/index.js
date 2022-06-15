@@ -169,7 +169,9 @@ function Multiplexer(props) {
 
 
   React.useEffect(() => {
-    getLanguage(languageRef.current);
+    if (languageRef.current !== 'en') {
+      getLanguage(languageRef.current);
+    }
 
     if (languageRef.current === 'ar') {
       document.body.style.direction = 'rtl';
@@ -213,7 +215,7 @@ function Multiplexer(props) {
   });
 
   const pending = React.useMemo(() => (
-    (languageResponse.fetching || !languageResponse.fetched)
+    (languageResponse.fetching)
     || (allCountriesResponse.fetching || (!allCountriesResponse.cached && !allCountriesResponse.fetched))
     || (allRegionsResponse.fetching || (!allRegionsResponse.cached && !allRegionsResponse.fetched))
     || (!skipUserDetails && (userResponse.fetching || (!userResponse.cached && !userResponse.fetched)))
@@ -223,7 +225,7 @@ function Multiplexer(props) {
   if (pending) {
     return <InitialLoading />;
   }
-  
+
   return (
     <AlertContext.Provider value={alertContextValue}>
       <Router>

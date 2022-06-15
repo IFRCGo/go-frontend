@@ -78,7 +78,7 @@ function LanguageSelect(p) {
 
   return (
     <>
-      { languageResponse.fetching && <NewGlobalLoading /> }
+      {/* languageResponse.fetching && <NewGlobalLoading /> */}
       <DropdownMenu
         label={
           <div
