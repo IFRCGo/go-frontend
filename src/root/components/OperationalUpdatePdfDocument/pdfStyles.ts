@@ -137,7 +137,6 @@ const pdfStyles = StyleSheet.create({
   },
 
   mapImage: {
-    //display: 'flex',
     width: 'auto',
     height: 200,
     objectFit: 'contain',
@@ -331,8 +330,7 @@ const pdfStyles = StyleSheet.create({
   },
   piIconCell: {
     display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     border: TABLE_BORDER,
     padding: SMALL_PADDING,
   },
@@ -389,10 +387,9 @@ const pdfStyles = StyleSheet.create({
   },
   niIconCell: {
     display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     border: TABLE_BORDER,
-    padding: SMALL_PADDING,
+    padding: `0 ${SMALL_PADDING}`,
   },
   niIcon: {
     width: 40,
