@@ -231,11 +231,13 @@ function PlannedInterventionOutput(props: PlannedInterventionProps) {
           {strings.drefOperationalUpdateProgressTowardsOutcome}
         </Text>
       </View>
-      <View style={pdfStyles.piRow}>
-        <Text style={pdfStyles.piBorderCell}>
-          {data?.progress_towards_outcome}
-        </Text>
-      </View>
+      {data?.progress_towards_outcome && (
+        <View style={pdfStyles.piRow}>
+          <Text style={pdfStyles.piBorderCell}>
+            {data?.progress_towards_outcome}
+          </Text>
+        </View>
+      )}
     </View>
   );
 }
@@ -484,7 +486,7 @@ function OperationalUpdatePdfDocument(props: Props) {
           </View>
         </View>
         {(
-          operationalUpdateResponse?.change_since_request ||
+          operationalUpdateResponse?.has_change_since_request ||
           operationalUpdateResponse?.event_description ||
           operationalUpdateResponse?.event_scope ||
           operationalUpdateResponse?.anticipatory_actions ||
@@ -502,13 +504,13 @@ function OperationalUpdatePdfDocument(props: Props) {
                   />
                 </View>
               ))}
-              {operationalUpdateResponse?.change_since_request && (
+              {operationalUpdateResponse?.has_change_since_request && (
                 <View style={pdfStyles.subSection}>
                   <Text style={pdfStyles.subSectionHeading}>
                     {strings.drefOperationalUpdateDescriptionOfEventLabel}
                   </Text>
                   <Text style={pdfStyles.text}>
-                    {operationalUpdateResponse.change_since_request}
+                    {formatBoolean(operationalUpdateResponse.has_change_since_request)}
                   </Text>
                 </View>
               )}
@@ -911,14 +913,9 @@ function OperationalUpdatePdfDocument(props: Props) {
               {strings.drefExportBudgetOverview}
             </Text>
             <View style={pdfStyles.subSection}>
-              <Text style={pdfStyles.text}>
-                <a
-                  href={operationalUpdateResponse?.budget_file_details?.file}
-                  target='_blank'
-                >
-                  {operationalUpdateResponse?.budget_file_details?.file}
-                </a>
-              </Text>
+              <Link src={resolveUrl(window.location.origin, operationalUpdateResponse?.budget_file_details?.file)}>
+                {operationalUpdateResponse?.budget_file_details?.file}
+              </Link>
             </View>
           </View>
         )}

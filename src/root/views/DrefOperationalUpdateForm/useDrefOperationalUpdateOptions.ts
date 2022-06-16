@@ -118,7 +118,7 @@ export const schema: FormSchema = {
     changing_budget: [],
     request_for_second_allocation: [],
     summary_of_change: [],
-    change_since_request: [],
+    has_change_since_request: [],
     ifrc: [],
     icrc: [],
     partner_national_society: [],

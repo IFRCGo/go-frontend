@@ -146,13 +146,13 @@ function EventDetails(props: Props) {
         heading={strings.drefOperationalUpdateDescriptionOfEventHeading}>
         <InputSection title={strings.drefOperationalUpdateDescriptionOfEventLabel}>
           <RadioInput
-            name={"change_since_request" as const}
+            name={"has_change_since_request" as const}
             options={yesNoOptions}
             keySelector={booleanOptionKeySelector}
             labelSelector={optionLabelSelector}
-            value={value.change_since_request}
+            value={value.has_change_since_request}
             onChange={onValueChange}
-            error={error?.change_since_request}
+            error={error?.has_change_since_request}
           />
         </InputSection>
         <InputSection

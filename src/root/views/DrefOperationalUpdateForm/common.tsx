@@ -118,7 +118,7 @@ export interface DrefOperationalUpdateFields {
   changing_budget: boolean;
   request_for_second_allocation: boolean;
   summary_of_change: string;
-  change_since_request: boolean;
+  has_change_since_request: boolean;
   national_society_actions: NsAction[];
   ifrc: string;
   icrc: string;
@@ -251,7 +251,7 @@ export const eventFields: (keyof DrefOperationalUpdateFields)[] = [
   'changing_budget',
   'request_for_second_allocation',
   'summary_of_change',
-  'change_since_request',
+  'has_change_since_request',
   'event_description',
   'event_scope',
   'photos'
