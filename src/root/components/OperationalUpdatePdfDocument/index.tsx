@@ -152,7 +152,7 @@ function PlannedInterventionOutput(props: PlannedInterventionProps) {
     <View style={pdfStyles.piOutput} wrap={false}>
       <View style={pdfStyles.piRow}>
         <View style={pdfStyles.piIconCell}>
-          {data.image_url && (
+          {data?.image_url && (
             <PDFImage
               style={pdfStyles.piIcon}
               src={data.image_url}
@@ -408,14 +408,16 @@ function OperationalUpdatePdfDocument(props: Props) {
             ].filter(Boolean).join(' | ')}
           </Text>
         </View>
-        <View
-          style={pdfStyles.section}
-        >
-          <PDFImage
-            style={pdfStyles.bannerImage}
-            src={operationalUpdateResponse?.cover_image_details?.file}
-          />
-        </View>
+        {operationalUpdateResponse?.cover_image_details && (
+          <View
+            style={pdfStyles.section}
+          >
+            <PDFImage
+              style={pdfStyles.bannerImage}
+              src={operationalUpdateResponse?.cover_image_details?.file}
+            />
+          </View>
+        )}
         <View style={pdfStyles.section}>
           <View style={pdfStyles.basicInfoTable}>
             <View style={pdfStyles.compactSection} wrap={false}>
