@@ -271,13 +271,21 @@ class FieldReport extends React.Component {
             </dl>
             <dl className='dl-horizontal numeric-list'>
               <dt>
-                <Translate stringId='fieldReportAssistedByGovernment'/>
+                <Translate stringId='fieldReportAsstdByRCRC'/>
+              </dt>
+              <dd>{n(get(data, 'num_assisted'))}</dd>
+              <dt>
+                <Translate stringId='fieldReportAsstdByGov'/>
               </dt>
               <dd>{n(get(data, 'gov_num_assisted'))}</dd>
               <dt>
-                <Translate stringId='fieldReportAssistedRCRC'/>
+                <Translate stringId='fieldReportAsstdByWHO'/>
               </dt>
-              <dd>{n(get(data, 'num_assisted'))}</dd>
+              <dd>{n(get(data, 'who_num_assisted'))}</dd>
+              <dt>
+                <Translate stringId='fieldReportAsstdByOther'/>
+              </dt>
+              <dd>{n(get(data, 'other_num_assisted'))}</dd>
               <dt>
                 <Translate stringId='fieldReportLocalStaff'/>
               </dt>
@@ -369,13 +377,21 @@ class FieldReport extends React.Component {
             </dl>
             <dl className='dl-horizontal numeric-list'>
               <dt>
-                <Translate stringId='fieldReportAssistedByGovernment'/>
+                <Translate stringId='fieldReportAsstdByRCRC'/>
+              </dt>
+              <dd>{n(get(data, 'num_assisted'))}</dd>
+              <dt>
+                <Translate stringId='fieldReportAsstdByGov'/>
               </dt>
               <dd>{n(get(data, 'gov_num_assisted'))}</dd>
               <dt>
-                <Translate stringId='fieldReportAssistedRCRC'/>
+                <Translate stringId='fieldReportAsstdByWHO'/>
               </dt>
-              <dd>{n(get(data, 'num_assisted'))}</dd>
+              <dd>{n(get(data, 'who_num_assisted'))}</dd>
+              <dt>
+                <Translate stringId='fieldReportAsstdByOther'/>
+              </dt>
+              <dd>{n(get(data, 'other_num_assisted'))}</dd>
               <dt>
                 <Translate stringId='fieldReportLocalStaff'/>
               </dt>
@@ -440,13 +456,21 @@ class FieldReport extends React.Component {
         </dl>
         <dl className='dl-horizontal numeric-list'>
           <dt>
-            <Translate stringId='fieldReportAsstByGov'/>
+            <Translate stringId='fieldReportAsstdByRCRC'/>
+          </dt>
+          <dd>{n(get(data, 'num_assisted'))}</dd>
+          <dt>
+            <Translate stringId='fieldReportAsstdByGov'/>
           </dt>
           <dd>{n(get(data, 'gov_num_assisted'))}</dd>
           <dt>
-            <Translate stringId='fieldReportAsstByRCRC'/>
+            <Translate stringId='fieldReportAsstdByWHO'/>
           </dt>
-          <dd>{n(get(data, 'num_assisted'))}</dd>
+          <dd>{n(get(data, 'who_num_assisted'))}</dd>
+          <dt>
+            <Translate stringId='fieldReportAsstdByOther'/>
+          </dt>
+          <dd>{n(get(data, 'other_num_assisted'))}</dd>
         </dl>
       </React.Fragment>
     );
@@ -581,6 +605,15 @@ class FieldReport extends React.Component {
                       }}
                     />
                   )}
+                  {' –r '}{n(get(data, 'regions'))}
+                  {' –d '}{n(get(data, 'districts'))}
+                  {' –v '}{n(get(data, 'visibility'))}
+                  {' –h '}{n(get(data, 'health_min_num_assisted'))}
+                  {' –i '}{n(get(data, 'imminent_dref'))}
+                  {' –a '}{n(get(data, 'imminent_dref_amount'))}
+                  {' –I '}{n(get(data, 'num_ifrc_staff'))}
+                  {' –d '}{n(get(data, 'report_date'))}
+
                 </p>
                 {this.renderNumericDetails(data)}
                 { epiStatus === 'EPI' ? <DisplaySection title={strings.fieldReportDateOfData} inner={sitFieldsDate} /> : null }
@@ -592,11 +625,11 @@ class FieldReport extends React.Component {
                 <DisplaySection title={strings.fieldReportRequest}>
                   <p>
                     <Translate stringId='fieldReportGovernmentRequest'/>
-                    <span>{yesno(get(data, 'request_assistance'))}</span>
+                    <span> {yesno(get(data, 'request_assistance'))}</span>
                   </p>
                   <p>
                     <Translate stringId='fieldReportInternationalRequest'/>
-                    <span>{yesno(get(data, 'ns_request_assistance'))}</span>
+                    <span> {yesno(get(data, 'ns_request_assistance'))}</span>
                   </p>
                 </DisplaySection>
                 { !isCOVID
