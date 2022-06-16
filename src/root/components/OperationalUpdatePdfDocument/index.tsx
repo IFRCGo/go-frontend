@@ -481,51 +481,70 @@ function OperationalUpdatePdfDocument(props: Props) {
             </View>
           </View>
         </View>
-        <Text style={pdfStyles.sectionHeading}>
-          {strings.drefExportDescriptionOfTheEvent}
-        </Text>
-        {operationalUpdateResponse.images_details?.map((el) => (
-          <View style={pdfStyles.subSection}>
-            <PDFImage
-              style={pdfStyles.mapImage}
-              src={el.file}
-            />
-          </View>
-        ))}
-        <View style={pdfStyles.subSection}>
-          <Text style={pdfStyles.subSectionHeading}>
-            {strings.drefOperationalUpdateDescriptionOfEventLabel}
-          </Text>
-          <Text style={pdfStyles.text}>
-            {operationalUpdateResponse.change_since_request}
-          </Text>
-        </View>
-        <View style={pdfStyles.subSection}>
-          <Text style={pdfStyles.subSectionHeading}>
-            {isImminentOnset ? strings.drefExportImminentWhereWhenHow : strings.drefExportWhatWhereWhen}
-          </Text>
-          <Text style={pdfStyles.text}>
-            {operationalUpdateResponse.event_description}
-          </Text>
-        </View>
-        {operationalUpdateResponse.anticipatory_actions && (
-          <View style={pdfStyles.subSection}>
-            <Text style={pdfStyles.subSectionHeading}>
-              {strings.drefExportTargetCommunities}
-            </Text>
-            <Text style={pdfStyles.text}>
-              {operationalUpdateResponse.anticipatory_actions}
-            </Text>
-          </View>
-        )}
-        <View style={pdfStyles.subSection}>
-          <Text style={pdfStyles.subSectionHeading}>
-            {strings.drefExportScopeAndScale}
-          </Text>
-          <Text style={pdfStyles.text}>
-            {operationalUpdateResponse.event_scope}
-          </Text>
-        </View>
+        {(
+          operationalUpdateResponse?.change_since_request ||
+          operationalUpdateResponse?.event_description ||
+          operationalUpdateResponse?.event_scope ||
+          operationalUpdateResponse?.anticipatory_actions ||
+          operationalUpdateResponse?.images_details.length > 0
+        ) && (
+            <View>
+              <Text style={pdfStyles.sectionHeading}>
+                {strings.drefExportDescriptionOfTheEvent}
+              </Text>
+              {operationalUpdateResponse.images_details?.map((el) => (
+                <View style={pdfStyles.subSection}>
+                  <PDFImage
+                    style={pdfStyles.mapImage}
+                    src={el.file}
+                  />
+                </View>
+              ))}
+              {operationalUpdateResponse?.change_since_request && (
+                <View style={pdfStyles.subSection}>
+                  <Text style={pdfStyles.subSectionHeading}>
+                    {strings.drefOperationalUpdateDescriptionOfEventLabel}
+                  </Text>
+                  <Text style={pdfStyles.text}>
+                    {operationalUpdateResponse.change_since_request}
+                  </Text>
+                </View>
+              )}
+              {operationalUpdateResponse?.event_description && (
+                <View style={pdfStyles.subSection}>
+                  <Text style={pdfStyles.subSectionHeading}>
+                    {isImminentOnset ?
+                      strings.drefExportImminentWhereWhenHow
+                      :
+                      strings.drefExportWhatWhereWhen}
+                  </Text>
+                  <Text style={pdfStyles.text}>
+                    {operationalUpdateResponse.event_description}
+                  </Text>
+                </View>
+              )}
+              {operationalUpdateResponse.anticipatory_actions && (
+                <View style={pdfStyles.subSection}>
+                  <Text style={pdfStyles.subSectionHeading}>
+                    {strings.drefExportTargetCommunities}
+                  </Text>
+                  <Text style={pdfStyles.text}>
+                    {operationalUpdateResponse.anticipatory_actions}
+                  </Text>
+                </View>
+              )}
+              {operationalUpdateResponse?.event_scope && (
+                <View style={pdfStyles.subSection}>
+                  <Text style={pdfStyles.subSectionHeading}>
+                    {strings.drefExportScopeAndScale}
+                  </Text>
+                  <Text style={pdfStyles.text}>
+                    {operationalUpdateResponse.event_scope}
+                  </Text>
+                </View>
+              )}
+            </View>
+          )}
         <View style={pdfStyles.poSection}>
           <Text style={pdfStyles.sectionHeading}>
             {strings.drefOperationalUpdateSummaryChangeHeading}
@@ -599,7 +618,15 @@ function OperationalUpdatePdfDocument(props: Props) {
             <Text style={pdfStyles.sectionHeading}>
               {strings.drefExportCurrentNationalSocietyAction}
             </Text>
-            <View style={[pdfStyles.subSection, { display: 'flex', flexDirection: 'row', justifyContent: 'center' }]}>
+            <View style={[
+              pdfStyles.subSection,
+              {
+                display: 'flex',
+                flexDirection: 'row',
+                justifyContent: 'center'
+              }
+            ]}
+            >
               {operationalUpdateResponse?.photos_details?.map((el) => (
                 <PDFImage
                   style={pdfStyles.mapImage}
@@ -701,41 +728,46 @@ function OperationalUpdatePdfDocument(props: Props) {
             ))}
           </View>
         )}
-        <View style={pdfStyles.section}>
-          <Text style={pdfStyles.sectionHeading}>
-            {strings.drefExportTargetingStrategy}
-          </Text>
-          {operationalUpdateResponse.people_assisted && (
-            <View style={pdfStyles.qna}>
-              <Text style={pdfStyles.textLabelSection}>
-                {strings.drefExportPeopleAssistedthroughOperation}
+        {(operationalUpdateResponse?.people_assisted ||
+          operationalUpdateResponse?.selection_criteria ||
+          operationalUpdateResponse?.entity_affected
+        ) && (
+            <View style={pdfStyles.section}>
+              <Text style={pdfStyles.sectionHeading}>
+                {strings.drefExportTargetingStrategy}
               </Text>
-              <Text style={pdfStyles.answer}>
-                {operationalUpdateResponse.people_assisted}
-              </Text>
+              {operationalUpdateResponse.people_assisted && (
+                <View style={pdfStyles.qna}>
+                  <Text style={pdfStyles.textLabelSection}>
+                    {strings.drefExportPeopleAssistedthroughOperation}
+                  </Text>
+                  <Text style={pdfStyles.answer}>
+                    {operationalUpdateResponse.people_assisted}
+                  </Text>
+                </View>
+              )}
+              {operationalUpdateResponse.selection_criteria && (
+                <View style={pdfStyles.qna}>
+                  <Text style={pdfStyles.textLabelSection}>
+                    {strings.drefExportSelectionCriteriaRisk}
+                  </Text>
+                  <Text style={pdfStyles.answer}>
+                    {operationalUpdateResponse.selection_criteria}
+                  </Text>
+                </View>
+              )}
+              {operationalUpdateResponse.entity_affected && (
+                <View style={pdfStyles.qna}>
+                  <Text style={pdfStyles.textLabelSection}>
+                    {strings.drefExportProtectionGenderAndInclusion}
+                  </Text>
+                  <Text style={pdfStyles.answer}>
+                    {operationalUpdateResponse?.entity_affected}
+                  </Text>
+                </View>
+              )}
             </View>
           )}
-          {operationalUpdateResponse.selection_criteria && (
-            <View style={pdfStyles.qna}>
-              <Text style={pdfStyles.textLabelSection}>
-                {strings.drefExportSelectionCriteriaRisk}
-              </Text>
-              <Text style={pdfStyles.answer}>
-                {operationalUpdateResponse.selection_criteria}
-              </Text>
-            </View>
-          )}
-          {operationalUpdateResponse.entity_affected && (
-            <View style={pdfStyles.qna}>
-              <Text style={pdfStyles.textLabelSection}>
-                {strings.drefExportProtectionGenderAndInclusion}
-              </Text>
-              <Text style={pdfStyles.answer}>
-                {operationalUpdateResponse?.entity_affected}
-              </Text>
-            </View>
-          )}
-        </View>
         <View style={pdfStyles.tpSection}>
           <Text style={pdfStyles.sectionHeading}>
             {strings.drefExportAssistedPopulation}
@@ -840,18 +872,22 @@ function OperationalUpdatePdfDocument(props: Props) {
             </View>
           </View>
         </View>
-        <View style={pdfStyles.section}>
-          <Text style={pdfStyles.sectionHeading}>
-            {strings.drefExportObjectiveOperation}
-          </Text>
-          <Text>{operationalUpdateResponse.operation_objective}</Text>
-        </View>
-        <View style={pdfStyles.section}>
-          <Text style={pdfStyles.sectionHeading}>
-            {strings.drefExportResponseRationale}
-          </Text>
-          <Text>{operationalUpdateResponse.response_strategy}</Text>
-        </View>
+        {operationalUpdateResponse?.operation_objective && (
+          <View style={pdfStyles.section}>
+            <Text style={pdfStyles.sectionHeading}>
+              {strings.drefExportObjectiveOperation}
+            </Text>
+            <Text>{operationalUpdateResponse.operation_objective}</Text>
+          </View>
+        )}
+        {operationalUpdateResponse?.response_strategy && (
+          <View style={pdfStyles.section}>
+            <Text style={pdfStyles.sectionHeading}>
+              {strings.drefExportResponseRationale}
+            </Text>
+            <Text>{operationalUpdateResponse.response_strategy}</Text>
+          </View>
+        )}
         {operationalUpdateResponse.planned_interventions.length > 0 && (
           <View style={pdfStyles.piSection}>
             <Text style={pdfStyles.sectionHeading}>
@@ -868,7 +904,7 @@ function OperationalUpdatePdfDocument(props: Props) {
           </View>
         )}
         {operationalUpdateResponse?.budget_file && (
-          <>
+          <View>
             <Text style={pdfStyles.sectionHeading}>
               {strings.drefExportBudgetOverview}
             </Text>
@@ -882,7 +918,7 @@ function OperationalUpdatePdfDocument(props: Props) {
                 </a>
               </Text>
             </View>
-          </>
+          </View>
         )}
         <View style={pdfStyles.contactSection}>
           <Text style={pdfStyles.sectionHeading}>
