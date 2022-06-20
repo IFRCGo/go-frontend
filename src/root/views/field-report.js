@@ -271,13 +271,17 @@ class FieldReport extends React.Component {
             </dl>
             <dl className='dl-horizontal numeric-list'>
               <dt>
-                <Translate stringId='fieldReportAssistedByGovernment'/>
+                <Translate stringId='fieldReportAsstdByRCRC'/>
+              </dt>
+              <dd>{n(get(data, 'num_assisted'))}</dd>
+              <dt>
+                <Translate stringId='fieldReportAsstdByGov'/>
               </dt>
               <dd>{n(get(data, 'gov_num_assisted'))}</dd>
               <dt>
-                <Translate stringId='fieldReportAssistedRCRC'/>
+                <Translate stringId='fieldReportAsstdByOther'/>
               </dt>
-              <dd>{n(get(data, 'num_assisted'))}</dd>
+              <dd>{n(get(data, 'other_num_assisted'))}</dd>
               <dt>
                 <Translate stringId='fieldReportLocalStaff'/>
               </dt>
@@ -322,6 +326,14 @@ class FieldReport extends React.Component {
                 <Translate stringId='fieldReportAffected'/>
               </dt>
               <dd>{n(get(data, 'num_affected'))}</dd>
+              <dt>
+                <Translate stringId='fieldReportAsstdByRCRC'/>
+              </dt>
+              <dd>{n(get(data, 'num_assisted'))}</dd>
+              <dt>
+                <Translate stringId='fieldReportLocalStaff'/>
+              </dt>
+              <dd>{n(get(data, 'num_localstaff'))}</dd>
             </dl>
             <dl className='dl-horizontal numeric-list'>
               <dt>
@@ -344,6 +356,14 @@ class FieldReport extends React.Component {
                 <Translate stringId='fieldReportAffectedGov'/>
               </dt>
               <dd>{n(get(data, 'gov_num_affected'))}</dd>
+              <dt>
+                <Translate stringId='fieldReportAsstdByGov'/>
+              </dt>
+              <dd>{n(get(data, 'gov_num_assisted'))}</dd>
+              <dt>
+                <Translate stringId='fieldReportVolunteers'/>
+              </dt>
+              <dd>{n(get(data, 'num_volunteers'))}</dd>
             </dl>
             <dl className='dl-horizontal numeric-list'>
               <dt>
@@ -366,24 +386,14 @@ class FieldReport extends React.Component {
                 <Translate stringId='fieldReportAffectedOther'/>
               </dt>
               <dd>{n(get(data, 'other_num_affected'))}</dd>
-            </dl>
-            <dl className='dl-horizontal numeric-list'>
               <dt>
-                <Translate stringId='fieldReportAssistedByGovernment'/>
+                <Translate stringId='fieldReportAsstdByOther'/>
               </dt>
-              <dd>{n(get(data, 'gov_num_assisted'))}</dd>
+              <dd>{n(get(data, 'other_num_assisted'))}</dd>
               <dt>
-                <Translate stringId='fieldReportAssistedRCRC'/>
+                <Translate stringId='fieldReportNumIFRCstaff'/>
               </dt>
-              <dd>{n(get(data, 'num_assisted'))}</dd>
-              <dt>
-                <Translate stringId='fieldReportLocalStaff'/>
-              </dt>
-              <dd>{n(get(data, 'num_localstaff'))}</dd>
-              <dt>
-                <Translate stringId='fieldReportVolunteers'/>
-              </dt>
-              <dd>{n(get(data, 'num_volunteers'))}</dd>
+              <dd>{n(get(data, 'num_ifrc_staff'))}</dd>
               <dt>
                 <Translate stringId='fieldReportDelegates'/>
               </dt>
@@ -409,6 +419,10 @@ class FieldReport extends React.Component {
             <Translate stringId='fieldReportAffectedPop'/>
           </dt>
           <dd>{get(data, 'affected_pop_centres') || '--'}</dd>
+          <dt>
+            <Translate stringId='fieldReportAsstdByRCRC'/>
+          </dt>
+          <dd>{n(get(data, 'num_assisted'))}</dd>
         </dl>
         <dl className='dl-horizontal numeric-list'>
           <dt>
@@ -423,6 +437,10 @@ class FieldReport extends React.Component {
             <Translate stringId='fieldReportAffectedGov'/>
           </dt>
           <dd>{get(data, 'gov_affected_pop_centres') || '--'}</dd>
+          <dt>
+            <Translate stringId='fieldReportAsstdByGov'/>
+          </dt>
+          <dd>{n(get(data, 'gov_num_assisted'))}</dd>
         </dl>
         <dl className='dl-horizontal numeric-list'>
           <dt>
@@ -437,16 +455,10 @@ class FieldReport extends React.Component {
             <Translate stringId='fieldReportAffectedPopOther'/>
           </dt>
           <dd>{get(data, 'other_affected_pop_centres') || '--'}</dd>
-        </dl>
-        <dl className='dl-horizontal numeric-list'>
           <dt>
-            <Translate stringId='fieldReportAsstByGov'/>
+            <Translate stringId='fieldReportAsstdByOther'/>
           </dt>
-          <dd>{n(get(data, 'gov_num_assisted'))}</dd>
-          <dt>
-            <Translate stringId='fieldReportAsstByRCRC'/>
-          </dt>
-          <dd>{n(get(data, 'num_assisted'))}</dd>
+          <dd>{n(get(data, 'other_num_assisted'))}</dd>
         </dl>
       </React.Fragment>
     );
@@ -466,7 +478,7 @@ class FieldReport extends React.Component {
           inner={get(data, 'other_sources', false)}
         />
       </React.Fragment>
-    );
+      );
   }
 
   renderContent () {
@@ -514,11 +526,25 @@ class FieldReport extends React.Component {
       '2': 'Planned',
       '3': 'Yes'
     };
+    const visibility = {
+      1: 'Membership',
+      2: 'IFRC Only',
+      3: 'Public',
+      4: 'IFRC + NS'
+    };
+    const region = {
+      0: 'Africa',
+      1: 'America',
+      2: 'Asia',
+      3: 'Europe',
+      4: 'the Middle East'
+    };
     const infoBulletin = infoBulletinOptions[data.bulletin];
     const lastTouchedAt = DateTime.fromISO(data.updated_at || data.created_at).toISODate();
     const status = this.getStatus();
     const epiStatus = this.getEpiStatus();
     const startDate = DateTime.fromISO(data.start_date).toISODate();
+    const reportDate = DateTime.fromISO(data.report_date).toISODate();
     const sitFieldsDate = DateTime.fromISO(data.sit_fields_date).toISODate();
     const isCOVID = data.is_covid_report;
     const title = resolveToString(
@@ -527,6 +553,9 @@ class FieldReport extends React.Component {
         reportName: get(data, 'summary', strings.breadCrumbFieldReport),
       }
     );
+    const districts = [];
+    data.districts.forEach((x, i) => districts.push(data.districts[i].name));
+
     return (
       <section className='inpage'>
         <Helmet>
@@ -581,22 +610,39 @@ class FieldReport extends React.Component {
                       }}
                     />
                   )}
+                  {' ('}{ region[n(get(data, 'regions'))] }
+                  { data.districts.length > 0 ? ' – ' + districts.join(', ') : '' }
+                  {')'}
+
                 </p>
                 {this.renderNumericDetails(data)}
                 { epiStatus === 'EPI' ? <DisplaySection title={strings.fieldReportDateOfData} inner={sitFieldsDate} /> : null }
                 <DisplaySection sectionClass='rich-text-section' title={ status === 'EW' ? strings.fieldReportRiskAnalyisis : strings.fieldReportDescription } inner={get(data, 'description', false)} />
-                <DisplaySection title={ status === 'EW' ? strings.fieldReportForecastedDate : strings.fieldReportStartDate } inner={startDate} />
+                <div className='row flex-xs'>
+                  <dl className='dl-horizontal numeric-list'>
+                    <dt style={{fontWeight: 'bold'}}><Translate stringId='fieldReportVisibility'/></dt>
+                    <dd style={{fontSize: '1.4rem'}}>{visibility[n(get(data, 'visibility'))]}</dd>
+                  </dl>
+                  <dl className='dl-horizontal numeric-list'>
+                    <dt style={{fontWeight: 'bold'}}>{ status === 'EW' ? strings.fieldReportForecastedDate : strings.fieldReportStartDate }</dt>
+                    <dd style={{fontSize: '1rem'}}>{startDate}</dd>
+                  </dl>
+                  <dl className='dl-horizontal numeric-list'>
+                    <dt style={{fontWeight: 'bold'}}><Translate stringId='fieldReportReportDate'/></dt>
+                    <dd style={{fontSize: '1rem'}}>{reportDate}</dd>
+                  </dl>
+                </div>
                 { data.is_covid_report && (
                   <DisplaySection title={strings.fieldReportCovidReport} inner='Yes' />
                 )}
                 <DisplaySection title={strings.fieldReportRequest}>
                   <p>
                     <Translate stringId='fieldReportGovernmentRequest'/>
-                    <span>{yesno(get(data, 'request_assistance'))}</span>
+                    <span> {yesno(get(data, 'request_assistance'))}</span>
                   </p>
                   <p>
                     <Translate stringId='fieldReportInternationalRequest'/>
-                    <span>{yesno(get(data, 'ns_request_assistance'))}</span>
+                    <span> {yesno(get(data, 'ns_request_assistance'))}</span>
                   </p>
                 </DisplaySection>
                 { !isCOVID
