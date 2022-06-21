@@ -6,7 +6,6 @@ import { IoMdArrowDropdown } from 'react-icons/io';
 import {
   currentLanguageSelector,
   languageStringsSelector,
-  languageResponseSelector,
 } from '#selectors';
 
 import {
@@ -15,7 +14,6 @@ import {
 
 import languageContext from '#root/languageContext';
 import DropdownMenu from '#components/dropdown-menu';
-import NewGlobalLoading from '#components/NewGlobalLoading';
 
 import styles from './styles.module.scss';
 
@@ -59,7 +57,6 @@ function LanguageSelect(p) {
     currentLanguage,
     setCurrentLanguage,
     languageStrings,
-    languageResponse,
     className,
   } = p;
 
@@ -78,7 +75,6 @@ function LanguageSelect(p) {
 
   return (
     <>
-      {/* languageResponse.fetching && <NewGlobalLoading /> */}
       <DropdownMenu
         label={
           <div
@@ -106,7 +102,6 @@ function LanguageSelect(p) {
 }
 
 const mapStateToProps = (state) => ({
-  languageResponse: languageResponseSelector(state),
   currentLanguage: currentLanguageSelector(state),
   languageStrings: languageStringsSelector(state),
 });
