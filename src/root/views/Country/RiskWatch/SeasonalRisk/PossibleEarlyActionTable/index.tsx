@@ -15,16 +15,13 @@ import { Country } from '#types/country';
 
 import {
   PossibleEarlyActionsResponse,
+  Sector,
   tableKeySelector,
 } from '../common';
 
 import styles from './styles.module.scss';
 import Button from '#components/Button';
 
-interface Sector {
-  id: number;
-  name: string;
-}
 interface Props {
   hazardOptions: StringValueOption[];
   countryOptions?: StringValueOption[];
@@ -50,7 +47,7 @@ const getPossibleActionColumns = () => ([
   createStringColumn<PossibleEarlyActionsResponse, string | number>(
     'sector',
     'Sector',
-    (item) => item?.sector
+    (item) => (item?.sectors_details?.map(d => d.name).join(', ') as unknown as string)
   ),
   createStringColumn<PossibleEarlyActionsResponse, string | number>(
     'intended_purpose',
@@ -70,7 +67,7 @@ const getPossibleActionColumns = () => ([
   createStringColumn<PossibleEarlyActionsResponse, string | number>(
     'impact_actions',
     'Impact/Action',
-    (item) => item?.impact_actions
+    (item) => item?.impact_action
   ),
   createStringColumn<PossibleEarlyActionsResponse, string | number>(
     'evidence_of_success',
@@ -100,6 +97,7 @@ function PossibleEarlyActionTable(props: Props) {
     },
     url: 'risk://api/v1/early-actions/'
   });
+
   const { response: actionOptions } = useRequest<{ sectors: Sector[] }>({
     skip: !country,
     url: 'risk://api/v1/early-actions/options/'

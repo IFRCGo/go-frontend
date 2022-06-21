@@ -191,16 +191,20 @@ export interface SeasonalResponse {
 interface Centroid {
   type: string;
   coordinates: number[];
-
 }
 
-export const tableKeySelector = (o: PossibleEarlyActionsResponse) => o.id;
 interface Bbox {
   type: string;
   coordinates: number[];
   centroid: Centroid;
   region: number;
 }
+export interface Sector {
+  id: number;
+  name: string;
+}
+
+export const tableKeySelector = (o: PossibleEarlyActionsResponse) => o.id;
 export interface PossibleEarlyActionsResponse {
   id: number;
   hazard_type_display: string;
@@ -213,7 +217,7 @@ export interface PossibleEarlyActionsResponse {
   early_actions: string;
   hazard_name: string;
   location: string;
-  sector: string;
+  sectors: number[];
   intended_purpose: string;
   organization: string;
   budget: number;
@@ -229,12 +233,13 @@ export interface PossibleEarlyActionsResponse {
   scalability: string;
   cross_cutting: string;
   resources_used: string;
-  impact_actions: string;
+  impact_action: string;
   evidence_of_success: string;
   resource: string;
   link_to_resources: string;
   exist_in_hub: boolean;
   country: number;
+  sectors_details: Sector[];
 }
 
 export const monthKeys = [

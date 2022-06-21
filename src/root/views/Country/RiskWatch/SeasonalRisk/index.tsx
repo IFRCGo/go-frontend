@@ -293,15 +293,14 @@ function SeasonalRisk(props: Props) {
           ipcData={response?.ipc_displacement_data ?? []}
         />
       </Container>
-      <ReturnPeriodTable
-        data={response?.return_period_data}
-        hazardOptions={returnPeriodHazardOptions}
-      />
       <PossibleEarlyActionTable
-        //data={possibleEarlyActionsResponse?.results}
         hazardOptions={returnPeriodHazardOptions}
         countryOptions={countryOptions}
         country={country}
+      />
+      <ReturnPeriodTable
+        data={response?.return_period_data}
+        hazardOptions={returnPeriodHazardOptions}
       />
       <HistoricalDataChart countryId={countryId} />
     </>
