@@ -188,6 +188,55 @@ export interface SeasonalResponse {
   raster_displacement_data: ExposureData[];
 }
 
+interface Centroid {
+  type: string;
+  coordinates: number[];
+
+}
+
+export const tableKeySelector = (o: PossibleEarlyActionsResponse) => o.id;
+interface Bbox {
+  type: string;
+  coordinates: number[];
+  centroid: Centroid;
+  region: number;
+}
+export interface PossibleEarlyActionsResponse {
+  id: number;
+  hazard_type_display: string;
+  country_details: CountryDetail;
+  name: string;
+  iso: string;
+  iso3: string;
+  bbox: Bbox;
+  hazard_type: string;
+  early_actions: string;
+  hazard_name: string;
+  location: string;
+  sector: string;
+  intended_purpose: string;
+  organization: string;
+  budget: number;
+  cost: number;
+  implementation_date: string;
+  implementation_date_raw: string;
+  timeframe: string;
+  timeframe_raw: string;
+  effective_time: string;
+  effective_time_raw: string;
+  number_of_people_covered: number;
+  number_of_people_at_risk: number;
+  scalability: string;
+  cross_cutting: string;
+  resources_used: string;
+  impact_actions: string;
+  evidence_of_success: string;
+  resource: string;
+  link_to_resources: string;
+  exist_in_hub: boolean;
+  country: number;
+}
+
 export const monthKeys = [
   'january',
   'february',
@@ -210,7 +259,7 @@ export const chartMargin = {
   bottom: 0,
 };
 
-export function formatNumber (value: number) {
+export function formatNumber(value: number) {
   const {
     number,
     normalizeSuffix,

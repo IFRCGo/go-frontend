@@ -1,0 +1,31 @@
+@import '~styles/settings/variables';
+
+.early-action-table-container {
+  .early-action-table {
+    width: 100%;
+  }
+
+  .column-heading {
+    display: flex;
+  }
+}
+
+.container-description {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: $spacing*0.5 0;
+}
+
+.filters {
+  display: flex;
+  gap: $spacing*2;
+
+  .filter-input {
+    width: 14rem;
+  }
+}
+
+.link {
+  color: $primary-color;
+}
