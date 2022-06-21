@@ -21,12 +21,15 @@ import {
 
 import styles from './styles.module.scss';
 import Button from '#components/Button';
+import Pager from '#components/Pager';
 
 interface Props {
   hazardOptions: StringValueOption[];
   countryOptions?: StringValueOption[];
   country?: Country;
 }
+
+const ITEM_PER_PAGE = 5;
 
 const getPossibleActionColumns = () => ([
   createStringColumn<PossibleEarlyActionsResponse, string | number>(
@@ -47,7 +50,7 @@ const getPossibleActionColumns = () => ([
   createStringColumn<PossibleEarlyActionsResponse, string | number>(
     'sector',
     'Sector',
-    (item) => (item?.sectors_details?.map(d => d.name).join(', ') as unknown as string)
+    (item) => item?.sectors_details?.map(d => d.name).join(', ')
   ),
   createStringColumn<PossibleEarlyActionsResponse, string | number>(
     'intended_purpose',
@@ -83,14 +86,17 @@ function PossibleEarlyActionTable(props: Props) {
     country,
   } = props;
 
-  const possibleActionColumns = getPossibleActionColumns();
   const [hazardType, setHazardType] = useInputState<HazardTypes | undefined>(undefined);
   const [countryFilter, setCountryFilter] = useInputState<string | undefined>(undefined);
   const [sector, setSector] = useInputState<string | undefined>(undefined);
+  const [activePage, setActivePage] = React.useState<number>(1);
 
+  const possibleActionColumns = getPossibleActionColumns();
   const { response } = useRequest<ListResponse<PossibleEarlyActionsResponse>>({
     skip: !country,
     query: {
+      limit: ITEM_PER_PAGE,
+      offset: ITEM_PER_PAGE * (activePage - 1),
       iso3: countryFilter?.toLocaleLowerCase(),
       hazard_type: hazardType,
       sectors: sector,
@@ -113,7 +119,6 @@ function PossibleEarlyActionTable(props: Props) {
     setHazardType(undefined);
     setCountryFilter(undefined);
     setSector(undefined);
-
   }, [
     setHazardType,
     setCountryFilter,
@@ -168,6 +173,14 @@ function PossibleEarlyActionTable(props: Props) {
         columns={possibleActionColumns}
         keySelector={tableKeySelector}
       />
+      {response &&
+        <Pager
+          itemsCount={response?.count}
+          activePage={activePage}
+          onActivePageChange={setActivePage}
+          maxItemsPerPage={ITEM_PER_PAGE}
+        />
+      }
     </Container>
   );
 }
