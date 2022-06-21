@@ -12,6 +12,8 @@ import {
   useRequest,
 } from '#utils/restRequest';
 import { Country } from '#types/country';
+import Button from '#components/Button';
+import Pager from '#components/Pager';
 
 import {
   PossibleEarlyActionsResponse,
@@ -20,8 +22,6 @@ import {
 } from '../common';
 
 import styles from './styles.module.scss';
-import Button from '#components/Button';
-import Pager from '#components/Pager';
 
 interface Props {
   hazardOptions: StringValueOption[];
