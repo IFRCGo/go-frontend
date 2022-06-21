@@ -19,13 +19,13 @@ import {
 } from '../common';
 
 import styles from './styles.module.scss';
+import Button from '#components/Button';
 
 interface Sector {
   id: number;
   name: string;
 }
 interface Props {
-  //data?: PossibleEarlyActionsResponse[];
   hazardOptions: StringValueOption[];
   countryOptions?: StringValueOption[];
   country?: Country;
@@ -81,7 +81,6 @@ const getPossibleActionColumns = () => ([
 
 function PossibleEarlyActionTable(props: Props) {
   const {
-    //data,
     hazardOptions,
     countryOptions,
     country,
@@ -106,13 +105,22 @@ function PossibleEarlyActionTable(props: Props) {
     url: 'risk://api/v1/early-actions/options/'
   });
 
-  console.log(actionOptions);
-
   const earlyActionsOptions = React.useMemo(
     () => actionOptions?.sectors?.map((c) => ({
       value: c.name,
       label: c.name
     })), [actionOptions]);
+
+  const handleClearFilter = React.useCallback(() => {
+    setHazardType(undefined);
+    setCountryFilter(undefined);
+    setSector(undefined);
+
+  }, [
+    setHazardType,
+    setCountryFilter,
+    setSector,
+  ]);
 
   return (
     <Container
@@ -137,8 +145,6 @@ function PossibleEarlyActionTable(props: Props) {
               name="countryFilter"
               options={countryOptions}
             />
-
-            {/*TODO: sector options */}
             <SelectInput
               className={styles.filterInput}
               value={sector}
@@ -146,6 +152,13 @@ function PossibleEarlyActionTable(props: Props) {
               name="sector"
               options={earlyActionsOptions}
             />
+            <Button
+              name='clear'
+              variant='transparent'
+              onClick={handleClearFilter}
+            >
+              Clear Filter
+            </Button>
           </div>
         </>
       )}
