@@ -300,7 +300,7 @@ function FlashUpdateReport(props: Props) {
                   >
                     {r.url}
                   </a>
-                  {r.document_details?.file && (
+                  {r.document_details?.file ? (
                     <ButtonLikeLink
                       external
                       variant="secondary"
@@ -310,6 +310,8 @@ function FlashUpdateReport(props: Props) {
                     >
                       Download document
                     </ButtonLikeLink>
+                  ) : (
+                    <div className={styles.notDownloadLink} />
                   )}
                 </div>
               ))}
