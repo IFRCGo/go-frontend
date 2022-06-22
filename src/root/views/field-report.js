@@ -484,6 +484,7 @@ class FieldReport extends React.Component {
   renderContent () {
     const { data } = this.props.report;
     const { strings } = this.context;
+    const loggedIn = this.props.user.data.username !== undefined;
     if (!this.props.report.fetched || !data) {
       // If the error is a 404, then either the report doesn't exist
       // or the user is not authorized to see the resource
@@ -494,7 +495,9 @@ class FieldReport extends React.Component {
               <div className='inner'>
                 <div className='inpage__headline-content'>
                   <h1 className='inpage__title'>
-                    <Translate stringId='fieldReportResourceNotFound'/>
+                    <Translate stringId={
+                       loggedIn ? 'fieldReportResourceNotAuthrzd' : 'fieldReportResourceNotPublic'
+                    }/>
                   </h1>
               </div>
             </div>
@@ -504,9 +507,11 @@ class FieldReport extends React.Component {
                 <div className='prose fold prose--responsive'>
                   <div className='inner'>
                     <p className='inpage_note'>
-                      <Translate stringId='fieldReportResourceDescription'/>
+                      <Translate stringId={
+                       loggedIn ? 'fieldReportResourceNotAuthrzdDescr' : 'fieldReportResourceNotPublicDescr'
+                      }/>
                     </p>
-                    {(!this.props.user) && (
+                    {!loggedIn && (
                       <Link className='button button--medium button--primary-filled' to='/login' title={strings.fieldReportGoToLogin}>
                         <Translate stringId='fieldReportGoToLogin'/>
                       </Link>
@@ -735,7 +740,7 @@ const selector = (state, ownProps) => ({
     fetching: false,
     fetched: false
   }),
-  user: get(state.user)
+  user: state.user
 });
 
 const dispatcher = (dispatch) => ({
