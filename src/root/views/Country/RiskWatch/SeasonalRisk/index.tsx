@@ -15,7 +15,6 @@ import { useRequest } from '#utils/restRequest';
 import {
   avg,
   avgSafe,
-  compareLabel,
 } from '#utils/common';
 
 import {
@@ -238,16 +237,6 @@ function SeasonalRisk(props: Props) {
       ];
     }, [response]);
 
-  const countryOptions: StringValueOption[] = React.useMemo(
-    () => allCountries?.data?.results.filter((c) => (
-      c.independent && !c.is_deprecated && c.name
-    )).map((c) => ({
-      value: c.iso3!,
-      label: c.name,
-    })).sort(compareLabel) ?? [],
-    [allCountries],
-  );
-
   return (
     <>
       <Container
@@ -295,7 +284,6 @@ function SeasonalRisk(props: Props) {
       </Container>
       <PossibleEarlyActionTable
         hazardOptions={returnPeriodHazardOptions}
-        countryOptions={countryOptions}
         country={country}
       />
       <ReturnPeriodTable
