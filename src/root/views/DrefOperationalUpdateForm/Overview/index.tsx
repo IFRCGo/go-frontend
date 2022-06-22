@@ -283,20 +283,19 @@ function Overview(props: Props) {
           />
         </InputSection>
         <InputSection
-          title={strings.drerfOperationalUpdateImageLabel}
+          title={strings.drerfOperationalUpdateCoverImageLabel}
         >
           <DREFFileInput
-            name="images"
-            value={value.images}
+            name="cover_image"
+            value={value.cover_image}
             onChange={onValueChange}
             accept="image/*"
-            multiple
             showStatus
-            error={error?.images}
+            error={error?.cover_image}
             fileIdToUrlMap={fileIdToUrlMap}
             setFileIdToUrlMap={setFileIdToUrlMap}
           >
-            Select images
+            Select image
           </DREFFileInput>
         </InputSection>
         <InputSection

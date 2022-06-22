@@ -11,6 +11,7 @@ import Container from '#components/Container';
 import languageContext from '#root/languageContext';
 import InputSection from '#components/InputSection';
 import TextArea from '#components/TextArea';
+import DREFFileInput from '#components/DREFFileInput';
 
 import {
   booleanOptionKeySelector,
@@ -25,6 +26,9 @@ interface Props {
   onValueChange: (...entries: EntriesAsList<Value>) => void;
   value: Value;
   yesNoOptions: BooleanValueOption[];
+  isImminentOnset: boolean;
+  fileIdToUrlMap?: Record<number, string>;
+  setFileIdToUrlMap?: React.Dispatch<React.SetStateAction<Record<number, string>>>;
 }
 
 function EventDetails(props: Props) {
@@ -34,6 +38,9 @@ function EventDetails(props: Props) {
     error: formError,
     onValueChange,
     yesNoOptions,
+    isImminentOnset,
+    fileIdToUrlMap,
+    setFileIdToUrlMap,
   } = props;
   const error = React.useMemo(
     () => getErrorObject(formError),
@@ -138,12 +145,70 @@ function EventDetails(props: Props) {
       <Container
         heading={strings.drefOperationalUpdateDescriptionOfEventHeading}>
         <InputSection title={strings.drefOperationalUpdateDescriptionOfEventLabel}>
-          <TextArea
-            name="change_since_request"
-            value={value.change_since_request}
+          <RadioInput
+            name={"has_change_since_request" as const}
+            options={yesNoOptions}
+            keySelector={booleanOptionKeySelector}
+            labelSelector={optionLabelSelector}
+            value={value.has_change_since_request}
             onChange={onValueChange}
-            error={error?.change_since_request}
-            placeholder={strings.drefOperationalUpdateDescriptionOfEventLabel}
+            error={error?.has_change_since_request}
+          />
+        </InputSection>
+        <InputSection
+          title={!isImminentOnset ? strings.drefFormWhatWhereWhen : strings.drefFormImmientDisaster}
+          oneColumn
+          multiRow
+        >
+          <TextArea
+            name="event_description"
+            onChange={onValueChange}
+            value={value.event_description}
+            error={error?.event_description}
+          />
+        </InputSection>
+        {isImminentOnset &&
+          <InputSection
+            title={strings.drefFormTargetCommunities}
+            oneColumn
+            multiRow
+          >
+            <TextArea
+              name="anticipatory_actions"
+              onChange={onValueChange}
+              value={value.anticipatory_actions}
+              error={error?.anticipatory_actions}
+            />
+          </InputSection>
+        }
+        <InputSection
+          title={strings.drefFormUploadPhotos}
+        >
+          <DREFFileInput
+            accept="image/*"
+            name="images"
+            value={value.images}
+            onChange={onValueChange}
+            showStatus
+            multiple
+            error={error?.images}
+            fileIdToUrlMap={fileIdToUrlMap}
+            setFileIdToUrlMap={setFileIdToUrlMap}
+          >
+            Select images
+          </DREFFileInput>
+        </InputSection>
+        <InputSection
+          title={strings.drefFormScopeAndScaleEvent}
+          description={strings.drefFormScopeAndScaleDescription}
+          oneColumn
+          multiRow
+        >
+          <TextArea
+            name="event_scope"
+            onChange={onValueChange}
+            value={value.event_scope}
+            error={error?.event_scope}
           />
         </InputSection>
       </Container>

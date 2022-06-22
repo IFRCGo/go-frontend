@@ -118,7 +118,7 @@ export interface DrefOperationalUpdateFields {
   changing_budget: boolean;
   request_for_second_allocation: boolean;
   summary_of_change: string;
-  change_since_request: string;
+  has_change_since_request: boolean;
   national_society_actions: NsAction[];
   ifrc: string;
   icrc: string;
@@ -175,6 +175,14 @@ export interface DrefOperationalUpdateFields {
   dref?: string;
 
   dref_allocated_so_far?: number;
+  budget_file: number;
+
+  event_description: string;
+  event_scope: string;
+  anticipatory_actions: string;
+
+  cover_image: number;
+  photos: number[];
 }
 
 export interface DrefOperationalUpdateApiFields extends Omit<DrefOperationalUpdateFields, 'country_district' | 'planned_interventions' | 'national_society_actions' | 'needs_identified'> {
@@ -200,8 +208,20 @@ export interface DrefOperationalUpdateApiFields extends Omit<DrefOperationalUpda
     id: number;
     file: string;
   }[];
+  budget_file_details: {
+    id: number;
+    file: string;
+  };
+  budget_file_preview: string;
+  cover_image_details: {
+    id: number;
+    file: string;
+  };
+  photos_details: {
+    id: number;
+    file: string;
+  }[];
 }
-
 
 export const overviewFields: (keyof DrefOperationalUpdateFields)[] = [
   'title',
@@ -214,7 +234,7 @@ export const overviewFields: (keyof DrefOperationalUpdateFields)[] = [
   'number_of_people_targeted',
   'additional_allocation',
   'total_dref_allocation',
-  'images',
+  'cover_image',
   'operational_update_number',
   'emergency_appeal_planned',
   'new_operational_start_date',
@@ -231,7 +251,10 @@ export const eventFields: (keyof DrefOperationalUpdateFields)[] = [
   'changing_budget',
   'request_for_second_allocation',
   'summary_of_change',
-  'change_since_request',
+  'has_change_since_request',
+  'event_description',
+  'event_scope',
+  'photos'
 ];
 export const needsFields: (keyof DrefOperationalUpdateFields)[] = [
   'national_society_actions',
@@ -245,6 +268,7 @@ export const needsFields: (keyof DrefOperationalUpdateFields)[] = [
   'major_coordination_mechanism',
   'needs_identified',
   'identified_gaps',
+  'images'
 ];
 export const operationFields: (keyof DrefOperationalUpdateFields)[] = [
   'people_assisted',

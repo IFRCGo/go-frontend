@@ -198,7 +198,10 @@ function PlannedInterventionOutput(props: PlannedInterventionProps) {
       </View>
       {
         data?.indicators?.map((el) => (
-          <View style={pdfStyles.piRow}>
+          <View
+            key={el?.id}
+            style={pdfStyles.piRow}
+          >
             <View style={pdfStyles.piContentCell}>
               <Text style={pdfStyles.piBorderCell}>
                 {el?.title}
@@ -447,7 +450,7 @@ function DrefPdfDocument(props: Props) {
                     />
                     <View style={[pdfStyles.compactSection, pdfStyles.oneByTwo]}>
                       <TextOutput
-                        label={strings.drefExportDrefEnds}
+                        label={strings.drefExportDrefEndDateOfOperation}
                         value={dref.end_date}
                         columns="1/2"
                       />
@@ -470,51 +473,71 @@ function DrefPdfDocument(props: Props) {
             </View>
           </View>
         </View>
-      </PDFPage>
-      <PDFPage style={pdfStyles.portraitPage} >
-        <Text style={pdfStyles.sectionHeading}>
-          {strings.drefExportDescriptionOfTheEvent}
-        </Text>
-        {dref.event_map_details?.file && (
-          <View style={pdfStyles.subSection}>
-            <PDFImage
-              style={pdfStyles.mapImage}
-              src={dref.event_map_details.file}
-            />
-          </View>
-        )}
-        <View style={pdfStyles.subSection}>
-          <Text style={pdfStyles.subSectionHeading}>
-            {isImminentOnset ? strings.drefExportImminentWhereWhenHow : strings.drefExportWhatWhereWhen}
-          </Text>
-          <Text style={pdfStyles.text}>
-            {dref.event_description}
-          </Text>
-        </View>
-        {dref.anticipatory_actions && (
-          <View style={pdfStyles.subSection}>
-            <Text style={pdfStyles.subSectionHeading}>
-              {strings.drefExportTargetCommunities}
-            </Text>
-            <Text style={pdfStyles.text}>
-              {dref.anticipatory_actions}
-            </Text>
-          </View>
-        )}
-        <View style={pdfStyles.subSection}>
-          <Text style={pdfStyles.subSectionHeading}>
-            {strings.drefExportScopeAndScale}
-          </Text>
-          <Text style={pdfStyles.text}>
-            {dref.event_scope}
-          </Text>
-        </View>
-      </PDFPage>
-      <PDFPage style={pdfStyles.portraitPage}>
+        {(
+          dref?.event_scope ||
+          dref?.event_description ||
+          dref?.anticipatory_actions ||
+          dref?.images_details.length > 0
+        ) && (
+            <View>
+              <Text style={pdfStyles.sectionHeading}>
+                {strings.drefExportDescriptionOfTheEvent}
+              </Text>
+              {dref?.images_details?.map((el) => (
+                <View
+                  key={el?.id}
+                  style={pdfStyles.subSection}
+                >
+                  <PDFImage
+                    style={pdfStyles.mapImage}
+                    src={el?.file}
+                  />
+                </View>
+              ))}
+              {dref?.event_description && (
+                <View style={pdfStyles.subSection}>
+                  <Text style={pdfStyles.subSectionHeading}>
+                    {isImminentOnset ?
+                      strings.drefExportImminentWhereWhenHow
+                      :
+                      strings.drefExportWhatWhereWhen}
+                  </Text>
+                  <Text style={pdfStyles.text}>
+                    {dref.event_description}
+                  </Text>
+                </View>
+              )}
+              {dref.anticipatory_actions && (
+                <View style={pdfStyles.subSection}>
+                  <Text style={pdfStyles.subSectionHeading}>
+                    {strings.drefExportTargetCommunities}
+                  </Text>
+                  <Text style={pdfStyles.text}>
+                    {dref.anticipatory_actions}
+                  </Text>
+                </View>
+              )}
+              {dref?.event_scope && (
+                <View style={pdfStyles.subSection}>
+                  <Text style={pdfStyles.subSectionHeading}>
+                    {strings.drefExportScopeAndScale}
+                  </Text>
+                  <Text style={pdfStyles.text}>
+                    {dref.event_scope}
+                  </Text>
+                </View>
+              )}
+            </View>
+          )}
         <View style={pdfStyles.poSection}>
           <Text style={pdfStyles.sectionHeading}>
             {strings.drefExportPreviousOperations}
           </Text>
+          <View>
+            <Link src={resolveUrl(window.location.origin, 'https://go.ifrc.org/preparedness#operational-learning')}>
+              {strings.drefOperationalLearningPlatformLabel}
+            </Link>
+          </View>
           <View>
             <View style={pdfStyles.row}>
               <Text style={pdfStyles.cellTitle}>
@@ -579,7 +602,7 @@ function DrefPdfDocument(props: Props) {
             </View>
           </View>
         </View>
-        {dref.national_society_actions.length > 0 && (
+        {dref?.national_society_actions.length > 0 && (
           <View style={pdfStyles.section}>
             <Text style={pdfStyles.sectionHeading}>
               {strings.drefExportCurrentNationalSocietyAction}
@@ -662,7 +685,7 @@ function DrefPdfDocument(props: Props) {
             </View>
           </View>
         </View>
-        {dref.needs_identified.length > 0 && (
+        {dref?.needs_identified.length > 0 && (
           <View style={pdfStyles.niSection}>
             <Text style={pdfStyles.sectionHeading}>
               {isImminentOnset
@@ -678,41 +701,47 @@ function DrefPdfDocument(props: Props) {
             ))}
           </View>
         )}
-        <View style={pdfStyles.section}>
-          <Text style={pdfStyles.sectionHeading}>
-            {strings.drefExportTargetingStrategy}
-          </Text>
-          {dref.people_assisted && (
-            <View style={pdfStyles.qna}>
-              <Text style={pdfStyles.textLabelSection}>
-                {strings.drefExportPeopleAssistedthroughOperation}
+        {(
+          dref?.people_assisted ||
+          dref?.selection_criteria ||
+          dref?.entity_affected
+        ) && (
+            <View style={pdfStyles.section}>
+              <Text style={pdfStyles.sectionHeading}>
+                {strings.drefExportTargetingStrategy}
               </Text>
-              <Text style={pdfStyles.answer}>
-                {dref.people_assisted}
-              </Text>
+              {dref?.people_assisted && (
+                <View style={pdfStyles.qna}>
+                  <Text style={pdfStyles.textLabelSection}>
+                    {strings.drefExportPeopleAssistedthroughOperation}
+                  </Text>
+                  <Text style={pdfStyles.answer}>
+                    {dref.people_assisted}
+                  </Text>
+                </View>
+              )}
+              {dref?.selection_criteria && (
+                <View style={pdfStyles.qna}>
+                  <Text style={pdfStyles.textLabelSection}>
+                    {strings.drefExportSelectionCriteriaRisk}
+                  </Text>
+                  <Text style={pdfStyles.answer}>
+                    {dref.selection_criteria}
+                  </Text>
+                </View>
+              )}
+              {dref?.entity_affected && (
+                <View style={pdfStyles.qna}>
+                  <Text style={pdfStyles.textLabelSection}>
+                    {strings.drefExportProtectionGenderAndInclusion}
+                  </Text>
+                  <Text style={pdfStyles.answer}>
+                    {dref?.entity_affected}
+                  </Text>
+                </View>
+              )}
             </View>
           )}
-          {dref.selection_criteria && (
-            <View style={pdfStyles.qna}>
-              <Text style={pdfStyles.textLabelSection}>
-                {strings.drefExportSelectionCriteriaRisk}
-              </Text>
-              <Text style={pdfStyles.answer}>
-                {dref.selection_criteria}
-              </Text>
-            </View>
-          )}
-          {dref.entity_affected && (
-            <View style={pdfStyles.qna}>
-              <Text style={pdfStyles.textLabelSection}>
-                {strings.drefExportProtectionGenderAndInclusion}
-              </Text>
-              <Text style={pdfStyles.answer}>
-                {dref?.entity_affected}
-              </Text>
-            </View>
-          )}
-        </View>
         <View style={pdfStyles.tpSection}>
           <Text style={pdfStyles.sectionHeading}>
             {strings.drefExportAssistedPopulation}
@@ -829,83 +858,97 @@ function DrefPdfDocument(props: Props) {
             </View>
           </View>
         </View>
-        <View style={pdfStyles.section}>
-          <Text style={pdfStyles.sectionHeading}>
-            {strings.drefExportObjectiveOperation}
-          </Text>
-          <Text>{dref.operation_objective}</Text>
-        </View>
-        <View style={pdfStyles.section}>
-          <Text style={pdfStyles.sectionHeading}>
-            {strings.drefExportResponseRationale}
-          </Text>
-          <Text>{dref.response_strategy}</Text>
-        </View>
-        <View style={pdfStyles.section}>
-          <Text style={pdfStyles.sectionHeading}>
-            {strings.drefExportSupportServices}
-          </Text>
-          {dref.human_resource && (
-            <View style={pdfStyles.qna}>
-              <Text style={pdfStyles.textLabelSection}>
-                {strings.drefExportHumanResourceDescription}
+        {dref?.operation_objective && (
+          <View style={pdfStyles.section}>
+            <Text style={pdfStyles.sectionHeading}>
+              {strings.drefExportObjectiveOperation}
+            </Text>
+            <Text>{dref.operation_objective}</Text>
+          </View>
+        )}
+        {dref?.response_strategy && (
+          <View style={pdfStyles.section}>
+            <Text style={pdfStyles.sectionHeading}>
+              {strings.drefExportResponseRationale}
+            </Text>
+            <Text>{dref.response_strategy}</Text>
+          </View>
+        )}
+        {(
+          dref?.human_resource ||
+          dref?.surge_personnel_deployed ||
+          dref?.logistic_capacity_of_ns ||
+          dref?.safety_concerns ||
+          dref?.pmer ||
+          dref?.communication
+        )
+          && (
+            <View style={pdfStyles.section}>
+              <Text style={pdfStyles.sectionHeading}>
+                {strings.drefExportSupportServices}
               </Text>
-              <Text style={pdfStyles.answer}>
-                {dref.human_resource}
-              </Text>
+              {dref?.human_resource && (
+                <View style={pdfStyles.qna}>
+                  <Text style={pdfStyles.textLabelSection}>
+                    {strings.drefExportHumanResourceDescription}
+                  </Text>
+                  <Text style={pdfStyles.answer}>
+                    {dref.human_resource}
+                  </Text>
+                </View>
+              )}
+              {dref.surge_personnel_deployed && (
+                <View style={pdfStyles.qna}>
+                  <Text style={pdfStyles.textLabelSection}>
+                    {strings.drefExportSurgePersonnelDeployed}
+                  </Text>
+                  <Text style={pdfStyles.answer}>
+                    {dref.surge_personnel_deployed}
+                  </Text>
+                </View>
+              )}
+              {dref.logistic_capacity_of_ns && (
+                <View style={pdfStyles.qna}>
+                  <Text style={pdfStyles.textLabelSection}>
+                    {strings.drefExportLogisticCapacityOfNs}
+                  </Text>
+                  <Text style={pdfStyles.answer}>
+                    {dref.logistic_capacity_of_ns}
+                  </Text>
+                </View>
+              )}
+              {dref.safety_concerns && (
+                <View style={pdfStyles.qna}>
+                  <Text style={pdfStyles.textLabelSection}>
+                    {strings.drefExportSafetyConcerns}
+                  </Text>
+                  <Text style={pdfStyles.answer}>
+                    {dref.safety_concerns}
+                  </Text>
+                </View>
+              )}
+              {dref.pmer && (
+                <View style={pdfStyles.qna}>
+                  <Text style={pdfStyles.textLabelSection}>
+                    {strings.drefExportPmerDescription}
+                  </Text>
+                  <Text style={pdfStyles.answer}>
+                    {dref.pmer}
+                  </Text>
+                </View>
+              )}
+              {dref.communication && (
+                <View style={pdfStyles.qna}>
+                  <Text style={pdfStyles.textLabelSection}>
+                    {strings.drefExportCommunicationDescription}
+                  </Text>
+                  <Text style={pdfStyles.answer}>
+                    {dref.communication}
+                  </Text>
+                </View>
+              )}
             </View>
           )}
-          {dref.surge_personnel_deployed && (
-            <View style={pdfStyles.qna}>
-              <Text style={pdfStyles.textLabelSection}>
-                {strings.drefExportSurgePersonnelDeployed}
-              </Text>
-              <Text style={pdfStyles.answer}>
-                {dref.surge_personnel_deployed}
-              </Text>
-            </View>
-          )}
-          {dref.logistic_capacity_of_ns && (
-            <View style={pdfStyles.qna}>
-              <Text style={pdfStyles.textLabelSection}>
-                {strings.drefExportLogisticCapacityOfNs}
-              </Text>
-              <Text style={pdfStyles.answer}>
-                {dref.logistic_capacity_of_ns}
-              </Text>
-            </View>
-          )}
-          {dref.safety_concerns && (
-            <View style={pdfStyles.qna}>
-              <Text style={pdfStyles.textLabelSection}>
-                {strings.drefExportSafetyConcerns}
-              </Text>
-              <Text style={pdfStyles.answer}>
-                {dref.safety_concerns}
-              </Text>
-            </View>
-          )}
-          {dref.pmer && (
-            <View style={pdfStyles.qna}>
-              <Text style={pdfStyles.textLabelSection}>
-                {strings.drefExportPmerDescription}
-              </Text>
-              <Text style={pdfStyles.answer}>
-                {dref.pmer}
-              </Text>
-            </View>
-          )}
-          {dref.communication && (
-            <View style={pdfStyles.qna}>
-              <Text style={pdfStyles.textLabelSection}>
-                {strings.drefExportCommunicationDescription}
-              </Text>
-              <Text style={pdfStyles.answer}>
-                {dref.communication}
-              </Text>
-            </View>
-          )}
-        </View>
         {dref.planned_interventions.length > 0 && (
           <View style={pdfStyles.piSection}>
             <Text style={pdfStyles.sectionHeading}>
@@ -921,21 +964,18 @@ function DrefPdfDocument(props: Props) {
             ))}
           </View>
         )}
-      </PDFPage>
-      {dref.budget_file_preview && (
-        <PDFPage style={pdfStyles.portraitPage}>
-          <View style={pdfStyles.section}>
+        {dref?.budget_file && (
+          <View>
             <Text style={pdfStyles.sectionHeading}>
               {strings.drefExportBudgetOverview}
             </Text>
-            <PDFImage
-              style={pdfStyles.budgetOverview}
-              src={dref.budget_file_preview}
-            />
+            <View style={pdfStyles.subSection}>
+              <Link src={resolveUrl(window.location.origin, dref?.budget_file_details?.file)}>
+                {dref?.budget_file_details?.file}
+              </Link>
+            </View>
           </View>
-        </PDFPage>
-      )}
-      <PDFPage style={pdfStyles.portraitPage}>
+        )}
         <View style={pdfStyles.contactSection}>
           <Text style={pdfStyles.sectionHeading}>
             {strings.drefExportContactInformation}
@@ -997,7 +1037,7 @@ function DrefPdfDocument(props: Props) {
           </Link>
         </View>
       </PDFPage>
-    </Document>
+    </Document >
   );
 }
 export default DrefPdfDocument;

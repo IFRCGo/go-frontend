@@ -43,6 +43,7 @@ import {
   operationFields,
   submissionFields,
   DrefOperationalUpdateApiFields,
+  ONSET_IMMINENT,
 } from './common';
 import useDrefOperationalFormOptions, {
   schema
@@ -256,7 +257,17 @@ function DrefOperationalUpdate(props: Props) {
             newMap[img.id] = img.file;
           });
         }
-
+        if (response.budget_file_details) {
+          newMap[response.budget_file_details.id] = response.budget_file_details.file;
+        }
+        if (response.cover_image_details) {
+          newMap[response.cover_image_details.id] = response.cover_image_details.file;
+        }
+        if (response.photos_details?.length > 0) {
+          response.photos_details.forEach((img) => {
+            newMap[img.id] = img.file;
+          });
+        }
         return newMap;
       });
       setValue({
@@ -385,6 +396,8 @@ function DrefOperationalUpdate(props: Props) {
     children: strings.drefFormExportLabel,
   });
 
+  const isImminentOnset = value?.type_of_onset === ONSET_IMMINENT;
+
   return (
     <Tabs
       disabled={false}
@@ -507,6 +520,9 @@ function DrefOperationalUpdate(props: Props) {
                   onValueChange={onValueChange}
                   value={value}
                   yesNoOptions={yesNoOptions}
+                  isImminentOnset={isImminentOnset}
+                  fileIdToUrlMap={fileIdToUrlMap}
+                  setFileIdToUrlMap={setFileIdToUrlMap}
                 />
               </TabPanel>
               <TabPanel name='needs'>
@@ -517,6 +533,8 @@ function DrefOperationalUpdate(props: Props) {
                   yesNoOptions={yesNoOptions}
                   needOptions={needOptions}
                   nsActionOptions={nsActionOptions}
+                  fileIdToUrlMap={fileIdToUrlMap}
+                  setFileIdToUrlMap={setFileIdToUrlMap}
                 />
               </TabPanel>
               <TabPanel name='operation'>

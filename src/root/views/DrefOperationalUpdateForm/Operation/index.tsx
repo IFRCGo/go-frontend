@@ -23,6 +23,7 @@ import { IoWarning } from 'react-icons/io5';
 import SelectInput from '#components/SelectInput';
 import Button from '#components/Button';
 import InterventionInput from '#views/DrefApplicationForm/Response/InterventionInput';
+import DREFFileInput from '#components/DREFFileInput';
 
 import { InterventionType } from '../useDrefOperationalUpdateOptions';
 import {
@@ -54,6 +55,8 @@ function Operation(props: Props) {
     onValueChange,
     interventionOptions,
     value,
+    fileIdToUrlMap,
+    setFileIdToUrlMap,
   } = props;
 
   const error = getErrorObject(formError);
@@ -292,6 +295,21 @@ function Operation(props: Props) {
         className={styles.plannedIntervention}
         visibleOverflow
       >
+        <InputSection>
+          <DREFFileInput
+            accept=".pdf"
+            error={error?.budget_file}
+            fileIdToUrlMap={fileIdToUrlMap}
+            label={strings.drefFormBudgetTemplateLabel}
+            name="budget_file"
+            onChange={onValueChange}
+            setFileIdToUrlMap={setFileIdToUrlMap}
+            showStatus
+            value={value.budget_file}
+          >
+            {strings.drefFormBudgetTemplateUploadButtonLabel}
+          </DREFFileInput>
+        </InputSection>
         <InputSection>
           <SelectInput
             name={undefined}

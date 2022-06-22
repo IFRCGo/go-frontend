@@ -247,7 +247,7 @@ export interface DrefApiFields extends Omit<DrefFields, 'country_district' | 'pl
   budget_file_details: {
     id: number;
     file: string;
-  }
+  };
   budget_file_preview: string,
   images_details: {
     id: number;

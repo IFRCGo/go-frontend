@@ -328,10 +328,9 @@ const pdfStyles = StyleSheet.create({
   },
   piIconCell: {
     display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     border: TABLE_BORDER,
-    padding: SMALL_PADDING,
+    padding: `0 ${SMALL_PADDING}`,
   },
   piIcon: {
     width: 40,
@@ -345,11 +344,10 @@ const pdfStyles = StyleSheet.create({
   piHeaderCell: {
     flexBasis: SECTION_WIDTH * 0.3,
     padding: SMALL_PADDING,
+    border: TABLE_BORDER,
     color: COLOR_SECONDARY,
     fontSize: FONT_SIZE_LARGE,
     fontWeight: 'bold',
-    justifyContent: 'center',
-    alignSelf: 'center',
   },
   piContentCell: {
     flexBasis: SECTION_WIDTH * 0.7,
@@ -387,10 +385,9 @@ const pdfStyles = StyleSheet.create({
   },
   niIconCell: {
     display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     border: TABLE_BORDER,
-    padding: SMALL_PADDING,
+    padding: `0 ${SMALL_PADDING}`,
   },
   niIcon: {
     width: 40,
