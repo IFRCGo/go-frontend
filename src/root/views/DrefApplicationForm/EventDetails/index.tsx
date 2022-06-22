@@ -22,7 +22,6 @@ import {
 } from '../common';
 
 import styles from './styles.module.scss';
-import { Link } from 'react-router-dom';
 
 type Value = PartialForm<DrefFields>;
 interface Props {
@@ -56,9 +55,9 @@ function EventDetails(props: Props) {
         heading={strings.drefFormPreviousOperations}
         className={styles.previousOperations}
         description={
-          <Link to={' https://go.ifrc.org/preparedness#operational-learning'}>
+          <a href={process.env.REACT_APP_OPERATIONAL_LEARNING_PLATFORM_LINK}>
             {strings.drefOperationalLearningPlatformLabel}
-          </Link>
+          </a>
         }
       >
         <InputSection

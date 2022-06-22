@@ -146,7 +146,7 @@ function Response(props: Props) {
           />
         </InputSection>
         <InputSection
-          title={!isImminentOnset ? strings.drefFormSelectionCriteria : strings.drefFormSelectionCriteriaRisk}
+          title={strings.drefFormSelectionCriteria}
         >
           <TextArea
             label={strings.cmpActionDescriptionLabel}

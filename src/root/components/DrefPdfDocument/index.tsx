@@ -534,7 +534,7 @@ function DrefPdfDocument(props: Props) {
             {strings.drefExportPreviousOperations}
           </Text>
           <View>
-            <Link src={resolveUrl(window.location.origin, 'https://go.ifrc.org/preparedness#operational-learning')}>
+            <Link src={resolveUrl(window.location.origin, process.env.REACT_APP_OPERATIONAL_LEARNING_PLATFORM_LINK as string)}>
               {strings.drefOperationalLearningPlatformLabel}
             </Link>
           </View>
@@ -723,7 +723,7 @@ function DrefPdfDocument(props: Props) {
               {dref?.selection_criteria && (
                 <View style={pdfStyles.qna}>
                   <Text style={pdfStyles.textLabelSection}>
-                    {strings.drefExportSelectionCriteriaRisk}
+                    {strings.drefFormSelectionCriteria}
                   </Text>
                   <Text style={pdfStyles.answer}>
                     {dref.selection_criteria}
