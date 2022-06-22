@@ -122,6 +122,12 @@
         }
 
         .download-link {
+          flex-basis: 14rem;
+          flex-shrink: 0;
+        }
+
+        .not-download-link {
+          flex-basis: 14rem;
           flex-shrink: 0;
         }
       }

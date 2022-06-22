@@ -43,7 +43,8 @@ function MonthSelector<T>(props: Props<T>) {
 
           newValue[month] = true;
         } else {
-          newValue[month] = !value[month];
+          // At least one selection is required
+          newValue[month] = true;
         }
       } else {
         if (numSelection === 0) {

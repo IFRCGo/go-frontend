@@ -268,7 +268,7 @@ function SeasonalRisk(props: Props) {
           selectedMonths={selectedMonths}
           riskData={aggregatedRiskData}
         />
-        <div className={styles.eapSection}>
+        <div className={styles.linksSection}>
           <Container
             innerContainerClassName={styles.eapContainer}
             heading="Early Action Protocols (EAPs)"
@@ -284,7 +284,7 @@ function SeasonalRisk(props: Props) {
               />
             )}
           >
-            EAPs are a formal plan that guide timely and effective implementation of early actions for extreme weather events, based on pre-agreed triggers. Download the EAP for Philippines
+            EAPs are a formal plan that guide timely and effective implementation of early actions for extreme weather events, based on pre-agreed triggers.
           </Container>
         </div>
         <RiskBarChart

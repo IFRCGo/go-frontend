@@ -8,6 +8,12 @@
   .column-heading {
     display: flex;
   }
+
+  .pager-container {
+    display: flex;
+    padding: $spacing;
+    justify-content: flex-end;
+  }
 }
 
 .container-description {

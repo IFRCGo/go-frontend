@@ -12,7 +12,6 @@ import {
   useRequest,
 } from '#utils/restRequest';
 import { Country } from '#types/country';
-import Button from '#components/Button';
 import Pager from '#components/Pager';
 
 import {
@@ -25,7 +24,6 @@ import styles from './styles.module.scss';
 
 interface Props {
   hazardOptions: StringValueOption[];
-  countryOptions?: StringValueOption[];
   country?: Country;
 }
 
@@ -82,26 +80,24 @@ const getPossibleActionColumns = () => ([
 function PossibleEarlyActionTable(props: Props) {
   const {
     hazardOptions,
-    countryOptions,
     country,
   } = props;
 
   const [hazardType, setHazardType] = useInputState<HazardTypes | undefined>(undefined);
-  const [countryFilter, setCountryFilter] = useInputState<string | undefined>(undefined);
   const [sector, setSector] = useInputState<string | undefined>(undefined);
   const [activePage, setActivePage] = React.useState<number>(1);
 
-  const possibleActionColumns = getPossibleActionColumns();
+  const possibleActionColumns = React.useMemo(getPossibleActionColumns, []);
   const { response } = useRequest<ListResponse<PossibleEarlyActionsResponse>>({
     skip: !country,
+    url: 'risk://api/v1/early-actions',
     query: {
       limit: ITEM_PER_PAGE,
       offset: ITEM_PER_PAGE * (activePage - 1),
-      iso3: countryFilter?.toLocaleLowerCase(),
+      iso3: country?.iso3,
       hazard_type: hazardType,
       sectors: sector,
     },
-    url: 'risk://api/v1/early-actions/'
   });
 
   const { response: actionOptions } = useRequest<{ sectors: Sector[] }>({
@@ -115,15 +111,9 @@ function PossibleEarlyActionTable(props: Props) {
       label: c.name
     })), [actionOptions]);
 
-  const handleClearFilter = React.useCallback(() => {
-    setHazardType(undefined);
-    setCountryFilter(undefined);
-    setSector(undefined);
-  }, [
-    setHazardType,
-    setCountryFilter,
-    setSector,
-  ]);
+  if (!hazardType && !sector && (!response || response.count === 0)) {
+    return null;
+  }
 
   return (
     <Container
@@ -135,33 +125,23 @@ function PossibleEarlyActionTable(props: Props) {
         <>
           <div className={styles.filters}>
             <SelectInput
+              placeholder="Hazard Type"
               className={styles.filterInput}
               value={hazardType}
               onChange={setHazardType}
               name="hazardType"
               options={hazardOptions}
+              isClearable
             />
             <SelectInput
               className={styles.filterInput}
-              value={countryFilter}
-              onChange={setCountryFilter}
-              name="countryFilter"
-              options={countryOptions}
-            />
-            <SelectInput
-              className={styles.filterInput}
+              placeholder="Sector"
               value={sector}
               onChange={setSector}
               name="sector"
               options={earlyActionsOptions}
+              isClearable
             />
-            <Button
-              name='clear'
-              variant='transparent'
-              onClick={handleClearFilter}
-            >
-              Clear Filter
-            </Button>
           </div>
         </>
       )}
@@ -172,14 +152,17 @@ function PossibleEarlyActionTable(props: Props) {
         data={response?.results}
         columns={possibleActionColumns}
         keySelector={tableKeySelector}
+        variant="large"
       />
       {response &&
-        <Pager
-          itemsCount={response?.count}
-          activePage={activePage}
-          onActivePageChange={setActivePage}
-          maxItemsPerPage={ITEM_PER_PAGE}
-        />
+        <div className={styles.pagerContainer}>
+          <Pager
+            itemsCount={response?.count}
+            activePage={activePage}
+            onActivePageChange={setActivePage}
+            maxItemsPerPage={ITEM_PER_PAGE}
+          />
+        </div>
       }
     </Container>
   );

@@ -3,7 +3,6 @@
 @import '~styles/settings/_variables.scss';
 
 .table {
-  table-layout: fixed;
   border-collapse: separate;
   border-spacing: 0;
   font-size: inherit;
@@ -18,6 +17,7 @@
       z-index: 2;
       border: 0;
       background-color: inherit;
+      vertical-align: baseline;
 
       &:not(:first-child) {
         border-left: 0;
