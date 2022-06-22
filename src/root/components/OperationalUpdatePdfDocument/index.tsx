@@ -530,10 +530,9 @@ function OperationalUpdatePdfDocument(props: Props) {
               {operationalUpdateResponse?.event_description && (
                 <View style={pdfStyles.subSection}>
                   <Text style={pdfStyles.subSectionHeading}>
-                    {isImminentOnset ?
-                      strings.drefExportImminentWhereWhenHow
-                      :
-                      strings.drefExportWhatWhereWhen}
+                    {isImminentOnset
+                      ? strings.drefExportImminentWhereWhenHow
+                      : strings.drefExportWhatWhereWhen}
                   </Text>
                   <Text style={pdfStyles.text}>
                     {operationalUpdateResponse.event_description}

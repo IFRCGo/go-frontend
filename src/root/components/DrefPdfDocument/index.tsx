@@ -497,10 +497,9 @@ function DrefPdfDocument(props: Props) {
               {dref?.event_description && (
                 <View style={pdfStyles.subSection}>
                   <Text style={pdfStyles.subSectionHeading}>
-                    {isImminentOnset ?
-                      strings.drefExportImminentWhereWhenHow
-                      :
-                      strings.drefExportWhatWhereWhen}
+                    {isImminentOnset
+                      ? strings.drefExportImminentWhereWhenHow
+                      : strings.drefExportWhatWhereWhen}
                   </Text>
                   <Text style={pdfStyles.text}>
                     {dref.event_description}
@@ -1037,7 +1036,7 @@ function DrefPdfDocument(props: Props) {
           </Link>
         </View>
       </PDFPage>
-    </Document >
+    </Document>
   );
 }
 export default DrefPdfDocument;
