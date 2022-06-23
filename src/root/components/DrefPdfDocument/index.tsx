@@ -14,6 +14,7 @@ import {
   listToMap,
 } from '@togglecorp/fujs';
 
+import { resolveUrl } from '#utils/resolveUrl';
 import { resolveToString } from '#utils/lang';
 import { isValidNumber } from '#utils/common';
 import {
@@ -32,7 +33,6 @@ import {
 } from '#types';
 
 import pdfStyles from './pdfStyles';
-import { resolveUrl } from '#utils/resolveUrl';
 
 Font.register({
   family: 'Montserrat',
@@ -533,7 +533,7 @@ function DrefPdfDocument(props: Props) {
             {strings.drefExportPreviousOperations}
           </Text>
           <View>
-            <Link src={resolveUrl(window.location.origin, process.env.REACT_APP_OPERATIONAL_LEARNING_PLATFORM_LINK as string)}>
+            <Link src={resolveUrl(window.location.origin, 'preparedness#operational-learning')}>
               {strings.drefOperationalLearningPlatformLabel}
             </Link>
           </View>

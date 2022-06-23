@@ -6,6 +6,7 @@ import {
   getErrorObject,
 } from '@togglecorp/toggle-form';
 
+import { resolveUrl } from '#utils/resolveUrl';
 import Container from '#components/Container';
 import InputSection from '#components/InputSection';
 import TextInput from '#components/TextInput';
@@ -55,7 +56,7 @@ function EventDetails(props: Props) {
         heading={strings.drefFormPreviousOperations}
         className={styles.previousOperations}
         description={
-          <a href={process.env.REACT_APP_OPERATIONAL_LEARNING_PLATFORM_LINK}>
+          <a href={resolveUrl(window.location.origin, 'preparedness#operational-learning')}>
             {strings.drefOperationalLearningPlatformLabel}
           </a>
         }

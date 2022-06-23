@@ -197,7 +197,7 @@ function DrefOperationalUpdate(props: Props) {
 
   const handleTabChange = React.useCallback((newStep: StepTypes) => {
     scrollToTop();
-    const isCurrentTabValid = validateCurrentTab(['images']) && validateCurrentTab(['photos']);
+    const isCurrentTabValid = validateCurrentTab(['images', 'photos']);
 
     if (!isCurrentTabValid) {
       return;
