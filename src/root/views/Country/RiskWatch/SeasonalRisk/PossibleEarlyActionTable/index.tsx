@@ -118,9 +118,9 @@ function PossibleEarlyActionTable(props: Props) {
   return (
     <Container
       heading='Possible Early Actions'
-      visibleOverflow
       className={styles.earlyActionTableContainer}
       descriptionClassName={styles.containerDescription}
+      contentClassName={styles.content}
       description={(
         <>
           <div className={styles.filters}>
@@ -146,15 +146,7 @@ function PossibleEarlyActionTable(props: Props) {
         </>
       )}
       sub
-    >
-      <Table
-        className={styles.earlyActionTable}
-        data={response?.results}
-        columns={possibleActionColumns}
-        keySelector={tableKeySelector}
-        variant="large"
-      />
-      {response &&
+      footer={response &&
         <div className={styles.pagerContainer}>
           <Pager
             itemsCount={response?.count}
@@ -164,6 +156,14 @@ function PossibleEarlyActionTable(props: Props) {
           />
         </div>
       }
+    >
+      <Table
+        className={styles.earlyActionTable}
+        data={response?.results}
+        columns={possibleActionColumns}
+        keySelector={tableKeySelector}
+        variant="large"
+      />
     </Container>
   );
 }

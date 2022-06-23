@@ -31,3 +31,14 @@
     }
   }
 }
+
+.report-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $spacing;
+  padding: $spacing 0;
+
+  >* {
+    flex-shrink: 0;
+  }
+}
