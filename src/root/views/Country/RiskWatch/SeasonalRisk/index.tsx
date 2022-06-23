@@ -11,7 +11,10 @@ import { RiArrowRightUpLine } from 'react-icons/ri';
 import Container from '#components/Container';
 import { useButtonFeatures } from '#components/Button';
 import useReduxState from '#hooks/useReduxState';
-import { useRequest } from '#utils/restRequest';
+import {
+  useRequest,
+  ListResponse,
+} from '#utils/restRequest';
 import {
   avg,
   avgSafe,
@@ -28,6 +31,7 @@ import {
   IPCData,
   ReturnPeriodHazardType,
   SeasonalResponse,
+  Report,
   monthKeys,
 } from './common';
 import RiskTable from './RiskTable';
@@ -78,6 +82,32 @@ const estimationPriorityMap: {
   second_projection: 2,
 };
 
+interface ReportLinkProps {
+  url: string;
+  title: string;
+}
+
+function ReportLink (props: ReportLinkProps) {
+  const {
+    url,
+    title,
+  } = props;
+
+  const linkProps = useButtonFeatures({
+    variant: 'primary',
+    actions: <RiArrowRightUpLine />,
+    children: title,
+  });
+
+  return (
+    <a
+      href={url}
+      target="_blank"
+      {...linkProps}
+    />
+  );
+}
+
 
 interface Props {
   className?: string;
@@ -102,6 +132,12 @@ function SeasonalRisk(props: Props) {
     skip: !country,
     query: { iso3: country?.iso3?.toLocaleLowerCase() },
     url: 'risk://api/v1/seasonal/',
+  });
+
+  const { response: reportResponse } = useRequest<ListResponse<Report>>({
+    skip: !country,
+    query: { iso3: country?.iso3?.toLocaleLowerCase() },
+    url: 'risk://api/v1/publish-report/',
   });
 
   const [selectedMonths, setSelectedMonths] = useInputState<Record<number, boolean>>({
@@ -291,6 +327,17 @@ function SeasonalRisk(props: Props) {
         hazardOptions={returnPeriodHazardOptions}
       />
       <HistoricalDataChart countryId={countryId} />
+      {reportResponse && reportResponse.results && reportResponse.results.length > 0 && (
+        <div className={styles.reportList}>
+          {reportResponse.results.map((r) => (
+            <ReportLink
+              key={r.id}
+              url={r.attachment_url}
+              title={r.report_name}
+            />
+          ))}
+        </div>
+      )}
     </>
   );
 }

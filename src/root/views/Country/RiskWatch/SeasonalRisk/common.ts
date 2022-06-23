@@ -16,6 +16,17 @@ export const hazardTypeOptions = [
 export type HazardValueType = (typeof hazardTypeOptions)[number]['value'];
 export type Writable<T> = { -readonly [P in keyof T]: T[P] };
 
+export interface Report {
+  attachment_name: string;
+  attachment_url: string;
+  description: string;
+  email: string;
+  id: number;
+  program: number;
+  publish_report_id: string;
+  report_name: string;
+}
+
 export interface RiskData {
   hazardType: HazardTypes;
   hazardTypeDisplay: string;
