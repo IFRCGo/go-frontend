@@ -6,6 +6,7 @@ import {
   getErrorObject,
 } from '@togglecorp/toggle-form';
 
+import { resolveUrl } from '#utils/resolveUrl';
 import Container from '#components/Container';
 import InputSection from '#components/InputSection';
 import TextInput from '#components/TextInput';
@@ -22,7 +23,6 @@ import {
 } from '../common';
 
 import styles from './styles.module.scss';
-import { Link } from 'react-router-dom';
 
 type Value = PartialForm<DrefFields>;
 interface Props {
@@ -56,9 +56,9 @@ function EventDetails(props: Props) {
         heading={strings.drefFormPreviousOperations}
         className={styles.previousOperations}
         description={
-          <Link to={' https://go.ifrc.org/preparedness#operational-learning'}>
+          <a href={resolveUrl(window.location.origin, 'preparedness#operational-learning')}>
             {strings.drefOperationalLearningPlatformLabel}
-          </Link>
+          </a>
         }
       >
         <InputSection

@@ -254,7 +254,7 @@ export const eventFields: (keyof DrefOperationalUpdateFields)[] = [
   'has_change_since_request',
   'event_description',
   'event_scope',
-  'photos'
+  'images'
 ];
 export const needsFields: (keyof DrefOperationalUpdateFields)[] = [
   'national_society_actions',
@@ -268,7 +268,7 @@ export const needsFields: (keyof DrefOperationalUpdateFields)[] = [
   'major_coordination_mechanism',
   'needs_identified',
   'identified_gaps',
-  'images'
+  'photos'
 ];
 export const operationFields: (keyof DrefOperationalUpdateFields)[] = [
   'people_assisted',

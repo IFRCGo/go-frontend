@@ -14,6 +14,7 @@ import {
   listToMap,
 } from '@togglecorp/fujs';
 
+import { resolveUrl } from '#utils/resolveUrl';
 import { resolveToString } from '#utils/lang';
 import { isValidNumber } from '#utils/common';
 import {
@@ -32,7 +33,6 @@ import {
 } from '#types';
 
 import pdfStyles from './pdfStyles';
-import { resolveUrl } from '#utils/resolveUrl';
 
 Font.register({
   family: 'Montserrat',
@@ -497,10 +497,9 @@ function DrefPdfDocument(props: Props) {
               {dref?.event_description && (
                 <View style={pdfStyles.subSection}>
                   <Text style={pdfStyles.subSectionHeading}>
-                    {isImminentOnset ?
-                      strings.drefExportImminentWhereWhenHow
-                      :
-                      strings.drefExportWhatWhereWhen}
+                    {isImminentOnset
+                      ? strings.drefExportImminentWhereWhenHow
+                      : strings.drefExportWhatWhereWhen}
                   </Text>
                   <Text style={pdfStyles.text}>
                     {dref.event_description}
@@ -534,7 +533,7 @@ function DrefPdfDocument(props: Props) {
             {strings.drefExportPreviousOperations}
           </Text>
           <View>
-            <Link src={resolveUrl(window.location.origin, 'https://go.ifrc.org/preparedness#operational-learning')}>
+            <Link src={resolveUrl(window.location.origin, 'preparedness#operational-learning')}>
               {strings.drefOperationalLearningPlatformLabel}
             </Link>
           </View>
@@ -723,7 +722,7 @@ function DrefPdfDocument(props: Props) {
               {dref?.selection_criteria && (
                 <View style={pdfStyles.qna}>
                   <Text style={pdfStyles.textLabelSection}>
-                    {strings.drefExportSelectionCriteriaRisk}
+                    {strings.drefFormSelectionCriteria}
                   </Text>
                   <Text style={pdfStyles.answer}>
                     {dref.selection_criteria}
@@ -1037,7 +1036,7 @@ function DrefPdfDocument(props: Props) {
           </Link>
         </View>
       </PDFPage>
-    </Document >
+    </Document>
   );
 }
 export default DrefPdfDocument;

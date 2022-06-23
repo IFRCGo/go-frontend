@@ -197,8 +197,13 @@ function DrefOperationalUpdate(props: Props) {
 
   const handleTabChange = React.useCallback((newStep: StepTypes) => {
     scrollToTop();
+    const isCurrentTabValid = validateCurrentTab(['images', 'photos']);
+
+    if (!isCurrentTabValid) {
+      return;
+    }
     setCurrentStep(newStep);
-  }, []);
+  }, [validateCurrentTab]);
 
   const {
     pending: drefSubmitPending,
@@ -348,7 +353,7 @@ function DrefOperationalUpdate(props: Props) {
 
   const handleSubmitButtonClick = React.useCallback(() => {
     scrollToTop();
-    const isCurrentTabValid = validateCurrentTab(['title']);
+    const isCurrentTabValid = validateCurrentTab(['images']) && validateCurrentTab(['photos']);
     if (!isCurrentTabValid) {
       return;
     }

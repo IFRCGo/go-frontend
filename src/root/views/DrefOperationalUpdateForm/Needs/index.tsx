@@ -148,7 +148,7 @@ function Needs(props: Props) {
             accept='image/*'
             name='photos'
             onChange={onValueChange}
-            value={value?.photos}
+            value={value.photos}
             error={error?.photos}
             fileIdToUrlMap={fileIdToUrlMap}
             setFileIdToUrlMap={setFileIdToUrlMap}

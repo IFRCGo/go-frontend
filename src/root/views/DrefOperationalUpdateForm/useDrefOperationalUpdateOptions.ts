@@ -1,5 +1,5 @@
 import React from 'react';
-import { isNotDefined } from '@togglecorp/fujs';
+import { isDefined, isNotDefined } from '@togglecorp/fujs';
 import {
   ArraySchema,
   emailCondition,
@@ -68,6 +68,13 @@ export type IndicatorsSchemaMember = ReturnType<IndicatorsSchema['member']>;
 
 export const MaxIntLimit = 2147483647;
 
+export function lessThanSixImagesCondition(value: any) {
+  return isDefined(value) && Array.isArray(value) && value.length > 6
+    ? 'Only six images are allowed'
+    : undefined;
+}
+
+
 export const schema: FormSchema = {
   fields: (value): FormSchemaFields => ({
     title: [],
@@ -104,7 +111,7 @@ export const schema: FormSchema = {
     additional_allocation: [positiveIntegerCondition],
     total_dref_allocation: [],
     emergency_appeal_planned: [],
-    images: [],
+    images: [lessThanSixImagesCondition],
     operational_update_number: [],
     new_operational_start_date: [],
     reporting_timeframe: [],
@@ -163,7 +170,7 @@ export const schema: FormSchema = {
     media_contact_email: [emailCondition],
     media_contact_phone_number: [],
     dref: [],
-    photos: [],
+    photos: [lessThanSixImagesCondition],
     budget_file: [],
     cover_image: [],
     anticipatory_actions: [],

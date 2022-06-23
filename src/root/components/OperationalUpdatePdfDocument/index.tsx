@@ -152,7 +152,7 @@ function PlannedInterventionOutput(props: PlannedInterventionProps) {
     <View style={pdfStyles.piOutput} wrap={false}>
       <View style={pdfStyles.piRow}>
         <View style={pdfStyles.piIconCell}>
-          {data?.image_url && (
+          {data.image_url && (
             <PDFImage
               style={pdfStyles.piIcon}
               src={data.image_url}
@@ -206,7 +206,10 @@ function PlannedInterventionOutput(props: PlannedInterventionProps) {
 
       {
         data?.indicators?.map((el) => (
-          <View style={pdfStyles.piRow}>
+          <View
+            style={pdfStyles.piRow}
+            key={el.id}
+          >
             <View style={pdfStyles.piContentCell}>
               <Text style={pdfStyles.piBorderCell}>
                 {el?.title}
@@ -410,13 +413,13 @@ function OperationalUpdatePdfDocument(props: Props) {
             ].filter(Boolean).join(' | ')}
           </Text>
         </View>
-        {operationalUpdateResponse?.cover_image_details && (
+        {operationalUpdateResponse.cover_image_details && (
           <View
             style={pdfStyles.section}
           >
             <PDFImage
               style={pdfStyles.bannerImage}
-              src={operationalUpdateResponse?.cover_image_details?.file}
+              src={operationalUpdateResponse.cover_image_details.file}
             />
           </View>
         )}
@@ -481,6 +484,13 @@ function OperationalUpdatePdfDocument(props: Props) {
                     columns="3/3"
                   />
                 </View>
+                <View style={pdfStyles.compactSection}>
+                  <TextOutput
+                    label={strings.drefOperationalUpdateAdditionalAllocationRequested}
+                    value={formatNumber(operationalUpdateResponse.additional_allocation)}
+                    columns="3/3"
+                  />
+                </View>
               </View>
             </View>
           </View>
@@ -497,7 +507,10 @@ function OperationalUpdatePdfDocument(props: Props) {
                 {strings.drefExportDescriptionOfTheEvent}
               </Text>
               {operationalUpdateResponse.images_details?.map((el) => (
-                <View style={pdfStyles.subSection}>
+                <View
+                  style={pdfStyles.subSection}
+                  key={el.id}
+                >
                   <PDFImage
                     style={pdfStyles.mapImage}
                     src={el.file}
@@ -517,10 +530,9 @@ function OperationalUpdatePdfDocument(props: Props) {
               {operationalUpdateResponse?.event_description && (
                 <View style={pdfStyles.subSection}>
                   <Text style={pdfStyles.subSectionHeading}>
-                    {isImminentOnset ?
-                      strings.drefExportImminentWhereWhenHow
-                      :
-                      strings.drefExportWhatWhereWhen}
+                    {isImminentOnset
+                      ? strings.drefExportImminentWhereWhenHow
+                      : strings.drefExportWhatWhereWhen}
                   </Text>
                   <Text style={pdfStyles.text}>
                     {operationalUpdateResponse.event_description}
@@ -634,6 +646,7 @@ function OperationalUpdatePdfDocument(props: Props) {
               {operationalUpdateResponse?.photos_details?.map((el) => (
                 <PDFImage
                   style={pdfStyles.mapImage}
+                  key={el.id}
                   src={el.file}
                 />
               ))}

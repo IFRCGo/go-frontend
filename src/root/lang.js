@@ -3356,7 +3356,7 @@ export default {
   drefExportNumPeople: '{num} people',
   drefExportNumMonth: '{num} months',
   drefExportDrefLaunched: 'DREF launched:',
-  drefExportDrefEndDateOfOperation: 'Dref ends:',
+  drefExportDrefEndDateOfOperation: 'DREF ends:',
   drefExportOperationTimeframe: 'Operation timeframe:',
   drefExportAffectedAreas: 'Affected areas:',
   drefExportDescriptionOfTheEvent: 'Description of the event',
