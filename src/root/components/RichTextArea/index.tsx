@@ -10,10 +10,12 @@ import styles from './styles.module.scss';
 
 const editorSettings: Omit<RawEditorSettings, 'selector' | 'target'> = {
   menubar: false, // https://www.tiny.cloud/docs/advanced/available-toolbar-buttons
-  plugins: ['advlist autolink lists link help'],
+  plugins: ['advlist autolink lists link help code'],
   toolbar: 'undo redo | formatselect | ' +
-      'bold italic underlined | alignleft aligncenter alignright alignjustify |' +
-      'bullist numlist outdent indent | removeformat | help',
+    'bold italic underlined | alignleft aligncenter alignright alignjustify |' +
+    'bullist numlist outdent indent | code removeformat | help',
+  // https://www.tiny.cloud/docs/configure/content-filtering/#invalid_styles
+  invalid_styles: {'*': 'opacity'},
 };
 
 type InheritedProps<T> = Omit<InputContainerProps, 'input'> & {
