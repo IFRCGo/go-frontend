@@ -50,12 +50,12 @@ function EventDetails(props: Props) {
       >
         <DREFFileInput
           accept="image/*"
-          name="event_map"
-          value={value.event_map}
+          name="photos"
+          value={value.photos}
           onChange={onValueChange}
           showStatus
           multiple
-          error={error?.event_map}
+          error={error?.photos}
           fileIdToUrlMap={fileIdToUrlMap}
           setFileIdToUrlMap={setFileIdToUrlMap}
         >

@@ -25,7 +25,7 @@ import Button from '#components/Button';
 import InterventionInput from '#views/DrefApplicationForm/Response/InterventionInput';
 import DREFFileInput from '#components/DREFFileInput';
 
-import { InterventionType } from '../useDrefOperationalUpdateOptions';
+import { InterventionType } from '../useDreFinalReportOptions';
 import {
   booleanOptionKeySelector,
   BooleanValueOption,
