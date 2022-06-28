@@ -131,10 +131,6 @@ export const schema: FormSchema = {
     ifrc_project_manager_email: [emailCondition],
     ifrc_project_manager_title: [],
     ifrc_project_manager_phone_number: [],
-    national_society_contact_name: [],
-    national_society_contact_title: [],
-    national_society_contact_email: [emailCondition],
-    national_society_contact_phone_number: [],
     ifrc_emergency_name: [],
     ifrc_emergency_title: [],
     ifrc_emergency_email: [emailCondition],
@@ -201,7 +197,7 @@ interface UserListItem {
   username: string;
 }
 
-interface DrefOperationalUpdateOptions {
+interface DrefFinalReportOptions {
   disaster_category: NumericKeyValuePair[];
   national_society_actions: StringKeyValuePair[];
   needs_identified: StringKeyValuePair[];
@@ -221,7 +217,7 @@ function transformKeyValueToLabelValue<O extends NumericKeyValuePair | StringKey
   };
 }
 
-function useDrefOperationalFormOptions(value: PartialForm<DrefFinalReportFields>) {
+function useDrefFinalReportFormOptions(value: PartialForm<DrefFinalReportFields>) {
   const { strings } = React.useContext(languageContext);
 
   const {
@@ -234,7 +230,7 @@ function useDrefOperationalFormOptions(value: PartialForm<DrefFinalReportFields>
   const {
     pending: fetchingDrefOptions,
     response: drefOptions,
-  } = useRequest<DrefOperationalUpdateOptions>({
+  } = useRequest<DrefFinalReportOptions>({
     url: 'api/v2/dref-options/',
   });
 
@@ -341,4 +337,4 @@ function useDrefOperationalFormOptions(value: PartialForm<DrefFinalReportFields>
     userOptions,
   };
 }
-export default useDrefOperationalFormOptions;
+export default useDrefFinalReportFormOptions;

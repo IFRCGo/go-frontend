@@ -8,6 +8,7 @@ import {
   IoClose,
   IoAdd,
   IoList,
+  IoPushOutline,
 } from 'react-icons/io5';
 import {
   MdEdit,
@@ -61,10 +62,10 @@ interface OperationalUpdateDetails {
   is_published: boolean;
   operational_update_number: number;
 }
-interface FieldReportDetails {
+interface FinalReportDetails {
   id: number;
   title: string;
-  is_publish: boolean;
+  is_published: boolean;
 }
 
 interface DrefApplicationResponse {
@@ -80,7 +81,7 @@ interface DrefApplicationResponse {
   submission_to_geneva: string;
   is_published: boolean;
   operational_update_details: OperationalUpdateDetails[];
-  dref_final_report_details: FieldReportDetails[];
+  dref_final_report_details: FinalReportDetails[];
   is_final_report_created: boolean;
 }
 
@@ -295,12 +296,46 @@ function DrefApplicationList(props: Props) {
     }
   });
 
+  const {
+    pending: finalReportPublishPending,
+    trigger: postFinalReportPublishRequest,
+  } = useLazyRequest<DrefOperationalResponseFields, number>({
+    url: (finalReportId) => finalReportId ? `api/v2/dref-final-report/${finalReportId}/publish/` : undefined,
+    body: () => ({}),
+    method: 'POST',
+    onSuccess: (response) => {
+      refetchPublishedDrefList();
+    },
+    onFailure: ({
+      value: { messageForNotification },
+      debugMessage,
+    }) => {
+      alert.show(
+        <p>
+          Failed to publish the Operational Update
+          &nbsp;
+          <strong>
+            {messageForNotification}
+          </strong>
+        </p>,
+        {
+          variant: 'danger',
+          debugMessage,
+        },
+      );
+    }
+  });
+
   const handleDrefPublishConfirm = React.useCallback((drefId: number) => {
     postDrefPublishRequest(drefId);
   }, [postDrefPublishRequest]);
 
   const handleOperationalUpdatePublishConfirm = React.useCallback((operationalUpdateId: number) => {
     postOperationalUpdatePublishRequest(operationalUpdateId);
+  }, [postOperationalUpdatePublishRequest]);
+
+  const handleFinalReportPublishConfirm = React.useCallback((finalReportId: number) => {
+    postFinalReportPublishRequest(finalReportId);
   }, [postOperationalUpdatePublishRequest]);
 
   const [
@@ -317,6 +352,14 @@ function DrefApplicationList(props: Props) {
   ] = useConfirmation({
     message: strings.drefOperationalUpdatePublishConfirmationMessage,
     onConfirm: handleOperationalUpdatePublishConfirm,
+  });
+
+  const [
+    publishFinalReportConfirmationModal,
+    onFinalReportPublishClick,
+  ] = useConfirmation({
+    message: 'Are you sure, you want to publish Final Report?',
+    onConfirm: handleFinalReportPublishConfirm,
   });
 
   const [
@@ -388,16 +431,17 @@ function DrefApplicationList(props: Props) {
           (rowKey: number, item: DrefApplicationResponse) => {
             const hasOperationalUpdate = item.operational_update_details && item.operational_update_details.length > 0;
             const hasUnpublishedOperationalUpdate = item.operational_update_details?.some(d => d.is_published === false) ?? false;
-            const canAddNewOperationalUpdate = item.is_published && !hasUnpublishedOperationalUpdate;
-
+            const canAddNewOperationalUpdate = item.is_published && !hasUnpublishedOperationalUpdate && item.dref_final_report_details;
             const lastOperationalUpdateId = item.operational_update_details?.find(ou => !ou.is_published)?.id;
 
             //TODO: Field Report
-            const hasFieldReport = item.dref_final_report_details && item.dref_final_report_details.length > 0;
-            const hasUnpublishedFieldReport = item.dref_final_report_details?.some(d => d.is_publish === false) ?? false;
-            const canAddNewFinalReport = item.is_published && !hasUnpublishedFieldReport;
-
-            const lastFieldReportId = item.dref_final_report_details?.find(ou => !ou.is_publish)?.id;
+            const hasFinalReport = item.dref_final_report_details && item.dref_final_report_details.length > 0;
+            const hasUnpublishedFinalReport = item.dref_final_report_details?.some(d => d.is_published === false) ?? false;
+            const canAddNewFinalReport = item.is_published && !hasUnpublishedFinalReport && !hasUnpublishedOperationalUpdate;
+            const lastFinalReportId = item.dref_final_report_details?.find(ou => !ou.is_published)?.id;
+            console.log({ hasFinalReport });
+            console.log({ hasUnpublishedFinalReport });
+            console.log({ canAddNewFinalReport });
 
             return {
               extraActions: (
@@ -411,23 +455,35 @@ function DrefApplicationList(props: Props) {
                   />
                   <DropdownMenuItem
                     icon={<MdEdit />}
-                    href={`/dref-final-report/${lastFieldReportId}/edit/`}
-                    label='Edit Last Field Report'
-                    disabled={!hasFieldReport || !hasUnpublishedFieldReport}
+                    href={`/dref-final-report/${lastFinalReportId}/edit/`}
+                    label='Edit  Final Report'
+                    disabled={!hasFinalReport || !hasUnpublishedFinalReport}
                   />
                   <DropdownMenuItem
-                    icon={<IoAdd />}
-                    name={rowKey}
-                    onClick={postDrefNewOperationalUpdate}
-                    label={strings.drefOperationalUpdateNewLabel}
-                    disabled={!canAddNewOperationalUpdate}
+                    icon={<IoPushOutline />}
+                    name={+rowKey}
+                    label='Publish Final Report'
+                    onClick={onFinalReportPublishClick}
+                  // disabled={operationalUpdatePublishPending || item.is_published}
                   />
-                  <DropdownMenuItem
-                    icon={<MdEdit />}
-                    href={`/dref-operational-update/${lastOperationalUpdateId}/edit/`}
-                    label={strings.drefOperationalUpdateEditLastLabel}
-                    disabled={!hasOperationalUpdate || !hasUnpublishedOperationalUpdate}
-                  />
+                  {
+                    !hasFinalReport &&
+                    <>
+                      <DropdownMenuItem
+                        icon={<IoAdd />}
+                        name={rowKey}
+                        onClick={postDrefNewOperationalUpdate}
+                        label={strings.drefOperationalUpdateNewLabel}
+                        disabled={!canAddNewOperationalUpdate}
+                      />
+                      <DropdownMenuItem
+                        icon={<MdEdit />}
+                        href={`/dref-operational-update/${lastOperationalUpdateId}/edit/`}
+                        label={strings.drefOperationalUpdateEditLastLabel}
+                        disabled={!hasOperationalUpdate || !hasUnpublishedOperationalUpdate || hasFinalReport}
+                      />
+                    </>
+                  }
                   <DropdownMenuItem
                     icon={<IoList />}
                     name={item.id}
@@ -525,7 +581,7 @@ function DrefApplicationList(props: Props) {
     return publishedDrefResponse?.results?.find((d) => d.id === selectedDrefIdForOperationalUpdateList);
   }, [selectedDrefIdForOperationalUpdateList, publishedDrefResponse]);
 
-  const pending = publishedDrefPending || inProgressDrefPending || newOperationalUpdatePending;
+  const pending = publishedDrefPending || inProgressDrefPending || newOperationalUpdatePending || newFinalReportPending;
 
   return (
     <Container
@@ -652,6 +708,7 @@ function DrefApplicationList(props: Props) {
       )}
       {publishDrefConfirmationModal}
       {publishOperationalUpdateConfirmationModal}
+      {publishFinalReportConfirmationModal}
     </Container>
   );
 }

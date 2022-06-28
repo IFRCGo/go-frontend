@@ -19,7 +19,6 @@ import Button from '#components/Button';
 import TextInput from '#components/TextInput';
 import SelectInput from '#components/SelectInput';
 import CountryDistrictInput from '#views/DrefApplicationForm/DrefOverview/CountryDistrictInput';
-import { sumSafe } from '#utils/common';
 
 import {
   BooleanValueOption,
@@ -27,9 +26,8 @@ import {
   DrefFinalReportFields,
   NumericValueOption,
   ONSET_IMMINENT,
-  ONSET_SUDDEN,
 } from '../common';
-import { CountryDistrictType } from '../useDrefOperationalUpdateOptions';
+import { CountryDistrictType } from '../useDreFinalReportOptions';
 
 import styles from './styles.module.scss';
 
