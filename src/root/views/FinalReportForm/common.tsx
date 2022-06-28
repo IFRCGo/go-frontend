@@ -127,7 +127,6 @@ export interface DrefFinalReportFields {
   ifrc_emergency_name: string;
   ifrc_emergency_phone_number: string;
   ifrc_emergency_title: string;
-  event_map: number[];
   photos: number[];
   event_scope: string;
   event_description: string;
@@ -223,7 +222,7 @@ export const overviewFields: (keyof DrefFinalReportFields)[] = [
   'total_operation_timeframe',
 ];
 export const eventFields: (keyof DrefFinalReportFields)[] = [
-  'event_map',
+  'photos',
   'images',
   'event_scope',
   'event_description',
