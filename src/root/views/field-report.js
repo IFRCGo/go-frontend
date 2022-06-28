@@ -24,6 +24,7 @@ import { epiSources } from '#utils/field-report-constants';
 import LanguageContext from '#root/languageContext';
 import Translate from '#components/Translate';
 import { resolveToString } from '#utils/lang';
+import RichTextOutput from '#components/RichTextOutput';
 
 import App from './app';
 
@@ -622,7 +623,12 @@ class FieldReport extends React.Component {
                 </p>
                 {this.renderNumericDetails(data)}
                 { epiStatus === 'EPI' ? <DisplaySection title={strings.fieldReportDateOfData} inner={sitFieldsDate} /> : null }
-                <DisplaySection sectionClass='rich-text-section' title={ status === 'EW' ? strings.fieldReportRiskAnalyisis : strings.fieldReportDescription } inner={get(data, 'description', false)} />
+                <h3 className='font-size-lg'>{ status === 'EW' ? strings.fieldReportRiskAnalyisis : strings.fieldReportDescription }</h3>
+                <RichTextOutput
+                    className='rich-text-section'
+                    value={get(data, 'description', false)}
+                />
+                <br/>
                 <div className='row flex-xs'>
                   <dl className='dl-horizontal numeric-list'>
                     <dt style={{fontWeight: 'bold'}}><Translate stringId='fieldReportVisibility'/></dt>

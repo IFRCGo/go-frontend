@@ -49,7 +49,7 @@ import ProjectFormModal from '#views/Country/ThreeW/ProjectFormModal';
 import Fold from '#components/fold';
 import TabContent from '#components/tab-content';
 import ErrorPanel from '#components/error-panel';
-import Expandable from '#components/expandable';
+// import Expandable from '#components/expandable';
 import Snippets from '#components/emergencies/snippets';
 import EmergencyOverview from '#components/emergencies/overview';
 import SurgeAlertsTable from '#components/connected/alerts-table';
@@ -61,6 +61,7 @@ import { epiSources } from '#utils/field-report-constants';
 import { regionsByIdSelector, disasterTypesSelector, countriesByIso } from '#selectors';
 
 import Activities from './Activities';
+import RichTextOutput from "#components/RichTextOutput";
 
 class Emergency extends React.Component {
   constructor (props) {
@@ -1324,10 +1325,10 @@ class Emergency extends React.Component {
                       title={strings.emergencySituationalOverviewTitle}
                       foldWrapperClass="situational-overview fold--main"
                     >
-                      <Expandable
-                        sectionClass="rich-text-section"
-                        limit={4096}
-                        text={summary}
+                      {/* instead of a cuttable <Expandable sectionClass="rich-text-section" limit={4096} text={summary} /> : */}
+                      <RichTextOutput
+                          className='rich-text-section'
+                          value={get(data, 'summary', false)}
                       />
                     </Fold>
                   </TabContent>
