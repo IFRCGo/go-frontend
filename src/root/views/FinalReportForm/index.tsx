@@ -45,9 +45,7 @@ import {
   DrefFinalReportApiFields,
   ONSET_IMMINENT,
 } from './common';
-import useDrefOperationalFormOptions, {
-  schema
-} from './useDrefOperationalUpdateOptions';
+
 import Overview from './Overview';
 import EventDetails from './EventDetails';
 import Needs from './Needs';
@@ -55,6 +53,7 @@ import Operation from './Operation';
 import Submission from './Submission';
 
 import styles from './styles.module.scss';
+import useDrefFinalReportFormOptions, { schema } from './useDreFinalReportOptions';
 
 function scrollToTop() {
   window.setTimeout(() => {
@@ -71,7 +70,7 @@ interface Props {
   history: History;
   location: Location;
 }
-interface DrefOperationalResponseFields {
+interface DrefFinalResponseFields {
   id: string;
 }
 
@@ -126,7 +125,7 @@ function FinalReport(props: Props) {
     yesNoOptions,
     userDetails,
     userOptions,
-  } = useDrefOperationalFormOptions(value);
+  } = useDrefFinalReportFormOptions(value);
 
   const [fileIdToUrlMap, setFileIdToUrlMap] = React.useState<Record<number, string>>({});
   const { strings } = React.useContext(languageContext);
@@ -203,13 +202,13 @@ function FinalReport(props: Props) {
   const {
     pending: drefSubmitPending,
     trigger: submitRequest,
-  } = useLazyRequest<DrefOperationalResponseFields, Partial<DrefFinalReportApiFields>>({
+  } = useLazyRequest<DrefFinalResponseFields, Partial<DrefFinalReportApiFields>>({
     url: `api/v2/dref-final-report/${id}`,
     method: 'PUT',
     body: ctx => ctx,
     onSuccess: (response) => {
       alert.show(
-        'Operational Update was updated successfully!',
+        'Final Report was updated successfully!',
         { variant: 'success' },
       );
     },
@@ -242,8 +241,8 @@ function FinalReport(props: Props) {
   });
 
   const {
-    pending: operationalUpdatePending,
-    response: drefOperationalResponse,
+    pending: finalReportPending,
+    response: drefFinalReportResponse,
   } = useRequest<DrefFinalReportApiFields>({
     skip: !id,
     url: `api/v2/dref-final-report/${id}/`,
@@ -328,7 +327,7 @@ function FinalReport(props: Props) {
     }
   }, [handleTabChange, currentStep]);
 
-  const submitDrefOperationalUpdate = React.useCallback(() => {
+  const submitDrefFinalReport = React.useCallback(() => {
     const result = validate();
 
     if (result.errored) {
@@ -350,7 +349,7 @@ function FinalReport(props: Props) {
     }
 
     if (currentStep === 'submission') {
-      submitDrefOperationalUpdate();
+      submitDrefFinalReport();
     } else {
       const nextStepMap: {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -364,16 +363,16 @@ function FinalReport(props: Props) {
 
       handleTabChange(nextStepMap[currentStep]);
     }
-  }, [validateCurrentTab, currentStep, handleTabChange, submitDrefOperationalUpdate]);
+  }, [validateCurrentTab, currentStep, handleTabChange, submitDrefFinalReport]);
 
   const pending = fetchingCountries
     || fetchingDisasterTypes
     || fetchingDrefOptions
     || fetchingUserDetails
-    || operationalUpdatePending
+    || finalReportPending
     || drefSubmitPending;
 
-  const failedToLoadDref = !pending && isDefined(id) && !drefOperationalResponse;
+  const failedToLoadDref = !pending && isDefined(id) && !drefFinalReportResponse;
 
   //React.useEffect(() => {
   //  if (isDefined(value.new_operational_start_date) && isDefined(value.new_operational_end_date)) {
@@ -412,7 +411,7 @@ function FinalReport(props: Props) {
             )}
             <Button
               name={undefined}
-              onClick={submitDrefOperationalUpdate}
+              onClick={submitDrefFinalReport}
               type='submit'
             >
               {strings.drefOperationalUpdateSaveButtonLabel}
@@ -507,7 +506,7 @@ function FinalReport(props: Props) {
                   setFileIdToUrlMap={setFileIdToUrlMap}
                   onValueSet={setValue}
                   userOptions={userOptions}
-                  onCreateAndShareButtonClick={submitDrefOperationalUpdate}
+                  onCreateAndShareButtonClick={submitDrefFinalReport}
                 />
               </TabPanel>
               <TabPanel name='eventDetails'>
