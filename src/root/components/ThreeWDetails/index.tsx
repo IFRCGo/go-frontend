@@ -14,6 +14,8 @@ import { Project } from '#types';
 import Tooltip from '#components/common/tooltip';
 
 import styles from './styles.module.scss';
+import RichTextOutput from "#components/RichTextOutput";
+import {get} from "#utils/utils";
 
 function FieldOutput(props: TextOutputProps) {
   const {
@@ -129,10 +131,12 @@ function ProjectDetail(props: Props) {
         />
       )}
       { projectResponse?.description
-          ? (<div className='rich-text-section' style=
-              {{backgroundColor: '#faf9f9', padding: '1.5rem'}}
-             dangerouslySetInnerHTML={{__html: projectResponse?.description}}></div>)
-          : null }
+          ? <RichTextOutput
+              className='rich-text-section'
+              value={get(projectResponse, 'description', false)}
+              style={{backgroundColor: '#faf9f9', padding: '1.5rem'}}
+          /> : null }
+
       {projectPending ? (
         <BlockLoading />
       ) : (
