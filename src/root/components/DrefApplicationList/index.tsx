@@ -14,6 +14,12 @@ import {
   MdEdit,
   MdPublish,
 } from 'react-icons/md';
+import {
+  EntriesAsList,
+  Error,
+  getErrorObject,
+  PartialForm,
+} from '@togglecorp/toggle-form';
 
 import LanguageContext from '#root/languageContext';
 import Backdrop from '#components/backdrop';
@@ -45,12 +51,6 @@ import useAlert from '#hooks/useAlert';
 import { DrefOperationalUpdateResponse } from '#types';
 import OperationalUpdateExport from '#components/OperationalUpdateExport';
 import DREFFileImport from '#components/DREFFileImport';
-import {
-  EntriesAsList,
-  Error,
-  getErrorObject,
-  PartialForm,
-} from '@togglecorp/toggle-form';
 
 import styles from './styles.module.scss';
 
@@ -219,7 +219,7 @@ function DrefApplicationList(props: Props) {
     }) => {
       alert.show(
         <p>
-          Failed to publish the Operational Update
+          {strings.drefOperationalUpdatePublishConfirmationFailureMessage}
           &nbsp;
           <strong>
             {messageForNotification}
@@ -312,7 +312,7 @@ function DrefApplicationList(props: Props) {
     }) => {
       alert.show(
         <p>
-          Failed to publish the Operational Update
+          {strings.finalReportPublishConfirmationFailureMessage}
           &nbsp;
           <strong>
             {messageForNotification}
@@ -336,7 +336,7 @@ function DrefApplicationList(props: Props) {
 
   const handleFinalReportPublishConfirm = React.useCallback((finalReportId: number) => {
     postFinalReportPublishRequest(finalReportId);
-  }, [postOperationalUpdatePublishRequest]);
+  }, [postFinalReportPublishRequest]);
 
   const [
     publishDrefConfirmationModal,
@@ -358,7 +358,7 @@ function DrefApplicationList(props: Props) {
     publishFinalReportConfirmationModal,
     onFinalReportPublishClick,
   ] = useConfirmation({
-    message: 'Are you sure, you want to publish Final Report?',
+    message: strings.finalReportPublishConfirmationMessage,
     onConfirm: handleFinalReportPublishConfirm,
   });
 
@@ -456,15 +456,15 @@ function DrefApplicationList(props: Props) {
                   <DropdownMenuItem
                     icon={<MdEdit />}
                     href={`/dref-final-report/${lastFinalReportId}/edit/`}
-                    label='Edit  Final Report'
-                    disabled={!hasFinalReport || !hasUnpublishedFinalReport}
+                    label={strings.finalReportEditButtonLabel}
+                    disabled={!hasFinalReport || !hasUnpublishedFinalReport || finalReportPublishPending}
                   />
                   <DropdownMenuItem
                     icon={<IoPushOutline />}
                     name={+rowKey}
-                    label='Publish Final Report'
+                    label={strings.finalReportPublishButtonLabel}
                     onClick={onFinalReportPublishClick}
-                  // disabled={operationalUpdatePublishPending || item.is_published}
+                    disabled={!hasFinalReport}
                   />
                   {
                     !hasFinalReport &&
@@ -509,6 +509,8 @@ function DrefApplicationList(props: Props) {
     ]);
   }, [
     postDrefNewFinalReport,
+    finalReportPublishPending,
+    onFinalReportPublishClick,
     postDrefNewOperationalUpdate,
     drefPublishPending,
     onDrefPublishClick,
