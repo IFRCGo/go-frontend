@@ -120,11 +120,9 @@ function FinalReport(props: Props) {
     interventionOptions,
     nationalSocietyOptions,
     needOptions,
-    nsActionOptions,
     onsetOptions,
     yesNoOptions,
     userDetails,
-    userOptions,
   } = useDrefFinalReportFormOptions(value);
 
   const [fileIdToUrlMap, setFileIdToUrlMap] = React.useState<Record<number, string>>({});
@@ -298,7 +296,7 @@ function FinalReport(props: Props) {
     }) => {
       alert.show(
         <p>
-          {strings.drefOperationalUpdateFailureMessage}
+          {strings.finalReportFailureMessage}
           &nbsp;
           <strong>
             {messageForNotification}
@@ -414,7 +412,7 @@ function FinalReport(props: Props) {
               onClick={submitDrefFinalReport}
               type='submit'
             >
-              {strings.drefOperationalUpdateSaveButtonLabel}
+              {strings.drefFormSaveButtonLabel}
             </Button>
           </>
         )}
@@ -471,13 +469,13 @@ function FinalReport(props: Props) {
               contentClassName={styles.errorMessage}
             >
               <h3>
-                {strings.drefOperationalUpdateFailureMessage}
+                {strings.finalReportFailureMessage}
               </h3>
               <p>
                 {strings.drefFormLoadErrorDescription}
               </p>
               <p>
-                {strings.drefOperationalUpdateErrorDescription}
+                {strings.finalReportErrorDescription}
               </p>
             </Container>
           ) : (
@@ -493,7 +491,6 @@ function FinalReport(props: Props) {
                   error={error}
                   onValueChange={onValueChange}
                   value={value}
-                  yesNoOptions={yesNoOptions}
                   disasterTypeOptions={disasterTypeOptions}
                   onsetOptions={onsetOptions}
                   disasterCategoryOptions={disasterCategoryOptions}
@@ -502,11 +499,6 @@ function FinalReport(props: Props) {
                   fetchingDisasterTypes={fetchingDisasterTypes}
                   nationalSocietyOptions={nationalSocietyOptions}
                   fetchingNationalSociety={fetchingCountries}
-                  fileIdToUrlMap={fileIdToUrlMap}
-                  setFileIdToUrlMap={setFileIdToUrlMap}
-                  onValueSet={setValue}
-                  userOptions={userOptions}
-                  onCreateAndShareButtonClick={submitDrefFinalReport}
                 />
               </TabPanel>
               <TabPanel name='eventDetails'>
@@ -526,9 +518,6 @@ function FinalReport(props: Props) {
                   value={value}
                   yesNoOptions={yesNoOptions}
                   needOptions={needOptions}
-                  nsActionOptions={nsActionOptions}
-                  fileIdToUrlMap={fileIdToUrlMap}
-                  setFileIdToUrlMap={setFileIdToUrlMap}
                 />
               </TabPanel>
               <TabPanel name='operation'>

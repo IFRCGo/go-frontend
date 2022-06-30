@@ -3564,6 +3564,7 @@ export default {
   drefOperationalUpdateErrorDescription: 'There is an error loading Dref operational update',
   drefPublishConfirmationMessage: 'Are you sure you want to publish the DREF?',
   drefOperationalUpdatePublishConfirmationMessage: 'Are you sure you want to publish the DREF Operational Update?',
+  drefOperationalUpdatePublishConfirmationFailureMessage: 'Failed to publish the Operational Update',
   // button
   drefPublishButtonLabel: 'Publish',
   drefOperationalUpdateSaveButtonLabel: 'Save',
@@ -3631,6 +3632,7 @@ export default {
 
   finalReportCreateButtonLabel: 'Create a Final Report',
   finalReportEditButtonLabel: 'Edit last Final Report',
+  finalReportPublishButtonLabel: 'Publish Final Report',
 
   finalReportOperationOverviewTitle: 'operation overview',
   finalReportEssentialInformationTitle: 'Essential Information',
@@ -3720,4 +3722,11 @@ export default {
   finalReportNationalSocietyContact: 'National Society contact:',
   finalReportIfrcEmergency: 'IFRC focal point for the emergency',
   finalReportMediaContact: 'Media Contact',
+
+  //Messages
+  finalReportSuccessMessage: 'Final Report created successfully',
+  finalReportFailureMessage: 'Failed to create/load Final Report',
+  finalReportErrorDescription: 'There is an error loading Dref Final Report',
+  finalReportPublishConfirmationMessage: 'Are you sure you want to publish the DREF Final Report?',
+  finalReportPublishConfirmationFailureMessage: 'Failed to publish the Final Report',
 };
