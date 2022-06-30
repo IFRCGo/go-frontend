@@ -13,7 +13,6 @@ import TextArea from '#components/TextArea';
 import DREFFileInput from '#components/DREFFileInput';
 
 import {
-  BooleanValueOption,
   DrefFinalReportFields,
 } from '../common';
 

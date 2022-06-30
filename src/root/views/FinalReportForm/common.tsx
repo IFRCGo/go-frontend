@@ -61,13 +61,6 @@ export interface Need {
   description: string;
 }
 
-export interface NsAction {
-  clientId: string;
-  title: string;
-  description: string;
-  title_display: string;
-}
-
 export interface Indicator {
   clientId: string;
   title: string;
@@ -183,7 +176,6 @@ export interface DrefFinalReportApiFields extends Omit<DrefFinalReportFields, 'c
       id: number,
     })[],
   })[];
-  national_society_actions: (Omit<NsAction, 'clientId'> & { id: number })[];
   needs_identified: (Omit<Need, 'clientId'> & {
     id: number,
     image_url: string,

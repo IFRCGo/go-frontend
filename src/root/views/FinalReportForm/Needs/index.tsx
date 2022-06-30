@@ -20,17 +20,16 @@ import NeedInput from '#views/DrefApplicationForm/ActionsFields/NeedInput';
 import Button from '#components/Button';
 import SelectInput from '#components/SelectInput';
 import RadioInput from '#components/RadioInput';
-import NsActionInput from '#views/DrefApplicationForm/ActionsFields/NSActionInput';
 
 import {
   booleanOptionKeySelector,
   BooleanValueOption,
   DrefFinalReportFields,
   Need,
-  NsAction,
   optionLabelSelector,
   StringValueOption,
 } from '../common';
+
 import styles from './styles.module.scss';
 
 type Value = PartialForm<DrefFinalReportFields>;
@@ -40,9 +39,6 @@ interface Props {
   value: Value;
   yesNoOptions: BooleanValueOption[];
   needOptions: StringValueOption[];
-  nsActionOptions: StringValueOption[];
-  fileIdToUrlMap: Record<number, string>;
-  setFileIdToUrlMap?: React.Dispatch<React.SetStateAction<Record<number, string>>>;
 }
 
 function Needs(props: Props) {
@@ -54,9 +50,6 @@ function Needs(props: Props) {
     value,
     yesNoOptions,
     needOptions,
-    nsActionOptions,
-    fileIdToUrlMap,
-    setFileIdToUrlMap
   } = props;
 
   const error = React.useMemo(
@@ -65,7 +58,6 @@ function Needs(props: Props) {
   );
 
   const [need, setNeed] = React.useState<string | undefined>();
-  const [nsAction, setNsAction] = React.useState<string | undefined>();
   const {
     setValue: onNeedChange,
     removeValue: onNeedRemove,
