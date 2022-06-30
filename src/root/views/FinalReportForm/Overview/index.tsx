@@ -4,7 +4,6 @@ import {
   Error,
   getErrorObject,
   PartialForm,
-  SetBaseValueArg,
   useFormArray,
 } from '@togglecorp/toggle-form';
 import { IoHelpCircle } from 'react-icons/io5';
@@ -21,7 +20,6 @@ import SelectInput from '#components/SelectInput';
 import CountryDistrictInput from '#views/DrefApplicationForm/DrefOverview/CountryDistrictInput';
 
 import {
-  BooleanValueOption,
   CountryDistrict,
   DrefFinalReportFields,
   NumericValueOption,
@@ -33,23 +31,17 @@ import styles from './styles.module.scss';
 
 type Value = PartialForm<DrefFinalReportFields>;
 interface Props {
-  disasterTypeOptions: NumericValueOption[];
-  error: Error<Value> | undefined;
-  onValueChange: (...entries: EntriesAsList<Value>) => void;
-  value: Value;
-  yesNoOptions: BooleanValueOption[];
   countryOptions: NumericValueOption[];
-  nationalSocietyOptions: NumericValueOption[];
-  disasterCategoryOptions: NumericValueOption[];
-  onsetOptions: NumericValueOption[];
   fetchingCountries?: boolean;
   fetchingDisasterTypes?: boolean;
   fetchingNationalSociety?: boolean;
-  fileIdToUrlMap: Record<number, string>;
-  setFileIdToUrlMap?: React.Dispatch<React.SetStateAction<Record<number, string>>>;
-  onValueSet: (value: SetBaseValueArg<Value>) => void;
-  userOptions: NumericValueOption[];
-  onCreateAndShareButtonClick: () => void;
+  disasterTypeOptions: NumericValueOption[];
+  nationalSocietyOptions: NumericValueOption[];
+  error: Error<Value> | undefined;
+  onValueChange: (...entries: EntriesAsList<Value>) => void;
+  value: Value;
+  disasterCategoryOptions: NumericValueOption[];
+  onsetOptions: NumericValueOption[];
 }
 
 function Overview(props: Props) {
@@ -65,11 +57,8 @@ function Overview(props: Props) {
     error: formError,
     onValueChange,
     value,
-    yesNoOptions,
     disasterCategoryOptions,
     onsetOptions,
-    setFileIdToUrlMap,
-    fileIdToUrlMap,
   } = props;
 
   const error = React.useMemo(
