@@ -81,7 +81,7 @@ interface DrefApplicationResponse {
   submission_to_geneva: string;
   is_published: boolean;
   operational_update_details: OperationalUpdateDetails[];
-  dref_final_report_details: FinalReportDetails[];
+  dref_final_report_details: FinalReportDetails;
   is_final_report_created: boolean;
 }
 
@@ -334,9 +334,13 @@ function DrefApplicationList(props: Props) {
     postOperationalUpdatePublishRequest(operationalUpdateId);
   }, [postOperationalUpdatePublishRequest]);
 
-  const handleFinalReportPublishConfirm = React.useCallback((finalReportId: number) => {
+  const handleFinalReportPublishConfirm = React.useCallback((drefId: number) => {
+    const finalReportId: number = publishedApplicationList?.find(item => item.id === drefId)?.dref_final_report_details?.id as number;
     postFinalReportPublishRequest(finalReportId);
-  }, [postFinalReportPublishRequest]);
+  }, [
+    publishedApplicationList,
+    postFinalReportPublishRequest,
+  ]);
 
   const [
     publishDrefConfirmationModal,
@@ -431,17 +435,14 @@ function DrefApplicationList(props: Props) {
           (rowKey: number, item: DrefApplicationResponse) => {
             const hasOperationalUpdate = item.operational_update_details && item.operational_update_details.length > 0;
             const hasUnpublishedOperationalUpdate = item.operational_update_details?.some(d => d.is_published === false) ?? false;
-            const canAddNewOperationalUpdate = item.is_published && !hasUnpublishedOperationalUpdate && item.dref_final_report_details;
+            const canAddNewOperationalUpdate = item.is_published && !hasUnpublishedOperationalUpdate && !item.dref_final_report_details;
             const lastOperationalUpdateId = item.operational_update_details?.find(ou => !ou.is_published)?.id;
 
-            //TODO: Field Report
-            const hasFinalReport = item.dref_final_report_details && item.dref_final_report_details.length > 0;
-            const hasUnpublishedFinalReport = item.dref_final_report_details?.some(d => d.is_published === false) ?? false;
+            const hasFinalReport = item.dref_final_report_details ? true : false;
+            const hasUnpublishedFinalReport = item.dref_final_report_details?.is_published === false ?? false;
             const canAddNewFinalReport = item.is_published && !hasUnpublishedFinalReport && !hasUnpublishedOperationalUpdate;
-            const lastFinalReportId = item.dref_final_report_details?.find(ou => !ou.is_published)?.id;
-            console.log({ hasFinalReport });
-            console.log({ hasUnpublishedFinalReport });
-            console.log({ canAddNewFinalReport });
+            const lastFinalReportId = hasUnpublishedFinalReport && item.dref_final_report_details?.id;
+            const handlePublishFinalReport = hasFinalReport && !item?.is_final_report_created;
 
             return {
               extraActions: (
@@ -457,14 +458,14 @@ function DrefApplicationList(props: Props) {
                     icon={<MdEdit />}
                     href={`/dref-final-report/${lastFinalReportId}/edit/`}
                     label={strings.finalReportEditButtonLabel}
-                    disabled={!hasFinalReport || !hasUnpublishedFinalReport || finalReportPublishPending}
+                    disabled={!hasUnpublishedFinalReport}
                   />
                   <DropdownMenuItem
                     icon={<IoPushOutline />}
                     name={+rowKey}
                     label={strings.finalReportPublishButtonLabel}
                     onClick={onFinalReportPublishClick}
-                    disabled={!hasFinalReport}
+                    disabled={!handlePublishFinalReport}
                   />
                   {
                     !hasFinalReport &&
