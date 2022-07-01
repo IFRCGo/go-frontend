@@ -93,8 +93,40 @@ function Needs(props: Props) {
 
   const filteredNeedOptions = needsIdentifiedMap ? needOptions.filter(n => !needsIdentifiedMap[n.value]) : [];
 
+  const wantToReport = value.want_to_report;
+
   return (
     <>
+      <Container
+        heading={strings.finalReportFederationWideAndPartners}
+      >
+        <InputSection
+          title={strings.finalReportWantToReport}
+        >
+          <RadioInput
+            name={"want_to_report" as const}
+            options={yesNoOptions}
+            keySelector={booleanOptionKeySelector}
+            labelSelector={optionLabelSelector}
+            value={value.want_to_report}
+            onChange={onValueChange}
+            error={error?.want_to_report}
+          />
+        </InputSection>
+        {wantToReport &&
+          <InputSection
+            title={strings.finalReportAdditionalNationalSocietyAction}
+          >
+            <TextArea
+              label={strings.cmpActionDescriptionLabel}
+              name="additional_national_society_actions"
+              onChange={onValueChange}
+              value={value.additional_national_society_actions}
+              error={error?.additional_national_society_actions}
+            />
+          </InputSection>
+        }
+      </Container>
       <Container
         heading={strings.finalReportMovementPartners}
       >
