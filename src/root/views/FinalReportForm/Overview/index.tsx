@@ -238,10 +238,10 @@ function Overview(props: Props) {
           title={strings.finalReportStartOfOperation}
         >
           <DateInput
-            name="new_operational_start_date"
-            value={value.new_operational_start_date}
+            name="operation_start_date"
+            value={value.operation_start_date}
             onChange={onValueChange}
-            error={error?.new_operational_start_date}
+            error={error?.operation_start_date}
           />
         </InputSection>
         <InputSection
