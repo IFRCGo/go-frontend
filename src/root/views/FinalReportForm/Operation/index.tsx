@@ -22,7 +22,6 @@ import InputLabel from '#components/InputLabel';
 import { IoWarning } from 'react-icons/io5';
 import SelectInput from '#components/SelectInput';
 import Button from '#components/Button';
-import InterventionInput from '#views/DrefApplicationForm/Response/InterventionInput';
 import DREFFileInput from '#components/DREFFileInput';
 
 import { InterventionType } from '../useDreFinalReportOptions';
@@ -38,6 +37,7 @@ import {
 
 import styles from './styles.module.scss';
 import RadioInput from '#components/RadioInput';
+import InterventionInput from './InterventionInput';
 
 const emptyList: string[] = [];
 type Value = PartialForm<DrefFinalReportFields>;
@@ -67,6 +67,7 @@ function Operation(props: Props) {
 
   const error = getErrorObject(formError);
   const isImminentOnSet = value.type_of_onset === ONSET_IMMINENT;
+  const isChangeInOperationalStrategy = value.change_in_operational_strategy;
 
   const [intervention, setIntervention] = React.useState<number | undefined>();
   const {
@@ -183,17 +184,19 @@ function Operation(props: Props) {
             error={error?.change_in_operational_strategy}
           />
         </InputSection>
-        <InputSection
-          title={strings.finalReportChangeToOperationStrategy}
-        >
-          <TextArea
-            label={strings.cmpActionDescriptionLabel}
-            name="change_in_operational_strategy_text"
-            onChange={onValueChange}
-            value={value.change_in_operational_strategy_text}
-            error={error?.change_in_operational_strategy_text}
-          />
-        </InputSection>
+        {isChangeInOperationalStrategy &&
+          <InputSection
+            title={strings.finalReportChangeToOperationStrategyExplain}
+          >
+            <TextArea
+              label={strings.cmpActionDescriptionLabel}
+              name="change_in_operational_strategy_text"
+              onChange={onValueChange}
+              value={value.change_in_operational_strategy_text}
+              error={error?.change_in_operational_strategy_text}
+            />
+          </InputSection>
+        }
       </Container>
       <Container
         heading={strings.finalReportTargetedPopulation}
