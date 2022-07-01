@@ -77,6 +77,9 @@ export interface Intervention {
   progress_towards_outcome: string;
   male: number;
   female: number;
+  challenges: string;
+  narrative_description_of_achievements: string;
+  lessons_learnt: string;
 }
 
 export const optionKeySelector = (o: Option) => o.value;
@@ -97,7 +100,6 @@ export interface DrefFinalReportFields {
   total_dref_allocation: number;
   date_of_publication: string;
   total_operation_timeframe: number;
-  operational_start_date: string;
   appeal_code: string;
   glide_code: string;
   ifrc_appeal_manager_email: string;
@@ -149,7 +151,9 @@ export interface DrefFinalReportFields {
   response_strategy: string;
   planned_interventions: Intervention[];
   images: number[];
-  new_operational_start_date: string;
+  operation_start_date: string;
+  want_to_report: boolean;
+  additional_national_society_actions: string;
 
   id: string;
   created_at: string;
@@ -210,7 +214,7 @@ export const overviewFields: (keyof DrefFinalReportFields)[] = [
   'number_of_people_targeted',
   'total_dref_allocation',
   'date_of_publication',
-  'new_operational_start_date',
+  'operation_start_date',
   'total_operation_timeframe',
 ];
 export const eventFields: (keyof DrefFinalReportFields)[] = [
@@ -228,6 +232,8 @@ export const needsFields: (keyof DrefFinalReportFields)[] = [
   'un_or_other_actor',
   'major_coordination_mechanism',
   'needs_identified',
+  'want_to_report',
+  'additional_national_society_actions',
 ];
 export const operationFields: (keyof DrefFinalReportFields)[] = [
   'people_assisted',
