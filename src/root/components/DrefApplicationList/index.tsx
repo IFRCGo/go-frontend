@@ -465,7 +465,7 @@ function DrefApplicationList(props: Props) {
                     name={+rowKey}
                     label={strings.finalReportPublishButtonLabel}
                     onClick={onFinalReportPublishClick}
-                    disabled={!handlePublishFinalReport}
+                    disabled={!handlePublishFinalReport || finalReportPublishPending}
                   />
                   {
                     !hasFinalReport &&
