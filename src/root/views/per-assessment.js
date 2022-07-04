@@ -176,7 +176,7 @@ function PerAssessment (props) {
         // Omit the original form_data from Forms because we don't need that
         // on POST, also makes the request way smaller
         let omittedFormData = {};
-        for (const [formId, form] of Object.entries(formsState)) {
+        for (const [formId, form] of Object.entries(formsState ?? {})) {
           const {
             form_data, // eslint-disable-line @typescript-eslint/no-unused-vars
             ...restOfForm
