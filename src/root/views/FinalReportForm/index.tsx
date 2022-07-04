@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, match } from 'react-router-dom';
+import { match } from 'react-router-dom';
 import {
   History,
   Location,
@@ -23,7 +23,7 @@ import TabList from '#components/Tabs/TabList';
 import Page from '#components/Page';
 import Tabs from '#components/Tabs';
 import Tab from '#components/Tabs/Tab';
-import Button, { useButtonFeatures } from '#components/Button';
+import Button from '#components/Button';
 import NonFieldError from '#components/NonFieldError';
 import TabPanel from '#components/Tabs/TabPanel';
 import languageContext from '#root/languageContext';
@@ -51,9 +51,9 @@ import EventDetails from './EventDetails';
 import Needs from './Needs';
 import Operation from './Operation';
 import Submission from './Submission';
+import useDrefFinalReportFormOptions, { schema } from './useDreFinalReportOptions';
 
 import styles from './styles.module.scss';
-import useDrefFinalReportFormOptions, { schema } from './useDreFinalReportOptions';
 
 function scrollToTop() {
   window.setTimeout(() => {
@@ -373,22 +373,11 @@ function FinalReport(props: Props) {
 
   const failedToLoadDref = !pending && isDefined(id) && !drefFinalReportResponse;
 
-  //React.useEffect(() => {
-  //  if (isDefined(value.new_operational_start_date) && isDefined(value.new_operational_end_date)) {
-  //    const startDateYear = new Date(value.new_operational_start_date).getFullYear();
-  //    const startDateMonth = new Date(value.new_operational_start_date).getMonth();
-  //    const endDateYear = new Date(value.new_operational_end_date).getFullYear();
-  //    const endDateMonth = new Date(value.new_operational_end_date).getMonth();
-  //    const totalOperatingTimeframe = ((endDateMonth + 12 * endDateYear) - (startDateMonth + 12 * startDateYear));
-
-  //    onValueChange(totalOperatingTimeframe, 'total_operation_timeframe');
-  //  }
-  //}, [onValueChange, value.new_operational_start_date, value.new_operational_end_date]);
-
-  const exportLinkProps = useButtonFeatures({
-    variant: 'secondary',
-    children: strings.drefFormExportLabel,
-  });
+  //TODO:
+  //const exportLinkProps = useButtonFeatures({
+  //  variant: 'secondary',
+  //  children: strings.drefFormExportLabel,
+  //});
 
   const isImminentOnset = value?.type_of_onset === ONSET_IMMINENT;
 
@@ -402,12 +391,13 @@ function FinalReport(props: Props) {
       <Page
         actions={(
           <>
+            {/* TODO:
             {isDefined(id) && (
               <Link
                 to={`/dref-operational-update/${id}/export/`}
                 {...exportLinkProps}
               />
-            )}
+            )}*/}
             <Button
               name={undefined}
               onClick={submitDrefFinalReport}
