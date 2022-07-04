@@ -9,7 +9,6 @@ import {
 } from '@togglecorp/toggle-form';
 import { IoTrash } from 'react-icons/io5';
 
-import TextArea from '#components/TextArea';
 import BulletTextArea from '#components/BulletTextArea';
 import Button from '#components/Button';
 import NumberInput from '#components/NumberInput';
