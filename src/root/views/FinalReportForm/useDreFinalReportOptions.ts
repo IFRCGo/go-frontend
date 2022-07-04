@@ -181,6 +181,8 @@ export const schema: FormSchema = {
           progress_towards_outcome: [],
           male: [positiveIntegerCondition],
           female: [positiveIntegerCondition],
+          lessons_learnt: [],
+          challenges: [],
         }),
       }),
     },
