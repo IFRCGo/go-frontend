@@ -3713,6 +3713,8 @@ export default {
   finalReportWantToReport: 'Want to report of activities outside of the operational strategy of this DREF?',
   finalReportAdditionalNationalSocietyAction: 'Additional National Society Actions',
   finalReportEstimateResponse: 'Estimate',
+  finalReportPlannedInterventionChallenges: 'Challenges',
+  finalReportPlannedInterventionLessonsLearnt: 'Lessons Learnt',
 
   //submission
   finalReportTrackingData: 'tracking data',
