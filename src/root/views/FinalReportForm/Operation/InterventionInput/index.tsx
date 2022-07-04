@@ -139,11 +139,11 @@ function InterventionInput(props: Props) {
       >
         <div className={styles.addIndicatorContainer}>
           <BulletTextArea
-            label={strings.drefFormListOfActivities}
-            name="description"
-            value={value.description}
+            label={strings.finalReportPlannedInterventionLessonsLearnt}
+            name="lessons_learnt"
+            value={value.lessons_learnt}
             onChange={onFieldChange}
-            error={error?.description}
+            error={error?.lessons_learnt}
           />
           <div>
             <Button
@@ -169,12 +169,12 @@ function InterventionInput(props: Props) {
           </div>
         </div>
         {showNewFieldOperational && (
-          <TextArea
-            label={strings.drefOperationalUpdateProgressTowardsOutcome}
-            name='progress_towards_outcome'
-            value={value.progress_towards_outcome}
+          <BulletTextArea
+            label={strings.finalReportPlannedInterventionChallenges}
+            name='challenges'
+            value={value.challenges}
             onChange={onFieldChange}
-            error={error?.progress_towards_outcome}
+            error={error?.challenges}
           />
         )}
       </InputSection>
