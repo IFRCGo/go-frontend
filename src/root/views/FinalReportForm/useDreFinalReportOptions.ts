@@ -97,7 +97,6 @@ export const schema: FormSchema = {
     number_of_people_affected: [positiveIntegerCondition],
     number_of_people_targeted: [positiveIntegerCondition],
     total_dref_allocation: [],
-    images: [],
     operation_start_date: [],
     total_operation_timeframe: [positiveIntegerCondition],
     ifrc: [],
@@ -147,6 +146,7 @@ export const schema: FormSchema = {
     change_in_operational_strategy_text: [],
     additional_national_society_actions: [],
     want_to_report: [],
+    event_map: [],
 
     needs_identified: {
       keySelector: (n) => n.clientId as string,

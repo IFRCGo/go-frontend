@@ -69,6 +69,7 @@ const AllFlashUpdates = lazy(() => import('../views/AllFlashUpdates'));
 const DrefOperationalUpdate = lazy(() => import('#views/DrefOperationalUpdateForm'));
 const OperationalUpdatePdfPreview = lazy(() => import('#views/DrefOpPdfPreview'));
 const FinalReport = lazy(() => import('#views/FinalReportForm'));
+const FinalReportPdfPreview = lazy(() => import('#views/FinalReportPdfPreview'));
 
 function LoadingGlobal() {
   return (
@@ -291,6 +292,7 @@ function Multiplexer(props) {
               <PrivateRoute exact path='/dref-operational-update/:id/export/' component={OperationalUpdatePdfPreview} />
               <PrivateRoute exact path='/dref-final-report/new/' component={FinalReport} />
               <PrivateRoute exact path='/dref-final-report/:id/edit/' component={FinalReport} />
+              <PrivateRoute exact path='/dref-final-report/:id/export/' component={FinalReportPdfPreview} />
 
               <Route component={FourHundredFour} />
             </Switch>
