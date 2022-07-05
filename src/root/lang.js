@@ -3711,7 +3711,7 @@ export default {
   finalReportImplementation: 'Implementation',
   finalReportSelectIntervention: 'Select the interventions that apply.',
   finalReportSupportServices: 'About Support Services',
-  finalReportFederationWideAndPartners: 'Federation Widw and Partners',
+  finalReportFederationWideAndPartners: 'Federation Wide and Partners',
   finalReportWantToReport: 'Want to report of activities outside of the operational strategy of this DREF?',
   finalReportAdditionalNationalSocietyAction: 'Additional National Society Actions',
   finalReportEstimateResponse: 'Estimate',
