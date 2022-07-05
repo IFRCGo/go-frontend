@@ -1,5 +1,5 @@
 import React from 'react';
-import { match } from 'react-router-dom';
+import { Link, match } from 'react-router-dom';
 import {
   History,
   Location,
@@ -23,7 +23,7 @@ import TabList from '#components/Tabs/TabList';
 import Page from '#components/Page';
 import Tabs from '#components/Tabs';
 import Tab from '#components/Tabs/Tab';
-import Button from '#components/Button';
+import Button, { useButtonFeatures } from '#components/Button';
 import NonFieldError from '#components/NonFieldError';
 import TabPanel from '#components/Tabs/TabPanel';
 import languageContext from '#root/languageContext';
@@ -88,7 +88,7 @@ const stepTypesToFieldsMap: {
 };
 
 const defaultFormValues: PartialForm<DrefFinalReportFields> = {
-  images: []
+  photos: []
 };
 
 function FinalReport(props: Props) {
@@ -250,21 +250,16 @@ function FinalReport(props: Props) {
         const newMap = {
           ...prevMap,
         };
-        if (response.images_details?.length > 0) {
-          response.images_details.forEach((img) => {
-            newMap[img.id] = img.file;
-          });
-        }
         if (response.budget_file_details) {
           newMap[response.budget_file_details.id] = response.budget_file_details.file;
-        }
-        if (response.cover_image_details) {
-          newMap[response.cover_image_details.id] = response.cover_image_details.file;
         }
         if (response.photos_details?.length > 0) {
           response.photos_details.forEach((img) => {
             newMap[img.id] = img.file;
           });
+        }
+        if (response.event_map_details) {
+          newMap[response.event_map_details.id] = response.event_map_details.file;
         }
         return newMap;
       });
@@ -373,11 +368,10 @@ function FinalReport(props: Props) {
 
   const failedToLoadDref = !pending && isDefined(id) && !drefFinalReportResponse;
 
-  //TODO:
-  //const exportLinkProps = useButtonFeatures({
-  //  variant: 'secondary',
-  //  children: strings.drefFormExportLabel,
-  //});
+  const exportLinkProps = useButtonFeatures({
+    variant: 'secondary',
+    children: strings.drefFormExportLabel,
+  });
 
   const isImminentOnset = value?.type_of_onset === ONSET_IMMINENT;
 
@@ -391,13 +385,12 @@ function FinalReport(props: Props) {
       <Page
         actions={(
           <>
-            {/* TODO:
             {isDefined(id) && (
               <Link
-                to={`/dref-operational-update/${id}/export/`}
+                to={`/dref-final-report/${id}/export/`}
                 {...exportLinkProps}
               />
-            )}*/}
+            )}
             <Button
               name={undefined}
               onClick={submitDrefFinalReport}

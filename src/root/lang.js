@@ -3610,6 +3610,7 @@ export default {
   operationalUpdateCurrentNsImageLabel: 'Add photos of National Society Operation',
 
   //TODO: final report
+  finalReportTitle: 'Final Report',
   finalReportPageTitle: 'IFRC GO - DREF Final Report Application',
   finalReportPageHeading: 'DREF Final Report Application',
   finalReportTabOperationOverview: 'Operation Overview',
@@ -3670,6 +3671,7 @@ export default {
   finalReportCoordinationMechanism: 'List major coordination mechanisms in place',
   finalReportNeedsTabTitle: 'needs',
   finalReportNeedsIdentified: 'Needs (Gaps) Identified',
+  finalReportImminentNeedsGapsIdentified: 'Anticipated Needs',
   finalReportActionFieldsLabel: 'Select the needs that apply.',
 
   //tab: operation report
@@ -3703,6 +3705,7 @@ export default {
   finalReportEstimateResponse: 'Estimate',
   finalReportPlannedInterventionChallenges: 'Challenges',
   finalReportPlannedInterventionLessonsLearnt: 'Lessons Learnt',
+  finalReportPlannedInterventionNarrativeAchievement: 'Narrative description of achievements ',
 
   //submission
   finalReportTrackingData: 'tracking data',
@@ -3720,4 +3723,33 @@ export default {
   finalReportErrorDescription: 'There is an error loading Dref Final Report',
   finalReportPublishConfirmationMessage: 'Are you sure you want to publish the DREF Final Report?',
   finalReportPublishConfirmationFailureMessage: 'Failed to publish the Final Report',
+
+  // export
+  finalReportExportAppealNum: 'Appeal no:',
+  finalReportExportGlideNum: 'Glide no:',
+  finalReportExportTotalAllocation: 'Total DREF Allocation:',
+  finalReportExportPeopleAffected: ' People affected:',
+  finalReportExportPeopleTargeted: 'People targeted:',
+  finalReportExportDateOfPublication: 'Date of publication:',
+  finalReportExportStartOfOperation: 'Start of operation:',
+  finalReportExportTotalOperatingTimeFrame: 'Total operating timeframe:',
+  finalReportExportAffectedArea: 'Affected areas:',
+  finalReportExportTotalPopulation: 'Total Population',
+  finalReportBudgetOverview: 'Budget Overview',
+  FinalReportExportContactInformation: 'Contact Information',
+  finalReportExportContactDescription: 'For further information, specifically related to this operation please contact:',
+  finalReportExportNationalSocietyContact: 'National Society contact:',
+  finalReportExportAppealManager: 'IFRC Appeal Manager:',
+  finalReportExportProjectManager: 'IFRC Project Manager:',
+  finalReportExportIfrcEmergency: 'IFRC focal point for the emergency:',
+  finalReportExportMediaContact: 'Media Contact:',
+  finalReportExportReference: 'Click here for the reference',
+  finalReportPhotosOfImplementation: 'Photos of the implementation',
+
+  finalReportExportPersonReachedLabel: 'Persons reached:',
+  finalReportIndicatorTargetLabel: 'Target',
+  finalReportIndicatorMaleLabel: 'Male',
+  finalReportIndicatorFemaleLabel: 'Female',
+  finalReportIndicatorActualLabel: 'Actual',
+  finalReportExportIndicators: 'Indicators',
 };
