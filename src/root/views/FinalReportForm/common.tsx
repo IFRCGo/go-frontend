@@ -150,7 +150,7 @@ export interface DrefFinalReportFields {
   operation_objective: string;
   response_strategy: string;
   planned_interventions: Intervention[];
-  images: number[];
+  event_map: number;
   operation_start_date: string;
   want_to_report: boolean;
   additional_national_society_actions: string;
@@ -184,23 +184,20 @@ export interface DrefFinalReportApiFields extends Omit<DrefFinalReportFields, 'c
     id: number,
     image_url: string,
   })[];
-  images_details: {
-    id: number;
-    file: string;
-  }[];
   budget_file_details: {
     id: number;
     file: string;
   };
   budget_file_preview: string;
-  cover_image_details: {
-    id: number;
-    file: string;
-  };
+
   photos_details: {
     id: number;
     file: string;
   }[];
+  event_map_details: {
+    id: number;
+    file: string;
+  };
 }
 
 export const overviewFields: (keyof DrefFinalReportFields)[] = [
@@ -219,7 +216,7 @@ export const overviewFields: (keyof DrefFinalReportFields)[] = [
 ];
 export const eventFields: (keyof DrefFinalReportFields)[] = [
   'photos',
-  'images',
+  'event_map',
   'event_scope',
   'event_description',
 ];
