@@ -544,6 +544,29 @@ function FinalReportPdfDocument(props: Props) {
           )}
         <View style={pdfStyles.section}>
           <Text style={pdfStyles.sectionHeading}>
+            {strings.finalReportFederationWideAndPartners}
+          </Text>
+          <View>
+            <View style={pdfStyles.row} wrap={false}>
+              <View style={pdfStyles.niHeaderCell}>
+                <Text>{strings.finalReportWantToReport}</Text>
+              </View>
+              <View style={pdfStyles.niContentCell}>
+                <Text>{formatBoolean(finalReportResponse?.want_to_report)}</Text>
+              </View>
+            </View>
+            <View style={pdfStyles.row} wrap={false}>
+              <View style={pdfStyles.niHeaderCell}>
+                <Text>{strings.finalReportAdditionalNationalSocietyAction}</Text>
+              </View>
+              <View style={pdfStyles.niContentCell}>
+                <Text>{finalReportResponse?.additional_national_society_actions}</Text>
+              </View>
+            </View>
+          </View>
+        </View>
+        <View style={pdfStyles.section}>
+          <Text style={pdfStyles.sectionHeading}>
             {strings.finalReportMovementPartners}
           </Text>
           <View>
@@ -666,6 +689,24 @@ function FinalReportPdfDocument(props: Props) {
                   </Text>
                 </View>
               )}
+              <View style={pdfStyles.section}>
+                <View style={pdfStyles.row} wrap={false}>
+                  <View style={pdfStyles.niHeaderCell}>
+                    <Text>{strings.finalReportChangeToOperationStrategy}</Text>
+                  </View>
+                  <View style={pdfStyles.niContentCell}>
+                    <Text>{formatBoolean(finalReportResponse?.change_in_operational_strategy)}</Text>
+                  </View>
+                </View>
+                <View style={pdfStyles.row} wrap={false}>
+                  <View style={pdfStyles.niHeaderCell}>
+                    <Text>{strings.finalReportChangeToOperationStrategy}</Text>
+                  </View>
+                  <View style={pdfStyles.niContentCell}>
+                    <Text>{finalReportResponse?.change_in_operational_strategy_text}</Text>
+                  </View>
+                </View>
+              </View>
             </View>
           )}
         <View style={pdfStyles.tpSection}>
@@ -788,12 +829,12 @@ function FinalReportPdfDocument(props: Props) {
             <Text>{finalReportResponse.response_strategy}</Text>
           </View>
         )}
-        {finalReportResponse.planned_interventions.length > 0 && (
+        {finalReportResponse?.planned_interventions.length > 0 && (
           <View style={pdfStyles.piSection}>
             <Text style={pdfStyles.sectionHeading}>
-              {strings.finalReportSelectIntervention}
+              {strings.finalReportImplementation}
             </Text>
-            {finalReportResponse.planned_interventions.map((pi) => (
+            {finalReportResponse?.planned_interventions.map((pi) => (
               <PlannedInterventionOutput
                 strings={strings}
                 key={pi.id}
