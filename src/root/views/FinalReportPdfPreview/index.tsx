@@ -45,10 +45,6 @@ function FinalReportPdfPreview(props: Props) {
 
   const { id } = match.params;
 
-  //const {
-  //  id,
-  //} = props;
-
   const {
     pending: fetchingFinalReport,
     response: finalReportResponse,
