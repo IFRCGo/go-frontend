@@ -114,25 +114,22 @@ function InterventionInput(props: Props) {
               onChange={onFieldChange}
               error={error?.person_targeted}
             />
-            {showNewFieldOperational && (
-
-              <div className={styles.maleFemale} >
-                <NumberInput
-                  label={strings.drefOperationalUpdateIndicatorMaleLabel}
-                  name='male'
-                  value={value.male}
-                  onChange={onFieldChange}
-                  error={error?.male}
-                />
-                <NumberInput
-                  label={strings.drefOperationalUpdateIndicatorFemaleLabel}
-                  name='female'
-                  value={value.female}
-                  onChange={onFieldChange}
-                  error={error?.female}
-                />
-              </div>
-            )}
+            <div className={styles.maleFemale} >
+              <NumberInput
+                label={strings.drefOperationalUpdateIndicatorMaleLabel}
+                name='male'
+                value={value.male}
+                onChange={onFieldChange}
+                error={error?.male}
+              />
+              <NumberInput
+                label={strings.drefOperationalUpdateIndicatorFemaleLabel}
+                name='female'
+                value={value.female}
+                onChange={onFieldChange}
+                error={error?.female}
+              />
+            </div>
           </>
         )}
       >
@@ -143,6 +140,22 @@ function InterventionInput(props: Props) {
             value={value.lessons_learnt}
             onChange={onFieldChange}
             error={error?.lessons_learnt}
+          />
+          <BulletTextArea
+            label={strings.finalReportPlannedInterventionNarrativeAchievement}
+            name='narrative_description_of_achievements'
+            value={value.narrative_description_of_achievements}
+            onChange={onFieldChange}
+            error={error?.narrative_description_of_achievements}
+          />
+        </div>
+        <div className={styles.addIndicatorContainer}>
+          <BulletTextArea
+            label={strings.finalReportPlannedInterventionChallenges}
+            name='challenges'
+            value={value.challenges}
+            onChange={onFieldChange}
+            error={error?.challenges}
           />
           <div>
             <Button
@@ -167,15 +180,6 @@ function InterventionInput(props: Props) {
             }
           </div>
         </div>
-        {showNewFieldOperational && (
-          <BulletTextArea
-            label={strings.finalReportPlannedInterventionChallenges}
-            name='challenges'
-            value={value.challenges}
-            onChange={onFieldChange}
-            error={error?.challenges}
-          />
-        )}
       </InputSection>
       <Button
         className={styles.removeButton}

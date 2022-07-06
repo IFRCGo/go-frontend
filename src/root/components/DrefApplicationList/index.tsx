@@ -452,7 +452,7 @@ function DrefApplicationList(props: Props) {
                     name={rowKey}
                     onClick={postDrefNewFinalReport}
                     label={strings.finalReportCreateButtonLabel}
-                    disabled={!canAddNewFinalReport}
+                    disabled={!canAddNewFinalReport || hasFinalReport}
                   />
                   <DropdownMenuItem
                     icon={<MdEdit />}
