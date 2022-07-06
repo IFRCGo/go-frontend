@@ -22,13 +22,13 @@ import {
   StringKeyValuePair,
   Strings,
 } from '#types';
+import { resolveUrl } from '#utils/resolveUrl';
+import { DrefFinalReportApiFields } from '#views/FinalReportForm/common';
 
 import montserratFont from './resources/montserrat.bold.ttf';
 import opensansFont from './resources/open-sans.regular.ttf';
 import opensansBoldFont from './resources/open-sans.bold.ttf';
 import pdfStyles from './pdfStyles';
-import { resolveUrl } from '#utils/resolveUrl';
-import { DrefFinalReportApiFields } from '#views/FinalReportForm/common';
 
 Font.register({
   family: 'Montserrat',
