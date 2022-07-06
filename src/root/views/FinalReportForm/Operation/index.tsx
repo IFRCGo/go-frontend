@@ -23,6 +23,7 @@ import { IoWarning } from 'react-icons/io5';
 import SelectInput from '#components/SelectInput';
 import Button from '#components/Button';
 import DREFFileInput from '#components/DREFFileInput';
+import RadioInput from '#components/RadioInput';
 
 import { InterventionType } from '../useDreFinalReportOptions';
 import {
@@ -34,10 +35,9 @@ import {
   optionLabelSelector,
   StringValueOption,
 } from '../common';
+import InterventionInput from './InterventionInput';
 
 import styles from './styles.module.scss';
-import RadioInput from '#components/RadioInput';
-import InterventionInput from './InterventionInput';
 
 const emptyList: string[] = [];
 type Value = PartialForm<DrefFinalReportFields>;
