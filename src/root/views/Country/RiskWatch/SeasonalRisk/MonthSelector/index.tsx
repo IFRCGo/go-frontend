@@ -22,9 +22,28 @@ function MonthSelector<T>(props: Props<T>) {
     value,
   } = props;
 
-  const {
-    strings,
-  } = React.useContext(languageContext);
+  const shiftPressedRef = React.useRef<boolean>(false);
+  const { strings } = React.useContext(languageContext);
+
+  React.useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.which === 16) {
+        shiftPressedRef.current = true;
+      }
+    };
+
+    const handleKeyUp = () => {
+        shiftPressedRef.current = false;
+    };
+
+    document.addEventListener('keyup', handleKeyUp);
+    document.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      document.removeEventListener('keyup', handleKeyUp);
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, []);
 
   const monthNameList = React.useMemo(() => (
     getFullMonthNameList(strings).map(m => m.substr(0, 3))
@@ -35,7 +54,13 @@ function MonthSelector<T>(props: Props<T>) {
       const numSelection = Object.values(value).filter(Boolean).length;
       const newValue = { ...value };
 
-      if (value[month]) {
+      if (!shiftPressedRef.current) {
+          for (let i = 0; i < 12; i = i + 1) {
+            newValue[i] = false;
+          }
+
+          newValue[month] = true;
+      } else if (value[month]) {
         if (numSelection > 1) {
           for (let i = 0; i < 12; i = i + 1) {
             newValue[i] = false;

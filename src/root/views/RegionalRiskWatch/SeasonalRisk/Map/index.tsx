@@ -58,6 +58,10 @@ const EXPOSURE_LOW = 100;
 const EXPOSURE_MEDIUM = 1000;
 const EXPOSURE_HIGH = 10000;
 
+const FI_EXPOSURE_LOW = 1000000;
+const FI_EXPOSURE_MEDIUM = 10000000;
+const FI_EXPOSURE_HIGH= 100000000;
+
 const INFORM_RISK_VERY_LOW = 0;
 const INFORM_RISK_LOW = 2;
 const INFORM_RISK_MEDIUM = 3.5;
@@ -137,6 +141,25 @@ const exposureLegendData = [
   },
 ];
 
+const fiExposureLegendData = [
+  {
+    color: COLOR_BLUE_GRADIENT_3,
+    label: `Less than ${addSeparator(FI_EXPOSURE_LOW)}`,
+  },
+  {
+    color: COLOR_BLUE_GRADIENT_5,
+    label: `${addSeparator(FI_EXPOSURE_LOW+1)} to ${addSeparator(FI_EXPOSURE_MEDIUM)}`,
+  },
+  {
+    color: COLOR_BLUE_GRADIENT_7,
+    label: `${addSeparator(FI_EXPOSURE_MEDIUM+1)} to ${addSeparator(FI_EXPOSURE_HIGH)}`,
+  },
+  {
+    color: COLOR_BLUE_GRADIENT_9,
+    label: `More than ${addSeparator(FI_EXPOSURE_HIGH)}`,
+  },
+];
+
 const informLegendData = [
   {
     color: COLOR_LIGHT_YELLOW,
@@ -163,16 +186,24 @@ const informLegendData = [
 
 interface MapLegendProps {
   selectedRiskMetric: (typeof riskMetricOptions)[number]['value'];
+  hazardType: HazardTypes;
 }
 
 function MapLegend(props: MapLegendProps) {
-  const { selectedRiskMetric } = props;
+  const {
+    selectedRiskMetric,
+    hazardType,
+  } = props;
   const legendData = React.useMemo(() => {
     if (selectedRiskMetric === 'displacement') {
       return displacementLegendData;
     }
 
     if (selectedRiskMetric === 'exposure') {
+      if (hazardType === 'FI') {
+        return fiExposureLegendData;
+      }
+
       return exposureLegendData;
     }
 
@@ -181,7 +212,7 @@ function MapLegend(props: MapLegendProps) {
     }
 
     return [];
-  }, [selectedRiskMetric]);
+  }, [hazardType, selectedRiskMetric]);
 
   return (
     <div className={styles.mapLegend}>
@@ -285,15 +316,18 @@ function Choropleth(props: ChoroplethProps) {
             color = COLOR_BLUE_GRADIENT_3;
           }
 
-          if (exposure > EXPOSURE_LOW) {
+          const LOW = selectedHazard === 'FI' ? FI_EXPOSURE_LOW : EXPOSURE_LOW;
+          if (exposure > LOW) {
             color = COLOR_BLUE_GRADIENT_5;
           }
 
-          if (exposure > EXPOSURE_MEDIUM) {
+          const MEDIUM = selectedHazard === 'FI' ? FI_EXPOSURE_MEDIUM: EXPOSURE_MEDIUM;
+          if (exposure > MEDIUM) {
             color = COLOR_BLUE_GRADIENT_7;
           }
 
-          if (exposure > EXPOSURE_HIGH) {
+          const HIGH = selectedHazard === 'FI' ? FI_EXPOSURE_HIGH: EXPOSURE_HIGH;
+          if (exposure > HIGH) {
             color = COLOR_BLUE_GRADIENT_9;
           }
         }
@@ -425,7 +459,7 @@ function SeasonalRiskMap(props: Props) {
       <Container
         className={_cs(styles.seasonalRiskMap, className)}
         heading="Risk map"
-        description="The map and table below display available information about specific disaster risks for for each month per country. When you move the slider from month to month, the information in the map  will update automatically."
+        description="The map and table below display available information about specific disaster risks for for each month per country. When you move the slider from month to month, the information in the map  will update automatically. Hold Shift to select a range of month."
         contentClassName={styles.mapSection}
       >
         <div className={styles.filters}>
@@ -466,6 +500,7 @@ function SeasonalRiskMap(props: Props) {
             />
           </Map>
           <MapLegend
+            hazardType={hazardType}
             selectedRiskMetric={riskMetric}
           />
           <MonthSelector

@@ -120,8 +120,8 @@ function DetailedChart(props: DetailedChartProps) {
       // We should only take first occuring year
       (data) => unique(data, d => d.year),
     );
-    // const currentYear = new Date().getFullYear();
-    const currentYear = 2021; // NOTE: this will make 2022 data a prediction
+
+    const currentYear = new Date().getFullYear();
 
     return months.map((m) => {
       const historicData = (groupedData[m] ?? []).filter(d => d.year <= currentYear);
