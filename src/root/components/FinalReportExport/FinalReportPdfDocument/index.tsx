@@ -408,18 +408,6 @@ function FinalReportPdfDocument(props: Props) {
             ].filter(Boolean).join(' | ')}
           </Text>
         </View>
-        {/*{finalReportResponse?.cover_image_details && (
-          <View
-            style={pdfStyles.section}
-          >
-            <PDFImage
-              style={pdfStyles.bannerImage}
-              src={finalReportResponse?.cover_image_details?.file}
-            />
-          </View>
-        )}*/}
-
-        {/*Summary*/}
         <View style={pdfStyles.section}>
           <View style={pdfStyles.basicInfoTable}>
             <View style={pdfStyles.compactSection} wrap={false}>
@@ -485,63 +473,57 @@ function FinalReportPdfDocument(props: Props) {
             </View>
           </View>
         </View>
-
-        {/* description of event */}
-        {(
-          finalReportResponse?.event_description ||
-          finalReportResponse?.event_scope ||
-          finalReportResponse?.event_map_details
-        ) && (
-            <View>
-              <Text style={pdfStyles.sectionHeading}>
-                {strings.drefExportDescriptionOfTheEvent}
+        <View>
+          <Text style={pdfStyles.sectionHeading}>
+            {strings.drefExportDescriptionOfTheEvent}
+          </Text>
+          {finalReportResponse.event_map_details &&
+            <View style={pdfStyles.subSection}>
+              <PDFImage
+                style={pdfStyles.mapImage}
+                src={finalReportResponse.event_map_details.file}
+              />
+            </View>
+          }
+          {finalReportResponse?.event_description && (
+            <View style={pdfStyles.subSection}>
+              <Text style={pdfStyles.subSectionHeading}>
+                {isImminentOnset ?
+                  strings.finalReportImminentDisaster
+                  :
+                  strings.finalReportWhatWhereWhen}
               </Text>
-              <View style={pdfStyles.subSection}>
-                <PDFImage
-                  style={pdfStyles.mapImage}
-                  src={finalReportResponse.event_map_details.file}
-                />
-              </View>
-              {finalReportResponse?.event_description && (
-                <View style={pdfStyles.subSection}>
-                  <Text style={pdfStyles.subSectionHeading}>
-                    {isImminentOnset ?
-                      strings.finalReportImminentDisaster
-                      :
-                      strings.finalReportWhatWhereWhen}
-                  </Text>
-                  <Text style={pdfStyles.text}>
-                    {finalReportResponse.event_description}
-                  </Text>
-                </View>
-              )}
-              {finalReportResponse?.photos_details && (
-                <View style={pdfStyles.subSection}>
-                  <Text style={pdfStyles.subSectionHeading}>
-                    {strings.finalReportPhotosOfImplementation}
-                  </Text>
-                  {finalReportResponse?.photos_details.map((el) => (
-                    <View style={pdfStyles.subSection}>
-                      <PDFImage
-                        style={pdfStyles.mapImage}
-                        src={el.file}
-                      />
-                    </View>
-                  ))}
-                </View>
-              )}
-              {finalReportResponse?.event_scope && (
-                <View style={pdfStyles.subSection}>
-                  <Text style={pdfStyles.subSectionHeading}>
-                    {strings.finalReportScopeAndScaleEvent}
-                  </Text>
-                  <Text style={pdfStyles.text}>
-                    {finalReportResponse.event_scope}
-                  </Text>
-                </View>
-              )}
+              <Text style={pdfStyles.text}>
+                {finalReportResponse.event_description}
+              </Text>
             </View>
           )}
+          {finalReportResponse?.photos_details && (
+            <View style={pdfStyles.subSection}>
+              <Text style={pdfStyles.subSectionHeading}>
+                {strings.finalReportPhotosOfImplementation}
+              </Text>
+              {finalReportResponse?.photos_details.map((el) => (
+                <View style={pdfStyles.subSection}>
+                  <PDFImage
+                    style={pdfStyles.mapImage}
+                    src={el.file}
+                  />
+                </View>
+              ))}
+            </View>
+          )}
+          {finalReportResponse?.event_scope && (
+            <View style={pdfStyles.subSection}>
+              <Text style={pdfStyles.subSectionHeading}>
+                {strings.finalReportScopeAndScaleEvent}
+              </Text>
+              <Text style={pdfStyles.text}>
+                {finalReportResponse.event_scope}
+              </Text>
+            </View>
+          )}
+        </View>
         <View style={pdfStyles.section}>
           <Text style={pdfStyles.sectionHeading}>
             {strings.finalReportFederationWideAndPartners}
@@ -651,64 +633,59 @@ function FinalReportPdfDocument(props: Props) {
             ))}
           </View>
         )}
-        {(finalReportResponse?.people_assisted ||
-          finalReportResponse?.selection_criteria ||
-          finalReportResponse?.entity_affected
-        ) && (
-            <View style={pdfStyles.section}>
-              <Text style={pdfStyles.sectionHeading}>
-                {strings.finalReportTargetingStrategy}
+        <View style={pdfStyles.section}>
+          <Text style={pdfStyles.sectionHeading}>
+            {strings.finalReportTargetingStrategy}
+          </Text>
+          {finalReportResponse.people_assisted && (
+            <View style={pdfStyles.qna}>
+              <Text style={pdfStyles.textLabelSection}>
+                {strings.finalReportPeopleAssistedThroughOperation}
               </Text>
-              {finalReportResponse.people_assisted && (
-                <View style={pdfStyles.qna}>
-                  <Text style={pdfStyles.textLabelSection}>
-                    {strings.finalReportPeopleAssistedThroughOperation}
-                  </Text>
-                  <Text style={pdfStyles.answer}>
-                    {finalReportResponse.people_assisted}
-                  </Text>
-                </View>
-              )}
-              {finalReportResponse.selection_criteria && (
-                <View style={pdfStyles.qna}>
-                  <Text style={pdfStyles.textLabelSection}>
-                    {strings.finalReportSelectionCriteria}
-                  </Text>
-                  <Text style={pdfStyles.answer}>
-                    {finalReportResponse.selection_criteria}
-                  </Text>
-                </View>
-              )}
-              {finalReportResponse.entity_affected && (
-                <View style={pdfStyles.qna}>
-                  <Text style={pdfStyles.textLabelSection}>
-                    {strings.finalReportProtectionGenderAndInclusion}
-                  </Text>
-                  <Text style={pdfStyles.answer}>
-                    {finalReportResponse?.entity_affected}
-                  </Text>
-                </View>
-              )}
-              <View style={pdfStyles.section}>
-                <View style={pdfStyles.row} wrap={false}>
-                  <View style={pdfStyles.niHeaderCell}>
-                    <Text>{strings.finalReportChangeToOperationStrategy}</Text>
-                  </View>
-                  <View style={pdfStyles.niContentCell}>
-                    <Text>{formatBoolean(finalReportResponse?.change_in_operational_strategy)}</Text>
-                  </View>
-                </View>
-                <View style={pdfStyles.row} wrap={false}>
-                  <View style={pdfStyles.niHeaderCell}>
-                    <Text>{strings.finalReportChangeToOperationStrategy}</Text>
-                  </View>
-                  <View style={pdfStyles.niContentCell}>
-                    <Text>{finalReportResponse?.change_in_operational_strategy_text}</Text>
-                  </View>
-                </View>
-              </View>
+              <Text style={pdfStyles.answer}>
+                {finalReportResponse.people_assisted}
+              </Text>
             </View>
           )}
+          {finalReportResponse.selection_criteria && (
+            <View style={pdfStyles.qna}>
+              <Text style={pdfStyles.textLabelSection}>
+                {strings.finalReportSelectionCriteria}
+              </Text>
+              <Text style={pdfStyles.answer}>
+                {finalReportResponse.selection_criteria}
+              </Text>
+            </View>
+          )}
+          {finalReportResponse.entity_affected && (
+            <View style={pdfStyles.qna}>
+              <Text style={pdfStyles.textLabelSection}>
+                {strings.finalReportProtectionGenderAndInclusion}
+              </Text>
+              <Text style={pdfStyles.answer}>
+                {finalReportResponse?.entity_affected}
+              </Text>
+            </View>
+          )}
+          <View style={pdfStyles.section}>
+            <View style={pdfStyles.row} wrap={false}>
+              <View style={pdfStyles.niHeaderCell}>
+                <Text>{strings.finalReportChangeToOperationStrategy}</Text>
+              </View>
+              <View style={pdfStyles.niContentCell}>
+                <Text>{formatBoolean(finalReportResponse?.change_in_operational_strategy)}</Text>
+              </View>
+            </View>
+            <View style={pdfStyles.row} wrap={false}>
+              <View style={pdfStyles.niHeaderCell}>
+                <Text>{strings.finalReportChangeToOperationStrategy}</Text>
+              </View>
+              <View style={pdfStyles.niContentCell}>
+                <Text>{finalReportResponse?.change_in_operational_strategy_text}</Text>
+              </View>
+            </View>
+          </View>
+        </View>
         <View style={pdfStyles.tpSection}>
           <Text style={pdfStyles.sectionHeading}>
             {strings.finalReportPeopleAssistedThroughOperation}
