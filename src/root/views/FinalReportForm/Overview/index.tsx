@@ -215,8 +215,8 @@ function Overview(props: Props) {
           <NumberInput
             name="total_dref_allocation"
             value={value.total_dref_allocation}
-            onChange={undefined}
             error={error?.total_dref_allocation}
+            readOnly
           />
         </InputSection>
       </Container>

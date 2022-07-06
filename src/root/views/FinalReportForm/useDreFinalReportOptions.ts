@@ -177,12 +177,11 @@ export const schema: FormSchema = {
               })
             })
           },
-          description: [],
-          progress_towards_outcome: [],
           male: [positiveIntegerCondition],
           female: [positiveIntegerCondition],
           lessons_learnt: [],
           challenges: [],
+          narrative_description_of_achievements: [],
         }),
       }),
     },
