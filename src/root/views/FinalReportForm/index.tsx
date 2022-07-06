@@ -45,7 +45,6 @@ import {
   DrefFinalReportApiFields,
   ONSET_IMMINENT,
 } from './common';
-
 import Overview from './Overview';
 import EventDetails from './EventDetails';
 import Needs from './Needs';
