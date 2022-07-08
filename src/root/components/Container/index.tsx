@@ -23,6 +23,7 @@ export interface Props {
   visibleOverflow?: boolean;
   footer?: React.ReactNode;
   footerActions?: React.ReactNode;
+  subHeading?: React.ReactNode;
   footerClassName?: string,
 }
 
@@ -45,6 +46,7 @@ function Container(props: Props) {
     footer,
     footerClassName,
     footerActions,
+    subHeading,
   } = props;
 
   return (
@@ -66,12 +68,17 @@ function Container(props: Props) {
       >
         {(heading || actions) && (
           <Header
-            className={_cs(styles.header, headerClassName)}
+            className={_cs(styles.headerClassName)}
             heading={heading}
             actions={actions}
             headingSize={headingSize}
             elementRef={headerElementRef}
           />
+        )}
+        {subHeading && (
+          <div className={_cs(styles.header, contentClassName)}>
+            { subHeading }
+          </div>
         )}
         {description && (
           <Description className={descriptionClassName}>

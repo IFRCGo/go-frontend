@@ -66,6 +66,7 @@ import KeyFiguresHeader from '#components/common/key-figures-header';
 import { SFPComponent } from '#utils/extendables';
 
 import RiskWatch from './RiskWatch';
+import Preparedness from './Preparedness';
 
 import ThreeW from './ThreeW';
 // import CountryProfile from './CountryProfile';
@@ -728,6 +729,12 @@ class AdminArea extends SFPComponent {
                 <TabPanel>
                   <TabContent>
                     <RiskWatch countryId={this.props.country?.id} />
+                  </TabContent>
+                </TabPanel>
+
+                <TabPanel>
+                  <TabContent>
+                    <Preparedness countryId={this.props.country?.id} />
                   </TabContent>
                 </TabPanel>
 

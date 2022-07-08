@@ -1,0 +1,11 @@
+@import '~styles/settings/variables';
+
+.preparedness {
+  .content {
+    display: flex;
+    flex-wrap: wrap;
+    overflow: hidden;
+    flex-direction: column;
+    gap: $spacing*2;
+  }
+}

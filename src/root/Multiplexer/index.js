@@ -23,6 +23,7 @@ import {
   currentLanguageSelector,
   disasterTypesSelectSelector,
 } from '#selectors';
+import EapApplication from '#views/Country/Preparedness/EapApplication';
 
 import styles from './styles.module.scss';
 
@@ -284,6 +285,7 @@ function Multiplexer(props) {
               <PrivateRoute exact path='/flash-update/:id/' component={FlashUpdateReport} />
               <Route exact path='/dref-operational-update/new/' component={DrefOperationalUpdate} />
               <PrivateRoute key="new-dref-application-form" exact path='/dref-application/new/' component={DrefApplicationForm} />
+              <PrivateRoute key="new-early-action-protocol-summary" exact path='/country-preparedness/new' component={EapApplication} />
               <PrivateRoute exact path='/dref-application/:drefId/edit/' component={DrefApplicationForm} />
               <PrivateRoute exact path='/dref-application/:drefId/export/' component={DrefPdfPreview} />
               <PrivateRoute exact path='/dref-operational-update/:id/edit/' component={DrefOperationalUpdate} />

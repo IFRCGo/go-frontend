@@ -3607,4 +3607,21 @@ export default {
   operationalUpdateExportNewOperationalEndDate: 'New Operational end date',
   operationalUpdateExportPersonReachedLabel: 'Persons reached:',
   operationalUpdateCurrentNsImageLabel: 'Add photos of National Society Operation',
+
+  //country preparedness
+  countryPreparednessHeading: 'Philippines Early Action Protocols(EAPS)',
+  countryPreparednessSubHeading: 'EAPs are a formal plan that guide timely and effective implementation of early action for extreme weather events, based on pre agreed triggers.',
+
+  //Early Action Protocol summary
+  eapsFormSaveButtonLabel: 'Save',
+  eapsFormPageTitle: 'IFRC GO - Early Action Protocol Summary',
+  eapsFormPageHeading: 'Early Action Protocol Summary',
+  eapsFormPageDescription: 'The EAP Summary is completed based on the information provided in the full EAP document. Every field with an asterisk (*) is mandatory, except for targeted provinces, however the provinces can be included if these are identified. Take budget figures from the validated EAP budget. For the EAP overview, include the standard opening text ‘The IFRC Disaster Relief Emergency Fund (DREF) has approved a total allocation of CHF xxx, xxx from its Forecast-based Action (FbA) mechanism for the (insert the name of the National Society) to mitigate the impact of (insert hazard type) on the most vulnerable population’. Include in the EAP overview: a brief overview of the hazard, risk and specific vulnerabilities to the hazard, an overview of the targeted community, include a brief description of how the early action activities will mitigate risks, reduce the impact and promote resilience in the target communities.',
+  eapsFormContinueButtonLabel: 'Continue',
+  eapsFormBackButtonLabel: 'Back',
+  eapsFormTabEapOverview: 'EAP Overview',
+  eapsFormTabEarlyActions: 'Early Actions',
+  eapsFormTabContacts: 'Contacts',
+  eapsFormEapOverviewHeading: 'EAP Location/Disaster Type',
+  eapsFormEapCountry: 'EAP Country*',
 };
