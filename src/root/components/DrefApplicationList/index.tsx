@@ -25,6 +25,7 @@ import LanguageContext from '#root/languageContext';
 import Backdrop from '#components/backdrop';
 import Button from '#components/Button';
 import Container from '#components/Container';
+import GlobalLoading from '#components/NewGlobalLoading';
 import BlockLoading from '#components/block-loading';
 import Table from '#components/Table';
 import SelectInput from '#components/SelectInput';
@@ -600,6 +601,7 @@ function DrefApplicationList(props: Props) {
             value={country}
             onChange={setCountry}
             isClearable
+            disabled={pending}
           />
           <div className={styles.buttonImport}>
             <DREFFileImport
@@ -611,6 +613,7 @@ function DrefApplicationList(props: Props) {
               setFileIdToUrlMap={setFileIdToUrlMap}
               value={value?.file}
               multiple={false}
+              disabled={pending}
             >
               {strings.drefFileImportLabel}
             </DREFFileImport>
@@ -618,6 +621,7 @@ function DrefApplicationList(props: Props) {
         </>
       )}
     >
+      {(drefPublishPending || newFinalReportPending || newOperationalUpdatePending) && <GlobalLoading />}
       <Container
         heading={strings.drefTableInProgressHeading}
         sub
