@@ -98,6 +98,7 @@ function DetailedChart(props: DetailedChartProps) {
     ipcData,
     showHistoricalValues,
   } = props;
+
   const { strings } = React.useContext(languageContext);
 
   const monthNameList = React.useMemo(() => (
@@ -121,11 +122,13 @@ function DetailedChart(props: DetailedChartProps) {
       (data) => unique(data, d => d.year),
     );
 
-    const currentYear = new Date().getFullYear();
+    const now = new Date();
+    const currentYear = now.getFullYear();
+    const currentMonth = now.getMonth() + 1;
 
     return months.map((m) => {
-      const historicData = (groupedData[m] ?? []).filter(d => d.year <= currentYear);
-      const prediction = (groupedData[m] ?? []).filter(d => d.year === (currentYear + 1))[0]?.total_displacement;
+      const historicData = (groupedData[m] ?? []).filter(d => d.year < currentYear || (d.year === currentYear && d.month <= currentMonth));
+      const prediction = (groupedData[m] ?? []).filter(d => d.year > currentYear || (d.year === currentYear && d.month > currentMonth))[0]?.total_displacement;
       const disaggregationByYear = listToMap(
         historicData.map(d => ({ [d.year]: d.total_displacement })),
         d => Object.keys(d)[0],
