@@ -279,7 +279,7 @@ function SeasonalRisk(props: Props) {
         className={styles.riskTableContainer}
         heading="Risks by Month"
         sub
-        description="This table displays available information about specific disaster risks for for each month. When you move the slider from month to month, the information in the table will update automatically."
+        description="This table displays available information about specific disaster risks for for each month. When you move the slider from month to month, the information in the table will update automatically. Hold Shift to select a range of month."
         descriptionClassName={styles.tableDescription}
         contentClassName={styles.content}
       >
