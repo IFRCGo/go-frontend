@@ -285,12 +285,15 @@ function Multiplexer(props) {
               <PrivateRoute exact path='/flash-update/:id/edit/' component={FlashUpdateApplicationForm} />
               <PrivateRoute exact path='/flash-update/:id/' component={FlashUpdateReport} />
               <Route exact path='/dref-operational-update/new/' component={DrefOperationalUpdate} />
+
               <PrivateRoute key="new-dref-application-form" exact path='/dref-application/new/' component={DrefApplicationForm} />
+
               <PrivateRoute exact path='/dref-application/:drefId/edit/' component={DrefApplicationForm} />
               <PrivateRoute exact path='/dref-application/:drefId/export/' component={DrefPdfPreview} />
+
               <PrivateRoute exact path='/dref-operational-update/:id/edit/' component={DrefOperationalUpdate} />
               <PrivateRoute exact path='/dref-operational-update/:id/export/' component={OperationalUpdatePdfPreview} />
-              <PrivateRoute exact path='/dref-final-report/new/' component={FinalReport} />
+
               <PrivateRoute exact path='/dref-final-report/:id/edit/' component={FinalReport} />
               <PrivateRoute exact path='/dref-final-report/:id/export/' component={FinalReportPdfPreview} />
 
