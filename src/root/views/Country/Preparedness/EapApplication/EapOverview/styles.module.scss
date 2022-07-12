@@ -3,16 +3,23 @@
 .eap-overview {
   :global {
     .go-input-section {
-      margin: $spacing 0;
       box-shadow: $box-shadow-component;
     }
   }
+}
 
-  .content {
+.urban-to-rural {
+  .inputs {
     display: flex;
-    flex-wrap: wrap;
-    overflow: hidden;
-    flex-direction: column;
-    gap: $spacing*2;
   }
+}
+
+.key-partners {
+  display: flex;
+}
+
+.actions {
+  flex-basis: unset;
+  flex-grow: unset;
+  padding: $spacing;
 }

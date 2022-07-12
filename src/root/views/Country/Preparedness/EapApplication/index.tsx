@@ -21,6 +21,7 @@ import EapOverview from './EapOverview';
 
 import styles from './styles.module.scss';
 import { any } from 'prop-types';
+import Contacts from './Contacts';
 
 function scrollToTop() {
   window.setTimeout(() => {
@@ -151,8 +152,8 @@ function EapApplication(props: Props) {
         <TabPanel name="earlyActions">
           <h5>This is action</h5>
         </TabPanel>
-        <TabPanel name="contact">
-          <h5>This is contact</h5>
+        <TabPanel name="contacts">
+          <Contacts />
         </TabPanel>
         <div className={styles.actions}>
           <Button
