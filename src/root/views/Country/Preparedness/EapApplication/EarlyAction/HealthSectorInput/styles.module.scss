@@ -1,0 +1,44 @@
+@import '~styles/settings/variables';
+
+.health-sector-input {
+  display: flex;
+
+  .input-section {
+    display: flex;
+    justify-content: flex-end;
+    flex-grow: 1;
+  }
+
+  .remove-button {
+    align-self: flex-start;
+    flex-shrink: 0;
+    margin-right: $spacing*2;
+    padding: $spacing*0.25;
+  }
+
+  .addIndicatorContainer {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing*2;
+  }
+}
+
+.sector {
+  display: flex;
+
+  >* {
+    flex-grow: 1;
+    align-items: flex-end;
+    flex-basis: 0;
+  }
+}
+
+.add-risk-button {
+  padding-bottom: $spacing*2;
+}
+
+.early-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+}

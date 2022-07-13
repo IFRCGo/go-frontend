@@ -4,24 +4,28 @@ import {
   Error,
   EntriesAsList,
 } from '@togglecorp/toggle-form';
-import Container from '#components/Container';
-import InputSection from '#components/InputSection';
 
 import languageContext from '#root/languageContext';
+import {
+  IoAdd,
+  IoCloudUpload,
+} from 'react-icons/io5';
 
 import {
   EapsFields,
   BooleanValueOption,
 } from '../common';
-import styles from './styles.module.scss';
 import SearchSelectInput from '#components/SearchSelectInput';
 import DateInput from '#components/DateInput';
 import NumberInput from '#components/NumberInput';
-import InputLabel from '#components/InputLabel';
 import TextArea from '#components/TextArea';
+import Container from '#components/Container';
+import InputSection from '#components/InputSection';
 import DREFFileInput from '#components/DREFFileInput';
 import TextInput from '#components/TextInput';
 import Button from '#components/Button';
+
+import styles from './styles.module.scss';
 
 type Value = PartialForm<EapsFields>;
 
@@ -120,13 +124,13 @@ function EapOverview() {
         <InputSection
           title={strings.eapsFormEapOperationalTimeframe}
         >
-          <SearchSelectInput
+          <NumberInput
             name="operational_timeframe"
             value={undefined}
             onChange={undefined}
             error={undefined}
           >
-          </SearchSelectInput>
+          </NumberInput>
         </InputSection>
         <InputSection
           title={strings.eapsFormEapLeadTime}
@@ -264,6 +268,7 @@ function EapOverview() {
                 onClick={undefined}
                 variant="secondary"
               >
+                <IoAdd />
                 {strings.eapsFormAddKeyPartnersLabel}
               </Button>
             </div>
@@ -298,12 +303,12 @@ function EapOverview() {
                 onClick={undefined}
                 variant="secondary"
               >
+                <IoAdd />
                 {strings.eapsFormAddReferncesLabel}
               </Button>
             </div>
           </InputSection>
         </div>
-
       </Container>
       <Container
         className={styles.eapOverview}
@@ -322,6 +327,7 @@ function EapOverview() {
             showStatus
             value={undefined}
           >
+            <IoCloudUpload />
             {strings.eapsFormUploadEapsButtonLabel}
           </DREFFileInput>
         </InputSection>

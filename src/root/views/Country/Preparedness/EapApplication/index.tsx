@@ -18,10 +18,10 @@ import TabList from '#components/Tabs/TabList';
 import TabPanel from '#components/Tabs/TabPanel';
 import Tabs from '#components/Tabs';
 import EapOverview from './EapOverview';
+import Contacts from './Contacts';
+import EarlyAction from './EarlyAction';
 
 import styles from './styles.module.scss';
-import { any } from 'prop-types';
-import Contacts from './Contacts';
 
 function scrollToTop() {
   window.setTimeout(() => {
@@ -66,7 +66,7 @@ function EapApplication(props: Props) {
   //   setError: onErrorSet,
   //   setValue: onValueSet,
   // } = useForm(schema, { value: defaultFormValues });
-  const [currentStep, setCurrentStep] = React.useState<StepTypes>('eapOverview');
+  const [currentStep, setCurrentStep] = React.useState<StepTypes>('earlyActions');
   const submitButtonLabel = currentStep === 'contacts' ? strings.drefFormSaveButtonLabel : strings.drefFormContinueButtonLabel;
   const shouldDisabledBackButton = currentStep === 'eapOverview';
 
@@ -150,7 +150,7 @@ function EapApplication(props: Props) {
           <EapOverview />
         </TabPanel>
         <TabPanel name="earlyActions">
-          <h5>This is action</h5>
+         <EarlyAction />
         </TabPanel>
         <TabPanel name="contacts">
           <Contacts />

@@ -1,0 +1,19 @@
+@import '~styles/settings/_variables.scss';
+
+.early-action {
+  :global {
+    .go-input-section {
+      box-shadow: $box-shadow-component;
+    }
+  }
+}
+
+.sector {
+  display: flex;
+  justify-content: space-around;
+
+  >* {
+    flex-grow: 1;
+    flex-basis: 0;
+  }
+}
