@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo, } from 'react';
 import {
   Page as PDFPage,
   Text,
@@ -8,12 +8,12 @@ import {
   Image as PDFImage,
   Font,
 } from '@react-pdf/renderer';
-import {
-  addSeparator,
-  listToMap,
-} from '@togglecorp/fujs';
+import { listToMap } from '@togglecorp/fujs';
 
-import { isValidNumber } from '#utils/common';
+import {
+  formatBoolean,
+  formatNumber,
+} from '#utils/common';
 import {
   ONSET_IMMINENT,
 } from '#views/DrefApplicationForm/common';
@@ -24,11 +24,12 @@ import {
 } from '#types';
 import { resolveUrl } from '#utils/resolveUrl';
 import { DrefFinalReportApiFields } from '#views/FinalReportForm/common';
+import { PdfTextOutput } from '#components/PdfTextOutput';
 
 import montserratFont from './resources/montserrat.bold.ttf';
 import opensansFont from './resources/open-sans.regular.ttf';
 import opensansBoldFont from './resources/open-sans.bold.ttf';
-import pdfStyles from './pdfStyles';
+import pdfStyles from 'src/styles/pdf/pdfStyles';
 
 Font.register({
   family: 'Montserrat',
@@ -85,7 +86,7 @@ interface NeedIdentifiedProps {
 function NeedIdentified(props: NeedIdentifiedProps) {
   const {
     data,
-    niMap = {},
+    niMap,
   } = props;
 
   return (
@@ -100,7 +101,7 @@ function NeedIdentified(props: NeedIdentifiedProps) {
       </View>
       <View style={pdfStyles.niHeaderCell}>
         <Text>
-          {niMap[data.title]}
+          {niMap?.[data.title]}
         </Text>
       </View>
       <View style={pdfStyles.niContentCell}>
@@ -121,7 +122,7 @@ interface PlannedInterventionProps {
 function PlannedInterventionOutput(props: PlannedInterventionProps) {
   const {
     data,
-    piMap = {},
+    piMap,
     strings,
   } = props;
 
@@ -137,7 +138,7 @@ function PlannedInterventionOutput(props: PlannedInterventionProps) {
           )}
         </View>
         <Text style={pdfStyles.piHeaderCell}>
-          {piMap[data.title]}
+          {piMap?.[data.title]}
         </Text>
         <View style={[pdfStyles.piContentCell, { flexDirection: 'column' }]}>
           <View style={pdfStyles.piSubRow}>
@@ -182,21 +183,24 @@ function PlannedInterventionOutput(props: PlannedInterventionProps) {
       </View>
 
       {
-        data?.indicators?.map((el) => (
-          <View style={pdfStyles.piRow}>
+        data?.indicators?.map((indicator) => (
+          <View
+            style={pdfStyles.piRow}
+            key={indicator.id}
+          >
             <View style={pdfStyles.piContentCell}>
               <Text style={pdfStyles.piBorderCell}>
-                {el?.title}
+                {indicator?.title}
               </Text>
             </View>
             <View style={[pdfStyles.piHeaderCell, pdfStyles.fontWeightNormalAndSmall]}>
               <Text style={pdfStyles.fontWeightNormalAndSmall}>
-                {el?.target}
+                {indicator?.target}
               </Text>
             </View>
             <View style={[pdfStyles.piHeaderCell, pdfStyles.fontWeightNormalAndSmall]}>
               <Text style={pdfStyles.fontWeightNormalAndSmall}>
-                {el?.actual}
+                {indicator?.actual}
               </Text>
             </View>
           </View>
@@ -242,69 +246,6 @@ function PlannedInterventionOutput(props: PlannedInterventionProps) {
   );
 }
 
-function formatBoolean(value: boolean | undefined | null) {
-  if (value === true) {
-    return 'Yes';
-  }
-
-  if (value === false) {
-    return 'No';
-  }
-
-  return '-';
-}
-
-function formatNumber(value: number | undefined | null, prefix?: string): string {
-  const defaultValue = '-';
-
-  if (isValidNumber(value)) {
-    const formattedNumber = addSeparator(value) ?? defaultValue;
-
-    if (prefix) {
-      return `${prefix}${formattedNumber}`;
-    }
-
-    return formattedNumber;
-  }
-
-  return defaultValue;
-}
-
-function TextOutput(props: {
-  label: string;
-  value?: string;
-  columns?: '1/3' | '2/3' | '3/3' | '1/2';
-}) {
-  const {
-    label,
-    value,
-    columns = '1/3',
-  } = props;
-
-  const styleMap = {
-    '1/3': pdfStyles.oneByThree,
-    '2/3': pdfStyles.twoByThree,
-    '3/3': pdfStyles.threeByThree,
-    '1/2': pdfStyles.oneByTwo,
-  };
-
-  return (
-    <View
-      style={[
-        pdfStyles.textOutput,
-        styleMap[columns] ?? pdfStyles.oneByThree,
-      ]}
-    >
-      <Text style={pdfStyles.textOutputLabel}>
-        {label}
-      </Text>
-      <Text style={pdfStyles.textOutputValue}>
-        {value}
-      </Text>
-    </View>
-  );
-}
-
 interface DrefOptions {
   disaster_category: NumericKeyValuePair[];
   needs_identified: StringKeyValuePair[];
@@ -323,7 +264,6 @@ interface DrefOptions {
 interface Props {
   finalReportResponse: DrefFinalReportApiFields;
   drefOptions: DrefOptions;
-  // onLoad?: (params: { blob?: Blob }) => void;
   strings: Strings;
 }
 
@@ -336,42 +276,30 @@ function FinalReportPdfDocument(props: Props) {
     strings,
   } = props;
 
-  const getMaps = () => {
-    if (!drefOptions) {
-      return [
-        {},
-        {},
-        {},
-      ];
-    }
+  const niMap = useMemo(() => (
+    listToMap(
+      drefOptions?.planned_interventions,
+      intervention => intervention.key,
+      intervention => intervention.value,
+    )
+  ), [drefOptions]);
 
-    return [
-      listToMap(drefOptions.planned_interventions, d => d.key, d => d.value),
-      listToMap(drefOptions.needs_identified, d => d.key, d => d.value),
-    ];
-  };
-  const [
-    piMap,
-    niMap,
-  ] = getMaps();
+  const piMap = useMemo(() => (
+    listToMap(
+      drefOptions?.needs_identified,
+      need => need.key,
+      need => need.value,
+    )
+  ), [drefOptions]);
 
-  const getAffectedAreas = () => {
-    if (finalReportResponse?.country_district) {
-      let areas = '';
-      const districts = finalReportResponse.country_district.map(d => d.district_details);
+  const affectedAreas = useMemo(() => {
+    const districts = finalReportResponse?.country_district.map(d => d['district_details']);
+    const areas = districts.map(districtsList => {
+      return districtsList.map((districtItem) => districtItem.name).join(', ');
+    }).join(', ');
 
-      districts.forEach(d => {
-        const names = d.map(dd => dd.name);
-        areas += names.join(', ');
-      });
-
-      return areas;
-    }
-    return undefined;
-
-  };
-
-  const affectedAreas = getAffectedAreas();
+    return areas;
+  }, [finalReportResponse]);
 
   const isImminentOnset = finalReportResponse?.disaster_type === ONSET_IMMINENT;
   const documentTitle = [
@@ -411,30 +339,30 @@ function FinalReportPdfDocument(props: Props) {
         <View style={pdfStyles.section}>
           <View style={pdfStyles.basicInfoTable}>
             <View style={pdfStyles.compactSection} wrap={false}>
-              <TextOutput
+              <PdfTextOutput
                 label={strings.finalReportExportAppealNum}
                 value={finalReportResponse.appeal_code}
               />
-              <TextOutput
+              <PdfTextOutput
                 label={strings.finalReportExportTotalAllocation}
                 value={formatNumber(finalReportResponse.total_dref_allocation, 'CHF ' ?? '-')}
                 columns="2/3"
               />
             </View>
             <View style={pdfStyles.compactSection} wrap={false}>
-              <TextOutput
+              <PdfTextOutput
                 label={strings.finalReportExportGlideNum}
                 value={finalReportResponse.glide_code}
               />
               <View style={pdfStyles.twoByThree}>
                 <View style={pdfStyles.compactSection}>
                   <View style={pdfStyles.compactSection}>
-                    <TextOutput
+                    <PdfTextOutput
                       label={strings.finalReportExportPeopleAffected}
                       value={formatNumber(finalReportResponse.number_of_people_affected)}
                       columns="1/2"
                     />
-                    <TextOutput
+                    <PdfTextOutput
                       label={strings.finalReportExportPeopleTargeted}
                       value={formatNumber(finalReportResponse.number_of_people_targeted)}
                       columns="1/2"
@@ -443,18 +371,18 @@ function FinalReportPdfDocument(props: Props) {
                 </View>
                 <View style={pdfStyles.compactSection}>
                   <View style={pdfStyles.compactSection}>
-                    <TextOutput
+                    <PdfTextOutput
                       label={strings.finalReportExportDateOfPublication}
                       value={finalReportResponse.date_of_publication}
                       columns="1/2"
                     />
                     <View style={[pdfStyles.compactSection, pdfStyles.oneByTwo]}>
-                      <TextOutput
+                      <PdfTextOutput
                         label={strings.finalReportExportStartOfOperation}
                         value={finalReportResponse.operation_start_date}
                         columns="1/2"
                       />
-                      <TextOutput
+                      <PdfTextOutput
                         label={strings.finalReportExportTotalOperatingTimeFrame}
                         value={formatNumber(finalReportResponse.total_operation_timeframe)}
                         columns="1/2"
@@ -463,7 +391,7 @@ function FinalReportPdfDocument(props: Props) {
                   </View>
                 </View>
                 <View style={pdfStyles.compactSection}>
-                  <TextOutput
+                  <PdfTextOutput
                     label={strings.finalReportExportAffectedArea}
                     value={affectedAreas}
                     columns="3/3"
