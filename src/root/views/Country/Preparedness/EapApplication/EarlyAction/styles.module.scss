@@ -8,12 +8,21 @@
   }
 }
 
-.sector {
-  display: flex;
-  justify-content: space-around;
+.sector-container {
+  background-color: $white;
 
-  >* {
-    flex-grow: 1;
-    flex-basis: 0;
+  .sector {
+    display: flex;
+    justify-content: space-around;
+    width: 50%;
+
+    >* {
+      flex-grow: 1;
+      flex-basis: 0;
+    }
+
+    .early-action-button {
+      flex-grow: 0;
+    }
   }
 }

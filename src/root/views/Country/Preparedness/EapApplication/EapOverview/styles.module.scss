@@ -3,8 +3,20 @@
 .eap-overview {
   :global {
     .go-input-section {
-      box-shadow: $box-shadow-component;
+      width: 100%;
     }
+  }
+
+  .eap-overview-container {
+    background-color: $white;
+  }
+
+  .eap-country {
+    display: flex;
+  }
+
+  .eap-disaster {
+    width: 50%;
   }
 }
 
@@ -21,5 +33,13 @@
 .actions {
   flex-basis: unset;
   flex-grow: unset;
-  padding: $spacing;
+
+  .add-key-button {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: $spacing;
+  }
+}
+.upload-document{
+  padding: $spacing/4;
 }

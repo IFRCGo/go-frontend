@@ -5,11 +5,9 @@ import { Link } from 'react-router-dom';
 
 import Container from '#components/Container';
 import LanguageContext from '#root/languageContext';
-import Card from '#components/Card';
 import PreparednessCard from './PreparednessCard';
 import { useButtonFeatures } from '#components/Button';
-
-import Button from '#components/Button';
+import { IoAdd } from 'react-icons/io5';
 
 import styles from './styles.module.scss';
 
@@ -28,6 +26,7 @@ function Preparedness(props: Props) {
 
   const addPreparedness = useButtonFeatures({
     variant: 'secondary',
+    icons: <IoAdd />,
     children: 'Add',
   });
 
@@ -46,11 +45,7 @@ function Preparedness(props: Props) {
         </>
       )}
     >
-      <>
-        <Card>
-          <PreparednessCard />
-        </Card>
-      </>
+      <PreparednessCard />
     </Container>
   );
 }

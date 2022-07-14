@@ -16,20 +16,22 @@
     padding: $spacing*0.25;
   }
 
-  .addIndicatorContainer {
-    display: flex;
-    flex-direction: column;
-    gap: $spacing*2;
-  }
 }
 
 .sector {
   display: flex;
+  justify-content: flex-start;
 
   >* {
     flex-grow: 1;
+    justify-content: flex-start;
     align-items: flex-end;
     flex-basis: 0;
+  }
+  .indicator {
+    width: 100%;
+    padding: $spacing*2;
+    background-color: $white;
   }
 }
 
@@ -39,6 +41,7 @@
 
 .early-actions {
   display: flex;
+  flex-grow: 1;
   justify-content: space-between;
   align-items: flex-end;
 }

@@ -3613,6 +3613,8 @@ export default {
   countryPreparednessSubHeading: 'EAPs are a formal plan that guide timely and effective implementation of early action for extreme weather events, based on pre agreed triggers.',
 
   //Early Action Protocol summary
+  eapsFormDateofApproval: 'Date of Approval',
+  eapsFormStatus: 'Status',
   eapsFormSaveButtonLabel: 'Save',
   eapsFormPageTitle: 'IFRC GO - Early Action Protocol Summary',
   eapsFormPageHeading: 'Early Action Protocol Summary',
@@ -3650,12 +3652,10 @@ export default {
   eapsFormPartnersAndRefernces: 'Partners & Reference',
   eapsFormKeyPartners: 'Key Partners',
   eapsFormKeyPartnersDescription: 'Enter the partners name and link to their website (if available)',
-  eapsFormKeyPartnersLabel: 'Partner Name',
   eapsFormKeyPartnersPlaceholder: 'Enter partner name',
-  eapsFormkeyPartnersUrl: 'URL',
   eapsFormAddKeyPartnersLabel: 'Add key partner',
   eapsFormReferences: 'Reference',
-  eapsFormReferencesLabel: 'Source Name',
+  eapsFormUrlTitle: 'URL',
   eapsFormReferencesDescription: 'Enter key information sources used for the trigger development and the risk and vulnerability analysis.',
   eapsFormReferncesPlaceholder: 'Enter source name',
   eapsFormAddReferncesLabel: 'Add',

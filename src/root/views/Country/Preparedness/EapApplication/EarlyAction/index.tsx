@@ -15,29 +15,30 @@ function EarlyAction() {
   return (
     <>
       <Container
-        className={styles.earlyAction}
         heading={strings.eapsFormPrioritizedRisksAndSelectedEarlyActions}
       >
-        <div className={styles.sector}>
-          <InputSection
-            title={strings.eapsFormSector}
-          >
-            <SearchSelectInput
-              name="eap_country"
-              value={undefined}
-              onChange={undefined}
-              error={undefined}
-            />
-            <Button
-              className={styles.earlyActionButton}
-              name={undefined}
-              onClick={undefined}
-              variant="secondary"
+        <div className={styles.sectorContainer}>
+          <div className={styles.sector}>
+            <InputSection
+              title={strings.eapsFormSector}
             >
-              <IoAdd />
-              {strings.eapsFormAddButtonLabel}
-            </Button>
-          </InputSection>
+              <SearchSelectInput
+                name="eap_country"
+                value={undefined}
+                onChange={undefined}
+                error={undefined}
+              />
+              <Button
+                className={styles.earlyActionButton}
+                name={undefined}
+                onClick={undefined}
+                variant="secondary"
+              >
+                <IoAdd />
+                {strings.eapsFormAddButtonLabel}
+              </Button>
+            </InputSection>
+          </div>
         </div>
         {/* {value?.planned_interventions?.map((n, i) => ( */}
         <HealthSectorInput

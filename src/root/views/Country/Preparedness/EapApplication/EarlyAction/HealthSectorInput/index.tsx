@@ -45,27 +45,23 @@ function HealthSectorInput() {
         </InputSection>
       </div>
       <div className={styles.sector}>
-        <InputSection
+        <SearchSelectInput
+          label={strings.eapsFormSectorIndicator}
           className={styles.indicator}
-        >
-          <SearchSelectInput
-            label={strings.eapsFormSectorIndicator}
-            name="eap_country"
-            value={undefined}
-            onChange={undefined}
-            error={undefined}
-          />
-        </InputSection>
-        <InputSection>
-          <NumberInput
-            label={strings.eapsFormSectorIndicatorValue}
-            name="eap_country"
-            placeholder={strings.eapsFormSectorPlaceholder}
-            value={undefined}
-            onChange={undefined}
-            error={undefined}
-          />
-        </InputSection>
+          name="eap_country"
+          value={undefined}
+          onChange={undefined}
+          error={undefined}
+        />
+        <NumberInput
+          label={strings.eapsFormSectorIndicatorValue}
+          className={styles.indicator}
+          name="eap_country"
+          placeholder={strings.eapsFormSectorPlaceholder}
+          value={undefined}
+          onChange={undefined}
+          error={undefined}
+        />
         <InputSection
           className={styles.indicator}
         >

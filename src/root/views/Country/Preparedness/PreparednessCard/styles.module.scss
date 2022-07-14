@@ -1,6 +1,32 @@
 @import '~styles/settings/variables';
 
-.eap-tab{
+.preparedness-card {
+  display: flex;
+  justify-content: left;
+  gap: $spacing*3;
+  width: auto;
+
+  .eap-tab {
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
+    padding: $spacing;
+  }
+
+  .link {
+    color: $primary-color;
+    font-weight: bold;
+  }
+
+  .eap-approve-tab {
+    display: flex;
+    justify-content: space-between;
+    padding: $spacing;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+  }
+
+  .eap-activation-tab {
+    display: flex;
+    justify-content: space-between;
+  }
 }

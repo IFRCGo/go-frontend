@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import {
   listToMap,
 } from '@togglecorp/fujs';
@@ -22,16 +22,6 @@ import Contacts from './Contacts';
 import EarlyAction from './EarlyAction';
 
 import styles from './styles.module.scss';
-
-function scrollToTop() {
-  window.setTimeout(() => {
-    window.scrollTo({
-      top: Math.min(145, window.scrollY),
-      left: 0,
-      behavior: 'smooth',
-    });
-  }, 0);
-}
 
 interface Props {
   className?: string;
@@ -66,12 +56,11 @@ function EapApplication(props: Props) {
   //   setError: onErrorSet,
   //   setValue: onValueSet,
   // } = useForm(schema, { value: defaultFormValues });
-  const [currentStep, setCurrentStep] = React.useState<StepTypes>('earlyActions');
+  const [currentStep, setCurrentStep] = React.useState<StepTypes>('eapOverview');
   const submitButtonLabel = currentStep === 'contacts' ? strings.drefFormSaveButtonLabel : strings.drefFormContinueButtonLabel;
   const shouldDisabledBackButton = currentStep === 'eapOverview';
 
   const handleTabChange = React.useCallback((newStep: StepTypes) => {
-    scrollToTop();
     setCurrentStep(newStep);
   }, []);
 
