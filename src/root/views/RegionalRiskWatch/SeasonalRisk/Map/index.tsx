@@ -277,6 +277,7 @@ function Choropleth(props: ChoroplethProps) {
       if (selectedRiskMetric === 'displacement') {
         const displacement = getSumForSelectedMonths(
           riskData?.displacement?.monthly,
+          riskData?.displacement?.annualAverage,
           selectedMonths,
         );
         let color = COLOR_LIGHT_GREY;
@@ -306,6 +307,7 @@ function Choropleth(props: ChoroplethProps) {
       if (selectedRiskMetric === 'exposure') {
         const exposure = getSumForSelectedMonths(
           riskData?.exposure?.monthly,
+          riskData?.displacement?.annualAverage,
           selectedMonths,
         );
 
@@ -339,6 +341,7 @@ function Choropleth(props: ChoroplethProps) {
       if (selectedRiskMetric === 'informRiskScore') {
         const riskScore = getSumForSelectedMonths(
           riskData?.informRiskScore?.monthly,
+          riskData?.informRiskScore?.annualAverage,
           selectedMonths,
         );
         let color = COLOR_LIGHT_GREY;

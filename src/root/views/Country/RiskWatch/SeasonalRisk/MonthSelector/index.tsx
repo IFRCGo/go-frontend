@@ -54,15 +54,23 @@ function MonthSelector<T>(props: Props<T>) {
       const numSelection = Object.values(value).filter(Boolean).length;
       const newValue = { ...value };
 
-      if (!shiftPressedRef.current) {
-          for (let i = 0; i < 12; i = i + 1) {
-            newValue[i] = false;
-          }
+      // Yearly Avg Selected
+      if (month === 12) {
+        for (let i = 0; i <= 12; i = i + 1) {
+          newValue[i] = false;
+        }
 
-          newValue[month] = true;
+        newValue[month] = true;
+      } else if (!shiftPressedRef.current || newValue[12]) {
+        // Shift not pressed, only selecting single value
+        for (let i = 0; i <= 12; i = i + 1) {
+          newValue[i] = false;
+        }
+
+        newValue[month] = true;
       } else if (value[month]) {
         if (numSelection > 1) {
-          for (let i = 0; i < 12; i = i + 1) {
+          for (let i = 0; i <= 12; i = i + 1) {
             newValue[i] = false;
           }
 
@@ -79,8 +87,7 @@ function MonthSelector<T>(props: Props<T>) {
           const startIndex = Math.min(prevMonth, month);
           const endIndex = Math.max(prevMonth, month);
 
-
-          for (let i = 0; i < 12; i = i + 1) {
+          for (let i = 0; i <= 12; i = i + 1) {
             if (i >= startIndex && i <= endIndex) {
               newValue[i] = true;
             } else {
@@ -88,7 +95,7 @@ function MonthSelector<T>(props: Props<T>) {
             }
           }
         } else {
-          for (let i = 0; i < 12; i = i + 1) {
+          for (let i = 0; i <= 12; i = i + 1) {
             newValue[i] = false;
           }
 
@@ -102,33 +109,50 @@ function MonthSelector<T>(props: Props<T>) {
 
   return (
     <div className={_cs(styles.monthSelector, className)}>
-      <div className={styles.track} />
-      {monthNameList.map((m, i) => (
-        <React.Fragment key={m}>
-          <RawButton
-            name={i}
-            className={_cs(
-              styles.tickItem,
-              value[i] && styles.active,
-            )}
-            onClick={handleClick}
-          >
-            <div className={styles.monthName}>
-              {m}
-            </div>
-            <div className={styles.tick} />
-          </RawButton>
-          {i < (monthNameList.length - 1) && (
-            <div
+      <div className={styles.monthList}>
+        <div className={styles.track} />
+        {monthNameList.map((m, i) => (
+          <React.Fragment key={m}>
+            <RawButton
+              name={i}
               className={_cs(
-                styles.track,
-                i < 11 && value[i] && value[i + 1] && styles.activeTrack,
+                styles.tickItem,
+                value[i] && styles.active,
               )}
-            />
+              onClick={handleClick}
+            >
+              <div className={styles.monthName}>
+                {m}
+              </div>
+              <div className={styles.tick} />
+            </RawButton>
+            {i < (monthNameList.length - 1) && (
+              <div
+                className={_cs(
+                  styles.track,
+                  i < 11 && value[i] && value[i + 1] && styles.activeTrack,
+                )}
+              />
+            )}
+          </React.Fragment>
+        ))}
+        <div className={styles.track} />
+      </div>
+      <div className={styles.yearlyAverage}>
+        <RawButton
+          name={12}
+          className={_cs(
+            styles.tickItem,
+            value[12] && styles.active,
           )}
-        </React.Fragment>
-      ))}
-      <div className={styles.track} />
+          onClick={handleClick}
+        >
+          <div className={styles.monthName}>
+            Yearly Avg
+          </div>
+          <div className={styles.tick} />
+        </RawButton>
+      </div>
     </div>
   );
 }
