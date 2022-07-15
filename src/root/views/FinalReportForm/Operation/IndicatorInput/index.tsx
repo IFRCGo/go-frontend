@@ -27,7 +27,6 @@ interface Props {
   onChange: (value: SetValueArg<PartialForm<Indicator>>, index: number) => void;
   onRemove: (index: number) => void;
   index: number;
-  showNewFieldOperational?: boolean;
 }
 
 function IndicatorInput(props: Props) {
@@ -39,7 +38,6 @@ function IndicatorInput(props: Props) {
     value,
     index,
     onRemove,
-    showNewFieldOperational,
   } = props;
 
   const onFieldChange = useFormObject(index, onChange, defaultIndicatorValue);
@@ -64,24 +62,20 @@ function IndicatorInput(props: Props) {
           onChange={onFieldChange}
           error={error?.target}
         />
-
-        {
-          showNewFieldOperational && (
-            <NumberInput
-              label={strings.drefOperationalUpdateIndicatorActualLabel}
-              name="actual"
-              value={value.actual}
-              onChange={onFieldChange}
-              error={error?.actual}
-            />
-          )
-        }
+        <NumberInput
+          label={strings.drefOperationalUpdateIndicatorActualLabel}
+          name="actual"
+          value={value.actual}
+          onChange={onFieldChange}
+          error={error?.actual}
+        />
       </div>
       <div>
         <Button
           name={index}
           onClick={onRemove}
           variant="action"
+
         >
           <IoTrash />
         </Button>

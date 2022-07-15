@@ -1,4 +1,9 @@
-import React from 'react';
+import React, {
+  useCallback,
+  useMemo,
+  useContext,
+  useState,
+} from 'react';
 import { Link, match } from 'react-router-dom';
 import {
   History,
@@ -34,6 +39,7 @@ import {
   useLazyRequest,
   useRequest,
 } from '#utils/restRequest';
+import scrollToTop from '#utils/scrollToTop';
 
 import {
   DrefFinalReportFields,
@@ -54,16 +60,15 @@ import useDrefFinalReportFormOptions, { schema } from './useDreFinalReportOption
 
 import styles from './styles.module.scss';
 
-function scrollToTop() {
-  window.setTimeout(() => {
-    window.scrollTo({
-      top: Math.min(145, window.scrollY),
-      left: 0,
-      behavior: 'smooth',
-    });
-  }, 0);
-}
-
+//function scrollToTop() {
+//  window.setTimeout(() => {
+//    window.scrollTo({
+//      top: Math.min(145, window.scrollY),
+//      left: 0,
+//      behavior: 'smooth',
+//    });
+//  }, 0);
+//}
 interface Props {
   match: match<{ id?: string }>;
   history: History;
@@ -125,13 +130,13 @@ function FinalReport(props: Props) {
 
   } = useDrefFinalReportFormOptions(value);
 
-  const [fileIdToUrlMap, setFileIdToUrlMap] = React.useState<Record<number, string>>({});
-  const { strings } = React.useContext(languageContext);
-  const [currentStep, setCurrentStep] = React.useState<StepTypes>('operationOverview');
+  const [fileIdToUrlMap, setFileIdToUrlMap] = useState<Record<number, string>>({});
+  const { strings } = useContext(languageContext);
+  const [currentStep, setCurrentStep] = useState<StepTypes>('operationOverview');
   const submitButtonLabel = currentStep === 'submission' ? strings.drefFormSaveButtonLabel : strings.drefFormContinueButtonLabel;
   const shouldDisabledBackButton = currentStep === 'operationOverview';
 
-  const erroredTabs = React.useMemo(() => {
+  const erroredTabs = useMemo(() => {
     const safeErrors = getErrorObject(error) ?? {};
 
     const tabs: {
@@ -167,7 +172,7 @@ function FinalReport(props: Props) {
     );
   }, [error]);
 
-  const validateCurrentTab = React.useCallback((exceptions: (keyof DrefFinalReportFields)[] = []) => {
+  const validateCurrentTab = useCallback((exceptions: (keyof DrefFinalReportFields)[] = []) => {
     const validationError = getErrorObject(accumulateErrors(value, schema, value, undefined));
     const currentFields = stepTypesToFieldsMap[currentStep];
     const exceptionsMap = listToMap(exceptions, d => d, d => true);
@@ -192,7 +197,7 @@ function FinalReport(props: Props) {
     return !hasError;
   }, [value, currentStep, setError]);
 
-  const handleTabChange = React.useCallback((newStep: StepTypes) => {
+  const handleTabChange = useCallback((newStep: StepTypes) => {
     scrollToTop();
     setCurrentStep(newStep);
   }, []);
@@ -305,7 +310,7 @@ function FinalReport(props: Props) {
     }
   });
 
-  const handleBackButtonClick = React.useCallback(() => {
+  const handleBackButtonClick = useCallback(() => {
     if (currentStep !== 'operationOverview') {
       const prevStepMap: {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -320,7 +325,7 @@ function FinalReport(props: Props) {
     }
   }, [handleTabChange, currentStep]);
 
-  const submitDrefFinalReport = React.useCallback(() => {
+  const submitDrefFinalReport = useCallback(() => {
     const result = validate();
 
     if (result.errored) {
@@ -334,7 +339,7 @@ function FinalReport(props: Props) {
     }
   }, [submitRequest, setError, validate, userDetails]);
 
-  const handleSubmitButtonClick = React.useCallback(() => {
+  const handleSubmitButtonClick = useCallback(() => {
     scrollToTop();
     const isCurrentTabValid = validateCurrentTab(['title']);
     if (!isCurrentTabValid) {
@@ -373,6 +378,37 @@ function FinalReport(props: Props) {
   });
 
   const isImminentOnset = value?.type_of_onset === ONSET_IMMINENT;
+
+  const drefLoadingStatus = useMemo(() => (
+    <>
+      {
+        pending &&
+        <Container>
+          <BlockLoading />
+        </Container>
+      }
+      {
+        failedToLoadDref &&
+        <Container
+          contentClassName={styles.errorMessage}
+        >
+          <h3>
+            {strings.finalReportFailureMessage}
+          </h3>
+          <p>
+            {strings.drefFormLoadErrorDescription}
+          </p>
+          <p>
+            {strings.finalReportErrorDescription}
+          </p>
+        </Container>
+      }
+    </>
+  ), [
+    strings,
+    pending,
+    failedToLoadDref,
+  ]);
 
   return (
     <Tabs
@@ -442,104 +478,85 @@ function FinalReport(props: Props) {
           </TabList>
         )}
       >
-        {pending ? (
-          <Container>
-            <BlockLoading />
-          </Container>
-        ) : (
-          failedToLoadDref ? (
-            <Container
-              contentClassName={styles.errorMessage}
-            >
-              <h3>
-                {strings.finalReportFailureMessage}
-              </h3>
-              <p>
-                {strings.drefFormLoadErrorDescription}
-              </p>
-              <p>
-                {strings.finalReportErrorDescription}
-              </p>
+        {drefLoadingStatus}
+        {!pending && !failedToLoadDref && (
+          <>
+            <Container>
+              <NonFieldError
+                error={error}
+                message={strings.drefFormFieldGeneralError}
+              />
             </Container>
-          ) : (
-            <>
-              <Container>
-                <NonFieldError
-                  error={error}
-                  message="Please correct all the errors"
-                />
-              </Container>
-              <TabPanel name='operationOverview'>
-                <Overview
-                  error={error}
-                  onValueChange={onValueChange}
-                  value={value}
-                  disasterTypeOptions={disasterTypeOptions}
-                  onsetOptions={onsetOptions}
-                  disasterCategoryOptions={disasterCategoryOptions}
-                  countryOptions={countryOptions}
-                  fetchingCountries={fetchingCountries}
-                  fetchingDisasterTypes={fetchingDisasterTypes}
-                  nationalSocietyOptions={nationalSocietyOptions}
-                  fetchingNationalSociety={fetchingCountries}
-                />
-              </TabPanel>
-              <TabPanel name='eventDetails'>
-                <EventDetails
-                  error={error}
-                  onValueChange={onValueChange}
-                  value={value}
-                  isImminentOnset={isImminentOnset}
-                  fileIdToUrlMap={fileIdToUrlMap}
-                  setFileIdToUrlMap={setFileIdToUrlMap}
-                />
-              </TabPanel>
-              <TabPanel name='needs'>
-                <Needs
-                  error={error}
-                  onValueChange={onValueChange}
-                  value={value}
-                  yesNoOptions={yesNoOptions}
-                  needOptions={needOptions}
-                />
-              </TabPanel>
-              <TabPanel name='operation'>
-                <Operation
-                  interventionOptions={interventionOptions}
-                  error={error}
-                  onValueChange={onValueChange}
-                  value={value}
-                  fileIdToUrlMap={fileIdToUrlMap}
-                  setFileIdToUrlMap={setFileIdToUrlMap}
-                  yesNoOptions={yesNoOptions}
-                />
-              </TabPanel>
-              <TabPanel name='submission'>
-                <Submission
-                  error={error}
-                  onValueChange={onValueChange}
-                  value={value}
-                />
-              </TabPanel>
-              <div className={styles.actions}>
-                <Button
-                  name={undefined}
-                  variant="secondary"
-                  onClick={handleBackButtonClick}
-                  disabled={shouldDisabledBackButton}
-                >
-                  {strings.drefFormBackButtonLabel}
-                </Button>
-                <Button
-                  name={undefined}
-                  variant="secondary"
-                  onClick={handleSubmitButtonClick}
-                >
-                  {submitButtonLabel}
-                </Button>
-              </div>
-            </>
-          )
+            <TabPanel name='operationOverview'>
+              <Overview
+                error={error}
+                onValueChange={onValueChange}
+                value={value}
+                disasterTypeOptions={disasterTypeOptions}
+                onsetOptions={onsetOptions}
+                disasterCategoryOptions={disasterCategoryOptions}
+                countryOptions={countryOptions}
+                fetchingCountries={fetchingCountries}
+                fetchingDisasterTypes={fetchingDisasterTypes}
+                nationalSocietyOptions={nationalSocietyOptions}
+                fetchingNationalSociety={fetchingCountries}
+              />
+            </TabPanel>
+            <TabPanel name='eventDetails'>
+              <EventDetails
+                error={error}
+                onValueChange={onValueChange}
+                value={value}
+                isImminentOnset={isImminentOnset}
+                fileIdToUrlMap={fileIdToUrlMap}
+                setFileIdToUrlMap={setFileIdToUrlMap}
+              />
+            </TabPanel>
+            <TabPanel name='needs'>
+              <Needs
+                error={error}
+                onValueChange={onValueChange}
+                value={value}
+                yesNoOptions={yesNoOptions}
+                needOptions={needOptions}
+              />
+            </TabPanel>
+            <TabPanel name='operation'>
+              <Operation
+                interventionOptions={interventionOptions}
+                error={error}
+                onValueChange={onValueChange}
+                value={value}
+                fileIdToUrlMap={fileIdToUrlMap}
+                setFileIdToUrlMap={setFileIdToUrlMap}
+                yesNoOptions={yesNoOptions}
+              />
+            </TabPanel>
+            <TabPanel name='submission'>
+              <Submission
+                error={error}
+                onValueChange={onValueChange}
+                value={value}
+              />
+            </TabPanel>
+            <div className={styles.actions}>
+              <Button
+                name={undefined}
+                variant="secondary"
+                onClick={handleBackButtonClick}
+                disabled={shouldDisabledBackButton}
+              >
+                {strings.drefFormBackButtonLabel}
+              </Button>
+              <Button
+                name={undefined}
+                variant="secondary"
+                onClick={handleSubmitButtonClick}
+              >
+                {submitButtonLabel}
+              </Button>
+            </div>
+          </>
         )}
       </Page>
     </Tabs>
