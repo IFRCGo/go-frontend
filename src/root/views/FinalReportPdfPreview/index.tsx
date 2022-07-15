@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import type { match as Match } from 'react-router-dom';
 import { PDFViewer } from '@react-pdf/renderer';
+import { isNotDefined } from '@togglecorp/fujs';
 
 import BlockLoading from '#components/block-loading';
 import Page from '#components/Page';
@@ -11,6 +12,8 @@ import {
   StringKeyValuePair,
 } from '#types';
 import { DrefFinalReportApiFields } from '#views/FinalReportForm/common';
+import useAlert from '#hooks/useAlert';
+import Container from '#components/Container';
 
 import FinalReportPdfDocument from '../../components/FinalReportExport/FinalReportPdfDocument';
 
@@ -37,6 +40,7 @@ interface OperationalUpdateOptions {
 }
 
 function FinalReportPdfPreview(props: Props) {
+  const alert = useAlert();
   const { strings } = React.useContext(LanguageContext);
   const {
     className,
@@ -51,6 +55,24 @@ function FinalReportPdfPreview(props: Props) {
   } = useRequest<DrefFinalReportApiFields>({
     skip: !id,
     url: `api/v2/dref-final-report/${id}/`,
+    onFailure: ({
+      value: { messageForNotification },
+      debugMessage,
+    }) => {
+      alert.show(
+        <p>
+          {strings.drefLoadPdfFailureMessage}
+          &nbsp;
+          <strong>
+            {messageForNotification}
+          </strong>
+        </p>,
+        {
+          variant: 'danger',
+          debugMessage,
+        },
+      );
+    }
   });
 
   const {
@@ -59,17 +81,64 @@ function FinalReportPdfPreview(props: Props) {
   } = useRequest<OperationalUpdateOptions>({
     skip: !id,
     url: 'api/v2/dref-options/',
+    onFailure: ({
+      value: { messageForNotification },
+      debugMessage,
+    }) => {
+      alert.show(
+        <p>
+          {strings.drefLoadPdfFailureMessage}
+          &nbsp;
+          <strong>
+            {messageForNotification}
+          </strong>
+        </p>,
+        {
+          variant: 'danger',
+          debugMessage,
+        },
+      );
+    },
   });
 
   const pending = fetchingFinalReport || fetchingDrefOptions;
 
+  const failedToLoadPdf = !pending && isNotDefined(id);
+
+  const pdfLoadingStatus = useMemo(() => {
+    if (pending) {
+      return (
+        <Container>
+          <BlockLoading />
+        </Container>
+      );
+    }
+
+    if (failedToLoadPdf) {
+      return (
+        <Container
+          contentClassName={styles.errorMessage}
+        >
+          <h3>
+            {strings.drefLoadPdfFailureMessage}
+          </h3>
+        </Container>
+      );
+    }
+  }, [
+    strings,
+    pending,
+    failedToLoadPdf,
+  ]);
+
   return (
     <Page
       className={className}
-      heading="Final Report Export"
+      heading={strings.finalReportExport}
     >
-      {pending && <BlockLoading />}
-      {!pending && finalReportResponse && drefOptions && (
+      {pdfLoadingStatus}
+
+      {!pdfLoadingStatus && finalReportResponse && drefOptions && (
         <PDFViewer
           className={styles.pdfPreview}
         >
