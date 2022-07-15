@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { randomString } from '@togglecorp/fujs';
 import {
   PartialForm,
@@ -45,7 +45,7 @@ function NeedInput(props: Props) {
     onRemove,
   } = props;
 
-  const needLabel = React.useMemo(() => (
+  const needLabel = useMemo(() => (
     needOptions.find(n => n.value === value.title)?.label
   ), [needOptions, value]);
 

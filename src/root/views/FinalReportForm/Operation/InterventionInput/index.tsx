@@ -1,4 +1,9 @@
-import React from 'react';
+import React, {
+  useContext,
+  useState,
+  useCallback,
+  useMemo,
+} from 'react';
 import { randomString } from '@togglecorp/fujs';
 import {
   PartialForm,
@@ -38,12 +43,11 @@ interface Props {
   onRemove: (index: number) => void;
   index: number;
   interventionOptions: StringValueOption[];
-  showNewFieldOperational: boolean;
 }
 
 function InterventionInput(props: Props) {
-  const { strings } = React.useContext(LanguageContext);
-  const [indicator, setIndicator] = React.useState<number | undefined>();
+  const { strings } = useContext(LanguageContext);
+  const [indicator, setIndicator] = useState<number | undefined>();
 
   const {
     error: errorFromProps,
@@ -52,10 +56,9 @@ function InterventionInput(props: Props) {
     index,
     interventionOptions,
     onRemove,
-    showNewFieldOperational,
   } = props;
 
-  const interventionLabel = React.useMemo(() => (
+  const interventionLabel = useMemo(() => (
     interventionOptions.find(n => n.value === value.title)?.label
   ), [interventionOptions, value]);
 
@@ -73,9 +76,9 @@ function InterventionInput(props: Props) {
   );
 
   type Indicators = typeof value.indicators;
-  const handleIndicatorAddButtonClick = React.useCallback((title, target) => {
+  const handleIndicatorAddButtonClick = useCallback((title, target) => {
     const clientId = randomString();
-    const newList: PartialForm<IndicatorType> = {
+    const newIndicatorItem: PartialForm<IndicatorType> = {
       clientId,
       title,
       target,
@@ -83,7 +86,7 @@ function InterventionInput(props: Props) {
 
     onFieldChange(
       (oldValue: PartialForm<Indicators>) => (
-        [...(oldValue ?? []), newList]
+        [...(oldValue ?? []), newIndicatorItem]
       ),
       'indicators' as const,
     );
@@ -166,15 +169,14 @@ function InterventionInput(props: Props) {
               Add Indicator
             </Button>
             {
-              value?.indicators?.map((n, i) => (
+              value?.indicators?.map((i, n) => (
                 <IndicatorInput
-                  key={n.clientId}
-                  index={i}
-                  value={n}
+                  key={i.clientId}
+                  index={n}
+                  value={i}
                   onChange={onIndicatorChange}
                   onRemove={onIndicatorRemove}
                   error={getErrorObject(error?.indicators)}
-                  showNewFieldOperational={showNewFieldOperational}
                 />
               ))
             }
