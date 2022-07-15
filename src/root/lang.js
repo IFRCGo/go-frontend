@@ -3128,7 +3128,7 @@ export default {
   drefFormAddRegion: 'Region/Province',
   // Imminent
   drefFormRiskCountryLabel: 'At Risk Country and Region(s)',
-  drefFormRiskPeopleLabel: 'People At Risk',
+  drefFormRiskPeopleLabel: 'People at Risk',
   drefFormDateOfImpact: 'Forecasted Date of Impact',
   drefFormNSAnticipatoryAction: 'National Society anticipatory actions started',
   drefFormDisasterCategoryLabel: 'Disaster Category',
@@ -3255,6 +3255,7 @@ export default {
   drefFormLoadErrorDescription: 'There was an error loading the DREF Application',
   drefFormLoadErrorHelpText: 'Please make sure that the application with given id exists and you have the permission to view it',
   drefFormFieldGeneralError: 'Please correct all the errors!',
+  drefLoadPdfFailureMessage: 'Failed to create/load PDF',
 
   drefFormBudgetTemplateLabel: 'Budget template',
   drefFormBudgetTemplateUploadButtonLabel: 'Upload your budget summary',
@@ -3620,7 +3621,7 @@ export default {
   finalReportTabSubmission: 'Submission',
 
   finalReportCreateButtonLabel: 'Create a Final Report',
-  finalReportEditButtonLabel: 'Edit last Final Report',
+  finalReportEditButtonLabel: 'Edit Last Final Report',
   finalReportPublishButtonLabel: 'Publish Final Report',
 
   finalReportOperationOverviewTitle: 'operation overview',
@@ -3640,7 +3641,7 @@ export default {
   finalReportAddCountryLabel: 'Add Country',
   finalReportAddRegion: 'Region/Province',
   finalReportPeopleAffected: 'People Affected',
-  finalReportRiskPeopleLabel: 'People At Risk',
+  finalReportRiskPeopleLabel: 'People at Risk',
   finalReportPeopleTargeted: 'Number of people targeted',
   finalReportTotalAllocation: 'Total DREF Allocation',
   //timeframe
@@ -3752,5 +3753,6 @@ export default {
   finalReportIndicatorFemaleLabel: 'Female',
   finalReportIndicatorActualLabel: 'Actual',
   finalReportExportIndicators: 'Indicators',
+  finalReportExport: 'Final Report Export',
   clickToViewEmergencyResponseFramework: 'Click to view Emergency Response Framework'
 };
