@@ -78,13 +78,13 @@ function Overview(props: Props) {
 
   const handleCountryDistrictAdd = React.useCallback(() => {
     const clientId = randomString();
-    const newList: PartialForm<CountryDistrictType> = {
+    const newCountryDistrict: PartialForm<CountryDistrictType> = {
       clientId,
     };
 
     onValueChange(
       (oldValue: PartialForm<CountryDistricts>) => (
-        [...(oldValue ?? []), newList]
+        [...(oldValue ?? []), newCountryDistrict]
       ),
       'country_district' as const,
     );
@@ -149,7 +149,7 @@ function Overview(props: Props) {
                 <a
                   className={styles.disasterCategoryHelpLink}
                   target="_blank"
-                  title="Click to view Emergency Response Framework"
+                  title={strings.clickToViewEmergencyResponseFramework}
                   href="https://www.ifrc.org/sites/default/files/2021-07/IFRC%20Emergency%20Response%20Framework%20-%202017.pdf"
                 >
                   <IoHelpCircle />

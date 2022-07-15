@@ -3764,4 +3764,5 @@ export default {
   finalReportIndicatorFemaleLabel: 'Female',
   finalReportIndicatorActualLabel: 'Actual',
   finalReportExportIndicators: 'Indicators',
+  clickToViewEmergencyResponseFramework: 'Click to view Emergency Response Framework'
 };
