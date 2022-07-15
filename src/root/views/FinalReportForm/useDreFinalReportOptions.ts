@@ -286,21 +286,25 @@ function useDrefFinalReportFormOptions(value: PartialForm<DrefFinalReportFields>
     }
 
     const ns: NumericValueOption[] = countriesResponse.results
-      .filter(d => d.independent && d.society_name)
-      .map(d => ({
-        value: d.id,
-        label: d.society_name,
+      .filter(country => country.independent && country.society_name)
+      .map(ns => ({
+        value: ns.id,
+        label: ns.society_name,
       })).sort(compareString);
 
     const c: NumericValueOption[] = countriesResponse.results
-      .filter(d => d.independent && d.iso)
-      .map(d => ({
-        value: d.id,
-        label: d.name,
+      .filter(country => country.independent && country.iso)
+      .map(country => ({
+        value: country.id,
+        label: country.name,
       })).sort(compareString);
 
     return [ns, c] as const;
   }, [countriesResponse]);
+
+  console.log(countriesResponse);
+  console.log(nationalSocietyOptions);
+  console.log(countryOptions);
 
   const {
     pending: fetchingDisasterTypes,
