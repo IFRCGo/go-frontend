@@ -302,10 +302,6 @@ function useDrefFinalReportFormOptions(value: PartialForm<DrefFinalReportFields>
     return [ns, c] as const;
   }, [countriesResponse]);
 
-  console.log(countriesResponse);
-  console.log(nationalSocietyOptions);
-  console.log(countryOptions);
-
   const {
     pending: fetchingDisasterTypes,
     response: disasterTypesResponse,
