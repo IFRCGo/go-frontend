@@ -1,4 +1,9 @@
-import React from 'react';
+import React, {
+  useCallback,
+  useContext,
+  useMemo,
+  useState,
+} from 'react';
 import {
   PartialForm,
   Error,
@@ -42,7 +47,7 @@ interface Props {
 }
 
 function Needs(props: Props) {
-  const { strings } = React.useContext(languageContext);
+  const { strings } = useContext(languageContext);
 
   const {
     error: formError,
@@ -52,12 +57,9 @@ function Needs(props: Props) {
     needOptions,
   } = props;
 
-  const error = React.useMemo(
-    () => getErrorObject(formError),
-    [formError]
-  );
+  const error = useMemo(() => getErrorObject(formError), [formError]);
 
-  const [need, setNeed] = React.useState<string | undefined>();
+  const [need, setNeed] = useState<string | undefined>();
   const {
     setValue: onNeedChange,
     removeValue: onNeedRemove,
@@ -67,31 +69,33 @@ function Needs(props: Props) {
   );
 
   type Needs = typeof value.needs_identified;
-  const handleNeedAddButtonClick = React.useCallback((title?: string) => {
+  const handleNeedAddButtonClick = useCallback((title?: string) => {
     const clientId = randomString();
-    const newList: PartialForm<Need> = {
+    const newNeedItem: PartialForm<Need> = {
       clientId,
       title,
     };
 
     onValueChange(
       (oldValue: PartialForm<Needs>) => (
-        [...(oldValue ?? []), newList]
+        [...(oldValue ?? []), newNeedItem]
       ),
       'needs_identified' as const,
     );
     setNeed(undefined);
   }, [onValueChange, setNeed]);
 
-  const needsIdentifiedMap = React.useMemo(() => (
+  const needsIdentifiedMap = useMemo(() => (
     listToMap(
-      value.needs_identified,
+      value?.needs_identified,
       d => d.title ?? '',
       d => true,
     )
   ), [value.needs_identified]);
 
-  const filteredNeedOptions = needsIdentifiedMap ? needOptions.filter(n => !needsIdentifiedMap[n.value]) : [];
+  const filteredNeedOptions = useMemo(() => (
+    needsIdentifiedMap ? needOptions.filter(n => !needsIdentifiedMap[n.value]) : []
+  ), [needsIdentifiedMap, needOptions]);
 
   const wantToReport = value.want_to_report;
 
