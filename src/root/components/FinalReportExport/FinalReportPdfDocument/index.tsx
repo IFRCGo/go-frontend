@@ -341,30 +341,30 @@ function FinalReportPdfDocument(props: Props) {
             <View style={pdfStyles.compactSection} wrap={false}>
               <PdfTextOutput
                 label={strings.finalReportExportAppealNum}
-                value={finalReportResponse.appeal_code}
+                value={finalReportResponse?.appeal_code}
               />
               <PdfTextOutput
                 label={strings.finalReportExportTotalAllocation}
-                value={formatNumber(finalReportResponse.total_dref_allocation, 'CHF ' ?? '-')}
+                value={formatNumber(finalReportResponse?.total_dref_allocation, 'CHF ' ?? '-')}
                 columns="2/3"
               />
             </View>
             <View style={pdfStyles.compactSection} wrap={false}>
               <PdfTextOutput
                 label={strings.finalReportExportGlideNum}
-                value={finalReportResponse.glide_code}
+                value={finalReportResponse?.glide_code}
               />
               <View style={pdfStyles.twoByThree}>
                 <View style={pdfStyles.compactSection}>
                   <View style={pdfStyles.compactSection}>
                     <PdfTextOutput
                       label={strings.finalReportExportPeopleAffected}
-                      value={formatNumber(finalReportResponse.number_of_people_affected)}
+                      value={formatNumber(finalReportResponse?.number_of_people_affected)}
                       columns="1/2"
                     />
                     <PdfTextOutput
                       label={strings.finalReportExportPeopleTargeted}
-                      value={formatNumber(finalReportResponse.number_of_people_targeted)}
+                      value={formatNumber(finalReportResponse?.number_of_people_targeted)}
                       columns="1/2"
                     />
                   </View>
@@ -373,18 +373,18 @@ function FinalReportPdfDocument(props: Props) {
                   <View style={pdfStyles.compactSection}>
                     <PdfTextOutput
                       label={strings.finalReportExportDateOfPublication}
-                      value={finalReportResponse.date_of_publication}
+                      value={finalReportResponse?.date_of_publication}
                       columns="1/2"
                     />
                     <View style={[pdfStyles.compactSection, pdfStyles.oneByTwo]}>
                       <PdfTextOutput
                         label={strings.finalReportExportStartOfOperation}
-                        value={finalReportResponse.operation_start_date}
+                        value={finalReportResponse?.operation_start_date}
                         columns="1/2"
                       />
                       <PdfTextOutput
                         label={strings.finalReportExportTotalOperatingTimeFrame}
-                        value={formatNumber(finalReportResponse.total_operation_timeframe)}
+                        value={formatNumber(finalReportResponse?.total_operation_timeframe)}
                         columns="1/2"
                       />
                     </View>
@@ -405,11 +405,11 @@ function FinalReportPdfDocument(props: Props) {
           <Text style={pdfStyles.sectionHeading}>
             {strings.drefExportDescriptionOfTheEvent}
           </Text>
-          {finalReportResponse.event_map_details &&
+          {finalReportResponse?.event_map_details &&
             <View style={pdfStyles.subSection}>
               <PDFImage
                 style={pdfStyles.mapImage}
-                src={finalReportResponse.event_map_details.file}
+                src={finalReportResponse?.event_map_details.file}
               />
             </View>
           }
@@ -422,7 +422,7 @@ function FinalReportPdfDocument(props: Props) {
                   strings.finalReportWhatWhereWhen}
               </Text>
               <Text style={pdfStyles.text}>
-                {finalReportResponse.event_description}
+                {finalReportResponse?.event_description}
               </Text>
             </View>
           )}
@@ -447,7 +447,7 @@ function FinalReportPdfDocument(props: Props) {
                 {strings.finalReportScopeAndScaleEvent}
               </Text>
               <Text style={pdfStyles.text}>
-                {finalReportResponse.event_scope}
+                {finalReportResponse?.event_scope}
               </Text>
             </View>
           )}
@@ -485,7 +485,7 @@ function FinalReportPdfDocument(props: Props) {
                 <Text>{strings.finalReportIfrc}</Text>
               </View>
               <View style={pdfStyles.niContentCell}>
-                <Text>{finalReportResponse.ifrc}</Text>
+                <Text>{finalReportResponse?.ifrc}</Text>
               </View>
             </View>
             <View style={pdfStyles.row} wrap={false}>
@@ -493,7 +493,7 @@ function FinalReportPdfDocument(props: Props) {
                 <Text>{strings.finalReportIcrc}</Text>
               </View>
               <View style={pdfStyles.niContentCell}>
-                <Text>{finalReportResponse.icrc}</Text>
+                <Text>{finalReportResponse?.icrc}</Text>
               </View>
             </View>
             <View style={pdfStyles.row} wrap={false}>
@@ -501,7 +501,7 @@ function FinalReportPdfDocument(props: Props) {
                 <Text>{strings.finalReportPartnerNationalSociety}</Text>
               </View>
               <View style={pdfStyles.niContentCell}>
-                <Text>{finalReportResponse.partner_national_society}</Text>
+                <Text>{finalReportResponse?.partner_national_society}</Text>
               </View>
             </View>
           </View>
@@ -516,7 +516,7 @@ function FinalReportPdfDocument(props: Props) {
                 <Text>{strings.finalReportInternationalAssistance}</Text>
               </View>
               <View style={pdfStyles.niContentCell}>
-                <Text>{formatBoolean(finalReportResponse.government_requested_assistance)}</Text>
+                <Text>{formatBoolean(finalReportResponse?.government_requested_assistance)}</Text>
               </View>
             </View>
             <View style={pdfStyles.row} wrap={false}>
@@ -524,7 +524,7 @@ function FinalReportPdfDocument(props: Props) {
                 <Text>{strings.finalReportNationalAuthorities}</Text>
               </View>
               <View style={pdfStyles.niContentCell}>
-                <Text>{finalReportResponse.national_authorities}</Text>
+                <Text>{finalReportResponse?.national_authorities}</Text>
               </View>
             </View>
             <View style={pdfStyles.row} wrap={false}>
@@ -532,7 +532,7 @@ function FinalReportPdfDocument(props: Props) {
                 <Text>{strings.finalReportUNorOtherActors}</Text>
               </View>
               <View style={pdfStyles.niContentCell}>
-                <Text>{finalReportResponse.un_or_other_actor}</Text>
+                <Text>{finalReportResponse?.un_or_other_actor}</Text>
               </View>
             </View>
             <View style={pdfStyles.row} wrap={false}>
@@ -540,19 +540,19 @@ function FinalReportPdfDocument(props: Props) {
                 <Text>{strings.finalReportCoordinationMechanism}</Text>
               </View>
               <View style={pdfStyles.niContentCell}>
-                <Text>{finalReportResponse.major_coordination_mechanism}</Text>
+                <Text>{finalReportResponse?.major_coordination_mechanism}</Text>
               </View>
             </View>
           </View>
         </View>
-        {finalReportResponse.needs_identified.length > 0 && (
+        {finalReportResponse?.needs_identified.length > 0 && (
           <View style={pdfStyles.niSection} wrap={false}>
             <Text style={pdfStyles.sectionHeading}>
               {isImminentOnset
                 ? strings.finalReportImminentNeedsGapsIdentified
                 : strings.finalReportNeedsIdentified}
             </Text>
-            {finalReportResponse.needs_identified.map((ni) => (
+            {finalReportResponse?.needs_identified.map((ni) => (
               <NeedIdentified
                 key={ni.id}
                 data={ni}
@@ -565,27 +565,27 @@ function FinalReportPdfDocument(props: Props) {
           <Text style={pdfStyles.sectionHeading}>
             {strings.finalReportTargetingStrategy}
           </Text>
-          {finalReportResponse.people_assisted && (
+          {finalReportResponse?.people_assisted && (
             <View style={pdfStyles.qna}>
               <Text style={pdfStyles.textLabelSection}>
                 {strings.finalReportPeopleAssistedThroughOperation}
               </Text>
               <Text style={pdfStyles.answer}>
-                {finalReportResponse.people_assisted}
+                {finalReportResponse?.people_assisted}
               </Text>
             </View>
           )}
-          {finalReportResponse.selection_criteria && (
+          {finalReportResponse?.selection_criteria && (
             <View style={pdfStyles.qna}>
               <Text style={pdfStyles.textLabelSection}>
                 {strings.finalReportSelectionCriteria}
               </Text>
               <Text style={pdfStyles.answer}>
-                {finalReportResponse.selection_criteria}
+                {finalReportResponse?.selection_criteria}
               </Text>
             </View>
           )}
-          {finalReportResponse.entity_affected && (
+          {finalReportResponse?.entity_affected && (
             <View style={pdfStyles.qna}>
               <Text style={pdfStyles.textLabelSection}>
                 {strings.finalReportProtectionGenderAndInclusion}
@@ -723,7 +723,7 @@ function FinalReportPdfDocument(props: Props) {
             <Text style={pdfStyles.sectionHeading}>
               {strings.finalReportObjectiveOperation}
             </Text>
-            <Text>{finalReportResponse.operation_objective}</Text>
+            <Text>{finalReportResponse?.operation_objective}</Text>
           </View>
         )}
         {finalReportResponse?.response_strategy && (
@@ -731,7 +731,7 @@ function FinalReportPdfDocument(props: Props) {
             <Text style={pdfStyles.sectionHeading}>
               {strings.finalReportResponseStrategyImplementation}
             </Text>
-            <Text>{finalReportResponse.response_strategy}</Text>
+            <Text>{finalReportResponse?.response_strategy}</Text>
           </View>
         )}
         {finalReportResponse?.planned_interventions.length > 0 && (
@@ -772,46 +772,46 @@ function FinalReportPdfDocument(props: Props) {
             <ContactSection
               title={strings.finalReportExportNationalSocietyContact}
               contacts={[
-                finalReportResponse.national_society_contact_name,
-                finalReportResponse.national_society_contact_title,
-                finalReportResponse.national_society_contact_email,
-                finalReportResponse.national_society_contact_phone_number,
+                finalReportResponse?.national_society_contact_name,
+                finalReportResponse?.national_society_contact_title,
+                finalReportResponse?.national_society_contact_email,
+                finalReportResponse?.national_society_contact_phone_number,
               ]}
             />
             <ContactSection
               title={strings.finalReportExportAppealManager}
               contacts={[
-                finalReportResponse.ifrc_appeal_manager_name,
-                finalReportResponse.ifrc_appeal_manager_title,
-                finalReportResponse.ifrc_appeal_manager_email,
-                finalReportResponse.ifrc_appeal_manager_phone_number,
+                finalReportResponse?.ifrc_appeal_manager_name,
+                finalReportResponse?.ifrc_appeal_manager_title,
+                finalReportResponse?.ifrc_appeal_manager_email,
+                finalReportResponse?.ifrc_appeal_manager_phone_number,
               ]}
             />
             <ContactSection
               title={strings.finalReportExportProjectManager}
               contacts={[
-                finalReportResponse.ifrc_project_manager_name,
-                finalReportResponse.ifrc_project_manager_title,
-                finalReportResponse.ifrc_project_manager_email,
-                finalReportResponse.ifrc_project_manager_phone_number,
+                finalReportResponse?.ifrc_project_manager_name,
+                finalReportResponse?.ifrc_project_manager_title,
+                finalReportResponse?.ifrc_project_manager_email,
+                finalReportResponse?.ifrc_project_manager_phone_number,
               ]}
             />
             <ContactSection
               title={strings.finalReportExportIfrcEmergency}
               contacts={[
-                finalReportResponse.ifrc_emergency_name,
-                finalReportResponse.ifrc_emergency_title,
-                finalReportResponse.ifrc_emergency_email,
-                finalReportResponse.ifrc_emergency_phone_number,
+                finalReportResponse?.ifrc_emergency_name,
+                finalReportResponse?.ifrc_emergency_title,
+                finalReportResponse?.ifrc_emergency_email,
+                finalReportResponse?.ifrc_emergency_phone_number,
               ]}
             />
             <ContactSection
               title={strings.finalReportExportMediaContact}
               contacts={[
-                finalReportResponse.media_contact_name,
-                finalReportResponse.media_contact_title,
-                finalReportResponse.media_contact_email,
-                finalReportResponse.media_contact_phone_number,
+                finalReportResponse?.media_contact_name,
+                finalReportResponse?.media_contact_title,
+                finalReportResponse?.media_contact_email,
+                finalReportResponse?.media_contact_phone_number,
               ]}
             />
           </View>
