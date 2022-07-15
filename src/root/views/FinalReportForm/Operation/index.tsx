@@ -1,4 +1,11 @@
-import React from 'react';
+import React, {
+  Dispatch,
+  SetStateAction,
+  useCallback,
+  useContext,
+  useState,
+  useMemo,
+} from 'react';
 import {
   isNotDefined,
   listToMap,
@@ -47,13 +54,12 @@ interface Props {
   value: Value;
   interventionOptions: StringValueOption[];
   fileIdToUrlMap: Record<number, string>;
-  setFileIdToUrlMap?: React.Dispatch<React.SetStateAction<Record<number, string>>>;
+  setFileIdToUrlMap?: Dispatch<SetStateAction<Record<number, string>>>;
   yesNoOptions: BooleanValueOption[];
 }
-const showNewFieldOperational = true;
 
 function Operation(props: Props) {
-  const { strings } = React.useContext(languageContext);
+  const { strings } = useContext(languageContext);
 
   const {
     error: formError,
@@ -69,7 +75,7 @@ function Operation(props: Props) {
   const isImminentOnSet = value.type_of_onset === ONSET_IMMINENT;
   const isChangeInOperationalStrategy = value.change_in_operational_strategy;
 
-  const [intervention, setIntervention] = React.useState<number | undefined>();
+  const [intervention, setIntervention] = useState<number | undefined>();
   const {
     setValue: onInterventionChange,
     removeValue: onInterventionRemove,
@@ -79,23 +85,23 @@ function Operation(props: Props) {
   );
 
   type Interventions = typeof value.planned_interventions;
-  const handleInterventionAddButtonClick = React.useCallback((title) => {
+  const handleInterventionAddButtonClick = useCallback((title) => {
     const clientId = randomString();
-    const newList: PartialForm<InterventionType> = {
+    const newInterventionItem: PartialForm<InterventionType> = {
       clientId,
       title,
     };
 
     onValueChange(
       (oldValue: PartialForm<Interventions>) => (
-        [...(oldValue ?? []), newList]
+        [...(oldValue ?? []), newInterventionItem]
       ),
       'planned_interventions' as const,
     );
     setIntervention(undefined);
   }, [onValueChange, setIntervention]);
 
-  const interventionsIdentifiedMap = React.useMemo(() => (
+  const interventionsIdentifiedMap = useMemo(() => (
     listToMap(
       value.planned_interventions,
       d => d.title ?? '',
@@ -103,7 +109,7 @@ function Operation(props: Props) {
     )
   ), [value.planned_interventions]);
 
-  const warnings = React.useMemo(() => {
+  const warnings = useMemo(() => {
     if (isNotDefined(value?.number_of_people_targeted)) {
       return emptyList;
     }
@@ -116,7 +122,7 @@ function Operation(props: Props) {
       value?.girls,
       value?.boys,
     ]) !== value?.number_of_people_targeted) {
-      w.push('Total targeted population is not equal to sum of other population fields');
+      w.push({ message: 'Total targeted population is not equal to sum of other population fields' });
     }
 
     return w;
@@ -128,7 +134,7 @@ function Operation(props: Props) {
     value?.boys,
   ]);
 
-  const filteredInterventionOptions = React.useMemo(() => (
+  const filteredInterventionOptions = useMemo(() => (
     interventionsIdentifiedMap ? interventionOptions.filter(n => !interventionsIdentifiedMap[n.value]) : []
   ), [interventionsIdentifiedMap, interventionOptions]);
 
@@ -203,7 +209,11 @@ function Operation(props: Props) {
         className={styles.assistedPopulation}
         description={(
           warnings?.map((w) => (
-            <div className={styles.warning}>
+            <div
+              className={styles.warning}
+            //TODO
+            //key={w}
+            >
               <IoWarning />
               {w}
             </div>
@@ -362,16 +372,15 @@ function Operation(props: Props) {
             </Button>
           </div>
         </InputSection>
-        {value?.planned_interventions?.map((n, i) => (
+        {value?.planned_interventions?.map((pi, i) => (
           <InterventionInput
-            key={n.clientId}
+            key={pi.clientId}
             index={i}
-            value={n}
+            value={pi}
             onChange={onInterventionChange}
             onRemove={onInterventionRemove}
             error={getErrorObject(error?.planned_interventions)}
             interventionOptions={interventionOptions}
-            showNewFieldOperational={showNewFieldOperational}
           />
         ))}
       </Container>
