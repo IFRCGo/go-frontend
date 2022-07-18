@@ -71,11 +71,11 @@ function IndicatorInput(props: Props) {
         />
       </div>
       <div>
+        {/*Fixme: tooltip*/}
         <Button
           name={index}
           onClick={onRemove}
           variant="action"
-
         >
           <IoTrash />
         </Button>
