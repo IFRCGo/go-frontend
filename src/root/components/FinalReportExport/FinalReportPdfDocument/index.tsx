@@ -303,8 +303,8 @@ function FinalReportPdfDocument(props: Props) {
 
   const isImminentOnset = finalReportResponse?.disaster_type === ONSET_IMMINENT;
   const documentTitle = [
-    finalReportResponse?.country_district.map(d => d.country_details?.name).join(', '),
-    finalReportResponse?.title
+    finalReportResponse?.country_district.map(cd => cd.country_details.name).join(', '),
+    finalReportResponse.title
   ].join(' | ');
 
   return (
