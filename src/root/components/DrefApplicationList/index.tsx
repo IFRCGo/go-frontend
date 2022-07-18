@@ -439,11 +439,8 @@ function DrefApplicationList(props: Props) {
             const canAddNewOperationalUpdate = item.is_published && !hasUnpublishedOperationalUpdate && !item.dref_final_report_details;
             const lastOperationalUpdateId = item.operational_update_details?.find(ou => !ou.is_published)?.id;
 
-
-            //Fix me:
             const hasFinalReport = !!item.dref_final_report_details;
-            const hasUnpublishedFinalReport = !item.dref_final_report_details?.is_published;
-            const canAddNewFinalReport = item.is_published && !hasUnpublishedFinalReport && !hasUnpublishedOperationalUpdate;
+            const hasUnpublishedFinalReport = !!item.dref_final_report_details?.is_published && !!item.is_final_report_created;
             const lastFinalReportId = hasUnpublishedFinalReport && item.dref_final_report_details?.id;
 
             return {
@@ -454,20 +451,20 @@ function DrefApplicationList(props: Props) {
                     name={rowKey}
                     onClick={postDrefNewFinalReport}
                     label={strings.finalReportCreateButtonLabel}
-                    disabled={!canAddNewFinalReport || hasFinalReport}
+                    disabled={hasFinalReport}
                   />
                   <DropdownMenuItem
                     icon={<MdEdit />}
                     href={`/dref-final-report/${lastFinalReportId}/edit/`}
                     label={strings.finalReportEditButtonLabel}
-                    disabled={!hasUnpublishedFinalReport}
+                    disabled={hasUnpublishedFinalReport || !hasFinalReport}
                   />
                   <DropdownMenuItem
                     icon={<IoPushOutline />}
                     name={+rowKey}
                     label={strings.finalReportPublishButtonLabel}
                     onClick={onFinalReportPublishClick}
-                    disabled={!hasUnpublishedFinalReport || finalReportPublishPending}
+                    disabled={hasUnpublishedFinalReport || finalReportPublishPending}
                   />
                   {
                     !hasFinalReport &&
