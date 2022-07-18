@@ -441,7 +441,7 @@ function DrefApplicationList(props: Props) {
 
             const hasFinalReport = !!item.dref_final_report_details;
             const hasUnpublishedFinalReport = !!item.dref_final_report_details?.is_published && !!item.is_final_report_created;
-            const lastFinalReportId = hasUnpublishedFinalReport && item.dref_final_report_details?.id;
+            const lastFinalReportId = item.dref_final_report_details?.id;
 
             return {
               extraActions: (
