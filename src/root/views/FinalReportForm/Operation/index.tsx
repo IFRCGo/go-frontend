@@ -208,11 +208,10 @@ function Operation(props: Props) {
         heading={strings.finalReportTargetedPopulation}
         className={styles.assistedPopulation}
         description={(
-          warnings?.map((w) => (
+          warnings?.map((w, i) => (
             <div
               className={styles.warning}
-            //TODO
-            //key={w}
+              key={i}
             >
               <IoWarning />
               {w}
