@@ -88,8 +88,8 @@ function Needs(props: Props) {
   const needsIdentifiedMap = useMemo(() => (
     listToMap(
       value?.needs_identified,
-      d => d.title ?? '',
-      d => true,
+      need => need.title ?? '',
+      need => true
     )
   ), [value.needs_identified]);
 
