@@ -3096,7 +3096,7 @@ export default {
   drefFormSharingDescription: 'The users will be able to view, edit and add other users',
   drefFormInstantShareLabel: 'Create & Share',
 
-  drefFormTitle: 'Title',
+  drefFormTitle: 'DREF Title',
   drefFormTitleDescription: 'Add country, type of disaster and location to the title',
 
   // dref form ActionFields
@@ -3133,12 +3133,15 @@ export default {
   drefFormNSAnticipatoryAction: 'National Society anticipatory actions started',
   drefFormDisasterCategoryLabel: 'Disaster Category',
   drefFormAffectedCountryAndProvinceImminent: 'Affected Country and Affected Region(s)',
-  drefFormPeopleAffected: 'People Affected',
+  drefFormPeopleAffected: 'Total affected population/Total population at risk',
+  drefFormPeopleAffectedDescription: 'Includes all those whose lives and livelihoods have been impacted as a direct result of the shock or stress.',
   drefFormPeopleTargeted: 'Number of people targeted',
   drefFormRequestAmount: 'Requested Amount in CHF',
   drefFormEmergencyAppealPlanned: 'Emergency appeal planned',
   drefFormUploadMap: 'Upload map',
+  drefFormUploadMapDescription: 'Add a map highlighting the targeted areas for this operation, it will be used for the publishable document.',
   drefFormUploadCoverImage: 'Cover image',
+  drefFormUploadCoverImageDescription: 'Upload a image for the cover page of the publishable document.',
   drefFormTimeFrames: 'Timeframes',
   drefFormEventDate: 'Date of event',
   drefFormGoFieldReportDate: 'Date of GO field report',
@@ -3146,8 +3149,8 @@ export default {
   drefFormApproximateDateOfImpact: 'Approximate date of impact',
 
   // EventDetails
-  drefFormEventDetailsTitle: 'Copy data from an existing field report',
-  drefFormEventDescription: 'These field reports have already been filtered by the country and disaster type that you have entered. Selecting field report will pre-fill matching fields in this report, which you can modify.',
+  drefFormEventDetailsTitle: 'Import data from an existing field report',
+  drefFormEventDescription: 'These field reports have already been filtered by the National Society that you have selected. Selecting a field report will pre-fill matching fields in this request, which you can modify.',
   drefFormPreviousOperations: 'Previous Operations',
   drefFormAffectedthePopulationTitle: 'Did it affect the same population?',
   drefFormAffectSameArea: 'Has a similar event affected the same area in the past?',
