@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import {
   isDefined,
   listToMap,
+  randomString,
 } from '@togglecorp/fujs';
 import {
   PartialForm,
@@ -52,7 +53,9 @@ import useDrefFormOptions, { schema } from './useDrefFormOptions';
 import styles from './styles.module.scss';
 
 const defaultFormValues: PartialForm<DrefFields> = {
-  country_district: [],
+  country_district: [{
+    clientId: randomString(),
+  }],
   planned_interventions: [],
   national_society_actions: [],
   needs_identified: [],
