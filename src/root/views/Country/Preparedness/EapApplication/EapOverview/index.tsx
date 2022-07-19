@@ -3,6 +3,7 @@ import {
   PartialForm,
   Error,
   EntriesAsList,
+  getErrorObject,
 } from '@togglecorp/toggle-form';
 
 import languageContext from '#root/languageContext';
@@ -13,7 +14,7 @@ import {
 
 import {
   EapsFields,
-  BooleanValueOption,
+  NumericValueOption,
 } from '../common';
 import SearchSelectInput from '#components/SearchSelectInput';
 import DateInput from '#components/DateInput';
@@ -33,15 +34,25 @@ interface Props {
   error: Error<Value> | undefined;
   onValueChange: (...entries: EntriesAsList<Value>) => void;
   value: Value;
-  yesNoOptions: BooleanValueOption[];
-  isImminentOnset: boolean;
-  fileIdToUrlMap?: Record<number, string>;
-  setFileIdToUrlMap?: React.Dispatch<React.SetStateAction<Record<number, string>>>;
-
+  countryOptions: NumericValueOption[];
+  fetchingCountries?: boolean;
 }
 
-function EapOverview() {
+function EapOverview(props: Props) {
   const { strings } = React.useContext(languageContext);
+
+  const {
+    error: formError,
+    onValueChange,
+    value,
+    countryOptions,
+    fetchingCountries,
+  } = props;
+
+  const error = React.useMemo(
+    () => getErrorObject(formError),
+    [formError]
+  );
 
   return (
     <>
@@ -55,10 +66,12 @@ function EapOverview() {
               title={strings.eapsFormEapCountry}
             >
               <SearchSelectInput
-                name="eap_country"
-                value={undefined}
+                name="district"
+                value={value.country}
                 onChange={undefined}
-                error={undefined}
+                countryOptions={countryOptions}
+                fetchingCountries={fetchingCountries}
+                error={error?.district}
               >
               </SearchSelectInput>
             </InputSection>
@@ -66,10 +79,10 @@ function EapOverview() {
               title={strings.eapsFormRegion}
             >
               <SearchSelectInput
-                name="region"
+                name="district"
                 value={undefined}
                 onChange={undefined}
-                error={undefined}
+                error={error?.district}
               >
               </SearchSelectInput>
             </InputSection>
@@ -83,7 +96,7 @@ function EapOverview() {
                 name="disaster_type"
                 value={undefined}
                 onChange={undefined}
-                error={undefined}
+                error={error?.disaster_type}
               >
               </SearchSelectInput>
             </InputSection>
@@ -99,13 +112,13 @@ function EapOverview() {
             <InputSection
               title={strings.eapsFormEapNumber}
             >
-              <SearchSelectInput
+              <NumberInput
                 name="eap_number"
-                value={undefined}
-                onChange={undefined}
+                value={value.eap_number}
+                onChange={onValueChange}
                 error={undefined}
               >
-              </SearchSelectInput>
+              </NumberInput>
             </InputSection>
             <InputSection
               title={strings.eapsFormEapStatus}
@@ -147,26 +160,26 @@ function EapOverview() {
             <InputSection
               title={strings.eapsFormEapLeadTime}
             >
-              <SearchSelectInput
+              <NumberInput
                 name="lead_time"
                 value={undefined}
                 onChange={undefined}
                 error={undefined}
               >
-              </SearchSelectInput>
+              </NumberInput>
             </InputSection>
           </div>
           <div className={styles.eapDisaster}>
             <InputSection
               title={strings.eapsFormEapTimeframe}
             >
-              <SearchSelectInput
+              <NumberInput
                 name="eap_timeframe"
                 value={undefined}
                 onChange={undefined}
                 error={undefined}
               >
-              </SearchSelectInput>
+              </NumberInput>
             </InputSection>
           </div>
         </div>

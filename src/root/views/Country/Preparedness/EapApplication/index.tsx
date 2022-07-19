@@ -1,4 +1,5 @@
 import React from 'react';
+import type { History, Location } from 'history';
 import {
   listToMap,
 } from '@togglecorp/fujs';
@@ -7,10 +8,15 @@ import LanguageContext from '#root/languageContext';
 import { EapsFields } from './common';
 import Button from '#components/Button';
 import {
+  EapsApiFields,
   overviewFields,
   eventDetailsFields,
   contactFields,
 } from './common';
+import {
+  useLazyRequest,
+} from '#utils/restRequest';
+import type { match as Match } from 'react-router-dom';
 
 import Page from '#components/Page';
 import Tab from '#components/Tabs/Tab';
@@ -20,11 +26,24 @@ import Tabs from '#components/Tabs';
 import EapOverview from './EapOverview';
 import Contacts from './Contacts';
 import EarlyAction from './EarlyAction';
-
+import {
+  useForm,
+  getErrorObject,
+  PartialForm,
+} from '@togglecorp/toggle-form';
+import useEapFormOptions, { schema } from './useEapFormOptions';
 import styles from './styles.module.scss';
+
+const defaultFormValues: PartialForm<EapsFields> = {
+};
+
+interface EapsResponseFields {
+  id: number;
+}
 
 interface Props {
   className?: string;
+  match: Match<{ eapId?: string }>;
   history: History;
   location: Location;
 }
@@ -42,20 +61,28 @@ const stepTypesToFieldsMap: {
 function EapApplication(props: Props) {
   const {
     className,
+    match,
     history,
   } = props;
 
   const alert = useAlert();
+  const { eapId } = match.params;
   const { strings } = React.useContext(LanguageContext);
 
-  // const {
-  //   value,
-  //   error,
-  //   setFieldValue: onValueChange,
-  //   validate,
-  //   setError: onErrorSet,
-  //   setValue: onValueSet,
-  // } = useForm(schema, { value: defaultFormValues });
+  const {
+    value,
+    error,
+    setFieldValue: onValueChange,
+    validate,
+    setError: onErrorSet,
+    setValue: onValueSet,
+  } = useForm(schema, { value: defaultFormValues });
+
+  const {
+    fetchingCountries,
+    countryOptions,
+  } = useEapFormOptions(value);
+
   const [currentStep, setCurrentStep] = React.useState<StepTypes>('eapOverview');
   const submitButtonLabel = currentStep === 'contacts' ? strings.drefFormSaveButtonLabel : strings.drefFormContinueButtonLabel;
   const shouldDisabledBackButton = currentStep === 'eapOverview';
@@ -79,13 +106,57 @@ function EapApplication(props: Props) {
       const currentFields = stepTypesToFieldsMap[tabKey];
       const currentFieldsMap = listToMap(currentFields, d => d, d => true);
 
-      // const erroredFields = Object.keys(getErrorObject(error) ?? {}) as (keyof EapsFields)[];
-      // const hasError = erroredFields.some(d => currentFieldsMap[d]);
-      // tabs[tabKey] = hasError;
+      const erroredFields = Object.keys(getErrorObject(error) ?? {}) as (keyof EapsFields)[];
+      const hasError = erroredFields.some(d => currentFieldsMap[d]);
+      tabs[tabKey] = hasError;
     });
 
     return tabs;
-  }, []);
+  }, [error]);
+
+  const {
+    pending: eapSubmitPending,
+    trigger: submitRequest,
+  } = useLazyRequest<EapsResponseFields, Partial<EapsApiFields>>({
+    url: eapId ? `api/v2/eap/${eapId}/` : `api/v2/eap/`,
+    method: eapId ? 'PUT' : 'POST',
+    body: ctx => ctx,
+    onSuccess: (response) => {
+      alert.show(
+        strings.drefFormSaveRequestSuccessMessage,
+        { variant: 'success' },
+      );
+      if (!eapId) {
+        window.setTimeout(
+          () => history.push(`/eap-application/${response?.id}/edit/`),
+          250,
+        );
+      }
+    },
+    onFailure: ({
+      value: {
+        messageForNotification,
+        formErrors,
+      },
+      debugMessage,
+    }) => {
+      onErrorSet(formErrors);
+
+      alert.show(
+        <p>
+          {strings.drefFormSaveRequestFailureMessage}
+          &nbsp;
+          <strong>
+            {messageForNotification}
+          </strong>
+        </p>,
+        {
+          variant: 'danger',
+          debugMessage,
+        },
+      );
+    },
+  });
 
   return (
     <Tabs
@@ -136,10 +207,16 @@ function EapApplication(props: Props) {
         )}
       >
         <TabPanel name="eapOverview">
-          <EapOverview />
+          <EapOverview
+            error={undefined}
+            onValueChange={onValueChange}
+            value={value}
+            fetchingCountries={fetchingCountries}
+            countryOptions={countryOptions}
+          />
         </TabPanel>
         <TabPanel name="earlyActions">
-         <EarlyAction />
+          <EarlyAction />
         </TabPanel>
         <TabPanel name="contacts">
           <Contacts />
