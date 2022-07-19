@@ -10,18 +10,20 @@ function useSanitizedHtml(rawHtml: string) {
       rawHtml,
       {
         allowedTags: [
-          'b',
-          'i',
-          'em',
-          'h',
-          'p',
-          'bold',
-          'strong',
-          'li',
-          'ul',
-          'a',
-          'span',
-          'div',
+            // https://www.semrush.com/blog/html-tags-list
+            'p', 'br', 'hr', 'span', 'div',
+            'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
+            'strong', 'b', 'i', 'em', 'u',
+            'li', 'ul', 'ol',
+            'a',
+            'table', 'thead', 'tbody', 'th', 'tr', 'td',
+            'dd', 'dt', 'dl',
+            'sub', 'sup',
+            'img', 'svg',
+            'pre', 'cite', 'code', 'q',
+            // 'base', 'iframe', 'canvas', 'video', // can be switched on when need occurs
+            // 'area', 'map', 'label', 'meter', // can be switched on when need occurs
+            // forbid: 'input', 'textarea', 'button',
         ],
         // TODO: create comprehensive list of the attributes used
         // to improve security
