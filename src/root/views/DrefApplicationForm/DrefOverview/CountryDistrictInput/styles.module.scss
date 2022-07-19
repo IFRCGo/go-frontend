@@ -3,17 +3,10 @@
 .country-district-input {
   display: flex;
   align-items: flex-end;
+  gap: $spacing;
 
   >* {
     flex-basis: 0;
     flex-grow: 1;
-  }
-
-  .remove-button {
-    flex-basis: unset;
-    flex-grow: unset;
-    flex-shrink: 0;
-    margin-bottom: 0.5em;
-    padding: $spacing*0.5 $spacing;
   }
 }
