@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import {
   PartialForm,
   Error,
@@ -8,7 +8,6 @@ import {
   SetBaseValueArg,
 } from '@togglecorp/toggle-form';
 import {
-  randomString,
   listToMap,
   isNotDefined,
 } from '@togglecorp/fujs';
@@ -38,7 +37,6 @@ import {
   emptyNumericOptionList,
   ONSET_SUDDEN,
 } from '../common';
-import { CountryDistrictType } from '../useDrefFormOptions';
 import CountryDistrictInput from './CountryDistrictInput';
 import CopyFieldReportSection from './CopyFieldReportSection';
 import styles from './styles.module.scss';
@@ -101,22 +99,6 @@ function DrefOverview(props: Props) {
     onValueChange,
   );
 
-  type CountryDistricts = typeof value.country_district;
-
-  const handleCountryDistrictAdd = React.useCallback(() => {
-    const clientId = randomString();
-    const newList: PartialForm<CountryDistrictType> = {
-      clientId,
-    };
-
-    onValueChange(
-      (oldValue: PartialForm<CountryDistricts>) => (
-        [...(oldValue ?? []), newList]
-      ),
-      'country_district' as const,
-    );
-  }, [onValueChange]);
-
   const isImminentOnset = value.type_of_onset === ONSET_IMMINENT;
   const isSuddenOnSet = value.type_of_onset === ONSET_SUDDEN ? false : value.emergency_appeal_planned;
   onValueChange(isSuddenOnSet, 'emergency_appeal_planned');
@@ -141,6 +123,20 @@ function DrefOverview(props: Props) {
     }))
   ), [userMap, value.users]);
 
+  const handleNSChange = useCallback((ns) => {
+    onValueSet({
+      ...value.country_district,
+      national_society: ns,
+      country_district: [{
+        ...value?.country_district,
+        country: ns,
+      }],
+    });
+  }, [
+    value.country_district,
+    onValueSet,
+  ]);
+
   return (
     <>
       <Container
@@ -148,6 +144,18 @@ function DrefOverview(props: Props) {
         heading={strings.drefFormSharingHeading}
         visibleOverflow
       >
+        <InputSection
+          title={strings.drefFormNationalSociety}
+        >
+          <SelectInput
+            error={error?.national_society}
+            name={"national_society" as const}
+            onChange={handleNSChange}
+            options={nationalSocietyOptions}
+            pending={fetchingNationalSociety}
+            value={value.national_society}
+          />
+        </InputSection>
         <InputSection
           title={strings.drefFormSharingTitle}
           description={strings.drefFormSharingDescription}
@@ -178,27 +186,6 @@ function DrefOverview(props: Props) {
         heading={strings.drefFormEssentialInformation}
         className={styles.essentialInformation}
       >
-        <InputSection title={strings.drefFormTitle}>
-          <TextInput
-            name="title"
-            value={value.title}
-            onChange={onValueChange}
-            error={error?.title}
-            placeholder={strings.drefFormTitleDescription}
-          />
-        </InputSection>
-        <InputSection
-          title={strings.drefFormNationalSociety}
-        >
-          <SelectInput
-            error={error?.national_society}
-            name={"national_society" as const}
-            onChange={onValueChange}
-            options={nationalSocietyOptions}
-            pending={fetchingNationalSociety}
-            value={value.national_society}
-          />
-        </InputSection>
         <CopyFieldReportSection
           value={value}
           onValueSet={onValueSet}
@@ -263,19 +250,19 @@ function DrefOverview(props: Props) {
               fetchingCountries={fetchingCountries}
             />
           ))}
-          <div className={styles.actions}>
-            <Button
-              name={undefined}
-              onClick={handleCountryDistrictAdd}
-              variant="secondary"
-            >
-              {strings.drefFormAddCountryLabel}
-            </Button>
-          </div>
+        </InputSection>
+        <InputSection title={strings.drefFormTitle}>
+          <TextInput
+            name="title"
+            value={value.title}
+            onChange={onValueChange}
+            error={error?.title}
+            placeholder={strings.drefFormTitleDescription}
+          />
         </InputSection>
         <InputSection
           title={!isImminentOnset ? strings.drefFormPeopleAffected : strings.drefFormRiskPeopleLabel}
-
+          description={strings.drefFormPeopleAffectedDescription}
         >
           <NumberInput
             name="num_affected"
@@ -319,6 +306,7 @@ function DrefOverview(props: Props) {
         </InputSection>
         <InputSection
           title={strings.drefFormUploadMap}
+          description={strings.drefFormUploadMapDescription}
         >
           <DREFFileInput
             accept="image/*"
@@ -335,6 +323,7 @@ function DrefOverview(props: Props) {
         </InputSection>
         <InputSection
           title={strings.drefFormUploadCoverImage}
+          description={strings.drefFormUploadCoverImageDescription}
         >
           <DREFFileInput
             accept="image/*"
