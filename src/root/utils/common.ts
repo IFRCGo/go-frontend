@@ -244,3 +244,159 @@ export function isIfrcUser(user: {
 }
 
 export type SetValueArg<T> = T | ((value: T) => T);
+
+const DBL_EPSILON = 2.2204460492503131e-16;
+const DBL_MIN = 2.2250738585072013830902327173324040642192159804623318306e-308;
+const DBL_MAX = 1.7976931348623157E+308;
+
+export function getPrettyBreakpoints(
+  // Lower limit
+  l: number,
+
+  // Upper limit
+  u: number,
+
+  // integer giving the desired number of intervals. Non-integer values are rounded down.
+  n: number = 5,
+
+  // nonnegative integer giving the minimal number of intervals.
+  minN: number = Math.floor(n / 3),
+
+  // positive number, a factor (smaller than one) by which a default scale is shrunk in the case when range is very small
+  shrinkSml: number = 0.75,
+
+  // [high.u.bias, u5.bias]
+  // high.u.bias -> non-negative numeric, typically > 1 . The interval unit is determined as {1,2,5,10} times b, a power of 10. Larger high.u.bias values favor larger units.
+  // u5.bias -> non-negative numeric multiplier favoring factor 5 over 2. Default and ‘optimal’: u5.bias = .5 + 1.5*high.u.bias.
+  highUFact: [number, number] = [0.5, 0.5 + 1.5 * 1.5],
+
+  // integer code, one of {0,1,2}. If non-0, an epsilon correction is made at the boundaries such that the result boundaries will be outside range; in the small case, the correction is only done if eps.correct >= 2.
+  epsCorrection: number = 0,
+
+  returnBounds: boolean = true,
+) {
+  let lo = l;
+  let up = u;
+  let ndiv = n;
+
+  const roundingEps = 1e-10;
+  const [h, h5] = highUFact;
+
+  let cell: number;
+  let unit: number;
+  let U: number;
+  let ns: number;
+  let nu: number;
+  let k: number;
+  let iSmall: boolean;
+
+  const dx = up - lo;
+
+  if (dx === 0 && up === 0) {
+    cell = 1;
+    iSmall = true;
+  } else {
+    cell = Math.max(Math.abs(lo), Math.abs(up));
+    U = 1 + ((h5 >= 1.5 * h + 0.5) ? 1 / (1 + h) : 1.5 / (1 + h5));
+    U *= Math.max(1, ndiv) * DBL_EPSILON;
+    iSmall = dx < cell * U * 3;
+  }
+
+  if (iSmall) {
+    if (cell > 10) {
+      cell = 9 + cell / 10;
+    }
+    cell *= shrinkSml;
+    if (minN > 1) {
+      cell /= minN;
+    }
+  } else {
+    cell = dx;
+    if (ndiv > 1) {
+      cell /= ndiv;
+    }
+  }
+
+  if (cell < 20 * DBL_MIN) {
+    console.warn('very small range.. corrected');
+    cell = 20 * DBL_MIN;
+  } else if (cell * 10 > DBL_MAX) {
+    console.warn('very large range.. corrected');
+    cell = 0.1 * DBL_MAX;
+  }
+
+  /* base <= cell < 10*base */
+  const base = Math.pow(10.0, Math.floor(Math.log10(cell)));
+
+  unit = base;
+  U = 2 * base;
+  if (U - cell < h * (cell - unit)) {
+    unit = U;
+    U = 5 * base;
+    if (U - cell < h5 * (cell - unit)) {
+      unit = U;
+      U = 10 * base;
+      if (U - cell < h * (cell - unit)) {
+        unit = U;
+      }
+    }
+  }
+
+  ns = Math.floor(lo / unit + roundingEps);
+  nu = Math.ceil(up / unit - roundingEps);
+
+  if (epsCorrection && (epsCorrection > 1 || !iSmall)) {
+    if (lo !== 0.0) {
+      lo *= (1 - DBL_EPSILON);
+    } else {
+      lo = -DBL_MIN;
+    }
+    if (up !== 0.0) {
+      up *= (1 + DBL_EPSILON);
+    } else {
+      up = +DBL_MIN;
+    }
+  }
+
+  while (ns * unit > lo + roundingEps * unit) {
+    ns -= 1;
+  }
+
+  while (nu * unit < up - roundingEps * unit) {
+    nu += 1;
+  }
+
+  k = Math.floor(0.5 + nu - ns);
+  if (k < minN) {
+    k = minN - k;
+    if (ns >= 0.0) {
+      nu += Math.floor(k / 2);
+      ns -= Math.floor(k / 2) + (k % 2);
+    } else {
+      ns -= Math.floor(k / 2);
+      nu += Math.floor(k / 2) + (k % 2);
+    }
+    ndiv = minN;
+  } else {
+    ndiv = k;
+  }
+
+  if (returnBounds) {
+    if (ns * unit < lo) {
+      lo = ns * unit;
+    }
+    if (nu * unit > up) {
+      up = nu * unit;
+    }
+  } else {
+    lo = ns;
+    up = nu;
+  }
+
+  return {
+    unit,
+    lo,
+    up,
+    ndiv,
+  };
+}

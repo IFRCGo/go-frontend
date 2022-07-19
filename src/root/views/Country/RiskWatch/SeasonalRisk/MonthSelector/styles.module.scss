@@ -58,8 +58,6 @@
       .month-name {
         font-weight: $base-font-medium;
         font-size: $font-size-sm;
-        font-family: $code-font-family;
-        width: 3ch;
       }
 
       &.active {
@@ -111,7 +109,6 @@
       .month-name {
         font-weight: $base-font-medium;
         font-size: $font-size-sm;
-        font-family: $code-font-family;
       }
 
       &.active {

@@ -25,9 +25,8 @@
 
       .month-selector {
         position: absolute;
-        bottom: $spacing;
-        left: 50%;
-        transform: translateX(-50%);
+        bottom: $spacing * 3;
+        left: 0;
         width: 100%;
         max-width: 34rem;
         padding: $spacing;

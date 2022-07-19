@@ -85,6 +85,8 @@ const mapPadding = {
 
 const noOp = () => {};
 
+const MAP_BOUNDS_ANIMATION_DURATION = 1800;
+
 interface Props {
   defaultBounds: BBOXType;
   hazardList: PDCEvent[];
@@ -549,6 +551,7 @@ function PDCExposureMap(props: Props) {
       <MapBounds
         bounds={bounds}
         padding={mapPadding}
+        duration={MAP_BOUNDS_ANIMATION_DURATION}
       />
     </Map>
   );

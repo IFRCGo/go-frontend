@@ -426,6 +426,9 @@ function About (props) {
                   <a href='https://www.usaid.gov/' target='_blank'>
                     <img src='/assets/graphics/content/us_aid.svg' alt='Visit US Aid' width='189'/>
                   </a>
+                  <a href='https://www.pdc.org/' target='_blank'>
+                    <img src='/assets/graphics/content/pdc_logo.svg' alt='Visit PDC' width='189'/>
+                  </a>
                 </div>
               </div>
             </section>
