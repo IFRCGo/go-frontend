@@ -2,6 +2,7 @@ import React from 'react';
 import {
   PartialForm,
   ObjectSchema,
+  ArraySchema,
 } from '@togglecorp/toggle-form';
 
 import {
@@ -36,6 +37,12 @@ import {
 export type FormSchema = ObjectSchema<PartialForm<EapsFields>>;
 export type FormSchemaFields = ReturnType<FormSchema['fields']>;
 
+export type CountryDistrictType = NonNullable<NonNullable<EapsFields['country']>>[number];
+export type CountryDistrictSchema = ObjectSchema<PartialForm<CountryDistrictType>>;
+export type CountryDistrictSchemaFields = ReturnType<CountryDistrictSchema['fields']>;
+export type CountryDistrictsSchema = ArraySchema<PartialForm<CountryDistrictType>>;
+export type CountryDistrictsSchemaMember = ReturnType<CountryDistrictsSchema['member']>;
+
 export const schema: FormSchema = {
   fields: (value): FormSchemaFields => ({
     eap_number: [requiredCondition],
@@ -53,6 +60,10 @@ export const schema: FormSchema = {
     overview: [],
     document: [],
     early_actions: [],
+    budget_per_sector: [],
+    sector: [],
+    readiness_activities: [],
+    prepositioning_activities: [],
     originator_name: [],
     originator_title: [],
     originator_email: [],
@@ -111,7 +122,6 @@ function useEapsFormOptions(value: PartialForm<EapsFields>) {
         emptyStringOptionList,
         emptyStringOptionList,
         emptyStringOptionList,
-        emptyStringOptionList,
       ];
     }
     return [
@@ -124,11 +134,9 @@ function useEapsFormOptions(value: PartialForm<EapsFields>) {
   const {
     pending: fetchingEapDetails,
     response: eapDetailsResponse,
-  } = useRequest<FormSchemaFields>({
+  } = useRequest<ListResponse<EapsFields>>({
     url: `api/v2/eap/`,
   });
-
-  console.log('detailsss', eapDetailsResponse?.eap_number);
 
   const {
     pending: fetchingDisasterTypes,

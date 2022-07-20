@@ -1,3 +1,5 @@
+import { Country, DistrictMini } from "#types/country";
+
 export interface CountryDistrict {
   clientId: string;
   country: number;
@@ -40,17 +42,21 @@ export interface EapsFields {
   eap_timeframe: number;
   num_of_people: number;
   total_budget: number;
-  readiness_budget: number[];
-  pre_positioning_budget: number[];
-  early_action_budget: number[];
+  readiness_budget: number;
+  pre_positioning_budget: number;
+  early_action_budget: number;
   trigger_statement: string;
   overview: string;
   document: number;
-  early_actions: string[];
+  budget_per_sector: number;
+  sector: string;
+  readiness_activities: string;
+  prepositioning_activities: string;
+  early_actions: string;
   originator_name: string;
   originator_title: string;
   originator_email: string;
-  originator_phone: number;
+  originator_phone: string;
   nsc_name: string;
   nsc_title: string;
   nsc_email: string;
@@ -58,11 +64,23 @@ export interface EapsFields {
   ifrc_focal_name: string;
   ifrc_focal_title: string;
   ifrc_focal_email: string;
-  ifrc_focal_phone: number;
-  country: string;
-  district: string;
+  ifrc_focal_phone: string;
+  country: CountryDistrict[];
+  district: string[];
   disaster_type: number;
+  targeted_people: number;
+  partners: string;
+  references: string;
 }
+
+export interface EapsApiFields extends Omit<EapsFields, 'country_district' | 'planned_interventions' | 'national_society_actions' | 'needs_identified'> {
+  country_district: (Omit<CountryDistrict, 'clientId'> & {
+    id: number
+    country_details: Country,
+    district_details: DistrictMini[],
+  })[];
+}
+
 export interface NumericValueOption {
   value: number;
   label: string;
@@ -90,6 +108,8 @@ export const overviewFields: (keyof EapsFields)[] = [
   'trigger_statement',
   'overview',
   'document',
+  'num_of_people',
+  'partners'
 ];
 
 export const contactFields: (keyof EapsFields)[] = [
@@ -105,4 +125,13 @@ export const contactFields: (keyof EapsFields)[] = [
   'ifrc_focal_title',
   'ifrc_focal_email',
   'ifrc_focal_phone',
+];
+
+export const earlyActionFields: (keyof EapsFields)[] = [
+  'budget_per_sector',
+  'sector',
+  'readiness_activities',
+  'prepositioning_activities',
+  'early_actions',
+  'targeted_people',
 ];

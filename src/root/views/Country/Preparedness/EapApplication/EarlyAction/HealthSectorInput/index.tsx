@@ -4,6 +4,12 @@ import {
   IoAdd,
   IoTrash,
 } from 'react-icons/io5';
+import {
+  PartialForm,
+  Error,
+  EntriesAsList,
+  getErrorObject,
+} from '@togglecorp/toggle-form';
 
 import InputSection from '#components/InputSection';
 import NumberInput from '#components/NumberInput';
@@ -12,9 +18,25 @@ import SearchSelectInput from '#components/SearchSelectInput';
 import BulletTextArea from '#components/BulletTextArea';
 
 import styles from './styles.module.scss';
+import { EapsFields } from '../../common';
 
-function HealthSectorInput() {
+type Value = PartialForm<EapsFields>;
+interface Props {
+  error: Error<Value> | undefined;
+  onValueChange: (...entries: EntriesAsList<Value>) => void;
+  value: Value;
+}
+
+function HealthSectorInput(props: Props) {
   const { strings } = React.useContext(languageContext);
+
+  const {
+    error: formError,
+    onValueChange,
+    value,
+  } = props;
+
+  const error = getErrorObject(formError);
 
   return (
     <>
@@ -29,10 +51,10 @@ function HealthSectorInput() {
           title={strings.eapsFormBudgetPerSector}
         >
           <NumberInput
-            name="budget"
-            value={undefined}
-            onChange={undefined}
-            error={undefined}
+            name="budget_per_sector"
+            value={value?.budget_per_sector}
+            onChange={onValueChange}
+            error={error?.budget_per_sector}
           />
           <Button
             className={styles.removeButton}
@@ -48,15 +70,15 @@ function HealthSectorInput() {
         <SearchSelectInput
           label={strings.eapsFormSectorIndicator}
           className={styles.indicator}
-          name="eap_country"
-          value={undefined}
+          name="priortised_risk"
+          value={onValueChange}
           onChange={undefined}
           error={undefined}
         />
         <NumberInput
           label={strings.eapsFormSectorIndicatorValue}
           className={styles.indicator}
-          name="eap_country"
+          name="indicator"
           placeholder={strings.eapsFormSectorPlaceholder}
           value={undefined}
           onChange={undefined}
@@ -102,20 +124,20 @@ function HealthSectorInput() {
         <div className={styles.targetPeople}>
           <NumberInput
             label={strings.eapsFormTargetPeople}
-            name="eap_country"
+            name="targeted_people"
             placeholder={strings.eapsFormSectorPlaceholder}
-            value={undefined}
-            onChange={undefined}
-            error={undefined}
+            value={value?.targeted_people}
+            onChange={onValueChange}
+            error={error?.targeted_people}
           />
           <div className={styles.earlyActions}>
             <BulletTextArea
               label={strings.eapsFormEarlyActions}
-              name="eap_country"
+              name="early_actions"
               placeholder={strings.eapsFormListTheEarlyAction}
-              value={undefined}
-              onChange={undefined}
-              error={undefined}
+              value={value?.early_actions}
+              onChange={onValueChange}
+              error={error?.early_actions}
             />
             <Button
               name={undefined}
@@ -128,19 +150,19 @@ function HealthSectorInput() {
           </div>
           <BulletTextArea
             label={strings.eapsFormReadinessActivities}
-            name="eap_country"
+            name="readiness_activities"
             placeholder={strings.eapsFormListTheReadinessActivities}
-            value={undefined}
-            onChange={undefined}
-            error={undefined}
+            value={value?.readiness_activities}
+            onChange={onValueChange}
+            error={error?.readiness_activities}
           />
           <BulletTextArea
             label={strings.eapsFormPrePositioningActivities}
-            name="eap_country"
-            placeholder='List the pre-positioning activities (if any)'
-            value={undefined}
-            onChange={undefined}
-            error={undefined}
+            name="prepositioning_activities"
+            placeholder="List the pre-positioning activities (if any)"
+            value={value?.prepositioning_activities}
+            onChange={onValueChange}
+            error={error?.prepositioning_activities}
           />
         </div>
       </InputSection>

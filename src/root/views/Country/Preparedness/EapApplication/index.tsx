@@ -1,6 +1,7 @@
 import React from 'react';
 import type { History, Location } from 'history';
 import {
+  isDefined,
   listToMap,
 } from '@togglecorp/fujs';
 import useAlert from '#hooks/useAlert';
@@ -41,11 +42,17 @@ interface EapsResponseFields {
   id: number;
 }
 
-interface Props {
-  className?: string;
-  match: Match<{ eapId?: string }>;
-  history: History;
-  location: Location;
+export function getDefinedValues<T extends Record<string, any>>(o: T): Partial<T> {
+  type Key = keyof T;
+  const keys = Object.keys(o) as Key[];
+  const definedValues: Partial<T> = {};
+  keys.forEach((key) => {
+    if (isDefined(o[key])) {
+      definedValues[key] = o[key];
+    }
+  });
+
+  return definedValues;
 }
 
 type StepTypes = 'eapOverview' | 'earlyActions' | 'contacts';
@@ -57,6 +64,13 @@ const stepTypesToFieldsMap: {
   earlyActions: eventDetailsFields,
   contacts: contactFields,
 };
+
+interface Props {
+  className?: string;
+  match: Match<{ eapId?: string }>;
+  history: History;
+  location: Location;
+}
 
 function EapApplication(props: Props) {
   const {
@@ -79,9 +93,17 @@ function EapApplication(props: Props) {
   } = useForm(schema, { value: defaultFormValues });
 
   const {
-    fetchingCountries,
     countryOptions,
+    fetchingEapDetails,
+    disasterCategoryOptions,
+    disasterTypeOptions,
+    fetchingCountries,
+    fetchingDisasterTypes,
+    disasterTypesResponse,
+    fetchingUserDetails,
   } = useEapFormOptions(value);
+
+  const [fileIdToUrlMap, setFileIdToUrlMap] = React.useState<Record<number, string>>({});
 
   const [currentStep, setCurrentStep] = React.useState<StepTypes>('eapOverview');
   const submitButtonLabel = currentStep === 'contacts' ? strings.drefFormSaveButtonLabel : strings.drefFormContinueButtonLabel;
@@ -211,15 +233,30 @@ function EapApplication(props: Props) {
             error={undefined}
             onValueChange={onValueChange}
             value={value}
+            disasterTypeOptions={disasterTypeOptions}
+            disasterCategoryOptions={disasterCategoryOptions}
+            onValueSet={onValueSet}
+            fetchingDisasterTypes={fetchingDisasterTypes}
             fetchingCountries={fetchingCountries}
             countryOptions={countryOptions}
+            fetchingEapDetails={fetchingEapDetails}
+            fileIdToUrlMap={fileIdToUrlMap}
+            setFileIdToUrlMap={setFileIdToUrlMap}
           />
         </TabPanel>
         <TabPanel name="earlyActions">
-          <EarlyAction />
+          <EarlyAction
+            error={undefined}
+            onValueChange={onValueChange}
+            value={value}
+          />
         </TabPanel>
         <TabPanel name="contacts">
-          <Contacts />
+          <Contacts
+            error={undefined}
+            onValueChange={onValueChange}
+            value={value}
+          />
         </TabPanel>
         <div className={styles.actions}>
           <Button
