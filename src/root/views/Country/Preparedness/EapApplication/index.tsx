@@ -15,7 +15,7 @@ import {
   contactFields,
 } from './common';
 import {
-  useLazyRequest,
+  useLazyRequest, useRequest,
 } from '#utils/restRequest';
 import type { match as Match } from 'react-router-dom';
 
@@ -31,11 +31,16 @@ import {
   useForm,
   getErrorObject,
   PartialForm,
+  accumulateErrors,
+  ObjectError,
 } from '@togglecorp/toggle-form';
 import useEapFormOptions, { schema } from './useEapFormOptions';
 import styles from './styles.module.scss';
 
 const defaultFormValues: PartialForm<EapsFields> = {
+  country: [],
+  sectors: [],
+  early_actions_indicators: [],
 };
 
 interface EapsResponseFields {
@@ -95,12 +100,15 @@ function EapApplication(props: Props) {
   const {
     countryOptions,
     fetchingEapDetails,
-    disasterCategoryOptions,
     disasterTypeOptions,
     fetchingCountries,
     fetchingDisasterTypes,
-    disasterTypesResponse,
-    fetchingUserDetails,
+    statusOptions,
+    earlyActionIndicatorsOptions,
+    sectorsOptions,
+    fetchingDistricts,
+    districtOptions,
+    disasterCategoryOptions,
   } = useEapFormOptions(value);
 
   const [fileIdToUrlMap, setFileIdToUrlMap] = React.useState<Record<number, string>>({});
@@ -108,10 +116,6 @@ function EapApplication(props: Props) {
   const [currentStep, setCurrentStep] = React.useState<StepTypes>('eapOverview');
   const submitButtonLabel = currentStep === 'contacts' ? strings.drefFormSaveButtonLabel : strings.drefFormContinueButtonLabel;
   const shouldDisabledBackButton = currentStep === 'eapOverview';
-
-  const handleTabChange = React.useCallback((newStep: StepTypes) => {
-    setCurrentStep(newStep);
-  }, []);
 
   const erroredTabs = React.useMemo(() => {
     const tabs: {
@@ -179,6 +183,97 @@ function EapApplication(props: Props) {
       );
     },
   });
+  const validateCurrentTab = React.useCallback((exceptions: (keyof EapsFields)[] = []) => {
+    const validationError = getErrorObject(accumulateErrors(value, schema, value, undefined));
+    const currentFields = stepTypesToFieldsMap[currentStep];
+    const exceptionsMap = listToMap(exceptions, d => d, d => true);
+
+    if (!validationError) {
+      return true;
+    }
+
+    const currentTabErrors = listToMap(
+      currentFields.filter(field => (!exceptionsMap[field] && !!validationError?.[field])),
+      field => field,
+      field => validationError?.[field]
+    ) as ObjectError<EapsFields>;
+
+    const newError: typeof error = {
+      ...currentTabErrors,
+    };
+
+    onErrorSet(newError);
+
+    const hasError = Object.keys(currentTabErrors).some(d => !!d);
+    return !hasError;
+  }, [value, currentStep, onErrorSet]);
+
+  const handleTabChange = React.useCallback((newStep: StepTypes) => {
+    const isCurrentTabValid = validateCurrentTab(['eap_number']);
+
+    if (!isCurrentTabValid) {
+      return;
+    }
+
+    setCurrentStep(newStep);
+  }, [validateCurrentTab]);
+
+  const submitEap = React.useCallback(() => {
+    const result = validate();
+
+    if (result.errored) {
+      onErrorSet(result.error);
+    } else if (result.value) {
+      const body = {
+        ...result.value,
+      };
+      submitRequest(body as EapsApiFields);
+    }
+  }, [submitRequest, validate, onErrorSet]);
+
+  const handleSubmitButtonClick = React.useCallback(() => {
+
+    const isCurrentTabValid = validateCurrentTab(['eap_number']);
+
+    if (!isCurrentTabValid) {
+      return;
+    }
+
+    if (currentStep === 'contacts') {
+      submitEap();
+    } else {
+      const nextStepMap: {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        [key in Exclude<StepTypes, 'contacts'>]: Exclude<StepTypes, 'eapOverview'>;
+      } = {
+        eapOverview: 'earlyActions',
+        earlyActions: 'contacts',
+      };
+
+      handleTabChange(nextStepMap[currentStep]);
+    }
+  }, [validateCurrentTab, currentStep, handleTabChange, submitEap]);
+
+  const handleBackButtonClick = React.useCallback(() => {
+    if (currentStep !== 'eapOverview') {
+      const prevStepMap: {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        [key in Exclude<StepTypes, 'eapOverview'>]: Exclude<StepTypes, 'contacts'>;
+      } = {
+        earlyActions: 'eapOverview',
+        contacts: 'earlyActions',
+      };
+
+      handleTabChange(prevStepMap[currentStep]);
+    }
+  }, [handleTabChange, currentStep]);
+
+  const pending = fetchingCountries
+    || fetchingDisasterTypes
+    || fetchingEapDetails
+    || eapSubmitPending;
+
+  const failedToLoadEap = !pending && isDefined(eapId);
 
   return (
     <Tabs
@@ -233,6 +328,9 @@ function EapApplication(props: Props) {
             error={undefined}
             onValueChange={onValueChange}
             value={value}
+            fetchingDistricts={fetchingDistricts}
+            districtOptions={districtOptions}
+            statusOptions={statusOptions}
             disasterTypeOptions={disasterTypeOptions}
             disasterCategoryOptions={disasterCategoryOptions}
             onValueSet={onValueSet}
@@ -247,6 +345,8 @@ function EapApplication(props: Props) {
         <TabPanel name="earlyActions">
           <EarlyAction
             error={undefined}
+            earlyActionIndicatorOptions={earlyActionIndicatorsOptions}
+            sectorsOptions={sectorsOptions}
             onValueChange={onValueChange}
             value={value}
           />
@@ -262,7 +362,7 @@ function EapApplication(props: Props) {
           <Button
             name={undefined}
             variant="secondary"
-            onClick={undefined}
+            onClick={handleBackButtonClick}
             disabled={shouldDisabledBackButton}
           >
             {strings.eapsFormBackButtonLabel}
@@ -270,7 +370,7 @@ function EapApplication(props: Props) {
           <Button
             name={undefined}
             variant="secondary"
-            onClick={undefined}
+            onClick={handleSubmitButtonClick}
           >
             {submitButtonLabel}
           </Button>

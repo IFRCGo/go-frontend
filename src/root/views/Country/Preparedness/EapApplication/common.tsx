@@ -1,4 +1,6 @@
 import { Country, DistrictMini } from "#types/country";
+import { IndicatorsSchema } from "#views/DrefApplicationForm/useDrefFormOptions";
+import { Sector } from "recharts";
 
 export interface CountryDistrict {
   clientId: string;
@@ -25,7 +27,18 @@ export interface StringKeyValuePair {
 }
 
 export interface Status {
-  key: number;
+  key: string;
+  value: string;
+}
+
+export interface Sectors {
+  key: string;
+  value: string;
+}
+
+export interface Indicator {
+  key: string;
+  value: string;
 }
 
 export const emptyOptionList: Option[] = [];
@@ -37,6 +50,7 @@ export interface EapsFields {
   eap_number: number;
   approval_date: string;
   status: string;
+  early_actions_indicators: string[];
   operational_timeframe: number;
   lead_time: number;
   eap_timeframe: number;
@@ -49,7 +63,7 @@ export interface EapsFields {
   overview: string;
   document: number;
   budget_per_sector: number;
-  sector: string;
+  sectors: string[];
   readiness_activities: string;
   prepositioning_activities: string;
   early_actions: string;
@@ -73,12 +87,39 @@ export interface EapsFields {
   references: string;
 }
 
-export interface EapsApiFields extends Omit<EapsFields, 'country_district' | 'planned_interventions' | 'national_society_actions' | 'needs_identified'> {
+export interface EapsApiFields extends Omit<
+  EapsFields,
+  'country_district'
+  | 'early_actions_indicators'
+  | 'sectors'
+  | 'status'
+> {
   country_district: (Omit<CountryDistrict, 'clientId'> & {
     id: number
     country_details: Country,
     district_details: DistrictMini[],
   })[];
+  sectors: (Omit<Sector, 'clientId' | 'sectors'> & {
+    id: number,
+    key: string,
+    value: string,
+  })[];
+  early_actions_indicators: (Omit<IndicatorsSchema, 'clientId' | 'indicator'> & {
+    id: number,
+    key: string,
+    value: string,
+  })[];
+  documents_details: {
+    id: number,
+    created_by_details: {
+      id: number,
+      username: string,
+      first_name: string,
+      last_name: string,
+    },
+    file: string,
+    created_by: string,
+  }[];
 }
 
 export interface NumericValueOption {
@@ -129,7 +170,8 @@ export const contactFields: (keyof EapsFields)[] = [
 
 export const earlyActionFields: (keyof EapsFields)[] = [
   'budget_per_sector',
-  'sector',
+  'sectors',
+  'early_actions_indicators',
   'readiness_activities',
   'prepositioning_activities',
   'early_actions',

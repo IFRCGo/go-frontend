@@ -22,6 +22,7 @@ import {
 import {
   Country,
   Disaster,
+  DistrictMini,
 } from '#types';
 
 import {
@@ -31,7 +32,6 @@ import {
   StringKeyValuePair,
   NumericKeyValuePair,
   emptyStringOptionList,
-  BooleanValueOption,
 } from './common';
 
 export type FormSchema = ObjectSchema<PartialForm<EapsFields>>;
@@ -43,25 +43,26 @@ export type CountryDistrictSchemaFields = ReturnType<CountryDistrictSchema['fiel
 export type CountryDistrictsSchema = ArraySchema<PartialForm<CountryDistrictType>>;
 export type CountryDistrictsSchemaMember = ReturnType<CountryDistrictsSchema['member']>;
 
+
 export const schema: FormSchema = {
   fields: (value): FormSchemaFields => ({
-    eap_number: [requiredCondition],
+    eap_number: [positiveIntegerCondition, requiredCondition],
     approval_date: [requiredCondition],
     status: [requiredCondition],
-    operational_timeframe: [],
-    lead_time: [],
-    eap_timeframe: [],
-    num_of_people: [],
-    total_budget: [],
+    operational_timeframe: [positiveIntegerCondition, requiredCondition],
+    lead_time: [positiveIntegerCondition, requiredCondition],
+    eap_timeframe: [positiveIntegerCondition, requiredCondition],
+    num_of_people: [positiveIntegerCondition, requiredCondition],
+    total_budget: [positiveIntegerCondition, requiredCondition],
     readiness_budget: [],
     pre_positioning_budget: [],
     early_action_budget: [],
-    trigger_statement: [],
-    overview: [],
+    trigger_statement: [requiredCondition],
+    overview: [requiredCondition],
     document: [],
-    early_actions: [],
+    early_actions: [requiredCondition],
     budget_per_sector: [],
-    sector: [],
+    sectors: [],
     readiness_activities: [],
     prepositioning_activities: [],
     originator_name: [],
@@ -76,7 +77,7 @@ export const schema: FormSchema = {
     ifrc_focal_title: [],
     ifrc_focal_email: [],
     ifrc_focal_phone: [],
-    country: [],
+    country: [requiredCondition],
     district: [],
     disaster_type: [],
   })
@@ -112,23 +113,27 @@ function useEapsFormOptions(value: PartialForm<EapsFields>) {
     url: `api/v2/eap-options/`,
   });
 
-  const [
-    statusOptions,
-    earlyActionIndicatorsOptions,
-    sectorsOptions,
-  ] = React.useMemo(() => {
+  const statusOptions = React.useMemo(() => {
     if (!eapOptions) {
-      return [
-        emptyStringOptionList,
-        emptyStringOptionList,
-        emptyStringOptionList,
-      ];
+      return emptyStringOptionList;
     }
     return [
       eapOptions.status.map(transformKeyValueToLabelValue),
-      eapOptions.early_actions_indicators.map(transformKeyValueToLabelValue),
-      eapOptions.sectors.map(transformKeyValueToLabelValue),
     ];
+  }, [eapOptions]);
+
+  const earlyActionIndicatorsOptions = React.useMemo(() => {
+    if (!eapOptions) {
+      return emptyStringOptionList;
+    }
+    return eapOptions.early_actions_indicators.map(transformKeyValueToLabelValue);
+  }, [eapOptions]);
+
+  const sectorsOptions = React.useMemo(() => {
+    if (!eapOptions) {
+      return emptyStringOptionList;
+    }
+    return eapOptions.sectors.map(transformKeyValueToLabelValue);
   }, [eapOptions]);
 
   const {
@@ -151,13 +156,6 @@ function useEapsFormOptions(value: PartialForm<EapsFields>) {
       label: d.name,
     })) ?? emptyNumericOptionList
   ), [disasterTypesResponse]);
-
-  const yesNoOptions = React.useMemo(() => {
-    return [
-      { value: true, label: strings.yesLabel },
-      { value: false, label: strings.noLabel },
-    ] as BooleanValueOption[];
-  }, [strings]);
 
   const {
     pending: fetchingCountries,
@@ -192,6 +190,28 @@ function useEapsFormOptions(value: PartialForm<EapsFields>) {
     return [ns, c] as const;
   }, [countriesResponse]);
 
+  const countryQuery = React.useMemo(() => ({
+    country: value.country,
+    limit: 500,
+  }), [value.country]);
+
+  const {
+    pending: fetchingDistricts,
+    response: districtsResponse,
+  } = useRequest<ListResponse<DistrictMini>>({
+    skip: !value.country,
+    url: 'api/v2/district/',
+    query: countryQuery,
+  });
+
+  const districtOptions = React.useMemo(() => (
+    districtsResponse?.results?.map(d => ({
+      value: d.id,
+      label: d.name,
+    })).sort(compareString) ?? emptyNumericOptionList
+  ), [districtsResponse]);
+
+
   return {
     countryOptions,
     statusOptions,
@@ -200,11 +220,12 @@ function useEapsFormOptions(value: PartialForm<EapsFields>) {
     disasterTypeOptions,
     fetchingCountries,
     fetchingDisasterTypes,
-    yesNoOptions,
     nationalSocietyOptions,
     eapDetailsResponse,
     fetchingEapDetails,
     fetchingEapOptions,
+    fetchingDistricts,
+    districtOptions,
   };
 }
 

@@ -3,14 +3,74 @@ import languageContext from '#root/languageContext';
 import Container from '#components/Container';
 import InputSection from '#components/InputSection';
 import Button from '#components/Button';
-import SearchSelectInput from '#components/SearchSelectInput';
 import HealthSectorInput from './HealthSectorInput';
 import { IoAdd } from 'react-icons/io5';
 
 import styles from './styles.module.scss';
+import {
+  EntriesAsList,
+  PartialForm,
+  Error,
+  getErrorObject,
+  useFormArray,
+} from '@togglecorp/toggle-form';
+import {
+  EapsFields,
+  NumericValueOption,
+  Sectors,
+} from '../common';
+import SelectInput from '#components/SelectInput';
+import { isNotDefined, randomString } from '@togglecorp/fujs';
 
-function EarlyAction() {
+type Value = PartialForm<EapsFields>;
+
+interface Props {
+  error: Error<Value> | undefined;
+  onValueChange: (...entries: EntriesAsList<Value>) => void;
+  value: Value;
+  sectorsOptions: NumericValueOption[];
+}
+
+function EarlyAction(props: Props) {
   const { strings } = React.useContext(languageContext);
+
+  const {
+    error: formError,
+    onValueChange,
+    value,
+    sectorsOptions,
+  } = props;
+
+  const error = React.useMemo(
+    () => getErrorObject(formError),
+    [formError]
+  );
+
+  const [sectors, setSectors] = React.useState<number | undefined>();
+  const {
+    setValue: onSectorsChange,
+    removeValue: onSectorsRemove,
+  } = useFormArray<'sectors', PartialForm<Sectors>>(
+    'sectors',
+    onValueChange,
+  );
+
+  type Sectors = typeof value.sectors;
+  const handleSectorsAddButtonClick = React.useCallback((title) => {
+    const key = randomString();
+    const newList: PartialForm<SectorsType> = {
+      key,
+      value,
+    };
+    onValueChange(
+      (oldValue: PartialForm<Sectors>) => (
+        [...(oldValue ?? []), newList]
+      ),
+      'sectors' as const,
+    );
+    setSectors(undefined);
+  }, [onValueChange, setSectors]);
+
 
   return (
     <>
@@ -22,17 +82,19 @@ function EarlyAction() {
             <InputSection
               title={strings.eapsFormSector}
             >
-              <SearchSelectInput
-                name="eap_country"
-                value={undefined}
-                onChange={undefined}
-                error={undefined}
+              <SelectInput
+                name="sectors"
+                value={value?.sectors}
+                onChange={setSectors}
+                error={error?.sectors}
+                options={sectorsOptions}
               />
               <Button
                 className={styles.earlyActionButton}
-                name={undefined}
-                onClick={undefined}
+                name={sectors}
+                onClick={handleSectorsAddButtonClick}
                 variant="secondary"
+                disabled={isNotDefined(sectors)}
               >
                 <IoAdd />
                 {strings.eapsFormAddButtonLabel}
@@ -40,17 +102,17 @@ function EarlyAction() {
             </InputSection>
           </div>
         </div>
-        {/* {value?.planned_interventions?.map((n, i) => ( */}
-        <HealthSectorInput
-          // key={n.clientId}
-          // index={i}
-          value={undefined}
-          onChange={undefined}
-          onRemove={undefined}
-          error={undefined}
-          interventionOptions={undefined}
-          showNewFieldOperational={false} />
-        {/* ))} */}
+        {value?.sectors?.map((n, i) => (
+          <HealthSectorInput
+            key={n}
+            index={i}
+            value={n}
+            onChange={onSectorsChange}
+            onRemove={onSectorsRemove}
+            error={error?.sectors}
+            sectorsOptions={sectorsOptions}
+            showNewFieldOperational={false} />
+        ))}
       </Container>
     </>
   );

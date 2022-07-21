@@ -17,7 +17,6 @@ import {
   EapsFields,
   NumericValueOption,
 } from '../common';
-import SearchSelectInput from '#components/SearchSelectInput';
 import DateInput from '#components/DateInput';
 import NumberInput from '#components/NumberInput';
 import TextArea from '#components/TextArea';
@@ -30,8 +29,6 @@ import { CountryDistrictType } from '../useEapFormOptions';
 
 import styles from './styles.module.scss';
 import SelectInput from '#components/SelectInput';
-import { ListResponse, useRequest } from '#utils/restRequest';
-import { DistrictMini } from '#types/country';
 
 type Value = PartialForm<EapsFields>;
 type SetValueArg<T> = T | ((value: T) => T);
@@ -52,6 +49,9 @@ interface Props {
   fileIdToUrlMap: Record<number, string>;
   setFileIdToUrlMap?: React.Dispatch<React.SetStateAction<Record<number, string>>>;
   index: number;
+  districtOptions: NumericValueOption[];
+  fetchingDistricts?: boolean;
+  statusOptions: NumericValueOption[];
 }
 
 function EapOverview(props: Props) {
@@ -65,36 +65,18 @@ function EapOverview(props: Props) {
     disasterTypeOptions,
     countryOptions,
     fetchingCountries,
+    fetchingDistricts,
     setFileIdToUrlMap,
     fileIdToUrlMap,
     index,
+    statusOptions,
+    districtOptions,
   } = props;
 
   const error = React.useMemo(
     () => getErrorObject(formError),
     [formError]
   );
-
-  const countryQuery = React.useMemo(() => ({
-    country: value.country,
-    limit: 500,
-  }), [value.country]);
-
-  const {
-    pending: fetchingDistricts,
-    response: districtsResponse,
-  } = useRequest<ListResponse<DistrictMini>>({
-    skip: !value.country,
-    url: 'api/v2/district/',
-    query: countryQuery,
-  });
-
-  const districtOptions = React.useMemo(() => (
-    districtsResponse?.results?.map(d => ({
-      value: d.id,
-      label: d.name,
-    }))
-  ), [districtsResponse]);
 
   const onFieldChange = useFormObject(index, onChange, defaultCountryDistrictValue);
 
@@ -123,7 +105,6 @@ function EapOverview(props: Props) {
             >
               <SelectInput
                 pending={fetchingDistricts}
-                isMulti={true}
                 error={error?.district}
                 name={"district" as const}
                 onChange={onFieldChange}
@@ -168,13 +149,13 @@ function EapOverview(props: Props) {
             <InputSection
               title={strings.eapsFormEapStatus}
             >
-              <SearchSelectInput
+              <SelectInput
                 name="eap_status"
-                value={undefined}
-                onChange={undefined}
-                error={undefined}
-              >
-              </SearchSelectInput>
+                value={value?.status}
+                options={statusOptions}
+                onChange={onValueChange}
+                error={error?.status}
+              />
             </InputSection>
           </div>
           <div className={styles.eapCountry}>

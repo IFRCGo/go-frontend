@@ -9,32 +9,84 @@ import {
   Error,
   EntriesAsList,
   getErrorObject,
+  useFormArray,
+  useFormObject,
 } from '@togglecorp/toggle-form';
+import {
+  EapsFields,
+  Indicator,
+  NumericValueOption,
+  Sectors,
+  StringValueOption,
+} from '../../common';
 
 import InputSection from '#components/InputSection';
 import NumberInput from '#components/NumberInput';
 import Button from '#components/Button';
-import SearchSelectInput from '#components/SearchSelectInput';
 import BulletTextArea from '#components/BulletTextArea';
+import SelectInput from '#components/SelectInput';
 
 import styles from './styles.module.scss';
-import { EapsFields } from '../../common';
+import { randomString } from '@togglecorp/fujs';
 
 type Value = PartialForm<EapsFields>;
+type SetValueArg<T> = T | ((value: T) => T);
+
+const defaultSectorValue: PartialForm<Sectors> = {
+  value: randomString(),
+};
+
 interface Props {
   error: Error<Value> | undefined;
   onValueChange: (...entries: EntriesAsList<Value>) => void;
   value: Value;
+  onChange: (value: SetValueArg<PartialForm<Sectors>>, index: number) => void;
+  onRemove: (index: number) => void;
+  earlyActionIndicatorsOptions: NumericValueOption[];
+  index: number;
+  showNewFieldOperational: boolean;
+  sectorOptions: StringValueOption[];
 }
 
 function HealthSectorInput(props: Props) {
   const { strings } = React.useContext(languageContext);
-
+  const [indicator, setIndicator] = React.useState<number | undefined>();
   const {
     error: formError,
+    onChange,
+    index,
+    onRemove,
     onValueChange,
+    earlyActionIndicatorsOptions,
     value,
   } = props;
+
+  const onFieldChange = useFormObject(index, onChange, defaultSectorValue);
+
+  const {
+    setValue: onIndicatorChange,
+    removeValue: onIndicatorRemove,
+  } = useFormArray<'indicator', PartialForm<Indicator>>(
+    'indicator',
+    onFieldChange,
+  );
+
+  type Sectors = typeof value.sectors;
+  const handleIndicatorAddButtonClick = React.useCallback((title) => {
+    const key = randomString();
+    const newList: PartialForm<IndicatorType> = {
+      key,
+      value,
+    };
+
+    onFieldChange(
+      (oldValue: PartialForm<Indicator>) => (
+        [...(oldValue ?? []), newList]
+      ),
+      'indicator' as const,
+    );
+    setIndicator(undefined);
+  }, [onFieldChange, setIndicator]);
 
   const error = getErrorObject(formError);
 
@@ -58,8 +110,8 @@ function HealthSectorInput(props: Props) {
           />
           <Button
             className={styles.removeButton}
-            name={undefined}
-            onClick={undefined}
+            name={index}
+            onClick={onRemove}
             variant="action"
           >
             <IoTrash />
@@ -67,13 +119,14 @@ function HealthSectorInput(props: Props) {
         </InputSection>
       </div>
       <div className={styles.sector}>
-        <SearchSelectInput
+        <SelectInput
           label={strings.eapsFormSectorIndicator}
           className={styles.indicator}
-          name="priortised_risk"
-          value={onValueChange}
-          onChange={undefined}
-          error={undefined}
+          name="early_actions_indicators"
+          options={earlyActionIndicatorsOptions}
+          onChange={onFieldChange}
+          value={value?.early_actions_indicators}
+          error={error?.early_actions_indicators}
         />
         <NumberInput
           label={strings.eapsFormSectorIndicatorValue}
@@ -140,12 +193,12 @@ function HealthSectorInput(props: Props) {
               error={error?.early_actions}
             />
             <Button
-              name={undefined}
-              onClick={undefined}
+              name={indicator}
+              onClick={handleIndicatorAddButtonClick}
               variant="secondary"
             >
               <IoAdd />
-              {strings.eapsFormAddEarlyAction}
+              Add early action
             </Button>
           </div>
           <BulletTextArea
