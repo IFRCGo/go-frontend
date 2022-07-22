@@ -115,7 +115,7 @@ function CopyFieldReportSection(props: Props) {
       const frDate = fieldReport.created_at?.split('T')[0];
       const go_field_report_date = value.go_field_report_date ?? frDate;
       const disaster_type = value.disaster_type ?? fieldReport.dtype?.id;
-      const event_description = value.event_description ?? fieldReport.description;
+      const event_description = fieldReport.description;
       const un_or_other_actor = value.un_or_other_actor ?? fieldReport.actions_others;
       let country_district = value.country_district ?? [];
       const startDate = fieldReport.start_date?.split('T')[0];

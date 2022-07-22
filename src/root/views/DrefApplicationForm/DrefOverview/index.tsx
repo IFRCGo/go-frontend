@@ -348,9 +348,14 @@ function DrefOverview(props: Props) {
       </Container>
       <Container
         heading={strings.drefFormOperationalTimeframes}
+        className={styles.operationalTimeframes}
       >
-        <InputSection>
-          {/*{!isImminentOnset ?
+        <InputSection
+          className={styles.operationalTimeframesInput}
+          fullWidth
+        >
+          {/* TODO: 
+          {!isImminentOnset ?
             <DateInput
               label={strings.drefFormEventDate}
               name="event_date"
@@ -359,7 +364,6 @@ function DrefOverview(props: Props) {
               error={error?.event_date}
             />
             :
-
             <TextArea
               label={strings.drefFormApproximateDateOfImpact}
               name="event_text"
@@ -391,6 +395,7 @@ function DrefOverview(props: Props) {
           />
         </InputSection>
         <InputSection
+          fullWidth
         >
           <DateInput
             label={strings.drefFormPublishingDate}
@@ -416,15 +421,6 @@ function DrefOverview(props: Props) {
             readOnly
           />
         </InputSection>
-        {/*<InputSection
-          title={strings.drefFormOperationTimeframeSubmission}
-        >
-        </InputSection>*/}
-        {/*<InputSection
-          title={strings.drefFormSubmissionEndDate}
-          description={strings.drefFormEndDateSubmissionDescription}
-        >
-        </InputSection>*/}
       </Container>
     </>
   );

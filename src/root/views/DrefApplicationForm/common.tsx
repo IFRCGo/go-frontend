@@ -101,6 +101,12 @@ export interface Intervention {
   female: number;
 }
 
+export interface FileWithCaption {
+  client_id: string;
+  id: number;
+  caption: string;
+}
+
 export const optionKeySelector = (o: Option) => o.value;
 export const numericOptionKeySelector = (o: NumericValueOption) => o.value;
 export const stringOptionKeySelector = (o: StringValueOption) => o.value;
@@ -131,7 +137,7 @@ export interface DrefFields {
   event_date: string;
   event_map: number;
   field_report: number;
-  images: number[];
+  images: FileWithCaption[];
   event_description: string;
   event_scope: string;
   event_text: string;
@@ -257,7 +263,6 @@ export interface DrefApiFields extends Omit<DrefFields, 'country_district' | 'pl
     file: string;
   }[];
 }
-
 
 export const overviewFields: (keyof DrefFields)[] = [
   'users',
