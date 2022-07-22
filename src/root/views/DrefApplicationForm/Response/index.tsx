@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import {
   randomString,
   isNotDefined,
@@ -78,14 +78,14 @@ function Response(props: Props) {
   type Interventions = typeof value.planned_interventions;
   const handleInterventionAddButtonClick = React.useCallback((title) => {
     const clientId = randomString();
-    const newList: PartialForm<InterventionType> = {
+    const newInterventionList: PartialForm<InterventionType> = {
       clientId,
       title,
     };
 
     onValueChange(
       (oldValue: PartialForm<Interventions>) => (
-        [...(oldValue ?? []), newList]
+        [...(oldValue ?? []), newInterventionList]
       ),
       'planned_interventions' as const,
     );
@@ -95,8 +95,8 @@ function Response(props: Props) {
   const interventionsIdentifiedMap = React.useMemo(() => (
     listToMap(
       value.planned_interventions,
-      d => d.title ?? '',
-      d => true
+      pi => pi.title ?? '',
+      pi => true,
     )
   ), [value.planned_interventions]);
 
@@ -110,7 +110,6 @@ function Response(props: Props) {
     if (value?.num_assisted !== value?.total_targeted_population) {
       w.push('Total targeted population is different from that in Operation Overview');
     }
-
 
     if (sumSafe([
       value?.women,
@@ -131,7 +130,13 @@ function Response(props: Props) {
     value?.total_targeted_population,
   ]);
 
-  const filteredInterventionOptions = interventionsIdentifiedMap ? interventionOptions.filter(n => !interventionsIdentifiedMap[n.value]) : [];
+  const filteredInterventionOptions = useMemo(() =>
+    interventionsIdentifiedMap ? interventionOptions.filter(n => !interventionsIdentifiedMap[n.value]) : []
+    , [
+      interventionsIdentifiedMap,
+      interventionOptions,
+    ]);
+
   const isImminentOnset = value.type_of_onset === ONSET_IMMINENT;
 
   const isSurgePersonnelDeployed = value?.surge_personnel_deployed_yes_no;

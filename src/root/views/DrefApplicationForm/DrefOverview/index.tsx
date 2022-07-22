@@ -115,7 +115,12 @@ function DrefOverview(props: Props) {
     ));
   }, [userOptions]);
 
-  const userMap = React.useMemo(() => listToMap(userOptions, d => d.value, d => d.label), [userOptions]);
+  const userMap = React.useMemo(() => listToMap(
+    userOptions,
+    u => u.value,
+    u => u.label
+  ), [userOptions]);
+
   const initialOptions = React.useMemo(() => (
     value.users?.map((u) => ({
       label: userMap[u],
@@ -137,10 +142,6 @@ function DrefOverview(props: Props) {
     value,
     onValueSet,
   ]);
-
-  //const dynamicTitle = `${value?.country_district?.map((cd) => cd.country)} ${value?.disaster_type} ${value?.event_date}`;
-
-  //onValueChange(dynamicTitle, 'title');
 
   return (
     <>
