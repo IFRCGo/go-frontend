@@ -126,18 +126,22 @@ function EventDetails(props: Props) {
             />
           </InputSection>
         )}
-        {value.ns_request_fund && value.ns_respond && value.affect_same_population && value.affect_same_area && (
-          <InputSection
-            title={strings.drefFormRecurrentText}
-          >
-            <TextArea
-              name="dref_recurrent_text"
-              value={value.dref_recurrent_text}
-              onChange={onValueChange}
-              error={error?.dref_recurrent_text}
-            />
-          </InputSection>
-        )}
+        {
+          value.ns_request_fund &&
+          value.ns_respond &&
+          value.affect_same_population &&
+          value.affect_same_area && (
+            <InputSection
+              title={strings.drefFormRecurrentText}
+            >
+              <TextArea
+                name="dref_recurrent_text"
+                value={value.dref_recurrent_text}
+                onChange={onValueChange}
+                error={error?.dref_recurrent_text}
+              />
+            </InputSection>
+          )}
         <InputSection
           title={strings.drefFormLessonsLearnedTitle}
           description={strings.drefFormLessonsLearnedDescription}

@@ -86,7 +86,6 @@ function CountryDistrictInput(props: Props) {
         onChange={onFieldChange}
         options={countryOptions}
         value={value.country}
-        disabled
 
       />
       <SelectInput<"district", number>
@@ -99,7 +98,7 @@ function CountryDistrictInput(props: Props) {
         options={districtOptions}
         value={value.district}
       />
-    </div>
+    </div> 
   );
 }
 

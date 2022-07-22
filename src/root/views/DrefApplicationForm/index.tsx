@@ -423,7 +423,13 @@ function DrefApplication(props: Props) {
       }
       return oldValue;
     });
-  }, [onValueSet, value.ns_request_fund, value.ns_respond, value.affect_same_population, value.affect_same_area]);
+  }, [
+    onValueSet,
+    value.ns_request_fund,
+    value.ns_respond,
+    value.affect_same_population,
+    value.affect_same_area,
+  ]);
 
   React.useEffect(() => {
     if (isDefined(value.date_of_approval) && isDefined(value.operation_timeframe)) {
@@ -442,7 +448,14 @@ function DrefApplication(props: Props) {
         onValueChange(ymdToDateString(yyyy, mm, dd), 'end_date' as const);
       }
     }
-  }, [onValueChange, value.date_of_approval, value.operation_timeframe]);
+    onValueChange(value?.num_assisted, 'total_targeted_population');
+  }, [
+    onValueChange,
+    value.date_of_approval,
+    value.operation_timeframe,
+    value.num_assisted,
+    value.country_district,
+  ]);
 
   const exportLinkProps = useButtonFeatures({
     variant: 'secondary',
@@ -450,6 +463,23 @@ function DrefApplication(props: Props) {
   });
 
   const failedToLoadDref = !pending && isDefined(drefId) && !drefResponse;
+
+  //TODO: 
+  React.useMemo(() => {
+    const getCurrentCountryValue = value?.country_district?.map((cd) => cd.country)[0];
+    const countryName = countryOptions.filter((cd) => cd.value === getCurrentCountryValue).map((c) => c.label);
+    const filteredDisasterTypeName = disasterTypeOptions.filter((dt) => dt.value === value.disaster_type).map((dt) => dt.label).toString();
+
+    const dynamicTitle = `${countryName} ${filteredDisasterTypeName} ${value?.event_date ?? ''}`;
+    onValueChange(dynamicTitle, 'title');
+  }, [
+    countryOptions,
+    disasterTypeOptions,
+    value.disaster_type,
+    value.country_district,
+    value.event_date,
+    onValueChange,
+  ]);
 
   return (
     <Tabs
@@ -595,6 +625,7 @@ function DrefApplication(props: Props) {
                   value={value}
                   fileIdToUrlMap={fileIdToUrlMap}
                   setFileIdToUrlMap={setFileIdToUrlMap}
+                  yesNoOptions={yesNoOptions}
                 />
               </TabPanel>
               <TabPanel name="submission">
