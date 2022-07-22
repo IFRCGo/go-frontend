@@ -4,6 +4,7 @@ import {
   Error,
   EntriesAsList,
   getErrorObject,
+  useFormArray,
 } from '@togglecorp/toggle-form';
 
 import { resolveUrl } from '#utils/resolveUrl';
@@ -20,9 +21,12 @@ import {
   BooleanValueOption,
   booleanOptionKeySelector,
   DrefFields,
+  FileWithCaption,
 } from '../common';
 
 import styles from './styles.module.scss';
+import CaptionInput from '../CaptionInput/CaptionInput';
+import { listToMap } from '@togglecorp/fujs';
 
 type Value = PartialForm<DrefFields>;
 interface Props {
@@ -31,7 +35,7 @@ interface Props {
   value: Value;
   yesNoOptions: BooleanValueOption[];
   isImminentOnset: boolean;
-  fileIdToUrlMap?: Record<number, string>;
+  fileIdToUrlMap: Record<number, string>;
   setFileIdToUrlMap?: React.Dispatch<React.SetStateAction<Record<number, string>>>;
 }
 
@@ -49,6 +53,32 @@ function EventDetails(props: Props) {
   } = props;
 
   const error = getErrorObject(formError);
+  const imagesValue = React.useMemo(() => (
+    value?.images?.map(d => d.id).filter(d => !!d) as number[] | undefined
+  ), [value?.images]);
+
+  const {
+    setValue: onImageChange,
+    removeValue: onImageRemove,
+  } = useFormArray<'images', PartialForm<FileWithCaption>>(
+    'images',
+    onValueChange,
+  );
+  const handleImageInputChange = React.useCallback((newValue: number[] | undefined) => {
+    const imageCaptionByIdMap = listToMap(
+      value?.images ?? [],
+      img => img.id as number,
+      img => img.caption,
+    );
+
+    const newImageList: undefined | PartialForm<FileWithCaption[]> = newValue?.map((v) => ({
+      client_id: String(v),
+      id: v,
+      caption: imageCaptionByIdMap[v],
+    }));
+
+    onValueChange(newImageList, 'images' as const);
+  }, [value?.images, onValueChange]);
 
   return (
     <>
@@ -188,20 +218,35 @@ function EventDetails(props: Props) {
         }
         <InputSection
           title={strings.drefFormUploadPhotos}
+          contentSectionClassName={styles.imageInputContent}
         >
           <DREFFileInput
             name="images"
-            value={value.images}
-            onChange={onValueChange}
+            value={imagesValue}
+            onChange={handleImageInputChange}
             accept="image/*"
             multiple
             showStatus
-            error={error?.images}
+            error={getErrorObject(error?.images)?.id}
             fileIdToUrlMap={fileIdToUrlMap}
             setFileIdToUrlMap={setFileIdToUrlMap}
+            hidePreview
           >
             Select images
           </DREFFileInput>
+          <div className={styles.previewList}>
+            {value?.images?.map((g, i) => (
+              <CaptionInput
+                key={g.client_id}
+                index={i}
+                value={g}
+                onChange={onImageChange}
+                onRemove={onImageRemove}
+                error={getErrorObject(error?.images)}
+                fileIdToUrlMap={fileIdToUrlMap}
+              />
+            ))}
+          </div>
         </InputSection>
         <InputSection
           title={strings.drefFormScopeAndScaleEvent}
