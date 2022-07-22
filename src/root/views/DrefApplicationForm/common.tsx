@@ -67,6 +67,7 @@ export interface CountryDistrict {
   clientId: string;
   country: number;
   district: number[];
+  country_details: Country;
 }
 
 export interface Need {
@@ -167,7 +168,7 @@ export interface DrefFields {
   modified_at: string;
   modified_by: number;
 
-  // FIXME: this typeing for details should not be here
+  // FIXME: this typing for details should not be here
   modified_by_details: {};
 
   national_authorities: string;
@@ -215,6 +216,8 @@ export interface DrefFields {
   dref_recurrent_text: string;
   total_targeted_population: number;
   users: number[];
+  coordination_mechanism: boolean;
+  surge_personnel_deployed_yes_no: boolean;
 }
 
 export interface DrefApiFields extends Omit<DrefFields, 'country_district' | 'planned_interventions' | 'national_society_actions' | 'needs_identified'> {
@@ -270,15 +273,15 @@ export const overviewFields: (keyof DrefFields)[] = [
   'event_map',
   'cover_image',
   'emergency_appeal_planned',
-  'event_date',
   'go_field_report_date',
-  'ns_respond_date',
   'ns_request_date',
   'start_date',
   'end_date',
   'submission_to_geneva',
   'date_of_approval',
   'operation_timeframe',
+  'event_date',
+  'event_text'
 ];
 
 export const eventDetailsFields: (keyof DrefFields)[] = [
@@ -304,6 +307,8 @@ export const actionsFields: (keyof DrefFields)[] = [
   'major_coordination_mechanism',
   'needs_identified',
   'identified_gaps',
+  'ns_respond_date',
+  'coordination_mechanism'
 ];
 
 export const responseFields: (keyof DrefFields)[] = [
@@ -328,6 +333,7 @@ export const responseFields: (keyof DrefFields)[] = [
   'communication',
   'budget_file',
   'planned_interventions',
+  'surge_personnel_deployed_yes_no'
 ];
 
 export const submissionFields: (keyof DrefFields)[] = [

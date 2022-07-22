@@ -10,6 +10,7 @@ import {
 import {
   listToMap,
   isNotDefined,
+  randomString,
 } from '@togglecorp/fujs';
 import { IoHelpCircle } from 'react-icons/io5';
 
@@ -40,7 +41,6 @@ import {
 import CountryDistrictInput from './CountryDistrictInput';
 import CopyFieldReportSection from './CopyFieldReportSection';
 import styles from './styles.module.scss';
-import TextArea from '#components/TextArea';
 
 type Value = PartialForm<DrefFields>;
 interface Props {
@@ -125,17 +125,22 @@ function DrefOverview(props: Props) {
 
   const handleNSChange = useCallback((ns) => {
     onValueSet({
-      ...value.country_district,
+      ...value,
       national_society: ns,
       country_district: [{
         ...value?.country_district,
+        clientId: randomString(),
         country: ns,
       }],
     });
   }, [
-    value.country_district,
+    value,
     onValueSet,
   ]);
+
+  //const dynamicTitle = `${value?.country_district?.map((cd) => cd.country)} ${value?.disaster_type} ${value?.event_date}`;
+
+  //onValueChange(dynamicTitle, 'title');
 
   return (
     <>
@@ -258,6 +263,7 @@ function DrefOverview(props: Props) {
             onChange={onValueChange}
             error={error?.title}
             placeholder={strings.drefFormTitleDescription}
+            prefix={value.title}
           />
         </InputSection>
         <InputSection
@@ -340,78 +346,43 @@ function DrefOverview(props: Props) {
         </InputSection>
       </Container>
       <Container
-        heading={strings.drefFormTimeFrames}
-        className={styles.timeframes}
+        heading={strings.drefFormOperationalTimeframes}
       >
-        {!isImminentOnset ?
-          <InputSection
-            title={strings.drefFormEventDate}
-          >
+        <InputSection>
+          {/*{!isImminentOnset ?
             <DateInput
+              label={strings.drefFormEventDate}
               name="event_date"
               value={value.event_date}
               onChange={onValueChange}
               error={error?.event_date}
             />
-          </InputSection>
-          :
-          <InputSection
-            title={strings.drefFormApproximateDateOfImpact}
-          >
+            :
+
             <TextArea
+              label={strings.drefFormApproximateDateOfImpact}
               name="event_text"
               value={value.event_text}
               onChange={onValueChange}
               error={error?.event_text}
             />
-          </InputSection>
-        }
-        <InputSection
-          title={strings.drefFormGoFieldReportDate}
-        >
+          }*/}
           <DateInput
-            name="go_field_report_date"
-            value={value.go_field_report_date}
-            onChange={onValueChange}
-            error={error?.go_field_report_date}
-          />
-        </InputSection>
-        <InputSection
-          title={!isImminentOnset ? strings.drefFormNsResponseStarted : strings.drefFormNSAnticipatoryAction}
-        >
-          <DateInput
-            name="ns_respond_date"
-            value={value.ns_respond_date}
-            onChange={onValueChange}
-            error={error?.ns_respond_date}
-          />
-        </InputSection>
-        <InputSection
-          title={strings.drefFormNsRequestDate}
-        >
-          <DateInput
+            label={strings.drefFormNsRequestDate}
             name="ns_request_date"
             value={value.ns_request_date}
             onChange={onValueChange}
             error={error?.ns_request_date}
           />
-        </InputSection>
-        <InputSection
-          title={strings.drefFormDateSubmissionToGeneva}
-          description={strings.drefFormDateSubmissionToGenevaDescription}
-        >
           <DateInput
+            label={strings.drefFormDateSubmissionToGeneva}
             name="submission_to_geneva"
             value={value.submission_to_geneva}
             onChange={onValueChange}
             error={error?.submission_to_geneva}
           />
-        </InputSection>
-        <InputSection
-          title={strings.drefFormDateOfApproval}
-          description={strings.drefFormDateOfApprovalDescription}
-        >
           <DateInput
+            label={strings.drefFormDateOfApproval}
             name="date_of_approval"
             value={value.date_of_approval}
             onChange={onValueChange}
@@ -419,32 +390,24 @@ function DrefOverview(props: Props) {
           />
         </InputSection>
         <InputSection
-          title={strings.drefFormPublishingDate}
-          description={strings.drefFormPublishingDateDescription}
         >
           <DateInput
+            label={strings.drefFormPublishingDate}
             name="publishing_date"
             value={value.publishing_date}
             onChange={onValueChange}
             error={error?.publishing_date}
           />
-        </InputSection>
-        <InputSection
-          title={strings.drefFormOperationTimeframeSubmission}
-        >
           <NumberInput
+            label={strings.drefFormOperationTimeframeSubmission}
             name="operation_timeframe"
             placeholder={strings.drefFormOperationTimeframeSubmissionDescription}
             value={value.operation_timeframe}
             onChange={onValueChange}
             error={error?.operation_timeframe}
           />
-        </InputSection>
-        <InputSection
-          title={strings.drefFormSubmissionEndDate}
-          description={strings.drefFormEndDateSubmissionDescription}
-        >
           <DateInput
+            label={strings.drefFormSubmissionEndDate}
             name="end_date"
             value={value.end_date}
             onChange={onValueChange}
@@ -452,6 +415,15 @@ function DrefOverview(props: Props) {
             readOnly
           />
         </InputSection>
+        {/*<InputSection
+          title={strings.drefFormOperationTimeframeSubmission}
+        >
+        </InputSection>*/}
+        {/*<InputSection
+          title={strings.drefFormSubmissionEndDate}
+          description={strings.drefFormEndDateSubmissionDescription}
+        >
+        </InputSection>*/}
       </Container>
     </>
   );

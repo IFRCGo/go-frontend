@@ -32,13 +32,13 @@ import {
 import styles from './styles.module.scss';
 
 type Value = PartialForm<DrefFields>;
-type FieldReportListItem = Omit<FieldReportAPIResponseFields, 'districts'> & { districts: number[]};
+type FieldReportListItem = Omit<FieldReportAPIResponseFields, 'districts'> & { districts: number[] };
 interface Props {
   value: Value;
   onValueSet: (value: SetBaseValueArg<Value>) => void;
 }
 
-function CopyFieldReportSection (props: Props) {
+function CopyFieldReportSection(props: Props) {
   const {
     value,
     onValueSet,
@@ -118,6 +118,8 @@ function CopyFieldReportSection (props: Props) {
       const event_description = value.event_description ?? fieldReport.description;
       const un_or_other_actor = value.un_or_other_actor ?? fieldReport.actions_others;
       let country_district = value.country_district ?? [];
+      const startDate = fieldReport.start_date?.split('T')[0];
+      const event_date = value.event_date ?? startDate;
 
       let {
         national_society_contact_name,
@@ -174,15 +176,15 @@ function CopyFieldReportSection (props: Props) {
         && !media_contact_email
         && !media_contact_title
         && !media_contact_phone_number
-       ) {
-         const contact = fieldReport.contacts?.find(c => c.ctype === 'Media');
-         if (contact) {
-           media_contact_name = contact.name;
-           media_contact_email = contact.email;
-           media_contact_title = contact.title;
-           media_contact_phone_number = contact.phone;
-         }
-       }
+      ) {
+        const contact = fieldReport.contacts?.find(c => c.ctype === 'Media');
+        if (contact) {
+          media_contact_name = contact.name;
+          media_contact_email = contact.email;
+          media_contact_title = contact.title;
+          media_contact_phone_number = contact.phone;
+        }
+      }
 
       onValueSet({
         ...value,
@@ -198,6 +200,7 @@ function CopyFieldReportSection (props: Props) {
         media_contact_name,
         media_contact_email,
         field_report: fieldReport.id,
+        event_date,
       });
 
       alert.show(
