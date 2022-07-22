@@ -1,5 +1,4 @@
 import React from 'react';
-import { isNotDefined } from '@togglecorp/fujs';
 import {
   PartialForm,
   ObjectSchema,
@@ -83,9 +82,9 @@ export function max500CharCondition(value: any) {
     : undefined;
 }
 
-export function lessThanSixImagesCondition(value: any) {
-  return isDefined(value) && Array.isArray(value) && value.length > 6
-    ? 'Only six images are allowed'
+export function lessThanEqualToTwoImagesCondition(value: any) {
+  return isDefined(value) && Array.isArray(value) && value.length > 2
+    ? 'Only two images are allowed'
     : undefined;
 }
 
@@ -107,20 +106,7 @@ export const schema: FormSchema = {
       member: (): CountryDistrictsSchemaMember => ({
         fields: (): CountryDistrictSchemaFields => ({
           clientId: [],
-          country: [requiredCondition, (value, allValues) => {
-            if (isNotDefined(value)) {
-              return undefined;
-            }
-            const countriesWithCurrentId = (allValues as unknown as DrefFields)?.country_district?.filter(
-              d => d.country === value
-            );
-
-            if (countriesWithCurrentId.length > 1) {
-              return 'Duplicate countries not allowed';
-            }
-
-            return undefined;
-          }],
+          country: [requiredCondition],
           district: [requiredCondition],
         }),
       }),
@@ -148,7 +134,7 @@ export const schema: FormSchema = {
 
     event_description: [],
     event_scope: [],
-    images: [lessThanSixImagesCondition],
+    images: [lessThanEqualToTwoImagesCondition],
 
     national_society_actions: {
       keySelector: (n) => n.clientId as string,
@@ -229,7 +215,7 @@ export const schema: FormSchema = {
     submission_to_geneva: [],
     end_date: [],
     date_of_approval: [],
-    operation_timeframe: [positiveIntegerCondition],
+    operation_timeframe: [positiveIntegerCondition, lessThanOrEqualToCondition(30)],
     publishing_date: [],
     dref_recurrent_text: [],
     appeal_code: [],
@@ -261,6 +247,7 @@ export const schema: FormSchema = {
     pmer: [],
     communication: [],
     users: [],
+    coordination_mechanism: [],
   }),
   fieldDependencies: () => ({
   }),

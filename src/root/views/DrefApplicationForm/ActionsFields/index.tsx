@@ -19,6 +19,7 @@ import SelectInput from '#components/SelectInput';
 import RadioInput from '#components/RadioInput';
 import TextArea from '#components/TextArea';
 import LanguageContext from '#root/languageContext';
+import DateInput from '#components/DateInput';
 
 import {
   optionLabelSelector,
@@ -134,6 +135,8 @@ function ActionsFields(props: Props) {
   const filteredNsActionOptions = nsActionsMap ? nsActionOptions.filter(n => !nsActionsMap[n.value]) : [];
   const isImminentOnset = value.type_of_onset === ONSET_IMMINENT;
 
+  const isThereCoordinationMechanism = value.coordination_mechanism;
+
   return (
     <>
       <Container
@@ -141,6 +144,16 @@ function ActionsFields(props: Props) {
         className={styles.nationalSocietyActions}
         visibleOverflow
       >
+        <InputSection
+          title={!isImminentOnset ? strings.drefFormNsResponseStarted : strings.drefFormNSAnticipatoryAction}
+        >
+          <DateInput
+            name="ns_respond_date"
+            value={value.ns_respond_date}
+            onChange={onValueChange}
+            error={error?.ns_respond_date}
+          />
+        </InputSection>
         <InputSection>
           <SelectInput
             label={strings.drefFormNationalSocietiesActionsLabel}
@@ -254,13 +267,25 @@ function ActionsFields(props: Props) {
           oneColumn
           multiRow
         >
-          <TextArea
-            label={strings.cmpActionDescriptionLabel}
-            name="major_coordination_mechanism"
+          <RadioInput
+            name={"coordination_mechanism" as const}
+            options={yesNoOptions}
+            keySelector={booleanOptionKeySelector}
+            labelSelector={optionLabelSelector}
+            value={value.coordination_mechanism}
             onChange={onValueChange}
-            value={value.major_coordination_mechanism}
-            error={error?.major_coordination_mechanism}
+            error={error?.coordination_mechanism}
           />
+          {
+            isThereCoordinationMechanism &&
+            <TextArea
+              label={strings.cmpActionDescriptionLabel}
+              name="major_coordination_mechanism"
+              onChange={onValueChange}
+              value={value.major_coordination_mechanism}
+              error={error?.major_coordination_mechanism}
+            />
+          }
         </InputSection>
       </Container>
       <Container
