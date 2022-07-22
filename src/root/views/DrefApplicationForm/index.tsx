@@ -415,7 +415,10 @@ function DrefApplication(props: Props) {
 
   React.useEffect(() => {
     onValueSet((oldValue) => {
-      if (value.ns_request_fund === false || value.ns_respond === false || value.affect_same_population === false || value.affect_same_area === false) {
+      if (value.ns_request_fund === false ||
+        value.ns_respond === false ||
+        value.affect_same_population === false ||
+        value.affect_same_area === false) {
         return {
           ...oldValue,
           dref_recurrent_text: undefined,
