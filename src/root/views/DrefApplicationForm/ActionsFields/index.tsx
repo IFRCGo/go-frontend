@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import {
   randomString,
   isNotDefined,
@@ -84,14 +84,14 @@ function ActionsFields(props: Props) {
   type Needs = typeof value.needs_identified;
   const handleNeedAddButtonClick = React.useCallback((title) => {
     const clientId = randomString();
-    const newList: PartialForm<Need> = {
+    const newNeedList: PartialForm<Need> = {
       clientId,
       title,
     };
 
     onValueChange(
       (oldValue: PartialForm<Needs>) => (
-        [...(oldValue ?? []), newList]
+        [...(oldValue ?? []), newNeedList]
       ),
       'needs_identified' as const,
     );
@@ -101,14 +101,14 @@ function ActionsFields(props: Props) {
   type NsActions = typeof value.needs_identified;
   const handleNsActionAddButtonClick = React.useCallback((title) => {
     const clientId = randomString();
-    const newList: PartialForm<NsAction> = {
+    const newNsActionList: PartialForm<NsAction> = {
       clientId,
       title,
     };
 
     onValueChange(
       (oldValue: PartialForm<NsActions>) => (
-        [...(oldValue ?? []), newList]
+        [...(oldValue ?? []), newNsActionList]
       ),
       'national_society_actions' as const,
     );
@@ -123,7 +123,12 @@ function ActionsFields(props: Props) {
     )
   ), [value.needs_identified]);
 
-  const filteredNeedOptions = needsIdentifiedMap ? needOptions.filter(n => !needsIdentifiedMap[n.value]) : [];
+  const filteredNeedOptions = useMemo(() => (
+    needsIdentifiedMap ? needOptions.filter(n => !needsIdentifiedMap[n.value]) : []
+  ), [
+    needsIdentifiedMap,
+    needOptions,
+  ]);
 
   const nsActionsMap = React.useMemo(() => (
     listToMap(
@@ -132,7 +137,13 @@ function ActionsFields(props: Props) {
       d => true,
     )
   ), [value.national_society_actions]);
-  const filteredNsActionOptions = nsActionsMap ? nsActionOptions.filter(n => !nsActionsMap[n.value]) : [];
+
+  const filteredNsActionOptions = useMemo(() => (
+    nsActionsMap ? nsActionOptions.filter(n => !nsActionsMap[n.value]) : []
+  ), [
+    nsActionsMap,
+    nsActionOptions
+  ]);
   const isImminentOnset = value.type_of_onset === ONSET_IMMINENT;
 
   const isThereCoordinationMechanism = value.coordination_mechanism;
