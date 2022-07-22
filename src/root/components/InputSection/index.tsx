@@ -13,6 +13,7 @@ export interface BaseProps {
   multiRow?: boolean;
   normalDescription?: boolean;
   descriptionContainerClassName?: string;
+  fullWidth?: boolean;
 }
 
 type Props = BaseProps & ({
@@ -44,8 +45,9 @@ function InputSection(props: Props) {
     contentSectionClassName,
     descriptionContainerClassName,
     normalDescription,
+    fullWidth,
   } = props;
-
+  console.log({ fullWidth });
   return (
     <div
       className={_cs(
@@ -60,22 +62,22 @@ function InputSection(props: Props) {
       )}
     >
       <div
-        className={styles.sectionTitle}
+        className={!fullWidth ? styles.sectionTitle : ''}
         title={tooltip}
       >
         {title && (
           <div className={styles.title}>
-          { title }
+            {title}
           </div>
         )}
         <div className={_cs(styles.description, descriptionContainerClassName)}>
-          { description }
+          {description}
         </div>
       </div>
       <div className={_cs(styles.sectionContent, contentSectionClassName)}>
-        { children }
+        {children}
       </div>
-    </div>
+    </div >
   );
 }
 
