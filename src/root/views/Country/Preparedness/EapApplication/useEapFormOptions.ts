@@ -44,6 +44,13 @@ export type CountryDistrictsSchema = ArraySchema<PartialForm<CountryDistrictType
 export type CountryDistrictsSchemaMember = ReturnType<CountryDistrictsSchema['member']>;
 
 
+export type KeyPartnerType = KeyPartnerType['Partners'][number];
+export type KeyPartnerSchema = ObjectSchema<PartialForm<KeyPartnerType>>;
+export type KeyPartnerSchemaFields = ReturnType<KeyPartnerSchema['fields']>;
+export type KeyPartnersSchema = ArraySchema<PartialForm<KeyPartnerType>>;
+export type KeyPartnersSchemaMember = ReturnType<KeyPartnersSchema['member']>;
+
+
 export const schema: FormSchema = {
   fields: (value): FormSchemaFields => ({
     eap_number: [positiveIntegerCondition, requiredCondition],
@@ -54,8 +61,8 @@ export const schema: FormSchema = {
     eap_timeframe: [positiveIntegerCondition, requiredCondition],
     num_of_people: [positiveIntegerCondition, requiredCondition],
     total_budget: [positiveIntegerCondition, requiredCondition],
-    readiness_budget: [],
-    pre_positioning_budget: [],
+    readiness_budget: [positiveIntegerCondition],
+    pre_positioning_budget: [positiveIntegerCondition],
     early_action_budget: [],
     trigger_statement: [requiredCondition],
     overview: [requiredCondition],
@@ -104,7 +111,6 @@ function transformKeyValueToLabelValue<O extends NumericKeyValuePair | StringKey
 }
 
 function useEapsFormOptions(value: PartialForm<EapsFields>) {
-  const { strings } = React.useContext(LanguageContext);
 
   const {
     pending: fetchingEapOptions,
@@ -113,7 +119,7 @@ function useEapsFormOptions(value: PartialForm<EapsFields>) {
     url: `api/v2/eap-options/`,
   });
 
-  const statusOptions = React.useMemo(() => {
+  const [statusOptions] = React.useMemo(() => {
     if (!eapOptions) {
       return emptyStringOptionList;
     }
@@ -122,7 +128,7 @@ function useEapsFormOptions(value: PartialForm<EapsFields>) {
     ];
   }, [eapOptions]);
 
-  const earlyActionIndicatorsOptions = React.useMemo(() => {
+  const [earlyActionIndicatorsOptions] = React.useMemo(() => {
     if (!eapOptions) {
       return emptyStringOptionList;
     }

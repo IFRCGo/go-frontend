@@ -4,6 +4,7 @@ import {
   Error,
   EntriesAsList,
   getErrorObject,
+  useFormArray,
   useFormObject,
 } from '@togglecorp/toggle-form';
 
@@ -15,6 +16,7 @@ import {
 
 import {
   EapsFields,
+  KeyPartner,
   NumericValueOption,
 } from '../common';
 import DateInput from '#components/DateInput';
@@ -25,17 +27,21 @@ import InputSection from '#components/InputSection';
 import DREFFileInput from '#components/DREFFileInput';
 import TextInput from '#components/TextInput';
 import Button from '#components/Button';
-import { CountryDistrictType } from '../useEapFormOptions';
+import { CountryDistrictType, KeyPartnerType } from '../useEapFormOptions';
+import SelectInput from '#components/SelectInput';
+import { isNotDefined, randomString } from '@togglecorp/fujs';
+import KeyPartners from './KeyPartners';
+import KeyIndicators from '#views/CountryProfile/KeyIndicators';
 
 import styles from './styles.module.scss';
-import SelectInput from '#components/SelectInput';
 
 type Value = PartialForm<EapsFields>;
 type SetValueArg<T> = T | ((value: T) => T);
 
-const defaultCountryDistrictValue: PartialForm<CountryDistrictType> = {
-  clientId: 'test',
+const defaultKeyPartnerValue: PartialForm<KeyPartner> = {
+  clientId: randomString(),
 };
+
 
 interface Props {
   error: Error<Value> | undefined;
@@ -43,7 +49,6 @@ interface Props {
   onChange: (value: SetValueArg<PartialForm<CountryDistrictType>>, index: number) => void;
   disasterTypeOptions: NumericValueOption[];
   value: Value;
-  disasterCategoryOptions: NumericValueOption[];
   countryOptions: NumericValueOption[];
   fetchingCountries?: boolean;
   fileIdToUrlMap: Record<number, string>;
@@ -56,11 +61,13 @@ interface Props {
 
 function EapOverview(props: Props) {
   const { strings } = React.useContext(languageContext);
+  const [partners, setPartners] = React.useState<number | undefined>();
 
   const {
     error: formError,
-    onValueChange,
     onChange,
+    index,
+    onValueChange,
     value,
     disasterTypeOptions,
     countryOptions,
@@ -68,7 +75,6 @@ function EapOverview(props: Props) {
     fetchingDistricts,
     setFileIdToUrlMap,
     fileIdToUrlMap,
-    index,
     statusOptions,
     districtOptions,
   } = props;
@@ -78,7 +84,33 @@ function EapOverview(props: Props) {
     [formError]
   );
 
-  const onFieldChange = useFormObject(index, onChange, defaultCountryDistrictValue);
+  const onFieldChange = useFormObject(index, onChange, defaultKeyPartnerValue);
+
+  const {
+    setValue: onPartnerChange,
+    removeValue: onPartnerRemove,
+  } = useFormArray<'partners', PartialForm<KeyIndicators>>(
+    'partners',
+    onFieldChange,
+  );
+
+  type KeyPartner = typeof value.partners;
+  const handlePartnerAddButtonClick = React.useCallback((name, url) => {
+    const clientId = randomString();
+    const newList: PartialForm<KeyPartnerType> = {
+      clientId,
+      name,
+      url,
+    };
+
+    onFieldChange(
+      (oldValue: PartialForm<KeyPartner>) => (
+        [...(oldValue ?? []), newList]
+      ),
+      'partners' as const,
+    );
+    setPartners(undefined);
+  }, [onFieldChange, setPartners]);
 
   return (
     <>
@@ -90,12 +122,14 @@ function EapOverview(props: Props) {
           <div className={styles.eapCountry}>
             <InputSection
               title={strings.eapsFormEapCountry}
+              multiRow
+              twoColumn
             >
               <SelectInput
                 pending={fetchingCountries}
                 error={error?.country}
                 name={"country" as const}
-                onChange={onFieldChange}
+                onChange={onValueChange}
                 options={countryOptions}
                 value={value.country}
               />
@@ -107,7 +141,7 @@ function EapOverview(props: Props) {
                 pending={fetchingDistricts}
                 error={error?.district}
                 name={"district" as const}
-                onChange={onFieldChange}
+                onChange={onValueChange}
                 options={districtOptions}
                 value={value.district}
               />
@@ -116,7 +150,6 @@ function EapOverview(props: Props) {
           <div className={styles.eapDisaster}>
             <InputSection
               title={strings.eapsFormDisasterType}
-
             >
               <SelectInput
                 name={"disaster_type" as const}
@@ -150,11 +183,11 @@ function EapOverview(props: Props) {
               title={strings.eapsFormEapStatus}
             >
               <SelectInput
-                name="eap_status"
-                value={value?.status}
-                options={statusOptions}
+                name={"status" as const}
                 onChange={onValueChange}
+                value={value?.status}
                 error={error?.status}
+                options={statusOptions}
               />
             </InputSection>
           </div>
@@ -298,33 +331,42 @@ function EapOverview(props: Props) {
       >
         <div className={styles.keyPartners}>
           <InputSection
-            title={strings.eapsFormKeyPartners}
-            description={strings.eapsFormKeyPartnersDescription}
+            title={strings.eapsFormReferences}
+            description={strings.eapsFormReferencesDescription}
           >
             <TextInput
               name="partners"
               value={value?.partners}
               onChange={onValueChange}
               error={error?.partners}
-              placeholder={strings.eapsFormKeyPartnersPlaceholder}
+              placeholder={strings.eapsFormReferncesPlaceholder}
             />
           </InputSection>
+          <KeyPartners
+            name="partners"
+            value={value?.partners}
+            onChange={onPartnerChange}
+            onRemove={onPartnerRemove}
+            error={error?.partners}
+            showNewFieldPartner={false}
+          />
           <InputSection
             title={strings.eapsFormUrlTitle}
           >
             <div className={styles.actions}>
               <TextInput
                 name="url"
-                value={undefined}
+                value={value?.references}
                 onChange={onValueChange}
                 error={undefined}
                 placeholder="Enter URL"
               />
               <div className={styles.addKeyButton}>
                 <Button
-                  name={undefined}
-                  onClick={undefined}
+                  name={partners}
+                  onClick={handlePartnerAddButtonClick}
                   variant="secondary"
+                // disabled={isNotDefined(partners)}
                 >
                   <IoAdd />
                   {strings.eapsFormAddKeyPartnersLabel}
@@ -351,9 +393,9 @@ function EapOverview(props: Props) {
           >
             <div className={styles.actions}>
               <TextInput
-                name="key_partners_url"
-                value={undefined}
-                onChange={undefined}
+                name="url"
+                value={value?.references}
+                onChange={onValueChange}
                 error={undefined}
                 placeholder="Enter URL"
               />

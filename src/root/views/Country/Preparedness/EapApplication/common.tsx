@@ -41,6 +41,12 @@ export interface Indicator {
   value: string;
 }
 
+export interface KeyPartner {
+  clientId: string;
+  name: string;
+  url: string;
+}
+
 export const emptyOptionList: Option[] = [];
 export const emptyStringOptionList: StringValueOption[] = [];
 export const emptyNumericOptionList: NumericValueOption[] = [];
@@ -49,7 +55,7 @@ export type Option = NumericValueOption | BooleanValueOption | StringValueOption
 export interface EapsFields {
   eap_number: number;
   approval_date: string;
-  status: string;
+  status: string[];
   early_actions_indicators: string[];
   operational_timeframe: number;
   lead_time: number;
@@ -83,8 +89,8 @@ export interface EapsFields {
   district: string[];
   disaster_type: number;
   targeted_people: number;
-  partners: string;
-  references: string;
+  partners: string[];
+  references: string[];
 }
 
 export interface EapsApiFields extends Omit<
@@ -93,6 +99,8 @@ export interface EapsApiFields extends Omit<
   | 'early_actions_indicators'
   | 'sectors'
   | 'status'
+  | 'partners'
+  | 'references'
 > {
   country_district: (Omit<CountryDistrict, 'clientId'> & {
     id: number
@@ -100,6 +108,11 @@ export interface EapsApiFields extends Omit<
     district_details: DistrictMini[],
   })[];
   sectors: (Omit<Sector, 'clientId' | 'sectors'> & {
+    id: number,
+    key: string,
+    value: string,
+  })[];
+  status: (Omit<Status, 'clientId' | 'status'> & {
     id: number,
     key: string,
     value: string,
@@ -119,6 +132,16 @@ export interface EapsApiFields extends Omit<
     },
     file: string,
     created_by: string,
+  }[];
+  partners: {
+    id: number,
+    name: string,
+    url: string,
+  }[];
+  references: {
+    id: number,
+    source: string,
+    url: string,
   }[];
 }
 
@@ -150,7 +173,8 @@ export const overviewFields: (keyof EapsFields)[] = [
   'overview',
   'document',
   'num_of_people',
-  'partners'
+  'partners',
+  'references',
 ];
 
 export const contactFields: (keyof EapsFields)[] = [

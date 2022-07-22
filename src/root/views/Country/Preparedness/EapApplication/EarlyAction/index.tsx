@@ -17,7 +17,6 @@ import {
 import {
   EapsFields,
   NumericValueOption,
-  Sectors,
 } from '../common';
 import SelectInput from '#components/SelectInput';
 import { isNotDefined, randomString } from '@togglecorp/fujs';
