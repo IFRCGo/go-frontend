@@ -224,6 +224,7 @@ export interface DrefFields {
   users: number[];
   coordination_mechanism: boolean;
   surge_personnel_deployed_yes_no: boolean;
+  assessment_report: number;
 }
 
 export interface DrefApiFields extends Omit<DrefFields, 'country_district' | 'planned_interventions' | 'national_society_actions' | 'needs_identified'> {
@@ -262,6 +263,10 @@ export interface DrefApiFields extends Omit<DrefFields, 'country_district' | 'pl
     id: number;
     file: string;
   }[];
+  assessment_report_details: {
+    id: number;
+    file: string;
+  };
 }
 
 export const overviewFields: (keyof DrefFields)[] = [
@@ -313,7 +318,8 @@ export const actionsFields: (keyof DrefFields)[] = [
   'needs_identified',
   'identified_gaps',
   'ns_respond_date',
-  'coordination_mechanism'
+  'coordination_mechanism',
+  'assessment_report',
 ];
 
 export const responseFields: (keyof DrefFields)[] = [
@@ -338,7 +344,7 @@ export const responseFields: (keyof DrefFields)[] = [
   'communication',
   'budget_file',
   'planned_interventions',
-  'surge_personnel_deployed_yes_no'
+  'surge_personnel_deployed_yes_no',
 ];
 
 export const submissionFields: (keyof DrefFields)[] = [
