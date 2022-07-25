@@ -222,9 +222,12 @@ export interface DrefFields {
   dref_recurrent_text: string;
   total_targeted_population: number;
   users: number[];
-  coordination_mechanism: boolean;
-  surge_personnel_deployed_yes_no: boolean;
+  is_there_major_coordination_mechanism: boolean;
+  is_surge_personnel_deployed: boolean;
   assessment_report: number;
+  country: number;
+  district: number[],
+  country_details: Country,
 }
 
 export interface DrefApiFields extends Omit<DrefFields, 'country_district' | 'planned_interventions' | 'national_society_actions' | 'needs_identified'> {
@@ -277,7 +280,6 @@ export const overviewFields: (keyof DrefFields)[] = [
   'disaster_type',
   'type_of_onset',
   'disaster_category',
-  'country_district',
   'num_affected',
   'amount_requested',
   'event_map',
@@ -291,7 +293,9 @@ export const overviewFields: (keyof DrefFields)[] = [
   'date_of_approval',
   'operation_timeframe',
   'event_date',
-  'event_text'
+  'event_text',
+  'country',
+  'district',
 ];
 
 export const eventDetailsFields: (keyof DrefFields)[] = [
@@ -318,7 +322,7 @@ export const actionsFields: (keyof DrefFields)[] = [
   'needs_identified',
   'identified_gaps',
   'ns_respond_date',
-  'coordination_mechanism',
+  'is_there_major_coordination_mechanism',
   'assessment_report',
 ];
 
@@ -344,7 +348,7 @@ export const responseFields: (keyof DrefFields)[] = [
   'communication',
   'budget_file',
   'planned_interventions',
-  'surge_personnel_deployed_yes_no',
+  'is_surge_personnel_deployed',
 ];
 
 export const submissionFields: (keyof DrefFields)[] = [
