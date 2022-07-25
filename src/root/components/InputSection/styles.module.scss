@@ -6,6 +6,12 @@
   background-color: $white;
   gap: $spacing*2;
 
+  &.full-width-column {
+    .section-title {
+      display: none;
+    }
+  }
+
   .section-title {
     flex-basis: 30%;
     max-width: 320px;

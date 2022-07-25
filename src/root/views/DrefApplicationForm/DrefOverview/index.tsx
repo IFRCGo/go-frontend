@@ -351,8 +351,7 @@ function DrefOverview(props: Props) {
         className={styles.operationalTimeframes}
       >
         <InputSection
-          className={styles.operationalTimeframesInput}
-          fullWidth
+          fullWidthColumn
         >
           {/* TODO: 
           {!isImminentOnset ?
@@ -395,7 +394,7 @@ function DrefOverview(props: Props) {
           />
         </InputSection>
         <InputSection
-          fullWidth
+          fullWidthColumn
         >
           <DateInput
             label={strings.drefFormPublishingDate}
