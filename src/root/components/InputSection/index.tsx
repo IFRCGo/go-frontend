@@ -13,7 +13,7 @@ export interface BaseProps {
   multiRow?: boolean;
   normalDescription?: boolean;
   descriptionContainerClassName?: string;
-  fullWidth?: boolean;
+  fullWidthColumn?: boolean;
 }
 
 type Props = BaseProps & ({
@@ -45,9 +45,9 @@ function InputSection(props: Props) {
     contentSectionClassName,
     descriptionContainerClassName,
     normalDescription,
-    fullWidth,
+    fullWidthColumn,
   } = props;
-  console.log({ fullWidth });
+
   return (
     <div
       className={_cs(
@@ -59,10 +59,11 @@ function InputSection(props: Props) {
         props.twoColumn && styles.twoColumn,
         props.threeColumn && styles.threeColumn,
         !normalDescription && styles.specialDescription,
+        fullWidthColumn && styles.fullWidthColumn,
       )}
     >
       <div
-        className={!fullWidth ? styles.sectionTitle : ''}
+        className={styles.sectionTitle}
         title={tooltip}
       >
         {title && (

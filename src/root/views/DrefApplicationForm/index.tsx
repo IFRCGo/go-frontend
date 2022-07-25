@@ -618,6 +618,8 @@ function DrefApplication(props: Props) {
                   yesNoOptions={yesNoOptions}
                   needOptions={needOptions}
                   nsActionOptions={nsActionOptions}
+                  fileIdToUrlMap={fileIdToUrlMap}
+                  setFileIdToUrlMap={setFileIdToUrlMap}
                 />
               </TabPanel>
               <TabPanel name="response">
