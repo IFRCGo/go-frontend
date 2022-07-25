@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 import {
   isDefined,
   listToMap,
-  randomString,
 } from '@togglecorp/fujs';
 import {
   PartialForm,
@@ -53,9 +52,6 @@ import useDrefFormOptions, { schema } from './useDrefFormOptions';
 import styles from './styles.module.scss';
 
 const defaultFormValues: PartialForm<DrefFields> = {
-  country_district: [{
-    clientId: randomString(),
-  }],
   planned_interventions: [],
   national_society_actions: [],
   needs_identified: [],
@@ -254,10 +250,6 @@ function DrefApplication(props: Props) {
       });
       onValueSet({
         ...response,
-        country_district: response.country_district?.map((cd) => ({
-          ...cd,
-          clientId: String(cd.id),
-        })),
         planned_interventions: response.planned_interventions?.map((pi) => ({
           ...pi,
           clientId: String(pi.id),
@@ -457,7 +449,6 @@ function DrefApplication(props: Props) {
     value.date_of_approval,
     value.operation_timeframe,
     value.num_assisted,
-    value.country_district,
   ]);
 
   const exportLinkProps = useButtonFeatures({
@@ -469,7 +460,7 @@ function DrefApplication(props: Props) {
 
   //TODO: 
   React.useMemo(() => {
-    const getCurrentCountryValue = value?.country_district?.map((cd) => cd.country)[0];
+    const getCurrentCountryValue = value?.country;
     const countryName = countryOptions.filter((cd) => cd.value === getCurrentCountryValue).map((c) => c.label);
     const filteredDisasterTypeName = disasterTypeOptions.filter((dt) => dt.value === value.disaster_type).map((dt) => dt.label).toString();
 
@@ -479,7 +470,7 @@ function DrefApplication(props: Props) {
     countryOptions,
     disasterTypeOptions,
     value.disaster_type,
-    value.country_district,
+    value.country,
     value.event_date,
     onValueChange,
   ]);
