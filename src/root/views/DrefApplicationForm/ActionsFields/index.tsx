@@ -20,6 +20,7 @@ import RadioInput from '#components/RadioInput';
 import TextArea from '#components/TextArea';
 import LanguageContext from '#root/languageContext';
 import DateInput from '#components/DateInput';
+import DREFFileInput from '#components/DREFFileInput';
 
 import {
   optionLabelSelector,
@@ -45,6 +46,8 @@ interface Props {
   yesNoOptions: BooleanValueOption[];
   needOptions: StringValueOption[];
   nsActionOptions: StringValueOption[];
+  fileIdToUrlMap: Record<number, string>;
+  setFileIdToUrlMap?: React.Dispatch<React.SetStateAction<Record<number, string>>>;
 }
 
 function ActionsFields(props: Props) {
@@ -57,6 +60,8 @@ function ActionsFields(props: Props) {
     yesNoOptions,
     needOptions,
     nsActionOptions,
+    fileIdToUrlMap,
+    setFileIdToUrlMap,
   } = props;
 
   const error = React.useMemo(
@@ -304,6 +309,21 @@ function ActionsFields(props: Props) {
         className={styles.needsIdentified}
         visibleOverflow
       >
+        <InputSection>
+          <DREFFileInput
+            accept=".pdf"
+            error={error?.assessment_report}
+            fileIdToUrlMap={fileIdToUrlMap}
+            label={strings.drefFormAssessmentReportUploadLabel}
+            name="assessment_report"
+            onChange={onValueChange}
+            setFileIdToUrlMap={setFileIdToUrlMap}
+            showStatus
+            value={value.assessment_report}
+          >
+            {strings.drefFormAssessmentReportUploadButtonLabel}
+          </DREFFileInput>
+        </InputSection>
         <InputSection>
           <SelectInput
             label={strings.drefFormActionFieldsLabel}
