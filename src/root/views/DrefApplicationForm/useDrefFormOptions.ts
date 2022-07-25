@@ -93,58 +93,30 @@ export const schema: FormSchema = {
     field_report: [],
     title: [requiredCondition],
     national_society: [requiredCondition],
-    // disaster_type: [requiredCondition],
-    // type_of_onset: [requiredCondition],
-    // disaster_category: [requiredCondition],
-
     disaster_category: [],
     disaster_type: [],
     type_of_onset: [],
-
-    country_district: {
-      keySelector: (c) => c.clientId as string,
-      member: (): CountryDistrictsSchemaMember => ({
-        fields: (): CountryDistrictSchemaFields => ({
-          clientId: [],
-          country: [requiredCondition],
-          district: [requiredCondition],
-        }),
-      }),
-    },
+    country: [],
+    district: [],
     num_affected: [positiveIntegerCondition],
     num_assisted: [positiveIntegerCondition],
     amount_requested: [positiveNumberCondition],
     emergency_appeal_planned: [],
-    // event_map: [requiredCondition],
     event_map: [],
     cover_image: [],
-
     event_date: [],
     event_text: [max500CharCondition],
     anticipatory_actions: [],
-
     go_field_report_date: [],
     ns_respond_date: [],
-
     affect_same_population: [],
     ns_request_fund: [],
     ns_respond: [],
     ns_request_text: [],
     lessons_learned: [],
-
     event_description: [],
     event_scope: [],
     images: [lessThanEqualToTwoImagesCondition],
-
-    national_society_actions: {
-      keySelector: (n) => n.clientId as string,
-      member: (): NsActionsSchemaMember => ({
-        fields: (): NsActionSchemaFields => ({
-          title: [requiredCondition],
-          description: [requiredCondition],
-        }),
-      }),
-    },
     government_requested_assistance: [],
     government_requested_assistance_date: [],
     national_authorities: [],
@@ -155,22 +127,10 @@ export const schema: FormSchema = {
     un_or_other_actor: [],
     major_coordination_mechanism: [],
     identified_gaps: [],
-
-    needs_identified: {
-      keySelector: (n) => n.clientId as string,
-      member: (): NeedsSchemaMember => ({
-        fields: (): NeedSchemaFields => ({
-          clientId: [],
-          title: [requiredCondition],
-          description: [requiredCondition],
-        }),
-      }),
-    },
     people_assisted: [],
     selection_criteria: [],
     entity_affected: [],
     community_involved: [],
-
     women: [positiveIntegerCondition],
     men: [positiveIntegerCondition],
     girls: [positiveIntegerCondition],
@@ -183,33 +143,7 @@ export const schema: FormSchema = {
     total_targeted_population: [positiveIntegerCondition],
     operation_objective: [],
     response_strategy: [],
-
     budget_file: [],
-    planned_interventions: {
-      keySelector: (n) => n.clientId as string,
-      member: (): InterventionsSchemaMember => ({
-        fields: (): InterventionSchemaFields => ({
-          clientId: [],
-          title: [requiredCondition],
-          budget: [requiredCondition, positiveIntegerCondition, lessThanOrEqualToCondition(MaxIntLimit)],
-          person_targeted: [requiredCondition, positiveIntegerCondition, lessThanOrEqualToCondition(MaxIntLimit)],
-          indicators: {
-            keySelector: (n) => n.clientId as string,
-            member: (): IndicatorsSchemaMember => ({
-              fields: (): IndicatorSchemaFields => ({
-                clientId: [],
-                title: [],
-                target: [positiveNumberCondition],
-              })
-            })
-          },
-          description: [],
-          progress_towards_outcome: [],
-          male: [],
-          female: [],
-        }),
-      }),
-    },
     ns_request_date: [],
     start_date: [],
     submission_to_geneva: [],
@@ -247,7 +181,52 @@ export const schema: FormSchema = {
     pmer: [],
     communication: [],
     users: [],
-    coordination_mechanism: [],
+    is_there_major_coordination_mechanism: [],
+    is_surge_personnel_deployed: [],
+    national_society_actions: {
+      keySelector: (n) => n.clientId as string,
+      member: (): NsActionsSchemaMember => ({
+        fields: (): NsActionSchemaFields => ({
+          title: [requiredCondition],
+          description: [requiredCondition],
+        }),
+      }),
+    },
+    needs_identified: {
+      keySelector: (n) => n.clientId as string,
+      member: (): NeedsSchemaMember => ({
+        fields: (): NeedSchemaFields => ({
+          clientId: [],
+          title: [requiredCondition],
+          description: [requiredCondition],
+        }),
+      }),
+    },
+    planned_interventions: {
+      keySelector: (n) => n.clientId as string,
+      member: (): InterventionsSchemaMember => ({
+        fields: (): InterventionSchemaFields => ({
+          clientId: [],
+          title: [requiredCondition],
+          budget: [requiredCondition, positiveIntegerCondition, lessThanOrEqualToCondition(MaxIntLimit)],
+          person_targeted: [requiredCondition, positiveIntegerCondition, lessThanOrEqualToCondition(MaxIntLimit)],
+          indicators: {
+            keySelector: (n) => n.clientId as string,
+            member: (): IndicatorsSchemaMember => ({
+              fields: (): IndicatorSchemaFields => ({
+                clientId: [],
+                title: [],
+                target: [positiveNumberCondition],
+              })
+            })
+          },
+          description: [],
+          progress_towards_outcome: [],
+          male: [],
+          female: [],
+        }),
+      }),
+    },
   }),
   fieldDependencies: () => ({
   }),

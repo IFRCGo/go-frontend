@@ -151,7 +151,7 @@ function ActionsFields(props: Props) {
   ]);
   const isImminentOnset = value.type_of_onset === ONSET_IMMINENT;
 
-  const isThereCoordinationMechanism = value.coordination_mechanism;
+  const isThereCoordinationMechanism = value.is_there_major_coordination_mechanism;
 
   return (
     <>
@@ -161,7 +161,10 @@ function ActionsFields(props: Props) {
         visibleOverflow
       >
         <InputSection
-          title={!isImminentOnset ? strings.drefFormNsResponseStarted : strings.drefFormNSAnticipatoryAction}
+          title={
+            !isImminentOnset ?
+              strings.drefFormNsResponseStarted
+              : strings.drefFormNSAnticipatoryAction}
         >
           <DateInput
             name="ns_respond_date"
@@ -284,13 +287,13 @@ function ActionsFields(props: Props) {
           multiRow
         >
           <RadioInput
-            name={"coordination_mechanism" as const}
+            name={"is_there_major_coordination_mechanism" as const}
             options={yesNoOptions}
             keySelector={booleanOptionKeySelector}
             labelSelector={optionLabelSelector}
-            value={value.coordination_mechanism}
+            value={value.is_there_major_coordination_mechanism}
             onChange={onValueChange}
-            error={error?.coordination_mechanism}
+            error={error?.is_there_major_coordination_mechanism}
           />
           {
             isThereCoordinationMechanism &&
