@@ -139,7 +139,7 @@ function Response(props: Props) {
 
   const isImminentOnset = value.type_of_onset === ONSET_IMMINENT;
 
-  const isSurgePersonnelDeployed = value?.surge_personnel_deployed_yes_no;
+  const isSurgePersonnelDeployed = value?.is_surge_personnel_deployed;
 
   return (
     <>
@@ -384,13 +384,13 @@ function Response(props: Props) {
           multiRow
         >
           <RadioInput
-            name={"surge_personnel_deployed_yes_no" as const}
+            name={"is_surge_personnel_deployed" as const}
             options={yesNoOptions}
             keySelector={booleanOptionKeySelector}
             labelSelector={optionLabelSelector}
-            value={value.surge_personnel_deployed_yes_no}
+            value={value.is_surge_personnel_deployed}
             onChange={onValueChange}
-            error={error?.surge_personnel_deployed_yes_no}
+            error={error?.is_surge_personnel_deployed}
           />
           {
             isSurgePersonnelDeployed &&

@@ -2,7 +2,6 @@ import React from 'react';
 import {
   isNotDefined,
   unique,
-  randomString,
 } from '@togglecorp/fujs';
 import {
   PartialForm,
@@ -117,7 +116,7 @@ function CopyFieldReportSection(props: Props) {
       const disaster_type = value.disaster_type ?? fieldReport.dtype?.id;
       const event_description = fieldReport.description;
       const un_or_other_actor = value.un_or_other_actor ?? fieldReport.actions_others;
-      let country_district = value.country_district ?? [];
+      const country = value.country;
       const startDate = fieldReport.start_date?.split('T')[0];
       const event_date = value.event_date ?? startDate;
 
@@ -135,14 +134,6 @@ function CopyFieldReportSection(props: Props) {
         media_contact_email,
         media_contact_phone_number,
       } = value;
-
-      if (country_district.length === 1 && isNotDefined(country_district[0].country)) {
-        country_district = [{
-          clientId: randomString(),
-          country: fieldReport.countries[0]?.id,
-          district: fieldReport.districts?.map(d => d.id),
-        }];
-      }
 
       if (!national_society_contact_name
         && !national_society_contact_email
@@ -191,7 +182,6 @@ function CopyFieldReportSection(props: Props) {
         go_field_report_date,
         disaster_type,
         event_description,
-        country_district,
         un_or_other_actor,
         national_society_contact_name,
         national_society_contact_email,
@@ -201,6 +191,7 @@ function CopyFieldReportSection(props: Props) {
         media_contact_email,
         field_report: fieldReport.id,
         event_date,
+        country,
       });
 
       alert.show(

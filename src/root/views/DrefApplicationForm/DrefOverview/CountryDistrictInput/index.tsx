@@ -98,7 +98,7 @@ function CountryDistrictInput(props: Props) {
         options={districtOptions}
         value={value.district}
       />
-    </div> 
+    </div>
   );
 }
 
