@@ -3288,9 +3288,10 @@ export default {
   drefFormInterventionPersonTargetedLabel: 'Persons Targeted',
   drefFormIndicatorTitleLabel: 'Title',
   drefFormIndicatorTargetLabel: 'Target',
+  drefFormAssessmentReportUploadLabel: 'Assessment Report',
+  drefFormAssessmentReportUploadButtonLabel: 'Upload assesment report',
 
   drefOperationalLearningPlatformLabel: 'To access lessons from previous operations, please visit the DREF Operational Learning Platform',
-
   // dref pdf
   drefFormPdfTitle: 'DREF APPLICATION',
   drefFormPdfDrefAllocated: 'DREF Allocated',
