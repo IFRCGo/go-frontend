@@ -208,7 +208,6 @@ export interface DrefFields {
   pmer: string;
   publishing_date: string;
   response_strategy: string;
-  safety_concerns: string;
   selection_criteria: string;
   start_date: string;
   status: number;
@@ -343,7 +342,6 @@ export const responseFields: (keyof DrefFields)[] = [
   'human_resource',
   'surge_personnel_deployed',
   'logistic_capacity_of_ns',
-  'safety_concerns',
   'pmer',
   'communication',
   'budget_file',

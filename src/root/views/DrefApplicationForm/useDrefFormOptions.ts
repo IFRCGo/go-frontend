@@ -177,7 +177,6 @@ export const schema: FormSchema = {
     human_resource: [],
     surge_personnel_deployed: [],
     logistic_capacity_of_ns: [],
-    safety_concerns: [],
     pmer: [],
     communication: [],
     users: [],
