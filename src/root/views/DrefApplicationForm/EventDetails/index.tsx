@@ -6,6 +6,7 @@ import {
   getErrorObject,
   useFormArray,
 } from '@togglecorp/toggle-form';
+import { listToMap } from '@togglecorp/fujs';
 
 import { resolveUrl } from '#utils/resolveUrl';
 import Container from '#components/Container';
@@ -15,7 +16,9 @@ import RadioInput from '#components/RadioInput';
 import TextArea from '#components/TextArea';
 import LanguageContext from '#root/languageContext';
 import DREFFileInput from '#components/DREFFileInput';
+import DateInput from '#components/DateInput';
 
+import CaptionInput from '../CaptionInput/CaptionInput';
 import {
   optionLabelSelector,
   BooleanValueOption,
@@ -25,9 +28,6 @@ import {
 } from '../common';
 
 import styles from './styles.module.scss';
-import CaptionInput from '../CaptionInput/CaptionInput';
-import { listToMap } from '@togglecorp/fujs';
-import DateInput from '#components/DateInput';
 
 type Value = PartialForm<DrefFields>;
 interface Props {
