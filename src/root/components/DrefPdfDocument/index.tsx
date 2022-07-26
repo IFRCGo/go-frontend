@@ -702,8 +702,7 @@ function DrefPdfDocument(props: Props) {
         )}
         {(
           dref?.people_assisted ||
-          dref?.selection_criteria ||
-          dref?.entity_affected
+          dref?.selection_criteria
         ) && (
             <View style={pdfStyles.section}>
               <Text style={pdfStyles.sectionHeading}>
@@ -726,16 +725,6 @@ function DrefPdfDocument(props: Props) {
                   </Text>
                   <Text style={pdfStyles.answer}>
                     {dref.selection_criteria}
-                  </Text>
-                </View>
-              )}
-              {dref?.entity_affected && (
-                <View style={pdfStyles.qna}>
-                  <Text style={pdfStyles.textLabelSection}>
-                    {strings.drefExportProtectionGenderAndInclusion}
-                  </Text>
-                  <Text style={pdfStyles.answer}>
-                    {dref?.entity_affected}
                   </Text>
                 </View>
               )}

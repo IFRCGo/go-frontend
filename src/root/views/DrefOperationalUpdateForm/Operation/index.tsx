@@ -153,17 +153,6 @@ function Operation(props: Props) {
             error={error?.selection_criteria}
           />
         </InputSection>
-        <InputSection
-          title={strings.drefFormProtectionGenderAndInclusion}
-        >
-          <TextArea
-            label={strings.cmpActionDescriptionLabel}
-            name="entity_affected"
-            onChange={onValueChange}
-            value={value.entity_affected}
-            error={error?.entity_affected}
-          />
-        </InputSection>
       </Container>
       <Container
         heading={strings.drefFormTargetedPopulation}
