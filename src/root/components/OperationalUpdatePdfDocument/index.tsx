@@ -773,16 +773,6 @@ function OperationalUpdatePdfDocument(props: Props) {
                   </Text>
                 </View>
               )}
-              {operationalUpdateResponse.entity_affected && (
-                <View style={pdfStyles.qna}>
-                  <Text style={pdfStyles.textLabelSection}>
-                    {strings.drefExportProtectionGenderAndInclusion}
-                  </Text>
-                  <Text style={pdfStyles.answer}>
-                    {operationalUpdateResponse?.entity_affected}
-                  </Text>
-                </View>
-              )}
             </View>
           )}
         <View style={pdfStyles.tpSection}>

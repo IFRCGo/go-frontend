@@ -475,6 +475,15 @@ function DrefApplication(props: Props) {
     onValueChange,
   ]);
 
+  React.useMemo(() => {
+    if (isImminentOnset) {
+      return onValueChange(undefined, 'event_date');
+    }
+  }, [
+    isImminentOnset,
+    onValueChange,
+  ]);
+
   return (
     <Tabs
       disabled={failedToLoadDref}
