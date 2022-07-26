@@ -484,6 +484,37 @@ function DrefApplication(props: Props) {
     onValueChange,
   ]);
 
+  const drefLoadingStatus = React.useMemo(() => (
+    <>
+      {
+        pending &&
+        <Container>
+          <BlockLoading />
+        </Container>
+      }
+      {
+        failedToLoadDref &&
+        <Container
+          contentClassName={styles.errorMessage}
+        >
+          <h3>
+            {strings.drefFormLoadErrorTitle}
+          </h3>
+          <p>
+            {strings.drefFormLoadErrorDescription}
+          </p>
+          <p>
+            {strings.drefFormLoadErrorHelpText}
+          </p>
+        </Container>
+      }
+    </>
+  ), [
+    strings,
+    pending,
+    failedToLoadDref,
+  ]);
+
   return (
     <Tabs
       disabled={failedToLoadDref}
@@ -551,114 +582,95 @@ function DrefApplication(props: Props) {
           </TabList>
         )}
       >
-        {pending ? (
-          <Container>
-            <BlockLoading />
-          </Container>
-        ) : (
-          failedToLoadDref ? (
-            <Container
-              contentClassName={styles.errorMessage}
-            >
-              <h3>
-                {strings.drefFormLoadErrorTitle}
-              </h3>
-              <p>
-                {strings.drefFormLoadErrorDescription}
-              </p>
-              <p>
-                {strings.drefFormLoadErrorHelpText}
-              </p>
+        {drefLoadingStatus}
+        {!pending && !failedToLoadDref && (
+          <>
+            <Container>
+              <NonFieldError
+                error={error}
+                message={strings.drefFormFieldGeneralError}
+              />
             </Container>
-          ) : (
-            <>
-              <Container>
-                <NonFieldError
-                  error={error}
-                  message={strings.drefFormFieldGeneralError}
-                />
-              </Container>
-              <TabPanel name="operationOverview">
-                <DrefOverview
-                  error={error}
-                  onValueChange={onValueChange}
-                  value={value}
-                  yesNoOptions={yesNoOptions}
-                  disasterTypeOptions={disasterTypeOptions}
-                  onsetOptions={onsetOptions}
-                  disasterCategoryOptions={disasterCategoryOptions}
-                  countryOptions={countryOptions}
-                  fetchingCountries={fetchingCountries}
-                  fetchingDisasterTypes={fetchingDisasterTypes}
-                  nationalSocietyOptions={nationalSocietyOptions}
-                  fetchingNationalSociety={fetchingCountries}
-                  fileIdToUrlMap={fileIdToUrlMap}
-                  setFileIdToUrlMap={setFileIdToUrlMap}
-                  onValueSet={onValueSet}
-                  userOptions={userOptions}
-                  onCreateAndShareButtonClick={submitDref}
-                />
-              </TabPanel>
-              <TabPanel name="eventDetails">
-                <EventDetails
-                  isImminentOnset={isImminentOnset}
-                  error={error}
-                  onValueChange={onValueChange}
-                  value={value}
-                  yesNoOptions={yesNoOptions}
-                  fileIdToUrlMap={fileIdToUrlMap}
-                  setFileIdToUrlMap={setFileIdToUrlMap}
-                />
-              </TabPanel>
-              <TabPanel name="action">
-                <ActionsFields
-                  error={error}
-                  onValueChange={onValueChange}
-                  value={value}
-                  yesNoOptions={yesNoOptions}
-                  needOptions={needOptions}
-                  nsActionOptions={nsActionOptions}
-                  fileIdToUrlMap={fileIdToUrlMap}
-                  setFileIdToUrlMap={setFileIdToUrlMap}
-                />
-              </TabPanel>
-              <TabPanel name="response">
-                <Response
-                  interventionOptions={interventionOptions}
-                  error={error}
-                  onValueChange={onValueChange}
-                  value={value}
-                  fileIdToUrlMap={fileIdToUrlMap}
-                  setFileIdToUrlMap={setFileIdToUrlMap}
-                  yesNoOptions={yesNoOptions}
-                />
-              </TabPanel>
-              <TabPanel name="submission">
-                <Submission
-                  error={error}
-                  onValueChange={onValueChange}
-                  value={value}
-                />
-              </TabPanel>
-              <div className={styles.actions}>
-                <Button
-                  name={undefined}
-                  variant="secondary"
-                  onClick={handleBackButtonClick}
-                  disabled={shouldDisabledBackButton}
-                >
-                  {strings.drefFormBackButtonLabel}
-                </Button>
-                <Button
-                  name={undefined}
-                  variant="secondary"
-                  onClick={handleSubmitButtonClick}
-                >
-                  {submitButtonLabel}
-                </Button>
-              </div>
-            </>
-          )
+            <TabPanel name="operationOverview">
+              <DrefOverview
+                error={error}
+                onValueChange={onValueChange}
+                value={value}
+                yesNoOptions={yesNoOptions}
+                disasterTypeOptions={disasterTypeOptions}
+                onsetOptions={onsetOptions}
+                disasterCategoryOptions={disasterCategoryOptions}
+                countryOptions={countryOptions}
+                fetchingCountries={fetchingCountries}
+                fetchingDisasterTypes={fetchingDisasterTypes}
+                nationalSocietyOptions={nationalSocietyOptions}
+                fetchingNationalSociety={fetchingCountries}
+                fileIdToUrlMap={fileIdToUrlMap}
+                setFileIdToUrlMap={setFileIdToUrlMap}
+                onValueSet={onValueSet}
+                userOptions={userOptions}
+                onCreateAndShareButtonClick={submitDref}
+              />
+            </TabPanel>
+            <TabPanel name="eventDetails">
+              <EventDetails
+                isImminentOnset={isImminentOnset}
+                error={error}
+                onValueChange={onValueChange}
+                value={value}
+                yesNoOptions={yesNoOptions}
+                fileIdToUrlMap={fileIdToUrlMap}
+                setFileIdToUrlMap={setFileIdToUrlMap}
+              />
+            </TabPanel>
+            <TabPanel name="action">
+              <ActionsFields
+                error={error}
+                onValueChange={onValueChange}
+                value={value}
+                yesNoOptions={yesNoOptions}
+                needOptions={needOptions}
+                nsActionOptions={nsActionOptions}
+                fileIdToUrlMap={fileIdToUrlMap}
+                setFileIdToUrlMap={setFileIdToUrlMap}
+              />
+            </TabPanel>
+            <TabPanel name="response">
+              <Response
+                interventionOptions={interventionOptions}
+                error={error}
+                onValueChange={onValueChange}
+                value={value}
+                fileIdToUrlMap={fileIdToUrlMap}
+                setFileIdToUrlMap={setFileIdToUrlMap}
+                yesNoOptions={yesNoOptions}
+              />
+            </TabPanel>
+            <TabPanel name="submission">
+              <Submission
+                error={error}
+                onValueChange={onValueChange}
+                value={value}
+              />
+            </TabPanel>
+            <div className={styles.actions}>
+              <Button
+                name={undefined}
+                variant="secondary"
+                onClick={handleBackButtonClick}
+                disabled={shouldDisabledBackButton}
+              >
+                {strings.drefFormBackButtonLabel}
+              </Button>
+              <Button
+                name={undefined}
+                variant="secondary"
+                onClick={handleSubmitButtonClick}
+              >
+                {submitButtonLabel}
+              </Button>
+            </div>
+          </>
         )}
       </Page>
     </Tabs>
