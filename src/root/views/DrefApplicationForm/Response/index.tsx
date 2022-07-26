@@ -417,18 +417,6 @@ function Response(props: Props) {
           />
         </InputSection>
         <InputSection
-          title={strings.drefFormSafetyConcerns}
-          description={strings.drefFormSafetyConcernsDescription}
-        >
-          <TextArea
-            label={strings.cmpActionDescriptionLabel}
-            name="safety_concerns"
-            onChange={onValueChange}
-            value={value.safety_concerns}
-            error={error?.safety_concerns}
-          />
-        </InputSection>
-        <InputSection
           title={strings.drefFormPmer}
           description={strings.drefFormPmerDescription}
         >
