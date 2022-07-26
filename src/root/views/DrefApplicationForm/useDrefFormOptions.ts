@@ -129,7 +129,6 @@ export const schema: FormSchema = {
     identified_gaps: [],
     people_assisted: [],
     selection_criteria: [],
-    entity_affected: [],
     community_involved: [],
     women: [positiveIntegerCondition],
     men: [positiveIntegerCondition],
@@ -182,6 +181,9 @@ export const schema: FormSchema = {
     users: [],
     is_there_major_coordination_mechanism: [],
     is_surge_personnel_deployed: [],
+    people_in_need: [],
+    supporting_document: [],
+    did_national_society: [],
     national_society_actions: {
       keySelector: (n) => n.clientId as string,
       member: (): NsActionsSchemaMember => ({
