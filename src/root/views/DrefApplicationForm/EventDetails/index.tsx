@@ -27,6 +27,7 @@ import {
 import styles from './styles.module.scss';
 import CaptionInput from '../CaptionInput/CaptionInput';
 import { listToMap } from '@togglecorp/fujs';
+import DateInput from '#components/DateInput';
 
 type Value = PartialForm<DrefFields>;
 interface Props {
@@ -191,7 +192,31 @@ function EventDetails(props: Props) {
         className={styles.eventDetails}
       >
         <InputSection
-          title={!isImminentOnset ? strings.drefFormWhatWhereWhen : strings.drefFormImmientDisaster}
+          title={strings.drefFormEventDate}
+        >
+          {!isImminentOnset ?
+            <DateInput
+              name="event_date"
+              value={value.event_date}
+              onChange={onValueChange}
+              error={error?.event_date}
+            />
+            :
+            <TextArea
+              label={strings.drefFormApproximateDateOfImpact}
+              name="event_text"
+              value={value.event_text}
+              onChange={onValueChange}
+              error={error?.event_text}
+            />
+          }
+        </InputSection>
+        <InputSection
+          title={
+            !isImminentOnset ?
+              strings.drefFormWhatWhereWhen
+              : strings.drefFormImmientDisaster
+          }
           oneColumn
           multiRow
         >
@@ -205,6 +230,7 @@ function EventDetails(props: Props) {
         {isImminentOnset &&
           <InputSection
             title={strings.drefFormTargetCommunities}
+            description={strings.drefFormTargetCommunitiesDescription}
             oneColumn
             multiRow
           >
@@ -261,6 +287,24 @@ function EventDetails(props: Props) {
             error={error?.event_scope}
           />
         </InputSection>
+        {isImminentOnset &&
+          <InputSection
+            title={strings.drefFormUploadSupportingDocument}
+          >
+            <DREFFileInput
+              accept=".pdf,.docx,.pptx"
+              error={error?.supporting_document}
+              fileIdToUrlMap={fileIdToUrlMap}
+              name="supporting_document"
+              onChange={onValueChange}
+              setFileIdToUrlMap={setFileIdToUrlMap}
+              showStatus
+              value={value.supporting_document}
+            >
+              {strings.drefFormUploadSupportingDocumentButtonLabel}
+            </DREFFileInput>
+          </InputSection>
+        }
       </Container>
     </>
   );
