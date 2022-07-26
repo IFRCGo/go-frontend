@@ -157,6 +157,7 @@ function ActionsFields(props: Props) {
     <>
       <Container
         heading={strings.drefFormNationalSocietiesActions}
+        description={strings.drefFormNationalSocietiesActionsDescription}
         className={styles.nationalSocietyActions}
         visibleOverflow
       >
@@ -209,6 +210,7 @@ function ActionsFields(props: Props) {
       >
         <InputSection
           title={strings.drefFormIfrc}
+          description={strings.drefFormIfrcDescription}
         >
           <TextArea
             label={strings.cmpActionDescriptionLabel}
@@ -220,6 +222,7 @@ function ActionsFields(props: Props) {
         </InputSection>
         <InputSection
           title={strings.drefFormIcrc}
+          description={strings.drefFormIcrcDescription}
         >
           <TextArea
             label={strings.cmpActionDescriptionLabel}
@@ -295,8 +298,12 @@ function ActionsFields(props: Props) {
             onChange={onValueChange}
             error={error?.is_there_major_coordination_mechanism}
           />
-          {
-            isThereCoordinationMechanism &&
+        </InputSection>
+        {
+          isThereCoordinationMechanism &&
+          <InputSection
+            description={strings.drefFormCoordinationMechanismDescription}
+          >
             <TextArea
               label={strings.cmpActionDescriptionLabel}
               name="major_coordination_mechanism"
@@ -304,29 +311,35 @@ function ActionsFields(props: Props) {
               value={value.major_coordination_mechanism}
               error={error?.major_coordination_mechanism}
             />
-          }
-        </InputSection>
+          </InputSection>
+        }
       </Container>
       <Container
-        heading={isImminentOnset ? strings.drefFormImminentNeedsIdentified : strings.drefFormNeedsIdentified}
         className={styles.needsIdentified}
+        heading={
+          isImminentOnset ?
+            strings.drefFormImminentNeedsIdentified
+            : strings.drefFormNeedsIdentified
+        }
         visibleOverflow
       >
-        <InputSection>
-          <DREFFileInput
-            accept=".pdf"
-            error={error?.assessment_report}
-            fileIdToUrlMap={fileIdToUrlMap}
-            label={strings.drefFormAssessmentReportUploadLabel}
-            name="assessment_report"
-            onChange={onValueChange}
-            setFileIdToUrlMap={setFileIdToUrlMap}
-            showStatus
-            value={value.assessment_report}
-          >
-            {strings.drefFormAssessmentReportUploadButtonLabel}
-          </DREFFileInput>
-        </InputSection>
+        {!isImminentOnset &&
+          <InputSection>
+            <DREFFileInput
+              accept=".pdf,.docx,.pptx"
+              error={error?.assessment_report}
+              fileIdToUrlMap={fileIdToUrlMap}
+              label={strings.drefFormAssessmentReportUploadLabel}
+              name="assessment_report"
+              onChange={onValueChange}
+              setFileIdToUrlMap={setFileIdToUrlMap}
+              showStatus
+              value={value.assessment_report}
+            >
+              {strings.drefFormAssessmentReportUploadButtonLabel}
+            </DREFFileInput>
+          </InputSection>
+        }
         <InputSection>
           <SelectInput
             label={strings.drefFormActionFieldsLabel}
@@ -357,6 +370,7 @@ function ActionsFields(props: Props) {
             needOptions={needOptions}
           />
         ))}
+        {/* TODO:
         <InputSection
           title={strings.drefFormGapsInAssessment}
           oneColumn
@@ -369,7 +383,7 @@ function ActionsFields(props: Props) {
             value={value.identified_gaps}
             error={error?.identified_gaps}
           />
-        </InputSection>
+        </InputSection>*/}
       </Container>
     </>
   );
