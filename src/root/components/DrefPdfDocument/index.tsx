@@ -877,7 +877,6 @@ function DrefPdfDocument(props: Props) {
           dref?.human_resource ||
           dref?.surge_personnel_deployed ||
           dref?.logistic_capacity_of_ns ||
-          dref?.safety_concerns ||
           dref?.pmer ||
           dref?.communication
         )
@@ -913,16 +912,6 @@ function DrefPdfDocument(props: Props) {
                   </Text>
                   <Text style={pdfStyles.answer}>
                     {dref.logistic_capacity_of_ns}
-                  </Text>
-                </View>
-              )}
-              {dref.safety_concerns && (
-                <View style={pdfStyles.qna}>
-                  <Text style={pdfStyles.textLabelSection}>
-                    {strings.drefExportSafetyConcerns}
-                  </Text>
-                  <Text style={pdfStyles.answer}>
-                    {dref.safety_concerns}
                   </Text>
                 </View>
               )}
