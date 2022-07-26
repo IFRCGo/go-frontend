@@ -133,7 +133,6 @@ export interface DrefFields {
   displaced_people: number;
   emergency_appeal_planned: boolean;
   end_date: string;
-  entity_affected: string,
   event_date: string;
   event_map: number;
   field_report: number;
@@ -225,8 +224,11 @@ export interface DrefFields {
   is_surge_personnel_deployed: boolean;
   assessment_report: number;
   country: number;
-  district: number[],
-  country_details: Country,
+  district: number[];
+  country_details: Country;
+  people_in_need: number;
+  did_national_society: boolean;
+  supporting_document: number;
 }
 
 export interface DrefApiFields extends Omit<DrefFields, 'country_district' | 'planned_interventions' | 'national_society_actions' | 'needs_identified'> {
@@ -291,10 +293,11 @@ export const overviewFields: (keyof DrefFields)[] = [
   'submission_to_geneva',
   'date_of_approval',
   'operation_timeframe',
-  'event_date',
-  'event_text',
   'country',
   'district',
+  'people_in_need',
+  'did_national_society',
+  'supporting_document',
 ];
 
 export const eventDetailsFields: (keyof DrefFields)[] = [
@@ -307,6 +310,8 @@ export const eventDetailsFields: (keyof DrefFields)[] = [
   'event_description',
   'event_scope',
   'images',
+  'event_date',
+  'event_text',
 ];
 
 export const actionsFields: (keyof DrefFields)[] = [
@@ -327,7 +332,6 @@ export const actionsFields: (keyof DrefFields)[] = [
 
 export const responseFields: (keyof DrefFields)[] = [
   'people_assisted',
-  'entity_affected',
   'women',
   'men',
   'girls',

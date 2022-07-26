@@ -117,8 +117,6 @@ function CopyFieldReportSection(props: Props) {
       const event_description = fieldReport.description;
       const un_or_other_actor = value.un_or_other_actor ?? fieldReport.actions_others;
       const country = value.country;
-      const startDate = fieldReport.start_date?.split('T')[0];
-      const event_date = value.event_date ?? startDate;
 
       let {
         national_society_contact_name,
@@ -190,7 +188,6 @@ function CopyFieldReportSection(props: Props) {
         media_contact_name,
         media_contact_email,
         field_report: fieldReport.id,
-        event_date,
         country,
       });
 

@@ -177,6 +177,7 @@ function Response(props: Props) {
       >
         <InputSection
           title={strings.drefFormPeopleAssistedthroughOperation}
+          description={strings.drefFormPeopleAssistedThroughOperationDescription}
         >
           <TextArea
             label={strings.cmpActionDescriptionLabel}
@@ -188,6 +189,7 @@ function Response(props: Props) {
         </InputSection>
         <InputSection
           title={strings.drefFormSelectionCriteria}
+          description={strings.drefFormSelectionCriteriaDescription}
         >
           <TextArea
             label={strings.cmpActionDescriptionLabel}
@@ -195,17 +197,6 @@ function Response(props: Props) {
             onChange={onValueChange}
             value={value.selection_criteria}
             error={error?.selection_criteria}
-          />
-        </InputSection>
-        <InputSection
-          title={strings.drefFormProtectionGenderAndInclusion}
-        >
-          <TextArea
-            label={strings.cmpActionDescriptionLabel}
-            name="entity_affected"
-            onChange={onValueChange}
-            value={value.entity_affected}
-            error={error?.entity_affected}
           />
         </InputSection>
       </Container>
