@@ -24,8 +24,10 @@ import DREFFileInput from '#components/DREFFileInput';
 import LanguageContext from '#root/languageContext';
 import { sumSafe } from '#utils/common';
 import RadioInput from '#components/RadioInput';
+import TextInput from '#components/TextInput';
 
 import InterventionInput from './InterventionInput';
+import RiskSecurityInput from './RiskSecurityInput';
 import {
   DrefFields,
   StringValueOption,
@@ -34,8 +36,12 @@ import {
   BooleanValueOption,
   booleanOptionKeySelector,
   optionLabelSelector,
+  RiskSecurityProps,
 } from '../common';
-import { InterventionType } from '../useDrefFormOptions';
+import {
+  InterventionType,
+  RiskSecurityType
+} from '../useDrefFormOptions';
 
 import styles from './styles.module.scss';
 
@@ -140,6 +146,32 @@ function Response(props: Props) {
   const isImminentOnset = value.type_of_onset === ONSET_IMMINENT;
 
   const isSurgePersonnelDeployed = value?.is_surge_personnel_deployed;
+
+
+
+  const {
+    setValue: onRiskSecurityChange,
+    removeValue: onRiskSecurityRemove,
+  } = useFormArray<'risk_security', PartialForm<RiskSecurityProps>>(
+    'risk_security',
+    onValueChange,
+  );
+
+  type riskSecurity = typeof value.risk_security;
+
+  const handleRiskSecurityAdd = React.useCallback(() => {
+    const clientId = randomString();
+    const newList: PartialForm<RiskSecurityType> = {
+      clientId,
+    };
+
+    onValueChange(
+      (oldValue: PartialForm<riskSecurity>) => (
+        [...(oldValue ?? []), newList]
+      ),
+      'risk_security' as const,
+    );
+  }, [onValueChange]);
 
   return (
     <>
@@ -302,6 +334,46 @@ function Response(props: Props) {
               error={error?.people_targeted_with_early_actions}
             />
           }
+        </InputSection>
+      </Container>
+      <Container
+        heading={strings.drefFormRiskSecurity}
+        visibleOverflow
+      >
+        <InputSection
+          title={strings.drefFormRiskSecurityPotentialRisk}
+          multiRow
+          oneColumn
+        >
+          {value.risk_security?.map((rs, i) => (
+            <RiskSecurityInput
+              key={rs.clientId}
+              index={i}
+              value={rs}
+              onChange={onRiskSecurityChange}
+              onRemove={onRiskSecurityRemove}
+              error={getErrorObject(error?.risk_security)}
+            />
+          ))}
+          <div className={styles.actions}>
+            <Button
+              name={undefined}
+              onClick={handleRiskSecurityAdd}
+              variant="secondary"
+            >
+              {strings.drefFormRiskSecurityAddButton}
+            </Button>
+          </div>
+        </InputSection>
+        <InputSection
+          title={strings.drefFormRiskSecuritySafetyConcern}
+        >
+          <TextInput
+            name='security_safety_concern'
+            value={value.security_safety_concern}
+            error={error?.security_safety_concern}
+            onChange={onValueChange}
+          />
         </InputSection>
       </Container>
       <Container

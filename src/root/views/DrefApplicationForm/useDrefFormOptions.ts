@@ -69,6 +69,12 @@ export type NsActionSchemaFields = ReturnType<NsActionSchema['fields']>;
 export type NsActionsSchema = ArraySchema<PartialForm<NsActionType>>;
 export type NsActionsSchemaMember = ReturnType<NsActionsSchema['member']>;
 
+export type RiskSecurityType = NonNullable<NonNullable<DrefFields['risk_security']>>[number];
+export type RiskSecuritySchema = ObjectSchema<PartialForm<RiskSecurityType>>;
+export type RiskSecuritySchemaFields = ReturnType<RiskSecuritySchema['fields']>;
+export type RiskSecuritiesSchema = ArraySchema<PartialForm<RiskSecurityType>>;
+export type RiskSecuritiesSchemaMember = ReturnType<RiskSecuritiesSchema['member']>;
+
 export const MaxIntLimit = 2147483647;
 
 export function max10CharCondition(value: any) {
@@ -184,6 +190,7 @@ export const schema: FormSchema = {
     people_in_need: [],
     supporting_document: [],
     did_national_society: [],
+    security_safety_concern: [],
     national_society_actions: {
       keySelector: (n) => n.clientId as string,
       member: (): NsActionsSchemaMember => ({
@@ -225,6 +232,16 @@ export const schema: FormSchema = {
           progress_towards_outcome: [],
           male: [],
           female: [],
+        }),
+      }),
+    },
+    risk_security: {
+      keySelector: (r) => r.clientId as string,
+      member: (): RiskSecuritiesSchemaMember => ({
+        fields: (): RiskSecuritySchemaFields => ({
+          clientId: [],
+          risk: [requiredCondition],
+          mitigation: [requiredCondition],
         }),
       }),
     },

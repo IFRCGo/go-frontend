@@ -106,6 +106,11 @@ export interface FileWithCaption {
   id: number;
   caption: string;
 }
+export interface RiskSecurityProps {
+  clientId: string;
+  risk: string;
+  mitigation: string;
+}
 
 export const optionKeySelector = (o: Option) => o.value;
 export const numericOptionKeySelector = (o: NumericValueOption) => o.value;
@@ -229,6 +234,8 @@ export interface DrefFields {
   people_in_need: number;
   did_national_society: boolean;
   supporting_document: number;
+  risk_security: RiskSecurityProps[];
+  security_safety_concern: string;
 }
 
 export interface DrefApiFields extends Omit<DrefFields, 'country_district' | 'planned_interventions' | 'national_society_actions' | 'needs_identified'> {
@@ -328,6 +335,8 @@ export const actionsFields: (keyof DrefFields)[] = [
   'ns_respond_date',
   'is_there_major_coordination_mechanism',
   'assessment_report',
+  'risk_security',
+  'security_safety_concern',
 ];
 
 export const responseFields: (keyof DrefFields)[] = [

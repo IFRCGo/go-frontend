@@ -3238,6 +3238,12 @@ export default {
   drefFormPlannedIntervention: 'Planned Intervention',
   drefFormInterventionsLabel: 'Select the interventions that apply.',
   drefFormSupportServices: 'About Support Services',
+  drefFormRiskSecurityAddButton: 'Add New Risk',
+  drefFormRiskSecurityRiskLabel: 'Risk',
+  drefFormRiskSecurityMitigationLabel: 'Mitigation action',
+  drefFormRiskSecurity: 'Risk and security considerations',
+  drefFormRiskSecurityPotentialRisk: 'Please indicate about potential operational risk for this operations and mitigation actions',
+  drefFormRiskSecuritySafetyConcern: 'Please indicate any security and safety concerns for this operation',
 
   // Submission
   drefFormSubmissionFlow: 'Submission flow',
