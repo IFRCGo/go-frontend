@@ -55,19 +55,19 @@ function EventDetails(props: Props) {
 
   const error = getErrorObject(formError);
   const imagesValue = React.useMemo(() => (
-    value?.images?.map(d => d.id).filter(d => !!d) as number[] | undefined
-  ), [value?.images]);
+    value?.images_file?.map(d => d.id).filter(d => !!d) as number[] | undefined
+  ), [value?.images_file]);
 
   const {
     setValue: onImageChange,
     removeValue: onImageRemove,
-  } = useFormArray<'images', PartialForm<FileWithCaption>>(
-    'images',
+  } = useFormArray<'images_file', PartialForm<FileWithCaption>>(
+    'images_file',
     onValueChange,
   );
   const handleImageInputChange = React.useCallback((newValue: number[] | undefined) => {
     const imageCaptionByIdMap = listToMap(
-      value?.images ?? [],
+      value?.images_file ?? [],
       img => img.id as number,
       img => img.caption,
     );
@@ -78,8 +78,8 @@ function EventDetails(props: Props) {
       caption: imageCaptionByIdMap[v],
     }));
 
-    onValueChange(newImageList, 'images' as const);
-  }, [value?.images, onValueChange]);
+    onValueChange(newImageList, 'images_file' as const);
+  }, [value?.images_file, onValueChange]);
 
   return (
     <>
@@ -247,13 +247,13 @@ function EventDetails(props: Props) {
           contentSectionClassName={styles.imageInputContent}
         >
           <DREFFileInput
-            name="images"
+            name="images_file"
             value={imagesValue}
             onChange={handleImageInputChange}
             accept="image/*"
             multiple
             showStatus
-            error={getErrorObject(error?.images)?.id}
+            error={getErrorObject(error?.images_file)?.id}
             fileIdToUrlMap={fileIdToUrlMap}
             setFileIdToUrlMap={setFileIdToUrlMap}
             hidePreview
@@ -261,14 +261,14 @@ function EventDetails(props: Props) {
             Select images
           </DREFFileInput>
           <div className={styles.previewList}>
-            {value?.images?.map((g, i) => (
+            {value?.images_file?.map((g, i) => (
               <CaptionInput
                 key={g.client_id}
                 index={i}
                 value={g}
                 onChange={onImageChange}
                 onRemove={onImageRemove}
-                error={getErrorObject(error?.images)}
+                error={getErrorObject(error?.images_file)}
                 fileIdToUrlMap={fileIdToUrlMap}
               />
             ))}
