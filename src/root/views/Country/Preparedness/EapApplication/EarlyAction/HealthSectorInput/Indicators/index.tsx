@@ -10,25 +10,29 @@ import { randomString } from '@togglecorp/fujs';
 
 import Button from '#components/Button';
 import TextInput from '#components/TextInput';
-import { SetValueArg } from '#utils/common';
+import SelectInput from '#components/SelectInput';
 
-import { KeyPartner } from '../../common';
+import { EapsFields, Indicator, NumericValueOption } from '../../../common';
 
 import styles from './styles.module.scss';
 
-const defaultKeyPartnersValue: PartialForm<KeyPartner> = {
+type Value = PartialForm<EapsFields>;
+
+type SetValueArg<T> = T | ((value: T) => T);
+const defaultIndicatorsValue: PartialForm<Indicator> = {
   clientId: randomString(),
 };
 
 interface Props {
-  value: PartialForm<KeyPartner>;
-  error: ArrayError<KeyPartner> | undefined;
-  onChange: (value: SetValueArg<PartialForm<KeyPartner>>, index: number) => void;
+  value: PartialForm<Indicator>;
+  error: ArrayError<Indicator> | undefined;
+  onChange: (value: SetValueArg<PartialForm<Indicator>>, index: number) => void;
   onRemove: (index: number) => void;
   index: number;
+  earlyActionIndicatorsOptions: NumericValueOption[];
 }
 
-function KeyPartners(props: Props) {
+function Indicators(props: Props) {
 
   const {
     error: errorFromProps,
@@ -36,9 +40,10 @@ function KeyPartners(props: Props) {
     value,
     index,
     onRemove,
+    earlyActionIndicatorsOptions,
   } = props;
 
-  const onFieldChange = useFormObject(index, onChange, defaultKeyPartnersValue);
+  const onFieldChange = useFormObject(index, onChange, defaultIndicatorsValue);
   const error = (value && value.clientId && errorFromProps)
     ? getErrorObject(errorFromProps?.[value.clientId])
     : undefined;
@@ -46,19 +51,20 @@ function KeyPartners(props: Props) {
   return (
     <div className={styles.partners}>
       <div className={styles.inputs}>
-        <TextInput
-          label="name"
-          name="name"
-          value={value?.name}
+        <SelectInput
+          label="Indicators"
+          name={"indicator" as const}
+          value={value?.indicator}
           onChange={onFieldChange}
-          error={error?.name}
+          error={error?.indicator}
+          options={earlyActionIndicatorsOptions}
         />
         <TextInput
-          label="url"
-          name="url"
-          value={value?.url}
+          label="Indicator Value"
+          name={"indicator_value"}
+          value={value?.indicator_value}
           onChange={onFieldChange}
-          error={error?.url}
+          error={error?.indicator_value}
         />
       </div>
       <div>
@@ -76,4 +82,4 @@ function KeyPartners(props: Props) {
   );
 }
 
-export default KeyPartners;
+export default Indicators;

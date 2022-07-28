@@ -12,23 +12,23 @@ import Button from '#components/Button';
 import TextInput from '#components/TextInput';
 import { SetValueArg } from '#utils/common';
 
-import { KeyPartner } from '../../common';
+import { Action, EapsFields } from '../../../common';
 
 import styles from './styles.module.scss';
 
-const defaultKeyPartnersValue: PartialForm<KeyPartner> = {
+const defaultActionValue: PartialForm<Action> = {
   clientId: randomString(),
 };
 
 interface Props {
-  value: PartialForm<KeyPartner>;
-  error: ArrayError<KeyPartner> | undefined;
-  onChange: (value: SetValueArg<PartialForm<KeyPartner>>, index: number) => void;
+  value: PartialForm<Action>;
+  error: ArrayError<Action> | undefined;
+  onChange: (value: SetValueArg<PartialForm<Action>>, index: number) => void;
   onRemove: (index: number) => void;
   index: number;
 }
 
-function KeyPartners(props: Props) {
+function Actions(props: Props) {
 
   const {
     error: errorFromProps,
@@ -38,29 +38,20 @@ function KeyPartners(props: Props) {
     onRemove,
   } = props;
 
-  const onFieldChange = useFormObject(index, onChange, defaultKeyPartnersValue);
+  const onFieldChange = useFormObject(index, onChange, defaultActionValue);
   const error = (value && value.clientId && errorFromProps)
     ? getErrorObject(errorFromProps?.[value.clientId])
     : undefined;
 
   return (
-    <div className={styles.partners}>
-      <div className={styles.inputs}>
-        <TextInput
-          label="name"
-          name="name"
-          value={value?.name}
-          onChange={onFieldChange}
-          error={error?.name}
-        />
-        <TextInput
-          label="url"
-          name="url"
-          value={value?.url}
-          onChange={onFieldChange}
-          error={error?.url}
-        />
-      </div>
+    <div className={styles.inputs}>
+      <TextInput
+        label="Early Actions"
+        name="early_act"
+        value={value.early_act}
+        onChange={onFieldChange}
+        error={error?.early_act}
+      />
       <div>
         <Button
           name={index}
@@ -76,4 +67,4 @@ function KeyPartners(props: Props) {
   );
 }
 
-export default KeyPartners;
+export default Actions;

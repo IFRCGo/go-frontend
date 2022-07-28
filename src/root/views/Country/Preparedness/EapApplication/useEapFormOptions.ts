@@ -6,14 +6,10 @@ import {
 } from '@togglecorp/toggle-form';
 
 import {
-  positiveNumberCondition,
   positiveIntegerCondition,
   requiredCondition,
-  emailCondition,
-  lessThanOrEqualToCondition,
 } from '#utils/form';
 import { compareString } from '#utils/utils';
-import LanguageContext from '#root/languageContext';
 import {
   useRequest,
   ListResponse,
@@ -43,31 +39,23 @@ export type CountryDistrictSchemaFields = ReturnType<CountryDistrictSchema['fiel
 export type CountryDistrictsSchema = ArraySchema<PartialForm<CountryDistrictType>>;
 export type CountryDistrictsSchemaMember = ReturnType<CountryDistrictsSchema['member']>;
 
-
-export type KeyPartnerType = KeyPartnerType['Partners'][number];
-export type KeyPartnerSchema = ObjectSchema<PartialForm<KeyPartnerType>>;
-export type KeyPartnerSchemaFields = ReturnType<KeyPartnerSchema['fields']>;
-export type KeyPartnersSchema = ArraySchema<PartialForm<KeyPartnerType>>;
-export type KeyPartnersSchemaMember = ReturnType<KeyPartnersSchema['member']>;
-
-
 export const schema: FormSchema = {
   fields: (value): FormSchemaFields => ({
-    eap_number: [positiveIntegerCondition, requiredCondition],
+    eap_number: [],
     approval_date: [requiredCondition],
     status: [requiredCondition],
-    operational_timeframe: [positiveIntegerCondition, requiredCondition],
-    lead_time: [positiveIntegerCondition, requiredCondition],
-    eap_timeframe: [positiveIntegerCondition, requiredCondition],
-    num_of_people: [positiveIntegerCondition, requiredCondition],
-    total_budget: [positiveIntegerCondition, requiredCondition],
+    operational_timeframe: [positiveIntegerCondition],
+    lead_time: [positiveIntegerCondition],
+    eap_timeframe: [positiveIntegerCondition],
+    num_of_people: [positiveIntegerCondition],
+    total_budget: [positiveIntegerCondition],
     readiness_budget: [positiveIntegerCondition],
     pre_positioning_budget: [positiveIntegerCondition],
-    early_action_budget: [],
+    early_action_budget: [positiveIntegerCondition],
     trigger_statement: [requiredCondition],
     overview: [requiredCondition],
     document: [],
-    early_actions: [requiredCondition],
+    early_actions: [],
     budget_per_sector: [],
     sectors: [],
     readiness_activities: [],
@@ -87,6 +75,11 @@ export const schema: FormSchema = {
     country: [requiredCondition],
     district: [],
     disaster_type: [],
+    indicators: [],
+    indicator_value: [],
+    prioritized_risks: [],
+    actions: [],
+    early_act: [],
   })
 };
 
@@ -128,7 +121,7 @@ function useEapsFormOptions(value: PartialForm<EapsFields>) {
     ];
   }, [eapOptions]);
 
-  const [earlyActionIndicatorsOptions] = React.useMemo(() => {
+  const earlyActionIndicatorsOptions = React.useMemo(() => {
     if (!eapOptions) {
       return emptyStringOptionList;
     }

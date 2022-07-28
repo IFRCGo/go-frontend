@@ -1,6 +1,4 @@
 import { Country, DistrictMini } from "#types/country";
-import { IndicatorsSchema } from "#views/DrefApplicationForm/useDrefFormOptions";
-import { Sector } from "recharts";
 
 export interface CountryDistrict {
   clientId: string;
@@ -32,13 +30,24 @@ export interface Status {
 }
 
 export interface Sectors {
+  clientId: string;
   key: string;
   value: string;
 }
 
 export interface Indicator {
+  clientId: string;
   key: string;
   value: string;
+  earlyIndicators: number[];
+  indicator: string;
+  indicator_value: string;
+}
+
+export interface Risk {
+  risks: string;
+  clientId: string;
+  prioritized_risks: string[];
 }
 
 export interface KeyPartner {
@@ -47,16 +56,29 @@ export interface KeyPartner {
   url: string;
 }
 
+export interface Reference {
+  clientId: string;
+  source: string;
+  url: string;
+}
+
+export interface Action {
+  clientId: string;
+  early_act: string;
+}
+
 export const emptyOptionList: Option[] = [];
 export const emptyStringOptionList: StringValueOption[] = [];
 export const emptyNumericOptionList: NumericValueOption[] = [];
 export type Option = NumericValueOption | BooleanValueOption | StringValueOption;
 
 export interface EapsFields {
+  id: number;
   eap_number: number;
   approval_date: string;
-  status: string[];
-  early_actions_indicators: string[];
+  early_actions: string[];
+  status: Status[];
+  indicators: Indicator[];
   operational_timeframe: number;
   lead_time: number;
   eap_timeframe: number;
@@ -69,10 +91,9 @@ export interface EapsFields {
   overview: string;
   document: number;
   budget_per_sector: number;
-  sectors: string[];
+  sectors: number[];
   readiness_activities: string;
   prepositioning_activities: string;
-  early_actions: string;
   originator_name: string;
   originator_title: string;
   originator_email: string;
@@ -89,38 +110,25 @@ export interface EapsFields {
   district: string[];
   disaster_type: number;
   targeted_people: number;
-  partners: string[];
-  references: string[];
+  references: Reference[];
+  partners: KeyPartner[];
+  indicator_value: string[];
+  prioritized_risks: Risk[];
+  actions: Action[];
+  early_act: Action[];
 }
 
 export interface EapsApiFields extends Omit<
   EapsFields,
   'country_district'
-  | 'early_actions_indicators'
-  | 'sectors'
-  | 'status'
   | 'partners'
   | 'references'
+  | 'indicators'
 > {
   country_district: (Omit<CountryDistrict, 'clientId'> & {
     id: number
     country_details: Country,
     district_details: DistrictMini[],
-  })[];
-  sectors: (Omit<Sector, 'clientId' | 'sectors'> & {
-    id: number,
-    key: string,
-    value: string,
-  })[];
-  status: (Omit<Status, 'clientId' | 'status'> & {
-    id: number,
-    key: string,
-    value: string,
-  })[];
-  early_actions_indicators: (Omit<IndicatorsSchema, 'clientId' | 'indicator'> & {
-    id: number,
-    key: string,
-    value: string,
   })[];
   documents_details: {
     id: number,
@@ -133,26 +141,12 @@ export interface EapsApiFields extends Omit<
     file: string,
     created_by: string,
   }[];
-  partners: {
-    id: number,
-    name: string,
-    url: string,
-  }[];
-  references: {
-    id: number,
-    source: string,
-    url: string,
-  }[];
 }
 
 export interface NumericValueOption {
   value: number;
   label: string;
 }
-
-export const eventDetailsFields: (keyof EapsFields)[] = [
-  'early_actions',
-];
 
 export const overviewFields: (keyof EapsFields)[] = [
   'country',
@@ -195,9 +189,13 @@ export const contactFields: (keyof EapsFields)[] = [
 export const earlyActionFields: (keyof EapsFields)[] = [
   'budget_per_sector',
   'sectors',
-  'early_actions_indicators',
   'readiness_activities',
   'prepositioning_activities',
   'early_actions',
+  'indicators',
+  'indicator_value',
   'targeted_people',
+  'prioritized_risks',
+  'actions',
+  'early_act',
 ];

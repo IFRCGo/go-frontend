@@ -5,20 +5,14 @@ import {
   EntriesAsList,
   getErrorObject,
   useFormArray,
-  useFormObject,
 } from '@togglecorp/toggle-form';
+import { randomString } from '@togglecorp/fujs';
 
-import languageContext from '#root/languageContext';
 import {
   IoAdd,
   IoCloudUpload,
 } from 'react-icons/io5';
 
-import {
-  EapsFields,
-  KeyPartner,
-  NumericValueOption,
-} from '../common';
 import DateInput from '#components/DateInput';
 import NumberInput from '#components/NumberInput';
 import TextArea from '#components/TextArea';
@@ -27,21 +21,24 @@ import InputSection from '#components/InputSection';
 import DREFFileInput from '#components/DREFFileInput';
 import TextInput from '#components/TextInput';
 import Button from '#components/Button';
-import { CountryDistrictType, KeyPartnerType } from '../useEapFormOptions';
 import SelectInput from '#components/SelectInput';
-import { isNotDefined, randomString } from '@togglecorp/fujs';
+import languageContext from '#root/languageContext';
+
+import {
+  EapsFields,
+  KeyPartner,
+  NumericValueOption,
+  Reference,
+  StringValueOption,
+} from '../common';
+import { CountryDistrictType } from '../useEapFormOptions';
 import KeyPartners from './KeyPartners';
-import KeyIndicators from '#views/CountryProfile/KeyIndicators';
+import ReferencesItem from './ReferenceItem';
 
 import styles from './styles.module.scss';
 
 type Value = PartialForm<EapsFields>;
 type SetValueArg<T> = T | ((value: T) => T);
-
-const defaultKeyPartnerValue: PartialForm<KeyPartner> = {
-  clientId: randomString(),
-};
-
 
 interface Props {
   error: Error<Value> | undefined;
@@ -56,17 +53,16 @@ interface Props {
   index: number;
   districtOptions: NumericValueOption[];
   fetchingDistricts?: boolean;
-  statusOptions: NumericValueOption[];
+  statusOptions: StringValueOption[];
 }
 
 function EapOverview(props: Props) {
   const { strings } = React.useContext(languageContext);
   const [partners, setPartners] = React.useState<number | undefined>();
+  const [reference, setReference] = React.useState<number | undefined>();
 
   const {
     error: formError,
-    onChange,
-    index,
     onValueChange,
     value,
     disasterTypeOptions,
@@ -84,37 +80,56 @@ function EapOverview(props: Props) {
     [formError]
   );
 
-  const onFieldChange = useFormObject(index, onChange, defaultKeyPartnerValue);
-
   const {
     setValue: onPartnerChange,
     removeValue: onPartnerRemove,
-  } = useFormArray<'partners', PartialForm<KeyIndicators>>(
+  } = useFormArray<'partners', PartialForm<KeyPartner>>(
     'partners',
-    onFieldChange,
+    onValueChange,
   );
 
-  type KeyPartner = typeof value.partners;
-  const handlePartnerAddButtonClick = React.useCallback((name, url) => {
+  type KeyPartners = typeof value.partners;
+  const handlePartnerAddButtonClick = React.useCallback(() => {
     const clientId = randomString();
-    const newList: PartialForm<KeyPartnerType> = {
+    const newItem: PartialForm<KeyPartner> = {
       clientId,
-      name,
-      url,
     };
-
-    onFieldChange(
-      (oldValue: PartialForm<KeyPartner>) => (
-        [...(oldValue ?? []), newList]
+    onValueChange(
+      (oldValue: PartialForm<KeyPartners>) => (
+        [...(oldValue ?? []), newItem]
       ),
       'partners' as const,
     );
     setPartners(undefined);
-  }, [onFieldChange, setPartners]);
+  }, [onValueChange, setPartners]);
 
+  const {
+    setValue: onReferenceChange,
+    removeValue: onReferenceRemove,
+  } = useFormArray<'references', PartialForm<Reference>>(
+    'references',
+    onValueChange,
+  );
+
+  type References = typeof value.references;
+  const handleReferenceAddButtonClick = React.useCallback(() => {
+    const clientId = randomString();
+    const newItem: PartialForm<Reference> = {
+      clientId,
+    };
+    onValueChange(
+      (oldValue: PartialForm<References>) => (
+        [...(oldValue ?? []), newItem]
+      ),
+      'references' as const,
+    );
+    setReference(undefined);
+  }, [onValueChange, setReference]);
+  
   return (
     <>
       <Container
+        visibleOverflow
         className={styles.eapOverview}
         heading={strings.eapsFormEapOverviewHeading}
       >
@@ -280,7 +295,7 @@ function EapOverview(props: Props) {
                   name="readiness_budget"
                   value={value?.readiness_budget}
                   onChange={onValueChange}
-                  error={value?.readiness_budget}
+                  error={error?.readiness_budget}
                 />
                 <NumberInput
                   label={strings.eapsFormPrepositioningBudget}
@@ -288,7 +303,7 @@ function EapOverview(props: Props) {
                   name="pre_positioning_budget"
                   value={value?.pre_positioning_budget}
                   onChange={onValueChange}
-                  error={value?.pre_positioning_budget}
+                  error={error?.pre_positioning_budget}
                 />
                 <NumberInput
                   label={strings.eapsFormEarlyActionBudget}
@@ -296,7 +311,7 @@ function EapOverview(props: Props) {
                   name="early_action_budget"
                   value={value?.early_action_budget}
                   onChange={onValueChange}
-                  error={value?.early_action_budget}
+                  error={error?.early_action_budget}
                 />
               </div>
             </div>
@@ -331,42 +346,25 @@ function EapOverview(props: Props) {
       >
         <div className={styles.keyPartners}>
           <InputSection
-            title={strings.eapsFormReferences}
-            description={strings.eapsFormReferencesDescription}
-          >
-            <TextInput
-              name="partners"
-              value={value?.partners}
-              onChange={onValueChange}
-              error={error?.partners}
-              placeholder={strings.eapsFormReferncesPlaceholder}
-            />
-          </InputSection>
-          <KeyPartners
-            name="partners"
-            value={value?.partners}
-            onChange={onPartnerChange}
-            onRemove={onPartnerRemove}
-            error={error?.partners}
-            showNewFieldPartner={false}
-          />
-          <InputSection
-            title={strings.eapsFormUrlTitle}
+            title={strings.eapsFormKeyPartners}
+            description={strings.eapsFormKeyPartnersDescription}
           >
             <div className={styles.actions}>
-              <TextInput
-                name="url"
-                value={value?.references}
-                onChange={onValueChange}
-                error={undefined}
-                placeholder="Enter URL"
-              />
+              {value?.partners?.map((partner, i) => (
+                <KeyPartners
+                  key={partner.clientId}
+                  index={i}
+                  value={partner}
+                  onChange={onPartnerChange}
+                  onRemove={onPartnerRemove}
+                  error={getErrorObject(error?.partners)}
+                />
+              ))}
               <div className={styles.addKeyButton}>
                 <Button
                   name={partners}
                   onClick={handlePartnerAddButtonClick}
                   variant="secondary"
-                // disabled={isNotDefined(partners)}
                 >
                   <IoAdd />
                   {strings.eapsFormAddKeyPartnersLabel}
@@ -380,29 +378,21 @@ function EapOverview(props: Props) {
             title={strings.eapsFormReferences}
             description={strings.eapsFormReferencesDescription}
           >
-            <TextInput
-              name="references"
-              value={value?.references}
-              onChange={onValueChange}
-              error={error?.references}
-              placeholder={strings.eapsFormReferncesPlaceholder}
-            />
-          </InputSection>
-          <InputSection
-            title={strings.eapsFormUrlTitle}
-          >
             <div className={styles.actions}>
-              <TextInput
-                name="url"
-                value={value?.references}
-                onChange={onValueChange}
-                error={undefined}
-                placeholder="Enter URL"
-              />
+              {value?.references?.map((reference, i) => (
+                <ReferencesItem
+                  key={reference.clientId}
+                  index={i}
+                  value={reference}
+                  onChange={onReferenceChange}
+                  onRemove={onReferenceRemove}
+                  error={getErrorObject(error?.references)}
+                />
+              ))}
               <div className={styles.addKeyButton}>
                 <Button
-                  name={undefined}
-                  onClick={undefined}
+                  name={reference}
+                  onClick={handleReferenceAddButtonClick}
                   variant="secondary"
                 >
                   <IoAdd />

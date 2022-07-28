@@ -8,11 +8,12 @@ import {
 
 import Container from '#components/Container';
 import LanguageContext from '#root/languageContext';
-
 import InputSection from '#components/InputSection';
 import TextInput from '#components/TextInput';
-import styles from './styles.module.scss';
+
 import { EapsFields } from '../common';
+
+import styles from './styles.module.scss';
 
 type Value = PartialForm<EapsFields>;
 interface Props {
@@ -20,7 +21,6 @@ interface Props {
   onValueChange: (...entries: EntriesAsList<Value>) => void;
   value: Value;
 }
-
 
 function Contacts(props: Props) {
   const { strings } = React.useContext(LanguageContext);

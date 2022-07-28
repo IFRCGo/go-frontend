@@ -1,12 +1,7 @@
 import React from 'react';
-import languageContext from '#root/languageContext';
-import Container from '#components/Container';
-import InputSection from '#components/InputSection';
-import Button from '#components/Button';
-import HealthSectorInput from './HealthSectorInput';
 import { IoAdd } from 'react-icons/io5';
+import { isNotDefined, randomString } from '@togglecorp/fujs';
 
-import styles from './styles.module.scss';
 import {
   EntriesAsList,
   PartialForm,
@@ -14,30 +9,43 @@ import {
   getErrorObject,
   useFormArray,
 } from '@togglecorp/toggle-form';
+
+import languageContext from '#root/languageContext';
+import Container from '#components/Container';
+import InputSection from '#components/InputSection';
+import Button from '#components/Button';
+
+import SelectInput from '#components/SelectInput';
+import HealthSectorInput from './HealthSectorInput';
 import {
   EapsFields,
-  NumericValueOption,
+  Sectors,
+  StringValueOption,
 } from '../common';
-import SelectInput from '#components/SelectInput';
-import { isNotDefined, randomString } from '@togglecorp/fujs';
+
+import styles from './styles.module.scss';
 
 type Value = PartialForm<EapsFields>;
+type SetValueArg<T> = T | ((value: T) => T);
 
 interface Props {
   error: Error<Value> | undefined;
   onValueChange: (...entries: EntriesAsList<Value>) => void;
   value: Value;
-  sectorsOptions: NumericValueOption[];
+  sectorsOptions: StringValueOption[];
+  earlyActionIndicatorOptions: StringValueOption[];
 }
 
 function EarlyAction(props: Props) {
   const { strings } = React.useContext(languageContext);
+  const [sectors, setSectors] = React.useState<number | undefined>();
 
   const {
     error: formError,
     onValueChange,
     value,
     sectorsOptions,
+    earlyActionIndicatorOptions,
   } = props;
 
   const error = React.useMemo(
@@ -45,7 +53,6 @@ function EarlyAction(props: Props) {
     [formError]
   );
 
-  const [sectors, setSectors] = React.useState<number | undefined>();
   const {
     setValue: onSectorsChange,
     removeValue: onSectorsRemove,
@@ -54,15 +61,14 @@ function EarlyAction(props: Props) {
     onValueChange,
   );
 
-  type Sectors = typeof value.sectors;
-  const handleSectorsAddButtonClick = React.useCallback((title) => {
-    const key = randomString();
-    const newList: PartialForm<SectorsType> = {
-      key,
-      value,
+  type SectorsIteam = typeof value.sectors;
+  const handleSectorsAddButtonClick = React.useCallback(() => {
+    const clientId = randomString();
+    const newList: PartialForm<Sectors> = {
+      clientId,
     };
     onValueChange(
-      (oldValue: PartialForm<Sectors>) => (
+      (oldValue: PartialForm<SectorsIteam>) => (
         [...(oldValue ?? []), newList]
       ),
       'sectors' as const,
@@ -70,10 +76,10 @@ function EarlyAction(props: Props) {
     setSectors(undefined);
   }, [onValueChange, setSectors]);
 
-
   return (
     <>
       <Container
+        visibleOverflow
         heading={strings.eapsFormPrioritizedRisksAndSelectedEarlyActions}
       >
         <div className={styles.sectorContainer}>
@@ -83,7 +89,7 @@ function EarlyAction(props: Props) {
             >
               <SelectInput
                 name="sectors"
-                value={value?.sectors}
+                value={value.sectors}
                 onChange={setSectors}
                 error={error?.sectors}
                 options={sectorsOptions}
@@ -110,6 +116,7 @@ function EarlyAction(props: Props) {
             onRemove={onSectorsRemove}
             error={error?.sectors}
             sectorsOptions={sectorsOptions}
+            earlyActionIndicatorsOptions={earlyActionIndicatorOptions}
             showNewFieldOperational={false} />
         ))}
       </Container>

@@ -12,23 +12,23 @@ import Button from '#components/Button';
 import TextInput from '#components/TextInput';
 import { SetValueArg } from '#utils/common';
 
-import { KeyPartner } from '../../common';
+import { Reference } from '../../common';
 
 import styles from './styles.module.scss';
 
-const defaultKeyPartnersValue: PartialForm<KeyPartner> = {
+const defaultReferenceValue: PartialForm<Reference> = {
   clientId: randomString(),
 };
 
 interface Props {
-  value: PartialForm<KeyPartner>;
-  error: ArrayError<KeyPartner> | undefined;
-  onChange: (value: SetValueArg<PartialForm<KeyPartner>>, index: number) => void;
+  value: PartialForm<Reference>;
+  error: ArrayError<Reference> | undefined;
+  onChange: (value: SetValueArg<PartialForm<Reference>>, index: number) => void;
   onRemove: (index: number) => void;
   index: number;
 }
 
-function KeyPartners(props: Props) {
+function ReferencesItem(props: Props) {
 
   const {
     error: errorFromProps,
@@ -38,7 +38,7 @@ function KeyPartners(props: Props) {
     onRemove,
   } = props;
 
-  const onFieldChange = useFormObject(index, onChange, defaultKeyPartnersValue);
+  const onFieldChange = useFormObject(index, onChange, defaultReferenceValue);
   const error = (value && value.clientId && errorFromProps)
     ? getErrorObject(errorFromProps?.[value.clientId])
     : undefined;
@@ -48,10 +48,10 @@ function KeyPartners(props: Props) {
       <div className={styles.inputs}>
         <TextInput
           label="name"
-          name="name"
-          value={value?.name}
+          name="source"
+          value={value?.source}
           onChange={onFieldChange}
-          error={error?.name}
+          error={error?.source}
         />
         <TextInput
           label="url"
@@ -64,7 +64,6 @@ function KeyPartners(props: Props) {
       <div>
         <Button
           name={index}
-          className={styles.removeButton}
           onClick={onRemove}
           variant="action"
           disabled={index === 0}
@@ -76,4 +75,4 @@ function KeyPartners(props: Props) {
   );
 }
 
-export default KeyPartners;
+export default ReferencesItem;

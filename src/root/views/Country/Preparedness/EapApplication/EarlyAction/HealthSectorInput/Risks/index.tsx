@@ -10,25 +10,27 @@ import { randomString } from '@togglecorp/fujs';
 
 import Button from '#components/Button';
 import TextInput from '#components/TextInput';
-import { SetValueArg } from '#utils/common';
 
-import { KeyPartner } from '../../common';
+import { EapsFields, Risk } from '../../../common';
 
 import styles from './styles.module.scss';
 
-const defaultKeyPartnersValue: PartialForm<KeyPartner> = {
+type Value = PartialForm<EapsFields>;
+type SetValueArg<T> = T | ((value: T) => T);
+
+const defaultRiskValue: PartialForm<Risk> = {
   clientId: randomString(),
 };
 
 interface Props {
-  value: PartialForm<KeyPartner>;
-  error: ArrayError<KeyPartner> | undefined;
-  onChange: (value: SetValueArg<PartialForm<KeyPartner>>, index: number) => void;
+  value: PartialForm<Risk>;
+  error: ArrayError<Risk> | undefined;
+  onChange: (value: SetValueArg<PartialForm<Risk>>, index: number) => void;
   onRemove: (index: number) => void;
   index: number;
 }
 
-function KeyPartners(props: Props) {
+function Risks(props: Props) {
 
   const {
     error: errorFromProps,
@@ -38,29 +40,21 @@ function KeyPartners(props: Props) {
     onRemove,
   } = props;
 
-  const onFieldChange = useFormObject(index, onChange, defaultKeyPartnersValue);
+
+  const onFieldChange = useFormObject(index, onChange, defaultRiskValue);
   const error = (value && value.clientId && errorFromProps)
     ? getErrorObject(errorFromProps?.[value.clientId])
     : undefined;
 
   return (
-    <div className={styles.partners}>
-      <div className={styles.inputs}>
-        <TextInput
-          label="name"
-          name="name"
-          value={value?.name}
-          onChange={onFieldChange}
-          error={error?.name}
-        />
-        <TextInput
-          label="url"
-          name="url"
-          value={value?.url}
-          onChange={onFieldChange}
-          error={error?.url}
-        />
-      </div>
+    <div className={styles.inputs}>
+      <TextInput
+        label="Priortised risk"
+        name="prioritized_risks"
+        value={value?.risks}
+        onChange={onFieldChange}
+        error={error?.risks}
+      />
       <div>
         <Button
           name={index}
@@ -76,4 +70,4 @@ function KeyPartners(props: Props) {
   );
 }
 
-export default KeyPartners;
+export default Risks;

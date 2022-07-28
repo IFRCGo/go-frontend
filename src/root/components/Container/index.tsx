@@ -35,7 +35,6 @@ function Container(props: Props) {
     actions,
     children,
     contentClassName,
-    headerClassName,
     innerContainerClassName,
     descriptionClassName,
     sub,
@@ -68,7 +67,7 @@ function Container(props: Props) {
       >
         {(heading || actions) && (
           <Header
-            className={_cs(styles.headerClassName)}
+            className={styles.headerClassName}
             heading={heading}
             actions={actions}
             headingSize={headingSize}
@@ -77,17 +76,17 @@ function Container(props: Props) {
         )}
         {subHeading && (
           <div className={_cs(styles.header, contentClassName)}>
-            { subHeading }
+            {subHeading}
           </div>
         )}
         {description && (
           <Description className={descriptionClassName}>
-            { description }
+            {description}
           </Description>
         )}
         {children && (
           <div className={_cs(styles.content, contentClassName)}>
-            { children }
+            {children}
           </div>
         )}
         {(footer || footerActions) && (

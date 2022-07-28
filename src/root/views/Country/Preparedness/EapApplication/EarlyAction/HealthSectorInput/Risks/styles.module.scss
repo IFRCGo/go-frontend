@@ -1,17 +1,16 @@
 @import '~styles/settings/variables';
 
-.partners {
-  .input {
-    display: flex;
-    align-items: flex-end;
+.input {
+  display: flex;
+  align-items: flex-end;
 
-    >* {
-      flex-basis: 0;
-      flex-grow: 1;
-    }
-
+  >* {
+    flex-basis: 0;
+    flex-grow: 1;
   }
+
 }
+
 .remove-button {
   flex-basis: unset;
   flex-grow: unset;

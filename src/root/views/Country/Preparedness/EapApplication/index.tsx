@@ -3,30 +3,9 @@ import type { History, Location } from 'history';
 import {
   isDefined,
   listToMap,
+  randomString,
 } from '@togglecorp/fujs';
-import useAlert from '#hooks/useAlert';
-import LanguageContext from '#root/languageContext';
-import { EapsFields } from './common';
-import Button from '#components/Button';
-import {
-  EapsApiFields,
-  overviewFields,
-  eventDetailsFields,
-  contactFields,
-} from './common';
-import {
-  useLazyRequest, useRequest,
-} from '#utils/restRequest';
 import type { match as Match } from 'react-router-dom';
-
-import Page from '#components/Page';
-import Tab from '#components/Tabs/Tab';
-import TabList from '#components/Tabs/TabList';
-import TabPanel from '#components/Tabs/TabPanel';
-import Tabs from '#components/Tabs';
-import EapOverview from './EapOverview';
-import Contacts from './Contacts';
-import EarlyAction from './EarlyAction';
 import {
   useForm,
   getErrorObject,
@@ -34,13 +13,47 @@ import {
   accumulateErrors,
   ObjectError,
 } from '@togglecorp/toggle-form';
+
+import useAlert from '#hooks/useAlert';
+import LanguageContext from '#root/languageContext';
+import Button from '#components/Button';
+import {
+  useLazyRequest
+} from '#utils/restRequest';
+import Page from '#components/Page';
+import Tab from '#components/Tabs/Tab';
+import TabList from '#components/Tabs/TabList';
+import TabPanel from '#components/Tabs/TabPanel';
+import Tabs from '#components/Tabs';
+
+import {
+  EapsApiFields,
+  overviewFields,
+  earlyActionFields,
+  contactFields,
+} from './common';
+import EapOverview from './EapOverview';
+import Contacts from './Contacts';
+import { EapsFields } from './common';
+import EarlyAction from './EarlyAction';
 import useEapFormOptions, { schema } from './useEapFormOptions';
+
 import styles from './styles.module.scss';
 
 const defaultFormValues: PartialForm<EapsFields> = {
   country: [],
-  sectors: [],
-  early_actions_indicators: [],
+  partners: [{
+    clientId: randomString(),
+  }],
+  references: [{
+    clientId: randomString(),
+  }],
+  indicators: [{
+    clientId: randomString(),
+  }],
+  prioritized_risks: [{
+    clientId: randomString(),
+  }],
 };
 
 interface EapsResponseFields {
@@ -62,11 +75,10 @@ export function getDefinedValues<T extends Record<string, any>>(o: T): Partial<T
 
 type StepTypes = 'eapOverview' | 'earlyActions' | 'contacts';
 const stepTypesToFieldsMap: {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   [key in StepTypes]: (keyof EapsFields)[];
 } = {
   eapOverview: overviewFields,
-  earlyActions: eventDetailsFields,
+  earlyActions: earlyActionFields,
   contacts: contactFields,
 };
 
@@ -130,10 +142,10 @@ function EapApplication(props: Props) {
     const tabKeys = (Object.keys(tabs)) as StepTypes[];
     tabKeys.forEach((tabKey) => {
       const currentFields = stepTypesToFieldsMap[tabKey];
-      const currentFieldsMap = listToMap(currentFields, d => d, d => true);
+      const currentFieldsMap = listToMap(currentFields, field => field, field => true);
 
       const erroredFields = Object.keys(getErrorObject(error) ?? {}) as (keyof EapsFields)[];
-      const hasError = erroredFields.some(d => currentFieldsMap[d]);
+      const hasError = erroredFields.some(field => currentFieldsMap[field]);
       tabs[tabKey] = hasError;
     });
 
@@ -275,6 +287,7 @@ function EapApplication(props: Props) {
 
   const failedToLoadEap = !pending && isDefined(eapId);
 
+  console.log('value', value);
   return (
     <Tabs
       disabled={undefined}
@@ -285,14 +298,12 @@ function EapApplication(props: Props) {
       <Page
         className={className}
         actions={(
-          <>
-            <Button
-              name={undefined}
-              onClick={undefined}
-            >
-              {strings.eapsFormSaveButtonLabel}
-            </Button>
-          </>
+          <Button
+            name={undefined}
+            onClick={undefined}
+          >
+            {strings.eapsFormSaveButtonLabel}
+          </Button>
         )}
         title={strings.eapsFormPageTitle}
         heading={strings.eapsFormPageHeading}
@@ -325,7 +336,7 @@ function EapApplication(props: Props) {
       >
         <TabPanel name="eapOverview">
           <EapOverview
-            error={undefined}
+            error={error}
             onValueChange={onValueChange}
             value={value}
             fetchingDistricts={fetchingDistricts}
@@ -344,7 +355,7 @@ function EapApplication(props: Props) {
         </TabPanel>
         <TabPanel name="earlyActions">
           <EarlyAction
-            error={undefined}
+            error={error}
             earlyActionIndicatorOptions={earlyActionIndicatorsOptions}
             sectorsOptions={sectorsOptions}
             onValueChange={onValueChange}
@@ -353,14 +364,14 @@ function EapApplication(props: Props) {
         </TabPanel>
         <TabPanel name="contacts">
           <Contacts
-            error={undefined}
+            error={error}
             onValueChange={onValueChange}
             value={value}
           />
         </TabPanel>
         <div className={styles.actions}>
           <Button
-            name={undefined}
+            name={error}
             variant="secondary"
             onClick={handleBackButtonClick}
             disabled={shouldDisabledBackButton}
@@ -368,7 +379,7 @@ function EapApplication(props: Props) {
             {strings.eapsFormBackButtonLabel}
           </Button>
           <Button
-            name={undefined}
+            name={error}
             variant="secondary"
             onClick={handleSubmitButtonClick}
           >
