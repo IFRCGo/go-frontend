@@ -369,9 +369,9 @@ function Response(props: Props) {
           title={strings.drefFormRiskSecuritySafetyConcern}
         >
           <TextInput
-            name='security_safety_concern'
-            value={value.security_safety_concern}
-            error={error?.security_safety_concern}
+            name='risk_security_concern'
+            value={value.risk_security_concern}
+            error={error?.risk_security_concern}
             onChange={onValueChange}
           />
         </InputSection>
