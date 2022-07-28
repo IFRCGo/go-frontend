@@ -141,7 +141,7 @@ export interface DrefFields {
   event_date: string;
   event_map: number;
   field_report: number;
-  images: FileWithCaption[];
+  images_file: FileWithCaption[];
   event_description: string;
   event_scope: string;
   event_text: string;
@@ -235,10 +235,10 @@ export interface DrefFields {
   did_national_society: boolean;
   supporting_document: number;
   risk_security: RiskSecurityProps[];
-  security_safety_concern: string;
+  risk_security_concern: string;
 }
 
-export interface DrefApiFields extends Omit<DrefFields, 'country_district' | 'planned_interventions' | 'national_society_actions' | 'needs_identified'> {
+export interface DrefApiFields extends Omit<DrefFields, 'country_district' | 'planned_interventions' | 'national_society_actions' | 'needs_identified' | 'images_file'> {
   user: number;
   country_district: (Omit<CountryDistrict, 'clientId'> & {
     id: number
@@ -278,6 +278,12 @@ export interface DrefApiFields extends Omit<DrefFields, 'country_district' | 'pl
     id: number;
     file: string;
   };
+  images_file: {
+    id: number,
+    caption: string | null,
+    client_id: string | null,
+    file: string;
+  }[];
 }
 
 export const overviewFields: (keyof DrefFields)[] = [
@@ -316,7 +322,7 @@ export const eventDetailsFields: (keyof DrefFields)[] = [
   'lessons_learned',
   'event_description',
   'event_scope',
-  'images',
+  'images_file',
   'event_date',
   'event_text',
 ];
@@ -336,7 +342,7 @@ export const actionsFields: (keyof DrefFields)[] = [
   'is_there_major_coordination_mechanism',
   'assessment_report',
   'risk_security',
-  'security_safety_concern',
+  'risk_security_concern',
 ];
 
 export const responseFields: (keyof DrefFields)[] = [

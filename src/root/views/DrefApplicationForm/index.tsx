@@ -55,7 +55,7 @@ const defaultFormValues: PartialForm<DrefFields> = {
   planned_interventions: [],
   national_society_actions: [],
   needs_identified: [],
-  images: [],
+  images_file: [],
   users: [],
 };
 
@@ -266,6 +266,11 @@ function DrefApplication(props: Props) {
           ...ni,
           clientId: String(ni.id),
         })),
+        images_file: response.images_file.map((img) => ({
+          id: img.id,
+          client_id: img.client_id ?? String(img.id),
+          caption: img.caption ?? '',
+        })),
         disability_people_per: response.disability_people_per ? +response.disability_people_per : undefined,
         people_per_urban: response.people_per_urban ? +response.people_per_urban : undefined,
         people_per_local: response.people_per_local ? +response.people_per_local : undefined,
@@ -333,6 +338,7 @@ function DrefApplication(props: Props) {
     if (result.errored) {
       onErrorSet(result.error);
     } else if (result.value && userDetails && userDetails.id) {
+
       const body = {
         user: userDetails.id,
         ...result.value,
