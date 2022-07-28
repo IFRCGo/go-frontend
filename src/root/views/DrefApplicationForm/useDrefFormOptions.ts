@@ -122,7 +122,7 @@ export const schema: FormSchema = {
     lessons_learned: [],
     event_description: [],
     event_scope: [],
-    images: [lessThanEqualToTwoImagesCondition],
+    images_file: [lessThanEqualToTwoImagesCondition],
     government_requested_assistance: [],
     government_requested_assistance_date: [],
     national_authorities: [],
@@ -190,7 +190,7 @@ export const schema: FormSchema = {
     people_in_need: [],
     supporting_document: [],
     did_national_society: [],
-    security_safety_concern: [],
+    risk_security_concern: [],
     national_society_actions: {
       keySelector: (n) => n.clientId as string,
       member: (): NsActionsSchemaMember => ({
