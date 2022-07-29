@@ -35,23 +35,16 @@ import {
 import EapOverview from './EapOverview';
 import Contacts from './Contacts';
 import { EapsFields } from './common';
-import EarlyAction from './EarlyAction';
+import EarlyAction from './EarlyActions';
 import useEapFormOptions, { schema } from './useEapFormOptions';
 
 import styles from './styles.module.scss';
 
 const defaultFormValues: PartialForm<EapsFields> = {
-  country: [],
   partners: [{
     clientId: randomString(),
   }],
   references: [{
-    clientId: randomString(),
-  }],
-  indicators: [{
-    clientId: randomString(),
-  }],
-  prioritized_risks: [{
     clientId: randomString(),
   }],
 };

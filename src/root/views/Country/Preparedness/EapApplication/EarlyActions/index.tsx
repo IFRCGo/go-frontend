@@ -18,14 +18,14 @@ import Button from '#components/Button';
 import SelectInput from '#components/SelectInput';
 import HealthSectorInput from './HealthSectorInput';
 import {
-  EapsFields,
+  EarlyAction,
   Sectors,
   StringValueOption,
 } from '../common';
 
 import styles from './styles.module.scss';
 
-type Value = PartialForm<EapsFields>;
+type Value = PartialForm<EarlyAction>;
 
 interface Props {
   error: Error<Value> | undefined;
@@ -35,9 +35,9 @@ interface Props {
   earlyActionIndicatorOptions: StringValueOption[];
 }
 
-function EarlyAction(props: Props) {
+function EarlyActions(props: Props) {
   const { strings } = React.useContext(languageContext);
-  const [sectors, setSectors] = React.useState<number | undefined>();
+  const [sector, setSector] = React.useState<string | undefined>();
 
   const {
     error: formError,
@@ -55,19 +55,25 @@ function EarlyAction(props: Props) {
   const {
     setValue: onSectorsChange,
     removeValue: onSectorsRemove,
-  } = useFormArray<'sectors', PartialForm<Sectors>>(
-    'sectors',
+  } = useFormArray<'sector', PartialForm<Sectors>>(
+    'sector',
     onValueChange,
   );
 
-  type SectorsItem = typeof value.sectors;
+  type SectorItem = typeof value.sector;
+
   const handleSectorsAddButtonClick = React.useCallback(() => {
     const clientId = randomString();
-    const newItem: PartialForm<Sectors> = {
+    const newList: PartialForm<Sectors> = {
       clientId,
     };
-    
-  }, []);
+    onValueChange(
+      (oldValue: PartialForm<SectorItem>) => (
+        [...(oldValue ?? []), newList]
+      ),
+      'sector' as const,
+    );
+  }, [onValueChange]);
 
   return (
     <>
@@ -81,18 +87,18 @@ function EarlyAction(props: Props) {
               title={strings.eapsFormSector}
             >
               <SelectInput
-                name="sectors"
-                value={value.sectors}
-                onChange={setSectors}
-                error={error?.sectors}
+                name="sector"
+                value={value.sector}
+                onChange={setSector}
+                error={error?.sector}
                 options={sectorsOptions}
               />
               <Button
                 className={styles.earlyActionButton}
-                name={sectors}
+                name={sector}
                 onClick={handleSectorsAddButtonClick}
                 variant="secondary"
-                disabled={isNotDefined(sectors)}
+                disabled={isNotDefined(sector)}
               >
                 <IoAdd />
                 {strings.eapsFormAddButtonLabel}
@@ -100,14 +106,14 @@ function EarlyAction(props: Props) {
             </InputSection>
           </div>
         </div>
-        {value?.sectors?.map((n, i) => (
+        {value?.sector?.map((n, i) => (
           <HealthSectorInput
             key={n}
             index={i}
             value={n}
             onValueChange={onSectorsChange}
             onRemove={onSectorsRemove}
-            error={error?.sectors}
+            error={error?.sector}
             sectorsOptions={sectorsOptions}
             earlyActionIndicatorsOptions={earlyActionIndicatorOptions}
             showNewFieldOperational={false} />
@@ -117,4 +123,4 @@ function EarlyAction(props: Props) {
   );
 }
 
-export default EarlyAction;
+export default EarlyActions;

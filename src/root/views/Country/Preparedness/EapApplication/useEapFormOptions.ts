@@ -57,8 +57,6 @@ export const schema: FormSchema = {
     document: [],
     early_actions: [],
     budget_per_sector: [],
-    sectors: [],
-    readiness_activities: [],
     prepositioning_activities: [],
     originator_name: [],
     originator_title: [],
@@ -75,10 +73,7 @@ export const schema: FormSchema = {
     country: [requiredCondition],
     district: [],
     disaster_type: [],
-    indicators: [],
     indicator_value: [],
-    prioritized_risks: [],
-    actions: [],
     early_act: [],
   })
 };

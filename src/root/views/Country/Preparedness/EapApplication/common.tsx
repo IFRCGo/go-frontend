@@ -42,7 +42,7 @@ export interface Indicator {
 }
 
 export interface Risk {
-  risks: string;
+  risks?: string;
   clientId: string;
 }
 
@@ -63,14 +63,16 @@ export interface Action {
   early_act: string;
 }
 
-interface EarlyAction {
-  sector: string;
+export interface EarlyAction {
+  sector: Sectors[];
+  clientId: string;
   budget_per_sector: number;
   prioritized_risks: Risk[];
   targeted_people: number;
   readiness_activities: string;
   indicators: Indicator[];
-  actions: Action;
+  actions: Action[];
+  prepositioning_activities: string;
 }
 
 export const emptyOptionList: Option[] = [];
@@ -96,7 +98,6 @@ export interface EapsFields {
   overview: string;
   document: number;
   budget_per_sector: number;
-  sectors: number[];
   prepositioning_activities: string;
   originator_name: string;
   originator_title: string;
@@ -188,7 +189,6 @@ export const contactFields: (keyof EapsFields)[] = [
 
 export const earlyActionFields: (keyof EapsFields)[] = [
   'budget_per_sector',
-  'sectors',
   'prepositioning_activities',
   'early_actions',
   'indicator_value',

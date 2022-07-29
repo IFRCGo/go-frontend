@@ -12,7 +12,7 @@ import Button from '#components/Button';
 import TextInput from '#components/TextInput';
 import { SetValueArg } from '#utils/common';
 
-import { Action, EapsFields } from '../../../common';
+import { Action } from '../../../common';
 
 import styles from './styles.module.scss';
 

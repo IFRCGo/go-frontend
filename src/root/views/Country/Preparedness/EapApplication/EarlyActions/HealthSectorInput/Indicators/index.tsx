@@ -12,11 +12,14 @@ import Button from '#components/Button';
 import TextInput from '#components/TextInput';
 import SelectInput from '#components/SelectInput';
 
-import { EapsFields, Indicator, NumericValueOption } from '../../../common';
+import {
+  Indicator,
+  StringValueOption,
+} from '../../../common';
 
 import styles from './styles.module.scss';
 
-type Value = PartialForm<EapsFields>;
+type Value = PartialForm<Indicator>;
 
 type SetValueArg<T> = T | ((value: T) => T);
 const defaultIndicatorsValue: PartialForm<Indicator> = {
@@ -24,12 +27,12 @@ const defaultIndicatorsValue: PartialForm<Indicator> = {
 };
 
 interface Props {
-  value: PartialForm<Indicator>;
+  value: Value;
   error: ArrayError<Indicator> | undefined;
   onChange: (value: SetValueArg<PartialForm<Indicator>>, index: number) => void;
   onRemove: (index: number) => void;
   index: number;
-  earlyActionIndicatorsOptions: NumericValueOption[];
+  earlyActionIndicatorsOptions: StringValueOption[];
 }
 
 function Indicators(props: Props) {

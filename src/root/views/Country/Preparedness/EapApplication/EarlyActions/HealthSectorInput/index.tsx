@@ -22,16 +22,16 @@ import Indicators from './Indicators';
 import Actions from './Actions';
 import {
   Action,
-  Sectors,
   Indicator,
   StringValueOption,
   Risk,
+  EarlyAction,
 } from '../../common';
 import Risks from './Risks';
 
 import styles from './styles.module.scss';
 
-type Value = PartialForm<Sectors>;
+type Value = PartialForm<EarlyAction>;
 
 interface Props {
   error: Error<Value> | undefined;
@@ -45,8 +45,9 @@ interface Props {
 function HealthSectorInput(props: Props) {
   const { strings } = React.useContext(languageContext);
 
-  const [risk, setRisk] = React.useState<number | undefined>();
-  const [action, setAction] = React.useState<number | undefined>();
+  const [indicator, setIndicator] = React.useState<string | undefined>();
+  const [risk, setRisk] = React.useState<string | undefined>();
+  const [action, setAction] = React.useState<string | undefined>();
 
   const {
     error: formError,
@@ -79,18 +80,19 @@ function HealthSectorInput(props: Props) {
       ),
       'indicators' as const,
     );
-  }, [onValueChange]);
+    setIndicator(undefined);
+  }, [onValueChange, setIndicator]);
 
   const {
     setValue: onRiskChange,
     removeValue: onRiskRemove,
-  } = useFormArray<'prioritized_risks', PartialForm<Risk>>(
-    'prioritized_risks',
+  } = useFormArray<'risks', PartialForm<Risk>>(
+    'risks',
     onValueChange,
   );
 
   type RiskItem = typeof value.prioritized_risks;
-  
+
   const handleRiskAddButtonClick = React.useCallback(() => {
     const clientId = randomString();
     const newList: PartialForm<Risk> = {
@@ -114,7 +116,7 @@ function HealthSectorInput(props: Props) {
     onValueChange,
   );
 
-  type ActionItem = typeof value.early_act;
+  type ActionItem = typeof value.actions;
   const handleActionAddButtonClick = React.useCallback(() => {
     const clientId = randomString();
     const newList: PartialForm<Action> = {
@@ -165,7 +167,7 @@ function HealthSectorInput(props: Props) {
           <Indicators
             key={indicator.clientId}
             index={i}
-            value={indicator} 
+            value={indicator}
             onChange={onIndicatorsChange}
             onRemove={onIndicatorsRemove}
             earlyActionIndicatorsOptions={earlyActionIndicatorsOptions}
@@ -176,7 +178,7 @@ function HealthSectorInput(props: Props) {
           className={styles.indicator}
         >
           <Button
-            name={undefined}
+            name={indicator}
             onClick={handleIndicatorAddButtonClick}
             variant="secondary"
           >
@@ -189,18 +191,18 @@ function HealthSectorInput(props: Props) {
         normalDescription
         description={(
           <>
-            {value?.prioritized_risks?.map((prioritise, i) => (
+            {value?.prioritized_risks?.map((p, i) => (
               <Risks
-                key={prioritise.clientId}
+                key={p.clientId}
                 index={i}
-                value={prioritise}
+                value={p}
                 onChange={onRiskChange}
                 onRemove={onRiskRemove}
                 error={getErrorObject(error?.prioritized_risks)}
               />
             ))}
             <Button
-              name={undefined}
+              name={risk}
               onClick={handleRiskAddButtonClick}
               variant="secondary"
             >
@@ -227,7 +229,7 @@ function HealthSectorInput(props: Props) {
                 value={action}
                 onChange={onActionChange}
                 onRemove={onActionRemove}
-                error={getErrorObject(error?.early_act)}
+                error={getErrorObject(error?.actions)}
               />
             ))}
             <Button

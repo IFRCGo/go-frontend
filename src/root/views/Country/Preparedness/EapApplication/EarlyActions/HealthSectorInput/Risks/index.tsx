@@ -11,11 +11,11 @@ import { randomString } from '@togglecorp/fujs';
 import Button from '#components/Button';
 import TextInput from '#components/TextInput';
 
-import { EapsFields, Risk } from '../../../common';
+import { Risk } from '../../../common';
 
 import styles from './styles.module.scss';
 
-type Value = PartialForm<EapsFields>;
+type Value = PartialForm<Risk>;
 type SetValueArg<T> = T | ((value: T) => T);
 
 const defaultRiskValue: PartialForm<Risk> = {
@@ -23,7 +23,7 @@ const defaultRiskValue: PartialForm<Risk> = {
 };
 
 interface Props {
-  value: PartialForm<Risk>;
+  value: Value;
   error: ArrayError<Risk> | undefined;
   onChange: (value: SetValueArg<PartialForm<Risk>>, index: number) => void;
   onRemove: (index: number) => void;
@@ -50,7 +50,7 @@ function Risks(props: Props) {
     <div className={styles.inputs}>
       <TextInput
         label="Priortised risk"
-        name="prioritized_risks"
+        name="risks"
         value={value?.risks}
         onChange={onFieldChange}
         error={error?.risks}
