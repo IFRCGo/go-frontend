@@ -125,7 +125,7 @@ function EapApplication(props: Props) {
 
   const [fileIdToUrlMap, setFileIdToUrlMap] = React.useState<Record<number, string>>({});
 
-  const [currentStep, setCurrentStep] = React.useState<StepTypes>('eapOverview');
+  const [currentStep, setCurrentStep] = React.useState<StepTypes>('earlyActions');
   const submitButtonLabel = currentStep === 'contacts' ? strings.drefFormSaveButtonLabel : strings.drefFormContinueButtonLabel;
   const shouldDisabledBackButton = currentStep === 'eapOverview';
 

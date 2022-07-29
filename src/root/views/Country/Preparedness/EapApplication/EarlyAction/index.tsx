@@ -26,7 +26,6 @@ import {
 import styles from './styles.module.scss';
 
 type Value = PartialForm<EapsFields>;
-type SetValueArg<T> = T | ((value: T) => T);
 
 interface Props {
   error: Error<Value> | undefined;
@@ -61,20 +60,14 @@ function EarlyAction(props: Props) {
     onValueChange,
   );
 
-  type SectorsIteam = typeof value.sectors;
+  type SectorsItem = typeof value.sectors;
   const handleSectorsAddButtonClick = React.useCallback(() => {
     const clientId = randomString();
-    const newList: PartialForm<Sectors> = {
+    const newItem: PartialForm<Sectors> = {
       clientId,
     };
-    onValueChange(
-      (oldValue: PartialForm<SectorsIteam>) => (
-        [...(oldValue ?? []), newList]
-      ),
-      'sectors' as const,
-    );
-    setSectors(undefined);
-  }, [onValueChange, setSectors]);
+    
+  }, []);
 
   return (
     <>
@@ -112,7 +105,7 @@ function EarlyAction(props: Props) {
             key={n}
             index={i}
             value={n}
-            onChange={onSectorsChange}
+            onValueChange={onSectorsChange}
             onRemove={onSectorsRemove}
             error={error?.sectors}
             sectorsOptions={sectorsOptions}

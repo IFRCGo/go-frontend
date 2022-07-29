@@ -37,9 +37,6 @@ export interface Sectors {
 
 export interface Indicator {
   clientId: string;
-  key: string;
-  value: string;
-  earlyIndicators: number[];
   indicator: string;
   indicator_value: string;
 }
@@ -47,7 +44,6 @@ export interface Indicator {
 export interface Risk {
   risks: string;
   clientId: string;
-  prioritized_risks: string[];
 }
 
 export interface KeyPartner {
@@ -67,6 +63,16 @@ export interface Action {
   early_act: string;
 }
 
+interface EarlyAction {
+  sector: string;
+  budget_per_sector: number;
+  prioritized_risks: Risk[];
+  targeted_people: number;
+  readiness_activities: string;
+  indicators: Indicator[];
+  actions: Action;
+}
+
 export const emptyOptionList: Option[] = [];
 export const emptyStringOptionList: StringValueOption[] = [];
 export const emptyNumericOptionList: NumericValueOption[] = [];
@@ -76,9 +82,8 @@ export interface EapsFields {
   id: number;
   eap_number: number;
   approval_date: string;
-  early_actions: string[];
+  early_actions: EarlyAction[];
   status: Status[];
-  indicators: Indicator[];
   operational_timeframe: number;
   lead_time: number;
   eap_timeframe: number;
@@ -92,7 +97,6 @@ export interface EapsFields {
   document: number;
   budget_per_sector: number;
   sectors: number[];
-  readiness_activities: string;
   prepositioning_activities: string;
   originator_name: string;
   originator_title: string;
@@ -106,15 +110,12 @@ export interface EapsFields {
   ifrc_focal_title: string;
   ifrc_focal_email: string;
   ifrc_focal_phone: string;
-  country: CountryDistrict[];
-  district: string[];
+  country: number;
+  district: number;
   disaster_type: number;
-  targeted_people: number;
   references: Reference[];
   partners: KeyPartner[];
   indicator_value: string[];
-  prioritized_risks: Risk[];
-  actions: Action[];
   early_act: Action[];
 }
 
@@ -123,7 +124,6 @@ export interface EapsApiFields extends Omit<
   'country_district'
   | 'partners'
   | 'references'
-  | 'indicators'
 > {
   country_district: (Omit<CountryDistrict, 'clientId'> & {
     id: number
@@ -189,13 +189,8 @@ export const contactFields: (keyof EapsFields)[] = [
 export const earlyActionFields: (keyof EapsFields)[] = [
   'budget_per_sector',
   'sectors',
-  'readiness_activities',
   'prepositioning_activities',
   'early_actions',
-  'indicators',
   'indicator_value',
-  'targeted_people',
-  'prioritized_risks',
-  'actions',
   'early_act',
 ];

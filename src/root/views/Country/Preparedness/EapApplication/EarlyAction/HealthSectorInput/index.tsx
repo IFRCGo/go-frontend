@@ -22,24 +22,23 @@ import Indicators from './Indicators';
 import Actions from './Actions';
 import {
   Action,
-  EapsFields,
+  Sectors,
   Indicator,
-  NumericValueOption,
+  StringValueOption,
   Risk,
 } from '../../common';
 import Risks from './Risks';
 
 import styles from './styles.module.scss';
 
-type Value = PartialForm<EapsFields>;
-type SetValueArg<T> = T | ((value: T) => T);
+type Value = PartialForm<Sectors>;
 
 interface Props {
   error: Error<Value> | undefined;
   onValueChange: (...entries: EntriesAsList<Value>) => void;
   value: Value;
   onRemove: (index: number) => void;
-  earlyActionIndicatorsOptions: NumericValueOption[];
+  earlyActionIndicatorsOptions: StringValueOption[];
   index: number;
 }
 
