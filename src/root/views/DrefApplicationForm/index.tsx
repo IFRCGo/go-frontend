@@ -228,15 +228,14 @@ function DrefApplication(props: Props) {
           ...prevMap,
         };
 
-        if (response.cover_image_details) {
-          newMap[response.cover_image_details.id] = response.cover_image_details.file;
+        if (response.cover_image_file) {
+          newMap[response.cover_image_file.id] = response.cover_image_file.file;
         }
         if (response.event_map_file) {
           newMap[response.event_map_file.id] = response.event_map_file.file;
         }
-
-        if (response.images_details?.length > 0) {
-          response.images_details.forEach((img) => {
+        if (response.images_file?.length > 0) {
+          response.images_file.forEach((img) => {
             newMap[img.id] = img.file;
           });
         }
@@ -265,7 +264,6 @@ function DrefApplication(props: Props) {
           client_id: img.client_id ?? String(img.id),
           caption: img.caption ?? '',
         })),
-
         disability_people_per: response.disability_people_per ? +response.disability_people_per : undefined,
         people_per_urban: response.people_per_urban ? +response.people_per_urban : undefined,
         people_per_local: response.people_per_local ? +response.people_per_local : undefined,
