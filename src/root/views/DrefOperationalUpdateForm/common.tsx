@@ -98,7 +98,6 @@ export interface DrefOperationalUpdateFields {
   disaster_type: number;
   disaster_category: number;
   type_of_onset: number;
-  country_district: CountryDistrict[];
   number_of_people_affected: number;
   number_of_people_targeted: number;
   additional_allocation: number;
@@ -173,25 +172,21 @@ export interface DrefOperationalUpdateFields {
   modified_by: number;
   users: number[];
   dref?: string;
-
   dref_allocated_so_far?: number;
   budget_file: number;
-
   event_description: string;
   event_scope: string;
   anticipatory_actions: string;
-
   cover_image: number;
   photos: number[];
+  country: number;
+  district: number[];
+  country_details: Country;
 }
 
-export interface DrefOperationalUpdateApiFields extends Omit<DrefOperationalUpdateFields, 'country_district' | 'planned_interventions' | 'national_society_actions' | 'needs_identified'> {
+export interface DrefOperationalUpdateApiFields extends Omit<DrefOperationalUpdateFields, 'district_details' | 'planned_interventions' | 'national_society_actions' | 'needs_identified'> {
   user: number;
-  country_district: (Omit<CountryDistrict, 'clientId'> & {
-    id: number
-    country_details: Country,
-    district_details: DistrictMini[],
-  })[];
+  district_details: DistrictMini[],
   planned_interventions: (Omit<Intervention, 'clientId' | 'indicators'> & {
     id: number,
     image_url: string,
@@ -228,7 +223,6 @@ export const overviewFields: (keyof DrefOperationalUpdateFields)[] = [
   'national_society',
   'disaster_type',
   'disaster_category',
-  'country_district',
   'type_of_onset',
   'number_of_people_affected',
   'number_of_people_targeted',
@@ -242,6 +236,8 @@ export const overviewFields: (keyof DrefOperationalUpdateFields)[] = [
   'is_timeframe_extension_required',
   'new_operational_end_date',
   'total_operation_timeframe',
+  'country',
+  'district',
 ];
 export const eventFields: (keyof DrefOperationalUpdateFields)[] = [
   'changing_timeframe_operation',

@@ -215,7 +215,7 @@ function EventDetails(props: Props) {
           title={
             !isImminentOnset ?
               strings.drefFormWhatWhereWhen
-              : strings.drefFormImmientDisaster
+              : strings.drefFormImminentDisaster
           }
           oneColumn
           multiRow

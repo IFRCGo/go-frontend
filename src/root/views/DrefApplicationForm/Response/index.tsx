@@ -208,7 +208,7 @@ function Response(props: Props) {
         className={styles.targetingStrategy}
       >
         <InputSection
-          title={strings.drefFormPeopleAssistedthroughOperation}
+          title={strings.drefFormPeopleAssistedThroughOperation}
           description={strings.drefFormPeopleAssistedThroughOperationDescription}
         >
           <TextArea

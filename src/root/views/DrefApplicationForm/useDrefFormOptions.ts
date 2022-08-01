@@ -39,11 +39,11 @@ import { isDefined } from '@togglecorp/fujs';
 export type FormSchema = ObjectSchema<PartialForm<DrefFields>>;
 export type FormSchemaFields = ReturnType<FormSchema['fields']>;
 
-export type CountryDistrictType = NonNullable<NonNullable<DrefFields['country_district']>>[number];
-export type CountryDistrictSchema = ObjectSchema<PartialForm<CountryDistrictType>>;
-export type CountryDistrictSchemaFields = ReturnType<CountryDistrictSchema['fields']>;
-export type CountryDistrictsSchema = ArraySchema<PartialForm<CountryDistrictType>>;
-export type CountryDistrictsSchemaMember = ReturnType<CountryDistrictsSchema['member']>;
+//export type CountryDistrictType = NonNullable<NonNullable<DrefFields['country_district']>>[number];
+//export type CountryDistrictSchema = ObjectSchema<PartialForm<CountryDistrictType>>;
+//export type CountryDistrictSchemaFields = ReturnType<CountryDistrictSchema['fields']>;
+//export type CountryDistrictsSchema = ArraySchema<PartialForm<CountryDistrictType>>;
+//export type CountryDistrictsSchemaMember = ReturnType<CountryDistrictsSchema['member']>;
 
 export type NeedType = NonNullable<NonNullable<DrefFields['needs_identified']>>[number];
 export type NeedSchema = ObjectSchema<PartialForm<NeedType>>;
@@ -102,8 +102,8 @@ export const schema: FormSchema = {
     disaster_category: [],
     disaster_type: [],
     type_of_onset: [],
-    country: [],
-    district: [],
+    country: [requiredCondition],
+    district: [requiredCondition],
     num_affected: [positiveIntegerCondition],
     num_assisted: [positiveIntegerCondition],
     amount_requested: [positiveNumberCondition],

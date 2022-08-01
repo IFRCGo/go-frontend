@@ -132,7 +132,7 @@ function Operation(props: Props) {
         className={styles.targetingStrategy}
       >
         <InputSection
-          title={strings.drefFormPeopleAssistedthroughOperation}
+          title={strings.drefFormPeopleAssistedThroughOperation}
         >
           <TextArea
             label={strings.cmpActionDescriptionLabel}
