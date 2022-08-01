@@ -1,5 +1,5 @@
 import React from 'react';
-import { isDefined, isNotDefined } from '@togglecorp/fujs';
+import { isDefined } from '@togglecorp/fujs';
 import {
   ArraySchema,
   emailCondition,
@@ -34,12 +34,6 @@ import {
 
 export type FormSchema = ObjectSchema<PartialForm<DrefOperationalUpdateFields>>;
 export type FormSchemaFields = ReturnType<FormSchema['fields']>;
-
-export type CountryDistrictType = NonNullable<NonNullable<DrefOperationalUpdateFields['country_district']>>[number];
-export type CountryDistrictSchema = ObjectSchema<PartialForm<CountryDistrictType>>;
-export type CountryDistrictSchemaFields = ReturnType<CountryDistrictSchema['fields']>;
-export type CountryDistrictsSchema = ArraySchema<PartialForm<CountryDistrictType>>;
-export type CountryDistrictsSchemaMember = ReturnType<CountryDistrictsSchema['member']>;
 
 export type NeedType = NonNullable<NonNullable<DrefOperationalUpdateFields['needs_identified']>>[number];
 export type NeedSchema = ObjectSchema<PartialForm<NeedType>>;
@@ -82,30 +76,6 @@ export const schema: FormSchema = {
     disaster_type: [],
     disaster_category: [],
     type_of_onset: [],
-    country_district: {
-      keySelector: (c) => c.clientId as string,
-      member: (): CountryDistrictsSchemaMember => ({
-        fields: (): CountryDistrictSchemaFields => ({
-          clientId: [],
-          country: [requiredCondition, (value, allValues) => {
-            if (isNotDefined(value)) {
-              return undefined;
-            }
-            const countriesWithCurrentId = (allValues as unknown as DrefOperationalUpdateFields)?.country_district?.filter(
-              d => d.country === value
-            );
-
-            if (countriesWithCurrentId.length > 1) {
-              return 'Duplicate countries not allowed';
-            }
-
-            return undefined;
-          }],
-          district: [requiredCondition],
-        }),
-      }),
-    },
-
     number_of_people_affected: [positiveIntegerCondition],
     number_of_people_targeted: [positiveIntegerCondition],
     additional_allocation: [positiveIntegerCondition],
@@ -175,6 +145,8 @@ export const schema: FormSchema = {
     cover_image: [],
     anticipatory_actions: [],
     event_scope: [],
+    country: [requiredCondition],
+    district: [requiredCondition],
 
     national_society_actions: {
       keySelector: (n) => n.clientId as string,
