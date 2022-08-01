@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { _cs } from '@togglecorp/fujs';
 import {
   PartialForm,
@@ -45,7 +45,9 @@ function CaptionInput(props: Props) {
     ? getErrorObject(errorFromProps?.[value.client_id])
     : undefined;
 
-  const fileUrl = value?.id ? fileIdToUrlMap[value.id] : undefined;
+  const fileUrl = useMemo(() =>
+    value?.id ? fileIdToUrlMap[value.id] : undefined
+    , [value, fileIdToUrlMap]);
 
   return (
     <div
