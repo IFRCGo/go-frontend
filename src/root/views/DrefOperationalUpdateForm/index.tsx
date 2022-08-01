@@ -277,10 +277,6 @@ function DrefOperationalUpdate(props: Props) {
       });
       setValue({
         ...response,
-        country_district: response.country_district?.map((cd) => ({
-          ...cd,
-          clientId: String(cd.id),
-        })),
         planned_interventions: response.planned_interventions?.map((pi) => ({
           ...pi,
           clientId: String(pi.id),
