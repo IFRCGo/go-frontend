@@ -109,7 +109,7 @@ export const schema: FormSchema = {
     amount_requested: [positiveNumberCondition],
     emergency_appeal_planned: [],
     event_map_file: [],
-    cover_image: [],
+    cover_image_file: [],
     event_date: [],
     event_text: [max500CharCondition],
     anticipatory_actions: [],
