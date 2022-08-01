@@ -400,11 +400,11 @@ function DrefPdfDocument(props: Props) {
             ].filter(Boolean).join(' | ')}
           </Text>
         </View>
-        {(dref.cover_image_details?.file) && (
+        {(dref.cover_image_file?.file) && (
           <View style={pdfStyles.section}>
             <PDFImage
               style={pdfStyles.bannerImage}
-              src={dref.cover_image_details.file}
+              src={dref.cover_image_file.file}
             />
           </View>
         )}
