@@ -41,6 +41,7 @@ import {
   ONSET_IMMINENT,
   emptyNumericOptionList,
   ONSET_SUDDEN,
+  FileWithCaption,
 } from '../common';
 
 import styles from './styles.module.scss';
@@ -155,6 +156,15 @@ function DrefOverview(props: Props) {
       label: d.name,
     })).sort(compareString) ?? emptyNumericOptionList
   ), [districtsResponse]);
+
+  const handleImageInputChange = React.useCallback((newValue: number | undefined) => {
+    const newImageList: undefined | PartialForm<FileWithCaption> = ({
+      client_id: String(newValue),
+      id: newValue,
+    });
+
+    onValueChange(newImageList, 'event_map_file' as const);
+  }, [onValueChange]);
 
   return (
     <>
@@ -367,13 +377,13 @@ function DrefOverview(props: Props) {
         >
           <DREFFileInput
             accept="image/*"
-            error={error?.event_map}
+            error={error?.event_map_file}
             fileIdToUrlMap={fileIdToUrlMap}
-            name="event_map"
-            onChange={onValueChange}
+            name="event_map_file"
+            onChange={handleImageInputChange}
             setFileIdToUrlMap={setFileIdToUrlMap}
             showStatus
-            value={value.event_map}
+            value={value.event_map_file?.id}
           >
             {strings.drefFormUploadAnImageLabel}
           </DREFFileInput>
