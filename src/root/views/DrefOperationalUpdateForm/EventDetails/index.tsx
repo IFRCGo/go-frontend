@@ -156,7 +156,10 @@ function EventDetails(props: Props) {
           />
         </InputSection>
         <InputSection
-          title={!isImminentOnset ? strings.drefFormWhatWhereWhen : strings.drefFormImmientDisaster}
+          title={
+            !isImminentOnset ?
+              strings.drefFormWhatWhereWhen
+              : strings.drefFormImminentDisaster}
           oneColumn
           multiRow
         >

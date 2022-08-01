@@ -128,7 +128,6 @@ export interface DrefFields {
   boys: number;
   communication: string;
   community_involved: string;
-  country_district: CountryDistrict[];
   cover_image_file: FileWithCaption;
   created_at: string;
   date_of_approval: string;
@@ -238,13 +237,9 @@ export interface DrefFields {
   risk_security_concern: string;
 }
 
-export interface DrefApiFields extends Omit<DrefFields, 'country_district' | 'planned_interventions' | 'national_society_actions' | 'needs_identified' | 'images_file' | 'event_map_file' | 'cover_image_file'> {
+export interface DrefApiFields extends Omit<DrefFields, 'district_details' | 'planned_interventions' | 'national_society_actions' | 'needs_identified' | 'images_file' | 'event_map_file' | 'cover_image_file'> {
   user: number;
-  country_district: (Omit<CountryDistrict, 'clientId'> & {
-    id: number
-    country_details: Country,
-    district_details: DistrictMini[],
-  })[];
+  district_details: DistrictMini[],
   planned_interventions: (Omit<Intervention, 'clientId' | 'indicators'> & {
     id: number,
     image_url: string,
