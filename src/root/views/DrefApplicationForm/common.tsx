@@ -139,7 +139,7 @@ export interface DrefFields {
   emergency_appeal_planned: boolean;
   end_date: string;
   event_date: string;
-  event_map: number;
+  event_map_file: FileWithCaption;
   field_report: number;
   images_file: FileWithCaption[];
   event_description: string;
@@ -238,7 +238,7 @@ export interface DrefFields {
   risk_security_concern: string;
 }
 
-export interface DrefApiFields extends Omit<DrefFields, 'country_district' | 'planned_interventions' | 'national_society_actions' | 'needs_identified' | 'images_file'> {
+export interface DrefApiFields extends Omit<DrefFields, 'country_district' | 'planned_interventions' | 'national_society_actions' | 'needs_identified' | 'images_file' | 'event_map_file'> {
   user: number;
   country_district: (Omit<CountryDistrict, 'clientId'> & {
     id: number
@@ -257,10 +257,7 @@ export interface DrefApiFields extends Omit<DrefFields, 'country_district' | 'pl
     id: number,
     image_url: string,
   })[];
-  event_map_details: {
-    id: number;
-    file: string;
-  };
+
   cover_image_details: {
     id: number;
     file: string;
@@ -284,6 +281,13 @@ export interface DrefApiFields extends Omit<DrefFields, 'country_district' | 'pl
     client_id: string | null,
     file: string;
   }[];
+  event_map_file: {
+    id: number,
+    caption: string | undefined,
+    client_id: string | undefined,
+    file: string;
+  };
+
 }
 
 export const overviewFields: (keyof DrefFields)[] = [
@@ -296,7 +300,7 @@ export const overviewFields: (keyof DrefFields)[] = [
   'disaster_category',
   'num_affected',
   'amount_requested',
-  'event_map',
+  'event_map_file',
   'cover_image',
   'emergency_appeal_planned',
   'go_field_report_date',
