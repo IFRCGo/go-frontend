@@ -25,32 +25,28 @@ import SelectInput from '#components/SelectInput';
 import languageContext from '#root/languageContext';
 
 import {
-  EapsFields,
+  EapFormFields,
   KeyPartner,
   NumericValueOption,
   Reference,
   StringValueOption,
 } from '../common';
-import { CountryDistrictType } from '../useEapFormOptions';
-import KeyPartners from './KeyPartners';
+import KeyPartnerItem from './KeyPartners';
 import ReferencesItem from './ReferenceItem';
 
 import styles from './styles.module.scss';
 
-type Value = PartialForm<EapsFields>;
-type SetValueArg<T> = T | ((value: T) => T);
+type Value = PartialForm<EapFormFields>;
 
 interface Props {
   error: Error<Value> | undefined;
   onValueChange: (...entries: EntriesAsList<Value>) => void;
-  onChange: (value: SetValueArg<PartialForm<CountryDistrictType>>, index: number) => void;
   disasterTypeOptions: NumericValueOption[];
   value: Value;
   countryOptions: NumericValueOption[];
   fetchingCountries?: boolean;
   fileIdToUrlMap: Record<number, string>;
   setFileIdToUrlMap?: React.Dispatch<React.SetStateAction<Record<number, string>>>;
-  index: number;
   districtOptions: NumericValueOption[];
   fetchingDistricts?: boolean;
   statusOptions: StringValueOption[];
@@ -77,7 +73,7 @@ function EapOverview(props: Props) {
 
   const error = React.useMemo(
     () => getErrorObject(formError),
-    [formError]
+    [formError],
   );
 
   const {
@@ -351,7 +347,7 @@ function EapOverview(props: Props) {
           >
             <div className={styles.actions}>
               {value?.partners?.map((partner, i) => (
-                <KeyPartners
+                <KeyPartnerItem
                   key={partner.clientId}
                   index={i}
                   value={partner}

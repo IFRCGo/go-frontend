@@ -10,28 +10,25 @@ import { randomString } from '@togglecorp/fujs';
 
 import Button from '#components/Button';
 import TextInput from '#components/TextInput';
+import { SetValueArg } from '#utils/common';
 
-import { Risk } from '../../../common';
+import { Action } from '../../../common';
 
 import styles from './styles.module.scss';
 
-type Value = PartialForm<Risk>;
-type SetValueArg<T> = T | ((value: T) => T);
-
-const defaultRiskValue: PartialForm<Risk> = {
+const defaultActionValue: PartialForm<Action> = {
   clientId: randomString(),
 };
 
 interface Props {
-  value: Value;
-  error: ArrayError<Risk> | undefined;
-  onChange: (value: SetValueArg<PartialForm<Risk>>, index: number) => void;
+  value: PartialForm<Action>;
+  error: ArrayError<Action> | undefined;
+  onChange: (value: SetValueArg<PartialForm<Action>>, index: number) => void;
   onRemove: (index: number) => void;
   index: number;
 }
 
-function Risks(props: Props) {
-
+function Actions(props: Props) {
   const {
     error: errorFromProps,
     onChange,
@@ -40,8 +37,7 @@ function Risks(props: Props) {
     onRemove,
   } = props;
 
-
-  const onFieldChange = useFormObject(index, onChange, defaultRiskValue);
+  const onFieldChange = useFormObject(index, onChange, defaultActionValue);
   const error = (value && value.clientId && errorFromProps)
     ? getErrorObject(errorFromProps?.[value.clientId])
     : undefined;
@@ -49,25 +45,23 @@ function Risks(props: Props) {
   return (
     <div className={styles.inputs}>
       <TextInput
-        label="Priortised risk"
-        name="risks"
-        value={value?.risks}
+        label="Early Actions"
+        name="early_action"
+        value={value}
         onChange={onFieldChange}
-        error={error?.risks}
+        error={error?.early_action}
       />
-      <div>
-        <Button
-          name={index}
-          className={styles.removeButton}
-          onClick={onRemove}
-          variant="action"
-          disabled={index === 0}
-        >
-          <IoTrash />
-        </Button>
-      </div>
+      <Button
+        name={index}
+        className={styles.removeButton}
+        onClick={onRemove}
+        variant="action"
+        disabled={index === 0}
+      >
+        <IoTrash />
+      </Button>
     </div>
   );
 }
 
-export default Risks;
+export default Actions;

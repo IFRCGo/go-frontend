@@ -42,7 +42,8 @@ export interface Indicator {
 }
 
 export interface Risk {
-  risks?: string;
+  risks: string;
+  early_action: number;
   clientId: string;
 }
 
@@ -61,18 +62,19 @@ export interface Reference {
 export interface Action {
   clientId: string;
   early_act: string;
+  early_action: string;
 }
 
 export interface EarlyAction {
-  sector: Sectors[];
-  clientId: string;
-  budget_per_sector: number;
-  prioritized_risks: Risk[];
-  targeted_people: number;
-  readiness_activities: string;
-  indicators: Indicator[];
   actions: Action[];
+  budget_per_sector: number;
+  clientId: string;
+  indicators: Indicator[];
   prepositioning_activities: string;
+  prioritized_risks: Risk[];
+  readiness_activities: string;
+  sector: string;
+  targeted_people: number;
 }
 
 export const emptyOptionList: Option[] = [];
@@ -80,12 +82,12 @@ export const emptyStringOptionList: StringValueOption[] = [];
 export const emptyNumericOptionList: NumericValueOption[] = [];
 export type Option = NumericValueOption | BooleanValueOption | StringValueOption;
 
-export interface EapsFields {
+export interface EapFormFields {
   id: number;
-  eap_number: number;
+  eap_number: string;
   approval_date: string;
   early_actions: EarlyAction[];
-  status: Status[];
+  status: string;
   operational_timeframe: number;
   lead_time: number;
   eap_timeframe: number;
@@ -106,13 +108,13 @@ export interface EapsFields {
   nsc_name: string;
   nsc_title: string;
   nsc_email: string;
-  nsc_phone: number;
+  nsc_phone: string;
   ifrc_focal_name: string;
   ifrc_focal_title: string;
   ifrc_focal_email: string;
   ifrc_focal_phone: string;
-  country: number;
-  district: number;
+  country: string;
+  district: string;
   disaster_type: number;
   references: Reference[];
   partners: KeyPartner[];
@@ -121,7 +123,7 @@ export interface EapsFields {
 }
 
 export interface EapsApiFields extends Omit<
-  EapsFields,
+  EapFormFields,
   'country_district'
   | 'partners'
   | 'references'
@@ -149,7 +151,7 @@ export interface NumericValueOption {
   label: string;
 }
 
-export const overviewFields: (keyof EapsFields)[] = [
+export const overviewFields: (keyof EapFormFields)[] = [
   'country',
   'district',
   'disaster_type',
@@ -172,7 +174,7 @@ export const overviewFields: (keyof EapsFields)[] = [
   'references',
 ];
 
-export const contactFields: (keyof EapsFields)[] = [
+export const contactFields: (keyof EapFormFields)[] = [
   'originator_name',
   'originator_title',
   'originator_email',
@@ -187,7 +189,7 @@ export const contactFields: (keyof EapsFields)[] = [
   'ifrc_focal_phone',
 ];
 
-export const earlyActionFields: (keyof EapsFields)[] = [
+export const earlyActionFields: (keyof EapFormFields)[] = [
   'budget_per_sector',
   'prepositioning_activities',
   'early_actions',

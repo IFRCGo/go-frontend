@@ -21,18 +21,17 @@ import {
 import ListView from '#components/ListView';
 import Heading from '#components/Heading';
 
-import { EapsFields } from './EapApplication/common';
+import { EapFormFields } from './EapApplication/common';
 
 import styles from './styles.module.scss';
 
-type PreparednessValue = PartialForm<EapsFields, 'id'>;
+type PreparednessValue = PartialForm<EapFormFields, 'id'>;
 
 interface PreparednessItemProps {
   preparednessValue: PreparednessValue;
 }
 
 function PreparednessItem(props: PreparednessItemProps) {
-
   const { strings } = useContext(LanguageContext);
   const viewEapDetails = useButtonFeatures({
     variant: 'primary',
@@ -86,16 +85,16 @@ function PreparednessItem(props: PreparednessItemProps) {
   );
 }
 
-function preparednessKeySelector(value: PreparednessValue) {
+function preparednessKeySelector(value: EapFormFields) {
   return value.id;
 }
+
 interface Props {
   preparednessData: PreparednessValue[];
   error: Error<PreparednessValue> | undefined;
 }
 
 function Preparedness(props: Props) {
-
   const { strings } = useContext(LanguageContext);
 
   const {
@@ -104,14 +103,15 @@ function Preparedness(props: Props) {
 
   const error = React.useMemo(
     () => getErrorObject(formError),
-    [formError]
+    [formError],
   );
-  const preparednessRendererParams = (_, datum: PreparednessValue) => ({ preparednessValue: datum });
+
+  const preparednessRendererParams = (_: number, datum: PreparednessValue) => ({ preparednessValue: datum });
 
   const {
     pending: fetchingEapDetails,
     response: eapDetailsResponse,
-  } = useRequest<ListResponse<EapsFields>>({
+  } = useRequest<ListResponse<EapFormFields>>({
     url: `api/v2/eap/`,
   });
 
@@ -128,12 +128,10 @@ function Preparedness(props: Props) {
       heading={strings.countryPreparednessHeading}
       subHeading={strings.countryPreparednessSubHeading}
       actions={(
-        <>
-          <Link
-            to="/country-preparedness/new"
-            {...addPreparedness}
-          />
-        </>
+        <Link
+          to="/country-preparedness/new"
+          {...addPreparedness}
+        />
       )}
     >
       <ListView

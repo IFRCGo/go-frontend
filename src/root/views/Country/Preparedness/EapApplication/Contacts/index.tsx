@@ -11,11 +11,11 @@ import LanguageContext from '#root/languageContext';
 import InputSection from '#components/InputSection';
 import TextInput from '#components/TextInput';
 
-import { EapsFields } from '../common';
+import { EapFormFields } from '../common';
 
 import styles from './styles.module.scss';
 
-type Value = PartialForm<EapsFields>;
+type Value = PartialForm<EapFormFields>;
 interface Props {
   error: Error<Value> | undefined;
   onValueChange: (...entries: EntriesAsList<Value>) => void;
@@ -81,31 +81,31 @@ function Contacts(props: Props) {
       >
         <TextInput
           label="Name"
-          name="ifrc_focal_name"
-          value={value?.ifrc_focal_name}
+          name="nsc_name"
+          value={value?.nsc_name}
           onChange={onValueChange}
-          error={error?.ifrc_focal_name}
+          error={error?.nsc_name}
         />
         <TextInput
           label="Title"
-          name="ifrc_focal_title"
-          value={value?.ifrc_focal_title}
+          name="nsc_title"
+          value={value?.nsc_title}
           onChange={onValueChange}
-          error={error?.ifrc_focal_title}
+          error={error?.nsc_title}
         />
         <TextInput
           label="Email"
-          name="ifrc_focal_email"
-          value={value?.ifrc_focal_email}
+          name="nsc_email"
+          value={value?.nsc_email}
           onChange={onValueChange}
-          error={error?.ifrc_focal_email}
+          error={error?.nsc_email}
         />
         <TextInput
           label="Phone Number"
-          name="ifrc_focal_phone"
-          value={value?.ifrc_focal_phone}
+          name="nsc_phone"
+          value={value?.nsc_phone}
           onChange={onValueChange}
-          error={error?.ifrc_focal_phone}
+          error={error?.nsc_phone}
         />
       </InputSection>
       <InputSection

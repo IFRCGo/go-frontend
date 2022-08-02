@@ -29,7 +29,6 @@ interface Props {
 }
 
 function KeyPartners(props: Props) {
-
   const {
     error: errorFromProps,
     onChange,
@@ -61,17 +60,15 @@ function KeyPartners(props: Props) {
           error={error?.url}
         />
       </div>
-      <div>
-        <Button
-          name={index}
-          className={styles.removeButton}
-          onClick={onRemove}
-          variant="action"
-          disabled={index === 0}
-        >
-          <IoTrash />
-        </Button>
-      </div>
+      <Button
+        name={index}
+        className={styles.removeButton}
+        onClick={onRemove}
+        variant="action"
+        disabled={index === 0}
+      >
+        <IoTrash />
+      </Button>
     </div>
   );
 }

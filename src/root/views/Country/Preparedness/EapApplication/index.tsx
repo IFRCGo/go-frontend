@@ -34,13 +34,13 @@ import {
 } from './common';
 import EapOverview from './EapOverview';
 import Contacts from './Contacts';
-import { EapsFields } from './common';
+import { EapFormFields } from './common';
 import EarlyAction from './EarlyActions';
 import useEapFormOptions, { schema } from './useEapFormOptions';
 
 import styles from './styles.module.scss';
 
-const defaultFormValues: PartialForm<EapsFields> = {
+const defaultFormValues: PartialForm<EapFormFields> = {
   partners: [{
     clientId: randomString(),
   }],
@@ -68,7 +68,7 @@ export function getDefinedValues<T extends Record<string, any>>(o: T): Partial<T
 
 type StepTypes = 'eapOverview' | 'earlyActions' | 'contacts';
 const stepTypesToFieldsMap: {
-  [key in StepTypes]: (keyof EapsFields)[];
+  [key in StepTypes]: (keyof EapFormFields)[];
 } = {
   eapOverview: overviewFields,
   earlyActions: earlyActionFields,
@@ -96,10 +96,9 @@ function EapApplication(props: Props) {
   const {
     value,
     error,
-    setFieldValue: onValueChange,
+    setFieldValue,
     validate,
-    setError: onErrorSet,
-    setValue: onValueSet,
+    setError,
   } = useForm(schema, { value: defaultFormValues });
 
   const {
@@ -113,7 +112,6 @@ function EapApplication(props: Props) {
     sectorsOptions,
     fetchingDistricts,
     districtOptions,
-    disasterCategoryOptions,
   } = useEapFormOptions(value);
 
   const [fileIdToUrlMap, setFileIdToUrlMap] = React.useState<Record<number, string>>({});
@@ -137,7 +135,7 @@ function EapApplication(props: Props) {
       const currentFields = stepTypesToFieldsMap[tabKey];
       const currentFieldsMap = listToMap(currentFields, field => field, field => true);
 
-      const erroredFields = Object.keys(getErrorObject(error) ?? {}) as (keyof EapsFields)[];
+      const erroredFields = Object.keys(getErrorObject(error) ?? {}) as (keyof EapFormFields)[];
       const hasError = erroredFields.some(field => currentFieldsMap[field]);
       tabs[tabKey] = hasError;
     });
@@ -171,7 +169,7 @@ function EapApplication(props: Props) {
       },
       debugMessage,
     }) => {
-      onErrorSet(formErrors);
+      setError(formErrors);
 
       alert.show(
         <p>
@@ -188,7 +186,7 @@ function EapApplication(props: Props) {
       );
     },
   });
-  const validateCurrentTab = React.useCallback((exceptions: (keyof EapsFields)[] = []) => {
+  const validateCurrentTab = React.useCallback((exceptions: (keyof EapFormFields)[] = []) => {
     const validationError = getErrorObject(accumulateErrors(value, schema, value, undefined));
     const currentFields = stepTypesToFieldsMap[currentStep];
     const exceptionsMap = listToMap(exceptions, d => d, d => true);
@@ -201,17 +199,17 @@ function EapApplication(props: Props) {
       currentFields.filter(field => (!exceptionsMap[field] && !!validationError?.[field])),
       field => field,
       field => validationError?.[field]
-    ) as ObjectError<EapsFields>;
+    ) as ObjectError<EapFormFields>;
 
     const newError: typeof error = {
       ...currentTabErrors,
     };
 
-    onErrorSet(newError);
+    setError(newError);
 
     const hasError = Object.keys(currentTabErrors).some(d => !!d);
     return !hasError;
-  }, [value, currentStep, onErrorSet]);
+  }, [value, currentStep, setError]);
 
   const handleTabChange = React.useCallback((newStep: StepTypes) => {
     const isCurrentTabValid = validateCurrentTab(['eap_number']);
@@ -227,14 +225,14 @@ function EapApplication(props: Props) {
     const result = validate();
 
     if (result.errored) {
-      onErrorSet(result.error);
+      setError(result.error);
     } else if (result.value) {
       const body = {
         ...result.value,
       };
       submitRequest(body as EapsApiFields);
     }
-  }, [submitRequest, validate, onErrorSet]);
+  }, [submitRequest, validate, setError]);
 
   const handleSubmitButtonClick = React.useCallback(() => {
 
@@ -278,9 +276,8 @@ function EapApplication(props: Props) {
     || fetchingEapDetails
     || eapSubmitPending;
 
-  const failedToLoadEap = !pending && isDefined(eapId);
+  const failedToLoadEap = !pending && !isDefined(eapId);
 
-  console.log('value', value);
   return (
     <Tabs
       disabled={undefined}
@@ -330,35 +327,31 @@ function EapApplication(props: Props) {
         <TabPanel name="eapOverview">
           <EapOverview
             error={error}
-            onValueChange={onValueChange}
+            onValueChange={setFieldValue}
             value={value}
             fetchingDistricts={fetchingDistricts}
             districtOptions={districtOptions}
             statusOptions={statusOptions}
             disasterTypeOptions={disasterTypeOptions}
-            disasterCategoryOptions={disasterCategoryOptions}
-            onValueSet={onValueSet}
-            fetchingDisasterTypes={fetchingDisasterTypes}
             fetchingCountries={fetchingCountries}
             countryOptions={countryOptions}
-            fetchingEapDetails={fetchingEapDetails}
             fileIdToUrlMap={fileIdToUrlMap}
             setFileIdToUrlMap={setFileIdToUrlMap}
           />
         </TabPanel>
         <TabPanel name="earlyActions">
           <EarlyAction
-            error={error}
             earlyActionIndicatorOptions={earlyActionIndicatorsOptions}
+            error={error}
+            onValueChange={setFieldValue}
             sectorsOptions={sectorsOptions}
-            onValueChange={onValueChange}
             value={value}
           />
         </TabPanel>
         <TabPanel name="contacts">
           <Contacts
             error={error}
-            onValueChange={onValueChange}
+            onValueChange={setFieldValue}
             value={value}
           />
         </TabPanel>

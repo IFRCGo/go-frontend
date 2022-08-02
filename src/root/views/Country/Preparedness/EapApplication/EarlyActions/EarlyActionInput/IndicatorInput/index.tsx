@@ -26,7 +26,7 @@ const defaultIndicatorsValue: PartialForm<Indicator> = {
   clientId: randomString(),
 };
 
-interface Props {
+export interface Props {
   value: Value;
   error: ArrayError<Indicator> | undefined;
   onChange: (value: SetValueArg<PartialForm<Indicator>>, index: number) => void;
@@ -70,17 +70,15 @@ function Indicators(props: Props) {
           error={error?.indicator_value}
         />
       </div>
-      <div>
-        <Button
-          name={index}
-          className={styles.removeButton}
-          onClick={onRemove}
-          variant="action"
-          disabled={index === 0}
-        >
-          <IoTrash />
-        </Button>
-      </div>
+      <Button
+        name={index}
+        className={styles.removeButton}
+        onClick={onRemove}
+        variant="action"
+        disabled={index === 0}
+      >
+        <IoTrash />
+      </Button>
     </div>
   );
 }

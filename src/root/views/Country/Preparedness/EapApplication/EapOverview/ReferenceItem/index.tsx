@@ -29,7 +29,6 @@ interface Props {
 }
 
 function ReferencesItem(props: Props) {
-
   const {
     error: errorFromProps,
     onChange,
@@ -61,16 +60,14 @@ function ReferencesItem(props: Props) {
           error={error?.url}
         />
       </div>
-      <div>
-        <Button
-          name={index}
-          onClick={onRemove}
-          variant="action"
-          disabled={index === 0}
-        >
-          <IoTrash />
-        </Button>
-      </div>
+      <Button
+        name={index}
+        onClick={onRemove}
+        variant="action"
+        disabled={index === 0}
+      >
+        <IoTrash />
+      </Button>
     </div>
   );
 }
