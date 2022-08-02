@@ -126,9 +126,9 @@ function RiskTable(props: Props) {
       createStringColumn<RiskData, string | number>(
         'informRiskScore',
         <div className={styles.columnHeading}>
-          Inform Risk Score
+          INFORM Risk Score
           <InfoPopup
-            title="Inform Risk Score"
+            title="INFORM Risk Score"
             description={(
               <>
                 <p>

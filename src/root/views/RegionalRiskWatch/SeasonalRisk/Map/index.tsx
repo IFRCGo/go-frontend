@@ -453,7 +453,7 @@ function SeasonalRiskMap(props: Props) {
       <Container
         className={_cs(styles.seasonalRiskMap, className)}
         heading="Risk map"
-        description="The map and table below display available information about specific disaster risks for for each month per country. When you move the slider from month to month, the information in the map  will update automatically. Hold Shift to select a range of month."
+        description={`The map and table below display available information about specific disaster risks for each month per country. When you move the slider from month to month, the information in the map will update automatically. Hold Shift to select a range of months -- this will display the cumulative number of people exposed and at risk of displacement. Selecting "Yearly Avg" will display the annual figures from INFORM and the total number of people exposed and at risk of being displaced per country per year.`}
         contentClassName={styles.mapSection}
       >
         <div className={styles.filters}>

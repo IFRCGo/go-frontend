@@ -57,7 +57,7 @@ import styles from './styles.module.scss';
 
 const severityFillColorPaint = [
   'match',
-  ['get', 'severity'],
+  ['get', 'hazardSeverity'],
   'warning',
   COLOR_RED,
   'watch',
@@ -141,6 +141,7 @@ function PDCExposureMap(props: Props) {
             hazardId: hazard.id,
             hazardUuid: hazard.pdc_details.uuid,
             hazardType: hazard.hazard_type,
+            hazardSeverity: hazard.pdc_details.severity,
           },
         };
       }),
@@ -156,7 +157,7 @@ function PDCExposureMap(props: Props) {
         ...d.pdc_details.footprint_geojson as NonNullable<typeof d.pdc_details.footprint_geojson>,
         properties: {
           hazardUuid: d.pdc_details.uuid,
-          severity: d.pdc_details.severity,
+          hazardSeverity: d.pdc_details.severity,
         },
       }));
 
@@ -505,7 +506,20 @@ function PDCExposureMap(props: Props) {
             layerKey="hazard-points-circle"
             layerOptions={{
               type: 'circle',
-              paint: pointCirclePaint,
+              paint: {
+                ...pointCirclePaint,
+                'circle-color': [
+                  ...severityFillColorPaint,
+                ],
+                'circle-opacity': [
+                  'case',
+                  ['boolean', ['feature-state', 'active'], false],
+                  0.8,
+                  ['boolean', ['feature-state', 'hovered'], false],
+                  0.6,
+                  0.5,
+                ],
+              },
             }}
           />
           <MapLayer

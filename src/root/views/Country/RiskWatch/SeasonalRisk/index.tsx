@@ -279,7 +279,7 @@ function SeasonalRisk(props: Props) {
         className={styles.riskTableContainer}
         heading="Risks by Month"
         sub
-        description="This table displays available information about specific disaster risks for for each month. When you move the slider from month to month, the information in the table will update automatically. Hold Shift to select a range of month."
+        description={`The table below displays available information about specific disaster risks for each month. When you move the slider from month to month, the information will update automatically. Hold Shift to select a range of months -- this will display the cumulative number of people exposed and at risk of displacement. Selecting "Yearly Avg" will display the annual figures from INFORM and the total number of people exposed and at risk of being displaced per country per year.`}
         descriptionClassName={styles.tableDescription}
         contentClassName={styles.content}
       >

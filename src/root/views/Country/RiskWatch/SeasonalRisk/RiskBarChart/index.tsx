@@ -113,6 +113,10 @@ function DetailedChart(props: DetailedChartProps) {
         || ((estimationPriorityMap[a.estimation_type] ?? 0) - (estimationPriorityMap[b.estimation_type] ?? 0))
     );
 
+    const latestAnalysisDate = [...ipcData].sort(
+      (a, b) => (new Date(b.analysis_date ?? 0)).getTime() - (new Date(a.analysis_date ?? 0)).getTime(),
+    )[0].analysis_date;
+
     const months = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12] as const;
     const groupedData = mapToMap(
       listToGroupList(sortedData, d => d.month),
@@ -122,15 +126,17 @@ function DetailedChart(props: DetailedChartProps) {
       (data) => unique(data, d => d.year),
     );
 
-    const now = new Date();
-    const currentYear = now.getFullYear();
-    const currentMonth = now.getMonth() + 1;
-
     return months.map((m) => {
-      const historicData = (groupedData[m] ?? []).filter(d => d.year < currentYear || (d.year === currentYear && d.month <= currentMonth));
-      const prediction = (groupedData[m] ?? []).filter(d => d.year > currentYear || (d.year === currentYear && d.month > currentMonth))[0]?.total_displacement;
-      const disaggregationByYear = listToMap(
+      const historicData = (groupedData[m] ?? []).filter(d => d.estimation_type === 'current');
+      const prediction = (groupedData[m] ?? []).filter(d => d.analysis_date === latestAnalysisDate && d.estimation_type !== 'current');
+      const yearDisaggregatedHistoricData = listToMap(
         historicData.map(d => ({ [d.year]: d.total_displacement })),
+        d => Object.keys(d)[0],
+        d => Object.values(d)[0],
+      );
+
+      const yearDisaggregatedPrediction = listToMap(
+        prediction.map(d => ({ [`prediction-${d.year}`]: d.total_displacement })),
         d => Object.keys(d)[0],
         d => Object.values(d)[0],
       );
@@ -138,12 +144,36 @@ function DetailedChart(props: DetailedChartProps) {
       return {
         month: m,
         average: avgSafe(historicData.map(d => d.total_displacement)),
-        prediction,
-        ...disaggregationByYear,
+        ...yearDisaggregatedHistoricData,
+        ...yearDisaggregatedPrediction,
       };
     });
   }, [ipcData]);
 
+  const [activeLine, setActiveLine] = React.useState<string | undefined>();
+
+  const getLine = (
+    dataKey: string,
+    stroke: string,
+    label = dataKey,
+    inactiveStroke = '#ecf0f5',
+    strokeWidth = 2,
+  ) => (
+    <Line
+        type="monotone"
+        dataKey={dataKey}
+        stroke={(isDefined(activeLine) && activeLine !== dataKey) ? inactiveStroke : stroke}
+        strokeWidth={strokeWidth}
+        name={label}
+        onMouseOver={() => { setActiveLine(dataKey); }}
+        onMouseOut={() => { setActiveLine(undefined); }}
+        dot={{
+          r: strokeWidth + 2,
+          onMouseOver: () => { setActiveLine(dataKey); },
+          onMouseOut: () => { setActiveLine(undefined); },
+        }}
+    />
+  );
 
   return (
     <ResponsiveContainer>
@@ -181,16 +211,28 @@ function DetailedChart(props: DetailedChartProps) {
         />
         {showHistoricalValues && (
           <>
-            <Line type="monotone" dataKey="2017" stroke="#a2a5b4" strokeWidth={1} />
-            <Line type="monotone" dataKey="2018" stroke="#82879c" strokeWidth={1} />
-            <Line type="monotone" dataKey="2019" stroke="#646b84" strokeWidth={1} />
-            <Line type="monotone" dataKey="2020" stroke="#464f6d" strokeWidth={1} />
-            <Line type="monotone" dataKey="2021" stroke="#273657" strokeWidth={1} />
+            {getLine('2017', '#a2a5b4')}
+            {getLine('2018', '#82879c')}
+            {getLine('2019', '#646b84')}
+            {getLine('2020', '#464f6d')}
+            {getLine('2021', '#273657')}
+            {getLine('2022', '#101637')}
           </>
         )}
-        <Line type="monotone" dataKey="average" stroke="#011e41" strokeWidth={3} name="Average" />
-        <Line type="monotone" dataKey="prediction" stroke="#f04355" strokeWidth={2} name="Prediction" />
+
+        {getLine('average', '#011e41', 'Average', undefined, 4)}
+
+        {getLine('prediction-2017', '#f04355', 'Prediction (2017)', '#ffdfe7')}
+        {getLine('prediction-2018', '#f04355', 'Prediction (2018)', '#ffdfe7')}
+        {getLine('prediction-2019', '#f04355', 'Prediction (2019)', '#ffdfe7')}
+        {getLine('prediction-2020', '#f04355', 'Prediction (2020)', '#ffdfe7')}
+        {getLine('prediction-2021', '#f04355', 'Prediction (2021)', '#ffdfe7')}
+        {getLine('prediction-2022', '#f04355', 'Prediction (2022)', '#ffdfe7')}
+        {getLine('prediction-2023', '#f04355', 'Prediction (2023)', '#ffdfe7')}
+
         <Tooltip
+          cursorStyle={{ pointerEvents: 'none' }}
+          cursor={false}
           filterNull
           isAnimationActive={false}
           formatter={(value: string | number, label: string) => {
@@ -424,6 +466,7 @@ function RiskBarChart(props: Props) {
                     <FILegendItem color="#646b84" label="2019" />
                     <FILegendItem color="#464f6d" label="2020" />
                     <FILegendItem color="#273657" label="2021" />
+                    <FILegendItem color="#101637" label="2022" />
                   </>
                 )}
               </div>
