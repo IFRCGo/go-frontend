@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import {
   Page as PDFPage,
   Text,
@@ -74,12 +74,12 @@ function NationalSocietyActions(props: NationalSocietyActionsProps) {
   );
 }
 
-interface ContactionSectionProps {
+interface ContactSectionProps {
   title: string;
   contacts: string[];
 }
 
-function ContactSection(props: ContactionSectionProps) {
+function ContactSection(props: ContactSectionProps) {
   const {
     title,
     contacts,
@@ -111,7 +111,7 @@ interface NeedIdentifiedProps {
 function NeedIdentified(props: NeedIdentifiedProps) {
   const {
     data,
-    niMap = {},
+    niMap,
   } = props;
 
   return (
@@ -126,7 +126,7 @@ function NeedIdentified(props: NeedIdentifiedProps) {
       </View>
       <View style={pdfStyles.niHeaderCell}>
         <Text>
-          {niMap[data.title]}
+          {niMap?.[data.title]}
         </Text>
       </View>
       <View style={pdfStyles.niContentCell}>
@@ -147,7 +147,7 @@ interface PlannedInterventionProps {
 function PlannedInterventionOutput(props: PlannedInterventionProps) {
   const {
     data,
-    piMap = {},
+    piMap,
     strings,
   } = props;
 
@@ -163,7 +163,7 @@ function PlannedInterventionOutput(props: PlannedInterventionProps) {
           )}
         </View>
         <Text style={pdfStyles.piHeaderCell}>
-          {piMap[data.title]}
+          {piMap?.[data.title]}
         </Text>
         <View style={[pdfStyles.piContentCell, { flexDirection: 'column' }]}>
           <View style={pdfStyles.piSubRow}>
@@ -204,12 +204,12 @@ function PlannedInterventionOutput(props: PlannedInterventionProps) {
           >
             <View style={pdfStyles.piContentCell}>
               <Text style={pdfStyles.piBorderCell}>
-                {el?.title}
+                {el.title}
               </Text>
             </View>
             <View style={pdfStyles.piContentCell}>
               <Text style={pdfStyles.piBorderCell}>
-                {el?.target}
+                {el.target}
               </Text>
             </View>
           </View>
@@ -317,6 +317,8 @@ interface Props {
   strings: Strings;
 }
 
+const logoUrl = '/assets/graphics/layout/go-logo-2020.png';
+
 function DrefPdfDocument(props: Props) {
   const {
     dref,
@@ -324,17 +326,13 @@ function DrefPdfDocument(props: Props) {
     strings,
   } = props;
 
-  const getMaps = useCallback(() => {
-    return [
-      listToMap(drefOptions.planned_interventions, d => d.key, d => d.value),
-      listToMap(drefOptions.needs_identified, d => d.key, d => d.value),
-      listToMap(drefOptions.national_society_actions, d => d.key, d => d.value),
-    ];
-  }, [drefOptions]);
-  const [
-    piMap,
-    niMap,
-  ] = getMaps();
+  const piMap = useMemo(() =>
+    listToMap(drefOptions.planned_interventions, d => d.key, d => d.value)
+    , [drefOptions.planned_interventions]);
+
+  const niMap = useMemo(() =>
+    listToMap(drefOptions.needs_identified, d => d.key, d => d.value)
+    , [drefOptions.needs_identified]);
 
   const affectedAreas = useMemo(() => {
     let areas = '';
@@ -342,7 +340,6 @@ function DrefPdfDocument(props: Props) {
     return areas += districts.join(', ');
   }, [dref.district_details]);
 
-  const logoUrl = '/assets/graphics/layout/go-logo-2020.png';
 
   const isImminentOnset = dref?.disaster_type === ONSET_IMMINENT;
   const documentTitle = useMemo(() => (
@@ -409,12 +406,20 @@ function DrefPdfDocument(props: Props) {
                   <View style={pdfStyles.compactSection}>
                     <TextOutput
                       label={strings.drefExportPeopleAffected}
-                      value={isDefined(dref.num_affected) ? resolveToString(strings.drefExportNumPeople, { num: formatNumber(dref.num_affected) }) : ''}
+                      value={
+                        isDefined(dref.num_affected) ?
+                          resolveToString(strings.drefExportNumPeople, { num: formatNumber(dref.num_affected) })
+                          : ''
+                      }
                       columns="1/2"
                     />
                     <TextOutput
                       label={strings.drefExportPeopleAssisted}
-                      value={isDefined(dref.num_assisted) ? resolveToString(strings.drefExportNumPeople, { num: formatNumber(dref.num_assisted) }) : ''}
+                      value={
+                        isDefined(dref.num_assisted) ?
+                          resolveToString(strings.drefExportNumPeople, { num: formatNumber(dref.num_assisted) })
+                          : ''
+                      }
                       columns="1/2"
                     />
                   </View>
@@ -434,7 +439,11 @@ function DrefPdfDocument(props: Props) {
                       />
                       <TextOutput
                         label={strings.drefExportOperationTimeframe}
-                        value={isDefined(dref.operation_timeframe) ? resolveToString(strings.drefExportNumMonth, { num: dref.operation_timeframe }) : ''}
+                        value={
+                          isDefined(dref.operation_timeframe) ?
+                            resolveToString(strings.drefExportNumMonth, { num: dref.operation_timeframe })
+                            : ''
+                        }
                         columns="1/2"
                       />
                     </View>
@@ -461,14 +470,14 @@ function DrefPdfDocument(props: Props) {
               <Text style={pdfStyles.sectionHeading}>
                 {strings.drefFormDescriptionEvent}
               </Text>
-              {dref?.images_details?.map((el) => (
+              {dref.images_details?.map((el) => (
                 <View
                   key={el?.id}
                   style={pdfStyles.subSection}
                 >
                   <PDFImage
                     style={pdfStyles.mapImage}
-                    src={el?.file}
+                    src={el.file}
                   />
                 </View>
               ))}
@@ -556,14 +565,6 @@ function DrefPdfDocument(props: Props) {
                 <Text>{dref.ns_request_text ?? '-'}</Text>
               </View>
             </View>
-            {/*<View style={pdfStyles.row}>
-              <View style={pdfStyles.cellTitle}>
-                <Text> {strings.drefExportRecurrentText}</Text>
-              </View>
-              <View style={pdfStyles.strongCell}>
-                <Text>{dref.dref_recurrent_text}</Text>
-              </View>
-            </View>*/}
             <View style={pdfStyles.row}>
               <View style={pdfStyles.cellTitle}>
                 <Text>{strings.drefFormLessonsLearnedTitle}</Text>
@@ -584,7 +585,7 @@ function DrefPdfDocument(props: Props) {
             <Text style={pdfStyles.sectionHeading}>
               {strings.drefFormNationalSocietiesActions}
             </Text>
-            {dref.national_society_actions.map((nsa) => (
+            {dref?.national_society_actions.map((nsa) => (
               <NationalSocietyActions
                 key={nsa.id}
                 data={nsa}
@@ -862,7 +863,7 @@ function DrefPdfDocument(props: Props) {
                   </Text>
                 </View>
               )}
-              {dref.surge_personnel_deployed && (
+              {dref?.surge_personnel_deployed && (
                 <View style={pdfStyles.qna}>
                   <Text style={pdfStyles.textLabelSection}>
                     {strings.drefFormSurgePersonnelDeployed}
@@ -872,7 +873,7 @@ function DrefPdfDocument(props: Props) {
                   </Text>
                 </View>
               )}
-              {dref.logistic_capacity_of_ns && (
+              {dref?.logistic_capacity_of_ns && (
                 <View style={pdfStyles.qna}>
                   <Text style={pdfStyles.textLabelSection}>
                     {strings.drefFormLogisticCapacityOfNs}
@@ -882,7 +883,7 @@ function DrefPdfDocument(props: Props) {
                   </Text>
                 </View>
               )}
-              {dref.pmer && (
+              {dref?.pmer && (
                 <View style={pdfStyles.qna}>
                   <Text style={pdfStyles.textLabelSection}>
                     {strings.drefFormPmerDescription}
@@ -892,7 +893,7 @@ function DrefPdfDocument(props: Props) {
                   </Text>
                 </View>
               )}
-              {dref.communication && (
+              {dref?.communication && (
                 <View style={pdfStyles.qna}>
                   <Text style={pdfStyles.textLabelSection}>
                     {strings.drefFormCommunicationDescripiton}
@@ -926,7 +927,7 @@ function DrefPdfDocument(props: Props) {
             </Text>
             <View style={pdfStyles.subSection}>
               <Link src={resolveUrl(window.location.origin, dref?.budget_file_details?.file)}>
-                {dref?.budget_file_details?.file}
+                {dref.budget_file_details?.file}
               </Link>
             </View>
           </View>
