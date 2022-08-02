@@ -6,9 +6,8 @@ import {
   View,
   Document,
   Image as PDFImage,
-  Font,
 } from '@react-pdf/renderer';
-import { listToMap } from '@togglecorp/fujs';
+import { isTruthyString, listToMap } from '@togglecorp/fujs';
 
 import {
   formatBoolean,
@@ -26,45 +25,26 @@ import { resolveUrl } from '#utils/resolveUrl';
 import { DrefFinalReportApiFields } from '#views/FinalReportForm/common';
 import { PdfTextOutput } from '#components/PdfTextOutput';
 
-import montserratFont from './resources/montserrat.bold.ttf';
-import opensansFont from './resources/open-sans.regular.ttf';
-import opensansBoldFont from './resources/open-sans.bold.ttf';
 import pdfStyles from 'src/styles/pdf/pdfStyles';
 
-Font.register({
-  family: 'Montserrat',
-  src: montserratFont,
-  fontWeight: 'bold',
-});
-
-Font.register({
-  family: 'OpenSans',
-  src: opensansFont,
-  fontWeight: 'medium',
-});
-
-Font.register({
-  family: 'OpenSans',
-  src: opensansBoldFont,
-  fontWeight: 'bold',
-});
-
-interface ContactionSectionProps {
+interface ContactSectionProps {
   title: string;
   contacts: string[];
 }
 
-function ContactSection(props: ContactionSectionProps) {
+function ContactSection(props: ContactSectionProps) {
   const {
     title,
     contacts,
   } = props;
 
-  const outputString = contacts.filter(d => !!d).join(', ');
+  const outputString = contacts.filter(isTruthyString).join(', ');
 
   if (!outputString) {
     return null;
   }
+
+  console.log({ outputString });
 
   return (
     <View style={pdfStyles.ciRow} wrap={false}>
