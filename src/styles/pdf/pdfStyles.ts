@@ -1,9 +1,12 @@
-import { Font, StyleSheet } from '@react-pdf/renderer';
+import {
+  Font,
+  StyleSheet,
+} from '@react-pdf/renderer';
 
 import montserratFont from '#root/resources/montserrat.bold.ttf';
 import openSansFont from '#root/resources/open-sans.regular.ttf';
 import openSansBoldFont from '#root/resources/open-sans.bold.ttf';
-import * as styles from 'src/styles/pdf/PdfVariables';
+import * as styles from './pdfVariables';
 
 Font.register({
   family: 'Montserrat',

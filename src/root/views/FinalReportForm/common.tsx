@@ -94,7 +94,6 @@ export interface DrefFinalReportFields {
   disaster_type: number;
   disaster_category: number;
   type_of_onset: number;
-  country_district: CountryDistrict[];
   number_of_people_affected: number;
   number_of_people_targeted: number;
   total_dref_allocation: number;
@@ -161,18 +160,16 @@ export interface DrefFinalReportFields {
   modified_by: number;
   users: number[];
   dref?: string;
-
   budget_file: number;
+  country: number;
+  district: number[];
+  country_details: Country;
 }
 
 
-export interface DrefFinalReportApiFields extends Omit<DrefFinalReportFields, 'country_district' | 'planned_interventions' | 'national_society_actions' | 'needs_identified'> {
+export interface DrefFinalReportApiFields extends Omit<DrefFinalReportFields, 'district_details' | 'planned_interventions' | 'national_society_actions' | 'needs_identified'> {
   user: number;
-  country_district: (Omit<CountryDistrict, 'clientId'> & {
-    id: number
-    country_details: Country,
-    district_details: DistrictMini[],
-  })[];
+  district_details: DistrictMini[];
   planned_interventions: (Omit<Intervention, 'clientId' | 'indicators'> & {
     id: number,
     image_url: string,
@@ -206,13 +203,14 @@ export const overviewFields: (keyof DrefFinalReportFields)[] = [
   'disaster_type',
   'disaster_category',
   'type_of_onset',
-  'country_district',
   'number_of_people_affected',
   'number_of_people_targeted',
   'total_dref_allocation',
   'date_of_publication',
   'operation_start_date',
   'total_operation_timeframe',
+  'country',
+  'district'
 ];
 export const eventFields: (keyof DrefFinalReportFields)[] = [
   'photos',
