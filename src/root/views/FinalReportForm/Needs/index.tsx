@@ -69,11 +69,10 @@ function Needs(props: Props) {
   );
 
   type Needs = typeof value.needs_identified;
-  const handleNeedAddButtonClick = useCallback((title?: string) => {
+  const handleNeedAddButtonClick = useCallback(() => {
     const clientId = randomString();
     const newNeedItem: PartialForm<Need> = {
       clientId,
-      title,
     };
 
     onValueChange(

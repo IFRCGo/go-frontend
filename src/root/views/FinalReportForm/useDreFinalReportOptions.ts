@@ -1,5 +1,4 @@
 import React from 'react';
-import { isNotDefined } from '@togglecorp/fujs';
 import {
   ArraySchema,
   emailCondition,
@@ -35,12 +34,6 @@ import {
 export type FormSchema = ObjectSchema<PartialForm<DrefFinalReportFields>>;
 export type FormSchemaFields = ReturnType<FormSchema['fields']>;
 
-export type CountryDistrictType = NonNullable<NonNullable<DrefFinalReportFields['country_district']>>[number];
-export type CountryDistrictSchema = ObjectSchema<PartialForm<CountryDistrictType>>;
-export type CountryDistrictSchemaFields = ReturnType<CountryDistrictSchema['fields']>;
-export type CountryDistrictsSchema = ArraySchema<PartialForm<CountryDistrictType>>;
-export type CountryDistrictsSchemaMember = ReturnType<CountryDistrictsSchema['member']>;
-
 export type NeedType = NonNullable<NonNullable<DrefFinalReportFields['needs_identified']>>[number];
 export type NeedSchema = ObjectSchema<PartialForm<NeedType>>;
 export type NeedSchemaFields = ReturnType<NeedSchema['fields']>;
@@ -69,29 +62,6 @@ export const schema: FormSchema = {
     disaster_type: [],
     disaster_category: [],
     type_of_onset: [],
-    country_district: {
-      keySelector: (c) => c.clientId as string,
-      member: (): CountryDistrictsSchemaMember => ({
-        fields: (): CountryDistrictSchemaFields => ({
-          clientId: [],
-          country: [requiredCondition, (value, allValues) => {
-            if (isNotDefined(value)) {
-              return undefined;
-            }
-            const countriesWithCurrentId = (allValues as unknown as DrefFinalReportFields)?.country_district?.filter(
-              d => d.country === value
-            );
-
-            if (countriesWithCurrentId.length > 1) {
-              return 'Duplicate countries not allowed';
-            }
-
-            return undefined;
-          }],
-          district: [requiredCondition],
-        }),
-      }),
-    },
     date_of_publication: [],
 
     number_of_people_affected: [positiveIntegerCondition],
@@ -147,6 +117,8 @@ export const schema: FormSchema = {
     additional_national_society_actions: [],
     want_to_report: [],
     event_map: [],
+    country: [requiredCondition],
+    district: [requiredCondition],
 
     needs_identified: {
       keySelector: (n) => n.clientId as string,
@@ -286,20 +258,20 @@ function useDrefFinalReportFormOptions(value: PartialForm<DrefFinalReportFields>
     }
 
     const ns: NumericValueOption[] = countriesResponse.results
-      .filter(country => country.independent && country.society_name)
+      .filter(cd => cd.independent && cd.society_name)
       .map(ns => ({
         value: ns.id,
         label: ns.society_name,
       })).sort(compareString);
 
-    const c: NumericValueOption[] = countriesResponse.results
-      .filter(country => country.independent && country.iso)
-      .map(country => ({
-        value: country.id,
-        label: country.name,
+    const country: NumericValueOption[] = countriesResponse.results
+      .filter(cd => cd.independent && cd.iso)
+      .map(c => ({
+        value: c.id,
+        label: c.name,
       })).sort(compareString);
 
-    return [ns, c] as const;
+    return [ns, country] as const;
   }, [countriesResponse]);
 
   const {
