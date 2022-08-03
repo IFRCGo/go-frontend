@@ -77,9 +77,8 @@ function InterventionInput(props: Props) {
 
   type Indicators = typeof value.indicators;
   const handleIndicatorAddButtonClick = useCallback(() => {
-    const clientId = randomString();
     const newIndicatorItem: PartialForm<IndicatorType> = {
-      clientId,
+      clientId: randomString(),
     };
 
     onFieldChange(

@@ -86,9 +86,8 @@ function Operation(props: Props) {
 
   type Interventions = typeof value.planned_interventions;
   const handleInterventionAddButtonClick = useCallback(() => {
-    const clientId = randomString();
     const newInterventionItem: PartialForm<InterventionType> = {
-      clientId,
+      clientId: randomString(),
     };
 
     onValueChange(
