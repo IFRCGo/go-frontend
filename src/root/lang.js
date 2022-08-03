@@ -3684,7 +3684,7 @@ export default {
   finalReportChangeToOperationStrategy: 'Has there been any changes to the operation strategy',
   finalReportChangeToOperationStrategyExplain: 'Explain',
   finalReportTargetedPopulation: 'Target Population',
-  finalReportWomen: "Women",
+  finalReportWomen: 'Women',
   finalReportGirls: 'Girls (under 18)',
   finalReportMen: 'Men',
   finalReportBoys: 'Boys (under 18)',
