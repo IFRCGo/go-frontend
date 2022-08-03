@@ -52,6 +52,7 @@ import { countriesSelector, disasterTypesSelectSelector } from '#selectors';
 
 import App from './app';
 import store from '#utils/store';
+import RichTextOutput from "#components/RichTextOutput";
 
 const currentLanguage = store.getState().lang.current;
 
@@ -650,7 +651,11 @@ class Account extends React.Component {
                           </div>
                         </div>
                       </div>
-                      <p>{o.description}</p>
+                      { o?.description
+                          ? <RichTextOutput
+                              className='rich-text-section'
+                              value={get(o, 'description', false)}
+                          /> : null }
                     </li>
                   ))}
                 </ul>
