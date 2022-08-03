@@ -3658,7 +3658,7 @@ export default {
   eapsFormUrlTitle: 'URL',
   eapsFormReferencesDescription: 'Enter key information sources used for the trigger development and the risk and vulnerability analysis.',
   eapsFormReferncesPlaceholder: 'Enter source name',
-  eapsFormAddReferncesLabel: 'Add',
+  eapsFormAddReferncesLabel: 'Add Reference',
   eapsFormContacts: 'Contacts',
   eapsFormOriginator: 'Originator',
   eapsFormOriginatorDescription: 'NS or IFRC Staff completing the EAP Summary',

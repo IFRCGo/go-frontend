@@ -52,6 +52,7 @@ function PreparednessItem(props: PreparednessItemProps) {
             {...viewEapDetails}
           />
         </div>
+        {/* Todo */}
         <div>
           Last Updated: oct 1.2018
         </div>

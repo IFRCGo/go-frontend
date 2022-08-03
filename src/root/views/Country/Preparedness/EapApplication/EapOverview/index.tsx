@@ -121,7 +121,7 @@ function EapOverview(props: Props) {
     );
     setReference(undefined);
   }, [onValueChange, setReference]);
-  
+
   return (
     <>
       <Container
@@ -387,6 +387,7 @@ function EapOverview(props: Props) {
               ))}
               <div className={styles.addKeyButton}>
                 <Button
+                  className={styles.addKeyButton}
                   name={reference}
                   onClick={handleReferenceAddButtonClick}
                   variant="secondary"

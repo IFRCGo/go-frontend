@@ -260,7 +260,6 @@ function EapApplication(props: Props) {
   const handleBackButtonClick = React.useCallback(() => {
     if (currentStep !== 'eapOverview') {
       const prevStepMap: {
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         [key in Exclude<StepTypes, 'eapOverview'>]: Exclude<StepTypes, 'contacts'>;
       } = {
         earlyActions: 'eapOverview',

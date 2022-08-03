@@ -9,19 +9,21 @@ import {
 import { randomString } from '@togglecorp/fujs';
 
 import Button from '#components/Button';
-import TextInput from '#components/TextInput';
-import { SetValueArg } from '#utils/common';
+import TextArea from '#components/TextArea';
 
 import { Action } from '../../../common';
 
 import styles from './styles.module.scss';
 
+type Value = PartialForm<Action>;
+
+type SetValueArg<T> = T | ((value: T) => T);
 const defaultActionValue: PartialForm<Action> = {
   clientId: randomString(),
 };
 
-interface Props {
-  value: PartialForm<Action>;
+export interface Props {
+  value: Value;
   error: ArrayError<Action> | undefined;
   onChange: (value: SetValueArg<PartialForm<Action>>, index: number) => void;
   onRemove: (index: number) => void;
@@ -44,12 +46,12 @@ function Actions(props: Props) {
 
   return (
     <div className={styles.inputs}>
-      <TextInput
+      <TextArea
         label="Early Actions"
-        name="early_action"
-        value={value}
+        name="early_act"
+        value={value?.early_act}
         onChange={onFieldChange}
-        error={error?.early_action}
+        error={error?.early_act}
       />
       <Button
         name={index}

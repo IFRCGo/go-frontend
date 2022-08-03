@@ -29,7 +29,7 @@ export interface Status {
   value: string;
 }
 
-export interface Sectors {
+export interface Sector {
   clientId: string;
   key: string;
   value: string;
@@ -62,7 +62,6 @@ export interface Reference {
 export interface Action {
   clientId: string;
   early_act: string;
-  early_action: string;
 }
 
 export interface EarlyAction {
@@ -104,15 +103,15 @@ export interface EapFormFields {
   originator_name: string;
   originator_title: string;
   originator_email: string;
-  originator_phone: string;
+  originator_phone: number;
   nsc_name: string;
   nsc_title: string;
   nsc_email: string;
-  nsc_phone: string;
+  nsc_phone: number;
   ifrc_focal_name: string;
   ifrc_focal_title: string;
   ifrc_focal_email: string;
-  ifrc_focal_phone: string;
+  ifrc_focal_phone: number;
   country: string;
   district: string;
   disaster_type: number;

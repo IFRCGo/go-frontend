@@ -7,7 +7,6 @@ import {
 import {
   PartialForm,
   Error,
-  EntriesAsList,
   getErrorObject,
   useFormArray,
   useFormObject,
@@ -18,25 +17,22 @@ import Container from '#components/Container';
 import InputSection from '#components/InputSection';
 import NumberInput from '#components/NumberInput';
 import Button from '#components/Button';
-import BulletTextArea from '#components/BulletTextArea';
-import { ListResponse, useRequest } from '#utils/restRequest';
 import ListView from '#components/ListView';
 import { SetValueArg } from '#utils/common';
+import BulletTextArea from '#components/BulletTextArea';
 
-import IndicatorInput, {Props as IndicatorInputProps} from './IndicatorInput';
-import Actions from './Actions';
-
+import ActionInput, { Props as ActionInputProps } from './ActionInput';
+import RisksInput, { Props as RisksInputProps } from './RisksInput';
+import IndicatorInput, { Props as IndicatorInputProps } from './IndicatorInput';
 import {
   Action,
   Indicator,
   StringValueOption,
   EarlyAction,
-  EapFormFields,
   Risk,
 } from '../../common';
 
 import styles from './styles.module.scss';
-import Risks from './Risks';
 
 type Value = PartialForm<EarlyAction>;
 
@@ -49,16 +45,16 @@ const defaultEarlyActionValue: Value = {
 };
 
 function riskKeySelector(value: RiskValue) {
-  return value.clientId;
+  return value.clientId as string;
 }
-function actionKeySelector(value: EapFormFields) {
-  return value.id;
+function actionKeySelector(value: ActionValue) {
+  return value.clientId as string;
 }
 function indicatorKeySelector(value: IndicatorValue) {
   return value.clientId as string;
 }
 
-interface Props {
+export interface Props {
   error: Error<Value> | undefined;
   index: number;
   onRemove: (index: number) => void;
@@ -86,9 +82,8 @@ function EarlyActionInput(props: Props) {
   const onFieldChange = useFormObject(index, onValueChange, defaultEarlyActionValue);
 
   const handleIndicatorAddButtonClick = React.useCallback(() => {
-    const clientId = randomString();
     const newList: IndicatorValue = {
-      clientId,
+      clientId: randomString(),
     };
 
     onFieldChange(
@@ -107,40 +102,48 @@ function EarlyActionInput(props: Props) {
     onFieldChange,
   );
 
-  // type RiskItem = typeof riskValue.risks;
+  const handleRiskAddButtonClick = React.useCallback(() => {
+    const newList: RiskValue = {
+      clientId: randomString(),
+    };
 
-  // const handleRiskAddButtonClick = React.useCallback(() => {
-  //   const clientId = randomString();
-  //   const newList: PartialForm<Risk> = {
-  //     clientId,
-  //   };
+    onFieldChange(
+      (oldValue: RiskValue[] | undefined) => (
+        [...(oldValue ?? []), newList]
+      ),
+      'prioritized_risks' as const,
+    );
+  }, [onFieldChange]);
 
-  //   onValueChange(
-  //     (oldValue: PartialForm<RiskItem>) => (
-  //       [...(oldValue ?? []), newList]
-  //     ),
-  //     'risks' as const,
-  //   );
-  // }, [onValueChange]);
+  const {
+    setValue: setRiskValue,
+    removeValue: removeRiskValue,
+  } = useFormArray<'prioritized_risks', RiskValue>(
+    'prioritized_risks',
+    onFieldChange,
+  );
 
-  // type ActionItem = typeof actionValue.early_act;
+  const handleActionAddButtonClick = React.useCallback(() => {
+    const newList: ActionValue = {
+      clientId:randomString(),
+    };
 
-  // const handleActionAddButtonClick = React.useCallback(() => {
-  //   const clientId = randomString();
-  //   const newList: PartialForm<Action> = {
-  //     clientId,
-  //   };
+    onFieldChange(
+      (oldValue: ActionValue[] | undefined) => (
+        [...(oldValue ?? []), newList]
+      ),
+      'actions' as const,
+    );
+  }, [onFieldChange]);
 
-  //   onValueChange(
-  //     (oldValue: PartialForm<ActionItem>) => (
-  //       [...(oldValue ?? []), newList]
-  //     ),
-  //     'early_act' as const,
-  //   );
-  // }, [onValueChange]);
+  const {
+    setValue: setActionValue,
+    removeValue: removeActionValue,
+  } = useFormArray<'actions', IndicatorValue>(
+    'actions',
+    onFieldChange,
+  );
 
-  // const RiskRendererParams = (_, datum: RiskValue) => ({ riskValue: datum });
-  // const ActionRendererParams = (_, datum: ActionValue) => ({ actionValue: datum });
   const indicatorRendererParams: (
     key: string, datum: IndicatorValue, index: number
   ) => IndicatorInputProps = (key, datum, index) => ({
@@ -153,11 +156,24 @@ function EarlyActionInput(props: Props) {
     earlyActionIndicatorsOptions,
   });
 
-  const {
-    pending: fetchingEapDetails,
-    response: eapDetailsResponse,
-  } = useRequest<ListResponse<EapFormFields>>({
-    url: `api/v2/eap/`,
+  const riskRendererParams: (
+    key: string, datum: RiskValue, index: number
+  ) => RisksInputProps = (key, datum, index) => ({
+    value: datum,
+    onChange: setRiskValue,
+    index,
+    error: undefined,
+    onRemove: removeRiskValue,
+  });
+
+  const actionRendererParams: (
+    key: string, datum: ActionValue, index: number
+  ) => ActionInputProps = (key, datum, index) => ({
+    value: datum,
+    onChange: setActionValue,
+    index,
+    error: undefined,
+    onRemove: removeActionValue,
   });
 
   const error = getErrorObject(formError);
@@ -188,15 +204,16 @@ function EarlyActionInput(props: Props) {
           error={error?.budget_per_sector}
         />
       </InputSection>
-      <InputSection>
+      <InputSection
+        className={styles.indicator}>
         <ListView
           data={value?.indicators}
           renderer={IndicatorInput}
           keySelector={indicatorKeySelector}
           rendererParams={indicatorRendererParams}
           errored={!!error}
-          pending={fetchingEapDetails}
-          emptyMessage="No data to display"
+          pending={false}
+          emptyMessage={false}
           pendingMessage="Loading data"
         />
         <Button
@@ -208,27 +225,26 @@ function EarlyActionInput(props: Props) {
           {strings.eapsFormSectorAddIndicator}
         </Button>
       </InputSection>
-      {/*
       <InputSection
         normalDescription
         description={(
           <>
             <ListView
-              data={eapDetailsResponse?.results}
-              renderer={Risks}
+              data={value?.prioritized_risks}
+              renderer={RisksInput}
               keySelector={riskKeySelector}
-              rendererParams={RiskRendererParams}
+              rendererParams={riskRendererParams}
               errored={!!error}
-              pending={fetchingEapDetails}
-              emptyMessage="No data to display"
+              pending={false}
+              emptyMessage={false}
               pendingMessage="Loading data"
             />
             <Button
               name={risk}
               onClick={handleRiskAddButtonClick}
               variant="secondary"
+              icons={<IoAdd />}
             >
-              <IoAdd />
               {strings.eapsFormAddRisk}
             </Button>
           </>
@@ -237,38 +253,38 @@ function EarlyActionInput(props: Props) {
         <div className={styles.targetPeople}>
           <NumberInput
             label={strings.eapsFormTargetPeople}
-            name="targeted_people"
+            name={"targeted_people" as const}
             placeholder={strings.eapsFormSectorPlaceholder}
             value={value?.targeted_people}
-            onChange={onValueChange}
+            onChange={onFieldChange}
             error={error?.targeted_people}
           />
           <div className={styles.earlyActions}>
             <ListView
-              data={eapDetailsResponse?.results}
-              renderer={Actions}
+              data={value?.actions}
+              renderer={ActionInput}
               keySelector={actionKeySelector}
-              rendererParams={ActionRendererParams}
+              rendererParams={actionRendererParams}
               errored={!!error}
-              pending={fetchingEapDetails}
-              emptyMessage="No data to display"
+              pending={false}
+              emptyMessage={false}
               pendingMessage="Loading data"
             />
-            <Button
-              name={action}
-              onClick={handleActionAddButtonClick}
-              variant="secondary"
-            >
-              <IoAdd />
-              Add early action
-            </Button>
           </div>
+          <Button
+            name={action}
+            onClick={handleActionAddButtonClick}
+            variant="secondary"
+            icons={<IoAdd />}
+          >
+            {strings.eapsFormEarlyActions}
+          </Button>
           <BulletTextArea
             label={strings.eapsFormReadinessActivities}
             name="readiness_activities"
             placeholder={strings.eapsFormListTheReadinessActivities}
             value={value?.readiness_activities}
-            onChange={onValueChange}
+            onChange={onFieldChange}
             error={error?.readiness_activities}
           />
           <BulletTextArea
@@ -276,12 +292,11 @@ function EarlyActionInput(props: Props) {
             name="prepositioning_activities"
             placeholder="List the pre-positioning activities (if any)"
             value={value?.prepositioning_activities}
-            onChange={onValueChange}
+            onChange={onFieldChange}
             error={error?.prepositioning_activities}
           />
         </div>
       </InputSection>
-      */}
     </Container>
   );
 }

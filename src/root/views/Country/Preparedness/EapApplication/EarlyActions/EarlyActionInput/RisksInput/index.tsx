@@ -14,15 +14,16 @@ import TextInput from '#components/TextInput';
 import { Risk } from '../../../common';
 
 import styles from './styles.module.scss';
+import TextArea from '#components/TextArea';
 
 type Value = PartialForm<Risk>;
-type SetValueArg<T> = T | ((value: T) => T);
 
+type SetValueArg<T> = T | ((value: T) => T);
 const defaultRiskValue: PartialForm<Risk> = {
   clientId: randomString(),
 };
 
-interface Props {
+export interface Props {
   value: Value;
   error: ArrayError<Risk> | undefined;
   onChange: (value: SetValueArg<PartialForm<Risk>>, index: number) => void;
@@ -46,7 +47,7 @@ function Risks(props: Props) {
 
   return (
     <div className={styles.inputs}>
-      <TextInput
+      <TextArea
         label="Priortised Risk"
         name="risks"
         value={value?.risks}

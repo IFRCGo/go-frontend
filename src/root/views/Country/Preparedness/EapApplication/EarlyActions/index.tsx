@@ -4,6 +4,7 @@ import {
   isNotDefined,
   randomString,
   isDefined,
+  listToMap,
 } from '@togglecorp/fujs';
 
 import {
@@ -19,19 +20,25 @@ import languageContext from '#root/languageContext';
 import Container from '#components/Container';
 import InputSection from '#components/InputSection';
 import Button from '#components/Button';
-
+import ListView from '#components/ListView';
 import SelectInput from '#components/SelectInput';
-import EarlyActionInput from './EarlyActionInput';
+
 import {
   EapFormFields,
-  EarlyAction,
   StringValueOption,
+  EarlyAction,
 } from '../common';
+import EarlyActionInput, { Props as EarlyActionInputProps } from './EarlyActionInput';
 
 import styles from './styles.module.scss';
 
 type Value = PartialForm<EapFormFields>;
 
+type EarlyActionValue = PartialForm<EarlyAction>;
+
+function earlyActionKeySelector(value: EarlyActionValue){
+  return value.clientId as string;
+}
 interface Props {
   earlyActionIndicatorOptions: StringValueOption[];
   error: Error<Value> | undefined;
@@ -42,7 +49,7 @@ interface Props {
 
 function EarlyActions(props: Props) {
   const { strings } = React.useContext(languageContext);
-  const [sector, setSector] = React.useState<string | undefined>();
+  const [selectedSector, setSelectedSector] = useInputState<string | undefined>(undefined);
 
   const {
     error: formError,
@@ -51,8 +58,6 @@ function EarlyActions(props: Props) {
     sectorsOptions,
     earlyActionIndicatorOptions,
   } = props;
-
-  const [selectedSector, setSelectedSector] = useInputState<string | undefined>(undefined);
 
   const error = React.useMemo(
     () => getErrorObject(formError),
@@ -70,9 +75,8 @@ function EarlyActions(props: Props) {
   type EarlyActionItem = typeof value.early_actions;
   const handleSectorsAddButtonClick = React.useCallback((selectedSector: string | undefined) => {
     if (isDefined(selectedSector)) {
-      const clientId = randomString();
       const newEapItem: PartialForm<EarlyAction> = {
-        clientId,
+        clientId: randomString(),
         sector: selectedSector,
       };
 
@@ -86,6 +90,27 @@ function EarlyActions(props: Props) {
       setSelectedSector(undefined);
     }
   }, [onValueChange, setSelectedSector]);
+
+  const earlyActionRendererParams: (
+    key: string, datum: EarlyActionValue, index: number
+  ) => EarlyActionInputProps = (key, datum, index) => ({
+    value: datum,
+    onValueChange: onEarlyActionChange,
+    index,
+    error: undefined,
+    onRemove: onEarlyActionRemove,
+    earlyActionIndicatorsOptions: earlyActionIndicatorOptions,
+  });
+
+  const sectorOptionMap = React.useMemo(() => (
+    listToMap(
+      sectorsOptions,
+      d => d.value ?? '',
+      d => true,
+    )
+  ), [sectorsOptions]);
+
+  const filteredSectorOptions = sectorOptionMap ? sectorsOptions.filter(n => sectorOptionMap[n.value]) : [];
 
   return (
     <Container
@@ -101,9 +126,7 @@ function EarlyActions(props: Props) {
               name="sector"
               value={selectedSector}
               onChange={setSelectedSector}
-              // TODO: show filtered options
-              // sectors that are already selected should not be shown
-              options={sectorsOptions}
+              options={filteredSectorOptions}
             />
             <Button
               className={styles.earlyActionButton}
@@ -118,17 +141,16 @@ function EarlyActions(props: Props) {
           </InputSection>
         </div>
       </div>
-      {value?.early_actions?.map((earlyAction, index) => (
-        <EarlyActionInput
-          earlyActionIndicatorsOptions={earlyActionIndicatorOptions}
-          error={error?.early_actions}
-          index={index}
-          key={earlyAction.clientId}
-          onRemove={onEarlyActionRemove}
-          onValueChange={onEarlyActionChange}
-          value={earlyAction}
-        />
-      ))}
+      <ListView
+        data={value?.early_actions}
+        renderer={EarlyActionInput}
+        keySelector={earlyActionKeySelector}
+        rendererParams={earlyActionRendererParams}
+        errored={!!error}
+        pending={false}
+        emptyMessage={false}
+        pendingMessage="Loading data"
+      />
     </Container>
   );
 }

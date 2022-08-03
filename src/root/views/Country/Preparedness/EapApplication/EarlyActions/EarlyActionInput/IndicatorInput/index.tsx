@@ -36,7 +36,6 @@ export interface Props {
 }
 
 function Indicators(props: Props) {
-
   const {
     error: errorFromProps,
     onChange,

@@ -14,6 +14,7 @@ import TextInput from '#components/TextInput';
 import { EapFormFields } from '../common';
 
 import styles from './styles.module.scss';
+import NumberInput from '#components/NumberInput';
 
 type Value = PartialForm<EapFormFields>;
 interface Props {
@@ -65,7 +66,7 @@ function Contacts(props: Props) {
           onChange={onValueChange}
           error={error?.originator_email}
         />
-        <TextInput
+        <NumberInput
           label="Phone Number"
           name="originator_email"
           value={value?.originator_phone}
@@ -100,7 +101,7 @@ function Contacts(props: Props) {
           onChange={onValueChange}
           error={error?.nsc_email}
         />
-        <TextInput
+        <NumberInput
           label="Phone Number"
           name="nsc_phone"
           value={value?.nsc_phone}
@@ -135,7 +136,7 @@ function Contacts(props: Props) {
           onChange={onValueChange}
           error={error?.ifrc_focal_email}
         />
-        <TextInput
+        <NumberInput
           label="Phone Number"
           name="ifrc_focal_phone"
           value={value?.ifrc_focal_phone}
