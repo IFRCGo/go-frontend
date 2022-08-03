@@ -7,7 +7,7 @@ import {
   Document,
   Image as PDFImage,
 } from '@react-pdf/renderer';
-import { isTruthyString, listToMap } from '@togglecorp/fujs';
+import { isDefined, listToMap } from '@togglecorp/fujs';
 
 import {
   formatBoolean,
@@ -25,206 +25,11 @@ import { resolveUrl } from '#utils/resolveUrl';
 import { DrefFinalReportApiFields } from '#views/FinalReportForm/common';
 import { PdfTextOutput } from '#components/PdfTextOutput';
 
+import ContactSection from '../ContactSection';
+import PlannedIntervention from '../PlannedIntervention';
+import NeedIdentified from '../NeedIdentified';
+
 import pdfStyles from 'src/styles/pdf/pdfStyles';
-
-interface ContactSectionProps {
-  title: string;
-  contacts: string[];
-}
-
-function ContactSection(props: ContactSectionProps) {
-  const {
-    title,
-    contacts,
-  } = props;
-
-  const outputString = contacts.filter(isTruthyString).join(', ');
-
-  if (!outputString) {
-    return null;
-  }
-
-  console.log({ outputString });
-
-  return (
-    <View style={pdfStyles.ciRow} wrap={false}>
-      <Text style={pdfStyles.contactType}>
-        {'\u2022'} {title}
-      </Text>
-      <Text style={pdfStyles.contactDetails}>
-        {outputString}
-      </Text>
-    </View>
-  );
-}
-
-interface NeedIdentifiedProps {
-  data: DrefFinalReportApiFields['needs_identified'][number];
-  niMap?: Record<string, string>;
-}
-
-function NeedIdentified(props: NeedIdentifiedProps) {
-  const {
-    data,
-    niMap,
-  } = props;
-
-  return (
-    <View style={pdfStyles.niOutput} wrap={false}>
-      <View style={pdfStyles.niIconCell}>
-        {data.image_url && (
-          <PDFImage
-            style={pdfStyles.niIcon}
-            src={data.image_url}
-          />
-        )}
-      </View>
-      <View style={pdfStyles.niHeaderCell}>
-        <Text>
-          {niMap?.[data.title]}
-        </Text>
-      </View>
-      <View style={pdfStyles.niContentCell}>
-        <Text>
-          {data.description}
-        </Text>
-      </View>
-    </View>
-  );
-}
-
-interface PlannedInterventionProps {
-  data: DrefFinalReportApiFields['planned_interventions'][number];
-  piMap?: Record<string, string>;
-  strings: Strings;
-}
-
-function PlannedInterventionOutput(props: PlannedInterventionProps) {
-  const {
-    data,
-    piMap,
-    strings,
-  } = props;
-
-  return (
-    <View style={pdfStyles.piOutput} wrap={false}>
-      <View style={pdfStyles.piRow}>
-        <View style={pdfStyles.piIconCell}>
-          {data?.image_url && (
-            <PDFImage
-              style={pdfStyles.piIcon}
-              src={data.image_url}
-            />
-          )}
-        </View>
-        <Text style={pdfStyles.piHeaderCell}>
-          {piMap?.[data.title]}
-        </Text>
-        <View style={[pdfStyles.piContentCell, { flexDirection: 'column' }]}>
-          <View style={pdfStyles.piSubRow}>
-            <Text style={pdfStyles.piSubHeadingCell}>
-              {strings.finalReportExportPersonReachedLabel}
-            </Text>
-            <Text style={pdfStyles.piSubHeadingCell}>
-              {strings.finalReportIndicatorMaleLabel}
-            </Text>
-            <Text style={pdfStyles.piSubContentCell}>
-              {data?.male}
-            </Text>
-          </View>
-          <View style={pdfStyles.piSubRow}>
-            <Text style={pdfStyles.piSubHeadingCell} />
-            <Text style={pdfStyles.piSubHeadingCell}>
-              {strings.finalReportIndicatorFemaleLabel}
-            </Text>
-            <Text style={pdfStyles.piSubContentCell}>
-              {data?.female}
-            </Text>
-          </View>
-        </View>
-      </View>
-
-      <View style={pdfStyles.piRow}>
-        <View style={pdfStyles.piContentCell}>
-          <Text style={[pdfStyles.piBorderCell, pdfStyles.fontWeightBoldAndLarge]}>
-            {strings.finalReportExportIndicators}
-          </Text>
-        </View>
-        <View style={pdfStyles.piHeaderCell}>
-          <Text>
-            {strings.finalReportIndicatorTargetLabel}
-          </Text>
-        </View>
-        <View style={pdfStyles.piHeaderCell}>
-          <Text>
-            {strings.finalReportIndicatorActualLabel}
-          </Text>
-        </View>
-      </View>
-
-      {
-        data?.indicators?.map((indicator) => (
-          <View
-            style={pdfStyles.piRow}
-            key={indicator.id}
-          >
-            <View style={pdfStyles.piContentCell}>
-              <Text style={pdfStyles.piBorderCell}>
-                {indicator?.title}
-              </Text>
-            </View>
-            <View style={[pdfStyles.piHeaderCell, pdfStyles.fontWeightNormalAndSmall]}>
-              <Text style={pdfStyles.fontWeightNormalAndSmall}>
-                {indicator?.target}
-              </Text>
-            </View>
-            <View style={[pdfStyles.piHeaderCell, pdfStyles.fontWeightNormalAndSmall]}>
-              <Text style={pdfStyles.fontWeightNormalAndSmall}>
-                {indicator?.actual}
-              </Text>
-            </View>
-          </View>
-        ))
-      }
-      <View style={pdfStyles.piRow}>
-        <Text style={[pdfStyles.piBorderCell, pdfStyles.fontWeightBoldAndLarge]}>
-          {strings.finalReportPlannedInterventionNarrativeAchievement}
-        </Text>
-      </View>
-      {data?.challenges && (
-        <View style={pdfStyles.piRow}>
-          <Text style={pdfStyles.piBorderCell}>
-            {data?.narrative_description_of_achievements}
-          </Text>
-        </View>
-      )}
-      <View style={pdfStyles.piRow}>
-        <Text style={[pdfStyles.piBorderCell, pdfStyles.fontWeightBoldAndLarge]}>
-          {strings.finalReportPlannedInterventionChallenges}
-        </Text>
-      </View>
-      {data?.challenges && (
-        <View style={pdfStyles.piRow}>
-          <Text style={pdfStyles.piBorderCell}>
-            {data?.challenges}
-          </Text>
-        </View>
-      )}
-      <View style={pdfStyles.piRow}>
-        <Text style={[pdfStyles.piBorderCell, pdfStyles.fontWeightBoldAndLarge]}>
-          {strings.finalReportPlannedInterventionLessonsLearnt}
-        </Text>
-      </View>
-      {data?.lessons_learnt && (
-        <View style={pdfStyles.piRow}>
-          <Text style={pdfStyles.piBorderCell}>
-            {data?.lessons_learnt}
-          </Text>
-        </View>
-      )}
-    </View>
-  );
-}
 
 interface DrefOptions {
   disaster_category: NumericKeyValuePair[];
@@ -273,19 +78,19 @@ function FinalReportPdfDocument(props: Props) {
   ), [drefOptions]);
 
   const affectedAreas = useMemo(() => {
-    const districts = finalReportResponse?.country_district.map(d => d['district_details']);
-    const areas = districts.map(districtsList => {
-      return districtsList.map((districtItem) => districtItem.name).join(', ');
-    }).join(', ');
+    let areas = '';
+    const districts = finalReportResponse.district_details?.map(dd => dd.name);
+    return areas += districts.join(', ');
+  }, [finalReportResponse.district_details]);
 
-    return areas;
-  }, [finalReportResponse]);
+  const documentTitle = useMemo(() => (
+    `${finalReportResponse?.country_details?.name} | ${finalReportResponse?.title}`
+  ), [
+    finalReportResponse.country_details,
+    finalReportResponse.title,
+  ]);
 
   const isImminentOnset = finalReportResponse?.disaster_type === ONSET_IMMINENT;
-  const documentTitle = [
-    finalReportResponse?.country_district.map(cd => cd.country_details.name).join(', '),
-    finalReportResponse.title
-  ].join(' | ');
 
   return (
     <Document
@@ -310,26 +115,29 @@ function FinalReportPdfDocument(props: Props) {
             </Text>
           </View>
           <Text style={pdfStyles.subTitle}>
-            {[
-              finalReportResponse?.country_district.map(d => d.country_details?.name).join(', '),
-              finalReportResponse?.title
-            ].filter(Boolean).join(' | ')}
+            {documentTitle}
           </Text>
         </View>
         <View style={pdfStyles.section}>
           <View style={pdfStyles.basicInfoTable}>
-            <View style={pdfStyles.compactSection} wrap={false}>
+            <View
+              style={pdfStyles.compactSection}
+              wrap={false}
+            >
               <PdfTextOutput
                 label={strings.finalReportExportAppealNum}
                 value={finalReportResponse?.appeal_code}
               />
               <PdfTextOutput
                 label={strings.finalReportExportTotalAllocation}
-                value={formatNumber(finalReportResponse?.total_dref_allocation, 'CHF ' ?? '-')}
+                value={formatNumber(finalReportResponse?.total_dref_allocation, 'CHF ')}
                 columns="2/3"
               />
             </View>
-            <View style={pdfStyles.compactSection} wrap={false}>
+            <View
+              style={pdfStyles.compactSection}
+              wrap={false}
+            >
               <PdfTextOutput
                 label={strings.finalReportExportGlideNum}
                 value={finalReportResponse?.glide_code}
@@ -356,7 +164,11 @@ function FinalReportPdfDocument(props: Props) {
                       value={finalReportResponse?.date_of_publication}
                       columns="1/2"
                     />
-                    <View style={[pdfStyles.compactSection, pdfStyles.oneByTwo]}>
+                    <View style={[
+                      pdfStyles.compactSection,
+                      pdfStyles.oneByTwo
+                    ]}
+                    >
                       <PdfTextOutput
                         label={strings.finalReportExportStartOfOperation}
                         value={finalReportResponse?.operation_start_date}
@@ -389,20 +201,19 @@ function FinalReportPdfDocument(props: Props) {
             <View style={pdfStyles.subSection}>
               <PDFImage
                 style={pdfStyles.mapImage}
-                src={finalReportResponse?.event_map_details.file}
+                src={finalReportResponse.event_map_details.file}
               />
             </View>
           }
-          {finalReportResponse?.event_description && (
+          {isDefined(finalReportResponse?.event_description) && (
             <View style={pdfStyles.subSection}>
               <Text style={pdfStyles.subSectionHeading}>
-                {isImminentOnset ?
-                  strings.finalReportImminentDisaster
-                  :
-                  strings.finalReportWhatWhereWhen}
+                {isImminentOnset
+                  ? strings.finalReportImminentDisaster
+                  : strings.finalReportWhatWhereWhen}
               </Text>
               <Text style={pdfStyles.text}>
-                {finalReportResponse?.event_description}
+                {finalReportResponse.event_description}
               </Text>
             </View>
           )}
@@ -411,23 +222,24 @@ function FinalReportPdfDocument(props: Props) {
               <Text style={pdfStyles.subSectionHeading}>
                 {strings.finalReportPhotosOfImplementation}
               </Text>
-              {finalReportResponse?.photos_details.map((el) => (
+              {finalReportResponse.photos_details.map((mi) => (
                 <View style={pdfStyles.subSection}>
                   <PDFImage
                     style={pdfStyles.mapImage}
-                    src={el.file}
+                    key={mi.id}
+                    src={mi.file}
                   />
                 </View>
               ))}
             </View>
           )}
-          {finalReportResponse?.event_scope && (
+          {isDefined(finalReportResponse.event_scope) && (
             <View style={pdfStyles.subSection}>
               <Text style={pdfStyles.subSectionHeading}>
                 {strings.finalReportScopeAndScaleEvent}
               </Text>
               <Text style={pdfStyles.text}>
-                {finalReportResponse?.event_scope}
+                {finalReportResponse.event_scope}
               </Text>
             </View>
           )}
@@ -437,7 +249,10 @@ function FinalReportPdfDocument(props: Props) {
             {strings.finalReportFederationWideAndPartners}
           </Text>
           <View>
-            <View style={pdfStyles.row} wrap={false}>
+            <View
+              style={pdfStyles.row}
+              wrap={false}
+            >
               <View style={pdfStyles.niHeaderCell}>
                 <Text>{strings.finalReportWantToReport}</Text>
               </View>
@@ -445,7 +260,10 @@ function FinalReportPdfDocument(props: Props) {
                 <Text>{formatBoolean(finalReportResponse?.want_to_report)}</Text>
               </View>
             </View>
-            <View style={pdfStyles.row} wrap={false}>
+            <View
+              style={pdfStyles.row}
+              wrap={false}
+            >
               <View style={pdfStyles.niHeaderCell}>
                 <Text>{strings.finalReportAdditionalNationalSocietyAction}</Text>
               </View>
@@ -460,7 +278,10 @@ function FinalReportPdfDocument(props: Props) {
             {strings.finalReportMovementPartners}
           </Text>
           <View>
-            <View style={pdfStyles.row} wrap={false}>
+            <View
+              style={pdfStyles.row}
+              wrap={false}
+            >
               <View style={pdfStyles.niHeaderCell}>
                 <Text>{strings.finalReportIfrc}</Text>
               </View>
@@ -468,7 +289,10 @@ function FinalReportPdfDocument(props: Props) {
                 <Text>{finalReportResponse?.ifrc}</Text>
               </View>
             </View>
-            <View style={pdfStyles.row} wrap={false}>
+            <View
+              style={pdfStyles.row}
+              wrap={false}
+            >
               <View style={pdfStyles.niHeaderCell}>
                 <Text>{strings.finalReportIcrc}</Text>
               </View>
@@ -476,7 +300,10 @@ function FinalReportPdfDocument(props: Props) {
                 <Text>{finalReportResponse?.icrc}</Text>
               </View>
             </View>
-            <View style={pdfStyles.row} wrap={false}>
+            <View
+              style={pdfStyles.row}
+              wrap={false}
+            >
               <View style={pdfStyles.niHeaderCell}>
                 <Text>{strings.finalReportPartnerNationalSociety}</Text>
               </View>
@@ -491,7 +318,10 @@ function FinalReportPdfDocument(props: Props) {
             {strings.finalReportNationalOtherActors}
           </Text>
           <View>
-            <View style={pdfStyles.row} wrap={false}>
+            <View
+              style={pdfStyles.row}
+              wrap={false}
+            >
               <View style={pdfStyles.niHeaderCell}>
                 <Text>{strings.finalReportInternationalAssistance}</Text>
               </View>
@@ -499,7 +329,10 @@ function FinalReportPdfDocument(props: Props) {
                 <Text>{formatBoolean(finalReportResponse?.government_requested_assistance)}</Text>
               </View>
             </View>
-            <View style={pdfStyles.row} wrap={false}>
+            <View
+              style={pdfStyles.row}
+              wrap={false}
+            >
               <View style={pdfStyles.niHeaderCell}>
                 <Text>{strings.finalReportNationalAuthorities}</Text>
               </View>
@@ -507,7 +340,10 @@ function FinalReportPdfDocument(props: Props) {
                 <Text>{finalReportResponse?.national_authorities}</Text>
               </View>
             </View>
-            <View style={pdfStyles.row} wrap={false}>
+            <View
+              style={pdfStyles.row}
+              wrap={false}
+            >
               <View style={pdfStyles.niHeaderCell}>
                 <Text>{strings.finalReportUNorOtherActors}</Text>
               </View>
@@ -515,7 +351,10 @@ function FinalReportPdfDocument(props: Props) {
                 <Text>{finalReportResponse?.un_or_other_actor}</Text>
               </View>
             </View>
-            <View style={pdfStyles.row} wrap={false}>
+            <View
+              style={pdfStyles.row}
+              wrap={false}
+            >
               <View style={pdfStyles.niHeaderCell}>
                 <Text>{strings.finalReportCoordinationMechanism}</Text>
               </View>
@@ -526,7 +365,10 @@ function FinalReportPdfDocument(props: Props) {
           </View>
         </View>
         {finalReportResponse?.needs_identified.length > 0 && (
-          <View style={pdfStyles.niSection} wrap={false}>
+          <View
+            style={pdfStyles.niSection}
+            wrap={false}
+          >
             <Text style={pdfStyles.sectionHeading}>
               {isImminentOnset
                 ? strings.finalReportImminentNeedsGapsIdentified
@@ -545,38 +387,41 @@ function FinalReportPdfDocument(props: Props) {
           <Text style={pdfStyles.sectionHeading}>
             {strings.finalReportTargetingStrategy}
           </Text>
-          {finalReportResponse?.people_assisted && (
+          {isDefined(finalReportResponse.people_assisted) && (
             <View style={pdfStyles.qna}>
               <Text style={pdfStyles.textLabelSection}>
                 {strings.finalReportPeopleAssistedThroughOperation}
               </Text>
               <Text style={pdfStyles.answer}>
-                {finalReportResponse?.people_assisted}
+                {finalReportResponse.people_assisted}
               </Text>
             </View>
           )}
-          {finalReportResponse?.selection_criteria && (
+          {isDefined(finalReportResponse.selection_criteria) && (
             <View style={pdfStyles.qna}>
               <Text style={pdfStyles.textLabelSection}>
                 {strings.finalReportSelectionCriteria}
               </Text>
               <Text style={pdfStyles.answer}>
-                {finalReportResponse?.selection_criteria}
+                {finalReportResponse.selection_criteria}
               </Text>
             </View>
           )}
-          {finalReportResponse?.entity_affected && (
+          {isDefined(finalReportResponse.entity_affected) && (
             <View style={pdfStyles.qna}>
               <Text style={pdfStyles.textLabelSection}>
                 {strings.finalReportProtectionGenderAndInclusion}
               </Text>
               <Text style={pdfStyles.answer}>
-                {finalReportResponse?.entity_affected}
+                {finalReportResponse.entity_affected}
               </Text>
             </View>
           )}
           <View style={pdfStyles.section}>
-            <View style={pdfStyles.row} wrap={false}>
+            <View
+              style={pdfStyles.row}
+              wrap={false}
+            >
               <View style={pdfStyles.niHeaderCell}>
                 <Text>{strings.finalReportChangeToOperationStrategy}</Text>
               </View>
@@ -584,7 +429,10 @@ function FinalReportPdfDocument(props: Props) {
                 <Text>{formatBoolean(finalReportResponse?.change_in_operational_strategy)}</Text>
               </View>
             </View>
-            <View style={pdfStyles.row} wrap={false}>
+            <View
+              style={pdfStyles.row}
+              wrap={false}
+            >
               <View style={pdfStyles.niHeaderCell}>
                 <Text>{strings.finalReportChangeToOperationStrategy}</Text>
               </View>
@@ -598,7 +446,10 @@ function FinalReportPdfDocument(props: Props) {
           <Text style={pdfStyles.sectionHeading}>
             {strings.finalReportPeopleAssistedThroughOperation}
           </Text>
-          <View style={pdfStyles.row} wrap={false}>
+          <View
+            style={pdfStyles.row}
+            wrap={false}
+          >
             <View style={pdfStyles.tpHeaderCell}>
               <Text>{strings.finalReportTargetedPopulation}</Text>
             </View>
@@ -655,7 +506,10 @@ function FinalReportPdfDocument(props: Props) {
               </View>
             </View>
           </View>
-          <View style={pdfStyles.row} wrap={false}>
+          <View
+            style={pdfStyles.row}
+            wrap={false}
+          >
             <View style={pdfStyles.tpHeaderCell}>
               <Text>{strings.finalReportEstimateResponse}</Text>
             </View>
@@ -698,20 +552,20 @@ function FinalReportPdfDocument(props: Props) {
             </View>
           </View>
         </View>
-        {finalReportResponse?.operation_objective && (
+        {isDefined(finalReportResponse.operation_objective) && (
           <View style={pdfStyles.section}>
             <Text style={pdfStyles.sectionHeading}>
               {strings.finalReportObjectiveOperation}
             </Text>
-            <Text>{finalReportResponse?.operation_objective}</Text>
+            <Text>{finalReportResponse.operation_objective}</Text>
           </View>
         )}
-        {finalReportResponse?.response_strategy && (
+        {isDefined(finalReportResponse.response_strategy) && (
           <View style={pdfStyles.section}>
             <Text style={pdfStyles.sectionHeading}>
               {strings.finalReportResponseStrategyImplementation}
             </Text>
-            <Text>{finalReportResponse?.response_strategy}</Text>
+            <Text>{finalReportResponse.response_strategy}</Text>
           </View>
         )}
         {finalReportResponse?.planned_interventions.length > 0 && (
@@ -720,7 +574,7 @@ function FinalReportPdfDocument(props: Props) {
               {strings.finalReportImplementation}
             </Text>
             {finalReportResponse?.planned_interventions.map((pi) => (
-              <PlannedInterventionOutput
+              <PlannedIntervention
                 strings={strings}
                 key={pi.id}
                 data={pi}
@@ -735,8 +589,11 @@ function FinalReportPdfDocument(props: Props) {
               {strings.finalReportBudgetOverview}
             </Text>
             <View style={pdfStyles.subSection}>
-              <Link src={resolveUrl(window.location.origin, finalReportResponse?.budget_file_details?.file)}>
-                {finalReportResponse?.budget_file_details?.file}
+              <Link src={resolveUrl(
+                window.location.origin,
+                finalReportResponse.budget_file_details?.file
+              )}>
+                {finalReportResponse.budget_file_details?.file}
               </Link>
             </View>
           </View>

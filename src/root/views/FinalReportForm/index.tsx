@@ -60,15 +60,6 @@ import useDrefFinalReportFormOptions, { schema } from './useDreFinalReportOption
 
 import styles from './styles.module.scss';
 
-//function scrollToTop() {
-//  window.setTimeout(() => {
-//    window.scrollTo({
-//      top: Math.min(145, window.scrollY),
-//      left: 0,
-//      behavior: 'smooth',
-//    });
-//  }, 0);
-//}
 interface Props {
   match: match<{ id?: string }>;
   history: History;
@@ -269,10 +260,6 @@ function FinalReport(props: Props) {
       });
       setValue({
         ...response,
-        country_district: response.country_district?.map((cd) => ({
-          ...cd,
-          clientId: String(cd.id),
-        })),
         planned_interventions: response.planned_interventions?.map((pi) => ({
           ...pi,
           clientId: String(pi.id),
@@ -285,9 +272,9 @@ function FinalReport(props: Props) {
           ...ni,
           clientId: String(ni.id),
         })),
-        disability_people_per: response.disability_people_per ? +response.disability_people_per : undefined,
-        people_per_urban: response.people_per_urban ? +response.people_per_urban : undefined,
-        people_per_local: response.people_per_local ? +response.people_per_local : undefined,
+        disability_people_per: isDefined(response.disability_people_per) ? response.disability_people_per + response.disability_people_per : undefined,
+        people_per_urban: isDefined(response.people_per_urban) ? +response.people_per_urban : undefined,
+        people_per_local: isDefined(response.people_per_local) ? +response.people_per_local : undefined,
       });
     },
     onFailure: ({
@@ -379,37 +366,6 @@ function FinalReport(props: Props) {
 
   const isImminentOnset = value?.type_of_onset === ONSET_IMMINENT;
 
-  const drefLoadingStatus = useMemo(() => (
-    <>
-      {
-        pending &&
-        <Container>
-          <BlockLoading />
-        </Container>
-      }
-      {
-        failedToLoadDref &&
-        <Container
-          contentClassName={styles.errorMessage}
-        >
-          <h3>
-            {strings.finalReportFailureMessage}
-          </h3>
-          <p>
-            {strings.drefFormLoadErrorDescription}
-          </p>
-          <p>
-            {strings.finalReportErrorDescription}
-          </p>
-        </Container>
-      }
-    </>
-  ), [
-    strings,
-    pending,
-    failedToLoadDref,
-  ]);
-
   return (
     <Tabs
       disabled={false}
@@ -478,7 +434,28 @@ function FinalReport(props: Props) {
           </TabList>
         )}
       >
-        {drefLoadingStatus}
+        {
+          pending &&
+          <Container>
+            <BlockLoading />
+          </Container>
+        }
+        {
+          failedToLoadDref &&
+          <Container
+            contentClassName={styles.errorMessage}
+          >
+            <h3>
+              {strings.finalReportFailureMessage}
+            </h3>
+            <p>
+              {strings.drefFormLoadErrorDescription}
+            </p>
+            <p>
+              {strings.finalReportErrorDescription}
+            </p>
+          </Container>
+        }
         {!pending && !failedToLoadDref && (
           <>
             <Container>
