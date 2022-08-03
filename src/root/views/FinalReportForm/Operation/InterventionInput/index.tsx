@@ -20,12 +20,12 @@ import NumberInput from '#components/NumberInput';
 import InputSection from '#components/InputSection';
 import LanguageContext from '#root/languageContext';
 import { IndicatorType } from '#views/DrefApplicationForm/useDrefFormOptions';
-
 import {
   Indicator,
   Intervention,
   StringValueOption,
-} from '../../common';
+} from '#views/FinalReportForm/common';
+
 import IndicatorInput from '../IndicatorInput';
 
 import styles from './styles.module.scss';
@@ -76,12 +76,10 @@ function InterventionInput(props: Props) {
   );
 
   type Indicators = typeof value.indicators;
-  const handleIndicatorAddButtonClick = useCallback((title, target) => {
+  const handleIndicatorAddButtonClick = useCallback(() => {
     const clientId = randomString();
     const newIndicatorItem: PartialForm<IndicatorType> = {
       clientId,
-      title,
-      target,
     };
 
     onFieldChange(
@@ -169,10 +167,10 @@ function InterventionInput(props: Props) {
               Add Indicator
             </Button>
             {
-              value?.indicators?.map((i, n) => (
+              value?.indicators?.map((i, index) => (
                 <IndicatorInput
                   key={i.clientId}
-                  index={n}
+                  index={index}
                   value={i}
                   onChange={onIndicatorChange}
                   onRemove={onIndicatorRemove}

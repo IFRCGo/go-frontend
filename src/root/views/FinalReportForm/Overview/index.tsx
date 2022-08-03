@@ -4,28 +4,26 @@ import {
   Error,
   getErrorObject,
   PartialForm,
-  useFormArray,
 } from '@togglecorp/toggle-form';
 import { IoHelpCircle } from 'react-icons/io5';
-import { randomString } from '@togglecorp/fujs';
 
 import Container from '#components/Container';
 import DateInput from '#components/DateInput';
 import InputSection from '#components/InputSection';
 import NumberInput from '#components/NumberInput';
 import languageContext from '#root/languageContext';
-import Button from '#components/Button';
 import TextInput from '#components/TextInput';
 import SelectInput from '#components/SelectInput';
-import CountryDistrictInput from '#views/DrefApplicationForm/DrefOverview/CountryDistrictInput';
+import { ListResponse, useRequest } from '#utils/restRequest';
+import { DistrictMini } from '#types/country';
+import { compareString } from '#utils/utils';
 
 import {
-  CountryDistrict,
   DrefFinalReportFields,
+  emptyNumericOptionList,
   NumericValueOption,
   ONSET_IMMINENT,
 } from '../common';
-import { CountryDistrictType } from '../useDreFinalReportOptions';
 
 import styles from './styles.module.scss';
 
@@ -66,29 +64,26 @@ function Overview(props: Props) {
     [formError]
   );
 
+  const countryQuery = React.useMemo(() => ({
+    country: value.country,
+    limit: 500,
+  }), [value.country]);
+
   const {
-    setValue: onCountryDistrictChange,
-    removeValue: onCountryDistrictRemove,
-  } = useFormArray<'country_district', PartialForm<CountryDistrict>>(
-    'country_district',
-    onValueChange,
-  );
+    pending: fetchingDistricts,
+    response: districtsResponse,
+  } = useRequest<ListResponse<DistrictMini>>({
+    skip: !value.country,
+    url: 'api/v2/district/',
+    query: countryQuery,
+  });
 
-  type CountryDistricts = typeof value.country_district;
-
-  const handleCountryDistrictAdd = React.useCallback(() => {
-    const clientId = randomString();
-    const newCountryDistrict: PartialForm<CountryDistrictType> = {
-      clientId,
-    };
-
-    onValueChange(
-      (oldValue: PartialForm<CountryDistricts>) => (
-        [...(oldValue ?? []), newCountryDistrict]
-      ),
-      'country_district' as const,
-    );
-  }, [onValueChange]);
+  const districtOptions = React.useMemo(() => (
+    districtsResponse?.results?.map(d => ({
+      value: d.id,
+      label: d.name,
+    })).sort(compareString) ?? emptyNumericOptionList
+  ), [districtsResponse]);
 
   const isImminentOnset = value.type_of_onset === ONSET_IMMINENT;
 
@@ -120,13 +115,17 @@ function Overview(props: Props) {
           />
         </InputSection>
         <InputSection
-          title={isImminentOnset ? strings.finalReportImminentDisasterDetails : strings.finalReportDisasterDetails}
+          title={isImminentOnset
+            ? strings.finalReportImminentDisasterDetails
+            : strings.finalReportDisasterDetails}
           multiRow
           twoColumn
         >
           <SelectInput
             error={error?.disaster_type}
-            label={isImminentOnset ? strings.finalReportImminentDisasterTypeLabel : strings.finalReportDisasterTypeLabel}
+            label={isImminentOnset
+              ? strings.finalReportImminentDisasterTypeLabel
+              : strings.finalReportDisasterTypeLabel}
             name={"disaster_type" as const}
             onChange={onValueChange}
             options={disasterTypeOptions}
@@ -163,34 +162,37 @@ function Overview(props: Props) {
           />
         </InputSection>
         <InputSection
-          title={!isImminentOnset ? strings.finalReportAffectedCountryAndProvinceImminent : strings.finalReportRiskCountryLabel}
+          title={!isImminentOnset
+            ? strings.finalReportAffectedCountryAndProvinceImminent
+            : strings.finalReportRiskCountryLabel}
           multiRow
           oneColumn
         >
-          {value.country_district?.map((c, i) => (
-            <CountryDistrictInput
-              key={c.clientId}
-              index={i}
-              value={c}
-              onChange={onCountryDistrictChange}
-              onRemove={onCountryDistrictRemove}
-              error={getErrorObject(error?.country_district)}
-              countryOptions={countryOptions}
-              fetchingCountries={fetchingCountries}
-            />
-          ))}
-          <div className={styles.actions}>
-            <Button
-              name={undefined}
-              onClick={handleCountryDistrictAdd}
-              variant="secondary"
-            >
-              {strings.finalReportAddCountryLabel}
-            </Button>
-          </div>
+          <SelectInput
+            label={strings.drefFormAddCountry}
+            pending={fetchingCountries}
+            error={error?.country}
+            name={"country" as const}
+            onChange={onValueChange}
+            options={countryOptions}
+            value={value.country}
+
+          />
+          <SelectInput<"district", number>
+            label={strings.drefFormAddRegion}
+            pending={fetchingDistricts}
+            isMulti={true}
+            error={error?.district}
+            name="district"
+            onChange={onValueChange}
+            options={districtOptions}
+            value={value.district}
+          />
         </InputSection>
         <InputSection
-          title={!isImminentOnset ? strings.finalReportPeopleAffected : strings.finalReportRiskPeopleLabel}
+          title={!isImminentOnset
+            ? strings.finalReportPeopleAffected
+            : strings.finalReportRiskPeopleLabel}
         >
           <NumberInput
             name="number_of_people_affected"

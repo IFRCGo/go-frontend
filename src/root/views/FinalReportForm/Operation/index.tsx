@@ -85,11 +85,10 @@ function Operation(props: Props) {
   );
 
   type Interventions = typeof value.planned_interventions;
-  const handleInterventionAddButtonClick = useCallback((title) => {
+  const handleInterventionAddButtonClick = useCallback(() => {
     const clientId = randomString();
     const newInterventionItem: PartialForm<InterventionType> = {
       clientId,
-      title,
     };
 
     onValueChange(
@@ -114,7 +113,7 @@ function Operation(props: Props) {
       return emptyList;
     }
 
-    const w = [];
+    const warningMessage = [];
 
     if (sumSafe([
       value?.women,
@@ -122,10 +121,10 @@ function Operation(props: Props) {
       value?.girls,
       value?.boys,
     ]) !== value?.number_of_people_targeted) {
-      w.push({ message: 'Total targeted population is not equal to sum of other population fields' });
+      warningMessage.push('Total targeted population is not equal to sum of other population fields');
     }
 
-    return w;
+    return warningMessage;
   }, [
     value?.number_of_people_targeted,
     value?.women,
@@ -208,13 +207,13 @@ function Operation(props: Props) {
         heading={strings.finalReportTargetedPopulation}
         className={styles.assistedPopulation}
         description={(
-          warnings?.map((w, i) => (
+          warnings?.map((m, i) => (
             <div
-              className={styles.warning}
               key={i}
+              className={styles.warning}
             >
               <IoWarning />
-              {w}
+              {m}
             </div>
           ))
         )}
