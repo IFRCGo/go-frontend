@@ -9,12 +9,11 @@ import {
 import { randomString } from '@togglecorp/fujs';
 
 import Button from '#components/Button';
-import TextInput from '#components/TextInput';
+import TextArea from '#components/TextArea';
 
 import { Risk } from '../../../common';
 
 import styles from './styles.module.scss';
-import TextArea from '#components/TextArea';
 
 type Value = PartialForm<Risk>;
 

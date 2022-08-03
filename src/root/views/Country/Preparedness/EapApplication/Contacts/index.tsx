@@ -10,11 +10,11 @@ import Container from '#components/Container';
 import LanguageContext from '#root/languageContext';
 import InputSection from '#components/InputSection';
 import TextInput from '#components/TextInput';
+import NumberInput from '#components/NumberInput';
 
 import { EapFormFields } from '../common';
 
 import styles from './styles.module.scss';
-import NumberInput from '#components/NumberInput';
 
 type Value = PartialForm<EapFormFields>;
 interface Props {
