@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import type { match as Match } from 'react-router-dom';
 import { PDFViewer } from '@react-pdf/renderer';
 import { isNotDefined } from '@togglecorp/fujs';
@@ -14,8 +14,7 @@ import {
 import { DrefFinalReportApiFields } from '#views/FinalReportForm/common';
 import useAlert from '#hooks/useAlert';
 import Container from '#components/Container';
-
-import FinalReportPdfDocument from '../../components/FinalReportExport/FinalReportPdfDocument';
+import FinalReportPdfDocument from '#components/FinalReportExport/FinalReportPdfDocument';
 
 import styles from './styles.module.scss';
 
@@ -105,7 +104,7 @@ function FinalReportPdfPreview(props: Props) {
 
   const failedToLoadPdf = !pending && isNotDefined(id);
 
-  const pdfLoadingStatus = useMemo(() => {
+  const pdfLoadingStatus = () => {
     if (pending) {
       return (
         <Container>
@@ -125,11 +124,7 @@ function FinalReportPdfPreview(props: Props) {
         </Container>
       );
     }
-  }, [
-    strings,
-    pending,
-    failedToLoadPdf,
-  ]);
+  };
 
   return (
     <Page
