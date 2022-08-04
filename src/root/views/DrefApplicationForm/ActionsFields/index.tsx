@@ -2,6 +2,7 @@ import React, { useMemo } from 'react';
 import {
   randomString,
   isNotDefined,
+  isDefined,
   listToMap,
 } from '@togglecorp/fujs';
 import {
@@ -148,6 +149,7 @@ function ActionsFields(props: Props) {
     nsActionsMap,
     nsActionOptions
   ]);
+
   const isImminentOnset = value.type_of_onset === ONSET_IMMINENT;
 
   const isThereCoordinationMechanism = value.is_there_major_coordination_mechanism;
@@ -233,6 +235,7 @@ function ActionsFields(props: Props) {
         </InputSection>
         <InputSection
           title={strings.drefFormPartnerNationalSociety}
+          description={strings.drefFormPartnerNationalSocietyDescription}
         >
           <TextArea
             name="partner_national_society"
