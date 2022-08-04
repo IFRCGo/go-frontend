@@ -125,7 +125,7 @@ function EarlyActionInput(props: Props) {
 
   const handleActionAddButtonClick = React.useCallback(() => {
     const newList: ActionValue = {
-      clientId:randomString(),
+      clientId: randomString(),
     };
 
     onFieldChange(
@@ -145,7 +145,9 @@ function EarlyActionInput(props: Props) {
   );
 
   const indicatorRendererParams: (
-    key: string, datum: IndicatorValue, index: number
+    key: string,
+    datum: IndicatorValue,
+    index: number,
   ) => IndicatorInputProps = (key, datum, index) => ({
     value: datum,
     onChange: setIndicatorValue,
@@ -157,7 +159,9 @@ function EarlyActionInput(props: Props) {
   });
 
   const riskRendererParams: (
-    key: string, datum: RiskValue, index: number
+    key: string,
+    datum: RiskValue,
+    index: number,
   ) => RisksInputProps = (key, datum, index) => ({
     value: datum,
     onChange: setRiskValue,
@@ -167,7 +171,9 @@ function EarlyActionInput(props: Props) {
   });
 
   const actionRendererParams: (
-    key: string, datum: ActionValue, index: number
+    key: string,
+    datum: ActionValue,
+    index: number,
   ) => ActionInputProps = (key, datum, index) => ({
     value: datum,
     onChange: setActionValue,

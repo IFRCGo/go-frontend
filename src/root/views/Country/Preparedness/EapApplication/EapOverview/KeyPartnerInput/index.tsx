@@ -20,7 +20,7 @@ const defaultKeyPartnersValue: PartialForm<KeyPartner> = {
   clientId: randomString(),
 };
 
-interface Props {
+export interface Props {
   value: PartialForm<KeyPartner>;
   error: ArrayError<KeyPartner> | undefined;
   onChange: (value: SetValueArg<PartialForm<KeyPartner>>, index: number) => void;
@@ -28,7 +28,7 @@ interface Props {
   index: number;
 }
 
-function KeyPartners(props: Props) {
+function KeyPartnerInput(props: Props) {
   const {
     error: errorFromProps,
     onChange,
@@ -73,4 +73,4 @@ function KeyPartners(props: Props) {
   );
 }
 
-export default KeyPartners;
+export default KeyPartnerInput;

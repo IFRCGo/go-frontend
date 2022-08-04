@@ -3,7 +3,7 @@ import { Country, DistrictMini } from "#types/country";
 export interface CountryDistrict {
   clientId: string;
   country: number;
-  district: number[];
+  districts: number[];
 }
 export interface StringValueOption {
   value: string;
@@ -113,12 +113,13 @@ export interface EapFormFields {
   ifrc_focal_email: string;
   ifrc_focal_phone: number;
   country: string;
-  district: string;
+  districts: string;
   disaster_type: number;
   references: Reference[];
   partners: KeyPartner[];
   indicator_value: string[];
   early_act: Action[];
+  clientId: string;
 }
 
 export interface EapsApiFields extends Omit<
@@ -128,20 +129,20 @@ export interface EapsApiFields extends Omit<
   | 'references'
 > {
   country_district: (Omit<CountryDistrict, 'clientId'> & {
-    id: number
-    country_details: Country,
-    district_details: DistrictMini[],
+    id: number;
+    country_details: Country;
+    district_details: DistrictMini[];
   })[];
   documents_details: {
-    id: number,
+    id: number;
     created_by_details: {
-      id: number,
-      username: string,
-      first_name: string,
-      last_name: string,
+      id: number;
+      username: string;
+      first_name: string;
+      last_name: string;
     },
-    file: string,
-    created_by: string,
+    file: string;
+    created_by: string;
   }[];
 }
 
@@ -152,7 +153,7 @@ export interface NumericValueOption {
 
 export const overviewFields: (keyof EapFormFields)[] = [
   'country',
-  'district',
+  'districts',
   'disaster_type',
   'eap_number',
   'approval_date',

@@ -20,7 +20,7 @@ const defaultReferenceValue: PartialForm<Reference> = {
   clientId: randomString(),
 };
 
-interface Props {
+export interface Props {
   value: PartialForm<Reference>;
   error: ArrayError<Reference> | undefined;
   onChange: (value: SetValueArg<PartialForm<Reference>>, index: number) => void;
@@ -28,7 +28,7 @@ interface Props {
   index: number;
 }
 
-function ReferencesItem(props: Props) {
+function ReferenceInput(props: Props) {
   const {
     error: errorFromProps,
     onChange,
@@ -72,4 +72,4 @@ function ReferencesItem(props: Props) {
   );
 }
 
-export default ReferencesItem;
+export default ReferenceInput;

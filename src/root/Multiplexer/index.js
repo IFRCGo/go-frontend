@@ -23,7 +23,6 @@ import {
   currentLanguageSelector,
   disasterTypesSelectSelector,
 } from '#selectors';
-import EapApplication from '#views/Country/Preparedness/EapApplication';
 
 import styles from './styles.module.scss';
 
@@ -61,7 +60,7 @@ const ThreeWEdit = lazy(() => import('../views/ThreeWEdit'));
 const EmergencyThreeWEdit = lazy(() => import('../views/EmergencyThreeWEdit'));
 const EmergencyThreeW = lazy(() => import('../views/EmergencyThreeW'));
 const EmergencyThreeWForm = lazy(() => import('../components/EmergencyThreeWForm'));
-
+const EapApplication = lazy(() => import('../views/Country/Preparedness/EapApplication'));
 const DrefApplicationForm = lazy(() => import('../views/DrefApplicationForm'));
 const DrefPdfPreview = lazy(() => import('../views/DrefPdfPreview'));
 const FlashUpdateApplicationForm = lazy(() => import('../views/FlashUpdateApplicationForm'));

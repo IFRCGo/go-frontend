@@ -23,6 +23,7 @@ import TextInput from '#components/TextInput';
 import Button from '#components/Button';
 import SelectInput from '#components/SelectInput';
 import languageContext from '#root/languageContext';
+import ListView from '#components/ListView';
 
 import {
   EapFormFields,
@@ -31,12 +32,23 @@ import {
   Reference,
   StringValueOption,
 } from '../common';
-import KeyPartnerItem from './KeyPartners';
-import ReferencesItem from './ReferenceItem';
+import ReferenceInput, { Props as ReferenceInputProps } from './ReferenceInput';
+import KeyPartnerInput, { Props as KeyPartnerInputProps } from './KeyPartnerInput';
 
 import styles from './styles.module.scss';
 
 type Value = PartialForm<EapFormFields>;
+
+type ReferenceValue = PartialForm<Reference>;
+type KeyPartnerValue = PartialForm<KeyPartner>;
+
+function referenceKeySelector(value: ReferenceValue) {
+  return value.clientId as string;
+}
+
+function keyPartnerSelector(value: KeyPartnerValue) {
+  return value.clientId as string;
+}
 
 interface Props {
   error: Error<Value> | undefined;
@@ -77,21 +89,19 @@ function EapOverview(props: Props) {
   );
 
   const {
-    setValue: onPartnerChange,
-    removeValue: onPartnerRemove,
+    setValue: setKeyPartnerChange,
+    removeValue: setKeyPartnerRemove,
   } = useFormArray<'partners', PartialForm<KeyPartner>>(
     'partners',
     onValueChange,
   );
 
-  type KeyPartners = typeof value.partners;
   const handlePartnerAddButtonClick = React.useCallback(() => {
-    const clientId = randomString();
-    const newItem: PartialForm<KeyPartner> = {
-      clientId,
+    const newItem: KeyPartnerValue = {
+      clientId: randomString(),
     };
     onValueChange(
-      (oldValue: PartialForm<KeyPartners>) => (
+      (oldValue: KeyPartnerValue[] | undefined) => (
         [...(oldValue ?? []), newItem]
       ),
       'partners' as const,
@@ -99,28 +109,48 @@ function EapOverview(props: Props) {
     setPartners(undefined);
   }, [onValueChange, setPartners]);
 
+  const keyPartnerRendererParams: (
+    key: string, datum: KeyPartnerValue, index: number
+  ) => KeyPartnerInputProps = (key, datum, index) => ({
+    value: datum,
+    onChange: setKeyPartnerChange,
+    index,
+    // error: error?.indicators?.[key],
+    error: undefined,
+    onRemove: setKeyPartnerRemove,
+  });
+
   const {
-    setValue: onReferenceChange,
-    removeValue: onReferenceRemove,
+    setValue: setReferenceChange,
+    removeValue: setReferenceRemove,
   } = useFormArray<'references', PartialForm<Reference>>(
     'references',
     onValueChange,
   );
 
-  type References = typeof value.references;
   const handleReferenceAddButtonClick = React.useCallback(() => {
-    const clientId = randomString();
-    const newItem: PartialForm<Reference> = {
-      clientId,
+    const newItem: ReferenceValue = {
+      clientId: randomString(),
     };
     onValueChange(
-      (oldValue: PartialForm<References>) => (
+      (oldValue: ReferenceValue[] | undefined) => (
         [...(oldValue ?? []), newItem]
       ),
       'references' as const,
     );
     setReference(undefined);
   }, [onValueChange, setReference]);
+
+  const referenceRendererParams: (
+    key: string, datum: ReferenceValue, index: number
+  ) => ReferenceInputProps = (key, datum, index) => ({
+    value: datum,
+    onChange: setReferenceChange,
+    index,
+    // error: error?.indicators?.[key],
+    error: undefined,
+    onRemove: setReferenceRemove,
+  });
 
   return (
     <>
@@ -150,11 +180,11 @@ function EapOverview(props: Props) {
             >
               <SelectInput
                 pending={fetchingDistricts}
-                error={error?.district}
-                name={"district" as const}
+                error={error?.districts}
+                name={"districts" as const}
                 onChange={onValueChange}
                 options={districtOptions}
-                value={value.district}
+                value={value.districts}
               />
             </InputSection>
           </div>
@@ -346,16 +376,16 @@ function EapOverview(props: Props) {
             description={strings.eapsFormKeyPartnersDescription}
           >
             <div className={styles.actions}>
-              {value?.partners?.map((partner, i) => (
-                <KeyPartnerItem
-                  key={partner.clientId}
-                  index={i}
-                  value={partner}
-                  onChange={onPartnerChange}
-                  onRemove={onPartnerRemove}
-                  error={getErrorObject(error?.partners)}
-                />
-              ))}
+              <ListView
+                data={value?.partners}
+                renderer={KeyPartnerInput}
+                keySelector={keyPartnerSelector}
+                rendererParams={keyPartnerRendererParams}
+                errored={!!error}
+                pending={false}
+                emptyMessage={false}
+                pendingMessage="Loading data"
+              />
               <div className={styles.addKeyButton}>
                 <Button
                   name={partners}
@@ -375,24 +405,24 @@ function EapOverview(props: Props) {
             description={strings.eapsFormReferencesDescription}
           >
             <div className={styles.actions}>
-              {value?.references?.map((reference, i) => (
-                <ReferencesItem
-                  key={reference.clientId}
-                  index={i}
-                  value={reference}
-                  onChange={onReferenceChange}
-                  onRemove={onReferenceRemove}
-                  error={getErrorObject(error?.references)}
-                />
-              ))}
+              <ListView
+                data={value?.references}
+                renderer={ReferenceInput}
+                keySelector={referenceKeySelector}
+                rendererParams={referenceRendererParams}
+                errored={!!error}
+                pending={false}
+                emptyMessage={false}
+                pendingMessage="Loading data"
+              />
               <div className={styles.addKeyButton}>
                 <Button
                   className={styles.addKeyButton}
                   name={reference}
                   onClick={handleReferenceAddButtonClick}
                   variant="secondary"
+                  icons={<IoAdd />}
                 >
-                  <IoAdd />
                   {strings.eapsFormAddReferncesLabel}
                 </Button>
               </div>
@@ -406,7 +436,8 @@ function EapOverview(props: Props) {
       >
         <InputSection
           title={strings.eapsFormUploadEapsDocuments}
-          description={strings.eapsFormUploadEapsDocumentsDescription}>
+          description={strings.eapsFormUploadEapsDocumentsDescription}
+        >
           <DREFFileInput
             name="document"
             accept=".pdf"

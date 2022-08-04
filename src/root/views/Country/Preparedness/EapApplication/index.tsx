@@ -34,8 +34,11 @@ import {
 } from './common';
 import EapOverview from './EapOverview';
 import Contacts from './Contacts';
-import { EapFormFields } from './common';
-import EarlyAction from './EarlyActions';
+import { 
+  EapFormFields,
+  EarlyAction,
+ } from './common';
+import EarlyActions from './EarlyActions';
 import useEapFormOptions, { schema } from './useEapFormOptions';
 
 import styles from './styles.module.scss';
@@ -51,19 +54,6 @@ const defaultFormValues: PartialForm<EapFormFields> = {
 
 interface EapsResponseFields {
   id: number;
-}
-
-export function getDefinedValues<T extends Record<string, any>>(o: T): Partial<T> {
-  type Key = keyof T;
-  const keys = Object.keys(o) as Key[];
-  const definedValues: Partial<T> = {};
-  keys.forEach((key) => {
-    if (isDefined(o[key])) {
-      definedValues[key] = o[key];
-    }
-  });
-
-  return definedValues;
 }
 
 type StepTypes = 'eapOverview' | 'earlyActions' | 'contacts';
@@ -339,7 +329,7 @@ function EapApplication(props: Props) {
           />
         </TabPanel>
         <TabPanel name="earlyActions">
-          <EarlyAction
+          <EarlyActions
             earlyActionIndicatorOptions={earlyActionIndicatorsOptions}
             error={error}
             onValueChange={setFieldValue}

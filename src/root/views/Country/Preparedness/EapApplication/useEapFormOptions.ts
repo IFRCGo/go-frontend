@@ -71,7 +71,7 @@ export const schema: FormSchema = {
     ifrc_focal_email: [],
     ifrc_focal_phone: [],
     country: [requiredCondition],
-    district: [],
+    districts: [],
     disaster_type: [],
     indicator_value: [],
     early_act: [],

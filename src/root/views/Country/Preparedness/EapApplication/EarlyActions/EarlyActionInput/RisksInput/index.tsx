@@ -4,6 +4,7 @@ import {
   ArrayError,
   getErrorObject,
   PartialForm,
+  SetValueArg,
   useFormObject,
 } from '@togglecorp/toggle-form';
 import { randomString } from '@togglecorp/fujs';
@@ -17,7 +18,6 @@ import styles from './styles.module.scss';
 
 type Value = PartialForm<Risk>;
 
-type SetValueArg<T> = T | ((value: T) => T);
 const defaultRiskValue: PartialForm<Risk> = {
   clientId: randomString(),
 };

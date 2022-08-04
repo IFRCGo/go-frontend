@@ -30,6 +30,8 @@ type PreparednessValue = PartialForm<EapFormFields, 'id'>;
 interface PreparednessItemProps {
   preparednessValue: PreparednessValue;
 }
+const lastUpDated = 'oct 1.2018';
+const totalActiveEaps = '1';
 
 function PreparednessItem(props: PreparednessItemProps) {
   const { strings } = useContext(LanguageContext);
@@ -52,33 +54,40 @@ function PreparednessItem(props: PreparednessItemProps) {
             {...viewEapDetails}
           />
         </div>
-        {/* Todo */}
+        {/* // TODO: Use actual data */}
         <div>
-          Last Updated: oct 1.2018
+          {strings.eapsFormLastUpdateDate} {lastUpDated}
         </div>
         <div className={styles.eapApproveTab}>
           <div>
-            <Heading>
+            <Heading
+              size='medium'
+            >
               {preparednessValue?.status}
             </Heading>
             {strings.eapsFormStatus}
           </div>
           <div>
-            <Heading>
+            <Heading
+              size='small'
+            >
               {preparednessValue?.approval_date}
             </Heading>
             {strings.eapsFormDateofApproval}
           </div>
         </div>
         <div className={styles.eapTab}>
-          <Heading>
-            1
+          {/* // TODO: Use actual data for total active eaps */}
+          <Heading
+            size='medium'
+          >
+            {totalActiveEaps}
           </Heading>
         </div>
         <div className={styles.eapActivationTab}>
           <div>{preparednessValue?.status}</div>
           <div className={styles.link}>
-            {preparednessValue?.country} - {preparednessValue?.district}
+            {preparednessValue?.country} - {preparednessValue?.districts}
           </div>
         </div>
       </Card>

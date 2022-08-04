@@ -3688,4 +3688,5 @@ export default {
   eapsFormListTheReadinessActivities: 'List the readiness activities (if any)',
   eapsFormPrePositioningActivities: 'Pre-positioning Activities',
   eapsFormListThePrePositioningActivities: 'List the pre-positioning activities (if any)',
+  eapsFormLastUpdateDate: 'Last Update:',
 };

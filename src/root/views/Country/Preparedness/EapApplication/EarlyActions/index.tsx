@@ -33,12 +33,12 @@ import EarlyActionInput, { Props as EarlyActionInputProps } from './EarlyActionI
 import styles from './styles.module.scss';
 
 type Value = PartialForm<EapFormFields>;
-
 type EarlyActionValue = PartialForm<EarlyAction>;
 
-function earlyActionKeySelector(value: EarlyActionValue){
+function earlyActionKeySelector(value: EarlyActionValue) {
   return value.clientId as string;
 }
+
 interface Props {
   earlyActionIndicatorOptions: StringValueOption[];
   error: Error<Value> | undefined;
@@ -92,7 +92,9 @@ function EarlyActions(props: Props) {
   }, [onValueChange, setSelectedSector]);
 
   const earlyActionRendererParams: (
-    key: string, datum: EarlyActionValue, index: number
+    key: string,
+    datum: EarlyActionValue,
+    index: number,
   ) => EarlyActionInputProps = (key, datum, index) => ({
     value: datum,
     onValueChange: onEarlyActionChange,
@@ -110,7 +112,9 @@ function EarlyActions(props: Props) {
     )
   ), [sectorsOptions]);
 
-  const filteredSectorOptions = sectorOptionMap ? sectorsOptions.filter(n => sectorOptionMap[n.value]) : [];
+  const filteredSectorOptions = sectorOptionMap
+    ? sectorsOptions.filter(n => sectorOptionMap[n.value])
+    : [];
 
   return (
     <Container
