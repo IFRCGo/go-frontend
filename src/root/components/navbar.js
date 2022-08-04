@@ -39,6 +39,7 @@ function Navbar(props) {
   const { strings } = React.useContext(LanguageContext);
   const debounceTimeoutRef = React.useRef();
 
+  const ns = user?.data?.profile?.country?.id;
   const orgType = (user?.data?.is_superuser === true) ? '*' :
                    user?.data?.profile?.org_type;
 
@@ -46,11 +47,11 @@ function Navbar(props) {
     window.clearTimeout(debounceTimeoutRef.current);
 
     debounceTimeoutRef.current = window.setTimeout(() => {
-      getElasticSearchOptions(input, orgType, callback);
+      getElasticSearchOptions(input, orgType, ns, callback);
     }, 500);
 
     return false;
-  }, [orgType]);
+  }, [orgType, ns]);
 
   const handleSelect = React.useCallback(({ value }) => {
     history.push(value);
