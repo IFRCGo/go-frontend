@@ -15,7 +15,6 @@ import Map, {
   MapBounds,
   MapChildContext,
 } from '@togglecorp/re-map';
-import { fixBounds } from '#utils/map';
 import turfBbox from '@turf/bbox';
 
 import {
@@ -27,7 +26,9 @@ import {
   COLOR_DARK_RED,
   defaultMapStyle,
   defaultMapOptions,
+  fixBounds,
 } from '#utils/map';
+import { getPrettyBreakpoints } from '#utils/common';
 import Pager from '#components/Pager';
 import Container from '#components/Container';
 import Button from '#components/Button';
@@ -49,18 +50,6 @@ import {
 import styles from './styles.module.scss';
 
 type RiskMetricType = (typeof riskMetricOptions)[number]['value'];
-
-const DISPLACEMENT_LOW = 100;
-const DISPLACEMENT_MEDIUM = 1000;
-const DISPLACEMENT_HIGH = 10000;
-
-const EXPOSURE_LOW = 100;
-const EXPOSURE_MEDIUM = 1000;
-const EXPOSURE_HIGH = 10000;
-
-const FI_EXPOSURE_LOW = 1000000;
-const FI_EXPOSURE_MEDIUM = 10000000;
-const FI_EXPOSURE_HIGH= 100000000;
 
 const INFORM_RISK_VERY_LOW = 0;
 const INFORM_RISK_LOW = 2;
@@ -93,71 +82,38 @@ function LegendItem(props: LegendItemProps) {
   );
 }
 
-// const COLOR_BLUE_GRADIENT_1 = '#e0e3e7';
-// const COLOR_BLUE_GRADIENT_2 = '#ccd2d9';
+const COLOR_BLUE_GRADIENT_1 = '#e0e3e7';
+const COLOR_BLUE_GRADIENT_2 = '#ccd2d9';
 const COLOR_BLUE_GRADIENT_3 = '#aeb7c2';
-// const COLOR_BLUE_GRADIENT_4 = '#99a5b3';
+const COLOR_BLUE_GRADIENT_4 = '#99a5b3';
 const COLOR_BLUE_GRADIENT_5 = '#7d8b9d';
-// const COLOR_BLUE_GRADIENT_6 = '#67788d';
+const COLOR_BLUE_GRADIENT_6 = '#67788d';
 const COLOR_BLUE_GRADIENT_7 = '#4d617a';
-// const COLOR_BLUE_GRADIENT_8 = '#344b67';
+const COLOR_BLUE_GRADIENT_8 = '#344b67';
 const COLOR_BLUE_GRADIENT_9 = '#011e41';
 
-const displacementLegendData = [
-  {
-    color: COLOR_BLUE_GRADIENT_3,
-    label: `Less than ${addSeparator(DISPLACEMENT_LOW)}`
-  },
-  {
-    color: COLOR_BLUE_GRADIENT_5,
-    label: `${addSeparator(DISPLACEMENT_LOW+1)} to ${addSeparator(DISPLACEMENT_MEDIUM)}`
-  },
-  {
-    color: COLOR_BLUE_GRADIENT_7,
-    label: `${addSeparator(DISPLACEMENT_MEDIUM+1)} to ${addSeparator(DISPLACEMENT_HIGH)}`
-  },
-  {
-    color: COLOR_BLUE_GRADIENT_9,
-    label: `More than ${addSeparator(DISPLACEMENT_HIGH)}`
-  },
+const displacementColors = [
+  COLOR_BLUE_GRADIENT_1,
+  COLOR_BLUE_GRADIENT_2,
+  COLOR_BLUE_GRADIENT_3,
+  COLOR_BLUE_GRADIENT_4,
+  COLOR_BLUE_GRADIENT_5,
+  COLOR_BLUE_GRADIENT_6,
+  COLOR_BLUE_GRADIENT_7,
+  COLOR_BLUE_GRADIENT_8,
+  COLOR_BLUE_GRADIENT_9,
 ];
 
-const exposureLegendData = [
-  {
-    color: COLOR_BLUE_GRADIENT_3,
-    label: `Less than ${addSeparator(EXPOSURE_LOW)}`,
-  },
-  {
-    color: COLOR_BLUE_GRADIENT_5,
-    label: `${addSeparator(EXPOSURE_LOW+1)} to ${addSeparator(EXPOSURE_MEDIUM)}`,
-  },
-  {
-    color: COLOR_BLUE_GRADIENT_7,
-    label: `${addSeparator(EXPOSURE_MEDIUM+1)} to ${addSeparator(EXPOSURE_HIGH)}`,
-  },
-  {
-    color: COLOR_BLUE_GRADIENT_9,
-    label: `More than ${addSeparator(EXPOSURE_HIGH)}`,
-  },
-];
-
-const fiExposureLegendData = [
-  {
-    color: COLOR_BLUE_GRADIENT_3,
-    label: `Less than ${addSeparator(FI_EXPOSURE_LOW)}`,
-  },
-  {
-    color: COLOR_BLUE_GRADIENT_5,
-    label: `${addSeparator(FI_EXPOSURE_LOW+1)} to ${addSeparator(FI_EXPOSURE_MEDIUM)}`,
-  },
-  {
-    color: COLOR_BLUE_GRADIENT_7,
-    label: `${addSeparator(FI_EXPOSURE_MEDIUM+1)} to ${addSeparator(FI_EXPOSURE_HIGH)}`,
-  },
-  {
-    color: COLOR_BLUE_GRADIENT_9,
-    label: `More than ${addSeparator(FI_EXPOSURE_HIGH)}`,
-  },
+const exposureColors = [
+  COLOR_BLUE_GRADIENT_1,
+  COLOR_BLUE_GRADIENT_2,
+  COLOR_BLUE_GRADIENT_3,
+  COLOR_BLUE_GRADIENT_4,
+  COLOR_BLUE_GRADIENT_5,
+  COLOR_BLUE_GRADIENT_6,
+  COLOR_BLUE_GRADIENT_7,
+  COLOR_BLUE_GRADIENT_8,
+  COLOR_BLUE_GRADIENT_9,
 ];
 
 const informLegendData = [
@@ -183,25 +139,42 @@ const informLegendData = [
   },
 ];
 
+const MAX_PRETTY_BREAKS = 5;
+
 
 interface MapLegendProps {
   selectedRiskMetric: (typeof riskMetricOptions)[number]['value'];
-  hazardType: HazardTypes;
+  maxValue: number,
 }
 
 function MapLegend(props: MapLegendProps) {
   const {
     selectedRiskMetric,
-    hazardType,
+    maxValue,
   } = props;
+
+  const prettyValues = getPrettyBreakpoints(0, maxValue, MAX_PRETTY_BREAKS, MAX_PRETTY_BREAKS);
+
   const legendData = React.useMemo(() => {
     if (selectedRiskMetric === 'displacement') {
+      const displacementLegendData = [];
+      for (let i = 0; i < prettyValues.ndiv; i += 1) {
+        displacementLegendData.push({
+          color: displacementColors[i],
+          label: `${addSeparator(i * prettyValues.unit)} - ${addSeparator((i + 1) * prettyValues.unit)}`,
+        });
+      }
+
       return displacementLegendData;
     }
 
     if (selectedRiskMetric === 'exposure') {
-      if (hazardType === 'FI') {
-        return fiExposureLegendData;
+      const exposureLegendData = [];
+      for (let i = 0; i < prettyValues.ndiv; i += 1) {
+        exposureLegendData.push({
+          color: displacementColors[i],
+          label: `${addSeparator(i * prettyValues.unit)} - ${addSeparator((i + 1) * prettyValues.unit)}`,
+        });
       }
 
       return exposureLegendData;
@@ -212,7 +185,11 @@ function MapLegend(props: MapLegendProps) {
     }
 
     return [];
-  }, [hazardType, selectedRiskMetric]);
+  }, [prettyValues, selectedRiskMetric]);
+
+  if (maxValue === 0) {
+    return null;
+  }
 
   return (
     <div className={styles.mapLegend}>
@@ -232,6 +209,7 @@ interface ChoroplethProps {
   selectedHazard: HazardTypes;
   selectedMonths: Record<number, boolean>;
   selectedRiskMetric: (typeof riskMetricOptions)[number]['value'];
+  maxValue: number;
 }
 
 function Choropleth(props: ChoroplethProps) {
@@ -240,7 +218,10 @@ function Choropleth(props: ChoroplethProps) {
     selectedHazard,
     selectedMonths,
     selectedRiskMetric,
+    maxValue,
   } = props;
+
+  const prettyValues = getPrettyBreakpoints(0, maxValue, MAX_PRETTY_BREAKS, MAX_PRETTY_BREAKS);
 
   const mc = React.useContext(MapChildContext);
 
@@ -259,7 +240,6 @@ function Choropleth(props: ChoroplethProps) {
       ['get', 'iso3'],
   ];
 
-
   hazardGroupedRiskData.forEach((rd) => {
     const countries = Object.keys(rd);
     countries.forEach((co) => {
@@ -274,29 +254,24 @@ function Choropleth(props: ChoroplethProps) {
         return;
       }
 
+      if (maxValue === 0) {
+        colorProperty.push(iso3);
+        colorProperty.push(COLOR_LIGHT_GREY);
+        return;
+      }
+
       if (selectedRiskMetric === 'displacement') {
         const displacement = getSumForSelectedMonths(
           riskData?.displacement?.monthly,
+          riskData?.displacement?.annualAverage,
           selectedMonths,
         );
+
         let color = COLOR_LIGHT_GREY;
 
         if (isDefined(displacement)) {
-          if (displacement > 0) {
-            color = COLOR_BLUE_GRADIENT_3;
-          }
-
-          if (displacement > DISPLACEMENT_LOW) {
-            color = COLOR_BLUE_GRADIENT_5;
-          }
-
-          if (displacement > DISPLACEMENT_MEDIUM) {
-            color = COLOR_BLUE_GRADIENT_7;
-          }
-
-          if (displacement > DISPLACEMENT_HIGH) {
-            color = COLOR_BLUE_GRADIENT_9;
-          }
+          const index = Math.round(displacement / prettyValues.unit);
+          color = displacementColors[index] ?? COLOR_BLUE_GRADIENT_9;
         }
 
         colorProperty.push(iso3);
@@ -306,30 +281,15 @@ function Choropleth(props: ChoroplethProps) {
       if (selectedRiskMetric === 'exposure') {
         const exposure = getSumForSelectedMonths(
           riskData?.exposure?.monthly,
+          riskData?.exposure?.annualAverage,
           selectedMonths,
         );
 
         let color = COLOR_LIGHT_GREY;
 
         if (isDefined(exposure)) {
-          if (exposure > 0) {
-            color = COLOR_BLUE_GRADIENT_3;
-          }
-
-          const LOW = selectedHazard === 'FI' ? FI_EXPOSURE_LOW : EXPOSURE_LOW;
-          if (exposure > LOW) {
-            color = COLOR_BLUE_GRADIENT_5;
-          }
-
-          const MEDIUM = selectedHazard === 'FI' ? FI_EXPOSURE_MEDIUM: EXPOSURE_MEDIUM;
-          if (exposure > MEDIUM) {
-            color = COLOR_BLUE_GRADIENT_7;
-          }
-
-          const HIGH = selectedHazard === 'FI' ? FI_EXPOSURE_HIGH: EXPOSURE_HIGH;
-          if (exposure > HIGH) {
-            color = COLOR_BLUE_GRADIENT_9;
-          }
+          const index = Math.round(exposure / prettyValues.unit);
+          color = exposureColors[index] ?? COLOR_BLUE_GRADIENT_9;
         }
 
         colorProperty.push(iso3);
@@ -339,6 +299,7 @@ function Choropleth(props: ChoroplethProps) {
       if (selectedRiskMetric === 'informRiskScore') {
         const riskScore = getSumForSelectedMonths(
           riskData?.informRiskScore?.monthly,
+          riskData?.informRiskScore?.annualAverage,
           selectedMonths,
         );
         let color = COLOR_LIGHT_GREY;
@@ -453,13 +414,46 @@ function SeasonalRiskMap(props: Props) {
     });
   }, []);
 
+  const maxValue = React.useMemo(() => {
+    const allValues = riskData.map((rd) => {
+      const countries = Object.keys(rd);
+
+      const values = countries.map((co) => {
+        const countryRiskData = rd[co];
+        if (countryRiskData?.hazardType !== hazardType) {
+          return 0;
+        }
+
+        const iso3 = co?.toUpperCase();
+
+        if (!iso3) {
+          return 0;
+        }
+
+        const currentValue = getSumForSelectedMonths(
+          countryRiskData?.[riskMetric]?.monthly,
+          countryRiskData?.[riskMetric]?.annualAverage,
+          selectedMonths,
+        );
+
+        return currentValue ?? 0;
+      });
+
+      return values;
+    }).flat();
+
+    if (allValues.length === 0) {
+      return 0;
+    }
+    return Math.max(...allValues);
+  }, [riskData, selectedMonths, hazardType, riskMetric]);
 
   return (
     <>
       <Container
         className={_cs(styles.seasonalRiskMap, className)}
         heading="Risk map"
-        description="The map and table below display available information about specific disaster risks for for each month per country. When you move the slider from month to month, the information in the map  will update automatically. Hold Shift to select a range of month."
+        description={`The map and table below display available information about specific disaster risks for each month per country. When you move the slider from month to month, the information in the map will update automatically. Hold Shift to select a range of months -- this will display the cumulative number of people exposed and at risk of displacement. Selecting "Yearly Avg" will display the annual figures from INFORM and the total number of people exposed and at risk of being displaced per country per year.`}
         contentClassName={styles.mapSection}
       >
         <div className={styles.filters}>
@@ -491,6 +485,7 @@ function SeasonalRiskMap(props: Props) {
                 selectedHazard={hazardType}
                 selectedRiskMetric={riskMetric}
                 selectedMonths={selectedMonths}
+                maxValue={maxValue}
               />
             )}
             <MapContainer className={styles.map} />
@@ -500,8 +495,8 @@ function SeasonalRiskMap(props: Props) {
             />
           </Map>
           <MapLegend
-            hazardType={hazardType}
             selectedRiskMetric={riskMetric}
+            maxValue={maxValue}
           />
           <MonthSelector
             name={undefined}

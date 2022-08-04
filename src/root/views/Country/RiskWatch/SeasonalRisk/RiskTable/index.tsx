@@ -18,28 +18,46 @@ import { RiskData } from '../common';
 import styles from './styles.module.scss';
 
 // TODO move to utils
-export function getSumForSelectedMonths(data: undefined | (number | null)[], selectedMonths: Record<number, boolean>) {
-  const dataWithSelectedMonths = data?.filter((_, i) => selectedMonths[i]);
+export function getSumForSelectedMonths(
+  monthlyData: undefined | (number | null)[],
+  yearlyAverage: number | null | undefined,
+  selectedMonths: Record<number, boolean>,
+) {
+  if (selectedMonths?.[12]) {
+    return yearlyAverage;
+  }
+
+  const dataWithSelectedMonths = monthlyData?.filter((_, i) => selectedMonths[i]);
   return sumSafe(dataWithSelectedMonths ?? []);
 }
 
-function getRiskScoreForSelectedMonth(data: undefined | (number | null)[], selectedMonths: Record<number, boolean>) {
+function getRiskScoreForSelectedMonth(
+  monthlyData: undefined | (number | null)[],
+  yearlyAverage: number | null | undefined,
+  selectedMonths: Record<number, boolean>
+) {
+  if (selectedMonths?.[12]) {
+    return riskScoreToCategory(yearlyAverage);
+  }
+
   if (Object.values(selectedMonths).filter(Boolean).length > 1) {
     return '-';
   }
 
-  const dataWithSelectedMonth = data?.filter((_, i) => selectedMonths[i])[0];
+  const dataWithSelectedMonth = monthlyData?.filter((_, i) => selectedMonths[i])[0];
 
   return riskScoreToCategory(dataWithSelectedMonth);
 }
 
 function getDisplacementSumForSelectedMonths(
-  displacementData: undefined | (number | null)[],
-  exposureData: undefined | (number | null)[],
+  monthlyDisplacementData: undefined | (number | null)[],
+  yearlyDisplacementAverage: number | null | undefined,
+  monthlyExposureData: undefined | (number | null)[],
+  yearlyExposureAverage: number | null | undefined,
   selectedMonths: Record<number, boolean>,
 ) {
-  const avgDisplacement = getSumForSelectedMonths(displacementData, selectedMonths);
-  const avgExposure = getSumForSelectedMonths(exposureData, selectedMonths);
+  const avgDisplacement = getSumForSelectedMonths(monthlyDisplacementData, yearlyDisplacementAverage, selectedMonths);
+  const avgExposure = getSumForSelectedMonths(monthlyExposureData, yearlyExposureAverage, selectedMonths);
 
   // Avoid cases where displacement > exposure
   if (isDefined(avgExposure) && isDefined(avgDisplacement)) {
@@ -108,9 +126,9 @@ function RiskTable(props: Props) {
       createStringColumn<RiskData, string | number>(
         'informRiskScore',
         <div className={styles.columnHeading}>
-          Inform Risk Score
+          INFORM Risk Score
           <InfoPopup
-            title="Inform Risk Score"
+            title="INFORM Risk Score"
             description={(
               <>
                 <p>
@@ -124,7 +142,11 @@ function RiskTable(props: Props) {
             )}
           />
         </div>,
-        (item) => getRiskScoreForSelectedMonth(item.informRiskScore?.monthly, selectedMonths),
+        (item) => getRiskScoreForSelectedMonth(
+          item.informRiskScore?.monthly,
+          item.informRiskScore?.annualAverage,
+          selectedMonths,
+        ),
       ),
       createNumberColumn<RiskData, string | number>(
         'peopleExposed',
@@ -135,7 +157,11 @@ function RiskTable(props: Props) {
             description="These figures represent the number of people exposed to each hazard per month, on average. The population exposure figures are from the 2015 UNDRR Global Risk Model, based on average annual exposure to each hazard. The average annual exposure estimates were disaggregated by month based on recorded impacts of observed hazard events."
           />
         </div>,
-        (item) => getSumForSelectedMonths(item.exposure?.monthly, selectedMonths),
+        (item) => getSumForSelectedMonths(
+          item.exposure?.monthly,
+          item.exposure?.annualAverage,
+          selectedMonths
+        ),
         undefined,
         {
           normal: true,
@@ -153,7 +179,9 @@ function RiskTable(props: Props) {
         </div>,
         (item) => getDisplacementSumForSelectedMonths(
           item.displacement?.monthly,
+          item.displacement?.annualAverage,
           item.exposure?.monthly,
+          item.exposure?.annualAverage,
           selectedMonths,
         ),
         undefined,

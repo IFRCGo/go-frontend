@@ -45,7 +45,7 @@ export interface RiskData {
 }
 
 export const riskMetricOptions = [
-  { label: 'Inform Risk Score', value: 'informRiskScore' },
+  { label: 'INFORM Risk Score', value: 'informRiskScore' },
   { label: 'People Exposed', value: 'exposure' },
   { label: 'People at Risk of Displacement', value: 'displacement' },
 ] as const;
