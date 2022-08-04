@@ -411,7 +411,11 @@ export function getElasticSearchOptions(input, orgType, ns, callback) {
         // If the linearized visibility value > linearized value of organization type, not allowed to see that:
         if (line(d.visibility) > nume(orgType)) { return false; }
         // If the organization ~ NS === 8 === linearized visibility, and ns (list) is given in the object, we accept only our ns in the array:
-        if (nume(orgType) === 8 && line(d.visibility) === 8 && d.ns !== null && !d.ns.split(" ").includes(ns.toString())) { return false; }
+        if (nume(orgType) === 8 && line(d.visibility) === 8 && d.ns !== null) {
+          if (ns === undefined || ns === null || !d.ns.split(" ").includes(ns.toString())) {
+            return false;
+          }
+        }
         const value = getUriForType(d.type, d.id, d);
         const date = d.date ? ` (${isoDate(d.date)})` : '';
         const label = `${u(d.type)}: ${d.name}${date}`;
