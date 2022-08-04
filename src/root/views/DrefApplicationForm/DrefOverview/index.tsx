@@ -176,18 +176,6 @@ function DrefOverview(props: Props) {
         visibleOverflow
       >
         <InputSection
-          title={strings.drefFormNationalSociety}
-        >
-          <SelectInput
-            error={error?.national_society}
-            name={"national_society" as const}
-            onChange={handleNSChange}
-            options={nationalSocietyOptions}
-            pending={fetchingNationalSociety}
-            value={value.national_society}
-          />
-        </InputSection>
-        <InputSection
           title={strings.drefFormSharingTitle}
           description={strings.drefFormSharingDescription}
         >
@@ -217,6 +205,18 @@ function DrefOverview(props: Props) {
         heading={strings.drefFormEssentialInformation}
         className={styles.essentialInformation}
       >
+        <InputSection
+          title={strings.drefFormNationalSociety}
+        >
+          <SelectInput
+            error={error?.national_society}
+            name={"national_society" as const}
+            onChange={handleNSChange}
+            options={nationalSocietyOptions}
+            pending={fetchingNationalSociety}
+            value={value.national_society}
+          />
+        </InputSection>
         <CopyFieldReportSection
           value={value}
           onValueSet={onValueSet}
@@ -255,7 +255,7 @@ function DrefOverview(props: Props) {
             error={error?.disaster_category}
             label={(
               <>
-                {strings.drefFormDisasterCategoryLabel}
+                {isImminentOnset ? strings.drefFormImminentDisasterCategoryLabel : strings.drefFormDisasterCategoryLabel}
                 <a
                   className={styles.disasterCategoryHelpLink}
                   target="_blank"

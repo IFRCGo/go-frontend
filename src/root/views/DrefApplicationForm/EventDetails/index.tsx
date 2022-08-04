@@ -189,7 +189,6 @@ function EventDetails(props: Props) {
       </Container>
       <Container
         heading={strings.drefFormDescriptionEvent}
-        className={styles.eventDetails}
       >
         <InputSection
           title={strings.drefFormEventDate}
