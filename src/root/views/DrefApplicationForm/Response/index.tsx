@@ -147,8 +147,6 @@ function Response(props: Props) {
 
   const isSurgePersonnelDeployed = value?.is_surge_personnel_deployed;
 
-
-
   const {
     setValue: onRiskSecurityChange,
     removeValue: onRiskSecurityRemove,
@@ -443,6 +441,7 @@ function Response(props: Props) {
         </InputSection>
         <InputSection
           title={strings.drefFormSurgePersonnelDeployed}
+          description={isSurgePersonnelDeployed && strings.drefFormSurgePersonnelDeployedDescription}
           oneColumn
           multiRow
         >
@@ -455,8 +454,7 @@ function Response(props: Props) {
             onChange={onValueChange}
             error={error?.is_surge_personnel_deployed}
           />
-          {
-            isSurgePersonnelDeployed &&
+          {isSurgePersonnelDeployed &&
             <TextArea
               label={strings.cmpActionDescriptionLabel}
               name="surge_personnel_deployed"

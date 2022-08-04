@@ -58,6 +58,7 @@ function CopyFieldReportSection(props: Props) {
     query: {
       summary: fieldReportSearch,
       limit: 20,
+      countries__in: value?.national_society,
     },
     onSuccess: (response) => {
       if (fieldReportCallbackRef.current) {
