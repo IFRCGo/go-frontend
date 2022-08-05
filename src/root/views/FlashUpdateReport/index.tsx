@@ -24,8 +24,12 @@ import {
 import { FlashUpdateAPIResponseFields } from '#views/FlashUpdateApplicationForm/common';
 
 import ShareButton from './ShareButton';
+import ExportButton from './ExportButton';
 
 import styles from './styles.module.scss';
+import { isIfrcUser } from '#utils/common';
+import FourHundredFour from '#views/FourHundredFour';
+import useReduxState from '#hooks/useReduxState';
 
 function ButtonLikeLink(props: ButtonFeatureProps<undefined> & {
   to: string;
@@ -74,6 +78,7 @@ function FlashUpdateReport(props: Props) {
     }
   } = props;
   const { strings } = useContext(languageContext);
+  const user = useReduxState('me');
   const {
     pending,
     response,
@@ -115,6 +120,12 @@ function FlashUpdateReport(props: Props) {
     (at) => (at.actions.length !== 0 || at.summary)
   );
 
+  const ifrcUser = React.useMemo(() => isIfrcUser(user?.data), [user]);
+  if (!ifrcUser) {
+    return (
+      <FourHundredFour />
+    );
+  }
   return (
     <Page
       className={styles.flashUpdate}
@@ -140,15 +151,19 @@ function FlashUpdateReport(props: Props) {
       }
       actions={response && (
         <>
-            <ShareButton
-              flashUpdateId={response.id}
-            />
-            <ButtonLikeLink
-              variant="primary"
-              to={`/flash-update/${response.id}/edit/`}
-            >
-              Edit
-            </ButtonLikeLink>
+          <ExportButton
+            flashUpdateId={response.id}
+            title={response.title}
+          />
+          <ShareButton
+            flashUpdateId={response.id}
+          />
+          <ButtonLikeLink
+            variant="primary"
+            to={`/flash-update/${response.id}/edit/`}
+          >
+            Edit
+          </ButtonLikeLink>
         </>
       )}
       mainSectionClassName={styles.mainContent}
@@ -175,21 +190,21 @@ function FlashUpdateReport(props: Props) {
               heading={strings.flashUpdateMapTitle}
               contentClassName={styles.maps}
             >
-                {response.map_files.map((item) => (
-                  <div
-                    className={styles.mapItem}
-                    key={item.id}
-                  >
-                    <img
-                      className={styles.image}
-                      src={item.file}
-                      alt=""
-                    />
-                    <div className={styles.caption}>
-                      {item.caption}
-                    </div>
+              {response.map_files.map((item) => (
+                <div
+                  className={styles.mapItem}
+                  key={item.id}
+                >
+                  <img
+                    className={styles.image}
+                    src={item.file}
+                    alt=""
+                  />
+                  <div className={styles.caption}>
+                    {item.caption}
                   </div>
-                ))}
+                </div>
+              ))}
             </Container>
           )}
           {response.graphics_files && response.graphics_files.length > 0 && (
@@ -224,12 +239,13 @@ function FlashUpdateReport(props: Props) {
               {response.actions_taken.map((at) => (
                 (at?.actions?.length !== 0 || isDefined(at?.summary)) && (
                   <Container
+                    className={styles.containerWithShadow}
                     sub
                     heading={at.organization_display}
                     headingSize="small"
-                    hideHeaderBorder
                     contentClassName={styles.actionTakenContent}
                     key={at.id}
+                    headerClassName={styles.headerWithBackground}
                   >
                     {at.summary && (
                       <div className={styles.summary}>
@@ -284,7 +300,7 @@ function FlashUpdateReport(props: Props) {
                   >
                     {r.url}
                   </a>
-                  {r.document_details?.file && (
+                  {r.document_details?.file ? (
                     <ButtonLikeLink
                       external
                       variant="secondary"
@@ -294,6 +310,8 @@ function FlashUpdateReport(props: Props) {
                     >
                       Download document
                     </ButtonLikeLink>
+                  ) : (
+                    <div className={styles.notDownloadLink} />
                   )}
                 </div>
               ))}

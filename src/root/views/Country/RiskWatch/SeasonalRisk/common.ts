@@ -1,4 +1,9 @@
-import { listToMap } from '@togglecorp/fujs';
+import {
+  addSeparator,
+  formattedNormalize,
+  Lang,
+  listToMap,
+} from '@togglecorp/fujs';
 import { HazardTypes } from '#types';
 
 export const hazardTypeOptions = [
@@ -10,6 +15,17 @@ export const hazardTypeOptions = [
 
 export type HazardValueType = (typeof hazardTypeOptions)[number]['value'];
 export type Writable<T> = { -readonly [P in keyof T]: T[P] };
+
+export interface Report {
+  attachment_name: string;
+  attachment_url: string;
+  description: string;
+  email: string;
+  id: number;
+  program: number;
+  publish_report_id: string;
+  report_name: string;
+}
 
 export interface RiskData {
   hazardType: HazardTypes;
@@ -29,7 +45,7 @@ export interface RiskData {
 }
 
 export const riskMetricOptions = [
-  { label: 'Inform Risk Score', value: 'informRiskScore' },
+  { label: 'INFORM Risk Score', value: 'informRiskScore' },
   { label: 'People Exposed', value: 'exposure' },
   { label: 'People at Risk of Displacement', value: 'displacement' },
 ] as const;
@@ -183,6 +199,60 @@ export interface SeasonalResponse {
   raster_displacement_data: ExposureData[];
 }
 
+interface Centroid {
+  type: string;
+  coordinates: number[];
+}
+
+interface Bbox {
+  type: string;
+  coordinates: number[];
+  centroid: Centroid;
+  region: number;
+}
+export interface Sector {
+  id: number;
+  name: string;
+}
+
+export const tableKeySelector = (o: PossibleEarlyActionsResponse) => o.id;
+export interface PossibleEarlyActionsResponse {
+  id: number;
+  hazard_type_display: string;
+  country_details: CountryDetail;
+  name: string;
+  iso: string;
+  iso3: string;
+  bbox: Bbox;
+  hazard_type: string;
+  early_actions: string;
+  hazard_name: string;
+  location: string;
+  sectors: number[];
+  intended_purpose: string;
+  organization: string;
+  budget: number;
+  cost: number;
+  implementation_date: string;
+  implementation_date_raw: string;
+  timeframe: string;
+  timeframe_raw: string;
+  effective_time: string;
+  effective_time_raw: string;
+  number_of_people_covered: number;
+  number_of_people_at_risk: number;
+  scalability: string;
+  cross_cutting: string;
+  resources_used: string;
+  impact_action: string;
+  evidence_of_success: string;
+  resource: string;
+  link_to_resources: string;
+  exist_in_hub: boolean;
+  country: number;
+  sectors_details: Sector[];
+}
+
 export const monthKeys = [
   'january',
   'february',
@@ -197,3 +267,49 @@ export const monthKeys = [
   'november',
   'december',
 ] as const;
+
+export const chartMargin = {
+  top: 20,
+  right: 10,
+  left: 20,
+  bottom: 0,
+};
+
+export function formatNumber(value: number) {
+  const {
+    number,
+    normalizeSuffix,
+  } = formattedNormalize(value, Lang.en);
+
+  const integer = Math.floor(number);
+  const fraction = number - integer;
+
+  let precision = 2;
+  const absoluteValue = Math.abs(number);
+  if (absoluteValue < 1) {
+    precision = Math.ceil(-Math.log10(absoluteValue)) + 1;
+  }
+
+  if (integer > 100) {
+    // 140.1234M -> 140 M
+    precision = 0;
+  } else {
+    // 96.0334M -> 96.03 M
+    if (fraction > 0.01) {
+      precision = 2;
+    } else {
+      precision = 0;
+    }
+  }
+
+  if (normalizeSuffix) {
+    return `${number.toFixed(precision)} ${normalizeSuffix}`;
+  }
+
+  if (fraction) {
+    return String(number.toFixed(precision));
+  }
+
+  return addSeparator(number) ?? '';
+}
+

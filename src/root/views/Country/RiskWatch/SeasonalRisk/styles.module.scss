@@ -11,7 +11,7 @@
     flex-direction: column;
     gap: $spacing*2;
 
-    .eap-section {
+    .links-section {
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -29,5 +29,16 @@
         }
       }
     }
+  }
+}
+
+.report-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $spacing;
+  padding: $spacing 0;
+
+  >* {
+    flex-shrink: 0;
   }
 }

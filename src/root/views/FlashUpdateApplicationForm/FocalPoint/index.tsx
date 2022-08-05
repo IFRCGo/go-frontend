@@ -8,17 +8,13 @@ import {
 
 import Container from '#components/Container';
 import InputSection from '#components/InputSection';
-import RadioInput from '#components/RadioInput';
 import TextInput from '#components/TextInput';
 import languageContext from '#root/languageContext';
-import { optionDescriptionSelector } from '#views/FieldReportForm/common';
 import {
   StringValueOption
 } from '#types';
 import {
   FlashUpdateFields,
-  optionLabelSelector,
-  stringOptionKeySelector,
 } from '../common';
 
 type Value = PartialForm<FlashUpdateFields>;
@@ -36,7 +32,6 @@ function FocalPoints(props: Props) {
     error: formError,
     onValueChange,
     value,
-    shareWithOptions,
   } = props;
 
   const error = getErrorObject(formError);
@@ -118,20 +113,11 @@ function FocalPoints(props: Props) {
       </Container>
       <Container>
         <InputSection
-          title={strings.flashUpdateFormFocalIfrcShareWithTitle}
-          description={strings.flashUpdateFormFocalIfrcShareWithDescription}
+          title={strings.flashUpdateFormVisibilityTitle}
         >
-          <RadioInput
-            name={"share_with" as const}
-            options={shareWithOptions}
-            keySelector={stringOptionKeySelector}
-            labelSelector={optionLabelSelector}
-            descriptionSelector={optionDescriptionSelector}
-            value={value.share_with}
-            error={error?.share_with}
-            onChange={onValueChange}
-          />
-
+          <div>
+            {strings.flashUpdateFormVisibilityDescription}
+          </div>
         </InputSection>
       </Container>
     </>

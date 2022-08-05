@@ -19,6 +19,9 @@ import {
 } from '#types';
 
 import styles from './styles.module.scss';
+import store from '#utils/store';
+
+const currentLanguage = store.getState().lang.current;
 
 const operationTypeOptions: StringValueOption[] = [
   { value: 'project', label: 'Project' },
@@ -71,6 +74,12 @@ function NewThreeW(props: Props) {
       title={strings.newThreeWPageTitle}
       heading={strings.newThreeWPageHeading}
       breadCrumbs={<BreadCrumb crumbs={crumbs} compact />}
+      actions={
+        strings.wikiJsLink3WForm !== undefined && strings.wikiJsLink3WForm.length>0 ?
+        <div style={{display: 'flex', justifyContent:'flex-end', paddingBottom:'8px'}}> 
+            <a href={strings.wikiJsLinkGOWiki+'/'+currentLanguage +'/'+ strings.wikiJsLink3WForm} title='GO Wiki' target='_blank' ><img className='' src='/assets/graphics/content/wiki-help-section.svg' alt='IFRC GO logo'/></a>
+        </div>:null
+      }
     >
       <Container
         visibleOverflow

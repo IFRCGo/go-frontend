@@ -6,6 +6,7 @@ import {
   getErrorObject,
 } from '@togglecorp/toggle-form';
 
+import { resolveUrl } from '#utils/resolveUrl';
 import Container from '#components/Container';
 import InputSection from '#components/InputSection';
 import TextInput from '#components/TextInput';
@@ -54,6 +55,11 @@ function EventDetails(props: Props) {
       <Container
         heading={strings.drefFormPreviousOperations}
         className={styles.previousOperations}
+        description={
+          <a href={resolveUrl(window.location.origin, 'preparedness#operational-learning')}>
+            {strings.drefOperationalLearningPlatformLabel}
+          </a>
+        }
       >
         <InputSection
           title={strings.drefFormAffectSameArea}
@@ -95,7 +101,7 @@ function EventDetails(props: Props) {
           />
         </InputSection>
         <InputSection
-          title={strings.drefFormNsRequest}
+          title={strings.drefFormNsRequestFund}
         >
           <RadioInput
             name={"ns_request_fund" as const}

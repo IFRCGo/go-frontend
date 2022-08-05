@@ -46,12 +46,15 @@ import {
 } from '#components/form-elements/';
 import ThreeWList from '#components/ThreeWList';
 
-// NOTE: Temporary
 // import DrefApplicationList from '#components/DrefApplicationList';
 
 import { countriesSelector, disasterTypesSelectSelector } from '#selectors';
 
 import App from './app';
+import store from '#utils/store';
+import RichTextOutput from "#components/RichTextOutput";
+
+const currentLanguage = store.getState().lang.current;
 
 const Fragment = React.Fragment;
 
@@ -166,7 +169,6 @@ class Account extends React.Component {
     { title: strings.accountInformation, hash: '#account-information' },
     { title: strings.accountNotification, hash: '#notifications' },
     { title: strings.accountPerForms, hash: '#per-forms' },
-    // Note: Temporary
     // { title: strings.accountMyDrefApplications, hash: '#my-dref-applications' },
     { title: strings.accountThreeWForms, hash: '#three-w-forms' }
   ])
@@ -262,7 +264,7 @@ class Account extends React.Component {
   // eslint-disable-next-line camelcase
   UNSAFE_componentWillReceiveProps(nextProps) {
     if (this.props.profile.receivedAt !== nextProps.profile.receivedAt) {
-      if (typeof nextProps.profile.data !== 'undefined' && nextProps.profile.data !== null && typeof nextProps.profile.data.subscription !== 'undefined' && nextProps.profile.data.subscription !== null) {
+      if (typeof nextProps.profile.data !== 'undefined' && nextProps.profile.data !== null && typeof nextProps.profile?.data?.subscription !== 'undefined' && nextProps.profile?.data?.subscription !== null) {
         nextProps.profile.data.subscription.forEach((subscription) => {
           if (typeof subscription.event !== 'undefined' && subscription.event !== null) {
             this.props._getEventById(subscription.event);
@@ -361,7 +363,7 @@ class Account extends React.Component {
     e.preventDefault();
     showGlobalLoading();
     const payload = this.serializeNotifications(this.state.notifications);
-    const id = this.props.profile.data.id;
+    const id = this.props.profile.data?.id;
     this.props._updateSubscriptions(id, payload);
   }
 
@@ -426,7 +428,7 @@ class Account extends React.Component {
   onProfileSubmit(e) {
     e.preventDefault();
     showGlobalLoading();
-    const id = this.props.profile.data.id;
+    const id = this.props.profile.data?.id;
     this.props._updateProfile(id, this.serializeProfile(profileAttributes.slice(1, profileAttributes.length)));
   }
 
@@ -649,7 +651,11 @@ class Account extends React.Component {
                           </div>
                         </div>
                       </div>
-                      <p>{o.description}</p>
+                      { o?.description
+                          ? <RichTextOutput
+                              className='rich-text-section'
+                              value={get(o, 'description', false)}
+                          /> : null }
                     </li>
                   ))}
                 </ul>
@@ -665,7 +671,7 @@ class Account extends React.Component {
   }
 
   renderSubscriptionForm() {
-    this.props.profile.data.subscription.filter(subscription => subscription.event !== null);
+    // this.props.profile.data?.subscription?.filter(subscription => subscription.event !== null);
     const events = [];
     const { strings } = this.context;
     Object.keys(this.props.event.event).forEach(event => {
@@ -836,10 +842,28 @@ class Account extends React.Component {
             {strings.accountTitle}
           </title>
         </Helmet>
-        <BreadCrumb crumbs={[
-          { link: '/account', name: strings.breadCrumbAccount },
-          { link: '/', name: strings.breadCrumbHome }
-        ]} />
+        <div className='container-lg'>
+          <div className='row flex-sm'>
+            <div className='col col-6-sm col-7-mid'>
+            <BreadCrumb crumbs={[
+              { link: '/account', name: strings.breadCrumbAccount },
+              { link: '/', name: strings.breadCrumbHome }
+              ]} compact />
+            </div>
+            {strings.wikiJsLinkUserAccount !== undefined && strings.wikiJsLinkUserAccount.length>0 ?
+            <>
+            <div className='col col-6-sm col-5-mid spacing-half-t'>
+              <div className='row-sm flex flex-justify-flex-end'>
+                <div className='col-sm spacing-half-v'>
+                <a href={strings.wikiJsLinkGOWiki+'/'+currentLanguage +'/'+ strings.wikiJsLinkUserAccount} title='GO Wiki' target='_blank' ><img className='' src='/assets/graphics/content/wiki-help-section.svg' alt='IFRC GO logo'/></a>
+                </div>
+              </div>
+            </div>
+            </>: null
+            }
+          </div>
+        </div>
+
         <section className='inpage'>
           <header className='inpage__header'>
             <div className='inner'>
@@ -895,10 +919,12 @@ class Account extends React.Component {
                       <PerAccount user={this.props.user} />
                     </TabContent>
                   </TabPanel>
-                  {/* NOTE: Temporary
+                  {/*
                   <TabPanel>
                     <TabContent title={strings.accountPerTitle}>
-                      <DrefApplicationList />
+                      <DrefApplicationList
+                        history={this.props.history}
+                      />
                     </TabContent>
                   </TabPanel>
                   */}

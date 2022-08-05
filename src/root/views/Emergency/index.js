@@ -49,7 +49,7 @@ import ProjectFormModal from '#views/Country/ThreeW/ProjectFormModal';
 import Fold from '#components/fold';
 import TabContent from '#components/tab-content';
 import ErrorPanel from '#components/error-panel';
-import Expandable from '#components/expandable';
+// import Expandable from '#components/expandable';
 import Snippets from '#components/emergencies/snippets';
 import EmergencyOverview from '#components/emergencies/overview';
 import SurgeAlertsTable from '#components/connected/alerts-table';
@@ -61,6 +61,7 @@ import { epiSources } from '#utils/field-report-constants';
 import { regionsByIdSelector, disasterTypesSelector, countriesByIso } from '#selectors';
 
 import Activities from './Activities';
+import RichTextOutput from "#components/RichTextOutput";
 
 class Emergency extends React.Component {
   constructor (props) {
@@ -183,7 +184,7 @@ class Emergency extends React.Component {
     // We fetch the Personnel and Alerts here to know whether to render the Surge tab
     // Ideally, we would pass this down to the personnel-table, currently
     // we only use it to check whether there are personnel. #FIXME
-    this.props._getSurgeAlerts(1, { event: id });
+    this.props._getSurgeAlerts(1, { 'event': id, 'is_active': true });
     this.props._getPersonnel(1, {'event_deployed_to': id});
     this.props._getEventSnippets(id);
     this.props._getDeploymentERU(1, {'event': id});
@@ -737,7 +738,7 @@ class Emergency extends React.Component {
       let t = { ...typ };
       const initialItemsLength = t.items.length;
       t.items = t.items.filter(item => {
-        return item.name.indexOf(search) !== -1;
+        return item.name.toLowerCase().indexOf(search.toLowerCase()) !== -1;
       });
       if (t.items.length === 0 && initialItemsLength > 0) {
         t.noSearchResults = true;
@@ -1050,6 +1051,8 @@ class Emergency extends React.Component {
   renderContent () {
     const { fetched, error, data } = this.props.event;
     const { disasterTypes } = this.props;
+    const loggedIn = this.props.isLogged;
+    const su = this.props.profile?.data?.is_superuser;
     if (!fetched || !data) {
       if (error) {
         return (
@@ -1058,7 +1061,11 @@ class Emergency extends React.Component {
               <div className='inner'>
                 <div className='inpage__headline-content'>
                   <h1 className='inpage__title'>
-                    <Translate stringId='fieldReportResourceNotFound'/>
+                    <Translate stringId={
+                       loggedIn ?
+                       (su ? 'fieldReportResourceNotFound' : 'fieldReportResourceNotAuthrzd')
+                       : 'fieldReportResourceNotPublic'
+                    }/>
                   </h1>
                 </div>
               </div>
@@ -1068,7 +1075,10 @@ class Emergency extends React.Component {
                 <div className='prose fold prose--responsive'>
                   <div className='inner'>
                     <p className='inpage_note'>
-                      <Translate stringId='fieldReportResourceDescription'/>
+                      <Translate stringId={
+                        loggedIn ?
+                        (su ? 'fieldReportResourceNotFoundDescr' : 'fieldReportResourceNotAuthrzdDescr')
+                        : 'fieldReportResourceNotPublicDescr'}/>
                     </p>
                   </div>
                 </div>
@@ -1315,10 +1325,10 @@ class Emergency extends React.Component {
                       title={strings.emergencySituationalOverviewTitle}
                       foldWrapperClass="situational-overview fold--main"
                     >
-                      <Expandable
-                        sectionClass="rich-text-section"
-                        limit={4096}
-                        text={summary}
+                      {/* instead of a cuttable <Expandable sectionClass="rich-text-section" limit={4096} text={summary} /> : */}
+                      <RichTextOutput
+                          className='rich-text-section'
+                          value={get(data, 'summary', false)}
                       />
                     </Fold>
                   </TabContent>

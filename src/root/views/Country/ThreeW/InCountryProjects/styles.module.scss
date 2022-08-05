@@ -10,7 +10,7 @@
     >* {
       flex-basis: 0;
       flex-grow: 1;
-      margin: 0 $spacing/2;
+      margin: 0 $spacing*0.5;
     }
   }
 
@@ -41,7 +41,7 @@
 
             .project-detail-item {
               align-items: flex-start;
-              padding: $spacing/4 0;
+              padding: $spacing*0.25 0;
               display: flex;
 
               .name {
@@ -51,7 +51,7 @@
 
               .actions {
                 flex-shrink: 0;
-                margin: 0 $spacing/2;
+                margin: 0 $spacing*0.5;
               }
             }
           }

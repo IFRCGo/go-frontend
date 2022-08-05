@@ -61,14 +61,14 @@ const EmergencyThreeWEdit = lazy(() => import('../views/EmergencyThreeWEdit'));
 const EmergencyThreeW = lazy(() => import('../views/EmergencyThreeW'));
 const EmergencyThreeWForm = lazy(() => import('../components/EmergencyThreeWForm'));
 
-/* NOTE: Temporary
-const DrefApplicationForm = lazy(() => import('../views/DrefApplicationForm'));
-const DrefPdfPreview = lazy(() => import('../views/DrefPdfPreview'));
 const FlashUpdateApplicationForm = lazy(() => import('../views/FlashUpdateApplicationForm'));
 const FlashUpdateReport = lazy(() => import('../views/FlashUpdateReport'));
 const AllFlashUpdates = lazy(() => import('../views/AllFlashUpdates'));
-*/
 
+// const DrefApplicationForm = lazy(() => import('../views/DrefApplicationForm'));
+// const DrefPdfPreview = lazy(() => import('../views/DrefPdfPreview'));
+// const DrefOperationalUpdate = lazy(() => import('#views/DrefOperationalUpdateForm'));
+// const OperationalUpdatePdfPreview = lazy(() => import('#views/DrefOpPdfPreview'));
 
 function LoadingGlobal() {
   return (
@@ -170,7 +170,9 @@ function Multiplexer(props) {
 
 
   React.useEffect(() => {
-    getLanguage(languageRef.current);
+    if (languageRef.current !== 'en') {
+      getLanguage(languageRef.current);
+    }
 
     if (languageRef.current === 'ar') {
       document.body.style.direction = 'rtl';
@@ -214,7 +216,7 @@ function Multiplexer(props) {
   });
 
   const pending = React.useMemo(() => (
-    (languageResponse.fetching || !languageResponse.fetched)
+    (languageResponse.fetching)
     || (allCountriesResponse.fetching || (!allCountriesResponse.cached && !allCountriesResponse.fetched))
     || (allRegionsResponse.fetching || (!allRegionsResponse.cached && !allRegionsResponse.fetched))
     || (!skipUserDetails && (userResponse.fetching || (!userResponse.cached && !userResponse.fetched)))
@@ -251,9 +253,9 @@ function Multiplexer(props) {
               <Route exact path='/reports/:id' component={FieldReport} />
               <Route exact path='/emergencies' component={Emergencies} />
               <Route exact path='/emergencies/all' render={props => <Table {...props} type='emergency' />} />
-              <Route exact path='/emergencies/:id/follow' component={Emergency}/>
-              <Route exact path='/emergencies/:id' component={Emergency}/>
-              <Route exact path='/emergency/:slug' component={EmergencyWrapper}/>
+              <Route exact path='/emergencies/:id/follow' component={Emergency} />
+              <Route exact path='/emergencies/:id' component={Emergency} />
+              <Route exact path='/emergency/:slug' component={EmergencyWrapper} />
               <Route exact path='/regions/:id' render={props => <Region {...props} type='region' />} />
               <Route exact path='/countries/:id' render={props => <Country {...props} type='country' />} />
               <Route exact path='/alerts/all' render={props => <Table {...props} type='alert' />} />
@@ -277,15 +279,18 @@ function Multiplexer(props) {
               <Route exact path='/three-w/' component={GlobalThreeW} />
               <PrivateRoute exact path='/emergency-three-w-form/' component={EmergencyThreeWForm} />
 
-              {/* NOTE: Temporary
               <PrivateRoute key="new-flash-update-application-form" exact path='/flash-update/new/' component={FlashUpdateApplicationForm} />
-              <Route exact path='/flash-update/all/' component={AllFlashUpdates} />
+              <PrivateRoute exact path='/flash-update/all/' component={AllFlashUpdates} />
               <PrivateRoute exact path='/flash-update/:id/edit/' component={FlashUpdateApplicationForm} />
-              <Route exact path='/flash-update/:id/' component={FlashUpdateReport} />
+              <PrivateRoute exact path='/flash-update/:id/' component={FlashUpdateReport} />
 
+              {/* NOTE: Temporary
+              <Route exact path='/dref-operational-update/new/' component={DrefOperationalUpdate} />
               <PrivateRoute key="new-dref-application-form" exact path='/dref-application/new/' component={DrefApplicationForm} />
               <PrivateRoute exact path='/dref-application/:drefId/edit/' component={DrefApplicationForm} />
               <PrivateRoute exact path='/dref-application/:drefId/export/' component={DrefPdfPreview} />
+              <PrivateRoute exact path='/dref-operational-update/:id/edit/' component={DrefOperationalUpdate} />
+              <PrivateRoute exact path='/dref-operational-update/:id/export/' component={OperationalUpdatePdfPreview} />
               */}
 
               <Route component={FourHundredFour} />

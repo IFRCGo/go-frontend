@@ -1,3 +1,5 @@
+@use "sass:math";
+
 .page--emergency {
   .introduction-nav {
     clear: both;
@@ -13,7 +15,7 @@
 
       margin-inline-start: 0;
       @include media(medium-up) {
-        @include column(4/12);
+        @include column(math.div(4, 12));
       }
       li {
         font-size: 0.875rem;
@@ -23,7 +25,7 @@
         font-weight: $base-font-regular;
         .content-highlight {
           font-size: 1.15rem;
-          margin-inline-start: $global-spacing/2;
+          margin-inline-start: $global-spacing*0.5;
           color: rgba(0, 0, 0, 1);
           text-transform: capitalize;
         }
@@ -111,7 +113,7 @@
     font-family: $base-font-family;
     font-size: 2.5rem;
     font-weight: 300;
-    margin-bottom: $global-spacing/2;
+    margin-bottom: $global-spacing*0.5;
   }
 }
 
@@ -129,12 +131,12 @@
 .situation-reports-list {
   list-style: none;
   margin-inline-start: 0;
-  @include column(12/12);
-  margin-bottom: $global-spacing/2;
+  @include column(math.div(12, 12));
+  margin-bottom: $global-spacing*0.5;
   li {
     @include media(medium-up) {
-      @include column(3/10);
-      margin-bottom: $global-spacing/2;
+      @include column(3*0.1);
+      margin-bottom: $global-spacing*0.5;
     }
   }
 }
@@ -142,7 +144,7 @@
 .public-docs-list {
   list-style: none;
   li {
-    margin-bottom: $global-spacing/2;
+    margin-bottom: $global-spacing*0.5;
   }
 }
 
@@ -210,7 +212,7 @@
 
 .map__container__title {
   font-weight: $base-font-regular;
-  margin: ($global-spacing/2 0 0 0);
+  margin: ($global-spacing*0.5 0 0 0);
 }
 
 h2.map__container__title {
@@ -219,7 +221,7 @@ h2.map__container__title {
 
 .map__container__disclaimer {
   font-size: $font-size-xs;
-  padding: $global-spacing ($global-spacing/2);
+  padding: $global-spacing ($global-spacing*0.5);
 }
 
 .response__doc__col {
@@ -343,7 +345,7 @@ a.response__doc__item {
       .emergency__affected__no {
         width: 100%;
         text-align: inline-start;
-        margin-top: ($spacing-half / 2);
+        margin-top: ($spacing-half * 0.5);
       }
     }
   }

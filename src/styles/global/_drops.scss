@@ -81,11 +81,11 @@
   }
 
   .drop--down.drop--open > & {
-    margin-top: $global-spacing / 2;
+    margin-top: $global-spacing * 0.5;
   }
 
   .drop--up.drop--open > & {
-    margin-bottom: $global-spacing / 2;
+    margin-bottom: $global-spacing * 0.5;
   }
 }
 
@@ -128,22 +128,22 @@
 
 @mixin drop-top-start() {
   opacity: 0;
-  transform: translate(0, -($global-spacing / 2));
+  transform: translate(0, -($global-spacing * 0.5));
 }
 
 @mixin drop-top-end() {
   opacity: 1;
-  transform: translate(0, ($global-spacing / 2));
+  transform: translate(0, ($global-spacing * 0.5));
 }
 
 @mixin drop-bottom-start() {
   opacity: 0;
-  transform: translate(0, ($global-spacing / 2));
+  transform: translate(0, ($global-spacing * 0.5));
 }
 
 @mixin drop-bottom-end() {
   opacity: 1;
-  transform: translate(0, -($global-spacing / 2));
+  transform: translate(0, -($global-spacing * 0.5));
 }
 
 @mixin drop-left-start() {
@@ -279,7 +279,7 @@
   list-style: none;
   margin: (-$global-spacing) (-$global-spacing) $global-spacing (-$global-spacing);
   box-shadow: 0 $base-border-width 0 0 $base-alpha-color;
-  padding: ($global-spacing / 2) 0;
+  padding: ($global-spacing * 0.5) 0;
   min-width: 12rem;
 
   &:last-child {
@@ -329,8 +329,8 @@
       @extend %collecticon-sm-tick;
       position: absolute;
       z-index: 1;
-      top: $global-spacing / 4;
-      right: $global-spacing / 2;
+      top: $global-spacing * 0.25;
+      right: $global-spacing * 0.5;
       font-size: 1rem;
       line-height: 1.5rem;
       opacity: 0.48;
@@ -350,7 +350,7 @@
     > [class^="collecticon-"] {
       position: absolute;
       z-index: 1;
-      top: $global-spacing / 4;
+      top: $global-spacing * 0.25;
       left: $global-spacing;
       font-size: 1rem;
       line-height: 1.5rem;

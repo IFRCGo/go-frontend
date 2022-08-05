@@ -52,6 +52,10 @@ import {
 } from './common';
 import styles from './styles.module.scss';
 
+import store from '#utils/store';
+
+const currentLanguage = store.getState().lang.current;
+
 const defaultFormValues: PartialForm<FormType> = {
   status: STATUS_EVENT,
   is_covid_report: false,
@@ -344,6 +348,12 @@ function FieldReportForm(props: Props) {
         title={isDefined(reportId) ? strings.fieldReportUpdateFormPageTitle : strings.fieldReportFormPageTitle}
         heading={isDefined(reportId) ? strings.fieldReportUpdate : strings.fieldReportCreate}
         breadCrumbs={<BreadCrumb crumbs={crumbs} compact />}
+        actions={
+          strings.wikiJsLinkFRForm !== undefined && strings.wikiJsLinkFRForm.length>0 ?
+            <div style={{display: 'flex', justifyContent:'flex-end', paddingBottom:'8px'}}> 
+                <a href={strings.wikiJsLinkGOWiki+'/'+currentLanguage +'/'+ strings.wikiJsLinkFRForm} title='GO Wiki' target='_blank' ><img className='' src='/assets/graphics/content/wiki-help-section.svg' alt='IFRC GO logo'/></a>
+            </div>:null
+        }
         info={(
           <TabList className={styles.tabList}>
             <Tab

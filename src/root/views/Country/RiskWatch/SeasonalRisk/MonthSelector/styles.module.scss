@@ -1,0 +1,121 @@
+@import "~styles/settings/variables";
+
+.month-selector {
+  display: flex;
+  align-items: flex-start;
+  gap: $spacing;
+
+  $__tick-width: 1.5ch;
+  $__border-width: $base-border-width * 2;
+
+  .month-list {
+    flex-grow: 1;
+    display: flex;
+    align-items: flex-start;
+
+    .tick-item {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      flex-shrink: 0;
+      cursor: pointer;
+      gap: $spacing;
+
+      .tick {
+        width: $__border-width;
+        height: calc(#{$__tick-width * 0.75} + #{$__border-width * 0.5});
+        background-color: $grey-titanium;
+        border-radius: 50%;
+        position: relative;
+        transform: translateY(-$__tick-width * 0.25);
+        min-height: $__tick-width;
+
+        &::before {
+          position: absolute;
+          right: 0;
+          top: calc(#{$__tick-width * 0.5} - #{$__border-width * 0.5});
+          content: '';
+          width: $__tick-width;
+          height: $__border-width;
+          background-color: $grey-titanium;
+          transform: translate(-$__border-width, $__tick-width * 0.25);
+        }
+
+        &::after {
+          position: absolute;
+          right: 0;
+          top: calc(#{$__tick-width * 0.5} - #{$__border-width * 0.5});
+          content: '';
+          width: $__tick-width;
+          height: $__border-width;
+          background-color: $grey-titanium;
+          transform: translate(100%, $__tick-width * 0.25);
+        }
+      }
+
+      .month-name {
+        font-weight: $base-font-medium;
+        font-size: $font-size-sm;
+      }
+
+      &.active {
+        color: $primary-color;
+
+        .tick {
+          width: $__tick-width;
+          height: $__tick-width;
+          background-color: $primary-color;
+          transform: translateY(0);
+
+          &::after {
+            background-color: $primary-color;
+            width: $__tick-width;
+            transform: translateX(100%);
+          }
+
+          &::before {
+            transform: translateX(-$__tick-width);
+            background-color: $primary-color;
+            width: $__tick-width;
+          }
+        }
+      }
+    }
+
+    .track {
+      flex-grow: 1;
+      height: $__border-width;
+      background-color: $grey-titanium;
+      margin-bottom: calc(#{$__tick-width * 0.5} - #{$__border-width * 0.5});
+      align-self: flex-end;
+
+      &.active-track {
+        background-color: $primary-color;
+      }
+
+      &:last-child,
+      &:first-child {
+        flex-grow: 0.2;
+      }
+    }
+  }
+
+  .yearly-average {
+    flex-basis: calc(100% / 13);
+
+    .tick-item {
+      .month-name {
+        font-weight: $base-font-medium;
+        font-size: $font-size-sm;
+      }
+
+      &.active {
+        .month-name {
+          color: $primary-color;
+        }
+      }
+    }
+  }
+}

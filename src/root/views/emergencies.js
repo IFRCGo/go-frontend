@@ -3,9 +3,7 @@ import { connect } from 'react-redux';
 import { DateTime } from 'luxon';
 import { PropTypes as T } from 'prop-types';
 import { Helmet } from 'react-helmet';
-
-// @NOTE: Temporary
-// import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import App from '#views/app';
 
@@ -16,13 +14,45 @@ import EmergenciesDash from '#components/connected/emergencies-dash';
 import EmergenciesTable from '#components/connected/emergencies-table';
 import { allCountriesSelector } from '#selectors';
 
-import { getLastMonthsEmergencies, getAggregateEmergencies } from '#actions';
+import store from '#utils/store';
+import {
+  getLastMonthsEmergencies,
+  getAggregateEmergencies,
+} from '#actions';
 import { environment } from '#config';
-
 import LanguageContext from '#root/languageContext';
+import FlashUpdateTableLists from '#views/AllFlashUpdates/TableLists';
+import { isIfrcUser } from '#utils/common';
+import useReduxState from '#hooks/useReduxState';
 
-// @NOTE: Temporary
-// import FlashUpdateTableLists from '#views/AllFlashUpdates/TableLists';
+function FlashUpdateLink(props) {
+  const user = useReduxState('me');
+  const ifrcUser = React.useMemo(() => isIfrcUser(user?.data), [user]);
+  if (!ifrcUser) {
+    return null;
+  }
+
+  return (
+    <div className='inner inner--field-reports-emergencies'>
+      <FlashUpdateTableLists
+        itemPerPage={4}
+        actions={(
+          <div className="fold__title__linkwrap">
+            <Link
+              className="fold__title__link"
+              to="/flash-update/all/"
+            >
+              {props.label}
+            </Link>
+            <span className="collecticon-chevron-right" />
+          </div>
+        )}
+      />
+    </div>
+  );
+}
+
+const currentLanguage = store.getState().lang.current;
 
 class Emergencies extends React.Component {
   componentDidMount() {
@@ -34,6 +64,7 @@ class Emergencies extends React.Component {
     const {
       lastMonth,
     } = this.props;
+
     const { strings } = this.context;
     const pending = !(lastMonth?.fetched);
     const count = lastMonth?.data?.count;
@@ -47,7 +78,34 @@ class Emergencies extends React.Component {
           </title>
         </Helmet>
         <section className='inpage'>
-          <BreadCrumb crumbs={[{ link: '/emergencies', name: strings.breadCrumbEmergencies }, { link: '/', name: strings.breadCrumbHome }]} />
+          <div className='container-lg'>
+            <div className='row flex-sm'>
+              <div className='col col-6-sm col-7-mid'>
+              <BreadCrumb crumbs={[
+                { link: '/emergencies', name: strings.breadCrumbEmergencies },
+                { link: '/', name: strings.breadCrumbHome }
+                ]} compact />
+              </div>
+              {strings.wikiJsLinkEmergencies && (
+                <div className='col col-6-sm col-5-mid spacing-half-t'>
+                  <div className='row-sm flex flex-justify-flex-end'>
+                    <div className='col-sm spacing-half-v'>
+                      <a
+                        href={`${strings.wikiJsLinkGOWiki}/${currentLanguage}/${strings.wikiJsLinkEmergencies}`}
+                        title='GO Wiki' target='_blank'
+                      >
+                        <img
+                          className=''
+                          src='/assets/graphics/content/wiki-help-section.svg'
+                          alt='IFRC GO logo'
+                        />
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
           {pending ? (
             <BlockLoading />
           ) : (
@@ -64,24 +122,9 @@ class Emergencies extends React.Component {
                     showHeader={false}
                   />
                 </div>
-                {/* @NOTE: Temporary
-                <div className='inner inner--field-reports-emergencies'>
-                  <FlashUpdateTableLists
-                    itemPerPage={4}
-                    actions={(
-                      <div className="fold__title__linkwrap">
-                        <Link
-                          className="fold__title__link"
-                          to="/flash-update/all/"
-                        >
-                          {strings.flashUpdateReportsTableViewAllReports}
-                        </Link>
-                        <span className="collecticon-chevron-right" />
-                      </div>
-                    )}
-                  />
-                </div>
-                */}
+                <FlashUpdateLink
+                  label={strings.flashUpdateReportsTableViewAllReports}
+                />
                 <div className='inner inner--field-reports-emergencies'>
                   <FieldReportsTable
                     title={strings.fieldReportsTableTitle}
@@ -91,7 +134,7 @@ class Emergencies extends React.Component {
                 </div>
               </div>
             </>
-          )};
+          )}
         </section>
       </App>
     );

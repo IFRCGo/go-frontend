@@ -4,7 +4,7 @@
   display: flex;
   align-items: flex-start;
   cursor: pointer;
-  gap: $spacing/2;
+  gap: $spacing*0.5;
 
   .checkmark {
     display: flex;

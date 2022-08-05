@@ -34,7 +34,7 @@
 
     .header {
       flex-shrink: 0;
-      padding: $spacing * 3/4;
+      padding: $spacing * 3*0.25;
     }
 
     .content {
@@ -59,7 +59,7 @@
   &.sub {
     >.inner-container {
       .content {
-        padding: $spacing/2 0;
+        padding: $spacing*0.5 0;
       }
     }
   }

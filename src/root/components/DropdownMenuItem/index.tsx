@@ -15,9 +15,10 @@ interface BaseProps {
   className?: string;
   icon?: React.ReactNode;
   label?: React.ReactNode;
+  disabled?: boolean;
 }
 
-type Props<N extends string | number> = BaseProps & ({
+type Props<N> = BaseProps & ({
   name?: N;
   onClick: RawButtonProps<N>['onClick'];
   href?: never;
@@ -29,21 +30,26 @@ type Props<N extends string | number> = BaseProps & ({
   name?: never;
 })
 
-function DropdownMenuItem<N extends string | number>(props: Props<N>) {
+function DropdownMenuItem<N>(props: Props<N>) {
   const {
     className: classNameFromProps,
     icon,
     label,
+    disabled,
   } = props;
 
   const isExternalLink = React.useMemo(() => (
     props.href
     && typeof props.href === 'string'
     && (isValidUrl(props.href)
-        || props.href.startsWith('mailto:'))
+      || props.href.startsWith('mailto:'))
   ), [props.href]);
 
-  const className = _cs(styles.dropdownMenuItem, classNameFromProps);
+  const className = _cs(
+    styles.dropdownMenuItem,
+    disabled && styles.disabled,
+    classNameFromProps,
+  );
 
   const children = (
     <>
@@ -82,13 +88,13 @@ function DropdownMenuItem<N extends string | number>(props: Props<N>) {
     );
   }
 
-
   if (props.name) {
     return (
       <RawButton
         className={className}
         name={props.name}
         onClick={props.onClick}
+        disabled={disabled}
       >
         {children}
       </RawButton>

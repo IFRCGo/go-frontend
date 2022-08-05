@@ -58,6 +58,12 @@ export type InterventionSchemaFields = ReturnType<InterventionSchema['fields']>;
 export type InterventionsSchema = ArraySchema<PartialForm<InterventionType>>;
 export type InterventionsSchemaMember = ReturnType<InterventionsSchema['member']>;
 
+export type IndicatorType = InterventionType['indicators'][number];
+export type IndicatorSchema = ObjectSchema<PartialForm<IndicatorType>>;
+export type IndicatorSchemaFields = ReturnType<IndicatorSchema['fields']>;
+export type IndicatorsSchema = ArraySchema<PartialForm<IndicatorType>>;
+export type IndicatorsSchemaMember = ReturnType<IndicatorsSchema['member']>;
+
 export type NsActionType = NonNullable<NonNullable<DrefFields['national_society_actions']>>[number];
 export type NsActionSchema = ObjectSchema<PartialForm<NsActionType>>;
 export type NsActionSchemaFields = ReturnType<NsActionSchema['fields']>;
@@ -69,6 +75,11 @@ export const MaxIntLimit = 2147483647;
 export function max10CharCondition(value: any) {
   return isDefined(value) && value.length > 10
     ? 'only 10 characters are allowed'
+    : undefined;
+}
+export function max500CharCondition(value: any) {
+  return isDefined(value) && value.length > 500
+    ? 'Maximum 500 characters are allowed'
     : undefined;
 }
 
@@ -123,7 +134,7 @@ export const schema: FormSchema = {
     cover_image: [],
 
     event_date: [],
-    event_text: [],
+    event_text: [max500CharCondition],
     anticipatory_actions: [],
 
     go_field_report_date: [],
@@ -196,8 +207,20 @@ export const schema: FormSchema = {
           title: [requiredCondition],
           budget: [requiredCondition, positiveIntegerCondition, lessThanOrEqualToCondition(MaxIntLimit)],
           person_targeted: [requiredCondition, positiveIntegerCondition, lessThanOrEqualToCondition(MaxIntLimit)],
-          indicator: [],
+          indicators: {
+            keySelector: (n) => n.clientId as string,
+            member: (): IndicatorsSchemaMember => ({
+              fields: (): IndicatorSchemaFields => ({
+                clientId: [],
+                title: [],
+                target: [positiveNumberCondition],
+              })
+            })
+          },
           description: [],
+          progress_towards_outcome: [],
+          male: [],
+          female: [],
         }),
       }),
     },

@@ -231,13 +231,14 @@ function Context(props: Props) {
         </InputSection>
         <InputSection
           title={strings.flashUpdateFormContextSituationalTitle}
-          description={strings.flashUpdateFormContextSituationalDescription}
+          // Moved into the area as placeholder: description={...}
         >
           <RichTextArea
             name="situational_overview"
-            onChange={onValueChange}
             value={value.situational_overview}
+            onChange={onValueChange}
             error={error?.situational_overview}
+            placeholder={strings.flashUpdateFormContextSituationalDescription}
           />
         </InputSection>
         <InputSection

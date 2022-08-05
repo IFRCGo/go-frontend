@@ -3,6 +3,8 @@
    ========================================================================== */
 
 
+@use "sass:math";
+
 .page--frep-form {
 
   .fold__body > .form__group {
@@ -63,19 +65,19 @@
 
 .sources-list {
   &__item {
-    @include column(12/12);
+    @include column(math.div(12, 12));
     margin-bottom: $global-spacing * 1.5;
 
     @include media(small-up) {
-      @include column(6/12, $cycle: 2);
+      @include column(math.div(6, 12), $cycle: 2);
     }
 
     @include media(medium-up) {
-      @include column(4/12, $cycle: 3);
+      @include column(math.div(4, 12), $cycle: 3);
     }
 
     @include media(large-up) {
-      @include column(3/12, $cycle: 4);
+      @include column(math.div(3, 12), $cycle: 4);
     }
   }
 }
@@ -312,7 +314,7 @@
 .form__actions {
   button {
     &:first-child {
-      margin-inline-end: $global-spacing/2;
+      margin-inline-end: $global-spacing*0.5;
     };
   }
 }

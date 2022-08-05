@@ -328,14 +328,13 @@ const pdfStyles = StyleSheet.create({
   },
   piIconCell: {
     display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: 30,
-    height: 30,
+    justifyContent: 'flex-start',
+    border: TABLE_BORDER,
+    padding: `0 ${SMALL_PADDING}`,
   },
   piIcon: {
-    width: 20,
-    height: 20,
+    width: 40,
+    height: 40,
   },
   piSubRow: {
     display: 'flex',
@@ -344,8 +343,8 @@ const pdfStyles = StyleSheet.create({
   },
   piHeaderCell: {
     flexBasis: SECTION_WIDTH * 0.3,
-    border: TABLE_BORDER,
     padding: SMALL_PADDING,
+    border: TABLE_BORDER,
     color: COLOR_SECONDARY,
     fontSize: FONT_SIZE_LARGE,
     fontWeight: 'bold',
@@ -359,11 +358,11 @@ const pdfStyles = StyleSheet.create({
     padding: SMALL_PADDING,
     border: TABLE_BORDER,
     flexBasis: '30%',
+    fontWeight: 'bold'
   },
   piSubContentCell: {
     padding: SMALL_PADDING,
     border: TABLE_BORDER,
-    fontWeight: 'bold',
     flexBasis: '70%',
   },
   piBorderCell: {
@@ -386,14 +385,13 @@ const pdfStyles = StyleSheet.create({
   },
   niIconCell: {
     display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: 30,
-    height: 30,
+    justifyContent: 'flex-start',
+    border: TABLE_BORDER,
+    padding: `0 ${SMALL_PADDING}`,
   },
   niIcon: {
-    width: 20,
-    height: 20,
+    width: 40,
+    height: 40,
   },
   niHeaderCell: {
     padding: SMALL_PADDING,
@@ -442,6 +440,15 @@ const pdfStyles = StyleSheet.create({
 
   contactDetails: {
     marginLeft: SPACING_SMALL,
+  },
+
+  fontWeightNormalAndSmall: {
+    fontWeight: 'light',
+  },
+
+  fontWeightBoldAndLarge: {
+    fontWeight: 'bold',
+    fontSize: FONT_SIZE_LARGE,
   },
 });
 

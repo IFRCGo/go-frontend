@@ -57,7 +57,7 @@
       .meta {
         display: flex;
         flex-direction: column;
-        gap: $spacing/2;
+        gap: $spacing*0.5;
         padding: $spacing 0;
 
         .meta-label {
@@ -76,7 +76,7 @@
             .sector-output {
               display: flex;
               flex-direction: column;
-              gap: $spacing/2;
+              gap: $spacing*0.5;
 
               .title {
                 font-weight: $base-font-medium;
@@ -95,7 +95,7 @@
               .list-item {
                 display: flex;
                 align-items: baseline;
-                gap: $spacing/2;
+                gap: $spacing*0.5;
 
                 .icon {
                   flex-shrink: 0;

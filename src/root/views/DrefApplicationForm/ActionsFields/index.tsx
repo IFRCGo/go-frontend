@@ -173,7 +173,7 @@ function ActionsFields(props: Props) {
         ))}
       </Container>
       <Container
-        heading={strings.drefFormMovementPartnets}
+        heading={strings.drefFormMovementPartners}
       >
         <InputSection
           title={strings.drefFormIfrc}

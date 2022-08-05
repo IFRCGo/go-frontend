@@ -2,11 +2,13 @@
    Global: Banners
    ========================================================================== */
 
+@use "sass:math";
+
 .global__banner {
   color: #fff;
   font-size: $font-size-sm;
   font-weight: $base-font-medium;
-  padding: ($global-spacing / 1.5);
+  padding: math.div($global-spacing, 1.5);
 
   a {
     color: currentColor;

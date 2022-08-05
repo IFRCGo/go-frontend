@@ -36,11 +36,13 @@ import {
   CountryDistrict,
   ONSET_IMMINENT,
   emptyNumericOptionList,
+  ONSET_SUDDEN,
 } from '../common';
 import { CountryDistrictType } from '../useDrefFormOptions';
 import CountryDistrictInput from './CountryDistrictInput';
 import CopyFieldReportSection from './CopyFieldReportSection';
 import styles from './styles.module.scss';
+import TextArea from '#components/TextArea';
 
 type Value = PartialForm<DrefFields>;
 interface Props {
@@ -116,6 +118,9 @@ function DrefOverview(props: Props) {
   }, [onValueChange]);
 
   const isImminentOnset = value.type_of_onset === ONSET_IMMINENT;
+  const isSuddenOnSet = value.type_of_onset === ONSET_SUDDEN ? false : value.emergency_appeal_planned;
+  onValueChange(isSuddenOnSet, 'emergency_appeal_planned');
+
   const handleUserSearch = React.useCallback((input: string | undefined, callback) => {
     if (!input) {
       callback(emptyNumericOptionList);
@@ -197,7 +202,7 @@ function DrefOverview(props: Props) {
         <CopyFieldReportSection
           value={value}
           onValueSet={onValueSet}
-          />
+        />
         <InputSection
           title={isImminentOnset ? strings.drefFormImminentDisasterDetails : strings.drefFormDisasterDetails}
           multiRow
@@ -223,17 +228,17 @@ function DrefOverview(props: Props) {
           <SelectInput
             error={error?.disaster_category}
             label={(
-                <>
-                  {strings.drefFormDisasterCategoryLabel}
-                  <a
-                    className={styles.disasterCategoryHelpLink}
-                    target="_blank"
-                    title="Click to view Emergency Response Framework"
-                    href="https://www.ifrc.org/sites/default/files/2021-07/IFRC%20Emergency%20Response%20Framework%20-%202017.pdf"
-                  >
-                    <IoHelpCircle />
-                  </a>
-                </>
+              <>
+                {strings.drefFormDisasterCategoryLabel}
+                <a
+                  className={styles.disasterCategoryHelpLink}
+                  target="_blank"
+                  title="Click to view Emergency Response Framework"
+                  href="https://www.ifrc.org/sites/default/files/2021-07/IFRC%20Emergency%20Response%20Framework%20-%202017.pdf"
+                >
+                  <IoHelpCircle />
+                </a>
+              </>
             )}
             name={"disaster_category" as const}
             onChange={onValueChange}
@@ -325,7 +330,7 @@ function DrefOverview(props: Props) {
             showStatus
             value={value.event_map}
           >
-            {strings.drefFormUploadImageLabel}
+            {strings.drefFormUploadAnImageLabel}
           </DREFFileInput>
         </InputSection>
         <InputSection
@@ -341,7 +346,7 @@ function DrefOverview(props: Props) {
             showStatus
             value={value.cover_image}
           >
-            {strings.drefFormUploadImageLabel}
+            {strings.drefFormUploadAnImageLabel}
           </DREFFileInput>
         </InputSection>
       </Container>
@@ -349,16 +354,29 @@ function DrefOverview(props: Props) {
         heading={strings.drefFormTimeFrames}
         className={styles.timeframes}
       >
-        <InputSection
-          title={!isImminentOnset ? strings.drefFormEventDate : strings.drefFormDateOfImpact}
-        >
-          <DateInput
-            name="event_date"
-            value={value.event_date}
-            onChange={onValueChange}
-            error={error?.event_date}
-          />
-        </InputSection>
+        {!isImminentOnset ?
+          <InputSection
+            title={strings.drefFormEventDate}
+          >
+            <DateInput
+              name="event_date"
+              value={value.event_date}
+              onChange={onValueChange}
+              error={error?.event_date}
+            />
+          </InputSection>
+          :
+          <InputSection
+            title={strings.drefFormApproximateDateOfImpact}
+          >
+            <TextArea
+              name="event_text"
+              value={value.event_text}
+              onChange={onValueChange}
+              error={error?.event_text}
+            />
+          </InputSection>
+        }
         <InputSection
           title={strings.drefFormGoFieldReportDate}
         >

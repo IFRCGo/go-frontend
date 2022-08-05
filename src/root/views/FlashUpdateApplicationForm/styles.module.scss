@@ -1,14 +1,5 @@
 @import '~styles/settings/_variables.scss';
 
-.new-field-report-form {
-  padding: 0;
-
-  .tab-list {
-    justify-content: center;
-    margin: $spacing*2 4vw;
-  }
-}
-
 .actions {
   padding: $spacing*3 $spacing;
   display: flex;
@@ -16,7 +7,7 @@
   justify-content: center;
 
   >* {
-    margin: 0 $spacing/2;
+    margin: 0 $spacing*0.5;
   }
 }
 

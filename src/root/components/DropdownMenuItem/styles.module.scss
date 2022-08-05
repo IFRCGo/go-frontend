@@ -4,23 +4,28 @@
   display: flex;
   width: 100%;
   align-items: center;
-  padding: $spacing/2;
+  padding: $spacing*0.5;
 
   .icon-container {
     display: flex;
     align-items: center;
     font-size: 1.2em;
-    padding: 0 $spacing/2;
+    padding: 0 $spacing*0.5;
   }
 
   .label {
     display: flex;
     align-items: center;
-    padding:  0 $spacing/2;
+    padding:  0 $spacing*0.5;
     font-weight: $base-font-medium;
   }
 
   &:hover {
     background-color: lighten($primary-color, 40%);
+  }
+
+  &.disabled {
+    pointer-events: none;
+    opacity: 0.5;
   }
 }

@@ -2,6 +2,8 @@
    Preparedness Page
    ========================================================================== */
 
+@use "sass:math";
+
 .component__block__wrap {
 
   @include media(medium) {
@@ -17,7 +19,7 @@
 
 .component__block__title__block {
   font-size: $font-size-sm;
-  padding: $global-spacing/2.5;
+  padding: math.div($global-spacing, 2.5);
   border-bottom: 1px solid $base-border-color;
 }
 
@@ -37,14 +39,14 @@
 
 .component__block__content {
   font-size: $font-size-sm;
-  padding: $global-spacing/2 $global-spacing/2 $global-spacing $global-spacing/2;
+  padding: $global-spacing*0.5 $global-spacing*0.5 $global-spacing $global-spacing*0.5;
   text-align: center;
 }
 
 .component__block__icon {
   width: 11px;
   height: 11px;
-  margin-inline-end: $global-spacing/2;
+  margin-inline-end: $global-spacing*0.5;
   vertical-align: middle;
 }
 

@@ -2,10 +2,10 @@
 
 .project-detail {
   .header {
-    padding: $spacing*7/4;
+    padding: $spacing*7*0.25;
 
     .header-description {
-      margin: -$spacing/4;
+      margin: -$spacing*0.25;
     }
   }
 

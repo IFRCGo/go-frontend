@@ -16,7 +16,7 @@
 
       .recharts-legend-item-text {
         color: $color-text!important;
-        margin-left: $spacing/2;
+        margin-left: $spacing*0.5;
         text-transform: uppercase;
       }
     }

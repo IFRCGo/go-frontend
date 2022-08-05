@@ -1,0 +1,100 @@
+@use "sass:math";
+
+@import "~styles/settings/variables";
+
+.risk-chart {
+  .filters {
+    display: flex;
+    align-items: center;
+    gap: $spacing*2;
+
+    .filter-input {
+      width: 20rem;
+    }
+  }
+
+  :global {
+    .recharts-active-dot {
+      pointer-events: none;
+    }
+  }
+
+  .chart-container {
+    flex-grow: 1;
+    height: 24rem;
+    overflow: hidden;
+
+    .empty-message {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: $spacing;
+
+      .icon {
+        font-size: 8rem;
+        opacity: 0.2;
+      }
+
+      .text {
+        color: $color-text-light;
+        opacity: 0.4;
+        font-weight: $base-font-medium;
+      }
+    }
+  }
+
+  .legend {
+    display: flex;
+    align-items: center;
+    background-color: $grey-mist;
+    border-top: $base-border-width solid $base-border-color;
+    padding: $spacing;
+
+    .heading {
+      font-weight: $base-font-medium;
+      padding: 0 $spacing*2;
+    }
+
+    .content {
+      display: flex;
+      flex-wrap: wrap;
+      padding: 0 $spacing*2;
+      border-left: $base-border-width * 2 solid $base-border-color;
+      display: flex;
+      gap: $spacing*2;
+
+      .hazard-legend-items {
+        display: flex;
+        gap: $spacing*2;
+      }
+
+      .fi-legend-items {
+        display: flex;
+        gap: $spacing*2;
+      }
+    }
+  }
+
+  .label {
+    text-anchor: middle;
+  }
+}
+
+
+.fi-legend-item {
+  display: flex;
+  align-items: center;
+  gap: math.div($spacing*2, 3);
+
+  .label {
+    font-weight: $base-font-medium;
+  }
+
+  .circle {
+    height: 2px;
+    width: 1rem;
+  }
+}
+

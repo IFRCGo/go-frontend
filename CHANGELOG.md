@@ -1,3 +1,23 @@
+### Release 6.2.0 - Flash Updates, Rich Text Editors and more
+
+Date: 2022-08-05
+
+Major changes:
+
+ - Release of Flash Updates feature
+ - Integration of Rich Text Editor into text fields on field report
+ - Support for NS-level permissions in ElasticSearch queries
+ - Fixes for slow responses for personnel and emergency-project endpoints
+ - Add table of anticipatory action and links to Resilience Dashboard in the Country Risk page
+
+Assorted improvements:
+
+ - Export option for Emergency Response activities
+ - Cleanup language translation file
+ - 3w enhancements
+ - Update data sources and improve UI in Risk Module
+
+
 ### Release 6.1.1 - Hotfix to hide Flash Update
 
 Date: 2022-05-19

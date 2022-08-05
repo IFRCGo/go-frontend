@@ -1,0 +1,24 @@
+@import '~styles/settings/_variables.scss';
+
+.confirmation-modal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .inner-container {
+    width: 24rem;
+    min-height: 10rem;
+    background-color: $white;
+    border-radius: $base-border-radius;
+
+    .content {
+      padding: $spacing!important;
+    }
+
+    .actions {
+      display: flex;
+      gap: $spacing;
+      padding: $spacing;
+    }
+  }
+}

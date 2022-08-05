@@ -73,6 +73,10 @@ function EmergencyThreeW(props: Props) {
           label="Last modified on"
           value={projectResponse?.modified_at}
           valueType="date"
+          description={' by ' +
+              (projectResponse.modified_by !== null ?
+               projectResponse.modified_by :
+               projectResponse.created_by_details.username)}
         />
       ) : undefined }
       actions={(

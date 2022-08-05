@@ -466,22 +466,24 @@ function ThreeWForm(props: Props) {
             tooltip={strings.projectFormTooltip}
           >
             <TextInput
-              error={error?.name}
               name='name'
-              onChange={onValueChange}
               value={value.name}
+              onChange={onValueChange}
+              error={error?.name}
             />
           </InputSection>
           <InputSection
               title={strings.projectFormDescription}
-              description={strings.projectFormDescriptionHelpText}
-              tooltip={strings.projectFormDescriptionTooltip}
+              // description={strings.projectFormDescriptionHelpText}
+              // tooltip={strings.projectFormDescriptionTooltip}
+              // These texts are moved into the area as placeholder:
           >
             <RichTextArea
-                error={error?.description}
                 name='description'
-                onChange={onValueChange}
                 value={value.description === null ? '' : value.description}
+                onChange={onValueChange}
+                error={error?.description}
+                placeholder={strings.projectFormDescriptionHelpText + ' ' + strings.projectFormDescriptionTooltip}
             />
           </InputSection>
           <InputSection

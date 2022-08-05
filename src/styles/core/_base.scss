@@ -4,6 +4,8 @@
 
 /* Reset the box-sizing */
 
+@use "sass:math";
+
 html {
   box-sizing: border-box;
 }
@@ -106,7 +108,7 @@ a:focus {
   .popover__subtitle {
     font-weight: $base-font-semi-bold;
     //text-decoration: underline;
-    margin-bottom: $global-spacing/2.5;
+    margin-bottom: math.div($global-spacing, 2.5);
   }
   
   .popover__subtitle, .popover__details {
@@ -127,7 +129,7 @@ a:focus {
   .poa-xmark {
     padding: $spacing-half 0;
     position: relative;
-    top: -($spacing / 1.9);
+    top: -(math.div($spacing, 1.9));
   }
 
   .actions__menu {
@@ -141,7 +143,7 @@ a:focus {
   text-transform: uppercase;
   //border-bottom: 1px solid $primary-color;
   font-weight: $base-font-medium;
-  padding-bottom: $global-spacing/4;
+  padding-bottom: $global-spacing*0.25;
   background-image: none;
   background-size: auto;
   background-repeat: repeat;
@@ -150,7 +152,7 @@ a:focus {
   .popover__headline__icon {
     font-size: $font-size-xs;
     font-weight: $base-font-bold;
-    padding-left: ($spacing-half / 4);
+    padding-left: ($spacing-half * 0.25);
   }
 }
 
@@ -188,7 +190,7 @@ a:focus {
   
   &:before {
     font-size: $font-size-xxs;
-    margin-inline-start: ($spacing-half / 2);
+    margin-inline-start: ($spacing-half * 0.5);
   }
 }
 
@@ -234,7 +236,7 @@ a.link--external {
     height: 2px;
     width: 1rem;
     left: 0;
-    top: $global-spacing/2;
+    top: $global-spacing*0.5;
     background-color: $secondary-color;
     transition: width .2s ease-in-out;
   };

@@ -106,6 +106,7 @@ function DrefExportButton(props: Props) {
       className={className}
       disabled={pending || shouldRender}
       onClick={handleClick}
+      variant="secondary"
     >
       {shouldRender ? 'Exporting...' : 'Export'}
     </Button>
