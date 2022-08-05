@@ -95,9 +95,9 @@ function FinalReportPdfDocument(props: Props) {
   return (
     <Document
       title={documentTitle}
-      author={strings.operationalUpdateExportIfrcName}
-      creator={strings.operationalUpdateExportIfrcName}
-      producer={strings.operationalUpdateExportIfrcName}
+      author={strings.drefExportIfrcName}
+      creator={strings.drefExportIfrcName}
+      producer={strings.drefExportIfrcName}
       keywords="finalReportResponse"
     >
       <PDFPage
@@ -195,7 +195,7 @@ function FinalReportPdfDocument(props: Props) {
         </View>
         <View>
           <Text style={pdfStyles.sectionHeading}>
-            {strings.drefExportDescriptionOfTheEvent}
+            {strings.drefFormDescriptionEvent}
           </Text>
           {finalReportResponse?.event_map_details &&
             <View style={pdfStyles.subSection}>
@@ -456,7 +456,7 @@ function FinalReportPdfDocument(props: Props) {
             <View style={pdfStyles.tpContentCell}>
               <View style={pdfStyles.tpSubRow}>
                 <View style={pdfStyles.tpSubCell}>
-                  <Text>{strings.drefExportWomen}</Text>
+                  <Text>{strings.drefFormWomen}</Text>
                 </View>
                 <View style={pdfStyles.tpSubCell}>
                   <Text style={pdfStyles.strong}>
