@@ -164,9 +164,7 @@ function DrefOverview(props: Props) {
     });
 
     onValueChange(newImageList, name);
-  }, [
-    onValueChange,
-  ]);
+  }, [onValueChange]);
 
   return (
     <>
@@ -427,8 +425,7 @@ function DrefOverview(props: Props) {
               </a>
             </>
           )}
-          description={
-            !isImminentOnset && strings.drefFormPeopleInNeedDescription}
+          description={!isImminentOnset && strings.drefFormPeopleInNeedDescription}
         >
           <NumberInput
             name="people_in_need"
