@@ -86,11 +86,10 @@ function ActionsFields(props: Props) {
   );
 
   type Needs = typeof value.needs_identified;
-  const handleNeedAddButtonClick = React.useCallback((title) => {
+  const handleNeedAddButtonClick = React.useCallback(() => {
     const clientId = randomString();
     const newNeedList: PartialForm<Need> = {
       clientId,
-      title,
     };
 
     onValueChange(
@@ -103,11 +102,10 @@ function ActionsFields(props: Props) {
   }, [onValueChange, setNeed]);
 
   type NsActions = typeof value.needs_identified;
-  const handleNsActionAddButtonClick = React.useCallback((title) => {
+  const handleNsActionAddButtonClick = React.useCallback(() => {
     const clientId = randomString();
     const newNsActionList: PartialForm<NsAction> = {
       clientId,
-      title,
     };
 
     onValueChange(
@@ -128,7 +126,9 @@ function ActionsFields(props: Props) {
   ), [value.needs_identified]);
 
   const filteredNeedOptions = useMemo(() => (
-    needsIdentifiedMap ? needOptions.filter(n => !needsIdentifiedMap[n.value]) : []
+    needsIdentifiedMap
+      ? needOptions.filter(n => !needsIdentifiedMap[n.value])
+      : []
   ), [
     needsIdentifiedMap,
     needOptions,
@@ -143,14 +143,15 @@ function ActionsFields(props: Props) {
   ), [value.national_society_actions]);
 
   const filteredNsActionOptions = useMemo(() => (
-    nsActionsMap ? nsActionOptions.filter(n => !nsActionsMap[n.value]) : []
+    nsActionsMap
+      ? nsActionOptions.filter(n => !nsActionsMap[n.value]) :
+      []
   ), [
     nsActionsMap,
     nsActionOptions
   ]);
 
   const isImminentOnset = value.type_of_onset === ONSET_IMMINENT;
-
   const isThereCoordinationMechanism = value.is_there_major_coordination_mechanism;
 
   return (

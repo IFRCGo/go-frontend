@@ -6,6 +6,7 @@ import {
   getErrorObject,
 } from '@togglecorp/toggle-form';
 import { IoTrash } from 'react-icons/io5';
+import { randomString } from '@togglecorp/fujs';
 
 import Button from '#components/Button';
 import LanguageContext from '#root/languageContext';
@@ -17,7 +18,7 @@ import styles from './styles.module.scss';
 type SetValueArg<T> = T | ((value: T) => T);
 
 const defaultCountryDistrictValue: PartialForm<RiskSecurityType> = {
-  clientId: 'test',
+  clientId: randomString(),
 };
 
 interface Props {

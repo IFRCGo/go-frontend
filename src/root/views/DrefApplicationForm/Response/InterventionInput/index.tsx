@@ -16,12 +16,12 @@ import NumberInput from '#components/NumberInput';
 import InputSection from '#components/InputSection';
 import LanguageContext from '#root/languageContext';
 import { IndicatorType } from '#views/DrefApplicationForm/useDrefFormOptions';
-
 import {
   Indicator,
   Intervention,
   StringValueOption,
-} from '../../common';
+} from '#views/DrefApplicationForm/common';
+
 import IndicatorInput from '../IndicatorInput';
 
 import styles from './styles.module.scss';
@@ -44,7 +44,6 @@ interface Props {
 
 function InterventionInput(props: Props) {
   const { strings } = React.useContext(LanguageContext);
-  const [indicator, setIndicator] = React.useState<number | undefined>();
 
   const {
     error: errorFromProps,
@@ -74,22 +73,19 @@ function InterventionInput(props: Props) {
   );
 
   type Indicators = typeof value.indicators;
-  const handleIndicatorAddButtonClick = React.useCallback((title, target) => {
+  const handleIndicatorAddButtonClick = React.useCallback(() => {
     const clientId = randomString();
-    const newList: PartialForm<IndicatorType> = {
+    const newIndicatorList: PartialForm<IndicatorType> = {
       clientId,
-      title,
-      target,
     };
 
     onFieldChange(
       (oldValue: PartialForm<Indicators>) => (
-        [...(oldValue ?? []), newList]
+        [...(oldValue ?? []), newIndicatorList]
       ),
       'indicators' as const,
     );
-    setIndicator(undefined);
-  }, [onFieldChange, setIndicator]);
+  }, [onFieldChange]);
 
   return (
     <div className={styles.interventionInput}>
@@ -148,7 +144,7 @@ function InterventionInput(props: Props) {
           <div>
             <Button
               variant="secondary"
-              name={indicator}
+              name={undefined}
               onClick={handleIndicatorAddButtonClick}
             >
               Add Indicator
