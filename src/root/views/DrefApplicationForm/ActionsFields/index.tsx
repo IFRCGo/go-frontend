@@ -2,7 +2,6 @@ import React, { useMemo } from 'react';
 import {
   randomString,
   isNotDefined,
-  isDefined,
   listToMap,
 } from '@togglecorp/fujs';
 import {
