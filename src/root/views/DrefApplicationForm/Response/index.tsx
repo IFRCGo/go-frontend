@@ -86,7 +86,6 @@ function Response(props: Props) {
     const clientId = randomString();
     const newInterventionList: PartialForm<InterventionType> = {
       clientId,
-      title,
     };
 
     onValueChange(
@@ -137,7 +136,9 @@ function Response(props: Props) {
   ]);
 
   const filteredInterventionOptions = useMemo(() =>
-    interventionsIdentifiedMap ? interventionOptions.filter(n => !interventionsIdentifiedMap[n.value]) : []
+    interventionsIdentifiedMap
+      ? interventionOptions.filter(n => !interventionsIdentifiedMap[n.value])
+      : []
     , [
       interventionsIdentifiedMap,
       interventionOptions,
@@ -159,13 +160,13 @@ function Response(props: Props) {
 
   const handleRiskSecurityAdd = React.useCallback(() => {
     const clientId = randomString();
-    const newList: PartialForm<RiskSecurityType> = {
+    const newRiskSecurityList: PartialForm<RiskSecurityType> = {
       clientId,
     };
 
     onValueChange(
       (oldValue: PartialForm<riskSecurity>) => (
-        [...(oldValue ?? []), newList]
+        [...(oldValue ?? []), newRiskSecurityList]
       ),
       'risk_security' as const,
     );
@@ -234,8 +235,11 @@ function Response(props: Props) {
         heading={strings.drefFormAssistedPopulation}
         className={styles.assistedPopulation}
         description={(
-          warnings?.map((w) => (
-            <div className={styles.warning}>
+          warnings?.map((w, i) => (
+            <div
+              className={styles.warning}
+              key={i}
+            >
               <IoWarning />
               {w}
             </div>
@@ -422,7 +426,8 @@ function Response(props: Props) {
             onRemove={onInterventionRemove}
             error={getErrorObject(error?.planned_interventions)}
             interventionOptions={interventionOptions}
-            showNewFieldOperational={false} />
+            showNewFieldOperational={false}
+          />
         ))}
       </Container>
       <Container
