@@ -1,3 +1,10 @@
+### Release 6.1.1 - Hotfix to hide Flash Update
+
+Date: 2022-05-19
+
+Frontend:
+- Hide Flash Update
+
 ### Release 6.1.0 - Risk Module
 
 Date: 2022-04-05
