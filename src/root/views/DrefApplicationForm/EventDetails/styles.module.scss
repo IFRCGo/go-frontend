@@ -1,22 +1,13 @@
 @import '~styles/settings/_variables.scss';
 
-.event-details {
-  :global {
-    .go-input-section {
-      margin: $spacing 0;
-      box-shadow: $box-shadow-component;
-    }
-  }
+.map-input-content,
+.image-input-content {
+  display: flex;
+  flex-direction: column;
 
-  .map-input-content,
-  .image-input-content {
+  .preview-list {
     display: flex;
-    flex-direction: column;
-
-    .preview-list {
-      display: flex;
-      flex-wrap: wrap;
-      gap: $spacing;
-    }
+    flex-wrap: wrap;
+    gap: $spacing;
   }
 }
