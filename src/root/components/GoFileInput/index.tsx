@@ -41,13 +41,13 @@ export function Preview<ID extends number>(props: PreviewProps<ID>) {
   const isPreviewable = file.match(/.(jpg|jpeg|png|gif)$/i);
 
   const removeButton = (
-      <RawButton
-        name={id}
-        onClick={onRemoveButtonClick}
-        className={styles.removeButton}
-      >
-        <IoClose />
-      </RawButton>
+    <RawButton
+      name={id}
+      onClick={onRemoveButtonClick}
+      className={styles.removeButton}
+    >
+      <IoClose />
+    </RawButton>
   );
 
   if (!isPreviewable) {
@@ -176,7 +176,7 @@ function GoFileInput<T extends string>(props: Props<T>) {
     currentStatus = 'Uploading file(s)...';
   } else if (!value) {
     currentStatus = 'No file selected';
-  }  else {
+  } else {
     currentStatus = Array.isArray(value) ? `${value.length} files selected` : '1 file selected';
   }
 
@@ -220,7 +220,7 @@ function GoFileInput<T extends string>(props: Props<T>) {
                 >
                   <IoClose />
                 </Button>
-            )}
+              )}
             </>
           )}
           disabled={disabled || pending}
@@ -264,7 +264,7 @@ function GoFileInput<T extends string>(props: Props<T>) {
               >
                 <IoClose />
               </Button>
-          )}
+            )}
           </>
         )}
         disabled={disabled || pending}

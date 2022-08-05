@@ -1,7 +1,8 @@
+@import '~styles/settings/_variables.scss';
+
 .image-input {
   display: flex;
   flex-direction: column;
-  align-items: center;
 
   .caption-input {
     width: 100%;
