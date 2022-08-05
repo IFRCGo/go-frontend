@@ -223,8 +223,8 @@ function DrefOverview(props: Props) {
         />
         <InputSection
           title={
-            isImminentOnset ?
-              strings.drefFormImminentDisasterDetails
+            isImminentOnset
+              ? strings.drefFormImminentDisasterDetails
               : strings.drefFormDisasterDetails
           }
           multiRow
@@ -233,8 +233,8 @@ function DrefOverview(props: Props) {
           <SelectInput
             error={error?.disaster_type}
             label={
-              isImminentOnset ?
-                strings.drefFormImminentDisasterTypeLabel
+              isImminentOnset
+                ? strings.drefFormImminentDisasterTypeLabel
                 : strings.drefFormDisasterTypeLabel
             }
             name={"disaster_type" as const}
@@ -255,7 +255,9 @@ function DrefOverview(props: Props) {
             error={error?.disaster_category}
             label={(
               <>
-                {isImminentOnset ? strings.drefFormImminentDisasterCategoryLabel : strings.drefFormDisasterCategoryLabel}
+                {isImminentOnset
+                  ? strings.drefFormImminentDisasterCategoryLabel
+                  : strings.drefFormDisasterCategoryLabel}
                 <a
                   className={styles.disasterCategoryHelpLink}
                   target="_blank"
@@ -274,8 +276,8 @@ function DrefOverview(props: Props) {
         </InputSection>
         <InputSection
           title={
-            !isImminentOnset ?
-              strings.drefFormAffectedCountryAndProvinceImminent
+            !isImminentOnset
+              ? strings.drefFormAffectedCountryAndProvinceImminent
               : strings.drefFormRiskCountryLabel
           }
           twoColumn
@@ -303,6 +305,7 @@ function DrefOverview(props: Props) {
         </InputSection>
         <InputSection title={strings.drefFormTitle}>
           <TextInput
+            icons={value.dynamic_title}
             name="title"
             value={value.title}
             onChange={onValueChange}
@@ -313,8 +316,8 @@ function DrefOverview(props: Props) {
         </InputSection>
         <InputSection
           title={
-            !isImminentOnset ?
-              strings.drefFormPeopleAffected
+            !isImminentOnset
+              ? strings.drefFormPeopleAffected
               : strings.drefFormRiskPeopleLabel
           }
           description={strings.drefFormPeopleAffectedDescription}
@@ -341,7 +344,6 @@ function DrefOverview(props: Props) {
             </>
           )}
           description={strings.drefFormPeopleTargetedDescription}
-
         >
           <NumberInput
             name="num_assisted"
@@ -411,8 +413,8 @@ function DrefOverview(props: Props) {
           title={(
             <>
               {
-                isImminentOnset ?
-                  strings.drefFormEstimatedPeopleInNeed
+                isImminentOnset
+                  ? strings.drefFormEstimatedPeopleInNeed
                   : strings.drefFormPeopleInNeed
               }
               <a
@@ -455,21 +457,18 @@ function DrefOverview(props: Props) {
             />
           </InputSection>
         }
-        {didNationalSociety &&
-          <InputSection
-            title={strings.drefFormNsRequestDate}
-          >
+        <InputSection
+          fullWidthColumn
+        >
+          {didNationalSociety &&
             <DateInput
+              label={strings.drefFormNsRequestDate}
               name="ns_request_date"
               value={value.ns_request_date}
               onChange={onValueChange}
               error={error?.ns_request_date}
             />
-          </InputSection>
-        }
-        <InputSection
-          fullWidthColumn
-        >
+          }
           <DateInput
             label={strings.drefFormDateSubmissionToGeneva}
             name="submission_to_geneva"
