@@ -7,7 +7,7 @@ import {
   SetValueArg,
   useFormObject,
 } from '@togglecorp/toggle-form';
-import { randomString } from '@togglecorp/fujs';
+import { listToMap, randomString } from '@togglecorp/fujs';
 
 import Button from '#components/Button';
 import TextInput from '#components/TextInput';
@@ -50,6 +50,18 @@ function Indicators(props: Props) {
     ? getErrorObject(errorFromProps?.[value.clientId])
     : undefined;
 
+  const indicatorOptionMap = React.useMemo(() => (
+    listToMap(
+      earlyActionIndicatorsOptions,
+      d => d.value ?? '',
+      d => true,
+    )
+  ), [earlyActionIndicatorsOptions]);
+
+  const filteredIndicatorOptions = indicatorOptionMap
+    ? earlyActionIndicatorsOptions.filter(n => indicatorOptionMap[n.value])
+    : [];
+
   return (
     <div className={styles.partners}>
       <div className={styles.inputs}>
@@ -59,7 +71,7 @@ function Indicators(props: Props) {
           value={value?.indicator}
           onChange={onFieldChange}
           error={error?.indicator}
-          options={earlyActionIndicatorsOptions}
+          options={filteredIndicatorOptions}
         />
         <TextInput
           label="Indicator Value"

@@ -36,7 +36,6 @@ import EapOverview from './EapOverview';
 import Contacts from './Contacts';
 import { 
   EapFormFields,
-  EarlyAction,
  } from './common';
 import EarlyActions from './EarlyActions';
 import useEapFormOptions, { schema } from './useEapFormOptions';
@@ -106,7 +105,7 @@ function EapApplication(props: Props) {
 
   const [fileIdToUrlMap, setFileIdToUrlMap] = React.useState<Record<number, string>>({});
 
-  const [currentStep, setCurrentStep] = React.useState<StepTypes>('earlyActions');
+  const [currentStep, setCurrentStep] = React.useState<StepTypes>('eapOverview');
   const submitButtonLabel = currentStep === 'contacts' ? strings.drefFormSaveButtonLabel : strings.drefFormContinueButtonLabel;
   const shouldDisabledBackButton = currentStep === 'eapOverview';
 
