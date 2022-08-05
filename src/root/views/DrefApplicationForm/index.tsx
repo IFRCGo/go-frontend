@@ -2,6 +2,7 @@ import React from 'react';
 import type { History, Location } from 'history';
 import { Link } from 'react-router-dom';
 import {
+  formatDateToString,
   isDefined,
   listToMap,
 } from '@togglecorp/fujs';
@@ -463,55 +464,15 @@ function DrefApplication(props: Props) {
     const countryName = countryOptions.filter((cd) => cd.value === getCurrentCountryValue).map((c) => c.label);
     const filteredDisasterTypeName = disasterTypeOptions.filter((dt) => dt.value === value.disaster_type).map((dt) => dt.label).toString();
 
-    const dynamicTitle = `${countryName} ${filteredDisasterTypeName} ${value?.event_date ?? ''}`;
-    onValueChange(dynamicTitle, 'title');
+    const todayDate = formatDateToString(new Date(), 'yyyy-MM-dd');
+    const dynamicTitle = `${countryName} ${filteredDisasterTypeName} ${todayDate}`;
+    onValueChange(dynamicTitle, 'dynamic_title');
   }, [
     countryOptions,
     disasterTypeOptions,
     value.disaster_type,
     value.country,
-    value.event_date,
     onValueChange,
-  ]);
-
-  React.useMemo(() => {
-    if (isImminentOnset) {
-      return onValueChange(undefined, 'event_date');
-    }
-  }, [
-    isImminentOnset,
-    onValueChange,
-  ]);
-
-  const drefLoadingStatus = React.useMemo(() => (
-    <>
-      {
-        pending &&
-        <Container>
-          <BlockLoading />
-        </Container>
-      }
-      {
-        failedToLoadDref &&
-        <Container
-          contentClassName={styles.errorMessage}
-        >
-          <h3>
-            {strings.drefFormLoadErrorTitle}
-          </h3>
-          <p>
-            {strings.drefFormLoadErrorDescription}
-          </p>
-          <p>
-            {strings.drefFormLoadErrorHelpText}
-          </p>
-        </Container>
-      }
-    </>
-  ), [
-    strings,
-    pending,
-    failedToLoadDref,
   ]);
 
   return (
@@ -581,7 +542,28 @@ function DrefApplication(props: Props) {
           </TabList>
         )}
       >
-        {drefLoadingStatus}
+        {
+          pending &&
+          <Container>
+            <BlockLoading />
+          </Container>
+        }
+        {
+          failedToLoadDref &&
+          <Container
+            contentClassName={styles.errorMessage}
+          >
+            <h3>
+              {strings.drefFormLoadErrorTitle}
+            </h3>
+            <p>
+              {strings.drefFormLoadErrorDescription}
+            </p>
+            <p>
+              {strings.drefFormLoadErrorHelpText}
+            </p>
+          </Container>
+        }
         {!pending && !failedToLoadDref && (
           <>
             <Container>

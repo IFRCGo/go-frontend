@@ -371,20 +371,21 @@ function ActionsFields(props: Props) {
             needOptions={needOptions}
           />
         ))}
-        {/* TODO:
-        <InputSection
-          title={strings.drefFormGapsInAssessment}
-          oneColumn
-          multiRow
-        >
-          <TextArea
-            label={strings.cmpActionDescriptionLabel}
-            name="identified_gaps"
-            onChange={onValueChange}
-            value={value.identified_gaps}
-            error={error?.identified_gaps}
-          />
-        </InputSection>*/}
+        {!isImminentOnset && (
+          <InputSection
+            title={strings.drefFormGapsInAssessment}
+            oneColumn
+            multiRow
+          >
+            <TextArea
+              label={strings.cmpActionDescriptionLabel}
+              name="identified_gaps"
+              onChange={onValueChange}
+              value={value.identified_gaps}
+              error={error?.identified_gaps}
+            />
+          </InputSection>
+        )}
       </Container>
     </>
   );

@@ -234,6 +234,7 @@ export interface DrefFields {
   supporting_document: number;
   risk_security: RiskSecurityProps[];
   risk_security_concern: string;
+  dynamic_title: string;
 }
 
 export interface DrefApiFields extends Omit<DrefFields, 'district_details' | 'planned_interventions' | 'national_society_actions' | 'needs_identified' | 'images_file' | 'event_map_file' | 'cover_image_file'> {
