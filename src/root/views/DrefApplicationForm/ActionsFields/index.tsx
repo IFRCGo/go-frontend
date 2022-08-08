@@ -164,9 +164,10 @@ function ActionsFields(props: Props) {
       >
         <InputSection
           title={
-            !isImminentOnset ?
-              strings.drefFormNsResponseStarted
-              : strings.drefFormNSAnticipatoryAction}
+            !isImminentOnset
+              ? strings.drefFormNsResponseStarted
+              : strings.drefFormNSAnticipatoryAction
+          }
         >
           <DateInput
             name="ns_respond_date"
@@ -319,8 +320,8 @@ function ActionsFields(props: Props) {
       <Container
         className={styles.needsIdentified}
         heading={
-          isImminentOnset ?
-            strings.drefFormImminentNeedsIdentified
+          isImminentOnset
+            ? strings.drefFormImminentNeedsIdentified
             : strings.drefFormNeedsIdentified
         }
         visibleOverflow
@@ -328,15 +329,14 @@ function ActionsFields(props: Props) {
         {!isImminentOnset &&
           <InputSection>
             <DREFFileInput
-              accept=".pdf,.docx,.pptx"
-              error={error?.assessment_report}
-              fileIdToUrlMap={fileIdToUrlMap}
+              accept=".pdf, .docx, .pptx"
               label={strings.drefFormAssessmentReportUploadLabel}
               name="assessment_report"
-              onChange={onValueChange}
-              setFileIdToUrlMap={setFileIdToUrlMap}
-              showStatus
               value={value.assessment_report}
+              onChange={onValueChange}
+              error={error?.assessment_report}
+              fileIdToUrlMap={fileIdToUrlMap}
+              setFileIdToUrlMap={setFileIdToUrlMap}
             >
               {strings.drefFormAssessmentReportUploadButtonLabel}
             </DREFFileInput>
