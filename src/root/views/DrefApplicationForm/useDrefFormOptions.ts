@@ -226,9 +226,6 @@ export const schema: FormSchema = {
             })
           },
           description: [],
-          progress_towards_outcome: [],
-          male: [],
-          female: [],
         }),
       }),
     },
