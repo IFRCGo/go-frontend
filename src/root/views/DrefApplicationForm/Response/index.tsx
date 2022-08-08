@@ -86,6 +86,7 @@ function Response(props: Props) {
     const clientId = randomString();
     const newInterventionList: PartialForm<InterventionType> = {
       clientId,
+      title,
     };
 
     onValueChange(
