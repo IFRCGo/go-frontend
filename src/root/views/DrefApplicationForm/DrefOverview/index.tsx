@@ -296,7 +296,6 @@ function DrefOverview(props: Props) {
             name="title_prefix"
             value={value.title_prefix}
             error={error?.title_prefix}
-            placeholder={strings.drefFormTitleDescription}
             prefix={value.title_prefix}
             disabled
           />
@@ -306,7 +305,6 @@ function DrefOverview(props: Props) {
             onChange={onValueChange}
             error={error?.title}
             placeholder={strings.drefFormTitleDescription}
-            prefix={value.title}
           />
         </InputSection>
         <InputSection
