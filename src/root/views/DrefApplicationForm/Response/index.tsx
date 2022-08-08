@@ -386,24 +386,23 @@ function Response(props: Props) {
         <InputSection>
           <DREFFileInput
             accept=".pdf"
-            error={error?.budget_file}
-            fileIdToUrlMap={fileIdToUrlMap}
             label={strings.drefFormBudgetTemplateLabel}
             name="budget_file"
-            onChange={onValueChange}
-            setFileIdToUrlMap={setFileIdToUrlMap}
-            showStatus
             value={value.budget_file}
+            onChange={onValueChange}
+            error={error?.budget_file}
+            fileIdToUrlMap={fileIdToUrlMap}
+            setFileIdToUrlMap={setFileIdToUrlMap}
           >
             {strings.drefFormBudgetTemplateUploadButtonLabel}
           </DREFFileInput>
         </InputSection>
         <InputSection>
           <SelectInput
+            label={strings.drefFormInterventionsLabel}
             name={undefined}
             onChange={setIntervention}
             value={intervention}
-            label={strings.drefFormInterventionsLabel}
             options={filteredInterventionOptions}
           />
           <div className={styles.actions}>
