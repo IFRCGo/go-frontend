@@ -118,6 +118,7 @@ function CopyFieldReportSection(props: Props) {
       const event_description = fieldReport.description;
       const un_or_other_actor = value.un_or_other_actor ?? fieldReport.actions_others;
       const country = value.country;
+      const num_affected = fieldReport.num_affected;
 
       let {
         national_society_contact_name,
@@ -190,6 +191,7 @@ function CopyFieldReportSection(props: Props) {
         media_contact_email,
         field_report: fieldReport.id,
         country,
+        num_affected,
       });
 
       alert.show(
