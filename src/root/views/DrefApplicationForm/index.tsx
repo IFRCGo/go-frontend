@@ -2,7 +2,6 @@ import React from 'react';
 import type { History, Location } from 'history';
 import { Link } from 'react-router-dom';
 import {
-  formatDateToString,
   isDefined,
   listToMap,
 } from '@togglecorp/fujs';
@@ -47,6 +46,7 @@ import {
   responseFields,
   submissionFields,
   ONSET_IMMINENT,
+  ONSET_SLOW,
 } from './common';
 import useDrefFormOptions, { schema } from './useDrefFormOptions';
 
@@ -391,6 +391,7 @@ function DrefApplication(props: Props) {
     || drefApplicationPending;
 
   const isImminentOnset = value?.type_of_onset === ONSET_IMMINENT;
+  const isSlowOnset = value?.type_of_onset === ONSET_SLOW;
   React.useEffect(() => {
     onValueSet((oldValue) => {
       if (value.type_of_onset !== ONSET_IMMINENT) {
@@ -463,9 +464,9 @@ function DrefApplication(props: Props) {
     const countryName = countryOptions.filter((cd) => cd.value === getCurrentCountryValue).map((c) => c.label);
     const filteredDisasterTypeName = disasterTypeOptions.filter((dt) => dt.value === value.disaster_type).map((dt) => dt.label).toString();
 
-    const todayDate = formatDateToString(new Date(), 'yyyy-MM-dd');
-    const dynamicTitle = `${countryName} ${filteredDisasterTypeName} ${todayDate}`;
-    onValueChange(dynamicTitle, 'dynamic_title');
+    const currentYear = new Date().getFullYear();
+    const titlePrefix = `${countryName} ${filteredDisasterTypeName} ${currentYear}`;
+    onValueChange(titlePrefix, 'title_prefix');
   }, [
     countryOptions,
     disasterTypeOptions,
@@ -594,6 +595,7 @@ function DrefApplication(props: Props) {
             </TabPanel>
             <TabPanel name="eventDetails">
               <EventDetails
+                isSlowOnset={isSlowOnset}
                 isImminentOnset={isImminentOnset}
                 error={error}
                 onValueChange={onValueChange}

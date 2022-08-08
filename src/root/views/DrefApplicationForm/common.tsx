@@ -104,6 +104,7 @@ export interface FileWithCaption {
   client_id: string;
   id: number;
   caption: string;
+  file: string;
 }
 export interface RiskSecurityProps {
   clientId: string;
@@ -234,7 +235,7 @@ export interface DrefFields {
   supporting_document: number;
   risk_security: RiskSecurityProps[];
   risk_security_concern: string;
-  dynamic_title: string;
+  title_prefix: string;
 }
 
 export interface DrefApiFields extends Omit<DrefFields, 'district_details' | 'planned_interventions' | 'national_society_actions' | 'needs_identified' | 'images_file' | 'event_map_file' | 'cover_image_file'> {
@@ -271,18 +272,8 @@ export interface DrefApiFields extends Omit<DrefFields, 'district_details' | 'pl
     client_id: string | null,
     file: string;
   }[];
-  event_map_file: {
-    id: number,
-    caption: string | undefined,
-    client_id: string | undefined,
-    file: string;
-  };
-  cover_image_file: {
-    id: number,
-    caption: string | undefined,
-    client_id: string | undefined,
-    file: string;
-  };
+  event_map_file: FileWithCaption;
+  cover_image_file: FileWithCaption;
 }
 
 export const overviewFields: (keyof DrefFields)[] = [
@@ -310,6 +301,7 @@ export const overviewFields: (keyof DrefFields)[] = [
   'people_in_need',
   'did_national_society',
   'supporting_document',
+  'title_prefix',
 ];
 
 export const eventDetailsFields: (keyof DrefFields)[] = [

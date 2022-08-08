@@ -159,7 +159,6 @@ function DrefOverview(props: Props) {
 
   const handleImageInputChange = React.useCallback((newValue: number | undefined, name: 'cover_image_file' | 'event_map_file') => {
     const newImageList: undefined | PartialForm<FileWithCaption> = ({
-      client_id: String(newValue),
       id: newValue,
     });
 
@@ -303,7 +302,14 @@ function DrefOverview(props: Props) {
         </InputSection>
         <InputSection title={strings.drefFormTitle}>
           <TextInput
-            icons={value.dynamic_title}
+            name="title_prefix"
+            value={value.title_prefix}
+            error={error?.title_prefix}
+            placeholder={strings.drefFormTitleDescription}
+            prefix={value.title_prefix}
+            disabled
+          />
+          <TextInput
             name="title"
             value={value.title}
             onChange={onValueChange}
