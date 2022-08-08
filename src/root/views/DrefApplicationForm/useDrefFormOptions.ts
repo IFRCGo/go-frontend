@@ -3,6 +3,7 @@ import {
   PartialForm,
   ObjectSchema,
   ArraySchema,
+  greaterThanOrEqualToCondition,
 } from '@togglecorp/toggle-form';
 
 import {
@@ -134,9 +135,9 @@ export const schema: FormSchema = {
     men: [positiveIntegerCondition],
     girls: [positiveIntegerCondition],
     boys: [positiveIntegerCondition],
-    disability_people_per: [positiveNumberCondition, lessThanOrEqualToCondition(100)],
-    people_per_urban: [positiveNumberCondition, lessThanOrEqualToCondition(100)],
-    people_per_local: [positiveNumberCondition, lessThanOrEqualToCondition(100)],
+    disability_people_per: [greaterThanOrEqualToCondition(0), lessThanOrEqualToCondition(100)],
+    people_per_urban: [greaterThanOrEqualToCondition(0), lessThanOrEqualToCondition(100)],
+    people_per_local: [greaterThanOrEqualToCondition(0), lessThanOrEqualToCondition(100)],
     displaced_people: [positiveIntegerCondition],
     people_targeted_with_early_actions: [positiveIntegerCondition],
     total_targeted_population: [positiveIntegerCondition],
@@ -185,6 +186,7 @@ export const schema: FormSchema = {
     supporting_document: [],
     did_national_society: [],
     risk_security_concern: [],
+    title_prefix: [requiredCondition],
     national_society_actions: {
       keySelector: (n) => n.clientId as string,
       member: (): NsActionsSchemaMember => ({
