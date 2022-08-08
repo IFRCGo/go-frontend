@@ -41,7 +41,6 @@ import {
   ONSET_IMMINENT,
   emptyNumericOptionList,
   ONSET_SUDDEN,
-  FileWithCaption,
 } from '../common';
 
 import styles from './styles.module.scss';
@@ -156,14 +155,6 @@ function DrefOverview(props: Props) {
       label: d.name,
     })).sort(compareString) ?? emptyNumericOptionList
   ), [districtsResponse]);
-
-  const handleImageInputChange = React.useCallback((newValue: number | undefined, name: 'cover_image_file' | 'event_map_file') => {
-    const newImageList: undefined | PartialForm<FileWithCaption> = ({
-      id: newValue,
-    });
-
-    onValueChange(newImageList, name);
-  }, [onValueChange]);
 
   return (
     <>
@@ -385,13 +376,12 @@ function DrefOverview(props: Props) {
         >
           <DREFFileInput
             accept="image/*"
-            name="event_map_file"
-            value={value.event_map_file?.id}
-            onChange={handleImageInputChange}
-            error={error?.event_map_file}
+            name="event_map"
+            value={value.event_map}
+            onChange={onValueChange}
+            error={error?.event_map}
             fileIdToUrlMap={fileIdToUrlMap}
             setFileIdToUrlMap={setFileIdToUrlMap}
-            showStatus
           >
             {strings.drefFormUploadAnImageLabel}
           </DREFFileInput>
@@ -402,13 +392,12 @@ function DrefOverview(props: Props) {
         >
           <DREFFileInput
             accept="image/*"
-            name="cover_image_file"
-            value={value.cover_image_file?.id}
-            onChange={handleImageInputChange}
-            error={error?.cover_image_file}
+            name="cover_image"
+            value={value.cover_image}
+            onChange={onValueChange}
+            error={error?.cover_image}
             fileIdToUrlMap={fileIdToUrlMap}
             setFileIdToUrlMap={setFileIdToUrlMap}
-            showStatus
           >
             {strings.drefFormUploadAnImageLabel}
           </DREFFileInput>

@@ -103,8 +103,8 @@ export const schema: FormSchema = {
     num_assisted: [positiveIntegerCondition],
     amount_requested: [positiveNumberCondition],
     emergency_appeal_planned: [],
-    event_map_file: [],
-    cover_image_file: [],
+    event_map: [],
+    cover_image: [],
     event_date: [],
     event_text: [max500CharCondition],
     anticipatory_actions: [],
@@ -187,6 +187,7 @@ export const schema: FormSchema = {
     did_national_society: [],
     risk_security_concern: [],
     title_prefix: [requiredCondition],
+    assessment_report: [],
     national_society_actions: {
       keySelector: (n) => n.clientId as string,
       member: (): NsActionsSchemaMember => ({
