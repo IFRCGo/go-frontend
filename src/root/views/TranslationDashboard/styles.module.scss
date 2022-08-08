@@ -91,16 +91,19 @@
         .key {
           display: table-cell;
           padding: 10px;
+          word-break: break-all;
         }
 
         .value {
           display: table-cell;
           padding: 10px;
+          word-break: break-word;
         }
 
         .dev-value {
           display: table-cell;
           padding: 10px;
+          word-break: break-word;
         }
       }
 
