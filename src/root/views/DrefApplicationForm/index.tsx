@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import {
   isDefined,
   listToMap,
+  isNotDefined,
 } from '@togglecorp/fujs';
 import {
   PartialForm,
@@ -236,6 +237,19 @@ function DrefApplication(props: Props) {
         }
         return newMap;
       });
+
+      const getNumberFromResponse = (value: number | string | undefined | null) => {
+        if (isNotDefined(value)) {
+          return undefined;
+        }
+
+        if (value === '') {
+          return undefined;
+        }
+
+        return +value;
+      };
+
       onValueSet({
         ...response,
         planned_interventions: response.planned_interventions?.map((pi) => ({
@@ -259,9 +273,9 @@ function DrefApplication(props: Props) {
           client_id: img.client_id ?? String(img.id),
           caption: img.caption ?? '',
         })),
-        disability_people_per: isDefined(response.disability_people_per) ? response.disability_people_per : undefined,
-        people_per_urban: isDefined(response.people_per_urban) ? response.people_per_urban : undefined,
-        people_per_local: isDefined(response.people_per_local) ? response.people_per_local : undefined,
+        disability_people_per: getNumberFromResponse(response.disability_people_per),
+        people_per_urban: getNumberFromResponse(response.people_per_urban),
+        people_per_local: getNumberFromResponse(response.people_per_local),
       });
     },
     onFailure: ({
