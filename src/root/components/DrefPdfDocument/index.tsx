@@ -10,22 +10,20 @@ import {
 } from '@react-pdf/renderer';
 import {
   isDefined,
-  addSeparator,
   listToMap,
 } from '@togglecorp/fujs';
 
 import { resolveUrl } from '#utils/resolveUrl';
 import { resolveToString } from '#utils/lang';
-import { isValidNumber } from '#utils/common';
+import { PdfTextOutput } from '#components/PdfTextOutput';
+import {
+  formatBoolean,
+  formatNumber,
+} from '#utils/common';
 import {
   DrefApiFields,
   ONSET_IMMINENT,
 } from '#views/DrefApplicationForm/common';
-
-import montserratFont from './resources/montserrat.bold.ttf';
-import opensansFont from './resources/open-sans.regular.ttf';
-import opensansBoldFont from './resources/open-sans.bold.ttf';
-
 import {
   NumericKeyValuePair,
   StringKeyValuePair,
@@ -33,24 +31,8 @@ import {
 } from '#types';
 
 import pdfStyles from './pdfStyles';
-
-Font.register({
-  family: 'Montserrat',
-  src: montserratFont,
-  fontWeight: 'bold',
-});
-
-Font.register({
-  family: 'OpenSans',
-  src: opensansFont,
-  fontWeight: 'medium',
-});
-
-Font.register({
-  family: 'OpenSans',
-  src: opensansBoldFont,
-  fontWeight: 'bold',
-});
+import NeedIdentified from './NeedIdentified';
+import ContactSection from './ContactSection';
 
 interface NationalSocietyActionsProps {
   data: DrefApiFields['national_society_actions'][number];
@@ -69,70 +51,6 @@ function NationalSocietyActions(props: NationalSocietyActionsProps) {
         <View style={pdfStyles.niContentCell}>
           <Text>{data.description}</Text>
         </View>
-      </View>
-    </View>
-  );
-}
-
-interface ContactSectionProps {
-  title: string;
-  contacts: string[];
-}
-
-function ContactSection(props: ContactSectionProps) {
-  const {
-    title,
-    contacts,
-  } = props;
-
-  const outputString = contacts.filter(d => !!d).join(', ');
-
-  if (!outputString) {
-    return null;
-  }
-
-  return (
-    <View style={pdfStyles.ciRow}>
-      <Text style={pdfStyles.contactType}>
-        {'\u2022'} {title}
-      </Text>
-      <Text style={pdfStyles.contactDetails}>
-        {outputString}
-      </Text>
-    </View>
-  );
-}
-
-interface NeedIdentifiedProps {
-  data: DrefApiFields['needs_identified'][number];
-  niMap?: Record<string, string>;
-}
-
-function NeedIdentified(props: NeedIdentifiedProps) {
-  const {
-    data,
-    niMap,
-  } = props;
-
-  return (
-    <View style={pdfStyles.niOutput} wrap={false}>
-      <View style={pdfStyles.niIconCell}>
-        {data.image_url && (
-          <PDFImage
-            style={pdfStyles.niIcon}
-            src={data.image_url}
-          />
-        )}
-      </View>
-      <View style={pdfStyles.niHeaderCell}>
-        <Text>
-          {niMap?.[data.title]}
-        </Text>
-      </View>
-      <View style={pdfStyles.niContentCell}>
-        <Text>
-          {data.description}
-        </Text>
       </View>
     </View>
   );
@@ -230,70 +148,6 @@ function PlannedInterventionOutput(props: PlannedInterventionProps) {
     </View>
   );
 }
-
-function formatBoolean(value: boolean | undefined | null) {
-  if (value === true) {
-    return 'Yes';
-  }
-
-  if (value === false) {
-    return 'No';
-  }
-
-  return '-';
-}
-
-function formatNumber(value: number | undefined | null, prefix?: string): string {
-  const defaultValue = '-';
-
-  if (isValidNumber(value)) {
-    const formattedNumber = addSeparator(value) ?? defaultValue;
-
-    if (prefix) {
-      return `${prefix}${formattedNumber}`;
-    }
-
-    return formattedNumber;
-  }
-
-  return defaultValue;
-}
-
-function TextOutput(props: {
-  label: string;
-  value?: string;
-  columns?: '1/3' | '2/3' | '3/3' | '1/2';
-}) {
-  const {
-    label,
-    value,
-    columns = '1/3',
-  } = props;
-
-  const styleMap = {
-    '1/3': pdfStyles.oneByThree,
-    '2/3': pdfStyles.twoByThree,
-    '3/3': pdfStyles.threeByThree,
-    '1/2': pdfStyles.oneByTwo,
-  };
-
-  return (
-    <View
-      style={[
-        pdfStyles.textOutput,
-        styleMap[columns] ?? pdfStyles.oneByThree,
-      ]}
-    >
-      <Text style={pdfStyles.textOutputLabel}>
-        {label}
-      </Text>
-      <Text style={pdfStyles.textOutputValue}>
-        {value}
-      </Text>
-    </View>
-  );
-}
-
 interface DrefOptions {
   disaster_category: NumericKeyValuePair[];
   national_society_actions: StringKeyValuePair[];
@@ -343,9 +197,9 @@ function DrefPdfDocument(props: Props) {
 
   const isImminentOnset = dref?.disaster_type === ONSET_IMMINENT;
   const documentTitle = useMemo(() => (
-    `${dref?.country_details?.name} | ${dref?.title}`
+    `${dref.title_prefix} | ${dref?.title}`
   ), [
-    dref.country_details,
+    dref.title_prefix,
     dref.title,
   ]);
 
@@ -375,36 +229,36 @@ function DrefPdfDocument(props: Props) {
             {documentTitle}
           </Text>
         </View>
-        {(dref.cover_image_file?.file) && (
+        {(dref.cover_image_details?.file) && (
           <View style={pdfStyles.section}>
             <PDFImage
               style={pdfStyles.bannerImage}
-              src={dref.cover_image_file.file}
+              src={dref.cover_image_details.file}
             />
           </View>
         )}
         <View style={pdfStyles.section}>
           <View style={pdfStyles.basicInfoTable}>
             <View style={pdfStyles.compactSection} wrap={false}>
-              <TextOutput
+              <PdfTextOutput
                 label={strings.drefExportAppealNum}
                 value={dref.appeal_code}
               />
-              <TextOutput
+              <PdfTextOutput
                 label={strings.drefExportDrefAllocated}
                 value={formatNumber(dref.amount_requested, 'CHF ')}
                 columns="2/3"
               />
             </View>
             <View style={pdfStyles.compactSection} wrap={false}>
-              <TextOutput
+              <PdfTextOutput
                 label={strings.drefExportGlideNum}
                 value={dref.glide_code}
               />
               <View style={pdfStyles.twoByThree}>
                 <View style={pdfStyles.compactSection}>
                   <View style={pdfStyles.compactSection}>
-                    <TextOutput
+                    <PdfTextOutput
                       label={strings.drefExportPeopleAffected}
                       value={
                         isDefined(dref.num_affected) ?
@@ -413,7 +267,7 @@ function DrefPdfDocument(props: Props) {
                       }
                       columns="1/2"
                     />
-                    <TextOutput
+                    <PdfTextOutput
                       label={strings.drefExportPeopleAssisted}
                       value={
                         isDefined(dref.num_assisted) ?
@@ -426,18 +280,18 @@ function DrefPdfDocument(props: Props) {
                 </View>
                 <View style={pdfStyles.compactSection}>
                   <View style={pdfStyles.compactSection}>
-                    <TextOutput
+                    <PdfTextOutput
                       label={strings.drefExportDrefLaunched}
                       value={dref.date_of_approval}
                       columns="1/2"
                     />
                     <View style={[pdfStyles.compactSection, pdfStyles.oneByTwo]}>
-                      <TextOutput
+                      <PdfTextOutput
                         label={strings.drefExportDrefEndDateOfOperation}
                         value={dref.end_date}
                         columns="1/2"
                       />
-                      <TextOutput
+                      <PdfTextOutput
                         label={strings.drefExportOperationTimeframe}
                         value={
                           isDefined(dref.operation_timeframe) ?
@@ -450,7 +304,7 @@ function DrefPdfDocument(props: Props) {
                   </View>
                 </View>
                 <View style={pdfStyles.compactSection}>
-                  <TextOutput
+                  <PdfTextOutput
                     label={strings.drefExportAffectedAreas}
                     value={affectedAreas}
                     columns="3/3"

@@ -17,17 +17,13 @@ Font.register({
 
 Font.register({
   family: 'OpenSans',
-  fonts: [
-    {
-      src: openSansFont,
-      fontWeight: 'bold',
-    },
-    {
-      src: openSansBoldFont,
-      fontWeight: 'bold',
-    },
-  ]
-
+  src: openSansFont,
+  fontWeight: 'bold',
+});
+Font.register({
+  family: 'OpenSans',
+  src: openSansBoldFont,
+  fontWeight: 'bold',
 });
 
 const section = StyleSheet.create({
