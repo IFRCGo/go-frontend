@@ -31,6 +31,7 @@ function useSanitizedHtml(rawHtml: string) {
           p: ['style'],
           span: ['style'],
           div: ['style'],
+          img: ['src'],
           // a: ['href'],
         },
         allowedSchemes: [ 'http', 'https', 'data' ],
