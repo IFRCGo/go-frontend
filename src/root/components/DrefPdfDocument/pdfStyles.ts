@@ -1,45 +1,40 @@
-import { StyleSheet } from '@react-pdf/renderer';
+import {
+  Font,
+  StyleSheet,
+} from '@react-pdf/renderer';
 
-const PAGE_PADDING = 20;
-const FULL_WIDTH = 600;
-const VERTICAL_MARGIN = 10;
-const TABLE_CELL_PADDING = 10;
-const HEADING_VERTICAL_PADDING = 10;
-const SUBHEADING_VERTICAL_PADDING = 5;
-const SMALL_PADDING = 7;
-const TABLE_BORDER = '1px solid #ffffff';
+import montserratFont from '#root/resources/montserrat.bold.ttf';
+import openSansFont from '#root/resources/open-sans.regular.ttf';
+import openSansBoldFont from '#root/resources/open-sans.bold.ttf';
 
-// const FONT_SIZE_SMALL = 8;
-const FONT_SIZE_MEDIUM = 10;
-const FONT_SIZE_LARGE = 12;
-const FONT_SIZE_EXTRA_LARGE = 15;
-const FONT_SIZE_SUPER_LARGE = 20;
-const FONT_SIZE_MEGA_LARGE = 27;
-const FONT_SIZE_ULTRA_LARGE = 40;
+import * as styles from "src/styles/pdf/pdfVariables";
 
-const SPACING_SMALL = 6;
-const SPACING_MEDIUM = 10;
-const SPACING_LARGE = 16;
-// const SPACING_EXTRA_LARGE = 24;
-const SPACING_SUPER_LARGE = 32;
-const SECTION_PADDING = SPACING_LARGE;
+Font.register({
+  family: 'Montserrat',
+  src: montserratFont,
+  fontWeight: 'bold',
+});
 
-const SECTION_WIDTH = FULL_WIDTH - PAGE_PADDING * 2;
-
-const COLOR_PRIMARY = '#f5333f';
-const COLOR_SECONDARY = '#011e41';
-const COLOR_TEXT = '#212121';
-const COLOR_BACKGROUND = '#f0f0f0';
+Font.register({
+  family: 'OpenSans',
+  src: openSansFont,
+  fontWeight: 'bold',
+});
+Font.register({
+  family: 'OpenSans',
+  src: openSansBoldFont,
+  fontWeight: 'bold',
+});
 
 const section = StyleSheet.create({
   style: {
-    paddingVertical: SECTION_PADDING,
+    paddingVertical: styles.SECTION_PADDING,
   }
 });
 
 const subSection = StyleSheet.create({
   style: {
-    paddingVertical: SECTION_PADDING / 2,
+    paddingVertical: styles.SECTION_PADDING / 2,
   }
 });
 
@@ -47,23 +42,24 @@ const heading = StyleSheet.create({
   style: {
     fontFamily: 'Montserrat',
     fontWeight: 'bold',
-    color: COLOR_SECONDARY,
-    marginTop: SPACING_LARGE,
-    marginBottom: SPACING_MEDIUM,
+    color: styles.COLOR_SECONDARY,
+    marginTop: styles.SPACING_LARGE,
+    marginBottom: styles.SPACING_MEDIUM,
   }
 });
 
 const pdfStyles = StyleSheet.create({
   portraitPage: {
-    fontSize: FONT_SIZE_MEDIUM,
+    fontSize: styles.FONT_SIZE_MEDIUM,
     fontFamily: 'OpenSans',
     fontWeight: 'medium',
-    padding: SPACING_SUPER_LARGE,
-    color: COLOR_TEXT,
+    padding: styles.SPACING_SUPER_LARGE,
+    color: styles.COLOR_TEXT,
   },
 
   section: {
     ...section.style,
+    textAlign: 'justify',
   },
 
   subSection: {
@@ -72,13 +68,13 @@ const pdfStyles = StyleSheet.create({
 
   sectionHeading: {
     ...heading.style,
-    fontSize: FONT_SIZE_SUPER_LARGE,
+    fontSize: styles.FONT_SIZE_SUPER_LARGE,
   },
 
   subSectionHeading: {
     ...heading.style,
-    fontSize: FONT_SIZE_LARGE,
-    color: COLOR_PRIMARY,
+    fontSize: styles.FONT_SIZE_LARGE,
+    color: styles.COLOR_PRIMARY,
   },
 
   textOutputLabel: {
@@ -87,11 +83,11 @@ const pdfStyles = StyleSheet.create({
   },
 
   text: {
-    color: COLOR_TEXT,
+    color: styles.COLOR_TEXT,
   },
 
   description: {
-    color: COLOR_TEXT,
+    color: styles.COLOR_TEXT,
   },
 
   textOutputValue: {
@@ -102,18 +98,18 @@ const pdfStyles = StyleSheet.create({
   pageTitle: {
     fontFamily: 'Montserrat',
     fontWeight: 'bold',
-    fontSize: FONT_SIZE_MEGA_LARGE,
-    color: COLOR_PRIMARY,
+    fontSize: styles.FONT_SIZE_MEGA_LARGE,
+    color: styles.COLOR_PRIMARY,
     textTransform: 'uppercase',
   },
 
   subTitle: {
     fontFamily: 'Montserrat',
     fontWeight: 'bold',
-    fontSize: FONT_SIZE_LARGE,
-    color: COLOR_SECONDARY,
+    fontSize: styles.FONT_SIZE_LARGE,
+    color: styles.COLOR_SECONDARY,
     textAlign: 'right',
-    marginTop: SPACING_MEDIUM,
+    marginTop: styles.SPACING_MEDIUM,
   },
 
   strong: {
@@ -132,11 +128,11 @@ const pdfStyles = StyleSheet.create({
   },
 
   titleIfrcLogo: {
-    height: FONT_SIZE_ULTRA_LARGE,
+    height: styles.FONT_SIZE_ULTRA_LARGE,
   },
 
   mapImage: {
-    width: '100%',
+    width: 'auto',
     height: 200,
     objectFit: 'contain',
     objectPosition: 'center',
@@ -155,14 +151,14 @@ const pdfStyles = StyleSheet.create({
   },
 
   bannerImage: {
-    backgroundColor: COLOR_BACKGROUND,
+    backgroundColor: styles.COLOR_BACKGROUND,
     width: '100%',
     height: 300,
     objectFit: 'contain',
     objectPosition: 'center',
   },
   textLabelSection: {
-    color: COLOR_PRIMARY,
+    color: styles.COLOR_PRIMARY,
     fontWeight: 'bold',
   },
   logo: {
@@ -176,30 +172,30 @@ const pdfStyles = StyleSheet.create({
     height: 50,
   },
   title: {
-    fontSize: FONT_SIZE_SUPER_LARGE,
+    fontSize: styles.FONT_SIZE_SUPER_LARGE,
     fontFamily: 'Montserrat',
-    color: COLOR_PRIMARY,
+    color: styles.COLOR_PRIMARY,
   },
   heading: {
-    fontSize: FONT_SIZE_EXTRA_LARGE,
+    fontSize: styles.FONT_SIZE_EXTRA_LARGE,
     fontFamily: 'Montserrat',
-    color: COLOR_PRIMARY,
-    paddingVertical: HEADING_VERTICAL_PADDING,
+    color: styles.COLOR_PRIMARY,
+    paddingVertical: styles.HEADING_VERTICAL_PADDING,
   },
   subHeading: {
-    fontSize: FONT_SIZE_LARGE,
+    fontSize: styles.FONT_SIZE_LARGE,
     fontWeight: 'bold',
-    paddingVertical: SUBHEADING_VERTICAL_PADDING,
+    paddingVertical: styles.SUBHEADING_VERTICAL_PADDING,
   },
   label: {
     fontFamily: 'Montserrat',
-    fontSize: FONT_SIZE_MEDIUM,
+    fontSize: styles.FONT_SIZE_MEDIUM,
     fontWeight: 'bold',
   },
   textOutput: {
-    backgroundColor: COLOR_BACKGROUND,
+    backgroundColor: styles.COLOR_BACKGROUND,
     margin: 1,
-    padding: TABLE_CELL_PADDING,
+    padding: styles.TABLE_CELL_PADDING,
   },
   oneByThree: {
     width: '33.33%',
@@ -226,10 +222,10 @@ const pdfStyles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     minWidth: '100%',
-    backgroundColor: COLOR_BACKGROUND,
+    backgroundColor: styles.COLOR_BACKGROUND,
   },
   cellContent: {
-    border: TABLE_BORDER,
+    border: styles.TABLE_BORDER,
     display: 'flex',
     justifyContent: 'space-between',
     padding: '5',
@@ -238,36 +234,37 @@ const pdfStyles = StyleSheet.create({
   verticalRow: {
     display: 'flex',
     flexDirection: 'column',
-    paddingTop: SPACING_MEDIUM,
+    paddingTop: styles.SPACING_MEDIUM,
     width: 300,
   },
   cell: {
-    border: TABLE_BORDER,
+    border: styles.TABLE_BORDER,
     display: 'flex',
     justifyContent: 'space-between',
-    padding: SPACING_SMALL,
+    padding: styles.SPACING_SMALL,
     width: '50%',
   },
   strongCell: {
-    border: TABLE_BORDER,
+    border: styles.TABLE_BORDER,
     display: 'flex',
     justifyContent: 'space-between',
-    padding: SPACING_SMALL,
+    padding: styles.SPACING_SMALL,
     width: '50%',
     fontWeight: 'bold',
+    textAlign: 'justify',
   },
   cellTitle: {
-    border: TABLE_BORDER,
+    border: styles.TABLE_BORDER,
     display: 'flex',
     justifyContent: 'center',
     width: '50%',
-    padding: SPACING_SMALL,
+    padding: styles.SPACING_SMALL,
   },
   cellDescription: {
     fontWeight: 'medium',
   },
   header: {
-    backgroundColor: COLOR_BACKGROUND,
+    backgroundColor: styles.COLOR_BACKGROUND,
   },
   tpSection: {
     ...section.style,
@@ -275,24 +272,24 @@ const pdfStyles = StyleSheet.create({
     flexDirection: 'column',
   },
   tpCell: {
-    border: TABLE_BORDER,
+    border: styles.TABLE_BORDER,
     display: 'flex',
     justifyContent: 'space-between',
   },
   tpHeaderCell: {
-    border: TABLE_BORDER,
-    width: SECTION_WIDTH * 0.3,
-    padding: SMALL_PADDING,
+    border: styles.TABLE_BORDER,
+    width: styles.SECTION_WIDTH * 0.3,
+    padding: styles.SMALL_PADDING,
     textAlign: 'center',
-    color: COLOR_SECONDARY,
+    color: styles.COLOR_SECONDARY,
     fontWeight: 'bold',
   },
   tpContentCell: {
     display: 'flex',
     flexDirection: 'row',
     flexWrap: 'wrap',
-    border: TABLE_BORDER,
-    width: SECTION_WIDTH * 0.7,
+    border: styles.TABLE_BORDER,
+    width: styles.SECTION_WIDTH * 0.7,
   },
   tpSubRow: {
     flexBasis: '50%',
@@ -300,15 +297,15 @@ const pdfStyles = StyleSheet.create({
     flexDirection: 'row',
   },
   tpSubCell: {
-    border: TABLE_BORDER,
+    border: styles.TABLE_BORDER,
     flexBasis: '50%',
-    padding: SMALL_PADDING,
+    padding: styles.SMALL_PADDING,
   },
   qna: {
-    paddingVertical: SMALL_PADDING,
+    paddingVertical: styles.SMALL_PADDING,
   },
   answer: {
-    color: COLOR_TEXT,
+    color: styles.COLOR_TEXT,
   },
 
   piSection: {
@@ -318,19 +315,19 @@ const pdfStyles = StyleSheet.create({
   },
   piOutput: {
     width: '100%',
-    paddingVertical: VERTICAL_MARGIN,
+    paddingVertical: styles.VERTICAL_MARGIN,
   },
   piRow: {
     display: 'flex',
     flexDirection: 'row',
     width: '100%',
-    backgroundColor: COLOR_BACKGROUND,
+    backgroundColor: styles.COLOR_BACKGROUND,
   },
   piIconCell: {
     display: 'flex',
     justifyContent: 'flex-start',
-    border: TABLE_BORDER,
-    padding: `0 ${SMALL_PADDING}`,
+    border: styles.TABLE_BORDER,
+    padding: styles.SMALL_PADDING,
   },
   piIcon: {
     width: 40,
@@ -342,33 +339,33 @@ const pdfStyles = StyleSheet.create({
     width: '100%',
   },
   piHeaderCell: {
-    flexBasis: SECTION_WIDTH * 0.3,
-    padding: SMALL_PADDING,
-    border: TABLE_BORDER,
-    color: COLOR_SECONDARY,
-    fontSize: FONT_SIZE_LARGE,
+    flexBasis: styles.SECTION_WIDTH * 0.3,
+    border: styles.TABLE_BORDER,
+    padding: styles.SMALL_PADDING,
+    color: styles.COLOR_SECONDARY,
+    fontSize: styles.FONT_SIZE_LARGE,
     fontWeight: 'bold',
   },
   piContentCell: {
-    flexBasis: SECTION_WIDTH * 0.7,
+    flexBasis: styles.SECTION_WIDTH * 0.7,
     display: 'flex',
     flexDirection: 'row',
   },
   piSubHeadingCell: {
-    padding: SMALL_PADDING,
-    border: TABLE_BORDER,
+    padding: styles.SMALL_PADDING,
+    border: styles.TABLE_BORDER,
     flexBasis: '30%',
-    fontWeight: 'bold'
+    fontWeight: 'bold',
   },
   piSubContentCell: {
-    padding: SMALL_PADDING,
-    border: TABLE_BORDER,
+    padding: styles.SMALL_PADDING,
+    border: styles.TABLE_BORDER,
     flexBasis: '70%',
   },
   piBorderCell: {
     width: '100%',
-    border: TABLE_BORDER,
-    padding: SMALL_PADDING,
+    border: styles.TABLE_BORDER,
+    padding: styles.SMALL_PADDING,
   },
 
   niSection: {
@@ -381,28 +378,29 @@ const pdfStyles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     width: '100%',
-    backgroundColor: COLOR_BACKGROUND,
+    backgroundColor: styles.COLOR_BACKGROUND,
   },
   niIconCell: {
     display: 'flex',
     justifyContent: 'flex-start',
-    border: TABLE_BORDER,
-    padding: `0 ${SMALL_PADDING}`,
+    border: styles.TABLE_BORDER,
+    padding: `0 ${styles.SMALL_PADDING}`,
   },
   niIcon: {
     width: 40,
     height: 40,
   },
   niHeaderCell: {
-    padding: SMALL_PADDING,
-    border: TABLE_BORDER,
+    padding: styles.SMALL_PADDING,
+    border: styles.TABLE_BORDER,
     flexBasis: '30%',
     fontWeight: 'bold',
   },
   niContentCell: {
-    padding: SMALL_PADDING,
-    border: TABLE_BORDER,
+    padding: styles.SMALL_PADDING,
+    border: styles.TABLE_BORDER,
     flexBasis: '70%',
+    textAlign: 'justify',
   },
 
   budgetOverview: {
@@ -432,6 +430,7 @@ const pdfStyles = StyleSheet.create({
     ...subSection.style,
     display: 'flex',
     flexDirection: 'column',
+    textAlign: 'justify',
   },
 
   contactType: {
@@ -439,18 +438,16 @@ const pdfStyles = StyleSheet.create({
   },
 
   contactDetails: {
-    marginLeft: SPACING_SMALL,
+    marginLeft: styles.SPACING_SMALL,
   },
-
   fontWeightNormalAndSmall: {
     fontWeight: 'light',
   },
 
   fontWeightBoldAndLarge: {
     fontWeight: 'bold',
-    fontSize: FONT_SIZE_LARGE,
+    fontSize: styles.FONT_SIZE_LARGE,
   },
 });
 
 export default pdfStyles;
-

@@ -24,10 +24,9 @@ import {
 import { resolveUrl } from '#utils/resolveUrl';
 import { DrefFinalReportApiFields } from '#views/FinalReportForm/common';
 import { PdfTextOutput } from '#components/PdfTextOutput';
-
-import ContactSection from '../ContactSection';
-import PlannedIntervention from '../PlannedIntervention';
-import NeedIdentified from '../NeedIdentified';
+import NeedIdentified from '#components/DrefPdfDocument/NeedIdentified';
+import PlannedIntervention from '#components/DrefPdfDocument/PlannedIntervention';
+import ContactSection from '#components/DrefPdfDocument/ContactSection';
 
 import pdfStyles from 'src/styles/pdf/pdfStyles';
 
