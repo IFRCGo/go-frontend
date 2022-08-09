@@ -34,6 +34,7 @@ function useSanitizedHtml(rawHtml: string) {
           img: ['src'],
           // a: ['href'],
         },
+        allowedSchemes: [ 'http', 'https', 'data' ],
         allowedStyles: {
           '*': {
             // Allow indentation
