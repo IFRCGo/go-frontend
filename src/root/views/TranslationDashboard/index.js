@@ -194,7 +194,9 @@ function TranslationDashboard(p) {
 
   const devStringKeyList = React.useMemo(() => {
     const keys = Object.keys(lang);
-    return keys.sort((a, b) => (a || '').localeCompare(b));
+    return keys
+      .sort((a, b) => (a || '').localeCompare(b))
+      .filter((l) => !!lang[l]);
   }, []);
 
   const devStrings = React.useMemo(() => {
@@ -297,12 +299,14 @@ function TranslationDashboard(p) {
   ), [removedKeyList]);
 
   const handleSaveButtonClick = React.useCallback(() => {
-    const actions = Object.keys(appStrings).map((key) => ({
-      action: 'set',
-      key,
-      value: appStrings[key].value,
-      hash: appStrings[key].hash,
-    }));
+    const actions = Object.keys(appStrings)
+      .filter((key) => !!appStrings[key].value)
+      .map((key) => ({
+        action: 'set',
+        key,
+        value: appStrings[key].value,
+        hash: appStrings[key].hash,
+      }));
 
     const data = { actions };
     postLanguageBulk(currentLanguage, data);
