@@ -4,6 +4,7 @@ import {
   ObjectSchema,
   ArraySchema,
   greaterThanOrEqualToCondition,
+  defaultEmptyArrayType,
 } from '@togglecorp/toggle-form';
 
 import {
@@ -117,7 +118,7 @@ export const schema: FormSchema = {
     lessons_learned: [],
     event_description: [],
     event_scope: [],
-    images_file: [lessThanEqualToTwoImagesCondition],
+    images_file: [defaultEmptyArrayType, lessThanEqualToTwoImagesCondition],
     government_requested_assistance: [],
     government_requested_assistance_date: [],
     national_authorities: [],
@@ -179,7 +180,7 @@ export const schema: FormSchema = {
     logistic_capacity_of_ns: [],
     pmer: [],
     communication: [],
-    users: [],
+    users: [defaultEmptyArrayType],
     is_there_major_coordination_mechanism: [],
     is_surge_personnel_deployed: [],
     people_in_need: [],
