@@ -228,12 +228,15 @@ function DrefApplication(props: Props) {
         const newMap = {
           ...prevMap,
         };
-
-        if (response.cover_image_details) {
-          newMap[response.cover_image_details.id] = response.cover_image_details.file;
-        }
-        if (response.event_map_details) {
-          newMap[response.event_map_details.id] = response.event_map_details.file;
+        //TODO:
+        //if (response.cover_image_details) {
+        //  newMap[response.cover_image_details.id] = response.cover_image_details.file;
+        //}
+        //if (response.event_map_details) {
+        //  newMap[response.event_map_details.id] = response.event_map_details.file;
+        //}
+        if (response.cover_image_file) {
+          newMap[response.cover_image_file.id] = response.cover_image_file.file;
         }
         if (response.images_file?.length > 0) {
           response.images_file.forEach((img) => {
@@ -330,7 +333,7 @@ function DrefApplication(props: Props) {
 
   const handleTabChange = React.useCallback((newStep: StepTypes) => {
     scrollToTop();
-    const isCurrentTabValid = validateCurrentTab(['event_map']);
+    const isCurrentTabValid = validateCurrentTab(['event_map_file']);
 
     if (!isCurrentTabValid) {
       return;
@@ -357,7 +360,7 @@ function DrefApplication(props: Props) {
   const handleSubmitButtonClick = React.useCallback(() => {
     scrollToTop();
 
-    const isCurrentTabValid = validateCurrentTab(['event_map']);
+    const isCurrentTabValid = validateCurrentTab(['event_map_file']);
 
     if (!isCurrentTabValid) {
       return;

@@ -5,10 +5,13 @@ import {
   EntriesAsList,
   getErrorObject,
   SetBaseValueArg,
+  useFormArray,
+  useFormObject,
 } from '@togglecorp/toggle-form';
 import {
   listToMap,
   isNotDefined,
+  isDefined,
 } from '@togglecorp/fujs';
 import { IoHelpCircle } from 'react-icons/io5';
 
@@ -40,11 +43,16 @@ import {
   ONSET_IMMINENT,
   emptyNumericOptionList,
   ONSET_SUDDEN,
+  FileWithCaption,
 } from '../common';
 
 import styles from './styles.module.scss';
+import CaptionInput from '../CaptionInput/CaptionInput';
+import FileCaptionInput from './FileCaptionInput/FileCaptionInput';
+import { SetValueArg } from '#types/common';
 
 type Value = PartialForm<DrefFields>;
+
 interface Props {
   disasterTypeOptions: NumericValueOption[];
   error: Error<Value> | undefined;
@@ -95,7 +103,8 @@ function DrefOverview(props: Props) {
 
   const isImminentOnset = value?.type_of_onset === ONSET_IMMINENT;
   const isSuddenOnSet = value?.type_of_onset === ONSET_SUDDEN ? false : value.emergency_appeal_planned;
-  onValueChange(isSuddenOnSet, 'emergency_appeal_planned');
+
+  //onValueChange(isSuddenOnSet, 'emergency_appeal_planned');
 
   const handleUserSearch = React.useCallback((input: string | undefined, callback) => {
     if (!input) {
@@ -153,6 +162,14 @@ function DrefOverview(props: Props) {
       label: d.name,
     })).sort(compareString) ?? emptyNumericOptionList
   ), [districtsResponse]);
+
+  const handleImageInputChange = React.useCallback((newValue: number | undefined, name: 'cover_image_file' | 'event_map_file') => {
+    const newImageList: undefined | PartialForm<FileWithCaption> = ({
+      id: newValue,
+    });
+    onValueChange(newImageList, name);
+  }, [onValueChange]);
+  console.warn({ value });
 
   return (
     <>
@@ -417,36 +434,61 @@ function DrefOverview(props: Props) {
         <InputSection
           title={strings.drefFormUploadMap}
           description={strings.drefFormUploadMapDescription}
+          contentSectionClassName={styles.imageInputContent}
         >
           <DREFFileInput
             accept="image/*"
-            name="event_map"
-            value={value.event_map}
-            onChange={onValueChange}
-            error={error?.event_map}
+            name="event_map_file"
+            value={value.event_map_file?.id}
+            onChange={handleImageInputChange}
+            error={error?.event_map_file}
             fileIdToUrlMap={fileIdToUrlMap}
             setFileIdToUrlMap={setFileIdToUrlMap}
+            hidePreview
           >
             {strings.drefFormUploadAnImageLabel}
           </DREFFileInput>
+          {/*<div className={styles.previewList}>
+            {value.cover_image_file && (
+              <FileCaptionInput
+                name="event_map_details"
+                value={value.event_map_details}
+                onChange={onValueChange}
+                fileIdToUrlMap={fileIdToUrlMap}
+              />
+            )}
+          </div>*/}
         </InputSection>
         <InputSection
           title={strings.drefFormUploadCoverImage}
           description={strings.drefFormUploadCoverImageDescription}
+          contentSectionClassName={styles.imageInputContent}
         >
           <DREFFileInput
             accept="image/*"
-            name="cover_image"
-            value={value.cover_image}
-            onChange={onValueChange}
-            error={error?.cover_image}
+            name="cover_image_file"
+            value={value.cover_image_file?.id}
+            onChange={handleImageInputChange}
+            error={(error?.cover_image_file)}
             fileIdToUrlMap={fileIdToUrlMap}
             setFileIdToUrlMap={setFileIdToUrlMap}
+            hidePreview
+            hideClearButton
           >
             {strings.drefFormUploadAnImageLabel}
           </DREFFileInput>
+          <div className={styles.previewList}>
+            {value.cover_image_file && (
+              <FileCaptionInput
+                name="cover_image_file"
+                value={value.cover_image_file}
+                onChange={onValueChange}
+                fileIdToUrlMap={fileIdToUrlMap}
+              />
+            )}
+          </div>
         </InputSection>
-      </Container >
+      </Container>
     </>
   );
 }
