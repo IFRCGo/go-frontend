@@ -7,7 +7,7 @@ import {
   useFormArray,
 } from '@togglecorp/toggle-form';
 import { listToMap } from '@togglecorp/fujs';
-import sanitizeHtml from 'sanitize-html';
+import sanitize from 'sanitize-html';
 
 import { resolveUrl } from '#utils/resolveUrl';
 import Container from '#components/Container';
@@ -39,50 +39,6 @@ interface Props {
   isImminentOnset: boolean;
   fileIdToUrlMap: Record<number, string>;
   setFileIdToUrlMap?: React.Dispatch<React.SetStateAction<Record<number, string>>>;
-  isSlowOnset: boolean;
-}
-
-function useSanitizedHtml(rawHtml: string) {
-  const sanitizedHtml = React.useMemo(() => (
-    sanitizeHtml(
-      rawHtml,
-      {
-        allowedTags: [
-          // https://www.semrush.com/blog/html-tags-list
-          'p', 'br', 'hr', 'span', 'div',
-          'h1', 'h2', 'h3', 'h4', 'h5', 'h6',
-          'strong', 'b', 'i', 'em', 'u',
-          'li', 'ul', 'ol',
-          'a',
-          'table', 'thead', 'tbody', 'th', 'tr', 'td',
-          'dd', 'dt', 'dl',
-          'sub', 'sup',
-          'img', 'svg',
-          'pre', 'cite', 'code', 'q',
-          // 'base', 'iframe', 'canvas', 'video', // can be switched on when need occurs
-          // 'area', 'map', 'label', 'meter', // can be switched on when need occurs
-          // forbid: 'input', 'textarea', 'button',
-        ],
-        // to improve security
-        allowedAttributes: {
-          p: ['style'],
-          span: ['style'],
-          div: ['style'],
-          // a: ['href'],
-        },
-        allowedStyles: {
-          '*': {
-            // Allow indentation
-            'padding-left': [/^\d+(?:px)$/],
-            'font-size': [/^\d+(?:px)$/],
-            'text-align': [/.+/],
-          },
-        },
-      },
-    )
-  ), [rawHtml]);
-
-  return sanitizedHtml;
 }
 
 function EventDetails(props: Props) {
@@ -96,7 +52,6 @@ function EventDetails(props: Props) {
     isImminentOnset,
     fileIdToUrlMap,
     setFileIdToUrlMap,
-    isSlowOnset,
   } = props;
 
   const error = getErrorObject(formError);
@@ -127,7 +82,7 @@ function EventDetails(props: Props) {
     onValueChange(newImageList, 'images_file' as const);
   }, [value?.images_file, onValueChange]);
 
-  const sanitizedValue = useSanitizedHtml(value.event_description ?? '');
+  const sanitizedValue = sanitize(value.event_description ?? '');
   onValueChange(sanitizedValue, 'event_description');
 
   return (
@@ -240,9 +195,7 @@ function EventDetails(props: Props) {
         heading={strings.drefFormDescriptionEvent}
       >
         <InputSection
-          title={isSlowOnset
-            ? strings.drefFormEventDateSlow
-            : strings.drefFormEventDate}
+          title={strings.drefFormEventDate}
         >
           {!isImminentOnset ?
             <DateInput
@@ -294,6 +247,7 @@ function EventDetails(props: Props) {
         }
         <InputSection
           title={strings.drefFormUploadPhotos}
+          description={strings.drefFormUploadPhotosLimitation}
           contentSectionClassName={styles.imageInputContent}
         >
           <DREFFileInput
