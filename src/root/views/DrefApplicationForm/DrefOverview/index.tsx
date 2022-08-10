@@ -20,7 +20,6 @@ import SelectInput from '#components/SelectInput';
 import SearchSelectInput from '#components/SearchSelectInput';
 import LanguageContext from '#root/languageContext';
 import RadioInput from '#components/RadioInput';
-import DateInput from '#components/DateInput';
 import NumberInput from '#components/NumberInput';
 import DREFFileInput from '#components/DREFFileInput';
 import { rankedSearchOnList } from '#utils/common';
@@ -96,7 +95,6 @@ function DrefOverview(props: Props) {
 
   const isImminentOnset = value?.type_of_onset === ONSET_IMMINENT;
   const isSuddenOnSet = value?.type_of_onset === ONSET_SUDDEN ? false : value.emergency_appeal_planned;
-  const didNationalSociety = value?.did_national_society;
   onValueChange(isSuddenOnSet, 'emergency_appeal_planned');
 
   const handleUserSearch = React.useCallback((input: string | undefined, callback) => {
@@ -308,12 +306,33 @@ function DrefOverview(props: Props) {
           />
         </InputSection>
         <InputSection
-          title={
-            !isImminentOnset
-              ? strings.drefFormPeopleAffected
-              : strings.drefFormRiskPeopleLabel
+          title={isImminentOnset
+            ?
+            <>
+              {strings.drefFormRiskPeopleLabel}
+              <a
+                className={styles.peopleTargetedHelpLink}
+                target="_blank"
+                title="Click to view Emergency Response Framework"
+                href="https://ifrcorg.sharepoint.com/sites/IFRCSharing/Shared%20Documents/Forms/AllItems.aspx?id=%2Fsites%2FIFRCSharing%2FShared%20Documents%2FDREF%2FHum%20Pop%20Definitions%20for%20DREF%20Form%5F21072022%2Epdf&parent=%2Fsites%2FIFRCSharing%2FShared%20Documents%2FDREF&p=true&ga=1"
+              >
+                <IoHelpCircle />
+              </a>
+            </>
+            :
+            <>
+              {strings.drefFormPeopleAffected}
+              <a
+                className={styles.peopleTargetedHelpLink}
+                target="_blank"
+                title="Click to view Emergency Response Framework"
+                href="https://ifrcorg.sharepoint.com/sites/IFRCSharing/Shared%20Documents/Forms/AllItems.aspx?id=%2Fsites%2FIFRCSharing%2FShared%20Documents%2FDREF%2FHum%20Pop%20Definitions%20for%20DREF%20Form%5F21072022%2Epdf&parent=%2Fsites%2FIFRCSharing%2FShared%20Documents%2FDREF&p=true&ga=1"
+              >
+                <IoHelpCircle />
+              </a>
+            </>
           }
-          description={strings.drefFormPeopleAffectedDescription}
+          description={isImminentOnset && strings.drefFormPeopleAffectedDescription}
         >
           <NumberInput
             name="num_affected"
@@ -325,12 +344,39 @@ function DrefOverview(props: Props) {
         <InputSection
           title={(
             <>
+              {
+                isImminentOnset
+                  ? strings.drefFormEstimatedPeopleInNeed
+                  : strings.drefFormPeopleInNeed
+              }
+              <a
+                className={styles.peopleTargetedHelpLink}
+                target="_blank"
+                title="Click to view Emergency Response Framework"
+                href="https://ifrcorg.sharepoint.com/sites/IFRCSharing/Shared%20Documents/Forms/AllItems.aspx?id=%2Fsites%2FIFRCSharing%2FShared%20Documents%2FDREF%2FHum%20Pop%20Definitions%20for%20DREF%20Form%5F21072022%2Epdf&parent=%2Fsites%2FIFRCSharing%2FShared%20Documents%2FDREF&p=true&ga=1"
+              >
+                <IoHelpCircle />
+              </a>
+            </>
+          )}
+          description={isImminentOnset && strings.drefFormPeopleInNeedDescription}
+        >
+          <NumberInput
+            name="people_in_need"
+            value={value.people_in_need}
+            onChange={onValueChange}
+            error={error?.people_in_need}
+          />
+        </InputSection>
+        <InputSection
+          title={(
+            <>
               {strings.drefFormPeopleTargeted}
               <a
                 className={styles.peopleTargetedHelpLink}
                 target="_blank"
                 title="Click to view Emergency Response Framework"
-                href="https://www.ifrc.org/sites/default/files/2021-07/IFRC%20Emergency%20Response%20Framework%20-%202017.pdf"
+                href="https://ifrcorg.sharepoint.com/sites/IFRCSharing/Shared%20Documents/Forms/AllItems.aspx?id=%2Fsites%2FIFRCSharing%2FShared%20Documents%2FDREF%2FHum%20Pop%20Definitions%20for%20DREF%20Form%5F21072022%2Epdf&parent=%2Fsites%2FIFRCSharing%2FShared%20Documents%2FDREF&p=true&ga=1"
               >
                 <IoHelpCircle />
               </a>
@@ -400,108 +446,7 @@ function DrefOverview(props: Props) {
             {strings.drefFormUploadAnImageLabel}
           </DREFFileInput>
         </InputSection>
-        <InputSection
-          title={(
-            <>
-              {
-                isImminentOnset
-                  ? strings.drefFormEstimatedPeopleInNeed
-                  : strings.drefFormPeopleInNeed
-              }
-              <a
-                className={styles.peopleTargetedHelpLink}
-                target="_blank"
-                title="Click to view Emergency Response Framework"
-                href="https://www.ifrc.org/sites/default/files/2021-07/IFRC%20Emergency%20Response%20Framework%20-%202017.pdf"
-              >
-                <IoHelpCircle />
-              </a>
-            </>
-          )}
-          description={!isImminentOnset && strings.drefFormPeopleInNeedDescription}
-        >
-          <NumberInput
-            name="people_in_need"
-            value={value.people_in_need}
-            onChange={onValueChange}
-            error={error?.people_in_need}
-          />
-        </InputSection>
-      </Container>
-      <Container
-        heading={strings.drefFormOperationalTimeframes}
-        className={styles.operationalTimeframes}
-      >
-        {isImminentOnset &&
-          <InputSection
-            title={strings.drefFormDidNationalSocietyStarted}
-          >
-            <RadioInput
-              name={'did_national_society' as const}
-              options={yesNoOptions}
-              keySelector={booleanOptionKeySelector}
-              labelSelector={optionLabelSelector}
-              onChange={onValueChange}
-              value={value?.did_national_society}
-              error={error?.did_national_society}
-            />
-          </InputSection>
-        }
-        <InputSection
-          fullWidthColumn
-        >
-          {didNationalSociety &&
-            <DateInput
-              label={strings.drefFormNsRequestDate}
-              name="ns_request_date"
-              value={value.ns_request_date}
-              onChange={onValueChange}
-              error={error?.ns_request_date}
-            />
-          }
-          <DateInput
-            label={strings.drefFormDateSubmissionToGeneva}
-            name="submission_to_geneva"
-            value={value.submission_to_geneva}
-            onChange={onValueChange}
-            error={error?.submission_to_geneva}
-          />
-          <DateInput
-            label={strings.drefFormDateOfApproval}
-            name="date_of_approval"
-            value={value.date_of_approval}
-            onChange={onValueChange}
-            error={error?.date_of_approval}
-          />
-        </InputSection>
-        <InputSection
-          fullWidthColumn
-        >
-          <DateInput
-            label={strings.drefFormPublishingDate}
-            name="publishing_date"
-            value={value.publishing_date}
-            onChange={onValueChange}
-            error={error?.publishing_date}
-          />
-          <NumberInput
-            label={strings.drefFormOperationTimeframeSubmission}
-            name="operation_timeframe"
-            placeholder={strings.drefFormOperationTimeframeSubmissionDescription}
-            value={value.operation_timeframe}
-            onChange={onValueChange}
-            error={error?.operation_timeframe}
-          />
-          <DateInput
-            label={strings.drefFormSubmissionEndDate}
-            name="end_date"
-            value={value.end_date}
-            onChange={onValueChange}
-            error={error?.end_date}
-            readOnly
-          />
-        </InputSection>
-      </Container>
+      </Container >
     </>
   );
 }

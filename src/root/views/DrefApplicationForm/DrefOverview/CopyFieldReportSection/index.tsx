@@ -21,12 +21,11 @@ import {
   ListResponse,
 } from '#utils/restRequest';
 import { FieldReportAPIResponseFields } from '#views/FieldReportForm/common';
-
 import {
-  NumericValueOption,
-  emptyNumericOptionList,
   DrefFields,
-} from '../../common';
+  emptyNumericOptionList,
+  NumericValueOption,
+} from '#views/DrefApplicationForm/common';
 
 import styles from './styles.module.scss';
 
@@ -185,10 +184,16 @@ function CopyFieldReportSection(props: Props) {
         un_or_other_actor,
         national_society_contact_name,
         national_society_contact_email,
+        national_society_contact_phone_number,
+        national_society_contact_title,
         ifrc_emergency_name,
         ifrc_emergency_email,
+        ifrc_emergency_phone_number,
+        ifrc_emergency_title,
         media_contact_name,
         media_contact_email,
+        media_contact_phone_number,
+        media_contact_title,
         field_report: fieldReport.id,
         country,
         num_affected,

@@ -155,6 +155,7 @@ function ActionsFields(props: Props) {
 
   const isImminentOnset = value.type_of_onset === ONSET_IMMINENT;
   const isThereCoordinationMechanism = value.is_there_major_coordination_mechanism;
+  const didNationalSocietyStarted = value.did_national_society;
 
   return (
     <>
@@ -167,17 +168,36 @@ function ActionsFields(props: Props) {
         <InputSection
           title={
             !isImminentOnset
-              ? strings.drefFormNsResponseStarted
-              : strings.drefFormNSAnticipatoryAction
+              ? strings.drefFormDidNationalSocietyStartedSlow
+              : strings.drefFormDidNationalSocietyStartedImminent
           }
         >
-          <DateInput
-            name="ns_respond_date"
-            value={value.ns_respond_date}
+          <RadioInput
+            name={'did_national_society' as const}
+            options={yesNoOptions}
+            keySelector={booleanOptionKeySelector}
+            labelSelector={optionLabelSelector}
             onChange={onValueChange}
-            error={error?.ns_respond_date}
+            value={value?.did_national_society}
+            error={error?.did_national_society}
           />
         </InputSection>
+        {didNationalSocietyStarted &&
+          <InputSection
+            title={
+              isImminentOnset
+                ? strings.drefFormNSAnticipatoryAction
+                : strings.drefFormNsResponseStarted
+            }
+          >
+            <DateInput
+              name="ns_respond_date"
+              value={value.ns_respond_date}
+              onChange={onValueChange}
+              error={error?.ns_respond_date}
+            />
+          </InputSection>
+        }
         <InputSection>
           <SelectInput
             label={strings.drefFormNationalSocietiesActionsLabel}
