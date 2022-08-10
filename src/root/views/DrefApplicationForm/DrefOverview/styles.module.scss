@@ -28,3 +28,15 @@
   margin-inline-start: $spacing;
   font-size: 1rem;
 }
+
+.map-input-content,
+.image-input-content {
+  display: flex;
+  flex-direction: column;
+
+  .preview-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $spacing;
+  }
+}
