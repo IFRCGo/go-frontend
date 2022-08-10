@@ -648,9 +648,8 @@ export function getPerCountries () {
 
 export const GET_PER_AREAS = 'GET_PER_AREAS';
 export function getPerAreas (id = null, area_num = null) {
-  let filters = {
-    limit: 500
-  };
+  let filters = {};
+  filters.limit = 500;
   if (area_num) {
     filters.area_num = area_num;
   }
@@ -664,6 +663,7 @@ export function getPerAreas (id = null, area_num = null) {
 export const GET_PER_FORMS = 'GET_PER_FORMS';
 export function getPerForms (id = null, overview_id = null, withData = false) {
   let filters = {};
+  filters.limit = 9999;
   if (id) {
     filters.id = id;
   }
@@ -693,9 +693,8 @@ export function getPerForm (formid = null, countryId = null) {
 
 export const GET_PER_QUESTIONS = 'GET_PER_QUESTIONS';
 export function getPerQuestions (area_id = null) {
-  let filters = {
-    limit: 9999
-  };
+  let filters = {};
+  filters.limit = 9999;
   if (area_id) {
     filters.area_id = area_id;
   }
@@ -705,9 +704,8 @@ export function getPerQuestions (area_id = null) {
 
 export const GET_PER_COMPONENTS = 'GET_PER_COMPONENTS';
 export function getPerComponents (area_id = null) {
-  let filters = {
-    limit: 500
-  };
+  let filters = {};
+  filters.limit = 500;
   if (area_id) {
     filters.area_id = area_id;
   }
@@ -751,12 +749,28 @@ export function getPerNsPhase (countryId = null) {
 
 export const PER_OVERVIEWS = 'PER_OVERVIEWS';
 export function getPerOverviews (countryId = null, formId = null) {
-  const f = buildAPIQS({country: countryId, id: formId});
+  let filters = {};
+  filters.limit = 9999;
+  if (countryId) {
+    filters.country = countryId;
+  }
+  if (formId) {
+    filters.id = formId;
+  }
+  const f = buildAPIQS(filters);
   return fetchJSON(`api/v2/peroverview/?${f}`, PER_OVERVIEWS, withToken());
 }
 
 export function getPerOverviewsStrict (countryId = null, formId = null) {
-  const f = buildAPIQS({country: countryId, id: formId});
+  let filters = {};
+  filters.limit = 9999;
+  if (countryId) {
+    filters.country = countryId;
+  }
+  if (formId) {
+    filters.id = formId;
+  }
+  const f = buildAPIQS(filters);
   return fetchJSON(`api/v2/peroverviewstrict/?${f}`, PER_OVERVIEWS, withToken());
 }
 
