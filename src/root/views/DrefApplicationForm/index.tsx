@@ -53,7 +53,13 @@ import useDrefFormOptions, { schema } from './useDrefFormOptions';
 
 import styles from './styles.module.scss';
 
-const defaultFormValues: PartialForm<DrefFields> = {};
+const defaultFormValues: PartialForm<DrefFields> = {
+  planned_interventions: [],
+  national_society_actions: [],
+  needs_identified: [],
+  images_file: [],
+  users: [],
+};
 
 function scrollToTop() {
   window.setTimeout(() => {
