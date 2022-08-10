@@ -275,13 +275,20 @@ export interface DrefApiFields extends Omit<DrefFields, 'district_details' | 'pl
   }[];
   event_map_details: FileWithCaption;
   cover_image_details: FileWithCaption;
+  districts: {
+    id: number;
+  }[];
 }
 
 export const overviewFields: (keyof DrefFields)[] = [
   'users',
   'field_report',
+  'title_prefix',
   'title',
   'national_society',
+  'country',
+  'district',
+  'people_in_need',
   'disaster_type',
   'type_of_onset',
   'disaster_category',
@@ -290,19 +297,6 @@ export const overviewFields: (keyof DrefFields)[] = [
   'event_map',
   'cover_image',
   'emergency_appeal_planned',
-  'go_field_report_date',
-  'ns_request_date',
-  'start_date',
-  'end_date',
-  'submission_to_geneva',
-  'date_of_approval',
-  'operation_timeframe',
-  'country',
-  'district',
-  'people_in_need',
-  'did_national_society',
-  'supporting_document',
-  'title_prefix',
 ];
 
 export const eventDetailsFields: (keyof DrefFields)[] = [
@@ -361,6 +355,13 @@ export const responseFields: (keyof DrefFields)[] = [
 ];
 
 export const submissionFields: (keyof DrefFields)[] = [
+  'ns_request_date',
+  'start_date',
+  'end_date',
+  'submission_to_geneva',
+  'date_of_approval',
+  'operation_timeframe',
+  'did_national_society',
   'appeal_code',
   'glide_code',
   'ifrc_appeal_manager_name',

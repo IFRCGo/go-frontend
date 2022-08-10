@@ -47,7 +47,6 @@ import {
   responseFields,
   submissionFields,
   ONSET_IMMINENT,
-  ONSET_SLOW,
 } from './common';
 import useDrefFormOptions, { schema } from './useDrefFormOptions';
 
@@ -405,7 +404,7 @@ function DrefApplication(props: Props) {
     || drefApplicationPending;
 
   const isImminentOnset = value?.type_of_onset === ONSET_IMMINENT;
-  const isSlowOnset = value?.type_of_onset === ONSET_SLOW;
+
   React.useEffect(() => {
     onValueSet((oldValue) => {
       if (value.type_of_onset !== ONSET_IMMINENT) {
@@ -609,7 +608,6 @@ function DrefApplication(props: Props) {
             </TabPanel>
             <TabPanel name="eventDetails">
               <EventDetails
-                isSlowOnset={isSlowOnset}
                 isImminentOnset={isImminentOnset}
                 error={error}
                 onValueChange={onValueChange}

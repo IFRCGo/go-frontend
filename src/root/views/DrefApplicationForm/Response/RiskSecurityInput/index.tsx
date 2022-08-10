@@ -11,7 +11,7 @@ import { randomString } from '@togglecorp/fujs';
 import Button from '#components/Button';
 import LanguageContext from '#root/languageContext';
 import { RiskSecurityType } from '#views/DrefApplicationForm/useDrefFormOptions';
-import TextInput from '#components/TextInput';
+import TextArea from '#components/TextArea';
 
 import styles from './styles.module.scss';
 
@@ -47,14 +47,14 @@ function RiskSecurityInput(props: Props) {
 
   return (
     <div className={styles.riskSecurityInput}>
-      <TextInput
+      <TextArea
         label={strings.drefFormRiskSecurityRiskLabel}
         name="risk"
         value={value.risk}
         error={error?.risk}
         onChange={onFieldChange}
       />
-      <TextInput
+      <TextArea
         label={strings.drefFormRiskSecurityMitigationLabel}
         name="mitigation"
         value={value.mitigation}

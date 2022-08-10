@@ -10,6 +10,8 @@ import Container from '#components/Container';
 import InputSection from '#components/InputSection';
 import TextInput from '#components/TextInput';
 import LanguageContext from '#root/languageContext';
+import DateInput from '#components/DateInput';
+import NumberInput from '#components/NumberInput';
 
 import { DrefFields } from '../common';
 
@@ -35,6 +37,64 @@ function Submission(props: Props) {
 
   return (
     <>
+      <Container
+        heading={strings.drefFormOperationalTimeframes}
+        className={styles.operationalTimeframes}
+      >
+        <InputSection
+          fullWidthColumn
+        >
+          <DateInput
+            label={strings.drefFormDateOfApproval}
+            name="date_of_approval"
+            value={value.date_of_approval}
+            onChange={onValueChange}
+            error={error?.date_of_approval}
+          />
+          <NumberInput
+            label={strings.drefFormOperationTimeframeSubmission}
+            name="operation_timeframe"
+            placeholder={strings.drefFormOperationTimeframeSubmissionDescription}
+            value={value.operation_timeframe}
+            onChange={onValueChange}
+            error={error?.operation_timeframe}
+          />
+          <DateInput
+            label={strings.drefFormSubmissionEndDate}
+            name="end_date"
+            value={value.end_date}
+            onChange={onValueChange}
+            error={error?.end_date}
+            readOnly
+          />
+        </InputSection>
+        <InputSection
+          fullWidthColumn
+        >
+          <DateInput
+            label={strings.drefFormNsRequestDate}
+            name="ns_request_date"
+            value={value.ns_request_date}
+            onChange={onValueChange}
+            error={error?.ns_request_date}
+          />
+          <DateInput
+            label={strings.drefFormDateSubmissionToGeneva}
+            name="submission_to_geneva"
+            value={value.submission_to_geneva}
+            onChange={onValueChange}
+            error={error?.submission_to_geneva}
+          />
+
+          <DateInput
+            label={strings.drefFormPublishingDate}
+            name="publishing_date"
+            value={value.publishing_date}
+            onChange={onValueChange}
+            error={error?.publishing_date}
+          />
+        </InputSection>
+      </Container>
       <Container
         heading={strings.drefFormTrackingData}
         className={styles.trackingData}
