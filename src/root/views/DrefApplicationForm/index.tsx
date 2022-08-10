@@ -228,14 +228,10 @@ function DrefApplication(props: Props) {
         const newMap = {
           ...prevMap,
         };
-        //TODO:
-        //if (response.cover_image_details) {
-        //  newMap[response.cover_image_details.id] = response.cover_image_details.file;
-        //}
-        //if (response.event_map_details) {
-        //  newMap[response.event_map_details.id] = response.event_map_details.file;
-        //}
-        if (response.cover_image_file) {
+        if (response.event_map_file && response.event_map_file.file) {
+          newMap[response.event_map_file.id] = response.event_map_file.file;
+        }
+        if (response.cover_image_file && response.cover_image_file.file) {
           newMap[response.cover_image_file.id] = response.cover_image_file.file;
         }
         if (response.images_file?.length > 0) {
