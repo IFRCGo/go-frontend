@@ -24,7 +24,6 @@ import DREFFileInput from '#components/DREFFileInput';
 import LanguageContext from '#root/languageContext';
 import { sumSafe } from '#utils/common';
 import RadioInput from '#components/RadioInput';
-import TextInput from '#components/TextInput';
 
 import InterventionInput from './InterventionInput';
 import RiskSecurityInput from './RiskSecurityInput';
@@ -181,13 +180,12 @@ function Response(props: Props) {
       >
         <InputSection
           title={strings.drefFormObjectiveOperation}
-          description={strings.drefFormObjectiveOperationDescription}
         >
           <TextArea
-            error={error?.operation_objective}
             name="operation_objective"
             onChange={onValueChange}
             value={value.operation_objective}
+            error={error?.operation_objective}
             placeholder={strings.drefFormObjectiveOperationPlaceholder}
           />
         </InputSection>
@@ -371,7 +369,7 @@ function Response(props: Props) {
         <InputSection
           title={strings.drefFormRiskSecuritySafetyConcern}
         >
-          <TextInput
+          <TextArea
             name='risk_security_concern'
             value={value.risk_security_concern}
             error={error?.risk_security_concern}
