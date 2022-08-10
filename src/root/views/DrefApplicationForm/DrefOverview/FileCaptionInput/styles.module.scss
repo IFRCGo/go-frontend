@@ -1,0 +1,13 @@
+@import '~styles/settings/_variables.scss';
+
+.image-input {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  .caption-input {
+    width: 100%;
+    max-width: 12rem;
+    padding: 0;
+  }
+}
