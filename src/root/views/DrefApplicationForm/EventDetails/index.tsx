@@ -7,7 +7,7 @@ import {
   useFormArray,
 } from '@togglecorp/toggle-form';
 import { listToMap } from '@togglecorp/fujs';
-import sanitize from 'sanitize-html';
+import sanitizeHtml from 'sanitize-html';
 
 import { resolveUrl } from '#utils/resolveUrl';
 import Container from '#components/Container';
@@ -82,7 +82,9 @@ function EventDetails(props: Props) {
     onValueChange(newImageList, 'images_file' as const);
   }, [value?.images_file, onValueChange]);
 
-  const sanitizedValue = sanitize(value.event_description ?? '');
+  const sanitizedValue = sanitizeHtml(value.event_description ?? '', {
+    allowedTags: [],
+  });
   onValueChange(sanitizedValue, 'event_description');
 
   return (
