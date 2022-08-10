@@ -6,7 +6,7 @@ import {
   View,
   Document,
   Image as PDFImage,
-  Font,
+  // Font,
 } from '@react-pdf/renderer';
 import {
   isDefined,
@@ -229,11 +229,11 @@ function DrefPdfDocument(props: Props) {
             {documentTitle}
           </Text>
         </View>
-        {(dref.cover_image_details?.file) && (
+        {(dref.cover_image_file?.file) && (
           <View style={pdfStyles.section}>
             <PDFImage
               style={pdfStyles.bannerImage}
-              src={dref.cover_image_details.file}
+              src={dref.cover_image_file.file}
             />
           </View>
         )}
