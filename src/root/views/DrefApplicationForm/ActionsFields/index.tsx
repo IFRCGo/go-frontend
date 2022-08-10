@@ -86,10 +86,11 @@ function ActionsFields(props: Props) {
   );
 
   type Needs = typeof value.needs_identified;
-  const handleNeedAddButtonClick = React.useCallback(() => {
+  const handleNeedAddButtonClick = React.useCallback((title?: string) => {
     const clientId = randomString();
     const newNeedList: PartialForm<Need> = {
       clientId,
+      title,
     };
 
     onValueChange(
@@ -102,10 +103,11 @@ function ActionsFields(props: Props) {
   }, [onValueChange, setNeed]);
 
   type NsActions = typeof value.needs_identified;
-  const handleNsActionAddButtonClick = React.useCallback(() => {
+  const handleNsActionAddButtonClick = React.useCallback((title?: string) => {
     const clientId = randomString();
     const newNsActionList: PartialForm<NsAction> = {
       clientId,
+      title,
     };
 
     onValueChange(
