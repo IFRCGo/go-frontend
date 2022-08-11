@@ -144,8 +144,7 @@ const pdfStyles = StyleSheet.create({
 
   compactSection: {
     display: 'flex',
-    justifyItem: 'stretch',
-    alignItems: 'stretch',
+
     flexDirection: 'row',
     width: '100%',
   },
