@@ -3146,9 +3146,9 @@ export default {
   drefFormRequestAmount: 'Requested Amount in CHF',
   drefFormEmergencyAppealPlanned: 'Emergency appeal planned',
   drefFormUploadMap: 'Upload map',
-  drefFormUploadMapDescription: 'Add a map highlighting the targeted areas for this operation, it will be used for the publishable document.',
+  drefFormUploadMapDescription: 'Add a map highlighting the targeted areas for this operation, it will be used for the publicly published DREF application.',
   drefFormUploadCoverImage: 'Cover image',
-  drefFormUploadCoverImageDescription: 'Upload a image for the cover page of the publishable document.',
+  drefFormUploadCoverImageDescription: 'Upload a image for the cover page of the publicly published DREF application.',
   drefFormTimeFrames: 'Timeframes',
   drefFormEventDate: 'Date of the Event',
   drefFormGoFieldReportDate: 'Date of GO field report',
@@ -3176,7 +3176,8 @@ export default {
   drefFormLessonsLearnedDescription: 'Specify how the lessons learnt from these previous operations are being used to mitigate similar challenges in the current operation',
   drefFormDescriptionEvent: 'Description of the Event',
   drefFormUploadSupportingDocumentButtonLabel: 'Upload document',
-  drefFormUploadSupportingDocument: 'Upload any supporting documentation if relevant',
+  drefFormUploadSupportingDocument: 'Upload any supporting documentation if relevant (Optional)',
+  drefFormUploadSupportingDocumentDescription: 'Here the National Society can upload documentation that substantiates their decision to launch this operation now. For example: seasonal outlooks, forecast information, reports from credible sources...etc.',
 
   // Imminent
   drefFormImminentDisaster: 'Provide any updates in the situation since the field report and explain what is expected to happen.',
@@ -3238,7 +3239,7 @@ export default {
 
   // Submission
   drefFormSubmissionFlow: 'Submission flow',
-  drefFormNsRequestDate: 'Date of National Society Request',
+  drefFormNsRequestDate: 'Date of National Society Application',
   drefFormDateSubmissionToGeneva: 'Date of Submission to GVA',
   drefFormDateOfApproval: 'Date of Approval',
   drefFormPublishingDate: 'Date of Publishing',
