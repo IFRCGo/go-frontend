@@ -247,6 +247,25 @@ function EventDetails(props: Props) {
             />
           </InputSection>
         }
+        {isImminentOnset &&
+          <InputSection
+            title={strings.drefFormUploadSupportingDocument}
+            description={strings.drefFormUploadSupportingDocumentDescription}
+          >
+            <DREFFileInput
+              accept=".pdf,.docx,.pptx"
+              error={error?.supporting_document}
+              fileIdToUrlMap={fileIdToUrlMap}
+              name="supporting_document"
+              onChange={onValueChange}
+              setFileIdToUrlMap={setFileIdToUrlMap}
+              showStatus
+              value={value.supporting_document}
+            >
+              {strings.drefFormUploadSupportingDocumentButtonLabel}
+            </DREFFileInput>
+          </InputSection>
+        }
         <InputSection
           title={strings.drefFormUploadPhotos}
           description={strings.drefFormUploadPhotosLimitation}
@@ -293,24 +312,6 @@ function EventDetails(props: Props) {
             error={error?.event_scope}
           />
         </InputSection>
-        {isImminentOnset &&
-          <InputSection
-            title={strings.drefFormUploadSupportingDocument}
-          >
-            <DREFFileInput
-              accept=".pdf,.docx,.pptx"
-              error={error?.supporting_document}
-              fileIdToUrlMap={fileIdToUrlMap}
-              name="supporting_document"
-              onChange={onValueChange}
-              setFileIdToUrlMap={setFileIdToUrlMap}
-              showStatus
-              value={value.supporting_document}
-            >
-              {strings.drefFormUploadSupportingDocumentButtonLabel}
-            </DREFFileInput>
-          </InputSection>
-        }
       </Container>
     </>
   );
