@@ -3,7 +3,7 @@ import {
   isDefined,
   unique,
 } from '@togglecorp/fujs';
-import AsyncSelect from 'react-select/async';
+import AsyncSelect, { Props as SelectProps } from 'react-select/async';
 
 import styles from './styles.module.scss';
 
@@ -24,6 +24,7 @@ interface BaseProps<N> {
   actions?: React.ReactNode;
   icons?: React.ReactNode;
   error?: React.ReactNode,
+  hint?: React.ReactNode;
   label?: React.ReactNode,
   disabled?: boolean;
   pending?: boolean;
@@ -33,14 +34,18 @@ interface BaseProps<N> {
   placeholder?: string;
   initialOptions?: Option[];
   defaultOptions?: boolean;
+  isOptionDisabled?: SelectProps<Option, false>['isOptionDisabled'];
+  isClearable?: boolean;
 }
 
 type Props<N, V extends Key> = BaseProps<N> & ({
   isMulti: true;
+  isOptionDisabled?: SelectProps<Option, true>['isOptionDisabled'];
   value: V[] | undefined | null;
   onChange: (newValue: NonNullable<V>[] | undefined, name: N) => void;
 } | {
   isMulti?: false;
+  isOptionDisabled?: SelectProps<Option, false>['isOptionDisabled'];
   value: V | undefined | null;
   onChange: (newValue: V, name: N) => void;
 })
@@ -57,6 +62,7 @@ function SearchSelectInput<N, V extends Key>(props: Props<N, V>) {
     readOnly,
     name,
     value,
+    hint,
     loadOptions,
     isMulti,
     onChange,
@@ -151,6 +157,7 @@ function SearchSelectInput<N, V extends Key>(props: Props<N, V>) {
       icons={icons}
       error={error}
       label={label}
+      hint={hint}
       disabled={disabled}
       input={(
         <AsyncSelect

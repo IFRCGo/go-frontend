@@ -31,7 +31,7 @@ import {
   Strings,
 } from '#types';
 
-import pdfStyles from 'src/styles/pdf/pdfStyles';
+import pdfStyles from '#utils/pdf/pdfStyles';
 import NeedIdentified from './NeedIdentified';
 import ContactSection from './ContactSection';
 
@@ -149,6 +149,138 @@ function PlannedInterventionOutput(props: PlannedInterventionProps) {
     </View>
   );
 }
+
+interface TargetedPopulationProps {
+  data: DrefApiFields;
+  strings: Strings;
+}
+
+function TargetedPopulationOutput(props: TargetedPopulationProps) {
+  const {
+    data,
+    strings,
+  } = props;
+  return (
+    <View style={pdfStyles.tpSection}>
+      <Text style={pdfStyles.sectionHeading}>
+        {strings.drefFormAssistedPopulation}
+      </Text>
+      <View style={pdfStyles.row}>
+        <View style={pdfStyles.tpHeaderCell}>
+          <Text>{strings.drefFormTargetedPopulation}</Text>
+        </View>
+        <View style={pdfStyles.tpContentCell}>
+          <View style={pdfStyles.tpSubRow}>
+            <View style={pdfStyles.tpSubCell}>
+              <Text>{strings.drefFormWomen}</Text>
+            </View>
+            <View style={pdfStyles.tpSubCell}>
+              <Text style={pdfStyles.strong}>
+                {formatNumber(data?.women)}
+              </Text>
+            </View>
+          </View>
+          <View style={pdfStyles.tpSubRow}>
+            <View style={pdfStyles.tpSubCell}>
+              <Text>{strings.drefFormMen}</Text>
+            </View>
+            <View style={pdfStyles.tpSubCell}>
+              <Text style={pdfStyles.strong}>
+                {formatNumber(data?.men)}
+              </Text>
+            </View>
+          </View>
+          <View style={pdfStyles.tpSubRow}>
+            <View style={pdfStyles.tpSubCell}>
+              <Text>{strings.drefFormGirls}</Text>
+            </View>
+            <View style={pdfStyles.tpSubCell}>
+              <Text style={pdfStyles.strong}>
+                {formatNumber(data?.girls)}
+              </Text>
+            </View>
+          </View>
+          <View style={pdfStyles.tpSubRow}>
+            <View style={pdfStyles.tpSubCell}>
+              <Text>{strings.drefFormBoys}</Text>
+            </View>
+            <View style={pdfStyles.tpSubCell}>
+              <Text style={pdfStyles.strong}>
+                {formatNumber(data?.boys)}
+              </Text>
+            </View>
+          </View>
+          <View style={pdfStyles.tpSubRow}>
+            <View style={pdfStyles.tpSubCell}>
+              <Text>{strings.drefFormTotal}</Text>
+            </View>
+            <View style={pdfStyles.tpSubCell}>
+              <Text style={pdfStyles.strong}>
+                {formatNumber(data?.total_targeted_population)}
+              </Text>
+            </View>
+          </View>
+        </View>
+      </View>
+      <View style={pdfStyles.row}>
+        <View style={pdfStyles.tpHeaderCell}>
+          <Text>{strings.drefFormEstimateResponse}</Text>
+        </View>
+        <View style={pdfStyles.tpContentCell}>
+          <View style={pdfStyles.tpSubRow}>
+            <View style={pdfStyles.tpSubCell}>
+              <Text>
+                {strings.drefFormEstimatePeopleDisability}
+              </Text>
+            </View>
+            <View style={pdfStyles.tpSubCell}>
+              <Text style={pdfStyles.strong}>
+                {data?.disability_people_per}
+              </Text>
+            </View>
+          </View>
+          <View style={pdfStyles.tpSubRow}>
+            <View style={pdfStyles.tpSubCell}>
+              <Text>{strings.drefFormEstimatedPercentage}</Text>
+            </View>
+            <View style={pdfStyles.tpSubCell}>
+              <Text style={pdfStyles.strong}>
+                {[
+                  data?.people_per_urban,
+                  data?.people_per_local,
+                ].filter(Boolean).join('/')}
+              </Text>
+            </View>
+          </View>
+          <View style={pdfStyles.tpSubRow}>
+            <View style={pdfStyles.tpSubCell}>
+              <Text>{strings.drefFormEstimatedDisplacedPeople}</Text>
+            </View>
+            <View style={pdfStyles.tpSubCell}>
+              <Text style={pdfStyles.strong}>
+                {formatNumber(data?.displaced_people)}
+              </Text>
+            </View>
+          </View>
+          {data?.anticipatory_actions && (
+            <View style={pdfStyles.tpSubRow}>
+              <View style={pdfStyles.tpSubCell}>
+                <Text>{strings.drefFormPeopleTargetedWithEarlyActions}</Text>
+              </View>
+              <View style={pdfStyles.tpSubCell}>
+                <Text style={pdfStyles.strong}>
+                  {formatNumber(data?.people_targeted_with_early_actions)}
+                </Text>
+              </View>
+            </View>
+          )}
+        </View>
+      </View>
+    </View>
+  );
+
+}
+
 interface DrefOptions {
   disaster_category: NumericKeyValuePair[];
   national_society_actions: StringKeyValuePair[];
@@ -593,7 +725,7 @@ function DrefPdfDocument(props: Props) {
                 pdfStyles.cellTitle,
                 pdfStyles.fullWidth
               ]}>
-                <Text>{dref.major_coordination_mechanism}                </Text>
+                <Text>{dref.major_coordination_mechanism}</Text>
               </View>
             </View>
           </View>
@@ -614,6 +746,24 @@ function DrefPdfDocument(props: Props) {
             ))}
           </View>
         )}
+
+        {dref?.operation_objective && (
+          <View style={pdfStyles.section}>
+            <Text style={pdfStyles.sectionHeading}>
+              {strings.drefFormObjectiveOperation}
+            </Text>
+            <Text>{dref.operation_objective}</Text>
+          </View>
+        )}
+        {dref?.response_strategy && (
+          <View style={pdfStyles.section}>
+            <Text style={pdfStyles.sectionHeading}>
+              {strings.drefFormResponseRationale}
+            </Text>
+            <Text>{dref.response_strategy}</Text>
+          </View>
+        )}
+
         {(
           dref?.people_assisted ||
           dref?.selection_criteria
@@ -644,138 +794,14 @@ function DrefPdfDocument(props: Props) {
               )}
             </View>
           )}
-        <View style={pdfStyles.tpSection}>
-          <Text style={pdfStyles.sectionHeading}>
-            {strings.drefFormAssistedPopulation}
-          </Text>
-          <View style={pdfStyles.row}>
-            <View style={pdfStyles.tpHeaderCell}>
-              <Text>{strings.drefFormTargetedPopulation}</Text>
-            </View>
-            <View style={pdfStyles.tpContentCell}>
-              <View style={pdfStyles.tpSubRow}>
-                <View style={pdfStyles.tpSubCell}>
-                  <Text>{strings.drefFormWomen}</Text>
-                </View>
-                <View style={pdfStyles.tpSubCell}>
-                  <Text style={pdfStyles.strong}>
-                    {formatNumber(dref?.women)}
-                  </Text>
-                </View>
-              </View>
-              <View style={pdfStyles.tpSubRow}>
-                <View style={pdfStyles.tpSubCell}>
-                  <Text>{strings.drefFormMen}</Text>
-                </View>
-                <View style={pdfStyles.tpSubCell}>
-                  <Text style={pdfStyles.strong}>
-                    {formatNumber(dref?.men)}
-                  </Text>
-                </View>
-              </View>
-              <View style={pdfStyles.tpSubRow}>
-                <View style={pdfStyles.tpSubCell}>
-                  <Text>{strings.drefFormGirls}</Text>
-                </View>
-                <View style={pdfStyles.tpSubCell}>
-                  <Text style={pdfStyles.strong}>
-                    {formatNumber(dref?.girls)}
-                  </Text>
-                </View>
-              </View>
-              <View style={pdfStyles.tpSubRow}>
-                <View style={pdfStyles.tpSubCell}>
-                  <Text>{strings.drefFormBoys}</Text>
-                </View>
-                <View style={pdfStyles.tpSubCell}>
-                  <Text style={pdfStyles.strong}>
-                    {formatNumber(dref?.boys)}
-                  </Text>
-                </View>
-              </View>
-              <View style={pdfStyles.tpSubRow}>
-                <View style={pdfStyles.tpSubCell}>
-                  <Text>{strings.drefFormTotal}</Text>
-                </View>
-                <View style={pdfStyles.tpSubCell}>
-                  <Text style={pdfStyles.strong}>
-                    {formatNumber(dref?.total_targeted_population)}
-                  </Text>
-                </View>
-              </View>
-            </View>
-          </View>
-          <View style={pdfStyles.row}>
-            <View style={pdfStyles.tpHeaderCell}>
-              <Text>{strings.drefFormEstimateResponse}</Text>
-            </View>
-            <View style={pdfStyles.tpContentCell}>
-              <View style={pdfStyles.tpSubRow}>
-                <View style={pdfStyles.tpSubCell}>
-                  <Text>
-                    {strings.drefFormEstimatePeopleDisability}
-                  </Text>
-                </View>
-                <View style={pdfStyles.tpSubCell}>
-                  <Text style={pdfStyles.strong}>
-                    {dref?.disability_people_per}
-                  </Text>
-                </View>
-              </View>
-              <View style={pdfStyles.tpSubRow}>
-                <View style={pdfStyles.tpSubCell}>
-                  <Text>{strings.drefFormEstimatedPercentage}</Text>
-                </View>
-                <View style={pdfStyles.tpSubCell}>
-                  <Text style={pdfStyles.strong}>
-                    {[
-                      dref?.people_per_urban,
-                      dref?.people_per_local,
-                    ].filter(Boolean).join('/')}
-                  </Text>
-                </View>
-              </View>
-              <View style={pdfStyles.tpSubRow}>
-                <View style={pdfStyles.tpSubCell}>
-                  <Text>{strings.drefFormEstimatedDisplacedPeople}</Text>
-                </View>
-                <View style={pdfStyles.tpSubCell}>
-                  <Text style={pdfStyles.strong}>
-                    {formatNumber(dref?.displaced_people)}
-                  </Text>
-                </View>
-              </View>
-              {dref?.anticipatory_actions && (
-                <View style={pdfStyles.tpSubRow}>
-                  <View style={pdfStyles.tpSubCell}>
-                    <Text>{strings.drefFormPeopleTargetedWithEarlyActions}</Text>
-                  </View>
-                  <View style={pdfStyles.tpSubCell}>
-                    <Text style={pdfStyles.strong}>
-                      {formatNumber(dref?.people_targeted_with_early_actions)}
-                    </Text>
-                  </View>
-                </View>
-              )}
-            </View>
-          </View>
-        </View>
-        {dref?.operation_objective && (
-          <View style={pdfStyles.section}>
-            <Text style={pdfStyles.sectionHeading}>
-              {strings.drefFormObjectiveOperation}
-            </Text>
-            <Text>{dref.operation_objective}</Text>
-          </View>
-        )}
-        {dref?.response_strategy && (
-          <View style={pdfStyles.section}>
-            <Text style={pdfStyles.sectionHeading}>
-              {strings.drefFormResponseRationale}
-            </Text>
-            <Text>{dref.response_strategy}</Text>
-          </View>
-        )}
+
+
+        <TargetedPopulationOutput
+          data={dref}
+          strings={strings}
+        />
+
+
         {(
           dref?.human_resource ||
           dref?.surge_personnel_deployed ||

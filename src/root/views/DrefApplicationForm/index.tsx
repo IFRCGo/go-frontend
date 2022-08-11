@@ -272,14 +272,20 @@ function DrefApplication(props: Props) {
           ...ni,
           clientId: String(ni.id),
         })),
-        images_file: response.images_file.map((img) => ({
-          id: img.id,
-          client_id: img.client_id ?? String(img.id),
-          caption: img.caption ?? '',
-        })),
+        images_file: response.images_file.map((img) => (
+          isDefined(img.file)
+            ? ({
+              id: img.id,
+              client_id: img.client_id ?? String(img.id),
+              caption: img.caption ?? '',
+            })
+            : undefined
+        )).filter(isDefined),
         disability_people_per: getNumberFromResponse(response.disability_people_per),
         people_per_urban: getNumberFromResponse(response.people_per_urban),
         people_per_local: getNumberFromResponse(response.people_per_local),
+        cover_image_file: isDefined(response.cover_image_file?.file) ? response.cover_image_file : undefined,
+        event_map_file: isDefined(response.event_map_file?.file) ? response.event_map_file : undefined,
       });
     },
     onFailure: ({

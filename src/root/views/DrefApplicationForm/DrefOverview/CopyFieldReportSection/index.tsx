@@ -7,6 +7,7 @@ import {
   PartialForm,
   SetBaseValueArg,
 } from '@togglecorp/toggle-form';
+import sanitizeHtml from 'sanitize-html';
 
 import Button from '#components/Button';
 import SearchSelectInput from '#components/SearchSelectInput';
@@ -114,10 +115,20 @@ function CopyFieldReportSection(props: Props) {
       const frDate = fieldReport.created_at?.split('T')[0];
       const go_field_report_date = value.go_field_report_date ?? frDate;
       const disaster_type = value.disaster_type ?? fieldReport.dtype?.id;
-      const event_description = fieldReport.description;
+      const event_description = fieldReport.description
+        ? sanitizeHtml(
+          fieldReport.description,
+          { allowedTags: [] },
+        )
+        : undefined;
       const un_or_other_actor = value.un_or_other_actor ?? fieldReport.actions_others;
-      const country = value.country;
+      const country = value.country ?? fieldReport.countries[0]?.id;
+      const district = (value.district && value.district.length > 0)? value.district : fieldReport.districts?.map(d => d.id);
       const num_affected = fieldReport.num_affected;
+
+      const partner_national_society = value?.partner_national_society ?? fieldReport.actions_taken?.find(a => a.organization === 'PNS')?.summary;
+      const ifrc = value?.ifrc ?? fieldReport.actions_taken?.find(a => a.organization === 'FDRN')?.summary;
+      const icrc = value?.icrc ?? fieldReport.actions_taken?.find(a => a.organization === 'NTLS')?.summary;
 
       let {
         national_society_contact_name,
@@ -196,7 +207,11 @@ function CopyFieldReportSection(props: Props) {
         media_contact_title,
         field_report: fieldReport.id,
         country,
+        district,
         num_affected,
+        partner_national_society,
+        ifrc,
+        icrc,
       });
 
       alert.show(
@@ -251,6 +266,7 @@ function CopyFieldReportSection(props: Props) {
         loadOptions={handleFieldReportLoad}
         initialOptions={initialOptions}
         pending={selectedFrPending}
+        isClearable
         defaultOptions
       />
       <div className={styles.actions}>
