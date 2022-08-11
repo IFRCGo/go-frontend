@@ -21,29 +21,28 @@ function NeedIdentified(props: Props) {
   } = props;
 
   return (
-    <View style={
-      pdfStyles.niOutput}
+    <View
       wrap={false}
+      style={pdfStyles.niContainer}
     >
-      <View style={pdfStyles.niIconCell}>
+      <View style={pdfStyles.niContentIconCell}>
         {data.image_url && (
           <Image
             style={pdfStyles.niIcon}
             src={data.image_url}
           />
         )}
-      </View>
-      <View style={pdfStyles.niHeaderCell}>
-        <Text>
+        <Text style={pdfStyles.niSubSectionHeading}>
           {niMap?.[data.title]}
         </Text>
       </View>
-      <View style={pdfStyles.niContentCell}>
+
+      <View style={pdfStyles.niContentTextCell}>
         <Text>
           {data.description}
         </Text>
       </View>
-    </View>
+    </View >
   );
 }
 
