@@ -171,14 +171,31 @@ function GoFileInput<T extends string>(props: Props<T>) {
     [triggerFileUpload, name, props.onChange],
   );
 
+  let hasSelection = false;
+
+  if (!value) {
+    hasSelection = false;
+  } else if (Array.isArray(value) && value.length === 0) {
+    hasSelection = false;
+  } else {
+    hasSelection = true;
+  }
+
   let currentStatus;
   if (pending) {
     currentStatus = 'Uploading file(s)...';
   } else if (!value) {
     currentStatus = 'No file selected';
   } else {
-    currentStatus = Array.isArray(value) ? `${value.length} files selected` : '1 file selected';
+    if (Array.isArray(value)) {
+      if (value.length > 0) {
+        currentStatus = `${value.length} files selected`;
+      }
+    } else {
+      currentStatus = '1 file selected';
+    }
   }
+
 
   const handleClear = useCallback(() => {
     props.onChange(undefined, name);
@@ -210,7 +227,7 @@ function GoFileInput<T extends string>(props: Props<T>) {
           actions={(
             <>
               {actions}
-              {!hideClearButton && value && (
+              {!hideClearButton && hasSelection && (
                 <Button
                   onClick={handleClear}
                   disabled={disabled}
@@ -254,7 +271,7 @@ function GoFileInput<T extends string>(props: Props<T>) {
         actions={(
           <>
             {actions}
-            {!hideClearButton && value && (
+            {!hideClearButton && hasSelection && (
               <Button
                 onClick={handleClear}
                 disabled={disabled}
