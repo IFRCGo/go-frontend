@@ -309,90 +309,86 @@ function DrefOverview(props: Props) {
           />
         </InputSection>
         <InputSection
-          title={isImminentOnset
-            ?
-            <>
-              {strings.drefFormRiskPeopleLabel}
-              <a
-                className={styles.peopleTargetedHelpLink}
-                target="_blank"
-                title="Click to view Emergency Response Framework"
-                href="https://ifrcorg.sharepoint.com/sites/IFRCSharing/Shared%20Documents/Forms/AllItems.aspx?id=%2Fsites%2FIFRCSharing%2FShared%20Documents%2FDREF%2FHum%20Pop%20Definitions%20for%20DREF%20Form%5F21072022%2Epdf&parent=%2Fsites%2FIFRCSharing%2FShared%20Documents%2FDREF&p=true&ga=1"
-              >
-                <IoHelpCircle />
-              </a>
-            </>
-            :
-            <>
-              {strings.drefFormPeopleAffected}
-              <a
-                className={styles.peopleTargetedHelpLink}
-                target="_blank"
-                title="Click to view Emergency Response Framework"
-                href="https://ifrcorg.sharepoint.com/sites/IFRCSharing/Shared%20Documents/Forms/AllItems.aspx?id=%2Fsites%2FIFRCSharing%2FShared%20Documents%2FDREF%2FHum%20Pop%20Definitions%20for%20DREF%20Form%5F21072022%2Epdf&parent=%2Fsites%2FIFRCSharing%2FShared%20Documents%2FDREF&p=true&ga=1"
-              >
-                <IoHelpCircle />
-              </a>
-            </>
-          }
-          description={isImminentOnset && strings.drefFormPeopleAffectedDescription}
+          multiRow
+          twoColumn
         >
           <NumberInput
+            label={isImminentOnset ?
+              <>
+                {strings.drefFormRiskPeopleLabel}
+                <a
+                  className={styles.peopleTargetedHelpLink}
+                  target="_blank"
+                  title="Click to view Emergency Response Framework"
+                  href="https://ifrcorg.sharepoint.com/sites/IFRCSharing/Shared%20Documents/Forms/AllItems.aspx?id=%2Fsites%2FIFRCSharing%2FShared%20Documents%2FDREF%2FHum%20Pop%20Definitions%20for%20DREF%20Form%5F21072022%2Epdf&parent=%2Fsites%2FIFRCSharing%2FShared%20Documents%2FDREF&p=true&ga=1"
+                >
+                  <IoHelpCircle />
+                </a>
+              </>
+              :
+              <>
+                {strings.drefFormPeopleAffected}
+                <a
+                  className={styles.peopleTargetedHelpLink}
+                  target="_blank"
+                  title="Click to view Emergency Response Framework"
+                  href="https://ifrcorg.sharepoint.com/sites/IFRCSharing/Shared%20Documents/Forms/AllItems.aspx?id=%2Fsites%2FIFRCSharing%2FShared%20Documents%2FDREF%2FHum%20Pop%20Definitions%20for%20DREF%20Form%5F21072022%2Epdf&parent=%2Fsites%2FIFRCSharing%2FShared%20Documents%2FDREF&p=true&ga=1"
+                >
+                  <IoHelpCircle />
+                </a>
+              </>
+            }
             name="num_affected"
             value={value.num_affected}
             onChange={onValueChange}
             error={error?.num_affected}
+            hint={isImminentOnset && strings.drefFormPeopleAffectedDescription}
           />
-        </InputSection>
-        <InputSection
-          title={(
-            <>
-              {
-                isImminentOnset
-                  ? strings.drefFormEstimatedPeopleInNeed
-                  : strings.drefFormPeopleInNeed
-              }
-              <a
-                className={styles.peopleTargetedHelpLink}
-                target="_blank"
-                title="Click to view Emergency Response Framework"
-                href="https://ifrcorg.sharepoint.com/sites/IFRCSharing/Shared%20Documents/Forms/AllItems.aspx?id=%2Fsites%2FIFRCSharing%2FShared%20Documents%2FDREF%2FHum%20Pop%20Definitions%20for%20DREF%20Form%5F21072022%2Epdf&parent=%2Fsites%2FIFRCSharing%2FShared%20Documents%2FDREF&p=true&ga=1"
-              >
-                <IoHelpCircle />
-              </a>
-            </>
-          )}
-          description={isImminentOnset && strings.drefFormPeopleInNeedDescription}
-        >
           <NumberInput
+            label={(
+              <>
+                {
+                  isImminentOnset
+                    ? strings.drefFormEstimatedPeopleInNeed
+                    : strings.drefFormPeopleInNeed
+                }
+                <a
+                  className={styles.peopleTargetedHelpLink}
+                  target="_blank"
+                  title="Click to view Emergency Response Framework"
+                  href="https://ifrcorg.sharepoint.com/sites/IFRCSharing/Shared%20Documents/Forms/AllItems.aspx?id=%2Fsites%2FIFRCSharing%2FShared%20Documents%2FDREF%2FHum%20Pop%20Definitions%20for%20DREF%20Form%5F21072022%2Epdf&parent=%2Fsites%2FIFRCSharing%2FShared%20Documents%2FDREF&p=true&ga=1"
+                >
+                  <IoHelpCircle />
+                </a>
+              </>
+            )}
             name="people_in_need"
             value={value.people_in_need}
             onChange={onValueChange}
             error={error?.people_in_need}
+            hint={isImminentOnset && strings.drefFormPeopleInNeedDescription}
           />
-        </InputSection>
-        <InputSection
-          title={(
-            <>
-              {strings.drefFormPeopleTargeted}
-              <a
-                className={styles.peopleTargetedHelpLink}
-                target="_blank"
-                title="Click to view Emergency Response Framework"
-                href="https://ifrcorg.sharepoint.com/sites/IFRCSharing/Shared%20Documents/Forms/AllItems.aspx?id=%2Fsites%2FIFRCSharing%2FShared%20Documents%2FDREF%2FHum%20Pop%20Definitions%20for%20DREF%20Form%5F21072022%2Epdf&parent=%2Fsites%2FIFRCSharing%2FShared%20Documents%2FDREF&p=true&ga=1"
-              >
-                <IoHelpCircle />
-              </a>
-            </>
-          )}
-          description={strings.drefFormPeopleTargetedDescription}
-        >
           <NumberInput
+            label={(
+              <>
+                {strings.drefFormPeopleTargeted}
+                <a
+                  className={styles.peopleTargetedHelpLink}
+                  target="_blank"
+                  title="Click to view Emergency Response Framework"
+                  href="https://ifrcorg.sharepoint.com/sites/IFRCSharing/Shared%20Documents/Forms/AllItems.aspx?id=%2Fsites%2FIFRCSharing%2FShared%20Documents%2FDREF%2FHum%20Pop%20Definitions%20for%20DREF%20Form%5F21072022%2Epdf&parent=%2Fsites%2FIFRCSharing%2FShared%20Documents%2FDREF&p=true&ga=1"
+                >
+                  <IoHelpCircle />
+                </a>
+              </>
+            )}
             name="num_assisted"
             value={value.num_assisted}
             onChange={onValueChange}
             error={error?.num_assisted}
+            hint={strings.drefFormPeopleTargetedDescription}
           />
+          <div />
         </InputSection>
         <InputSection
           title={strings.drefFormRequestAmount}

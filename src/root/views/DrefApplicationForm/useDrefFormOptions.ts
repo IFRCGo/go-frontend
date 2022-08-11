@@ -97,7 +97,7 @@ export const schema: FormSchema = {
     national_society: [requiredCondition],
     disaster_category: [],
     disaster_type: [],
-    type_of_onset: [],
+    type_of_onset: [requiredCondition],
     country: [],
     district: [],
     num_affected: [positiveIntegerCondition],

@@ -7,7 +7,7 @@ import {
 
 import { DrefFinalReportApiFields } from '#views/FinalReportForm/common';
 
-import pdfStyles from 'src/styles/pdf/pdfStyles';
+import pdfStyles from '#utils/pdf/pdfStyles';
 
 interface Props {
   data: DrefFinalReportApiFields['needs_identified'][number];
