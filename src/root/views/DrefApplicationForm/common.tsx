@@ -285,6 +285,13 @@ export interface DrefApiFields extends Omit<DrefFields, 'event_map_details' | 'c
   districts: {
     id: number;
   }[];
+  disaster_type_details: {
+    id: number;
+    name: string;
+    summary: string;
+  };
+  disaster_category_display: string;
+  type_of_onset_display: string;
 }
 
 export const overviewFields: (keyof DrefFields)[] = [

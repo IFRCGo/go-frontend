@@ -104,8 +104,13 @@ export const schema: FormSchema = {
     num_assisted: [positiveIntegerCondition],
     amount_requested: [positiveNumberCondition],
     emergency_appeal_planned: [],
-    event_map_file: [],
     cover_image_file: {
+      fields: () => ({
+        id: [],
+        caption: [],
+      }),
+    },
+    event_map_file: {
       fields: () => ({
         id: [],
         caption: [],

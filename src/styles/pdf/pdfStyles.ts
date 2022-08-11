@@ -92,7 +92,7 @@ const pdfStyles = StyleSheet.create({
 
   textOutputValue: {
     fontFamily: 'OpenSans',
-    fontWeight: 'bold',
+    fontWeight: 'extrabold',
   },
 
   pageTitle: {
@@ -197,14 +197,17 @@ const pdfStyles = StyleSheet.create({
     margin: 1,
     padding: styles.TABLE_CELL_PADDING,
   },
-  oneByThree: {
-    width: '33.33%',
+  oneByFour: {
+    width: '25%',
   },
-  twoByThree: {
-    width: '66.66%',
+  twoByFour: {
+    width: '50%',
   },
-  threeByThree: {
-    width: '99.99%',
+  threeByFour: {
+    width: '75%',
+  },
+  fourByFour: {
+    width: '100%',
   },
   oneByTwo: {
     width: '50%',
@@ -250,7 +253,7 @@ const pdfStyles = StyleSheet.create({
     justifyContent: 'space-between',
     padding: styles.SPACING_SMALL,
     width: '50%',
-    fontWeight: 'bold',
+    fontWeight: 'extrabold',
     textAlign: 'justify',
   },
   cellTitle: {
@@ -394,7 +397,10 @@ const pdfStyles = StyleSheet.create({
     padding: styles.SMALL_PADDING,
     border: styles.TABLE_BORDER,
     flexBasis: '30%',
-    fontWeight: 'bold',
+    fontWeight: 'extrabold',
+    display: 'flex',
+    alignItems: 'flex-end',
+    justifyContent: 'center',
   },
   niContentCell: {
     padding: styles.SMALL_PADDING,
@@ -447,6 +453,33 @@ const pdfStyles = StyleSheet.create({
   fontWeightBoldAndLarge: {
     fontWeight: 'bold',
     fontSize: styles.FONT_SIZE_LARGE,
+  },
+  imagesSection: {
+    display: 'flex',
+    flexDirection: 'row',
+  },
+  fullWidth: {
+    width: '100%',
+  },
+  fontWeightBold: {
+    fontWeight: 'extrabold',
+  },
+  niContainer: {
+    marginBottom: styles.PAGE_PADDING * 1.5,
+  },
+  niContentIconCell: {
+    display: 'flex',
+    flexDirection: 'row',
+    marginBottom: styles.SMALL_PADDING,
+  },
+  niSubSectionHeading: {
+    ...heading.style,
+    fontSize: styles.FONT_SIZE_LARGE,
+    color: styles.COLOR_PRIMARY,
+    marginLeft: styles.SPACING_SMALL,
+  },
+  niContentTextCell: {
+    textAlign: 'justify',
   },
 });
 
