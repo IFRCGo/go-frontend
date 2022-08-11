@@ -2,7 +2,7 @@ import React from 'react';
 import { Text, View } from '@react-pdf/renderer';
 import { isTruthyString } from '@togglecorp/fujs';
 
-import pdfStyles from 'src/styles/pdf/pdfStyles';
+import pdfStyles from '#utils/pdf/pdfStyles';
 
 interface Props {
   title: string;

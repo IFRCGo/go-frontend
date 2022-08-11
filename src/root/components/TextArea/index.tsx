@@ -17,6 +17,7 @@ function TextArea<T extends string | undefined>(props: Props<T>) {
     icons,
     error,
     label,
+    hint,
     disabled,
     readOnly,
     inputClassName,
@@ -30,6 +31,7 @@ function TextArea<T extends string | undefined>(props: Props<T>) {
       actions={actions}
       icons={icons}
       error={error}
+      hint={hint}
       label={label}
       disabled={disabled}
       errorOnTooltip={errorOnTooltip}

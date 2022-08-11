@@ -7,7 +7,7 @@ import montserratFont from '#root/resources/montserrat.bold.ttf';
 import openSansFont from '#root/resources/open-sans.regular.ttf';
 import openSansBoldFont from '#root/resources/open-sans.bold.ttf';
 
-import * as styles from "src/styles/pdf/pdfVariables";
+import * as styles from "#utils/pdf/pdfVariables";
 
 Font.register({
   family: 'Montserrat',

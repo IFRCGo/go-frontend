@@ -5,6 +5,7 @@ import {
   ArraySchema,
   greaterThanOrEqualToCondition,
   defaultEmptyArrayType,
+  defaultUndefinedType,
 } from '@togglecorp/toggle-form';
 
 import {
@@ -97,7 +98,7 @@ export const schema: FormSchema = {
     national_society: [requiredCondition],
     disaster_category: [],
     disaster_type: [],
-    type_of_onset: [],
+    type_of_onset: [requiredCondition],
     country: [],
     district: [],
     num_affected: [positiveIntegerCondition],
@@ -106,14 +107,14 @@ export const schema: FormSchema = {
     emergency_appeal_planned: [],
     cover_image_file: {
       fields: () => ({
-        id: [],
-        caption: [],
+        id: [defaultUndefinedType],
+        caption: [defaultUndefinedType],
       }),
     },
     event_map_file: {
       fields: () => ({
-        id: [],
-        caption: [],
+        id: [defaultUndefinedType],
+        caption: [defaultUndefinedType],
       }),
     },
     event_date: [],

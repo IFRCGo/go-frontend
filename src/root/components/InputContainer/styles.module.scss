@@ -9,6 +9,7 @@
     border: $base-border-width solid $base-border-color;
     border-radius: $base-border-radius;
     transition: $duration-transition-medium border-color ease-in-out;
+    z-index: 0;
 
     .internal-input-container {
       flex-grow: 1;
@@ -19,12 +20,19 @@
     }
   }
 
+  .input-hint {
+    font-size: $font-size-sm;
+    opacity: .7;
+    padding: $spacing*0.25 $spacing;
+  }
+
   &.errored {
     .input-section {
       border-left-width: $border-width-errored-input;
       border-left-color: $danger-color;
     }
   }
+
 
   &.disabled {
     .input-section {
@@ -36,5 +44,11 @@
     position: absolute;
     min-width: 8rem;
     z-index: 1;
+  }
+
+  :global {
+    .go__menu {
+      z-index: 10;
+    }
   }
 }

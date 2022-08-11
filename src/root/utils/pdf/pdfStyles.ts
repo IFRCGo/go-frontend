@@ -41,7 +41,7 @@ const subSection = StyleSheet.create({
 const heading = StyleSheet.create({
   style: {
     fontFamily: 'Montserrat',
-    fontWeight: 'bold',
+    fontWeight: 'extrabold',
     color: styles.COLOR_SECONDARY,
     marginTop: styles.SPACING_LARGE,
     marginBottom: styles.SPACING_MEDIUM,
@@ -159,7 +159,7 @@ const pdfStyles = StyleSheet.create({
   },
   textLabelSection: {
     color: styles.COLOR_PRIMARY,
-    fontWeight: 'bold',
+    fontWeight: 'extrabold',
   },
   logo: {
     width: 200,
@@ -211,6 +211,15 @@ const pdfStyles = StyleSheet.create({
   },
   oneByTwo: {
     width: '50%',
+  },
+  oneByThree: {
+    width: '33.33%',
+  },
+  twoByThree: {
+    width: '66.66%',
+  },
+  threeByThree: {
+    width: '99.99%',
   },
   poSection: {
     ...section.style,
@@ -371,12 +380,6 @@ const pdfStyles = StyleSheet.create({
     padding: styles.SMALL_PADDING,
   },
 
-  niSection: {
-    ...section.style,
-    display: 'flex',
-    flexDirection: 'column',
-  },
-
   niOutput: {
     display: 'flex',
     flexDirection: 'row',
@@ -463,6 +466,13 @@ const pdfStyles = StyleSheet.create({
   },
   fontWeightBold: {
     fontWeight: 'extrabold',
+  },
+
+  //TODO: Needs Identified
+  niSection: {
+    display: 'flex',
+    flexDirection: 'column',
+    padding: styles.SMALL_PADDING,
   },
   niContainer: {
     marginBottom: styles.PAGE_PADDING * 1.5,

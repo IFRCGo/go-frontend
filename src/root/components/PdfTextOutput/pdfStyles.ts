@@ -1,5 +1,5 @@
 import { StyleSheet } from "@react-pdf/renderer";
-import * as styles from 'src/styles/pdf/pdfVariables';
+import * as styles from '#utils/pdf/pdfVariables';
 
 const pdfStyles = StyleSheet.create({
 
@@ -31,4 +31,5 @@ const pdfStyles = StyleSheet.create({
     fontWeight: 'extrabold',
   },
 });
+
 export default pdfStyles;

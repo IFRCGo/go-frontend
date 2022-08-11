@@ -22,6 +22,7 @@ interface BaseProps {
   className?: string;
   actions?: React.ReactNode;
   icons?: React.ReactNode;
+  hint?: React.ReactNode;
   error?: React.ReactNode,
   label?: React.ReactNode,
   disabled?: boolean;
@@ -51,6 +52,7 @@ function SelectInput<N, V extends ValueType>(props: Props<N, V>) {
     actions,
     icons,
     error,
+    hint,
     label,
     disabled,
     pending,
@@ -107,6 +109,7 @@ function SelectInput<N, V extends ValueType>(props: Props<N, V>) {
       )}
       actions={actions}
       icons={icons}
+      hint={hint}
       error={error}
       label={label}
       disabled={disabled}

@@ -172,6 +172,14 @@ function Response(props: Props) {
     );
   }, [onValueChange]);
 
+  const totalBudgetFromInterventions = React.useMemo(
+    () => sumSafe(value?.planned_interventions?.map(pi => pi.budget) ?? []),
+    [value?.planned_interventions],
+  );
+
+  // NOTE: || used intentionally instead of ??
+  const plannedBudgetMatchRequestedAmount = (value?.amount_requested || 0) === totalBudgetFromInterventions;
+
   return (
     <>
       <Container
@@ -396,7 +404,14 @@ function Response(props: Props) {
             {strings.drefFormBudgetTemplateUploadButtonLabel}
           </DREFFileInput>
         </InputSection>
-        <InputSection>
+        <InputSection
+          normalDescription
+          description={!plannedBudgetMatchRequestedAmount && (
+            <div className={styles.warning}>
+              Total amount of planned budget does not match the Requested Amount
+            </div>
+          )}
+        >
           <SelectInput
             label={strings.drefFormInterventionsLabel}
             name={undefined}

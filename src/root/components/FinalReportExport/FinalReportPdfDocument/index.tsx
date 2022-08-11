@@ -28,7 +28,7 @@ import NeedIdentified from '#components/DrefPdfDocument/NeedIdentified';
 import PlannedIntervention from '#components/DrefPdfDocument/PlannedIntervention';
 import ContactSection from '#components/DrefPdfDocument/ContactSection';
 
-import pdfStyles from 'src/styles/pdf/pdfStyles';
+import pdfStyles from '#utils/pdf/pdfStyles';
 
 interface DrefOptions {
   disaster_category: NumericKeyValuePair[];
