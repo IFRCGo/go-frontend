@@ -7,7 +7,6 @@ import {
   useFormArray,
 } from '@togglecorp/toggle-form';
 import { listToMap } from '@togglecorp/fujs';
-import sanitizeHtml from 'sanitize-html';
 
 import { resolveUrl } from '#utils/resolveUrl';
 import Container from '#components/Container';
@@ -26,6 +25,7 @@ import {
   booleanOptionKeySelector,
   DrefFields,
   FileWithCaption,
+  ONSET_SLOW,
 } from '../common';
 
 import styles from './styles.module.scss';
@@ -59,6 +59,8 @@ function EventDetails(props: Props) {
     value?.images_file?.map(d => d.id).filter(d => !!d) as number[] | undefined
   ), [value?.images_file]);
 
+  const isSlowOnset = value?.type_of_onset === ONSET_SLOW;
+
   const {
     setValue: onImageChange,
     removeValue: onImageRemove,
@@ -82,10 +84,7 @@ function EventDetails(props: Props) {
     onValueChange(newImageList, 'images_file' as const);
   }, [value?.images_file, onValueChange]);
 
-  const sanitizedValue = sanitizeHtml(value.event_description ?? '', {
-    allowedTags: [],
-  });
-  onValueChange(sanitizedValue, 'event_description');
+  const operationalLearningPlatformUrl = resolveUrl(window.location.origin, 'preparedness#operational-learning');
 
   return (
     <>
@@ -93,7 +92,7 @@ function EventDetails(props: Props) {
         heading={strings.drefFormPreviousOperations}
         className={styles.previousOperations}
         description={
-          <a href={resolveUrl(window.location.origin, 'preparedness#operational-learning')}>
+          <a href={operationalLearningPlatformUrl}>
             {strings.drefOperationalLearningPlatformLabel}
           </a>
         }
@@ -197,16 +196,16 @@ function EventDetails(props: Props) {
         heading={strings.drefFormDescriptionEvent}
       >
         <InputSection
-          title={strings.drefFormEventDate}
+          title={isSlowOnset ? strings.drefFormSlowEventDate : strings.drefFormEventDate}
         >
-          {!isImminentOnset ?
+          {!isImminentOnset ? (
             <DateInput
               name="event_date"
               value={value.event_date}
               onChange={onValueChange}
               error={error?.event_date}
             />
-            :
+          ) : (
             <TextArea
               label={strings.drefFormApproximateDateOfImpact}
               name="event_text"
@@ -214,7 +213,7 @@ function EventDetails(props: Props) {
               onChange={onValueChange}
               error={error?.event_text}
             />
-          }
+          )}
         </InputSection>
         <InputSection
           title={

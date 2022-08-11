@@ -8,7 +8,7 @@ import {
 import { DrefFinalReportApiFields } from '#views/FinalReportForm/common';
 import { Strings } from '#types';
 
-import pdfStyles from 'src/styles/pdf/pdfStyles';
+import pdfStyles from '#utils/pdf/pdfStyles';
 
 interface Props {
   data: DrefFinalReportApiFields['planned_interventions'][number];

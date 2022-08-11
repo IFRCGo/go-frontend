@@ -50,6 +50,7 @@ function Submission(props: Props) {
             value={value.date_of_approval}
             onChange={onValueChange}
             error={error?.date_of_approval}
+            hint={strings.drefFormAddedByGeneva}
           />
           <NumberInput
             label={strings.drefFormOperationTimeframeSubmission}
@@ -61,6 +62,7 @@ function Submission(props: Props) {
           />
           <DateInput
             label={strings.drefFormSubmissionEndDate}
+            hint={strings.drefFormSubmissionEndDateDescription}
             name="end_date"
             value={value.end_date}
             onChange={onValueChange}
@@ -84,6 +86,7 @@ function Submission(props: Props) {
             value={value.submission_to_geneva}
             onChange={onValueChange}
             error={error?.submission_to_geneva}
+            hint={strings.drefFormAddedByGeneva}
           />
 
           <DateInput
@@ -92,6 +95,7 @@ function Submission(props: Props) {
             value={value.publishing_date}
             onChange={onValueChange}
             error={error?.publishing_date}
+            hint={strings.drefFormAddedByGeneva}
           />
         </InputSection>
       </Container>

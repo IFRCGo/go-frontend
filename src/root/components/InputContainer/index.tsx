@@ -15,6 +15,7 @@ export interface Props {
   actions?: React.ReactNode;
   disabled?: boolean;
   error?: React.ReactNode;
+  hint?: React.ReactNode;
   icons?: React.ReactNode;
   label?: React.ReactNode;
   readOnly?: boolean;
@@ -33,6 +34,7 @@ function InputContainer(props: Props) {
     readOnly,
     input,
     errorOnTooltip = false,
+    hint,
   } = props;
 
   return (
@@ -85,6 +87,11 @@ function InputContainer(props: Props) {
           </div>
         )}
       </div>
+      {hint && (
+        <div className={styles.inputHint}>
+          {hint}
+        </div>
+      )}
       {!errorOnTooltip && (
         <InputError
           disabled={disabled}

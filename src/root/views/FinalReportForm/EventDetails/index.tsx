@@ -43,7 +43,8 @@ function EventDetails(props: Props) {
 
   return (
     <Container
-      heading={strings.finalReportDescriptionOfEvent}>
+      heading={strings.finalReportDescriptionOfEvent}
+    >
       <InputSection
         title={strings.finalReportUploadMap}
       >
@@ -53,7 +54,6 @@ function EventDetails(props: Props) {
           value={value.event_map}
           onChange={onValueChange}
           showStatus
-          //multiple
           error={error?.event_map}
           fileIdToUrlMap={fileIdToUrlMap}
           setFileIdToUrlMap={setFileIdToUrlMap}

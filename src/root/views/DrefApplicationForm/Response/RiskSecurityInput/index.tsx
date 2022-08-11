@@ -62,6 +62,7 @@ function RiskSecurityInput(props: Props) {
         onChange={onFieldChange}
       />
       <Button
+        className={styles.removeButton}
         name={index}
         onClick={onRemove}
         variant="action"
