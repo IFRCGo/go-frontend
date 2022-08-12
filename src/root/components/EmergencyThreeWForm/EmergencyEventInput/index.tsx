@@ -40,9 +40,8 @@ function EmergencyEventInput<N, V extends ValueType> (props: Props<N, V>) {
 
   useRequest<ListResponse<EventMini>>({
     skip: (eventSearch?.length ?? 0) < 3,
-    url: 'api/v2/event/mini/',
+    url: 'api/v2/event/response-activity/',
     query: {
-      auto_generated_source: 'New field report',
       search: eventSearch,
       limit: 20,
     },
