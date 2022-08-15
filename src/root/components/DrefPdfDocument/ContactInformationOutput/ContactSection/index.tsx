@@ -1,5 +1,8 @@
 import React from 'react';
-import { Text, View } from '@react-pdf/renderer';
+import {
+  Text,
+  View,
+} from '@react-pdf/renderer';
 import { isTruthyString } from '@togglecorp/fujs';
 
 import pdfStyles from '#utils/pdf/pdfStyles';
@@ -20,7 +23,10 @@ function ContactSection(props: Props) {
   const outputString = contacts.filter(isTruthyString).join(', ');
 
   return (
-    <View style={pdfStyles.ciRow} wrap={false}>
+    <View
+      style={pdfStyles.ciRow}
+      wrap={false}
+    >
       <Text style={pdfStyles.contactType}>
         {bulletUnicode} {title}
       </Text>

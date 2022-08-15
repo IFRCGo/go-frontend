@@ -24,11 +24,11 @@ import {
 import { resolveUrl } from '#utils/resolveUrl';
 import { DrefFinalReportApiFields } from '#views/FinalReportForm/common';
 import { PdfTextOutput } from '#components/PdfTextOutput';
-import NeedIdentified from '#components/DrefPdfDocument/NeedIdentified';
-import PlannedIntervention from '#components/DrefPdfDocument/PlannedIntervention';
-import ContactSection from '#components/DrefPdfDocument/ContactSection';
 
+import NeedIdentifiedOutput from '#components/DrefPdfDocument/NeedIdentifiedOutput';
 import pdfStyles from '#utils/pdf/pdfStyles';
+import PlannedInterventionOutput from '#components/DrefPdfDocument/PlannedInterventionOutput';
+import ContactSection from '#components/DrefPdfDocument/ContactInformationOutput/ContactSection';
 
 interface DrefOptions {
   disaster_category: NumericKeyValuePair[];
@@ -374,7 +374,7 @@ function FinalReportPdfDocument(props: Props) {
                 : strings.finalReportNeedsIdentified}
             </Text>
             {finalReportResponse?.needs_identified.map((ni) => (
-              <NeedIdentified
+              <NeedIdentifiedOutput
                 key={ni.id}
                 data={ni}
                 niMap={niMap}
@@ -573,7 +573,7 @@ function FinalReportPdfDocument(props: Props) {
               {strings.finalReportImplementation}
             </Text>
             {finalReportResponse?.planned_interventions.map((pi) => (
-              <PlannedIntervention
+              <PlannedInterventionOutput
                 strings={strings}
                 key={pi.id}
                 data={pi}

@@ -3400,6 +3400,18 @@ export default {
   drefExportEventOnset: 'Event Onset:',
   drefExportTargetedAreas: 'Targeted Areas:',
   drefExportScopeAndScaleEvent: 'Scope and Scale',
+  drefExportWomen: 'Women:',
+  drefExportGirls: 'Girls (under 18):',
+  drefExportMen: 'Men:',
+  drefExportBoys: 'Boys (under 18):',
+  drefExportEstimatePeopleDisability: 'People with disabilities (estimated %)',
+  drefExportTotalTargetedPopulation: 'Total targeted population:',
+  drefExportEstimatedLocal: 'Rural %',
+  drefExportEstimatedUrban: 'Urban %',
+  drefExportPercentage: '{num} %',
+  drefExportRiskSecurityMitigationLabel: 'Mitigation Meas',
+  drefExportBudgetSummary: 'Budget Summary',
+  drefExportBudgetSummaryPlannedOperation: 'Planned Operations',
 
   //FIXME: 
   //drefExportDescriptionOfTheEvent: 'Description of the event',
