@@ -37,7 +37,7 @@ import ResponseFields from './ResponseFields';
 
 import useFieldReportOptions, { schema } from './useFieldReportOptions';
 import {
-  STATUS_EVENT,
+  EVENT_RELATED,
   STATUS_EARLY_WARNING,
   DISASTER_TYPE_EPIDEMIC,
   VISIBILITY_PUBLIC,
@@ -49,21 +49,24 @@ import {
   FieldReportAPIResponseFields,
   getDefinedValues,
   Option,
+  IMMINENT_EVENT_EAP_ACTIVATION,
 } from './common';
 import styles from './styles.module.scss';
 
 import store from '#utils/store';
+import EapFields from './EapFields';
 
 const currentLanguage = store.getState().lang.current;
 
 const defaultFormValues: PartialForm<FormType> = {
-  status: STATUS_EVENT,
+  status: EVENT_RELATED,
   is_covid_report: false,
   visibility: VISIBILITY_PUBLIC,
   bulletin: BULLETIN_PUBLISHED_NO,
+  // eap_activation: IMMINENT_EVENT_EAP_ACTIVATION,
 };
 
-function scrollToTop () {
+function scrollToTop() {
   window.setTimeout(() => {
     window.scrollTo({
       top: Math.min(145, window.scrollY),
@@ -102,8 +105,8 @@ function FieldReportForm(props: Props) {
   });
 
   const crumbs = React.useMemo(() => [
-    {link: location?.pathname, name: isDefined(reportId) ? strings.breadCrumbEditFieldReport : strings.breadCrumbNewFieldReport},
-    {link: '/', name: strings.breadCrumbHome},
+    { link: location?.pathname, name: isDefined(reportId) ? strings.breadCrumbEditFieldReport : strings.breadCrumbNewFieldReport },
+    { link: '/', name: strings.breadCrumbHome },
   ], [
     strings.breadCrumbHome,
     strings.breadCrumbEditFieldReport,
@@ -121,7 +124,7 @@ function FieldReportForm(props: Props) {
     setValue: onValueSet,
   } = useForm(schema, { value: defaultFormValues });
 
-   React.useEffect(() => {
+  React.useEffect(() => {
     if (fieldReportResponse) {
       const formValue = transformAPIFieldsToFormFields(fieldReportResponse);
       onValueSet(formValue);
@@ -197,6 +200,7 @@ function FieldReportForm(props: Props) {
     yesNoOptions,
     eventOptions,
     isReviewCountry,
+    imminentEventOptions,
   } = useFieldReportOptions(value);
 
   React.useEffect(() => {
@@ -206,6 +210,9 @@ function FieldReportForm(props: Props) {
       if (value.dtype === DISASTER_TYPE_EPIDEMIC) {
         onValueChange(undefined, 'dtype');
       }
+    }
+    if (value.status === IMMINENT_EVENT_EAP_ACTIVATION) {
+      onValueChange(undefined, 'eap_activation');
     }
   }, [value.status, onValueChange, value.dtype]);
 
@@ -255,39 +262,33 @@ function FieldReportForm(props: Props) {
       return;
     }
 
-      if (currentStep === 'step4') {
+    if (currentStep === 'step4') {
       const apiFields = transformFormFieldsToAPIFields(finalValues as FormType);
       const definedValues = getDefinedValues(apiFields);
-      
+
       // COVID-19
-      if(definedValues.is_covid_report)
-      {
-        if (eventOptions.find(x => x.value===value.event)?.label === undefined)
-        {      
-          if(reportId === undefined){   
-            definedValues.summary = countryIsoOptions.find(x => x.value===value.country)?.label + ': ' + strings.fieldReportCOVID19; 
+      if (definedValues.is_covid_report) {
+        if (eventOptions.find(x => x.value === value.event)?.label === undefined) {
+          if (reportId === undefined) {
+            definedValues.summary = countryIsoOptions.find(x => x.value === value.country)?.label + ': ' + strings.fieldReportCOVID19;
           }
         }
-        else
-        {
-          if(reportId === undefined){
-            definedValues.summary = countryIsoOptions.find(x => x.value===value.country)?.label + ': ' + strings.fieldReportCOVID19 + ' #'+ eventOptions.find(x => x.value===value.event)?.label + ' (' + new Date().toISOString().slice(0, 10) + ')'; 
+        else {
+          if (reportId === undefined) {
+            definedValues.summary = countryIsoOptions.find(x => x.value === value.country)?.label + ': ' + strings.fieldReportCOVID19 + ' #' + eventOptions.find(x => x.value === value.event)?.label + ' (' + new Date().toISOString().slice(0, 10) + ')';
           }
         }
       }
       // NON-COVID-19
-      else
-      {
-        if (eventOptions.find(x => x.value===value.event)?.label === undefined)
-        {
-          if(reportId === undefined){
-            definedValues.summary = countryIsoOptions.find(x => x.value===value.country)?.label + ': ' + disasterTypeOptions.find( x=> x.value === definedValues.dtype)?.label + ' - ' + definedValues.start_date?.substring(0,7) + ' - ' + definedValues.summary;
+      else {
+        if (eventOptions.find(x => x.value === value.event)?.label === undefined) {
+          if (reportId === undefined) {
+            definedValues.summary = countryIsoOptions.find(x => x.value === value.country)?.label + ': ' + disasterTypeOptions.find(x => x.value === definedValues.dtype)?.label + ' - ' + definedValues.start_date?.substring(0, 7) + ' - ' + definedValues.summary;
           }
         }
-        else
-        {
-          if(reportId === undefined){
-             definedValues.summary = countryIsoOptions.find(x => x.value===value.country)?.label + ': ' + disasterTypeOptions.find( x=> x.value === definedValues.dtype)?.label + ' - ' + definedValues.start_date?.substring(0,7) + ' - ' + definedValues.summary + ' #'+ eventOptions.find(x => x.value===value.event)?.label + ' (' + new Date().toISOString().slice(0, 10) + ')';
+        else {
+          if (reportId === undefined) {
+            definedValues.summary = countryIsoOptions.find(x => x.value === value.country)?.label + ': ' + disasterTypeOptions.find(x => x.value === definedValues.dtype)?.label + ' - ' + definedValues.start_date?.substring(0, 7) + ' - ' + definedValues.summary + ' #' + eventOptions.find(x => x.value === value.event)?.label + ' (' + new Date().toISOString().slice(0, 10) + ')';
           }
         }
       }
@@ -312,7 +313,7 @@ function FieldReportForm(props: Props) {
 
       setCurrentStep(nextStepMap[currentStep]);
     }
-  }, [submitRequest, userDetails, currentStep, setCurrentStep, validate, onErrorSet,countryIsoOptions, disasterTypeOptions, eventOptions, strings.fieldReportCOVID19, value.country, value.event, reportId]);
+  }, [submitRequest, userDetails, currentStep, setCurrentStep, validate, onErrorSet, countryIsoOptions, disasterTypeOptions, eventOptions, strings.fieldReportCOVID19, value.country, value.event, reportId]);
 
   const handleBackButtonClick = React.useCallback(() => {
     scrollToTop();
@@ -349,10 +350,10 @@ function FieldReportForm(props: Props) {
         heading={isDefined(reportId) ? strings.fieldReportUpdate : strings.fieldReportCreate}
         breadCrumbs={<BreadCrumb crumbs={crumbs} compact />}
         actions={
-          strings.wikiJsLinkFRForm !== undefined && strings.wikiJsLinkFRForm.length>0 ?
-            <div style={{display: 'flex', justifyContent:'flex-end', paddingBottom:'8px'}}> 
-                <a href={strings.wikiJsLinkGOWiki+'/'+currentLanguage +'/'+ strings.wikiJsLinkFRForm} title='GO Wiki' target='_blank' ><img className='' src='/assets/graphics/content/wiki-help-section.svg' alt='IFRC GO logo'/></a>
-            </div>:null
+          strings.wikiJsLinkFRForm !== undefined && strings.wikiJsLinkFRForm.length > 0 ?
+            <div style={{ display: 'flex', justifyContent: 'flex-end', paddingBottom: '8px' }}>
+              <a href={strings.wikiJsLinkGOWiki + '/' + currentLanguage + '/' + strings.wikiJsLinkFRForm} title='GO Wiki' target='_blank' ><img className='' src='/assets/graphics/content/wiki-help-section.svg' alt='IFRC GO logo' /></a>
+            </div> : null
         }
         info={(
           <TabList className={styles.tabList}>
@@ -366,22 +367,26 @@ function FieldReportForm(props: Props) {
               name="step2"
               step={2}
             >
-              { value.status === STATUS_EARLY_WARNING && strings.fieldReportFormItemRiskAnalysisLabel }
-              { value.status === STATUS_EVENT && strings.fieldReportFormItemSituationLabel }
+              {value.status === STATUS_EARLY_WARNING && strings.fieldReportFormItemRiskAnalysisLabel}
+              {value.status === EVENT_RELATED && strings.fieldReportFormItemSituationLabel}
+              {value.status === IMMINENT_EVENT_EAP_ACTIVATION && "Early Actions"}
             </Tab>
             <Tab
               name="step3"
               step={3}
             >
-              { value.status === STATUS_EARLY_WARNING && strings.fieldReportFormItemEarlyActionsLabel }
-              { value.status === STATUS_EVENT && strings.fieldReportFormItemActionsLabel }
+              {value.status === STATUS_EARLY_WARNING && strings.fieldReportFormItemEarlyActionsLabel}
+              {value.status === EVENT_RELATED && strings.fieldReportFormItemActionsLabel}
+              {value.status === IMMINENT_EVENT_EAP_ACTIVATION && "Contacts"}
             </Tab>
-            <Tab
-              name="step4"
-              step={4}
-            >
-              { strings.fieldReportFormItemResponseLabel }
-            </Tab>
+            {value.status !== IMMINENT_EVENT_EAP_ACTIVATION &&
+              <Tab
+                name="step4"
+                step={4}
+              >
+                {strings.fieldReportFormItemResponseLabel}
+              </Tab>
+            }
           </TabList>
         )}
       >
@@ -415,6 +420,8 @@ function FieldReportForm(props: Props) {
                 initialEventOptions={initialEventOptions}
                 eventOptions={eventOptions}
                 reportId={reportId}
+                imminentEventOptions={imminentEventOptions}
+                fileIdToUrlMap={undefined}
               />
             </TabPanel>
             <TabPanel name="step2">
@@ -426,7 +433,7 @@ function FieldReportForm(props: Props) {
                   value={value}
                 />
               )}
-              {value.status === STATUS_EVENT && (
+              {value.status === EVENT_RELATED && (
                 <SituationFields
                   sourceOptions={sourceOptions}
                   reportType={reportType}
@@ -434,6 +441,9 @@ function FieldReportForm(props: Props) {
                   onValueChange={onValueChange}
                   value={value}
                 />
+              )}
+              {value.status === IMMINENT_EVENT_EAP_ACTIVATION && (
+                <EapFields></EapFields>
               )}
             </TabPanel>
             <TabPanel name="step3">
@@ -446,7 +456,7 @@ function FieldReportForm(props: Props) {
                   value={value}
                 />
               )}
-              {value.status === STATUS_EVENT && (
+              {value.status === EVENT_RELATED && (
                 <ActionsFields
                   bulletinOptions={bulletinOptions}
                   actionOptions={orgGroupedActionForCurrentReport}

@@ -2772,7 +2772,8 @@ export default {
   fieldReportFormItemEarlyActionsLabel: 'Early Actions',
   fieldReportFormItemResponseLabel: 'Response',
 
-  fieldReportFormStatusLabel: 'Status *',
+  fieldReportFormEventTypeLabel: 'Event Type*',
+  fieldReportFormImminentEventReportType: 'Imminent Event Report Type*',
   fieldReportFormCovidLabel: 'COVID-19 Related Event *',
 
   fieldReportFormOptionYesLabel: 'Yes',

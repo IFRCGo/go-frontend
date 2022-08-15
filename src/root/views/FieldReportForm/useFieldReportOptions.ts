@@ -21,7 +21,7 @@ import {
 } from '#utils/form';
 
 import {
-  Country
+  Country, Disaster
 } from '#types';
 
 import {
@@ -38,7 +38,8 @@ import {
   ActionsByOrganization,
   OrganizationType,
   STATUS_EARLY_WARNING,
-  STATUS_EVENT,
+  IMMINENT_EVENT_EAP_ACTIVATION,
+  EVENT_RELATED,
   DISASTER_TYPE_EPIDEMIC,
   BULLETIN_PUBLISHED_NO,
   BULLETIN_PUBLISHED_PLANNED,
@@ -76,10 +77,9 @@ const getRequiredWithNonEmptyCondition = (key: keyof FormType) => (
 };
 
 const validStatusCondition = (value: number | string | null | undefined) => {
-  if (value === STATUS_EARLY_WARNING || value === STATUS_EVENT) {
+  if (value === STATUS_EARLY_WARNING || value === EVENT_RELATED || value === IMMINENT_EVENT_EAP_ACTIVATION) {
     return undefined;
   }
-
   return 'Status should either be an Event or an Early Warning / Early Action';
 };
 
@@ -95,6 +95,7 @@ export const schema: FormSchema = {
     start_date: [requiredCondition],
     request_assistance: [],
     ns_request_assistance: [],
+    eap_activation: [],
 
     epi_cases: [positiveIntegerCondition],
     epi_suspected_cases: [positiveIntegerCondition],
@@ -209,11 +210,12 @@ export const schema: FormSchema = {
     num_potentially_affected_source: ['num_potentially_affected'],
     num_highest_risk_source: ['num_highest_risk'],
     affected_pop_centres_source: ['affected_pop_centres'],
+    eap_activation: ['eap_activation'],
   }),
 
   validation: (value) => {
     if (value?.status === STATUS_EARLY_WARNING
-        && value?.dtype === DISASTER_TYPE_EPIDEMIC) {
+      && value?.dtype === DISASTER_TYPE_EPIDEMIC) {
       return 'Early Warning / Early action cannot be selected when disaster type is Epidemic or vice-versa';
     }
 
@@ -257,8 +259,8 @@ function useFieldReportOptions(value: Partial<FormType>) {
       c => c.independent && c.record_type === 1
     ).map((c) => ({
       value: c.id,
-      label: c.iso3+'',
-   
+      label: c.iso3 + '',
+
     })) ?? emptyNumericOptionList
   ), [countriesResponse]);
 
@@ -309,43 +311,36 @@ function useFieldReportOptions(value: Partial<FormType>) {
   }), [value.event]);
 
   const {
-      response: eventsResponse,
-    } = useRequest<ListResponse<FREvent>>({
+    response: eventsResponse,
+  } = useRequest<ListResponse<FREvent>>({
     skip: !value.event,
     url: 'api/v2/event/',
     query: eventQuery,
   });
 
-  var updateNo = React.useMemo(() => {  
+  var updateNo = React.useMemo(() => {
     let i = 1;
     let fr = eventsResponse?.results[0];
-    if (fr !== undefined)
-    {
-    fr.field_reports.forEach(fr => {
-      fr.countries.forEach(c => {     
-        if(c.id === value.country) 
-        {
-          i++;
-        }
+    if (fr !== undefined) {
+      fr.field_reports.forEach(fr => {
+        fr.countries.forEach(c => {
+          if (c.id === value.country) {
+            i++;
+          }
+        });
       });
-    });
-  }
-   return i;
-  }, [ eventsResponse, value.country]);
-
-
+    }
+    return i;
+  }, [eventsResponse, value.country]);
 
   var eventOptions = React.useMemo(() => (
-    
+
     eventsResponse?.results?.map(e => ({
       value: e.id,
       label: (updateNo).toString(),
-      
+
     })).sort(compareString) ?? emptyNumericOptionList
   ), [eventsResponse, updateNo]);
-
-
-
 
   const {
     pending: fetchingDisasterTypes,
@@ -372,6 +367,10 @@ function useFieldReportOptions(value: Partial<FormType>) {
 
     if (value.dtype === DISASTER_TYPE_EPIDEMIC) {
       return 'EPI';
+    }
+    if (value.status === IMMINENT_EVENT_EAP_ACTIVATION)
+    {
+      return 'EAP_ACTV';
     }
 
     return 'EVT';
@@ -415,7 +414,6 @@ function useFieldReportOptions(value: Partial<FormType>) {
     query: limitQuery,
   });
 
-
   const actionOptionsMap: ActionByReportType = React.useMemo(() => {
     if (!actionsResponse?.results?.length) {
       return {
@@ -438,6 +436,7 @@ function useFieldReportOptions(value: Partial<FormType>) {
       EPI: actionList.filter(getFilter('EPI')),
       COVID: actionList.filter(getFilter('COVID')),
       EVT: actionList.filter(getFilter('EVT')),
+      EAP_ACTV: actionList.filter(getFilter('EAP_ACTV')),
     };
 
     return actionMap;
@@ -447,7 +446,7 @@ function useFieldReportOptions(value: Partial<FormType>) {
     const options = actionOptionsMap[reportType];
 
     return options.reduce((acc, val) => {
-      const newAcc = {...acc} as ActionsByOrganization;
+      const newAcc = { ...acc } as ActionsByOrganization;
       (Object.keys(newAcc) as OrganizationType[]).forEach((org) => {
         if (val.organizations.findIndex((o) => o === org) !== -1) {
           newAcc[org].push({
@@ -470,14 +469,32 @@ function useFieldReportOptions(value: Partial<FormType>) {
   const statusOptions: NumericValueOption[] = React.useMemo(() => ([
     {
       value: STATUS_EARLY_WARNING,
-      label: strings.fieldReportConstantStatusEarlyWarningLabel,
-      description: strings.fieldReportConstantStatusEarlyWarningDescription,
+      label: "Imminent Event",
+      description: "Report on an imminent disaster (early warning or early action activation)",
     },
     {
-      value: STATUS_EVENT,
+      value: EVENT_RELATED,
       label: strings.fieldReportConstantStatusEventLabel,
-      description: strings.fieldReportConstantStatusEventDescription,
+      description: "Report on an ongoing disaster",
     },
+    {
+      value: IMMINENT_EVENT_EAP_ACTIVATION,
+      label: "EAP Activation",
+      description: "Tick this box to activate an existing Early Action Protocol",
+    }
+  ]), [strings]);
+
+  const imminentEventOptions: NumericValueOption[] = React.useMemo(() => ([
+    {
+      value: STATUS_EARLY_WARNING,
+      label: strings.fieldReportConstantStatusEarlyWarningLabel,
+      description: "Tick this box to activate an existing Early Action Protocol",
+    },
+    {
+      value: IMMINENT_EVENT_EAP_ACTIVATION,
+      label: "EAP Activation",
+      description: "Tick this box to activate an existing Early Action Protocol",
+    }
   ]), [strings]);
 
   const yesNoOptions = React.useMemo(() => {
@@ -494,9 +511,9 @@ function useFieldReportOptions(value: Partial<FormType>) {
   ], [strings]);
 
   const sourceOptions: StringValueOption[] = React.useMemo(() => ([
-    {label: strings.fieldsStep2OrganizationsEVTEWLabelRC, value: SOURCE_RC},
-    {label: strings.fieldsStep2OrganizationsEVTEWLabelGovernment, value: SOURCE_GOV},
-    {label: strings.fieldsStep2OrganizationsLabelOther, value: SOURCE_OTHER},
+    { label: strings.fieldsStep2OrganizationsEVTEWLabelRC, value: SOURCE_RC },
+    { label: strings.fieldsStep2OrganizationsEVTEWLabelGovernment, value: SOURCE_GOV },
+    { label: strings.fieldsStep2OrganizationsLabelOther, value: SOURCE_OTHER },
   ]), [strings]);
 
   return {
@@ -524,6 +541,7 @@ function useFieldReportOptions(value: Partial<FormType>) {
     eventOptions,
     updateNo,
     isReviewCountry,
+    imminentEventOptions,
   };
 }
 

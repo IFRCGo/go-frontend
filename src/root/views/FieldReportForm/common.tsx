@@ -7,10 +7,12 @@ import { request } from '#utils/network';
 import type { Option as SearchSelectOption } from '#components/SearchSelectInput';
 
 export const STATUS_EARLY_WARNING = 8;
-export const STATUS_EVENT = 9;
+export const EVENT_RELATED = 9;
 export const DISASTER_TYPE_EPIDEMIC = 1;
+export const IMMINENT_EVENT_EARLY_ACTION = 10;
+export const IMMINENT_EVENT_EAP_ACTIVATION = 11;
 
-export type ReportType = 'EVT' | 'EPI' | 'EW' | 'COVID';
+export type ReportType = 'EVT' | 'EPI' | 'EW' | 'COVID' | 'EAP_ACTV';
 
 export interface NumericValueOption {
   value: number;
@@ -34,6 +36,23 @@ export interface User {
   id: number;
 }
 
+export interface EapActivation {
+  title: string;
+  eap: string;
+  description: string;
+  trigger_met_date: number;
+  document: string;
+  originator_name: string;
+  originator_title: string;
+  originator_email: string;
+  nsc_name_operational: string;
+  nsc_title_operational: string;
+  nsc_email_operational: string;
+  ifrc_focal_name: string;
+  ifrc_focal_title: string;
+  ifrc_focal_email: string;
+}
+
 export type Option = NumericValueOption | BooleanValueOption | StringValueOption;
 
 export const emptyOptionList: Option[] = [];
@@ -41,7 +60,7 @@ export const emptyStringOptionList: StringValueOption[] = [];
 export const emptyNumericOptionList: NumericValueOption[] = [];
 export const emptyBooleanOptionList: BooleanValueOption[] = [];
 
-export function fetchEventsFromApi (input: string | undefined, callback: (options: SearchSelectOption[]) => void) {
+export function fetchEventsFromApi(input: string | undefined, callback: (options: SearchSelectOption[]) => void) {
   if (!input) {
     callback([]);
   }
@@ -68,6 +87,8 @@ export interface FormType {
   start_date: string;
   request_assistance?: boolean;
   ns_request_assistance?: boolean;
+  eap_activation: number[];
+  disaster_type: string;
 
   epi_cases: number;
   epi_suspected_cases: number;
@@ -220,7 +241,7 @@ export const epiSourceOptions: NumericValueOption[] = [
 // FDRN: IFRC
 // PNS: Other RCRC (Partner NS)
 export type OrganizationType = 'NTLS' | 'PNS' | 'FDRN';
-export type FieldReportType = 'EW' | 'EVT' | 'EPI' | 'COVID';
+export type FieldReportType = 'EW' | 'EVT' | 'EPI' | 'COVID' | 'EAP_ACTV';
 type ContactType = 'Originator' | 'NationalSociety' | 'Federation' | 'Media';
 
 export interface ActionFields {
@@ -260,6 +281,7 @@ export interface FieldReportAPIFields {
   status: number;
   is_covid_report: boolean;
   event: number | undefined;
+  eap_activation: number[];
   summary: string;
   countries: number[];
   districts: number[];
@@ -393,6 +415,7 @@ export interface FieldReportAPIFields {
 export function transformFormFieldsToAPIFields(formValues: FormType): FieldReportAPIFields {
   const {
     status,
+    eap_activation,
     is_covid_report,
     dtype,
     event,
@@ -591,19 +614,20 @@ export function transformFormFieldsToAPIFields(formValues: FormType): FieldRepor
   const gov_num_affected = num_affected_source === SOURCE_GOV ? num_affected : undefined;
   const gov_num_displaced = num_displaced_source === SOURCE_GOV ? num_displaced : undefined;
 
-  const other_num_potentially_affected = num_potentially_affected_source === SOURCE_OTHER? num_potentially_affected : undefined;
-  const other_num_highest_risk = num_highest_risk_source === SOURCE_OTHER? num_highest_risk : undefined;
-  const other_affected_pop_centres = affected_pop_centres_source === SOURCE_OTHER? affected_pop_centres : undefined;
-  const other_num_injured = num_injured_source === SOURCE_OTHER? num_injured : undefined;
-  const other_num_dead = num_dead_source === SOURCE_OTHER? num_dead : undefined;
-  const other_num_missing = num_missing_source === SOURCE_OTHER? num_missing : undefined;
-  const other_num_affected = num_affected_source === SOURCE_OTHER? num_affected : undefined;
-  const other_num_displaced = num_displaced_source === SOURCE_OTHER? num_displaced : undefined;
+  const other_num_potentially_affected = num_potentially_affected_source === SOURCE_OTHER ? num_potentially_affected : undefined;
+  const other_num_highest_risk = num_highest_risk_source === SOURCE_OTHER ? num_highest_risk : undefined;
+  const other_affected_pop_centres = affected_pop_centres_source === SOURCE_OTHER ? affected_pop_centres : undefined;
+  const other_num_injured = num_injured_source === SOURCE_OTHER ? num_injured : undefined;
+  const other_num_dead = num_dead_source === SOURCE_OTHER ? num_dead : undefined;
+  const other_num_missing = num_missing_source === SOURCE_OTHER ? num_missing : undefined;
+  const other_num_affected = num_affected_source === SOURCE_OTHER ? num_affected : undefined;
+  const other_num_displaced = num_displaced_source === SOURCE_OTHER ? num_displaced : undefined;
 
   return {
     status,
     is_covid_report,
     event,
+    eap_activation,
     summary,
     countries: [country],
     districts,
@@ -725,15 +749,16 @@ export function transformAPIFieldsToFormFields(apiValues: FieldReportAPIResponse
     actions_taken,
     event,
     countries: {
-        0: {
-            id: country,
-        } = {} as { id: number }
+      0: {
+        id: country,
+      } = {} as { id: number }
     } = [],
     districts,
     external_partners,
     supported_activities,
     is_covid_report,
     status,
+    eap_activation,
     request_assistance,
     ns_request_assistance,
     num_injured: rc_num_injured,
@@ -835,19 +860,19 @@ export function transformAPIFieldsToFormFields(apiValues: FieldReportAPIResponse
   const getSourceAndValue: <T extends string | number>(
     rc?: T, gov?: T, other?: T,
   ) => [
-    string | undefined,
-    T | undefined,
-  ] = (rc, gov, other) => {
-    if (isDefined(rc)) {
-      return [SOURCE_RC, rc];
-    } else if (isDefined(gov)) {
-      return [SOURCE_GOV, gov];
-    } else if (isDefined(other)) {
-      return [SOURCE_OTHER, other];
-    }
+      string | undefined,
+      T | undefined,
+    ] = (rc, gov, other) => {
+      if (isDefined(rc)) {
+        return [SOURCE_RC, rc];
+      } else if (isDefined(gov)) {
+        return [SOURCE_GOV, gov];
+      } else if (isDefined(other)) {
+        return [SOURCE_OTHER, other];
+      }
 
-    return [undefined, undefined];
-  };
+      return [undefined, undefined];
+    };
 
   const [
     num_potentially_affected_source,
@@ -928,7 +953,7 @@ export function transformAPIFieldsToFormFields(apiValues: FieldReportAPIResponse
   let actions_pns_desc;
 
   actions_taken.forEach((action) => {
-    switch(action.organization) {
+    switch (action.organization) {
       case 'NTLS':
         actions_ntls = action.actions.map(d => d.id);
         actions_ntls_desc = action.summary;
@@ -942,7 +967,7 @@ export function transformAPIFieldsToFormFields(apiValues: FieldReportAPIResponse
         actions_pns_desc = action.summary;
         break;
       default:
-          break;
+        break;
     }
   });
 
@@ -964,7 +989,7 @@ export function transformAPIFieldsToFormFields(apiValues: FieldReportAPIResponse
   let contact_media_phone;
 
   contacts.forEach((contact) => {
-    switch(contact.ctype) {
+    switch (contact.ctype) {
       case 'Originator':
         contact_originator_name = contact.name;
         contact_originator_title = contact.title;
@@ -1005,6 +1030,7 @@ export function transformAPIFieldsToFormFields(apiValues: FieldReportAPIResponse
     is_covid_report,
     supported_activities,
     status,
+    eap_activation,
     request_assistance,
     ns_request_assistance,
 
