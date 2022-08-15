@@ -367,7 +367,7 @@ const pdfStyles = StyleSheet.create({
     padding: styles.SMALL_PADDING,
     border: styles.TABLE_BORDER,
     flexBasis: '30%',
-    fontWeight: 'bold',
+    fontWeight: 'extrabold',
   },
   piSubContentCell: {
     padding: styles.SMALL_PADDING,
@@ -443,7 +443,7 @@ const pdfStyles = StyleSheet.create({
   },
 
   contactType: {
-    fontWeight: 'bold',
+    fontWeight: 'extrabold',
   },
 
   contactDetails: {
@@ -491,6 +491,10 @@ const pdfStyles = StyleSheet.create({
   niContentTextCell: {
     textAlign: 'justify',
   },
+  color: {
+    color: styles.COLOR_PRIMARY
+  },
 });
+
 
 export default pdfStyles;

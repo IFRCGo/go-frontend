@@ -1,0 +1,142 @@
+import React from 'react';
+import {
+  Image,
+  Text,
+  View,
+} from '@react-pdf/renderer';
+
+import { Strings } from '#types';
+import { formatNumber } from '#utils/common';
+import { DrefApiFields } from '#views/DrefApplicationForm/common';
+import pdfStyles from '#utils/pdf/pdfStyles';
+
+interface BaseProps {
+  data: DrefApiFields;
+  piMap?: Record<string, string>;
+  strings: Strings;
+}
+interface PlannedInterventionProps {
+  data: DrefApiFields['planned_interventions'][number];
+  piMap?: Record<string, string>;
+  strings: Strings;
+}
+
+function PlannedIntervention(props: PlannedInterventionProps) {
+  const {
+    data,
+    piMap,
+    strings,
+  } = props;
+
+  return (
+    <View
+      style={pdfStyles.piOutput}
+      wrap={false}
+    >
+      <View style={pdfStyles.piRow}>
+        <View style={pdfStyles.piIconCell}>
+          {data.image_url && (
+            <Image
+              style={pdfStyles.piIcon}
+              src={data.image_url}
+            />
+          )}
+        </View>
+        <Text style={pdfStyles.piHeaderCell}>
+          {piMap?.[data.title]}
+        </Text>
+        <View style={[pdfStyles.piContentCell, { flexDirection: 'column' }]}>
+          <View style={pdfStyles.piSubRow}>
+            <Text style={pdfStyles.piSubHeadingCell}>
+              {strings.drefExportBudget}
+            </Text>
+            <Text style={pdfStyles.piSubContentCell}>
+              {formatNumber(data.budget, 'CHF ')}
+            </Text>
+          </View>
+          <View style={pdfStyles.piSubRow}>
+            <Text style={pdfStyles.piSubHeadingCell}>
+              {strings.drefExportTargetPersons}
+            </Text>
+            <Text style={pdfStyles.piSubContentCell}>
+              {data.person_targeted}
+            </Text>
+          </View>
+        </View>
+      </View>
+      <View style={pdfStyles.piRow}>
+        <View style={pdfStyles.piContentCell}>
+          <Text style={[pdfStyles.piBorderCell, pdfStyles.fontWeightBoldAndLarge]}>
+            {strings.drefExportIndicators}
+          </Text>
+        </View>
+        <View style={pdfStyles.piContentCell}>
+          <Text style={[pdfStyles.piBorderCell, pdfStyles.fontWeightBoldAndLarge]}>
+            {strings.drefFormIndicatorTargetLabel}
+          </Text>
+        </View>
+      </View>
+      {
+        data?.indicators?.map((el) => (
+          <View
+            key={el?.id}
+            style={pdfStyles.piRow}
+          >
+            <View style={pdfStyles.piContentCell}>
+              <Text style={pdfStyles.piBorderCell}>
+                {el.title}
+              </Text>
+            </View>
+            <View style={pdfStyles.piContentCell}>
+              <Text style={pdfStyles.piBorderCell}>
+                {el.target}
+              </Text>
+            </View>
+          </View>
+        ))
+      }
+      <View style={pdfStyles.piRow}>
+        <View style={pdfStyles.piHeaderCell}>
+          <Text>
+            {strings.drefExportPriorityActions}
+          </Text>
+        </View>
+        <View style={pdfStyles.piContentCell}>
+          <Text style={pdfStyles.piBorderCell}>
+            {data.description}
+          </Text>
+        </View>
+      </View>
+    </View>
+  );
+}
+
+function PlannedInterventionOutput(props: BaseProps) {
+  const {
+    data,
+    piMap,
+    strings,
+  } = props;
+
+  return (
+    <>
+      {data.planned_interventions.length > 0 && (
+        <View style={pdfStyles.piSection}>
+          <Text style={pdfStyles.sectionHeading}>
+            {strings.drefFormPlannedIntervention}
+          </Text>
+          {data?.planned_interventions.map((pi) => (
+            <PlannedIntervention
+              strings={strings}
+              key={pi.id}
+              data={pi}
+              piMap={piMap}
+            />
+          ))}
+        </View>
+      )}
+    </>
+  );
+}
+
+export default PlannedInterventionOutput;
