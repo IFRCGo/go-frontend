@@ -32,10 +32,10 @@ import ObjectiveAndStrategy from './ObjectivesAndStrategy';
 import PlannedInterventionOutput from './PlannedInterventionOutput';
 import AboutServicesOutput from './AboutServicesOutput';
 import ContactInformationOutput from './ContactInformationOutput';
-
-import pdfStyles from '#utils/pdf/pdfStyles';
 import RiskAndSecurityOutput from './RiskAndSecurityOutput';
 import HeadingOutput from './HeadingOutput';
+
+import pdfStyles from '#utils/pdf/pdfStyles';
 
 interface DrefOptions {
   disaster_category: NumericKeyValuePair[];

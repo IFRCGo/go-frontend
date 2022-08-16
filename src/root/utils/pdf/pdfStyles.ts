@@ -1,3 +1,4 @@
+//TODO: breakdown to related component file
 import {
   Font,
   StyleSheet,
@@ -320,6 +321,16 @@ const pdfStyles = StyleSheet.create({
     color: styles.COLOR_TEXT,
   },
 
+  piSmallColumn: {
+    display: 'flex',
+    flexBasis: '40%',
+    flexDirection: 'row',
+  },
+  piLargeColumn: {
+    display: 'flex',
+    flexBasis: '60%',
+    flexDirection: 'row',
+  },
   piSection: {
     ...section.style,
     display: 'flex',
@@ -337,9 +348,11 @@ const pdfStyles = StyleSheet.create({
   },
   piIconCell: {
     display: 'flex',
-    justifyContent: 'flex-start',
+    justifyContent: 'center',
+    alignItems: 'center',
     border: styles.TABLE_BORDER,
     padding: styles.SMALL_PADDING,
+    flexBasis: '30%',
   },
   piIcon: {
     width: 40,
@@ -350,36 +363,55 @@ const pdfStyles = StyleSheet.create({
     flexDirection: 'row',
     width: '100%',
   },
+  piMultiRow: {
+    display: 'flex',
+    flexDirection: 'column',
+    flexBasis: '60%',
+  },
   piHeaderCell: {
-    flexBasis: styles.SECTION_WIDTH * 0.3,
+    flexBasis: '70%',
     border: styles.TABLE_BORDER,
     padding: styles.SMALL_PADDING,
     color: styles.COLOR_SECONDARY,
     fontSize: styles.FONT_SIZE_LARGE,
-    fontWeight: 'bold',
+    fontWeight: 'extrabold',
   },
   piContentCell: {
-    flexBasis: styles.SECTION_WIDTH * 0.7,
+    flexBasis: '60%',
     display: 'flex',
     flexDirection: 'row',
   },
   piSubHeadingCell: {
     padding: styles.SMALL_PADDING,
     border: styles.TABLE_BORDER,
-    flexBasis: '30%',
+    flexBasis: '25%',
     fontWeight: 'extrabold',
+  },
+  piContentHeadingCell: {
+    padding: styles.SMALL_PADDING,
+    border: styles.TABLE_BORDER,
+    fontWeight: 'extrabold',
+    width: '100%'
   },
   piSubContentCell: {
     padding: styles.SMALL_PADDING,
     border: styles.TABLE_BORDER,
-    flexBasis: '70%',
+    flexBasis: '75%',
   },
   piBorderCell: {
     width: '100%',
     border: styles.TABLE_BORDER,
     padding: styles.SMALL_PADDING,
   },
-
+  piPriorityCell: {
+    display: 'flex',
+    width: '100%',
+    border: styles.TABLE_BORDER,
+    padding: styles.SMALL_PADDING,
+    fontWeight: 'extrabold',
+    justifyContent: 'center',
+    alignItems: 'flex-end',
+  },
   niOutput: {
     display: 'flex',
     flexDirection: 'row',
@@ -411,7 +443,6 @@ const pdfStyles = StyleSheet.create({
     flexBasis: '70%',
     textAlign: 'justify',
   },
-
   budgetOverview: {
     height: 680,
   },
@@ -467,8 +498,6 @@ const pdfStyles = StyleSheet.create({
   fontWeightBold: {
     fontWeight: 'extrabold',
   },
-
-  //TODO: Needs Identified
   niSection: {
     display: 'flex',
     flexDirection: 'column',
@@ -495,6 +524,5 @@ const pdfStyles = StyleSheet.create({
     color: styles.COLOR_PRIMARY
   },
 });
-
 
 export default pdfStyles;
