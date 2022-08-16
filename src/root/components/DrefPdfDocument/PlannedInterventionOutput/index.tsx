@@ -9,6 +9,7 @@ import { Strings } from '#types';
 import { formatNumber } from '#utils/common';
 import { DrefApiFields } from '#views/DrefApplicationForm/common';
 import pdfStyles from '#utils/pdf/pdfStyles';
+import { PdfTextOutput } from '#components/PdfTextOutput';
 
 interface BaseProps {
   data: DrefApiFields;
@@ -34,18 +35,20 @@ function PlannedIntervention(props: PlannedInterventionProps) {
       wrap={false}
     >
       <View style={pdfStyles.piRow}>
-        <View style={pdfStyles.piIconCell}>
-          {data.image_url && (
-            <Image
-              style={pdfStyles.piIcon}
-              src={data.image_url}
-            />
-          )}
+        <View style={pdfStyles.piSmallColumn}>
+          <View style={pdfStyles.piIconCell}>
+            {data.image_url && (
+              <Image
+                style={pdfStyles.piIcon}
+                src={data.image_url}
+              />
+            )}
+          </View>
+          <Text style={pdfStyles.piHeaderCell}>
+            {piMap?.[data.title]}
+          </Text>
         </View>
-        <Text style={pdfStyles.piHeaderCell}>
-          {piMap?.[data.title]}
-        </Text>
-        <View style={[pdfStyles.piContentCell, { flexDirection: 'column' }]}>
+        <View style={pdfStyles.piMultiRow}>
           <View style={pdfStyles.piSubRow}>
             <Text style={pdfStyles.piSubHeadingCell}>
               {strings.drefExportBudget}
@@ -65,13 +68,13 @@ function PlannedIntervention(props: PlannedInterventionProps) {
         </View>
       </View>
       <View style={pdfStyles.piRow}>
-        <View style={pdfStyles.piContentCell}>
-          <Text style={[pdfStyles.piBorderCell, pdfStyles.fontWeightBoldAndLarge]}>
+        <View style={pdfStyles.piSmallColumn}>
+          <Text style={pdfStyles.piContentHeadingCell}>
             {strings.drefExportIndicators}
           </Text>
         </View>
-        <View style={pdfStyles.piContentCell}>
-          <Text style={[pdfStyles.piBorderCell, pdfStyles.fontWeightBoldAndLarge]}>
+        <View style={pdfStyles.piLargeColumn}>
+          <Text style={pdfStyles.piContentHeadingCell}>
             {strings.drefFormIndicatorTargetLabel}
           </Text>
         </View>
@@ -82,12 +85,12 @@ function PlannedIntervention(props: PlannedInterventionProps) {
             key={el?.id}
             style={pdfStyles.piRow}
           >
-            <View style={pdfStyles.piContentCell}>
+            <View style={pdfStyles.piSmallColumn}>
               <Text style={pdfStyles.piBorderCell}>
                 {el.title}
               </Text>
             </View>
-            <View style={pdfStyles.piContentCell}>
+            <View style={pdfStyles.piLargeColumn}>
               <Text style={pdfStyles.piBorderCell}>
                 {el.target}
               </Text>
@@ -96,18 +99,20 @@ function PlannedIntervention(props: PlannedInterventionProps) {
         ))
       }
       <View style={pdfStyles.piRow}>
-        <View style={pdfStyles.piHeaderCell}>
-          <Text>
-            {strings.drefExportPriorityActions}
-          </Text>
+        <View style={pdfStyles.piSmallColumn}>
+          <View style={pdfStyles.piPriorityCell}>
+            <Text>
+              {strings.drefExportPriorityActions}
+            </Text>
+          </View>
         </View>
-        <View style={pdfStyles.piContentCell}>
+        <View style={pdfStyles.piLargeColumn}>
           <Text style={pdfStyles.piBorderCell}>
             {data.description}
           </Text>
         </View>
       </View>
-    </View>
+    </View >
   );
 }
 
