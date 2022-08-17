@@ -14,15 +14,17 @@ import pdfStyles from '#utils/pdf/pdfStyles';
 
 interface Props {
   data: DrefApiFields;
-  affectedAreas: string;
   strings: Strings;
+  affectedAreas: string;
+  isImminentOnset: boolean;
 }
 
 function EssentialInformationOutput(props: Props) {
   const {
     data,
-    affectedAreas,
     strings,
+    affectedAreas,
+    isImminentOnset,
   } = props;
 
   return (
@@ -69,7 +71,10 @@ function EssentialInformationOutput(props: Props) {
               value={data.glide_code}
             />
             <PdfTextOutput
-              label={strings.drefExportPeopleAffected}
+              label={isImminentOnset
+                ? strings.drefExportPeopleAtRisk
+                : strings.drefExportPeopleAffected
+              }
               value={isDefined(data.num_affected)
                 ? resolveToString(
                   strings.drefExportNumPeople,

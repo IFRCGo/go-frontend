@@ -3399,6 +3399,7 @@ export default {
   drefExportGlideNum: 'Glide Number:',
   drefExportAppealNum: 'Appeal:',
   drefExportPeopleAffected: 'People Affected:',
+  drefExportPeopleAtRisk: 'People at risk:',
   drefExportPeopleAssisted: 'People Targeted:',
   drefExportNumPeople: '{num} people',
   drefExportNumMonth: '{num} months',
@@ -3424,6 +3425,8 @@ export default {
   drefExportRiskSecurityMitigationLabel: 'Mitigation Meas',
   drefExportBudgetSummary: 'Budget Summary',
   drefExportBudgetSummaryPlannedOperation: 'Planned Operations',
+  drefExportWhatExpectedHappen: 'What is expected to happen?',
+  drefExportTargetCommunities: 'Why your National Society is acting now and what criteria is used to launch this operation.',
 
   //FIXME: 
   //drefExportDescriptionOfTheEvent: 'Description of the event',
