@@ -81,7 +81,7 @@ function DrefPdfDocument(props: Props) {
   }, [dref.district_details]);
 
 
-  const isImminentOnset = dref?.disaster_type === ONSET_IMMINENT;
+  const isImminentOnset = dref?.type_of_onset === ONSET_IMMINENT;
   const documentTitle = useMemo(() => (
     `${dref.title_prefix} | ${dref?.title}`
   ), [
@@ -107,8 +107,9 @@ function DrefPdfDocument(props: Props) {
         />
         <EssentialInformationOutput
           data={dref}
-          affectedAreas={affectedAreas}
           strings={strings}
+          affectedAreas={affectedAreas}
+          isImminentOnset={isImminentOnset}
         />
         <EventDescriptionOutput
           data={dref}

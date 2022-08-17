@@ -7,7 +7,7 @@ import pdfStyles from '#utils/pdf/pdfStyles';
 
 export function PdfTextOutput(props: {
   color?: 'Yellow' | 'Red' | 'Orange' | 'Text';
-  label?: string;
+  label?: string | null;
   value?: string | null;
   columns?: '1/4' | '2/4' | '3/4' | '4/4' | '1/2' | '1/3' | '2/3' | '3/3';
 }) {
