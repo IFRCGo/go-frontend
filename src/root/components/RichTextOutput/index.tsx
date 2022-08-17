@@ -33,6 +33,7 @@ function useSanitizedHtml(rawHtml: string) {
           span: ['style'],
           div: ['style'],
           img: ['src', 'width', 'height', 'style'],
+          iframe: ['src', 'width', 'height', 'frameborder', 'style'],
           // a: ['href'],
         },
         allowedSchemes: [ 'http', 'https', 'data' ],
