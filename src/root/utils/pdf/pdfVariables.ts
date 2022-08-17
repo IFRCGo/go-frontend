@@ -26,3 +26,6 @@ export const COLOR_PRIMARY = '#f5333f';
 export const COLOR_SECONDARY = '#011e41';
 export const COLOR_TEXT = '#212121';
 export const COLOR_BACKGROUND = '#f0f0f0';
+export const COLOR_YELLOW = '#ffc000';
+export const COLOR_ORANGE = '#ed7d31';
+export const COLOR_RED = '#f40d11';

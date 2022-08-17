@@ -290,7 +290,7 @@ export interface DrefApiFields extends Omit<DrefFields, 'event_map_details' | 'c
     name: string;
     summary: string;
   };
-  disaster_category_display: string;
+  disaster_category_display: 'Yellow' | 'Red' | 'Orange';
   type_of_onset_display: string;
 }
 
