@@ -37,6 +37,16 @@ function EventDescriptionOutput(props: Props) {
             <Text style={pdfStyles.sectionHeading}>
               {strings.drefFormDescriptionEvent}
             </Text>
+            {isImminentOnset && (
+              <>
+                <Text style={pdfStyles.subSectionHeading}>
+                  {strings.drefFormApproximateDateOfImpact}
+                </Text>
+                <Text style={pdfStyles.text}>
+                  {data?.event_text}
+                </Text>
+              </>
+            )}
             {data?.event_map_file && (
               <View style={[
                 pdfStyles.section,
@@ -47,7 +57,7 @@ function EventDescriptionOutput(props: Props) {
                   src={data.event_map_file.file}
                 />
                 <PdfTextOutput
-                  value={data.event_map_file.caption}
+                  label={data.event_map_file.caption}
                   columns='2/4'
                 />
               </View>
@@ -55,9 +65,9 @@ function EventDescriptionOutput(props: Props) {
             {data?.event_description && (
               <View style={pdfStyles.subSection}>
                 <Text style={pdfStyles.subSectionHeading}>
-                  {!isImminentOnset
-                    ? strings.drefFormWhatWhereWhen
-                    : strings.drefFormImminentDisaster}
+                  {isImminentOnset
+                    ? strings.drefExportWhatExpectedHappen
+                    : strings.drefFormWhatWhereWhen}
                 </Text>
                 <Text style={pdfStyles.text}>
                   {sanitizeHtml(data.event_description ?? '', {
@@ -77,7 +87,7 @@ function EventDescriptionOutput(props: Props) {
                     src={img.file}
                   />
                   <PdfTextOutput
-                    value={img.caption}
+                    label={img.caption}
                     columns='4/4'
                   />
                 </View>
@@ -86,7 +96,7 @@ function EventDescriptionOutput(props: Props) {
             {isImminentOnset && data.anticipatory_actions && (
               <View style={pdfStyles.subSection}>
                 <Text style={pdfStyles.subSectionHeading}>
-                  {strings.drefFormTargetCommunities}
+                  {strings.drefExportTargetCommunities}
                 </Text>
                 <Text style={pdfStyles.text}>
                   {data.anticipatory_actions}

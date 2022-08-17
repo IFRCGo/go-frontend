@@ -111,6 +111,7 @@ function TargetedPopulationOutput(props: Props) {
             <PdfTextOutput
               value={formatNumber(data?.total_targeted_population)}
               columns="3/4"
+              color='Red'
             />
           </View>
         </View>
