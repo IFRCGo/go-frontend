@@ -9,7 +9,6 @@ import { Strings } from '#types';
 import { formatNumber } from '#utils/common';
 import { DrefApiFields } from '#views/DrefApplicationForm/common';
 import pdfStyles from '#utils/pdf/pdfStyles';
-import { PdfTextOutput } from '#components/PdfTextOutput';
 
 interface BaseProps {
   data: DrefApiFields;

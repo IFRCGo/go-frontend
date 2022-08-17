@@ -38,14 +38,17 @@ function EventDescriptionOutput(props: Props) {
               {strings.drefFormDescriptionEvent}
             </Text>
             {data?.event_map_file && (
-              <View style={pdfStyles.subSection}>
+              <View style={[
+                pdfStyles.section,
+                pdfStyles.bannerImageContainer,
+              ]}>
                 <Image
                   style={pdfStyles.mapImage}
                   src={data.event_map_file.file}
                 />
                 <PdfTextOutput
                   value={data.event_map_file.caption}
-                  columns='4/4'
+                  columns='2/4'
                 />
               </View>
             )}
@@ -63,7 +66,6 @@ function EventDescriptionOutput(props: Props) {
                 </Text>
               </View>
             )}
-
             <div style={pdfStyles.imagesSection}>
               {data.images_file?.map((img) => (
                 <View
@@ -74,15 +76,14 @@ function EventDescriptionOutput(props: Props) {
                     style={pdfStyles.mapImage}
                     src={img.file}
                   />
-                  <Text>
-                    {img.caption}
-                  </Text>
+                  <PdfTextOutput
+                    value={img.caption}
+                    columns='4/4'
+                  />
                 </View>
               ))}
             </div>
-
-            {/*data shows in imminent only*/}
-            {data.anticipatory_actions && (
+            {isImminentOnset && data.anticipatory_actions && (
               <View style={pdfStyles.subSection}>
                 <Text style={pdfStyles.subSectionHeading}>
                   {strings.drefFormTargetCommunities}
