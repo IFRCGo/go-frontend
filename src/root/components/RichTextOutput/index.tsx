@@ -21,7 +21,8 @@ function useSanitizedHtml(rawHtml: string) {
             'sub', 'sup',
             'img', 'svg',
             'pre', 'cite', 'code', 'q',
-            // 'base', 'iframe', 'canvas', 'video', // can be switched on when need occurs
+            'iframe', // some emergencies, like 3972, needed iframe reference to a dashboard
+            // 'base', 'canvas', 'video', // can be switched on when need occurs
             // 'area', 'map', 'label', 'meter', // can be switched on when need occurs
             // forbid: 'input', 'textarea', 'button',
         ],
@@ -32,6 +33,7 @@ function useSanitizedHtml(rawHtml: string) {
           span: ['style'],
           div: ['style'],
           img: ['src', 'width', 'height', 'style'],
+          iframe: ['src', 'width', 'height', 'frameborder', 'style'],
           // a: ['href'],
         },
         allowedSchemes: [ 'http', 'https', 'data' ],
