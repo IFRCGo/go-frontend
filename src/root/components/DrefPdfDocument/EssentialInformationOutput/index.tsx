@@ -28,7 +28,10 @@ function EssentialInformationOutput(props: Props) {
   return (
     <>
       {(data.cover_image_file?.file) && (
-        <View style={pdfStyles.section}>
+        <View style={[
+          pdfStyles.section,
+          pdfStyles.bannerImageContainer,
+        ]}>
           <Image
             style={pdfStyles.bannerImage}
             src={data.cover_image_file.file}
@@ -53,6 +56,7 @@ function EssentialInformationOutput(props: Props) {
             <PdfTextOutput
               label={strings.drefExportCrisisCategory}
               value={data.disaster_category_display}
+              color={data.disaster_category_display}
             />
             <PdfTextOutput
               label={strings.drefExportHazard}

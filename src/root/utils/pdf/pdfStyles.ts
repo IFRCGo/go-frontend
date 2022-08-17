@@ -59,7 +59,6 @@ const pdfStyles = StyleSheet.create({
   },
 
   section: {
-    ...section.style,
     textAlign: 'justify',
   },
 
@@ -151,77 +150,100 @@ const pdfStyles = StyleSheet.create({
     width: '100%',
   },
 
+  bannerImageContainer: {
+    width: '100%',
+    height: 250,
+    alignItems: 'center',
+  },
+
   bannerImage: {
     backgroundColor: styles.COLOR_BACKGROUND,
     width: '100%',
-    height: 300,
-    objectFit: 'contain',
+    height: '100%',
+    objectFit: 'cover',
     objectPosition: 'center',
   },
+
   textLabelSection: {
     color: styles.COLOR_PRIMARY,
     fontWeight: 'extrabold',
   },
+
   logo: {
     width: 200,
     height: 90,
     objectFit: 'contain',
     objectPosition: 'center',
   },
+
   icon: {
     width: 50,
     height: 50,
   },
+
   title: {
     fontSize: styles.FONT_SIZE_SUPER_LARGE,
     fontFamily: 'Montserrat',
     color: styles.COLOR_PRIMARY,
   },
+
   heading: {
     fontSize: styles.FONT_SIZE_EXTRA_LARGE,
     fontFamily: 'Montserrat',
     color: styles.COLOR_PRIMARY,
     paddingVertical: styles.HEADING_VERTICAL_PADDING,
   },
+
   subHeading: {
     fontSize: styles.FONT_SIZE_LARGE,
     fontWeight: 'bold',
     paddingVertical: styles.SUBHEADING_VERTICAL_PADDING,
   },
+
   label: {
     fontFamily: 'Montserrat',
     fontSize: styles.FONT_SIZE_MEDIUM,
     fontWeight: 'bold',
   },
+
   textOutput: {
     backgroundColor: styles.COLOR_BACKGROUND,
     margin: 1,
-    padding: styles.TABLE_CELL_PADDING,
+    padding: styles.TABLE_CELL_PADDING / 3,
   },
+
   oneByFour: {
     width: '25%',
   },
+
   twoByFour: {
     width: '50%',
   },
+
   threeByFour: {
     width: '75%',
   },
+
   fourByFour: {
     width: '100%',
   },
+
   oneByTwo: {
     width: '50%',
   },
+
   oneByThree: {
     width: '33.33%',
   },
+
   twoByThree: {
     width: '66.66%',
   },
+
   threeByThree: {
     width: '99.99%',
   },
+
   poSection: {
     ...section.style,
     display: 'flex',
@@ -231,12 +253,14 @@ const pdfStyles = StyleSheet.create({
     flexWrap: 'nowrap',
     alignItems: 'stretch',
   },
+
   row: {
     display: 'flex',
     flexDirection: 'row',
     minWidth: '100%',
     backgroundColor: styles.COLOR_BACKGROUND,
   },
+
   cellContent: {
     border: styles.TABLE_BORDER,
     display: 'flex',
@@ -244,12 +268,14 @@ const pdfStyles = StyleSheet.create({
     padding: '5',
     width: '22%',
   },
+
   verticalRow: {
     display: 'flex',
     flexDirection: 'column',
     paddingTop: styles.SPACING_MEDIUM,
     width: 300,
   },
+
   cell: {
     border: styles.TABLE_BORDER,
     display: 'flex',
@@ -257,6 +283,7 @@ const pdfStyles = StyleSheet.create({
     padding: styles.SPACING_SMALL,
     width: '50%',
   },
+
   strongCell: {
     border: styles.TABLE_BORDER,
     display: 'flex',
@@ -266,6 +293,7 @@ const pdfStyles = StyleSheet.create({
     fontWeight: 'extrabold',
     textAlign: 'justify',
   },
+
   cellTitle: {
     border: styles.TABLE_BORDER,
     display: 'flex',
@@ -273,22 +301,27 @@ const pdfStyles = StyleSheet.create({
     width: '50%',
     padding: styles.SPACING_SMALL,
   },
+
   cellDescription: {
     fontWeight: 'medium',
   },
+
   header: {
     backgroundColor: styles.COLOR_BACKGROUND,
   },
+
   tpSection: {
     ...section.style,
     display: 'flex',
     flexDirection: 'column',
   },
+
   tpCell: {
     border: styles.TABLE_BORDER,
     display: 'flex',
     justifyContent: 'space-between',
   },
+
   tpHeaderCell: {
     border: styles.TABLE_BORDER,
     width: styles.SECTION_WIDTH * 0.3,
@@ -297,6 +330,7 @@ const pdfStyles = StyleSheet.create({
     color: styles.COLOR_SECONDARY,
     fontWeight: 'bold',
   },
+
   tpContentCell: {
     display: 'flex',
     flexDirection: 'row',
@@ -304,19 +338,23 @@ const pdfStyles = StyleSheet.create({
     border: styles.TABLE_BORDER,
     width: styles.SECTION_WIDTH * 0.7,
   },
+
   tpSubRow: {
     flexBasis: '50%',
     diplay: 'flex',
     flexDirection: 'row',
   },
+
   tpSubCell: {
     border: styles.TABLE_BORDER,
     flexBasis: '50%',
     padding: styles.SMALL_PADDING,
   },
+
   qna: {
     paddingVertical: styles.SMALL_PADDING,
   },
+
   answer: {
     color: styles.COLOR_TEXT,
   },
@@ -326,26 +364,31 @@ const pdfStyles = StyleSheet.create({
     flexBasis: '40%',
     flexDirection: 'row',
   },
+
   piLargeColumn: {
     display: 'flex',
     flexBasis: '60%',
     flexDirection: 'row',
   },
+
   piSection: {
     ...section.style,
     display: 'flex',
     flexDirection: 'column',
   },
+
   piOutput: {
     width: '100%',
     paddingVertical: styles.VERTICAL_MARGIN,
   },
+
   piRow: {
     display: 'flex',
     flexDirection: 'row',
     width: '100%',
     backgroundColor: styles.COLOR_BACKGROUND,
   },
+
   piIconCell: {
     display: 'flex',
     justifyContent: 'center',
@@ -354,20 +397,24 @@ const pdfStyles = StyleSheet.create({
     padding: styles.SMALL_PADDING,
     flexBasis: '30%',
   },
+
   piIcon: {
     width: 40,
     height: 40,
   },
+
   piSubRow: {
     display: 'flex',
     flexDirection: 'row',
     width: '100%',
   },
+
   piMultiRow: {
     display: 'flex',
     flexDirection: 'column',
     flexBasis: '60%',
   },
+
   piHeaderCell: {
     flexBasis: '70%',
     border: styles.TABLE_BORDER,
@@ -376,33 +423,39 @@ const pdfStyles = StyleSheet.create({
     fontSize: styles.FONT_SIZE_LARGE,
     fontWeight: 'extrabold',
   },
+
   piContentCell: {
     flexBasis: '60%',
     display: 'flex',
     flexDirection: 'row',
   },
+
   piSubHeadingCell: {
     padding: styles.SMALL_PADDING,
     border: styles.TABLE_BORDER,
     flexBasis: '25%',
     fontWeight: 'extrabold',
   },
+
   piContentHeadingCell: {
     padding: styles.SMALL_PADDING,
     border: styles.TABLE_BORDER,
     fontWeight: 'extrabold',
     width: '100%'
   },
+
   piSubContentCell: {
     padding: styles.SMALL_PADDING,
     border: styles.TABLE_BORDER,
     flexBasis: '75%',
   },
+
   piBorderCell: {
     width: '100%',
     border: styles.TABLE_BORDER,
     padding: styles.SMALL_PADDING,
   },
+
   piPriorityCell: {
     display: 'flex',
     width: '100%',
@@ -412,22 +465,26 @@ const pdfStyles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'flex-end',
   },
+
   niOutput: {
     display: 'flex',
     flexDirection: 'row',
     width: '100%',
     backgroundColor: styles.COLOR_BACKGROUND,
   },
+
   niIconCell: {
     display: 'flex',
     justifyContent: 'flex-start',
     border: styles.TABLE_BORDER,
     padding: `0 ${styles.SMALL_PADDING}`,
   },
+
   niIcon: {
     width: 40,
     height: 40,
   },
+
   niHeaderCell: {
     padding: styles.SMALL_PADDING,
     border: styles.TABLE_BORDER,
@@ -437,12 +494,14 @@ const pdfStyles = StyleSheet.create({
     alignItems: 'flex-end',
     justifyContent: 'center',
   },
+
   niContentCell: {
     padding: styles.SMALL_PADDING,
     border: styles.TABLE_BORDER,
     flexBasis: '70%',
     textAlign: 'justify',
   },
+
   budgetOverview: {
     height: 680,
   },
@@ -480,6 +539,7 @@ const pdfStyles = StyleSheet.create({
   contactDetails: {
     marginLeft: styles.SPACING_SMALL,
   },
+
   fontWeightNormalAndSmall: {
     fontWeight: 'light',
   },
@@ -488,16 +548,21 @@ const pdfStyles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: styles.FONT_SIZE_LARGE,
   },
+
   imagesSection: {
     display: 'flex',
     flexDirection: 'row',
+    justifyContent: 'space-around',
   },
+
   fullWidth: {
     width: '100%',
   },
+
   fontWeightBold: {
     fontWeight: 'extrabold',
   },
+
   niSection: {
     display: 'flex',
     flexDirection: 'column',
@@ -517,11 +582,25 @@ const pdfStyles = StyleSheet.create({
     color: styles.COLOR_PRIMARY,
     marginLeft: styles.SPACING_SMALL,
   },
+
   niContentTextCell: {
     textAlign: 'justify',
   },
+
   color: {
     color: styles.COLOR_PRIMARY
+  },
+
+  disasterColorYellow: {
+    color: '#ffc000',
+  },
+
+  disasterColorOrange: {
+    color: '#ed7d31',
+  },
+
+  disasterColorRed: {
+    color: '#f40d11',
   },
 });
 

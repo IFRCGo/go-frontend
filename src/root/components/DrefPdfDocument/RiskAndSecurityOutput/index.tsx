@@ -32,11 +32,11 @@ function RiskAndSecurityOutput(props: Props) {
           </View>
           <View style={pdfStyles.compactSection}>
             <PdfTextOutput
-              label={strings.drefFormRiskSecurityRiskLabel}
+              value={strings.drefFormRiskSecurityRiskLabel}
               columns="2/4"
             />
             <PdfTextOutput
-              label={strings.drefExportRiskSecurityMitigationLabel}
+              value={strings.drefExportRiskSecurityMitigationLabel}
               columns="2/4"
             />
           </View>
@@ -46,11 +46,11 @@ function RiskAndSecurityOutput(props: Props) {
               style={pdfStyles.compactSection}
             >
               <PdfTextOutput
-                value={rm.risk}
+                label={rm.risk}
                 columns="2/4"
               />
               <PdfTextOutput
-                value={rm.mitigation}
+                label={rm.mitigation}
                 columns="2/4"
               />
             </View>
