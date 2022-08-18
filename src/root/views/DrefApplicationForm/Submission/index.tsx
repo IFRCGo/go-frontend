@@ -45,6 +45,21 @@ function Submission(props: Props) {
           fullWidthColumn
         >
           <DateInput
+            label={strings.drefFormNsRequestDate}
+            name="ns_request_date"
+            value={value.ns_request_date}
+            onChange={onValueChange}
+            error={error?.ns_request_date}
+          />
+          <DateInput
+            label={strings.drefFormDateSubmissionToGeneva}
+            name="submission_to_geneva"
+            value={value.submission_to_geneva}
+            onChange={onValueChange}
+            error={error?.submission_to_geneva}
+            hint={strings.drefFormAddedByGeneva}
+          />
+          <DateInput
             label={strings.drefFormDateOfApproval}
             name="date_of_approval"
             value={value.date_of_approval}
@@ -52,6 +67,10 @@ function Submission(props: Props) {
             error={error?.date_of_approval}
             hint={strings.drefFormAddedByGeneva}
           />
+        </InputSection>
+        <InputSection
+          fullWidthColumn
+        >
           <NumberInput
             label={strings.drefFormOperationTimeframeSubmission}
             name="operation_timeframe"
@@ -69,26 +88,6 @@ function Submission(props: Props) {
             error={error?.end_date}
             readOnly
           />
-        </InputSection>
-        <InputSection
-          fullWidthColumn
-        >
-          <DateInput
-            label={strings.drefFormNsRequestDate}
-            name="ns_request_date"
-            value={value.ns_request_date}
-            onChange={onValueChange}
-            error={error?.ns_request_date}
-          />
-          <DateInput
-            label={strings.drefFormDateSubmissionToGeneva}
-            name="submission_to_geneva"
-            value={value.submission_to_geneva}
-            onChange={onValueChange}
-            error={error?.submission_to_geneva}
-            hint={strings.drefFormAddedByGeneva}
-          />
-
           <DateInput
             label={strings.drefFormPublishingDate}
             name="publishing_date"

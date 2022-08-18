@@ -200,6 +200,7 @@ export const schema: FormSchema = {
     risk_security_concern: [],
     title_prefix: [requiredCondition],
     assessment_report: [],
+    is_man_made_event: [],
     national_society_actions: {
       keySelector: (n) => n.clientId as string,
       member: (): NsActionsSchemaMember => ({
