@@ -25,7 +25,6 @@ import {
   booleanOptionKeySelector,
   DrefFields,
   FileWithCaption,
-  ONSET_SLOW,
 } from '../common';
 
 import styles from './styles.module.scss';
@@ -58,8 +57,6 @@ function EventDetails(props: Props) {
   const imagesValue = React.useMemo(() => (
     value?.images_file?.map(d => d.id).filter(d => !!d) as number[] | undefined
   ), [value?.images_file]);
-
-  const isSlowOnset = value?.type_of_onset === ONSET_SLOW;
 
   const {
     setValue: onImageChange,
@@ -196,22 +193,24 @@ function EventDetails(props: Props) {
         heading={strings.drefFormDescriptionEvent}
       >
         <InputSection
-          title={isSlowOnset ? strings.drefFormSlowEventDate : strings.drefFormEventDate}
+          title={isImminentOnset
+            ? strings.drefFormApproximateDateOfImpact
+            : strings.drefFormSlowEventDate
+          }
         >
-          {!isImminentOnset ? (
+          {isImminentOnset ? (
+            <TextArea
+              name="event_text"
+              value={value.event_text}
+              onChange={onValueChange}
+              error={error?.event_text}
+            />
+          ) : (
             <DateInput
               name="event_date"
               value={value.event_date}
               onChange={onValueChange}
               error={error?.event_date}
-            />
-          ) : (
-            <TextArea
-              label={strings.drefFormApproximateDateOfImpact}
-              name="event_text"
-              value={value.event_text}
-              onChange={onValueChange}
-              error={error?.event_text}
             />
           )}
         </InputSection>
@@ -252,13 +251,12 @@ function EventDetails(props: Props) {
             description={strings.drefFormUploadSupportingDocumentDescription}
           >
             <DREFFileInput
-              accept=".pdf,.docx,.pptx"
+              accept=".pdf, .docx, .pptx"
               error={error?.supporting_document}
               fileIdToUrlMap={fileIdToUrlMap}
               name="supporting_document"
               onChange={onValueChange}
               setFileIdToUrlMap={setFileIdToUrlMap}
-              showStatus
               value={value.supporting_document}
             >
               {strings.drefFormUploadSupportingDocumentButtonLabel}
@@ -276,7 +274,6 @@ function EventDetails(props: Props) {
             onChange={handleImageInputChange}
             accept="image/*"
             multiple
-            showStatus
             error={getErrorObject(error?.images_file)?.id}
             fileIdToUrlMap={fileIdToUrlMap}
             setFileIdToUrlMap={setFileIdToUrlMap}

@@ -181,10 +181,6 @@ export interface DrefFields {
   men: number;
   modified_at: string;
   modified_by: number;
-
-  // FIXME: this typing for details should not be here
-  modified_by_details: {};
-
   national_authorities: string;
   national_society: number;
   national_society_actions: NsAction[];
@@ -243,6 +239,7 @@ export interface DrefFields {
   title_prefix: string;
   cover_image_file: SingleFileWithCaption;
   event_map_file: SingleFileWithCaption;
+  is_man_made_event: boolean;
 }
 
 export interface DrefApiFields extends Omit<DrefFields, 'event_map_details' | 'cover_image_file' | 'district_details' | 'planned_interventions' | 'national_society_actions' | 'needs_identified' | 'images_file'> {
@@ -311,6 +308,7 @@ export const overviewFields: (keyof DrefFields)[] = [
   'event_map_file',
   'cover_image_file',
   'emergency_appeal_planned',
+  'is_man_made_event',
 ];
 
 export const eventDetailsFields: (keyof DrefFields)[] = [
