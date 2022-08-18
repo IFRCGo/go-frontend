@@ -37,20 +37,37 @@ export interface User {
 }
 
 export interface EapActivation {
+  clientId: string;
   title: string;
   eap: string;
   description: string;
   trigger_met_date: number;
-  document: string;
+  documents: string[];
   originator_name: string;
   originator_title: string;
   originator_email: string;
   nsc_name_operational: string;
   nsc_title_operational: string;
   nsc_email_operational: string;
+  nsc_name_secretary: string;
+  nsc_title_secretary: string;
+  nsc_email_secretary: string;
   ifrc_focal_name: string;
   ifrc_focal_title: string;
   ifrc_focal_email: string;
+}
+
+export interface EarlyAction {
+  actions: Action[];
+  budget_per_sector: number;
+  clientId: string;
+  indicators: string[];
+  indicator_value: string;
+  prepositioning_activities: string;
+  prioritized_risks: string[];
+  readiness_activities: string;
+  sector: string;
+  targeted_people: number;
 }
 
 export type Option = NumericValueOption | BooleanValueOption | StringValueOption;
@@ -89,6 +106,7 @@ export interface FormType {
   ns_request_assistance?: boolean;
   eap_activation: number[];
   disaster_type: string;
+  early_action: EarlyAction[];
 
   epi_cases: number;
   epi_suspected_cases: number;

@@ -1,0 +1,9 @@
+@import '~styles/settings/_variables.scss';
+
+.contacts {
+  :global {
+    .go-input-section {
+      box-shadow: $box-shadow-component;
+    }
+  }
+}

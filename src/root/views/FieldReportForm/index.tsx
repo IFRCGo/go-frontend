@@ -55,6 +55,7 @@ import styles from './styles.module.scss';
 
 import store from '#utils/store';
 import EapFields from './EapFields';
+import EapContact from './EapContacts';
 
 const currentLanguage = store.getState().lang.current;
 
@@ -470,16 +471,26 @@ function FieldReportForm(props: Props) {
                   fetchingSupportedActivities={fetchingSupportedActivities}
                 />
               )}
+              {value.status === IMMINENT_EVENT_EAP_ACTIVATION && (
+                <EapContact
+                  onValueChange={onValueChange}
+                  value={value}
+                  error={error}
+                >
+                </EapContact>
+              )}
             </TabPanel>
-            <TabPanel name="step4">
-              <ResponseFields
-                reportType={reportType}
-                error={error}
-                onValueChange={onValueChange}
-                value={value}
-                isReviewCountry={isReviewCountry}
-              />
-            </TabPanel>
+            {value.status !== IMMINENT_EVENT_EAP_ACTIVATION && (
+              <TabPanel name="step4">
+                <ResponseFields
+                  reportType={reportType}
+                  error={error}
+                  onValueChange={onValueChange}
+                  value={value}
+                  isReviewCountry={isReviewCountry}
+                />
+              </TabPanel>
+            )}
             <div className={styles.actions}>
               <button
                 className={_cs('button button--secondary-bounded', shouldDisabledBackButton && 'disabled')}

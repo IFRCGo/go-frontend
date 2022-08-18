@@ -3608,4 +3608,22 @@ export default {
   operationalUpdateExportNewOperationalEndDate: 'New Operational end date',
   operationalUpdateExportPersonReachedLabel: 'Persons reached:',
   operationalUpdateCurrentNsImageLabel: 'Add photos of National Society Operation',
+ 
+  //EAP Field Report
+  eapsFieldReportFormTitle: 'Prioritized Risks and Selected Early Actions',
+  eapsFieldReportFormBudgetPerSectorLabel: 'Budget per sector (CHF)',
+  eapsFieldReportFormIndicatorLabel: 'Indicator',
+  eapsFieldReportFormIndicatorValueLabel: 'Indicator Value',
+  eapsFieldReortFormTargetedPeopleLabel: 'Targeted People',
+  eapsFieldReportFormEarlyActionLabel: 'Early Action',
+  eapsFieldReportFormReadinessActivitiesLabel: 'Readiness Activities',
+  eapsFieldReportFormPrePositioningActivitiesLabel: 'Pre-positioning Activities',
+  eapsFieldReportFormPrioritizedRiskLabel: 'Prioritized risk',
+  eapsFieldReportFormContacts: 'Contacts',
+  eapsFieldReportFormOriginator: 'Originator',
+  eapsFormFieldReportOriginatorDescription: 'NS or IFRC Staff completing the EAP Summary',
+  eapsFormFieldReportNationalSocietyContact: 'National Society Contact',
+  eapsFormFieldReportNationalSocietyContactDescription: 'The contact person within the National Society responsible and knowledgeable about the EAP',
+  eapsFormFieldReportIFRCFocalPoint: 'IFRC Focal Point',
+  eapsFormFieldReportIFRCFocalPointDescription: 'IFRC staff who is overall responsible for supporting the NS in EAP development',
 };

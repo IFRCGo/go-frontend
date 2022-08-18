@@ -85,17 +85,24 @@ const validStatusCondition = (value: number | string | null | undefined) => {
 
 export const schema: FormSchema = {
   fields: (value): FormSchemaFields => ({
-    status: [requiredCondition, validStatusCondition],
-    is_covid_report: [requiredCondition],
-    dtype: [requiredCondition],
+    status: [validStatusCondition],
+    is_covid_report: [],
+    dtype: [],
+    // status: [requiredCondition, validStatusCondition],
+    // is_covid_report: [requiredCondition],
+    // dtype: [requiredCondition],
+    // summary: [requiredStringCondition],
     event: [],
-    summary: [requiredStringCondition],
-    country: [requiredCondition],
+    summary: [],
+    country: [],
+    start_date: [],
+    // country: [requiredCondition],
     districts: [],
-    start_date: [requiredCondition],
+    // start_date: [requiredCondition],
     request_assistance: [],
     ns_request_assistance: [],
     eap_activation: [],
+    early_action: [],
 
     epi_cases: [positiveIntegerCondition],
     epi_suspected_cases: [positiveIntegerCondition],
@@ -179,7 +186,8 @@ export const schema: FormSchema = {
     contact_media_title: [],
     contact_media_email: [],
     contact_media_phone: [],
-    visibility: [requiredCondition],
+    visibility: [],
+    // visibility: [requiredCondition],
   }),
 
   fieldDependencies: () => ({
@@ -368,8 +376,7 @@ function useFieldReportOptions(value: Partial<FormType>) {
     if (value.dtype === DISASTER_TYPE_EPIDEMIC) {
       return 'EPI';
     }
-    if (value.status === IMMINENT_EVENT_EAP_ACTIVATION)
-    {
+    if (value.status === IMMINENT_EVENT_EAP_ACTIVATION) {
       return 'EAP_ACTV';
     }
 
@@ -516,6 +523,13 @@ function useFieldReportOptions(value: Partial<FormType>) {
     { label: strings.fieldsStep2OrganizationsLabelOther, value: SOURCE_OTHER },
   ]), [strings]);
 
+  const {
+    pending: fetchingEapDetails,
+    response: eapDetailsResponse,
+  } = useRequest<ListResponse<FormType>>({
+    url: `api/v2/eap/`,
+  });
+
   return {
     bulletinOptions,
     countryOptions,
@@ -542,6 +556,8 @@ function useFieldReportOptions(value: Partial<FormType>) {
     updateNo,
     isReviewCountry,
     imminentEventOptions,
+    fetchingEapDetails,
+    eapDetailsResponse,
   };
 }
 
