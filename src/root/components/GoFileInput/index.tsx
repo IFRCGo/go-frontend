@@ -3,7 +3,10 @@ import {
   _cs,
   isDefined,
 } from '@togglecorp/fujs';
-import { IoClose } from 'react-icons/io5';
+import {
+  IoClose,
+  IoDocumentTextOutline,
+} from 'react-icons/io5';
 import { internal } from '@togglecorp/toggle-form';
 
 import { useLazyRequest } from '#utils/restRequest';
@@ -54,7 +57,7 @@ export function Preview<ID extends number>(props: PreviewProps<ID>) {
     return (
       <div className={styles.noPreview}>
         {removeButton}
-        Preview not available!
+        <IoDocumentTextOutline fontSize="6rem" />
       </div>
     );
   }

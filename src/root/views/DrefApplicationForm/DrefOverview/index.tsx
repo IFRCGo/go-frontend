@@ -30,6 +30,7 @@ import { DistrictMini } from '#types/country';
 import { compareString } from '#utils/utils';
 
 import CopyFieldReportSection from './CopyFieldReportSection';
+import ImageWithCaptionInput from './ImageWithCaptionInput';
 import {
   optionLabelSelector,
   DrefFields,
@@ -38,10 +39,8 @@ import {
   booleanOptionKeySelector,
   ONSET_IMMINENT,
   emptyNumericOptionList,
-  // ONSET_SUDDEN,
+  ONSET_SUDDEN,
 } from '../common';
-
-import ImageWithCaptionInput from './ImageWithCaptionInput';
 
 import styles from './styles.module.scss';
 
@@ -66,6 +65,12 @@ interface Props {
   userOptions: NumericValueOption[];
   onCreateAndShareButtonClick: () => void;
 }
+
+const disasterCategoryLink = "https://www.ifrc.org/sites/default/files/2021-07/IFRC%20Emergency%20Response%20Framework%20-%202017.pdf";
+const totalPopulationRiskImminentLink = "https://ifrcorg.sharepoint.com/sites/IFRCSharing/Shared%20Documents/Forms/AllItems.aspx?id=%2Fsites%2FIFRCSharing%2FShared%20Documents%2FDREF%2FHum%20Pop%20Definitions%20for%20DREF%20Form%5F21072022%2Epdf&parent=%2Fsites%2FIFRCSharing%2FShared%20Documents%2FDREF&p=true&ga=1";
+const totalPeopleAffectedSlowSuddenLink = "https://ifrcorg.sharepoint.com/sites/IFRCSharing/Shared%20Documents/Forms/AllItems.aspx?id=%2Fsites%2FIFRCSharing%2FShared%20Documents%2FDREF%2FHum%20Pop%20Definitions%20for%20DREF%20Form%5F21072022%2Epdf&parent=%2Fsites%2FIFRCSharing%2FShared%20Documents%2FDREF&p=true&ga=1";
+const peopleTargetedLink = "https://ifrcorg.sharepoint.com/sites/IFRCSharing/Shared%20Documents/Forms/AllItems.aspx?id=%2Fsites%2FIFRCSharing%2FShared%20Documents%2FDREF%2FHum%20Pop%20Definitions%20for%20DREF%20Form%5F21072022%2Epdf&parent=%2Fsites%2FIFRCSharing%2FShared%20Documents%2FDREF&p=true&ga=1";
+const peopleInNeedLink = "https://ifrcorg.sharepoint.com/sites/IFRCSharing/Shared%20Documents/Forms/AllItems.aspx?id=%2Fsites%2FIFRCSharing%2FShared%20Documents%2FDREF%2FHum%20Pop%20Definitions%20for%20DREF%20Form%5F21072022%2Epdf&parent=%2Fsites%2FIFRCSharing%2FShared%20Documents%2FDREF&p=true&ga=1";
 
 function DrefOverview(props: Props) {
   const { strings } = React.useContext(LanguageContext);
@@ -96,9 +101,15 @@ function DrefOverview(props: Props) {
   );
 
   const isImminentOnset = value?.type_of_onset === ONSET_IMMINENT;
-  // const isSuddenOnset = value?.type_of_onset === ONSET_SUDDEN ? false : value.emergency_appeal_planned;
 
-  //onValueChange(isSuddenOnset, 'emergency_appeal_planned');
+  React.useMemo(() => {
+    const isSuddenOnset = value?.type_of_onset === ONSET_SUDDEN ? false : value.emergency_appeal_planned;
+    onValueChange(isSuddenOnset, 'emergency_appeal_planned');
+  }, [
+    value.type_of_onset,
+    value.emergency_appeal_planned,
+    onValueChange,
+  ]);
 
   const handleUserSearch = React.useCallback((input: string | undefined, callback) => {
     if (!input) {
@@ -156,6 +167,14 @@ function DrefOverview(props: Props) {
       label: d.name,
     })).sort(compareString) ?? emptyNumericOptionList
   ), [districtsResponse]);
+
+  const isManMadeEvent = React.useMemo(() => {
+    const disasterLabel = disasterTypeOptions.find(disaster => disaster.value === value.disaster_type)?.label;
+    return disasterLabel ? ["Flood", "Flash Flood", "Fire"].includes(disasterLabel) : false;
+  }, [
+    disasterTypeOptions,
+    value.disaster_type,
+  ]);
 
   return (
     <>
@@ -251,7 +270,7 @@ function DrefOverview(props: Props) {
                   className={styles.disasterCategoryHelpLink}
                   target="_blank"
                   title="Click to view Emergency Response Framework"
-                  href="https://www.ifrc.org/sites/default/files/2021-07/IFRC%20Emergency%20Response%20Framework%20-%202017.pdf"
+                  href={disasterCategoryLink}
                 >
                   <IoHelpCircle />
                 </a>
@@ -262,6 +281,18 @@ function DrefOverview(props: Props) {
             options={disasterCategoryOptions}
             value={value.disaster_category}
           />
+          {isManMadeEvent &&
+            <RadioInput
+              label={strings.drefFormManMadeEvent}
+              name={"is_man_made_event" as const}
+              options={yesNoOptions}
+              keySelector={booleanOptionKeySelector}
+              labelSelector={optionLabelSelector}
+              value={value.is_man_made_event}
+              onChange={onValueChange}
+              error={error?.is_man_made_event}
+            />
+          }
         </InputSection>
         <InputSection
           title={
@@ -297,7 +328,6 @@ function DrefOverview(props: Props) {
             name="title_prefix"
             value={value.title_prefix}
             error={error?.title_prefix}
-            prefix={value.title_prefix}
             disabled
           />
           <TextInput
@@ -305,7 +335,6 @@ function DrefOverview(props: Props) {
             value={value.title}
             onChange={onValueChange}
             error={error?.title}
-            placeholder={strings.drefFormTitleDescription}
           />
         </InputSection>
         <InputSection
@@ -320,7 +349,7 @@ function DrefOverview(props: Props) {
                   className={styles.peopleTargetedHelpLink}
                   target="_blank"
                   title="Click to view Emergency Response Framework"
-                  href="https://ifrcorg.sharepoint.com/sites/IFRCSharing/Shared%20Documents/Forms/AllItems.aspx?id=%2Fsites%2FIFRCSharing%2FShared%20Documents%2FDREF%2FHum%20Pop%20Definitions%20for%20DREF%20Form%5F21072022%2Epdf&parent=%2Fsites%2FIFRCSharing%2FShared%20Documents%2FDREF&p=true&ga=1"
+                  href={totalPopulationRiskImminentLink}
                 >
                   <IoHelpCircle />
                 </a>
@@ -332,7 +361,7 @@ function DrefOverview(props: Props) {
                   className={styles.peopleTargetedHelpLink}
                   target="_blank"
                   title="Click to view Emergency Response Framework"
-                  href="https://ifrcorg.sharepoint.com/sites/IFRCSharing/Shared%20Documents/Forms/AllItems.aspx?id=%2Fsites%2FIFRCSharing%2FShared%20Documents%2FDREF%2FHum%20Pop%20Definitions%20for%20DREF%20Form%5F21072022%2Epdf&parent=%2Fsites%2FIFRCSharing%2FShared%20Documents%2FDREF&p=true&ga=1"
+                  href={totalPeopleAffectedSlowSuddenLink}
                 >
                   <IoHelpCircle />
                 </a>
@@ -342,7 +371,10 @@ function DrefOverview(props: Props) {
             value={value.num_affected}
             onChange={onValueChange}
             error={error?.num_affected}
-            hint={isImminentOnset && strings.drefFormPeopleAffectedDescription}
+            hint={isImminentOnset
+              ? strings.drefFormPeopleAffectedDescriptionImminent
+              : strings.drefFormPeopleAffectedDescriptionSlowSudden
+            }
           />
           <NumberInput
             label={(
@@ -356,7 +388,7 @@ function DrefOverview(props: Props) {
                   className={styles.peopleTargetedHelpLink}
                   target="_blank"
                   title="Click to view Emergency Response Framework"
-                  href="https://ifrcorg.sharepoint.com/sites/IFRCSharing/Shared%20Documents/Forms/AllItems.aspx?id=%2Fsites%2FIFRCSharing%2FShared%20Documents%2FDREF%2FHum%20Pop%20Definitions%20for%20DREF%20Form%5F21072022%2Epdf&parent=%2Fsites%2FIFRCSharing%2FShared%20Documents%2FDREF&p=true&ga=1"
+                  href={peopleInNeedLink}
                 >
                   <IoHelpCircle />
                 </a>
@@ -366,7 +398,10 @@ function DrefOverview(props: Props) {
             value={value.people_in_need}
             onChange={onValueChange}
             error={error?.people_in_need}
-            hint={isImminentOnset && strings.drefFormPeopleInNeedDescription}
+            hint={isImminentOnset
+              ? strings.drefFormPeopleInNeedDescriptionImminent
+              : strings.drefFormPeopleInNeedDescriptionSlowSudden
+            }
           />
           <NumberInput
             label={(
@@ -376,7 +411,7 @@ function DrefOverview(props: Props) {
                   className={styles.peopleTargetedHelpLink}
                   target="_blank"
                   title="Click to view Emergency Response Framework"
-                  href="https://ifrcorg.sharepoint.com/sites/IFRCSharing/Shared%20Documents/Forms/AllItems.aspx?id=%2Fsites%2FIFRCSharing%2FShared%20Documents%2FDREF%2FHum%20Pop%20Definitions%20for%20DREF%20Form%5F21072022%2Epdf&parent=%2Fsites%2FIFRCSharing%2FShared%20Documents%2FDREF&p=true&ga=1"
+                  href={peopleTargetedLink}
                 >
                   <IoHelpCircle />
                 </a>
