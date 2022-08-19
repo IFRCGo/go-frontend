@@ -3229,6 +3229,7 @@ export default {
   drefFormObjectiveOperation: 'Overall objective of the operation',
   drefFormObjectiveOperationPlaceholder: 'This DREF allocation aims at supporting ….. of people in need affected by ……. Disaster, by providing …..(list sectors) support in the ……(list areas/regions) for …. months',
   drefFormResponseRationale: 'Operation strategy rationale',
+  drefFormResponseRationaleDescription: 'Please describe the strategy to conduct the assessment exercise, main objectives, who will be involved?',
   drefFormResponseRationalePlaceholder: 'To address the needs of the targeted population, this DREF will aim at (please briefly describe the planned activities).',
   drefFormHumanResourceDescription: 'How many staff and volunteers will be involved in this operation. Briefly describe their role.',
   drefFormSurgePersonnelDeployed: 'Will surge personnel be deployed?',
@@ -3249,6 +3250,7 @@ export default {
   drefFormRiskSecurityMitigationLabel: 'Mitigation action',
   drefFormRiskSecurity: 'Risk and security considerations',
   drefFormRiskSecurityPotentialRisk: 'Please indicate about potential operational risk for this operations and mitigation actions',
+  drefFormRiskSecurityPotentialRiskDescription: 'Please consider any possible challenges to conduct the assessment, any possible limitations in getting the information required and overall risk to the implementation',
   drefFormRiskSecuritySafetyConcern: 'Please indicate any security and safety concerns for this operation',
 
   // Submission

@@ -38,6 +38,7 @@ interface Props {
   isImminentOnset: boolean;
   fileIdToUrlMap: Record<number, string>;
   setFileIdToUrlMap?: React.Dispatch<React.SetStateAction<Record<number, string>>>;
+  isAssessmentReport?: boolean;
 }
 
 function EventDetails(props: Props) {
@@ -51,6 +52,7 @@ function EventDetails(props: Props) {
     isImminentOnset,
     fileIdToUrlMap,
     setFileIdToUrlMap,
+    isAssessmentReport,
   } = props;
 
   const error = getErrorObject(formError);
@@ -85,110 +87,112 @@ function EventDetails(props: Props) {
 
   return (
     <>
-      <Container
-        heading={strings.drefFormPreviousOperations}
-        className={styles.previousOperations}
-        description={
-          <a href={operationalLearningPlatformUrl}>
-            {strings.drefOperationalLearningPlatformLabel}
-          </a>
-        }
-      >
-        <InputSection
-          title={strings.drefFormAffectSameArea}
+      {!isAssessmentReport &&
+        <Container
+          heading={strings.drefFormPreviousOperations}
+          className={styles.previousOperations}
+          description={
+            <a href={operationalLearningPlatformUrl}>
+              {strings.drefOperationalLearningPlatformLabel}
+            </a>
+          }
         >
-          <RadioInput
-            name={"affect_same_area" as const}
-            options={yesNoOptions}
-            keySelector={booleanOptionKeySelector}
-            labelSelector={optionLabelSelector}
-            value={value.affect_same_area}
-            onChange={onValueChange}
-            error={error?.affect_same_area}
-          />
-        </InputSection>
-        <InputSection
-          title={strings.drefFormAffectedthePopulationTitle}
-        >
-          <RadioInput
-            name={"affect_same_population" as const}
-            options={yesNoOptions}
-            keySelector={booleanOptionKeySelector}
-            labelSelector={optionLabelSelector}
-            value={value.affect_same_population}
-            onChange={onValueChange}
-            error={error?.affect_same_population}
-          />
-        </InputSection>
-        <InputSection
-          title={strings.drefFormNsRespond}
-        >
-          <RadioInput
-            name={"ns_respond" as const}
-            options={yesNoOptions}
-            keySelector={booleanOptionKeySelector}
-            labelSelector={optionLabelSelector}
-            value={value.ns_respond}
-            onChange={onValueChange}
-            error={error?.ns_respond}
-          />
-        </InputSection>
-        <InputSection
-          title={strings.drefFormNsRequestFund}
-        >
-          <RadioInput
-            name={"ns_request_fund" as const}
-            options={yesNoOptions}
-            keySelector={booleanOptionKeySelector}
-            labelSelector={optionLabelSelector}
-            value={value.ns_request_fund}
-            onChange={onValueChange}
-            error={error?.ns_request_fund}
-          />
-        </InputSection>
-        {value.ns_request_fund && (
           <InputSection
-            title={strings.drefFormNsFundingDetail}
+            title={strings.drefFormAffectSameArea}
           >
-            <TextInput
-              placeholder={strings.drefFormNsFundingDetailDescription}
-              name="ns_request_text"
-              value={value.ns_request_text}
+            <RadioInput
+              name={"affect_same_area" as const}
+              options={yesNoOptions}
+              keySelector={booleanOptionKeySelector}
+              labelSelector={optionLabelSelector}
+              value={value.affect_same_area}
               onChange={onValueChange}
-              error={error?.ns_request_text}
+              error={error?.affect_same_area}
             />
           </InputSection>
-        )}
-        {
-          value.ns_request_fund &&
-          value.ns_respond &&
-          value.affect_same_population &&
-          value.affect_same_area && (
+          <InputSection
+            title={strings.drefFormAffectedthePopulationTitle}
+          >
+            <RadioInput
+              name={"affect_same_population" as const}
+              options={yesNoOptions}
+              keySelector={booleanOptionKeySelector}
+              labelSelector={optionLabelSelector}
+              value={value.affect_same_population}
+              onChange={onValueChange}
+              error={error?.affect_same_population}
+            />
+          </InputSection>
+          <InputSection
+            title={strings.drefFormNsRespond}
+          >
+            <RadioInput
+              name={"ns_respond" as const}
+              options={yesNoOptions}
+              keySelector={booleanOptionKeySelector}
+              labelSelector={optionLabelSelector}
+              value={value.ns_respond}
+              onChange={onValueChange}
+              error={error?.ns_respond}
+            />
+          </InputSection>
+          <InputSection
+            title={strings.drefFormNsRequestFund}
+          >
+            <RadioInput
+              name={"ns_request_fund" as const}
+              options={yesNoOptions}
+              keySelector={booleanOptionKeySelector}
+              labelSelector={optionLabelSelector}
+              value={value.ns_request_fund}
+              onChange={onValueChange}
+              error={error?.ns_request_fund}
+            />
+          </InputSection>
+          {value.ns_request_fund && (
             <InputSection
-              title={strings.drefFormRecurrentText}
+              title={strings.drefFormNsFundingDetail}
             >
-              <TextArea
-                name="dref_recurrent_text"
-                value={value.dref_recurrent_text}
+              <TextInput
+                placeholder={strings.drefFormNsFundingDetailDescription}
+                name="ns_request_text"
+                value={value.ns_request_text}
                 onChange={onValueChange}
-                error={error?.dref_recurrent_text}
+                error={error?.ns_request_text}
               />
             </InputSection>
           )}
-        <InputSection
-          title={strings.drefFormLessonsLearnedTitle}
-          description={strings.drefFormLessonsLearnedDescription}
-          oneColumn
-          multiRow
-        >
-          <TextArea
-            name="lessons_learned"
-            onChange={onValueChange}
-            value={value.lessons_learned}
-            error={error?.lessons_learned}
-          />
-        </InputSection>
-      </Container>
+          {
+            value.ns_request_fund &&
+            value.ns_respond &&
+            value.affect_same_population &&
+            value.affect_same_area && (
+              <InputSection
+                title={strings.drefFormRecurrentText}
+              >
+                <TextArea
+                  name="dref_recurrent_text"
+                  value={value.dref_recurrent_text}
+                  onChange={onValueChange}
+                  error={error?.dref_recurrent_text}
+                />
+              </InputSection>
+            )}
+          <InputSection
+            title={strings.drefFormLessonsLearnedTitle}
+            description={strings.drefFormLessonsLearnedDescription}
+            oneColumn
+            multiRow
+          >
+            <TextArea
+              name="lessons_learned"
+              onChange={onValueChange}
+              value={value.lessons_learned}
+              error={error?.lessons_learned}
+            />
+          </InputSection>
+        </Container>
+      }
       <Container
         heading={strings.drefFormDescriptionEvent}
       >
@@ -295,19 +299,21 @@ function EventDetails(props: Props) {
             ))}
           </div>
         </InputSection>
-        <InputSection
-          title={strings.drefFormScopeAndScaleEvent}
-          description={strings.drefFormScopeAndScaleDescription}
-          oneColumn
-          multiRow
-        >
-          <TextArea
-            name="event_scope"
-            onChange={onValueChange}
-            value={value.event_scope}
-            error={error?.event_scope}
-          />
-        </InputSection>
+        {!isAssessmentReport ??
+          <InputSection
+            title={strings.drefFormScopeAndScaleEvent}
+            description={strings.drefFormScopeAndScaleDescription}
+            oneColumn
+            multiRow
+          >
+            <TextArea
+              name="event_scope"
+              onChange={onValueChange}
+              value={value.event_scope}
+              error={error?.event_scope}
+            />
+          </InputSection>
+        }
       </Container>
     </>
   );
