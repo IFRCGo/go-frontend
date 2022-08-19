@@ -215,6 +215,8 @@ function DrefOverview(props: Props) {
       >
         <InputSection
           title={strings.drefFormNationalSociety}
+          multiRow
+          oneColumn
         >
           <SelectInput
             error={error?.national_society}
@@ -223,6 +225,15 @@ function DrefOverview(props: Props) {
             options={nationalSocietyOptions}
             pending={fetchingNationalSociety}
             value={value.national_society}
+          />
+          <RadioInput
+            name={"is_assessment_report" as const}
+            options={yesNoOptions}
+            keySelector={booleanOptionKeySelector}
+            labelSelector={optionLabelSelector}
+            value={value.is_assessment_report}
+            onChange={onValueChange}
+            error={error?.is_assessment_report}
           />
         </InputSection>
         <CopyFieldReportSection

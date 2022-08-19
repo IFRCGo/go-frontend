@@ -36,6 +36,11 @@ import {
   DrefFields,
   NumericKeyValuePair,
   StringKeyValuePair,
+  ONSET_SUDDEN,
+  Need,
+  RiskSecurityProps,
+  Intervention,
+  NsAction,
 } from './common';
 import { isDefined } from '@togglecorp/fujs';
 
@@ -91,168 +96,197 @@ export function lessThanEqualToTwoImagesCondition(value: any) {
     : undefined;
 }
 
-export const schema: FormSchema = {
-  fields: (value): FormSchemaFields => ({
-    field_report: [],
-    title: [requiredCondition],
-    national_society: [requiredCondition],
-    disaster_category: [],
-    disaster_type: [],
-    type_of_onset: [requiredCondition],
-    country: [],
-    district: [],
-    num_affected: [positiveIntegerCondition],
-    num_assisted: [positiveIntegerCondition],
-    amount_requested: [positiveNumberCondition],
-    emergency_appeal_planned: [],
-    cover_image_file: {
-      fields: () => ({
-        id: [defaultUndefinedType],
-        caption: [defaultUndefinedType],
+const defaultSchema = {
+  field_report: [],
+  title: [requiredCondition],
+  national_society: [requiredCondition],
+  disaster_category: [],
+  disaster_type: [],
+  type_of_onset: [requiredCondition],
+  country: [],
+  district: [],
+  num_affected: [positiveIntegerCondition],
+  num_assisted: [positiveIntegerCondition],
+  amount_requested: [positiveNumberCondition],
+  emergency_appeal_planned: [],
+  cover_image_file: {
+    fields: () => ({
+      id: [defaultUndefinedType],
+      caption: [defaultUndefinedType],
+    }),
+  },
+  event_map_file: {
+    fields: () => ({
+      id: [defaultUndefinedType],
+      caption: [defaultUndefinedType],
+    }),
+  },
+  event_date: [],
+  event_text: [max500CharCondition],
+  anticipatory_actions: [],
+  go_field_report_date: [],
+  ns_respond_date: [],
+  event_description: [],
+  images_file: [defaultEmptyArrayType, lessThanEqualToTwoImagesCondition],
+  government_requested_assistance: [],
+  government_requested_assistance_date: [],
+  national_authorities: [],
+  partner_national_society: [],
+  ifrc: [],
+  icrc: [],
+  un_or_other_actor: [],
+  major_coordination_mechanism: [],
+  people_assisted: [],
+  selection_criteria: [],
+  community_involved: [],
+  disability_people_per: [greaterThanOrEqualToCondition(0), lessThanOrEqualToCondition(100)],
+  people_per_urban: [greaterThanOrEqualToCondition(0), lessThanOrEqualToCondition(100)],
+  people_per_local: [greaterThanOrEqualToCondition(0), lessThanOrEqualToCondition(100)],
+  displaced_people: [positiveIntegerCondition],
+  people_targeted_with_early_actions: [positiveIntegerCondition],
+  total_targeted_population: [positiveIntegerCondition],
+  operation_objective: [],
+  response_strategy: [],
+  budget_file: [],
+  ns_request_date: [],
+  start_date: [],
+  submission_to_geneva: [],
+  end_date: [],
+  date_of_approval: [],
+  publishing_date: [],
+  appeal_code: [],
+  glide_code: [],
+  ifrc_appeal_manager_name: [],
+  ifrc_appeal_manager_email: [emailCondition],
+  ifrc_appeal_manager_phone_number: [],
+  ifrc_appeal_manager_title: [],
+  ifrc_project_manager_name: [],
+  ifrc_project_manager_email: [emailCondition],
+  ifrc_project_manager_title: [],
+  ifrc_project_manager_phone_number: [],
+  national_society_contact_name: [],
+  national_society_contact_title: [],
+  national_society_contact_email: [emailCondition],
+  national_society_contact_phone_number: [],
+  ifrc_emergency_name: [],
+  ifrc_emergency_title: [],
+  ifrc_emergency_email: [emailCondition],
+  ifrc_emergency_phone_number: [],
+  media_contact_name: [],
+  media_contact_title: [],
+  media_contact_email: [emailCondition],
+  media_contact_phone_number: [],
+  human_resource: [],
+  surge_personnel_deployed: [],
+  users: [defaultEmptyArrayType],
+  is_there_major_coordination_mechanism: [],
+  is_surge_personnel_deployed: [],
+  people_in_need: [],
+  supporting_document: [],
+  did_national_society: [],
+  risk_security_concern: [],
+  title_prefix: [requiredCondition],
+  is_man_made_event: [],
+  is_assessment_report: [],
+  national_society_actions: {
+    keySelector: (n: PartialForm<NsAction>) => n.clientId as string,
+    member: (): NsActionsSchemaMember => ({
+      fields: (): NsActionSchemaFields => ({
+        title: [requiredCondition],
+        description: [requiredCondition],
       }),
-    },
-    event_map_file: {
-      fields: () => ({
-        id: [defaultUndefinedType],
-        caption: [defaultUndefinedType],
-      }),
-    },
-    event_date: [],
-    event_text: [max500CharCondition],
-    anticipatory_actions: [],
-    go_field_report_date: [],
-    ns_respond_date: [],
-    affect_same_population: [],
-    ns_request_fund: [],
-    ns_respond: [],
-    ns_request_text: [],
-    lessons_learned: [],
-    event_description: [],
-    event_scope: [],
-    images_file: [defaultEmptyArrayType, lessThanEqualToTwoImagesCondition],
-    government_requested_assistance: [],
-    government_requested_assistance_date: [],
-    national_authorities: [],
-    partner_national_society: [],
-    ifrc: [],
-    icrc: [],
-    affect_same_area: [],
-    un_or_other_actor: [],
-    major_coordination_mechanism: [],
-    identified_gaps: [],
-    people_assisted: [],
-    selection_criteria: [],
-    community_involved: [],
-    women: [positiveIntegerCondition],
-    men: [positiveIntegerCondition],
-    girls: [positiveIntegerCondition],
-    boys: [positiveIntegerCondition],
-    disability_people_per: [greaterThanOrEqualToCondition(0), lessThanOrEqualToCondition(100)],
-    people_per_urban: [greaterThanOrEqualToCondition(0), lessThanOrEqualToCondition(100)],
-    people_per_local: [greaterThanOrEqualToCondition(0), lessThanOrEqualToCondition(100)],
-    displaced_people: [positiveIntegerCondition],
-    people_targeted_with_early_actions: [positiveIntegerCondition],
-    total_targeted_population: [positiveIntegerCondition],
-    operation_objective: [],
-    response_strategy: [],
-    budget_file: [],
-    ns_request_date: [],
-    start_date: [],
-    submission_to_geneva: [],
-    end_date: [],
-    date_of_approval: [],
-    operation_timeframe: [positiveIntegerCondition, lessThanOrEqualToCondition(30)],
-    publishing_date: [],
-    dref_recurrent_text: [],
-    appeal_code: [],
-    glide_code: [],
-    ifrc_appeal_manager_name: [],
-    ifrc_appeal_manager_email: [emailCondition],
-    ifrc_appeal_manager_phone_number: [],
-    ifrc_appeal_manager_title: [],
-    ifrc_project_manager_name: [],
-    ifrc_project_manager_email: [emailCondition],
-    ifrc_project_manager_title: [],
-    ifrc_project_manager_phone_number: [],
-    national_society_contact_name: [],
-    national_society_contact_title: [],
-    national_society_contact_email: [emailCondition],
-    national_society_contact_phone_number: [],
-    ifrc_emergency_name: [],
-    ifrc_emergency_title: [],
-    ifrc_emergency_email: [emailCondition],
-    ifrc_emergency_phone_number: [],
-    media_contact_name: [],
-    media_contact_title: [],
-    media_contact_email: [emailCondition],
-    media_contact_phone_number: [],
-    human_resource: [],
-    surge_personnel_deployed: [],
-    logistic_capacity_of_ns: [],
-    pmer: [],
-    communication: [],
-    users: [defaultEmptyArrayType],
-    is_there_major_coordination_mechanism: [],
-    is_surge_personnel_deployed: [],
-    people_in_need: [],
-    supporting_document: [],
-    did_national_society: [],
-    risk_security_concern: [],
-    title_prefix: [requiredCondition],
-    assessment_report: [],
-    is_man_made_event: [],
-    national_society_actions: {
-      keySelector: (n) => n.clientId as string,
-      member: (): NsActionsSchemaMember => ({
-        fields: (): NsActionSchemaFields => ({
-          title: [requiredCondition],
-          description: [requiredCondition],
-        }),
-      }),
-    },
-    needs_identified: {
-      keySelector: (n) => n.clientId as string,
-      member: (): NeedsSchemaMember => ({
-        fields: (): NeedSchemaFields => ({
-          clientId: [],
-          title: [requiredCondition],
-          description: [requiredCondition],
-        }),
-      }),
-    },
-    planned_interventions: {
-      keySelector: (n) => n.clientId as string,
-      member: (): InterventionsSchemaMember => ({
-        fields: (): InterventionSchemaFields => ({
-          clientId: [],
-          title: [requiredCondition],
-          budget: [requiredCondition, positiveIntegerCondition, lessThanOrEqualToCondition(MaxIntLimit)],
-          person_targeted: [requiredCondition, positiveIntegerCondition, lessThanOrEqualToCondition(MaxIntLimit)],
-          indicators: {
-            keySelector: (n) => n.clientId as string,
-            member: (): IndicatorsSchemaMember => ({
-              fields: (): IndicatorSchemaFields => ({
-                clientId: [],
-                title: [],
-                target: [positiveNumberCondition],
-              })
+    }),
+  },
+  planned_interventions: {
+    keySelector: (n: PartialForm<Intervention>) => n.clientId as string,
+    member: (): InterventionsSchemaMember => ({
+      fields: (): InterventionSchemaFields => ({
+        clientId: [],
+        title: [requiredCondition],
+        budget: [requiredCondition, positiveIntegerCondition, lessThanOrEqualToCondition(MaxIntLimit)],
+        person_targeted: [requiredCondition, positiveIntegerCondition, lessThanOrEqualToCondition(MaxIntLimit)],
+        indicators: {
+          keySelector: (n) => n.clientId as string,
+          member: (): IndicatorsSchemaMember => ({
+            fields: (): IndicatorSchemaFields => ({
+              clientId: [],
+              title: [],
+              target: [positiveNumberCondition],
             })
-          },
-          description: [],
-        }),
+          })
+        },
+        description: [],
       }),
-    },
-    risk_security: {
-      keySelector: (r) => r.clientId as string,
-      member: (): RiskSecuritiesSchemaMember => ({
-        fields: (): RiskSecuritySchemaFields => ({
-          clientId: [],
-          risk: [requiredCondition],
-          mitigation: [requiredCondition],
-        }),
+    }),
+  },
+  risk_security: {
+    keySelector: (r: PartialForm<RiskSecurityProps>) => r.clientId as string,
+    member: (): RiskSecuritiesSchemaMember => ({
+      fields: (): RiskSecuritySchemaFields => ({
+        clientId: [],
+        risk: [requiredCondition],
+        mitigation: [requiredCondition],
       }),
-    },
-  }),
+    }),
+  },
+};
+
+const isNotAssessmentSchema = {
+  ns_request_fund: [],
+  affect_same_area: [],
+  ns_respond: [],
+  affect_same_population: [],
+  ns_request_text: [],
+  lessons_learned: [],
+  dref_recurrent_text: [],
+  identified_gaps: [],
+  women: [positiveIntegerCondition],
+  men: [positiveIntegerCondition],
+  girls: [positiveIntegerCondition],
+  boys: [positiveIntegerCondition],
+  event_scope: [],
+  assessment_report: [],
+  logistic_capacity_of_ns: [],
+  pmer: [],
+  communication: [],
+  needs_identified: {
+    keySelector: (n: PartialForm<Need>) => n.clientId as string,
+    member: (): NeedsSchemaMember => ({
+      fields: (): NeedSchemaFields => ({
+        clientId: [],
+        title: [requiredCondition],
+        description: [requiredCondition],
+      }),
+    }),
+  },
+};
+
+export const schema: FormSchema = {
+  fields: (value): FormSchemaFields => {
+    if (value?.is_assessment_report) {
+      return {
+        ...defaultSchema,
+        operation_timeframe: [
+          positiveIntegerCondition,
+          value?.type_of_onset === ONSET_SUDDEN
+            ? lessThanOrEqualToCondition(2)
+            : lessThanOrEqualToCondition(30)
+        ],
+      };
+    }
+    else {
+      return {
+        ...defaultSchema,
+        ...isNotAssessmentSchema,
+        operation_timeframe: [
+          positiveIntegerCondition,
+          value?.type_of_onset === ONSET_SUDDEN
+            ? lessThanOrEqualToCondition(2)
+            : lessThanOrEqualToCondition(30)
+        ],
+      };
+    }
+  },
   fieldDependencies: () => ({
   }),
   validation: (value) => {

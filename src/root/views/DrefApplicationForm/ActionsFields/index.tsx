@@ -47,6 +47,7 @@ interface Props {
   nsActionOptions: StringValueOption[];
   fileIdToUrlMap: Record<number, string>;
   setFileIdToUrlMap?: React.Dispatch<React.SetStateAction<Record<number, string>>>;
+  isAssessmentReport?: boolean;
 }
 
 function ActionsFields(props: Props) {
@@ -60,6 +61,7 @@ function ActionsFields(props: Props) {
     needOptions,
     nsActionOptions,
     fileIdToUrlMap,
+    isAssessmentReport,
     setFileIdToUrlMap,
   } = props;
 
@@ -339,77 +341,79 @@ function ActionsFields(props: Props) {
           </InputSection>
         }
       </Container>
-      <Container
-        className={styles.needsIdentified}
-        heading={
-          isImminentOnset
-            ? strings.drefFormImminentNeedsIdentified
-            : strings.drefFormNeedsIdentified
-        }
-        visibleOverflow
-      >
-        {!isImminentOnset &&
+      {!isAssessmentReport &&
+        <Container
+          className={styles.needsIdentified}
+          heading={
+            isImminentOnset
+              ? strings.drefFormImminentNeedsIdentified
+              : strings.drefFormNeedsIdentified
+          }
+          visibleOverflow
+        >
+          {!isImminentOnset &&
+            <InputSection>
+              <DREFFileInput
+                accept=".pdf, .docx, .pptx"
+                label={strings.drefFormAssessmentReportUploadLabel}
+                name="assessment_report"
+                value={value.assessment_report}
+                onChange={onValueChange}
+                error={error?.assessment_report}
+                fileIdToUrlMap={fileIdToUrlMap}
+                setFileIdToUrlMap={setFileIdToUrlMap}
+              >
+                {strings.drefFormAssessmentReportUploadButtonLabel}
+              </DREFFileInput>
+            </InputSection>
+          }
           <InputSection>
-            <DREFFileInput
-              accept=".pdf, .docx, .pptx"
-              label={strings.drefFormAssessmentReportUploadLabel}
-              name="assessment_report"
-              value={value.assessment_report}
-              onChange={onValueChange}
-              error={error?.assessment_report}
-              fileIdToUrlMap={fileIdToUrlMap}
-              setFileIdToUrlMap={setFileIdToUrlMap}
-            >
-              {strings.drefFormAssessmentReportUploadButtonLabel}
-            </DREFFileInput>
-          </InputSection>
-        }
-        <InputSection>
-          <SelectInput
-            label={strings.drefFormActionFieldsLabel}
-            name={undefined}
-            onChange={setNeed}
-            options={filteredNeedOptions}
-            value={need}
-          />
-          <div className={styles.actions}>
-            <Button
-              variant="secondary"
-              name={need}
-              onClick={handleNeedAddButtonClick}
-              disabled={isNotDefined(need)}
-            >
-              Add
-            </Button>
-          </div>
-        </InputSection>
-        {value?.needs_identified?.map((n, i) => (
-          <NeedInput
-            key={n.clientId}
-            index={i}
-            value={n}
-            onChange={onNeedChange}
-            onRemove={onNeedRemove}
-            error={getErrorObject(error?.needs_identified)}
-            needOptions={needOptions}
-          />
-        ))}
-        {!isImminentOnset && (
-          <InputSection
-            title={strings.drefFormGapsInAssessment}
-            oneColumn
-            multiRow
-          >
-            <TextArea
-              label={strings.cmpActionDescriptionLabel}
-              name="identified_gaps"
-              onChange={onValueChange}
-              value={value.identified_gaps}
-              error={error?.identified_gaps}
+            <SelectInput
+              label={strings.drefFormActionFieldsLabel}
+              name={undefined}
+              onChange={setNeed}
+              options={filteredNeedOptions}
+              value={need}
             />
+            <div className={styles.actions}>
+              <Button
+                variant="secondary"
+                name={need}
+                onClick={handleNeedAddButtonClick}
+                disabled={isNotDefined(need)}
+              >
+                Add
+              </Button>
+            </div>
           </InputSection>
-        )}
-      </Container>
+          {value?.needs_identified?.map((n, i) => (
+            <NeedInput
+              key={n.clientId}
+              index={i}
+              value={n}
+              onChange={onNeedChange}
+              onRemove={onNeedRemove}
+              error={getErrorObject(error?.needs_identified)}
+              needOptions={needOptions}
+            />
+          ))}
+          {!isImminentOnset && (
+            <InputSection
+              title={strings.drefFormGapsInAssessment}
+              oneColumn
+              multiRow
+            >
+              <TextArea
+                label={strings.cmpActionDescriptionLabel}
+                name="identified_gaps"
+                onChange={onValueChange}
+                value={value.identified_gaps}
+                error={error?.identified_gaps}
+              />
+            </InputSection>
+          )}
+        </Container>
+      }
     </>
   );
 }
