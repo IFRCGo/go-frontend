@@ -15,13 +15,15 @@ interface Props {
   data: DrefApiFields;
   strings: Strings;
   isImminentOnset: boolean;
+  isAssessmentReport?: boolean;
 }
 
 function EventDescriptionOutput(props: Props) {
   const {
     data,
     strings,
-    isImminentOnset
+    isImminentOnset,
+    isAssessmentReport,
   } = props;
 
   return (
@@ -103,7 +105,7 @@ function EventDescriptionOutput(props: Props) {
                 </Text>
               </View>
             )}
-            {data?.event_scope && (
+            {!isAssessmentReport && data?.event_scope && (
               <View style={pdfStyles.subSection}>
                 <Text style={pdfStyles.subSectionHeading}>
                   {strings.drefExportScopeAndScaleEvent}

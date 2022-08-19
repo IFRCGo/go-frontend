@@ -80,7 +80,7 @@ function DrefPdfDocument(props: Props) {
     return areas += districts.join(', ');
   }, [dref.district_details]);
 
-
+  const isAssessmentReport = dref?.is_assessment_report;
   const isImminentOnset = dref?.type_of_onset === ONSET_IMMINENT;
   const documentTitle = useMemo(() => (
     `${dref.title_prefix} | ${dref?.title}`
@@ -115,11 +115,14 @@ function DrefPdfDocument(props: Props) {
           data={dref}
           strings={strings}
           isImminentOnset={isImminentOnset}
+          isAssessmentReport={isAssessmentReport}
         />
-        <PreviousOperationOutput
-          data={dref}
-          strings={strings}
-        />
+        {!isAssessmentReport &&
+          <PreviousOperationOutput
+            data={dref}
+            strings={strings}
+          />
+        }
         <NationalSocietyOutput
           data={dref}
           strings={strings}
@@ -132,12 +135,14 @@ function DrefPdfDocument(props: Props) {
           data={dref}
           strings={strings}
         />
-        <NeedIdentifiedOutput
-          data={dref}
-          niMap={niMap}
-          isImminentOnset={isImminentOnset}
-          strings={strings}
-        />
+        {!isAssessmentReport &&
+          <NeedIdentifiedOutput
+            data={dref}
+            niMap={niMap}
+            isImminentOnset={isImminentOnset}
+            strings={strings}
+          />
+        }
         <ObjectiveAndStrategy
           data={dref}
           strings={strings}
@@ -145,6 +150,7 @@ function DrefPdfDocument(props: Props) {
         <TargetedPopulationOutput
           data={dref}
           strings={strings}
+          isAssessmentReport={isAssessmentReport}
         />
         <RiskAndSecurityOutput
           data={dref}
@@ -158,6 +164,7 @@ function DrefPdfDocument(props: Props) {
         <AboutServicesOutput
           strings={strings}
           data={dref}
+          isAssessmentReport={isAssessmentReport}
         />
         {dref?.budget_file && (
           <View>
