@@ -54,6 +54,7 @@ interface Props {
   fileIdToUrlMap: Record<number, string>;
   setFileIdToUrlMap?: React.Dispatch<React.SetStateAction<Record<number, string>>>;
   yesNoOptions: BooleanValueOption[];
+  isAssessmentReport?: boolean;
 }
 
 function Response(props: Props) {
@@ -67,6 +68,7 @@ function Response(props: Props) {
     setFileIdToUrlMap,
     value,
     yesNoOptions,
+    isAssessmentReport,
   } = props;
 
   const error = getErrorObject(formError);
@@ -199,6 +201,7 @@ function Response(props: Props) {
         </InputSection>
         <InputSection
           title={strings.drefFormResponseRationale}
+          description={isAssessmentReport && strings.drefFormResponseRationaleDescription}
         >
           <TextArea
             name="response_strategy"
@@ -258,34 +261,38 @@ function Response(props: Props) {
           multiRow
           twoColumn
         >
-          <NumberInput
-            label={strings.drefFormWomen}
-            name="women"
-            value={value.women}
-            onChange={onValueChange}
-            error={error?.women}
-          />
-          <NumberInput
-            label={strings.drefFormMen}
-            name="men"
-            value={value.men}
-            onChange={onValueChange}
-            error={error?.men}
-          />
-          <NumberInput
-            label={strings.drefFormGirls}
-            name="girls"
-            value={value.girls}
-            onChange={onValueChange}
-            error={error?.girls}
-          />
-          <NumberInput
-            label={strings.drefFormBoys}
-            name="boys"
-            value={value.boys}
-            onChange={onValueChange}
-            error={error?.boys}
-          />
+          {!isAssessmentReport && (
+            <>
+              <NumberInput
+                label={strings.drefFormWomen}
+                name="women"
+                value={value.women}
+                onChange={onValueChange}
+                error={error?.women}
+              />
+              <NumberInput
+                label={strings.drefFormMen}
+                name="men"
+                value={value.men}
+                onChange={onValueChange}
+                error={error?.men}
+              />
+              <NumberInput
+                label={strings.drefFormGirls}
+                name="girls"
+                value={value.girls}
+                onChange={onValueChange}
+                error={error?.girls}
+              />
+              <NumberInput
+                label={strings.drefFormBoys}
+                name="boys"
+                value={value.boys}
+                onChange={onValueChange}
+                error={error?.boys}
+              />
+            </>
+          )}
           <NumberInput
             label={strings.drefFormTotal}
             name="total_targeted_population"
@@ -351,6 +358,7 @@ function Response(props: Props) {
       >
         <InputSection
           title={strings.drefFormRiskSecurityPotentialRisk}
+          description={strings.drefFormRiskSecurityPotentialRiskDescription}
           multiRow
           oneColumn
         >
@@ -483,42 +491,46 @@ function Response(props: Props) {
             />
           }
         </InputSection>
-        <InputSection
-          title={strings.drefFormLogisticCapacityOfNs}
-          description={strings.drefFormLogisticCapacityOfNsDescription}
-        >
-          <TextArea
-            label={strings.cmpActionDescriptionLabel}
-            name="logistic_capacity_of_ns"
-            onChange={onValueChange}
-            value={value.logistic_capacity_of_ns}
-            error={error?.logistic_capacity_of_ns}
-          />
-        </InputSection>
-        <InputSection
-          title={strings.drefFormPmer}
-          description={strings.drefFormPmerDescription}
-        >
-          <TextArea
-            label={strings.cmpActionDescriptionLabel}
-            name="pmer"
-            onChange={onValueChange}
-            value={value.pmer}
-            error={error?.pmer}
-          />
-        </InputSection>
-        <InputSection
-          title={strings.drefFormCommunication}
-          description={strings.drefFormCommunicationDescripiton}
-        >
-          <TextArea
-            label={strings.cmpActionDescriptionLabel}
-            name="communication"
-            onChange={onValueChange}
-            value={value.communication}
-            error={error?.communication}
-          />
-        </InputSection>
+        {!isAssessmentReport && (
+          <>
+            <InputSection
+              title={strings.drefFormLogisticCapacityOfNs}
+              description={strings.drefFormLogisticCapacityOfNsDescription}
+            >
+              <TextArea
+                label={strings.cmpActionDescriptionLabel}
+                name="logistic_capacity_of_ns"
+                onChange={onValueChange}
+                value={value.logistic_capacity_of_ns}
+                error={error?.logistic_capacity_of_ns}
+              />
+            </InputSection>
+            <InputSection
+              title={strings.drefFormPmer}
+              description={strings.drefFormPmerDescription}
+            >
+              <TextArea
+                label={strings.cmpActionDescriptionLabel}
+                name="pmer"
+                onChange={onValueChange}
+                value={value.pmer}
+                error={error?.pmer}
+              />
+            </InputSection>
+            <InputSection
+              title={strings.drefFormCommunication}
+              description={strings.drefFormCommunicationDescripiton}
+            >
+              <TextArea
+                label={strings.cmpActionDescriptionLabel}
+                name="communication"
+                onChange={onValueChange}
+                value={value.communication}
+                error={error?.communication}
+              />
+            </InputSection>
+          </>
+        )}
       </Container>
     </>
   );

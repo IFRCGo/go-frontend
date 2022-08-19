@@ -240,6 +240,7 @@ export interface DrefFields {
   cover_image_file: SingleFileWithCaption;
   event_map_file: SingleFileWithCaption;
   is_man_made_event: boolean;
+  is_assessment_report: boolean;
 }
 
 export interface DrefApiFields extends Omit<DrefFields, 'event_map_details' | 'cover_image_file' | 'district_details' | 'planned_interventions' | 'national_society_actions' | 'needs_identified' | 'images_file'> {
@@ -309,6 +310,7 @@ export const overviewFields: (keyof DrefFields)[] = [
   'cover_image_file',
   'emergency_appeal_planned',
   'is_man_made_event',
+  'is_assessment_report',
 ];
 
 export const eventDetailsFields: (keyof DrefFields)[] = [

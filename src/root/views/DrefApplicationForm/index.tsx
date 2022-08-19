@@ -409,6 +409,7 @@ function DrefApplication(props: Props) {
     || drefApplicationPending;
 
   const isImminentOnset = value?.type_of_onset === ONSET_IMMINENT;
+  const isAssessmentReport = value?.is_assessment_report;
 
   React.useEffect(() => {
     onValueSet((oldValue) => {
@@ -620,6 +621,7 @@ function DrefApplication(props: Props) {
                 yesNoOptions={yesNoOptions}
                 fileIdToUrlMap={fileIdToUrlMap}
                 setFileIdToUrlMap={setFileIdToUrlMap}
+                isAssessmentReport={isAssessmentReport}
               />
             </TabPanel>
             <TabPanel name="action">
@@ -632,6 +634,7 @@ function DrefApplication(props: Props) {
                 nsActionOptions={nsActionOptions}
                 fileIdToUrlMap={fileIdToUrlMap}
                 setFileIdToUrlMap={setFileIdToUrlMap}
+                isAssessmentReport={isAssessmentReport}
               />
             </TabPanel>
             <TabPanel name="response">
@@ -643,6 +646,7 @@ function DrefApplication(props: Props) {
                 fileIdToUrlMap={fileIdToUrlMap}
                 setFileIdToUrlMap={setFileIdToUrlMap}
                 yesNoOptions={yesNoOptions}
+                isAssessmentReport={isAssessmentReport}
               />
             </TabPanel>
             <TabPanel name="submission">
