@@ -9,6 +9,11 @@
   }
 }
 
+.title-prefix {
+  padding: 0 0 0 $spacing;
+  opacity: 0.5;
+}
+
 .sharing {
   .actions {
     flex-basis: unset;

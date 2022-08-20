@@ -7,7 +7,10 @@ import {
   Document,
   Image as PDFImage,
 } from '@react-pdf/renderer';
-import { isDefined, listToMap } from '@togglecorp/fujs';
+import {
+  isDefined,
+  // listToMap,
+} from '@togglecorp/fujs';
 
 import {
   formatBoolean,
@@ -25,9 +28,9 @@ import { resolveUrl } from '#utils/resolveUrl';
 import { DrefFinalReportApiFields } from '#views/FinalReportForm/common';
 import { PdfTextOutput } from '#components/PdfTextOutput';
 
-import NeedIdentifiedOutput from '#components/DrefPdfDocument/NeedIdentifiedOutput';
+// import NeedIdentifiedOutput from '#components/DrefPdfDocument/NeedIdentifiedOutput';
 import pdfStyles from '#utils/pdf/pdfStyles';
-import PlannedInterventionOutput from '#components/DrefPdfDocument/PlannedInterventionOutput';
+// import PlannedInterventionOutput from '#components/DrefPdfDocument/PlannedInterventionOutput';
 import ContactSection from '#components/DrefPdfDocument/ContactInformationOutput/ContactSection';
 
 interface DrefOptions {
@@ -56,10 +59,11 @@ const logoUrl = '/assets/graphics/layout/go-logo-2020.png';
 function FinalReportPdfDocument(props: Props) {
   const {
     finalReportResponse,
-    drefOptions,
+    // drefOptions,
     strings,
   } = props;
 
+  /*
   const niMap = useMemo(() => (
     listToMap(
       drefOptions?.planned_interventions,
@@ -67,7 +71,9 @@ function FinalReportPdfDocument(props: Props) {
       intervention => intervention.value,
     )
   ), [drefOptions]);
+  */
 
+/*
   const piMap = useMemo(() => (
     listToMap(
       drefOptions?.needs_identified,
@@ -75,6 +81,7 @@ function FinalReportPdfDocument(props: Props) {
       need => need.value,
     )
   ), [drefOptions]);
+*/
 
   const affectedAreas = useMemo(() => {
     let areas = '';
@@ -373,6 +380,7 @@ function FinalReportPdfDocument(props: Props) {
                 ? strings.finalReportImminentNeedsGapsIdentified
                 : strings.finalReportNeedsIdentified}
             </Text>
+            {/* FIXME
             {finalReportResponse?.needs_identified.map((ni) => (
               <NeedIdentifiedOutput
                 key={ni.id}
@@ -380,6 +388,7 @@ function FinalReportPdfDocument(props: Props) {
                 niMap={niMap}
               />
             ))}
+            */}
           </View>
         )}
         <View style={pdfStyles.section}>
@@ -572,6 +581,7 @@ function FinalReportPdfDocument(props: Props) {
             <Text style={pdfStyles.sectionHeading}>
               {strings.finalReportImplementation}
             </Text>
+          {/*
             {finalReportResponse?.planned_interventions.map((pi) => (
               <PlannedInterventionOutput
                 strings={strings}
@@ -580,6 +590,7 @@ function FinalReportPdfDocument(props: Props) {
                 piMap={piMap}
               />
             ))}
+            */}
           </View>
         )}
         {finalReportResponse?.budget_file && (
