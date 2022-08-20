@@ -38,8 +38,11 @@ import {
   BooleanValueOption,
   booleanOptionKeySelector,
   ONSET_IMMINENT,
-  emptyNumericOptionList,
   ONSET_SUDDEN,
+  DISASTER_FIRE,
+  DISASTER_FLOOD,
+  DISASTER_FLASH_FLOOD,
+  emptyNumericOptionList,
 } from '../common';
 
 import styles from './styles.module.scss';
@@ -168,13 +171,9 @@ function DrefOverview(props: Props) {
     })).sort(compareString) ?? emptyNumericOptionList
   ), [districtsResponse]);
 
-  const isManMadeEvent = React.useMemo(() => {
-    const disasterLabel = disasterTypeOptions.find(disaster => disaster.value === value.disaster_type)?.label;
-    return disasterLabel ? ["Flood", "Flash Flood", "Fire"].includes(disasterLabel) : false;
-  }, [
-    disasterTypeOptions,
-    value.disaster_type,
-  ]);
+  const showManMadeEventInput = value?.disaster_type === DISASTER_FIRE
+    || value?.disaster_type === DISASTER_FLASH_FLOOD
+    || value?.disaster_category === DISASTER_FLOOD;
 
   return (
     <>
@@ -226,6 +225,10 @@ function DrefOverview(props: Props) {
             pending={fetchingNationalSociety}
             value={value.national_society}
           />
+        </InputSection>
+        <InputSection
+          title={strings.drefFormForAssessment}
+        >
           <RadioInput
             name={"is_assessment_report" as const}
             options={yesNoOptions}
@@ -270,6 +273,19 @@ function DrefOverview(props: Props) {
             options={onsetOptions}
             value={value.type_of_onset}
           />
+          {showManMadeEventInput &&
+            <RadioInput
+              label={strings.drefFormManMadeEvent}
+              name={"is_man_made_event" as const}
+              options={yesNoOptions}
+              keySelector={booleanOptionKeySelector}
+              labelSelector={optionLabelSelector}
+              value={value.is_man_made_event}
+              onChange={onValueChange}
+              error={error?.is_man_made_event}
+            />
+          }
+          {!showManMadeEventInput && <div />}
           <SelectInput
             error={error?.disaster_category}
             label={(
@@ -292,18 +308,6 @@ function DrefOverview(props: Props) {
             options={disasterCategoryOptions}
             value={value.disaster_category}
           />
-          {isManMadeEvent &&
-            <RadioInput
-              label={strings.drefFormManMadeEvent}
-              name={"is_man_made_event" as const}
-              options={yesNoOptions}
-              keySelector={booleanOptionKeySelector}
-              labelSelector={optionLabelSelector}
-              value={value.is_man_made_event}
-              onChange={onValueChange}
-              error={error?.is_man_made_event}
-            />
-          }
         </InputSection>
         <InputSection
           title={
@@ -336,12 +340,11 @@ function DrefOverview(props: Props) {
         </InputSection>
         <InputSection title={strings.drefFormTitle}>
           <TextInput
-            name="title_prefix"
-            value={value.title_prefix}
-            error={error?.title_prefix}
-            disabled
-          />
-          <TextInput
+            icons={(
+              <div className={styles.titlePrefix}>
+                {value.title_prefix}
+              </div>
+            )}
             name="title"
             value={value.title}
             onChange={onValueChange}

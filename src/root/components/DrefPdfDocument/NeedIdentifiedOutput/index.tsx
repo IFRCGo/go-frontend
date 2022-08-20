@@ -9,12 +9,6 @@ import pdfStyles from '#utils/pdf/pdfStyles';
 import { DrefApiFields } from '#views/DrefApplicationForm/common';
 import { Strings } from '#types';
 
-interface BaseProps {
-  data: DrefApiFields;
-  niMap?: Record<string, string>;
-  isImminentOnset: boolean;
-  strings: Strings;
-}
 interface NeedsProps {
   data: DrefApiFields['needs_identified'][number];
   niMap?: Record<string, string>;
@@ -51,6 +45,13 @@ function NeedIdentified(props: NeedsProps) {
       </View>
     </View >
   );
+}
+
+interface BaseProps {
+  data: DrefApiFields;
+  niMap?: Record<string, string>;
+  isImminentOnset: boolean;
+  strings: Strings;
 }
 
 function NeedIdentifiedOutput(props: BaseProps) {

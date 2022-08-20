@@ -358,7 +358,7 @@ function Response(props: Props) {
       >
         <InputSection
           title={strings.drefFormRiskSecurityPotentialRisk}
-          description={strings.drefFormRiskSecurityPotentialRiskDescription}
+          description={isAssessmentReport && strings.drefFormRiskSecurityPotentialRiskDescription}
           multiRow
           oneColumn
         >

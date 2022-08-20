@@ -280,9 +280,7 @@ export const schema: FormSchema = {
         ...isNotAssessmentSchema,
         operation_timeframe: [
           positiveIntegerCondition,
-          value?.type_of_onset === ONSET_SUDDEN
-            ? lessThanOrEqualToCondition(2)
-            : lessThanOrEqualToCondition(30)
+          lessThanOrEqualToCondition(30),
         ],
       };
     }
