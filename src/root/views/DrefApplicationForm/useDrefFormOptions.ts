@@ -7,6 +7,7 @@ import {
   defaultEmptyArrayType,
   defaultUndefinedType,
 } from '@togglecorp/toggle-form';
+import { isDefined } from '@togglecorp/fujs';
 
 import {
   positiveNumberCondition,
@@ -42,7 +43,6 @@ import {
   Intervention,
   NsAction,
 } from './common';
-import { isDefined } from '@togglecorp/fujs';
 
 export type FormSchema = ObjectSchema<PartialForm<DrefFields>>;
 export type FormSchemaFields = ReturnType<FormSchema['fields']>;
