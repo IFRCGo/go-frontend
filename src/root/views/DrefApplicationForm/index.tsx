@@ -32,6 +32,7 @@ import {
 import { ymdToDateString } from '#utils/common';
 import LanguageContext from '#root/languageContext';
 import useAlert from '#hooks/useAlert';
+import scrollToTop from '#utils/scrollToTop';
 
 import DrefOverview from './DrefOverview';
 import EventDetails from './EventDetails';
@@ -59,16 +60,6 @@ const defaultFormValues: PartialForm<DrefFields> = {
   images_file: [],
   users: [],
 };
-
-function scrollToTop() {
-  window.setTimeout(() => {
-    window.scrollTo({
-      top: Math.min(145, window.scrollY),
-      left: 0,
-      behavior: 'smooth',
-    });
-  }, 0);
-}
 
 interface DrefResponseFields {
   id: number;
