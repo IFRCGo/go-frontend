@@ -42,7 +42,7 @@ function RiskAndSecurityOutput(props: Props) {
                         columns="2/4"
                       />
                       <PdfTextOutput
-                        value={strings.drefExportRiskSecurityMitigationLabel}
+                        value={strings.drefFormRiskSecurityMitigationLabel}
                         columns="2/4"
                       />
                     </View>

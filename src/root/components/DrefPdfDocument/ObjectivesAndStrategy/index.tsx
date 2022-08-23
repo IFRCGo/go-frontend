@@ -22,28 +22,37 @@ function ObjectiveAndStrategy(props: Props) {
     <>
       {data?.operation_objective && (
         <View style={pdfStyles.section}>
-          <Text style={pdfStyles.sectionHeading}>
-            {strings.drefFormObjectiveOperation}
-          </Text>
-          <Text>{data.operation_objective}</Text>
+          <View>
+            <Text style={pdfStyles.sectionHeading}>
+              {strings.drefExportOperationalStrategy}
+            </Text>
+          </View>
+          <View style={pdfStyles.qna}>
+            <Text style={pdfStyles.strategySubSectionHeading}>
+              {strings.drefFormObjectiveOperation}
+            </Text>
+            <Text style={pdfStyles.answer}>
+              {data.operation_objective}
+            </Text>
+          </View>
         </View>
       )}
-      {
-        data?.response_strategy && (
-          <View style={pdfStyles.section}>
-            <Text style={pdfStyles.sectionHeading}>
-              {strings.drefFormResponseRationale}
-            </Text>
-            <Text>{data.response_strategy}</Text>
-          </View>
-        )
-      }
+      {data?.response_strategy && (
+        <View style={pdfStyles.qna}>
+          <Text style={pdfStyles.strategySubSectionHeading}
+          >
+            {strings.drefFormResponseRationale}
+          </Text>
+          <Text style={pdfStyles.answer}>
+            {data.response_strategy}
+          </Text>
+        </View>
+      )}
 
-      {
-        (
-          data?.people_assisted ||
-          data?.selection_criteria
-        ) && (
+      {(
+        data?.people_assisted ||
+        data?.selection_criteria
+      ) && (
           <View style={pdfStyles.section}>
             <Text style={pdfStyles.sectionHeading}>
               {strings.drefFormTargetingStrategy}
@@ -69,8 +78,7 @@ function ObjectiveAndStrategy(props: Props) {
               </View>
             )}
           </View>
-        )
-      }
+        )}
     </>);
 }
 

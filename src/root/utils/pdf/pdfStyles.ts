@@ -84,6 +84,7 @@ const pdfStyles = StyleSheet.create({
 
   text: {
     color: styles.COLOR_TEXT,
+    textAlign: 'justify',
   },
 
   description: {
@@ -491,7 +492,7 @@ const pdfStyles = StyleSheet.create({
     flexBasis: '30%',
     fontWeight: 'extrabold',
     display: 'flex',
-    alignItems: 'flex-end',
+    alignItems: 'flex-start',
     justifyContent: 'center',
   },
 
@@ -534,6 +535,7 @@ const pdfStyles = StyleSheet.create({
 
   contactType: {
     fontWeight: 'extrabold',
+    color: styles.COLOR_PRIMARY,
   },
 
   contactDetails: {
@@ -582,6 +584,11 @@ const pdfStyles = StyleSheet.create({
     color: styles.COLOR_PRIMARY,
     marginLeft: styles.SPACING_SMALL,
   },
+  strategySubSectionHeading: {
+    ...heading.style,
+    fontSize: styles.FONT_SIZE_LARGE,
+    color: styles.COLOR_PRIMARY,
+  },
 
   niContentTextCell: {
     textAlign: 'justify',
@@ -602,6 +609,10 @@ const pdfStyles = StyleSheet.create({
   disasterColorRed: {
     color: '#f40d11',
   },
+
+  budgetImage: {
+    width: '100%',
+  }
 });
 
 export default pdfStyles;

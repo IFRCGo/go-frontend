@@ -54,7 +54,7 @@ function AboutServicesOutput(props: Props) {
                 </Text>
               </View>
             )}
-            {isAssessmentReport && (
+            {!isAssessmentReport && (
               <>
                 {data?.logistic_capacity_of_ns && (
                   <View style={pdfStyles.qna}>

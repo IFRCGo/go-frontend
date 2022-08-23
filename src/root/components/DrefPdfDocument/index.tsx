@@ -7,6 +7,7 @@ import {
   Image,
 } from '@react-pdf/renderer';
 import {
+  isDefined,
   listToMap,
 } from '@togglecorp/fujs';
 
@@ -127,6 +128,11 @@ function DrefPdfDocument(props: Props) {
             strings={strings}
           />
         }
+      </PDFPage>
+      <PDFPage
+        size="A4"
+        style={pdfStyles.portraitPage}
+      >
         <ObjectiveAndStrategy
           data={dref}
           strings={strings}
@@ -150,17 +156,27 @@ function DrefPdfDocument(props: Props) {
           data={dref}
           isAssessmentReport={isAssessmentReport}
         />
-        {dref?.budget_file && (
+      </PDFPage>
+      {isDefined(dref.budget_file) && (
+        <PDFPage
+          size="A4"
+          style={pdfStyles.portraitPage}
+        >
           <View>
             <Text style={pdfStyles.sectionHeading}>
               {strings.drefExportBudgetOverview}
             </Text>
             <Image
-              style={pdfStyles.mapImage}
+              style={pdfStyles.budgetImage}
               src={dref.budget_file_preview}
             />
           </View>
-        )}
+        </PDFPage>
+      )}
+      <PDFPage
+        size="A4"
+        style={pdfStyles.portraitPage}
+      >
         <ContactInformationOutput
           data={dref}
           strings={strings}
