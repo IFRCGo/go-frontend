@@ -150,6 +150,22 @@ function DrefOverview(props: Props) {
     onValueSet,
   ]);
 
+  const handleTitleChange = useCallback(() => {
+    const getCurrentCountryValue = value?.country;
+    const countryName = countryOptions.filter((cd) => cd.value === getCurrentCountryValue).map((c) => c.label);
+    const filteredDisasterTypeName = disasterTypeOptions.filter((dt) => dt.value === value.disaster_type).map((dt) => dt.label).toString();
+
+    const currentYear = new Date().getFullYear();
+    const title = `${countryName} ${filteredDisasterTypeName} ${currentYear}`;
+    onValueChange(title, 'title');
+  }, [
+    countryOptions,
+    disasterTypeOptions,
+    value.disaster_type,
+    value.country,
+    onValueChange,
+  ]);
+
   const countryQuery = React.useMemo(() => ({
     country: value.country,
     limit: 500,
@@ -340,16 +356,25 @@ function DrefOverview(props: Props) {
         </InputSection>
         <InputSection title={strings.drefFormTitle}>
           <TextInput
-            icons={(
-              <div className={styles.titlePrefix}>
-                {value.title_prefix}
-              </div>
-            )}
+            //TODO:
+            //icons={(
+            //  <div className={styles.titlePrefix}>
+            //    {value.title_prefix}
+            //  </div>
+            //)}
             name="title"
             value={value.title}
             onChange={onValueChange}
             error={error?.title}
           />
+
+          <Button
+            name={undefined}
+            variant="secondary"
+            onClick={handleTitleChange}
+          >
+            Generate Title
+          </Button>
         </InputSection>
         <InputSection
           multiRow
