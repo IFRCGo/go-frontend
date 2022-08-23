@@ -95,7 +95,7 @@ function EventDescriptionOutput(props: Props) {
                 </View>
               ))}
             </div>
-            {isImminentOnset && data.anticipatory_actions && (
+            {isImminentOnset && data?.anticipatory_actions && (
               <View style={pdfStyles.subSection}>
                 <Text style={pdfStyles.subSectionHeading}>
                   {strings.drefExportTargetCommunities}

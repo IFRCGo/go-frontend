@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import {
   Page as PDFPage,
   Text,
@@ -66,28 +66,12 @@ function DrefPdfDocument(props: Props) {
     strings,
   } = props;
 
-  const piMap = useMemo(() =>
-    listToMap(drefOptions.planned_interventions, d => d.key, d => d.value)
-    , [drefOptions.planned_interventions]);
-
-  const niMap = useMemo(() =>
-    listToMap(drefOptions.needs_identified, d => d.key, d => d.value)
-    , [drefOptions.needs_identified]);
-
-  const affectedAreas = useMemo(() => {
-    let areas = '';
-    const districts = dref.district_details?.map(d => d.name);
-    return areas += districts.join(', ');
-  }, [dref.district_details]);
-
+  const piMap = listToMap(drefOptions.planned_interventions, d => d.key, d => d.value);
+  const niMap = listToMap(drefOptions.needs_identified, d => d.key, d => d.value);
+  const affectedAreas = dref?.district_details?.map(d => d.name).join(', ');
   const isAssessmentReport = dref?.is_assessment_report;
   const isImminentOnset = dref?.type_of_onset === ONSET_IMMINENT;
-  const documentTitle = useMemo(() => (
-    `${dref.title_prefix} | ${dref?.title}`
-  ), [
-    dref.title_prefix,
-    dref.title,
-  ]);
+  const documentTitle = `${dref.title_prefix} | ${dref?.title}`;
 
   return (
     <Document
@@ -177,7 +161,6 @@ function DrefPdfDocument(props: Props) {
             />
           </View>
         )}
-
         <ContactInformationOutput
           data={dref}
           strings={strings}

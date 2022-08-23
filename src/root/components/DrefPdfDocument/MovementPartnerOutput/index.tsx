@@ -20,37 +20,41 @@ function MovementPartnerOutput(props: Props) {
   } = props;
 
   return (
-    <View style={pdfStyles.section}>
-      <Text style={pdfStyles.sectionHeading}>
-        {strings.drefFormMovementPartners}
-      </Text>
-      <View>
-        <View style={pdfStyles.row}>
-          <View style={pdfStyles.niHeaderCell}>
-            <Text>{strings.drefFormIfrc}</Text>
-          </View>
-          <View style={pdfStyles.niContentCell}>
-            <Text>{data.ifrc}</Text>
+    <>
+      {(data?.ifrc || data?.icrc || data?.partner_national_society) && (
+        <View style={pdfStyles.section}>
+          <Text style={pdfStyles.sectionHeading}>
+            {strings.drefFormMovementPartners}
+          </Text>
+          <View>
+            <View style={pdfStyles.row}>
+              <View style={pdfStyles.niHeaderCell}>
+                <Text>{strings.drefFormIfrc}</Text>
+              </View>
+              <View style={pdfStyles.niContentCell}>
+                <Text>{data.ifrc}</Text>
+              </View>
+            </View>
+            <View style={pdfStyles.row}>
+              <View style={pdfStyles.niHeaderCell}>
+                <Text>{strings.drefFormIcrc}</Text>
+              </View>
+              <View style={pdfStyles.niContentCell}>
+                <Text>{data.icrc}</Text>
+              </View>
+            </View>
+            <View style={pdfStyles.row}>
+              <View style={pdfStyles.niHeaderCell}>
+                <Text>{strings.drefFormPartnerNationalSociety}</Text>
+              </View>
+              <View style={pdfStyles.niContentCell}>
+                <Text>{data.partner_national_society}</Text>
+              </View>
+            </View>
           </View>
         </View>
-        <View style={pdfStyles.row}>
-          <View style={pdfStyles.niHeaderCell}>
-            <Text>{strings.drefFormIcrc}</Text>
-          </View>
-          <View style={pdfStyles.niContentCell}>
-            <Text>{data.icrc}</Text>
-          </View>
-        </View>
-        <View style={pdfStyles.row}>
-          <View style={pdfStyles.niHeaderCell}>
-            <Text>{strings.drefFormPartnerNationalSociety}</Text>
-          </View>
-          <View style={pdfStyles.niContentCell}>
-            <Text>{data.partner_national_society}</Text>
-          </View>
-        </View>
-      </View>
-    </View>
+      )}
+    </>
   );
 }
 
