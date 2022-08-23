@@ -29,7 +29,7 @@ function EssentialInformationOutput(props: Props) {
 
   return (
     <>
-      {(data.cover_image_file?.file) && (
+      {(data?.cover_image_file?.file) && (
         <View style={[
           pdfStyles.section,
           pdfStyles.bannerImageContainer,
@@ -49,7 +49,7 @@ function EssentialInformationOutput(props: Props) {
           <View style={pdfStyles.compactSection}>
             <PdfTextOutput
               label={strings.drefExportAppealNum}
-              value={data.appeal_code}
+              value={data?.appeal_code}
             />
             <PdfTextOutput
               label={strings.drefExportDrefAllocated}
@@ -62,13 +62,13 @@ function EssentialInformationOutput(props: Props) {
             />
             <PdfTextOutput
               label={strings.drefExportHazard}
-              value={data.disaster_type_details.name}
+              value={data?.disaster_type_details?.name}
             />
           </View>
           <View style={pdfStyles.compactSection}>
             <PdfTextOutput
               label={strings.drefExportGlideNum}
-              value={data.glide_code}
+              value={data?.glide_code}
             />
             <PdfTextOutput
               label={isImminentOnset
@@ -98,15 +98,15 @@ function EssentialInformationOutput(props: Props) {
           <View style={pdfStyles.compactSection}>
             <PdfTextOutput
               label={strings.drefExportEventOnset}
-              value={data.type_of_onset_display}
+              value={data?.type_of_onset_display}
             />
             <PdfTextOutput
               label={strings.drefExportDrefOperationStartDate}
-              value={data.date_of_approval}
+              value={data?.date_of_approval}
             />
             <PdfTextOutput
               label={strings.drefExportDrefEndDateOfOperation}
-              value={data.end_date}
+              value={data?.end_date}
             />
             <PdfTextOutput
               label={strings.drefExportOperationTimeframe}
