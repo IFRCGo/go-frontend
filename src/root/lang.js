@@ -3429,11 +3429,11 @@ export default {
   drefExportEstimatedLocal: 'Rural %',
   drefExportEstimatedUrban: 'Urban %',
   drefExportPercentage: '{num} %',
-  drefExportRiskSecurityMitigationLabel: 'Mitigation Meas',
   drefExportBudgetSummary: 'Budget Summary',
   drefExportBudgetSummaryPlannedOperation: 'Planned Operations',
   drefExportWhatExpectedHappen: 'What is expected to happen?',
   drefExportTargetCommunities: 'Why your National Society is acting now and what criteria is used to launch this operation.',
+  drefExportOperationalStrategy: 'Operational Strategy',
 
   //FIXME: 
   //drefExportDescriptionOfTheEvent: 'Description of the event',

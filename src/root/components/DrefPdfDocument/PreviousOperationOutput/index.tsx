@@ -69,7 +69,7 @@ function PreviousOperationOutput(props: Props) {
             <Text>{strings.drefFormNsFundingDetail}</Text>
           </View>
           <View style={pdfStyles.strongCell}>
-            <Text>{data.ns_request_text ?? '-'}</Text>
+            <Text>{data?.ns_request_text ?? '-'}</Text>
           </View>
         </View>
         <View style={pdfStyles.row}>
@@ -87,7 +87,7 @@ function PreviousOperationOutput(props: Props) {
             pdfStyles.cellTitle,
             pdfStyles.fullWidth
           ]}>
-            <Text>{data.dref_recurrent_text}</Text>
+            <Text>{data?.dref_recurrent_text}</Text>
           </View>
         </View>
         <View style={pdfStyles.row}>
@@ -106,7 +106,7 @@ function PreviousOperationOutput(props: Props) {
             pdfStyles.fullWidth
           ]}>
             <Text>
-              {data.lessons_learned}
+              {data?.lessons_learned}
             </Text>
           </View>
         </View>

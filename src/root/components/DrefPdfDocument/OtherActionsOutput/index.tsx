@@ -38,7 +38,7 @@ function OtherActionsOutput(props: Props) {
             <Text>{strings.drefFormNationalAuthorities}</Text>
           </View>
           <View style={pdfStyles.niContentCell}>
-            <Text>{data.national_authorities}</Text>
+            <Text>{data?.national_authorities}</Text>
           </View>
         </View>
         <View style={pdfStyles.row}>
@@ -46,7 +46,7 @@ function OtherActionsOutput(props: Props) {
             <Text>{strings.drefFormUNorOtherActors}</Text>
           </View>
           <View style={pdfStyles.niContentCell}>
-            <Text>{data.un_or_other_actor}</Text>
+            <Text>{data?.un_or_other_actor}</Text>
           </View>
         </View>
 
@@ -65,7 +65,7 @@ function OtherActionsOutput(props: Props) {
             pdfStyles.cellTitle,
             pdfStyles.fullWidth
           ]}>
-            <Text>{data.major_coordination_mechanism}</Text>
+            <Text>{data?.major_coordination_mechanism}</Text>
           </View>
         </View>
       </View>
