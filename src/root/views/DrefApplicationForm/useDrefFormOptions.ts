@@ -185,7 +185,6 @@ const defaultSchema = {
   supporting_document: [],
   did_national_society: [],
   risk_security_concern: [],
-  title_prefix: [requiredCondition],
   is_man_made_event: [],
   is_assessment_report: [],
   national_society_actions: {
