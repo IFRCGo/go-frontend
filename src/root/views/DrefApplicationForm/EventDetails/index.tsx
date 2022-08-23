@@ -39,6 +39,7 @@ interface Props {
   fileIdToUrlMap: Record<number, string>;
   setFileIdToUrlMap?: React.Dispatch<React.SetStateAction<Record<number, string>>>;
   isAssessmentReport?: boolean;
+  isSuddenOnset: boolean;
 }
 
 function EventDetails(props: Props) {
@@ -53,6 +54,7 @@ function EventDetails(props: Props) {
     fileIdToUrlMap,
     setFileIdToUrlMap,
     isAssessmentReport,
+    isSuddenOnset,
   } = props;
 
   const error = getErrorObject(formError);
@@ -92,7 +94,10 @@ function EventDetails(props: Props) {
           heading={strings.drefFormPreviousOperations}
           className={styles.previousOperations}
           description={
-            <a href={operationalLearningPlatformUrl}>
+            <a
+              href={operationalLearningPlatformUrl}
+              target="_blank"
+            >
               {strings.drefOperationalLearningPlatformLabel}
             </a>
           }
@@ -197,9 +202,13 @@ function EventDetails(props: Props) {
         heading={strings.drefFormDescriptionEvent}
       >
         <InputSection
-          title={isImminentOnset
-            ? strings.drefFormApproximateDateOfImpact
-            : strings.drefFormSlowEventDate
+
+          title={
+            isImminentOnset
+              ? strings.drefFormApproximateDateOfImpact
+              : isSuddenOnset
+                ? strings.drefFormEventDate
+                : strings.drefFormSlowEventDate
           }
         >
           {isImminentOnset ? (

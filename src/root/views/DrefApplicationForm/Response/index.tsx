@@ -245,6 +245,7 @@ function Response(props: Props) {
         heading={strings.drefFormAssistedPopulation}
         className={styles.assistedPopulation}
         description={(
+          !isAssessmentReport &&
           warnings?.map((w, i) => (
             <div
               className={styles.warning}

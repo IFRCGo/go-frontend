@@ -71,7 +71,7 @@ function DrefPdfDocument(props: Props) {
   const affectedAreas = dref?.district_details?.map(d => d.name).join(', ');
   const isAssessmentReport = dref?.is_assessment_report;
   const isImminentOnset = dref?.type_of_onset === ONSET_IMMINENT;
-  const documentTitle = `${dref.title_prefix} | ${dref?.title}`;
+  const documentTitle = dref?.title;
 
   return (
     <Document

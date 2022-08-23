@@ -48,6 +48,7 @@ import {
   responseFields,
   submissionFields,
   ONSET_IMMINENT,
+  ONSET_SUDDEN,
 } from './common';
 import useDrefFormOptions, { schema } from './useDrefFormOptions';
 
@@ -399,6 +400,7 @@ function DrefApplication(props: Props) {
     || drefSubmitPending
     || drefApplicationPending;
 
+  const isSuddenOnset = value?.type_of_onset === ONSET_SUDDEN;
   const isImminentOnset = value?.type_of_onset === ONSET_IMMINENT;
   const isAssessmentReport = value?.is_assessment_report;
 
@@ -411,10 +413,18 @@ function DrefApplication(props: Props) {
           people_targeted_with_early_actions: undefined,
         };
       }
-
+      if (value.type_of_onset === ONSET_IMMINENT) {
+        return {
+          ...oldValue,
+          event_date: undefined,
+        };
+      }
       return oldValue;
     });
-  }, [onValueSet, value.type_of_onset]);
+  }, [
+    onValueSet,
+    value.type_of_onset,
+  ]);
 
   React.useEffect(() => {
     onValueSet((oldValue) => {
@@ -468,22 +478,6 @@ function DrefApplication(props: Props) {
   });
 
   const failedToLoadDref = !pending && isDefined(drefId) && !drefResponse;
-
-  React.useMemo(() => {
-    const getCurrentCountryValue = value?.country;
-    const countryName = countryOptions.filter((cd) => cd.value === getCurrentCountryValue).map((c) => c.label);
-    const filteredDisasterTypeName = disasterTypeOptions.filter((dt) => dt.value === value.disaster_type).map((dt) => dt.label).toString();
-
-    const currentYear = new Date().getFullYear();
-    const titlePrefix = `${countryName} ${filteredDisasterTypeName} ${currentYear}`;
-    onValueChange(titlePrefix, 'title_prefix');
-  }, [
-    countryOptions,
-    disasterTypeOptions,
-    value.disaster_type,
-    value.country,
-    onValueChange,
-  ]);
 
   return (
     <Tabs
@@ -605,6 +599,7 @@ function DrefApplication(props: Props) {
             </TabPanel>
             <TabPanel name="eventDetails">
               <EventDetails
+                isSuddenOnset={isSuddenOnset}
                 isImminentOnset={isImminentOnset}
                 error={error}
                 onValueChange={onValueChange}
