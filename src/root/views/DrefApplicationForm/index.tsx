@@ -60,6 +60,7 @@ const defaultFormValues: PartialForm<DrefFields> = {
   needs_identified: [],
   images_file: [],
   users: [],
+  is_assessment_report: false,
 };
 
 interface DrefResponseFields {

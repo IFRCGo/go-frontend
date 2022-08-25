@@ -3108,6 +3108,7 @@ export default {
   drefFormSharingDescription: 'The users will be able to view, edit and add other users',
   drefFormInstantShareLabel: 'Create & Share',
 
+  drefFormGenerateTitle: 'Generate title',
   drefFormTitle: 'DREF Title',
   drefFormTitleDescription: 'Add country, type of disaster and location to the title',
 

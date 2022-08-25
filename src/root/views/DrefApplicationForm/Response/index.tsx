@@ -118,7 +118,7 @@ function Response(props: Props) {
       w.push('Total targeted population is different from that in Operation Overview');
     }
 
-    if (sumSafe([
+    if (!value.is_assessment_report && sumSafe([
       value?.women,
       value?.men,
       value?.girls,
@@ -129,6 +129,7 @@ function Response(props: Props) {
 
     return w;
   }, [
+    value?.is_assessment_report,
     value?.num_assisted,
     value?.women,
     value?.men,
@@ -141,10 +142,11 @@ function Response(props: Props) {
     interventionsIdentifiedMap
       ? interventionOptions.filter(n => !interventionsIdentifiedMap[n.value])
       : []
-    , [
+  , [
       interventionsIdentifiedMap,
       interventionOptions,
-    ]);
+    ]
+  );
 
   const isImminentOnset = value.type_of_onset === ONSET_IMMINENT;
 

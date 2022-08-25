@@ -369,11 +369,12 @@ function DrefOverview(props: Props) {
           />
 
           <Button
+            className={styles.generateTitleButton}
             name={undefined}
             variant="secondary"
             onClick={handleTitleChange}
           >
-            Generate Title
+            {strings.drefFormGenerateTitle}
           </Button>
         </InputSection>
         <InputSection
