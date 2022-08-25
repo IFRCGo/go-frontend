@@ -45,3 +45,9 @@
     gap: $spacing;
   }
 }
+
+.generate-title-button {
+  flex-grow: unset!important;
+  flex-basis: initial!important;
+  flex-shrink: 0!important;
+}

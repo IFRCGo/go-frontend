@@ -124,7 +124,7 @@ function CopyFieldReportSection(props: Props) {
       const un_or_other_actor = value.un_or_other_actor ?? fieldReport.actions_others;
       const country = value.country ?? fieldReport.countries[0]?.id;
       const district = (value.district && value.district.length > 0)? value.district : fieldReport.districts?.map(d => d.id);
-      const num_affected = fieldReport.num_affected;
+      const num_affected = value?.num_affected ?? fieldReport.num_affected ?? fieldReport.gov_num_affected ?? fieldReport.other_num_affected;
 
       const partner_national_society = value?.partner_national_society ?? fieldReport.actions_taken?.find(a => a.organization === 'PNS')?.summary;
       const ifrc = value?.ifrc ?? fieldReport.actions_taken?.find(a => a.organization === 'FDRN')?.summary;
