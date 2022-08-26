@@ -221,6 +221,12 @@ function DrefApplication(props: Props) {
         const newMap = {
           ...prevMap,
         };
+        if (response.supporting_document_details && response.supporting_document_details) {
+          newMap[response.supporting_document_details.id] = response.supporting_document_details.file;
+        }
+        if (response.assessment_report_details && response.assessment_report_details) {
+          newMap[response.assessment_report_details.id] = response.assessment_report_details.file;
+        }
         if (response.event_map_file && response.event_map_file.file) {
           newMap[response.event_map_file.id] = response.event_map_file.file;
         }
