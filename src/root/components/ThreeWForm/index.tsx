@@ -61,7 +61,7 @@ interface Props {
   className?: string;
   onSubmitSuccess?: (result: Project) => void;
   projectId?: number;
-  initialValue?: Partial<ProjectFormFields>;
+  initialValue?: PartialForm<ProjectFormFields>;
 }
 
 function ThreeWForm(props: Props) {

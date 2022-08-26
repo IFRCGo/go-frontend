@@ -157,7 +157,7 @@ export const schema: FormSchema = {
       visibility: [requiredCondition],
       is_annual_report: [],
       annual_splits: {
-      keySelector: (split) => split.clientId as string,
+        keySelector: (split) => split.clientId as string,
         member: (): AnnualSplitsSchemaMember => ({
           fields: (): AnnualSplitSchemaFields => ({
             clientId: [],
@@ -174,8 +174,6 @@ export const schema: FormSchema = {
           })
         }),
       },
-
-
     };
 
     const programmeType = value?.programme_type;
@@ -207,7 +205,7 @@ const limitQuery = {
   limit: 500,
 };
 
-export function useThreeWOptions(value: Partial<FormType>) {
+export function useThreeWOptions(value: PartialForm<FormType>) {
   const { strings } = React.useContext(LanguageContext);
   const user = useReduxState('me');
   const {
