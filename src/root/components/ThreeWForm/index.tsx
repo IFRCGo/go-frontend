@@ -49,6 +49,7 @@ import {
 } from './useThreeWOptions';
 
 import styles from './styles.module.scss';
+import Switch from "#components/Switch";
 
 const defaultFormValues: PartialForm<FormType> = {
   project_districts: [],
@@ -597,6 +598,14 @@ function ThreeWForm(props: Props) {
               <TextOutput
                 label={strings.projectFormProjectStatusTitle}
                 value={value.status ? statuses[value.status] : undefined}
+              />
+            </div>
+            <div>
+              <Switch
+                  label="Annual Reporting"
+                  name="is_annual_report"
+                  value={value?.is_annual_report}
+                  onChange={onValueChange}
               />
             </div>
           </InputSection>

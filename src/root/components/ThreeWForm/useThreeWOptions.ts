@@ -6,6 +6,7 @@ import {
 } from '@togglecorp/fujs';
 import {
   PartialForm,
+  ArraySchema,
   ObjectSchema,
 } from '@togglecorp/toggle-form';
 
@@ -34,6 +35,7 @@ import {
   Country,
   District,
   EventMini,
+  AnnualSplit,
   Project,
 } from '#types';
 import LanguageContext from '#root/languageContext';
@@ -79,7 +81,7 @@ const operationTypeOptions = operationTypeList.map((o) => ({
   label: o.label,
 })).sort(compareString);
 
-var projectVisibilityOptions = [...projectVisibilityList].sort(compareString);
+let projectVisibilityOptions = [...projectVisibilityList].sort(compareString);
 
 export interface FormType extends ProjectFormFields {
   is_project_completed: boolean;
@@ -106,8 +108,16 @@ const greaterThanStartDateCondition = (
   return undefined;
 };
 
+type BaseValue = PartialForm<ProjectFormFields>
+
 type FormSchema = ObjectSchema<PartialForm<FormType>>;
 type FormSchemaFields = ReturnType<FormSchema['fields']>;
+
+type AnnualSplitSchema = ObjectSchema<PartialForm<AnnualSplit>, BaseValue>;
+type AnnualSplitSchemaFields = ReturnType<AnnualSplitSchema['fields']>;
+
+type AnnualSplitsSchema = ArraySchema<PartialForm<AnnualSplit>, BaseValue>;  // plural: Splits
+type AnnualSplitsSchemaMember = ReturnType<AnnualSplitsSchema['member']>;  // plural: Splits
 
 export const schema: FormSchema = {
   fields: (value): FormSchemaFields => {
@@ -145,6 +155,27 @@ export const schema: FormSchema = {
       target_other: [positiveIntegerCondition],
       target_total: [requiredCondition, positiveIntegerCondition],
       visibility: [requiredCondition],
+      is_annual_report: [],
+      annual_splits: {
+      keySelector: (split) => split.clientId as string,
+        member: (): AnnualSplitsSchemaMember => ({
+          fields: (): AnnualSplitSchemaFields => ({
+            clientId: [],
+            year: [],
+            budget_amount: [],
+            target_male: [],
+            target_female: [],
+            target_other: [],
+            target_total: [],
+            reached_male: [],
+            reached_female: [],
+            reached_other: [],
+            reached_total: [],
+          })
+        }),
+      },
+
+
     };
 
     const programmeType = value?.programme_type;
@@ -423,6 +454,8 @@ export function transformResponseFieldsToFormFields(projectResponse: Project): F
     target_other,
     target_total,
     visibility,
+    is_annual_report,
+    annual_splits,
   } = projectResponse;
 
   const formValue: FormType = {
@@ -455,6 +488,8 @@ export function transformResponseFieldsToFormFields(projectResponse: Project): F
     target_other,
     target_total,
     visibility,
+    is_annual_report,
+    annual_splits,
   };
 
   return formValue;
