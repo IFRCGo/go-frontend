@@ -294,6 +294,10 @@ export interface DrefApiFields extends Omit<DrefFields, 'event_map_details' | 'c
   };
   disaster_category_display: 'Yellow' | 'Red' | 'Orange';
   type_of_onset_display: string;
+  supporting_document_details: {
+    id: number;
+    file: string;
+  };
 }
 
 export const overviewFields: (keyof DrefFields)[] = [

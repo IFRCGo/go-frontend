@@ -356,12 +356,6 @@ function DrefOverview(props: Props) {
         </InputSection>
         <InputSection title={strings.drefFormTitle}>
           <TextInput
-            //TODO:
-            //icons={(
-            //  <div className={styles.titlePrefix}>
-            //    {value.title_prefix}
-            //  </div>
-            //)}
             name="title"
             value={value.title}
             onChange={onValueChange}
