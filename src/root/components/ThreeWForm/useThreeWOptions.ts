@@ -146,7 +146,7 @@ export const schema: FormSchema = {
       secondary_sectors: [],
       start_date: [requiredCondition],
       // Note: Event though status is required field,
-      // its not marked required in the schema
+      // it's not marked required in the schema
       // because it is calculated automatically
       // using value of other required fields
       status: [],
@@ -156,7 +156,7 @@ export const schema: FormSchema = {
       target_total: [requiredCondition, positiveIntegerCondition],
       visibility: [requiredCondition],
       is_annual_report: [],
-      annual_splits: {
+      annual_split_detail: {
         keySelector: (split) => split.clientId as string,
         member: (): AnnualSplitsSchemaMember => ({
           fields: (): AnnualSplitSchemaFields => ({
@@ -235,7 +235,7 @@ export function useThreeWOptions(value: PartialForm<FormType>) {
       // here, we want to include all countries where
       // independent is either null or true (but exclude false)
       // see https://github.com/IFRCGo/go-frontend/issues/1934
-      .filter(d => (d.independent !== false && d.society_name) || d.name.substring(2) === 'RC' || d.iso === 'BX')
+      .filter(d => (d.independent && d.society_name) || d.name.substring(2) === 'RC' || d.iso === 'BX')
       .map(d => ({
         value: d.id,
         label: d.society_name,
@@ -453,10 +453,10 @@ export function transformResponseFieldsToFormFields(projectResponse: Project): F
     target_total,
     visibility,
     is_annual_report,
-    annual_splits,
+    annual_split_detail,
   } = projectResponse;
 
-  const formValue: FormType = {
+  return {
     is_project_completed: status === PROJECT_STATUS_COMPLETED,
     actual_expenditure,
     budget_amount,
@@ -487,8 +487,6 @@ export function transformResponseFieldsToFormFields(projectResponse: Project): F
     target_total,
     visibility,
     is_annual_report,
-    annual_splits,
+    annual_split_detail,
   };
-
-  return formValue;
 }

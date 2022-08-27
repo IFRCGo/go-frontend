@@ -71,12 +71,11 @@ export interface ProjectFormFields {
   target_total: number | null;
   visibility: string;
   is_annual_report: boolean;
-  annual_splits: AnnualSplit[];
+  annual_split_detail: AnnualSplit[];
 }
 
 export interface Project {
   actual_expenditure: number;
-  annual_split_detail: AnnualSplit[];
   budget_amount: number;
   dtype: number;
   dtype_detail: Disaster;
@@ -123,7 +122,7 @@ export interface Project {
   visibility: string;
   visibility_display: string;
   is_annual_report: boolean;
-  annual_splits: AnnualSplit[];
+  annual_split_detail: AnnualSplit[];
 }
 
 interface Point {
