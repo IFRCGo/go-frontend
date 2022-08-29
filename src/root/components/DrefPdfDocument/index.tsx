@@ -6,10 +6,7 @@ import {
   Document,
   Image,
 } from '@react-pdf/renderer';
-import {
-  isDefined,
-  listToMap,
-} from '@togglecorp/fujs';
+import { listToMap } from '@togglecorp/fujs';
 
 import {
   DrefApiFields,
@@ -157,13 +154,19 @@ function DrefPdfDocument(props: Props) {
           isAssessmentReport={isAssessmentReport}
         />
       </PDFPage>
-      {isDefined(dref.budget_file) && (
+      {dref.budget_file && (
         <PDFPage
           size="A4"
           style={pdfStyles.portraitPage}
         >
           <View>
-            <Text style={pdfStyles.sectionHeading}>
+            <Text style={[
+              pdfStyles.sectionHeading, {
+                marginTop: 0,
+                marginBottom: 0,
+              }
+            ]}
+            >
               {strings.drefExportBudgetOverview}
             </Text>
             <Image
