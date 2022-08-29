@@ -22,7 +22,7 @@ function NationalSociety(props: NationalSocietyProps) {
   } = props;
 
   return (
-    <View wrap={false}>
+    <View>
       <View style={pdfStyles.row}>
         <View style={pdfStyles.niHeaderCell}>
           <Text>{data.title_display}</Text>

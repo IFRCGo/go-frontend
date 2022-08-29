@@ -31,7 +31,6 @@ function PlannedIntervention(props: PlannedInterventionProps) {
   return (
     <View
       style={pdfStyles.piOutput}
-      wrap={false}
     >
       <View style={pdfStyles.piRow}>
         <View style={pdfStyles.piSmallColumn}>

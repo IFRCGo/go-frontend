@@ -23,7 +23,6 @@ function NeedIdentified(props: NeedsProps) {
 
   return (
     <View
-      wrap={false}
       style={pdfStyles.niContainer}
     >
       <View style={pdfStyles.niContentIconCell}>
