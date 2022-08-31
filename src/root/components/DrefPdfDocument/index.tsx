@@ -34,6 +34,7 @@ import RiskAndSecurityOutput from './RiskAndSecurityOutput';
 import HeadingOutput from './HeadingOutput';
 
 import pdfStyles from '#utils/pdf/pdfStyles';
+import BudgetFileOutput from './BudgetFileOutput';
 
 interface DrefOptions {
   disaster_category: NumericKeyValuePair[];
@@ -125,11 +126,6 @@ function DrefPdfDocument(props: Props) {
             strings={strings}
           />
         }
-      </PDFPage>
-      <PDFPage
-        size="A4"
-        style={pdfStyles.portraitPage}
-      >
         <ObjectiveAndStrategy
           data={dref}
           strings={strings}
@@ -153,36 +149,20 @@ function DrefPdfDocument(props: Props) {
           data={dref}
           isAssessmentReport={isAssessmentReport}
         />
-      </PDFPage>
-      {dref.budget_file && (
-        <PDFPage
-          size="A4"
-          style={pdfStyles.portraitPage}
-        >
-          <View>
-            <Text style={[
-              pdfStyles.sectionHeading, {
-                marginTop: 0,
-                marginBottom: 0,
-              }
-            ]}
-            >
-              {strings.drefExportBudgetOverview}
-            </Text>
-            <Image
-              style={pdfStyles.budgetImage}
-              src={dref.budget_file_preview}
-            />
-          </View>
-        </PDFPage>
-      )}
-      <PDFPage
-        size="A4"
-        style={pdfStyles.portraitPage}
-      >
+        <BudgetFileOutput
+          strings={strings}
+          data={dref}
+        />
         <ContactInformationOutput
           data={dref}
           strings={strings}
+        />
+        <Text
+          style={pdfStyles.pageNumber}
+          render={({ pageNumber, totalPages }) => (
+            `Page ${pageNumber} / ${totalPages}`
+          )}
+          fixed
         />
       </PDFPage>
     </Document>

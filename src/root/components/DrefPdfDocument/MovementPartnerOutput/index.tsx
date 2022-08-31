@@ -22,11 +22,14 @@ function MovementPartnerOutput(props: Props) {
 
   return (
     <>
-      {(isDefined(data.ifrc)
-        || isDefined(data.icrc)
-        || isDefined(data.partner_national_society)
+      {(data.ifrc
+        || data.icrc
+        || data.partner_national_society
       ) && (
-          <View style={pdfStyles.section}>
+          <View
+            style={pdfStyles.section}
+            wrap={false}
+          >
             <Text style={pdfStyles.sectionHeading}>
               {strings.drefFormMovementPartners}
             </Text>

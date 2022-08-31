@@ -35,7 +35,7 @@ function EventDescriptionOutput(props: Props) {
         data?.event_map_file ||
         data?.images_file.length > 0
       ) && (
-          <View>
+          <View break>
             <Text style={pdfStyles.sectionHeading}>
               {strings.drefFormDescriptionEvent}
             </Text>
@@ -50,19 +50,18 @@ function EventDescriptionOutput(props: Props) {
               </>
             )}
             {data?.event_map_file && (
-              <View style={[
-                pdfStyles.section,
-                pdfStyles.bannerImageContainer,
-              ]}>
-                <Image
-                  style={pdfStyles.mapImage}
-                  src={data.event_map_file.file}
-                />
-                <PdfTextOutput
-                  label={data.event_map_file.caption}
-                  columns='2/4'
-                />
-              </View>
+              <div style={pdfStyles.imagesSection}>
+                <View style={pdfStyles.section}>
+                  <Image
+                    style={pdfStyles.mapImage}
+                    src={data.event_map_file.file}
+                  />
+                  <PdfTextOutput
+                    label={data.event_map_file.caption}
+                    columns='4/4'
+                  />
+                </View>
+              </div>
             )}
             {data?.event_description && (
               <View style={pdfStyles.subSection}>
@@ -85,7 +84,7 @@ function EventDescriptionOutput(props: Props) {
                   style={pdfStyles.subSection}
                 >
                   <Image
-                    style={pdfStyles.mapImage}
+                    style={pdfStyles.coverImage}
                     src={img.file}
                   />
                   <PdfTextOutput

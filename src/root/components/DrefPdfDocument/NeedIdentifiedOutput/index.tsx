@@ -64,7 +64,10 @@ function NeedIdentifiedOutput(props: BaseProps) {
   return (
     <>
       {data?.needs_identified.length > 0 && (
-        <View style={pdfStyles.niSection}>
+        <View
+          style={pdfStyles.niSection}
+          break
+        >
           <Text style={pdfStyles.sectionHeading}>
             {isImminentOnset ?
               strings.drefFormImminentNeedsIdentified

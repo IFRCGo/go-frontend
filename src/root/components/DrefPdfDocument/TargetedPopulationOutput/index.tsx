@@ -25,13 +25,15 @@ function TargetedPopulationOutput(props: Props) {
     isAssessmentReport,
   } = props;
   return (
-    <View style={pdfStyles.tpSection}>
+    <View
+      style={pdfStyles.tpSection}
+      wrap={false}
+    >
       <Text style={pdfStyles.sectionHeading}>
         {strings.drefFormAssistedPopulation}
       </Text>
       <View style={pdfStyles.section}>
         <View style={pdfStyles.basicInfoTable}>
-
           {isAssessmentReport
             ? (<>
               <View style={pdfStyles.compactSection}>

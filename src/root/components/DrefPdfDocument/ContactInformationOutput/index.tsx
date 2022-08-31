@@ -23,7 +23,10 @@ function ContactInformationOutput(props: Props) {
 
   return (
     <>
-      <View style={pdfStyles.contactSection}>
+      <View
+        style={pdfStyles.contactSection}
+        wrap={false}
+      >
         <Text style={pdfStyles.sectionHeading}>
           {strings.drefExportContactInformation}
         </Text>

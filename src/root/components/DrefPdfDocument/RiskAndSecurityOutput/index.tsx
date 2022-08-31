@@ -21,7 +21,10 @@ function RiskAndSecurityOutput(props: Props) {
     <>
       {(data?.risk_security_concern || data?.risk_security)
         && (
-          <View style={pdfStyles.section}>
+          <View
+            style={pdfStyles.section}
+            wrap={false}
+          >
             <Text style={pdfStyles.sectionHeading}>
               {strings.drefFormRiskSecurity}
             </Text>
