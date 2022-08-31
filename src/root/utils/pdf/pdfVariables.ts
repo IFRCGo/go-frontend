@@ -29,3 +29,4 @@ export const COLOR_BACKGROUND = '#f0f0f0';
 export const COLOR_YELLOW = '#ffc000';
 export const COLOR_ORANGE = '#ed7d31';
 export const COLOR_RED = '#f40d11';
+export const COLOR_PAGE_NUMBER = '#5a5a5a';

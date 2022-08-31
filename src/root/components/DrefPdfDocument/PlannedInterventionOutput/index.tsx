@@ -124,7 +124,10 @@ function PlannedInterventionOutput(props: BaseProps) {
   return (
     <>
       {data.planned_interventions.length > 0 && (
-        <View style={pdfStyles.piSection}>
+        <View
+          style={pdfStyles.piSection}
+          break
+        >
           <Text style={pdfStyles.sectionHeading}>
             {strings.drefFormPlannedIntervention}
           </Text>

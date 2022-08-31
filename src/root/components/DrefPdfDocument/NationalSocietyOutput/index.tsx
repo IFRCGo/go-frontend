@@ -43,7 +43,10 @@ function NationalSocietyOutput(props: BaseProps) {
   return (
     <>
       {data?.national_society_actions.length > 0 && (
-        <View style={pdfStyles.section}>
+        <View
+          style={pdfStyles.section}
+          wrap={false}
+        >
           <Text style={pdfStyles.sectionHeading}>
             {strings.drefFormNationalSocietiesActions}
           </Text>

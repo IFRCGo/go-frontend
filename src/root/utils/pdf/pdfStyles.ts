@@ -44,7 +44,7 @@ const heading = StyleSheet.create({
     fontFamily: 'Montserrat',
     fontWeight: 'extrabold',
     color: styles.COLOR_SECONDARY,
-    marginTop: styles.SPACING_LARGE,
+    marginTop: styles.SPACING_MEDIUM,
     marginBottom: styles.SPACING_MEDIUM,
   }
 });
@@ -132,7 +132,7 @@ const pdfStyles = StyleSheet.create({
     height: styles.FONT_SIZE_ULTRA_LARGE,
   },
 
-  mapImage: {
+  coverImage: {
     width: 'auto',
     height: 200,
     objectFit: 'contain',
@@ -162,6 +162,13 @@ const pdfStyles = StyleSheet.create({
     width: '100%',
     height: '100%',
     objectFit: 'cover',
+    objectPosition: 'center',
+  },
+
+  mapImage: {
+    width: 'auto',
+    height: 400,
+    objectFit: 'contain',
     objectPosition: 'center',
   },
 
@@ -612,6 +619,16 @@ const pdfStyles = StyleSheet.create({
 
   budgetImage: {
     width: '100%',
+  },
+
+  pageNumber: {
+    fontSize: styles.FONT_SIZE_MEDIUM / 1.3,
+    color: styles.COLOR_PAGE_NUMBER,
+    position: 'absolute',
+    bottom: 10,
+    left: 0,
+    right: 0,
+    textAlign: 'center',
   }
 });
 

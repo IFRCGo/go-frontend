@@ -21,7 +21,10 @@ function PreviousOperationOutput(props: Props) {
   } = props;
 
   return (
-    <View style={pdfStyles.poSection}>
+    <View
+      style={pdfStyles.poSection}
+      wrap={false}
+    >
       <Text style={pdfStyles.sectionHeading}>
         {strings.drefFormPreviousOperations}
       </Text>

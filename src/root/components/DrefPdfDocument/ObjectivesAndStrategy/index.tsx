@@ -21,7 +21,10 @@ function ObjectiveAndStrategy(props: Props) {
   return (
     <>
       {data?.operation_objective && (
-        <View style={pdfStyles.section}>
+        <View
+          style={pdfStyles.section}
+          wrap={false}
+        >
           <View>
             <Text style={pdfStyles.sectionHeading}>
               {strings.drefExportOperationalStrategy}
@@ -38,7 +41,10 @@ function ObjectiveAndStrategy(props: Props) {
         </View>
       )}
       {data?.response_strategy && (
-        <View style={pdfStyles.qna}>
+        <View
+          style={pdfStyles.qna}
+          wrap={false}
+        >
           <Text style={pdfStyles.strategySubSectionHeading}
           >
             {strings.drefFormResponseRationale}
@@ -53,7 +59,10 @@ function ObjectiveAndStrategy(props: Props) {
         data?.people_assisted ||
         data?.selection_criteria
       ) && (
-          <View style={pdfStyles.section}>
+          <View
+            style={pdfStyles.section}
+            wrap={false}
+          >
             <Text style={pdfStyles.sectionHeading}>
               {strings.drefFormTargetingStrategy}
             </Text>

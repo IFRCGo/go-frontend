@@ -20,7 +20,10 @@ function OtherActionsOutput(props: Props) {
   } = props;
 
   return (
-    <View style={pdfStyles.section}>
+    <View
+      style={pdfStyles.section}
+      wrap={false}
+    >
       <Text style={pdfStyles.sectionHeading}>
         {strings.drefFormNationalOtherActors}
       </Text>

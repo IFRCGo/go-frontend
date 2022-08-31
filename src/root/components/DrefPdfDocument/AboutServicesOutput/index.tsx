@@ -29,7 +29,11 @@ function AboutServicesOutput(props: Props) {
         data?.pmer ||
         data?.communication
       ) && (
-          <View style={pdfStyles.section}>
+          <View
+            style={pdfStyles.section}
+            wrap={false}
+            break
+          >
             <Text style={pdfStyles.sectionHeading}>
               {strings.drefFormSupportServices}
             </Text>
