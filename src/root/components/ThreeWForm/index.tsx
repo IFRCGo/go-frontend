@@ -232,6 +232,19 @@ function ThreeWForm(props: Props) {
     onValueChange(total, 'reached_total');
   }, [onValueChange, value.reached_male, value.reached_female, value.reached_other]);
 
+
+  // Set beginning is_annual_report switch according to the filled-in annual split details
+  React.useEffect(() => {
+    onValueChange((oldValue: boolean | undefined) => {
+      if (isNotDefined(oldValue)) {
+        return value.annual_split_detail?.length ? true : false;
+      }
+
+      return oldValue;
+    }, 'is_annual_report');
+  }, [onValueChange, value.annual_split_detail]);
+
+
   // Set disaster type based on the selected event
   React.useEffect(() => {
     if (shouldDisableDisasterType) {
@@ -611,9 +624,9 @@ function ThreeWForm(props: Props) {
           </InputSection>
           {value?.is_annual_report === true ? ( <>
             <InputSection
-                description={strings.projectFormPeopleTagetedHelpText + ' NOT THIS!'}
-                title={strings.projectFormPeopleTageted + ' NOT THIS'}
-                tooltip={strings.projectFormPeopleTagetedTooltip + ' NOT THIS'}
+                description={strings.projectFormPeopleTargetedHelpText + ' NOT THIS!'}
+                title={strings.projectFormPeopleTargeted + ' NOT THIS'}
+                tooltip={strings.projectFormPeopleTargetedTooltip + ' NOT THIS'}
             >
               <table>
                 <tr style={{textTransform: "uppercase", color: "grey"}}>
@@ -628,25 +641,27 @@ function ThreeWForm(props: Props) {
                   <th>{strings.threeWReachedOther}:</th>
                   <th>{strings.threeWReachedTotal}:</th>
                 </tr>
-                <tr key={value?.end_date} style={{textAlign: 'center'}}>
-                  <td>{value?.end_date}</td>
-                  <td>{value?.budget_amount}</td>
-                  <td>{value?.target_male}</td>
-                  <td>{value?.target_female}</td>
-                  <td>{value?.target_other}</td>
-                  <td>{value?.target_total}</td>
-                  <td>{value?.reached_male}</td>
-                  <td>{value?.reached_female}</td>
-                  <td>{value?.reached_other}</td>
-                  <td>{value?.reached_total}</td>
-                </tr>
+                {value?.annual_split_detail?.map((obj, i) =>
+                <tr key={obj.id} style={{textAlign: 'center'}}>
+                  <td>{obj.year}</td>
+                  <td>{obj.budget_amount}</td>
+                  <td>{obj.target_male}</td>
+                  <td>{obj.target_female}</td>
+                  <td>{obj.target_other}</td>
+                  <td>{obj.target_total}</td>
+                  <td>{obj.reached_male}</td>
+                  <td>{obj.reached_female}</td>
+                  <td>{obj.reached_other}</td>
+                  <td>{obj.reached_total}</td>
+                </tr>)
+              }
               </table>
             </InputSection>
           </> ) : ( <>
             <InputSection
-                description={strings.projectFormPeopleTagetedHelpText}
-                title={strings.projectFormPeopleTageted}
-                tooltip={strings.projectFormPeopleTagetedTooltip}
+                description={strings.projectFormPeopleTargetedHelpText}
+                title={strings.projectFormPeopleTargeted}
+                tooltip={strings.projectFormPeopleTargetedTooltip}
             >
               <NumberInput
                   name='target_male'

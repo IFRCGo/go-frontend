@@ -157,10 +157,10 @@ export const schema: FormSchema = {
       visibility: [requiredCondition],
       is_annual_report: [],
       annual_split_detail: {
-        keySelector: (split) => split.clientId as string,
+        keySelector: (split) => split.id as number,
         member: (): AnnualSplitsSchemaMember => ({
           fields: (): AnnualSplitSchemaFields => ({
-            clientId: [],
+            id: [requiredCondition],
             year: [],
             budget_amount: [],
             target_male: [],

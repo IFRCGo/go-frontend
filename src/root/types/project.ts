@@ -28,7 +28,7 @@ export interface EventMini {
 }
 
 export interface AnnualSplit {
-  clientId: string;
+  id: number;
   year: number | null;
   budget_amount: number | null;
   target_male: number | null;
