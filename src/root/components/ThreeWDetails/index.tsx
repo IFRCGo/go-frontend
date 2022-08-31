@@ -37,6 +37,7 @@ interface RowProps {
   className?: string;
   children?: React.ReactNode;
 }
+
 function Row(props: RowProps) {
   const {
     className,
@@ -105,6 +106,8 @@ function ProjectDetail(props: Props) {
   if (isNotDefined(projectId)) {
     return null;
   }
+
+  console.info(projectResponse);
 
   return (
     <div className={_cs(styles.projectDetail, className)}>
@@ -229,34 +232,39 @@ function ProjectDetail(props: Props) {
           {projectResponse !== undefined && projectResponse?.annual_split_detail.length > 0 ?
               <Row>
                 <table>
-                  <tr style={{textTransform: "uppercase", color: "grey"}}>
-                    <th>{strings.threeWYear}:</th>
-                    <th>{strings.threeWBudgetAmount}:</th>
-                    <th>{strings.threeWTargetMale}:</th>
-                    <th>{strings.threeWTargetFemale}:</th>
-                    <th>{strings.threeWTargetOther}:</th>
-                    <th>{strings.threeWTargetTotal}:</th>
-                    <th>{strings.threeWReachedMale}:</th>
-                    <th>{strings.threeWReachedFemale}:</th>
-                    <th>{strings.threeWReachedOther}:</th>
-                    <th>{strings.threeWReachedTotal}:</th>
-                  </tr>
-                  {projectResponse?.annual_split_detail.map(split => {
-                    return (
-                        <tr key={split.year} style={{textAlign: 'center'}}>
-                          <td>{split.year}</td>
-                          <td>{split.budget_amount}</td>
-                          <td>{split.target_male}</td>
-                          <td>{split.target_female}</td>
-                          <td>{split.target_other}</td>
-                          <td>{split.target_total}</td>
-                          <td>{split.reached_male}</td>
-                          <td>{split.reached_female}</td>
-                          <td>{split.reached_other}</td>
-                          <td>{split.reached_total}</td>
-                        </tr>
-                    );
-                  })}
+                  <thead>
+                    {/* FIXME: avoid inline for styling */}
+                    <tr style={{textTransform: "uppercase", color: "grey"}}>
+                      <th>{strings.threeWYear}:</th>
+                      <th>{strings.threeWBudgetAmount}:</th>
+                      <th>{strings.threeWTargetMale}:</th>
+                      <th>{strings.threeWTargetFemale}:</th>
+                      <th>{strings.threeWTargetOther}:</th>
+                      <th>{strings.threeWTargetTotal}:</th>
+                      <th>{strings.threeWReachedMale}:</th>
+                      <th>{strings.threeWReachedFemale}:</th>
+                      <th>{strings.threeWReachedOther}:</th>
+                      <th>{strings.threeWReachedTotal}:</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {projectResponse?.annual_split_detail.map(split => {
+                      return (
+                          <tr key={split.year} style={{textAlign: 'center'}}>
+                            <td>{split.year}</td>
+                            <td>{split.budget_amount}</td>
+                            <td>{split.target_male}</td>
+                            <td>{split.target_female}</td>
+                            <td>{split.target_other}</td>
+                            <td>{split.target_total}</td>
+                            <td>{split.reached_male}</td>
+                            <td>{split.reached_female}</td>
+                            <td>{split.reached_other}</td>
+                            <td>{split.reached_total}</td>
+                          </tr>
+                      );
+                    })}
+                  </tbody>
                 </table>
               </Row> :
               <>

@@ -1,0 +1,18 @@
+@import '~styles/settings/_variables.scss';
+
+.annual-split-input {
+  display: flex;
+  gap: $spacing*0.5;
+  flex-wrap: wrap;
+  align-items: flex-end;
+
+  >* {
+    flex-basis: calc(100% / 3 - #{$spacing*0.5});
+  }
+
+  .remove-button {
+    flex-basis: unset;
+    flex-grow: initial;
+    min-width: unset;
+  }
+}

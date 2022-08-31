@@ -29,6 +29,7 @@ export interface EventMini {
 
 export interface AnnualSplit {
   id: number;
+  client_id: string;
   year: number | null;
   budget_amount: number | null;
   target_male: number | null;
@@ -122,7 +123,7 @@ export interface Project {
   visibility: string;
   visibility_display: string;
   is_annual_report: boolean;
-  annual_split_detail: AnnualSplit[];
+  annual_split_detail: Omit<AnnualSplit, 'client_id'>[];
 }
 
 interface Point {

@@ -8,6 +8,7 @@ import {
   PartialForm,
   ArraySchema,
   ObjectSchema,
+  forceUndefinedType,
 } from '@togglecorp/toggle-form';
 
 import {
@@ -157,11 +158,12 @@ export const schema: FormSchema = {
       visibility: [requiredCondition],
       is_annual_report: [],
       annual_split_detail: {
-        keySelector: (split) => split.id as number,
+        keySelector: (split) => split.client_id as string,
         member: (): AnnualSplitsSchemaMember => ({
           fields: (): AnnualSplitSchemaFields => ({
-            id: [requiredCondition],
-            year: [],
+            // If you force it as undefined type it will not be sent to the server
+            client_id: [forceUndefinedType],
+            year: [requiredCondition, positiveIntegerCondition],
             budget_amount: [],
             target_male: [],
             target_female: [],
@@ -487,6 +489,9 @@ export function transformResponseFieldsToFormFields(projectResponse: Project): F
     target_total,
     visibility,
     is_annual_report,
-    annual_split_detail,
+    annual_split_detail: annual_split_detail?.map((annualSplit) => ({
+      ...annualSplit,
+      client_id: String(annualSplit.id),
+    })),
   };
 }
