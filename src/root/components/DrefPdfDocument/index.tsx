@@ -2,9 +2,7 @@ import React from 'react';
 import {
   Page as PDFPage,
   Text,
-  View,
   Document,
-  Image,
 } from '@react-pdf/renderer';
 import { listToMap } from '@togglecorp/fujs';
 
@@ -32,9 +30,9 @@ import AboutServicesOutput from './AboutServicesOutput';
 import ContactInformationOutput from './ContactInformationOutput';
 import RiskAndSecurityOutput from './RiskAndSecurityOutput';
 import HeadingOutput from './HeadingOutput';
+import BudgetFileOutput from './BudgetFileOutput';
 
 import pdfStyles from '#utils/pdf/pdfStyles';
-import BudgetFileOutput from './BudgetFileOutput';
 
 interface DrefOptions {
   disaster_category: NumericKeyValuePair[];

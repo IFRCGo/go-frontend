@@ -6,8 +6,6 @@ import {
   View,
 } from '@react-pdf/renderer';
 import pdfStyles from '#utils/pdf/pdfStyles';
-import { isDefined } from '@togglecorp/fujs';
-
 
 interface Props {
   data: DrefApiFields;

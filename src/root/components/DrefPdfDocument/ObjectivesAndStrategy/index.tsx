@@ -23,13 +23,10 @@ function ObjectiveAndStrategy(props: Props) {
       {data?.operation_objective && (
         <View
           style={pdfStyles.section}
-          wrap={false}
         >
-          <View>
-            <Text style={pdfStyles.sectionHeading}>
-              {strings.drefExportOperationalStrategy}
-            </Text>
-          </View>
+          <Text style={pdfStyles.sectionHeading}>
+            {strings.drefExportOperationalStrategy}
+          </Text>
           <View style={pdfStyles.qna}>
             <Text style={pdfStyles.strategySubSectionHeading}>
               {strings.drefFormObjectiveOperation}
@@ -41,10 +38,7 @@ function ObjectiveAndStrategy(props: Props) {
         </View>
       )}
       {data?.response_strategy && (
-        <View
-          style={pdfStyles.qna}
-          wrap={false}
-        >
+        <View style={pdfStyles.qna}>
           <Text style={pdfStyles.strategySubSectionHeading}
           >
             {strings.drefFormResponseRationale}
@@ -59,23 +53,22 @@ function ObjectiveAndStrategy(props: Props) {
         data?.people_assisted ||
         data?.selection_criteria
       ) && (
-          <View
-            style={pdfStyles.section}
-            wrap={false}
-          >
-            <Text style={pdfStyles.sectionHeading}>
-              {strings.drefFormTargetingStrategy}
-            </Text>
-            {data?.people_assisted && (
-              <View style={pdfStyles.qna}>
-                <Text style={pdfStyles.textLabelSection}>
-                  {strings.drefFormPeopleAssistedThroughOperation}
-                </Text>
-                <Text style={pdfStyles.answer}>
-                  {data.people_assisted}
-                </Text>
-              </View>
-            )}
+          <View style={pdfStyles.section}>
+            <View wrap={false}>
+              <Text style={pdfStyles.sectionHeading}>
+                {strings.drefFormTargetingStrategy}
+              </Text>
+              {data?.people_assisted && (
+                <View style={pdfStyles.qna}>
+                  <Text style={pdfStyles.textLabelSection}>
+                    {strings.drefFormPeopleAssistedThroughOperation}
+                  </Text>
+                  <Text style={pdfStyles.answer}>
+                    {data.people_assisted}
+                  </Text>
+                </View>
+              )}
+            </View>
             {data?.selection_criteria && (
               <View style={pdfStyles.qna}>
                 <Text style={pdfStyles.textLabelSection}>
