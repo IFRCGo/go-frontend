@@ -79,7 +79,7 @@ function Filters(props: Props) {
       filteredValues = filteredValues.filter(p => p.country === country);
 
       if (isDefined(district)) {
-        filteredValues = filteredValues.filter(p => -1 !== p.districts.findIndex(d => d === district));
+        filteredValues = filteredValues.filter(p => -1 !== p.districts_details.findIndex(d => d.id === district));
       }
     }
 
