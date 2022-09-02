@@ -6,7 +6,9 @@ import {
 } from '@togglecorp/fujs';
 import {
   PartialForm,
+  ArraySchema,
   ObjectSchema,
+  forceUndefinedType,
 } from '@togglecorp/toggle-form';
 
 import {
@@ -34,6 +36,7 @@ import {
   Country,
   District,
   EventMini,
+  AnnualSplit,
   Project,
 } from '#types';
 import LanguageContext from '#root/languageContext';
@@ -79,7 +82,7 @@ const operationTypeOptions = operationTypeList.map((o) => ({
   label: o.label,
 })).sort(compareString);
 
-var projectVisibilityOptions = [...projectVisibilityList].sort(compareString);
+let projectVisibilityOptions = [...projectVisibilityList].sort(compareString);
 
 export interface FormType extends ProjectFormFields {
   is_project_completed: boolean;
@@ -106,8 +109,16 @@ const greaterThanStartDateCondition = (
   return undefined;
 };
 
+type BaseValue = PartialForm<ProjectFormFields>
+
 type FormSchema = ObjectSchema<PartialForm<FormType>>;
 type FormSchemaFields = ReturnType<FormSchema['fields']>;
+
+type AnnualSplitSchema = ObjectSchema<PartialForm<AnnualSplit>, BaseValue>;
+type AnnualSplitSchemaFields = ReturnType<AnnualSplitSchema['fields']>;
+
+type AnnualSplitsSchema = ArraySchema<PartialForm<AnnualSplit>, BaseValue>;  // plural: Splits
+type AnnualSplitsSchemaMember = ReturnType<AnnualSplitsSchema['member']>;  // plural: Splits
 
 export const schema: FormSchema = {
   fields: (value): FormSchemaFields => {
@@ -136,7 +147,7 @@ export const schema: FormSchema = {
       secondary_sectors: [],
       start_date: [requiredCondition],
       // Note: Event though status is required field,
-      // its not marked required in the schema
+      // it's not marked required in the schema
       // because it is calculated automatically
       // using value of other required fields
       status: [],
@@ -145,6 +156,27 @@ export const schema: FormSchema = {
       target_other: [positiveIntegerCondition],
       target_total: [requiredCondition, positiveIntegerCondition],
       visibility: [requiredCondition],
+      is_annual_report: [],
+      annual_split_detail: {
+        keySelector: (split) => split.client_id as string,
+        member: (): AnnualSplitsSchemaMember => ({
+          fields: (): AnnualSplitSchemaFields => ({
+            // If you force it as undefined type it will not be sent to the server
+            client_id: [forceUndefinedType],
+            year: [requiredCondition, positiveIntegerCondition],
+            id: [],  // can arrive from db, useful for update
+            budget_amount: [],
+            target_male: [],
+            target_female: [],
+            target_other: [],
+            target_total: [],
+            reached_male: [],
+            reached_female: [],
+            reached_other: [],
+            reached_total: [],
+          })
+        }),
+      },
     };
 
     const programmeType = value?.programme_type;
@@ -176,7 +208,7 @@ const limitQuery = {
   limit: 500,
 };
 
-export function useThreeWOptions(value: Partial<FormType>) {
+export function useThreeWOptions(value: PartialForm<FormType>) {
   const { strings } = React.useContext(LanguageContext);
   const user = useReduxState('me');
   const {
@@ -206,7 +238,7 @@ export function useThreeWOptions(value: Partial<FormType>) {
       // here, we want to include all countries where
       // independent is either null or true (but exclude false)
       // see https://github.com/IFRCGo/go-frontend/issues/1934
-      .filter(d => (d.independent !== false && d.society_name) || d.name.substring(2) === 'RC' || d.iso === 'BX')
+      .filter(d => (d.independent && d.society_name) || d.name.substring(2) === 'RC' || d.iso === 'BX')
       .map(d => ({
         value: d.id,
         label: d.society_name,
@@ -423,9 +455,11 @@ export function transformResponseFieldsToFormFields(projectResponse: Project): F
     target_other,
     target_total,
     visibility,
+    is_annual_report,
+    annual_split_detail,
   } = projectResponse;
 
-  const formValue: FormType = {
+  return {
     is_project_completed: status === PROJECT_STATUS_COMPLETED,
     actual_expenditure,
     budget_amount,
@@ -455,7 +489,10 @@ export function transformResponseFieldsToFormFields(projectResponse: Project): F
     target_other,
     target_total,
     visibility,
+    is_annual_report,
+    annual_split_detail: annual_split_detail?.map((annualSplit) => ({
+      ...annualSplit,
+      client_id: String(annualSplit.id),
+    })),
   };
-
-  return formValue;
 }

@@ -27,6 +27,21 @@ export interface EventMini {
   emergency_response_contact_email: string | null;
 }
 
+export interface AnnualSplit {
+  id: number;
+  client_id: string;
+  year: number | null;
+  budget_amount: number | null;
+  target_male: number | null;
+  target_female: number | null;
+  target_other: number | null;
+  target_total: number | null;
+  reached_male: number | null;
+  reached_female: number | null;
+  reached_other: number | null;
+  reached_total: number | null;
+}
+
 export interface ProjectFormFields {
   actual_expenditure: number;
   budget_amount: number;
@@ -56,6 +71,8 @@ export interface ProjectFormFields {
   target_other: number | null;
   target_total: number | null;
   visibility: string;
+  is_annual_report: boolean;
+  annual_split_detail: AnnualSplit[];
 }
 
 export interface Project {
@@ -105,6 +122,8 @@ export interface Project {
   user: number;
   visibility: string;
   visibility_display: string;
+  is_annual_report: boolean;
+  annual_split_detail: Omit<AnnualSplit, 'client_id'>[];
 }
 
 interface Point {
