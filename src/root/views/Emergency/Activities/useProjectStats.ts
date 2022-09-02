@@ -156,7 +156,7 @@ function useProjectStats(
       {} as Record<string, { title: string, count: number }>,
     );
 
-    const districtList = filteredProjectList?.map((p) => p.districts).flat(1) ?? [];
+    const districtList = filteredProjectList?.map((p) => p.districts_details.map(d => d.id)).flat(1) ?? [];
     const projectCountByDistrict = districtList.reduce((acc, val) => {
       const newAcc = {...acc};
       if (!newAcc[val]) {
