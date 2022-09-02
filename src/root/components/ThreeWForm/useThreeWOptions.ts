@@ -164,6 +164,7 @@ export const schema: FormSchema = {
             // If you force it as undefined type it will not be sent to the server
             client_id: [forceUndefinedType],
             year: [requiredCondition, positiveIntegerCondition],
+            id: [],  // can arrive from db, useful for update
             budget_amount: [],
             target_male: [],
             target_female: [],

@@ -649,9 +649,9 @@ function ThreeWForm(props: Props) {
           </InputSection>
           {value?.is_annual_report === true ? (
               <InputSection
-                description={strings.projectFormPeopleTargetedHelpText + ' NOT THIS!'}
-                title={strings.projectFormPeopleTargeted + ' NOT THIS'}
-                tooltip={strings.projectFormPeopleTargetedTooltip + ' NOT THIS'}
+                description={strings.projectFormPeopleTargetedHelpText}
+                title={strings.projectFormPeopleTargeted + ' ' + strings.projectFormAnnually}
+                tooltip={strings.projectFormPeopleTargetedTooltip + strings.projectFormAnnually}
                 oneColumn
                 multiRow
               >
@@ -671,8 +671,7 @@ function ThreeWForm(props: Props) {
                     name={undefined}
                     variant="secondary"
                   >
-                    {/* FIXME: use strings */}
-                    Add New Split
+                    {strings.addNewSplit}
                   </Button>
                 </div>
             </InputSection>

@@ -107,7 +107,7 @@ function ProjectDetail(props: Props) {
     return null;
   }
 
-  console.info(projectResponse);
+  // RemoveMeLater console.info('projectResponse', projectResponse);
 
   return (
     <div className={_cs(styles.projectDetail, className)}>
@@ -233,8 +233,7 @@ function ProjectDetail(props: Props) {
               <Row>
                 <table>
                   <thead>
-                    {/* FIXME: avoid inline for styling */}
-                    <tr style={{textTransform: "uppercase", color: "grey"}}>
+                    <tr className={styles.annualSplit}>
                       <th>{strings.threeWYear}:</th>
                       <th>{strings.threeWBudgetAmount}:</th>
                       <th>{strings.threeWTargetMale}:</th>
@@ -250,8 +249,8 @@ function ProjectDetail(props: Props) {
                   <tbody>
                     {projectResponse?.annual_split_detail.map(split => {
                       return (
-                          <tr key={split.year} style={{textAlign: 'center'}}>
-                            <td>{split.year}</td>
+                          <tr key={split.year} className={styles.center}>
+                            <td className={styles.bold}>{split.year}</td>
                             <td>{split.budget_amount}</td>
                             <td>{split.target_male}</td>
                             <td>{split.target_female}</td>

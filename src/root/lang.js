@@ -2558,6 +2558,8 @@ export default {
   // not used -   projectFormModalClose: 'Close',
   projectFormNonFieldError: 'Please correct all the errors above before submission',
   projectFormFailedToSubmit: 'Failed to submit project: {message}',
+  projectFormAnnually: 'and Budget – Annually',
+  addNewSplit: 'Add New Split',
 
   // not used -   regionOverviewTitle: 'Regions',
   // not used -   regionOverviewSectorActivity: 'Activities by sector',

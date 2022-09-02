@@ -11,6 +11,7 @@ import NumberInput from '#components/NumberInput';
 import Button from '#components/Button';
 import { SetValueArg } from '#utils/common';
 import LanguageContext from '#root/languageContext';
+import { IoTrash } from 'react-icons/io5';
 
 import { AnnualSplit } from '#types';
 import styles from './styles.module.scss';
@@ -44,6 +45,8 @@ function AnnualSplitInput(props: Props) {
 
   return (
     <div className={_cs(styles.annualSplitInput, className)}>
+      <input type="hidden" name="id" value={value?.id} />
+      <span className={styles.bold}>
       <NumberInput
         label={strings.threeWYear}
         name="year"
@@ -51,6 +54,7 @@ function AnnualSplitInput(props: Props) {
         onChange={setFieldValue}
         error={error?.year}
       />
+      </span>
       <NumberInput
         label={strings.threeWBudgetAmount}
         name="budget_amount"
@@ -58,6 +62,15 @@ function AnnualSplitInput(props: Props) {
         onChange={setFieldValue}
         error={error?.budget_amount}
       />
+      <Button
+        className={styles.removeButton}
+        name={index}
+        onClick={onRemove}
+        variant="secondary"
+      >
+        <IoTrash/>
+      </Button>
+      <div className="break"></div>
       <NumberInput
         label={strings.threeWTargetMale}
         name="target_male"
@@ -79,16 +92,41 @@ function AnnualSplitInput(props: Props) {
         onChange={setFieldValue}
         error={error?.target_other}
       />
-      {/* Other fields can be added here similarly */}
-      <Button
-        className={styles.removeButton}
-        name={index}
-        onClick={onRemove}
-        variant="secondary"
-      >
-        {/* FIXME: use strings */}
-        Remove
-      </Button>
+      <NumberInput
+        label={strings.threeWTargetTotal}
+        name="target_total"
+        value={value?.target_total}
+        onChange={setFieldValue}
+        error={error?.target_total}
+      />
+      <NumberInput
+        label={strings.threeWReachedMale}
+        name="reached_male"
+        value={value?.reached_male}
+        onChange={setFieldValue}
+        error={error?.reached_male}
+      />
+      <NumberInput
+        label={strings.threeWReachedFemale}
+        name="reached_female"
+        value={value?.reached_female}
+        onChange={setFieldValue}
+        error={error?.reached_female}
+      />
+      <NumberInput
+        label={strings.threeWReachedOther}
+        name="reached_other"
+        value={value?.reached_other}
+        onChange={setFieldValue}
+        error={error?.reached_other}
+      />
+      <NumberInput
+        label={strings.threeWReachedTotal}
+        name="reached_total"
+        value={value?.reached_total}
+        onChange={setFieldValue}
+        error={error?.reached_total}
+      />
     </div>
   );
 }
