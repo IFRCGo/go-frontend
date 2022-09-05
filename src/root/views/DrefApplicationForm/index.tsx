@@ -628,6 +628,7 @@ function DrefApplication(props: Props) {
                 fileIdToUrlMap={fileIdToUrlMap}
                 setFileIdToUrlMap={setFileIdToUrlMap}
                 isAssessmentReport={isAssessmentReport}
+                isImminentOnset={isImminentOnset}
               />
             </TabPanel>
             <TabPanel name="response">
