@@ -48,6 +48,7 @@ interface Props {
   fileIdToUrlMap: Record<number, string>;
   setFileIdToUrlMap?: React.Dispatch<React.SetStateAction<Record<number, string>>>;
   isAssessmentReport?: boolean;
+  isImminentOnset?: boolean;
 }
 
 function ActionsFields(props: Props) {
@@ -63,6 +64,7 @@ function ActionsFields(props: Props) {
     fileIdToUrlMap,
     isAssessmentReport,
     setFileIdToUrlMap,
+    isImminentOnset,
   } = props;
 
   const error = React.useMemo(
@@ -155,7 +157,6 @@ function ActionsFields(props: Props) {
     nsActionOptions
   ]);
 
-  const isImminentOnset = value.type_of_onset === ONSET_IMMINENT;
   const isThereCoordinationMechanism = value.is_there_major_coordination_mechanism;
   const didNationalSocietyStarted = value.did_national_society;
 

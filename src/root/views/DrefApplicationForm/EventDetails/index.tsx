@@ -287,7 +287,7 @@ function EventDetails(props: Props) {
             onChange={handleImageInputChange}
             accept="image/*"
             multiple
-            error={getErrorObject(error?.images_file)?.id}
+            error={error?.images_file}
             fileIdToUrlMap={fileIdToUrlMap}
             setFileIdToUrlMap={setFileIdToUrlMap}
             hidePreview

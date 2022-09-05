@@ -349,8 +349,6 @@ export const actionsFields: (keyof DrefFields)[] = [
   'ns_respond_date',
   'is_there_major_coordination_mechanism',
   'assessment_report',
-  'risk_security',
-  'risk_security_concern',
 ];
 
 export const responseFields: (keyof DrefFields)[] = [
@@ -374,6 +372,8 @@ export const responseFields: (keyof DrefFields)[] = [
   'budget_file',
   'planned_interventions',
   'is_surge_personnel_deployed',
+  'risk_security',
+  'risk_security_concern',
 ];
 
 export const submissionFields: (keyof DrefFields)[] = [

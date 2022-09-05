@@ -202,8 +202,8 @@ const defaultSchema = {
       fields: (): InterventionSchemaFields => ({
         clientId: [],
         title: [requiredCondition],
-        budget: [requiredCondition, positiveIntegerCondition, lessThanOrEqualToCondition(MaxIntLimit)],
-        person_targeted: [requiredCondition, positiveIntegerCondition, lessThanOrEqualToCondition(MaxIntLimit)],
+        budget: [positiveIntegerCondition, lessThanOrEqualToCondition(MaxIntLimit)],
+        person_targeted: [positiveIntegerCondition, lessThanOrEqualToCondition(MaxIntLimit)],
         indicators: {
           keySelector: (n) => n.clientId as string,
           member: (): IndicatorsSchemaMember => ({
