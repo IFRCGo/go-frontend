@@ -25,15 +25,21 @@ import Button from '#components/Button';
 import InterventionInput from '#views/DrefApplicationForm/Response/InterventionInput';
 import DREFFileInput from '#components/DREFFileInput';
 
-import { InterventionType } from '../useDrefOperationalUpdateOptions';
+import { InterventionType, RiskSecurityType } from '../useDrefOperationalUpdateOptions';
 import {
+  booleanOptionKeySelector,
+  BooleanValueOption,
   DrefOperationalUpdateFields,
   Intervention,
   ONSET_IMMINENT,
+  optionLabelSelector,
+  RiskSecurityProps,
   StringValueOption,
 } from '../common';
 
 import styles from './styles.module.scss';
+import RiskSecurityInput from '#views/DrefApplicationForm/Response/RiskSecurityInput';
+import RadioInput from '#components/RadioInput';
 
 const emptyList: string[] = [];
 type Value = PartialForm<DrefOperationalUpdateFields>;
@@ -44,6 +50,8 @@ interface Props {
   interventionOptions: StringValueOption[];
   fileIdToUrlMap: Record<number, string>;
   setFileIdToUrlMap?: React.Dispatch<React.SetStateAction<Record<number, string>>>;
+  isAssessmentReport?: boolean;
+  yesNoOptions: BooleanValueOption[];
 }
 const showNewFieldOperational = true;
 
@@ -57,6 +65,9 @@ function Operation(props: Props) {
     value,
     fileIdToUrlMap,
     setFileIdToUrlMap,
+    isAssessmentReport,
+    yesNoOptions,
+
   } = props;
 
   const error = getErrorObject(formError);
@@ -121,12 +132,64 @@ function Operation(props: Props) {
     value?.boys,
   ]);
 
+  const {
+    setValue: onRiskSecurityChange,
+    removeValue: onRiskSecurityRemove,
+  } = useFormArray<'risk_security', PartialForm<RiskSecurityProps>>(
+    'risk_security',
+    onValueChange,
+  );
+
+  type riskSecurity = typeof value.risk_security;
+
+  const handleRiskSecurityAdd = React.useCallback(() => {
+    const clientId = randomString();
+    const newRiskSecurityList: PartialForm<RiskSecurityType> = {
+      clientId,
+    };
+
+    onValueChange(
+      (oldValue: PartialForm<riskSecurity>) => (
+        [...(oldValue ?? []), newRiskSecurityList]
+      ),
+      'risk_security' as const,
+    );
+  }, [onValueChange]);
+
   const filteredInterventionOptions = React.useMemo(() => (
     interventionsIdentifiedMap ? interventionOptions.filter(n => !interventionsIdentifiedMap[n.value]) : []
   ), [interventionsIdentifiedMap, interventionOptions]);
 
+  const isSurgePersonnelDeployed = value?.is_surge_personnel_deployed;
   return (
     <>
+      <Container
+        heading={strings.drefFormObjectiveAndStrategy}
+        className={styles.objectiveRationale}
+      >
+        <InputSection
+          title={strings.drefFormObjectiveOperation}
+        >
+          <TextArea
+            error={error?.operation_objective}
+            name="operation_objective"
+            onChange={onValueChange}
+            value={value.operation_objective}
+            placeholder={strings.drefFormObjectiveOperationPlaceholder}
+          />
+        </InputSection>
+        <InputSection
+          title={strings.drefFormResponseRationale}
+        >
+          <TextArea
+            name="response_strategy"
+            onChange={onValueChange}
+            value={value.response_strategy}
+            error={error?.response_strategy}
+            placeholder={strings.drefFormResponseRationalePlaceholder}
+          />
+        </InputSection>
+      </Container>
       <Container
         heading={strings.drefFormTargetingStrategy}
         className={styles.targetingStrategy}
@@ -158,8 +221,12 @@ function Operation(props: Props) {
         heading={strings.drefFormTargetedPopulation}
         className={styles.assistedPopulation}
         description={(
-          warnings?.map((w) => (
-            <div className={styles.warning}>
+          !isAssessmentReport &&
+          warnings?.map((w, i) => (
+            <div
+              className={styles.warning}
+              key={i}
+            >
               <IoWarning />
               {w}
             </div>
@@ -171,34 +238,38 @@ function Operation(props: Props) {
           multiRow
           twoColumn
         >
-          <NumberInput
-            label={strings.drefFormWomen}
-            name="women"
-            value={value.women}
-            onChange={onValueChange}
-            error={error?.women}
-          />
-          <NumberInput
-            label={strings.drefFormMen}
-            name="men"
-            value={value.men}
-            onChange={onValueChange}
-            error={error?.men}
-          />
-          <NumberInput
-            label={strings.drefFormGirls}
-            name="girls"
-            value={value.girls}
-            onChange={onValueChange}
-            error={error?.girls}
-          />
-          <NumberInput
-            label={strings.drefFormBoys}
-            name="boys"
-            value={value.boys}
-            onChange={onValueChange}
-            error={error?.boys}
-          />
+          {!isAssessmentReport && (
+            <>
+              <NumberInput
+                label={strings.drefFormWomen}
+                name="women"
+                value={value.women}
+                onChange={onValueChange}
+                error={error?.women}
+              />
+              <NumberInput
+                label={strings.drefFormMen}
+                name="men"
+                value={value.men}
+                onChange={onValueChange}
+                error={error?.men}
+              />
+              <NumberInput
+                label={strings.drefFormGirls}
+                name="girls"
+                value={value.girls}
+                onChange={onValueChange}
+                error={error?.girls}
+              />
+              <NumberInput
+                label={strings.drefFormBoys}
+                name="boys"
+                value={value.boys}
+                onChange={onValueChange}
+                error={error?.boys}
+              />
+            </>
+          )}
         </InputSection>
         <InputSection
           title={strings.drefFormEstimateResponse}
@@ -253,29 +324,43 @@ function Operation(props: Props) {
         </InputSection>
       </Container>
       <Container
-        heading={strings.drefFormObjectiveAndStrategy}
-        className={styles.objectiveRationale}
+        heading={strings.drefFormRiskSecurity}
+        visibleOverflow
       >
         <InputSection
-          title={strings.drefFormObjectiveOperation}
+          title={strings.drefFormRiskSecurityPotentialRisk}
+          description={isAssessmentReport && strings.drefFormRiskSecurityPotentialRiskDescription}
+          multiRow
+          oneColumn
         >
-          <TextArea
-            error={error?.operation_objective}
-            name="operation_objective"
-            onChange={onValueChange}
-            value={value.operation_objective}
-            placeholder={strings.drefFormObjectiveOperationPlaceholder}
-          />
+          {value.risk_security?.map((rs, i) => (
+            <RiskSecurityInput
+              key={rs.clientId}
+              index={i}
+              value={rs}
+              onChange={onRiskSecurityChange}
+              onRemove={onRiskSecurityRemove}
+              error={getErrorObject(error?.risk_security)}
+            />
+          ))}
+          <div className={styles.actions}>
+            <Button
+              name={undefined}
+              onClick={handleRiskSecurityAdd}
+              variant="secondary"
+            >
+              {strings.drefFormRiskSecurityAddButton}
+            </Button>
+          </div>
         </InputSection>
         <InputSection
-          title={strings.drefFormResponseRationale}
+          title={strings.drefFormRiskSecuritySafetyConcern}
         >
           <TextArea
-            name="response_strategy"
+            name='risk_security_concern'
+            value={value.risk_security_concern}
+            error={error?.risk_security_concern}
             onChange={onValueChange}
-            value={value.response_strategy}
-            error={error?.response_strategy}
-            placeholder={strings.drefFormResponseRationalePlaceholder}
           />
         </InputSection>
       </Container>
@@ -301,10 +386,10 @@ function Operation(props: Props) {
         </InputSection>
         <InputSection>
           <SelectInput
+            label={strings.drefFormInterventionsLabel}
             name={undefined}
             onChange={setIntervention}
             value={intervention}
-            label={strings.drefFormInterventionsLabel}
             options={filteredInterventionOptions}
           />
           <div className={styles.actions}>
@@ -330,6 +415,87 @@ function Operation(props: Props) {
             showNewFieldOperational={showNewFieldOperational}
           />
         ))}
+      </Container>
+      <Container
+        heading={strings.drefFormSupportServices}
+      >
+        <InputSection
+          title={strings.drefFormHumanResourceDescription}
+        >
+          <TextArea
+            label={strings.cmpActionDescriptionLabel}
+            name="human_resource"
+            onChange={onValueChange}
+            value={value.human_resource}
+            error={error?.human_resource}
+          />
+        </InputSection>
+        <InputSection
+          title={strings.drefFormSurgePersonnelDeployed}
+          description={isSurgePersonnelDeployed && strings.drefFormSurgePersonnelDeployedDescription}
+          oneColumn
+          multiRow
+        >
+          <RadioInput
+            name={"is_surge_personnel_deployed" as const}
+            options={yesNoOptions}
+            keySelector={booleanOptionKeySelector}
+            labelSelector={optionLabelSelector}
+            value={value.is_surge_personnel_deployed}
+            onChange={onValueChange}
+            error={error?.is_surge_personnel_deployed}
+          />
+          {isSurgePersonnelDeployed &&
+            <TextArea
+              label={strings.cmpActionDescriptionLabel}
+              name="surge_personnel_deployed"
+              onChange={onValueChange}
+              value={value.surge_personnel_deployed}
+              error={error?.surge_personnel_deployed}
+              placeholder={strings.drefFormSurgePersonnelDeployedDescription}
+            />
+          }
+        </InputSection>
+        {!isAssessmentReport && (
+          <>
+            <InputSection
+              title={strings.drefFormLogisticCapacityOfNs}
+              description={strings.drefFormLogisticCapacityOfNsDescription}
+            >
+              <TextArea
+                label={strings.cmpActionDescriptionLabel}
+                name="logistic_capacity_of_ns"
+                onChange={onValueChange}
+                value={value.logistic_capacity_of_ns}
+                error={error?.logistic_capacity_of_ns}
+              />
+            </InputSection>
+            <InputSection
+              title={strings.drefFormPmer}
+              description={strings.drefFormPmerDescription}
+            >
+              <TextArea
+                label={strings.cmpActionDescriptionLabel}
+                name="pmer"
+                onChange={onValueChange}
+                value={value.pmer}
+                error={error?.pmer}
+              />
+            </InputSection>
+            <InputSection
+              title={strings.drefFormCommunication}
+              description={strings.drefFormCommunicationDescripiton}
+            >
+              <TextArea
+                label={strings.cmpActionDescriptionLabel}
+                name="communication"
+                onChange={onValueChange}
+                value={value.communication}
+                error={error?.communication}
+              />
+            </InputSection>
+          </>
+        )}
       </Container>
     </>
   );
