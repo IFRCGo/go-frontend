@@ -55,16 +55,7 @@ import Operation from './Operation';
 import Submission from './Submission';
 
 import styles from './styles.module.scss';
-
-function scrollToTop() {
-  window.setTimeout(() => {
-    window.scrollTo({
-      top: Math.min(145, window.scrollY),
-      left: 0,
-      behavior: 'smooth',
-    });
-  }, 0);
-}
+import scrollToTop from '#utils/scrollToTop';
 
 interface Props {
   match: match<{ id?: string }>;
@@ -89,7 +80,7 @@ const stepTypesToFieldsMap: {
 };
 
 const defaultFormValues: PartialForm<DrefOperationalUpdateFields> = {
-  images: []
+  images_file: []
 };
 
 function DrefOperationalUpdate(props: Props) {
@@ -197,7 +188,7 @@ function DrefOperationalUpdate(props: Props) {
 
   const handleTabChange = React.useCallback((newStep: StepTypes) => {
     scrollToTop();
-    const isCurrentTabValid = validateCurrentTab(['images', 'photos']);
+    const isCurrentTabValid = validateCurrentTab(['event_map_file', 'photos']);
 
     if (!isCurrentTabValid) {
       return;
@@ -257,19 +248,22 @@ function DrefOperationalUpdate(props: Props) {
         const newMap = {
           ...prevMap,
         };
-        if (response.images_details?.length > 0) {
-          response.images_details.forEach((img) => {
-            newMap[img.id] = img.file;
-          });
-        }
         if (response.budget_file_details) {
           newMap[response.budget_file_details.id] = response.budget_file_details.file;
         }
-        if (response.cover_image_details) {
-          newMap[response.cover_image_details.id] = response.cover_image_details.file;
+        if (response.event_map_file && response.event_map_file.file) {
+          newMap[response.event_map_file.id] = response.event_map_file.file;
+        }
+        if (response.cover_image_file && response.cover_image_file.file) {
+          newMap[response.cover_image_file.id] = response.cover_image_file.file;
         }
         if (response.photos_details?.length > 0) {
           response.photos_details.forEach((img) => {
+            newMap[img.id] = img.file;
+          });
+        }
+        if (response.images_file?.length > 0) {
+          response.images_file.forEach((img) => {
             newMap[img.id] = img.file;
           });
         }
@@ -293,6 +287,17 @@ function DrefOperationalUpdate(props: Props) {
           ...ni,
           clientId: String(ni.id),
         })),
+
+        //TODO:
+        //images_file: response.images_file.map((img) => (
+        //  isDefined(img.file)
+        //    ? ({
+        //      id: img.id,
+        //      client_id: img.client_id ?? String(img.id),
+        //      caption: img.caption ?? '',
+        //    })
+        //    : undefined
+        //)).filter(isDefined),
         disability_people_per: response.disability_people_per ? +response.disability_people_per : undefined,
         people_per_urban: response.people_per_urban ? +response.people_per_urban : undefined,
         people_per_local: response.people_per_local ? +response.people_per_local : undefined,
@@ -349,7 +354,7 @@ function DrefOperationalUpdate(props: Props) {
 
   const handleSubmitButtonClick = React.useCallback(() => {
     scrollToTop();
-    const isCurrentTabValid = validateCurrentTab(['images']) && validateCurrentTab(['photos']);
+    const isCurrentTabValid = validateCurrentTab(['event_map_file']) && validateCurrentTab(['photos']);
     if (!isCurrentTabValid) {
       return;
     }
@@ -380,24 +385,13 @@ function DrefOperationalUpdate(props: Props) {
 
   const failedToLoadDref = !pending && isDefined(id) && !drefOperationalResponse;
 
-  React.useEffect(() => {
-    if (isDefined(value.new_operational_start_date) && isDefined(value.new_operational_end_date)) {
-      const startDateYear = new Date(value.new_operational_start_date).getFullYear();
-      const startDateMonth = new Date(value.new_operational_start_date).getMonth();
-      const endDateYear = new Date(value.new_operational_end_date).getFullYear();
-      const endDateMonth = new Date(value.new_operational_end_date).getMonth();
-      const totalOperatingTimeframe = ((endDateMonth + 12 * endDateYear) - (startDateMonth + 12 * startDateYear));
-
-      onValueChange(totalOperatingTimeframe, 'total_operation_timeframe');
-    }
-  }, [onValueChange, value.new_operational_start_date, value.new_operational_end_date]);
-
   const exportLinkProps = useButtonFeatures({
     variant: 'secondary',
     children: strings.drefFormExportLabel,
   });
 
   const isImminentOnset = value?.type_of_onset === ONSET_IMMINENT;
+  const isAssessmentReport = value?.is_assessment_report;
 
   return (
     <Tabs
@@ -536,6 +530,8 @@ function DrefOperationalUpdate(props: Props) {
                   nsActionOptions={nsActionOptions}
                   fileIdToUrlMap={fileIdToUrlMap}
                   setFileIdToUrlMap={setFileIdToUrlMap}
+                  isAssessmentReport={isAssessmentReport}
+                  isImminentOnset={isImminentOnset}
                 />
               </TabPanel>
               <TabPanel name='operation'>
@@ -546,6 +542,8 @@ function DrefOperationalUpdate(props: Props) {
                   value={value}
                   fileIdToUrlMap={fileIdToUrlMap}
                   setFileIdToUrlMap={setFileIdToUrlMap}
+                  isAssessmentReport={isAssessmentReport}
+                  yesNoOptions={yesNoOptions}
                 />
               </TabPanel>
               <TabPanel name='submission'>
