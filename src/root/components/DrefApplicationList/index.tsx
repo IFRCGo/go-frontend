@@ -692,15 +692,15 @@ function DrefApplicationList(props: Props) {
       contentClassName={styles.content}
       descriptionClassName={styles.filters}
       description={(
-          <SelectInput
-            name={undefined}
-            placeholder="Select Country"
-            options={countryOptions}
-            value={country}
-            onChange={setCountry}
-            isClearable
-            disabled={pending}
-          />
+        <SelectInput
+          name={undefined}
+          placeholder="Select Country"
+          options={countryOptions}
+          value={country}
+          onChange={setCountry}
+          isClearable
+          disabled={pending}
+        />
       )}
     >
       {(drefPublishPending || newFinalReportPending || newOperationalUpdatePending) && <GlobalLoading />}
