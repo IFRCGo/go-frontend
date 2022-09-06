@@ -9,6 +9,7 @@ import {
   IoAdd,
   IoList,
   IoPushOutline,
+  IoCloudUploadSharp,
 } from 'react-icons/io5';
 import {
   MdEdit,
@@ -17,7 +18,6 @@ import {
 import {
   EntriesAsList,
   Error,
-  getErrorObject,
   PartialForm,
 } from '@togglecorp/toggle-form';
 
@@ -51,12 +51,12 @@ import { compareLabel } from '#utils/common';
 import useAlert from '#hooks/useAlert';
 import { DrefOperationalUpdateResponse } from '#types';
 import OperationalUpdateExport from '#components/OperationalUpdateExport';
-import DREFFileImport from '#components/DREFFileImport';
+import InputSection from '#components/InputSection';
+import FileInput from '#components/FileInput';
 
 import styles from './styles.module.scss';
 
 const ITEM_PER_PAGE = 6;
-
 interface OperationalUpdateDetails {
   id: number;
   title: string;
@@ -94,31 +94,23 @@ interface DrefOperationalResponseFields {
   id: number;
 }
 
-interface DREFFileField {
+interface DrefImportFields {
   file: number;
+  dref: number;
+  id: number;
 }
-type Value = PartialForm<DREFFileField>;
 
+type Value = PartialForm<DrefImportFields>;
 interface Props {
   history: History;
   value: Value,
-  onValueChange: (...entries: EntriesAsList<Value>) => void;
-  fileIdToUrlMap: Record<number, string>;
-  setFileIdToUrlMap?: React.Dispatch<React.SetStateAction<Record<number, string>>>;
   error: Error<Value> | undefined;
+  onValueChange: (...entries: EntriesAsList<Value>) => void;
 }
 
 function DrefApplicationList(props: Props) {
-  const {
-    history,
-    onValueChange,
-    value,
-    setFileIdToUrlMap,
-    fileIdToUrlMap,
-    error: formError,
-  } = props;
 
-  const error = getErrorObject(formError);
+  const { history } = props;
 
   const alert = useAlert();
   const { strings } = React.useContext(LanguageContext);
@@ -326,6 +318,45 @@ function DrefApplicationList(props: Props) {
       );
     }
   });
+
+  const {
+    pending: drefImportPending,
+    trigger: postDrefDocumentImport
+  } = useLazyRequest<DrefImportFields, File | undefined>({
+    formData: true,
+    url: () => 'api/v2/dref-file-slow-sudden/',
+    body: (ctx) => ({ file: ctx }),
+    method: 'POST',
+    onSuccess: (response) => {
+      console.log('success', response);
+      if (isDefined(response.id)) {
+        history.push(`/dref-application/${response.dref}/edit/`);
+      }
+    },
+    onFailure: ({
+      value: { messageForNotification },
+      debugMessage,
+    }) => {
+      console.log('failure');
+      alert.show(
+        <p>
+          {strings.drefLoadPdfFailureMessage}
+          &nbsp;
+          <strong>
+            {messageForNotification}
+          </strong>
+        </p>,
+        {
+          variant: 'danger',
+          debugMessage,
+        }
+      );
+    }
+  });
+
+  const handleDocumentImportChange = React.useCallback((file: File | undefined) => {
+    postDrefDocumentImport(file);
+  }, [postDrefDocumentImport]);
 
   const handleDrefPublishConfirm = React.useCallback((drefId: number) => {
     postDrefPublishRequest(drefId);
@@ -591,7 +622,6 @@ function DrefApplicationList(props: Props) {
       contentClassName={styles.content}
       descriptionClassName={styles.filters}
       description={(
-        <>
           <SelectInput
             name={undefined}
             placeholder="Select Country"
@@ -601,25 +631,28 @@ function DrefApplicationList(props: Props) {
             isClearable
             disabled={pending}
           />
-          <div className={styles.buttonImport}>
-            <DREFFileImport
-              accept=".docx"
-              error={error?.file}
-              fileIdToUrlMap={fileIdToUrlMap}
-              name="file"
-              onChange={onValueChange}
-              setFileIdToUrlMap={setFileIdToUrlMap}
-              value={value?.file}
-              multiple={false}
-              disabled={pending}
-            >
-              {strings.drefFileImportLabel}
-            </DREFFileImport>
-          </div>
-        </>
       )}
     >
       {(drefPublishPending || newFinalReportPending || newOperationalUpdatePending) && <GlobalLoading />}
+      <Container
+        heading={strings.drefDocumentImportTitle}
+        sub
+      >
+        <InputSection>
+          <FileInput
+            type='file'
+            accept='.docx'
+            name="file"
+            multiple={false}
+            disabled={drefImportPending}
+            value={undefined}
+            onChange={handleDocumentImportChange}
+          >
+            <IoCloudUploadSharp /> &nbsp;
+            {strings.drefDocumentImportSlowSuddenLabel}
+          </FileInput>
+        </InputSection>
+      </Container>
       <Container
         heading={strings.drefTableInProgressHeading}
         sub
