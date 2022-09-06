@@ -320,15 +320,14 @@ function DrefApplicationList(props: Props) {
   });
 
   const {
-    pending: drefImportPending,
-    trigger: postDrefDocumentImport
+    pending: drefImportSlowSuddenPending,
+    trigger: postDrefDocumentImportSlowSudden
   } = useLazyRequest<DrefImportFields, File | undefined>({
     formData: true,
     url: () => 'api/v2/dref-file-slow-sudden/',
     body: (ctx) => ({ file: ctx }),
     method: 'POST',
     onSuccess: (response) => {
-      console.log('success', response);
       if (isDefined(response.id)) {
         history.push(`/dref-application/${response.dref}/edit/`);
       }
@@ -337,7 +336,70 @@ function DrefApplicationList(props: Props) {
       value: { messageForNotification },
       debugMessage,
     }) => {
-      console.log('failure');
+      alert.show(
+        <p>
+          {strings.drefLoadPdfFailureMessage}
+          &nbsp;
+          <strong>
+            {messageForNotification}
+          </strong>
+        </p>,
+        {
+          variant: 'danger',
+          debugMessage,
+        }
+      );
+    }
+  });
+  const {
+    pending: drefImportImminentPending,
+    trigger: postDrefDocumentImportImminent
+  } = useLazyRequest<DrefImportFields, File | undefined>({
+    formData: true,
+    url: () => 'api/v2/dref-file-imminent/',
+    body: (ctx) => ({ file: ctx }),
+    method: 'POST',
+    onSuccess: (response) => {
+      if (isDefined(response.id)) {
+        history.push(`/dref-application/${response.dref}/edit/`);
+      }
+    },
+    onFailure: ({
+      value: { messageForNotification },
+      debugMessage,
+    }) => {
+      alert.show(
+        <p>
+          {strings.drefLoadPdfFailureMessage}
+          &nbsp;
+          <strong>
+            {messageForNotification}
+          </strong>
+        </p>,
+        {
+          variant: 'danger',
+          debugMessage,
+        }
+      );
+    }
+  });
+  const {
+    pending: drefImportAssessmentPending,
+    trigger: postDrefDocumentImportAssessment
+  } = useLazyRequest<DrefImportFields, File | undefined>({
+    formData: true,
+    url: () => 'api/v2/dref-file-assessment/',
+    body: (ctx) => ({ file: ctx }),
+    method: 'POST',
+    onSuccess: (response) => {
+      if (isDefined(response.id)) {
+        history.push(`/dref-application/${response.dref}/edit/`);
+      }
+    },
+    onFailure: ({
+      value: { messageForNotification },
+      debugMessage,
+    }) => {
       alert.show(
         <p>
           {strings.drefLoadPdfFailureMessage}
@@ -354,9 +416,17 @@ function DrefApplicationList(props: Props) {
     }
   });
 
-  const handleDocumentImportChange = React.useCallback((file: File | undefined) => {
-    postDrefDocumentImport(file);
-  }, [postDrefDocumentImport]);
+  const handleDocumentImportSlowSudden = React.useCallback((file: File | undefined) => {
+    postDrefDocumentImportSlowSudden(file);
+  }, [postDrefDocumentImportSlowSudden]);
+
+  const handleDocumentImportImminent = React.useCallback((file: File | undefined) => {
+    postDrefDocumentImportImminent(file);
+  }, [postDrefDocumentImportImminent]);
+
+  const handleDocumentImportAssessment = React.useCallback((file: File | undefined) => {
+    postDrefDocumentImportAssessment(file);
+  }, [postDrefDocumentImportAssessment]);
 
   const handleDrefPublishConfirm = React.useCallback((drefId: number) => {
     postDrefPublishRequest(drefId);
@@ -638,18 +708,42 @@ function DrefApplicationList(props: Props) {
         heading={strings.drefDocumentImportTitle}
         sub
       >
-        <InputSection>
+        <InputSection fullWidthColumn>
           <FileInput
             type='file'
             accept='.docx'
             name="file"
             multiple={false}
-            disabled={drefImportPending}
+            disabled={drefImportSlowSuddenPending}
             value={undefined}
-            onChange={handleDocumentImportChange}
+            onChange={handleDocumentImportSlowSudden}
           >
             <IoCloudUploadSharp /> &nbsp;
             {strings.drefDocumentImportSlowSuddenLabel}
+          </FileInput>
+          <FileInput
+            type='file'
+            accept='.docx'
+            name="file"
+            multiple={false}
+            disabled={drefImportImminentPending}
+            value={undefined}
+            onChange={handleDocumentImportImminent}
+          >
+            <IoCloudUploadSharp /> &nbsp;
+            {strings.drefDocumentImportImminentLabel}
+          </FileInput>
+          <FileInput
+            type='file'
+            accept='.docx'
+            name="file"
+            multiple={false}
+            disabled={drefImportAssessmentPending}
+            value={undefined}
+            onChange={handleDocumentImportAssessment}
+          >
+            <IoCloudUploadSharp /> &nbsp;
+            {strings.drefDocumentImportAssessmentLabel}
           </FileInput>
         </InputSection>
       </Container>
