@@ -3502,7 +3502,10 @@ export default {
   drefExportIndicators: 'Indicators',
   drefExportPriorityActions: 'Priority Actions:',
   drefExportBudgetOverview: 'Budget Overview',
-  drefFileImportLabel: 'Import from Document',
+  drefDocumentImportTitle: 'Import from Document',
+  drefDocumentImportSlowSuddenLabel: 'Slow/Sudden',
+  drefDocumentImportImminentLabel: 'Imminent',
+  drefDocumentImportAssessmentLabel: 'Assessment',
 
   // Flash Update
   flashUpdateFormPageTitle: 'IFRC GO - Flash Update Request',
