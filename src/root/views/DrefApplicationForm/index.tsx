@@ -641,6 +641,7 @@ function DrefApplication(props: Props) {
                 setFileIdToUrlMap={setFileIdToUrlMap}
                 yesNoOptions={yesNoOptions}
                 isAssessmentReport={isAssessmentReport}
+                isImminentOnset={isImminentOnset}
               />
             </TabPanel>
             <TabPanel name="submission">
