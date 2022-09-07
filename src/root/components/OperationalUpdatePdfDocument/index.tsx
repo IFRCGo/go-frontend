@@ -393,13 +393,13 @@ function OperationalUpdatePdfDocument(props: Props) {
             {documentTitle}
           </Text>
         </View>
-        {operationalUpdateResponse.cover_image_details && (
+        {operationalUpdateResponse.cover_image_file.file && (
           <View
             style={pdfStyles.section}
           >
             <PDFImage
               style={pdfStyles.bannerImage}
-              src={operationalUpdateResponse.cover_image_details.file}
+              src={operationalUpdateResponse.cover_image_file.file}
             />
           </View>
         )}
@@ -480,13 +480,13 @@ function OperationalUpdatePdfDocument(props: Props) {
           operationalUpdateResponse?.event_description ||
           operationalUpdateResponse?.event_scope ||
           operationalUpdateResponse?.anticipatory_actions ||
-          operationalUpdateResponse?.images_details.length > 0
+          operationalUpdateResponse?.images_file.length > 0
         ) && (
             <View>
               <Text style={pdfStyles.sectionHeading}>
                 {strings.drefFormDescriptionEvent}
               </Text>
-              {operationalUpdateResponse.images_details?.map((el) => (
+              {operationalUpdateResponse.images_file?.map((el) => (
                 <View
                   style={pdfStyles.subSection}
                   key={el.id}
