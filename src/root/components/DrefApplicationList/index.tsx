@@ -56,7 +56,6 @@ import FileInput from '#components/FileInput';
 
 import styles from './styles.module.scss';
 
-const ITEM_PER_PAGE = 6;
 interface OperationalUpdateDetails {
   id: number;
   title: string;
@@ -85,6 +84,11 @@ interface DrefApplicationResponse {
   dref_final_report_details: FinalReportDetails;
   is_final_report_created: boolean;
 }
+
+const ITEM_PER_PAGE = 6;
+const SLOW_SUDDEN = "slow";
+const IMMINENT = "imminent";
+const ASSESSMENT = "assessment";
 
 const drefKeySelector = (d: DrefApplicationResponse) => d.id;
 const operationalUpdateKeySelector = (d: OperationalUpdateDetails) => d.id;
@@ -416,17 +420,21 @@ function DrefApplicationList(props: Props) {
     }
   });
 
-  const handleDocumentImportSlowSudden = React.useCallback((file: File | undefined) => {
-    postDrefDocumentImportSlowSudden(file);
-  }, [postDrefDocumentImportSlowSudden]);
-
-  const handleDocumentImportImminent = React.useCallback((file: File | undefined) => {
-    postDrefDocumentImportImminent(file);
-  }, [postDrefDocumentImportImminent]);
-
-  const handleDocumentImportAssessment = React.useCallback((file: File | undefined) => {
-    postDrefDocumentImportAssessment(file);
-  }, [postDrefDocumentImportAssessment]);
+  const handleDocumentImport = React.useCallback((file: File | undefined, name: string) => {
+    if (isDefined(name) && name === SLOW_SUDDEN) {
+      postDrefDocumentImportSlowSudden(file);
+    } else if (isDefined(name) && name === IMMINENT) {
+      postDrefDocumentImportImminent(file);
+    } else if (isDefined(name) && name === ASSESSMENT) {
+      postDrefDocumentImportAssessment(file);
+    } else {
+      return;
+    }
+  }, [
+    postDrefDocumentImportSlowSudden,
+    postDrefDocumentImportImminent,
+    postDrefDocumentImportAssessment,
+  ]);
 
   const handleDrefPublishConfirm = React.useCallback((drefId: number) => {
     postDrefPublishRequest(drefId);
@@ -684,7 +692,13 @@ function DrefApplicationList(props: Props) {
     return publishedDrefResponse?.results?.find((d) => d.id === selectedDrefIdForOperationalUpdateList);
   }, [selectedDrefIdForOperationalUpdateList, publishedDrefResponse]);
 
-  const pending = publishedDrefPending || inProgressDrefPending || newOperationalUpdatePending || newFinalReportPending;
+  const pending = publishedDrefPending
+    || inProgressDrefPending
+    || newOperationalUpdatePending
+    || newFinalReportPending
+    || drefImportSlowSuddenPending
+    || drefImportImminentPending
+    || drefImportAssessmentPending;
 
   return (
     <Container
@@ -712,11 +726,10 @@ function DrefApplicationList(props: Props) {
           <FileInput
             type='file'
             accept='.docx'
-            name="file"
-            multiple={false}
-            disabled={drefImportSlowSuddenPending}
+            name={SLOW_SUDDEN}
             value={undefined}
-            onChange={handleDocumentImportSlowSudden}
+            disabled={pending}
+            onChange={handleDocumentImport}
           >
             <IoCloudUploadSharp /> &nbsp;
             {strings.drefDocumentImportSlowSuddenLabel}
@@ -724,11 +737,10 @@ function DrefApplicationList(props: Props) {
           <FileInput
             type='file'
             accept='.docx'
-            name="file"
-            multiple={false}
-            disabled={drefImportImminentPending}
+            name={IMMINENT}
             value={undefined}
-            onChange={handleDocumentImportImminent}
+            disabled={pending}
+            onChange={handleDocumentImport}
           >
             <IoCloudUploadSharp /> &nbsp;
             {strings.drefDocumentImportImminentLabel}
@@ -736,11 +748,10 @@ function DrefApplicationList(props: Props) {
           <FileInput
             type='file'
             accept='.docx'
-            name="file"
-            multiple={false}
-            disabled={drefImportAssessmentPending}
+            name={ASSESSMENT}
             value={undefined}
-            onChange={handleDocumentImportAssessment}
+            disabled={pending}
+            onChange={handleDocumentImport}
           >
             <IoCloudUploadSharp /> &nbsp;
             {strings.drefDocumentImportAssessmentLabel}
