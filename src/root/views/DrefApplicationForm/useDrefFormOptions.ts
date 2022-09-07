@@ -37,7 +37,6 @@ import {
   DrefFields,
   NumericKeyValuePair,
   StringKeyValuePair,
-  ONSET_SUDDEN,
   Need,
   RiskSecurityProps,
   Intervention,
