@@ -31,7 +31,6 @@ import {
   DrefFields,
   StringValueOption,
   Intervention,
-  ONSET_IMMINENT,
   BooleanValueOption,
   booleanOptionKeySelector,
   optionLabelSelector,
@@ -55,6 +54,7 @@ interface Props {
   setFileIdToUrlMap?: React.Dispatch<React.SetStateAction<Record<number, string>>>;
   yesNoOptions: BooleanValueOption[];
   isAssessmentReport?: boolean;
+  isImminentOnset?: boolean;
 }
 
 function Response(props: Props) {
@@ -69,6 +69,7 @@ function Response(props: Props) {
     value,
     yesNoOptions,
     isAssessmentReport,
+    isImminentOnset
   } = props;
 
   const error = getErrorObject(formError);
@@ -142,13 +143,11 @@ function Response(props: Props) {
     interventionsIdentifiedMap
       ? interventionOptions.filter(n => !interventionsIdentifiedMap[n.value])
       : []
-  , [
+    , [
       interventionsIdentifiedMap,
       interventionOptions,
     ]
   );
-
-  const isImminentOnset = value.type_of_onset === ONSET_IMMINENT;
 
   const isSurgePersonnelDeployed = value?.is_surge_personnel_deployed;
 
