@@ -128,7 +128,7 @@ function transformResponseToFormFields(response: EmergencyProjectResponse) {
   const formValues: PartialForm<EmergencyThreeWFormFields> = {
     title: response.title,
     country: response.country,
-    districts: response.districts,
+    districts: response.districts_details.map((d) => d.id),
     status: response.status,
     event: response.event,
     start_date: response.start_date,
