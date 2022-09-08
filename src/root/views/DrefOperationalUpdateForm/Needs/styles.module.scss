@@ -8,3 +8,15 @@
     padding: $spacing*0.5;
   }
 }
+
+.map-input-content,
+.image-input-content {
+  display: flex;
+  flex-direction: column;
+
+  .preview-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $spacing;
+  }
+}

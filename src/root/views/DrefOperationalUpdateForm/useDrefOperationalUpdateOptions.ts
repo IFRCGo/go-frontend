@@ -171,12 +171,14 @@ const defaultSchema = {
   people_in_need: [],
   supporting_document: [],
   risk_security_concern: [],
-  photos: [lessThanEqualToTwoImagesCondition],
+  photos_file: [lessThanEqualToTwoImagesCondition],
   additional_allocation: [],
   total_dref_allocation: [],
   is_man_made_event: [],
   is_assessment_report: [],
   dref: [],
+  has_forecasted_event_materialize: [],
+  specified_trigger_met: [],
   national_society_actions: {
     keySelector: (n: PartialForm<NsAction>) => n.clientId as string,
     member: (): NsActionsSchemaMember => ({

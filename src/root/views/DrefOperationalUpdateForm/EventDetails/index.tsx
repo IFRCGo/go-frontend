@@ -151,9 +151,7 @@ function EventDetails(props: Props) {
             error={error?.changing_budget}
           />
         </InputSection>
-        <InputSection
-          title={strings.drefOperationalUpdateSummaryRequestForSecondAllocation}
-        >
+        <InputSection title={strings.drefOperationalUpdateSummaryRequestForSecondAllocation}>
           <RadioInput
             name={"request_for_second_allocation" as const}
             options={yesNoOptions}
@@ -164,7 +162,36 @@ function EventDetails(props: Props) {
             error={error?.request_for_second_allocation}
           />
         </InputSection>
-
+        {isImminentOnset &&
+          <InputSection
+            title={strings.drefOperationalUpdateEventMaterialize}
+          >
+            <RadioInput
+              name={"has_forecasted_event_materialize" as const}
+              options={yesNoOptions}
+              keySelector={booleanOptionKeySelector}
+              labelSelector={optionLabelSelector}
+              value={value.has_forecasted_event_materialize}
+              onChange={onValueChange}
+              error={error?.has_forecasted_event_materialize}
+            />
+          </InputSection>
+        }
+        {(isImminentOnset && value.has_forecasted_event_materialize)
+          &&
+          <InputSection
+            title={strings.drefOperationalUpdateEventMaterializeExplain}
+            description={strings.drefOperationalUpdateEventMaterializeExplainDescription}
+          >
+            <TextArea
+              name="specified_trigger_met"
+              value={value.specified_trigger_met}
+              onChange={onValueChange}
+              error={error?.specified_trigger_met}
+              placeholder={strings.drefOperationalUpdateSummaryExplain}
+            />
+          </InputSection>
+        }
         <InputSection title={strings.drefOperationalUpdateSummaryExplain}>
           <TextArea
             name="summary_of_change"

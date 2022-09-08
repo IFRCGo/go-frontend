@@ -30,9 +30,11 @@ import {
   Need,
   NsAction,
   optionLabelSelector,
+  SingleFileWithCaption,
   StringValueOption,
 } from '../common';
 import styles from './styles.module.scss';
+import CaptionInput from '#views/DrefApplicationForm/CaptionInput/CaptionInput';
 
 type Value = PartialForm<DrefOperationalUpdateFields>;
 interface Props {
@@ -141,6 +143,33 @@ function Needs(props: Props) {
   const filteredNsActionOptions = nsActionsMap ? nsActionOptions.filter(n => !nsActionsMap[n.value]) : [];
   const isThereCoordinationMechanism = value.is_there_major_coordination_mechanism;
 
+  const imagesValue = React.useMemo(() => (
+    value?.photos_file?.map(d => d.id).filter(d => !!d) as number[] | undefined
+  ), [value?.photos_file]);
+
+  const {
+    setValue: onImageChange,
+    removeValue: onImageRemove,
+  } = useFormArray<'photos_file', PartialForm<SingleFileWithCaption>>(
+    'photos_file',
+    onValueChange,
+  );
+  const handleImageInputChange = React.useCallback((newValue: number[] | undefined) => {
+    const imageCaptionByIdMap = listToMap(
+      value?.photos_file ?? [],
+      img => img.id as number,
+      img => img.caption,
+    );
+
+    const newImageList: undefined | PartialForm<SingleFileWithCaption[]> = newValue?.map((v) => ({
+      client_id: String(v),
+      id: v,
+      caption: imageCaptionByIdMap[v],
+    }));
+
+    onValueChange(newImageList, 'photos_file' as const);
+  }, [value?.photos_file, onValueChange]);
+
   return (
     <>
       <Container
@@ -148,19 +177,35 @@ function Needs(props: Props) {
         className={styles.nationalSocietyActions}
         visibleOverflow
       >
-        <InputSection>
+        <InputSection
+          contentSectionClassName={styles.imageInputContent}
+        >
           <DREFFileInput
-            accept='image/*'
-            name='photos'
-            onChange={onValueChange}
-            value={value.photos}
-            error={error?.photos}
+            name="photos_file"
+            value={imagesValue}
+            onChange={handleImageInputChange}
+            accept="image/*"
+            multiple
+            error={error?.photos_file}
             fileIdToUrlMap={fileIdToUrlMap}
             setFileIdToUrlMap={setFileIdToUrlMap}
-            multiple
+            hidePreview
           >
             {strings.operationalUpdateCurrentNsImageLabel}
           </DREFFileInput>
+          <div className={styles.previewList}>
+            {value?.photos_file?.map((g, i) => (
+              <CaptionInput
+                key={g.client_id}
+                index={i}
+                value={g}
+                onChange={onImageChange}
+                onRemove={onImageRemove}
+                error={getErrorObject(error?.photos_file)}
+                fileIdToUrlMap={fileIdToUrlMap}
+              />
+            ))}
+          </div>
         </InputSection>
         <InputSection>
           <SelectInput
