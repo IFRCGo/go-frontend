@@ -2,7 +2,6 @@ import {
   Country,
   DistrictMini,
 } from "#types/country";
-import { FileWithCaption } from "#views/DrefApplicationForm/common";
 
 export const ONSET_IMMINENT = 0;
 export const ONSET_SLOW = 1;
@@ -92,8 +91,9 @@ export interface Intervention {
 }
 
 export interface SingleFileWithCaption {
+  client_id: string;
   id: number;
-  file?: string;
+  file: string;
   caption: string;
 }
 export interface RiskSecurityProps {
@@ -119,7 +119,7 @@ export interface DrefOperationalUpdateFields {
   additional_allocation: number;
   total_dref_allocation: number;
   emergency_appeal_planned: boolean;
-  images_file: FileWithCaption[];
+  images_file: SingleFileWithCaption[];
   operational_update_number: number;
   new_operational_start_date: string;
   reporting_timeframe: string;
@@ -195,7 +195,7 @@ export interface DrefOperationalUpdateFields {
   anticipatory_actions: string;
   cover_image_file: SingleFileWithCaption;
   event_map_file: SingleFileWithCaption;
-  photos: number[];
+  photos_file: SingleFileWithCaption[];
   country: number;
   district: number[];
   country_details: Country;
@@ -211,9 +211,11 @@ export interface DrefOperationalUpdateFields {
   logistic_capacity_of_ns: string;
   is_surge_personnel_deployed: boolean;
   surge_personnel_deployed: string;
+  has_forecasted_event_materialize: boolean;
+  specified_trigger_met: string;
 }
 
-export interface DrefOperationalUpdateApiFields extends Omit<DrefOperationalUpdateFields, 'district_details' | 'planned_interventions' | 'national_society_actions' | 'needs_identified' | 'cover_image_file' | 'event_map_file' | 'images_file'> {
+export interface DrefOperationalUpdateApiFields extends Omit<DrefOperationalUpdateFields, 'district_details' | 'planned_interventions' | 'national_society_actions' | 'needs_identified' | 'cover_image_file' | 'event_map_file' | 'images_file' | 'photos_file'> {
   user: number;
   district_details: DistrictMini[],
   planned_interventions: (Omit<Intervention, 'clientId' | 'indicators'> & {
@@ -237,18 +239,15 @@ export interface DrefOperationalUpdateApiFields extends Omit<DrefOperationalUpda
     id: number;
     file: string;
   };
-  photos_details: {
-    id: number;
-    file: string;
-  }[];
   assessment_report_details: {
     id: number;
     file: string;
   };
   assessment_report_preview: string,
-  images_file: FileWithCaption[],
+  images_file: SingleFileWithCaption[],
   cover_image_file: SingleFileWithCaption;
   event_map_file: SingleFileWithCaption;
+  photos_file: SingleFileWithCaption[];
 }
 
 export const overviewFields: (keyof DrefOperationalUpdateFields)[] = [
@@ -282,7 +281,9 @@ export const eventFields: (keyof DrefOperationalUpdateFields)[] = [
   'has_change_since_request',
   'event_description',
   'event_scope',
-  'images_file'
+  'images_file',
+  'has_forecasted_event_materialize',
+  'specified_trigger_met',
 ];
 export const needsFields: (keyof DrefOperationalUpdateFields)[] = [
   'national_society_actions',
@@ -296,7 +297,7 @@ export const needsFields: (keyof DrefOperationalUpdateFields)[] = [
   'major_coordination_mechanism',
   'needs_identified',
   'identified_gaps',
-  'photos',
+  'photos_file',
   'is_there_major_coordination_mechanism',
   'assessment_report'
 ];

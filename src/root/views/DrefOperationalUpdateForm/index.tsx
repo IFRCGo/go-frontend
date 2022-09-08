@@ -80,7 +80,12 @@ const stepTypesToFieldsMap: {
 };
 
 const defaultFormValues: PartialForm<DrefOperationalUpdateFields> = {
-  images_file: []
+  planned_interventions: [],
+  national_society_actions: [],
+  needs_identified: [],
+  images_file: [],
+  users: [],
+  is_assessment_report: false,
 };
 
 function DrefOperationalUpdate(props: Props) {
@@ -188,7 +193,7 @@ function DrefOperationalUpdate(props: Props) {
 
   const handleTabChange = React.useCallback((newStep: StepTypes) => {
     scrollToTop();
-    const isCurrentTabValid = validateCurrentTab(['event_map_file', 'photos']);
+    const isCurrentTabValid = validateCurrentTab(['event_map_file', 'photos_file']);
 
     if (!isCurrentTabValid) {
       return;
@@ -257,8 +262,8 @@ function DrefOperationalUpdate(props: Props) {
         if (response.cover_image_file && response.cover_image_file.file) {
           newMap[response.cover_image_file.id] = response.cover_image_file.file;
         }
-        if (response.photos_details?.length > 0) {
-          response.photos_details.forEach((img) => {
+        if (response.photos_file?.length > 0) {
+          response.photos_file.forEach((img) => {
             newMap[img.id] = img.file;
           });
         }
@@ -287,17 +292,25 @@ function DrefOperationalUpdate(props: Props) {
           ...ni,
           clientId: String(ni.id),
         })),
+        images_file: response.images_file.map((img) => (
+          isDefined(img.file)
+            ? ({
+              id: img.id,
+              client_id: img.client_id ?? String(img.id),
+              caption: img.caption ?? '',
+            })
+            : undefined
+        )).filter(isDefined),
 
-        //TODO:
-        //images_file: response.images_file.map((img) => (
-        //  isDefined(img.file)
-        //    ? ({
-        //      id: img.id,
-        //      client_id: img.client_id ?? String(img.id),
-        //      caption: img.caption ?? '',
-        //    })
-        //    : undefined
-        //)).filter(isDefined),
+        photos_file: response.photos_file.map((img) => (
+          isDefined(img.file)
+            ? ({
+              id: img.id,
+              client_id: img.client_id ?? String(img.id),
+              caption: img.caption ?? '',
+            })
+            : undefined
+        )).filter(isDefined),
         disability_people_per: response.disability_people_per ? +response.disability_people_per : undefined,
         people_per_urban: response.people_per_urban ? +response.people_per_urban : undefined,
         people_per_local: response.people_per_local ? +response.people_per_local : undefined,
@@ -354,7 +367,7 @@ function DrefOperationalUpdate(props: Props) {
 
   const handleSubmitButtonClick = React.useCallback(() => {
     scrollToTop();
-    const isCurrentTabValid = validateCurrentTab(['event_map_file']) && validateCurrentTab(['photos']);
+    const isCurrentTabValid = validateCurrentTab(['event_map_file']) && validateCurrentTab(['photos_file']);
     if (!isCurrentTabValid) {
       return;
     }
@@ -392,6 +405,8 @@ function DrefOperationalUpdate(props: Props) {
 
   const isImminentOnset = value?.type_of_onset === ONSET_IMMINENT;
   const isAssessmentReport = value?.is_assessment_report;
+  console.warn({ value });
+  console.warn({ error });
 
   return (
     <Tabs

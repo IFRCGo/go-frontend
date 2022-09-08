@@ -3668,6 +3668,9 @@ export default {
   drefOperationalUpdateSummaryAreYouChangingBudget: 'Are you making changes to the budget',
   drefOperationalUpdateSummaryRequestForSecondAllocation: 'Is this a request for a second allocation',
   drefOperationalUpdateSummaryExplain: 'Please explain the summary of changes and justification',
+  drefOperationalUpdateEventMaterialize: 'Has the forecasted event materialize?',
+  drefOperationalUpdateEventMaterializeExplain: 'Please explain how is the operation is transitioning from Anticipatory to Response',
+  drefOperationalUpdateEventMaterializeExplainDescription: 'Explain on whether the specified triggers have been met, and if the event has materialized either as forecasted or if there were any differences. Also please provide an update on the readiness, prepositioning and/or early actions implemented so far',
   // Description of event
   drefOperationalUpdateDescriptionOfEventHeading: 'Description of the event',
   drefOperationalUpdateDescriptionOfEventLabel: 'Has anything changed in the context since the request',
