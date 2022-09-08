@@ -171,7 +171,7 @@ const defaultSchema = {
   people_in_need: [],
   supporting_document: [],
   risk_security_concern: [],
-  photos: [lessThanEqualToTwoImagesCondition],
+  photos_file: [lessThanEqualToTwoImagesCondition],
   additional_allocation: [],
   total_dref_allocation: [],
   is_man_made_event: [],
