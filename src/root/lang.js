@@ -3685,11 +3685,12 @@ export default {
 
   //pdf export
   operationalUpdateExportTitle: 'operational update',
-  operationalUpdateExportPeopleAffected: 'People affected',
-  operationalUpdateExportPeopleTargeted: 'People targeted',
-  operationalUpdateExportNewOperationalEndDate: 'New Operational end date',
+  operationalUpdateExportPeopleAffected: 'People affected:',
+  operationalUpdateExportPeopleTargeted: 'People targeted:',
+  operationalUpdateExportNewOperationalEndDate: 'New Operational end date:',
   operationalUpdateExportPersonReachedLabel: 'Persons reached:',
   operationalUpdateCurrentNsImageLabel: 'Add photos of National Society Operation',
+  drefOperationalUpdateExportTimeFrameTotalOperatingTimeFrame: 'Total operating timeframe:',
 
   //TODO: final report
   finalReportTitle: 'Final Report',

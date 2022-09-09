@@ -206,6 +206,17 @@ export interface DrefOperationalUpdateFields {
   surge_personnel_deployed: string;
   has_forecasted_event_materialize: boolean;
   specified_trigger_met: string;
+  disaster_type_details: {
+    id: number;
+    name: string;
+    summary: string;
+  };
+  disaster_category_display: 'Yellow' | 'Red' | 'Orange';
+  type_of_onset_display: string;
+  supporting_document_details: {
+    id: number;
+    file: string;
+  };
 }
 
 export interface DrefOperationalUpdateApiFields extends Omit<DrefOperationalUpdateFields, 'district_details' | 'planned_interventions' | 'national_society_actions' | 'needs_identified' | 'cover_image_file' | 'event_map_file' | 'images_file' | 'photos_file'> {
@@ -233,6 +244,17 @@ export interface DrefOperationalUpdateApiFields extends Omit<DrefOperationalUpda
     file: string;
   };
   assessment_report_details: {
+    id: number;
+    file: string;
+  };
+  disaster_type_details: {
+    id: number;
+    name: string;
+    summary: string;
+  };
+  disaster_category_display: 'Yellow' | 'Red' | 'Orange';
+  type_of_onset_display: string;
+  supporting_document_details: {
     id: number;
     file: string;
   };
