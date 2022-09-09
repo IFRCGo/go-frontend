@@ -231,36 +231,39 @@ function ProjectDetail(props: Props) {
           </Row>
           {projectResponse !== undefined && projectResponse?.annual_split_detail.length > 0 ?
               <Row>
-                <table>
+                <table className={styles.bottomTable}>
                   <thead>
                     <tr className={styles.annualSplit}>
-                      <th>{strings.threeWYear}:</th>
-                      <th>{strings.threeWBudgetAmount}:</th>
-                      <th>{strings.threeWTargetMale}:</th>
-                      <th>{strings.threeWTargetFemale}:</th>
-                      <th>{strings.threeWTargetOther}:</th>
-                      <th>{strings.threeWTargetTotal}:</th>
-                      <th>{strings.threeWReachedMale}:</th>
-                      <th>{strings.threeWReachedFemale}:</th>
-                      <th>{strings.threeWReachedOther}:</th>
-                      <th>{strings.threeWReachedTotal}:</th>
+                      <th className={styles.left}>{strings.threeWYear} / {strings.threeWBudgetAmount}:</th>
+                      <th></th>
+                      <th>{strings.threeWMale}:</th>
+                      <th>{strings.threeWFemale}:</th>
+                      <th>{strings.threeWOther}:</th>
+                      <th>{strings.threeWTotal}:</th>
                     </tr>
                   </thead>
                   <tbody>
                     {projectResponse?.annual_split_detail.map(split => {
                       return (
+                          <>
                           <tr key={split.year} className={styles.center}>
                             <td className={styles.bold}>{split.year}</td>
-                            <td>{split.budget_amount}</td>
-                            <td>{split.target_male}</td>
-                            <td>{split.target_female}</td>
-                            <td>{split.target_other}</td>
-                            <td>{split.target_total}</td>
-                            <td>{split.reached_male}</td>
-                            <td>{split.reached_female}</td>
-                            <td>{split.reached_other}</td>
-                            <td>{split.reached_total}</td>
+                            <th className={styles.annualSplit}>People targeted</th>
+                            <td className={styles.relief}>{split.target_male}</td>
+                            <td className={styles.relief}>{split.target_female}</td>
+                            <td className={styles.relief}>{split.target_other}</td>
+                            <td className={styles.belief}>{split.target_total}</td>
                           </tr>
+                          <tr key={-Number(split.year)} className={styles.center}>
+                            <td>{split.budget_amount} </td>
+                            <th className={styles.annualSplit}>People reached</th>
+                            <td className={styles.relief}>{split.reached_male}</td>
+                            <td className={styles.relief}>{split.reached_female}</td>
+                            <td className={styles.relief}>{split.reached_other}</td>
+                            <td className={styles.belief}>{split.reached_total}</td>
+                          </tr>
+                            <tr><td colSpan={7}></td></tr>
+                          </>
                       );
                     })}
                   </tbody>

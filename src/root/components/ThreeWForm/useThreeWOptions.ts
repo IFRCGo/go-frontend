@@ -381,7 +381,7 @@ export function useThreeWOptions(value: PartialForm<FormType>) {
     allSecondarySectorOptions.filter(d => d.value !== value.primary_sector)
   ), [value.primary_sector]);
 
-  const isReachedTotalRequired = value.status === PROJECT_STATUS_COMPLETED;
+  const isTotalRequired = value.status === PROJECT_STATUS_COMPLETED;
   const shouldDisableTotalTarget = !isFalsy(value.target_male)
     || !isFalsy(value.target_female)
     || !isFalsy(value.target_other);
@@ -418,7 +418,7 @@ export function useThreeWOptions(value: PartialForm<FormType>) {
     disasterTypePlaceholder,
     shouldDisableDisasterType,
     statuses,
-    isReachedTotalRequired,
+    isTotalRequired,
     shouldDisableTotalTarget,
     shouldDisableTotalReached,
     disasterTypeLabel,
