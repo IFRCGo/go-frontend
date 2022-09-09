@@ -427,8 +427,6 @@ function DrefOperationalUpdate(props: Props) {
 
   const isImminentOnset = value?.type_of_onset === ONSET_IMMINENT;
   const isAssessmentReport = value?.is_assessment_report;
-  console.warn({ value });
-  console.warn({ error });
 
   // TODO:
   //const conditionalValidation = useCallback((newValue: any, oldValue: any, booleanValue: boolean | undefined) => {
