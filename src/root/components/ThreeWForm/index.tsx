@@ -174,7 +174,7 @@ function ThreeWForm(props: Props) {
     disasterTypePlaceholder,
     shouldDisableDisasterType,
     statuses,
-    isReachedTotalRequired,
+    isTotalRequired,
     shouldDisableTotalTarget,
     shouldDisableTotalReached,
     disasterTypeLabel,
@@ -706,10 +706,11 @@ function ThreeWForm(props: Props) {
                 <NumberInput
                     disabled={shouldDisableTotalTarget}
                     name='target_total'
-                    label="Total*"
+                    label={isTotalRequired && !shouldDisableTotalTarget ? strings.projectFormTotalRequired : strings.projectFormTotal}
                     value={value.target_total}
                     error={error?.target_total}
                     onChange={onValueChange}
+                    className={shouldDisableTotalTarget ? styles.disable : styles.normal}
                 />
               </InputSection>
               <InputSection
@@ -741,10 +742,11 @@ function ThreeWForm(props: Props) {
                 <NumberInput
                     disabled={shouldDisableTotalReached}
                     name='reached_total'
-                    label={isReachedTotalRequired ? strings.projectFormTotalRequired : strings.projectFormTotal}
+                    label={isTotalRequired && !shouldDisableTotalReached ? strings.projectFormTotalRequired : strings.projectFormTotal}
                     value={value.reached_total}
                     error={error?.reached_total}
                     onChange={onValueChange}
+                    className={shouldDisableTotalReached ? styles.disable : styles.normal}
                 />
               </InputSection>
             </>

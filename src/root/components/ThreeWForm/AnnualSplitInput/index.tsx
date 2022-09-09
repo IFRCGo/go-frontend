@@ -32,9 +32,9 @@ interface Props {
 function AnnualSplitInput(props: Props) {
   const {
     className,
-    index,
     onChange,
     error: errorFromProps,
+    index,
     value,
     onRemove,
   } = props;
@@ -92,6 +92,7 @@ function AnnualSplitInput(props: Props) {
         onChange={setFieldValue}
         error={error?.target_other}
       />
+      <span className={styles.bold}>
       <NumberInput
         label={strings.threeWTargetTotal}
         name="target_total"
@@ -99,6 +100,7 @@ function AnnualSplitInput(props: Props) {
         onChange={setFieldValue}
         error={error?.target_total}
       />
+      </span>
       <NumberInput
         label={strings.threeWReachedMale}
         name="reached_male"
@@ -120,6 +122,7 @@ function AnnualSplitInput(props: Props) {
         onChange={setFieldValue}
         error={error?.reached_other}
       />
+      <span className={styles.bold}>
       <NumberInput
         label={strings.threeWReachedTotal}
         name="reached_total"
@@ -127,6 +130,7 @@ function AnnualSplitInput(props: Props) {
         onChange={setFieldValue}
         error={error?.reached_total}
       />
+      </span>
     </div>
   );
 }
