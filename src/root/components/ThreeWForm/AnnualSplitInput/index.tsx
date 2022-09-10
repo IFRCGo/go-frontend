@@ -5,8 +5,11 @@ import {
   getErrorObject,
   Error,
 } from '@togglecorp/toggle-form';
-import { _cs } from '@togglecorp/fujs';
-
+import {
+    _cs,
+    isDefined,
+    isFalsy,
+} from '@togglecorp/fujs';
 import NumberInput from '#components/NumberInput';
 import Button from '#components/Button';
 import { SetValueArg } from '#utils/common';
@@ -42,6 +45,50 @@ function AnnualSplitInput(props: Props) {
   const setFieldValue = useFormObject(index, onChange, defaultValue);
   const { strings } = React.useContext(LanguageContext);
   const error = getErrorObject(errorFromProps);
+
+  // Calculate and set target total
+  React.useEffect(() => {
+      if (isFalsy(value.target_male)
+          && isFalsy(value.target_female)
+          && isFalsy(value.target_other)
+      ) {
+          return;
+      }
+
+      const total = (value.target_male ?? 0)
+          + (value.target_female ?? 0)
+          + (value.target_other ?? 0);
+
+      if (!Number.isNaN(total)) {
+          setFieldValue(total, 'target_total');
+      }
+  }, [value?.target_male, value?.target_female, value?.target_other, setFieldValue]);
+
+    // Calculate and set reached total
+    React.useEffect(() => {
+        if (isFalsy(value.reached_male)
+            && isFalsy(value.reached_female)
+            && isFalsy(value.reached_other)
+        ) {
+            return;
+        }
+
+        const total = (value?.reached_male ?? 0)
+            + (value?.reached_female ?? 0)
+            + (value?.reached_other ?? 0);
+
+        if (!Number.isNaN(total)) {
+            setFieldValue(total, 'reached_total');
+        }
+    }, [value?.reached_male, value?.reached_female, value?.reached_other, setFieldValue]);
+
+    const shouldDisableReachedTotal = isDefined(value.reached_male)
+        || isDefined(value.reached_female)
+        || isDefined(value.reached_other);
+
+    const shouldDisableTargetTotal = isDefined(value.target_male)
+        || isDefined(value.target_female)
+        || isDefined(value.target_other);
 
   return (
     <div className={_cs(styles.annualSplitInput, className)}>
@@ -94,10 +141,11 @@ function AnnualSplitInput(props: Props) {
       />
       <span className={styles.bold}>
       <NumberInput
-        label={strings.threeWTargetTotal}
+        label={strings.threeWTargetTotal + (shouldDisableTargetTotal ? '' : '*')}
         name="target_total"
         value={value?.target_total}
         onChange={setFieldValue}
+        disabled={shouldDisableTargetTotal}
         error={error?.target_total}
       />
       </span>
@@ -124,10 +172,11 @@ function AnnualSplitInput(props: Props) {
       />
       <span className={styles.bold}>
       <NumberInput
-        label={strings.threeWReachedTotal}
+        label={strings.threeWReachedTotal + (shouldDisableReachedTotal ? '' : '*')}
         name="reached_total"
         value={value?.reached_total}
         onChange={setFieldValue}
+        disabled={shouldDisableReachedTotal}
         error={error?.reached_total}
       />
       </span>
