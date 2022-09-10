@@ -17,9 +17,10 @@ import {
 } from '#utils/restRequest';
 import { compareString } from '#utils/utils';
 import {
+  positiveIntegerCondition,
+  positiveNumberCondition,
   requiredCondition,
   requiredStringCondition,
-  positiveIntegerCondition,
   requiredListCondition,
 } from '#utils/form';
 import {
@@ -165,15 +166,15 @@ export const schema: FormSchema = {
             client_id: [forceUndefinedType],
             year: [requiredCondition, positiveIntegerCondition],
             id: [],  // can arrive from db, useful for update
-            budget_amount: [],
-            target_male: [],
-            target_female: [],
-            target_other: [],
-            target_total: [],
-            reached_male: [],
-            reached_female: [],
-            reached_other: [],
-            reached_total: [],
+            budget_amount: [positiveNumberCondition],
+            target_male: [positiveIntegerCondition],
+            target_female: [positiveIntegerCondition],
+            target_other: [positiveIntegerCondition],
+            target_total: [positiveIntegerCondition],
+            reached_male: [positiveIntegerCondition],
+            reached_female: [positiveIntegerCondition],
+            reached_other: [positiveIntegerCondition],
+            reached_total: [positiveIntegerCondition],
           })
         }),
       },
