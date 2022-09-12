@@ -1,5 +1,11 @@
-import React from 'react';
-import { Link, match } from 'react-router-dom';
+import React, {
+  useMemo,
+  useState,
+} from 'react';
+import {
+  Link,
+  match,
+} from 'react-router-dom';
 import {
   History,
   Location,
@@ -66,6 +72,14 @@ interface DrefOperationalResponseFields {
   id: string;
 }
 
+interface DrefApplicationValidateConditionalField {
+  total_operation_timeframe: number;
+  number_of_people_targeted: number;
+  country: number;
+  district: number[];
+  additional_allocation: number
+}
+
 type StepTypes = 'operationOverview' | 'eventDetails' | 'needs' | 'operation' | 'submission';
 
 const stepTypesToFieldsMap: {
@@ -124,6 +138,7 @@ function DrefOperationalUpdate(props: Props) {
     userOptions,
   } = useDrefOperationalFormOptions(value);
 
+  const [validateConditionalField, setValidateConditionalField] = useState<DrefApplicationValidateConditionalField>();
   const [fileIdToUrlMap, setFileIdToUrlMap] = React.useState<Record<number, string>>({});
   const { strings } = React.useContext(languageContext);
   const [currentStep, setCurrentStep] = React.useState<StepTypes>('operationOverview');
@@ -249,6 +264,13 @@ function DrefOperationalUpdate(props: Props) {
     skip: !id,
     url: `api/v2/dref-op-update/${id}/`,
     onSuccess: (response) => {
+      setValidateConditionalField({
+        total_operation_timeframe: response.total_operation_timeframe,
+        number_of_people_targeted: response.number_of_people_targeted,
+        country: response.country,
+        district: response.district,
+        additional_allocation: response.additional_allocation,
+      });
       setFileIdToUrlMap((prevMap) => {
         const newMap = {
           ...prevMap,
@@ -407,6 +429,35 @@ function DrefOperationalUpdate(props: Props) {
   const isAssessmentReport = value?.is_assessment_report;
   console.warn({ value });
   console.warn({ error });
+
+  // TODO:
+  //const conditionalValidation = useCallback((newValue: any, oldValue: any, booleanValue: boolean | undefined) => {
+  //  if (!booleanValue && (newValue !== oldValue)) {
+  //    setError({ [newValue]: 'please correct error' });
+  //  } else if (booleanValue && (newValue === oldValue)) {
+  //    setError({ [newValue]: 'please correct error' });
+  //  } else {
+  //    setError({ [newValue]: undefined });
+  //  }
+  //}, [setError]);
+
+  //TODO: 
+  useMemo(() => {
+    if ((validateConditionalField?.total_operation_timeframe !== value.total_operation_timeframe)
+      && value.changing_timeframe_operation !== true) {
+      setError({ changing_timeframe_operation: "Please select yes" });
+    } else if ((validateConditionalField?.total_operation_timeframe === value.total_operation_timeframe)
+      && value.changing_timeframe_operation !== false) {
+      setError({ total_operation_timeframe: "Please change operation timeframe" });
+    } else {
+      setError({ total_operation_timeframe: undefined });
+    }
+  }, [
+    setError,
+    validateConditionalField?.total_operation_timeframe,
+    value.total_operation_timeframe,
+    value.changing_timeframe_operation
+  ]);
 
   return (
     <Tabs
