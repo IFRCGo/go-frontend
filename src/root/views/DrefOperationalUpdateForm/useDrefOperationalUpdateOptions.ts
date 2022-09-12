@@ -171,7 +171,7 @@ const defaultSchema = {
   people_in_need: [],
   supporting_document: [],
   risk_security_concern: [],
-  photos_file: [lessThanEqualToTwoImagesCondition],
+  photos: [lessThanEqualToTwoImagesCondition],
   additional_allocation: [],
   total_dref_allocation: [],
   is_man_made_event: [],
@@ -179,6 +179,12 @@ const defaultSchema = {
   dref: [],
   has_forecasted_event_materialize: [],
   specified_trigger_met: [],
+  changing_timeframe_operation: [],
+  changing_operation_strategy: [],
+  changing_target_population_of_operation: [],
+  changing_geographic_location: [],
+  changing_budget: [],
+  request_for_second_allocation: [],
   national_society_actions: {
     keySelector: (n: PartialForm<NsAction>) => n.clientId as string,
     member: (): NsActionsSchemaMember => ({
