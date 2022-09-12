@@ -97,8 +97,8 @@ const defaultSchema = {
   type_of_onset: [requiredCondition],
   country: [],
   district: [],
-  num_affected: [positiveIntegerCondition],
-  num_assisted: [positiveIntegerCondition],
+  number_of_people_targeted: [positiveIntegerCondition],
+  number_of_people_affected: [positiveIntegerCondition],
   emergency_appeal_planned: [],
   cover_image_file: {
     fields: () => ({

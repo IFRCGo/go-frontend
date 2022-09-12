@@ -52,13 +52,6 @@ export interface Entity {
   id: number;
   name: string;
 }
-
-export interface CountryDistrict {
-  clientId: string;
-  country: number;
-  district: number[];
-}
-
 export interface Need {
   clientId: string;
   title: string;

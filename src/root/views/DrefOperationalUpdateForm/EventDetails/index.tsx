@@ -80,7 +80,6 @@ function EventDetails(props: Props) {
     onValueChange(newImageList, 'images_file' as const);
   }, [value?.images_file, onValueChange]);
 
-
   return (
     <>
       <Container
