@@ -8,7 +8,7 @@ import {
   IoClose,
   IoAdd,
   IoList,
-  IoPushOutline,
+  // IoPushOutline,
   IoCloudUploadSharp,
 } from 'react-icons/io5';
 import {
@@ -263,7 +263,7 @@ function DrefApplicationList(props: Props) {
   });
   const {
     pending: newFinalReportPending,
-    trigger: postDrefNewFinalReport,
+    // trigger: postDrefNewFinalReport,
   } = useLazyRequest<DrefOperationalUpdateResponse, number>({
     url: (drefId) => drefId ? `api/v2/dref-final-report/` : undefined,
     body: (drefId) => ({ dref: drefId }),
@@ -294,7 +294,7 @@ function DrefApplicationList(props: Props) {
   });
 
   const {
-    pending: finalReportPublishPending,
+    // pending: finalReportPublishPending,
     trigger: postFinalReportPublishRequest,
   } = useLazyRequest<DrefOperationalResponseFields, number | undefined>({
     url: (finalReportId) => finalReportId ? `api/v2/dref-final-report/${finalReportId}/publish/` : undefined,
@@ -470,7 +470,7 @@ function DrefApplicationList(props: Props) {
 
   const [
     publishFinalReportConfirmationModal,
-    onFinalReportPublishClick,
+    // onFinalReportPublishClick,
   ] = useConfirmation({
     message: strings.finalReportPublishConfirmationMessage,
     onConfirm: handleFinalReportPublishConfirm,
@@ -545,16 +545,19 @@ function DrefApplicationList(props: Props) {
           (rowKey: number, item: DrefApplicationResponse) => {
             const hasOperationalUpdate = item.operational_update_details && item.operational_update_details.length > 0;
             const hasUnpublishedOperationalUpdate = item.operational_update_details?.some(d => d.is_published === false) ?? false;
-            const canAddNewOperationalUpdate = item.is_published && !hasUnpublishedOperationalUpdate && !item.dref_final_report_details;
+            const canAddNewOperationalUpdate = item.is_published && !hasUnpublishedOperationalUpdate;
             const lastOperationalUpdateId = item.operational_update_details?.find(ou => !ou.is_published)?.id;
 
+            /*
             const hasFinalReport = !!item.dref_final_report_details;
             const hasUnpublishedFinalReport = !!item.dref_final_report_details?.is_published && !!item.is_final_report_created;
             const lastFinalReportId = item.dref_final_report_details?.id;
+            */
 
             return {
               extraActions: (
                 <>
+                  {/*
                   <DropdownMenuItem
                     icon={<IoAdd />}
                     name={rowKey}
@@ -575,24 +578,20 @@ function DrefApplicationList(props: Props) {
                     onClick={onFinalReportPublishClick}
                     disabled={hasUnpublishedFinalReport || finalReportPublishPending}
                   />
-                  {
-                    !hasFinalReport &&
-                    <>
-                      <DropdownMenuItem
-                        icon={<IoAdd />}
-                        name={rowKey}
-                        onClick={postDrefNewOperationalUpdate}
-                        label={strings.drefOperationalUpdateNewLabel}
-                        disabled={!canAddNewOperationalUpdate}
-                      />
-                      <DropdownMenuItem
-                        icon={<MdEdit />}
-                        href={`/dref-operational-update/${lastOperationalUpdateId}/edit/`}
-                        label={strings.drefOperationalUpdateEditLastLabel}
-                        disabled={!hasOperationalUpdate || !hasUnpublishedOperationalUpdate || hasFinalReport}
-                      />
-                    </>
-                  }
+                  */}
+                  <DropdownMenuItem
+                    icon={<IoAdd />}
+                    name={rowKey}
+                    onClick={postDrefNewOperationalUpdate}
+                    label={strings.drefOperationalUpdateNewLabel}
+                    disabled={!canAddNewOperationalUpdate}
+                  />
+                  <DropdownMenuItem
+                    icon={<MdEdit />}
+                    href={`/dref-operational-update/${lastOperationalUpdateId}/edit/`}
+                    label={strings.drefOperationalUpdateEditLastLabel}
+                    disabled={!hasOperationalUpdate || !hasUnpublishedOperationalUpdate}
+                  />
                   <DropdownMenuItem
                     icon={<IoList />}
                     name={item.id}
@@ -617,9 +616,9 @@ function DrefApplicationList(props: Props) {
       ],
     ]);
   }, [
-    postDrefNewFinalReport,
-    finalReportPublishPending,
-    onFinalReportPublishClick,
+    // postDrefNewFinalReport,
+    // finalReportPublishPending,
+    // onFinalReportPublishClick,
     postDrefNewOperationalUpdate,
     drefPublishPending,
     onDrefPublishClick,

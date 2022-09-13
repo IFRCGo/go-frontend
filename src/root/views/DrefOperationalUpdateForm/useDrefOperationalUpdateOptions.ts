@@ -20,13 +20,18 @@ import languageContext from '#root/languageContext';
 import { compareString } from '#utils/utils';
 import { Disaster } from '#types/project';
 import { Country } from '#types/country';
+import { DrefApiFields } from '#views/DrefApplicationForm/common';
 import {
-  positiveIntegerCondition, positiveNumberCondition,
+  positiveIntegerCondition,
+  positiveNumberCondition,
 } from '#utils/form';
+import {
+  isSimilarArray,
+} from '#utils/common';
 
 import {
   BooleanValueOption,
-  DrefApplicationValidateConditionalField,
+  DrefOperationalUpdateApiFields,
   DrefOperationalUpdateFields,
   emptyNumericOptionList,
   emptyStringOptionList,
@@ -36,40 +41,91 @@ import {
   User,
 } from './common';
 
-export type FormSchema = ObjectSchema<PartialForm<DrefOperationalUpdateFields>, PartialForm<DrefOperationalUpdateFields>, PartialForm<DrefApplicationValidateConditionalField>>;
+export type ContextType = {
+  type: 'dref';
+  value: DrefApiFields | undefined;
+} | {
+  type: 'opsUpdate';
+  value: DrefOperationalUpdateApiFields | undefined;
+}
+
+export type FormSchema = ObjectSchema<
+  PartialForm<DrefOperationalUpdateFields>,
+  PartialForm<DrefOperationalUpdateFields>,
+  ContextType
+>;
 export type FormSchemaFields = ReturnType<FormSchema['fields']>;
 
 export type NeedType = NonNullable<NonNullable<DrefOperationalUpdateFields['needs_identified']>>[number];
-export type NeedSchema = ObjectSchema<PartialForm<NeedType>>;
+export type NeedSchema = ObjectSchema<
+  PartialForm<NeedType>,
+  PartialForm<DrefOperationalUpdateFields>,
+  ContextType
+>;
 export type NeedSchemaFields = ReturnType<NeedSchema['fields']>;
-export type NeedsSchema = ArraySchema<PartialForm<NeedType>>;
+export type NeedsSchema = ArraySchema<
+  PartialForm<NeedType>,
+  PartialForm<DrefOperationalUpdateFields>,
+  ContextType
+>;
 export type NeedsSchemaMember = ReturnType<NeedsSchema['member']>;
 
 export type NsActionType = NonNullable<NonNullable<DrefOperationalUpdateFields['national_society_actions']>>[number];
-export type NsActionSchema = ObjectSchema<PartialForm<NsActionType>>;
+export type NsActionSchema = ObjectSchema<
+  PartialForm<NsActionType>,
+  PartialForm<DrefOperationalUpdateFields>,
+  ContextType
+>;
 export type NsActionSchemaFields = ReturnType<NsActionSchema['fields']>;
-export type NsActionsSchema = ArraySchema<PartialForm<NsActionType>>;
+export type NsActionsSchema = ArraySchema<
+  PartialForm<NsActionType>,
+  PartialForm<DrefOperationalUpdateFields>,
+  ContextType
+>;
 export type NsActionsSchemaMember = ReturnType<NsActionsSchema['member']>;
 
 export type InterventionType = NonNullable<NonNullable<DrefOperationalUpdateFields['planned_interventions']>>[number];
-export type InterventionSchema = ObjectSchema<PartialForm<InterventionType>>;
+export type InterventionSchema = ObjectSchema<
+  PartialForm<InterventionType>,
+  PartialForm<DrefOperationalUpdateFields>,
+  ContextType
+>;
 export type InterventionSchemaFields = ReturnType<InterventionSchema['fields']>;
-export type InterventionsSchema = ArraySchema<PartialForm<InterventionType>>;
+export type InterventionsSchema = ArraySchema<
+  PartialForm<InterventionType>,
+  PartialForm<DrefOperationalUpdateFields>,
+  ContextType
+>;
 export type InterventionsSchemaMember = ReturnType<InterventionsSchema['member']>;
 
 export type IndicatorType = InterventionType['indicators'][number];
-export type IndicatorSchema = ObjectSchema<PartialForm<IndicatorType>>;
+export type IndicatorSchema = ObjectSchema<
+  PartialForm<IndicatorType>,
+  PartialForm<DrefOperationalUpdateFields>,
+  ContextType
+>;
 export type IndicatorSchemaFields = ReturnType<IndicatorSchema['fields']>;
-export type IndicatorsSchema = ArraySchema<PartialForm<IndicatorType>>;
+export type IndicatorsSchema = ArraySchema<
+  PartialForm<IndicatorType>,
+  PartialForm<DrefOperationalUpdateFields>,
+  ContextType
+>;
 export type IndicatorsSchemaMember = ReturnType<IndicatorsSchema['member']>;
 
 
 export type RiskSecurityType = NonNullable<NonNullable<DrefOperationalUpdateFields['risk_security']>>[number];
-export type RiskSecuritySchema = ObjectSchema<PartialForm<RiskSecurityType>>;
+export type RiskSecuritySchema = ObjectSchema<
+  PartialForm<RiskSecurityType>,
+  PartialForm<DrefOperationalUpdateFields>,
+  ContextType
+>;
 export type RiskSecuritySchemaFields = ReturnType<RiskSecuritySchema['fields']>;
-export type RiskSecuritiesSchema = ArraySchema<PartialForm<RiskSecurityType>>;
+export type RiskSecuritiesSchema = ArraySchema<
+  PartialForm<RiskSecurityType>,
+  PartialForm<DrefOperationalUpdateFields>,
+  ContextType
+>;
 export type RiskSecuritiesSchemaMember = ReturnType<RiskSecuritiesSchema['member']>;
-
 
 export const MaxIntLimit = 2147483647;
 
@@ -85,22 +141,45 @@ export function lessThanEqualToTwoImagesCondition(value: any) {
     : undefined;
 }
 
-export function changeTimeFrameCondition(value: any) {
-  return isDefined(value) && Array.isArray(value)
-    ? "kjghf"
-    : undefined;
-}
-
 const defaultSchema: FormSchemaFields = {
-  field_report: [],
+  // FIXME: un-comment fields that are actually used
+  // field_report: [],
   title: [requiredCondition],
   national_society: [requiredCondition],
   disaster_category: [],
   disaster_type: [],
   type_of_onset: [requiredCondition],
   country: [],
-  district: [],
-  number_of_people_targeted: [positiveIntegerCondition],
+  district: [
+    (currentValue, allValue, context) => {
+      const contextValue = context.type === 'dref' ? context.value?.districts?.map(d => d.id) : context.value?.district;
+      const areDistrictsSimilar = isSimilarArray(currentValue, contextValue ?? []);
+      if (allValue?.changing_geographic_location && areDistrictsSimilar) {
+        return 'Please select a different value when selected yes on changing geographic location';
+      }
+
+      if (!allValue?.changing_geographic_location && !areDistrictsSimilar) {
+        return 'Please select yes on changing geographic location first';
+      }
+
+      return undefined;
+    },
+  ],
+  number_of_people_targeted: [
+    positiveIntegerCondition,
+    (currentValue, allValue, context) => {
+      const contextValue = context.type === 'dref' ? context.value?.total_targeted_population : context.value?.number_of_people_targeted;
+      if (allValue.changing_target_population_of_operation && currentValue === contextValue) {
+        return 'Please select a different value when selected yes on changing target population';
+      }
+
+      if (!allValue.changing_target_population_of_operation && currentValue !== contextValue) {
+        return 'Please select yes on changing target population first';
+      }
+
+      return undefined;
+    },
+  ],
   number_of_people_affected: [positiveIntegerCondition],
   emergency_appeal_planned: [],
   cover_image_file: {
@@ -116,9 +195,9 @@ const defaultSchema: FormSchemaFields = {
     }),
   },
   images_file: [defaultEmptyArrayType, lessThanEqualToTwoImagesCondition],
-  event_date: [],
+  // event_date: [],
   anticipatory_actions: [],
-  go_field_report_date: [],
+  // go_field_report_date: [],
   event_description: [],
   government_requested_assistance: [],
   government_requested_assistance_date: [],
@@ -130,13 +209,13 @@ const defaultSchema: FormSchemaFields = {
   major_coordination_mechanism: [],
   people_assisted: [],
   selection_criteria: [],
-  community_involved: [],
+  // community_involved: [],
   disability_people_per: [greaterThanOrEqualToCondition(0), lessThanOrEqualToCondition(100)],
   people_per_urban: [greaterThanOrEqualToCondition(0), lessThanOrEqualToCondition(100)],
   people_per_local: [greaterThanOrEqualToCondition(0), lessThanOrEqualToCondition(100)],
   displaced_people: [positiveIntegerCondition],
   people_targeted_with_early_actions: [positiveIntegerCondition],
-  total_targeted_population: [positiveIntegerCondition],
+  // total_targeted_population: [positiveIntegerCondition],
   operation_objective: [],
   response_strategy: [],
   budget_file: [],
@@ -170,8 +249,8 @@ const defaultSchema: FormSchemaFields = {
   users: [defaultEmptyArrayType],
   is_there_major_coordination_mechanism: [],
   is_surge_personnel_deployed: [],
-  people_in_need: [],
-  supporting_document: [],
+  // people_in_need: [],
+  // supporting_document: [],
   risk_security_concern: [],
   photos_file: [lessThanEqualToTwoImagesCondition],
   additional_allocation: [],
@@ -184,50 +263,24 @@ const defaultSchema: FormSchemaFields = {
   changing_timeframe_operation: [],
   changing_operation_strategy: [],
   changing_budget: [],
-  changing_target_population_of_operation: [(_, allValue, contextValue) => {
-    if ((allValue?.number_of_people_targeted === contextValue?.number_of_people_targeted)
-      && allValue?.changing_target_population_of_operation) {
-      return 'Please restore country and region value';
-    }
-    if ((allValue?.number_of_people_targeted !== contextValue?.number_of_people_targeted)
-      && !allValue?.changing_target_population_of_operation) {
-      return 'Please select yes to change country and region';
-    }
-  }],
-  changing_geographic_location: [
-    (_, allValue, contextValue) => {
-      if ((allValue?.country === contextValue?.country)
-        && allValue?.changing_geographic_location) {
-        return 'Please restore people targeted value';
+  changing_target_population_of_operation: [],
+  changing_geographic_location: [],
+  request_for_second_allocation: [],
+  total_operation_timeframe: [
+    (currentValue, allValue, context) => {
+      const contextValue = context.type === 'dref' ? context.value?.operation_timeframe : context.value?.total_operation_timeframe;
+
+      if (allValue?.changing_timeframe_operation && currentValue === contextValue) {
+        return 'Please select a different timeframe when selected yes on changing the operation timeframe';
       }
-      if ((allValue?.country !== contextValue?.country)
-        && !allValue?.changing_geographic_location) {
-        return 'Please select yes to change people targeted value';
+
+      if(currentValue !== contextValue && !allValue?.changing_timeframe_operation) {
+        return 'Please select yes on changing the operation timeframe first';
       }
+
+      return undefined;
     }
   ],
-  request_for_second_allocation: [
-    (_, allValue, contextValue) => {
-      if ((allValue?.additional_allocation === contextValue?.additional_allocation)
-        && allValue?.request_for_second_allocation) {
-        return 'Please restore additional allocation value';
-      }
-      if ((allValue?.additional_allocation !== contextValue?.additional_allocation)
-        && !allValue?.request_for_second_allocation) {
-        return 'Please select yes to change additional allocation';
-      }
-    }],
-  total_operation_timeframe: [
-    (_, allValue, contextValue) => {
-      if ((allValue?.total_operation_timeframe === contextValue?.total_operation_timeframe)
-        && allValue?.changing_timeframe_operation) {
-        return 'Please change timeframe';
-      }
-      if ((allValue?.total_operation_timeframe !== contextValue?.total_operation_timeframe)
-        && !allValue?.changing_timeframe_operation) {
-        return 'cannot change timeframe';
-      }
-    }],
   national_society_actions: {
     keySelector: (n) => n.clientId as string,
     member: (): NsActionsSchemaMember => ({
@@ -272,13 +325,14 @@ const defaultSchema: FormSchemaFields = {
 };
 
 const isNotAssessmentSchema: FormSchemaFields = {
-  ns_request_fund: [],
-  affect_same_area: [],
-  ns_respond: [],
-  affect_same_population: [],
-  ns_request_text: [],
-  lessons_learned: [],
-  dref_recurrent_text: [],
+  // FIXME: un-comment fields that are actually used
+  // ns_request_fund: [],
+  // affect_same_area: [],
+  // ns_respond: [],
+  // affect_same_population: [],
+  // ns_request_text: [],
+  // lessons_learned: [],
+  // dref_recurrent_text: [],
   identified_gaps: [],
   women: [positiveIntegerCondition],
   men: [positiveIntegerCondition],
@@ -316,6 +370,10 @@ export const schema: FormSchema = {
     }
   },
   fieldDependencies: () => ({
+    'total_operation_timeframe': ['changing_timeframe_operation'],
+    'number_of_people_targeted': ['changing_target_population_of_operation'],
+    'district': ['changing_geographic_location'],
+    // 'additional_allocation': ['changing_budget'],
   }),
   validation: () => {
     return undefined;

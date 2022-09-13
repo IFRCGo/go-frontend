@@ -83,7 +83,7 @@ export interface Intervention {
   female: number;
 }
 
-export interface SingleFileWithCaption {
+export interface FileWithCaption {
   client_id: string;
   id: number;
   file: string;
@@ -112,7 +112,7 @@ export interface DrefOperationalUpdateFields {
   additional_allocation: number;
   total_dref_allocation: number;
   emergency_appeal_planned: boolean;
-  images_file: SingleFileWithCaption[];
+  images_file: FileWithCaption[];
   operational_update_number: number;
   new_operational_start_date: string;
   reporting_timeframe: string;
@@ -186,9 +186,9 @@ export interface DrefOperationalUpdateFields {
   event_description: string;
   event_scope: string;
   anticipatory_actions: string;
-  cover_image_file: SingleFileWithCaption;
-  event_map_file: SingleFileWithCaption;
-  photos_file: SingleFileWithCaption[];
+  cover_image_file: FileWithCaption;
+  event_map_file: FileWithCaption;
+  photos_file: FileWithCaption[];
   country: number;
   district: number[];
   country_details: Country;
@@ -267,10 +267,10 @@ export interface DrefOperationalUpdateApiFields extends Omit<DrefOperationalUpda
     file: string;
   };
   assessment_report_preview: string,
-  images_file: SingleFileWithCaption[],
-  cover_image_file: SingleFileWithCaption;
-  event_map_file: SingleFileWithCaption;
-  photos_file: SingleFileWithCaption[];
+  images_file: FileWithCaption[],
+  cover_image_file: FileWithCaption;
+  event_map_file: FileWithCaption;
+  photos_file: FileWithCaption[];
 }
 
 export const overviewFields: (keyof DrefOperationalUpdateFields)[] = [
