@@ -298,6 +298,12 @@ export interface DrefApiFields extends Omit<DrefFields, 'event_map_details' | 'c
     id: number;
     file: string;
   };
+  operational_update_details: {
+    id: number;
+    is_published: boolean;
+    operational_update_number: number;
+    title: string;
+  }[] | null;
 }
 
 export const overviewFields: (keyof DrefFields)[] = [

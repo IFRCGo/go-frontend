@@ -30,7 +30,7 @@ import {
   Need,
   NsAction,
   optionLabelSelector,
-  SingleFileWithCaption,
+  FileWithCaption,
   StringValueOption,
 } from '../common';
 import styles from './styles.module.scss';
@@ -150,7 +150,7 @@ function Needs(props: Props) {
   const {
     setValue: onImageChange,
     removeValue: onImageRemove,
-  } = useFormArray<'photos_file', PartialForm<SingleFileWithCaption>>(
+  } = useFormArray<'photos_file', PartialForm<FileWithCaption>>(
     'photos_file',
     onValueChange,
   );
@@ -161,7 +161,7 @@ function Needs(props: Props) {
       img => img.caption,
     );
 
-    const newImageList: undefined | PartialForm<SingleFileWithCaption[]> = newValue?.map((v) => ({
+    const newImageList: undefined | PartialForm<FileWithCaption[]> = newValue?.map((v) => ({
       client_id: String(v),
       id: v,
       caption: imageCaptionByIdMap[v],

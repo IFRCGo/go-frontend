@@ -6,6 +6,7 @@ import {
   caseInsensitiveSubmatch,
   compareStringSearch,
   addSeparator,
+  listToMap,
 } from '@togglecorp/fujs';
 
 import { Strings } from '#types';
@@ -428,4 +429,28 @@ export function formatNumber(value: number | undefined | null, prefix?: string):
   }
 
   return defaultValue;
+}
+
+export function isSimilarArray<T extends string | number>(
+  aList: T[] | undefined,
+  bList: T[] | undefined,
+) {
+  if (!aList && !bList) {
+    return true;
+  }
+
+  if (!aList || !bList) {
+    return false;
+  }
+
+  if (aList.length !== bList.length) {
+    return false;
+  }
+
+  if (aList.length === 0 && bList.length === 0) {
+    return true;
+  }
+
+  const aMap = listToMap(aList, a => a, a => true);
+  return bList.every((b) => aMap[b]);
 }
