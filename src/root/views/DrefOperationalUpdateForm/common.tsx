@@ -219,6 +219,14 @@ export interface DrefOperationalUpdateFields {
   };
 }
 
+export interface DrefApplicationValidateConditionalField {
+  total_operation_timeframe?: number;
+  number_of_people_targeted?: number;
+  country?: number;
+  district?: number[];
+  additional_allocation?: number;
+}
+
 export interface DrefOperationalUpdateApiFields extends Omit<DrefOperationalUpdateFields, 'district_details' | 'planned_interventions' | 'national_society_actions' | 'needs_identified' | 'cover_image_file' | 'event_map_file' | 'images_file' | 'photos_file'> {
   user: number;
   district_details: DistrictMini[],

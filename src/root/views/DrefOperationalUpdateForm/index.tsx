@@ -1,7 +1,4 @@
-import React, {
-  useMemo,
-  useState,
-} from 'react';
+import React, { useState } from 'react';
 import {
   Link,
   match,
@@ -40,6 +37,7 @@ import {
   useLazyRequest,
   useRequest,
 } from '#utils/restRequest';
+import scrollToTop from '#utils/scrollToTop';
 
 import {
   DrefOperationalUpdateFields,
@@ -50,6 +48,7 @@ import {
   submissionFields,
   DrefOperationalUpdateApiFields,
   ONSET_IMMINENT,
+  DrefApplicationValidateConditionalField,
 } from './common';
 import useDrefOperationalFormOptions, {
   schema
@@ -61,7 +60,6 @@ import Operation from './Operation';
 import Submission from './Submission';
 
 import styles from './styles.module.scss';
-import scrollToTop from '#utils/scrollToTop';
 
 interface Props {
   match: match<{ id?: string }>;
@@ -70,14 +68,6 @@ interface Props {
 }
 interface DrefOperationalResponseFields {
   id: string;
-}
-
-interface DrefApplicationValidateConditionalField {
-  total_operation_timeframe: number;
-  number_of_people_targeted: number;
-  country: number;
-  district: number[];
-  additional_allocation: number
 }
 
 type StepTypes = 'operationOverview' | 'eventDetails' | 'needs' | 'operation' | 'submission';
@@ -106,6 +96,7 @@ function DrefOperationalUpdate(props: Props) {
   const {
     match,
   } = props;
+  const [validateConditionalField, setValidateConditionalField] = useState<DrefApplicationValidateConditionalField>({});
   const { id } = match.params;
   const alert = useAlert();
   const {
@@ -117,7 +108,10 @@ function DrefOperationalUpdate(props: Props) {
     setError,
   } = useForm(
     schema,
-    { value: defaultFormValues }
+    {
+      value: defaultFormValues,
+    },
+    validateConditionalField,
   );
 
   const {
@@ -138,7 +132,6 @@ function DrefOperationalUpdate(props: Props) {
     userOptions,
   } = useDrefOperationalFormOptions(value);
 
-  const [validateConditionalField, setValidateConditionalField] = useState<DrefApplicationValidateConditionalField>();
   const [fileIdToUrlMap, setFileIdToUrlMap] = React.useState<Record<number, string>>({});
   const { strings } = React.useContext(languageContext);
   const [currentStep, setCurrentStep] = React.useState<StepTypes>('operationOverview');
@@ -182,7 +175,7 @@ function DrefOperationalUpdate(props: Props) {
   }, [error]);
 
   const validateCurrentTab = React.useCallback((exceptions: (keyof DrefOperationalUpdateFields)[] = []) => {
-    const validationError = getErrorObject(accumulateErrors(value, schema, value, undefined));
+    const validationError = getErrorObject(accumulateErrors(value, schema, value, validateConditionalField));
     const currentFields = stepTypesToFieldsMap[currentStep];
     const exceptionsMap = listToMap(exceptions, d => d, d => true);
 
@@ -204,7 +197,12 @@ function DrefOperationalUpdate(props: Props) {
 
     const hasError = Object.keys(currentTabErrors).some(d => !!d);
     return !hasError;
-  }, [value, currentStep, setError]);
+  }, [
+    value,
+    currentStep,
+    setError,
+    validateConditionalField,
+  ]);
 
   const handleTabChange = React.useCallback((newStep: StepTypes) => {
     scrollToTop();
@@ -236,10 +234,16 @@ function DrefOperationalUpdate(props: Props) {
       },
       debugMessage,
     }) => {
-      setError({
-        ...formErrors,
-        [internal]: formErrors?.non_field_errors as string | undefined,
-      });
+      if (Array.isArray(formErrors)) {
+        setError({
+          [internal]: formErrors?.join(', '),
+        });
+      } else {
+        setError({
+          ...formErrors,
+          [internal]: formErrors?.non_field_errors as string | undefined,
+        });
+      }
 
       alert.show(
         <p>
@@ -256,6 +260,7 @@ function DrefOperationalUpdate(props: Props) {
       );
     },
   });
+
 
   const {
     pending: operationalUpdatePending,
@@ -427,37 +432,6 @@ function DrefOperationalUpdate(props: Props) {
 
   const isImminentOnset = value?.type_of_onset === ONSET_IMMINENT;
   const isAssessmentReport = value?.is_assessment_report;
-  console.warn({ value });
-  console.warn({ error });
-
-  // TODO:
-  //const conditionalValidation = useCallback((newValue: any, oldValue: any, booleanValue: boolean | undefined) => {
-  //  if (!booleanValue && (newValue !== oldValue)) {
-  //    setError({ [newValue]: 'please correct error' });
-  //  } else if (booleanValue && (newValue === oldValue)) {
-  //    setError({ [newValue]: 'please correct error' });
-  //  } else {
-  //    setError({ [newValue]: undefined });
-  //  }
-  //}, [setError]);
-
-  //TODO: 
-  useMemo(() => {
-    if ((validateConditionalField?.total_operation_timeframe !== value.total_operation_timeframe)
-      && value.changing_timeframe_operation !== true) {
-      setError({ changing_timeframe_operation: "Please select yes" });
-    } else if ((validateConditionalField?.total_operation_timeframe === value.total_operation_timeframe)
-      && value.changing_timeframe_operation !== false) {
-      setError({ total_operation_timeframe: "Please change operation timeframe" });
-    } else {
-      setError({ total_operation_timeframe: undefined });
-    }
-  }, [
-    setError,
-    validateConditionalField?.total_operation_timeframe,
-    value.total_operation_timeframe,
-    value.changing_timeframe_operation
-  ]);
 
   return (
     <Tabs

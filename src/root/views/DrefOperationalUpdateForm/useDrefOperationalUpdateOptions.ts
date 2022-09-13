@@ -26,20 +26,17 @@ import {
 
 import {
   BooleanValueOption,
+  DrefApplicationValidateConditionalField,
   DrefOperationalUpdateFields,
   emptyNumericOptionList,
   emptyStringOptionList,
-  Intervention,
-  Need,
-  NsAction,
   NumericKeyValuePair,
   NumericValueOption,
-  RiskSecurityProps,
   StringKeyValuePair,
   User,
 } from './common';
 
-export type FormSchema = ObjectSchema<PartialForm<DrefOperationalUpdateFields>>;
+export type FormSchema = ObjectSchema<PartialForm<DrefOperationalUpdateFields>, PartialForm<DrefOperationalUpdateFields>, PartialForm<DrefApplicationValidateConditionalField>>;
 export type FormSchemaFields = ReturnType<FormSchema['fields']>;
 
 export type NeedType = NonNullable<NonNullable<DrefOperationalUpdateFields['needs_identified']>>[number];
@@ -88,7 +85,13 @@ export function lessThanEqualToTwoImagesCondition(value: any) {
     : undefined;
 }
 
-const defaultSchema = {
+export function changeTimeFrameCondition(value: any) {
+  return isDefined(value) && Array.isArray(value)
+    ? "kjghf"
+    : undefined;
+}
+
+const defaultSchema: FormSchemaFields = {
   field_report: [],
   title: [requiredCondition],
   national_society: [requiredCondition],
@@ -140,7 +143,6 @@ const defaultSchema = {
   new_operational_start_date: [],
   reporting_timeframe: [],
   new_operational_end_date: [],
-  total_operation_timeframe: [],
   appeal_code: [],
   glide_code: [],
   ifrc_appeal_manager_name: [],
@@ -181,12 +183,53 @@ const defaultSchema = {
   specified_trigger_met: [],
   changing_timeframe_operation: [],
   changing_operation_strategy: [],
-  changing_target_population_of_operation: [],
-  changing_geographic_location: [],
   changing_budget: [],
-  request_for_second_allocation: [],
+  changing_target_population_of_operation: [(_, allValue, contextValue) => {
+    if ((allValue?.number_of_people_targeted === contextValue?.number_of_people_targeted)
+      && allValue?.changing_target_population_of_operation) {
+      return 'Please restore country and region value';
+    }
+    if ((allValue?.number_of_people_targeted !== contextValue?.number_of_people_targeted)
+      && !allValue?.changing_target_population_of_operation) {
+      return 'Please select yes to change country and region';
+    }
+  }],
+  changing_geographic_location: [
+    (_, allValue, contextValue) => {
+      if ((allValue?.country === contextValue?.country)
+        && allValue?.changing_geographic_location) {
+        return 'Please restore people targeted value';
+      }
+      if ((allValue?.country !== contextValue?.country)
+        && !allValue?.changing_geographic_location) {
+        return 'Please select yes to change people targeted value';
+      }
+    }
+  ],
+  request_for_second_allocation: [
+    (_, allValue, contextValue) => {
+      if ((allValue?.additional_allocation === contextValue?.additional_allocation)
+        && allValue?.request_for_second_allocation) {
+        return 'Please restore additional allocation value';
+      }
+      if ((allValue?.additional_allocation !== contextValue?.additional_allocation)
+        && !allValue?.request_for_second_allocation) {
+        return 'Please select yes to change additional allocation';
+      }
+    }],
+  total_operation_timeframe: [
+    (_, allValue, contextValue) => {
+      if ((allValue?.total_operation_timeframe === contextValue?.total_operation_timeframe)
+        && allValue?.changing_timeframe_operation) {
+        return 'Please change timeframe';
+      }
+      if ((allValue?.total_operation_timeframe !== contextValue?.total_operation_timeframe)
+        && !allValue?.changing_timeframe_operation) {
+        return 'cannot change timeframe';
+      }
+    }],
   national_society_actions: {
-    keySelector: (n: PartialForm<NsAction>) => n.clientId as string,
+    keySelector: (n) => n.clientId as string,
     member: (): NsActionsSchemaMember => ({
       fields: (): NsActionSchemaFields => ({
         title: [requiredCondition],
@@ -195,7 +238,7 @@ const defaultSchema = {
     }),
   },
   planned_interventions: {
-    keySelector: (n: PartialForm<Intervention>) => n.clientId as string,
+    keySelector: (n) => n.clientId as string,
     member: (): InterventionsSchemaMember => ({
       fields: (): InterventionSchemaFields => ({
         clientId: [],
@@ -217,7 +260,7 @@ const defaultSchema = {
     }),
   },
   risk_security: {
-    keySelector: (r: PartialForm<RiskSecurityProps>) => r.clientId as string,
+    keySelector: (r) => r.clientId as string,
     member: (): RiskSecuritiesSchemaMember => ({
       fields: (): RiskSecuritySchemaFields => ({
         clientId: [],
@@ -228,7 +271,7 @@ const defaultSchema = {
   },
 };
 
-const isNotAssessmentSchema = {
+const isNotAssessmentSchema: FormSchemaFields = {
   ns_request_fund: [],
   affect_same_area: [],
   ns_respond: [],
@@ -247,7 +290,7 @@ const isNotAssessmentSchema = {
   pmer: [],
   communication: [],
   needs_identified: {
-    keySelector: (n: PartialForm<Need>) => n.clientId as string,
+    keySelector: (n) => n.clientId as string,
     member: (): NeedsSchemaMember => ({
       fields: (): NeedSchemaFields => ({
         clientId: [],
@@ -261,7 +304,9 @@ const isNotAssessmentSchema = {
 export const schema: FormSchema = {
   fields: (value): FormSchemaFields => {
     if (value?.is_assessment_report) {
-      return { ...defaultSchema };
+      return {
+        ...defaultSchema,
+      };
     }
     else {
       return {
@@ -272,7 +317,7 @@ export const schema: FormSchema = {
   },
   fieldDependencies: () => ({
   }),
-  validation: (value) => {
+  validation: () => {
     return undefined;
   },
 };
