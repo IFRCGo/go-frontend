@@ -1,0 +1,18 @@
+@import '~styles/settings/variables';
+
+.risk-security-input {
+  display: flex;
+  align-items: flex-end;
+  gap: $spacing;
+
+  >* {
+    flex-basis: 0;
+    flex-grow: 1;
+  }
+
+  .remove-button {
+    flex-grow: 0;
+    flex-shrink: 0;
+    flex-basis: unset;
+  }
+}

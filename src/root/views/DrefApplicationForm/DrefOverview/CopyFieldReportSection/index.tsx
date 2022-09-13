@@ -2,12 +2,12 @@ import React from 'react';
 import {
   isNotDefined,
   unique,
-  randomString,
 } from '@togglecorp/fujs';
 import {
   PartialForm,
   SetBaseValueArg,
 } from '@togglecorp/toggle-form';
+import sanitizeHtml from 'sanitize-html';
 
 import Button from '#components/Button';
 import SearchSelectInput from '#components/SearchSelectInput';
@@ -22,23 +22,22 @@ import {
   ListResponse,
 } from '#utils/restRequest';
 import { FieldReportAPIResponseFields } from '#views/FieldReportForm/common';
-
 import {
-  NumericValueOption,
-  emptyNumericOptionList,
   DrefFields,
-} from '../../common';
+  emptyNumericOptionList,
+  NumericValueOption,
+} from '#views/DrefApplicationForm/common';
 
 import styles from './styles.module.scss';
 
 type Value = PartialForm<DrefFields>;
-type FieldReportListItem = Omit<FieldReportAPIResponseFields, 'districts'> & { districts: number[]};
+type FieldReportListItem = Omit<FieldReportAPIResponseFields, 'districts'> & { districts: number[] };
 interface Props {
   value: Value;
   onValueSet: (value: SetBaseValueArg<Value>) => void;
 }
 
-function CopyFieldReportSection (props: Props) {
+function CopyFieldReportSection(props: Props) {
   const {
     value,
     onValueSet,
@@ -59,6 +58,7 @@ function CopyFieldReportSection (props: Props) {
     query: {
       summary: fieldReportSearch,
       limit: 20,
+      countries__in: value?.national_society,
     },
     onSuccess: (response) => {
       if (fieldReportCallbackRef.current) {
@@ -115,9 +115,20 @@ function CopyFieldReportSection (props: Props) {
       const frDate = fieldReport.created_at?.split('T')[0];
       const go_field_report_date = value.go_field_report_date ?? frDate;
       const disaster_type = value.disaster_type ?? fieldReport.dtype?.id;
-      const event_description = value.event_description ?? fieldReport.description;
+      const event_description = fieldReport.description
+        ? sanitizeHtml(
+          fieldReport.description,
+          { allowedTags: [] },
+        )
+        : undefined;
       const un_or_other_actor = value.un_or_other_actor ?? fieldReport.actions_others;
-      let country_district = value.country_district ?? [];
+      const country = value.country ?? fieldReport.countries[0]?.id;
+      const district = (value.district && value.district.length > 0)? value.district : fieldReport.districts?.map(d => d.id);
+      const num_affected = value?.num_affected ?? fieldReport.num_affected ?? fieldReport.gov_num_affected ?? fieldReport.other_num_affected;
+
+      const partner_national_society = value?.partner_national_society ?? fieldReport.actions_taken?.find(a => a.organization === 'PNS')?.summary;
+      const ifrc = value?.ifrc ?? fieldReport.actions_taken?.find(a => a.organization === 'FDRN')?.summary;
+      const icrc = value?.icrc ?? fieldReport.actions_taken?.find(a => a.organization === 'NTLS')?.summary;
 
       let {
         national_society_contact_name,
@@ -133,14 +144,6 @@ function CopyFieldReportSection (props: Props) {
         media_contact_email,
         media_contact_phone_number,
       } = value;
-
-      if (country_district.length === 1 && isNotDefined(country_district[0].country)) {
-        country_district = [{
-          clientId: randomString(),
-          country: fieldReport.countries[0]?.id,
-          district: fieldReport.districts?.map(d => d.id),
-        }];
-      }
 
       if (!national_society_contact_name
         && !national_society_contact_email
@@ -174,30 +177,41 @@ function CopyFieldReportSection (props: Props) {
         && !media_contact_email
         && !media_contact_title
         && !media_contact_phone_number
-       ) {
-         const contact = fieldReport.contacts?.find(c => c.ctype === 'Media');
-         if (contact) {
-           media_contact_name = contact.name;
-           media_contact_email = contact.email;
-           media_contact_title = contact.title;
-           media_contact_phone_number = contact.phone;
-         }
-       }
+      ) {
+        const contact = fieldReport.contacts?.find(c => c.ctype === 'Media');
+        if (contact) {
+          media_contact_name = contact.name;
+          media_contact_email = contact.email;
+          media_contact_title = contact.title;
+          media_contact_phone_number = contact.phone;
+        }
+      }
 
       onValueSet({
         ...value,
         go_field_report_date,
         disaster_type,
         event_description,
-        country_district,
         un_or_other_actor,
         national_society_contact_name,
         national_society_contact_email,
+        national_society_contact_phone_number,
+        national_society_contact_title,
         ifrc_emergency_name,
         ifrc_emergency_email,
+        ifrc_emergency_phone_number,
+        ifrc_emergency_title,
         media_contact_name,
         media_contact_email,
+        media_contact_phone_number,
+        media_contact_title,
         field_report: fieldReport.id,
+        country,
+        district,
+        num_affected,
+        partner_national_society,
+        ifrc,
+        icrc,
       });
 
       alert.show(
@@ -252,6 +266,7 @@ function CopyFieldReportSection (props: Props) {
         loadOptions={handleFieldReportLoad}
         initialOptions={initialOptions}
         pending={selectedFrPending}
+        isClearable
         defaultOptions
       />
       <div className={styles.actions}>

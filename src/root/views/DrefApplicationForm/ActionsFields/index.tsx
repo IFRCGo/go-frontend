@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import {
   randomString,
   isNotDefined,
@@ -19,6 +19,8 @@ import SelectInput from '#components/SelectInput';
 import RadioInput from '#components/RadioInput';
 import TextArea from '#components/TextArea';
 import LanguageContext from '#root/languageContext';
+import DateInput from '#components/DateInput';
+import DREFFileInput from '#components/DREFFileInput';
 
 import {
   optionLabelSelector,
@@ -28,9 +30,7 @@ import {
   Need,
   NsAction,
   StringValueOption,
-  ONSET_IMMINENT,
 } from '../common';
-
 import NeedInput from './NeedInput';
 import NsActionInput from './NSActionInput';
 
@@ -44,6 +44,10 @@ interface Props {
   yesNoOptions: BooleanValueOption[];
   needOptions: StringValueOption[];
   nsActionOptions: StringValueOption[];
+  fileIdToUrlMap: Record<number, string>;
+  setFileIdToUrlMap?: React.Dispatch<React.SetStateAction<Record<number, string>>>;
+  isAssessmentReport?: boolean;
+  isImminentOnset?: boolean;
 }
 
 function ActionsFields(props: Props) {
@@ -56,6 +60,10 @@ function ActionsFields(props: Props) {
     yesNoOptions,
     needOptions,
     nsActionOptions,
+    fileIdToUrlMap,
+    isAssessmentReport,
+    setFileIdToUrlMap,
+    isImminentOnset,
   } = props;
 
   const error = React.useMemo(
@@ -81,16 +89,16 @@ function ActionsFields(props: Props) {
   );
 
   type Needs = typeof value.needs_identified;
-  const handleNeedAddButtonClick = React.useCallback((title) => {
+  const handleNeedAddButtonClick = React.useCallback((title?: string) => {
     const clientId = randomString();
-    const newList: PartialForm<Need> = {
+    const newNeedList: PartialForm<Need> = {
       clientId,
       title,
     };
 
     onValueChange(
       (oldValue: PartialForm<Needs>) => (
-        [...(oldValue ?? []), newList]
+        [...(oldValue ?? []), newNeedList]
       ),
       'needs_identified' as const,
     );
@@ -98,16 +106,16 @@ function ActionsFields(props: Props) {
   }, [onValueChange, setNeed]);
 
   type NsActions = typeof value.needs_identified;
-  const handleNsActionAddButtonClick = React.useCallback((title) => {
+  const handleNsActionAddButtonClick = React.useCallback((title?: string) => {
     const clientId = randomString();
-    const newList: PartialForm<NsAction> = {
+    const newNsActionList: PartialForm<NsAction> = {
       clientId,
       title,
     };
 
     onValueChange(
       (oldValue: PartialForm<NsActions>) => (
-        [...(oldValue ?? []), newList]
+        [...(oldValue ?? []), newNsActionList]
       ),
       'national_society_actions' as const,
     );
@@ -122,7 +130,14 @@ function ActionsFields(props: Props) {
     )
   ), [value.needs_identified]);
 
-  const filteredNeedOptions = needsIdentifiedMap ? needOptions.filter(n => !needsIdentifiedMap[n.value]) : [];
+  const filteredNeedOptions = useMemo(() => (
+    needsIdentifiedMap
+      ? needOptions.filter(n => !needsIdentifiedMap[n.value])
+      : []
+  ), [
+    needsIdentifiedMap,
+    needOptions,
+  ]);
 
   const nsActionsMap = React.useMemo(() => (
     listToMap(
@@ -131,16 +146,60 @@ function ActionsFields(props: Props) {
       d => true,
     )
   ), [value.national_society_actions]);
-  const filteredNsActionOptions = nsActionsMap ? nsActionOptions.filter(n => !nsActionsMap[n.value]) : [];
-  const isImminentOnset = value.type_of_onset === ONSET_IMMINENT;
+
+  const filteredNsActionOptions = useMemo(() => (
+    nsActionsMap
+      ? nsActionOptions.filter(n => !nsActionsMap[n.value]) :
+      []
+  ), [
+    nsActionsMap,
+    nsActionOptions
+  ]);
+
+  const isThereCoordinationMechanism = value.is_there_major_coordination_mechanism;
+  const didNationalSocietyStarted = value.did_national_society;
 
   return (
     <>
       <Container
         heading={strings.drefFormNationalSocietiesActions}
+        description={strings.drefFormNationalSocietiesActionsDescription}
         className={styles.nationalSocietyActions}
         visibleOverflow
       >
+        <InputSection
+          title={
+            !isImminentOnset
+              ? strings.drefFormDidNationalSocietyStartedSlow
+              : strings.drefFormDidNationalSocietyStartedImminent
+          }
+        >
+          <RadioInput
+            name={'did_national_society' as const}
+            options={yesNoOptions}
+            keySelector={booleanOptionKeySelector}
+            labelSelector={optionLabelSelector}
+            onChange={onValueChange}
+            value={value?.did_national_society}
+            error={error?.did_national_society}
+          />
+        </InputSection>
+        {didNationalSocietyStarted &&
+          <InputSection
+            title={
+              isImminentOnset
+                ? strings.drefFormNSAnticipatoryAction
+                : strings.drefFormNsResponseStarted
+            }
+          >
+            <DateInput
+              name="ns_respond_date"
+              value={value.ns_respond_date}
+              onChange={onValueChange}
+              error={error?.ns_respond_date}
+            />
+          </InputSection>
+        }
         <InputSection>
           <SelectInput
             label={strings.drefFormNationalSocietiesActionsLabel}
@@ -177,6 +236,7 @@ function ActionsFields(props: Props) {
       >
         <InputSection
           title={strings.drefFormIfrc}
+          description={strings.drefFormIfrcDescription}
         >
           <TextArea
             label={strings.cmpActionDescriptionLabel}
@@ -188,6 +248,7 @@ function ActionsFields(props: Props) {
         </InputSection>
         <InputSection
           title={strings.drefFormIcrc}
+          description={strings.drefFormIcrcDescription}
         >
           <TextArea
             label={strings.cmpActionDescriptionLabel}
@@ -199,6 +260,7 @@ function ActionsFields(props: Props) {
         </InputSection>
         <InputSection
           title={strings.drefFormPartnerNationalSociety}
+          description={strings.drefFormPartnerNationalSocietyDescription}
         >
           <TextArea
             name="partner_national_society"
@@ -254,64 +316,104 @@ function ActionsFields(props: Props) {
           oneColumn
           multiRow
         >
-          <TextArea
-            label={strings.cmpActionDescriptionLabel}
-            name="major_coordination_mechanism"
+          <RadioInput
+            name={"is_there_major_coordination_mechanism" as const}
+            options={yesNoOptions}
+            keySelector={booleanOptionKeySelector}
+            labelSelector={optionLabelSelector}
+            value={value.is_there_major_coordination_mechanism}
             onChange={onValueChange}
-            value={value.major_coordination_mechanism}
-            error={error?.major_coordination_mechanism}
+            error={error?.is_there_major_coordination_mechanism}
           />
         </InputSection>
+        {
+          isThereCoordinationMechanism &&
+          <InputSection
+            description={strings.drefFormCoordinationMechanismDescription}
+          >
+            <TextArea
+              label={strings.cmpActionDescriptionLabel}
+              name="major_coordination_mechanism"
+              onChange={onValueChange}
+              value={value.major_coordination_mechanism}
+              error={error?.major_coordination_mechanism}
+            />
+          </InputSection>
+        }
       </Container>
-      <Container
-        heading={isImminentOnset ? strings.drefFormImminentNeedsIdentified : strings.drefFormNeedsIdentified}
-        className={styles.needsIdentified}
-        visibleOverflow
-      >
-        <InputSection>
-          <SelectInput
-            label={strings.drefFormActionFieldsLabel}
-            name={undefined}
-            onChange={setNeed}
-            options={filteredNeedOptions}
-            value={need}
-          />
-          <div className={styles.actions}>
-            <Button
-              variant="secondary"
-              name={need}
-              onClick={handleNeedAddButtonClick}
-              disabled={isNotDefined(need)}
-            >
-              Add
-            </Button>
-          </div>
-        </InputSection>
-        {value?.needs_identified?.map((n, i) => (
-          <NeedInput
-            key={n.clientId}
-            index={i}
-            value={n}
-            onChange={onNeedChange}
-            onRemove={onNeedRemove}
-            error={getErrorObject(error?.needs_identified)}
-            needOptions={needOptions}
-          />
-        ))}
-        <InputSection
-          title={strings.drefFormGapsInAssessment}
-          oneColumn
-          multiRow
+      {!isAssessmentReport &&
+        <Container
+          className={styles.needsIdentified}
+          heading={
+            isImminentOnset
+              ? strings.drefFormImminentNeedsIdentified
+              : strings.drefFormNeedsIdentified
+          }
+          visibleOverflow
         >
-          <TextArea
-            label={strings.cmpActionDescriptionLabel}
-            name="identified_gaps"
-            onChange={onValueChange}
-            value={value.identified_gaps}
-            error={error?.identified_gaps}
-          />
-        </InputSection>
-      </Container>
+          {!isImminentOnset &&
+            <InputSection>
+              <DREFFileInput
+                accept=".pdf, .docx, .pptx"
+                label={strings.drefFormAssessmentReportUploadLabel}
+                name="assessment_report"
+                value={value.assessment_report}
+                onChange={onValueChange}
+                error={error?.assessment_report}
+                fileIdToUrlMap={fileIdToUrlMap}
+                setFileIdToUrlMap={setFileIdToUrlMap}
+              >
+                {strings.drefFormAssessmentReportUploadButtonLabel}
+              </DREFFileInput>
+            </InputSection>
+          }
+          <InputSection>
+            <SelectInput
+              label={strings.drefFormActionFieldsLabel}
+              name={undefined}
+              onChange={setNeed}
+              options={filteredNeedOptions}
+              value={need}
+            />
+            <div className={styles.actions}>
+              <Button
+                variant="secondary"
+                name={need}
+                onClick={handleNeedAddButtonClick}
+                disabled={isNotDefined(need)}
+              >
+                Add
+              </Button>
+            </div>
+          </InputSection>
+          {value?.needs_identified?.map((n, i) => (
+            <NeedInput
+              key={n.clientId}
+              index={i}
+              value={n}
+              onChange={onNeedChange}
+              onRemove={onNeedRemove}
+              error={getErrorObject(error?.needs_identified)}
+              needOptions={needOptions}
+            />
+          ))}
+          {!isImminentOnset && (
+            <InputSection
+              title={strings.drefFormGapsInAssessment}
+              oneColumn
+              multiRow
+            >
+              <TextArea
+                label={strings.cmpActionDescriptionLabel}
+                name="identified_gaps"
+                onChange={onValueChange}
+                value={value.identified_gaps}
+                error={error?.identified_gaps}
+              />
+            </InputSection>
+          )}
+        </Container>
+      }
     </>
   );
 }

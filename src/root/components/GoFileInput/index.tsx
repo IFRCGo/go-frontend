@@ -3,7 +3,10 @@ import {
   _cs,
   isDefined,
 } from '@togglecorp/fujs';
-import { IoClose } from 'react-icons/io5';
+import {
+  IoClose,
+  IoDocumentTextOutline,
+} from 'react-icons/io5';
 import { internal } from '@togglecorp/toggle-form';
 
 import { useLazyRequest } from '#utils/restRequest';
@@ -41,20 +44,20 @@ export function Preview<ID extends number>(props: PreviewProps<ID>) {
   const isPreviewable = file.match(/.(jpg|jpeg|png|gif)$/i);
 
   const removeButton = (
-      <RawButton
-        name={id}
-        onClick={onRemoveButtonClick}
-        className={styles.removeButton}
-      >
-        <IoClose />
-      </RawButton>
+    <RawButton
+      name={id}
+      onClick={onRemoveButtonClick}
+      className={styles.removeButton}
+    >
+      <IoClose />
+    </RawButton>
   );
 
   if (!isPreviewable) {
     return (
       <div className={styles.noPreview}>
         {removeButton}
-        Preview not available!
+        <IoDocumentTextOutline fontSize="6rem" />
       </div>
     );
   }
@@ -171,14 +174,31 @@ function GoFileInput<T extends string>(props: Props<T>) {
     [triggerFileUpload, name, props.onChange],
   );
 
+  let hasSelection = false;
+
+  if (!value) {
+    hasSelection = false;
+  } else if (Array.isArray(value) && value.length === 0) {
+    hasSelection = false;
+  } else {
+    hasSelection = true;
+  }
+
   let currentStatus;
   if (pending) {
     currentStatus = 'Uploading file(s)...';
   } else if (!value) {
     currentStatus = 'No file selected';
-  }  else {
-    currentStatus = Array.isArray(value) ? `${value.length} files selected` : '1 file selected';
+  } else {
+    if (Array.isArray(value)) {
+      if (value.length > 0) {
+        currentStatus = `${value.length} files selected`;
+      }
+    } else {
+      currentStatus = '1 file selected';
+    }
   }
+
 
   const handleClear = useCallback(() => {
     props.onChange(undefined, name);
@@ -210,7 +230,7 @@ function GoFileInput<T extends string>(props: Props<T>) {
           actions={(
             <>
               {actions}
-              {!hideClearButton && value && (
+              {!hideClearButton && hasSelection && (
                 <Button
                   onClick={handleClear}
                   disabled={disabled}
@@ -220,7 +240,7 @@ function GoFileInput<T extends string>(props: Props<T>) {
                 >
                   <IoClose />
                 </Button>
-            )}
+              )}
             </>
           )}
           disabled={disabled || pending}
@@ -254,7 +274,7 @@ function GoFileInput<T extends string>(props: Props<T>) {
         actions={(
           <>
             {actions}
-            {!hideClearButton && value && (
+            {!hideClearButton && hasSelection && (
               <Button
                 onClick={handleClear}
                 disabled={disabled}
@@ -264,7 +284,7 @@ function GoFileInput<T extends string>(props: Props<T>) {
               >
                 <IoClose />
               </Button>
-          )}
+            )}
           </>
         )}
         disabled={disabled || pending}

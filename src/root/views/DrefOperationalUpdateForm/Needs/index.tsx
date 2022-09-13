@@ -21,6 +21,7 @@ import Button from '#components/Button';
 import SelectInput from '#components/SelectInput';
 import RadioInput from '#components/RadioInput';
 import NsActionInput from '#views/DrefApplicationForm/ActionsFields/NSActionInput';
+import DREFFileInput from '#components/DREFFileInput';
 
 import {
   booleanOptionKeySelector,
@@ -29,10 +30,11 @@ import {
   Need,
   NsAction,
   optionLabelSelector,
+  FileWithCaption,
   StringValueOption,
 } from '../common';
 import styles from './styles.module.scss';
-import DREFFileInput from '#components/DREFFileInput';
+import CaptionInput from '#views/DrefApplicationForm/CaptionInput/CaptionInput';
 
 type Value = PartialForm<DrefOperationalUpdateFields>;
 interface Props {
@@ -44,6 +46,8 @@ interface Props {
   nsActionOptions: StringValueOption[];
   fileIdToUrlMap: Record<number, string>;
   setFileIdToUrlMap?: React.Dispatch<React.SetStateAction<Record<number, string>>>;
+  isAssessmentReport?: boolean;
+  isImminentOnset?: boolean;
 }
 
 function Needs(props: Props) {
@@ -57,7 +61,9 @@ function Needs(props: Props) {
     needOptions,
     nsActionOptions,
     fileIdToUrlMap,
-    setFileIdToUrlMap
+    setFileIdToUrlMap,
+    isAssessmentReport,
+    isImminentOnset,
   } = props;
 
   const error = React.useMemo(
@@ -135,6 +141,34 @@ function Needs(props: Props) {
   ), [value.national_society_actions]);
 
   const filteredNsActionOptions = nsActionsMap ? nsActionOptions.filter(n => !nsActionsMap[n.value]) : [];
+  const isThereCoordinationMechanism = value.is_there_major_coordination_mechanism;
+
+  const imagesValue = React.useMemo(() => (
+    value?.photos_file?.map(d => d.id).filter(d => !!d) as number[] | undefined
+  ), [value?.photos_file]);
+
+  const {
+    setValue: onImageChange,
+    removeValue: onImageRemove,
+  } = useFormArray<'photos_file', PartialForm<FileWithCaption>>(
+    'photos_file',
+    onValueChange,
+  );
+  const handleImageInputChange = React.useCallback((newValue: number[] | undefined) => {
+    const imageCaptionByIdMap = listToMap(
+      value?.photos_file ?? [],
+      img => img.id as number,
+      img => img.caption,
+    );
+
+    const newImageList: undefined | PartialForm<FileWithCaption[]> = newValue?.map((v) => ({
+      client_id: String(v),
+      id: v,
+      caption: imageCaptionByIdMap[v],
+    }));
+
+    onValueChange(newImageList, 'photos_file' as const);
+  }, [value?.photos_file, onValueChange]);
 
   return (
     <>
@@ -143,19 +177,35 @@ function Needs(props: Props) {
         className={styles.nationalSocietyActions}
         visibleOverflow
       >
-        <InputSection>
+        <InputSection
+          contentSectionClassName={styles.imageInputContent}
+        >
           <DREFFileInput
-            accept='image/*'
-            name='photos'
-            onChange={onValueChange}
-            value={value.photos}
-            error={error?.photos}
+            name="photos_file"
+            value={imagesValue}
+            onChange={handleImageInputChange}
+            accept="image/*"
+            multiple
+            error={error?.photos_file}
             fileIdToUrlMap={fileIdToUrlMap}
             setFileIdToUrlMap={setFileIdToUrlMap}
-            multiple
+            hidePreview
           >
             {strings.operationalUpdateCurrentNsImageLabel}
           </DREFFileInput>
+          <div className={styles.previewList}>
+            {value?.photos_file?.map((g, i) => (
+              <CaptionInput
+                key={g.client_id}
+                index={i}
+                value={g}
+                onChange={onImageChange}
+                onRemove={onImageRemove}
+                error={getErrorObject(error?.photos_file)}
+                fileIdToUrlMap={fileIdToUrlMap}
+              />
+            ))}
+          </div>
         </InputSection>
         <InputSection>
           <SelectInput
@@ -193,6 +243,7 @@ function Needs(props: Props) {
       >
         <InputSection
           title={strings.drefFormIfrc}
+          description={strings.drefFormIfrcDescription}
         >
           <TextArea
             label={strings.cmpActionDescriptionLabel}
@@ -204,6 +255,7 @@ function Needs(props: Props) {
         </InputSection>
         <InputSection
           title={strings.drefFormIcrc}
+          description={strings.drefFormIcrcDescription}
         >
           <TextArea
             label={strings.cmpActionDescriptionLabel}
@@ -215,6 +267,7 @@ function Needs(props: Props) {
         </InputSection>
         <InputSection
           title={strings.drefFormPartnerNationalSociety}
+          description={strings.drefFormPartnerNationalSocietyDescription}
         >
           <TextArea
             name="partner_national_society"
@@ -270,51 +323,104 @@ function Needs(props: Props) {
           oneColumn
           multiRow
         >
-          <TextArea
-            label={strings.cmpActionDescriptionLabel}
-            name="major_coordination_mechanism"
+          <RadioInput
+            name={"is_there_major_coordination_mechanism" as const}
+            options={yesNoOptions}
+            keySelector={booleanOptionKeySelector}
+            labelSelector={optionLabelSelector}
+            value={value.is_there_major_coordination_mechanism}
             onChange={onValueChange}
-            value={value.major_coordination_mechanism}
-            error={error?.major_coordination_mechanism}
+            error={error?.is_there_major_coordination_mechanism}
           />
         </InputSection>
+
+        {isThereCoordinationMechanism &&
+          <InputSection
+            description={strings.drefFormCoordinationMechanismDescription}
+          >
+            <TextArea
+              label={strings.cmpActionDescriptionLabel}
+              name="major_coordination_mechanism"
+              onChange={onValueChange}
+              value={value.major_coordination_mechanism}
+              error={error?.major_coordination_mechanism}
+            />
+          </InputSection>
+        }
       </Container>
-      <Container
-        heading={strings.drefFormNeedsIdentified}
-        className={styles.needsIdentified}
-        visibleOverflow
-      >
-        <InputSection>
-          <SelectInput
-            label={strings.drefFormActionFieldsLabel}
-            name={undefined}
-            onChange={setNeed}
-            options={filteredNeedOptions}
-            value={need}
-          />
-          <div className={styles.actions}>
-            <Button
-              variant="secondary"
-              name={need}
-              onClick={handleNeedAddButtonClick}
-              disabled={isNotDefined(need)}
+      {!isAssessmentReport &&
+        <Container
+          className={styles.needsIdentified}
+          heading={
+            isImminentOnset
+              ? strings.drefFormImminentNeedsIdentified
+              : strings.drefFormNeedsIdentified
+          }
+          visibleOverflow
+        >
+          {!isImminentOnset &&
+            <InputSection>
+              <DREFFileInput
+                accept=".pdf, .docx, .pptx"
+                label={strings.drefFormAssessmentReportUploadLabel}
+                name="assessment_report"
+                value={value.assessment_report}
+                onChange={onValueChange}
+                error={error?.assessment_report}
+                fileIdToUrlMap={fileIdToUrlMap}
+                setFileIdToUrlMap={setFileIdToUrlMap}
+              >
+                {strings.drefFormAssessmentReportUploadButtonLabel}
+              </DREFFileInput>
+            </InputSection>
+          }
+          <InputSection>
+            <SelectInput
+              label={strings.drefFormActionFieldsLabel}
+              name={undefined}
+              onChange={setNeed}
+              options={filteredNeedOptions}
+              value={need}
+            />
+            <div className={styles.actions}>
+              <Button
+                variant="secondary"
+                name={need}
+                onClick={handleNeedAddButtonClick}
+                disabled={isNotDefined(need)}
+              >
+                Add
+              </Button>
+            </div>
+          </InputSection>
+          {value?.needs_identified?.map((n, i) => (
+            <NeedInput
+              key={n.clientId}
+              index={i}
+              value={n}
+              onChange={onNeedChange}
+              onRemove={onNeedRemove}
+              error={getErrorObject(error?.needs_identified)}
+              needOptions={needOptions}
+            />
+          ))}
+          {!isImminentOnset && (
+            <InputSection
+              title={strings.drefFormGapsInAssessment}
+              oneColumn
+              multiRow
             >
-              Add
-            </Button>
-          </div>
-        </InputSection>
-        {value?.needs_identified?.map((n, i) => (
-          <NeedInput
-            key={n.clientId}
-            index={i}
-            value={n}
-            onChange={onNeedChange}
-            onRemove={onNeedRemove}
-            error={getErrorObject(error?.needs_identified)}
-            needOptions={needOptions}
-          />
-        ))}
-      </Container>
+              <TextArea
+                label={strings.cmpActionDescriptionLabel}
+                name="identified_gaps"
+                onChange={onValueChange}
+                value={value.identified_gaps}
+                error={error?.identified_gaps}
+              />
+            </InputSection>
+          )}
+        </Container>
+      }
     </>
   );
 }

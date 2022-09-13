@@ -5,17 +5,19 @@ import {
   isFalsyString,
   caseInsensitiveSubmatch,
   compareStringSearch,
+  addSeparator,
+  listToMap,
 } from '@togglecorp/fujs';
 
 import { Strings } from '#types';
 
 export const getHashFromBrowser = () => window.location.hash.substr(1);
 export const setHashToBrowser = (hash: string | undefined) => {
-    if (hash) {
-        window.location.replace(`#${hash}`);
-    } else {
-        window.location.hash = '';
-    }
+  if (hash) {
+    window.location.replace(`#${hash}`);
+  } else {
+    window.location.hash = '';
+  }
 };
 
 export function sumSafe(list: (number | undefined | null)[]): number {
@@ -129,11 +131,11 @@ export function isObject(foo: unknown): foo is object {
 }
 
 export function ymdToDateString(year: number, month: number, day: number) {
-    const ys = String(year).padStart(4, '0');
-    const ms = String(month + 1).padStart(2, '0');
-    const ds = String(day).padStart(2, '0');
+  const ys = String(year).padStart(4, '0');
+  const ms = String(month + 1).padStart(2, '0');
+  const ds = String(day).padStart(2, '0');
 
-    return `${ys}-${ms}-${ds}`;
+  return `${ys}-${ms}-${ds}`;
 }
 
 export const genericMemo: (<T>(c: T) => T) = memo;
@@ -148,12 +150,12 @@ export function rankedSearchOnList<T>(
   }
 
   return list
-  .filter((option) => caseInsensitiveSubmatch(labelSelector(option), searchString))
-  .sort((a, b) => compareStringSearch(
-    labelSelector(a),
-    labelSelector(b),
-    searchString,
-  ));
+    .filter((option) => caseInsensitiveSubmatch(labelSelector(option), searchString))
+    .sort((a, b) => compareStringSearch(
+      labelSelector(a),
+      labelSelector(b),
+      searchString,
+    ));
 }
 
 export function getFullMonthNameList(strings: Strings) {
@@ -173,12 +175,12 @@ export function getFullMonthNameList(strings: Strings) {
   ] as const;
 }
 
-export function avgSafe(list: (number|undefined|null)[]) {
+export function avgSafe(list: (number | undefined | null)[]) {
   const listSafe = (list ?? []).filter((i) => isDefined(i) && !Number.isNaN(i)) as number[];
   return avg(listSafe, d => d);
 }
 
-export function isValidNumber(value: unknown): value is number  {
+export function isValidNumber(value: unknown): value is number {
   if (isFalsy(value)) {
     return false;
   }
@@ -399,4 +401,56 @@ export function getPrettyBreakpoints(
     up,
     ndiv,
   };
+}
+
+export function formatBoolean(value: boolean | undefined | null) {
+  if (value === true) {
+    return 'Yes';
+  }
+
+  if (value === false) {
+    return 'No';
+  }
+
+  return '-';
+}
+
+export function formatNumber(value: number | undefined | null, prefix?: string): string {
+  const defaultValue = '-';
+
+  if (isValidNumber(value)) {
+    const formattedNumber = addSeparator(value) ?? defaultValue;
+
+    if (prefix) {
+      return `${prefix}${formattedNumber}`;
+    }
+
+    return formattedNumber;
+  }
+
+  return defaultValue;
+}
+
+export function isSimilarArray<T extends string | number>(
+  aList: T[] | undefined,
+  bList: T[] | undefined,
+) {
+  if (!aList && !bList) {
+    return true;
+  }
+
+  if (!aList || !bList) {
+    return false;
+  }
+
+  if (aList.length !== bList.length) {
+    return false;
+  }
+
+  if (aList.length === 0 && bList.length === 0) {
+    return true;
+  }
+
+  const aMap = listToMap(aList, a => a, a => true);
+  return bList.every((b) => aMap[b]);
 }

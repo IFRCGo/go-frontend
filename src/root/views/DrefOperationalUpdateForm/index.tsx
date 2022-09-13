@@ -1,5 +1,8 @@
 import React from 'react';
-import { Link, match } from 'react-router-dom';
+import {
+  Link,
+  match,
+} from 'react-router-dom';
 import {
   History,
   Location,
@@ -8,6 +11,7 @@ import {
   isDefined,
   listToMap,
   mapToMap,
+  isNotDefined,
 } from '@togglecorp/fujs';
 import {
   analyzeErrors,
@@ -34,6 +38,8 @@ import {
   useLazyRequest,
   useRequest,
 } from '#utils/restRequest';
+import scrollToTop from '#utils/scrollToTop';
+import { DrefApiFields } from '#views/DrefApplicationForm/common';
 
 import {
   DrefOperationalUpdateFields,
@@ -55,16 +61,6 @@ import Operation from './Operation';
 import Submission from './Submission';
 
 import styles from './styles.module.scss';
-
-function scrollToTop() {
-  window.setTimeout(() => {
-    window.scrollTo({
-      top: Math.min(145, window.scrollY),
-      left: 0,
-      behavior: 'smooth',
-    });
-  }, 0);
-}
 
 interface Props {
   match: match<{ id?: string }>;
@@ -89,8 +85,21 @@ const stepTypesToFieldsMap: {
 };
 
 const defaultFormValues: PartialForm<DrefOperationalUpdateFields> = {
-  images: []
+  planned_interventions: [],
+  national_society_actions: [],
+  needs_identified: [],
+  images_file: [],
+  users: [],
+  is_assessment_report: false,
 };
+
+const intermittentValidationExceptions: (keyof DrefOperationalUpdateFields)[] = [
+  'event_map_file',
+  'photos_file',
+  'total_operation_timeframe',
+  'number_of_people_targeted',
+  'district',
+];
 
 function DrefOperationalUpdate(props: Props) {
   const {
@@ -98,6 +107,122 @@ function DrefOperationalUpdate(props: Props) {
   } = props;
   const { id } = match.params;
   const alert = useAlert();
+
+  const {
+    pending: operationalUpdatePending,
+    response: drefOperationalResponse,
+  } = useRequest<DrefOperationalUpdateApiFields>({
+    skip: isNotDefined(id),
+    url: `api/v2/dref-op-update/${id}/`,
+    onSuccess: (response) => {
+      setFileIdToUrlMap((prevMap) => {
+        const newMap = {
+          ...prevMap,
+        };
+        if (response.budget_file_details) {
+          newMap[response.budget_file_details.id] = response.budget_file_details.file;
+        }
+        if (response.event_map_file && response.event_map_file.file) {
+          newMap[response.event_map_file.id] = response.event_map_file.file;
+        }
+        if (response.cover_image_file && response.cover_image_file.file) {
+          newMap[response.cover_image_file.id] = response.cover_image_file.file;
+        }
+        if (response.photos_file?.length > 0) {
+          response.photos_file.forEach((img) => {
+            newMap[img.id] = img.file;
+          });
+        }
+        if (response.images_file?.length > 0) {
+          response.images_file.forEach((img) => {
+            newMap[img.id] = img.file;
+          });
+        }
+        return newMap;
+      });
+      setValue({
+        ...response,
+        planned_interventions: response.planned_interventions?.map((pi) => ({
+          ...pi,
+          clientId: String(pi.id),
+          indicators: pi?.indicators?.map((i) => ({
+            ...i,
+            clientId: String(i.id)
+          })),
+        })),
+        national_society_actions: response.national_society_actions?.map((nsa) => ({
+          ...nsa,
+          clientId: String(nsa.id),
+        })),
+        needs_identified: response.needs_identified?.map((ni) => ({
+          ...ni,
+          clientId: String(ni.id),
+        })),
+        images_file: response.images_file.map((img) => (
+          isDefined(img.file)
+            ? ({
+              id: img.id,
+              client_id: img.client_id ?? String(img.id),
+              caption: img.caption ?? '',
+            })
+            : undefined
+        )).filter(isDefined),
+
+        photos_file: response.photos_file.map((img) => (
+          isDefined(img.file)
+            ? ({
+              id: img.id,
+              client_id: img.client_id ?? String(img.id),
+              caption: img.caption ?? '',
+            })
+            : undefined
+        )).filter(isDefined),
+        disability_people_per: response.disability_people_per ? +response.disability_people_per : undefined,
+        people_per_urban: response.people_per_urban ? +response.people_per_urban : undefined,
+        people_per_local: response.people_per_local ? +response.people_per_local : undefined,
+      });
+    },
+    onFailure: ({
+      value: { messageForNotification },
+      debugMessage,
+    }) => {
+      alert.show(
+        <p>
+          {strings.drefOperationalUpdateFailureMessage}
+          &nbsp;
+          <strong>
+            {messageForNotification}
+          </strong>
+        </p>,
+        {
+          variant: 'danger',
+          debugMessage,
+        },
+      );
+    }
+  });
+
+  const {
+    pending: fetchingDref,
+    response: drefFields,
+  } = useRequest<DrefApiFields>({
+    skip: isNotDefined(drefOperationalResponse?.dref),
+    url: `api/v2/dref/${drefOperationalResponse?.dref}`,
+  });
+
+  const prevOperationalUpdateId = drefFields?.operational_update_details?.find(ou => !ou.is_published)?.id;
+  const {
+    pending: fetchingPrevOperationalUpdate,
+    response: prevOperationalUpdate,
+  } = useRequest<DrefOperationalUpdateApiFields>({
+    skip: isNotDefined(prevOperationalUpdateId),
+    url: `api/v2/dref-op-update/${prevOperationalUpdateId}/`,
+  });
+
+  const contextValue = React.useMemo(() => (
+    isDefined(prevOperationalUpdateId) ? ({ type: 'opsUpdate' as const, value: prevOperationalUpdate }) : ({ type: 'dref' as const, value: drefFields })
+  ), [prevOperationalUpdateId, prevOperationalUpdate, drefFields]);
+
   const {
     value,
     error,
@@ -107,7 +232,8 @@ function DrefOperationalUpdate(props: Props) {
     setError,
   } = useForm(
     schema,
-    { value: defaultFormValues }
+    { value: defaultFormValues },
+    contextValue,
   );
 
   const {
@@ -171,7 +297,7 @@ function DrefOperationalUpdate(props: Props) {
   }, [error]);
 
   const validateCurrentTab = React.useCallback((exceptions: (keyof DrefOperationalUpdateFields)[] = []) => {
-    const validationError = getErrorObject(accumulateErrors(value, schema, value, undefined));
+    const validationError = getErrorObject(accumulateErrors(value, schema, value, contextValue));
     const currentFields = stepTypesToFieldsMap[currentStep];
     const exceptionsMap = listToMap(exceptions, d => d, d => true);
 
@@ -185,19 +311,27 @@ function DrefOperationalUpdate(props: Props) {
       field => validationError?.[field]
     ) as ObjectError<DrefOperationalUpdateFields>;
 
+    /*
     const newError: typeof error = {
       ...currentTabErrors,
     };
 
     setError(newError);
+    */
+    setError(validationError);
 
     const hasError = Object.keys(currentTabErrors).some(d => !!d);
     return !hasError;
-  }, [value, currentStep, setError]);
+  }, [
+    value,
+    currentStep,
+    setError,
+    contextValue,
+  ]);
 
   const handleTabChange = React.useCallback((newStep: StepTypes) => {
     scrollToTop();
-    const isCurrentTabValid = validateCurrentTab(['images', 'photos']);
+    const isCurrentTabValid = validateCurrentTab(intermittentValidationExceptions);
 
     if (!isCurrentTabValid) {
       return;
@@ -214,6 +348,7 @@ function DrefOperationalUpdate(props: Props) {
     body: ctx => ctx,
     onSuccess: (response) => {
       alert.show(
+        // FIXME: use strings
         'Operational Update was updated successfully!',
         { variant: 'success' },
       );
@@ -225,10 +360,16 @@ function DrefOperationalUpdate(props: Props) {
       },
       debugMessage,
     }) => {
-      setError({
-        ...formErrors,
-        [internal]: formErrors?.non_field_errors as string | undefined,
-      });
+      if (Array.isArray(formErrors)) {
+        setError({
+          [internal]: formErrors?.join(', '),
+        });
+      } else {
+        setError({
+          ...formErrors,
+          [internal]: formErrors?.non_field_errors as string | undefined,
+        });
+      }
 
       alert.show(
         <p>
@@ -244,82 +385,6 @@ function DrefOperationalUpdate(props: Props) {
         },
       );
     },
-  });
-
-  const {
-    pending: operationalUpdatePending,
-    response: drefOperationalResponse,
-  } = useRequest<DrefOperationalUpdateApiFields>({
-    skip: !id,
-    url: `api/v2/dref-op-update/${id}/`,
-    onSuccess: (response) => {
-      setFileIdToUrlMap((prevMap) => {
-        const newMap = {
-          ...prevMap,
-        };
-        if (response.images_details?.length > 0) {
-          response.images_details.forEach((img) => {
-            newMap[img.id] = img.file;
-          });
-        }
-        if (response.budget_file_details) {
-          newMap[response.budget_file_details.id] = response.budget_file_details.file;
-        }
-        if (response.cover_image_details) {
-          newMap[response.cover_image_details.id] = response.cover_image_details.file;
-        }
-        if (response.photos_details?.length > 0) {
-          response.photos_details.forEach((img) => {
-            newMap[img.id] = img.file;
-          });
-        }
-        return newMap;
-      });
-      setValue({
-        ...response,
-        country_district: response.country_district?.map((cd) => ({
-          ...cd,
-          clientId: String(cd.id),
-        })),
-        planned_interventions: response.planned_interventions?.map((pi) => ({
-          ...pi,
-          clientId: String(pi.id),
-          indicators: pi?.indicators?.map((i) => ({
-            ...i,
-            clientId: String(i.id)
-          })),
-        })),
-        national_society_actions: response.national_society_actions?.map((nsa) => ({
-          ...nsa,
-          clientId: String(nsa.id),
-        })),
-        needs_identified: response.needs_identified?.map((ni) => ({
-          ...ni,
-          clientId: String(ni.id),
-        })),
-        disability_people_per: response.disability_people_per ? +response.disability_people_per : undefined,
-        people_per_urban: response.people_per_urban ? +response.people_per_urban : undefined,
-        people_per_local: response.people_per_local ? +response.people_per_local : undefined,
-      });
-    },
-    onFailure: ({
-      value: { messageForNotification },
-      debugMessage,
-    }) => {
-      alert.show(
-        <p>
-          {strings.drefOperationalUpdateFailureMessage}
-          &nbsp;
-          <strong>
-            {messageForNotification}
-          </strong>
-        </p>,
-        {
-          variant: 'danger',
-          debugMessage,
-        },
-      );
-    }
   });
 
   const handleBackButtonClick = React.useCallback(() => {
@@ -353,7 +418,7 @@ function DrefOperationalUpdate(props: Props) {
 
   const handleSubmitButtonClick = React.useCallback(() => {
     scrollToTop();
-    const isCurrentTabValid = validateCurrentTab(['images']) && validateCurrentTab(['photos']);
+    const isCurrentTabValid = validateCurrentTab(intermittentValidationExceptions);
     if (!isCurrentTabValid) {
       return;
     }
@@ -379,22 +444,12 @@ function DrefOperationalUpdate(props: Props) {
     || fetchingDisasterTypes
     || fetchingDrefOptions
     || fetchingUserDetails
+    || fetchingDref
+    || fetchingPrevOperationalUpdate
     || operationalUpdatePending
     || drefSubmitPending;
 
   const failedToLoadDref = !pending && isDefined(id) && !drefOperationalResponse;
-
-  React.useEffect(() => {
-    if (isDefined(value.new_operational_start_date) && isDefined(value.new_operational_end_date)) {
-      const startDateYear = new Date(value.new_operational_start_date).getFullYear();
-      const startDateMonth = new Date(value.new_operational_start_date).getMonth();
-      const endDateYear = new Date(value.new_operational_end_date).getFullYear();
-      const endDateMonth = new Date(value.new_operational_end_date).getMonth();
-      const totalOperatingTimeframe = ((endDateMonth + 12 * endDateYear) - (startDateMonth + 12 * startDateYear));
-
-      onValueChange(totalOperatingTimeframe, 'total_operation_timeframe');
-    }
-  }, [onValueChange, value.new_operational_start_date, value.new_operational_end_date]);
 
   const exportLinkProps = useButtonFeatures({
     variant: 'secondary',
@@ -402,6 +457,7 @@ function DrefOperationalUpdate(props: Props) {
   });
 
   const isImminentOnset = value?.type_of_onset === ONSET_IMMINENT;
+  const isAssessmentReport = value?.is_assessment_report;
 
   return (
     <Tabs
@@ -540,6 +596,8 @@ function DrefOperationalUpdate(props: Props) {
                   nsActionOptions={nsActionOptions}
                   fileIdToUrlMap={fileIdToUrlMap}
                   setFileIdToUrlMap={setFileIdToUrlMap}
+                  isAssessmentReport={isAssessmentReport}
+                  isImminentOnset={isImminentOnset}
                 />
               </TabPanel>
               <TabPanel name='operation'>
@@ -550,6 +608,8 @@ function DrefOperationalUpdate(props: Props) {
                   value={value}
                   fileIdToUrlMap={fileIdToUrlMap}
                   setFileIdToUrlMap={setFileIdToUrlMap}
+                  isAssessmentReport={isAssessmentReport}
+                  yesNoOptions={yesNoOptions}
                 />
               </TabPanel>
               <TabPanel name='submission'>

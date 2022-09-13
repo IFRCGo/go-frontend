@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import {
   randomString,
   isNotDefined,
@@ -22,16 +22,24 @@ import TextArea from '#components/TextArea';
 import InputLabel from '#components/InputLabel';
 import DREFFileInput from '#components/DREFFileInput';
 import LanguageContext from '#root/languageContext';
-
 import { sumSafe } from '#utils/common';
+import RadioInput from '#components/RadioInput';
+
 import InterventionInput from './InterventionInput';
+import RiskSecurityInput from './RiskSecurityInput';
 import {
   DrefFields,
   StringValueOption,
   Intervention,
-  ONSET_IMMINENT,
+  BooleanValueOption,
+  booleanOptionKeySelector,
+  optionLabelSelector,
+  RiskSecurityProps,
 } from '../common';
-import { InterventionType } from '../useDrefFormOptions';
+import {
+  InterventionType,
+  RiskSecurityType
+} from '../useDrefFormOptions';
 
 import styles from './styles.module.scss';
 
@@ -44,6 +52,9 @@ interface Props {
   interventionOptions: StringValueOption[];
   fileIdToUrlMap: Record<number, string>;
   setFileIdToUrlMap?: React.Dispatch<React.SetStateAction<Record<number, string>>>;
+  yesNoOptions: BooleanValueOption[];
+  isAssessmentReport?: boolean;
+  isImminentOnset?: boolean;
 }
 
 function Response(props: Props) {
@@ -56,6 +67,9 @@ function Response(props: Props) {
     fileIdToUrlMap,
     setFileIdToUrlMap,
     value,
+    yesNoOptions,
+    isAssessmentReport,
+    isImminentOnset
   } = props;
 
   const error = getErrorObject(formError);
@@ -72,14 +86,14 @@ function Response(props: Props) {
   type Interventions = typeof value.planned_interventions;
   const handleInterventionAddButtonClick = React.useCallback((title) => {
     const clientId = randomString();
-    const newList: PartialForm<InterventionType> = {
+    const newInterventionList: PartialForm<InterventionType> = {
       clientId,
       title,
     };
 
     onValueChange(
       (oldValue: PartialForm<Interventions>) => (
-        [...(oldValue ?? []), newList]
+        [...(oldValue ?? []), newInterventionList]
       ),
       'planned_interventions' as const,
     );
@@ -89,8 +103,8 @@ function Response(props: Props) {
   const interventionsIdentifiedMap = React.useMemo(() => (
     listToMap(
       value.planned_interventions,
-      d => d.title ?? '',
-      d => true
+      pi => pi.title ?? '',
+      pi => true,
     )
   ), [value.planned_interventions]);
 
@@ -105,8 +119,7 @@ function Response(props: Props) {
       w.push('Total targeted population is different from that in Operation Overview');
     }
 
-
-    if (sumSafe([
+    if (!value.is_assessment_report && sumSafe([
       value?.women,
       value?.men,
       value?.girls,
@@ -117,6 +130,7 @@ function Response(props: Props) {
 
     return w;
   }, [
+    value?.is_assessment_report,
     value?.num_assisted,
     value?.women,
     value?.men,
@@ -125,17 +139,87 @@ function Response(props: Props) {
     value?.total_targeted_population,
   ]);
 
-  const filteredInterventionOptions = interventionsIdentifiedMap ? interventionOptions.filter(n => !interventionsIdentifiedMap[n.value]) : [];
-  const isImminentOnset = value.type_of_onset === ONSET_IMMINENT;
+  const filteredInterventionOptions = useMemo(() =>
+    interventionsIdentifiedMap
+      ? interventionOptions.filter(n => !interventionsIdentifiedMap[n.value])
+      : []
+    , [
+      interventionsIdentifiedMap,
+      interventionOptions,
+    ]
+  );
+
+  const isSurgePersonnelDeployed = value?.is_surge_personnel_deployed;
+
+  const {
+    setValue: onRiskSecurityChange,
+    removeValue: onRiskSecurityRemove,
+  } = useFormArray<'risk_security', PartialForm<RiskSecurityProps>>(
+    'risk_security',
+    onValueChange,
+  );
+
+  type riskSecurity = typeof value.risk_security;
+
+  const handleRiskSecurityAdd = React.useCallback(() => {
+    const clientId = randomString();
+    const newRiskSecurityList: PartialForm<RiskSecurityType> = {
+      clientId,
+    };
+
+    onValueChange(
+      (oldValue: PartialForm<riskSecurity>) => (
+        [...(oldValue ?? []), newRiskSecurityList]
+      ),
+      'risk_security' as const,
+    );
+  }, [onValueChange]);
+
+  const totalBudgetFromInterventions = React.useMemo(
+    () => sumSafe(value?.planned_interventions?.map(pi => pi.budget) ?? []),
+    [value?.planned_interventions],
+  );
+
+  // NOTE: || used intentionally instead of ??
+  const plannedBudgetMatchRequestedAmount = (value?.amount_requested || 0) === totalBudgetFromInterventions;
 
   return (
     <>
+      <Container
+        heading={strings.drefFormObjectiveAndStrategy}
+        className={styles.objectiveRationale}
+      >
+        <InputSection
+          title={strings.drefFormObjectiveOperation}
+        >
+          <TextArea
+            name="operation_objective"
+            onChange={onValueChange}
+            value={value.operation_objective}
+            error={error?.operation_objective}
+            placeholder={strings.drefFormObjectiveOperationPlaceholder}
+          />
+        </InputSection>
+        <InputSection
+          title={strings.drefFormResponseRationale}
+          description={isAssessmentReport && strings.drefFormResponseRationaleDescription}
+        >
+          <TextArea
+            name="response_strategy"
+            onChange={onValueChange}
+            value={value.response_strategy}
+            error={error?.response_strategy}
+            placeholder={strings.drefFormResponseRationalePlaceholder}
+          />
+        </InputSection>
+      </Container>
       <Container
         heading={strings.drefFormTargetingStrategy}
         className={styles.targetingStrategy}
       >
         <InputSection
-          title={strings.drefFormPeopleAssistedthroughOperation}
+          title={strings.drefFormPeopleAssistedThroughOperation}
+          description={strings.drefFormPeopleAssistedThroughOperationDescription}
         >
           <TextArea
             label={strings.cmpActionDescriptionLabel}
@@ -147,6 +231,7 @@ function Response(props: Props) {
         </InputSection>
         <InputSection
           title={strings.drefFormSelectionCriteria}
+          description={strings.drefFormSelectionCriteriaDescription}
         >
           <TextArea
             label={strings.cmpActionDescriptionLabel}
@@ -156,24 +241,17 @@ function Response(props: Props) {
             error={error?.selection_criteria}
           />
         </InputSection>
-        <InputSection
-          title={strings.drefFormProtectionGenderAndInclusion}
-        >
-          <TextArea
-            label={strings.cmpActionDescriptionLabel}
-            name="entity_affected"
-            onChange={onValueChange}
-            value={value.entity_affected}
-            error={error?.entity_affected}
-          />
-        </InputSection>
       </Container>
       <Container
         heading={strings.drefFormAssistedPopulation}
         className={styles.assistedPopulation}
         description={(
-          warnings?.map((w) => (
-            <div className={styles.warning}>
+          !isAssessmentReport &&
+          warnings?.map((w, i) => (
+            <div
+              className={styles.warning}
+              key={i}
+            >
               <IoWarning />
               {w}
             </div>
@@ -185,34 +263,38 @@ function Response(props: Props) {
           multiRow
           twoColumn
         >
-          <NumberInput
-            label={strings.drefFormWomen}
-            name="women"
-            value={value.women}
-            onChange={onValueChange}
-            error={error?.women}
-          />
-          <NumberInput
-            label={strings.drefFormMen}
-            name="men"
-            value={value.men}
-            onChange={onValueChange}
-            error={error?.men}
-          />
-          <NumberInput
-            label={strings.drefFormGirls}
-            name="girls"
-            value={value.girls}
-            onChange={onValueChange}
-            error={error?.girls}
-          />
-          <NumberInput
-            label={strings.drefFormBoys}
-            name="boys"
-            value={value.boys}
-            onChange={onValueChange}
-            error={error?.boys}
-          />
+          {!isAssessmentReport && (
+            <>
+              <NumberInput
+                label={strings.drefFormWomen}
+                name="women"
+                value={value.women}
+                onChange={onValueChange}
+                error={error?.women}
+              />
+              <NumberInput
+                label={strings.drefFormMen}
+                name="men"
+                value={value.men}
+                onChange={onValueChange}
+                error={error?.men}
+              />
+              <NumberInput
+                label={strings.drefFormGirls}
+                name="girls"
+                value={value.girls}
+                onChange={onValueChange}
+                error={error?.girls}
+              />
+              <NumberInput
+                label={strings.drefFormBoys}
+                name="boys"
+                value={value.boys}
+                onChange={onValueChange}
+                error={error?.boys}
+              />
+            </>
+          )}
           <NumberInput
             label={strings.drefFormTotal}
             name="total_targeted_population"
@@ -273,99 +355,43 @@ function Response(props: Props) {
         </InputSection>
       </Container>
       <Container
-        heading={strings.drefFormObjectiveAndStrategy}
-        className={styles.objectiveRationale}
+        heading={strings.drefFormRiskSecurity}
+        visibleOverflow
       >
         <InputSection
-          title={strings.drefFormObjectiveOperation}
+          title={strings.drefFormRiskSecurityPotentialRisk}
+          description={isAssessmentReport && strings.drefFormRiskSecurityPotentialRiskDescription}
+          multiRow
+          oneColumn
         >
-          <TextArea
-            error={error?.operation_objective}
-            name="operation_objective"
-            onChange={onValueChange}
-            value={value.operation_objective}
-            placeholder={strings.drefFormObjectiveOperationPlaceholder}
-          />
+          {value.risk_security?.map((rs, i) => (
+            <RiskSecurityInput
+              key={rs.clientId}
+              index={i}
+              value={rs}
+              onChange={onRiskSecurityChange}
+              onRemove={onRiskSecurityRemove}
+              error={getErrorObject(error?.risk_security)}
+            />
+          ))}
+          <div className={styles.actions}>
+            <Button
+              name={undefined}
+              onClick={handleRiskSecurityAdd}
+              variant="secondary"
+            >
+              {strings.drefFormRiskSecurityAddButton}
+            </Button>
+          </div>
         </InputSection>
         <InputSection
-          title={strings.drefFormResponseRationale}
+          title={strings.drefFormRiskSecuritySafetyConcern}
         >
           <TextArea
-            name="response_strategy"
+            name='risk_security_concern'
+            value={value.risk_security_concern}
+            error={error?.risk_security_concern}
             onChange={onValueChange}
-            value={value.response_strategy}
-            error={error?.response_strategy}
-            placeholder={strings.drefFormResponseRationalePlaceholder}
-          />
-        </InputSection>
-      </Container>
-      <Container
-        heading={strings.drefFormSupportServices}
-      >
-        <InputSection
-          title={strings.drefFormHumanResourceDescription}
-        >
-          <TextArea
-            label={strings.cmpActionDescriptionLabel}
-            name="human_resource"
-            onChange={onValueChange}
-            value={value.human_resource}
-            error={error?.human_resource}
-          />
-        </InputSection>
-        <InputSection
-          title={strings.drefFormSurgePersonnelDeployed}
-        >
-          <TextArea
-            label={strings.cmpActionDescriptionLabel}
-            name="surge_personnel_deployed"
-            onChange={onValueChange}
-            value={value.surge_personnel_deployed}
-            error={error?.surge_personnel_deployed}
-          />
-        </InputSection>
-        <InputSection
-          title={strings.drefFormLogisticCapacityOfNs}
-        >
-          <TextArea
-            label={strings.cmpActionDescriptionLabel}
-            name="logistic_capacity_of_ns"
-            onChange={onValueChange}
-            value={value.logistic_capacity_of_ns}
-            error={error?.logistic_capacity_of_ns}
-          />
-        </InputSection>
-        <InputSection
-          title={strings.drefFormSafetyConcerns}
-        >
-          <TextArea
-            label={strings.cmpActionDescriptionLabel}
-            name="safety_concerns"
-            onChange={onValueChange}
-            value={value.safety_concerns}
-            error={error?.safety_concerns}
-          />
-        </InputSection>
-        <InputSection
-          title={strings.drefFormPmerDescription}
-        >
-          <TextArea
-            label={strings.cmpActionDescriptionLabel}
-            name="pmer"
-            onChange={onValueChange}
-            value={value.pmer}
-            error={error?.pmer}
-          />
-        </InputSection>
-        <InputSection
-          title={strings.drefFormCommunicationDescription}
-        >
-          <TextArea
-            label={strings.cmpActionDescriptionLabel}
-            name="communication"
-            onChange={onValueChange}
-            value={value.communication}
-            error={error?.communication}
           />
         </InputSection>
       </Container>
@@ -377,24 +403,30 @@ function Response(props: Props) {
         <InputSection>
           <DREFFileInput
             accept=".pdf"
-            error={error?.budget_file}
-            fileIdToUrlMap={fileIdToUrlMap}
             label={strings.drefFormBudgetTemplateLabel}
             name="budget_file"
-            onChange={onValueChange}
-            setFileIdToUrlMap={setFileIdToUrlMap}
-            showStatus
             value={value.budget_file}
+            onChange={onValueChange}
+            error={error?.budget_file}
+            fileIdToUrlMap={fileIdToUrlMap}
+            setFileIdToUrlMap={setFileIdToUrlMap}
           >
             {strings.drefFormBudgetTemplateUploadButtonLabel}
           </DREFFileInput>
         </InputSection>
-        <InputSection>
+        <InputSection
+          normalDescription
+          description={!plannedBudgetMatchRequestedAmount && (
+            <div className={styles.warning}>
+              Total amount of planned budget does not match the Requested Amount
+            </div>
+          )}
+        >
           <SelectInput
+            label={strings.drefFormInterventionsLabel}
             name={undefined}
             onChange={setIntervention}
             value={intervention}
-            label={strings.drefFormInterventionsLabel}
             options={filteredInterventionOptions}
           />
           <div className={styles.actions}>
@@ -417,8 +449,90 @@ function Response(props: Props) {
             onRemove={onInterventionRemove}
             error={getErrorObject(error?.planned_interventions)}
             interventionOptions={interventionOptions}
-            showNewFieldOperational={false} />
+            showNewFieldOperational={false}
+          />
         ))}
+      </Container>
+      <Container
+        heading={strings.drefFormSupportServices}
+      >
+        <InputSection
+          title={strings.drefFormHumanResourceDescription}
+        >
+          <TextArea
+            label={strings.cmpActionDescriptionLabel}
+            name="human_resource"
+            onChange={onValueChange}
+            value={value.human_resource}
+            error={error?.human_resource}
+          />
+        </InputSection>
+        <InputSection
+          title={strings.drefFormSurgePersonnelDeployed}
+          description={isSurgePersonnelDeployed && strings.drefFormSurgePersonnelDeployedDescription}
+          oneColumn
+          multiRow
+        >
+          <RadioInput
+            name={"is_surge_personnel_deployed" as const}
+            options={yesNoOptions}
+            keySelector={booleanOptionKeySelector}
+            labelSelector={optionLabelSelector}
+            value={value.is_surge_personnel_deployed}
+            onChange={onValueChange}
+            error={error?.is_surge_personnel_deployed}
+          />
+          {isSurgePersonnelDeployed &&
+            <TextArea
+              label={strings.cmpActionDescriptionLabel}
+              name="surge_personnel_deployed"
+              onChange={onValueChange}
+              value={value.surge_personnel_deployed}
+              error={error?.surge_personnel_deployed}
+              placeholder={strings.drefFormSurgePersonnelDeployedDescription}
+            />
+          }
+        </InputSection>
+        {!isAssessmentReport && (
+          <>
+            <InputSection
+              title={strings.drefFormLogisticCapacityOfNs}
+              description={strings.drefFormLogisticCapacityOfNsDescription}
+            >
+              <TextArea
+                label={strings.cmpActionDescriptionLabel}
+                name="logistic_capacity_of_ns"
+                onChange={onValueChange}
+                value={value.logistic_capacity_of_ns}
+                error={error?.logistic_capacity_of_ns}
+              />
+            </InputSection>
+            <InputSection
+              title={strings.drefFormPmer}
+              description={strings.drefFormPmerDescription}
+            >
+              <TextArea
+                label={strings.cmpActionDescriptionLabel}
+                name="pmer"
+                onChange={onValueChange}
+                value={value.pmer}
+                error={error?.pmer}
+              />
+            </InputSection>
+            <InputSection
+              title={strings.drefFormCommunication}
+              description={strings.drefFormCommunicationDescripiton}
+            >
+              <TextArea
+                label={strings.cmpActionDescriptionLabel}
+                name="communication"
+                onChange={onValueChange}
+                value={value.communication}
+                error={error?.communication}
+              />
+            </InputSection>
+          </>
+        )}
       </Container>
     </>
   );

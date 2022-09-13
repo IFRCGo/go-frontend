@@ -13,6 +13,7 @@ export interface BaseProps {
   multiRow?: boolean;
   normalDescription?: boolean;
   descriptionContainerClassName?: string;
+  fullWidthColumn?: boolean;
 }
 
 type Props = BaseProps & ({
@@ -44,6 +45,7 @@ function InputSection(props: Props) {
     contentSectionClassName,
     descriptionContainerClassName,
     normalDescription,
+    fullWidthColumn,
   } = props;
 
   return (
@@ -57,6 +59,7 @@ function InputSection(props: Props) {
         props.twoColumn && styles.twoColumn,
         props.threeColumn && styles.threeColumn,
         !normalDescription && styles.specialDescription,
+        fullWidthColumn && styles.fullWidthColumn,
       )}
     >
       <div
@@ -65,17 +68,17 @@ function InputSection(props: Props) {
       >
         {title && (
           <div className={styles.title}>
-          { title }
+            {title}
           </div>
         )}
         <div className={_cs(styles.description, descriptionContainerClassName)}>
-          { description }
+          {description}
         </div>
       </div>
       <div className={_cs(styles.sectionContent, contentSectionClassName)}>
-        { children }
+        {children}
       </div>
-    </div>
+    </div >
   );
 }
 

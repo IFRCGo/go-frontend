@@ -15,6 +15,7 @@ function TextInput<T extends string | undefined>(props: Props<T>) {
     actions,
     icons,
     error,
+    hint,
     label,
     disabled,
     readOnly,
@@ -28,6 +29,7 @@ function TextInput<T extends string | undefined>(props: Props<T>) {
       className={className}
       actions={actions}
       icons={icons}
+      hint={hint}
       error={error}
       label={label}
       disabled={disabled}
