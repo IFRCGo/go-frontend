@@ -4,6 +4,7 @@ import {
   Text,
   View,
 } from '@react-pdf/renderer';
+import { isDefined } from '@togglecorp/fujs';
 import sanitizeHtml from 'sanitize-html';
 
 import { Strings } from '#types';
@@ -28,12 +29,11 @@ function EventDescriptionOutput(props: Props) {
 
   return (
     <>
-      {(
-        data?.event_scope ||
-        data?.event_description ||
-        data?.anticipatory_actions ||
-        data?.event_map_file ||
-        data?.images_file.length > 0
+      {(isDefined(data.event_scope)
+        || isDefined(data.event_description)
+        || isDefined(data.anticipatory_actions)
+        || isDefined(data.event_map_file)
+        || data.images_file.length > 0
       ) && (
           <View break>
             <Text style={pdfStyles.sectionHeading}>

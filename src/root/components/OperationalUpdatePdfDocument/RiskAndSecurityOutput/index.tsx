@@ -1,5 +1,9 @@
 import React from 'react';
-import { Text, View } from '@react-pdf/renderer';
+import {
+  Text,
+  View,
+} from '@react-pdf/renderer';
+import { isDefined } from '@togglecorp/fujs';
 
 import { Strings } from '#types';
 import { PdfTextOutput } from '#components/PdfTextOutput';
@@ -19,8 +23,9 @@ function RiskAndSecurityOutput(props: Props) {
 
   return (
     <>
-      {(data?.risk_security_concern || data?.risk_security)
-        && (
+      {(isDefined(data.risk_security_concern)
+        || data?.risk_security.length > 0
+      ) && (
           <View
             style={pdfStyles.section}
             wrap={false}
