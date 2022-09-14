@@ -322,7 +322,7 @@ function EmergencyThreeWForm(props: Props) {
     pending: postEmergencyPending,
   } = useLazyRequest<EmergencyProjectResponse>({
     method: isDefined(projectId) ? 'PUT' : 'POST',
-    url: isDefined(projectId) ? `api/v2/emergency-project/${projectId}` : 'api/v2/emergency-project/',
+    url: isDefined(projectId) ? `api/v2/emergency-project/${projectId}/` : 'api/v2/emergency-project/',
     body: ctx => ctx,
     onSuccess: onSubmitSuccess,
     onFailure: ({
