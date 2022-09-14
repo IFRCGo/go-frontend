@@ -152,7 +152,7 @@ const defaultSchema: FormSchemaFields = {
   country: [],
   district: [
     (currentValue, allValue, context) => {
-      const contextValue = context.type === 'dref' ? context.value?.districts?.map(d => d.id) : context.value?.district;
+      const contextValue = context.value?.district;
       const areDistrictsSimilar = isSimilarArray(currentValue, contextValue ?? []);
       if (allValue?.changing_geographic_location && areDistrictsSimilar) {
         return 'Please select a different value when selected yes on changing geographic location';

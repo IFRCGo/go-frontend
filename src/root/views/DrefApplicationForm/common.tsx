@@ -284,9 +284,6 @@ export interface DrefApiFields extends Omit<DrefFields, 'event_map_details' | 'c
   }[];
   cover_image_file: SingleFileWithCaption;
   event_map_details: SingleFileWithCaption;
-  districts: {
-    id: number;
-  }[];
   disaster_type_details: {
     id: number;
     name: string;
