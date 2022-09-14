@@ -3012,6 +3012,7 @@ export default {
   ifrcLinkText: '{countryName} on IFRC.org',
   reliefWebLinkText: '{countryName} on reliefweb.int',
   homePageLinkText: '{countryName} RC Homepage',
+  fdrsLinkText: 'National Society page on FDRS',
 
   noDataMessage: 'No data to display.',
 
