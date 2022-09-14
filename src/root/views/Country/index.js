@@ -227,12 +227,21 @@ class AdminArea extends SFPComponent {
     const { adminArea, country } = this.props;
     if (!adminArea.fetched) return false;
     const iso3 = country.iso3;
+    const fdrs = country.fdrs;
     const homepage = adminArea.data.society_url;
     const homepageIfrc = adminArea.data.url_ifrc;
     // const regionSlug = getRegionSlug(adminArea.data.region);
     // const countryLower = adminArea.data.name.toLowerCase();
     const links = [];
     const countryName = adminArea.data.name;
+
+    if (fdrs) {
+      const fdrsLink = {
+        text: resolveToString(strings.fdrsLinkText),
+        url: `https://data.ifrc.org/FDRS/national-society/${fdrs}`
+      };
+      links.push(fdrsLink);
+    }
 
     if (homepageIfrc) {
       const ifrcLink = {
