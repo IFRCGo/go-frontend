@@ -74,8 +74,8 @@ function EmergencyThreeW(props: Props) {
           value={projectResponse?.modified_at}
           valueType="date"
           description={' by ' +
-              (projectResponse.modified_by_details?.username !== null ?
-               projectResponse.modified_by_details?.username :
+              (projectResponse.modified_by_details !== null ?
+               projectResponse.modified_by_details.username :
                projectResponse.created_by_details.username)}
         />
       ) : undefined }
