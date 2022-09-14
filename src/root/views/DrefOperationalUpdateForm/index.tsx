@@ -210,7 +210,18 @@ function DrefOperationalUpdate(props: Props) {
     url: `api/v2/dref/${drefOperationalResponse?.dref}`,
   });
 
-  const prevOperationalUpdateId = drefFields?.operational_update_details?.find(ou => !ou.is_published)?.id;
+  const prevOperationalUpdateId = React.useMemo(() => {
+    const currentOpsUpdate = drefFields?.operational_update_details?.find(ou => !ou.is_published);
+    if (!currentOpsUpdate) {
+      return undefined;
+    }
+
+    const prevOpsUpdateNumber = currentOpsUpdate.operational_update_number - 1;
+    const prevOpsUpdate = drefFields?.operational_update_details?.find(ou => ou.operational_update_number === prevOpsUpdateNumber);
+
+    return prevOpsUpdate?.id;
+  }, [drefFields]);
+
   const {
     pending: fetchingPrevOperationalUpdate,
     response: prevOperationalUpdate,
@@ -354,22 +365,18 @@ function DrefOperationalUpdate(props: Props) {
       );
     },
     onFailure: ({
-      value: {
-        messageForNotification,
-        formErrors,
-      },
+      value: responseError,
       debugMessage,
     }) => {
-      if (Array.isArray(formErrors)) {
-        setError({
-          [internal]: formErrors?.join(', '),
-        });
-      } else {
-        setError({
-          ...formErrors,
-          [internal]: formErrors?.non_field_errors as string | undefined,
-        });
-      }
+      const {
+        messageForNotification,
+        formErrors,
+      } = responseError;
+
+      setError({
+        ...formErrors,
+        [internal]: formErrors?.[internal],
+      });
 
       alert.show(
         <p>
