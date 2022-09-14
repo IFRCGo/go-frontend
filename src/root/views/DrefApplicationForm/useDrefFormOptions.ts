@@ -104,7 +104,7 @@ const defaultSchema = {
   disaster_type: [],
   type_of_onset: [requiredCondition],
   country: [],
-  district: [],
+  district: [defaultEmptyArrayType],
   num_affected: [positiveIntegerCondition],
   num_assisted: [positiveIntegerCondition],
   amount_requested: [positiveNumberCondition],
