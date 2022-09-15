@@ -61,29 +61,29 @@ function NeedIdentifiedOutput(props: BaseProps) {
     strings,
   } = props;
 
+  if (data.needs_identified.length < 1) {
+    return null;
+  }
+
   return (
-    <>
-      {data?.needs_identified.length > 0 && (
-        <View
-          style={pdfStyles.niSection}
-          break
-        >
-          <Text style={pdfStyles.sectionHeading}>
-            {isImminentOnset ?
-              strings.drefFormImminentNeedsIdentified
-              : strings.drefFormNeedsIdentified}
-          </Text>
-          {data?.needs_identified.map((ni) => (
-            <NeedIdentified
-              key={ni.id}
-              data={ni}
-              niMap={niMap}
-              strings={strings}
-            />
-          ))}
-        </View>
-      )}
-    </>
+    <View
+      style={pdfStyles.niSection}
+      break
+    >
+      <Text style={pdfStyles.sectionHeading}>
+        {isImminentOnset ?
+          strings.drefFormImminentNeedsIdentified
+          : strings.drefFormNeedsIdentified}
+      </Text>
+      {data?.needs_identified.map((ni) => (
+        <NeedIdentified
+          key={ni.id}
+          data={ni}
+          niMap={niMap}
+          strings={strings}
+        />
+      ))}
+    </View>
   );
 }
 

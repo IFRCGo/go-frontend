@@ -3,7 +3,7 @@ import {
   Text,
   View,
 } from '@react-pdf/renderer';
-import { isDefined } from '@togglecorp/fujs';
+import { isNotDefined } from '@togglecorp/fujs';
 
 import { Strings } from '#types';
 import { formatBoolean } from '#utils/common';
@@ -23,126 +23,126 @@ function SummaryOfChangeOutput(props: Props) {
     isImminentOnset,
   } = props;
 
+  if (isNotDefined(data.changing_timeframe_operation)
+    && isNotDefined(data.changing_geographic_location)
+    && isNotDefined(data.changing_budget)
+    && isNotDefined(data.changing_operation_strategy)
+    && isNotDefined(data.changing_target_population_of_operation)
+    && isNotDefined(data.request_for_second_allocation)
+    && isNotDefined(data.has_forecasted_event_materialize)
+    && isNotDefined(data.summary_of_change)
+    && isNotDefined(data.specified_trigger_met)
+  ) {
+    return null;
+  }
+
   return (
-    <>
-      {(isDefined(data.changing_timeframe_operation)
-        || isDefined(data.changing_geographic_location)
-        || isDefined(data.changing_budget)
-        || isDefined(data.changing_operation_strategy)
-        || isDefined(data.changing_target_population_of_operation)
-        || isDefined(data.request_for_second_allocation)
-        || isDefined(data.has_forecasted_event_materialize)
-        || isDefined(data.summary_of_change)
-        || isDefined(data.specified_trigger_met)
-      ) && (
-          <View
-            style={pdfStyles.poSection}
-            wrap={false}
-          >
-            <Text style={pdfStyles.sectionHeading}>
-              {strings.drefOperationalUpdateSummaryChangeHeading}
-            </Text>
-            <View>
-              <View style={pdfStyles.row}>
-                <Text style={pdfStyles.cellTitle}>
-                  {strings.drefOperationalUpdateSummaryAreYouChangingTimeFrame}
-                </Text>
-                <Text style={pdfStyles.strongCell}>
-                  {formatBoolean(data.changing_timeframe_operation)}
-                </Text>
-              </View>
-              <View style={pdfStyles.row}>
-                <Text style={pdfStyles.cellTitle}>
-                  {strings.drefOperationalUpdateSummaryAreYouChangingStrategy}
-                </Text>
-                <Text style={pdfStyles.strongCell}>
-                  {formatBoolean(data.changing_operation_strategy)}
-                </Text>
-              </View>
-              <View style={pdfStyles.row}>
-                <View style={pdfStyles.cellTitle}>
-                  <Text>{strings.drefOperationalUpdateSummaryAreYouChangingTargetPopulation}</Text>
-                </View>
-                <View style={pdfStyles.strongCell}>
-                  <Text>{formatBoolean(data.changing_target_population_of_operation)}</Text>
-                </View>
-              </View>
-              <View style={pdfStyles.row}>
-                <View style={pdfStyles.cellTitle}>
-                  <Text>{strings.drefOperationalUpdateSummaryAreYouChangingGeographicalLocation}</Text>
-                </View>
-                <View style={pdfStyles.strongCell}>
-                  <Text>{formatBoolean(data.changing_geographic_location)}</Text>
-                </View>
-              </View>
-              <View style={pdfStyles.row}>
-                <View style={pdfStyles.cellTitle}>
-                  <Text>{strings.drefOperationalUpdateSummaryAreYouChangingBudget}</Text>
-                </View>
-                <View style={pdfStyles.strongCell}>
-                  <Text>{formatBoolean(data.changing_budget)}</Text>
-                </View>
-              </View>
-              <View style={pdfStyles.row}>
-                <View style={pdfStyles.cellTitle}>
-                  <Text>{strings.drefOperationalUpdateSummaryRequestForSecondAllocation}</Text>
-                </View>
-                <View style={pdfStyles.strongCell}>
-                  <Text>{formatBoolean(data.request_for_second_allocation)}</Text>
-                </View>
-              </View>
-              <View style={pdfStyles.row}>
-                <View style={pdfStyles.cellTitle}>
-                  <Text>{strings.drefOperationalUpdateEventMaterialize}</Text>
-                </View>
-                <View style={pdfStyles.strongCell}>
-                  <Text>{formatBoolean(data.has_forecasted_event_materialize)}</Text>
-                </View>
-              </View>
-              <View style={pdfStyles.row}>
-                <View style={[
-                  pdfStyles.cellTitle,
-                  pdfStyles.fullWidth
-                ]}>
-                  <Text style={pdfStyles.fontWeightBold}>
-                    {strings.drefOperationalUpdateSummaryExplain}
-                  </Text>
-                </View>
-              </View>
-              <View style={pdfStyles.row}>
-                <View style={[
-                  pdfStyles.cellTitle,
-                  pdfStyles.fullWidth
-                ]}>
-                  <Text>{data?.summary_of_change}</Text>
-                </View>
-              </View>
-              {isImminentOnset && (
-                <>
-                  <View style={pdfStyles.row}>
-                    <View style={[
-                      pdfStyles.cellTitle,
-                      pdfStyles.fullWidth
-                    ]}>
-                      <Text style={pdfStyles.fontWeightBold}>
-                        {strings.drefOperationalUpdateEventMaterializeExplain}
-                      </Text>
-                    </View>
-                  </View>
-                  <View style={pdfStyles.row}>
-                    <View style={[
-                      pdfStyles.cellTitle,
-                      pdfStyles.fullWidth
-                    ]}>
-                      <Text>{data?.specified_trigger_met}</Text>
-                    </View>
-                  </View>
-                </>
-              )}
-            </View>
+    <View
+      style={pdfStyles.poSection}
+      wrap={false}
+    >
+      <Text style={pdfStyles.sectionHeading}>
+        {strings.drefOperationalUpdateSummaryChangeHeading}
+      </Text>
+      <View>
+        <View style={pdfStyles.row}>
+          <Text style={pdfStyles.cellTitle}>
+            {strings.drefOperationalUpdateSummaryAreYouChangingTimeFrame}
+          </Text>
+          <Text style={pdfStyles.strongCell}>
+            {formatBoolean(data.changing_timeframe_operation)}
+          </Text>
+        </View>
+        <View style={pdfStyles.row}>
+          <Text style={pdfStyles.cellTitle}>
+            {strings.drefOperationalUpdateSummaryAreYouChangingStrategy}
+          </Text>
+          <Text style={pdfStyles.strongCell}>
+            {formatBoolean(data.changing_operation_strategy)}
+          </Text>
+        </View>
+        <View style={pdfStyles.row}>
+          <View style={pdfStyles.cellTitle}>
+            <Text>{strings.drefOperationalUpdateSummaryAreYouChangingTargetPopulation}</Text>
           </View>
+          <View style={pdfStyles.strongCell}>
+            <Text>{formatBoolean(data.changing_target_population_of_operation)}</Text>
+          </View>
+        </View>
+        <View style={pdfStyles.row}>
+          <View style={pdfStyles.cellTitle}>
+            <Text>{strings.drefOperationalUpdateSummaryAreYouChangingGeographicalLocation}</Text>
+          </View>
+          <View style={pdfStyles.strongCell}>
+            <Text>{formatBoolean(data.changing_geographic_location)}</Text>
+          </View>
+        </View>
+        <View style={pdfStyles.row}>
+          <View style={pdfStyles.cellTitle}>
+            <Text>{strings.drefOperationalUpdateSummaryAreYouChangingBudget}</Text>
+          </View>
+          <View style={pdfStyles.strongCell}>
+            <Text>{formatBoolean(data.changing_budget)}</Text>
+          </View>
+        </View>
+        <View style={pdfStyles.row}>
+          <View style={pdfStyles.cellTitle}>
+            <Text>{strings.drefOperationalUpdateSummaryRequestForSecondAllocation}</Text>
+          </View>
+          <View style={pdfStyles.strongCell}>
+            <Text>{formatBoolean(data.request_for_second_allocation)}</Text>
+          </View>
+        </View>
+        <View style={pdfStyles.row}>
+          <View style={pdfStyles.cellTitle}>
+            <Text>{strings.drefOperationalUpdateEventMaterialize}</Text>
+          </View>
+          <View style={pdfStyles.strongCell}>
+            <Text>{formatBoolean(data.has_forecasted_event_materialize)}</Text>
+          </View>
+        </View>
+        <View style={pdfStyles.row}>
+          <View style={[
+            pdfStyles.cellTitle,
+            pdfStyles.fullWidth
+          ]}>
+            <Text style={pdfStyles.fontWeightBold}>
+              {strings.drefOperationalUpdateSummaryExplain}
+            </Text>
+          </View>
+        </View>
+        <View style={pdfStyles.row}>
+          <View style={[
+            pdfStyles.cellTitle,
+            pdfStyles.fullWidth
+          ]}>
+            <Text>{data?.summary_of_change}</Text>
+          </View>
+        </View>
+        {isImminentOnset && (
+          <>
+            <View style={pdfStyles.row}>
+              <View style={[
+                pdfStyles.cellTitle,
+                pdfStyles.fullWidth
+              ]}>
+                <Text style={pdfStyles.fontWeightBold}>
+                  {strings.drefOperationalUpdateEventMaterializeExplain}
+                </Text>
+              </View>
+            </View>
+            <View style={pdfStyles.row}>
+              <View style={[
+                pdfStyles.cellTitle,
+                pdfStyles.fullWidth
+              ]}>
+                <Text>{data?.specified_trigger_met}</Text>
+              </View>
+            </View>
+          </>
         )}
-    </>
+      </View>
+    </View>
   );
 }
 

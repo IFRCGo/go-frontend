@@ -3,6 +3,7 @@ import {
   Text,
   View,
 } from '@react-pdf/renderer';
+import { isDefined } from '@togglecorp/fujs';
 
 import { Strings } from '#types';
 import { DrefOperationalUpdateApiFields } from '#views/DrefOperationalUpdateForm/common';
@@ -21,7 +22,7 @@ function ObjectiveAndStrategy(props: Props) {
 
   return (
     <>
-      {data?.operation_objective && (
+      {isDefined(data.operation_objective) && (
         <View
           style={pdfStyles.section}
         >
@@ -38,7 +39,7 @@ function ObjectiveAndStrategy(props: Props) {
           </View>
         </View>
       )}
-      {data?.response_strategy && (
+      {isDefined(data.response_strategy) && (
         <View style={pdfStyles.qna}>
           <Text style={pdfStyles.strategySubSectionHeading}
           >
@@ -49,10 +50,9 @@ function ObjectiveAndStrategy(props: Props) {
           </Text>
         </View>
       )}
-
       {(
-        data?.people_assisted ||
-        data?.selection_criteria
+        isDefined(data.people_assisted) ||
+        isDefined(data.selection_criteria)
       ) && (
           <View style={pdfStyles.section}>
             <View wrap={false}>
@@ -70,7 +70,7 @@ function ObjectiveAndStrategy(props: Props) {
                 </View>
               )}
             </View>
-            {data?.selection_criteria && (
+            {isDefined(data.selection_criteria) && (
               <View style={pdfStyles.qna}>
                 <Text style={pdfStyles.textLabelSection}>
                   {strings.drefFormSelectionCriteria}
