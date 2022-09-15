@@ -4,7 +4,7 @@ import {
   Text,
   View,
 } from '@react-pdf/renderer';
-import { isDefined } from '@togglecorp/fujs';
+import { isDefined, isNotDefined } from '@togglecorp/fujs';
 import sanitizeHtml from 'sanitize-html';
 
 import { Strings } from '#types';
@@ -27,96 +27,100 @@ function EventDescriptionOutput(props: Props) {
     isAssessmentReport,
   } = props;
 
+  if (isNotDefined(data.event_scope)
+    && isNotDefined(data.event_description)
+    && isNotDefined(data.anticipatory_actions)
+    && isNotDefined(data.event_map_file)
+    && (data.images_file.length < 1)
+  ) {
+    return null;
+  }
+
   return (
-    <>
-      {(isDefined(data.event_scope)
-        || isDefined(data.event_description)
-        || isDefined(data.anticipatory_actions)
-        || isDefined(data.event_map_file)
-        || data.images_file.length > 0
-      ) && (
-          <View break>
-            <Text style={pdfStyles.sectionHeading}>
-              {strings.drefFormDescriptionEvent}
+    <View break>
+      <Text style={pdfStyles.sectionHeading}>
+        {strings.drefFormDescriptionEvent}
+      </Text>
+      {isImminentOnset && (
+        <>
+          <Text style={pdfStyles.subSectionHeading}>
+            {strings.drefFormApproximateDateOfImpact}
+          </Text>
+          <Text style={pdfStyles.text}>
+            {data?.event_text}
+          </Text>
+        </>
+      )}
+      {isDefined(data.event_map_file) && (
+        <div style={pdfStyles.imagesSection}>
+          <View style={pdfStyles.section}>
+            <Image
+              style={pdfStyles.mapImage}
+              src={data.event_map_file.file}
+            />
+            <PdfTextOutput
+              label={data.event_map_file.caption}
+              columns='4/4'
+            />
+          </View>
+        </div>
+      )}
+      {isDefined(data.event_description) && (
+        <View style={pdfStyles.subSection}>
+          <Text style={pdfStyles.subSectionHeading}>
+            {isImminentOnset
+              ? strings.drefExportWhatExpectedHappen
+              : strings.drefFormWhatWhereWhen}
+          </Text>
+          <Text style={pdfStyles.text}>
+            {sanitizeHtml(data.event_description ?? '', {
+              allowedTags: [],
+            })}
+          </Text>
+        </View>
+      )}
+      <div style={pdfStyles.imagesSection}>
+        {data.images_file?.map((img) => (
+          <View
+            key={img?.id}
+            style={pdfStyles.subSection}
+          >
+            <Image
+              style={pdfStyles.coverImage}
+              src={img.file}
+            />
+            <PdfTextOutput
+              label={img.caption}
+              columns='4/4'
+            />
+          </View>
+        ))}
+      </div>
+      {isImminentOnset
+        && isDefined(data.anticipatory_actions)
+        && (
+          <View style={pdfStyles.subSection}>
+            <Text style={pdfStyles.subSectionHeading}>
+              {strings.drefExportTargetCommunities}
             </Text>
-            {isImminentOnset && (
-              <>
-                <Text style={pdfStyles.subSectionHeading}>
-                  {strings.drefFormApproximateDateOfImpact}
-                </Text>
-                <Text style={pdfStyles.text}>
-                  {data?.event_text}
-                </Text>
-              </>
-            )}
-            {data?.event_map_file && (
-              <div style={pdfStyles.imagesSection}>
-                <View style={pdfStyles.section}>
-                  <Image
-                    style={pdfStyles.mapImage}
-                    src={data.event_map_file.file}
-                  />
-                  <PdfTextOutput
-                    label={data.event_map_file.caption}
-                    columns='4/4'
-                  />
-                </View>
-              </div>
-            )}
-            {data?.event_description && (
-              <View style={pdfStyles.subSection}>
-                <Text style={pdfStyles.subSectionHeading}>
-                  {isImminentOnset
-                    ? strings.drefExportWhatExpectedHappen
-                    : strings.drefFormWhatWhereWhen}
-                </Text>
-                <Text style={pdfStyles.text}>
-                  {sanitizeHtml(data.event_description ?? '', {
-                    allowedTags: [],
-                  })}
-                </Text>
-              </View>
-            )}
-            <div style={pdfStyles.imagesSection}>
-              {data.images_file?.map((img) => (
-                <View
-                  key={img?.id}
-                  style={pdfStyles.subSection}
-                >
-                  <Image
-                    style={pdfStyles.coverImage}
-                    src={img.file}
-                  />
-                  <PdfTextOutput
-                    label={img.caption}
-                    columns='4/4'
-                  />
-                </View>
-              ))}
-            </div>
-            {isImminentOnset && data?.anticipatory_actions && (
-              <View style={pdfStyles.subSection}>
-                <Text style={pdfStyles.subSectionHeading}>
-                  {strings.drefExportTargetCommunities}
-                </Text>
-                <Text style={pdfStyles.text}>
-                  {data.anticipatory_actions}
-                </Text>
-              </View>
-            )}
-            {!isAssessmentReport && data?.event_scope && (
-              <View style={pdfStyles.subSection}>
-                <Text style={pdfStyles.subSectionHeading}>
-                  {strings.drefExportScopeAndScaleEvent}
-                </Text>
-                <Text style={pdfStyles.text}>
-                  {data.event_scope}
-                </Text>
-              </View>
-            )}
+            <Text style={pdfStyles.text}>
+              {data.anticipatory_actions}
+            </Text>
           </View>
         )}
-    </>
+      {!isAssessmentReport
+        && isDefined(data.event_scope)
+        && (
+          <View style={pdfStyles.subSection}>
+            <Text style={pdfStyles.subSectionHeading}>
+              {strings.drefExportScopeAndScaleEvent}
+            </Text>
+            <Text style={pdfStyles.text}>
+              {data.event_scope}
+            </Text>
+          </View>
+        )}
+    </View>
   );
 }
 

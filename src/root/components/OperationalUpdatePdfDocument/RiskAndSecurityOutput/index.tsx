@@ -24,8 +24,9 @@ function RiskAndSecurityOutput(props: Props) {
     strings,
   } = props;
 
-  if (data.risk_security.length < 1
-    && isNotDefined(data.risk_security_concern)
+  if (
+    isNotDefined(data.risk_security_concern)
+    && data.risk_security.length < 1
   ) {
     return null;
   }

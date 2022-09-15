@@ -35,7 +35,7 @@ function EventDescriptionOutput(props: Props) {
     && isNotDefined(data.event_description)
     && isNotDefined(data.anticipatory_actions)
     && isNotDefined(data.event_map_file)
-    && (data?.images_file.length < 1)
+    && (data.images_file.length < 1)
   ) {
     return null;
   }
@@ -100,26 +100,30 @@ function EventDescriptionOutput(props: Props) {
           </View>
         ))}
       </div>
-      {isImminentOnset && isDefined(data.anticipatory_actions) && (
-        <View style={pdfStyles.subSection}>
-          <Text style={pdfStyles.subSectionHeading}>
-            {strings.drefExportTargetCommunities}
-          </Text>
-          <Text style={pdfStyles.text}>
-            {data.anticipatory_actions}
-          </Text>
-        </View>
-      )}
-      {!isAssessmentReport && isDefined(data.event_scope) && (
-        <View style={pdfStyles.subSection}>
-          <Text style={pdfStyles.subSectionHeading}>
-            {strings.drefExportScopeAndScaleEvent}
-          </Text>
-          <Text style={pdfStyles.text}>
-            {data.event_scope}
-          </Text>
-        </View>
-      )}
+      {isImminentOnset
+        && isDefined(data.anticipatory_actions)
+        && (
+          <View style={pdfStyles.subSection}>
+            <Text style={pdfStyles.subSectionHeading}>
+              {strings.drefExportTargetCommunities}
+            </Text>
+            <Text style={pdfStyles.text}>
+              {data.anticipatory_actions}
+            </Text>
+          </View>
+        )}
+      {!isAssessmentReport
+        && isDefined(data.event_scope)
+        && (
+          <View style={pdfStyles.subSection}>
+            <Text style={pdfStyles.subSectionHeading}>
+              {strings.drefExportScopeAndScaleEvent}
+            </Text>
+            <Text style={pdfStyles.text}>
+              {data.event_scope}
+            </Text>
+          </View>
+        )}
     </View>
   );
 }

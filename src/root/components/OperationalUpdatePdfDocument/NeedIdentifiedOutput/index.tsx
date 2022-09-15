@@ -4,6 +4,7 @@ import {
   View,
   Text,
 } from '@react-pdf/renderer';
+import { isDefined } from '@togglecorp/fujs';
 
 import { DrefOperationalUpdateApiFields } from '#views/DrefOperationalUpdateForm/common';
 import { Strings } from '#types';
@@ -26,7 +27,7 @@ function NeedIdentified(props: NeedsProps) {
       style={pdfStyles.niContainer}
     >
       <View style={pdfStyles.niContentIconCell}>
-        {data.image_url && (
+        {isDefined(data.image_url) && (
           <Image
             style={pdfStyles.niIcon}
             src={data.image_url}

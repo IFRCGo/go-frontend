@@ -25,7 +25,6 @@ function TargetedPopulationOutput(props: Props) {
     isAssessmentReport,
   } = props;
 
-  // NOTE: we cannot use isDefined because of empty string
   if (isNotDefined(data.people_per_local)
     && isNotDefined(data.people_per_urban)
     && isNotDefined(data.disability_people_per)
