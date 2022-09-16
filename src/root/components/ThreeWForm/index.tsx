@@ -638,6 +638,7 @@ function ThreeWForm(props: Props) {
                 value={value.status ? statuses[value.status] : undefined}
               />
             </div>
+{/*
             <div>
               <Switch
                   label="Annual Reporting"
@@ -646,8 +647,9 @@ function ThreeWForm(props: Props) {
                   onChange={onValueChange}
               />
             </div>
+FIXME: this false 2 rows later is just for hiding. */}
           </InputSection>
-          {value?.is_annual_report === true ? (
+          {false && value?.is_annual_report === true ? (
               <InputSection
                 description={strings.projectFormPeopleTargetedHelpText}
                 title={strings.projectFormPeopleTargeted + ' ' + strings.projectFormAnnually}
