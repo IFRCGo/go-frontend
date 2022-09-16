@@ -3,6 +3,7 @@ import {
   Text,
   View,
 } from '@react-pdf/renderer';
+import { isNotDefined } from '@togglecorp/fujs';
 
 import { Strings } from '#types';
 import { formatBoolean } from '#utils/common';
@@ -19,6 +20,14 @@ function OtherActionsOutput(props: Props) {
     data,
     strings,
   } = props;
+
+  if (isNotDefined(data.government_requested_assistance)
+    && isNotDefined(data.national_authorities)
+    && isNotDefined(data.un_or_other_actor)
+    && isNotDefined(data.major_coordination_mechanism)
+  ) {
+    return null;
+  }
 
   return (
     <View

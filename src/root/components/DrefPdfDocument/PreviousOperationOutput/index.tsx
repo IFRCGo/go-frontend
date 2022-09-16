@@ -3,6 +3,7 @@ import {
   Text,
   View,
 } from '@react-pdf/renderer';
+import { isNotDefined } from '@togglecorp/fujs';
 
 import { Strings } from '#types';
 import { formatBoolean } from '#utils/common';
@@ -20,6 +21,17 @@ function PreviousOperationOutput(props: Props) {
     strings,
   } = props;
 
+  if (isNotDefined(data.affect_same_area)
+    && isNotDefined(data.affect_same_population)
+    && isNotDefined(data.ns_respond)
+    && isNotDefined(data.ns_request_fund)
+    && isNotDefined(data.ns_request_text)
+    && isNotDefined(data.dref_recurrent_text)
+    && isNotDefined(data.lessons_learned)
+  ) {
+    return null;
+  }
+
   return (
     <View
       style={pdfStyles.poSection}
@@ -28,12 +40,6 @@ function PreviousOperationOutput(props: Props) {
       <Text style={pdfStyles.sectionHeading}>
         {strings.drefFormPreviousOperations}
       </Text>
-      {/*FIXME:
-    <View>
-      <Link src={resolveUrl(window.location.origin, 'preparedness#operational-learning')}>
-        {strings.drefOperationalLearningPlatformLabel}
-      </Link>
-    </View>*/}
       <View>
         <View style={pdfStyles.row}>
           <Text style={pdfStyles.cellTitle}>

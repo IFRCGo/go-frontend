@@ -1,7 +1,6 @@
 import React from 'react';
 import {
   Page as PDFPage,
-  Text,
   Document,
 } from '@react-pdf/renderer';
 import { listToMap } from '@togglecorp/fujs';
@@ -33,6 +32,7 @@ import HeadingOutput from './HeadingOutput';
 import BudgetFileOutput from './BudgetFileOutput';
 
 import pdfStyles from '#utils/pdf/pdfStyles';
+import PageNumberPdf from './PageNumberPdf';
 
 interface DrefOptions {
   disaster_category: NumericKeyValuePair[];
@@ -86,36 +86,43 @@ function DrefPdfDocument(props: Props) {
           documentTitle={documentTitle}
           strings={strings}
         />
+
         <EssentialInformationOutput
           data={dref}
           strings={strings}
           affectedAreas={affectedAreas}
           isImminentOnset={isImminentOnset}
         />
+
         <EventDescriptionOutput
           data={dref}
           strings={strings}
           isImminentOnset={isImminentOnset}
           isAssessmentReport={isAssessmentReport}
         />
+
         {!isAssessmentReport &&
           <PreviousOperationOutput
             data={dref}
             strings={strings}
           />
         }
+
         <NationalSocietyOutput
           data={dref}
           strings={strings}
         />
+
         <MovementPartnerOutput
           data={dref}
           strings={strings}
         />
+
         <OtherActionsOutput
           data={dref}
           strings={strings}
         />
+
         {!isAssessmentReport &&
           <NeedIdentifiedOutput
             data={dref}
@@ -124,44 +131,46 @@ function DrefPdfDocument(props: Props) {
             strings={strings}
           />
         }
+
         <ObjectiveAndStrategy
           data={dref}
           strings={strings}
         />
+
         <TargetedPopulationOutput
           data={dref}
           strings={strings}
           isAssessmentReport={isAssessmentReport}
         />
+
         <RiskAndSecurityOutput
           data={dref}
           strings={strings}
         />
+
         <PlannedInterventionOutput
           strings={strings}
           data={dref}
           piMap={piMap}
         />
+
         <AboutServicesOutput
           strings={strings}
           data={dref}
           isAssessmentReport={isAssessmentReport}
         />
+
         <BudgetFileOutput
           strings={strings}
           data={dref}
         />
+
         <ContactInformationOutput
           data={dref}
           strings={strings}
         />
-        <Text
-          style={pdfStyles.pageNumber}
-          render={({ pageNumber, totalPages }) => (
-            `Page ${pageNumber} / ${totalPages}`
-          )}
-          fixed
-        />
+
+        <PageNumberPdf />
       </PDFPage>
     </Document>
   );

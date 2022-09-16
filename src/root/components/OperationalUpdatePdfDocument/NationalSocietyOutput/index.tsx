@@ -40,25 +40,26 @@ function NationalSocietyOutput(props: BaseProps) {
     data,
     strings,
   } = props;
+
+  if (data.national_society_actions.length < 1) {
+    return null;
+  }
+
   return (
-    <>
-      {data?.national_society_actions.length > 0 && (
-        <View
-          style={pdfStyles.section}
-          wrap={false}
-        >
-          <Text style={pdfStyles.sectionHeading}>
-            {strings.drefFormNationalSocietiesActions}
-          </Text>
-          {data?.national_society_actions.map((nsa) => (
-            <NationalSociety
-              key={nsa.id}
-              data={nsa}
-            />
-          ))}
-        </View>
-      )}
-    </>
+    <View
+      style={pdfStyles.section}
+      wrap={false}
+    >
+      <Text style={pdfStyles.sectionHeading}>
+        {strings.drefFormNationalSocietiesActions}
+      </Text>
+      {data?.national_society_actions.map((nsa) => (
+        <NationalSociety
+          key={nsa.id}
+          data={nsa}
+        />
+      ))}
+    </View>
   );
 }
 

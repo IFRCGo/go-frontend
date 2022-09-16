@@ -4,6 +4,7 @@ import {
   Text,
   View,
 } from '@react-pdf/renderer';
+import { isNotDefined } from '@togglecorp/fujs';
 
 import { Strings } from '#types';
 import { DrefApiFields } from '#views/DrefApplicationForm/common';
@@ -20,6 +21,38 @@ function ContactInformationOutput(props: Props) {
     data,
     strings,
   } = props;
+
+  if (isNotDefined(data.national_society_contact_name)
+    && isNotDefined(data.national_society_contact_title)
+    && isNotDefined(data.national_society_contact_email)
+    && isNotDefined(data.national_society_contact_phone_number)
+    && isNotDefined(data.ifrc_appeal_manager_name)
+    && isNotDefined(data.ifrc_appeal_manager_title)
+    && isNotDefined(data.ifrc_appeal_manager_email)
+    && isNotDefined(data.ifrc_appeal_manager_phone_number)
+    && isNotDefined(data.ifrc_project_manager_name)
+    && isNotDefined(data.ifrc_project_manager_title)
+    && isNotDefined(data.ifrc_project_manager_email)
+    && isNotDefined(data.ifrc_project_manager_phone_number)
+    && isNotDefined(data.ifrc_appeal_manager_name)
+    && isNotDefined(data.ifrc_appeal_manager_title)
+    && isNotDefined(data.ifrc_appeal_manager_email)
+    && isNotDefined(data.ifrc_appeal_manager_phone_number)
+    && isNotDefined(data.ifrc_project_manager_name)
+    && isNotDefined(data.ifrc_project_manager_title)
+    && isNotDefined(data.ifrc_project_manager_email)
+    && isNotDefined(data.ifrc_project_manager_phone_number)
+    && isNotDefined(data.ifrc_emergency_name)
+    && isNotDefined(data.ifrc_emergency_title)
+    && isNotDefined(data.ifrc_emergency_email)
+    && isNotDefined(data.ifrc_emergency_phone_number)
+    && isNotDefined(data.media_contact_name)
+    && isNotDefined(data.media_contact_title)
+    && isNotDefined(data.media_contact_email)
+    && isNotDefined(data.media_contact_phone_number)
+  ) {
+    return null;
+  }
 
   return (
     <>

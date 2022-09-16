@@ -274,7 +274,7 @@ const defaultSchema: FormSchemaFields = {
         return 'Please select a different timeframe when selected yes on changing the operation timeframe';
       }
 
-      if(currentValue !== contextValue && !allValue?.changing_timeframe_operation) {
+      if (currentValue !== contextValue && !allValue?.changing_timeframe_operation) {
         return 'Please select yes on changing the operation timeframe first';
       }
 

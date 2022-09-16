@@ -3,7 +3,10 @@ import {
   Text,
   View,
 } from '@react-pdf/renderer';
-import { isDefined } from '@togglecorp/fujs';
+import {
+  isDefined,
+  isNotDefined,
+} from '@togglecorp/fujs';
 
 import { Strings } from '#types';
 import { formatNumber } from '#utils/common';
@@ -24,6 +27,20 @@ function TargetedPopulationOutput(props: Props) {
     strings,
     isAssessmentReport,
   } = props;
+
+  // Note: we cannot use isNotDefined because of empty string from server
+  if ((!data.people_per_local)
+    && (!data.people_per_urban)
+    && (!data.disability_people_per)
+    && isNotDefined(data.total_targeted_population)
+    && isNotDefined(data.women)
+    && isNotDefined(data.girls)
+    && isNotDefined(data.men)
+    && isNotDefined(data.boys)
+  ) {
+    return null;
+  }
+
   return (
     <View
       style={pdfStyles.tpSection}
@@ -44,7 +61,6 @@ function TargetedPopulationOutput(props: Props) {
                 <PdfTextOutput
                   label={strings.drefExportEstimatedUrban}
                   columns="2/4"
-
                 />
               </View>
               <View style={pdfStyles.compactSection}>
@@ -57,7 +73,6 @@ function TargetedPopulationOutput(props: Props) {
                       : ''
                   }
                   columns="2/4"
-
                 />
                 <PdfTextOutput
                   value={
@@ -68,7 +83,6 @@ function TargetedPopulationOutput(props: Props) {
                       : ''
                   }
                   columns="2/4"
-
                 />
               </View>
               <View style={pdfStyles.compactSection}>

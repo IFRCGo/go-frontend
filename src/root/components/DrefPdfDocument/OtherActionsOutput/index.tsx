@@ -1,4 +1,6 @@
 import React from 'react';
+import { isNotDefined } from '@togglecorp/fujs';
+
 import { DrefApiFields } from '#views/DrefApplicationForm/common';
 import { Strings } from '#types';
 import {
@@ -18,6 +20,14 @@ function OtherActionsOutput(props: Props) {
     data,
     strings,
   } = props;
+
+  if (isNotDefined(data.government_requested_assistance)
+    && isNotDefined(data.national_authorities)
+    && isNotDefined(data.un_or_other_actor)
+    && isNotDefined(data.major_coordination_mechanism)
+  ) {
+    return null;
+  }
 
   return (
     <View

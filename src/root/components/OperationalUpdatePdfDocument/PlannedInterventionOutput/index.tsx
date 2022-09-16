@@ -121,27 +121,26 @@ function PlannedInterventionOutput(props: BaseProps) {
     strings,
   } = props;
 
+  if (data.planned_interventions.length < 1) {
+    return null;
+  }
   return (
-    <>
-      {data.planned_interventions.length > 0 && (
-        <View
-          style={pdfStyles.piSection}
-          break
-        >
-          <Text style={pdfStyles.sectionHeading}>
-            {strings.drefFormPlannedIntervention}
-          </Text>
-          {data?.planned_interventions.map((pi) => (
-            <PlannedIntervention
-              strings={strings}
-              key={pi.id}
-              data={pi}
-              piMap={piMap}
-            />
-          ))}
-        </View>
-      )}
-    </>
+    <View
+      style={pdfStyles.piSection}
+      break
+    >
+      <Text style={pdfStyles.sectionHeading}>
+      </Text>
+      {strings.drefFormPlannedIntervention}
+      {data?.planned_interventions.map((pi) => (
+        <PlannedIntervention
+          strings={strings}
+          key={pi.id}
+          data={pi}
+          piMap={piMap}
+        />
+      ))}
+    </View>
   );
 }
 

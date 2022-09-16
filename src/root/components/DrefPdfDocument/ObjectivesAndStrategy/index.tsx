@@ -1,10 +1,12 @@
 import React from 'react';
-import { DrefApiFields } from '#views/DrefApplicationForm/common';
-import { Strings } from '#types';
 import {
   Text,
   View,
 } from '@react-pdf/renderer';
+import { isDefined } from '@togglecorp/fujs';
+
+import { Strings } from '#types';
+import { DrefApiFields } from '#views/DrefApplicationForm/common';
 import pdfStyles from '#utils/pdf/pdfStyles';
 
 interface Props {
@@ -20,7 +22,7 @@ function ObjectiveAndStrategy(props: Props) {
 
   return (
     <>
-      {data?.operation_objective && (
+      {isDefined(data.operation_objective) && (
         <View
           style={pdfStyles.section}
         >
@@ -37,7 +39,7 @@ function ObjectiveAndStrategy(props: Props) {
           </View>
         </View>
       )}
-      {data?.response_strategy && (
+      {isDefined(data.response_strategy) && (
         <View style={pdfStyles.qna}>
           <Text style={pdfStyles.strategySubSectionHeading}
           >
@@ -50,26 +52,26 @@ function ObjectiveAndStrategy(props: Props) {
       )}
 
       {(
-        data?.people_assisted ||
-        data?.selection_criteria
+        isDefined(data.people_assisted) ||
+        isDefined(data.selection_criteria)
       ) && (
           <View style={pdfStyles.section}>
             <View wrap={false}>
               <Text style={pdfStyles.sectionHeading}>
                 {strings.drefFormTargetingStrategy}
               </Text>
-              {data?.people_assisted && (
+              {isDefined(data.people_assisted) && (
                 <View style={pdfStyles.qna}>
                   <Text style={pdfStyles.textLabelSection}>
                     {strings.drefFormPeopleAssistedThroughOperation}
                   </Text>
                   <Text style={pdfStyles.answer}>
-                    {data.people_assisted}
+                    {isDefined(data.people_assisted)}
                   </Text>
                 </View>
               )}
             </View>
-            {data?.selection_criteria && (
+            {isDefined(data.selection_criteria) && (
               <View style={pdfStyles.qna}>
                 <Text style={pdfStyles.textLabelSection}>
                   {strings.drefFormSelectionCriteria}

@@ -4,6 +4,7 @@ import {
   View,
   Text,
 } from '@react-pdf/renderer';
+import { isDefined } from '@togglecorp/fujs';
 
 import { DrefOperationalUpdateApiFields } from '#views/DrefOperationalUpdateForm/common';
 import { Strings } from '#types';
@@ -26,7 +27,7 @@ function NeedIdentified(props: NeedsProps) {
       style={pdfStyles.niContainer}
     >
       <View style={pdfStyles.niContentIconCell}>
-        {data.image_url && (
+        {isDefined(data.image_url) && (
           <Image
             style={pdfStyles.niIcon}
             src={data.image_url}
@@ -61,29 +62,29 @@ function NeedIdentifiedOutput(props: BaseProps) {
     strings,
   } = props;
 
+  if (data.needs_identified.length < 1) {
+    return null;
+  }
+
   return (
-    <>
-      {data?.needs_identified.length > 0 && (
-        <View
-          style={pdfStyles.niSection}
-          break
-        >
-          <Text style={pdfStyles.sectionHeading}>
-            {isImminentOnset ?
-              strings.drefFormImminentNeedsIdentified
-              : strings.drefFormNeedsIdentified}
-          </Text>
-          {data?.needs_identified.map((ni) => (
-            <NeedIdentified
-              key={ni.id}
-              data={ni}
-              niMap={niMap}
-              strings={strings}
-            />
-          ))}
-        </View>
-      )}
-    </>
+    <View
+      style={pdfStyles.niSection}
+      break
+    >
+      <Text style={pdfStyles.sectionHeading}>
+        {isImminentOnset ?
+          strings.drefFormImminentNeedsIdentified
+          : strings.drefFormNeedsIdentified}
+      </Text>
+      {data?.needs_identified.map((ni) => (
+        <NeedIdentified
+          key={ni.id}
+          data={ni}
+          niMap={niMap}
+          strings={strings}
+        />
+      ))}
+    </View>
   );
 }
 

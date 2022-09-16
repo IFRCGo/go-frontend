@@ -9,7 +9,10 @@ import {
   IoAdd,
   IoList,
   // IoPushOutline,
-  IoCloudUploadSharp,
+  //
+  // NOTE: Temporary
+  // IoCloudUploadSharp,
+
 } from 'react-icons/io5';
 import {
   MdEdit,
@@ -51,8 +54,11 @@ import { compareLabel } from '#utils/common';
 import useAlert from '#hooks/useAlert';
 import { DrefOperationalUpdateResponse } from '#types';
 import OperationalUpdateExport from '#components/OperationalUpdateExport';
-import InputSection from '#components/InputSection';
-import FileInput from '#components/FileInput';
+
+
+// NOTE: Temporary
+// import InputSection from '#components/InputSection';
+// import FileInput from '#components/FileInput';
 
 import styles from './styles.module.scss';
 
@@ -86,9 +92,10 @@ interface DrefApplicationResponse {
 }
 
 const ITEM_PER_PAGE = 6;
-const SLOW_SUDDEN = "slow";
-const IMMINENT = "imminent";
-const ASSESSMENT = "assessment";
+// NOTE: Temporary
+// const SLOW_SUDDEN = "slow";
+// const IMMINENT = "imminent";
+// const ASSESSMENT = "assessment";
 
 const drefKeySelector = (d: DrefApplicationResponse) => d.id;
 const operationalUpdateKeySelector = (d: OperationalUpdateDetails) => d.id;
@@ -323,6 +330,7 @@ function DrefApplicationList(props: Props) {
     }
   });
 
+  /* NOTE: Temporary
   const {
     pending: drefImportSlowSuddenPending,
     trigger: postDrefDocumentImportSlowSudden
@@ -435,6 +443,7 @@ function DrefApplicationList(props: Props) {
     postDrefDocumentImportImminent,
     postDrefDocumentImportAssessment,
   ]);
+  */
 
   const handleDrefPublishConfirm = React.useCallback((drefId: number) => {
     postDrefPublishRequest(drefId);
@@ -692,12 +701,13 @@ function DrefApplicationList(props: Props) {
   }, [selectedDrefIdForOperationalUpdateList, publishedDrefResponse]);
 
   const pending = publishedDrefPending
+    // NOTE: Temporary
+    // || drefImportSlowSuddenPending
+    // || drefImportImminentPending
+    // || drefImportAssessmentPending
     || inProgressDrefPending
     || newOperationalUpdatePending
-    || newFinalReportPending
-    || drefImportSlowSuddenPending
-    || drefImportImminentPending
-    || drefImportAssessmentPending;
+    || newFinalReportPending;
 
   return (
     <Container
@@ -717,6 +727,7 @@ function DrefApplicationList(props: Props) {
       )}
     >
       {(drefPublishPending || newFinalReportPending || newOperationalUpdatePending) && <GlobalLoading />}
+      {/* NOTE: Temporary
       <Container
         heading={strings.drefDocumentImportTitle}
         sub
@@ -757,6 +768,7 @@ function DrefApplicationList(props: Props) {
           </FileInput>
         </InputSection>
       </Container>
+      */}
       <Container
         heading={strings.drefTableInProgressHeading}
         sub

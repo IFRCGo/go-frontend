@@ -3,6 +3,7 @@ import {
   Text,
   View,
 } from '@react-pdf/renderer';
+import { isNotDefined } from '@togglecorp/fujs';
 
 import { Strings } from '#types';
 import { formatBoolean } from '#utils/common';
@@ -21,6 +22,19 @@ function SummaryOfChangeOutput(props: Props) {
     strings,
     isImminentOnset,
   } = props;
+
+  if (isNotDefined(data.changing_timeframe_operation)
+    && isNotDefined(data.changing_geographic_location)
+    && isNotDefined(data.changing_budget)
+    && isNotDefined(data.changing_operation_strategy)
+    && isNotDefined(data.changing_target_population_of_operation)
+    && isNotDefined(data.request_for_second_allocation)
+    && isNotDefined(data.has_forecasted_event_materialize)
+    && isNotDefined(data.summary_of_change)
+    && isNotDefined(data.specified_trigger_met)
+  ) {
+    return null;
+  }
 
   return (
     <View
@@ -125,7 +139,8 @@ function SummaryOfChangeOutput(props: Props) {
                 <Text>{data?.specified_trigger_met}</Text>
               </View>
             </View>
-          </>)}
+          </>
+        )}
       </View>
     </View>
   );

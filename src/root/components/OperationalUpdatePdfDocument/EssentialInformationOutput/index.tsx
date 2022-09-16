@@ -29,7 +29,7 @@ function EssentialInformationOutput(props: Props) {
 
   return (
     <>
-      {(data?.cover_image_file?.file) && (
+      {isDefined(data.cover_image_file?.file) && (
         <View style={[
           pdfStyles.section,
           pdfStyles.bannerImageContainer,

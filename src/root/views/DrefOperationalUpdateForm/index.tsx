@@ -322,7 +322,7 @@ function DrefOperationalUpdate(props: Props) {
       field => validationError?.[field]
     ) as ObjectError<DrefOperationalUpdateFields>;
 
-    /*
+    /*FIXME:
     const newError: typeof error = {
       ...currentTabErrors,
     };
@@ -359,8 +359,7 @@ function DrefOperationalUpdate(props: Props) {
     body: ctx => ctx,
     onSuccess: (response) => {
       alert.show(
-        // FIXME: use strings
-        'Operational Update was updated successfully!',
+        strings.drefOperationalUpdateSuccessMessage,
         { variant: 'success' },
       );
     },
@@ -558,7 +557,7 @@ function DrefOperationalUpdate(props: Props) {
               <Container>
                 <NonFieldError
                   error={error}
-                  message="Please correct all the errors"
+                  message={strings.drefFormFieldGeneralError}
                 />
               </Container>
               <TabPanel name='operationOverview'>
