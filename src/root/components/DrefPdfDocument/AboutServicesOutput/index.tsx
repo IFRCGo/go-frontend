@@ -33,15 +33,14 @@ function AboutServicesOutput(props: Props) {
 
   return (
     <View
-      style={pdfStyles.section}
-      wrap={false}
       break
+      style={pdfStyles.section}
     >
       <Text style={pdfStyles.sectionHeading}>
         {strings.drefFormSupportServices}
       </Text>
       {isDefined(data.human_resource) && (
-        <View style={pdfStyles.qna}>
+        <View style={pdfStyles.qna} minPresenceAhead={3}>
           <Text style={pdfStyles.textLabelSection}>
             {strings.drefFormHumanResourceDescription}
           </Text>
@@ -51,9 +50,10 @@ function AboutServicesOutput(props: Props) {
         </View>
       )}
       {isDefined(data.surge_personnel_deployed) && (
-        <View style={pdfStyles.qna}>
+        <View style={pdfStyles.qna} minPresenceAhead={3}>
           <Text style={pdfStyles.textLabelSection}>
             {strings.drefFormSurgePersonnelDeployed}
+            &nbsp;
             {strings.drefFormSurgePersonnelDeployedDescription}
           </Text>
           <Text style={pdfStyles.answer}>
@@ -64,7 +64,7 @@ function AboutServicesOutput(props: Props) {
       {!isAssessmentReport && (
         <>
           {isDefined(data.logistic_capacity_of_ns) && (
-            <View style={pdfStyles.qna}>
+            <View style={pdfStyles.qna} minPresenceAhead={3}>
               <Text style={pdfStyles.textLabelSection}>
                 {strings.drefFormLogisticCapacityOfNs}
               </Text>
@@ -74,7 +74,7 @@ function AboutServicesOutput(props: Props) {
             </View>
           )}
           {isDefined(data.pmer) && (
-            <View style={pdfStyles.qna}>
+            <View style={pdfStyles.qna} minPresenceAhead={3}>
               <Text style={pdfStyles.textLabelSection}>
                 {strings.drefFormPmer}
               </Text>
@@ -84,7 +84,7 @@ function AboutServicesOutput(props: Props) {
             </View>
           )}
           {isDefined(data.communication) && (
-            <View style={pdfStyles.qna}>
+            <View style={pdfStyles.qna} minPresenceAhead={3}>
               <Text style={pdfStyles.textLabelSection}>
                 {strings.drefFormCommunication}
               </Text>

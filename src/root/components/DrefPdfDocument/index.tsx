@@ -153,7 +153,6 @@ function DrefPdfDocument(props: Props) {
           data={dref}
           piMap={piMap}
         />
-
         <AboutServicesOutput
           strings={strings}
           data={dref}
@@ -164,7 +163,11 @@ function DrefPdfDocument(props: Props) {
           strings={strings}
           data={dref}
         />
-
+      </PDFPage>
+      <PDFPage
+        style={pdfStyles.portraitPage}
+        size="A4"
+      >
         <ContactInformationOutput
           data={dref}
           strings={strings}

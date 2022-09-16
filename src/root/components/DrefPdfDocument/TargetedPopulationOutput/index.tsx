@@ -44,15 +44,14 @@ function TargetedPopulationOutput(props: Props) {
   return (
     <View
       style={pdfStyles.tpSection}
-      wrap={false}
     >
-      <Text style={pdfStyles.sectionHeading}>
+      <Text style={pdfStyles.sectionHeading} minPresenceAhead={10}>
         {strings.drefFormAssistedPopulation}
       </Text>
       <View style={pdfStyles.section}>
         <View style={pdfStyles.basicInfoTable}>
-          {isAssessmentReport
-            ? (<>
+          {isAssessmentReport ? (
+            <>
               <View style={pdfStyles.compactSection}>
                 <PdfTextOutput
                   label={strings.drefExportEstimatedLocal}
@@ -114,8 +113,9 @@ function TargetedPopulationOutput(props: Props) {
                   color='Red'
                 />
               </View>
-            </>)
-            : (<>
+            </>
+          ) : (
+            <>
               <View style={pdfStyles.compactSection}>
                 <PdfTextOutput
                   label={strings.drefExportWomen}
@@ -201,7 +201,8 @@ function TargetedPopulationOutput(props: Props) {
                   color='Red'
                 />
               </View>
-            </>)}
+            </>
+          )}
         </View>
       </View>
     </View>
