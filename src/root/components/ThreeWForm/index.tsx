@@ -704,7 +704,7 @@ function ThreeWForm(props: Props) {
                     onChange={onValueChange}
                 />
                 <NumberInput
-                    disabled={shouldDisableTotalTarget}
+                    disabled={shouldDisableTotalTarget || value?.is_annual_report}
                     name='target_total'
                     label={isTotalRequired && !shouldDisableTotalTarget ? strings.projectFormTotalRequired : strings.projectFormTotal}
                     value={value.target_total}
@@ -740,7 +740,7 @@ function ThreeWForm(props: Props) {
                     onChange={onValueChange}
                 />
                 <NumberInput
-                    disabled={shouldDisableTotalReached}
+                    disabled={shouldDisableTotalReached || value?.is_annual_report}
                     name='reached_total'
                     label={isTotalRequired && !shouldDisableTotalReached ? strings.projectFormTotalRequired : strings.projectFormTotal}
                     value={value.reached_total}
