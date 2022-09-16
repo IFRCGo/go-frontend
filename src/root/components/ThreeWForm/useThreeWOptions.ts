@@ -155,7 +155,7 @@ export const schema: FormSchema = {
       target_female: [positiveIntegerCondition],
       target_male: [positiveIntegerCondition],
       target_other: [positiveIntegerCondition],
-      target_total: [requiredCondition, positiveIntegerCondition],
+      target_total: [positiveIntegerCondition],
       visibility: [requiredCondition],
       is_annual_report: [],
       annual_split_detail: {
@@ -193,9 +193,17 @@ export const schema: FormSchema = {
         schema.event = [requiredCondition];
     }
 
-    if (projectStatus === PROJECT_STATUS_COMPLETED) {
-      schema.reached_total = [requiredCondition, positiveIntegerCondition];
+    if (value?.is_annual_report) {
       schema.budget_amount = [positiveIntegerCondition];
+      schema.target_total = [positiveIntegerCondition];
+      schema.reached_total = [positiveIntegerCondition];
+    }
+    else {
+      schema.target_total = [requiredCondition, positiveIntegerCondition];
+      if (projectStatus === PROJECT_STATUS_COMPLETED) {
+        schema.budget_amount = [positiveIntegerCondition];
+        schema.reached_total = [requiredCondition, positiveIntegerCondition];
+      }
     }
 
     return schema;
