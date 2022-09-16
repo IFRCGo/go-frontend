@@ -2,7 +2,7 @@
 
 <h1 align="center">IFRC GO Frontend</h1>
 
-This repository contains the user interface of the IFRC Go.
+This repository contains the user interface of the IFRC GO.
 
 ## Installation and Usage
 The steps below will walk you through setting up a development environment for the frontend.

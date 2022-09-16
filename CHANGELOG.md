@@ -1,3 +1,13 @@
+### Release 6.3.0 - DREF Application, DREF Operational Updates
+
+Date: 2022-09-16
+
+Major changes:
+
+- Realse of DREF Application feature
+- Release of DREF Operational Update feature
+
+
 ### Release 6.2.0 - Flash Updates, Rich Text Editors and more
 
 Date: 2022-08-05

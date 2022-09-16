@@ -9,6 +9,11 @@
   }
 }
 
+.title-prefix {
+  padding: 0 0 0 $spacing;
+  opacity: 0.5;
+}
+
 .sharing {
   .actions {
     flex-basis: unset;
@@ -22,4 +27,27 @@
   align-items: center;
   margin-inline-start: $spacing;
   font-size: 1rem;
+}
+
+.people-targeted-help-link {
+  margin-inline-start: $spacing;
+  font-size: 1rem;
+}
+
+.map-input-content,
+.image-input-content {
+  display: flex;
+  flex-direction: column;
+
+  .preview-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $spacing;
+  }
+}
+
+.generate-title-button {
+  flex-grow: unset!important;
+  flex-basis: initial!important;
+  flex-shrink: 0!important;
 }

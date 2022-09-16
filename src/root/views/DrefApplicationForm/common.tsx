@@ -8,6 +8,10 @@ export const ONSET_IMMINENT = 0;
 export const ONSET_SLOW = 1;
 export const ONSET_SUDDEN = 2;
 
+export const DISASTER_FIRE = 15;
+export const DISASTER_FLASH_FLOOD = 27;
+export const DISASTER_FLOOD = 12;
+
 export interface NumericValueOption {
   value: number;
   label: string;
@@ -17,7 +21,6 @@ export interface BooleanValueOption {
   value: boolean;
   label: string;
 }
-
 export interface StringValueOption {
   value: string;
   label: string;
@@ -67,6 +70,7 @@ export interface CountryDistrict {
   clientId: string;
   country: number;
   district: number[];
+  country_details: Country;
 }
 
 export interface Need {
@@ -100,6 +104,25 @@ export interface Intervention {
   female: number;
 }
 
+export interface SingleFileWithCaption {
+  id: number;
+  file?: string;
+  caption: string;
+}
+
+export interface FileWithCaption {
+  client_id: string;
+  id: number;
+  caption: string;
+  file: string;
+}
+
+export interface RiskSecurityProps {
+  clientId: string;
+  risk: string;
+  mitigation: string;
+}
+
 export const optionKeySelector = (o: Option) => o.value;
 export const numericOptionKeySelector = (o: NumericValueOption) => o.value;
 export const stringOptionKeySelector = (o: StringValueOption) => o.value;
@@ -116,8 +139,6 @@ export interface DrefFields {
   boys: number;
   communication: string;
   community_involved: string;
-  country_district: CountryDistrict[];
-  cover_image: number;
   created_at: string;
   date_of_approval: string;
   disability_people_per: number;
@@ -126,11 +147,9 @@ export interface DrefFields {
   displaced_people: number;
   emergency_appeal_planned: boolean;
   end_date: string;
-  entity_affected: string,
   event_date: string;
-  event_map: number;
   field_report: number;
-  images: number[];
+  images_file: FileWithCaption[];
   event_description: string;
   event_scope: string;
   event_text: string;
@@ -166,10 +185,6 @@ export interface DrefFields {
   men: number;
   modified_at: string;
   modified_by: number;
-
-  // FIXME: this typeing for details should not be here
-  modified_by_details: {};
-
   national_authorities: string;
   national_society: number;
   national_society_actions: NsAction[];
@@ -201,7 +216,6 @@ export interface DrefFields {
   pmer: string;
   publishing_date: string;
   response_strategy: string;
-  safety_concerns: string;
   selection_criteria: string;
   start_date: string;
   status: number;
@@ -215,15 +229,27 @@ export interface DrefFields {
   dref_recurrent_text: string;
   total_targeted_population: number;
   users: number[];
+  is_there_major_coordination_mechanism: boolean;
+  is_surge_personnel_deployed: boolean;
+  assessment_report: number;
+  country: number;
+  district: number[];
+  country_details: Country;
+  people_in_need: number;
+  did_national_society: boolean;
+  supporting_document: number;
+  risk_security: RiskSecurityProps[];
+  risk_security_concern: string;
+  title_prefix: string;
+  cover_image_file: SingleFileWithCaption;
+  event_map_file: SingleFileWithCaption;
+  is_man_made_event: boolean;
+  is_assessment_report: boolean;
 }
 
-export interface DrefApiFields extends Omit<DrefFields, 'country_district' | 'planned_interventions' | 'national_society_actions' | 'needs_identified'> {
+export interface DrefApiFields extends Omit<DrefFields, 'event_map_details' | 'cover_image_file' | 'district_details' | 'planned_interventions' | 'national_society_actions' | 'needs_identified' | 'images_file'> {
   user: number;
-  country_district: (Omit<CountryDistrict, 'clientId'> & {
-    id: number
-    country_details: Country,
-    district_details: DistrictMini[],
-  })[];
+  district_details: DistrictMini[],
   planned_interventions: (Omit<Intervention, 'clientId' | 'indicators'> & {
     id: number,
     image_url: string,
@@ -236,14 +262,6 @@ export interface DrefApiFields extends Omit<DrefFields, 'country_district' | 'pl
     id: number,
     image_url: string,
   })[];
-  event_map_details: {
-    id: number;
-    file: string;
-  };
-  cover_image_details: {
-    id: number;
-    file: string;
-  } | null;
   budget_file_details: {
     id: number;
     file: string;
@@ -253,32 +271,57 @@ export interface DrefApiFields extends Omit<DrefFields, 'country_district' | 'pl
     id: number;
     file: string;
   }[];
+  assessment_report_details: {
+    id: number;
+    file: string;
+  };
+  assessment_report_preview: string,
+  images_file: {
+    id: number,
+    caption: string | null,
+    client_id: string | null,
+    file: string;
+  }[];
+  cover_image_file: SingleFileWithCaption;
+  event_map_details: SingleFileWithCaption;
+  disaster_type_details: {
+    id: number;
+    name: string;
+    summary: string;
+  };
+  disaster_category_display: 'Yellow' | 'Red' | 'Orange';
+  type_of_onset_display: string;
+  supporting_document_details: {
+    id: number;
+    file: string;
+  };
+  operational_update_details: {
+    id: number;
+    is_published: boolean;
+    operational_update_number: number;
+    title: string;
+  }[] | null;
 }
-
 
 export const overviewFields: (keyof DrefFields)[] = [
   'users',
   'field_report',
+  'title_prefix',
   'title',
   'national_society',
+  'country',
+  'district',
+  'people_in_need',
   'disaster_type',
   'type_of_onset',
   'disaster_category',
-  'country_district',
   'num_affected',
   'amount_requested',
-  'event_map',
-  'cover_image',
+  'event_map_file',
+  'cover_image_file',
   'emergency_appeal_planned',
-  'event_date',
-  'go_field_report_date',
-  'ns_respond_date',
-  'ns_request_date',
-  'start_date',
-  'end_date',
-  'submission_to_geneva',
-  'date_of_approval',
-  'operation_timeframe',
+  'is_man_made_event',
+  'is_assessment_report',
 ];
 
 export const eventDetailsFields: (keyof DrefFields)[] = [
@@ -290,7 +333,9 @@ export const eventDetailsFields: (keyof DrefFields)[] = [
   'lessons_learned',
   'event_description',
   'event_scope',
-  'images',
+  'images_file',
+  'event_date',
+  'event_text',
 ];
 
 export const actionsFields: (keyof DrefFields)[] = [
@@ -304,11 +349,13 @@ export const actionsFields: (keyof DrefFields)[] = [
   'major_coordination_mechanism',
   'needs_identified',
   'identified_gaps',
+  'ns_respond_date',
+  'is_there_major_coordination_mechanism',
+  'assessment_report',
 ];
 
 export const responseFields: (keyof DrefFields)[] = [
   'people_assisted',
-  'entity_affected',
   'women',
   'men',
   'girls',
@@ -323,14 +370,23 @@ export const responseFields: (keyof DrefFields)[] = [
   'human_resource',
   'surge_personnel_deployed',
   'logistic_capacity_of_ns',
-  'safety_concerns',
   'pmer',
   'communication',
   'budget_file',
   'planned_interventions',
+  'is_surge_personnel_deployed',
+  'risk_security',
+  'risk_security_concern',
 ];
 
 export const submissionFields: (keyof DrefFields)[] = [
+  'ns_request_date',
+  'start_date',
+  'end_date',
+  'submission_to_geneva',
+  'date_of_approval',
+  'operation_timeframe',
+  'did_national_society',
   'appeal_code',
   'glide_code',
   'ifrc_appeal_manager_name',

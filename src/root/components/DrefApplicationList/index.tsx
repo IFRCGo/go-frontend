@@ -8,16 +8,27 @@ import {
   IoClose,
   IoAdd,
   IoList,
+  // IoPushOutline,
+  //
+  // NOTE: Temporary
+  // IoCloudUploadSharp,
+
 } from 'react-icons/io5';
 import {
   MdEdit,
   MdPublish,
 } from 'react-icons/md';
+import {
+  EntriesAsList,
+  Error,
+  PartialForm,
+} from '@togglecorp/toggle-form';
 
 import LanguageContext from '#root/languageContext';
 import Backdrop from '#components/backdrop';
 import Button from '#components/Button';
 import Container from '#components/Container';
+import GlobalLoading from '#components/NewGlobalLoading';
 import BlockLoading from '#components/block-loading';
 import Table from '#components/Table';
 import SelectInput from '#components/SelectInput';
@@ -43,23 +54,24 @@ import { compareLabel } from '#utils/common';
 import useAlert from '#hooks/useAlert';
 import { DrefOperationalUpdateResponse } from '#types';
 import OperationalUpdateExport from '#components/OperationalUpdateExport';
-import DREFFileImport from '#components/DREFFileImport';
-import {
-  EntriesAsList,
-  Error,
-  getErrorObject,
-  PartialForm,
-} from '@togglecorp/toggle-form';
+
+
+// NOTE: Temporary
+// import InputSection from '#components/InputSection';
+// import FileInput from '#components/FileInput';
 
 import styles from './styles.module.scss';
-
-const ITEM_PER_PAGE = 6;
 
 interface OperationalUpdateDetails {
   id: number;
   title: string;
   is_published: boolean;
   operational_update_number: number;
+}
+interface FinalReportDetails {
+  id: number;
+  title: string;
+  is_published: boolean;
 }
 
 interface DrefApplicationResponse {
@@ -75,7 +87,15 @@ interface DrefApplicationResponse {
   submission_to_geneva: string;
   is_published: boolean;
   operational_update_details: OperationalUpdateDetails[];
+  dref_final_report_details: FinalReportDetails;
+  is_final_report_created: boolean;
 }
+
+const ITEM_PER_PAGE = 6;
+// NOTE: Temporary
+// const SLOW_SUDDEN = "slow";
+// const IMMINENT = "imminent";
+// const ASSESSMENT = "assessment";
 
 const drefKeySelector = (d: DrefApplicationResponse) => d.id;
 const operationalUpdateKeySelector = (d: OperationalUpdateDetails) => d.id;
@@ -85,31 +105,23 @@ interface DrefOperationalResponseFields {
   id: number;
 }
 
-interface DREFFileField {
+interface DrefImportFields {
   file: number;
+  dref: number;
+  id: number;
 }
-type Value = PartialForm<DREFFileField>;
 
+type Value = PartialForm<DrefImportFields>;
 interface Props {
   history: History;
   value: Value,
-  onValueChange: (...entries: EntriesAsList<Value>) => void;
-  fileIdToUrlMap: Record<number, string>;
-  setFileIdToUrlMap?: React.Dispatch<React.SetStateAction<Record<number, string>>>;
   error: Error<Value> | undefined;
+  onValueChange: (...entries: EntriesAsList<Value>) => void;
 }
 
 function DrefApplicationList(props: Props) {
-  const {
-    history,
-    onValueChange,
-    value,
-    setFileIdToUrlMap,
-    fileIdToUrlMap,
-    error: formError,
-  } = props;
 
-  const error = getErrorObject(formError);
+  const { history } = props;
 
   const alert = useAlert();
   const { strings } = React.useContext(LanguageContext);
@@ -171,7 +183,7 @@ function DrefApplicationList(props: Props) {
     url: (drefId) => drefId ? `api/v2/dref/${drefId}/publish/` : undefined,
     body: () => ({}),
     method: 'POST',
-    onSuccess: (response) => {
+    onSuccess: () => {
       refetchPublishedDrefList();
       refetchInProgressDrefList();
     },
@@ -202,7 +214,7 @@ function DrefApplicationList(props: Props) {
     url: (operationalUpdateId) => operationalUpdateId ? `api/v2/dref-op-update/${operationalUpdateId}/publish/` : undefined,
     body: () => ({}),
     method: 'POST',
-    onSuccess: (response) => {
+    onSuccess: () => {
       refetchPublishedDrefList();
     },
     onFailure: ({
@@ -211,7 +223,7 @@ function DrefApplicationList(props: Props) {
     }) => {
       alert.show(
         <p>
-          Failed to publish the Operational Update
+          {strings.drefOperationalUpdatePublishConfirmationFailureMessage}
           &nbsp;
           <strong>
             {messageForNotification}
@@ -256,6 +268,182 @@ function DrefApplicationList(props: Props) {
       );
     }
   });
+  const {
+    pending: newFinalReportPending,
+    // trigger: postDrefNewFinalReport,
+  } = useLazyRequest<DrefOperationalUpdateResponse, number>({
+    url: (drefId) => drefId ? `api/v2/dref-final-report/` : undefined,
+    body: (drefId) => ({ dref: drefId }),
+    method: 'POST',
+    onSuccess: (response) => {
+      if (isDefined(response?.id)) {
+        history.push(`/dref-final-report/${response.id}/edit/`);
+      }
+    },
+    onFailure: ({
+      value: { messageForNotification },
+      debugMessage,
+    }) => {
+      alert.show(
+        <p>
+          {strings.drefOperationalUpdateFailureMessage}
+          &nbsp;
+          <strong>
+            {messageForNotification}
+          </strong>
+        </p>,
+        {
+          variant: 'danger',
+          debugMessage,
+        },
+      );
+    }
+  });
+
+  const {
+    // pending: finalReportPublishPending,
+    trigger: postFinalReportPublishRequest,
+  } = useLazyRequest<DrefOperationalResponseFields, number | undefined>({
+    url: (finalReportId) => finalReportId ? `api/v2/dref-final-report/${finalReportId}/publish/` : undefined,
+    body: () => ({}),
+    method: 'POST',
+    onSuccess: () => {
+      refetchPublishedDrefList();
+    },
+    onFailure: ({
+      value: { messageForNotification },
+      debugMessage,
+    }) => {
+      alert.show(
+        <p>
+          {strings.finalReportPublishConfirmationFailureMessage}
+          &nbsp;
+          <strong>
+            {messageForNotification}
+          </strong>
+        </p>,
+        {
+          variant: 'danger',
+          debugMessage,
+        },
+      );
+    }
+  });
+
+  /* NOTE: Temporary
+  const {
+    pending: drefImportSlowSuddenPending,
+    trigger: postDrefDocumentImportSlowSudden
+  } = useLazyRequest<DrefImportFields, File | undefined>({
+    formData: true,
+    url: () => 'api/v2/dref-file-slow-sudden/',
+    body: (ctx) => ({ file: ctx }),
+    method: 'POST',
+    onSuccess: (response) => {
+      if (isDefined(response.id)) {
+        history.push(`/dref-application/${response.dref}/edit/`);
+      }
+    },
+    onFailure: ({
+      value: { messageForNotification },
+      debugMessage,
+    }) => {
+      alert.show(
+        <p>
+          {strings.drefLoadPdfFailureMessage}
+          &nbsp;
+          <strong>
+            {messageForNotification}
+          </strong>
+        </p>,
+        {
+          variant: 'danger',
+          debugMessage,
+        }
+      );
+    }
+  });
+  const {
+    pending: drefImportImminentPending,
+    trigger: postDrefDocumentImportImminent
+  } = useLazyRequest<DrefImportFields, File | undefined>({
+    formData: true,
+    url: () => 'api/v2/dref-file-imminent/',
+    body: (ctx) => ({ file: ctx }),
+    method: 'POST',
+    onSuccess: (response) => {
+      if (isDefined(response.id)) {
+        history.push(`/dref-application/${response.dref}/edit/`);
+      }
+    },
+    onFailure: ({
+      value: { messageForNotification },
+      debugMessage,
+    }) => {
+      alert.show(
+        <p>
+          {strings.drefLoadPdfFailureMessage}
+          &nbsp;
+          <strong>
+            {messageForNotification}
+          </strong>
+        </p>,
+        {
+          variant: 'danger',
+          debugMessage,
+        }
+      );
+    }
+  });
+  const {
+    pending: drefImportAssessmentPending,
+    trigger: postDrefDocumentImportAssessment
+  } = useLazyRequest<DrefImportFields, File | undefined>({
+    formData: true,
+    url: () => 'api/v2/dref-file-assessment/',
+    body: (ctx) => ({ file: ctx }),
+    method: 'POST',
+    onSuccess: (response) => {
+      if (isDefined(response.id)) {
+        history.push(`/dref-application/${response.dref}/edit/`);
+      }
+    },
+    onFailure: ({
+      value: { messageForNotification },
+      debugMessage,
+    }) => {
+      alert.show(
+        <p>
+          {strings.drefLoadPdfFailureMessage}
+          &nbsp;
+          <strong>
+            {messageForNotification}
+          </strong>
+        </p>,
+        {
+          variant: 'danger',
+          debugMessage,
+        }
+      );
+    }
+  });
+
+  const handleDocumentImport = React.useCallback((file: File | undefined, name: string) => {
+    if (isDefined(name) && name === SLOW_SUDDEN) {
+      postDrefDocumentImportSlowSudden(file);
+    } else if (isDefined(name) && name === IMMINENT) {
+      postDrefDocumentImportImminent(file);
+    } else if (isDefined(name) && name === ASSESSMENT) {
+      postDrefDocumentImportAssessment(file);
+    } else {
+      return;
+    }
+  }, [
+    postDrefDocumentImportSlowSudden,
+    postDrefDocumentImportImminent,
+    postDrefDocumentImportAssessment,
+  ]);
+  */
 
   const handleDrefPublishConfirm = React.useCallback((drefId: number) => {
     postDrefPublishRequest(drefId);
@@ -264,6 +452,14 @@ function DrefApplicationList(props: Props) {
   const handleOperationalUpdatePublishConfirm = React.useCallback((operationalUpdateId: number) => {
     postOperationalUpdatePublishRequest(operationalUpdateId);
   }, [postOperationalUpdatePublishRequest]);
+
+  const handleFinalReportPublishConfirm = React.useCallback((drefId) => {
+    const finalReportId = publishedApplicationList?.find(item => item.id === drefId)?.dref_final_report_details?.id;
+    postFinalReportPublishRequest(finalReportId);
+  }, [
+    publishedApplicationList,
+    postFinalReportPublishRequest,
+  ]);
 
   const [
     publishDrefConfirmationModal,
@@ -279,6 +475,14 @@ function DrefApplicationList(props: Props) {
   ] = useConfirmation({
     message: strings.drefOperationalUpdatePublishConfirmationMessage,
     onConfirm: handleOperationalUpdatePublishConfirm,
+  });
+
+  const [
+    publishFinalReportConfirmationModal,
+    // onFinalReportPublishClick,
+  ] = useConfirmation({
+    message: strings.finalReportPublishConfirmationMessage,
+    onConfirm: handleFinalReportPublishConfirm,
   });
 
   const [
@@ -351,12 +555,39 @@ function DrefApplicationList(props: Props) {
             const hasOperationalUpdate = item.operational_update_details && item.operational_update_details.length > 0;
             const hasUnpublishedOperationalUpdate = item.operational_update_details?.some(d => d.is_published === false) ?? false;
             const canAddNewOperationalUpdate = item.is_published && !hasUnpublishedOperationalUpdate;
-
             const lastOperationalUpdateId = item.operational_update_details?.find(ou => !ou.is_published)?.id;
+
+            /*
+            const hasFinalReport = !!item.dref_final_report_details;
+            const hasUnpublishedFinalReport = !!item.dref_final_report_details?.is_published && !!item.is_final_report_created;
+            const lastFinalReportId = item.dref_final_report_details?.id;
+            */
 
             return {
               extraActions: (
                 <>
+                  {/*
+                  <DropdownMenuItem
+                    icon={<IoAdd />}
+                    name={rowKey}
+                    onClick={postDrefNewFinalReport}
+                    label={strings.finalReportCreateButtonLabel}
+                    disabled={hasFinalReport}
+                  />
+                  <DropdownMenuItem
+                    icon={<MdEdit />}
+                    href={`/dref-final-report/${lastFinalReportId}/edit/`}
+                    label={strings.finalReportEditButtonLabel}
+                    disabled={hasUnpublishedFinalReport || !hasFinalReport}
+                  />
+                  <DropdownMenuItem
+                    icon={<IoPushOutline />}
+                    name={+rowKey}
+                    label={strings.finalReportPublishButtonLabel}
+                    onClick={onFinalReportPublishClick}
+                    disabled={hasUnpublishedFinalReport || finalReportPublishPending}
+                  />
+                  */}
                   <DropdownMenuItem
                     icon={<IoAdd />}
                     name={rowKey}
@@ -394,6 +625,9 @@ function DrefApplicationList(props: Props) {
       ],
     ]);
   }, [
+    // postDrefNewFinalReport,
+    // finalReportPublishPending,
+    // onFinalReportPublishClick,
     postDrefNewOperationalUpdate,
     drefPublishPending,
     onDrefPublishClick,
@@ -466,7 +700,14 @@ function DrefApplicationList(props: Props) {
     return publishedDrefResponse?.results?.find((d) => d.id === selectedDrefIdForOperationalUpdateList);
   }, [selectedDrefIdForOperationalUpdateList, publishedDrefResponse]);
 
-  const pending = publishedDrefPending || inProgressDrefPending || newOperationalUpdatePending;
+  const pending = publishedDrefPending
+    // NOTE: Temporary
+    // || drefImportSlowSuddenPending
+    // || drefImportImminentPending
+    // || drefImportAssessmentPending
+    || inProgressDrefPending
+    || newOperationalUpdatePending
+    || newFinalReportPending;
 
   return (
     <Container
@@ -474,32 +715,60 @@ function DrefApplicationList(props: Props) {
       contentClassName={styles.content}
       descriptionClassName={styles.filters}
       description={(
-        <>
-          <SelectInput
-            name={undefined}
-            placeholder="Select Country"
-            options={countryOptions}
-            value={country}
-            onChange={setCountry}
-            isClearable
-          />
-          <div className={styles.buttonImport}>
-            <DREFFileImport
-              accept=".docx"
-              error={error?.file}
-              fileIdToUrlMap={fileIdToUrlMap}
-              name="file"
-              onChange={onValueChange}
-              setFileIdToUrlMap={setFileIdToUrlMap}
-              value={value?.file}
-              multiple={false}
-            >
-              {strings.drefFileImportLabel}
-            </DREFFileImport>
-          </div>
-        </>
+        <SelectInput
+          name={undefined}
+          placeholder="Select Country"
+          options={countryOptions}
+          value={country}
+          onChange={setCountry}
+          isClearable
+          disabled={pending}
+        />
       )}
     >
+      {(drefPublishPending || newFinalReportPending || newOperationalUpdatePending) && <GlobalLoading />}
+      {/* NOTE: Temporary
+      <Container
+        heading={strings.drefDocumentImportTitle}
+        sub
+      >
+        <InputSection fullWidthColumn>
+          <FileInput
+            type='file'
+            accept='.docx'
+            name={SLOW_SUDDEN}
+            value={undefined}
+            disabled={pending}
+            onChange={handleDocumentImport}
+          >
+            <IoCloudUploadSharp /> &nbsp;
+            {strings.drefDocumentImportSlowSuddenLabel}
+          </FileInput>
+          <FileInput
+            type='file'
+            accept='.docx'
+            name={IMMINENT}
+            value={undefined}
+            disabled={pending}
+            onChange={handleDocumentImport}
+          >
+            <IoCloudUploadSharp /> &nbsp;
+            {strings.drefDocumentImportImminentLabel}
+          </FileInput>
+          <FileInput
+            type='file'
+            accept='.docx'
+            name={ASSESSMENT}
+            value={undefined}
+            disabled={pending}
+            onChange={handleDocumentImport}
+          >
+            <IoCloudUploadSharp /> &nbsp;
+            {strings.drefDocumentImportAssessmentLabel}
+          </FileInput>
+        </InputSection>
+      </Container>
+      */}
       <Container
         heading={strings.drefTableInProgressHeading}
         sub
@@ -593,6 +862,7 @@ function DrefApplicationList(props: Props) {
       )}
       {publishDrefConfirmationModal}
       {publishOperationalUpdateConfirmationModal}
+      {publishFinalReportConfirmationModal}
     </Container>
   );
 }

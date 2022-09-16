@@ -1,0 +1,26 @@
+@import '~styles/settings/_variables.scss';
+
+.annual-split-input {
+  display: flex;
+  gap: $spacing*0.5;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  padding-bottom: $spacing;
+
+  >* {
+    flex-basis: calc(100% / 4 - #{$spacing*0.5});
+  }
+
+  .remove-button {
+    flex-basis: unset;
+    flex-grow: initial;
+    min-width: unset;
+    border: none;
+    margin-left: 2*$spacing;
+    margin-bottom: 0.6*$spacing;
+  }
+
+  .bold {
+    font-weight: 500;
+  }
+}

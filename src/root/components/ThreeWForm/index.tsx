@@ -4,12 +4,14 @@ import {
   isDefined,
   isFalsy,
   isNotDefined,
+  randomString,
 } from '@togglecorp/fujs';
 import {
   useForm,
   createSubmitHandler,
   PartialForm,
   getErrorObject,
+  useFormArray,
 } from '@togglecorp/toggle-form';
 import { MdDoneAll } from 'react-icons/md';
 
@@ -27,6 +29,8 @@ import NonFieldError from '#components/NonFieldError';
 import TextOutput from '#components/text-output';
 import LanguageContext from '#root/languageContext';
 import RichTextArea from '#components/RichTextArea';
+import Switch from "#components/Switch";
+
 
 import useAlert from '#hooks/useAlert';
 import {
@@ -36,6 +40,7 @@ import {
 import {
   Project,
   ProjectFormFields,
+  AnnualSplit,
 } from '#types';
 
 import {
@@ -47,6 +52,8 @@ import {
   FormType,
   transformResponseFieldsToFormFields,
 } from './useThreeWOptions';
+
+import AnnualSplitInput from './AnnualSplitInput';
 
 import styles from './styles.module.scss';
 
@@ -60,7 +67,7 @@ interface Props {
   className?: string;
   onSubmitSuccess?: (result: Project) => void;
   projectId?: number;
-  initialValue?: Partial<ProjectFormFields>;
+  initialValue?: PartialForm<ProjectFormFields>;
 }
 
 function ThreeWForm(props: Props) {
@@ -92,22 +99,18 @@ function ThreeWForm(props: Props) {
   );
 
   const error = React.useMemo(() => getErrorObject(formError), [formError]);
+  const annualSplitErrors = React.useMemo(() => getErrorObject(error?.annual_split_detail), [error]);
 
   const {
     pending: projectDetailsPending,
-    response: projectResponse,
   } = useRequest<Project>({
     skip: isNotDefined(projectId),
     url: `api/v2/project/${projectId}/`,
-  });
-
-  React.useEffect(() => {
-    if (projectResponse) {
+    onSuccess: (projectResponse) => {
       const formValue = transformResponseFieldsToFormFields(projectResponse);
       onValueSet(formValue);
-    }
-  }, [projectResponse, onValueSet]);
-
+    },
+  });
 
   const {
     pending: submitRequestPending,
@@ -171,7 +174,7 @@ function ThreeWForm(props: Props) {
     disasterTypePlaceholder,
     shouldDisableDisasterType,
     statuses,
-    isReachedTotalRequired,
+    isTotalRequired,
     shouldDisableTotalTarget,
     shouldDisableTotalReached,
     disasterTypeLabel,
@@ -231,6 +234,19 @@ function ThreeWForm(props: Props) {
     onValueChange(total, 'reached_total');
   }, [onValueChange, value.reached_male, value.reached_female, value.reached_other]);
 
+
+  // Set beginning is_annual_report switch according to the filled-in annual split details
+  React.useEffect(() => {
+    onValueChange((oldValue: boolean | undefined) => {
+      if (isNotDefined(oldValue)) {
+        return value.annual_split_detail?.length ? true : false;
+      }
+
+      return oldValue;
+    }, 'is_annual_report');
+  }, [onValueChange, value.annual_split_detail]);
+
+
   // Set disaster type based on the selected event
   React.useEffect(() => {
     if (shouldDisableDisasterType) {
@@ -274,6 +290,29 @@ function ThreeWForm(props: Props) {
     },
     [onValueChange],
   );
+
+  const handleAddAnnualSplitButtonClick = React.useCallback(() => {
+    const client_id = randomString();
+    const newAnnualSplit: PartialForm<AnnualSplit> = {
+      client_id,
+    };
+
+    onValueChange(
+      (oldValue: PartialForm<AnnualSplit[]> | undefined) => (
+        [...(oldValue ?? []), newAnnualSplit]
+      ),
+      'annual_split_detail' as const,
+    );
+  }, [onValueChange]);
+
+  const {
+    setValue: setAnnualSplit,
+    removeValue: removeAnnualSplit,
+  } = useFormArray<'annual_split_detail', PartialForm<AnnualSplit>>(
+    'annual_split_detail',
+    onValueChange,
+  );
+
   // if(!projectResponse)
   // {
   //   return(
@@ -599,77 +638,121 @@ function ThreeWForm(props: Props) {
                 value={value.status ? statuses[value.status] : undefined}
               />
             </div>
+{/*
+            <div>
+              <Switch
+                  label="Annual Reporting"
+                  name="is_annual_report"
+                  value={value?.is_annual_report}
+                  onChange={onValueChange}
+              />
+            </div>
+FIXME: this false 2 rows later is just for hiding. */}
           </InputSection>
-          <InputSection
-            description={strings.projectFormPeopleTagetedHelpText}
-            title={strings.projectFormPeopleTageted}
-            tooltip={strings.projectFormPeopleTagetedTooltip}
-          >
-            <NumberInput
-              name='target_male'
-              label={strings.projectFormMale}
-              value={value.target_male}
-              error={error?.target_male}
-              onChange={onValueChange}
-            />
-            <NumberInput
-              name='target_female'
-              label={strings.projectFormFemale}
-              value={value.target_female}
-              error={error?.target_female}
-              onChange={onValueChange}
-            />
-            <NumberInput
-              name='target_other'
-              label={strings.projectFormOther}
-              value={value.target_other}
-              error={error?.target_other}
-              onChange={onValueChange}
-            />
-            <NumberInput
-              disabled={shouldDisableTotalTarget}
-              name='target_total'
-              label="Total*"
-              value={value.target_total}
-              error={error?.target_total}
-              onChange={onValueChange}
-            />
-          </InputSection>
-          <InputSection
-            title={strings.projectFormPeopleReached2}
-            description={strings.projectFormPeopleReachedHelpText}
-            tooltip={strings.projectFormPeopleReachedTooltip}
-          >
-            <NumberInput
-              name='reached_male'
-              label={strings.projectFormPeopleReachedMale}
-              value={value.reached_male}
-              error={error?.reached_male}
-              onChange={onValueChange}
-            />
-            <NumberInput
-              name='reached_female'
-              label={strings.projectFormPeopleReachedFemale}
-              value={value.reached_female}
-              error={error?.reached_female}
-              onChange={onValueChange}
-            />
-            <NumberInput
-              name='reached_other'
-              label={strings.projectFormPeopleReachedOther}
-              value={value.reached_other}
-              error={error?.reached_other}
-              onChange={onValueChange}
-            />
-            <NumberInput
-              disabled={shouldDisableTotalReached}
-              name='reached_total'
-              label={isReachedTotalRequired ? strings.projectFormTotalRequired : strings.projectFormTotal}
-              value={value.reached_total}
-              error={error?.reached_total}
-              onChange={onValueChange}
-            />
-          </InputSection>
+          {false && value?.is_annual_report === true ? (
+              <InputSection
+                description={strings.projectFormPeopleTargetedHelpText}
+                title={strings.projectFormPeopleTargeted + ' ' + strings.projectFormAnnually}
+                tooltip={strings.projectFormPeopleTargetedTooltip + strings.projectFormAnnually}
+                oneColumn
+                multiRow
+              >
+                {value?.annual_split_detail?.map((annual_split, i) => (
+                  <AnnualSplitInput
+                    key={i}
+                    index={i}
+                    value={annual_split}
+                    onChange={setAnnualSplit}
+                    error={annualSplitErrors?.[annual_split.client_id as string]}
+                    onRemove={removeAnnualSplit}
+                  />
+                ))}
+                <div>
+                  <Button
+                    onClick={handleAddAnnualSplitButtonClick}
+                    name={undefined}
+                    variant="secondary"
+                  >
+                    {strings.addNewSplit}
+                  </Button>
+                </div>
+            </InputSection>
+          ) : (
+            <>
+              <InputSection
+                  description={strings.projectFormPeopleTargetedHelpText}
+                  title={strings.projectFormPeopleTargeted}
+                  tooltip={strings.projectFormPeopleTargetedTooltip}
+              >
+                <NumberInput
+                    name='target_male'
+                    label={strings.projectFormMale}
+                    value={value.target_male}
+                    error={error?.target_male}
+                    onChange={onValueChange}
+                />
+                <NumberInput
+                    name='target_female'
+                    label={strings.projectFormFemale}
+                    value={value.target_female}
+                    error={error?.target_female}
+                    onChange={onValueChange}
+                />
+                <NumberInput
+                    name='target_other'
+                    label={strings.projectFormOther}
+                    value={value.target_other}
+                    error={error?.target_other}
+                    onChange={onValueChange}
+                />
+                <NumberInput
+                    disabled={shouldDisableTotalTarget}
+                    name='target_total'
+                    label={isTotalRequired && !shouldDisableTotalTarget ? strings.projectFormTotalRequired : strings.projectFormTotal}
+                    value={value.target_total}
+                    error={error?.target_total}
+                    onChange={onValueChange}
+                    className={shouldDisableTotalTarget ? styles.disable : styles.normal}
+                />
+              </InputSection>
+              <InputSection
+                  title={strings.projectFormPeopleReached2}
+                  description={strings.projectFormPeopleReachedHelpText}
+                  tooltip={strings.projectFormPeopleReachedTooltip}
+              >
+                <NumberInput
+                    name='reached_male'
+                    label={strings.projectFormPeopleReachedMale}
+                    value={value.reached_male}
+                    error={error?.reached_male}
+                    onChange={onValueChange}
+                />
+                <NumberInput
+                    name='reached_female'
+                    label={strings.projectFormPeopleReachedFemale}
+                    value={value.reached_female}
+                    error={error?.reached_female}
+                    onChange={onValueChange}
+                />
+                <NumberInput
+                    name='reached_other'
+                    label={strings.projectFormPeopleReachedOther}
+                    value={value.reached_other}
+                    error={error?.reached_other}
+                    onChange={onValueChange}
+                />
+                <NumberInput
+                    disabled={shouldDisableTotalReached}
+                    name='reached_total'
+                    label={isTotalRequired && !shouldDisableTotalReached ? strings.projectFormTotalRequired : strings.projectFormTotal}
+                    value={value.reached_total}
+                    error={error?.reached_total}
+                    onChange={onValueChange}
+                    className={shouldDisableTotalReached ? styles.disable : styles.normal}
+                />
+              </InputSection>
+            </>
+          )}
           <InputSection
             title={strings.projectFormProjectVisibility}
             description={strings.projectFormProjectVisibilityHelpText}

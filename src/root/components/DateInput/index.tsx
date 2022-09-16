@@ -15,6 +15,7 @@ function DateInput<T extends string | undefined>(props: Props<T>) {
     actions,
     icons,
     error,
+    hint,
     label,
     disabled,
     readOnly,
@@ -30,6 +31,7 @@ function DateInput<T extends string | undefined>(props: Props<T>) {
       icons={icons}
       error={error}
       label={label}
+      hint={hint}
       disabled={disabled}
       errorOnTooltip={errorOnTooltip}
       input={(

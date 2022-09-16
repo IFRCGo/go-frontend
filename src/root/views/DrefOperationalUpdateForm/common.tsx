@@ -7,6 +7,10 @@ export const ONSET_IMMINENT = 0;
 export const ONSET_SLOW = 1;
 export const ONSET_SUDDEN = 2;
 
+export const DISASTER_FIRE = 15;
+export const DISASTER_FLASH_FLOOD = 27;
+export const DISASTER_FLOOD = 12;
+
 export interface NumericValueOption {
   value: number;
   label: string;
@@ -48,13 +52,6 @@ export interface Entity {
   id: number;
   name: string;
 }
-
-export interface CountryDistrict {
-  clientId: string;
-  country: number;
-  district: number[];
-}
-
 export interface Need {
   clientId: string;
   title: string;
@@ -86,6 +83,18 @@ export interface Intervention {
   female: number;
 }
 
+export interface FileWithCaption {
+  client_id: string;
+  id: number;
+  file: string;
+  caption: string;
+}
+export interface RiskSecurityProps {
+  clientId: string;
+  risk: string;
+  mitigation: string;
+}
+
 export const optionKeySelector = (o: Option) => o.value;
 export const numericOptionKeySelector = (o: NumericValueOption) => o.value;
 export const stringOptionKeySelector = (o: StringValueOption) => o.value;
@@ -98,13 +107,12 @@ export interface DrefOperationalUpdateFields {
   disaster_type: number;
   disaster_category: number;
   type_of_onset: number;
-  country_district: CountryDistrict[];
   number_of_people_affected: number;
   number_of_people_targeted: number;
   additional_allocation: number;
   total_dref_allocation: number;
   emergency_appeal_planned: boolean;
-  images: number[];
+  images_file: FileWithCaption[];
   operational_update_number: number;
   new_operational_start_date: string;
   reporting_timeframe: string;
@@ -173,25 +181,55 @@ export interface DrefOperationalUpdateFields {
   modified_by: number;
   users: number[];
   dref?: string;
-
   dref_allocated_so_far?: number;
   budget_file: number;
-
   event_description: string;
   event_scope: string;
   anticipatory_actions: string;
-
-  cover_image: number;
-  photos: number[];
+  cover_image_file: FileWithCaption;
+  event_map_file: FileWithCaption;
+  photos_file: FileWithCaption[];
+  country: number;
+  district: number[];
+  country_details: Country;
+  is_assessment_report: boolean;
+  is_man_made_event: boolean;
+  is_there_major_coordination_mechanism: boolean;
+  assessment_report: number;
+  risk_security: RiskSecurityProps[];
+  risk_security_concern: string;
+  human_resource: string;
+  pmer: string;
+  communication: string;
+  logistic_capacity_of_ns: string;
+  is_surge_personnel_deployed: boolean;
+  surge_personnel_deployed: string;
+  has_forecasted_event_materialize: boolean;
+  specified_trigger_met: string;
+  disaster_type_details: {
+    id: number;
+    name: string;
+    summary: string;
+  };
+  disaster_category_display: 'Yellow' | 'Red' | 'Orange';
+  type_of_onset_display: string;
+  supporting_document_details: {
+    id: number;
+    file: string;
+  };
 }
 
-export interface DrefOperationalUpdateApiFields extends Omit<DrefOperationalUpdateFields, 'country_district' | 'planned_interventions' | 'national_society_actions' | 'needs_identified'> {
+export interface DrefApplicationValidateConditionalField {
+  total_operation_timeframe?: number;
+  number_of_people_targeted?: number;
+  country?: number;
+  district?: number[];
+  additional_allocation?: number;
+}
+
+export interface DrefOperationalUpdateApiFields extends Omit<DrefOperationalUpdateFields, 'district_details' | 'planned_interventions' | 'national_society_actions' | 'needs_identified' | 'cover_image_file' | 'event_map_file' | 'images_file' | 'photos_file'> {
   user: number;
-  country_district: (Omit<CountryDistrict, 'clientId'> & {
-    id: number
-    country_details: Country,
-    district_details: DistrictMini[],
-  })[];
+  district_details: DistrictMini[],
   planned_interventions: (Omit<Intervention, 'clientId' | 'indicators'> & {
     id: number,
     image_url: string,
@@ -204,23 +242,35 @@ export interface DrefOperationalUpdateApiFields extends Omit<DrefOperationalUpda
     id: number,
     image_url: string,
   })[];
-  images_details: {
-    id: number;
-    file: string;
-  }[];
   budget_file_details: {
     id: number;
     file: string;
   };
   budget_file_preview: string;
-  cover_image_details: {
+  file: {
     id: number;
     file: string;
   };
-  photos_details: {
+  assessment_report_details: {
     id: number;
     file: string;
-  }[];
+  };
+  disaster_type_details: {
+    id: number;
+    name: string;
+    summary: string;
+  };
+  disaster_category_display: 'Yellow' | 'Red' | 'Orange';
+  type_of_onset_display: string;
+  supporting_document_details: {
+    id: number;
+    file: string;
+  };
+  assessment_report_preview: string,
+  images_file: FileWithCaption[],
+  cover_image_file: FileWithCaption;
+  event_map_file: FileWithCaption;
+  photos_file: FileWithCaption[];
 }
 
 export const overviewFields: (keyof DrefOperationalUpdateFields)[] = [
@@ -228,20 +278,20 @@ export const overviewFields: (keyof DrefOperationalUpdateFields)[] = [
   'national_society',
   'disaster_type',
   'disaster_category',
-  'country_district',
   'type_of_onset',
   'number_of_people_affected',
   'number_of_people_targeted',
   'additional_allocation',
   'total_dref_allocation',
-  'cover_image',
+  'cover_image_file',
   'operational_update_number',
   'emergency_appeal_planned',
-  'new_operational_start_date',
-  'reporting_timeframe',
   'is_timeframe_extension_required',
-  'new_operational_end_date',
-  'total_operation_timeframe',
+  'country',
+  'district',
+  'users',
+  'is_assessment_report',
+  'is_man_made_event',
 ];
 export const eventFields: (keyof DrefOperationalUpdateFields)[] = [
   'changing_timeframe_operation',
@@ -254,7 +304,9 @@ export const eventFields: (keyof DrefOperationalUpdateFields)[] = [
   'has_change_since_request',
   'event_description',
   'event_scope',
-  'images'
+  'images_file',
+  'has_forecasted_event_materialize',
+  'specified_trigger_met',
 ];
 export const needsFields: (keyof DrefOperationalUpdateFields)[] = [
   'national_society_actions',
@@ -268,7 +320,9 @@ export const needsFields: (keyof DrefOperationalUpdateFields)[] = [
   'major_coordination_mechanism',
   'needs_identified',
   'identified_gaps',
-  'photos'
+  'photos_file',
+  'is_there_major_coordination_mechanism',
+  'assessment_report'
 ];
 export const operationFields: (keyof DrefOperationalUpdateFields)[] = [
   'people_assisted',
@@ -286,6 +340,14 @@ export const operationFields: (keyof DrefOperationalUpdateFields)[] = [
   'operation_objective',
   'response_strategy',
   'planned_interventions',
+  'risk_security',
+  'risk_security_concern',
+  'logistic_capacity_of_ns',
+  'pmer',
+  'communication',
+  'human_resource',
+  'is_surge_personnel_deployed',
+  'surge_personnel_deployed'
 ];
 export const submissionFields: (keyof DrefOperationalUpdateFields)[] = [
   'appeal_code',
@@ -310,4 +372,8 @@ export const submissionFields: (keyof DrefOperationalUpdateFields)[] = [
   'media_contact_email',
   'media_contact_phone_number',
   'media_contact_title',
+  'reporting_timeframe',
+  'new_operational_start_date',
+  'new_operational_end_date',
+  'total_operation_timeframe',
 ];

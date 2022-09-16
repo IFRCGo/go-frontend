@@ -1,14 +1,12 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import {
   PartialForm,
   Error,
   EntriesAsList,
-  useFormArray,
   getErrorObject,
   SetBaseValueArg,
 } from '@togglecorp/toggle-form';
 import {
-  randomString,
   listToMap,
   isNotDefined,
 } from '@togglecorp/fujs';
@@ -22,29 +20,35 @@ import SelectInput from '#components/SelectInput';
 import SearchSelectInput from '#components/SearchSelectInput';
 import LanguageContext from '#root/languageContext';
 import RadioInput from '#components/RadioInput';
-import DateInput from '#components/DateInput';
 import NumberInput from '#components/NumberInput';
-import DREFFileInput from '#components/DREFFileInput';
 import { rankedSearchOnList } from '#utils/common';
+import {
+  useRequest,
+  ListResponse,
+} from '#utils/restRequest';
+import { DistrictMini } from '#types/country';
+import { compareString } from '#utils/utils';
 
+import CopyFieldReportSection from './CopyFieldReportSection';
+import ImageWithCaptionInput from './ImageWithCaptionInput';
 import {
   optionLabelSelector,
   DrefFields,
   NumericValueOption,
   BooleanValueOption,
   booleanOptionKeySelector,
-  CountryDistrict,
   ONSET_IMMINENT,
-  emptyNumericOptionList,
   ONSET_SUDDEN,
+  DISASTER_FIRE,
+  DISASTER_FLOOD,
+  DISASTER_FLASH_FLOOD,
+  emptyNumericOptionList,
 } from '../common';
-import { CountryDistrictType } from '../useDrefFormOptions';
-import CountryDistrictInput from './CountryDistrictInput';
-import CopyFieldReportSection from './CopyFieldReportSection';
+
 import styles from './styles.module.scss';
-import TextArea from '#components/TextArea';
 
 type Value = PartialForm<DrefFields>;
+
 interface Props {
   disasterTypeOptions: NumericValueOption[];
   error: Error<Value> | undefined;
@@ -64,6 +68,12 @@ interface Props {
   userOptions: NumericValueOption[];
   onCreateAndShareButtonClick: () => void;
 }
+
+const disasterCategoryLink = "https://www.ifrc.org/sites/default/files/2021-07/IFRC%20Emergency%20Response%20Framework%20-%202017.pdf";
+const totalPopulationRiskImminentLink = "https://ifrcorg.sharepoint.com/sites/IFRCSharing/Shared%20Documents/Forms/AllItems.aspx?id=%2Fsites%2FIFRCSharing%2FShared%20Documents%2FDREF%2FHum%20Pop%20Definitions%20for%20DREF%20Form%5F21072022%2Epdf&parent=%2Fsites%2FIFRCSharing%2FShared%20Documents%2FDREF&p=true&ga=1";
+const totalPeopleAffectedSlowSuddenLink = "https://ifrcorg.sharepoint.com/sites/IFRCSharing/Shared%20Documents/Forms/AllItems.aspx?id=%2Fsites%2FIFRCSharing%2FShared%20Documents%2FDREF%2FHum%20Pop%20Definitions%20for%20DREF%20Form%5F21072022%2Epdf&parent=%2Fsites%2FIFRCSharing%2FShared%20Documents%2FDREF&p=true&ga=1";
+const peopleTargetedLink = "https://ifrcorg.sharepoint.com/sites/IFRCSharing/Shared%20Documents/Forms/AllItems.aspx?id=%2Fsites%2FIFRCSharing%2FShared%20Documents%2FDREF%2FHum%20Pop%20Definitions%20for%20DREF%20Form%5F21072022%2Epdf&parent=%2Fsites%2FIFRCSharing%2FShared%20Documents%2FDREF&p=true&ga=1";
+const peopleInNeedLink = "https://ifrcorg.sharepoint.com/sites/IFRCSharing/Shared%20Documents/Forms/AllItems.aspx?id=%2Fsites%2FIFRCSharing%2FShared%20Documents%2FDREF%2FHum%20Pop%20Definitions%20for%20DREF%20Form%5F21072022%2Epdf&parent=%2Fsites%2FIFRCSharing%2FShared%20Documents%2FDREF&p=true&ga=1";
 
 function DrefOverview(props: Props) {
   const { strings } = React.useContext(LanguageContext);
@@ -93,33 +103,16 @@ function DrefOverview(props: Props) {
     [formError]
   );
 
-  const {
-    setValue: onCountryDistrictChange,
-    removeValue: onCountryDistrictRemove,
-  } = useFormArray<'country_district', PartialForm<CountryDistrict>>(
-    'country_district',
+  const isImminentOnset = value?.type_of_onset === ONSET_IMMINENT;
+
+  React.useMemo(() => {
+    const isSuddenOnset = value?.type_of_onset === ONSET_SUDDEN ? false : value.emergency_appeal_planned;
+    onValueChange(isSuddenOnset, 'emergency_appeal_planned');
+  }, [
+    value.type_of_onset,
+    value.emergency_appeal_planned,
     onValueChange,
-  );
-
-  type CountryDistricts = typeof value.country_district;
-
-  const handleCountryDistrictAdd = React.useCallback(() => {
-    const clientId = randomString();
-    const newList: PartialForm<CountryDistrictType> = {
-      clientId,
-    };
-
-    onValueChange(
-      (oldValue: PartialForm<CountryDistricts>) => (
-        [...(oldValue ?? []), newList]
-      ),
-      'country_district' as const,
-    );
-  }, [onValueChange]);
-
-  const isImminentOnset = value.type_of_onset === ONSET_IMMINENT;
-  const isSuddenOnSet = value.type_of_onset === ONSET_SUDDEN ? false : value.emergency_appeal_planned;
-  onValueChange(isSuddenOnSet, 'emergency_appeal_planned');
+  ]);
 
   const handleUserSearch = React.useCallback((input: string | undefined, callback) => {
     if (!input) {
@@ -133,13 +126,70 @@ function DrefOverview(props: Props) {
     ));
   }, [userOptions]);
 
-  const userMap = React.useMemo(() => listToMap(userOptions, d => d.value, d => d.label), [userOptions]);
+  const userMap = React.useMemo(() => listToMap(
+    userOptions,
+    u => u.value,
+    u => u.label
+  ), [userOptions]);
+
   const initialOptions = React.useMemo(() => (
     value.users?.map((u) => ({
       label: userMap[u],
       value: u,
     }))
   ), [userMap, value.users]);
+
+  const handleNSChange = useCallback((ns) => {
+    onValueSet({
+      ...value,
+      national_society: ns,
+      country: ns,
+    });
+  }, [
+    value,
+    onValueSet,
+  ]);
+
+  const handleTitleChange = useCallback(() => {
+    const getCurrentCountryValue = value?.country;
+    const countryName = countryOptions.filter((cd) => cd.value === getCurrentCountryValue).map((c) => c.label);
+    const filteredDisasterTypeName = disasterTypeOptions.filter((dt) => dt.value === value.disaster_type).map((dt) => dt.label).toString();
+
+    const currentYear = new Date().getFullYear();
+    const title = `${countryName} ${filteredDisasterTypeName} ${currentYear}`;
+    onValueChange(title, 'title');
+  }, [
+    countryOptions,
+    disasterTypeOptions,
+    value.disaster_type,
+    value.country,
+    onValueChange,
+  ]);
+
+  const countryQuery = React.useMemo(() => ({
+    country: value.country,
+    limit: 500,
+  }), [value.country]);
+
+  const {
+    pending: fetchingDistricts,
+    response: districtsResponse,
+  } = useRequest<ListResponse<DistrictMini>>({
+    skip: !value.country,
+    url: 'api/v2/district/',
+    query: countryQuery,
+  });
+
+  const districtOptions = React.useMemo(() => (
+    districtsResponse?.results?.map(d => ({
+      value: d.id,
+      label: d.name,
+    })).sort(compareString) ?? emptyNumericOptionList
+  ), [districtsResponse]);
+
+  const showManMadeEventInput = value?.disaster_type === DISASTER_FIRE
+    || value?.disaster_type === DISASTER_FLASH_FLOOD
+    || value?.disaster_category === DISASTER_FLOOD;
 
   return (
     <>
@@ -178,25 +228,31 @@ function DrefOverview(props: Props) {
         heading={strings.drefFormEssentialInformation}
         className={styles.essentialInformation}
       >
-        <InputSection title={strings.drefFormTitle}>
-          <TextInput
-            name="title"
-            value={value.title}
-            onChange={onValueChange}
-            error={error?.title}
-            placeholder={strings.drefFormTitleDescription}
-          />
-        </InputSection>
         <InputSection
           title={strings.drefFormNationalSociety}
+          multiRow
+          oneColumn
         >
           <SelectInput
             error={error?.national_society}
             name={"national_society" as const}
-            onChange={onValueChange}
+            onChange={handleNSChange}
             options={nationalSocietyOptions}
             pending={fetchingNationalSociety}
             value={value.national_society}
+          />
+        </InputSection>
+        <InputSection
+          title={strings.drefFormForAssessment}
+        >
+          <RadioInput
+            name={"is_assessment_report" as const}
+            options={yesNoOptions}
+            keySelector={booleanOptionKeySelector}
+            labelSelector={optionLabelSelector}
+            value={value.is_assessment_report}
+            onChange={onValueChange}
+            error={error?.is_assessment_report}
           />
         </InputSection>
         <CopyFieldReportSection
@@ -204,13 +260,21 @@ function DrefOverview(props: Props) {
           onValueSet={onValueSet}
         />
         <InputSection
-          title={isImminentOnset ? strings.drefFormImminentDisasterDetails : strings.drefFormDisasterDetails}
+          title={
+            isImminentOnset
+              ? strings.drefFormImminentDisasterDetails
+              : strings.drefFormDisasterDetails
+          }
           multiRow
           twoColumn
         >
           <SelectInput
             error={error?.disaster_type}
-            label={isImminentOnset ? strings.drefFormImminentDisasterTypeLabel : strings.drefFormDisasterTypeLabel}
+            label={
+              isImminentOnset
+                ? strings.drefFormImminentDisasterTypeLabel
+                : strings.drefFormDisasterTypeLabel
+            }
             name={"disaster_type" as const}
             onChange={onValueChange}
             options={disasterTypeOptions}
@@ -225,16 +289,31 @@ function DrefOverview(props: Props) {
             options={onsetOptions}
             value={value.type_of_onset}
           />
+          {showManMadeEventInput &&
+            <RadioInput
+              label={strings.drefFormManMadeEvent}
+              name={"is_man_made_event" as const}
+              options={yesNoOptions}
+              keySelector={booleanOptionKeySelector}
+              labelSelector={optionLabelSelector}
+              value={value.is_man_made_event}
+              onChange={onValueChange}
+              error={error?.is_man_made_event}
+            />
+          }
+          {!showManMadeEventInput && <div />}
           <SelectInput
             error={error?.disaster_category}
             label={(
               <>
-                {strings.drefFormDisasterCategoryLabel}
+                {isImminentOnset
+                  ? strings.drefFormImminentDisasterCategoryLabel
+                  : strings.drefFormDisasterCategoryLabel}
                 <a
                   className={styles.disasterCategoryHelpLink}
                   target="_blank"
                   title="Click to view Emergency Response Framework"
-                  href="https://www.ifrc.org/sites/default/files/2021-07/IFRC%20Emergency%20Response%20Framework%20-%202017.pdf"
+                  href={disasterCategoryLink}
                 >
                   <IoHelpCircle />
                 </a>
@@ -247,52 +326,138 @@ function DrefOverview(props: Props) {
           />
         </InputSection>
         <InputSection
-          title={!isImminentOnset ? strings.drefFormAffectedCountryAndProvinceImminent : strings.drefFormRiskCountryLabel}
-          multiRow
-          oneColumn
+          title={
+            !isImminentOnset
+              ? strings.drefFormAffectedCountryAndProvinceImminent
+              : strings.drefFormRiskCountryLabel
+          }
+          twoColumn
         >
-          {value.country_district?.map((c, i) => (
-            <CountryDistrictInput
-              key={c.clientId}
-              index={i}
-              value={c}
-              onChange={onCountryDistrictChange}
-              onRemove={onCountryDistrictRemove}
-              error={getErrorObject(error?.country_district)}
-              countryOptions={countryOptions}
-              fetchingCountries={fetchingCountries}
-            />
-          ))}
-          <div className={styles.actions}>
-            <Button
-              name={undefined}
-              onClick={handleCountryDistrictAdd}
-              variant="secondary"
-            >
-              {strings.drefFormAddCountryLabel}
-            </Button>
-          </div>
+          <SelectInput
+            label={strings.drefFormAddCountry}
+            pending={fetchingCountries}
+            error={error?.country}
+            name={"country" as const}
+            onChange={onValueChange}
+            options={countryOptions}
+            value={value.country}
+
+          />
+          <SelectInput<"district", number>
+            label={strings.drefFormAddRegion}
+            pending={fetchingDistricts}
+            isMulti={true}
+            error={error?.district}
+            name="district"
+            onChange={onValueChange}
+            options={districtOptions}
+            value={value.district}
+          />
+        </InputSection>
+        <InputSection title={strings.drefFormTitle}>
+          <TextInput
+            name="title"
+            value={value.title}
+            onChange={onValueChange}
+            error={error?.title}
+          />
+
+          <Button
+            className={styles.generateTitleButton}
+            name={undefined}
+            variant="secondary"
+            onClick={handleTitleChange}
+          >
+            {strings.drefFormGenerateTitle}
+          </Button>
         </InputSection>
         <InputSection
-          title={!isImminentOnset ? strings.drefFormPeopleAffected : strings.drefFormRiskPeopleLabel}
-
+          multiRow
+          twoColumn
         >
           <NumberInput
+            label={isImminentOnset ?
+              <>
+                {strings.drefFormRiskPeopleLabel}
+                <a
+                  className={styles.peopleTargetedHelpLink}
+                  target="_blank"
+                  title="Click to view Emergency Response Framework"
+                  href={totalPopulationRiskImminentLink}
+                >
+                  <IoHelpCircle />
+                </a>
+              </>
+              :
+              <>
+                {strings.drefFormPeopleAffected}
+                <a
+                  className={styles.peopleTargetedHelpLink}
+                  target="_blank"
+                  title="Click to view Emergency Response Framework"
+                  href={totalPeopleAffectedSlowSuddenLink}
+                >
+                  <IoHelpCircle />
+                </a>
+              </>
+            }
             name="num_affected"
             value={value.num_affected}
             onChange={onValueChange}
             error={error?.num_affected}
+            hint={isImminentOnset
+              ? strings.drefFormPeopleAffectedDescriptionImminent
+              : strings.drefFormPeopleAffectedDescriptionSlowSudden
+            }
           />
-        </InputSection>
-        <InputSection
-          title={strings.drefFormPeopleTargeted}
-        >
           <NumberInput
+            label={(
+              <>
+                {
+                  isImminentOnset
+                    ? strings.drefFormEstimatedPeopleInNeed
+                    : strings.drefFormPeopleInNeed
+                }
+                <a
+                  className={styles.peopleTargetedHelpLink}
+                  target="_blank"
+                  title="Click to view Emergency Response Framework"
+                  href={peopleInNeedLink}
+                >
+                  <IoHelpCircle />
+                </a>
+              </>
+            )}
+            name="people_in_need"
+            value={value.people_in_need}
+            onChange={onValueChange}
+            error={error?.people_in_need}
+            hint={isImminentOnset
+              ? strings.drefFormPeopleInNeedDescriptionImminent
+              : strings.drefFormPeopleInNeedDescriptionSlowSudden
+            }
+          />
+          <NumberInput
+            label={(
+              <>
+                {strings.drefFormPeopleTargeted}
+                <a
+                  className={styles.peopleTargetedHelpLink}
+                  target="_blank"
+                  title="Click to view Emergency Response Framework"
+                  href={peopleTargetedLink}
+                >
+                  <IoHelpCircle />
+                </a>
+              </>
+            )}
             name="num_assisted"
             value={value.num_assisted}
             onChange={onValueChange}
             error={error?.num_assisted}
+            hint={strings.drefFormPeopleTargetedDescription}
           />
+          <div />
         </InputSection>
         <InputSection
           title={strings.drefFormRequestAmount}
@@ -319,148 +484,32 @@ function DrefOverview(props: Props) {
         </InputSection>
         <InputSection
           title={strings.drefFormUploadMap}
+          description={strings.drefFormUploadMapDescription}
+          contentSectionClassName={styles.imageInputContent}
         >
-          <DREFFileInput
-            accept="image/*"
-            error={error?.event_map}
-            fileIdToUrlMap={fileIdToUrlMap}
-            name="event_map"
+          <ImageWithCaptionInput
+            name={"event_map_file" as const}
+            value={value?.event_map_file}
             onChange={onValueChange}
+            error={error?.event_map_file}
+            fileIdToUrlMap={fileIdToUrlMap}
             setFileIdToUrlMap={setFileIdToUrlMap}
-            showStatus
-            value={value.event_map}
-          >
-            {strings.drefFormUploadAnImageLabel}
-          </DREFFileInput>
+            label={strings.drefFormUploadAnImageLabel}
+          />
         </InputSection>
         <InputSection
           title={strings.drefFormUploadCoverImage}
+          description={strings.drefFormUploadCoverImageDescription}
+          contentSectionClassName={styles.imageInputContent}
         >
-          <DREFFileInput
-            accept="image/*"
-            error={error?.cover_image}
+          <ImageWithCaptionInput
+            name={"cover_image_file" as const}
+            value={value?.cover_image_file}
+            onChange={onValueChange}
+            error={error?.cover_image_file}
             fileIdToUrlMap={fileIdToUrlMap}
-            name="cover_image"
-            onChange={onValueChange}
             setFileIdToUrlMap={setFileIdToUrlMap}
-            showStatus
-            value={value.cover_image}
-          >
-            {strings.drefFormUploadAnImageLabel}
-          </DREFFileInput>
-        </InputSection>
-      </Container>
-      <Container
-        heading={strings.drefFormTimeFrames}
-        className={styles.timeframes}
-      >
-        {!isImminentOnset ?
-          <InputSection
-            title={strings.drefFormEventDate}
-          >
-            <DateInput
-              name="event_date"
-              value={value.event_date}
-              onChange={onValueChange}
-              error={error?.event_date}
-            />
-          </InputSection>
-          :
-          <InputSection
-            title={strings.drefFormApproximateDateOfImpact}
-          >
-            <TextArea
-              name="event_text"
-              value={value.event_text}
-              onChange={onValueChange}
-              error={error?.event_text}
-            />
-          </InputSection>
-        }
-        <InputSection
-          title={strings.drefFormGoFieldReportDate}
-        >
-          <DateInput
-            name="go_field_report_date"
-            value={value.go_field_report_date}
-            onChange={onValueChange}
-            error={error?.go_field_report_date}
-          />
-        </InputSection>
-        <InputSection
-          title={!isImminentOnset ? strings.drefFormNsResponseStarted : strings.drefFormNSAnticipatoryAction}
-        >
-          <DateInput
-            name="ns_respond_date"
-            value={value.ns_respond_date}
-            onChange={onValueChange}
-            error={error?.ns_respond_date}
-          />
-        </InputSection>
-        <InputSection
-          title={strings.drefFormNsRequestDate}
-        >
-          <DateInput
-            name="ns_request_date"
-            value={value.ns_request_date}
-            onChange={onValueChange}
-            error={error?.ns_request_date}
-          />
-        </InputSection>
-        <InputSection
-          title={strings.drefFormDateSubmissionToGeneva}
-          description={strings.drefFormDateSubmissionToGenevaDescription}
-        >
-          <DateInput
-            name="submission_to_geneva"
-            value={value.submission_to_geneva}
-            onChange={onValueChange}
-            error={error?.submission_to_geneva}
-          />
-        </InputSection>
-        <InputSection
-          title={strings.drefFormDateOfApproval}
-          description={strings.drefFormDateOfApprovalDescription}
-        >
-          <DateInput
-            name="date_of_approval"
-            value={value.date_of_approval}
-            onChange={onValueChange}
-            error={error?.date_of_approval}
-          />
-        </InputSection>
-        <InputSection
-          title={strings.drefFormPublishingDate}
-          description={strings.drefFormPublishingDateDescription}
-        >
-          <DateInput
-            name="publishing_date"
-            value={value.publishing_date}
-            onChange={onValueChange}
-            error={error?.publishing_date}
-          />
-        </InputSection>
-        <InputSection
-          title={strings.drefFormOperationTimeframeSubmission}
-        >
-          <NumberInput
-            name="operation_timeframe"
-            placeholder={strings.drefFormOperationTimeframeSubmissionDescription}
-            value={value.operation_timeframe}
-            onChange={onValueChange}
-            error={error?.operation_timeframe}
-          />
-        </InputSection>
-        <InputSection
-          title={strings.drefFormSubmissionEndDate}
-          description={strings.drefFormEndDateSubmissionDescription}
-        >
-          <DateInput
-            name="end_date"
-            value={value.end_date}
-            onChange={onValueChange}
-            error={error?.end_date}
-            readOnly
+            label={strings.drefFormUploadAnImageLabel}
           />
         </InputSection>
       </Container>

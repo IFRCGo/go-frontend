@@ -22,6 +22,7 @@ function NumberInput<T extends string | undefined>(props: Props<T>) {
     actions,
     icons,
     error,
+    hint,
     label,
     disabled,
     readOnly,
@@ -61,6 +62,7 @@ function NumberInput<T extends string | undefined>(props: Props<T>) {
       actions={actions}
       icons={icons}
       error={error}
+      hint={hint}
       label={label}
       disabled={disabled}
       errorOnTooltip={errorOnTooltip}
