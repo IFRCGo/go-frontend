@@ -10,12 +10,14 @@ export function PdfTextOutput(props: {
   label?: string | null;
   value?: string | null;
   columns?: '1/4' | '2/4' | '3/4' | '4/4' | '1/2' | '1/3' | '2/3' | '3/3';
+  wrap?: boolean;
 }) {
   const {
     color = 'Text',
     label,
     value,
     columns = '1/4',
+    wrap,
   } = props;
 
   const styleMap = {
@@ -41,6 +43,7 @@ export function PdfTextOutput(props: {
         pdfStyles.textOutput,
         styleMap[columns],
       ]}
+      wrap={wrap}
     >
       <Text
         style={pdfStyles.textOutputLabel}

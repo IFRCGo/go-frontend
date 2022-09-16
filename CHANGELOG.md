@@ -1,10 +1,19 @@
+### Release 6.3.1 - DREF Application, DREF Operational Updates
+
+Date: 2022-09-16
+
+Minor changes:
+
+- Improve DREF export
+
+
 ### Release 6.3.0 - DREF Application, DREF Operational Updates
 
 Date: 2022-09-16
 
 Major changes:
 
-- Realse of DREF Application feature
+- Release of DREF Application feature
 - Release of DREF Operational Update feature
 
 
