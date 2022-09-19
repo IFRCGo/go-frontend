@@ -172,21 +172,19 @@ function Navbar(props) {
               </ul>
             </nav>
             <div className='nav-global-search col'>
-              <form className='gsearch'>
-                <div>
-                  <label className='form__label'>
-                    <Translate stringId="headerSearchLabel" />
-                  </label>
-                  <AsyncSelect
-                    placeholder={strings.headerSearchPlaceholder}
-                    onChange={handleSelect}
-                    filterOptions={noFilter}
-                    autoload={false}
-                    noOptionsMessage={getSelectInputNoOptionsMessage}
-                    cache={false}
-                    loadOptions={loadOptionsWithDebouncing} />
-                </div>
-              </form>
+              <div className='gsearch'>
+                <label className='form__label'>
+                  <Translate stringId="headerSearchLabel" />
+                </label>
+                <AsyncSelect
+                  placeholder={strings.headerSearchPlaceholder}
+                  onChange={handleSelect}
+                  filterOptions={noFilter}
+                  autoload={false}
+                  noOptionsMessage={getSelectInputNoOptionsMessage}
+                  cache={false}
+                  loadOptions={loadOptionsWithDebouncing} />
+              </div>
             </div>
           </div>
         </div>
