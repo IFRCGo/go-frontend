@@ -1,0 +1,67 @@
+@import '~styles/settings/variables';
+
+.mobile-navbar {
+  border-bottom: $base-border-width solid $base-border-color;
+  background-color: $white;
+
+  .go-logo {
+    height: 2rem;
+  }
+
+  .top-section {
+    display: flex;
+    justify-content: space-between;
+    padding: $spacing;
+    border-bottom: $base-border-width solid $primary-color;
+
+    .menu-icon {
+      font-size: 2rem;
+    }
+
+  }
+
+  .bottom-section {
+    padding: $spacing;
+  }
+
+  .menu {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: $white;
+    z-index: 1;
+
+    .menu-top-section {
+      padding: $spacing;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .menu-items {
+      display: flex;
+      flex-direction: column;
+
+      .menu-item {
+        padding: $spacing;
+
+        &.active {
+          color: $primary-color;
+        }
+
+        &:hover {
+          background-color: lighten($primary-color, 40%);
+        }
+      }
+
+      .region-menu-item {
+        .regions {
+          display: flex;
+          flex-direction: column;
+          padding-inline-start: $spacing;
+        }
+      }
+    }
+  }
+}

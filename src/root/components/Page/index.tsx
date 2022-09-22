@@ -6,7 +6,8 @@ import {
 } from '@togglecorp/fujs';
 
 import Navbar from '#components/navbar';
-import MobileNavbar from '#components/mobile-navbar';
+// import MobileNavbar from '#components/mobile-navbar';
+import MobileNavbar from '#components/MobileNavbar';
 import PageFooter from '#components/footer';
 import PageHeader from '#components/PageHeader';
 import GlobalLoading from '#components/global-loading';

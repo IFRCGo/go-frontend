@@ -50,10 +50,12 @@ function getUriForType (type, id) {
 class MobileNavbar extends React.PureComponent {
   constructor (props) {
     super(props);
+
     this.state = {
       search: '',
       showMenu: false
     };
+
     this.onSelect = this.onSelect.bind(this);
     this.toggleMenu = this.toggleMenu.bind(this);
   }

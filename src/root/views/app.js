@@ -3,7 +3,8 @@ import { ThroughProvider } from 'react-through';
 import c from 'classnames';
 
 import Navbar from '#components/navbar';
-import MobileNavbar from '#components/mobile-navbar';
+// import MobileNavbar from '#components/mobile-navbar';
+import MobileNavbar from '#components/MobileNavbar';
 import Footer from '#components/footer';
 import GlobalLoading from '#components/global-loading';
 // import GlobalHeaderBanner from '#components/global-header-banner';
