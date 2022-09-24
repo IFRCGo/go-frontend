@@ -626,7 +626,7 @@ const CatalogueOfSurgeServiceSubpageContent = [
         thumbnail: fileStorage + "shelter-sct_01.jpg",
         thumbnailWidth: 300,
         thumbnailHeight: 200,
-        caption: 'East Cameroon, May 2014 - With civil unrest continuing to cause an upheaval in people`s daily routines in the Central African Republic, neighbouring Cameroon has become a haven for tens of thousands of men, women and children seeking safety. Supported by IFRC through an emergency appeal, the Cameroon Red Cross Society has deployed a large number of volunteers who provide diversified and substantial assistance to families affected by the on-going crisis.'
+        caption: 'East Cameroon, May 2014 - With civil unrest continuing to cause an upheaval in people`s daily routines in the Central African Republic, neighbouring Cameroon has become a haven for tens of thousands of men, women and children seeking safety. Supported by IFRC through an emergency appeal, the Cameroon Red Cross Society has deployed a large number of volunteers who provide diversified and substantial assistance to families affected by the ongoing crisis.'
         },
         {
         src: fileStorage + "shelter-sct_02.jpg",
