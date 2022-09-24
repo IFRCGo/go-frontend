@@ -627,7 +627,7 @@ export function useEmergencyThreeWoptions(
 
   const statusOptions: StringValueOption[] = React.useMemo(() => ([
     { value: STATUS_PLANNED, label: 'Planned' },
-    { value: STATUS_ONGOING, label: 'On-Going' },
+    { value: STATUS_ONGOING, label: 'Ongoing' },
     { value: STATUS_COMPLETE, label: 'Complete' },
   ]), []);
 
