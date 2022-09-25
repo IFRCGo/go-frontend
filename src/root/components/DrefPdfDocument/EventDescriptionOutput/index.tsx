@@ -52,18 +52,20 @@ function EventDescriptionOutput(props: Props) {
         </>
       )}
       {isDefined(data.event_map_file) && (
-        <div style={pdfStyles.imagesSection}>
+        <View style={pdfStyles.imagesSection}>
           <View style={pdfStyles.section}>
             <Image
               style={pdfStyles.mapImage}
               src={data.event_map_file.file}
             />
-            <PdfTextOutput
-              label={data.event_map_file.caption}
-              columns='4/4'
-            />
+            {data.event_map_file.caption && (
+              <PdfTextOutput
+                label={data.event_map_file.caption}
+                columns='4/4'
+              />
+            )}
           </View>
-        </div>
+        </View>
       )}
       {isDefined(data.event_description) && (
         <View style={pdfStyles.subSection}>
@@ -79,23 +81,25 @@ function EventDescriptionOutput(props: Props) {
           </Text>
         </View>
       )}
-      <div style={pdfStyles.imagesSection}>
-        {data.images_file?.map((img) => (
-          <View
-            key={img?.id}
-            style={pdfStyles.subSection}
-          >
-            <Image
-              style={pdfStyles.coverImage}
-              src={img.file}
-            />
-            <PdfTextOutput
-              label={img.caption}
-              columns='4/4'
-            />
-          </View>
-        ))}
-      </div>
+      {(data.images_file?.length ?? 0) !== 0 && (
+        <View style={pdfStyles.imagesSection} wrap={false}>
+          {data.images_file?.map((img) => (
+            <View
+              key={img?.id}
+              style={pdfStyles.subSection}
+            >
+              <Image
+                style={pdfStyles.coverImage}
+                src={img.file}
+              />
+              <PdfTextOutput
+                label={img.caption}
+                columns='4/4'
+              />
+            </View>
+          ))}
+        </View>
+      )}
       {isImminentOnset
         && isDefined(data.anticipatory_actions)
         && (

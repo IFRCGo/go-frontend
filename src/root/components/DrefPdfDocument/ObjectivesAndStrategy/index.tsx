@@ -26,11 +26,17 @@ function ObjectiveAndStrategy(props: Props) {
         <View
           style={pdfStyles.section}
         >
-          <Text style={pdfStyles.sectionHeading}>
+          <Text
+            style={pdfStyles.sectionHeading}
+            minPresenceAhead={10}
+          >
             {strings.drefExportOperationalStrategy}
           </Text>
           <View style={pdfStyles.qna}>
-            <Text style={pdfStyles.strategySubSectionHeading}>
+            <Text
+              style={pdfStyles.strategySubSectionHeading}
+              minPresenceAhead={2}
+            >
               {strings.drefFormObjectiveOperation}
             </Text>
             <Text style={pdfStyles.answer}>
@@ -56,24 +62,24 @@ function ObjectiveAndStrategy(props: Props) {
         isDefined(data.selection_criteria)
       ) && (
           <View style={pdfStyles.section}>
-            <View wrap={false}>
-              <Text style={pdfStyles.sectionHeading}>
+            <View>
+              <Text style={pdfStyles.sectionHeading} minPresenceAhead={3}>
                 {strings.drefFormTargetingStrategy}
               </Text>
               {isDefined(data.people_assisted) && (
                 <View style={pdfStyles.qna}>
-                  <Text style={pdfStyles.textLabelSection}>
+                  <Text style={pdfStyles.textLabelSection} minPresenceAhead={2}>
                     {strings.drefFormPeopleAssistedThroughOperation}
                   </Text>
                   <Text style={pdfStyles.answer}>
-                    {isDefined(data.people_assisted)}
+                    {data.people_assisted}
                   </Text>
                 </View>
               )}
             </View>
             {isDefined(data.selection_criteria) && (
               <View style={pdfStyles.qna}>
-                <Text style={pdfStyles.textLabelSection}>
+                <Text style={pdfStyles.textLabelSection} minPresenceAhead={2}>
                   {strings.drefFormSelectionCriteria}
                 </Text>
                 <Text style={pdfStyles.answer}>
