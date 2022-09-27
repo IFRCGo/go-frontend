@@ -1,0 +1,19 @@
+{
+  "entry": ["./src/index.js"],
+  "ignorePatterns": ["**/node_modules/**", "build/**"],
+  "ignoreUnimported": ["**/*.d.ts"],
+  "extensions": [".ts", ".js", ".tsx", ".jsx"],
+  "aliases": {
+    "#actions/*": ["./src/root/actions/*"],
+    "#components/*": ["./src/root/components/*"],
+    "#config": ["./src/root/config"],
+    "#hooks/*": ["./src/root/hooks/*"],
+    "#types/*": ["./src/root/types/*"],
+    "#types": ["./src/root/types"],
+    "#lang": ["./src/root/lang"],
+    "#selectors/*": ["./src/root/selectors/*"],
+    "#utils/*": ["./src/root/utils/*"],
+    "#views/*": ["./src/root/views/*"],
+    "#root/*": ["./src/root/*"]
+  }
+}
