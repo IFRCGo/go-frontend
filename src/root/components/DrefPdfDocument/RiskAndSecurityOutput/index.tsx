@@ -34,9 +34,8 @@ function RiskAndSecurityOutput(props: Props) {
   return (
     <View
       style={pdfStyles.section}
-      wrap={false}
     >
-      <Text style={pdfStyles.sectionHeading}>
+      <Text style={pdfStyles.sectionHeading} minPresenceAhead={10}>
         {strings.drefFormRiskSecurity}
       </Text>
       <View style={pdfStyles.section}>

@@ -35,13 +35,12 @@ function PreviousOperationOutput(props: Props) {
   return (
     <View
       style={pdfStyles.poSection}
-      wrap={false}
     >
-      <Text style={pdfStyles.sectionHeading}>
+      <Text style={pdfStyles.sectionHeading} minPresenceAhead={10}>
         {strings.drefFormPreviousOperations}
       </Text>
       <View>
-        <View style={pdfStyles.row}>
+        <View style={pdfStyles.row} wrap={false}>
           <Text style={pdfStyles.cellTitle}>
             {strings.drefFormAffectSameArea}
           </Text>
@@ -49,7 +48,7 @@ function PreviousOperationOutput(props: Props) {
             {formatBoolean(data.affect_same_area)}
           </Text>
         </View>
-        <View style={pdfStyles.row}>
+        <View style={pdfStyles.row} wrap={false}>
           <Text style={pdfStyles.cellTitle}>
             {strings.drefFormAffectedthePopulationTitle}
           </Text>
@@ -57,7 +56,7 @@ function PreviousOperationOutput(props: Props) {
             {formatBoolean(data.affect_same_population)}
           </Text>
         </View>
-        <View style={pdfStyles.row}>
+        <View style={pdfStyles.row} wrap={false}>
           <View style={pdfStyles.cellTitle}>
             <Text>{strings.drefFormNsRespond}</Text>
           </View>
@@ -65,7 +64,7 @@ function PreviousOperationOutput(props: Props) {
             <Text>{formatBoolean(data.ns_respond)}</Text>
           </View>
         </View>
-        <View style={pdfStyles.row}>
+        <View style={pdfStyles.row} wrap={false}>
           <View style={pdfStyles.cellTitle}>
             <Text>{strings.drefFormNsRequestFund}</Text>
           </View>
@@ -73,7 +72,7 @@ function PreviousOperationOutput(props: Props) {
             <Text>{formatBoolean(data.ns_request_fund)}</Text>
           </View>
         </View>
-        <View style={pdfStyles.row}>
+        <View style={pdfStyles.row} minPresenceAhead={4}>
           <View style={pdfStyles.cellTitle}>
             <Text>{strings.drefFormNsFundingDetail}</Text>
           </View>
