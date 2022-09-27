@@ -1,3 +1,10 @@
+### Release 6.3.2 - Hotfix for DREF export improvements
+
+Date: 2022-09-27
+
+Frontend:
+- Fix overlapping of texts in DREF export
+
 ### Release 6.3.1 - DREF Application, DREF Operational Updates
 
 Date: 2022-09-16
