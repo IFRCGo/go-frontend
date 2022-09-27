@@ -8,8 +8,6 @@ import {
   IoClose,
   IoAdd,
   IoList,
-  // IoPushOutline,
-  IoCloudUploadSharp,
 } from 'react-icons/io5';
 import {
   MdEdit,
@@ -52,8 +50,6 @@ import { compareLabel } from '#utils/common';
 import useAlert from '#hooks/useAlert';
 import { DrefOperationalUpdateResponse } from '#types';
 import OperationalUpdateExport from '#components/OperationalUpdateExport';
-import InputSection from '#components/InputSection';
-import FileInput from '#components/FileInput';
 
 import styles from './styles.module.scss';
 
@@ -87,9 +83,6 @@ interface DrefApplicationResponse {
 }
 
 const ITEM_PER_PAGE = 6;
-const SLOW_SUDDEN = "slow";
-const IMMINENT = "imminent";
-const ASSESSMENT = "assessment";
 
 const drefKeySelector = (d: DrefApplicationResponse) => d.id;
 const operationalUpdateKeySelector = (d: OperationalUpdateDetails) => d.id;
@@ -323,119 +316,6 @@ function DrefApplicationList(props: Props) {
       );
     }
   });
-
-  const {
-    pending: drefImportSlowSuddenPending,
-    trigger: postDrefDocumentImportSlowSudden
-  } = useLazyRequest<DrefImportFields, File | undefined>({
-    formData: true,
-    url: () => 'api/v2/dref-file-slow-sudden/',
-    body: (ctx) => ({ file: ctx }),
-    method: 'POST',
-    onSuccess: (response) => {
-      if (isDefined(response.id)) {
-        history.push(`/dref-application/${response.dref}/edit/`);
-      }
-    },
-    onFailure: ({
-      value: { messageForNotification },
-      debugMessage,
-    }) => {
-      alert.show(
-        <p>
-          {strings.drefLoadPdfFailureMessage}
-          &nbsp;
-          <strong>
-            {messageForNotification}
-          </strong>
-        </p>,
-        {
-          variant: 'danger',
-          debugMessage,
-        }
-      );
-    }
-  });
-  const {
-    pending: drefImportImminentPending,
-    trigger: postDrefDocumentImportImminent
-  } = useLazyRequest<DrefImportFields, File | undefined>({
-    formData: true,
-    url: () => 'api/v2/dref-file-imminent/',
-    body: (ctx) => ({ file: ctx }),
-    method: 'POST',
-    onSuccess: (response) => {
-      if (isDefined(response.id)) {
-        history.push(`/dref-application/${response.dref}/edit/`);
-      }
-    },
-    onFailure: ({
-      value: { messageForNotification },
-      debugMessage,
-    }) => {
-      alert.show(
-        <p>
-          {strings.drefLoadPdfFailureMessage}
-          &nbsp;
-          <strong>
-            {messageForNotification}
-          </strong>
-        </p>,
-        {
-          variant: 'danger',
-          debugMessage,
-        }
-      );
-    }
-  });
-  const {
-    pending: drefImportAssessmentPending,
-    trigger: postDrefDocumentImportAssessment
-  } = useLazyRequest<DrefImportFields, File | undefined>({
-    formData: true,
-    url: () => 'api/v2/dref-file-assessment/',
-    body: (ctx) => ({ file: ctx }),
-    method: 'POST',
-    onSuccess: (response) => {
-      if (isDefined(response.id)) {
-        history.push(`/dref-application/${response.dref}/edit/`);
-      }
-    },
-    onFailure: ({
-      value: { messageForNotification },
-      debugMessage,
-    }) => {
-      alert.show(
-        <p>
-          {strings.drefLoadPdfFailureMessage}
-          &nbsp;
-          <strong>
-            {messageForNotification}
-          </strong>
-        </p>,
-        {
-          variant: 'danger',
-          debugMessage,
-        }
-      );
-    }
-  });
-
-  const handleDocumentImport = React.useCallback((file: File | undefined, name: string) => {
-    if (isDefined(name) && name === SLOW_SUDDEN) {
-      postDrefDocumentImportSlowSudden(file);
-    } else if (isDefined(name) && name === IMMINENT) {
-      postDrefDocumentImportImminent(file);
-    } else if (isDefined(name) && name === ASSESSMENT) {
-      postDrefDocumentImportAssessment(file);
-    } else {
-      return;
-    }
-  }, [
-    postDrefDocumentImportSlowSudden,
-    postDrefDocumentImportImminent,
-    postDrefDocumentImportAssessment,
-  ]);
 
   const handleDrefPublishConfirm = React.useCallback((drefId: number) => {
     postDrefPublishRequest(drefId);
@@ -695,10 +575,7 @@ function DrefApplicationList(props: Props) {
   const pending = publishedDrefPending
     || inProgressDrefPending
     || newOperationalUpdatePending
-    || newFinalReportPending
-    || drefImportSlowSuddenPending
-    || drefImportImminentPending
-    || drefImportAssessmentPending;
+    || newFinalReportPending;
 
   return (
     <Container
@@ -725,46 +602,6 @@ function DrefApplicationList(props: Props) {
       )}
     >
       {(drefPublishPending || newFinalReportPending || newOperationalUpdatePending) && <GlobalLoading />}
-      <Container
-        heading={strings.drefDocumentImportTitle}
-        sub
-      >
-        <InputSection fullWidthColumn>
-          <FileInput
-            type='file'
-            accept='.docx'
-            name={SLOW_SUDDEN}
-            value={undefined}
-            disabled={pending}
-            onChange={handleDocumentImport}
-          >
-            <IoCloudUploadSharp /> &nbsp;
-            {strings.drefDocumentImportSlowSuddenLabel}
-          </FileInput>
-          <FileInput
-            type='file'
-            accept='.docx'
-            name={IMMINENT}
-            value={undefined}
-            disabled={pending}
-            onChange={handleDocumentImport}
-          >
-            <IoCloudUploadSharp /> &nbsp;
-            {strings.drefDocumentImportImminentLabel}
-          </FileInput>
-          <FileInput
-            type='file'
-            accept='.docx'
-            name={ASSESSMENT}
-            value={undefined}
-            disabled={pending}
-            onChange={handleDocumentImport}
-          >
-            <IoCloudUploadSharp /> &nbsp;
-            {strings.drefDocumentImportAssessmentLabel}
-          </FileInput>
-        </InputSection>
-      </Container>
       <Container
         heading={strings.drefTableInProgressHeading}
         sub
