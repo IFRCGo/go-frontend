@@ -33,6 +33,7 @@ import Pager from '#components/Pager';
 import EmptyMessage from '#components/EmptyMessage';
 import DrefExportButton from '#components/DrefExportButton';
 import DropdownMenuItem from '#components/DropdownMenuItem';
+import DrefImportButton from './DrefImportButton';
 import {
   createStringColumn,
   createNumberColumn,
@@ -705,15 +706,22 @@ function DrefApplicationList(props: Props) {
       contentClassName={styles.content}
       descriptionClassName={styles.filters}
       description={(
-        <SelectInput
-          name={undefined}
-          placeholder="Select Country"
-          options={countryOptions}
-          value={country}
-          onChange={setCountry}
-          isClearable
-          disabled={pending}
-        />
+        <>
+          <SelectInput
+            name={undefined}
+            className={styles.countryFilter}
+            placeholder="Select Country"
+            options={countryOptions}
+            value={country}
+            onChange={setCountry}
+            isClearable
+            disabled={pending}
+          />
+          <DrefImportButton
+            history={history}
+            className={styles.importButton}
+          />
+        </>
       )}
     >
       {(drefPublishPending || newFinalReportPending || newOperationalUpdatePending) && <GlobalLoading />}
