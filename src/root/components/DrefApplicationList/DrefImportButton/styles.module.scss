@@ -1,0 +1,45 @@
+@import '~styles/settings/_variables.scss';
+
+.dref-import-button {
+}
+
+.import-modal {
+  width: 100%;
+  max-width: 36rem;
+  position: relative;
+
+  .content {
+    display: flex;
+    flex-direction: column;
+    padding: $spacing*2;
+    gap: $spacing*4;
+
+    .input-section {
+      display: flex;
+      flex-direction: column;
+      gap: $spacing;
+
+      .inputs {
+        display: flex;
+        flex-wrap: wrap;
+        gap: $spacing;
+      }
+    }
+
+    .template-section {
+      display: flex;
+      flex-direction: column;
+      gap: $spacing;
+
+      .templates {
+        display: flex;
+        flex-wrap: wrap;
+        gap: $spacing;
+      }
+    }
+  }
+
+  .loading {
+    margin: 0;
+  }
+}

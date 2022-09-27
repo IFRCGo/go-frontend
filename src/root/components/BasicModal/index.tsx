@@ -18,6 +18,7 @@ export interface Props {
   footerContent?: React.ReactNode;
   children?: React.ReactNode;
   hideCloseButton?: boolean;
+  bodyClassName?: string;
 }
 
 function BasicModal(props: Props) {
@@ -31,6 +32,7 @@ function BasicModal(props: Props) {
     footerContent,
     children,
     hideCloseButton,
+    bodyClassName,
   } = props;
 
   const shouldHideHeader = hideCloseButton && !heading && !headerActions;
@@ -61,7 +63,7 @@ function BasicModal(props: Props) {
             )}
           />
         )}
-        <div className={styles.body}>
+        <div className={_cs(styles.body, bodyClassName)}>
           {children}
         </div>
         {(footerContent || footerActions) && (

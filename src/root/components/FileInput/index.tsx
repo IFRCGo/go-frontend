@@ -3,7 +3,7 @@ import { _cs } from '@togglecorp/fujs';
 
 import InputContainer, { Props as InputContainerProps } from '#components/InputContainer';
 import RawInput, { Props as RawInputProps } from '#components/RawInput';
-import { useButtonFeatures } from '#components/Button';
+import { useButtonFeatures, ButtonVariant } from '#components/Button';
 import styles from './styles.module.scss';
 
 export const isValidFile = (fileName: string, mimeType: string, acceptString?: string) => {
@@ -34,6 +34,7 @@ export type Props<T extends string> = InheritedProps<T> & {
 
   overrideStatus?: boolean;
   status?: string;
+  variant?: ButtonVariant,
 } & ({
   multiple: true;
   value: File[] | undefined | null;
@@ -65,6 +66,7 @@ function FileInput<T extends string>(props: Props<T>) {
     labelClassName,
     children,
     showStatus,
+    variant,
     ...fileInputProps
   } = props;
 
@@ -104,9 +106,11 @@ function FileInput<T extends string>(props: Props<T>) {
     className: buttonLabelClassName,
     children: buttonLabelChildren,
   } = useButtonFeatures({
-    variant: 'secondary',
+    variant: variant ?? 'secondary',
     className: labelClassName,
     disabled,
+    icons,
+    actions,
     children: (
       <>
         {children}
@@ -156,19 +160,15 @@ function FileInput<T extends string>(props: Props<T>) {
 
   return (
     <InputContainer
-      actions={actions}
       className={_cs(className, styles.fileInput)}
       disabled={disabled}
       error={error}
       icons={(
-        <>
-          {icons}
-          <label
-            className={buttonLabelClassName}
-          >
-            {buttonLabelChildren}
-          </label>
-        </>
+        <label
+          className={buttonLabelClassName}
+        >
+          {buttonLabelChildren}
+        </label>
       )}
       label={label}
       readOnly={readOnly}

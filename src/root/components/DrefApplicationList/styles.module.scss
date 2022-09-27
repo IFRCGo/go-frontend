@@ -6,10 +6,18 @@
   .filters {
     display: flex;
     padding: $spacing 0;
+    align-items: center;
+    justify-content: space-between;
     margin-bottom: $spacing*2;
+    gap: $spacing;
 
-    >* {
-      flex-basis: calc(100% / 2);
+    .country-filter {
+      flex-grow: 1;
+      max-width: 30rem;
+    }
+
+    .import-button {
+      flex-shrink: 0;
     }
   }
 
