@@ -29,6 +29,7 @@ import NonFieldError from '#components/NonFieldError';
 import TextOutput from '#components/text-output';
 import LanguageContext from '#root/languageContext';
 import RichTextArea from '#components/RichTextArea';
+import Switch from '#components/Switch';
 
 import useAlert from '#hooks/useAlert';
 import {
