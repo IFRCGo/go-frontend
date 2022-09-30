@@ -241,9 +241,10 @@ export default class OperationalTimeline extends React.Component {
           />
         </div>
         <div className="margin-2-t">
-          <p>{strings.operationalToolboxFooterText}</p>
-          <p><a href="mailto:antoine.belair@ifrc.go">antoine.belair@ifrc.org</a></p>
-          <p><a href="mailto:betisa.egea@ifrc.go">betisa.egea@ifrc.org</a></p>
+          <p>{strings.operationalToolboxFooterText1}
+          <a target="_blank" href="https://ifrcorg.sharepoint.com/:x:/s/IFRCSharing/EZrYT-ysYfFFn9skPZxClN8B2sQPuY-GVvi3ddwdc5ZPHw">{strings.operationalToolboxFooterText2}</a>.
+          {strings.operationalToolboxFooterText3}</p>
+          <p><a href="mailto:antoine.belair@ifrc.go">antoine.belair@ifrc.org</a> {strings.operationalToolboxFooterTextList5Part5} <a href="mailto:betisa.egea@ifrc.go">betisa.egea@ifrc.org</a>.</p>
         </div>
 
         <div className="margin-2-t">
