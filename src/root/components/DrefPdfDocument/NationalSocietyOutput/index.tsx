@@ -22,14 +22,12 @@ function NationalSociety(props: NationalSocietyProps) {
   } = props;
 
   return (
-    <View>
-      <View style={pdfStyles.row}>
-        <View style={pdfStyles.niHeaderCell}>
-          <Text>{data.title_display}</Text>
-        </View>
-        <View style={pdfStyles.niContentCell}>
-          <Text>{data.description}</Text>
-        </View>
+    <View style={pdfStyles.row}>
+      <View style={pdfStyles.niHeaderCell}>
+        <Text>{data.title_display}</Text>
+      </View>
+      <View style={pdfStyles.niContentCell}>
+        <Text>{data.description}</Text>
       </View>
     </View>
   );
@@ -46,10 +44,11 @@ function NationalSocietyOutput(props: BaseProps) {
   }
 
   return (
-    <View
-      style={pdfStyles.section}
-    >
-      <Text style={pdfStyles.sectionHeading}>
+    <View style={pdfStyles.section}>
+      <Text
+        style={pdfStyles.sectionHeading}
+        minPresenceAhead={10}
+      >
         {strings.drefFormNationalSocietiesActions}
       </Text>
       {data?.national_society_actions.map((nsa) => (

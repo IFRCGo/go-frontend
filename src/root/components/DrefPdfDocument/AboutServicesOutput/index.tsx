@@ -36,7 +36,10 @@ function AboutServicesOutput(props: Props) {
       break
       style={pdfStyles.section}
     >
-      <Text style={pdfStyles.sectionHeading}>
+      <Text
+        style={pdfStyles.sectionHeading}
+        minPresenceAhead={10}
+      >
         {strings.drefFormSupportServices}
       </Text>
       {isDefined(data.human_resource) && (
