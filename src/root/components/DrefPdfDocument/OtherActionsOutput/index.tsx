@@ -30,11 +30,11 @@ function OtherActionsOutput(props: Props) {
   }
 
   return (
-    <View
-      style={pdfStyles.section}
-      wrap={false}
-    >
-      <Text style={pdfStyles.sectionHeading}>
+    <View style={pdfStyles.section}>
+      <Text
+        style={pdfStyles.sectionHeading}
+        minPresenceAhead={10}
+      >
         {strings.drefFormNationalOtherActors}
       </Text>
       <View>

@@ -25,6 +25,7 @@ function ObjectiveAndStrategy(props: Props) {
       {isDefined(data.operation_objective) && (
         <View
           style={pdfStyles.section}
+          minPresenceAhead={1}
         >
           <Text
             style={pdfStyles.sectionHeading}
@@ -35,7 +36,7 @@ function ObjectiveAndStrategy(props: Props) {
           <View style={pdfStyles.qna}>
             <Text
               style={pdfStyles.strategySubSectionHeading}
-              minPresenceAhead={2}
+              minPresenceAhead={5}
             >
               {strings.drefFormObjectiveOperation}
             </Text>
@@ -47,7 +48,9 @@ function ObjectiveAndStrategy(props: Props) {
       )}
       {isDefined(data.response_strategy) && (
         <View style={pdfStyles.qna}>
-          <Text style={pdfStyles.strategySubSectionHeading}
+          <Text
+            style={pdfStyles.strategySubSectionHeading}
+            minPresenceAhead={5}
           >
             {strings.drefFormResponseRationale}
           </Text>
@@ -62,24 +65,31 @@ function ObjectiveAndStrategy(props: Props) {
         isDefined(data.selection_criteria)
       ) && (
           <View style={pdfStyles.section}>
-            <View>
-              <Text style={pdfStyles.sectionHeading} minPresenceAhead={3}>
-                {strings.drefFormTargetingStrategy}
-              </Text>
-              {isDefined(data.people_assisted) && (
-                <View style={pdfStyles.qna}>
-                  <Text style={pdfStyles.textLabelSection} minPresenceAhead={2}>
-                    {strings.drefFormPeopleAssistedThroughOperation}
-                  </Text>
-                  <Text style={pdfStyles.answer}>
-                    {data.people_assisted}
-                  </Text>
-                </View>
-              )}
-            </View>
+            <Text
+              style={pdfStyles.sectionHeading}
+              minPresenceAhead={3}
+            >
+              {strings.drefFormTargetingStrategy}
+            </Text>
+            {isDefined(data.people_assisted) && (
+              <View style={pdfStyles.qna}>
+                <Text
+                  style={pdfStyles.textLabelSection}
+                  minPresenceAhead={2}
+                >
+                  {strings.drefFormPeopleAssistedThroughOperation}
+                </Text>
+                <Text style={pdfStyles.answer}>
+                  {data.people_assisted}
+                </Text>
+              </View>
+            )}
             {isDefined(data.selection_criteria) && (
               <View style={pdfStyles.qna}>
-                <Text style={pdfStyles.textLabelSection} minPresenceAhead={2}>
+                <Text
+                  style={pdfStyles.textLabelSection}
+                  minPresenceAhead={2}
+                >
                   {strings.drefFormSelectionCriteria}
                 </Text>
                 <Text style={pdfStyles.answer}>
