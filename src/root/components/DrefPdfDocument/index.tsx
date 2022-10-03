@@ -93,7 +93,6 @@ function DrefPdfDocument(props: Props) {
           affectedAreas={affectedAreas}
           isImminentOnset={isImminentOnset}
         />
-
         <EventDescriptionOutput
           data={dref}
           strings={strings}
