@@ -31,7 +31,7 @@ function MovementPartnerOutput(props: Props) {
     <View style={pdfStyles.section}>
       <Text
         style={pdfStyles.sectionHeading}
-        minPresenceAhead={10}
+        minPresenceAhead={20}
       >
         {strings.drefFormMovementPartners}
       </Text>

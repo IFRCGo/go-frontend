@@ -59,6 +59,7 @@ function ContactInformationOutput(props: Props) {
       <View
         style={pdfStyles.contactSection}
         wrap={false}
+        break
       >
         <Text style={pdfStyles.sectionHeading}>
           {strings.drefExportContactInformation}

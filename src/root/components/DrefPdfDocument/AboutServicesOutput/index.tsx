@@ -32,10 +32,7 @@ function AboutServicesOutput(props: Props) {
   }
 
   return (
-    <View
-      break
-      style={pdfStyles.section}
-    >
+    <View style={pdfStyles.section}>
       <Text
         style={pdfStyles.sectionHeading}
         minPresenceAhead={10}
@@ -43,8 +40,11 @@ function AboutServicesOutput(props: Props) {
         {strings.drefFormSupportServices}
       </Text>
       {isDefined(data.human_resource) && (
-        <View style={pdfStyles.qna} minPresenceAhead={3}>
-          <Text style={pdfStyles.textLabelSection}>
+        <View style={pdfStyles.qna}>
+          <Text
+            style={pdfStyles.textLabelSection}
+            minPresenceAhead={10}
+          >
             {strings.drefFormHumanResourceDescription}
           </Text>
           <Text style={pdfStyles.answer}>
@@ -53,8 +53,11 @@ function AboutServicesOutput(props: Props) {
         </View>
       )}
       {isDefined(data.surge_personnel_deployed) && (
-        <View style={pdfStyles.qna} minPresenceAhead={3}>
-          <Text style={pdfStyles.textLabelSection}>
+        <View style={pdfStyles.qna}>
+          <Text
+            style={pdfStyles.textLabelSection}
+            minPresenceAhead={10}
+          >
             {strings.drefFormSurgePersonnelDeployed}
             &nbsp;
             {strings.drefFormSurgePersonnelDeployedDescription}
@@ -67,8 +70,11 @@ function AboutServicesOutput(props: Props) {
       {!isAssessmentReport && (
         <>
           {isDefined(data.logistic_capacity_of_ns) && (
-            <View style={pdfStyles.qna} minPresenceAhead={3}>
-              <Text style={pdfStyles.textLabelSection}>
+            <View style={pdfStyles.qna}>
+              <Text
+                style={pdfStyles.textLabelSection}
+                minPresenceAhead={10}
+              >
                 {strings.drefFormLogisticCapacityOfNs}
               </Text>
               <Text style={pdfStyles.answer}>
@@ -77,8 +83,11 @@ function AboutServicesOutput(props: Props) {
             </View>
           )}
           {isDefined(data.pmer) && (
-            <View style={pdfStyles.qna} minPresenceAhead={3}>
-              <Text style={pdfStyles.textLabelSection}>
+            <View style={pdfStyles.qna}>
+              <Text
+                style={pdfStyles.textLabelSection}
+                minPresenceAhead={10}
+              >
                 {strings.drefFormPmer}
               </Text>
               <Text style={pdfStyles.answer}>
@@ -87,11 +96,16 @@ function AboutServicesOutput(props: Props) {
             </View>
           )}
           {isDefined(data.communication) && (
-            <View style={pdfStyles.qna} minPresenceAhead={3}>
-              <Text style={pdfStyles.textLabelSection}>
+            <View style={pdfStyles.qna}>
+              <Text
+                style={pdfStyles.textLabelSection}
+                minPresenceAhead={10}
+              >
                 {strings.drefFormCommunication}
               </Text>
-              <Text style={pdfStyles.answer}>
+              <Text
+                style={pdfStyles.answer}
+              >
                 {data.communication}
               </Text>
             </View>

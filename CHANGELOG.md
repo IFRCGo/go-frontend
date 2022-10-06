@@ -1,3 +1,10 @@
+### Release 6.3.4 - Hotfix for page being unresponsive during DREF export
+
+Date: 2022-10-06
+
+Frontend:
+- Fix the page being unresponsive while exporting the DREF
+
 ### Release 6.3.3 - Hotfix for DREF export overlapping
 
 Date: 2022-10-03

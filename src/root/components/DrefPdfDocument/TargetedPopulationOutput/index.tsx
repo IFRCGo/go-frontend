@@ -45,7 +45,10 @@ function TargetedPopulationOutput(props: Props) {
     <View
       style={pdfStyles.tpSection}
     >
-      <Text style={pdfStyles.sectionHeading} minPresenceAhead={10}>
+      <Text
+        style={pdfStyles.sectionHeading}
+        minPresenceAhead={20}
+      >
         {strings.drefFormAssistedPopulation}
       </Text>
       <View style={pdfStyles.section}>

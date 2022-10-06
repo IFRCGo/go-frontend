@@ -25,18 +25,17 @@ function ObjectiveAndStrategy(props: Props) {
       {isDefined(data.operation_objective) && (
         <View
           style={pdfStyles.section}
-          minPresenceAhead={1}
         >
           <Text
             style={pdfStyles.sectionHeading}
-            minPresenceAhead={10}
+            minPresenceAhead={20}
           >
             {strings.drefExportOperationalStrategy}
           </Text>
           <View style={pdfStyles.qna}>
             <Text
               style={pdfStyles.strategySubSectionHeading}
-              minPresenceAhead={5}
+              minPresenceAhead={10}
             >
               {strings.drefFormObjectiveOperation}
             </Text>
@@ -50,7 +49,7 @@ function ObjectiveAndStrategy(props: Props) {
         <View style={pdfStyles.qna}>
           <Text
             style={pdfStyles.strategySubSectionHeading}
-            minPresenceAhead={5}
+            minPresenceAhead={10}
           >
             {strings.drefFormResponseRationale}
           </Text>
@@ -67,7 +66,7 @@ function ObjectiveAndStrategy(props: Props) {
           <View style={pdfStyles.section}>
             <Text
               style={pdfStyles.sectionHeading}
-              minPresenceAhead={3}
+              minPresenceAhead={10}
             >
               {strings.drefFormTargetingStrategy}
             </Text>
@@ -75,7 +74,7 @@ function ObjectiveAndStrategy(props: Props) {
               <View style={pdfStyles.qna}>
                 <Text
                   style={pdfStyles.textLabelSection}
-                  minPresenceAhead={2}
+                  minPresenceAhead={10}
                 >
                   {strings.drefFormPeopleAssistedThroughOperation}
                 </Text>
@@ -88,7 +87,7 @@ function ObjectiveAndStrategy(props: Props) {
               <View style={pdfStyles.qna}>
                 <Text
                   style={pdfStyles.textLabelSection}
-                  minPresenceAhead={2}
+                  minPresenceAhead={10}
                 >
                   {strings.drefFormSelectionCriteria}
                 </Text>
