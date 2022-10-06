@@ -24,10 +24,14 @@ function NationalSociety(props: NationalSocietyProps) {
   return (
     <View style={pdfStyles.row}>
       <View style={pdfStyles.niHeaderCell}>
-        <Text>{data.title_display}</Text>
+        <Text>
+          {data.title_display}
+        </Text>
       </View>
       <View style={pdfStyles.niContentCell}>
-        <Text>{data.description}</Text>
+        <Text>
+          {data.description}
+        </Text>
       </View>
     </View>
   );
@@ -47,7 +51,7 @@ function NationalSocietyOutput(props: BaseProps) {
     <View style={pdfStyles.section}>
       <Text
         style={pdfStyles.sectionHeading}
-        minPresenceAhead={10}
+        minPresenceAhead={20}
       >
         {strings.drefFormNationalSocietiesActions}
       </Text>

@@ -33,13 +33,10 @@ function PreviousOperationOutput(props: Props) {
   }
 
   return (
-    <View
-      style={pdfStyles.poSection}
-      minPresenceAhead={1}
-    >
+    <View style={pdfStyles.poSection}>
       <Text
         style={pdfStyles.sectionHeading}
-        minPresenceAhead={10}
+        minPresenceAhead={20}
       >
         {strings.drefFormPreviousOperations}
       </Text>
@@ -78,7 +75,7 @@ function PreviousOperationOutput(props: Props) {
           <Text>{formatBoolean(data.ns_request_fund)}</Text>
         </View>
       </View>
-      <View style={pdfStyles.row} minPresenceAhead={4}>
+      <View style={pdfStyles.row} minPresenceAhead={10}>
         <View style={pdfStyles.cellTitle}>
           <Text>{strings.drefFormNsFundingDetail}</Text>
         </View>
@@ -87,56 +84,40 @@ function PreviousOperationOutput(props: Props) {
         </View>
       </View>
       {data?.dref_recurrent_text && (
-        <>
-          <View style={pdfStyles.row}>
-            <View style={[
-              pdfStyles.cellTitle,
-              pdfStyles.fullWidth
-            ]}>
-              <Text
-                style={pdfStyles.fontWeightBold}
-                minPresenceAhead={3}
-              >
-                {strings.drefFormRecurrentText}
-              </Text>
-            </View>
+        <View style={pdfStyles.row}>
+          <View style={[
+            pdfStyles.cellTitle,
+            pdfStyles.fullWidth
+          ]}>
+            <Text
+              style={pdfStyles.fontWeightBold}
+              minPresenceAhead={10}
+            >
+              {strings.drefFormRecurrentText}
+            </Text>
+            <Text>
+              {data?.dref_recurrent_text}
+            </Text>
           </View>
-          <View style={pdfStyles.row}>
-            <View style={[
-              pdfStyles.cellTitle,
-              pdfStyles.fullWidth
-            ]}>
-              <Text>{data?.dref_recurrent_text}</Text>
-            </View>
-          </View>
-        </>
+        </View>
       )}
       {data?.lessons_learned && (
-        <>
-          <View style={pdfStyles.row}>
-            <View style={[
-              pdfStyles.cellTitle,
-              pdfStyles.fullWidth
-            ]}>
-              <Text
-                style={pdfStyles.fontWeightBold}
-                minPresenceAhead={3}
-              >
-                {strings.drefFormLessonsLearnedDescription}
-              </Text>
-            </View>
+        <View style={pdfStyles.row}>
+          <View style={[
+            pdfStyles.cellTitle,
+            pdfStyles.fullWidth,
+          ]}>
+            <Text
+              style={pdfStyles.fontWeightBold}
+              minPresenceAhead={10}
+            >
+              {strings.drefFormLessonsLearnedDescription}
+            </Text>
+            <Text>
+              {data?.lessons_learned}
+            </Text>
           </View>
-          <View style={pdfStyles.row}>
-            <View style={[
-              pdfStyles.cellTitle,
-              pdfStyles.fullWidth
-            ]}>
-              <Text>
-                {data?.lessons_learned}
-              </Text>
-            </View>
-          </View>
-        </>
+        </View>
       )}
     </View>
   );
