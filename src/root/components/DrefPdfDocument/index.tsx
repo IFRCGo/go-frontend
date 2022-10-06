@@ -25,8 +25,7 @@ import OtherActionsOutput from './OtherActionsOutput';
 import NeedIdentifiedOutput from './NeedIdentifiedOutput';
 import ObjectiveAndStrategy from './ObjectivesAndStrategy';
 import PlannedInterventionOutput from './PlannedInterventionOutput';
-import AboutServicesOutput from './AboutServicesOutput';
-import ContactInformationOutput from './ContactInformationOutput';
+import AboutServicesOutput from './AboutServicesOutput'; import ContactInformationOutput from './ContactInformationOutput';
 import RiskAndSecurityOutput from './RiskAndSecurityOutput';
 import HeadingOutput from './HeadingOutput';
 import BudgetFileOutput from './BudgetFileOutput';
@@ -86,7 +85,6 @@ function DrefPdfDocument(props: Props) {
           documentTitle={documentTitle}
           strings={strings}
         />
-
         <EssentialInformationOutput
           data={dref}
           strings={strings}
@@ -99,14 +97,12 @@ function DrefPdfDocument(props: Props) {
           isImminentOnset={isImminentOnset}
           isAssessmentReport={isAssessmentReport}
         />
-
         {!isAssessmentReport &&
           <PreviousOperationOutput
             data={dref}
             strings={strings}
           />
         }
-
         <NationalSocietyOutput
           data={dref}
           strings={strings}
@@ -162,16 +158,10 @@ function DrefPdfDocument(props: Props) {
           strings={strings}
           data={dref}
         />
-      </PDFPage>
-      <PDFPage
-        style={pdfStyles.portraitPage}
-        size="A4"
-      >
         <ContactInformationOutput
           data={dref}
           strings={strings}
         />
-
         <PageNumberPdf />
       </PDFPage>
     </Document>
