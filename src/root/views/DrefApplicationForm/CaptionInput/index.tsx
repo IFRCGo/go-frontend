@@ -7,9 +7,7 @@ import {
   getErrorObject,
 } from '@togglecorp/toggle-form';
 
-import {
-  SetValueArg,
-} from '#types';
+import { SetValueArg } from '#types';
 import TextInput from '#components/TextInput';
 import { Preview } from '#components/GoFileInput';
 import { FileWithCaption } from '#views/DrefApplicationForm/common';
@@ -50,9 +48,7 @@ function CaptionInput(props: Props) {
     , [value, fileIdToUrlMap]);
 
   return (
-    <div
-      className={_cs(styles.imageInput, className)}
-    >
+    <div className={_cs(styles.imageInput, className)}>
       <Preview
         id={index}
         file={fileUrl}

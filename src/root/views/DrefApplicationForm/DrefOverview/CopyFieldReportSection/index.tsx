@@ -22,10 +22,10 @@ import {
   ListResponse,
 } from '#utils/restRequest';
 import { FieldReportAPIResponseFields } from '#views/FieldReportForm/common';
+import { NumericValueOption } from '#types';
 import {
   DrefFields,
   emptyNumericOptionList,
-  NumericValueOption,
 } from '#views/DrefApplicationForm/common';
 
 import styles from './styles.module.scss';

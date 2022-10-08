@@ -11,12 +11,9 @@ import { IoTrash } from 'react-icons/io5';
 import TextArea from '#components/TextArea';
 import Button from '#components/Button';
 import InputSection from '#components/InputSection';
-// import LanguageContext from '#root/languageContext';
 
-import {
-  Need,
-  StringValueOption,
-} from '../../common';
+import { StringValueOption } from '#types';
+import { Need } from '../../common';
 
 import styles from './styles.module.scss';
 
