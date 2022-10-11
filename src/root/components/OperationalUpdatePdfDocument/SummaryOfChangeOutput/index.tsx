@@ -37,11 +37,11 @@ function SummaryOfChangeOutput(props: Props) {
   }
 
   return (
-    <View
-      style={pdfStyles.poSection}
-      wrap={false}
-    >
-      <Text style={pdfStyles.sectionHeading}>
+    <View style={pdfStyles.poSection}>
+      <Text
+        style={pdfStyles.sectionHeading}
+        minPresenceAhead={20}
+      >
         {strings.drefOperationalUpdateSummaryChangeHeading}
       </Text>
       <View>

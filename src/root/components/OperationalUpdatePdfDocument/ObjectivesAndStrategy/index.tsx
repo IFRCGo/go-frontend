@@ -26,11 +26,17 @@ function ObjectiveAndStrategy(props: Props) {
         <View
           style={pdfStyles.section}
         >
-          <Text style={pdfStyles.sectionHeading}>
+          <Text
+            style={pdfStyles.sectionHeading}
+            minPresenceAhead={20}
+          >
             {strings.drefExportOperationalStrategy}
           </Text>
           <View style={pdfStyles.qna}>
-            <Text style={pdfStyles.strategySubSectionHeading}>
+            <Text
+              style={pdfStyles.strategySubSectionHeading}
+              minPresenceAhead={20}
+            >
               {strings.drefFormObjectiveOperation}
             </Text>
             <Text style={pdfStyles.answer}>
@@ -41,7 +47,9 @@ function ObjectiveAndStrategy(props: Props) {
       )}
       {isDefined(data.response_strategy) && (
         <View style={pdfStyles.qna}>
-          <Text style={pdfStyles.strategySubSectionHeading}
+          <Text
+            style={pdfStyles.strategySubSectionHeading}
+            minPresenceAhead={20}
           >
             {strings.drefFormResponseRationale}
           </Text>
@@ -55,13 +63,19 @@ function ObjectiveAndStrategy(props: Props) {
         isDefined(data.selection_criteria)
       ) && (
           <View style={pdfStyles.section}>
-            <View wrap={false}>
-              <Text style={pdfStyles.sectionHeading}>
+            <View>
+              <Text
+                style={pdfStyles.sectionHeading}
+                minPresenceAhead={20}
+              >
                 {strings.drefFormTargetingStrategy}
               </Text>
               {data?.people_assisted && (
                 <View style={pdfStyles.qna}>
-                  <Text style={pdfStyles.textLabelSection}>
+                  <Text
+                    style={pdfStyles.textLabelSection}
+                    minPresenceAhead={20}
+                  >
                     {strings.drefFormPeopleAssistedThroughOperation}
                   </Text>
                   <Text style={pdfStyles.answer}>
@@ -72,7 +86,10 @@ function ObjectiveAndStrategy(props: Props) {
             </View>
             {isDefined(data.selection_criteria) && (
               <View style={pdfStyles.qna}>
-                <Text style={pdfStyles.textLabelSection}>
+                <Text
+                  style={pdfStyles.textLabelSection}
+                  minPresenceAhead={20}
+                >
                   {strings.drefFormSelectionCriteria}
                 </Text>
                 <Text style={pdfStyles.answer}>

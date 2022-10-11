@@ -20,7 +20,13 @@ function ContactSection(props: Props) {
     contacts,
   } = props;
 
-  const outputString = contacts.filter(isTruthyString).join(', ');
+  const contactsSafe = contacts.filter(isTruthyString);
+
+  if (contactsSafe.length === 0) {
+    return null;
+  }
+
+  const outputString = contactsSafe.join(', ');
 
   return (
     <View

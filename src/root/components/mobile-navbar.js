@@ -23,7 +23,6 @@ function FlashUpdateLink(props) {
   if (!ifrcUser) {
     return null;
   }
-
   return (
     <li>
       <Link
