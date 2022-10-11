@@ -86,7 +86,6 @@ function OperationalUpdatePdfDocument(props: Props) {
           documentTitle={documentTitle}
           strings={strings}
         />
-
         <EssentialInformationOutput
           data={operationalUpdateResponse}
           strings={strings}
@@ -169,7 +168,6 @@ function OperationalUpdatePdfDocument(props: Props) {
           data={operationalUpdateResponse}
           strings={strings}
         />
-
         <PageNumberPdf />
       </PDFPage>
     </Document>

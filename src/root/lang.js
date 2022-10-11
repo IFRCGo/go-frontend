@@ -7,7 +7,7 @@ export default {
   headerMenuResources: 'Resources',
   headerCreateAReportLabel: 'Create a Report',
   headerDropdownNewFieldReport: 'New Field Report',
-  headerDropdownNewDrefApplication: 'New Dref Application',
+  headerDropdownNewDrefApplication: 'New DREF Application',
   headerDropdownNew3WActivity: 'New 3W Activity',
   headerDropdownNewFlashUpdate: 'New Flash Update',
   headerDropdownCovid19IndicatorTracking: 'COVID-19 Indicator Tracking',

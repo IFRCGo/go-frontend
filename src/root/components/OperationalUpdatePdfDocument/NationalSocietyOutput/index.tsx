@@ -48,9 +48,11 @@ function NationalSocietyOutput(props: BaseProps) {
   return (
     <View
       style={pdfStyles.section}
-      wrap={false}
     >
-      <Text style={pdfStyles.sectionHeading}>
+      <Text
+        style={pdfStyles.sectionHeading}
+        minPresenceAhead={20}
+      >
         {strings.drefFormNationalSocietiesActions}
       </Text>
       {data?.national_society_actions.map((nsa) => (
