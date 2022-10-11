@@ -37,15 +37,20 @@ function AboutServicesOutput(props: Props) {
   return (
     <View
       style={pdfStyles.section}
-      wrap={false}
       break
     >
-      <Text style={pdfStyles.sectionHeading}>
+      <Text
+        style={pdfStyles.sectionHeading}
+        minPresenceAhead={20}
+      >
         {strings.drefFormSupportServices}
       </Text>
       {isDefined(data.human_resource) && (
         <View style={pdfStyles.qna}>
-          <Text style={pdfStyles.textLabelSection}>
+          <Text
+            style={pdfStyles.textLabelSection}
+            minPresenceAhead={20}
+          >
             {strings.drefFormHumanResourceDescription}
           </Text>
           <Text style={pdfStyles.answer}>
@@ -55,8 +60,12 @@ function AboutServicesOutput(props: Props) {
       )}
       {isDefined(data.surge_personnel_deployed) && (
         <View style={pdfStyles.qna}>
-          <Text style={pdfStyles.textLabelSection}>
+          <Text
+            style={pdfStyles.textLabelSection}
+            minPresenceAhead={20}
+          >
             {strings.drefFormSurgePersonnelDeployed}
+            &nbsp;
             {strings.drefFormSurgePersonnelDeployedDescription}
           </Text>
           <Text style={pdfStyles.answer}>
@@ -68,7 +77,10 @@ function AboutServicesOutput(props: Props) {
         <>
           {isDefined(data.logistic_capacity_of_ns) && (
             <View style={pdfStyles.qna}>
-              <Text style={pdfStyles.textLabelSection}>
+              <Text
+                style={pdfStyles.textLabelSection}
+                minPresenceAhead={20}
+              >
                 {strings.drefFormLogisticCapacityOfNs}
               </Text>
               <Text style={pdfStyles.answer}>
@@ -78,7 +90,10 @@ function AboutServicesOutput(props: Props) {
           )}
           {isDefined(data.pmer) && (
             <View style={pdfStyles.qna}>
-              <Text style={pdfStyles.textLabelSection}>
+              <Text
+                style={pdfStyles.textLabelSection}
+                minPresenceAhead={20}
+              >
                 {strings.drefFormPmer}
               </Text>
               <Text style={pdfStyles.answer}>
@@ -88,7 +103,10 @@ function AboutServicesOutput(props: Props) {
           )}
           {isDefined(data.communication) && (
             <View style={pdfStyles.qna}>
-              <Text style={pdfStyles.textLabelSection}>
+              <Text
+                style={pdfStyles.textLabelSection}
+                minPresenceAhead={20}
+              >
                 {strings.drefFormCommunication}
               </Text>
               <Text style={pdfStyles.answer}>

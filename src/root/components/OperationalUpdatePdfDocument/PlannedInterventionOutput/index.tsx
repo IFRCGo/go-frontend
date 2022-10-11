@@ -29,9 +29,7 @@ function PlannedIntervention(props: PlannedInterventionProps) {
   } = props;
 
   return (
-    <View
-      style={pdfStyles.piOutput}
-    >
+    <View style={pdfStyles.piOutput}>
       <View style={pdfStyles.piRow}>
         <View style={pdfStyles.piSmallColumn}>
           <View style={pdfStyles.piIconCell}>
@@ -124,14 +122,18 @@ function PlannedInterventionOutput(props: BaseProps) {
   if (data.planned_interventions.length < 1) {
     return null;
   }
+
   return (
     <View
       style={pdfStyles.piSection}
       break
     >
-      <Text style={pdfStyles.sectionHeading}>
+      <Text
+        style={pdfStyles.sectionHeading}
+        minPresenceAhead={20}
+      >
+        {strings.drefFormPlannedIntervention}
       </Text>
-      {strings.drefFormPlannedIntervention}
       {data?.planned_interventions.map((pi) => (
         <PlannedIntervention
           strings={strings}

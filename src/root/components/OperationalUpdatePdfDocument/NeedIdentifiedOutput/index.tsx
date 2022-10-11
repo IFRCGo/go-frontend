@@ -71,7 +71,10 @@ function NeedIdentifiedOutput(props: BaseProps) {
       style={pdfStyles.niSection}
       break
     >
-      <Text style={pdfStyles.sectionHeading}>
+      <Text
+        style={pdfStyles.sectionHeading}
+        minPresenceAhead={20}
+      >
         {isImminentOnset ?
           strings.drefFormImminentNeedsIdentified
           : strings.drefFormNeedsIdentified}

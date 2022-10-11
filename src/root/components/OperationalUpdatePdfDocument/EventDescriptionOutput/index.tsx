@@ -42,7 +42,10 @@ function EventDescriptionOutput(props: Props) {
 
   return (
     <View break>
-      <Text style={pdfStyles.sectionHeading}>
+      <Text
+        style={pdfStyles.sectionHeading}
+        minPresenceAhead={20}
+      >
         {strings.drefFormDescriptionEvent}
       </Text>
       {data?.event_map_file && (
@@ -61,7 +64,10 @@ function EventDescriptionOutput(props: Props) {
       )}
       {isDefined(data.has_change_since_request) && (
         <View style={pdfStyles.subSection}>
-          <Text style={pdfStyles.subSectionHeading}>
+          <Text
+            style={pdfStyles.subSectionHeading}
+            minPresenceAhead={20}
+          >
             {strings.drefOperationalUpdateDescriptionOfEventLabel}
           </Text>
           <Text style={pdfStyles.text}>
@@ -71,7 +77,10 @@ function EventDescriptionOutput(props: Props) {
       )}
       {isDefined(data.event_description) && (
         <View style={pdfStyles.subSection}>
-          <Text style={pdfStyles.subSectionHeading}>
+          <Text
+            style={pdfStyles.subSectionHeading}
+            minPresenceAhead={20}
+          >
             {isImminentOnset
               ? strings.drefExportWhatExpectedHappen
               : strings.drefFormImminentDisaster}
@@ -92,6 +101,7 @@ function EventDescriptionOutput(props: Props) {
             <Image
               style={pdfStyles.coverImage}
               src={img.file}
+              minPresenceAhead={20}
             />
             <PdfTextOutput
               label={img.caption}
@@ -104,7 +114,10 @@ function EventDescriptionOutput(props: Props) {
         && isDefined(data.anticipatory_actions)
         && (
           <View style={pdfStyles.subSection}>
-            <Text style={pdfStyles.subSectionHeading}>
+            <Text
+              style={pdfStyles.subSectionHeading}
+              minPresenceAhead={20}
+            >
               {strings.drefExportTargetCommunities}
             </Text>
             <Text style={pdfStyles.text}>
@@ -116,7 +129,10 @@ function EventDescriptionOutput(props: Props) {
         && isDefined(data.event_scope)
         && (
           <View style={pdfStyles.subSection}>
-            <Text style={pdfStyles.subSectionHeading}>
+            <Text
+              style={pdfStyles.subSectionHeading}
+              minPresenceAhead={20}
+            >
               {strings.drefExportScopeAndScaleEvent}
             </Text>
             <Text style={pdfStyles.text}>
