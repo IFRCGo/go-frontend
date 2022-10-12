@@ -3589,7 +3589,7 @@ export default {
   drefOperationalUpdatePageHeading: 'DREF Operational Update Application',
   drefOperationalUpdateOverviewLabel: 'Operation Overview',
   drefOperationalUpdateEventDetailsLabel: 'Event Details',
-  drefOperationalUpdateNeedsLabel: 'Needs',
+  drefOperationalUpdateNeedsLabel: 'Actions/Needs',
   drefOperationalUpdateOperationLabel: 'Operation',
   drefOperationalUpdateSubmissionLabel: 'Submission',
   // Overview
@@ -3601,6 +3601,8 @@ export default {
   //Timeframes
   drefOperationalUpdateTimeFrameDateOfEvent: 'Operation start Date',
   drefOperationalUpdateTimeFrameReportingTimeFrame: 'Reporting timeframe',
+  drefOperationalUpdateTimeFrameReportingTimeFrameFrom: 'From',
+  drefOperationalUpdateTimeFrameReportingTimeFrameTo: 'To',
   drefOperationalUpdateTimeFrameExtensionRequested: 'Is timeframe extension requested?',
   drefOperationalUpdateTimeFrameExtensionRequestedIfYes: 'New operational end date',
   drefOperationalUpdateTimeFrameTotalOperatingTimeFrame: 'Total operating timeframe',
@@ -3617,6 +3619,7 @@ export default {
   drefOperationalUpdateEventMaterialize: 'Has the forecasted event materialize?',
   drefOperationalUpdateEventMaterializeExplain: 'Please explain how is the operation is transitioning from Anticipatory to Response',
   drefOperationalUpdateEventMaterializeExplainDescription: 'Explain on whether the specified triggers have been met, and if the event has materialized either as forecasted or if there were any differences. Also please provide an update on the readiness, prepositioning and/or early actions implemented so far',
+  drefOperationalUpdateEventOccur: 'Has the event occurred?',
   // Description of event
   drefOperationalUpdateDescriptionOfEventHeading: 'Description of the event',
   drefOperationalUpdateDescriptionOfEventLabel: 'Has anything changed in the context since the request',
@@ -3688,7 +3691,7 @@ export default {
   finalReportImmientDisaster: 'For imminent disaster, explain what is expected to happen, where, when and how is above average ?',
   finalReportScopeAndScaleDescription: 'Describe the extent this hazard will produce negative impacts on lives, livelihoods, well-being and infrastructure. Explain which people are most likely to experience the impacts of this hazard? Where do they live, and why are they vulnerable? Please explain which groups (e.g elderly, children, people with disabilities, IDPs, Refugees, etc.) are most likely to be affected? Provide historic information on how communities have been affected by the magnitude of this hazard in the past?',
 
-  // tab: needs 
+  // tab: needs
   finalReportMovementPartners: 'Movement Partners Actions',
   finalReportIfrc: 'IFRC',
   finalReportIcrc: 'ICRC',

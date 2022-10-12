@@ -11,7 +11,6 @@ import {
 import sanitizeHtml from 'sanitize-html';
 
 import { Strings } from '#types';
-import { formatBoolean } from '#utils/common';
 import { PdfTextOutput } from '#components/PdfTextOutput';
 import { DrefOperationalUpdateApiFields } from '#views/DrefOperationalUpdateForm/common';
 import pdfStyles from '#utils/pdf/pdfStyles';
@@ -61,19 +60,6 @@ function EventDescriptionOutput(props: Props) {
             />
           </View>
         </div>
-      )}
-      {isDefined(data.has_change_since_request) && (
-        <View style={pdfStyles.subSection}>
-          <Text
-            style={pdfStyles.subSectionHeading}
-            minPresenceAhead={20}
-          >
-            {strings.drefOperationalUpdateDescriptionOfEventLabel}
-          </Text>
-          <Text style={pdfStyles.text}>
-            {formatBoolean(data.has_change_since_request)}
-          </Text>
-        </View>
       )}
       {isDefined(data.event_description) && (
         <View style={pdfStyles.subSection}>

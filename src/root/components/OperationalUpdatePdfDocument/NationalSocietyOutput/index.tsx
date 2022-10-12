@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+  Image,
   Text,
   View,
 } from '@react-pdf/renderer';
@@ -7,6 +8,7 @@ import {
 import { DrefOperationalUpdateApiFields } from '#views/DrefOperationalUpdateForm/common';
 import pdfStyles from '#utils/pdf/pdfStyles';
 import { Strings } from '#types';
+import { PdfTextOutput } from '#components/PdfTextOutput';
 
 interface BaseProps {
   data: DrefOperationalUpdateApiFields;
@@ -55,6 +57,24 @@ function NationalSocietyOutput(props: BaseProps) {
       >
         {strings.drefFormNationalSocietiesActions}
       </Text>
+      <div style={pdfStyles.imagesSection}>
+        {data.photos_file?.map((img) => (
+          <View
+            key={img?.id}
+            style={pdfStyles.subSection}
+          >
+            <Image
+              style={pdfStyles.coverImage}
+              src={img.file}
+              minPresenceAhead={20}
+            />
+            <PdfTextOutput
+              label={img.caption}
+              columns='4/4'
+            />
+          </View>
+        ))}
+      </div>
       {data?.national_society_actions.map((nsa) => (
         <NationalSociety
           key={nsa.id}

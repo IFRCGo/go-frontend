@@ -48,13 +48,14 @@ function Submission(props: Props) {
             value={value.new_operational_start_date}
             onChange={onValueChange}
             error={error?.new_operational_start_date}
+            readOnly
           />
-          <DateInput
-            label={strings.drefOperationalUpdateTimeFrameReportingTimeFrame}
-            name="reporting_timeframe"
-            value={value.reporting_timeframe}
+          <NumberInput
+            label={strings.drefOperationalUpdateTimeFrameTotalOperatingTimeFrame}
+            name="total_operation_timeframe"
+            value={value.total_operation_timeframe}
             onChange={onValueChange}
-            error={error?.reporting_timeframe}
+            error={error?.total_operation_timeframe}
           />
           <DateInput
             label={strings.drefOperationalUpdateTimeFrameExtensionRequestedIfYes}
@@ -64,13 +65,22 @@ function Submission(props: Props) {
             error={error?.new_operational_end_date}
           />
         </InputSection>
-        <InputSection fullWidthColumn>
-          <NumberInput
-            label={strings.drefOperationalUpdateTimeFrameTotalOperatingTimeFrame}
-            name="total_operation_timeframe"
-            value={value.total_operation_timeframe}
+        <InputSection
+          title={strings.drefOperationalUpdateTimeFrameReportingTimeFrame}
+        >
+          <DateInput
+            label={strings.drefOperationalUpdateTimeFrameReportingTimeFrameFrom}
+            name="reporting_timeframe_from"
+            value={value.reporting_timeframe_from}
             onChange={onValueChange}
-            error={error?.total_operation_timeframe}
+            error={error?.reporting_timeframe_from}
+          />
+          <DateInput
+            label={strings.drefOperationalUpdateTimeFrameReportingTimeFrameTo}
+            name="reporting_timeframe_to"
+            value={value.reporting_timeframe_to}
+            onChange={onValueChange}
+            error={error?.reporting_timeframe_to}
           />
         </InputSection>
       </Container>
@@ -87,6 +97,7 @@ function Submission(props: Props) {
             value={value.appeal_code}
             onChange={onValueChange}
             error={error?.appeal_code}
+            readOnly
           />
         </InputSection>
         <InputSection

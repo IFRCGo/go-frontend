@@ -22,6 +22,8 @@ import SelectInput from '#components/SelectInput';
 import RadioInput from '#components/RadioInput';
 import NsActionInput from '#views/DrefApplicationForm/ActionsFields/NSActionInput';
 import DREFFileInput from '#components/DREFFileInput';
+import DateInput from '#components/DateInput';
+import CaptionInput from '#views/DrefApplicationForm/CaptionInput';
 
 import {
   booleanOptionKeySelector,
@@ -35,7 +37,6 @@ import {
 } from '../common';
 
 import styles from './styles.module.scss';
-import CaptionInput from '#views/DrefApplicationForm/CaptionInput';
 
 type Value = PartialForm<DrefOperationalUpdateFields>;
 interface Props {
@@ -143,6 +144,8 @@ function Needs(props: Props) {
 
   const filteredNsActionOptions = nsActionsMap ? nsActionOptions.filter(n => !nsActionsMap[n.value]) : [];
   const isThereCoordinationMechanism = value.is_there_major_coordination_mechanism;
+  const didNationalSocietyStarted = value.did_national_society;
+
 
   const imagesValue = React.useMemo(() => (
     value?.photos_file?.map(d => d.id).filter(d => !!d) as number[] | undefined
@@ -175,9 +178,44 @@ function Needs(props: Props) {
     <>
       <Container
         heading={strings.drefFormNationalSocietiesActions}
+        description={strings.drefFormNationalSocietiesActionsDescription}
         className={styles.nationalSocietyActions}
         visibleOverflow
       >
+        <InputSection
+          title={
+            !isImminentOnset
+              ? strings.drefFormDidNationalSocietyStartedSlow
+              : strings.drefFormDidNationalSocietyStartedImminent
+          }
+        >
+          <RadioInput
+            name={'did_national_society' as const}
+            options={yesNoOptions}
+            keySelector={booleanOptionKeySelector}
+            labelSelector={optionLabelSelector}
+            onChange={onValueChange}
+            value={value?.did_national_society}
+            error={error?.did_national_society}
+          />
+        </InputSection>
+        {didNationalSocietyStarted &&
+          <InputSection
+            title={
+              isImminentOnset
+                ? strings.drefFormNSAnticipatoryAction
+                : strings.drefFormNsResponseStarted
+            }
+          >
+            <DateInput
+              name="ns_respond_date"
+              value={value.ns_respond_date}
+              onChange={onValueChange}
+              error={error?.ns_respond_date}
+            />
+          </InputSection>
+        }
+
         <InputSection
           contentSectionClassName={styles.imageInputContent}
         >
