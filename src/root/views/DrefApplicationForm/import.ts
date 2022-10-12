@@ -158,37 +158,73 @@ export function transformImport(
     d => d.value,
   );
 
+  const numFieldsToType: Record<number, string> = {
+    220: 'slow-sudden',
+    223: 'imminent',
+    198: 'assessment',
+  };
+
+  const importType = numFieldsToType[importData.length];
+
   const {
     affect_same_area,
     affect_same_population,
     amount_requested,
+    anticipatory_actions,
     appeal_code,
     boys,
     communication,
+    // country,
     disability_people_per,
+    // disaster_category,
+    // disaster_type,
+    // district_details,
     dref_recurrent_text,
     end_date,
     event_description,
     event_scope,
+    event_text,
     girls,
     glide_code,
     government_requested_assistance,
     icrc,
     ifrc,
+    ifrc_appeal_manager_email,
+    ifrc_appeal_manager_name,
+    ifrc_appeal_manager_phone_number,
+    ifrc_appeal_manager_title,
+    ifrc_emergency_email,
+    ifrc_emergency_name,
+    ifrc_emergency_phone_number,
+    ifrc_emergency_title,
+    ifrc_project_manager_email,
+    ifrc_project_manager_name,
+    ifrc_project_manager_phone_number,
+    ifrc_project_manager_title,
     lessons_learned,
     logistic_capacity_of_ns,
     major_coordination_mechanism,
+    media_contact_email,
+    media_contact_name,
+    media_contact_phone_number,
+    media_contact_title,
     men,
     national_authorities,
+    national_society_contact_email,
+    national_society_contact_name,
+    national_society_contact_phone_number,
+    national_society_contact_title,
     ns_request_fund,
     ns_request_text,
     ns_respond,
     num_affected,
     operation_objective,
     operation_timeframe,
+    // partner_national_society,
     people_assisted,
     people_per_local,
     people_per_urban,
+    people_targeted_with_early_actions,
     pmer,
     response_strategy,
     risk_security_concern,
@@ -197,33 +233,10 @@ export function transformImport(
     surge_personnel_deployed,
     title,
     total_targeted_population,
+    // type_of_onset_display,
     un_or_other_actor,
+    // volunteers,
     women,
-
-    national_society_contact_name,
-    national_society_contact_title,
-    national_society_contact_email,
-    national_society_contact_phone_number,
-
-    ifrc_appeal_manager_name,
-    ifrc_appeal_manager_title,
-    ifrc_appeal_manager_email,
-    ifrc_appeal_manager_phone_number,
-
-    ifrc_project_manager_name,
-    ifrc_project_manager_title,
-    ifrc_project_manager_email,
-    ifrc_project_manager_phone_number,
-
-    ifrc_emergency_name,
-    ifrc_emergency_title,
-    ifrc_emergency_email,
-    ifrc_emergency_phone_number,
-
-    media_contact_name,
-    media_contact_title,
-    media_contact_email,
-    media_contact_phone_number,
   } = importDataMap;
 
   const countryLabel = getStringSafe(importDataMap.country);
@@ -492,82 +505,105 @@ export function transformImport(
     }
   ).filter(isDefined);
 
-  return {
-    country,
-    disaster_category,
-    disaster_type,
-    type_of_onset,
-    national_society: country,
-    date_of_approval: getDateSafe(start_date),
-    planned_interventions: interventions,
-    national_society_actions,
-    needs_identified,
-    risk_security,
-
-    affect_same_area: getBooleanSafe(affect_same_area),
-    affect_same_population: getBooleanSafe(affect_same_population),
+  const commonFields = {
     amount_requested: getNumberSafe(amount_requested),
     appeal_code: getStringSafe(appeal_code),
     boys: getNumberSafe(boys),
-    communication: getStringSafe(communication),
+    country,
+    date_of_approval: getDateSafe(start_date),
     disability_people_per: getNumberSafe(disability_people_per),
-    dref_recurrent_text: getStringSafe(dref_recurrent_text),
+    disaster_category,
+    disaster_type,
     end_date: getDateSafe(end_date),
     event_description: getStringSafe(event_description),
-    event_scope: getStringSafe(event_scope),
     girls: getNumberSafe(girls),
     glide_code: getStringSafe(glide_code),
     government_requested_assistance: getBooleanSafe(government_requested_assistance),
     icrc: getStringSafe(icrc),
     ifrc: getStringSafe(ifrc),
-    lessons_learned: getStringSafe(lessons_learned),
-    logistic_capacity_of_ns: getStringSafe(logistic_capacity_of_ns),
     major_coordination_mechanism: getStringSafe(major_coordination_mechanism),
     men: getNumberSafe(men),
     national_authorities: getStringSafe(national_authorities),
-    ns_request_fund: getBooleanSafe(ns_request_fund),
-    ns_request_text: getStringSafe(ns_request_text),
-    ns_respond: getBooleanSafe(ns_respond),
+    national_society: country,
     num_affected: getNumberSafe(num_affected),
     operation_objective: getStringSafe(operation_objective),
     operation_timeframe: getNumberSafe(operation_timeframe),
     people_assisted: getNumberSafe(people_assisted),
     people_per_local: getNumberSafe(people_per_local),
     people_per_urban: getNumberSafe(people_per_urban),
-    pmer: getStringSafe(pmer),
+    planned_interventions: interventions,
     response_strategy: getStringSafe(response_strategy),
+    risk_security,
     risk_security_concern: getStringSafe(risk_security_concern),
     selection_criteria: getStringSafe(selection_criteria),
     start_date: getDateSafe(start_date),
     surge_personnel_deployed: getBooleanSafe(surge_personnel_deployed),
     title: getStringSafe(title),
     total_targeted_population: getNumberSafe(total_targeted_population),
+    type_of_onset,
     un_or_other_actor: getStringSafe(un_or_other_actor),
     women: getNumberSafe(women),
-
     national_society_contact_name: getStringSafe(national_society_contact_name),
     national_society_contact_title: getStringSafe(national_society_contact_title),
     national_society_contact_email: getStringSafe(national_society_contact_email),
     national_society_contact_phone_number: getStringSafe(national_society_contact_phone_number),
-
     ifrc_appeal_manager_name: getStringSafe(ifrc_appeal_manager_name),
     ifrc_appeal_manager_title: getStringSafe(ifrc_appeal_manager_title),
     ifrc_appeal_manager_email: getStringSafe(ifrc_appeal_manager_email),
     ifrc_appeal_manager_phone_number: getStringSafe(ifrc_appeal_manager_phone_number),
-
     ifrc_project_manager_name: getStringSafe(ifrc_project_manager_name),
     ifrc_project_manager_title: getStringSafe(ifrc_project_manager_title),
     ifrc_project_manager_email: getStringSafe(ifrc_project_manager_email),
     ifrc_project_manager_phone_number: getStringSafe(ifrc_project_manager_phone_number),
-
     ifrc_emergency_name: getStringSafe(ifrc_emergency_name),
     ifrc_emergency_title: getStringSafe(ifrc_emergency_title),
     ifrc_emergency_email: getStringSafe(ifrc_emergency_email),
     ifrc_emergency_phone_number: getStringSafe(ifrc_emergency_phone_number),
-
     media_contact_name: getStringSafe(media_contact_name),
     media_contact_title: getStringSafe(media_contact_title),
     media_contact_email: getStringSafe(media_contact_email),
     media_contact_phone_number: getStringSafe(media_contact_phone_number),
+  };
+
+  if (importType === 'assessment') {
+    return {
+      ...commonFields,
+      is_assessment_report: true,
+    };
+  }
+
+  const commonInSlowSuddenAndImminnent = {
+    affect_same_area: getBooleanSafe(affect_same_area),
+    affect_same_population: getBooleanSafe(affect_same_population),
+    communication: getStringSafe(communication),
+    dref_recurrent_text: getStringSafe(dref_recurrent_text),
+    event_scope: getStringSafe(event_scope),
+    lessons_learned: getStringSafe(lessons_learned),
+    logistic_capacity_of_ns: getStringSafe(logistic_capacity_of_ns),
+    national_society_actions,
+    needs_identified,
+    ns_request_fund: getBooleanSafe(ns_request_fund),
+    ns_request_text: getStringSafe(ns_request_text),
+    ns_respond: getBooleanSafe(ns_respond),
+    pmer: getStringSafe(pmer),
+  };
+
+  if (importType === 'slow-sudden') {
+    return {
+        ...commonFields,
+        ...commonInSlowSuddenAndImminnent,
+    };
+  }
+
+  const imminentFields = {
+    anticipatory_actions: getStringSafe(anticipatory_actions),
+    event_text: getStringSafe(event_text),
+    people_targeted_with_early_actions: getNumberSafe(people_targeted_with_early_actions),
+  };
+
+  return {
+    ...commonFields,
+    ...commonInSlowSuddenAndImminnent,
+    ...imminentFields,
   };
 }

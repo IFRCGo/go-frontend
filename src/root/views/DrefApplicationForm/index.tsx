@@ -547,7 +547,7 @@ function DrefApplication(props: Props) {
                 icons={<IoCloudUploadSharp />}
                 variant="secondary"
               >
-                Import Slow/Sudden
+                Import from Document
               </FileInput>
             )}
             {isDefined(drefId) && (
