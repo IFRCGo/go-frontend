@@ -502,8 +502,9 @@ function DrefApplication(props: Props) {
     }
 
     const importData = await getImportData(newValue);
-    if (importData) {
+    // FIXME: Check if component is still mounted
 
+    if (importData) {
       const safeImportData = transformImport(
         importData,
         countryOptions,

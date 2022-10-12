@@ -18,30 +18,31 @@ function getChildren(node: Node | undefined, name: string) {
     return undefined;
   }
 
-  const accumulator: Node[] = [];
 
   if (node.name === name) {
-    accumulator.push(node);
-    return accumulator;
+    return [node];
   }
 
-  node.children.forEach(
-    (child) => {
+  const nodeList = node.children.reduce(
+    (acc, child) => {
       const potentialNode = getChildren(child, name);
 
       if (potentialNode && potentialNode.length > 0) {
-        accumulator.push(...potentialNode);
+        acc.push(...potentialNode);
       }
-    }
+
+      return acc;
+    }, [] as Node[],
   );
 
-  return accumulator;
+  return nodeList;
 }
 
 export async function getImportData(file: File) {
   const docx = await docxReader.load(file);
   const body: Node | undefined = docx?.officeDocument?.content?._root?.children?.[1]?.children?.[0];
   const sdtList = body?.children?.map((ch: Node | undefined) => {
+    // w:sdt is a standard block
     const potentialNodeList = getChildren(ch, 'w:sdt');
 
     return potentialNodeList ?? [];
@@ -81,11 +82,17 @@ function getNumberSafe(str: string | undefined) {
     return undefined;
   }
 
-  if (str === 'Enter number.') {
+  const trimmedStr = str.trim();
+
+  if (trimmedStr === '') {
     return undefined;
   }
 
-  const potentialNumber = +str;
+  if (trimmedStr === 'Enter number.') {
+    return undefined;
+  }
+
+  const potentialNumber = +trimmedStr;
 
   if (Number.isNaN(potentialNumber)) {
     return undefined;
@@ -95,11 +102,17 @@ function getNumberSafe(str: string | undefined) {
 }
 
 function getBooleanSafe(str: string | undefined) {
-  if (str === 'Yes') {
+  if (!str) {
+    return undefined;
+  }
+
+  const trimmedStr = str.trim();
+
+  if (trimmedStr === 'Yes') {
     return true;
   }
 
-  if (str === 'No') {
+  if (trimmedStr === 'No') {
     return false;
   }
 
@@ -130,15 +143,16 @@ function getStringSafe(str: string | undefined) {
     return undefined;
   }
 
-  if (trimmedStr === 'Click or tap here to enter text.') {
-    return undefined;
-  }
+  const ignoredStrings: Record<string, boolean> = {
+    'Click or tap here to enter text.': true,
+    'Enter indicator title.': true,
+    'Name.': true,
+    'Email.': true,
+    'Title.': true,
+    'Phone number': true,
+  };
 
-  if (trimmedStr === 'Enter indicator title.') {
-    return undefined;
-  }
-
-  if (trimmedStr === 'Name.' || trimmedStr === 'Email.' || trimmedStr === 'Title.' || trimmedStr === 'Phone number.') {
+  if (ignoredStrings[trimmedStr]) {
     return undefined;
   }
 
@@ -392,12 +406,18 @@ export function transformImport(
     "other"
   ];
   const national_society_actions = nsActionItems.map((nsActionItem) => {
-    const order = +(nsActionItem.key.substring(
-      NS_ACTION_KEY.length,
-      nsActionItem.key.length,
-    ));
+    if (!nsActionItem.value) {
+      return undefined;
+    }
 
-    if (Number.isNaN(order) || isNotDefined(order) || !nsActionItem.value) {
+    const order = getNumberSafe(
+      nsActionItem.key.substring(
+        NS_ACTION_KEY.length,
+        nsActionItem.key.length,
+      )
+    );
+
+    if (isNotDefined(order)) {
       return undefined;
     }
 
