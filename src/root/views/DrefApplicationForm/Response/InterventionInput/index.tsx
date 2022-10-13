@@ -16,10 +16,10 @@ import NumberInput from '#components/NumberInput';
 import InputSection from '#components/InputSection';
 import LanguageContext from '#root/languageContext';
 import { IndicatorType } from '#views/DrefApplicationForm/useDrefFormOptions';
+import { StringValueOption } from '#types';
 import {
   Indicator,
   Intervention,
-  StringValueOption,
 } from '#views/DrefApplicationForm/common';
 
 import IndicatorInput from '../IndicatorInput';

@@ -15,7 +15,7 @@ import InputSection from '#components/InputSection';
 import TextArea from '#components/TextArea';
 import DREFFileInput from '#components/DREFFileInput';
 import { FileWithCaption } from '#views/DrefApplicationForm/common';
-import CaptionInput from '#views/DrefApplicationForm/CaptionInput/CaptionInput';
+import CaptionInput from '#views/DrefApplicationForm/CaptionInput';
 
 import {
   booleanOptionKeySelector,

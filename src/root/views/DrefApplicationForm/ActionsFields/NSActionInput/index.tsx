@@ -12,10 +12,8 @@ import TextArea from '#components/TextArea';
 import Button from '#components/Button';
 import InputSection from '#components/InputSection';
 
-import {
-  NsAction,
-  StringValueOption,
-} from '../../common';
+import { StringValueOption } from '#types';
+import { NsAction } from '../../common';
 
 import styles from './styles.module.scss';
 

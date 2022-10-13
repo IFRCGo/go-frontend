@@ -33,8 +33,9 @@ import {
   FileWithCaption,
   StringValueOption,
 } from '../common';
+
 import styles from './styles.module.scss';
-import CaptionInput from '#views/DrefApplicationForm/CaptionInput/CaptionInput';
+import CaptionInput from '#views/DrefApplicationForm/CaptionInput';
 
 type Value = PartialForm<DrefOperationalUpdateFields>;
 interface Props {
