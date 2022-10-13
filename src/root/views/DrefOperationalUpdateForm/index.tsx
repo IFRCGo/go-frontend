@@ -101,6 +101,8 @@ const intermittentValidationExceptions: (keyof DrefOperationalUpdateFields)[] = 
 	'total_operation_timeframe',
 	'number_of_people_targeted',
 	'district',
+	'additional_allocation',
+	'changing_budget',
 ];
 
 function DrefOperationalUpdate(props: Props) {

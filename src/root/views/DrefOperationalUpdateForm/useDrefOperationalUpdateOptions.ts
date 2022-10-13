@@ -254,7 +254,15 @@ const defaultSchema: FormSchemaFields = {
   // supporting_document: [],
   risk_security_concern: [],
   photos_file: [lessThanEqualToTwoImagesCondition],
-  additional_allocation: [],
+  additional_allocation: [
+    (currentValue, allValue, _) => {
+      if (allValue?.changing_budget && !currentValue) {
+        return 'Please select a different value when selected yes on changing budget';
+      }
+
+      return undefined;
+    },
+  ],
   total_dref_allocation: [],
   is_man_made_event: [],
   is_assessment_report: [],
@@ -263,7 +271,15 @@ const defaultSchema: FormSchemaFields = {
   specified_trigger_met: [],
   changing_timeframe_operation: [],
   changing_operation_strategy: [],
-  changing_budget: [],
+  changing_budget: [
+    (currentValue, allValue, _) => {
+      if (allValue?.additional_allocation && !currentValue) {
+        return 'Please select yes on changing budget first';
+      }
+
+      return undefined;
+    },
+  ],
   changing_target_population_of_operation: [],
   changing_geographic_location: [],
   request_for_second_allocation: [],
