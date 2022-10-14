@@ -108,7 +108,7 @@ function Operation(props: Props) {
   ), [value.planned_interventions]);
 
   const warnings = React.useMemo(() => {
-    if (isNotDefined(value?.number_of_people_targeted)) {
+    if (isNotDefined(value?.total_targeted_population)) {
       return emptyList;
     }
 
@@ -119,17 +119,38 @@ function Operation(props: Props) {
       value?.men,
       value?.girls,
       value?.boys,
-    ]) !== value?.number_of_people_targeted) {
+    ]) !== value?.total_targeted_population) {
       w.push('Total targeted population is not equal to sum of other population fields');
     }
 
     return w;
   }, [
-    value?.number_of_people_targeted,
+    value?.total_targeted_population,
     value?.women,
     value?.men,
     value?.girls,
     value?.boys,
+  ]);
+  const warningsBudget = React.useMemo(() => {
+    if (isNotDefined(value?.total_dref_allocation)) {
+      return emptyList;
+    }
+
+    const w = [];
+
+    const totalBudget = value?.planned_interventions && value?.planned_interventions.reduce(
+      (previousValue, currentValue) => {
+        return previousValue += (currentValue.budget ?? 0);
+      }, 0);
+
+    if (totalBudget !== value?.total_dref_allocation) {
+      w.push('Total DREF allocation is not equal to sum of other budget fields');
+    }
+
+    return w;
+  }, [
+    value?.total_dref_allocation,
+    value?.planned_interventions
   ]);
 
   const {
@@ -270,6 +291,13 @@ function Operation(props: Props) {
               />
             </>
           )}
+          <NumberInput
+            label={strings.drefFormTotal}
+            name="total_targeted_population"
+            value={value.total_targeted_population}
+            onChange={onValueChange}
+            error={error?.total_targeted_population}
+          />
         </InputSection>
         <InputSection
           title={strings.drefFormEstimateResponse}
@@ -366,6 +394,17 @@ function Operation(props: Props) {
       </Container>
       <Container
         heading={strings.drefOperationalUpdatePlannedIntervention}
+        description={(
+          warningsBudget?.map((w, i) => (
+            <div
+              className={styles.warning}
+              key={i}
+            >
+              <IoWarning />
+              {w}
+            </div>
+          ))
+        )}
         className={styles.plannedIntervention}
         visibleOverflow
       >

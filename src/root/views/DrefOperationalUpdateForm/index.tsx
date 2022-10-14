@@ -50,6 +50,7 @@ import {
   submissionFields,
   DrefOperationalUpdateApiFields,
   ONSET_IMMINENT,
+  ONSET_SUDDEN,
 } from './common';
 import useDrefOperationalFormOptions, {
   schema
@@ -61,6 +62,7 @@ import Operation from './Operation';
 import Submission from './Submission';
 
 import styles from './styles.module.scss';
+import { ymdToDateString } from '#utils/common';
 
 interface Props {
   match: match<{ id?: string }>;
@@ -99,6 +101,8 @@ const intermittentValidationExceptions: (keyof DrefOperationalUpdateFields)[] = 
   'total_operation_timeframe',
   'number_of_people_targeted',
   'district',
+  'additional_allocation',
+  'changing_budget',
 ];
 
 function DrefOperationalUpdate(props: Props) {
@@ -446,6 +450,30 @@ function DrefOperationalUpdate(props: Props) {
     }
   }, [validateCurrentTab, currentStep, handleTabChange, submitDrefOperationalUpdate]);
 
+  React.useEffect(() => {
+    if (isDefined(value.new_operational_start_date) && isDefined(value.total_operation_timeframe)) {
+      const approvalDate = new Date(value.new_operational_start_date);
+      if (!Number.isNaN(approvalDate.getTime())) {
+        approvalDate.setMonth(
+          approvalDate.getMonth()
+          + value.total_operation_timeframe
+          + 1 // To get last day of the month
+        );
+        approvalDate.setDate(0);
+
+        const yyyy = approvalDate.getFullYear();
+        const mm = approvalDate.getMonth();
+        const dd = approvalDate.getDate();
+        onValueChange(ymdToDateString(yyyy, mm, dd), 'new_operational_end_date' as const);
+      }
+    }
+  }, [
+    onValueChange,
+    value.new_operational_start_date,
+    value.total_operation_timeframe,
+    value.new_operational_end_date,
+  ]);
+
   const pending = fetchingCountries
     || fetchingDisasterTypes
     || fetchingDrefOptions
@@ -462,6 +490,7 @@ function DrefOperationalUpdate(props: Props) {
     children: strings.drefFormExportLabel,
   });
 
+  const isSuddenOnset = value?.type_of_onset === ONSET_SUDDEN;
   const isImminentOnset = value?.type_of_onset === ONSET_IMMINENT;
   const isAssessmentReport = value?.is_assessment_report;
 
@@ -590,6 +619,7 @@ function DrefOperationalUpdate(props: Props) {
                   isImminentOnset={isImminentOnset}
                   fileIdToUrlMap={fileIdToUrlMap}
                   setFileIdToUrlMap={setFileIdToUrlMap}
+                  isSuddenOnset={isSuddenOnset}
                 />
               </TabPanel>
               <TabPanel name='needs'>

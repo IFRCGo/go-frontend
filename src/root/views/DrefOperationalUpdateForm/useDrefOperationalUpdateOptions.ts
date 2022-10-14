@@ -195,7 +195,8 @@ const defaultSchema: FormSchemaFields = {
     }),
   },
   images_file: [defaultEmptyArrayType, lessThanEqualToTwoImagesCondition],
-  // event_date: [],
+  event_date: [],
+  event_text: [],
   anticipatory_actions: [],
   // go_field_report_date: [],
   event_description: [],
@@ -215,12 +216,12 @@ const defaultSchema: FormSchemaFields = {
   people_per_local: [greaterThanOrEqualToCondition(0), lessThanOrEqualToCondition(100)],
   displaced_people: [positiveIntegerCondition],
   people_targeted_with_early_actions: [positiveIntegerCondition],
-  // total_targeted_population: [positiveIntegerCondition],
+  total_targeted_population: [positiveIntegerCondition],
   operation_objective: [],
   response_strategy: [],
   budget_file: [],
   new_operational_start_date: [],
-  reporting_timeframe: [],
+  // reporting_timeframe: [],
   new_operational_end_date: [],
   appeal_code: [],
   glide_code: [],
@@ -249,11 +250,19 @@ const defaultSchema: FormSchemaFields = {
   users: [defaultEmptyArrayType],
   is_there_major_coordination_mechanism: [],
   is_surge_personnel_deployed: [],
-  // people_in_need: [],
+  people_in_need: [],
   // supporting_document: [],
   risk_security_concern: [],
   photos_file: [lessThanEqualToTwoImagesCondition],
-  additional_allocation: [],
+  additional_allocation: [
+    (currentValue, allValue, _) => {
+      if (allValue?.changing_budget && !currentValue) {
+        return 'Please select a different value when selected yes on changing budget';
+      }
+
+      return undefined;
+    },
+  ],
   total_dref_allocation: [],
   is_man_made_event: [],
   is_assessment_report: [],
@@ -262,10 +271,23 @@ const defaultSchema: FormSchemaFields = {
   specified_trigger_met: [],
   changing_timeframe_operation: [],
   changing_operation_strategy: [],
-  changing_budget: [],
+  changing_budget: [
+    (currentValue, allValue, _) => {
+      if (allValue?.additional_allocation && !currentValue) {
+        return 'Please select yes on changing budget first';
+      }
+
+      return undefined;
+    },
+  ],
   changing_target_population_of_operation: [],
   changing_geographic_location: [],
   request_for_second_allocation: [],
+  did_national_society: [],
+  ns_respond_date: [],
+  has_event_occurred: [],
+  reporting_timeframe_from: [],
+  reporting_timeframe_to: [],
   total_operation_timeframe: [
     (currentValue, allValue, context) => {
       const contextValue = context.type === 'dref' ? context.value?.operation_timeframe : context.value?.total_operation_timeframe;
@@ -373,7 +395,7 @@ export const schema: FormSchema = {
     'total_operation_timeframe': ['changing_timeframe_operation'],
     'number_of_people_targeted': ['changing_target_population_of_operation'],
     'district': ['changing_geographic_location'],
-    // 'additional_allocation': ['changing_budget'],
+    'additional_allocation': ['changing_budget'],
   }),
   validation: () => {
     return undefined;

@@ -189,7 +189,7 @@ function Overview(props: Props) {
   const totalPopulationRiskImminentLink = "https://ifrcorg.sharepoint.com/sites/IFRCSharing/Shared%20Documents/Forms/AllItems.aspx?id=%2Fsites%2FIFRCSharing%2FShared%20Documents%2FDREF%2FHum%20Pop%20Definitions%20for%20DREF%20Form%5F21072022%2Epdf&parent=%2Fsites%2FIFRCSharing%2FShared%20Documents%2FDREF&p=true&ga=1";
   const totalPeopleAffectedSlowSuddenLink = "https://ifrcorg.sharepoint.com/sites/IFRCSharing/Shared%20Documents/Forms/AllItems.aspx?id=%2Fsites%2FIFRCSharing%2FShared%20Documents%2FDREF%2FHum%20Pop%20Definitions%20for%20DREF%20Form%5F21072022%2Epdf&parent=%2Fsites%2FIFRCSharing%2FShared%20Documents%2FDREF&p=true&ga=1";
   const peopleTargetedLink = "https://ifrcorg.sharepoint.com/sites/IFRCSharing/Shared%20Documents/Forms/AllItems.aspx?id=%2Fsites%2FIFRCSharing%2FShared%20Documents%2FDREF%2FHum%20Pop%20Definitions%20for%20DREF%20Form%5F21072022%2Epdf&parent=%2Fsites%2FIFRCSharing%2FShared%20Documents%2FDREF&p=true&ga=1";
-
+  const peopleInNeedLink = "https://ifrcorg.sharepoint.com/sites/IFRCSharing/Shared%20Documents/Forms/AllItems.aspx?id=%2Fsites%2FIFRCSharing%2FShared%20Documents%2FDREF%2FHum%20Pop%20Definitions%20for%20DREF%20Form%5F21072022%2Epdf&parent=%2Fsites%2FIFRCSharing%2FShared%20Documents%2FDREF&p=true&ga=1";
 
   return (
     <>
@@ -399,6 +399,33 @@ function Overview(props: Props) {
             hint={isImminentOnset
               ? strings.drefFormPeopleAffectedDescriptionImminent
               : strings.drefFormPeopleAffectedDescriptionSlowSudden
+            }
+          />
+          <NumberInput
+            label={(
+              <>
+                {
+                  isImminentOnset
+                    ? strings.drefFormEstimatedPeopleInNeed
+                    : strings.drefFormPeopleInNeed
+                }
+                <a
+                  className={styles.peopleTargetedHelpLink}
+                  target="_blank"
+                  title="Click to view Emergency Response Framework"
+                  href={peopleInNeedLink}
+                >
+                  <IoHelpCircle />
+                </a>
+              </>
+            )}
+            name="people_in_need"
+            value={value.people_in_need}
+            onChange={onValueChange}
+            error={error?.people_in_need}
+            hint={isImminentOnset
+              ? strings.drefFormPeopleInNeedDescriptionImminent
+              : strings.drefFormPeopleInNeedDescriptionSlowSudden
             }
           />
           <NumberInput
