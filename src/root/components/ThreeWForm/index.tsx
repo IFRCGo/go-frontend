@@ -238,7 +238,7 @@ function ThreeWForm(props: Props) {
   React.useEffect(() => {
     onValueChange((oldValue: boolean | undefined) => {
       if (isNotDefined(oldValue)) {
-        return value.annual_split_detail?.length ? true : false;
+        return !!value.annual_split_detail?.length;
       }
 
       return oldValue;

@@ -28,6 +28,7 @@ function FieldOutput(props: TextOutputProps) {
       className={_cs(styles.fieldOutput, className)}
       labelContainerClassName={styles.label}
       valueContainerClassName={styles.value}
+      hideLabelColon={true}
       {...otherProps}
     />
   );
@@ -109,6 +110,10 @@ function ProjectDetail(props: Props) {
 
   // RemoveMeLater console.info('projectResponse', projectResponse);
 
+  if (!projectPending && projectResponse?.id === undefined) {
+    return null; // in case of using a nonexistent id
+  }
+
   return (
     <div className={_cs(styles.projectDetail, className)}>
       {!hideHeader && (
@@ -147,14 +152,26 @@ function ProjectDetail(props: Props) {
           <Row>
             <FieldOutput
               label={strings.threeWNationalSociety}
-              value={projectResponse?.reporting_ns_detail?.name}
+              value={
+                <a className={styles.link}
+                   href={'/countries/' + projectResponse?.reporting_ns_detail?.id + '#3w'}
+                >
+                  <span>{projectResponse?.reporting_ns_detail?.society_name }</span>
+                  <span className="icon-about-ref collecticon-chevron-right"></span>
+                </a>
+              }
             />
             <FieldOutput
               label={strings.threeWCountryAndRegion}
               value={(
                 <>
                   <div>
-                    {projectResponse?.project_country_detail?.name}
+                    <a className={styles.link}
+                       href={'/countries/' + projectResponse?.reporting_ns_detail?.id}
+                    >
+                      <span>{projectResponse?.reporting_ns_detail?.name }</span>
+                      <span className="icon-about-ref collecticon-chevron-right"></span>
+                    </a>
                   </div>
                   <div>
                     {projectResponse?.project_districts_detail?.map(d => d.name).join(', ')}
@@ -182,14 +199,26 @@ function ProjectDetail(props: Props) {
               value={projectResponse?.operation_type_display}
             />
             <FieldOutput
-              label={strings.threeWProgrammeType}
-              value={projectResponse?.programme_type_display}
+              label={<div style={{whiteSpace:"nowrap"}}
+              >{strings.threeWProgrammeType} <Tooltip
+                  title={strings.threeWProgrammeType}
+                  description={strings.threeWProgrammeTypeTooltip}
+              /></div>}
+              value={projectResponse?.programme_type_display + ' '}
             />
           </Row>
           <Row>
             <FieldOutput
               label={strings.threeWLinkedOperation}
-              value={projectResponse?.event_detail?.name}
+              value={projectResponse?.event_detail ?
+                  <a className={styles.link}
+                     href={'/emergencies/' + projectResponse?.event_detail?.id}
+                  >
+                    <span>{projectResponse?.event_detail?.name}</span>
+                    <span className="icon-about-ref collecticon-chevron-right"></span>
+                  </a>
+
+                  : ''}
             />
             <FieldOutput
               label={strings.threeWDisasterType}
@@ -202,8 +231,8 @@ function ProjectDetail(props: Props) {
               value={projectResponse?.primary_sector_display}
             />
             <FieldOutput
-              label={strings.threeWTagging}
-              value={projectResponse?.secondary_sectors_display?.join(', ')}
+              label={<>{strings.threeWTags} <Tooltip title={strings.threeWTags} description={strings.threeWTagsTooltip}/></>}
+              value={projectResponse?.secondary_sectors_display?.join(', ') + ' '}
             />
           </Row>
           <Row>
@@ -229,108 +258,170 @@ function ProjectDetail(props: Props) {
               valueType="number"
             />
           </Row>
-          {projectResponse !== undefined && projectResponse?.annual_split_detail.length > 0 ?
-              <Row>
-                <table className={styles.bottomTable}>
-                  <thead>
-                    <tr className={styles.annualSplit}>
-                      <th className={styles.left}>{strings.threeWYear} / {strings.threeWBudgetAmount}:</th>
-                      <th></th>
-                      <th>{strings.threeWMale}:</th>
-                      <th>{strings.threeWFemale}:</th>
-                      <th>{strings.threeWOther}:</th>
-                      <th>{strings.threeWTotal}:</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {projectResponse?.annual_split_detail.map(split => {
-                      return (
-                          <>
-                          <tr key={split.year} className={styles.center}>
-                            <td className={styles.bold}>{split.year}</td>
-                            <th className={styles.annualSplit}>People targeted</th>
-                            <td className={styles.relief}>{split.target_male}</td>
-                            <td className={styles.relief}>{split.target_female}</td>
-                            <td className={styles.relief}>{split.target_other}</td>
-                            <td className={styles.belief}>{split.target_total}</td>
-                          </tr>
-                          <tr key={-Number(split.year)} className={styles.center}>
-                            <td>{split.budget_amount} </td>
-                            <th className={styles.annualSplit}>People reached</th>
-                            <td className={styles.relief}>{split.reached_male}</td>
-                            <td className={styles.relief}>{split.reached_female}</td>
-                            <td className={styles.relief}>{split.reached_other}</td>
-                            <td className={styles.belief}>{split.reached_total}</td>
-                          </tr>
-                            <tr><td colSpan={7}></td></tr>
-                          </>
-                      );
-                    })}
-                  </tbody>
-                </table>
-              </Row> :
-              <>
-                <Row>
-                  <FieldOutput
-                      label={strings.threeWPeopleTargeted}
-                      value={(
-                          <Row>
-                            <FieldOutput
-                                label={strings.threeWMale}
-                                value={projectResponse?.target_male}
-                                valueType="number"
-                            />
-                            <FieldOutput
-                                label={strings.threeWFemale}
-                                value={projectResponse?.target_female}
-                                valueType="number"
-                            />
-                            <FieldOutput
-                                label={strings.threeWOther}
-                                value={projectResponse?.target_other}
-                                valueType="number"
-                            />
-                            <FieldOutput
-                                label={strings.threeWTotal}
-                                value={projectResponse?.target_total}
-                                valueType="number"
-                            />
-                          </Row>
-                      )}
-                  />
-                </Row>
-                <Row>
-                  <FieldOutput
-                      label={strings.threeWPeopleReached1}
-                      value={(
-                          <Row>
-                            <Tooltip title={strings.threeWTablePeopleReached2}
-                                     description={strings.threeWTablePeopleReached2HelpText}/>
-                            <FieldOutput
-                                label={strings.threeWMale}
-                                value={projectResponse?.reached_male}
-                                valueType="number"
-                            />
-                            <FieldOutput
-                                label={strings.threeWFemale}
-                                value={projectResponse?.reached_female}
-                                valueType="number"
-                            />
-                            <FieldOutput
-                                label={strings.threeWOther}
-                                value={projectResponse?.reached_other}
-                                valueType="number"
-                            />
-                            <FieldOutput
-                                label={strings.threeWTotal}
-                                value={projectResponse?.reached_total}
-                                valueType="number"
-                            />
-                          </Row>
-                      )}
-                  />
-                </Row>
-              </>
+          <Row>
+            <hr/>
+          </Row>
+          {projectResponse !== undefined && projectResponse?.annual_split_detail?.length > 0 ?
+             <table>
+                 {projectResponse?.annual_split_detail?.map(split => { return (
+                 <tbody>
+                 <tr>
+                     <td colSpan={6} className={styles.grey}>
+                     <FieldOutput
+                         label={strings.threeWYear}
+                         value={split.year}
+                     />
+                     </td>
+                 </tr>
+                 <tr>
+                     <td>
+                     <FieldOutput
+                         label={strings.threeWBudgetAmount}
+                         value={split.budget_amount}
+                     />
+                     </td>
+                     <td className={styles.peopleLabel}>
+                       {strings.threeWPeopleTargeted}
+                     </td>
+                     <td>
+                     <FieldOutput
+                         label={strings.threeWMale}
+                         value={split.target_male ?? '-'}
+                         className={styles.grey}
+                     />
+                     </td>
+                     <td>
+                     <FieldOutput
+                         label={strings.threeWFemale}
+                         value={split.target_female ?? '-'}
+                         className={styles.grey}
+                     />
+                     </td>
+                     <td>
+                     <FieldOutput
+                         label={strings.threeWOther}
+                         value={split.target_other ?? '-'}
+                         className={styles.grey}
+                     />
+                     </td>
+                     <td>
+                     <FieldOutput
+                         label={strings.threeWTotal}
+                         value={split.target_total ?? '-'}
+                         className={styles.grey}
+                     />
+                     </td>
+                 </tr>
+                 <tr>
+                     <td>
+                     &nbsp;
+                     </td>
+                     <td className={styles.peopleLabel}>
+                       {strings.threeWPeopleReached1}
+                     </td>
+                     <td>
+                     <FieldOutput
+                         label={strings.threeWMale}
+                         value={split.reached_male ?? '-'}
+                         className={styles.grey}
+                     />
+                     </td>
+                     <td>
+                     <FieldOutput
+                         label={strings.threeWFemale}
+                         value={split.reached_female ?? '-'}
+                         className={styles.grey}
+                     />
+                     </td>
+                     <td>
+                     <FieldOutput
+                         label={strings.threeWOther}
+                         value={split.reached_other ?? '-'}
+                         className={styles.grey}
+                     />
+                     </td>
+                     <td>
+                     <FieldOutput
+                         label={strings.threeWTotal}
+                         value={split.reached_total ?? '-'}
+                         className={styles.grey}
+                     />
+                     </td>
+                 </tr>
+                 </tbody>
+               );
+             })}
+             </table>
+             :
+             <>
+               <Row>
+                 <FieldOutput
+                     label={strings.threeWPeopleTargeted}
+                     value={(
+                         <Row className={styles.grey}>
+                           <FieldOutput
+                               className={styles.padded}
+                               label={strings.threeWMale}
+                               value={projectResponse?.target_male}
+                               valueType="number"
+                           />
+                           <FieldOutput
+                               className={styles.padded}
+                               label={strings.threeWFemale}
+                               value={projectResponse?.target_female}
+                               valueType="number"
+                           />
+                           <FieldOutput
+                               className={styles.padded}
+                               label={strings.threeWOther}
+                               value={projectResponse?.target_other}
+                               valueType="number"
+                           />
+                           <FieldOutput
+                               className={styles.padded}
+                               label={strings.threeWTotal}
+                               value={projectResponse?.target_total}
+                               valueType="number"
+                           />
+                         </Row>
+                     )}
+                 />
+               </Row>
+               <Row>
+                 <FieldOutput
+                     label={<>
+                       {strings.threeWPeopleReached1}<Tooltip title={strings.threeWTablePeopleReached2} description={strings.threeWTablePeopleReached2HelpText}/>
+                     </>}
+                     value={(
+                         <Row className={styles.grey}>
+                           <FieldOutput
+                               className={styles.padded}
+                               label={strings.threeWMale}
+                               value={projectResponse?.reached_male}
+                           />
+                           <FieldOutput
+                               className={styles.padded}
+                               label={strings.threeWFemale}
+                               value={projectResponse?.reached_female}
+                               valueType="number"
+                           />
+                           <FieldOutput
+                               className={styles.padded}
+                               label={strings.threeWOther}
+                               value={projectResponse?.reached_other}
+                               valueType="number"
+                           />
+                           <FieldOutput
+                               className={styles.padded}
+                               label={strings.threeWTotal}
+                               value={projectResponse?.reached_total}
+                               valueType="number"
+                           />
+                         </Row>
+                     )}
+                 />
+               </Row>
+             </>
           }
         </div>
       )}
