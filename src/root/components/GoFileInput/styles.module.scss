@@ -66,5 +66,20 @@
     color: $danger-color;
     border-radius: 50%;
   }
+
+  .download-link {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    bottom: 0;
+    right: 0;
+    font-size: $font-size-xl;
+    transform: translate(50%, 50%);
+    background-color: $color-foreground;
+    color: $color-text-light;
+    border: $base-border-width solid $color-text-light;
+    border-radius: 50%;
+  }
 }
 

@@ -33,7 +33,7 @@ export type Props<T extends string> = InheritedProps<T> & {
   labelClassName?: string;
 
   overrideStatus?: boolean;
-  status?: string;
+  status?: React.ReactNode;
   variant?: ButtonVariant,
 } & ({
   multiple: true;
