@@ -223,8 +223,8 @@ export interface DrefOperationalUpdateFields {
   ns_respond_date: string;
   total_targeted_population: number;
   has_event_occurred: boolean;
-  reporting_timeframe_from: string;
-  reporting_timeframe_to: string;
+  reporting_start_date: string;
+  reporting_end_date: string;
 }
 
 export interface DrefApplicationValidateConditionalField {
@@ -390,6 +390,6 @@ export const submissionFields: (keyof DrefOperationalUpdateFields)[] = [
   'new_operational_start_date',
   'new_operational_end_date',
   'total_operation_timeframe',
-  'reporting_timeframe_from',
-  'reporting_timeframe_to',
+  'reporting_start_date',
+  'reporting_end_date',
 ];

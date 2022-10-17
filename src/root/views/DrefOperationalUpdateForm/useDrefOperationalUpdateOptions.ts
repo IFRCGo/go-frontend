@@ -286,8 +286,8 @@ const defaultSchema: FormSchemaFields = {
   did_national_society: [],
   ns_respond_date: [],
   has_event_occurred: [],
-  reporting_timeframe_from: [],
-  reporting_timeframe_to: [],
+  reporting_start_date: [],
+  reporting_end_date: [],
   total_operation_timeframe: [
     (currentValue, allValue, context) => {
       const contextValue = context.type === 'dref' ? context.value?.operation_timeframe : context.value?.total_operation_timeframe;

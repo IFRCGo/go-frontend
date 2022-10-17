@@ -3603,8 +3603,8 @@ export default {
   //Timeframes
   drefOperationalUpdateTimeFrameDateOfEvent: 'Operation start Date',
   drefOperationalUpdateTimeFrameReportingTimeFrame: 'Reporting timeframe',
-  drefOperationalUpdateTimeFrameReportingTimeFrameFrom: 'From',
-  drefOperationalUpdateTimeFrameReportingTimeFrameTo: 'To',
+  drefOperationalUpdateTimeFrameReportingTimeFrameStart: 'Reporting Timeframe start date',
+  drefOperationalUpdateTimeFrameReportingTimeFrameEnd: 'Reporting Timeframe end date',
   drefOperationalUpdateTimeFrameExtensionRequested: 'Is timeframe extension requested?',
   drefOperationalUpdateTimeFrameExtensionRequestedIfYes: 'New operational end date',
   drefOperationalUpdateTimeFrameTotalOperatingTimeFrame: 'Total operating timeframe',
