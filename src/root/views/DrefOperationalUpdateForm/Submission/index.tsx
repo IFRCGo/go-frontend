@@ -65,22 +65,20 @@ function Submission(props: Props) {
             error={error?.new_operational_end_date}
           />
         </InputSection>
-        <InputSection
-          title={strings.drefOperationalUpdateTimeFrameReportingTimeFrame}
-        >
+        <InputSection fullWidthColumn>
           <DateInput
-            label={strings.drefOperationalUpdateTimeFrameReportingTimeFrameFrom}
-            name="reporting_timeframe_from"
-            value={value.reporting_timeframe_from}
+            label={strings.drefOperationalUpdateTimeFrameReportingTimeFrameStart}
+            name="reporting_start_date"
+            value={value.reporting_start_date}
             onChange={onValueChange}
-            error={error?.reporting_timeframe_from}
+            error={error?.reporting_start_date}
           />
           <DateInput
-            label={strings.drefOperationalUpdateTimeFrameReportingTimeFrameTo}
-            name="reporting_timeframe_to"
-            value={value.reporting_timeframe_to}
+            label={strings.drefOperationalUpdateTimeFrameReportingTimeFrameEnd}
+            name="reporting_end_date"
+            value={value.reporting_end_date}
             onChange={onValueChange}
-            error={error?.reporting_timeframe_to}
+            error={error?.reporting_end_date}
           />
         </InputSection>
       </Container>
