@@ -405,9 +405,8 @@ export function getElasticSearchOptions(input, orgType, ns, callback) {
     .then(data => {
       const options = data.hits.map(o => {
         const d = o._source;
-        // TODO: later remove these checking points:
-        console.log('user ns, orgType | object ns, visibilityRaw', [ns, orgType, '|', d.ns, d.visibility]);
-        console.log('visibility should be <= permission_level',[line(d.visibility), '<=', nume(orgType)]);
+        // for DEBUG: console.log('user ns, orgType | object ns, visibl.Raw', [ns, orgType, '|', d.ns, d.visibility]);
+        // for DEBUG: console.log('visibility should be <= permission_level',[line(d.visibility), '<=', nume(orgType)]);
         // If the linearized visibility value > linearized value of organization type, not allowed to see that:
         if (line(d.visibility) > nume(orgType)) { return false; }
         // If the organization ~ NS === 8 === linearized visibility, and ns (list) is given in the object, we accept only our ns in the array:
