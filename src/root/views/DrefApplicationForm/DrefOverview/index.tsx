@@ -28,14 +28,16 @@ import {
 } from '#utils/restRequest';
 import { DistrictMini } from '#types/country';
 import { compareString } from '#utils/utils';
+import {
+  BooleanValueOption,
+  NumericValueOption,
+} from '#types';
 
 import CopyFieldReportSection from './CopyFieldReportSection';
 import ImageWithCaptionInput from './ImageWithCaptionInput';
 import {
   optionLabelSelector,
   DrefFields,
-  NumericValueOption,
-  BooleanValueOption,
   booleanOptionKeySelector,
   ONSET_IMMINENT,
   ONSET_SUDDEN,

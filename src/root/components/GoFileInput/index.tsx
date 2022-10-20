@@ -7,6 +7,7 @@ import {
   IoClose,
   IoDocumentTextOutline,
 } from 'react-icons/io5';
+import { MdDownload } from 'react-icons/md';
 import { internal } from '@togglecorp/toggle-form';
 
 import { useLazyRequest } from '#utils/restRequest';
@@ -55,9 +56,18 @@ export function Preview<ID extends number>(props: PreviewProps<ID>) {
 
   if (!isPreviewable) {
     return (
-      <div className={styles.noPreview}>
+      <div
+        className={styles.noPreview}
+      >
         {removeButton}
         <IoDocumentTextOutline fontSize="6rem" />
+        <a
+          title="Download file"
+          href={file}
+          className={styles.downloadLink}
+        >
+          <MdDownload />
+        </a>
       </div>
     );
   }

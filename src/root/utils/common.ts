@@ -138,6 +138,14 @@ export function ymdToDateString(year: number, month: number, day: number) {
   return `${ys}-${ms}-${ds}`;
 }
 
+export function dateToDateString(val: Date) {
+  const yyyy = val.getFullYear();
+  const mm = val.getMonth();
+  const dd = val.getDate();
+
+  return ymdToDateString(yyyy, mm, dd);
+}
+
 export const genericMemo: (<T>(c: T) => T) = memo;
 
 export function rankedSearchOnList<T>(

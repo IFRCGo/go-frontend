@@ -21,6 +21,7 @@ import { isIfrcUser } from '#utils/common';
 import UserMenu from './connected/user-menu';
 import HeaderRegionButton from './header-region-button';
 import DropdownMenu from './dropdown-menu';
+import {CountryMatches} from '#components/CountryMatches';
 // import store from '#utils/store';
 //
 // const currentLanguage = store.getState().lang.current;
@@ -45,6 +46,18 @@ function Navbar(props) {
 
   const loadOptionsWithDebouncing = React.useCallback((input, callback) => {
     window.clearTimeout(debounceTimeoutRef.current);
+
+    if (input.length === 2) {
+      let ans = [];
+      if (input in CountryMatches) {
+        let value = CountryMatches[input][0];
+        let label = CountryMatches[input][1];
+        for (let i = 0; i < value.length; i++) {
+          ans.push({value: "/countries/" + value[i], label: "Country: " + label[i]});
+        }
+      }
+      callback(ans);
+    }
 
     debounceTimeoutRef.current = window.setTimeout(() => {
       getElasticSearchOptions(input, orgType, ns, callback);
@@ -172,21 +185,19 @@ function Navbar(props) {
               </ul>
             </nav>
             <div className='nav-global-search col'>
-              <form className='gsearch'>
-                <div>
-                  <label className='form__label'>
-                    <Translate stringId="headerSearchLabel" />
-                  </label>
-                  <AsyncSelect
-                    placeholder={strings.headerSearchPlaceholder}
-                    onChange={handleSelect}
-                    filterOptions={noFilter}
-                    autoload={false}
-                    noOptionsMessage={getSelectInputNoOptionsMessage}
-                    cache={false}
-                    loadOptions={loadOptionsWithDebouncing} />
-                </div>
-              </form>
+              <div className='gsearch'>
+                <label className='form__label'>
+                  <Translate stringId="headerSearchLabel" />
+                </label>
+                <AsyncSelect
+                  placeholder={strings.headerSearchPlaceholder}
+                  onChange={handleSelect}
+                  filterOptions={noFilter}
+                  autoload={false}
+                  noOptionsMessage={getSelectInputNoOptionsMessage}
+                  cache={false}
+                  loadOptions={loadOptionsWithDebouncing} />
+              </div>
             </div>
           </div>
         </div>

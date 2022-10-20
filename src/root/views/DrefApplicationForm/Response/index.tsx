@@ -24,14 +24,16 @@ import DREFFileInput from '#components/DREFFileInput';
 import LanguageContext from '#root/languageContext';
 import { sumSafe } from '#utils/common';
 import RadioInput from '#components/RadioInput';
+import {
+  BooleanValueOption,
+  StringValueOption,
+} from '#types';
 
 import InterventionInput from './InterventionInput';
 import RiskSecurityInput from './RiskSecurityInput';
 import {
   DrefFields,
-  StringValueOption,
   Intervention,
-  BooleanValueOption,
   booleanOptionKeySelector,
   optionLabelSelector,
   RiskSecurityProps,

@@ -18,10 +18,10 @@ import LanguageContext from '#root/languageContext';
 import DREFFileInput from '#components/DREFFileInput';
 import DateInput from '#components/DateInput';
 
-import CaptionInput from '../CaptionInput/CaptionInput';
+import CaptionInput from '../CaptionInput';
+import { BooleanValueOption } from '#types';
 import {
   optionLabelSelector,
-  BooleanValueOption,
   booleanOptionKeySelector,
   DrefFields,
   FileWithCaption,

@@ -9,6 +9,7 @@ import {
   ArraySchema,
   ObjectSchema,
   forceUndefinedType,
+  forceNullType,
 } from '@togglecorp/toggle-form';
 
 import {
@@ -147,7 +148,7 @@ export const schema: FormSchema = {
       reporting_ns_contact_email:  [],
       secondary_sectors: [],
       start_date: [requiredCondition],
-      // Note: Event though status is required field,
+      // Note: Even though status is required field,
       // it's not marked required in the schema
       // because it is calculated automatically
       // using value of other required fields
@@ -155,7 +156,10 @@ export const schema: FormSchema = {
       target_female: [positiveIntegerCondition],
       target_male: [positiveIntegerCondition],
       target_other: [positiveIntegerCondition],
-      target_total: [requiredCondition, positiveIntegerCondition],
+      target_total: [
+        positiveIntegerCondition,
+        (value?.is_project_completed && !value?.is_annual_report) ? requiredCondition: undefined,
+      ].filter(isDefined),
       visibility: [requiredCondition],
       is_annual_report: [],
       annual_split_detail: {
@@ -170,11 +174,11 @@ export const schema: FormSchema = {
             target_male: [positiveIntegerCondition],
             target_female: [positiveIntegerCondition],
             target_other: [positiveIntegerCondition],
-            target_total: [positiveIntegerCondition],
+            target_total: [positiveIntegerCondition, requiredCondition],
             reached_male: [positiveIntegerCondition],
             reached_female: [positiveIntegerCondition],
             reached_other: [positiveIntegerCondition],
-            reached_total: [positiveIntegerCondition],
+            reached_total: [positiveIntegerCondition, requiredCondition],
           })
         }),
       },
@@ -193,7 +197,16 @@ export const schema: FormSchema = {
         schema.event = [requiredCondition];
     }
 
-    if (projectStatus === PROJECT_STATUS_COMPLETED) {
+    if (value?.is_annual_report) {
+      schema.budget_amount = [positiveIntegerCondition, forceNullType];
+      schema.reached_total = [positiveIntegerCondition, forceNullType];
+    }
+
+    if (!value?.is_annual_report) {
+      delete schema.annual_split_detail;
+    }
+
+    if (!value?.is_annual_report && projectStatus === PROJECT_STATUS_COMPLETED) {
       schema.reached_total = [requiredCondition, positiveIntegerCondition];
       schema.budget_amount = [positiveIntegerCondition];
     }
@@ -202,6 +215,7 @@ export const schema: FormSchema = {
   },
   fieldDependencies: () => ({
     end_date: ['start_date'],
+    target_total: ['is_annual_report'],
   }),
 };
 

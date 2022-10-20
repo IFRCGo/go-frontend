@@ -126,7 +126,6 @@ export interface DrefOperationalUpdateFields {
   changing_budget: boolean;
   request_for_second_allocation: boolean;
   summary_of_change: string;
-  has_change_since_request: boolean;
   national_society_actions: NsAction[];
   ifrc: string;
   icrc: string;
@@ -217,6 +216,15 @@ export interface DrefOperationalUpdateFields {
     id: number;
     file: string;
   };
+  people_in_need: number;
+  event_date: string;
+  event_text: string;
+  did_national_society: boolean;
+  ns_respond_date: string;
+  total_targeted_population: number;
+  has_event_occurred: boolean;
+  reporting_start_date: string;
+  reporting_end_date: string;
 }
 
 export interface DrefApplicationValidateConditionalField {
@@ -292,6 +300,7 @@ export const overviewFields: (keyof DrefOperationalUpdateFields)[] = [
   'users',
   'is_assessment_report',
   'is_man_made_event',
+  'people_in_need',
 ];
 export const eventFields: (keyof DrefOperationalUpdateFields)[] = [
   'changing_timeframe_operation',
@@ -301,12 +310,14 @@ export const eventFields: (keyof DrefOperationalUpdateFields)[] = [
   'changing_budget',
   'request_for_second_allocation',
   'summary_of_change',
-  'has_change_since_request',
   'event_description',
   'event_scope',
   'images_file',
   'has_forecasted_event_materialize',
   'specified_trigger_met',
+  'event_date',
+  'event_text',
+  'has_event_occurred',
 ];
 export const needsFields: (keyof DrefOperationalUpdateFields)[] = [
   'national_society_actions',
@@ -322,7 +333,9 @@ export const needsFields: (keyof DrefOperationalUpdateFields)[] = [
   'identified_gaps',
   'photos_file',
   'is_there_major_coordination_mechanism',
-  'assessment_report'
+  'assessment_report',
+  'did_national_society',
+  'ns_respond_date',
 ];
 export const operationFields: (keyof DrefOperationalUpdateFields)[] = [
   'people_assisted',
@@ -347,7 +360,8 @@ export const operationFields: (keyof DrefOperationalUpdateFields)[] = [
   'communication',
   'human_resource',
   'is_surge_personnel_deployed',
-  'surge_personnel_deployed'
+  'surge_personnel_deployed',
+  'total_targeted_population',
 ];
 export const submissionFields: (keyof DrefOperationalUpdateFields)[] = [
   'appeal_code',
@@ -376,4 +390,6 @@ export const submissionFields: (keyof DrefOperationalUpdateFields)[] = [
   'new_operational_start_date',
   'new_operational_end_date',
   'total_operation_timeframe',
+  'reporting_start_date',
+  'reporting_end_date',
 ];

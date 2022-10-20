@@ -23,13 +23,16 @@ import DateInput from '#components/DateInput';
 import DREFFileInput from '#components/DREFFileInput';
 
 import {
+  BooleanValueOption,
+  StringValueOption,
+} from '#types';
+
+import {
   optionLabelSelector,
   DrefFields,
-  BooleanValueOption,
   booleanOptionKeySelector,
   Need,
   NsAction,
-  StringValueOption,
 } from '../common';
 import NeedInput from './NeedInput';
 import NsActionInput from './NSActionInput';

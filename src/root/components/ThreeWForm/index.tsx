@@ -29,6 +29,7 @@ import NonFieldError from '#components/NonFieldError';
 import TextOutput from '#components/text-output';
 import LanguageContext from '#root/languageContext';
 import RichTextArea from '#components/RichTextArea';
+import Switch from '#components/Switch';
 
 import useAlert from '#hooks/useAlert';
 import {
@@ -237,7 +238,7 @@ function ThreeWForm(props: Props) {
   React.useEffect(() => {
     onValueChange((oldValue: boolean | undefined) => {
       if (isNotDefined(oldValue)) {
-        return value.annual_split_detail?.length ? true : false;
+        return !!value.annual_split_detail?.length;
       }
 
       return oldValue;
@@ -636,7 +637,6 @@ function ThreeWForm(props: Props) {
                 value={value.status ? statuses[value.status] : undefined}
               />
             </div>
-{/*
             <div>
               <Switch
                   label="Annual Reporting"
@@ -645,9 +645,8 @@ function ThreeWForm(props: Props) {
                   onChange={onValueChange}
               />
             </div>
-FIXME: this false 2 rows later is just for hiding. */}
           </InputSection>
-          {false && value?.is_annual_report === true ? (
+          {value?.is_annual_report === true ? (
               <InputSection
                 description={strings.projectFormPeopleTargetedHelpText}
                 title={strings.projectFormPeopleTargeted + ' ' + strings.projectFormAnnually}
@@ -704,7 +703,7 @@ FIXME: this false 2 rows later is just for hiding. */}
                     onChange={onValueChange}
                 />
                 <NumberInput
-                    disabled={shouldDisableTotalTarget}
+                    disabled={shouldDisableTotalTarget || value?.is_annual_report}
                     name='target_total'
                     label={isTotalRequired && !shouldDisableTotalTarget ? strings.projectFormTotalRequired : strings.projectFormTotal}
                     value={value.target_total}
@@ -740,7 +739,7 @@ FIXME: this false 2 rows later is just for hiding. */}
                     onChange={onValueChange}
                 />
                 <NumberInput
-                    disabled={shouldDisableTotalReached}
+                    disabled={shouldDisableTotalReached || value?.is_annual_report}
                     name='reached_total'
                     label={isTotalRequired && !shouldDisableTotalReached ? strings.projectFormTotalRequired : strings.projectFormTotal}
                     value={value.reached_total}

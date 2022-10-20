@@ -15,7 +15,7 @@ import InputSection from '#components/InputSection';
 import TextArea from '#components/TextArea';
 import DREFFileInput from '#components/DREFFileInput';
 import { FileWithCaption } from '#views/DrefApplicationForm/common';
-import CaptionInput from '#views/DrefApplicationForm/CaptionInput/CaptionInput';
+import CaptionInput from '#views/DrefApplicationForm/CaptionInput';
 
 import {
   booleanOptionKeySelector,
@@ -25,6 +25,7 @@ import {
 } from '../common';
 
 import styles from './styles.module.scss';
+import DateInput from '#components/DateInput';
 
 type Value = PartialForm<DrefOperationalUpdateFields>;
 interface Props {
@@ -35,6 +36,7 @@ interface Props {
   isImminentOnset: boolean;
   fileIdToUrlMap: Record<number, string>;
   setFileIdToUrlMap?: React.Dispatch<React.SetStateAction<Record<number, string>>>;
+  isSuddenOnset: boolean;
 }
 
 function EventDetails(props: Props) {
@@ -47,6 +49,7 @@ function EventDetails(props: Props) {
     isImminentOnset,
     fileIdToUrlMap,
     setFileIdToUrlMap,
+    isSuddenOnset,
   } = props;
   const error = React.useMemo(
     () => getErrorObject(formError),
@@ -161,6 +164,7 @@ function EventDetails(props: Props) {
             error={error?.request_for_second_allocation}
           />
         </InputSection>
+
         {isImminentOnset &&
           <InputSection
             title={strings.drefOperationalUpdateEventMaterialize}
@@ -202,18 +206,31 @@ function EventDetails(props: Props) {
         </InputSection>
 
       </Container>
-      <Container
-        heading={strings.drefOperationalUpdateDescriptionOfEventHeading}>
-        <InputSection title={strings.drefOperationalUpdateDescriptionOfEventLabel}>
-          <RadioInput
-            name={"has_change_since_request" as const}
-            options={yesNoOptions}
-            keySelector={booleanOptionKeySelector}
-            labelSelector={optionLabelSelector}
-            value={value.has_change_since_request}
-            onChange={onValueChange}
-            error={error?.has_change_since_request}
-          />
+      <Container heading={strings.drefOperationalUpdateDescriptionOfEventHeading}>
+        <InputSection
+          title={
+            isImminentOnset
+              ? strings.drefFormApproximateDateOfImpact
+              : isSuddenOnset
+                ? strings.drefFormEventDate
+                : strings.drefFormSlowEventDate
+          }
+        >
+          {isImminentOnset ? (
+            <TextArea
+              name="event_text"
+              value={value.event_text}
+              onChange={onValueChange}
+              error={error?.event_text}
+            />
+          ) : (
+            <DateInput
+              name="event_date"
+              value={value.event_date}
+              onChange={onValueChange}
+              error={error?.event_date}
+            />
+          )}
         </InputSection>
         <InputSection
           title={

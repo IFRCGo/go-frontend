@@ -16,10 +16,7 @@ import languageContext from '#root/languageContext';
 import BlockLoading from '#components/block-loading';
 import DateOutput from '#components/DateOutput';
 import RichTextOutput from '#components/RichTextOutput';
-import {
-  useButtonFeatures,
-  ButtonFeatureProps
-} from '#components/Button';
+import ButtonLikeLink from '#components/ButtonLikeLink';
 
 import { FlashUpdateAPIResponseFields } from '#views/FlashUpdateApplicationForm/common';
 
@@ -30,37 +27,6 @@ import styles from './styles.module.scss';
 import { isIfrcUser } from '#utils/common';
 import FourHundredFour from '#views/FourHundredFour';
 import useReduxState from '#hooks/useReduxState';
-
-function ButtonLikeLink(props: ButtonFeatureProps<undefined> & {
-  to: string;
-  external?: boolean;
-}) {
-  const {
-    external,
-    to,
-    ...buttonFeatureProps
-  } = props;
-
-  const linkProps = useButtonFeatures(buttonFeatureProps);
-
-  if (external) {
-    return (
-      <a
-        target="_blank"
-        rel="noopener noreferrer"
-        href={to}
-        {...linkProps}
-      />
-    );
-  }
-
-  return (
-    <Link
-      to={to}
-      {...linkProps}
-    />
-  );
-}
 
 interface Props {
   match: Match<{ id?: string }>

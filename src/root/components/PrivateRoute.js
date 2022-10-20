@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Route, Redirect } from 'react-router-dom';
-import { PropTypes as T } from 'prop-types';
 
 import { showAlert } from '#components/system-alerts';
 import Translate from '#components/Translate';
@@ -43,13 +42,6 @@ class PrivateRoute extends React.Component {
 
     return <Route {...otherProps} render={render} />;
   }
-}
-
-if (process.env.NODE_ENV !== 'production') {
-  PrivateRoute.propTypes = {
-    component: T.func,
-    render: T.func
-  };
 }
 
 const mapStateToProps = (state) => ({

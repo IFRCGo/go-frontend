@@ -17,9 +17,12 @@
     }
   }
 
-  .annual-split {
+  .people-label {
     text-transform: uppercase;
+    font-weight: 500;
     color: grey;
+    width: 50px;
+    padding: 2rem;
   }
 
   .center {
@@ -46,6 +49,14 @@
     white-space: nowrap;
   }
 
+  .grey {
+    background-color: #fafafa;
+  }
+
+  .padded {
+    margin: 0 2rem 0 2rem;
+  }
+
   .content {
     .row {
       display: flex;
@@ -54,6 +65,11 @@
         flex-basis: 0;
         flex-grow: 1;
       }
+    }
+
+    .link {
+      color: #f5333f;
+      font-weight: 500;
     }
 
     .field-output {

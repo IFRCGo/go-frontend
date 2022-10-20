@@ -2,6 +2,9 @@ import { isDefined } from '@togglecorp/fujs';
 import {
   Country,
   DistrictMini,
+  NumericValueOption,
+  BooleanValueOption,
+  StringValueOption,
 } from '#types';
 
 export const ONSET_IMMINENT = 0;
@@ -11,31 +14,6 @@ export const ONSET_SUDDEN = 2;
 export const DISASTER_FIRE = 15;
 export const DISASTER_FLASH_FLOOD = 27;
 export const DISASTER_FLOOD = 12;
-
-export interface NumericValueOption {
-  value: number;
-  label: string;
-}
-
-export interface BooleanValueOption {
-  value: boolean;
-  label: string;
-}
-export interface StringValueOption {
-  value: string;
-  label: string;
-}
-
-export interface NumericKeyValuePair {
-  key: number;
-  value: string;
-}
-
-export interface StringKeyValuePair {
-  key: string;
-  value: string;
-}
-
 
 export interface User {
   id: number;

@@ -48,13 +48,14 @@ function Submission(props: Props) {
             value={value.new_operational_start_date}
             onChange={onValueChange}
             error={error?.new_operational_start_date}
+            readOnly
           />
-          <DateInput
-            label={strings.drefOperationalUpdateTimeFrameReportingTimeFrame}
-            name="reporting_timeframe"
-            value={value.reporting_timeframe}
+          <NumberInput
+            label={strings.drefOperationalUpdateTimeFrameTotalOperatingTimeFrame}
+            name="total_operation_timeframe"
+            value={value.total_operation_timeframe}
             onChange={onValueChange}
-            error={error?.reporting_timeframe}
+            error={error?.total_operation_timeframe}
           />
           <DateInput
             label={strings.drefOperationalUpdateTimeFrameExtensionRequestedIfYes}
@@ -65,12 +66,19 @@ function Submission(props: Props) {
           />
         </InputSection>
         <InputSection fullWidthColumn>
-          <NumberInput
-            label={strings.drefOperationalUpdateTimeFrameTotalOperatingTimeFrame}
-            name="total_operation_timeframe"
-            value={value.total_operation_timeframe}
+          <DateInput
+            label={strings.drefOperationalUpdateTimeFrameReportingTimeFrameStart}
+            name="reporting_start_date"
+            value={value.reporting_start_date}
             onChange={onValueChange}
-            error={error?.total_operation_timeframe}
+            error={error?.reporting_start_date}
+          />
+          <DateInput
+            label={strings.drefOperationalUpdateTimeFrameReportingTimeFrameEnd}
+            name="reporting_end_date"
+            value={value.reporting_end_date}
+            onChange={onValueChange}
+            error={error?.reporting_end_date}
           />
         </InputSection>
       </Container>
@@ -87,6 +95,7 @@ function Submission(props: Props) {
             value={value.appeal_code}
             onChange={onValueChange}
             error={error?.appeal_code}
+            readOnly
           />
         </InputSection>
         <InputSection

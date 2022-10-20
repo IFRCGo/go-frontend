@@ -14,6 +14,7 @@ import {
   ObjectError,
 } from '@togglecorp/toggle-form';
 import type { match as Match } from 'react-router-dom';
+import { IoCloudUploadSharp } from 'react-icons/io5';
 
 import BlockLoading from '#components/block-loading';
 import Button from '#components/Button';
@@ -23,13 +24,17 @@ import Page from '#components/Page';
 import Tab from '#components/Tabs/Tab';
 import TabList from '#components/Tabs/TabList';
 import TabPanel from '#components/Tabs/TabPanel';
+import FileInput from '#components/FileInput';
 import Tabs from '#components/Tabs';
 import { useButtonFeatures } from '#components/Button';
 import {
   useLazyRequest,
   useRequest,
 } from '#utils/restRequest';
-import { ymdToDateString } from '#utils/common';
+import {
+  ymdToDateString,
+  // dateToDateString,
+} from '#utils/common';
 import LanguageContext from '#root/languageContext';
 import useAlert from '#hooks/useAlert';
 import scrollToTop from '#utils/scrollToTop';
@@ -50,7 +55,12 @@ import {
   ONSET_IMMINENT,
   ONSET_SUDDEN,
 } from './common';
+
 import useDrefFormOptions, { schema } from './useDrefFormOptions';
+import {
+  getImportData,
+  transformImport,
+} from './import';
 
 import styles from './styles.module.scss';
 
@@ -112,10 +122,10 @@ function DrefApplication(props: Props) {
   const {
     value,
     error,
-    setFieldValue: onValueChange,
+    setFieldValue,
     validate,
-    setError: onErrorSet,
-    setValue: onValueSet,
+    setError,
+    setValue,
   } = useForm(schema, { value: defaultFormValues });
 
   const {
@@ -192,7 +202,7 @@ function DrefApplication(props: Props) {
       },
       debugMessage,
     }) => {
-      onErrorSet(formErrors);
+      setError(formErrors);
 
       alert.show(
         <p>
@@ -253,7 +263,7 @@ function DrefApplication(props: Props) {
         return +value;
       };
 
-      onValueSet({
+      setValue({
         ...response,
         planned_interventions: response.planned_interventions?.map((pi) => ({
           ...pi,
@@ -326,11 +336,11 @@ function DrefApplication(props: Props) {
       ...currentTabErrors,
     };
 
-    onErrorSet(newError);
+    setError(newError);
 
     const hasError = Object.keys(currentTabErrors).some(d => !!d);
     return !hasError;
-  }, [value, currentStep, onErrorSet]);
+  }, [value, currentStep, setError]);
 
   const handleTabChange = React.useCallback((newStep: StepTypes) => {
     scrollToTop();
@@ -347,7 +357,7 @@ function DrefApplication(props: Props) {
     const result = validate();
 
     if (result.errored) {
-      onErrorSet(result.error);
+      setError(result.error);
     } else if (result.value && userDetails && userDetails.id) {
 
       const body = {
@@ -356,7 +366,7 @@ function DrefApplication(props: Props) {
       };
       submitRequest(body as DrefApiFields);
     }
-  }, [submitRequest, validate, userDetails, onErrorSet]);
+  }, [submitRequest, validate, userDetails, setError]);
 
   const handleSubmitButtonClick = React.useCallback(() => {
     scrollToTop();
@@ -412,7 +422,7 @@ function DrefApplication(props: Props) {
   const isAssessmentReport = value?.is_assessment_report;
 
   React.useEffect(() => {
-    onValueSet((oldValue) => {
+    setValue((oldValue) => {
       if (value.type_of_onset !== ONSET_IMMINENT) {
         return {
           ...oldValue,
@@ -429,12 +439,12 @@ function DrefApplication(props: Props) {
       return oldValue;
     });
   }, [
-    onValueSet,
+    setValue,
     value.type_of_onset,
   ]);
 
   React.useEffect(() => {
-    onValueSet((oldValue) => {
+    setValue((oldValue) => {
       if (value.ns_request_fund === false ||
         value.ns_respond === false ||
         value.affect_same_population === false ||
@@ -447,7 +457,7 @@ function DrefApplication(props: Props) {
       return oldValue;
     });
   }, [
-    onValueSet,
+    setValue,
     value.ns_request_fund,
     value.ns_respond,
     value.affect_same_population,
@@ -468,12 +478,12 @@ function DrefApplication(props: Props) {
         const yyyy = approvalDate.getFullYear();
         const mm = approvalDate.getMonth();
         const dd = approvalDate.getDate();
-        onValueChange(ymdToDateString(yyyy, mm, dd), 'end_date' as const);
+        setFieldValue(ymdToDateString(yyyy, mm, dd), 'end_date' as const);
       }
     }
-    onValueChange(value?.num_assisted, 'total_targeted_population');
+    setFieldValue(value?.num_assisted, 'total_targeted_population');
   }, [
-    onValueChange,
+    setFieldValue,
     value.date_of_approval,
     value.operation_timeframe,
     value.num_assisted,
@@ -486,6 +496,37 @@ function DrefApplication(props: Props) {
 
   const failedToLoadDref = !pending && isDefined(drefId) && !drefResponse;
 
+  const handleDocumentImport = React.useCallback(async (newValue: File | undefined) => {
+    if (!newValue) {
+      return;
+    }
+
+    const importData = await getImportData(newValue);
+    // FIXME: Check if component is still mounted
+
+    if (importData) {
+      const safeImportData = transformImport(
+        importData,
+        countryOptions,
+        disasterCategoryOptions,
+        disasterTypeOptions,
+        onsetOptions,
+      );
+      setValue(
+        (prevValue) => ({
+          ...prevValue,
+          ...safeImportData,
+        }),
+      );
+    }
+  }, [
+    countryOptions,
+    disasterTypeOptions,
+    disasterCategoryOptions,
+    onsetOptions,
+    setValue,
+  ]);
+
   return (
     <Tabs
       disabled={failedToLoadDref}
@@ -497,6 +538,19 @@ function DrefApplication(props: Props) {
         className={className}
         actions={(
           <>
+            {isNotDefined(drefId) && (
+              <FileInput
+                type='file'
+                accept='.docx'
+                name="dref-docx-import"
+                value={undefined}
+                onChange={handleDocumentImport}
+                icons={<IoCloudUploadSharp />}
+                variant="secondary"
+              >
+                Import from Document
+              </FileInput>
+            )}
             {isDefined(drefId) && (
               <Link
                 to={`/dref-application/${drefId}/export/`}
@@ -586,7 +640,7 @@ function DrefApplication(props: Props) {
             <TabPanel name="operationOverview">
               <DrefOverview
                 error={error}
-                onValueChange={onValueChange}
+                onValueChange={setFieldValue}
                 value={value}
                 yesNoOptions={yesNoOptions}
                 disasterTypeOptions={disasterTypeOptions}
@@ -599,7 +653,7 @@ function DrefApplication(props: Props) {
                 fetchingNationalSociety={fetchingCountries}
                 fileIdToUrlMap={fileIdToUrlMap}
                 setFileIdToUrlMap={setFileIdToUrlMap}
-                onValueSet={onValueSet}
+                onValueSet={setValue}
                 userOptions={userOptions}
                 onCreateAndShareButtonClick={submitDref}
               />
@@ -609,7 +663,7 @@ function DrefApplication(props: Props) {
                 isSuddenOnset={isSuddenOnset}
                 isImminentOnset={isImminentOnset}
                 error={error}
-                onValueChange={onValueChange}
+                onValueChange={setFieldValue}
                 value={value}
                 yesNoOptions={yesNoOptions}
                 fileIdToUrlMap={fileIdToUrlMap}
@@ -620,7 +674,7 @@ function DrefApplication(props: Props) {
             <TabPanel name="action">
               <ActionsFields
                 error={error}
-                onValueChange={onValueChange}
+                onValueChange={setFieldValue}
                 value={value}
                 yesNoOptions={yesNoOptions}
                 needOptions={needOptions}
@@ -635,7 +689,7 @@ function DrefApplication(props: Props) {
               <Response
                 interventionOptions={interventionOptions}
                 error={error}
-                onValueChange={onValueChange}
+                onValueChange={setFieldValue}
                 value={value}
                 fileIdToUrlMap={fileIdToUrlMap}
                 setFileIdToUrlMap={setFileIdToUrlMap}
@@ -647,7 +701,7 @@ function DrefApplication(props: Props) {
             <TabPanel name="submission">
               <Submission
                 error={error}
-                onValueChange={onValueChange}
+                onValueChange={setFieldValue}
                 value={value}
               />
             </TabPanel>
