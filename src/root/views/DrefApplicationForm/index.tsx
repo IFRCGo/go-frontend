@@ -31,10 +31,7 @@ import {
   useLazyRequest,
   useRequest,
 } from '#utils/restRequest';
-import {
-  ymdToDateString,
-  // dateToDateString,
-} from '#utils/common';
+import { ymdToDateString } from '#utils/common';
 import LanguageContext from '#root/languageContext';
 import useAlert from '#hooks/useAlert';
 import scrollToTop from '#utils/scrollToTop';
@@ -44,6 +41,7 @@ import EventDetails from './EventDetails';
 import ActionsFields from './ActionsFields';
 import Response from './Response';
 import Submission from './Submission';
+import ObsoletePaylodResolutionModal from './ObsoletePayloadResolutionModal';
 import {
   DrefFields,
   DrefApiFields,
@@ -72,10 +70,6 @@ const defaultFormValues: PartialForm<DrefFields> = {
   users: [],
   is_assessment_report: false,
 };
-
-interface DrefResponseFields {
-  id: number;
-}
 
 export function getDefinedValues<T extends Record<string, any>>(o: T): Partial<T> {
   type Key = keyof T;
@@ -150,6 +144,10 @@ function DrefApplication(props: Props) {
   const [currentStep, setCurrentStep] = React.useState<StepTypes>('operationOverview');
   const submitButtonLabel = currentStep === 'submission' ? strings.drefFormSaveButtonLabel : strings.drefFormContinueButtonLabel;
   const shouldDisabledBackButton = currentStep === 'operationOverview';
+  const [
+    showObsoletePayloadResolutionModal,
+    setShowObsoletePayloadResolutionModal,
+  ] = React.useState(false);
 
   const erroredTabs = React.useMemo(() => {
     const tabs: {
@@ -176,10 +174,83 @@ function DrefApplication(props: Props) {
     return tabs;
   }, [error]);
 
+  const handleDrefLoad = React.useCallback((response: DrefApiFields) => {
+    setFileIdToUrlMap((prevMap) => {
+      const newMap = {
+        ...prevMap,
+      };
+      if (response.supporting_document_details && response.supporting_document_details) {
+        newMap[response.supporting_document_details.id] = response.supporting_document_details.file;
+      }
+      if (response.assessment_report_details && response.assessment_report_details) {
+        newMap[response.assessment_report_details.id] = response.assessment_report_details.file;
+      }
+      if (response.event_map_file && response.event_map_file.file) {
+        newMap[response.event_map_file.id] = response.event_map_file.file;
+      }
+      if (response.cover_image_file && response.cover_image_file.file) {
+        newMap[response.cover_image_file.id] = response.cover_image_file.file;
+      }
+      if (response.images_file?.length > 0) {
+        response.images_file.forEach((img) => {
+          newMap[img.id] = img.file;
+        });
+      }
+      return newMap;
+    });
+
+    const getNumberFromResponse = (value: number | string | undefined | null) => {
+      if (isNotDefined(value)) {
+        return undefined;
+      }
+
+      if (value === '') {
+        return undefined;
+      }
+
+      return +value;
+    };
+
+    setValue({
+      ...response,
+      planned_interventions: response.planned_interventions?.map((pi) => ({
+        ...pi,
+        clientId: String(pi.id),
+        indicators: pi?.indicators?.map((i) => ({
+          ...i,
+          clientId: String(i.id)
+        })),
+      })),
+      national_society_actions: response.national_society_actions?.map((nsa) => ({
+        ...nsa,
+        clientId: String(nsa.id),
+      })),
+      needs_identified: response.needs_identified?.map((ni) => ({
+        ...ni,
+        clientId: String(ni.id),
+      })),
+      images_file: response.images_file.map((img) => (
+        isDefined(img.file)
+          ? ({
+            id: img.id,
+            client_id: img.client_id ?? String(img.id),
+            caption: img.caption ?? '',
+          })
+          : undefined
+      )).filter(isDefined),
+      disability_people_per: getNumberFromResponse(response.disability_people_per),
+      people_per_urban: getNumberFromResponse(response.people_per_urban),
+      people_per_local: getNumberFromResponse(response.people_per_local),
+      cover_image_file: isDefined(response.cover_image_file?.file) ? response.cover_image_file : undefined,
+      event_map_file: isDefined(response.event_map_file?.file) ? response.event_map_file : undefined,
+    });
+  }, [setValue]);
+
+
   const {
     pending: drefSubmitPending,
     trigger: submitRequest,
-  } = useLazyRequest<DrefResponseFields, Partial<DrefApiFields>>({
+  } = useLazyRequest<DrefApiFields, Partial<DrefApiFields>>({
     url: drefId ? `api/v2/dref/${drefId}/` : 'api/v2/dref/',
     method: drefId ? 'PUT' : 'POST',
     body: ctx => ctx,
@@ -188,11 +259,14 @@ function DrefApplication(props: Props) {
         strings.drefFormSaveRequestSuccessMessage,
         { variant: 'success' },
       );
+
       if (!drefId) {
         window.setTimeout(
           () => history.push(`/dref-application/${response?.id}/edit/`),
           250,
         );
+      } else {
+        handleDrefLoad(response);
       }
     },
     onFailure: ({
@@ -203,6 +277,10 @@ function DrefApplication(props: Props) {
       debugMessage,
     }) => {
       setError(formErrors);
+      if (formErrors.modified_at === 'OBSOLETE_PAYLOAD') {
+        // There was a save conflict due to obsolete payload
+        setShowObsoletePayloadResolutionModal(true);
+      }
 
       alert.show(
         <p>
@@ -227,75 +305,7 @@ function DrefApplication(props: Props) {
     skip: !drefId,
     url: `api/v2/dref/${drefId}/`,
     onSuccess: (response) => {
-      setFileIdToUrlMap((prevMap) => {
-        const newMap = {
-          ...prevMap,
-        };
-        if (response.supporting_document_details && response.supporting_document_details) {
-          newMap[response.supporting_document_details.id] = response.supporting_document_details.file;
-        }
-        if (response.assessment_report_details && response.assessment_report_details) {
-          newMap[response.assessment_report_details.id] = response.assessment_report_details.file;
-        }
-        if (response.event_map_file && response.event_map_file.file) {
-          newMap[response.event_map_file.id] = response.event_map_file.file;
-        }
-        if (response.cover_image_file && response.cover_image_file.file) {
-          newMap[response.cover_image_file.id] = response.cover_image_file.file;
-        }
-        if (response.images_file?.length > 0) {
-          response.images_file.forEach((img) => {
-            newMap[img.id] = img.file;
-          });
-        }
-        return newMap;
-      });
-
-      const getNumberFromResponse = (value: number | string | undefined | null) => {
-        if (isNotDefined(value)) {
-          return undefined;
-        }
-
-        if (value === '') {
-          return undefined;
-        }
-
-        return +value;
-      };
-
-      setValue({
-        ...response,
-        planned_interventions: response.planned_interventions?.map((pi) => ({
-          ...pi,
-          clientId: String(pi.id),
-          indicators: pi?.indicators?.map((i) => ({
-            ...i,
-            clientId: String(i.id)
-          })),
-        })),
-        national_society_actions: response.national_society_actions?.map((nsa) => ({
-          ...nsa,
-          clientId: String(nsa.id),
-        })),
-        needs_identified: response.needs_identified?.map((ni) => ({
-          ...ni,
-          clientId: String(ni.id),
-        })),
-        images_file: response.images_file.map((img) => (
-          isDefined(img.file)
-            ? ({
-              id: img.id,
-              client_id: img.client_id ?? String(img.id),
-              caption: img.caption ?? '',
-            })
-            : undefined
-        )).filter(isDefined),
-        disability_people_per: getNumberFromResponse(response.disability_people_per),
-        people_per_urban: getNumberFromResponse(response.people_per_urban),
-        people_per_local: getNumberFromResponse(response.people_per_local),
-        cover_image_file: isDefined(response.cover_image_file?.file) ? response.cover_image_file : undefined,
-        event_map_file: isDefined(response.event_map_file?.file) ? response.event_map_file : undefined,
-      });
+      handleDrefLoad(response);
     },
     onFailure: ({
       value: { messageForNotification },
@@ -353,7 +363,7 @@ function DrefApplication(props: Props) {
     setCurrentStep(newStep);
   }, [validateCurrentTab]);
 
-  const submitDref = React.useCallback(() => {
+  const submitDref = React.useCallback((modifiedAt?: string) => {
     const result = validate();
 
     if (result.errored) {
@@ -363,10 +373,12 @@ function DrefApplication(props: Props) {
       const body = {
         user: userDetails.id,
         ...result.value,
+        modified_at: modifiedAt ?? drefResponse?.modified_at,
       };
+
       submitRequest(body as DrefApiFields);
     }
-  }, [submitRequest, validate, userDetails, setError]);
+  }, [drefResponse?.modified_at, submitRequest, validate, userDetails, setError]);
 
   const handleSubmitButtonClick = React.useCallback(() => {
     scrollToTop();
@@ -526,6 +538,15 @@ function DrefApplication(props: Props) {
     onsetOptions,
     setValue,
   ]);
+
+  const handleObsoletePayloadResolutionOverwiteButtonClick = React.useCallback((newModifiedAt: string | undefined) => {
+    setShowObsoletePayloadResolutionModal(false);
+    submitDref(newModifiedAt);
+  }, [submitDref]);
+
+  const handleObsoletePayloadResolutionCancelButtonClick = React.useCallback(() => {
+    setShowObsoletePayloadResolutionModal(false);
+  }, []);
 
   return (
     <Tabs
@@ -722,6 +743,13 @@ function DrefApplication(props: Props) {
                 {submitButtonLabel}
               </Button>
             </div>
+            {isDefined(drefId) && showObsoletePayloadResolutionModal && (
+              <ObsoletePaylodResolutionModal
+                drefId={+drefId}
+                onOverwriteButtonClick={handleObsoletePayloadResolutionOverwiteButtonClick}
+                onCancelButtonClick={handleObsoletePayloadResolutionCancelButtonClick}
+              />
+            )}
           </>
         )}
       </Page>

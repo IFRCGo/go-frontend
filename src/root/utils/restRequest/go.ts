@@ -58,6 +58,11 @@ function transformError(response: ResponseError, fallbackMessage: string): Trans
           ...json,
         };
       }
+
+      if (Array.isArray(json)) {
+        return { [internal]: json.join(', ') };
+      }
+
       // FIXME: rename error message
       return { [internal]: 'Response content type mismatch' };
     } catch(e) {

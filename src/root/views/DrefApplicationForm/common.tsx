@@ -17,6 +17,9 @@ export const DISASTER_FLOOD = 12;
 
 export interface User {
   id: number;
+  first_name: string;
+  last_name: string;
+  username: string;
 }
 
 export type Option = NumericValueOption | BooleanValueOption | StringValueOption;
@@ -279,6 +282,7 @@ export interface DrefApiFields extends Omit<DrefFields, 'event_map_details' | 'c
     operational_update_number: number;
     title: string;
   }[] | null;
+  modified_by_details: User;
 }
 
 export const overviewFields: (keyof DrefFields)[] = [
