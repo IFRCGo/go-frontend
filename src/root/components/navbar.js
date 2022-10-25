@@ -21,7 +21,6 @@ import { isIfrcUser } from '#utils/common';
 import UserMenu from './connected/user-menu';
 import HeaderRegionButton from './header-region-button';
 import DropdownMenu from './dropdown-menu';
-import {CountryMatches} from '#components/CountryMatches';
 // import store from '#utils/store';
 //
 // const currentLanguage = store.getState().lang.current;
@@ -35,6 +34,7 @@ function Navbar(props) {
   } = props;
 
   const user = useReduxState('me');
+  const countries = useReduxState('allCountries');
   const ifrcUser = React.useMemo(() => isIfrcUser(user?.data), [user]);
 
   const { strings } = React.useContext(LanguageContext);
@@ -48,15 +48,33 @@ function Navbar(props) {
     window.clearTimeout(debounceTimeoutRef.current);
 
     if (input.length === 2) {
-      let ans = [];
-      if (input in CountryMatches) {
-        let value = CountryMatches[input][0];
-        let label = CountryMatches[input][1];
-        for (let i = 0; i < value.length; i++) {
-          ans.push({value: "/countries/" + value[i], label: "Country: " + label[i]});
-        }
-      }
-      callback(ans);
+      const exceptions = {
+        'uk': ['GBR'],
+        'us': ['USA'],
+        'co': ['CIV'],
+        'em': ['ARE'],
+      };
+      const exceptionCountries = countries.data.results.filter(country => {
+        return exceptions.hasOwnProperty(input) && exceptions[input].includes(country.iso3);
+      });
+      const answers = countries.data.results.filter(country => {
+        return country.name.toLowerCase().startsWith(input.toLowerCase())
+            && country.independent
+            && !country.is_deprecated;
+      }).concat(exceptionCountries).map(country => {
+        return {
+          value: `/country/${country.id}`,
+          label: `Country: ${country.name}`
+        };
+      });
+      //if (input in CountryMatches) {
+      //  let value = CountryMatches[input][0];
+      //  let label = CountryMatches[input][1];
+      //  for (let i = 0; i < value.length; i++) {
+      //    ans.push({value: "/countries/" + value[i], label: "Country: " + label[i]});
+      //  }
+      //}
+      callback(answers);
     }
 
     debounceTimeoutRef.current = window.setTimeout(() => {
@@ -64,7 +82,7 @@ function Navbar(props) {
     }, 500);
 
     return false;
-  }, [orgType, ns]);
+  }, [orgType, ns, countries]);
 
   const handleSelect = React.useCallback(({ value }) => {
     history.push(value);
