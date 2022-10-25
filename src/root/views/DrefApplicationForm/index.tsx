@@ -149,6 +149,8 @@ function DrefApplication(props: Props) {
     setShowObsoletePayloadResolutionModal,
   ] = React.useState(false);
 
+  const lastModifiedAtRef = React.useRef<string | undefined>();
+
   const erroredTabs = React.useMemo(() => {
     const tabs: {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -175,6 +177,8 @@ function DrefApplication(props: Props) {
   }, [error]);
 
   const handleDrefLoad = React.useCallback((response: DrefApiFields) => {
+    lastModifiedAtRef.current = response?.modified_at;
+
     setFileIdToUrlMap((prevMap) => {
       const newMap = {
         ...prevMap,
@@ -229,7 +233,7 @@ function DrefApplication(props: Props) {
         ...ni,
         clientId: String(ni.id),
       })),
-      images_file: response.images_file.map((img) => (
+      images_file: response.images_file?.map((img) => (
         isDefined(img.file)
           ? ({
             id: img.id,
@@ -373,12 +377,12 @@ function DrefApplication(props: Props) {
       const body = {
         user: userDetails.id,
         ...result.value,
-        modified_at: modifiedAt ?? drefResponse?.modified_at,
+        modified_at: modifiedAt ?? lastModifiedAtRef.current,
       };
 
       submitRequest(body as DrefApiFields);
     }
-  }, [drefResponse?.modified_at, submitRequest, validate, userDetails, setError]);
+  }, [submitRequest, validate, userDetails, setError]);
 
   const handleSubmitButtonClick = React.useCallback(() => {
     scrollToTop();

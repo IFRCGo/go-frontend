@@ -9,7 +9,7 @@ import {
   DrefApiFields,
 } from '../common';
 
-// import styles from './styles.module.scss';
+import styles from './styles.module.scss';
 
 function getUserName(user: DrefApiFields['modified_by_details'] | undefined) {
   if (!user) {
@@ -58,6 +58,7 @@ function ObsoletePaylodResolutionModal(props: Props) {
       heading="Conflict while saving"
       headingSize="large"
       hideCloseButton
+      className={styles.obsoletePayloadResolutionModal}
       footerActions={(
         <>
           <Button
