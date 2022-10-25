@@ -266,7 +266,7 @@ function ProjectDetail(props: Props) {
                  {projectResponse?.annual_split_detail?.map(split => { return (
                  <tbody>
                  <tr>
-                     <td colSpan={6} className={styles.grey}>
+                     <td colSpan={6} className={styles.year}>
                      <FieldOutput
                          label={strings.threeWYear}
                          value={split.year}
@@ -278,6 +278,7 @@ function ProjectDetail(props: Props) {
                      <FieldOutput
                          label={strings.threeWBudgetAmount}
                          value={split.budget_amount}
+                         valueType="number"
                      />
                      </td>
                      <td className={styles.peopleLabel}>
@@ -286,28 +287,32 @@ function ProjectDetail(props: Props) {
                      <td>
                      <FieldOutput
                          label={strings.threeWMale}
-                         value={split.target_male ?? '-'}
+                         value={split.target_male}
+                         valueType="number"
                          className={styles.grey}
                      />
                      </td>
                      <td>
                      <FieldOutput
                          label={strings.threeWFemale}
-                         value={split.target_female ?? '-'}
+                         value={split.target_female}
+                         valueType="number"
                          className={styles.grey}
                      />
                      </td>
                      <td>
                      <FieldOutput
                          label={strings.threeWOther}
-                         value={split.target_other ?? '-'}
+                         value={split.target_other}
+                         valueType="number"
                          className={styles.grey}
                      />
                      </td>
                      <td>
                      <FieldOutput
                          label={strings.threeWTotal}
-                         value={split.target_total ?? '-'}
+                         value={split.target_total}
+                         valueType="number"
                          className={styles.grey}
                      />
                      </td>
@@ -322,28 +327,32 @@ function ProjectDetail(props: Props) {
                      <td>
                      <FieldOutput
                          label={strings.threeWMale}
-                         value={split.reached_male ?? '-'}
+                         value={split.reached_male}
+                         valueType="number"
                          className={styles.grey}
                      />
                      </td>
                      <td>
                      <FieldOutput
                          label={strings.threeWFemale}
-                         value={split.reached_female ?? '-'}
+                         value={split.reached_female}
+                         valueType="number"
                          className={styles.grey}
                      />
                      </td>
                      <td>
                      <FieldOutput
                          label={strings.threeWOther}
-                         value={split.reached_other ?? '-'}
+                         value={split.reached_other}
+                         valueType="number"
                          className={styles.grey}
                      />
                      </td>
                      <td>
                      <FieldOutput
                          label={strings.threeWTotal}
-                         value={split.reached_total ?? '-'}
+                         value={split.reached_total}
+                         valueType="number"
                          className={styles.grey}
                      />
                      </td>
@@ -358,7 +367,7 @@ function ProjectDetail(props: Props) {
                  <FieldOutput
                      label={strings.threeWPeopleTargeted}
                      value={(
-                         <Row className={styles.grey}>
+                         <Row className={styles.greyRow}>
                            <FieldOutput
                                className={styles.padded}
                                label={strings.threeWMale}
@@ -393,11 +402,12 @@ function ProjectDetail(props: Props) {
                        {strings.threeWPeopleReached1}<Tooltip title={strings.threeWTablePeopleReached2} description={strings.threeWTablePeopleReached2HelpText}/>
                      </>}
                      value={(
-                         <Row className={styles.grey}>
+                         <Row className={styles.greyRow}>
                            <FieldOutput
                                className={styles.padded}
                                label={strings.threeWMale}
                                value={projectResponse?.reached_male}
+                               valueType="number"
                            />
                            <FieldOutput
                                className={styles.padded}

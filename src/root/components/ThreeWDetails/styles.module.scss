@@ -9,20 +9,12 @@
     }
   }
 
-  .bottom-table {
-    margin-left: 12px;
-    td, th
-    {
-      padding: 12px;
-    }
-  }
-
   .people-label {
     text-transform: uppercase;
     font-weight: 500;
     color: grey;
-    width: 50px;
-    padding: 2rem;
+    width: 4rem;
+    padding-right: $spacing * 2;
   }
 
   .center {
@@ -49,8 +41,22 @@
     white-space: nowrap;
   }
 
+  .year, .grey-row {
+    background-color: #fafafa;
+  }
+
   .grey {
     background-color: #fafafa;
+    width: $spacing * 16;
+
+    .label {
+      width: $spacing * 6;
+    }
+    .value {
+      width: $spacing;
+      display: flex;
+      justify-content: flex-end;
+    }
   }
 
   .padded {
