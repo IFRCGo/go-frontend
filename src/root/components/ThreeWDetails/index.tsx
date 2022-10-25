@@ -357,6 +357,11 @@ function ProjectDetail(props: Props) {
                      />
                      </td>
                  </tr>
+                 <tr>
+                   <td colSpan={6} className={styles.narrow}>
+                     &nbsp;
+                   </td>
+                 </tr>
                  </tbody>
                );
              })}
