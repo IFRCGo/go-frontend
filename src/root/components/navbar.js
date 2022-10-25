@@ -63,17 +63,11 @@ function Navbar(props) {
             && !country.is_deprecated;
       }).concat(exceptionCountries).map(country => {
         return {
-          value: `/country/${country.id}`,
+          value: `/countries/${country.id}`,
           label: `Country: ${country.name}`
         };
       });
-      //if (input in CountryMatches) {
-      //  let value = CountryMatches[input][0];
-      //  let label = CountryMatches[input][1];
-      //  for (let i = 0; i < value.length; i++) {
-      //    ans.push({value: "/countries/" + value[i], label: "Country: " + label[i]});
-      //  }
-      //}
+
       callback(answers);
     }
 
