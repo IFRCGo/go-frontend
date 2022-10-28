@@ -6,6 +6,7 @@
   justify-content: center;
   animation: fade-in .3s ease-in;
   overflow: auto;
+  z-index: 11;
 }
 
 .basic-modal {
@@ -19,29 +20,32 @@
   animation: appear .3s ease-in;
   transform-origin: 0% 0%;
   transition: width .2s ease-in-out, height .2s ease-in-out;
+  padding: $spacing;
+  gap: $spacing;
 
   .header {
     flex-shrink: 0;
-    padding: $spacing*2;
   }
 
   .body {
     flex-grow: 1;
     overflow: auto;
+    padding: $spacing*0.5;
   }
 
   .footer {
     flex-shrink: 0;
     display: flex;
+    padding: $spacing*0.5;
 
     .footer-content {
       flex-grow: 1;
-      padding: $spacing*0.25;
     }
 
     .footer-actions {
+      display: flex;
       flex-shrink: 0;
-      padding: $spacing*0.25;
+      gap: $spacing;
     }
   }
 }
