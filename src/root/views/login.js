@@ -71,7 +71,7 @@ class Login extends React.Component {
              <Translate
                stringId='loginErrorMessage'
                params={{
-                 message: error.message,
+                 message: error.errors[0].error_message,
                }}
              />
            </p>;
