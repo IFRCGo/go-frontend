@@ -162,7 +162,7 @@ function DrefOperationalUpdate(props: Props) {
           ...ni,
           clientId: String(ni.id),
         })),
-        images_file: response.images_file.map((img) => (
+        images_file: response.images_file?.map((img) => (
           isDefined(img.file)
             ? ({
               id: img.id,
@@ -172,7 +172,7 @@ function DrefOperationalUpdate(props: Props) {
             : undefined
         )).filter(isDefined),
 
-        photos_file: response.photos_file.map((img) => (
+        photos_file: response.photos_file?.map((img) => (
           isDefined(img.file)
             ? ({
               id: img.id,
@@ -422,6 +422,7 @@ function DrefOperationalUpdate(props: Props) {
         user: userDetails.id,
         ...result.value,
       };
+
       submitRequest(body as DrefOperationalUpdateApiFields);
     }
   }, [submitRequest, setError, validate, userDetails]);
