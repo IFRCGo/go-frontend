@@ -8,6 +8,7 @@ import Translate from '#components/Translate';
 import { getFileName } from '#utils/utils';
 
 import useRecursiveCsvRequest from '#utils/restRequest/useRecursiveCsvRequest';
+import { renderToStaticMarkup } from "react-dom/server";
 
 function formatHeader(headerRow) {
   let str = headerRow;
@@ -24,6 +25,7 @@ function formatHeader(headerRow) {
 
 
 function useExportButton(apiUrl, fileNameSuffix, className) {
+  const exportButtonTooltip = renderToStaticMarkup(<Translate stringId='exportButtonTooltip'/>).replace(/<.+?>/g, '');
   const [pending, data, total, triggerExportStart] = useRecursiveCsvRequest({
     url: apiUrl,
     onFailure: (err) => {
@@ -69,6 +71,7 @@ function useExportButton(apiUrl, fileNameSuffix, className) {
 
   return (
     <button
+      title={exportButtonTooltip}
       onClick={triggerExportStart}
       className={_cs(
         'button button--primary-bounded button-small',
