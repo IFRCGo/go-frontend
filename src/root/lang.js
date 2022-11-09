@@ -2358,6 +2358,7 @@ export default {
   expandableShowMore: 'Show more',
   exportButtonExportTable: 'Export Table',
   exportButtonDownloadingProgress: 'Downloading... {progress}%',
+  exportButtonTooltip: 'Export data in UTF-8 encoded CSV',
 
   globalHeaderBannerTitle: 'COVID-19 global situational information and technical guidance available {link}.',
   globalHeaderBannerHere: 'here',
