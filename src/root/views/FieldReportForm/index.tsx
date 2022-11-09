@@ -202,6 +202,8 @@ function FieldReportForm(props: Props) {
     eventOptions,
     isReviewCountry,
     imminentEventOptions,
+    fetchingEapDetails,
+    eapDetailsResponse,
   } = useFieldReportOptions(value);
 
   React.useEffect(() => {
@@ -226,7 +228,8 @@ function FieldReportForm(props: Props) {
   const pending = fetchingUserDetails
     || fetchingActions
     || fieldReportPending
-    || fieldReportSubmitPending;
+    || fieldReportSubmitPending
+    || fetchingEapDetails;
 
   type StepTypes = 'step1' | 'step2' | 'step3' | 'step4';
   const [currentStep, setCurrentStep] = React.useState<StepTypes>('step1');
