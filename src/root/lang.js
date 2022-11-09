@@ -156,6 +156,7 @@ export default {
   regionRiskTab: 'Risk Watch',
   regionProfileTab: 'Regional Profile',
   regionPreparednessTab: 'Preparedness',
+  regionCountryPlansTab: 'Country Plan',
   regionAdditionalInfoTab: 'Additional Data',
   regionSnippetsTitle: 'Regional Content',
   regionIframeBackLink: 'Back to Regional Profile',

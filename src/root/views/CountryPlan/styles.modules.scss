@@ -1,0 +1,8 @@
+@import '~styles/settings/variables';
+
+.country-plan {
+  display: flex;
+  flex-direction: column;
+  padding: $spacing*2 0;
+  gap: $spacing*2;
+}
