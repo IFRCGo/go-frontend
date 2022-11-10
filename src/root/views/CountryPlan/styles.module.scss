@@ -1,0 +1,13 @@
+@import '~styles/settings/variables';
+
+.country-plan{
+  margin: $spacing*2 0;
+
+  .country-plan-content {
+    display: flex;
+    justify-content: space-evenly;
+  }
+  .country-plan-report {
+    display: flex;
+  }
+}

@@ -1,0 +1,10 @@
+@import '~styles/settings/variables';
+
+.country-plan-table {
+  width: 100%;
+  margin: $spacing*2 0;
+
+  .column-heading {
+    display: flex;
+  }
+}
