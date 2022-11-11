@@ -156,7 +156,6 @@ export default {
   regionRiskTab: 'Risk Watch',
   regionProfileTab: 'Regional Profile',
   regionPreparednessTab: 'Preparedness',
-  regionCountryPlansTab: 'Country Plan',
   regionAdditionalInfoTab: 'Additional Data',
   regionSnippetsTitle: 'Regional Content',
   regionIframeBackLink: 'Back to Regional Profile',
@@ -211,7 +210,7 @@ export default {
   country3WTab: '3W',
   countryPreparednessTab: 'Preparedness',
   countryAdditionalInfoTab: 'Additional Data',
-
+  countryCountryPlanTab: 'Country Plan',
   emergenciesTableError: 'Latest emergencies not available.',
   emergenciesTableDate: 'Start Date',
   emergenciesTableName: 'Name',

@@ -6,10 +6,10 @@ import Card from '#components/Card';
 import KeyFigure from '#components/KeyFigure';
 import Container from '#components/Container';
 import Header from '#components/Header';
-import FieldReportsTable from '#components/connected/field-reports-table';
+import CountryPlanTable from './CountryPlanTable';
 
 import styles from './styles.module.scss';
-import CountryPlanTable from './CountryPlanTable';
+import CountryMembershipTable from './CountryMembershipTable';
 
 interface Props {
   className?: string;
@@ -64,9 +64,15 @@ function CountryPlan(props: Props) {
           </Card>
         </div>
       </div>
+      <Header
+        className={styles.header}
+        heading="Strategic Priorities"
+        actions={undefined}
+        headingSize="extraLarge"
+      />
       <div className={styles.countryPlanReport}>
         <CountryPlanTable />
-        <CountryPlanTable />
+        <CountryMembershipTable />
       </div>
     </Container>
   );

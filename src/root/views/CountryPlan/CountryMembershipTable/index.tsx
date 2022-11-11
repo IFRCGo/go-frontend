@@ -3,7 +3,6 @@ import {
   _cs,
 } from '@togglecorp/fujs';
 import TextOutput, { Props as TextOutputProps } from '#components/TextOutput';
-import Header from '#components/Header';
 
 import styles from './styles.module.scss';
 
@@ -28,7 +27,7 @@ function FieldOutput(props: TextOutputProps) {
   );
 }
 
-function CountryPlanTable(props: Props) {
+function CountryMembershipTable(props: Props) {
   const {
     className,
   } = props;
@@ -38,10 +37,32 @@ function CountryPlanTable(props: Props) {
       <tr>
         <td colSpan={2} className={styles.year}>
           <FieldOutput
-            label="Strategic Priorities"
+            label="Name of Partner National Society"
+            className={styles.climate}
           />
           <FieldOutput
-            label="People Targeted"
+            label="Climate"
+          />
+          <FieldOutput
+            label="Crises"
+          />
+          <FieldOutput
+            label="Health"
+          />
+          <FieldOutput
+            label="Migration"
+          />
+          <FieldOutput
+            label="Inclusion"
+          />
+          <FieldOutput
+            label="Engaged"
+          />
+          <FieldOutput
+            label="Accountable"
+          />
+          <FieldOutput
+            label="Trusted"
           />
         </td>
       </tr>
@@ -49,7 +70,7 @@ function CountryPlanTable(props: Props) {
         <tr>
           <td className={styles.peopleLabel}>
             <FieldOutput
-              label="Climate and environment crises"
+              label="British Red cross"
               value={500000}
               valueType="number"
               className={styles.grey}
@@ -59,7 +80,7 @@ function CountryPlanTable(props: Props) {
         <tr>
           <td className={styles.peopleLabel}>
             <FieldOutput
-              label="Evolving crises and disasters"
+              label="Canadian Red Cross"
               value={500000}
               valueType="number"
               className={styles.grey}
@@ -69,38 +90,8 @@ function CountryPlanTable(props: Props) {
         <tr>
           <td className={styles.peopleLabel}>
             <FieldOutput
-              label="Growing gaps in health and well-being"
+              label="Red Cross of China"
               value={500000}
-              valueType="number"
-              className={styles.grey}
-            />
-          </td>
-        </tr>
-        <tr>
-          <td className={styles.peopleLabel}>
-            <FieldOutput
-              label="Migration and identity"
-              value={1000000}
-              valueType="number"
-              className={styles.grey}
-            />
-          </td>
-        </tr>
-        <tr>
-          <td className={styles.peopleLabel}>
-            <FieldOutput
-              label="Values, power, and inclusion"
-              value={110000}
-              valueType="number"
-              className={styles.grey}
-            />
-          </td>
-        </tr>
-        <tr>
-          <td className={styles.peopleLabel}>
-            <FieldOutput
-              label="Ongoing emergencies"
-              value={20000}
               valueType="number"
               className={styles.grey}
             />
@@ -111,4 +102,4 @@ function CountryPlanTable(props: Props) {
   );
 }
 
-export default CountryPlanTable;
+export default CountryMembershipTable;

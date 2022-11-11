@@ -52,7 +52,6 @@ import RegionalRiskWatch from './RegionalRiskWatch';
 
 import LanguageContext from '#root/languageContext';
 import { resolveToString } from '#utils/lang';
-import CountryPlan from './CountryPlan';
 
 import { countriesSelector, countriesByRegionSelector, regionsByIdSelector, regionByIdOrNameSelector, countriesGeojsonSelector } from '../selectors';
 import turfBbox from '@turf/bbox';
@@ -487,11 +486,6 @@ class AdminArea extends SFPComponent {
                       <TitledSnippets snippets={data.preparedness_snippets} />
                     </TabContent>
                   </TabPanel>) : null}
-                <TabPanel>
-                  <TabContent title={strings.regionCountryPlansTab}>
-                    <CountryPlan />
-                  </TabContent>
-                </TabPanel>
                 {get(this.props.snippets, 'data.results.length') || get(this.props.keyFigures, 'data.results.length') ? (
                   <TabPanel>
                     <TabContent isError={!get(this.props.keyFigures, 'data.results.length')} errorMessage={strings.noDataMessage} title={strings.regionKeyFigures}>

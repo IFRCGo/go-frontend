@@ -30,7 +30,6 @@
 
 .field-output {
   display: flex;
-  padding: $spacing/2;
 
   .label {
     width: 10rem;
@@ -39,13 +38,11 @@
 
   .value {
     font-weight: $base-font-medium;
-    padding: $spacing;
   }
 
   .field-output {
     .label {
       width: auto;
-      padding: $spacing;
     }
   }
 }
