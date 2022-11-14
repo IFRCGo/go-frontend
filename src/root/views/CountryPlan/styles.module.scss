@@ -1,13 +1,29 @@
 @import '~styles/settings/variables';
 
-.country-plan{
+.country-plan {
   margin: $spacing*2 0;
 
   .country-plan-content {
     display: flex;
-    justify-content: space-evenly;
+    justify-content: flex-start;
+    gap: $spacing * 13;
+
+    .download-links {
+      .download-link {
+        margin: $spacing / 2;
+      }
+    }
   }
-  .country-plan-report {
+
+  .keyFigure {
     display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: $spacing*6 0;
   }
+}
+
+.country-plan-report {
+  display: flex;
+  justify-content: space-evenly;
 }

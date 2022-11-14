@@ -4,6 +4,14 @@
   display: flex;
 }
 
+.table-header {
+  transform: rotate(90deg);
+
+  .label {
+    width: 4rem;
+  }
+}
+
 .people-label {
   font-weight: 500;
   color: grey;
@@ -11,20 +19,19 @@
 
 }
 
-.year,
-.grey-row {
-  background-color: #fafafa;
-}
+.row {
+  .field-output {
+    .label {
+      transform: rotate(0deg);
+      width: $spacing * 8;
+    }
 
-.grey {
-  .label {
-    width: $spacing * 6;
-  }
-
-  .value {
-    width: $spacing;
-    display: flex;
-    justify-content: space-between;
+    .value {
+      width: 4rem;
+      display: flex;
+      justify-content: center;
+      padding: $spacing;
+    }
   }
 }
 
@@ -32,7 +39,8 @@
   display: flex;
 
   .label {
-    width: 10rem;
+    width: 5rem;
+    transform: rotate(-90deg);
     flex-shrink: 0;
   }
 
@@ -44,5 +52,14 @@
     .label {
       width: auto;
     }
+  }
+}
+
+.row {
+  display: flex;
+
+  >* {
+    flex-basis: 0;
+    flex-grow: 1;
   }
 }

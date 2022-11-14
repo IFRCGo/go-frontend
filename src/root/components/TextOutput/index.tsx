@@ -14,7 +14,7 @@ interface BaseProps {
   labelContainerClassName?: string;
   description?: React.ReactNode;
   descriptionContainerClassName?: string;
-  valueContainerClassName?: string;
+  valueContainerClassName?:  React.ReactNode;
   hideLabelColon?: boolean;
   displayType?: DisplayType;
   strongValue?: boolean;

@@ -13,7 +13,7 @@ import Translate from '#components/Translate';
 // Provides titles to associate with incoming stats
 // The explicit reference of these and the tooltip values could
 // be avoided by adding this data as properties on the incoming appealsList
-const keyFiguresList = ['activeDrefs', 'activeAppeals', 'budget', 'appealsFunding', 'targetPop'];
+const keyFiguresList = ['activeDrefs', 'activeAppeals', 'budget', 'appealsFunding', 'targetPop', 'countryPlan'];
 
 // const keyIcon = {
 //   activeDrefs: 'collecticon-rc',
@@ -28,7 +28,8 @@ const keyIconSrc = {
   activeAppeals: '/assets/graphics/layout/logo-appeals.svg',
   budget: '/assets/graphics/layout/funding-requirements.svg',
   appealsFunding: '/assets/graphics/layout/funding-coverage.svg',
-  targetPop: '/assets/graphics/layout/targeted-population.svg'
+  targetPop: '/assets/graphics/layout/targeted-population.svg',
+  countryPlan: '/assets/graphics/layout/logo-dref.svg'
 };
 
 export default function KeyFiguresHeader (props) {
@@ -48,7 +49,8 @@ export default function KeyFiguresHeader (props) {
     activeAppeals: strings.keyFiguresActiveAppeals,
     budget: strings.keyFiguresBudget,
     appealsFunding: strings.keyFiguresAppealsFunding,
-    targetPop: strings.keyFiguresTargetPop
+    targetPop: strings.keyFiguresTargetPop,
+    countryPlan: strings.activeCountryPlanTitle,
   };
   // Lists two tooltip descriptions currently in use.
   const tooltipOptions = {
@@ -59,6 +61,10 @@ export default function KeyFiguresHeader (props) {
     activeAppeals: {
       title: strings.keyFigureActiveAppealTitle,
       description: strings.keyFigureActiveAppealDescription,
+    },
+    activeCountryPlan: {
+      title: strings.activeCountryPlanTitle,
+      description: undefined,
     }
   };
 
@@ -80,8 +86,9 @@ export default function KeyFiguresHeader (props) {
   const filteredKeyFigures = () => {
     return Object.keys(stats).map(stat => {
       let value = stats[stat];
+      console.warn('value', stats, stat, value);
       // Applies common util to long numbers
-      const statsToShorten = ['budget', 'targetPop', 'amountFunded', 'amountRequested', ''];
+      const statsToShorten = ['budget', 'targetPop', 'amountFunded', 'amountRequested', 'countryPlan'];
       if (statsToShorten.includes(stat)) {
         value = shortenLargeNumber(value, 1);
       }
@@ -100,6 +107,7 @@ export default function KeyFiguresHeader (props) {
     }).filter(figure => keyFiguresList.includes(figure.id));
   };
 
+  console.warn('filteredKeyFigures', filteredKeyFigures(), stats, keyFiguresList);
   return (
     <div className='container-lg'>
       {props.fullscreen ? (

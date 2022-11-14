@@ -3789,5 +3789,8 @@ export default {
   finalReportIndicatorActualLabel: 'Actual',
   finalReportExportIndicators: 'Indicators',
   finalReportExport: 'Final Report Export',
-  clickToViewEmergencyResponseFramework: 'Click to view Emergency Response Framework'
+  clickToViewEmergencyResponseFramework: 'Click to view Emergency Response Framework',
+
+  //Country Plan
+  activeCountryPlanTitle: 'Active Country Plan',
 };

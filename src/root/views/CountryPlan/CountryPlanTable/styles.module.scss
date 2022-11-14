@@ -1,14 +1,17 @@
 @import '~styles/settings/variables';
 
-.year {
-  display: flex;
-}
-
 .people-label {
   font-weight: 500;
   color: grey;
-  width: 4rem;
+  width: 8rem;
+}
 
+.people-targeted-label {
+  display: flex;
+  justify-content: flex-end;
+  font-weight: 500;
+  color: grey;
+  width: 16rem;
 }
 
 .year,
@@ -29,11 +32,8 @@
 }
 
 .field-output {
-  display: flex;
-  padding: $spacing/2;
-
   .label {
-    width: 10rem;
+    width: 15rem;
     flex-shrink: 0;
   }
 
@@ -45,6 +45,21 @@
   .field-output {
     .label {
       width: auto;
+      padding: $spacing;
+    }
+  }
+}
+.row {
+  .field-output {
+    .label {
+      transform: rotate(0deg);
+      width: $spacing * 8;
+    }
+
+    .value {
+      width: 4rem;
+      display: flex;
+      justify-content: center;
       padding: $spacing;
     }
   }
