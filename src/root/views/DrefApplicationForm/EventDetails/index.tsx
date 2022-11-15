@@ -202,7 +202,6 @@ function EventDetails(props: Props) {
         heading={strings.drefFormDescriptionEvent}
       >
         <InputSection
-
           title={
             isImminentOnset
               ? strings.drefFormApproximateDateOfImpact
