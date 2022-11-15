@@ -445,7 +445,7 @@ function DrefApplicationList(props: Props) {
                     name={rowKey}
                     onClick={postDrefNewFinalReport}
                     label={strings.finalReportCreateButtonLabel}
-                    disabled={!canAddFinalReport}
+                    disabled={!canAddFinalReport || finalReportPublishPending}
                   />
                   <DropdownMenuItem
                     icon={<MdEdit />}
