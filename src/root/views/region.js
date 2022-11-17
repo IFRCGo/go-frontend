@@ -84,7 +84,6 @@ class AdminArea extends SFPComponent {
       { title: strings.region3WTab, hash: '#3w' },
       { title: strings.regionRiskTab, hash: '#risk-watch' },
       { title: strings.regionProfileTab, hash: '#regional-profile' },
-      { title: strings.regionCountryPlansTab, hash: '#country-plans' },
 
       // { title: strings.regionPreparednessTab, hash: '#preparedness' },
       // { title: strings.regionAdditionalInfoTab, hash: '#additional-info' }

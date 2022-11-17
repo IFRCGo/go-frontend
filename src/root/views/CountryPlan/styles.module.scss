@@ -27,3 +27,23 @@
   display: flex;
   justify-content: space-evenly;
 }
+
+@media (max-width: $media-medium) {
+  .country-plan {
+    .country-plan-content{
+      flex-direction: column;
+      gap: $spacing * 2;
+    }
+
+    .keyFigure {
+      margin: $spacing 0;
+    }
+  }
+
+  .country-plan-report {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing * 3;
+  }
+}
+
