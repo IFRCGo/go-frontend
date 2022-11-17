@@ -82,8 +82,16 @@ interface KeyValue {
   value: string | undefined,
 }
 
-function getItemsWithMatchingKeys(items: KeyValue[], key: string) {
-  return items.filter(item => item.key.startsWith(key));
+
+function getItemsWithMatchingKeys(items: KeyValue[], key: string, exceptions?: string[]) {
+  const filteredItems = items.filter(item => item.key.startsWith(key));
+
+  if (!exceptions || exceptions.length <= 0) {
+    return filteredItems;
+  }
+
+  const exceptionMap = listToMap(exceptions, d => d, () => true);
+  return filteredItems.filter(item => !exceptionMap[item.key]);
 }
 
 function getNumberSafe(str: string | undefined) {
@@ -188,8 +196,6 @@ export function transformImport(
   };
 
   const importType = numFieldsToType[importData.length];
-
-  console.info(importType, importData);
 
   const {
     affect_same_area,
@@ -496,7 +502,7 @@ export function transformImport(
   }).filter(isDefined);
 
   const RISK_KEY = 'risk_';
-  const riskItems = getItemsWithMatchingKeys(importData, RISK_KEY);
+  const riskItems = getItemsWithMatchingKeys(importData, RISK_KEY, ['risk_security_concern']);
   const groupedRisks = listToGroupList(
     riskItems,
     (d) => {
@@ -560,6 +566,7 @@ export function transformImport(
     men: getNumberSafe(men),
     national_authorities: getStringSafe(national_authorities),
     national_society: country,
+    national_society_actions,
     num_affected: getNumberSafe(num_affected),
     num_assisted: getNumberSafe(total_targeted_population),
     operation_objective: getStringSafe(operation_objective),
@@ -618,7 +625,6 @@ export function transformImport(
     event_scope: getStringSafe(event_scope),
     lessons_learned: getStringSafe(lessons_learned),
     logistic_capacity_of_ns: getStringSafe(logistic_capacity_of_ns),
-    national_society_actions,
     needs_identified,
     ns_request_fund: getBooleanSafe(ns_request_fund),
     ns_request_text: getStringSafe(ns_request_text),
