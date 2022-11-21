@@ -55,7 +55,7 @@ interface Props {
   fileIdToUrlMap: Record<number, string>;
   setFileIdToUrlMap?: React.Dispatch<React.SetStateAction<Record<number, string>>>;
   yesNoOptions: BooleanValueOption[];
-  isAssessmentReport?: boolean;
+  isAssessmentReport: boolean;
   isImminentOnset?: boolean;
 }
 

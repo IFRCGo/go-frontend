@@ -493,7 +493,7 @@ function DrefOperationalUpdate(props: Props) {
 
   const isSuddenOnset = value?.type_of_onset === ONSET_SUDDEN;
   const isImminentOnset = value?.type_of_onset === ONSET_IMMINENT;
-  const isAssessmentReport = value?.is_assessment_report;
+  const isAssessmentReport = !!value?.is_assessment_report;
 
   return (
     <Tabs
@@ -621,6 +621,7 @@ function DrefOperationalUpdate(props: Props) {
                   fileIdToUrlMap={fileIdToUrlMap}
                   setFileIdToUrlMap={setFileIdToUrlMap}
                   isSuddenOnset={isSuddenOnset}
+                  isAssessmentReport={isAssessmentReport}
                 />
               </TabPanel>
               <TabPanel name='needs'>

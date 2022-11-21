@@ -49,7 +49,7 @@ interface Props {
   nsActionOptions: StringValueOption[];
   fileIdToUrlMap: Record<number, string>;
   setFileIdToUrlMap?: React.Dispatch<React.SetStateAction<Record<number, string>>>;
-  isAssessmentReport?: boolean;
+  isAssessmentReport: boolean;
   isImminentOnset?: boolean;
 }
 

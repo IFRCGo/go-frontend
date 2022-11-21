@@ -37,6 +37,7 @@ interface Props {
   fileIdToUrlMap: Record<number, string>;
   setFileIdToUrlMap?: React.Dispatch<React.SetStateAction<Record<number, string>>>;
   isSuddenOnset: boolean;
+  isAssessmentReport: boolean;
 }
 
 function EventDetails(props: Props) {
@@ -50,7 +51,9 @@ function EventDetails(props: Props) {
     fileIdToUrlMap,
     setFileIdToUrlMap,
     isSuddenOnset,
+    isAssessmentReport,
   } = props;
+
   const error = React.useMemo(
     () => getErrorObject(formError),
     [formError]
@@ -293,19 +296,21 @@ function EventDetails(props: Props) {
             ))}
           </div>
         </InputSection>
-        <InputSection
-          title={strings.drefFormScopeAndScaleEvent}
-          description={strings.drefFormScopeAndScaleDescription}
-          oneColumn
-          multiRow
-        >
-          <TextArea
-            name="event_scope"
-            onChange={onValueChange}
-            value={value.event_scope}
-            error={error?.event_scope}
-          />
-        </InputSection>
+        {!isAssessmentReport && (
+          <InputSection
+            title={strings.drefFormScopeAndScaleEvent}
+            description={strings.drefFormScopeAndScaleDescription}
+            oneColumn
+            multiRow
+          >
+            <TextArea
+              name="event_scope"
+              onChange={onValueChange}
+              value={value.event_scope}
+              error={error?.event_scope}
+            />
+          </InputSection>
+        )}
       </Container>
     </>
   );

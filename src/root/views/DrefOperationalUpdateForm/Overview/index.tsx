@@ -352,7 +352,6 @@ function Overview(props: Props) {
             onChange={onValueChange}
             error={error?.title}
           />
-
           <Button
             className={styles.generateTitleButton}
             name={undefined}
