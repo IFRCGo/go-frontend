@@ -2,14 +2,23 @@ import React from 'react';
 import {
   _cs,
 } from '@togglecorp/fujs';
+
+import LanguageContext from '#root/languageContext';
+import Container from '#components/Container';
 import TextOutput, { Props as TextOutputProps } from '#components/TextOutput';
-import Header from '#components/Header';
 
 import styles from './styles.module.scss';
 
-interface Props {
-  className?: string;
-}
+export const tables = [
+  {
+    label: "Climate and environmental",
+    value: "5555"
+  },
+  {
+    label: "Climate",
+    value: "2000"
+  },
+];
 
 function FieldOutput(props: TextOutputProps) {
   const {
@@ -28,145 +37,67 @@ function FieldOutput(props: TextOutputProps) {
   );
 }
 
+interface RowProps {
+  className?: string;
+  children?: React.ReactNode;
+}
+
+function Row(props: RowProps) {
+  const {
+    className,
+    children,
+  } = props;
+
+  return (
+    <div
+      className={_cs(
+        styles.row,
+        className,
+      )}
+    >
+      {children}
+    </div>
+  );
+}
+
+interface Props {
+  className?: string;
+}
+
 function CountryPlanTable(props: Props) {
+  const {
+    className,
+  } = props;
+
+  const { strings } = React.useContext(LanguageContext);
 
   return (
     <div className={styles.countryPlanHeader}>
-      <Header
+      <Container
         className={styles.header}
-        heading="Strategic Priorities"
-        actions={undefined}
-        headingSize="extraLarge"
-      />
-      <table>
-        <tr>
-          <td>
+        heading={strings.countryPlanTableHeading}
+      >
+        <div className={styles.content}>
+          <Row>
             <FieldOutput
-              label="Strategic Priorities"
+              className={styles.contentHeader}
+              label={strings.countryPlanTableHeading}
+              value={strings.countryPlanPeopleTargeted}
             />
-          </td>
-          <td>
-            <FieldOutput
-              label="Funding Requirements (CHF)"
-            />
-          </td>
-          <td>
-            <FieldOutput
-              label="People Targeted"
-            />
-          </td>
-        </tr>
-        <tbody>
-          <tr>
-            <td className={styles.peopleLabel}>
-              <FieldOutput
-                label="Climate and environment crises"
-                value={500000}
-                valueType="number"
-                className={styles.grey}
-              />
-            </td>
-            <td className={styles.peopleTargetedLabel}>
-              <FieldOutput
-                label={undefined}
-                value={5555}
-                valueType="number"
-                className={styles.grey}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td className={styles.peopleLabel}>
-              <FieldOutput
-                label="Evolving crises and disasters"
-                value={500000}
-                valueType="number"
-                className={styles.grey}
-              />
-            </td>
-            <td className={styles.peopleTargetedLabel}>
-              <FieldOutput
-                label={undefined}
-                value={5555}
-                valueType="number"
-                className={styles.grey}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td className={styles.peopleLabel}>
-              <FieldOutput
-                label="Growing gaps in health and well-being"
-                value={500000}
-                valueType="number"
-                className={styles.grey}
-              />
-            </td>
-            <td className={styles.peopleTargetedLabel}>
-              <FieldOutput
-                label={undefined}
-                value={100000}
-                valueType="number"
-                className={styles.grey}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td className={styles.peopleLabel}>
-              <FieldOutput
-                label="Migration and identity"
-                value={1000000}
-                valueType="number"
-                className={styles.grey}
-              />
-            </td>
-            <td className={styles.peopleTargetedLabel}>
-              <FieldOutput
-                label={undefined}
-                value={22000}
-                valueType="number"
-                className={styles.grey}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td className={styles.peopleLabel}>
-              <FieldOutput
-                label="Values, power, and inclusion"
-                value={110000}
-                valueType="number"
-                className={styles.grey}
-              />
-            </td>
-            <td className={styles.peopleTargetedLabel}>
-              <FieldOutput
-                label={undefined}
-                value={22000}
-                valueType="number"
-                className={styles.grey}
-              />
-            </td>
-          </tr>
-          <tr>
-            <td className={styles.peopleLabel}>
-              <FieldOutput
-                label="Ongoing emergencies"
-                value={20000}
-                valueType="number"
-                className={styles.grey}
-              />
-            </td>
-            <td className={styles.peopleTargetedLabel}>
-              <FieldOutput
-                label={undefined}
-                value={11000}
-                valueType="number"
-                className={styles.grey}
-              />
-            </td>
-          </tr>
-        </tbody>
-      </table>
+          </Row>
+          {tables &&
+            tables.map((type, index) => (
+              <Row>
+                <FieldOutput
+                  key={index}
+                  label={type.label}
+                  value={type.value}
+                />
+              </Row>
+            ))
+          }
+        </div>
+      </Container>
     </div>
   );
 }

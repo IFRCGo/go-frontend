@@ -1,14 +1,20 @@
 @import '~styles/settings/variables';
 
-.year {
+.content {
   display: flex;
-}
 
-.table-header {
-  transform: rotate(90deg);
+  .table-title {
+    transform: rotate(90deg);
+    background-color: $grey-mist;
+  }
 
-  .label {
-    width: 4rem;
+  .table-header {
+    transform: rotate(360deg);
+    background-color: $grey-mist;
+
+    .label {
+      width: 5rem;
+    }
   }
 }
 
@@ -16,7 +22,6 @@
   font-weight: 500;
   color: grey;
   width: 4rem;
-
 }
 
 .row {
@@ -27,7 +32,7 @@
     }
 
     .value {
-      width: 4rem;
+      width: 3.5rem;
       display: flex;
       justify-content: center;
       padding: $spacing;

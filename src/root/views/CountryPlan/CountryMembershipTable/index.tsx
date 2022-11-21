@@ -4,10 +4,25 @@ import {
   _cs,
 } from '@togglecorp/fujs';
 import LanguageContext from '#root/languageContext';
-import Header from '#components/Header';
 import TextOutput, { Props as TextOutputProps } from '#components/TextOutput';
 
 import styles from './styles.module.scss';
+import Container from '#components/Container';
+
+export const tables = [
+  {
+    label: "British Red Cross",
+    value: { undefined }
+  },
+  {
+    label: "Red Cross China",
+    value: { undefined }
+  },
+  {
+    label: "Danish Red Cross",
+    value: { undefined }
+  }
+];
 
 function FieldOutput(props: TextOutputProps) {
   const {
@@ -49,278 +64,120 @@ function Row(props: RowProps) {
   );
 }
 
-function CountryMembershipTable() {
+interface Props {
+  className?: string;
+}
+
+function CountryMembershipTable(props: Props) {
 
   const { strings } = React.useContext(LanguageContext);
 
   return (
     <div className={styles.countryMembershipPlan}>
-      <Header
+      <Container
         className={styles.header}
-        heading="Membership Coordination"
-        actions={undefined}
-        headingSize="extraLarge"
-      />
-      <table>
-        <tr>
-          <td colSpan={10} className={styles.year}>
-            <FieldOutput
-              label="Name of Partner National Society"
-              className={styles.tableHeader}
-            />
-            <FieldOutput
-              label="Climate"
-            />
-            <FieldOutput
-              label="Crises"
-            />
-            <FieldOutput
-              label="Health"
-            />
-            <FieldOutput
-              label="Migration"
-            />
-            <FieldOutput
-              label="Inclusion"
-            />
-            <FieldOutput
-              label="Engaged"
-            />
-            <FieldOutput
-              label="Accountable"
-            />
-            <FieldOutput
-              label="Trusted"
-            />
-          </td>
-        </tr>
-        <tbody>
-          <Row>
-            <FieldOutput
-              label="British Red Cross"
-              value={<TiTick />}
-              valueType="text"
-              className={styles.grey}
-            />
-            <FieldOutput
-              value={<TiTick />}
-              valueType="text"
-              className={styles.grey}
-            />
-            <FieldOutput
-              value={<TiTick />}
-              valueType="text"
-              className={styles.grey}
-            />
-            <FieldOutput
-              value={<TiTick />}
-              valueType="text"
-              className={styles.grey}
-            />
-            <FieldOutput
-              value={<TiTick />}
-              valueType="text"
-              className={styles.grey}
-            />
-            <FieldOutput
-              value={undefined}
-              valueType="text"
-              className={styles.grey}
-            />
-            <FieldOutput
-              value={undefined}
-              valueType="text"
-              className={styles.grey}
-            />
-            <FieldOutput
-              value={undefined}
-              valueType="text"
-              className={styles.grey}
-            />
-            <FieldOutput
-              value={<TiTick />}
-              valueType="text"
-              className={styles.grey}
-            />
-            <FieldOutput
-              value={<TiTick />}
-              valueType="text"
-              className={styles.grey}
-            />
-          </Row>
-          <Row>
-            <hr />
-          </Row>
-          <Row>
-            <FieldOutput
-              label="Red Cross China"
-              value={<TiTick />}
-              valueType="text"
-              className={styles.grey}
-            />
-            <FieldOutput
-              value={<TiTick />}
-              valueType="text"
-              className={styles.grey}
-            />
-            <FieldOutput
-              value={undefined}
-              valueType="text"
-              className={styles.grey}
-            />
-            <FieldOutput
-              value={<TiTick />}
-              valueType="text"
-              className={styles.grey}
-            />
-            <FieldOutput
-              value={<TiTick />}
-              valueType="text"
-              className={styles.grey}
-            />
-            <FieldOutput
-              value={undefined}
-              valueType="text"
-              className={styles.grey}
-            />
-            <FieldOutput
-              value={undefined}
-              valueType="text"
-              className={styles.grey}
-            />
-            <FieldOutput
-              value={<TiTick />}
-              valueType="text"
-              className={styles.grey}
-            />
-            <FieldOutput
-              value={<TiTick />}
-              valueType="text"
-              className={styles.grey}
-            />
-            <FieldOutput
-              value={<TiTick />}
-              valueType="text"
-              className={styles.grey}
-            />
-          </Row>
-          <Row>
-            <hr />
-          </Row>
-          <Row>
-            <FieldOutput
-              label="Canadian Red Cross"
-              value={<TiTick />}
-              valueType="text"
-              className={styles.grey}
-            />
-            <FieldOutput
-              value={<TiTick />}
-              valueType="text"
-              className={styles.grey}
-            />
-            <FieldOutput
-              value={undefined}
-              valueType="text"
-              className={styles.grey}
-            />
-            <FieldOutput
-              value={<TiTick />}
-              valueType="text"
-              className={styles.grey}
-            />
-            <FieldOutput
-              value={<TiTick />}
-              valueType="text"
-              className={styles.grey}
-            />
-            <FieldOutput
-              value={undefined}
-              valueType="text"
-              className={styles.grey}
-            />
-            <FieldOutput
-              value={undefined}
-              valueType="text"
-              className={styles.grey}
-            />
-            <FieldOutput
-              value={<TiTick />}
-              valueType="text"
-              className={styles.grey}
-            />
-            <FieldOutput
-              value={<TiTick />}
-              valueType="text"
-              className={styles.grey}
-            />
-            <FieldOutput
-              value={<TiTick />}
-              valueType="text"
-              className={styles.grey}
-            />
-          </Row>
-          <Row>
-            <hr />
-          </Row>
-          <Row>
-            <FieldOutput
-              label="Danish Red Cross"
-              value={undefined}
-              valueType="text"
-              className={styles.grey}
-            />
-            <FieldOutput
-              value={undefined}
-              valueType="text"
-              className={styles.grey}
-            />
-            <FieldOutput
-              value={undefined}
-              valueType="text"
-              className={styles.grey}
-            />
-            <FieldOutput
-              value={<TiTick />}
-              valueType="text"
-              className={styles.grey}
-            />
-            <FieldOutput
-              value={<TiTick />}
-              valueType="text"
-              className={styles.grey}
-            />
-            <FieldOutput
-              value={<TiTick />}
-              valueType="text"
-              className={styles.grey}
-            />
-            <FieldOutput
-              value={undefined}
-              valueType="text"
-              className={styles.grey}
-            />
-            <FieldOutput
-              value={undefined}
-              valueType="text"
-              className={styles.grey}
-            />
-            <FieldOutput
-              value={<TiTick />}
-              valueType="text"
-              className={styles.grey}
-            />
-            <FieldOutput
-              value={<TiTick />}
-              valueType="text"
-              className={styles.grey}
-            />
-          </Row>
-          <Row>
-            <hr />
-          </Row>
-        </tbody>
-      </table>
+        heading={strings.countryPlanMembershipCoordinationtitle}
+      >
+        <div className={styles.content}>
+          <FieldOutput
+            label={strings.countryPlanNameOfPartnerNationalSociety}
+            className={styles.tableTitle}
+          />
+          <FieldOutput
+            label="Climate"
+            className={styles.tableHeader}
+          />
+          <FieldOutput
+            label="Crises"
+            className={styles.tableHeader}
+          />
+          <FieldOutput
+            label="Health"
+            className={styles.tableHeader}
+          />
+          <FieldOutput
+            label="Migration"
+            className={styles.tableHeader}
+          />
+          <FieldOutput
+            label="Inclusion"
+            className={styles.tableHeader}
+          />
+          <FieldOutput
+            label="Engaged"
+            className={styles.tableHeader}
+          />
+          <FieldOutput
+            label="Accountable"
+            className={styles.tableHeader}
+          />
+          <FieldOutput
+            label="Trusted"
+            className={styles.tableHeader}
+          />
+        </div>
+        {tables &&
+          tables.map((type, index) => (
+            <>
+              <Row key={index}>
+                <FieldOutput
+                  label={type.label}
+                  value={<TiTick />}
+                  valueType="text"
+                  className={styles.grey}
+                />
+                <FieldOutput
+                  value={<TiTick />}
+                  valueType="text"
+                  className={styles.grey}
+                />
+                <FieldOutput
+                  value={undefined}
+                  valueType="text"
+                  className={styles.grey}
+                />
+                <FieldOutput
+                  value={<TiTick />}
+                  valueType="text"
+                  className={styles.grey}
+                />
+                <FieldOutput
+                  value={<TiTick />}
+                  valueType="text"
+                  className={styles.grey}
+                />
+                <FieldOutput
+                  value={undefined}
+                  valueType="text"
+                  className={styles.grey}
+                />
+                <FieldOutput
+                  value={<TiTick />}
+                  valueType="text"
+                  className={styles.grey}
+                />
+                <FieldOutput
+                  value={undefined}
+                  valueType="text"
+                  className={styles.grey}
+                />
+                <FieldOutput
+                  value={<TiTick />}
+                  valueType="text"
+                  className={styles.grey}
+                />
+                <FieldOutput
+                  value={<TiTick />}
+                  valueType="text"
+                  className={styles.grey}
+                />
+              </Row>
+              <Row>
+                <hr />
+              </Row>
+            </>
+          ))}
+      </Container>
     </div>
   );
 }

@@ -3793,4 +3793,9 @@ export default {
 
   //Country Plan
   activeCountryPlanTitle: 'Active Country Plan',
+  countryPlanTableHeading: 'Strategic Priorities',
+  countryPlanPeopleTargeted: 'People Targeted',
+  countryPlanNsClimate: 'Climate and environmental crises',
+  countryPlanMembershipCoordinationtitle: 'Membership Coordination',
+  countryPlanNameOfPartnerNationalSociety: 'Name of Partner National Society'
 };

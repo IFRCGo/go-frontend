@@ -73,7 +73,10 @@ function CountryPlan(props: Props) {
         </div>
       </Container>
       <div className={styles.countryPlanReport}>
-        <CountryPlanTable />
+        <CountryPlanTable
+          strategicPrioritiesLabel="hello"
+          strategicPrioritiesValue={0}
+        />
         <CountryMembershipTable />
       </div>
     </>

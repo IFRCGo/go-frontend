@@ -1,35 +1,25 @@
 @import '~styles/settings/variables';
 
-.people-label {
-  font-weight: 500;
-  color: grey;
-  width: 8rem;
-}
-
-.people-targeted-label {
-  display: flex;
-  justify-content: flex-end;
-  font-weight: 500;
-  color: grey;
-  width: 16rem;
-}
-
-.year,
-.grey-row {
-  background-color: #fafafa;
-}
-
-.grey {
-  .label {
-    width: $spacing * 6;
+.content {
+  .content-header {
+    background-color: $grey-mist;
   }
-
-  .value {
-    width: $spacing;
+  .row {
     display: flex;
-    justify-content: space-between;
+
+    >* {
+      flex-basis: 0;
+      flex-grow: 1;
+    }
   }
 }
+
+.value {
+  width: $spacing;
+  display: flex;
+  justify-content: space-between;
+}
+
 
 .field-output {
   .label {
@@ -41,14 +31,8 @@
     font-weight: $base-font-medium;
     padding: $spacing;
   }
-
-  .field-output {
-    .label {
-      width: auto;
-      padding: $spacing;
-    }
-  }
 }
+
 .row {
   .field-output {
     .label {
@@ -57,10 +41,11 @@
     }
 
     .value {
-      width: 4rem;
+      width: 14rem;
       display: flex;
       justify-content: center;
       padding: $spacing;
+      color: rgb(75, 74, 74);
     }
   }
 }
