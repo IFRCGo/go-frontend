@@ -1,5 +1,5 @@
 import React from 'react';
-import { TiTick } from 'react-icons/ti';
+import { IoCheckmarkCircleSharp } from 'react-icons/io5';
 import {
   _cs,
 } from '@togglecorp/fujs';
@@ -122,27 +122,15 @@ function CountryMembershipTable(props: Props) {
               <Row key={index}>
                 <FieldOutput
                   label={type.label}
-                  value={<TiTick />}
+                  value={<IoCheckmarkCircleSharp
+                    fontSize="1.5em" />}
                   valueType="text"
                   className={styles.grey}
                 />
                 <FieldOutput
-                  value={<TiTick />}
-                  valueType="text"
-                  className={styles.grey}
-                />
-                <FieldOutput
-                  value={undefined}
-                  valueType="text"
-                  className={styles.grey}
-                />
-                <FieldOutput
-                  value={<TiTick />}
-                  valueType="text"
-                  className={styles.grey}
-                />
-                <FieldOutput
-                  value={<TiTick />}
+                  value={<IoCheckmarkCircleSharp
+                    fontSize="1.5em"
+                  />}
                   valueType="text"
                   className={styles.grey}
                 />
@@ -152,7 +140,14 @@ function CountryMembershipTable(props: Props) {
                   className={styles.grey}
                 />
                 <FieldOutput
-                  value={<TiTick />}
+                  value={<IoCheckmarkCircleSharp
+                    fontSize="1.5em" />}
+                  valueType="text"
+                  className={styles.grey}
+                />
+                <FieldOutput
+                  value={<IoCheckmarkCircleSharp
+                    fontSize="1.5em" />}
                   valueType="text"
                   className={styles.grey}
                 />
@@ -162,12 +157,25 @@ function CountryMembershipTable(props: Props) {
                   className={styles.grey}
                 />
                 <FieldOutput
-                  value={<TiTick />}
+                  value={<IoCheckmarkCircleSharp
+                    fontSize="1.5em" />}
                   valueType="text"
                   className={styles.grey}
                 />
                 <FieldOutput
-                  value={<TiTick />}
+                  value={undefined}
+                  valueType="text"
+                  className={styles.grey}
+                />
+                <FieldOutput
+                  value={<IoCheckmarkCircleSharp
+                    fontSize="1.5em" />}
+                  valueType="text"
+                  className={styles.grey}
+                />
+                <FieldOutput
+                  value={<IoCheckmarkCircleSharp
+                    fontSize="1.5em" />}
                   valueType="text"
                   className={styles.grey}
                 />

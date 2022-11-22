@@ -13,15 +13,9 @@
     background-color: $grey-mist;
 
     .label {
-      width: 5rem;
+      width: 5.5rem;
     }
   }
-}
-
-.people-label {
-  font-weight: 500;
-  color: grey;
-  width: 4rem;
 }
 
 .row {
@@ -32,7 +26,7 @@
     }
 
     .value {
-      width: 3.5rem;
+      width: 4rem;
       display: flex;
       justify-content: center;
       padding: $spacing;
@@ -44,19 +38,13 @@
   display: flex;
 
   .label {
-    width: 5rem;
+    width: 4.5rem;
     transform: rotate(-90deg);
     flex-shrink: 0;
   }
 
   .value {
     font-weight: $base-font-medium;
-  }
-
-  .field-output {
-    .label {
-      width: auto;
-    }
   }
 }
 
