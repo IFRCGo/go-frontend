@@ -44,4 +44,12 @@
       flex-grow: 1;
     }
   }
+
+  .errored,
+  .no-plan {
+    display: flex;
+    justify-content: center;
+    color: $color-text-message;
+    font-size: $font-size-lg;
+  }
 }

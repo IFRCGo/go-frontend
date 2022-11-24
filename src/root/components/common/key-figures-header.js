@@ -1,4 +1,6 @@
 import React, { useContext } from 'react';
+import { isDefined } from '@togglecorp/fujs';
+
 import { percent, shortenLargeNumber } from '#utils/format';
 import BlockLoading from '#components/block-loading';
 import { environment } from '#config';
@@ -13,7 +15,7 @@ import Translate from '#components/Translate';
 // Provides titles to associate with incoming stats
 // The explicit reference of these and the tooltip values could
 // be avoided by adding this data as properties on the incoming appealsList
-const keyFiguresList = ['activeDrefs', 'activeAppeals', 'budget', 'appealsFunding', 'targetPop', 'countryPlan'];
+const keyFiguresList = ['activeDrefs', 'activeAppeals', 'budget', 'appealsFunding', 'targetPop'];
 
 // const keyIcon = {
 //   activeDrefs: 'collecticon-rc',
@@ -29,18 +31,21 @@ const keyIconSrc = {
   budget: '/assets/graphics/layout/funding-requirements.svg',
   appealsFunding: '/assets/graphics/layout/funding-coverage.svg',
   targetPop: '/assets/graphics/layout/targeted-population.svg',
-  countryPlan: '/assets/graphics/layout/logo-dref.svg'
 };
 
 export default function KeyFiguresHeader (props) {
   const {
-    data: {
-      stats
-    } = {},
-    fetched,
-    fetching,
-    error
-  } = props.appealsListStats;
+    countryPlans,
+    appealsListStats: {
+      data: {
+        stats
+      } = {},
+      fetched,
+      fetching,
+      error,
+    },
+    fullscreen,
+  } = props;
 
   const { strings } = useContext(LanguageContext);
 
@@ -50,7 +55,6 @@ export default function KeyFiguresHeader (props) {
     budget: strings.keyFiguresBudget,
     appealsFunding: strings.keyFiguresAppealsFunding,
     targetPop: strings.keyFiguresTargetPop,
-    countryPlan: strings.activeCountryPlanTitle,
   };
   // Lists two tooltip descriptions currently in use.
   const tooltipOptions = {
@@ -95,6 +99,7 @@ export default function KeyFiguresHeader (props) {
       if (stat === 'appealsFunding' && stats.appealsBudget) {
         value = `${percent(stats.appealsFunding, stats.appealsBudget, 1)}%`;
       }
+
       return {
         id: stat,
         title: keyTitle[stat],
@@ -108,9 +113,7 @@ export default function KeyFiguresHeader (props) {
 
   return (
     <div className='container-lg'>
-      {props.fullscreen ? (
-        <FullscreenHeader title={strings.keyFiguresHeading}/>
-      ) : null}
+      {fullscreen && <FullscreenHeader title={strings.keyFiguresHeading}/>}
       <div className='stats-overall'>
         <h1 className='visually-hidden'>
           <Translate stringId='keyFiguresStatsOverall'/>
@@ -132,6 +135,19 @@ export default function KeyFiguresHeader (props) {
                 </div>
               </li>
             ))}
+            {isDefined(countryPlans) && (
+              <li className='sumstats__item__wrap'>
+                <div className='sumstats__item'>
+                  <span className='sumstats__icon_wrapper'>
+                    <img className='sumstats__icon_2020' src="/assets/graphics/layout/country-plan.png" />
+                  </span>
+                  <span className='sumstats__value'>{countryPlans}</span>
+                  <span className='sumstats__key'>
+                    {strings.activeCountryPlanTitle}
+                  </span>
+                </div>
+              </li>
+            )}
           </ul>
         </div>
       </div>

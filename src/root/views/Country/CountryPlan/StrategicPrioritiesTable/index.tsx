@@ -12,8 +12,8 @@ export interface StrategicPriority {
   country_plan: number;
   funding_requirement: number | null;
   people_targeted: number | null;
-  sp_name: string | null;
-  sp_name_display: string | null;
+  type: string | null;
+  type_display: string | null;
 }
 
 interface Props {
@@ -49,9 +49,9 @@ function CountryPlanTable(props: Props) {
         </thead>
         <tbody>
           {data?.map((sp) => (
-            <tr key={sp.sp_name}>
+            <tr key={sp.type}>
               <td>
-                {sp.sp_name_display}
+                {sp.type_display}
               </td>
               <td>
                 <NumberOutput

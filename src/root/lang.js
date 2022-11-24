@@ -3806,4 +3806,5 @@ export default {
   countryPlanKeyFigureRequestedAmount: 'Federation-Wide Requested Amount (CHF)',
   countryPlanKeyFigurePeopleTargeted: 'People Targeted',
   countryPlanNameOfPNS: 'Name of Partner National Society',
+  countryPlanNoCountryPlan: 'This country hasn\'t published any Country Plan yet!',
 };

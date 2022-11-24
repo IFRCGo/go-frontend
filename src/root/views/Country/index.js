@@ -667,7 +667,10 @@ class AdminArea extends SFPComponent {
         </header>
         <section className='inpage__body'>
           <div className='inner'>
-            <KeyFiguresHeader appealsListStats={this.props.appealsListStats} />
+            <KeyFiguresHeader
+              appealsListStats={this.props.appealsListStats}
+              countryPlans={this.props.country?.has_country_plan ? 1 : 0}
+            />
           </div>
         </section>
         <div className='tab__wrap'>

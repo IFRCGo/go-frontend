@@ -5,6 +5,7 @@ import {
   unique,
   listToGroupList,
   listToMap,
+  isDefined,
 } from '@togglecorp/fujs';
 import LanguageContext from '#root/languageContext';
 
@@ -12,15 +13,13 @@ import styles from './styles.module.scss';
 import Container from '#components/Container';
 
 export interface MembershipCoordination {
-  id: number;
+  id: number | null;
   country_plan: number;
   has_coordination: boolean;
   national_society: number;
   national_society_name: string;
-
-  // These should be named sector
-  strategic_priority: string;
-  strategic_priority_display: string;
+  sector: string;
+  sector_display: string;
 }
 interface Props {
   className?: string;
@@ -38,7 +37,7 @@ function MembershipCoordinationTable(props: Props) {
   const sectors = React.useMemo(
     () => (
       unique(
-        data.map(d => ({ key: d.strategic_priority, value: d.strategic_priority_display })),
+        data.map(d => ({ key: d.sector, value: d.sector_display })),
         d => d.key,
       )
     ),
@@ -49,7 +48,7 @@ function MembershipCoordinationTable(props: Props) {
     () => (
       listToMap(
         unique(
-          data,
+          data.filter(d => isDefined(d.id)),
           d => d.national_society,
         ),
         d => d.national_society,
@@ -61,9 +60,9 @@ function MembershipCoordinationTable(props: Props) {
 
   const nsGroupedCoordination = React.useMemo(() => (
     listToGroupList(
-      data,
+      data.filter(d => isDefined(d.id)),
       d => d.national_society,
-      d => d.strategic_priority,
+      d => d.sector,
     )
   ), [data]);
 

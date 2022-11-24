@@ -307,7 +307,10 @@ class AdminArea extends SFPComponent {
         <section className='inpage__body'>
           <div className='inner'>
             {this.props.appealsListStats.data ? (
-              <KeyFiguresHeader appealsListStats={this.props.appealsListStats} />
+              <KeyFiguresHeader
+                appealsListStats={this.props.appealsListStats}
+                countryPlans={this.props.adminArea?.data?.country_plans}
+              />
             ) : <BlockLoading />}
           </div>
         </section>
@@ -346,7 +349,11 @@ class AdminArea extends SFPComponent {
                     <HighlightedOperations opsType='region' opsId={data.id} />
                     <section className={presentationClass} id='presentation'>
                       {this.state.fullscreen ? (
-                        <KeyFiguresHeader fullscreen={this.state.fullscreen} appealsListStats={this.props.appealsListStats} />
+                        <KeyFiguresHeader
+                          fullscreen={this.state.fullscreen}
+                          appealsListStats={this.props.appealsListStats}
+                          countryPlans={this.props.adminArea?.data?.country_plans}
+                        />
                       ) : null}
                       <div className={c('inner', { 'appeals--fullscreen': this.state.fullscreen })}>
                         <Fold

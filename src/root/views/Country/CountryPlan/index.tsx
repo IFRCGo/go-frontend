@@ -30,8 +30,7 @@ interface CountryPlanApiResponse {
   // FIXME: should be is_published
   is_publish: boolean;
 
-  // FIXME: typo
-  membership_coordinationes: MembershipCoordination[];
+  membership_coordinations: MembershipCoordination[];
   people_targeted: number | null;
   requested_amount: number | null;
   strategic_priorities: StrategicPriority[];
@@ -48,12 +47,15 @@ function CountryPlan(props: Props) {
     countryDetails,
   } = props;
 
+  // const hasPlan = !!countryDetails?.has_country_plan;
+  const hasPlan = true;
+
   const {
     pending: countryPlanPending,
     response: countryPlanResponse,
   } = useRequest<CountryPlanApiResponse>({
-    skip: isNotDefined(countryDetails?.id),
-    url: 'api/v2/country-plan/1',
+    skip: isNotDefined(countryDetails?.id) || !hasPlan,
+    url: `api/v2/country-plan/${countryDetails?.id}`,
   });
 
   if (!countryDetails) {
@@ -62,10 +64,17 @@ function CountryPlan(props: Props) {
 
   return (
     <div className={_cs(styles.countryPlan, className)}>
+      {!hasPlan && (
+        <div className={styles.noPlan}>
+          <Translate
+            stringId="countryPlanNoCountryPlan"
+          />
+        </div>
+      )}
       {countryPlanPending && (
         <BlockLoading />
       )}
-      {!countryPlanPending && !countryPlanResponse && (
+      {hasPlan && !countryPlanPending && !countryPlanResponse && (
         <div className={styles.errored}>
           <Translate
             stringId="countryPlanLoadFailureMessage"
@@ -142,7 +151,7 @@ function CountryPlan(props: Props) {
             />
             <MembershipCoordinationTable
               className={styles.coordinationTable}
-              data={countryPlanResponse.membership_coordinationes}
+              data={countryPlanResponse.membership_coordinations}
             />
           </div>
         </>
