@@ -257,7 +257,11 @@ const defaultSchema: FormSchemaFields = {
   additional_allocation: [
     (currentValue, allValue, _) => {
       if (allValue?.changing_budget && !currentValue) {
-        return 'Please select a different value when selected yes on changing budget';
+        return 'Please add a value when selected yes on changing budget';
+      }
+
+      if (!allValue?.changing_budget && currentValue) {
+        return 'Please select yes on changing budget';
       }
 
       return undefined;
@@ -271,15 +275,7 @@ const defaultSchema: FormSchemaFields = {
   specified_trigger_met: [],
   changing_timeframe_operation: [],
   changing_operation_strategy: [],
-  changing_budget: [
-    (currentValue, allValue, _) => {
-      if (allValue?.additional_allocation && !currentValue) {
-        return 'Please select yes on changing budget first';
-      }
-
-      return undefined;
-    },
-  ],
+  changing_budget: [],
   changing_target_population_of_operation: [],
   changing_geographic_location: [],
   request_for_second_allocation: [],
