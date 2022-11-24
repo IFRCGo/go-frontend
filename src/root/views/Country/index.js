@@ -669,7 +669,7 @@ class AdminArea extends SFPComponent {
           <div className='inner'>
             <KeyFiguresHeader
               appealsListStats={this.props.appealsListStats}
-              countryPlans={this.props.country?.has_country_plan ? 1 : 0}
+              countryPlans={this.props.adminArea?.data?.has_country_plan ? 1 : 0}
             />
           </div>
         </section>
@@ -785,6 +785,7 @@ class AdminArea extends SFPComponent {
                     <TabContent title={strings.countryCountryPlanTab}>
                       <CountryPlan
                         countryDetails={this.props.country}
+                        hasCountryPlan={this.props.adminArea?.data?.has_country_plan}
                       />
                     </TabContent>
                   </div>

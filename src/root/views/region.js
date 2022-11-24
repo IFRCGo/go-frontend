@@ -309,7 +309,7 @@ class AdminArea extends SFPComponent {
             {this.props.appealsListStats.data ? (
               <KeyFiguresHeader
                 appealsListStats={this.props.appealsListStats}
-                countryPlans={this.props.adminArea?.data?.country_plans}
+                countryPlans={this.props.adminArea?.data?.country_plan_count}
               />
             ) : <BlockLoading />}
           </div>

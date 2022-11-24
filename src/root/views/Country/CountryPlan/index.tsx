@@ -39,22 +39,21 @@ interface CountryPlanApiResponse {
 interface Props {
   className?: string;
   countryDetails?: Country;
+  hasCountryPlan?: boolean;
 }
 
 function CountryPlan(props: Props) {
   const {
     className,
     countryDetails,
+    hasCountryPlan,
   } = props;
-
-  // const hasPlan = !!countryDetails?.has_country_plan;
-  const hasPlan = true;
 
   const {
     pending: countryPlanPending,
     response: countryPlanResponse,
   } = useRequest<CountryPlanApiResponse>({
-    skip: isNotDefined(countryDetails?.id) || !hasPlan,
+    skip: isNotDefined(countryDetails?.id) || !hasCountryPlan,
     url: `api/v2/country-plan/${countryDetails?.id}`,
   });
 
@@ -64,7 +63,7 @@ function CountryPlan(props: Props) {
 
   return (
     <div className={_cs(styles.countryPlan, className)}>
-      {!hasPlan && (
+      {!hasCountryPlan && (
         <div className={styles.noPlan}>
           <Translate
             stringId="countryPlanNoCountryPlan"
@@ -74,7 +73,7 @@ function CountryPlan(props: Props) {
       {countryPlanPending && (
         <BlockLoading />
       )}
-      {hasPlan && !countryPlanPending && !countryPlanResponse && (
+      {hasCountryPlan && !countryPlanPending && !countryPlanResponse && (
         <div className={styles.errored}>
           <Translate
             stringId="countryPlanLoadFailureMessage"

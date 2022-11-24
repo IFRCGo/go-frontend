@@ -24,7 +24,6 @@ export interface Country {
   society_name: string;
   society_url: string;
   url_ifrc: string;
-  has_country_plan?: boolean | null;
 }
 
 export type CountryMini = Pick<
