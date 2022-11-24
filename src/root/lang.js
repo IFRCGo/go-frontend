@@ -211,6 +211,9 @@ export default {
   countryPreparednessTab: 'Preparedness',
   countryAdditionalInfoTab: 'Additional Data',
   countryCountryPlanTab: 'Country Plan',
+
+  countryPlanTitle: '{countryName} Country Plan',
+
   emergenciesTableError: 'Latest emergencies not available.',
   emergenciesTableDate: 'Start Date',
   emergenciesTableName: 'Name',
@@ -3793,9 +3796,14 @@ export default {
 
   //Country Plan
   activeCountryPlanTitle: 'Active Country Plan',
-  countryPlanTableHeading: 'Strategic Priorities',
+  countryPlanStrategicPrioritiesTableHeading: 'Strategic Priorities',
   countryPlanPeopleTargeted: 'People Targeted',
-  countryPlanNsClimate: 'Climate and environmental crises',
-  countryPlanMembershipCoordinationtitle: 'Membership Coordination',
-  countryPlanNameOfPartnerNationalSociety: 'Name of Partner National Society'
+  countryPlanStrategicPriority: 'Strategic Priority',
+  countryPlanMembershipCoordinationTableTitle: 'Membership Coordination',
+  countryPlanLoadFailureMessage: 'Failed to load the Country Plan!',
+  countryPlanDownloadPlan: 'Download Plan',
+  countryPlanDownloadPlanInternal: 'Download Internal Plan',
+  countryPlanKeyFigureRequestedAmount: 'Federation-Wide Requested Amount (CHF)',
+  countryPlanKeyFigurePeopleTargeted: 'People Targeted',
+  countryPlanNameOfPNS: 'Name of Partner National Society',
 };

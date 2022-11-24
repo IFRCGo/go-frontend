@@ -1,0 +1,50 @@
+@import '~styles/settings/variables';
+
+.membership-coordination-table {
+  .content {
+    padding: 0!important;
+
+    table {
+      flex-grow: 1;
+      width: 100%;
+      overflow-x: auto;
+
+      th {
+        padding: $spacing;
+        border-bottom: $base-border-width solid $base-border-color;
+        background-color: $color-background;
+        vertical-align: bottom;
+
+        &.rotated {
+          .th-content {
+            writing-mode: vertical-lr;
+            transform: rotate(180deg);
+          }
+        }
+
+        &:first-child {
+          width: 100%;
+          text-align: left;
+          vertical-align: bottom;
+
+          .th-content {
+            max-width: 8rem;
+          }
+        }
+      }
+
+      td {
+        padding: $spacing;
+        border-bottom: $base-border-width solid $base-border-color;
+
+        .checkmark-container {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: $primary-color;
+          font-size: 1.5em;
+        }
+      }
+    }
+  }
+}

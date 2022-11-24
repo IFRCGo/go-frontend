@@ -86,7 +86,6 @@ export default function KeyFiguresHeader (props) {
   const filteredKeyFigures = () => {
     return Object.keys(stats).map(stat => {
       let value = stats[stat];
-      console.warn('value', stats, stat, value);
       // Applies common util to long numbers
       const statsToShorten = ['budget', 'targetPop', 'amountFunded', 'amountRequested', 'countryPlan'];
       if (statsToShorten.includes(stat)) {
@@ -107,7 +106,6 @@ export default function KeyFiguresHeader (props) {
     }).filter(figure => keyFiguresList.includes(figure.id));
   };
 
-  console.warn('filteredKeyFigures', filteredKeyFigures(), stats, keyFiguresList);
   return (
     <div className='container-lg'>
       {props.fullscreen ? (

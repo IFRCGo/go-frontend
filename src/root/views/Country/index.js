@@ -66,12 +66,12 @@ import KeyFiguresHeader from '#components/common/key-figures-header';
 import { SFPComponent } from '#utils/extendables';
 
 import RiskWatch from './RiskWatch';
-
 import ThreeW from './ThreeW';
+import CountryPlan from './CountryPlan';
+
 // import CountryProfile from './CountryProfile';
 
 import { countryByIdOrNameSelector, regionsByIdSelector, disasterTypesSelectSelector } from '#selectors';
-import CountryPlan from '#views/CountryPlan';
 
 const emptyObject = {};
 
@@ -780,7 +780,9 @@ class AdminArea extends SFPComponent {
                 <TabPanel>
                   <div className='container-lg'>
                     <TabContent title={strings.countryCountryPlanTab}>
-                      <CountryPlan />
+                      <CountryPlan
+                        countryDetails={this.props.country}
+                      />
                     </TabContent>
                   </div>
                 </TabPanel>
