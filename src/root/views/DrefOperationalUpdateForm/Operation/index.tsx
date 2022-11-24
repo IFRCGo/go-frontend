@@ -217,9 +217,10 @@ function Operation(props: Props) {
       >
         <InputSection
           title={strings.drefFormPeopleAssistedThroughOperation}
+          description={strings.drefFormPeopleAssistedThroughOperationDescription}
         >
           <TextArea
-            label={strings.cmpActionDescriptionLabel}
+            label={strings.drefFormDescription}
             name="people_assisted"
             onChange={onValueChange}
             value={value.people_assisted}
@@ -228,9 +229,10 @@ function Operation(props: Props) {
         </InputSection>
         <InputSection
           title={strings.drefFormSelectionCriteria}
+          description={strings.drefFormSelectionCriteria}
         >
           <TextArea
-            label={strings.cmpActionDescriptionLabel}
+            label={strings.drefFormDescription}
             name="selection_criteria"
             onChange={onValueChange}
             value={value.selection_criteria}
@@ -462,7 +464,7 @@ function Operation(props: Props) {
           title={strings.drefFormHumanResourceDescription}
         >
           <TextArea
-            label={strings.cmpActionDescriptionLabel}
+            label={strings.drefFormDescription}
             name="human_resource"
             onChange={onValueChange}
             value={value.human_resource}
@@ -486,7 +488,7 @@ function Operation(props: Props) {
           />
           {isSurgePersonnelDeployed &&
             <TextArea
-              label={strings.cmpActionDescriptionLabel}
+              label={strings.drefFormDescription}
               name="surge_personnel_deployed"
               onChange={onValueChange}
               value={value.surge_personnel_deployed}
@@ -502,7 +504,7 @@ function Operation(props: Props) {
               description={strings.drefFormLogisticCapacityOfNsDescription}
             >
               <TextArea
-                label={strings.cmpActionDescriptionLabel}
+                label={strings.drefFormDescription}
                 name="logistic_capacity_of_ns"
                 onChange={onValueChange}
                 value={value.logistic_capacity_of_ns}
@@ -514,7 +516,7 @@ function Operation(props: Props) {
               description={strings.drefFormPmerDescription}
             >
               <TextArea
-                label={strings.cmpActionDescriptionLabel}
+                label={strings.drefFormDescription}
                 name="pmer"
                 onChange={onValueChange}
                 value={value.pmer}
@@ -526,7 +528,7 @@ function Operation(props: Props) {
               description={strings.drefFormCommunicationDescripiton}
             >
               <TextArea
-                label={strings.cmpActionDescriptionLabel}
+                label={strings.drefFormDescription}
                 name="communication"
                 onChange={onValueChange}
                 value={value.communication}

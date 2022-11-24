@@ -146,7 +146,7 @@ function Operation(props: Props) {
           title={strings.finalReportPeopleAssistedThroughOperation}
         >
           <TextArea
-            label={strings.cmpActionDescriptionLabel}
+            label={strings.drefFormDescription}
             name="people_assisted"
             onChange={onValueChange}
             value={value.people_assisted}
@@ -157,7 +157,7 @@ function Operation(props: Props) {
           title={strings.finalReportSelectionCriteria}
         >
           <TextArea
-            label={strings.cmpActionDescriptionLabel}
+            label={strings.drefFormDescription}
             name="selection_criteria"
             onChange={onValueChange}
             value={value.selection_criteria}
@@ -168,7 +168,7 @@ function Operation(props: Props) {
           title={strings.finalReportProtectionGenderAndInclusion}
         >
           <TextArea
-            label={strings.cmpActionDescriptionLabel}
+            label={strings.drefFormDescription}
             name="entity_affected"
             onChange={onValueChange}
             value={value.entity_affected}
@@ -193,7 +193,7 @@ function Operation(props: Props) {
             title={strings.finalReportChangeToOperationStrategyExplain}
           >
             <TextArea
-              label={strings.cmpActionDescriptionLabel}
+              label={strings.drefFormDescription}
               name="change_in_operational_strategy_text"
               onChange={onValueChange}
               value={value.change_in_operational_strategy_text}
