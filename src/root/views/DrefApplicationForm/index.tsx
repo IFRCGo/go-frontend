@@ -435,7 +435,7 @@ function DrefApplication(props: Props) {
 
   const isSuddenOnset = value?.type_of_onset === ONSET_SUDDEN;
   const isImminentOnset = value?.type_of_onset === ONSET_IMMINENT;
-  const isAssessmentReport = value?.is_assessment_report;
+  const isAssessmentReport = !!value?.is_assessment_report;
 
   React.useEffect(() => {
     setValue((oldValue) => {

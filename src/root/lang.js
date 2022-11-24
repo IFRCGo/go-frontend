@@ -3118,6 +3118,7 @@ export default {
   drefFormGenerateTitle: 'Generate title',
   drefFormTitle: 'DREF Title',
   drefFormTitleDescription: 'Add country, type of disaster and location to the title',
+  drefFormDescription: 'Description',
 
   // dref form ActionFields
   drefFormNationalSocietiesActions: 'Current National Society Actions',

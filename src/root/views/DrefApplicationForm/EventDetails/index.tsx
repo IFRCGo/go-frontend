@@ -38,7 +38,7 @@ interface Props {
   isImminentOnset: boolean;
   fileIdToUrlMap: Record<number, string>;
   setFileIdToUrlMap?: React.Dispatch<React.SetStateAction<Record<number, string>>>;
-  isAssessmentReport?: boolean;
+  isAssessmentReport: boolean;
   isSuddenOnset: boolean;
 }
 
@@ -257,7 +257,7 @@ function EventDetails(props: Props) {
             />
           </InputSection>
         }
-        {isImminentOnset &&
+        {isImminentOnset && (
           <InputSection
             title={strings.drefFormUploadSupportingDocument}
             description={strings.drefFormUploadSupportingDocumentDescription}
@@ -274,7 +274,7 @@ function EventDetails(props: Props) {
               {strings.drefFormUploadSupportingDocumentButtonLabel}
             </DREFFileInput>
           </InputSection>
-        }
+        )}
         <InputSection
           title={strings.drefFormUploadPhotos}
           description={strings.drefFormUploadPhotosLimitation}

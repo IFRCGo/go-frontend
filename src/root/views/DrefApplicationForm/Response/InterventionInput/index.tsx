@@ -112,7 +112,6 @@ function InterventionInput(props: Props) {
               error={error?.person_targeted}
             />
             {showNewFieldOperational && (
-
               <div className={styles.maleFemale} >
                 <NumberInput
                   label={strings.drefOperationalUpdateIndicatorMaleLabel}
