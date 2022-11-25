@@ -28,6 +28,15 @@
     display: flex;
     justify-content: center;
     gap: $spacing;
+
+    .separator {
+      flex-grow: 0;
+      flex-shrink: 0;
+      align-self: stretch;
+      flex-basis: $base-border-width;
+      background-color: $base-border-color;
+      margin: $spacing;
+    }
   }
 
   .tables-section {

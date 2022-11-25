@@ -1,11 +1,9 @@
 import React from 'react';
-import { IoDownload } from 'react-icons/io5';
+import { MdDownload } from 'react-icons/md';
 import {
   _cs,
   isNotDefined,
 } from '@togglecorp/fujs';
-
-// import LanguageContext from '#root/languageContext';
 
 import ButtonLikeLink from '#components/ButtonLikeLink';
 import Card from '#components/Card';
@@ -95,34 +93,38 @@ function CountryPlan(props: Props) {
             actions={undefined}
             headingSize="extraLarge"
           />
-          <div className={styles.downloadLinks}>
-            {countryPlanResponse.internal_plan_file && (
-              <ButtonLikeLink
-                external
-                variant="secondary"
-                to={countryPlanResponse.internal_plan_file}
-                className={styles.downloadLink}
-                icons={<IoDownload />}
-              >
-                <Translate
-                  stringId="countryPlanDownloadPlanInternal"
-                />
-              </ButtonLikeLink>
-            )}
-            {countryPlanResponse.public_plan_file && (
-              <ButtonLikeLink
-                external
-                variant="secondary"
-                to={countryPlanResponse.public_plan_file}
-                className={styles.downloadLink}
-                icons={<IoDownload />}
-              >
-                <Translate
-                  stringId="countryPlanDownloadPlan"
-                />
-              </ButtonLikeLink>
-            )}
-          </div>
+          {(countryPlanResponse.internal_plan_file || countryPlanResponse.public_plan_file) && (
+            <div className={styles.downloadLinks}>
+              {countryPlanResponse.public_plan_file && (
+                <ButtonLikeLink
+                  external
+                  variant="secondary"
+                  to={countryPlanResponse.public_plan_file}
+                  className={styles.downloadLink}
+                  icons={<MdDownload />}
+                >
+                  <Translate
+                    stringId="countryPlanDownloadPlan"
+                    params={{ countryName: countryDetails.name }}
+                  />
+                </ButtonLikeLink>
+              )}
+              {countryPlanResponse.internal_plan_file && (
+                <ButtonLikeLink
+                  external
+                  variant="secondary"
+                  to={countryPlanResponse.internal_plan_file}
+                  className={styles.downloadLink}
+                  icons={<MdDownload />}
+                >
+                  <Translate
+                    stringId="countryPlanDownloadPlanInternal"
+                    params={{ countryName: countryDetails.name }}
+                  />
+                </ButtonLikeLink>
+              )}
+            </div>
+          )}
           <div className={styles.stats}>
             <Card multiColumn>
               <KeyFigure
@@ -133,6 +135,7 @@ function CountryPlan(props: Props) {
                   />
                 )}
               />
+              <div className={styles.separator} />
               <KeyFigure
                 value={countryPlanResponse.people_targeted}
                 description={(
