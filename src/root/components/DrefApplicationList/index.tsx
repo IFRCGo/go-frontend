@@ -436,10 +436,36 @@ function DrefApplicationList(props: Props) {
             const hasUnpublishedFinalReport = hasFinalReport && !item.dref_final_report_details?.is_published;
 
             const lastFinalReportId = item.dref_final_report_details?.id;
+            // eslint-disable-next-line no-unused-vars
+            const finalReportActionsTemp = (
+              <>
+                <DropdownMenuItem
+                  icon={<IoAdd />}
+                  name={rowKey}
+                  onClick={postDrefNewFinalReport}
+                  label={strings.finalReportCreateButtonLabel}
+                  disabled={!canAddFinalReport || finalReportPublishPending}
+                />
+                <DropdownMenuItem
+                  icon={<MdEdit />}
+                  href={`/dref-final-report/${lastFinalReportId}/edit/`}
+                  label={strings.finalReportEditButtonLabel}
+                  disabled={!hasUnpublishedFinalReport}
+                />
+                <DropdownMenuItem
+                  icon={<IoPushOutline />}
+                  name={+rowKey}
+                  label={strings.finalReportPublishButtonLabel}
+                  onClick={onFinalReportPublishClick}
+                  disabled={!hasUnpublishedFinalReport}
+                />
+              </>
+            );
 
             return {
               extraActions: (
                 <>
+                  {/*
                   <DropdownMenuItem
                     icon={<IoAdd />}
                     name={rowKey}
@@ -460,6 +486,7 @@ function DrefApplicationList(props: Props) {
                     onClick={onFinalReportPublishClick}
                     disabled={!hasUnpublishedFinalReport}
                   />
+                  */}
                   <DropdownMenuItem
                     icon={<IoAdd />}
                     name={rowKey}
