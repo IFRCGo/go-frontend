@@ -1,4 +1,6 @@
 import React, { useContext } from 'react';
+import { isDefined } from '@togglecorp/fujs';
+
 import { percent, shortenLargeNumber } from '#utils/format';
 import BlockLoading from '#components/block-loading';
 import { environment } from '#config';
@@ -28,18 +30,22 @@ const keyIconSrc = {
   activeAppeals: '/assets/graphics/layout/logo-appeals.svg',
   budget: '/assets/graphics/layout/funding-requirements.svg',
   appealsFunding: '/assets/graphics/layout/funding-coverage.svg',
-  targetPop: '/assets/graphics/layout/targeted-population.svg'
+  targetPop: '/assets/graphics/layout/targeted-population.svg',
 };
 
 export default function KeyFiguresHeader (props) {
   const {
-    data: {
-      stats
-    } = {},
-    fetched,
-    fetching,
-    error
-  } = props.appealsListStats;
+    countryPlans,
+    appealsListStats: {
+      data: {
+        stats
+      } = {},
+      fetched,
+      fetching,
+      error,
+    },
+    fullscreen,
+  } = props;
 
   const { strings } = useContext(LanguageContext);
 
@@ -48,7 +54,7 @@ export default function KeyFiguresHeader (props) {
     activeAppeals: strings.keyFiguresActiveAppeals,
     budget: strings.keyFiguresBudget,
     appealsFunding: strings.keyFiguresAppealsFunding,
-    targetPop: strings.keyFiguresTargetPop
+    targetPop: strings.keyFiguresTargetPop,
   };
   // Lists two tooltip descriptions currently in use.
   const tooltipOptions = {
@@ -59,6 +65,10 @@ export default function KeyFiguresHeader (props) {
     activeAppeals: {
       title: strings.keyFigureActiveAppealTitle,
       description: strings.keyFigureActiveAppealDescription,
+    },
+    activeCountryPlan: {
+      title: strings.activeCountryPlanTitle,
+      description: undefined,
     }
   };
 
@@ -81,7 +91,7 @@ export default function KeyFiguresHeader (props) {
     return Object.keys(stats).map(stat => {
       let value = stats[stat];
       // Applies common util to long numbers
-      const statsToShorten = ['budget', 'targetPop', 'amountFunded', 'amountRequested', ''];
+      const statsToShorten = ['budget', 'targetPop', 'amountFunded', 'amountRequested', 'countryPlan'];
       if (statsToShorten.includes(stat)) {
         value = shortenLargeNumber(value, 1);
       }
@@ -89,6 +99,7 @@ export default function KeyFiguresHeader (props) {
       if (stat === 'appealsFunding' && stats.appealsBudget) {
         value = `${percent(stats.appealsFunding, stats.appealsBudget, 1)}%`;
       }
+
       return {
         id: stat,
         title: keyTitle[stat],
@@ -102,9 +113,7 @@ export default function KeyFiguresHeader (props) {
 
   return (
     <div className='container-lg'>
-      {props.fullscreen ? (
-        <FullscreenHeader title={strings.keyFiguresHeading}/>
-      ) : null}
+      {fullscreen && <FullscreenHeader title={strings.keyFiguresHeading}/>}
       <div className='stats-overall'>
         <h1 className='visually-hidden'>
           <Translate stringId='keyFiguresStatsOverall'/>
@@ -126,6 +135,19 @@ export default function KeyFiguresHeader (props) {
                 </div>
               </li>
             ))}
+            {isDefined(countryPlans) && (
+              <li className='sumstats__item__wrap'>
+                <div className='sumstats__item'>
+                  <span className='sumstats__icon_wrapper'>
+                    <img className='sumstats__icon_2020' src="/assets/graphics/layout/country-plan.png" />
+                  </span>
+                  <span className='sumstats__value'>{countryPlans}</span>
+                  <span className='sumstats__key'>
+                    {strings.activeCountryPlanTitle}
+                  </span>
+                </div>
+              </li>
+            )}
           </ul>
         </div>
       </div>

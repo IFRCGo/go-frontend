@@ -162,7 +162,7 @@ function DrefOperationalUpdate(props: Props) {
           ...ni,
           clientId: String(ni.id),
         })),
-        images_file: response.images_file.map((img) => (
+        images_file: response.images_file?.map((img) => (
           isDefined(img.file)
             ? ({
               id: img.id,
@@ -172,7 +172,7 @@ function DrefOperationalUpdate(props: Props) {
             : undefined
         )).filter(isDefined),
 
-        photos_file: response.photos_file.map((img) => (
+        photos_file: response.photos_file?.map((img) => (
           isDefined(img.file)
             ? ({
               id: img.id,
@@ -422,6 +422,7 @@ function DrefOperationalUpdate(props: Props) {
         user: userDetails.id,
         ...result.value,
       };
+
       submitRequest(body as DrefOperationalUpdateApiFields);
     }
   }, [submitRequest, setError, validate, userDetails]);
@@ -492,7 +493,7 @@ function DrefOperationalUpdate(props: Props) {
 
   const isSuddenOnset = value?.type_of_onset === ONSET_SUDDEN;
   const isImminentOnset = value?.type_of_onset === ONSET_IMMINENT;
-  const isAssessmentReport = value?.is_assessment_report;
+  const isAssessmentReport = !!value?.is_assessment_report;
 
   return (
     <Tabs
@@ -620,6 +621,7 @@ function DrefOperationalUpdate(props: Props) {
                   fileIdToUrlMap={fileIdToUrlMap}
                   setFileIdToUrlMap={setFileIdToUrlMap}
                   isSuddenOnset={isSuddenOnset}
+                  isAssessmentReport={isAssessmentReport}
                 />
               </TabPanel>
               <TabPanel name='needs'>

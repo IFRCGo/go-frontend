@@ -210,6 +210,9 @@ export default {
   country3WTab: '3W',
   countryPreparednessTab: 'Preparedness',
   countryAdditionalInfoTab: 'Additional Data',
+  countryCountryPlanTab: 'Country Plan',
+
+  countryPlanTitle: '{countryName} Country Plan',
 
   emergenciesTableError: 'Latest emergencies not available.',
   emergenciesTableDate: 'Start Date',
@@ -2358,6 +2361,7 @@ export default {
   expandableShowMore: 'Show more',
   exportButtonExportTable: 'Export Table',
   exportButtonDownloadingProgress: 'Downloading... {progress}%',
+  exportButtonTooltip: 'Export data in UTF-8 encoded CSV',
 
   globalHeaderBannerTitle: 'COVID-19 global situational information and technical guidance available {link}.',
   globalHeaderBannerHere: 'here',
@@ -3117,6 +3121,7 @@ export default {
   drefFormGenerateTitle: 'Generate title',
   drefFormTitle: 'DREF Title',
   drefFormTitleDescription: 'Add country, type of disaster and location to the title',
+  drefFormDescription: 'Description',
 
   // dref form ActionFields
   drefFormNationalSocietiesActions: 'Current National Society Actions',
@@ -3787,5 +3792,19 @@ export default {
   finalReportIndicatorActualLabel: 'Actual',
   finalReportExportIndicators: 'Indicators',
   finalReportExport: 'Final Report Export',
-  clickToViewEmergencyResponseFramework: 'Click to view Emergency Response Framework'
+  clickToViewEmergencyResponseFramework: 'Click to view Emergency Response Framework',
+
+  //Country Plan
+  activeCountryPlanTitle: 'Active Country Plan',
+  countryPlanStrategicPrioritiesTableHeading: 'Strategic Priorities',
+  countryPlanPeopleTargeted: 'People Targeted',
+  countryPlanStrategicPriority: 'Strategic Priority',
+  countryPlanMembershipCoordinationTableTitle: 'Membership Coordination',
+  countryPlanLoadFailureMessage: 'Failed to load the Country Plan!',
+  countryPlanDownloadPlan: '{countryName} Country Plan',
+  countryPlanDownloadPlanInternal: '{countryName} Internal Plan',
+  countryPlanKeyFigureRequestedAmount: 'Federation-Wide Requested Amount (CHF)',
+  countryPlanKeyFigurePeopleTargeted: 'People Targeted',
+  countryPlanNameOfPNS: 'Name of Partner National Society',
+  countryPlanNoCountryPlan: 'This country hasn\'t published any Country Plan yet!',
 };

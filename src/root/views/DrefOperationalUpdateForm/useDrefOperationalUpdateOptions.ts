@@ -256,8 +256,12 @@ const defaultSchema: FormSchemaFields = {
   photos_file: [lessThanEqualToTwoImagesCondition],
   additional_allocation: [
     (currentValue, allValue, _) => {
-      if (allValue?.changing_budget && !currentValue) {
-        return 'Please select a different value when selected yes on changing budget';
+      if ((allValue?.changing_budget || allValue?.request_for_second_allocation) && !currentValue) {
+        return 'Please add a value when selected yes on changing budget or on request for a second allocation!';
+      }
+
+      if ((!allValue?.changing_budget || !allValue?.request_for_second_allocation) && currentValue) {
+        return 'Please select yes on both changing budget and on request for a second allocation!';
       }
 
       return undefined;
@@ -271,15 +275,7 @@ const defaultSchema: FormSchemaFields = {
   specified_trigger_met: [],
   changing_timeframe_operation: [],
   changing_operation_strategy: [],
-  changing_budget: [
-    (currentValue, allValue, _) => {
-      if (allValue?.additional_allocation && !currentValue) {
-        return 'Please select yes on changing budget first';
-      }
-
-      return undefined;
-    },
-  ],
+  changing_budget: [],
   changing_target_population_of_operation: [],
   changing_geographic_location: [],
   request_for_second_allocation: [],
@@ -395,7 +391,7 @@ export const schema: FormSchema = {
     'total_operation_timeframe': ['changing_timeframe_operation'],
     'number_of_people_targeted': ['changing_target_population_of_operation'],
     'district': ['changing_geographic_location'],
-    'additional_allocation': ['changing_budget'],
+    'additional_allocation': ['changing_budget', 'request_for_second_allocation'],
   }),
   validation: () => {
     return undefined;

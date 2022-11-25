@@ -1,0 +1,64 @@
+@import '~styles/settings/variables';
+
+.country-plan {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing * 4;
+  padding: $spacing*3 $spacing;
+
+  .header {
+    .heading-container {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+
+      .heading {
+        flex-grow: unset;
+      }
+    }
+  }
+
+  .download-links {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing;
+  }
+
+  .stats {
+    display: flex;
+    justify-content: center;
+    gap: $spacing;
+
+    .separator {
+      flex-grow: 0;
+      flex-shrink: 0;
+      align-self: stretch;
+      flex-basis: $base-border-width;
+      background-color: $base-border-color;
+      margin: $spacing;
+    }
+  }
+
+  .tables-section {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $spacing * 2;
+    align-items: flex-start;
+
+    .strategic-priority-table {
+      flex-grow: 1;
+    }
+
+    .coordination-table {
+      flex-grow: 1;
+    }
+  }
+
+  .errored,
+  .no-plan {
+    display: flex;
+    justify-content: center;
+    color: $color-text-message;
+    font-size: $font-size-lg;
+  }
+}

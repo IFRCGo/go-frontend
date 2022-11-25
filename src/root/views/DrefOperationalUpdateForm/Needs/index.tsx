@@ -48,7 +48,7 @@ interface Props {
   nsActionOptions: StringValueOption[];
   fileIdToUrlMap: Record<number, string>;
   setFileIdToUrlMap?: React.Dispatch<React.SetStateAction<Record<number, string>>>;
-  isAssessmentReport?: boolean;
+  isAssessmentReport: boolean;
   isImminentOnset?: boolean;
 }
 
@@ -285,7 +285,7 @@ function Needs(props: Props) {
           description={strings.drefFormIfrcDescription}
         >
           <TextArea
-            label={strings.cmpActionDescriptionLabel}
+            label={strings.drefFormDescription}
             name="ifrc"
             onChange={onValueChange}
             value={value.ifrc}
@@ -297,7 +297,7 @@ function Needs(props: Props) {
           description={strings.drefFormIcrcDescription}
         >
           <TextArea
-            label={strings.cmpActionDescriptionLabel}
+            label={strings.drefFormDescription}
             name="icrc"
             onChange={onValueChange}
             value={value.icrc}
@@ -337,7 +337,7 @@ function Needs(props: Props) {
           title={strings.drefFormNationalAuthorities}
         >
           <TextArea
-            label={strings.cmpActionDescriptionLabel}
+            label={strings.drefFormDescription}
             name="national_authorities"
             onChange={onValueChange}
             value={value.national_authorities}
@@ -350,7 +350,7 @@ function Needs(props: Props) {
           multiRow
         >
           <TextArea
-            label={strings.cmpActionDescriptionLabel}
+            label={strings.drefFormDescription}
             name="un_or_other_actor"
             onChange={onValueChange}
             value={value.un_or_other_actor}
@@ -378,7 +378,7 @@ function Needs(props: Props) {
             description={strings.drefFormCoordinationMechanismDescription}
           >
             <TextArea
-              label={strings.cmpActionDescriptionLabel}
+              label={strings.drefFormDescription}
               name="major_coordination_mechanism"
               onChange={onValueChange}
               value={value.major_coordination_mechanism}
@@ -450,7 +450,7 @@ function Needs(props: Props) {
               multiRow
             >
               <TextArea
-                label={strings.cmpActionDescriptionLabel}
+                label={strings.drefFormDescription}
                 name="identified_gaps"
                 onChange={onValueChange}
                 value={value.identified_gaps}

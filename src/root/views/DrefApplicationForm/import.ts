@@ -51,12 +51,21 @@ export async function getImportData(file: File) {
   const importData = sdtList?.map((sdt) => {
     const alias = getChildren(sdt, 'w:alias');
     const textNode = getChildren(sdt, 'w:t');
+    const dateNode = getChildren(sdt, 'w:date');
     const key = alias?.[0]?.attribs?.['w:val'];
-    const value = textNode?.map(
-      t => t.children?.map(
-        tc => tc.data
-      )
-    )?.flat(2)?.join('');
+
+    const dateValue = dateNode?.[0]?.attribs?.['w:fullDate'];
+    let value;
+
+    if (dateValue) {
+      value = dateValue;
+    } else {
+      value = textNode?.map(
+        t => t.children?.map(
+          tc => tc.data
+        )
+      )?.flat(2)?.join('');
+    }
 
     if (key) {
       return { key, value };
@@ -73,8 +82,16 @@ interface KeyValue {
   value: string | undefined,
 }
 
-function getItemsWithMatchingKeys(items: KeyValue[], key: string) {
-  return items.filter(item => item.key.startsWith(key));
+
+function getItemsWithMatchingKeys(items: KeyValue[], key: string, exceptions?: string[]) {
+  const filteredItems = items.filter(item => item.key.startsWith(key));
+
+  if (!exceptions || exceptions.length <= 0) {
+    return filteredItems;
+  }
+
+  const exceptionMap = listToMap(exceptions, d => d, () => true);
+  return filteredItems.filter(item => !exceptionMap[item.key]);
 }
 
 function getNumberSafe(str: string | undefined) {
@@ -173,9 +190,9 @@ export function transformImport(
   );
 
   const numFieldsToType: Record<number, string> = {
-    220: 'slow-sudden',
-    223: 'imminent',
-    198: 'assessment',
+    219: 'slow-sudden',
+    221: 'imminent',
+    197: 'assessment',
   };
 
   const importType = numFieldsToType[importData.length];
@@ -198,6 +215,7 @@ export function transformImport(
     event_description,
     event_scope,
     event_text,
+    event_date,
     girls,
     glide_code,
     government_requested_assistance,
@@ -234,7 +252,7 @@ export function transformImport(
     num_affected,
     operation_objective,
     operation_timeframe,
-    // partner_national_society,
+    partner_national_society,
     people_assisted,
     people_per_local,
     people_per_urban,
@@ -249,7 +267,7 @@ export function transformImport(
     total_targeted_population,
     // type_of_onset_display,
     un_or_other_actor,
-    // volunteers,
+    volunteers,
     women,
   } = importDataMap;
 
@@ -361,12 +379,12 @@ export function transformImport(
 
       const budget = getNumberSafe(mapping.budget?.value);
       const person_targeted = getNumberSafe(mapping.person_targeted?.value);
-      const progress_towards_outcome = getNumberSafe(mapping.progress_toward_outcome?.value);
+      const description = getStringSafe(mapping.progress_towards_outcome?.value);
 
       if (
         isNotDefined(budget)
         && isNotDefined(person_targeted)
-        && isNotDefined(progress_towards_outcome)
+        && isNotDefined(description)
         && indicators.length === 0
       ) {
         return undefined;
@@ -375,9 +393,9 @@ export function transformImport(
       return {
         title,
         clientId: randomString(),
-        budget: getNumberSafe(mapping.budget?.value),
-        person_targeted: getNumberSafe(mapping.person_targeted?.value),
-        progress_towards_outcome: getNumberSafe(mapping.progress_toward_outcome?.value),
+        budget: budget,
+        person_targeted: person_targeted,
+        description,
         indicators,
       };
     },
@@ -484,7 +502,7 @@ export function transformImport(
   }).filter(isDefined);
 
   const RISK_KEY = 'risk_';
-  const riskItems = getItemsWithMatchingKeys(importData, RISK_KEY);
+  const riskItems = getItemsWithMatchingKeys(importData, RISK_KEY, ['risk_security_concern']);
   const groupedRisks = listToGroupList(
     riskItems,
     (d) => {
@@ -530,25 +548,31 @@ export function transformImport(
     appeal_code: getStringSafe(appeal_code),
     boys: getNumberSafe(boys),
     country,
-    date_of_approval: getDateSafe(start_date),
+    // date_of_approval: getDateSafe(start_date),
     disability_people_per: getNumberSafe(disability_people_per),
     disaster_category,
     disaster_type,
     end_date: getDateSafe(end_date),
     event_description: getStringSafe(event_description),
+    event_date: getDateSafe(event_date),
     girls: getNumberSafe(girls),
     glide_code: getStringSafe(glide_code),
     government_requested_assistance: getBooleanSafe(government_requested_assistance),
+    human_resource: getStringSafe(volunteers),
     icrc: getStringSafe(icrc),
     ifrc: getStringSafe(ifrc),
+    is_there_major_coordination_mechanism: isDefined(getStringSafe(major_coordination_mechanism)) ? true : undefined,
     major_coordination_mechanism: getStringSafe(major_coordination_mechanism),
     men: getNumberSafe(men),
     national_authorities: getStringSafe(national_authorities),
     national_society: country,
+    national_society_actions,
     num_affected: getNumberSafe(num_affected),
+    num_assisted: getNumberSafe(total_targeted_population),
     operation_objective: getStringSafe(operation_objective),
     operation_timeframe: getNumberSafe(operation_timeframe),
-    people_assisted: getNumberSafe(people_assisted),
+    partner_national_society: getStringSafe(partner_national_society),
+    people_assisted: getStringSafe(people_assisted),
     people_per_local: getNumberSafe(people_per_local),
     people_per_urban: getNumberSafe(people_per_urban),
     planned_interventions: interventions,
@@ -557,9 +581,10 @@ export function transformImport(
     risk_security_concern: getStringSafe(risk_security_concern),
     selection_criteria: getStringSafe(selection_criteria),
     start_date: getDateSafe(start_date),
-    surge_personnel_deployed: getBooleanSafe(surge_personnel_deployed),
+    is_surge_personnel_deployed: isDefined(getStringSafe(surge_personnel_deployed)) ? true : undefined,
+    surge_personnel_deployed: getStringSafe(surge_personnel_deployed),
     title: getStringSafe(title),
-    total_targeted_population: getNumberSafe(total_targeted_population),
+    // total_targeted_population: getNumberSafe(total_targeted_population),
     type_of_onset,
     un_or_other_actor: getStringSafe(un_or_other_actor),
     women: getNumberSafe(women),
@@ -600,7 +625,6 @@ export function transformImport(
     event_scope: getStringSafe(event_scope),
     lessons_learned: getStringSafe(lessons_learned),
     logistic_capacity_of_ns: getStringSafe(logistic_capacity_of_ns),
-    national_society_actions,
     needs_identified,
     ns_request_fund: getBooleanSafe(ns_request_fund),
     ns_request_text: getStringSafe(ns_request_text),

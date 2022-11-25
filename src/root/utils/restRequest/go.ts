@@ -19,7 +19,7 @@ const CONTENT_TYPE_CSV = 'text/csv';
 
 export type ResponseError = {
   status: number;
-  originalReponse: Response,
+  originalResponse: Response,
   responseText: string;
 }
 
@@ -41,22 +41,33 @@ export interface AdditionalOptions {
 
 function transformError(response: ResponseError, fallbackMessage: string): TransformedError['value']['formErrors'] {
   const {
-    originalReponse,
+    originalResponse,
     responseText,
   } = response;
 
-  if (!response) {
-      return { [internal]: 'Empty error response from server' };
+  if (originalResponse.status.toLocaleString()[0] === '5') {
+      return { [internal]: 'Internal server error!' };
   }
-  if (originalReponse.headers.get('content-type') === CONTENT_TYPE_JSON) {
+
+  if (!responseText) {
+      return { [internal]: 'Empty error response from server!' };
+  }
+
+  if (originalResponse.headers.get('content-type') === CONTENT_TYPE_JSON) {
     try {
       const json = JSON.parse(responseText);
       if (isObject(json)) {
-        // NOTE: this case may not occur
-        return {
-          [internal]: fallbackMessage,
-          ...json,
+        const {
+          non_field_errors,
+          ...otherError
+        } = json as Record<string, string[]>;
+
+        const formError = {
+          [internal]: non_field_errors?.join(', ') ?? fallbackMessage,
+          ...otherError,
         };
+
+        return formError;
       }
 
       if (Array.isArray(json)) {
@@ -66,11 +77,15 @@ function transformError(response: ResponseError, fallbackMessage: string): Trans
       // FIXME: rename error message
       return { [internal]: 'Response content type mismatch' };
     } catch(e) {
-      return { [internal]: responseText };
+      console.error(e);
     }
   }
 
-  return { [internal]: responseText };
+  if (typeof responseText === 'string') {
+    return { [internal]: responseText };
+  }
+
+  return { [internal]: fallbackMessage };
 }
 
 type GoContextInterface = ContextInterface<
@@ -182,8 +197,14 @@ export const processGoOptions: GoContextInterface['transformOptions'] = (
 export const processGoResponse: GoContextInterface['transformResponse'] = async (
   res,
 ) => {
-  const resClone = res.clone();
   const resText = await res.text();
+
+  if (res.redirected) {
+    const url = new URL(res.url);
+    if (url.pathname.includes('login')) {
+      throw Error('Redirected by server');
+    }
+  }
 
   if (String(res.status)[0] === '2') {
     if (res.headers.get('content-type') === CONTENT_TYPE_JSON) {
@@ -194,13 +215,7 @@ export const processGoResponse: GoContextInterface['transformResponse'] = async 
     return resText;
   }
 
-  const serverError: ResponseError = {
-    status: res.status,
-    originalReponse: resClone,
-    responseText: resText,
-  };
-
-  return serverError;
+  throw Error;
 };
 
 export const processGoError: GoContextInterface['transformError'] = (

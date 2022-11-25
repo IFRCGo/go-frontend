@@ -55,7 +55,7 @@ interface Props {
   fileIdToUrlMap: Record<number, string>;
   setFileIdToUrlMap?: React.Dispatch<React.SetStateAction<Record<number, string>>>;
   yesNoOptions: BooleanValueOption[];
-  isAssessmentReport?: boolean;
+  isAssessmentReport: boolean;
   isImminentOnset?: boolean;
 }
 
@@ -224,7 +224,7 @@ function Response(props: Props) {
           description={strings.drefFormPeopleAssistedThroughOperationDescription}
         >
           <TextArea
-            label={strings.cmpActionDescriptionLabel}
+            label={strings.drefFormDescription}
             name="people_assisted"
             onChange={onValueChange}
             value={value.people_assisted}
@@ -236,7 +236,7 @@ function Response(props: Props) {
           description={strings.drefFormSelectionCriteriaDescription}
         >
           <TextArea
-            label={strings.cmpActionDescriptionLabel}
+            label={strings.drefFormDescription}
             name="selection_criteria"
             onChange={onValueChange}
             value={value.selection_criteria}
@@ -462,7 +462,7 @@ function Response(props: Props) {
           title={strings.drefFormHumanResourceDescription}
         >
           <TextArea
-            label={strings.cmpActionDescriptionLabel}
+            label={strings.drefFormDescription}
             name="human_resource"
             onChange={onValueChange}
             value={value.human_resource}
@@ -486,7 +486,7 @@ function Response(props: Props) {
           />
           {isSurgePersonnelDeployed &&
             <TextArea
-              label={strings.cmpActionDescriptionLabel}
+              label={strings.drefFormDescription}
               name="surge_personnel_deployed"
               onChange={onValueChange}
               value={value.surge_personnel_deployed}
@@ -502,7 +502,7 @@ function Response(props: Props) {
               description={strings.drefFormLogisticCapacityOfNsDescription}
             >
               <TextArea
-                label={strings.cmpActionDescriptionLabel}
+                label={strings.drefFormDescription}
                 name="logistic_capacity_of_ns"
                 onChange={onValueChange}
                 value={value.logistic_capacity_of_ns}
@@ -514,7 +514,7 @@ function Response(props: Props) {
               description={strings.drefFormPmerDescription}
             >
               <TextArea
-                label={strings.cmpActionDescriptionLabel}
+                label={strings.drefFormDescription}
                 name="pmer"
                 onChange={onValueChange}
                 value={value.pmer}
@@ -526,7 +526,7 @@ function Response(props: Props) {
               description={strings.drefFormCommunicationDescripiton}
             >
               <TextArea
-                label={strings.cmpActionDescriptionLabel}
+                label={strings.drefFormDescription}
                 name="communication"
                 onChange={onValueChange}
                 value={value.communication}
