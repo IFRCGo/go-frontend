@@ -6,7 +6,7 @@ import styles from './styles.module.scss';
 
 interface Props {
   className?: string;
-  value?: number;
+  value?: number | null;
   description?: React.ReactNode;
   headerIcon?: React.ReactNode;
   footerIcon?: React.ReactNode;

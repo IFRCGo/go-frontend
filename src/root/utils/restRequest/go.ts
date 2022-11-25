@@ -197,8 +197,14 @@ export const processGoOptions: GoContextInterface['transformOptions'] = (
 export const processGoResponse: GoContextInterface['transformResponse'] = async (
   res,
 ) => {
-  const resClone = res.clone();
   const resText = await res.text();
+
+  if (res.redirected) {
+    const url = new URL(res.url);
+    if (url.pathname.includes('login')) {
+      throw Error('Redirected by server');
+    }
+  }
 
   if (String(res.status)[0] === '2') {
     if (res.headers.get('content-type') === CONTENT_TYPE_JSON) {
@@ -209,13 +215,7 @@ export const processGoResponse: GoContextInterface['transformResponse'] = async 
     return resText;
   }
 
-  const serverError: ResponseError = {
-    status: res.status,
-    originalResponse: resClone,
-    responseText: resText,
-  };
-
-  return serverError;
+  throw Error;
 };
 
 export const processGoError: GoContextInterface['transformError'] = (
