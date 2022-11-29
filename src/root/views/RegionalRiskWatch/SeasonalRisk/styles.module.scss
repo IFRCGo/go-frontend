@@ -1,9 +1,51 @@
 @import '~styles/settings/variables';
 
-.risk-table-container {
-  margin: $spacing * 2 0;
+.seasonal-risk-content {
+  position: relative;
+  z-index: 0;
 
-  .table-description {
-    padding: $spacing;
+  .map-container {
+    display: flex;
+
+    .map {
+      flex-grow: 1;
+      z-index: 0;
+    }
+
+    .bar-chart {
+      z-index: 1;
+      height: 40rem;
+      flex-shrink: 0;
+      width: calc(5% + 16rem);
+      padding: $spacing*0.75 $spacing;
+      box-shadow: 0 0 5px rgba(0, 0, 0, .3);
+    }
+  }
+
+  .legend {
+    display: flex;
+    align-items: center;
+    gap: $spacing*2;
+    background-color: $color-background;
+    padding: $spacing $spacing*2;
+
+    .legend-content {
+      display: flex;
+      flex-direction: column;
+
+      .label {
+        font-size: $font-size-sm;
+      }
+
+      .gradient {
+        width: 10rem;
+        height: 0.5em;
+      }
+
+      .label-list {
+        display: flex;
+        justify-content: space-between;
+      }
+    }
   }
 }

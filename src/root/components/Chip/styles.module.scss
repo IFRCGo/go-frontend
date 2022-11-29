@@ -1,0 +1,12 @@
+@import '~styles/settings/variables';
+
+.chip {
+  display: flex;
+  align-items: center;
+  gap: $spacing*0.75;
+  border: $base-border-width solid $base-border-color;
+  padding: $spacing*0.25 $spacing * 0.75;
+  border-radius: 1rem;
+  background-color: $grey-fog;
+  font-size: $font-size-sm;
+}

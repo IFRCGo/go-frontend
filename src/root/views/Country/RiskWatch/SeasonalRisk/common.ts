@@ -7,10 +7,10 @@ import {
 import { HazardTypes } from '#types';
 
 export const hazardTypeOptions = [
-  { label: 'Cyclone', value: 'CY' },
+  { label: 'Cyclone', value: 'TC' },
   { label: 'Flood', value: 'FL' },
   { label: 'Food Insecurity', value: 'FI' },
-  { label: 'Drought', value: 'DG' },
+  { label: 'Drought', value: 'DR' },
 ] as const;
 
 export type HazardValueType = (typeof hazardTypeOptions)[number]['value'];

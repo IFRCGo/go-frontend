@@ -57,6 +57,7 @@ const chartMargin = {
   bottom: 0,
 };
 
+const monthTicks = [0,1,2,3,4,5,6,7,8,9,10,11];
 
 function formatNumber (value: number) {
   const {
@@ -389,7 +390,7 @@ function ImpactChart(props: ImpactChartProps) {
               domain={[0, 11]}
               interval={0}
               tickCount={12}
-              ticks={[0,1,2,3,4,5,6,7,8,9,10,11]}
+              ticks={monthTicks}
               tickFormatter={(m: number) => monthNameList[Math.floor(m)]}
               padding={{
                 left: 10,
