@@ -1276,7 +1276,7 @@ export default {
   catalogueOfSurgeServicesHealthCards1Card1Element10: 'HEALTH Information Management',
   catalogueOfSurgeServicesHealthCards1Card1Element11: 'ERU – Clinical Care',
   catalogueOfSurgeServicesHealthCards1Card1Element12: 'ERU – Public Health',
-  catalogueOfSurgeServicesCardsTitleHealthERU: 'Emergency Relief Unit Role Profiles',
+  catalogueOfSurgeServicesCardsTitleHealthERU: 'Emergency Response Unit Role Profiles',
   catalogueOfSurgeServicesHealthCards1Card2BtnText: 'PSS',
   catalogueOfSurgeServicesHealthCards2CardTitle1: 'Clinical - Emergency Response Unit',
   catalogueOfSurgeServicesHealthCards2CardTitle2: 'Clinical',
