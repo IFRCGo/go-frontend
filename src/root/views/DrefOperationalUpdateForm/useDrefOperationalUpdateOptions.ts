@@ -323,6 +323,7 @@ const defaultSchema: FormSchemaFields = {
               clientId: [],
               title: [],
               target: [positiveNumberCondition],
+              actual: [positiveNumberCondition]
             })
           })
         },

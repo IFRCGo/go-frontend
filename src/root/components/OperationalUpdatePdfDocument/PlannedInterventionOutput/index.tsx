@@ -70,9 +70,17 @@ function PlannedIntervention(props: PlannedInterventionProps) {
           </Text>
         </View>
         <View style={pdfStyles.piLargeColumn}>
-          <Text style={pdfStyles.piContentHeadingCell}>
-            {strings.drefFormIndicatorTargetLabel}
-          </Text>
+          <View style={pdfStyles.piMediumColumn}>
+            <Text style={pdfStyles.piContentHeadingCell}>
+              {strings.drefFormIndicatorTargetLabel}
+            </Text>
+          </View>
+          <View style={pdfStyles.piMediumColumn}>
+            <Text style={pdfStyles.piContentHeadingCell}>
+              {/* FIXME: load new string file */}
+              Actual
+            </Text>
+          </View>
         </View>
       </View>
       {
@@ -87,27 +95,20 @@ function PlannedIntervention(props: PlannedInterventionProps) {
               </Text>
             </View>
             <View style={pdfStyles.piLargeColumn}>
-              <Text style={pdfStyles.piBorderCell}>
-                {el.target}
-              </Text>
+              <View style={pdfStyles.piMediumColumn}>
+                <Text style={pdfStyles.piBorderCell}>
+                  {el.target}
+                </Text>
+              </View>
+              <View style={pdfStyles.piMediumColumn}>
+                <Text style={pdfStyles.piBorderCell}>
+                  {el.actual}
+                </Text>
+              </View>
             </View>
           </View>
         ))
       }
-      <View style={pdfStyles.piRow}>
-        <View style={pdfStyles.piSmallColumn}>
-          <View style={pdfStyles.piPriorityCell}>
-            <Text>
-              {strings.drefExportPriorityActions}
-            </Text>
-          </View>
-        </View>
-        <View style={pdfStyles.piLargeColumn}>
-          <Text style={pdfStyles.piBorderCell}>
-            {data.description}
-          </Text>
-        </View>
-      </View>
     </View >
   );
 }
