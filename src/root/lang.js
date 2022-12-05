@@ -2058,7 +2058,7 @@ export default {
   catalogueReliefStandardCompListItem2: 'Medium Life Kit (MLK) with material to allow relief team to be autonomous.',
   catalogueReliefSpecifiationWeight: 'RK = 518 KG / MLK = 1,926 KG (Weight based on French Red Cross reference. Kit can be modified depending on field needs.)',
   catalogueReliefSpecifiationVolume: 'RK = 3.49 m3 / MLK = 9.5 m3 (Volume based on French Red Cross reference.)',
-  catalogueReliefSpecifiationNationalSocieties: 'American, BeNeLux, Danish, Finnish, French, Spanish.',
+  catalogueReliefSpecifiationNationalSocieties: 'American, BeNeLux, Danish, French, Spanish.',
   catalogueSecurityTitle: 'Security Management',
   catalogueSecurityCapacityText: 'Will provide field-based support to operations, according to disaster scale, complexity, impact of the event or the context into which a surge response is being deployed. For high risk missions it is suggested that a Surge Security Coordinator is always deployed as part of the first rotation. Provide support in surge response operations through a roster of trained professionals and partner National Societies.',
   catalogueSecurityEmergencyText: 'The Surge Security Coordinator is required to deploy in a complex and / or large-scale emergency. The Security Surge will be expected to provide professional security risk management (SRM) advice and support/guidance and recommendations to management of the operation. The Surge Security will work closely with the in-country IFRC operations, should they exist.',
