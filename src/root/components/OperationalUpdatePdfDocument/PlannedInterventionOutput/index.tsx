@@ -63,46 +63,48 @@ function PlannedIntervention(props: PlannedInterventionProps) {
           </View>
         </View>
       </View>
-      <View style={pdfStyles.piRow}>
-        <View style={pdfStyles.piSmallColumn}>
-          <Text style={pdfStyles.piContentHeadingCell}>
-            {strings.drefExportIndicators}
-          </Text>
-        </View>
-        <View style={pdfStyles.piLargeColumn}>
-          <View style={pdfStyles.piMediumColumn}>
+
+      {data?.indicators?.length > 0 && (
+        <View style={pdfStyles.piRow}>
+          <View style={pdfStyles.piSmallColumn}>
             <Text style={pdfStyles.piContentHeadingCell}>
-              {strings.drefFormIndicatorTargetLabel}
+              {strings.drefExportIndicators}
             </Text>
           </View>
-          <View style={pdfStyles.piMediumColumn}>
-            <Text style={pdfStyles.piContentHeadingCell}>
-              {/* FIXME: load new string file */}
-              Actual
-            </Text>
+          <View style={pdfStyles.piLargeColumn}>
+            <View style={pdfStyles.piMediumColumn}>
+              <Text style={pdfStyles.piContentHeadingCell}>
+                {strings.drefFormIndicatorTargetLabel}
+              </Text>
+            </View>
+            <View style={pdfStyles.piMediumColumn}>
+              <Text style={pdfStyles.piContentHeadingCell}>
+                {strings.drefFormIndicatorActualLabel}
+              </Text>
+            </View>
           </View>
         </View>
-      </View>
+      )}
       {
-        data?.indicators?.map((el) => (
+        data?.indicators?.map((indicator) => (
           <View
-            key={el?.id}
+            key={indicator?.id}
             style={pdfStyles.piRow}
           >
             <View style={pdfStyles.piSmallColumn}>
               <Text style={pdfStyles.piBorderCell}>
-                {el.title}
+                {indicator.title}
               </Text>
             </View>
             <View style={pdfStyles.piLargeColumn}>
               <View style={pdfStyles.piMediumColumn}>
                 <Text style={pdfStyles.piBorderCell}>
-                  {el.target}
+                  {indicator.target}
                 </Text>
               </View>
               <View style={pdfStyles.piMediumColumn}>
                 <Text style={pdfStyles.piBorderCell}>
-                  {el.actual}
+                  {indicator.target}
                 </Text>
               </View>
             </View>
