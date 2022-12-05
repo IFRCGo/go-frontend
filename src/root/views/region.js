@@ -252,6 +252,10 @@ class AdminArea extends SFPComponent {
       this.props.history.replace(`${url}${tabHashArray[index]}`);
     };
     const hashes = tabDetails.map(t => t.hash);
+    if (this.props.location.hash === '#3w#operations') { // FIXME! Should not happen! A quick & dirty hack for go-frontend/issues/2555
+        this.props.location.hash = '#3w';
+        this.props.history.replace(`${this.props.location.pathname}${this.props.location.hash}`);
+    }
     const selectedIndex = hashes.indexOf(this.props.location.hash) !== -1 ? hashes.indexOf(this.props.location.hash) : 0;
 
     const foldLink = (
@@ -548,7 +552,7 @@ if (environment !== 'production') {
 // Connect functions
 
 const selector = (state, ownProps) => ({
-  adminArea: get(state.adminArea.aaData, regionByIdOrNameSelector(state, ownProps.match.params.id).id, {
+  adminArea: get(state.adminArea.aaData, regionByIdOrNameSelector(state, ownProps.match.params.id.split('#')[0]).id, {
     data: {},
     fetching: false,
     fetched: false
@@ -568,7 +572,7 @@ const selector = (state, ownProps) => ({
   appealsListStats: state.overallStats.appealsListStats,
   countriesByRegion: countriesByRegionSelector(state),
   regions: regionsByIdSelector(state),
-  thisRegion: regionByIdOrNameSelector(state, ownProps.match.params.id),
+  thisRegion: regionByIdOrNameSelector(state, ownProps.match.params.id.split('#')[0]),
   countriesGeojson: countriesGeojsonSelector(state)
 });
 
