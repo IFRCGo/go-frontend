@@ -41,7 +41,6 @@ import {
   RiskSecurityProps,
   Intervention,
   NsAction,
-  ONSET_SUDDEN,
 } from './common';
 
 export type FormSchema = ObjectSchema<PartialForm<DrefFields>>;

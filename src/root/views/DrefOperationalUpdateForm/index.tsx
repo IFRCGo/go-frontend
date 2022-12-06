@@ -40,6 +40,7 @@ import {
 } from '#utils/restRequest';
 import scrollToTop from '#utils/scrollToTop';
 import { DrefApiFields } from '#views/DrefApplicationForm/common';
+import { ymdToDateString } from '#utils/common';
 
 import {
   DrefOperationalUpdateFields,
@@ -62,15 +63,11 @@ import Operation from './Operation';
 import Submission from './Submission';
 
 import styles from './styles.module.scss';
-import { ymdToDateString } from '#utils/common';
 
 interface Props {
   match: match<{ id?: string }>;
   history: History;
   location: Location;
-}
-interface DrefOperationalResponseFields {
-  id: string;
 }
 
 type StepTypes = 'operationOverview' | 'eventDetails' | 'needs' | 'operation' | 'submission';
@@ -111,6 +108,82 @@ function DrefOperationalUpdate(props: Props) {
   } = props;
   const { id } = match.params;
   const alert = useAlert();
+  const lastModifiedAtRef = React.useRef<string | undefined>();
+
+  const handleOperationalUpdateLoad = React.useCallback((response: DrefOperationalUpdateApiFields) => {
+    lastModifiedAtRef.current = response?.modified_at;
+
+    setFileIdToUrlMap((prevMap) => {
+      const newMap = {
+        ...prevMap,
+      };
+      if (response.budget_file_details) {
+        newMap[response.budget_file_details.id] = response.budget_file_details.file;
+      }
+      if (response.event_map_file && response.event_map_file.file) {
+        newMap[response.event_map_file.id] = response.event_map_file.file;
+      }
+      if (response.cover_image_file && response.cover_image_file.file) {
+        newMap[response.cover_image_file.id] = response.cover_image_file.file;
+      }
+      if (response.photos_file?.length > 0) {
+        response.photos_file.forEach((img) => {
+          newMap[img.id] = img.file;
+        });
+      }
+      if (response.images_file?.length > 0) {
+        response.images_file.forEach((img) => {
+          newMap[img.id] = img.file;
+        });
+      }
+      return newMap;
+    });
+
+    const opsUpdateValue = ({
+      ...response,
+      planned_interventions: response.planned_interventions?.map((pi) => ({
+        ...pi,
+        clientId: String(pi.id),
+        indicators: pi?.indicators?.map((i) => ({
+          ...i,
+          clientId: String(i.id)
+        })),
+      })),
+      national_society_actions: response.national_society_actions?.map((nsa) => ({
+        ...nsa,
+        clientId: String(nsa.id),
+      })),
+      needs_identified: response.needs_identified?.map((ni) => ({
+        ...ni,
+        clientId: String(ni.id),
+      })),
+      images_file: response.images_file?.map((img) => (
+        isDefined(img.file)
+          ? ({
+            id: img.id,
+            client_id: img.client_id ?? String(img.id),
+            caption: img.caption ?? '',
+          })
+          : undefined
+      )).filter(isDefined),
+
+      photos_file: response.photos_file?.map((img) => (
+        isDefined(img.file)
+          ? ({
+            id: img.id,
+            client_id: img.client_id ?? String(img.id),
+            caption: img.caption ?? '',
+          })
+          : undefined
+      )).filter(isDefined),
+      disability_people_per: response.disability_people_per ? +response.disability_people_per : undefined,
+      people_per_urban: response.people_per_urban ? +response.people_per_urban : undefined,
+      people_per_local: response.people_per_local ? +response.people_per_local : undefined,
+    });
+    return opsUpdateValue;
+  },
+    [],
+  );
 
   const {
     pending: operationalUpdatePending,
@@ -119,72 +192,8 @@ function DrefOperationalUpdate(props: Props) {
     skip: isNotDefined(id),
     url: `api/v2/dref-op-update/${id}/`,
     onSuccess: (response) => {
-      setFileIdToUrlMap((prevMap) => {
-        const newMap = {
-          ...prevMap,
-        };
-        if (response.budget_file_details) {
-          newMap[response.budget_file_details.id] = response.budget_file_details.file;
-        }
-        if (response.event_map_file && response.event_map_file.file) {
-          newMap[response.event_map_file.id] = response.event_map_file.file;
-        }
-        if (response.cover_image_file && response.cover_image_file.file) {
-          newMap[response.cover_image_file.id] = response.cover_image_file.file;
-        }
-        if (response.photos_file?.length > 0) {
-          response.photos_file.forEach((img) => {
-            newMap[img.id] = img.file;
-          });
-        }
-        if (response.images_file?.length > 0) {
-          response.images_file.forEach((img) => {
-            newMap[img.id] = img.file;
-          });
-        }
-        return newMap;
-      });
-      setValue({
-        ...response,
-        planned_interventions: response.planned_interventions?.map((pi) => ({
-          ...pi,
-          clientId: String(pi.id),
-          indicators: pi?.indicators?.map((i) => ({
-            ...i,
-            clientId: String(i.id)
-          })),
-        })),
-        national_society_actions: response.national_society_actions?.map((nsa) => ({
-          ...nsa,
-          clientId: String(nsa.id),
-        })),
-        needs_identified: response.needs_identified?.map((ni) => ({
-          ...ni,
-          clientId: String(ni.id),
-        })),
-        images_file: response.images_file?.map((img) => (
-          isDefined(img.file)
-            ? ({
-              id: img.id,
-              client_id: img.client_id ?? String(img.id),
-              caption: img.caption ?? '',
-            })
-            : undefined
-        )).filter(isDefined),
-
-        photos_file: response.photos_file?.map((img) => (
-          isDefined(img.file)
-            ? ({
-              id: img.id,
-              client_id: img.client_id ?? String(img.id),
-              caption: img.caption ?? '',
-            })
-            : undefined
-        )).filter(isDefined),
-        disability_people_per: response.disability_people_per ? +response.disability_people_per : undefined,
-        people_per_urban: response.people_per_urban ? +response.people_per_urban : undefined,
-        people_per_local: response.people_per_local ? +response.people_per_local : undefined,
-      });
+      const opsUpdateResponse = handleOperationalUpdateLoad(response);
+      setValue(opsUpdateResponse);
     },
     onFailure: ({
       value: { messageForNotification },
@@ -357,7 +366,7 @@ function DrefOperationalUpdate(props: Props) {
   const {
     pending: drefSubmitPending,
     trigger: submitRequest,
-  } = useLazyRequest<DrefOperationalResponseFields, Partial<DrefOperationalUpdateApiFields>>({
+  } = useLazyRequest<DrefOperationalUpdateApiFields, Partial<DrefOperationalUpdateApiFields>>({
     url: `api/v2/dref-op-update/${id}`,
     method: 'PUT',
     body: ctx => ctx,
@@ -366,6 +375,9 @@ function DrefOperationalUpdate(props: Props) {
         strings.drefOperationalUpdateSuccessMessage,
         { variant: 'success' },
       );
+      //NOTE: we need to refetch if not it gives error modified_at:"OBSOLETE_PAYLOAD"
+      const opsUpdateResponse = handleOperationalUpdateLoad(response);
+      setValue(opsUpdateResponse);
     },
     onFailure: ({
       value: responseError,
@@ -412,7 +424,7 @@ function DrefOperationalUpdate(props: Props) {
     }
   }, [handleTabChange, currentStep]);
 
-  const submitDrefOperationalUpdate = React.useCallback(() => {
+  const submitDrefOperationalUpdate = React.useCallback((modifiedAt?: string) => {
     const result = validate();
 
     if (result.errored) {
@@ -421,6 +433,7 @@ function DrefOperationalUpdate(props: Props) {
       const body = {
         user: userDetails.id,
         ...result.value,
+        modified_at: modifiedAt ?? lastModifiedAtRef.current,
       };
 
       submitRequest(body as DrefOperationalUpdateApiFields);

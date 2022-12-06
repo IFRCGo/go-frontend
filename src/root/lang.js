@@ -3327,6 +3327,7 @@ export default {
   drefFormInterventionPersonTargetedLabel: 'Persons Targeted',
   drefFormIndicatorTitleLabel: 'Title',
   drefFormIndicatorTargetLabel: 'Target',
+  drefFormIndicatorActualLabel: 'Actual',
   drefFormAssessmentReportUploadLabel: 'Assessment Report (Optional)',
   drefFormAssessmentReportUploadButtonLabel: 'Upload assesment report',
 
