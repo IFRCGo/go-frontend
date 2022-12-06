@@ -357,7 +357,7 @@ class MainMap extends React.Component {
             onDtypeHover={this.onDtypeHover.bind(this)}/>}
 
         <div className={mapContainerClassName}>
-          {!this.props.fullscreen ? (
+          {!this.props.fullscreen && (
             <div className='map-vis__legend__filters'>
               <div className='map-vis__legend__filters-wrap'>
                 <DateFilterHeader
@@ -375,8 +375,7 @@ class MainMap extends React.Component {
                 <AppealTypesDropdown onAppealTypeChange={this.onAppealTypeChange.bind(this)} />
               </div>
             </div>
-          ) : null
-          }
+          )}
           <MapComponent className='map-vis__holder'
             noExport={this.props.noExport}
             configureMap={this.configureMap}
