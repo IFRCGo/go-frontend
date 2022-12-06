@@ -29,10 +29,12 @@ import {
   fixBounds,
 } from '#utils/map';
 import { getPrettyBreakpoints } from '#utils/common';
+import store from '#utils/store';
 import Pager from '#components/Pager';
 import Container from '#components/Container';
 import Button from '#components/Button';
 import SelectInput from '#components/SelectInput';
+import WikiLink from '#components/WikiLink';
 import MonthSelector from '#views/Country/RiskWatch/SeasonalRisk/MonthSelector';
 import RiskTable, { getSumForSelectedMonths } from '#views/Country/RiskWatch/SeasonalRisk/RiskTable';
 import useReduxState from '#hooks/useReduxState';
@@ -448,6 +450,8 @@ function SeasonalRiskMap(props: Props) {
     return Math.max(...allValues);
   }, [riskData, selectedMonths, hazardType, riskMetric]);
 
+  const lang = store.getState().lang.current ?? 'en';
+
   return (
     <>
       <Container
@@ -455,6 +459,7 @@ function SeasonalRiskMap(props: Props) {
         heading="Risk map"
         description={`The map and table below display available information about specific disaster risks for each month per country. When you move the slider from month to month, the information in the map will update automatically. Hold Shift to select a range of months -- this will display the cumulative number of people exposed and at risk of displacement. Selecting "Yearly Avg" will display the annual figures from INFORM and the total number of people exposed and at risk of being displaced per country per year.`}
         contentClassName={styles.mapSection}
+        actions={<WikiLink language={lang} linkEnding='user_guide/risk_module#seasonal-risk'/>}
       >
         <div className={styles.filters}>
           <SelectInput

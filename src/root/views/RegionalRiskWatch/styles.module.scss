@@ -9,4 +9,11 @@
   .tab-list {
     align-self: center;
   }
+
+  .wiki-link {
+    position: relative;
+    left: $spacing*36;
+    width: 0px;
+    /* ^ otherwise the right button gets wider in Regional Risk Watch page */
+  }
 }

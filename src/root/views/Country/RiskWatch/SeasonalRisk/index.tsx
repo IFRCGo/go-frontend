@@ -9,6 +9,7 @@ import {
 import { RiArrowRightUpLine } from 'react-icons/ri';
 
 import Container from '#components/Container';
+import WikiLink from '#components/WikiLink';
 import { useButtonFeatures } from '#components/Button';
 import useReduxState from '#hooks/useReduxState';
 import {
@@ -19,6 +20,7 @@ import {
   avg,
   avgSafe,
 } from '#utils/common';
+import store from '#utils/store';
 
 import {
   HazardTypes,
@@ -273,6 +275,8 @@ function SeasonalRisk(props: Props) {
       ];
     }, [response]);
 
+  const lang = store.getState().lang.current ?? 'en';
+
   return (
     <>
       <Container
@@ -282,6 +286,7 @@ function SeasonalRisk(props: Props) {
         description={`The table below displays available information about specific disaster risks for each month. When you move the slider from month to month, the information will update automatically. Hold Shift to select a range of months -- this will display the cumulative number of people exposed and at risk of displacement. Selecting "Yearly Avg" will display the annual figures from INFORM and the total number of people exposed and at risk of being displaced per country per year.`}
         descriptionClassName={styles.tableDescription}
         contentClassName={styles.content}
+        actions={<WikiLink language={lang} linkEnding='user_guide/risk_module#seasonal-risk'/>}
       >
         <MonthSelector
           name={undefined}

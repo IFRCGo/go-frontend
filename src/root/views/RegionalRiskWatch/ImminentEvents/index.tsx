@@ -8,6 +8,7 @@ import turfBbox from '@turf/bbox';
 import Container from '#components/Container';
 import BlockLoading from '#components/block-loading';
 import RiskImminentEventMap from '#components/RiskImminentEventMap';
+import WikiLink from '#components/WikiLink';
 
 import useReduxState from '#hooks/useReduxState';
 import { useRequest } from '#utils/restRequest';
@@ -15,6 +16,7 @@ import {
   fixBounds,
   BBOXType,
 } from '#utils/map';
+import store from '#utils/store';
 
 import { ImminentResponse } from '#types';
 import styles from './styles.module.scss';
@@ -111,6 +113,8 @@ function ImminentEvents(props: Props) {
     [region?.bbox],
   );
 
+  const lang = store.getState().lang.current ?? 'en';
+
   return (
     <Container
       heading="Imminent events"
@@ -118,6 +122,7 @@ function ImminentEvents(props: Props) {
       description="This map displays information about the modeled impact of specific forecasted or detected natural hazards. By hovering over the icons, if available, you can see the forecasted/observed footprint of the hazard; when you click on it, the table of modeled impact estimates will appear, as well as an information about who produced the impact estimate."
       descriptionClassName={styles.mapDescription}
       contentClassName={styles.mainContent}
+      actions={<WikiLink language={lang} linkEnding='user_guide/risk_module#imminent-events'/>}
     >
       {pending && <BlockLoading /> }
       {!pending && data && (
