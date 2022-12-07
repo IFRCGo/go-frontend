@@ -1,29 +1,33 @@
 import React from 'react';
-import { _cs } from '@togglecorp/fujs';
 
-import styles from './styles.module.scss';
+import useReduxState from '#hooks/useReduxState';
 
 export interface Props {
   className?: string;
-  language?: string;
-  linkEnding?: string;
+  pathName?: string;
 }
 
 function WikiLink(props: Props) {
   const {
     className,
-    language,
-    linkEnding,
+    pathName,
   } = props;
 
-  const lang = language ?? 'en';
+  const lang = useReduxState('lang');
+  const href = `https://go-wiki.ifrc.org/${lang.current}/${pathName}`;
 
   return (
-      <a
-        className={_cs(styles.WikiLink, className)}
-        href={'https://go-wiki.ifrc.org/' + lang + '/' + linkEnding} title='GO Wiki' target='_blank' >
-        <img className='' src='/assets/graphics/content/wiki-help-section.svg' alt='IFRC GO Wiki' />
-      </a>
+    <a
+      className={className}
+      href={href}
+      title='GO Wiki'
+      target='_blank'
+    >
+      <img
+        src='/assets/graphics/content/wiki-help-section.png'
+        alt='IFRC GO Wiki'
+      />
+    </a>
   );
 }
 

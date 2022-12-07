@@ -1,19 +1,14 @@
 @import '~styles/settings/variables';
 
 .regional-risk-watch {
-  display: flex;
-  flex-direction: column;
-  padding: $spacing*2 0;
-  gap: $spacing*2;
+  .content {
+    display: flex;
+    flex-direction: column;
+    padding: $spacing*2 0;
+    gap: $spacing*2;
 
-  .tab-list {
-    align-self: center;
-  }
-
-  .wiki-link {
-    position: relative;
-    left: $spacing*36;
-    width: 0px;
-    /* ^ otherwise the right button gets wider in Regional Risk Watch page */
+    .tab-list {
+      align-self: center;
+    }
   }
 }

@@ -4,6 +4,7 @@ import {
   Country,
   Region,
   User,
+  Strings,
 } from '#types';
 
 type StateKeys = 'user'
@@ -37,7 +38,11 @@ interface State {
     token: string;
     username: string;
   }>;
-  lang: string;
+  lang: {
+    current: string;
+    data: {};
+    strings: Strings;
+  };
   allCountries: ReduxResponse<OldListResponse<Country>>;
   allRegions: ReduxResponse<OldListResponse<Region>>;
   me: ReduxResponse<User>;

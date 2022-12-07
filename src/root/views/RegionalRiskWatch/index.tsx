@@ -7,8 +7,7 @@ import Tab from '#components/Tabs/Tab';
 import TabPanel from '#components/Tabs/TabPanel';
 import useInputState from '#hooks/useInputState';
 import WikiLink from '#components/WikiLink';
-
-import store from '#utils/store';
+import Container from '#components/Container';
 
 import ImminentEvents from './ImminentEvents';
 import SeasonalRisk from './SeasonalRisk';
@@ -31,10 +30,18 @@ function RegionalRiskWatch(props: Props) {
 
   const [activeTab, setActiveTab] = useInputState<TabTypes>('imminent');
 
-  const lang = store.getState().lang.current ?? 'en';
-
   return (
-    <div className={_cs(styles.regionalRiskWatch, className)}>
+    <Container
+      className={_cs(styles.regionalRiskWatch, className)}
+      contentClassName={styles.content}
+      hideHeaderBorder
+      actions={(
+        <WikiLink
+          className={styles.wikiLink}
+          pathName='user_guide/risk_module'
+        />
+      )}
+    >
       <Tabs
         variant="secondary"
         value={activeTab}
@@ -47,7 +54,6 @@ function RegionalRiskWatch(props: Props) {
           <Tab name="seasonal">
             Seasonal
           </Tab>
-          <WikiLink className={styles.wikiLink} language={lang} linkEnding='user_guide/risk_module'/>
         </TabList>
         <TabPanel name="imminent">
           <ImminentEvents
@@ -60,7 +66,7 @@ function RegionalRiskWatch(props: Props) {
           />
         </TabPanel>
       </Tabs>
-    </div>
+    </Container>
   );
 }
 

@@ -34,7 +34,7 @@ interface Props {
   onCancelButtonClick: () => void;
 }
 
-function ObsoletePaylodResolutionModal(props: Props) {
+function ObsoletePayloadResolutionModal(props: Props) {
   const {
     opsUpdateId,
     onOverwriteButtonClick,
@@ -103,4 +103,4 @@ function ObsoletePaylodResolutionModal(props: Props) {
   );
 }
 
-export default ObsoletePaylodResolutionModal;
+export default ObsoletePayloadResolutionModal;
