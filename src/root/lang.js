@@ -862,7 +862,7 @@ export default {
   catalogueOfSurgeServicesTitleSubtitle2: 'Core Competency Framework for Surge Personnel',
   catalogueOfSurgeServicesTitleSubtitle2Link1: 'The Core competency framework',
   catalogueOfSurgeServicesTitleSubtitle2Text1: 'for Surge Personnel is applicable to all Rapid Response personnel and is to be used as the underlying tool for an objective and transparent approach to recruitment, selection, performance management and learning and development.',
-  catalogueOfSurgeServicesTitleSubtitle3Text1: 'You can find the list of the Minimum trainings required for IFRC Surge personnel in this',
+  catalogueOfSurgeServicesTitleSubtitle3Text1: 'You can find the list of the Minimum trainings required for IFRC Surge personnel in this ',
   catalogueOfSurgeServicesTitleSubtitle3Link1: 'link',
   catalogueOfSurgeServicesTitleSubtitle3Text2: '. It provides guidance on minimum required courses for current and future Rapid Response personnel.',
   catalogueOfSurgeServicesCardsTitleAdditionalResources: 'Additional Resources',
