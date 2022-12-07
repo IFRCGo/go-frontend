@@ -41,7 +41,7 @@ import EventDetails from './EventDetails';
 import ActionsFields from './ActionsFields';
 import Response from './Response';
 import Submission from './Submission';
-import ObsoletePaylodResolutionModal from './ObsoletePayloadResolutionModal';
+import ObsoletePayloadResolutionModal from './ObsoletePayloadResolutionModal';
 import {
   DrefFields,
   DrefApiFields,
@@ -748,7 +748,7 @@ function DrefApplication(props: Props) {
               </Button>
             </div>
             {isDefined(drefId) && showObsoletePayloadResolutionModal && (
-              <ObsoletePaylodResolutionModal
+              <ObsoletePayloadResolutionModal
                 drefId={+drefId}
                 onOverwriteButtonClick={handleObsoletePayloadResolutionOverwiteButtonClick}
                 onCancelButtonClick={handleObsoletePayloadResolutionCancelButtonClick}

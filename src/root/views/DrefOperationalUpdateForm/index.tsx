@@ -60,7 +60,7 @@ import EventDetails from './EventDetails';
 import Needs from './Needs';
 import Operation from './Operation';
 import Submission from './Submission';
-import ObsoletePaylodResolutionModal from './ObsoletePayloadResolutionModal';
+import ObsoletePayloadResolutionModal from './ObsoletePayloadResolutionModal';
 
 import styles from './styles.module.scss';
 
@@ -701,7 +701,7 @@ function DrefOperationalUpdate(props: Props) {
                 </Button>
               </div>
               {isDefined(opsUpdateId) && showObsoletePayloadResolutionModal && (
-                <ObsoletePaylodResolutionModal
+                <ObsoletePayloadResolutionModal
                   opsUpdateId={+opsUpdateId}
                   onOverwriteButtonClick={handleObsoletePayloadResolutionOverwiteButtonClick}
                   onCancelButtonClick={handleObsoletePayloadResolutionCancelButtonClick}
