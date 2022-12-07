@@ -50,6 +50,7 @@ import {
   submissionFields,
   DrefFinalReportApiFields,
   ONSET_IMMINENT,
+  ONSET_SUDDEN,
 } from './common';
 import Overview from './Overview';
 import EventDetails from './EventDetails';
@@ -59,6 +60,7 @@ import Submission from './Submission';
 import useDrefFinalReportFormOptions, { schema } from './useDreFinalReportOptions';
 
 import styles from './styles.module.scss';
+import { ymdToDateString } from '#utils/common';
 
 interface Props {
   match: match<{ id?: string }>;
@@ -83,7 +85,7 @@ const stepTypesToFieldsMap: {
 };
 
 const defaultFormValues: PartialForm<DrefFinalReportFields> = {
-  photos: []
+  images_file: []
 };
 
 function FinalReport(props: Props) {
@@ -118,7 +120,8 @@ function FinalReport(props: Props) {
     onsetOptions,
     yesNoOptions,
     userDetails,
-
+    userOptions,
+    nsActionOptions,
   } = useDrefFinalReportFormOptions(value);
 
   const [fileIdToUrlMap, setFileIdToUrlMap] = useState<Record<number, string>>({});
@@ -248,13 +251,21 @@ function FinalReport(props: Props) {
         if (response.budget_file_details) {
           newMap[response.budget_file_details.id] = response.budget_file_details.file;
         }
-        if (response.photos_details?.length > 0) {
-          response.photos_details.forEach((img) => {
+        if (response.event_map_file && response.event_map_file.file) {
+          newMap[response.event_map_file.id] = response.event_map_file.file;
+        }
+        if (response.cover_image_file && response.cover_image_file.file) {
+          newMap[response.cover_image_file.id] = response.cover_image_file.file;
+        }
+        if (response.images_file?.length > 0) {
+          response.images_file.forEach((img) => {
             newMap[img.id] = img.file;
           });
         }
-        if (response.event_map_details) {
-          newMap[response.event_map_details.id] = response.event_map_details.file;
+        if (response.photos_file?.length > 0) {
+          response.photos_file.forEach((img) => {
+            newMap[img.id] = img.file;
+          });
         }
         return newMap;
       });
@@ -272,6 +283,24 @@ function FinalReport(props: Props) {
           ...ni,
           clientId: String(ni.id),
         })),
+        images_file: response.images_file?.map((img) => (
+          isDefined(img.file)
+            ? ({
+              id: img.id,
+              client_id: img.client_id ?? String(img.id),
+              caption: img.caption ?? '',
+            })
+            : undefined
+        )).filter(isDefined),
+        photos_file: response.photos_file?.map((img) => (
+          isDefined(img.file)
+            ? ({
+              id: img.id,
+              client_id: img.client_id ?? String(img.id),
+              caption: img.caption ?? '',
+            })
+            : undefined
+        )).filter(isDefined),
         disability_people_per: isDefined(response.disability_people_per) ? response.disability_people_per + response.disability_people_per : undefined,
         people_per_urban: isDefined(response.people_per_urban) ? +response.people_per_urban : undefined,
         people_per_local: isDefined(response.people_per_local) ? +response.people_per_local : undefined,
@@ -296,6 +325,29 @@ function FinalReport(props: Props) {
       );
     }
   });
+
+  React.useEffect(() => {
+    if (isDefined(value.operation_start_date) && isDefined(value.total_operation_timeframe)) {
+      const operationEndDate = new Date(value.operation_start_date);
+      if (!Number.isNaN(operationEndDate.getTime())) {
+        operationEndDate.setMonth(
+          operationEndDate.getMonth()
+          + value.total_operation_timeframe
+          + 1 // To get last day of the month
+        );
+        operationEndDate.setDate(0);
+
+        const yyyy = operationEndDate.getFullYear();
+        const dd = operationEndDate.getDate();
+        const mm = operationEndDate.getMonth();
+        onValueChange(ymdToDateString(yyyy, mm, dd), 'operation_end_date' as const);
+      }
+    }
+  }, [
+    onValueChange,
+    value.operation_start_date,
+    value.total_operation_timeframe,
+  ]);
 
   const handleBackButtonClick = useCallback(() => {
     if (currentStep !== 'operationOverview') {
@@ -365,6 +417,9 @@ function FinalReport(props: Props) {
   });
 
   const isImminentOnset = value?.type_of_onset === ONSET_IMMINENT;
+  const isSuddenOnset = value?.type_of_onset === ONSET_SUDDEN;
+  const isAssessmentReport = !!value?.is_assessment_report;
+
 
   return (
     <Tabs
@@ -477,6 +532,11 @@ function FinalReport(props: Props) {
                 fetchingDisasterTypes={fetchingDisasterTypes}
                 nationalSocietyOptions={nationalSocietyOptions}
                 fetchingNationalSociety={fetchingCountries}
+                yesNoOptions={yesNoOptions}
+                userOptions={userOptions}
+                onCreateAndShareButtonClick={submitDrefFinalReport}
+                fileIdToUrlMap={fileIdToUrlMap}
+                setFileIdToUrlMap={setFileIdToUrlMap}
               />
             </TabPanel>
             <TabPanel name='eventDetails'>
@@ -487,6 +547,7 @@ function FinalReport(props: Props) {
                 isImminentOnset={isImminentOnset}
                 fileIdToUrlMap={fileIdToUrlMap}
                 setFileIdToUrlMap={setFileIdToUrlMap}
+                isSuddenOnset={isSuddenOnset}
               />
             </TabPanel>
             <TabPanel name='needs'>
@@ -496,6 +557,10 @@ function FinalReport(props: Props) {
                 value={value}
                 yesNoOptions={yesNoOptions}
                 needOptions={needOptions}
+                nsActionOptions={nsActionOptions}
+                fileIdToUrlMap={fileIdToUrlMap}
+                setFileIdToUrlMap={setFileIdToUrlMap}
+                isImminentOnset={isImminentOnset}
               />
             </TabPanel>
             <TabPanel name='operation'>

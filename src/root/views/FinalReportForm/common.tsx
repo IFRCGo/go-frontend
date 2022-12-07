@@ -2,6 +2,7 @@ import {
   Country,
   DistrictMini,
 } from "#types/country";
+import { SingleFileWithCaption } from "#views/DrefApplicationForm/common";
 
 export const ONSET_IMMINENT = 0;
 export const ONSET_SLOW = 1;
@@ -82,6 +83,20 @@ export interface Intervention {
   lessons_learnt: string;
 }
 
+export interface FileWithCaption {
+  client_id: string;
+  id: number;
+  caption: string;
+  file: string;
+}
+
+export interface NsAction {
+  clientId: string;
+  title: string;
+  description: string;
+  title_display: string;
+}
+
 export const optionKeySelector = (o: Option) => o.value;
 export const numericOptionKeySelector = (o: NumericValueOption) => o.value;
 export const stringOptionKeySelector = (o: StringValueOption) => o.value;
@@ -121,7 +136,7 @@ export interface DrefFinalReportFields {
   ifrc_emergency_name: string;
   ifrc_emergency_phone_number: string;
   ifrc_emergency_title: string;
-  photos: number[];
+  images_file: FileWithCaption[];
   event_scope: string;
   event_description: string;
   ifrc: string;
@@ -151,6 +166,7 @@ export interface DrefFinalReportFields {
   planned_interventions: Intervention[];
   event_map: number;
   operation_start_date: string;
+  operation_end_date: string;
   want_to_report: boolean;
   additional_national_society_actions: string;
 
@@ -164,10 +180,21 @@ export interface DrefFinalReportFields {
   country: number;
   district: number[];
   country_details: Country;
+  is_assessment_report: boolean;
+  people_in_need: number;
+  cover_image_file: SingleFileWithCaption;
+  event_map_file: SingleFileWithCaption;
+  event_text: string;
+  event_date: string;
+  national_society_actions: NsAction[];
+  did_national_society: boolean;
+  ns_respond_date: string;
+  photos_file: FileWithCaption[]
+  is_there_major_coordination_mechanism: boolean;
 }
 
 
-export interface DrefFinalReportApiFields extends Omit<DrefFinalReportFields, 'district_details' | 'planned_interventions' | 'national_society_actions' | 'needs_identified'> {
+export interface DrefFinalReportApiFields extends Omit<DrefFinalReportFields, 'district_details' | 'planned_interventions' | 'national_society_actions' | 'needs_identified' | 'images_file'> {
   user: number;
   district_details: DistrictMini[];
   planned_interventions: (Omit<Intervention, 'clientId' | 'indicators'> & {
@@ -186,15 +213,12 @@ export interface DrefFinalReportApiFields extends Omit<DrefFinalReportFields, 'd
     file: string;
   };
   budget_file_preview: string;
-
-  photos_details: {
-    id: number;
+  images_file: {
+    id: number,
+    caption: string | undefined,
+    client_id: string | undefined,
     file: string;
   }[];
-  event_map_details: {
-    id: number;
-    file: string;
-  };
 }
 
 export const overviewFields: (keyof DrefFinalReportFields)[] = [
@@ -206,17 +230,19 @@ export const overviewFields: (keyof DrefFinalReportFields)[] = [
   'number_of_people_affected',
   'number_of_people_targeted',
   'total_dref_allocation',
-  'date_of_publication',
-  'operation_start_date',
-  'total_operation_timeframe',
   'country',
-  'district'
+  'district',
+  'is_assessment_report',
+  'people_in_need',
+  'event_map_file',
+  'cover_image_file',
 ];
 export const eventFields: (keyof DrefFinalReportFields)[] = [
-  'photos',
-  'event_map',
+  'images_file',
   'event_scope',
   'event_description',
+  'event_date',
+  'event_text',
 ];
 export const needsFields: (keyof DrefFinalReportFields)[] = [
   'ifrc',
@@ -229,6 +255,9 @@ export const needsFields: (keyof DrefFinalReportFields)[] = [
   'needs_identified',
   'want_to_report',
   'additional_national_society_actions',
+  'did_national_society',
+  'photos_file',
+  'is_there_major_coordination_mechanism',
 ];
 export const operationFields: (keyof DrefFinalReportFields)[] = [
   'people_assisted',
@@ -269,4 +298,8 @@ export const submissionFields: (keyof DrefFinalReportFields)[] = [
   'media_contact_email',
   'media_contact_phone_number',
   'media_contact_title',
+  'date_of_publication',
+  'operation_start_date',
+  'total_operation_timeframe',
+  'operation_end_date',
 ];

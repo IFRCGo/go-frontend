@@ -8,7 +8,6 @@ import {
 import { IoHelpCircle } from 'react-icons/io5';
 
 import Container from '#components/Container';
-import DateInput from '#components/DateInput';
 import InputSection from '#components/InputSection';
 import NumberInput from '#components/NumberInput';
 import languageContext from '#root/languageContext';
@@ -17,15 +16,23 @@ import SelectInput from '#components/SelectInput';
 import { ListResponse, useRequest } from '#utils/restRequest';
 import { DistrictMini } from '#types/country';
 import { compareString } from '#utils/utils';
-
+import SearchSelectInput from '#components/SearchSelectInput';
+import { isNotDefined, listToMap } from '@togglecorp/fujs';
+import { rankedSearchOnList } from '#utils/common';
+import Button from '#components/Button';
+import RadioInput from '#components/RadioInput';
 import {
+  booleanOptionKeySelector,
+  BooleanValueOption,
   DrefFinalReportFields,
   emptyNumericOptionList,
   NumericValueOption,
   ONSET_IMMINENT,
+  optionLabelSelector,
 } from '../common';
 
 import styles from './styles.module.scss';
+import ImageWithCaptionInput from '#views/DrefApplicationForm/DrefOverview/ImageWithCaptionInput';
 
 type Value = PartialForm<DrefFinalReportFields>;
 interface Props {
@@ -40,7 +47,19 @@ interface Props {
   value: Value;
   disasterCategoryOptions: NumericValueOption[];
   onsetOptions: NumericValueOption[];
+  userOptions: NumericValueOption[];
+  onCreateAndShareButtonClick: () => void;
+  yesNoOptions: BooleanValueOption[];
+  fileIdToUrlMap: Record<number, string>;
+  setFileIdToUrlMap?: React.Dispatch<React.SetStateAction<Record<number, string>>>;
 }
+
+const totalPopulationRiskImminentLink = "https://ifrcorg.sharepoint.com/sites/IFRCSharing/Shared%20Documents/Forms/AllItems.aspx?id=%2Fsites%2FIFRCSharing%2FShared%20Documents%2FDREF%2FHum%20Pop%20Definitions%20for%20DREF%20Form%5F21072022%2Epdf&parent=%2Fsites%2FIFRCSharing%2FShared%20Documents%2FDREF&p=true&ga=1";
+const totalPeopleAffectedSlowSuddenLink = "https://ifrcorg.sharepoint.com/sites/IFRCSharing/Shared%20Documents/Forms/AllItems.aspx?id=%2Fsites%2FIFRCSharing%2FShared%20Documents%2FDREF%2FHum%20Pop%20Definitions%20for%20DREF%20Form%5F21072022%2Epdf&parent=%2Fsites%2FIFRCSharing%2FShared%20Documents%2FDREF&p=true&ga=1";
+const peopleTargetedLink = "https://ifrcorg.sharepoint.com/sites/IFRCSharing/Shared%20Documents/Forms/AllItems.aspx?id=%2Fsites%2FIFRCSharing%2FShared%20Documents%2FDREF%2FHum%20Pop%20Definitions%20for%20DREF%20Form%5F21072022%2Epdf&parent=%2Fsites%2FIFRCSharing%2FShared%20Documents%2FDREF&p=true&ga=1";
+const peopleInNeedLink = "https://ifrcorg.sharepoint.com/sites/IFRCSharing/Shared%20Documents/Forms/AllItems.aspx?id=%2Fsites%2FIFRCSharing%2FShared%20Documents%2FDREF%2FHum%20Pop%20Definitions%20for%20DREF%20Form%5F21072022%2Epdf&parent=%2Fsites%2FIFRCSharing%2FShared%20Documents%2FDREF&p=true&ga=1";
+
+
 
 function Overview(props: Props) {
   const { strings } = React.useContext(languageContext);
@@ -57,6 +76,11 @@ function Overview(props: Props) {
     value,
     disasterCategoryOptions,
     onsetOptions,
+    userOptions,
+    onCreateAndShareButtonClick,
+    yesNoOptions,
+    fileIdToUrlMap,
+    setFileIdToUrlMap,
   } = props;
 
   const error = React.useMemo(
@@ -78,6 +102,17 @@ function Overview(props: Props) {
     query: countryQuery,
   });
 
+  const handleUserSearch = React.useCallback((input: string | undefined, callback) => {
+    if (!input) {
+      callback(emptyNumericOptionList);
+    }
+
+    callback(rankedSearchOnList(
+      userOptions,
+      input,
+      d => d.label,
+    ));
+  }, [userOptions]);
   const districtOptions = React.useMemo(() => (
     districtsResponse?.results?.map(d => ({
       value: d.id,
@@ -85,25 +120,62 @@ function Overview(props: Props) {
     })).sort(compareString) ?? emptyNumericOptionList
   ), [districtsResponse]);
 
+  const userMap = React.useMemo(() => listToMap(
+    userOptions,
+    u => u.value,
+    u => u.label
+  ), [userOptions]);
+
+  const initialOptions = React.useMemo(() => (
+    value.users?.map((u) => ({
+      label: userMap[u],
+      value: u,
+    }))
+  ), [userMap, value.users]);
+
   const isImminentOnset = value.type_of_onset === ONSET_IMMINENT;
 
   return (
     <>
       <Container
+        className={styles.sharing}
+        heading={strings.drefFormSharingHeading}
+        visibleOverflow
+      >
+        <InputSection
+          title={strings.drefFormSharingTitle}
+          description={strings.drefFormSharingDescription}
+        >
+          <SearchSelectInput
+            name={"users" as const}
+            isMulti
+            initialOptions={initialOptions}
+            value={value.users}
+            onChange={onValueChange}
+            loadOptions={handleUserSearch}
+          />
+          {isNotDefined(value.id) && (
+            <div className={styles.actions}>
+              <Button
+                name={undefined}
+                variant="secondary"
+                disabled={isNotDefined(value.users) || value.users.length === 0}
+                onClick={onCreateAndShareButtonClick}
+              >
+                {strings.drefFormInstantShareLabel}
+              </Button>
+            </div>
+          )}
+        </InputSection>
+      </Container>
+      <Container
         heading={strings.finalReportEssentialInformationTitle}
         className={styles.essentialInformation}
       >
-        <InputSection title={strings.finalReportEssentialTitle}>
-          <TextInput
-            name="title"
-            value={value.title}
-            onChange={onValueChange}
-            error={error?.title}
-            placeholder={strings.finalReportEssentialDescription}
-          />
-        </InputSection>
         <InputSection
           title={strings.finalReportNationalSociety}
+          multiRow
+          oneColumn
         >
           <SelectInput
             name={"national_society" as const}
@@ -112,6 +184,19 @@ function Overview(props: Props) {
             options={nationalSocietyOptions}
             error={error?.national_society}
             pending={fetchingNationalSociety}
+          />
+          </InputSection>
+        <InputSection
+          title={strings.drefFormForAssessment}
+        >
+          <RadioInput
+            name={"is_assessment_report" as const}
+            options={yesNoOptions}
+            keySelector={booleanOptionKeySelector}
+            labelSelector={optionLabelSelector}
+            value={value.is_assessment_report}
+            onChange={onValueChange}
+            error={error?.is_assessment_report}
           />
         </InputSection>
         <InputSection
@@ -165,8 +250,7 @@ function Overview(props: Props) {
           title={!isImminentOnset
             ? strings.finalReportAffectedCountryAndProvinceImminent
             : strings.finalReportRiskCountryLabel}
-          multiRow
-          oneColumn
+          twoColumn
         >
           <SelectInput
             label={strings.drefFormAddCountry}
@@ -189,26 +273,100 @@ function Overview(props: Props) {
             value={value.district}
           />
         </InputSection>
+        <InputSection title={strings.finalReportEssentialTitle}>
+          <TextInput
+            name="title"
+            value={value.title}
+            onChange={onValueChange}
+            error={error?.title}
+            placeholder={strings.finalReportEssentialDescription}
+          />
+        </InputSection>
         <InputSection
-          title={!isImminentOnset
-            ? strings.finalReportPeopleAffected
-            : strings.finalReportRiskPeopleLabel}
+          multiRow
+          twoColumn
         >
           <NumberInput
+            label={isImminentOnset ?
+              <>
+                {strings.finalReportRiskPeopleLabel}
+                <a
+                  className={styles.peopleTargetedHelpLink}
+                  target="_blank"
+                  title="Click to view Emergency Response Framework"
+                  href={totalPopulationRiskImminentLink}
+                >
+                  <IoHelpCircle />
+                </a>
+              </>
+              :
+              <>
+                {strings.finalReportPeopleAffected}
+                <a
+                  className={styles.peopleTargetedHelpLink}
+                  target="_blank"
+                  title="Click to view Emergency Response Framework"
+                  href={totalPeopleAffectedSlowSuddenLink}
+                >
+                  <IoHelpCircle />
+                </a>
+              </>
+            }
             name="number_of_people_affected"
             value={value.number_of_people_affected}
             onChange={onValueChange}
             error={error?.number_of_people_affected}
+            hint={isImminentOnset
+              ? strings.drefFormPeopleAffectedDescriptionImminent
+              : strings.drefFormPeopleAffectedDescriptionSlowSudden
+            }
           />
-        </InputSection>
-        <InputSection
-          title={strings.finalReportPeopleTargeted}
-        >
           <NumberInput
+            label={(
+              <>
+                {
+                  isImminentOnset
+                    ? strings.drefFormEstimatedPeopleInNeed
+                    : strings.drefFormPeopleInNeed
+                }
+                <a
+                  className={styles.peopleTargetedHelpLink}
+                  target="_blank"
+                  title="Click to view Emergency Response Framework"
+                  href={peopleInNeedLink}
+                >
+                  <IoHelpCircle />
+                </a>
+              </>
+            )}
+            name="people_in_need"
+            value={value.people_in_need}
+            onChange={onValueChange}
+            error={error?.people_in_need}
+            hint={isImminentOnset
+              ? strings.drefFormPeopleInNeedDescriptionImminent
+              : strings.drefFormPeopleInNeedDescriptionSlowSudden
+            }
+          />
+          <NumberInput
+            label={(
+              <>
+                {strings.finalReportPeopleTargeted}
+                <a
+                  className={styles.peopleTargetedHelpLink}
+                  target="_blank"
+                  title="Click to view Emergency Response Framework"
+                  href={peopleTargetedLink}
+                >
+                  <IoHelpCircle />
+                </a>
+              </>
+            )}
             name="number_of_people_targeted"
             value={value.number_of_people_targeted}
             onChange={onValueChange}
             error={error?.number_of_people_targeted}
+            hint={strings.drefFormPeopleTargetedDescription}
           />
         </InputSection>
         <InputSection
@@ -221,39 +379,34 @@ function Overview(props: Props) {
             readOnly
           />
         </InputSection>
-      </Container>
-      <Container
-        heading={strings.finalReportTimeFrame}
-        className={styles.timeframes}
-      >
         <InputSection
-          title={strings.finalReportDateOfPublication}
+          title={strings.drefFormUploadMap}
+          description={strings.drefFormUploadMapDescription}
+          contentSectionClassName={styles.imageInputContent}
         >
-          <DateInput
-            name="date_of_publication"
-            value={value.date_of_publication}
+          <ImageWithCaptionInput
+            name={"event_map_file" as const}
+            value={value?.event_map_file}
             onChange={onValueChange}
-            error={error?.date_of_publication}
+            error={error?.event_map_file}
+            fileIdToUrlMap={fileIdToUrlMap}
+            setFileIdToUrlMap={setFileIdToUrlMap}
+            label={strings.drefFormUploadAnImageLabel}
           />
         </InputSection>
         <InputSection
-          title={strings.finalReportStartOfOperation}
+          title={strings.drefFormUploadCoverImage}
+          description={strings.drefFormUploadCoverImageDescription}
+          contentSectionClassName={styles.imageInputContent}
         >
-          <DateInput
-            name="operation_start_date"
-            value={value.operation_start_date}
+          <ImageWithCaptionInput
+            name={"cover_image_file" as const}
+            value={value?.cover_image_file}
             onChange={onValueChange}
-            error={error?.operation_start_date}
-          />
-        </InputSection>
-        <InputSection
-          title={strings.finalReportTotalOperatingTimeFrame}
-        >
-          <NumberInput
-            name="total_operation_timeframe"
-            value={value.total_operation_timeframe}
-            onChange={onValueChange}
-            error={error?.total_operation_timeframe}
+            error={error?.cover_image_file}
+            fileIdToUrlMap={fileIdToUrlMap}
+            setFileIdToUrlMap={setFileIdToUrlMap}
+            label={strings.drefFormUploadAnImageLabel}
           />
         </InputSection>
       </Container>

@@ -25,12 +25,18 @@ import NeedInput from '#views/DrefApplicationForm/ActionsFields/NeedInput';
 import Button from '#components/Button';
 import SelectInput from '#components/SelectInput';
 import RadioInput from '#components/RadioInput';
+import DREFFileInput from '#components/DREFFileInput';
+import DateInput from '#components/DateInput';
+import CaptionInput from '#views/DrefApplicationForm/CaptionInput';
+import NsActionInput from '#views/DrefApplicationForm/ActionsFields/NSActionInput';
 
 import {
   booleanOptionKeySelector,
   BooleanValueOption,
   DrefFinalReportFields,
+  FileWithCaption,
   Need,
+  NsAction,
   optionLabelSelector,
   StringValueOption,
 } from '../common';
@@ -44,6 +50,10 @@ interface Props {
   value: Value;
   yesNoOptions: BooleanValueOption[];
   needOptions: StringValueOption[];
+  nsActionOptions: StringValueOption[];
+  fileIdToUrlMap: Record<number, string>;
+  setFileIdToUrlMap?: React.Dispatch<React.SetStateAction<Record<number, string>>>;
+  isImminentOnset?: boolean;
 }
 
 function Needs(props: Props) {
@@ -55,10 +65,15 @@ function Needs(props: Props) {
     value,
     yesNoOptions,
     needOptions,
+    isImminentOnset,
+    nsActionOptions,
+    fileIdToUrlMap,
+    setFileIdToUrlMap,
   } = props;
 
   const error = useMemo(() => getErrorObject(formError), [formError]);
 
+  const [nsAction, setNsAction] = React.useState<string | undefined>();
   const [need, setNeed] = useState<string | undefined>();
   const {
     setValue: onNeedChange,
@@ -83,6 +98,58 @@ function Needs(props: Props) {
     setNeed(undefined);
   }, [onValueChange, setNeed]);
 
+  const {
+    setValue: onNsActionChange,
+    removeValue: onNsActionRemove,
+  } = useFormArray<'national_society_actions', PartialForm<NsAction>>(
+    'national_society_actions',
+    onValueChange,
+  );
+
+  type NsActions = typeof value.needs_identified;
+  const handleNsActionAddButtonClick = React.useCallback((title?: string) => {
+    const clientId = randomString();
+    const newList: PartialForm<NsAction> = {
+      clientId,
+      title,
+    };
+
+    onValueChange(
+      (oldValue: PartialForm<NsActions>) => (
+        [...(oldValue ?? []), newList]
+      ),
+      'national_society_actions' as const,
+    );
+    setNsAction(undefined);
+  }, [onValueChange, setNsAction]);
+
+  const imagesValue = React.useMemo(() => (
+    value?.photos_file?.map(d => d.id).filter(d => !!d) as number[] | undefined
+  ), [value?.photos_file]);
+
+  const {
+    setValue: onImageChange,
+    removeValue: onImageRemove,
+  } = useFormArray<'photos_file', PartialForm<FileWithCaption>>(
+    'photos_file',
+    onValueChange,
+  );
+  const handleImageInputChange = React.useCallback((newValue: number[] | undefined) => {
+    const imageCaptionByIdMap = listToMap(
+      value?.photos_file ?? [],
+      img => img.id as number,
+      img => img.caption,
+    );
+
+    const newImageList: undefined | PartialForm<FileWithCaption[]> = newValue?.map((v) => ({
+      client_id: String(v),
+      id: v,
+      caption: imageCaptionByIdMap[v],
+    }));
+
+    onValueChange(newImageList, 'photos_file' as const);
+  }, [value?.photos_file, onValueChange]);
+
   const needsIdentifiedMap = useMemo(() => (
     listToMap(
       value?.needs_identified,
@@ -91,15 +158,30 @@ function Needs(props: Props) {
     )
   ), [value.needs_identified]);
 
+  const nsActionsMap = React.useMemo(() => (
+    listToMap(
+      value.national_society_actions,
+      d => d.title ?? '',
+      d => true,
+    )
+  ), [value.national_society_actions]);
+
+  const filteredNsActionOptions = useMemo(() => (
+    nsActionsMap ? nsActionOptions.filter(n => !nsActionsMap[n.value]) : []
+  ), [nsActionsMap, nsActionOptions]);
+
+
   const filteredNeedOptions = useMemo(() => (
     needsIdentifiedMap ? needOptions.filter(n => !needsIdentifiedMap[n.value]) : []
   ), [needsIdentifiedMap, needOptions]);
 
-  const wantToReport = value.want_to_report;
+  const didNationalSocietyStarted = value.did_national_society;
+  const isThereCoordinationMechanism = value.is_there_major_coordination_mechanism;
+  // const wantToReport = value.want_to_report;
 
   return (
     <>
-      <Container
+      {/* <Container
         heading={strings.finalReportFederationWideAndPartners}
       >
         <InputSection
@@ -128,12 +210,114 @@ function Needs(props: Props) {
             />
           </InputSection>
         }
+      </Container> */}
+      <Container
+        heading={strings.drefFormNationalSocietiesActions}
+        description={strings.drefFormNationalSocietiesActionsDescription}
+        className={styles.nationalSocietyActions}
+        visibleOverflow
+      >
+        <InputSection
+          title={
+            !isImminentOnset
+              ? strings.drefFormDidNationalSocietyStartedSlow
+              : strings.drefFormDidNationalSocietyStartedImminent
+          }
+        >
+          <RadioInput
+            name={'did_national_society' as const}
+            options={yesNoOptions}
+            keySelector={booleanOptionKeySelector}
+            labelSelector={optionLabelSelector}
+            onChange={onValueChange}
+            value={value?.did_national_society}
+            error={error?.did_national_society}
+          />
+        </InputSection>
+        {didNationalSocietyStarted &&
+          <InputSection
+            title={
+              isImminentOnset
+                ? strings.drefFormNSAnticipatoryAction
+                : strings.drefFormNsResponseStarted
+            }
+          >
+            <DateInput
+              name="ns_respond_date"
+              value={value.ns_respond_date}
+              onChange={onValueChange}
+              error={error?.ns_respond_date}
+            />
+          </InputSection>
+        }
+
+        <InputSection
+          contentSectionClassName={styles.imageInputContent}
+        >
+          <DREFFileInput
+            name="photos_file"
+            value={imagesValue}
+            onChange={handleImageInputChange}
+            accept="image/*"
+            multiple
+            error={error?.photos_file}
+            fileIdToUrlMap={fileIdToUrlMap}
+            setFileIdToUrlMap={setFileIdToUrlMap}
+            hidePreview
+          >
+            {strings.operationalUpdateCurrentNsImageLabel}
+          </DREFFileInput>
+          <div className={styles.previewList}>
+            {value?.photos_file?.map((g, i) => (
+              <CaptionInput
+                key={g.client_id}
+                index={i}
+                value={g}
+                onChange={onImageChange}
+                onRemove={onImageRemove}
+                error={getErrorObject(error?.photos_file)}
+                fileIdToUrlMap={fileIdToUrlMap}
+              />
+            ))}
+          </div>
+        </InputSection>
+        <InputSection>
+          <SelectInput
+            label={strings.drefFormNationalSocietiesActionsLabel}
+            name={undefined}
+            options={filteredNsActionOptions}
+            value={nsAction}
+            onChange={setNsAction}
+          />
+          <div className={styles.actions}>
+            <Button
+              variant="secondary"
+              name={nsAction}
+              onClick={handleNsActionAddButtonClick}
+              disabled={isNotDefined(nsAction)}
+            >
+              Add
+            </Button>
+          </div>
+        </InputSection>
+        {value?.national_society_actions?.map((n, i) => (
+          <NsActionInput
+            key={n.clientId}
+            index={i}
+            value={n}
+            onChange={onNsActionChange}
+            onRemove={onNsActionRemove}
+            error={getErrorObject(error?.national_society_actions)}
+            nsActionOptions={nsActionOptions}
+          />
+        ))}
       </Container>
       <Container
         heading={strings.finalReportMovementPartners}
       >
         <InputSection
           title={strings.finalReportIfrc}
+          description={strings.drefFormIfrcDescription}
         >
           <TextArea
             label={strings.cmpActionDescriptionLabel}
@@ -145,6 +329,7 @@ function Needs(props: Props) {
         </InputSection>
         <InputSection
           title={strings.finalReportIcrc}
+          description={strings.drefFormIcrcDescription}
         >
           <TextArea
             label={strings.cmpActionDescriptionLabel}
@@ -156,6 +341,7 @@ function Needs(props: Props) {
         </InputSection>
         <InputSection
           title={strings.finalReportPartnerNationalSociety}
+          description={strings.drefFormPartnerNationalSocietyDescription}
         >
           <TextArea
             name="partner_national_society"
@@ -211,14 +397,30 @@ function Needs(props: Props) {
           oneColumn
           multiRow
         >
-          <TextArea
-            label={strings.cmpActionDescriptionLabel}
-            name="major_coordination_mechanism"
+          <RadioInput
+            name={"is_there_major_coordination_mechanism" as const}
+            options={yesNoOptions}
+            keySelector={booleanOptionKeySelector}
+            labelSelector={optionLabelSelector}
+            value={value.is_there_major_coordination_mechanism}
             onChange={onValueChange}
-            value={value.major_coordination_mechanism}
-            error={error?.major_coordination_mechanism}
+            error={error?.is_there_major_coordination_mechanism}
           />
         </InputSection>
+
+        {isThereCoordinationMechanism &&
+          <InputSection
+            description={strings.finalReportCoordinationMechanismDescription}
+          >
+            <TextArea
+              label={strings.drefFormDescription}
+              name="major_coordination_mechanism"
+              onChange={onValueChange}
+              value={value.major_coordination_mechanism}
+              error={error?.major_coordination_mechanism}
+            />
+          </InputSection>
+        }
       </Container>
       <Container
         heading={strings.finalReportNeedsIdentified}

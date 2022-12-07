@@ -1,6 +1,8 @@
 import React from 'react';
 import {
   ArraySchema,
+  defaultEmptyArrayType,
+  defaultUndefinedType,
   emailCondition,
   lessThanOrEqualToCondition,
   ObjectSchema,
@@ -25,11 +27,13 @@ import {
   DrefFinalReportFields,
   emptyNumericOptionList,
   emptyStringOptionList,
+  NsAction,
   NumericKeyValuePair,
   NumericValueOption,
   StringKeyValuePair,
   User,
 } from './common';
+import { isDefined } from '@togglecorp/fujs';
 
 export type FormSchema = ObjectSchema<PartialForm<DrefFinalReportFields>>;
 export type FormSchemaFields = ReturnType<FormSchema['fields']>;
@@ -52,9 +56,18 @@ export type IndicatorSchemaFields = ReturnType<IndicatorSchema['fields']>;
 export type IndicatorsSchema = ArraySchema<PartialForm<IndicatorType>>;
 export type IndicatorsSchemaMember = ReturnType<IndicatorsSchema['member']>;
 
+export type NsActionType = NonNullable<NonNullable<DrefFinalReportFields['national_society_actions']>>[number];
+export type NsActionSchema = ObjectSchema<PartialForm<NsActionType>>;
+export type NsActionSchemaFields = ReturnType<NsActionSchema['fields']>;
+export type NsActionsSchema = ArraySchema<PartialForm<NsActionType>>;
+export type NsActionsSchemaMember = ReturnType<NsActionsSchema['member']>;
 
 export const MaxIntLimit = 2147483647;
-
+export function lessThanEqualToTwoImagesCondition(value: any) {
+  return isDefined(value) && Array.isArray(value) && value.length > 2
+    ? 'Only two images are allowed'
+    : undefined;
+}
 export const schema: FormSchema = {
   fields: (value): FormSchemaFields => ({
     title: [],
@@ -109,7 +122,7 @@ export const schema: FormSchema = {
     media_contact_email: [emailCondition],
     media_contact_phone_number: [],
     dref: [],
-    photos: [],
+    images_file: [defaultEmptyArrayType, lessThanEqualToTwoImagesCondition],
     budget_file: [],
     event_scope: [],
     change_in_operational_strategy: [],
@@ -119,6 +132,32 @@ export const schema: FormSchema = {
     event_map: [],
     country: [requiredCondition],
     district: [requiredCondition],
+    is_assessment_report: [],
+    did_national_society: [],
+    photos_file: [lessThanEqualToTwoImagesCondition],
+    ns_respond_date: [],
+    is_there_major_coordination_mechanism: [],
+    national_society_actions: {
+      keySelector: (n: PartialForm<NsAction>) => n.clientId as string,
+      member: (): NsActionsSchemaMember => ({
+        fields: (): NsActionSchemaFields => ({
+          title: [requiredCondition],
+          description: [requiredCondition],
+        }),
+      }),
+    },
+    cover_image_file: {
+      fields: () => ({
+        id: [defaultUndefinedType],
+        caption: [defaultUndefinedType],
+      }),
+    },
+    event_map_file: {
+      fields: () => ({
+        id: [defaultUndefinedType],
+        caption: [defaultUndefinedType],
+      }),
+    },
 
     needs_identified: {
       keySelector: (n) => n.clientId as string,
