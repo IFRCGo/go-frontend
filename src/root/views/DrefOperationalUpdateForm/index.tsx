@@ -20,7 +20,6 @@ import {
   PartialForm,
   useForm,
   accumulateErrors,
-  internal,
 } from '@togglecorp/toggle-form';
 
 import TabList from '#components/Tabs/TabList';
@@ -61,6 +60,7 @@ import EventDetails from './EventDetails';
 import Needs from './Needs';
 import Operation from './Operation';
 import Submission from './Submission';
+import ObsoletePaylodResolutionModal from './ObsoletePayloadResolutionModal';
 
 import styles from './styles.module.scss';
 
@@ -103,14 +103,12 @@ const intermittentValidationExceptions: (keyof DrefOperationalUpdateFields)[] = 
 ];
 
 function DrefOperationalUpdate(props: Props) {
-  const {
-    match,
-  } = props;
-  const { id } = match.params;
+  const { match } = props;
+  const { id: opsUpdateId } = match.params;
   const alert = useAlert();
   const lastModifiedAtRef = React.useRef<string | undefined>();
 
-  const handleOperationalUpdateLoad = React.useCallback((response: DrefOperationalUpdateApiFields) => {
+  const transformApiFieldsToFormFields = React.useCallback((response: DrefOperationalUpdateApiFields) => {
     lastModifiedAtRef.current = response?.modified_at;
 
     setFileIdToUrlMap((prevMap) => {
@@ -180,20 +178,19 @@ function DrefOperationalUpdate(props: Props) {
       people_per_urban: response.people_per_urban ? +response.people_per_urban : undefined,
       people_per_local: response.people_per_local ? +response.people_per_local : undefined,
     });
+
     return opsUpdateValue;
-  },
-    [],
-  );
+  }, []);
 
   const {
     pending: operationalUpdatePending,
     response: drefOperationalResponse,
   } = useRequest<DrefOperationalUpdateApiFields>({
-    skip: isNotDefined(id),
-    url: `api/v2/dref-op-update/${id}/`,
+    skip: isNotDefined(opsUpdateId),
+    url: `api/v2/dref-op-update/${opsUpdateId}/`,
     onSuccess: (response) => {
-      const opsUpdateResponse = handleOperationalUpdateLoad(response);
-      setValue(opsUpdateResponse);
+      const newOpsUpdateValue = transformApiFieldsToFormFields(response);
+      setValue(newOpsUpdateValue);
     },
     onFailure: ({
       value: { messageForNotification },
@@ -284,6 +281,11 @@ function DrefOperationalUpdate(props: Props) {
   const submitButtonLabel = currentStep === 'submission' ? strings.drefFormSaveButtonLabel : strings.drefFormContinueButtonLabel;
   const shouldDisabledBackButton = currentStep === 'operationOverview';
 
+  const [
+    showObsoletePayloadResolutionModal,
+    setShowObsoletePayloadResolutionModal,
+  ] = React.useState(false);
+
   const erroredTabs = React.useMemo(() => {
     const safeErrors = getErrorObject(error) ?? {};
 
@@ -367,7 +369,7 @@ function DrefOperationalUpdate(props: Props) {
     pending: drefSubmitPending,
     trigger: submitRequest,
   } = useLazyRequest<DrefOperationalUpdateApiFields, Partial<DrefOperationalUpdateApiFields>>({
-    url: `api/v2/dref-op-update/${id}`,
+    url: `api/v2/dref-op-update/${opsUpdateId}`,
     method: 'PUT',
     body: ctx => ctx,
     onSuccess: (response) => {
@@ -376,8 +378,8 @@ function DrefOperationalUpdate(props: Props) {
         { variant: 'success' },
       );
       //NOTE: we need to refetch if not it gives error modified_at:"OBSOLETE_PAYLOAD"
-      const opsUpdateResponse = handleOperationalUpdateLoad(response);
-      setValue(opsUpdateResponse);
+      const newOpsUpdateValue = transformApiFieldsToFormFields(response);
+      setValue(newOpsUpdateValue);
     },
     onFailure: ({
       value: responseError,
@@ -388,10 +390,11 @@ function DrefOperationalUpdate(props: Props) {
         formErrors,
       } = responseError;
 
-      setError({
-        ...formErrors,
-        [internal]: formErrors?.[internal],
-      });
+      setError(formErrors);
+      if (formErrors.modified_at === 'OBSOLETE_PAYLOAD') {
+        // There was a save conflict due to obsolete payload
+        setShowObsoletePayloadResolutionModal(true);
+      }
 
       alert.show(
         <p>
@@ -497,7 +500,7 @@ function DrefOperationalUpdate(props: Props) {
     || operationalUpdatePending
     || drefSubmitPending;
 
-  const failedToLoadDref = !pending && isDefined(id) && !drefOperationalResponse;
+  const failedToLoadDref = !pending && isDefined(opsUpdateId) && !drefOperationalResponse;
 
   const exportLinkProps = useButtonFeatures({
     variant: 'secondary',
@@ -507,6 +510,15 @@ function DrefOperationalUpdate(props: Props) {
   const isSuddenOnset = value?.type_of_onset === ONSET_SUDDEN;
   const isImminentOnset = value?.type_of_onset === ONSET_IMMINENT;
   const isAssessmentReport = !!value?.is_assessment_report;
+
+  const handleObsoletePayloadResolutionOverwiteButtonClick = React.useCallback((newModifiedAt: string | undefined) => {
+    setShowObsoletePayloadResolutionModal(false);
+    submitDrefOperationalUpdate(newModifiedAt);
+  }, [submitDrefOperationalUpdate]);
+
+  const handleObsoletePayloadResolutionCancelButtonClick = React.useCallback(() => {
+    setShowObsoletePayloadResolutionModal(false);
+  }, []);
 
   return (
     <Tabs
@@ -518,9 +530,9 @@ function DrefOperationalUpdate(props: Props) {
       <Page
         actions={(
           <>
-            {isDefined(id) && (
+            {isDefined(opsUpdateId) && (
               <Link
-                to={`/dref-operational-update/${id}/export/`}
+                to={`/dref-operational-update/${opsUpdateId}/export/`}
                 {...exportLinkProps}
               />
             )}
@@ -528,6 +540,7 @@ function DrefOperationalUpdate(props: Props) {
               name={undefined}
               onClick={submitDrefOperationalUpdate}
               type='submit'
+              disabled={pending}
             >
               {strings.drefOperationalUpdateSaveButtonLabel}
             </Button>
@@ -687,6 +700,13 @@ function DrefOperationalUpdate(props: Props) {
                   {submitButtonLabel}
                 </Button>
               </div>
+              {isDefined(opsUpdateId) && showObsoletePayloadResolutionModal && (
+                <ObsoletePaylodResolutionModal
+                  opsUpdateId={+opsUpdateId}
+                  onOverwriteButtonClick={handleObsoletePayloadResolutionOverwiteButtonClick}
+                  onCancelButtonClick={handleObsoletePayloadResolutionCancelButtonClick}
+                />
+              )}
             </>
           )
         )}
