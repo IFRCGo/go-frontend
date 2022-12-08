@@ -591,6 +591,11 @@ class AdminArea extends SFPComponent {
       return (<Redirect to={'/regions/' + countryRegionMapping[this.props.country.id]} />);
     }
 
+    if (this.props.country.id === 200 && this.props.location.hash === '#3w') {  // Az. exception, DELETEME if map question is arranged.
+      // this.props.location.hash = '#operations';
+      return (<Redirect to={'/countries/200#operations'} />);
+    }
+
     // const bbox = getBoundingBox(data.iso);
     // const mapContainerClass = 'country__map';
 
