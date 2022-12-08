@@ -5,13 +5,11 @@ import { useRequest } from '#utils/restRequest';
 import Modal from '#components/BasicModal';
 import Button from '#components/Button';
 import BlockLoading from '#components/block-loading';
-import {
-  DrefApiFields,
-} from '../common';
+import { DrefOperationalUpdateApiFields } from '../common';
 
 import styles from './styles.module.scss';
 
-function getUserName(user: DrefApiFields['modified_by_details'] | undefined) {
+function getUserName(user: DrefOperationalUpdateApiFields['modified_by_details'] | undefined) {
   if (!user) {
     return 'Unknown User';
   }
@@ -31,14 +29,14 @@ function getUserName(user: DrefApiFields['modified_by_details'] | undefined) {
 }
 
 interface Props {
-  drefId: number;
+  opsUpdateId: number;
   onOverwriteButtonClick: (newModifiedAt: string | undefined) => void;
   onCancelButtonClick: () => void;
 }
 
 function ObsoletePayloadResolutionModal(props: Props) {
   const {
-    drefId,
+    opsUpdateId,
     onOverwriteButtonClick,
     onCancelButtonClick,
   } = props;
@@ -46,9 +44,9 @@ function ObsoletePayloadResolutionModal(props: Props) {
   const {
     pending: drefPending,
     response: drefResponse,
-  } = useRequest<DrefApiFields>({
-    skip: !drefId,
-    url: `api/v2/dref/${drefId}/`,
+  } = useRequest<DrefOperationalUpdateApiFields>({
+    skip: !opsUpdateId,
+    url: `api/v2/dref-op-update/${opsUpdateId}/`,
     onSuccess: (response) => {
     },
   });
@@ -84,7 +82,7 @@ function ObsoletePayloadResolutionModal(props: Props) {
       {!drefPending && (
         <>
           <div>
-            There's a newer version of current DREF application which was modified by &nbsp;
+            There's a newer version of current Operational Update which was modified by &nbsp;
             <strong>
               {getUserName(drefResponse?.modified_by_details)}
             </strong>
@@ -97,7 +95,7 @@ function ObsoletePayloadResolutionModal(props: Props) {
             <strong>
               Note:
             </strong>
-            &nbsp;You can open this DREF application in a new tab and verify / merge the changes manually.
+            &nbsp;You can open this Operational Update form in a new tab and verify / merge the changes manually.
           </div>
         </>
       )}

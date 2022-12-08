@@ -8,6 +8,7 @@ import turfBbox from '@turf/bbox';
 import Container from '#components/Container';
 import BlockLoading from '#components/block-loading';
 import RiskImminentEventMap from '#components/RiskImminentEventMap';
+import WikiLink from '#components/WikiLink';
 
 import useReduxState from '#hooks/useReduxState';
 import { useRequest } from '#utils/restRequest';
@@ -118,6 +119,8 @@ function ImminentEvents(props: Props) {
       description="This map displays information about the modeled impact of specific forecasted or detected natural hazards. By hovering over the icons, if available, you can see the forecasted/observed footprint of the hazard; when you click on it, the table of modeled impact estimates will appear, as well as an information about who produced the impact estimate."
       descriptionClassName={styles.mapDescription}
       contentClassName={styles.mainContent}
+      actions={<WikiLink pathName='user_guide/risk_module#imminent-events'/>}
+      sub
     >
       {pending && <BlockLoading /> }
       {!pending && data && (

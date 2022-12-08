@@ -25,6 +25,7 @@ type Props<N> = BaseProps & ({
   state?: never;
 } | {
   href: string;
+  hash?: string;
   state?: unknown;
   onClick?: never;
   name?: never;
@@ -81,6 +82,7 @@ function DropdownMenuItem<N>(props: Props<N>) {
         to={{
           pathname: props.href,
           state: props.state,
+          hash: props.hash,
         }}
       >
         {children}

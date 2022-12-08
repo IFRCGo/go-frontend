@@ -44,7 +44,7 @@ export default function FormRadioGroup (props) {
         </div>
         <div className='form__inner-body'>
           {options.map(o => (
-            <React.Fragment>
+            <React.Fragment key={o.value}>
               <FormRadio
                 key={o.value}
                 label={o.label}

@@ -63,51 +63,54 @@ function PlannedIntervention(props: PlannedInterventionProps) {
           </View>
         </View>
       </View>
-      <View style={pdfStyles.piRow}>
-        <View style={pdfStyles.piSmallColumn}>
-          <Text style={pdfStyles.piContentHeadingCell}>
-            {strings.drefExportIndicators}
-          </Text>
+
+      {data?.indicators?.length > 0 && (
+        <View style={pdfStyles.piRow}>
+          <View style={pdfStyles.piSmallColumn}>
+            <Text style={pdfStyles.piContentHeadingCell}>
+              {strings.drefExportIndicators}
+            </Text>
+          </View>
+          <View style={pdfStyles.piLargeColumn}>
+            <View style={pdfStyles.piMediumColumn}>
+              <Text style={pdfStyles.piContentHeadingCell}>
+                {strings.drefFormIndicatorTargetLabel}
+              </Text>
+            </View>
+            <View style={pdfStyles.piMediumColumn}>
+              <Text style={pdfStyles.piContentHeadingCell}>
+                {strings.drefFormIndicatorActualLabel}
+              </Text>
+            </View>
+          </View>
         </View>
-        <View style={pdfStyles.piLargeColumn}>
-          <Text style={pdfStyles.piContentHeadingCell}>
-            {strings.drefFormIndicatorTargetLabel}
-          </Text>
-        </View>
-      </View>
+      )}
       {
-        data?.indicators?.map((el) => (
+        data?.indicators?.map((indicator) => (
           <View
-            key={el?.id}
+            key={indicator?.id}
             style={pdfStyles.piRow}
           >
             <View style={pdfStyles.piSmallColumn}>
               <Text style={pdfStyles.piBorderCell}>
-                {el.title}
+                {indicator.title}
               </Text>
             </View>
             <View style={pdfStyles.piLargeColumn}>
-              <Text style={pdfStyles.piBorderCell}>
-                {el.target}
-              </Text>
+              <View style={pdfStyles.piMediumColumn}>
+                <Text style={pdfStyles.piBorderCell}>
+                  {indicator.target}
+                </Text>
+              </View>
+              <View style={pdfStyles.piMediumColumn}>
+                <Text style={pdfStyles.piBorderCell}>
+                  {indicator.target}
+                </Text>
+              </View>
             </View>
           </View>
         ))
       }
-      <View style={pdfStyles.piRow}>
-        <View style={pdfStyles.piSmallColumn}>
-          <View style={pdfStyles.piPriorityCell}>
-            <Text>
-              {strings.drefExportPriorityActions}
-            </Text>
-          </View>
-        </View>
-        <View style={pdfStyles.piLargeColumn}>
-          <Text style={pdfStyles.piBorderCell}>
-            {data.description}
-          </Text>
-        </View>
-      </View>
     </View >
   );
 }

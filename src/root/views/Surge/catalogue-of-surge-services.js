@@ -171,8 +171,8 @@ export default class CatalogueOfSurgeServices extends React.Component {
                     <p>{strings.catalogueOfSurgeServicesTitleSubtitle1Text1}</p>
                     <p>{strings.catalogueOfSurgeServicesTitleSubtitle1Text2}</p>
                     <h3>{strings.catalogueOfSurgeServicesTitleSubtitle2}</h3>
-                    <a href={SharepointLink['Core competency framework.pdf']} > <u>{strings.catalogueOfSurgeServicesTitleSubtitle2Link1} </u> </a> {strings.catalogueOfSurgeServicesTitleSubtitle2Text1}
-                    {/* <p>{strings.catalogueOfSurgeServicesTitleSubtitle2Text1}</p> */}
+                    <p><a href={SharepointLink['Core competency framework.pdf']} > <u>{strings.catalogueOfSurgeServicesTitleSubtitle2Link1} </u> </a> {strings.catalogueOfSurgeServicesTitleSubtitle2Text1}</p>
+                    <p>{strings.catalogueOfSurgeServicesTitleSubtitle3Text1}<a href="https://surgelearning.ifrc.org/resources/minimum-training-required-surge-personnel"><u>{strings.catalogueOfSurgeServicesTitleSubtitle3Link1}</u></a>{strings.catalogueOfSurgeServicesTitleSubtitle3Text2}</p>
                 </section>
             );
         }

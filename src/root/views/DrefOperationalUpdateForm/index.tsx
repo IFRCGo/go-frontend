@@ -20,7 +20,6 @@ import {
   PartialForm,
   useForm,
   accumulateErrors,
-  internal,
 } from '@togglecorp/toggle-form';
 
 import TabList from '#components/Tabs/TabList';
@@ -40,6 +39,7 @@ import {
 } from '#utils/restRequest';
 import scrollToTop from '#utils/scrollToTop';
 import { DrefApiFields } from '#views/DrefApplicationForm/common';
+import { ymdToDateString } from '#utils/common';
 
 import {
   DrefOperationalUpdateFields,
@@ -60,17 +60,14 @@ import EventDetails from './EventDetails';
 import Needs from './Needs';
 import Operation from './Operation';
 import Submission from './Submission';
+import ObsoletePayloadResolutionModal from './ObsoletePayloadResolutionModal';
 
 import styles from './styles.module.scss';
-import { ymdToDateString } from '#utils/common';
 
 interface Props {
   match: match<{ id?: string }>;
   history: History;
   location: Location;
-}
-interface DrefOperationalResponseFields {
-  id: string;
 }
 
 type StepTypes = 'operationOverview' | 'eventDetails' | 'needs' | 'operation' | 'submission';
@@ -106,85 +103,94 @@ const intermittentValidationExceptions: (keyof DrefOperationalUpdateFields)[] = 
 ];
 
 function DrefOperationalUpdate(props: Props) {
-  const {
-    match,
-  } = props;
-  const { id } = match.params;
+  const { match } = props;
+  const { id: opsUpdateId } = match.params;
   const alert = useAlert();
+  const lastModifiedAtRef = React.useRef<string | undefined>();
+
+  const transformApiFieldsToFormFields = React.useCallback((response: DrefOperationalUpdateApiFields) => {
+    lastModifiedAtRef.current = response?.modified_at;
+
+    setFileIdToUrlMap((prevMap) => {
+      const newMap = {
+        ...prevMap,
+      };
+      if (response.budget_file_details) {
+        newMap[response.budget_file_details.id] = response.budget_file_details.file;
+      }
+      if (response.event_map_file && response.event_map_file.file) {
+        newMap[response.event_map_file.id] = response.event_map_file.file;
+      }
+      if (response.cover_image_file && response.cover_image_file.file) {
+        newMap[response.cover_image_file.id] = response.cover_image_file.file;
+      }
+      if (response.photos_file?.length > 0) {
+        response.photos_file.forEach((img) => {
+          newMap[img.id] = img.file;
+        });
+      }
+      if (response.images_file?.length > 0) {
+        response.images_file.forEach((img) => {
+          newMap[img.id] = img.file;
+        });
+      }
+      return newMap;
+    });
+
+    const opsUpdateValue = ({
+      ...response,
+      planned_interventions: response.planned_interventions?.map((pi) => ({
+        ...pi,
+        clientId: String(pi.id),
+        indicators: pi?.indicators?.map((i) => ({
+          ...i,
+          clientId: String(i.id)
+        })),
+      })),
+      national_society_actions: response.national_society_actions?.map((nsa) => ({
+        ...nsa,
+        clientId: String(nsa.id),
+      })),
+      needs_identified: response.needs_identified?.map((ni) => ({
+        ...ni,
+        clientId: String(ni.id),
+      })),
+      images_file: response.images_file?.map((img) => (
+        isDefined(img.file)
+          ? ({
+            id: img.id,
+            client_id: img.client_id ?? String(img.id),
+            caption: img.caption ?? '',
+          })
+          : undefined
+      )).filter(isDefined),
+
+      photos_file: response.photos_file?.map((img) => (
+        isDefined(img.file)
+          ? ({
+            id: img.id,
+            client_id: img.client_id ?? String(img.id),
+            caption: img.caption ?? '',
+          })
+          : undefined
+      )).filter(isDefined),
+      disability_people_per: response.disability_people_per ? +response.disability_people_per : undefined,
+      people_per_urban: response.people_per_urban ? +response.people_per_urban : undefined,
+      people_per_local: response.people_per_local ? +response.people_per_local : undefined,
+    });
+
+    return opsUpdateValue;
+  }, []);
 
   const {
     pending: operationalUpdatePending,
     response: drefOperationalResponse,
   } = useRequest<DrefOperationalUpdateApiFields>({
-    skip: isNotDefined(id),
-    url: `api/v2/dref-op-update/${id}/`,
+    skip: isNotDefined(opsUpdateId),
+    url: `api/v2/dref-op-update/${opsUpdateId}/`,
     onSuccess: (response) => {
-      setFileIdToUrlMap((prevMap) => {
-        const newMap = {
-          ...prevMap,
-        };
-        if (response.budget_file_details) {
-          newMap[response.budget_file_details.id] = response.budget_file_details.file;
-        }
-        if (response.event_map_file && response.event_map_file.file) {
-          newMap[response.event_map_file.id] = response.event_map_file.file;
-        }
-        if (response.cover_image_file && response.cover_image_file.file) {
-          newMap[response.cover_image_file.id] = response.cover_image_file.file;
-        }
-        if (response.photos_file?.length > 0) {
-          response.photos_file.forEach((img) => {
-            newMap[img.id] = img.file;
-          });
-        }
-        if (response.images_file?.length > 0) {
-          response.images_file.forEach((img) => {
-            newMap[img.id] = img.file;
-          });
-        }
-        return newMap;
-      });
-      setValue({
-        ...response,
-        planned_interventions: response.planned_interventions?.map((pi) => ({
-          ...pi,
-          clientId: String(pi.id),
-          indicators: pi?.indicators?.map((i) => ({
-            ...i,
-            clientId: String(i.id)
-          })),
-        })),
-        national_society_actions: response.national_society_actions?.map((nsa) => ({
-          ...nsa,
-          clientId: String(nsa.id),
-        })),
-        needs_identified: response.needs_identified?.map((ni) => ({
-          ...ni,
-          clientId: String(ni.id),
-        })),
-        images_file: response.images_file?.map((img) => (
-          isDefined(img.file)
-            ? ({
-              id: img.id,
-              client_id: img.client_id ?? String(img.id),
-              caption: img.caption ?? '',
-            })
-            : undefined
-        )).filter(isDefined),
-
-        photos_file: response.photos_file?.map((img) => (
-          isDefined(img.file)
-            ? ({
-              id: img.id,
-              client_id: img.client_id ?? String(img.id),
-              caption: img.caption ?? '',
-            })
-            : undefined
-        )).filter(isDefined),
-        disability_people_per: response.disability_people_per ? +response.disability_people_per : undefined,
-        people_per_urban: response.people_per_urban ? +response.people_per_urban : undefined,
-        people_per_local: response.people_per_local ? +response.people_per_local : undefined,
-      });
+      const newOpsUpdateValue = transformApiFieldsToFormFields(response);
+      setValue(newOpsUpdateValue);
     },
     onFailure: ({
       value: { messageForNotification },
@@ -275,6 +281,11 @@ function DrefOperationalUpdate(props: Props) {
   const submitButtonLabel = currentStep === 'submission' ? strings.drefFormSaveButtonLabel : strings.drefFormContinueButtonLabel;
   const shouldDisabledBackButton = currentStep === 'operationOverview';
 
+  const [
+    showObsoletePayloadResolutionModal,
+    setShowObsoletePayloadResolutionModal,
+  ] = React.useState(false);
+
   const erroredTabs = React.useMemo(() => {
     const safeErrors = getErrorObject(error) ?? {};
 
@@ -357,8 +368,8 @@ function DrefOperationalUpdate(props: Props) {
   const {
     pending: drefSubmitPending,
     trigger: submitRequest,
-  } = useLazyRequest<DrefOperationalResponseFields, Partial<DrefOperationalUpdateApiFields>>({
-    url: `api/v2/dref-op-update/${id}`,
+  } = useLazyRequest<DrefOperationalUpdateApiFields, Partial<DrefOperationalUpdateApiFields>>({
+    url: `api/v2/dref-op-update/${opsUpdateId}`,
     method: 'PUT',
     body: ctx => ctx,
     onSuccess: (response) => {
@@ -366,6 +377,9 @@ function DrefOperationalUpdate(props: Props) {
         strings.drefOperationalUpdateSuccessMessage,
         { variant: 'success' },
       );
+      //NOTE: we need to refetch if not it gives error modified_at:"OBSOLETE_PAYLOAD"
+      const newOpsUpdateValue = transformApiFieldsToFormFields(response);
+      setValue(newOpsUpdateValue);
     },
     onFailure: ({
       value: responseError,
@@ -376,10 +390,11 @@ function DrefOperationalUpdate(props: Props) {
         formErrors,
       } = responseError;
 
-      setError({
-        ...formErrors,
-        [internal]: formErrors?.[internal],
-      });
+      setError(formErrors);
+      if (formErrors.modified_at === 'OBSOLETE_PAYLOAD') {
+        // There was a save conflict due to obsolete payload
+        setShowObsoletePayloadResolutionModal(true);
+      }
 
       alert.show(
         <p>
@@ -412,7 +427,7 @@ function DrefOperationalUpdate(props: Props) {
     }
   }, [handleTabChange, currentStep]);
 
-  const submitDrefOperationalUpdate = React.useCallback(() => {
+  const submitDrefOperationalUpdate = React.useCallback((modifiedAt?: string) => {
     const result = validate();
 
     if (result.errored) {
@@ -421,6 +436,7 @@ function DrefOperationalUpdate(props: Props) {
       const body = {
         user: userDetails.id,
         ...result.value,
+        modified_at: modifiedAt ?? lastModifiedAtRef.current,
       };
 
       submitRequest(body as DrefOperationalUpdateApiFields);
@@ -484,7 +500,7 @@ function DrefOperationalUpdate(props: Props) {
     || operationalUpdatePending
     || drefSubmitPending;
 
-  const failedToLoadDref = !pending && isDefined(id) && !drefOperationalResponse;
+  const failedToLoadDref = !pending && isDefined(opsUpdateId) && !drefOperationalResponse;
 
   const exportLinkProps = useButtonFeatures({
     variant: 'secondary',
@@ -494,6 +510,15 @@ function DrefOperationalUpdate(props: Props) {
   const isSuddenOnset = value?.type_of_onset === ONSET_SUDDEN;
   const isImminentOnset = value?.type_of_onset === ONSET_IMMINENT;
   const isAssessmentReport = !!value?.is_assessment_report;
+
+  const handleObsoletePayloadResolutionOverwiteButtonClick = React.useCallback((newModifiedAt: string | undefined) => {
+    setShowObsoletePayloadResolutionModal(false);
+    submitDrefOperationalUpdate(newModifiedAt);
+  }, [submitDrefOperationalUpdate]);
+
+  const handleObsoletePayloadResolutionCancelButtonClick = React.useCallback(() => {
+    setShowObsoletePayloadResolutionModal(false);
+  }, []);
 
   return (
     <Tabs
@@ -505,9 +530,9 @@ function DrefOperationalUpdate(props: Props) {
       <Page
         actions={(
           <>
-            {isDefined(id) && (
+            {isDefined(opsUpdateId) && (
               <Link
-                to={`/dref-operational-update/${id}/export/`}
+                to={`/dref-operational-update/${opsUpdateId}/export/`}
                 {...exportLinkProps}
               />
             )}
@@ -515,6 +540,7 @@ function DrefOperationalUpdate(props: Props) {
               name={undefined}
               onClick={submitDrefOperationalUpdate}
               type='submit'
+              disabled={pending}
             >
               {strings.drefOperationalUpdateSaveButtonLabel}
             </Button>
@@ -674,6 +700,13 @@ function DrefOperationalUpdate(props: Props) {
                   {submitButtonLabel}
                 </Button>
               </div>
+              {isDefined(opsUpdateId) && showObsoletePayloadResolutionModal && (
+                <ObsoletePayloadResolutionModal
+                  opsUpdateId={+opsUpdateId}
+                  onOverwriteButtonClick={handleObsoletePayloadResolutionOverwiteButtonClick}
+                  onCancelButtonClick={handleObsoletePayloadResolutionCancelButtonClick}
+                />
+              )}
             </>
           )
         )}

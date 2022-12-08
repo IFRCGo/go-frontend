@@ -39,6 +39,9 @@ export interface StringKeyValuePair {
 
 export interface User {
   id: number;
+  first_name: string;
+  last_name: string;
+  username: string;
 }
 
 export type Option = NumericValueOption | BooleanValueOption | StringValueOption;
@@ -279,6 +282,7 @@ export interface DrefOperationalUpdateApiFields extends Omit<DrefOperationalUpda
   cover_image_file: FileWithCaption;
   event_map_file: FileWithCaption;
   photos_file: FileWithCaption[];
+  modified_by_details: User;
 }
 
 export const overviewFields: (keyof DrefOperationalUpdateFields)[] = [

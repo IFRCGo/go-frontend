@@ -275,7 +275,8 @@ function GlobalThreeW(props: Props) {
                   <DropdownMenuItem
                     key={region.id}
                     label={region.region_name}
-                    href={`/regions/${region.id}#3w`}
+                    href={`/regions/${region.id}`}
+                    hash="#3w"
                   />
                 ))}
               </DropdownMenu>

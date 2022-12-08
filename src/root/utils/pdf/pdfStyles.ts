@@ -372,6 +372,11 @@ const pdfStyles = StyleSheet.create({
     flexBasis: '40%',
     flexDirection: 'row',
   },
+  piMediumColumn: {
+    display: 'flex',
+    flexBasis: '50%',
+    flexDirection: 'row',
+  },
 
   piLargeColumn: {
     display: 'flex',
