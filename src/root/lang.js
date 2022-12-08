@@ -3662,7 +3662,7 @@ export default {
   finalReportTabSubmission: 'Submission',
 
   finalReportCreateButtonLabel: 'Create Final Report',
-  finalReportEditButtonLabel: 'Edit Last Final Report',
+  finalReportEditButtonLabel: 'Edit Final Report',
   finalReportPublishButtonLabel: 'Publish Final Report',
 
   finalReportOperationOverviewTitle: 'operation overview',

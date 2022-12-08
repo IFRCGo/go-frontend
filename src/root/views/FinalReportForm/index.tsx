@@ -390,6 +390,7 @@ function FinalReport(props: Props) {
       const body = {
         user: userDetails.id,
         ...result.value,
+        modified_at: lastModifiedAtRef.current,
       };
       submitRequest(body as DrefFinalReportApiFields);
     }
