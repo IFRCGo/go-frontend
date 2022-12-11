@@ -185,7 +185,7 @@ function Overview(props: Props) {
             error={error?.national_society}
             pending={fetchingNationalSociety}
           />
-          </InputSection>
+        </InputSection>
         <InputSection
           title={strings.drefFormForAssessment}
         >

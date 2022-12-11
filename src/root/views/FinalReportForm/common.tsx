@@ -97,6 +97,13 @@ export interface NsAction {
   title_display: string;
 }
 
+export interface RiskSecurityProps {
+  clientId: string;
+  risk: string;
+  mitigation: string;
+}
+
+
 export const optionKeySelector = (o: Option) => o.value;
 export const numericOptionKeySelector = (o: NumericValueOption) => o.value;
 export const stringOptionKeySelector = (o: StringValueOption) => o.value;
@@ -149,7 +156,6 @@ export interface DrefFinalReportFields {
   needs_identified: Need[];
   people_assisted: string;
   selection_criteria: string;
-  entity_affected: string;
   change_in_operational_strategy: boolean;
   change_in_operational_strategy_text: string;
   women: number;
@@ -191,12 +197,15 @@ export interface DrefFinalReportFields {
   ns_respond_date: string;
   photos_file: FileWithCaption[]
   is_there_major_coordination_mechanism: boolean;
+  risk_security: RiskSecurityProps[];
+  risk_security_concern: string;
+  total_targeted_population: number;
 }
-
 
 export interface DrefFinalReportApiFields extends Omit<DrefFinalReportFields, 'district_details' | 'planned_interventions' | 'national_society_actions' | 'needs_identified' | 'images_file'> {
   user: number;
   district_details: DistrictMini[];
+  national_society_actions: (Omit<NsAction, 'clientId'> & { id: number })[];
   planned_interventions: (Omit<Intervention, 'clientId' | 'indicators'> & {
     id: number,
     image_url: string,
@@ -258,11 +267,12 @@ export const needsFields: (keyof DrefFinalReportFields)[] = [
   'did_national_society',
   'photos_file',
   'is_there_major_coordination_mechanism',
+  'national_society_actions',
+  'did_national_society',
 ];
 export const operationFields: (keyof DrefFinalReportFields)[] = [
   'people_assisted',
   'selection_criteria',
-  'entity_affected',
   'change_in_operational_strategy',
   'change_in_operational_strategy_text',
   'women',
@@ -278,6 +288,9 @@ export const operationFields: (keyof DrefFinalReportFields)[] = [
   'response_strategy',
   'budget_file',
   'planned_interventions',
+  'risk_security',
+  'risk_security_concern',
+  'total_targeted_population',
 ];
 export const submissionFields: (keyof DrefFinalReportFields)[] = [
   'appeal_code',

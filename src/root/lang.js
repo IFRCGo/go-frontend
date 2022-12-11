@@ -3702,6 +3702,7 @@ export default {
   finalReportScopeAndScaleDescription: 'Describe the extent this hazard will produce negative impacts on lives, livelihoods, well-being and infrastructure. Explain which people are most likely to experience the impacts of this hazard? Where do they live, and why are they vulnerable? Please explain which groups (e.g elderly, children, people with disabilities, IDPs, Refugees, etc.) are most likely to be affected? Provide historic information on how communities have been affected by the magnitude of this hazard in the past?',
 
   // tab: needs
+  finalReportNationalSocietiesActions: 'National Society Actions',
   finalReportMovementPartners: 'Movement Partners Actions',
   finalReportIfrc: 'IFRC',
   finalReportIcrc: 'ICRC',
@@ -3722,7 +3723,6 @@ export default {
   finalReportTargetingStrategy: 'Targeting Strategy',
   finalReportPeopleAssistedThroughOperation: 'Who will be targeted through this operation?',
   finalReportSelectionCriteria: 'Explain the selection criteria for the targeted population',
-  finalReportProtectionGenderAndInclusion: 'How have, community engagement Protection, Gender and Inclusion been considered in planning this operation?',
   finalReportChangeToOperationStrategy: 'Has there been any changes to the operation strategy',
   finalReportChangeToOperationStrategyExplain: 'Explain',
   finalReportTargetedPopulation: 'Target Population',

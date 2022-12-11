@@ -124,7 +124,7 @@ function EventDetails(props: Props) {
         contentSectionClassName={styles.imageInputContent}
       >
         <DREFFileInput
-          name="photos"
+          name="images_file"
           value={imagesValue}
           onChange={handleImageInputChange}
           accept="image/*"

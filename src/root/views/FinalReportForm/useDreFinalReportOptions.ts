@@ -62,6 +62,19 @@ export type NsActionSchemaFields = ReturnType<NsActionSchema['fields']>;
 export type NsActionsSchema = ArraySchema<PartialForm<NsActionType>>;
 export type NsActionsSchemaMember = ReturnType<NsActionsSchema['member']>;
 
+export type RiskSecurityType = NonNullable<NonNullable<DrefFinalReportFields['risk_security']>>[number];
+export type RiskSecuritySchema = ObjectSchema<
+  PartialForm<RiskSecurityType>,
+  PartialForm<DrefFinalReportFields>
+>;
+export type RiskSecuritySchemaFields = ReturnType<RiskSecuritySchema['fields']>;
+export type RiskSecuritiesSchema = ArraySchema<
+  PartialForm<RiskSecurityType>,
+  PartialForm<DrefFinalReportFields>
+>;
+export type RiskSecuritiesSchemaMember = ReturnType<RiskSecuritiesSchema['member']>;
+
+
 export const MaxIntLimit = 2147483647;
 export function lessThanEqualToTwoImagesCondition(value: any) {
   return isDefined(value) && Array.isArray(value) && value.length > 2
@@ -91,7 +104,6 @@ export const schema: FormSchema = {
     major_coordination_mechanism: [],
     people_assisted: [],
     selection_criteria: [],
-    entity_affected: [],
     women: [positiveIntegerCondition],
     men: [positiveIntegerCondition],
     girls: [positiveIntegerCondition],
@@ -133,10 +145,17 @@ export const schema: FormSchema = {
     country: [requiredCondition],
     district: [requiredCondition],
     is_assessment_report: [],
-    did_national_society: [],
     photos_file: [lessThanEqualToTwoImagesCondition],
     ns_respond_date: [],
     is_there_major_coordination_mechanism: [],
+    risk_security_concern: [],
+    total_targeted_population: [],
+    modified_at: [],
+    people_in_need: [],
+    event_date: [],
+    event_text: [],
+    event_description: [],
+    did_national_society: [],
     national_society_actions: {
       keySelector: (n: PartialForm<NsAction>) => n.clientId as string,
       member: (): NsActionsSchemaMember => ({
@@ -193,6 +212,16 @@ export const schema: FormSchema = {
           lessons_learnt: [],
           challenges: [],
           narrative_description_of_achievements: [],
+        }),
+      }),
+    },
+    risk_security: {
+      keySelector: (r) => r.clientId as string,
+      member: (): RiskSecuritiesSchemaMember => ({
+        fields: (): RiskSecuritySchemaFields => ({
+          clientId: [],
+          risk: [requiredCondition],
+          mitigation: [requiredCondition],
         }),
       }),
     },

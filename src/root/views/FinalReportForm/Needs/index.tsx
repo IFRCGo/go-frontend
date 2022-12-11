@@ -65,21 +65,42 @@ function Needs(props: Props) {
     value,
     yesNoOptions,
     needOptions,
-    isImminentOnset,
     nsActionOptions,
     fileIdToUrlMap,
     setFileIdToUrlMap,
+    isImminentOnset,
   } = props;
 
   const error = useMemo(() => getErrorObject(formError), [formError]);
 
   const [nsAction, setNsAction] = React.useState<string | undefined>();
   const [need, setNeed] = useState<string | undefined>();
+
+  const imagesValue = React.useMemo(() => (
+    value?.photos_file?.map(d => d.id).filter(d => !!d) as number[] | undefined
+  ), [value?.photos_file]);
+
   const {
     setValue: onNeedChange,
     removeValue: onNeedRemove,
   } = useFormArray<'needs_identified', PartialForm<Need>>(
     'needs_identified',
+    onValueChange,
+  );
+
+  const {
+    setValue: onImageChange,
+    removeValue: onImageRemove,
+  } = useFormArray<'photos_file', PartialForm<FileWithCaption>>(
+    'photos_file',
+    onValueChange,
+  );
+
+  const {
+    setValue: onNsActionChange,
+    removeValue: onNsActionRemove,
+  } = useFormArray<'national_society_actions', PartialForm<NsAction>>(
+    'national_society_actions',
     onValueChange,
   );
 
@@ -98,14 +119,6 @@ function Needs(props: Props) {
     setNeed(undefined);
   }, [onValueChange, setNeed]);
 
-  const {
-    setValue: onNsActionChange,
-    removeValue: onNsActionRemove,
-  } = useFormArray<'national_society_actions', PartialForm<NsAction>>(
-    'national_society_actions',
-    onValueChange,
-  );
-
   type NsActions = typeof value.needs_identified;
   const handleNsActionAddButtonClick = React.useCallback((title?: string) => {
     const clientId = randomString();
@@ -123,17 +136,6 @@ function Needs(props: Props) {
     setNsAction(undefined);
   }, [onValueChange, setNsAction]);
 
-  const imagesValue = React.useMemo(() => (
-    value?.photos_file?.map(d => d.id).filter(d => !!d) as number[] | undefined
-  ), [value?.photos_file]);
-
-  const {
-    setValue: onImageChange,
-    removeValue: onImageRemove,
-  } = useFormArray<'photos_file', PartialForm<FileWithCaption>>(
-    'photos_file',
-    onValueChange,
-  );
   const handleImageInputChange = React.useCallback((newValue: number[] | undefined) => {
     const imageCaptionByIdMap = listToMap(
       value?.photos_file ?? [],
@@ -166,53 +168,21 @@ function Needs(props: Props) {
     )
   ), [value.national_society_actions]);
 
-  const filteredNsActionOptions = useMemo(() => (
-    nsActionsMap ? nsActionOptions.filter(n => !nsActionsMap[n.value]) : []
-  ), [nsActionsMap, nsActionOptions]);
-
-
-  const filteredNeedOptions = useMemo(() => (
+  const filteredNeedOptions = React.useMemo(() => (
     needsIdentifiedMap ? needOptions.filter(n => !needsIdentifiedMap[n.value]) : []
   ), [needsIdentifiedMap, needOptions]);
 
+  const filteredNsActionOptions = React.useMemo(() => (
+    nsActionsMap ? nsActionOptions.filter(n => !nsActionsMap[n.value]) : []
+  ), [nsActionsMap, nsActionOptions]);
+
   const didNationalSocietyStarted = value.did_national_society;
   const isThereCoordinationMechanism = value.is_there_major_coordination_mechanism;
-  // const wantToReport = value.want_to_report;
 
   return (
     <>
-      {/* <Container
-        heading={strings.finalReportFederationWideAndPartners}
-      >
-        <InputSection
-          title={strings.finalReportWantToReport}
-        >
-          <RadioInput
-            name={"want_to_report" as const}
-            options={yesNoOptions}
-            keySelector={booleanOptionKeySelector}
-            labelSelector={optionLabelSelector}
-            value={value.want_to_report}
-            onChange={onValueChange}
-            error={error?.want_to_report}
-          />
-        </InputSection>
-        {wantToReport &&
-          <InputSection
-            title={strings.finalReportAdditionalNationalSocietyAction}
-          >
-            <TextArea
-              label={strings.cmpActionDescriptionLabel}
-              name="additional_national_society_actions"
-              onChange={onValueChange}
-              value={value.additional_national_society_actions}
-              error={error?.additional_national_society_actions}
-            />
-          </InputSection>
-        }
-      </Container> */}
       <Container
-        heading={strings.drefFormNationalSocietiesActions}
+        heading={strings.finalReportNationalSocietiesActions}
         description={strings.drefFormNationalSocietiesActionsDescription}
         className={styles.nationalSocietyActions}
         visibleOverflow
