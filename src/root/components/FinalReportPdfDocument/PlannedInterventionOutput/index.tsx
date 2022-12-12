@@ -132,7 +132,7 @@ function PlannedInterventionOutput(props: BaseProps) {
         style={pdfStyles.sectionHeading}
         minPresenceAhead={20}
       >
-        {strings.drefFormPlannedIntervention}
+        {strings.finalReportImplementation}
       </Text>
       {data?.planned_interventions.map((pi) => (
         <PlannedIntervention

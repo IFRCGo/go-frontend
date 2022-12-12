@@ -35,7 +35,7 @@ function OtherActionsOutput(props: Props) {
         style={pdfStyles.sectionHeading}
         minPresenceAhead={20}
       >
-        {strings.drefFormNationalOtherActors}
+        {strings.finalReportNationalOtherActors}
       </Text>
       <View>
         <View style={pdfStyles.row}>

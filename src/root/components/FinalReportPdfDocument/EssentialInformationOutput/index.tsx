@@ -102,11 +102,11 @@ function EssentialInformationOutput(props: Props) {
             />
             <PdfTextOutput
               label={strings.drefExportDrefOperationStartDate}
-              value={data?.new_operational_start_date}
+              value={data?.operation_start_date}
             />
             <PdfTextOutput
               label={strings.operationalUpdateExportNewOperationalEndDate}
-              value={data?.new_operational_end_date}
+              value={data?.operation_end_date}
             />
             <PdfTextOutput
               label={strings.drefOperationalUpdateExportTimeFrameTotalOperatingTimeFrame}
@@ -121,15 +121,11 @@ function EssentialInformationOutput(props: Props) {
           </View>
           <View style={pdfStyles.compactSection}>
             <PdfTextOutput
-              label={strings.drefOperationalUpdateAdditionalAllocationRequested}
-              value={formatNumber(data.additional_allocation)}
-            />
-            <PdfTextOutput
               label={strings.drefExportTargetedAreas}
             />
             <PdfTextOutput
               value={affectedAreas}
-              columns="2/4"
+              columns="3/4"
             />
           </View>
         </View>

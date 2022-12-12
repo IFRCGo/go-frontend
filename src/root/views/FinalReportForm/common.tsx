@@ -228,6 +228,13 @@ export interface DrefFinalReportApiFields extends Omit<DrefFinalReportFields, 'd
     client_id: string | undefined,
     file: string;
   }[];
+  disaster_type_details: {
+    id: number;
+    name: string;
+    summary: string;
+  };
+  disaster_category_display: 'Yellow' | 'Red' | 'Orange';
+  type_of_onset_display: string;
 }
 
 export const overviewFields: (keyof DrefFinalReportFields)[] = [

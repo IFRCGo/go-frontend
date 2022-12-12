@@ -105,9 +105,10 @@ function Needs(props: Props) {
   );
 
   type Needs = typeof value.needs_identified;
-  const handleNeedAddButtonClick = useCallback(() => {
+  const handleNeedAddButtonClick = useCallback((title?: string) => {
     const newNeedItem: PartialForm<Need> = {
       clientId: randomString(),
+      title,
     };
 
     onValueChange(
@@ -119,7 +120,7 @@ function Needs(props: Props) {
     setNeed(undefined);
   }, [onValueChange, setNeed]);
 
-  type NsActions = typeof value.needs_identified;
+  type NsActions = typeof value.national_society_actions;
   const handleNsActionAddButtonClick = React.useCallback((title?: string) => {
     const clientId = randomString();
     const newList: PartialForm<NsAction> = {

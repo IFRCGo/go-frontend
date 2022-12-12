@@ -30,7 +30,7 @@ function ObjectiveAndStrategy(props: Props) {
             style={pdfStyles.sectionHeading}
             minPresenceAhead={20}
           >
-            {strings.drefExportOperationalStrategy}
+            {strings.finalReportObjectiveAndStrategy}
           </Text>
           <View style={pdfStyles.qna}>
             <Text
@@ -51,7 +51,7 @@ function ObjectiveAndStrategy(props: Props) {
             style={pdfStyles.strategySubSectionHeading}
             minPresenceAhead={20}
           >
-            {strings.drefFormResponseRationale}
+            {strings.finalReportResponseStrategyImplementation}
           </Text>
           <Text style={pdfStyles.answer}>
             {data.response_strategy}

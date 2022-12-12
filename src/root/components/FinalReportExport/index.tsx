@@ -10,10 +10,11 @@ import {
 } from '#types';
 import DropdownMenuItem from '#components/DropdownMenuItem';
 import { DrefFinalReportApiFields } from '#views/FinalReportForm/common';
-import FinalReportPdfDocument from './FinalReportPdfDocument';
+import FinalReportPdfDocument from '../FinalReportPdfDocument';
 
 interface DrefOptions {
   disaster_category: NumericKeyValuePair[];
+  national_society_actions: StringKeyValuePair[];
   needs_identified: StringKeyValuePair[];
   planned_interventions: StringKeyValuePair[];
   status: NumericKeyValuePair[];

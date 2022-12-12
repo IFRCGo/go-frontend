@@ -106,7 +106,7 @@ function Operation(props: Props) {
     );
   }, [onValueChange]);
 
-  const [intervention, setIntervention] = useState<number | undefined>();
+  const [intervention, setIntervention] = useState<string | undefined>();
   const {
     setValue: onInterventionChange,
     removeValue: onInterventionRemove,
@@ -116,9 +116,10 @@ function Operation(props: Props) {
   );
 
   type Interventions = typeof value.planned_interventions;
-  const handleInterventionAddButtonClick = useCallback(() => {
+  const handleInterventionAddButtonClick = useCallback((title?: string) => {
     const newInterventionItem: PartialForm<InterventionType> = {
       clientId: randomString(),
+      title,
     };
 
     onValueChange(

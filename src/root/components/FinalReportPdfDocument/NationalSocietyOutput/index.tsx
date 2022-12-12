@@ -55,7 +55,7 @@ function NationalSocietyOutput(props: BaseProps) {
         style={pdfStyles.sectionHeading}
         minPresenceAhead={20}
       >
-        {strings.drefFormNationalSocietiesActions}
+        {strings.finalReportNationalSocietiesActions}
       </Text>
       <div style={pdfStyles.imagesSection}>
         {data.photos_file?.map((img) => (

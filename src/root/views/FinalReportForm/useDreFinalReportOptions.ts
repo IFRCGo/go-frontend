@@ -146,7 +146,6 @@ export const schema: FormSchema = {
     district: [requiredCondition],
     is_assessment_report: [],
     photos_file: [lessThanEqualToTwoImagesCondition],
-    ns_respond_date: [],
     is_there_major_coordination_mechanism: [],
     risk_security_concern: [],
     total_targeted_population: [],
@@ -156,6 +155,7 @@ export const schema: FormSchema = {
     event_text: [],
     event_description: [],
     did_national_society: [],
+    ns_respond_date: [],
     national_society_actions: {
       keySelector: (n: PartialForm<NsAction>) => n.clientId as string,
       member: (): NsActionsSchemaMember => ({

@@ -10,10 +10,10 @@ import {
 } from '@togglecorp/fujs';
 import sanitizeHtml from 'sanitize-html';
 
-import { Strings } from '#types';
-import { PdfTextOutput } from '#components/PdfTextOutput';
-import pdfStyles from '#utils/pdf/pdfStyles';
 import { DrefFinalReportApiFields } from '#views/FinalReportForm/common';
+import { PdfTextOutput } from '#components/PdfTextOutput';
+import { Strings } from '#types';
+import pdfStyles from '#utils/pdf/pdfStyles';
 
 interface Props {
   data: DrefFinalReportApiFields;
@@ -32,7 +32,6 @@ function EventDescriptionOutput(props: Props) {
 
   if (isNotDefined(data.event_scope)
     && isNotDefined(data.event_description)
-    && isNotDefined(data.anticipatory_actions)
     && isNotDefined(data.event_map_file)
     && (data.images_file.length < 1)
   ) {
@@ -96,21 +95,6 @@ function EventDescriptionOutput(props: Props) {
           </View>
         ))}
       </div>
-      {isImminentOnset
-        && isDefined(data.anticipatory_actions)
-        && (
-          <View style={pdfStyles.subSection}>
-            <Text
-              style={pdfStyles.subSectionHeading}
-              minPresenceAhead={20}
-            >
-              {strings.drefExportTargetCommunities}
-            </Text>
-            <Text style={pdfStyles.text}>
-              {data.anticipatory_actions}
-            </Text>
-          </View>
-        )}
       {!isAssessmentReport
         && isDefined(data.event_scope)
         && (
