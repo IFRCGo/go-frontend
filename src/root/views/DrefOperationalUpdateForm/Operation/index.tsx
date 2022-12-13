@@ -53,7 +53,6 @@ interface Props {
   isAssessmentReport: boolean;
   yesNoOptions: BooleanValueOption[];
 }
-const showNewFieldOperational = true;
 
 function Operation(props: Props) {
   const { strings } = React.useContext(languageContext);
@@ -453,7 +452,7 @@ function Operation(props: Props) {
             onRemove={onInterventionRemove}
             error={getErrorObject(error?.planned_interventions)}
             interventionOptions={interventionOptions}
-            showNewFieldOperational={showNewFieldOperational}
+            showNewFieldOperational
           />
         ))}
       </Container>

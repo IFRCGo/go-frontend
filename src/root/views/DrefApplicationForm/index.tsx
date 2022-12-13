@@ -233,6 +233,10 @@ function DrefApplication(props: Props) {
         ...ni,
         clientId: String(ni.id),
       })),
+      risk_security: response.risk_security?.map((rs) => ({
+        ...rs,
+        clientId: String(rs.id),
+      })),
       images_file: response.images_file?.map((img) => (
         isDefined(img.file)
           ? ({

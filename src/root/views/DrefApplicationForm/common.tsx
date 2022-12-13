@@ -99,6 +99,7 @@ export interface FileWithCaption {
 }
 
 export interface RiskSecurityProps {
+  id?: string;
   clientId: string;
   risk: string;
   mitigation: string;

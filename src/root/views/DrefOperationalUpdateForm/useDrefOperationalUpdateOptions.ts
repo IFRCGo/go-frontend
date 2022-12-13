@@ -273,6 +273,7 @@ const defaultSchema: FormSchemaFields = {
   dref: [],
   has_forecasted_event_materialize: [],
   specified_trigger_met: [],
+  summary_of_change: [],
   changing_timeframe_operation: [],
   changing_operation_strategy: [],
   changing_budget: [],
@@ -316,6 +317,7 @@ const defaultSchema: FormSchemaFields = {
         title: [requiredCondition],
         budget: [requiredCondition, positiveIntegerCondition, lessThanOrEqualToCondition(MaxIntLimit)],
         person_targeted: [requiredCondition, positiveIntegerCondition, lessThanOrEqualToCondition(MaxIntLimit)],
+        progress_towards_outcome: [],
         indicators: {
           keySelector: (n) => n.clientId as string,
           member: (): IndicatorsSchemaMember => ({
