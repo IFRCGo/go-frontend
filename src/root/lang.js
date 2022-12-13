@@ -3586,7 +3586,6 @@ export default {
   drefFetchingErrorMessage: 'there was an error fetchig the Dref application list',
   drefOperationalUpdateSuccessMessage: 'Operational update created/updated successfully',
   drefOperationalUpdateFailureMessage: 'Failed to create/load Operational update',
-  drefOperationalUpdateErrorDescription: 'There is an error loading Dref operational update',
   drefPublishConfirmationMessage: 'Are you sure you want to publish the DREF?',
   drefOperationalUpdatePublishConfirmationMessage: 'Are you sure you want to publish the DREF Operational Update?',
   drefOperationalUpdatePublishConfirmationFailureMessage: 'Failed to publish the Operational Update',
