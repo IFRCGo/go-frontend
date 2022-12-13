@@ -263,9 +263,9 @@ function FinalReport(props: Props) {
             })
             : undefined
         )).filter(isDefined),
-        disability_people_per: isDefined(response.disability_people_per) ? response.disability_people_per + response.disability_people_per : undefined,
-        people_per_urban: isDefined(response.people_per_urban) ? +response.people_per_urban : undefined,
-        people_per_local: isDefined(response.people_per_local) ? +response.people_per_local : undefined,
+        disability_people_per: response.disability_people_per ? +response.disability_people_per : undefined,
+        people_per_urban: response.people_per_urban ? +response.people_per_urban : undefined,
+        people_per_local: response.people_per_local ? +response.people_per_local : undefined,
       });
     },
     [setValue],

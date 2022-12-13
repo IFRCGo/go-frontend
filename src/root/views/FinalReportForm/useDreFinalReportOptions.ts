@@ -4,6 +4,7 @@ import {
   defaultEmptyArrayType,
   defaultUndefinedType,
   emailCondition,
+  greaterThanOrEqualToCondition,
   lessThanOrEqualToCondition,
   ObjectSchema,
   PartialForm,
@@ -108,7 +109,7 @@ export const schema: FormSchema = {
     men: [positiveIntegerCondition],
     girls: [positiveIntegerCondition],
     boys: [positiveIntegerCondition],
-    disability_people_per: [positiveIntegerCondition],
+    disability_people_per: [greaterThanOrEqualToCondition(0), lessThanOrEqualToCondition(100)],
     people_per_urban: [positiveIntegerCondition],
     people_per_local: [positiveIntegerCondition],
     displaced_people: [positiveIntegerCondition],
@@ -156,6 +157,7 @@ export const schema: FormSchema = {
     event_description: [],
     did_national_society: [],
     ns_respond_date: [],
+
     national_society_actions: {
       keySelector: (n: PartialForm<NsAction>) => n.clientId as string,
       member: (): NsActionsSchemaMember => ({
