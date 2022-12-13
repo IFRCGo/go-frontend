@@ -198,6 +198,114 @@ function Operation(props: Props) {
         </InputSection>
       </Container>
       <Container
+        heading={strings.finalReportTargetedPopulation}
+        className={styles.assistedPopulation}
+        description={(
+          warnings?.map((m, i) => (
+            <div
+              key={i}
+              className={styles.warning}
+            >
+              <IoWarning />
+              {m}
+            </div>
+          ))
+        )}
+      >
+        <InputSection
+          title={strings.finalReportTargetedPopulation}
+          multiRow
+          twoColumn
+        >
+          <NumberInput
+            label={strings.finalReportWomen}
+            name="women"
+            value={value.women}
+            onChange={onValueChange}
+            error={error?.women}
+          />
+          <NumberInput
+            label={strings.finalReportMen}
+            name="men"
+            value={value.men}
+            onChange={onValueChange}
+            error={error?.men}
+          />
+          <NumberInput
+            label={strings.finalReportGirls}
+            name="girls"
+            value={value.girls}
+            onChange={onValueChange}
+            error={error?.girls}
+          />
+          <NumberInput
+            label={strings.finalReportBoys}
+            name="boys"
+            value={value.boys}
+            onChange={onValueChange}
+            error={error?.boys}
+          />
+          <NumberInput
+            label={strings.drefFormTotal}
+            name="total_targeted_population"
+            value={value.total_targeted_population}
+            onChange={onValueChange}
+            error={error?.total_targeted_population}
+          />
+        </InputSection>
+        <InputSection
+          title={strings.finalReportEstimateResponse}
+          multiRow
+          twoColumn
+        >
+          <NumberInput
+            label={strings.finalReportEstimatePeopleDisability}
+            name="disability_people_per"
+            value={value.disability_people_per}
+            onChange={onValueChange}
+            error={error?.disability_people_per}
+          />
+          <div className={styles.urbanToRural}>
+            <InputLabel>
+              {strings.finalReportEstimatedPercentage}
+            </InputLabel>
+            <div className={styles.inputs}>
+              <NumberInput
+                placeholder={strings.finalReportEstimatedUrban}
+                name="people_per_urban"
+                value={value.people_per_urban}
+                onChange={onValueChange}
+                error={error?.people_per_urban}
+              />
+              <NumberInput
+                placeholder={strings.finalReportEstimatedLocal}
+                name="people_per_local"
+                value={value.people_per_local}
+                onChange={onValueChange}
+                error={error?.people_per_local}
+              />
+            </div>
+          </div>
+          <NumberInput
+            label={strings.finalReportEstimatedDisplacedPeople}
+            name="displaced_people"
+            value={value.displaced_people}
+            onChange={onValueChange}
+            error={error?.displaced_people}
+          />
+          {
+            isImminentOnSet &&
+            <NumberInput
+              label={strings.finalReportPeopleTargetedWithEarlyActions}
+              name="people_targeted_with_early_actions"
+              value={value.people_targeted_with_early_actions}
+              onChange={onValueChange}
+              error={error?.people_targeted_with_early_actions}
+            />
+          }
+        </InputSection>
+      </Container>
+      <Container
         heading={strings.drefFormRiskSecurity}
         visibleOverflow
       >
@@ -341,114 +449,6 @@ function Operation(props: Props) {
             />
           </InputSection>
         }
-      </Container>
-      <Container
-        heading={strings.finalReportTargetedPopulation}
-        className={styles.assistedPopulation}
-        description={(
-          warnings?.map((m, i) => (
-            <div
-              key={i}
-              className={styles.warning}
-            >
-              <IoWarning />
-              {m}
-            </div>
-          ))
-        )}
-      >
-        <InputSection
-          title={strings.finalReportTargetedPopulation}
-          multiRow
-          twoColumn
-        >
-          <NumberInput
-            label={strings.finalReportWomen}
-            name="women"
-            value={value.women}
-            onChange={onValueChange}
-            error={error?.women}
-          />
-          <NumberInput
-            label={strings.finalReportMen}
-            name="men"
-            value={value.men}
-            onChange={onValueChange}
-            error={error?.men}
-          />
-          <NumberInput
-            label={strings.finalReportGirls}
-            name="girls"
-            value={value.girls}
-            onChange={onValueChange}
-            error={error?.girls}
-          />
-          <NumberInput
-            label={strings.finalReportBoys}
-            name="boys"
-            value={value.boys}
-            onChange={onValueChange}
-            error={error?.boys}
-          />
-          <NumberInput
-            label={strings.drefFormTotal}
-            name="total_targeted_population"
-            value={value.total_targeted_population}
-            onChange={onValueChange}
-            error={error?.total_targeted_population}
-          />
-        </InputSection>
-        <InputSection
-          title={strings.finalReportEstimateResponse}
-          multiRow
-          twoColumn
-        >
-          <NumberInput
-            label={strings.finalReportEstimatePeopleDisability}
-            name="disability_people_per"
-            value={value.disability_people_per}
-            onChange={onValueChange}
-            error={error?.disability_people_per}
-          />
-          <div className={styles.urbanToRural}>
-            <InputLabel>
-              {strings.finalReportEstimatedPercentage}
-            </InputLabel>
-            <div className={styles.inputs}>
-              <NumberInput
-                placeholder={strings.finalReportEstimatedUrban}
-                name="people_per_urban"
-                value={value.people_per_urban}
-                onChange={onValueChange}
-                error={error?.people_per_urban}
-              />
-              <NumberInput
-                placeholder={strings.finalReportEstimatedLocal}
-                name="people_per_local"
-                value={value.people_per_local}
-                onChange={onValueChange}
-                error={error?.people_per_local}
-              />
-            </div>
-          </div>
-          <NumberInput
-            label={strings.finalReportEstimatedDisplacedPeople}
-            name="displaced_people"
-            value={value.displaced_people}
-            onChange={onValueChange}
-            error={error?.displaced_people}
-          />
-          {
-            isImminentOnSet &&
-            <NumberInput
-              label={strings.finalReportPeopleTargetedWithEarlyActions}
-              name="people_targeted_with_early_actions"
-              value={value.people_targeted_with_early_actions}
-              onChange={onValueChange}
-              error={error?.people_targeted_with_early_actions}
-            />
-          }
-        </InputSection>
       </Container>
     </>
   );
