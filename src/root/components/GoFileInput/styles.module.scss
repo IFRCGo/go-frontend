@@ -5,7 +5,7 @@
     display: flex;
     flex-wrap: wrap;
     gap: $spacing;
-    padding: $spacing;
+    padding-top: $spacing;
 
   }
 }
@@ -82,4 +82,3 @@
     border-radius: 50%;
   }
 }
-

@@ -498,7 +498,6 @@ function Overview(props: Props) {
         <InputSection
           title={strings.drefFormUploadMap}
           description={strings.drefFormUploadMapDescription}
-          contentSectionClassName={styles.imageInputContent}
         >
           <ImageWithCaptionInput
             name={"event_map_file" as const}
@@ -513,7 +512,6 @@ function Overview(props: Props) {
         <InputSection
           title={strings.drefFormUploadCoverImage}
           description={strings.drefFormUploadCoverImageDescription}
-          contentSectionClassName={styles.imageInputContent}
         >
           <ImageWithCaptionInput
             name={"cover_image_file" as const}
