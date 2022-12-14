@@ -206,7 +206,7 @@ function FinalReport(props: Props) {
         const newMap = {
           ...prevMap,
         };
-        if (response.budget_file_details) {
+        if (response.budget_file_details && response.budget_file_details.file) {
           newMap[response.budget_file_details.id] = response.budget_file_details.file;
         }
         if (response.event_map_file && response.event_map_file.file) {
