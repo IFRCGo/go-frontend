@@ -31,8 +31,13 @@ import SelectInput from '#components/SelectInput';
 import Button from '#components/Button';
 import DREFFileInput from '#components/DREFFileInput';
 import RadioInput from '#components/RadioInput';
+import RiskSecurityInput from '#views/DrefApplicationForm/Response/RiskSecurityInput';
 
-import { InterventionType } from '../useDreFinalReportOptions';
+import InterventionInput from './InterventionInput';
+import {
+  InterventionType,
+  RiskSecurityType,
+} from '../useDreFinalReportOptions';
 import {
   booleanOptionKeySelector,
   BooleanValueOption,
@@ -40,9 +45,9 @@ import {
   Intervention,
   ONSET_IMMINENT,
   optionLabelSelector,
+  RiskSecurityProps,
   StringValueOption,
 } from '../common';
-import InterventionInput from './InterventionInput';
 
 import styles from './styles.module.scss';
 
@@ -56,6 +61,7 @@ interface Props {
   fileIdToUrlMap: Record<number, string>;
   setFileIdToUrlMap?: Dispatch<SetStateAction<Record<number, string>>>;
   yesNoOptions: BooleanValueOption[];
+  isAssessmentReport: boolean;
 }
 
 function Operation(props: Props) {
@@ -68,14 +74,39 @@ function Operation(props: Props) {
     value,
     fileIdToUrlMap,
     setFileIdToUrlMap,
-    yesNoOptions
+    yesNoOptions,
+    isAssessmentReport,
   } = props;
 
   const error = getErrorObject(formError);
   const isImminentOnSet = value.type_of_onset === ONSET_IMMINENT;
   const isChangeInOperationalStrategy = value.change_in_operational_strategy;
 
-  const [intervention, setIntervention] = useState<number | undefined>();
+  const {
+    setValue: onRiskSecurityChange,
+    removeValue: onRiskSecurityRemove,
+  } = useFormArray<'risk_security', PartialForm<RiskSecurityProps>>(
+    'risk_security',
+    onValueChange,
+  );
+
+  type riskSecurity = typeof value.risk_security;
+
+  const handleRiskSecurityAdd = React.useCallback(() => {
+    const clientId = randomString();
+    const newRiskSecurityList: PartialForm<RiskSecurityType> = {
+      clientId,
+    };
+
+    onValueChange(
+      (oldValue: PartialForm<riskSecurity>) => (
+        [...(oldValue ?? []), newRiskSecurityList]
+      ),
+      'risk_security' as const,
+    );
+  }, [onValueChange]);
+
+  const [intervention, setIntervention] = useState<string | undefined>();
   const {
     setValue: onInterventionChange,
     removeValue: onInterventionRemove,
@@ -85,9 +116,10 @@ function Operation(props: Props) {
   );
 
   type Interventions = typeof value.planned_interventions;
-  const handleInterventionAddButtonClick = useCallback(() => {
+  const handleInterventionAddButtonClick = useCallback((title?: string) => {
     const newInterventionItem: PartialForm<InterventionType> = {
       clientId: randomString(),
+      title,
     };
 
     onValueChange(
@@ -108,7 +140,7 @@ function Operation(props: Props) {
   ), [value.planned_interventions]);
 
   const warnings = useMemo(() => {
-    if (isNotDefined(value?.number_of_people_targeted)) {
+    if (isNotDefined(value?.total_targeted_population)) {
       return emptyList;
     }
 
@@ -119,13 +151,13 @@ function Operation(props: Props) {
       value?.men,
       value?.girls,
       value?.boys,
-    ]) !== value?.number_of_people_targeted) {
+    ]) !== value?.total_targeted_population) {
       warningMessage.push('Total targeted population is not equal to sum of other population fields');
     }
 
     return warningMessage;
   }, [
-    value?.number_of_people_targeted,
+    value?.total_targeted_population,
     value?.women,
     value?.men,
     value?.girls,
@@ -139,68 +171,31 @@ function Operation(props: Props) {
   return (
     <>
       <Container
-        heading={strings.finalReportOperationReportTitle}
-        className={styles.targetingStrategy}
+        heading={strings.finalReportObjectiveAndStrategy}
+        className={styles.objectiveRationale}
       >
         <InputSection
-          title={strings.finalReportPeopleAssistedThroughOperation}
+          title={strings.finalReportObjectiveOperation}
         >
           <TextArea
-            label={strings.drefFormDescription}
-            name="people_assisted"
+            error={error?.operation_objective}
+            name="operation_objective"
             onChange={onValueChange}
-            value={value.people_assisted}
-            error={error?.people_assisted}
+            value={value.operation_objective}
+            placeholder={strings.drefFormObjectiveOperationPlaceholder}
           />
         </InputSection>
         <InputSection
-          title={strings.finalReportSelectionCriteria}
+          title={strings.finalReportResponseStrategyImplementation}
         >
           <TextArea
-            label={strings.drefFormDescription}
-            name="selection_criteria"
+            name="response_strategy"
             onChange={onValueChange}
-            value={value.selection_criteria}
-            error={error?.selection_criteria}
+            value={value.response_strategy}
+            error={error?.response_strategy}
+            placeholder={strings.drefFormResponseRationalePlaceholder}
           />
         </InputSection>
-        <InputSection
-          title={strings.finalReportProtectionGenderAndInclusion}
-        >
-          <TextArea
-            label={strings.drefFormDescription}
-            name="entity_affected"
-            onChange={onValueChange}
-            value={value.entity_affected}
-            error={error?.entity_affected}
-          />
-        </InputSection>
-        <InputSection
-          title={strings.finalReportChangeToOperationStrategy}
-        >
-          <RadioInput
-            name={"change_in_operational_strategy" as const}
-            options={yesNoOptions}
-            keySelector={booleanOptionKeySelector}
-            labelSelector={optionLabelSelector}
-            value={value.change_in_operational_strategy}
-            onChange={onValueChange}
-            error={error?.change_in_operational_strategy}
-          />
-        </InputSection>
-        {isChangeInOperationalStrategy &&
-          <InputSection
-            title={strings.finalReportChangeToOperationStrategyExplain}
-          >
-            <TextArea
-              label={strings.drefFormDescription}
-              name="change_in_operational_strategy_text"
-              onChange={onValueChange}
-              value={value.change_in_operational_strategy_text}
-              error={error?.change_in_operational_strategy_text}
-            />
-          </InputSection>
-        }
       </Container>
       <Container
         heading={strings.finalReportTargetedPopulation}
@@ -249,6 +244,13 @@ function Operation(props: Props) {
             value={value.boys}
             onChange={onValueChange}
             error={error?.boys}
+          />
+          <NumberInput
+            label={strings.drefFormTotal}
+            name="total_targeted_population"
+            value={value.total_targeted_population}
+            onChange={onValueChange}
+            error={error?.total_targeted_population}
           />
         </InputSection>
         <InputSection
@@ -304,29 +306,43 @@ function Operation(props: Props) {
         </InputSection>
       </Container>
       <Container
-        heading={strings.finalReportObjectiveAndStrategy}
-        className={styles.objectiveRationale}
+        heading={strings.drefFormRiskSecurity}
+        visibleOverflow
       >
         <InputSection
-          title={strings.finalReportObjectiveOperation}
+          title={strings.drefFormRiskSecurityPotentialRisk}
+          description={isAssessmentReport && strings.drefFormRiskSecurityPotentialRiskDescription}
+          multiRow
+          oneColumn
         >
-          <TextArea
-            error={error?.operation_objective}
-            name="operation_objective"
-            onChange={onValueChange}
-            value={value.operation_objective}
-            placeholder={strings.drefFormObjectiveOperationPlaceholder}
-          />
+          {value.risk_security?.map((rs, i) => (
+            <RiskSecurityInput
+              key={rs.clientId}
+              index={i}
+              value={rs}
+              onChange={onRiskSecurityChange}
+              onRemove={onRiskSecurityRemove}
+              error={getErrorObject(error?.risk_security)}
+            />
+          ))}
+          <div className={styles.actions}>
+            <Button
+              name={undefined}
+              onClick={handleRiskSecurityAdd}
+              variant="secondary"
+            >
+              {strings.drefFormRiskSecurityAddButton}
+            </Button>
+          </div>
         </InputSection>
         <InputSection
-          title={strings.finalReportResponseStrategyImplementation}
+          title={strings.drefFormRiskSecuritySafetyConcern}
         >
           <TextArea
-            name="response_strategy"
+            name='risk_security_concern'
+            value={value.risk_security_concern}
+            error={error?.risk_security_concern}
             onChange={onValueChange}
-            value={value.response_strategy}
-            error={error?.response_strategy}
-            placeholder={strings.drefFormResponseRationalePlaceholder}
           />
         </InputSection>
       </Container>
@@ -380,6 +396,59 @@ function Operation(props: Props) {
             interventionOptions={interventionOptions}
           />
         ))}
+      </Container>
+      <Container
+        heading={strings.finalReportOperationReportTitle}
+        className={styles.targetingStrategy}
+      >
+        <InputSection
+          title={strings.finalReportPeopleAssistedThroughOperation}
+        >
+          <TextArea
+            label={strings.drefFormDescription}
+            name="people_assisted"
+            onChange={onValueChange}
+            value={value.people_assisted}
+            error={error?.people_assisted}
+          />
+        </InputSection>
+        <InputSection
+          title={strings.finalReportSelectionCriteria}
+        >
+          <TextArea
+            label={strings.drefFormDescription}
+            name="selection_criteria"
+            onChange={onValueChange}
+            value={value.selection_criteria}
+            error={error?.selection_criteria}
+          />
+        </InputSection>
+        <InputSection
+          title={strings.finalReportChangeToOperationStrategy}
+        >
+          <RadioInput
+            name={"change_in_operational_strategy" as const}
+            options={yesNoOptions}
+            keySelector={booleanOptionKeySelector}
+            labelSelector={optionLabelSelector}
+            value={value.change_in_operational_strategy}
+            onChange={onValueChange}
+            error={error?.change_in_operational_strategy}
+          />
+        </InputSection>
+        {isChangeInOperationalStrategy &&
+          <InputSection
+            title={strings.finalReportChangeToOperationStrategyExplain}
+          >
+            <TextArea
+              label={strings.drefFormDescription}
+              name="change_in_operational_strategy_text"
+              onChange={onValueChange}
+              value={value.change_in_operational_strategy_text}
+              error={error?.change_in_operational_strategy_text}
+            />
+          </InputSection>
+        }
       </Container>
     </>
   );

@@ -1,7 +1,10 @@
 import React from 'react';
 import {
   ArraySchema,
+  defaultEmptyArrayType,
+  defaultUndefinedType,
   emailCondition,
+  greaterThanOrEqualToCondition,
   lessThanOrEqualToCondition,
   ObjectSchema,
   PartialForm,
@@ -25,11 +28,13 @@ import {
   DrefFinalReportFields,
   emptyNumericOptionList,
   emptyStringOptionList,
+  NsAction,
   NumericKeyValuePair,
   NumericValueOption,
   StringKeyValuePair,
   User,
 } from './common';
+import { isDefined } from '@togglecorp/fujs';
 
 export type FormSchema = ObjectSchema<PartialForm<DrefFinalReportFields>>;
 export type FormSchemaFields = ReturnType<FormSchema['fields']>;
@@ -52,9 +57,31 @@ export type IndicatorSchemaFields = ReturnType<IndicatorSchema['fields']>;
 export type IndicatorsSchema = ArraySchema<PartialForm<IndicatorType>>;
 export type IndicatorsSchemaMember = ReturnType<IndicatorsSchema['member']>;
 
+export type NsActionType = NonNullable<NonNullable<DrefFinalReportFields['national_society_actions']>>[number];
+export type NsActionSchema = ObjectSchema<PartialForm<NsActionType>>;
+export type NsActionSchemaFields = ReturnType<NsActionSchema['fields']>;
+export type NsActionsSchema = ArraySchema<PartialForm<NsActionType>>;
+export type NsActionsSchemaMember = ReturnType<NsActionsSchema['member']>;
+
+export type RiskSecurityType = NonNullable<NonNullable<DrefFinalReportFields['risk_security']>>[number];
+export type RiskSecuritySchema = ObjectSchema<
+  PartialForm<RiskSecurityType>,
+  PartialForm<DrefFinalReportFields>
+>;
+export type RiskSecuritySchemaFields = ReturnType<RiskSecuritySchema['fields']>;
+export type RiskSecuritiesSchema = ArraySchema<
+  PartialForm<RiskSecurityType>,
+  PartialForm<DrefFinalReportFields>
+>;
+export type RiskSecuritiesSchemaMember = ReturnType<RiskSecuritiesSchema['member']>;
+
 
 export const MaxIntLimit = 2147483647;
-
+export function lessThanEqualToTwoImagesCondition(value: any) {
+  return isDefined(value) && Array.isArray(value) && value.length > 2
+    ? 'Only two images are allowed'
+    : undefined;
+}
 export const schema: FormSchema = {
   fields: (value): FormSchemaFields => ({
     title: [],
@@ -78,12 +105,11 @@ export const schema: FormSchema = {
     major_coordination_mechanism: [],
     people_assisted: [],
     selection_criteria: [],
-    entity_affected: [],
     women: [positiveIntegerCondition],
     men: [positiveIntegerCondition],
     girls: [positiveIntegerCondition],
     boys: [positiveIntegerCondition],
-    disability_people_per: [positiveIntegerCondition],
+    disability_people_per: [greaterThanOrEqualToCondition(0), lessThanOrEqualToCondition(100)],
     people_per_urban: [positiveIntegerCondition],
     people_per_local: [positiveIntegerCondition],
     displaced_people: [positiveIntegerCondition],
@@ -109,7 +135,7 @@ export const schema: FormSchema = {
     media_contact_email: [emailCondition],
     media_contact_phone_number: [],
     dref: [],
-    photos: [],
+    images_file: [defaultEmptyArrayType, lessThanEqualToTwoImagesCondition],
     budget_file: [],
     event_scope: [],
     change_in_operational_strategy: [],
@@ -119,6 +145,40 @@ export const schema: FormSchema = {
     event_map: [],
     country: [requiredCondition],
     district: [requiredCondition],
+    is_assessment_report: [],
+    photos_file: [lessThanEqualToTwoImagesCondition],
+    is_there_major_coordination_mechanism: [],
+    risk_security_concern: [],
+    total_targeted_population: [],
+    modified_at: [],
+    people_in_need: [],
+    event_date: [],
+    event_text: [],
+    event_description: [],
+    did_national_society: [],
+    ns_respond_date: [],
+
+    national_society_actions: {
+      keySelector: (n: PartialForm<NsAction>) => n.clientId as string,
+      member: (): NsActionsSchemaMember => ({
+        fields: (): NsActionSchemaFields => ({
+          title: [requiredCondition],
+          description: [requiredCondition],
+        }),
+      }),
+    },
+    cover_image_file: {
+      fields: () => ({
+        id: [defaultUndefinedType],
+        caption: [defaultUndefinedType],
+      }),
+    },
+    event_map_file: {
+      fields: () => ({
+        id: [defaultUndefinedType],
+        caption: [defaultUndefinedType],
+      }),
+    },
 
     needs_identified: {
       keySelector: (n) => n.clientId as string,
@@ -154,6 +214,16 @@ export const schema: FormSchema = {
           lessons_learnt: [],
           challenges: [],
           narrative_description_of_achievements: [],
+        }),
+      }),
+    },
+    risk_security: {
+      keySelector: (r) => r.clientId as string,
+      member: (): RiskSecuritiesSchemaMember => ({
+        fields: (): RiskSecuritySchemaFields => ({
+          clientId: [],
+          risk: [requiredCondition],
+          mitigation: [requiredCondition],
         }),
       }),
     },
