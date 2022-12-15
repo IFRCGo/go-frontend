@@ -62,7 +62,7 @@ function Submission(props: Props) {
           fullWidthColumn
         >
           <DateInput
-            label={strings.finalReportStartOfOperation}
+            label={strings.finalReportEndOfOperation}
             name="operation_end_date"
             value={value.operation_end_date}
             onChange={onValueChange}

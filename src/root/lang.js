@@ -3687,9 +3687,10 @@ export default {
   finalReportTotalAllocation: 'Total DREF Allocation',
   //timeframe
   finalReportTimeFrame: 'timeframes',
-  finalReportDateOfPublication: 'Date of Publication',
+  finalReportDateOfPublication: 'Publication date of final report',
   finalReportTotalOperatingTimeFrame: 'Total operating timeframe',
   finalReportStartOfOperation: 'Start of operation',
+  finalReportEndOfOperation: 'Operational end date',
 
   //EventDetails
   finalReportDescriptionOfEvent: 'Description of the Event',
