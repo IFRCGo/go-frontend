@@ -119,25 +119,25 @@ function PlannedIntervention(props: PlannedInterventionProps) {
         && (
           <>
             <View style={pdfStyles.piRow}>
-              <View style={pdfStyles.piMediumColumn}>
-                <Text style={pdfStyles.piContentHeadingCell}>
-                  {strings.drefOperationalUpdateProgressTowardsOutcome}
-                </Text>
-              </View>
-              <View style={pdfStyles.piMediumColumn}>
+              <View style={pdfStyles.piSmallColumn}>
                 <Text style={pdfStyles.piContentHeadingCell}>
                   {strings.drefFormListOfActivities}
+                </Text>
+              </View>
+              <View style={pdfStyles.piLargeColumn}>
+                <Text style={pdfStyles.piContentHeadingCell}>
+                  {strings.drefOperationalUpdateProgressTowardsOutcome}
                 </Text>
               </View>
             </View>
 
             <View style={pdfStyles.piRow}>
-              <View style={pdfStyles.piMediumColumn}>
+              <View style={pdfStyles.piSmallColumn}>
                 <Text style={pdfStyles.piBorderCell}>
                   {data.description}
                 </Text>
               </View>
-              <View style={pdfStyles.piMediumColumn}>
+              <View style={pdfStyles.piLargeColumn}>
                 <Text style={pdfStyles.piBorderCell}>
                   {data.progress_towards_outcome}
                 </Text>
