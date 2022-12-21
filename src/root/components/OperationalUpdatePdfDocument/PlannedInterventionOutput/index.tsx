@@ -104,7 +104,7 @@ function PlannedIntervention(props: PlannedInterventionProps) {
               </View>
               <View style={pdfStyles.piMediumColumn}>
                 <Text style={pdfStyles.piBorderCell}>
-                  {indicator.target}
+                  {indicator.actual}
                 </Text>
               </View>
             </View>
