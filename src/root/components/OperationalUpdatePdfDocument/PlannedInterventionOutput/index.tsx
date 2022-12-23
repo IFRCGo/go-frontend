@@ -9,6 +9,7 @@ import { Strings } from '#types';
 import { formatNumber } from '#utils/common';
 import { DrefOperationalUpdateApiFields } from '#views/DrefOperationalUpdateForm/common';
 import pdfStyles from '#utils/pdf/pdfStyles';
+import { isDefined } from '@togglecorp/fujs';
 
 interface BaseProps {
   data: DrefOperationalUpdateApiFields;
@@ -63,27 +64,29 @@ function PlannedIntervention(props: PlannedInterventionProps) {
           </View>
         </View>
       </View>
-
       {data?.indicators?.length > 0 && (
-        <View style={pdfStyles.piRow}>
-          <View style={pdfStyles.piSmallColumn}>
-            <Text style={pdfStyles.piContentHeadingCell}>
-              {strings.drefExportIndicators}
-            </Text>
-          </View>
-          <View style={pdfStyles.piLargeColumn}>
-            <View style={pdfStyles.piMediumColumn}>
+        <>
+          <View style={pdfStyles.piRow}>
+            <View style={pdfStyles.piSmallColumn}>
               <Text style={pdfStyles.piContentHeadingCell}>
-                {strings.drefFormIndicatorTargetLabel}
+                {strings.drefExportIndicators}
               </Text>
             </View>
-            <View style={pdfStyles.piMediumColumn}>
-              <Text style={pdfStyles.piContentHeadingCell}>
-                {strings.drefFormIndicatorActualLabel}
-              </Text>
+            <View style={pdfStyles.piLargeColumn}>
+              <View style={pdfStyles.piMediumColumn}>
+                <Text style={pdfStyles.piContentHeadingCell}>
+                  {strings.drefFormIndicatorTargetLabel}
+                </Text>
+              </View>
+              <View style={pdfStyles.piMediumColumn}>
+                <Text style={pdfStyles.piContentHeadingCell}>
+                  {strings.drefFormIndicatorActualLabel}
+                </Text>
+              </View>
             </View>
           </View>
-        </View>
+
+        </>
       )}
       {
         data?.indicators?.map((indicator) => (
@@ -104,13 +107,33 @@ function PlannedIntervention(props: PlannedInterventionProps) {
               </View>
               <View style={pdfStyles.piMediumColumn}>
                 <Text style={pdfStyles.piBorderCell}>
-                  {indicator.target}
+                  {indicator.actual}
                 </Text>
               </View>
             </View>
           </View>
         ))
       }
+
+      {isDefined(data.progress_towards_outcome) && (
+        <>
+          <View style={pdfStyles.piRow}>
+            <View style={pdfStyles.piContentHeadingCell}>
+              <Text>
+                {strings.drefOperationalUpdateProgressTowardsOutcome}
+              </Text>
+            </View>
+          </View>
+
+          <View style={pdfStyles.piRow}>
+            <View style={pdfStyles.piBorderCell}>
+              <Text >
+                {data.progress_towards_outcome}
+              </Text>
+            </View>
+          </View>
+        </>
+      )}
     </View >
   );
 }

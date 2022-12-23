@@ -1,3 +1,11 @@
+### Release 6.3.5 - Hotfix for ops update export
+
+Date: 2022-10-06
+
+Frontend:
+- Fix the `actual` value being wrongly populated in ops update export
+- Add progress toward outcome in ops update export
+
 ### Release 6.3.4 - Hotfix for page being unresponsive during DREF export
 
 Date: 2022-10-06
