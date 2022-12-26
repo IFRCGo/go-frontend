@@ -27,7 +27,6 @@ import {
   DrefFinalReportFields,
   emptyNumericOptionList,
   NumericValueOption,
-  ONSET_IMMINENT,
   optionLabelSelector,
 } from '../common';
 
@@ -52,6 +51,8 @@ interface Props {
   yesNoOptions: BooleanValueOption[];
   fileIdToUrlMap: Record<number, string>;
   setFileIdToUrlMap?: React.Dispatch<React.SetStateAction<Record<number, string>>>;
+  isImminentOnset?: boolean;
+  isAssessmentReport?: boolean;
 }
 
 const totalPopulationRiskImminentLink = "https://ifrcorg.sharepoint.com/sites/IFRCSharing/Shared%20Documents/Forms/AllItems.aspx?id=%2Fsites%2FIFRCSharing%2FShared%20Documents%2FDREF%2FHum%20Pop%20Definitions%20for%20DREF%20Form%5F21072022%2Epdf&parent=%2Fsites%2FIFRCSharing%2FShared%20Documents%2FDREF&p=true&ga=1";
@@ -79,6 +80,8 @@ function Overview(props: Props) {
     yesNoOptions,
     fileIdToUrlMap,
     setFileIdToUrlMap,
+    isImminentOnset,
+    isAssessmentReport,
   } = props;
 
   const error = React.useMemo(
@@ -131,8 +134,6 @@ function Overview(props: Props) {
     }))
   ), [userMap, value.users]);
 
-  const isImminentOnset = value.type_of_onset === ONSET_IMMINENT;
-
   return (
     <>
       <Container
@@ -184,19 +185,21 @@ function Overview(props: Props) {
             pending={fetchingNationalSociety}
           />
         </InputSection>
-        <InputSection
-          title={strings.drefFormForAssessment}
-        >
-          <RadioInput
-            name={"is_assessment_report" as const}
-            options={yesNoOptions}
-            keySelector={booleanOptionKeySelector}
-            labelSelector={optionLabelSelector}
-            value={value.is_assessment_report}
-            onChange={onValueChange}
-            error={error?.is_assessment_report}
-          />
-        </InputSection>
+        {!isAssessmentReport &&
+          <InputSection
+            title={strings.drefFormForAssessment}
+          >
+            <RadioInput
+              name={"is_assessment_report" as const}
+              options={yesNoOptions}
+              keySelector={booleanOptionKeySelector}
+              labelSelector={optionLabelSelector}
+              value={value.is_assessment_report}
+              onChange={onValueChange}
+              error={error?.is_assessment_report}
+            />
+          </InputSection>
+        }
         <InputSection
           title={isImminentOnset
             ? strings.finalReportImminentDisasterDetails
@@ -365,6 +368,13 @@ function Overview(props: Props) {
             onChange={onValueChange}
             error={error?.number_of_people_targeted}
             hint={strings.drefFormPeopleTargetedDescription}
+          />
+          <NumberInput
+            label={strings.finalReportPeopleAssisted}
+            name="number_of_people_assisted"
+            value={value.number_of_people_assisted}
+            onChange={onValueChange}
+            error={error?.number_of_people_assisted}
           />
         </InputSection>
         <InputSection

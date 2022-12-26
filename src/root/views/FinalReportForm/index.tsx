@@ -88,6 +88,7 @@ const defaultFormValues: PartialForm<DrefFinalReportFields> = {
   images_file: [],
   users: [],
   is_assessment_report: false,
+  have_national_society_conducted: false,
 };
 
 function FinalReport(props: Props) {
@@ -206,9 +207,6 @@ function FinalReport(props: Props) {
         const newMap = {
           ...prevMap,
         };
-        if (response.budget_file_details && response.budget_file_details.file) {
-          newMap[response.budget_file_details.id] = response.budget_file_details.file;
-        }
         if (response.event_map_file && response.event_map_file.file) {
           newMap[response.event_map_file.id] = response.event_map_file.file;
         }
@@ -554,6 +552,8 @@ function FinalReport(props: Props) {
                 onCreateAndShareButtonClick={submitDrefFinalReport}
                 fileIdToUrlMap={fileIdToUrlMap}
                 setFileIdToUrlMap={setFileIdToUrlMap}
+                isImminentOnset={isImminentOnset}
+                isAssessmentReport={isAssessmentReport}
               />
             </TabPanel>
             <TabPanel name='eventDetails'>
@@ -575,9 +575,6 @@ function FinalReport(props: Props) {
                 yesNoOptions={yesNoOptions}
                 needOptions={needOptions}
                 nsActionOptions={nsActionOptions}
-                fileIdToUrlMap={fileIdToUrlMap}
-                setFileIdToUrlMap={setFileIdToUrlMap}
-                isImminentOnset={isImminentOnset}
               />
             </TabPanel>
             <TabPanel name='operation'>

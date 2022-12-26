@@ -73,6 +73,7 @@ export interface Intervention {
   title: string;
   budget: number;
   person_targeted: number;
+  person_assisted: number;
   indicators: Indicator[];
   description: string;
   progress_towards_outcome: string;
@@ -182,7 +183,6 @@ export interface DrefFinalReportFields {
   modified_by: number;
   users: number[];
   dref?: string;
-  budget_file: number;
   country: number;
   district: number[];
   country_details: Country;
@@ -193,13 +193,17 @@ export interface DrefFinalReportFields {
   event_text: string;
   event_date: string;
   national_society_actions: NsAction[];
-  did_national_society: boolean;
   ns_respond_date: string;
   photos_file: FileWithCaption[]
   is_there_major_coordination_mechanism: boolean;
   risk_security: RiskSecurityProps[];
   risk_security_concern: string;
   total_targeted_population: number;
+  number_of_people_assisted: number;
+  have_national_society_conducted: boolean;
+  description_of_additional_activities: string;
+  financial_report: number;
+  variances: string;
 }
 
 export interface DrefFinalReportApiFields extends Omit<DrefFinalReportFields, 'district_details' | 'planned_interventions' | 'national_society_actions' | 'needs_identified' | 'images_file'> {
@@ -217,10 +221,6 @@ export interface DrefFinalReportApiFields extends Omit<DrefFinalReportFields, 'd
     id: number,
     image_url: string,
   })[];
-  budget_file_details: {
-    id: number;
-    file: string;
-  };
   budget_file_preview: string;
   images_file: {
     id: number,
@@ -252,6 +252,7 @@ export const overviewFields: (keyof DrefFinalReportFields)[] = [
   'people_in_need',
   'event_map_file',
   'cover_image_file',
+  'number_of_people_assisted',
 ];
 export const eventFields: (keyof DrefFinalReportFields)[] = [
   'images_file',
@@ -271,11 +272,11 @@ export const needsFields: (keyof DrefFinalReportFields)[] = [
   'needs_identified',
   'want_to_report',
   'additional_national_society_actions',
-  'did_national_society',
   'photos_file',
   'is_there_major_coordination_mechanism',
   'national_society_actions',
-  'did_national_society',
+  'have_national_society_conducted',
+  'description_of_additional_activities',
 ];
 export const operationFields: (keyof DrefFinalReportFields)[] = [
   'people_assisted',
@@ -293,11 +294,12 @@ export const operationFields: (keyof DrefFinalReportFields)[] = [
   'people_targeted_with_early_actions',
   'operation_objective',
   'response_strategy',
-  'budget_file',
   'planned_interventions',
   'risk_security',
   'risk_security_concern',
   'total_targeted_population',
+  'financial_report',
+  'variances',
 ];
 export const submissionFields: (keyof DrefFinalReportFields)[] = [
   'appeal_code',
