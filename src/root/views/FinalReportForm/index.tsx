@@ -88,7 +88,7 @@ const defaultFormValues: PartialForm<DrefFinalReportFields> = {
   images_file: [],
   users: [],
   is_assessment_report: false,
-  have_national_society_conducted: false,
+  has_national_society_conducted: false,
 };
 
 function FinalReport(props: Props) {
@@ -207,6 +207,9 @@ function FinalReport(props: Props) {
         const newMap = {
           ...prevMap,
         };
+        if (response.financial_report_details && response.financial_report_details) {
+          newMap[response.financial_report_details.id] = response.financial_report_details.file;
+        }
         if (response.event_map_file && response.event_map_file.file) {
           newMap[response.event_map_file.id] = response.event_map_file.file;
         }

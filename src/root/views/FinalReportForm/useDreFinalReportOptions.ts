@@ -155,9 +155,11 @@ export const schema: FormSchema = {
     event_text: [],
     event_description: [],
     ns_respond_date: [],
-    have_national_society_conducted: [],
-    description_of_additional_activities: [],
-    number_of_people_assisted: [],
+    has_national_society_conducted: [],
+    national_society_conducted_description: [],
+    num_assisted: [],
+    financial_report: [],
+    financial_report_description: [],
 
     national_society_actions: {
       keySelector: (n: PartialForm<NsAction>) => n.clientId as string,

@@ -199,11 +199,11 @@ export interface DrefFinalReportFields {
   risk_security: RiskSecurityProps[];
   risk_security_concern: string;
   total_targeted_population: number;
-  number_of_people_assisted: number;
-  have_national_society_conducted: boolean;
-  description_of_additional_activities: string;
+  num_assisted: number;
+  has_national_society_conducted: boolean;
+  national_society_conducted_description: string;
   financial_report: number;
-  variances: string;
+  financial_report_description: string;
 }
 
 export interface DrefFinalReportApiFields extends Omit<DrefFinalReportFields, 'district_details' | 'planned_interventions' | 'national_society_actions' | 'needs_identified' | 'images_file'> {
@@ -221,7 +221,6 @@ export interface DrefFinalReportApiFields extends Omit<DrefFinalReportFields, 'd
     id: number,
     image_url: string,
   })[];
-  budget_file_preview: string;
   images_file: {
     id: number,
     caption: string | undefined,
@@ -235,6 +234,10 @@ export interface DrefFinalReportApiFields extends Omit<DrefFinalReportFields, 'd
   };
   disaster_category_display: 'Yellow' | 'Red' | 'Orange';
   type_of_onset_display: string;
+  financial_report_details: {
+    id: number;
+    file: string;
+  }
 }
 
 export const overviewFields: (keyof DrefFinalReportFields)[] = [
@@ -252,7 +255,7 @@ export const overviewFields: (keyof DrefFinalReportFields)[] = [
   'people_in_need',
   'event_map_file',
   'cover_image_file',
-  'number_of_people_assisted',
+  'num_assisted',
 ];
 export const eventFields: (keyof DrefFinalReportFields)[] = [
   'images_file',
@@ -275,8 +278,8 @@ export const needsFields: (keyof DrefFinalReportFields)[] = [
   'photos_file',
   'is_there_major_coordination_mechanism',
   'national_society_actions',
-  'have_national_society_conducted',
-  'description_of_additional_activities',
+  'has_national_society_conducted',
+  'national_society_conducted_description',
 ];
 export const operationFields: (keyof DrefFinalReportFields)[] = [
   'people_assisted',
@@ -299,7 +302,7 @@ export const operationFields: (keyof DrefFinalReportFields)[] = [
   'risk_security_concern',
   'total_targeted_population',
   'financial_report',
-  'variances',
+  'financial_report_description',
 ];
 export const submissionFields: (keyof DrefFinalReportFields)[] = [
   'appeal_code',

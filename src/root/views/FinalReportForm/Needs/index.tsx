@@ -110,7 +110,7 @@ function Needs(props: Props) {
   ), [needsIdentifiedMap, needOptions]);
 
   const isThereCoordinationMechanism = value.is_there_major_coordination_mechanism;
-  const haveNationalSocietyConducted = !!value.have_national_society_conducted;
+  const hasNationalSocietyConducted = !!value.has_national_society_conducted;
 
   return (
     <>
@@ -123,22 +123,22 @@ function Needs(props: Props) {
 
         <InputSection title={strings.finalReportHaveNationalSocietyConducted}>
           <RadioInput
-            name={'have_national_society_conducted' as const}
+            name={'has_national_society_conducted' as const}
             options={yesNoOptions}
             keySelector={booleanOptionKeySelector}
             labelSelector={optionLabelSelector}
             onChange={onValueChange}
-            value={value?.have_national_society_conducted}
-            error={error?.have_national_society_conducted}
+            value={value?.has_national_society_conducted}
+            error={error?.has_national_society_conducted}
           />
         </InputSection>
-        {haveNationalSocietyConducted &&
+        {hasNationalSocietyConducted &&
           <InputSection title={strings.finalReportDescriptionOfAdditionalActivities}>
             <TextArea
-              name="description_of_additional_activities"
-              value={value.description_of_additional_activities}
+              name="national_society_conducted_description"
+              value={value.national_society_conducted_description}
               onChange={onValueChange}
-              error={error?.description_of_additional_activities}
+              error={error?.national_society_conducted_description}
             />
           </InputSection>
         }

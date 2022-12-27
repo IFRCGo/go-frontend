@@ -59,6 +59,7 @@ const totalPopulationRiskImminentLink = "https://ifrcorg.sharepoint.com/sites/IF
 const totalPeopleAffectedSlowSuddenLink = "https://ifrcorg.sharepoint.com/sites/IFRCSharing/Shared%20Documents/Forms/AllItems.aspx?id=%2Fsites%2FIFRCSharing%2FShared%20Documents%2FDREF%2FHum%20Pop%20Definitions%20for%20DREF%20Form%5F21072022%2Epdf&parent=%2Fsites%2FIFRCSharing%2FShared%20Documents%2FDREF&p=true&ga=1";
 const peopleTargetedLink = "https://ifrcorg.sharepoint.com/sites/IFRCSharing/Shared%20Documents/Forms/AllItems.aspx?id=%2Fsites%2FIFRCSharing%2FShared%20Documents%2FDREF%2FHum%20Pop%20Definitions%20for%20DREF%20Form%5F21072022%2Epdf&parent=%2Fsites%2FIFRCSharing%2FShared%20Documents%2FDREF&p=true&ga=1";
 const peopleInNeedLink = "https://ifrcorg.sharepoint.com/sites/IFRCSharing/Shared%20Documents/Forms/AllItems.aspx?id=%2Fsites%2FIFRCSharing%2FShared%20Documents%2FDREF%2FHum%20Pop%20Definitions%20for%20DREF%20Form%5F21072022%2Epdf&parent=%2Fsites%2FIFRCSharing%2FShared%20Documents%2FDREF&p=true&ga=1";
+const peopleAssistedLink = "https://ifrcorg.sharepoint.com/sites/IFRCSharing/Shared%20Documents/Forms/AllItems.aspx?id=%2Fsites%2FIFRCSharing%2FShared%20Documents%2FDREF%2FHum%20Pop%20Definitions%20for%20DREF%20Form%5F21072022%2Epdf&parent=%2Fsites%2FIFRCSharing%2FShared%20Documents%2FDREF&p=true&ga=1";
 
 function Overview(props: Props) {
   const { strings } = React.useContext(languageContext);
@@ -370,11 +371,23 @@ function Overview(props: Props) {
             hint={strings.drefFormPeopleTargetedDescription}
           />
           <NumberInput
-            label={strings.finalReportPeopleAssisted}
-            name="number_of_people_assisted"
-            value={value.number_of_people_assisted}
+            label={(
+              <>
+                {strings.finalReportPeopleAssisted}
+                <a
+                  className={styles.peopleTargetedHelpLink}
+                  target="_blank"
+                  title="Click to view Emergency Response Framework"
+                  href={peopleAssistedLink}
+                >
+                  <IoHelpCircle />
+                </a>
+              </>
+            )}
+            name="num_assisted"
+            value={value.num_assisted}
             onChange={onValueChange}
-            error={error?.number_of_people_assisted}
+            error={error?.num_assisted}
           />
         </InputSection>
         <InputSection

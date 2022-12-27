@@ -441,7 +441,7 @@ function Operation(props: Props) {
       >
         <InputSection>
           <DREFFileInput
-            accept="image/*"
+            accept=".pdf"
             name="financial_report"
             value={value.financial_report}
             onChange={onValueChange}
@@ -454,10 +454,10 @@ function Operation(props: Props) {
         </InputSection>
         <InputSection title={strings.finalReportFinancialReportVariances}>
           <TextArea
-            name="variances"
-            value={value.variances}
+            name="financial_report_description"
+            value={value.financial_report_description}
             onChange={onValueChange}
-            error={error?.variances}
+            error={error?.financial_report_description}
           />
         </InputSection>
       </Container>
