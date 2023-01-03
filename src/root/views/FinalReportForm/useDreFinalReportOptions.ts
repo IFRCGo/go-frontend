@@ -136,7 +136,6 @@ export const schema: FormSchema = {
     media_contact_phone_number: [],
     dref: [],
     images_file: [defaultEmptyArrayType, lessThanEqualToTwoImagesCondition],
-    budget_file: [],
     event_scope: [],
     change_in_operational_strategy: [],
     change_in_operational_strategy_text: [],
@@ -155,8 +154,12 @@ export const schema: FormSchema = {
     event_date: [],
     event_text: [],
     event_description: [],
-    did_national_society: [],
     ns_respond_date: [],
+    has_national_society_conducted: [],
+    national_society_conducted_description: [],
+    num_assisted: [],
+    financial_report: [],
+    financial_report_description: [],
 
     national_society_actions: {
       keySelector: (n: PartialForm<NsAction>) => n.clientId as string,
@@ -198,6 +201,7 @@ export const schema: FormSchema = {
           title: [requiredCondition],
           budget: [requiredCondition, positiveIntegerCondition, lessThanOrEqualToCondition(MaxIntLimit)],
           person_targeted: [requiredCondition, positiveIntegerCondition, lessThanOrEqualToCondition(MaxIntLimit)],
+          person_assisted: [requiredCondition, positiveIntegerCondition, lessThanOrEqualToCondition(MaxIntLimit)],
           indicators: {
             keySelector: (n) => n.clientId as string,
             member: (): IndicatorsSchemaMember => ({

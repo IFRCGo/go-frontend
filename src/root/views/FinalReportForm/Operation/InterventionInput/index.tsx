@@ -94,7 +94,18 @@ function InterventionInput(props: Props) {
     <div className={styles.interventionInput}>
       <InputSection
         className={styles.inputSection}
-        title={interventionLabel}
+        title={(
+          <div className={styles.titleAction}>
+            {interventionLabel}
+            <Button
+              name={index}
+              onClick={onRemove}
+              variant="action"
+            >
+              <IoTrash />
+            </Button>
+          </div>
+        )}
         multiRow={false}
         twoColumn
         normalDescription
@@ -111,6 +122,13 @@ function InterventionInput(props: Props) {
               label={strings.drefFormInterventionPersonTargetedLabel}
               name="person_targeted"
               value={value.person_targeted}
+              onChange={onFieldChange}
+              error={error?.person_targeted}
+            />
+            <NumberInput
+              label={strings.drefFormInterventionPersonAssistedLabel}
+              name="person_assisted"
+              value={value.person_assisted}
               onChange={onFieldChange}
               error={error?.person_targeted}
             />
@@ -133,7 +151,7 @@ function InterventionInput(props: Props) {
           </>
         )}
       >
-        <div className={styles.addIndicatorContainer}>
+        <div className={styles.midContainer}>
           <BulletTextArea
             label={strings.finalReportPlannedInterventionLessonsLearnt}
             name="lessons_learnt"
@@ -148,8 +166,6 @@ function InterventionInput(props: Props) {
             onChange={onFieldChange}
             error={error?.narrative_description_of_achievements}
           />
-        </div>
-        <div className={styles.addIndicatorContainer}>
           <BulletTextArea
             label={strings.finalReportPlannedInterventionChallenges}
             name='challenges'
@@ -157,38 +173,30 @@ function InterventionInput(props: Props) {
             onChange={onFieldChange}
             error={error?.challenges}
           />
-          <div>
-            <Button
-              variant="secondary"
-              name={indicator}
-              onClick={handleIndicatorAddButtonClick}
-            >
-              Add Indicator
-            </Button>
-            {
-              value?.indicators?.map((i, index) => (
-                <IndicatorInput
-                  key={i.clientId}
-                  index={index}
-                  value={i}
-                  onChange={onIndicatorChange}
-                  onRemove={onIndicatorRemove}
-                  error={getErrorObject(error?.indicators)}
-                />
-              ))
-            }
-          </div>
         </div>
-      </InputSection>
-      <Button
-        className={styles.removeButton}
-        name={index}
-        onClick={onRemove}
-        variant="action"
-      >
-        <IoTrash />
-      </Button>
-    </div>
+        <div className={styles.addIndicator}>
+          <Button
+            variant="secondary"
+            name={indicator}
+            onClick={handleIndicatorAddButtonClick}
+          >
+            Add Indicator
+          </Button>
+          {
+            value?.indicators?.map((i, index) => (
+              <IndicatorInput
+                key={i.clientId}
+                index={index}
+                value={i}
+                onChange={onIndicatorChange}
+                onRemove={onIndicatorRemove}
+                error={getErrorObject(error?.indicators)}
+              />
+            ))
+          }
+        </div>
+      </InputSection >
+    </div >
   );
 }
 

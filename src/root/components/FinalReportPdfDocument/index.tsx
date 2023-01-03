@@ -24,7 +24,6 @@ import ObjectiveAndStrategy from './ObjectivesAndStrategy';
 import RiskAndSecurityOutput from './RiskAndSecurityOutput';
 import PlannedInterventionOutput from './PlannedInterventionOutput';
 import TargetedPopulationOutput from './TargetedPopulationOutput';
-import BudgetFileOutput from './BudgetFileOutput';
 import ContactInformationOutput from './ContactInformationOutput';
 import PageNumberPdf from '#components/DrefPdfDocument/PageNumberPdf';
 
@@ -128,10 +127,6 @@ function FinalReportPdfDocument(props: Props) {
           strings={strings}
           data={finalReportResponse}
           piMap={piMap}
-        />
-        <BudgetFileOutput
-          strings={strings}
-          data={finalReportResponse}
         />
         <ContactInformationOutput
           data={finalReportResponse}

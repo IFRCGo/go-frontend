@@ -29,7 +29,6 @@ import InputLabel from '#components/InputLabel';
 import { IoWarning } from 'react-icons/io5';
 import SelectInput from '#components/SelectInput';
 import Button from '#components/Button';
-import DREFFileInput from '#components/DREFFileInput';
 import RadioInput from '#components/RadioInput';
 import RiskSecurityInput from '#views/DrefApplicationForm/Response/RiskSecurityInput';
 
@@ -50,6 +49,7 @@ import {
 } from '../common';
 
 import styles from './styles.module.scss';
+import DREFFileInput from '#components/DREFFileInput';
 
 const emptyList: string[] = [];
 type Value = PartialForm<DrefFinalReportFields>;
@@ -72,10 +72,10 @@ function Operation(props: Props) {
     onValueChange,
     interventionOptions,
     value,
-    fileIdToUrlMap,
-    setFileIdToUrlMap,
     yesNoOptions,
     isAssessmentReport,
+    fileIdToUrlMap,
+    setFileIdToUrlMap,
   } = props;
 
   const error = getErrorObject(formError);
@@ -196,6 +196,59 @@ function Operation(props: Props) {
             placeholder={strings.drefFormResponseRationalePlaceholder}
           />
         </InputSection>
+      </Container>
+      <Container
+        heading={strings.finalReportTargetingStrategy}
+        className={styles.targetingStrategy}
+      >
+        <InputSection
+          title={strings.finalReportPeopleAssistedThroughOperation}
+        >
+          <TextArea
+            label={strings.drefFormDescription}
+            name="people_assisted"
+            onChange={onValueChange}
+            value={value.people_assisted}
+            error={error?.people_assisted}
+          />
+        </InputSection>
+        <InputSection
+          title={strings.finalReportSelectionCriteria}
+        >
+          <TextArea
+            label={strings.drefFormDescription}
+            name="selection_criteria"
+            onChange={onValueChange}
+            value={value.selection_criteria}
+            error={error?.selection_criteria}
+          />
+        </InputSection>
+        <InputSection
+          title={strings.finalReportChangeToOperationStrategy}
+        >
+          <RadioInput
+            name={"change_in_operational_strategy" as const}
+            options={yesNoOptions}
+            keySelector={booleanOptionKeySelector}
+            labelSelector={optionLabelSelector}
+            value={value.change_in_operational_strategy}
+            onChange={onValueChange}
+            error={error?.change_in_operational_strategy}
+          />
+        </InputSection>
+        {isChangeInOperationalStrategy &&
+          <InputSection
+            title={strings.finalReportChangeToOperationStrategyExplain}
+          >
+            <TextArea
+              label={strings.drefFormDescription}
+              name="change_in_operational_strategy_text"
+              onChange={onValueChange}
+              value={value.change_in_operational_strategy_text}
+              error={error?.change_in_operational_strategy_text}
+            />
+          </InputSection>
+        }
       </Container>
       <Container
         heading={strings.finalReportTargetedPopulation}
@@ -352,21 +405,6 @@ function Operation(props: Props) {
         visibleOverflow
       >
         <InputSection>
-          <DREFFileInput
-            accept=".pdf"
-            error={error?.budget_file}
-            fileIdToUrlMap={fileIdToUrlMap}
-            label={strings.drefFormBudgetTemplateLabel}
-            name="budget_file"
-            onChange={onValueChange}
-            setFileIdToUrlMap={setFileIdToUrlMap}
-            showStatus
-            value={value.budget_file}
-          >
-            {strings.drefFormBudgetTemplateUploadButtonLabel}
-          </DREFFileInput>
-        </InputSection>
-        <InputSection>
           <SelectInput
             name={undefined}
             onChange={setIntervention}
@@ -398,57 +436,30 @@ function Operation(props: Props) {
         ))}
       </Container>
       <Container
-        heading={strings.finalReportOperationReportTitle}
-        className={styles.targetingStrategy}
+        heading={strings.finalReportFinancialReport}
+        visibleOverflow
       >
-        <InputSection
-          title={strings.finalReportPeopleAssistedThroughOperation}
-        >
-          <TextArea
-            label={strings.drefFormDescription}
-            name="people_assisted"
+        <InputSection>
+          <DREFFileInput
+            accept=".pdf"
+            name="financial_report"
+            value={value.financial_report}
             onChange={onValueChange}
-            value={value.people_assisted}
-            error={error?.people_assisted}
-          />
-        </InputSection>
-        <InputSection
-          title={strings.finalReportSelectionCriteria}
-        >
-          <TextArea
-            label={strings.drefFormDescription}
-            name="selection_criteria"
-            onChange={onValueChange}
-            value={value.selection_criteria}
-            error={error?.selection_criteria}
-          />
-        </InputSection>
-        <InputSection
-          title={strings.finalReportChangeToOperationStrategy}
-        >
-          <RadioInput
-            name={"change_in_operational_strategy" as const}
-            options={yesNoOptions}
-            keySelector={booleanOptionKeySelector}
-            labelSelector={optionLabelSelector}
-            value={value.change_in_operational_strategy}
-            onChange={onValueChange}
-            error={error?.change_in_operational_strategy}
-          />
-        </InputSection>
-        {isChangeInOperationalStrategy &&
-          <InputSection
-            title={strings.finalReportChangeToOperationStrategyExplain}
+            error={error?.financial_report}
+            fileIdToUrlMap={fileIdToUrlMap}
+            setFileIdToUrlMap={setFileIdToUrlMap}
           >
-            <TextArea
-              label={strings.drefFormDescription}
-              name="change_in_operational_strategy_text"
-              onChange={onValueChange}
-              value={value.change_in_operational_strategy_text}
-              error={error?.change_in_operational_strategy_text}
-            />
-          </InputSection>
-        }
+            {strings.finalReportFinancialReportAttachment}
+          </DREFFileInput>
+        </InputSection>
+        <InputSection title={strings.finalReportFinancialReportVariances}>
+          <TextArea
+            name="financial_report_description"
+            value={value.financial_report_description}
+            onChange={onValueChange}
+            error={error?.financial_report_description}
+          />
+        </InputSection>
       </Container>
     </>
   );
