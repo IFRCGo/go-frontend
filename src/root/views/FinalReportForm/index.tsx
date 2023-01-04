@@ -87,7 +87,6 @@ const defaultFormValues: PartialForm<DrefFinalReportFields> = {
   needs_identified: [],
   images_file: [],
   users: [],
-  is_assessment_report: false,
   has_national_society_conducted: false,
 };
 
