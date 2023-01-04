@@ -20,14 +20,11 @@ import SearchSelectInput from '#components/SearchSelectInput';
 import { isNotDefined, listToMap } from '@togglecorp/fujs';
 import { rankedSearchOnList } from '#utils/common';
 import Button from '#components/Button';
-import RadioInput from '#components/RadioInput';
 import {
-  booleanOptionKeySelector,
   BooleanValueOption,
   DrefFinalReportFields,
   emptyNumericOptionList,
   NumericValueOption,
-  optionLabelSelector,
 } from '../common';
 
 import styles from './styles.module.scss';
@@ -78,11 +75,9 @@ function Overview(props: Props) {
     onsetOptions,
     userOptions,
     onCreateAndShareButtonClick,
-    yesNoOptions,
     fileIdToUrlMap,
     setFileIdToUrlMap,
     isImminentOnset,
-    isAssessmentReport,
   } = props;
 
   const error = React.useMemo(
@@ -186,21 +181,6 @@ function Overview(props: Props) {
             pending={fetchingNationalSociety}
           />
         </InputSection>
-        {!isAssessmentReport &&
-          <InputSection
-            title={strings.drefFormForAssessment}
-          >
-            <RadioInput
-              name={"is_assessment_report" as const}
-              options={yesNoOptions}
-              keySelector={booleanOptionKeySelector}
-              labelSelector={optionLabelSelector}
-              value={value.is_assessment_report}
-              onChange={onValueChange}
-              error={error?.is_assessment_report}
-            />
-          </InputSection>
-        }
         <InputSection
           title={isImminentOnset
             ? strings.finalReportImminentDisasterDetails

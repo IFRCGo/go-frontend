@@ -251,7 +251,6 @@ export const overviewFields: (keyof DrefFinalReportFields)[] = [
   'total_dref_allocation',
   'country',
   'district',
-  'is_assessment_report',
   'people_in_need',
   'event_map_file',
   'cover_image_file',
