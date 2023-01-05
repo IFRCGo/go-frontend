@@ -144,7 +144,6 @@ export const schema: FormSchema = {
     event_map: [],
     country: [requiredCondition],
     district: [requiredCondition],
-    is_assessment_report: [],
     photos_file: [lessThanEqualToTwoImagesCondition],
     is_there_major_coordination_mechanism: [],
     risk_security_concern: [],
