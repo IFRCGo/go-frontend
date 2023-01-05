@@ -21,3 +21,16 @@ export default {
   ...surge,
   ...threeW,
 };
+
+export const strings = {
+  common,
+  about,
+  dref,
+  emergencies,
+  fieldReport,
+  flashUpdate,
+  login,
+  register,
+  surge,
+  threeW,
+};
