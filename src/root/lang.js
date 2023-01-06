@@ -3282,7 +3282,7 @@ export default {
   drefFormDateOfPublishing: 'Date of publishing',
   drefFormDateOfPublishingDescription: 'Added by the regional office',
   drefFormTrackingData: 'Tracking Data and Contacts',
-  drefFormAppealCode: 'MDR Code',
+  drefFormAppealCode: 'Appeal Code',
   drefFormAppealCodeDescription: 'Added by the regional PMER',
   drefFormGlideNum: 'GLIDE number',
   drefFormAppealManager: 'IFRC Appeal Manager:',
