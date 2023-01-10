@@ -1,23 +1,25 @@
 @import '~styles/settings/variables';
 
-.intervention-input {
-  display: flex;
-  background-color: $white;
+.intervention-container {
 
-  .input-section {
+  .intervention-content {
     display: flex;
-    flex-grow: 1;
+    flex-direction: column;
+    align-items: initial;
+  }
+
+  .textarea-container {
+    display: flex;
+    gap: $spacing*2;
+
+    .bullet-input {
+      flex-basis: 100%;
+    }
   }
 
   .male-female {
     display: flex;
     gap: $spacing;
-  }
-
-  .mid-container {
-    display: flex;
-    flex-direction: column;
-    gap: $spacing*2;
   }
 
   .title-action {

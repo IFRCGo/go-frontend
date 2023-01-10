@@ -25,14 +25,12 @@ import NeedInput from '#views/DrefApplicationForm/ActionsFields/NeedInput';
 import Button from '#components/Button';
 import SelectInput from '#components/SelectInput';
 import RadioInput from '#components/RadioInput';
-import NsActionInput from '#views/DrefApplicationForm/ActionsFields/NSActionInput';
 
 import {
   booleanOptionKeySelector,
   BooleanValueOption,
   DrefFinalReportFields,
   Need,
-  NsAction,
   optionLabelSelector,
   StringValueOption,
 } from '../common';
@@ -58,7 +56,6 @@ function Needs(props: Props) {
     value,
     yesNoOptions,
     needOptions,
-    nsActionOptions,
   } = props;
 
   const error = useMemo(() => getErrorObject(formError), [formError]);
@@ -70,14 +67,6 @@ function Needs(props: Props) {
     removeValue: onNeedRemove,
   } = useFormArray<'needs_identified', PartialForm<Need>>(
     'needs_identified',
-    onValueChange,
-  );
-
-  const {
-    setValue: onNsActionChange,
-    removeValue: onNsActionRemove,
-  } = useFormArray<'national_society_actions', PartialForm<NsAction>>(
-    'national_society_actions',
     onValueChange,
   );
 
@@ -142,17 +131,6 @@ function Needs(props: Props) {
             />
           </InputSection>
         }
-        {value?.national_society_actions?.map((n, i) => (
-          <NsActionInput
-            key={n.clientId}
-            index={i}
-            value={n}
-            onChange={onNsActionChange}
-            onRemove={onNsActionRemove}
-            error={getErrorObject(error?.national_society_actions)}
-            nsActionOptions={nsActionOptions}
-          />
-        ))}
       </Container>
       <Container
         heading={strings.finalReportMovementPartners}

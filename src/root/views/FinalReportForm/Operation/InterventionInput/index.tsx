@@ -91,112 +91,122 @@ function InterventionInput(props: Props) {
   }, [onFieldChange, setIndicator]);
 
   return (
-    <div className={styles.interventionInput}>
-      <InputSection
-        className={styles.inputSection}
-        title={(
-          <div className={styles.titleAction}>
-            {interventionLabel}
-            <Button
-              name={index}
-              onClick={onRemove}
-              variant="action"
-            >
-              <IoTrash />
-            </Button>
-          </div>
-        )}
-        multiRow={false}
-        twoColumn
-        normalDescription
-        description={(
-          <>
-            <NumberInput
-              label={strings.drefFormInterventionBudgetLabel}
-              name="budget"
-              value={value.budget}
-              onChange={onFieldChange}
-              error={error?.budget}
-            />
-            <NumberInput
-              label={strings.drefFormInterventionPersonTargetedLabel}
-              name="person_targeted"
-              value={value.person_targeted}
-              onChange={onFieldChange}
-              error={error?.person_targeted}
-            />
-            <NumberInput
-              label={strings.drefFormInterventionPersonAssistedLabel}
-              name="person_assisted"
-              value={value.person_assisted}
-              onChange={onFieldChange}
-              error={error?.person_targeted}
-            />
-            <div className={styles.maleFemale} >
-              <NumberInput
-                label={strings.drefOperationalUpdateIndicatorMaleLabel}
-                name='male'
-                value={value.male}
-                onChange={onFieldChange}
-                error={error?.male}
-              />
-              <NumberInput
-                label={strings.drefOperationalUpdateIndicatorFemaleLabel}
-                name='female'
-                value={value.female}
-                onChange={onFieldChange}
-                error={error?.female}
-              />
-            </div>
-          </>
-        )}
-      >
-        <div className={styles.midContainer}>
-          <BulletTextArea
-            label={strings.finalReportPlannedInterventionLessonsLearnt}
-            name="lessons_learnt"
-            value={value.lessons_learnt}
-            onChange={onFieldChange}
-            error={error?.lessons_learnt}
-          />
-          <BulletTextArea
-            label={strings.finalReportPlannedInterventionNarrativeAchievement}
-            name='narrative_description_of_achievements'
-            value={value.narrative_description_of_achievements}
-            onChange={onFieldChange}
-            error={error?.narrative_description_of_achievements}
-          />
-          <BulletTextArea
-            label={strings.finalReportPlannedInterventionChallenges}
-            name='challenges'
-            value={value.challenges}
-            onChange={onFieldChange}
-            error={error?.challenges}
-          />
-        </div>
-        <div className={styles.addIndicator}>
+    <InputSection
+      className={styles.interventionContainer}
+      contentSectionClassName={styles.interventionContent}
+      title={(
+        <div className={styles.titleAction}>
+          {interventionLabel}
           <Button
-            variant="secondary"
-            name={indicator}
-            onClick={handleIndicatorAddButtonClick}
+            name={index}
+            onClick={onRemove}
+            variant="action"
           >
-            Add Indicator
+            <IoTrash />
           </Button>
-          {
-            value?.indicators?.map((i, index) => (
-              <IndicatorInput
-                key={i.clientId}
-                index={index}
-                value={i}
-                onChange={onIndicatorChange}
-                onRemove={onIndicatorRemove}
-                error={getErrorObject(error?.indicators)}
-              />
-            ))
-          }
         </div>
-      </InputSection >
-    </div >
+      )}
+      normalDescription
+      description={(
+        <>
+          <NumberInput
+            label={strings.drefFormInterventionBudgetLabel}
+            name="budget"
+            value={value.budget}
+            onChange={onFieldChange}
+            error={error?.budget}
+          />
+          <NumberInput
+            label={strings.drefFormInterventionPersonTargetedLabel}
+            name="person_targeted"
+            value={value.person_targeted}
+            onChange={onFieldChange}
+            error={error?.person_targeted}
+          />
+          <NumberInput
+            label={strings.drefFormInterventionPersonAssistedLabel}
+            name="person_assisted"
+            value={value.person_assisted}
+            onChange={onFieldChange}
+            error={error?.person_targeted}
+          />
+          <div className={styles.maleFemale} >
+            <NumberInput
+              label={strings.drefOperationalUpdateIndicatorMaleLabel}
+              name='male'
+              value={value.male}
+              onChange={onFieldChange}
+              error={error?.male}
+            />
+            <NumberInput
+              label={strings.drefOperationalUpdateIndicatorFemaleLabel}
+              name='female'
+              value={value.female}
+              onChange={onFieldChange}
+              error={error?.female}
+            />
+          </div>
+        </>
+      )}
+    >
+      <div className={styles.textareaContainer}>
+        <BulletTextArea
+          label={strings.finalReportPlannedInterventionNarrativeAchievement}
+          name='narrative_description_of_achievements'
+          value={value.narrative_description_of_achievements}
+          onChange={onFieldChange}
+          error={error?.narrative_description_of_achievements}
+          className={styles.bulletInput}
+        />
+        <BulletTextArea
+          label={strings.drefFormListOfActivities}
+          name="description"
+          value={value.description}
+          onChange={onFieldChange}
+          error={error?.description}
+          className={styles.bulletInput}
+        />
+      </div>
+      <div className={styles.textareaContainer}>
+        <BulletTextArea
+          label={strings.finalReportPlannedInterventionLessonsLearnt}
+          name="lessons_learnt"
+          value={value.lessons_learnt}
+          onChange={onFieldChange}
+          error={error?.lessons_learnt}
+          className={styles.bulletInput}
+        />
+        <BulletTextArea
+          label={strings.finalReportPlannedInterventionChallenges}
+          name='challenges'
+          value={value.challenges}
+          onChange={onFieldChange}
+          error={error?.challenges}
+          className={styles.bulletInput}
+        />
+      </div>
+      <div>
+        <Button
+          variant="secondary"
+          name={indicator}
+          onClick={handleIndicatorAddButtonClick}
+        >
+          Add Indicator
+        </Button>
+        {
+          value?.indicators?.map((i, index) => (
+            <IndicatorInput
+              key={i.clientId}
+              index={index}
+              value={i}
+              onChange={onIndicatorChange}
+              onRemove={onIndicatorRemove}
+              error={getErrorObject(error?.indicators)}
+            />
+          ))
+        }
+      </div>
+    </InputSection >
   );
 }
 

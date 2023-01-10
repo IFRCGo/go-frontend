@@ -10,6 +10,7 @@ import {
   PartialForm,
   requiredCondition,
 } from '@togglecorp/toggle-form';
+import { isDefined } from '@togglecorp/fujs';
 
 import {
   ListResponse,
@@ -28,13 +29,11 @@ import {
   DrefFinalReportFields,
   emptyNumericOptionList,
   emptyStringOptionList,
-  NsAction,
   NumericKeyValuePair,
   NumericValueOption,
   StringKeyValuePair,
   User,
 } from './common';
-import { isDefined } from '@togglecorp/fujs';
 
 export type FormSchema = ObjectSchema<PartialForm<DrefFinalReportFields>>;
 export type FormSchemaFields = ReturnType<FormSchema['fields']>;
@@ -57,12 +56,6 @@ export type IndicatorSchemaFields = ReturnType<IndicatorSchema['fields']>;
 export type IndicatorsSchema = ArraySchema<PartialForm<IndicatorType>>;
 export type IndicatorsSchemaMember = ReturnType<IndicatorsSchema['member']>;
 
-export type NsActionType = NonNullable<NonNullable<DrefFinalReportFields['national_society_actions']>>[number];
-export type NsActionSchema = ObjectSchema<PartialForm<NsActionType>>;
-export type NsActionSchemaFields = ReturnType<NsActionSchema['fields']>;
-export type NsActionsSchema = ArraySchema<PartialForm<NsActionType>>;
-export type NsActionsSchemaMember = ReturnType<NsActionsSchema['member']>;
-
 export type RiskSecurityType = NonNullable<NonNullable<DrefFinalReportFields['risk_security']>>[number];
 export type RiskSecuritySchema = ObjectSchema<
   PartialForm<RiskSecurityType>,
@@ -82,6 +75,7 @@ export function lessThanEqualToTwoImagesCondition(value: any) {
     ? 'Only two images are allowed'
     : undefined;
 }
+
 export const schema: FormSchema = {
   fields: (value): FormSchemaFields => ({
     title: [],
@@ -160,15 +154,6 @@ export const schema: FormSchema = {
     financial_report: [],
     financial_report_description: [],
 
-    national_society_actions: {
-      keySelector: (n: PartialForm<NsAction>) => n.clientId as string,
-      member: (): NsActionsSchemaMember => ({
-        fields: (): NsActionSchemaFields => ({
-          title: [requiredCondition],
-          description: [requiredCondition],
-        }),
-      }),
-    },
     cover_image_file: {
       fields: () => ({
         id: [defaultUndefinedType],
@@ -200,7 +185,7 @@ export const schema: FormSchema = {
           title: [requiredCondition],
           budget: [requiredCondition, positiveIntegerCondition, lessThanOrEqualToCondition(MaxIntLimit)],
           person_targeted: [requiredCondition, positiveIntegerCondition, lessThanOrEqualToCondition(MaxIntLimit)],
-          person_assisted: [requiredCondition, positiveIntegerCondition, lessThanOrEqualToCondition(MaxIntLimit)],
+          person_assisted: [requiredCondition, positiveIntegerCondition],
           indicators: {
             keySelector: (n) => n.clientId as string,
             member: (): IndicatorsSchemaMember => ({
@@ -217,6 +202,7 @@ export const schema: FormSchema = {
           lessons_learnt: [],
           challenges: [],
           narrative_description_of_achievements: [],
+          description: [],
         }),
       }),
     },
