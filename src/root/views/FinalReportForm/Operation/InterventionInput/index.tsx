@@ -167,44 +167,44 @@ function InterventionInput(props: Props) {
           className={styles.bulletInput}
         />
       </div>
-      <div className={styles.textareaContainer}>
-        <BulletTextArea
-          label={strings.finalReportPlannedInterventionLessonsLearnt}
-          name="lessons_learnt"
-          value={value.lessons_learnt}
-          onChange={onFieldChange}
-          error={error?.lessons_learnt}
-          className={styles.bulletInput}
-        />
-        <BulletTextArea
-          label={strings.finalReportPlannedInterventionChallenges}
-          name='challenges'
-          value={value.challenges}
-          onChange={onFieldChange}
-          error={error?.challenges}
-          className={styles.bulletInput}
-        />
-      </div>
-      <div>
-        <Button
-          variant="secondary"
-          name={indicator}
-          onClick={handleIndicatorAddButtonClick}
-        >
-          Add Indicator
-        </Button>
-        {
-          value?.indicators?.map((i, index) => (
-            <IndicatorInput
-              key={i.clientId}
-              index={index}
-              value={i}
-              onChange={onIndicatorChange}
-              onRemove={onIndicatorRemove}
-              error={getErrorObject(error?.indicators)}
-            />
-          ))
-        }
+      <div className={styles.indicatorChallengeContainer}>
+        <div className={styles.challengeSection}>
+          <BulletTextArea
+            label={strings.finalReportPlannedInterventionLessonsLearnt}
+            name="lessons_learnt"
+            value={value.lessons_learnt}
+            onChange={onFieldChange}
+            error={error?.lessons_learnt}
+          />
+          <BulletTextArea
+            label={strings.finalReportPlannedInterventionChallenges}
+            name='challenges'
+            value={value.challenges}
+            onChange={onFieldChange}
+            error={error?.challenges}
+          />
+        </div>
+        <div>
+          <Button
+            variant="secondary"
+            name={indicator}
+            onClick={handleIndicatorAddButtonClick}
+          >
+            Add Indicator
+          </Button>
+          {
+            value?.indicators?.map((i, index) => (
+              <IndicatorInput
+                key={i.clientId}
+                index={index}
+                value={i}
+                onChange={onIndicatorChange}
+                onRemove={onIndicatorRemove}
+                error={getErrorObject(error?.indicators)}
+              />
+            ))
+          }
+        </div>
       </div>
     </InputSection >
   );

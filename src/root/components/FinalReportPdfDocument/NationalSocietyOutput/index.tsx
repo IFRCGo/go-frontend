@@ -3,11 +3,12 @@ import {
   Text,
   View,
 } from '@react-pdf/renderer';
+import { isNotDefined } from '@togglecorp/fujs';
 
 import pdfStyles from '#utils/pdf/pdfStyles';
 import { Strings } from '#types';
 import { DrefFinalReportApiFields } from '#views/FinalReportForm/common';
-import { isNotDefined } from '@togglecorp/fujs';
+import { formatBoolean } from '#utils/common';
 
 interface BaseProps {
   data: DrefFinalReportApiFields;
@@ -39,7 +40,7 @@ function NationalSocietyOutput(props: BaseProps) {
           <Text>{strings.finalReportHaveNationalSocietyConducted}</Text>
         </View>
         <View style={pdfStyles.niContentCell}>
-          <Text>{data.has_national_society_conducted}</Text>
+          <Text>{formatBoolean(data.has_national_society_conducted)}</Text>
         </View>
       </View>
       <View style={pdfStyles.row}>
