@@ -128,7 +128,7 @@ function InterventionInput(props: Props) {
             name="person_assisted"
             value={value.person_assisted}
             onChange={onFieldChange}
-            error={error?.person_targeted}
+            error={error?.person_assisted}
           />
           <div className={styles.maleFemale} >
             <NumberInput
