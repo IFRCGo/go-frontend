@@ -11,20 +11,35 @@
   .textarea-container {
     display: flex;
     gap: $spacing*2;
+    flex-wrap: wrap;
 
     .bullet-input {
-      flex-basis: 100%;
+      flex-basis: calc(50% - #{$spacing*2});
     }
   }
 
-  .male-female {
-    display: flex;
-    gap: $spacing;
-  }
+.male-female {
+  display: flex;
+  gap: $spacing;
+}
 
-  .title-action {
+.title-action {
+  display: flex;
+  align-items: center;
+  gap: $spacing;
+}
+
+.indicator-challenge-container {
+  display: flex;
+  gap: $spacing*2;
+  flex-wrap: wrap;
+
+  .challengeSection {
     display: flex;
-    align-items: center;
+    flex-direction: column;
     gap: $spacing;
+    flex-grow: 1;
+    max-width: 20rem;
   }
+}
 }
