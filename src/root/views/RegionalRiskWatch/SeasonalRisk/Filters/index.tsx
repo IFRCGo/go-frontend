@@ -14,6 +14,7 @@ import {
   riskMetricOptions,
   RiskType,
   riskTypeOptions,
+  monthKeys,
   monthOptions,
   hazardTypeToNameMap,
   informHazards,
@@ -35,9 +36,9 @@ export interface FilterValue {
 }
 
 const defaultHazardTypeByMetric: Record<RiskMetricType, HazardType[]> = {
-  informRiskScore: ['FL'],
-  exposure: ['FL'],
-  displacement: ['FL'],
+  informRiskScore: ['FL', 'TC', 'DR'],
+  exposure: ['FL', 'TC', 'FI'],
+  displacement: ['FL', 'TC'],
 };
 
 const DEFAULT_RISK_METRIC = 'informRiskScore';
@@ -45,9 +46,11 @@ export const initialFilterValue: FilterValue = {
   countries: [],
   hazardTypes: defaultHazardTypeByMetric[DEFAULT_RISK_METRIC],
   riskType: 'absolute',
-  include_coping_capacity: false,
+  include_coping_capacity: true,
   riskMetric: DEFAULT_RISK_METRIC,
-  months: ['january'],
+
+  // Current month
+  months: [monthKeys[new Date().getMonth()]],
 };
 
 interface Props {
@@ -80,7 +83,6 @@ function Filters(props: Props) {
     value: country.iso3 as string,
     label: country.name,
   }));
-
 
   const hazardTypeOptions = React.useMemo(() => {
     if (value.riskMetric === 'informRiskScore') {
@@ -127,6 +129,11 @@ function Filters(props: Props) {
     },
     [onChange],
   );
+
+  React.useEffect(() => {
+    // Setting intial values
+    handleChange(countryOptions.map((d) => d.value), 'countries');
+  }, [handleChange, countryOptions]);
 
   const handleSelectAllCountryClick = React.useCallback(() => {
     handleChange(countryOptions.map((d) => d.value), 'countries');
