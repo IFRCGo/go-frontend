@@ -15,7 +15,7 @@
     overflow-y: hidden;
     display: flex;
     flex-direction: column;
-    gap: $spacing * 0.5;
+    gap: $spacing * 0.75;
 
     &:hover {
       overflow-y: auto;
@@ -23,6 +23,7 @@
 
     .country-name {
       font-size: $font-size-sm;
+      font-weight: $base-font-medium;
     }
 
     .bar-container {

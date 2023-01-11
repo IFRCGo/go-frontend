@@ -7,6 +7,13 @@ import {
   COLOR_LIGHT_YELLOW,
   COLOR_DARK_RED,
 } from '#utils/map';
+import {
+  COLOR_FLOOD,
+  COLOR_CYCLONE,
+  COLOR_DROUGHT,
+  COLOR_FOOD_INSECURITY,
+  COLOR_EARTHQUAKE,
+} from '#utils/risk';
 
 export type RiskType = 'absolute' | 'normalized';
 export type HazardType = 'TC' | 'FL' | 'DR' | 'FI' | 'EQ';
@@ -368,4 +375,12 @@ export const informLegendData = [
 ];
 
 export const MAX_PRETTY_BREAKS = 5;
+
+export const hazardTypeColorMap: Record<HazardType, string> = {
+  FL: COLOR_FLOOD,
+  TC: COLOR_CYCLONE,
+  DR: COLOR_DROUGHT,
+  FI: COLOR_FOOD_INSECURITY,
+  EQ: COLOR_EARTHQUAKE,
+};
 

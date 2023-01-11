@@ -2,23 +2,9 @@ import React from 'react';
 import { _cs } from '@togglecorp/fujs';
 
 import Heading from '#components/Heading';
-import {
-  COLOR_FLOOD,
-  COLOR_CYCLONE,
-  COLOR_DROUGHT,
-  COLOR_FOOD_INSECURITY,
-  COLOR_EARTHQUAKE,
-} from '#utils/risk';
-import { HazardType } from '../common';
+import { HazardType, hazardTypeColorMap } from '../common';
 import styles from './styles.module.scss';
 
-const hazardTypeColorMap: Record<HazardType, string> = {
-  FL: COLOR_FLOOD,
-  TC: COLOR_CYCLONE,
-  DR: COLOR_DROUGHT,
-  FI: COLOR_FOOD_INSECURITY,
-  EQ: COLOR_EARTHQUAKE,
-};
 
 const hazardDisplayOrder: Record<HazardType, number> = {
   FL: 1,

@@ -7,6 +7,7 @@
   border: $base-border-width solid $base-border-color;
   padding: $spacing*0.25 $spacing * 0.75;
   border-radius: 1rem;
-  background-color: $grey-fog;
+  background-color: $grey-mist;
   font-size: $font-size-sm;
+  color: $color-text-light;
 }

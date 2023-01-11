@@ -27,6 +27,8 @@ import {
   RISK_LOW_COLOR,
   IPCData,
   monthKeys,
+  hazardTypeOptions,
+  hazardTypeColorMap,
 } from './common';
 import RiskMap from './Map';
 import HistoricalChart from './HistoricalChart';
@@ -286,23 +288,48 @@ function SeasonalRisk(props: Props) {
           />
         </div>
         <div className={styles.legend}>
-          <div className={styles.legendLabel}>
-            Severity
+          <div className={styles.riskLegend}>
+            <div className={styles.legendLabel}>
+              Severity
+            </div>
+            <div className={styles.separator} />
+            <div className={styles.legendContent}>
+              <div
+                className={styles.gradient}
+                style={{
+                  background: `linear-gradient(90deg, ${RISK_LOW_COLOR}, ${RISK_HIGH_COLOR})`
+                }}
+              />
+              <div className={styles.labelList}>
+                <div className={styles.label}>
+                  Low
+                </div>
+                <div className={styles.label}>
+                  High
+                </div>
+              </div>
+            </div>
           </div>
-          <div className={styles.legendContent}>
-            <div
-              className={styles.gradient}
-              style={{
-                background: `linear-gradient(90deg, ${RISK_LOW_COLOR}, ${RISK_HIGH_COLOR})`
-              }}
-            />
-            <div className={styles.labelList}>
-              <div className={styles.label}>
-                Low
-              </div>
-              <div className={styles.label}>
-                High
-              </div>
+          <div className={styles.separator} />
+          <div className={styles.hazardLegend}>
+            <div className={styles.legendLabel}>
+              Types of Hazards
+            </div>
+            <div className={styles.separator} />
+            <div className={styles.legendContent}>
+              {hazardTypeOptions.map((hazardType) => (
+                <div className={styles.legendItem}>
+                  <div
+                    className={styles.color}
+                    style={{
+                      backgroundColor: hazardTypeColorMap[hazardType.value],
+                    }}
+                  />
+                  <div className={styles.label}>
+                    {hazardType.label}
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </div>
