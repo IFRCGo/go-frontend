@@ -61,6 +61,14 @@ function PlannedIntervention(props: PlannedInterventionProps) {
               {data.person_targeted}
             </Text>
           </View>
+          <View style={pdfStyles.piSubRow}>
+            <Text style={pdfStyles.piSubHeadingCell}>
+              {strings.drefFormInterventionPersonAssistedLabel}
+            </Text>
+            <Text style={pdfStyles.piSubContentCell}>
+              {data.person_assisted}
+            </Text>
+          </View>
         </View>
       </View>
       <View style={pdfStyles.piRow}>
@@ -94,20 +102,6 @@ function PlannedIntervention(props: PlannedInterventionProps) {
           </View>
         ))
       }
-      <View style={pdfStyles.piRow}>
-        <View style={pdfStyles.piSmallColumn}>
-          <View style={pdfStyles.piPriorityCell}>
-            <Text>
-              {strings.drefExportPriorityActions}
-            </Text>
-          </View>
-        </View>
-        <View style={pdfStyles.piLargeColumn}>
-          <Text style={pdfStyles.piBorderCell}>
-            {data.description}
-          </Text>
-        </View>
-      </View>
     </View >
   );
 }
