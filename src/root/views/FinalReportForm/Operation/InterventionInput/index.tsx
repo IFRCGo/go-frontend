@@ -151,19 +151,19 @@ function InterventionInput(props: Props) {
     >
       <div className={styles.textareaContainer}>
         <BulletTextArea
-          label={strings.finalReportPlannedInterventionNarrativeAchievement}
-          name='narrative_description_of_achievements'
-          value={value.narrative_description_of_achievements}
-          onChange={onFieldChange}
-          error={error?.narrative_description_of_achievements}
-          className={styles.bulletInput}
-        />
-        <BulletTextArea
           label={strings.drefFormListOfActivities}
           name="description"
           value={value.description}
           onChange={onFieldChange}
           error={error?.description}
+          className={styles.bulletInput}
+        />
+        <BulletTextArea
+          label={strings.finalReportPlannedInterventionNarrativeAchievement}
+          name='narrative_description_of_achievements'
+          value={value.narrative_description_of_achievements}
+          onChange={onFieldChange}
+          error={error?.narrative_description_of_achievements}
           className={styles.bulletInput}
         />
       </div>

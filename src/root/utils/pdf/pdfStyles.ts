@@ -446,7 +446,7 @@ const pdfStyles = StyleSheet.create({
   piSubHeadingCell: {
     padding: styles.SMALL_PADDING,
     border: styles.TABLE_BORDER,
-    flexBasis: '25%',
+    flexBasis: '60%',
     fontWeight: 'extrabold',
   },
 
@@ -460,7 +460,7 @@ const pdfStyles = StyleSheet.create({
   piSubContentCell: {
     padding: styles.SMALL_PADDING,
     border: styles.TABLE_BORDER,
-    flexBasis: '75%',
+    flexBasis: '40%',
   },
 
   piBorderCell: {

@@ -3775,6 +3775,7 @@ export default {
   finalReportPublishConfirmationFailureMessage: 'Failed to publish the Final Report',
 
   // export
+  finalReportExportTitle: 'Final Report',
   finalReportExportAppealNum: 'Appeal no:',
   finalReportExportGlideNum: 'Glide no:',
   finalReportExportTotalAllocation: 'Total DREF Allocation:',

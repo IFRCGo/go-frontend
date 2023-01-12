@@ -28,7 +28,7 @@ function HeadingOutput(props: Props) {
           src={logoUrl}
         />
         <Text style={pdfStyles.pageTitle}>
-          {strings.operationalUpdateExportTitle}
+          {strings.finalReportExportTitle}
         </Text>
       </View>
       <Text style={pdfStyles.subTitle}>

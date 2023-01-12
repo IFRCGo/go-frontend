@@ -32,14 +32,15 @@
 .indicator-challenge-container {
   display: flex;
   gap: $spacing*2;
-  flex-wrap: wrap;
+  flex-grow: 1 2;
 
   .challengeSection {
     display: flex;
     flex-direction: column;
     gap: $spacing;
-    flex-grow: 1;
-    max-width: 20rem;
+    flex-basis: 100%;
+    flex-shrink: 0;
+    max-width: calc(50% - #{$spacing*2});
   }
 }
 }
