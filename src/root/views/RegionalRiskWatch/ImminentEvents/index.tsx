@@ -43,6 +43,19 @@ function ImminentEvents(props: Props) {
     },
   });
 
+  /*
+  const {
+    response: adamResponse,
+  } = useRequest({
+    skip: isNotDefined(regionId),
+    url: 'risk://api/v1/adam-exposure',
+    query: {
+      region: regionId,
+    },
+  });
+  */
+
+
   const data = React.useMemo(() => {
     if (!response || !response.pdc_data) {
       return undefined;

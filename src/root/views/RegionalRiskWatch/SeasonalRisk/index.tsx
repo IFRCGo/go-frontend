@@ -1,63 +1,110 @@
 import React  from 'react';
 import {
-  listToMap,
-  isDefined,
-  listToGroupList,
-  mapToMap,
-  unique,
   isNotDefined,
+  listToMap,
+  listToGroupList,
+  sum,
+  unique,
+  mapToMap,
+  isDefined,
 } from '@togglecorp/fujs';
 
-import { useRequest } from '#utils/restRequest';
 import {
-  avg,
-  avgSafe,
-} from '#utils/common';
+  useRequest,
+  ListResponse,
+} from '#utils/restRequest';
+import Container from '#components/Container';
+import WikiLink from '#components/WikiLink';
+import { avgSafe } from '#utils/common';
 
 import {
-  HazardTypes,
-  StringValueOption,
-} from '#types';
-import useInputState from '#hooks/useInputState';
-
-import {
-  RiskData,
-  IPCData,
   SeasonalResponse,
+  MonthlyValues,
+  HazardType,
   CountryDetail,
+  RiskScoreData,
+  RISK_HIGH_COLOR,
+  RISK_LOW_COLOR,
+  IPCData,
   monthKeys,
+  hazardTypeOptions,
+  hazardTypeColorMap,
 } from './common';
 import RiskMap from './Map';
 import HistoricalChart from './HistoricalChart';
+import Filters, { initialFilterValue, FilterValue } from './Filters';
+import CountryRiskBarChart from './CountryRiskBarChart';
 
-const visibleHazardTypeMap: {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  [key in HazardTypes]: boolean;
-} = {
-  TC: true,
-  FL: true,
-  FI: true,
-  DR: true,
-};
+import styles from './styles.module.scss';
 
-const hazardOrderMap: {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  [key in HazardTypes]: number;
-} = {
-  FL: 1,
-  TC: 2,
-  DR: 3,
-  FI: 4,
-};
+function processIpcData(data: IPCData[]) {
+  const estimationPriorityMap: {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    [key in IPCData['estimation_type']]: number
+  } = {
+    current: 0,
+    first_projection: 1,
+    second_projection: 2,
+  };
 
-const estimationPriorityMap: {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  [key in IPCData['estimation_type']]: number
-} = {
-  current: 0,
-  first_projection: 1,
-  second_projection: 2,
-};
+  const sortedData = [...data].sort(
+    (a, b) => (a.year - b.year)
+      || (a.month - b.month)
+      || ((new Date(b.analysis_date ?? 0).getTime()) - (new Date(a.analysis_date ?? 0).getTime()))
+      || ((estimationPriorityMap[a.estimation_type] ?? 0) - (estimationPriorityMap[b.estimation_type] ?? 0))
+  );
+
+  const latestAnalysisDate = [...data].sort(
+    (a, b) => (new Date(b.analysis_date ?? 0)).getTime() - (new Date(a.analysis_date ?? 0)).getTime(),
+  )[0].analysis_date;
+
+  const groupedData = mapToMap(
+    listToGroupList(sortedData, d => d.month),
+    d => d,
+    // Since we've sorted data in order of priority
+    // We should only take first occuring year
+    (data) => unique(data, d => d.year),
+  );
+
+  const ipcDataMonthly = monthKeys.map((m, i) => {
+    const historicData = (groupedData[i] ?? []).filter(d => d.estimation_type === 'current');
+    const prediction = (groupedData[i] ?? []).filter(d => d.analysis_date === latestAnalysisDate && d.estimation_type !== 'current');
+
+    const yearDisaggregatedHistoricData = listToMap(
+      historicData.map(d => ({ [d.year]: d.total_displacement })),
+      d => Object.keys(d)[0],
+      d => Object.values(d)[0],
+    );
+
+    const yearDisaggregatedPrediction = listToMap(
+      prediction.map(d => ({ [`prediction-${d.year}`]: d.total_displacement })),
+      d => Object.keys(d)[0],
+      d => Object.values(d)[0],
+    );
+
+    return {
+      month: m,
+      average: avgSafe(historicData.map(d => d.total_displacement)),
+      ...yearDisaggregatedHistoricData,
+      ...yearDisaggregatedPrediction,
+    };
+  });
+
+  const ipcData = {
+    hazard_type_display: data[0].hazard_type_display,
+    hazard_type: data[0].hazard_type,
+    iso3: data[0].country_details.iso3,
+    country: data[0].country,
+    country_details: data[0].country_details,
+    ...(ipcDataMonthly.reduce((acc, val) => {
+      acc[val.month] = val.average ?? null;
+      return acc;
+    }, {} as MonthlyValues)),
+  };
+
+  return ipcData;
+}
+
 
 interface Props {
   className?: string;
@@ -66,200 +113,230 @@ interface Props {
 
 function SeasonalRisk(props: Props) {
   const { regionId } = props;
+  const [filterValue, setFilterValue] = React.useState<FilterValue>(initialFilterValue);
 
-  const { response } = useRequest<SeasonalResponse>({
+  const { response: seasonalRiskResponse } = useRequest<SeasonalResponse>({
+    url: 'risk://api/v1/seasonal/',
     skip: isNotDefined(regionId),
     query: { region: regionId },
-    url: 'risk://api/v1/seasonal/',
   });
 
-  const [selectedMonths, setSelectedMonths] = useInputState<Record<number, boolean>>({
-    0: true,
-    1: false,
-    2: false,
-    3: false,
-    4: false,
-    5: false,
-    6: false,
-    7: false,
-    8: false,
-    9: false,
-    10: false,
-    11: false,
+  const { response: riskScoreResponse } = useRequest<ListResponse<RiskScoreData>>({
+    url: 'risk://api/v1/risk-score/',
+    skip: isNotDefined(regionId),
+    query: {
+      region: regionId,
+      limit: 500,
+    },
   });
 
-  const [
-    aggregatedRiskData,
-    hazardOptions,
-  ] : [
-    Record<string, RiskData>[],
-    StringValueOption[],
-  ] = React.useMemo(() => {
-    const hazardTitleMap = {
-      ...listToMap(response?.ipc_displacement_data, d => d.hazard_type, d => d.hazard_type_display),
-      ...listToMap(response?.idmc, d => d.hazard_type, d => d.hazard_type_display),
-      ...listToMap(response?.inform, d => d.hazard_type, d => d.hazard_type_display),
-      ...listToMap(response?.inform_seasonal, d => d.hazard_type, d => d.hazard_type_display),
-      ...listToMap(response?.raster_displacement_data, d => d.hazard_type, d => d.hazard_type_display),
-    };
-
-    const allHazardKeys = Object.keys(hazardTitleMap) as HazardTypes[];
-    const hazardKeys = allHazardKeys.filter(
-      (h) => visibleHazardTypeMap[h]
+  const filteredRiskData = React.useMemo(() => {
+    const selectedCountryMaps = listToMap(
+      filterValue.countries,
+      d => d,
+      () => true,
     );
 
-    const aggregateRiskData = (seasonalRiskData: undefined | SeasonalResponse, hazard: HazardTypes, countryIso3: string) => {
-      const displacements = seasonalRiskData?.idmc
-        .filter((risk) => risk.hazard_type === hazard)
-        .map((risk) => {
-          const monthlyDisplacement = monthKeys.map((monthKey) => risk[monthKey]);
+    const selectedHazardsMap = listToMap(
+      filterValue.hazardTypes,
+      d => d,
+      () => true,
+    );
+
+    const getSumForSelectedMonths = (monthlyValues: MonthlyValues) => (
+      filterValue.months.reduce(
+        (acc, monthKey) => acc + (monthlyValues[monthKey] ?? 0),
+        0,
+      )
+    );
+
+    const getRiskValueList = (riskList: (MonthlyValues & {
+      hazard_type: HazardType,
+      hazard_type_display: string,
+      country_details: CountryDetail,
+    })[]) => {
+      const countryGroupedRiskList = listToGroupList(
+        riskList,
+        d => d.country_details.iso3.toUpperCase()
+      ) ?? {};
+      const countryRiskList = Object.keys(countryGroupedRiskList).map(
+        (iso3) => {
+          if (!selectedCountryMaps[iso3]) {
+            return undefined;
+          }
+
+          const riskList = unique(
+            countryGroupedRiskList[iso3]
+              .filter(({ hazard_type }) => selectedHazardsMap[hazard_type])
+              .map((riskData) => ({
+                hazard_type: riskData.hazard_type,
+                hazard_type_display: riskData.hazard_type_display,
+                value: getSumForSelectedMonths(riskData),
+              })),
+            (r) => r.hazard_type,
+          );
+
+          const riskValueList = riskList.map((rv) => rv.value);
+          const countryName = countryGroupedRiskList[iso3][0].country_details.name;
 
           return {
-            annualAverage: risk.annual_average_displacement,
-            monthly: monthlyDisplacement,
+            iso3,
+            value: sum(riskValueList),
+            byHazard: riskList,
+            countryName,
           };
-        }) ?? [];
+        },
+      ).filter(isDefined);
 
-      const exposures = seasonalRiskData?.raster_displacement_data
-        .filter((risk) => risk.hazard_type === hazard)
-        .map((risk) => {
-          const monthlyDisplacement = monthKeys.map((monthKey) => risk[monthKey]);
-
-          return {
-            annualAverage: risk.annual_average_displacement,
-            monthly: monthlyDisplacement,
-          };
-        }) ?? [];
-
-      if (hazard === 'FI') {
-        const maxYear = 2021;
-
-        const foodInsecurityRaw = (seasonalRiskData?.ipc_displacement_data.filter(
-          d => (isDefined(d.total_displacement) && d.year === maxYear)
-        ) ?? []).sort((a, b) => {
-          return (a.year - b.year)
-            || (a.month - b.month)
-            || ((new Date(b.analysis_date ?? 0).getTime()) - (new Date(a.analysis_date ?? 0).getTime()))
-            || ((estimationPriorityMap[a.estimation_type] ?? 0) - (estimationPriorityMap[b.estimation_type] ?? 0));
-        });
-
-        const groupedMap = mapToMap(
-          listToGroupList(foodInsecurityRaw, d => d.month),
-          d => d,
-          (data) => unique(data, d => d.year)
-        );
-
-        const foodInsecurity = Object.values(groupedMap).map(d => d?.[0]).filter(isDefined);
-
-        const months = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12] as const;
-        exposures.push({
-          annualAverage: avg(foodInsecurity, d => d.total_displacement) ?? null,
-          monthly: months.map(m => avgSafe(
-            groupedMap[m]?.map(d => d.total_displacement)
-          ) ?? null),
-        });
-      }
-
-      const informRiskScoreAnnual = seasonalRiskData?.inform
-        .filter((risk) => risk.hazard_type === hazard)
-        .map((risk) => risk.risk_score)[0] ?? null;
-
-      const informRiskScores = seasonalRiskData?.inform_seasonal
-        .filter((risk) => risk.hazard_type === hazard)
-        .map((risk) => {
-          const monthlyRiskScore = monthKeys.map((monthKey) => risk[monthKey]);
-
-          return {
-            annualAverage: informRiskScoreAnnual,
-            monthly: monthlyRiskScore,
-          };
-        }) ?? [];
-
-      return {
-        countryIso3,
-        hazardType: hazard,
-        hazardTypeDisplay: hazardTitleMap[hazard] ?? '',
-        // TODO: sum all the values if multiple
-        displacement: displacements[0],
-        informRiskScore: informRiskScores[0],
-        exposure: exposures[0],
-      };
+      return countryRiskList;
     };
 
-    const riskData = hazardKeys.map((hazard) => {
-      function group<T extends { country_details: CountryDetail}>(list: T[] | undefined) {
-        if (!list) {
-          return {};
-        }
+    if (filterValue.riskMetric === 'displacement') {
+      return getRiskValueList(seasonalRiskResponse?.idmc ?? []);
+    }
 
-        return listToGroupList(
-          list,
-          d => d.country_details.iso3,
-          d => d,
-        );
-      }
+    if (filterValue.riskMetric === 'exposure') {
+      const countryGroupedIpcData = listToGroupList(
+        seasonalRiskResponse?.ipc_displacement_data,
+        (d) => d.country_details.iso3,
+      ) ?? [];
 
-      const gar_return_period_data = group(response?.gar_return_period_data);
-      const hazard_info = group(response?.hazard_info);
-      const idmc = group(response?.idmc);
-      const idmc_return_period = group(response?.idmc_return_period);
-      const inform = group(response?.inform);
-      const inform_seasonal = group(response?.inform_seasonal);
-      const ipc_displacement_data = group(response?.ipc_displacement_data);
-      const raster_displacement_data = group(response?.raster_displacement_data);
+      const combinedData = [
+        ...(Object.values(countryGroupedIpcData).map(processIpcData)),
+        ...(seasonalRiskResponse?.raster_displacement_data ?? []),
+      ];
 
-      const countryList = unique([
-        ...Object.keys(gar_return_period_data),
-        ...Object.keys(hazard_info),
-        ...Object.keys(idmc),
-        ...Object.keys(idmc_return_period),
-        ...Object.keys(inform),
-        ...Object.keys(inform_seasonal),
-        ...Object.keys(ipc_displacement_data),
-        ...Object.keys(raster_displacement_data),
-      ]);
+      return getRiskValueList(combinedData);
+    }
 
-      const countryGroupedRiskData = listToMap(
-        countryList.map((c) => {
-          const countryResponse: SeasonalResponse = {
-            gar_return_period_data: gar_return_period_data[c] ?? [],
-            hazard_info: hazard_info[c] ?? [],
-            idmc: idmc[c] ?? [],
-            idmc_return_period: idmc_return_period[c] ?? [],
-            inform: inform[c] ?? [],
-            inform_seasonal: inform_seasonal[c] ?? [],
-            ipc_displacement_data: ipc_displacement_data[c] ?? [],
-            raster_displacement_data: raster_displacement_data[c] ?? [],
-          };
+    if (filterValue.riskMetric === 'informRiskScore') {
+      const riskValueList = getRiskValueList(riskScoreResponse?.results ?? []);
 
-          return { country: c, data: aggregateRiskData(countryResponse, hazard, c) };
-        }),
-        d => d.country,
-        d => d.data,
+      const riskFeatureMap = listToMap(
+        unique(riskScoreResponse?.results ?? [], (rs) => rs.country_details.iso3),
+        (rs) => rs.country_details.iso3.toUpperCase(),
+        (rs) => ({ lcc: rs.lcc, population: Math.sqrt(rs.population_in_thousands) }),
       );
 
-      return countryGroupedRiskData;
-    });
+      const riskValueListWithFilter = riskValueList.map((rv) => {
+        let valueWithFilter = rv.value;
+        let byHazardWithFilter = rv.byHazard;
 
-    return [
-      riskData.sort((a, b) => (hazardOrderMap[a[0]?.hazardType] - hazardOrderMap[b[0]?.hazardType])),
-      hazardKeys.map((h) => ({
-        label: hazardTitleMap[h] ?? '',
-        value: h,
-      })),
-    ];
-  }, [response]);
+        if (filterValue.include_coping_capacity) {
+          const lcc = riskFeatureMap[rv.iso3].lcc;
+          valueWithFilter = valueWithFilter * lcc;
+          byHazardWithFilter = byHazardWithFilter.map((r) => ({
+            ...r,
+            value: r.value * lcc,
+          }));
+        }
 
+        if (filterValue.riskType === 'normalized') {
+          const population = riskFeatureMap[rv.iso3].population;
+          valueWithFilter = valueWithFilter / population;
+          byHazardWithFilter = byHazardWithFilter.map((r) => ({
+            ...r,
+            value: r.value / population,
+          }));
+        }
+
+        return {
+          ...rv,
+          value: valueWithFilter,
+          byHazard: byHazardWithFilter,
+        };
+      });
+
+      return riskValueListWithFilter;
+    }
+
+    return [];
+  }, [filterValue, seasonalRiskResponse, riskScoreResponse]);
 
   return (
     <>
-      <RiskMap
-        riskData={aggregatedRiskData}
-        selectedMonths={selectedMonths}
-        setSelectedMonths={setSelectedMonths}
-        hazardOptions={hazardOptions}
-        regionId={regionId}
-      />
+      <Container
+        visibleOverflow
+        heading="Risk map"
+        description={(
+          <>
+            <p>
+              The map and horizontal bar charts below visualise risk information for every country for every month. Using the filters, you can choose which countries, hazards and risks to see. The map and bar charts will update dynamically depending on how you've filtered the data. The horizontal bar charts display the level of risk per country and list the countries in descending order.
+            </p>
+            <p>
+              When viewing INFORM Risk Scores, People at Risk of Displacement and Population Exposure, you can display the information for each hazard individually or in combination. By adjusting the "Months" filter, you can explore the data for one month, for multiple months or for an entire year. When viewing the INFORM Risk Scores, you can choose to view the data with a country's coping capacity factored into the analysis or without it; using the toggle, you can also view the results in Absolute terms or Normalised in relation to each country's population. When normalised, the risk score is divided by the square root of the country's population in thousands. To remove a Country, Hazard or Month from the analysis, click the "x" next to items you want to remove and the map and bar charts will update automatically.
+            </p>
+          </>
+        )}
+        actions={<WikiLink pathName='user_guide/risk_module#seasonal-risk'/>}
+        contentClassName={styles.seasonalRiskContent}
+      >
+        <Filters
+          value={filterValue}
+          onChange={setFilterValue}
+          regionId={regionId}
+        />
+        <div className={styles.mapContainer}>
+          <RiskMap
+            className={styles.map}
+            riskData={filteredRiskData}
+            regionId={regionId}
+          />
+          <CountryRiskBarChart
+            className={styles.barChart}
+            riskData={filteredRiskData}
+          />
+        </div>
+        <div className={styles.legend}>
+          <div className={styles.riskLegend}>
+            <div className={styles.legendLabel}>
+              Severity
+            </div>
+            <div className={styles.separator} />
+            <div className={styles.legendContent}>
+              <div
+                className={styles.gradient}
+                style={{
+                  background: `linear-gradient(90deg, ${RISK_LOW_COLOR}, ${RISK_HIGH_COLOR})`
+                }}
+              />
+              <div className={styles.labelList}>
+                <div className={styles.label}>
+                  Low
+                </div>
+                <div className={styles.label}>
+                  High
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className={styles.separator} />
+          <div className={styles.hazardLegend}>
+            <div className={styles.legendLabel}>
+              Types of Hazards
+            </div>
+            <div className={styles.separator} />
+            <div className={styles.legendContent}>
+              {hazardTypeOptions.map((hazardType) => (
+                <div
+                  className={styles.legendItem}
+                  key={hazardType.value}
+                >
+                  <div
+                    className={styles.color}
+                    style={{
+                      backgroundColor: hazardTypeColorMap[hazardType.value],
+                    }}
+                  />
+                  <div className={styles.label}>
+                    {hazardType.label}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </Container>
       <HistoricalChart
         regionId={regionId}
       />

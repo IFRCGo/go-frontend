@@ -1,0 +1,11 @@
+@import "~styles/settings/variables";
+
+.legend-item {
+  display: flex;
+  gap: $spacing;
+
+  .symbol {
+    width: 1rem;
+    height: 1rem;
+  }
+}

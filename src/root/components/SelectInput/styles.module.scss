@@ -1,3 +1,5 @@
+@import '~styles/settings/_variables.scss';
+
 .select-input {
   &.disabled {
     :global {
@@ -13,6 +15,7 @@
     .go__control {
       border: 0;
       box-shadow: unset;
+      padding: 0;
 
       &.go__control--is-focused {
         border: 0;
@@ -22,6 +25,10 @@
           border: 0;
           box-shadow: unset;
         }
+      }
+
+      .go__value-container {
+        padding: 0;
       }
     }
   }

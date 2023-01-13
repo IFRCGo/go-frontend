@@ -15,6 +15,7 @@
   .actions {
     display: flex;
     align-items: flex-end;
+    flex-grow: 0;
     padding: $spacing*0.5;
   }
 }

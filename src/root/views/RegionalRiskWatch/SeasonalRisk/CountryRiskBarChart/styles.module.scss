@@ -1,0 +1,47 @@
+@import '~styles/settings/variables';
+
+.country-risk-bar-chart {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing * 0.5;
+
+  .heading {
+    padding: 0;
+  }
+
+  .content {
+    flex-grow: 1;
+    scrollbar-gutter: stable;
+    overflow-y: hidden;
+    display: flex;
+    flex-direction: column;
+    gap: $spacing * 0.75;
+
+    &:hover {
+      overflow-y: auto;
+    }
+
+    .country-name {
+      font-size: $font-size-sm;
+      font-weight: $base-font-medium;
+    }
+
+    .bar-container {
+      height: 0.5rem;
+      display: flex;
+      background-color: rgba(0, 0, 0, .1);
+
+      .hazard-risk-bar {
+        height: 100%;
+      }
+    }
+
+    .empty-message {
+      color: $color-text-message;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 4rem;
+    }
+  }
+}

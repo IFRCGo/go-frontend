@@ -1,12 +1,16 @@
 import React from 'react';
 import {
   ArraySchema,
+  defaultEmptyArrayType,
+  defaultUndefinedType,
   emailCondition,
+  greaterThanOrEqualToCondition,
   lessThanOrEqualToCondition,
   ObjectSchema,
   PartialForm,
   requiredCondition,
 } from '@togglecorp/toggle-form';
+import { isDefined } from '@togglecorp/fujs';
 
 import {
   ListResponse,
@@ -52,8 +56,25 @@ export type IndicatorSchemaFields = ReturnType<IndicatorSchema['fields']>;
 export type IndicatorsSchema = ArraySchema<PartialForm<IndicatorType>>;
 export type IndicatorsSchemaMember = ReturnType<IndicatorsSchema['member']>;
 
+export type RiskSecurityType = NonNullable<NonNullable<DrefFinalReportFields['risk_security']>>[number];
+export type RiskSecuritySchema = ObjectSchema<
+  PartialForm<RiskSecurityType>,
+  PartialForm<DrefFinalReportFields>
+>;
+export type RiskSecuritySchemaFields = ReturnType<RiskSecuritySchema['fields']>;
+export type RiskSecuritiesSchema = ArraySchema<
+  PartialForm<RiskSecurityType>,
+  PartialForm<DrefFinalReportFields>
+>;
+export type RiskSecuritiesSchemaMember = ReturnType<RiskSecuritiesSchema['member']>;
+
 
 export const MaxIntLimit = 2147483647;
+export function lessThanEqualToTwoImagesCondition(value: any) {
+  return isDefined(value) && Array.isArray(value) && value.length > 2
+    ? 'Only two images are allowed'
+    : undefined;
+}
 
 export const schema: FormSchema = {
   fields: (value): FormSchemaFields => ({
@@ -78,12 +99,11 @@ export const schema: FormSchema = {
     major_coordination_mechanism: [],
     people_assisted: [],
     selection_criteria: [],
-    entity_affected: [],
     women: [positiveIntegerCondition],
     men: [positiveIntegerCondition],
     girls: [positiveIntegerCondition],
     boys: [positiveIntegerCondition],
-    disability_people_per: [positiveIntegerCondition],
+    disability_people_per: [greaterThanOrEqualToCondition(0), lessThanOrEqualToCondition(100)],
     people_per_urban: [positiveIntegerCondition],
     people_per_local: [positiveIntegerCondition],
     displaced_people: [positiveIntegerCondition],
@@ -109,8 +129,7 @@ export const schema: FormSchema = {
     media_contact_email: [emailCondition],
     media_contact_phone_number: [],
     dref: [],
-    photos: [],
-    budget_file: [],
+    images_file: [defaultEmptyArrayType, lessThanEqualToTwoImagesCondition],
     event_scope: [],
     change_in_operational_strategy: [],
     change_in_operational_strategy_text: [],
@@ -119,6 +138,34 @@ export const schema: FormSchema = {
     event_map: [],
     country: [requiredCondition],
     district: [requiredCondition],
+    photos_file: [lessThanEqualToTwoImagesCondition],
+    is_there_major_coordination_mechanism: [],
+    risk_security_concern: [],
+    total_targeted_population: [],
+    modified_at: [],
+    people_in_need: [],
+    event_date: [],
+    event_text: [],
+    event_description: [],
+    ns_respond_date: [],
+    has_national_society_conducted: [],
+    national_society_conducted_description: [],
+    num_assisted: [],
+    financial_report: [],
+    financial_report_description: [],
+
+    cover_image_file: {
+      fields: () => ({
+        id: [defaultUndefinedType],
+        caption: [defaultUndefinedType],
+      }),
+    },
+    event_map_file: {
+      fields: () => ({
+        id: [defaultUndefinedType],
+        caption: [defaultUndefinedType],
+      }),
+    },
 
     needs_identified: {
       keySelector: (n) => n.clientId as string,
@@ -138,6 +185,7 @@ export const schema: FormSchema = {
           title: [requiredCondition],
           budget: [requiredCondition, positiveIntegerCondition, lessThanOrEqualToCondition(MaxIntLimit)],
           person_targeted: [requiredCondition, positiveIntegerCondition, lessThanOrEqualToCondition(MaxIntLimit)],
+          person_assisted: [requiredCondition, positiveIntegerCondition,lessThanOrEqualToCondition(MaxIntLimit)],
           indicators: {
             keySelector: (n) => n.clientId as string,
             member: (): IndicatorsSchemaMember => ({
@@ -154,6 +202,17 @@ export const schema: FormSchema = {
           lessons_learnt: [],
           challenges: [],
           narrative_description_of_achievements: [],
+          description: [],
+        }),
+      }),
+    },
+    risk_security: {
+      keySelector: (r) => r.clientId as string,
+      member: (): RiskSecuritiesSchemaMember => ({
+        fields: (): RiskSecuritySchemaFields => ({
+          clientId: [],
+          risk: [requiredCondition],
+          mitigation: [requiredCondition],
         }),
       }),
     },

@@ -1,15 +1,118 @@
 import { listToMap } from '@togglecorp/fujs';
 import { HazardTypes } from '#types';
+import {
+  COLOR_RED,
+  COLOR_ORANGE,
+  COLOR_YELLOW,
+  COLOR_LIGHT_YELLOW,
+  COLOR_DARK_RED,
+} from '#utils/map';
+import {
+  COLOR_FLOOD,
+  COLOR_CYCLONE,
+  COLOR_DROUGHT,
+  COLOR_FOOD_INSECURITY,
+  COLOR_EARTHQUAKE,
+} from '#utils/risk';
 
-export const hazardTypeOptions = [
-  { label: 'Cyclone', value: 'CY' },
+export type RiskType = 'absolute' | 'normalized';
+export type HazardType = 'TC' | 'FL' | 'DR' | 'FI' | 'EQ';
+
+export function labelSelector<D extends { label: React.ReactNode }>(d: D) {
+  return d.label;
+}
+
+export function valueSelector<D extends { value: string }>(d: D) {
+  return d.value;
+}
+
+export const informHazards: HazardType[] = [
+  'FL',
+  'TC',
+  'DR',
+];
+
+export const exposureHazards: HazardType[] = [
+  'FI',
+  'TC',
+  'FL',
+];
+
+export const displacementHazards: HazardType[] = [
+  'TC',
+  'FL',
+];
+
+export const hazardTypeToNameMap: Record<HazardType, string> = {
+  FL: 'Flood',
+  TC: 'Cyclone',
+  DR: 'Drought',
+  FI: 'Food Insecurity',
+  EQ: 'Earthquake',
+};
+
+export const riskTypeOptions: {
+  label: string;
+  value: RiskType;
+}[] = [
+    { label: 'Absolute', value: 'absolute' },
+    { label: 'Normalised', value: 'normalized' },
+];
+
+
+export const monthKeys = [
+  'january',
+  'february',
+  'march',
+  'april',
+  'may',
+  'june',
+  'july',
+  'august',
+  'september',
+  'october',
+  'november',
+  'december',
+] as const;
+
+export type MonthKey = (typeof monthKeys)[number];
+
+export const monthOptions: {
+  value: MonthKey;
+  label: string;
+}[] = [
+  { label: 'January', value: 'january' },
+  { label: 'February', value: 'february' },
+  { label: 'March', value: 'march' },
+  { label: 'April', value: 'april' },
+  { label: 'May', value: 'may' },
+  { label: 'June', value: 'june' },
+  { label: 'July', value: 'july' },
+  { label: 'August', value: 'august' },
+  { label: 'September', value: 'september' },
+  { label: 'October', value: 'october' },
+  { label: 'November', value: 'november' },
+  { label: 'December', value: 'december' },
+];
+
+export const hazardTypeOptions: {
+  value: 'TC' | 'FL' | 'FI' | 'DR';
+  label: string;
+}[] = [
+  { label: 'Cyclone', value: 'TC' },
   { label: 'Flood', value: 'FL' },
   { label: 'Food Insecurity', value: 'FI' },
-  { label: 'Drought', value: 'DG' },
-] as const;
+  { label: 'Drought', value: 'DR' },
+];
 
 export type HazardValueType = (typeof hazardTypeOptions)[number]['value'];
 export type Writable<T> = { -readonly [P in keyof T]: T[P] };
+
+export const hazardTypeToLabelMap = listToMap(
+  hazardTypeOptions,
+  h => h.value,
+  h => h.label,
+);
 
 export interface RiskData {
   countryIso3: string;
@@ -29,29 +132,37 @@ export interface RiskData {
   };
 }
 
-export const riskMetricOptions = [
+export const riskMetricOptions: {
+  value: 'informRiskScore' | 'exposure' | 'displacement';
+  label: string;
+}[] = [
   { label: 'INFORM Risk Score', value: 'informRiskScore' },
   { label: 'People Exposed', value: 'exposure' },
   { label: 'People at Risk of Displacement', value: 'displacement' },
-] as const;
+];
 
 export const riskMetricMap = listToMap(
-  riskMetricOptions as Writable<typeof riskMetricOptions>,
+  riskMetricOptions,
   d => d.value,
   d => d.label,
 );
 
-export interface IDMCData {
-  confidence_type: 'low' | 'medium' | 'high' | string;
-  confidence_type_display: string;
-  country: number;
-  country_details: CountryDetail;
-  hazard_type: HazardTypes;
-  hazard_type_display: string;
+export interface CountryDetail {
   id: number;
-  iso3: string
-  note: string | null;
-  annual_average_displacement: number | null;
+  iso: string;
+  iso3: string;
+  name: string;
+  region: number;
+  region_details : {
+    id: number;
+    name: number;
+    name_display: string;
+  }
+}
+
+type DisplacmentHazardType = Extract<HazardType, 'FL' | 'TC'>;
+
+export interface MonthlyValues {
   january: number | null;
   february: number | null;
   march: number | null;
@@ -64,6 +175,19 @@ export interface IDMCData {
   october: number | null;
   november: number | null;
   december: number | null;
+}
+
+export interface IDMCData extends MonthlyValues {
+  confidence_type: 'low' | 'medium' | 'high' | string;
+  confidence_type_display: string;
+  country: number;
+  country_details: CountryDetail;
+  hazard_type: DisplacmentHazardType;
+  hazard_type_display: string;
+  id: number;
+  iso3: string
+  note: string | null;
+  annual_average_displacement: number | null;
 }
 
 export interface IPCData {
@@ -79,136 +203,192 @@ export interface IPCData {
   estimation_type: 'current' | 'first_projection' | 'second_projection';
 }
 
-export interface INFORMData {
-  id: number;
+type InformHazardType = Extract<HazardType, 'DR' | 'FL' | 'TC'>;
+
+export interface InformSeasonalData extends MonthlyValues {
   country: number;
   country_details: CountryDetail;
-  hazard_type: HazardTypes;
+  hazard_type: InformHazardType;
   hazard_type_display: string;
+  id: number;
+}
+
+export interface InformData {
+  country: number;
+  country_details: CountryDetail;
+  hazard_type: InformHazardType;
+  hazard_type_display: string;
+  id: number;
   risk_score: number;
 }
 
-export interface CountryDetail {
+export interface RiskScoreData extends MonthlyValues {
   id: number;
-  iso: string;
-  iso3: string;
-  name: string;
+  hazard_type_display: string;
+  country_details: CountryDetail;
+  hazard_type: InformHazardType;
+  yearly_sum: number | null;
+  lcc: number;
+  population_in_thousands: number;
+  country: number;
 }
 
-export interface INFORMSeasonalData {
-  april: number | null;
-  august: number | null;
+
+
+type ExposureHazardType = Extract<HazardType, 'FL' | 'TC' | 'FI'>
+export interface ExposureData extends MonthlyValues {
+  id: number;
+  hazard_type_display: string;
+  country: number;
+  country_details: CountryDetail;
+  iso3: string;
+  hazard_type: ExposureHazardType;
+  note: string | null;
+  annual_average_displacement: number | null;
+}
+
+// CD: Cyclonic Wind
+// EQ: Earthquake
+// SS: Storm Surge
+// TS: Tsunami
+// FL: Flood
+type GARHazard = 'CD' | 'EQ' | 'SS' | 'TS' | 'FL';
+
+interface GARLossData {
+  absolute_loss_in_million: number;
+  capital_stock_percentage: number;
   country: number;
   country_details: {
     id: number;
-    name: string;
-    iso3: string;
     iso: string;
+    iso3: string;
+    name: string;
+    region: number;
+    region_details : {
+      id: number;
+      name: number;
+      name_display: string;
+    }
   };
-  december: number | null;
-  february: number | null;
-  hazard_type: HazardTypes;
+  gfcf: number;
+  gross_saving: number;
+  hazard_type: GARHazard;
   hazard_type_display: string;
   id: number;
-  january: number | null;
-  july: number | null;
-  june: number | null;
-  march: number | null;
-  may: number | null;
-  november: number | null;
-  october: number | null;
-  september: number | null;
+  social_exp: number;
+  total_revenue: number;
 }
 
-export type ReturnPeriodHazardTypes = 'SS' | 'WD' | 'FL' | 'CD';
-
-export interface ReturnPeriodData {
-  country: number;
-  country_details: CountryDetail ;
-  hazard_type: ReturnPeriodHazardTypes;
-  hazard_type_display: string;
-  id: number;
+interface LossValue {
+  economic_loss?: number;
+  population_displacement?: number;
 }
 
-export interface IDMCReturnPeriodData extends ReturnPeriodData {
-  annual_average_displacement: number
-  return_period_20_years: number | null;
-  return_period_50_years: number | null;
-  return_period_100_years: number | null;
-  return_period_250_years: number | null;
-  return_period_500_years: number | null;
-}
+type ReturnPeriodHazard = 'CD' | 'EQ' | 'SS' | 'TS' | 'FL';
 
-export interface GARReturnPeriodData extends ReturnPeriodData {
-  economic_loss_return_period_20_years: number | null;
-  economic_loss_return_period_50_years: number | null;
-  economic_loss_return_period_100_years: number | null;
-  economic_loss_return_period_250_years: number | null;
-  economic_loss_return_period_500_years: number | null;
-  population_exposure_return_period_25_years: number | null;
-  population_exposure_return_period_50_years: number | null;
-  population_exposure_return_period_100_years: number | null;
-  population_exposure_return_period_200_years: number | null;
-  population_exposure_return_period_500_years: number | null;
-  population_exposure_return_period_1000_years: number | null;
-}
-
-export interface ExposureData {
-  id: number;
-  hazard_type_display: string;
+interface ReturnPeriodData {
   country: number;
   country_details: CountryDetail;
-  iso3: string;
-  hazard_type: HazardTypes;
-  note: string | null;
-  annual_average_displacement: number | null;
-  january: number | null;
-  february: number | null;
-  march: number | null;
-  april: number | null;
-  may: number | null;
-  june: number | null;
-  july: number | null;
-  august: number | null;
-  september: number | null;
-  october: number | null;
-  november: number | null;
-  december: number | null;
-}
-
-interface THReport {
-  id: number;
-  country: number;
-  country_details: CountryDetail;
-  hazard_level: 'low' | 'medium' | 'high';
-  hazard_level_display: string;
-  hazard_type: HazardTypes;
+  fifty_years: LossValue;
+  five_hundred_years: LossValue;
+  hazard_type: ReturnPeriodHazard;
   hazard_type_display: string;
-  information: string;
+  hundred_years: LossValue;
+  id: number;
+  one_thousand_five_hundred_years: LossValue;
+  one_thousand_years: LossValue;
+  ten_years: LossValue;
+  twenty_five_years: LossValue;
+  twenty_years: LossValue;
+  two_hundred_fifty_years: LossValue;
 }
 
 export interface SeasonalResponse {
-  gar_return_period_data: GARReturnPeriodData[];
-  hazard_info: THReport[];
+  gar_loss: GARLossData[];
   idmc: IDMCData[];
-  idmc_return_period: IDMCReturnPeriodData[];
-  inform: INFORMData[];
-  inform_seasonal: INFORMSeasonalData[];
+  inform: InformData;
+  inform_seasonal: InformSeasonalData[];
   ipc_displacement_data: IPCData[];
   raster_displacement_data: ExposureData[];
+  return_period_data: ReturnPeriodData;
 }
 
-export const monthKeys = [
-  'january',
-  'february',
-  'march',
-  'april',
-  'may',
-  'june',
-  'july',
-  'august',
-  'september',
-  'october',
-  'november',
-  'december',
-] as const;
+export type RiskMetricType = (typeof riskMetricOptions)[number]['value'];
+
+export const RISK_LOW_COLOR = '#c7d3e0';
+export const RISK_HIGH_COLOR = '#f5333f';
+
+export const INFORM_RISK_VERY_LOW = 0;
+export const INFORM_RISK_LOW = 2;
+export const INFORM_RISK_MEDIUM = 3.5;
+export const INFORM_RISK_HIGH = 5;
+export const INFORM_RISK_VERY_HIGH = 6.5;
+export const INFORM_RISK_MAXIMUM = 10;
+
+export const COLOR_BLUE_GRADIENT_1 = '#e0e3e7';
+export const COLOR_BLUE_GRADIENT_2 = '#ccd2d9';
+export const COLOR_BLUE_GRADIENT_3 = '#aeb7c2';
+export const COLOR_BLUE_GRADIENT_4 = '#99a5b3';
+export const COLOR_BLUE_GRADIENT_5 = '#7d8b9d';
+export const COLOR_BLUE_GRADIENT_6 = '#67788d';
+export const COLOR_BLUE_GRADIENT_7 = '#4d617a';
+export const COLOR_BLUE_GRADIENT_8 = '#344b67';
+export const COLOR_BLUE_GRADIENT_9 = '#011e41';
+
+export const displacementColors = [
+  COLOR_BLUE_GRADIENT_1,
+  COLOR_BLUE_GRADIENT_2,
+  COLOR_BLUE_GRADIENT_3,
+  COLOR_BLUE_GRADIENT_4,
+  COLOR_BLUE_GRADIENT_5,
+  COLOR_BLUE_GRADIENT_6,
+  COLOR_BLUE_GRADIENT_7,
+  COLOR_BLUE_GRADIENT_8,
+  COLOR_BLUE_GRADIENT_9,
+];
+
+export const exposureColors = [
+  COLOR_BLUE_GRADIENT_1,
+  COLOR_BLUE_GRADIENT_2,
+  COLOR_BLUE_GRADIENT_3,
+  COLOR_BLUE_GRADIENT_4,
+  COLOR_BLUE_GRADIENT_5,
+  COLOR_BLUE_GRADIENT_6,
+  COLOR_BLUE_GRADIENT_7,
+  COLOR_BLUE_GRADIENT_8,
+  COLOR_BLUE_GRADIENT_9,
+];
+
+export const informLegendData = [
+  {
+    color: COLOR_LIGHT_YELLOW,
+    label: `Very low (${INFORM_RISK_VERY_LOW} - ${INFORM_RISK_LOW-0.1})`,
+  },
+  {
+    color: COLOR_YELLOW,
+    label: `Low (${INFORM_RISK_LOW} - ${INFORM_RISK_MEDIUM-0.1})`,
+  },
+  {
+    color: COLOR_ORANGE,
+    label: `Medium (${INFORM_RISK_MEDIUM} - ${INFORM_RISK_HIGH-0.1})`,
+  },
+  {
+    color: COLOR_RED,
+    label: `High (${INFORM_RISK_HIGH} - ${INFORM_RISK_VERY_HIGH})`,
+  },
+  {
+    color: COLOR_DARK_RED,
+    label: `Very high (${INFORM_RISK_VERY_HIGH} - ${INFORM_RISK_MAXIMUM})`,
+  },
+];
+
+export const MAX_PRETTY_BREAKS = 5;
+
+export const hazardTypeColorMap: Record<HazardType, string> = {
+  FL: COLOR_FLOOD,
+  TC: COLOR_CYCLONE,
+  DR: COLOR_DROUGHT,
+  FI: COLOR_FOOD_INSECURITY,
+  EQ: COLOR_EARTHQUAKE,
+};
+

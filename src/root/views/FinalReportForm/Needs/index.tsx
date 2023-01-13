@@ -44,6 +44,7 @@ interface Props {
   value: Value;
   yesNoOptions: BooleanValueOption[];
   needOptions: StringValueOption[];
+  nsActionOptions: StringValueOption[];
 }
 
 function Needs(props: Props) {
@@ -60,6 +61,7 @@ function Needs(props: Props) {
   const error = useMemo(() => getErrorObject(formError), [formError]);
 
   const [need, setNeed] = useState<string | undefined>();
+
   const {
     setValue: onNeedChange,
     removeValue: onNeedRemove,
@@ -69,9 +71,10 @@ function Needs(props: Props) {
   );
 
   type Needs = typeof value.needs_identified;
-  const handleNeedAddButtonClick = useCallback(() => {
+  const handleNeedAddButtonClick = useCallback((title?: string) => {
     const newNeedItem: PartialForm<Need> = {
       clientId: randomString(),
+      title,
     };
 
     onValueChange(
@@ -91,40 +94,40 @@ function Needs(props: Props) {
     )
   ), [value.needs_identified]);
 
-  const filteredNeedOptions = useMemo(() => (
+  const filteredNeedOptions = React.useMemo(() => (
     needsIdentifiedMap ? needOptions.filter(n => !needsIdentifiedMap[n.value]) : []
   ), [needsIdentifiedMap, needOptions]);
 
-  const wantToReport = value.want_to_report;
+  const isThereCoordinationMechanism = value.is_there_major_coordination_mechanism;
+  const hasNationalSocietyConducted = !!value.has_national_society_conducted;
 
   return (
     <>
       <Container
-        heading={strings.finalReportFederationWideAndPartners}
+        heading={strings.finalReportNationalSocietiesActions}
+        description={strings.drefFormNationalSocietiesActionsDescription}
+        className={styles.nationalSocietyActions}
+        visibleOverflow
       >
-        <InputSection
-          title={strings.finalReportWantToReport}
-        >
+
+        <InputSection title={strings.finalReportHaveNationalSocietyConducted}>
           <RadioInput
-            name={"want_to_report" as const}
+            name={'has_national_society_conducted' as const}
             options={yesNoOptions}
             keySelector={booleanOptionKeySelector}
             labelSelector={optionLabelSelector}
-            value={value.want_to_report}
             onChange={onValueChange}
-            error={error?.want_to_report}
+            value={value?.has_national_society_conducted}
+            error={error?.has_national_society_conducted}
           />
         </InputSection>
-        {wantToReport &&
-          <InputSection
-            title={strings.finalReportAdditionalNationalSocietyAction}
-          >
+        {hasNationalSocietyConducted &&
+          <InputSection title={strings.finalReportDescriptionOfAdditionalActivities}>
             <TextArea
-              label={strings.cmpActionDescriptionLabel}
-              name="additional_national_society_actions"
+              name="national_society_conducted_description"
+              value={value.national_society_conducted_description}
               onChange={onValueChange}
-              value={value.additional_national_society_actions}
-              error={error?.additional_national_society_actions}
+              error={error?.national_society_conducted_description}
             />
           </InputSection>
         }
@@ -134,6 +137,7 @@ function Needs(props: Props) {
       >
         <InputSection
           title={strings.finalReportIfrc}
+          description={strings.drefFormIfrcDescription}
         >
           <TextArea
             label={strings.cmpActionDescriptionLabel}
@@ -145,6 +149,7 @@ function Needs(props: Props) {
         </InputSection>
         <InputSection
           title={strings.finalReportIcrc}
+          description={strings.drefFormIcrcDescription}
         >
           <TextArea
             label={strings.cmpActionDescriptionLabel}
@@ -156,6 +161,7 @@ function Needs(props: Props) {
         </InputSection>
         <InputSection
           title={strings.finalReportPartnerNationalSociety}
+          description={strings.drefFormPartnerNationalSocietyDescription}
         >
           <TextArea
             name="partner_national_society"
@@ -211,14 +217,30 @@ function Needs(props: Props) {
           oneColumn
           multiRow
         >
-          <TextArea
-            label={strings.cmpActionDescriptionLabel}
-            name="major_coordination_mechanism"
+          <RadioInput
+            name={"is_there_major_coordination_mechanism" as const}
+            options={yesNoOptions}
+            keySelector={booleanOptionKeySelector}
+            labelSelector={optionLabelSelector}
+            value={value.is_there_major_coordination_mechanism}
             onChange={onValueChange}
-            value={value.major_coordination_mechanism}
-            error={error?.major_coordination_mechanism}
+            error={error?.is_there_major_coordination_mechanism}
           />
         </InputSection>
+
+        {isThereCoordinationMechanism &&
+          <InputSection
+            description={strings.finalReportCoordinationMechanismDescription}
+          >
+            <TextArea
+              label={strings.drefFormDescription}
+              name="major_coordination_mechanism"
+              onChange={onValueChange}
+              value={value.major_coordination_mechanism}
+              error={error?.major_coordination_mechanism}
+            />
+          </InputSection>
+        }
       </Container>
       <Container
         heading={strings.finalReportNeedsIdentified}

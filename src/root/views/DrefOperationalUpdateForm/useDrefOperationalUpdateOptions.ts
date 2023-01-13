@@ -112,7 +112,6 @@ export type IndicatorsSchema = ArraySchema<
 >;
 export type IndicatorsSchemaMember = ReturnType<IndicatorsSchema['member']>;
 
-
 export type RiskSecurityType = NonNullable<NonNullable<DrefOperationalUpdateFields['risk_security']>>[number];
 export type RiskSecuritySchema = ObjectSchema<
   PartialForm<RiskSecurityType>,

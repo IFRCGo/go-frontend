@@ -14,7 +14,7 @@ import {
 import { DrefFinalReportApiFields } from '#views/FinalReportForm/common';
 import useAlert from '#hooks/useAlert';
 import Container from '#components/Container';
-import FinalReportPdfDocument from '#components/FinalReportExport/FinalReportPdfDocument';
+import FinalReportPdfDocument from '#components/FinalReportPdfDocument';
 
 import styles from './styles.module.scss';
 
@@ -23,8 +23,9 @@ interface Props {
   match: Match<{ id?: string }>;
 }
 
-interface OperationalUpdateOptions {
+interface DrefOptions {
   disaster_category: NumericKeyValuePair[];
+  national_society_actions: StringKeyValuePair[];
   needs_identified: StringKeyValuePair[];
   planned_interventions: StringKeyValuePair[];
   status: NumericKeyValuePair[];
@@ -77,7 +78,7 @@ function FinalReportPdfPreview(props: Props) {
   const {
     pending: fetchingDrefOptions,
     response: drefOptions,
-  } = useRequest<OperationalUpdateOptions>({
+  } = useRequest<DrefOptions>({
     skip: !id,
     url: 'api/v2/dref-options/',
     onFailure: ({
@@ -133,7 +134,7 @@ function FinalReportPdfPreview(props: Props) {
     >
       {pdfLoadingStatus}
 
-      {!pdfLoadingStatus && finalReportResponse && drefOptions && (
+      {!pending && finalReportResponse && drefOptions && (
         <PDFViewer
           className={styles.pdfPreview}
         >

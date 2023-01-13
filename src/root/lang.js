@@ -3282,7 +3282,7 @@ export default {
   drefFormDateOfPublishing: 'Date of publishing',
   drefFormDateOfPublishingDescription: 'Added by the regional office',
   drefFormTrackingData: 'Tracking Data and Contacts',
-  drefFormAppealCode: 'MDR Code',
+  drefFormAppealCode: 'Appeal Code',
   drefFormAppealCodeDescription: 'Added by the regional PMER',
   drefFormGlideNum: 'GLIDE number',
   drefFormAppealManager: 'IFRC Appeal Manager:',
@@ -3328,6 +3328,7 @@ export default {
   drefFormSaveButtonLabel: 'Save',
   drefFormInterventionBudgetLabel: 'Budget',
   drefFormInterventionPersonTargetedLabel: 'Persons Targeted',
+  drefFormInterventionPersonAssistedLabel: 'Persons Assisted',
   drefFormIndicatorTitleLabel: 'Title',
   drefFormIndicatorTargetLabel: 'Target',
   drefFormIndicatorActualLabel: 'Actual',
@@ -3654,20 +3655,20 @@ export default {
   //TODO: final report
   finalReportTitle: 'Final Report',
   finalReportPageTitle: 'IFRC GO - DREF Final Report Application',
-  finalReportPageHeading: 'DREF Final Report Application',
+  finalReportPageHeading: 'DREF Final Report',
   finalReportTabOperationOverview: 'Operation Overview',
   finalReportTabEventDetails: 'Event Details',
-  finalReportTabNeeds: 'Needs',
+  finalReportTabNeeds: 'Actions/Needs',
   finalReportTabOperationReport: 'Operation Report',
   finalReportTabSubmission: 'Submission',
 
   finalReportCreateButtonLabel: 'Create Final Report',
-  finalReportEditButtonLabel: 'Edit Last Final Report',
+  finalReportEditButtonLabel: 'Edit Final Report',
   finalReportPublishButtonLabel: 'Publish Final Report',
 
   finalReportOperationOverviewTitle: 'operation overview',
   finalReportEssentialInformationTitle: 'Essential Information',
-  finalReportEssentialTitle: 'Title',
+  finalReportEssentialTitle: 'DREF Title',
   finalReportEssentialDescription: 'Add country, type of disaster and location to the title',
 
   finalReportNationalSociety: 'Name of National Society',
@@ -3684,12 +3685,14 @@ export default {
   finalReportPeopleAffected: 'People Affected',
   finalReportRiskPeopleLabel: 'People at Risk',
   finalReportPeopleTargeted: 'Number of people targeted',
+  finalReportPeopleAssisted: 'Number of people assisted',
   finalReportTotalAllocation: 'Total DREF Allocation',
   //timeframe
   finalReportTimeFrame: 'timeframes',
-  finalReportDateOfPublication: 'Date of Publication',
+  finalReportDateOfPublication: 'Publication date of final report',
   finalReportTotalOperatingTimeFrame: 'Total operating timeframe',
   finalReportStartOfOperation: 'Start of operation',
+  finalReportEndOfOperation: 'Operational end date',
 
   //EventDetails
   finalReportDescriptionOfEvent: 'Description of the Event',
@@ -3702,26 +3705,28 @@ export default {
   finalReportScopeAndScaleDescription: 'Describe the extent this hazard will produce negative impacts on lives, livelihoods, well-being and infrastructure. Explain which people are most likely to experience the impacts of this hazard? Where do they live, and why are they vulnerable? Please explain which groups (e.g elderly, children, people with disabilities, IDPs, Refugees, etc.) are most likely to be affected? Provide historic information on how communities have been affected by the magnitude of this hazard in the past?',
 
   // tab: needs
+  finalReportHaveNationalSocietyConducted: 'Have the National Society conducted any intervention additionally to those part of this DREF Operation?',
+  finalReportDescriptionOfAdditionalActivities: 'Please provide a brief description of those additional activities',
+  finalReportNationalSocietiesActions: 'National Society Actions',
   finalReportMovementPartners: 'Movement Partners Actions',
   finalReportIfrc: 'IFRC',
   finalReportIcrc: 'ICRC',
-  finalReportPartnerNationalSociety: 'Partner National Society',
-  finalReportNationalOtherActors: 'Other Actors',
+  finalReportPartnerNationalSociety: 'Participating National Societies',
+  finalReportNationalOtherActors: 'Other Actors Actions Related To The Current Event ',
   finalReportInternationalAssistance: 'Government has requested international assistance',
   finalReportNationalAuthorities: 'National authorities',
   finalReportUNorOtherActors: 'UN or other actors',
-  finalReportCoordinationMechanism: 'List major coordination mechanisms in place',
+  finalReportCoordinationMechanism: 'Are there major coordination mechanisms in place?',
+  finalReportCoordinationMechanismDescription: 'List coordination mechanisms/platform in place at local/district and national level. Indicate the lead authorities/agencies. How the National Society is involved/positioned in this coordination. Does the NS in any lead/co-lead role? Any identified gap/overlap in the coordination (e.g., sector missing…)?',
   finalReportNeedsTabTitle: 'needs',
-  finalReportNeedsIdentified: 'Needs (Gaps) Identified',
+  finalReportNeedsIdentified: 'Needs',
   finalReportImminentNeedsGapsIdentified: 'Anticipated Needs',
   finalReportActionFieldsLabel: 'Select the needs that apply.',
 
   //tab: operation report
-  finalReportOperationReportTitle: 'operation reoport',
   finalReportTargetingStrategy: 'Targeting Strategy',
   finalReportPeopleAssistedThroughOperation: 'Who will be targeted through this operation?',
   finalReportSelectionCriteria: 'Explain the selection criteria for the targeted population',
-  finalReportProtectionGenderAndInclusion: 'How have, community engagement Protection, Gender and Inclusion been considered in planning this operation?',
   finalReportChangeToOperationStrategy: 'Has there been any changes to the operation strategy',
   finalReportChangeToOperationStrategyExplain: 'Explain',
   finalReportTargetedPopulation: 'Target Population',
@@ -3748,6 +3753,9 @@ export default {
   finalReportPlannedInterventionChallenges: 'Challenges',
   finalReportPlannedInterventionLessonsLearnt: 'Lessons Learnt',
   finalReportPlannedInterventionNarrativeAchievement: 'Narrative description of achievements ',
+  finalReportFinancialReport: 'Financial report',
+  finalReportFinancialReportAttachment: 'Please attach the final financial report',
+  finalReportFinancialReportVariances: 'Please explain variances (if any)',
 
   //submission
   finalReportTrackingData: 'tracking data',
@@ -3767,6 +3775,7 @@ export default {
   finalReportPublishConfirmationFailureMessage: 'Failed to publish the Final Report',
 
   // export
+  finalReportExportTitle: 'Final Report',
   finalReportExportAppealNum: 'Appeal no:',
   finalReportExportGlideNum: 'Glide no:',
   finalReportExportTotalAllocation: 'Total DREF Allocation:',

@@ -1,0 +1,17 @@
+@import '~styles/settings/variables';
+
+.filter-output {
+  display: flex;
+  align-items: baseline;
+  gap: $spacing;
+
+  .label {
+    color: $color-text-light;
+  }
+
+  .selected-values {
+    display: flex;
+    gap: $spacing*0.5;
+    flex-wrap: wrap;
+  }
+}

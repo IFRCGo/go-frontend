@@ -50,6 +50,7 @@ import {
   submissionFields,
   DrefFinalReportApiFields,
   ONSET_IMMINENT,
+  ONSET_SUDDEN,
 } from './common';
 import Overview from './Overview';
 import EventDetails from './EventDetails';
@@ -59,14 +60,12 @@ import Submission from './Submission';
 import useDrefFinalReportFormOptions, { schema } from './useDreFinalReportOptions';
 
 import styles from './styles.module.scss';
+import { ymdToDateString } from '#utils/common';
 
 interface Props {
   match: match<{ id?: string }>;
   history: History;
   location: Location;
-}
-interface DrefFinalResponseFields {
-  id: string;
 }
 
 type StepTypes = 'operationOverview' | 'eventDetails' | 'needs' | 'operation' | 'submission';
@@ -83,7 +82,12 @@ const stepTypesToFieldsMap: {
 };
 
 const defaultFormValues: PartialForm<DrefFinalReportFields> = {
-  photos: []
+  planned_interventions: [],
+  national_society_actions: [],
+  needs_identified: [],
+  images_file: [],
+  users: [],
+  has_national_society_conducted: false,
 };
 
 function FinalReport(props: Props) {
@@ -118,7 +122,8 @@ function FinalReport(props: Props) {
     onsetOptions,
     yesNoOptions,
     userDetails,
-
+    userOptions,
+    nsActionOptions,
   } = useDrefFinalReportFormOptions(value);
 
   const [fileIdToUrlMap, setFileIdToUrlMap] = useState<Record<number, string>>({});
@@ -126,6 +131,7 @@ function FinalReport(props: Props) {
   const [currentStep, setCurrentStep] = useState<StepTypes>('operationOverview');
   const submitButtonLabel = currentStep === 'submission' ? strings.drefFormSaveButtonLabel : strings.drefFormContinueButtonLabel;
   const shouldDisabledBackButton = currentStep === 'operationOverview';
+  const lastModifiedAtRef = React.useRef<string | undefined>();
 
   const erroredTabs = useMemo(() => {
     const safeErrors = getErrorObject(error) ?? {};
@@ -193,10 +199,83 @@ function FinalReport(props: Props) {
     setCurrentStep(newStep);
   }, []);
 
+  const handleFinalReportLoad = React.useCallback(
+    (response: DrefFinalReportApiFields) => {
+      lastModifiedAtRef.current = response?.modified_at;
+      setFileIdToUrlMap((prevMap) => {
+        const newMap = {
+          ...prevMap,
+        };
+        if (response.financial_report_details && response.financial_report_details) {
+          newMap[response.financial_report_details.id] = response.financial_report_details.file;
+        }
+        if (response.event_map_file && response.event_map_file.file) {
+          newMap[response.event_map_file.id] = response.event_map_file.file;
+        }
+        if (response.cover_image_file && response.cover_image_file.file) {
+          newMap[response.cover_image_file.id] = response.cover_image_file.file;
+        }
+        if (response.images_file?.length > 0) {
+          response.images_file.forEach((img) => {
+            newMap[img.id] = img.file;
+          });
+        }
+        if (response.photos_file?.length > 0) {
+          response.photos_file.forEach((img) => {
+            newMap[img.id] = img.file;
+          });
+        }
+        return newMap;
+      });
+      setValue({
+        ...response,
+        national_society_actions: response.national_society_actions?.map((nsa) => ({
+          ...nsa,
+          clientId: String(nsa.id),
+        })),
+        planned_interventions: response.planned_interventions?.map((pi) => ({
+          ...pi,
+          clientId: String(pi.id),
+          indicators: pi?.indicators?.map((i) => ({
+            ...i,
+            clientId: String(i.id)
+          })),
+        })),
+        needs_identified: response.needs_identified?.map((ni) => ({
+          ...ni,
+          clientId: String(ni.id),
+        })),
+        images_file: response.images_file?.map((img) => (
+          isDefined(img.file)
+            ? ({
+              id: img.id,
+              client_id: img.client_id ?? String(img.id),
+              caption: img.caption ?? '',
+            })
+            : undefined
+        )).filter(isDefined),
+        photos_file: response.photos_file?.map((img) => (
+          isDefined(img.file)
+            ? ({
+              id: img.id,
+              client_id: img.client_id ?? String(img.id),
+              caption: img.caption ?? '',
+            })
+            : undefined
+        )).filter(isDefined),
+        disability_people_per: response.disability_people_per ? +response.disability_people_per : undefined,
+        people_per_urban: response.people_per_urban ? +response.people_per_urban : undefined,
+        people_per_local: response.people_per_local ? +response.people_per_local : undefined,
+      });
+    },
+    [setValue],
+  );
+
+
   const {
-    pending: drefSubmitPending,
+    pending: drefFinalReportSubmitPending,
     trigger: submitRequest,
-  } = useLazyRequest<DrefFinalResponseFields, Partial<DrefFinalReportApiFields>>({
+  } = useLazyRequest<DrefFinalReportApiFields, Partial<DrefFinalReportApiFields>>({
     url: `api/v2/dref-final-report/${id}`,
     method: 'PUT',
     body: ctx => ctx,
@@ -205,6 +284,7 @@ function FinalReport(props: Props) {
         'Final Report was updated successfully!',
         { variant: 'success' },
       );
+      handleFinalReportLoad(response);
     },
     onFailure: ({
       value: {
@@ -241,41 +321,7 @@ function FinalReport(props: Props) {
     skip: !id,
     url: `api/v2/dref-final-report/${id}/`,
     onSuccess: (response) => {
-      setFileIdToUrlMap((prevMap) => {
-        const newMap = {
-          ...prevMap,
-        };
-        if (response.budget_file_details) {
-          newMap[response.budget_file_details.id] = response.budget_file_details.file;
-        }
-        if (response.photos_details?.length > 0) {
-          response.photos_details.forEach((img) => {
-            newMap[img.id] = img.file;
-          });
-        }
-        if (response.event_map_details) {
-          newMap[response.event_map_details.id] = response.event_map_details.file;
-        }
-        return newMap;
-      });
-      setValue({
-        ...response,
-        planned_interventions: response.planned_interventions?.map((pi) => ({
-          ...pi,
-          clientId: String(pi.id),
-          indicators: pi?.indicators?.map((i) => ({
-            ...i,
-            clientId: String(i.id)
-          })),
-        })),
-        needs_identified: response.needs_identified?.map((ni) => ({
-          ...ni,
-          clientId: String(ni.id),
-        })),
-        disability_people_per: isDefined(response.disability_people_per) ? response.disability_people_per + response.disability_people_per : undefined,
-        people_per_urban: isDefined(response.people_per_urban) ? +response.people_per_urban : undefined,
-        people_per_local: isDefined(response.people_per_local) ? +response.people_per_local : undefined,
-      });
+      handleFinalReportLoad(response);
     },
     onFailure: ({
       value: { messageForNotification },
@@ -296,6 +342,29 @@ function FinalReport(props: Props) {
       );
     }
   });
+
+  React.useEffect(() => {
+    if (isDefined(value.operation_start_date) && isDefined(value.total_operation_timeframe)) {
+      const operationEndDate = new Date(value.operation_start_date);
+      if (!Number.isNaN(operationEndDate.getTime())) {
+        operationEndDate.setMonth(
+          operationEndDate.getMonth()
+          + value.total_operation_timeframe
+          + 1 // To get last day of the month
+        );
+        operationEndDate.setDate(0);
+
+        const yyyy = operationEndDate.getFullYear();
+        const dd = operationEndDate.getDate();
+        const mm = operationEndDate.getMonth();
+        onValueChange(ymdToDateString(yyyy, mm, dd), 'operation_end_date' as const);
+      }
+    }
+  }, [
+    onValueChange,
+    value.operation_start_date,
+    value.total_operation_timeframe,
+  ]);
 
   const handleBackButtonClick = useCallback(() => {
     if (currentStep !== 'operationOverview') {
@@ -321,6 +390,7 @@ function FinalReport(props: Props) {
       const body = {
         user: userDetails.id,
         ...result.value,
+        modified_at: lastModifiedAtRef.current,
       };
       submitRequest(body as DrefFinalReportApiFields);
     }
@@ -355,7 +425,7 @@ function FinalReport(props: Props) {
     || fetchingDrefOptions
     || fetchingUserDetails
     || finalReportPending
-    || drefSubmitPending;
+    || drefFinalReportSubmitPending;
 
   const failedToLoadDref = !pending && isDefined(id) && !drefFinalReportResponse;
 
@@ -365,6 +435,8 @@ function FinalReport(props: Props) {
   });
 
   const isImminentOnset = value?.type_of_onset === ONSET_IMMINENT;
+  const isSuddenOnset = value?.type_of_onset === ONSET_SUDDEN;
+  const isAssessmentReport = !!value?.is_assessment_report;
 
   return (
     <Tabs
@@ -477,6 +549,13 @@ function FinalReport(props: Props) {
                 fetchingDisasterTypes={fetchingDisasterTypes}
                 nationalSocietyOptions={nationalSocietyOptions}
                 fetchingNationalSociety={fetchingCountries}
+                yesNoOptions={yesNoOptions}
+                userOptions={userOptions}
+                onCreateAndShareButtonClick={submitDrefFinalReport}
+                fileIdToUrlMap={fileIdToUrlMap}
+                setFileIdToUrlMap={setFileIdToUrlMap}
+                isImminentOnset={isImminentOnset}
+                isAssessmentReport={isAssessmentReport}
               />
             </TabPanel>
             <TabPanel name='eventDetails'>
@@ -487,6 +566,7 @@ function FinalReport(props: Props) {
                 isImminentOnset={isImminentOnset}
                 fileIdToUrlMap={fileIdToUrlMap}
                 setFileIdToUrlMap={setFileIdToUrlMap}
+                isSuddenOnset={isSuddenOnset}
               />
             </TabPanel>
             <TabPanel name='needs'>
@@ -496,6 +576,7 @@ function FinalReport(props: Props) {
                 value={value}
                 yesNoOptions={yesNoOptions}
                 needOptions={needOptions}
+                nsActionOptions={nsActionOptions}
               />
             </TabPanel>
             <TabPanel name='operation'>
@@ -507,6 +588,7 @@ function FinalReport(props: Props) {
                 fileIdToUrlMap={fileIdToUrlMap}
                 setFileIdToUrlMap={setFileIdToUrlMap}
                 yesNoOptions={yesNoOptions}
+                isAssessmentReport={isAssessmentReport}
               />
             </TabPanel>
             <TabPanel name='submission'>

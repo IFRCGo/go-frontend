@@ -2,6 +2,7 @@ import {
   Country,
   DistrictMini,
 } from "#types/country";
+import { SingleFileWithCaption } from "#views/DrefApplicationForm/common";
 
 export const ONSET_IMMINENT = 0;
 export const ONSET_SLOW = 1;
@@ -72,6 +73,7 @@ export interface Intervention {
   title: string;
   budget: number;
   person_targeted: number;
+  person_assisted: number;
   indicators: Indicator[];
   description: string;
   progress_towards_outcome: string;
@@ -81,6 +83,27 @@ export interface Intervention {
   narrative_description_of_achievements: string;
   lessons_learnt: string;
 }
+
+export interface FileWithCaption {
+  client_id: string;
+  id: number;
+  caption: string;
+  file: string;
+}
+
+export interface NsAction {
+  clientId: string;
+  title: string;
+  description: string;
+  title_display: string;
+}
+
+export interface RiskSecurityProps {
+  clientId: string;
+  risk: string;
+  mitigation: string;
+}
+
 
 export const optionKeySelector = (o: Option) => o.value;
 export const numericOptionKeySelector = (o: NumericValueOption) => o.value;
@@ -121,7 +144,7 @@ export interface DrefFinalReportFields {
   ifrc_emergency_name: string;
   ifrc_emergency_phone_number: string;
   ifrc_emergency_title: string;
-  photos: number[];
+  images_file: FileWithCaption[];
   event_scope: string;
   event_description: string;
   ifrc: string;
@@ -134,7 +157,6 @@ export interface DrefFinalReportFields {
   needs_identified: Need[];
   people_assisted: string;
   selection_criteria: string;
-  entity_affected: string;
   change_in_operational_strategy: boolean;
   change_in_operational_strategy_text: string;
   women: number;
@@ -151,6 +173,7 @@ export interface DrefFinalReportFields {
   planned_interventions: Intervention[];
   event_map: number;
   operation_start_date: string;
+  operation_end_date: string;
   want_to_report: boolean;
   additional_national_society_actions: string;
 
@@ -160,16 +183,33 @@ export interface DrefFinalReportFields {
   modified_by: number;
   users: number[];
   dref?: string;
-  budget_file: number;
   country: number;
   district: number[];
   country_details: Country;
+  is_assessment_report: boolean;
+  people_in_need: number;
+  cover_image_file: SingleFileWithCaption;
+  event_map_file: SingleFileWithCaption;
+  event_text: string;
+  event_date: string;
+  national_society_actions: NsAction[];
+  ns_respond_date: string;
+  photos_file: FileWithCaption[]
+  is_there_major_coordination_mechanism: boolean;
+  risk_security: RiskSecurityProps[];
+  risk_security_concern: string;
+  total_targeted_population: number;
+  num_assisted: number;
+  has_national_society_conducted: boolean;
+  national_society_conducted_description: string;
+  financial_report: number;
+  financial_report_description: string;
 }
 
-
-export interface DrefFinalReportApiFields extends Omit<DrefFinalReportFields, 'district_details' | 'planned_interventions' | 'national_society_actions' | 'needs_identified'> {
+export interface DrefFinalReportApiFields extends Omit<DrefFinalReportFields, 'district_details' | 'planned_interventions' | 'national_society_actions' | 'needs_identified' | 'images_file'> {
   user: number;
   district_details: DistrictMini[];
+  national_society_actions: (Omit<NsAction, 'clientId'> & { id: number })[];
   planned_interventions: (Omit<Intervention, 'clientId' | 'indicators'> & {
     id: number,
     image_url: string,
@@ -181,20 +221,23 @@ export interface DrefFinalReportApiFields extends Omit<DrefFinalReportFields, 'd
     id: number,
     image_url: string,
   })[];
-  budget_file_details: {
-    id: number;
-    file: string;
-  };
-  budget_file_preview: string;
-
-  photos_details: {
-    id: number;
+  images_file: {
+    id: number,
+    caption: string | undefined,
+    client_id: string | undefined,
     file: string;
   }[];
-  event_map_details: {
+  disaster_type_details: {
+    id: number;
+    name: string;
+    summary: string;
+  };
+  disaster_category_display: 'Yellow' | 'Red' | 'Orange';
+  type_of_onset_display: string;
+  financial_report_details: {
     id: number;
     file: string;
-  };
+  }
 }
 
 export const overviewFields: (keyof DrefFinalReportFields)[] = [
@@ -206,17 +249,19 @@ export const overviewFields: (keyof DrefFinalReportFields)[] = [
   'number_of_people_affected',
   'number_of_people_targeted',
   'total_dref_allocation',
-  'date_of_publication',
-  'operation_start_date',
-  'total_operation_timeframe',
   'country',
-  'district'
+  'district',
+  'people_in_need',
+  'event_map_file',
+  'cover_image_file',
+  'num_assisted',
 ];
 export const eventFields: (keyof DrefFinalReportFields)[] = [
-  'photos',
-  'event_map',
+  'images_file',
   'event_scope',
   'event_description',
+  'event_date',
+  'event_text',
 ];
 export const needsFields: (keyof DrefFinalReportFields)[] = [
   'ifrc',
@@ -229,11 +274,15 @@ export const needsFields: (keyof DrefFinalReportFields)[] = [
   'needs_identified',
   'want_to_report',
   'additional_national_society_actions',
+  'photos_file',
+  'is_there_major_coordination_mechanism',
+  'national_society_actions',
+  'has_national_society_conducted',
+  'national_society_conducted_description',
 ];
 export const operationFields: (keyof DrefFinalReportFields)[] = [
   'people_assisted',
   'selection_criteria',
-  'entity_affected',
   'change_in_operational_strategy',
   'change_in_operational_strategy_text',
   'women',
@@ -247,8 +296,12 @@ export const operationFields: (keyof DrefFinalReportFields)[] = [
   'people_targeted_with_early_actions',
   'operation_objective',
   'response_strategy',
-  'budget_file',
   'planned_interventions',
+  'risk_security',
+  'risk_security_concern',
+  'total_targeted_population',
+  'financial_report',
+  'financial_report_description',
 ];
 export const submissionFields: (keyof DrefFinalReportFields)[] = [
   'appeal_code',
@@ -269,4 +322,8 @@ export const submissionFields: (keyof DrefFinalReportFields)[] = [
   'media_contact_email',
   'media_contact_phone_number',
   'media_contact_title',
+  'date_of_publication',
+  'operation_start_date',
+  'total_operation_timeframe',
+  'operation_end_date',
 ];

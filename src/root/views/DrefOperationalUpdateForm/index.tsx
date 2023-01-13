@@ -118,6 +118,9 @@ function DrefOperationalUpdate(props: Props) {
       if (response.budget_file_details) {
         newMap[response.budget_file_details.id] = response.budget_file_details.file;
       }
+      if (response.assessment_report_details) {
+        newMap[response.assessment_report_details.id] = response.assessment_report_details.file;
+      }
       if (response.event_map_file && response.event_map_file.file) {
         newMap[response.event_map_file.id] = response.event_map_file.file;
       }

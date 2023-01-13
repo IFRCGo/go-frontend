@@ -54,20 +54,38 @@ function EmergencyOverview(props) {
                 </div>
               </div>
               <div className='flex row emergency__overview-row'>
+                <div className='col emergency__overview-col-cat'>{strings.drefFormGlideNum}</div>
+                <div className='col emergency__overview-col-desc'>
+                  <div className='emergency__overview-desc'>
+                    {data.glide === '' ? '-' : data.glide}
+                  </div>
+                </div>
+              </div>
+              <div className='flex row emergency__overview-row'>
                 <div className='col emergency__overview-col-cat'>{strings.globalStartDate}</div>
                 <div className='col emergency__overview-col-desc'>
                   <div className='emergency__overview-desc'>
                     {formatDate(data.disaster_start_date)}
                   </div>
                 </div>
-              </div> 
+              </div>
             </div>
             <div className='col-sm col-12 col-6-sm'>
               <div className='flex row emergency__overview-row'>
-                <div className='col emergency__overview-col-cat'>{strings.emergencyGovtReqIntlAsst}</div>
+                <div className='col emergency__overview-col-cat'>{strings.fieldReportVisibility}</div>
+                <div className='col emergency__overview-col-desc'>
+                  <div className='introduction-nav-item--active'>
+                    {data.visibility === 1 ? strings.fieldReportConstantVisibilityRCRCMovementLabel :
+                    (data.visibility === 2 ? strings.fieldReportConstantVisibilityIFRCSecretariatLabel :
+                    (data.visibility === 4 ? strings.fieldReportConstantVisibilityIFRCandNSLabel : strings.fieldReportConstantVisibilityPublicLabel))}
+                  </div>
+                </div>
+              </div>
+              <div className='flex row emergency__overview-row'>
+                <div className='col emergency__overview-col-cat'>{strings.drefFormAppealCode}</div>
                 <div className='col emergency__overview-col-desc'>
                   <div className='emergency__overview-desc'>
-                    { hasFieldReports ? yesno(firstFieldReport.request_assistance) : '-' }
+                    {data.appeals.length === 0 || data.appeals[0].code === '' ? '-' : data.appeals[0].code}
                   </div>
                 </div>
               </div>
@@ -78,7 +96,15 @@ function EmergencyOverview(props) {
                     { hasFieldReports ? yesno(firstFieldReport.ns_request_assistance) : '-' }
                   </div>
                 </div>
-              </div> 
+              </div>
+              <div className='flex row emergency__overview-row'>
+                <div className='col emergency__overview-col-cat'>{strings.emergencyGovtReqIntlAsst}</div>
+                <div className='col emergency__overview-col-desc'>
+                  <div className='emergency__overview-desc'>
+                    { hasFieldReports ? yesno(firstFieldReport.request_assistance) : '-' }
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
       </div>

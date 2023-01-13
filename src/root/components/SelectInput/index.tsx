@@ -18,7 +18,7 @@ interface Option {
 
 const emptyOptionList: Option[] = [];
 
-interface BaseProps {
+interface BaseProps<N> {
   className?: string;
   actions?: React.ReactNode;
   icons?: React.ReactNode;
@@ -32,18 +32,18 @@ interface BaseProps {
   placeholder?: string;
   isOptionDisabled?: SelectProps<Option>['isOptionDisabled'];
   isClearable?: boolean;
+  hideValue?: boolean;
+  name: N;
 }
 
-type Props<N, V extends ValueType> = BaseProps & ({
-  isMulti?: false;
-  name: N;
-  onChange: (newValue: V, name: N) => void;
+type Props<N, V extends ValueType> = BaseProps<N> & ({
+  isMulti?: never;
   value: V | undefined | null;
+  onChange: (newValue: V, name: N) => void;
 } | {
   isMulti: true;
-  name: N;
-  onChange: (newValue: V[], name: N) => void;
   value: V[] | undefined | null;
+  onChange: (newValue: V[], name: N) => void;
 })
 
 function SelectInput<N, V extends ValueType>(props: Props<N, V>) {
@@ -62,6 +62,7 @@ function SelectInput<N, V extends ValueType>(props: Props<N, V>) {
     options = emptyOptionList,
     isMulti,
     onChange,
+    hideValue,
     ...otherSelectInputProps
   } = props;
 
@@ -125,6 +126,9 @@ function SelectInput<N, V extends ValueType>(props: Props<N, V>) {
           isMulti={isMulti}
           isDisabled={pending || disabled}
           isLoading={pending}
+          controlShouldRenderValue={!hideValue}
+          // menuPortalTarget={document.body}
+          unstyled
         />
       )}
     />
