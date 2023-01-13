@@ -318,7 +318,10 @@ function SeasonalRisk(props: Props) {
             <div className={styles.separator} />
             <div className={styles.legendContent}>
               {hazardTypeOptions.map((hazardType) => (
-                <div className={styles.legendItem}>
+                <div
+                  className={styles.legendItem}
+                  key={hazardType.value}
+                >
                   <div
                     className={styles.color}
                     style={{

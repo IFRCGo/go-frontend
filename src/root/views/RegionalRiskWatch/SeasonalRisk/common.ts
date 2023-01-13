@@ -18,6 +18,14 @@ import {
 export type RiskType = 'absolute' | 'normalized';
 export type HazardType = 'TC' | 'FL' | 'DR' | 'FI' | 'EQ';
 
+export function labelSelector<D extends { label: React.ReactNode }>(d: D) {
+  return d.label;
+}
+
+export function valueSelector<D extends { value: string }>(d: D) {
+  return d.value;
+}
+
 export const informHazards: HazardType[] = [
   'FL',
   'TC',
