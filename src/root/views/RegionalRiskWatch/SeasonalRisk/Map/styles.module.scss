@@ -1,81 +1,8 @@
 @import "~styles/settings/variables";
 
-.seasonal-risk-map {
-  .filters {
-    display: flex;
-    padding: $spacing*0.5;
-    gap: $spacing;
-
-    .filter-input {
-      width: 20rem;
-    }
-  }
-
-  .map-section {
-    z-index: 0;
-
-    .map-container {
-      position: relative;
-
-      .map {
-        z-index: 0;
-        height: 40rem;
-      }
-
-      .month-selector {
-        position: absolute;
-        bottom: $spacing * 3;
-        left: 0;
-        width: 100%;
-        max-width: 34rem;
-        padding: $spacing;
-        background-color: $white;
-      }
-    }
-  }
-}
-
-.country-list {
-  padding: $spacing 0;
-
-  .risk-table-list {
-    display: flex;
-    flex-direction: column;
-    gap: $base-border-width;
-
-    .risk-table-item {
-      .country-name {
-        display: flex;
-        padding: $spacing;
-        justify-content: space-between;
-        background-color: $grey-fog;
-        border-radius: 0;
-        width: 100%;
-
-        .icon {
-          opacity: .5;
-          font-size: $font-size-sm;
-        }
-      }
-    }
-  }
-}
-
-.map-legend {
-  position: absolute;
-  right: $spacing * 0.5;
-  bottom: $spacing * 2;
-  background-color: $color-foreground;
-  padding: $spacing;
-
-  .legend-item {
-    display: flex;
-    gap: $spacing;
-
-    .symbol {
-      width: 1rem;
-      height: 1rem;
-    }
+.map {
+  .mapContainer {
+    height: 40rem;
   }
 }
 

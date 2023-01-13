@@ -10,6 +10,7 @@
     border-radius: $base-border-radius;
     transition: $duration-transition-medium border-color ease-in-out;
     z-index: 0;
+    padding: 0 $spacing;
 
     .internal-input-container {
       flex-grow: 1;
