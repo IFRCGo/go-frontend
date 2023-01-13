@@ -1,3 +1,11 @@
+### Release 6.3.6 - DREF Final Report, Risk Module updates
+
+Date: 2023-01-13
+
+Frontend:
+- Add final report for DREF
+- Revamp seasonal risk for Regions page, add risk score calculation
+
 ### Release 6.3.5 - Hotfix for ops update export
 
 Date: 2022-10-06
