@@ -71,6 +71,20 @@ function PlannedIntervention(props: PlannedInterventionProps) {
           </View>
         </View>
       </View>
+      {data.narrative_description_of_achievements && (
+        <>
+          <View style={pdfStyles.piRow}>
+            <Text style={pdfStyles.piContentHeadingCell}>
+              {strings.finalReportPlannedInterventionNarrativeAchievement}
+            </Text>
+          </View>
+          <View style={pdfStyles.piRow}>
+            <Text style={pdfStyles.piBorderCell}>
+              {data.narrative_description_of_achievements}
+            </Text>
+          </View>
+        </>
+      )}
       <View style={pdfStyles.piRow}>
         <View style={pdfStyles.piSmallColumn}>
           <Text style={pdfStyles.piContentHeadingCell}>
@@ -83,6 +97,7 @@ function PlannedIntervention(props: PlannedInterventionProps) {
           </Text>
         </View>
       </View>
+
       {
         data?.indicators?.map((el) => (
           <View
