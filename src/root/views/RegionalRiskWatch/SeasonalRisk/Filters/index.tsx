@@ -22,6 +22,8 @@ import {
   displacementHazards,
   HazardType,
   MonthKey,
+  labelSelector,
+  valueSelector,
 } from '../common';
 
 import styles from './styles.module.scss';
@@ -74,15 +76,20 @@ function Filters(props: Props) {
     } = {},
   } = useReduxState('allCountries');
 
-  const countryOptions = countryList.filter(
-    (country) => country.iso3
-      && country.independent
-      && !country.is_deprecated
-      && country.region === regionId
-  ).map((country) => ({
-    value: country.iso3 as string,
-    label: country.name,
-  }));
+  const countryOptions = React.useMemo(
+    () => (
+      countryList.filter(
+        (country) => country.iso3
+          && country.independent
+          && !country.is_deprecated
+          && country.region === regionId
+      ).map((country) => ({
+        value: country.iso3 as string,
+        label: country.name,
+      }))
+    ),
+    [regionId, countryList],
+  );
 
   const hazardTypeOptions = React.useMemo(() => {
     if (value.riskMetric === 'informRiskScore') {
@@ -230,8 +237,8 @@ function Filters(props: Props) {
           name={"countries" as const}
           options={countryOptions}
           value={value.countries}
-          optionKeySelector={h => h.value}
-          optionLabelSelector={h => h.label}
+          optionKeySelector={valueSelector}
+          optionLabelSelector={labelSelector}
           onChange={handleChange}
           isMulti
         />
@@ -240,8 +247,8 @@ function Filters(props: Props) {
           name={"hazardTypes" as const}
           options={hazardTypeOptions}
           value={value.hazardTypes}
-          optionKeySelector={h => h.value}
-          optionLabelSelector={h => h.label}
+          optionKeySelector={valueSelector}
+          optionLabelSelector={labelSelector}
           onChange={handleChange}
           isMulti
         />
@@ -250,8 +257,8 @@ function Filters(props: Props) {
           name={"months" as const}
           options={monthOptions}
           value={value.months}
-          optionKeySelector={h => h.value}
-          optionLabelSelector={h => h.label}
+          optionKeySelector={valueSelector}
+          optionLabelSelector={labelSelector}
           onChange={handleChange}
           isMulti
         />
