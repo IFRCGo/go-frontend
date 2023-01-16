@@ -58,7 +58,7 @@ function FinalReportPdfDocument(props: Props) {
   const piMap = listToMap(drefOptions.planned_interventions, d => d.key, d => d.value);
   const niMap = listToMap(drefOptions.needs_identified, d => d.key, d => d.value);
   const affectedAreas = finalReportResponse?.district_details?.map(d => d.name).join(', ');
-  const isImminentOnset = finalReportResponse?.disaster_type === ONSET_IMMINENT;
+  const isImminentOnset = finalReportResponse?.type_of_onset === ONSET_IMMINENT;
   const isAssessmentReport = finalReportResponse?.is_assessment_report;
   const documentTitle = finalReportResponse.title;
 

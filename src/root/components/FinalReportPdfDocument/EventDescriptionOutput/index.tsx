@@ -67,8 +67,8 @@ function EventDescriptionOutput(props: Props) {
             minPresenceAhead={20}
           >
             {isImminentOnset
-              ? strings.drefExportWhatExpectedHappen
-              : strings.drefFormImminentDisaster}
+              ? strings.finalReportImminentDisaster
+              : strings.finalReportWhatWhereWhen}
           </Text>
           <Text style={pdfStyles.text}>
             {sanitizeHtml(data.event_description ?? '', {
