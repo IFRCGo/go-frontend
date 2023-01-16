@@ -71,52 +71,108 @@ function PlannedIntervention(props: PlannedInterventionProps) {
           </View>
         </View>
       </View>
-      {data.narrative_description_of_achievements && (
+      {data?.indicators?.length > 0 && (
         <>
           <View style={pdfStyles.piRow}>
-            <Text style={pdfStyles.piContentHeadingCell}>
-              {strings.finalReportPlannedInterventionNarrativeAchievement}
-            </Text>
-          </View>
-          <View style={pdfStyles.piRow}>
-            <Text style={pdfStyles.piBorderCell}>
-              {data.narrative_description_of_achievements}
-            </Text>
-          </View>
-        </>
-      )}
-      <View style={pdfStyles.piRow}>
-        <View style={pdfStyles.piSmallColumn}>
-          <Text style={pdfStyles.piContentHeadingCell}>
-            {strings.drefExportIndicators}
-          </Text>
-        </View>
-        <View style={pdfStyles.piLargeColumn}>
-          <Text style={pdfStyles.piContentHeadingCell}>
-            {strings.drefFormIndicatorTargetLabel}
-          </Text>
-        </View>
-      </View>
-
-      {
-        data?.indicators?.map((el) => (
-          <View
-            key={el?.id}
-            style={pdfStyles.piRow}
-          >
             <View style={pdfStyles.piSmallColumn}>
-              <Text style={pdfStyles.piBorderCell}>
-                {el.title}
+              <Text style={pdfStyles.piContentHeadingCell}>
+                {strings.drefExportIndicators}
               </Text>
             </View>
             <View style={pdfStyles.piLargeColumn}>
+              <View style={pdfStyles.piMediumColumn}>
+                <Text style={pdfStyles.piContentHeadingCell}>
+                  {strings.drefFormIndicatorTargetLabel}
+                </Text>
+              </View>
+              <View style={pdfStyles.piMediumColumn}>
+                <Text style={pdfStyles.piContentHeadingCell}>
+                  {strings.drefFormIndicatorActualLabel}
+                </Text>
+              </View>
+            </View>
+          </View>
+        </>
+      )}
+
+      {data?.indicators?.map((indicator) => (
+        <View
+          key={indicator?.id}
+          style={pdfStyles.piRow}
+        >
+          <View style={pdfStyles.piSmallColumn}>
+            <Text style={pdfStyles.piBorderCell}>
+              {indicator.title}
+            </Text>
+          </View>
+          <View style={pdfStyles.piLargeColumn}>
+            <View style={pdfStyles.piMediumColumn}>
               <Text style={pdfStyles.piBorderCell}>
-                {el.target}
+                {indicator.target}
+              </Text>
+            </View>
+            <View style={pdfStyles.piMediumColumn}>
+              <Text style={pdfStyles.piBorderCell}>
+                {indicator.actual}
               </Text>
             </View>
           </View>
-        ))
-      }
+        </View>
+      ))}
+      {data?.narrative_description_of_achievements && (
+        <>
+          <View style={pdfStyles.piRow}>
+            <View style={pdfStyles.piContentHeadingCell}>
+              <Text>
+                {strings.finalReportPlannedInterventionNarrativeAchievement}
+              </Text>
+            </View>
+          </View>
+          <View style={pdfStyles.piRow}>
+            <View style={pdfStyles.piBorderCell}>
+              <Text>
+                {data.narrative_description_of_achievements}
+              </Text>
+            </View>
+          </View>
+        </>
+      )}
+      {data?.lessons_learnt && (
+        <>
+          <View style={pdfStyles.piRow}>
+            <View style={pdfStyles.piContentHeadingCell}>
+              <Text>
+                {strings.finalReportPlannedInterventionLessonsLearnt}
+              </Text>
+            </View>
+          </View>
+          <View style={pdfStyles.piRow}>
+            <View style={pdfStyles.piBorderCell}>
+              <Text>
+                {data.lessons_learnt}
+              </Text>
+            </View>
+          </View>
+        </>
+      )}
+      {data?.challenges && (
+        <>
+          <View style={pdfStyles.piRow}>
+            <View style={pdfStyles.piContentHeadingCell}>
+              <Text>
+                {strings.finalReportPlannedInterventionChallenges}
+              </Text>
+            </View>
+          </View>
+          <View style={pdfStyles.piRow}>
+            <View style={pdfStyles.piBorderCell}>
+              <Text>
+                {data.challenges}
+              </Text>
+            </View>
+          </View>
+        </>
+      )}
     </View >
   );
 }

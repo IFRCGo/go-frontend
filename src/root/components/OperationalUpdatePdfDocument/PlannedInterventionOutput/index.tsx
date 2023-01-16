@@ -127,7 +127,7 @@ function PlannedIntervention(props: PlannedInterventionProps) {
 
           <View style={pdfStyles.piRow}>
             <View style={pdfStyles.piBorderCell}>
-              <Text >
+              <Text>
                 {data.progress_towards_outcome}
               </Text>
             </View>
