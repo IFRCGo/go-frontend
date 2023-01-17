@@ -105,9 +105,9 @@ function EventDetails(props: Props) {
         )}
       </InputSection>
       <InputSection
-        title={!isImminentOnset
-          ? strings.finalReportWhatWhereWhen
-          : strings.finalReportImminentDisaster}
+        title={isImminentOnset
+          ? strings.finalReportImminentDisaster
+          : strings.finalReportWhatWhereWhen}
         oneColumn
         multiRow
       >
