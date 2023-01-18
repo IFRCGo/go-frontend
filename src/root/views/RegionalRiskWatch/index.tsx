@@ -28,7 +28,7 @@ function RegionalRiskWatch(props: Props) {
     regionId,
   } = props;
 
-  const [activeTab, setActiveTab] = useInputState<TabTypes>('imminent');
+  const [activeTab, setActiveTab] = useInputState<TabTypes>('seasonal');
 
   return (
     <Container
