@@ -1,4 +1,12 @@
-### Release 6.3.6 - DREF Final Report, Risk Module updates
+### Release 6.4.1 - Hotfix for DREF final report
+Date: 2023-01-18
+
+Frontend:
+- Fix final report issues mentioned in #2556
+- Change default tab to "Seasonal" in regional risk
+
+
+### Release 6.4.0 - DREF Final Report, Risk Module updates
 
 Date: 2023-01-13
 
