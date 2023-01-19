@@ -16,8 +16,8 @@
 
   .clear-button {
     position: absolute;
-    right: 0;
-    top: 0;
+    inset-inline-end: 0;
+    inset-block-start: 0;
     background-color: transparent;
     border: 0;
     cursor: pointer;
