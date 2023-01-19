@@ -23,7 +23,7 @@ import HighlightedOperations from '#components/highlighted-operations';
 import TimelineCharts from '#components/timeline-charts';
 import AppealsTable from '#components/connected/appeals-table';
 import MainMap from '#components/map/main-map';
-import LanguageContext from '#root/languageContext';
+import { languageContext } from '#root/lang';
 import { countriesGeojsonSelector, countriesSelector } from '#selectors';
 
 class PresentationDash extends React.Component {
@@ -61,7 +61,7 @@ class PresentationDash extends React.Component {
   }
 
   render () {
-    const { strings } = this.context;
+    const { strings: { common: strings = {} } } = this.context;
     const { appealsList } = this.props;
 
     const foldLink = (
@@ -145,5 +145,5 @@ const dispatcher = (dispatch) => ({
   _getAppealsList: (...args) => dispatch(getAppealsList(...args)),
 });
 
-PresentationDash.contextType = LanguageContext;
+PresentationDash.contextType = languageContext;
 export default connect(selector, dispatcher)(PresentationDash);

@@ -1,4 +1,4 @@
-export default {
+const dref = {
   drefFormAddInterventionLabel: 'Add',
   drefFormUploadAnImageLabel: 'Select an Image',
   drefFormAddCountryLabel: 'Add Country',
@@ -565,3 +565,7 @@ export default {
   finalReportExportIndicators: 'Indicators',
   finalReportExport: 'Final Report Export',
 };
+
+export type DrefStrings = typeof dref;
+
+export default dref;

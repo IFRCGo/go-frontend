@@ -1,4 +1,4 @@
-export default {
+const login = {
   loginTitle: 'IFRC GO - Login',
   loginHeader: 'Login',
   loginSubHeader: 'If you are staff, member or volunteer of the Red Cross Red Crescent Movement (National Societies, the IFRC and the ICRC) login with you email and password.',
@@ -20,3 +20,7 @@ export default {
   loginSignUp: 'Sign up',
   // not used -   loginKeep: 'Keep me logged in',
 };
+
+export type LoginStrings = typeof login;
+
+export default login;

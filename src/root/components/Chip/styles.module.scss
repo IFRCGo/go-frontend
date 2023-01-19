@@ -1,6 +1,7 @@
 @import '~styles/settings/variables';
 
 .chip {
+  width: fit-content;
   display: flex;
   align-items: center;
   gap: $spacing*0.75;

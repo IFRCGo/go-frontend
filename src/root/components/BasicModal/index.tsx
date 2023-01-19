@@ -35,7 +35,8 @@ function BasicModal(props: Props) {
     bodyClassName,
   } = props;
 
-  const shouldHideHeader = hideCloseButton && !heading && !headerActions;
+  const shouldShowCloseButton = !hideCloseButton && onCloseButtonClick;
+  const shouldHideHeader = !shouldShowCloseButton && !heading && !headerActions;
 
   return (
     <Backdrop
@@ -50,7 +51,7 @@ function BasicModal(props: Props) {
             actions={(
               <>
                 {headerActions}
-                {!hideCloseButton && (
+                {shouldShowCloseButton && (
                   <Button
                     name={undefined}
                     onClick={onCloseButtonClick}

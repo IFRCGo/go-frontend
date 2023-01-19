@@ -1,4 +1,4 @@
-export default {
+const common = {
   headerAppName: 'IFRC GO',
   headerMenuResources: 'Resources',
   headerCreateAReportLabel: 'Create a Report',
@@ -963,3 +963,7 @@ export default {
   searchResultforQuery: 'Couldn\'t find any results for given query!',
   searchThreeCharactersRequired: 'Please enter at least 3 characters to get started with search!',
 };
+
+export type CommonStrings = typeof common;
+
+export default common;

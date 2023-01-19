@@ -31,9 +31,7 @@ function Translate(props: Props) {
     <span className={_cs(styles.translate, className)}>
       { displayComponent }
       { !isDefined(displayComponent) && (
-        <React.Fragment>
-          undefined <b>{stringId}</b>
-        </React.Fragment>
+          <del>{stringId}</del>
       )}
     </span>
   );

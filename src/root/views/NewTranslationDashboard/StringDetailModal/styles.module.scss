@@ -1,0 +1,30 @@
+@import '~styles/settings/variables';
+
+.string-detail-modal {
+  width: 100%;
+  max-width: 40rem;
+  height: 100%;
+  max-height: 30rem;
+
+  .content {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing*2;
+
+    .translations-list {
+      display: flex;
+      flex-direction: column;
+
+      .translations-list-content {
+        display: flex;
+        flex-direction: column;
+        gap: $spacing;
+      }
+    }
+  }
+
+  .tag {
+    font-size: $font-size-sm;
+    color: $primary-color;
+  }
+}

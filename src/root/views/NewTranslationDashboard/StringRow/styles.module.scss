@@ -1,0 +1,57 @@
+@import '~styles/settings/variables';
+
+.string-row {
+  display: flex;
+  align-items: baseline;
+  gap: $spacing;
+  padding: $spacing;
+  background-color: $white;
+  cursor: pointer;
+
+  &:nth-child(odd) {
+    background-color: $grey-mist;
+  }
+
+  &:hover {
+    background-color: $grey-titanium;
+  }
+
+
+  .key {
+    flex-basis: 30%;
+    word-break: break-word;
+    flex-shrink: 0;
+    font-size: $font-size-sm;
+    font-family: $code-font-family;
+  }
+
+  .value {
+    flex-grow: 1;
+    word-break: break-word;
+  }
+
+  .translations {
+    flex-shrink: 0;
+    flex-basis: 6rem;
+    font-family: $code-font-family;
+  }
+
+  .page-name {
+    flex-shrink: 0;
+    flex-basis: 6rem;
+    font-size: $font-size-sm;
+    font-family: $code-font-family;
+  }
+
+  .status {
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    flex-basis: 6rem;
+  }
+
+  .tag {
+    font-size: $font-size-sm;
+    color: $primary-color;
+  }
+}

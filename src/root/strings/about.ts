@@ -1,6 +1,7 @@
-export default {
+const about = {
   aboutTitle: 'IFRC GO - About',
-  aboutResources: 'Resources', aboutDescription: 'GO is a Red Cross Red Crescent platform to connect information on emergency needs with the right response.',
+  aboutResources: 'Resources',
+  aboutDescription: 'GO is a Red Cross Red Crescent platform to connect information on emergency needs with the right response.',
   aboutUserGuidance: 'Go user guidance',
   aboutUserAdministrativeGuide: 'GO User and Administrative Guides',
   aboutUserAdministrativeGuideDescription: 'User guides help to explain the different functions and features of GO. Administrator guides include also back-end functions aimed at people who are helping to manage the site.',
@@ -38,3 +39,7 @@ export default {
   // not used -   aboutMenaRegion: 'MENA Region',
   aboutGoFunding: 'GO has received dedicated personnel and funding support from:',
 };
+
+export type AboutStrings = typeof about;
+
+export default about;

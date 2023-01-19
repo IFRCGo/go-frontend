@@ -1,4 +1,4 @@
-export default {
+const flashUpdate = {
   flashUpdateFormPageTitle: 'IFRC GO - Flash Update Request',
   flashUpdateFormPageDescription: 'The following information is provided for early warning and rapid dissemination and is based upon initial information only. IFRC will obtain more accurate and detailed information as more is known about the event.',
   flashUpdateFormExportLabel: 'Export',
@@ -94,3 +94,7 @@ export default {
   flashUpdateFormLoadErrorDescription: 'There was an error loading the Flash Update Application',
   flashUpdateFormLoadErrorHelpText: 'Please make sure that the application with given id exists and you have the permission to view it',
 };
+
+export type FlashUpdateStrings = typeof flashUpdate;
+
+export default flashUpdate;

@@ -82,7 +82,7 @@ export default class DisplayTable extends React.Component {
                 <tr>
                   {this.props.headings.map(h => {
                     const {id, className, label, ...rest} = h;
-                    const activeHeader = label.props && label.props.isActive ? 'table__header--active' : null;
+                    const activeHeader = label?.props && label.props.isActive ? 'table__header--active' : null;
                     return <th key={id} className={c(`table__header--${id}`, className, activeHeader)} {...rest}>{label}</th>;
                   })}
                 </tr>

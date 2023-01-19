@@ -1,4 +1,4 @@
-export default {
+const fieldReport = {
   fieldReportTitle: 'IFRC GO - Field Report',
   fieldReportResourceNotFound: 'Resource Not Found.',
   fieldReportResourceNotFoundDescr: 'The resource doesn\'t exist – mistyped URL or removed content.',
@@ -291,3 +291,7 @@ export default {
   fieldReportCOVID19: 'COVID-19',
   fieldReportUpdateNo: 'Update #',
 };
+
+export type FieldReportStrings = typeof fieldReport;
+
+export default fieldReport;

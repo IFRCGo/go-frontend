@@ -1,4 +1,4 @@
-export default {
+const surge = {
   operationalToolboxH1: 'Operational Timeline toolbox',
   operationalToolboxH3: 'For Orange & Red Emergencies',
   operationalToolboxAccordionBtnText: 'Overview of the toolbox',
@@ -1457,3 +1457,6 @@ export default {
   catalogueHwtsSpecifiationNationalSocieties: 'Spanish.',
   catalogueHwtsAdditionalResourceText: 'Spanish Red Cross HWTS Module implementation guide/SOP',
 };
+
+export type SurgeStrings = typeof surge;
+export default surge;

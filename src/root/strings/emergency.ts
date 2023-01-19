@@ -1,4 +1,4 @@
-export default {
+const emergency = {
   emergenciesTableError: 'Latest emergencies not available.',
   emergenciesTableDate: 'Start Date',
   emergenciesTableName: 'Name',
@@ -113,3 +113,7 @@ export default {
   emergenciesTitle: 'IFRC GO - Emergencies',
   emergenciesTableTitle: 'Emergencies in the last 30 days',
 };
+
+export type EmergencyStrings = typeof emergency;
+
+export default emergency;

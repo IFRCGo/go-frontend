@@ -18,7 +18,7 @@ import {
   addSubscriptions,
   delSubscription
 } from '#actions';
-import LanguageContext from '#root/languageContext';
+import { languageContext } from '#root/lang';
 import Translate from '#components/Translate';
 
 class HighlightedOperations extends React.Component {
@@ -120,10 +120,10 @@ class HighlightedOperations extends React.Component {
   }
   render() {
     const { error, fetching, fetched, data } = this.props.featured;
-    const { strings } = this.context;
+    const { strings: { common: strings = {} } } = this.context;
     const foldLink = (
       <Link to='/appeals/all' className='fold__title__link'>
-        <Translate stringId='highlightedOperationsViewAll'/>
+        {strings.highlightedOperationsViewAll}
       </Link>);
     if (fetched && (error || !Array.isArray(data.results) || !data.results.length)) return null;
     else if (!fetched || fetching) return <div className='inner'><Fold title={strings.highlightedOperationsTitle}><BlockLoading/></Fold></div>;
@@ -216,5 +216,5 @@ const dispatcher = (dispatch) => ({
   _delSubscription: (...args) => dispatch(delSubscription(...args))
 });
 
-HighlightedOperations.contextType = LanguageContext;
+HighlightedOperations.contextType = languageContext;
 export default connect(selector, dispatcher)(HighlightedOperations);

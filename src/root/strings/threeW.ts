@@ -1,4 +1,4 @@
-export default {
+const threeW = {
   globalThreeWPageTitle: 'IFRC GO - Global 3W Response',
   globalThreeWPageHeading: 'Global 3W Response',
   globalThreeWPageDescriptionP1: 'The \'Who does What, Where\' or 3w aims to map the global footprint of the Red Cross Red Crescent Movement. It is a global database of projects conducted by National Societies, IFRC and the ICRC, broken down by sector, location, budget and people targeted and reached.',
@@ -222,3 +222,7 @@ export default {
   threeWPageTitle: 'IFRC GO - 3W Details',
   threeWEditPageTitle: 'IFRC GO - Edit 3W',
 };
+
+export type ThreeWStrings = typeof threeW;
+
+export default threeW;

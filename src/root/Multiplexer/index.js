@@ -7,6 +7,7 @@ import { BreadcrumbsProvider } from 'react-breadcrumbs-dynamic';
 import PrivateRoute from '#components/PrivateRoute';
 import AnonymousRoute from '#components/AnonymousRoute';
 import AlertContext from '#components/AlertContext';
+import { languageContext } from '#root/lang';
 
 import {
   getMe as getUserAction,
@@ -49,6 +50,7 @@ const PerForm = lazy(() => import('../components/per-forms/per-form'));
 const PerAssessment = lazy(() => import('../views/per-assessment'));
 const Preparedness = lazy(() => import('../views/preparedness'));
 const TranslationDashboard = lazy(() => import('../views/TranslationDashboard'));
+const NewTranslationDashboard = lazy(() => import('../views/NewTranslationDashboard'));
 const ClearInitCache = lazy(() => import('../views/ClearInitCache'));
 const NewThreeW = lazy(() => import('../views/NewThreeW'));
 const FieldReportForm = lazy(() => import('../views/FieldReportForm'));
@@ -218,6 +220,15 @@ function Multiplexer(props) {
     }
   });
 
+  const [strings, setStrings] = React.useState({});
+  const [queue, setQueue] = React.useState();
+
+  const languageContextValue = React.useMemo(() => ({
+    strings,
+    setStrings,
+    addToQueue: setQueue,
+  }), [strings, setStrings, setQueue]);
+
   const pending = React.useMemo(() => (
     (languageResponse.fetching)
     || (allCountriesResponse.fetching || (!allCountriesResponse.cached && !allCountriesResponse.fetched))
@@ -231,83 +242,86 @@ function Multiplexer(props) {
   }
 
   return (
-    <AlertContext.Provider value={alertContextValue}>
-      <Router>
-        <Suspense fallback={<InitialLoading />}>
-          <BreadcrumbsProvider>
-            <Switch>
-              <Route exact path='/' component={Home} />
-              <Route path='/clear-init-cache' component={ClearInitCache} />
-              <Route exact path='/covid19-3w-sankey' component={Covid19ThreeWSankey} />
-              <PrivateRoute exact path='/translation-dashboard' component={TranslationDashboard} />
-              <Route exact path='/about' component={About} />
-              <PrivateRoute exact path='/account' component={Account} />
-              <PrivateRoute exact path='/account/password-change' component={PasswordChange} />
-              <Route exact path='/appeals/all' render={props => <Table {...props} type='appeal' />} />
-              <AnonymousRoute exact path='/login' component={Login} />
-              <AnonymousRoute exact path='/register' component={Register} />
-              <AnonymousRoute exact path='/recover-account' component={RecoverAccount} />
-              <AnonymousRoute exact path='/recover-account/:username/:token' component={RecoverAccount} />
-              <AnonymousRoute exact path='/recover-username' component={RecoverUsername} />
-              <AnonymousRoute exact path='/resend-validation' component={ResendValidation} />
-              <PrivateRoute key="new-field-report-form" exact path='/reports/new' component={FieldReportForm} />
-              <Route exact path='/reports/all' render={props => <Table {...props} type='report' />} />
-              <PrivateRoute exact path='/reports/:reportId/edit' component={FieldReportForm} />
-              <Route exact path='/reports/:id' component={FieldReport} />
-              <Route exact path='/emergencies' component={Emergencies} />
-              <Route exact path='/emergencies/all' render={props => <Table {...props} type='emergency' />} />
-              <Route exact path='/emergencies/:id/follow' component={Emergency} />
-              <Route exact path='/emergencies/:id' component={Emergency} />
-              <Route exact path='/emergency/:slug' component={EmergencyWrapper} />
-              <Route exact path='/regions/:id/' render={props => <Region {...props} type='region' />} />
-              <Route exact path='/countries/:id' render={props => <Country {...props} type='country' />} />
-              <Route exact path='/alerts/all' render={props => <Table {...props} type='alert' />} />
-              <Route exact path='/deployments' component={Deployments} />
-              <Route exact path='/deployments/personnel/all' render={props => <Table {...props} type='personnel' />} />
-              <Route exact path='/deployments/erus/all' render={props => <Table {...props} type='eru' />} />
-              <Route path='/deployments' component={Deployments} />
-              <Route exact path='/per-form/:form_id' component={PerForm} />
-              <Route exact path='/per-form/:form_id/edit' render={props => <PerForm {...props} isEdit={true} />} />
-              <Route path='/per-assessment/create' render={props => <PerAssessment {...props} isCreate={true} />} />
-              <Route exact path='/per-assessment/:id' component={PerAssessment} />
-              <Route exact path='/per-assessment/:id/edit' render={props => <PerAssessment {...props} isEdit={true} />} />
-              <Route path='/preparedness' component={Preparedness} />
-              <PrivateRoute key="new-three-w" exact path='/three-w/new/' component={NewThreeW} />
-              <Route exact path='/three-w/all/' component={AllThreeW} />
-              <Route exact path='/emergency-three-w/all/' component={AllEmergencyThreeW} />
-              <Route exact path='/three-w/:projectId/' component={ThreeW} />
-              <Route exact path='/emergency-three-w/:projectId/' component={EmergencyThreeW} />
-              <PrivateRoute exact path='/three-w/:projectId/edit/' component={ThreeWEdit} />
-              <PrivateRoute exact path='/emergency-three-w/:projectId/edit/' component={EmergencyThreeWEdit} />
-              <Route exact path='/three-w/' component={GlobalThreeW} />
-              <PrivateRoute exact path='/emergency-three-w-form/' component={EmergencyThreeWForm} />
-              
+    <languageContext.Provider value={languageContextValue}>
+      <AlertContext.Provider value={alertContextValue}>
+        <Router>
+          <Suspense fallback={<InitialLoading />}>
+            <BreadcrumbsProvider>
+              <Switch>
+                <Route exact path='/' component={Home} />
+                <Route path='/clear-init-cache' component={ClearInitCache} />
+                <Route exact path='/covid19-3w-sankey' component={Covid19ThreeWSankey} />
+                <PrivateRoute exact path='/translation-dashboard' component={TranslationDashboard} />
+                <PrivateRoute exact path='/new-translation-dashboard' component={NewTranslationDashboard} />
+                <Route exact path='/about' component={About} />
+                <PrivateRoute exact path='/account' component={Account} />
+                <PrivateRoute exact path='/account/password-change' component={PasswordChange} />
+                <Route exact path='/appeals/all' render={props => <Table {...props} type='appeal' />} />
+                <AnonymousRoute exact path='/login' component={Login} />
+                <AnonymousRoute exact path='/register' component={Register} />
+                <AnonymousRoute exact path='/recover-account' component={RecoverAccount} />
+                <AnonymousRoute exact path='/recover-account/:username/:token' component={RecoverAccount} />
+                <AnonymousRoute exact path='/recover-username' component={RecoverUsername} />
+                <AnonymousRoute exact path='/resend-validation' component={ResendValidation} />
+                <PrivateRoute key="new-field-report-form" exact path='/reports/new' component={FieldReportForm} />
+                <Route exact path='/reports/all' render={props => <Table {...props} type='report' />} />
+                <PrivateRoute exact path='/reports/:reportId/edit' component={FieldReportForm} />
+                <Route exact path='/reports/:id' component={FieldReport} />
+                <Route exact path='/emergencies' component={Emergencies} />
+                <Route exact path='/emergencies/all' render={props => <Table {...props} type='emergency' />} />
+                <Route exact path='/emergencies/:id/follow' component={Emergency} />
+                <Route exact path='/emergencies/:id' component={Emergency} />
+                <Route exact path='/emergency/:slug' component={EmergencyWrapper} />
+                <Route exact path='/regions/:id/' render={props => <Region {...props} type='region' />} />
+                <Route exact path='/countries/:id' render={props => <Country {...props} type='country' />} />
+                <Route exact path='/alerts/all' render={props => <Table {...props} type='alert' />} />
+                <Route exact path='/deployments' component={Deployments} />
+                <Route exact path='/deployments/personnel/all' render={props => <Table {...props} type='personnel' />} />
+                <Route exact path='/deployments/erus/all' render={props => <Table {...props} type='eru' />} />
+                <Route path='/deployments' component={Deployments} />
+                <Route exact path='/per-form/:form_id' component={PerForm} />
+                <Route exact path='/per-form/:form_id/edit' render={props => <PerForm {...props} isEdit={true} />} />
+                <Route path='/per-assessment/create' render={props => <PerAssessment {...props} isCreate={true} />} />
+                <Route exact path='/per-assessment/:id' component={PerAssessment} />
+                <Route exact path='/per-assessment/:id/edit' render={props => <PerAssessment {...props} isEdit={true} />} />
+                <Route path='/preparedness' component={Preparedness} />
+                <PrivateRoute key="new-three-w" exact path='/three-w/new/' component={NewThreeW} />
+                <Route exact path='/three-w/all/' component={AllThreeW} />
+                <Route exact path='/emergency-three-w/all/' component={AllEmergencyThreeW} />
+                <Route exact path='/three-w/:projectId/' component={ThreeW} />
+                <Route exact path='/emergency-three-w/:projectId/' component={EmergencyThreeW} />
+                <PrivateRoute exact path='/three-w/:projectId/edit/' component={ThreeWEdit} />
+                <PrivateRoute exact path='/emergency-three-w/:projectId/edit/' component={EmergencyThreeWEdit} />
+                <Route exact path='/three-w/' component={GlobalThreeW} />
+                <PrivateRoute exact path='/emergency-three-w-form/' component={EmergencyThreeWForm} />
+                
 
-              <PrivateRoute key="new-flash-update-application-form" exact path='/flash-update/new/' component={FlashUpdateApplicationForm} />
-              <PrivateRoute exact path='/flash-update/all/' component={AllFlashUpdates} />
-              <PrivateRoute exact path='/flash-update/:id/edit/' component={FlashUpdateApplicationForm} />
-              <PrivateRoute exact path='/flash-update/:id/' component={FlashUpdateReport} />
+                <PrivateRoute key="new-flash-update-application-form" exact path='/flash-update/new/' component={FlashUpdateApplicationForm} />
+                <PrivateRoute exact path='/flash-update/all/' component={AllFlashUpdates} />
+                <PrivateRoute exact path='/flash-update/:id/edit/' component={FlashUpdateApplicationForm} />
+                <PrivateRoute exact path='/flash-update/:id/' component={FlashUpdateReport} />
 
-              <Route exact path='/dref-operational-update/new/' component={DrefOperationalUpdate} />
+                <Route exact path='/dref-operational-update/new/' component={DrefOperationalUpdate} />
 
-              <PrivateRoute key="new-dref-application-form" exact path='/dref-application/new/' component={DrefApplicationForm} />
+                <PrivateRoute key="new-dref-application-form" exact path='/dref-application/new/' component={DrefApplicationForm} />
 
-              <PrivateRoute exact path='/dref-application/:drefId/edit/' component={DrefApplicationForm} />
-              <PrivateRoute exact path='/dref-application/:drefId/export/' component={DrefPdfPreview} />
+                <PrivateRoute exact path='/dref-application/:drefId/edit/' component={DrefApplicationForm} />
+                <PrivateRoute exact path='/dref-application/:drefId/export/' component={DrefPdfPreview} />
 
-              <PrivateRoute exact path='/dref-operational-update/:id/edit/' component={DrefOperationalUpdate} />
-              <PrivateRoute exact path='/dref-operational-update/:id/export/' component={OperationalUpdatePdfPreview} />
+                <PrivateRoute exact path='/dref-operational-update/:id/edit/' component={DrefOperationalUpdate} />
+                <PrivateRoute exact path='/dref-operational-update/:id/export/' component={OperationalUpdatePdfPreview} />
 
-              <PrivateRoute exact path='/dref-final-report/:id/edit/' component={FinalReport} />
-              <PrivateRoute exact path='/dref-final-report/:id/export/' component={FinalReportPdfPreview} />
-              <Route exact path='/search/' component={Search} />
+                <PrivateRoute exact path='/dref-final-report/:id/edit/' component={FinalReport} />
+                <PrivateRoute exact path='/dref-final-report/:id/export/' component={FinalReportPdfPreview} />
+                <Route exact path='/search/' component={Search} />
 
-              <Route component={FourHundredFour} />
-            </Switch>
-          </BreadcrumbsProvider>
-        </Suspense>
-      </Router>
-    </AlertContext.Provider>
+                <Route component={FourHundredFour} />
+              </Switch>
+            </BreadcrumbsProvider>
+          </Suspense>
+        </Router>
+      </AlertContext.Provider>
+    </languageContext.Provider>
   );
 }
 
