@@ -70,9 +70,9 @@ const severityFillColorPaint = [
 ];
 
 const legendItems = [
-  { color: COLOR_RED, label: 'Warning'},
-  { color: COLOR_YELLOW, label: 'Watch'},
-  { color: COLOR_BLUE, label: 'Advisory / Information'},
+  { color: COLOR_RED, label: 'Warning' },
+  { color: COLOR_YELLOW, label: 'Watch' },
+  { color: COLOR_BLUE, label: 'Advisory / Information' },
   { color: COLOR_BLACK, label: 'Unknown' },
 ];
 
@@ -83,7 +83,7 @@ const mapPadding = {
   bottom: 50,
 };
 
-const noOp = () => {};
+const noOp = () => { };
 
 const MAP_BOUNDS_ANIMATION_DURATION = 1800;
 
@@ -530,7 +530,7 @@ function PDCExposureMap(props: Props) {
               paint: iconPaint,
               layout: allIconsLoaded ? {
                 visibility: 'visible',
-                 // @ts-ignore
+                // @ts-ignore
                 'icon-image': [
                   'match',
                   ['get', 'hazardType'],
@@ -539,7 +539,7 @@ function PDCExposureMap(props: Props) {
                 ],
                 'icon-size': 0.7,
                 'icon-allow-overlap': true,
-              }: hiddenLayout,
+              } : hiddenLayout,
             }}
           />
           <MapState
@@ -552,17 +552,17 @@ function PDCExposureMap(props: Props) {
         && activeHazard.hazardDetails.population_exposure
         && activeHazard.hazardDetails.capital_exposure
         && (
-        <MapTooltip
-          coordinates={activeHazard.lngLat}
-          onHide={handlePointClose}
-          tooltipOptions={defaultTooltipOptions}
-        >
-          <PointDetails
-            onCloseButtonClick={handlePointClose}
-            hazardDetails={activeHazard.hazardDetails}
-          />
-        </MapTooltip>
-      )}
+          <MapTooltip
+            coordinates={activeHazard.lngLat}
+            onHide={handlePointClose}
+            tooltipOptions={defaultTooltipOptions}
+          >
+            <PointDetails
+              onCloseButtonClick={handlePointClose}
+              hazardDetails={activeHazard.hazardDetails}
+            />
+          </MapTooltip>
+        )}
       <MapBounds
         bounds={bounds}
         padding={mapPadding}

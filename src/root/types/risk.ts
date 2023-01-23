@@ -84,9 +84,58 @@ export interface PDCEvent {
     total: ExposureObject;
   } | null;
   country: number | null;
+  source_type: string;
 }
 
 export interface ImminentResponse {
   oddrin_data: unknown[];
   pdc_data: PDCEvent[];
+}
+
+export interface ADAMEvent {
+  id: number;
+  // hazard_type_display: string;
+  country_details: {
+    id: number;
+    iso: string;
+    iso3: string;
+    name: string;
+    region: number;
+    regions_details: {
+      id: number;
+      name_disaplay: string;
+      name: number;
+    }
+  } | null;
+  title: string;
+  hazard_type: ImminentHazardTypes;
+  event_id: string;
+  publish_date: string;
+  geojson: GeoJSON.Feature<GeoJSON.Point>[] | null;
+  event_details: {
+    mag: number;
+    mmni: number;
+    url: {
+      map: string;
+      shakemap: string;
+      population: string;
+    }
+    iso3: string;
+    depth: number;
+    place: string;
+    title: string;
+    event_id: string;
+    latitude: number;
+    mag_type: string;
+    admin1_name: string;
+    longitude: number;
+    alert_sent: boolean;
+    published_at: string;
+    population_impact: number;
+    country: number | null;
+  }
+  country: number | null;
+}
+export interface ImminentResponseAdam {
+  results: ADAMEvent[];
 }

@@ -27,9 +27,9 @@ function RiskWatch(props: Props) {
       <ImminentEvents
         countryId={countryId}
       />
-      <SeasonalRisk
+      {/* <SeasonalRisk
         countryId={countryId}
-      />
+      /> */}
     </Container>
   );
 }
