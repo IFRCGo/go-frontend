@@ -5,12 +5,36 @@
 
   .stats {
     display: flex;
+    flex-wrap: wrap;
     padding: $page-spacing-v 0;
+    gap: $spacing;
 
     >* {
       flex-basis: 0;
       flex-grow: 1;
-      margin: 0 $spacing*0.5;
+      min-width: 20rem;
+      max-width: calc(50% - #{$spacing / 2});
+      flex-shrink: 0;
+
+      .card-content {
+        >* {
+          flex-basis: 50%;
+          max-width: 50%;
+        }
+      }
+
+      .pie-chart {
+        flex-basis: 12rem;
+        width: 12rem;
+        flex-grow: 0;
+        flex-shrink: 0;
+        max-width: unset;
+      }
+
+      @media screen and (max-width: $media-small) {
+        max-width: unset;
+        flex-basis: 100%;
+      }
     }
   }
 
@@ -71,6 +95,7 @@
 
   .pie-chart {
     padding: 0;
+    min-width: 12rem;
   }
 
   .top-login-info {

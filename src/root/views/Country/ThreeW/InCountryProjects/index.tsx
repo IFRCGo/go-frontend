@@ -253,7 +253,10 @@ function InCountryProjects(props: Props) {
       ) : (
         <>
           <div className={styles.stats}>
-            <Card multiColumn>
+            <Card
+              contentClassName={styles.cardContent}
+              multiColumn
+            >
               <KeyFigure
                 value={numActiveNS}
                 description={strings.threeWKeyFigureActiveNSTitle}
@@ -263,7 +266,10 @@ function InCountryProjects(props: Props) {
                 description={strings.threeWKeyFigureTargetedPopulationTitle}
               />
             </Card>
-            <Card multiColumn>
+            <Card
+              contentClassName={styles.cardContent}
+              multiColumn
+            >
               <KeyFigure
                 value={projectList.length}
                 description={strings.threeWKeyFigureTotalProjectsTitle}
@@ -274,7 +280,10 @@ function InCountryProjects(props: Props) {
                 data={programmeTypeCounts}
               />
             </Card>
-            <Card multiColumn>
+            <Card
+              contentClassName={styles.cardContent}
+              multiColumn
+            >
               <KeyFigure
                 value={ongoingProjectBudget}
                 description={strings.threeWKeyFigureOngoingProjectBudgetTitle}

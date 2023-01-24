@@ -1,10 +1,22 @@
 @import '~styles/settings/variables';
 
-.map-container {
-  height: 60vh;
+.map {
+  .map-container-wrapper {
+    position: relative;
 
-  .project-detail-item {
-    padding: $spacing*0.5 $spacing*3*0.25;
+    .map-container {
+      height: 60vh;
+
+      .project-detail-item {
+        padding: $spacing*0.5 $spacing*3*0.25;
+      }
+    }
+
+    .map-disclaimer {
+      position: absolute;
+      left: $mapbox-icon-width + $spacing*0.5;
+      bottom: $spacing*0.25;
+    }
   }
 }
 

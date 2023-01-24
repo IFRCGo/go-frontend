@@ -9,12 +9,12 @@ import chroma from 'chroma-js';
 import { environment } from '#config';
 import { get } from '#utils/utils';
 import EmptyMessage from '#components/EmptyMessage';
+import GoMapDisclaimer from '#components/GoMapDisclaimer';
 
 import BlockLoading from '../block-loading';
 import DateFilterHeader from '../common/filters/date-filter-header';
 import MapComponent from './common/map-component';
-import OperationsPopover from './home-map/operations-popover';
-import ExplanationBubble from './home-map/explanation-bubble';
+import OperationsPopover from './home-map/operations-popover'; import ExplanationBubble from './home-map/explanation-bubble';
 import EmergencyTypesDropdown from './home-map/emergency-types-dropdown';
 import AppealTypesDropdown from './home-map/appeal-types-dropdown';
 import { filtering } from './home-map/filtering/filtering-processor';
@@ -389,6 +389,9 @@ class MainMap extends React.Component {
               onFieldChange={this.onFieldChange}
               deployments={this.props.deployments}
               deploymentsKey={this.props.deploymentsKey}/>
+          <GoMapDisclaimer 
+              className='map-disclaimer'
+          />
           </MapComponent>
           <div className='map-vis__legend--fullscreen-wrap'>
             <button className='button button--secondary-bounded button--small button--fullscreen'

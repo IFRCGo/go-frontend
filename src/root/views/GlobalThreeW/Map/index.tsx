@@ -15,6 +15,7 @@ import Map, {
 import Container from '#components/Container';
 import MapTooltipContent from '#components/MapTooltipContent';
 import TextOutput from '#components/TextOutput';
+import GoMapDisclaimer from '#components/GoMapDisclaimer';
 import useReduxState from '#hooks/useReduxState';
 import { Country } from '#types';
 import {
@@ -247,7 +248,10 @@ function GlobalThreeWMap(props: Props) {
       navControlPosition="top-right"
       debug={false}
     >
-      <MapContainer className={_cs(styles.mapContainer, className)} />
+      <div className={_cs(styles.mapContainerWrapper, className)}>
+        <MapContainer className={_cs(styles.mapContainer, className)} />
+        <GoMapDisclaimer className={styles.mapDisclaimer} />
+      </div>
       <div className={styles.legend}>
         {legendItems?.map(d => (
           <div

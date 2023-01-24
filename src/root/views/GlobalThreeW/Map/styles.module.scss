@@ -1,19 +1,29 @@
 @import '~styles/settings/variables';
 
-.map-container {
-  height: 40rem;
+.map-container-wrapper {
+  position: relative;
 
-  .map-tooltip {
-    .meta {
-      margin: 0 $spacing*3*0.25;
-      padding: $spacing*0.5;
-      border-bottom: $base-border-width solid $base-border-color;
-    }
+  .map-container {
+    height: 40rem;
 
-    .top-project-sectors-chart {
-      margin: $spacing;
-      width: calc(100% - 2 * #{$spacing})!important;
+    .map-tooltip {
+      .meta {
+        margin: 0 $spacing*3*0.25;
+        padding: $spacing*0.5;
+        border-bottom: $base-border-width solid $base-border-color;
+      }
+
+      .top-project-sectors-chart {
+        margin: $spacing;
+        width: calc(100% - 2 * #{$spacing})!important;
+      }
     }
+  }
+
+  .map-disclaimer {
+    position: absolute;
+    left: $mapbox-icon-width + $spacing * 0.5;
+    bottom: $spacing * 0.25;
   }
 }
 

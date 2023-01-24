@@ -1,26 +1,36 @@
 @import '~styles/settings/variables';
 
 .map {
-  .map-container {
-    height: 60vh;
+  .map-container-wrapper {
+    position: relative;
 
-    .project-detail-item {
-      padding: $spacing;
-    }
+    .map-container {
+      height: 60vh;
 
-    .loading {
-      width: 100%;
-      margin: 0;
-      height: 10rem;
-      border: $base-border-width solid $base-border-color;
-      border-radius: 0;
+      .project-detail-item {
+        padding: $spacing;
+      }
 
-      :global {
-        .spinner {
-          display: flex;
-          align-items: center;
+      .loading {
+        width: 100%;
+        margin: 0;
+        height: 10rem;
+        border: $base-border-width solid $base-border-color;
+        border-radius: 0;
+
+        :global {
+          .spinner {
+            display: flex;
+            align-items: center;
+          }
         }
       }
+    }
+
+    .map-disclaimer {
+      position: absolute;
+      left: $mapbox-icon-width + $spacing*0.5;
+      bottom: $spacing*0.25;
     }
   }
 

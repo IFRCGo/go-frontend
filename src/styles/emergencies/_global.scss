@@ -43,19 +43,17 @@
 .emergencies-map {
   .map-container {
     position: relative;
+
+    .map-disclaimer {
+      position: absolute;
+      left: $mapbox-icon-width + 0.5*$spacing;
+      bottom: $spacing*0.25;
+    }
   }
 }
 
 .color--blue::before {
   background: #4680F2;
-}
-
-.emergency-map {
-  img {
-    vertical-align: top;
-    height: 3rem;
-    width: auto;
-  }
 }
 
 .map-scale-options {
@@ -65,7 +63,6 @@
 }
 
 .page--emergencies {
-
   .sumstats__item__wrap {
     @include media(medium) {
       width: 240px;

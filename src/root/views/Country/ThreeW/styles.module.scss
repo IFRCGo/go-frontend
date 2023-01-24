@@ -16,5 +16,11 @@
     margin: $page-spacing-v 0;
     align-self: center;
   }
+
+  .wiki-link {
+    display: flex;
+    justify-content: flex-end;
+    padding-bottom: $spacing;
+  }
 }
 

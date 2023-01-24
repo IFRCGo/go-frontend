@@ -113,7 +113,14 @@
 .deployments-map {
   margin-bottom: $global-spacing * 4;
   .map-container {
+    position: relative;
     width: 100%;
+
+    .map-disclaimer {
+      position: absolute;
+      left: $mapbox-icon-width + $spacing * 0.5;
+      bottom: $spacing * 0.25;
+    }
   }
   .map-vis .map-vis__legend .key {
     border-inline-start: none;

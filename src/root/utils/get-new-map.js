@@ -1,7 +1,11 @@
 import mapboxgl from 'mapbox-gl';
 
 export const source = 'SOURCE';
-export default function newMap (container, mapStyle = 'mapbox://styles/go-ifrc/ckrfe16ru4c8718phmckdfjh0', mapOptions = {}) {
+export default function newMap (
+  container,
+  mapStyle = 'mapbox://styles/go-ifrc/ckrfe16ru4c8718phmckdfjh0',
+  mapOptions = {},
+) {
   const map = new mapboxgl.Map({
     container: container,
     style: mapStyle,
@@ -16,6 +20,7 @@ export default function newMap (container, mapStyle = 'mapbox://styles/go-ifrc/c
     preserveDrawingBuffer: true,
     ...mapOptions,
   });
+
   map.addControl(new mapboxgl.NavigationControl(), 'top-right');
 
   // Disable map rotation using right click + drag.

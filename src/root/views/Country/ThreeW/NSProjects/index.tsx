@@ -202,7 +202,10 @@ function NSProjects(props: Props) {
       ) : (
         <>
           <div className={styles.stats}>
-            <Card multiColumn>
+            <Card
+              contentClassName={styles.cardContent}
+              multiColumn
+            >
               <KeyFigure
                 value={numActivities}
                 description={strings.threeWKeyFigureCountryActivityTitle}
@@ -212,7 +215,10 @@ function NSProjects(props: Props) {
                 description={strings.threeWKeyFigureTargetedPopulationTitle}
               />
             </Card>
-            <Card multiColumn>
+            <Card
+              contentClassName={styles.cardContent}
+              multiColumn
+            >
               <KeyFigure
                 value={projectList.length}
                 description={strings.threeWKeyFigureTotalProjectsTitle}
@@ -222,7 +228,10 @@ function NSProjects(props: Props) {
                 data={programmeTypeCounts}
               />
             </Card>
-            <Card multiColumn>
+            <Card
+              contentClassName={styles.cardContent}
+              multiColumn
+            >
               <KeyFigure
                 value={ongoingProjectBudget}
                 description={strings.threeWKeyFigureOngoingProjectBudgetTitle}

@@ -6,6 +6,7 @@ import styles from './styles.module.scss';
 interface Props {
   className?: string;
   children?: React.ReactNode;
+  contentClassName?: string;
   title?: React.ReactNode;
   multiColumn?: boolean;
 }
@@ -16,6 +17,7 @@ function Card(props: Props) {
     children,
     title,
     multiColumn,
+    contentClassName,
   } = props;
 
   return (
@@ -31,7 +33,7 @@ function Card(props: Props) {
           {title}
         </div>
       )}
-      <div className={styles.content}>
+      <div className={_cs(styles.content, contentClassName)}>
         { children }
       </div>
     </div>

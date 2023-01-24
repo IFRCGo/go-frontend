@@ -10,6 +10,7 @@ import { source } from '#utils/get-new-map';
 import { commaSeparatedNumber as n } from '#utils/format';
 import Translate from '#components/Translate';
 import EmptyMessage from '#components/EmptyMessage';
+import GoMapDisclaimer from '#components/GoMapDisclaimer';
 
 import { FormRadioGroup } from '../form-elements';
 import MapComponent from './common/map-component';
@@ -201,6 +202,7 @@ class EmergenciesMap extends React.Component {
                   </p>
                 </figcaption>
               </MapComponent>
+              <GoMapDisclaimer className='map-disclaimer' />
             </div>
           ) : (
             <EmptyMessage />
