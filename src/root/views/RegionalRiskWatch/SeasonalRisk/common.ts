@@ -233,8 +233,6 @@ export interface RiskScoreData extends MonthlyValues {
   country: number;
 }
 
-
-
 type ExposureHazardType = Extract<HazardType, 'FL' | 'TC' | 'FI'>
 export interface ExposureData extends MonthlyValues {
   id: number;
@@ -252,40 +250,17 @@ export interface ExposureData extends MonthlyValues {
 // SS: Storm Surge
 // TS: Tsunami
 // FL: Flood
-type GARHazard = 'CD' | 'EQ' | 'SS' | 'TS' | 'FL';
 
-interface GARLossData {
-  absolute_loss_in_million: number;
-  capital_stock_percentage: number;
-  country: number;
-  country_details: {
-    id: number;
-    iso: string;
-    iso3: string;
-    name: string;
-    region: number;
-    region_details : {
-      id: number;
-      name: number;
-      name_display: string;
-    }
-  };
-  gfcf: number;
-  gross_saving: number;
-  hazard_type: GARHazard;
-  hazard_type_display: string;
-  id: number;
-  social_exp: number;
-  total_revenue: number;
-}
-
+/*
 interface LossValue {
   economic_loss?: number;
   population_displacement?: number;
 }
+*/
 
-type ReturnPeriodHazard = 'CD' | 'EQ' | 'SS' | 'TS' | 'FL';
+// type ReturnPeriodHazard = 'CD' | 'EQ' | 'SS' | 'TS' | 'FL';
 
+/*
 interface ReturnPeriodData {
   country: number;
   country_details: CountryDetail;
@@ -302,15 +277,16 @@ interface ReturnPeriodData {
   twenty_years: LossValue;
   two_hundred_fifty_years: LossValue;
 }
+*/
 
 export interface SeasonalResponse {
-  gar_loss: GARLossData[];
   idmc: IDMCData[];
-  inform: InformData;
-  inform_seasonal: InformSeasonalData[];
   ipc_displacement_data: IPCData[];
   raster_displacement_data: ExposureData[];
-  return_period_data: ReturnPeriodData;
+
+  // inform: InformData;
+  // inform_seasonal: InformSeasonalData[];
+  // return_period_data: ReturnPeriodData;
 }
 
 export type RiskMetricType = (typeof riskMetricOptions)[number]['value'];
