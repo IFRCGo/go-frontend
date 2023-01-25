@@ -84,9 +84,8 @@ class AdminArea extends SFPComponent {
       { title: strings.region3WTab, hash: '#3w' },
       { title: strings.regionRiskTab, hash: '#risk-watch' },
       { title: strings.regionProfileTab, hash: '#regional-profile' },
-
-      // { title: strings.regionPreparednessTab, hash: '#preparedness' },
-      // { title: strings.regionAdditionalInfoTab, hash: '#additional-info' }
+      { title: strings.regionPreparednessTab, hash: '#preparedness' },
+      { title: strings.regionAdditionalInfoTab, hash: '#additional-info' }
     ];
   }
 
@@ -220,22 +219,23 @@ class AdminArea extends SFPComponent {
     const { strings } = this.context;
 
     const additionalTabName = data.additional_tab_name ? data.additional_tab_name : strings.regionAdditionalInfoTab;
-
     const tabDetails = [...this.getTabDetails()];
-    // Add Preparedness Tab only if Preparedness Snippets exist
-    if (data.preparedness_snippets.length > 0) {
-      tabDetails.push({
-        title: strings.regionPreparednessTab,
-        hash: '#preparedness'
-      });
+
+    // Adding new Tabs here would be too late, so we clean up unnecessary ones – chk go-frontend/issues/2613)
+    // Leave Preparedness Tab only if Preparedness Snippets exist
+    if (data.preparedness_snippets.length === 0) {
+      tabDetails[4] = 0;
     }
 
+    // Leave Additional Tab only if it exists.
     if (get(this.props.snippets, 'data.results.length') || get(this.props.keyFigures, 'data.results.length')) {
-      tabDetails.push({
-        title: additionalTabName,
-        hash: '#additional-info'
-      });
+      tabDetails[5] = {title: additionalTabName, hash: '#additional-info'}; // can differ from the original one
+    } else {
+      tabDetails[5] = 0;
     }
+
+    if (tabDetails[5] === 0) tabDetails.splice(5, 1);
+    if (tabDetails[4] === 0) tabDetails.splice(4, 1);
 
     const presentationClass = c({
       'presenting fold--stats': this.state.fullscreen,
