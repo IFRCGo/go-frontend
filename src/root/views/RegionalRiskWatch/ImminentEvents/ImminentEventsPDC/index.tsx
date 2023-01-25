@@ -1,138 +1,138 @@
 import React from 'react';
 import turfBbox from '@turf/bbox';
 import {
-    isNotDefined,
-    listToGroupList,
-    _cs,
+  isNotDefined,
+  isDefined,
+  listToGroupList,
+  listToMap,
+  _cs,
 } from '@togglecorp/fujs';
 
-import { useRequest } from '#utils/restRequest';
+import { useRequest, ListResponse } from '#utils/restRequest';
 import { BBOXType, fixBounds } from '#utils/map';
-import { ImminentResponse } from '#types/risk';
+import { PDCEvent, PDCEventExposure } from '#types/risk';
 import useReduxState from '#hooks/useReduxState';
 import BlockLoading from '#components/block-loading';
 
 import styles from './styles.module.scss';
-import PDCExposureMap from '#components/RiskImminentEventMap/PDCEventMap';
+import PDCEventMap from '#components/RiskImminentEventMap/PDCEventMap';
 
 interface Props {
-    className?: string;
-    regionId: number;
+  className?: string;
+  regionId: number;
 }
 
 function ImminentEventsPDC(props: Props) {
-    const {
-        className,
-        regionId,
-    } = props;
+  const {
+    className,
+    regionId,
+  } = props;
 
-    const allRegions = useReduxState('allRegions');
-    const region = React.useMemo(() => (
-        allRegions?.data.results.find(d => d.id === regionId)
-    ), [allRegions, regionId]);
+  const allRegions = useReduxState('allRegions');
+  const region = React.useMemo(() => (
+    allRegions?.data.results.find(d => d.id === regionId)
+  ), [allRegions, regionId]);
 
-    const {
-        pending,
-        response,
-    } = useRequest<ImminentResponse>({
-        skip: isNotDefined(regionId),
-        url: 'risk://api/v1/imminent/',
-        query: {
-            region: regionId,
-        },
+  const [activeEventUuid, setActiveEventUuid] = React.useState<string>();
+  const handleEventClick = React.useCallback((eventUuid: string | undefined) => {
+    setActiveEventUuid((oldEventUuid) => {
+      if (oldEventUuid === eventUuid) {
+        return undefined;
+      }
+
+      return eventUuid;
+    });
+  }, []);
+
+  const {
+    pending,
+    response: pdcResponse,
+  } = useRequest<ListResponse<PDCEvent>>({
+    skip: isNotDefined(regionId),
+    url: 'risk://api/v1/imminent/',
+    query: {
+      region: regionId,
+      limit: 200,
+    },
+  });
+
+  const eventUuidToIdMap = React.useMemo(() => {
+    if (!pdcResponse?.results) {
+      return {};
+    }
+
+    return listToMap(pdcResponse.results, d => d.uuid, d => d.id);
+  }, [pdcResponse?.results]);
+
+  const eventId = isDefined(activeEventUuid) ? eventUuidToIdMap[activeEventUuid]: undefined;
+
+  const {
+    pending: activeEventExposurePending,
+    response: activeEventExposure,
+  } = useRequest<PDCEventExposure>({
+    skip: isNotDefined(eventId),
+    url: `risk://api/v1/imminent/${eventId}/exposure`,
+  });
+
+  const data = React.useMemo(() => {
+    if (!pdcResponse || !pdcResponse.results) {
+      return undefined;
+    }
+
+    const uuidGroupedHazardList = listToGroupList(
+      pdcResponse.results,
+      h => h.uuid,
+    );
+
+    const uniqueList = Object.values(uuidGroupedHazardList).map((hazardList) => {
+      const sortedList = [...hazardList].sort((h1, h2) => {
+        const date1 = new Date(h1.pdc_updated_at ?? h1.pdc_created_at ?? h1.created_at);
+        const date2: Date = new Date(h2.pdc_updated_at ?? h2.pdc_created_at ?? h2.created_at);
+
+        return date2.getTime() - date1.getTime();
+      });
+
+      let latestData = sortedList[0];
+
+      return latestData;
     });
 
-    const data = React.useMemo(() => {
-        if (!response || !response.pdc_data) {
-            return undefined;
-        }
+    return uniqueList;
+  }, [pdcResponse]);
 
-        const uuidGroupedHazardList = listToGroupList(
-            response.pdc_data,
-            h => h.pdc_details.uuid,
-        );
+  const hasImminentEvents = pdcResponse && pdcResponse.results && pdcResponse.results.length > 0;
+  const regionBounds = React.useMemo(
+    () => {
+      let bbox = turfBbox(region?.bbox ?? []);
+      return fixBounds(bbox as BBOXType);
+    },
+    [region?.bbox],
+  );
 
-        const uniqueList = Object.values(uuidGroupedHazardList).map((hazardList) => {
-            const sortedList = [...hazardList].sort((h1, h2) => {
-                const date1 = new Date(h1.pdc_details.pdc_updated_at ?? h1.pdc_details.created_at);
-                const date2: Date = new Date(h2.pdc_details.pdc_updated_at ?? h2.pdc_details.created_at);
-
-                return date2.getTime() - date1.getTime();
-            });
-
-            let latestData = sortedList[0];
-
-            const latestFootprint = sortedList.find(h => !!h.pdc_details.footprint_geojson)?.pdc_details?.footprint_geojson;
-            const latestTrack = sortedList.find(h => !!h.pdc_details.storm_position_geojson)?.pdc_details?.storm_position_geojson;
-
-            if (!latestData.pdc_details.footprint_geojson && latestFootprint) {
-                latestData = {
-                    ...latestData,
-                    pdc_details: {
-                        ...latestData.pdc_details,
-                        footprint_geojson: latestFootprint,
-                    },
-                };
-            }
-
-            if (!latestData.pdc_details.storm_position_geojson && latestTrack) {
-                latestData = {
-                    ...latestData,
-                    pdc_details: {
-                        ...latestData.pdc_details,
-                        storm_position_geojson: latestTrack,
-                    },
-                };
-            }
-
-            return latestData;
-        });
-
-        return uniqueList;
-    }, [response]);
-
-    const [activeEventUuid, setActiveEventUuid] = React.useState<string>();
-    const handleEventClick = React.useCallback((eventUuid: string | undefined) => {
-        setActiveEventUuid((oldEventUuid) => {
-            if (oldEventUuid === eventUuid) {
-                return undefined;
-            }
-
-            return eventUuid;
-        });
-    }, []);
-
-    const hasImminentEvents = response && response.pdc_data && response.pdc_data.length > 0;
-    const regionBounds = React.useMemo(
-        () => {
-            let bbox = turfBbox(region?.bbox ?? []);
-            return fixBounds(bbox as BBOXType);
-        },
-        [region?.bbox],
-    );
-
-    return (
-        <>
-            {pending && <BlockLoading />}
-            {!pending && data && (
-                <PDCExposureMap
-                    sidebarHeading={region?.region_name}
-                    className={_cs(className, styles.map)}
-                    hazardList={data}
-                    defaultBounds={regionBounds}
-                    onActiveEventChange={handleEventClick}
-                    activeEventUuid={activeEventUuid}
-                />
-            )}
-            {!pending && !hasImminentEvents && (
-                <div className={styles.emptyMessage}>
-                    <div className={styles.text}>
-                        No imminent events
-                    </div>
-                </div>
-            )}
-        </>
-    );
+  return (
+    <>
+      {pending && <BlockLoading />}
+      {!pending && data && (
+        <PDCEventMap
+          sidebarHeading={region?.region_name}
+          className={_cs(className, styles.map)}
+          hazardList={data}
+          defaultBounds={regionBounds}
+          onActiveEventChange={handleEventClick}
+          activeEventUuid={activeEventUuid}
+          activeEventExposure={activeEventExposure}
+          activeEventExposurePending={activeEventExposurePending}
+        />
+      )}
+      {!pending && !hasImminentEvents && (
+        <div className={styles.emptyMessage}>
+          <div className={styles.text}>
+            No imminent events
+          </div>
+        </div>
+      )}
+    </>
+  );
 }
 
 export default ImminentEventsPDC;

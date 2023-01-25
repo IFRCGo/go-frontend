@@ -23,8 +23,8 @@ function EventDetail(props: EventDetailProps) {
 
   const ref = React.useRef<HTMLDivElement>(null);
   const handleClick = React.useCallback(() => {
-    onClick(hazardDetails.pdc_details.uuid);
-  }, [hazardDetails.pdc_details.uuid, onClick]);
+    onClick(hazardDetails.uuid);
+  }, [hazardDetails.uuid, onClick]);
 
   React.useEffect(() => {
     if (isActive && ref.current) {
@@ -47,7 +47,7 @@ function EventDetail(props: EventDetailProps) {
       >
         <div className={styles.header}>
           <div className={styles.title}>
-            {hazardDetails.pdc_details.hazard_name}
+            {hazardDetails.hazard_name}
           </div>
           <div className={styles.icon}>
             {isActive ? <IoCaretUp /> : <IoCaretDown />}
@@ -57,7 +57,7 @@ function EventDetail(props: EventDetailProps) {
           <TextOutput
             className={styles.startDate}
             label="Event start date"
-            value={hazardDetails.pdc_details.start_date}
+            value={hazardDetails.start_date}
             valueType="date"
           />
         </div>
@@ -68,18 +68,18 @@ function EventDetail(props: EventDetailProps) {
             <TextOutput
               className={styles.startDate}
               label="Created at"
-              value={hazardDetails.pdc_details.pdc_created_at}
+              value={hazardDetails.pdc_created_at}
               valueType="date"
             />
             <TextOutput
               className={styles.startDate}
               label="Updated at"
-              value={hazardDetails.pdc_details.pdc_updated_at}
+              value={hazardDetails.pdc_updated_at}
               valueType="date"
             />
           </div>
           <div className={styles.description}>
-            {hazardDetails.pdc_details.description}
+            {hazardDetails.description}
           </div>
         </div>
       )}

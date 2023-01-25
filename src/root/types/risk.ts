@@ -8,47 +8,34 @@ interface ExposureObject {
 }
 
 export interface PDCEvent {
-  id: number;
-  hazard_type_display: string;
-  country_details: {
-    id: number;
-    iso: string;
-    iso3: string;
-    name: string;
-    region: number;
-    regions_details: {
-      id: number;
-      name_disaplay: string;
-      name: number;
-    }
-  } | null;
-  pdc: number;
-  pdc_details: {
-    id: number;
-    created_at: string;
-    hazard_id: string;
-    hazard_name: string;
-    hazard_type: ImminentHazardTypes;
-    latitude: number;
-    longitude: number;
-    uuid: string;
-    description: string;
-    start_date: string;
-    end_date: string;
-    pdc_created_at: string;
-    pdc_updated_at: string;
-    severity: 'warning' | 'watch' | 'advisory' | 'information' | null;
-    severity_display: string | null;
-    footprint_geojson: GeoJSON.Feature<GeoJSON.Polygon, { type_id: string }> | null;
-    storm_position_geojson: GeoJSON.Feature<GeoJSON.Point, {
-      forecast_date_time: string;
-      severity: string;
-      storm_name: string;
-      track_heading: string;
-      wind_speed_mph: number;
-    }>[] | null;
-  }
+  created_at: string;
+  description: string | null;
+  end_date: string | null;
+  hazard_id: string;
+  hazard_name: string;
   hazard_type: ImminentHazardTypes;
+  id: number;
+  latitude: number;
+  longitude: number;
+  pdc_created_at: string | null;
+  pdc_updated_at: string | null;
+  severity: 'warning' | 'watch' | 'advisory' | 'information' | null;
+  severity_display: string | null;
+  start_date: string | null;
+  status: string;
+  status_display: string;
+  uuid: string;
+}
+
+export interface PDCEventExposure {
+  footprint_geojson: GeoJSON.Feature<GeoJSON.Polygon, { type_id: string }> | null;
+  storm_position_geojson: GeoJSON.Feature<GeoJSON.Point, {
+    forecast_date_time: string;
+    severity: string;
+    storm_name: string;
+    track_heading: string;
+    wind_speed_mph: number;
+  }>[] | null;
   population_exposure: {
     households: ExposureObject;
     total: ExposureObject;
@@ -83,8 +70,6 @@ export interface PDCEvent {
     school: ExposureObject;
     total: ExposureObject;
   } | null;
-  country: number | null;
-  source_type: string;
 }
 
 export interface ImminentResponse {

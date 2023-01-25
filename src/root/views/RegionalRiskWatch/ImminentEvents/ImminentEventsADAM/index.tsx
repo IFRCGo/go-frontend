@@ -1,19 +1,21 @@
 import React from 'react';
 
 interface Props {
-    className?: string;
-    regionId: number;
+  className?: string;
+  regionId: number;
 }
 
 function ImminentEventsADAM(props: Props) {
-    const {
-        className,
-        regionId,
-    } = props;
+  const {
+    className,
+    regionId,
+  } = props;
 
-    return (
-        <div>ImminentEventSourceADAM</div>
-    );
+  return (
+    <div className={className}>
+      ImminentEventSourceADAM {regionId}
+    </div>
+  );
 }
 
 export default ImminentEventsADAM;

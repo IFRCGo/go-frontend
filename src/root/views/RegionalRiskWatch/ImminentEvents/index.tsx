@@ -59,16 +59,14 @@ function ImminentEvents(props: Props) {
       className={styles.imminentEvents}
       description={
         <>
-          <div>
-            <RadioInput
-              name={"sourceType"}
-              options={yesNoOptions}
-              keySelector={stringOptionKeySelector}
-              labelSelector={optionLabelSelector}
-              value={sourceType}
-              onChange={handleChangeSourceType}
-            />
-          </div>
+          <RadioInput
+            name={"sourceType"}
+            options={yesNoOptions}
+            keySelector={stringOptionKeySelector}
+            labelSelector={optionLabelSelector}
+            value={sourceType}
+            onChange={handleChangeSourceType}
+          />
           <div>
             This map displays information about the modeled impact of specific forecasted or detected natural hazards. By hovering over the icons, if available, you can see the forecasted/observed footprint of the hazard; when you click on it, the table of modeled impact estimates will appear, as well as an information about who produced the impact estimate.
           </div>

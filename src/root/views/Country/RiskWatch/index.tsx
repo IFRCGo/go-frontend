@@ -27,11 +27,11 @@ function RiskWatch(props: Props) {
       <ImminentEvents
         countryId={countryId}
       />
-
       {/* FIXME: crash due to changes on server
        <SeasonalRisk
         countryId={countryId}
-      /> */}
+      />
+      */}
     </Container>
   );
 }

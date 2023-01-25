@@ -6,7 +6,7 @@ import {
 import TextOutput from '#components/TextOutput';
 import MapTooltipContent from '#components/MapTooltipContent';
 
-import { PDCEvent } from '#types';
+import { PDCEvent, PDCEventExposure } from '#types';
 
 import styles from './styles.module.scss';
 
@@ -42,13 +42,19 @@ function EstimatedOutput({
 
 interface PointDetailsProps {
   hazardDetails: PDCEvent;
+  exposureDetails: PDCEventExposure;
   onCloseButtonClick: () => void;
 }
 
 function PointDetails(props: PointDetailsProps) {
   const {
     hazardDetails: {
-      pdc_details,
+      hazard_name,
+      start_date,
+      pdc_created_at,
+      pdc_updated_at,
+    },
+    exposureDetails: {
       population_exposure,
       capital_exposure,
     },
@@ -57,24 +63,24 @@ function PointDetails(props: PointDetailsProps) {
 
   return (
     <MapTooltipContent
-      title={pdc_details.hazard_name}
+      title={hazard_name}
       onCloseButtonClick={onCloseButtonClick}
       contentClassName={styles.tooltipContent}
     >
       <div className={styles.eventDates}>
         <TextOutput
           label="Event start date"
-          value={pdc_details.start_date}
+          value={start_date}
           valueType="date"
         />
         <TextOutput
           label="Created on"
-          value={pdc_details.start_date}
+          value={pdc_created_at}
           valueType="date"
         />
         <TextOutput
           label="Updated on"
-          value={pdc_details.pdc_updated_at}
+          value={pdc_updated_at}
           valueType="date"
         />
       </div>
