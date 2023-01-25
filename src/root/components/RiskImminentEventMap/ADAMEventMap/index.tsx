@@ -87,7 +87,18 @@ function ADAMEventMap(props: Props) {
         sidebarHeading,
     } = props;
 
-    console.log('active event id', activeEventUuid);
+    const [
+        hazardIconLoadedStatusMap,
+        setHazardIconLoadedStatusMap,
+    ] = React.useState<Record<ImminentHazardTypes, boolean>>({
+        EQ: false,
+        FL: false,
+        CY: false,
+        TC: false,
+        SS: false,
+        DR: false,
+    });
+
     const hazardList = React.useMemo(() => {
         const supportedHazards = listToMap(hazardKeys, h => h, d => true);
         return hazardListFromProps.filter(h => supportedHazards[h.hazard_type]);
@@ -154,25 +165,6 @@ function ADAMEventMap(props: Props) {
         [defaultBounds, hazardList, activeHazard],
     );
 
-    const [
-        hazardIconLoadedStatusMap,
-        setHazardIconLoadedStatusMap,
-    ] = React.useState<Record<ImminentHazardTypes, boolean>>({
-        EQ: false,
-        FL: false,
-        CY: false,
-        TC: false,
-        SS: false,
-        DR: false,
-    });
-
-    const pointActiveState = React.useMemo(() => {
-        return hazardList.map((h) => ({
-            id: h.id,
-            value: h.event_id === activeEventUuid,
-        }));
-    }, [activeEventUuid, hazardList]);
-
     const hazardPointGeoJson = React.useMemo(() => {
         if (!hazardList) {
             return undefined;
@@ -203,6 +195,21 @@ function ADAMEventMap(props: Props) {
 
     }, [hazardList]);
 
+    const allIconsLoaded = React.useMemo(() => (
+        Object.values(hazardIconLoadedStatusMap).every(d => d)
+    ), [hazardIconLoadedStatusMap]);
+
+    const handleIconLoad = React.useCallback((hazardKey: ImminentHazardTypes) => {
+        setHazardIconLoadedStatusMap(prevMap => ({ ...prevMap, [hazardKey]: true }));
+    }, []);
+
+    const pointActiveState = React.useMemo(() => {
+        return hazardList.map((h) => ({
+            id: h.id,
+            value: h.event_id === activeEventUuid,
+        }));
+    }, [activeEventUuid, hazardList]);
+
     const handlePointMouseClick = React.useCallback((
         feature: mapboxgl.MapboxGeoJSONFeature,
     ) => {
@@ -215,23 +222,6 @@ function ADAMEventMap(props: Props) {
 
         return false;
     }, [activeEventUuid, onActiveEventChange]);
-
-    const handleIconLoad = React.useCallback((hazardKey: ImminentHazardTypes) => {
-        setHazardIconLoadedStatusMap(prevMap => ({ ...prevMap, [hazardKey]: true }));
-    }, []);
-
-    const allIconsLoaded = React.useMemo(() => (
-        Object.values(hazardIconLoadedStatusMap).every(d => d)
-    ), [hazardIconLoadedStatusMap]);
-
-    const footprintLayerOptions = React.useMemo(() => ({
-        type: 'fill',
-        paint: {
-            'fill-color': severityFillColorPaint,
-            'fill-opacity': 0.3,
-        },
-        filter: ['==', ['get', 'hazardUuid'], activeHazard?.uuid ?? ''],
-    }), [activeHazard]);
 
     return (
         <Map
@@ -259,6 +249,7 @@ function ADAMEventMap(props: Props) {
                     onLoad={handleIconLoad}
                 />
             ))}
+
             {hazardPointGeoJson && (
                 <MapSource
                     sourceKey="hazard-points"

@@ -100,7 +100,6 @@ function ImminentEventsADAM(props: Props) {
     const [activeEventUuid, setActiveEventUuid] = React.useState<string | undefined>(undefined);
 
     const handleEventClick = React.useCallback((eventUuid: string | undefined) => {
-        console.warn("EVENT IS", eventUuid);
         setActiveEventUuid((oldEventUuid) => {
             if (oldEventUuid === eventUuid) {
                 return undefined;

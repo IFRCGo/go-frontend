@@ -94,7 +94,12 @@ export interface ImminentResponse {
 
 export interface ADAMEvent {
   id: number;
-  // hazard_type_display: string;
+  hazard_type: ImminentHazardTypes;
+  hazard_type_display: string;
+  title: string;
+  event_id: string;
+  publish_date: string;
+  country: number | null;
   country_details: {
     id: number;
     iso: string;
@@ -103,16 +108,12 @@ export interface ADAMEvent {
     region: number;
     regions_details: {
       id: number;
-      name_disaplay: string;
+      name_display: string;
       name: number;
     }
   } | null;
-  title: string;
-  hazard_type: ImminentHazardTypes;
-  event_id: string;
-  publish_date: string;
-  geojson: GeoJSON.Feature<GeoJSON.Point>[] | null;
   event_details: {
+    event_id: string;
     mag: number;
     mmni: number;
     url: {
@@ -124,7 +125,6 @@ export interface ADAMEvent {
     depth: number;
     place: string;
     title: string;
-    event_id: string;
     latitude: number;
     mag_type: string;
     admin1_name: string;
@@ -134,7 +134,15 @@ export interface ADAMEvent {
     population_impact: number;
     country: number | null;
   }
-  country: number | null;
+  geojson: GeoJSON.Feature<GeoJSON.Point>[] | null;
+  footprint_geojson: GeoJSON.Feature<GeoJSON.Polygon, { type_id: string }> | null;
+  storm_position_geojson: GeoJSON.Feature<GeoJSON.Point, {
+    forecast_date_time: string;
+    severity: string;
+    storm_name: string;
+    track_heading: string;
+    wind_speed_mph: number;
+  }>[] | null;
 }
 export interface ImminentResponseAdam {
   results: ADAMEvent[];
