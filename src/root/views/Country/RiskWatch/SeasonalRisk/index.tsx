@@ -132,7 +132,7 @@ function SeasonalRisk(props: Props) {
   const { response } = useRequest<SeasonalResponse>({
     skip: !country,
     query: { iso3: country?.iso3?.toLocaleLowerCase() },
-    url: 'risk://api/v1/seasonal/',
+    url: 'risk://api/v1/country-seasonal/',
   });
 
   const { response: reportResponse } = useRequest<ListResponse<Report>>({
