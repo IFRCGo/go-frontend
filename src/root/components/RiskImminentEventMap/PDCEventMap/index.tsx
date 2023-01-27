@@ -333,7 +333,7 @@ function PDCEventMap(props: Props) {
       'fill-color': severityFillColorPaint,
       'fill-opacity': 0.3,
     },
-  }), [activeEventPopupDetails]);
+  }), []);
 
   return (
     <Map

@@ -77,6 +77,30 @@ export interface ImminentResponse {
   pdc_data: PDCEvent[];
 }
 
+export interface ADAMEventExposure {
+  event_id: string;
+  mag: number;
+  mmni: number;
+  url: {
+    map: string;
+    shakemap: string;
+    population: string;
+  }
+  iso3: string;
+  depth: number;
+  place: string;
+  title: string;
+  latitude: number;
+  mag_type: string;
+  admin1_name: string;
+  longitude: number;
+  published_at: string;
+  population_impact: number;
+  country: number | null;
+  alert_sent: boolean;
+  alert_level: string;
+}
+
 export interface ADAMEvent {
   id: number;
   hazard_type: ImminentHazardTypes;
@@ -97,37 +121,8 @@ export interface ADAMEvent {
       name: number;
     }
   } | null;
-  event_details: {
-    event_id: string;
-    mag: number;
-    mmni: number;
-    url: {
-      map: string;
-      shakemap: string;
-      population: string;
-    }
-    iso3: string;
-    depth: number;
-    place: string;
-    title: string;
-    latitude: number;
-    mag_type: string;
-    admin1_name: string;
-    longitude: number;
-    alert_sent: boolean;
-    published_at: string;
-    population_impact: number;
-    country: number | null;
-  }
-  geojson: GeoJSON.Feature<GeoJSON.Point>[] | null;
-  footprint_geojson: GeoJSON.Feature<GeoJSON.Polygon, { type_id: string }> | null;
-  storm_position_geojson: GeoJSON.Feature<GeoJSON.Point, {
-    forecast_date_time: string;
-    severity: string;
-    storm_name: string;
-    track_heading: string;
-    wind_speed_mph: number;
-  }>[] | null;
+  event_details: ADAMEventExposure;
+  geojson: GeoJSON.Point;
 }
 export interface ImminentResponseAdam {
   results: ADAMEvent[];

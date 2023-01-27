@@ -6,6 +6,7 @@ import Map,
     MapLayer,
     MapSource,
     MapState,
+    MapTooltip,
 } from '@togglecorp/re-map';
 import {
     isDefined,
@@ -13,6 +14,7 @@ import {
     listToMap,
     _cs,
 } from '@togglecorp/fujs';
+import { LngLat } from 'mapbox-gl';
 import {
     defaultMapOptions,
     defaultMapStyle,
@@ -21,6 +23,7 @@ import {
     COLOR_BLUE,
     COLOR_BLACK,
     fixBounds,
+    defaultTooltipOptions,
 } from '#utils/map';
 import {
     geoJsonSourceOptions,
@@ -36,25 +39,33 @@ import {
 } from '@turf/turf';
 import { ADAMEvent, ImminentHazardTypes } from '#types/risk';
 import { BBOXType } from '#utils/map';
-import { LngLat } from 'mapbox-gl';
 
 import Sidebar from './Sidebar';
+import PointDetails from './PointDetails';
 import HazardMapImage from '../PDCEventMap/HazardMapImage';
 
 import styles from './styles.module.scss';
+import TextOutput from '#components/TextOutput';
+import InfoPopup from '#components/InfoPopup';
 
 const severityFillColorPaint = [
     'match',
     ['get', 'hazardSeverity'],
-    'warning',
+    'Orange',
     COLOR_RED,
-    'watch',
+    'Green',
     COLOR_YELLOW,
-    'advisory',
+    'Cones',
     COLOR_BLUE,
     'information',
     COLOR_BLUE,
     COLOR_BLACK,
+];
+const legendItems = [
+    { color: COLOR_RED, label: 'Orange' },
+    { color: COLOR_YELLOW, label: 'Green' },
+    { color: COLOR_BLUE, label: 'Cones' },
+    { color: COLOR_BLACK, label: 'Unknown' },
 ];
 
 const mapPadding = {
@@ -105,12 +116,14 @@ function ADAMEventMap(props: Props) {
 
     }, [hazardListFromProps]);
 
-    const activeHazard = React.useMemo(() => {
+    const activeEvent = hazardList?.find(d => d.event_id === activeEventUuid);
+
+    const activeEventPopUpDetails = React.useMemo(() => {
         if (isNotDefined(activeEventUuid)) {
             return undefined;
         }
 
-        const hazardDetails = hazardList.find(d => d.event_details.event_id === activeEventUuid);
+        const hazardDetails = hazardList.find(d => d.event_id === activeEventUuid);
 
         if (!hazardDetails) {
             return undefined;
@@ -120,8 +133,10 @@ function ADAMEventMap(props: Props) {
             hazardDetails.event_details.longitude,
             hazardDetails.event_details.latitude,
         );
+        const activeEventExposure = hazardDetails.event_details;
 
         return {
+            activeEventExposure,
             hazardDetails,
             lngLat,
             uuid: activeEventUuid,
@@ -130,16 +145,13 @@ function ADAMEventMap(props: Props) {
 
     const bounds = React.useMemo(
         () => {
-            const ah = hazardList.find(d => d.event_id === activeHazard?.uuid);
-
-            if (!ah) {
+            if (!activeEvent) {
                 return defaultBounds;
             }
 
-            const stormPoints = ah.geojson;
             const point = turfPoint([
-                ah.event_details.longitude,
-                ah.event_details.latitude,
+                activeEvent.event_details.longitude,
+                activeEvent.event_details.latitude,
             ]);
             const pointBuffer = turfBuffer(point, 50, { units: 'kilometers' });
 
@@ -147,22 +159,15 @@ function ADAMEventMap(props: Props) {
                 type: 'FeatureCollection',
                 features: [
                     pointBuffer,
-                    ah.geojson,
-                    stormPoints ? ({
-                        type: 'Feature',
-                        geometry: {
-                            type: 'LineString',
-                            coordinates: stormPoints.map((sp) => (
-                                sp.geometry.coordinates
-                            )),
-                        },
-                    }) : undefined,
                 ].filter(isDefined),
             };
 
             return fixBounds(turfBbox(geojson) as BBOXType);
         },
-        [defaultBounds, hazardList, activeHazard],
+        [
+            defaultBounds,
+            activeEvent,
+        ],
     );
 
     const hazardPointGeoJson = React.useMemo(() => {
@@ -187,7 +192,7 @@ function ADAMEventMap(props: Props) {
                         hazardId: hazard.id,
                         hazardUuid: hazard.event_id,
                         hazardType: hazard.hazard_type,
-                        hazardSeverity: '',
+                        hazardSeverity: hazard.event_details.alert_level,
                     },
                 };
             }),
@@ -223,6 +228,12 @@ function ADAMEventMap(props: Props) {
         return false;
     }, [activeEventUuid, onActiveEventChange]);
 
+    const handlePointClose = React.useCallback(() => {
+        if (onActiveEventChange) {
+            onActiveEventChange(undefined);
+        }
+    }, [onActiveEventChange]);
+
     return (
         <Map
             mapStyle={defaultMapStyle}
@@ -239,6 +250,47 @@ function ADAMEventMap(props: Props) {
                         hazardList={hazardList}
                         onActiveEventChange={onActiveEventChange}
                         activeEventUuid={activeEventUuid}
+                    />
+                </div>
+                <div className={styles.footer}>
+                    <div className={styles.legend}>
+                        <div className={styles.legendTitle}>
+                            Alert Level:
+                        </div>
+                        {legendItems.map((li) => (
+                            <div
+                                key={li.label}
+                                className={styles.legendItem}
+                            >
+                                <div
+                                    className={styles.color}
+                                    style={{ backgroundColor: li.color }}
+                                />
+                                <div className={styles.label}>
+                                    {li.label}
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                    <TextOutput
+                        className={styles.source}
+                        label="Source"
+                        value="Pacific Disaster Center"
+                        description={(
+                            <InfoPopup
+                                title="Source: Pacific Disaster Center"
+                                description={(
+                                    <>
+                                        <p>
+                                            These impacts are produced by the Pacific Disaster Center's All-hazards Impact Model (AIM) 3.0.
+                                        </p>
+                                        <div>
+                                            Click <a className={styles.pdcLink} target="_blank" href="https://www.pdc.org/wp-content/uploads/AIM-3-Fact-Sheet-Screen-1.pdf">here</a> for more information about the model and its inputs.
+                                        </div>
+                                    </>
+                                )}
+                            />
+                        )}
                     />
                 </div>
             </div>
@@ -302,6 +354,19 @@ function ADAMEventMap(props: Props) {
                         attributes={pointActiveState}
                     />
                 </MapSource>
+            )}
+            {activeEventPopUpDetails && activeEventPopUpDetails.hazardDetails && (
+                <MapTooltip
+                    coordinates={activeEventPopUpDetails.lngLat}
+                    onHide={handlePointClose}
+                    tooltipOptions={defaultTooltipOptions}
+                >
+                    <PointDetails
+                        onCloseButtonClick={handlePointClose}
+                        hazardDetails={activeEventPopUpDetails.hazardDetails}
+                        exposureDetails={activeEventPopUpDetails.activeEventExposure}
+                    />
+                </MapTooltip>
             )}
             <MapBounds
                 bounds={bounds}

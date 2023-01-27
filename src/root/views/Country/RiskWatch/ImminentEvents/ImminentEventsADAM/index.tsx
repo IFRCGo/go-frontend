@@ -54,7 +54,6 @@ function ImminentEventsADAM(props: Props) {
             hazardListWithDefinedCountries,
             h => h.event_id,
         );
-        // return response.results;
 
         const uniqueList = Object.values(uuidGroupedHazardList).map((hazardList) => {
             const sortedList = [...hazardList].sort((h1, h2) => {
@@ -67,7 +66,6 @@ function ImminentEventsADAM(props: Props) {
             let latestData = sortedList[0];
 
             const latestFootprint = sortedList.find(h => !!h.geojson)?.geojson;
-            // const latestTrack = sortedList.find(h => !!h.pdc_details.storm_position_geojson)?.pdc_details?.storm_position_geojson;
 
             if (!latestData.geojson && latestFootprint) {
                 latestData = {
@@ -75,13 +73,6 @@ function ImminentEventsADAM(props: Props) {
                     geojson: latestFootprint,
                 };
             }
-
-            // if (!latestData.geojson) {
-            //     latestData = {
-            //         ...latestData,
-            //         // storm_position_geojson: latestTrack,
-            //     };
-            // }
 
             return latestData;
         });
