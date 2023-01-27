@@ -6,6 +6,7 @@ import {
 
 import { ADAMEvent } from '#types';
 import TextOutput from '#components/TextOutput';
+
 import styles from './styles.module.scss';
 
 interface EventDetailProps {
@@ -35,6 +36,17 @@ function EventDetail(props: EventDetailProps) {
     }
   }, [isActive]);
 
+  const generateTitle = React.useCallback(
+    (data: ADAMEvent) => {
+      if (!data.title) {
+        return `${data.hazard_type_display} - ${data.country_details?.name}`;
+      }
+
+      if (data.title) {
+        return data.title;
+      }
+    }, []);
+
   return (
     <div
       ref={ref}
@@ -47,7 +59,7 @@ function EventDetail(props: EventDetailProps) {
       >
         <div className={styles.header}>
           <div className={styles.title}>
-            {hazardDetails.hazard_type}
+            {generateTitle(hazardDetails)}
           </div>
           <div className={styles.icon}>
             {isActive ? <IoCaretUp /> : <IoCaretDown />}
@@ -62,27 +74,30 @@ function EventDetail(props: EventDetailProps) {
           />
         </div>
       </div>
-      {isActive && (
-        <div className={styles.details}>
-          <div className={styles.dates}>
-            <TextOutput
-              className={styles.startDate}
-              label="Created at"
-              value={hazardDetails.publish_date}
-              valueType="date"
-            />
-            <TextOutput
-              className={styles.startDate}
-              label="Updated at"
-              value={hazardDetails.publish_date}
-              valueType="date"
-            />
+      {isActive && (hazardDetails.event_details.from_date
+        || hazardDetails.event_details.to_date
+        || hazardDetails.event_details.published_at)
+        && (
+          <div className={styles.details}>
+            <div className={styles.dates}>
+              <TextOutput
+                className={styles.startDate}
+                label="From Date"
+                value={hazardDetails.event_details.from_date}
+                valueType="date"
+              />
+              <TextOutput
+                className={styles.startDate}
+                label="Updated at"
+                value={hazardDetails.event_details.to_date}
+                valueType="date"
+              />
+            </div>
+            <div className={styles.description}>
+              {hazardDetails.event_details.published_at}
+            </div>
           </div>
-          <div className={styles.description}>
-            {hazardDetails.publish_date}
-          </div>
-        </div>
-      )}
+        )}
     </div>
   );
 }

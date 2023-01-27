@@ -273,7 +273,6 @@ function PDCEventMap(props: Props) {
     trackLinestringGeoJson,
   ] = React.useMemo(() => {
     const stormPositionGeoJson = activeEventExposure?.storm_position_geojson;
-
     if (!activeEvent || !stormPositionGeoJson) {
       return [];
     }

@@ -54,7 +54,7 @@ function ImminentEventsPDC(props: Props) {
     return listToMap(pdcResponse.results, d => d.uuid, d => d.id);
   }, [pdcResponse?.results]);
 
-  const eventId = isDefined(activeEventUuid) ? eventUuidToIdMap[activeEventUuid]: undefined;
+  const eventId = isDefined(activeEventUuid) ? eventUuidToIdMap[activeEventUuid] : undefined;
   const {
     pending: activeEventExposurePending,
     response: activeEventExposure,

@@ -99,12 +99,19 @@ export interface ADAMEventExposure {
   country: number | null;
   alert_sent: boolean;
   alert_level: string;
+  from_date: string;
+  to_date: string;
+  wind_speed: number;
+  effective_date: string;
+  date_processed: string;
+  population: number;
 }
 
 export interface ADAMEvent {
   id: number;
   hazard_type: ImminentHazardTypes;
   hazard_type_display: string;
+  event_details: ADAMEventExposure;
   title: string;
   event_id: string;
   publish_date: string;
@@ -121,8 +128,10 @@ export interface ADAMEvent {
       name: number;
     }
   } | null;
-  event_details: ADAMEventExposure;
-  geojson: GeoJSON.Point;
+  geojson: GeoJSON.Feature<GeoJSON.Point, {
+    alert_level: string;
+    name: string;
+  }>[] | null;
 }
 export interface ImminentResponseAdam {
   results: ADAMEvent[];

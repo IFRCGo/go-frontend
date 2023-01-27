@@ -48,53 +48,85 @@ interface PointDetailsProps {
 
 function PointDetails(props: PointDetailsProps) {
   const {
-    hazardDetails: {
-      hazard_type,
-      publish_date,
-
-      // hazard_name,
-      // start_date,
-      // pdc_created_at,
-      // pdc_updated_at,
-    },
+    hazardDetails,
     exposureDetails: {
+      from_date,
+      to_date,
       population_impact,
+      population,
       depth,
+      wind_speed,
+      effective_date,
+      date_processed,
     },
     onCloseButtonClick,
   } = props;
 
+  const generateTitle = React.useCallback(
+    (data: ADAMEvent) => {
+      if (!data.title) {
+        return `${data.hazard_type_display} - ${data.country_details?.name}`;
+      }
+
+      if (data.title) {
+        return data.title;
+      }
+    }, []);
+
   return (
     <MapTooltipContent
-      title={hazard_type}
+      title={generateTitle(hazardDetails)}
       onCloseButtonClick={onCloseButtonClick}
       contentClassName={styles.tooltipContent}
     >
       <div className={styles.eventDates}>
         <TextOutput
           label="Event start date"
-          value={publish_date}
+          value={hazardDetails.publish_date}
           valueType="date"
         />
-        <TextOutput
-          label="Created on"
-          value={publish_date}
-          valueType="date"
-        />
-        <TextOutput
-          label="Updated on"
-          value={publish_date}
-          valueType="date"
-        />
+        {from_date &&
+          <TextOutput
+            label="From date"
+            value={from_date}
+            valueType="date"
+          />
+        }
+        {to_date &&
+          <TextOutput
+            label="To date"
+            value={to_date}
+            valueType="date"
+          />
+        }
+        {effective_date &&
+          <TextOutput
+            label="Effective date"
+            value={effective_date}
+            valueType="date"
+          />
+        }
+        {date_processed &&
+          <TextOutput
+            label="Processed date"
+            value={date_processed}
+            valueType="text"
+          />
+        }
+        {date_processed}
       </div>
       <EstimatedOutput
         attribute="People Exposed / Potentially Affected"
-        value={population_impact}
+        value={population_impact ?? population}
       />
       <hr />
       <EstimatedOutput
-        attribute="Earthquake depth"
+        attribute="Depth"
         value={depth}
+      />
+      <EstimatedOutput
+        attribute="Wind speed"
+        value={wind_speed}
       />
       {/* <EstimatedOutput
         attribute="People in vulnerable groups exposed to the hazard"
