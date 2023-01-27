@@ -16,6 +16,7 @@ import turfBbox from '@turf/bbox';
 
 import TextOutput from '#components/TextOutput';
 import MapTooltipContent from '#components/MapTooltipContent';
+import GoMapDisclaimer from '#components/GoMapDisclaimer';
 import useReduxState from '#hooks/useReduxState';
 import {
   COLOR_RED,
@@ -266,7 +267,10 @@ function ThreeWMap(props: Props) {
       navControlPosition="top-right"
     >
       <div className={_cs(styles.map, className)}>
-        <MapContainer className={styles.mapContainer} />
+        <div className={styles.mapContainerWrapper}>
+          <MapContainer className={styles.mapContainer} />
+          <GoMapDisclaimer className={styles.mapDisclaimer}/>
+        </div>
         <div className={styles.legend}>
           {legendItems?.map(d => (
             <div

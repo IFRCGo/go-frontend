@@ -14,6 +14,7 @@ import Map, {
 } from '@togglecorp/re-map';
 
 import BlockLoading from '#components/block-loading';
+import GoMapDisclaimer from '#components/GoMapDisclaimer';
 import MapTooltipContent from '#components/MapTooltipContent';
 import useReduxState from '#hooks/useReduxState';
 import LanguageContext from '#root/languageContext';
@@ -375,7 +376,10 @@ function ThreeWMap(props: Props) {
       debug={false}
     >
       <div className={_cs(styles.map, className)}>
-        <MapContainer className={styles.mapContainer} />
+        <div className={styles.mapContainerWrapper}>
+          <MapContainer className={styles.mapContainer} />
+          <GoMapDisclaimer className={styles.mapDisclaimer}/>
+        </div>
         <div className={styles.legend}>
           <LegendItem
             color={COLOR_BLUE}

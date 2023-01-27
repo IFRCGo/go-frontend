@@ -1,5 +1,17 @@
 @import '~styles/settings/variables';
 
+.info-popup {
+  display: flex;
+  align-items: center;
+  gap: $spacing*0.5;
+
+  .icon {
+    display: flex;
+    font-size: 1.33em;
+    line-height: 1;
+  }
+}
+
 .dropdown-container {
   padding: $spacing*0.5;
   max-width: 24rem;

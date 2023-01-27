@@ -63,14 +63,22 @@ function ThreeW(props: Props) {
         variant="secondary"
       >
         {isDefined(userDetails?.id) && (
-          
           <>
-          {
-          strings.wikiJsLinkCountry3W !== undefined && strings.wikiJsLinkCountry3W.length>0 ?
-          <div style={{display: 'flex', justifyContent:'flex-end', paddingBottom:'8px'}}>
-            <a href={strings.wikiJsLinkGOWiki+'/'+currentLanguage +'/'+ strings.wikiJsLinkCountry3W} title='GO Wiki' target='_blank' ><img className='' src='/assets/graphics/content/wiki-help-section.svg' alt='IFRC GO logo'/></a>
-          </div> : null
-          }
+            {strings.wikiJsLinkCountry3W?.length > 0 && (
+              <div className={styles.wikiLink}>
+                <a
+                  href={`${strings.wikiJsLinkGOWiki}/${currentLanguage}/${strings.wikiJsLinkCountry3W}`}
+                  title='GO Wiki'
+                  target='_blank'
+                >
+                  <img
+                    className=''
+                    src='/assets/graphics/content/wiki-help-section.svg'
+                    alt='IFRC GO logo'
+                  />
+                </a>
+            </div>
+          )}
           <div className={styles.headerActions}>           
             <Button
               onClick={setShowProjectFormModalTrue}

@@ -8,6 +8,7 @@ import turfBbox from '@turf/bbox';
 import store from '#utils/store';
 import newMap from '#utils/get-new-map';
 import Translate from '#components/Translate';
+import GoMapDisclaimer from '#components/GoMapDisclaimer';
 import { countryLabels } from '#utils/country-labels';
 
 import ActivityDetails from './activity-details';
@@ -213,6 +214,7 @@ function Map (props) {
           ))}
         </div>
       </div>
+      <GoMapDisclaimer className='map-disclaimer' />
     </div>
   );
 }
