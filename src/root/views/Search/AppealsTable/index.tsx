@@ -6,6 +6,7 @@ import Table from '#components/Table';
 import LanguageContext from '#root/languageContext';
 import {
   createDateColumn,
+  createLinkColumn,
   createStringColumn,
 } from '#components/Table/predefinedColumns';
 
@@ -46,15 +47,21 @@ function AppealsTable(props: Props) {
       'Code',
       (appeal) => appeal.code
     ),
-    createStringColumn<Appeal, number>(
+    createLinkColumn<Appeal, number>(
       'name',
       'Name',
-      (appeal) => appeal.name
+      (appeal) => appeal.name,
+      (appeal) => ({
+        to: `appeals/${appeal.id}`, //TODO: Discuss the appeal name link
+      })
     ),
-    createStringColumn<Appeal, number>(
+    createLinkColumn<Appeal, number>(
       'country',
       'Country',
-      (appeal) => appeal.country
+      (appeal) => appeal.country,
+      (appeal) => ({
+        to: `countries/${appeal.country}`,
+      })
     ),
   ];
 

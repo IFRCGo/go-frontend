@@ -4,6 +4,7 @@ import { _cs } from '@togglecorp/fujs';
 import LanguageContext from '#root/languageContext';
 import Container from '#components/Container';
 import {
+  createLinkColumn,
   createStringColumn,
 } from '#components/Table/predefinedColumns';
 import Table from '#components/Table';
@@ -30,10 +31,13 @@ function EmergencyTable(props: Props) {
   const { strings } = React.useContext(LanguageContext);
 
   const columns = [
-    createStringColumn<Emergency, number>(
+    createLinkColumn<Emergency, number>(
       'name',
       'Active Operations',
       (emergency) => emergency.name,
+      (emergency) => ({
+        to: `emergency/${emergency.id}`,
+      })
     ),
     createStringColumn<Emergency, number>(
       'disaster_type',
