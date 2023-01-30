@@ -36,16 +36,36 @@ function SurgeAlertTable(props: Props) {
       'Alert Date',
       (surgeAlert) => surgeAlert.alert_date,
     ),
+    createDateColumn<SurgeAlert, number>(
+      'deadline',
+      'Application Deadline',
+      (surgeAlert) => surgeAlert.deadline,
+    ),
     createStringColumn<SurgeAlert, number>(
       'start_date',
       'Start Date',
       (surgeAlert) => surgeAlert.start_date
     ),
     createStringColumn<SurgeAlert, number>(
+      'name',
+      'Position',
+      (surgeAlert) => surgeAlert.name
+    ),
+    createStringColumn<SurgeAlert, number>(
         'keywords',
         'Keywords',
-        (surgeAlert) => surgeAlert.keywords
+        (surgeAlert) =>  surgeAlert.keywords
       ),
+      createStringColumn<SurgeAlert, number>(
+        'surge_type',
+        'Surge Type',
+        (surgeAlert) => surgeAlert.surge_type
+      ),
+      createStringColumn<SurgeAlert, number>(
+        'status',
+        'Status',
+        (surgeAlert) => surgeAlert.status
+      )
   ];
 
   return (

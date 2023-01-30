@@ -1,6 +1,6 @@
 import React from 'react';
 import AsyncSelect from 'react-select/async';
-import { isDefined, _cs } from '@togglecorp/fujs';
+import { _cs } from '@togglecorp/fujs';
 import { useRequest } from '#utils/restRequest';
 import LanguageContext from '#root/languageContext';
 import Page from '#components/Page';
@@ -55,6 +55,10 @@ export interface SurgeAlert {
   start_date: string;
   alert_date: string | null;
   score: number;
+  event_id: number;
+  status: string;
+  deadline: string;
+  surge_type: string;
 }
 
 export interface Project {
@@ -78,7 +82,7 @@ export interface FieldReport { // FIXME: emergency type is required as per wiref
   event_name: string;
 }
 
-export interface SurgeDeployement {
+export interface SurgeDeployement { // FIXME: duration field is missing
   id: number;
   event_name: string;
   deployed_country: string;
@@ -88,14 +92,14 @@ export interface SurgeDeployement {
   equipment_units: number;
 }
 
-export type SearchResult = { // FIXME: surge_deployments is required
+export type SearchResult = {
   countries: Country[];
   appeals: Appeal[];
   field_reports: FieldReport[];
   projects: Project[];
   emergencies: Emergency[];
   surge_alerts: SurgeAlert[];
-  surge_deployemnts: SurgeDeployement[];
+  surge_deployments: SurgeDeployement[];
 }
 
 
@@ -110,17 +114,17 @@ function Search(props: Props) {
     pending: searchPending,
     response: searchResponse,
   } = useRequest<SearchResult>({
-    url: 'https://search-page-ifrc.dev.datafriendlyspace.org/api/v1/search/?keyword=den',
+    url: 'https://search-page-ifrc.dev.datafriendlyspace.org/api/v1/search/?keyword=in',
   });
 
-  // const emergencyPlanning = searchResponse?.emergencyPlanning.slice(0, 5);
   const emergencies = searchResponse?.emergencies.slice(0, 4);
   const fieldReport = searchResponse?.field_reports.slice(0, 5);
   const appeals = searchResponse?.appeals.slice(0, 5);
   const projectTable = searchResponse?.projects.slice(0, 5);
   const surgeAlert = searchResponse?.surge_alerts.slice(0, 5);
-  const surgeDeployement = searchResponse?.surge_deployemnts.slice(0, 5);
-  const country = searchResponse?.countries.map((country) => country);
+  const surgeDeployement = searchResponse?.surge_deployments.slice(0, 5);
+  const country = searchResponse?.countries.map((country) => country.name);
+  const countryList = country?.slice(0, 5).join(', ');
 
   return (
     <Page
@@ -138,19 +142,27 @@ function Search(props: Props) {
       <div className={styles.content}>
         <Container
           heading={strings.searchIfrcCountry}
-          description={country}
+          description={countryList}
         >
         </Container>
-        {emergencies &&
+        {emergencies && (
           <EmergencyTable data={emergencies} />
-        }
-        <AppealsTable data={appeals} />
-        <FieldReportTable data={fieldReport} />
-        <ProjectTabel data={projectTable} />
-        {isDefined(surgeAlert) && (
+        )}
+        {appeals && (
+          <AppealsTable data={appeals} />
+        )}
+        {fieldReport && (
+          <FieldReportTable data={fieldReport} />
+        )}
+        {projectTable && (
+          <ProjectTabel data={projectTable} />
+        )}
+        {surgeAlert && (
           <SurgeAlertTable data={surgeAlert} />
         )}
-        <SurgeDeployementTable data={surgeDeployement} />
+        {surgeDeployement && (
+          <SurgeDeployementTable data={surgeDeployement} />
+        )}
       </div>
     </Page>
   );
