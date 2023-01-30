@@ -148,15 +148,14 @@ function ADAMEventMap(props: Props) {
         activeEvent.event_details.latitude,
       ]);
 
-      const stormPoints = activeEventPopUpDetails.hazardDetails.storm_position_geojson as GeoJSON.FeatureCollection;
       const pointBuffer = turfBuffer(point, 500, { units: 'kilometers' });
+      const stormPoints = activeEventPopUpDetails.hazardDetails.storm_position_geojson as GeoJSON.FeatureCollection ?? [];
 
       const geojson = {
         type: 'FeatureCollection',
         features: [
           pointBuffer,
-          // ...(stormPoints.features ?? []),
-          // Fixme: unable to create bound for storm
+          ...(stormPoints.features ?? []),
           stormPoints ? ({
             type: 'Feature',
             geometry: {
