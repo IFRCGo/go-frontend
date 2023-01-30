@@ -3,5 +3,7 @@
 .search-details {
   .content {
     display: flex;
+    flex-direction: column;
+    gap: calc($spacing * 3);
   }
 }
