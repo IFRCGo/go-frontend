@@ -65,15 +65,6 @@ function ImminentEventsADAM(props: Props) {
 
       let latestData = sortedList[0];
 
-      const latestFootprint = sortedList.find(h => !!h.geojson)?.geojson;
-
-      if (!latestData.geojson && latestFootprint) {
-        latestData = {
-          ...latestData,
-          geojson: latestFootprint,
-        };
-      }
-
       return latestData;
     });
 

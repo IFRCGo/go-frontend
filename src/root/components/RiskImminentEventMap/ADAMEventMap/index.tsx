@@ -137,71 +137,9 @@ function ADAMEventMap(props: Props) {
     };
   }, [activeEventUuid, hazardList]);
 
-  // FIXME: unable to handle MultiLineString type geoJSON error occour in cyclone data
-  // const [
-  //   trackPointsGeoJson,
-  //   trackLinestringGeoJson,
-  // ] = React.useMemo(() => {
-
-  //   if (!activeEvent) {
-  //     return [];
-  //   }
-  //   const hazardDetails = hazardList.filter(
-  //     (d) => d.event_id === activeEventPopUpDetails?.uuid
-  //   ).find(sp => sp.hazard_type === "TC");
-
-  //   const stormPositionGeoJson = hazardDetails?.geojson;
-
-  //   if (!stormPositionGeoJson) {
-  //     return [];
-  //   }
-
-  //   console.warn("cyclone", hazardDetails);
-  //   console.warn("points", stormPositionGeoJson);
-  //   const featuresForTrack = stormPositionGeoJson.map((sp) => ({
-  //     ...sp,
-  //     properties: {
-  //       ...sp.properties,
-  //       hazardId: activeEvent.id,
-  //       hazardUuid: activeEvent.event_id,
-  //     }
-  //   }));
-
-  //   if (featuresForTrack.length === 0) {
-  //     return [];
-  //   }
-
-  //   const featureForLinestring = {
-  //     type: 'Feature' as const,
-  //     geometry: {
-  //       type: 'LineString' as const,
-  //       coordinates: stormPositionGeoJson.map((sp) => sp.geometry.coordinates),
-  //     },
-  //     properties: {
-  //       hazardId: activeEvent.id,
-  //       hazardUuid: activeEvent.event_id,
-  //     },
-  //   };
-  //   console.warn("feature line string", featureForLinestring);
-  //   const trackPointsGeoJson = {
-  //     type: 'FeatureCollection' as const,
-  //     features: featuresForTrack,
-  //   };
-
-  //   const trackLinestringGeoJson = {
-  //     type: 'FeatureCollection' as const,
-  //     features: [featureForLinestring],
-  //   };
-
-  //   return [
-  //     trackPointsGeoJson,
-  //     trackLinestringGeoJson,
-  //   ];
-  // }, [activeEvent, hazardList, activeEventPopUpDetails]);
-
   const bounds = React.useMemo(
     () => {
-      if (!activeEvent) {
+      if (!activeEvent || !activeEventPopUpDetails) {
         return defaultBounds;
       }
 
@@ -209,23 +147,23 @@ function ADAMEventMap(props: Props) {
         activeEvent.event_details.longitude,
         activeEvent.event_details.latitude,
       ]);
-      const pointBuffer = turfBuffer(point, 50, { units: 'kilometers' });
+
+      const stormPoints = activeEventPopUpDetails.hazardDetails.storm_position_geojson as GeoJSON.FeatureCollection;
+      const pointBuffer = turfBuffer(point, 500, { units: 'kilometers' });
 
       const geojson = {
         type: 'FeatureCollection',
         features: [
           pointBuffer,
-
-          //Fixme: unable to create bound for storm
-          // stormPoints ? ({
-          //   type: 'Feature',
-          //   geometry: {
-          //     type: 'LineString',
-          //     coordinates: stormPoints.map((sp) => (
-          //       sp.geometry.coordinates
-          //     )),
-          //   },
-          // }) : undefined,
+          // ...(stormPoints.features ?? []),
+          // Fixme: unable to create bound for storm
+          stormPoints ? ({
+            type: 'Feature',
+            geometry: {
+              type: 'LineString',
+              coordinates: stormPoints,
+            },
+          }) : undefined,
         ].filter(isDefined),
       };
 
@@ -234,6 +172,7 @@ function ADAMEventMap(props: Props) {
     [
       defaultBounds,
       activeEvent,
+      activeEventPopUpDetails,
     ],
   );
 
@@ -266,6 +205,25 @@ function ADAMEventMap(props: Props) {
     };
 
   }, [hazardList]);
+
+  const stormPosition = React.useMemo(
+    () => {
+      if (!activeEventPopUpDetails) {
+        return {
+          type: 'FeatureCollection' as const,
+          features: [],
+        };
+      }
+
+      // const stormPosition = hazardListFromProps.filter(
+      //   hh => hh.storm_position_geojson
+      // ).map(sp => sp.storm_position_geojson)[0];
+
+      const stormPoints = activeEventPopUpDetails?.hazardDetails.storm_position_geojson;
+
+      return stormPoints;
+    },
+    [activeEventPopUpDetails]);
 
   const allIconsLoaded = React.useMemo(() => (
     Object.values(hazardIconLoadedStatusMap).every(d => d)
@@ -328,12 +286,26 @@ function ADAMEventMap(props: Props) {
           onLoad={handleIconLoad}
         />
       ))}
-      {/* {trackLinestringGeoJson && (
+      {stormPosition && (
         <MapSource
-          sourceKey="cyclone-tracks-linestring"
+          sourceKey='maine'
           sourceOptions={geoJsonSourceOptions}
-          geoJson={trackLinestringGeoJson}
+          geoJson={stormPosition}
         >
+          {/* TODO: Proper styling
+          Add a new layer to visualize the polygon.
+          */}
+          {/* <MapLayer
+            layerKey="maine"
+            layerOptions={{
+              type: 'fill',
+              layout: {},
+              'paint': {
+                'fill-color': '#0080ff',
+                'fill-opacity': 0.5
+              }
+            }}
+          /> */}
           <MapLayer
             layerKey="cyclone-tracks-arrow"
             layerOptions={{
@@ -350,64 +322,40 @@ function ADAMEventMap(props: Props) {
                 'icon-size': 0.8,
                 'icon-rotate': 90,
               },
-              filter: ['==', ['get', 'hazardUuid'], activeEventPopUpDetails?.uuid ?? ''],
+
             }}
           />
+
+          {/* TODO: Proper styling
+           Add a black outline around the polygon.
+            */}
+          {/* <MapLayer
+            layerKey="outline"
+            layerOptions={{
+              source: 'maine',
+              type: 'line',
+              layout: {},
+              'paint': {
+                'line-color': '#000',
+                'line-width': 3
+              }
+            }}
+          /> */}
           <MapLayer
             layerKey="cyclone-tracks-linestring-line"
             layerOptions={{
               type: 'line',
               paint: {
                 'line-color': '#000000',
-                'line-opacity': 0.1,
+                'line-opacity': 0.5,
                 'line-width': 1,
               },
-              filter: ['==', ['get', 'hazardUuid'], activeEventPopUpDetails?.uuid ?? ''],
             }}
           />
+
         </MapSource>
       )}
-      {trackPointsGeoJson && (
-        <MapSource
-          sourceKey="cyclone-tracks"
-          sourceOptions={geoJsonSourceOptions}
-          geoJson={trackPointsGeoJson}
-        >
-          <MapLayer
-            layerKey="cyclone-tracks-points-circle"
-            layerOptions={{
-              type: 'circle',
-              paint: {
-                'circle-color': severityFillColorPaint,
-                'circle-radius': 6,
-                'circle-opacity': 0.5,
-              },
-              filter: ['==', ['get', 'hazardUuid'], activeEventPopUpDetails?.uuid ?? ''],
-            }}
-          />
-          <MapLayer
-            layerKey="cyclone-tracks-points-label"
-            layerOptions={{
-              type: 'symbol',
-              paint: {
-                'text-color': COLOR_BLACK,
-                'text-halo-color': COLOR_YELLOW,
-                'text-halo-width': 2,
-                'text-halo-blur': 1,
-              },
-              layout: {
-                // FIXME: check the actual problem here
-                // @ts-ignore
-                'text-size': 10,
-                'text-field': ['get', 'forecast_date_time'],
-                'text-anchor': 'left',
-                'text-offset': [1, 0],
-              },
-              filter: ['==', ['get', 'hazardUuid'], activeEventPopUpDetails?.uuid ?? ''],
-            }}
-          />
-        </MapSource>
-      )} */}
+
       {hazardPointGeoJson && (
         <MapSource
           sourceKey="hazard-points"

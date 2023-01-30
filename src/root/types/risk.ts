@@ -128,10 +128,12 @@ export interface ADAMEvent {
       name: number;
     }
   } | null;
-  geojson: GeoJSON.Feature<GeoJSON.Point, {
+  geojson: GeoJSON.Feature | GeoJSON.FeatureCollection<GeoJSON.Geometry, {
     alert_level: string;
-    name: string;
-  }>[] | null;
+  }>
+  storm_position_geojson: GeoJSON.Feature | GeoJSON.FeatureCollection<GeoJSON.Geometry, {
+    alert_level: string;
+  }>;
 }
 export interface ImminentResponseAdam {
   results: ADAMEvent[];
