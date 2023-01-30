@@ -98,7 +98,7 @@ export interface ADAMEventExposure {
   population_impact: number;
   country: number | null;
   alert_sent: boolean;
-  alert_level: string;
+  alert_level: 'Orange' | 'Green' | 'Cones' | 'Information' | null;
   from_date: string;
   to_date: string;
   wind_speed: number;
@@ -129,10 +129,18 @@ export interface ADAMEvent {
     }
   } | null;
   geojson: GeoJSON.Feature | GeoJSON.FeatureCollection<GeoJSON.Geometry, {
+    hazardId: number;
+    hazardUuid: string;
+    hazardType: string;
     alert_level: string;
+    feature_type: string;
   }>
   storm_position_geojson: GeoJSON.Feature | GeoJSON.FeatureCollection<GeoJSON.Geometry, {
+    hazardId: number;
+    hazardUuid: string;
+    hazardType: string;
     alert_level: string;
+    feature_type: string;
   }>;
 }
 export interface ImminentResponseAdam {
