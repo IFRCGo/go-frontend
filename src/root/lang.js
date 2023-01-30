@@ -3822,4 +3822,13 @@ export default {
   countryPlanKeyFigurePeopleTargeted: 'People Targeted',
   countryPlanNameOfPNS: 'Name of Partner National Society',
   countryPlanNoCountryPlan: 'This country hasn\'t published any Country Plan yet!',
+
+  //Search
+  searchIfrcEmergencyOperations: 'IFRC Emergency Operations',
+  searchIfrcEmergencies: 'Emergencies',
+  searchIfrcEmergencyPlanningAndReportingDocuments: 'Emergency Planning And Reporting Documents',
+  searchIfrcReport: 'Report',
+  searchIfrcProjects: 'Projects',
+  searchIfrcOpenSurgeAlerts: 'Open Surge Alerts',
+  searchIfrcCountry: 'Country',
 };

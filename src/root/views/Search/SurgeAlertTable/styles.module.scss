@@ -1,0 +1,21 @@
+@import '~styles/settings/variables';
+
+.surge-alerts-table {
+  .content {
+    table {
+      width: 100%;
+
+      th {
+        text-align: left;
+        padding: $spacing;
+        border-bottom: $base-border-width solid $base-border-color;
+        background-color: $color-background;
+      }
+
+      td {
+        padding: $spacing;
+        border-bottom: $base-border-width solid $base-border-color;
+      }
+    }
+  }
+}
