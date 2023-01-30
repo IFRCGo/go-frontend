@@ -12,7 +12,10 @@ import {
   getDuration,
   getMolnixKeywords
 } from '#utils/utils';
-import { nope, recentInterval } from '#utils/format';
+import {
+  nope,
+//  recentInterval
+} from '#utils/format';
 
 // FIXME: imports from the /components/ could be a 1 liner?
 import ExportButton from '#components/export-button-container';
@@ -113,8 +116,8 @@ class AlertsTable extends SFPComponent {
     }
     if (state.filters.date !== 'all') {
       qs.created_at__gte = datesAgo[state.filters.date]();
-    } else if (props.showRecent) {
-      qs.created_at__gte = recentInterval;
+//  } else if (props.showRecent) {
+//    qs.created_at__gte = recentInterval;
     }
 
     if (props.isActive) {
