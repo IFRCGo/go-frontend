@@ -1,7 +1,9 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 import mapboxgl from 'mapbox-gl';
+import { init, ErrorBoundary, setUser as setUserOnSentry, withProfiler } from '@sentry/react';
 
+import sentryConfig from 'base/configs/sentry';
 import store from '#utils/store';
 import { detectIE } from '#utils/ie';
 
@@ -15,7 +17,7 @@ import {
 
 import LanguageContext from '#root/languageContext';
 import lang from '#lang';
-import { mbtoken }from './config';
+import { mbtoken } from './config';
 import Multiplexer from './Multiplexer';
 
 require('isomorphic-fetch');
@@ -28,6 +30,10 @@ mapboxgl.setRTLTextPlugin(
 
 mapboxgl.accessToken = mbtoken;
 
+if (sentryConfig) {
+  init(sentryConfig);
+}
+
 const requestContextValue = {
   transformUrl: processGoUrls,
   transformOptions: processGoOptions,
@@ -35,7 +41,7 @@ const requestContextValue = {
   transformError: processGoError,
 };
 
-function Root () {
+function Root() {
   const [strings, setStrings] = React.useState(lang);
   const langContextValue = React.useMemo(() => ({
     strings,
@@ -77,7 +83,7 @@ if (version === false) {
       configurable: true,
       enumerable: true,
       writable: true,
-      value: function remove () {
+      value: function remove() {
         if (this.parentNode !== null) this.parentNode.removeChild(this);
       }
     });
