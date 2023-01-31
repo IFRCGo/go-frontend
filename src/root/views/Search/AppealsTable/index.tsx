@@ -1,5 +1,6 @@
 import React from 'react';
 import { _cs } from '@togglecorp/fujs';
+import { Link } from 'react-router-dom';
 
 import Container from '#components/Container';
 import Table from '#components/Table';
@@ -47,18 +48,19 @@ function AppealsTable(props: Props) {
       'Code',
       (appeal) => appeal.code
     ),
-    createLinkColumn<Appeal, number>(
+    createStringColumn<Appeal, number>(
       'name',
       'Name',
-      (appeal) => appeal.name,
-      (appeal) => ({
-        to: `appeals/${appeal.id}`, //TODO: Discuss the appeal name link
-      })
+      (appeal) => appeal.name
     ),
     createLinkColumn<Appeal, number>(
       'country',
       'Country',
-      (appeal) => appeal.country,
+      (appeal) => (
+        <div className={styles.link}>
+          {appeal.country}
+        </div>
+      ),
       (appeal) => ({
         to: `countries/${appeal.country}`,
       })
@@ -71,6 +73,14 @@ function AppealsTable(props: Props) {
       heading={strings.searchIfrcEmergencyPlanningAndReportingDocuments}
       contentClassName={styles.content}
       sub
+      actions={(
+        <Link
+          className={styles.link}
+          to={`appeals/all`}  //FIXME: Redirect to appeals
+        >
+          View All Documents
+        </Link>
+      )}
     >
       <Table
         className={styles.inProgressDrefTable}

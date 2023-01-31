@@ -1,10 +1,12 @@
 import React from 'react';
 import { _cs } from '@togglecorp/fujs';
+import { Link } from 'react-router-dom';
 
 import Container from '#components/Container';
 import Table from '#components/Table';
 import LanguageContext from '#root/languageContext';
 import {
+  createLinkColumn,
   createNumberColumn,
   createStringColumn,
 } from '#components/Table/predefinedColumns';
@@ -56,10 +58,17 @@ function SurgeDeployementTable(props: Props) {
       'Country Deployed to',
       (surgeDeployement) => surgeDeployement.deployed_country
     ),
-    createStringColumn<SurgeDeployement, number>(
-        'event_name',
-        'Emergency',
-        (surgeDeployement) => surgeDeployement.event_name
+    createLinkColumn<SurgeDeployement, number>(
+      'event_name',
+      'Emergency',
+      (surgeDeployement) => (
+        <div className={styles.link}>
+          {surgeDeployement.event_name}
+        </div>
+      ),
+        (surgeDeployement) => ({
+          to: `emergencies/${surgeDeployement.id}`,
+        })
       ),
   ];
 
@@ -69,6 +78,14 @@ function SurgeDeployementTable(props: Props) {
       heading={strings.searchIfrcEmergencyPlanningAndReportingDocuments}
       contentClassName={styles.content}
       sub
+      actions={(
+        <Link
+          className={styles.link}
+          to={`deployments/erus/all`}
+        >
+          View All Documents
+        </Link>
+      )}
     >
       <Table
         className={styles.inProgressDrefTable}
@@ -82,4 +99,3 @@ function SurgeDeployementTable(props: Props) {
 }
 
 export default SurgeDeployementTable;
- 

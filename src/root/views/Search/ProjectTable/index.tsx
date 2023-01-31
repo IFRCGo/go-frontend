@@ -4,6 +4,7 @@ import { _cs } from '@togglecorp/fujs';
 import LanguageContext from '#root/languageContext';
 import Container from '#components/Container';
 import {
+  createDateColumn,
   createNumberColumn,
   createStringColumn,
 } from '#components/Table/predefinedColumns';
@@ -38,7 +39,7 @@ function ProjectTable(props: Props) {
     ),
     createStringColumn<Project, number>(
       'national_society',
-      'National Society',
+      'National Society/ ERU',
       (project) => project.national_society,
     ),
     createStringColumn<Project, number>(
@@ -46,7 +47,7 @@ function ProjectTable(props: Props) {
       'Project/ Activity Name',
       (project) => project.name,
     ),
-    createStringColumn<Project, number>(
+    createDateColumn<Project, number>(
       'start_date',
       'Start-End Dates',
       (project) => project.start_date,

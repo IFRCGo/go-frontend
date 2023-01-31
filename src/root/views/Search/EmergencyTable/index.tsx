@@ -1,5 +1,6 @@
 import React from 'react';
 import { _cs } from '@togglecorp/fujs';
+import { Link } from 'react-router-dom';
 
 import LanguageContext from '#root/languageContext';
 import Container from '#components/Container';
@@ -34,7 +35,11 @@ function EmergencyTable(props: Props) {
     createLinkColumn<Emergency, number>(
       'name',
       'Active Operations',
-      (emergency) => emergency.name,
+      (emergency) => ( 
+        <div className={styles.link}>
+          {emergency.name}
+        </div>
+      ),
       (emergency) => ({
         to: `emergency/${emergency.id}`,
       })
@@ -67,6 +72,14 @@ function EmergencyTable(props: Props) {
       heading={strings.searchIfrcEmergencies}
       contentClassName={styles.content}
       sub
+      actions={(
+        <Link
+          className={styles.link}
+          to={`/emergencies/all`}
+        >
+          View All Documents
+        </Link>
+      )}
     >
       <Table
         className={styles.inProgressDrefTable}

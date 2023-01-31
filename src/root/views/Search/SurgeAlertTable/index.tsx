@@ -1,11 +1,13 @@
 import React from 'react';
 import { _cs } from '@togglecorp/fujs';
+import { Link } from 'react-router-dom';
 
 import Container from '#components/Container';
 import Table from '#components/Table';
 import LanguageContext from '#root/languageContext';
 import {
   createDateColumn,
+  createNumberColumn,
   createStringColumn,
 } from '#components/Table/predefinedColumns';
 
@@ -41,7 +43,14 @@ function SurgeAlertTable(props: Props) {
       'Application Deadline',
       (surgeAlert) => surgeAlert.deadline,
     ),
-    createStringColumn<SurgeAlert, number>(
+    createNumberColumn<SurgeAlert, number>(
+      'duration',
+      'Duration',
+      (surgeAlert) => {
+        const duration = Number(surgeAlert.alert_date) - Number(surgeAlert.deadline);
+        return duration;
+      }),
+    createDateColumn<SurgeAlert, number>(
       'start_date',
       'Start Date',
       (surgeAlert) => surgeAlert.start_date
@@ -52,20 +61,20 @@ function SurgeAlertTable(props: Props) {
       (surgeAlert) => surgeAlert.name
     ),
     createStringColumn<SurgeAlert, number>(
-        'keywords',
-        'Keywords',
-        (surgeAlert) =>  surgeAlert.keywords
-      ),
-      createStringColumn<SurgeAlert, number>(
-        'surge_type',
-        'Surge Type',
-        (surgeAlert) => surgeAlert.surge_type
-      ),
-      createStringColumn<SurgeAlert, number>(
-        'status',
-        'Status',
-        (surgeAlert) => surgeAlert.status
-      )
+      'keywords',
+      'Keywords',
+      (surgeAlert) => surgeAlert.keywords
+    ),
+    createStringColumn<SurgeAlert, number>(
+      'surge_type',
+      'Surge Type',
+      (surgeAlert) => surgeAlert.surge_type
+    ),
+    createStringColumn<SurgeAlert, number>(
+      'status',
+      'Status',
+      (surgeAlert) => surgeAlert.status
+    )
   ];
 
   return (
@@ -74,6 +83,14 @@ function SurgeAlertTable(props: Props) {
       heading={strings.searchIfrcOpenSurgeAlerts}
       contentClassName={styles.content}
       sub
+      actions={(
+        <Link
+          className={styles.link}
+          to={`alerts/all`}
+        >
+          View All Documents
+        </Link>
+      )}
     >
       <Table
         className={styles.appealsTable}
