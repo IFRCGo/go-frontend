@@ -35,13 +35,10 @@ function EmergencyTable(props: Props) {
     createLinkColumn<Emergency, number>(
       'name',
       'Active Operations',
-      (emergency) => ( 
-        <div className={styles.link}>
-          {emergency.name}
-        </div>
-      ),
+      (emergency) => emergency.name,
       (emergency) => ({
-        to: `emergency/${emergency.id}`,
+        to: `/emergencies/${emergency.id}`,
+        className: styles.link,
       })
     ),
     createStringColumn<Emergency, number>(

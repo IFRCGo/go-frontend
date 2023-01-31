@@ -1,12 +1,13 @@
 import React from 'react';
-import AsyncSelect, { Props as SelectProps } from 'react-select/async';
 
-import { isDefined, unique, _cs } from '@togglecorp/fujs';
+import { _cs } from '@togglecorp/fujs';
 import { useRequest } from '#utils/restRequest';
 import LanguageContext from '#root/languageContext';
 import Page from '#components/Page';
 import Container from '#components/Container';
-import { getSelectInputNoOptionsMessage } from '#utils/utils';
+import TextInput from '#components/TextInput';
+import BlockLoading from '#components/block-loading';
+import useInputState from '#hooks/useInputState';
 
 import EmergencyTable from './EmergencyTable';
 import AppealsTable from './AppealsTable';
@@ -21,19 +22,6 @@ export interface Option {
   value: string | number;
   label: string;
 }
-
-interface BaseProps<N> {
-  className?: string;
-  readOnly?: boolean;
-  initialOptions?: Option[];
-  pending?: boolean;
-  defaultOptions?: boolean;
-  name: N;
-  loadOptions: (value: string | undefined, callback: (opt: Option[]) => void) => void;
-}
-const emptyOptionList: Option[] = [];
-
-type Key = string | number;
 
 export interface Country {
   id: number;
@@ -118,142 +106,69 @@ export type SearchResult = {
   surge_deployments: SurgeDeployement[];
 }
 
-type Props<N, V extends Key> = BaseProps<N> & ({
-  isMulti: true;
-  isOptionDisabled?: SelectProps<Option, true>['isOptionDisabled'];
-  value: V[] | undefined | null;
-  onChange: (newValue: NonNullable<V>[] | undefined, name: N) => void;
-} | {
-  isMulti?: false;
-  isOptionDisabled?: SelectProps<Option, false>['isOptionDisabled'];
-  value: V | undefined | null;
-  onChange: (newValue: V, name: N) => void;
-})
+interface Props {
+  className?: string;
+}
 
-function Search<N, V extends Key>(props: Props<N, V>) {
+function Search(props: Props) {
   const {
     className,
-    readOnly,
-    loadOptions,
-    name,
-    defaultOptions,
-    initialOptions = emptyOptionList,
-    pending,
   } = props;
 
-  const [options, setOptions] = React.useState<Option[]>(initialOptions);
-
+  const [searchString, setSearchString] = useInputState<string | undefined>(undefined);
   const { strings } = React.useContext(LanguageContext);
 
-  const selectValue = React.useMemo(() => {
-    if (!props.isMulti) {
-      return options.find(o => (
-        String(props.value) === String(o.value)
-      ));
-    }
-
-    return options.filter(
-      o => (props.value || []).findIndex(
-        v => String(v) === String(o.value)
-      ) !== -1
-    );
-  }, [props.isMulti, options, props.value]);
-
-  const timeoutRef = React.useRef<number | undefined>();
-
-  const handleChange = React.useCallback((newValue) => {
-    if (!props.onChange) {
-      return;
-    }
-
-    if (isDefined(newValue)) {
-      if (props.isMulti) {
-        props.onChange(newValue.map((d: Option) => d.value), name);
-      } else {
-        props.onChange(newValue.value, name);
-      }
-    } else {
-      if (props.isMulti) {
-        props.onChange([], name);
-      } else {
-        props.onChange(undefined as unknown as V, name);
-      }
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [name, props.isMulti, props.onChange]);
-
-  const handleLoadOptions = React.useCallback((searchText, callback) => {
-    if (!isDefined(searchText)) {
-      callback(emptyOptionList);
-    }
-
-    const localCallback = (currentOptions: Option[]) => {
-      if (currentOptions?.length > 0) {
-        setOptions(
-          prevOptions => unique(
-            [
-              ...prevOptions,
-              ...currentOptions,
-            ],
-            o => o.value
-          ) ?? [],
-        );
-      }
-      callback(currentOptions);
-    };
-
-    // window.clearTimeout(timeoutRef.current);
-    // timeoutRef.current = window.setTimeout(() => {
-    //   loadOptions(searchText, localCallback);
-    // }, 350);
-  }, [setOptions, loadOptions]);
-
-    const {
+  const shouldSendSearchRequest = searchString && searchString.length > 2;
+  const {
     pending: searchPending,
     response: searchResponse,
   } = useRequest<SearchResult>({
-    url: 'https://search-page-ifrc.dev.datafriendlyspace.org/api/v1/search/?keyword=${inputValue}',
+    skip: !shouldSendSearchRequest,
+    url: 'api/v1/search/',
+    query: {
+      keyword: searchString,
+    }
   });
 
   const emergencies = searchResponse?.emergencies.slice(0, 4);
   const fieldReport = searchResponse?.field_reports.slice(0, 5);
   const appeals = searchResponse?.appeals.slice(0, 5);
-  const projectTable = searchResponse?.projects.slice(0, 5);
+  const projects = searchResponse?.projects.slice(0, 5);
   const surgeAlert = searchResponse?.surge_alerts.slice(0, 5);
   const surgeDeployement = searchResponse?.surge_deployments.slice(0, 5);
   const country = searchResponse?.countries.map((country) => country.name);
   const countryList = country?.slice(0, 5).join(', ');
 
+  const isEmpty = !emergencies && !fieldReport && !appeals
+    && !projects && !surgeAlert && !surgeDeployement && !country;
+
   return (
     <Page
-      className={_cs(styles.searchDetails, className)}
+      className={_cs(styles.search, className)}
       title={strings.threeWPageTitle}
       heading="Search for keyword"
       withMainContentBackground
       description={(
-        <AsyncSelect
-          className={styles.searchBar}
-          placeholder={strings.headerSearchPlaceholder}
-          select={false}
-          classNamePrefix="go"
-          readOnly={readOnly}
-          onChange={handleChange}
-          value={selectValue}
-          loadOptions={handleLoadOptions}
-          isDisabled={searchPending}
-          isLoading={pending}
-          noOptionsMessage={getSelectInputNoOptionsMessage as unknown as (obj: { inputValue: string }) => string}
-          defaultOptions={defaultOptions}
+        <TextInput
+          name="search"
+          value={searchString}
+          onChange={setSearchString}
         />
       )}
     >
-      <div className={styles.content}>
-        <Container
-          heading={strings.searchIfrcCountry}
-          description={countryList}
-          contentClassName={styles.content}
-        >
+      {searchPending && <BlockLoading />}
+      {!searchPending && isEmpty && (
+        <Container>
+          Nothing here!
         </Container>
+      )}
+      <div className={styles.content}>
+        {country && (
+          <Container
+            heading={strings.searchIfrcCountry}
+            description={countryList}
+          />
+        )}
         {emergencies && (
           <EmergencyTable
             data={emergencies}
@@ -268,9 +183,9 @@ function Search<N, V extends Key>(props: Props<N, V>) {
           <FieldReportTable
             data={fieldReport} />
         )}
-        {projectTable && (
+        {projects && (
           <ProjectTabel
-            data={projectTable}
+            data={projects}
           />
         )}
         {surgeAlert && (

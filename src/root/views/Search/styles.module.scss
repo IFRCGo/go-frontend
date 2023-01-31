@@ -1,12 +1,10 @@
 @import '~styles/settings/variables';
 
-.search-details {
+.search {
   .content {
     display: flex;
     flex-direction: column;
-    gap: calc($spacing * 3);
-  }
-  .search-bar {
-    overflow: hidden;
+    gap: $spacing * 5;
+    padding: $spacing * 4;
   }
 }
