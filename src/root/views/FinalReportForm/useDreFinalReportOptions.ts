@@ -153,6 +153,7 @@ export const schema: FormSchema = {
     num_assisted: [],
     financial_report: [],
     financial_report_description: [],
+    users: [defaultEmptyArrayType],
 
     cover_image_file: {
       fields: () => ({
@@ -185,7 +186,7 @@ export const schema: FormSchema = {
           title: [requiredCondition],
           budget: [requiredCondition, positiveIntegerCondition, lessThanOrEqualToCondition(MaxIntLimit)],
           person_targeted: [requiredCondition, positiveIntegerCondition, lessThanOrEqualToCondition(MaxIntLimit)],
-          person_assisted: [requiredCondition, positiveIntegerCondition,lessThanOrEqualToCondition(MaxIntLimit)],
+          person_assisted: [requiredCondition, positiveIntegerCondition, lessThanOrEqualToCondition(MaxIntLimit)],
           indicators: {
             keySelector: (n) => n.clientId as string,
             member: (): IndicatorsSchemaMember => ({
