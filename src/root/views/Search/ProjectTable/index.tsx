@@ -81,7 +81,7 @@ function ProjectTable(props: Props) {
         data={data}
         columns={columns}
         keySelector={ProjectKeySelector}
-        variant="small"
+        variant="large"
       />
     </Container>
   );
