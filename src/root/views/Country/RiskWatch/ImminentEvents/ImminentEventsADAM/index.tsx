@@ -1,19 +1,19 @@
 import React from 'react';
 import {
+  isNotDefined,
   listToGroupList,
-  isDefined,
   _cs,
 } from '@togglecorp/fujs';
 import turfBbox from '@turf/bbox';
 
 import useReduxState from '#hooks/useReduxState';
-import { ADAMEvent } from '#types';
+import BlockLoading from '#components/block-loading';
 import { useRequest, ListResponse } from '#utils/restRequest';
 import {
   fixBounds,
   BBOXType,
 } from '#utils/map';
-import BlockLoading from '#components/block-loading';
+import { ADAMEvent } from '#types';
 import ADAMEventMap from '#components/RiskImminentEventMap/ADAMEventMap';
 
 import styles from './styles.module.scss';
@@ -28,16 +28,29 @@ function ImminentEventsADAM(props: Props) {
     className,
     countryId,
   } = props;
+
   const allCountries = useReduxState('allCountries');
   const country = React.useMemo(() => (
     allCountries?.data.results.find(d => d.id === countryId)
   ), [allCountries, countryId]);
 
+  const [activeEventUuid, setActiveEventUuid] = React.useState<string | undefined>(undefined);
+
+  const handleEventClick = React.useCallback((eventUuid: string | undefined) => {
+    setActiveEventUuid((oldEventUuid) => {
+      if (oldEventUuid === eventUuid) {
+        return undefined;
+      }
+
+      return eventUuid;
+    });
+  }, []);
+
   const {
     pending,
     response,
   } = useRequest<ListResponse<ADAMEvent>>({
-    skip: !country,
+    skip: isNotDefined(country),
     url: 'risk://api/v1/adam-exposure/',
     query: { iso3: country?.iso3?.toLocaleLowerCase() },
   });
@@ -47,11 +60,8 @@ function ImminentEventsADAM(props: Props) {
       return undefined;
     }
 
-    const hazardListWithDefinedCountries = response.results.filter(
-      (h) => isDefined(h.country)
-    );
     const uuidGroupedHazardList = listToGroupList(
-      hazardListWithDefinedCountries,
+      response.results,
       h => h.event_id,
     );
 
@@ -78,18 +88,6 @@ function ImminentEventsADAM(props: Props) {
     },
     [country?.bbox],
   );
-
-  const [activeEventUuid, setActiveEventUuid] = React.useState<string | undefined>(undefined);
-
-  const handleEventClick = React.useCallback((eventUuid: string | undefined) => {
-    setActiveEventUuid((oldEventUuid) => {
-      if (oldEventUuid === eventUuid) {
-        return undefined;
-      }
-
-      return eventUuid;
-    });
-  }, []);
 
   if ((!pending && !response?.results) || data?.length === 0) {
     return null;

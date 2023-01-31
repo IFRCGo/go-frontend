@@ -1,9 +1,11 @@
 import React from 'react';
+
 import Container from '#components/Container';
-import styles from './styles.module.scss';
 import RadioInput from '#components/RadioInput';
 import ImminentEventsADAM from './ImminentEventsADAM';
 import ImminentEventsPDC from './ImminentEventsPDC';
+
+import styles from './styles.module.scss';
 
 export interface StringValueOption {
   value: string;
@@ -21,7 +23,7 @@ const titleDescription = "This map displays information about the modeled impact
 function ImminentEvents(props: Props) {
   const { countryId } = props;
 
-  const [sourceType, setSourceType] = React.useState<string | undefined>("WFP");
+  const [sourceType, setSourceType] = React.useState<string | undefined>("PDC");
 
   const yesNoOptions = React.useMemo(() => {
     return [

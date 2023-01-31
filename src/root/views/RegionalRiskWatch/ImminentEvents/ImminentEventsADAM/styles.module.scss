@@ -1,0 +1,20 @@
+@import '~styles/settings/variables';
+
+.imminent-events {
+  margin: $spacing*2 0;
+
+  .map-description {
+    padding: $spacing;
+  }
+
+  .main-content {
+    position: relative;
+    min-height: 20rem;
+
+    .map {
+      z-index: 0;
+      flex-grow: 1;
+      height: 50rem;
+    }
+  }
+}

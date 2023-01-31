@@ -6,7 +6,8 @@ import Map,
   MapLayer,
   MapSource,
   MapState,
-  MapTooltip, } from '@togglecorp/re-map';
+  MapTooltip,
+} from '@togglecorp/re-map';
 import {
   isDefined,
   isNotDefined,
@@ -104,8 +105,11 @@ function ADAMEventMap(props: Props) {
   });
 
   const hazardList = React.useMemo(() => {
+    //Note: Remove after handle null event_details in server
+    const hazardWithEventDetailsOnly = hazardListFromProps.filter(h => isDefined(h.event_details));
+
     const supportedHazards = listToMap(hazardKeys, h => h, d => true);
-    return hazardListFromProps.filter(h => supportedHazards[h.hazard_type]);
+    return hazardWithEventDetailsOnly.filter(h => supportedHazards[h.hazard_type]);
 
   }, [hazardListFromProps]);
 
@@ -118,7 +122,7 @@ function ADAMEventMap(props: Props) {
 
     const hazardDetails = hazardList.find(d => d.event_id === activeEventUuid);
 
-    if (!hazardDetails) {
+    if (isNotDefined(hazardDetails)) {
       return undefined;
     }
 
@@ -138,7 +142,9 @@ function ADAMEventMap(props: Props) {
 
   const bounds = React.useMemo(
     () => {
-      if (!activeEvent || !activeEventPopUpDetails) {
+      if (isNotDefined(activeEvent)
+        || isNotDefined(activeEventPopUpDetails)
+      ) {
         return defaultBounds;
       }
 
@@ -148,7 +154,7 @@ function ADAMEventMap(props: Props) {
       ]);
 
       const pointBuffer = turfBuffer(point, 500, { units: 'kilometers' });
-      const stormPoints = activeEventPopUpDetails.hazardDetails.storm_position_geojson;
+      const stormPoints = activeEventPopUpDetails.hazardDetails.storm_position_geojson ?? [];
 
       const geojson = {
         type: 'FeatureCollection',
@@ -175,7 +181,7 @@ function ADAMEventMap(props: Props) {
   );
 
   const hazardPointGeoJson = React.useMemo(() => {
-    if (!hazardList) {
+    if (isNotDefined(hazardList)) {
       return undefined;
     }
 
@@ -206,7 +212,7 @@ function ADAMEventMap(props: Props) {
 
   const stormPosition = React.useMemo(
     () => {
-      if (!activeEventPopUpDetails) {
+      if (isNotDefined(activeEventPopUpDetails)) {
         return {
           type: 'FeatureCollection' as const,
           features: [],
@@ -215,7 +221,7 @@ function ADAMEventMap(props: Props) {
 
       const stormPoints = activeEventPopUpDetails?.hazardDetails.storm_position_geojson;
 
-      if (!stormPoints) {
+      if (isNotDefined(stormPoints)) {
         return {
           type: 'FeatureCollection' as const,
           features: [],
@@ -242,8 +248,6 @@ function ADAMEventMap(props: Props) {
   const handleIconLoad = React.useCallback((hazardKey: ImminentHazardTypes) => {
     setHazardIconLoadedStatusMap(prevMap => ({ ...prevMap, [hazardKey]: true }));
   }, []);
-
-  console.info(stormPosition);
 
   const pointActiveState = React.useMemo(() => {
     return hazardList.map((h) => ({

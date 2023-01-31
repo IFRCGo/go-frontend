@@ -13,9 +13,9 @@ import { BBOXType, fixBounds } from '#utils/map';
 import { PDCEvent, PDCEventExposure } from '#types/risk';
 import useReduxState from '#hooks/useReduxState';
 import BlockLoading from '#components/block-loading';
+import PDCEventMap from '#components/RiskImminentEventMap/PDCEventMap';
 
 import styles from './styles.module.scss';
-import PDCEventMap from '#components/RiskImminentEventMap/PDCEventMap';
 
 interface Props {
   className?: string;
@@ -64,7 +64,7 @@ function ImminentEventsPDC(props: Props) {
     return listToMap(pdcResponse.results, d => d.uuid, d => d.id);
   }, [pdcResponse?.results]);
 
-  const eventId = isDefined(activeEventUuid) ? eventUuidToIdMap[activeEventUuid]: undefined;
+  const eventId = isDefined(activeEventUuid) ? eventUuidToIdMap[activeEventUuid] : undefined;
 
   const {
     pending: activeEventExposurePending,
