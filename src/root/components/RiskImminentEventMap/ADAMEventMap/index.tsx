@@ -18,13 +18,13 @@ import { LngLat } from 'mapbox-gl';
 import {
   defaultMapOptions,
   defaultMapStyle,
-  COLOR_RED,
   COLOR_YELLOW,
   COLOR_BLUE,
   COLOR_BLACK,
   COLOR_WHITE,
   fixBounds,
   defaultTooltipOptions,
+  COLOR_ORANGE,
 } from '#utils/map';
 import {
   geoJsonSourceOptions,
@@ -52,7 +52,7 @@ const alertLevelFillColorPaint = [
   'match',
   ['get', 'alert_level'],
   'Orange',
-  COLOR_RED,
+  COLOR_ORANGE,
   'Green',
   COLOR_YELLOW,
   'Cones',

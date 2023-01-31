@@ -1,9 +1,9 @@
 import React from "react";
 import {
-  COLOR_RED,
   COLOR_YELLOW,
   COLOR_BLUE,
   COLOR_BLACK,
+  COLOR_ORANGE,
 } from '#utils/map';
 
 import InfoPopup from "#components/InfoPopup";
@@ -11,7 +11,7 @@ import TextOutput from "#components/TextOutput";
 import styles from "./styles.module.scss";
 
 const legendItems = [
-  { color: COLOR_RED, label: 'Orange' },
+  { color: COLOR_ORANGE, label: 'Orange' },
   { color: COLOR_YELLOW, label: 'Green' },
   { color: COLOR_BLUE, label: 'Cones' },
   { color: COLOR_BLACK, label: 'Unknown' },
