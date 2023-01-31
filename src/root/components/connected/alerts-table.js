@@ -53,6 +53,10 @@ class AlertsTable extends SFPComponent {
           field: 'is_stood_down',
           direction: 'asc'
         },
+        sort2: {
+          field: 'created_at',
+          direction: 'desc'
+        },
         filters: {
           date: 'all',
           type: 'all',
@@ -113,6 +117,9 @@ class AlertsTable extends SFPComponent {
     let qs = { limit: state.limit };
     if (state.sort.field) {
       qs.ordering = (state.sort.direction === 'desc' ? '-' : '') + state.sort.field;
+    }
+    if (state.sort2.field) {
+      qs.ordering += ',' + (state.sort2.direction === 'desc' ? '-' : '') + state.sort2.field;
     }
     if (state.filters.date !== 'all') {
       qs.created_at__gte = datesAgo[state.filters.date]();
@@ -219,6 +226,14 @@ class AlertsTable extends SFPComponent {
         country = countries && countries.length > 0 ? countries[0].name : '';
       }
       const eventTitle = rowData.operation || get(rowData, 'event.name');
+      let status3;
+      if (get(rowData, 'is_stood_down')) {
+        status3 = 'Stood down';
+      } else if (endDate.ts < nowMs) {
+        status3 = 'Closed';
+      } else {
+        status3 = 'Open';
+      }
       acc.push({
         id: rowData.id,
         date: date.toISODate(),
@@ -230,7 +245,7 @@ class AlertsTable extends SFPComponent {
         keywords: getMolnixKeywords(rowData.molnix_tags || []),
         emergency: event ? <Link className='link--table' to={`/emergencies/${event}`} title={strings.alertTableViewEmergency}>{eventTitle}</Link> : rowData.operation || nope,
         country: country,
-        status: rowData.is_stood_down ? 'Stood down' : 'Open' // Former: molnix_status === 'unfilled'
+        status: status3
       });
 
       return acc;
