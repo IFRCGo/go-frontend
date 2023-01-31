@@ -90,6 +90,12 @@ const defaultFormValues: PartialForm<DrefOperationalUpdateFields> = {
   images_file: [],
   users: [],
   is_assessment_report: false,
+  changing_timeframe_operation: false,
+  changing_operation_strategy: false,
+  changing_target_population_of_operation: false,
+  changing_geographic_location: false,
+  changing_budget: false,
+  request_for_second_allocation: false,
 };
 
 const intermittentValidationExceptions: (keyof DrefOperationalUpdateFields)[] = [
