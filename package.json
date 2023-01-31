@@ -106,6 +106,8 @@
     "@mapbox/geo-viewport": "^0.5.0",
     "@mapbox/mapbox-gl-draw": "^1.2.0",
     "@react-pdf/renderer": "^2.0.21",
+    "@sentry/react": "^7.34.0",
+    "@sentry/tracing": "^7.34.0",
     "@tinymce/tinymce-react": "^3.13.1",
     "@togglecorp/faram": "^1.2.1",
     "@togglecorp/fujs": "^1.9.3",
