@@ -135,6 +135,7 @@ function Search(props: Props) {
       description={(
         <AsyncSelect
           placeholder={strings.headerSearchPlaceholder}
+          className={styles.searchBar}
           select={false}
         />
       )}
@@ -143,25 +144,37 @@ function Search(props: Props) {
         <Container
           heading={strings.searchIfrcCountry}
           description={countryList}
+          contentClassName={styles.content}
         >
         </Container>
         {emergencies && (
-          <EmergencyTable data={emergencies} />
+          <EmergencyTable
+            data={emergencies}
+          />
         )}
         {appeals && (
-          <AppealsTable data={appeals} />
+          <AppealsTable
+            data={appeals}
+          />
         )}
         {fieldReport && (
-          <FieldReportTable data={fieldReport} />
+          <FieldReportTable
+            data={fieldReport} />
         )}
         {projectTable && (
-          <ProjectTabel data={projectTable} />
+          <ProjectTabel
+            data={projectTable}
+          />
         )}
         {surgeAlert && (
-          <SurgeAlertTable data={surgeAlert} />
+          <SurgeAlertTable
+            data={surgeAlert}
+          />
         )}
         {surgeDeployement && (
-          <SurgeDeployementTable data={surgeDeployement} />
+          <SurgeDeployementTable
+            data={surgeDeployement}
+          />
         )}
       </div>
     </Page>

@@ -6,4 +6,7 @@
     flex-direction: column;
     gap: calc($spacing * 3);
   }
+  .search-bar {
+    overflow: hidden;
+  }
 }

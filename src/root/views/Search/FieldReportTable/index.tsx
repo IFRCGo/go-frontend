@@ -1,12 +1,12 @@
 import React from 'react';
 import { _cs } from '@togglecorp/fujs';
 import LanguageContext from '#root/languageContext';
+import { Link } from 'react-router-dom';
 
 import Container from '#components/Container';
 import Table from '#components/Table';
 import {
   createDateColumn,
-  createLinkColumn,
   createStringColumn,
 } from '#components/Table/predefinedColumns';
 
@@ -55,6 +55,14 @@ function FieldReportTable(props: Props) {
       heading={strings.searchIfrcReport}
       contentClassName={styles.content}
       sub
+      actions={(
+        <Link
+          className={styles.link}
+          to={`reports/all`}
+        >
+          View All Documents
+        </Link>
+      )}
     >
       <Table
         className={styles.inProgressDrefTable}
