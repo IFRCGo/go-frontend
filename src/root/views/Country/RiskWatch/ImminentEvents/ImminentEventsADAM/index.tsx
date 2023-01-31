@@ -7,8 +7,8 @@ import {
 import turfBbox from '@turf/bbox';
 
 import useReduxState from '#hooks/useReduxState';
-import { ImminentResponseAdam } from '#types';
-import { useRequest } from '#utils/restRequest';
+import { ADAMEvent } from '#types';
+import { useRequest, ListResponse } from '#utils/restRequest';
 import {
   fixBounds,
   BBOXType,
@@ -36,7 +36,7 @@ function ImminentEventsADAM(props: Props) {
   const {
     pending,
     response,
-  } = useRequest<ImminentResponseAdam>({
+  } = useRequest<ListResponse<ADAMEvent>>({
     skip: !country,
     url: 'risk://api/v1/adam-exposure/',
     query: { iso3: country?.iso3?.toLocaleLowerCase() },

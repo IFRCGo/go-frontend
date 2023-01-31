@@ -128,21 +128,8 @@ export interface ADAMEvent {
       name: number;
     }
   } | null;
-  geojson: GeoJSON.Feature | GeoJSON.FeatureCollection<GeoJSON.Geometry, {
-    hazardId: number;
-    hazardUuid: string;
-    hazardType: string;
-    alert_level: string;
-    feature_type: string;
-  }>
-  storm_position_geojson: GeoJSON.Feature | GeoJSON.FeatureCollection<GeoJSON.Geometry, {
-    hazardId: number;
-    hazardUuid: string;
-    hazardType: string;
-    alert_level: string;
-    feature_type: string;
-  }>;
-}
-export interface ImminentResponseAdam {
-  results: ADAMEvent[];
+  geojson: GeoJSON.Feature<GeoJSON.Point>;
+
+  // TODO: add properties here
+  storm_position_geojson: GeoJSON.FeatureCollection<GeoJSON.Geometry, {}>;
 }

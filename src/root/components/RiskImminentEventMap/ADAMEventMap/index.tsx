@@ -6,8 +6,7 @@ import Map,
   MapLayer,
   MapSource,
   MapState,
-  MapTooltip,
-} from '@togglecorp/re-map';
+  MapTooltip, } from '@togglecorp/re-map';
 import {
   isDefined,
   isNotDefined,
@@ -22,6 +21,7 @@ import {
   COLOR_YELLOW,
   COLOR_BLUE,
   COLOR_BLACK,
+  COLOR_WHITE,
   fixBounds,
   defaultTooltipOptions,
 } from '#utils/map';
@@ -136,32 +136,6 @@ function ADAMEventMap(props: Props) {
     };
   }, [activeEventUuid, hazardList]);
 
-  //  FIXME: I think this not the right way, please fix.
-  // Thank you ankit dai 😁
-  const footprintGeoJson = React.useMemo(() => {
-    if (!activeEvent || !activeEventPopUpDetails?.hazardDetails) {
-      return {
-        type: 'FeatureCollection' as const,
-        features: [],
-        properties: {},
-      };
-    }
-
-    const stormPoints = activeEventPopUpDetails.hazardDetails.storm_position_geojson as GeoJSON.FeatureCollection ?? [];
-
-    return {
-      type: 'FeatureCollection' as const,
-      features: [
-        ...(stormPoints.features ?? []),
-      ].filter(isDefined),
-      properties: {
-        ...activeEvent.storm_position_geojson,
-        hazardUuid: activeEvent.event_id,
-        alert_level: activeEvent.event_details.alert_level,
-      },
-    };
-  }, [activeEvent, activeEventPopUpDetails]);
-
   const bounds = React.useMemo(
     () => {
       if (!activeEvent || !activeEventPopUpDetails) {
@@ -174,7 +148,7 @@ function ADAMEventMap(props: Props) {
       ]);
 
       const pointBuffer = turfBuffer(point, 500, { units: 'kilometers' });
-      const stormPoints = activeEventPopUpDetails.hazardDetails.storm_position_geojson as GeoJSON.FeatureCollection ?? [];
+      const stormPoints = activeEventPopUpDetails.hazardDetails.storm_position_geojson;
 
       const geojson = {
         type: 'FeatureCollection',
@@ -241,7 +215,23 @@ function ADAMEventMap(props: Props) {
 
       const stormPoints = activeEventPopUpDetails?.hazardDetails.storm_position_geojson;
 
-      return stormPoints;
+      if (!stormPoints) {
+        return {
+          type: 'FeatureCollection' as const,
+          features: [],
+        };
+      }
+
+      return {
+        ...stormPoints,
+        features: stormPoints.features.map((feature) => ({
+          ...feature,
+          properties: {
+            ...feature.properties,
+            type: feature.geometry.type,
+          },
+        })),
+      };
     },
     [activeEventPopUpDetails]);
 
@@ -252,6 +242,8 @@ function ADAMEventMap(props: Props) {
   const handleIconLoad = React.useCallback((hazardKey: ImminentHazardTypes) => {
     setHazardIconLoadedStatusMap(prevMap => ({ ...prevMap, [hazardKey]: true }));
   }, []);
+
+  console.info(stormPosition);
 
   const pointActiveState = React.useMemo(() => {
     return hazardList.map((h) => ({
@@ -278,12 +270,14 @@ function ADAMEventMap(props: Props) {
       onActiveEventChange(undefined);
     }
   }, [onActiveEventChange]);
+
   const footprintLayerOptions = React.useMemo(() => ({
     type: 'fill',
     paint: {
       'fill-color': alertLevelFillColorPaint,
       'fill-opacity': 0.3,
     },
+    filter: ['==', ['get', 'type'], 'MultiPolygon'],
   }), []);
 
   return (
@@ -314,25 +308,49 @@ function ADAMEventMap(props: Props) {
         />
       ))}
 
-      {/* FIXME: Plese correct this area color process */}
-      {footprintGeoJson && (
-        <MapSource
-          sourceKey="hazard-footprint"
-          sourceOptions={geoJsonSourceOptions}
-          geoJson={footprintGeoJson}
-        >
-          <MapLayer
-            layerKey="hazard-footprint-polygon"
-            layerOptions={footprintLayerOptions}
-          />
-        </MapSource>
-      )}
       {stormPosition && (
         <MapSource
           sourceKey='maine'
           sourceOptions={geoJsonSourceOptions}
           geoJson={stormPosition}
         >
+          <MapLayer
+            layerKey="cyclone-tracks-points-circle"
+            layerOptions={{
+              type: 'circle',
+              paint: {
+                'circle-color': alertLevelFillColorPaint,
+                'circle-radius': 6,
+                'circle-opacity': 0.5,
+              },
+              filter: ['==', ['get', 'type'], 'Point'],
+            }}
+          />
+          <MapLayer
+            layerKey="cyclone-tracks-points-label"
+            layerOptions={{
+              type: 'symbol',
+              paint: {
+                'text-color': COLOR_BLACK,
+                'text-halo-color': COLOR_WHITE,
+                'text-halo-width': 2,
+                'text-halo-blur': 1,
+              },
+              layout: {
+                // FIXME: check the actual problem here
+                // @ts-ignore
+                'text-size': 10,
+                'text-field': ['get', 'track_date'],
+                'text-anchor': 'left',
+                'text-offset': [1, 0],
+              },
+              filter: ['==', ['get', 'type'], 'Point'],
+            }}
+          />
+          <MapLayer
+            layerKey="hazard-footprint-polygon"
+            layerOptions={footprintLayerOptions}
+          />
           <MapLayer
             layerKey="cyclone-tracks-arrow"
             layerOptions={{
@@ -349,7 +367,7 @@ function ADAMEventMap(props: Props) {
                 'icon-size': 0.8,
                 'icon-rotate': 90,
               },
-
+              filter: ['==', ['get', 'type'], 'MultiLineString'],
             }}
           />
           <MapLayer
@@ -361,6 +379,7 @@ function ADAMEventMap(props: Props) {
                 'line-opacity': 0.5,
                 'line-width': 1,
               },
+              filter: ['==', ['get', 'type'], 'MultiLineString'],
             }}
           />
 
