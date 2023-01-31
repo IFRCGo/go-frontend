@@ -1,10 +1,12 @@
 import React from 'react';
-import AsyncSelect from 'react-select/async';
-import { _cs } from '@togglecorp/fujs';
+import AsyncSelect, { Props as SelectProps } from 'react-select/async';
+
+import { isDefined, unique, _cs } from '@togglecorp/fujs';
 import { useRequest } from '#utils/restRequest';
 import LanguageContext from '#root/languageContext';
 import Page from '#components/Page';
 import Container from '#components/Container';
+import { getSelectInputNoOptionsMessage } from '#utils/utils';
 
 import EmergencyTable from './EmergencyTable';
 import AppealsTable from './AppealsTable';
@@ -15,9 +17,23 @@ import SurgeDeployementTable from './SurgeDeployementTable';
 
 import styles from './styles.module.scss';
 
-interface Props {
-  className?: string;
+export interface Option {
+  value: string | number;
+  label: string;
 }
+
+interface BaseProps<N> {
+  className?: string;
+  readOnly?: boolean;
+  initialOptions?: Option[];
+  pending?: boolean;
+  defaultOptions?: boolean;
+  name: N;
+  loadOptions: (value: string | undefined, callback: (opt: Option[]) => void) => void;
+}
+const emptyOptionList: Option[] = [];
+
+type Key = string | number;
 
 export interface Country {
   id: number;
@@ -102,19 +118,101 @@ export type SearchResult = {
   surge_deployments: SurgeDeployement[];
 }
 
+type Props<N, V extends Key> = BaseProps<N> & ({
+  isMulti: true;
+  isOptionDisabled?: SelectProps<Option, true>['isOptionDisabled'];
+  value: V[] | undefined | null;
+  onChange: (newValue: NonNullable<V>[] | undefined, name: N) => void;
+} | {
+  isMulti?: false;
+  isOptionDisabled?: SelectProps<Option, false>['isOptionDisabled'];
+  value: V | undefined | null;
+  onChange: (newValue: V, name: N) => void;
+})
 
-function Search(props: Props) {
+function Search<N, V extends Key>(props: Props<N, V>) {
   const {
     className,
+    readOnly,
+    loadOptions,
+    name,
+    defaultOptions,
+    initialOptions = emptyOptionList,
+    pending,
   } = props;
+
+  const [options, setOptions] = React.useState<Option[]>(initialOptions);
 
   const { strings } = React.useContext(LanguageContext);
 
-  const {
+  const selectValue = React.useMemo(() => {
+    if (!props.isMulti) {
+      return options.find(o => (
+        String(props.value) === String(o.value)
+      ));
+    }
+
+    return options.filter(
+      o => (props.value || []).findIndex(
+        v => String(v) === String(o.value)
+      ) !== -1
+    );
+  }, [props.isMulti, options, props.value]);
+
+  const timeoutRef = React.useRef<number | undefined>();
+
+  const handleChange = React.useCallback((newValue) => {
+    if (!props.onChange) {
+      return;
+    }
+
+    if (isDefined(newValue)) {
+      if (props.isMulti) {
+        props.onChange(newValue.map((d: Option) => d.value), name);
+      } else {
+        props.onChange(newValue.value, name);
+      }
+    } else {
+      if (props.isMulti) {
+        props.onChange([], name);
+      } else {
+        props.onChange(undefined as unknown as V, name);
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [name, props.isMulti, props.onChange]);
+
+  const handleLoadOptions = React.useCallback((searchText, callback) => {
+    if (!isDefined(searchText)) {
+      callback(emptyOptionList);
+    }
+
+    const localCallback = (currentOptions: Option[]) => {
+      if (currentOptions?.length > 0) {
+        setOptions(
+          prevOptions => unique(
+            [
+              ...prevOptions,
+              ...currentOptions,
+            ],
+            o => o.value
+          ) ?? [],
+        );
+      }
+      callback(currentOptions);
+    };
+
+    // window.clearTimeout(timeoutRef.current);
+    // timeoutRef.current = window.setTimeout(() => {
+    //   loadOptions(searchText, localCallback);
+    // }, 350);
+  }, [setOptions, loadOptions]);
+
+    const {
     pending: searchPending,
     response: searchResponse,
   } = useRequest<SearchResult>({
-    url: 'https://search-page-ifrc.dev.datafriendlyspace.org/api/v1/search/?keyword=in',
+    url: 'https://search-page-ifrc.dev.datafriendlyspace.org/api/v1/search/?keyword=${inputValue}',
   });
 
   const emergencies = searchResponse?.emergencies.slice(0, 4);
@@ -134,9 +232,18 @@ function Search(props: Props) {
       withMainContentBackground
       description={(
         <AsyncSelect
-          placeholder={strings.headerSearchPlaceholder}
           className={styles.searchBar}
+          placeholder={strings.headerSearchPlaceholder}
           select={false}
+          classNamePrefix="go"
+          readOnly={readOnly}
+          onChange={handleChange}
+          value={selectValue}
+          loadOptions={handleLoadOptions}
+          isDisabled={searchPending}
+          isLoading={pending}
+          noOptionsMessage={getSelectInputNoOptionsMessage as unknown as (obj: { inputValue: string }) => string}
+          defaultOptions={defaultOptions}
         />
       )}
     >
