@@ -3,6 +3,7 @@ import thunkMiddleware from 'redux-thunk';
 import { createLogger } from 'redux-logger';
 import listen from 'redux-listener-middleware';
 import * as localStorage from 'local-storage';
+import { setUser as setUserOnSentry } from '@sentry/react';
 
 import config from '#config';
 import reducer from '../reducers';
@@ -153,14 +154,21 @@ const logger = createLogger({
 
 /* Listeners */
 const tokenListener = ({ data }) => {
-  localStorage.set('user', {
+  const userData = {
     username: data.username,
     token: data.token,
     expires: data.expires,
     firstName: data.firstName,
     lastName: data.lastName,
-    id: data.id
-  });
+    id: data.id,
+  };
+  const sentryUserData = {
+    id: data.id,
+    displayName: data.username,
+    email: data.email,
+  };
+  localStorage.set('user', userData);
+  setUserOnSentry(sentryUserData ?? null);
 };
 
 const currentLanguageListener = ({ language }) => {
