@@ -1,9 +1,13 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 import mapboxgl from 'mapbox-gl';
-import { init, ErrorBoundary, setUser as setUserOnSentry, withProfiler } from '@sentry/react';
+import {
+  init,
+  ErrorBoundary,
+  withProfiler,
+} from '@sentry/react';
 
-import sentryConfig from 'base/configs/sentry';
+import sentryConfig from './sentry';
 import store from '#utils/store';
 import { detectIE } from '#utils/ie';
 
@@ -17,6 +21,8 @@ import {
 
 import LanguageContext from '#root/languageContext';
 import lang from '#lang';
+import FullPageErrorMessage from '#components/FullPageErrorMessage';
+
 import { mbtoken } from './config';
 import Multiplexer from './Multiplexer';
 
@@ -49,17 +55,27 @@ function Root() {
   }), [strings, setStrings]);
 
   return (
-    <Provider store={store}>
-      <LanguageContext.Provider value={langContextValue}>
-        <RequestContext.Provider value={requestContextValue}>
-          <Multiplexer />
-        </RequestContext.Provider>
-      </LanguageContext.Provider>
-    </Provider>
+    <ErrorBoundary
+      showDialog
+      fallback={(
+        <FullPageErrorMessage
+          errorTitle="Oh no!"
+          errorMessage="Some error occured"
+        />
+      )}
+    >
+      <Provider store={store}>
+        <LanguageContext.Provider value={langContextValue}>
+          <RequestContext.Provider value={requestContextValue}>
+            <Multiplexer />
+          </RequestContext.Provider>
+        </LanguageContext.Provider>
+      </Provider>
+    </ErrorBoundary>
   );
 }
 
-export default Root;
+export default withProfiler(Root, { name: 'Root' });
 
 // Get IE or Edge browser version
 const version = detectIE();
