@@ -4,12 +4,15 @@
   margin: $spacing*2 0;
 
   .map-description {
-    padding: $spacing;
+    display: flex;
+    flex-direction: column;
+    gap: $spacing;
+    padding: $spacing 0;
   }
 
   .main-content {
     position: relative;
-    min-height: 20rem;
+    min-height: 16rem;
 
     .map {
       z-index: 0;
