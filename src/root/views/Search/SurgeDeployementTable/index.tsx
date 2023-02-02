@@ -1,6 +1,5 @@
 import React from 'react';
 import { _cs } from '@togglecorp/fujs';
-import { Link } from 'react-router-dom';
 
 import Container from '#components/Container';
 import Table from '#components/Table';
@@ -11,17 +10,26 @@ import {
   createStringColumn,
 } from '#components/Table/predefinedColumns';
 
-import { SurgeDeployement } from '../index';
-
 import styles from './styles.module.scss';
 
-function surgeDeploymentTable(surgeDeployement: SurgeDeployement) {
+export interface SurgeDeployementList {
+  id: number;
+  event_name: string;
+  deployed_country: string;
+  type: string;
+  owner: string;
+  personnel_units: number;
+  equipment_units: number;
+  score: number;
+}
+
+function surgeDeploymentTable(surgeDeployement: SurgeDeployementList) {
   return surgeDeployement.id;
 }
 
 interface Props {
   className?: string;
-  data: SurgeDeployement[] | undefined;
+  data: SurgeDeployementList[] | undefined;
   actions: React.ReactNode;
 }
 
@@ -35,32 +43,32 @@ function SurgeDeployementTable(props: Props) {
   const { strings } = React.useContext(LanguageContext);
 
   const columns = [
-    createStringColumn<SurgeDeployement, number>(
+    createStringColumn<SurgeDeployementList, number>(
       'owner',
       'Owner',
       (surgeDeployement) => surgeDeployement.owner,
     ),
-    createStringColumn<SurgeDeployement, number>(
+    createStringColumn<SurgeDeployementList, number>(
       'type',
       'Type',
       (surgeDeployement) => surgeDeployement.type,
     ),
-    createNumberColumn<SurgeDeployement, number>(
+    createNumberColumn<SurgeDeployementList, number>(
       'personnel_units',
       'Personnel Units',
       (surgeDeployement) => surgeDeployement.personnel_units,
     ),
-    createNumberColumn<SurgeDeployement, number>(
+    createNumberColumn<SurgeDeployementList, number>(
       'equipment_units',
       'Equipment Units',
       (surgeDeployement) => surgeDeployement.equipment_units,
     ),
-    createStringColumn<SurgeDeployement, number>(
+    createStringColumn<SurgeDeployementList, number>(
       'deployed_country',
       'Country Deployed to',
       (surgeDeployement) => surgeDeployement.deployed_country,
     ),
-    createLinkColumn<SurgeDeployement, number>(
+    createLinkColumn<SurgeDeployementList, number>(
       'event_name',
       'Emergency',
       (surgeDeployement) => surgeDeployement.event_name,
@@ -69,6 +77,10 @@ function SurgeDeployementTable(props: Props) {
       })
     ),
   ];
+
+  if (!data) {
+    return null;
+  }
 
   return (
     <>

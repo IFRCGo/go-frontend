@@ -1,7 +1,6 @@
 import React from 'react';
 import { _cs } from '@togglecorp/fujs';
 import LanguageContext from '#root/languageContext';
-import { Link } from 'react-router-dom';
 
 import Container from '#components/Container';
 import Table from '#components/Table';
@@ -10,17 +9,23 @@ import {
   createStringColumn,
 } from '#components/Table/predefinedColumns';
 
-import { FieldReport } from '../index';
-
 import styles from './styles.module.scss';
 
-function fieldReportKeySelector(fieldReport: FieldReport) {
+export interface FieldReportList {
+  created_at: string;
+  name: string;
+  id: number;
+  score: number;
+  event_name: string;
+}
+
+function fieldReportKeySelector(fieldReport: FieldReportList) {
   return fieldReport.id;
 }
 
 interface Props {
   className?: string;
-  data: FieldReport[] | undefined;
+  data: FieldReportList[] | undefined;
   actions: React.ReactNode;
 }
 
@@ -34,22 +39,26 @@ function FieldReportTable(props: Props) {
   const { strings } = React.useContext(LanguageContext);
 
   const columns = [
-    createDateColumn<FieldReport, number>(
+    createDateColumn<FieldReportList, number>(
       'created_at',
       '',
       (fieldReport) => fieldReport.created_at,
     ),
-    createStringColumn<FieldReport, number>(
+    createStringColumn<FieldReportList, number>(
       'event_name',
       '',
       (fieldReport) => fieldReport.event_name,
     ),
-    createStringColumn<FieldReport, number>(
+    createStringColumn<FieldReportList, number>(
       'name',
       '',
       (fieldReport) => fieldReport.name,
     ),
   ];
+
+  if (!data) {
+    return null;
+  }
 
   return (
     <>

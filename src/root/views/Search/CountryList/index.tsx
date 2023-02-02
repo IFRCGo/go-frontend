@@ -13,7 +13,6 @@ export interface CountryResult {
   score: number;
 }
 
-
 interface Props {
   data: CountryResult[] | undefined;
   actions: React.ReactNode;

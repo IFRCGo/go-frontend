@@ -1,6 +1,5 @@
 import React from 'react';
 import { _cs } from '@togglecorp/fujs';
-import { Link } from 'react-router-dom';
 
 import LanguageContext from '#root/languageContext';
 import Container from '#components/Container';
@@ -11,17 +10,28 @@ import {
 } from '#components/Table/predefinedColumns';
 import Table from '#components/Table';
 
-import { Project } from '../index';
-
 import styles from './styles.module.scss';
 
-function ProjectKeySelector(project: Project) {
+export interface ProjectList {
+  id: number;
+  name: string;
+  event_name: string;
+  national_society: string;
+  tags: string[];
+  sector: string;
+  start_date: string;
+  regions: string[];
+  people_targeted: number;
+  score: number;
+}
+
+function ProjectKeySelector(project: ProjectList) {
   return project.id;
 }
 
 interface Props {
   className?: string;
-  data: Project[] | undefined;
+  data: ProjectList[] | undefined;
   actions: React.ReactNode;
 }
 
@@ -35,42 +45,46 @@ function ProjectTable(props: Props) {
   const { strings } = React.useContext(LanguageContext);
 
   const columns = [
-    createStringColumn<Project, number>(
+    createStringColumn<ProjectList, number>(
       'name',
       'Emergency',
       (project) => project.name,
     ),
-    createStringColumn<Project, number>(
+    createStringColumn<ProjectList, number>(
       'national_society',
       'National Society/ ERU',
       (project) => project.national_society,
     ),
-    createStringColumn<Project, number>(
+    createStringColumn<ProjectList, number>(
       'name',
       'Project/ Activity Name',
       (project) => project.name,
     ),
-    createDateColumn<Project, number>(
+    createDateColumn<ProjectList, number>(
       'start_date',
       'Start-End Dates',
       (project) => project.start_date,
     ),
-    createStringColumn<Project, number>(
+    createStringColumn<ProjectList, number>(
       'regions',
       'Provinces/Region',
       (project) => project.regions.slice(0, 5).join(', '),
     ),
-    createStringColumn<Project, number>(
+    createStringColumn<ProjectList, number>(
       'sector',
       'Sector',
       (project) => project.sector,
     ),
-    createNumberColumn<Project, number>(
+    createNumberColumn<ProjectList, number>(
       'people_targeted',
       'People Targeted',
       (project) => project.people_targeted,
     ),
   ];
+
+  if (!data) {
+    return null;
+  }
 
   return (
     <>
