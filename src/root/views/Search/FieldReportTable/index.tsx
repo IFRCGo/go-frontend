@@ -35,43 +35,47 @@ function FieldReportTable(props: Props) {
     createDateColumn<FieldReport, number>(
       'created_at',
       '',
-      (fieldReport) => fieldReport.created_at, //FIXME: This is Link in the design
+      (fieldReport) => fieldReport.created_at,
     ),
     createStringColumn<FieldReport, number>(
       'event_name',
       '',
-      (fieldReport) => fieldReport.event_name
+      (fieldReport) => fieldReport.event_name,
     ),
     createStringColumn<FieldReport, number>(
       'name',
       '',
-      (fieldReport) => fieldReport.name
+      (fieldReport) => fieldReport.name,
     ),
   ];
 
   return (
-    <Container
-      className={_cs(styles.fieldReportTable, className)}
-      heading={strings.searchIfrcReport}
-      contentClassName={styles.content}
-      sub
-      actions={(
-        <Link
-          className={styles.link}
-          to={`reports/all`}
+    <>
+      {data && (
+        <Container
+          className={_cs(styles.fieldReportTable, className)}
+          heading={strings.searchIfrcReport}
+          contentClassName={styles.content}
+          sub
+          actions={(
+            <Link
+              className={styles.link}
+              to={`reports/all`}
+            >
+              {strings.searchViewAllDocuments}
+            </Link>
+          )}
         >
-          View All Documents
-        </Link>
+          <Table
+            className={styles.inProgressDrefTable}
+            data={data}
+            columns={columns}
+            keySelector={fieldReportKeySelector}
+            variant="large"
+          />
+        </Container>
       )}
-    >
-      <Table
-        className={styles.inProgressDrefTable}
-        data={data}
-        columns={columns}
-        keySelector={fieldReportKeySelector}
-        variant="small"
-      />
-    </Container>
+    </>
   );
 }
 

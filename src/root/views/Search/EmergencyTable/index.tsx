@@ -64,28 +64,32 @@ function EmergencyTable(props: Props) {
   ];
 
   return (
-    <Container
-      className={_cs(styles.emergencyTable, className)}
-      heading={strings.searchIfrcEmergencies}
-      contentClassName={styles.content}
-      sub
-      actions={(
-        <Link
-          className={styles.link}
-          to={`/emergencies/all`}
+    <>
+      {data && (
+        <Container
+          className={_cs(styles.emergencyTable, className)}
+          heading={strings.searchIfrcEmergencies}
+          contentClassName={styles.content}
+          sub
+          actions={(
+            <Link
+              className={styles.link}
+              to={`/emergencies/all`}
+            >
+              {strings.searchViewAllDocuments}
+            </Link>
+          )}
         >
-          View All Documents
-        </Link>
+          <Table
+            className={styles.inProgressDrefTable}
+            data={data}
+            columns={columns}
+            keySelector={emergencyKeySelector}
+            variant="small"
+          />
+        </Container>
       )}
-    >
-      <Table
-        className={styles.inProgressDrefTable}
-        data={data}
-        columns={columns}
-        keySelector={emergencyKeySelector}
-        variant="small"
-      />
-    </Container>
+    </>
   );
 }
 

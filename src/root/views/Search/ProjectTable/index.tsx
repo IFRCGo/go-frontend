@@ -1,5 +1,6 @@
 import React from 'react';
 import { _cs } from '@togglecorp/fujs';
+import { Link } from 'react-router-dom';
 
 import LanguageContext from '#root/languageContext';
 import Container from '#components/Container';
@@ -55,7 +56,7 @@ function ProjectTable(props: Props) {
     createStringColumn<Project, number>(
       'regions',
       'Provinces/Region',
-      (project) => project.regions[0],
+      (project) => project.regions.slice(0, 5).join(', '),
     ),
     createStringColumn<Project, number>(
       'sector',
@@ -70,20 +71,32 @@ function ProjectTable(props: Props) {
   ];
 
   return (
-    <Container
-      className={_cs(styles.projectTable, className)}
-      heading={strings.searchIfrcProjects}
-      contentClassName={styles.content}
-      sub
-    >
-      <Table
-        className={styles.inProgressDrefTable}
-        data={data}
-        columns={columns}
-        keySelector={ProjectKeySelector}
-        variant="large"
-      />
-    </Container>
+    <>
+      {data && (
+        <Container
+          className={_cs(styles.projectTable, className)}
+          heading={strings.searchIfrcProjects}
+          contentClassName={styles.content}
+          sub
+          actions={(
+            <Link
+              className={styles.link}
+              to={`/`}
+            >
+              {strings.searchViewAllDocuments}
+            </Link>
+          )}
+        >
+          <Table
+            className={styles.inProgressDrefTable}
+            data={data}
+            columns={columns}
+            keySelector={ProjectKeySelector}
+            variant="large"
+          />
+        </Container>
+      )}
+    </>
   );
 }
 

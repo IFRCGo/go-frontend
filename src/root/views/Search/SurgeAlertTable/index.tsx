@@ -43,63 +43,69 @@ function SurgeAlertTable(props: Props) {
       'Application Deadline',
       (surgeAlert) => surgeAlert.deadline,
     ),
-    createNumberColumn<SurgeAlert, number>(
+    createStringColumn<SurgeAlert, number>(
       'duration',
       'Duration',
       (surgeAlert) => {
-        const duration = Number(surgeAlert.alert_date) - Number(surgeAlert.deadline);
-        return duration;
+        const startDate = new Date(surgeAlert.start_date);
+        const deadline = new Date(surgeAlert.deadline);
+        const duration = deadline.getDay() - startDate.getDay();
+        return `${duration} Days`;
       }),
     createDateColumn<SurgeAlert, number>(
       'start_date',
       'Start Date',
-      (surgeAlert) => surgeAlert.start_date
+      (surgeAlert) => surgeAlert.start_date,
     ),
     createStringColumn<SurgeAlert, number>(
       'name',
       'Position',
-      (surgeAlert) => surgeAlert.name
+      (surgeAlert) => surgeAlert.name,
     ),
     createStringColumn<SurgeAlert, number>(
       'keywords',
       'Keywords',
-      (surgeAlert) => surgeAlert.keywords
+      (surgeAlert) => surgeAlert.keywords?.slice(0, 5).join(', '),
     ),
     createStringColumn<SurgeAlert, number>(
       'surge_type',
       'Surge Type',
-      (surgeAlert) => surgeAlert.surge_type
+      (surgeAlert) => surgeAlert.surge_type,
     ),
     createStringColumn<SurgeAlert, number>(
       'status',
       'Status',
-      (surgeAlert) => surgeAlert.status
+      (surgeAlert) => surgeAlert.status,
     )
   ];
 
   return (
-    <Container
-      className={_cs(styles.surgeAlertsTable, className)}
-      heading={strings.searchIfrcOpenSurgeAlerts}
-      contentClassName={styles.content}
-      sub
-      actions={(
-        <Link
-          className={styles.link}
-          to={`alerts/all`}
+    <>
+      {data && (
+        <Container
+          className={_cs(styles.surgeAlertsTable, className)}
+          heading={strings.searchIfrcOpenSurgeAlerts}
+          contentClassName={styles.content}
+          sub
+          actions={(
+            <Link
+              className={styles.link}
+              to={`alerts/all`}
+            >
+              {strings.searchViewAllDocuments}
+            </Link>
+          )}
         >
-          View All Documents
-        </Link>
+          <Table
+            className={styles.appealsTable}
+            data={data}
+            columns={columns}
+            keySelector={surgeAlertKeySelector}
+            variant="large"
+          />
+        </Container>
       )}
-    >
-      <Table
-        className={styles.appealsTable}
-        data={data}
-        columns={columns}
-        keySelector={surgeAlertKeySelector}
-        variant="small"
-      />
-    </Container>
+    </>
   );
 }
 
