@@ -6,7 +6,7 @@ import {
 import TextOutput from '#components/TextOutput';
 import MapTooltipContent from '#components/MapTooltipContent';
 
-import { PDCEvent } from '#types';
+import { ADAMEvent, ADAMEventExposure } from '#types';
 
 import styles from './styles.module.scss';
 
@@ -41,53 +41,94 @@ function EstimatedOutput({
 }
 
 interface PointDetailsProps {
-  hazardDetails: PDCEvent;
+  hazardDetails: ADAMEvent;
+  exposureDetails: ADAMEventExposure;
   onCloseButtonClick: () => void;
 }
 
 function PointDetails(props: PointDetailsProps) {
   const {
-    hazardDetails: {
-      pdc_details,
-      population_exposure,
-      capital_exposure,
+    hazardDetails,
+    exposureDetails: {
+      from_date,
+      to_date,
+      population_impact,
+      population,
+      depth,
+      wind_speed,
+      effective_date,
+      date_processed,
     },
     onCloseButtonClick,
   } = props;
 
+  const generateTitle = React.useCallback(
+    (data: ADAMEvent) => {
+      if (!data.title) {
+        return `${data.hazard_type_display} - ${data.country_details?.name}`;
+      }
+
+      if (data.title) {
+        return data.title;
+      }
+    }, []);
+
   return (
     <MapTooltipContent
-      title={pdc_details.hazard_name}
+      title={generateTitle(hazardDetails)}
       onCloseButtonClick={onCloseButtonClick}
       contentClassName={styles.tooltipContent}
     >
       <div className={styles.eventDates}>
         <TextOutput
           label="Event start date"
-          value={pdc_details.start_date}
+          value={hazardDetails.publish_date}
           valueType="date"
         />
-        <TextOutput
-          label="Created on"
-          value={pdc_details.start_date}
-          valueType="date"
-        />
-        <TextOutput
-          label="Updated on"
-          value={pdc_details.pdc_updated_at}
-          valueType="date"
-        />
+        {from_date &&
+          <TextOutput
+            label="From date"
+            value={from_date}
+            valueType="date"
+          />
+        }
+        {to_date &&
+          <TextOutput
+            label="To date"
+            value={to_date}
+            valueType="date"
+          />
+        }
+        {effective_date &&
+          <TextOutput
+            label="Effective date"
+            value={effective_date}
+            valueType="date"
+          />
+        }
+        {date_processed &&
+          <TextOutput
+            label="Processed date"
+            value={date_processed}
+            valueType="text"
+          />
+        }
+        {date_processed}
       </div>
       <EstimatedOutput
         attribute="People Exposed / Potentially Affected"
-        value={population_exposure?.total?.value}
+        value={population_impact ?? population}
       />
       <hr />
       <EstimatedOutput
-        attribute="Households Exposed"
-        value={population_exposure?.households?.value}
+        attribute="Depth"
+        value={depth}
       />
       <EstimatedOutput
+        attribute="Wind speed"
+        value={wind_speed}
+      />
+      {/* <EstimatedOutput
         attribute="People in vulnerable groups exposed to the hazard"
         value={population_exposure?.vulnerable?.value}
       />
@@ -102,7 +143,7 @@ function PointDetails(props: PointDetailsProps) {
       <EstimatedOutput
         attribute="Hospitals Exposed"
         value={capital_exposure?.hospital?.value}
-      />
+      /> */}
     </MapTooltipContent>
   );
 }

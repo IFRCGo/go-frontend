@@ -92,4 +92,3 @@ export const iconPaint: mapboxgl.SymbolPaint = {
 export const hiddenLayout: mapboxgl.LineLayout = {
   visibility: 'none',
 };
-

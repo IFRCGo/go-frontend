@@ -50,6 +50,7 @@ import Sidebar from './Sidebar';
 
 import {
   PDCEvent,
+  PDCEventExposure,
   ImminentHazardTypes,
 } from '#types';
 
@@ -70,9 +71,9 @@ const severityFillColorPaint = [
 ];
 
 const legendItems = [
-  { color: COLOR_RED, label: 'Warning'},
-  { color: COLOR_YELLOW, label: 'Watch'},
-  { color: COLOR_BLUE, label: 'Advisory / Information'},
+  { color: COLOR_RED, label: 'Warning' },
+  { color: COLOR_YELLOW, label: 'Watch' },
+  { color: COLOR_BLUE, label: 'Advisory / Information' },
   { color: COLOR_BLACK, label: 'Unknown' },
 ];
 
@@ -83,7 +84,7 @@ const mapPadding = {
   bottom: 50,
 };
 
-const noOp = () => {};
+const noOp = () => { };
 
 const MAP_BOUNDS_ANIMATION_DURATION = 1800;
 
@@ -92,11 +93,13 @@ interface Props {
   hazardList: PDCEvent[];
   className?: string;
   activeEventUuid: string | undefined;
+  activeEventExposure?: PDCEventExposure;
+  activeEventExposurePending?: boolean;
   onActiveEventChange: (eventUuid: string | undefined) => void;
   sidebarHeading?: React.ReactNode;
 }
 
-function PDCExposureMap(props: Props) {
+function PDCEventMap(props: Props) {
   const {
     hazardList: hazardListFromProps,
     defaultBounds,
@@ -104,18 +107,40 @@ function PDCExposureMap(props: Props) {
     activeEventUuid,
     onActiveEventChange,
     sidebarHeading,
+    activeEventExposure,
+    activeEventExposurePending,
   } = props;
-
 
   const hazardList = React.useMemo(() => {
     const supportedHazards = listToMap(hazardKeys, h => h, d => true);
     return hazardListFromProps.filter(h => supportedHazards[h.hazard_type]);
   }, [hazardListFromProps]);
 
+  const activeEvent = hazardList?.find(d => d.uuid === activeEventUuid);
+  const activeEventPopupDetails = React.useMemo(() => {
+    if (isNotDefined(activeEventUuid)) {
+      return undefined;
+    }
+
+    const hazardDetails = hazardList.find(d => d.uuid === activeEventUuid);
+
+    if (!hazardDetails) {
+      return undefined;
+    }
+
+    const lngLat = new LngLat(hazardDetails.longitude, hazardDetails.latitude);
+
+    return {
+      hazardDetails,
+      lngLat,
+      uuid: activeEventUuid,
+    };
+  }, [activeEventUuid, hazardList]);
+
   const pointActiveState = React.useMemo(() => {
     return hazardList.map((h) => ({
-      id: h.pdc,
-      value: h.pdc_details.uuid === activeEventUuid,
+      id: h.id,
+      value: h.uuid === activeEventUuid,
     }));
   }, [activeEventUuid, hazardList]);
 
@@ -128,20 +153,20 @@ function PDCExposureMap(props: Props) {
       type: 'FeatureCollection' as const,
       features: hazardList.map((hazard) => {
         return {
-          id: hazard.pdc,
+          id: hazard.id,
           type: 'Feature' as const,
           geometry: {
             type: 'Point' as const,
             coordinates: [
-              hazard.pdc_details.longitude,
-              hazard.pdc_details.latitude,
+              hazard.longitude,
+              hazard.latitude,
             ],
           },
           properties: {
             hazardId: hazard.id,
-            hazardUuid: hazard.pdc_details.uuid,
+            hazardUuid: hazard.uuid,
             hazardType: hazard.hazard_type,
-            hazardSeverity: hazard.pdc_details.severity,
+            hazardSeverity: hazard.severity,
           },
         };
       }),
@@ -150,62 +175,43 @@ function PDCExposureMap(props: Props) {
   }, [hazardList]);
 
   const footprintGeoJson = React.useMemo(() => {
-    const dataWithFootprint = hazardList.filter((d) => d.pdc_details.footprint_geojson);
-
-    const featureListForFootprint = dataWithFootprint
-      .map((d) => ({
-        ...d.pdc_details.footprint_geojson as NonNullable<typeof d.pdc_details.footprint_geojson>,
-        properties: {
-          hazardUuid: d.pdc_details.uuid,
-          hazardSeverity: d.pdc_details.severity,
-        },
-      }));
+    if (!activeEvent || !activeEventExposure?.footprint_geojson) {
+      return undefined;
+    }
 
     return {
       type: 'FeatureCollection' as const,
-      features: featureListForFootprint,
+      features: [{
+        ...activeEventExposure.footprint_geojson,
+        properties: {
+          ...activeEventExposure.footprint_geojson.properties,
+          hazardUuid: activeEvent.uuid,
+          hazardSeverity: activeEvent.severity,
+        },
+      }],
     };
-  }, [hazardList]);
-
-  const activeHazard = React.useMemo(() => {
-    if (isNotDefined(activeEventUuid)) {
-      return undefined;
-    }
-
-    const hazardDetails = hazardList.find(d => d.pdc_details.uuid === activeEventUuid);
-
-    if (!hazardDetails) {
-      return undefined;
-    }
-
-    const lngLat = new LngLat(hazardDetails.pdc_details.longitude, hazardDetails.pdc_details.latitude);
-
-    return {
-      hazardDetails,
-      lngLat,
-      uuid: activeEventUuid,
-    };
-  }, [activeEventUuid, hazardList]);
+  }, [activeEvent, activeEventExposure?.footprint_geojson]);
 
   const bounds = React.useMemo(
     () => {
-      const ah = hazardList.find(d => d.pdc_details.uuid === activeHazard?.uuid);
-      if (!ah) {
+      if (!activeEvent || activeEventExposurePending) {
         return defaultBounds;
       }
 
-      const stormPoints = ah.pdc_details.storm_position_geojson;
       const point = turfPoint([
-        ah.pdc_details.longitude,
-        ah.pdc_details.latitude,
+        activeEvent.longitude,
+        activeEvent.latitude,
       ]);
+
+      const stormPoints = activeEventExposure?.storm_position_geojson;
+
       const pointBuffer = turfBuffer(point, 50, { units: 'kilometers' });
 
       const geojson = {
         type: 'FeatureCollection',
         features: [
           pointBuffer,
-          ah.pdc_details.footprint_geojson,
+          ...(footprintGeoJson?.features ?? []),
           stormPoints ? ({
             type: 'Feature',
             geometry: {
@@ -220,7 +226,13 @@ function PDCExposureMap(props: Props) {
 
       return fixBounds(turfBbox(geojson) as BBOXType);
     },
-    [defaultBounds, hazardList, activeHazard],
+    [
+      defaultBounds,
+      activeEventExposurePending,
+      activeEventExposure?.storm_position_geojson,
+      footprintGeoJson,
+      activeEvent,
+    ],
   );
 
   const handlePointMouseClick = React.useCallback((
@@ -254,52 +266,41 @@ function PDCExposureMap(props: Props) {
     DR: false,
   });
 
+
+
   const [
     trackPointsGeoJson,
     trackLinestringGeoJson,
   ] = React.useMemo(() => {
-    if (!hazardList) {
+    const stormPositionGeoJson = activeEventExposure?.storm_position_geojson;
+    if (!activeEvent || !stormPositionGeoJson) {
       return [];
     }
 
-    const featuresForTrack = hazardList.filter(
-      (d) => isDefined(d.pdc_details.storm_position_geojson),
-    ).map(
-      (d) => (
-        (d.pdc_details.storm_position_geojson as NonNullable<typeof d.pdc_details.storm_position_geojson>).map(
-          (sp) => ({
-            ...sp,
-            properties: {
-              ...sp.properties,
-              hazardId: d.id,
-              hazardUuid: d.pdc_details.uuid,
-            },
-          }),
-        )
-      ),
-    ).flat(1);
-
-    const featuresForLinestring = hazardList.filter(
-      (d) => isDefined(d.pdc_details.storm_position_geojson),
-    ).map(
-      (d) => ({
-        type: 'Feature' as const,
-        geometry: {
-          type: 'LineString' as const,
-          coordinates: (d.pdc_details.storm_position_geojson as NonNullable<typeof d.pdc_details.storm_position_geojson>).map(
-            (sp) => sp.geometry.coordinates,
-          ),
-        },
-        properties: {
-          hazardId: d.id,
-          hazardUuid: d.pdc_details.uuid,
-        },
-      }),
-    );
+    const featuresForTrack = stormPositionGeoJson.map((sp) => ({
+      ...sp,
+      properties: {
+        ...sp.properties,
+        hazardId: activeEvent.id,
+        hazardUuid: activeEvent.uuid,
+      }
+    }));
 
     if (featuresForTrack.length === 0) {
       return [];
     }
+
+    const featureForLinestring = {
+      type: 'Feature' as const,
+      geometry: {
+        type: 'LineString' as const,
+        coordinates: stormPositionGeoJson.map((sp) => sp.geometry.coordinates),
+      },
+      properties: {
+        hazardId: activeEvent.id,
+        hazardUuid: activeEvent.uuid,
+      },
+    };
 
     const trackPointsGeoJson = {
       type: 'FeatureCollection' as const,
@@ -308,15 +309,14 @@ function PDCExposureMap(props: Props) {
 
     const trackLinestringGeoJson = {
       type: 'FeatureCollection' as const,
-      features: featuresForLinestring,
+      features: [featureForLinestring],
     };
 
     return [
       trackPointsGeoJson,
       trackLinestringGeoJson,
     ];
-  }, [hazardList]);
-
+  }, [activeEvent, activeEventExposure?.storm_position_geojson]);
 
   const handleIconLoad = React.useCallback((hazardKey: ImminentHazardTypes) => {
     setHazardIconLoadedStatusMap(prevMap => ({ ...prevMap, [hazardKey]: true }));
@@ -332,8 +332,7 @@ function PDCExposureMap(props: Props) {
       'fill-color': severityFillColorPaint,
       'fill-opacity': 0.3,
     },
-    filter: ['==', ['get', 'hazardUuid'], activeHazard?.uuid ?? ''],
-  }), [activeHazard]);
+  }), []);
 
   return (
     <Map
@@ -437,7 +436,7 @@ function PDCExposureMap(props: Props) {
                 'icon-size': 0.8,
                 'icon-rotate': 90,
               },
-              filter: ['==', ['get', 'hazardUuid'], activeHazard?.uuid ?? ''],
+              filter: ['==', ['get', 'hazardUuid'], activeEventPopupDetails?.uuid ?? ''],
             }}
           />
           <MapLayer
@@ -449,7 +448,7 @@ function PDCExposureMap(props: Props) {
                 'line-opacity': 0.1,
                 'line-width': 1,
               },
-              filter: ['==', ['get', 'hazardUuid'], activeHazard?.uuid ?? ''],
+              filter: ['==', ['get', 'hazardUuid'], activeEventPopupDetails?.uuid ?? ''],
             }}
           />
         </MapSource>
@@ -469,7 +468,7 @@ function PDCExposureMap(props: Props) {
                 'circle-radius': 6,
                 'circle-opacity': 0.5,
               },
-              filter: ['==', ['get', 'hazardUuid'], activeHazard?.uuid ?? ''],
+              filter: ['==', ['get', 'hazardUuid'], activeEventPopupDetails?.uuid ?? ''],
             }}
           />
           <MapLayer
@@ -490,7 +489,7 @@ function PDCExposureMap(props: Props) {
                 'text-anchor': 'left',
                 'text-offset': [1, 0],
               },
-              filter: ['==', ['get', 'hazardUuid'], activeHazard?.uuid ?? ''],
+              filter: ['==', ['get', 'hazardUuid'], activeEventPopupDetails?.uuid ?? ''],
             }}
           />
         </MapSource>
@@ -530,7 +529,7 @@ function PDCExposureMap(props: Props) {
               paint: iconPaint,
               layout: allIconsLoaded ? {
                 visibility: 'visible',
-                 // @ts-ignore
+                // @ts-ignore
                 'icon-image': [
                   'match',
                   ['get', 'hazardType'],
@@ -539,7 +538,7 @@ function PDCExposureMap(props: Props) {
                 ],
                 'icon-size': 0.7,
                 'icon-allow-overlap': true,
-              }: hiddenLayout,
+              } : hiddenLayout,
             }}
           />
           <MapState
@@ -548,21 +547,22 @@ function PDCExposureMap(props: Props) {
           />
         </MapSource>
       )}
-      {activeHazard
-        && activeHazard.hazardDetails.population_exposure
-        && activeHazard.hazardDetails.capital_exposure
+      {activeEventPopupDetails && activeEventExposure
+        && activeEventExposure.population_exposure
+        && activeEventExposure.capital_exposure
         && (
-        <MapTooltip
-          coordinates={activeHazard.lngLat}
-          onHide={handlePointClose}
-          tooltipOptions={defaultTooltipOptions}
-        >
-          <PointDetails
-            onCloseButtonClick={handlePointClose}
-            hazardDetails={activeHazard.hazardDetails}
-          />
-        </MapTooltip>
-      )}
+          <MapTooltip
+            coordinates={activeEventPopupDetails.lngLat}
+            onHide={handlePointClose}
+            tooltipOptions={defaultTooltipOptions}
+          >
+            <PointDetails
+              onCloseButtonClick={handlePointClose}
+              hazardDetails={activeEventPopupDetails.hazardDetails}
+              exposureDetails={activeEventExposure}
+            />
+          </MapTooltip>
+        )}
       <MapBounds
         bounds={bounds}
         padding={mapPadding}
@@ -572,4 +572,4 @@ function PDCExposureMap(props: Props) {
   );
 }
 
-export default PDCExposureMap;
+export default PDCEventMap;
