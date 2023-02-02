@@ -7,18 +7,13 @@
 
       th {
         text-align: left;
-        padding: $spacing;
         border-bottom: $base-border-width solid $base-border-color;
         background-color: $color-background;
       }
 
       td {
-        padding: $spacing;
         border-bottom: $base-border-width solid $base-border-color;
       }
     }
   }
-}
-.link {
-  text-decoration: underline;
 }

@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 
-import { _cs } from '@togglecorp/fujs';
+import { _cs, sum } from '@togglecorp/fujs';
 import { useRequest } from '#utils/restRequest';
 import LanguageContext from '#root/languageContext';
 import Page from '#components/Page';
 import Container from '#components/Container';
 import TextInput from '#components/TextInput';
+import Button from '#components/Button';
 import BlockLoading from '#components/block-loading';
 import useInputState from '#hooks/useInputState';
+import useDebouncedValue from '#hooks/useDebouncedValue';
 
 import EmergencyTable from './EmergencyTable';
 import AppealsTable from './AppealsTable';
@@ -15,21 +17,9 @@ import FieldReportTable from './FieldReportTable';
 import ProjectTabel from './ProjectTable';
 import SurgeAlertTable from './SurgeAlertTable';
 import SurgeDeployementTable from './SurgeDeployementTable';
-import CountryList from './Country';
+import CountryList, { CountryResult } from './CountryList';
 
 import styles from './styles.module.scss';
-
-export interface Option {
-  value: string | number;
-  label: string;
-}
-
-export interface Country {
-  id: number;
-  name: string;
-  society_name: string;
-  score: number;
-}
 
 export interface Appeal {
   id: number;
@@ -99,7 +89,7 @@ export interface SurgeDeployement {
 }
 
 export type SearchResult = {
-  countries: Country[];
+  countries: CountryResult[];
   appeals: Appeal[];
   field_reports: FieldReport[];
   projects: Project[];
@@ -108,21 +98,23 @@ export type SearchResult = {
   surge_deployments: SurgeDeployement[];
 }
 
+const MAX_VIEW_PER_SECTION = 5;
+type ResultKeys = 'countries' | 'emergencies' | 'appeals' | 'projects' | 'surgeAlerts' | 'surgeDeployments' | 'fieldReports';
+
 interface Props {
   className?: string;
   data: SearchResult[] | undefined;
 }
 
 function Search(props: Props) {
-  const {
-    className,
-    data,
-  } = props;
+  const { className } = props;
 
+  const [activeView, setActiveView] = React.useState<ResultKeys | undefined>();
   const [searchString, setSearchString] = useInputState<string | undefined>(undefined);
   const { strings } = React.useContext(LanguageContext);
 
-  const shouldSendSearchRequest = searchString && searchString.length > 2;
+  const debouncedSearchString = useDebouncedValue(searchString);
+  const shouldSendSearchRequest = debouncedSearchString && debouncedSearchString.length > 2;
   const {
     pending: searchPending,
     response: searchResponse,
@@ -130,72 +122,53 @@ function Search(props: Props) {
     skip: !shouldSendSearchRequest,
     url: 'api/v1/search/',
     query: {
-      keyword: searchString,
+      keyword: debouncedSearchString,
     }
   });
 
-  const emergencies = searchResponse?.emergencies.slice(0, 4);
-  const fieldReport = searchResponse?.field_reports.slice(0, 5);
-  const appeals = searchResponse?.appeals.slice(0, 5);
-  const projects = searchResponse?.projects.slice(0, 5);
-  const surgeAlert = searchResponse?.surge_alerts.slice(0, 5);
-  const surgeDeployement = searchResponse?.surge_deployments.slice(0, 5);
-  const country = searchResponse?.countries.map((country) => country.name);
-  const countryList = country?.slice(0, 5).join(', ');
+  const [
+    resultsMap,
+    componentMap,
+    sortedScoreList,
+    isEmpty,
+  ] = React.useMemo(() => {
+    const scoreSelector = (d: { score: number }) => d.score;
+    const resultsMap = {
+      countries: searchResponse?.countries ?? [],
+      emergencies: searchResponse?.emergencies ?? [],
+      appeals: searchResponse?.appeals ?? [],
+      projects: searchResponse?.projects ?? [],
+      surgeAlerts: searchResponse?.surge_alerts ?? [],
+      surgeDeployments: searchResponse?.surge_deployments ?? [],
+      fieldReports: searchResponse?.field_reports ?? [],
+    };
 
-  const scoreEmergencies = searchResponse?.emergencies.map((i) => i.score);
-  const totalScoreEmergencies = scoreEmergencies?.reduce(function (prev, current) {
-    return (prev + current) / scoreEmergencies.length;
-  }, 0);
+    const componentMap: Record<ResultKeys, React.ElementType> = {
+      countries: CountryList,
+      emergencies: EmergencyTable,
+      appeals: AppealsTable,
+      projects: ProjectTabel,
+      surgeAlerts: SurgeAlertTable,
+      surgeDeployments: SurgeDeployementTable,
+      fieldReports: FieldReportTable,
+    };
 
-  const scoreFieldReport = searchResponse?.field_reports.map((i) => i.score);
-  const totalScoreFieldReport = scoreFieldReport?.reduce(function (prev, current) {
-    return (prev + current) / scoreFieldReport.length;
-  }, 0);
+    const scoreList = (Object.keys(resultsMap) as ResultKeys[]).map((resultKey) => ({
+      key: resultKey,
+      value: sum(resultsMap[resultKey].slice(0, MAX_VIEW_PER_SECTION).map(scoreSelector)),
+    }));
 
-  const scoreSurgeAlert = searchResponse?.surge_alerts.map((i) => i.score);
-  const totalScoreSurgeAlert = scoreSurgeAlert?.reduce(function (prev, current) {
-    return (prev + current) / scoreSurgeAlert.length;
-  }, 0);
+    const sortedScoreList = scoreList.sort((a, b) => a.value - b.value);
+    const isEmpty = scoreList.every((score) => resultsMap[score.key].length === 0);
 
-  const scoreAppeal = searchResponse?.appeals.map((i) => i.score);
-  const totalScoreAppeal = scoreAppeal?.reduce(function (prev, current) {
-    return (prev + current) / scoreAppeal?.length;
-  }, 0);
+    return [
+      resultsMap,
+      componentMap, sortedScoreList,
+      isEmpty,
+    ];
+  }, [searchResponse]);
 
-  const scoreProject = searchResponse?.projects.map((i) => i.score);
-  const totalScoreProject = scoreProject?.reduce(function (prev, current) {
-    return (prev + current) / scoreProject?.length;
-  }, 0);
-
-  const scoreSurgeDeployment = searchResponse?.surge_deployments.map((i) => i.score);
-  const totalScoreSurgeAlertDeployment = scoreSurgeDeployment?.reduce(function(prev, current){
-    return (prev + current) / scoreSurgeDeployment?.length;
-  }, 0);
-
-
-  const isEmpty = !emergencies && !fieldReport && !appeals
-    && !projects && !surgeAlert && !surgeDeployement && !country;
-
-  const sortList = (props: SearchResult) => {
-    // { data?.sort((a, b) => b) }
-    switch (sort.data) {
-      case "appeal":
-        return <AppealsTable data={appeals} />;
-      case "surgeAlert":
-        return <SurgeAlertTable data={surgeAlert} />;
-      case "emergencyTable":
-        return <EmergencyTable data={emergencies} />;
-      case "fieldReport":
-        return <FieldReportTable data={fieldReport} />;
-      case "projectTable":
-        return <ProjectTabel data={projects} />;
-      case "surgeAlertTable":
-        return <SurgeAlertTable data={surgeAlert} />;
-      case "surgeDeployement":
-        return <SurgeDeployementTable data={surgeDeployement} />;
-    }
-  };
+  const ActiveComponent = activeView ? componentMap[activeView] : undefined;
 
   return (
     <Page
@@ -218,26 +191,46 @@ function Search(props: Props) {
         </Container>
       )}
       <div className={styles.content}>
-        <CountryList
-          data={countryList}
-        />
-        <EmergencyTable
-          data={emergencies}
-        />
-        <AppealsTable
-          data={appeals}
-        />
-        <FieldReportTable
-          data={fieldReport} />
-        <ProjectTabel
-          data={projects}
-        />
-        <SurgeAlertTable
-          data={surgeAlert}
-        />
-        <SurgeDeployementTable
-          data={surgeDeployement}
-        />
+        {activeView && ActiveComponent && (
+          <ActiveComponent
+            data={resultsMap[activeView]}
+            actions={(
+              <Button
+                name={undefined}
+                variant="transparent"
+                onClick={setActiveView}
+              >
+                Go back
+              </Button>
+            )}
+          />
+        )}
+        {!activeView && sortedScoreList.map((score) => {
+          const Component = componentMap[score.key];
+          const data = resultsMap[score.key];
+
+          if (data.length === 0) {
+            return null;
+          }
+
+          const truncatedData = data.slice(0, MAX_VIEW_PER_SECTION);
+
+          return (
+            <Component
+              key={score.key}
+              data={truncatedData}
+              actions={data.length > MAX_VIEW_PER_SECTION && (
+                <Button
+                  name={score.key}
+                  variant="transparent"
+                  onClick={setActiveView}
+                >
+                  View all results
+                </Button>
+              )}
+            />
+          );
+        })}
       </div>
     </Page >
   );

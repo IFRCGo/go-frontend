@@ -7,7 +7,6 @@ import Table from '#components/Table';
 import LanguageContext from '#root/languageContext';
 import {
   createDateColumn,
-  createNumberColumn,
   createStringColumn,
 } from '#components/Table/predefinedColumns';
 
@@ -15,19 +14,21 @@ import { SurgeAlert } from '../index';
 
 import styles from './styles.module.scss';
 
+function surgeAlertKeySelector(surgeAlert: SurgeAlert) {
+  return surgeAlert.id;
+}
+
 interface Props {
   className?: string;
   data: SurgeAlert[] | undefined;
-}
-
-function surgeAlertKeySelector(surgeAlert: SurgeAlert) {
-  return surgeAlert.id;
+  actions: React.ReactNode;
 }
 
 function SurgeAlertTable(props: Props) {
   const {
     className,
     data,
+    actions,
   } = props;
 
   const { strings } = React.useContext(LanguageContext);
@@ -87,14 +88,7 @@ function SurgeAlertTable(props: Props) {
           heading={strings.searchIfrcOpenSurgeAlerts}
           contentClassName={styles.content}
           sub
-          actions={(
-            <Link
-              className={styles.link}
-              to={`alerts/all`}
-            >
-              {strings.searchViewAllDocuments}
-            </Link>
-          )}
+          actions={actions}
         >
           <Table
             className={styles.appealsTable}

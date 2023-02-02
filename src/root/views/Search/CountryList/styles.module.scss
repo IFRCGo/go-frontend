@@ -1,0 +1,8 @@
+@import '~styles/settings/variables';
+
+.country-list {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing;
+  padding: $spacing*2 $spacing!important;
+}

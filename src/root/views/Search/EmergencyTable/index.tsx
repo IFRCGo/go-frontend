@@ -14,19 +14,21 @@ import { Emergency } from '../index';
 
 import styles from './styles.module.scss';
 
+function emergencyKeySelector(emergency: Emergency) {
+  return emergency.id;
+}
+
 interface Props {
   className?: string;
   data: Emergency[] | undefined;
-}
-
-function emergencyKeySelector(emergency: Emergency) {
-  return emergency.id;
+  actions: React.ReactNode;
 }
 
 function EmergencyTable(props: Props) {
   const {
     className,
     data,
+    actions,
   } = props;
 
   const { strings } = React.useContext(LanguageContext);
@@ -37,8 +39,7 @@ function EmergencyTable(props: Props) {
       'Active Operations',
       (emergency) => emergency.name,
       (emergency) => ({
-        to: `/emergencies/${emergency.id}`,
-        className: styles.link,
+        href: `/emergencies/${emergency.id}`,
       })
     ),
     createStringColumn<Emergency, number>(
@@ -71,21 +72,14 @@ function EmergencyTable(props: Props) {
           heading={strings.searchIfrcEmergencies}
           contentClassName={styles.content}
           sub
-          actions={(
-            <Link
-              className={styles.link}
-              to={`/emergencies/all`}
-            >
-              {strings.searchViewAllDocuments}
-            </Link>
-          )}
+          actions={actions}
         >
           <Table
             className={styles.inProgressDrefTable}
             data={data}
             columns={columns}
             keySelector={emergencyKeySelector}
-            variant="small"
+            variant="large"
           />
         </Container>
       )}
