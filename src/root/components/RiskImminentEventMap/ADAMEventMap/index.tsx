@@ -38,6 +38,7 @@ import {
   bbox as turfBbox,
   buffer as turfBuffer,
 } from '@turf/turf';
+import GoMapDisclaimer from '#components/GoMapDisclaimer';
 import { ADAMEvent, ImminentHazardTypes } from '#types/risk';
 import { BBOXType } from '#utils/map';
 
@@ -301,6 +302,7 @@ function ADAMEventMap(props: Props) {
             onActiveEventChange={onActiveEventChange}
             activeEventUuid={activeEventUuid}
           />
+          <GoMapDisclaimer className={styles.mapDisclaimer} />
         </div>
         <MapFooter />
       </div>
@@ -443,6 +445,7 @@ function ADAMEventMap(props: Props) {
           />
         </MapSource>
       )}
+
       {activeEventPopUpDetails && activeEventPopUpDetails.hazardDetails && (
         <MapTooltip
           coordinates={activeEventPopUpDetails.lngLat}
@@ -456,6 +459,7 @@ function ADAMEventMap(props: Props) {
           />
         </MapTooltip>
       )}
+
       <MapBounds
         bounds={bounds}
         padding={mapPadding}

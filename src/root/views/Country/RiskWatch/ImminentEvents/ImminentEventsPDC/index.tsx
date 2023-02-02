@@ -5,7 +5,6 @@ import {
   listToGroupList,
   listToMap,
   isDefined,
-  _cs,
 } from '@togglecorp/fujs';
 import turfBbox from '@turf/bbox';
 import BlockLoading from '#components/block-loading';
@@ -24,12 +23,14 @@ import styles from './styles.module.scss';
 interface Props {
   className?: string;
   countryId: number;
+  onLoad: (numEvents: number | undefined) => void;
 }
 
 function ImminentEventsPDC(props: Props) {
   const {
     className,
     countryId,
+    onLoad,
   } = props;
   const allCountries = useReduxState('allCountries');
   const country = React.useMemo(() => (
@@ -44,6 +45,12 @@ function ImminentEventsPDC(props: Props) {
     skip: !country,
     url: 'risk://api/v1/imminent/',
     query: { iso3: country?.iso3?.toLocaleLowerCase() },
+    onSuccess: (response) => {
+      onLoad(response.results?.length);
+    },
+    onFailure: () => {
+      onLoad(undefined);
+    }
   });
 
   const eventUuidToIdMap = React.useMemo(() => {
@@ -109,7 +116,11 @@ function ImminentEventsPDC(props: Props) {
   }, []);
 
   if ((!pending && !pdcResponse?.results) || data?.length === 0) {
-    return null;
+    return (
+      <div className={styles.empty}>
+        There are currently no events!
+      </div>
+    );
   }
 
   return (
@@ -117,7 +128,7 @@ function ImminentEventsPDC(props: Props) {
       {pending && <BlockLoading />}
       {!pending && data && (
         <PDCEventMap
-          className={_cs(className, styles.map)}
+          className={className}
           sidebarHeading={country?.name}
           hazardList={data}
           defaultBounds={countryBounds}

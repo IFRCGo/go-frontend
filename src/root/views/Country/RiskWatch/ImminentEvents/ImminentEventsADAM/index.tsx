@@ -21,12 +21,14 @@ import styles from './styles.module.scss';
 interface Props {
   className?: string;
   countryId: number;
+  onLoad: (numEvents: number | undefined) => void;
 }
 
 function ImminentEventsADAM(props: Props) {
   const {
     className,
     countryId,
+    onLoad,
   } = props;
 
   const allCountries = useReduxState('allCountries');
@@ -53,6 +55,12 @@ function ImminentEventsADAM(props: Props) {
     skip: isNotDefined(country),
     url: 'risk://api/v1/adam-exposure/',
     query: { iso3: country?.iso3?.toLocaleLowerCase() },
+    onSuccess: (response) => {
+      onLoad(response.results?.length);
+    },
+    onFailure: () => {
+      onLoad(undefined);
+    }
   });
 
   const data = React.useMemo(() => {
@@ -90,7 +98,11 @@ function ImminentEventsADAM(props: Props) {
   );
 
   if ((!pending && !response?.results) || data?.length === 0) {
-    return null;
+    return (
+      <div className={styles.empty}>
+        There are currently no events!
+      </div>
+    );
   }
 
   return (

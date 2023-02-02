@@ -8,6 +8,7 @@ import {
 
 import InfoPopup from "#components/InfoPopup";
 import TextOutput from "#components/TextOutput";
+import Link from '#components/Link';
 import styles from "./styles.module.scss";
 
 const legendItems = [
@@ -49,13 +50,11 @@ function MapFooter() {
             description={(
               <>
                 <p>
-                  These impacts are produced by the WFP ADAM. All-hazards Impact Model (AIM) 3.0.
+                  These data points are recieved from the WFP ADAM, which performs a 24/7 automated data harvesting, analysis and mapping of natural hazards events.
                 </p>
-                <div>
-
-                  {/* Note: Add wfp adam link */}
-                  Click <a className={styles.pdcLink} target="_blank" href="">here</a> for more information about the model and its inputs.
-                </div>
+                <p>
+                  Click <Link href="https://gis.wfp.org/adam/">here</Link> for more information.
+                </p>
               </>
             )}
           />
