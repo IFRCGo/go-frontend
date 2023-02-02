@@ -27,6 +27,7 @@ import Container from '#components/Container';
 import DateOutput from '#components/DateOutput';
 import TextOutput from '#components/TextOutput';
 import Button from '#components/Button';
+import GoMapDisclaimer from '#components/GoMapDisclaimer';
 
 import { getPeopleReachedInActivity } from '../useProjectStats';
 import { reduceListDisplay } from '../projectTableColumns';
@@ -36,7 +37,6 @@ import styles from './styles.module.scss';
 const SEVERITY_SMALL = 2;
 const SEVERITY_MEDIUM = 5;
 const SEVERITY_LARGE = 10;
-
 
 const getColorForValue = (value: number) => {
   if (value >= SEVERITY_LARGE) {
@@ -363,20 +363,23 @@ function ActivityMap(props: Props) {
 
   return (
     <div className={_cs(styles.activityMap, className)}>
-      <Map
-        mapStyle={defaultMapStyle}
-        mapOptions={defaultMapOptions}
-        navControlShown
-        navControlPosition="top-right"
-      >
-        <MapContainer className={styles.mapContainer} />
-        <MapBounds
-          bounds={activityBounds}
-        />
-        <Choropleth
-          projectCountByDistrict={projectCountByDistrict}
-        />
-      </Map>
+      <div className={styles.mapContainerWrapper}>
+        <Map
+          mapStyle={defaultMapStyle}
+          mapOptions={defaultMapOptions}
+          navControlShown
+          navControlPosition="top-right"
+        >
+          <MapContainer className={styles.mapContainer} />
+          <GoMapDisclaimer className={styles.mapDisclaimer} />
+          <MapBounds
+            bounds={activityBounds}
+          />
+          <Choropleth
+            projectCountByDistrict={projectCountByDistrict}
+          />
+        </Map>
+      </div>
       <Container
         sub
         className={styles.sectorGroupedActivities}

@@ -4,3 +4,8 @@
   font-size: $font-size-sm!important;
   opacity: 0.5;
 }
+
+.attribution {
+  display: flex;
+  gap: $spacing*0.5;
+}

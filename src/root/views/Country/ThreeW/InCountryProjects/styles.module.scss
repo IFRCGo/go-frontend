@@ -14,7 +14,6 @@
       flex-grow: 1;
       min-width: 20rem;
       max-width: calc(50% - #{$spacing / 2});
-      flex-shrink: 0;
 
       .card-content {
         >* {
@@ -24,8 +23,8 @@
       }
 
       .pie-chart {
-        flex-basis: 12rem;
-        width: 12rem;
+        flex-basis: 10rem;
+        width: 10rem;
         flex-grow: 0;
         flex-shrink: 0;
         max-width: unset;
