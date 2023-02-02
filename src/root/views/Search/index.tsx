@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { _cs } from '@togglecorp/fujs';
 import { useRequest } from '#utils/restRequest';
@@ -15,6 +15,7 @@ import FieldReportTable from './FieldReportTable';
 import ProjectTabel from './ProjectTable';
 import SurgeAlertTable from './SurgeAlertTable';
 import SurgeDeployementTable from './SurgeDeployementTable';
+import CountryList from './Country';
 
 import styles from './styles.module.scss';
 
@@ -53,7 +54,7 @@ export interface Emergency {
 export interface SurgeAlert {
   id: number;
   name: string;
-  keywords: string | null;
+  keywords: string[] | null;
   event_name: string;
   country: string | null;
   start_date: string;
@@ -86,7 +87,7 @@ export interface FieldReport { // FIXME: emergency type is required as per wiref
   event_name: string;
 }
 
-export interface SurgeDeployement { // FIXME: duration field is missing
+export interface SurgeDeployement {
   id: number;
   event_name: string;
   deployed_country: string;
@@ -94,6 +95,7 @@ export interface SurgeDeployement { // FIXME: duration field is missing
   owner: string;
   personnel_units: number;
   equipment_units: number;
+  score: number;
 }
 
 export type SearchResult = {
@@ -108,11 +110,13 @@ export type SearchResult = {
 
 interface Props {
   className?: string;
+  data: SearchResult[] | undefined;
 }
 
 function Search(props: Props) {
   const {
     className,
+    data,
   } = props;
 
   const [searchString, setSearchString] = useInputState<string | undefined>(undefined);
@@ -139,8 +143,59 @@ function Search(props: Props) {
   const country = searchResponse?.countries.map((country) => country.name);
   const countryList = country?.slice(0, 5).join(', ');
 
+  const scoreEmergencies = searchResponse?.emergencies.map((i) => i.score);
+  const totalScoreEmergencies = scoreEmergencies?.reduce(function (prev, current) {
+    return (prev + current) / scoreEmergencies.length;
+  }, 0);
+
+  const scoreFieldReport = searchResponse?.field_reports.map((i) => i.score);
+  const totalScoreFieldReport = scoreFieldReport?.reduce(function (prev, current) {
+    return (prev + current) / scoreFieldReport.length;
+  }, 0);
+
+  const scoreSurgeAlert = searchResponse?.surge_alerts.map((i) => i.score);
+  const totalScoreSurgeAlert = scoreSurgeAlert?.reduce(function (prev, current) {
+    return (prev + current) / scoreSurgeAlert.length;
+  }, 0);
+
+  const scoreAppeal = searchResponse?.appeals.map((i) => i.score);
+  const totalScoreAppeal = scoreAppeal?.reduce(function (prev, current) {
+    return (prev + current) / scoreAppeal?.length;
+  }, 0);
+
+  const scoreProject = searchResponse?.projects.map((i) => i.score);
+  const totalScoreProject = scoreProject?.reduce(function (prev, current) {
+    return (prev + current) / scoreProject?.length;
+  }, 0);
+
+  const scoreSurgeDeployment = searchResponse?.surge_deployments.map((i) => i.score);
+  const totalScoreSurgeAlertDeployment = scoreSurgeDeployment?.reduce(function(prev, current){
+    return (prev + current) / scoreSurgeDeployment?.length;
+  }, 0);
+
+
   const isEmpty = !emergencies && !fieldReport && !appeals
     && !projects && !surgeAlert && !surgeDeployement && !country;
+
+  const sortList = (props: SearchResult) => {
+    // { data?.sort((a, b) => b) }
+    switch (sort.data) {
+      case "appeal":
+        return <AppealsTable data={appeals} />;
+      case "surgeAlert":
+        return <SurgeAlertTable data={surgeAlert} />;
+      case "emergencyTable":
+        return <EmergencyTable data={emergencies} />;
+      case "fieldReport":
+        return <FieldReportTable data={fieldReport} />;
+      case "projectTable":
+        return <ProjectTabel data={projects} />;
+      case "surgeAlertTable":
+        return <SurgeAlertTable data={surgeAlert} />;
+      case "surgeDeployement":
+        return <SurgeDeployementTable data={surgeDeployement} />;
+    }
+  };
 
   return (
     <Page
@@ -163,43 +218,28 @@ function Search(props: Props) {
         </Container>
       )}
       <div className={styles.content}>
-        {country && (
-          <Container
-            heading={strings.searchIfrcCountry}
-            description={countryList}
-          />
-        )}
-        {emergencies && (
-          <EmergencyTable
-            data={emergencies}
-          />
-        )}
-        {appeals && (
-          <AppealsTable
-            data={appeals}
-          />
-        )}
-        {fieldReport && (
-          <FieldReportTable
-            data={fieldReport} />
-        )}
-        {projects && (
-          <ProjectTabel
-            data={projects}
-          />
-        )}
-        {surgeAlert && (
-          <SurgeAlertTable
-            data={surgeAlert}
-          />
-        )}
-        {surgeDeployement && (
-          <SurgeDeployementTable
-            data={surgeDeployement}
-          />
-        )}
+        <CountryList
+          data={countryList}
+        />
+        <EmergencyTable
+          data={emergencies}
+        />
+        <AppealsTable
+          data={appeals}
+        />
+        <FieldReportTable
+          data={fieldReport} />
+        <ProjectTabel
+          data={projects}
+        />
+        <SurgeAlertTable
+          data={surgeAlert}
+        />
+        <SurgeDeployementTable
+          data={surgeDeployement}
+        />
       </div>
-    </Page>
+    </Page >
   );
 }
 

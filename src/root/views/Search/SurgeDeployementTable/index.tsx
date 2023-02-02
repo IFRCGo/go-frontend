@@ -41,22 +41,22 @@ function SurgeDeployementTable(props: Props) {
     createStringColumn<SurgeDeployement, number>(
       'type',
       'Type',
-      (surgeDeployement) => surgeDeployement.type
+      (surgeDeployement) => surgeDeployement.type,
     ),
     createNumberColumn<SurgeDeployement, number>(
       'personnel_units',
       'Personnel Units',
-      (surgeDeployement) => surgeDeployement.personnel_units
+      (surgeDeployement) => surgeDeployement.personnel_units,
     ),
     createNumberColumn<SurgeDeployement, number>(
       'equipment_units',
       'Equipment Units',
-      (surgeDeployement) => surgeDeployement.equipment_units
+      (surgeDeployement) => surgeDeployement.equipment_units,
     ),
     createStringColumn<SurgeDeployement, number>(
       'deployed_country',
       'Country Deployed to',
-      (surgeDeployement) => surgeDeployement.deployed_country
+      (surgeDeployement) => surgeDeployement.deployed_country,
     ),
     createLinkColumn<SurgeDeployement, number>(
       'event_name',
@@ -66,35 +66,39 @@ function SurgeDeployementTable(props: Props) {
           {surgeDeployement.event_name}
         </div>
       ),
-        (surgeDeployement) => ({
-          to: `emergencies/${surgeDeployement.id}`,
-        })
-      ),
+      (surgeDeployement) => ({
+        to: `emergencies/${surgeDeployement.id}`,
+      })
+    ),
   ];
 
   return (
-    <Container
-      className={_cs(styles.surgeDeployementTable, className)}
-      heading={strings.searchIfrcEmergencyPlanningAndReportingDocuments}
-      contentClassName={styles.content}
-      sub
-      actions={(
-        <Link
-          className={styles.link}
-          to={`deployments/erus/all`}
+    <>
+      {data && (
+        <Container
+          className={_cs(styles.surgeDeployementTable, className)}
+          heading={strings.searchIfrcEmergencyPlanningAndReportingDocuments}
+          contentClassName={styles.content}
+          sub
+          actions={(
+            <Link
+              className={styles.link}
+              to={`deployments/erus/all`}
+            >
+              {strings.searchViewAllDocuments}
+            </Link>
+          )}
         >
-          View All Documents
-        </Link>
+          <Table
+            className={styles.inProgressDrefTable}
+            data={data}
+            columns={columns}
+            keySelector={surgeDeploymentTable}
+            variant="small"
+          />
+        </Container>
       )}
-    >
-      <Table
-        className={styles.inProgressDrefTable}
-        data={data}
-        columns={columns}
-        keySelector={surgeDeploymentTable}
-        variant="small"
-      />
-    </Container>
+    </>
   );
 }
 

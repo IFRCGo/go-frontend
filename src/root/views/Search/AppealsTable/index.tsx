@@ -41,17 +41,17 @@ function AppealsTable(props: Props) {
     createStringColumn<Appeal, number>(
       'appeal_type',
       'Type',
-      (appeal) => appeal.appeal_type
+      (appeal) => appeal.appeal_type,
     ),
     createStringColumn<Appeal, number>(
       'code',
       'Code',
-      (appeal) => appeal.code
+      (appeal) => appeal.code,
     ),
     createStringColumn<Appeal, number>(
       'name',
       'Name',
-      (appeal) => appeal.name
+      (appeal) => appeal.name,
     ),
     createLinkColumn<Appeal, number>(
       'country',
@@ -68,28 +68,32 @@ function AppealsTable(props: Props) {
   ];
 
   return (
-    <Container
-      className={_cs(styles.appealsTable, className)}
-      heading={strings.searchIfrcEmergencyPlanningAndReportingDocuments}
-      contentClassName={styles.content}
-      sub
-      actions={(
-        <Link
-          className={styles.link}
-          to={`appeals/all`}  //FIXME: Redirect to appeals
+    <>
+      {data && (
+        <Container
+          className={_cs(styles.appealsTable, className)}
+          heading={strings.searchIfrcEmergencyPlanningAndReportingDocuments}
+          contentClassName={styles.content}
+          sub
+          actions={(
+            <Link
+              className={styles.link}
+              to={`appeals/all`}
+            >
+              {strings.searchViewAllDocuments}
+            </Link>
+          )}
         >
-          View All Documents
-        </Link>
+          <Table
+            className={styles.inProgressDrefTable}
+            data={data}
+            columns={columns}
+            keySelector={appealKeySelector}
+            variant="small"
+          />
+        </Container>
       )}
-    >
-      <Table
-        className={styles.inProgressDrefTable}
-        data={data}
-        columns={columns}
-        keySelector={appealKeySelector}
-        variant="small"
-      />
-    </Container>
+    </>
   );
 }
 

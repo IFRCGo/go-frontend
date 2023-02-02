@@ -3831,4 +3831,5 @@ export default {
   searchIfrcProjects: 'Projects',
   searchIfrcOpenSurgeAlerts: 'Open Surge Alerts',
   searchIfrcCountry: 'Country',
+  searchViewAllDocuments: 'View All Documents',
 };
