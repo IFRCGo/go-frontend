@@ -18,7 +18,6 @@ import {
   bbox as turfBbox,
   buffer as turfBuffer,
 } from '@turf/turf';
-
 import { LngLat } from 'mapbox-gl';
 
 import {
@@ -43,6 +42,7 @@ import {
 
 import TextOutput from '#components/TextOutput';
 import InfoPopup from '#components/InfoPopup';
+import GoMapDisclaimer from '#components/GoMapDisclaimer';
 
 import HazardMapImage from './HazardMapImage';
 import PointDetails from './PointDetails';
@@ -352,6 +352,7 @@ function PDCExposureMap(props: Props) {
             onActiveEventChange={onActiveEventChange}
             activeEventUuid={activeEventUuid}
           />
+          <GoMapDisclaimer className={styles.mapDisclaimer} />
         </div>
         <div className={styles.footer}>
           <div className={styles.legend}>

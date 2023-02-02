@@ -9,7 +9,7 @@ export const defaultMapOptions: Omit<mapboxgl.MapboxOptions, 'style' | 'containe
   pitchWithRotate: false,
   dragRotate: false,
   renderWorldCopies: true,
-  attributionControl: true,
+  attributionControl: false,
   preserveDrawingBuffer: true,
   // interactive: false,
 };

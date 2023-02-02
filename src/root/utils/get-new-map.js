@@ -16,7 +16,7 @@ export default function newMap (
     pitchWithRotate: false,
     dragRotate: false,
     renderWorldCopies: true,
-    attributionControl: true,
+    attributionControl: false,
     preserveDrawingBuffer: true,
     ...mapOptions,
   });

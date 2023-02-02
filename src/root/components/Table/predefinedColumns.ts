@@ -2,10 +2,7 @@ import {
   compareString,
   compareNumber,
 } from '@togglecorp/fujs';
-import {
-  Link,
-  LinkProps,
-} from 'react-router-dom';
+import Link, { Props as LinkProps } from '#components/Link';
 
 import HeaderCell, { HeaderCellProps } from './HeaderCell';
 import Cell, { CellProps } from './Cell';

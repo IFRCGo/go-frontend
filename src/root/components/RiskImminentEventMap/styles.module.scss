@@ -6,6 +6,12 @@
   flex-direction: column;
   position: relative;
 
+  .map-disclaimer {
+    position: absolute;
+    left: $mapbox-icon-width + $spacing*0.5;
+    bottom: $spacing*0.25;
+  }
+
   :global {
     .mapboxgl-popup {
       height: 18rem;

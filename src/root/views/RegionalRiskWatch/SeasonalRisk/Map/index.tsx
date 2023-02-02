@@ -9,6 +9,7 @@ import Map, {
 import turfBbox from '@turf/bbox';
 
 import useReduxState from '#hooks/useReduxState';
+import GoMapDisclaimer from '#components/GoMapDisclaimer';
 import {
   defaultMapStyle,
   defaultMapOptions,
@@ -50,6 +51,7 @@ function SeasonalRiskMap(props: Props) {
         navControlPosition="top-right"
       >
         <MapContainer className={styles.mapContainer} />
+        <GoMapDisclaimer className={styles.mapDisclaimer} />
         <MapBounds
           // @ts-ignore
           bounds={regionBounds}
