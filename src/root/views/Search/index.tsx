@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import { _cs, sum } from '@togglecorp/fujs';
 import { useRequest } from '#utils/restRequest';
@@ -11,91 +11,39 @@ import BlockLoading from '#components/block-loading';
 import useInputState from '#hooks/useInputState';
 import useDebouncedValue from '#hooks/useDebouncedValue';
 
-import EmergencyTable from './EmergencyTable';
-import AppealsTable from './AppealsTable';
-import FieldReportTable from './FieldReportTable';
-import ProjectTabel from './ProjectTable';
-import SurgeAlertTable from './SurgeAlertTable';
-import SurgeDeployementTable from './SurgeDeployementTable';
-import CountryList, { CountryResult } from './CountryList';
+import EmergencyTable, {
+  EmergencyList
+} from './EmergencyTable';
+import AppealsTable, {
+  AppealList
+} from './AppealsTable';
+import FieldReportTable, {
+  FieldReportList
+} from './FieldReportTable';
+import ProjectTable, {
+  ProjectList
+} from './ProjectTable';
+import SurgeAlertTable, {
+  SurgeAlertList
+} from './SurgeAlertTable';
+import SurgeDeployementTable, {
+  SurgeDeployementList
+} from './SurgeDeployementTable';
+
+import CountryList, {
+  CountryResult
+} from './CountryList';
 
 import styles from './styles.module.scss';
 
-export interface Appeal {
-  id: number;
-  name: string;
-  appeal_type: string;
-  code: string;
-  country: string;
-  start_date: string;
-  score: number;
-}
-
-export interface Emergency {
-  id: number;
-  disaster_type: string;
-  funding_requirements: string;
-  name: string;
-  funding_coverage: string;
-  event_date: string;
-  score: number;
-}
-
-export interface SurgeAlert {
-  id: number;
-  name: string;
-  keywords: string[] | null;
-  event_name: string;
-  country: string | null;
-  start_date: string;
-  alert_date: string | null;
-  score: number;
-  event_id: number;
-  status: string;
-  deadline: string;
-  surge_type: string;
-}
-
-export interface Project {
-  id: number;
-  name: string;
-  event_name: string;
-  national_society: string;
-  tags: string[];
-  sector: string;
-  start_date: string;
-  regions: string[];
-  people_targeted: number;
-  score: number;
-}
-
-export interface FieldReport { // FIXME: emergency type is required as per wireframe
-  created_at: string;
-  name: string;
-  id: number;
-  score: number;
-  event_name: string;
-}
-
-export interface SurgeDeployement {
-  id: number;
-  event_name: string;
-  deployed_country: string;
-  type: string;
-  owner: string;
-  personnel_units: number;
-  equipment_units: number;
-  score: number;
-}
-
 export type SearchResult = {
   countries: CountryResult[];
-  appeals: Appeal[];
-  field_reports: FieldReport[];
-  projects: Project[];
-  emergencies: Emergency[];
-  surge_alerts: SurgeAlert[];
-  surge_deployments: SurgeDeployement[];
+  appeals: AppealList[];
+  field_reports: FieldReportList[];
+  projects: ProjectList[];
+  emergencies: EmergencyList[];
+  surge_alerts: SurgeAlertList[];
+  surge_deployments: SurgeDeployementList[];
 }
 
 const MAX_VIEW_PER_SECTION = 5;
@@ -147,7 +95,7 @@ function Search(props: Props) {
       countries: CountryList,
       emergencies: EmergencyTable,
       appeals: AppealsTable,
-      projects: ProjectTabel,
+      projects: ProjectTable,
       surgeAlerts: SurgeAlertTable,
       surgeDeployments: SurgeDeployementTable,
       fieldReports: FieldReportTable,
@@ -225,7 +173,7 @@ function Search(props: Props) {
                   variant="transparent"
                   onClick={setActiveView}
                 >
-                  View all results
+                  {strings.searchViewAllDocuments}
                 </Button>
               )}
             />

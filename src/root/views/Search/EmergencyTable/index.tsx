@@ -1,26 +1,34 @@
 import React from 'react';
 import { _cs } from '@togglecorp/fujs';
-import { Link } from 'react-router-dom';
 
 import LanguageContext from '#root/languageContext';
 import Container from '#components/Container';
 import {
   createLinkColumn,
+  createNumberColumn,
   createStringColumn,
 } from '#components/Table/predefinedColumns';
 import Table from '#components/Table';
 
-import { Emergency } from '../index';
-
 import styles from './styles.module.scss';
 
-function emergencyKeySelector(emergency: Emergency) {
+export interface EmergencyList {
+  id: number;
+  disaster_type: string;
+  funding_requirements: number;
+  name: string;
+  funding_coverage: string;
+  event_date: string;
+  score: number;
+}
+
+function emergencyKeySelector(emergency: EmergencyList) {
   return emergency.id;
 }
 
 interface Props {
   className?: string;
-  data: Emergency[] | undefined;
+  data: EmergencyList[] | undefined;
   actions: React.ReactNode;
 }
 
@@ -34,7 +42,7 @@ function EmergencyTable(props: Props) {
   const { strings } = React.useContext(LanguageContext);
 
   const columns = [
-    createLinkColumn<Emergency, number>(
+    createLinkColumn<EmergencyList, number>(
       'name',
       'Active Operations',
       (emergency) => emergency.name,
@@ -42,27 +50,31 @@ function EmergencyTable(props: Props) {
         href: `/emergencies/${emergency.id}`,
       })
     ),
-    createStringColumn<Emergency, number>(
+    createStringColumn<EmergencyList, number>(
       'disaster_type',
       'Disaster Type',
       (emergency) => emergency.disaster_type,
     ),
-    createStringColumn<Emergency, number>(
+    createNumberColumn<EmergencyList, number>(
       'funding_requirements',
       'Funding Requirements',
       (emergency) => emergency.funding_requirements,
     ),
-    createStringColumn<Emergency, number>(
+    createStringColumn<EmergencyList, number>(
       'funding_coverage',
       'Funding Coverage',
       (emergency) => {
-        if (emergency.funding_requirements) {
+        if (emergency.funding_requirements && emergency.funding_requirements > 0) {
           const percent = Number(emergency.funding_coverage) / Number(emergency.funding_requirements) * 100;
           return `${percent.toFixed(1)} %`;
         }
         return '-';
       }),
   ];
+
+  if (!data) {
+    return null;
+  }
 
   return (
     <>

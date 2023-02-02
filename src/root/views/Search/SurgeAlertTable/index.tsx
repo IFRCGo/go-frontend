@@ -10,17 +10,30 @@ import {
   createStringColumn,
 } from '#components/Table/predefinedColumns';
 
-import { SurgeAlert } from '../index';
-
 import styles from './styles.module.scss';
 
-function surgeAlertKeySelector(surgeAlert: SurgeAlert) {
+export interface SurgeAlertList {
+  id: number;
+  name: string;
+  keywords: string[] | null;
+  event_name: string;
+  country: string | null;
+  start_date: string;
+  alert_date: string | null;
+  score: number;
+  event_id: number;
+  status: string;
+  deadline: string;
+  surge_type: string;
+}
+
+function surgeAlertKeySelector(surgeAlert: SurgeAlertList) {
   return surgeAlert.id;
 }
 
 interface Props {
   className?: string;
-  data: SurgeAlert[] | undefined;
+  data: SurgeAlertList[] | undefined;
   actions: React.ReactNode;
 }
 
@@ -34,17 +47,17 @@ function SurgeAlertTable(props: Props) {
   const { strings } = React.useContext(LanguageContext);
 
   const columns = [
-    createDateColumn<SurgeAlert, number>(
+    createDateColumn<SurgeAlertList, number>(
       'alert_date',
       'Alert Date',
       (surgeAlert) => surgeAlert.alert_date,
     ),
-    createDateColumn<SurgeAlert, number>(
+    createDateColumn<SurgeAlertList, number>(
       'deadline',
       'Application Deadline',
       (surgeAlert) => surgeAlert.deadline,
     ),
-    createStringColumn<SurgeAlert, number>(
+    createStringColumn<SurgeAlertList, number>(
       'duration',
       'Duration',
       (surgeAlert) => {
@@ -53,32 +66,36 @@ function SurgeAlertTable(props: Props) {
         const duration = deadline.getDay() - startDate.getDay();
         return `${duration} Days`;
       }),
-    createDateColumn<SurgeAlert, number>(
+    createDateColumn<SurgeAlertList, number>(
       'start_date',
       'Start Date',
       (surgeAlert) => surgeAlert.start_date,
     ),
-    createStringColumn<SurgeAlert, number>(
+    createStringColumn<SurgeAlertList, number>(
       'name',
       'Position',
       (surgeAlert) => surgeAlert.name,
     ),
-    createStringColumn<SurgeAlert, number>(
+    createStringColumn<SurgeAlertList, number>(
       'keywords',
       'Keywords',
       (surgeAlert) => surgeAlert.keywords?.slice(0, 5).join(', '),
     ),
-    createStringColumn<SurgeAlert, number>(
+    createStringColumn<SurgeAlertList, number>(
       'surge_type',
       'Surge Type',
       (surgeAlert) => surgeAlert.surge_type,
     ),
-    createStringColumn<SurgeAlert, number>(
+    createStringColumn<SurgeAlertList, number>(
       'status',
       'Status',
       (surgeAlert) => surgeAlert.status,
     )
   ];
+
+  if (!data) {
+    return null;
+  }
 
   return (
     <>

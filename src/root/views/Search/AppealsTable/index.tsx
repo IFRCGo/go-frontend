@@ -1,6 +1,5 @@
 import React from 'react';
 import { _cs } from '@togglecorp/fujs';
-import { Link } from 'react-router-dom';
 
 import Container from '#components/Container';
 import Table from '#components/Table';
@@ -11,17 +10,25 @@ import {
   createStringColumn,
 } from '#components/Table/predefinedColumns';
 
-import { Appeal } from '../index';
-
 import styles from './styles.module.scss';
 
-function appealKeySelector(appeal: Appeal) {
+export interface AppealList {
+  id: number;
+  name: string;
+  appeal_type: string;
+  code: string;
+  country: string;
+  start_date: string;
+  score: number;
+}
+
+function appealKeySelector(appeal: AppealList) {
   return appeal.id;
 }
 
 interface Props {
   className?: string;
-  data: Appeal[] | undefined;
+  data: AppealList[] | undefined;
   actions: React.ReactNode;
 }
 
@@ -35,27 +42,27 @@ function AppealsTable(props: Props) {
   const { strings } = React.useContext(LanguageContext);
 
   const columns = [
-    createDateColumn<Appeal, number>(
+    createDateColumn<AppealList, number>(
       'start_date',
       'Date',
       (appeal) => appeal.start_date,
     ),
-    createStringColumn<Appeal, number>(
+    createStringColumn<AppealList, number>(
       'appeal_type',
       'Type',
       (appeal) => appeal.appeal_type,
     ),
-    createStringColumn<Appeal, number>(
+    createStringColumn<AppealList, number>(
       'code',
       'Code',
       (appeal) => appeal.code,
     ),
-    createStringColumn<Appeal, number>(
+    createStringColumn<AppealList, number>(
       'name',
       'Name',
       (appeal) => appeal.name,
     ),
-    createLinkColumn<Appeal, number>(
+    createLinkColumn<AppealList, number>(
       'country',
       'Country',
       (appeal) =>  appeal.country,
@@ -64,6 +71,10 @@ function AppealsTable(props: Props) {
       })
     ),
   ];
+
+  if (!data) {
+    return null;
+  }
 
   return (
     <>
@@ -80,7 +91,7 @@ function AppealsTable(props: Props) {
             data={data}
             columns={columns}
             keySelector={appealKeySelector}
-            variant="small"
+            variant="large"
           />
         </Container>
       )}
