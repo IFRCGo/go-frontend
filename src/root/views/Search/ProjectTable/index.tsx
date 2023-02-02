@@ -15,19 +15,21 @@ import { Project } from '../index';
 
 import styles from './styles.module.scss';
 
+function ProjectKeySelector(project: Project) {
+  return project.id;
+}
+
 interface Props {
   className?: string;
   data: Project[] | undefined;
-}
-
-function ProjectKeySelector(project: Project) {
-  return project.id;
+  actions: React.ReactNode;
 }
 
 function ProjectTable(props: Props) {
   const {
     className,
     data,
+    actions,
   } = props;
 
   const { strings } = React.useContext(LanguageContext);
@@ -78,14 +80,7 @@ function ProjectTable(props: Props) {
           heading={strings.searchIfrcProjects}
           contentClassName={styles.content}
           sub
-          actions={(
-            <Link
-              className={styles.link}
-              to={`/`}
-            >
-              {strings.searchViewAllDocuments}
-            </Link>
-          )}
+          actions={actions}
         >
           <Table
             className={styles.inProgressDrefTable}

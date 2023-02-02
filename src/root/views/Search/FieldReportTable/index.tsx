@@ -14,19 +14,21 @@ import { FieldReport } from '../index';
 
 import styles from './styles.module.scss';
 
+function fieldReportKeySelector(fieldReport: FieldReport) {
+  return fieldReport.id;
+}
+
 interface Props {
   className?: string;
   data: FieldReport[] | undefined;
-}
-
-function fieldReportKeySelector(fieldReport: FieldReport) {
-  return fieldReport.id;
+  actions: React.ReactNode;
 }
 
 function FieldReportTable(props: Props) {
   const {
     className,
     data,
+    actions,
   } = props;
 
   const { strings } = React.useContext(LanguageContext);
@@ -57,14 +59,7 @@ function FieldReportTable(props: Props) {
           heading={strings.searchIfrcReport}
           contentClassName={styles.content}
           sub
-          actions={(
-            <Link
-              className={styles.link}
-              to={`reports/all`}
-            >
-              {strings.searchViewAllDocuments}
-            </Link>
-          )}
+          actions={actions}
         >
           <Table
             className={styles.inProgressDrefTable}

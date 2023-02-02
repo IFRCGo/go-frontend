@@ -7,17 +7,22 @@ import { Appeal } from '../index';
 
 interface Props {
   data: Appeal[] | undefined;
+  actions: React.ReactNode;
 }
 
 function ListAppealTable(props: Props) {
   const {
     data,
+    actions,
   } = props;
 
   const { strings } = React.useContext(LanguageContext);
 
   return (
-    <AppealsTable data={data} />
+    <AppealsTable
+      data={data}
+      actions={actions}
+    />
   );
 }
 export default ListAppealTable;

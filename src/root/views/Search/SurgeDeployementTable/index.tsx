@@ -15,19 +15,21 @@ import { SurgeDeployement } from '../index';
 
 import styles from './styles.module.scss';
 
+function surgeDeploymentTable(surgeDeployement: SurgeDeployement) {
+  return surgeDeployement.id;
+}
+
 interface Props {
   className?: string;
   data: SurgeDeployement[] | undefined;
-}
-
-function surgeDeploymentTable(surgeDeployement: SurgeDeployement) {
-  return surgeDeployement.id;
+  actions: React.ReactNode;
 }
 
 function SurgeDeployementTable(props: Props) {
   const {
     className,
     data,
+    actions,
   } = props;
 
   const { strings } = React.useContext(LanguageContext);
@@ -61,13 +63,9 @@ function SurgeDeployementTable(props: Props) {
     createLinkColumn<SurgeDeployement, number>(
       'event_name',
       'Emergency',
-      (surgeDeployement) => (
-        <div className={styles.link}>
-          {surgeDeployement.event_name}
-        </div>
-      ),
+      (surgeDeployement) => surgeDeployement.event_name,
       (surgeDeployement) => ({
-        to: `emergencies/${surgeDeployement.id}`,
+        href: `emergencies/${surgeDeployement.id}`,
       })
     ),
   ];
@@ -80,14 +78,7 @@ function SurgeDeployementTable(props: Props) {
           heading={strings.searchIfrcEmergencyPlanningAndReportingDocuments}
           contentClassName={styles.content}
           sub
-          actions={(
-            <Link
-              className={styles.link}
-              to={`deployments/erus/all`}
-            >
-              {strings.searchViewAllDocuments}
-            </Link>
-          )}
+          actions={actions}
         >
           <Table
             className={styles.inProgressDrefTable}

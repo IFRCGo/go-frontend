@@ -15,19 +15,21 @@ import { Appeal } from '../index';
 
 import styles from './styles.module.scss';
 
+function appealKeySelector(appeal: Appeal) {
+  return appeal.id;
+}
+
 interface Props {
   className?: string;
   data: Appeal[] | undefined;
-}
-
-function appealKeySelector(appeal: Appeal) {
-  return appeal.id;
+  actions: React.ReactNode;
 }
 
 function AppealsTable(props: Props) {
   const {
     className,
     data,
+    actions,
   } = props;
 
   const { strings } = React.useContext(LanguageContext);
@@ -56,13 +58,9 @@ function AppealsTable(props: Props) {
     createLinkColumn<Appeal, number>(
       'country',
       'Country',
-      (appeal) => (
-        <div className={styles.link}>
-          {appeal.country}
-        </div>
-      ),
+      (appeal) =>  appeal.country,
       (appeal) => ({
-        to: `countries/${appeal.country}`,
+        href: `countries/${appeal.country}`,
       })
     ),
   ];
@@ -75,14 +73,7 @@ function AppealsTable(props: Props) {
           heading={strings.searchIfrcEmergencyPlanningAndReportingDocuments}
           contentClassName={styles.content}
           sub
-          actions={(
-            <Link
-              className={styles.link}
-              to={`appeals/all`}
-            >
-              {strings.searchViewAllDocuments}
-            </Link>
-          )}
+          actions={actions}
         >
           <Table
             className={styles.inProgressDrefTable}
