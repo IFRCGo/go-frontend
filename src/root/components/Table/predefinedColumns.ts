@@ -22,7 +22,7 @@ import { SortDirection, FilterType } from './types';
 export function createStringColumn<D, K>(
   id: string,
   title: React.ReactNode,
-  accessor: (item: D) => string | undefined | null,
+  accessor: (item: D) => React.ReactNode | string | undefined | null,
   options?: {
     cellAsHeader?: boolean,
     sortable?: boolean,
@@ -33,7 +33,7 @@ export function createStringColumn<D, K>(
   },
 ) {
   const item: Column<D, K, CellProps<React.ReactNode>, HeaderCellProps> & {
-    valueSelector: (item: D) => string | undefined | null,
+    valueSelector: (item: D) => React.ReactNode | string | undefined | null,
     valueComparator: (foo: D, bar: D) => number,
   } = {
     id,
@@ -51,7 +51,8 @@ export function createStringColumn<D, K>(
       value: accessor(datum),
     }),
     valueSelector: accessor,
-    valueComparator: (foo: D, bar: D) => compareString(accessor(foo), accessor(bar)),
+    valueComparator: () => 0,
+    // valueComparator: (foo: D, bar: D) => compareString(accessor(foo), accessor(bar)),
   };
   return item;
 }

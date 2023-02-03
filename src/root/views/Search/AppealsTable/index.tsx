@@ -12,7 +12,7 @@ import {
 
 import styles from './styles.module.scss';
 
-export interface AppealList {
+export interface AppealResult {
   id: number;
   name: string;
   appeal_type: string;
@@ -23,13 +23,13 @@ export interface AppealList {
   score: number;
 }
 
-function appealKeySelector(appeal: AppealList) {
+function appealKeySelector(appeal: AppealResult) {
   return appeal.id;
 }
 
 interface Props {
   className?: string;
-  data: AppealList[] | undefined;
+  data: AppealResult[] | undefined;
   actions: React.ReactNode;
 }
 
@@ -43,27 +43,27 @@ function AppealsTable(props: Props) {
   const { strings } = React.useContext(LanguageContext);
 
   const columns = [
-    createDateColumn<AppealList, number>(
+    createDateColumn<AppealResult, number>(
       'start_date',
       'Date',
       (appeal) => appeal.start_date,
     ),
-    createStringColumn<AppealList, number>(
+    createStringColumn<AppealResult, number>(
       'appeal_type',
       'Type',
       (appeal) => appeal.appeal_type,
     ),
-    createStringColumn<AppealList, number>(
+    createStringColumn<AppealResult, number>(
       'code',
       'Code',
       (appeal) => appeal.code,
     ),
-    createStringColumn<AppealList, number>(
+    createStringColumn<AppealResult, number>(
       'name',
       'Name',
       (appeal) => appeal.name,
     ),
-    createLinkColumn<AppealList, number>(
+    createLinkColumn<AppealResult, number>(
       'country',
       'Country',
       (appeal) =>  appeal.country,
@@ -79,25 +79,21 @@ function AppealsTable(props: Props) {
   }
 
   return (
-    <>
-      {data && (
-        <Container
-          className={_cs(styles.appealsTable, className)}
-          heading={strings.searchIfrcEmergencyPlanningAndReportingDocuments}
-          contentClassName={styles.content}
-          sub
-          actions={actions}
-        >
-          <Table
-            className={styles.inProgressDrefTable}
-            data={data}
-            columns={columns}
-            keySelector={appealKeySelector}
-            variant="large"
-          />
-        </Container>
-      )}
-    </>
+    <Container
+      className={_cs(styles.appealsTable, className)}
+      heading={strings.searchIfrcEmergencyPlanningAndReportingDocuments}
+      contentClassName={styles.content}
+      sub
+      actions={actions}
+    >
+      <Table
+        className={styles.inProgressDrefTable}
+        data={data}
+        columns={columns}
+        keySelector={appealKeySelector}
+        variant="large"
+      />
+    </Container>
   );
 }
 

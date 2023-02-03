@@ -16,24 +16,24 @@ import { useRequest } from '#utils/restRequest';
 import { getSearchValue } from '#utils/common';
 import { URL_SEARCH_KEY } from '#utils/constants';
 
-import EmergencyTable, { EmergencyList } from './EmergencyTable';
-import AppealsTable, { AppealList } from './AppealsTable';
-import FieldReportTable, { FieldReportList } from './FieldReportTable';
-import ProjectTable, { ProjectList } from './ProjectTable';
-import SurgeAlertTable, { SurgeAlertList } from './SurgeAlertTable';
-import SurgeDeploymentTable, { SurgeDeploymentList } from './SurgeDeploymentTable';
+import EmergencyTable, { EmergencyResult } from './EmergencyTable';
+import AppealsTable, { AppealResult } from './AppealsTable';
+import FieldReportTable, { FieldReportResponse } from './FieldReportTable';
+import ProjectTable, { ProjectResult } from './ProjectTable';
+import SurgeAlertTable, { SurgeAlertResult } from './SurgeAlertTable';
+import SurgeDeploymentTable, { SurgeDeploymentResult } from './SurgeDeploymentTable';
 import CountryList, { CountryResult } from './CountryList';
 
 import styles from './styles.module.scss';
 
 export type SearchResult = {
   countries: CountryResult[];
-  appeals: AppealList[];
-  field_reports: FieldReportList[];
-  projects: ProjectList[];
-  emergencies: EmergencyList[];
-  surge_alerts: SurgeAlertList[];
-  surge_deployments: SurgeDeploymentList[];
+  appeals: AppealResult[];
+  field_reports: FieldReportResponse[];
+  projects: ProjectResult[];
+  emergencies: EmergencyResult[];
+  surge_alerts: SurgeAlertResult[];
+  surge_deployments: SurgeDeploymentResult[];
 }
 
 const MAX_VIEW_PER_SECTION = 5;
@@ -118,6 +118,8 @@ function Search(props: Props) {
   }, [searchResponse]);
 
   const ActiveComponent = activeView ? componentMap[activeView] : undefined;
+  const redirectSearchString = isDefined(debouncedSearchString) ? `?${URL_SEARCH_KEY}=${window.encodeURI(debouncedSearchString)}` : undefined;
+  const currentSearchString = window.location.search;
 
   return (
     <Page
@@ -128,6 +130,7 @@ function Search(props: Props) {
       description={(
         <TextInput
           icons={<IoSearch />}
+          type="search"
           name="search"
           value={searchString}
           onChange={setSearchString}
@@ -151,12 +154,14 @@ function Search(props: Props) {
           )}
         </Container>
       )}
-      <Redirect
-        to={{
-          pathname: '/search',
-          search: isDefined(debouncedSearchString) ? `?${URL_SEARCH_KEY}=${window.encodeURI(debouncedSearchString)}` : undefined,
-        }}
-      />
+      {redirectSearchString !== currentSearchString && (
+        <Redirect
+          to={{
+            pathname: '/search',
+            search: redirectSearchString,
+          }}
+        />
+      )}
       <div className={styles.content}>
         {activeView && ActiveComponent && (
           <ActiveComponent

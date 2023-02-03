@@ -11,7 +11,7 @@ import {
 
 import styles from './styles.module.scss';
 
-export interface FieldReportList {
+export interface FieldReportResponse {
   created_at: string;
   name: string;
   id: number;
@@ -19,13 +19,13 @@ export interface FieldReportList {
   event_name: string;
 }
 
-function fieldReportKeySelector(fieldReport: FieldReportList) {
+function fieldReportKeySelector(fieldReport: FieldReportResponse) {
   return fieldReport.id;
 }
 
 interface Props {
   className?: string;
-  data: FieldReportList[] | undefined;
+  data: FieldReportResponse[] | undefined;
   actions: React.ReactNode;
 }
 
@@ -39,17 +39,17 @@ function FieldReportTable(props: Props) {
   const { strings } = React.useContext(LanguageContext);
 
   const columns = [
-    createDateColumn<FieldReportList, number>(
+    createDateColumn<FieldReportResponse, number>(
       'created_at',
       '',
       (fieldReport) => fieldReport.created_at,
     ),
-    createStringColumn<FieldReportList, number>(
+    createStringColumn<FieldReportResponse, number>(
       'event_name',
       '',
       (fieldReport) => fieldReport.event_name,
     ),
-    createStringColumn<FieldReportList, number>(
+    createStringColumn<FieldReportResponse, number>(
       'name',
       '',
       (fieldReport) => fieldReport.name,
@@ -61,25 +61,21 @@ function FieldReportTable(props: Props) {
   }
 
   return (
-    <>
-      {data && (
-        <Container
-          className={_cs(styles.fieldReportTable, className)}
-          heading={strings.searchIfrcReport}
-          contentClassName={styles.content}
-          sub
-          actions={actions}
-        >
-          <Table
-            className={styles.inProgressDrefTable}
-            data={data}
-            columns={columns}
-            keySelector={fieldReportKeySelector}
-            variant="large"
-          />
-        </Container>
-      )}
-    </>
+    <Container
+      className={_cs(styles.fieldReportTable, className)}
+      heading={strings.searchIfrcReport}
+      contentClassName={styles.content}
+      sub
+      actions={actions}
+    >
+      <Table
+        className={styles.inProgressDrefTable}
+        data={data}
+        columns={columns}
+        keySelector={fieldReportKeySelector}
+        variant="large"
+      />
+    </Container>
   );
 }
 

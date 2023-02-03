@@ -12,7 +12,7 @@ import Table from '#components/Table';
 
 import styles from './styles.module.scss';
 
-export interface EmergencyList {
+export interface EmergencyResult {
   id: number;
   disaster_type: string;
   funding_requirements: number;
@@ -22,13 +22,13 @@ export interface EmergencyList {
   score: number;
 }
 
-function emergencyKeySelector(emergency: EmergencyList) {
+function emergencyKeySelector(emergency: EmergencyResult) {
   return emergency.id;
 }
 
 interface Props {
   className?: string;
-  data: EmergencyList[] | undefined;
+  data: EmergencyResult[] | undefined;
   actions: React.ReactNode;
 }
 
@@ -42,7 +42,7 @@ function EmergencyTable(props: Props) {
   const { strings } = React.useContext(LanguageContext);
 
   const columns = [
-    createLinkColumn<EmergencyList, number>(
+    createLinkColumn<EmergencyResult, number>(
       'name',
       'Active Operations',
       (emergency) => emergency.name,
@@ -51,17 +51,17 @@ function EmergencyTable(props: Props) {
         variant: 'table',
       })
     ),
-    createStringColumn<EmergencyList, number>(
+    createStringColumn<EmergencyResult, number>(
       'disaster_type',
       'Disaster Type',
       (emergency) => emergency.disaster_type,
     ),
-    createNumberColumn<EmergencyList, number>(
+    createNumberColumn<EmergencyResult, number>(
       'funding_requirements',
       'Funding Requirements',
       (emergency) => emergency.funding_requirements,
     ),
-    createStringColumn<EmergencyList, number>(
+    createStringColumn<EmergencyResult, number>(
       'funding_coverage',
       'Funding Coverage',
       (emergency) => {
@@ -78,25 +78,21 @@ function EmergencyTable(props: Props) {
   }
 
   return (
-    <>
-      {data && (
-        <Container
-          className={_cs(styles.emergencyTable, className)}
-          heading={strings.searchIfrcEmergencies}
-          contentClassName={styles.content}
-          sub
-          actions={actions}
-        >
-          <Table
-            className={styles.inProgressDrefTable}
-            data={data}
-            columns={columns}
-            keySelector={emergencyKeySelector}
-            variant="large"
-          />
-        </Container>
-      )}
-    </>
+    <Container
+      className={_cs(styles.emergencyTable, className)}
+      heading={strings.searchIfrcEmergencies}
+      contentClassName={styles.content}
+      sub
+      actions={actions}
+    >
+      <Table
+        className={styles.inProgressDrefTable}
+        data={data}
+        columns={columns}
+        keySelector={emergencyKeySelector}
+        variant="large"
+      />
+    </Container>
   );
 }
 

@@ -1,0 +1,13 @@
+@import '~styles/settings/variables';
+
+.reduced-list-label {
+  text-decoration: underline;
+  font-weight: $base-font-medium;
+  color: $secondary-color;
+  padding: 0;
+
+  &:hover, &:focus {
+    color: $primary-color;
+    opacity: 1;
+  }
+}

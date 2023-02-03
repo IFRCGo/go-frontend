@@ -13,7 +13,7 @@ import { getDuration } from '#utils/utils';
 
 import styles from './styles.module.scss';
 
-export interface SurgeAlertList {
+export interface SurgeAlertResult {
   id: number;
   name: string;
   keywords: string[] | null;
@@ -28,13 +28,13 @@ export interface SurgeAlertList {
   surge_type: string;
 }
 
-function surgeAlertKeySelector(surgeAlert: SurgeAlertList) {
+function surgeAlertKeySelector(surgeAlert: SurgeAlertResult) {
   return surgeAlert.id;
 }
 
 interface Props {
   className?: string;
-  data: SurgeAlertList[] | undefined;
+  data: SurgeAlertResult[] | undefined;
   actions: React.ReactNode;
 }
 
@@ -48,17 +48,17 @@ function SurgeAlertTable(props: Props) {
   const { strings } = React.useContext(LanguageContext);
 
   const columns = [
-    createDateColumn<SurgeAlertList, number>(
+    createDateColumn<SurgeAlertResult, number>(
       'alert_date',
       'Alert Date',
       (surgeAlert) => surgeAlert.alert_date,
     ),
-    createDateColumn<SurgeAlertList, number>(
+    createDateColumn<SurgeAlertResult, number>(
       'deadline',
       'Application Deadline',
       (surgeAlert) => surgeAlert.deadline,
     ),
-    createStringColumn<SurgeAlertList, number>(
+    createStringColumn<SurgeAlertResult, number>(
       'duration',
       'Duration',
       (surgeAlert) => {
@@ -73,27 +73,27 @@ function SurgeAlertTable(props: Props) {
         return duration;
       },
     ),
-    createDateColumn<SurgeAlertList, number>(
+    createDateColumn<SurgeAlertResult, number>(
       'start_date',
       'Start Date',
       (surgeAlert) => surgeAlert.start_date,
     ),
-    createStringColumn<SurgeAlertList, number>(
+    createStringColumn<SurgeAlertResult, number>(
       'name',
       'Position',
       (surgeAlert) => surgeAlert.name,
     ),
-    createStringColumn<SurgeAlertList, number>(
+    createStringColumn<SurgeAlertResult, number>(
       'keywords',
       'Keywords',
       (surgeAlert) => surgeAlert.keywords?.join(', '),
     ),
-    createStringColumn<SurgeAlertList, number>(
+    createStringColumn<SurgeAlertResult, number>(
       'surge_type',
       'Surge Type',
       (surgeAlert) => surgeAlert.surge_type,
     ),
-    createStringColumn<SurgeAlertList, number>(
+    createStringColumn<SurgeAlertResult, number>(
       'status',
       'Status',
       (surgeAlert) => surgeAlert.status,
@@ -105,25 +105,21 @@ function SurgeAlertTable(props: Props) {
   }
 
   return (
-    <>
-      {data && (
-        <Container
-          className={_cs(styles.surgeAlertsTable, className)}
-          heading={strings.searchIfrcOpenSurgeAlerts}
-          contentClassName={styles.content}
-          sub
-          actions={actions}
-        >
-          <Table
-            className={styles.appealsTable}
-            data={data}
-            columns={columns}
-            keySelector={surgeAlertKeySelector}
-            variant="large"
-          />
-        </Container>
-      )}
-    </>
+    <Container
+      className={_cs(styles.surgeAlertsTable, className)}
+      heading={strings.searchIfrcOpenSurgeAlerts}
+      contentClassName={styles.content}
+      sub
+      actions={actions}
+    >
+      <Table
+        className={styles.appealsTable}
+        data={data}
+        columns={columns}
+        keySelector={surgeAlertKeySelector}
+        variant="large"
+      />
+    </Container>
   );
 }
 
