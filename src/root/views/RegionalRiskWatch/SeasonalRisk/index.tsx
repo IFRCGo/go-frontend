@@ -159,13 +159,14 @@ function SeasonalRisk(props: Props) {
         riskList,
         d => d.country_details.iso3.toUpperCase()
       ) ?? {};
+
       const countryRiskList = Object.keys(countryGroupedRiskList).map(
         (iso3) => {
           if (!selectedCountryMaps[iso3]) {
             return undefined;
           }
 
-          const riskList = unique(
+          const mappedRiskList = unique(
             countryGroupedRiskList[iso3]
               .filter(({ hazard_type }) => selectedHazardsMap[hazard_type])
               .map((riskData) => ({
@@ -176,13 +177,13 @@ function SeasonalRisk(props: Props) {
             (r) => r.hazard_type,
           );
 
-          const riskValueList = riskList.map((rv) => rv.value);
+          const riskValueList = mappedRiskList.map((rv) => rv.value);
           const countryName = countryGroupedRiskList[iso3][0].country_details.name;
 
           return {
             iso3,
             value: sum(riskValueList),
-            byHazard: riskList,
+            byHazard: mappedRiskList,
             countryName,
           };
         },
