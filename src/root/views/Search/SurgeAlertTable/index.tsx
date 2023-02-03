@@ -1,6 +1,6 @@
 import React from 'react';
 import { _cs } from '@togglecorp/fujs';
-import { Link } from 'react-router-dom';
+import { DateTime } from 'luxon';
 
 import Container from '#components/Container';
 import Table from '#components/Table';
@@ -9,6 +9,7 @@ import {
   createDateColumn,
   createStringColumn,
 } from '#components/Table/predefinedColumns';
+import { getDuration } from '#utils/utils';
 
 import styles from './styles.module.scss';
 
@@ -61,14 +62,17 @@ function SurgeAlertTable(props: Props) {
       'duration',
       'Duration',
       (surgeAlert) => {
-        const startDate = new Date(surgeAlert.start_date);
-        const deadline = new Date(surgeAlert.deadline);
-        const duration = deadline.getDay() - startDate.getDay();
-        if (duration > 1) {
-          return `${duration} Days`;
+        if (!surgeAlert.alert_date) {
+          return '-';
         }
-        return `-`;
-      }),
+
+        const alertDate = DateTime.fromISO(surgeAlert.alert_date);
+        const deadline = DateTime.fromISO(surgeAlert.deadline);
+        const duration = getDuration(alertDate, deadline);
+
+        return duration;
+      },
+    ),
     createDateColumn<SurgeAlertList, number>(
       'start_date',
       'Start Date',
@@ -82,7 +86,7 @@ function SurgeAlertTable(props: Props) {
     createStringColumn<SurgeAlertList, number>(
       'keywords',
       'Keywords',
-      (surgeAlert) => surgeAlert.keywords?.slice(0, 5).join(', '),
+      (surgeAlert) => surgeAlert.keywords?.join(', '),
     ),
     createStringColumn<SurgeAlertList, number>(
       'surge_type',

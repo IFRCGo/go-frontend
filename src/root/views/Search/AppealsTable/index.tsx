@@ -18,6 +18,7 @@ export interface AppealList {
   appeal_type: string;
   code: string;
   country: string;
+  country_id: number;
   start_date: string;
   score: number;
 }
@@ -67,7 +68,8 @@ function AppealsTable(props: Props) {
       'Country',
       (appeal) =>  appeal.country,
       (appeal) => ({
-        href: `countries/${appeal.country}`,
+        href: `countries/${appeal.country_id}`,
+        variant: "table"
       })
     ),
   ];

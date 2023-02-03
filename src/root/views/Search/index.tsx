@@ -1,7 +1,9 @@
 import React from 'react';
+import { _cs, sum, isDefined } from '@togglecorp/fujs';
+import { Redirect } from 'react-router-dom';
+import { MdSearch, MdSearchOff } from 'react-icons/md';
+import { IoSearch, IoChevronForward, IoChevronBack } from 'react-icons/io5';
 
-import { _cs, sum } from '@togglecorp/fujs';
-import { useRequest } from '#utils/restRequest';
 import LanguageContext from '#root/languageContext';
 import Page from '#components/Page';
 import Container from '#components/Container';
@@ -10,29 +12,17 @@ import Button from '#components/Button';
 import BlockLoading from '#components/block-loading';
 import useInputState from '#hooks/useInputState';
 import useDebouncedValue from '#hooks/useDebouncedValue';
+import { useRequest } from '#utils/restRequest';
+import { getSearchValue } from '#utils/common';
+import { URL_SEARCH_KEY } from '#utils/constants';
 
-import EmergencyTable, {
-  EmergencyList
-} from './EmergencyTable';
-import AppealsTable, {
-  AppealList
-} from './AppealsTable';
-import FieldReportTable, {
-  FieldReportList
-} from './FieldReportTable';
-import ProjectTable, {
-  ProjectList
-} from './ProjectTable';
-import SurgeAlertTable, {
-  SurgeAlertList
-} from './SurgeAlertTable';
-import SurgeDeploymentTable, {
-  SurgeDeploymentList
-} from './SurgeDeploymentTable';
-
-import CountryList, {
-  CountryResult
-} from './CountryList';
+import EmergencyTable, { EmergencyList } from './EmergencyTable';
+import AppealsTable, { AppealList } from './AppealsTable';
+import FieldReportTable, { FieldReportList } from './FieldReportTable';
+import ProjectTable, { ProjectList } from './ProjectTable';
+import SurgeAlertTable, { SurgeAlertList } from './SurgeAlertTable';
+import SurgeDeploymentTable, { SurgeDeploymentList } from './SurgeDeploymentTable';
+import CountryList, { CountryResult } from './CountryList';
 
 import styles from './styles.module.scss';
 
@@ -56,12 +46,23 @@ interface Props {
 
 function Search(props: Props) {
   const { className } = props;
+  const urlSearchValue = getSearchValue(URL_SEARCH_KEY);
 
   const [activeView, setActiveView] = React.useState<ResultKeys | undefined>();
-  const [searchString, setSearchString] = useInputState<string | undefined>(undefined);
-  const { strings } = React.useContext(LanguageContext);
+  const [searchString, setSearchString] = useInputState<string | undefined>(
+    getSearchValue(URL_SEARCH_KEY)
+  );
 
-  const debouncedSearchString = useDebouncedValue(searchString);
+  const { strings } = React.useContext(LanguageContext);
+  const debouncedSearchString = useDebouncedValue(
+    searchString?.trim(),
+    500,
+  );
+
+  React.useEffect(() => {
+    setSearchString(urlSearchValue);
+  }, [urlSearchValue, setSearchString]);
+
   const shouldSendSearchRequest = debouncedSearchString && debouncedSearchString.length > 2;
   const {
     pending: searchPending,
@@ -126,18 +127,36 @@ function Search(props: Props) {
       withMainContentBackground
       description={(
         <TextInput
+          icons={<IoSearch />}
           name="search"
           value={searchString}
           onChange={setSearchString}
+          placeholder="Enter at least 3 characters"
         />
       )}
     >
       {searchPending && <BlockLoading />}
       {!searchPending && isEmpty && (
-        <Container>
-          Nothing here!
+        <Container contentClassName={styles.emptySearchContent}>
+          {isDefined(debouncedSearchString) && debouncedSearchString.trim().length > 2 ? (
+            <>
+              <MdSearchOff className={styles.icon} />
+              Couldn't find any results for given query!
+            </>
+          ) : (
+            <>
+              <MdSearch className={styles.icon} />
+              Please enter at least 3 characters to get started with search!
+            </>
+          )}
         </Container>
       )}
+      <Redirect
+        to={{
+          pathname: '/search',
+          search: isDefined(debouncedSearchString) ? `?${URL_SEARCH_KEY}=${window.encodeURI(debouncedSearchString)}` : undefined,
+        }}
+      />
       <div className={styles.content}>
         {activeView && ActiveComponent && (
           <ActiveComponent
@@ -147,6 +166,7 @@ function Search(props: Props) {
                 name={undefined}
                 variant="transparent"
                 onClick={setActiveView}
+                icons={<IoChevronBack />}
               >
                 Go back
               </Button>
@@ -172,15 +192,16 @@ function Search(props: Props) {
                   name={score.key}
                   variant="transparent"
                   onClick={setActiveView}
+                  actions={<IoChevronForward />}
                 >
-                  {strings.searchViewAllDocuments}
+                  View all Results
                 </Button>
               )}
             />
           );
         })}
       </div>
-    </Page >
+    </Page>
   );
 }
 
