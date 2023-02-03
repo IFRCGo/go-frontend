@@ -26,9 +26,9 @@ import ProjectTable, {
 import SurgeAlertTable, {
   SurgeAlertList
 } from './SurgeAlertTable';
-import SurgeDeployementTable, {
-  SurgeDeployementList
-} from './SurgeDeployementTable';
+import SurgeDeploymentTable, {
+  SurgeDeploymentList
+} from './SurgeDeploymentTable';
 
 import CountryList, {
   CountryResult
@@ -43,7 +43,7 @@ export type SearchResult = {
   projects: ProjectList[];
   emergencies: EmergencyList[];
   surge_alerts: SurgeAlertList[];
-  surge_deployments: SurgeDeployementList[];
+  surge_deployments: SurgeDeploymentList[];
 }
 
 const MAX_VIEW_PER_SECTION = 5;
@@ -97,7 +97,7 @@ function Search(props: Props) {
       appeals: AppealsTable,
       projects: ProjectTable,
       surgeAlerts: SurgeAlertTable,
-      surgeDeployments: SurgeDeployementTable,
+      surgeDeployments: SurgeDeploymentTable,
       fieldReports: FieldReportTable,
     };
 
