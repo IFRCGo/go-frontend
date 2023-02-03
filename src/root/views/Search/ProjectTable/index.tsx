@@ -7,6 +7,7 @@ import {
   createDateColumn,
   createNumberColumn,
   createStringColumn,
+  createLinkColumn,
 } from '#components/Table/predefinedColumns';
 import Table from '#components/Table';
 
@@ -15,6 +16,7 @@ import styles from './styles.module.scss';
 export interface ProjectList {
   id: number;
   name: string;
+  event_id: number;
   event_name: string;
   national_society: string;
   tags: string[];
@@ -45,20 +47,28 @@ function ProjectTable(props: Props) {
   const { strings } = React.useContext(LanguageContext);
 
   const columns = [
-    createStringColumn<ProjectList, number>(
+    createLinkColumn<ProjectList, number>(
       'name',
       'Emergency',
-      (project) => project.name,
+      (project) => project.event_name,
+      (project) => ({
+        href: `/emergency/${project.event_id}`,
+        variant: 'table',
+      })
     ),
     createStringColumn<ProjectList, number>(
       'national_society',
       'National Society/ERU',
       (project) => project.national_society,
     ),
-    createStringColumn<ProjectList, number>(
+    createLinkColumn<ProjectList, number>(
       'name',
       'Project/Activity Name',
       (project) => project.name,
+      (project) => ({
+        href: `/three-w/${project.id}`,
+        variant: 'table',
+      }),
     ),
     createDateColumn<ProjectList, number>(
       'start_date',

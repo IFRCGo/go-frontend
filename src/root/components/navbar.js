@@ -5,6 +5,7 @@ import {
   NavLink,
   Link,
   withRouter,
+  Redirect,
 } from 'react-router-dom';
 
 import { environment } from '#config';
@@ -17,6 +18,7 @@ import Translate from '#components/Translate';
 import LanguageContext from '#root/languageContext';
 import useReduxState from '#hooks/useReduxState';
 import { isIfrcUser } from '#utils/common';
+import { URL_SEARCH_KEY } from '#utils/constants';
 
 import UserMenu from './connected/user-menu';
 import HeaderRegionButton from './header-region-button';
@@ -36,6 +38,8 @@ function Navbar(props) {
   const user = useReduxState('me');
   const countries = useReduxState('allCountries');
   const ifrcUser = React.useMemo(() => isIfrcUser(user?.data), [user]);
+  const searchTextRef = React.useRef();
+  const [redirectSearchString, setRedirectSearchStrihng] = React.useState();
 
   const { strings } = React.useContext(LanguageContext);
   const debounceTimeoutRef = React.useRef();
@@ -77,6 +81,10 @@ function Navbar(props) {
 
     return false;
   }, [orgType, ns, countries]);
+
+  const handleSearchInputChange = React.useCallback((newText) => {
+    searchTextRef.current = newText;
+  }, []);
 
   const handleSelect = React.useCallback(({ value }) => {
     history.push(value);
@@ -208,12 +216,30 @@ function Navbar(props) {
                   autoload={false}
                   noOptionsMessage={getSelectInputNoOptionsMessage}
                   cache={false}
-                  loadOptions={loadOptionsWithDebouncing} />
+                  loadOptions={loadOptionsWithDebouncing}
+                  onKeyDown={(e) => {
+                    if (e.which === 13) {
+                      e.preventDefault();
+                      if (searchTextRef.current?.trim().length > 2) {
+                        setRedirectSearchStrihng(searchTextRef.current);
+                      }
+                    }
+                  }}
+                  onInputChange={handleSearchInputChange}
+                />
               </div>
             </div>
           </div>
         </div>
       </header>
+      {redirectSearchString && (
+        <Redirect
+          to={{
+            pathname: "/search",
+            search: `?${URL_SEARCH_KEY}=${redirectSearchString}`,
+          }}
+        />
+      )}
     </div>
   );
 }

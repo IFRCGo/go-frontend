@@ -4,11 +4,13 @@ function useDebouncedValue<T>(
     input: T,
     debounceTime?: number,
 ): T
+// eslint-disable-next-line no-redeclare
 function useDebouncedValue<T, V>(
     input: T,
     debounceTime: number | undefined,
     transformer: (value: T) => V,
 ): V
+// eslint-disable-next-line no-redeclare
 function useDebouncedValue<T, V>(
     input: T,
     debounceTime?: number,

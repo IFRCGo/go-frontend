@@ -13,8 +13,12 @@
       }
 
       td {
-        padding: $spacing*0.5;
+        padding: $spacing;
         border-bottom: $base-border-width solid $base-border-color;
+
+        >* {
+          padding: 0!important;
+        }
       }
     }
   }

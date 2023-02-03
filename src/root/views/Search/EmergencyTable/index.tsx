@@ -48,6 +48,7 @@ function EmergencyTable(props: Props) {
       (emergency) => emergency.name,
       (emergency) => ({
         href: `/emergencies/${emergency.id}`,
+        variant: 'table',
       })
     ),
     createStringColumn<EmergencyList, number>(

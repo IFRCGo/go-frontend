@@ -1,5 +1,6 @@
 import { listToMap } from '@togglecorp/fujs';
 
+export const URL_SEARCH_KEY = 'keyword';
 export const NO_DATA = 'No data to display.';
 
 export const programmeTypeList = [
