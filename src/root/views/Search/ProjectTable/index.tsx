@@ -10,10 +10,11 @@ import {
   createLinkColumn,
 } from '#components/Table/predefinedColumns';
 import Table from '#components/Table';
+import ReducedListDisplay from '#components/ReducedListDisplay';
 
 import styles from './styles.module.scss';
 
-export interface ProjectList {
+export interface ProjectResult {
   id: number;
   name: string;
   event_id: number;
@@ -27,13 +28,13 @@ export interface ProjectList {
   score: number;
 }
 
-function ProjectKeySelector(project: ProjectList) {
+function projectKeySelector(project: ProjectResult) {
   return project.id;
 }
 
 interface Props {
   className?: string;
-  data: ProjectList[] | undefined;
+  data: ProjectResult[] | undefined;
   actions: React.ReactNode;
 }
 
@@ -47,8 +48,8 @@ function ProjectTable(props: Props) {
   const { strings } = React.useContext(LanguageContext);
 
   const columns = [
-    createLinkColumn<ProjectList, number>(
-      'name',
+    createLinkColumn<ProjectResult, number>(
+      'emergency_name',
       'Emergency',
       (project) => project.event_name,
       (project) => ({
@@ -56,12 +57,12 @@ function ProjectTable(props: Props) {
         variant: 'table',
       })
     ),
-    createStringColumn<ProjectList, number>(
+    createStringColumn<ProjectResult, number>(
       'national_society',
       'National Society/ERU',
       (project) => project.national_society,
     ),
-    createLinkColumn<ProjectList, number>(
+    createLinkColumn<ProjectResult, number>(
       'name',
       'Project/Activity Name',
       (project) => project.name,
@@ -70,22 +71,27 @@ function ProjectTable(props: Props) {
         variant: 'table',
       }),
     ),
-    createDateColumn<ProjectList, number>(
+    createDateColumn<ProjectResult, number>(
       'start_date',
       'Start-End Dates',
       (project) => project.start_date,
     ),
-    createStringColumn<ProjectList, number>(
+    createStringColumn<ProjectResult, number>(
       'regions',
       'Provinces/Region',
-      (project) => project.regions.slice(0, 5).join(', '),
+      (project) => (
+        <ReducedListDisplay
+          title="Provinces / Region"
+          value={project.regions}
+        />
+      ),
     ),
-    createStringColumn<ProjectList, number>(
+    createStringColumn<ProjectResult, number>(
       'sector',
       'Sector',
       (project) => project.sector,
     ),
-    createNumberColumn<ProjectList, number>(
+    createNumberColumn<ProjectResult, number>(
       'people_targeted',
       'People Targeted',
       (project) => project.people_targeted,
@@ -110,7 +116,7 @@ function ProjectTable(props: Props) {
             className={styles.inProgressDrefTable}
             data={data}
             columns={columns}
-            keySelector={ProjectKeySelector}
+            keySelector={projectKeySelector}
             variant="large"
           />
         </Container>
