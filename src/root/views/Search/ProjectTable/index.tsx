@@ -52,12 +52,12 @@ function ProjectTable(props: Props) {
     ),
     createStringColumn<ProjectList, number>(
       'national_society',
-      'National Society/ ERU',
+      'National Society/ERU',
       (project) => project.national_society,
     ),
     createStringColumn<ProjectList, number>(
       'name',
-      'Project/ Activity Name',
+      'Project/Activity Name',
       (project) => project.name,
     ),
     createDateColumn<ProjectList, number>(

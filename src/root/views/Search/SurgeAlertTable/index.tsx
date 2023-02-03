@@ -64,7 +64,10 @@ function SurgeAlertTable(props: Props) {
         const startDate = new Date(surgeAlert.start_date);
         const deadline = new Date(surgeAlert.deadline);
         const duration = deadline.getDay() - startDate.getDay();
-        return `${duration} Days`;
+        if (duration > 1) {
+          return `${duration} Days`;
+        }
+        return `-`;
       }),
     createDateColumn<SurgeAlertList, number>(
       'start_date',
