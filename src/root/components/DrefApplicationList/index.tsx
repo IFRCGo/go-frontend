@@ -122,7 +122,7 @@ function DrefApplicationList(props: Props) {
       label: c.name,
     })).sort(compareLabel) ?? [],
     [allCountries],
-  );
+  ); // a code duplication can be found in per-account.js
 
   const [inProgressDrefActivePage, setInProgressDrefActivePage] = React.useState(1);
   const [publishedDrefActivePage, setPublishedDrefActivePage] = React.useState(1);
@@ -425,7 +425,7 @@ function DrefApplicationList(props: Props) {
           'actions',
           (rowKey: number, item: DrefApplicationResponse) => {
             const hasOperationalUpdate = item.operational_update_details && item.operational_update_details.length > 0;
-            const hasUnpublishedOperationalUpdate = item.operational_update_details?.some(d => d.is_published === false) ?? false;
+            const hasUnpublishedOperationalUpdate = item.operational_update_details?.some(d => !d.is_published) ?? false;
 
             const hasFinalReport = !!item.dref_final_report_details;
 
