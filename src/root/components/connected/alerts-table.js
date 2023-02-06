@@ -14,7 +14,7 @@ import {
 } from '#utils/utils';
 import {
   nope,
-//  recentInterval
+  recentInterval
 } from '#utils/format';
 
 // FIXME: imports from the /components/ could be a 1 liner?
@@ -113,6 +113,7 @@ class AlertsTable extends SFPComponent {
   }
 
   getQs (props) {
+    let now = new Date();
     let state = this.state.table;
     let qs = { limit: state.limit };
     if (state.sort.field) {
@@ -123,12 +124,13 @@ class AlertsTable extends SFPComponent {
     }
     if (state.filters.date !== 'all') {
       qs.created_at__gte = datesAgo[state.filters.date]();
-//  } else if (props.showRecent) {
-//    qs.created_at__gte = recentInterval;
+    } else if (props.showRecent) {
+      qs.created_at__gte = recentInterval;
     }
 
     if (props.isActive) {
       qs.is_active = 'true';
+      qs.end__gte = now.toISOString();
     }
     
     if (!isNaN(props.emergency)) {
