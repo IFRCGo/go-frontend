@@ -1119,6 +1119,17 @@ const CatalogueOfSurgeServicesContent = [
                                 url: SharepointLink['Security Coordinator.pdf']
                             }
                         ]
+                    },
+                    {
+                        cardType: 'textBtnPdf',
+                        cardTitle: 'catalogueOfSurgeServicesCardsTitleTechnicalCompetencyFramework',
+                        cardText: 'catalogueOfSurgeServicesCardsTitleTechnicalCompetencyFrameworkText',
+                        buttons: [
+                            {
+                                btnText: 'catalogueOfSurgeServicesSecurityCards1Card1BtnText',
+                                url: SharepointLink['Security Technical Competency Framework.pdf']
+                            }
+                        ]
                     }
                 ]
             },

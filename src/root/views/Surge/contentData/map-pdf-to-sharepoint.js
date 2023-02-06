@@ -147,6 +147,8 @@ const SharepointLink = {
 
     'Security Coordinator.pdf':
         pre + 'EaX7SnxsiU5Mq0YLUPQx-mIBzbFVntIQb0gkDDi42ulQ8w',
+    'Security Technical Competency Framework.pdf':
+        pre + 'EYV496KJyh9BnYymU2B3d9kBvX_9Zo1wHkOJnynT9CTTBQ',
 
     'Shelter Programme Coordinator.pdf':
         pre + 'EYHx8KJbzVxIqAwtECnKMFcBNXyLPfKyn73kN1mTPBCKJQ',
