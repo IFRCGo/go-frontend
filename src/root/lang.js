@@ -50,7 +50,7 @@ export default {
   aboutGoInfoArchitecture: 'GO Info Architecture',
   // not used -   about3WGuidance: '3w guidance',
   aboutGO3wSystemAnalysis: 'GO 3w System Analysis',
-  aboutGoWorkplan2022: 'GO Workplan 2022',
+  aboutGoWorkplanThisYear: 'GO Workplan 2023',
   aboutImStrategicDirection: 'IFRC IM Strategic Direction',
   aboutGOUserAnalytics: 'GO User Analytics',
   aboutIfrcResources: 'IFRC Resources',
