@@ -127,7 +127,7 @@ function ImminentEventsPDC(props: Props) {
       {!pending && !hasImminentEvents && (
         <div className={styles.emptyMessage}>
           <div className={styles.text}>
-            No imminent events
+            No PDC events
           </div>
         </div>
       )}
