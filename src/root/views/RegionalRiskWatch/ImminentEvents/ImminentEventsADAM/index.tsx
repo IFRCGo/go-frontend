@@ -88,9 +88,7 @@ function ImminentEventsADAM(props: Props) {
     [region?.bbox],
   );
 
-  if ((!pending && !response?.results) || data?.length === 0) {
-    return null;
-  }
+  const hasAdamEvents = response && response.results && response.results.length > 0;
 
   return (
     <>
@@ -104,6 +102,13 @@ function ImminentEventsADAM(props: Props) {
           onActiveEventChange={handleEventClick}
           activeEventUuid={activeEventUuid}
         />
+      )}
+      {!pending && !hasAdamEvents && (
+        <div className={styles.emptyMessage}>
+          <div className={styles.text}>
+            No ADAM events
+          </div>
+        </div>
       )}
     </>
   );
