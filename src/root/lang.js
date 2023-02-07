@@ -3830,6 +3830,6 @@ export default {
   searchIfrcReport: 'Report',
   searchIfrcProjects: 'Projects',
   searchIfrcOpenSurgeAlerts: 'Open Surge Alerts',
-  searchIfrcCountry: 'Country',
+  searchIfrcCountry: 'Country/Region',
   searchViewAllDocuments: 'View All Documents',
 };

@@ -4,5 +4,12 @@
   display: flex;
   flex-direction: column;
   gap: $spacing;
-  padding: $spacing*2 $spacing!important;
+  padding: $spacing*2 $spacing !important;
+
+  .country-name {
+    display: flex;
+    color: $primary-color;
+    text-decoration: none;
+    align-items: center;
+  }
 }

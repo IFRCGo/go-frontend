@@ -37,7 +37,7 @@ export type SearchResult = {
 }
 
 const MAX_VIEW_PER_SECTION = 5;
-type ResultKeys = 'countries' | 'emergencies' | 'appeals' | 'projects' | 'surgeAlerts' | 'surgeDeployments' | 'fieldReports';
+type ResultKeys = 'emergencies' | 'appeals' | 'projects' | 'surgeAlerts' | 'surgeDeployments' | 'fieldReports';
 
 interface Props {
   className?: string;
@@ -75,6 +75,8 @@ function Search(props: Props) {
     }
   });
 
+  const countriesName = searchResponse?.countries;
+
   const [
     resultsMap,
     componentMap,
@@ -83,7 +85,6 @@ function Search(props: Props) {
   ] = React.useMemo(() => {
     const scoreSelector = (d: { score: number }) => d.score;
     const resultsMap = {
-      countries: searchResponse?.countries ?? [],
       emergencies: searchResponse?.emergencies ?? [],
       appeals: searchResponse?.appeals ?? [],
       projects: searchResponse?.projects ?? [],
@@ -93,7 +94,6 @@ function Search(props: Props) {
     };
 
     const componentMap: Record<ResultKeys, React.ElementType> = {
-      countries: CountryList,
       emergencies: EmergencyTable,
       appeals: AppealsTable,
       projects: ProjectTable,
@@ -163,6 +163,12 @@ function Search(props: Props) {
         />
       )}
       <div className={styles.content}>
+        {countriesName && countriesName.length > 0 && (
+          <CountryList
+            data={countriesName}
+            actions={undefined}
+          />
+        )}
         {activeView && ActiveComponent && (
           <ActiveComponent
             data={resultsMap[activeView]}
@@ -173,7 +179,7 @@ function Search(props: Props) {
                 onClick={setActiveView}
                 icons={<IoChevronBack />}
               >
-                Go back
+                {strings.searchGoBack}
               </Button>
             )}
           />
@@ -199,7 +205,7 @@ function Search(props: Props) {
                   onClick={setActiveView}
                   actions={<IoChevronForward />}
                 >
-                  View all Results
+                  {strings.searchViewAllDocuments}
                 </Button>
               )}
             />
