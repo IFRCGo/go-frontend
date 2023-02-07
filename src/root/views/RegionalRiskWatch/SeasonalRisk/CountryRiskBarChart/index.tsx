@@ -45,7 +45,12 @@ function CountryRiskBarChart(props: Props) {
         size="small"
         className={styles.heading}
       >
-        Countries by Risk
+        <div>COUNTRIES BY RISK</div>
+        <div className={styles.riskStatus}>
+          <div>Low</div>
+          <div>High</div>
+        </div>
+
       </Heading>
       <div className={styles.content}>
         {sortedData.length === 0 && (
@@ -54,7 +59,7 @@ function CountryRiskBarChart(props: Props) {
           </div>
         )}
         {sortedData.map((rd) => (
-          <div key={rd.iso3}>
+          <div key={rd.iso3} className={styles.countryCard}>
             <div className={styles.countryName}>
               {rd.countryName}
             </div>
@@ -62,22 +67,22 @@ function CountryRiskBarChart(props: Props) {
               {rd.byHazard.sort(
                 (a, b) => hazardDisplayOrder[a.hazard_type] - hazardDisplayOrder[b.hazard_type],
               ).map(
-                (hrd) => {
-                  const width = 100 * hrd.value / maxValueSafe;
+                  (hrd) => {
+                    const width = 100 * hrd.value / maxValueSafe;
 
-                  return (
-                    <div
-                      title={`${hrd.hazard_type_display}: ${hrd.value}`}
-                      className={styles.hazardRiskBar}
-                      key={hrd.hazard_type}
-                      style={{
-                        width: `${width}%`,
-                        backgroundColor: hazardTypeColorMap[hrd.hazard_type],
-                      }}
-                    />
-                  );
-                }
-              )}
+                    return (
+                      <div
+                        title={`${hrd.hazard_type_display}: ${hrd.value}`}
+                        className={styles.hazardRiskBar}
+                        key={hrd.hazard_type}
+                        style={{
+                          width: `${width}%`,
+                          backgroundColor: hazardTypeColorMap[hrd.hazard_type],
+                        }}
+                      />
+                    );
+                  }
+                )}
             </div>
           </div>
         ))}
