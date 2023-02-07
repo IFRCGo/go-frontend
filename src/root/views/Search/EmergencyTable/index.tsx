@@ -11,13 +11,14 @@ import {
 import Table from '#components/Table';
 
 import styles from './styles.module.scss';
+import ProgressBar from '#components/ProgressBar';
 
 export interface EmergencyResult {
   id: number;
   disaster_type: string;
   funding_requirements: number;
   name: string;
-  funding_coverage: string;
+  funding_coverage: number;
   event_date: string;
   score: number;
 }
@@ -40,6 +41,18 @@ function EmergencyTable(props: Props) {
   } = props;
 
   const { strings } = React.useContext(LanguageContext);
+
+  const showProgressBar = (data: EmergencyResult) => {
+    if (data.funding_requirements && data.funding_requirements > 0) {
+      const percent = Number(data.funding_coverage) / Number(data.funding_requirements) * 100;
+      return (
+        <ProgressBar
+          label={`${percent} %`}
+          percent={percent}
+        />
+      );
+    }
+  };
 
   const columns = [
     createLinkColumn<EmergencyResult, number>(
@@ -64,13 +77,7 @@ function EmergencyTable(props: Props) {
     createStringColumn<EmergencyResult, number>(
       'funding_coverage',
       'Funding Coverage',
-      (emergency) => {
-        if (emergency.funding_requirements && emergency.funding_requirements > 0) {
-          const percent = Number(emergency.funding_coverage) / Number(emergency.funding_requirements) * 100;
-          return `${percent.toFixed(1)} %`;
-        }
-        return '-';
-      }),
+      showProgressBar,)
   ];
 
   if (!data) {

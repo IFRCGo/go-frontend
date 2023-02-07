@@ -1,4 +1,7 @@
 import React from 'react';
+import {
+  IoChevronForwardOutline,
+} from 'react-icons/io5';
 
 import Container from '#components/Container';
 import Link from '#components/Link';
@@ -25,6 +28,7 @@ function CountryList(props: Props) {
   } = props;
 
   const { strings } = React.useContext(LanguageContext);
+
   if (!data) {
     return null;
   }
@@ -39,9 +43,11 @@ function CountryList(props: Props) {
       {data.map((country) => (
         <Link
           href={`/country/${country.id}`}
+          className={styles.countryName}
           key={country.id}
         >
           {country.name}
+          <IoChevronForwardOutline />
         </Link>
       ))}
     </Container>
