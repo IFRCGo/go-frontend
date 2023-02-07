@@ -3,10 +3,19 @@
 .country-risk-bar-chart {
   display: flex;
   flex-direction: column;
-  gap: $spacing * 0.5;
 
   .heading {
+    display: block;
     padding: 0;
+
+    .risk-status {
+      display: flex;
+      justify-content: space-between;
+      padding-left: $spacing-2 * 0.75;
+      padding-right: $spacing-4;
+      font-size: $font-size-xxs;
+      font-weight: $base-font-semi-bold;
+    }
   }
 
   .content {
@@ -16,9 +25,16 @@
     display: flex;
     flex-direction: column;
     gap: $spacing * 0.75;
+    padding-right: $spacing;
+
 
     &:hover {
       overflow-y: auto;
+    }
+
+    .country-card {
+      border: 1px solid $grey-titanium;
+      padding: $spacing;
     }
 
     .country-name {
