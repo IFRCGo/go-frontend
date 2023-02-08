@@ -6,12 +6,20 @@
   gap: $spacing;
 
   .label {
-    color: $color-text-light;
+    color: $light-base-color;
+    font-size: $font-size-sm;
+    font-weight: $base-font-light;
   }
 
   .selected-values {
     display: flex;
-    gap: $spacing*0.5;
     flex-wrap: wrap;
+    gap: $spacing*0.5;
+
+    .chip {
+      border: none;
+      background-color: $color-filter-tag;
+      color: $color-filter-tag-text;
+    }
   }
 }

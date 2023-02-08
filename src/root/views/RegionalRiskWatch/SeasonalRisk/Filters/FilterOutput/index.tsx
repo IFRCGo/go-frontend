@@ -77,6 +77,7 @@ function FilterOutput<N, V, O>(props: Props<N, V, O>) {
         {props.isMulti ? (
           props.value.map((key) => (
             <Chip
+              className={styles.chip}
               key={String(key)}
               name={key}
               onDismiss={handleChipDismiss}
