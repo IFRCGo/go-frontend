@@ -47,7 +47,6 @@ function EmergencyTable(props: Props) {
     if (isDefined(data.funding_requirements) && data.funding_coverage > 0) {
       const percentage = (data.funding_requirements) / (data.funding_coverage) * 100;
       const percentageRound = round(percentage, 2);
-
       return (
         <ProgressBar
           label={`${percentageRound} %`}
@@ -81,7 +80,7 @@ function EmergencyTable(props: Props) {
     createStringColumn<EmergencyResult, number>(
       'funding_coverage',
       'Funding Coverage',
-      showProgressBar,)
+      showProgressBar)
   ];
 
   if (!data) {

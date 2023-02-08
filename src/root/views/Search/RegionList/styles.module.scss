@@ -1,0 +1,15 @@
+@import '~styles/settings/variables';
+
+.region-list {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing;
+  padding: $spacing*2 $spacing !important;
+
+  .region-name {
+    display: flex;
+    color: $primary-color;
+    text-decoration: none;
+    align-items: center;
+  }
+}

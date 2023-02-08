@@ -3830,7 +3830,8 @@ export default {
   searchIfrcReport: 'Report',
   searchIfrcProjects: 'Projects',
   searchIfrcOpenSurgeAlerts: 'Open Surge Alerts',
-  searchIfrcCountry: 'Country/Region',
+  searchIfrcCountry: 'Country',
+  searchIfrcRegion: 'Region',
   searchViewAllDocuments: 'View All Documents',
   searchGoBack: 'Go Back',
 };
