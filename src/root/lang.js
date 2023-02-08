@@ -3832,4 +3832,5 @@ export default {
   searchIfrcOpenSurgeAlerts: 'Open Surge Alerts',
   searchIfrcCountry: 'Country/Region',
   searchViewAllDocuments: 'View All Documents',
+  searchGoBack: 'Go Back',
 };
