@@ -1,27 +1,19 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import styles from './styles.module.scss';
 
 interface Props {
   label?: string;
-  percent?: number;
+  value?: number;
 }
 
 function ProgressBar(props: Props) {
   const {
     label,
-    percent,
+    value,
   } = props;
 
-  const [width, setWidth] = useState<Number | undefined>(0);
-
-  React.useEffect(() => {
-    setTimeout(() => {
-      setWidth(percent);
-    }, 200);
-  }, [percent]);
-
-  if (!percent) {
+  if (!value) {
     return (
       <div>-</div>
     );
@@ -34,7 +26,7 @@ function ProgressBar(props: Props) {
       </div>
       <div className={styles.progressBar}>
         <div className={styles.progressDone}
-          style={{ width: `${width}%` }}>
+          style={{ width: `${value}%` }}>
         </div>
       </div>
     </div>
