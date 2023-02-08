@@ -42,7 +42,7 @@ function CountryList(props: Props) {
     >
       {data.map((country) => (
         <Link
-          href={`/country/${country.id}`}
+          href={`/countries/${country.id}`}
           className={styles.countryName}
           key={country.id}
         >
