@@ -1,5 +1,5 @@
 import React from 'react';
-import { _cs } from '@togglecorp/fujs';
+import { isDefined, _cs } from '@togglecorp/fujs';
 
 import LanguageContext from '#root/languageContext';
 import Container from '#components/Container';
@@ -9,9 +9,10 @@ import {
   createStringColumn,
 } from '#components/Table/predefinedColumns';
 import Table from '#components/Table';
+import ProgressBar from '#components/ProgressBar';
+import { round } from '#utils/format';
 
 import styles from './styles.module.scss';
-import ProgressBar from '#components/ProgressBar';
 
 export interface EmergencyResult {
   id: number;
@@ -43,15 +44,18 @@ function EmergencyTable(props: Props) {
   const { strings } = React.useContext(LanguageContext);
 
   const showProgressBar = (data: EmergencyResult) => {
-    if (data.funding_requirements && data.funding_requirements > 0) {
-      const percent = Number(data.funding_coverage) / Number(data.funding_requirements) * 100;
+    if (isDefined(data.funding_requirements) && data.funding_coverage > 0) {
+      const percentage = (data.funding_requirements) / (data.funding_coverage) * 100;
+      const percentageRound = round(percentage, 2);
+
       return (
         <ProgressBar
-          label={`${percent} %`}
-          percent={percent}
+          label={`${percentageRound} %`}
+          value={percentageRound}
         />
       );
     }
+    return '-';
   };
 
   const columns = [
