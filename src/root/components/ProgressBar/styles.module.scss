@@ -1,6 +1,8 @@
 @import '~styles/settings/variables';
 
 .progress {
+  width: 8rem;
+
   .progress-label {
     display: flex;
     justify-content: center;
@@ -16,4 +18,7 @@
       opacity: 1;
     }
   }
+}
+.progress-label-bar {
+  width: 10rem;
 }

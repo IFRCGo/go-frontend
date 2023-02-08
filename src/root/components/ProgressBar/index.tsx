@@ -13,6 +13,12 @@ function ProgressBar(props: Props) {
     value,
   } = props;
 
+  if (value && value > 100) {
+    return (
+        <div className={styles.progressLabelBar}>{label}</div>
+    );
+  }
+
   if (!value) {
     return (
       <div>-</div>
