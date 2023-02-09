@@ -9,10 +9,12 @@ export interface ProvinceResult {
   id: number;
   name: string;
   score: number;
+  country: string;
+  country_id: number;
 }
 
 interface Props {
-  data?: ProvinceResult[];
+  data: ProvinceResult[] | undefined;
   actions: React.ReactNode;
 }
 
