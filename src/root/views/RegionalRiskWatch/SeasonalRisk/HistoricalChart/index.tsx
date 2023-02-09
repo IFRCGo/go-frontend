@@ -307,6 +307,7 @@ function ImpactChart(props: ImpactChartProps) {
 
   return (
     <Container
+      sub
       heading={(
         <Translate stringId='riskModulePastAndHistoricEvent' />
       )}

@@ -31,6 +31,7 @@ export function reduceListDisplay(list?: string[]) {
       <InfoPopup
         className="go-reduced-list-label"
         infoLabel={`... and ${list.length - 2} more`}
+        hideIcon
         title="Province / Region"
         description={list.join(', ')}
       />

@@ -182,8 +182,8 @@ function About (props) {
                                   <Translate stringId='aboutGoInfoArchitecture'/>
                                   <span className='collecticon-chevron-right icon-about-ref'></span>
                                 </a>
-                                <a href='https://ifrcorg.sharepoint.com/:f:/s/IFRCSharing/ElipxelToqdJpQcJq5HA7LwBidSDhOjkUk5QrccHg0_4Wg?e=4d6Bew' target='_blank' className='box__global__content--ref__link col col-6-xs'>
-                                  <Translate stringId='aboutGoWorkplan2022'/>
+                                <a href='https://ifrcorg.sharepoint.com/:b:/s/IFRCSharing/Ea0TfruyRiZGhyGT3XCEnPMBxZSYqlwLLgEHx1VqeBT9Tg?e=nrpLmz' target='_blank' className='box__global__content--ref__link col col-6-xs'>
+                                  <Translate stringId='aboutGoWorkplanThisYear'/>
                                   <span className='collecticon-chevron-right icon-about-ref'></span>
                                 </a>
                                 <a href='https://ifrcorg.sharepoint.com/:b:/s/IFRCSharing/EUqbJHWGW8xLjFJgwG-x4GABfUD5UCS3DS6uwW74tufs9Q?e=HwsqbI' target='_blank' className='box__global__content--ref__link col col-6-xs'>

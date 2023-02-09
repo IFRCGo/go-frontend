@@ -1,11 +1,20 @@
 @import '~styles/settings/variables';
 
 .project-stat-pie-chart {
+  flex-shrink: 0;
+  overflow: hidden;
+
   .title {
     font-size: $font-size-sm;
     text-align: center;
     color: $color-text-light;
     font-weight: $base-font-medium;
+  }
+
+  .responsive-container {
+    width: 100%;
+    min-width: 10rem;
+    height: 108px!important;
   }
 
   :global {

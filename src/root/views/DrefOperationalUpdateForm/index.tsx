@@ -90,6 +90,13 @@ const defaultFormValues: PartialForm<DrefOperationalUpdateFields> = {
   images_file: [],
   users: [],
   is_assessment_report: false,
+  changing_timeframe_operation: false,
+  changing_operation_strategy: false,
+  changing_target_population_of_operation: false,
+  changing_geographic_location: false,
+  changing_budget: false,
+  request_for_second_allocation: false,
+  has_forecasted_event_materialize: false,
 };
 
 const intermittentValidationExceptions: (keyof DrefOperationalUpdateFields)[] = [
@@ -184,6 +191,14 @@ function DrefOperationalUpdate(props: Props) {
       disability_people_per: response.disability_people_per ? +response.disability_people_per : undefined,
       people_per_urban: response.people_per_urban ? +response.people_per_urban : undefined,
       people_per_local: response.people_per_local ? +response.people_per_local : undefined,
+      is_assessment_report: response.is_assessment_report ?? false,
+      changing_timeframe_operation: response.changing_timeframe_operation ?? false,
+      changing_operation_strategy: response.changing_operation_strategy ?? false,
+      changing_target_population_of_operation: response.changing_target_population_of_operation ?? false,
+      changing_geographic_location: response.changing_geographic_location ?? false,
+      changing_budget: response.changing_budget ?? false,
+      request_for_second_allocation: response.request_for_second_allocation ?? false,
+      has_forecasted_event_materialize: response.has_forecasted_event_materialize ?? false,
     });
 
     return opsUpdateValue;

@@ -303,12 +303,18 @@
 
       >.tc-content {
         .regional-threew-map-wrapper {
+          position: relative;
           display: flex;
-
-          $height-map: 500px;
+          $height-map: 540px;
           $width-country-details: 295px;
           $width-popup: 100%;
           $height-popup: 100%;
+
+          .map-disclaimer {
+            position: absolute;
+            left: $mapbox-icon-width + $spacing * 0.5;
+            bottom: $spacing * 0.25;
+          }
 
           .regional-threew-map {
             height: $height-map;

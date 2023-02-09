@@ -37,7 +37,7 @@ function Sidebar(props: Props) {
         <EventDetail
           key={hazard.id}
           onClick={onActiveEventChange}
-          isActive={activeEventUuid === hazard.pdc_details.uuid}
+          isActive={activeEventUuid === hazard.uuid}
           hazardDetails={hazard}
         />
       ))}

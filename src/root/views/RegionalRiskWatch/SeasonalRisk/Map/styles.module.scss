@@ -1,8 +1,16 @@
 @import "~styles/settings/variables";
 
 .map {
-  .mapContainer {
+  position: relative;
+
+  .map-container {
     height: 40rem;
+  }
+
+  .map-disclaimer {
+    position: absolute;
+    left: $mapbox-icon-width + $spacing*0.5;
+    bottom: $spacing*0.25;
   }
 }
 

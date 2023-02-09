@@ -352,6 +352,13 @@
   height: 40rem;
   margin-bottom: 0;
 
+  .map-disclaimer {
+    position: absolute;
+    bottom: $spacing*0.25;
+    // Mapbox logo is 88px wide
+    left: $mapbox-icon-width + $spacing*0.5;
+  }
+
   .map-vis__holder {
     position: absolute;
     width: 100%;
@@ -372,9 +379,10 @@
       bottom: -3rem;
       right: 0;
       left: 0;
+
       @include media(small-up) {
         left: auto;
-        bottom: $global-spacing;
+        bottom: $global-spacing*2;
         right: $global-spacing;
       }
     }

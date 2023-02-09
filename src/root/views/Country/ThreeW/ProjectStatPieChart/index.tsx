@@ -34,7 +34,7 @@ function ProjectStatPieChart(props: Props) {
       <div className={styles.title}>
         { title }
       </div>
-      <ResponsiveContainer width='100%' height={108}>
+      <ResponsiveContainer className={styles.responsiveContainer}>
         <PieChart>
           <Pie
             data={data}
@@ -43,7 +43,9 @@ function ProjectStatPieChart(props: Props) {
             legendType='circle'
             startAngle={450}
             endAngle={90}
-            cx={40}
+            cx={50}
+            width={108}
+            height={108}
           >
             { data.map((entry, i) => {
               return (

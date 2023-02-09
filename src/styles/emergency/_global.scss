@@ -55,6 +55,24 @@
       width: 50%;
     }
   }  
+
+  .emergency-map {
+    img {
+      vertical-align: top;
+      height: 3rem;
+      width: auto;
+    }
+
+    .map-container {
+      position: relative;
+
+      .map-disclaimer {
+        position: absolute;
+        left: $mapbox-icon-width + 0.5*$spacing;
+        bottom: $spacing*0.25;
+      }
+    }
+  }
 }
 
 .fold__filters {

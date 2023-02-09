@@ -242,25 +242,25 @@ function ContextFields(props: Props) {
       >
         <table cellSpacing={0} cellPadding={0}>
           <tbody>
-           <tr>
-           {
-              reportId === undefined ? (
+            <tr>
+              {reportId === undefined && (
                 <>
-              <td style={{width: '35%'}} >
-                <TextInput
-                  style={{ backgroundColor: '#E0DDDD', borderRadius: 0, padding:'offset' }}
-                  label='prefix '//{strings.fieldReportFormCountryLabel}
-                  placeholder=""
-                  name="pref2"
-                  //value={(countryIsoOptions.find(x=> x.value === value.country)?.label + ': ' +  disasterTypeOptions.find(x=>x.value === value.dtype)?.label + ' -' + value.start_date?.substring(0,7)).replaceAll('undefined',' ' )}
-                  value={value.country !== undefined && value.dtype !== undefined && value.start_date !== undefined ? countryIsoOptions.find(x=> x.value === value.country)?.label + ': ' +  (value.is_covid_report ? strings.fieldReportCOVID19 : disasterTypeOptions.find(x=>x.value === value.dtype)?.label) + ' -' + value.start_date?.substring(0,7) : ' '}
-                  error={error?.event}
-                />
-              </td>
-              </>
-              ) : null
-            }
-              <td>        
+                  // FIXME: move styling to styles.module.scss
+                  <td style={{width: '35%'}} >
+                    <TextInput
+                      // FIXME: move styling to styles.module.scss
+                      style={{ backgroundColor: '#E0DDDD', borderRadius: 0, padding:'offset' }}
+                      label='prefix '//{strings.fieldReportFormCountryLabel}
+                      placeholder=""
+                      name="pref2"
+                      //value={(countryIsoOptions.find(x=> x.value === value.country)?.label + ': ' +  disasterTypeOptions.find(x=>x.value === value.dtype)?.label + ' -' + value.start_date?.substring(0,7)).replaceAll('undefined',' ' )}
+                      value={value.country !== undefined && value.dtype !== undefined && value.start_date !== undefined ? countryIsoOptions.find(x=> x.value === value.country)?.label + ': ' +  (value.is_covid_report ? strings.fieldReportCOVID19 : disasterTypeOptions.find(x=>x.value === value.dtype)?.label) + ' -' + value.start_date?.substring(0,7) : ' '}
+                      error={error?.event}
+                    />
+                  </td>
+                </>
+              )}
+              <td>
                 <TextInput
                   label={strings.fieldReportFormTitleSecondaryLabel}
                   placeholder={strings.fieldReportFormTitleInputPlaceholder}
@@ -270,12 +270,13 @@ function ContextFields(props: Props) {
                   onChange={onValueChange}
                   error={error?.summary}
                 />
-             </td>
-             {
-              reportId === undefined && value.event !==undefined ? (
+              </td>
+              {reportId === undefined && value.event !==undefined && (
                 <>
-                 <td style={{width: '7%'}}>
+                  // FIXME: move styling to styles.module.scss
+                  <td style={{width: '7%'}}>
                     <TextInput
+                      // FIXME: move styling to styles.module.scss
                       style={{ backgroundColor: '#E0DDDD', borderRadius: 5, padding:'offset' }}
                       label= "#" // {strings.fieldReportUpdateNo}
                       placeholder="1"
@@ -283,9 +284,9 @@ function ContextFields(props: Props) {
                       value={eventOptions.find(x => x.value===value.event)?.label}
                       error={error?.event}
                     />
-                 </td>
-               </>
-             ): null}
+                  </td>
+                </>
+              )}
            </tr>
           </tbody>
         </table>

@@ -15,6 +15,8 @@ import {
   clearLoadedCsv
 } from '#actions';
 
+import useReduxState from '#hooks/useReduxState';
+import { compareLabel } from '#utils/common';
 import Select from 'react-select';
 import { FormError } from '#components/form-elements/';
 // include , { SortHeader, FilterHeader } if needed
@@ -180,11 +182,17 @@ function PerAccount (props) {
     }
   }, [props.perForm.deletePerOverview, _getPerOverviews]);
 
-  const countryOptions = React.useMemo(() => (
-    props.countries.map(country => (
-      { value: country.value, label: country.label }
-    ))
-  ), [props.countries]);
+  // Code duplicated from DrefApplicationList/index.tsx:
+  const allCountries = useReduxState('allCountries');
+  const countryOptions = React.useMemo(
+      () => allCountries?.data?.results.filter((c) => (
+          c.independent && !c.is_deprecated && c.name
+      )).map((c) => ({
+        value: c.id,
+        label: c.name,
+      })).sort(compareLabel) ?? [],
+      [allCountries],
+  );
 
   return (
     <React.Fragment>

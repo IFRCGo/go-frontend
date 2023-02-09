@@ -1,0 +1,47 @@
+@import '~styles/settings/variables';
+
+.tooltip-content {
+  display: flex;
+  flex-direction: column;
+  padding: $spacing*0.5 !important;
+
+  hr {
+    margin: $spacing*0.5 0;
+    border-bottom: $base-border-width solid $base-border-color;
+  }
+
+  .event-dates {
+    padding: 0 $spacing*0.5;
+    margin-bottom: $spacing;
+
+    >* {
+      padding: 0;
+      gap: $spacing*0.5;
+
+      >* {
+        padding: 0;
+
+        &:first-child {
+          width: 7rem;
+        }
+      }
+    }
+  }
+}
+
+.estimated-output {
+  align-items: flex-start!important;
+  padding: 0 $spacing*0.25;
+
+  .value {
+    font-weight: $base-font-bold;
+  }
+
+  .label {
+    font-weight: $base-font-light;
+  }
+
+  .description {
+    color: $color-text-light;
+  }
+}

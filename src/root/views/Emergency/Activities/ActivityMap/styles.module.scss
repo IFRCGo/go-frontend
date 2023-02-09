@@ -1,14 +1,23 @@
 @use "sass:math";
-
 @import '~styles/settings/variables';
 
 .activity-map {
   display: flex;
   flex-wrap: wrap;
 
-  .map-container {
-    height: 40rem;
+  .map-container-wrapper {
+    position: relative;
     flex-grow: 1;
+
+    .map-container {
+      height: 40rem;
+    }
+
+    .map-disclaimer {
+      position: absolute;
+      left: $mapbox-icon-width + $spacing*0.5;
+      bottom: $spacing*0.25;
+    }
   }
 
   .sector-grouped-activities {

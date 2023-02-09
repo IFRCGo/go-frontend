@@ -22,7 +22,8 @@ export const getBaseColumns = (strings: Strings) => ([
     'Report',
     (item) => item?.title,
     (item) => ({
-      to: `/flash-update/${item.id}`,
+      href: `/flash-update/${item.id}`,
+      variant: 'table',
     }),
   ),
   createStringColumn<FlashUpdateTableFields, string | number>(
@@ -30,6 +31,7 @@ export const getBaseColumns = (strings: Strings) => ([
     'Disaster Type',
     (item) => item?.hazard_type_details?.name
   ),
+
   createStringColumn<FlashUpdateTableFields, string | number>(
     'country_district',
     'Country',

@@ -1,10 +1,25 @@
+### Release 6.4.2 - DREF, RiskModule improvements
+Date: 2023-02-09
+
+Frontend:
+ - DREF improvements
+ - RiskModule improvements
+ - Map disclaimer to display with proper links
+ - Fixes on the Arabic Field Report form
+ - API pagination issue fix
+ - GitHub Actions - add issue to Backlog project
+ - GO Workplan yearly update
+ - Security technical competency framework PDF doc adding
+ - Using the same country dropdown in PER as in DREF
+ - Surge Alerts list with 30 days limit. Excluding closed ones
+ - Map layers improvements
+
 ### Release 6.4.1 - Hotfix for DREF final report
 Date: 2023-01-18
 
 Frontend:
 - Fix final report issues mentioned in #2556
 - Change default tab to "Seasonal" in regional risk
-
 
 ### Release 6.4.0 - DREF Final Report, Risk Module updates
 

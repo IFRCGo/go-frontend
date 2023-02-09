@@ -11,6 +11,7 @@ import { DateTime } from 'luxon';
 import _find from 'lodash.find';
 import LanguageContext from '#root/languageContext';
 import Translate from '#components/Translate';
+import GoMapDisclaimer from '#components/GoMapDisclaimer';
 import { disasterTypesSelectSelector } from '#selectors';
 
 class EmergencyMap extends React.Component {
@@ -197,6 +198,7 @@ class EmergencyMap extends React.Component {
                   <p style={exportStyle} className='map__container__disclaimer'>
                     <Translate stringId='mapFooterDisclaimer'/>
                   </p>
+                  <GoMapDisclaimer className='map-disclaimer' />
                 </div>
               </div>
             </div>

@@ -1,119 +1,61 @@
 import React from 'react';
-import {
-  listToGroupList,
-  isDefined,
-} from '@togglecorp/fujs';
-import turfBbox from '@turf/bbox';
+import { isNotDefined } from '@togglecorp/fujs';
 
 import Container from '#components/Container';
+import RadioInput from '#components/RadioInput';
 import BlockLoading from '#components/block-loading';
-import RiskImminentEventMap from '#components/RiskImminentEventMap';
-import useReduxState from '#hooks/useReduxState';
-import { useRequest } from '#utils/restRequest';
 
-import {
-  fixBounds,
-  BBOXType,
-} from '#utils/map';
-import { ImminentResponse } from '#types';
+import ImminentEventsADAM from './ImminentEventsADAM';
+import ImminentEventsPDC from './ImminentEventsPDC';
+
 import styles from './styles.module.scss';
+
+export interface StringValueOption {
+  value: string;
+  label: string;
+}
+export type Option = StringValueOption;
+export const stringOptionKeySelector = (o: StringValueOption) => o.value;
+export const optionLabelSelector = (o: Option) => o.label;
+
+const sourceOptions = [
+  { value: "PDC", label: "PDC" },
+  { value: "WFP", label: "WFP ADAM" },
+];
+
 
 interface Props {
   className?: string;
   countryId: number;
 }
-
+const titleDescription = "This map displays information about the modeled impact of specific forecasted or detected natural hazards.By hovering over the icons, if available, you can see the forecasted / observed footprint of the hazard; when you click on it, the table of modeled impact estimates will appear, as well as an information about who produced the impact estimate.";
 function ImminentEvents(props: Props) {
   const { countryId } = props;
+  // const [sourceType, setSourceType] = React.useState<string | undefined>("PDC");
+  // const [numWfpEvents, setNumWfpEvents] = React.useState<number | undefined>();
+  const [numPdcEvents, setNumPdcEvents] = React.useState<number | undefined>();
 
-  const allCountries = useReduxState('allCountries');
-  const country = React.useMemo(() => (
-    allCountries?.data.results.find(d => d.id === countryId)
-  ), [allCountries, countryId]);
-
-  const {
-    pending,
-    response,
-  } = useRequest<ImminentResponse>({
-    skip: !country,
-    url: 'risk://api/v1/imminent/',
-    query: { iso3: country?.iso3?.toLocaleLowerCase() },
-  });
-
-  const data = React.useMemo(() => {
-    if (!response || !response.pdc_data) {
-      return undefined;
-    }
-
-    const hazardListWithDefinedCountries = response.pdc_data.filter(
-      (h) => isDefined(h.country)
-    );
-
-    const uuidGroupedHazardList = listToGroupList(
-      hazardListWithDefinedCountries,
-      h => h.pdc_details.uuid,
-    );
-
-    const uniqueList = Object.values(uuidGroupedHazardList).map((hazardList) => {
-      const sortedList = [...hazardList].sort((h1, h2) => {
-        const date1 = new Date(h1.pdc_details.pdc_updated_at ?? h1.pdc_details.created_at);
-        const date2 = new Date(h2.pdc_details.pdc_updated_at ?? h2.pdc_details.created_at);
-
-        return date2.getTime() - date1.getTime();
-      });
-
-      let latestData = sortedList[0];
-
-      const latestFootprint = sortedList.find(h => !!h.pdc_details.footprint_geojson)?.pdc_details?.footprint_geojson;
-      const latestTrack = sortedList.find(h => !!h.pdc_details.storm_position_geojson)?.pdc_details?.storm_position_geojson;
-
-      if (!latestData.pdc_details.footprint_geojson && latestFootprint) {
-        latestData = {
-          ...latestData,
-          pdc_details: {
-            ...latestData.pdc_details,
-            footprint_geojson: latestFootprint,
-          },
-        };
-      }
-
-      if (!latestData.pdc_details.storm_position_geojson && latestTrack) {
-        latestData = {
-          ...latestData,
-          pdc_details: {
-            ...latestData.pdc_details,
-            storm_position_geojson: latestTrack,
-          },
-        };
-      }
-
-      return latestData;
-    });
-
-    return uniqueList;
-  }, [response]);
-
-  const countryBounds = React.useMemo(
-    () => {
-      let bbox = turfBbox(country?.bbox ?? []);
-      return fixBounds(bbox as BBOXType);
-    },
-    [country?.bbox],
+  /* TEMP
+  const handleChangeSourceType = React.useCallback(
+    (value: string | undefined) => setSourceType(value),
+    [],
   );
 
-  const [activeEventUuid, setActiveEventUuid] = React.useState<string | undefined>(undefined);
+  const handleWfpEventLoad = React.useCallback((numEvents: number | undefined) => {
+    setNumWfpEvents(numEvents ?? 0);
+  }, []);
+  */
 
-  const handleEventClick = React.useCallback((eventUuid: string | undefined) => {
-    setActiveEventUuid((oldEventUuid) => {
-      if (oldEventUuid === eventUuid) {
-        return undefined;
-      }
-
-      return eventUuid;
-    });
+  const handlePdcEventLoad = React.useCallback((numEvents: number | undefined) => {
+    /*
+    if (!numEvents) {
+      setSourceType('WFP');
+    }
+    */
+    setNumPdcEvents(numEvents ?? 0);
   }, []);
 
-  if((!pending && !response?.pdc_data) || data?.length === 0) {
+  if (numPdcEvents === 0) {
     return null;
   }
 
@@ -121,22 +63,49 @@ function ImminentEvents(props: Props) {
     <Container
       heading="Imminent events"
       className={styles.imminentEvents}
-      description="This map displays information about the modeled impact of specific forecasted or detected natural hazards. By hovering over the icons, if available, you can see the forecasted/observed footprint of the hazard; when you click on it, the table of modeled impact estimates will appear, as well as an information about who produced the impact estimate."
+      description={
+        <>
+          {/* @TEMP
+          <RadioInput
+            name={"sourceType"}
+            options={sourceOptions}
+            keySelector={stringOptionKeySelector}
+            labelSelector={optionLabelSelector}
+            value={sourceType}
+            onChange={handleChangeSourceType}
+          />
+          */}
+          {titleDescription}
+        </>
+      }
       descriptionClassName={styles.mapDescription}
       contentClassName={styles.mainContent}
       sub
     >
-      {pending && <BlockLoading /> }
-      {!pending && data && (
-        <RiskImminentEventMap
+      {isNotDefined(numPdcEvents) && isNotDefined(numPdcEvents) && (
+        <BlockLoading className={styles.blockLoading}/>
+      )}
+      {/* @TEMP
+      {sourceType === "PDC" && (
+        <ImminentEventsPDC
           className={styles.map}
-          sidebarHeading={country?.name}
-          hazardList={data}
-          defaultBounds={countryBounds}
-          onActiveEventChange={handleEventClick}
-          activeEventUuid={activeEventUuid}
+          countryId={countryId}
+          onLoad={handlePdcEventLoad}
         />
       )}
+      {sourceType === "WFP" && (
+        <ImminentEventsADAM
+          className={styles.map}
+          countryId={countryId}
+          onLoad={handleWfpEventLoad}
+        />
+      )}
+      */}
+      <ImminentEventsPDC
+        className={styles.map}
+        countryId={countryId}
+        onLoad={handlePdcEventLoad}
+      />
     </Container>
   );
 }
