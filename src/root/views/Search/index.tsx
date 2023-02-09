@@ -24,6 +24,7 @@ import SurgeAlertTable, { SurgeAlertResult } from './SurgeAlertTable';
 import SurgeDeploymentTable, { SurgeDeploymentResult } from './SurgeDeploymentTable';
 import CountryList, { CountryResult } from './CountryList';
 import RegionList, { RegionResult } from './RegionList';
+import ProvinceList, { ProvinceResult } from './ProvinceList';
 
 import styles from './styles.module.scss';
 
@@ -36,6 +37,7 @@ export type SearchResult = {
   surge_alerts: SurgeAlertResult[];
   surge_deployments: SurgeDeploymentResult[];
   regions: RegionResult[];
+  district_province_response: ProvinceResult[];
 }
 
 const MAX_VIEW_PER_SECTION = 5;
@@ -79,6 +81,7 @@ function Search(props: Props) {
 
   const countriesName = searchResponse?.countries;
   const regionsName = searchResponse?.regions;
+  const provinceName = searchResponse?.district_province_response;
 
   const [
     resultsMap,
@@ -175,6 +178,12 @@ function Search(props: Props) {
         {countriesName && countriesName.length > 0 && (
           <CountryList
             data={countriesName}
+            actions={undefined}
+          />
+        )}
+        {provinceName && provinceName.length > 0 && (
+          <ProvinceList
+            data={provinceName}
             actions={undefined}
           />
         )}

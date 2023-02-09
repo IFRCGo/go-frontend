@@ -1,0 +1,13 @@
+@import '~styles/settings/variables';
+
+.province-list {
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+  gap: $spacing;
+  padding: $spacing*2 $spacing !important;
+
+  .province-name {
+    color: $primary-color;
+  }
+}

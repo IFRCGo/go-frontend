@@ -3832,7 +3832,8 @@ export default {
   searchIfrcProjects: 'Projects',
   searchIfrcOpenSurgeAlerts: 'Open Surge Alerts',
   searchIfrcCountry: 'Country',
-  searchIfrcRegion: 'Region/Province',
+  searchIfrcRegion: 'Region',
+  searchIfrcProvince: 'Province',
   searchViewAllDocuments: 'View All Documents',
   searchGoBack: 'Go Back',
 };
