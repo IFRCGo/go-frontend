@@ -48,6 +48,7 @@
       background-color: rgba(0, 0, 0, .1);
 
       .hazard-risk-bar {
+        cursor: pointer;
         height: 100%;
       }
     }
@@ -59,5 +60,30 @@
       justify-content: center;
       min-height: 4rem;
     }
+  }
+}
+
+.tooltip {
+  display: flex;
+  gap: 6px !important;
+  padding: $spacing $spacing-2 !important;
+  background-color: $color-background !important;
+  font-size: 12px !important;
+  box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.03) !important;
+
+
+  &.place-top {
+    &:after {
+      border: 0px !important;
+      border-width: 0px !important;
+    }
+  }
+
+  .tooltip-hazard-title {
+    font-weight: $base-font-bold;
+  }
+
+  .sub-title {
+    font-weight: $base-font-semi-bold;
   }
 }
