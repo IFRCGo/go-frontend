@@ -76,12 +76,12 @@ const stepTypesToFieldsMap: {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   [key in StepTypes]: (keyof DrefOperationalUpdateFields)[];
 } = {
-  operationOverview: overviewFields,
-  eventDetails: eventFields,
-  needs: needsFields,
-  operation: operationFields,
-  submission: submissionFields,
-};
+    operationOverview: overviewFields,
+    eventDetails: eventFields,
+    needs: needsFields,
+    operation: operationFields,
+    submission: submissionFields,
+  };
 
 const defaultFormValues: PartialForm<DrefOperationalUpdateFields> = {
   planned_interventions: [],
@@ -140,7 +140,7 @@ function DrefOperationalUpdate(props: Props) {
         });
       }
       if (response.images_file?.length > 0) {
-        response.images_file.forEach((img) => {
+       response.images_file.forEach((img) => {
           newMap[img.id] = img.file;
         });
       }
@@ -263,7 +263,9 @@ function DrefOperationalUpdate(props: Props) {
   });
 
   const contextValue = React.useMemo(() => (
-    isDefined(prevOperationalUpdateId) ? ({ type: 'opsUpdate' as const, value: prevOperationalUpdate }) : ({ type: 'dref' as const, value: drefFields })
+    isDefined(prevOperationalUpdateId) 
+      ? ({ type: 'opsUpdate' as const, value: prevOperationalUpdate })
+      : ({ type: 'dref' as const, value: drefFields })
   ), [prevOperationalUpdateId, prevOperationalUpdate, drefFields]);
 
   const {
@@ -304,9 +306,9 @@ function DrefOperationalUpdate(props: Props) {
   const shouldDisabledBackButton = currentStep === 'operationOverview';
 
   const [
-    showObsoletePayloadResolutionModal,
-    setShowObsoletePayloadResolutionModal,
-  ] = React.useState(false);
+  showObsoletePayloadResolutionModal,
+  setShowObsoletePayloadResolutionModal,
+] = React.useState(false);
 
   const erroredTabs = React.useMemo(() => {
     const safeErrors = getErrorObject(error) ?? {};
@@ -315,12 +317,12 @@ function DrefOperationalUpdate(props: Props) {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       [key in StepTypes]: boolean;
     } = {
-      operationOverview: false,
-      eventDetails: false,
-      needs: false,
-      operation: false,
-      submission: false,
-    };
+        operationOverview: false,
+        eventDetails: false,
+        needs: false,
+        operation: false,
+        submission: false,
+      };
 
     return mapToMap(
       tabs,
@@ -361,7 +363,7 @@ function DrefOperationalUpdate(props: Props) {
 
     /*FIXME:
     const newError: typeof error = {
-      ...currentTabErrors,
+    ...currentTabErrors,
     };
 
     setError(newError);
@@ -371,11 +373,11 @@ function DrefOperationalUpdate(props: Props) {
     const hasError = Object.keys(currentTabErrors).some(d => !!d);
     return !hasError;
   }, [
-    value,
-    currentStep,
-    setError,
-    contextValue,
-  ]);
+      value,
+      currentStep,
+      setError,
+      contextValue,
+    ]);
 
   const handleTabChange = React.useCallback((newStep: StepTypes) => {
     scrollToTop();
@@ -440,11 +442,11 @@ function DrefOperationalUpdate(props: Props) {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         [key in Exclude<StepTypes, 'operationOverview'>]: Exclude<StepTypes, 'submission'>;
       } = {
-        eventDetails: 'operationOverview',
-        needs: 'eventDetails',
-        operation: 'needs',
-        submission: 'operation',
-      };
+          eventDetails: 'operationOverview',
+          needs: 'eventDetails',
+          operation: 'needs',
+          submission: 'operation',
+        };
       handleTabChange(prevStepMap[currentStep]);
     }
   }, [handleTabChange, currentStep]);
@@ -479,11 +481,11 @@ function DrefOperationalUpdate(props: Props) {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         [key in Exclude<StepTypes, 'submission'>]: Exclude<StepTypes, 'operationOverview'>;
       } = {
-        operationOverview: 'eventDetails',
-        eventDetails: 'needs',
-        needs: 'operation',
-        operation: 'submission',
-      };
+          operationOverview: 'eventDetails',
+          eventDetails: 'needs',
+          needs: 'operation',
+          operation: 'submission',
+        };
 
       handleTabChange(nextStepMap[currentStep]);
     }
@@ -495,8 +497,8 @@ function DrefOperationalUpdate(props: Props) {
       if (!Number.isNaN(approvalDate.getTime())) {
         approvalDate.setMonth(
           approvalDate.getMonth()
-          + value.total_operation_timeframe
-          + 1 // To get last day of the month
+            + value.total_operation_timeframe
+            + 1 // To get last day of the month
         );
         approvalDate.setDate(0);
 
@@ -507,11 +509,11 @@ function DrefOperationalUpdate(props: Props) {
       }
     }
   }, [
-    onValueChange,
-    value.new_operational_start_date,
-    value.total_operation_timeframe,
-    value.new_operational_end_date,
-  ]);
+      onValueChange,
+      value.new_operational_start_date,
+      value.total_operation_timeframe,
+      value.new_operational_end_date,
+    ]);
 
   const pending = fetchingCountries
     || fetchingDisasterTypes
@@ -541,6 +543,32 @@ function DrefOperationalUpdate(props: Props) {
   const handleObsoletePayloadResolutionCancelButtonClick = React.useCallback(() => {
     setShowObsoletePayloadResolutionModal(false);
   }, []);
+
+  const operationTimeframeWarning = React.useMemo(() => {
+
+    const defaultTotalOperaitonTimeframe = isDefined(value.total_operation_timeframe) 
+      ? value.total_operation_timeframe
+      : null;
+
+    const newContextValue = contextValue.type === 'dref'
+      ? contextValue.value?.operation_timeframe
+      : contextValue.value?.total_operation_timeframe;
+
+    if (value?.changing_timeframe_operation && defaultTotalOperaitonTimeframe === newContextValue) {
+      return 'Please select a different timeframe when selected yes on changing the operation timeframe';
+    }
+
+    if (value.total_operation_timeframe !== newContextValue && !value.changing_timeframe_operation) {
+      return 'Please select yes on changing the operation timeframe first';
+    }
+
+    return undefined;
+  },[
+      contextValue.type, 
+      contextValue.value,
+      value.total_operation_timeframe,
+      value.changing_timeframe_operation
+    ]);
 
   return (
     <Tabs
@@ -616,119 +644,122 @@ function DrefOperationalUpdate(props: Props) {
             <BlockLoading />
           </Container>
         ) : (
-          failedToLoadDref ? (
-            <Container
-              contentClassName={styles.errorMessage}
-            >
-              <h3>
-                {strings.drefOperationalUpdateFailureMessage}
-              </h3>
-              <p>
-                {strings.drefFormLoadErrorDescription}
-              </p>
-            </Container>
-          ) : (
-            <>
-              <Container>
-                <NonFieldError
-                  error={error}
-                  message={strings.drefFormFieldGeneralError}
-                />
+            failedToLoadDref ? (
+              <Container
+                contentClassName={styles.errorMessage}
+              >
+                <h3>
+                  {strings.drefOperationalUpdateFailureMessage}
+                </h3>
+                <p>
+                  {strings.drefFormLoadErrorDescription}
+                </p>
               </Container>
-              <TabPanel name='operationOverview'>
-                <Overview
-                  error={error}
-                  onValueChange={onValueChange}
-                  value={value}
-                  yesNoOptions={yesNoOptions}
-                  disasterTypeOptions={disasterTypeOptions}
-                  onsetOptions={onsetOptions}
-                  disasterCategoryOptions={disasterCategoryOptions}
-                  countryOptions={countryOptions}
-                  fetchingCountries={fetchingCountries}
-                  fetchingDisasterTypes={fetchingDisasterTypes}
-                  nationalSocietyOptions={nationalSocietyOptions}
-                  fetchingNationalSociety={fetchingCountries}
-                  fileIdToUrlMap={fileIdToUrlMap}
-                  setFileIdToUrlMap={setFileIdToUrlMap}
-                  onValueSet={setValue}
-                  userOptions={userOptions}
-                  onCreateAndShareButtonClick={submitDrefOperationalUpdate}
-                />
-              </TabPanel>
-              <TabPanel name='eventDetails'>
-                <EventDetails
-                  error={error}
-                  onValueChange={onValueChange}
-                  value={value}
-                  yesNoOptions={yesNoOptions}
-                  isImminentOnset={isImminentOnset}
-                  fileIdToUrlMap={fileIdToUrlMap}
-                  setFileIdToUrlMap={setFileIdToUrlMap}
-                  isSuddenOnset={isSuddenOnset}
-                  isAssessmentReport={isAssessmentReport}
-                />
-              </TabPanel>
-              <TabPanel name='needs'>
-                <Needs
-                  error={error}
-                  onValueChange={onValueChange}
-                  value={value}
-                  yesNoOptions={yesNoOptions}
-                  needOptions={needOptions}
-                  nsActionOptions={nsActionOptions}
-                  fileIdToUrlMap={fileIdToUrlMap}
-                  setFileIdToUrlMap={setFileIdToUrlMap}
-                  isAssessmentReport={isAssessmentReport}
-                  isImminentOnset={isImminentOnset}
-                />
-              </TabPanel>
-              <TabPanel name='operation'>
-                <Operation
-                  interventionOptions={interventionOptions}
-                  error={error}
-                  onValueChange={onValueChange}
-                  value={value}
-                  fileIdToUrlMap={fileIdToUrlMap}
-                  setFileIdToUrlMap={setFileIdToUrlMap}
-                  isAssessmentReport={isAssessmentReport}
-                  yesNoOptions={yesNoOptions}
-                />
-              </TabPanel>
-              <TabPanel name='submission'>
-                <Submission
-                  error={error}
-                  onValueChange={onValueChange}
-                  value={value}
-                />
-              </TabPanel>
-              <div className={styles.actions}>
-                <Button
-                  name={undefined}
-                  variant="secondary"
-                  onClick={handleBackButtonClick}
-                  disabled={shouldDisabledBackButton}
-                >
-                  {strings.drefFormBackButtonLabel}
-                </Button>
-                <Button
-                  name={undefined}
-                  variant="secondary"
-                  onClick={handleSubmitButtonClick}
-                >
-                  {submitButtonLabel}
-                </Button>
-              </div>
-              {isDefined(opsUpdateId) && showObsoletePayloadResolutionModal && (
-                <ObsoletePayloadResolutionModal
-                  opsUpdateId={+opsUpdateId}
-                  onOverwriteButtonClick={handleObsoletePayloadResolutionOverwiteButtonClick}
-                  onCancelButtonClick={handleObsoletePayloadResolutionCancelButtonClick}
-                />
-              )}
-            </>
-          )
-        )}
+            ) : (
+                <>
+                  <Container>
+                    <NonFieldError
+                      error={error}
+                      message={strings.drefFormFieldGeneralError}
+                    />
+                    {operationTimeframeWarning && (
+                      <div className={styles.warning}>{operationTimeframeWarning}</div>
+                    )}
+                  </Container>
+                  <TabPanel name='operationOverview'>
+                    <Overview
+                      error={error}
+                      onValueChange={onValueChange}
+                      value={value}
+                      yesNoOptions={yesNoOptions}
+                      disasterTypeOptions={disasterTypeOptions}
+                      onsetOptions={onsetOptions}
+                      disasterCategoryOptions={disasterCategoryOptions}
+                      countryOptions={countryOptions}
+                      fetchingCountries={fetchingCountries}
+                      fetchingDisasterTypes={fetchingDisasterTypes}
+                      nationalSocietyOptions={nationalSocietyOptions}
+                      fetchingNationalSociety={fetchingCountries}
+                      fileIdToUrlMap={fileIdToUrlMap}
+                      setFileIdToUrlMap={setFileIdToUrlMap}
+                      onValueSet={setValue}
+                      userOptions={userOptions}
+                      onCreateAndShareButtonClick={submitDrefOperationalUpdate}
+                    />
+                  </TabPanel>
+                  <TabPanel name='eventDetails'>
+                    <EventDetails
+                      error={error}
+                      onValueChange={onValueChange}
+                      value={value}
+                      yesNoOptions={yesNoOptions}
+                      isImminentOnset={isImminentOnset}
+                      fileIdToUrlMap={fileIdToUrlMap}
+                      setFileIdToUrlMap={setFileIdToUrlMap}
+                      isSuddenOnset={isSuddenOnset}
+                      isAssessmentReport={isAssessmentReport}
+                    />
+                  </TabPanel>
+                  <TabPanel name='needs'>
+                    <Needs
+                      error={error}
+                      onValueChange={onValueChange}
+                      value={value}
+                      yesNoOptions={yesNoOptions}
+                      needOptions={needOptions}
+                      nsActionOptions={nsActionOptions}
+                      fileIdToUrlMap={fileIdToUrlMap}
+                      setFileIdToUrlMap={setFileIdToUrlMap}
+                      isAssessmentReport={isAssessmentReport}
+                      isImminentOnset={isImminentOnset}
+                    />
+                  </TabPanel>
+                  <TabPanel name='operation'>
+                    <Operation
+                      interventionOptions={interventionOptions}
+                      error={error}
+                      onValueChange={onValueChange}
+                      value={value}
+                      fileIdToUrlMap={fileIdToUrlMap}
+                      setFileIdToUrlMap={setFileIdToUrlMap}
+                      isAssessmentReport={isAssessmentReport}
+                      yesNoOptions={yesNoOptions}
+                    />
+                  </TabPanel>
+                  <TabPanel name='submission'>
+                    <Submission
+                      error={error}
+                      onValueChange={onValueChange}
+                      value={value}
+                    />
+                  </TabPanel>
+                  <div className={styles.actions}>
+                    <Button
+                      name={undefined}
+                      variant="secondary"
+                      onClick={handleBackButtonClick}
+                      disabled={shouldDisabledBackButton}
+                    >
+                      {strings.drefFormBackButtonLabel}
+                    </Button>
+                    <Button
+                      name={undefined}
+                      variant="secondary"
+                      onClick={handleSubmitButtonClick}
+                    >
+                      {submitButtonLabel}
+                    </Button>
+                  </div>
+                  {isDefined(opsUpdateId) && showObsoletePayloadResolutionModal && (
+                    <ObsoletePayloadResolutionModal
+                      opsUpdateId={+opsUpdateId}
+                      onOverwriteButtonClick={handleObsoletePayloadResolutionOverwiteButtonClick}
+                      onCancelButtonClick={handleObsoletePayloadResolutionCancelButtonClick}
+                    />
+                  )}
+                </>
+              )
+          )}
       </Page>
     </Tabs>
   );
