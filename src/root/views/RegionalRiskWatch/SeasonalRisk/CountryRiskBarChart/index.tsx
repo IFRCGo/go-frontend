@@ -4,7 +4,7 @@ import { _cs } from '@togglecorp/fujs';
 import Heading from '#components/Heading';
 import { HazardType, hazardTypeColorMap } from '../common';
 import styles from './styles.module.scss';
-
+import ReactTooltip from 'react-tooltip';
 
 const hazardDisplayOrder: Record<HazardType, number> = {
   FL: 1,
@@ -39,6 +39,15 @@ function CountryRiskBarChart(props: Props) {
   const maxValue = Math.max(...riskData.map((rd) => rd.value));
   const maxValueSafe = maxValue <= 0 ? 1 : maxValue;
 
+  const tooltip = React.useCallback(()=>{
+    return (
+      <>
+        <div>Flood: </div>
+        <div>Risk:medium</div>
+      </>
+    );
+  },[]);
+
   return (
     <div className={_cs(styles.countryRiskBarChart, className)}>
       <Heading
@@ -71,15 +80,33 @@ function CountryRiskBarChart(props: Props) {
                     const width = 100 * hrd.value / maxValueSafe;
 
                     return (
-                      <div
-                        title={`${hrd.hazard_type_display}: ${hrd.value}`}
-                        className={styles.hazardRiskBar}
-                        key={hrd.hazard_type}
-                        style={{
-                          width: `${width}%`,
-                          backgroundColor: hazardTypeColorMap[hrd.hazard_type],
-                        }}
-                      />
+                      <React.Fragment key={hrd.hazard_type}>
+                        <div
+                          data-tip
+                          data-for={hrd.hazard_type}
+                          // Note: Tooltip is added for hover title
+                          // title={`${hrd.hazard_type_display}: ${hrd.value}`}
+                          className={styles.hazardRiskBar}
+                          key={hrd.hazard_type}
+                          style={{
+                            width: `${width}%`,
+                            backgroundColor: hazardTypeColorMap[hrd.hazard_type],
+                          }}
+                        />
+                        <ReactTooltip
+                          id={hrd.hazard_type}
+                          className={styles.tooltip}
+                          place="top"
+                          type="light"
+                          effect="solid"
+                          aria-haspopup='true'
+                          border={false}
+                        >
+                          <div className={styles.tooltipHazardTitle}>{hrd.hazard_type_display}</div>
+                          <div className={styles.subTitle}>Risk</div>
+                        </ReactTooltip>
+
+                      </React.Fragment>
                     );
                   }
                 )}
