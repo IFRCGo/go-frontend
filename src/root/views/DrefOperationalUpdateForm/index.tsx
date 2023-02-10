@@ -662,7 +662,9 @@ function DrefOperationalUpdate(props: Props) {
                       error={error}
                       message={strings.drefFormFieldGeneralError}
                     />
-                    <div className={styles.warning}>{operationTimeframeWarning}</div>
+                    {operationTimeframeWarning && (
+                      <div className={styles.warning}>{operationTimeframeWarning}</div>
+                    )}
                   </Container>
                   <TabPanel name='operationOverview'>
                     <Overview
