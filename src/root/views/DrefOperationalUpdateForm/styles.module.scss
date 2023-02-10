@@ -10,3 +10,12 @@
     margin: 0 $spacing*0.5;
   }
 }
+
+.warning {
+  color: $danger-color;
+  font-weight: $base-font-bold;
+  padding: $spacing*0.5;
+
+  animation: flash $duration-animation-fast 5 ease-in-out;
+  animation-delay: $duration-animation-medium;
+}

@@ -286,22 +286,7 @@ const defaultSchema: FormSchemaFields = {
   has_event_occurred: [],
   reporting_start_date: [],
   reporting_end_date: [],
-  total_operation_timeframe: [
-    (currentValue, allValue, context) => {
-      const defaultCurrentValue = isDefined(currentValue) ? currentValue : null;
-      const contextValue = context.type === 'dref' ? context.value?.operation_timeframe : context.value?.total_operation_timeframe;
-
-      if (allValue?.changing_timeframe_operation && defaultCurrentValue === contextValue) {
-        return 'Please select a different timeframe when selected yes on changing the operation timeframe';
-      }
-
-      if (defaultCurrentValue !== contextValue && !allValue?.changing_timeframe_operation) {
-        return 'Please select yes on changing the operation timeframe first';
-      }
-
-      return undefined;
-    }
-  ],
+  total_operation_timeframe: [],
   national_society_actions: {
     keySelector: (n) => n.clientId as string,
     member: (): NsActionsSchemaMember => ({
