@@ -49,7 +49,6 @@ function CountryRiskBarChart(props: Props) {
           <div>Low</div>
           <div>High</div>
         </div>
-
       </Heading>
       <div className={styles.content}>
         {sortedData.length === 0 && (
@@ -77,7 +76,6 @@ function CountryRiskBarChart(props: Props) {
                           // Note: Tooltip is added for hover title
                           title={`${hrd.hazard_type_display}: ${hrd.value}`}
                           className={styles.hazardRiskBar}
-                          key={hrd.hazard_type}
                           style={{
                             width: `${width}%`,
                             backgroundColor: hazardTypeColorMap[hrd.hazard_type],
