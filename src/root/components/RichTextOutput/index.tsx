@@ -34,7 +34,7 @@ function useSanitizedHtml(rawHtml: string) {
           div: ['style'],
           img: ['src', 'width', 'height', 'style'],
           iframe: ['src', 'width', 'height', 'frameborder', 'style'],
-          // a: ['href'],
+          a: ['href'],
         },
         allowedSchemes: [ 'http', 'https', 'data' ],
         allowedStyles: {
