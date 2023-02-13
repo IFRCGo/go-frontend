@@ -12,7 +12,7 @@ import styles from './styles.module.scss';
 export interface RegionResult {
   id: number;
   name: string;
-  // score: number;
+  score: number;
 }
 
 interface Props {

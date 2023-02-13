@@ -3836,4 +3836,6 @@ export default {
   searchIfrcProvince: 'Province',
   searchViewAllDocuments: 'View All Documents',
   searchGoBack: 'Go Back',
+  searchResultforQuery: 'Couldn\'t find any results for given query!',
+  searchThreeCharactersRequired: 'Please enter at least 3 characters to get started with search!',
 };

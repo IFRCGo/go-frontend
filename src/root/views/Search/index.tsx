@@ -1,5 +1,5 @@
 import React from 'react';
-import { _cs, sum, isDefined, mapToList } from '@togglecorp/fujs';
+import { _cs, isDefined, mapToList } from '@togglecorp/fujs';
 import { Redirect } from 'react-router-dom';
 import { MdSearch, MdSearchOff } from 'react-icons/md';
 import { IoSearch, IoChevronForward, IoChevronBack } from 'react-icons/io5';
@@ -79,15 +79,12 @@ function Search(props: Props) {
     }
   });
 
-  console.log("country", searchResponse?.countries);
-
   const [
     resultsMap,
     componentMap,
     sortedScoreList,
     isEmpty,
   ] = React.useMemo(() => {
-    const scoreSelector = (d: { score: number }) => d.score;
     const resultsMap = {
       regions: searchResponse?.regions ?? [],
       countries: searchResponse?.countries ?? [],
@@ -117,153 +114,127 @@ function Search(props: Props) {
       (item, key) => ({
         key: key as ResultKeys,
         totalItems: item.length,
-        value: sum(item.slice(0, MAX_VIEW_PER_SECTION).map(scoreSelector))
+        value: Math.max(0, ...(item.map((i) => i.score))),
       }),
     );
 
-  const keysOrdering: {
-    [key in ResultKeys]: number
-  } = {
-    regions: 0,
-    countries: 1,
-    provinces: 2,
-    emergencies: 3,
-    appeals: 3,
-    projects: 3,
-    surgeAlerts: 3,
-    surgeDeployments: 3,
-    fieldReports: 3,
-  };
-  const sortedScoreList = scoreList.sort((a, b) => (
-    keysOrdering[a.key] - keysOrdering[b.key] || b.value - a.value
-  ));
+    const keysOrdering: {
+      [key in ResultKeys]: number
+    } = {
+      regions: 0,
+      countries: 1,
+      provinces: 2,
+      emergencies: 3,
+      appeals: 3,
+      projects: 3,
+      surgeAlerts: 3,
+      surgeDeployments: 3,
+      fieldReports: 3,
+    };
+    const sortedScoreList = scoreList.sort((a, b) => (
+      keysOrdering[a.key] - keysOrdering[b.key] || b.value - a.value
+    ));
 
-  const isEmpty = scoreList.every((score) => score.totalItems === 0);
+    const isEmpty = scoreList.every((score) => score.totalItems === 0);
 
-  return [
-    resultsMap,
-    componentMap, sortedScoreList,
-    isEmpty,
-  ];
-}, [searchResponse]);
+    return [
+      resultsMap,
+      componentMap, sortedScoreList,
+      isEmpty,
+    ];
+  }, [searchResponse]);
 
-const ActiveComponent = activeView ? componentMap[activeView] : undefined;
-const redirectSearchString = isDefined(debouncedSearchString) ? `?${URL_SEARCH_KEY}=${window.encodeURI(debouncedSearchString)}` : undefined;
-const currentSearchString = window.location.search;
+  const ActiveComponent = activeView ? componentMap[activeView] : undefined;
+  const redirectSearchString = isDefined(debouncedSearchString) ? `?${URL_SEARCH_KEY}=${window.encodeURI(debouncedSearchString)}` : undefined;
+  const currentSearchString = window.location.search;
 
-return (
-  <Page
-    className={_cs(styles.search, className)}
-    title={strings.threeWPageTitle}
-    heading="Search for keyword"
-    withMainContentBackground
-    description={(
-      <TextInput
-        icons={<IoSearch />}
-        type="search"
-        name="search"
-        value={searchString}
-        onChange={setSearchString}
-        placeholder="Enter at least 3 characters"
-      />
-    )}
-  >
-    {searchPending && <BlockLoading />}
-    {!searchPending && isEmpty && (
-      <Container contentClassName={styles.emptySearchContent}>
-        {isDefined(debouncedSearchString) && debouncedSearchString.trim().length > 2 ? (
-          <>
-            <MdSearchOff className={styles.icon} />
-            Couldn't find any results for given query!
-          </>
-        ) : (
-          <>
-            <MdSearch className={styles.icon} />
-            Please enter at least 3 characters to get started with search!
-          </>
-        )}
-      </Container>
-    )}
-    {redirectSearchString !== currentSearchString && (
-      <Redirect
-        to={{
-          pathname: '/search',
-          search: redirectSearchString,
-        }}
-      />
-    )}
-    <div className={styles.content}>
-      {/* {regionsName && regionsName.length > 0 && (
-          <RegionList
-            data={regionsName}
-            actions={undefined}
-          />
-        )}
-        {countriesName && countriesName.length > 0 && (
-          <CountryList
-            data={countriesName}
-            actions={undefined}
-          />
-        )}
-        {provinceName && provinceName.length > 0 && (
-          <ProvinceList
-            data={provinceName}
-            actions={provinceName.length > MAX_VIEW_PER_SECTION && (
-              <Button
-                variant="transparent"
-                onClick={setActiveView}
-                actions={<IoChevronForward />} name={undefined}
-              >
-                {strings.searchViewAllDocuments}
-              </Button>
-            )}
-          />
-        )} */}
-      {activeView && ActiveComponent && (
-        <ActiveComponent
-          data={resultsMap[activeView]}
-          actions={(
-            <Button
-              name={undefined}
-              variant="transparent"
-              onClick={setActiveView}
-              icons={<IoChevronBack />}
-            >
-              {strings.searchGoBack}
-            </Button>
-          )}
+  return (
+    <Page
+      className={_cs(styles.search, className)}
+      title={strings.threeWPageTitle}
+      heading="Search for keyword"
+      withMainContentBackground
+      description={(
+        <TextInput
+          icons={<IoSearch />}
+          type="search"
+          name="search"
+          value={searchString}
+          onChange={setSearchString}
+          placeholder="Enter at least 3 characters"
         />
       )}
-      {!activeView && sortedScoreList.map((score) => {
-        const Component = componentMap[score.key];
-        const data = resultsMap[score.key];
-
-        if (data.length === 0) {
-          return null;
-        }
-
-        const truncatedData = data.slice(0, MAX_VIEW_PER_SECTION);
-
-        return (
-          <Component
-            key={score.key}
-            data={truncatedData}
-            actions={data.length > MAX_VIEW_PER_SECTION && (
+    >
+      {searchPending && <BlockLoading />}
+      {!searchPending && isEmpty && (
+        <Container contentClassName={styles.emptySearchContent}>
+          {isDefined(debouncedSearchString) && debouncedSearchString.trim().length > 2 ? (
+            <>
+              <MdSearchOff className={styles.icon} />
+              {strings.searchResultforQuery}
+            </>
+          ) : (
+            <>
+              <MdSearch className={styles.icon} />
+              {strings.searchThreeCharactersRequired}
+            </>
+          )}
+        </Container>
+      )}
+      {redirectSearchString !== currentSearchString && (
+        <Redirect
+          to={{
+            pathname: '/search',
+            search: redirectSearchString,
+          }}
+        />
+      )}
+      <div className={styles.content}>
+        {activeView && ActiveComponent && (
+          <ActiveComponent
+            data={resultsMap[activeView]}
+            actions={(
               <Button
-                name={score.key}
+                name={undefined}
                 variant="transparent"
                 onClick={setActiveView}
-                actions={<IoChevronForward />}
+                icons={<IoChevronBack />}
               >
-                {strings.searchViewAllDocuments}
+                {strings.searchGoBack}
               </Button>
             )}
           />
-        );
-      })}
-    </div>
-  </Page>
-);
+        )}
+        {!activeView && sortedScoreList.map((score) => {
+          const Component = componentMap[score.key];
+          const data = resultsMap[score.key];
+
+          if (data.length === 0) {
+            return null;
+          }
+
+          const truncatedData = data.slice(0, MAX_VIEW_PER_SECTION);
+
+          return (
+            <Component
+              key={score.key}
+              data={truncatedData}
+              actions={data.length > MAX_VIEW_PER_SECTION && (
+                <Button
+                  name={score.key}
+                  variant="transparent"
+                  onClick={setActiveView}
+                  actions={<IoChevronForward />}
+                >
+                  {strings.searchViewAllDocuments}
+                </Button>
+              )}
+            />
+          );
+        })}
+      </div>
+    </Page>
+  );
 }
 
 export default Search;
