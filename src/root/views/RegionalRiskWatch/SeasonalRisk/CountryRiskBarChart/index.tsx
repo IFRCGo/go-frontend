@@ -3,6 +3,9 @@ import { _cs } from '@togglecorp/fujs';
 
 import Heading from '#components/Heading';
 import { HazardType, hazardTypeColorMap } from '../common';
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import ReactTooltip from 'react-tooltip';
+
 import styles from './styles.module.scss';
 
 const hazardDisplayOrder: Record<HazardType, number> = {
@@ -44,10 +47,10 @@ function CountryRiskBarChart(props: Props) {
         size="small"
         className={styles.heading}
       >
-        <div>COUNTRIES BY RISK</div>
+        <div className={styles.headingTitle}>Countries by Risk</div>
         <div className={styles.riskStatus}>
-          <div>Low</div>
-          <div>High</div>
+          <div>LOW</div>
+          <div>HIGH</div>
         </div>
       </Heading>
       <div className={styles.content}>
@@ -71,30 +74,27 @@ function CountryRiskBarChart(props: Props) {
                     return (
                       <React.Fragment key={hrd.hazard_type}>
                         <div
-                          // data-tip
-                          // data-for={hrd.hazard_type}
+                          data-tip
+                          data-for={hrd.hazard_type}
                           // Note: Tooltip is added for hover title
-                          title={`${hrd.hazard_type_display}: ${hrd.value}`}
+                          // title={`${hrd.hazard_type_display}: ${hrd.value}`}
                           className={styles.hazardRiskBar}
                           style={{
                             width: `${width}%`,
                             backgroundColor: hazardTypeColorMap[hrd.hazard_type],
                           }}
                         />
-                        { /* Note:  Inprogress so hide for now
-                          <ReactTooltip
-                            id={hrd.hazard_type}
-                            className={styles.tooltip}
-                            place="top"
-                            type="light"
-                            effect="solid"
-                            aria-haspopup='true'
-                            border={false}
-                          >
-                            <div className={styles.tooltipHazardTitle}>{hrd.hazard_type_display}</div>
-                            <div className={styles.subTitle}>Risk</div>
-                          </ReactTooltip>
-                        */ }
+                        <ReactTooltip
+                          id={hrd.hazard_type}
+                          className={styles.tooltip}
+                          place="top"
+                          aria-haspopup='true'
+                          border={false}
+                          type="dark"
+                        >
+                          <div className={styles.tooltipHazardTitle}>{hrd.hazard_type_display}</div>
+                          <div className={styles.subTitle}>Risk</div>
+                        </ReactTooltip>
                       </React.Fragment>
                     );
                   }
