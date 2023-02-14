@@ -8,13 +8,21 @@
     display: block;
     padding: 0;
 
+    .heading-title {
+      font-size: $font-size-sm;
+      font-weight: $base-font-medium;
+    }
+
     .risk-status {
       display: flex;
       justify-content: space-between;
       padding-left: $spacing-2 * 0.75;
       padding-right: $spacing-4;
-      font-size: $font-size-xxs;
-      font-weight: $base-font-semi-bold;
+
+      > * {
+        font-size: $font-size-xs;
+        font-weight: $base-font-medium;
+      }
     }
   }
 
@@ -38,8 +46,9 @@
     }
 
     .country-name {
-      font-size: $font-size-sm;
+      font-size: $font-size-xxs;
       font-weight: $base-font-medium;
+      text-transform: uppercase;
     }
 
     .bar-container {
@@ -67,17 +76,17 @@
   display: flex;
   gap: 6px !important;
   padding: $spacing $spacing-2 !important;
-  background-color: $color-background !important;
   font-size: 12px !important;
-  box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.03) !important;
 
-
-  &.place-top {
-    &:after {
-      border: 0px !important;
-      border-width: 0px !important;
-    }
-  }
+  //TODO: fix styling as per figma
+  // background-color: $base-alpha-color !important;
+  // color: $color-text !important;
+  //
+  // box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.04) !important;
+  //
+  // &:after {
+  //   border-top-color: $base-alpha-color !important;
+  // }
 
   .tooltip-hazard-title {
     font-weight: $base-font-bold;
