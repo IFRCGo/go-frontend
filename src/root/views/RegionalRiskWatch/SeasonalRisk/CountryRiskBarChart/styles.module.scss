@@ -75,18 +75,16 @@
 .tooltip {
   display: flex;
   gap: 6px !important;
+  border-radius: 4px;
+  background-color: $white !important;
+  color: $color-text !important;
   padding: $spacing $spacing-2 !important;
   font-size: 12px !important;
+  box-shadow: 0px 0px 3px 1px rgba(0, 0, 0, 0.007);
 
-  //TODO: fix styling as per figma
-  // background-color: $base-alpha-color !important;
-  // color: $color-text !important;
-  //
-  // box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.04) !important;
-  //
-  // &:after {
-  //   border-top-color: $base-alpha-color !important;
-  // }
+  &:after {
+    border-top-color: rgba(0, 0, 0, 0.007) !important;
+  }
 
   .tooltip-hazard-title {
     font-weight: $base-font-bold;
