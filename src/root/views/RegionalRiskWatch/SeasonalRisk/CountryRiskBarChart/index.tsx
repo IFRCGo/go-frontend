@@ -3,7 +3,7 @@ import { _cs } from '@togglecorp/fujs';
 
 import Heading from '#components/Heading';
 import { HazardType, hazardTypeColorMap } from '../common';
-/* eslint-disable @typescript-eslint/no-unused-vars */
+// @ts-ignore
 import ReactTooltip from 'react-tooltip';
 
 import styles from './styles.module.scss';
@@ -90,7 +90,6 @@ function CountryRiskBarChart(props: Props) {
                           place="top"
                           aria-haspopup='true'
                           border={false}
-                          type="dark"
                         >
                           <div className={styles.tooltipHazardTitle}>{hrd.hazard_type_display}</div>
                           <div className={styles.subTitle}>Risk</div>
