@@ -86,7 +86,7 @@ function SurgeDeploymentTable(props: Props) {
   return (
     <Container
       className={_cs(styles.surgeDeploymentTable, className)}
-      heading={strings.searchIfrcEmergencyPlanningAndReportingDocuments}
+      heading={strings.searchIfrcSurgeDeployments}
       contentClassName={styles.content}
       sub
       actions={actions}
