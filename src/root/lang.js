@@ -3828,6 +3828,7 @@ export default {
   searchIfrcEmergencyOperations: 'IFRC Emergency Operations',
   searchIfrcEmergencies: 'Emergencies',
   searchIfrcEmergencyPlanningAndReportingDocuments: 'Emergency Planning And Reporting Documents',
+  searchIfrcSurgeDeployments: 'Surge deployments',
   searchIfrcReport: 'Report',
   searchIfrcProjects: 'Projects',
   searchIfrcOpenSurgeAlerts: 'Open Surge Alerts',
