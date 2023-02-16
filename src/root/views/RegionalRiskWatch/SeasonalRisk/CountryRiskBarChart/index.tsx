@@ -47,11 +47,7 @@ function CountryRiskBarChart(props: Props) {
         size="small"
         className={styles.heading}
       >
-        <div className={styles.headingTitle}>Countries by Risk</div>
-        <div className={styles.riskStatus}>
-          <div>LOW</div>
-          <div>HIGH</div>
-        </div>
+        Countries by Risk
       </Heading>
       <div className={styles.content}>
         {sortedData.length === 0 && (
