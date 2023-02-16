@@ -304,10 +304,10 @@ function SeasonalRisk(props: Props) {
               />
               <div className={styles.labelList}>
                 <div className={styles.label}>
-                  Low
+                  LOW
                 </div>
                 <div className={styles.label}>
-                  High
+                  HIGH
                 </div>
               </div>
             </div>

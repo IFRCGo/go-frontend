@@ -7,23 +7,8 @@
   .heading {
     display: block;
     padding: 0;
-
-    .heading-title {
-      font-size: $font-size-sm;
-      font-weight: $base-font-medium;
-    }
-
-    .risk-status {
-      display: flex;
-      justify-content: space-between;
-      padding-left: $spacing-2 * 0.75;
-      padding-right: $spacing-4;
-
-      > * {
-        font-size: $font-size-xs;
-        font-weight: $base-font-medium;
-      }
-    }
+    font-size: $font-size-sm;
+    font-weight: $base-font-medium;
   }
 
   .content {
@@ -52,9 +37,12 @@
     }
 
     .bar-container {
+      border: 1px solid transparent;
+      border-radius: $base-border-radius;
       height: 0.5rem;
       display: flex;
       background-color: rgba(0, 0, 0, .1);
+      overflow: hidden;
 
       .hazard-risk-bar {
         cursor: pointer;
