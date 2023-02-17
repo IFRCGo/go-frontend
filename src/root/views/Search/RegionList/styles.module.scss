@@ -6,6 +6,13 @@
   gap: $spacing;
   padding: $spacing*2 $spacing !important;
 
+  >* {
+    border: $base-border-width solid $grey-cloud;
+    padding: $spacing*2 $spacing*3;
+    font-weight: $base-font-medium;
+    text-transform: uppercase;
+  }
+
   .region-name {
     display: flex;
     color: $primary-color;

@@ -5,14 +5,9 @@
     table {
       width: 100%;
 
-      th {
-        text-align: left;
-        border-bottom: $base-border-width solid $base-border-color;
-        background-color: $color-background;
-      }
-
       td {
-        border-bottom: $base-border-width solid $base-border-color;
+        border: $base-border-width solid $base-border-color;
+        padding: $spacing;
       }
     }
   }

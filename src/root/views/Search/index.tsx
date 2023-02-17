@@ -109,7 +109,7 @@ function Search(props: Props) {
       fieldReports: FieldReportTable,
     };
 
-    const scoreList = mapToList(
+    const tableScoreList = mapToList(
       resultsMap,
       (item, key) => ({
         key: key as ResultKeys,
@@ -131,15 +131,16 @@ function Search(props: Props) {
       surgeDeployments: 3,
       fieldReports: 3,
     };
-    const sortedScoreList = scoreList.sort((a, b) => (
+    const sortedScoreList = tableScoreList.sort((a, b) => (
       keysOrdering[a.key] - keysOrdering[b.key] || b.value - a.value
     ));
 
-    const isEmpty = scoreList.every((score) => score.totalItems === 0);
+    const isEmpty = tableScoreList.every((score) => score.totalItems === 0);
 
     return [
       resultsMap,
-      componentMap, sortedScoreList,
+      componentMap,
+      sortedScoreList,
       isEmpty,
     ];
   }, [searchResponse]);
