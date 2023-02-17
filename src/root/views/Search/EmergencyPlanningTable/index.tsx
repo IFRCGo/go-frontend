@@ -12,28 +12,28 @@ import {
 
 import styles from './styles.module.scss';
 
-export interface AppealResult {
+export interface EmergencyPlanningResult {
   id: number;
   name: string;
-  appeal_type: string;
   code: string;
   country: string;
   country_id: number;
   start_date: string;
   score: number;
+  type: string;
 }
 
-function appealKeySelector(appeal: AppealResult) {
-  return appeal.id;
+function emergencyPlanningKeySelector(emergencyPlanning: EmergencyPlanningResult) {
+  return emergencyPlanning.id;
 }
 
 interface Props {
   className?: string;
-  data: AppealResult[] | undefined;
+  data: EmergencyPlanningResult[] | undefined;
   actions: React.ReactNode;
 }
 
-function AppealsTable(props: Props) {
+function EmergencyPlanningTable(props: Props) {
   const {
     className,
     data,
@@ -43,33 +43,37 @@ function AppealsTable(props: Props) {
   const { strings } = React.useContext(LanguageContext);
 
   const columns = [
-    createDateColumn<AppealResult, number>(
+    createDateColumn<EmergencyPlanningResult, number>(
       'start_date',
       'Date',
-      (appeal) => appeal.start_date,
+      (emergencyPlanning) => emergencyPlanning.start_date,
     ),
-    createStringColumn<AppealResult, number>(
-      'appeal_type',
+    createStringColumn<EmergencyPlanningResult, number>(
+      'type',
       'Type',
-      (appeal) => appeal.appeal_type,
+      (emergencyPlanning) => emergencyPlanning.type,
     ),
-    createStringColumn<AppealResult, number>(
+    createStringColumn<EmergencyPlanningResult, number>(
       'code',
       'Code',
-      (appeal) => appeal.code,
+      (emergencyPlanning) => emergencyPlanning.code,
     ),
-    createStringColumn<AppealResult, number>(
+    createLinkColumn<EmergencyPlanningResult, number>(
       'name',
-      'Name',
-      (appeal) => appeal.name,
+      'Title',
+      (emergencyPlanning) => emergencyPlanning.name,
+      (emergencyPlanning) => ({
+        href: `emergencies/${emergencyPlanning.id}`,
+        variant: 'table'
+      })
     ),
-    createLinkColumn<AppealResult, number>(
+    createLinkColumn<EmergencyPlanningResult, number>(
       'country',
       'Country',
-      (appeal) =>  appeal.country,
-      (appeal) => ({
-        href: `countries/${appeal.country_id}`,
-        variant: "table"
+      (emergencyPlanning) =>  emergencyPlanning.country,
+      (emergencyPlanning) => ({
+        href: `countries/${emergencyPlanning.country_id}`,
+        variant: 'table'
       })
     ),
   ];
@@ -80,7 +84,7 @@ function AppealsTable(props: Props) {
 
   return (
     <Container
-      className={_cs(styles.appealsTable, className)}
+      className={_cs(styles.emergencyPlanningTable, className)}
       heading={strings.searchIfrcEmergencyPlanningAndReportingDocuments}
       contentClassName={styles.content}
       sub
@@ -90,11 +94,11 @@ function AppealsTable(props: Props) {
         className={styles.inProgressDrefTable}
         data={data}
         columns={columns}
-        keySelector={appealKeySelector}
+        keySelector={emergencyPlanningKeySelector}
         variant="large"
       />
     </Container>
   );
 }
 
-export default AppealsTable;
+export default EmergencyPlanningTable;

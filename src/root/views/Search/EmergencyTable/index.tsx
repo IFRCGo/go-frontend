@@ -72,10 +72,10 @@ function EmergencyTable(props: Props) {
       'Disaster Type',
       (emergency) => emergency.disaster_type,
     ),
-    createNumberColumn<EmergencyResult, number>(
+    createStringColumn<EmergencyResult, number>(
       'funding_requirements',
       'Funding Requirements',
-      (emergency) => emergency.funding_requirements,
+      (emergency) => `${emergency.funding_requirements} CHF`,
     ),
     createStringColumn<EmergencyResult, number>(
       'funding_coverage',

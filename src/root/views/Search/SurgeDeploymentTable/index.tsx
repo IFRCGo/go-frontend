@@ -20,6 +20,8 @@ export interface SurgeDeploymentResult {
   owner: string;
   personnel_units: number;
   equipment_units: number;
+  event_id: number;
+  deployed_country_id: number;
   score: number;
 }
 
@@ -63,18 +65,21 @@ function SurgeDeploymentTable(props: Props) {
       'Equipment Units',
       (surgeDeployment) => surgeDeployment.equipment_units,
     ),
-    createStringColumn<SurgeDeploymentResult, number>(
+    createLinkColumn<SurgeDeploymentResult, number>(
       'deployed_country',
       'Country Deployed to',
       (surgeDeployment) => surgeDeployment.deployed_country,
+      (surgeDeployment) => ({
+        href: `countries/${surgeDeployment.deployed_country_id}`
+      })
     ),
     createLinkColumn<SurgeDeploymentResult, number>(
       'event_name',
       'Emergency',
       (surgeDeployement) => surgeDeployement.event_name,
       (surgeDeployement) => ({
-        href: `emergencies/${surgeDeployement.id}`,
-        variant: "table",
+        href: `emergencies/${surgeDeployement.event_id}`,
+        variant: 'table',
       })
     ),
   ];

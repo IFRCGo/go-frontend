@@ -17,7 +17,7 @@ import { getSearchValue } from '#utils/common';
 import { URL_SEARCH_KEY } from '#utils/constants';
 
 import EmergencyTable, { EmergencyResult } from './EmergencyTable';
-import AppealsTable, { AppealResult } from './AppealsTable';
+import EmergencyPlanningTable, { EmergencyPlanningResult } from './EmergencyPlanningTable';
 import FieldReportTable, { FieldReportResponse } from './FieldReportTable';
 import ProjectTable, { ProjectResult } from './ProjectTable';
 import SurgeAlertTable, { SurgeAlertResult } from './SurgeAlertTable';
@@ -32,8 +32,8 @@ export type SearchResult = {
   countries: CountryResult[];
   regions: RegionResult[];
   district_province_response: ProvinceResult[];
-  appeals: AppealResult[];
-  field_reports: FieldReportResponse[];
+  emergency_planning: EmergencyPlanningResult[];
+  reports: FieldReportResponse[];
   projects: ProjectResult[];
   emergencies: EmergencyResult[];
   surge_alerts: SurgeAlertResult[];
@@ -41,7 +41,7 @@ export type SearchResult = {
 }
 
 const MAX_VIEW_PER_SECTION = 5;
-type ResultKeys = 'provinces' | 'regions' | 'countries' | 'emergencies' | 'appeals' | 'projects' | 'surgeAlerts' | 'surgeDeployments' | 'fieldReports';
+type ResultKeys = 'provinces' | 'regions' | 'countries' | 'emergencies' | 'emergencyPlannings' | 'projects' | 'surgeAlerts' | 'surgeDeployments' | 'fieldReports';
 
 interface Props {
   className?: string;
@@ -90,11 +90,11 @@ function Search(props: Props) {
       countries: searchResponse?.countries ?? [],
       provinces: searchResponse?.district_province_response ?? [],
       emergencies: searchResponse?.emergencies ?? [],
-      appeals: searchResponse?.appeals ?? [],
+      emergencyPlannings: searchResponse?.emergency_planning ?? [],
       projects: searchResponse?.projects ?? [],
       surgeAlerts: searchResponse?.surge_alerts ?? [],
       surgeDeployments: searchResponse?.surge_deployments ?? [],
-      fieldReports: searchResponse?.field_reports ?? [],
+      fieldReports: searchResponse?.reports ?? [],
     };
 
     const componentMap: Record<ResultKeys, React.ElementType> = {
@@ -102,7 +102,7 @@ function Search(props: Props) {
       countries: CountryList,
       provinces: ProvinceList,
       emergencies: EmergencyTable,
-      appeals: AppealsTable,
+      emergencyPlannings: EmergencyPlanningTable,
       projects: ProjectTable,
       surgeAlerts: SurgeAlertTable,
       surgeDeployments: SurgeDeploymentTable,
@@ -125,7 +125,7 @@ function Search(props: Props) {
       countries: 1,
       provinces: 2,
       emergencies: 3,
-      appeals: 3,
+      emergencyPlannings: 3,
       projects: 3,
       surgeAlerts: 3,
       surgeDeployments: 3,

@@ -4,8 +4,8 @@
   display: flex;
   flex-grow: 1;
   flex-wrap: wrap;
-  justify-content: space-between;
-  gap: $spacing ;
+  // justify-content: space-between;
+  gap: $spacing*2;
   border: $base-border-width solid $grey-cloud;
   padding: $spacing*2 $spacing*4  !important;
   text-transform: uppercase;
