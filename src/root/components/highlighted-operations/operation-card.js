@@ -5,15 +5,27 @@ import { environment } from '#config';
 import { PropTypes } from 'prop-types';
 
 import { formatDate, percent, round, commaSeparatedNumber as n } from '#utils/format';
+import FormattedNumber from '#components/formatted-number';
 import Progress from './../progress-labeled';
 import Translate from '#components/Translate';
 
-const OperationCard = ({operationId, operationName, emergencyDeployments, appeals, lastUpdate, showFollow, isFollowing, followOperation, unfollowOperation}) => {
+const OperationCard = ({
+  operationId,
+  operationName,
+  emergencyDeployments,
+  appeals,
+  lastUpdate,
+  showFollow,
+  activeDeployments,
+  isFollowing,
+  followOperation,
+  unfollowOperation,
+}) => {
   const beneficiaries = appeals.reduce((acc, curr) => acc + curr.num_beneficiaries, 0);
   const requested = appeals.reduce((acc, curr) => acc + Number(curr.amount_requested), 0);
   const funded = appeals.reduce((acc, curr) => acc + Number(curr.amount_funded), 0);
 
-  function toggleFollow (event) {
+  function toggleFollow(event) {
     event.preventDefault();
     if (isFollowing) {
       unfollowOperation(operationId);
@@ -28,11 +40,11 @@ const OperationCard = ({operationId, operationName, emergencyDeployments, appeal
         <div className="card_box card_box_left card_box_title">
           <div className='row flex'>
             <div className='card__title__wrap col col-7 col-8-mid'>
-              <h2 className='card__title'>{ operationName?.length > 60 ? operationName?.slice(0, 60) + '...' : operationName }</h2>
+              <h2 className='card__title'>{operationName?.length > 60 ? operationName?.slice(0, 60) + '...' : operationName}</h2>
             </div>
             {showFollow ? (
-              <div className='button--key-emergencies__wrap col col-5 col-4-mid'>  
-                <div onClick={toggleFollow} className={`button button--capsule button--xsmall button--key-emergencies ${isFollowing ? 'button--primary-bounded' : 'button--primary-filled'}`}>
+              <div className='button--key-emergencies__wrap col col-5 col-4-mid'>
+                <div onClick={toggleFollow} className={`button button--capsule button--xsmall button--key-emergencies ${isFollowing ? 'button--primary-filled' : 'button--primary-bounded'}`}>
                   {
                     isFollowing ? (
                       <Translate stringId='operationCardFollowing' />
@@ -46,7 +58,7 @@ const OperationCard = ({operationId, operationName, emergencyDeployments, appeal
             }
           </div>
           <small className='last_updated'>
-            <Translate stringId='operationCardLastUpdated'/>
+            <Translate stringId='operationCardLastUpdated' />
             &nbsp;
             {formatDate(lastUpdate)}
           </small>
@@ -54,44 +66,63 @@ const OperationCard = ({operationId, operationName, emergencyDeployments, appeal
 
         <div className='card_box_container card_box_container--op'>
           <div className='card_box card_box_left card_box--op'>
-            <div className="card_box_no">{beneficiaries && beneficiaries !== 0 ? n(beneficiaries) : '--'}</div>
+            <div className="card_box_no">
+              <FormattedNumber
+                className='tc-value'
+                value={beneficiaries}
+                normalize
+                fixedTo={1}
+              />
+            </div>
             <span className='affected_population_icon'></span>
             <small className='heading-tiny'>
-              <Translate stringId='operationCardTargetedPopulation'/>
+              <Translate stringId='operationCardTargetedPopulation' />
             </small>
           </div>
           <div className='card_box card_box_left card_box--op'>
-            <span className='affected_population_icon'></span>
-            <div className="card_box_no">{n(emergencyDeployments.deployedErus)}</div>
+            <div className="card_box_no">
+              <FormattedNumber
+                className='tc-value'
+                value={beneficiaries}
+                normalize
+                fixedTo={1}
+              />
+            </div>
             <small className='heading-tiny'>
-              <Translate stringId='operationCardDepoloyedUnits'/>
+              <Translate stringId='operationCardFunding' />
             </small>
+            <Progress value={requested ? percent(funded, requested) : percent(0.1, 10)} max={100} />
+            <div className='card_box_full card_box_container card_box_container--op'>
+              <div className="heading-tiny-progress">
+                <div className="card_box_fc">{requested ? round(percent(funded, requested)) : 0}%</div>
+                <Translate stringId='operationCardFundingCoverage' />
+              </div>
+            </div>
           </div>
         </div>
 
         <div className='card_box_container card_box_container--op'>
           <div className='card_box card_box_left card_box--op'>
-            <div className="card_box_no">{requested && requested !== 0 ? `${n(requested)}` : '--'}</div>
+            <div className="card_box_no">
+              <FormattedNumber
+                className='tc-value'
+                value={requested}
+                normalize
+                fixedTo={1}
+              />
+            </div>
             <small className='heading-tiny'>
-              <Translate stringId='operationCardFunding'/> (CHF)
+              <Translate stringId='operationCardFunding' /> (CHF)
             </small>
           </div>
           <div className='card_box card_box_left card_box--op'>
             <span className='deployed_personnel_icon'></span>
-            <div className="card_box_no">{n(emergencyDeployments.deployedPersonnel)}</div>
-            <small className='heading-tiny'>
-              <Translate stringId='operationCardDeployed'/>
-            </small>
-          </div>
-        </div>
-
-        <div className="card_box_footer">
-          <Progress value={requested ? percent(funded, requested) : percent(0.1, 10)} max={100} />
-          <div className='card_box_full card_box_container card_box_container--op'>
-            <div className="heading-tiny">
-              <Translate stringId='operationCardFundingCoverage'/>
+            <div className="card_box_no">
+              {/* {n(activeDeployments.active)} */}
             </div>
-            <div className="card_box_fc">{requested ? round(percent(funded, requested)) : 0}%</div>
+            <small className='heading-tiny'>
+              <Translate stringId='operationCardDeployed' />
+            </small>
           </div>
         </div>
       </Link>
@@ -115,6 +146,8 @@ if (environment !== 'production') {
     }),
     lastUpdate: PropTypes.string,
     appeals: PropTypes.array,
-
+    activeDeployments: PropTypes.shape({
+      active_deployments: PropTypes.number,
+    })
   };
 }

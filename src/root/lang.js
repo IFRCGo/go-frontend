@@ -188,14 +188,14 @@ export default {
   alertTableViewEmergency: 'View Emergency page',
   alertTableViewAllText: 'View all surge alerts',
 
-  highlightedOperationsViewAll: 'View all operations',
+  highlightedOperationsViewAll: 'View all emergencies (last 30 days)',
   highlightedOperationsTitle: 'Highlighted Operations',
   operationCardLastUpdated: 'Last updated:',
   operationCardTargetedPopulation: 'Targeted Population',
   operationCardDepoloyedUnits: 'Deployed Emergency Response Units',
-  operationCardFunding: 'Funding Requirements',
+  operationCardFunding: 'Funding Ask',
   operationCardDeployed: 'Deployed Surge Personnel',
-  operationCardFundingCoverage: 'Funding Coverage',
+  operationCardFundingCoverage: 'received',
   operationCardFollow: 'Follow',
   operationCardFollowing: 'Following',
 
