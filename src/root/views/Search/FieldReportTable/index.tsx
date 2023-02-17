@@ -13,11 +13,11 @@ import {
 import styles from './styles.module.scss';
 
 export interface FieldReportResponse {
-  created_at: string;
-  name: string;
   id: number;
+  name: string;
+  created_at: string;
+  type: string;
   score: number;
-  event_name: string;
 }
 
 function fieldReportKeySelector(fieldReport: FieldReportResponse) {
@@ -46,9 +46,9 @@ function FieldReportTable(props: Props) {
       (fieldReport) => fieldReport.created_at,
     ),
     createStringColumn<FieldReportResponse, number>(
-      'event_name',
+      'type',
       '',
-      (fieldReport) => fieldReport.event_name,
+      (fieldReport) => fieldReport.type,
     ),
     createLinkColumn<FieldReportResponse, number>(
       'name',
@@ -74,7 +74,7 @@ function FieldReportTable(props: Props) {
       actions={actions}
     >
       <Table
-        className={styles.inProgressDrefTable}
+        className={styles.fieldReport}
         data={data}
         columns={columns}
         keySelector={fieldReportKeySelector}

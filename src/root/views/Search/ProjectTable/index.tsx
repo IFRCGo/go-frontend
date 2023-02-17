@@ -4,7 +4,6 @@ import { _cs } from '@togglecorp/fujs';
 import LanguageContext from '#root/languageContext';
 import Container from '#components/Container';
 import {
-  createDateColumn,
   createNumberColumn,
   createStringColumn,
   createLinkColumn,
@@ -23,6 +22,7 @@ export interface ProjectResult {
   tags: string[];
   sector: string;
   start_date: string;
+  end_date: string;
   regions: string[];
   people_targeted: number;
   score: number;
@@ -71,10 +71,10 @@ function ProjectTable(props: Props) {
         variant: 'table',
       }),
     ),
-    createDateColumn<ProjectResult, number>(
+    createStringColumn<ProjectResult, number>(
       'start_date',
       'Start-End Dates',
-      (project) => project.start_date,
+      (project) =>  `${project.start_date} - ${project.end_date}`,
     ),
     createStringColumn<ProjectResult, number>(
       'regions',
