@@ -267,6 +267,8 @@ export function getAggregateAppeals (date, unit, type, region = undefined) {
   return fetchJSON(`api/v1/aggregate/?${f}`, GET_AGGREGATE_APPEALS, withToken(), {aggregationUnit: unit, aggregationType: type});
 }
 
+//Api used
+
 export const GET_FEATURED_EMERGENCIES = 'GET_FEATURED_EMERGENCIES';
 export function getFeaturedEmergencies () {
   return fetchJSON('/api/v2/event/?is_featured=1', GET_FEATURED_EMERGENCIES, withToken());
