@@ -6,6 +6,7 @@ import Container from '#components/Container';
 import Table from '#components/Table';
 import {
   createDateColumn,
+  createLinkColumn,
   createStringColumn,
 } from '#components/Table/predefinedColumns';
 
@@ -49,10 +50,14 @@ function FieldReportTable(props: Props) {
       '',
       (fieldReport) => fieldReport.event_name,
     ),
-    createStringColumn<FieldReportResponse, number>(
+    createLinkColumn<FieldReportResponse, number>(
       'name',
       '',
       (fieldReport) => fieldReport.name,
+      (fieldReport) => ({
+        href: `/reports/${fieldReport.id}`,
+        variant: 'table',
+      })
     ),
   ];
 

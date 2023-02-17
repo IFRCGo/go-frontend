@@ -3,9 +3,17 @@
 .province-list {
   display: flex;
   flex-grow: 1;
-  flex-direction: column;
-  gap: $spacing;
-  padding: $spacing*2 $spacing !important;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: $spacing ;
+  border: $base-border-width solid $grey-cloud;
+  padding: $spacing*2 $spacing*4  !important;
+  text-transform: uppercase;
+  font-weight: $base-font-medium;
+
+  >* {
+    flex-basis: 18%;
+  }
 
   .province-name {
     color: $primary-color;
