@@ -12,7 +12,6 @@ import Translate from '#components/Translate';
 const OperationCard = ({
   operationId,
   operationName,
-  emergencyDeployments,
   appeals,
   lastUpdate,
   showFollow,
@@ -106,13 +105,13 @@ const OperationCard = ({
             <div className="card_box_no">
               <FormattedNumber
                 className='tc-value'
-                value={requested}
+                value={undefined}
                 normalize
                 fixedTo={1}
               />
             </div>
             <small className='heading-tiny'>
-              <Translate stringId='operationCardFunding' /> (CHF)
+              <Translate stringId='operationCardIFRCSurgePersonnel' />
             </small>
           </div>
           <div className='card_box card_box_left card_box--op'>
@@ -121,7 +120,7 @@ const OperationCard = ({
               {/* {n(activeDeployments.active)} */}
             </div>
             <small className='heading-tiny'>
-              <Translate stringId='operationCardDeployed' />
+              <Translate stringId='operationCardNSReportingActivities' />
             </small>
           </div>
         </div>
@@ -146,8 +145,6 @@ if (environment !== 'production') {
     }),
     lastUpdate: PropTypes.string,
     appeals: PropTypes.array,
-    activeDeployments: PropTypes.shape({
-      active_deployments: PropTypes.number,
-    })
+    activeDeployments: PropTypes.array,
   };
 }
