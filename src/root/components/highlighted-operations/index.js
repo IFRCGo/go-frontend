@@ -8,7 +8,6 @@ import {
   getFeaturedEmergencies,
   getFeaturedEmergenciesForRegion,
   getFeaturedEmergenciesDeployments,
-  getAggrSurgeEventKeyFigures,
   getDeploymentERU,
 } from '#actions';
 import BlockLoading from '../block-loading';
@@ -35,8 +34,6 @@ class HighlightedOperations extends React.Component {
   }
 
   componentDidMount() {
-    console.info('eventId', this.props);
-    this.props._getAggrSurgeEventKeyFigures(this.props.activeId);
     if (this.props.opsType === 'region') {
       this.props._getFeaturedEmergenciesForRegion(this.props.opsId);
     } else {
@@ -158,7 +155,7 @@ class HighlightedOperations extends React.Component {
       <div className='inner inner--emergencies'>
         <Fold title={strings.highlightedOperationsTitle} navLink={foldLink} foldWrapperClass='fold--main' foldTitleClass='fold__title--inline'>
           <div className={listStyle}>
-            {operations.slice(3, 12).map(operation =>
+            {operations.slice(0, 3).map(operation =>
               <OperationCard
                 key={operation.id}
                 showFollow={showFollow}
@@ -170,7 +167,8 @@ class HighlightedOperations extends React.Component {
                 emergencyDeployments={this.calculateDeployedPersonnel(operation)}
                 appeals={get(operation, 'appeals', [])}
                 lastUpdate={operation.updated_at}
-                activeDeployments={operation.activeId}
+                countryList = {operation.countries.length}
+                activeDeployment ={operation.active_deployments}
               />
             )}
           </div>
@@ -189,7 +187,6 @@ if (environment !== 'production') {
     _getAggrSurgeKeyFigures: T.func,
     _getDeploymentERU: T.func,
     featured: T.object,
-    deployments: T.object,
     eru: T.object,
     opsType: T.string,
     opsId: T.number,
@@ -213,7 +210,6 @@ const dispatcher = (dispatch) => ({
   _getUserProfile: (...args) => dispatch(getUserProfile(...args)),
   _addSubscriptions: (...args) => dispatch(addSubscriptions(...args)),
   _delSubscription: (...args) => dispatch(delSubscription(...args)),
-  _getAggrSurgeEventKeyFigures: (...args) => dispatch(getAggrSurgeEventKeyFigures(...args))
 });
 
 HighlightedOperations.contextType = LanguageContext;
