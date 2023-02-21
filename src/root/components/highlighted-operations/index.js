@@ -35,6 +35,8 @@ class HighlightedOperations extends React.Component {
   }
 
   componentDidMount() {
+    console.info('eventId', this.props);
+    this.props._getAggrSurgeEventKeyFigures(this.props.activeId);
     if (this.props.opsType === 'region') {
       this.props._getFeaturedEmergenciesForRegion(this.props.opsId);
     } else {
@@ -42,7 +44,6 @@ class HighlightedOperations extends React.Component {
     }
     if (this.props.isLogged) {
       this.props._getUserProfile(this.props.user.data.username);
-      // this.props._getAggrSurgeEventKeyFigures(this.props.match.params.id);
     }
     this.props._getFeaturedEmergenciesDeployments();
   }
@@ -119,7 +120,6 @@ class HighlightedOperations extends React.Component {
       unfollowed
     });
   }
-
   render() {
     const { error, fetching, fetched, data } = this.props.featured;
     const { strings } = this.context;
@@ -158,7 +158,7 @@ class HighlightedOperations extends React.Component {
       <div className='inner inner--emergencies'>
         <Fold title={strings.highlightedOperationsTitle} navLink={foldLink} foldWrapperClass='fold--main' foldTitleClass='fold__title--inline'>
           <div className={listStyle}>
-            {operations.slice(0, 3).map(operation =>
+            {operations.slice(3, 12).map(operation =>
               <OperationCard
                 key={operation.id}
                 showFollow={showFollow}
@@ -170,7 +170,7 @@ class HighlightedOperations extends React.Component {
                 emergencyDeployments={this.calculateDeployedPersonnel(operation)}
                 appeals={get(operation, 'appeals', [])}
                 lastUpdate={operation.updated_at}
-                activeDeployments={undefined}
+                activeDeployments={operation.activeId}
               />
             )}
           </div>
@@ -192,7 +192,7 @@ if (environment !== 'production') {
     deployments: T.object,
     eru: T.object,
     opsType: T.string,
-    opsId: T.number
+    opsId: T.number,
   };
 }
 
@@ -203,7 +203,6 @@ const selector = (state) => ({
   isLogged: !!state.user.data.token,
   user: state.user,
   profile: state.profile,
-  active: state.activeDeployments,
 });
 
 const dispatcher = (dispatch) => ({

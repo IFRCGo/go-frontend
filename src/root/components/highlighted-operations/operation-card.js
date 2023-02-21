@@ -15,7 +15,6 @@ const OperationCard = ({
   appeals,
   lastUpdate,
   showFollow,
-  activeDeployments,
   isFollowing,
   followOperation,
   unfollowOperation,
@@ -23,7 +22,6 @@ const OperationCard = ({
   const beneficiaries = appeals.reduce((acc, curr) => acc + curr.num_beneficiaries, 0);
   const requested = appeals.reduce((acc, curr) => acc + Number(curr.amount_requested), 0);
   const funded = appeals.reduce((acc, curr) => acc + Number(curr.amount_funded), 0);
-
   function toggleFollow(event) {
     event.preventDefault();
     if (isFollowing) {
@@ -117,7 +115,7 @@ const OperationCard = ({
           <div className='card_box card_box_left card_box--op'>
             <span className='deployed_personnel_icon'></span>
             <div className="card_box_no">
-              {/* {n(activeDeployments.active)} */}
+              {/* {actives} */}
             </div>
             <small className='heading-tiny'>
               <Translate stringId='operationCardNSReportingActivities' />
@@ -145,6 +143,5 @@ if (environment !== 'production') {
     }),
     lastUpdate: PropTypes.string,
     appeals: PropTypes.array,
-    activeDeployments: PropTypes.array,
   };
 }
