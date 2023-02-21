@@ -6,6 +6,7 @@ import { PropTypes } from 'prop-types';
 
 import { formatDate, percent, round, commaSeparatedNumber as n } from '#utils/format';
 import FormattedNumber from '#components/formatted-number';
+import Tooltip from '#components/common/tooltip';
 import Progress from './../progress-labeled';
 import Translate from '#components/Translate';
 
@@ -18,10 +19,13 @@ const OperationCard = ({
   isFollowing,
   followOperation,
   unfollowOperation,
+  countryList,
+  activeDeployment,
 }) => {
   const beneficiaries = appeals.reduce((acc, curr) => acc + curr.num_beneficiaries, 0);
   const requested = appeals.reduce((acc, curr) => acc + Number(curr.amount_requested), 0);
   const funded = appeals.reduce((acc, curr) => acc + Number(curr.amount_funded), 0);
+
   function toggleFollow(event) {
     event.preventDefault();
     if (isFollowing) {
@@ -37,7 +41,10 @@ const OperationCard = ({
         <div className="card_box card_box_left card_box_title">
           <div className='row flex'>
             <div className='card__title__wrap col col-7 col-8-mid'>
-              <h2 className='card__title'>{operationName?.length > 60 ? operationName?.slice(0, 60) + '...' : operationName}</h2>
+              <h2 className='card__title'>
+                <Tooltip title={operationName} />
+                {operationName?.length > 60 ? operationName?.slice(0, 60) + '...' : operationName}
+              </h2>
             </div>
             {showFollow ? (
               <div className='button--key-emergencies__wrap col col-5 col-4-mid'>
@@ -103,7 +110,7 @@ const OperationCard = ({
             <div className="card_box_no">
               <FormattedNumber
                 className='tc-value'
-                value={undefined}
+                value={activeDeployment}
                 normalize
                 fixedTo={1}
               />
@@ -115,7 +122,12 @@ const OperationCard = ({
           <div className='card_box card_box_left card_box--op'>
             <span className='deployed_personnel_icon'></span>
             <div className="card_box_no">
-              {/* {actives} */}
+              <FormattedNumber
+                className='tc-value'
+                value={countryList}
+                normalize
+                fixedTo={1}
+              />
             </div>
             <small className='heading-tiny'>
               <Translate stringId='operationCardNSReportingActivities' />
@@ -143,5 +155,7 @@ if (environment !== 'production') {
     }),
     lastUpdate: PropTypes.string,
     appeals: PropTypes.array,
+    countryList: PropTypes.number,
+    activeDeployment: PropTypes.number,
   };
 }
