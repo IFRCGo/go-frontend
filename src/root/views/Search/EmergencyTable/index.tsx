@@ -75,7 +75,12 @@ function EmergencyTable(props: Props) {
     createStringColumn<EmergencyResult, number>(
       'funding_requirements',
       'Funding Requirements',
-      (emergency) => `${emergency.funding_requirements} CHF`,
+      (emergency) => {
+        if (emergency.funding_requirements > 0) {
+          return `${emergency.funding_requirements} CHF`;
+        }
+        return '-';
+      }
     ),
     createStringColumn<EmergencyResult, number>(
       'funding_coverage',
