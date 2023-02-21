@@ -22,7 +22,7 @@ import LanguageContext from '#root/languageContext';
 import Translate from '#components/Translate';
 
 class HighlightedOperations extends React.Component {
-  constructor(props) {
+  constructor (props) {
     super(props);
 
     this.calculateDeployedPersonnel = this.calculateDeployedPersonnel.bind(this);
@@ -33,7 +33,7 @@ class HighlightedOperations extends React.Component {
     };
   }
 
-  componentDidMount() {
+  componentDidMount () {
     if (this.props.opsType === 'region') {
       this.props._getFeaturedEmergenciesForRegion(this.props.opsId);
     } else {
@@ -45,11 +45,11 @@ class HighlightedOperations extends React.Component {
     this.props._getFeaturedEmergenciesDeployments();
   }
 
-  componentDidUpdate() {
+  componentDidUpdate () {
     this.getDeploymentERU();
   }
 
-  getDeploymentERU() {
+  getDeploymentERU () {
     if (this.props.featured.data.count > 0) {
       let emergencyIds = '';
       this.props.featured.data.results.forEach(emergency => {
@@ -61,7 +61,7 @@ class HighlightedOperations extends React.Component {
     }
   }
 
-  calculateDeployedPersonnel(emergency) {
+  calculateDeployedPersonnel (emergency) {
     let deployedErus = null;
     let deployedPersonnel = null;
 
@@ -86,17 +86,17 @@ class HighlightedOperations extends React.Component {
         .forEach(eru => { deployedErus += eru.units; });
     }
 
-    return { 'deployedErus': deployedErus, 'deployedPersonnel': deployedPersonnel };
+    return {'deployedErus': deployedErus, 'deployedPersonnel': deployedPersonnel};
   }
 
   // whether to show the Follow button for Highlighted Ops
-  getShowFollow() {
+  getShowFollow () {
     if (!this.props.isLogged) return false;
     if (!this.props.profile.fetched) return false;
     return true;
   }
 
-  followOperation(id) {
+  followOperation (id) {
     this.props._addSubscriptions(id);
     const { followed, unfollowed } = this.state;
     followed.add(id);
@@ -107,7 +107,7 @@ class HighlightedOperations extends React.Component {
     });
   }
 
-  unfollowOperation(id) {
+  unfollowOperation (id) {
     this.props._delSubscription(id);
     const { followed, unfollowed } = this.state;
     followed.delete(id);
@@ -122,10 +122,10 @@ class HighlightedOperations extends React.Component {
     const { strings } = this.context;
     const foldLink = (
       <Link to='/appeals/all' className='fold__title__link'>
-        <Translate stringId='highlightedOperationsViewAll' />
+        <Translate stringId='highlightedOperationsViewAll'/>
       </Link>);
     if (fetched && (error || !Array.isArray(data.results) || !data.results.length)) return null;
-    else if (!fetched || fetching) return <div className='inner'><Fold title={strings.highlightedOperationsTitle}><BlockLoading /></Fold></div>;
+    else if (!fetched || fetching) return <div className='inner'><Fold title={strings.highlightedOperationsTitle}><BlockLoading/></Fold></div>;
     let operations = data.results;
     const listStyle = operations.length <= 4 ? (
       'key-emergencies-list key-emergencies-list-short row flex-sm'
@@ -167,8 +167,8 @@ class HighlightedOperations extends React.Component {
                 emergencyDeployments={this.calculateDeployedPersonnel(operation)}
                 appeals={get(operation, 'appeals', [])}
                 lastUpdate={operation.updated_at}
-                countryList = {operation.countries.length}
-                activeDeployment ={operation.active_deployments}
+                countryList={operation.countries.length}
+                activeDeployment={operation.active_deployments}
               />
             )}
           </div>
@@ -184,9 +184,9 @@ if (environment !== 'production') {
     _getFeaturedEmergencies: T.func,
     _getFeaturedEmergenciesForRegion: T.func,
     _getFeaturedEmergenciesDeployments: T.func,
-    _getAggrSurgeKeyFigures: T.func,
     _getDeploymentERU: T.func,
     featured: T.object,
+    deployments: T.object,
     eru: T.object,
     opsType: T.string,
     opsId: T.number,
@@ -199,7 +199,7 @@ const selector = (state) => ({
   eru: state.deployments.eru,
   isLogged: !!state.user.data.token,
   user: state.user,
-  profile: state.profile,
+  profile: state.profile
 });
 
 const dispatcher = (dispatch) => ({
@@ -209,7 +209,7 @@ const dispatcher = (dispatch) => ({
   _getDeploymentERU: (...args) => dispatch(getDeploymentERU(...args)),
   _getUserProfile: (...args) => dispatch(getUserProfile(...args)),
   _addSubscriptions: (...args) => dispatch(addSubscriptions(...args)),
-  _delSubscription: (...args) => dispatch(delSubscription(...args)),
+  _delSubscription: (...args) => dispatch(delSubscription(...args))
 });
 
 HighlightedOperations.contextType = LanguageContext;

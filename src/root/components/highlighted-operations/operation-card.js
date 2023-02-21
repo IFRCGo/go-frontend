@@ -26,7 +26,7 @@ const OperationCard = ({
   const requested = appeals.reduce((acc, curr) => acc + Number(curr.amount_requested), 0);
   const funded = appeals.reduce((acc, curr) => acc + Number(curr.amount_funded), 0);
 
-  function toggleFollow(event) {
+  function toggleFollow (event) {
     event.preventDefault();
     if (isFollowing) {
       unfollowOperation(operationId);
@@ -62,7 +62,7 @@ const OperationCard = ({
             }
           </div>
           <small className='last_updated'>
-            <Translate stringId='operationCardLastUpdated' />
+            <Translate stringId='operationCardLastUpdated'/>
             &nbsp;
             {formatDate(lastUpdate)}
           </small>
@@ -93,7 +93,7 @@ const OperationCard = ({
               />
             </div>
             <small className='heading-tiny'>
-              <Translate stringId='operationCardFunding' />
+              <Translate stringId='operationCardFunding'/>
             </small>
             <Progress value={requested ? percent(funded, requested) : percent(0.1, 10)} max={100} />
             <div className='card_box_full card_box_container card_box_container--op'>
@@ -130,7 +130,7 @@ const OperationCard = ({
               />
             </div>
             <small className='heading-tiny'>
-              <Translate stringId='operationCardNSReportingActivities' />
+              <Translate stringId='operationCardNSReportingActivities'/>
             </small>
           </div>
         </div>
