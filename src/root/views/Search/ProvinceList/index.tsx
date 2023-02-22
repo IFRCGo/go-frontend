@@ -1,5 +1,7 @@
 import React from 'react';
-
+import {
+  IoChevronForwardOutline,
+} from 'react-icons/io5';
 import Container from '#components/Container';
 import LanguageContext from '#root/languageContext';
 
@@ -42,6 +44,8 @@ function ProvinceList(props: Props) {
           key={district.id}
           className={styles.provinceName}
         >
+          {district.country}
+          <IoChevronForwardOutline />
           {district.name}
         </div>
       ))}
