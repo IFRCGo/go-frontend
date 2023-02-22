@@ -143,7 +143,7 @@ class HighlightedOperations extends React.Component {
       }, []);
       operations = operations.map(o => {
         const following = (followedOpIds.indexOf(o.id) !== -1 &&
-          !this.state.unfollowed.has(o.id)) || this.state.followed.has(o.id);
+                          !this.state.unfollowed.has(o.id)) || this.state.followed.has(o.id);
 
         return {
           ...o,
@@ -168,7 +168,10 @@ class HighlightedOperations extends React.Component {
                 appeals={get(operation, 'appeals', [])}
                 lastUpdate={operation.updated_at}
                 countryList={operation.countries.length}
+                countryName={operation.countries.map((i) => i.name)}
                 activeDeployment={operation.active_deployments}
+                severityLevelDisplay={operation.ifrc_severity_level_display}
+                severityLevel={operation.ifrc_severity_level}
               />
             )}
           </div>

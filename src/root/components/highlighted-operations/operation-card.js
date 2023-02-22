@@ -3,12 +3,12 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { environment } from '#config';
 import { PropTypes } from 'prop-types';
-
 import { formatDate, percent, round, commaSeparatedNumber as n } from '#utils/format';
 import FormattedNumber from '#components/formatted-number';
-import Tooltip from '#components/common/tooltip';
+import { Tooltip } from 'react-tooltip';
 import Progress from './../progress-labeled';
 import Translate from '#components/Translate';
+import { _cs } from '@togglecorp/fujs';
 
 const OperationCard = ({
   operationId,
@@ -21,12 +21,15 @@ const OperationCard = ({
   unfollowOperation,
   countryList,
   activeDeployment,
+  severityLevel,
+  severityLevelDisplay,
+  countryName,
 }) => {
   const beneficiaries = appeals.reduce((acc, curr) => acc + curr.num_beneficiaries, 0);
   const requested = appeals.reduce((acc, curr) => acc + Number(curr.amount_requested), 0);
   const funded = appeals.reduce((acc, curr) => acc + Number(curr.amount_funded), 0);
 
-  function toggleFollow (event) {
+  function toggleFollow(event) {
     event.preventDefault();
     if (isFollowing) {
       unfollowOperation(operationId);
@@ -35,6 +38,37 @@ const OperationCard = ({
     }
   }
 
+  const YELLOW_COLOR = severityLevel === 0;
+  const ORANGE_COLOR = severityLevel === 1;
+  const RED_COLOR = severityLevel === 2;
+
+  const dotWithColor = React.useMemo(
+    () => (
+      <span
+        className={_cs(
+          YELLOW_COLOR && 'yellow_dot',
+          RED_COLOR && 'red_dot',
+          ORANGE_COLOR && 'orange_dot',
+        )}
+      />
+    ), [
+    YELLOW_COLOR,
+    ORANGE_COLOR,
+    RED_COLOR,
+  ]);
+
+  const toggleToolTip = React.useMemo(
+    () => {
+      if (countryList > 1) {
+        return `${severityLevelDisplay} Emergency Involves multiple countries`;
+      }
+      else return `${severityLevelDisplay} Emergency ${countryName}`;
+    }, [
+    countryList,
+    countryName,
+    severityLevelDisplay,
+  ]);
+
   return (
     <div className='key-emergencies-item col col-6-sm col-4-mid' key={operationId}>
       <Link to={`/emergencies/${operationId}`}>
@@ -42,7 +76,12 @@ const OperationCard = ({
           <div className='row flex'>
             <div className='card__title__wrap col col-7 col-8-mid'>
               <h2 className='card__title'>
-                <Tooltip title={operationName} />
+                <a data-tooltip-id={operationId} data-tooltip-content={toggleToolTip}>
+                  {dotWithColor}
+                </a>
+                <Tooltip id={operationId}
+                  className="tooltip-content"
+                />
                 {operationName?.length > 60 ? operationName?.slice(0, 60) + '...' : operationName}
               </h2>
             </div>
@@ -62,7 +101,7 @@ const OperationCard = ({
             }
           </div>
           <small className='last_updated'>
-            <Translate stringId='operationCardLastUpdated'/>
+            <Translate stringId='operationCardLastUpdated' />
             &nbsp;
             {formatDate(lastUpdate)}
           </small>
@@ -93,7 +132,7 @@ const OperationCard = ({
               />
             </div>
             <small className='heading-tiny'>
-              <Translate stringId='operationCardFunding'/>
+              <Translate stringId='operationCardFunding' />
             </small>
             <Progress value={requested ? percent(funded, requested) : percent(0.1, 10)} max={100} />
             <div className='card_box_full card_box_container card_box_container--op'>
@@ -130,7 +169,7 @@ const OperationCard = ({
               />
             </div>
             <small className='heading-tiny'>
-              <Translate stringId='operationCardNSReportingActivities'/>
+              <Translate stringId='operationCardNSReportingActivities' />
             </small>
           </div>
         </div>

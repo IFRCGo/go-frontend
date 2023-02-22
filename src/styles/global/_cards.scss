@@ -125,6 +125,41 @@ a.card__contents {
   a.card__contents & {
     color: $link-color;
   }
+
+  .orange_dot {
+    height: 10px;
+    width: 10px;
+    background-color: $state-mid;
+    border-radius: 50%;
+    margin-right: ($global-spacing / 2);
+    display: inline-block;
+  }
+
+  .red_dot {
+    height: 10px;
+    width: 10px;
+    background-color: $primary-color;
+    border-radius: 50%;
+    margin-right: ($global-spacing / 2);
+    display: inline-block;
+  }
+  
+  .yellow_dot {
+    height: 10px;
+    width: 10px;
+    background-color: $warning-color;
+    border-radius: 50%;
+    margin-right: ($global-spacing / 2);
+    display: inline-block;
+  }
+
+  .tooltip-content {
+    background-color: $color-foreground;
+    color: $color-text;
+    box-shadow: 0 3px 5px -1px rgba(0, 0, 0, 0.2), 0 1px 18px 0 rgba(0, 0, 0, 0.02), 0 6px 10px 0 rgba(0, 0, 0, 0.10);
+    opacity: 1;
+    width: 10rem;
+  }
 }
 
 .card__subtitle {
