@@ -2,20 +2,25 @@
 
 .province-list {
   display: flex;
-  flex-grow: 1;
-  flex-wrap: wrap;
-  // justify-content: space-between;
-  gap: $spacing*2;
-  border: $base-border-width solid $grey-cloud;
-  padding: $spacing*2 $spacing*4  !important;
-  text-transform: uppercase;
-  font-weight: $base-font-medium;
+  flex-direction: column;
+  gap: $spacing;
+  padding: $spacing*2 $spacing !important;
 
   >* {
-    flex-basis: 18%;
+    border: $base-border-width solid $grey-cloud;
+    padding: $spacing*2 $spacing*3;
+    font-weight: $base-font-medium;
+    text-transform: uppercase;
   }
 
   .province-name {
+    display: flex;
+    flex-grow: 1;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: $spacing;
+    font-weight: $base-font-medium;
     color: $primary-color;
+    text-transform: uppercase;
   }
 }
