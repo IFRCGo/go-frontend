@@ -2,15 +2,15 @@ import React from 'react';
 import { environment } from '#config';
 import { PropTypes as T } from 'prop-types';
 import InfoIcon from '#components/common/info-icon';
-import ReactTooltip from 'react-tooltip';
+import {Tooltip} from 'react-tooltip';
 
-const Tooltip = ({title, description}) => {
+const TooltipComponent = ({title, description}) => {
   return (
     <React.Fragment>
       <a data-tip data-for={title ? title : description} data-event='click focus'>
         <InfoIcon className='tooltip' />
       </a>
-      <ReactTooltip
+      <Tooltip
         className='tooltip'
         globalEventOff='click'
         id={title ? title : description}
@@ -25,14 +25,14 @@ const Tooltip = ({title, description}) => {
         { description
           ? (<span className='tooltip__text' dangerouslySetInnerHTML={{ __html: description }} ></span>)
           : null }
-      </ReactTooltip>
+      </Tooltip>
     </React.Fragment>
   );
 };
 
 export const HoverTooltip = ({title, description, id}) => {
   return (
-    <ReactTooltip
+    <Tooltip
       className='tooltip'
       id={id}
     >
@@ -46,11 +46,11 @@ export const HoverTooltip = ({title, description, id}) => {
       { description
         ? (<span className='tooltip__text' dangerouslySetInnerHTML={{ __html: description }} ></span>)
         : null }
-    </ReactTooltip>
+    </Tooltip>
   );
 };
 
-export default Tooltip;
+export default TooltipComponent;
 
 if (environment !== 'production') {
   Tooltip.propTypes = {

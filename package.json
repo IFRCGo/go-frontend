@@ -178,7 +178,7 @@
     "react-tether": "^0.6.0",
     "react-through": "^1.1.4",
     "react-toggle-button": "^2.2.0",
-    "react-tooltip": "^3.11.1",
+    "react-tooltip": "^5.8.1",
     "react-transition-group": "^2.2.1",
     "recharts": "^2.1.6",
     "redux": "^3.7.2",
