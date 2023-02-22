@@ -24,6 +24,7 @@ export const riskApi = process.env.REACT_APP_RISK_API_ENDPOINT ?? window.appSett
 export const riskAdminUrl = process.env.REACT_APP_RISK_ADMIN_URL ?? window.appSettings.riskAdminUrl;
 export const tinyApiKey = process.env.REACT_APP_TINY_API_KEY ?? window.appSettings.tinyApiKey;
 export const commitHash = process.env.REACT_APP_COMMITHASH ?? window.appSettings.commitHash;
+export const commitVersion = process.env.REACT_APP_VERSION ?? window.appSettings.commitversion;
 
 const config = {
   api,

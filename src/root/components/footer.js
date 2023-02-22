@@ -1,5 +1,5 @@
 import React from 'react';
-import { adminUrl, commitHash } from '#config';
+import { adminUrl, commitHash, commitVersion } from '#config';
 
 import LanguageContext from '#root/languageContext';
 import Translate from '#components/Translate';
@@ -20,7 +20,7 @@ class Footer extends React.PureComponent {
                 <div className='base-font-medium'>
                   <Translate stringId='footerAboutGoDesc'/>
                 </div>
-                 <div className='footer-copyright footer-copyright--lg'><Translate stringId='footerIFRC'/> {year} | {commitHash}</div>
+                 <div className='footer-copyright footer-copyright--lg'><Translate stringId='footerIFRC'/> {year} | {commitHash} {commitVersion}</div>
               </div>
 
               <div className="col col-6-xs col-3-mid">
