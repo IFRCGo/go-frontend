@@ -19,6 +19,7 @@ import {
 import Choropleth from './Choropleth';
 
 import styles from './styles.module.scss';
+
 interface Props {
   className?: string;
   regionId?: number;
