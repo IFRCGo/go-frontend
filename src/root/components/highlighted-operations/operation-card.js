@@ -6,7 +6,7 @@ import { Tooltip } from 'react-tooltip';
 import { environment } from '#config';
 import { PropTypes } from 'prop-types';
 import { TiWorldOutline } from 'react-icons/ti';
-import { formatDate, percent, round, commaSeparatedNumber as n } from '#utils/format';
+import { formatDate, percent, round } from '#utils/format';
 import FormattedNumber from '#components/formatted-number';
 import Translate from '#components/Translate';
 import Progress from './../progress-labeled';
