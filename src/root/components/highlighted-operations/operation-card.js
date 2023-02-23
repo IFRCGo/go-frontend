@@ -68,6 +68,14 @@ const OperationCard = ({
           </div>
         );
       }
+      else if (countryList === 0) {
+        return (
+          <div className="tooltip-icon">
+          <TiWorldOutline size={13} />
+          <Translate stringId='operationCardNoCountryInvolved' />
+        </div>
+        );
+      }
       else return (
         <div className="tooltip-icon">
           <TiWorldOutline size={13} />
