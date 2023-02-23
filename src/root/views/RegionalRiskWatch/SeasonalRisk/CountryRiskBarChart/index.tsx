@@ -4,7 +4,7 @@ import { _cs } from '@togglecorp/fujs';
 import Heading from '#components/Heading';
 import { HazardType, hazardTypeColorMap } from '../common';
 // @ts-ignore
-import ReactTooltip from 'react-tooltip';
+import { Tooltip } from 'react-tooltip';
 
 import styles from './styles.module.scss';
 
@@ -80,16 +80,15 @@ function CountryRiskBarChart(props: Props) {
                             backgroundColor: hazardTypeColorMap[hrd.hazard_type],
                           }}
                         />
-                        <ReactTooltip
+                        <Tooltip
                           id={hrd.hazard_type}
                           className={styles.tooltip}
                           place="top"
                           aria-haspopup='true'
-                          border={false}
                         >
                           <div className={styles.tooltipHazardTitle}>{hrd.hazard_type_display}</div>
                           <div className={styles.subTitle}>Risk</div>
-                        </ReactTooltip>
+                        </Tooltip>
                       </React.Fragment>
                     );
                   }
