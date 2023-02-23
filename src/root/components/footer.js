@@ -1,5 +1,5 @@
 import React from 'react';
-import { adminUrl, commitHash } from '#config';
+import { adminUrl } from '#config';
 
 import LanguageContext from '#root/languageContext';
 import Translate from '#components/Translate';
@@ -8,6 +8,9 @@ import EnvironmentBanner from '#components/EnvironmentBanner';
 class Footer extends React.PureComponent {
   render () {
     const { strings } = this.context;
+    const gitData = process.env.REACT_APP_VERSION.split('-');
+    const version = gitData[0] ?? '-';
+    const gitHash = gitData[2].substring(1) ?? '-';
     const date = new Date();
     const year = date.getFullYear();
     return (
@@ -20,7 +23,7 @@ class Footer extends React.PureComponent {
                 <div className='base-font-medium'>
                   <Translate stringId='footerAboutGoDesc'/>
                 </div>
-                 <div className='footer-copyright footer-copyright--lg'><Translate stringId='footerIFRC'/> {year} | {commitHash}</div>
+                 <div className='footer-copyright footer-copyright--lg'><Translate stringId='footerIFRC'/> {year} <span title={gitHash}>{version}</span></div>
               </div>
 
               <div className="col col-6-xs col-3-mid">
@@ -58,7 +61,7 @@ class Footer extends React.PureComponent {
                     <span className='f-icon-youtube footer-social-icon'></span>
                   </a>
                 </div>
-                <div className='footer-copyright footer-copyright--sm'><Translate stringId='footerIFRC'/> {year} | {commitHash}</div>
+                <div className='footer-copyright footer-copyright--sm'><Translate stringId='footerIFRC'/> {year} <span title={gitHash}>{version}</span></div>
               </div>
             </div>
           </div>

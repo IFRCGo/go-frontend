@@ -7,7 +7,9 @@ services:
     tty: true
     env_file:
       - .env
-    command: bash -c 'yarn install --frozen-lockfile && yarn start'
+    command: bash -c 'git config --global --add safe.directory /code ; yarn install --frozen-lockfile && yarn start'
+# This git config command ^^^^^^ is required by git-revision-webpack-plugin – otherwise:
+# Command failed: git rev-parse HEAD, detected dubious ownership in repository
     volumes:
       - ./:/code
     ports:
