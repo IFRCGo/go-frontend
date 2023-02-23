@@ -1,0 +1,25 @@
+@import '~styles/settings/variables';
+
+.field-report-table {
+  .content {
+    table {
+      width: 100%;
+
+      th {
+        text-align: left;
+        padding: 0;
+        border-bottom: $base-border-width solid $base-border-color;
+        background-color: $color-background;
+      }
+
+      td {
+        padding: $spacing;
+        border-bottom: $base-border-width solid $base-border-color;
+
+        >* {
+          padding: 0!important;
+        }
+      }
+    }
+  }
+}

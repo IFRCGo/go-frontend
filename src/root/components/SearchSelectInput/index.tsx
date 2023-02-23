@@ -5,10 +5,10 @@ import {
 } from '@togglecorp/fujs';
 import AsyncSelect, { Props as SelectProps } from 'react-select/async';
 
-import styles from './styles.module.scss';
-
-import InputContainer from '#components/InputContainer';
 import { getSelectInputNoOptionsMessage } from '#utils/utils';
+import InputContainer from '#components/InputContainer';
+
+import styles from './styles.module.scss';
 
 export interface Option {
   value: string | number;

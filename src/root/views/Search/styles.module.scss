@@ -1,0 +1,27 @@
+@import '~styles/settings/variables';
+
+.search {
+  .content {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing * 5;
+    padding: $spacing * 4;
+  }
+
+  .empty-search-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: $spacing*3;
+    color: $color-text-disabled;
+    font-size: $font-size-lg;
+    font-weight: $base-font-medium;
+    gap: $spacing*2;
+
+    .icon {
+      font-size: 10rem;
+    }
+  }
+}

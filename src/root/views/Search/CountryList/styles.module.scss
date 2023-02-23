@@ -1,0 +1,23 @@
+@import '~styles/settings/variables';
+
+.country-list {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing;
+  padding: $spacing*2 $spacing !important;
+
+  >* {
+    border: $base-border-width solid $grey-cloud;
+    padding: $spacing*2 $spacing*3;
+    font-weight: $base-font-medium;
+    text-transform: uppercase;
+  }
+
+  .country-name {
+    display: flex;
+    color: $primary-color;
+    text-decoration: none;
+    align-items: center;
+    gap: $global-spacing*0.5;
+  }
+}

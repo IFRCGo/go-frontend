@@ -7,6 +7,7 @@ import {
   compareStringSearch,
   addSeparator,
   listToMap,
+  isNotDefined,
 } from '@togglecorp/fujs';
 
 import { Strings } from '#types';
@@ -461,4 +462,25 @@ export function isSimilarArray<T extends string | number>(
 
   const aMap = listToMap(aList, a => a, a => true);
   return bList.every((b) => aMap[b]);
+}
+
+export function getSearchValue(key: string): string | undefined {
+  const { search } = window.location;
+
+  if (isNotDefined(search)) {
+    return undefined;
+  }
+
+  if (search === '') {
+    return undefined;
+  }
+
+  const searchElements = search.substring(1, search.length).split('&');
+  const searchElementMap = listToMap(
+    searchElements,
+    (e) => e.split('=')[0],
+    (e) => window.decodeURI(e.split('=')[1]),
+  );
+
+  return searchElementMap[key];
 }
