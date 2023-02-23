@@ -127,28 +127,28 @@ a.card__contents {
   }
 
   .orange_dot {
-    height: 10px;
-    width: 10px;
+    height: $font-size-xxs;
+    width: $font-size-xxs;
     background-color: $state-mid;
-    border-radius: 50%;
+    border-radius: $full-border-radius;
     margin-right: ($global-spacing / 2);
     display: inline-block;
   }
 
   .red_dot {
-    height: 10px;
-    width: 10px;
+    height: $font-size-xxs;
+    width: $font-size-xxs;
     background-color: $primary-color;
-    border-radius: 50%;
+    border-radius: $full-border-radius;
     margin-right: ($global-spacing / 2);
     display: inline-block;
   }
-  
+
   .yellow_dot {
-    height: 10px;
-    width: 10px;
+    height: $font-size-xxs;
+    width: $font-size-xxs;
     background-color: $warning-color;
-    border-radius: 50%;
+    border-radius: $full-border-radius;
     margin-right: ($global-spacing / 2);
     display: inline-block;
   }
@@ -156,9 +156,13 @@ a.card__contents {
   .tooltip-content {
     background-color: $color-foreground;
     color: $color-text;
-    box-shadow: 0 3px 5px -1px rgba(0, 0, 0, 0.2), 0 1px 18px 0 rgba(0, 0, 0, 0.02), 0 6px 10px 0 rgba(0, 0, 0, 0.10);
+    box-shadow: 0 3px 5px -1px rgba(0, 0, 0, 0.2), 0 1px 18px 0 rgba(0, 0, 0, 0.02), 0 6px $font-size-xxs 0 rgba(0, 0, 0, 0.10);
     opacity: 1;
-    width: 10rem;
+
+  .tooltip-list {
+    display: flex;
+    flex-direction: column;
+  }
   }
 }
 
@@ -182,6 +186,12 @@ a.card__contents {
 
 /* Card body
    ========================================================================== */
+
+.tooltip-icon {
+  display: flex;
+  align-items: center;
+  gap: ($global-spacing / 2);
+}
 
 .card__body {
   flex: 1;

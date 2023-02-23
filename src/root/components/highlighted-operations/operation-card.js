@@ -1,14 +1,15 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { _cs } from '@togglecorp/fujs';
+import { Tooltip } from 'react-tooltip';
 import { environment } from '#config';
 import { PropTypes } from 'prop-types';
+import { TiWorldOutline } from 'react-icons/ti';
 import { formatDate, percent, round, commaSeparatedNumber as n } from '#utils/format';
 import FormattedNumber from '#components/formatted-number';
-import { Tooltip } from 'react-tooltip';
-import Progress from './../progress-labeled';
 import Translate from '#components/Translate';
-import { _cs } from '@togglecorp/fujs';
+import Progress from './../progress-labeled';
 
 const OperationCard = ({
   operationId,
@@ -29,7 +30,7 @@ const OperationCard = ({
   const requested = appeals.reduce((acc, curr) => acc + Number(curr.amount_requested), 0);
   const funded = appeals.reduce((acc, curr) => acc + Number(curr.amount_funded), 0);
 
-  function toggleFollow(event) {
+  function toggleFollow (event) {
     event.preventDefault();
     if (isFollowing) {
       unfollowOperation(operationId);
@@ -60,14 +61,20 @@ const OperationCard = ({
   const toggleToolTip = React.useMemo(
     () => {
       if (countryList > 1) {
-        return `${severityLevelDisplay} Emergency Involves multiple countries`;
+        return (
+          <div className="tooltip-icon">
+            <TiWorldOutline size={13} />
+            <Translate stringId='operationCardInvolvesMultipleCountries' />
+          </div>
+        );
       }
-      else return `${severityLevelDisplay} Emergency ${countryName}`;
-    }, [
-    countryList,
-    countryName,
-    severityLevelDisplay,
-  ]);
+      else return (
+        <div className="tooltip-icon">
+          <TiWorldOutline size={13} />
+          {countryName}
+        </div>
+      );
+    }, [countryList, countryName]);
 
   return (
     <div className='key-emergencies-item col col-6-sm col-4-mid' key={operationId}>
@@ -76,12 +83,18 @@ const OperationCard = ({
           <div className='row flex'>
             <div className='card__title__wrap col col-7 col-8-mid'>
               <h2 className='card__title'>
-                <a data-tooltip-id={operationId} data-tooltip-content={toggleToolTip}>
+                <a data-tooltip-id={operationId}>
                   {dotWithColor}
                 </a>
-                <Tooltip id={operationId}
-                  className="tooltip-content"
-                />
+                <Tooltip id={operationId} className="tooltip-content">
+                  <div className="tooltip-list">
+                    <span>
+                      {dotWithColor}
+                      {severityLevelDisplay} Emergency
+                    </span>
+                    <span>{toggleToolTip}</span>
+                  </div>
+                </Tooltip>
                 {operationName?.length > 60 ? operationName?.slice(0, 60) + '...' : operationName}
               </h2>
             </div>
