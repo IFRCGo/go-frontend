@@ -84,7 +84,7 @@ const OperationCard = ({
             <div className='card__title__wrap col col-7 col-8-mid'>
               <h2 className='card__title'>
                 <a data-tooltip-id={operationId}>
-                  {dotWithColor}
+                  {dotWithColor} {operationName?.length > 60 ? operationName?.slice(0, 60) + '...' : operationName}
                 </a>
                 <Tooltip id={operationId} className="tooltip-content">
                   <div className="tooltip-list">
@@ -95,7 +95,6 @@ const OperationCard = ({
                     <span>{toggleToolTip}</span>
                   </div>
                 </Tooltip>
-                {operationName?.length > 60 ? operationName?.slice(0, 60) + '...' : operationName}
               </h2>
             </div>
             {showFollow ? (
