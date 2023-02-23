@@ -57,6 +57,7 @@ class HighlightedOperations extends React.Component {
       });
       emergencyIds = emergencyIds.slice(0, -1);
       if (!this.props.eru.fetching && !this.props.eru.fetched) {
+        this.props._getDeploymentERU(1, {event__in: emergencyIds});
       }
     }
   }
