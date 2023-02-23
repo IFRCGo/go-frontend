@@ -131,7 +131,7 @@ a.card__contents {
     width: $font-size-xxs;
     background-color: $state-mid;
     border-radius: $full-border-radius;
-    margin-right: ($global-spacing / 2);
+    margin-inline-end: $global-spacing * 0.5;
     display: inline-block;
   }
 
@@ -140,7 +140,7 @@ a.card__contents {
     width: $font-size-xxs;
     background-color: $primary-color;
     border-radius: $full-border-radius;
-    margin-right: ($global-spacing / 2);
+    margin-inline-end: $global-spacing * 0.5;
     display: inline-block;
   }
 
@@ -149,7 +149,7 @@ a.card__contents {
     width: $font-size-xxs;
     background-color: $warning-color;
     border-radius: $full-border-radius;
-    margin-right: ($global-spacing / 2);
+    margin-inline-end: $global-spacing * 0.5;
     display: inline-block;
   }
 
@@ -190,7 +190,7 @@ a.card__contents {
 .tooltip-icon {
   display: flex;
   align-items: center;
-  gap: ($global-spacing / 2);
+  gap: $global-spacing * 0.5;
 }
 
 .card__body {
