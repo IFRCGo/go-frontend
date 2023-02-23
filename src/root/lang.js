@@ -200,7 +200,7 @@ export default {
   operationCardFundingCoverage: 'received',
   operationCardFollow: 'Follow',
   operationCardFollowing: 'Following',
-
+  operationCardInvolvesMultipleCountries: 'Involves multiple countries',
   countryPageTitle: 'IFRC GO - {countryName}',
   countryTitle: 'IFRC GO - Country',
   // not used -   countryListInRegion: ' Countries in this Region',

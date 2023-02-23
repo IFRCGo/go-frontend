@@ -192,7 +192,7 @@ if (environment !== 'production') {
     deployments: T.object,
     eru: T.object,
     opsType: T.string,
-    opsId: T.number,
+    opsId: T.number
   };
 }
 
