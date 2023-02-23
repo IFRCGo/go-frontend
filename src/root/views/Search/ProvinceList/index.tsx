@@ -3,6 +3,7 @@ import {
   IoChevronForwardOutline,
 } from 'react-icons/io5';
 import Container from '#components/Container';
+import Link from '#components/Link';
 import LanguageContext from '#root/languageContext';
 
 import styles from './styles.module.scss';
@@ -44,8 +45,17 @@ function ProvinceList(props: Props) {
           key={district.id}
           className={styles.provinceName}
         >
+          <Link
+            href={`/countries/${district.country_id}`}
+            className={styles.countryName}
+            key={district.id}
+          >
+            {district.country}
+            {district.country && (
+              <IoChevronForwardOutline />
+            )}
+          </Link>
           {district.country}
-          <IoChevronForwardOutline />
           {district.name}
         </div>
       ))}

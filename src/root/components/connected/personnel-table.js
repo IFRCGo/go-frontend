@@ -247,14 +247,15 @@ class PersonnelTable extends SFPComponent {
                           <div class="col-sm base-font-semi-bold">${o.country_to ? o.country_to.name : o.deployment.country_deployed_to.name}</div>
                         </div>
                       `}
-                      //data-for='{`${o.id}`}'         
+                      //data-for='{`${o.id}`}'
                     >
                       <Tooltip
                         className='tooltip'
                         html={true}
                         //data-id={`${o.id}`},
                         globalEventOff='click'
-                        aria-haspopup='true' />
+                        aria-haspopup='true'
+                      />
                       <Progress start={progressValues.start} value={progressValues.value} max='100'></Progress>
                     </div>
           /*deployed: o.deployment && o.deployment.country_deployed_to ? <Link to={`/countries/${o.deployment.country_deployed_to.id}`} className='link--table' title={strings.personnelTableViewCountry}>{o.deployment.country_deployed_to.name}</Link> : nope,
