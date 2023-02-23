@@ -22,7 +22,7 @@ import DisplayTable, { SortHeader } from '#components/display-table';
 import { SFPComponent } from '#utils/extendables';
 import LanguageContext from '#root/languageContext';
 import Progress from '#components/progress';
-import ReactTooltip from 'react-tooltip';
+import { Tooltip } from 'react-tooltip';
 
 // The Personnel types defined in the backend models here: https://github.com/IFRCGo/go-api/blob/e92b0ceadd70297a574fe4410d76eb7bf8614411/deployments/models.py#L98-L106
 const typeLongNames = {
@@ -247,12 +247,10 @@ class PersonnelTable extends SFPComponent {
                           <div class="col-sm base-font-semi-bold">${o.country_to ? o.country_to.name : o.deployment.country_deployed_to.name}</div>
                         </div>
                       `}
-                      //data-for='{`${o.id}`}'
                     >
-                      <ReactTooltip
+                      <Tooltip
                         className='tooltip'
                         html={true}
-                        //data-id={`${o.id}`},
                         globalEventOff='click'
                         aria-haspopup='true'
                       />
