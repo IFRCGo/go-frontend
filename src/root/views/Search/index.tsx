@@ -119,6 +119,7 @@ function Search(props: Props) {
     );
 
     const keysOrdering: {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       [key in ResultKeys]: number
     } = {
       regions: 0,
