@@ -14029,7 +14029,7 @@ react-toggle-button@^2.2.0:
     prop-types "^15.6.0"
     react-motion "^0.5.2"
 
-react-tooltip@^5.8.1:
+react-tooltip@^5.8.2:
   version "5.8.2"
   resolved "https://registry.yarnpkg.com/react-tooltip/-/react-tooltip-5.8.2.tgz#4e4ecf3c5720e71ae0d5e01d0b7536db038ef6d3"
   integrity sha512-aeFLkdm2jxOmewJHnMWu6VxBFac+wbqBIQW6iEu1wMZiCv7SXnY/0vs3gnG09+XrxTnEg5b6pBMjRjlbWWevoQ==

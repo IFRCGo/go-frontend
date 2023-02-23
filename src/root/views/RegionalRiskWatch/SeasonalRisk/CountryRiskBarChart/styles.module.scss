@@ -61,24 +61,25 @@
 }
 
 .tooltip {
-  display: flex;
-  gap: 6px !important;
-  border-radius: 4px;
-  background-color: $white !important;
-  color: $color-text !important;
-  padding: $spacing $spacing-2 !important;
-  font-size: 12px !important;
-  box-shadow: 0px 0px 3px 1px rgba(0, 0, 0, 0.007);
+  border: $base-border-width * 0.5 solid $base-border-color--light;
+  box-shadow: $box-shadow-component;
 
-  &:after {
-    border-top-color: rgba(0, 0, 0, 0.007) !important;
+  .arrow {
+    border-bottom: $base-border-width * 0.5 solid $base-border-color--light;
+    border-right: $base-border-width * 0.5 solid $base-border-color--light;
   }
 
-  .tooltip-hazard-title {
-    font-weight: $base-font-bold;
-  }
+  .tooltip-content {
+    display: flex;
+    gap: $spacing * 0.75;
+    font-size: 12px;
 
-  .sub-title {
-    font-weight: $base-font-semi-bold;
+    .tooltip-hazard-title {
+      font-weight: $base-font-bold;
+    }
+
+    .sub-title {
+      font-weight: $base-font-medium;
+    }
   }
 }
