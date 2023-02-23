@@ -18,7 +18,7 @@
     color: $primary-color;
     text-decoration: none;
     align-items: center;
-    gap: $global-spacing/2;
+    gap: $global-spacing*0.5;
   }
 
   .province-name {
@@ -28,7 +28,7 @@
     align-items: center;
     font-weight: $base-font-medium;
     color: $primary-color;
-    gap: $global-spacing/2;
+    gap: $global-spacing*0.5;
     text-transform: uppercase;
   }
 }
