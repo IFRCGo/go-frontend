@@ -23,7 +23,6 @@ interface Props {
 function ImminentEvents(props: Props) {
   const { regionId } = props;
 
-  /* @TEMP
   const [sourceType, setSourceType] = React.useState<string | undefined>("PDC");
 
   const sourceOptions = React.useMemo(() => {
@@ -37,7 +36,6 @@ function ImminentEvents(props: Props) {
     (value: string | undefined) => setSourceType(value),
     [],
   );
-  */
 
   return (
     <Container
@@ -45,7 +43,6 @@ function ImminentEvents(props: Props) {
       className={styles.imminentEvents}
       description={
         <>
-          {/* @TEMP
           <RadioInput
             name={"sourceType"}
             options={sourceOptions}
@@ -54,7 +51,6 @@ function ImminentEvents(props: Props) {
             value={sourceType}
             onChange={handleChangeSourceType}
           />
-          */}
           <div>
             This map displays information about the modeled impact of specific forecasted or detected natural hazards. By hovering over the icons, if available, you can see the forecasted/observed footprint of the hazard; when you click on it, the table of modeled impact estimates will appear, as well as an information about who produced the impact estimate.
           </div>
@@ -65,7 +61,7 @@ function ImminentEvents(props: Props) {
       actions={<WikiLink pathName='user_guide/risk_module#imminent-events' />}
       sub
     >
-      {/* @TEMP (sourceType === "PDC") && (
+      {(sourceType === "PDC") && (
         <ImminentEventsPDC
           className={styles.map}
           regionId={regionId}
@@ -76,11 +72,7 @@ function ImminentEvents(props: Props) {
           className={styles.map}
           regionId={regionId}
         />
-      ) */}
-      <ImminentEventsPDC
-        className={styles.map}
-        regionId={regionId}
-      />
+      )}
     </Container>
   );
 }
