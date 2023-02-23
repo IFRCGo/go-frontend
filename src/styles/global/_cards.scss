@@ -119,11 +119,50 @@ a.card__contents {
 }
 
 .card__title {
-  margin-bottom: ($global-spacing * 0.5);
+  display: -webkit-box;
+  margin-bottom: $global-spacing * 0.5;
   line-height: 1.3rem;
+  overflow: hidden;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
 
-  a.card__contents & {
-    color: $link-color;
+  .orange_dot {
+    height: $font-size-xxs;
+    width: $font-size-xxs;
+    background-color: $state-mid;
+    border-radius: $full-border-radius;
+    margin-inline-end: $global-spacing * 0.5;
+    display: inline-block;
+  }
+
+  .red_dot {
+    height: $font-size-xxs;
+    width: $font-size-xxs;
+    background-color: $primary-color;
+    border-radius: $full-border-radius;
+    margin-inline-end: $global-spacing * 0.5;
+    display: inline-block;
+  }
+
+  .yellow_dot {
+    height: $font-size-xxs;
+    width: $font-size-xxs;
+    background-color: $warning-color;
+    border-radius: $full-border-radius;
+    margin-inline-end: $global-spacing * 0.5;
+    display: inline-block;
+  }
+
+  .tooltip-content {
+    background-color: $color-foreground;
+    color: $color-text;
+    box-shadow: 0 3px 5px -1px rgba(0, 0, 0, 0.2), 0 1px 18px 0 rgba(0, 0, 0, 0.02), 0 6px $font-size-xxs 0 rgba(0, 0, 0, 0.10);
+    opacity: 1;
+
+  .tooltip-list {
+    display: flex;
+    flex-direction: column;
+  }
   }
 }
 
@@ -147,6 +186,12 @@ a.card__contents {
 
 /* Card body
    ========================================================================== */
+
+.tooltip-icon {
+  display: flex;
+  align-items: center;
+  gap: $global-spacing * 0.5;
+}
 
 .card__body {
   flex: 1;

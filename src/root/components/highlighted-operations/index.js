@@ -4,7 +4,12 @@ import { PropTypes as T } from 'prop-types';
 import { Link } from 'react-router-dom';
 import { environment } from '#config';
 import { get } from '#utils/utils';
-import { getFeaturedEmergencies, getFeaturedEmergenciesForRegion, getFeaturedEmergenciesDeployments, getDeploymentERU } from '#actions';
+import {
+  getFeaturedEmergencies,
+  getFeaturedEmergenciesForRegion,
+  getFeaturedEmergenciesDeployments,
+  getDeploymentERU,
+} from '#actions';
 import BlockLoading from '../block-loading';
 import Fold from '../fold';
 import OperationCard from './operation-card';
@@ -111,10 +116,9 @@ class HighlightedOperations extends React.Component {
     this.setState({
       followed,
       unfollowed
-    });  
+    });
   }
-
-  render () {
+  render() {
     const { error, fetching, fetched, data } = this.props.featured;
     const { strings } = this.context;
     const foldLink = (
@@ -140,7 +144,7 @@ class HighlightedOperations extends React.Component {
       }, []);
       operations = operations.map(o => {
         const following = (followedOpIds.indexOf(o.id) !== -1 &&
-                           !this.state.unfollowed.has(o.id)) || this.state.followed.has(o.id);
+                          !this.state.unfollowed.has(o.id)) || this.state.followed.has(o.id);
 
         return {
           ...o,
@@ -152,18 +156,23 @@ class HighlightedOperations extends React.Component {
       <div className='inner inner--emergencies'>
         <Fold title={strings.highlightedOperationsTitle} navLink={foldLink} foldWrapperClass='fold--main' foldTitleClass='fold__title--inline'>
           <div className={listStyle}>
-            {operations.slice(0, 6).map(operation =>
+            {operations.map(operation =>
               <OperationCard
                 key={operation.id}
                 showFollow={showFollow}
-                isFollowing = {operation.following ? true : false}
-                followOperation = {this.followOperation.bind(this)}
-                unfollowOperation = {this.unfollowOperation.bind(this)}
+                isFollowing={operation.following ? true : false}
+                followOperation={this.followOperation.bind(this)}
+                unfollowOperation={this.unfollowOperation.bind(this)}
                 operationId={operation.id}
                 operationName={operation.name}
                 emergencyDeployments={this.calculateDeployedPersonnel(operation)}
                 appeals={get(operation, 'appeals', [])}
                 lastUpdate={operation.updated_at}
+                countryList={operation.countries.length}
+                countryName={operation.countries.map((i) => i.name)}
+                activeDeployment={operation.active_deployments}
+                severityLevelDisplay={operation.ifrc_severity_level_display}
+                severityLevel={operation.ifrc_severity_level}
               />
             )}
           </div>
@@ -194,7 +203,7 @@ const selector = (state) => ({
   eru: state.deployments.eru,
   isLogged: !!state.user.data.token,
   user: state.user,
-  profile: state.profile  
+  profile: state.profile
 });
 
 const dispatcher = (dispatch) => ({
