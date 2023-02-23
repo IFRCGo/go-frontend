@@ -13,14 +13,22 @@
     text-transform: uppercase;
   }
 
+  .country-name {
+    display: flex;
+    color: $primary-color;
+    text-decoration: none;
+    align-items: center;
+    gap: $global-spacing/2;
+  }
+
   .province-name {
     display: flex;
     flex-grow: 1;
     flex-wrap: wrap;
     align-items: center;
-    gap: $spacing;
     font-weight: $base-font-medium;
     color: $primary-color;
+    gap: $global-spacing/2;
     text-transform: uppercase;
   }
 }

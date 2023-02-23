@@ -2,7 +2,7 @@ import React from 'react';
 import { environment } from '#config';
 import { PropTypes as T } from 'prop-types';
 import InfoIcon from '#components/common/info-icon';
-import {Tooltip} from 'react-tooltip';
+import { Tooltip } from 'react-tooltip';
 
 const TooltipComponent = ({title, description}) => {
   return (
@@ -36,16 +36,18 @@ export const HoverTooltip = ({title, description, id}) => {
       className='tooltip'
       id={id}
     >
-      { title
-        ? (
-          <header className='tooltip__header' >
-            {title}
-          </header>
-        )
-        : null }
-      { description
-        ? (<span className='tooltip__text' dangerouslySetInnerHTML={{ __html: description }} ></span>)
-        : null }
+      {title && (
+        <header className='tooltip__header' >
+          {title}
+        </header>
+      )}
+      {description && (
+        <span
+          className='tooltip__text'
+          dangerouslySetInnerHTML={{ __html: description }}
+        >
+        </span>
+      )}
     </Tooltip>
   );
 };
