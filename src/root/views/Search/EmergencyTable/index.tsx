@@ -5,7 +5,6 @@ import LanguageContext from '#root/languageContext';
 import Container from '#components/Container';
 import {
   createLinkColumn,
-  createNumberColumn,
   createStringColumn,
 } from '#components/Table/predefinedColumns';
 import Table from '#components/Table';

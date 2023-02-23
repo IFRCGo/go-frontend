@@ -49,13 +49,11 @@ function ProvinceList(props: Props) {
             href={`/countries/${district.country_id}`}
             className={styles.countryName}
             key={district.id}
+
           >
             {district.country}
-            {district.country && (
-              <IoChevronForwardOutline />
-            )}
+            <IoChevronForwardOutline />
           </Link>
-          {district.country}
           {district.name}
         </div>
       ))}
