@@ -30,7 +30,7 @@ const OperationCard = ({
   const requested = appeals.reduce((acc, curr) => acc + Number(curr.amount_requested), 0);
   const funded = appeals.reduce((acc, curr) => acc + Number(curr.amount_funded), 0);
 
-  function toggleFollow (event) {
+  function toggleFollow(event) {
     event.preventDefault();
     if (isFollowing) {
       unfollowOperation(operationId);
@@ -83,9 +83,10 @@ const OperationCard = ({
           <div className='row flex'>
             <div className='card__title__wrap col col-7 col-8-mid'>
               <h2 className='card__title'>
-                <a data-tooltip-id={operationId}>
-                  {dotWithColor} {operationName?.length > 60 ? operationName?.slice(0, 60) + '...' : operationName}
-                </a>
+                <span data-tooltip-id={operationId}>
+                  {dotWithColor}
+                  {operationName}
+                </span>
                 <Tooltip id={operationId} className="tooltip-content">
                   <div className="tooltip-list">
                     <span>
