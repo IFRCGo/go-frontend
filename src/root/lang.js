@@ -201,6 +201,7 @@ export default {
   operationCardFollow: 'Follow',
   operationCardFollowing: 'Following',
   operationCardInvolvesMultipleCountries: 'Involves multiple countries',
+  operationCardNoCountryInvolved: 'No Country Involved',
   countryPageTitle: 'IFRC GO - {countryName}',
   countryTitle: 'IFRC GO - Country',
   // not used -   countryListInRegion: ' Countries in this Region',
