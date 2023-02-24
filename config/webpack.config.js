@@ -35,7 +35,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const { GitRevisionPlugin } = require('git-revision-webpack-plugin');
 
 
-const gitRevisionPlugin = new GitRevisionPlugin();
+const gitRevisionPlugin = new GitRevisionPlugin({ lightweightTags: true });
 
 const postcssNormalize = require('postcss-normalize');
 
@@ -510,9 +510,7 @@ module.exports = function(webpackEnv) {
     },
     plugins: [
       new webpack.EnvironmentPlugin({
-          REACT_APP_COMMITHASH: gitRevisionPlugin.commithash().substring(0, 8),
-          //REACT_APP_VERSION: gitRevisionPlugin.version(),
-          //REACT_APP_BRANCH: gitRevisionPlugin.branch(),
+          REACT_APP_VERSION: gitRevisionPlugin.version(),
       }),
       // Generates an `index.html` file with the <script> injected.
       new HtmlWebpackPlugin(
