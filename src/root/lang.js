@@ -3830,7 +3830,7 @@ export default {
   searchIfrcEmergencies: 'Emergencies',
   searchIfrcEmergencyPlanningAndReportingDocuments: 'Emergency Planning And Reporting Documents',
   searchIfrcSurgeDeployments: 'Surge deployments',
-  searchIfrcReport: 'Report',
+  searchIfrcReport: 'Reports',
   searchIfrcProjects: 'Projects',
   searchIfrcOpenSurgeAlerts: 'Open Surge Alerts',
   searchIfrcCountry: 'Country',
