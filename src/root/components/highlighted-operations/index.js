@@ -57,7 +57,7 @@ class HighlightedOperations extends React.Component {
       });
       emergencyIds = emergencyIds.slice(0, -1);
       if (!this.props.eru.fetching && !this.props.eru.fetched) {
-        this.props._getDeploymentERU(1, {event__in: emergencyIds});
+         this.props._getDeploymentERU(1, { event__in: emergencyIds });
       }
     }
   }
@@ -123,7 +123,7 @@ class HighlightedOperations extends React.Component {
     const { strings } = this.context;
     const foldLink = (
       <Link to='/appeals/all' className='fold__title__link'>
-        <Translate stringId='highlightedOperationsViewAll'/>
+      <Translate stringId='highlightedOperationsViewAll'/>
       </Link>);
     if (fetched && (error || !Array.isArray(data.results) || !data.results.length)) return null;
     else if (!fetched || fetching) return <div className='inner'><Fold title={strings.highlightedOperationsTitle}><BlockLoading/></Fold></div>;
@@ -144,7 +144,7 @@ class HighlightedOperations extends React.Component {
       }, []);
       operations = operations.map(o => {
         const following = (followedOpIds.indexOf(o.id) !== -1 &&
-                          !this.state.unfollowed.has(o.id)) || this.state.followed.has(o.id);
+          !this.state.unfollowed.has(o.id)) || this.state.followed.has(o.id);
 
         return {
           ...o,
@@ -156,7 +156,28 @@ class HighlightedOperations extends React.Component {
       <div className='inner inner--emergencies'>
         <Fold title={strings.highlightedOperationsTitle} navLink={foldLink} foldWrapperClass='fold--main' foldTitleClass='fold__title--inline'>
           <div className={listStyle}>
-            {operations.map(operation =>
+            {this.props.isLogged && (
+                operations.map(operation =>
+                  <OperationCard
+                    key={operation.id}
+                    showFollow={showFollow}
+                    isFollowing={operation.following ? true : false}
+                    followOperation={this.followOperation.bind(this)}
+                    unfollowOperation={this.unfollowOperation.bind(this)}
+                    operationId={operation.id}
+                    operationName={operation.name}
+                    emergencyDeployments={this.calculateDeployedPersonnel(operation)}
+                    appeals={get(operation, 'appeals', [])}
+                    lastUpdate={operation.updated_at}
+                    countryList={operation.countries.length}
+                    countryName={operation.countries.map((i) => i.name)}
+                    activeDeployment={operation.active_deployments}
+                    severityLevelDisplay={operation.ifrc_severity_level_display}
+                    severityLevel={operation.ifrc_severity_level}
+                  />
+                )
+            )}
+            {operations.slice(0, 3).map(operation =>
               <OperationCard
                 key={operation.id}
                 showFollow={showFollow}
