@@ -61,6 +61,8 @@ function PopUp (props: RegionsProps) {
     countryName,
   } = props;
 
+  const filterHazardData = byHazard?.filter((hd) => hd.value !==0);
+
   const getHazardStatus =(hazardValue: number)=>{
     if(hazardValue > 0 && hazardValue < 25) {
       return 'very low';
@@ -74,10 +76,8 @@ function PopUp (props: RegionsProps) {
       return 'high';
     }
 
-    if(hazardValue >= 75 && hazardValue <= 100) {
+    if(hazardValue >= 75) {
       return 'very high';
-    }else {
-      return 'low';
     }
   };
 
@@ -88,7 +88,7 @@ function PopUp (props: RegionsProps) {
         <span><IoChevronForward className={styles.icon} /></span>
       </div>
       <div className={styles.subContent}>
-        {byHazard?.map(( hd) => (
+        {filterHazardData?.map(( hd) => (
           <React.Fragment key={hd.hazard_type_display}>
             <div
               key={hd.hazard_type}
