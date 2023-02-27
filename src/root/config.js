@@ -24,7 +24,7 @@ export const riskApi = process.env.REACT_APP_RISK_API_ENDPOINT ?? window.appSett
 export const riskAdminUrl = process.env.REACT_APP_RISK_ADMIN_URL ?? window.appSettings.riskAdminUrl;
 export const tinyApiKey = process.env.REACT_APP_TINY_API_KEY ?? window.appSettings.tinyApiKey;
 
-// Sentry
+// NOTE: New variables required by Sentry
 export const sentryAppDsn = process.env.REACT_APP_SENTRY_DSN;
 export const sentryTraceSampleRate = Number(process.env.REACT_APP_SENTRY_TRACES_SAMPLE_RATE) || 0.2;
 export const sentryNormalizeDepth = Number(process.env.REACT_APP_SENTRY_NORMALIZE_DEPTH) || 5;
