@@ -63,7 +63,7 @@ function PopUp (props: RegionsProps) {
 
   const filterHazardData = byHazard?.filter((hd) => hd.value !==0);
 
-  const getHazardStatus =(hazardValue: number)=>{
+  const getHazardStatus = (hazardValue: number)=>{
     if(hazardValue > 0 && hazardValue < 25) {
       return 'very low';
     }
@@ -155,6 +155,7 @@ function Choropleth(props: Props) {
     );
 
     map.on('click','admin-0', (e)=>{
+      e.preventDefault();
       map.getCanvas().style.cursor = 'pointer';
 
       const activeCountryIso3 = isDefined(e.features) && e?.features[0]?.properties?.iso3;
@@ -162,9 +163,9 @@ function Choropleth(props: Props) {
         (risk)=> risk.iso3 === activeCountryIso3
       );
 
-      if(e && isDefined(activeCountryDetails)){
-        const popupRender = ReactDOMServer.renderToString(PopUp(activeCountryDetails));
-        popup.setLngLat(e.lngLat).setHTML(popupRender).addTo(map);
+      const popupRender = activeCountryDetails && ReactDOMServer.renderToString(PopUp(activeCountryDetails));
+      if(popupRender) {
+        return popup.setLngLat(e.lngLat).setHTML(popupRender).addTo(map);
       }
     });
   }
