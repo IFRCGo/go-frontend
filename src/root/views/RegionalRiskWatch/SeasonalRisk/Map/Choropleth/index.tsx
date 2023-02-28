@@ -61,7 +61,9 @@ function PopUp (props: RegionsProps) {
     countryName,
   } = props;
 
-  const getHazardStatus =(hazardValue: number)=>{
+  const filterHazardData = byHazard?.filter((hd) => hd.value !==0);
+
+  const getHazardStatus = (hazardValue: number)=>{
     if(hazardValue > 0 && hazardValue < 25) {
       return 'very low';
     }
@@ -74,10 +76,8 @@ function PopUp (props: RegionsProps) {
       return 'high';
     }
 
-    if(hazardValue >= 75 && hazardValue <= 100) {
+    if(hazardValue >= 75) {
       return 'very high';
-    }else {
-      return 'low';
     }
   };
 
@@ -88,7 +88,7 @@ function PopUp (props: RegionsProps) {
         <span><IoChevronForward className={styles.icon} /></span>
       </div>
       <div className={styles.subContent}>
-        {byHazard?.map(( hd) => (
+        {filterHazardData?.map(( hd) => (
           <React.Fragment key={hd.hazard_type_display}>
             <div
               key={hd.hazard_type}
@@ -155,6 +155,7 @@ function Choropleth(props: Props) {
     );
 
     map.on('click','admin-0', (e)=>{
+      e.preventDefault();
       map.getCanvas().style.cursor = 'pointer';
 
       const activeCountryIso3 = isDefined(e.features) && e?.features[0]?.properties?.iso3;
@@ -162,9 +163,9 @@ function Choropleth(props: Props) {
         (risk)=> risk.iso3 === activeCountryIso3
       );
 
-      if(e && isDefined(activeCountryDetails)){
-        const popupRender = ReactDOMServer.renderToString(PopUp(activeCountryDetails));
-        popup.setLngLat(e.lngLat).setHTML(popupRender).addTo(map);
+      const popupRender = activeCountryDetails && ReactDOMServer.renderToString(PopUp(activeCountryDetails));
+      if(popupRender) {
+        return popup.setLngLat(e.lngLat).setHTML(popupRender).addTo(map);
       }
     });
   }

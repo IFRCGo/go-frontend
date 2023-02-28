@@ -53,10 +53,8 @@ function CountryRiskBarChart(props: Props) {
       return 'Risk: high';
     }
 
-    if(hazardValue >= 75 && hazardValue <= 100) {
+    if(hazardValue >= 75) {
       return 'Risk: very high';
-    }else {
-      return 'Risk: low';
     }
   };
 
