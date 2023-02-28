@@ -245,7 +245,6 @@ function ContextFields(props: Props) {
             <tr>
               {reportId === undefined && (
                 <>
-                  // FIXME: move styling to styles.module.scss
                   <td style={{width: '35%'}} >
                     <TextInput
                       // FIXME: move styling to styles.module.scss
