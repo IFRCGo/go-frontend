@@ -49,14 +49,14 @@ function EmergencyTable(props: Props) {
       if (percentageRound > 100) {
         return (
           <ProgressBar
-            label={`100%`}
+            label="100%"
             value={100}
           />
         );
       }
       return (
         <ProgressBar
-          label={`${percentageRound} %`}
+          label={`${percentageRound}%`}
           value={percentageRound}
         />
       );
