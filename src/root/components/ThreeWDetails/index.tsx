@@ -167,9 +167,9 @@ function ProjectDetail(props: Props) {
                 <>
                   <div>
                     <a className={styles.link}
-                       href={'/countries/' + projectResponse?.reporting_ns_detail?.id}
+                       href={'/countries/' + projectResponse?.project_country_detail?.id}
                     >
-                      <span>{projectResponse?.reporting_ns_detail?.name }</span>
+                      <span>{projectResponse?.project_country_detail?.name }</span>
                       <span className="icon-about-ref collecticon-chevron-right"></span>
                     </a>
                   </div>
