@@ -76,9 +76,9 @@ function SurgeDeploymentTable(props: Props) {
     createLinkColumn<SurgeDeploymentResult, number>(
       'event_name',
       'Emergency',
-      (surgeDeployement) => surgeDeployement.event_name,
-      (surgeDeployement) => ({
-        href: `emergencies/${surgeDeployement.event_id}`,
+      (surgeDeployment) => surgeDeployment.event_name,
+      (surgeDeployment) => ({
+        href: `emergencies/${surgeDeployment.event_id}`,
         variant: 'table',
       })
     ),
