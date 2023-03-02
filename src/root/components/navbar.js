@@ -9,25 +9,27 @@ import {
 } from 'react-router-dom';
 
 import { environment } from '#config';
-import {
-  getSelectInputNoOptionsMessage,
-  getElasticSearchOptions,
-} from '#utils/utils';
-import LanguageSelect from '#components/LanguageSelect';
-import Translate from '#components/Translate';
+import { getSelectInputNoOptionsMessage } from '#utils/utils';
 import LanguageContext from '#root/languageContext';
 import useReduxState from '#hooks/useReduxState';
-import { isIfrcUser } from '#utils/common';
-import { URL_SEARCH_KEY } from '#utils/constants';
+import useDebouncedValue from '#hooks/useDebouncedValue';
+import { getSearchValue } from '#utils/common';
+import useInputState from '#hooks/useInputState';
 
+import { URL_SEARCH_KEY } from '#utils/constants';
+import { isIfrcUser } from '#utils/common';
+import { api } from '#config';
+import { request } from '#utils/network';
 import UserMenu from './connected/user-menu';
+
+import Translate from '#components/Translate';
+import LanguageSelect from '#components/LanguageSelect';
 import HeaderRegionButton from './header-region-button';
 import DropdownMenu from './dropdown-menu';
-// import store from '#utils/store';
-//
-// const currentLanguage = store.getState().lang.current;
 
 const noFilter = options => options;
+const MAX_VIEW_PER_SECTION = 3;
+const MAX_VIEW_SEARCH_POPUP = 10;
 
 function Navbar(props) {
   const {
@@ -36,51 +38,102 @@ function Navbar(props) {
   } = props;
 
   const user = useReduxState('me');
-  const countries = useReduxState('allCountries');
   const ifrcUser = React.useMemo(() => isIfrcUser(user?.data), [user]);
   const searchTextRef = React.useRef();
-  const [redirectSearchString, setRedirectSearchStrihng] = React.useState();
+  const [redirectSearchString, setRedirectSearchString] = React.useState();
+  const urlSearchValue = getSearchValue(URL_SEARCH_KEY);
+
+  const [searchString, setSearchString] = useInputState(
+    getSearchValue(URL_SEARCH_KEY)
+  );
 
   const { strings } = React.useContext(LanguageContext);
+  const debouncedSearchString = useDebouncedValue(
+    searchString?.trim(),
+    500,
+  );
+  React.useEffect(() => {
+    setSearchString(urlSearchValue);
+  }, [urlSearchValue, setSearchString]);
+
   const debounceTimeoutRef = React.useRef();
 
   const ns = user?.data?.profile?.country?.id;
   const orgType = (user?.data?.is_superuser === true) ? '*' :
-                   user?.data?.profile?.org_type;
+    user?.data?.profile?.org_type;
 
-  const loadOptionsWithDebouncing = React.useCallback((input, callback) => {
+  const loadOptionsWithDebouncing = React.useCallback((searchString, callback) => {
     window.clearTimeout(debounceTimeoutRef.current);
 
-    if (input.length === 2) {
-      const exceptions = {
-        'uk': ['GBR'],
-        'us': ['USA'],
-        'co': ['CIV'],
-        'em': ['ARE'],
-      };
-      const exceptionCountries = countries.data.results.filter(country => {
-        return exceptions.hasOwnProperty(input) && exceptions[input].includes(country.iso3);
-      });
-      const answers = countries.data.results.filter(country => {
-        return country.name.toLowerCase().startsWith(input.toLowerCase())
-            && country.independent
-            && !country.is_deprecated;
-      }).concat(exceptionCountries).map(country => {
-        return {
-          value: `/countries/${country.id}`,
-          label: `Country: ${country.name}`
-        };
-      });
+    const response = request(`${api}api/v1/search/?keyword=${searchString}`).then(d => {
 
-      callback(answers);
-    }
+      if (searchString.length === 3) {
+        const countryList = d.countries.map(country => {
+          return {
+            value: `/countries/${country.id}`,
+            label: `Country: ${country.name}`
+          };
+        });
+        const countryData = countryList.slice(0, MAX_VIEW_PER_SECTION);
 
-    debounceTimeoutRef.current = window.setTimeout(() => {
-      getElasticSearchOptions(input, orgType, ns, callback);
-    }, 500);
+        const regionList = d.regions.map(region => {
+          return {
+            value: `/regions/${region.id}`,
+            label: `Region: ${region.name}`
+          };
+        });
+        const regionData = regionList.slice(0, MAX_VIEW_PER_SECTION);
+
+        const emergencyList = d.emergencies.map(emergency => {
+          return {
+            value: `/emergencies/${emergency.id}`,
+            label: `Emergency: ${emergency.name}`
+          };
+        });
+        const emergencyData = emergencyList.slice(0, MAX_VIEW_PER_SECTION);
+
+        const projectList = d.projects.map(project => {
+          return {
+            value: `/three-w/${project.event_id}`,
+            label: `3W Project: ${project.name}`
+          };
+        });
+        const projectData = projectList.slice(0, MAX_VIEW_PER_SECTION);
+
+        const reportList = d.reports.map(report => {
+          return {
+            value: `/reports/${report.id}`,
+            label: `Report: ${report.name}`
+          };
+        });
+        const reportData = reportList.slice(0, MAX_VIEW_PER_SECTION);
+
+        //NOTE: Add if there is link for emergency planning and surge Deployment
+        /*
+        const emergencyPlanningList = d.emergency_planning.map(emergencyPlanning => {
+          return {
+            value: `/emergencies/${emergencyPlanning.id}`,
+            label: `Emergency Planning: ${emergencyPlanning.name}`
+          };
+        });
+        const emergencyPlanningData = emergencyPlanningList.slice(0, MAX_VIEW_PER_SECTION);
+
+        const surgeDeploymentList = d.surge_deployments.map(surge => {
+          return {
+            value: `/emergencies/${surge.event_id}`,
+            label: `Surge Deployment: ${surge.name}`
+          };
+        });
+        const surgeDeploymentData = surgeDeploymentList.slice(0, MAX_VIEW_PER_SECTION);
+        */
+
+        const latestList = countryData.concat(regionData, emergencyData, projectData, reportData).slice(0, MAX_VIEW_SEARCH_POPUP);
+        callback(latestList);
+      }
+    });
 
     return false;
-  }, [orgType, ns, countries]);
+  }, [orgType, ns]);
 
   const handleSearchInputChange = React.useCallback((newText) => {
     searchTextRef.current = newText;
@@ -112,7 +165,7 @@ function Navbar(props) {
                   <Translate stringId="headerMenuResources" />
                 </Link>
                 <UserMenu />
-{/*             <div style={{paddingRight:'8px'}}>
+                {/*             <div style={{paddingRight:'8px'}}>
                 <a href={strings.wikiJsLinkGOWiki+'/'+currentLanguage +'/'+ strings.wikiJsLinkUserAccount} title='GO Wiki' target='_blank' ><img className='' src='/assets/graphics/content/wiki-help-header1.svg' alt='IFRC GO logo'/></a>
                 </div>*/}
                 <DropdownMenu
@@ -221,7 +274,7 @@ function Navbar(props) {
                     if (e.which === 13) {
                       e.preventDefault();
                       if (searchTextRef.current?.trim().length > 2) {
-                        setRedirectSearchStrihng(searchTextRef.current);
+                        setRedirectSearchString(searchTextRef.current);
                       }
                     }
                   }}

@@ -69,7 +69,7 @@ class MobileNavbar extends React.PureComponent {
   getOptions (input) {
     return !input
       ? Promise.resolve({ options: [] })
-      : request(`${api}/api/v1/es_search/?keyword=${input}`)
+      : request(`${api}api/v1/search/?keyword=${input}`)
         .then(data => {
           const options = data.hits.map(o => {
             const d = o._source;
