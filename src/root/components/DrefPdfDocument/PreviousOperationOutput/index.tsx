@@ -21,6 +21,10 @@ function PreviousOperationOutput(props: Props) {
     strings,
   } = props;
 
+  if (isNotDefined(data)) {
+    return null;
+  }
+
   if (isNotDefined(data.affect_same_area)
     && isNotDefined(data.affect_same_population)
     && isNotDefined(data.ns_respond)
@@ -31,6 +35,9 @@ function PreviousOperationOutput(props: Props) {
   ) {
     return null;
   }
+
+  const emptyRecurrentText = !data.dref_recurrent_text || data.dref_recurrent_text.trim() === '';
+  const emptyLessonsLearned = !data.lessons_learned || data.lessons_learned.trim() === '';
 
   return (
     <View style={pdfStyles.poSection}>
@@ -83,7 +90,7 @@ function PreviousOperationOutput(props: Props) {
           <Text>{data?.ns_request_text ?? '-'}</Text>
         </View>
       </View>
-      {data?.dref_recurrent_text && (
+      {emptyRecurrentText && (
         <View style={pdfStyles.row}>
           <View style={[
             pdfStyles.cellTitle,
@@ -101,7 +108,7 @@ function PreviousOperationOutput(props: Props) {
           </View>
         </View>
       )}
-      {data?.lessons_learned && (
+      {emptyLessonsLearned && (
         <View style={pdfStyles.row}>
           <View style={[
             pdfStyles.cellTitle,
