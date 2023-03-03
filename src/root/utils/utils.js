@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import _get from 'lodash.get';
 import _groupBy from 'lodash.groupby';
 import _toNumber from 'lodash.tonumber';
@@ -13,8 +13,6 @@ import {
 } from '@togglecorp/fujs';
 
 import Translate from '#components/Translate';
-import { request } from '#utils/network';
-import { api } from '#config';
 import { appealTypes } from '#utils/appeal-type-constants';
 import { getCountryMeta } from '#utils/get-country-meta';
 
@@ -342,110 +340,21 @@ export function getSelectInputNoOptionsMessage(options) {
   return <Translate stringId="searchSelectNoOptionsAvailable" />;
 }
 
-function getUriForType(type, id, data) {
-  switch (type) {
-    case 'region':
-      return '/regions/' + id;
-    case 'country':
-      return '/countries/' + id;
-    case 'report':
-      return '/reports/' + id;
-    case 'event':
-      return '/emergencies/' + id;
-    case 'appeal':
-      return data.event_id ? '/emergencies/' + data.event_id : '/appeals/all?record=' + id;
-    default:
-      return '/uhoh';
-  }
+export function useDebounce(func, debounceTime = 500) {
+  const myTimeout = React.useRef();
+
+  const myFunc = React.useCallback((...args) => {
+    clearTimeout(myTimeout.current);
+    myTimeout.current = setTimeout(
+      () => {
+        func(...args);
+      },
+      debounceTime
+    );
+  }, [func, debounceTime]);
+
+  return myFunc;
 }
-
-// 1234 => 7968, so that this linear, comparable order will have:
-//  2IFRC                      9
-//  4IFRC_NS                   8
-//  1MEMBERSHIP (logged in)    7
-//  3PUBLIC                    6
-function line(p) {
-  switch (parseInt(p)) {
-    case NaN:
-      return 6;
-    case 1:
-      return 7;
-    case 2:
-      return 9;
-    default:
-      return p + p;
-
-  }
-}
-
-function nume(p) { // numeric (and linear) representation of orgType
-  switch (p) {
-    case 'OTHR':
-      return 7;
-    case 'NTLS':
-    case 'DLGN':
-      return 8;
-    case 'SCRT':
-    case 'ICRC':
-    case '*': // superuser
-      return 9;
-    default:
-      return 6;
-  }
-}
-
-// export async function getElasticSearchOptions(input, orgType, callback) {
-//   if (!input) {
-//     callback([]);
-//   }
-
-//   const response  = await request(`${api}api/v1/search/?keyword=${input}`).then(d=> d);
-//   console.info("response data",response.countries.map((i) => i.name));
-//   // callback(response);
-// }
-
-/*
-
-export function getElasticSearchOptions(input, orgType, ns, callback) {
-  if (!input) {
-    callback([]);
-  }
-
-  const response  =   request(`${api}api/v1/search/?keyword=${input}`).then(d=> {
-    console.log("list all", d);
-  });
-
-  console.log("response ",response);
-
-    request(`${api}api/v1/search/?keyword=${input}`)
-    .then(data => {
-      console.info('data', data.countries);
-      const options = data?.map(o => {
-        const d = o._source;
-        // for DEBUG: console.log('user ns, orgType | object ns, visibl.Raw', [ns, orgType, '|', d.ns, d.visibility]);
-        // for DEBUG: console.log('visibility should be <= permission_level',[line(d.visibility), '<=', nume(orgType)]);
-        // If the linearized visibility value > linearized value of organization type, not allowed to see that:
-        if (line(d.visibility) > nume(orgType)) { return false; }
-        // If the organization ~ NS === 8 === linearized visibility, and ns (list) is given in the object, we accept only our ns in the array:
-        if (nume(orgType) === 8 && line(d.visibility) === 8 && d.ns !== null) {
-          if (ns === undefined || ns === null || !d.ns.split(" ").includes(ns.toString())) {
-            return false;
-          }
-        }
-        const value = getUriForType(d.type, d.id, d);
-        const date = d.date ? ` (${isoDate(d.date)})` : '';
-        const label = `${u(d.type)}: ${d.name}${date}`;
-
-        return {
-          value,
-          label
-        };
-      }).filter(Boolean);
-
-      callback(options);
-    });
-}
-*/
 
 export function getFileName(suffix, extension = 'csv') {
   const date = new Date();

@@ -9,17 +9,15 @@ import {
 } from 'react-router-dom';
 
 import { environment } from '#config';
-import { getSelectInputNoOptionsMessage } from '#utils/utils';
+
 import LanguageContext from '#root/languageContext';
 import useReduxState from '#hooks/useReduxState';
-import useDebouncedValue from '#hooks/useDebouncedValue';
-import { getSearchValue } from '#utils/common';
-import useInputState from '#hooks/useInputState';
-
-import { URL_SEARCH_KEY } from '#utils/constants';
 import { isIfrcUser } from '#utils/common';
+import { getSelectInputNoOptionsMessage, useDebounce } from '#utils/utils';
 import { api } from '#config';
 import { request } from '#utils/network';
+import { URL_SEARCH_KEY } from '#utils/constants';
+
 import UserMenu from './connected/user-menu';
 
 import Translate from '#components/Translate';
@@ -37,103 +35,71 @@ function Navbar(props) {
     match,
   } = props;
 
+  const { strings } = React.useContext(LanguageContext);
   const user = useReduxState('me');
   const ifrcUser = React.useMemo(() => isIfrcUser(user?.data), [user]);
   const searchTextRef = React.useRef();
   const [redirectSearchString, setRedirectSearchString] = React.useState();
-  const urlSearchValue = getSearchValue(URL_SEARCH_KEY);
 
-  const [searchString, setSearchString] = useInputState(
-    getSearchValue(URL_SEARCH_KEY)
-  );
-
-  const { strings } = React.useContext(LanguageContext);
-  const debouncedSearchString = useDebouncedValue(
-    searchString?.trim(),
-    500,
-  );
-  React.useEffect(() => {
-    setSearchString(urlSearchValue);
-  }, [urlSearchValue, setSearchString]);
-
-  const debounceTimeoutRef = React.useRef();
-
-  const ns = user?.data?.profile?.country?.id;
-  const orgType = (user?.data?.is_superuser === true) ? '*' :
-    user?.data?.profile?.org_type;
-
-  const loadOptionsWithDebouncing = React.useCallback((searchString, callback) => {
-    window.clearTimeout(debounceTimeoutRef.current);
-
-    const response = request(`${api}api/v1/search/?keyword=${searchString}`).then(d => {
-
-      if (searchString.length === 3) {
-        const countryList = d.countries.map(country => {
-          return {
-            value: `/countries/${country.id}`,
-            label: `Country: ${country.name}`
-          };
-        });
-        const countryData = countryList.slice(0, MAX_VIEW_PER_SECTION);
-
-        const regionList = d.regions.map(region => {
-          return {
-            value: `/regions/${region.id}`,
-            label: `Region: ${region.name}`
-          };
-        });
-        const regionData = regionList.slice(0, MAX_VIEW_PER_SECTION);
-
-        const emergencyList = d.emergencies.map(emergency => {
-          return {
-            value: `/emergencies/${emergency.id}`,
-            label: `Emergency: ${emergency.name}`
-          };
-        });
-        const emergencyData = emergencyList.slice(0, MAX_VIEW_PER_SECTION);
-
-        const projectList = d.projects.map(project => {
-          return {
-            value: `/three-w/${project.event_id}`,
-            label: `3W Project: ${project.name}`
-          };
-        });
-        const projectData = projectList.slice(0, MAX_VIEW_PER_SECTION);
-
-        const reportList = d.reports.map(report => {
-          return {
-            value: `/reports/${report.id}`,
-            label: `Report: ${report.name}`
-          };
-        });
-        const reportData = reportList.slice(0, MAX_VIEW_PER_SECTION);
-
-        //NOTE: Add if there is link for emergency planning and surge Deployment
-        /*
-        const emergencyPlanningList = d.emergency_planning.map(emergencyPlanning => {
-          return {
-            value: `/emergencies/${emergencyPlanning.id}`,
-            label: `Emergency Planning: ${emergencyPlanning.name}`
-          };
-        });
-        const emergencyPlanningData = emergencyPlanningList.slice(0, MAX_VIEW_PER_SECTION);
-
-        const surgeDeploymentList = d.surge_deployments.map(surge => {
-          return {
-            value: `/emergencies/${surge.event_id}`,
-            label: `Surge Deployment: ${surge.name}`
-          };
-        });
-        const surgeDeploymentData = surgeDeploymentList.slice(0, MAX_VIEW_PER_SECTION);
-        */
-
-        const latestList = countryData.concat(regionData, emergencyData, projectData, reportData).slice(0, MAX_VIEW_SEARCH_POPUP);
-        callback(latestList);
+  const loadOptions = React.useCallback(
+    (input, callback) => {
+      if (!input) {
+        return Promise.resolve({ options: [] });
       }
-    });
+      return request(`${api}api/v1/search/?keyword=${input}`).then(d => {
+        if (input.length >= 3) {
+          const countryList = d.countries.map(country => {
+            return {
+              value: `/countries/${country.id}`,
+              label: `Country: ${country.name}`
+            };
+          });
+          const countryData = countryList.slice(0, MAX_VIEW_PER_SECTION);
 
-    return false;
-  }, [orgType, ns]);
+          const regionList = d.regions.map(region => {
+            return {
+              value: `/regions/${region.id}`,
+              label: `Region: ${region.name}`
+            };
+          });
+          const regionData = regionList.slice(0, MAX_VIEW_PER_SECTION);
+
+          const emergencyList = d.emergencies.map(emergency => {
+            return {
+              value: `/emergencies/${emergency.id}`,
+              label: `Emergency: ${emergency.name}`
+            };
+          });
+          const emergencyData = emergencyList.slice(0, MAX_VIEW_PER_SECTION);
+
+          const projectList = d.projects.map(project => {
+            return {
+              value: `/three-w/${project.event_id}`,
+              label: `3W Project: ${project.name}`
+            };
+          });
+          const projectData = projectList.slice(0, MAX_VIEW_PER_SECTION);
+
+          const reportList = d.reports.map(report => {
+            return {
+              value: `/reports/${report.id}`,
+              label: `Report: ${report.name}`
+            };
+          });
+          const reportData = reportList.slice(0, MAX_VIEW_PER_SECTION);
+
+          const latestList = countryData.concat(
+            regionData,
+            emergencyData,
+            projectData,
+            reportData
+          ).slice(0, MAX_VIEW_SEARCH_POPUP);
+
+          callback(latestList);
+        }
+      });
+    },[]);
+  const loadOptionsWithDebouncing = useDebounce(loadOptions);
 
   const handleSearchInputChange = React.useCallback((newText) => {
     searchTextRef.current = newText;
@@ -165,9 +131,6 @@ function Navbar(props) {
                   <Translate stringId="headerMenuResources" />
                 </Link>
                 <UserMenu />
-                {/*             <div style={{paddingRight:'8px'}}>
-                <a href={strings.wikiJsLinkGOWiki+'/'+currentLanguage +'/'+ strings.wikiJsLinkUserAccount} title='GO Wiki' target='_blank' ><img className='' src='/assets/graphics/content/wiki-help-header1.svg' alt='IFRC GO logo'/></a>
-                </div>*/}
                 <DropdownMenu
                   className='drop__toggle--caret button button--primary-bounded button--small drop__toggle--field-report-new'
                   activeClassName='active'
@@ -274,6 +237,7 @@ function Navbar(props) {
                     if (e.which === 13) {
                       e.preventDefault();
                       if (searchTextRef.current?.trim().length > 2) {
+                        // TODO: redirect to search page on enter ?
                         setRedirectSearchString(searchTextRef.current);
                       }
                     }

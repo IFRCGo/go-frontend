@@ -71,9 +71,9 @@ const OperationCard = ({
       else if (countryList === 0) {
         return (
           <div className="tooltip-icon">
-          <TiWorldOutline size={13} />
-          <Translate stringId='operationCardNoCountryInvolved' />
-        </div>
+            <TiWorldOutline size={13} />
+            <Translate stringId='operationCardNoCountryInvolved' />
+          </div>
         );
       }
       else return (
@@ -86,68 +86,74 @@ const OperationCard = ({
 
   return (
     <div className='key-emergencies-item col col-6-sm col-4-mid' key={operationId}>
-      <Link to={`/emergencies/${operationId}`}>
-        <div className="card_box card_box_left card_box_title">
-          <div className='row flex'>
-            <div className='card__title__wrap col col-7 col-8-mid'>
-              <h2 className='card__title'>
-                <span data-tooltip-id={operationId}>
-                  {dotWithColor}
+      <div className='card_box_title card_box_left card_box_title'>
+        <div className='row flex'>
+          <div className='card__title__wrap col col-7 col-8-mid'>
+            <h2 className='card__title'>
+              <span data-tooltip-id={operationId}>
+                {dotWithColor}
+                <Link to={`/emergencies/${operationId}`}>
                   {operationName}
-                </span>
-                <Tooltip id={operationId} className="tooltip-content">
-                  <div className="tooltip-list">
-                    <span>
-                      {dotWithColor}
-                      {severityLevelDisplay} Emergency
-                    </span>
-                    <span>{toggleToolTip}</span>
-                  </div>
-                </Tooltip>
-              </h2>
-            </div>
-            {showFollow ? (
-              <div className='button--key-emergencies__wrap col col-5 col-4-mid'>
-                <div onClick={toggleFollow} className={`button button--capsule button--xsmall button--key-emergencies ${isFollowing ? 'button--primary-filled' : 'button--primary-bounded'}`}>
-                  {
-                    isFollowing ? (
-                      <Translate stringId='operationCardFollowing' />
-                    ) : (
-                      <Translate stringId='operationCardFollow' />
-                    )
-                  }
+                </Link>
+              </span>
+              <Tooltip id={operationId} className="tooltip-content">
+                <div className="tooltip-list">
+                  <span>
+                    {dotWithColor}
+                    {severityLevelDisplay} Emergency
+                  </span>
+                  <span>{toggleToolTip}</span>
                 </div>
+              </Tooltip>
+            </h2>
+          </div>
+          {showFollow ? (
+            <div className='button--key-emergencies__wrap col col-5 col-4-mid'>
+              <div onClick={toggleFollow} className={`button button--capsule button--xsmall button--key-emergencies ${isFollowing ? 'button--primary-filled' : 'button--primary-bounded'}`}>
+                {
+                  isFollowing ? (
+                    <Translate stringId='operationCardFollowing' />
+                  ) : (
+                    <Translate stringId='operationCardFollow' />
+                  )
+                }
               </div>
-            ) : null
-            }
-          </div>
-          <small className='last_updated'>
-            <Translate stringId='operationCardLastUpdated' />
-            &nbsp;
-            {formatDate(lastUpdate)}
-          </small>
-        </div>
-
-        <div className='card_box_container card_box_container--op'>
-          <div className='card_box card_box_left card_box--op'>
-            <div className="card_box_no">
-              <FormattedNumber
-                className='tc-value'
-                value={beneficiaries}
-                normalize
-                fixedTo={1}
-              />
             </div>
-            <span className='affected_population_icon'></span>
-            <small className='heading-tiny'>
-              <Translate stringId='operationCardTargetedPopulation' />
-            </small>
+          ) : null
+          }
+        </div>
+        <small className='last_updated'>
+          <Translate stringId='operationCardLastUpdated' />
+          &nbsp;
+          {formatDate(lastUpdate)}
+        </small>
+      </div>
+      <div className='card_box_content'>
+        <Link to={`/emergencies/${operationId}`}>
+          <div className='card_box_container card_box_container--op'>
+            <div className='card_box card_box_left card_box--op'>
+              <div className="card_box_no">
+                <FormattedNumber
+                  className='tc-value'
+                  value={beneficiaries}
+                  normalize
+                  fixedTo={1}
+                />
+              </div>
+              <span className='affected_population_icon'></span>
+              <small className='heading-tiny'>
+                <Translate stringId='operationCardTargetedPopulation' />
+              </small>
+            </div>
           </div>
+        </Link>
+
+        <Link to={`/emergencies/${operationId}#reports`}>
           <div className='card_box card_box_left card_box--op'>
             <div className="card_box_no">
               <FormattedNumber
                 className='tc-value'
-                value={beneficiaries}
+                value={requested}
                 normalize
                 fixedTo={1}
               />
@@ -158,27 +164,35 @@ const OperationCard = ({
             <Progress value={requested ? percent(funded, requested) : percent(0.1, 10)} max={100} />
             <div className='card_box_full card_box_container card_box_container--op'>
               <div className="heading-tiny-progress">
-                <div className="card_box_fc">{requested ? round(percent(funded, requested)) : 0}%</div>
+                <div className="card_box_fc">{requested ? round(percent(funded, requested)) : 0}% </div> &nbsp;
                 <Translate stringId='operationCardFundingCoverage' />
               </div>
             </div>
           </div>
-        </div>
+        </Link>
+      </div>
 
-        <div className='card_box_container card_box_container--op'>
-          <div className='card_box card_box_left card_box--op'>
-            <div className="card_box_no">
-              <FormattedNumber
-                className='tc-value'
-                value={activeDeployment}
-                normalize
-                fixedTo={1}
-              />
+      <div className='card_box_content'>
+        <Link to={`/emergencies/${operationId}#reports`}>
+          <div className='card_box_container card_box_container--op'>
+            <div className='card_box card_box_left card_box--op'>
+              <div className="card_box_no">
+                <FormattedNumber
+                  className='tc-value'
+                  value={activeDeployment}
+                  normalize
+                  fixedTo={1}
+                />
+              </div>
+              <small className='heading-tiny'>
+                <Translate stringId='operationCardIFRCSurgePersonnel' />
+              </small>
             </div>
-            <small className='heading-tiny'>
-              <Translate stringId='operationCardIFRCSurgePersonnel' />
-            </small>
+
           </div>
+        </Link>
+
+        <Link to={`/emergencies/${operationId}#3W`}>
           <div className='card_box card_box_left card_box--op'>
             <span className='deployed_personnel_icon'></span>
             <div className="card_box_no">
@@ -193,8 +207,8 @@ const OperationCard = ({
               <Translate stringId='operationCardNSReportingActivities' />
             </small>
           </div>
-        </div>
-      </Link>
+        </Link>
+      </div>
     </div>
   );
 };
