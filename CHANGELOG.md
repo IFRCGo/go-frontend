@@ -1,3 +1,9 @@
+### Release 6.4.3 - Hotfix for DREF export
+Date: 2023-03-03
+
+Frontend:
+ - Fix DREF export for empty strings in some fields
+
 ### Release 6.4.2 - DREF, RiskModule improvements
 Date: 2023-02-09
 
