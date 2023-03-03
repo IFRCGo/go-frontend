@@ -7,6 +7,7 @@ import Table from '#components/Table';
 import LanguageContext from '#root/languageContext';
 import {
   createDateColumn,
+  createLinkColumn,
   createStringColumn,
 } from '#components/Table/predefinedColumns';
 import { getDuration } from '#utils/utils';
@@ -19,6 +20,7 @@ export interface SurgeAlertResult {
   keywords: string[] | null;
   event_name: string;
   country: string | null;
+  country_id: string | null;
   start_date: string;
   alert_date: string | null;
   score: number;
@@ -52,11 +54,6 @@ function SurgeAlertTable(props: Props) {
       'alert_date',
       'Alert Date',
       (surgeAlert) => surgeAlert.alert_date,
-    ),
-    createDateColumn<SurgeAlertResult, number>(
-      'deadline',
-      'Application Deadline',
-      (surgeAlert) => surgeAlert.deadline,
     ),
     createStringColumn<SurgeAlertResult, number>(
       'duration',
@@ -92,6 +89,15 @@ function SurgeAlertTable(props: Props) {
       'surge_type',
       'Surge Type',
       (surgeAlert) => surgeAlert.surge_type,
+    ),
+    createLinkColumn<SurgeAlertResult, number>(
+      'country',
+      'Country',
+      (surgeAlert) => surgeAlert.country,
+      (surgeAlert) => ({
+        href: `/countries/${surgeAlert.country_id}`,
+        variant: 'table',
+      })
     ),
     createStringColumn<SurgeAlertResult, number>(
       'status',
