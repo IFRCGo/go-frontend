@@ -14,8 +14,7 @@ import LanguageContext from '#root/languageContext';
 import useReduxState from '#hooks/useReduxState';
 import { isIfrcUser } from '#utils/common';
 import { getSelectInputNoOptionsMessage, useDebounce } from '#utils/utils';
-import { api } from '#config';
-import { request } from '#utils/network';
+import { loadOptions } from '#utils/search';
 import { URL_SEARCH_KEY } from '#utils/constants';
 
 import UserMenu from './connected/user-menu';
@@ -26,8 +25,6 @@ import HeaderRegionButton from './header-region-button';
 import DropdownMenu from './dropdown-menu';
 
 const noFilter = options => options;
-const MAX_VIEW_PER_SECTION = 3;
-const MAX_VIEW_SEARCH_POPUP = 10;
 
 function Navbar(props) {
   const {
@@ -41,64 +38,6 @@ function Navbar(props) {
   const searchTextRef = React.useRef();
   const [redirectSearchString, setRedirectSearchString] = React.useState();
 
-  const loadOptions = React.useCallback(
-    (input, callback) => {
-      if (!input) {
-        return Promise.resolve({ options: [] });
-      }
-      return request(`${api}api/v1/search/?keyword=${input}`).then(d => {
-        if (input.length >= 3) {
-          const countryList = d.countries.map(country => {
-            return {
-              value: `/countries/${country.id}`,
-              label: `Country: ${country.name}`
-            };
-          });
-          const countryData = countryList.slice(0, MAX_VIEW_PER_SECTION);
-
-          const regionList = d.regions.map(region => {
-            return {
-              value: `/regions/${region.id}`,
-              label: `Region: ${region.name}`
-            };
-          });
-          const regionData = regionList.slice(0, MAX_VIEW_PER_SECTION);
-
-          const emergencyList = d.emergencies.map(emergency => {
-            return {
-              value: `/emergencies/${emergency.id}`,
-              label: `Emergency: ${emergency.name}`
-            };
-          });
-          const emergencyData = emergencyList.slice(0, MAX_VIEW_PER_SECTION);
-
-          const projectList = d.projects.map(project => {
-            return {
-              value: `/three-w/${project.event_id}`,
-              label: `3W Project: ${project.name}`
-            };
-          });
-          const projectData = projectList.slice(0, MAX_VIEW_PER_SECTION);
-
-          const reportList = d.reports.map(report => {
-            return {
-              value: `/reports/${report.id}`,
-              label: `Report: ${report.name}`
-            };
-          });
-          const reportData = reportList.slice(0, MAX_VIEW_PER_SECTION);
-
-          const latestList = countryData.concat(
-            regionData,
-            emergencyData,
-            projectData,
-            reportData
-          ).slice(0, MAX_VIEW_SEARCH_POPUP);
-
-          callback(latestList);
-        }
-      });
-    },[]);
   const loadOptionsWithDebouncing = useDebounce(loadOptions);
 
   const handleSearchInputChange = React.useCallback((newText) => {

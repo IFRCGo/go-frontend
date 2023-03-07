@@ -153,11 +153,12 @@ function Search(props: Props) {
   return (
     <Page
       className={_cs(styles.search, className)}
-      title={strings.threeWPageTitle}
+      title={strings.searchIfrcSearchTitle}
       heading="Search for keyword"
       withMainContentBackground
       description={(
         <TextInput
+          className={styles.inputSection}
           icons={<IoSearch />}
           type="search"
           name="search"
@@ -218,20 +219,22 @@ function Search(props: Props) {
           const truncatedData = data.slice(0, MAX_VIEW_PER_SECTION);
 
           return (
-            <Component
-              key={score.key}
-              data={truncatedData}
-              actions={data.length > MAX_VIEW_PER_SECTION && (
-                <Button
-                  name={score.key}
-                  variant="transparent"
-                  onClick={setActiveView}
-                  actions={<IoChevronForward />}
-                >
-                  {strings.searchViewAllDocuments}
-                </Button>
-              )}
-            />
+            <Container>
+              <Component
+                key={score.key}
+                data={truncatedData}
+                actions={data.length > MAX_VIEW_PER_SECTION && (
+                  <Button
+                    name={score.key}
+                    variant="transparent"
+                    onClick={setActiveView}
+                    actions={<IoChevronForward />}
+                  >
+                    {strings.searchViewAllDocuments}
+                  </Button>
+                )}
+              />
+            </Container>
           );
         })}
       </div>
