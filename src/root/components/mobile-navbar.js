@@ -45,8 +45,6 @@ function MobileNavbar(props) {
   const { pathname } = props.location;
  
   const { strings } = React.useContext(LanguageContext);
-  const user = useReduxState('me');
-  const ifrcUser = React.useMemo(() => isIfrcUser(user?.data), [user]);
   const searchTextRef = React.useRef();
   const [redirectSearchString, setRedirectSearchString] = React.useState();
   const [showMenu, setShowMenu] = React.useState(false);
