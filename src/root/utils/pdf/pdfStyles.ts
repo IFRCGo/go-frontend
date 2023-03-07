@@ -18,9 +18,20 @@ Font.register({
 
 Font.register({
   family: 'OpenSans',
-  src: openSansFont,
-  fontWeight: 'bold',
+  fonts: [
+    {
+      src: openSansFont,
+      fontStyle: 'normal',
+      fontWeight: 'normal',
+    },
+    {
+      src: openSansBoldFont,
+      fontStyle: 'normal',
+      fontWeight: 'bold',
+    },
+  ],
 });
+
 Font.register({
   family: 'OpenSans',
   src: openSansBoldFont,

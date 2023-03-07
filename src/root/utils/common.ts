@@ -1,13 +1,13 @@
 import { memo } from 'react';
 import {
   isDefined,
+  isNotDefined,
   isFalsy,
   isFalsyString,
   caseInsensitiveSubmatch,
   compareStringSearch,
   addSeparator,
   listToMap,
-  isNotDefined,
 } from '@togglecorp/fujs';
 
 import { Strings } from '#types';
@@ -483,4 +483,8 @@ export function getSearchValue(key: string, url = window.location): string | und
   );
 
   return searchElementMap[key];
+}
+
+export function reTab(str: string) {
+  return str.replaceAll('\t', '  ');
 }
