@@ -1,11 +1,22 @@
 @import '~styles/settings/variables';
 
 .search {
+  .input-section {
+    padding: 0 $spacing!important;
+    margin: 0!important;
+    box-shadow: unset;
+    overflow-y: visible;
+    >* {
+      background-color: none;
+      border-bottom: 1px solid grey;
+    }
+  }
   .content {
     display: flex;
     flex-direction: column;
     gap: $spacing * 5;
-    padding: $spacing * 4;
+    padding: 0;
+    // padding: $spacing * 4;
   }
 
   .empty-search-content {
