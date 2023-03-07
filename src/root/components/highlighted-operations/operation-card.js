@@ -109,7 +109,7 @@ const OperationCard = ({
           </div>
           {showFollow ? (
             <div className='button--key-emergencies__wrap col col-5 col-4-mid'>
-              <div onClick={toggleFollow} className={`button button--capsule button--xsmall button--key-emergencies ${isFollowing ? 'button--primary-filled' : 'button--primary-bounded'}`}>
+              <div onClick={toggleFollow} className={`button button--capsule-operation-card button--xsmall button--key-emergencies ${isFollowing ? 'button--primary-filled' : 'button--primary-bounded'}`}>
                 {
                   isFollowing ? (
                     <Translate stringId='operationCardFollowing' />
@@ -131,7 +131,7 @@ const OperationCard = ({
       <div className='card_box_content'>
         <Link to={`/emergencies/${operationId}`}>
           <div className='card_box_container card_box_container--op'>
-            <div className='card_box card_box_left card_box--op'>
+            <div className='card_box card_box_left_top card_box--op'>
               <div className="card_box_no">
                 <FormattedNumber
                   className='tc-value'
@@ -149,7 +149,7 @@ const OperationCard = ({
         </Link>
 
         <Link to={`/emergencies/${operationId}#reports`}>
-          <div className='card_box card_box_left card_box--op'>
+          <div className='card_box card_box_left_top card_box--op'>
             <div className="card_box_no">
               <FormattedNumber
                 className='tc-value'
@@ -164,8 +164,8 @@ const OperationCard = ({
             <Progress value={requested ? percent(funded, requested) : percent(0.1, 10)} max={100} />
             <div className='card_box_full card_box_container card_box_container--op'>
               <div className="heading-tiny-progress">
-                <div className="card_box_fc">{requested ? round(percent(funded, requested)) : 0}% </div> &nbsp;
-                <Translate stringId='operationCardFundingCoverage' />
+                <div className="card_box_fc">{requested ? round(percent(funded, requested)) : 0}% &nbsp;
+                <Translate stringId='operationCardFundingCoverage' /></div>
               </div>
             </div>
           </div>
