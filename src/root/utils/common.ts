@@ -484,3 +484,7 @@ export function getSearchValue(key: string): string | undefined {
 
   return searchElementMap[key];
 }
+
+export function reTab(str: string) {
+  return str.replaceAll('\t', '  ');
+}
