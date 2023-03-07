@@ -9,23 +9,20 @@ import {
 } from 'react-router-dom';
 
 import { environment } from '#config';
-import {
-  getSelectInputNoOptionsMessage,
-  getElasticSearchOptions,
-} from '#utils/utils';
-import LanguageSelect from '#components/LanguageSelect';
-import Translate from '#components/Translate';
+
 import LanguageContext from '#root/languageContext';
 import useReduxState from '#hooks/useReduxState';
 import { isIfrcUser } from '#utils/common';
+import { getSelectInputNoOptionsMessage, useDebounce } from '#utils/utils';
+import { loadOptions } from '#utils/search';
 import { URL_SEARCH_KEY } from '#utils/constants';
 
 import UserMenu from './connected/user-menu';
+
+import Translate from '#components/Translate';
+import LanguageSelect from '#components/LanguageSelect';
 import HeaderRegionButton from './header-region-button';
 import DropdownMenu from './dropdown-menu';
-// import store from '#utils/store';
-//
-// const currentLanguage = store.getState().lang.current;
 
 const noFilter = options => options;
 
@@ -35,52 +32,13 @@ function Navbar(props) {
     match,
   } = props;
 
+  const { strings } = React.useContext(LanguageContext);
   const user = useReduxState('me');
-  const countries = useReduxState('allCountries');
   const ifrcUser = React.useMemo(() => isIfrcUser(user?.data), [user]);
   const searchTextRef = React.useRef();
-  const [redirectSearchString, setRedirectSearchStrihng] = React.useState();
+  const [redirectSearchString, setRedirectSearchString] = React.useState();
 
-  const { strings } = React.useContext(LanguageContext);
-  const debounceTimeoutRef = React.useRef();
-
-  const ns = user?.data?.profile?.country?.id;
-  const orgType = (user?.data?.is_superuser === true) ? '*' :
-                   user?.data?.profile?.org_type;
-
-  const loadOptionsWithDebouncing = React.useCallback((input, callback) => {
-    window.clearTimeout(debounceTimeoutRef.current);
-
-    if (input.length === 2) {
-      const exceptions = {
-        'uk': ['GBR'],
-        'us': ['USA'],
-        'co': ['CIV'],
-        'em': ['ARE'],
-      };
-      const exceptionCountries = countries.data.results.filter(country => {
-        return exceptions.hasOwnProperty(input) && exceptions[input].includes(country.iso3);
-      });
-      const answers = countries.data.results.filter(country => {
-        return country.name.toLowerCase().startsWith(input.toLowerCase())
-            && country.independent
-            && !country.is_deprecated;
-      }).concat(exceptionCountries).map(country => {
-        return {
-          value: `/countries/${country.id}`,
-          label: `Country: ${country.name}`
-        };
-      });
-
-      callback(answers);
-    }
-
-    debounceTimeoutRef.current = window.setTimeout(() => {
-      getElasticSearchOptions(input, orgType, ns, callback);
-    }, 500);
-
-    return false;
-  }, [orgType, ns, countries]);
+  const loadOptionsWithDebouncing = useDebounce(loadOptions);
 
   const handleSearchInputChange = React.useCallback((newText) => {
     searchTextRef.current = newText;
@@ -112,9 +70,6 @@ function Navbar(props) {
                   <Translate stringId="headerMenuResources" />
                 </Link>
                 <UserMenu />
-{/*             <div style={{paddingRight:'8px'}}>
-                <a href={strings.wikiJsLinkGOWiki+'/'+currentLanguage +'/'+ strings.wikiJsLinkUserAccount} title='GO Wiki' target='_blank' ><img className='' src='/assets/graphics/content/wiki-help-header1.svg' alt='IFRC GO logo'/></a>
-                </div>*/}
                 <DropdownMenu
                   className='drop__toggle--caret button button--primary-bounded button--small drop__toggle--field-report-new'
                   activeClassName='active'
@@ -221,7 +176,8 @@ function Navbar(props) {
                     if (e.which === 13) {
                       e.preventDefault();
                       if (searchTextRef.current?.trim().length > 2) {
-                        setRedirectSearchStrihng(searchTextRef.current);
+                        // TODO: redirect to search page on enter ?
+                        setRedirectSearchString(searchTextRef.current);
                       }
                     }
                   }}

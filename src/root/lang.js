@@ -3825,6 +3825,7 @@ export default {
   countryPlanNoCountryPlan: 'This country hasn\'t published any Country Plan yet!',
 
   //Search
+  searchIfrcSearchTitle: 'IFRC GO - Search Details',
   searchIfrcEmergencyOperations: 'IFRC Emergency Operations',
   searchIfrcEmergencies: 'Emergencies',
   searchIfrcEmergencyPlanningAndReportingDocuments: 'Emergency Planning And Reporting Documents',

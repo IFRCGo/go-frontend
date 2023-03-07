@@ -21,6 +21,10 @@ export interface EmergencyResult {
   funding_coverage: number;
   event_date: string;
   score: number;
+  countries: string;
+  countries_id: string;
+  iso: string;
+  crisis_categorization: string;
 }
 
 function emergencyKeySelector(emergency: EmergencyResult) {
@@ -67,7 +71,7 @@ function EmergencyTable(props: Props) {
   const columns = [
     createLinkColumn<EmergencyResult, number>(
       'name',
-      'Active Operations',
+      'Title',
       (emergency) => emergency.name,
       (emergency) => ({
         href: `/emergencies/${emergency.id}`,
@@ -92,7 +96,22 @@ function EmergencyTable(props: Props) {
     createStringColumn<EmergencyResult, number>(
       'funding_coverage',
       'Funding Coverage',
-      showProgressBar)
+      showProgressBar
+    ),
+    createLinkColumn<EmergencyResult, number>(
+      'countries',
+      'Country',
+      (emergency) => emergency.countries,
+      (emergency) => ({
+        href: `/countries/${emergency.countries_id}`,
+        variant: 'table',
+      })
+    ),
+    createStringColumn<EmergencyResult, number>(
+      'crisis_categorization',
+      'Crisis Categorization',
+      (emergency) => emergency.crisis_categorization,
+    ),
   ];
 
   if (!data) {

@@ -34,11 +34,13 @@ function RegionList(props: Props) {
 
   return (
     <Container
-      heading={strings.searchIfrcRegion}
       actions={actions}
       sub
       contentClassName={styles.regionList}
     >
+      <div className={styles.searchTitle}>
+        {strings.searchIfrcRegion}
+      </div>
       {data.map((region) => (
         <Link
           href={`/regions/${region.id}`}

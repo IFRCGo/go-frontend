@@ -1,12 +1,28 @@
 @import '~styles/settings/variables';
 
-.card_box_container--op {
-  @include flex;
+.button--capsule-operation-card {
+  font-size: $font-size-md;
+}
+.card_box_content{
+  display: flex;
+  justify-content: space-between;
+
+  > a {
+    width: 100%;
+  }
+}
+
+.card_box_title {
+  padding: $spacing ($spacing * 1.5);
+  width: 100%;
+  height: 6.37rem;
 }
 
 .card_box {
-  width: 100%;
-  height: 6.5rem;
+
+  &:hover {
+    box-shadow: 0 1px 1px -1px rgba(0, 0, 0, 0.2), 0 1px 4px 0 rgba(0, 0, 0, 0.12), 0 2px 3px 0 rgba(0, 0, 0, 0.14);
+  };
 }
 
 .card_box, .card_box_footer {
@@ -22,11 +38,12 @@
 }
 
 .card__title {
-  line-height: 1.5;
+  height: 2rem;
+  line-height: 1;
 }
 
 .card_box_no {
-  color: $grey-soot;
+  color: $grey-coal;
   font-weight: $base-font-semi-bold;
   font-size: 1.2rem;
   line-height: 1.2;
@@ -40,7 +57,13 @@
   }
 }
 
+.card_box_left_top {
+  height: 6.37rem;
+  border-bottom: 1px solid $base-border-color--light;
+}
+
 .card_box_left {
+  height: 4.7rem;
   border-bottom: 1px solid $base-border-color--light;
 }
 
@@ -98,7 +121,6 @@
 }
 
 .card_box--op {
-  width: 50%;
 
   &:first-of-type {
     border-inline-end: 1px solid $base-border-color--light;
@@ -108,6 +130,7 @@
 .card_box--op, .card_box_footer {
   .heading-tiny {
     font-size: $font-size-sm;
+    color: $grey-coal;
   }
 }
 
@@ -116,7 +139,7 @@
 }
 
 .card_box_fc {
-  color: $black;
+  color: $grey-coal;
   text-align: inline-end;
-  font-weight: $base-font-medium;
+  font-size: $font-size-sm;
 }
