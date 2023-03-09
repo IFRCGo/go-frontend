@@ -50,5 +50,38 @@
       padding: $spacing 0;
       border-bottom: $base-border-width solid $base-border-color--light;
     }
+
+    .ppp {
+      text-align: center;
+    }
+
+    .ppp-title {
+      margin-top: 3rem;
+      padding-top: 4rem;
+      padding-bottom: 2rem;
+      font-size: 2rem;
+      line-height: 2.25rem;
+    }
+
+    .ppp-description {
+      width: 50%;
+      margin-left: 25%;
+      padding-bottom: 3rem;
+    }
+
+    .ppp1 {
+      display: flex;
+    }
+
+    .ppp2 {
+      width: 100%;
+      margin-left: 5%;
+    }
+
+    .ppp-iframe {
+      border: 0px;
+      width: 1050px;
+      height: 840px;
+    }
   }
 }
