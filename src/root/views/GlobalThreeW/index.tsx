@@ -295,14 +295,17 @@ function GlobalThreeW(props: Props) {
         {nsProjectsPending && <BlockLoading className={styles.mapLoading} />}
         <Map projectList={ongoingProjectStats} />
         <div className={styles.ppp}>
-          <div className={styles.pppLeft}>
-          <iframe
-              className={styles.pppIframe}
-              src="https://public.tableau.com/views/PPPdashboard_DRAFT/1_OVERVIEW?:language=en-US&amp;:display_count=n&amp;:origin=viz_share_link?:embed=yes&amp;:display_count=yes&amp;:showVizHome=no&amp;:toolbar=yes"
-          >
-          </iframe>
+          <h1  className={styles.pppTitle}>{strings.PPPMapTitle}</h1>
+          <p className={styles.pppDescription}>{strings.PPPMapDescription}</p>
+          <div className={styles.ppp1}>
+            <div className={styles.ppp2}>
+            <iframe
+                className={styles.pppIframe}
+                src="https://public.tableau.com/views/PPPdashboard_DRAFT/1_OVERVIEW?:language=en-US&amp;:display_count=n&amp;:origin=viz_share_link?:embed=yes&amp;:display_count=yes&amp;:showVizHome=no&amp;:toolbar=yes"
+            >
+            </iframe>
+            </div>
           </div>
-          <div><br/><h3>{strings.globalThreeWPPPMapTitle}</h3><p>{strings.globalThreeWPPPMapDescription}</p></div>
         </div>
       </Container>
     </Page>
