@@ -50,5 +50,19 @@
       padding: $spacing 0;
       border-bottom: $base-border-width solid $base-border-color--light;
     }
+
+    .ppp {
+      display: flex;
+    }
+
+    .ppp-left {
+      width: 100%;
+    }
+
+    .ppp-iframe {
+      border: 0px;
+      width: 1050px;
+      height: 840px;
+    }
   }
 }
