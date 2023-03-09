@@ -219,9 +219,8 @@ function Search(props: Props) {
           const truncatedData = data.slice(0, MAX_VIEW_PER_SECTION);
 
           return (
-            <Container>
+            <Container key={score.key}>
               <Component
-                key={score.key}
                 data={truncatedData}
                 actions={data.length > MAX_VIEW_PER_SECTION && (
                   <Button

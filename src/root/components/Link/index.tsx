@@ -27,7 +27,6 @@ function Link(props: Props) {
     ...otherProps
   } = props;
 
-  console.warn('classname', classNameFromProps);
   const isExternalLink = React.useMemo(() => (
     href
     && typeof href === 'string'

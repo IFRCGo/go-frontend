@@ -21,7 +21,7 @@ const OperationCard = ({
   followOperation,
   unfollowOperation,
   countryList,
-  activeDeployment,
+  // activeDeployment,
   severityLevel,
   severityLevelDisplay,
   countryName,
@@ -172,8 +172,7 @@ const OperationCard = ({
         </Link>
       </div>
 
-      {/*
-      //Note: Client wants to add this code in future when they have many emergencies with reported activities
+      {/* Note: We'll add this code in future when we have enough emergencies with reported activities
        <div className='card_box_content'>
         <Link to={`/emergencies/${operationId}#reports`}>
           <div className='card_box_container card_box_container--op'>
