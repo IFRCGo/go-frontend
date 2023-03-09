@@ -23,3 +23,9 @@
     }
   }
 }
+
+.project-date {
+  display: flex;
+  gap: $spacing - 10;
+  flex-wrap: wrap;
+}

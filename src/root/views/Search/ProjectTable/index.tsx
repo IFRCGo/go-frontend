@@ -12,6 +12,7 @@ import Table from '#components/Table';
 import ReducedListDisplay from '#components/ReducedListDisplay';
 
 import styles from './styles.module.scss';
+import DateOutput from '#components/DateOutput';
 
 export interface ProjectResult {
   id: number;
@@ -74,7 +75,13 @@ function ProjectTable(props: Props) {
     createStringColumn<ProjectResult, number>(
       'start_date',
       'Start-End Dates',
-      (project) =>  `${project.start_date} - ${project.end_date}`,
+      (project) => (
+        <div className={styles.projectDate}>
+          <DateOutput value={project.start_date} />
+          -
+          <DateOutput value={project.end_date} />
+        </div>
+      ),
     ),
     createStringColumn<ProjectResult, number>(
       'regions',

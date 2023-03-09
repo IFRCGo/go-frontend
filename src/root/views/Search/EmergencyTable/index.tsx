@@ -12,6 +12,7 @@ import ProgressBar from '#components/ProgressBar';
 import { round } from '#utils/format';
 
 import styles from './styles.module.scss';
+import DateOutput from '#components/DateOutput';
 
 export interface EmergencyResult {
   id: number;
@@ -19,11 +20,13 @@ export interface EmergencyResult {
   funding_requirements: number;
   name: string;
   funding_coverage: number;
+  start_date: string;
   event_date: string;
   score: number;
   countries: string;
   countries_id: string;
   iso: string;
+  appeal_type: string;
   crisis_categorization: string;
 }
 
@@ -77,6 +80,16 @@ function EmergencyTable(props: Props) {
         href: `/emergencies/${emergency.id}`,
         variant: 'table',
       })
+    ),
+    createStringColumn<EmergencyResult, number>(
+      'start_date',
+      'Start Date',
+      (emergency) => <DateOutput value={emergency.start_date}/>,
+    ),
+    createStringColumn<EmergencyResult, number>(
+      'appeal_type',
+      'Appeal Type',
+      (emergency) => emergency.appeal_type,
     ),
     createStringColumn<EmergencyResult, number>(
       'disaster_type',

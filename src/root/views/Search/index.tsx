@@ -225,6 +225,7 @@ function Search(props: Props) {
                 data={truncatedData}
                 actions={data.length > MAX_VIEW_PER_SECTION && (
                   <Button
+                    className={styles.viewAll}
                     name={score.key}
                     variant="transparent"
                     onClick={setActiveView}
