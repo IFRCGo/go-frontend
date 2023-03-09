@@ -3079,6 +3079,8 @@ export default {
   globalThreeWChartProgrammeTypeTitle: 'Programme Type',
   globalThreeWChartTopTagsTitle: 'Top Tags',
   globalThreeWMapHeading: 'NS with ongoing projects',
+  globalThreeWPPPMapTitle: 'Pilot Programmatic Partnership (PPP) dashboard',
+  globalThreeWPPPMapDescription: 'The Programmatic Partnership is an innovative and ambitious three-year partnership between the IFRC, many of our member National Societies, and the European Union. Together, we support communities worldwide to reduce their risks and be better prepared for disasters and health emergencies.',
 
   allThreeWPageTitle: 'IFRC GO - All 3W',
   allThreeWPageHeading: 'All 3W Projects ({count})',
