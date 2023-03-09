@@ -6,4 +6,7 @@
   &.table {
     font-weight: $base-font-medium;
   }
+  &:hover {
+    color: $primary-color;
+  }
 }

@@ -21,13 +21,12 @@ export interface SurgeAlertResult {
   event_name: string;
   country: string | null;
   country_id: string | null;
-  start_date: string;
+  start_date: string | null;
   alert_date: string | null;
   score: number;
   event_id: number;
   status: string;
   deadline: string;
-  surge_type: string;
 }
 
 function surgeAlertKeySelector(surgeAlert: SurgeAlertResult) {
@@ -85,10 +84,14 @@ function SurgeAlertTable(props: Props) {
       'Keywords',
       (surgeAlert) => surgeAlert.keywords?.join(', '),
     ),
-    createStringColumn<SurgeAlertResult, number>(
-      'surge_type',
-      'Surge Type',
-      (surgeAlert) => surgeAlert.surge_type,
+    createLinkColumn<SurgeAlertResult, number>(
+      'event_name',
+      'Emergency',
+      (surgeAlert) => surgeAlert.event_name,
+      (surgeAlert) => ({
+        href: `emergencies/${surgeAlert.event_id}`,
+        variant: 'table',
+      })
     ),
     createLinkColumn<SurgeAlertResult, number>(
       'country',
