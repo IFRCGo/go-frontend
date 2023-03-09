@@ -21,7 +21,7 @@ const OperationCard = ({
   followOperation,
   unfollowOperation,
   countryList,
-  activeDeployment,
+  // activeDeployment,
   severityLevel,
   severityLevelDisplay,
   countryName,
@@ -172,7 +172,8 @@ const OperationCard = ({
         </Link>
       </div>
 
-      <div className='card_box_content'>
+      {/* Note: We'll add this code in future when we have enough emergencies with reported activities
+       <div className='card_box_content'>
         <Link to={`/emergencies/${operationId}#reports`}>
           <div className='card_box_container card_box_container--op'>
             <div className='card_box card_box_left card_box--op'>
@@ -208,7 +209,8 @@ const OperationCard = ({
             </small>
           </div>
         </Link>
-      </div>
+      </div> 
+      */}
     </div>
   );
 };

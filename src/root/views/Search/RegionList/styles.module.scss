@@ -23,5 +23,9 @@
     font-size: $base-font-size;
     padding: $spacing 0;
     border-bottom: $base-border-width solid $base-border-color;
+
+    &:hover {
+      text-decoration: underline;
+    }
   }
 }

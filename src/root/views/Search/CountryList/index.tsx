@@ -43,16 +43,14 @@ function CountryList(props: Props) {
         {strings.searchIfrcCountry}
       </div>
       {data.map((country) => (
-        <>
-          <Link
-            href={`/countries/${country.id}`}
-            className={styles.countryName}
-            key={country.id}
-          >
-            {country.name}
-            <IoChevronForwardOutline />
-          </Link>
-        </>
+        <Link
+          href={`/countries/${country.id}`}
+          className={styles.countryName}
+          key={country.id}
+        >
+          {country.name}
+          <IoChevronForwardOutline />
+        </Link>
       ))}
     </Container>
   );
