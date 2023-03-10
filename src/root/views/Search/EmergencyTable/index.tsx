@@ -2,17 +2,18 @@ import React from 'react';
 import { isDefined, _cs } from '@togglecorp/fujs';
 
 import LanguageContext from '#root/languageContext';
+import { round } from '#utils/format';
+
 import Container from '#components/Container';
 import {
   createLinkColumn,
   createStringColumn,
 } from '#components/Table/predefinedColumns';
+import DateOutput from '#components/DateOutput';
 import Table from '#components/Table';
 import ProgressBar from '#components/ProgressBar';
-import { round } from '#utils/format';
 
 import styles from './styles.module.scss';
-import DateOutput from '#components/DateOutput';
 
 export interface EmergencyResult {
   id: number;
@@ -38,6 +39,7 @@ interface Props {
   className?: string;
   data: EmergencyResult[] | undefined;
   actions: React.ReactNode;
+  name?: string; 
 }
 
 function EmergencyTable(props: Props) {

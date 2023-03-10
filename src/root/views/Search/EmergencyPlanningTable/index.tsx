@@ -85,7 +85,7 @@ function EmergencyPlanningTable(props: Props) {
   return (
     <Container
       className={_cs(styles.emergencyPlanningTable, className)}
-      heading={strings.searchIfrcEmergencyPlanningAndReportingDocuments}
+      heading={strings.searchIfrcEmergencyPlanningAndReporting}
       contentClassName={styles.content}
       sub
       actions={actions}

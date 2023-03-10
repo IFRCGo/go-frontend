@@ -1,22 +1,33 @@
 @import '~styles/settings/variables';
 
 .search {
-  .input-section {
-    padding: 0 $spacing !important;
-    margin: 0 !important;
-    box-shadow: unset;
-    overflow-y: visible;
 
-    >* {
-      background-color: none;
-      border-bottom: 1px solid grey;
+  .reset {
+    display: flex;
+    justify-content: space-between;
+
+    .reset-button {
+      background: none;
+      border: none;
+    }
+
+    .input-section {
+      padding: 0 $spacing !important;
+      margin: 0 !important;
+      box-shadow: unset;
+      overflow-y: visible;
+
+      >* {
+        background-color: none;
+        border-bottom: 1px solid grey;
+      }
     }
   }
 
   .content {
     display: flex;
     flex-direction: column;
-    gap: $spacing * 5;
+    gap: $spacing * 4;
     padding: 0;
   }
 
