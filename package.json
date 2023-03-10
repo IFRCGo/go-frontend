@@ -103,6 +103,7 @@
   },
   "dependencies": {
     "@brainhubeu/react-carousel": "^1.13.40",
+    "@mapbox/geo-viewport": "^0.5.0",
     "@mapbox/mapbox-gl-draw": "^1.2.0",
     "@react-pdf/renderer": "^2.0.21",
     "@tinymce/tinymce-react": "^3.13.1",
@@ -116,6 +117,7 @@
     "@turf/buffer": "^6.5.0",
     "@turf/centroid": "^6.0.2",
     "@turf/turf": "^6.5.0",
+    "@types/mapbox__geo-viewport": "^0.4.1",
     "@types/react-helmet": "^6.1.1",
     "@types/react-pdf": "^5.0.9",
     "@types/react-redux": "^5.0.6",
