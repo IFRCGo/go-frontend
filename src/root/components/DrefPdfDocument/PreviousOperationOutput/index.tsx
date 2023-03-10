@@ -90,7 +90,7 @@ function PreviousOperationOutput(props: Props) {
           <Text>{data?.ns_request_text ?? '-'}</Text>
         </View>
       </View>
-      {emptyRecurrentText && (
+      {!emptyRecurrentText && (
         <View style={pdfStyles.row}>
           <View style={[
             pdfStyles.cellTitle,
@@ -108,7 +108,7 @@ function PreviousOperationOutput(props: Props) {
           </View>
         </View>
       )}
-      {emptyLessonsLearned && (
+      {!emptyLessonsLearned && (
         <View style={pdfStyles.row}>
           <View style={[
             pdfStyles.cellTitle,
@@ -118,7 +118,7 @@ function PreviousOperationOutput(props: Props) {
               style={pdfStyles.fontWeightBold}
               minPresenceAhead={10}
             >
-              {strings.drefFormLessonsLearnedDescription}
+              {strings.drefFormLessonsLearnedTitle}
             </Text>
             <Text>
               {data?.lessons_learned}
