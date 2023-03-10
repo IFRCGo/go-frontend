@@ -1,3 +1,9 @@
+### Release 6.4.4 - Hotfix for DREF export (Missing Lesson Learned)
+Date: 2023-03-10
+
+Frontend:
+ - Fix DREF export for missing lesson learned section
+
 ### Release 6.4.3 - Hotfix for DREF export
 Date: 2023-03-03
 
