@@ -35,11 +35,13 @@ function ProvinceList(props: Props) {
 
   return (
     <Container
-      heading={strings.searchIfrcProvince}
       actions={actions}
       sub
       contentClassName={styles.provinceList}
     >
+      <div className={styles.searchTitle}>
+        {strings.searchIfrcProvince}
+      </div>
       {data.map((district) => (
         <div
           key={district.id}

@@ -1,13 +1,12 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { _cs, isDefined, mapToList } from '@togglecorp/fujs';
 import { Redirect } from 'react-router-dom';
 import { MdSearch, MdSearchOff } from 'react-icons/md';
 import { IoSearch, IoChevronForward, IoChevronBack } from 'react-icons/io5';
-
+import { MdOutlineCancel } from 'react-icons/md';
 import LanguageContext from '#root/languageContext';
 import Page from '#components/Page';
 import Container from '#components/Container';
-import TextInput from '#components/TextInput';
 import Button from '#components/Button';
 import BlockLoading from '#components/block-loading';
 import useInputState from '#hooks/useInputState';
@@ -27,6 +26,7 @@ import RegionList, { RegionResult } from './RegionList';
 import ProvinceList, { ProvinceResult } from './ProvinceList';
 
 import styles from './styles.module.scss';
+import SearchInput from '#components/SearchInput';
 
 export type SearchResult = {
   countries: CountryResult[];
@@ -62,6 +62,35 @@ function Search(props: Props) {
     searchString?.trim(),
     500,
   );
+
+  function handleSearchInputChange (searchString: any) {
+    setSearchString(searchString.target.value);
+  }
+  function handleClearSearchInput() {
+    setSearchString('');
+  }
+
+  const viewAllStringMap: Record<ResultKeys, string> = useMemo(() => ({
+    provinces: strings.searchViewAllProvince,
+    regions: strings.searchViewAllRegions,
+    countries: strings.searchViewAllCountries,
+    emergencies: strings.searchViewAllEmergencies,
+    emergencyPlannings: strings.searchViewAllEmergenciesPlansAndReportingDocuments,
+    projects: strings.searchViewAllProjects,
+    surgeAlerts: strings.searchViewAllSurgeAlerts,
+    surgeDeployments: strings.searchViewAllSurgeDeployments,
+    fieldReports: strings.searchViewAllFieldReports,
+  }), [
+    strings.searchViewAllProvince,
+    strings.searchViewAllRegions,
+    strings.searchViewAllCountries,
+    strings.searchViewAllEmergencies,
+    strings.searchViewAllEmergenciesPlansAndReportingDocuments,
+    strings.searchViewAllProjects,
+    strings.searchViewAllSurgeAlerts,
+    strings.searchViewAllSurgeDeployments,
+    strings.searchViewAllFieldReports,
+  ]);
 
   React.useEffect(() => {
     setSearchString(urlSearchValue);
@@ -157,15 +186,29 @@ function Search(props: Props) {
       heading="Search for keyword"
       withMainContentBackground
       description={(
-        <TextInput
-          className={styles.inputSection}
-          icons={<IoSearch />}
-          type="search"
-          name="search"
-          value={searchString}
-          onChange={setSearchString}
-          placeholder="Enter at least 3 characters"
-        />
+        <div className={styles.reset}>
+          <SearchInput
+            className={styles.inputSection}
+            icons={<IoSearch />}
+            type="search"
+            name="search"
+            value={searchString}
+            onChange={setSearchString}
+            onClick={handleClearSearchInput}
+            placeholder="Enter at least 3 characters"
+          />
+          {searchString &&
+            <button
+              className={styles.resetButton}
+              onClick={handleClearSearchInput}
+              onChange={handleSearchInputChange}
+            >
+              {<MdOutlineCancel
+                size={16}
+              />}
+            </button>
+          }
+        </div>
       )}
     >
       {searchPending && <BlockLoading />}
@@ -198,6 +241,7 @@ function Search(props: Props) {
             data={resultsMap[activeView]}
             actions={(
               <Button
+                className={styles.viewAll}
                 name={undefined}
                 variant="transparent"
                 onClick={setActiveView}
@@ -230,7 +274,7 @@ function Search(props: Props) {
                     onClick={setActiveView}
                     actions={<IoChevronForward />}
                   >
-                    {strings.searchViewAllDocuments}
+                    {viewAllStringMap[score.key]}
                   </Button>
                 )}
               />
