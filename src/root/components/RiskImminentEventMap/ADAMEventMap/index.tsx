@@ -1,7 +1,6 @@
 import React from 'react';
 import Map,
 {
-  MapBounds,
   MapContainer,
   MapLayer,
   MapSource,
@@ -12,19 +11,20 @@ import {
   isDefined,
   isNotDefined,
   listToMap,
+  noOp,
   _cs,
 } from '@togglecorp/fujs';
 import { LngLat } from 'mapbox-gl';
 import {
   defaultMapOptions,
   defaultMapStyle,
-  COLOR_YELLOW,
-  COLOR_BLUE,
   COLOR_BLACK,
   COLOR_WHITE,
-  fixBounds,
   defaultTooltipOptions,
-  COLOR_ORANGE,
+  ADAM_COlOR_ORANGE,
+  ADAM_COlOR_GREEN,
+  ADAM_COlOR_RED,
+  ADAM_COlOR_CONES,
 } from '#utils/map';
 import {
   geoJsonSourceOptions,
@@ -41,6 +41,7 @@ import {
 import GoMapDisclaimer from '#components/GoMapDisclaimer';
 import { ADAMEvent, ImminentHazardTypes } from '#types/risk';
 import { BBOXType } from '#utils/map';
+import MapEaseTo from '#components/MapEaseTo';
 
 import Sidebar from './Sidebar';
 import PointDetails from './PointDetails';
@@ -53,24 +54,22 @@ const alertLevelFillColorPaint = [
   'match',
   ['get', 'alert_level'],
   'Orange',
-  COLOR_ORANGE,
+  ADAM_COlOR_ORANGE,
   'Green',
-  COLOR_YELLOW,
+  ADAM_COlOR_GREEN,
+  'Red',
+  ADAM_COlOR_RED,
   'Cones',
-  COLOR_BLUE,
-  'Information',
-  COLOR_BLUE,
+  ADAM_COlOR_CONES,
   COLOR_BLACK,
 ];
 
 const mapPadding = {
-  left: 50,
-  top: 50,
-  right: 250,
+  left: 0,
+  top: 0,
+  right: 360,
   bottom: 50,
 };
-
-const noOp = () => { };
 
 const MAP_BOUNDS_ANIMATION_DURATION = 1800;
 
@@ -94,9 +93,9 @@ function ADAMEventMap(props: Props) {
   } = props;
 
   const [
-    hazardIconLoadedStatusMap,
-    setHazardIconLoadedStatusMap,
-  ] = React.useState<Record<ImminentHazardTypes, boolean>>({
+  hazardIconLoadedStatusMap,
+  setHazardIconLoadedStatusMap,
+] = React.useState<Record<ImminentHazardTypes, boolean>>({
     EQ: false,
     FL: false,
     CY: false,
@@ -141,7 +140,7 @@ function ADAMEventMap(props: Props) {
     };
   }, [activeEventUuid, hazardList]);
 
-  const bounds = React.useMemo(
+  const boundsBoxPoints = React.useMemo(
     () => {
       if (isNotDefined(activeEvent)
         || isNotDefined(activeEventPopUpDetails)
@@ -154,13 +153,13 @@ function ADAMEventMap(props: Props) {
         activeEvent.event_details.latitude,
       ]);
 
-      const pointBuffer = turfBuffer(point, 500, { units: 'kilometers' });
+      // const pointBuffer = turfBuffer(point, 500, { units: 'kilometers' });
       const stormPoints = activeEventPopUpDetails.hazardDetails.storm_position_geojson ?? [];
 
       const geojson = {
         type: 'FeatureCollection',
         features: [
-          pointBuffer,
+          point,
           ...(stormPoints.features ?? []),
           stormPoints ? ({
             type: 'Feature',
@@ -172,7 +171,7 @@ function ADAMEventMap(props: Props) {
         ].filter(isDefined),
       };
 
-      return fixBounds(turfBbox(geojson) as BBOXType);
+      return turfBbox(geojson) as BBOXType;
     },
     [
       defaultBounds,
@@ -211,6 +210,8 @@ function ADAMEventMap(props: Props) {
 
   }, [hazardList]);
 
+  const trackDate = React.useCallback((date) => new Date(date)?.toLocaleDateString(),[]);
+
   const stormPosition = React.useMemo(
     () => {
       if (isNotDefined(activeEventPopUpDetails)) {
@@ -219,6 +220,7 @@ function ADAMEventMap(props: Props) {
           features: [],
         };
       }
+
 
       const stormPoints = activeEventPopUpDetails?.hazardDetails.storm_position_geojson;
 
@@ -236,11 +238,12 @@ function ADAMEventMap(props: Props) {
           properties: {
             ...feature.properties,
             type: feature.geometry.type,
+            track_date: trackDate(feature?.properties?.track_date),
           },
         })),
       };
     },
-    [activeEventPopUpDetails]);
+    [activeEventPopUpDetails, trackDate]);
 
   const allIconsLoaded = React.useMemo(() => (
     Object.values(hazardIconLoadedStatusMap).every(d => d)
@@ -260,15 +263,15 @@ function ADAMEventMap(props: Props) {
   const handlePointMouseClick = React.useCallback((
     feature: mapboxgl.MapboxGeoJSONFeature,
   ) => {
-    const uuid = feature?.properties?.hazardUuid;
-    if (isDefined(uuid) && activeEventUuid !== uuid) {
-      onActiveEventChange(uuid);
-    } else {
-      onActiveEventChange(undefined);
-    }
+      const uuid = feature?.properties?.hazardUuid;
+      if (isDefined(uuid) && activeEventUuid !== uuid) {
+        onActiveEventChange(uuid);
+      } else {
+        onActiveEventChange(undefined);
+      }
 
-    return false;
-  }, [activeEventUuid, onActiveEventChange]);
+      return false;
+    }, [activeEventUuid, onActiveEventChange]);
 
   const handlePointClose = React.useCallback(() => {
     if (onActiveEventChange) {
@@ -280,7 +283,7 @@ function ADAMEventMap(props: Props) {
     type: 'fill',
     paint: {
       'fill-color': alertLevelFillColorPaint,
-      'fill-opacity': 0.3,
+      'fill-opacity': 0.8,
     },
     filter: ['==', ['get', 'type'], 'MultiPolygon'],
   }), []);
@@ -316,7 +319,7 @@ function ADAMEventMap(props: Props) {
 
       {stormPosition && (
         <MapSource
-          sourceKey='maine'
+          sourceKey='type'
           sourceOptions={geoJsonSourceOptions}
           geoJson={stormPosition}
         >
@@ -327,7 +330,7 @@ function ADAMEventMap(props: Props) {
               paint: {
                 'circle-color': alertLevelFillColorPaint,
                 'circle-radius': 6,
-                'circle-opacity': 0.5,
+                'circle-opacity': 0.8,
               },
               filter: ['==', ['get', 'type'], 'Point'],
             }}
@@ -345,10 +348,12 @@ function ADAMEventMap(props: Props) {
               layout: {
                 // FIXME: check the actual problem here
                 // @ts-ignore
-                'text-size': 10,
+                'text-size': 12,
                 'text-field': ['get', 'track_date'],
                 'text-anchor': 'left',
                 'text-offset': [1, 0],
+                'symbol-z-order': 'source',
+                'text-max-width': 20,
               },
               filter: ['==', ['get', 'type'], 'Point'],
             }}
@@ -357,6 +362,8 @@ function ADAMEventMap(props: Props) {
             layerKey="hazard-footprint-polygon"
             layerOptions={footprintLayerOptions}
           />
+
+          {/* Note: show flow icons */}
           <MapLayer
             layerKey="cyclone-tracks-arrow"
             layerOptions={{
@@ -376,6 +383,8 @@ function ADAMEventMap(props: Props) {
               filter: ['==', ['get', 'type'], 'MultiLineString'],
             }}
           />
+
+          {/* Note: for boundry line */}
           <MapLayer
             layerKey="cyclone-tracks-linestring-line"
             layerOptions={{
@@ -460,8 +469,8 @@ function ADAMEventMap(props: Props) {
         </MapTooltip>
       )}
 
-      <MapBounds
-        bounds={bounds}
+      <MapEaseTo
+        bounds={boundsBoxPoints}
         padding={mapPadding}
         duration={MAP_BOUNDS_ANIMATION_DURATION}
       />

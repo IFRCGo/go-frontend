@@ -1696,6 +1696,13 @@
   resolved "https://registry.yarnpkg.com/@mapbox/extent/-/extent-0.4.0.tgz#3e591f32e1f0c3981c864239f7b0ac06e610f8a9"
   integrity sha1-PlkfMuHww5gchkI597CsBuYQ+Kk=
 
+"@mapbox/geo-viewport@^0.5.0":
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/@mapbox/geo-viewport/-/geo-viewport-0.5.0.tgz#5e3b4ef19ed113169d168eec9c60840e430c52a6"
+  integrity sha512-h0b10JU+lSxw8/TLXGdzcVTPxMN9Ikv0os8sCo0OAHXUiSDkQs5fx4WWLJeQTnC++qaGFl6/Ssr+H5N6NIvE5g==
+  dependencies:
+    "@mapbox/sphericalmercator" "^1.2.0"
+
 "@mapbox/geojson-area@^0.2.2":
   version "0.2.2"
   resolved "https://registry.yarnpkg.com/@mapbox/geojson-area/-/geojson-area-0.2.2.tgz#18d7814aa36bf23fbbcc379f8e26a22927debf10"
@@ -1766,6 +1773,11 @@
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/@mapbox/point-geometry/-/point-geometry-0.1.0.tgz#8a83f9335c7860effa2eeeca254332aa0aeed8f2"
   integrity sha1-ioP5M1x4YO/6Lu7KJUMyqgru2PI=
+
+"@mapbox/sphericalmercator@^1.2.0":
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/@mapbox/sphericalmercator/-/sphericalmercator-1.2.0.tgz#55d4896be906bfff859e22a1d72267329a0fff90"
+  integrity sha512-ZTOuuwGuMOJN+HEmG/68bSEw15HHaMWmQ5gdTsWdWsjDe56K1kGvLOK6bOSC8gWgIvEO0w6un/2Gvv1q5hJSkQ==
 
 "@mapbox/tiny-sdf@^1.1.1":
   version "1.2.5"
@@ -3678,6 +3690,11 @@
   integrity sha512-sv69WkijddNCIdLLyUsG90+X3Lh67a26lKsqaL8WbmXMkWITDrshe+sc9BI8oUV7sh+XD0jraI3qBe0NtJs7dw==
   dependencies:
     "@types/geojson" "*"
+
+"@types/mapbox__geo-viewport@^0.4.1":
+  version "0.4.1"
+  resolved "https://registry.yarnpkg.com/@types/mapbox__geo-viewport/-/mapbox__geo-viewport-0.4.1.tgz#77cc476c40fcbc168dceb0e0f85cb486402191a9"
+  integrity sha512-aW7Orm58KsT9KmpZb1sqM2l/KufsS1IUsL1RCplVLfUIbpTk3PYkpOat3CN7jA8KcO1w1TuNFapn0g+/rASWzQ==
 
 "@types/minimatch@*":
   version "3.0.5"

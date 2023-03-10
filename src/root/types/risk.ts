@@ -98,7 +98,7 @@ export interface ADAMEventExposure {
   population_impact: number;
   country: number | null;
   alert_sent: boolean;
-  alert_level: 'Orange' | 'Green' | 'Cones' | 'Information' | null;
+  alert_level: 'Red' | 'Orange' | 'Green' | 'Cones' | null;
   from_date: string;
   to_date: string;
   wind_speed: number;
@@ -131,5 +131,8 @@ export interface ADAMEvent {
   geojson: GeoJSON.Feature<GeoJSON.Point>;
 
   // TODO: add properties here
-  storm_position_geojson: GeoJSON.FeatureCollection<GeoJSON.Geometry, {}>;
+  storm_position_geojson: GeoJSON.FeatureCollection<GeoJSON.Geometry, {
+    track_date?: string;
+    alert_level: 'Red' | 'Orange' | 'Green' | 'Cones' | null;
+  }>;
 }
