@@ -1,7 +1,6 @@
 @import '~styles/settings/variables';
 
 .search {
-
   .reset {
     display: flex;
     justify-content: space-between;
@@ -9,18 +8,6 @@
     .reset-button {
       background: none;
       border: none;
-    }
-
-    .input-section {
-      padding: 0 $spacing !important;
-      margin: 0 !important;
-      box-shadow: unset;
-      overflow-y: visible;
-
-      >* {
-        background-color: none;
-        border-bottom: 1px solid grey;
-      }
     }
   }
 

@@ -9,7 +9,6 @@ import InputError from '#components/InputError';
 
 import styles from './styles.module.scss';
 
-
 export interface Props {
   className?: string;
   actions?: React.ReactNode;
@@ -21,6 +20,7 @@ export interface Props {
   readOnly?: boolean;
   input: React.ReactNode;
   errorOnTooltip?: boolean;
+  variant?: 'form' | 'general';
 }
 
 function InputContainer(props: Props) {
