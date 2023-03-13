@@ -6,6 +6,7 @@
   .input-section {
     display: flex;
     align-items: center;
+    border: $base-border-width solid $base-border-color;
     border-radius: $base-border-radius;
     transition: $duration-transition-medium border-color ease-in-out;
     z-index: 0;
@@ -33,10 +34,17 @@
     }
   }
 
-
   &.disabled {
     .input-section {
       opacity: .5;
+    }
+  }
+
+  &.general {
+    .input-section {
+      border: none;
+      border-radius: 0;
+      border-bottom: $base-border-width solid $base-border-color;
     }
   }
 

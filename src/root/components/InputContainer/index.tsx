@@ -35,6 +35,7 @@ function InputContainer(props: Props) {
     input,
     errorOnTooltip = false,
     hint,
+    variant,
   } = props;
 
   return (
@@ -46,11 +47,13 @@ function InputContainer(props: Props) {
         !!error && styles.errored,
         disabled && styles.disabled,
         readOnly && styles.readOnly,
+        variant === 'form' && styles.form,
+        variant === 'general' && styles.general,
       )}
       title={(errorOnTooltip && isDefined(error) && typeof error === 'string') ? error : undefined}
     >
       <InputLabel disabled={disabled}>
-        { label }
+        { label } 
       </InputLabel>
       <div
         className={_cs(
@@ -74,7 +77,7 @@ function InputContainer(props: Props) {
             'go-internal-input-container',
           )}
         >
-          { input}
+          { input }
         </div>
         {actions && (
           <div
