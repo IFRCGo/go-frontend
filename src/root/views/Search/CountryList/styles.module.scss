@@ -1,5 +1,9 @@
 @import '~styles/settings/variables';
 
+.header {
+  border-bottom: none !important;
+}
+
 .country-list {
   display: flex;
   flex-direction: column;

@@ -1,6 +1,5 @@
-import React, { useMemo } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import { _cs, isDefined, mapToList } from '@togglecorp/fujs';
-import { Redirect } from 'react-router-dom';
 import { MdSearch, MdSearchOff } from 'react-icons/md';
 import { IoSearch, IoChevronForward, IoChevronBack } from 'react-icons/io5';
 import { MdOutlineCancel } from 'react-icons/md';
@@ -63,12 +62,12 @@ function Search(props: Props) {
     500,
   );
 
-  function handleSearchInputChange (searchString: any) {
-    setSearchString(searchString.target.value);
-  }
-  function handleClearSearchInput() {
+  const handleSearchInputChange = useCallback((debouncedSearchString) => {
+    setSearchString(debouncedSearchString.target.value);
+  }, []);
+  const handleClearSearchInput = useCallback(() => {
     setSearchString('');
-  }
+  }, []);
 
   const viewAllStringMap: Record<ResultKeys, string> = useMemo(() => ({
     provinces: strings.searchViewAllProvince,
@@ -177,7 +176,6 @@ function Search(props: Props) {
 
   const ActiveComponent = activeView ? componentMap[activeView] : undefined;
   const redirectSearchString = isDefined(debouncedSearchString) ? `?${URL_SEARCH_KEY}=${window.encodeURI(debouncedSearchString)}` : undefined;
-  const currentSearchString = window.location.search;
 
   return (
     <Page
@@ -194,17 +192,16 @@ function Search(props: Props) {
             name="search"
             value={searchString}
             onChange={setSearchString}
-            onClick={handleClearSearchInput}
             placeholder="Enter at least 3 characters"
           />
-          {searchString &&
+          {debouncedSearchString &&
             <button
               className={styles.resetButton}
-              onClick={handleClearSearchInput}
               onChange={handleSearchInputChange}
             >
               {<MdOutlineCancel
                 size={16}
+                onClick={handleClearSearchInput}
               />}
             </button>
           }
@@ -226,14 +223,6 @@ function Search(props: Props) {
             </>
           )}
         </Container>
-      )}
-      {redirectSearchString !== currentSearchString && (
-        <Redirect
-          to={{
-            pathname: '/search',
-            search: redirectSearchString,
-          }}
-        />
       )}
       <div className={styles.content}>
         {activeView && ActiveComponent && (

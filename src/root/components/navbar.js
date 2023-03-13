@@ -176,7 +176,6 @@ function Navbar(props) {
                     if (e.which === 13) {
                       e.preventDefault();
                       if (searchTextRef.current?.trim().length > 2) {
-                        // TODO: redirect to search page on enter ?
                         setRedirectSearchString(searchTextRef.current);
                       }
                     }

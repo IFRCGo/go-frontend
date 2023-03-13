@@ -36,6 +36,7 @@ function CountryList(props: Props) {
   return (
     <Container
       actions={actions}
+      headerClassName={styles.header}
       sub
       contentClassName={styles.countryList}
     >
