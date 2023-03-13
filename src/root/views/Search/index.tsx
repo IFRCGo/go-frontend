@@ -61,9 +61,6 @@ function Search(props: Props) {
     500,
   );
 
-  const handleSearchInputChange = useCallback((debouncedSearchString) => {
-    setSearchString(debouncedSearchString.target.value);
-  }, []);
   const handleClearSearchInput = useCallback(() => {
     setSearchString('');
   }, []);
@@ -186,6 +183,7 @@ function Search(props: Props) {
         <TextInput
           className={styles.inputSection}
           icons={<IoSearch />}
+          variant='general'
           actions={(
             <Button
               name={undefined}
