@@ -1,8 +1,7 @@
 import React, { useCallback, useMemo } from 'react';
 import { _cs, isDefined, mapToList } from '@togglecorp/fujs';
 import { MdSearch, MdSearchOff } from 'react-icons/md';
-import { IoSearch, IoChevronForward, IoChevronBack } from 'react-icons/io5';
-import { MdOutlineCancel } from 'react-icons/md';
+import { IoSearch, IoChevronForward, IoChevronBack, IoCloseOutline } from 'react-icons/io5';
 import LanguageContext from '#root/languageContext';
 import Page from '#components/Page';
 import Container from '#components/Container';
@@ -25,7 +24,7 @@ import RegionList, { RegionResult } from './RegionList';
 import ProvinceList, { ProvinceResult } from './ProvinceList';
 
 import styles from './styles.module.scss';
-import SearchInput from '#components/SearchInput';
+import TextInput from '#components/TextInput';
 
 export type SearchResult = {
   countries: CountryResult[];
@@ -183,29 +182,24 @@ function Search(props: Props) {
       title={strings.searchIfrcSearchTitle}
       heading="Search for keyword"
       withMainContentBackground
-      description={(
-        <div className={styles.reset}>
-          <SearchInput
-            className={styles.inputSection}
-            icons={<IoSearch />}
-            type="search"
-            name="search"
-            value={searchString}
-            onChange={setSearchString}
-            placeholder="Enter at least 3 characters"
-          />
-          {debouncedSearchString &&
-            <button
-              className={styles.resetButton}
-              onChange={handleSearchInputChange}
+      description={debouncedSearchString && (
+        <TextInput
+          className={styles.inputSection}
+          icons={<IoSearch />}
+          actions={(
+            <Button
+              name={undefined}
+              variant="action"
+              onClick={handleClearSearchInput}
             >
-              {<MdOutlineCancel
-                size={16}
-                onClick={handleClearSearchInput}
-              />}
-            </button>
-          }
-        </div>
+              <IoCloseOutline />
+            </Button>
+          )}
+          name="search"
+          value={searchString}
+          onChange={setSearchString}
+          placeholder="Enter at least 3 characters"
+        />
       )}
     >
       {searchPending && <BlockLoading />}
