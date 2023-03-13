@@ -35,6 +35,7 @@ function RegionList(props: Props) {
   return (
     <Container
       actions={actions}
+      headerClassName={styles.header}
       sub
       contentClassName={styles.regionList}
     >
