@@ -464,8 +464,8 @@ export function isSimilarArray<T extends string | number>(
   return bList.every((b) => aMap[b]);
 }
 
-export function getSearchValue(key: string): string | undefined {
-  const { search } = window.location;
+export function getSearchValue(key: string, url = window.location): string | undefined {
+  const { search } = url;
 
   if (isNotDefined(search)) {
     return undefined;

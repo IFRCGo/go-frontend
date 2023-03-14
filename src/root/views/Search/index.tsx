@@ -1,5 +1,6 @@
 import React, { useCallback, useMemo } from 'react';
 import { _cs, isDefined, mapToList } from '@togglecorp/fujs';
+import { Redirect } from 'react-router-dom';
 import { MdSearch, MdSearchOff } from 'react-icons/md';
 import { IoSearch, IoChevronForward, IoChevronBack, IoCloseOutline } from 'react-icons/io5';
 import LanguageContext from '#root/languageContext';
@@ -44,26 +45,35 @@ type ResultKeys = 'provinces' | 'regions' | 'countries' | 'emergencies' | 'emerg
 interface Props {
   className?: string;
   data: SearchResult[] | undefined;
+  location: Location,
 }
 
 function Search(props: Props) {
-  const { className } = props;
-  const urlSearchValue = getSearchValue(URL_SEARCH_KEY);
+  const {
+    className,
+    location,
+  } = props;
+  const urlSearchValue = getSearchValue(URL_SEARCH_KEY, location);
+  const redirectSearchStringRef = React.useRef<string | undefined>(urlSearchValue);
 
   const [activeView, setActiveView] = React.useState<ResultKeys | undefined>();
   const [searchString, setSearchString] = useInputState<string | undefined>(
-    getSearchValue(URL_SEARCH_KEY)
+    urlSearchValue,
   );
 
   const { strings } = React.useContext(LanguageContext);
   const debouncedSearchString = useDebouncedValue(
     searchString?.trim(),
     500,
+    (newValue) => {
+      redirectSearchStringRef.current = newValue;
+      return newValue;
+    },
   );
 
   const handleClearSearchInput = useCallback(() => {
     setSearchString('');
-  }, []);
+  }, [setSearchString]);
 
   const viewAllStringMap: Record<ResultKeys, string> = useMemo(() => ({
     provinces: strings.searchViewAllProvince,
@@ -86,10 +96,6 @@ function Search(props: Props) {
     strings.searchViewAllSurgeDeployments,
     strings.searchViewAllFieldReports,
   ]);
-
-  React.useEffect(() => {
-    setSearchString(urlSearchValue);
-  }, [urlSearchValue, setSearchString]);
 
   const shouldSendSearchRequest = debouncedSearchString && debouncedSearchString.length > 2;
   const {
@@ -171,7 +177,7 @@ function Search(props: Props) {
   }, [searchResponse]);
 
   const ActiveComponent = activeView ? componentMap[activeView] : undefined;
-  const redirectSearchString = isDefined(debouncedSearchString) ? `?${URL_SEARCH_KEY}=${window.encodeURI(debouncedSearchString)}` : undefined;
+  const redirectSearchString = isDefined(redirectSearchStringRef.current) ? `?${URL_SEARCH_KEY}=${window.encodeURI(redirectSearchStringRef.current)}` : undefined;
 
   return (
     <Page
@@ -179,12 +185,12 @@ function Search(props: Props) {
       title={strings.searchIfrcSearchTitle}
       heading="Search for keyword"
       withMainContentBackground
-      description={debouncedSearchString && (
+      description={(
         <TextInput
           className={styles.inputSection}
           icons={<IoSearch />}
           variant='general'
-          actions={(
+          actions={debouncedSearchString && (
             <Button
               name={undefined}
               variant="action"
@@ -200,7 +206,15 @@ function Search(props: Props) {
         />
       )}
     >
-      {searchPending && <BlockLoading />}
+      {urlSearchValue !== debouncedSearchString && (
+        <Redirect
+          to={{
+            pathname: '/search',
+            search: redirectSearchString,
+          }}
+        />
+      )}
+      {searchPending && <Container><BlockLoading /></Container>}
       {!searchPending && isEmpty && (
         <Container contentClassName={styles.emptySearchContent}>
           {isDefined(debouncedSearchString) && debouncedSearchString.trim().length > 2 ? (
@@ -244,22 +258,21 @@ function Search(props: Props) {
           const truncatedData = data.slice(0, MAX_VIEW_PER_SECTION);
 
           return (
-            <Container key={score.key}>
-              <Component
-                data={truncatedData}
-                actions={data.length > MAX_VIEW_PER_SECTION && (
-                  <Button
-                    className={styles.viewAll}
-                    name={score.key}
-                    variant="transparent"
-                    onClick={setActiveView}
-                    actions={<IoChevronForward />}
-                  >
-                    {viewAllStringMap[score.key]}
-                  </Button>
-                )}
-              />
-            </Container>
+            <Component
+              key={score.key}
+              data={truncatedData}
+              actions={data.length > MAX_VIEW_PER_SECTION && (
+                <Button
+                  className={styles.viewAll}
+                  name={score.key}
+                  variant="transparent"
+                  onClick={setActiveView}
+                  actions={<IoChevronForward />}
+                >
+                  {viewAllStringMap[score.key]}
+                </Button>
+              )}
+            />
           );
         })}
       </div>

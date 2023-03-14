@@ -36,13 +36,9 @@ function CountryList(props: Props) {
   return (
     <Container
       actions={actions}
-      headerClassName={styles.header}
-      sub
       contentClassName={styles.countryList}
+      heading={strings.searchIfrcCountry}
     >
-      <div className={styles.searchTitle}>
-        {strings.searchIfrcCountry}
-      </div>
       {data.map((country) => (
         <Link
           href={`/countries/${country.id}`}

@@ -87,7 +87,6 @@ function EmergencyPlanningTable(props: Props) {
       className={_cs(styles.emergencyPlanningTable, className)}
       heading={strings.searchIfrcEmergencyPlanningAndReporting}
       contentClassName={styles.content}
-      sub
       actions={actions}
     >
       <Table
