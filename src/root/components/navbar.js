@@ -191,7 +191,7 @@ function Navbar(props) {
         <Redirect
           to={{
             pathname: "/search",
-            search: `?${URL_SEARCH_KEY}=${redirectSearchString}`,
+            search: `?${URL_SEARCH_KEY}=${window.encodeURI(redirectSearchString)}`,
           }}
         />
       )}

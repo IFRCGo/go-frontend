@@ -35,7 +35,7 @@ function InputContainer(props: Props) {
     input,
     errorOnTooltip = false,
     hint,
-    variant,
+    variant='form',
   } = props;
 
   return (

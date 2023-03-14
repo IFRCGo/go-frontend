@@ -575,7 +575,7 @@ function DrefApplication(props: Props) {
                 value={undefined}
                 onChange={handleDocumentImport}
                 icons={<IoCloudUploadSharp />}
-                variant="secondary"
+                buttonVariant="secondary"
               >
                 Import from Document
               </FileInput>

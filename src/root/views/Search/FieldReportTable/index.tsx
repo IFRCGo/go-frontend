@@ -70,7 +70,6 @@ function FieldReportTable(props: Props) {
       className={_cs(styles.fieldReportTable, className)}
       heading={strings.searchIfrcReport}
       contentClassName={styles.content}
-      sub
       actions={actions}
     >
       <Table

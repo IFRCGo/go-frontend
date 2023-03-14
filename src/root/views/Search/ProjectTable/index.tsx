@@ -116,7 +116,6 @@ function ProjectTable(props: Props) {
           className={_cs(styles.projectTable, className)}
           heading={strings.searchIfrcProjects}
           contentClassName={styles.content}
-          sub
           actions={actions}
         >
           <Table

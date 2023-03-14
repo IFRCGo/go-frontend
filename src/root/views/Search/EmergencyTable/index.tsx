@@ -138,7 +138,6 @@ function EmergencyTable(props: Props) {
       className={_cs(styles.emergencyTable, className)}
       heading={strings.searchIfrcEmergencies}
       contentClassName={styles.content}
-      sub
       actions={actions}
     >
       <Table
