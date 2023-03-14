@@ -1,7 +1,7 @@
 @import '~styles/settings/variables';
 
 .button--capsule-operation-card {
-  font-size: $font-size-md;
+  font-size: $font-size-sm;
 }
 .card_box_content{
   display: flex;
@@ -15,11 +15,9 @@
 .card_box_title {
   padding: $spacing ($spacing * 1.5);
   width: 100%;
-  height: 6.37rem;
 }
 
 .card_box {
-
   &:hover {
     box-shadow: 0 1px 1px -1px rgba(0, 0, 0, 0.2), 0 1px 4px 0 rgba(0, 0, 0, 0.12), 0 2px 3px 0 rgba(0, 0, 0, 0.14);
   };
@@ -58,12 +56,11 @@
 
 .card_box_left_top {
   height: 6.37rem;
-  border-bottom: 1px solid $base-border-color--light;
+  border-top: 1px solid $base-border-color--light;
 }
 
 .card_box_left {
   height: 5rem;
-  border-bottom: 1px solid $base-border-color--light;
 }
 
 .ifrc_supported_badge {

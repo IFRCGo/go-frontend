@@ -86,6 +86,7 @@ const OperationCard = ({
 
   return (
     <div className='key-emergencies-item col col-6-sm col-4-mid' key={operationId}>
+      <div className='key-emergencies-item-card'>
       <div className='card_box_title card_box_left card_box_title'>
         <div className='row flex'>
           <div className='card__title__wrap col col-7 col-8-mid'>
@@ -170,6 +171,7 @@ const OperationCard = ({
             </div>
           </div>
         </Link>
+        </div>
       </div>
 
       {/* Note: We'll add this code in future when we have enough emergencies with reported activities
