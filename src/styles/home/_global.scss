@@ -670,7 +670,7 @@
 
 .report__list--updated {
   color: rgba($base-color, 0.48);
-font-size: 0.75rem;
+  font-size: 0.75rem;
 }
 
 .key-emergencies-list-short {
@@ -679,12 +679,11 @@ font-size: 0.75rem;
 }
 
 .key-emergencies-list {
-
   .key-emergencies-item {
     margin-bottom: $spacing-2;
 
     .key-emergencies-item-card {
-      border: 1px solid $base-border-color--light;
+      border: $base-border-width solid $base-border-color--light;
       border-radius: $base-border-radius $base-border-radius;
       box-shadow: 0 2px 10px 0 rgba($black, 0.08);
     }

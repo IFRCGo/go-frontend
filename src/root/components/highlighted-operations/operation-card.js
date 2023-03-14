@@ -87,91 +87,90 @@ const OperationCard = ({
   return (
     <div className='key-emergencies-item col col-6-sm col-4-mid' key={operationId}>
       <div className='key-emergencies-item-card'>
-      <div className='card_box_title card_box_left card_box_title'>
-        <div className='row flex'>
-          <div className='card__title__wrap col col-7 col-8-mid'>
-            <h2 className='card__title'>
-              <span data-tooltip-id={operationId}>
-                {dotWithColor}
-                <Link to={`/emergencies/${operationId}`}>
-                  {operationName}
-                </Link>
-              </span>
-              <Tooltip id={operationId} className="tooltip-content">
-                <div className="tooltip-list">
-                  <span>
-                    {dotWithColor}
-                    {severityLevelDisplay} Emergency
-                  </span>
-                  <span>{toggleToolTip}</span>
+        <div className='card_box_title card_box_left card_box_title'>
+          <div className='row flex'>
+            <div className={`card__title__wrap col ${showFollow ? 'col-7 col-8-mid' : 'col-12 col-12-mid'}`}>
+              <h2 className='card__title'>
+                <span data-tooltip-id={operationId}>
+                  {dotWithColor}
+                  <Link to={`/emergencies/${operationId}`}>
+                    {operationName}
+                  </Link>
+                </span>
+                <Tooltip id={operationId} className="tooltip-content">
+                  <div className="tooltip-list">
+                    <span>
+                      {dotWithColor}
+                      {severityLevelDisplay} Emergency
+                    </span>
+                    <span>{toggleToolTip}</span>
+                  </div>
+                </Tooltip>
+              </h2>
+            </div>
+            {showFollow && (
+              <div className='button--key-emergencies__wrap col col-5 col-4-mid'>
+                <div onClick={toggleFollow} className={`button button--capsule-operation-card button--xsmall button--key-emergencies ${isFollowing ? 'button--primary-filled' : 'button--primary-bounded'}`}>
+                  {
+                    isFollowing ? (
+                      <Translate stringId='operationCardFollowing' />
+                    ) : (
+                      <Translate stringId='operationCardFollow' />
+                    )
+                  }
                 </div>
-              </Tooltip>
-            </h2>
+              </div>
+            )}
           </div>
-          {showFollow ? (
-            <div className='button--key-emergencies__wrap col col-5 col-4-mid'>
-              <div onClick={toggleFollow} className={`button button--capsule-operation-card button--xsmall button--key-emergencies ${isFollowing ? 'button--primary-filled' : 'button--primary-bounded'}`}>
-                {
-                  isFollowing ? (
-                    <Translate stringId='operationCardFollowing' />
-                  ) : (
-                    <Translate stringId='operationCardFollow' />
-                  )
-                }
+          <small className='last_updated'>
+            <Translate stringId='operationCardLastUpdated' />
+            &nbsp;
+            {formatDate(lastUpdate)}
+          </small>
+        </div>
+        <div className='card_box_content'>
+          <Link to={`/emergencies/${operationId}`}>
+            <div className='card_box_container card_box_container--op'>
+              <div className='card_box card_box_left_top card_box--op'>
+                <div className="card_box_no">
+                  <FormattedNumber
+                    className='tc-value'
+                    value={beneficiaries}
+                    normalize
+                    fixedTo={1}
+                  />
+                </div>
+                <span className='affected_population_icon'></span>
+                <small className='heading-tiny'>
+                  <Translate stringId='operationCardTargetedPopulation' />
+                </small>
               </div>
             </div>
-          ) : null
-          }
-        </div>
-        <small className='last_updated'>
-          <Translate stringId='operationCardLastUpdated' />
-          &nbsp;
-          {formatDate(lastUpdate)}
-        </small>
-      </div>
-      <div className='card_box_content'>
-        <Link to={`/emergencies/${operationId}`}>
-          <div className='card_box_container card_box_container--op'>
+          </Link>
+
+          <Link to={`/emergencies/${operationId}#reports`}>
             <div className='card_box card_box_left_top card_box--op'>
               <div className="card_box_no">
                 <FormattedNumber
                   className='tc-value'
-                  value={beneficiaries}
+                  value={requested}
                   normalize
                   fixedTo={1}
                 />
               </div>
-              <span className='affected_population_icon'></span>
               <small className='heading-tiny'>
-                <Translate stringId='operationCardTargetedPopulation' />
+                <Translate stringId='operationCardFunding' />
               </small>
-            </div>
-          </div>
-        </Link>
-
-        <Link to={`/emergencies/${operationId}#reports`}>
-          <div className='card_box card_box_left_top card_box--op'>
-            <div className="card_box_no">
-              <FormattedNumber
-                className='tc-value'
-                value={requested}
-                normalize
-                fixedTo={1}
-              />
-            </div>
-            <small className='heading-tiny'>
-              <Translate stringId='operationCardFunding' />
-            </small>
-            <Progress value={requested ? percent(funded, requested) : percent(0.1, 10)} max={100} />
-            <div className='card_box_full card_box_container card_box_container--op'>
-              <div className="heading-tiny-progress">
-                <div className="card_box_fc">{requested ? round(percent(funded, requested)) : 0}% &nbsp;
-                <Translate stringId='operationCardFundingCoverage' /></div>
+              <Progress value={requested ? percent(funded, requested) : percent(0.1, 10)} max={100} />
+              <div className='card_box_full card_box_container card_box_container--op'>
+                <div className="heading-tiny-progress">
+                  <div className="card_box_fc">{requested ? round(percent(funded, requested)) : 0}% &nbsp;
+                  <Translate stringId='operationCardFundingCoverage' /></div>
+                </div>
               </div>
             </div>
+          </Link>
           </div>
-        </Link>
-        </div>
       </div>
 
       {/* Note: We'll add this code in future when we have enough emergencies with reported activities
