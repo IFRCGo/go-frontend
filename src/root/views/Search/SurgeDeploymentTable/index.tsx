@@ -93,7 +93,6 @@ function SurgeDeploymentTable(props: Props) {
       className={_cs(styles.surgeDeploymentTable, className)}
       heading={strings.searchIfrcSurgeDeployments}
       contentClassName={styles.content}
-      sub
       actions={actions}
     >
       <Table

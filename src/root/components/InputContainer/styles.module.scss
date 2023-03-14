@@ -34,10 +34,17 @@
     }
   }
 
-
   &.disabled {
     .input-section {
       opacity: .5;
+    }
+  }
+
+  &.general {
+    .input-section {
+      border: none;
+      border-radius: 0;
+      border-bottom: $base-border-width solid $base-border-color;
     }
   }
 

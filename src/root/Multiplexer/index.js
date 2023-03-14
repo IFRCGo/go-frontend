@@ -237,22 +237,19 @@ function Multiplexer(props) {
           <BreadcrumbsProvider>
             <Switch>
               <Route exact path='/' component={Home} />
-              <Route path='/clear-init-cache' component={ClearInitCache} />
-              <Route exact path='/covid19-3w-sankey' component={Covid19ThreeWSankey} />
-              <PrivateRoute exact path='/translation-dashboard' component={TranslationDashboard} />
-              <Route exact path='/about' component={About} />
-              <PrivateRoute exact path='/account' component={Account} />
-              <PrivateRoute exact path='/account/password-change' component={PasswordChange} />
-              <Route exact path='/appeals/all' render={props => <Table {...props} type='appeal' />} />
+
               <AnonymousRoute exact path='/login' component={Login} />
               <AnonymousRoute exact path='/register' component={Register} />
               <AnonymousRoute exact path='/recover-account' component={RecoverAccount} />
               <AnonymousRoute exact path='/recover-account/:username/:token' component={RecoverAccount} />
               <AnonymousRoute exact path='/recover-username' component={RecoverUsername} />
               <AnonymousRoute exact path='/resend-validation' component={ResendValidation} />
-              <PrivateRoute key="new-field-report-form" exact path='/reports/new' component={FieldReportForm} />
+
+              <Route path='/clear-init-cache' component={ClearInitCache} />
+              <Route exact path='/covid19-3w-sankey' component={Covid19ThreeWSankey} />
+              <Route exact path='/about' component={About} />
+              <Route exact path='/appeals/all' render={props => <Table {...props} type='appeal' />} />
               <Route exact path='/reports/all' render={props => <Table {...props} type='report' />} />
-              <PrivateRoute exact path='/reports/:reportId/edit' component={FieldReportForm} />
               <Route exact path='/reports/:id' component={FieldReport} />
               <Route exact path='/emergencies' component={Emergencies} />
               <Route exact path='/emergencies/all' render={props => <Table {...props} type='emergency' />} />
@@ -272,36 +269,37 @@ function Multiplexer(props) {
               <Route exact path='/per-assessment/:id' component={PerAssessment} />
               <Route exact path='/per-assessment/:id/edit' render={props => <PerAssessment {...props} isEdit={true} />} />
               <Route path='/preparedness' component={Preparedness} />
-              <PrivateRoute key="new-three-w" exact path='/three-w/new/' component={NewThreeW} />
+              <Route exact path='/three-w/' component={GlobalThreeW} />
               <Route exact path='/three-w/all/' component={AllThreeW} />
               <Route exact path='/emergency-three-w/all/' component={AllEmergencyThreeW} />
               <Route exact path='/three-w/:projectId/' component={ThreeW} />
               <Route exact path='/emergency-three-w/:projectId/' component={EmergencyThreeW} />
+              <Route
+                exact
+                path='/search/'
+                render={(searchProps) => <Search key={searchProps.location.key} {...searchProps} />}
+              />
+              <PrivateRoute exact path='/translation-dashboard' component={TranslationDashboard} />
+              <PrivateRoute exact path='/account' component={Account} />
+              <PrivateRoute exact path='/account/password-change' component={PasswordChange} />
+              <PrivateRoute key="new-field-report-form" exact path='/reports/new' component={FieldReportForm} />
+              <PrivateRoute exact path='/reports/:reportId/edit' component={FieldReportForm} />
               <PrivateRoute exact path='/three-w/:projectId/edit/' component={ThreeWEdit} />
               <PrivateRoute exact path='/emergency-three-w/:projectId/edit/' component={EmergencyThreeWEdit} />
-              <Route exact path='/three-w/' component={GlobalThreeW} />
+              <PrivateRoute key="new-three-w" exact path='/three-w/new/' component={NewThreeW} />
               <PrivateRoute exact path='/emergency-three-w-form/' component={EmergencyThreeWForm} />
-              
-
-              <PrivateRoute key="new-flash-update-application-form" exact path='/flash-update/new/' component={FlashUpdateApplicationForm} />
+              <PrivateRoute exact key="new-flash-update-application-form" path='/flash-update/new/' component={FlashUpdateApplicationForm} />
               <PrivateRoute exact path='/flash-update/all/' component={AllFlashUpdates} />
               <PrivateRoute exact path='/flash-update/:id/edit/' component={FlashUpdateApplicationForm} />
               <PrivateRoute exact path='/flash-update/:id/' component={FlashUpdateReport} />
-
-              <Route exact path='/dref-operational-update/new/' component={DrefOperationalUpdate} />
-
-              <PrivateRoute key="new-dref-application-form" exact path='/dref-application/new/' component={DrefApplicationForm} />
-
+              <PrivateRoute exact path='/dref-operational-update/new/' component={DrefOperationalUpdate} />
+              <PrivateRoute exact key="new-dref-application-form" path='/dref-application/new/' component={DrefApplicationForm} />
               <PrivateRoute exact path='/dref-application/:drefId/edit/' component={DrefApplicationForm} />
               <PrivateRoute exact path='/dref-application/:drefId/export/' component={DrefPdfPreview} />
-
               <PrivateRoute exact path='/dref-operational-update/:id/edit/' component={DrefOperationalUpdate} />
               <PrivateRoute exact path='/dref-operational-update/:id/export/' component={OperationalUpdatePdfPreview} />
-
               <PrivateRoute exact path='/dref-final-report/:id/edit/' component={FinalReport} />
               <PrivateRoute exact path='/dref-final-report/:id/export/' component={FinalReportPdfPreview} />
-              <Route exact path='/search/' component={Search} />
-
               <Route component={FourHundredFour} />
             </Switch>
           </BreadcrumbsProvider>

@@ -118,7 +118,6 @@ function SurgeAlertTable(props: Props) {
       className={_cs(styles.surgeAlertsTable, className)}
       heading={strings.searchIfrcOpenSurgeAlerts}
       contentClassName={styles.content}
-      sub
       actions={actions}
     >
       <Table

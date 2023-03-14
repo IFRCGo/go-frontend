@@ -34,7 +34,7 @@ export type Props<T extends string> = InheritedProps<T> & {
 
   overrideStatus?: boolean;
   status?: React.ReactNode;
-  variant?: ButtonVariant,
+  buttonVariant?: ButtonVariant,
 } & ({
   multiple: true;
   value: File[] | undefined | null;
@@ -66,7 +66,7 @@ function FileInput<T extends string>(props: Props<T>) {
     labelClassName,
     children,
     showStatus,
-    variant,
+    buttonVariant,
     ...fileInputProps
   } = props;
 
@@ -106,7 +106,7 @@ function FileInput<T extends string>(props: Props<T>) {
     className: buttonLabelClassName,
     children: buttonLabelChildren,
   } = useButtonFeatures({
-    variant: variant ?? 'secondary',
+    variant: buttonVariant ?? 'secondary',
     className: labelClassName,
     disabled,
     icons,
