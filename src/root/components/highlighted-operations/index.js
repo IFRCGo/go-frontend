@@ -156,28 +156,7 @@ class HighlightedOperations extends React.Component {
       <div className='inner inner--emergencies'>
         <Fold title={strings.highlightedOperationsTitle} navLink={foldLink} foldWrapperClass='fold--main' foldTitleClass='fold__title--inline'>
           <div className={listStyle}>
-            {this.props.isLogged && (
-                operations.map(operation =>
-                  <OperationCard
-                    key={operation.id}
-                    showFollow={showFollow}
-                    isFollowing={operation.following ? true : false}
-                    followOperation={this.followOperation.bind(this)}
-                    unfollowOperation={this.unfollowOperation.bind(this)}
-                    operationId={operation.id}
-                    operationName={operation.name}
-                    emergencyDeployments={this.calculateDeployedPersonnel(operation)}
-                    appeals={get(operation, 'appeals', [])}
-                    lastUpdate={operation.updated_at}
-                    countryList={operation.countries.length}
-                    countryName={operation.countries.map((i) => i.name)}
-                    activeDeployment={operation.active_deployments}
-                    severityLevelDisplay={operation.ifrc_severity_level_display}
-                    severityLevel={operation.ifrc_severity_level}
-                  />
-                )
-            )}
-            {operations.slice(0, 3).map(operation =>
+            {operations.map(operation => (
               <OperationCard
                 key={operation.id}
                 showFollow={showFollow}
@@ -195,7 +174,7 @@ class HighlightedOperations extends React.Component {
                 severityLevelDisplay={operation.ifrc_severity_level_display}
                 severityLevel={operation.ifrc_severity_level}
               />
-            )}
+            ))}
           </div>
         </Fold>
       </div>
