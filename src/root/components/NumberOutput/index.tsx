@@ -41,7 +41,7 @@ export interface Props {
   /**
    * Prefix the output with certain string. Eg. %
    */
-  suffix?: string;
+  suffix?: React.ReactNode;
   /**
    * The value of the numeral
    */
@@ -81,6 +81,8 @@ function NumberOutput(props: Props) {
     if (!isValidNumber(value)) {
       return [];
     }
+
+    console.info('is valid number', value, isValidNumber(value));
 
     // Only use absolute part if showSign is true (sign are added later)
     let num = isTruthy(showSign) ? Math.abs(value) : value;
@@ -153,7 +155,7 @@ function NumberOutput(props: Props) {
   ]);
 
   return (
-    <div className={_cs(styles.numeral, className)}>
+    <div className={_cs(styles.numberOutput, className)}>
       { !isValidNumber(value) ? (
         invalidText
       ) : (

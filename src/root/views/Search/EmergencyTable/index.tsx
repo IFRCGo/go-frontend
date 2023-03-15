@@ -8,6 +8,7 @@ import Container from '#components/Container';
 import {
   createLinkColumn,
   createStringColumn,
+  createNumberColumn,
 } from '#components/Table/predefinedColumns';
 import DateOutput from '#components/DateOutput';
 import Table from '#components/Table';
@@ -98,15 +99,21 @@ function EmergencyTable(props: Props) {
       'Disaster Type',
       (emergency) => emergency.disaster_type,
     ),
-    createStringColumn<EmergencyResult, number>(
+    createNumberColumn<EmergencyResult, number>(
       'funding_requirements',
       'Funding Requirements',
       (emergency) => {
-        if (emergency.funding_requirements > 0) {
-          return `${emergency.funding_requirements} CHF`;
+        if (+emergency.funding_requirements > 0) {
+          return +emergency.funding_requirements;
         }
-        return '-';
-      }
+
+        return undefined;
+      },
+      undefined,
+      {
+        suffix: <span>&nbsp; CHF</span>,
+        precision: 0,
+      },
     ),
     createStringColumn<EmergencyResult, number>(
       'funding_coverage',

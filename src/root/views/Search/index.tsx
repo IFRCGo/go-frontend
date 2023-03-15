@@ -8,7 +8,6 @@ import Container from '#components/Container';
 import Button from '#components/Button';
 import BlockLoading from '#components/block-loading';
 import useInputState from '#hooks/useInputState';
-import useDebouncedValue from '#hooks/useDebouncedValue';
 import { useRequest } from '#utils/restRequest';
 import { getSearchValue } from '#utils/common';
 import { URL_SEARCH_KEY } from '#utils/constants';
@@ -63,11 +62,6 @@ function Search(props: Props) {
   );
 
   const { strings } = React.useContext(LanguageContext);
-  const debouncedSearchString = useDebouncedValue(
-    searchString?.trim(),
-    500,
-  );
-
   const handleClearSearchInput = useCallback(() => {
     setSearchString('');
   }, [setSearchString]);
@@ -104,8 +98,6 @@ function Search(props: Props) {
     },
     skip: isNotDefined(urlSearchValue),
   });
-
-  console.warn('pending', searchPending);
 
   const [
     resultsMap,
@@ -176,9 +168,11 @@ function Search(props: Props) {
 
   const ActiveComponent = activeView ? componentMap[activeView] : undefined;
   
-  const handleSearch = useCallback(() => {
-    history.push(`/search/?keyword=${debouncedSearchString}`);
-  }, [debouncedSearchString, history]);
+  const handleSearchInputEnter = useCallback(() => {
+    if ((searchString?.trim()?.length ?? 0) > 2) {
+      history.push(`/search/?keyword=${searchString}`);
+    }
+  }, [searchString, history]);
 
   return (
     <Page
@@ -191,7 +185,7 @@ function Search(props: Props) {
           className={styles.inputSection}
           icons={<IoSearch />}
           variant='general'
-          actions={debouncedSearchString && (
+          actions={searchString && (
             <Button
               name={undefined}
               variant="action"
@@ -207,9 +201,7 @@ function Search(props: Props) {
           onKeyDown={(e) => {
             if (e.key === 'Enter') {
               e.preventDefault();
-              if ((debouncedSearchString?.trim()?.length ?? 0) > 2) {
-                handleSearch();
-              }
+              handleSearchInputEnter();
             }
           }}
         />
@@ -218,7 +210,7 @@ function Search(props: Props) {
       {searchPending && <Container><BlockLoading /></Container>}
       {!searchPending && isEmpty && (
         <Container contentClassName={styles.emptySearchContent}>
-          {isDefined(debouncedSearchString) && debouncedSearchString.trim().length > 2 ? (
+          {isDefined(searchString) && searchString.trim().length > 2 ? (
             <>
               <MdSearchOff className={styles.icon} />
               {strings.searchResultforQuery}
