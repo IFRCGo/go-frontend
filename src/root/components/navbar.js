@@ -173,7 +173,7 @@ function Navbar(props) {
                   cache={false}
                   loadOptions={loadOptionsWithDebouncing}
                   onKeyDown={(e) => {
-                    if (e.which === 13) {
+                    if (e.key === 'Enter') {
                       e.preventDefault();
                       if (searchTextRef.current?.trim().length > 2) {
                         setRedirectSearchString(searchTextRef.current);

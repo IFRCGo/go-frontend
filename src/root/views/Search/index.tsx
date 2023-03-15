@@ -1,6 +1,5 @@
 import React, { useCallback, useMemo } from 'react';
-import { _cs, isDefined, mapToList } from '@togglecorp/fujs';
-import { Redirect } from 'react-router-dom';
+import { _cs, isDefined, mapToList, isNotDefined } from '@togglecorp/fujs';
 import { MdSearch, MdSearchOff } from 'react-icons/md';
 import { IoSearch, IoChevronForward, IoChevronBack, IoCloseOutline } from 'react-icons/io5';
 import LanguageContext from '#root/languageContext';
@@ -9,10 +8,10 @@ import Container from '#components/Container';
 import Button from '#components/Button';
 import BlockLoading from '#components/block-loading';
 import useInputState from '#hooks/useInputState';
-import useDebouncedValue from '#hooks/useDebouncedValue';
 import { useRequest } from '#utils/restRequest';
 import { getSearchValue } from '#utils/common';
 import { URL_SEARCH_KEY } from '#utils/constants';
+import type { History } from 'history';
 
 import EmergencyTable, { EmergencyResult } from './EmergencyTable';
 import EmergencyPlanningTable, { EmergencyPlanningResult } from './EmergencyPlanningTable';
@@ -46,15 +45,16 @@ interface Props {
   className?: string;
   data: SearchResult[] | undefined;
   location: Location,
+  history: History,
 }
 
 function Search(props: Props) {
   const {
     className,
     location,
+    history,
   } = props;
   const urlSearchValue = getSearchValue(URL_SEARCH_KEY, location);
-  const redirectSearchStringRef = React.useRef<string | undefined>(urlSearchValue);
 
   const [activeView, setActiveView] = React.useState<ResultKeys | undefined>();
   const [searchString, setSearchString] = useInputState<string | undefined>(
@@ -62,15 +62,6 @@ function Search(props: Props) {
   );
 
   const { strings } = React.useContext(LanguageContext);
-  const debouncedSearchString = useDebouncedValue(
-    searchString?.trim(),
-    500,
-    (newValue) => {
-      redirectSearchStringRef.current = newValue;
-      return newValue;
-    },
-  );
-
   const handleClearSearchInput = useCallback(() => {
     setSearchString('');
   }, [setSearchString]);
@@ -97,16 +88,15 @@ function Search(props: Props) {
     strings.searchViewAllFieldReports,
   ]);
 
-  const shouldSendSearchRequest = debouncedSearchString && debouncedSearchString.length > 2;
   const {
     pending: searchPending,
     response: searchResponse,
   } = useRequest<SearchResult>({
-    skip: !shouldSendSearchRequest,
     url: 'api/v1/search/',
     query: {
-      keyword: debouncedSearchString,
-    }
+      keyword: urlSearchValue,
+    },
+    skip: isNotDefined(urlSearchValue),
   });
 
   const [
@@ -166,7 +156,7 @@ function Search(props: Props) {
       keysOrdering[a.key] - keysOrdering[b.key] || b.value - a.value
     ));
 
-    const isEmpty = tableScoreList.every((score) => score.totalItems === 0);
+    const isEmpty = searchResponse && tableScoreList.every((score) => score.totalItems === 0);
 
     return [
       resultsMap,
@@ -177,7 +167,12 @@ function Search(props: Props) {
   }, [searchResponse]);
 
   const ActiveComponent = activeView ? componentMap[activeView] : undefined;
-  const redirectSearchString = isDefined(redirectSearchStringRef.current) ? `?${URL_SEARCH_KEY}=${window.encodeURI(redirectSearchStringRef.current)}` : undefined;
+  
+  const handleSearchInputEnter = useCallback(() => {
+    if ((searchString?.trim()?.length ?? 0) > 2) {
+      history.push(`/search/?keyword=${searchString}`);
+    }
+  }, [searchString, history]);
 
   return (
     <Page
@@ -190,7 +185,7 @@ function Search(props: Props) {
           className={styles.inputSection}
           icons={<IoSearch />}
           variant='general'
-          actions={debouncedSearchString && (
+          actions={searchString && (
             <Button
               name={undefined}
               variant="action"
@@ -203,21 +198,19 @@ function Search(props: Props) {
           value={searchString}
           onChange={setSearchString}
           placeholder="Enter at least 3 characters"
-        />
-      )}
-    >
-      {urlSearchValue !== debouncedSearchString && (
-        <Redirect
-          to={{
-            pathname: '/search',
-            search: redirectSearchString,
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              e.preventDefault();
+              handleSearchInputEnter();
+            }
           }}
         />
       )}
+    >
       {searchPending && <Container><BlockLoading /></Container>}
       {!searchPending && isEmpty && (
         <Container contentClassName={styles.emptySearchContent}>
-          {isDefined(debouncedSearchString) && debouncedSearchString.trim().length > 2 ? (
+          {isDefined(searchString) && searchString.trim().length > 2 ? (
             <>
               <MdSearchOff className={styles.icon} />
               {strings.searchResultforQuery}
