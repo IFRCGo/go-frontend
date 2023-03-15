@@ -82,8 +82,6 @@ function NumberOutput(props: Props) {
       return [];
     }
 
-    console.info('is valid number', value, isValidNumber(value));
-
     // Only use absolute part if showSign is true (sign are added later)
     let num = isTruthy(showSign) ? Math.abs(value) : value;
 
