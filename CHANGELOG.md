@@ -1,3 +1,9 @@
+### Release 6.4.5 - Hotfix for Final Report (code comment appearing)
+Date: 2023-03-16
+
+Frontend:
+ - Fix code comment appearing in the field report form
+
 ### Release 6.4.4 - Hotfix for DREF export (Missing Lesson Learned)
 Date: 2023-03-10
 
