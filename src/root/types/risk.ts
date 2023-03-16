@@ -132,7 +132,7 @@ export interface ADAMEvent {
 
   // TODO: add properties here
   storm_position_geojson: GeoJSON.FeatureCollection<GeoJSON.Geometry, {
-    track_date?: string;
+    track_date: string;
     alert_level: 'Red' | 'Orange' | 'Green' | 'Cones' | null;
   }>;
 }
