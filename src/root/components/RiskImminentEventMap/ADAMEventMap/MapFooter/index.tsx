@@ -1,9 +1,10 @@
 import React from "react";
 import {
-  COLOR_YELLOW,
-  COLOR_BLUE,
+  ADAM_COlOR_ORANGE,
+  ADAM_COlOR_GREEN,
+  ADAM_COlOR_CONES,
   COLOR_BLACK,
-  COLOR_ORANGE,
+  ADAM_COlOR_RED,
 } from '#utils/map';
 
 import InfoPopup from "#components/InfoPopup";
@@ -12,10 +13,11 @@ import Link from '#components/Link';
 import styles from "./styles.module.scss";
 
 const legendItems = [
-  { color: COLOR_ORANGE, label: 'Orange' },
-  { color: COLOR_YELLOW, label: 'Green' },
-  { color: COLOR_BLUE, label: 'Cones' },
-  { color: COLOR_BLACK, label: 'Unknown' },
+  { color: ADAM_COlOR_ORANGE, label: 'Orange' },
+  { color: ADAM_COlOR_GREEN, label: 'Green' },
+  { color: ADAM_COlOR_RED, label: 'Red' },
+  { color: ADAM_COlOR_CONES, label: 'Cones' },
+  { color: COLOR_BLACK , label: 'Unknown' },
 ];
 
 function MapFooter() {
