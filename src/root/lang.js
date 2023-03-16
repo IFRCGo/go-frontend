@@ -193,7 +193,7 @@ export default {
   operationCardLastUpdated: 'Last updated:',
   operationCardTargetedPopulation: 'Targeted Population',
   operationCardDepoloyedUnits: 'Deployed Emergency Response Units',
-  operationCardFunding: 'Funding Ask',
+  operationCardFunding: 'Funding Requirements',
   operationCardIFRCSurgePersonnel: 'IFRC Surge Personnel',
   operationCardNSReportingActivities: 'NS Reporting Activities',
   operationCardDeployed: 'Deployed Surge Personnel',
