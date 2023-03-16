@@ -14,7 +14,9 @@ import {
   noOp,
   _cs,
 } from '@togglecorp/fujs';
-import { LngLat } from 'mapbox-gl';
+import mapboxgl, { LngLat } from 'mapbox-gl';
+import { BoundingBox, viewport } from '@mapbox/geo-viewport';
+
 import {
   defaultMapOptions,
   defaultMapStyle,
@@ -33,15 +35,11 @@ import {
   iconPaint,
   pointCirclePaint,
 } from '#utils/risk';
-import {
-  point as turfPoint,
-  bbox as turfBbox,
-  buffer as turfBuffer,
-} from '@turf/turf';
+import { bbox as turfBbox } from '@turf/turf';
 import GoMapDisclaimer from '#components/GoMapDisclaimer';
 import { ADAMEvent, ImminentHazardTypes } from '#types/risk';
-import { BBOXType } from '#utils/map';
 import MapEaseTo from '#components/MapEaseTo';
+import fixGeoJsonZeroLine from '#utils/mapGeo';
 
 import Sidebar from './Sidebar';
 import PointDetails from './PointDetails';
@@ -49,6 +47,8 @@ import HazardMapImage from '../PDCEventMap/HazardMapImage';
 import MapFooter from './MapFooter';
 
 import styles from './styles.module.scss';
+
+const trackDate = (date: string) => new Date(date)?.toLocaleDateString();
 
 const alertLevelFillColorPaint = [
   'match',
@@ -64,17 +64,25 @@ const alertLevelFillColorPaint = [
   COLOR_BLACK,
 ];
 
+const footprintLayerOptions = {
+  type: 'fill',
+  paint: {
+    'fill-color': alertLevelFillColorPaint,
+    'fill-opacity': 0.8,
+  },
+  filter: ['==', ['get', 'type'], 'MultiPolygon'],
+};
+
 const mapPadding = {
   left: 0,
   top: 0,
-  right: 360,
+  right: 320,
   bottom: 50,
 };
 
 const MAP_BOUNDS_ANIMATION_DURATION = 1800;
 
 interface Props {
-  defaultBounds: BBOXType;
   hazardList: ADAMEvent[];
   className?: string;
   activeEventUuid: string | undefined;
@@ -85,7 +93,6 @@ interface Props {
 function ADAMEventMap(props: Props) {
   const {
     hazardList: hazardListFromProps,
-    defaultBounds,
     className,
     activeEventUuid,
     onActiveEventChange,
@@ -93,9 +100,9 @@ function ADAMEventMap(props: Props) {
   } = props;
 
   const [
-  hazardIconLoadedStatusMap,
-  setHazardIconLoadedStatusMap,
-] = React.useState<Record<ImminentHazardTypes, boolean>>({
+    hazardIconLoadedStatusMap,
+    setHazardIconLoadedStatusMap,
+  ] = React.useState<Record<ImminentHazardTypes, boolean>>({
     EQ: false,
     FL: false,
     CY: false,
@@ -105,86 +112,45 @@ function ADAMEventMap(props: Props) {
   });
 
   const hazardList = React.useMemo(() => {
-    //Note: Remove after handle null event_details in server
-    const hazardWithEventDetailsOnly = hazardListFromProps.filter(h => isDefined(h.event_details));
+    const supportedHazards = listToMap(
+      hazardKeys,
+      h => h,
+      () => true,
+    );
 
-    const supportedHazards = listToMap(hazardKeys, h => h, d => true);
-    return hazardWithEventDetailsOnly.filter(h => supportedHazards[h.hazard_type]);
-
+    // NOTE: Remove after handle null event_details in server
+    return hazardListFromProps.filter(
+      h => isDefined(h.event_details) && supportedHazards[h.hazard_type],
+    );
   }, [hazardListFromProps]);
 
-  const activeEvent = hazardList?.find(d => d.event_id === activeEventUuid);
+  const activeEvent = React.useMemo(
+    () => hazardList?.find(
+      d => d.event_id === activeEventUuid,
+    ),
+    [activeEventUuid, hazardList],
+  );
 
   const activeEventPopUpDetails = React.useMemo(() => {
-    if (isNotDefined(activeEventUuid)) {
-      return undefined;
-    }
-
-    const hazardDetails = hazardList.find(d => d.event_id === activeEventUuid);
-
-    if (isNotDefined(hazardDetails)) {
+    if (isNotDefined(activeEvent)) {
       return undefined;
     }
 
     const lngLat = new LngLat(
-      hazardDetails.event_details.longitude,
-      hazardDetails.event_details.latitude,
+      activeEvent.event_details.longitude,
+      activeEvent.event_details.latitude,
     );
-    const activeEventExposure = hazardDetails.event_details;
+    const activeEventExposure = activeEvent.event_details;
 
     return {
       activeEventExposure,
-      hazardDetails,
+      hazardDetails: activeEvent,
       lngLat,
-      uuid: activeEventUuid,
+      uuid: activeEvent.event_id,
     };
-  }, [activeEventUuid, hazardList]);
-
-  const boundsBoxPoints = React.useMemo(
-    () => {
-      if (isNotDefined(activeEvent)
-        || isNotDefined(activeEventPopUpDetails)
-      ) {
-        return defaultBounds;
-      }
-
-      const point = turfPoint([
-        activeEvent.event_details.longitude,
-        activeEvent.event_details.latitude,
-      ]);
-
-      // const pointBuffer = turfBuffer(point, 500, { units: 'kilometers' });
-      const stormPoints = activeEventPopUpDetails.hazardDetails.storm_position_geojson ?? [];
-
-      const geojson = {
-        type: 'FeatureCollection',
-        features: [
-          point,
-          ...(stormPoints.features ?? []),
-          stormPoints ? ({
-            type: 'Feature',
-            geometry: {
-              type: 'LineString',
-              coordinates: stormPoints,
-            },
-          }) : undefined,
-        ].filter(isDefined),
-      };
-
-      return turfBbox(geojson) as BBOXType;
-    },
-    [
-      defaultBounds,
-      activeEvent,
-      activeEventPopUpDetails,
-    ],
-  );
+  }, [activeEvent]);
 
   const hazardPointGeoJson = React.useMemo(() => {
-    if (isNotDefined(hazardList)) {
-      return undefined;
-    }
-
     return {
       type: 'FeatureCollection' as const,
       features: hazardList.map((hazard) => {
@@ -207,28 +173,14 @@ function ADAMEventMap(props: Props) {
         };
       }),
     };
-
   }, [hazardList]);
 
-  const trackDate = React.useCallback((date) => new Date(date)?.toLocaleDateString(),[]);
-
-  const stormPosition = React.useMemo(
+  const stormPositionGeoJson = React.useMemo(
     () => {
-      if (isNotDefined(activeEventPopUpDetails)) {
-        return {
-          type: 'FeatureCollection' as const,
-          features: [],
-        };
-      }
-
-
-      const stormPoints = activeEventPopUpDetails?.hazardDetails.storm_position_geojson;
+      const stormPoints = activeEventPopUpDetails?.hazardDetails?.storm_position_geojson;
 
       if (isNotDefined(stormPoints)) {
-        return {
-          type: 'FeatureCollection' as const,
-          features: [],
-        };
+        return undefined;
       }
 
       return {
@@ -238,12 +190,46 @@ function ADAMEventMap(props: Props) {
           properties: {
             ...feature.properties,
             type: feature.geometry.type,
-            track_date: trackDate(feature?.properties?.track_date),
+            track_date: trackDate(feature.properties.track_date),
           },
         })),
       };
     },
-    [activeEventPopUpDetails, trackDate]);
+    [activeEventPopUpDetails],
+  );
+
+  const boundsBoxPoints = React.useMemo(
+    () => {
+      if (stormPositionGeoJson) {
+        const bounds = turfBbox(stormPositionGeoJson) as BoundingBox;
+        const viewPort = viewport(bounds, [600, 400]);
+        return viewPort;
+      }
+
+      if (activeEvent) {
+        return {
+          center: [
+            activeEvent.event_details.longitude,
+            activeEvent.event_details.latitude,
+          ] as [number, number],
+          zoom: 5,
+        };
+      }
+
+      if(isNotDefined(activeEvent)) {
+        const newGeoFix = fixGeoJsonZeroLine(hazardPointGeoJson);
+        const bounds = turfBbox(newGeoFix) as BoundingBox;
+        const viewPort = viewport(bounds, [600, 400], 1, 2.5);
+
+        return viewPort;
+      }
+    },
+    [
+      stormPositionGeoJson,
+      hazardPointGeoJson,
+      activeEvent,
+    ],
+  );
 
   const allIconsLoaded = React.useMemo(() => (
     Object.values(hazardIconLoadedStatusMap).every(d => d)
@@ -269,24 +255,16 @@ function ADAMEventMap(props: Props) {
       } else {
         onActiveEventChange(undefined);
       }
-
       return false;
-    }, [activeEventUuid, onActiveEventChange]);
+    },
+    [activeEventUuid, onActiveEventChange],
+  );
 
   const handlePointClose = React.useCallback(() => {
     if (onActiveEventChange) {
       onActiveEventChange(undefined);
     }
   }, [onActiveEventChange]);
-
-  const footprintLayerOptions = React.useMemo(() => ({
-    type: 'fill',
-    paint: {
-      'fill-color': alertLevelFillColorPaint,
-      'fill-opacity': 0.8,
-    },
-    filter: ['==', ['get', 'type'], 'MultiPolygon'],
-  }), []);
 
   return (
     <Map
@@ -316,12 +294,11 @@ function ADAMEventMap(props: Props) {
           onLoad={handleIconLoad}
         />
       ))}
-
-      {stormPosition && (
+      {stormPositionGeoJson && (
         <MapSource
           sourceKey='type'
           sourceOptions={geoJsonSourceOptions}
-          geoJson={stormPosition}
+          geoJson={stormPositionGeoJson}
         >
           <MapLayer
             layerKey="cyclone-tracks-points-circle"
@@ -362,7 +339,6 @@ function ADAMEventMap(props: Props) {
             layerKey="hazard-footprint-polygon"
             layerOptions={footprintLayerOptions}
           />
-
           {/* Note: show flow icons */}
           <MapLayer
             layerKey="cyclone-tracks-arrow"
@@ -383,7 +359,6 @@ function ADAMEventMap(props: Props) {
               filter: ['==', ['get', 'type'], 'MultiLineString'],
             }}
           />
-
           {/* Note: for boundry line */}
           <MapLayer
             layerKey="cyclone-tracks-linestring-line"
@@ -397,7 +372,6 @@ function ADAMEventMap(props: Props) {
               filter: ['==', ['get', 'type'], 'MultiLineString'],
             }}
           />
-
         </MapSource>
       )}
 
@@ -470,8 +444,9 @@ function ADAMEventMap(props: Props) {
       )}
 
       <MapEaseTo
-        bounds={boundsBoxPoints}
         padding={mapPadding}
+        center={boundsBoxPoints?.center}
+        zoom={boundsBoxPoints?.zoom}
         duration={MAP_BOUNDS_ANIMATION_DURATION}
       />
     </Map>
