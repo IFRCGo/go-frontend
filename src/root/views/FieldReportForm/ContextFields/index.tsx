@@ -131,10 +131,10 @@ function ContextFields(props: Props) {
 
   return (
     <Container
-      // FIXME: use translation
       heading="Context"
       className={styles.contextFields}
     >
+    {/* FIXME: use translation */}
       <InputSection
         title={strings.fieldReportFormStatusLabel}
       >
@@ -246,8 +246,8 @@ function ContextFields(props: Props) {
               {reportId === undefined && (
                 <>
                   <td style={{width: '35%'}} >
+                    {/* FIXME: move styling to styles.module.scss */}
                     <TextInput
-                      // FIXME: move styling to styles.module.scss
                       style={{ backgroundColor: '#E0DDDD', borderRadius: 0, padding:'offset' }}
                       label='prefix '//{strings.fieldReportFormCountryLabel}
                       placeholder=""
@@ -272,10 +272,10 @@ function ContextFields(props: Props) {
               </td>
               {reportId === undefined && value.event !==undefined && (
                 <>
-                  // FIXME: move styling to styles.module.scss
+                  {/* FIXME: move styling to styles.module.scss */}
                   <td style={{width: '7%'}}>
+                    {/* FIXME: move styling to styles.module.scss */}
                     <TextInput
-                      // FIXME: move styling to styles.module.scss
                       style={{ backgroundColor: '#E0DDDD', borderRadius: 5, padding:'offset' }}
                       label= "#" // {strings.fieldReportUpdateNo}
                       placeholder="1"
