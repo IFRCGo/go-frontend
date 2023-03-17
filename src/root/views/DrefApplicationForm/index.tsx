@@ -50,8 +50,9 @@ import {
   actionsFields,
   responseFields,
   submissionFields,
-  ONSET_IMMINENT,
   ONSET_SUDDEN,
+  TYPE_IMMINENT,
+  TYPE_ASSESSMENT,
 } from './common';
 
 import useDrefFormOptions, { schema } from './useDrefFormOptions';
@@ -138,6 +139,7 @@ function DrefApplication(props: Props) {
     yesNoOptions,
     userDetails,
     userOptions,
+    drefTypeOptions,
   } = useDrefFormOptions(value);
 
   const [fileIdToUrlMap, setFileIdToUrlMap] = React.useState<Record<number, string>>({});
@@ -437,20 +439,20 @@ function DrefApplication(props: Props) {
     || drefSubmitPending
     || drefApplicationPending;
 
+  const isImminentDref = value?.type_of_dref === TYPE_IMMINENT;
+  const isAssessmentDref = value?.type_of_dref === TYPE_ASSESSMENT;
   const isSuddenOnset = value?.type_of_onset === ONSET_SUDDEN;
-  const isImminentOnset = value?.type_of_onset === ONSET_IMMINENT;
-  const isAssessmentReport = !!value?.is_assessment_report;
 
   React.useEffect(() => {
     setValue((oldValue) => {
-      if (value.type_of_onset !== ONSET_IMMINENT) {
+      if (value.type_of_dref !== TYPE_IMMINENT) {
         return {
           ...oldValue,
           anticipatory_actions: undefined,
           people_targeted_with_early_actions: undefined,
         };
       }
-      if (value.type_of_onset === ONSET_IMMINENT) {
+      if (value.type_of_dref === TYPE_IMMINENT) {
         return {
           ...oldValue,
           event_date: undefined,
@@ -460,7 +462,7 @@ function DrefApplication(props: Props) {
     });
   }, [
     setValue,
-    value.type_of_onset,
+    value.type_of_dref,
   ]);
 
   React.useEffect(() => {
@@ -685,19 +687,22 @@ function DrefApplication(props: Props) {
                 onValueSet={setValue}
                 userOptions={userOptions}
                 onCreateAndShareButtonClick={submitDref}
+                drefTypeOptions={drefTypeOptions}
+                isImminentDref={isImminentDref}
+                isSuddenOnset={isSuddenOnset}
               />
             </TabPanel>
             <TabPanel name="eventDetails">
               <EventDetails
                 isSuddenOnset={isSuddenOnset}
-                isImminentOnset={isImminentOnset}
+                isImminentDref={isImminentDref}
+                isAssessmentDref={isAssessmentDref}
                 error={error}
                 onValueChange={setFieldValue}
                 value={value}
                 yesNoOptions={yesNoOptions}
                 fileIdToUrlMap={fileIdToUrlMap}
                 setFileIdToUrlMap={setFileIdToUrlMap}
-                isAssessmentReport={isAssessmentReport}
               />
             </TabPanel>
             <TabPanel name="action">
@@ -710,8 +715,8 @@ function DrefApplication(props: Props) {
                 nsActionOptions={nsActionOptions}
                 fileIdToUrlMap={fileIdToUrlMap}
                 setFileIdToUrlMap={setFileIdToUrlMap}
-                isAssessmentReport={isAssessmentReport}
-                isImminentOnset={isImminentOnset}
+                isImminentDref={isImminentDref}
+                isAssessmentDref={isAssessmentDref}
               />
             </TabPanel>
             <TabPanel name="response">
@@ -723,8 +728,8 @@ function DrefApplication(props: Props) {
                 fileIdToUrlMap={fileIdToUrlMap}
                 setFileIdToUrlMap={setFileIdToUrlMap}
                 yesNoOptions={yesNoOptions}
-                isAssessmentReport={isAssessmentReport}
-                isImminentOnset={isImminentOnset}
+                isAssessmentDref={isAssessmentDref}
+                isImminentDref={isImminentDref}
               />
             </TabPanel>
             <TabPanel name="submission">
