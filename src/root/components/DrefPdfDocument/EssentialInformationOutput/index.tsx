@@ -16,7 +16,7 @@ interface Props {
   data: DrefApiFields;
   strings: Strings;
   affectedAreas: string;
-  isImminentOnset: boolean;
+  isImminentDref: boolean;
 }
 
 function EssentialInformationOutput(props: Props) {
@@ -24,7 +24,7 @@ function EssentialInformationOutput(props: Props) {
     data,
     strings,
     affectedAreas,
-    isImminentOnset,
+    isImminentDref,
   } = props;
 
   return (
@@ -71,7 +71,7 @@ function EssentialInformationOutput(props: Props) {
               value={data?.glide_code}
             />
             <PdfTextOutput
-              label={isImminentOnset
+              label={isImminentDref
                 ? strings.drefExportPeopleAtRisk
                 : strings.drefExportPeopleAffected
               }
@@ -120,7 +120,10 @@ function EssentialInformationOutput(props: Props) {
             />
           </View>
           <View style={pdfStyles.compactSection}>
-            <PdfTextOutput />
+            <PdfTextOutput 
+              label={strings.drefFormTypeOfDref}
+              value={data.type_of_dref_display}
+            />
             <PdfTextOutput
               label={strings.drefExportTargetedAreas}
             />

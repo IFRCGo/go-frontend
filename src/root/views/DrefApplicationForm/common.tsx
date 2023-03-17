@@ -232,6 +232,7 @@ export interface DrefFields {
   is_man_made_event: boolean;
   is_assessment_report: boolean;
   type_of_dref: number;
+  type_of_dref_display: string;
 }
 
 export interface DrefApiFields extends Omit<DrefFields, 'event_map_details' | 'cover_image_file' | 'district_details' | 'planned_interventions' | 'national_society_actions' | 'needs_identified' | 'images_file'> {
