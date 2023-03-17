@@ -5,10 +5,10 @@ import {
   View,
 } from '@react-pdf/renderer';
 
-import { Strings } from '#types';
-import { formatNumber } from '#utils/common';
 import { DrefApiFields } from '#views/DrefApplicationForm/common';
+import { Strings } from '#types';
 import pdfStyles from '#utils/pdf/pdfStyles';
+import { formatNumber, reTab } from '#utils/common';
 
 interface BaseProps {
   data: DrefApiFields;
@@ -106,7 +106,7 @@ function PlannedIntervention(props: PlannedInterventionProps) {
         </View>
         <View style={pdfStyles.piLargeColumn}>
           <Text style={pdfStyles.piBorderCell}>
-            {data.description}
+            {reTab(data.description)}
           </Text>
         </View>
       </View>

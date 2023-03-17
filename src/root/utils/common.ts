@@ -1,6 +1,7 @@
 import { memo } from 'react';
 import {
   isDefined,
+  isNotDefined,
   isFalsy,
   isFalsyString,
   caseInsensitiveSubmatch,
@@ -461,4 +462,37 @@ export function isSimilarArray<T extends string | number>(
 
   const aMap = listToMap(aList, a => a, a => true);
   return bList.every((b) => aMap[b]);
+}
+
+export function getSearchValue(key: string): string | undefined {
+  const { search } = window.location;
+
+  if (isNotDefined(search)) {
+    return undefined;
+  }
+
+  if (search === '') {
+    return undefined;
+  }
+
+  const searchElements = search.substring(1, search.length).split('&');
+  const searchElementMap = listToMap(
+    searchElements,
+    (e) => e.split('=')[0],
+    (e) => window.decodeURI(e.split('=')[1]),
+  );
+
+  return searchElementMap[key];
+}
+
+export function reTab(str: string | undefined | null) {
+  if (isNotDefined(str)) {
+    return str;
+  }
+
+  // Replace tab characters with 2 spaces
+  const reTabbed = str.replaceAll('\t', '  ');
+
+  // Remove all \r characters
+  return reTabbed.replaceAll('\r', '');
 }

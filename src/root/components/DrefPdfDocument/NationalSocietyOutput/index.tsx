@@ -6,6 +6,7 @@ import {
 
 import { DrefApiFields } from '#views/DrefApplicationForm/common';
 import pdfStyles from '#utils/pdf/pdfStyles';
+import { reTab } from '#utils/common';
 import { Strings } from '#types';
 
 interface BaseProps {
@@ -30,7 +31,7 @@ function NationalSociety(props: NationalSocietyProps) {
       </View>
       <View style={pdfStyles.niContentCell}>
         <Text>
-          {data.description}
+          {reTab(data.description)}
         </Text>
       </View>
     </View>

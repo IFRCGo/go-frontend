@@ -7,6 +7,7 @@ import {
 import { Strings } from '#types';
 import { DrefOperationalUpdateApiFields } from '#views/DrefOperationalUpdateForm/common';
 import pdfStyles from '#utils/pdf/pdfStyles';
+import { reTab } from '#utils/common';
 import {
   isDefined,
   isNotDefined,
@@ -54,7 +55,7 @@ function AboutServicesOutput(props: Props) {
             {strings.drefFormHumanResourceDescription}
           </Text>
           <Text style={pdfStyles.answer}>
-            {data.human_resource}
+            {reTab(data.human_resource)}
           </Text>
         </View>
       )}
@@ -69,7 +70,7 @@ function AboutServicesOutput(props: Props) {
             {strings.drefFormSurgePersonnelDeployedDescription}
           </Text>
           <Text style={pdfStyles.answer}>
-            {data.surge_personnel_deployed}
+            {reTab(data.surge_personnel_deployed)}
           </Text>
         </View>
       )}
@@ -84,7 +85,7 @@ function AboutServicesOutput(props: Props) {
                 {strings.drefFormLogisticCapacityOfNs}
               </Text>
               <Text style={pdfStyles.answer}>
-                {data.logistic_capacity_of_ns}
+                {reTab(data.logistic_capacity_of_ns)}
               </Text>
             </View>
           )}
@@ -97,7 +98,7 @@ function AboutServicesOutput(props: Props) {
                 {strings.drefFormPmer}
               </Text>
               <Text style={pdfStyles.answer}>
-                {data.pmer}
+                {reTab(data.pmer)}
               </Text>
             </View>
           )}
@@ -110,7 +111,7 @@ function AboutServicesOutput(props: Props) {
                 {strings.drefFormCommunication}
               </Text>
               <Text style={pdfStyles.answer}>
-                {data.communication}
+                {reTab(data.communication)}
               </Text>
             </View>
           )}

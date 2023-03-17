@@ -85,36 +85,32 @@ function PlannedIntervention(props: PlannedInterventionProps) {
               </View>
             </View>
           </View>
-
         </>
       )}
-      {
-        data?.indicators?.map((indicator) => (
-          <View
-            key={indicator?.id}
-            style={pdfStyles.piRow}
-          >
-            <View style={pdfStyles.piSmallColumn}>
+      {data?.indicators?.map((indicator) => (
+        <View
+          key={indicator?.id}
+          style={pdfStyles.piRow}
+        >
+          <View style={pdfStyles.piSmallColumn}>
+            <Text style={pdfStyles.piBorderCell}>
+              {indicator.title}
+            </Text>
+          </View>
+          <View style={pdfStyles.piLargeColumn}>
+            <View style={pdfStyles.piMediumColumn}>
               <Text style={pdfStyles.piBorderCell}>
-                {indicator.title}
+                {indicator.target}
               </Text>
             </View>
-            <View style={pdfStyles.piLargeColumn}>
-              <View style={pdfStyles.piMediumColumn}>
-                <Text style={pdfStyles.piBorderCell}>
-                  {indicator.target}
-                </Text>
-              </View>
-              <View style={pdfStyles.piMediumColumn}>
-                <Text style={pdfStyles.piBorderCell}>
-                  {indicator.actual}
-                </Text>
-              </View>
+            <View style={pdfStyles.piMediumColumn}>
+              <Text style={pdfStyles.piBorderCell}>
+                {indicator.actual}
+              </Text>
             </View>
           </View>
-        ))
-      }
-
+        </View>
+      ))}
       {isDefined(data.progress_towards_outcome) && (
         <>
           <View style={pdfStyles.piRow}>
@@ -124,7 +120,6 @@ function PlannedIntervention(props: PlannedInterventionProps) {
               </Text>
             </View>
           </View>
-
           <View style={pdfStyles.piRow}>
             <View style={pdfStyles.piBorderCell}>
               <Text>

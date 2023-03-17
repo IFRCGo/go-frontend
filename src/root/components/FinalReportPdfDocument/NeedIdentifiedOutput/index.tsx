@@ -9,6 +9,7 @@ import { isDefined } from '@togglecorp/fujs';
 import { Strings } from '#types';
 import pdfStyles from '#utils/pdf/pdfStyles';
 import { DrefFinalReportApiFields } from '#views/FinalReportForm/common';
+import { reTab } from '#utils/common';
 
 interface NeedsProps {
   data: DrefFinalReportApiFields['needs_identified'][number];
@@ -40,7 +41,7 @@ function NeedIdentified(props: NeedsProps) {
 
       <View style={pdfStyles.niContentTextCell}>
         <Text>
-          {data.description}
+          {reTab(data.description)}
         </Text>
       </View>
     </View >

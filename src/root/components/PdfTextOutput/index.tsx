@@ -4,6 +4,7 @@ import {
   View,
 } from '@react-pdf/renderer';
 import pdfStyles from '#utils/pdf/pdfStyles';
+import { reTab } from '#utils/common';
 
 export function PdfTextOutput(props: {
   color?: 'Yellow' | 'Red' | 'Orange' | 'Text';
@@ -55,7 +56,7 @@ export function PdfTextOutput(props: {
           pdfStyles.textOutputValue,
           colorMap[color],
         ]}>
-        {value}
+        {reTab(value)}
       </Text>
     </View>
   );

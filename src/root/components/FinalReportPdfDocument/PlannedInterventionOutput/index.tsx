@@ -9,6 +9,7 @@ import { Strings } from '#types';
 import { formatNumber } from '#utils/common';
 import pdfStyles from '#utils/pdf/pdfStyles';
 import { DrefFinalReportApiFields } from '#views/FinalReportForm/common';
+import { reTab } from '#utils/common';
 
 interface BaseProps {
   data: DrefFinalReportApiFields;
@@ -131,7 +132,7 @@ function PlannedIntervention(props: PlannedInterventionProps) {
           <View style={pdfStyles.piRow}>
             <View style={pdfStyles.piBorderCell}>
               <Text>
-                {data.narrative_description_of_achievements}
+                {reTab(data.narrative_description_of_achievements)}
               </Text>
             </View>
           </View>

@@ -8,6 +8,7 @@ import { isDefined } from '@togglecorp/fujs';
 import { Strings } from '#types';
 import pdfStyles from '#utils/pdf/pdfStyles';
 import { DrefFinalReportApiFields } from '#views/FinalReportForm/common';
+import { reTab } from '#utils/common';
 
 interface Props {
   data: DrefFinalReportApiFields;
@@ -40,7 +41,7 @@ function ObjectiveAndStrategy(props: Props) {
               {strings.drefFormObjectiveOperation}
             </Text>
             <Text style={pdfStyles.answer}>
-              {data.operation_objective}
+              {reTab(data.operation_objective)}
             </Text>
           </View>
         </View>
@@ -54,7 +55,7 @@ function ObjectiveAndStrategy(props: Props) {
             {strings.finalReportResponseStrategyImplementation}
           </Text>
           <Text style={pdfStyles.answer}>
-            {data.response_strategy}
+            {reTab(data.response_strategy)}
           </Text>
         </View>
       )}
@@ -79,7 +80,7 @@ function ObjectiveAndStrategy(props: Props) {
                     {strings.drefFormPeopleAssistedThroughOperation}
                   </Text>
                   <Text style={pdfStyles.answer}>
-                    {data.people_assisted}
+                    {reTab(data.people_assisted)}
                   </Text>
                 </View>
               )}
@@ -93,7 +94,7 @@ function ObjectiveAndStrategy(props: Props) {
                   {strings.drefFormSelectionCriteria}
                 </Text>
                 <Text style={pdfStyles.answer}>
-                  {data.selection_criteria}
+                  {reTab(data.selection_criteria)}
                 </Text>
               </View>
             )}
