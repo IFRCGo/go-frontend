@@ -47,7 +47,7 @@ function EventDescriptionOutput(props: Props) {
       >
         {strings.drefFormDescriptionEvent}
       </Text>
-      {data?.event_map_file && (
+      {data?.event_map_file?.file && (
         <div style={pdfStyles.imagesSection}>
           <View style={pdfStyles.section}>
             <Image

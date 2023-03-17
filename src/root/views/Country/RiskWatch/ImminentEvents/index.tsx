@@ -2,10 +2,10 @@ import React from 'react';
 import { isNotDefined } from '@togglecorp/fujs';
 
 import Container from '#components/Container';
-import RadioInput from '#components/RadioInput';
+// import RadioInput from '#components/RadioInput';
 import BlockLoading from '#components/block-loading';
 
-import ImminentEventsADAM from './ImminentEventsADAM';
+// import ImminentEventsADAM from './ImminentEventsADAM';
 import ImminentEventsPDC from './ImminentEventsPDC';
 
 import styles from './styles.module.scss';
@@ -18,10 +18,12 @@ export type Option = StringValueOption;
 export const stringOptionKeySelector = (o: StringValueOption) => o.value;
 export const optionLabelSelector = (o: Option) => o.label;
 
+/*
 const sourceOptions = [
   { value: "PDC", label: "PDC" },
   { value: "WFP", label: "WFP ADAM" },
 ];
+*/
 
 
 interface Props {
