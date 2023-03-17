@@ -1,4 +1,11 @@
-### Release 6.4.5 - Hotfix for Final Report (code comment appearing)
+### Release 6.4.6 - Hotfix for Ops Update Export
+Date: 2023-03-17
+
+Frontend:
+ - Fix Ops. Update export not working when map file was missing
+ - Remove the box characters from the export
+
+### Release 6.4.5 - Hotfix for Field Report (code comment appearing)
 Date: 2023-03-16
 
 Frontend:
