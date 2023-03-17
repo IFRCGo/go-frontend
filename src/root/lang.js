@@ -3158,6 +3158,7 @@ export default {
   drefFormEssentialInformation: 'Essential Information',
   drefFormNationalSociety: 'Name of National Society',
   drefFormForAssessment: 'Is this the DREF for assessment?',
+  drefFormTypeOfDref: 'Type of DREF',
   drefFormDisasterDetails: 'Disaster Details',
   drefFormImminentDisasterDetails: 'Hazard Details',
   drefFormDisasterTypeLabel: 'Type of Disaster',

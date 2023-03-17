@@ -15,6 +15,10 @@ export const DISASTER_FIRE = 15;
 export const DISASTER_FLASH_FLOOD = 27;
 export const DISASTER_FLOOD = 12;
 
+export const TYPE_IMMINENT = 0;
+export const TYPE_ASSESSMENT = 1;
+export const TYPE_RESPONSE = 2;
+
 export interface User {
   id: number;
   first_name: string;
@@ -227,6 +231,7 @@ export interface DrefFields {
   event_map_file: SingleFileWithCaption;
   is_man_made_event: boolean;
   is_assessment_report: boolean;
+  type_of_dref: number;
 }
 
 export interface DrefApiFields extends Omit<DrefFields, 'event_map_details' | 'cover_image_file' | 'district_details' | 'planned_interventions' | 'national_society_actions' | 'needs_identified' | 'images_file'> {
@@ -305,6 +310,7 @@ export const overviewFields: (keyof DrefFields)[] = [
   'emergency_appeal_planned',
   'is_man_made_event',
   'is_assessment_report',
+  'type_of_dref',
 ];
 
 export const eventDetailsFields: (keyof DrefFields)[] = [
