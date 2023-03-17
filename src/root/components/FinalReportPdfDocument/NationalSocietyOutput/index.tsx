@@ -8,7 +8,7 @@ import { isNotDefined } from '@togglecorp/fujs';
 import pdfStyles from '#utils/pdf/pdfStyles';
 import { Strings } from '#types';
 import { DrefFinalReportApiFields } from '#views/FinalReportForm/common';
-import { formatBoolean } from '#utils/common';
+import { reTab, formatBoolean } from '#utils/common';
 
 interface BaseProps {
   data: DrefFinalReportApiFields;
@@ -48,7 +48,7 @@ function NationalSocietyOutput(props: BaseProps) {
           <Text>{strings.finalReportDescriptionOfAdditionalActivities}</Text>
         </View>
         <View style={pdfStyles.niContentCell}>
-          <Text>{data.national_society_conducted_description}</Text>
+          <Text>{reTab(data.national_society_conducted_description)}</Text>
         </View>
       </View>
     </View >

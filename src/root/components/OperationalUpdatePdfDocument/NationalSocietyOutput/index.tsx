@@ -7,6 +7,7 @@ import {
 
 import { DrefOperationalUpdateApiFields } from '#views/DrefOperationalUpdateForm/common';
 import pdfStyles from '#utils/pdf/pdfStyles';
+import { reTab } from '#utils/common';
 import { Strings } from '#types';
 import { PdfTextOutput } from '#components/PdfTextOutput';
 
@@ -30,7 +31,9 @@ function NationalSociety(props: NationalSocietyProps) {
           <Text>{data.title_display}</Text>
         </View>
         <View style={pdfStyles.niContentCell}>
-          <Text>{data.description}</Text>
+          <Text>
+            {reTab(data.description)}
+          </Text>
         </View>
       </View>
     </View>

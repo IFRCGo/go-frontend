@@ -14,6 +14,7 @@ import { Strings } from '#types';
 import { PdfTextOutput } from '#components/PdfTextOutput';
 import { DrefOperationalUpdateApiFields } from '#views/DrefOperationalUpdateForm/common';
 import pdfStyles from '#utils/pdf/pdfStyles';
+import { reTab } from '#utils/common';
 
 interface Props {
   data: DrefOperationalUpdateApiFields;
@@ -72,7 +73,7 @@ function EventDescriptionOutput(props: Props) {
               : strings.drefFormWhatWhereWhen}
           </Text>
           <Text style={pdfStyles.text}>
-            {sanitizeHtml(data.event_description ?? '', {
+            {sanitizeHtml(reTab(data.event_description) ?? '', {
               allowedTags: [],
             })}
           </Text>
@@ -107,7 +108,7 @@ function EventDescriptionOutput(props: Props) {
               {strings.drefExportTargetCommunities}
             </Text>
             <Text style={pdfStyles.text}>
-              {data.anticipatory_actions}
+              {reTab(data.anticipatory_actions)}
             </Text>
           </View>
         )}
@@ -122,7 +123,7 @@ function EventDescriptionOutput(props: Props) {
               {strings.drefExportScopeAndScaleEvent}
             </Text>
             <Text style={pdfStyles.text}>
-              {data.event_scope}
+              {reTab(data.event_scope)}
             </Text>
           </View>
         )}
