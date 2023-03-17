@@ -3617,7 +3617,9 @@ export default {
   drefOperationalUpdateAdditionalAllocationRequested: 'Additional Allocation Requested',
   drefOperationalUpdateTotalAllocation: 'Total DREF Allocation',
   drefOperationalUpdateNumber: 'Operational Update Number',
-  drerfOperationalUpdateCoverImageLabel: 'Cover image',
+  drefOperationalUpdateCoverImageLabel: 'Cover image',
+  drefOperationalUpdateTypeOfDREF: 'Type of DREF',
+  drefOperationalUpdateDREFType: 'DREF Type',
   //Timeframes
   drefOperationalUpdateTimeFrameDateOfEvent: 'Operation start Date',
   drefOperationalUpdateTimeFrameReportingTimeFrame: 'Reporting timeframe',

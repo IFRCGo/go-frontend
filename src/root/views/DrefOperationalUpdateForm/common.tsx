@@ -3,9 +3,11 @@ import {
   DistrictMini,
 } from "#types/country";
 
-export const ONSET_IMMINENT = 0;
+export const TYPE_IMMINENT = 0;
 export const ONSET_SLOW = 1;
 export const ONSET_SUDDEN = 2;
+export const TYPE_ASSESSMENT = 3;
+export const TYPE_RESPONSE = 4;
 
 export const DISASTER_FIRE = 15;
 export const DISASTER_FLASH_FLOOD = 27;
@@ -229,6 +231,7 @@ export interface DrefOperationalUpdateFields {
   has_event_occurred: boolean;
   reporting_start_date: string;
   reporting_end_date: string;
+  type_of_dref: number;
 }
 
 export interface DrefApplicationValidateConditionalField {
@@ -306,6 +309,7 @@ export const overviewFields: (keyof DrefOperationalUpdateFields)[] = [
   'is_assessment_report',
   'is_man_made_event',
   'people_in_need',
+  'type_of_dref',
 ];
 export const eventFields: (keyof DrefOperationalUpdateFields)[] = [
   'changing_timeframe_operation',
