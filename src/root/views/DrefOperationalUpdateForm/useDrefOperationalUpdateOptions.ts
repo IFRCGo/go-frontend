@@ -148,6 +148,7 @@ const defaultSchema: FormSchemaFields = {
   disaster_category: [],
   disaster_type: [],
   type_of_onset: [requiredCondition],
+  type_of_dref: [requiredCondition],
   country: [],
   district: [
     (currentValue, allValue, context) => {
@@ -407,6 +408,7 @@ interface DrefOperationalUpdateOptions {
   planned_interventions: StringKeyValuePair[];
   status: NumericKeyValuePair[];
   type_of_onset: NumericKeyValuePair[];
+  type_of_dref: NumericKeyValuePair[];
   users: UserListItem[];
 }
 
@@ -444,6 +446,7 @@ function useDrefOperationalFormOptions(value: PartialForm<DrefOperationalUpdateF
   interventionOptions,
   onsetOptions,
   userOptions,
+  drefTypeOptions,
 ] = React.useMemo(() => {
     if (!drefOptions) {
       return [
@@ -466,6 +469,7 @@ function useDrefOperationalFormOptions(value: PartialForm<DrefOperationalUpdateF
         label: `${u.first_name} ${u.last_name}`,
         value: u.id,
       })),
+      drefOptions.type_of_dref.map(transformKeyValueToLabelValue)
     ];
   }, [drefOptions]);
 
@@ -538,6 +542,7 @@ function useDrefOperationalFormOptions(value: PartialForm<DrefOperationalUpdateF
     yesNoOptions,
     nationalSocietyOptions,
     userOptions,
+    drefTypeOptions,
   };
 }
 export default useDrefOperationalFormOptions;
