@@ -1,5 +1,7 @@
 export const defaultMapStyle = 'mapbox://styles/go-ifrc/ckrfe16ru4c8718phmckdfjh0';
 
+
+
 export const defaultMapOptions: Omit<mapboxgl.MapboxOptions, 'style' | 'container'> = {
   logoPosition: 'bottom-left' as const,
   zoom: 1.5,
@@ -13,6 +15,11 @@ export const defaultMapOptions: Omit<mapboxgl.MapboxOptions, 'style' | 'containe
   preserveDrawingBuffer: true,
   // interactive: false,
 };
+
+export const ADAM_COlOR_RED = '#4d0e12';
+export const ADAM_COlOR_ORANGE = '#4b3c14';
+export const ADAM_COlOR_GREEN = '#4b5514';
+export const ADAM_COlOR_CONES = '#d8d8d8';
 
 export const COLOR_WHITE = '#ffffff';
 export const COLOR_TEXT = '#707070';
