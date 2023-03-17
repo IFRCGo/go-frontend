@@ -18,14 +18,14 @@ import pdfStyles from '#utils/pdf/pdfStyles';
 interface Props {
   data: DrefApiFields;
   strings: Strings;
-  isAssessmentReport: boolean;
+  isAssessmentDref: boolean;
 }
 
 function TargetedPopulationOutput(props: Props) {
   const {
     data,
     strings,
-    isAssessmentReport,
+    isAssessmentDref,
   } = props;
 
   // Note: we cannot use isNotDefined because of empty string from server
@@ -53,7 +53,7 @@ function TargetedPopulationOutput(props: Props) {
       </Text>
       <View style={pdfStyles.section}>
         <View style={pdfStyles.basicInfoTable}>
-          {isAssessmentReport ? (
+          {isAssessmentDref ? (
             <>
               <View style={pdfStyles.compactSection}>
                 <PdfTextOutput

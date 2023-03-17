@@ -51,7 +51,7 @@ function NeedIdentified(props: NeedsProps) {
 interface BaseProps {
   data: DrefApiFields;
   niMap?: Record<string, string>;
-  isImminentOnset: boolean;
+  isImminentDref: boolean;
   strings: Strings;
 }
 
@@ -59,7 +59,7 @@ function NeedIdentifiedOutput(props: BaseProps) {
   const {
     data,
     niMap,
-    isImminentOnset,
+    isImminentDref,
     strings,
   } = props;
 
@@ -73,7 +73,7 @@ function NeedIdentifiedOutput(props: BaseProps) {
       break
     >
       <Text style={pdfStyles.sectionHeading}>
-        {isImminentOnset ?
+        {isImminentDref ?
           strings.drefFormImminentNeedsIdentified
           : strings.drefFormNeedsIdentified}
       </Text>
