@@ -244,19 +244,6 @@ function DrefOverview(props: Props) {
             value={value.national_society}
           />
         </InputSection>
-        <InputSection
-          title={strings.drefFormForAssessment}
-        >
-          <RadioInput
-            name={"is_assessment_report" as const}
-            options={yesNoOptions}
-            keySelector={booleanOptionKeySelector}
-            labelSelector={optionLabelSelector}
-            value={value.is_assessment_report}
-            onChange={onValueChange}
-            error={error?.is_assessment_report}
-          />
-        </InputSection>
         <CopyFieldReportSection
           value={value}
           onValueSet={onValueSet}
