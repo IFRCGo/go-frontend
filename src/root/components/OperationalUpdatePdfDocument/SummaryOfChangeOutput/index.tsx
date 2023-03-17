@@ -9,6 +9,7 @@ import { Strings } from '#types';
 import { formatBoolean } from '#utils/common';
 import { DrefOperationalUpdateApiFields } from '#views/DrefOperationalUpdateForm/common';
 import pdfStyles from '#utils/pdf/pdfStyles';
+import { reTab } from '#utils/common';
 
 interface Props {
   data: DrefOperationalUpdateApiFields;
@@ -107,7 +108,7 @@ function SummaryOfChangeOutput(props: Props) {
             pdfStyles.fullWidth
           ]}>
             <Text style={pdfStyles.fontWeightBold}>
-              {strings.drefOperationalUpdateSummaryExplain}
+              {reTab(strings.drefOperationalUpdateSummaryExplain)}
             </Text>
           </View>
         </View>
@@ -116,7 +117,7 @@ function SummaryOfChangeOutput(props: Props) {
             pdfStyles.cellTitle,
             pdfStyles.fullWidth
           ]}>
-            <Text>{data?.summary_of_change}</Text>
+            <Text>{reTab(data?.summary_of_change)}</Text>
           </View>
         </View>
         {isImminentOnset && (
@@ -136,7 +137,7 @@ function SummaryOfChangeOutput(props: Props) {
                 pdfStyles.cellTitle,
                 pdfStyles.fullWidth
               ]}>
-                <Text>{data?.specified_trigger_met}</Text>
+                <Text>{reTab(data?.specified_trigger_met)}</Text>
               </View>
             </View>
           </>

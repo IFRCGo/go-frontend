@@ -485,6 +485,14 @@ export function getSearchValue(key: string, url = window.location): string | und
   return searchElementMap[key];
 }
 
-export function reTab(str: string) {
-  return str.replaceAll('\t', '  ');
+export function reTab(str: string | undefined | null) {
+  if (isNotDefined(str)) {
+    return str;
+  }
+
+  // Replace tab characters with 2 spaces
+  const reTabbed = str.replaceAll('\t', '  ');
+
+  // Remove all \r characters
+  return reTabbed.replaceAll('\r', '');
 }
