@@ -3347,7 +3347,7 @@ export default {
   drefFormManMadeEvent: 'Is this a man made event?',
 
   // dref pdf
-  drefFormPdfTitle: 'DREF APPLICATION',
+  drefFormPdfTitle: 'DREF OPERATION',
   drefFormPdfDrefAllocated: 'DREF Allocated',
   drefFormPdfGlideNum: 'Glide No:',
   drefFormPdfAppealNum: 'Appeal No:',

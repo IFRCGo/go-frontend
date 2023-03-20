@@ -4,7 +4,6 @@ import {
   Document,
 } from '@react-pdf/renderer';
 import { listToMap } from '@togglecorp/fujs';
-
 import {
   TYPE_ASSESSMENT,
   TYPE_IMMINENT,

@@ -70,6 +70,7 @@ const pdfStyles = StyleSheet.create({
   },
 
   section: {
+    marginTop: styles.SPACING_SUPER_LARGE,
     textAlign: 'justify',
   },
 
