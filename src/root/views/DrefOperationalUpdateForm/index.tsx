@@ -702,7 +702,7 @@ function DrefOperationalUpdate(props: Props) {
                   fileIdToUrlMap={fileIdToUrlMap}
                   setFileIdToUrlMap={setFileIdToUrlMap}
                   isSuddenOnset={isSuddenOnset}
-                  isAssessmentReport={isAssessmentDref}
+                  isAssessmentDref={isAssessmentDref}
                 />
               </TabPanel>
               <TabPanel name='needs'>
@@ -715,7 +715,7 @@ function DrefOperationalUpdate(props: Props) {
                   nsActionOptions={nsActionOptions}
                   fileIdToUrlMap={fileIdToUrlMap}
                   setFileIdToUrlMap={setFileIdToUrlMap}
-                  isAssessmentReport={isAssessmentDref}
+                  isAssessmentDref={isAssessmentDref}
                   isImminentDref={isImminentDref}
                 />
               </TabPanel>
@@ -727,7 +727,7 @@ function DrefOperationalUpdate(props: Props) {
                   value={value}
                   fileIdToUrlMap={fileIdToUrlMap}
                   setFileIdToUrlMap={setFileIdToUrlMap}
-                  isAssessmentReport={isAssessmentDref}
+                  isAssessmentDref={isAssessmentDref}
                   yesNoOptions={yesNoOptions}
                 />
               </TabPanel>

@@ -58,6 +58,7 @@ interface Props {
   fetchingCountries?: boolean;
   fetchingDisasterTypes?: boolean;
   fetchingNationalSociety?: boolean;
+  fetchingDrefTypeOptions?: boolean;
   fileIdToUrlMap: Record<number, string>;
   setFileIdToUrlMap?: React.Dispatch<React.SetStateAction<Record<number, string>>>;
   onValueSet: (value: SetBaseValueArg<Value>) => void;
@@ -90,6 +91,7 @@ function Overview(props: Props) {
     onCreateAndShareButtonClick,
     onValueSet,
     drefTypeOptions,
+    fetchingDrefTypeOptions,
     isSuddenOnset,
     isImminentDref,
   } = props;
@@ -249,6 +251,7 @@ function Overview(props: Props) {
             name={"type_of_dref" as const}
             onChange={onValueChange}
             options={drefTypeOptions}
+            pending={fetchingDrefTypeOptions}
             value={value.type_of_dref}
           />
         </InputSection>
