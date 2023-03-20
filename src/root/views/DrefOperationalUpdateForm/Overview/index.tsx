@@ -64,7 +64,7 @@ interface Props {
   onValueSet: (value: SetBaseValueArg<Value>) => void;
   userOptions: NumericValueOption[];
   onCreateAndShareButtonClick: () => void;
-  drefTypeOptions: NumericValueOption[] | undefined;
+  drefTypeOptions: NumericValueOption[];
   isImminentDref: boolean;
   isSuddenOnset: boolean;
 }

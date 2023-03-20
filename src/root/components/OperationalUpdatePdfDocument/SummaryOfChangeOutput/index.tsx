@@ -14,14 +14,14 @@ import { reTab } from '#utils/common';
 interface Props {
   data: DrefOperationalUpdateApiFields;
   strings: Strings;
-  isImminentOnset: boolean;
+  isImminentDref: boolean;
 }
 
 function SummaryOfChangeOutput(props: Props) {
   const {
     data,
     strings,
-    isImminentOnset,
+    isImminentDref,
   } = props;
 
   if (isNotDefined(data.changing_timeframe_operation)
@@ -120,7 +120,7 @@ function SummaryOfChangeOutput(props: Props) {
             <Text>{reTab(data?.summary_of_change)}</Text>
           </View>
         </View>
-        {isImminentOnset && (
+        {isImminentDref && (
           <>
             <View style={pdfStyles.row}>
               <View style={[

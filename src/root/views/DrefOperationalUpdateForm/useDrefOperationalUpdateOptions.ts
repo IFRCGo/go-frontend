@@ -456,6 +456,7 @@ function useDrefOperationalFormOptions(value: PartialForm<DrefOperationalUpdateF
         emptyStringOptionList,
         emptyNumericOptionList,
         emptyNumericOptionList,
+        emptyNumericOptionList,
       ];
     }
 

@@ -51,7 +51,7 @@ function NeedIdentified(props: NeedsProps) {
 interface BaseProps {
   data: DrefOperationalUpdateApiFields;
   niMap?: Record<string, string>;
-  isImminentOnset: boolean;
+  isImminentDref: boolean;
   strings: Strings;
 }
 
@@ -59,7 +59,7 @@ function NeedIdentifiedOutput(props: BaseProps) {
   const {
     data,
     niMap,
-    isImminentOnset,
+    isImminentDref,
     strings,
   } = props;
 
@@ -76,7 +76,7 @@ function NeedIdentifiedOutput(props: BaseProps) {
         style={pdfStyles.sectionHeading}
         minPresenceAhead={20}
       >
-        {isImminentOnset ?
+        {isImminentDref ?
           strings.drefFormImminentNeedsIdentified
           : strings.drefFormNeedsIdentified}
       </Text>
