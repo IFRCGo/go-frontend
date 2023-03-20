@@ -91,9 +91,9 @@ export interface ADAMEventExposure {
   place: string;
   title: string;
   latitude: number;
+  longitude: number;
   mag_type: string;
   admin1_name: string;
-  longitude: number;
   published_at: string;
   population_impact: number;
   country: number | null;
@@ -105,6 +105,11 @@ export interface ADAMEventExposure {
   effective_date: string;
   date_processed: string;
   population: number;
+  dashboard_url: string;
+  flood_area: number;
+  fl_croplnd: number;
+  source: string;
+  sitrep: string;
 }
 
 export interface ADAMEvent {
