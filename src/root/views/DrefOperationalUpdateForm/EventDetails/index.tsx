@@ -37,7 +37,7 @@ interface Props {
   fileIdToUrlMap: Record<number, string>;
   setFileIdToUrlMap?: React.Dispatch<React.SetStateAction<Record<number, string>>>;
   isSuddenOnset: boolean;
-  isAssessmentReport: boolean;
+  isAssessmentDref: boolean;
 }
 
 function EventDetails(props: Props) {
@@ -51,7 +51,7 @@ function EventDetails(props: Props) {
     fileIdToUrlMap,
     setFileIdToUrlMap,
     isSuddenOnset,
-    isAssessmentReport,
+    isAssessmentDref,
   } = props;
 
   const error = React.useMemo(
@@ -295,7 +295,7 @@ function EventDetails(props: Props) {
             ))}
           </div>
         </InputSection>
-        {!isAssessmentReport && (
+        {!isAssessmentDref && (
           <InputSection
             title={strings.drefFormScopeAndScaleEvent}
             description={strings.drefFormScopeAndScaleDescription}

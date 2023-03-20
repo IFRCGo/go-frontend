@@ -48,7 +48,7 @@ interface Props {
   nsActionOptions: StringValueOption[];
   fileIdToUrlMap: Record<number, string>;
   setFileIdToUrlMap?: React.Dispatch<React.SetStateAction<Record<number, string>>>;
-  isAssessmentReport: boolean;
+  isAssessmentDref: boolean;
   isImminentDref?: boolean;
 }
 
@@ -64,7 +64,7 @@ function Needs(props: Props) {
     nsActionOptions,
     fileIdToUrlMap,
     setFileIdToUrlMap,
-    isAssessmentReport,
+    isAssessmentDref,
     isImminentDref,
   } = props;
 
@@ -387,7 +387,7 @@ function Needs(props: Props) {
           </InputSection>
         }
       </Container>
-      {!isAssessmentReport &&
+      {!isAssessmentDref &&
         <Container
           className={styles.needsIdentified}
           heading={
