@@ -81,6 +81,12 @@ export const sectorList = [
     color: '#b3b3b3',
     inputValue: '9',
   },
+  {
+    key: '10',
+    title: 'Multi-purpose Cash',
+    color: '#eeeeee',
+    inputValue: '10',
+  },
 ];
 
 export const secondarySectorList = [
@@ -167,6 +173,12 @@ export const secondarySectorList = [
     title: 'COVID-19',
     color: '#a6d854',
     inputValue: '13',
+  },
+  {
+    key: '14',
+    title: 'Multi-purpose Cash',
+    color: '#eeeeee',
+    inputValue: '14',
   },
 ];
 
