@@ -65,7 +65,7 @@ const pdfStyles = StyleSheet.create({
     fontSize: styles.FONT_SIZE_MEDIUM,
     fontFamily: 'OpenSans',
     fontWeight: 'medium',
-    padding: styles.SPACING_SUPER_LARGE,
+    padding: styles.PAGE_PADDING,
     color: styles.COLOR_TEXT,
   },
 
@@ -121,6 +121,7 @@ const pdfStyles = StyleSheet.create({
     fontSize: styles.FONT_SIZE_LARGE,
     color: styles.COLOR_SECONDARY,
     textAlign: 'right',
+    alignSelf:'flex-end',
     marginTop: styles.SPACING_MEDIUM,
   },
 
@@ -140,7 +141,7 @@ const pdfStyles = StyleSheet.create({
   },
 
   titleIfrcLogo: {
-    height: styles.FONT_SIZE_ULTRA_LARGE,
+    height: styles.FONT_SIZE_ULTRA_LARGE * 2,
   },
 
   coverImage: {
@@ -163,9 +164,10 @@ const pdfStyles = StyleSheet.create({
   },
 
   bannerImageContainer: {
-    width: '100%',
-    height: 250,
+    width: styles.SECTION_WIDTH,
+    height: styles.SECTION_WIDTH * 0.75,
     alignItems: 'center',
+    marginVertical: styles.SPACING_SUPER_LARGE,
   },
 
   bannerImage: {
