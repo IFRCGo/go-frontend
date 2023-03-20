@@ -18,16 +18,16 @@ import pdfStyles from '#utils/pdf/pdfStyles';
 interface Props {
   data: DrefFinalReportApiFields;
   strings: Strings;
-  isImminentOnset: boolean;
-  isAssessmentReport?: boolean;
+  isImminentDref: boolean;
+  isAssessmentDref?: boolean;
 }
 
 function EventDescriptionOutput(props: Props) {
   const {
     data,
     strings,
-    isImminentOnset,
-    isAssessmentReport,
+    isImminentDref,
+    isAssessmentDref,
   } = props;
 
   if (isNotDefined(data.event_scope)
@@ -66,7 +66,7 @@ function EventDescriptionOutput(props: Props) {
             style={pdfStyles.subSectionHeading}
             minPresenceAhead={20}
           >
-            {isImminentOnset
+            {isImminentDref
               ? strings.finalReportImminentDisaster
               : strings.finalReportWhatWhereWhen}
           </Text>
@@ -95,7 +95,7 @@ function EventDescriptionOutput(props: Props) {
           </View>
         ))}
       </div>
-      {!isAssessmentReport
+      {!isAssessmentDref
         && isDefined(data.event_scope)
         && (
           <View style={pdfStyles.subSection}>

@@ -287,6 +287,7 @@ function useDrefFinalReportFormOptions(value: PartialForm<DrefFinalReportFields>
         emptyStringOptionList,
         emptyNumericOptionList,
         emptyNumericOptionList,
+        emptyNumericOptionList,
       ];
     }
 

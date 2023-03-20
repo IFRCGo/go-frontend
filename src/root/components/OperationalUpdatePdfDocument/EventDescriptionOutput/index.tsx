@@ -19,16 +19,16 @@ import { reTab } from '#utils/common';
 interface Props {
   data: DrefOperationalUpdateApiFields;
   strings: Strings;
-  isImminentOnset: boolean;
-  isAssessmentReport?: boolean;
+  isImminentDref: boolean;
+  isAssessmentDref?: boolean;
 }
 
 function EventDescriptionOutput(props: Props) {
   const {
     data,
     strings,
-    isImminentOnset,
-    isAssessmentReport,
+    isImminentDref,
+    isAssessmentDref,
   } = props;
 
   if (isNotDefined(data.event_scope)
@@ -68,7 +68,7 @@ function EventDescriptionOutput(props: Props) {
             style={pdfStyles.subSectionHeading}
             minPresenceAhead={20}
           >
-            {isImminentOnset
+            {isImminentDref
               ? strings.drefFormImminentDisaster
               : strings.drefFormWhatWhereWhen}
           </Text>
@@ -97,7 +97,7 @@ function EventDescriptionOutput(props: Props) {
           </View>
         ))}
       </div>
-      {isImminentOnset
+      {isImminentDref
         && isDefined(data.anticipatory_actions)
         && (
           <View style={pdfStyles.subSection}>
@@ -112,7 +112,7 @@ function EventDescriptionOutput(props: Props) {
             </Text>
           </View>
         )}
-      {!isAssessmentReport
+      {!isAssessmentDref
         && isDefined(data.event_scope)
         && (
           <View style={pdfStyles.subSection}>

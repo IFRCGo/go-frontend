@@ -5,7 +5,10 @@ import {
 } from '@react-pdf/renderer';
 import { listToMap } from '@togglecorp/fujs';
 
-import { ONSET_IMMINENT } from '#views/DrefApplicationForm/common';
+import {
+    TYPE_ASSESSMENT,
+    TYPE_IMMINENT
+  } from '#views/DrefApplicationForm/common';
 import {
   NumericKeyValuePair,
   StringKeyValuePair,
@@ -58,8 +61,8 @@ function FinalReportPdfDocument(props: Props) {
   const piMap = listToMap(drefOptions.planned_interventions, d => d.key, d => d.value);
   const niMap = listToMap(drefOptions.needs_identified, d => d.key, d => d.value);
   const affectedAreas = finalReportResponse?.district_details?.map(d => d.name).join(', ');
-  const isImminentOnset = finalReportResponse?.type_of_onset === ONSET_IMMINENT;
-  const isAssessmentReport = finalReportResponse?.is_assessment_report;
+  const isImminentDref = finalReportResponse?.type_of_dref === TYPE_IMMINENT;
+  const isAssessmentDref = finalReportResponse?.type_of_dref === TYPE_ASSESSMENT;
   const documentTitle = finalReportResponse.title;
 
   return (
@@ -82,13 +85,13 @@ function FinalReportPdfDocument(props: Props) {
           data={finalReportResponse}
           strings={strings}
           affectedAreas={affectedAreas}
-          isImminentOnset={isImminentOnset}
+          isImminentDref={isImminentDref}
         />
         <EventDescriptionOutput
           data={finalReportResponse}
           strings={strings}
-          isImminentOnset={isImminentOnset}
-          isAssessmentReport={isAssessmentReport}
+          isImminentDref={isImminentDref}
+          isAssessmentDref={isAssessmentDref}
         />
         <NationalSocietyOutput
           data={finalReportResponse}
@@ -102,11 +105,11 @@ function FinalReportPdfDocument(props: Props) {
           data={finalReportResponse}
           strings={strings}
         />
-        {!isAssessmentReport &&
+        {!isAssessmentDref &&
           <NeedIdentifiedOutput
             data={finalReportResponse}
             niMap={niMap}
-            isImminentOnset={isImminentOnset}
+            isImminentDref={isImminentDref}
             strings={strings}
           />
         }
@@ -117,7 +120,7 @@ function FinalReportPdfDocument(props: Props) {
         <TargetedPopulationOutput
           data={finalReportResponse}
           strings={strings}
-          isAssessmentReport={isAssessmentReport}
+          isAssessmentDref={isAssessmentDref}
         />
         <RiskAndSecurityOutput
           data={finalReportResponse}

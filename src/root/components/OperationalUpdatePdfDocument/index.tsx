@@ -6,7 +6,8 @@ import {
 import { listToMap } from '@togglecorp/fujs';
 
 import {
-  ONSET_IMMINENT,
+  TYPE_ASSESSMENT,
+  TYPE_IMMINENT,
 } from '#views/DrefApplicationForm/common';
 import { DrefOperationalUpdateApiFields } from '#views/DrefOperationalUpdateForm/common';
 import {
@@ -40,7 +41,7 @@ interface DrefOptions {
   needs_identified: StringKeyValuePair[];
   planned_interventions: StringKeyValuePair[];
   status: NumericKeyValuePair[];
-  type_of_onset: NumericKeyValuePair[];
+  type_of_dref: NumericKeyValuePair[];
   users: {
     id: number;
     first_name: string;
@@ -66,8 +67,8 @@ function OperationalUpdatePdfDocument(props: Props) {
   const piMap = listToMap(drefOptions.planned_interventions, d => d.key, d => d.value);
   const niMap = listToMap(drefOptions.needs_identified, d => d.key, d => d.value);
   const affectedAreas = operationalUpdateResponse?.district_details?.map(d => d.name).join(', ');
-  const isAssessmentReport = operationalUpdateResponse?.is_assessment_report;
-  const isImminentOnset = operationalUpdateResponse?.type_of_onset === ONSET_IMMINENT;
+  const isAssessmentDref = operationalUpdateResponse.type_of_dref === TYPE_ASSESSMENT;
+  const isImminentDref = operationalUpdateResponse.type_of_dref === TYPE_IMMINENT;
   const documentTitle = operationalUpdateResponse?.title;
 
   return (
@@ -90,21 +91,21 @@ function OperationalUpdatePdfDocument(props: Props) {
           data={operationalUpdateResponse}
           strings={strings}
           affectedAreas={affectedAreas}
-          isImminentOnset={isImminentOnset}
+          isImminentDref={isImminentDref}
         />
 
         <EventDescriptionOutput
           data={operationalUpdateResponse}
           strings={strings}
-          isImminentOnset={isImminentOnset}
-          isAssessmentReport={isAssessmentReport}
+          isImminentDref={isImminentDref}
+          isAssessmentDref={isAssessmentDref}
         />
 
-        {!isAssessmentReport &&
+        {!isAssessmentDref &&
           <SummaryOfChangeOutput
             data={operationalUpdateResponse}
             strings={strings}
-            isImminentOnset={isImminentOnset}
+            isImminentDref={isImminentDref}
           />
         }
 
@@ -123,11 +124,11 @@ function OperationalUpdatePdfDocument(props: Props) {
           strings={strings}
         />
 
-        {!isAssessmentReport &&
+        {!isAssessmentDref &&
           <NeedIdentifiedOutput
             data={operationalUpdateResponse}
             niMap={niMap}
-            isImminentOnset={isImminentOnset}
+            isImminentDref={isImminentDref}
             strings={strings}
           />
         }
@@ -139,7 +140,7 @@ function OperationalUpdatePdfDocument(props: Props) {
         <TargetedPopulationOutput
           data={operationalUpdateResponse}
           strings={strings}
-          isAssessmentReport={isAssessmentReport}
+          isAssessmentDref={isAssessmentDref}
         />
 
         <RiskAndSecurityOutput
@@ -156,7 +157,7 @@ function OperationalUpdatePdfDocument(props: Props) {
         <AboutServicesOutput
           strings={strings}
           data={operationalUpdateResponse}
-          isAssessmentReport={isAssessmentReport}
+          isAssessmentDref={isAssessmentDref}
         />
 
         <BudgetFileOutput

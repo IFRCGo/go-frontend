@@ -51,7 +51,7 @@ interface Props {
   isImminentDref: boolean;
   isSuddenOnset: boolean;
   fetchingDrefTypeOptions?: boolean;
-  drefTypeOptions: NumericValueOption[] | undefined;
+  drefTypeOptions: NumericValueOption[];
 }
 
 const totalPopulationRiskImminentLink = "https://ifrcorg.sharepoint.com/sites/IFRCSharing/Shared%20Documents/Forms/AllItems.aspx?id=%2Fsites%2FIFRCSharing%2FShared%20Documents%2FDREF%2FHum%20Pop%20Definitions%20for%20DREF%20Form%5F21072022%2Epdf&parent=%2Fsites%2FIFRCSharing%2FShared%20Documents%2FDREF&p=true&ga=1";
