@@ -48,8 +48,10 @@ interface Props {
   yesNoOptions: BooleanValueOption[];
   fileIdToUrlMap: Record<number, string>;
   setFileIdToUrlMap?: React.Dispatch<React.SetStateAction<Record<number, string>>>;
-  isImminentOnset?: boolean;
-  isAssessmentReport?: boolean;
+  isImminentDref: boolean;
+  isSuddenOnset: boolean;
+  fetchingDrefTypeOptions?: boolean;
+  drefTypeOptions: NumericValueOption[] | undefined;
 }
 
 const totalPopulationRiskImminentLink = "https://ifrcorg.sharepoint.com/sites/IFRCSharing/Shared%20Documents/Forms/AllItems.aspx?id=%2Fsites%2FIFRCSharing%2FShared%20Documents%2FDREF%2FHum%20Pop%20Definitions%20for%20DREF%20Form%5F21072022%2Epdf&parent=%2Fsites%2FIFRCSharing%2FShared%20Documents%2FDREF&p=true&ga=1";
@@ -77,7 +79,8 @@ function Overview(props: Props) {
     onCreateAndShareButtonClick,
     fileIdToUrlMap,
     setFileIdToUrlMap,
-    isImminentOnset,
+    isImminentDref,
+    drefTypeOptions,
   } = props;
 
   const error = React.useMemo(
@@ -181,8 +184,18 @@ function Overview(props: Props) {
             pending={fetchingNationalSociety}
           />
         </InputSection>
+        <InputSection title={strings.drefOperationalUpdateDREFType}>
+          <SelectInput
+            error={error?.type_of_dref}
+            label={strings.drefOperationalUpdateTypeOfDREF}
+            name={"type_of_dref" as const}
+            onChange={onValueChange}
+            options={drefTypeOptions}
+            value={value.type_of_dref}
+          />
+        </InputSection>
         <InputSection
-          title={isImminentOnset
+          title={isImminentDref
             ? strings.finalReportImminentDisasterDetails
             : strings.finalReportDisasterDetails}
           multiRow
@@ -190,7 +203,7 @@ function Overview(props: Props) {
         >
           <SelectInput
             error={error?.disaster_type}
-            label={isImminentOnset
+            label={isImminentDref
               ? strings.finalReportImminentDisasterTypeLabel
               : strings.finalReportDisasterTypeLabel}
             name={"disaster_type" as const}
@@ -229,7 +242,7 @@ function Overview(props: Props) {
           />
         </InputSection>
         <InputSection
-          title={!isImminentOnset
+          title={!isImminentDref
             ? strings.finalReportAffectedCountryAndProvinceImminent
             : strings.finalReportRiskCountryLabel}
           twoColumn
@@ -269,7 +282,7 @@ function Overview(props: Props) {
           twoColumn
         >
           <NumberInput
-            label={isImminentOnset ?
+            label={isImminentDref ?
               <>
                 {strings.finalReportRiskPeopleLabel}
                 <a
@@ -298,7 +311,7 @@ function Overview(props: Props) {
             value={value.number_of_people_affected}
             onChange={onValueChange}
             error={error?.number_of_people_affected}
-            hint={isImminentOnset
+            hint={isImminentDref
               ? strings.drefFormPeopleAffectedDescriptionImminent
               : strings.drefFormPeopleAffectedDescriptionSlowSudden
             }
@@ -307,7 +320,7 @@ function Overview(props: Props) {
             label={(
               <>
                 {
-                  isImminentOnset
+                  isImminentDref
                     ? strings.drefFormEstimatedPeopleInNeed
                     : strings.drefFormPeopleInNeed
                 }
@@ -325,7 +338,7 @@ function Overview(props: Props) {
             value={value.people_in_need}
             onChange={onValueChange}
             error={error?.people_in_need}
-            hint={isImminentOnset
+            hint={isImminentDref
               ? strings.drefFormPeopleInNeedDescriptionImminent
               : strings.drefFormPeopleInNeedDescriptionSlowSudden
             }

@@ -4,9 +4,12 @@ import {
 } from "#types/country";
 import { SingleFileWithCaption } from "#views/DrefApplicationForm/common";
 
-export const ONSET_IMMINENT = 0;
 export const ONSET_SLOW = 1;
 export const ONSET_SUDDEN = 2;
+
+export const TYPE_IMMINENT = 0;
+export const TYPE_ASSESSMENT = 1;
+export const TYPE_RESPONSE = 2;
 
 export interface NumericValueOption {
   value: number;
@@ -204,6 +207,7 @@ export interface DrefFinalReportFields {
   national_society_conducted_description: string;
   financial_report: number;
   financial_report_description: string;
+  type_of_dref: number;
 }
 
 export interface DrefFinalReportApiFields extends Omit<DrefFinalReportFields, 'district_details' | 'planned_interventions' | 'national_society_actions' | 'needs_identified' | 'images_file'> {
@@ -255,6 +259,7 @@ export const overviewFields: (keyof DrefFinalReportFields)[] = [
   'event_map_file',
   'cover_image_file',
   'num_assisted',
+  'type_of_dref',
 ];
 export const eventFields: (keyof DrefFinalReportFields)[] = [
   'images_file',

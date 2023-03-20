@@ -42,7 +42,7 @@ import {
   BooleanValueOption,
   DrefFinalReportFields,
   Intervention,
-  ONSET_IMMINENT,
+  TYPE_IMMINENT,
   optionLabelSelector,
   RiskSecurityProps,
   StringValueOption,
@@ -61,7 +61,8 @@ interface Props {
   fileIdToUrlMap: Record<number, string>;
   setFileIdToUrlMap?: Dispatch<SetStateAction<Record<number, string>>>;
   yesNoOptions: BooleanValueOption[];
-  isAssessmentReport: boolean;
+  isAssessmentDref: boolean;
+  isImminentDref?: boolean;
 }
 
 function Operation(props: Props) {
@@ -73,13 +74,14 @@ function Operation(props: Props) {
     interventionOptions,
     value,
     yesNoOptions,
-    isAssessmentReport,
+    isAssessmentDref,
+    isImminentDref,
     fileIdToUrlMap,
     setFileIdToUrlMap,
   } = props;
 
   const error = getErrorObject(formError);
-  const isImminentOnSet = value.type_of_onset === ONSET_IMMINENT;
+  const isImminentOfDref = value.type_of_dref === TYPE_IMMINENT;
   const isChangeInOperationalStrategy = value.change_in_operational_strategy;
 
   const {
@@ -347,7 +349,7 @@ function Operation(props: Props) {
             error={error?.displaced_people}
           />
           {
-            isImminentOnSet &&
+            isImminentOfDref &&
             <NumberInput
               label={strings.finalReportPeopleTargetedWithEarlyActions}
               name="people_targeted_with_early_actions"
@@ -364,7 +366,7 @@ function Operation(props: Props) {
       >
         <InputSection
           title={strings.drefFormRiskSecurityPotentialRisk}
-          description={isAssessmentReport && strings.drefFormRiskSecurityPotentialRiskDescription}
+          description={isAssessmentDref && strings.drefFormRiskSecurityPotentialRiskDescription}
           multiRow
           oneColumn
         >
