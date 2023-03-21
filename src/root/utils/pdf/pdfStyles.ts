@@ -142,7 +142,7 @@ const pdfStyles = StyleSheet.create({
   },
 
   titleIfrcLogo: {
-    height: styles.FONT_SIZE_ULTRA_LARGE * 2,
+    height: styles.FONT_SIZE_IFRC_LOGO_HEADING,
   },
 
   coverImage: {

@@ -13,6 +13,7 @@ export const FONT_SIZE_EXTRA_LARGE = 15;
 export const FONT_SIZE_SUPER_LARGE = 20;
 export const FONT_SIZE_MEGA_LARGE = 27;
 export const FONT_SIZE_ULTRA_LARGE = 40;
+export const FONT_SIZE_IFRC_LOGO_HEADING = 70;
 
 export const SPACING_SMALL = 6;
 export const SPACING_MEDIUM = 10;
