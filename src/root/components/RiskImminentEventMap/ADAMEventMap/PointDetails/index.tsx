@@ -59,7 +59,6 @@ function PointDetails(props: PointDetailsProps) {
       depth,
       wind_speed,
       effective_date,
-      date_processed,
       dashboard_url,
       longitude,
       latitude,
@@ -89,8 +88,6 @@ function PointDetails(props: PointDetailsProps) {
     }, []);
 
   const dashboardUrl = dashboard_url ?? url.map;
-
-  console.log({dashboardUrl});
 
   return (
     <MapTooltipContent
@@ -136,6 +133,51 @@ function PointDetails(props: PointDetailsProps) {
               <Link
                 className={styles.url}
                 href={url.population}
+                target="_blank"
+              >
+                More Info
+              </Link>
+            }
+            valueType='text'
+          />
+        }
+        {isDefined(url) && isDefined(url.wind) &&
+          <TextOutput
+            label="Wind Link"
+            value={
+              <Link
+                className={styles.url}
+                href={url.wind}
+                target="_blank"
+              >
+                More Info
+              </Link>
+            }
+            valueType='text'
+          />
+        }
+        {isDefined(url) && isDefined(url.rainfall) &&
+          <TextOutput
+            label="Rainfall Link"
+            value={
+              <Link
+                className={styles.url}
+                href={url.wind}
+                target="_blank"
+              >
+                More Info
+              </Link>
+            }
+            valueType='text'
+          />
+        }
+        {isDefined(url) && isDefined(url.shapefile) &&
+          <TextOutput
+            label="Shapefile Link"
+            value={
+              <Link
+                className={styles.url}
+                href={url.shapefile}
                 target="_blank"
               >
                 More Info
@@ -193,13 +235,6 @@ function PointDetails(props: PointDetailsProps) {
             valueType="date"
           />
         }
-        {isDefined(date_processed) &&
-          <TextOutput
-            label="Date Process"
-            value={date_processed}
-            valueType="date"
-          />
-        }
         {isDefined(from_date) &&
           <TextOutput
             label="From date"
@@ -239,6 +274,30 @@ function PointDetails(props: PointDetailsProps) {
           <TextOutput
             label="Depth (km)"
             value={depth}
+            valueType="number"
+          />
+        }
+        {isDefined(hazardDetails.population_exposure) &&
+          isDefined (hazardDetails.population_exposure['exposure_60km/h']) &&
+          <TextOutput
+            label="Exposure (60km/h)"
+            value={hazardDetails.population_exposure['exposure_60km/h']}
+            valueType="number"
+          />
+        }
+        {isDefined(hazardDetails.population_exposure) &&
+          isDefined(hazardDetails.population_exposure['exposure_90km/h']) &&
+          <TextOutput
+            label="Exposure (90km/h)"
+            value={hazardDetails.population_exposure['exposure_90km/h']}
+            valueType="number"
+          />
+        }
+        {isDefined(hazardDetails.population_exposure) &&
+          isDefined(hazardDetails.population_exposure['exposure_120km/h']) &&
+          <TextOutput
+            label="Exposure (120km/h)"
+            value={hazardDetails.population_exposure['exposure_120km/h']}
             valueType="number"
           />
         }
@@ -291,22 +350,6 @@ function PointDetails(props: PointDetailsProps) {
         attribute="Wind speed"
         value={wind_speed}
       />
-      {/* <EstimatedOutput
-        attribute="People in vulnerable groups exposed to the hazard"
-        value={population_exposure?.vulnerable?.value}
-      />
-      <EstimatedOutput
-        attribute="value (USD) of exposed buildings"
-        value={capital_exposure?.total?.value}
-      />
-      <EstimatedOutput
-        attribute="Schools Exposed"
-        value={capital_exposure?.school?.value}
-      />
-      <EstimatedOutput
-        attribute="Hospitals Exposed"
-        value={capital_exposure?.hospital?.value}
-      /> */}
     </MapTooltipContent>
   );
 }

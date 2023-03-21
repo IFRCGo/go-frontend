@@ -85,6 +85,9 @@ export interface ADAMEventExposure {
     map: string;
     shakemap: string;
     population: string;
+    wind: string;
+    rainfall: string;
+    shapefile: string
   }
   iso3: string;
   depth: number;
@@ -140,4 +143,10 @@ export interface ADAMEvent {
     track_date: string;
     alert_level: 'Red' | 'Orange' | 'Green' | 'Cones' | null;
   }>;
+
+  population_exposure:{
+    "exposure_60km/h": number;
+    "exposure_90km/h": number;
+    "exposure_120km/h": number;
+  }
 }
