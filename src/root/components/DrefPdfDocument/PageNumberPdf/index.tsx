@@ -1,17 +1,26 @@
 import React from 'react';
-import { Text } from '@react-pdf/renderer';
+import { Image, Text, View } from '@react-pdf/renderer';
 
 import pdfStyles from '#utils/pdf/pdfStyles';
 
+const logoUrl = '/assets/graphics/layout/go-pdf-footer.png';
 function PageNumberPdf() {
   return (
-    <Text
-      style={pdfStyles.pageNumber}
-      render={({ pageNumber, totalPages }) => (
-        `Page ${pageNumber} / ${totalPages}`
-      )}
+    <View
       fixed
-    />
+      style={pdfStyles.footer}
+    >
+      <Text
+        style={pdfStyles.pageNumber}
+        render={({ pageNumber, totalPages }) => (
+          `Page ${pageNumber} / ${totalPages}`
+        )}
+      />
+      <Image
+        style={pdfStyles.footerLogo}
+        src={logoUrl}
+      />
+    </View>
   );
 }
 

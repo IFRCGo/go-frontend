@@ -639,15 +639,29 @@ const pdfStyles = StyleSheet.create({
     width: '100%',
   },
 
+  footer: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    paddingHorizontal: styles.PAGE_PADDING,
+  },
+
   pageNumber: {
     fontSize: styles.FONT_SIZE_MEDIUM / 1.3,
     color: styles.COLOR_PAGE_NUMBER,
-    position: 'absolute',
-    bottom: 10,
-    left: 0,
-    right: 0,
-    textAlign: 'center',
-  }
+    alignSelf: 'center',
+  },
+
+  footerLogo: {
+    height: 40,
+    width: 40,
+    alignSelf: 'flex-start',
+    marginBottom: 10,
+  },
 });
 
 export default pdfStyles;
