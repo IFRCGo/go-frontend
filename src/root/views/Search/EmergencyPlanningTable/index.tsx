@@ -63,7 +63,7 @@ function EmergencyPlanningTable(props: Props) {
       'Title',
       (emergencyPlanning) => emergencyPlanning.name,
       (emergencyPlanning) => ({
-        href: `emergencies/${emergencyPlanning.id}`,
+        href: `/emergencies/${emergencyPlanning.id}`,
         variant: 'table'
       })
     ),
@@ -72,7 +72,7 @@ function EmergencyPlanningTable(props: Props) {
       'Country',
       (emergencyPlanning) =>  emergencyPlanning.country,
       (emergencyPlanning) => ({
-        href: `countries/${emergencyPlanning.country_id}`,
+        href: `/countries/${emergencyPlanning.country_id}`,
         variant: 'table'
       })
     ),

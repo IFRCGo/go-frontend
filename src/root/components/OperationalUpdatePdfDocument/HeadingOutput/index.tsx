@@ -13,7 +13,7 @@ interface Props {
   strings: Strings;
 }
 
-const logoUrl = '/assets/graphics/layout/go-logo.svg';
+const logoUrl = '/assets/graphics/layout/ifrc-square.png';
 
 function HeadingOutput(props: Props) {
   const {

@@ -89,7 +89,7 @@ function SurgeAlertTable(props: Props) {
       'Emergency',
       (surgeAlert) => surgeAlert.event_name,
       (surgeAlert) => ({
-        href: `emergencies/${surgeAlert.event_id}`,
+        href: `/emergencies/${surgeAlert.event_id}`,
         variant: 'table',
       })
     ),
