@@ -68,7 +68,7 @@ const footprintLayerOptions = {
   type: 'fill',
   paint: {
     'fill-color': alertLevelFillColorPaint,
-    'fill-opacity': 0.8,
+    // 'fill-opacity': 0.8,
   },
   filter: ['==', ['get', 'type'], 'MultiPolygon'],
 };
@@ -316,7 +316,7 @@ function ADAMEventMap(props: Props) {
               paint: {
                 'circle-color': alertLevelFillColorPaint,
                 'circle-radius': 6,
-                'circle-opacity': 0.8,
+                // 'circle-opacity': 0.8,
               },
               filter: ['==', ['get', 'type'], 'Point'],
             }}
@@ -404,10 +404,10 @@ function ADAMEventMap(props: Props) {
                 'circle-opacity': [
                   'case',
                   ['boolean', ['feature-state', 'active'], false],
-                  0.8,
+                  1,
                   ['boolean', ['feature-state', 'hovered'], false],
-                  0.6,
                   0.5,
+                  1,
                 ],
               },
             }}
