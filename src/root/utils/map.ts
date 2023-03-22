@@ -16,10 +16,10 @@ export const defaultMapOptions: Omit<mapboxgl.MapboxOptions, 'style' | 'containe
   // interactive: false,
 };
 
-export const ADAM_COlOR_RED = '#4d0e12';
-export const ADAM_COlOR_ORANGE = '#4b3c14';
-export const ADAM_COlOR_GREEN = '#4b5514';
-export const ADAM_COlOR_CONES = '#d8d8d8';
+export const ADAM_COlOR_RED = '#c03a2b';
+export const ADAM_COlOR_ORANGE = '#f8aa05';
+export const ADAM_COlOR_GREEN = '#38a800';
+export const ADAM_COlOR_CONES = '#256db6';
 
 export const COLOR_WHITE = '#ffffff';
 export const COLOR_TEXT = '#707070';

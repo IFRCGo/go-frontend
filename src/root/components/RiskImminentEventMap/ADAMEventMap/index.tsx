@@ -68,7 +68,7 @@ const footprintLayerOptions = {
   type: 'fill',
   paint: {
     'fill-color': alertLevelFillColorPaint,
-    'fill-opacity': 0.8,
+    // 'fill-opacity': 0.8,
   },
   filter: ['==', ['get', 'type'], 'MultiPolygon'],
 };
@@ -100,9 +100,9 @@ function ADAMEventMap(props: Props) {
   } = props;
 
   const [
-    hazardIconLoadedStatusMap,
-    setHazardIconLoadedStatusMap,
-  ] = React.useState<Record<ImminentHazardTypes, boolean>>({
+  hazardIconLoadedStatusMap,
+  setHazardIconLoadedStatusMap,
+] = React.useState<Record<ImminentHazardTypes, boolean>>({
     EQ: false,
     FL: false,
     CY: false,
@@ -177,12 +177,21 @@ function ADAMEventMap(props: Props) {
 
   const stormPositionGeoJson = React.useMemo(
     () => {
-      const stormPoints = activeEventPopUpDetails?.hazardDetails?.storm_position_geojson;
-
-      if (isNotDefined(stormPoints)) {
-        return undefined;
+      if (isNotDefined(activeEvent)) {
+        return {
+          type: 'FeatureCollection' as const,
+          features:[],
+        };
       }
 
+      const stormPoints = activeEvent.storm_position_geojson;
+
+      if (isNotDefined(stormPoints)) {
+        return {
+          type: 'FeatureCollection' as const,
+          features:[],
+        };
+      }
       return {
         ...stormPoints,
         features: stormPoints.features.map((feature) => ({
@@ -195,12 +204,12 @@ function ADAMEventMap(props: Props) {
         })),
       };
     },
-    [activeEventPopUpDetails],
+    [activeEvent],
   );
 
   const boundsBoxPoints = React.useMemo(
     () => {
-      if (stormPositionGeoJson) {
+      if (stormPositionGeoJson.features.length > 1) {
         const bounds = turfBbox(stormPositionGeoJson) as BoundingBox;
         const viewPort = viewport(bounds, [600, 400]);
         return viewPort;
@@ -216,7 +225,7 @@ function ADAMEventMap(props: Props) {
         };
       }
 
-      if(isNotDefined(activeEvent)) {
+      if(isNotDefined(activeEvent)  && hazardPointGeoJson.features.length > 1) {
         const newGeoFix = fixGeoJsonZeroLine(hazardPointGeoJson);
         const bounds = turfBbox(newGeoFix) as BoundingBox;
         const viewPort = viewport(bounds, [600, 400], 1, 2.5);
@@ -307,7 +316,7 @@ function ADAMEventMap(props: Props) {
               paint: {
                 'circle-color': alertLevelFillColorPaint,
                 'circle-radius': 6,
-                'circle-opacity': 0.8,
+                // 'circle-opacity': 0.8,
               },
               filter: ['==', ['get', 'type'], 'Point'],
             }}
@@ -395,10 +404,10 @@ function ADAMEventMap(props: Props) {
                 'circle-opacity': [
                   'case',
                   ['boolean', ['feature-state', 'active'], false],
-                  0.8,
+                  1,
                   ['boolean', ['feature-state', 'hovered'], false],
-                  0.6,
                   0.5,
+                  1,
                 ],
               },
             }}
@@ -442,15 +451,17 @@ function ADAMEventMap(props: Props) {
           />
         </MapTooltip>
       )}
-
-      <MapEaseTo
-        padding={mapPadding}
-        center={boundsBoxPoints?.center}
-        zoom={boundsBoxPoints?.zoom}
-        duration={MAP_BOUNDS_ANIMATION_DURATION}
-      />
+      {boundsBoxPoints &&
+        <MapEaseTo
+          padding={mapPadding}
+          center={boundsBoxPoints.center}
+          zoom={boundsBoxPoints.zoom}
+          duration={MAP_BOUNDS_ANIMATION_DURATION}
+        />
+      }
     </Map>
   );
 }
 
 export default ADAMEventMap;
+
