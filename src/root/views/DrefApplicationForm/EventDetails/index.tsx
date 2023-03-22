@@ -25,6 +25,8 @@ import {
   booleanOptionKeySelector,
   DrefFields,
   FileWithCaption,
+  TYPE_IMMINENT,
+  TYPE_ASSESSMENT,
 } from '../common';
 
 import styles from './styles.module.scss';
@@ -35,10 +37,9 @@ interface Props {
   onValueChange: (...entries: EntriesAsList<Value>) => void;
   value: Value;
   yesNoOptions: BooleanValueOption[];
-  isImminentOnset: boolean;
   fileIdToUrlMap: Record<number, string>;
   setFileIdToUrlMap?: React.Dispatch<React.SetStateAction<Record<number, string>>>;
-  isAssessmentReport: boolean;
+  drefType?: number;
   isSuddenOnset: boolean;
 }
 
@@ -50,10 +51,9 @@ function EventDetails(props: Props) {
     onValueChange,
     value,
     yesNoOptions,
-    isImminentOnset,
     fileIdToUrlMap,
     setFileIdToUrlMap,
-    isAssessmentReport,
+    drefType,
     isSuddenOnset,
   } = props;
 
@@ -89,7 +89,7 @@ function EventDetails(props: Props) {
 
   return (
     <>
-      {!isAssessmentReport &&
+      {drefType !== TYPE_ASSESSMENT &&
         <Container
           heading={strings.drefFormPreviousOperations}
           className={styles.previousOperations}
@@ -203,14 +203,14 @@ function EventDetails(props: Props) {
       >
         <InputSection
           title={
-            isImminentOnset
+            drefType === TYPE_IMMINENT
               ? strings.drefFormApproximateDateOfImpact
               : isSuddenOnset
                 ? strings.drefFormEventDate
                 : strings.drefFormSlowEventDate
           }
         >
-          {isImminentOnset ? (
+          {drefType === TYPE_IMMINENT ? (
             <TextArea
               name="event_text"
               value={value.event_text}
@@ -228,7 +228,7 @@ function EventDetails(props: Props) {
         </InputSection>
         <InputSection
           title={
-            !isImminentOnset
+            drefType !== TYPE_IMMINENT
               ? strings.drefFormWhatWhereWhen
               : strings.drefFormImminentDisaster
           }
@@ -242,7 +242,7 @@ function EventDetails(props: Props) {
             error={error?.event_description}
           />
         </InputSection>
-        {isImminentOnset &&
+        {drefType === TYPE_IMMINENT &&
           <InputSection
             title={strings.drefFormTargetCommunities}
             description={strings.drefFormTargetCommunitiesDescription}
@@ -257,7 +257,7 @@ function EventDetails(props: Props) {
             />
           </InputSection>
         }
-        {isImminentOnset && (
+        {drefType === TYPE_IMMINENT && (
           <InputSection
             title={strings.drefFormUploadSupportingDocument}
             description={strings.drefFormUploadSupportingDocumentDescription}
@@ -307,7 +307,7 @@ function EventDetails(props: Props) {
             ))}
           </div>
         </InputSection>
-        {!isAssessmentReport &&
+        {drefType !== TYPE_ASSESSMENT &&
           <InputSection
             title={strings.drefFormScopeAndScaleEvent}
             description={strings.drefFormScopeAndScaleDescription}

@@ -1,5 +1,5 @@
-export const PAGE_PADDING = 20;
-export const FULL_WIDTH = 600;
+export const PAGE_PADDING = 32;
+export const FULL_WIDTH = 595;  // A4 default size width 595 pts
 export const VERTICAL_MARGIN = 10;
 export const TABLE_CELL_PADDING = 10;
 export const HEADING_VERTICAL_PADDING = 10;
@@ -30,3 +30,4 @@ export const COLOR_YELLOW = '#ffc000';
 export const COLOR_ORANGE = '#ed7d31';
 export const COLOR_RED = '#f40d11';
 export const COLOR_PAGE_NUMBER = '#5a5a5a';
+

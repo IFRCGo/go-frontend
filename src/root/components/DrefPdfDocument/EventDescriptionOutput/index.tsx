@@ -9,22 +9,24 @@ import sanitizeHtml from 'sanitize-html';
 
 import { Strings } from '#types';
 import { PdfTextOutput } from '#components/PdfTextOutput';
-import { DrefApiFields } from '#views/DrefApplicationForm/common';
+import {
+  DrefApiFields,
+  TYPE_ASSESSMENT,
+  TYPE_IMMINENT,
+} from '#views/DrefApplicationForm/common';
 import pdfStyles from '#utils/pdf/pdfStyles';
 
 interface Props {
   data: DrefApiFields;
   strings: Strings;
-  isImminentOnset: boolean;
-  isAssessmentReport?: boolean;
+  drefType?: number;
 }
 
 function EventDescriptionOutput(props: Props) {
   const {
     data,
     strings,
-    isImminentOnset,
-    isAssessmentReport,
+    drefType,
   } = props;
 
   if (isNotDefined(data.event_scope)
@@ -41,7 +43,7 @@ function EventDescriptionOutput(props: Props) {
       <Text style={pdfStyles.sectionHeading}>
         {strings.drefFormDescriptionEvent}
       </Text>
-      {isImminentOnset && (
+      {drefType === TYPE_IMMINENT && (
         <>
           <Text style={pdfStyles.subSectionHeading}>
             {strings.drefFormApproximateDateOfImpact}
@@ -70,7 +72,7 @@ function EventDescriptionOutput(props: Props) {
       {isDefined(data.event_description) && (
         <View style={pdfStyles.subSection}>
           <Text style={pdfStyles.subSectionHeading}>
-            {isImminentOnset
+            {drefType === TYPE_IMMINENT
               ? strings.drefExportWhatExpectedHappen
               : strings.drefFormWhatWhereWhen}
           </Text>
@@ -100,7 +102,7 @@ function EventDescriptionOutput(props: Props) {
           ))}
         </View>
       )}
-      {isImminentOnset
+      {drefType === TYPE_IMMINENT
         && isDefined(data.anticipatory_actions)
         && (
           <View style={pdfStyles.subSection}>
@@ -112,7 +114,7 @@ function EventDescriptionOutput(props: Props) {
             </Text>
           </View>
         )}
-      {!isAssessmentReport
+      {drefType !== TYPE_ASSESSMENT
         && isDefined(data.event_scope)
         && (
           <View style={pdfStyles.subSection}>

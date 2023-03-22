@@ -186,6 +186,7 @@ const defaultSchema = {
   risk_security_concern: [],
   is_man_made_event: [],
   is_assessment_report: [],
+  type_of_dref: [requiredCondition],
   national_society_actions: {
     keySelector: (n: PartialForm<NsAction>) => n.clientId as string,
     member: (): NsActionsSchemaMember => ({
@@ -307,6 +308,7 @@ interface DrefOptions {
   planned_interventions: StringKeyValuePair[];
   status: NumericKeyValuePair[];
   type_of_onset: NumericKeyValuePair[];
+  type_of_dref: NumericKeyValuePair[];
   users: UserListItem[];
 }
 
@@ -344,6 +346,7 @@ function useDrefFormOptions(value: PartialForm<DrefFields>) {
     interventionOptions,
     onsetOptions,
     userOptions,
+    drefTypeOptions,
   ] = React.useMemo(() => {
     if (!drefOptions) {
       return [
@@ -351,6 +354,7 @@ function useDrefFormOptions(value: PartialForm<DrefFields>) {
         emptyStringOptionList,
         emptyStringOptionList,
         emptyStringOptionList,
+        emptyNumericOptionList,
         emptyNumericOptionList,
         emptyNumericOptionList,
       ];
@@ -366,6 +370,7 @@ function useDrefFormOptions(value: PartialForm<DrefFields>) {
         label: `${u.first_name} ${u.last_name}`,
         value: u.id,
       })),
+      drefOptions.type_of_dref.map(transformKeyValueToLabelValue),
     ];
   }, [drefOptions]);
 
@@ -438,6 +443,7 @@ function useDrefFormOptions(value: PartialForm<DrefFields>) {
     yesNoOptions,
     nationalSocietyOptions,
     userOptions,
+    drefTypeOptions,
   };
 }
 

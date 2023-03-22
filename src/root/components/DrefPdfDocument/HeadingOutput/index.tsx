@@ -13,7 +13,7 @@ interface Props {
   strings: Strings;
 }
 
-const logoUrl = '/assets/graphics/layout/go-logo-2020.png';
+const logoUrl = '/assets/graphics/layout/ifrc-square.png';
 
 function HeadingOutput(props: Props) {
   const {
@@ -27,13 +27,15 @@ function HeadingOutput(props: Props) {
           style={pdfStyles.titleIfrcLogo}
           src={logoUrl}
         />
-        <Text style={pdfStyles.pageTitle}>
-          {strings.drefExportTitle}
-        </Text>
+        <View>
+          <Text style={pdfStyles.pageTitle}>
+            {strings.drefExportTitle}
+          </Text>
+          <Text style={pdfStyles.subTitle}>
+            {documentTitle}
+          </Text>
+        </View>
       </View>
-      <Text style={pdfStyles.subTitle}>
-        {documentTitle}
-      </Text>
     </View>
   );
 }

@@ -3158,6 +3158,7 @@ export default {
   drefFormEssentialInformation: 'Essential Information',
   drefFormNationalSociety: 'Name of National Society',
   drefFormForAssessment: 'Is this the DREF for assessment?',
+  drefFormTypeOfDref: 'Type of DREF',
   drefFormDisasterDetails: 'Disaster Details',
   drefFormImminentDisasterDetails: 'Hazard Details',
   drefFormDisasterTypeLabel: 'Type of Disaster',
@@ -3424,8 +3425,8 @@ export default {
   riskModulePastAndHistoricEvent: 'Past Events And Historical Impact',
   //dref pdf
   drefExportIfrcName: 'International Federation of Red Cross and Red Crescent Societies (IFRC)',
-  drefExportTitle: 'DREF Application',
-  drefExportDrefAllocated: 'DREF Allocated:',
+  drefExportTitle: 'DREF OPERATION',
+  drefExportDrefAllocated: 'DREF Allocation:',
   drefExportGlideNum: 'Glide Number:',
   drefExportAppealNum: 'Appeal:',
   drefExportPeopleAffected: 'People Affected:',
@@ -3470,6 +3471,8 @@ export default {
   drefDocumentImportSlowSuddenLabel: 'Slow/Sudden',
   drefDocumentImportImminentLabel: 'Imminent',
   drefDocumentImportAssessmentLabel: 'Assessment',
+  drefExportCountry: 'Country:',
+  drefExportDrefPublished: 'DREF Published:',
 
   // Flash Update
   flashUpdateFormPageTitle: 'IFRC GO - Flash Update Request',

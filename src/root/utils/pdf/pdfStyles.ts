@@ -65,7 +65,7 @@ const pdfStyles = StyleSheet.create({
     fontSize: styles.FONT_SIZE_MEDIUM,
     fontFamily: 'OpenSans',
     fontWeight: 'medium',
-    padding: styles.SPACING_SUPER_LARGE,
+    padding: styles.PAGE_PADDING,
     color: styles.COLOR_TEXT,
   },
 
@@ -121,6 +121,7 @@ const pdfStyles = StyleSheet.create({
     fontSize: styles.FONT_SIZE_LARGE,
     color: styles.COLOR_SECONDARY,
     textAlign: 'right',
+    alignSelf:'flex-end',
     marginTop: styles.SPACING_MEDIUM,
   },
 
@@ -140,7 +141,7 @@ const pdfStyles = StyleSheet.create({
   },
 
   titleIfrcLogo: {
-    height: styles.FONT_SIZE_ULTRA_LARGE,
+    height: styles.FONT_SIZE_ULTRA_LARGE * 2,
   },
 
   coverImage: {
@@ -163,9 +164,10 @@ const pdfStyles = StyleSheet.create({
   },
 
   bannerImageContainer: {
-    width: '100%',
-    height: 250,
+    width: styles.SECTION_WIDTH,
+    height: styles.SECTION_WIDTH * 0.75,
     alignItems: 'center',
+    marginVertical: styles.SPACING_SUPER_LARGE,
   },
 
   bannerImage: {
@@ -637,15 +639,29 @@ const pdfStyles = StyleSheet.create({
     width: '100%',
   },
 
+  footer: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    paddingHorizontal: styles.PAGE_PADDING,
+  },
+
   pageNumber: {
     fontSize: styles.FONT_SIZE_MEDIUM / 1.3,
     color: styles.COLOR_PAGE_NUMBER,
-    position: 'absolute',
-    bottom: 10,
-    left: 0,
-    right: 0,
-    textAlign: 'center',
-  }
+    alignSelf: 'center',
+  },
+
+  footerLogo: {
+    height: 40,
+    width: 40,
+    alignSelf: 'flex-start',
+    marginBottom: 10,
+  },
 });
 
 export default pdfStyles;

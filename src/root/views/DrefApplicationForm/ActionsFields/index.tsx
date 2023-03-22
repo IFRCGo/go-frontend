@@ -33,6 +33,8 @@ import {
   booleanOptionKeySelector,
   Need,
   NsAction,
+  TYPE_IMMINENT,
+  TYPE_ASSESSMENT,
 } from '../common';
 import NeedInput from './NeedInput';
 import NsActionInput from './NSActionInput';
@@ -49,8 +51,7 @@ interface Props {
   nsActionOptions: StringValueOption[];
   fileIdToUrlMap: Record<number, string>;
   setFileIdToUrlMap?: React.Dispatch<React.SetStateAction<Record<number, string>>>;
-  isAssessmentReport: boolean;
-  isImminentOnset?: boolean;
+  drefType?: number;
 }
 
 function ActionsFields(props: Props) {
@@ -64,9 +65,8 @@ function ActionsFields(props: Props) {
     needOptions,
     nsActionOptions,
     fileIdToUrlMap,
-    isAssessmentReport,
     setFileIdToUrlMap,
-    isImminentOnset,
+    drefType,
   } = props;
 
   const error = React.useMemo(
@@ -146,7 +146,7 @@ function ActionsFields(props: Props) {
     listToMap(
       value.national_society_actions,
       d => d.title ?? '',
-      d => true,
+      () => true,
     )
   ), [value.national_society_actions]);
 
@@ -172,7 +172,7 @@ function ActionsFields(props: Props) {
       >
         <InputSection
           title={
-            !isImminentOnset
+            drefType !== TYPE_IMMINENT
               ? strings.drefFormDidNationalSocietyStartedSlow
               : strings.drefFormDidNationalSocietyStartedImminent
           }
@@ -190,7 +190,7 @@ function ActionsFields(props: Props) {
         {didNationalSocietyStarted &&
           <InputSection
             title={
-              isImminentOnset
+              drefType === TYPE_IMMINENT
                 ? strings.drefFormNSAnticipatoryAction
                 : strings.drefFormNsResponseStarted
             }
@@ -344,17 +344,17 @@ function ActionsFields(props: Props) {
           </InputSection>
         }
       </Container>
-      {!isAssessmentReport &&
+      {drefType !== TYPE_ASSESSMENT &&
         <Container
           className={styles.needsIdentified}
           heading={
-            isImminentOnset
+            drefType === TYPE_IMMINENT
               ? strings.drefFormImminentNeedsIdentified
               : strings.drefFormNeedsIdentified
           }
           visibleOverflow
         >
-          {!isImminentOnset &&
+          {drefType !== TYPE_IMMINENT &&
             <InputSection>
               <DREFFileInput
                 accept=".pdf, .docx, .pptx"
@@ -400,7 +400,7 @@ function ActionsFields(props: Props) {
               needOptions={needOptions}
             />
           ))}
-          {!isImminentOnset && (
+          {drefType !== TYPE_IMMINENT && (
             <InputSection
               title={strings.drefFormGapsInAssessment}
               oneColumn
