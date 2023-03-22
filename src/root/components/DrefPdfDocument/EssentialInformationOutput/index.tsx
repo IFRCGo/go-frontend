@@ -52,17 +52,32 @@ function EssentialInformationOutput(props: Props) {
               value={data?.appeal_code}
             />
             <PdfTextOutput
-              label={strings.drefExportDrefAllocated}
-              value={formatNumber(data.amount_requested, 'CHF ')}
+              label={strings.drefExportCountry}
+              value={data?.country_details.name}
             />
+            <PdfTextOutput
+              label={strings.drefExportHazard}
+              value={data?.disaster_type_details?.name}
+            />
+            <PdfTextOutput 
+              label={strings.drefFormTypeOfDref}
+              value={data.type_of_dref_display}
+            />
+          </View>
+          <View style={pdfStyles.compactSection}>
             <PdfTextOutput
               label={strings.drefExportCrisisCategory}
               value={data.disaster_category_display}
               color={data.disaster_category_display}
             />
             <PdfTextOutput
-              label={strings.drefExportHazard}
-              value={data?.disaster_type_details?.name}
+              label={strings.drefExportEventOnset}
+              value={data?.type_of_onset_display}
+            />
+            <PdfTextOutput
+              label={strings.drefExportDrefAllocated}
+              value={formatNumber(data.amount_requested, 'CHF ')}
+              columns="2/4"
             />
           </View>
           <View style={pdfStyles.compactSection}>
@@ -84,7 +99,6 @@ function EssentialInformationOutput(props: Props) {
               }
             />
             <PdfTextOutput
-              columns='2/4'
               label={strings.drefExportPeopleAssisted}
               value={isDefined(data.num_assisted)
                 ? resolveToString(
@@ -93,20 +107,13 @@ function EssentialInformationOutput(props: Props) {
                 )
                 : ''
               }
+              columns='2/4'
             />
           </View>
           <View style={pdfStyles.compactSection}>
             <PdfTextOutput
-              label={strings.drefExportEventOnset}
-              value={data?.type_of_onset_display}
-            />
-            <PdfTextOutput
               label={strings.drefExportDrefOperationStartDate}
               value={data?.date_of_approval}
-            />
-            <PdfTextOutput
-              label={strings.drefExportDrefEndDateOfOperation}
-              value={data?.end_date}
             />
             <PdfTextOutput
               label={strings.drefExportOperationTimeframe}
@@ -118,18 +125,22 @@ function EssentialInformationOutput(props: Props) {
                   : ''
               }
             />
+            <PdfTextOutput
+              label={strings.drefExportDrefEndDateOfOperation}
+              value={data?.end_date}
+            />
+            <PdfTextOutput
+            label={strings.drefExportDrefPublished}
+            value={data.publishing_date}
+            />
           </View>
           <View style={pdfStyles.compactSection}>
-            <PdfTextOutput 
-              label={strings.drefFormTypeOfDref}
-              value={data.type_of_dref_display}
-            />
             <PdfTextOutput
               label={strings.drefExportTargetedAreas}
             />
             <PdfTextOutput
               value={affectedAreas}
-              columns="2/4"
+              columns="3/4"
             />
           </View>
         </View>
