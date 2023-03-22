@@ -3426,7 +3426,7 @@ export default {
   //dref pdf
   drefExportIfrcName: 'International Federation of Red Cross and Red Crescent Societies (IFRC)',
   drefExportTitle: 'DREF OPERATION',
-  drefExportDrefAllocated: 'DREF Allocated:',
+  drefExportDrefAllocated: 'DREF Allocation:',
   drefExportGlideNum: 'Glide Number:',
   drefExportAppealNum: 'Appeal:',
   drefExportPeopleAffected: 'People Affected:',
@@ -3471,6 +3471,8 @@ export default {
   drefDocumentImportSlowSuddenLabel: 'Slow/Sudden',
   drefDocumentImportImminentLabel: 'Imminent',
   drefDocumentImportAssessmentLabel: 'Assessment',
+  drefExportCountry: 'Country:',
+  drefExportDrefPublished: 'DREF Published:',
 
   // Flash Update
   flashUpdateFormPageTitle: 'IFRC GO - Flash Update Request',
