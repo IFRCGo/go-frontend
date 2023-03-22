@@ -70,7 +70,6 @@ const pdfStyles = StyleSheet.create({
   },
 
   section: {
-    marginTop: styles.SPACING_SUPER_LARGE,
     textAlign: 'justify',
   },
 
@@ -142,7 +141,7 @@ const pdfStyles = StyleSheet.create({
   },
 
   titleIfrcLogo: {
-    height: styles.FONT_SIZE_IFRC_LOGO_HEADING,
+    height: styles.FONT_SIZE_ULTRA_LARGE * 2,
   },
 
   coverImage: {

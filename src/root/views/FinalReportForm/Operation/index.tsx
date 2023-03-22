@@ -75,7 +75,6 @@ function Operation(props: Props) {
     value,
     yesNoOptions,
     isAssessmentDref,
-    isImminentDref,
     fileIdToUrlMap,
     setFileIdToUrlMap,
   } = props;
