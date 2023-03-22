@@ -43,6 +43,7 @@ import {
   DISASTER_FLOOD,
   DISASTER_FLASH_FLOOD,
   emptyNumericOptionList,
+  TYPE_IMMINENT,
 } from '../common';
 
 import styles from './styles.module.scss';
@@ -68,8 +69,8 @@ interface Props {
   userOptions: NumericValueOption[];
   onCreateAndShareButtonClick: () => void;
   drefTypeOptions: NumericValueOption[];
-  isImminentDref: boolean;
   isSuddenOnset: boolean;
+  drefType?: number;
 }
 
 const disasterCategoryLink = "https://www.ifrc.org/sites/default/files/2021-07/IFRC%20Emergency%20Response%20Framework%20-%202017.pdf";
@@ -101,7 +102,7 @@ function DrefOverview(props: Props) {
     onCreateAndShareButtonClick,
     drefTypeOptions,
     isSuddenOnset,
-    isImminentDref,
+    drefType,
   } = props;
 
   const error = React.useMemo(
@@ -260,7 +261,7 @@ function DrefOverview(props: Props) {
         </InputSection>
         <InputSection
           title={
-            isImminentDref
+            drefType === TYPE_IMMINENT
               ? strings.drefFormImminentDisasterDetails
               : strings.drefFormDisasterDetails
           }
@@ -270,7 +271,7 @@ function DrefOverview(props: Props) {
           <SelectInput
             error={error?.disaster_type}
             label={
-              isImminentDref
+            drefType === TYPE_IMMINENT
                 ? strings.drefFormImminentDisasterTypeLabel
                 : strings.drefFormDisasterTypeLabel
             }
@@ -305,7 +306,8 @@ function DrefOverview(props: Props) {
             error={error?.disaster_category}
             label={(
               <>
-                {isImminentDref
+                {drefType === TYPE_IMMINENT
+
                   ? strings.drefFormImminentDisasterCategoryLabel
                   : strings.drefFormDisasterCategoryLabel}
                 <a
@@ -326,7 +328,7 @@ function DrefOverview(props: Props) {
         </InputSection>
         <InputSection
           title={
-            !isImminentDref
+            drefType !== TYPE_IMMINENT
               ? strings.drefFormAffectedCountryAndProvinceImminent
               : strings.drefFormRiskCountryLabel
           }
@@ -375,7 +377,7 @@ function DrefOverview(props: Props) {
           twoColumn
         >
           <NumberInput
-            label={isImminentDref ?
+            label={drefType === TYPE_IMMINENT ?
               <>
                 {strings.drefFormRiskPeopleLabel}
                 <a
@@ -404,7 +406,7 @@ function DrefOverview(props: Props) {
             value={value.num_affected}
             onChange={onValueChange}
             error={error?.num_affected}
-            hint={isImminentDref
+            hint={drefType === TYPE_IMMINENT
               ? strings.drefFormPeopleAffectedDescriptionImminent
               : strings.drefFormPeopleAffectedDescriptionSlowSudden
             }
@@ -413,7 +415,7 @@ function DrefOverview(props: Props) {
             label={(
               <>
                 {
-                  isImminentDref
+                  drefType === TYPE_IMMINENT
                     ? strings.drefFormEstimatedPeopleInNeed
                     : strings.drefFormPeopleInNeed
                 }
@@ -431,7 +433,7 @@ function DrefOverview(props: Props) {
             value={value.people_in_need}
             onChange={onValueChange}
             error={error?.people_in_need}
-            hint={isImminentDref
+            hint={drefType === TYPE_IMMINENT
               ? strings.drefFormPeopleInNeedDescriptionImminent
               : strings.drefFormPeopleInNeedDescriptionSlowSudden
             }

@@ -52,7 +52,6 @@ import {
   submissionFields,
   ONSET_SUDDEN,
   TYPE_IMMINENT,
-  TYPE_ASSESSMENT,
 } from './common';
 
 import useDrefFormOptions, { schema } from './useDrefFormOptions';
@@ -439,9 +438,8 @@ function DrefApplication(props: Props) {
     || drefSubmitPending
     || drefApplicationPending;
 
-  const isImminentDref = value?.type_of_dref === TYPE_IMMINENT;
-  const isAssessmentDref = value?.type_of_dref === TYPE_ASSESSMENT;
   const isSuddenOnset = value?.type_of_onset === ONSET_SUDDEN;
+  const drefType = value.type_of_dref;
 
   React.useEffect(() => {
     setValue((oldValue) => {
@@ -688,15 +686,14 @@ function DrefApplication(props: Props) {
                 userOptions={userOptions}
                 onCreateAndShareButtonClick={submitDref}
                 drefTypeOptions={drefTypeOptions}
-                isImminentDref={isImminentDref}
                 isSuddenOnset={isSuddenOnset}
+                drefType={drefType}
               />
             </TabPanel>
             <TabPanel name="eventDetails">
               <EventDetails
                 isSuddenOnset={isSuddenOnset}
-                isImminentDref={isImminentDref}
-                isAssessmentDref={isAssessmentDref}
+                drefType={drefType}
                 error={error}
                 onValueChange={setFieldValue}
                 value={value}
@@ -715,8 +712,7 @@ function DrefApplication(props: Props) {
                 nsActionOptions={nsActionOptions}
                 fileIdToUrlMap={fileIdToUrlMap}
                 setFileIdToUrlMap={setFileIdToUrlMap}
-                isImminentDref={isImminentDref}
-                isAssessmentDref={isAssessmentDref}
+                drefType={drefType}
               />
             </TabPanel>
             <TabPanel name="response">
@@ -728,8 +724,7 @@ function DrefApplication(props: Props) {
                 fileIdToUrlMap={fileIdToUrlMap}
                 setFileIdToUrlMap={setFileIdToUrlMap}
                 yesNoOptions={yesNoOptions}
-                isAssessmentDref={isAssessmentDref}
-                isImminentDref={isImminentDref}
+                drefType={drefType}
               />
             </TabPanel>
             <TabPanel name="submission">
