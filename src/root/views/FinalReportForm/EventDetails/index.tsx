@@ -16,7 +16,7 @@ import DREFFileInput from '#components/DREFFileInput';
 import DateInput from '#components/DateInput';
 import CaptionInput from '#views/DrefApplicationForm/CaptionInput';
 import {
-  DrefFinalReportFields, FileWithCaption, NumericValueOption,
+  DrefFinalReportFields, FileWithCaption,
 } from '../common';
 import styles from './styles.module.scss';
 
