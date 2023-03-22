@@ -8,13 +8,13 @@ import { listToMap } from '@togglecorp/fujs';
 import {
   DrefApiFields,
   TYPE_ASSESSMENT,
-  TYPE_IMMINENT,
 } from '#views/DrefApplicationForm/common';
 import {
   NumericKeyValuePair,
   StringKeyValuePair,
   Strings,
 } from '#types';
+import pdfStyles from '#utils/pdf/pdfStyles';
 
 import TargetedPopulationOutput from './TargetedPopulationOutput';
 import EssentialInformationOutput from './EssentialInformationOutput';
@@ -31,8 +31,6 @@ import ContactInformationOutput from './ContactInformationOutput';
 import RiskAndSecurityOutput from './RiskAndSecurityOutput';
 import HeadingOutput from './HeadingOutput';
 import BudgetFileOutput from './BudgetFileOutput';
-
-import pdfStyles from '#utils/pdf/pdfStyles';
 import PageNumberPdf from './PageNumberPdf';
 
 interface DrefOptions {
@@ -68,7 +66,8 @@ function DrefPdfDocument(props: Props) {
   const niMap = listToMap(drefOptions.needs_identified, d => d.key, d => d.value);
   const affectedAreas = dref?.district_details?.map(d => d.name).join(', ');
   const isAssessmentDref = dref.type_of_dref === TYPE_ASSESSMENT;
-  const isImminentDref = dref.type_of_dref === TYPE_IMMINENT;
+  // const isImminentDref = dref.type_of_dref === TYPE_IMMINENT;
+  const drefType = dref.type_of_dref;
   const documentTitle = dref?.title;
 
   return (
@@ -91,15 +90,14 @@ function DrefPdfDocument(props: Props) {
           data={dref}
           strings={strings}
           affectedAreas={affectedAreas}
-          isImminentDref={isImminentDref}
+          drefType={drefType}
         />
         <EventDescriptionOutput
           data={dref}
           strings={strings}
-          isImminentDref={isImminentDref}
-          isAssessmentDref={isAssessmentDref}
+          drefType={drefType}
         />
-        {!isAssessmentDref &&
+        {drefType !== TYPE_ASSESSMENT &&
           <PreviousOperationOutput
             data={dref}
             strings={strings}
@@ -124,8 +122,8 @@ function DrefPdfDocument(props: Props) {
           <NeedIdentifiedOutput
             data={dref}
             niMap={niMap}
-            isImminentDref={isImminentDref}
             strings={strings}
+            drefType={drefType}
           />
         }
 
@@ -137,7 +135,7 @@ function DrefPdfDocument(props: Props) {
         <TargetedPopulationOutput
           data={dref}
           strings={strings}
-          isAssessmentDref={isAssessmentDref}
+          drefType={drefType}
         />
 
         <RiskAndSecurityOutput
@@ -153,7 +151,7 @@ function DrefPdfDocument(props: Props) {
         <AboutServicesOutput
           strings={strings}
           data={dref}
-          isAssessmentDref={isAssessmentDref}
+          drefType={drefType}
         />
 
         <BudgetFileOutput
