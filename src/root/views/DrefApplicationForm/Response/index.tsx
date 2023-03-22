@@ -37,6 +37,8 @@ import {
   booleanOptionKeySelector,
   optionLabelSelector,
   RiskSecurityProps,
+  TYPE_ASSESSMENT,
+  TYPE_IMMINENT,
 } from '../common';
 import {
   InterventionType,
@@ -55,8 +57,7 @@ interface Props {
   fileIdToUrlMap: Record<number, string>;
   setFileIdToUrlMap?: React.Dispatch<React.SetStateAction<Record<number, string>>>;
   yesNoOptions: BooleanValueOption[];
-  isAssessmentDref: boolean;
-  isImminentDref?: boolean;
+  drefType?: number;
 }
 
 function Response(props: Props) {
@@ -70,8 +71,7 @@ function Response(props: Props) {
     setFileIdToUrlMap,
     value,
     yesNoOptions,
-    isAssessmentDref,
-    isImminentDref
+    drefType,
   } = props;
 
   const error = getErrorObject(formError);
@@ -204,7 +204,7 @@ function Response(props: Props) {
         </InputSection>
         <InputSection
           title={strings.drefFormResponseRationale}
-          description={isAssessmentDref && strings.drefFormResponseRationaleDescription}
+          description={drefType === TYPE_ASSESSMENT && strings.drefFormResponseRationaleDescription}
         >
           <TextArea
             name="response_strategy"
@@ -248,7 +248,7 @@ function Response(props: Props) {
         heading={strings.drefFormAssistedPopulation}
         className={styles.assistedPopulation}
         description={(
-          !isAssessmentDref &&
+          drefType !== TYPE_ASSESSMENT &&
             warnings?.map((w, i) => (
               <div
                 className={styles.warning}
@@ -265,7 +265,7 @@ function Response(props: Props) {
           multiRow
           twoColumn
         >
-          {!isAssessmentDref && (
+          {drefType !== TYPE_ASSESSMENT && (
             <>
               <NumberInput
                 label={strings.drefFormWomen}
@@ -345,7 +345,7 @@ function Response(props: Props) {
             onChange={onValueChange}
             error={error?.displaced_people}
           />
-          {isImminentDref &&
+          {drefType === TYPE_IMMINENT &&
             <NumberInput
               label={strings.drefFormPeopleTargetedWithEarlyActions}
               name="people_targeted_with_early_actions"
@@ -362,7 +362,7 @@ function Response(props: Props) {
       >
         <InputSection
           title={strings.drefFormRiskSecurityPotentialRisk}
-          description={isAssessmentDref && strings.drefFormRiskSecurityPotentialRiskDescription}
+          description={drefType === TYPE_ASSESSMENT && strings.drefFormRiskSecurityPotentialRiskDescription}
           multiRow
           oneColumn
         >
@@ -495,7 +495,7 @@ function Response(props: Props) {
             />
           }
         </InputSection>
-        {!isAssessmentDref && (
+        {drefType !== TYPE_ASSESSMENT && (
           <>
             <InputSection
               title={strings.drefFormLogisticCapacityOfNs}
