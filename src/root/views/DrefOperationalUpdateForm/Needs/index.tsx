@@ -48,8 +48,8 @@ interface Props {
   nsActionOptions: StringValueOption[];
   fileIdToUrlMap: Record<number, string>;
   setFileIdToUrlMap?: React.Dispatch<React.SetStateAction<Record<number, string>>>;
-  isAssessmentReport: boolean;
-  isImminentOnset?: boolean;
+  isAssessmentDref: boolean;
+  isImminentDref?: boolean;
 }
 
 function Needs(props: Props) {
@@ -64,8 +64,8 @@ function Needs(props: Props) {
     nsActionOptions,
     fileIdToUrlMap,
     setFileIdToUrlMap,
-    isAssessmentReport,
-    isImminentOnset,
+    isAssessmentDref,
+    isImminentDref,
   } = props;
 
   const error = React.useMemo(
@@ -184,7 +184,7 @@ function Needs(props: Props) {
       >
         <InputSection
           title={
-            !isImminentOnset
+            !isImminentDref
               ? strings.drefFormDidNationalSocietyStartedSlow
               : strings.drefFormDidNationalSocietyStartedImminent
           }
@@ -202,7 +202,7 @@ function Needs(props: Props) {
         {didNationalSocietyStarted &&
           <InputSection
             title={
-              isImminentOnset
+              isImminentDref
                 ? strings.drefFormNSAnticipatoryAction
                 : strings.drefFormNsResponseStarted
             }
@@ -387,17 +387,17 @@ function Needs(props: Props) {
           </InputSection>
         }
       </Container>
-      {!isAssessmentReport &&
+      {!isAssessmentDref &&
         <Container
           className={styles.needsIdentified}
           heading={
-            isImminentOnset
+            isImminentDref
               ? strings.drefFormImminentNeedsIdentified
               : strings.drefFormNeedsIdentified
           }
           visibleOverflow
         >
-          {!isImminentOnset &&
+          {!isImminentDref &&
             <InputSection>
               <DREFFileInput
                 accept=".pdf, .docx, .pptx"
@@ -443,7 +443,7 @@ function Needs(props: Props) {
               needOptions={needOptions}
             />
           ))}
-          {!isImminentOnset && (
+          {!isImminentDref && (
             <InputSection
               title={strings.drefFormGapsInAssessment}
               oneColumn

@@ -33,11 +33,11 @@ interface Props {
   onValueChange: (...entries: EntriesAsList<Value>) => void;
   value: Value;
   yesNoOptions: BooleanValueOption[];
-  isImminentOnset: boolean;
+  isImminentDref: boolean;
   fileIdToUrlMap: Record<number, string>;
   setFileIdToUrlMap?: React.Dispatch<React.SetStateAction<Record<number, string>>>;
   isSuddenOnset: boolean;
-  isAssessmentReport: boolean;
+  isAssessmentDref: boolean;
 }
 
 function EventDetails(props: Props) {
@@ -47,11 +47,11 @@ function EventDetails(props: Props) {
     error: formError,
     onValueChange,
     yesNoOptions,
-    isImminentOnset,
+    isImminentDref,
     fileIdToUrlMap,
     setFileIdToUrlMap,
     isSuddenOnset,
-    isAssessmentReport,
+    isAssessmentDref,
   } = props;
 
   const error = React.useMemo(
@@ -168,7 +168,7 @@ function EventDetails(props: Props) {
           />
         </InputSection>
 
-        {isImminentOnset &&
+        {isImminentDref &&
           <InputSection
             title={strings.drefOperationalUpdateEventMaterialize}
           >
@@ -183,7 +183,7 @@ function EventDetails(props: Props) {
             />
           </InputSection>
         }
-        {(isImminentOnset && value.has_forecasted_event_materialize)
+        {(isImminentDref && value.has_forecasted_event_materialize)
           &&
           <InputSection
             title={strings.drefOperationalUpdateEventMaterializeExplain}
@@ -212,14 +212,14 @@ function EventDetails(props: Props) {
       <Container heading={strings.drefOperationalUpdateDescriptionOfEventHeading}>
         <InputSection
           title={
-            isImminentOnset
+            isImminentDref
               ? strings.drefFormApproximateDateOfImpact
               : isSuddenOnset
                 ? strings.drefFormEventDate
                 : strings.drefFormSlowEventDate
           }
         >
-          {isImminentOnset ? (
+          {isImminentDref ? (
             <TextArea
               name="event_text"
               value={value.event_text}
@@ -236,7 +236,7 @@ function EventDetails(props: Props) {
           )}
         </InputSection>
         <InputSection
-          title={isImminentOnset
+          title={isImminentDref
             ? strings.drefFormImminentDisaster
             : strings.drefFormWhatWhereWhen}
           oneColumn
@@ -249,7 +249,7 @@ function EventDetails(props: Props) {
             error={error?.event_description}
           />
         </InputSection>
-        {isImminentOnset &&
+        {isImminentDref &&
           <InputSection
             title={strings.drefFormTargetCommunities}
             oneColumn
@@ -295,7 +295,7 @@ function EventDetails(props: Props) {
             ))}
           </div>
         </InputSection>
-        {!isAssessmentReport && (
+        {!isAssessmentDref && (
           <InputSection
             title={strings.drefFormScopeAndScaleEvent}
             description={strings.drefFormScopeAndScaleDescription}

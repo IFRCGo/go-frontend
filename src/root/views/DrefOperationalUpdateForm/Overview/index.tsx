@@ -39,8 +39,6 @@ import {
   DrefOperationalUpdateFields,
   emptyNumericOptionList,
   NumericValueOption,
-  ONSET_IMMINENT,
-  ONSET_SUDDEN,
   optionLabelSelector,
 } from '../common';
 
@@ -60,11 +58,15 @@ interface Props {
   fetchingCountries?: boolean;
   fetchingDisasterTypes?: boolean;
   fetchingNationalSociety?: boolean;
+  fetchingDrefTypeOptions?: boolean;
   fileIdToUrlMap: Record<number, string>;
   setFileIdToUrlMap?: React.Dispatch<React.SetStateAction<Record<number, string>>>;
   onValueSet: (value: SetBaseValueArg<Value>) => void;
   userOptions: NumericValueOption[];
   onCreateAndShareButtonClick: () => void;
+  drefTypeOptions: NumericValueOption[];
+  isImminentDref: boolean;
+  isSuddenOnset: boolean;
 }
 
 function Overview(props: Props) {
@@ -88,6 +90,10 @@ function Overview(props: Props) {
     userOptions,
     onCreateAndShareButtonClick,
     onValueSet,
+    drefTypeOptions,
+    fetchingDrefTypeOptions,
+    isSuddenOnset,
+    isImminentDref,
   } = props;
 
   const error = useMemo(
@@ -95,9 +101,8 @@ function Overview(props: Props) {
     [formError]
   );
 
-  const isImminentOnset = value.type_of_onset === ONSET_IMMINENT;
-  const isSuddenOnSet = value.type_of_onset === ONSET_SUDDEN ? false : value.emergency_appeal_planned;
-  onValueChange(isSuddenOnSet, 'emergency_appeal_planned');
+  const suddenDependentValue = isSuddenOnset ? false : value.emergency_appeal_planned;
+  onValueChange(suddenDependentValue, 'emergency_appeal_planned');
 
   const totalDrefAllocation = useMemo(() => (
     sumSafe([
@@ -154,7 +159,6 @@ function Overview(props: Props) {
     value,
     onValueSet,
   ]);
-
 
   const handleUserSearch = useCallback((input: string | undefined, callback) => {
     if (!input) {
@@ -240,22 +244,20 @@ function Overview(props: Props) {
             pending={fetchingNationalSociety}
           />
         </InputSection>
-        <InputSection
-          title={strings.drefFormForAssessment}
-        >
-          <RadioInput
-            name={"is_assessment_report" as const}
-            options={yesNoOptions}
-            keySelector={booleanOptionKeySelector}
-            labelSelector={optionLabelSelector}
-            value={value.is_assessment_report}
+        <InputSection title={strings.drefOperationalUpdateDREFType}>
+          <SelectInput
+            error={error?.type_of_dref}
+            label={strings.drefOperationalUpdateTypeOfDREF}
+            name={"type_of_dref" as const}
             onChange={onValueChange}
-            error={error?.is_assessment_report}
+            options={drefTypeOptions}
+            pending={fetchingDrefTypeOptions}
+            value={value.type_of_dref}
           />
         </InputSection>
         <InputSection
           title={
-            isImminentOnset ?
+            isImminentDref ?
               strings.drefFormImminentDisasterDetails :
               strings.drefFormDisasterDetails
           }
@@ -265,7 +267,7 @@ function Overview(props: Props) {
           <SelectInput
             error={error?.disaster_type}
             label={
-              isImminentOnset ?
+              isImminentDref ?
                 strings.drefFormImminentDisasterTypeLabel
                 : strings.drefFormDisasterTypeLabel
             }
@@ -318,7 +320,7 @@ function Overview(props: Props) {
         </InputSection>
         <InputSection
           title={
-            !isImminentOnset ?
+            !isImminentDref ?
               strings.drefFormAffectedCountryAndProvinceImminent
               : strings.drefFormRiskCountryLabel
           }
@@ -366,7 +368,7 @@ function Overview(props: Props) {
           twoColumn
         >
           <NumberInput
-            label={isImminentOnset ?
+            label={isImminentDref ?
               <>
                 {strings.drefFormRiskPeopleLabel}
                 <a
@@ -395,7 +397,7 @@ function Overview(props: Props) {
             value={value.number_of_people_affected}
             onChange={onValueChange}
             error={error?.number_of_people_affected}
-            hint={isImminentOnset
+            hint={isImminentDref
               ? strings.drefFormPeopleAffectedDescriptionImminent
               : strings.drefFormPeopleAffectedDescriptionSlowSudden
             }
@@ -404,7 +406,7 @@ function Overview(props: Props) {
             label={(
               <>
                 {
-                  isImminentOnset
+                  isImminentDref
                     ? strings.drefFormEstimatedPeopleInNeed
                     : strings.drefFormPeopleInNeed
                 }
@@ -422,7 +424,7 @@ function Overview(props: Props) {
             value={value.people_in_need}
             onChange={onValueChange}
             error={error?.people_in_need}
-            hint={isImminentOnset
+            hint={isImminentDref
               ? strings.drefFormPeopleInNeedDescriptionImminent
               : strings.drefFormPeopleInNeedDescriptionSlowSudden
             }

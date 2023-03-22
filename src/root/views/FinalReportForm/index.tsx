@@ -49,8 +49,9 @@ import {
   operationFields,
   submissionFields,
   DrefFinalReportApiFields,
-  ONSET_IMMINENT,
+  TYPE_IMMINENT,
   ONSET_SUDDEN,
+  TYPE_ASSESSMENT,
 } from './common';
 import Overview from './Overview';
 import EventDetails from './EventDetails';
@@ -123,6 +124,7 @@ function FinalReport(props: Props) {
     yesNoOptions,
     userDetails,
     userOptions,
+    drefTypeOptions,
     nsActionOptions,
   } = useDrefFinalReportFormOptions(value);
 
@@ -434,9 +436,9 @@ function FinalReport(props: Props) {
     children: strings.drefFormExportLabel,
   });
 
-  const isImminentOnset = value?.type_of_onset === ONSET_IMMINENT;
+  const isImminentDref = value?.type_of_onset === TYPE_IMMINENT;
   const isSuddenOnset = value?.type_of_onset === ONSET_SUDDEN;
-  const isAssessmentReport = !!value?.is_assessment_report;
+  const isAssessmentDref = value?.type_of_dref === TYPE_ASSESSMENT;
 
   return (
     <Tabs
@@ -554,8 +556,9 @@ function FinalReport(props: Props) {
                 onCreateAndShareButtonClick={submitDrefFinalReport}
                 fileIdToUrlMap={fileIdToUrlMap}
                 setFileIdToUrlMap={setFileIdToUrlMap}
-                isImminentOnset={isImminentOnset}
-                isAssessmentReport={isAssessmentReport}
+                drefTypeOptions={drefTypeOptions}
+                isImminentDref={isImminentDref}
+                isSuddenOnset={isSuddenOnset}
               />
             </TabPanel>
             <TabPanel name='eventDetails'>
@@ -563,7 +566,7 @@ function FinalReport(props: Props) {
                 error={error}
                 onValueChange={onValueChange}
                 value={value}
-                isImminentOnset={isImminentOnset}
+                isImminentDref={isImminentDref}
                 fileIdToUrlMap={fileIdToUrlMap}
                 setFileIdToUrlMap={setFileIdToUrlMap}
                 isSuddenOnset={isSuddenOnset}
@@ -588,7 +591,7 @@ function FinalReport(props: Props) {
                 fileIdToUrlMap={fileIdToUrlMap}
                 setFileIdToUrlMap={setFileIdToUrlMap}
                 yesNoOptions={yesNoOptions}
-                isAssessmentReport={isAssessmentReport}
+                isAssessmentDref={isAssessmentDref}
               />
             </TabPanel>
             <TabPanel name='submission'>

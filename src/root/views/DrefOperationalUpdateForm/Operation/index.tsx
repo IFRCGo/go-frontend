@@ -31,7 +31,6 @@ import {
   BooleanValueOption,
   DrefOperationalUpdateFields,
   Intervention,
-  ONSET_IMMINENT,
   optionLabelSelector,
   RiskSecurityProps,
   StringValueOption,
@@ -50,7 +49,8 @@ interface Props {
   interventionOptions: StringValueOption[];
   fileIdToUrlMap: Record<number, string>;
   setFileIdToUrlMap?: React.Dispatch<React.SetStateAction<Record<number, string>>>;
-  isAssessmentReport: boolean;
+  isAssessmentDref: boolean;
+  isImminentDref?: boolean;
   yesNoOptions: BooleanValueOption[];
 }
 
@@ -64,13 +64,12 @@ function Operation(props: Props) {
     value,
     fileIdToUrlMap,
     setFileIdToUrlMap,
-    isAssessmentReport,
     yesNoOptions,
-
+    isAssessmentDref,
+    isImminentDref,
   } = props;
 
   const error = getErrorObject(formError);
-  const isImminentOnSet = value.type_of_onset === ONSET_IMMINENT;
 
   const [intervention, setIntervention] = React.useState<number | undefined>();
   const {
@@ -243,7 +242,7 @@ function Operation(props: Props) {
         heading={strings.drefFormTargetedPopulation}
         className={styles.assistedPopulation}
         description={(
-          !isAssessmentReport &&
+          !isAssessmentDref &&
           warnings?.map((w, i) => (
             <div
               className={styles.warning}
@@ -260,7 +259,7 @@ function Operation(props: Props) {
           multiRow
           twoColumn
         >
-          {!isAssessmentReport && (
+          {!isAssessmentDref && (
             <>
               <NumberInput
                 label={strings.drefFormWomen}
@@ -341,7 +340,7 @@ function Operation(props: Props) {
             error={error?.displaced_people}
           />
           {
-            isImminentOnSet &&
+            isImminentDref &&
             <NumberInput
               label={strings.drefFormPeopleTargetedWithEarlyActions}
               name="people_targeted_with_early_actions"
@@ -358,7 +357,7 @@ function Operation(props: Props) {
       >
         <InputSection
           title={strings.drefFormRiskSecurityPotentialRisk}
-          description={isAssessmentReport && strings.drefFormRiskSecurityPotentialRiskDescription}
+          description={isAssessmentDref && strings.drefFormRiskSecurityPotentialRiskDescription}
           multiRow
           oneColumn
         >
@@ -496,7 +495,7 @@ function Operation(props: Props) {
             />
           }
         </InputSection>
-        {!isAssessmentReport && (
+        {!isAssessmentDref && (
           <>
             <InputSection
               title={strings.drefFormLogisticCapacityOfNs}

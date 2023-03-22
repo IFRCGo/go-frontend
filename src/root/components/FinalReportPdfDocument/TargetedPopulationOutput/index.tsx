@@ -15,14 +15,14 @@ import { DrefFinalReportApiFields } from '#views/FinalReportForm/common';
 interface Props {
   data: DrefFinalReportApiFields;
   strings: Strings;
-  isAssessmentReport: boolean;
+  isAssessmentDref: boolean;
 }
 
 function TargetedPopulationOutput(props: Props) {
   const {
     data,
     strings,
-    isAssessmentReport,
+    isAssessmentDref,
   } = props;
 
   if (isNotDefined(data.people_per_local)
@@ -47,7 +47,7 @@ function TargetedPopulationOutput(props: Props) {
       </Text>
       <View style={pdfStyles.section}>
         <View style={pdfStyles.basicInfoTable}>
-          {isAssessmentReport
+          {isAssessmentDref
             ? (<>
               <View style={pdfStyles.compactSection}>
                 <PdfTextOutput

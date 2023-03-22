@@ -16,7 +16,7 @@ import DREFFileInput from '#components/DREFFileInput';
 import DateInput from '#components/DateInput';
 import CaptionInput from '#views/DrefApplicationForm/CaptionInput';
 import {
-  DrefFinalReportFields, FileWithCaption,
+  DrefFinalReportFields, FileWithCaption, NumericValueOption,
 } from '../common';
 import styles from './styles.module.scss';
 
@@ -25,7 +25,7 @@ interface Props {
   error: Error<Value> | undefined;
   onValueChange: (...entries: EntriesAsList<Value>) => void;
   value: Value;
-  isImminentOnset: boolean;
+  isImminentDref: boolean;
   fileIdToUrlMap: Record<number, string>;
   setFileIdToUrlMap?: React.Dispatch<React.SetStateAction<Record<number, string>>>;
   isSuddenOnset: boolean;
@@ -37,7 +37,7 @@ function EventDetails(props: Props) {
     value,
     error: formError,
     onValueChange,
-    isImminentOnset,
+    isImminentDref,
     fileIdToUrlMap,
     setFileIdToUrlMap,
     isSuddenOnset,
@@ -81,14 +81,14 @@ function EventDetails(props: Props) {
     >
       <InputSection
         title={
-          isImminentOnset
+          isImminentDref
             ? strings.drefFormApproximateDateOfImpact
             : isSuddenOnset
               ? strings.drefFormEventDate
               : strings.drefFormSlowEventDate
         }
       >
-        {isImminentOnset ? (
+        {isImminentDref ? (
           <TextArea
             name="event_text"
             value={value.event_text}
@@ -105,7 +105,7 @@ function EventDetails(props: Props) {
         )}
       </InputSection>
       <InputSection
-        title={isImminentOnset
+        title={isImminentDref
           ? strings.finalReportImminentDisaster
           : strings.finalReportWhatWhereWhen}
         oneColumn

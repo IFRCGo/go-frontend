@@ -84,9 +84,9 @@ export const schema: FormSchema = {
     disaster_category: [],
     type_of_onset: [],
     date_of_publication: [],
-
     number_of_people_affected: [positiveIntegerCondition],
     number_of_people_targeted: [positiveIntegerCondition],
+    type_of_dref: [requiredCondition],
     total_dref_allocation: [],
     operation_start_date: [],
     total_operation_timeframe: [positiveIntegerCondition],
@@ -239,6 +239,7 @@ interface DrefFinalReportOptions {
   planned_interventions: StringKeyValuePair[];
   status: NumericKeyValuePair[];
   type_of_onset: NumericKeyValuePair[];
+  type_of_dref: NumericKeyValuePair[];
   users: UserListItem[];
 }
 
@@ -276,6 +277,7 @@ function useDrefFinalReportFormOptions(value: PartialForm<DrefFinalReportFields>
     interventionOptions,
     onsetOptions,
     userOptions,
+    drefTypeOptions,
   ] = React.useMemo(() => {
     if (!drefOptions) {
       return [
@@ -283,6 +285,7 @@ function useDrefFinalReportFormOptions(value: PartialForm<DrefFinalReportFields>
         emptyStringOptionList,
         emptyStringOptionList,
         emptyStringOptionList,
+        emptyNumericOptionList,
         emptyNumericOptionList,
         emptyNumericOptionList,
       ];
@@ -298,6 +301,7 @@ function useDrefFinalReportFormOptions(value: PartialForm<DrefFinalReportFields>
         label: `${u.first_name} ${u.last_name}`,
         value: u.id,
       })),
+      drefOptions.type_of_dref.map(transformKeyValueToLabelValue)
     ];
   }, [drefOptions]);
 
@@ -370,6 +374,7 @@ function useDrefFinalReportFormOptions(value: PartialForm<DrefFinalReportFields>
     yesNoOptions,
     nationalSocietyOptions,
     userOptions,
+    drefTypeOptions,
   };
 }
 export default useDrefFinalReportFormOptions;

@@ -70,7 +70,8 @@ function SurgeDeploymentTable(props: Props) {
       'Country Deployed to',
       (surgeDeployment) => surgeDeployment.deployed_country,
       (surgeDeployment) => ({
-        href: `countries/${surgeDeployment.deployed_country_id}`
+        href: `/countries/${surgeDeployment.deployed_country_id}`,
+        variant: 'table',
       })
     ),
     createLinkColumn<SurgeDeploymentResult, number>(
@@ -78,7 +79,7 @@ function SurgeDeploymentTable(props: Props) {
       'Emergency',
       (surgeDeployment) => surgeDeployment.event_name,
       (surgeDeployment) => ({
-        href: `emergencies/${surgeDeployment.event_id}`,
+        href: `/emergencies/${surgeDeployment.event_id}`,
         variant: 'table',
       })
     ),

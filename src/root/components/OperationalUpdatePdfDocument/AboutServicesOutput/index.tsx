@@ -16,14 +16,14 @@ import {
 interface Props {
   data: DrefOperationalUpdateApiFields;
   strings: Strings;
-  isAssessmentReport: boolean,
+  isAssessmentDref: boolean,
 }
 
 function AboutServicesOutput(props: Props) {
   const {
     data,
     strings,
-    isAssessmentReport,
+    isAssessmentDref,
   } = props;
 
   if (isNotDefined(data.human_resource)
@@ -74,7 +74,7 @@ function AboutServicesOutput(props: Props) {
           </Text>
         </View>
       )}
-      {!isAssessmentReport && (
+      {!isAssessmentDref && (
         <>
           {isDefined(data.logistic_capacity_of_ns) && (
             <View style={pdfStyles.qna}>
