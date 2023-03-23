@@ -231,10 +231,10 @@ const defaultSchema = {
 };
 
 const isNotAssessmentSchema = {
-  ns_request_fund: [],
-  affect_same_area: [],
-  ns_respond: [],
-  affect_same_population: [],
+  did_it_affect_same_area: [],
+  did_it_affect_same_population: [],
+  did_ns_respond: [],
+  did_ns_request_fund: [],
   ns_request_text: [],
   lessons_learned: [],
   dref_recurrent_text: [],

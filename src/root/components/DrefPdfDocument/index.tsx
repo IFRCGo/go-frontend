@@ -65,8 +65,6 @@ function DrefPdfDocument(props: Props) {
   const piMap = listToMap(drefOptions.planned_interventions, d => d.key, d => d.value);
   const niMap = listToMap(drefOptions.needs_identified, d => d.key, d => d.value);
   const affectedAreas = dref?.district_details?.map(d => d.name).join(', ');
-  const isAssessmentDref = dref.type_of_dref === TYPE_ASSESSMENT;
-  // const isImminentDref = dref.type_of_dref === TYPE_IMMINENT;
   const drefType = dref.type_of_dref;
   const documentTitle = dref?.title;
 
@@ -118,7 +116,7 @@ function DrefPdfDocument(props: Props) {
           strings={strings}
         />
 
-        {!isAssessmentDref &&
+        {drefType !== TYPE_ASSESSMENT &&
           <NeedIdentifiedOutput
             data={dref}
             niMap={niMap}

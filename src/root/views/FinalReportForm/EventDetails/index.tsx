@@ -16,7 +16,10 @@ import DREFFileInput from '#components/DREFFileInput';
 import DateInput from '#components/DateInput';
 import CaptionInput from '#views/DrefApplicationForm/CaptionInput';
 import {
-  DrefFinalReportFields, FileWithCaption,
+  DrefFinalReportFields,
+  FileWithCaption,
+  ONSET_SUDDEN,
+  TYPE_IMMINENT,
 } from '../common';
 import styles from './styles.module.scss';
 
@@ -25,10 +28,10 @@ interface Props {
   error: Error<Value> | undefined;
   onValueChange: (...entries: EntriesAsList<Value>) => void;
   value: Value;
-  isImminentDref: boolean;
+  drefType?: number
   fileIdToUrlMap: Record<number, string>;
   setFileIdToUrlMap?: React.Dispatch<React.SetStateAction<Record<number, string>>>;
-  isSuddenOnset: boolean;
+  onsetType?: number;
 }
 
 function EventDetails(props: Props) {
@@ -37,10 +40,10 @@ function EventDetails(props: Props) {
     value,
     error: formError,
     onValueChange,
-    isImminentDref,
+    drefType,
     fileIdToUrlMap,
     setFileIdToUrlMap,
-    isSuddenOnset,
+    onsetType,
   } = props;
   const error = React.useMemo(
     () => getErrorObject(formError),
@@ -81,14 +84,14 @@ function EventDetails(props: Props) {
     >
       <InputSection
         title={
-          isImminentDref
+          drefType === TYPE_IMMINENT
             ? strings.drefFormApproximateDateOfImpact
-            : isSuddenOnset
+            : onsetType === ONSET_SUDDEN
               ? strings.drefFormEventDate
               : strings.drefFormSlowEventDate
         }
       >
-        {isImminentDref ? (
+        {drefType === TYPE_IMMINENT ? (
           <TextArea
             name="event_text"
             value={value.event_text}
@@ -105,7 +108,7 @@ function EventDetails(props: Props) {
         )}
       </InputSection>
       <InputSection
-        title={isImminentDref
+        title={drefType === TYPE_IMMINENT
           ? strings.finalReportImminentDisaster
           : strings.finalReportWhatWhereWhen}
         oneColumn

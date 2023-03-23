@@ -44,6 +44,7 @@ import {
   DISASTER_FLASH_FLOOD,
   emptyNumericOptionList,
   TYPE_IMMINENT,
+  ONSET_SUDDEN,
 } from '../common';
 
 import styles from './styles.module.scss';
@@ -69,7 +70,7 @@ interface Props {
   userOptions: NumericValueOption[];
   onCreateAndShareButtonClick: () => void;
   drefTypeOptions: NumericValueOption[];
-  isSuddenOnset: boolean;
+  onsetType?: number;
   drefType?: number;
 }
 
@@ -101,7 +102,7 @@ function DrefOverview(props: Props) {
     userOptions,
     onCreateAndShareButtonClick,
     drefTypeOptions,
-    isSuddenOnset,
+    onsetType,
     drefType,
   } = props;
 
@@ -112,10 +113,10 @@ function DrefOverview(props: Props) {
 
 
   React.useMemo(() => {
-    const suddenDependentValue = isSuddenOnset ? false : value.emergency_appeal_planned;
+    const suddenDependentValue = onsetType === ONSET_SUDDEN ? false : value.emergency_appeal_planned;
     onValueChange(suddenDependentValue, 'emergency_appeal_planned');
   }, [
-      isSuddenOnset,
+      onsetType,
       value.emergency_appeal_planned,
       onValueChange,
     ]);

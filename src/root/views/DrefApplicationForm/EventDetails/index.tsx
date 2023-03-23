@@ -27,6 +27,7 @@ import {
   FileWithCaption,
   TYPE_IMMINENT,
   TYPE_ASSESSMENT,
+  ONSET_SUDDEN,
 } from '../common';
 
 import styles from './styles.module.scss';
@@ -40,7 +41,7 @@ interface Props {
   fileIdToUrlMap: Record<number, string>;
   setFileIdToUrlMap?: React.Dispatch<React.SetStateAction<Record<number, string>>>;
   drefType?: number;
-  isSuddenOnset: boolean;
+  onsetType?: number;
 }
 
 function EventDetails(props: Props) {
@@ -54,7 +55,7 @@ function EventDetails(props: Props) {
     fileIdToUrlMap,
     setFileIdToUrlMap,
     drefType,
-    isSuddenOnset,
+    onsetType,
   } = props;
 
   const error = getErrorObject(formError);
@@ -106,55 +107,55 @@ function EventDetails(props: Props) {
             title={strings.drefFormAffectSameArea}
           >
             <RadioInput
-              name={"affect_same_area" as const}
+              name={"did_it_affect_same_area" as const}
               options={yesNoOptions}
               keySelector={booleanOptionKeySelector}
               labelSelector={optionLabelSelector}
-              value={value.affect_same_area}
+              value={value.did_it_affect_same_area}
               onChange={onValueChange}
-              error={error?.affect_same_area}
+              error={error?.did_it_affect_same_area}
             />
           </InputSection>
           <InputSection
             title={strings.drefFormAffectedthePopulationTitle}
           >
             <RadioInput
-              name={"affect_same_population" as const}
+              name={"did_it_affect_same_population" as const}
               options={yesNoOptions}
               keySelector={booleanOptionKeySelector}
               labelSelector={optionLabelSelector}
-              value={value.affect_same_population}
+              value={value.did_it_affect_same_population}
               onChange={onValueChange}
-              error={error?.affect_same_population}
+              error={error?.did_it_affect_same_population}
             />
           </InputSection>
           <InputSection
             title={strings.drefFormNsRespond}
           >
             <RadioInput
-              name={"ns_respond" as const}
+              name={"did_ns_respond" as const}
               options={yesNoOptions}
               keySelector={booleanOptionKeySelector}
               labelSelector={optionLabelSelector}
-              value={value.ns_respond}
+              value={value.did_ns_respond}
               onChange={onValueChange}
-              error={error?.ns_respond}
+              error={error?.did_ns_respond}
             />
           </InputSection>
           <InputSection
             title={strings.drefFormNsRequestFund}
           >
             <RadioInput
-              name={"ns_request_fund" as const}
+              name={"did_ns_request_fund" as const}
               options={yesNoOptions}
               keySelector={booleanOptionKeySelector}
               labelSelector={optionLabelSelector}
-              value={value.ns_request_fund}
+              value={value.did_ns_request_fund}
               onChange={onValueChange}
-              error={error?.ns_request_fund}
+              error={error?.did_ns_request_fund}
             />
           </InputSection>
-          {value.ns_request_fund && (
+          {value.did_ns_request_fund && (
             <InputSection
               title={strings.drefFormNsFundingDetail}
             >
@@ -168,10 +169,10 @@ function EventDetails(props: Props) {
             </InputSection>
           )}
           {
-            value.ns_request_fund &&
-            value.ns_respond &&
-            value.affect_same_population &&
-            value.affect_same_area && (
+            value.did_ns_request_fund &&
+            value.did_ns_respond &&
+            value.did_it_affect_same_population &&
+            value.did_it_affect_same_area && (
               <InputSection
                 title={strings.drefFormRecurrentText}
               >
@@ -205,7 +206,7 @@ function EventDetails(props: Props) {
           title={
             drefType === TYPE_IMMINENT
               ? strings.drefFormApproximateDateOfImpact
-              : isSuddenOnset
+              : onsetType === ONSET_SUDDEN
                 ? strings.drefFormEventDate
                 : strings.drefFormSlowEventDate
           }
