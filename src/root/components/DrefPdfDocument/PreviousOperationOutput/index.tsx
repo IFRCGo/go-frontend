@@ -25,10 +25,10 @@ function PreviousOperationOutput(props: Props) {
     return null;
   }
 
-  if (isNotDefined(data.affect_same_area)
-    && isNotDefined(data.affect_same_population)
-    && isNotDefined(data.ns_respond)
-    && isNotDefined(data.ns_request_fund)
+  if (isNotDefined(data.did_it_affect_same_area)
+    && isNotDefined(data.did_it_affect_same_population)
+    && isNotDefined(data.did_ns_respond)
+    && isNotDefined(data.did_ns_request_fund)
     && isNotDefined(data.ns_request_text)
     && isNotDefined(data.dref_recurrent_text)
     && isNotDefined(data.lessons_learned)
@@ -55,7 +55,7 @@ function PreviousOperationOutput(props: Props) {
           {strings.drefFormAffectSameArea}
         </Text>
         <Text style={pdfStyles.strongCell}>
-          {formatBoolean(data.affect_same_area)}
+          {formatBoolean(data.did_it_affect_same_area)}
         </Text>
       </View>
       <View style={pdfStyles.row} wrap={false}>
@@ -63,7 +63,7 @@ function PreviousOperationOutput(props: Props) {
           {strings.drefFormAffectedthePopulationTitle}
         </Text>
         <Text style={pdfStyles.strongCell}>
-          {formatBoolean(data.affect_same_population)}
+          {formatBoolean(data.did_it_affect_same_population)}
         </Text>
       </View>
       <View style={pdfStyles.row} wrap={false}>
@@ -71,7 +71,7 @@ function PreviousOperationOutput(props: Props) {
           <Text>{strings.drefFormNsRespond}</Text>
         </View>
         <View style={pdfStyles.strongCell}>
-          <Text>{formatBoolean(data.ns_respond)}</Text>
+          <Text>{formatBoolean(data.did_ns_respond)}</Text>
         </View>
       </View>
       <View style={pdfStyles.row} wrap={false}>
@@ -79,7 +79,7 @@ function PreviousOperationOutput(props: Props) {
           <Text>{strings.drefFormNsRequestFund}</Text>
         </View>
         <View style={pdfStyles.strongCell}>
-          <Text>{formatBoolean(data.ns_request_fund)}</Text>
+          <Text>{formatBoolean(data.did_ns_request_fund)}</Text>
         </View>
       </View>
       <View style={pdfStyles.row} minPresenceAhead={10}>

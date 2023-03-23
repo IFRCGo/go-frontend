@@ -49,19 +49,18 @@ import {
   operationFields,
   submissionFields,
   DrefFinalReportApiFields,
-  TYPE_IMMINENT,
-  ONSET_SUDDEN,
-  TYPE_ASSESSMENT,
 } from './common';
 import Overview from './Overview';
 import EventDetails from './EventDetails';
 import Needs from './Needs';
 import Operation from './Operation';
 import Submission from './Submission';
-import useDrefFinalReportFormOptions, { schema } from './useDreFinalReportOptions';
+import useDrefFinalReportFormOptions,{
+  schema,
+} from './useDreFinalReportOptions';
+import { ymdToDateString } from '#utils/common';
 
 import styles from './styles.module.scss';
-import { ymdToDateString } from '#utils/common';
 
 interface Props {
   match: match<{ id?: string }>;
@@ -157,7 +156,7 @@ function FinalReport(props: Props) {
         const currentFieldsMap = listToMap(
           currentFields,
           d => d,
-          d => true,
+          () => true,
         );
 
         const partialErrors: typeof error = mapToMap(
@@ -174,7 +173,11 @@ function FinalReport(props: Props) {
   const validateCurrentTab = useCallback((exceptions: (keyof DrefFinalReportFields)[] = []) => {
     const validationError = getErrorObject(accumulateErrors(value, schema, value, undefined));
     const currentFields = stepTypesToFieldsMap[currentStep];
-    const exceptionsMap = listToMap(exceptions, d => d, d => true);
+    const exceptionsMap = listToMap(
+      exceptions,
+      d => d,
+      () => true
+    );
 
     if (!validationError) {
       return true;
@@ -436,9 +439,8 @@ function FinalReport(props: Props) {
     children: strings.drefFormExportLabel,
   });
 
-  const isImminentDref = value?.type_of_onset === TYPE_IMMINENT;
-  const isSuddenOnset = value?.type_of_onset === ONSET_SUDDEN;
-  const isAssessmentDref = value?.type_of_dref === TYPE_ASSESSMENT;
+  const drefType = value?.type_of_dref;
+  const onsetType = value?.type_of_onset;
 
   return (
     <Tabs
@@ -557,8 +559,7 @@ function FinalReport(props: Props) {
                 fileIdToUrlMap={fileIdToUrlMap}
                 setFileIdToUrlMap={setFileIdToUrlMap}
                 drefTypeOptions={drefTypeOptions}
-                isImminentDref={isImminentDref}
-                isSuddenOnset={isSuddenOnset}
+                drefType={drefType}
               />
             </TabPanel>
             <TabPanel name='eventDetails'>
@@ -566,10 +567,10 @@ function FinalReport(props: Props) {
                 error={error}
                 onValueChange={onValueChange}
                 value={value}
-                isImminentDref={isImminentDref}
+                drefType={drefType}
                 fileIdToUrlMap={fileIdToUrlMap}
                 setFileIdToUrlMap={setFileIdToUrlMap}
-                isSuddenOnset={isSuddenOnset}
+                onsetType={onsetType}
               />
             </TabPanel>
             <TabPanel name='needs'>
@@ -591,7 +592,7 @@ function FinalReport(props: Props) {
                 fileIdToUrlMap={fileIdToUrlMap}
                 setFileIdToUrlMap={setFileIdToUrlMap}
                 yesNoOptions={yesNoOptions}
-                isAssessmentDref={isAssessmentDref}
+                drefType={drefType}
               />
             </TabPanel>
             <TabPanel name='submission'>

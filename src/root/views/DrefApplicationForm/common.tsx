@@ -116,9 +116,9 @@ export const booleanOptionKeySelector = (o: BooleanValueOption) => o.value;
 export const optionLabelSelector = (o: Option) => o.label;
 
 export interface DrefFields {
-  affect_same_area: boolean;
-  affect_same_population: boolean;
-  affect_same_population_text: string;
+  did_it_affect_same_area: boolean;
+  did_it_affect_same_population: boolean;
+  did_it_affect_same_population_text: string;
   amount_requested: number;
   anticipatory_actions: string,
   appeal_code: string;
@@ -180,9 +180,9 @@ export interface DrefFields {
   national_society_contact_title: string;
   needs_identified: Need[];
   ns_request_date: string;
-  ns_request_fund: boolean;
+  did_ns_request_fund: boolean;
   ns_request_text: string;
-  ns_respond: boolean;
+  did_ns_respond: boolean;
   ns_respond_date: string;
   num_affected: number;
   num_assisted: number;
@@ -315,10 +315,10 @@ export const overviewFields: (keyof DrefFields)[] = [
 ];
 
 export const eventDetailsFields: (keyof DrefFields)[] = [
-  'affect_same_population',
-  'affect_same_area',
-  'ns_respond',
-  'ns_request_fund',
+  'did_it_affect_same_population',
+  'did_it_affect_same_area',
+  'did_ns_respond',
+  'did_ns_request_fund',
   'ns_request_text',
   'lessons_learned',
   'event_description',
