@@ -24,7 +24,6 @@ import NsActionInput from '#views/DrefApplicationForm/ActionsFields/NSActionInpu
 import DREFFileInput from '#components/DREFFileInput';
 import DateInput from '#components/DateInput';
 import CaptionInput from '#views/DrefApplicationForm/CaptionInput';
-
 import {
   booleanOptionKeySelector,
   BooleanValueOption,
@@ -35,6 +34,7 @@ import {
   FileWithCaption,
   StringValueOption,
   TYPE_IMMINENT,
+  TYPE_ASSESSMENT,
 } from '../common';
 
 import styles from './styles.module.scss';
@@ -49,7 +49,6 @@ interface Props {
   nsActionOptions: StringValueOption[];
   fileIdToUrlMap: Record<number, string>;
   setFileIdToUrlMap?: React.Dispatch<React.SetStateAction<Record<number, string>>>;
-  isAssessmentDref: boolean;
   drefType?: number;
 }
 
@@ -65,7 +64,6 @@ function Needs(props: Props) {
     nsActionOptions,
     fileIdToUrlMap,
     setFileIdToUrlMap,
-    isAssessmentDref,
     drefType,
   } = props;
 
@@ -388,7 +386,7 @@ function Needs(props: Props) {
           </InputSection>
         }
       </Container>
-      {!isAssessmentDref &&
+      {drefType !== TYPE_ASSESSMENT &&
         <Container
           className={styles.needsIdentified}
           heading={

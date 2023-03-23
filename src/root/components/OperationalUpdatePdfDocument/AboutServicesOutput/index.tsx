@@ -5,7 +5,7 @@ import {
 } from '@react-pdf/renderer';
 
 import { Strings } from '#types';
-import { DrefOperationalUpdateApiFields } from '#views/DrefOperationalUpdateForm/common';
+import { DrefOperationalUpdateApiFields, TYPE_ASSESSMENT } from '#views/DrefOperationalUpdateForm/common';
 import pdfStyles from '#utils/pdf/pdfStyles';
 import { reTab } from '#utils/common';
 import {
@@ -16,14 +16,14 @@ import {
 interface Props {
   data: DrefOperationalUpdateApiFields;
   strings: Strings;
-  isAssessmentDref: boolean,
+  drefType?: number;
 }
 
 function AboutServicesOutput(props: Props) {
   const {
     data,
     strings,
-    isAssessmentDref,
+    drefType,
   } = props;
 
   if (isNotDefined(data.human_resource)
@@ -74,7 +74,7 @@ function AboutServicesOutput(props: Props) {
           </Text>
         </View>
       )}
-      {!isAssessmentDref && (
+      {drefType !== TYPE_ASSESSMENT && (
         <>
           {isDefined(data.logistic_capacity_of_ns) && (
             <View style={pdfStyles.qna}>

@@ -12,14 +12,17 @@ import sanitizeHtml from 'sanitize-html';
 
 import { Strings } from '#types';
 import { PdfTextOutput } from '#components/PdfTextOutput';
-import { DrefOperationalUpdateApiFields, TYPE_IMMINENT } from '#views/DrefOperationalUpdateForm/common';
+import {
+    DrefOperationalUpdateApiFields,
+    TYPE_IMMINENT,
+    TYPE_ASSESSMENT,
+  } from '#views/DrefOperationalUpdateForm/common';
 import pdfStyles from '#utils/pdf/pdfStyles';
 import { reTab } from '#utils/common';
 
 interface Props {
   data: DrefOperationalUpdateApiFields;
   strings: Strings;
-  isAssessmentDref?: boolean;
   drefType?: number;
 }
 
@@ -27,7 +30,6 @@ function EventDescriptionOutput(props: Props) {
   const {
     data,
     strings,
-    isAssessmentDref,
     drefType,
   } = props;
 
@@ -112,7 +114,7 @@ function EventDescriptionOutput(props: Props) {
             </Text>
           </View>
         )}
-      {!isAssessmentDref
+      {drefType !== TYPE_ASSESSMENT
         && isDefined(data.event_scope)
         && (
           <View style={pdfStyles.subSection}>

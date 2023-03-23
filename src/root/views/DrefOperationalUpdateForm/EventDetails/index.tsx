@@ -24,6 +24,8 @@ import {
   DrefOperationalUpdateFields,
   optionLabelSelector,
   TYPE_IMMINENT,
+  ONSET_SUDDEN,
+  TYPE_ASSESSMENT,
 } from '../common';
 
 import styles from './styles.module.scss';
@@ -36,9 +38,8 @@ interface Props {
   yesNoOptions: BooleanValueOption[];
   fileIdToUrlMap: Record<number, string>;
   setFileIdToUrlMap?: React.Dispatch<React.SetStateAction<Record<number, string>>>;
-  isSuddenOnset: boolean;
-  isAssessmentDref: boolean;
   drefType?: number;
+  onsetType?: number;
 }
 
 function EventDetails(props: Props) {
@@ -50,9 +51,8 @@ function EventDetails(props: Props) {
     yesNoOptions,
     fileIdToUrlMap,
     setFileIdToUrlMap,
-    isSuddenOnset,
-    isAssessmentDref,
     drefType,
+    onsetType,
   } = props;
 
   const error = React.useMemo(
@@ -215,7 +215,7 @@ function EventDetails(props: Props) {
           title={
             drefType === TYPE_IMMINENT
               ? strings.drefFormApproximateDateOfImpact
-              : isSuddenOnset
+              : onsetType === ONSET_SUDDEN
                 ? strings.drefFormEventDate
                 : strings.drefFormSlowEventDate
           }
@@ -296,7 +296,7 @@ function EventDetails(props: Props) {
             ))}
           </div>
         </InputSection>
-        {!isAssessmentDref && (
+        {drefType !== TYPE_ASSESSMENT && (
           <InputSection
             title={strings.drefFormScopeAndScaleEvent}
             description={strings.drefFormScopeAndScaleDescription}

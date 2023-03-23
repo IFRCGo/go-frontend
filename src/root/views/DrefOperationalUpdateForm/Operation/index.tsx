@@ -37,6 +37,7 @@ import {
   RiskSecurityProps,
   StringValueOption,
   TYPE_IMMINENT,
+  TYPE_ASSESSMENT,
 } from '../common';
 
 import styles from './styles.module.scss';
@@ -51,8 +52,8 @@ interface Props {
   interventionOptions: StringValueOption[];
   fileIdToUrlMap: Record<number, string>;
   setFileIdToUrlMap?: React.Dispatch<React.SetStateAction<Record<number, string>>>;
-  isAssessmentDref: boolean;
   yesNoOptions: BooleanValueOption[];
+  drefType?: number;
 }
 
 function Operation(props: Props) {
@@ -66,7 +67,7 @@ function Operation(props: Props) {
     fileIdToUrlMap,
     setFileIdToUrlMap,
     yesNoOptions,
-    isAssessmentDref,
+    drefType,
   } = props;
 
   const error = getErrorObject(formError);
@@ -243,7 +244,7 @@ function Operation(props: Props) {
         heading={strings.drefFormTargetedPopulation}
         className={styles.assistedPopulation}
         description={(
-          !isAssessmentDref &&
+          drefType !== TYPE_ASSESSMENT &&
           warnings?.map((w, i) => (
             <div
               className={styles.warning}
@@ -260,7 +261,7 @@ function Operation(props: Props) {
           multiRow
           twoColumn
         >
-          {!isAssessmentDref && (
+          {drefType !== TYPE_ASSESSMENT && (
             <>
               <NumberInput
                 label={strings.drefFormWomen}
@@ -358,7 +359,7 @@ function Operation(props: Props) {
       >
         <InputSection
           title={strings.drefFormRiskSecurityPotentialRisk}
-          description={isAssessmentDref && strings.drefFormRiskSecurityPotentialRiskDescription}
+          description={drefType === TYPE_ASSESSMENT && strings.drefFormRiskSecurityPotentialRiskDescription}
           multiRow
           oneColumn
         >
@@ -496,7 +497,7 @@ function Operation(props: Props) {
             />
           }
         </InputSection>
-        {!isAssessmentDref && (
+        {drefType !== TYPE_ASSESSMENT && (
           <>
             <InputSection
               title={strings.drefFormLogisticCapacityOfNs}
