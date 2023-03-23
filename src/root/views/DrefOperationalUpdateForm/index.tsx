@@ -534,7 +534,6 @@ function DrefOperationalUpdate(props: Props) {
   });
 
   const isSuddenOnset = value?.type_of_onset === ONSET_SUDDEN;
-  const isImminentDref = value?.type_of_dref === TYPE_IMMINENT;
   const isAssessmentDref = value?.type_of_dref === TYPE_ASSESSMENT;
 
   const handleObsoletePayloadResolutionOverwiteButtonClick = React.useCallback((newModifiedAt: string | undefined) => {

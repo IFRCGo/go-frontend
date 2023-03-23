@@ -12,23 +12,23 @@ import sanitizeHtml from 'sanitize-html';
 
 import { Strings } from '#types';
 import { PdfTextOutput } from '#components/PdfTextOutput';
-import { DrefOperationalUpdateApiFields } from '#views/DrefOperationalUpdateForm/common';
+import { DrefOperationalUpdateApiFields, TYPE_IMMINENT } from '#views/DrefOperationalUpdateForm/common';
 import pdfStyles from '#utils/pdf/pdfStyles';
 import { reTab } from '#utils/common';
 
 interface Props {
   data: DrefOperationalUpdateApiFields;
   strings: Strings;
-  isImminentDref: boolean;
   isAssessmentDref?: boolean;
+  drefType?: number;
 }
 
 function EventDescriptionOutput(props: Props) {
   const {
     data,
     strings,
-    isImminentDref,
     isAssessmentDref,
+    drefType,
   } = props;
 
   if (isNotDefined(data.event_scope)
@@ -68,7 +68,7 @@ function EventDescriptionOutput(props: Props) {
             style={pdfStyles.subSectionHeading}
             minPresenceAhead={20}
           >
-            {isImminentDref
+            {drefType === TYPE_IMMINENT
               ? strings.drefFormImminentDisaster
               : strings.drefFormWhatWhereWhen}
           </Text>
@@ -97,7 +97,7 @@ function EventDescriptionOutput(props: Props) {
           </View>
         ))}
       </div>
-      {isImminentDref
+      {drefType === TYPE_IMMINENT
         && isDefined(data.anticipatory_actions)
         && (
           <View style={pdfStyles.subSection}>
