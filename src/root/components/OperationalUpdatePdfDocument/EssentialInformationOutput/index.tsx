@@ -10,13 +10,13 @@ import { resolveToString } from '#utils/lang';
 import { formatNumber } from '#utils/common';
 import { PdfTextOutput } from '#components/PdfTextOutput';
 import pdfStyles from '#utils/pdf/pdfStyles';
-import { DrefOperationalUpdateApiFields } from '#views/DrefOperationalUpdateForm/common';
+import { DrefOperationalUpdateApiFields, TYPE_IMMINENT } from '#views/DrefOperationalUpdateForm/common';
 
 interface Props {
   data: DrefOperationalUpdateApiFields;
   strings: Strings;
   affectedAreas: string;
-  isImminentDref: boolean;
+  drefType?: number;
 }
 
 function EssentialInformationOutput(props: Props) {
@@ -24,7 +24,7 @@ function EssentialInformationOutput(props: Props) {
     data,
     strings,
     affectedAreas,
-    isImminentDref,
+    drefType,
   } = props;
 
   return (
@@ -71,7 +71,7 @@ function EssentialInformationOutput(props: Props) {
               value={data?.glide_code}
             />
             <PdfTextOutput
-              label={isImminentDref
+              label={drefType === TYPE_IMMINENT
                 ? strings.drefExportPeopleAtRisk
                 : strings.drefExportPeopleAffected
               }
