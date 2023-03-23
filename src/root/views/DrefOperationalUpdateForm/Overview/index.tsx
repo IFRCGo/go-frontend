@@ -41,6 +41,7 @@ import {
   NumericValueOption,
   optionLabelSelector,
   TYPE_IMMINENT,
+  ONSET_SUDDEN,
 } from '../common';
 
 import styles from './styles.module.scss';
@@ -66,7 +67,7 @@ interface Props {
   userOptions: NumericValueOption[];
   onCreateAndShareButtonClick: () => void;
   drefTypeOptions: NumericValueOption[];
-  isSuddenOnset: boolean;
+  onsetType?: number;
   drefType?: number;
 }
 
@@ -93,7 +94,7 @@ function Overview(props: Props) {
     onValueSet,
     drefTypeOptions,
     fetchingDrefTypeOptions,
-    isSuddenOnset,
+    onsetType,
     drefType,
   } = props;
 
@@ -102,7 +103,7 @@ function Overview(props: Props) {
     [formError]
   );
 
-  const suddenDependentValue = isSuddenOnset ? false : value.emergency_appeal_planned;
+  const suddenDependentValue = onsetType === ONSET_SUDDEN ? false : value.emergency_appeal_planned;
   onValueChange(suddenDependentValue, 'emergency_appeal_planned');
 
   const totalDrefAllocation = useMemo(() => (

@@ -49,8 +49,6 @@ import {
   operationFields,
   submissionFields,
   DrefOperationalUpdateApiFields,
-  ONSET_SUDDEN,
-  TYPE_ASSESSMENT,
 } from './common';
 import useDrefOperationalFormOptions, {
   schema
@@ -532,8 +530,8 @@ function DrefOperationalUpdate(props: Props) {
     children: strings.drefFormExportLabel,
   });
 
-  const isSuddenOnset = value?.type_of_onset === ONSET_SUDDEN;
-  const isAssessmentDref = value?.type_of_dref === TYPE_ASSESSMENT;
+  const drefType = value.type_of_dref;
+  const onsetType = value.type_of_onset;
 
   const handleObsoletePayloadResolutionOverwiteButtonClick = React.useCallback((newModifiedAt: string | undefined) => {
     setShowObsoletePayloadResolutionModal(false);
@@ -686,7 +684,7 @@ function DrefOperationalUpdate(props: Props) {
                   userOptions={userOptions}
                   onCreateAndShareButtonClick={submitDrefOperationalUpdate}
                   drefTypeOptions={drefTypeOptions}
-                  isSuddenOnset={isSuddenOnset}
+                  onsetType={onsetType}
                 />
               </TabPanel>
               <TabPanel name='eventDetails'>
@@ -697,8 +695,8 @@ function DrefOperationalUpdate(props: Props) {
                   yesNoOptions={yesNoOptions}
                   fileIdToUrlMap={fileIdToUrlMap}
                   setFileIdToUrlMap={setFileIdToUrlMap}
-                  isSuddenOnset={isSuddenOnset}
-                  isAssessmentDref={isAssessmentDref}
+                  drefType={drefType}
+                  onsetType={onsetType}
                 />
               </TabPanel>
               <TabPanel name='needs'>
@@ -711,7 +709,7 @@ function DrefOperationalUpdate(props: Props) {
                   nsActionOptions={nsActionOptions}
                   fileIdToUrlMap={fileIdToUrlMap}
                   setFileIdToUrlMap={setFileIdToUrlMap}
-                  isAssessmentDref={isAssessmentDref}
+                  drefType={drefType}
                 />
               </TabPanel>
               <TabPanel name='operation'>
@@ -722,7 +720,7 @@ function DrefOperationalUpdate(props: Props) {
                   value={value}
                   fileIdToUrlMap={fileIdToUrlMap}
                   setFileIdToUrlMap={setFileIdToUrlMap}
-                  isAssessmentDref={isAssessmentDref}
+                  drefType={drefType}
                   yesNoOptions={yesNoOptions}
                 />
               </TabPanel>
