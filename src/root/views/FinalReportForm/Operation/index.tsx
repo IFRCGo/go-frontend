@@ -31,6 +31,7 @@ import SelectInput from '#components/SelectInput';
 import Button from '#components/Button';
 import RadioInput from '#components/RadioInput';
 import RiskSecurityInput from '#views/DrefApplicationForm/Response/RiskSecurityInput';
+import DREFFileInput from '#components/DREFFileInput';
 
 import InterventionInput from './InterventionInput';
 import {
@@ -46,10 +47,10 @@ import {
   optionLabelSelector,
   RiskSecurityProps,
   StringValueOption,
+  TYPE_ASSESSMENT,
 } from '../common';
 
 import styles from './styles.module.scss';
-import DREFFileInput from '#components/DREFFileInput';
 
 const emptyList: string[] = [];
 type Value = PartialForm<DrefFinalReportFields>;
@@ -61,8 +62,7 @@ interface Props {
   fileIdToUrlMap: Record<number, string>;
   setFileIdToUrlMap?: Dispatch<SetStateAction<Record<number, string>>>;
   yesNoOptions: BooleanValueOption[];
-  isAssessmentDref: boolean;
-  isImminentDref?: boolean;
+  drefType?: number;
 }
 
 function Operation(props: Props) {
@@ -74,13 +74,12 @@ function Operation(props: Props) {
     interventionOptions,
     value,
     yesNoOptions,
-    isAssessmentDref,
+    drefType,
     fileIdToUrlMap,
     setFileIdToUrlMap,
   } = props;
 
   const error = getErrorObject(formError);
-  const isImminentOfDref = value.type_of_dref === TYPE_IMMINENT;
   const isChangeInOperationalStrategy = value.change_in_operational_strategy;
 
   const {
@@ -348,7 +347,7 @@ function Operation(props: Props) {
             error={error?.displaced_people}
           />
           {
-            isImminentOfDref &&
+            drefType === TYPE_IMMINENT &&
             <NumberInput
               label={strings.finalReportPeopleTargetedWithEarlyActions}
               name="people_targeted_with_early_actions"
@@ -365,7 +364,7 @@ function Operation(props: Props) {
       >
         <InputSection
           title={strings.drefFormRiskSecurityPotentialRisk}
-          description={isAssessmentDref && strings.drefFormRiskSecurityPotentialRiskDescription}
+          description={drefType === TYPE_ASSESSMENT && strings.drefFormRiskSecurityPotentialRiskDescription}
           multiRow
           oneColumn
         >

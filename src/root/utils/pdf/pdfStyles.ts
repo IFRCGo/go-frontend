@@ -66,6 +66,7 @@ const pdfStyles = StyleSheet.create({
     fontFamily: 'OpenSans',
     fontWeight: 'medium',
     padding: styles.PAGE_PADDING,
+    paddingBottom: styles.PAGE_PADDING * 2,
     color: styles.COLOR_TEXT,
   },
 

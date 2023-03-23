@@ -20,15 +20,16 @@ import SearchSelectInput from '#components/SearchSelectInput';
 import { isNotDefined, listToMap } from '@togglecorp/fujs';
 import { rankedSearchOnList } from '#utils/common';
 import Button from '#components/Button';
+import ImageWithCaptionInput from '#views/DrefApplicationForm/DrefOverview/ImageWithCaptionInput';
 import {
   BooleanValueOption,
   DrefFinalReportFields,
   emptyNumericOptionList,
   NumericValueOption,
+  TYPE_IMMINENT,
 } from '../common';
 
 import styles from './styles.module.scss';
-import ImageWithCaptionInput from '#views/DrefApplicationForm/DrefOverview/ImageWithCaptionInput';
 
 type Value = PartialForm<DrefFinalReportFields>;
 interface Props {
@@ -48,8 +49,7 @@ interface Props {
   yesNoOptions: BooleanValueOption[];
   fileIdToUrlMap: Record<number, string>;
   setFileIdToUrlMap?: React.Dispatch<React.SetStateAction<Record<number, string>>>;
-  isImminentDref: boolean;
-  isSuddenOnset: boolean;
+  drefType?: number;
   fetchingDrefTypeOptions?: boolean;
   drefTypeOptions: NumericValueOption[];
 }
@@ -79,7 +79,7 @@ function Overview(props: Props) {
     onCreateAndShareButtonClick,
     fileIdToUrlMap,
     setFileIdToUrlMap,
-    isImminentDref,
+    drefType,
     drefTypeOptions,
   } = props;
 
@@ -195,7 +195,7 @@ function Overview(props: Props) {
           />
         </InputSection>
         <InputSection
-          title={isImminentDref
+          title={drefType === TYPE_IMMINENT
             ? strings.finalReportImminentDisasterDetails
             : strings.finalReportDisasterDetails}
           multiRow
@@ -203,7 +203,7 @@ function Overview(props: Props) {
         >
           <SelectInput
             error={error?.disaster_type}
-            label={isImminentDref
+            label={drefType === TYPE_IMMINENT
               ? strings.finalReportImminentDisasterTypeLabel
               : strings.finalReportDisasterTypeLabel}
             name={"disaster_type" as const}
@@ -242,7 +242,7 @@ function Overview(props: Props) {
           />
         </InputSection>
         <InputSection
-          title={!isImminentDref
+          title={drefType !== TYPE_IMMINENT
             ? strings.finalReportAffectedCountryAndProvinceImminent
             : strings.finalReportRiskCountryLabel}
           twoColumn
@@ -282,7 +282,7 @@ function Overview(props: Props) {
           twoColumn
         >
           <NumberInput
-            label={isImminentDref ?
+            label={drefType === TYPE_IMMINENT ?
               <>
                 {strings.finalReportRiskPeopleLabel}
                 <a
@@ -311,7 +311,7 @@ function Overview(props: Props) {
             value={value.number_of_people_affected}
             onChange={onValueChange}
             error={error?.number_of_people_affected}
-            hint={isImminentDref
+            hint={drefType === TYPE_IMMINENT
               ? strings.drefFormPeopleAffectedDescriptionImminent
               : strings.drefFormPeopleAffectedDescriptionSlowSudden
             }
@@ -320,7 +320,7 @@ function Overview(props: Props) {
             label={(
               <>
                 {
-                  isImminentDref
+                  drefType === TYPE_IMMINENT
                     ? strings.drefFormEstimatedPeopleInNeed
                     : strings.drefFormPeopleInNeed
                 }
@@ -338,7 +338,7 @@ function Overview(props: Props) {
             value={value.people_in_need}
             onChange={onValueChange}
             error={error?.people_in_need}
-            hint={isImminentDref
+            hint={drefType === TYPE_IMMINENT
               ? strings.drefFormPeopleInNeedDescriptionImminent
               : strings.drefFormPeopleInNeedDescriptionSlowSudden
             }

@@ -50,7 +50,6 @@ import {
   actionsFields,
   responseFields,
   submissionFields,
-  ONSET_SUDDEN,
   TYPE_IMMINENT,
 } from './common';
 
@@ -438,8 +437,8 @@ function DrefApplication(props: Props) {
     || drefSubmitPending
     || drefApplicationPending;
 
-  const isSuddenOnset = value?.type_of_onset === ONSET_SUDDEN;
   const drefType = value.type_of_dref;
+  const onsetType = value.type_of_onset;
 
   React.useEffect(() => {
     setValue((oldValue) => {
@@ -465,10 +464,10 @@ function DrefApplication(props: Props) {
 
   React.useEffect(() => {
     setValue((oldValue) => {
-      if (value.ns_request_fund === false ||
-        value.ns_respond === false ||
-        value.affect_same_population === false ||
-        value.affect_same_area === false) {
+      if (value.did_ns_request_fund === false ||
+        value.did_ns_respond === false ||
+        value.did_it_affect_same_population === false ||
+        value.did_it_affect_same_area === false) {
         return {
           ...oldValue,
           dref_recurrent_text: undefined,
@@ -478,10 +477,10 @@ function DrefApplication(props: Props) {
     });
   }, [
     setValue,
-    value.ns_request_fund,
-    value.ns_respond,
-    value.affect_same_population,
-    value.affect_same_area,
+    value.did_ns_request_fund,
+    value.did_ns_respond,
+    value.did_it_affect_same_population,
+    value.did_it_affect_same_area,
   ]);
 
   React.useEffect(() => {
@@ -686,13 +685,13 @@ function DrefApplication(props: Props) {
                 userOptions={userOptions}
                 onCreateAndShareButtonClick={submitDref}
                 drefTypeOptions={drefTypeOptions}
-                isSuddenOnset={isSuddenOnset}
+                onsetType={onsetType}
                 drefType={drefType}
               />
             </TabPanel>
             <TabPanel name="eventDetails">
               <EventDetails
-                isSuddenOnset={isSuddenOnset}
+                onsetType={onsetType}
                 drefType={drefType}
                 error={error}
                 onValueChange={setFieldValue}
