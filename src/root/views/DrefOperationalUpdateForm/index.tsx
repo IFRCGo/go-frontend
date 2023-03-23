@@ -688,7 +688,6 @@ function DrefOperationalUpdate(props: Props) {
                   userOptions={userOptions}
                   onCreateAndShareButtonClick={submitDrefOperationalUpdate}
                   drefTypeOptions={drefTypeOptions}
-                  isImminentDref={isImminentDref}
                   isSuddenOnset={isSuddenOnset}
                 />
               </TabPanel>
@@ -698,7 +697,6 @@ function DrefOperationalUpdate(props: Props) {
                   onValueChange={onValueChange}
                   value={value}
                   yesNoOptions={yesNoOptions}
-                  isImminentDref={isImminentDref}
                   fileIdToUrlMap={fileIdToUrlMap}
                   setFileIdToUrlMap={setFileIdToUrlMap}
                   isSuddenOnset={isSuddenOnset}
@@ -716,7 +714,6 @@ function DrefOperationalUpdate(props: Props) {
                   fileIdToUrlMap={fileIdToUrlMap}
                   setFileIdToUrlMap={setFileIdToUrlMap}
                   isAssessmentDref={isAssessmentDref}
-                  isImminentDref={isImminentDref}
                 />
               </TabPanel>
               <TabPanel name='operation'>

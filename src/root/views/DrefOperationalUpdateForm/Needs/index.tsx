@@ -34,6 +34,7 @@ import {
   optionLabelSelector,
   FileWithCaption,
   StringValueOption,
+  TYPE_IMMINENT,
 } from '../common';
 
 import styles from './styles.module.scss';
@@ -49,7 +50,7 @@ interface Props {
   fileIdToUrlMap: Record<number, string>;
   setFileIdToUrlMap?: React.Dispatch<React.SetStateAction<Record<number, string>>>;
   isAssessmentDref: boolean;
-  isImminentDref?: boolean;
+  drefType?: number;
 }
 
 function Needs(props: Props) {
@@ -65,7 +66,7 @@ function Needs(props: Props) {
     fileIdToUrlMap,
     setFileIdToUrlMap,
     isAssessmentDref,
-    isImminentDref,
+    drefType,
   } = props;
 
   const error = React.useMemo(
@@ -184,7 +185,7 @@ function Needs(props: Props) {
       >
         <InputSection
           title={
-            !isImminentDref
+            drefType !== TYPE_IMMINENT
               ? strings.drefFormDidNationalSocietyStartedSlow
               : strings.drefFormDidNationalSocietyStartedImminent
           }
@@ -202,7 +203,7 @@ function Needs(props: Props) {
         {didNationalSocietyStarted &&
           <InputSection
             title={
-              isImminentDref
+              drefType === TYPE_IMMINENT
                 ? strings.drefFormNSAnticipatoryAction
                 : strings.drefFormNsResponseStarted
             }
@@ -391,13 +392,13 @@ function Needs(props: Props) {
         <Container
           className={styles.needsIdentified}
           heading={
-            isImminentDref
+            drefType === TYPE_IMMINENT
               ? strings.drefFormImminentNeedsIdentified
               : strings.drefFormNeedsIdentified
           }
           visibleOverflow
         >
-          {!isImminentDref &&
+          {drefType !== TYPE_IMMINENT &&
             <InputSection>
               <DREFFileInput
                 accept=".pdf, .docx, .pptx"
@@ -443,7 +444,7 @@ function Needs(props: Props) {
               needOptions={needOptions}
             />
           ))}
-          {!isImminentDref && (
+          {drefType !== TYPE_IMMINENT && (
             <InputSection
               title={strings.drefFormGapsInAssessment}
               oneColumn
