@@ -24,6 +24,8 @@ import SelectInput from '#components/SelectInput';
 import Button from '#components/Button';
 import InterventionInput from '#views/DrefApplicationForm/Response/InterventionInput';
 import DREFFileInput from '#components/DREFFileInput';
+import RiskSecurityInput from '#views/DrefApplicationForm/Response/RiskSecurityInput';
+import RadioInput from '#components/RadioInput';
 
 import { InterventionType, RiskSecurityType } from '../useDrefOperationalUpdateOptions';
 import {
@@ -34,11 +36,11 @@ import {
   optionLabelSelector,
   RiskSecurityProps,
   StringValueOption,
+  TYPE_IMMINENT,
 } from '../common';
 
 import styles from './styles.module.scss';
-import RiskSecurityInput from '#views/DrefApplicationForm/Response/RiskSecurityInput';
-import RadioInput from '#components/RadioInput';
+
 
 const emptyList: string[] = [];
 type Value = PartialForm<DrefOperationalUpdateFields>;
@@ -50,7 +52,6 @@ interface Props {
   fileIdToUrlMap: Record<number, string>;
   setFileIdToUrlMap?: React.Dispatch<React.SetStateAction<Record<number, string>>>;
   isAssessmentDref: boolean;
-  isImminentDref?: boolean;
   yesNoOptions: BooleanValueOption[];
 }
 
@@ -66,10 +67,10 @@ function Operation(props: Props) {
     setFileIdToUrlMap,
     yesNoOptions,
     isAssessmentDref,
-    isImminentDref,
   } = props;
 
   const error = getErrorObject(formError);
+  const isImminentOfDref = value.type_of_dref === TYPE_IMMINENT;
 
   const [intervention, setIntervention] = React.useState<number | undefined>();
   const {
@@ -340,7 +341,7 @@ function Operation(props: Props) {
             error={error?.displaced_people}
           />
           {
-            isImminentDref &&
+            isImminentOfDref &&
             <NumberInput
               label={strings.drefFormPeopleTargetedWithEarlyActions}
               name="people_targeted_with_early_actions"

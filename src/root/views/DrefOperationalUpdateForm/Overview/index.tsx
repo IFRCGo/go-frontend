@@ -40,6 +40,7 @@ import {
   emptyNumericOptionList,
   NumericValueOption,
   optionLabelSelector,
+  TYPE_IMMINENT,
 } from '../common';
 
 import styles from './styles.module.scss';
@@ -65,8 +66,8 @@ interface Props {
   userOptions: NumericValueOption[];
   onCreateAndShareButtonClick: () => void;
   drefTypeOptions: NumericValueOption[];
-  isImminentDref: boolean;
   isSuddenOnset: boolean;
+  drefType?: number;
 }
 
 function Overview(props: Props) {
@@ -93,7 +94,7 @@ function Overview(props: Props) {
     drefTypeOptions,
     fetchingDrefTypeOptions,
     isSuddenOnset,
-    isImminentDref,
+    drefType,
   } = props;
 
   const error = useMemo(
@@ -257,9 +258,9 @@ function Overview(props: Props) {
         </InputSection>
         <InputSection
           title={
-            isImminentDref ?
-              strings.drefFormImminentDisasterDetails :
-              strings.drefFormDisasterDetails
+            drefType === TYPE_IMMINENT
+             ? strings.drefFormImminentDisasterDetails
+             : strings.drefFormDisasterDetails
           }
           multiRow
           twoColumn
@@ -267,9 +268,9 @@ function Overview(props: Props) {
           <SelectInput
             error={error?.disaster_type}
             label={
-              isImminentDref ?
-                strings.drefFormImminentDisasterTypeLabel
-                : strings.drefFormDisasterTypeLabel
+              drefType === TYPE_IMMINENT
+              ? strings.drefFormImminentDisasterTypeLabel
+              : strings.drefFormDisasterTypeLabel
             }
             name={"disaster_type" as const}
             onChange={onValueChange}
@@ -320,9 +321,9 @@ function Overview(props: Props) {
         </InputSection>
         <InputSection
           title={
-            !isImminentDref ?
-              strings.drefFormAffectedCountryAndProvinceImminent
-              : strings.drefFormRiskCountryLabel
+            drefType !== TYPE_IMMINENT
+            ? strings.drefFormAffectedCountryAndProvinceImminent
+            : strings.drefFormRiskCountryLabel
           }
           twoColumn
         >
@@ -368,7 +369,7 @@ function Overview(props: Props) {
           twoColumn
         >
           <NumberInput
-            label={isImminentDref ?
+            label={drefType === TYPE_IMMINENT ?
               <>
                 {strings.drefFormRiskPeopleLabel}
                 <a
@@ -397,7 +398,7 @@ function Overview(props: Props) {
             value={value.number_of_people_affected}
             onChange={onValueChange}
             error={error?.number_of_people_affected}
-            hint={isImminentDref
+            hint={drefType === TYPE_IMMINENT
               ? strings.drefFormPeopleAffectedDescriptionImminent
               : strings.drefFormPeopleAffectedDescriptionSlowSudden
             }
@@ -406,7 +407,7 @@ function Overview(props: Props) {
             label={(
               <>
                 {
-                  isImminentDref
+                  drefType === TYPE_IMMINENT
                     ? strings.drefFormEstimatedPeopleInNeed
                     : strings.drefFormPeopleInNeed
                 }
@@ -424,7 +425,7 @@ function Overview(props: Props) {
             value={value.people_in_need}
             onChange={onValueChange}
             error={error?.people_in_need}
-            hint={isImminentDref
+            hint={drefType === TYPE_IMMINENT
               ? strings.drefFormPeopleInNeedDescriptionImminent
               : strings.drefFormPeopleInNeedDescriptionSlowSudden
             }
