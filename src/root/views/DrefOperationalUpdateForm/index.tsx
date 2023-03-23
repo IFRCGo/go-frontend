@@ -49,7 +49,6 @@ import {
   operationFields,
   submissionFields,
   DrefOperationalUpdateApiFields,
-  TYPE_IMMINENT,
   ONSET_SUDDEN,
   TYPE_ASSESSMENT,
 } from './common';
