@@ -1115,8 +1115,12 @@ const CatalogueOfSurgeServicesContent = [
                         cardTitle: "catalogueOfSurgeServicesCardTitleRoleProfiles",
                         elements: [
                             {
-                                name: "catalogueOfSurgeServicesPlanningCards1Card1Element1",
+                                name: "catalogueOfSurgeServicesPlanningCards1Card1Element0",
                                 url: SharepointLink['Security Coordinator.pdf']
+                            },
+                            {
+                                name: "catalogueOfSurgeServicesPlanningCards1Card1Element1",
+                                url: SharepointLink['Security Officer.pdf']
                             }
                         ]
                     },
