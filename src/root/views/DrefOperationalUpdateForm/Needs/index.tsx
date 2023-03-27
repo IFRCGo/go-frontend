@@ -24,7 +24,6 @@ import NsActionInput from '#views/DrefApplicationForm/ActionsFields/NSActionInpu
 import DREFFileInput from '#components/DREFFileInput';
 import DateInput from '#components/DateInput';
 import CaptionInput from '#views/DrefApplicationForm/CaptionInput';
-
 import {
   booleanOptionKeySelector,
   BooleanValueOption,
@@ -34,6 +33,8 @@ import {
   optionLabelSelector,
   FileWithCaption,
   StringValueOption,
+  TYPE_IMMINENT,
+  TYPE_ASSESSMENT,
 } from '../common';
 
 import styles from './styles.module.scss';
@@ -48,8 +49,7 @@ interface Props {
   nsActionOptions: StringValueOption[];
   fileIdToUrlMap: Record<number, string>;
   setFileIdToUrlMap?: React.Dispatch<React.SetStateAction<Record<number, string>>>;
-  isAssessmentDref: boolean;
-  isImminentDref?: boolean;
+  drefType?: number;
 }
 
 function Needs(props: Props) {
@@ -64,8 +64,7 @@ function Needs(props: Props) {
     nsActionOptions,
     fileIdToUrlMap,
     setFileIdToUrlMap,
-    isAssessmentDref,
-    isImminentDref,
+    drefType,
   } = props;
 
   const error = React.useMemo(
@@ -184,7 +183,7 @@ function Needs(props: Props) {
       >
         <InputSection
           title={
-            !isImminentDref
+            drefType !== TYPE_IMMINENT
               ? strings.drefFormDidNationalSocietyStartedSlow
               : strings.drefFormDidNationalSocietyStartedImminent
           }
@@ -202,7 +201,7 @@ function Needs(props: Props) {
         {didNationalSocietyStarted &&
           <InputSection
             title={
-              isImminentDref
+              drefType === TYPE_IMMINENT
                 ? strings.drefFormNSAnticipatoryAction
                 : strings.drefFormNsResponseStarted
             }
@@ -387,17 +386,17 @@ function Needs(props: Props) {
           </InputSection>
         }
       </Container>
-      {!isAssessmentDref &&
+      {drefType !== TYPE_ASSESSMENT &&
         <Container
           className={styles.needsIdentified}
           heading={
-            isImminentDref
+            drefType === TYPE_IMMINENT
               ? strings.drefFormImminentNeedsIdentified
               : strings.drefFormNeedsIdentified
           }
           visibleOverflow
         >
-          {!isImminentDref &&
+          {drefType !== TYPE_IMMINENT &&
             <InputSection>
               <DREFFileInput
                 accept=".pdf, .docx, .pptx"
@@ -443,7 +442,7 @@ function Needs(props: Props) {
               needOptions={needOptions}
             />
           ))}
-          {!isImminentDref && (
+          {drefType !== TYPE_IMMINENT && (
             <InputSection
               title={strings.drefFormGapsInAssessment}
               oneColumn

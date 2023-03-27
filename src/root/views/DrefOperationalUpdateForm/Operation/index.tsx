@@ -24,6 +24,8 @@ import SelectInput from '#components/SelectInput';
 import Button from '#components/Button';
 import InterventionInput from '#views/DrefApplicationForm/Response/InterventionInput';
 import DREFFileInput from '#components/DREFFileInput';
+import RiskSecurityInput from '#views/DrefApplicationForm/Response/RiskSecurityInput';
+import RadioInput from '#components/RadioInput';
 
 import { InterventionType, RiskSecurityType } from '../useDrefOperationalUpdateOptions';
 import {
@@ -34,11 +36,12 @@ import {
   optionLabelSelector,
   RiskSecurityProps,
   StringValueOption,
+  TYPE_IMMINENT,
+  TYPE_ASSESSMENT,
 } from '../common';
 
 import styles from './styles.module.scss';
-import RiskSecurityInput from '#views/DrefApplicationForm/Response/RiskSecurityInput';
-import RadioInput from '#components/RadioInput';
+
 
 const emptyList: string[] = [];
 type Value = PartialForm<DrefOperationalUpdateFields>;
@@ -49,9 +52,8 @@ interface Props {
   interventionOptions: StringValueOption[];
   fileIdToUrlMap: Record<number, string>;
   setFileIdToUrlMap?: React.Dispatch<React.SetStateAction<Record<number, string>>>;
-  isAssessmentDref: boolean;
-  isImminentDref?: boolean;
   yesNoOptions: BooleanValueOption[];
+  drefType?: number;
 }
 
 function Operation(props: Props) {
@@ -65,11 +67,11 @@ function Operation(props: Props) {
     fileIdToUrlMap,
     setFileIdToUrlMap,
     yesNoOptions,
-    isAssessmentDref,
-    isImminentDref,
+    drefType,
   } = props;
 
   const error = getErrorObject(formError);
+  const isImminentOfDref = value.type_of_dref === TYPE_IMMINENT;
 
   const [intervention, setIntervention] = React.useState<number | undefined>();
   const {
@@ -242,7 +244,7 @@ function Operation(props: Props) {
         heading={strings.drefFormTargetedPopulation}
         className={styles.assistedPopulation}
         description={(
-          !isAssessmentDref &&
+          drefType !== TYPE_ASSESSMENT &&
           warnings?.map((w, i) => (
             <div
               className={styles.warning}
@@ -259,7 +261,7 @@ function Operation(props: Props) {
           multiRow
           twoColumn
         >
-          {!isAssessmentDref && (
+          {drefType !== TYPE_ASSESSMENT && (
             <>
               <NumberInput
                 label={strings.drefFormWomen}
@@ -340,7 +342,7 @@ function Operation(props: Props) {
             error={error?.displaced_people}
           />
           {
-            isImminentDref &&
+            isImminentOfDref &&
             <NumberInput
               label={strings.drefFormPeopleTargetedWithEarlyActions}
               name="people_targeted_with_early_actions"
@@ -357,7 +359,7 @@ function Operation(props: Props) {
       >
         <InputSection
           title={strings.drefFormRiskSecurityPotentialRisk}
-          description={isAssessmentDref && strings.drefFormRiskSecurityPotentialRiskDescription}
+          description={drefType === TYPE_ASSESSMENT && strings.drefFormRiskSecurityPotentialRiskDescription}
           multiRow
           oneColumn
         >
@@ -495,7 +497,7 @@ function Operation(props: Props) {
             />
           }
         </InputSection>
-        {!isAssessmentDref && (
+        {drefType !== TYPE_ASSESSMENT && (
           <>
             <InputSection
               title={strings.drefFormLogisticCapacityOfNs}

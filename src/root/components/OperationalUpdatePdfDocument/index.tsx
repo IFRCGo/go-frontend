@@ -4,10 +4,7 @@ import {
   Document,
 } from '@react-pdf/renderer';
 import { listToMap } from '@togglecorp/fujs';
-import {
-  TYPE_ASSESSMENT,
-  TYPE_IMMINENT,
-} from '#views/DrefApplicationForm/common';
+import { TYPE_ASSESSMENT } from '#views/DrefApplicationForm/common';
 import { DrefOperationalUpdateApiFields } from '#views/DrefOperationalUpdateForm/common';
 import {
   NumericKeyValuePair,
@@ -15,6 +12,7 @@ import {
   Strings,
 } from '#types';
 
+import PageNumberPdf from '#components/DrefPdfDocument/PageNumberPdf';
 import HeadingOutput from './HeadingOutput';
 import EssentialInformationOutput from './EssentialInformationOutput';
 import EventDescriptionOutput from './EventDescriptionOutput';
@@ -32,7 +30,6 @@ import BudgetFileOutput from './BudgetFileOutput';
 import ContactInformationOutput from './ContactInformationOutput';
 
 import pdfStyles from '#utils/pdf/pdfStyles';
-import PageNumberPdf from '#components/DrefPdfDocument/PageNumberPdf';
 
 interface DrefOptions {
   disaster_category: NumericKeyValuePair[];
@@ -40,7 +37,6 @@ interface DrefOptions {
   needs_identified: StringKeyValuePair[];
   planned_interventions: StringKeyValuePair[];
   status: NumericKeyValuePair[];
-  type_of_dref: NumericKeyValuePair[];
   users: {
     id: number;
     first_name: string;
@@ -66,9 +62,8 @@ function OperationalUpdatePdfDocument(props: Props) {
   const piMap = listToMap(drefOptions.planned_interventions, d => d.key, d => d.value);
   const niMap = listToMap(drefOptions.needs_identified, d => d.key, d => d.value);
   const affectedAreas = operationalUpdateResponse?.district_details?.map(d => d.name).join(', ');
-  const isAssessmentDref = operationalUpdateResponse.type_of_dref === TYPE_ASSESSMENT;
-  const isImminentDref = operationalUpdateResponse.type_of_dref === TYPE_IMMINENT;
   const documentTitle = operationalUpdateResponse?.title;
+  const drefType = operationalUpdateResponse.type_of_dref;
 
   return (
     <Document
@@ -90,21 +85,19 @@ function OperationalUpdatePdfDocument(props: Props) {
           data={operationalUpdateResponse}
           strings={strings}
           affectedAreas={affectedAreas}
-          isImminentDref={isImminentDref}
+          drefType={drefType}
         />
 
         <EventDescriptionOutput
           data={operationalUpdateResponse}
           strings={strings}
-          isImminentDref={isImminentDref}
-          isAssessmentDref={isAssessmentDref}
+          drefType={drefType}
         />
 
-        {!isAssessmentDref &&
+        {drefType !== TYPE_ASSESSMENT &&
           <SummaryOfChangeOutput
             data={operationalUpdateResponse}
             strings={strings}
-            isImminentDref={isImminentDref}
           />
         }
 
@@ -123,11 +116,10 @@ function OperationalUpdatePdfDocument(props: Props) {
           strings={strings}
         />
 
-        {!isAssessmentDref &&
+        {drefType !== TYPE_ASSESSMENT &&
           <NeedIdentifiedOutput
             data={operationalUpdateResponse}
             niMap={niMap}
-            isImminentDref={isImminentDref}
             strings={strings}
           />
         }
@@ -139,7 +131,7 @@ function OperationalUpdatePdfDocument(props: Props) {
         <TargetedPopulationOutput
           data={operationalUpdateResponse}
           strings={strings}
-          isAssessmentDref={isAssessmentDref}
+          drefType={drefType}
         />
 
         <RiskAndSecurityOutput
@@ -156,7 +148,7 @@ function OperationalUpdatePdfDocument(props: Props) {
         <AboutServicesOutput
           strings={strings}
           data={operationalUpdateResponse}
-          isAssessmentDref={isAssessmentDref}
+          drefType={drefType}
         />
 
         <BudgetFileOutput
