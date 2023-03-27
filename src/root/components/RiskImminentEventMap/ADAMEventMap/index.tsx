@@ -411,7 +411,7 @@ function ADAMEventMap(props: Props) {
                   ['boolean', ['feature-state', 'active'], false],
                   1,
                   ['boolean', ['feature-state', 'hovered'], false],
-                  0.5,
+                  0.6,
                   1,
                 ],
               },

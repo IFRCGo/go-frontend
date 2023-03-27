@@ -1,7 +1,6 @@
 import React from "react";
 import InfoPopup from "#components/InfoPopup";
 import TextOutput from "#components/TextOutput";
-import Link from '#components/Link';
 import {
   COLOR_CYCLONE,
   COLOR_DROUGHT,
@@ -41,26 +40,26 @@ function MapFooter() {
           </div>
         ))}
       </div>
-      <TextOutput
-        className={styles.source}
-        label="Source"
-        value="WFP ADAM"
-        description={(
-          <InfoPopup
-            title="Source: WFP ADAM"
+          <TextOutput
+            className={styles.source}
+            label="Source"
+            value="Pacific Disaster Center"
             description={(
-              <>
-                <p>
-                  These data points are recieved from the WFP ADAM, which performs a 24/7 automated data harvesting, analysis and mapping of natural hazards events.
-                </p>
-                <p>
-                  Click <Link href="https://gis.wfp.org/adam/">here</Link> for more information.
-                </p>
-              </>
+              <InfoPopup
+                title="Source: Pacific Disaster Center"
+                description={(
+                  <>
+                    <p>
+                      These impacts are produced by the Pacific Disaster Center's All-hazards Impact Model (AIM) 3.0.
+                    </p>
+                    <div>
+                      Click <a className={styles.pdcLink} target="_blank" href="https://www.pdc.org/wp-content/uploads/AIM-3-Fact-Sheet-Screen-1.pdf">here</a> for more information about the model and its inputs.
+                    </div>
+                  </>
+                )}
+              />
             )}
           />
-        )}
-      />
     </div>
   );
 }
