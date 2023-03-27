@@ -108,6 +108,7 @@ $heading-font-weight: $base-font-semi-bold;
 /* Border radius */
 
 $base-border-radius: 0.25rem;
+$dot-border-radius: 50%;
 $full-border-radius: 100vh;
 $input-rounded-radius: 1.8rem;
 
@@ -146,7 +147,7 @@ $global-spacing-2: 1.5rem;
 $global-spacing-3: 2rem;
 $global-spacing-4: 2.5rem;
 $global-spacing-5: 3rem;
-
+$global-spacing-table: 7rem;
 
 /* Spacing Variables in pixels */
 
