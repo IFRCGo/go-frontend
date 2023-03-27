@@ -118,12 +118,10 @@ const pdfStyles = StyleSheet.create({
 
   subTitle: {
     fontFamily: 'Montserrat',
-    fontWeight: 'bold',
     fontSize: styles.FONT_SIZE_LARGE,
     color: styles.COLOR_SECONDARY,
     textAlign: 'right',
     alignSelf:'flex-end',
-    marginTop: styles.SPACING_MEDIUM,
   },
 
   strong: {
