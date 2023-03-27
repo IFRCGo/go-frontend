@@ -23,12 +23,13 @@ import {
   COLOR_BLACK,
   COLOR_WHITE,
   defaultTooltipOptions,
-  ADAM_COlOR_ORANGE,
-  ADAM_COlOR_GREEN,
-  ADAM_COlOR_RED,
-  ADAM_COlOR_CONES,
 } from '#utils/map';
 import {
+  COLOR_CYCLONE,
+  COLOR_DROUGHT,
+  COLOR_EARTHQUAKE,
+  COLOR_FLOOD,
+  COLOR_STORM,
   geoJsonSourceOptions,
   hazardKeys,
   hiddenLayout,
@@ -50,24 +51,28 @@ import styles from './styles.module.scss';
 
 const trackDate = (date: string) => new Date(date)?.toLocaleDateString();
 
-const alertLevelFillColorPaint = [
+const hazardTypeFillColorPaint = [
   'match',
-  ['get', 'alert_level'],
-  'Orange',
-  ADAM_COlOR_ORANGE,
-  'Green',
-  ADAM_COlOR_GREEN,
-  'Red',
-  ADAM_COlOR_RED,
-  'Cones',
-  ADAM_COlOR_CONES,
+  ['get', 'hazardType'],
+  'EQ',
+  COLOR_EARTHQUAKE,
+  'CY',
+  COLOR_CYCLONE,
+  'TC',
+  COLOR_CYCLONE,
+  'SS',
+  COLOR_STORM,
+  'FL',
+  COLOR_FLOOD,
+  'DR',
+  COLOR_DROUGHT,
   COLOR_BLACK,
 ];
 
 const footprintLayerOptions = {
   type: 'fill',
   paint: {
-    'fill-color': alertLevelFillColorPaint,
+    'fill-color': hazardTypeFillColorPaint,
     // 'fill-opacity': 0.8,
   },
   filter: ['==', ['get', 'type'], 'MultiPolygon'],
@@ -314,7 +319,7 @@ function ADAMEventMap(props: Props) {
             layerOptions={{
               type: 'circle',
               paint: {
-                'circle-color': alertLevelFillColorPaint,
+                'circle-color': hazardTypeFillColorPaint,
                 'circle-radius': 6,
                 // 'circle-opacity': 0.8,
               },
@@ -399,7 +404,7 @@ function ADAMEventMap(props: Props) {
               paint: {
                 ...pointCirclePaint,
                 'circle-color': [
-                  ...alertLevelFillColorPaint,
+                  ...hazardTypeFillColorPaint,
                 ],
                 'circle-opacity': [
                   'case',

@@ -1,23 +1,22 @@
 import React from "react";
-import {
-  ADAM_COlOR_ORANGE,
-  ADAM_COlOR_GREEN,
-  ADAM_COlOR_CONES,
-  COLOR_BLACK,
-  ADAM_COlOR_RED,
-} from '#utils/map';
-
 import InfoPopup from "#components/InfoPopup";
 import TextOutput from "#components/TextOutput";
 import Link from '#components/Link';
+import {
+  COLOR_CYCLONE,
+  COLOR_DROUGHT,
+  COLOR_EARTHQUAKE,
+  COLOR_FLOOD,
+  COLOR_STORM,
+} from "#utils/risk";
 import styles from "./styles.module.scss";
 
 const legendItems = [
-  { color: ADAM_COlOR_ORANGE, label: 'Orange' },
-  { color: ADAM_COlOR_GREEN, label: 'Green' },
-  { color: ADAM_COlOR_RED, label: 'Red' },
-  { color: ADAM_COlOR_CONES, label: 'Cones' },
-  { color: COLOR_BLACK , label: 'Unknown' },
+  { color: COLOR_EARTHQUAKE, label: 'Earthquake' },
+  { color: COLOR_FLOOD, label: 'Flood' },
+  { color: COLOR_CYCLONE, label: 'Cyclone' },
+  { color: COLOR_STORM, label: 'Storm' },
+  { color: COLOR_DROUGHT, label: 'Drought' },
 ];
 
 function MapFooter() {
@@ -25,7 +24,7 @@ function MapFooter() {
     <div className={styles.footer}>
       <div className={styles.legend}>
         <div className={styles.legendTitle}>
-          Alert Level:
+          Legends:
         </div>
         {legendItems.map((li) => (
           <div
