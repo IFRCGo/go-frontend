@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-    isDefined,
+  isDefined,
   isNotDefined,
 } from '@togglecorp/fujs';
 
@@ -16,9 +16,9 @@ function EstimatedOutput({
   value,
   attribute,
 }: {
-  value: number | undefined | null;
-  attribute: string;
-}) {
+    value: number | undefined | null;
+    attribute: string;
+  }) {
   if (isNotDefined(value)) {
     return null;
   }
@@ -60,18 +60,13 @@ function PointDetails(props: PointDetailsProps) {
       wind_speed,
       effective_date,
       dashboard_url,
-      longitude,
-      latitude,
       alert_level,
       flood_area,
       fl_croplnd,
-      iso3,
       source,
       sitrep,
       url,
-      admin1_name,
       mag,
-      mmni,
     },
     onCloseButtonClick,
   } = props;
@@ -186,13 +181,10 @@ function PointDetails(props: PointDetailsProps) {
             valueType='text'
           />
         }
-        {isDefined(admin1_name) &&
-          <TextOutput
-            label="ADM1 Name"
-            value={admin1_name}
-            valueType="text"
-          />
-        }
+        <EstimatedOutput
+          attribute="People Exposed / Potentially Affected"
+          value={population_impact ?? population}
+        />
         {isDefined(source) &&
           <TextOutput
             label="Source"
@@ -207,13 +199,6 @@ function PointDetails(props: PointDetailsProps) {
             valueType="text"
           />
         }
-        {isDefined(iso3) &&
-          <TextOutput
-            label="ISO3"
-            value={iso3}
-            valueType="text"
-          />
-        }
         {isDefined(mag) &&
           <TextOutput
             label="Magnitude"
@@ -221,11 +206,18 @@ function PointDetails(props: PointDetailsProps) {
             valueType="number"
           />
         }
-        {isDefined(mmni) &&
+        {isDefined(depth) &&
           <TextOutput
-            label="MMI Value"
-            value={mmni}
+            label="Depth (km)"
+            value={depth}
             valueType="number"
+          />
+        }
+        {isDefined(alert_level) &&
+          <TextOutput
+            label="Alert Type"
+            value={alert_level}
+            valueType="text"
           />
         }
         {isDefined(effective_date) &&
@@ -247,34 +239,6 @@ function PointDetails(props: PointDetailsProps) {
             label="To date"
             value={to_date}
             valueType="date"
-          />
-        }
-        {isDefined(longitude) &&
-          <TextOutput
-            label="Longitude"
-            value={longitude}
-            valueType="text"
-          />
-        }
-        {isDefined(latitude) &&
-          <TextOutput
-            label="Latitude"
-            value={latitude}
-            valueType="text"
-          />
-        }
-        {isDefined(alert_level) &&
-          <TextOutput
-            label="Alert Type"
-            value={alert_level}
-            valueType="text"
-          />
-        }
-        {isDefined(depth) &&
-          <TextOutput
-            label="Depth (km)"
-            value={depth}
-            valueType="number"
           />
         }
         {isDefined(hazardDetails.population_exposure) &&
@@ -301,13 +265,6 @@ function PointDetails(props: PointDetailsProps) {
             valueType="number"
           />
         }
-        {isDefined(population_impact ) &&
-          <TextOutput
-            label="Population Impact"
-            value={population_impact}
-            valueType="number"
-          />
-        }
         {isDefined(flood_area) &&
           <TextOutput
             label="Flood Area"
@@ -322,13 +279,6 @@ function PointDetails(props: PointDetailsProps) {
             valueType="number"
           />
         }
-        {isDefined(population) &&
-          <TextOutput
-            label="Flood Population"
-            value={population}
-            valueType="number"
-          />
-        }
         {isDefined(hazardDetails.publish_date) &&
           <TextOutput
             label="Published At"
@@ -337,15 +287,7 @@ function PointDetails(props: PointDetailsProps) {
           />
         }
       </div>
-      <EstimatedOutput
-        attribute="People Exposed / Potentially Affected"
-        value={population_impact ?? population}
-      />
       <hr />
-      <EstimatedOutput
-        attribute="Depth"
-        value={depth}
-      />
       <EstimatedOutput
         attribute="Wind speed"
         value={wind_speed}
