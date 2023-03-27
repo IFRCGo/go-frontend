@@ -40,7 +40,31 @@ interface Props {
   className?: string;
   data: EmergencyResult[] | undefined;
   actions: React.ReactNode;
-  name?: string; 
+  name?: string;
+}
+
+type CrisisType = 'Red' | 'Yellow' | 'Orange';
+interface DotProps {
+  crisisType: CrisisType;
+}
+
+const crisisTypeColorMap: Record<CrisisType, string> = {
+  Red: '#f5333f',
+  Orange: '#ff5014',
+  Yellow: '#f39c12',
+};
+
+function Dot(props: DotProps) {
+  const { crisisType } = props;
+
+  const color = crisisTypeColorMap[crisisType];
+  return (
+    <span
+      title={crisisType}
+      className={styles.dotColor}
+      style={{ backgroundColor: color }}
+    />
+  );
 }
 
 function EmergencyTable(props: Props) {
@@ -85,19 +109,9 @@ function EmergencyTable(props: Props) {
       })
     ),
     createStringColumn<EmergencyResult, number>(
-      'start_date',
-      'Start Date',
-      (emergency) => <DateOutput value={emergency.start_date}/>,
-    ),
-    createStringColumn<EmergencyResult, number>(
       'appeal_type',
       'Appeal Type',
       (emergency) => emergency.appeal_type,
-    ),
-    createStringColumn<EmergencyResult, number>(
-      'disaster_type',
-      'Disaster Type',
-      (emergency) => emergency.disaster_type,
     ),
     createNumberColumn<EmergencyResult, number>(
       'funding_requirements',
@@ -106,7 +120,6 @@ function EmergencyTable(props: Props) {
         if (+emergency.funding_requirements > 0) {
           return +emergency.funding_requirements;
         }
-
         return undefined;
       },
       undefined,
@@ -120,19 +133,18 @@ function EmergencyTable(props: Props) {
       'Funding Coverage',
       showProgressBar
     ),
-    createLinkColumn<EmergencyResult, number>(
-      'countries',
-      'Country',
-      (emergency) => emergency.countries,
-      (emergency) => ({
-        href: `/countries/${emergency.countries_id}`,
-        variant: 'table',
-      })
-    ),
     createStringColumn<EmergencyResult, number>(
       'crisis_categorization',
       'Crisis Categorization',
-      (emergency) => emergency.crisis_categorization,
+      (emergency) => {
+        if (emergency.crisis_categorization) {
+          return (
+            <div className={styles.crisisType}>
+              <Dot crisisType={emergency.crisis_categorization as CrisisType} />
+            </div>
+          );
+        }
+      },
     ),
   ];
 
