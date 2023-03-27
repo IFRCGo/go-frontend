@@ -17,9 +17,21 @@
         border-bottom: $base-border-width solid $base-border-color;
 
         >* {
-          padding: 0!important;
+          padding: 0 !important;
         }
       }
     }
+  }
+}
+
+.crisis-type {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .dot-color {
+    width: $font-size-xxs;
+    height: $font-size-xxs;
+    border-radius: $dot-border-radius;
   }
 }

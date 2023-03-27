@@ -7,6 +7,7 @@ import Page from '#components/Page';
 import Container from '#components/Container';
 import Button from '#components/Button';
 import BlockLoading from '#components/block-loading';
+import TextInput from '#components/TextInput';
 import useInputState from '#hooks/useInputState';
 import { useRequest } from '#utils/restRequest';
 import { getSearchValue } from '#utils/common';
@@ -22,9 +23,9 @@ import SurgeDeploymentTable, { SurgeDeploymentResult } from './SurgeDeploymentTa
 import CountryList, { CountryResult } from './CountryList';
 import RegionList, { RegionResult } from './RegionList';
 import ProvinceList, { ProvinceResult } from './ProvinceList';
+import RapidResponseDeploymentTable, { RapidResponseResult } from './RapidDeploymentTable';
 
 import styles from './styles.module.scss';
-import TextInput from '#components/TextInput';
 
 export type SearchResult = {
   countries: CountryResult[];
@@ -36,10 +37,11 @@ export type SearchResult = {
   emergencies: EmergencyResult[];
   surge_alerts: SurgeAlertResult[];
   surge_deployments: SurgeDeploymentResult[];
+  rapid_response_deployments: RapidResponseResult[];
 }
 
 const MAX_VIEW_PER_SECTION = 5;
-type ResultKeys = 'provinces' | 'regions' | 'countries' | 'emergencies' | 'emergencyPlannings' | 'projects' | 'surgeAlerts' | 'surgeDeployments' | 'fieldReports';
+type ResultKeys = 'provinces' | 'regions' | 'countries' | 'emergencies' | 'emergencyPlannings' | 'projects' | 'surgeAlerts' | 'surgeDeployments' | 'fieldReports' | 'rapidResponse';
 
 interface Props {
   className?: string;
@@ -76,6 +78,7 @@ function Search(props: Props) {
     surgeAlerts: strings.searchViewAllSurgeAlerts,
     surgeDeployments: strings.searchViewAllSurgeDeployments,
     fieldReports: strings.searchViewAllFieldReports,
+    rapidResponse: strings.searchViewAllRapidResponseDeployment,
   }), [
     strings.searchViewAllProvince,
     strings.searchViewAllRegions,
@@ -86,6 +89,7 @@ function Search(props: Props) {
     strings.searchViewAllSurgeAlerts,
     strings.searchViewAllSurgeDeployments,
     strings.searchViewAllFieldReports,
+    strings.searchViewAllRapidResponseDeployment
   ]);
 
   const {
@@ -115,6 +119,7 @@ function Search(props: Props) {
       surgeAlerts: searchResponse?.surge_alerts ?? [],
       surgeDeployments: searchResponse?.surge_deployments ?? [],
       fieldReports: searchResponse?.reports ?? [],
+      rapidResponse: searchResponse?.rapid_response_deployments ?? [],
     };
 
     const componentMap: Record<ResultKeys, React.ElementType> = {
@@ -127,6 +132,7 @@ function Search(props: Props) {
       surgeAlerts: SurgeAlertTable,
       surgeDeployments: SurgeDeploymentTable,
       fieldReports: FieldReportTable,
+      rapidResponse: RapidResponseDeploymentTable,
     };
 
     const tableScoreList = mapToList(
@@ -151,6 +157,7 @@ function Search(props: Props) {
       surgeAlerts: 3,
       surgeDeployments: 3,
       fieldReports: 3,
+      rapidResponse: 3,
     };
     const sortedScoreList = tableScoreList.sort((a, b) => (
       keysOrdering[a.key] - keysOrdering[b.key] || b.value - a.value
@@ -167,7 +174,7 @@ function Search(props: Props) {
   }, [searchResponse]);
 
   const ActiveComponent = activeView ? componentMap[activeView] : undefined;
-  
+
   const handleSearchInputEnter = useCallback(() => {
     if ((searchString?.trim()?.length ?? 0) > 2) {
       history.push(`/search/?keyword=${searchString}`);
