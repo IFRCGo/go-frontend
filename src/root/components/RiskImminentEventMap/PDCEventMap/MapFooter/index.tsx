@@ -11,7 +11,7 @@ import styles from "./styles.module.scss";
 
 const legendItems = [
   { color: COLOR_FLOOD, label: 'Flood' },
-  { color: COLOR_STORM, label: 'Cyclone/Storm' },
+  { color: COLOR_STORM, label: 'Storm' },
   { color: COLOR_EARTHQUAKE, label: 'Earthquake' },
   { color: COLOR_DROUGHT, label: 'Drought' },
 ];
