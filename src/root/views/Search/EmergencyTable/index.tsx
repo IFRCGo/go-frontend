@@ -10,7 +10,6 @@ import {
   createStringColumn,
   createNumberColumn,
 } from '#components/Table/predefinedColumns';
-import DateOutput from '#components/DateOutput';
 import Table from '#components/Table';
 import ProgressBar from '#components/ProgressBar';
 
