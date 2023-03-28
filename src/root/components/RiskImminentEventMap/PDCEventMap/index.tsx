@@ -38,7 +38,6 @@ import {
   COLOR_EARTHQUAKE,
   COLOR_CYCLONE,
   COLOR_FLOOD,
-  COLOR_STORM,
   COLOR_DROUGHT,
 } from '#utils/risk';
 import {
@@ -65,7 +64,7 @@ const hazardTypeFillColorPaint = [
   'TC',
   COLOR_CYCLONE,
   'SS',
-  COLOR_STORM,
+  COLOR_CYCLONE,
   'FL',
   COLOR_FLOOD,
   'DR',
