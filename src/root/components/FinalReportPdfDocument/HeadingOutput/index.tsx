@@ -27,13 +27,15 @@ function HeadingOutput(props: Props) {
           style={pdfStyles.titleIfrcLogo}
           src={logoUrl}
         />
-        <Text style={pdfStyles.pageTitle}>
-          {strings.finalReportExportTitle}
-        </Text>
+        <View>
+          <Text style={pdfStyles.pageTitle}>
+            {strings.finalReportExportTitle}
+          </Text>
+          <Text style={pdfStyles.subTitle}>
+            {documentTitle}
+          </Text>
+        </View>
       </View>
-      <Text style={pdfStyles.subTitle}>
-        {documentTitle}
-      </Text>
     </View>
   );
 }
