@@ -25,7 +25,7 @@ import {
   defaultTooltipOptions,
 } from '#utils/map';
 import {
-  COLOR_CYCLONE,
+  COLOR_STORM,
   COLOR_DROUGHT,
   COLOR_EARTHQUAKE,
   COLOR_FLOOD,
@@ -56,11 +56,11 @@ const hazardTypeFillColorPaint = [
   'EQ',
   COLOR_EARTHQUAKE,
   'CY',
-  COLOR_CYCLONE,
+  COLOR_STORM,
   'TC',
-  COLOR_CYCLONE,
+  COLOR_STORM,
   'SS',
-  COLOR_CYCLONE,
+  COLOR_STORM,
   'FL',
   COLOR_FLOOD,
   'DR',
