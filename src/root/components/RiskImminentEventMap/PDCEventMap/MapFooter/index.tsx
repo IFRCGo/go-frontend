@@ -12,8 +12,8 @@ import styles from "./styles.module.scss";
 const legendItems = [
   { color: COLOR_FLOOD, label: 'Flood' },
   { color: COLOR_CYCLONE, label: 'Cyclone/Storm' },
-  { color: COLOR_DROUGHT, label: 'Drought' },
   { color: COLOR_EARTHQUAKE, label: 'Earthquake' },
+  { color: COLOR_DROUGHT, label: 'Drought' },
 ];
 
 function MapFooter() {
