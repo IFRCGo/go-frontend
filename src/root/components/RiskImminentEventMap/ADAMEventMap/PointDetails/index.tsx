@@ -270,6 +270,7 @@ function PointDetails(props: PointDetailsProps) {
             label="Flood Area"
             value={flood_area}
             valueType="number"
+            description="hectares"
           />
         }
         {isDefined(fl_croplnd) &&
@@ -277,6 +278,7 @@ function PointDetails(props: PointDetailsProps) {
             label="Flood Cropland"
             value={fl_croplnd}
             valueType="number"
+            description="hectares"
           />
         }
         {isDefined(hazardDetails.publish_date) &&
