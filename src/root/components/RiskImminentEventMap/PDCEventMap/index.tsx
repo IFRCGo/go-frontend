@@ -36,10 +36,9 @@ import {
   hiddenLayout,
   hazardKeys,
   COLOR_EARTHQUAKE,
-  COLOR_CYCLONE,
   COLOR_FLOOD,
-  COLOR_STORM,
   COLOR_DROUGHT,
+  COLOR_STORM,
 } from '#utils/risk';
 import {
   PDCEvent,
@@ -61,9 +60,9 @@ const hazardTypeFillColorPaint = [
   'EQ',
   COLOR_EARTHQUAKE,
   'CY',
-  COLOR_CYCLONE,
+  COLOR_STORM,
   'TC',
-  COLOR_CYCLONE,
+  COLOR_STORM,
   'SS',
   COLOR_STORM,
   'FL',

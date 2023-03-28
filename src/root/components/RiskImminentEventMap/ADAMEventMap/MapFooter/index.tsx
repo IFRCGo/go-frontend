@@ -3,19 +3,17 @@ import InfoPopup from "#components/InfoPopup";
 import TextOutput from "#components/TextOutput";
 import Link from '#components/Link';
 import {
-  COLOR_CYCLONE,
+  COLOR_STORM,
   COLOR_DROUGHT,
   COLOR_EARTHQUAKE,
   COLOR_FLOOD,
-  COLOR_STORM,
 } from "#utils/risk";
 import styles from "./styles.module.scss";
 
 const legendItems = [
-  { color: COLOR_EARTHQUAKE, label: 'Earthquake' },
   { color: COLOR_FLOOD, label: 'Flood' },
-  { color: COLOR_CYCLONE, label: 'Cyclone' },
   { color: COLOR_STORM, label: 'Storm' },
+  { color: COLOR_EARTHQUAKE, label: 'Earthquake' },
   { color: COLOR_DROUGHT, label: 'Drought' },
 ];
 
