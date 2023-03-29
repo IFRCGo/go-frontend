@@ -222,6 +222,7 @@ function Search(props: Props) {
               &nbsp;
             </div>
             <ButtonLikeLink
+              external
               variant="primary"
               to={feedbackLink}
             >
