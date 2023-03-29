@@ -8,6 +8,8 @@ import ImminentEventsPDC from './ImminentEventsPDC';
 import styles from './styles.module.scss';
 import ImminentEventsADAM from './ImminentEventsADAM';
 
+const eventDescription = "This map displays information about the modeled impact of specific forecasted or detected natural hazards (floods, storms, droughts, wildfires, earthquakes). By hovering over the icons, if available, you can see the forecasted/observed footprint of the hazard; when you click on it, the table of modeled impact estimates will appear, as well as an information about who produced the impact estimate.";
+
 export interface StringValueOption {
   value: string;
   label: string;
@@ -52,7 +54,7 @@ function ImminentEvents(props: Props) {
             onChange={handleChangeSourceType}
           />
           <div>
-            This map displays information about the modeled impact of specific forecasted or detected natural hazards. By hovering over the icons, if available, you can see the forecasted/observed footprint of the hazard; when you click on it, the table of modeled impact estimates will appear, as well as an information about who produced the impact estimate.
+            {eventDescription}
           </div>
         </>
       }
