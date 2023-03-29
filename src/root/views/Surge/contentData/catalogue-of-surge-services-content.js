@@ -274,20 +274,20 @@ const CatalogueOfSurgeServicesContent = [
                                 url: SharepointLink['Communications Team Leader.pdf']
                             },
                             {
+                                name: "catalogueOfSurgeServicesCommunicationCards1Card1Element5",
+                                url: SharepointLink['Communications Officer.pdf']
+                            },
+                            {
                                 name: "catalogueOfSurgeServicesCommunicationCards1Card1Element6",
                                 url: SharepointLink['AV Officer Role Profile.pdf']
                             },
                             {
-                                name: "catalogueOfSurgeServicesCommunicationCards1Card1Element3",
+                                name: "catalogueOfSurgeServicesCommunicationCards1Card1Element4",
                                 url: SharepointLink['AV Officer - Photographer.pdf']
                             },
                             {
-                                name: "catalogueOfSurgeServicesCommunicationCards1Card1Element4",
+                                name: "catalogueOfSurgeServicesCommunicationCards1Card1Element3",
                                 url: SharepointLink['AV Officer - Videographer.pdf']
-                            },
-                            {
-                                name: "catalogueOfSurgeServicesCommunicationCards1Card1Element5",
-                                url: SharepointLink['Communications Officer.pdf']
                             }
                         ]
                     },
