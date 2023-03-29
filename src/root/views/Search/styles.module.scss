@@ -17,15 +17,14 @@
     gap: $spacing*2;
 
     .feedback {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
       font-size: medium;
-      font-style: italic;
 
-      .feedback-link {
-        &:hover {
-          text-decoration: underline;
-          color: $primary-color;
-          opacity: 1;
-        }
+      .feedback-text {
+        display: flex;
+        align-items: center;
       }
     }
   }

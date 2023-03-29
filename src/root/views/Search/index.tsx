@@ -26,6 +26,7 @@ import ProvinceList, { ProvinceResult } from './ProvinceList';
 import RapidResponseDeploymentTable, { RapidResponseResult } from './RapidDeploymentTable';
 
 import styles from './styles.module.scss';
+import ButtonLikeLink from '#components/ButtonLikeLink';
 
 export type SearchResult = {
   countries: CountryResult[];
@@ -216,13 +217,16 @@ function Search(props: Props) {
             }}
           />
           <div className={styles.feedback}>
-            <p>Search is new to GO.  Can't find what you're looking for? &nbsp;
-              <a
-                href={feedbackLink}
-                className={styles.feedbackLink}>
-                Please let us know
-              </a>
-            </p>
+            <div className={styles.feedbackText}>
+              Search is new to GO. Can't find what you're looking for?
+              &nbsp;
+            </div>
+            <ButtonLikeLink
+              variant="primary"
+              to={feedbackLink}
+            >
+              Please let us know
+            </ButtonLikeLink>
           </div>
         </div>
       )}
