@@ -154,19 +154,6 @@ function EmergencyTable(props: Props) {
         variant: 'table',
       })
     ),
-    // createStringColumn<EmergencyResult, number>(
-    //   'crisis_categorization',
-    //   'Crisis Categorization',
-    //   (emergency) => {
-    //     if (emergency.crisis_categorization) {
-    //       return (
-    //         <div className={styles.crisisType}>
-    //           <Dot crisisType={emergency.crisis_categorization as CrisisType} />
-    //         </div>
-    //       );
-    //     }
-    //   },
-    // ),
   ];
 
   if (!data) {
