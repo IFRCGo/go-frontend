@@ -43,6 +43,8 @@ export type SearchResult = {
 const MAX_VIEW_PER_SECTION = 5;
 type ResultKeys = 'provinces' | 'regions' | 'countries' | 'emergencies' | 'emergencyPlannings' | 'projects' | 'surgeAlerts' | 'surgeDeployments' | 'fieldReports' | 'rapidResponse';
 
+const feedbackLink = 'https://forms.office.com/pages/responsepage.aspx?id=5Tu1ok5zbE6rDdGE9g_ZF6J45kKES69IsSyDatuGYF1UREdHUFlUWUY1TFg4TUEzNjNINkU1QUVEMi4u';
+
 interface Props {
   className?: string;
   data: SearchResult[] | undefined;
@@ -188,30 +190,41 @@ function Search(props: Props) {
       heading="Search for keyword"
       withMainContentBackground
       description={(
-        <TextInput
-          className={styles.inputSection}
-          icons={<IoSearch />}
-          variant='general'
-          actions={searchString && (
-            <Button
-              name={undefined}
-              variant="action"
-              onClick={handleClearSearchInput}
-            >
-              <IoCloseOutline />
-            </Button>
-          )}
-          name="search"
-          value={searchString}
-          onChange={setSearchString}
-          placeholder="Enter at least 3 characters"
-          onKeyDown={(e) => {
-            if (e.key === 'Enter') {
-              e.preventDefault();
-              handleSearchInputEnter();
-            }
-          }}
-        />
+        <div className={styles.feedbackSection}>
+          <TextInput
+            className={styles.inputSection}
+            icons={<IoSearch />}
+            variant='general'
+            actions={searchString && (
+              <Button
+                name={undefined}
+                variant="action"
+                onClick={handleClearSearchInput}
+              >
+                <IoCloseOutline />
+              </Button>
+            )}
+            name="search"
+            value={searchString}
+            onChange={setSearchString}
+            placeholder="Enter at least 3 characters"
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                e.preventDefault();
+                handleSearchInputEnter();
+              }
+            }}
+          />
+          <div className={styles.feedback}>
+            <p>Search is new to GO.  Can't find what you're looking for? &nbsp;
+              <a
+                href={feedbackLink}
+                className={styles.feedbackLink}>
+                Please let us know
+              </a>
+            </p>
+          </div>
+        </div>
       )}
     >
       {searchPending && <Container><BlockLoading /></Container>}

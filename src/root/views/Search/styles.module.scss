@@ -11,6 +11,25 @@
     }
   }
 
+  .feedback-section {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing*2;
+
+    .feedback {
+      font-size: medium;
+      font-style: italic;
+
+      .feedback-link {
+        &:hover {
+          text-decoration: underline;
+          color: $primary-color;
+          opacity: 1;
+        }
+      }
+    }
+  }
+
   .content {
     display: flex;
     flex-direction: column;
