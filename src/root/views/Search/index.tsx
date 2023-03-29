@@ -5,6 +5,7 @@ import { IoSearch, IoChevronForward, IoChevronBack, IoCloseOutline } from 'react
 import LanguageContext from '#root/languageContext';
 import Page from '#components/Page';
 import Container from '#components/Container';
+import ButtonLikeLink from '#components/ButtonLikeLink';
 import Button from '#components/Button';
 import BlockLoading from '#components/block-loading';
 import TextInput from '#components/TextInput';
@@ -26,7 +27,6 @@ import ProvinceList, { ProvinceResult } from './ProvinceList';
 import RapidResponseDeploymentTable, { RapidResponseResult } from './RapidDeploymentTable';
 
 import styles from './styles.module.scss';
-import ButtonLikeLink from '#components/ButtonLikeLink';
 
 export type SearchResult = {
   countries: CountryResult[];
