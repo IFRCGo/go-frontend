@@ -228,7 +228,6 @@ function ADAMEventMap(props: Props) {
     [activeEvent],
   );
 
-  console.log("storm  position ---", stormPositionGeoJson);
   const boundsBoxPoints = React.useMemo(
     () => {
       if (stormPositionGeoJson.features.length > 1) {
