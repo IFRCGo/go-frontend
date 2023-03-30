@@ -44,7 +44,6 @@ import fixGeoJsonZeroLine from '#utils/mapGeo';
 import Sidebar from './Sidebar';
 import PointDetails from './PointDetails';
 import HazardMapImage from '../PDCEventMap/HazardMapImage';
-import MapFooter from './MapFooter';
 
 import styles from './styles.module.scss';
 
@@ -298,7 +297,6 @@ function ADAMEventMap(props: Props) {
           />
           <GoMapDisclaimer className={styles.mapDisclaimer} />
         </div>
-        <MapFooter />
       </div>
       {hazardKeys.map(d => (
         <HazardMapImage

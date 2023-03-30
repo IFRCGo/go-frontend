@@ -50,7 +50,6 @@ import GoMapDisclaimer from '#components/GoMapDisclaimer';
 import HazardMapImage from './HazardMapImage';
 import PointDetails from './PointDetails';
 import Sidebar from './Sidebar';
-import MapFooter from './MapFooter';
 
 import styles from './styles.module.scss';
 
@@ -349,7 +348,6 @@ function PDCEventMap(props: Props) {
           />
           <GoMapDisclaimer className={styles.mapDisclaimer} />
         </div>
-        <MapFooter />
       </div>
       {hazardKeys.map(d => (
         <HazardMapImage
