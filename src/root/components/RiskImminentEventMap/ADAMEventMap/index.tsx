@@ -23,6 +23,10 @@ import {
   COLOR_BLACK,
   COLOR_WHITE,
   defaultTooltipOptions,
+  ADAM_COlOR_ORANGE,
+  ADAM_COlOR_GREEN,
+  ADAM_COlOR_RED,
+  ADAM_COlOR_CONES,
 } from '#utils/map';
 import {
   COLOR_STORM,
@@ -67,10 +71,24 @@ const hazardTypeFillColorPaint = [
   COLOR_BLACK,
 ];
 
+const alertLevelFillColorPaint = [
+  'match',
+  ['get', 'alert_level'],
+  'Orange',
+  ADAM_COlOR_ORANGE,
+  'Green',
+  ADAM_COlOR_GREEN,
+  'Red',
+  ADAM_COlOR_RED,
+  'Cones',
+  ADAM_COlOR_CONES,
+  COLOR_BLACK,
+];
+
 const footprintLayerOptions = {
   type: 'fill',
   paint: {
-    'fill-color': hazardTypeFillColorPaint,
+    'fill-color': alertLevelFillColorPaint,
     // 'fill-opacity': 0.8,
   },
   filter: ['==', ['get', 'type'], 'MultiPolygon'],
@@ -210,6 +228,7 @@ function ADAMEventMap(props: Props) {
     [activeEvent],
   );
 
+  console.log("storm  position ---", stormPositionGeoJson);
   const boundsBoxPoints = React.useMemo(
     () => {
       if (stormPositionGeoJson.features.length > 1) {
