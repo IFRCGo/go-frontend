@@ -11,6 +11,24 @@
     }
   }
 
+  .feedback-section {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing*2;
+
+    .feedback {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      font-size: medium;
+
+      .feedback-text {
+        display: flex;
+        align-items: center;
+      }
+    }
+  }
+
   .content {
     display: flex;
     flex-direction: column;

@@ -7,8 +7,8 @@ import { round } from '#utils/format';
 import Container from '#components/Container';
 import {
   createLinkColumn,
-  createStringColumn,
   createNumberColumn,
+  createStringColumn,
 } from '#components/Table/predefinedColumns';
 import Table from '#components/Table';
 import ProgressBar from '#components/ProgressBar';
@@ -21,7 +21,6 @@ export interface EmergencyResult {
   funding_requirements: number;
   name: string;
   funding_coverage: number;
-  start_date: string;
   event_date: string;
   score: number;
   countries: string;
@@ -101,7 +100,16 @@ function EmergencyTable(props: Props) {
     createLinkColumn<EmergencyResult, number>(
       'name',
       'Title',
-      (emergency) => emergency.name,
+      (emergency) => {
+        if (emergency.name) {
+          return (
+            <div className={styles.crisisType}>
+              <Dot crisisType={emergency.crisis_categorization as CrisisType} />
+              {emergency.name}
+            </div>
+          );
+        }
+      },
       (emergency) => ({
         href: `/emergencies/${emergency.id}`,
         variant: 'table',
@@ -111,6 +119,11 @@ function EmergencyTable(props: Props) {
       'appeal_type',
       'Appeal Type',
       (emergency) => emergency.appeal_type,
+    ),
+    createStringColumn<EmergencyResult, number>(
+      'disaster_type',
+      'Disaster Type',
+      (emergency) => emergency.disaster_type,
     ),
     createNumberColumn<EmergencyResult, number>(
       'funding_requirements',
@@ -132,18 +145,14 @@ function EmergencyTable(props: Props) {
       'Funding Coverage',
       showProgressBar
     ),
-    createStringColumn<EmergencyResult, number>(
-      'crisis_categorization',
-      'Crisis Categorization',
-      (emergency) => {
-        if (emergency.crisis_categorization) {
-          return (
-            <div className={styles.crisisType}>
-              <Dot crisisType={emergency.crisis_categorization as CrisisType} />
-            </div>
-          );
-        }
-      },
+    createLinkColumn<EmergencyResult, number>(
+      'countries',
+      'Country',
+      (emergency) => emergency.countries,
+      (emergency) => ({
+        href: `/countries/${emergency.countries_id}`,
+        variant: 'table',
+      })
     ),
   ];
 

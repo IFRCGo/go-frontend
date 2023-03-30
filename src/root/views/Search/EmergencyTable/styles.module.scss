@@ -26,12 +26,12 @@
 
 .crisis-type {
   display: flex;
-  margin-inline-start: 5rem;
   align-items: center;
 
   .dot-color {
     width: $font-size-xxs;
     height: $font-size-xxs;
     border-radius: $dot-border-radius;
+    margin-inline-end: $global-spacing;
   }
 }
