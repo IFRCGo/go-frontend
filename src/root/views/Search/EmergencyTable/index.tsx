@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { isDefined, _cs } from '@togglecorp/fujs';
 
 import LanguageContext from '#root/languageContext';
@@ -12,6 +13,7 @@ import {
 } from '#components/Table/predefinedColumns';
 import Table from '#components/Table';
 import ProgressBar from '#components/ProgressBar';
+import ReducedListDisplay from '#components/ReducedListDisplay';
 
 import styles from './styles.module.scss';
 
@@ -23,7 +25,7 @@ export interface EmergencyResult {
   funding_coverage: number;
   event_date: string;
   score: number;
-  countries: string;
+  countries: string[];
   countries_id: string;
   iso: string;
   appeal_type: string;
@@ -49,7 +51,7 @@ interface DotProps {
 const crisisTypeColorMap: Record<CrisisType, string> = {
   Red: '#f5333f',
   Orange: '#ff5014',
-  Yellow: '#f39c12',
+  Yellow: '#ffee00',
 };
 
 function Dot(props: DotProps) {
@@ -145,14 +147,27 @@ function EmergencyTable(props: Props) {
       'Funding Coverage',
       showProgressBar
     ),
-    createLinkColumn<EmergencyResult, number>(
+    createStringColumn<EmergencyResult, number>(
       'countries',
       'Country',
-      (emergency) => emergency.countries,
-      (emergency) => ({
-        href: `/countries/${emergency.countries_id}`,
-        variant: 'table',
-      })
+      (emergency) => {
+        if (emergency.countries.length > 1) {
+          return (
+            <ReducedListDisplay
+              title="Multiple Countries"
+              value={emergency.countries}
+            />
+          );
+        }
+        return (
+          <Link
+            to={`countries/${emergency.countries_id}`}
+            className={styles.countryLink}
+          >
+            {emergency.countries[0]}
+          </Link>
+        );
+      },
     ),
   ];
 

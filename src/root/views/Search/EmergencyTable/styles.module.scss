@@ -26,12 +26,24 @@
 
 .crisis-type {
   display: flex;
+  justify-content: flex-start;
   align-items: center;
-
+  
   .dot-color {
     width: $font-size-xxs;
     height: $font-size-xxs;
     border-radius: $dot-border-radius;
+    flex-shrink: 0;
     margin-inline-end: $global-spacing;
+  }
+}
+
+.country-link {
+  text-decoration: underline;
+  font-weight: $base-font-medium;
+
+  &:hover {
+    color: $primary-color;
+    opacity: 1;
   }
 }

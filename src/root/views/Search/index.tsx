@@ -218,7 +218,7 @@ function Search(props: Props) {
           />
           <div className={styles.feedback}>
             <div className={styles.feedbackText}>
-              Search is new to GO. Can't find what you're looking for?
+              {strings.searchPageFeedbackLinkText}
               &nbsp;
             </div>
             <ButtonLikeLink
@@ -226,7 +226,7 @@ function Search(props: Props) {
               variant="primary"
               to={feedbackLink}
             >
-              Please let us know
+              {strings.searchPageFeedbackButton}
             </ButtonLikeLink>
           </div>
         </div>
