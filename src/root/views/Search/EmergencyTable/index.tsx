@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { isDefined, _cs } from '@togglecorp/fujs';
 
 import LanguageContext from '#root/languageContext';
@@ -12,10 +13,9 @@ import {
 } from '#components/Table/predefinedColumns';
 import Table from '#components/Table';
 import ProgressBar from '#components/ProgressBar';
+import ReducedListDisplay from '#components/ReducedListDisplay';
 
 import styles from './styles.module.scss';
-import ReducedListDisplay from '#components/ReducedListDisplay';
-import { Link } from 'react-router-dom';
 
 export interface EmergencyResult {
   id: number;
