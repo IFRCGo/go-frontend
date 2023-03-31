@@ -3858,4 +3858,6 @@ export default {
   searchGoBack: 'Go Back',
   searchResultforQuery: 'No matches for your keyword search',
   searchThreeCharactersRequired: 'Please enter at least 3 characters to get started with search!',
+  searchPageFeedbackLinkText: 'The search results page is new to GO. Can\'t find what you\'re looking for?',
+  searchPageFeedbackButton: 'Please let us know',
 };

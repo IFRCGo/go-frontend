@@ -160,7 +160,12 @@ function EmergencyTable(props: Props) {
           );
         }
         return (
-          <Link to={`countries/${emergency.countries_id}`}>{emergency.countries[0]}</Link>
+          <Link
+            to={`countries/${emergency.countries_id}`}
+            className={styles.countryLink}
+          >
+            {emergency.countries[0]}
+          </Link>
         );
       },
     ),
