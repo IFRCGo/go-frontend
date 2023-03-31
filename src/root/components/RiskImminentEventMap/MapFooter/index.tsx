@@ -113,12 +113,15 @@ function tooltip(title:string, description: React.ReactNode) {
 }
 
 interface Props {
+  sourceType?: string;
   onSourceChange: (source?: string) => void;
 }
 
 function MapFooter(props: Props) {
-  const { onSourceChange } = props;
-  const [sourceType, setSourceType] = React.useState<string | undefined>("PDC");
+  const {
+    sourceType,
+    onSourceChange,
+  } = props;
 
   const sourceOptions =[
     { value: "PDC", label: pdcIconLabel },
@@ -126,12 +129,10 @@ function MapFooter(props: Props) {
   ] as StringValueOption[];
 
   const handleChangeSourceType = React.useCallback(
-    (value: string | undefined) => {
-      setSourceType(value);
-    },[],
+    (value?: string) => {
+        onSourceChange(value);
+    },[onSourceChange],
   );
-
-  React.useMemo( () => onSourceChange(sourceType), [sourceType,onSourceChange]);
 
   return (
     <div className={styles.footer}>

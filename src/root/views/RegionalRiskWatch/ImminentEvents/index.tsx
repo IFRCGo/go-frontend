@@ -25,7 +25,7 @@ interface Props {
 
 function ImminentEvents(props: Props) {
   const { regionId } = props;
-  const [mapSource, setMapSource] = React.useState<string>();
+  const [mapSource, setMapSource] = React.useState<string | undefined>("PDC");
 
   const sourceType = React.useCallback(
     (data?: string) => setMapSource(data),
@@ -58,7 +58,10 @@ function ImminentEvents(props: Props) {
           regionId={regionId}
         />
       )}
-      <MapFooter onSourceChange={sourceType} />
+      <MapFooter 
+        sourceType={mapSource}
+        onSourceChange={sourceType}
+      />
     </Container>
   );
 }
