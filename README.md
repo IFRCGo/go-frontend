@@ -31,10 +31,17 @@ yarn install
 
 #### Environment variables
 All the environment variables are stored in `.env` file in the project's base directory. Currently there are 4 environment variables:
-- `REACT_APP_MAPBOX_ACCESS_TOKEN` access token for the mapbox, defaults to the IFRC's mapbox token 
+- `REACT_APP_MAPBOX_ACCESS_TOKEN` access token for the mapbox, defaults to the IFRC's mapbox token
 - `REACT_APP_API_ENDPOINT` endpoint where API for go is served, defaults to the staging server's URL
 - `REACT_APP_FDRS_AUTH` authentication token for FDRS API (optional)
 - `REACT_APP_ENVIRONMENT` current app environment (could be one of `development` / `staging` / `production`, defaults to `development`)
+
+
+Environment variables for sentry:
+- `REACT_APP_SENTRY_DSN` DSN token required by sentry
+- `REACT_APP_SENTRY_TRACES_SAMPLE_RATE` variable to define custom error tracing rate
+- `REACT_APP_SENTRY_NORMALIZE_DEPTH` variable to define the custom normalization rate
+
 
 Sample `.env` file
 ```
@@ -45,7 +52,7 @@ REACT_APP_API_ENDPOINT=https://dsgocdnapi.azureedge.net/
 #### Starting the app
 
 ```
-yarn start 
+yarn start
 ```
 Compiles the sass files, javascript, and launches the server making the site available at `http://localhost:3000/`
 The system will watch files and execute tasks whenever one of them changes.

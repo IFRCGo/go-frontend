@@ -1,0 +1,74 @@
+@import '~styles/settings/variables';
+
+/*
+NOTE: naming keyframes as wiggle-vertically will
+result in `postcss-modules/no-unused-class`
+warning. very weird!
+ */
+@keyframes wiggle {
+    0% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(5px);
+    }
+
+    100% {
+        transform: translateY(0);
+    }
+}
+
+.error-page {
+    display: grid;
+    grid-template-columns: auto;
+    grid-template-rows: auto 0fr;
+    overflow: auto;
+
+    .container {
+        margin: 0 auto;
+        padding: $global-spacing-2;
+        width: 100%;
+        max-width: 1200px;
+        grid-area: 1 / 1 / 1 / 1;
+
+        .content {
+            display: flex;
+            position: relative;
+            flex-direction: column;
+            gap: $global-spacing-2;
+
+            .message {
+                display: flex;
+                align-self: flex-start;
+                flex-direction: column;
+                color: $primary-color;
+                font-weight: $base-font-semi-bold;
+
+                .error-message-title {
+                    margin: 0;
+                    font-size: $font-size-xxl;
+                }
+
+                .error-message {
+                    line-height: 2;
+                    font-size: $font-size-xl;
+                }
+            }
+
+            .buttons {
+                display: flex;
+                gap: $spacing;
+            }
+        }
+    }
+
+    .footer {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: $color-foreground;
+        padding: $spacing;
+        max-height: 100%;
+    }
+}
