@@ -23,10 +23,10 @@ import {
   COLOR_BLACK,
   COLOR_WHITE,
   defaultTooltipOptions,
-  ADAM_COlOR_ORANGE,
-  ADAM_COlOR_GREEN,
-  ADAM_COlOR_RED,
-  ADAM_COlOR_CONES,
+  ADAM_COLOR_ORANGE,
+  ADAM_COLOR_GREEN,
+  ADAM_COLOR_RED,
+  ADAM_COLOR_CONES,
 } from '#utils/map';
 import {
   COLOR_STORM,
@@ -75,13 +75,13 @@ const alertLevelFillColorPaint = [
   'match',
   ['get', 'alert_level'],
   'Orange',
-  ADAM_COlOR_ORANGE,
+  ADAM_COLOR_ORANGE,
   'Green',
-  ADAM_COlOR_GREEN,
+  ADAM_COLOR_GREEN,
   'Red',
-  ADAM_COlOR_RED,
+  ADAM_COLOR_RED,
   'Cones',
-  ADAM_COlOR_CONES,
+  ADAM_COLOR_CONES,
   COLOR_BLACK,
 ];
 
