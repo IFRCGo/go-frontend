@@ -12,7 +12,7 @@ const eventDescription = "This map displays information about the modeled impact
 
 export interface StringValueOption {
   value: string;
-  label: string | React.ReactNode;
+  label: React.ReactNode;
 }
 
 export type Option = StringValueOption;
