@@ -23,6 +23,10 @@ import {
   COLOR_BLACK,
   COLOR_WHITE,
   defaultTooltipOptions,
+  ADAM_COLOR_ORANGE,
+  ADAM_COLOR_GREEN,
+  ADAM_COLOR_RED,
+  ADAM_COLOR_CONES,
 } from '#utils/map';
 import {
   COLOR_STORM,
@@ -44,7 +48,6 @@ import fixGeoJsonZeroLine from '#utils/mapGeo';
 import Sidebar from './Sidebar';
 import PointDetails from './PointDetails';
 import HazardMapImage from '../PDCEventMap/HazardMapImage';
-import MapFooter from './MapFooter';
 
 import styles from './styles.module.scss';
 
@@ -68,10 +71,24 @@ const hazardTypeFillColorPaint = [
   COLOR_BLACK,
 ];
 
+const alertLevelFillColorPaint = [
+  'match',
+  ['get', 'alert_level'],
+  'Orange',
+  ADAM_COLOR_ORANGE,
+  'Green',
+  ADAM_COLOR_GREEN,
+  'Red',
+  ADAM_COLOR_RED,
+  'Cones',
+  ADAM_COLOR_CONES,
+  COLOR_BLACK,
+];
+
 const footprintLayerOptions = {
   type: 'fill',
   paint: {
-    'fill-color': hazardTypeFillColorPaint,
+    'fill-color': alertLevelFillColorPaint,
     // 'fill-opacity': 0.8,
   },
   filter: ['==', ['get', 'type'], 'MultiPolygon'],
@@ -298,7 +315,6 @@ function ADAMEventMap(props: Props) {
           />
           <GoMapDisclaimer className={styles.mapDisclaimer} />
         </div>
-        <MapFooter />
       </div>
       {hazardKeys.map(d => (
         <HazardMapImage

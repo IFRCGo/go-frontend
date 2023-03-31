@@ -6,11 +6,10 @@ import {
 
 import TextOutput from '#components/TextOutput';
 import MapTooltipContent from '#components/MapTooltipContent';
-
+import Link from '#components/Link';
 import { ADAMEvent, ADAMEventExposure } from '#types';
 
 import styles from './styles.module.scss';
-import Link from '#components/Link';
 
 function EstimatedOutput({
   value,
@@ -181,10 +180,18 @@ function PointDetails(props: PointDetailsProps) {
             valueType='text'
           />
         }
-        <EstimatedOutput
-          attribute="People Exposed / Potentially Affected"
-          value={population_impact ?? population}
-        />
+      </div>
+
+      {(isDefined(population_impact) || isDefined(population)) &&(
+        <>
+          <EstimatedOutput
+            attribute="People Exposed / Potentially Affected"
+            value={population_impact ?? population}
+          />
+          <hr />
+        </>
+      )}
+      <div className={styles.eventDates}>
         {isDefined(source) &&
           <TextOutput
             label="Source"
@@ -289,11 +296,16 @@ function PointDetails(props: PointDetailsProps) {
           />
         }
       </div>
-      <hr />
-      <EstimatedOutput
-        attribute="Wind speed"
-        value={wind_speed}
-      />
+      {isDefined(wind_speed) && (
+        <>
+          <hr />
+          <EstimatedOutput
+            attribute="Wind speed"
+            value={wind_speed}
+          />
+        </>
+      )
+      }
     </MapTooltipContent>
   );
 }
