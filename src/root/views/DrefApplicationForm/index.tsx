@@ -51,6 +51,7 @@ import {
   responseFields,
   submissionFields,
   TYPE_IMMINENT,
+  TYPE_LOAN,
 } from './common';
 
 import useDrefFormOptions, { schema } from './useDrefFormOptions';
@@ -564,35 +565,36 @@ function DrefApplication(props: Props) {
     >
       <Page
         className={className}
-        actions={(
-          <>
-            {isNotDefined(drefId) && (
-              <FileInput
-                type='file'
-                accept='.docx'
-                name="dref-docx-import"
-                value={undefined}
-                onChange={handleDocumentImport}
-                icons={<IoCloudUploadSharp />}
-                buttonVariant="secondary"
+        actions={
+          drefType !== TYPE_LOAN && (
+            <>
+              {isNotDefined(drefId) && (
+                <FileInput
+                  type='file'
+                  accept='.docx'
+                  name="dref-docx-import"
+                  value={undefined}
+                  onChange={handleDocumentImport}
+                  icons={<IoCloudUploadSharp />}
+                  buttonVariant="secondary"
+                >
+                  Import from Document
+                </FileInput>
+              )}
+              {isDefined(drefId) && (
+                <Link
+                  to={`/dref-application/${drefId}/export/`}
+                  {...exportLinkProps}
+                />
+              )}
+              <Button
+                name={undefined}
+                onClick={submitDref}
               >
-                Import from Document
-              </FileInput>
-            )}
-            {isDefined(drefId) && (
-              <Link
-                to={`/dref-application/${drefId}/export/`}
-                {...exportLinkProps}
-              />
-            )}
-            <Button
-              name={undefined}
-              onClick={submitDref}
-            >
-              {strings.drefFormSaveButtonLabel}
-            </Button>
-          </>
-        )}
+                {strings.drefFormSaveButtonLabel}
+              </Button>
+            </>
+          )}
         title={strings.drefFormPageTitle}
         heading={strings.drefFormPageHeading}
         info={(
@@ -611,20 +613,24 @@ function DrefApplication(props: Props) {
             >
               {strings.drefFormTabEventDetailLabel}
             </Tab>
-            <Tab
-              name="action"
-              step={3}
-              errored={erroredTabs['action']}
-            >
-              {strings.drefFormTabActionsLabel}
-            </Tab>
-            <Tab
-              name="response"
-              step={4}
-              errored={erroredTabs['response']}
-            >
-              {strings.drefFormTabResponseLabel}
-            </Tab>
+            {drefType !== TYPE_LOAN &&
+              <Tab
+                name="action"
+                step={3}
+                errored={erroredTabs['action']}
+              >
+                {strings.drefFormTabActionsLabel}
+              </Tab>
+            }
+            {drefType !== TYPE_LOAN &&
+              <Tab
+                name="response"
+                step={4}
+                errored={erroredTabs['response']}
+              >
+                {strings.drefFormTabResponseLabel}
+              </Tab>
+            }
             <Tab
               name="submission"
               step={5}
@@ -701,31 +707,35 @@ function DrefApplication(props: Props) {
                 setFileIdToUrlMap={setFileIdToUrlMap}
               />
             </TabPanel>
-            <TabPanel name="action">
-              <ActionsFields
-                error={error}
-                onValueChange={setFieldValue}
-                value={value}
-                yesNoOptions={yesNoOptions}
-                needOptions={needOptions}
-                nsActionOptions={nsActionOptions}
-                fileIdToUrlMap={fileIdToUrlMap}
-                setFileIdToUrlMap={setFileIdToUrlMap}
-                drefType={drefType}
-              />
-            </TabPanel>
-            <TabPanel name="response">
-              <Response
-                interventionOptions={interventionOptions}
-                error={error}
-                onValueChange={setFieldValue}
-                value={value}
-                fileIdToUrlMap={fileIdToUrlMap}
-                setFileIdToUrlMap={setFileIdToUrlMap}
-                yesNoOptions={yesNoOptions}
-                drefType={drefType}
-              />
-            </TabPanel>
+            {drefType !== TYPE_LOAN &&
+              <TabPanel name="action">
+                <ActionsFields
+                  error={error}
+                  onValueChange={setFieldValue}
+                  value={value}
+                  yesNoOptions={yesNoOptions}
+                  needOptions={needOptions}
+                  nsActionOptions={nsActionOptions}
+                  fileIdToUrlMap={fileIdToUrlMap}
+                  setFileIdToUrlMap={setFileIdToUrlMap}
+                  drefType={drefType}
+                />
+              </TabPanel>
+            }
+            {drefType !== TYPE_LOAN &&
+              <TabPanel name="response">
+                <Response
+                  interventionOptions={interventionOptions}
+                  error={error}
+                  onValueChange={setFieldValue}
+                  value={value}
+                  fileIdToUrlMap={fileIdToUrlMap}
+                  setFileIdToUrlMap={setFileIdToUrlMap}
+                  yesNoOptions={yesNoOptions}
+                  drefType={drefType}
+                />
+              </TabPanel>
+            }
             <TabPanel name="submission">
               <Submission
                 error={error}

@@ -312,6 +312,25 @@ interface DrefOptions {
   users: UserListItem[];
 }
 
+const typeOfDref = [
+  {
+    key: 0,
+    value:"Imminent",
+  },
+  {
+    key: 1,
+    value: "Assessment",
+  },
+  {
+    key: 2,
+    value: "Response",
+  },
+  {
+    key: 3,
+    value: "Loan",
+  },
+];
+
 function transformKeyValueToLabelValue<O extends NumericKeyValuePair | StringKeyValuePair>(o: O): {
   label: string;
   value: O['key'];
@@ -370,7 +389,8 @@ function useDrefFormOptions(value: PartialForm<DrefFields>) {
         label: `${u.first_name} ${u.last_name}`,
         value: u.id,
       })),
-      drefOptions.type_of_dref.map(transformKeyValueToLabelValue),
+      // drefOptions.type_of_dref.map(transformKeyValueToLabelValue),
+      typeOfDref.map(transformKeyValueToLabelValue),
     ];
   }, [drefOptions]);
 
