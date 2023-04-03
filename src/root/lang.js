@@ -3877,6 +3877,7 @@ export default {
   searchEmergencyTableFundingRequirements: 'Funding Requirements',
   searchEmergencyTableFundingCoverage: 'Funding Coverage',
   searchEmergencyTableCountry: 'Country',
+  searchEmergencyTableMultipleCountries: 'Multiple Countries',
 
   //Search Field Report Table Headings
   searchFieldReportTableDate: 'Date',
@@ -3919,4 +3920,6 @@ export default {
   searchSurgeDeploymentTableEquipmentUnits: 'Equipment Units',
   searchSurgeDeploymentsTableCountryDeployedTo: 'Country Deployed to',
   searchSurgeDeploymentsTableEmergency: 'Emergency',
+
+  reducedListDisplayMoreLabel: '... and {n} more',
 };
