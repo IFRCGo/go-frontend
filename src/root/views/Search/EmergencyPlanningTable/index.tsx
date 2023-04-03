@@ -45,22 +45,22 @@ function EmergencyPlanningTable(props: Props) {
   const columns = [
     createDateColumn<EmergencyPlanningResult, number>(
       'start_date',
-      'Date',
+      strings.searchEmergencyPlanningTableDate,
       (emergencyPlanning) => emergencyPlanning.start_date,
     ),
     createStringColumn<EmergencyPlanningResult, number>(
       'type',
-      'Type',
+      strings.searchEmergencyPlanningTableType,
       (emergencyPlanning) => emergencyPlanning.type,
     ),
     createStringColumn<EmergencyPlanningResult, number>(
       'code',
-      'Code',
+      strings.searchEmergencyPlanningTableCode,
       (emergencyPlanning) => emergencyPlanning.code,
     ),
     createLinkColumn<EmergencyPlanningResult, number>(
       'name',
-      'Title',
+      strings.searchEmergencyPlanningTableTitle,
       (emergencyPlanning) => emergencyPlanning.name,
       (emergencyPlanning) => ({
         href: `/emergencies/${emergencyPlanning.id}`,
@@ -69,8 +69,8 @@ function EmergencyPlanningTable(props: Props) {
     ),
     createLinkColumn<EmergencyPlanningResult, number>(
       'country',
-      'Country',
-      (emergencyPlanning) =>  emergencyPlanning.country,
+      strings.searchEmergencyPlanningTableCountry,
+      (emergencyPlanning) => emergencyPlanning.country,
       (emergencyPlanning) => ({
         href: `/countries/${emergencyPlanning.country_id}`,
         variant: 'table'

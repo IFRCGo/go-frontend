@@ -51,12 +51,12 @@ function SurgeAlertTable(props: Props) {
   const columns = [
     createDateColumn<SurgeAlertResult, number>(
       'alert_date',
-      'Alert Date',
+      strings.searchSurgeAlertTableAlertDate,
       (surgeAlert) => surgeAlert.alert_date,
     ),
     createStringColumn<SurgeAlertResult, number>(
       'duration',
-      'Duration',
+      strings.searchSurgeAlertTableDuration,
       (surgeAlert) => {
         if (!surgeAlert.alert_date) {
           return '-';
@@ -71,22 +71,22 @@ function SurgeAlertTable(props: Props) {
     ),
     createDateColumn<SurgeAlertResult, number>(
       'start_date',
-      'Start Date',
+      strings.searchSurgeAlertTableStartDate,
       (surgeAlert) => surgeAlert.start_date,
     ),
     createStringColumn<SurgeAlertResult, number>(
       'name',
-      'Position',
+      strings.searchSurgeAlertTablePosition,
       (surgeAlert) => surgeAlert.name,
     ),
     createStringColumn<SurgeAlertResult, number>(
       'keywords',
-      'Keywords',
+      strings.searchSurgeAlertTableKeywords,
       (surgeAlert) => surgeAlert.keywords?.join(', '),
     ),
     createLinkColumn<SurgeAlertResult, number>(
       'event_name',
-      'Emergency',
+      strings.searchSurgeAlertTableEmergency,
       (surgeAlert) => surgeAlert.event_name,
       (surgeAlert) => ({
         href: `/emergencies/${surgeAlert.event_id}`,
@@ -95,7 +95,7 @@ function SurgeAlertTable(props: Props) {
     ),
     createLinkColumn<SurgeAlertResult, number>(
       'country',
-      'Country',
+      strings.searchSurgeAlertTableCountry,
       (surgeAlert) => surgeAlert.country,
       (surgeAlert) => ({
         href: `/countries/${surgeAlert.country_id}`,
@@ -104,7 +104,7 @@ function SurgeAlertTable(props: Props) {
     ),
     createStringColumn<SurgeAlertResult, number>(
       'status',
-      'Status',
+      strings.searchSurgeAlertTableStatus,
       (surgeAlert) => surgeAlert.status,
     )
   ];

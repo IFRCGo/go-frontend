@@ -50,32 +50,32 @@ function RapidResponseDeploymentTable(props: Props) {
   const columns = [
     createDateColumn<RapidResponseResult, number>(
       'start_date',
-      'Start Date',
+      strings.searchRapidDeploymentTableStartDate,
       (rapidResponse) => rapidResponse.start_date,
     ),
     createDateColumn<RapidResponseResult, number>(
       'end_date',
-      'End Date',
+      strings.searchRapidDeploymentTableEndDate,
       (rapidResponse) => rapidResponse.end_date,
     ),
     createStringColumn<RapidResponseResult, number>(
       'name',
-      'Name',
+      strings.searchRapidDeploymentTableName,
       (rapidResponse) => rapidResponse.name,
     ),
     createStringColumn<RapidResponseResult, number>(
       'position',
-      'Position',
+      strings.searchRapidDeploymentTablePosition,
       (rapidResponse) => rapidResponse.postion,
     ),
     createStringColumn<RapidResponseResult, number>(
       'keywords',
-      'Keywords',
+      strings.searchRapidDeploymentTableKeywords,
       (rapidResponse) => rapidResponse.type,
     ),
     createLinkColumn<RapidResponseResult, number>(
       'deploying_country_name',
-      'Deploying Party',
+      strings.searchRapidDeploymentTableDeployingParty,
       (rapidResponse) => rapidResponse.deploying_country_name,
       (rapidResponse) => ({
         href: `/countries/${rapidResponse.deploying_country_id}`,
@@ -84,7 +84,7 @@ function RapidResponseDeploymentTable(props: Props) {
     ),
     createLinkColumn<RapidResponseResult, number>(
       'deploying_country_name',
-      'Deployed To',
+      strings.searchRapidDeploymentTableDeployedTo,
       (rapidResponse) => rapidResponse.deployed_to_country_name,
       (rapidResponse) => ({
         href: `/countries/${rapidResponse.deployed_to_country_id}`,
@@ -93,7 +93,7 @@ function RapidResponseDeploymentTable(props: Props) {
     ),
     createLinkColumn<RapidResponseResult, number>(
       'event_name',
-      'Emergency',
+      strings.searchRapidDeploymentTableEmergency,
       (rapidResponse) => rapidResponse.event_name,
       (rapidResponse) => ({
         href: `/emergencies/${rapidResponse.event_id}`,

@@ -51,7 +51,7 @@ function ProjectTable(props: Props) {
   const columns = [
     createLinkColumn<ProjectResult, number>(
       'emergency_name',
-      'Emergency',
+      strings.searchProjectTableEmergency,
       (project) => project.event_name,
       (project) => ({
         href: `/emergency/${project.event_id}`,
@@ -60,12 +60,12 @@ function ProjectTable(props: Props) {
     ),
     createStringColumn<ProjectResult, number>(
       'national_society',
-      'National Society/ERU',
+      strings.searchProjectTableNationalSociety,
       (project) => project.national_society,
     ),
     createLinkColumn<ProjectResult, number>(
       'name',
-      'Project/Activity Name',
+      strings.searchProjectTableProjectName,
       (project) => project.name,
       (project) => ({
         href: `/three-w/${project.id}`,
@@ -74,7 +74,7 @@ function ProjectTable(props: Props) {
     ),
     createStringColumn<ProjectResult, number>(
       'start_date',
-      'Start-End Dates',
+      strings.searchProjectTableStartEndDate,
       (project) => (
         <div className={styles.projectDate}>
           <DateOutput value={project.start_date} />
@@ -85,7 +85,7 @@ function ProjectTable(props: Props) {
     ),
     createStringColumn<ProjectResult, number>(
       'regions',
-      'Provinces/Region',
+      strings.searchProjectTableProvince,
       (project) => (
         <ReducedListDisplay
           title="Provinces / Region"
@@ -95,12 +95,12 @@ function ProjectTable(props: Props) {
     ),
     createStringColumn<ProjectResult, number>(
       'sector',
-      'Sector',
+      strings.searchProjectTableSector,
       (project) => project.sector,
     ),
     createNumberColumn<ProjectResult, number>(
       'people_targeted',
-      'People Targeted',
+      strings.searchProjectTablePeopleTargeted,
       (project) => project.people_targeted,
     ),
   ];
