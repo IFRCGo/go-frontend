@@ -47,27 +47,27 @@ function SurgeDeploymentTable(props: Props) {
   const columns = [
     createStringColumn<SurgeDeploymentResult, number>(
       'owner',
-      'Owner',
+      strings.searchSurgeDeploymentTableOwner,
       (surgeDeployment) => surgeDeployment.owner,
     ),
     createStringColumn<SurgeDeploymentResult, number>(
       'type',
-      'Type',
+      strings.searchSurgeDeploymentTableType,
       (surgeDeployment) => surgeDeployment.type,
     ),
     createNumberColumn<SurgeDeploymentResult, number>(
       'personnel_units',
-      'Personnel Units',
+      strings.searchSurgeDeploymentTablePersonnelUnits,
       (surgeDeployment) => surgeDeployment.personnel_units,
     ),
     createNumberColumn<SurgeDeploymentResult, number>(
       'equipment_units',
-      'Equipment Units',
+      strings.searchSurgeDeploymentTableEquipmentUnits,
       (surgeDeployment) => surgeDeployment.equipment_units,
     ),
     createLinkColumn<SurgeDeploymentResult, number>(
       'deployed_country',
-      'Country Deployed to',
+      strings.searchSurgeDeploymentsTableCountryDeployedTo,
       (surgeDeployment) => surgeDeployment.deployed_country,
       (surgeDeployment) => ({
         href: `/countries/${surgeDeployment.deployed_country_id}`,
@@ -76,7 +76,7 @@ function SurgeDeploymentTable(props: Props) {
     ),
     createLinkColumn<SurgeDeploymentResult, number>(
       'event_name',
-      'Emergency',
+      strings.searchSurgeDeploymentsTableEmergency,
       (surgeDeployment) => surgeDeployment.event_name,
       (surgeDeployment) => ({
         href: `/emergencies/${surgeDeployment.event_id}`,

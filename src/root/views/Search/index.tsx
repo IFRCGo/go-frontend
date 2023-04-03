@@ -188,7 +188,7 @@ function Search(props: Props) {
     <Page
       className={_cs(styles.search, className)}
       title={strings.searchIfrcSearchTitle}
-      heading="Search for keyword"
+      heading={strings.searchPageSearchForKeyword}
       withMainContentBackground
       description={(
         <div className={styles.feedbackSection}>
@@ -208,7 +208,7 @@ function Search(props: Props) {
             name="search"
             value={searchString}
             onChange={setSearchString}
-            placeholder="Enter at least 3 characters"
+            placeholder={strings.searchEnterAtLeastThreeCharacters}
             onKeyDown={(e) => {
               if (e.key === 'Enter') {
                 e.preventDefault();
