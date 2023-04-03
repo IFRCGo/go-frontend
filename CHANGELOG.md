@@ -1,3 +1,15 @@
+### Release 6.5.0 - Search Page, Type of DREF, WFP ADAM Risk, and more
+Date: 2023-04-03
+
+Frontend:
+- Add new Search Page
+- Implement type of DREF
+- Add WFP ADAM as new source for Risk Watch
+- Revamp Highlighted Operations
+- Add Sentry for error tracking
+- Various fixes in DREF, Ops. Update pdf export
+
+
 ### Release 6.4.6 - Hotfix for Ops Update Export
 Date: 2023-03-17
 

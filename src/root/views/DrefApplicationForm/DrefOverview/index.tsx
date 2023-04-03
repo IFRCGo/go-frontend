@@ -39,12 +39,12 @@ import {
   optionLabelSelector,
   DrefFields,
   booleanOptionKeySelector,
-  ONSET_IMMINENT,
-  ONSET_SUDDEN,
   DISASTER_FIRE,
   DISASTER_FLOOD,
   DISASTER_FLASH_FLOOD,
   emptyNumericOptionList,
+  TYPE_IMMINENT,
+  ONSET_SUDDEN,
 } from '../common';
 
 import styles from './styles.module.scss';
@@ -69,6 +69,9 @@ interface Props {
   onValueSet: (value: SetBaseValueArg<Value>) => void;
   userOptions: NumericValueOption[];
   onCreateAndShareButtonClick: () => void;
+  drefTypeOptions: NumericValueOption[];
+  onsetType?: number;
+  drefType?: number;
 }
 
 const disasterCategoryLink = "https://www.ifrc.org/sites/default/files/2021-07/IFRC%20Emergency%20Response%20Framework%20-%202017.pdf";
@@ -98,6 +101,9 @@ function DrefOverview(props: Props) {
     onValueSet,
     userOptions,
     onCreateAndShareButtonClick,
+    drefTypeOptions,
+    onsetType,
+    drefType,
   } = props;
 
   const error = React.useMemo(
@@ -105,16 +111,15 @@ function DrefOverview(props: Props) {
     [formError]
   );
 
-  const isImminentOnset = value?.type_of_onset === ONSET_IMMINENT;
 
   React.useMemo(() => {
-    const isSuddenOnset = value?.type_of_onset === ONSET_SUDDEN ? false : value.emergency_appeal_planned;
-    onValueChange(isSuddenOnset, 'emergency_appeal_planned');
+    const suddenDependentValue = onsetType === ONSET_SUDDEN ? false : value.emergency_appeal_planned;
+    onValueChange(suddenDependentValue, 'emergency_appeal_planned');
   }, [
-    value.type_of_onset,
-    value.emergency_appeal_planned,
-    onValueChange,
-  ]);
+      onsetType,
+      value.emergency_appeal_planned,
+      onValueChange,
+    ]);
 
   const handleUserSearch = React.useCallback((input: string | undefined, callback) => {
     if (!input) {
@@ -147,10 +152,7 @@ function DrefOverview(props: Props) {
       national_society: ns,
       country: ns,
     });
-  }, [
-    value,
-    onValueSet,
-  ]);
+  }, [ value, onValueSet ]);
 
   const handleTitleChange = useCallback(() => {
     const getCurrentCountryValue = value?.country;
@@ -161,12 +163,12 @@ function DrefOverview(props: Props) {
     const title = `${countryName} ${filteredDisasterTypeName} ${currentYear}`;
     onValueChange(title, 'title');
   }, [
-    countryOptions,
-    disasterTypeOptions,
-    value.disaster_type,
-    value.country,
-    onValueChange,
-  ]);
+      countryOptions,
+      disasterTypeOptions,
+      value.disaster_type,
+      value.country,
+      onValueChange,
+    ]);
 
   const countryQuery = React.useMemo(() => ({
     country: value.country,
@@ -244,26 +246,23 @@ function DrefOverview(props: Props) {
             value={value.national_society}
           />
         </InputSection>
-        <InputSection
-          title={strings.drefFormForAssessment}
-        >
-          <RadioInput
-            name={"is_assessment_report" as const}
-            options={yesNoOptions}
-            keySelector={booleanOptionKeySelector}
-            labelSelector={optionLabelSelector}
-            value={value.is_assessment_report}
-            onChange={onValueChange}
-            error={error?.is_assessment_report}
-          />
-        </InputSection>
         <CopyFieldReportSection
           value={value}
           onValueSet={onValueSet}
         />
+        <InputSection title="DREF Type">
+          <SelectInput
+            error={error?.type_of_dref}
+            label={strings.drefFormTypeOfDref}
+            name={"type_of_dref" as const}
+            onChange={onValueChange}
+            options={drefTypeOptions}
+            value={value.type_of_dref}
+          />
+        </InputSection>
         <InputSection
           title={
-            isImminentOnset
+            drefType === TYPE_IMMINENT
               ? strings.drefFormImminentDisasterDetails
               : strings.drefFormDisasterDetails
           }
@@ -273,7 +272,7 @@ function DrefOverview(props: Props) {
           <SelectInput
             error={error?.disaster_type}
             label={
-              isImminentOnset
+            drefType === TYPE_IMMINENT
                 ? strings.drefFormImminentDisasterTypeLabel
                 : strings.drefFormDisasterTypeLabel
             }
@@ -308,7 +307,8 @@ function DrefOverview(props: Props) {
             error={error?.disaster_category}
             label={(
               <>
-                {isImminentOnset
+                {drefType === TYPE_IMMINENT
+
                   ? strings.drefFormImminentDisasterCategoryLabel
                   : strings.drefFormDisasterCategoryLabel}
                 <a
@@ -329,7 +329,7 @@ function DrefOverview(props: Props) {
         </InputSection>
         <InputSection
           title={
-            !isImminentOnset
+            drefType !== TYPE_IMMINENT
               ? strings.drefFormAffectedCountryAndProvinceImminent
               : strings.drefFormRiskCountryLabel
           }
@@ -378,7 +378,7 @@ function DrefOverview(props: Props) {
           twoColumn
         >
           <NumberInput
-            label={isImminentOnset ?
+            label={drefType === TYPE_IMMINENT ?
               <>
                 {strings.drefFormRiskPeopleLabel}
                 <a
@@ -407,7 +407,7 @@ function DrefOverview(props: Props) {
             value={value.num_affected}
             onChange={onValueChange}
             error={error?.num_affected}
-            hint={isImminentOnset
+            hint={drefType === TYPE_IMMINENT
               ? strings.drefFormPeopleAffectedDescriptionImminent
               : strings.drefFormPeopleAffectedDescriptionSlowSudden
             }
@@ -416,7 +416,7 @@ function DrefOverview(props: Props) {
             label={(
               <>
                 {
-                  isImminentOnset
+                  drefType === TYPE_IMMINENT
                     ? strings.drefFormEstimatedPeopleInNeed
                     : strings.drefFormPeopleInNeed
                 }
@@ -434,7 +434,7 @@ function DrefOverview(props: Props) {
             value={value.people_in_need}
             onChange={onValueChange}
             error={error?.people_in_need}
-            hint={isImminentOnset
+            hint={drefType === TYPE_IMMINENT
               ? strings.drefFormPeopleInNeedDescriptionImminent
               : strings.drefFormPeopleInNeedDescriptionSlowSudden
             }

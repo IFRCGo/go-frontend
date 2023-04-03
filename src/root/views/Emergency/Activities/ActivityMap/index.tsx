@@ -28,9 +28,9 @@ import DateOutput from '#components/DateOutput';
 import TextOutput from '#components/TextOutput';
 import Button from '#components/Button';
 import GoMapDisclaimer from '#components/GoMapDisclaimer';
+import ReducedListDisplay from '#components/ReducedListDisplay';
 
 import { getPeopleReachedInActivity } from '../useProjectStats';
-import { reduceListDisplay } from '../projectTableColumns';
 
 import styles from './styles.module.scss';
 
@@ -246,7 +246,10 @@ function ActivityDetail(props: ActivityDetailProps) {
                 </div>
                 {p.districts_details && (
                   <div className={styles.districtList}>
-                    {reduceListDisplay(p.districts_details.map(d => d.name))}
+                    <ReducedListDisplay
+                      value={p.districts_details.map(d => d.name)}
+                      title="Province / Region"
+                    />
                   </div>
                 )}
                 <div className={styles.startEndDate}>

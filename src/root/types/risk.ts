@@ -85,26 +85,34 @@ export interface ADAMEventExposure {
     map: string;
     shakemap: string;
     population: string;
+    wind: string;
+    rainfall: string;
+    shapefile: string
   }
   iso3: string;
   depth: number;
   place: string;
   title: string;
   latitude: number;
+  longitude: number;
   mag_type: string;
   admin1_name: string;
-  longitude: number;
   published_at: string;
   population_impact: number;
   country: number | null;
   alert_sent: boolean;
-  alert_level: 'Orange' | 'Green' | 'Cones' | 'Information' | null;
+  alert_level: 'Red' | 'Orange' | 'Green' | 'Cones' | null;
   from_date: string;
   to_date: string;
   wind_speed: number;
   effective_date: string;
   date_processed: string;
   population: number;
+  dashboard_url: string;
+  flood_area: number;
+  fl_croplnd: number;
+  source: string;
+  sitrep: string;
 }
 
 export interface ADAMEvent {
@@ -131,5 +139,14 @@ export interface ADAMEvent {
   geojson: GeoJSON.Feature<GeoJSON.Point>;
 
   // TODO: add properties here
-  storm_position_geojson: GeoJSON.FeatureCollection<GeoJSON.Geometry, {}>;
+  storm_position_geojson: GeoJSON.FeatureCollection<GeoJSON.Geometry, {
+    track_date: string;
+    alert_level: 'Red' | 'Orange' | 'Green' | 'Cones' | null;
+  }>;
+
+  population_exposure:{
+    "exposure_60km/h": number;
+    "exposure_90km/h": number;
+    "exposure_120km/h": number;
+  }
 }

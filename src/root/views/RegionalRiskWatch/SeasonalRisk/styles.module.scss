@@ -38,6 +38,7 @@
     }
 
     .legend-label {
+      font-size: $font-size-sm;
       font-weight: $base-font-medium;
     }
 
@@ -51,7 +52,7 @@
         flex-direction: column;
 
         .label {
-          font-size: $font-size-sm;
+          font-size: $font-size-xs;
           font-weight: $base-font-medium;
         }
 
@@ -88,7 +89,7 @@
 
           .label {
             font-weight: $base-font-medium;
-            font-size: $font-size-sm;
+            font-size: $font-size-xs;
           }
         }
       }

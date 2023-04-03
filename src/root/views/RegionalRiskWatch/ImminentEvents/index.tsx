@@ -2,16 +2,19 @@ import React from 'react';
 
 import Container from '#components/Container';
 import WikiLink from '#components/WikiLink';
-// import RadioInput from '#components/RadioInput';
 import ImminentEventsPDC from './ImminentEventsPDC';
+import ImminentEventsADAM from './ImminentEventsADAM';
 
 import styles from './styles.module.scss';
-// import ImminentEventsADAM from './ImminentEventsADAM';
+import MapFooter from '#components/RiskImminentEventMap/MapFooter';
+
+const eventDescription = "This map displays information about the modeled impact of specific forecasted or detected natural hazards (floods, storms, droughts, wildfires, earthquakes). By hovering over the icons, if available, you can see the forecasted/observed footprint of the hazard; when you click on it, the table of modeled impact estimates will appear, as well as an information about who produced the impact estimate.";
 
 export interface StringValueOption {
   value: string;
-  label: string;
+  label: React.ReactNode;
 }
+
 export type Option = StringValueOption;
 export const stringOptionKeySelector = (o: StringValueOption) => o.value;
 export const optionLabelSelector = (o: Option) => o.label;
@@ -22,64 +25,42 @@ interface Props {
 
 function ImminentEvents(props: Props) {
   const { regionId } = props;
+  const [mapSource, setMapSource] = React.useState<string | undefined>("PDC");
 
-  /* @TEMP
-  const [sourceType, setSourceType] = React.useState<string | undefined>("PDC");
-
-  const sourceOptions = React.useMemo(() => {
-    return [
-      { value: "PDC", label: "PDC" },
-      { value: "WFP", label: "WFP ADAM" },
-    ] as StringValueOption[];
-  }, []);
-
-  const handleChangeSourceType = React.useCallback(
-    (value: string | undefined) => setSourceType(value),
+  const sourceType = React.useCallback(
+    (data?: string) => setMapSource(data),
     [],
   );
-  */
 
   return (
     <Container
       heading="Imminent events"
       className={styles.imminentEvents}
       description={
-        <>
-          {/* @TEMP
-          <RadioInput
-            name={"sourceType"}
-            options={sourceOptions}
-            keySelector={stringOptionKeySelector}
-            labelSelector={optionLabelSelector}
-            value={sourceType}
-            onChange={handleChangeSourceType}
-          />
-          */}
-          <div>
-            This map displays information about the modeled impact of specific forecasted or detected natural hazards. By hovering over the icons, if available, you can see the forecasted/observed footprint of the hazard; when you click on it, the table of modeled impact estimates will appear, as well as an information about who produced the impact estimate.
-          </div>
-        </>
+        <div>
+          {eventDescription}
+        </div>
       }
       descriptionClassName={styles.mapDescription}
       contentClassName={styles.mainContent}
       actions={<WikiLink pathName='user_guide/risk_module#imminent-events' />}
       sub
     >
-      {/* @TEMP (sourceType === "PDC") && (
+      {(mapSource === "PDC") && (
         <ImminentEventsPDC
           className={styles.map}
           regionId={regionId}
         />
       )}
-      {(sourceType === "WFP") && (
+      {(mapSource === "WFP") && (
         <ImminentEventsADAM
           className={styles.map}
           regionId={regionId}
         />
-      ) */}
-      <ImminentEventsPDC
-        className={styles.map}
-        regionId={regionId}
+      )}
+      <MapFooter 
+        sourceType={mapSource}
+        onSourceChange={sourceType}
       />
     </Container>
   );

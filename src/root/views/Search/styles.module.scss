@@ -1,0 +1,62 @@
+@import '~styles/settings/variables';
+
+.search {
+  .reset {
+    display: flex;
+    justify-content: space-between;
+
+    .reset-button {
+      background: none;
+      border: none;
+    }
+  }
+
+  .feedback-section {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing*2;
+
+    .feedback {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      font-size: medium;
+
+      .feedback-text {
+        display: flex;
+        align-items: center;
+      }
+    }
+  }
+
+  .content {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing * 4;
+    padding: 0;
+  }
+
+  .empty-search-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: $spacing*3;
+    color: $color-text-disabled;
+    font-size: $font-size-lg;
+    font-weight: $base-font-medium;
+    gap: $spacing*2;
+
+    .icon {
+      font-size: 10rem;
+    }
+  }
+}
+
+.view-all {
+  &:hover {
+    color: $primary-color;
+    text-decoration: underline;
+  }
+}

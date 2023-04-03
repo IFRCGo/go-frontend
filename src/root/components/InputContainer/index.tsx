@@ -9,7 +9,6 @@ import InputError from '#components/InputError';
 
 import styles from './styles.module.scss';
 
-
 export interface Props {
   className?: string;
   actions?: React.ReactNode;
@@ -21,6 +20,7 @@ export interface Props {
   readOnly?: boolean;
   input: React.ReactNode;
   errorOnTooltip?: boolean;
+  variant?: 'form' | 'general';
 }
 
 function InputContainer(props: Props) {
@@ -35,6 +35,7 @@ function InputContainer(props: Props) {
     input,
     errorOnTooltip = false,
     hint,
+    variant='form',
   } = props;
 
   return (
@@ -46,11 +47,13 @@ function InputContainer(props: Props) {
         !!error && styles.errored,
         disabled && styles.disabled,
         readOnly && styles.readOnly,
+        variant === 'form' && styles.form,
+        variant === 'general' && styles.general,
       )}
       title={(errorOnTooltip && isDefined(error) && typeof error === 'string') ? error : undefined}
     >
       <InputLabel disabled={disabled}>
-        { label }
+        { label } 
       </InputLabel>
       <div
         className={_cs(
@@ -74,7 +77,7 @@ function InputContainer(props: Props) {
             'go-internal-input-container',
           )}
         >
-          { input}
+          { input }
         </div>
         {actions && (
           <div

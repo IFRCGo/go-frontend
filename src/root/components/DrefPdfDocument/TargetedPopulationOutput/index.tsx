@@ -12,20 +12,20 @@ import { Strings } from '#types';
 import { formatNumber } from '#utils/common';
 import { resolveToString } from '#utils/lang';
 import { PdfTextOutput } from '#components/PdfTextOutput';
-import { DrefApiFields } from '#views/DrefApplicationForm/common';
+import { DrefApiFields, TYPE_ASSESSMENT } from '#views/DrefApplicationForm/common';
 import pdfStyles from '#utils/pdf/pdfStyles';
 
 interface Props {
   data: DrefApiFields;
   strings: Strings;
-  isAssessmentReport: boolean;
+  drefType?: number;
 }
 
 function TargetedPopulationOutput(props: Props) {
   const {
     data,
     strings,
-    isAssessmentReport,
+    drefType,
   } = props;
 
   // Note: we cannot use isNotDefined because of empty string from server
@@ -53,7 +53,7 @@ function TargetedPopulationOutput(props: Props) {
       </Text>
       <View style={pdfStyles.section}>
         <View style={pdfStyles.basicInfoTable}>
-          {isAssessmentReport ? (
+          {drefType === TYPE_ASSESSMENT ? (
             <>
               <View style={pdfStyles.compactSection}>
                 <PdfTextOutput

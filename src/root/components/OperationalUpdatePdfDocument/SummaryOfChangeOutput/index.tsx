@@ -7,21 +7,21 @@ import { isNotDefined } from '@togglecorp/fujs';
 
 import { Strings } from '#types';
 import { formatBoolean } from '#utils/common';
-import { DrefOperationalUpdateApiFields } from '#views/DrefOperationalUpdateForm/common';
+import { DrefOperationalUpdateApiFields, TYPE_IMMINENT } from '#views/DrefOperationalUpdateForm/common';
 import pdfStyles from '#utils/pdf/pdfStyles';
 import { reTab } from '#utils/common';
 
 interface Props {
   data: DrefOperationalUpdateApiFields;
   strings: Strings;
-  isImminentOnset: boolean;
+  drefType?: number;
 }
 
 function SummaryOfChangeOutput(props: Props) {
   const {
     data,
     strings,
-    isImminentOnset,
+    drefType,
   } = props;
 
   if (isNotDefined(data.changing_timeframe_operation)
@@ -120,7 +120,7 @@ function SummaryOfChangeOutput(props: Props) {
             <Text>{reTab(data?.summary_of_change)}</Text>
           </View>
         </View>
-        {isImminentOnset && (
+        {drefType === TYPE_IMMINENT && (
           <>
             <View style={pdfStyles.row}>
               <View style={[

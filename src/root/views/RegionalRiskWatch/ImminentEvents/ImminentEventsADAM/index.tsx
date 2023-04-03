@@ -4,10 +4,8 @@ import {
   listToGroupList,
   _cs,
 } from '@togglecorp/fujs';
-import turfBbox from '@turf/bbox';
 
 import useReduxState from '#hooks/useReduxState';
-import { BBOXType, fixBounds } from '#utils/map';
 import { ListResponse, useRequest } from '#utils/restRequest';
 import BlockLoading from '#components/block-loading';
 import { ADAMEvent } from '#types/risk';
@@ -27,6 +25,7 @@ function ImminentEventsADAM(props: Props) {
   } = props;
 
   const allRegions = useReduxState('allRegions');
+
   const region = React.useMemo(() => (
     allRegions?.data.results.find(d => d.id === regionId)
   ), [allRegions, regionId]);
@@ -80,17 +79,7 @@ function ImminentEventsADAM(props: Props) {
     return uniqueList;
   }, [response]);
 
-  const regionBounds = React.useMemo(
-    () => {
-      let bbox = turfBbox(region?.bbox ?? []);
-      return fixBounds(bbox as BBOXType);
-    },
-    [region?.bbox],
-  );
-
-  if ((!pending && !response?.results) || data?.length === 0) {
-    return null;
-  }
+  const hasAdamEvents = response && response.results && response.results.length > 0;
 
   return (
     <>
@@ -100,10 +89,16 @@ function ImminentEventsADAM(props: Props) {
           className={_cs(className, styles.map)}
           sidebarHeading={region?.region_name}
           hazardList={data}
-          defaultBounds={regionBounds}
           onActiveEventChange={handleEventClick}
           activeEventUuid={activeEventUuid}
         />
+      )}
+      {!pending && !hasAdamEvents && (
+        <div className={styles.emptyMessage}>
+          <div className={styles.text}>
+            No ADAM events
+          </div>
+        </div>
       )}
     </>
   );

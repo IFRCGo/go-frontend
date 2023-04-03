@@ -3,10 +3,12 @@
 .country-risk-bar-chart {
   display: flex;
   flex-direction: column;
-  gap: $spacing * 0.5;
 
   .heading {
+    display: block;
     padding: 0;
+    font-size: $font-size-sm;
+    font-weight: $base-font-medium;
   }
 
   .content {
@@ -16,22 +18,34 @@
     display: flex;
     flex-direction: column;
     gap: $spacing * 0.75;
+    padding-right: $spacing;
+
 
     &:hover {
       overflow-y: auto;
     }
 
+    .country-card {
+      border: 1px solid $grey-titanium;
+      padding: $spacing;
+    }
+
     .country-name {
-      font-size: $font-size-sm;
+      font-size: $font-size-xxs;
       font-weight: $base-font-medium;
+      text-transform: uppercase;
     }
 
     .bar-container {
+      border: 1px solid transparent;
+      border-radius: $base-border-radius;
       height: 0.5rem;
       display: flex;
       background-color: rgba(0, 0, 0, .1);
+      overflow: hidden;
 
       .hazard-risk-bar {
+        cursor: pointer;
         height: 100%;
       }
     }
@@ -42,6 +56,30 @@
       align-items: center;
       justify-content: center;
       min-height: 4rem;
+    }
+  }
+}
+
+.tooltip {
+  border: $base-border-width * 0.5 solid $base-border-color--light;
+  box-shadow: $box-shadow-component;
+
+  .arrow {
+    border-bottom: $base-border-width * 0.5 solid $base-border-color--light;
+    border-right: $base-border-width * 0.5 solid $base-border-color--light;
+  }
+
+  .tooltip-content {
+    display: flex;
+    gap: $spacing * 0.75;
+    font-size: 12px;
+
+    .tooltip-hazard-title {
+      font-weight: $base-font-bold;
+    }
+
+    .sub-title {
+      font-weight: $base-font-medium;
     }
   }
 }

@@ -37,6 +37,8 @@ import {
   booleanOptionKeySelector,
   optionLabelSelector,
   RiskSecurityProps,
+  TYPE_ASSESSMENT,
+  TYPE_IMMINENT,
 } from '../common';
 import {
   InterventionType,
@@ -55,8 +57,7 @@ interface Props {
   fileIdToUrlMap: Record<number, string>;
   setFileIdToUrlMap?: React.Dispatch<React.SetStateAction<Record<number, string>>>;
   yesNoOptions: BooleanValueOption[];
-  isAssessmentReport: boolean;
-  isImminentOnset?: boolean;
+  drefType?: number;
 }
 
 function Response(props: Props) {
@@ -70,8 +71,7 @@ function Response(props: Props) {
     setFileIdToUrlMap,
     value,
     yesNoOptions,
-    isAssessmentReport,
-    isImminentOnset
+    drefType,
   } = props;
 
   const error = getErrorObject(formError);
@@ -106,7 +106,7 @@ function Response(props: Props) {
     listToMap(
       value.planned_interventions,
       pi => pi.title ?? '',
-      pi => true,
+      () => true,
     )
   ), [value.planned_interventions]);
 
@@ -132,14 +132,14 @@ function Response(props: Props) {
 
     return w;
   }, [
-    value?.is_assessment_report,
-    value?.num_assisted,
-    value?.women,
-    value?.men,
-    value?.girls,
-    value?.boys,
-    value?.total_targeted_population,
-  ]);
+      value?.is_assessment_report,
+      value?.num_assisted,
+      value?.women,
+      value?.men,
+      value?.girls,
+      value?.boys,
+      value?.total_targeted_population,
+    ]);
 
   const filteredInterventionOptions = useMemo(() =>
     interventionsIdentifiedMap
@@ -204,7 +204,7 @@ function Response(props: Props) {
         </InputSection>
         <InputSection
           title={strings.drefFormResponseRationale}
-          description={isAssessmentReport && strings.drefFormResponseRationaleDescription}
+          description={drefType === TYPE_ASSESSMENT && strings.drefFormResponseRationaleDescription}
         >
           <TextArea
             name="response_strategy"
@@ -248,16 +248,16 @@ function Response(props: Props) {
         heading={strings.drefFormAssistedPopulation}
         className={styles.assistedPopulation}
         description={(
-          !isAssessmentReport &&
-          warnings?.map((w, i) => (
-            <div
-              className={styles.warning}
-              key={i}
-            >
-              <IoWarning />
-              {w}
-            </div>
-          ))
+          drefType !== TYPE_ASSESSMENT &&
+            warnings?.map((w, i) => (
+              <div
+                className={styles.warning}
+                key={i}
+              >
+                <IoWarning />
+                {w}
+              </div>
+            ))
         )}
       >
         <InputSection
@@ -265,7 +265,7 @@ function Response(props: Props) {
           multiRow
           twoColumn
         >
-          {!isAssessmentReport && (
+          {drefType !== TYPE_ASSESSMENT && (
             <>
               <NumberInput
                 label={strings.drefFormWomen}
@@ -345,7 +345,7 @@ function Response(props: Props) {
             onChange={onValueChange}
             error={error?.displaced_people}
           />
-          {isImminentOnset &&
+          {drefType === TYPE_IMMINENT &&
             <NumberInput
               label={strings.drefFormPeopleTargetedWithEarlyActions}
               name="people_targeted_with_early_actions"
@@ -362,7 +362,7 @@ function Response(props: Props) {
       >
         <InputSection
           title={strings.drefFormRiskSecurityPotentialRisk}
-          description={isAssessmentReport && strings.drefFormRiskSecurityPotentialRiskDescription}
+          description={drefType === TYPE_ASSESSMENT && strings.drefFormRiskSecurityPotentialRiskDescription}
           multiRow
           oneColumn
         >
@@ -495,7 +495,7 @@ function Response(props: Props) {
             />
           }
         </InputSection>
-        {!isAssessmentReport && (
+        {drefType !== TYPE_ASSESSMENT && (
           <>
             <InputSection
               title={strings.drefFormLogisticCapacityOfNs}

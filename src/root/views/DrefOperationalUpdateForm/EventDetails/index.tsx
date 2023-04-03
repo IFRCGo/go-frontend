@@ -7,6 +7,7 @@ import {
   useFormArray,
 } from '@togglecorp/toggle-form';
 import { listToMap } from '@togglecorp/fujs';
+import DateInput from '#components/DateInput';
 
 import RadioInput from '#components/RadioInput';
 import Container from '#components/Container';
@@ -22,10 +23,12 @@ import {
   BooleanValueOption,
   DrefOperationalUpdateFields,
   optionLabelSelector,
+  TYPE_IMMINENT,
+  ONSET_SUDDEN,
+  TYPE_ASSESSMENT,
 } from '../common';
 
 import styles from './styles.module.scss';
-import DateInput from '#components/DateInput';
 
 type Value = PartialForm<DrefOperationalUpdateFields>;
 interface Props {
@@ -33,11 +36,10 @@ interface Props {
   onValueChange: (...entries: EntriesAsList<Value>) => void;
   value: Value;
   yesNoOptions: BooleanValueOption[];
-  isImminentOnset: boolean;
   fileIdToUrlMap: Record<number, string>;
   setFileIdToUrlMap?: React.Dispatch<React.SetStateAction<Record<number, string>>>;
-  isSuddenOnset: boolean;
-  isAssessmentReport: boolean;
+  drefType?: number;
+  onsetType?: number;
 }
 
 function EventDetails(props: Props) {
@@ -47,11 +49,10 @@ function EventDetails(props: Props) {
     error: formError,
     onValueChange,
     yesNoOptions,
-    isImminentOnset,
     fileIdToUrlMap,
     setFileIdToUrlMap,
-    isSuddenOnset,
-    isAssessmentReport,
+    drefType,
+    onsetType,
   } = props;
 
   const error = React.useMemo(
@@ -168,7 +169,7 @@ function EventDetails(props: Props) {
           />
         </InputSection>
 
-        {isImminentOnset &&
+        {drefType === TYPE_IMMINENT &&
           <InputSection
             title={strings.drefOperationalUpdateEventMaterialize}
           >
@@ -183,7 +184,7 @@ function EventDetails(props: Props) {
             />
           </InputSection>
         }
-        {(isImminentOnset && value.has_forecasted_event_materialize)
+        {(drefType === TYPE_IMMINENT && value.has_forecasted_event_materialize)
           &&
           <InputSection
             title={strings.drefOperationalUpdateEventMaterializeExplain}
@@ -212,14 +213,14 @@ function EventDetails(props: Props) {
       <Container heading={strings.drefOperationalUpdateDescriptionOfEventHeading}>
         <InputSection
           title={
-            isImminentOnset
+            drefType === TYPE_IMMINENT
               ? strings.drefFormApproximateDateOfImpact
-              : isSuddenOnset
+              : onsetType === ONSET_SUDDEN
                 ? strings.drefFormEventDate
                 : strings.drefFormSlowEventDate
           }
         >
-          {isImminentOnset ? (
+          {drefType === TYPE_IMMINENT ? (
             <TextArea
               name="event_text"
               value={value.event_text}
@@ -236,7 +237,7 @@ function EventDetails(props: Props) {
           )}
         </InputSection>
         <InputSection
-          title={isImminentOnset
+          title={drefType === TYPE_IMMINENT
             ? strings.drefFormImminentDisaster
             : strings.drefFormWhatWhereWhen}
           oneColumn
@@ -249,7 +250,7 @@ function EventDetails(props: Props) {
             error={error?.event_description}
           />
         </InputSection>
-        {isImminentOnset &&
+        {drefType === TYPE_IMMINENT &&
           <InputSection
             title={strings.drefFormTargetCommunities}
             oneColumn
@@ -295,7 +296,7 @@ function EventDetails(props: Props) {
             ))}
           </div>
         </InputSection>
-        {!isAssessmentReport && (
+        {drefType !== TYPE_ASSESSMENT && (
           <InputSection
             title={strings.drefFormScopeAndScaleEvent}
             description={strings.drefFormScopeAndScaleDescription}

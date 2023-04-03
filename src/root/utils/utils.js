@@ -13,16 +13,12 @@ import {
 } from '@togglecorp/fujs';
 
 import Translate from '#components/Translate';
-import { request } from '#utils/network';
-import { api } from '#config';
-import { uppercaseFirstLetter as u, isoDate } from '#utils/format';
 import { appealTypes } from '#utils/appeal-type-constants';
 import { getCountryMeta } from '#utils/get-country-meta';
 
-
 // lodash.get will only return the defaultValue when
 // the path is undefined. We want to also catch null and ''
-export function get (object, path, defaultValue) {
+export function get(object, path, defaultValue) {
   const value = _get(object, path, null);
   if (value === null || value === '') {
     return defaultValue || null;
@@ -31,20 +27,20 @@ export function get (object, path, defaultValue) {
   }
 }
 
-export function getAppealString (appealType) {
+export function getAppealString(appealType) {
   return get(appealTypes, appealType.toString());
 }
 
-export function unique (array) {
+export function unique(array) {
   return Array.from(new Set(array));
 }
 
-export function isLoggedIn (userState) {
+export function isLoggedIn(userState) {
   return !!get(userState, 'data.token');
 }
 
 // aggregate beneficiaries, requested, and funding for appeals
-export function aggregateAppealStats (appeals) {
+export function aggregateAppealStats(appeals) {
   let struct = {
     numBeneficiaries: 0,
     amountRequested: 0,
@@ -59,7 +55,7 @@ export function aggregateAppealStats (appeals) {
 }
 
 // returns a GeoJSON representation of a country's operations
-export function aggregateCountryAppeals (appeals, countries) {
+export function aggregateCountryAppeals(appeals, countries) {
   const grouped = _groupBy(appeals.filter(o => o.country), 'country.iso');
   const geojson = {
     type: 'FeatureCollection',
@@ -83,10 +79,10 @@ export function aggregateCountryAppeals (appeals, countries) {
       };
     })
   };
-  return(geojson);
+  return (geojson);
 }
 
-export function aggregatePartnerDeployments (deploymentGroups, filters = []) {
+export function aggregatePartnerDeployments(deploymentGroups, filters = []) {
   // flatten
   const filterFn = filters.length ? obj => {
     for (let i = 0; i < filters.length; ++i) {
@@ -131,7 +127,7 @@ export function aggregatePartnerDeployments (deploymentGroups, filters = []) {
 }
 
 // normalize ISO from a country vector tile
-export function getCountryIsoFromVt (feature) {
+export function getCountryIsoFromVt(feature) {
   const { properties } = feature;
   const iso = get(feature, 'properties.ISO2', '').toLowerCase();
   if (!iso || (iso === '-99' && properties.ISO3 !== 'FRA' && properties.ISO3 !== 'NOR')) {
@@ -140,7 +136,7 @@ export function getCountryIsoFromVt (feature) {
   return iso === '-99' ? properties.ISO3.toLowerCase().slice(0, 2) : iso;
 }
 
-export function groupByDisasterType (objs) {
+export function groupByDisasterType(objs) {
   const emergenciesByType = _groupBy(objs, 'dtype.id');
   return Object.keys(emergenciesByType).map(key => {
     const meta = emergenciesByType[key][0]?.dtype;
@@ -158,31 +154,31 @@ export function groupByDisasterType (objs) {
   }).filter(Boolean).sort((a, b) => a.items.length < b.items.length ? 1 : -1);
 }
 
-export function mostRecentReport (reports) {
+export function mostRecentReport(reports) {
   if (!Array.isArray(reports)) return null;
   return reports.map(d => Object.assign({}, d, { _date: new Date(d['updated_at']) })).sort((a, b) => a._date < b._date ? 1 : -1)[0];
 }
 
-export function isValidEmail (email) {
+export function isValidEmail(email) {
   return EmailValidator.validate(email);
 }
 
-export function isWhitelistedEmail (email, whitelistedDomains) {
+export function isWhitelistedEmail(email, whitelistedDomains) {
   if (!isValidEmail(email)) {
     return false;
   }
 
   // Looking for an EXACT match in the domain whitelist
   // (it finds even if UPPERCASE letters were used)
-  const userMailDomain = email.substring(email.lastIndexOf("@") +1);
+  const userMailDomain = email.substring(email.lastIndexOf("@") + 1);
   return whitelistedDomains.find(dom => dom === userMailDomain);
 }
 
-export function finishedFetch (curr, next, prop) {
+export function finishedFetch(curr, next, prop) {
   return _get(curr, `${prop}.fetching`, false) && !_get(next, `${prop}.fetching`, false);
 }
 
-export function objValues (obj) {
+export function objValues(obj) {
   return Object.keys(obj).map(k => obj[k]);
 }
 
@@ -194,9 +190,9 @@ export const dateOptions = [
 ];
 
 export const datesAgo = {
-  week: () => DateTime.utc().minus({days: 7}).startOf('day').toISO(),
-  month: () => DateTime.utc().minus({months: 1}).startOf('day').toISO(),
-  year: () => DateTime.utc().minus({years: 1}).startOf('day').toISO()
+  week: () => DateTime.utc().minus({ days: 7 }).startOf('day').toISO(),
+  month: () => DateTime.utc().minus({ months: 1 }).startOf('day').toISO(),
+  year: () => DateTime.utc().minus({ years: 1 }).startOf('day').toISO()
 };
 
 // TODO: use strings
@@ -208,7 +204,7 @@ export const appealStatusOptions = [
   { value: '3', label: 'Archived' }
 ];
 
-export function getRecordsByType (types, records) {
+export function getRecordsByType(types, records) {
   const typeIds = types.data.results.map(t => t.id.toString());
   let recordsByType = typeIds.reduce((memo, typeId) => {
     memo[typeId] = {
@@ -344,89 +340,20 @@ export function getSelectInputNoOptionsMessage(options) {
   return <Translate stringId="searchSelectNoOptionsAvailable" />;
 }
 
-function getUriForType (type, id, data) {
-  switch (type) {
-    case 'region':
-      return '/regions/' + id;
-    case 'country':
-      return '/countries/' + id;
-    case 'report':
-      return '/reports/' + id;
-    case 'event':
-      return '/emergencies/' + id;
-    case 'appeal':
-      return data.event_id ? '/emergencies/' + data.event_id : '/appeals/all?record=' + id;
-    default:
-      return '/uhoh';
-  }
-}
+export function useDebounce(func, debounceTime = 500) {
+  const myTimeout = React.useRef();
 
-// 1234 => 7968, so that this linear, comparable order will have:
-//  2IFRC                      9
-//  4IFRC_NS                   8
-//  1MEMBERSHIP (logged in)    7
-//  3PUBLIC                    6
-function line (p) {
-  switch (parseInt(p)) {
-    case NaN:
-      return 6;
-    case 1:
-      return 7;
-    case 2:
-      return 9;
-    default:
-      return p + p;
+  const myFunc = React.useCallback((...args) => {
+    clearTimeout(myTimeout.current);
+    myTimeout.current = setTimeout(
+      () => {
+        func(...args);
+      },
+      debounceTime
+    );
+  }, [func, debounceTime]);
 
-  }
-}
-
-function nume (p) { // numeric (and linear) representation of orgType
-  switch (p) {
-    case 'OTHR':
-      return 7;
-    case 'NTLS':
-    case 'DLGN':
-      return 8;
-    case 'SCRT':
-    case 'ICRC':
-    case '*': // superuser
-      return 9;
-    default:
-      return 6;
-  }
-}
-
-export function getElasticSearchOptions(input, orgType, ns, callback) {
-  if (!input) {
-    callback([]);
-  }
-
-  request(`${api}api/v1/es_search/?keyword=${input}`)
-    .then(data => {
-      const options = data.hits.map(o => {
-        const d = o._source;
-        // for DEBUG: console.log('user ns, orgType | object ns, visibl.Raw', [ns, orgType, '|', d.ns, d.visibility]);
-        // for DEBUG: console.log('visibility should be <= permission_level',[line(d.visibility), '<=', nume(orgType)]);
-        // If the linearized visibility value > linearized value of organization type, not allowed to see that:
-        if (line(d.visibility) > nume(orgType)) { return false; }
-        // If the organization ~ NS === 8 === linearized visibility, and ns (list) is given in the object, we accept only our ns in the array:
-        if (nume(orgType) === 8 && line(d.visibility) === 8 && d.ns !== null) {
-          if (ns === undefined || ns === null || !d.ns.split(" ").includes(ns.toString())) {
-            return false;
-          }
-        }
-        const value = getUriForType(d.type, d.id, d);
-        const date = d.date ? ` (${isoDate(d.date)})` : '';
-        const label = `${u(d.type)}: ${d.name}${date}`;
-
-        return {
-          value,
-          label
-        };
-      }).filter(Boolean);
-
-      callback(options);
-    });
+  return myFunc;
 }
 
 export function getFileName(suffix, extension = 'csv') {

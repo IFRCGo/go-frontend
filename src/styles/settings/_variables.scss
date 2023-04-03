@@ -26,6 +26,7 @@ $grey-coal: #323232;
 $grey-soot: #282d32;
 $black: #000;
 $white: #fff;
+$title-color: #c6c6c6;
 
 $color-foreground: #ffffff;
 $color-background: #f7f7f7;
@@ -35,6 +36,11 @@ $color-text-heading: $color-text;
 $color-text-light: rgba(0, 0, 0, .7);
 $color-text-disabled: rgba(0, 0, 0, .4);
 $color-text-message: rgba(0, 0, 0, .5);
+
+//Filter tags 
+$color-filter-tag: rgba(242, 244, 246, 0.5);
+$color-filter-tag-text: #a8a8a8;
+
 
 /* State colors */
 
@@ -102,6 +108,7 @@ $heading-font-weight: $base-font-semi-bold;
 /* Border radius */
 
 $base-border-radius: 0.25rem;
+$dot-border-radius: 50%;
 $full-border-radius: 100vh;
 $input-rounded-radius: 1.8rem;
 
@@ -140,7 +147,7 @@ $global-spacing-2: 1.5rem;
 $global-spacing-3: 2rem;
 $global-spacing-4: 2.5rem;
 $global-spacing-5: 3rem;
-
+$global-spacing-table: 7rem;
 
 /* Spacing Variables in pixels */
 

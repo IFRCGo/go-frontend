@@ -1,4 +1,4 @@
-FROM node:14.18.2-buster
+FROM node:18.14.1-buster
 
 LABEL maintainer="Togglecorp dev@togglecorp.com"
 

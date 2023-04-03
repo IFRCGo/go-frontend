@@ -50,8 +50,7 @@ import {
   actionsFields,
   responseFields,
   submissionFields,
-  ONSET_IMMINENT,
-  ONSET_SUDDEN,
+  TYPE_IMMINENT,
 } from './common';
 
 import useDrefFormOptions, { schema } from './useDrefFormOptions';
@@ -138,6 +137,7 @@ function DrefApplication(props: Props) {
     yesNoOptions,
     userDetails,
     userOptions,
+    drefTypeOptions,
   } = useDrefFormOptions(value);
 
   const [fileIdToUrlMap, setFileIdToUrlMap] = React.useState<Record<number, string>>({});
@@ -437,20 +437,19 @@ function DrefApplication(props: Props) {
     || drefSubmitPending
     || drefApplicationPending;
 
-  const isSuddenOnset = value?.type_of_onset === ONSET_SUDDEN;
-  const isImminentOnset = value?.type_of_onset === ONSET_IMMINENT;
-  const isAssessmentReport = !!value?.is_assessment_report;
+  const drefType = value.type_of_dref;
+  const onsetType = value.type_of_onset;
 
   React.useEffect(() => {
     setValue((oldValue) => {
-      if (value.type_of_onset !== ONSET_IMMINENT) {
+      if (value.type_of_dref !== TYPE_IMMINENT) {
         return {
           ...oldValue,
           anticipatory_actions: undefined,
           people_targeted_with_early_actions: undefined,
         };
       }
-      if (value.type_of_onset === ONSET_IMMINENT) {
+      if (value.type_of_dref === TYPE_IMMINENT) {
         return {
           ...oldValue,
           event_date: undefined,
@@ -460,15 +459,15 @@ function DrefApplication(props: Props) {
     });
   }, [
     setValue,
-    value.type_of_onset,
+    value.type_of_dref,
   ]);
 
   React.useEffect(() => {
     setValue((oldValue) => {
-      if (value.ns_request_fund === false ||
-        value.ns_respond === false ||
-        value.affect_same_population === false ||
-        value.affect_same_area === false) {
+      if (value.did_ns_request_fund === false ||
+        value.did_ns_respond === false ||
+        value.did_it_affect_same_population === false ||
+        value.did_it_affect_same_area === false) {
         return {
           ...oldValue,
           dref_recurrent_text: undefined,
@@ -478,10 +477,10 @@ function DrefApplication(props: Props) {
     });
   }, [
     setValue,
-    value.ns_request_fund,
-    value.ns_respond,
-    value.affect_same_population,
-    value.affect_same_area,
+    value.did_ns_request_fund,
+    value.did_ns_respond,
+    value.did_it_affect_same_population,
+    value.did_it_affect_same_area,
   ]);
 
   React.useEffect(() => {
@@ -575,7 +574,7 @@ function DrefApplication(props: Props) {
                 value={undefined}
                 onChange={handleDocumentImport}
                 icons={<IoCloudUploadSharp />}
-                variant="secondary"
+                buttonVariant="secondary"
               >
                 Import from Document
               </FileInput>
@@ -685,19 +684,21 @@ function DrefApplication(props: Props) {
                 onValueSet={setValue}
                 userOptions={userOptions}
                 onCreateAndShareButtonClick={submitDref}
+                drefTypeOptions={drefTypeOptions}
+                onsetType={onsetType}
+                drefType={drefType}
               />
             </TabPanel>
             <TabPanel name="eventDetails">
               <EventDetails
-                isSuddenOnset={isSuddenOnset}
-                isImminentOnset={isImminentOnset}
+                onsetType={onsetType}
+                drefType={drefType}
                 error={error}
                 onValueChange={setFieldValue}
                 value={value}
                 yesNoOptions={yesNoOptions}
                 fileIdToUrlMap={fileIdToUrlMap}
                 setFileIdToUrlMap={setFileIdToUrlMap}
-                isAssessmentReport={isAssessmentReport}
               />
             </TabPanel>
             <TabPanel name="action">
@@ -710,8 +711,7 @@ function DrefApplication(props: Props) {
                 nsActionOptions={nsActionOptions}
                 fileIdToUrlMap={fileIdToUrlMap}
                 setFileIdToUrlMap={setFileIdToUrlMap}
-                isAssessmentReport={isAssessmentReport}
-                isImminentOnset={isImminentOnset}
+                drefType={drefType}
               />
             </TabPanel>
             <TabPanel name="response">
@@ -723,8 +723,7 @@ function DrefApplication(props: Props) {
                 fileIdToUrlMap={fileIdToUrlMap}
                 setFileIdToUrlMap={setFileIdToUrlMap}
                 yesNoOptions={yesNoOptions}
-                isAssessmentReport={isAssessmentReport}
-                isImminentOnset={isImminentOnset}
+                drefType={drefType}
               />
             </TabPanel>
             <TabPanel name="submission">

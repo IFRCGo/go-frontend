@@ -10,19 +10,19 @@ import { formatNumber } from '#utils/common';
 import { resolveToString } from '#utils/lang';
 import { PdfTextOutput } from '#components/PdfTextOutput';
 import pdfStyles from '#utils/pdf/pdfStyles';
-import { DrefFinalReportApiFields } from '#views/FinalReportForm/common';
+import { DrefFinalReportApiFields, TYPE_ASSESSMENT } from '#views/FinalReportForm/common';
 
 interface Props {
   data: DrefFinalReportApiFields;
   strings: Strings;
-  isAssessmentReport: boolean;
+  drefType?: number;
 }
 
 function TargetedPopulationOutput(props: Props) {
   const {
     data,
     strings,
-    isAssessmentReport,
+    drefType,
   } = props;
 
   if (isNotDefined(data.people_per_local)
@@ -47,7 +47,7 @@ function TargetedPopulationOutput(props: Props) {
       </Text>
       <View style={pdfStyles.section}>
         <View style={pdfStyles.basicInfoTable}>
-          {isAssessmentReport
+          {drefType === TYPE_ASSESSMENT
             ? (<>
               <View style={pdfStyles.compactSection}>
                 <PdfTextOutput

@@ -1,7 +1,13 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 import mapboxgl from 'mapbox-gl';
+import {
+  init,
+  ErrorBoundary,
+  withProfiler,
+} from '@sentry/react';
 
+import sentryConfig from './sentry';
 import store from '#utils/store';
 import { detectIE } from '#utils/ie';
 
@@ -15,7 +21,9 @@ import {
 
 import LanguageContext from '#root/languageContext';
 import lang from '#lang';
-import { mbtoken }from './config';
+import FullPageErrorMessage from '#components/FullPageErrorMessage';
+
+import { mbtoken } from './config';
 import Multiplexer from './Multiplexer';
 
 require('isomorphic-fetch');
@@ -28,6 +36,10 @@ mapboxgl.setRTLTextPlugin(
 
 mapboxgl.accessToken = mbtoken;
 
+if (sentryConfig) {
+  init(sentryConfig);
+}
+
 const requestContextValue = {
   transformUrl: processGoUrls,
   transformOptions: processGoOptions,
@@ -35,7 +47,7 @@ const requestContextValue = {
   transformError: processGoError,
 };
 
-function Root () {
+function Root() {
   const [strings, setStrings] = React.useState(lang);
   const langContextValue = React.useMemo(() => ({
     strings,
@@ -43,17 +55,27 @@ function Root () {
   }), [strings, setStrings]);
 
   return (
-    <Provider store={store}>
-      <LanguageContext.Provider value={langContextValue}>
-        <RequestContext.Provider value={requestContextValue}>
-          <Multiplexer />
-        </RequestContext.Provider>
-      </LanguageContext.Provider>
-    </Provider>
+    <ErrorBoundary
+      showDialog
+      fallback={(
+        <FullPageErrorMessage
+          errorTitle="Oh no!"
+          errorMessage="Some error occured"
+        />
+      )}
+    >
+      <Provider store={store}>
+        <LanguageContext.Provider value={langContextValue}>
+          <RequestContext.Provider value={requestContextValue}>
+            <Multiplexer />
+          </RequestContext.Provider>
+        </LanguageContext.Provider>
+      </Provider>
+    </ErrorBoundary>
   );
 }
 
-export default Root;
+export default withProfiler(Root, { name: 'Root' });
 
 // Get IE or Edge browser version
 const version = detectIE();
@@ -77,7 +99,7 @@ if (version === false) {
       configurable: true,
       enumerable: true,
       writable: true,
-      value: function remove () {
+      value: function remove() {
         if (this.parentNode !== null) this.parentNode.removeChild(this);
       }
     });

@@ -1,11 +1,16 @@
 import React from 'react';
+import ReactDOMServer from 'react-dom/server';
 import { MapChildContext } from '@togglecorp/re-map';
+import { IoChevronForward } from 'react-icons/io5';
+import { isDefined } from '@togglecorp/fujs';
+import mapboxgl from 'mapbox-gl';
 
 import { COLOR_LIGHT_GREY } from '#utils/map';
 import {
   RISK_HIGH_COLOR,
   RISK_LOW_COLOR,
 } from '../../common';
+import styles from './styles.module.scss';
 
 interface ColorRGB {
   r: number;
@@ -40,13 +45,72 @@ function getProgress(currentValue: number, minValue: number, maxValue: number) {
   return progress;
 }
 
+interface HazardProps {
+  hazard_type?:string;
+  hazard_type_display?: string;
+  value: number;
+}
+interface RegionsProps {
+  byHazard?: HazardProps[];
+  countryName?: string;
+  value?: number;
+}
+function PopUp (props: RegionsProps) {
+  const {
+    byHazard,
+    countryName,
+  } = props;
+
+  const filterHazardData = byHazard?.filter((hd) => hd.value !==0);
+
+  const getHazardStatus = (hazardValue: number)=>{
+    if(hazardValue > 0 && hazardValue < 25) {
+      return 'very low';
+    }
+
+    if(hazardValue > 25 && hazardValue < 50) {
+      return 'medium';
+    }
+
+    if(hazardValue >= 50 && hazardValue < 75) {
+      return 'high';
+    }
+
+    if(hazardValue >= 75) {
+      return 'very high';
+    }
+  };
+
+  return (
+    <div className={styles.tooltip}>
+      <div className={styles.heading}>
+        {countryName}
+        <span><IoChevronForward className={styles.icon} /></span>
+      </div>
+      <div className={styles.subContent}>
+        {filterHazardData?.map(( hd) => (
+          <React.Fragment key={hd.hazard_type_display}>
+            <div
+              key={hd.hazard_type}
+              className={styles.hazard}
+            >
+              <a href="">{hd?.hazard_type_display}</a>
+              <div className={styles.hazardStatus}>Risk: {getHazardStatus(hd.value)}</div>
+            </div>
+            <hr />
+          </React.Fragment>
+        ))}
+      </div>
+    </div>
+  );
+}
+
 interface Props {
   riskData: { iso3: string, value: number }[];
 }
 
 function Choropleth(props: Props) {
   const { riskData } = props;
-
   const mc = React.useContext(MapChildContext);
 
   if (!mc) {
@@ -74,9 +138,14 @@ function Choropleth(props: Props) {
   }, [
       'match',
       ['get', 'iso3'],
-  ]);
+    ]);
 
   colorProperty.push(COLOR_LIGHT_GREY);
+
+  const popup = new mapboxgl.Popup({
+    closeButton: true,
+    closeOnClick: false,
+  });
 
   if (colorProperty.length >= 4) {
     map.setPaintProperty(
@@ -84,9 +153,25 @@ function Choropleth(props: Props) {
       'fill-color',
       colorProperty,
     );
+
+    map.on('click','admin-0', (e)=>{
+      e.preventDefault();
+      map.getCanvas().style.cursor = 'pointer';
+
+      const activeCountryIso3 = isDefined(e.features) && e?.features[0]?.properties?.iso3;
+      const activeCountryDetails = riskData.find(
+        (risk)=> risk.iso3 === activeCountryIso3
+      );
+
+      const popupRender = activeCountryDetails && ReactDOMServer.renderToString(PopUp(activeCountryDetails));
+      if(popupRender) {
+        return popup.setLngLat(e.lngLat).setHTML(popupRender).addTo(map);
+      }
+    });
   }
 
   return null;
 }
 
 export default Choropleth;
+

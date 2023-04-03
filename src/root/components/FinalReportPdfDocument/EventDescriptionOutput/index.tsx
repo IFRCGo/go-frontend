@@ -10,7 +10,7 @@ import {
 } from '@togglecorp/fujs';
 import sanitizeHtml from 'sanitize-html';
 
-import { DrefFinalReportApiFields } from '#views/FinalReportForm/common';
+import { DrefFinalReportApiFields, TYPE_ASSESSMENT, TYPE_IMMINENT } from '#views/FinalReportForm/common';
 import { PdfTextOutput } from '#components/PdfTextOutput';
 import { Strings } from '#types';
 import pdfStyles from '#utils/pdf/pdfStyles';
@@ -18,16 +18,14 @@ import pdfStyles from '#utils/pdf/pdfStyles';
 interface Props {
   data: DrefFinalReportApiFields;
   strings: Strings;
-  isImminentOnset: boolean;
-  isAssessmentReport?: boolean;
+  drefType?: number;
 }
 
 function EventDescriptionOutput(props: Props) {
   const {
     data,
     strings,
-    isImminentOnset,
-    isAssessmentReport,
+    drefType,
   } = props;
 
   if (isNotDefined(data.event_scope)
@@ -66,7 +64,7 @@ function EventDescriptionOutput(props: Props) {
             style={pdfStyles.subSectionHeading}
             minPresenceAhead={20}
           >
-            {isImminentOnset
+            {drefType === TYPE_IMMINENT
               ? strings.finalReportImminentDisaster
               : strings.finalReportWhatWhereWhen}
           </Text>
@@ -95,7 +93,7 @@ function EventDescriptionOutput(props: Props) {
           </View>
         ))}
       </div>
-      {!isAssessmentReport
+      {drefType !== TYPE_ASSESSMENT
         && isDefined(data.event_scope)
         && (
           <View style={pdfStyles.subSection}>

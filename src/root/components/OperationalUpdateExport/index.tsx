@@ -19,6 +19,7 @@ interface OperationalUpdateOptions {
   planned_interventions: StringKeyValuePair[];
   status: NumericKeyValuePair[];
   type_of_onset: NumericKeyValuePair[];
+  type_of_dref: NumericKeyValuePair[];
   users: {
     id: number;
     first_name: string;

@@ -5,19 +5,28 @@ function isSetterFn<T>(value: ValueOrSetterFn<T>): value is ((value: T) => T) {
     return typeof value === 'function';
 }
 
-function useInputState<T>(initialValue: T) {
-    const [value, setValue] = React.useState<T>(initialValue);
+function useInputState<T>(
+  initialValue: T,
+  sideEffect?: (newValue: T, oldValue: T) => void,
+) {
+  const [value, setValue] = React.useState<T>(initialValue);
 
-    type SetValue = React.Dispatch<React.SetStateAction<T>>;
-    const setValueSafe: SetValue = React.useCallback((newValueOrSetter) => {
-        setValue((oldValue) => (
-            isSetterFn(newValueOrSetter)
-                ? newValueOrSetter(oldValue)
-                : newValueOrSetter
-        ));
-    }, []);
+  type SetValue = React.Dispatch<React.SetStateAction<T>>;
+  const setValueSafe: SetValue = React.useCallback((newValueOrSetter) => {
+    setValue((oldValue) => {
+      const newValue = isSetterFn(newValueOrSetter)
+        ? newValueOrSetter(oldValue)
+        : newValueOrSetter;
 
-    return [value, setValueSafe] as const;
+      if (sideEffect) {
+        sideEffect(newValue, oldValue);
+      }
+      return newValue;
+    });
+
+  }, [sideEffect]);
+
+  return [value, setValueSafe] as const;
 }
 
 export default useInputState;

@@ -32,7 +32,10 @@ const ModuleNotFoundPlugin = require('react-dev-utils/ModuleNotFoundPlugin');
 const ForkTsCheckerWebpackPlugin = require('react-dev-utils/ForkTsCheckerWebpackPlugin');
 const typescriptFormatter = require('react-dev-utils/typescriptFormatter');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const { GitRevisionPlugin } = require('git-revision-webpack-plugin');
 
+
+const gitRevisionPlugin = new GitRevisionPlugin({ lightweightTags: true });
 
 const postcssNormalize = require('postcss-normalize');
 
@@ -506,6 +509,9 @@ module.exports = function(webpackEnv) {
       ],
     },
     plugins: [
+      new webpack.EnvironmentPlugin({
+          REACT_APP_VERSION: gitRevisionPlugin.version(),
+      }),
       // Generates an `index.html` file with the <script> injected.
       new HtmlWebpackPlugin(
         Object.assign(

@@ -6,7 +6,7 @@ import {
 } from '@react-pdf/renderer';
 import { isDefined } from '@togglecorp/fujs';
 
-import { DrefOperationalUpdateApiFields } from '#views/DrefOperationalUpdateForm/common';
+import { DrefOperationalUpdateApiFields, TYPE_IMMINENT } from '#views/DrefOperationalUpdateForm/common';
 import { Strings } from '#types';
 import pdfStyles from '#utils/pdf/pdfStyles';
 import { reTab } from '#utils/common';
@@ -51,7 +51,7 @@ function NeedIdentified(props: NeedsProps) {
 interface BaseProps {
   data: DrefOperationalUpdateApiFields;
   niMap?: Record<string, string>;
-  isImminentOnset: boolean;
+  drefType?: number;
   strings: Strings;
 }
 
@@ -59,7 +59,7 @@ function NeedIdentifiedOutput(props: BaseProps) {
   const {
     data,
     niMap,
-    isImminentOnset,
+    drefType,
     strings,
   } = props;
 
@@ -76,7 +76,7 @@ function NeedIdentifiedOutput(props: BaseProps) {
         style={pdfStyles.sectionHeading}
         minPresenceAhead={20}
       >
-        {isImminentOnset ?
+        {drefType === TYPE_IMMINENT ?
           strings.drefFormImminentNeedsIdentified
           : strings.drefFormNeedsIdentified}
       </Text>

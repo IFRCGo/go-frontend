@@ -21,6 +21,8 @@ function TextInput<T extends string | undefined>(props: Props<T>) {
     readOnly,
     errorOnTooltip,
     inputClassName,
+    type = 'text',
+    variant,
     ...otherInputProps
   } = props;
 
@@ -34,13 +36,14 @@ function TextInput<T extends string | undefined>(props: Props<T>) {
       label={label}
       disabled={disabled}
       errorOnTooltip={errorOnTooltip}
+      variant={variant}
       input={(
         <RawInput
           {...otherInputProps}
           readOnly={readOnly}
           disabled={disabled}
           className={inputClassName}
-          type="text"
+          type={type}
         />
       )}
     />

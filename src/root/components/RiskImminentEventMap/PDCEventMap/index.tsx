@@ -28,9 +28,6 @@ import {
   BBOXType,
   COLOR_WHITE,
   COLOR_BLACK,
-  COLOR_RED,
-  COLOR_BLUE,
-  COLOR_YELLOW,
 } from '#utils/map';
 import {
   geoJsonSourceOptions,
@@ -38,43 +35,40 @@ import {
   iconPaint,
   hiddenLayout,
   hazardKeys,
+  COLOR_EARTHQUAKE,
+  COLOR_FLOOD,
+  COLOR_DROUGHT,
+  COLOR_STORM,
 } from '#utils/risk';
-
-import TextOutput from '#components/TextOutput';
-import InfoPopup from '#components/InfoPopup';
+import {
+  PDCEvent,
+  PDCEventExposure,
+  ImminentHazardTypes,
+} from '#types';
 import GoMapDisclaimer from '#components/GoMapDisclaimer';
 
 import HazardMapImage from './HazardMapImage';
 import PointDetails from './PointDetails';
 import Sidebar from './Sidebar';
 
-import {
-  PDCEvent,
-  PDCEventExposure,
-  ImminentHazardTypes,
-} from '#types';
-
 import styles from './styles.module.scss';
 
-const severityFillColorPaint = [
+const hazardTypeFillColorPaint = [
   'match',
-  ['get', 'hazardSeverity'],
-  'warning',
-  COLOR_RED,
-  'watch',
-  COLOR_YELLOW,
-  'advisory',
-  COLOR_BLUE,
-  'information',
-  COLOR_BLUE,
+  ['get', 'hazardType'],
+  'EQ',
+  COLOR_EARTHQUAKE,
+  'CY',
+  COLOR_STORM,
+  'TC',
+  COLOR_STORM,
+  'SS',
+  COLOR_STORM,
+  'FL',
+  COLOR_FLOOD,
+  'DR',
+  COLOR_DROUGHT,
   COLOR_BLACK,
-];
-
-const legendItems = [
-  { color: COLOR_RED, label: 'Warning' },
-  { color: COLOR_YELLOW, label: 'Watch' },
-  { color: COLOR_BLUE, label: 'Advisory / Information' },
-  { color: COLOR_BLACK, label: 'Unknown' },
 ];
 
 const mapPadding = {
@@ -112,7 +106,7 @@ function PDCEventMap(props: Props) {
   } = props;
 
   const hazardList = React.useMemo(() => {
-    const supportedHazards = listToMap(hazardKeys, h => h, d => true);
+    const supportedHazards = listToMap(hazardKeys, h => h, () => true);
     return hazardListFromProps.filter(h => supportedHazards[h.hazard_type]);
   }, [hazardListFromProps]);
 
@@ -187,6 +181,7 @@ function PDCEventMap(props: Props) {
           ...activeEventExposure.footprint_geojson.properties,
           hazardUuid: activeEvent.uuid,
           hazardSeverity: activeEvent.severity,
+          hazardType: activeEvent.hazard_type,
         },
       }],
     };
@@ -329,8 +324,8 @@ function PDCEventMap(props: Props) {
   const footprintLayerOptions = React.useMemo(() => ({
     type: 'fill',
     paint: {
-      'fill-color': severityFillColorPaint,
-      'fill-opacity': 0.3,
+      'fill-color': hazardTypeFillColorPaint,
+      'fill-opacity': 0.5,
     },
   }), []);
 
@@ -352,47 +347,6 @@ function PDCEventMap(props: Props) {
             activeEventUuid={activeEventUuid}
           />
           <GoMapDisclaimer className={styles.mapDisclaimer} />
-        </div>
-        <div className={styles.footer}>
-          <div className={styles.legend}>
-            <div className={styles.legendTitle}>
-              Severity:
-            </div>
-            {legendItems.map((li) => (
-              <div
-                key={li.label}
-                className={styles.legendItem}
-              >
-                <div
-                  className={styles.color}
-                  style={{ backgroundColor: li.color }}
-                />
-                <div className={styles.label}>
-                  {li.label}
-                </div>
-              </div>
-            ))}
-          </div>
-          <TextOutput
-            className={styles.source}
-            label="Source"
-            value="Pacific Disaster Center"
-            description={(
-              <InfoPopup
-                title="Source: Pacific Disaster Center"
-                description={(
-                  <>
-                    <p>
-                      These impacts are produced by the Pacific Disaster Center's All-hazards Impact Model (AIM) 3.0.
-                    </p>
-                    <div>
-                      Click <a className={styles.pdcLink} target="_blank" href="https://www.pdc.org/wp-content/uploads/AIM-3-Fact-Sheet-Screen-1.pdf">here</a> for more information about the model and its inputs.
-                    </div>
-                  </>
-                )}
-              />
-            )}
-          />
         </div>
       </div>
       {hazardKeys.map(d => (
@@ -464,7 +418,7 @@ function PDCEventMap(props: Props) {
             layerOptions={{
               type: 'circle',
               paint: {
-                'circle-color': severityFillColorPaint,
+                'circle-color': hazardTypeFillColorPaint,
                 'circle-radius': 6,
                 'circle-opacity': 0.5,
               },
@@ -509,15 +463,15 @@ function PDCEventMap(props: Props) {
               paint: {
                 ...pointCirclePaint,
                 'circle-color': [
-                  ...severityFillColorPaint,
+                  ...hazardTypeFillColorPaint,
                 ],
                 'circle-opacity': [
                   'case',
                   ['boolean', ['feature-state', 'active'], false],
-                  0.8,
+                  1,
                   ['boolean', ['feature-state', 'hovered'], false],
                   0.6,
-                  0.5,
+                  1,
                 ],
               },
             }}

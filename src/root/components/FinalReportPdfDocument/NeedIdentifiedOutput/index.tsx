@@ -8,7 +8,7 @@ import { isDefined } from '@togglecorp/fujs';
 
 import { Strings } from '#types';
 import pdfStyles from '#utils/pdf/pdfStyles';
-import { DrefFinalReportApiFields } from '#views/FinalReportForm/common';
+import { DrefFinalReportApiFields, TYPE_IMMINENT } from '#views/FinalReportForm/common';
 import { reTab } from '#utils/common';
 
 interface NeedsProps {
@@ -51,7 +51,7 @@ function NeedIdentified(props: NeedsProps) {
 interface BaseProps {
   data: DrefFinalReportApiFields;
   niMap?: Record<string, string>;
-  isImminentOnset: boolean;
+  drefType?: number;
   strings: Strings;
 }
 
@@ -59,7 +59,7 @@ function NeedIdentifiedOutput(props: BaseProps) {
   const {
     data,
     niMap,
-    isImminentOnset,
+    drefType,
     strings,
   } = props;
 
@@ -76,7 +76,7 @@ function NeedIdentifiedOutput(props: BaseProps) {
         style={pdfStyles.sectionHeading}
         minPresenceAhead={20}
       >
-        {isImminentOnset ?
+        {drefType === TYPE_IMMINENT ?
           strings.drefFormImminentNeedsIdentified
           : strings.drefFormNeedsIdentified}
       </Text>

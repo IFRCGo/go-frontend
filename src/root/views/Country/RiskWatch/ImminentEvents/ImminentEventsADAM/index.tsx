@@ -4,15 +4,10 @@ import {
   listToGroupList,
   _cs,
 } from '@togglecorp/fujs';
-import turfBbox from '@turf/bbox';
 
 import useReduxState from '#hooks/useReduxState';
 import BlockLoading from '#components/block-loading';
 import { useRequest, ListResponse } from '#utils/restRequest';
-import {
-  fixBounds,
-  BBOXType,
-} from '#utils/map';
 import { ADAMEvent } from '#types';
 import ADAMEventMap from '#components/RiskImminentEventMap/ADAMEventMap';
 
@@ -89,14 +84,6 @@ function ImminentEventsADAM(props: Props) {
     return uniqueList;
   }, [response]);
 
-  const countryBounds = React.useMemo(
-    () => {
-      let bbox = turfBbox(country?.bbox ?? []);
-      return fixBounds(bbox as BBOXType);
-    },
-    [country?.bbox],
-  );
-
   if ((!pending && !response?.results) || data?.length === 0) {
     return (
       <div className={styles.empty}>
@@ -113,7 +100,6 @@ function ImminentEventsADAM(props: Props) {
           className={_cs(className, styles.map)}
           sidebarHeading={country?.name}
           hazardList={data}
-          defaultBounds={countryBounds}
           onActiveEventChange={handleEventClick}
           activeEventUuid={activeEventUuid}
         />

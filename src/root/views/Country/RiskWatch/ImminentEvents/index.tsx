@@ -2,10 +2,10 @@ import React from 'react';
 import { isNotDefined } from '@togglecorp/fujs';
 
 import Container from '#components/Container';
-// import RadioInput from '#components/RadioInput';
+import RadioInput from '#components/RadioInput';
 import BlockLoading from '#components/block-loading';
 
-// import ImminentEventsADAM from './ImminentEventsADAM';
+import ImminentEventsADAM from './ImminentEventsADAM';
 import ImminentEventsPDC from './ImminentEventsPDC';
 
 import styles from './styles.module.scss';
@@ -18,13 +18,10 @@ export type Option = StringValueOption;
 export const stringOptionKeySelector = (o: StringValueOption) => o.value;
 export const optionLabelSelector = (o: Option) => o.label;
 
-/*
 const sourceOptions = [
   { value: "PDC", label: "PDC" },
   { value: "WFP", label: "WFP ADAM" },
 ];
-*/
-
 
 interface Props {
   className?: string;
@@ -33,31 +30,27 @@ interface Props {
 const titleDescription = "This map displays information about the modeled impact of specific forecasted or detected natural hazards.By hovering over the icons, if available, you can see the forecasted / observed footprint of the hazard; when you click on it, the table of modeled impact estimates will appear, as well as an information about who produced the impact estimate.";
 function ImminentEvents(props: Props) {
   const { countryId } = props;
-  // const [sourceType, setSourceType] = React.useState<string | undefined>("PDC");
-  // const [numWfpEvents, setNumWfpEvents] = React.useState<number | undefined>();
+  const [sourceType, setSourceType] = React.useState<string | undefined>("PDC");
+  const [numWfpEvents, setNumWfpEvents] = React.useState<number | undefined>();
   const [numPdcEvents, setNumPdcEvents] = React.useState<number | undefined>();
 
-  /* TEMP
   const handleChangeSourceType = React.useCallback(
     (value: string | undefined) => setSourceType(value),
     [],
   );
 
-  const handleWfpEventLoad = React.useCallback((numEvents: number | undefined) => {
-    setNumWfpEvents(numEvents ?? 0);
-  }, []);
-  */
-
   const handlePdcEventLoad = React.useCallback((numEvents: number | undefined) => {
-    /*
     if (!numEvents) {
       setSourceType('WFP');
     }
-    */
     setNumPdcEvents(numEvents ?? 0);
   }, []);
 
-  if (numPdcEvents === 0) {
+  const handleWfpEventLoad = React.useCallback((numEvents: number | undefined) => {
+    setNumWfpEvents(numEvents ?? 0);
+  }, []);
+
+  if (numWfpEvents === 0 && numPdcEvents === 0) {
     return null;
   }
 
@@ -67,7 +60,6 @@ function ImminentEvents(props: Props) {
       className={styles.imminentEvents}
       description={
         <>
-          {/* @TEMP
           <RadioInput
             name={"sourceType"}
             options={sourceOptions}
@@ -76,7 +68,6 @@ function ImminentEvents(props: Props) {
             value={sourceType}
             onChange={handleChangeSourceType}
           />
-          */}
           {titleDescription}
         </>
       }
@@ -87,7 +78,6 @@ function ImminentEvents(props: Props) {
       {isNotDefined(numPdcEvents) && isNotDefined(numPdcEvents) && (
         <BlockLoading className={styles.blockLoading}/>
       )}
-      {/* @TEMP
       {sourceType === "PDC" && (
         <ImminentEventsPDC
           className={styles.map}
@@ -102,12 +92,6 @@ function ImminentEvents(props: Props) {
           onLoad={handleWfpEventLoad}
         />
       )}
-      */}
-      <ImminentEventsPDC
-        className={styles.map}
-        countryId={countryId}
-        onLoad={handlePdcEventLoad}
-      />
     </Container>
   );
 }

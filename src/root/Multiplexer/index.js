@@ -71,6 +71,7 @@ const DrefOperationalUpdate = lazy(() => import('#views/DrefOperationalUpdateFor
 const OperationalUpdatePdfPreview = lazy(() => import('#views/DrefOpPdfPreview'));
 const FinalReport = lazy(() => import('#views/FinalReportForm'));
 const FinalReportPdfPreview = lazy(() => import('#views/FinalReportPdfPreview'));
+const Search = lazy (() => import('#views/Search'));
 
 function LoadingGlobal() {
   return (
@@ -298,6 +299,11 @@ function Multiplexer(props) {
 
               <PrivateRoute exact path='/dref-final-report/:id/edit/' component={FinalReport} />
               <PrivateRoute exact path='/dref-final-report/:id/export/' component={FinalReportPdfPreview} />
+              <Route
+                exact
+                path='/search/'
+                render={(searchProps) => <Search key={searchProps.location.key} {...searchProps} />}
+              />
 
               <Route component={FourHundredFour} />
             </Switch>

@@ -188,17 +188,20 @@ export default {
   alertTableViewEmergency: 'View Emergency page',
   alertTableViewAllText: 'View all surge alerts',
 
-  highlightedOperationsViewAll: 'View all operations',
+  highlightedOperationsViewAll: 'View all emergencies (last 30 days)',
   highlightedOperationsTitle: 'Highlighted Operations',
   operationCardLastUpdated: 'Last updated:',
   operationCardTargetedPopulation: 'Targeted Population',
   operationCardDepoloyedUnits: 'Deployed Emergency Response Units',
   operationCardFunding: 'Funding Requirements',
+  operationCardIFRCSurgePersonnel: 'IFRC Surge Personnel',
+  operationCardNSReportingActivities: 'NS Reporting Activities',
   operationCardDeployed: 'Deployed Surge Personnel',
-  operationCardFundingCoverage: 'Funding Coverage',
+  operationCardFundingCoverage: 'received',
   operationCardFollow: 'Follow',
   operationCardFollowing: 'Following',
-
+  operationCardInvolvesMultipleCountries: 'Involves multiple countries',
+  operationCardNoCountryInvolved: 'No Country Involved',
   countryPageTitle: 'IFRC GO - {countryName}',
   countryTitle: 'IFRC GO - Country',
   // not used -   countryListInRegion: ' Countries in this Region',
@@ -3076,6 +3079,8 @@ export default {
   globalThreeWChartProgrammeTypeTitle: 'Programme Type',
   globalThreeWChartTopTagsTitle: 'Top Tags',
   globalThreeWMapHeading: 'NS with ongoing projects',
+  PPPMapTitle: 'Pilot Programmatic Partnership (PPP) dashboard',
+  PPPMapDescription: 'The Programmatic Partnership is an innovative and ambitious three-year partnership between the IFRC, many of our member National Societies, and the European Union. Together, we support communities worldwide to reduce their risks and be better prepared for disasters and health emergencies.',
 
   allThreeWPageTitle: 'IFRC GO - All 3W',
   allThreeWPageHeading: 'All 3W Projects ({count})',
@@ -3154,6 +3159,7 @@ export default {
   drefFormEssentialInformation: 'Essential Information',
   drefFormNationalSociety: 'Name of National Society',
   drefFormForAssessment: 'Is this the DREF for assessment?',
+  drefFormTypeOfDref: 'Type of DREF',
   drefFormDisasterDetails: 'Disaster Details',
   drefFormImminentDisasterDetails: 'Hazard Details',
   drefFormDisasterTypeLabel: 'Type of Disaster',
@@ -3341,7 +3347,7 @@ export default {
   drefFormManMadeEvent: 'Is this a man made event?',
 
   // dref pdf
-  drefFormPdfTitle: 'DREF APPLICATION',
+  drefFormPdfTitle: 'DREF Application',
   drefFormPdfDrefAllocated: 'DREF Allocated',
   drefFormPdfGlideNum: 'Glide No:',
   drefFormPdfAppealNum: 'Appeal No:',
@@ -3420,8 +3426,8 @@ export default {
   riskModulePastAndHistoricEvent: 'Past Events And Historical Impact',
   //dref pdf
   drefExportIfrcName: 'International Federation of Red Cross and Red Crescent Societies (IFRC)',
-  drefExportTitle: 'DREF Application',
-  drefExportDrefAllocated: 'DREF Allocated:',
+  drefExportTitle: 'DREF OPERATION',
+  drefExportDrefAllocated: 'DREF Allocation:',
   drefExportGlideNum: 'Glide Number:',
   drefExportAppealNum: 'Appeal:',
   drefExportPeopleAffected: 'People Affected:',
@@ -3466,6 +3472,8 @@ export default {
   drefDocumentImportSlowSuddenLabel: 'Slow/Sudden',
   drefDocumentImportImminentLabel: 'Imminent',
   drefDocumentImportAssessmentLabel: 'Assessment',
+  drefExportCountry: 'Country:',
+  drefExportDrefPublished: 'DREF Published:',
 
   // Flash Update
   flashUpdateFormPageTitle: 'IFRC GO - Flash Update Request',
@@ -3610,7 +3618,9 @@ export default {
   drefOperationalUpdateAdditionalAllocationRequested: 'Additional Allocation Requested',
   drefOperationalUpdateTotalAllocation: 'Total DREF Allocation',
   drefOperationalUpdateNumber: 'Operational Update Number',
-  drerfOperationalUpdateCoverImageLabel: 'Cover image',
+  drefOperationalUpdateCoverImageLabel: 'Cover image',
+  drefOperationalUpdateTypeOfDREF: 'Type of DREF',
+  drefOperationalUpdateDREFType: 'DREF Type',
   //Timeframes
   drefOperationalUpdateTimeFrameDateOfEvent: 'Operation start Date',
   drefOperationalUpdateTimeFrameReportingTimeFrame: 'Reporting timeframe',
@@ -3821,4 +3831,95 @@ export default {
   countryPlanKeyFigurePeopleTargeted: 'People Targeted',
   countryPlanNameOfPNS: 'Name of Partner National Society',
   countryPlanNoCountryPlan: 'This country hasn\'t published any Country Plan yet!',
+
+  //Search
+  searchIfrcSearchTitle: 'IFRC GO - Search Details',
+  searchIfrcEmergencyOperations: 'IFRC Emergency Operations',
+  searchIfrcEmergencies: 'Emergencies',
+  searchIfrcEmergencyPlanningAndReporting: 'Emergency Planning And Reporting',
+  searchIfrcSurgeDeployments: 'Deployed ERUs',
+  searchIfrcReport: 'Reports',
+  searchIfrcProjects: 'Projects',
+  searchIfrcOpenSurgeAlerts: 'Open Surge Alerts',
+  searchIFRCRapidResponseDeployment: 'Ongoing Rapid Response Deployments',
+  searchIfrcCountry: 'Country',
+  searchIfrcRegion: 'Region',
+  searchIfrcProvince: 'Province',
+  searchViewAllCountries: 'View All Countries',
+  searchViewAllRegions: 'View All Regions',
+  searchViewAllProvince: 'View All Provinces',
+  searchViewAllEmergencies: 'View All Emergencies',
+  searchViewAllRapidResponseDeployment: 'View All Ongoing Rapid Response Deployments',
+  searchViewAllEmergenciesPlansAndReportingDocuments: 'View All Emergencies Plans and Reporting Documents',
+  searchViewAllProjects: 'View All Projects',
+  searchViewAllSurgeAlerts: 'View All Open Surge Alerts',
+  searchViewAllSurgeDeployments: 'View All Surge deployments',
+  searchViewAllFieldReports: 'View All Field Reports',
+  searchGoBack: 'Go Back',
+  searchResultforQuery: 'No matches for your keyword search',
+  searchThreeCharactersRequired: 'Please enter at least 3 characters to get started with search!',
+  searchPageFeedbackLinkText: 'The search results page is new to GO. Can\'t find what you\'re looking for?',
+  searchPageFeedbackButton: 'Please let us know',
+  searchPageSearchForKeyword: 'Search for keyword',
+  searchEnterAtLeastThreeCharacters: 'Enter at least 3 characters',
+
+  //Search Emergency Planning Table Headings
+  searchEmergencyPlanningTableDate: 'Date',
+  searchEmergencyPlanningTableType: 'Type',
+  searchEmergencyPlanningTableCode: 'Code',
+  searchEmergencyPlanningTableTitle: 'Title',
+  searchEmergencyPlanningTableCountry: 'Country',
+
+  //Search Emergency Table Headings
+  searchEmergencyTableTitle: 'Title',
+  searchEmergencyTableAppealType: 'Appeal Type',
+  searchEmergencyTableDisasterType: 'Disaster Type',
+  searchEmergencyTableFundingRequirements: 'Funding Requirements',
+  searchEmergencyTableFundingCoverage: 'Funding Coverage',
+  searchEmergencyTableCountry: 'Country',
+  searchEmergencyTableMultipleCountries: 'Multiple Countries',
+
+  //Search Field Report Table Headings
+  searchFieldReportTableDate: 'Date',
+  searchFieldReportTableType: 'Type',
+  searchFieldReportTableTitle: 'Title',
+
+  //Search Project Table Headings
+  searchProjectTableEmergency: 'Emergency',
+  searchProjectTableNationalSociety: 'National Society/ERU',
+  searchProjectTableProjectName: 'Project/Activity Name',
+  searchProjectTableStartEndDate: 'Start-End Dates',
+  searchProjectTableProvince: 'Province/Region',
+  searchProjectTableSector: 'Sector',
+  searchProjectTablePeopleTargeted: 'People Targeted',
+
+  //Search Rapid Deployment Table Headings
+  searchRapidDeploymentTableStartDate: 'Start Date',
+  searchRapidDeploymentTableEndDate: 'End Date',
+  searchRapidDeploymentTableName: 'Name',
+  searchRapidDeploymentTablePosition: 'Position',
+  searchRapidDeploymentTableKeywords: 'Keywords',
+  searchRapidDeploymentTableDeployingParty: 'Deploying Party',
+  searchRapidDeploymentTableDeployedTo: 'Deployed To',
+  searchRapidDeploymentTableEmergency: 'Emergency',
+
+  //Search Surge Alert Table Headings
+  searchSurgeAlertTableAlertDate: 'Alert Date',
+  searchSurgeAlertTableDuration: 'Duration',
+  searchSurgeAlertTableStartDate: 'Start Date',
+  searchSurgeAlertTablePosition: 'Position',
+  searchSurgeAlertTableKeywords: 'Keywords',
+  searchSurgeAlertTableEmergency: 'Emergency',
+  searchSurgeAlertTableCountry: 'Country',
+  searchSurgeAlertTableStatus: 'Status',
+
+  //Search Surge Deployment Table Headings
+  searchSurgeDeploymentTableOwner: 'Owner',
+  searchSurgeDeploymentTableType: 'Type',
+  searchSurgeDeploymentTablePersonnelUnits: 'Personnel Units',
+  searchSurgeDeploymentTableEquipmentUnits: 'Equipment Units',
+  searchSurgeDeploymentsTableCountryDeployedTo: 'Country Deployed to',
+  searchSurgeDeploymentsTableEmergency: 'Emergency',
+
+  reducedListDisplayMoreLabel: '... and {n} more',
 };

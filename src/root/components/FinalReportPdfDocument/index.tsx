@@ -5,14 +5,13 @@ import {
 } from '@react-pdf/renderer';
 import { listToMap } from '@togglecorp/fujs';
 
-import { ONSET_IMMINENT } from '#views/DrefApplicationForm/common';
 import {
   NumericKeyValuePair,
   StringKeyValuePair,
   Strings,
 } from '#types';
 import pdfStyles from '#utils/pdf/pdfStyles';
-import { DrefFinalReportApiFields } from '#views/FinalReportForm/common';
+import { DrefFinalReportApiFields, TYPE_ASSESSMENT } from '#views/FinalReportForm/common';
 import HeadingOutput from './HeadingOutput';
 import EssentialInformationOutput from './EssentialInformationOutput';
 import EventDescriptionOutput from './EventDescriptionOutput';
@@ -58,9 +57,8 @@ function FinalReportPdfDocument(props: Props) {
   const piMap = listToMap(drefOptions.planned_interventions, d => d.key, d => d.value);
   const niMap = listToMap(drefOptions.needs_identified, d => d.key, d => d.value);
   const affectedAreas = finalReportResponse?.district_details?.map(d => d.name).join(', ');
-  const isImminentOnset = finalReportResponse?.type_of_onset === ONSET_IMMINENT;
-  const isAssessmentReport = finalReportResponse?.is_assessment_report;
   const documentTitle = finalReportResponse.title;
+  const drefType = finalReportResponse.type_of_dref;
 
   return (
     <Document
@@ -82,13 +80,12 @@ function FinalReportPdfDocument(props: Props) {
           data={finalReportResponse}
           strings={strings}
           affectedAreas={affectedAreas}
-          isImminentOnset={isImminentOnset}
+          drefType={drefType}
         />
         <EventDescriptionOutput
           data={finalReportResponse}
           strings={strings}
-          isImminentOnset={isImminentOnset}
-          isAssessmentReport={isAssessmentReport}
+          drefType={drefType}
         />
         <NationalSocietyOutput
           data={finalReportResponse}
@@ -102,11 +99,11 @@ function FinalReportPdfDocument(props: Props) {
           data={finalReportResponse}
           strings={strings}
         />
-        {!isAssessmentReport &&
+        {drefType !== TYPE_ASSESSMENT &&
           <NeedIdentifiedOutput
             data={finalReportResponse}
             niMap={niMap}
-            isImminentOnset={isImminentOnset}
+            drefType={drefType}
             strings={strings}
           />
         }
@@ -117,7 +114,7 @@ function FinalReportPdfDocument(props: Props) {
         <TargetedPopulationOutput
           data={finalReportResponse}
           strings={strings}
-          isAssessmentReport={isAssessmentReport}
+          drefType={drefType}
         />
         <RiskAndSecurityOutput
           data={finalReportResponse}

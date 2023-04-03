@@ -20,15 +20,16 @@ import SearchSelectInput from '#components/SearchSelectInput';
 import { isNotDefined, listToMap } from '@togglecorp/fujs';
 import { rankedSearchOnList } from '#utils/common';
 import Button from '#components/Button';
+import ImageWithCaptionInput from '#views/DrefApplicationForm/DrefOverview/ImageWithCaptionInput';
 import {
   BooleanValueOption,
   DrefFinalReportFields,
   emptyNumericOptionList,
   NumericValueOption,
+  TYPE_IMMINENT,
 } from '../common';
 
 import styles from './styles.module.scss';
-import ImageWithCaptionInput from '#views/DrefApplicationForm/DrefOverview/ImageWithCaptionInput';
 
 type Value = PartialForm<DrefFinalReportFields>;
 interface Props {
@@ -48,8 +49,9 @@ interface Props {
   yesNoOptions: BooleanValueOption[];
   fileIdToUrlMap: Record<number, string>;
   setFileIdToUrlMap?: React.Dispatch<React.SetStateAction<Record<number, string>>>;
-  isImminentOnset?: boolean;
-  isAssessmentReport?: boolean;
+  drefType?: number;
+  fetchingDrefTypeOptions?: boolean;
+  drefTypeOptions: NumericValueOption[];
 }
 
 const totalPopulationRiskImminentLink = "https://ifrcorg.sharepoint.com/sites/IFRCSharing/Shared%20Documents/Forms/AllItems.aspx?id=%2Fsites%2FIFRCSharing%2FShared%20Documents%2FDREF%2FHum%20Pop%20Definitions%20for%20DREF%20Form%5F21072022%2Epdf&parent=%2Fsites%2FIFRCSharing%2FShared%20Documents%2FDREF&p=true&ga=1";
@@ -77,7 +79,8 @@ function Overview(props: Props) {
     onCreateAndShareButtonClick,
     fileIdToUrlMap,
     setFileIdToUrlMap,
-    isImminentOnset,
+    drefType,
+    drefTypeOptions,
   } = props;
 
   const error = React.useMemo(
@@ -181,8 +184,18 @@ function Overview(props: Props) {
             pending={fetchingNationalSociety}
           />
         </InputSection>
+        <InputSection title={strings.drefOperationalUpdateDREFType}>
+          <SelectInput
+            error={error?.type_of_dref}
+            label={strings.drefOperationalUpdateTypeOfDREF}
+            name={"type_of_dref" as const}
+            onChange={onValueChange}
+            options={drefTypeOptions}
+            value={value.type_of_dref}
+          />
+        </InputSection>
         <InputSection
-          title={isImminentOnset
+          title={drefType === TYPE_IMMINENT
             ? strings.finalReportImminentDisasterDetails
             : strings.finalReportDisasterDetails}
           multiRow
@@ -190,7 +203,7 @@ function Overview(props: Props) {
         >
           <SelectInput
             error={error?.disaster_type}
-            label={isImminentOnset
+            label={drefType === TYPE_IMMINENT
               ? strings.finalReportImminentDisasterTypeLabel
               : strings.finalReportDisasterTypeLabel}
             name={"disaster_type" as const}
@@ -229,7 +242,7 @@ function Overview(props: Props) {
           />
         </InputSection>
         <InputSection
-          title={!isImminentOnset
+          title={drefType !== TYPE_IMMINENT
             ? strings.finalReportAffectedCountryAndProvinceImminent
             : strings.finalReportRiskCountryLabel}
           twoColumn
@@ -269,7 +282,7 @@ function Overview(props: Props) {
           twoColumn
         >
           <NumberInput
-            label={isImminentOnset ?
+            label={drefType === TYPE_IMMINENT ?
               <>
                 {strings.finalReportRiskPeopleLabel}
                 <a
@@ -298,7 +311,7 @@ function Overview(props: Props) {
             value={value.number_of_people_affected}
             onChange={onValueChange}
             error={error?.number_of_people_affected}
-            hint={isImminentOnset
+            hint={drefType === TYPE_IMMINENT
               ? strings.drefFormPeopleAffectedDescriptionImminent
               : strings.drefFormPeopleAffectedDescriptionSlowSudden
             }
@@ -307,7 +320,7 @@ function Overview(props: Props) {
             label={(
               <>
                 {
-                  isImminentOnset
+                  drefType === TYPE_IMMINENT
                     ? strings.drefFormEstimatedPeopleInNeed
                     : strings.drefFormPeopleInNeed
                 }
@@ -325,7 +338,7 @@ function Overview(props: Props) {
             value={value.people_in_need}
             onChange={onValueChange}
             error={error?.people_in_need}
-            hint={isImminentOnset
+            hint={drefType === TYPE_IMMINENT
               ? strings.drefFormPeopleInNeedDescriptionImminent
               : strings.drefFormPeopleInNeedDescriptionSlowSudden
             }
