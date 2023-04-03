@@ -3860,4 +3860,66 @@ export default {
   searchThreeCharactersRequired: 'Please enter at least 3 characters to get started with search!',
   searchPageFeedbackLinkText: 'The search results page is new to GO. Can\'t find what you\'re looking for?',
   searchPageFeedbackButton: 'Please let us know',
+  searchPageSearchForKeyword: 'Search for keyword',
+  searchEnterAtLeastThreeCharacters: 'Enter at least 3 characters',
+
+  //Search Emergency Planning Table Headings
+  searchEmergencyPlanningTableDate: 'Date',
+  searchEmergencyPlanningTableType: 'Type',
+  searchEmergencyPlanningTableCode: 'Code',
+  searchEmergencyPlanningTableTitle: 'Title',
+  searchEmergencyPlanningTableCountry: 'Country',
+
+  //Search Emergency Table Headings
+  searchEmergencyTableTitle: 'Title',
+  searchEmergencyTableAppealType: 'Appeal Type',
+  searchEmergencyTableDisasterType: 'Disaster Type',
+  searchEmergencyTableFundingRequirements: 'Funding Requirements',
+  searchEmergencyTableFundingCoverage: 'Funding Coverage',
+  searchEmergencyTableCountry: 'Country',
+  searchEmergencyTableMultipleCountries: 'Multiple Countries',
+
+  //Search Field Report Table Headings
+  searchFieldReportTableDate: 'Date',
+  searchFieldReportTableType: 'Type',
+  searchFieldReportTableTitle: 'Title',
+
+  //Search Project Table Headings
+  searchProjectTableEmergency: 'Emergency',
+  searchProjectTableNationalSociety: 'National Society/ERU',
+  searchProjectTableProjectName: 'Project/Activity Name',
+  searchProjectTableStartEndDate: 'Start-End Dates',
+  searchProjectTableProvince: 'Province/Region',
+  searchProjectTableSector: 'Sector',
+  searchProjectTablePeopleTargeted: 'People Targeted',
+
+  //Search Rapid Deployment Table Headings
+  searchRapidDeploymentTableStartDate: 'Start Date',
+  searchRapidDeploymentTableEndDate: 'End Date',
+  searchRapidDeploymentTableName: 'Name',
+  searchRapidDeploymentTablePosition: 'Position',
+  searchRapidDeploymentTableKeywords: 'Keywords',
+  searchRapidDeploymentTableDeployingParty: 'Deploying Party',
+  searchRapidDeploymentTableDeployedTo: 'Deployed To',
+  searchRapidDeploymentTableEmergency: 'Emergency',
+
+  //Search Surge Alert Table Headings
+  searchSurgeAlertTableAlertDate: 'Alert Date',
+  searchSurgeAlertTableDuration: 'Duration',
+  searchSurgeAlertTableStartDate: 'Start Date',
+  searchSurgeAlertTablePosition: 'Position',
+  searchSurgeAlertTableKeywords: 'Keywords',
+  searchSurgeAlertTableEmergency: 'Emergency',
+  searchSurgeAlertTableCountry: 'Country',
+  searchSurgeAlertTableStatus: 'Status',
+
+  //Search Surge Deployment Table Headings
+  searchSurgeDeploymentTableOwner: 'Owner',
+  searchSurgeDeploymentTableType: 'Type',
+  searchSurgeDeploymentTablePersonnelUnits: 'Personnel Units',
+  searchSurgeDeploymentTableEquipmentUnits: 'Equipment Units',
+  searchSurgeDeploymentsTableCountryDeployedTo: 'Country Deployed to',
+  searchSurgeDeploymentsTableEmergency: 'Emergency',
+
+  reducedListDisplayMoreLabel: '... and {n} more',
 };

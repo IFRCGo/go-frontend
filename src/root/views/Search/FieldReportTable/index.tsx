@@ -42,17 +42,17 @@ function FieldReportTable(props: Props) {
   const columns = [
     createDateColumn<FieldReportResponse, number>(
       'created_at',
-      'Date',
+      strings.searchFieldReportTableDate,
       (fieldReport) => fieldReport.created_at,
     ),
     createStringColumn<FieldReportResponse, number>(
       'type',
-      'Type',
+      strings.searchFieldReportTableType,
       (fieldReport) => fieldReport.type,
     ),
     createLinkColumn<FieldReportResponse, number>(
       'name',
-      'Title',
+      strings.searchFieldReportTableTitle,
       (fieldReport) => fieldReport.name,
       (fieldReport) => ({
         href: `/reports/${fieldReport.id}`,

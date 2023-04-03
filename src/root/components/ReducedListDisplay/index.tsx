@@ -1,5 +1,8 @@
 import React from 'react';
+
 import InfoPopup from '#components/InfoPopup';
+import { resolveToString } from '#utils/lang';
+import LanguageContext from '#root/languageContext';
 
 import styles from './styles.module.scss';
 
@@ -8,11 +11,13 @@ interface Props {
   title?: React.ReactNode;
 }
 
-export function ReduceListDisplay(props: Props) {
+export function ReducedListDisplay(props: Props) {
   const {
     value,
     title,
   } = props;
+
+  const { strings } = React.useContext(LanguageContext);
 
   if (!value) {
     return null;
@@ -27,13 +32,17 @@ export function ReduceListDisplay(props: Props) {
   }
 
   const newList = value.slice(0, 2);
+  const infoLabel = resolveToString(
+    strings.reducedListDisplayMoreLabel,
+    { n: value.length - 2 },
+  );
 
   return (
     <>
       {newList.join(', ')}
       <InfoPopup
         className={styles.reducedListLabel}
-        infoLabel={`... and ${value.length - 2} more`}
+        infoLabel={infoLabel}
         hideIcon
         title={title}
         description={value.join(', ')}
@@ -42,4 +51,4 @@ export function ReduceListDisplay(props: Props) {
   );
 }
 
-export default ReduceListDisplay;
+export default ReducedListDisplay;

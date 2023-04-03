@@ -101,7 +101,7 @@ function EmergencyTable(props: Props) {
   const columns = [
     createLinkColumn<EmergencyResult, number>(
       'name',
-      'Title',
+      strings.searchEmergencyTableTitle,
       (emergency) => {
         if (emergency.name) {
           return (
@@ -119,17 +119,17 @@ function EmergencyTable(props: Props) {
     ),
     createStringColumn<EmergencyResult, number>(
       'appeal_type',
-      'Appeal Type',
+      strings.searchEmergencyTableAppealType,
       (emergency) => emergency.appeal_type,
     ),
     createStringColumn<EmergencyResult, number>(
       'disaster_type',
-      'Disaster Type',
+      strings.searchEmergencyTableDisasterType,
       (emergency) => emergency.disaster_type,
     ),
     createNumberColumn<EmergencyResult, number>(
       'funding_requirements',
-      'Funding Requirements',
+      strings.searchEmergencyTableFundingRequirements,
       (emergency) => {
         if (+emergency.funding_requirements > 0) {
           return +emergency.funding_requirements;
@@ -144,17 +144,17 @@ function EmergencyTable(props: Props) {
     ),
     createStringColumn<EmergencyResult, number>(
       'funding_coverage',
-      'Funding Coverage',
+      strings.searchEmergencyTableFundingCoverage,
       showProgressBar
     ),
     createStringColumn<EmergencyResult, number>(
       'countries',
-      'Country',
+      strings.searchEmergencyTableCountry,
       (emergency) => {
         if (emergency.countries.length > 1) {
           return (
             <ReducedListDisplay
-              title="Multiple Countries"
+              title={strings.searchEmergencyTableMultipleCountries}
               value={emergency.countries}
             />
           );
