@@ -2,7 +2,7 @@ import React from 'react';
 import { MapImage } from '@togglecorp/re-map';
 
 import {
-  hazardTypeToIconMap,
+  imminentHazardTypeToIconMap,
   pointImageOptions,
 } from '#utils/risk';
 import { ImminentHazardTypes } from '#types';
@@ -27,7 +27,7 @@ function HazardMapImage<HK extends ImminentHazardTypes>(props: Props<HK>) {
   return (
     <MapImage
       name={`${hazardKey}-icon`}
-      url={hazardTypeToIconMap[hazardKey]}
+      url={imminentHazardTypeToIconMap[hazardKey]}
       onLoad={handleLoad}
       imageOptions={pointImageOptions}
     />

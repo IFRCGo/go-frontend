@@ -127,7 +127,6 @@ function SelectInput<N, V extends ValueType>(props: Props<N, V>) {
           isDisabled={pending || disabled}
           isLoading={pending}
           controlShouldRenderValue={!hideValue}
-          // menuPortalTarget={document.body}
           unstyled
         />
       )}
