@@ -154,7 +154,7 @@ function EmergencyTable(props: Props) {
         if (emergency.countries.length > 1) {
           return (
             <ReducedListDisplay
-              title="Multiple Countries"
+              title={strings.searchEmergencyTableMultipleCountries}
               value={emergency.countries}
             />
           );
