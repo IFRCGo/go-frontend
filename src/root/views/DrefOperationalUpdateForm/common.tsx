@@ -9,6 +9,7 @@ export const ONSET_SUDDEN = 2;
 export const TYPE_IMMINENT = 0;
 export const TYPE_ASSESSMENT = 1;
 export const TYPE_RESPONSE = 2;
+export const TYPE_LOAN = 3;
 
 export const DISASTER_FIRE = 15;
 export const DISASTER_FLASH_FLOOD = 27;

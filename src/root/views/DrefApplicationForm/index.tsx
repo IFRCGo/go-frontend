@@ -85,6 +85,14 @@ export function getDefinedValues<T extends Record<string, any>>(o: T): Partial<T
 }
 
 type StepTypes = 'operationOverview' | 'eventDetails' | 'action' | 'response' | 'submission';
+
+interface Props {
+  className?: string;
+  match: Match<{ drefId?: string }>;
+  history: History;
+  location: Location;
+}
+
 const stepTypesToFieldsMap: {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   [key in StepTypes]: (keyof DrefFields)[];
@@ -96,12 +104,6 @@ const stepTypesToFieldsMap: {
   submission: submissionFields,
 };
 
-interface Props {
-  className?: string;
-  match: Match<{ drefId?: string }>;
-  history: History;
-  location: Location;
-}
 
 function DrefApplication(props: Props) {
   const {
@@ -415,6 +417,30 @@ function DrefApplication(props: Props) {
     }
   }, [validateCurrentTab, currentStep, handleTabChange, submitDref]);
 
+  const handleLoanSubmitButtonClick = React.useCallback(() => {
+    scrollToTop();
+
+    const isCurrentTabValid = validateCurrentTab(['event_map_file']);
+
+    if (!isCurrentTabValid) {
+      return;
+    }
+
+    if (currentStep === 'submission') {
+      submitDref();
+    } else {
+      const nextStepMap: {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        [key in Exclude<StepTypes, 'submission'>]: Exclude<StepTypes, 'operationOverview'>;
+      } = {
+        operationOverview: 'eventDetails',
+        eventDetails: 'submission',
+      };
+
+      handleTabChange(nextStepMap[currentStep]);
+    }
+  }, [validateCurrentTab, currentStep, handleTabChange, submitDref]);
+
   const handleBackButtonClick = React.useCallback(() => {
     if (currentStep !== 'operationOverview') {
       const prevStepMap: {
@@ -425,6 +451,20 @@ function DrefApplication(props: Props) {
         action: 'eventDetails',
         response: 'action',
         submission: 'response',
+      };
+
+      handleTabChange(prevStepMap[currentStep]);
+    }
+  }, [handleTabChange, currentStep]);
+
+  const handleLoanBackButtonClick = React.useCallback(() => {
+    if (currentStep !== 'operationOverview') {
+      const prevStepMap: {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        [key in Exclude<StepTypes, 'operationOverview'>]: Exclude<StepTypes, 'submission'>;
+      } = {
+        eventDetails: 'operationOverview',
+        submission: 'eventDetails',
       };
 
       handleTabChange(prevStepMap[currentStep]);
@@ -565,10 +605,9 @@ function DrefApplication(props: Props) {
     >
       <Page
         className={className}
-        actions={
-          drefType !== TYPE_LOAN && (
+        actions={(
             <>
-              {isNotDefined(drefId) && (
+              {isNotDefined(drefId) && drefType !== TYPE_LOAN && (
                 <FileInput
                   type='file'
                   accept='.docx'
@@ -740,26 +779,48 @@ function DrefApplication(props: Props) {
               <Submission
                 error={error}
                 onValueChange={setFieldValue}
+                drefType={drefType}
                 value={value}
               />
             </TabPanel>
-            <div className={styles.actions}>
-              <Button
-                name={undefined}
-                variant="secondary"
-                onClick={handleBackButtonClick}
-                disabled={shouldDisabledBackButton}
-              >
-                {strings.drefFormBackButtonLabel}
-              </Button>
-              <Button
-                name={undefined}
-                variant="secondary"
-                onClick={handleSubmitButtonClick}
-              >
-                {submitButtonLabel}
-              </Button>
-            </div>
+              {drefType !== TYPE_LOAN &&
+                <div className={styles.actions}>
+                  <Button
+                    name={undefined}
+                    variant="secondary"
+                    onClick={handleBackButtonClick}
+                    disabled={shouldDisabledBackButton}
+                  >
+                    {strings.drefFormBackButtonLabel}
+                  </Button>
+                  <Button
+                    name={undefined}
+                    variant="secondary"
+                    onClick={handleSubmitButtonClick}
+                  >
+                    {submitButtonLabel}
+                  </Button>
+                </div>
+              }
+              {drefType === TYPE_LOAN &&
+                <div className={styles.actions}>
+                  <Button
+                    name={undefined}
+                    variant="secondary"
+                    onClick={handleLoanBackButtonClick}
+                    disabled={shouldDisabledBackButton}
+                  >
+                    {strings.drefFormBackButtonLabel}
+                  </Button>
+                  <Button
+                    name={undefined}
+                    variant="secondary"
+                    onClick={handleLoanSubmitButtonClick}
+                  >
+                    {submitButtonLabel}
+                  </Button>
+                </div>
+              }
             {isDefined(drefId) && showObsoletePayloadResolutionModal && (
               <ObsoletePayloadResolutionModal
                 drefId={+drefId}

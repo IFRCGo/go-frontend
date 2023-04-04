@@ -26,6 +26,7 @@ import {
   TYPE_IMMINENT,
   ONSET_SUDDEN,
   TYPE_ASSESSMENT,
+  TYPE_LOAN,
 } from '../common';
 
 import styles from './styles.module.scss';
@@ -87,89 +88,92 @@ function EventDetails(props: Props) {
     onValueChange(newImageList, 'images_file' as const);
   }, [value?.images_file, onValueChange]);
 
+  const isLoanDrefType = drefType === TYPE_LOAN;
+  const isImminentDrefType = drefType === TYPE_IMMINENT;
+  const isAssessmentDrefType = drefType === TYPE_ASSESSMENT;
+
   return (
     <>
-      <Container
-        heading={strings.drefOperationalUpdateSummaryChangeHeading}
-      >
-        <InputSection
-          title={strings.drefOperationalUpdateSummaryAreYouChangingTimeFrame}
+      {drefType !== TYPE_LOAN &&
+        <Container
+          heading={strings.drefOperationalUpdateSummaryChangeHeading}
         >
-          <RadioInput
-            name={"changing_timeframe_operation" as const}
-            options={yesNoOptions}
-            keySelector={booleanOptionKeySelector}
-            labelSelector={optionLabelSelector}
-            value={value.changing_timeframe_operation}
-            onChange={onValueChange}
-            error={error?.changing_timeframe_operation}
-          />
-        </InputSection>
-        <InputSection
-          title={strings.drefOperationalUpdateSummaryAreYouChangingStrategy}
-        >
-          <RadioInput
-            name={"changing_operation_strategy" as const}
-            options={yesNoOptions}
-            keySelector={booleanOptionKeySelector}
-            labelSelector={optionLabelSelector}
-            value={value.changing_operation_strategy}
-            onChange={onValueChange}
-            error={error?.changing_operation_strategy}
-          />
-        </InputSection>
-        <InputSection
-          title={strings.drefOperationalUpdateSummaryAreYouChangingTargetPopulation}
-        >
-          <RadioInput
-            name={"changing_target_population_of_operation" as const}
-            options={yesNoOptions}
-            keySelector={booleanOptionKeySelector}
-            labelSelector={optionLabelSelector}
-            value={value.changing_target_population_of_operation}
-            onChange={onValueChange}
-            error={error?.changing_target_population_of_operation}
-          />
-        </InputSection>
-        <InputSection
-          title={strings.drefOperationalUpdateSummaryAreYouChangingGeographicalLocation}
-        >
-          <RadioInput
-            name={"changing_geographic_location" as const}
-            options={yesNoOptions}
-            keySelector={booleanOptionKeySelector}
-            labelSelector={optionLabelSelector}
-            value={value.changing_geographic_location}
-            onChange={onValueChange}
-            error={error?.changing_geographic_location}
-          />
-        </InputSection>
-        <InputSection
-          title={strings.drefOperationalUpdateSummaryAreYouChangingBudget}
-        >
-          <RadioInput
-            name={"changing_budget" as const}
-            options={yesNoOptions}
-            keySelector={booleanOptionKeySelector}
-            labelSelector={optionLabelSelector}
-            value={value.changing_budget}
-            onChange={onValueChange}
-            error={error?.changing_budget}
-          />
-        </InputSection>
-        <InputSection title={strings.drefOperationalUpdateSummaryRequestForSecondAllocation}>
-          <RadioInput
-            name={"request_for_second_allocation" as const}
-            options={yesNoOptions}
-            keySelector={booleanOptionKeySelector}
-            labelSelector={optionLabelSelector}
-            value={value.request_for_second_allocation}
-            onChange={onValueChange}
-            error={error?.request_for_second_allocation}
-          />
-        </InputSection>
-
-        {drefType === TYPE_IMMINENT &&
+          <InputSection
+            title={strings.drefOperationalUpdateSummaryAreYouChangingTimeFrame}
+          >
+            <RadioInput
+              name={"changing_timeframe_operation" as const}
+              options={yesNoOptions}
+              keySelector={booleanOptionKeySelector}
+              labelSelector={optionLabelSelector}
+              value={value.changing_timeframe_operation}
+              onChange={onValueChange}
+              error={error?.changing_timeframe_operation}
+            />
+          </InputSection>
+          <InputSection
+            title={strings.drefOperationalUpdateSummaryAreYouChangingStrategy}
+          >
+            <RadioInput
+              name={"changing_operation_strategy" as const}
+              options={yesNoOptions}
+              keySelector={booleanOptionKeySelector}
+              labelSelector={optionLabelSelector}
+              value={value.changing_operation_strategy}
+              onChange={onValueChange}
+              error={error?.changing_operation_strategy}
+            />
+          </InputSection>
+          <InputSection
+            title={strings.drefOperationalUpdateSummaryAreYouChangingTargetPopulation}
+          >
+            <RadioInput
+              name={"changing_target_population_of_operation" as const}
+              options={yesNoOptions}
+              keySelector={booleanOptionKeySelector}
+              labelSelector={optionLabelSelector}
+              value={value.changing_target_population_of_operation}
+              onChange={onValueChange}
+              error={error?.changing_target_population_of_operation}
+            />
+          </InputSection>
+          <InputSection
+            title={strings.drefOperationalUpdateSummaryAreYouChangingGeographicalLocation}
+          >
+            <RadioInput
+              name={"changing_geographic_location" as const}
+              options={yesNoOptions}
+              keySelector={booleanOptionKeySelector}
+              labelSelector={optionLabelSelector}
+              value={value.changing_geographic_location}
+              onChange={onValueChange}
+              error={error?.changing_geographic_location}
+            />
+          </InputSection>
+          <InputSection
+            title={strings.drefOperationalUpdateSummaryAreYouChangingBudget}
+          >
+            <RadioInput
+              name={"changing_budget" as const}
+              options={yesNoOptions}
+              keySelector={booleanOptionKeySelector}
+              labelSelector={optionLabelSelector}
+              value={value.changing_budget}
+              onChange={onValueChange}
+              error={error?.changing_budget}
+            />
+          </InputSection>
+          <InputSection title={strings.drefOperationalUpdateSummaryRequestForSecondAllocation}>
+            <RadioInput
+              name={"request_for_second_allocation" as const}
+              options={yesNoOptions}
+              keySelector={booleanOptionKeySelector}
+              labelSelector={optionLabelSelector}
+              value={value.request_for_second_allocation}
+              onChange={onValueChange}
+              error={error?.request_for_second_allocation}
+            />
+          </InputSection>
           <InputSection
             title={strings.drefOperationalUpdateEventMaterialize}
           >
@@ -183,33 +187,34 @@ function EventDetails(props: Props) {
               error={error?.has_forecasted_event_materialize}
             />
           </InputSection>
-        }
-        {(drefType === TYPE_IMMINENT && value.has_forecasted_event_materialize)
-          &&
-          <InputSection
-            title={strings.drefOperationalUpdateEventMaterializeExplain}
-            description={strings.drefOperationalUpdateEventMaterializeExplainDescription}
-          >
-            <TextArea
-              name="specified_trigger_met"
-              value={value.specified_trigger_met}
-              onChange={onValueChange}
-              error={error?.specified_trigger_met}
-              placeholder={strings.drefOperationalUpdateSummaryExplain}
-            />
-          </InputSection>
-        }
-        <InputSection title={strings.drefOperationalUpdateSummaryExplain}>
-          <TextArea
-            name="summary_of_change"
-            value={value.summary_of_change}
-            onChange={onValueChange}
-            error={error?.summary_of_change}
-            placeholder={strings.drefOperationalUpdateSummaryExplain}
-          />
-        </InputSection>
-
-      </Container>
+          {(drefType === TYPE_IMMINENT && value.has_forecasted_event_materialize)
+            &&
+            <InputSection
+              title={strings.drefOperationalUpdateEventMaterializeExplain}
+              description={strings.drefOperationalUpdateEventMaterializeExplainDescription}
+            >
+              <TextArea
+                name="specified_trigger_met"
+                value={value.specified_trigger_met}
+                onChange={onValueChange}
+                error={error?.specified_trigger_met}
+                placeholder={strings.drefOperationalUpdateSummaryExplain}
+              />
+            </InputSection>
+          }
+          {drefType !== TYPE_LOAN &&
+            <InputSection title={strings.drefOperationalUpdateSummaryExplain}>
+              <TextArea
+                name="summary_of_change"
+                value={value.summary_of_change}
+                onChange={onValueChange}
+                error={error?.summary_of_change}
+                placeholder={strings.drefOperationalUpdateSummaryExplain}
+              />
+            </InputSection>
+          }
+        </Container>
+      }
       <Container heading={strings.drefOperationalUpdateDescriptionOfEventHeading}>
         <InputSection
           title={
@@ -236,21 +241,23 @@ function EventDetails(props: Props) {
             />
           )}
         </InputSection>
-        <InputSection
-          title={drefType === TYPE_IMMINENT
-            ? strings.drefFormImminentDisaster
-            : strings.drefFormWhatWhereWhen}
-          oneColumn
-          multiRow
-        >
-          <TextArea
-            name="event_description"
-            onChange={onValueChange}
-            value={value.event_description}
-            error={error?.event_description}
-          />
-        </InputSection>
-        {drefType === TYPE_IMMINENT &&
+        {drefType !== TYPE_LOAN &&
+          <InputSection
+            title={drefType === TYPE_IMMINENT
+              ? strings.drefFormImminentDisaster
+              : strings.drefFormWhatWhereWhen}
+            oneColumn
+            multiRow
+          >
+            <TextArea
+              name="event_description"
+              onChange={onValueChange}
+              value={value.event_description}
+              error={error?.event_description}
+            />
+          </InputSection>
+        }
+        {(isImminentDrefType && !isLoanDrefType) &&
           <InputSection
             title={strings.drefFormTargetCommunities}
             oneColumn
@@ -264,39 +271,41 @@ function EventDetails(props: Props) {
             />
           </InputSection>
         }
-        <InputSection
-          title={strings.drefFormUploadPhotos}
-          description={strings.drefFormUploadPhotosLimitation}
-          contentSectionClassName={styles.imageInputContent}
-        >
-          <DREFFileInput
-            name="images_file"
-            value={imagesValue}
-            onChange={handleImageInputChange}
-            accept="image/*"
-            multiple
-            error={error?.images_file}
-            fileIdToUrlMap={fileIdToUrlMap}
-            setFileIdToUrlMap={setFileIdToUrlMap}
-            hidePreview
+        {drefType !== TYPE_LOAN &&
+          <InputSection
+            title={strings.drefFormUploadPhotos}
+            description={strings.drefFormUploadPhotosLimitation}
+            contentSectionClassName={styles.imageInputContent}
           >
-            Select images
-          </DREFFileInput>
-          <div className={styles.previewList}>
-            {value?.images_file?.map((g, i) => (
-              <CaptionInput
-                key={g.client_id}
-                index={i}
-                value={g}
-                onChange={onImageChange}
-                onRemove={onImageRemove}
-                error={getErrorObject(error?.images_file)}
-                fileIdToUrlMap={fileIdToUrlMap}
-              />
-            ))}
-          </div>
-        </InputSection>
-        {drefType !== TYPE_ASSESSMENT && (
+            <DREFFileInput
+              name="images_file"
+              value={imagesValue}
+              onChange={handleImageInputChange}
+              accept="image/*"
+              multiple
+              error={error?.images_file}
+              fileIdToUrlMap={fileIdToUrlMap}
+              setFileIdToUrlMap={setFileIdToUrlMap}
+              hidePreview
+            >
+              Select images
+            </DREFFileInput>
+            <div className={styles.previewList}>
+              {value?.images_file?.map((g, i) => (
+                <CaptionInput
+                  key={g.client_id}
+                  index={i}
+                  value={g}
+                  onChange={onImageChange}
+                  onRemove={onImageRemove}
+                  error={getErrorObject(error?.images_file)}
+                  fileIdToUrlMap={fileIdToUrlMap}
+                />
+              ))}
+            </div>
+          </InputSection>
+        }
+        {(!isAssessmentDrefType && !isLoanDrefType) && (
           <InputSection
             title={strings.drefFormScopeAndScaleEvent}
             description={strings.drefFormScopeAndScaleDescription}
