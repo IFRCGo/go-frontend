@@ -1,3 +1,9 @@
+### Release 6.5.1 - Hotfix for PPP Dashboard
+Date: 2023-04-04
+
+Frontend:
+ - Changed URL of Tableau-based PPP map
+
 ### Release 6.5.0 - Search Page, Type of DREF, WFP ADAM Risk, and more
 Date: 2023-04-03
 

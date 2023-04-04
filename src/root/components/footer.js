@@ -10,7 +10,7 @@ class Footer extends React.PureComponent {
     const { strings } = this.context;
     const gitData = process.env.REACT_APP_VERSION.split('-');
     const version = gitData[0] ?? '-';
-    const gitHash = gitData[2].substring(1) ?? '-';
+    const gitHash = gitData.length > 2 ? ( gitData[2].substring(1) ?? '-' ) : '-';
     const date = new Date();
     const year = date.getFullYear();
     return (
