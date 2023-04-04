@@ -13,7 +13,6 @@ import {
   getErrorObject,
   useFormArray,
 } from '@togglecorp/toggle-form';
-import { MdDoneAll } from 'react-icons/md';
 
 import BlockLoading from '#components/block-loading';
 import Translate from '#components/Translate';
@@ -41,6 +40,7 @@ import {
   ProjectFormFields,
   AnnualSplit,
 } from '#types';
+import useBooleanState from '#hooks/useBooleanState';
 
 import {
   schema,
@@ -55,6 +55,7 @@ import {
 import AnnualSplitInput from './AnnualSplitInput';
 
 import styles from './styles.module.scss';
+import ProvinceMapModal from './ProvinceMapModal';
 
 const defaultFormValues: PartialForm<FormType> = {
   project_districts: [],
@@ -97,6 +98,11 @@ function ThreeWForm(props: Props) {
     },
   );
 
+  const [
+    showProvinceModal,
+    setShowProvinceModalTrue,
+    setShowProvinceModalFalse,
+  ] = useBooleanState(false);
   const error = React.useMemo(() => getErrorObject(formError), [formError]);
   const annualSplitErrors = React.useMemo(() => getErrorObject(error?.annual_split_detail), [error]);
 
@@ -399,7 +405,7 @@ function ThreeWForm(props: Props) {
               pending={fetchingCountries}
               value={value.project_country}
             />
-            <SelectInput<"project_districts", number>
+              {/* <SelectInput<"project_districts", number>
               disabled={shouldDisableDistrictInput}
               pending={fetchingDistricts}
               error={error?.project_districts}
@@ -425,7 +431,24 @@ function ThreeWForm(props: Props) {
                   <MdDoneAll />
                 </button>
               )}
-            />
+            /> */}
+              <Button
+                className={styles.provinceButton}
+                name="district"
+                variant="transparent"
+                onClick={setShowProvinceModalTrue}
+              >
+                Select a Province/Region
+              </Button>
+
+              {showProvinceModal && (
+                <ProvinceMapModal
+                  className={styles.provinceModal}
+                  onCloseButtonClick ={setShowProvinceModalFalse}
+                  countryId={value.project_country}
+                />
+              )}
+
           </InputSection>
           <InputSection
             title={strings.projectFormTypeOfOperation}

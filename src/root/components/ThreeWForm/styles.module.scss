@@ -29,4 +29,25 @@
   .normal {
   }
 
+  .province-modal {
+    .map-description {
+      display: flex;
+      flex-direction: column;
+      gap: $spacing;
+      padding: $spacing;
+      flex-grow: 1;
+    }
+
+    .main-content {
+      position: relative;
+      min-height: 20rem;
+
+      .map {
+        z-index: 0;
+        flex-grow: 1;
+        height: 50rem;
+      }
+    }
+  }
+
 }

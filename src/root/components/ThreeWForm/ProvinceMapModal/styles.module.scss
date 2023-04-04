@@ -1,0 +1,39 @@
+@import '~styles/settings/variables';
+
+.modal {
+  display: flex;
+  flex-grow: 1;
+
+  .modal-content {
+
+    .map-container {
+      outline: none;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      height: 30rem;
+
+      .map-disclaimer {
+        position: absolute;
+        left: $mapbox-icon-width + $spacing*0.5;
+        bottom: $spacing*0.25;
+      }
+
+      :global {
+        .mapboxgl-popup {
+          height: 18rem;
+        }
+      }
+
+      .wrapper-for-sidebar {
+        display: flex;
+        flex-grow: 1;
+        position: relative;
+
+        .map {
+          flex-grow: 1;
+        }
+      }
+    }
+  }
+}
