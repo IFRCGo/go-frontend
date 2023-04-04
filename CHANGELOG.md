@@ -1,3 +1,9 @@
+### Release 6.5.2 - Hotfix for Top Tags
+Date: 2023-04-04
+
+Frontend:
+ - Fix for secondary_sectors_display (plural)
+
 ### Release 6.5.1 - Hotfix for PPP Dashboard
 Date: 2023-04-04
 
