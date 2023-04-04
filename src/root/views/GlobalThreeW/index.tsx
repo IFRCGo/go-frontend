@@ -51,7 +51,7 @@ interface ProjectPerSector {
 interface ProjectPerSecondarySector {
   count: number;
   secondary_sector: number;
-  secondary_sector_display: string;
+  secondary_sectors_display: string;
 }
 
 interface GlobalProjectsOverview {
@@ -148,7 +148,7 @@ function GlobalThreeW(props: Props) {
       projects_per_secondary_sectors.map((p) => ({
         key: p.secondary_sector,
         value: p.count,
-        name: p.secondary_sector_display,
+        name: p.secondary_sectors_display,
       })),
       projects_per_programme_type.map((p) => ({
         key: p.programme_type,
