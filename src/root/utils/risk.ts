@@ -17,7 +17,8 @@ export const COLOR_DROUGHT = '#dca592';
 export const COLOR_FOOD_INSECURITY = '#c8ccb7';
 export const COLOR_EARTHQUAKE = '#b09db2';
 export const COLOR_STORM = '#97b8c2';
-
+// FIXME: change to assigned color
+export const COLOR_WILDFIRE = '#c2be97';
 
 export const hazardTypeToIconMap: {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -29,6 +30,8 @@ export const hazardTypeToIconMap: {
   SS: stormSurgeIcon,
   FL: floodIcon,
   DR: droughtIcon,
+  // FIXME: change to wildfire color
+  WF: droughtIcon,
 };
 
 export const hazardKeys: ImminentHazardTypes[] = [
@@ -38,6 +41,7 @@ export const hazardKeys: ImminentHazardTypes[] = [
   'SS',
   'FL',
   'DR',
+  'WF',
 ];
 
 export const hazardKeyToColorMap: Record<ImminentHazardTypes, string> = {
@@ -47,6 +51,7 @@ export const hazardKeyToColorMap: Record<ImminentHazardTypes, string> = {
   SS: COLOR_STORM,
   FL: COLOR_FLOOD,
   DR: COLOR_DROUGHT,
+  WF: COLOR_WILDFIRE,
 };
 
 

@@ -187,7 +187,7 @@ function DetailedChart(props: DetailedChartProps) {
           dataKey="month"
           tickCount={12}
           domain={['dataMin', 'dataMax']}
-          tickFormatter={(m: number) => monthNameList[m-1]}
+          tickFormatter={(m: number) => monthNameList[m - 1]}
           padding={{
             left: 10,
             right: 10,
@@ -242,7 +242,7 @@ function DetailedChart(props: DetailedChartProps) {
 
             return [formatNumber(+value), label];
           }}
-          labelFormatter={(m) => monthNameList[+m-1]}
+          labelFormatter={(m) => monthNameList[+m - 1]}
         />
       </ComposedChart>
     </ResponsiveContainer>
@@ -280,7 +280,6 @@ function RiskBarChart(props: Props) {
   const monthNameList = React.useMemo(() => (
     (getFullMonthNameList(strings)).map(m => m.substr(0, 3))
   ), [strings]);
-
 
   const chartData = React.useMemo(() => {
     let maxDisplacement = 0;
@@ -326,7 +325,7 @@ function RiskBarChart(props: Props) {
   ], [chartData]);
 
   const scaleCbrt = React.useMemo(
-    () => scalePow().exponent(1/3).nice(),
+    () => scalePow().exponent(1 / 3).nice(),
     [],
   );
 

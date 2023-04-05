@@ -38,6 +38,7 @@ import {
   hiddenLayout,
   iconPaint,
   pointCirclePaint,
+  COLOR_WILDFIRE,
 } from '#utils/risk';
 import { bbox as turfBbox } from '@turf/turf';
 import GoMapDisclaimer from '#components/GoMapDisclaimer';
@@ -68,6 +69,8 @@ const hazardTypeFillColorPaint = [
   COLOR_FLOOD,
   'DR',
   COLOR_DROUGHT,
+  'WF',
+  COLOR_WILDFIRE,
   COLOR_BLACK,
 ];
 
@@ -130,6 +133,7 @@ function ADAMEventMap(props: Props) {
     TC: false,
     SS: false,
     DR: false,
+    WF: false,
   });
 
   const hazardList = React.useMemo(() => {

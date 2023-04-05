@@ -1,5 +1,5 @@
 export type HazardTypes = 'DR' | 'FL' | 'TC' | 'FI';
-export type ImminentHazardTypes = 'EQ' | 'FL' | 'CY' | 'TC' | 'SS' | 'DR';
+export type ImminentHazardTypes = 'EQ' | 'FL' | 'CY' | 'TC' | 'SS' | 'DR' | 'WF';
 
 interface ExposureObject {
   value: number;
