@@ -264,6 +264,18 @@ function useDrefFinalReportFormOptions(value: PartialForm<DrefFinalReportFields>
   });
 
   const {
+    response: userResponse,
+  } = useRequest<ListResponse<UserListItem>>({
+    url: 'api/v2/users/'
+  });
+
+  const userOptions = React.useMemo(
+    () => userResponse?.results.map((u) => ({
+      label: `${u.first_name} ${u.last_name}`,
+      value: u.id,
+    })) ?? [], [userResponse]);
+
+  const {
     pending: fetchingDrefOptions,
     response: drefOptions,
   } = useRequest<DrefFinalReportOptions>({
@@ -276,7 +288,6 @@ function useDrefFinalReportFormOptions(value: PartialForm<DrefFinalReportFields>
     needOptions,
     interventionOptions,
     onsetOptions,
-    userOptions,
     drefTypeOptions,
   ] = React.useMemo(() => {
     if (!drefOptions) {
@@ -285,7 +296,6 @@ function useDrefFinalReportFormOptions(value: PartialForm<DrefFinalReportFields>
         emptyStringOptionList,
         emptyStringOptionList,
         emptyStringOptionList,
-        emptyNumericOptionList,
         emptyNumericOptionList,
         emptyNumericOptionList,
       ];
@@ -297,10 +307,6 @@ function useDrefFinalReportFormOptions(value: PartialForm<DrefFinalReportFields>
       drefOptions.needs_identified.map(transformKeyValueToLabelValue),
       drefOptions.planned_interventions.map(transformKeyValueToLabelValue),
       drefOptions.type_of_onset.map(transformKeyValueToLabelValue),
-      drefOptions.users.map((u) => ({
-        label: `${u.first_name} ${u.last_name}`,
-        value: u.id,
-      })),
       drefOptions.type_of_dref.map(transformKeyValueToLabelValue)
     ];
   }, [drefOptions]);

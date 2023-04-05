@@ -342,7 +342,7 @@ const userOptions = React.useMemo(
     () => userResponse?.results.map((u) => ({
       label: `${u.first_name} ${u.last_name}`,
       value: u.id,
-    })), [userResponse]);
+    })) ?? [], [userResponse]);
 
   const {
     pending: fetchingDrefOptions,

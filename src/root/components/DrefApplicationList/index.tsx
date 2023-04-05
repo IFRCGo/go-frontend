@@ -441,7 +441,8 @@ function DrefApplicationList(props: Props) {
             const lastFinalReportId = item.dref_final_report_details?.id;
 
             const isDrefLoan = item.type_of_dref === TYPE_LOAN;
-
+            const finalReportId = item?.dref_final_report_details?.id;
+            console.warn("final id", finalReportId);
             return {
               extraActions: (
                 <>
@@ -464,9 +465,6 @@ function DrefApplicationList(props: Props) {
                     label={strings.finalReportPublishButtonLabel}
                     onClick={onFinalReportPublishClick}
                     disabled={!hasUnpublishedFinalReport}
-                  />
-                  <FinalReportExport
-                    id={rowKey}
                   />
                   <DropdownMenuItem
                     icon={<IoAdd />}

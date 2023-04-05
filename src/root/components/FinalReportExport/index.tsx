@@ -92,7 +92,7 @@ function FinalReportExport(props: Props) {
   return (
     <DropdownMenuItem
       icon={<IoDownload />}
-      label="Final Report Export"
+      label="Export"
       onClick={handleExportRender}
       disabled={pending}
     />
