@@ -50,79 +50,79 @@ export type ContextType = {
 }
 
 export type FormSchema = ObjectSchema<
-  PartialForm<DrefOperationalUpdateFields>,
-  PartialForm<DrefOperationalUpdateFields>,
-  ContextType
+PartialForm<DrefOperationalUpdateFields>,
+PartialForm<DrefOperationalUpdateFields>,
+ContextType
 >;
 export type FormSchemaFields = ReturnType<FormSchema['fields']>;
 
 export type NeedType = NonNullable<NonNullable<DrefOperationalUpdateFields['needs_identified']>>[number];
 export type NeedSchema = ObjectSchema<
-  PartialForm<NeedType>,
-  PartialForm<DrefOperationalUpdateFields>,
-  ContextType
+PartialForm<NeedType>,
+PartialForm<DrefOperationalUpdateFields>,
+ContextType
 >;
 export type NeedSchemaFields = ReturnType<NeedSchema['fields']>;
 export type NeedsSchema = ArraySchema<
-  PartialForm<NeedType>,
-  PartialForm<DrefOperationalUpdateFields>,
-  ContextType
+PartialForm<NeedType>,
+PartialForm<DrefOperationalUpdateFields>,
+ContextType
 >;
 export type NeedsSchemaMember = ReturnType<NeedsSchema['member']>;
 
 export type NsActionType = NonNullable<NonNullable<DrefOperationalUpdateFields['national_society_actions']>>[number];
 export type NsActionSchema = ObjectSchema<
-  PartialForm<NsActionType>,
-  PartialForm<DrefOperationalUpdateFields>,
-  ContextType
+PartialForm<NsActionType>,
+PartialForm<DrefOperationalUpdateFields>,
+ContextType
 >;
 export type NsActionSchemaFields = ReturnType<NsActionSchema['fields']>;
 export type NsActionsSchema = ArraySchema<
-  PartialForm<NsActionType>,
-  PartialForm<DrefOperationalUpdateFields>,
-  ContextType
+PartialForm<NsActionType>,
+PartialForm<DrefOperationalUpdateFields>,
+ContextType
 >;
 export type NsActionsSchemaMember = ReturnType<NsActionsSchema['member']>;
 
 export type InterventionType = NonNullable<NonNullable<DrefOperationalUpdateFields['planned_interventions']>>[number];
 export type InterventionSchema = ObjectSchema<
-  PartialForm<InterventionType>,
-  PartialForm<DrefOperationalUpdateFields>,
-  ContextType
+PartialForm<InterventionType>,
+PartialForm<DrefOperationalUpdateFields>,
+ContextType
 >;
 export type InterventionSchemaFields = ReturnType<InterventionSchema['fields']>;
 export type InterventionsSchema = ArraySchema<
-  PartialForm<InterventionType>,
-  PartialForm<DrefOperationalUpdateFields>,
-  ContextType
+PartialForm<InterventionType>,
+PartialForm<DrefOperationalUpdateFields>,
+ContextType
 >;
 export type InterventionsSchemaMember = ReturnType<InterventionsSchema['member']>;
 
 export type IndicatorType = InterventionType['indicators'][number];
 export type IndicatorSchema = ObjectSchema<
-  PartialForm<IndicatorType>,
-  PartialForm<DrefOperationalUpdateFields>,
-  ContextType
+PartialForm<IndicatorType>,
+PartialForm<DrefOperationalUpdateFields>,
+ContextType
 >;
 export type IndicatorSchemaFields = ReturnType<IndicatorSchema['fields']>;
 export type IndicatorsSchema = ArraySchema<
-  PartialForm<IndicatorType>,
-  PartialForm<DrefOperationalUpdateFields>,
-  ContextType
+PartialForm<IndicatorType>,
+PartialForm<DrefOperationalUpdateFields>,
+ContextType
 >;
 export type IndicatorsSchemaMember = ReturnType<IndicatorsSchema['member']>;
 
 export type RiskSecurityType = NonNullable<NonNullable<DrefOperationalUpdateFields['risk_security']>>[number];
 export type RiskSecuritySchema = ObjectSchema<
-  PartialForm<RiskSecurityType>,
-  PartialForm<DrefOperationalUpdateFields>,
-  ContextType
+PartialForm<RiskSecurityType>,
+PartialForm<DrefOperationalUpdateFields>,
+ContextType
 >;
 export type RiskSecuritySchemaFields = ReturnType<RiskSecuritySchema['fields']>;
 export type RiskSecuritiesSchema = ArraySchema<
-  PartialForm<RiskSecurityType>,
-  PartialForm<DrefOperationalUpdateFields>,
-  ContextType
+PartialForm<RiskSecurityType>,
+PartialForm<DrefOperationalUpdateFields>,
+ContextType
 >;
 export type RiskSecuritiesSchemaMember = ReturnType<RiskSecuritiesSchema['member']>;
 
@@ -490,26 +490,26 @@ const userOptions = React.useMemo(
   });
 
   const [
-    nationalSocietyOptions,
-    countryOptions,
+  nationalSocietyOptions,
+  countryOptions,
   ] = React.useMemo(() => {
     if (!countriesResponse) {
       return [emptyNumericOptionList, emptyNumericOptionList];
     }
 
     const ns: NumericValueOption[] = countriesResponse.results
-      .filter(d => d.independent && d.society_name)
-      .map(d => ({
-        value: d.id,
-        label: d.society_name,
-      })).sort(compareString);
+    .filter(d => d.independent && d.society_name)
+    .map(d => ({
+      value: d.id,
+      label: d.society_name,
+    })).sort(compareString);
 
     const c: NumericValueOption[] = countriesResponse.results
-      .filter(d => d.independent && d.iso)
-      .map(d => ({
-        value: d.id,
-        label: d.name,
-      })).sort(compareString);
+    .filter(d => d.independent && d.iso)
+    .map(d => ({
+      value: d.id,
+      label: d.name,
+    })).sort(compareString);
 
     return [ns, c] as const;
   }, [countriesResponse]);

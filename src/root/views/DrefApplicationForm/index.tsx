@@ -104,7 +104,6 @@ const stepTypesToFieldsMap: {
   submission: submissionFields,
 };
 
-
 function DrefApplication(props: Props) {
   const {
     className,
