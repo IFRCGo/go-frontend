@@ -33,6 +33,7 @@ import Pager from '#components/Pager';
 import EmptyMessage from '#components/EmptyMessage';
 import DrefExportButton from '#components/DrefExportButton';
 import DropdownMenuItem from '#components/DropdownMenuItem';
+import FinalReportExport from '#components/FinalReportExport';
 import {
   createStringColumn,
   createNumberColumn,
@@ -439,7 +440,6 @@ function DrefApplicationList(props: Props) {
 
             const lastFinalReportId = item.dref_final_report_details?.id;
 
-            // FIXME: move to relevant file
             const isDrefLoan = item.type_of_dref === TYPE_LOAN;
 
             return {
@@ -464,6 +464,9 @@ function DrefApplicationList(props: Props) {
                     label={strings.finalReportPublishButtonLabel}
                     onClick={onFinalReportPublishClick}
                     disabled={!hasUnpublishedFinalReport}
+                  />
+                  <FinalReportExport
+                    id={rowKey}
                   />
                   <DropdownMenuItem
                     icon={<IoAdd />}

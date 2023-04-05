@@ -344,7 +344,6 @@ const userOptions = React.useMemo(
       value: u.id,
     })), [userResponse]);
 
-
   const {
     pending: fetchingDrefOptions,
     response: drefOptions,

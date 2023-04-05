@@ -451,6 +451,8 @@ function DrefOperationalUpdate(props: Props) {
       } = {
         eventDetails: 'operationOverview',
         submission: 'eventDetails',
+        operation: 'needs',
+        needs: 'operation',
       };
       handleTabChange(prevStepMap[currentStep]);
     }
@@ -527,6 +529,8 @@ function DrefOperationalUpdate(props: Props) {
       } = {
         operationOverview: 'eventDetails',
         eventDetails: 'submission',
+        needs: 'operation',
+        operation: 'needs',
       };
 
       handleTabChange(nextStepMap[currentStep]);

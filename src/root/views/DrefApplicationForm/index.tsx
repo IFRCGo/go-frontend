@@ -429,12 +429,11 @@ function DrefApplication(props: Props) {
     if (currentStep === 'submission') {
       submitDref();
     } else {
-      const nextStepMap: {
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        [key in Exclude<StepTypes, 'submission'>]: Exclude<StepTypes, 'operationOverview'>;
-      } = {
+      const nextStepMap: Record<Exclude<StepTypes, 'submission'>, Exclude<StepTypes, 'operationOverview'>> = {
         operationOverview: 'eventDetails',
         eventDetails: 'submission',
+        action: 'response',
+        response: 'action',
       };
 
       handleTabChange(nextStepMap[currentStep]);
@@ -465,6 +464,8 @@ function DrefApplication(props: Props) {
       } = {
         eventDetails: 'operationOverview',
         submission: 'eventDetails',
+        response: 'action',
+        action: 'response'
       };
 
       handleTabChange(prevStepMap[currentStep]);
@@ -727,11 +728,11 @@ function DrefApplication(props: Props) {
                 fileIdToUrlMap={fileIdToUrlMap}
                 setFileIdToUrlMap={setFileIdToUrlMap}
                 onValueSet={setValue}
-                userOptions={userOptions}
                 onCreateAndShareButtonClick={submitDref}
                 drefTypeOptions={drefTypeOptions}
                 onsetType={onsetType}
                 drefType={drefType}
+                userOptions={userOptions}
               />
             </TabPanel>
             <TabPanel name="eventDetails">
