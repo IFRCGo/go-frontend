@@ -36,6 +36,7 @@ export interface AdditionalOptions {
   formData?: boolean;
   isCsvRequest?: boolean;
   enforceEnglish?: boolean;
+  useCurrentLanguage?: boolean;
 }
 
 
@@ -151,6 +152,7 @@ export const processGoOptions: GoContextInterface['transformOptions'] = (
     formData,
     isCsvRequest,
     enforceEnglish,
+    useCurrentLanguage,
   } = extraOptions;
 
   const user = getFromLocalStorage('user');
@@ -161,8 +163,16 @@ export const processGoOptions: GoContextInterface['transformOptions'] = (
 
   const defaultHeaders = {
     Authorization: token ? `Token ${token}` : '',
-    'Accept-Language': (enforceEnglish || method !== 'GET') ? 'en' : currentLanguage,
+    'Accept-Language': currentLanguage,
   };
+
+  if (enforceEnglish) {
+    defaultHeaders['Accept-Language'] = 'en';
+  }
+
+  if (method !== 'GET' && !useCurrentLanguage) {
+    defaultHeaders['Accept-Language'] = 'en';
+  }
 
   if (formData) {
     const requestBody = getFormData(body as FormDataCompatibleObj);

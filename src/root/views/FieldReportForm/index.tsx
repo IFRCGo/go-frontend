@@ -172,6 +172,7 @@ function FieldReportForm(props: Props) {
         },
       );
     },
+    useCurrentLanguage: true,
   });
 
   const {
@@ -255,37 +256,27 @@ function FieldReportForm(props: Props) {
       return;
     }
 
-      if (currentStep === 'step4') {
+    if (currentStep === 'step4') {
       const apiFields = transformFormFieldsToAPIFields(finalValues as FormType);
       const definedValues = getDefinedValues(apiFields);
-      
       // COVID-19
-      if(definedValues.is_covid_report)
-      {
-        if (eventOptions.find(x => x.value===value.event)?.label === undefined)
-        {      
+      if(definedValues.is_covid_report) {
+        if (eventOptions.find(x => x.value===value.event)?.label === undefined) {
           if(reportId === undefined){   
             definedValues.summary = countryIsoOptions.find(x => x.value===value.country)?.label + ': ' + strings.fieldReportCOVID19; 
           }
-        }
-        else
-        {
+        } else {
           if(reportId === undefined){
             definedValues.summary = countryIsoOptions.find(x => x.value===value.country)?.label + ': ' + strings.fieldReportCOVID19 + ' #'+ eventOptions.find(x => x.value===value.event)?.label + ' (' + new Date().toISOString().slice(0, 10) + ')'; 
           }
         }
-      }
-      // NON-COVID-19
-      else
-      {
-        if (eventOptions.find(x => x.value===value.event)?.label === undefined)
-        {
+      } else {
+        // NON-COVID-19
+        if (eventOptions.find(x => x.value===value.event)?.label === undefined) {
           if(reportId === undefined){
             definedValues.summary = countryIsoOptions.find(x => x.value===value.country)?.label + ': ' + disasterTypeOptions.find( x=> x.value === definedValues.dtype)?.label + ' - ' + definedValues.start_date?.substring(0,7) + ' - ' + definedValues.summary;
           }
-        }
-        else
-        {
+        } else {
           if(reportId === undefined){
              definedValues.summary = countryIsoOptions.find(x => x.value===value.country)?.label + ': ' + disasterTypeOptions.find( x=> x.value === definedValues.dtype)?.label + ' - ' + definedValues.start_date?.substring(0,7) + ' - ' + definedValues.summary + ' #'+ eventOptions.find(x => x.value===value.event)?.label + ' (' + new Date().toISOString().slice(0, 10) + ')';
           }
