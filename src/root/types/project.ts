@@ -1,3 +1,4 @@
+import { BBox } from '@turf/turf';
 import {
   CountryMini,
   DistrictMini,
@@ -260,4 +261,12 @@ export interface EmergencyProjectResponse {
   reporting_ns: number | null;
   deployed_eru: number | null;
   districts: number[];
+}
+
+export interface ProvinceResponse {
+  district_id: number;
+  name: string;
+  code: string;
+  bbox: BBox;
+  centroid: GeoJSON.Point;
 }

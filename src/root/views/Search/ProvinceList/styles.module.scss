@@ -12,6 +12,12 @@
     font-weight: $base-font-regular;
   }
 
+  :global {
+    .calculation-box {
+      background-color: red !important;
+    }
+  }
+
   .country-name {
     display: flex;
     color: $primary-color;
