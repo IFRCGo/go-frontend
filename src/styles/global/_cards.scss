@@ -128,7 +128,7 @@ a.card__contents {
   .orange_dot {
     height: $font-size-xxs;
     width: $font-size-xxs;
-    background-color: $state-mid;
+    background-color: $orange-dot-color;
     border-radius: $full-border-radius;
     margin-inline-end: $global-spacing * 0.5;
     display: inline-block;
@@ -137,7 +137,7 @@ a.card__contents {
   .red_dot {
     height: $font-size-xxs;
     width: $font-size-xxs;
-    background-color: $primary-color;
+    background-color: $red-dot-color;
     border-radius: $full-border-radius;
     margin-inline-end: $global-spacing * 0.5;
     display: inline-block;
@@ -146,7 +146,7 @@ a.card__contents {
   .yellow_dot {
     height: $font-size-xxs;
     width: $font-size-xxs;
-    background-color: $warning-color;
+    background-color: $yellow-dot-color;
     border-radius: $full-border-radius;
     margin-inline-end: $global-spacing * 0.5;
     display: inline-block;

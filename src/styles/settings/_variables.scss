@@ -37,7 +37,7 @@ $color-text-light: rgba(0, 0, 0, .7);
 $color-text-disabled: rgba(0, 0, 0, .4);
 $color-text-message: rgba(0, 0, 0, .5);
 
-//Filter tags 
+//Filter tags
 $color-filter-tag: rgba(242, 244, 246, 0.5);
 $color-filter-tag-text: #a8a8a8;
 
@@ -58,6 +58,12 @@ $state-high: $primary-color;
 $link-color: $primary-color;
 $base-alpha-color: rgba($base-color, 0.10);
 
+
+/* Crisis Category dot colors */
+
+$yellow-dot-color: #ff9e00;
+$orange-dot-color: #ff6b00;
+$red-dot-color: #de2934;
 
 /* Typography
    ========================================================================== */
