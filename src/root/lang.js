@@ -3922,4 +3922,12 @@ export default {
   searchSurgeDeploymentsTableEmergency: 'Emergency',
 
   reducedListDisplayMoreLabel: '... and {n} more',
+
+  //PER Form
+  perFormTitle: 'PER Form',
+  perFormHeading: 'PER Process',
+  perFormTabOverviewLabel: '1. Overview',
+  perFormTabAssessmentLabel: '2. Assessment',
+  perFormTabPrioritizationLabel: '3. Prioritization',
+  perFormTabWorkPlanLabel: '4. Work-Plan',
 };
