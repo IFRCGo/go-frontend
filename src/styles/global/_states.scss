@@ -15,13 +15,13 @@
 }
 
 .state--severity-low {
-  background-color: $state-low;
+  background-color: $yellow-dot-color;
 }
 
 .state--severity-mid {
-  background-color: $state-mid;
+  background-color: $orange-dot-color;
 }
 
 .state--severity-high {
-  background-color: $state-high;
+  background-color: $red-dot-color;
 }
