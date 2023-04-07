@@ -333,6 +333,18 @@ function useDrefFormOptions(value: PartialForm<DrefFields>) {
   });
 
   const {
+    response: userResponse,
+  } = useRequest<ListResponse<UserListItem>>({
+    url: 'api/v2/users/'
+  });
+
+const userOptions = React.useMemo(
+    () => userResponse?.results.map((u) => ({
+      label: `${u.first_name} ${u.last_name}`,
+      value: u.id,
+    })) ?? [], [userResponse]);
+
+  const {
     pending: fetchingDrefOptions,
     response: drefOptions,
   } = useRequest<DrefOptions>({
@@ -345,7 +357,6 @@ function useDrefFormOptions(value: PartialForm<DrefFields>) {
     needOptions,
     interventionOptions,
     onsetOptions,
-    userOptions,
     drefTypeOptions,
   ] = React.useMemo(() => {
     if (!drefOptions) {
@@ -354,7 +365,6 @@ function useDrefFormOptions(value: PartialForm<DrefFields>) {
         emptyStringOptionList,
         emptyStringOptionList,
         emptyStringOptionList,
-        emptyNumericOptionList,
         emptyNumericOptionList,
         emptyNumericOptionList,
       ];
@@ -366,10 +376,6 @@ function useDrefFormOptions(value: PartialForm<DrefFields>) {
       drefOptions.needs_identified.map(transformKeyValueToLabelValue),
       drefOptions.planned_interventions.map(transformKeyValueToLabelValue),
       drefOptions.type_of_onset.map(transformKeyValueToLabelValue),
-      drefOptions.users.map((u) => ({
-        label: `${u.first_name} ${u.last_name}`,
-        value: u.id,
-      })),
       drefOptions.type_of_dref.map(transformKeyValueToLabelValue),
     ];
   }, [drefOptions]);

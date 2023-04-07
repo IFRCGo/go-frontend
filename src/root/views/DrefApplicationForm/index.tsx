@@ -51,6 +51,7 @@ import {
   responseFields,
   submissionFields,
   TYPE_IMMINENT,
+  TYPE_LOAN,
 } from './common';
 
 import useDrefFormOptions, { schema } from './useDrefFormOptions';
@@ -84,6 +85,14 @@ export function getDefinedValues<T extends Record<string, any>>(o: T): Partial<T
 }
 
 type StepTypes = 'operationOverview' | 'eventDetails' | 'action' | 'response' | 'submission';
+
+interface Props {
+  className?: string;
+  match: Match<{ drefId?: string }>;
+  history: History;
+  location: Location;
+}
+
 const stepTypesToFieldsMap: {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   [key in StepTypes]: (keyof DrefFields)[];
@@ -94,13 +103,6 @@ const stepTypesToFieldsMap: {
   response: responseFields,
   submission: submissionFields,
 };
-
-interface Props {
-  className?: string;
-  match: Match<{ drefId?: string }>;
-  history: History;
-  location: Location;
-}
 
 function DrefApplication(props: Props) {
   const {
@@ -414,6 +416,29 @@ function DrefApplication(props: Props) {
     }
   }, [validateCurrentTab, currentStep, handleTabChange, submitDref]);
 
+  const handleLoanSubmitButtonClick = React.useCallback(() => {
+    scrollToTop();
+
+    const isCurrentTabValid = validateCurrentTab(['event_map_file']);
+
+    if (!isCurrentTabValid) {
+      return;
+    }
+
+    if (currentStep === 'submission') {
+      submitDref();
+    } else {
+      const nextStepMap: Record<Exclude<StepTypes, 'submission'>, Exclude<StepTypes, 'operationOverview'>> = {
+        operationOverview: 'eventDetails',
+        eventDetails: 'submission',
+        action: 'response',
+        response: 'action',
+      };
+
+      handleTabChange(nextStepMap[currentStep]);
+    }
+  }, [validateCurrentTab, currentStep, handleTabChange, submitDref]);
+
   const handleBackButtonClick = React.useCallback(() => {
     if (currentStep !== 'operationOverview') {
       const prevStepMap: {
@@ -424,6 +449,22 @@ function DrefApplication(props: Props) {
         action: 'eventDetails',
         response: 'action',
         submission: 'response',
+      };
+
+      handleTabChange(prevStepMap[currentStep]);
+    }
+  }, [handleTabChange, currentStep]);
+
+  const handleLoanBackButtonClick = React.useCallback(() => {
+    if (currentStep !== 'operationOverview') {
+      const prevStepMap: {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        [key in Exclude<StepTypes, 'operationOverview'>]: Exclude<StepTypes, 'submission'>;
+      } = {
+        eventDetails: 'operationOverview',
+        submission: 'eventDetails',
+        response: 'action',
+        action: 'response'
       };
 
       handleTabChange(prevStepMap[currentStep]);
@@ -565,34 +606,34 @@ function DrefApplication(props: Props) {
       <Page
         className={className}
         actions={(
-          <>
-            {isNotDefined(drefId) && (
-              <FileInput
-                type='file'
-                accept='.docx'
-                name="dref-docx-import"
-                value={undefined}
-                onChange={handleDocumentImport}
-                icons={<IoCloudUploadSharp />}
-                buttonVariant="secondary"
+            <>
+              {isNotDefined(drefId) && drefType !== TYPE_LOAN && (
+                <FileInput
+                  type='file'
+                  accept='.docx'
+                  name="dref-docx-import"
+                  value={undefined}
+                  onChange={handleDocumentImport}
+                  icons={<IoCloudUploadSharp />}
+                  buttonVariant="secondary"
+                >
+                  Import from Document
+                </FileInput>
+              )}
+              {isDefined(drefId) && (
+                <Link
+                  to={`/dref-application/${drefId}/export/`}
+                  {...exportLinkProps}
+                />
+              )}
+              <Button
+                name={undefined}
+                onClick={submitDref}
               >
-                Import from Document
-              </FileInput>
-            )}
-            {isDefined(drefId) && (
-              <Link
-                to={`/dref-application/${drefId}/export/`}
-                {...exportLinkProps}
-              />
-            )}
-            <Button
-              name={undefined}
-              onClick={submitDref}
-            >
-              {strings.drefFormSaveButtonLabel}
-            </Button>
-          </>
-        )}
+                {strings.drefFormSaveButtonLabel}
+              </Button>
+            </>
+          )}
         title={strings.drefFormPageTitle}
         heading={strings.drefFormPageHeading}
         info={(
@@ -611,20 +652,24 @@ function DrefApplication(props: Props) {
             >
               {strings.drefFormTabEventDetailLabel}
             </Tab>
-            <Tab
-              name="action"
-              step={3}
-              errored={erroredTabs['action']}
-            >
-              {strings.drefFormTabActionsLabel}
-            </Tab>
-            <Tab
-              name="response"
-              step={4}
-              errored={erroredTabs['response']}
-            >
-              {strings.drefFormTabResponseLabel}
-            </Tab>
+            {drefType !== TYPE_LOAN &&
+              <Tab
+                name="action"
+                step={3}
+                errored={erroredTabs['action']}
+              >
+                {strings.drefFormTabActionsLabel}
+              </Tab>
+            }
+            {drefType !== TYPE_LOAN &&
+              <Tab
+                name="response"
+                step={4}
+                errored={erroredTabs['response']}
+              >
+                {strings.drefFormTabResponseLabel}
+              </Tab>
+            }
             <Tab
               name="submission"
               step={5}
@@ -682,11 +727,11 @@ function DrefApplication(props: Props) {
                 fileIdToUrlMap={fileIdToUrlMap}
                 setFileIdToUrlMap={setFileIdToUrlMap}
                 onValueSet={setValue}
-                userOptions={userOptions}
                 onCreateAndShareButtonClick={submitDref}
                 drefTypeOptions={drefTypeOptions}
                 onsetType={onsetType}
                 drefType={drefType}
+                userOptions={userOptions}
               />
             </TabPanel>
             <TabPanel name="eventDetails">
@@ -701,55 +746,81 @@ function DrefApplication(props: Props) {
                 setFileIdToUrlMap={setFileIdToUrlMap}
               />
             </TabPanel>
-            <TabPanel name="action">
-              <ActionsFields
-                error={error}
-                onValueChange={setFieldValue}
-                value={value}
-                yesNoOptions={yesNoOptions}
-                needOptions={needOptions}
-                nsActionOptions={nsActionOptions}
-                fileIdToUrlMap={fileIdToUrlMap}
-                setFileIdToUrlMap={setFileIdToUrlMap}
-                drefType={drefType}
-              />
-            </TabPanel>
-            <TabPanel name="response">
-              <Response
-                interventionOptions={interventionOptions}
-                error={error}
-                onValueChange={setFieldValue}
-                value={value}
-                fileIdToUrlMap={fileIdToUrlMap}
-                setFileIdToUrlMap={setFileIdToUrlMap}
-                yesNoOptions={yesNoOptions}
-                drefType={drefType}
-              />
-            </TabPanel>
+            {drefType !== TYPE_LOAN &&
+              <TabPanel name="action">
+                <ActionsFields
+                  error={error}
+                  onValueChange={setFieldValue}
+                  value={value}
+                  yesNoOptions={yesNoOptions}
+                  needOptions={needOptions}
+                  nsActionOptions={nsActionOptions}
+                  fileIdToUrlMap={fileIdToUrlMap}
+                  setFileIdToUrlMap={setFileIdToUrlMap}
+                  drefType={drefType}
+                />
+              </TabPanel>
+            }
+            {drefType !== TYPE_LOAN &&
+              <TabPanel name="response">
+                <Response
+                  interventionOptions={interventionOptions}
+                  error={error}
+                  onValueChange={setFieldValue}
+                  value={value}
+                  fileIdToUrlMap={fileIdToUrlMap}
+                  setFileIdToUrlMap={setFileIdToUrlMap}
+                  yesNoOptions={yesNoOptions}
+                  drefType={drefType}
+                />
+              </TabPanel>
+            }
             <TabPanel name="submission">
               <Submission
                 error={error}
                 onValueChange={setFieldValue}
+                drefType={drefType}
                 value={value}
               />
             </TabPanel>
-            <div className={styles.actions}>
-              <Button
-                name={undefined}
-                variant="secondary"
-                onClick={handleBackButtonClick}
-                disabled={shouldDisabledBackButton}
-              >
-                {strings.drefFormBackButtonLabel}
-              </Button>
-              <Button
-                name={undefined}
-                variant="secondary"
-                onClick={handleSubmitButtonClick}
-              >
-                {submitButtonLabel}
-              </Button>
-            </div>
+              {drefType !== TYPE_LOAN &&
+                <div className={styles.actions}>
+                  <Button
+                    name={undefined}
+                    variant="secondary"
+                    onClick={handleBackButtonClick}
+                    disabled={shouldDisabledBackButton}
+                  >
+                    {strings.drefFormBackButtonLabel}
+                  </Button>
+                  <Button
+                    name={undefined}
+                    variant="secondary"
+                    onClick={handleSubmitButtonClick}
+                  >
+                    {submitButtonLabel}
+                  </Button>
+                </div>
+              }
+              {drefType === TYPE_LOAN &&
+                <div className={styles.actions}>
+                  <Button
+                    name={undefined}
+                    variant="secondary"
+                    onClick={handleLoanBackButtonClick}
+                    disabled={shouldDisabledBackButton}
+                  >
+                    {strings.drefFormBackButtonLabel}
+                  </Button>
+                  <Button
+                    name={undefined}
+                    variant="secondary"
+                    onClick={handleLoanSubmitButtonClick}
+                  >
+                    {submitButtonLabel}
+                  </Button>
+                </div>
+              }
             {isDefined(drefId) && showObsoletePayloadResolutionModal && (
               <ObsoletePayloadResolutionModal
                 drefId={+drefId}

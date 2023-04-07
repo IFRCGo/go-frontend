@@ -3623,6 +3623,8 @@ export default {
   drefOperationalUpdateDREFType: 'DREF Type',
   //Timeframes
   drefOperationalUpdateTimeFrameDateOfEvent: 'Operation start Date',
+  drefOperationalUpdateTimeFrameNationalSocietyLoanRequest: 'National Society Loan request date',
+  drefOperationalDateOfApprovalOfLoan: 'Date of approval of Loan',
   drefOperationalUpdateTimeFrameReportingTimeFrame: 'Reporting timeframe',
   drefOperationalUpdateTimeFrameReportingTimeFrameStart: 'Reporting Timeframe start date',
   drefOperationalUpdateTimeFrameReportingTimeFrameEnd: 'Reporting Timeframe end date',
