@@ -9,6 +9,7 @@ import {
   COLOR_DROUGHT,
   COLOR_EARTHQUAKE,
   COLOR_FLOOD,
+  COLOR_WILDFIRE,
 } from "#utils/risk";
 import RadioInput from "#components/RadioInput";
 import {
@@ -97,6 +98,7 @@ const legendItems = [
   { color: COLOR_STORM, label: 'Storm' },
   { color: COLOR_EARTHQUAKE, label: 'Earthquake' },
   { color: COLOR_DROUGHT, label: 'Drought' },
+  { color: COLOR_WILDFIRE, label: 'Wildfire' }
 ];
 
 function tooltip(title:string, description: React.ReactNode) {
