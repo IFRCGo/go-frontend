@@ -234,6 +234,8 @@ export interface DrefOperationalUpdateFields {
   reporting_start_date: string;
   reporting_end_date: string;
   type_of_dref: number;
+  date_of_approval: string;
+  ns_request_date: string;
 }
 
 export interface DrefApplicationValidateConditionalField {
@@ -403,4 +405,6 @@ export const submissionFields: (keyof DrefOperationalUpdateFields)[] = [
   'total_operation_timeframe',
   'reporting_start_date',
   'reporting_end_date',
+  'ns_request_date',
+  'date_of_approval',
 ];

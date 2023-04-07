@@ -44,14 +44,25 @@ function Submission(props: Props) {
         visibleOverflow
       >
         <InputSection fullWidthColumn>
-          <DateInput
-            label={strings.drefOperationalUpdateTimeFrameDateOfEvent}
-            name="new_operational_start_date"
-            value={value.new_operational_start_date}
-            onChange={onValueChange}
-            error={error?.new_operational_start_date}
-            readOnly
-          />
+          {drefType !== TYPE_LOAN &&
+            <DateInput
+              label={strings.drefOperationalUpdateTimeFrameDateOfEvent}
+              name="new_operational_start_date"
+              value={value.new_operational_start_date}
+              onChange={onValueChange}
+              error={error?.new_operational_start_date}
+              readOnly
+            />
+          }
+          {drefType === TYPE_LOAN &&
+            <DateInput
+              label={strings.drefOperationalUpdateTimeFrameNationalSocietyLoanRequest}
+              name="ns_request_date"
+              value={value.ns_request_date}
+              onChange={onValueChange}
+              error={error?.ns_request_date}
+            />
+          }
           <NumberInput
             label={strings.drefOperationalUpdateTimeFrameTotalOperatingTimeFrame}
             name="total_operation_timeframe"
@@ -59,30 +70,43 @@ function Submission(props: Props) {
             onChange={onValueChange}
             error={error?.total_operation_timeframe}
           />
-          <DateInput
-            label={strings.drefOperationalUpdateTimeFrameExtensionRequestedIfYes}
-            name="new_operational_end_date"
-            value={value.new_operational_end_date}
-            onChange={onValueChange}
-            error={error?.new_operational_end_date}
-          />
+          {drefType !== TYPE_LOAN &&
+            <DateInput
+              label={strings.drefOperationalUpdateTimeFrameExtensionRequestedIfYes}
+              name="new_operational_end_date"
+              value={value.new_operational_end_date}
+              onChange={onValueChange}
+              error={error?.new_operational_end_date}
+            />
+          }
+          {drefType === TYPE_LOAN &&
+            <DateInput
+              label={strings.drefOperationalDateOfApprovalOfLoan}
+              name="date_of_approval"
+              value={value.date_of_approval}
+              onChange={onValueChange}
+              error={error?.date_of_approval}
+            />
+          }
         </InputSection>
-        <InputSection fullWidthColumn>
-          <DateInput
-            label={strings.drefOperationalUpdateTimeFrameReportingTimeFrameStart}
-            name="reporting_start_date"
-            value={value.reporting_start_date}
-            onChange={onValueChange}
-            error={error?.reporting_start_date}
-          />
-          <DateInput
-            label={strings.drefOperationalUpdateTimeFrameReportingTimeFrameEnd}
-            name="reporting_end_date"
-            value={value.reporting_end_date}
-            onChange={onValueChange}
-            error={error?.reporting_end_date}
-          />
-        </InputSection>
+        {drefType !== TYPE_LOAN &&
+          <InputSection fullWidthColumn>
+            <DateInput
+              label={strings.drefOperationalUpdateTimeFrameReportingTimeFrameStart}
+              name="reporting_start_date"
+              value={value.reporting_start_date}
+              onChange={onValueChange}
+              error={error?.reporting_start_date}
+            />
+            <DateInput
+              label={strings.drefOperationalUpdateTimeFrameReportingTimeFrameEnd}
+              name="reporting_end_date"
+              value={value.reporting_end_date}
+              onChange={onValueChange}
+              error={error?.reporting_end_date}
+            />
+          </InputSection>
+        }
       </Container>
       <Container
         heading={strings.drefFormTrackingData}

@@ -253,6 +253,8 @@ const defaultSchema: FormSchemaFields = {
   is_there_major_coordination_mechanism: [],
   is_surge_personnel_deployed: [],
   people_in_need: [],
+  date_of_approval: [],
+  ns_request_date: [],
   // supporting_document: [],
   risk_security_concern: [],
   photos_file: [lessThanEqualToTwoImagesCondition],
