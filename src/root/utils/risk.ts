@@ -10,6 +10,7 @@ import cycloneIcon from './risk-icons/cyclone.png';
 import stormSurgeIcon from './risk-icons/storm-surge.png';
 import floodIcon from './risk-icons/flood.png';
 import droughtIcon from './risk-icons/drought.png';
+import wildfireIcon from './risk-icons/wildfire.png';
 
 export const COLOR_CYCLONE = '#a4bede';
 export const COLOR_FLOOD = '#5a80b0';
@@ -17,8 +18,7 @@ export const COLOR_DROUGHT = '#dca592';
 export const COLOR_FOOD_INSECURITY = '#c8ccb7';
 export const COLOR_EARTHQUAKE = '#b09db2';
 export const COLOR_STORM = '#97b8c2';
-// FIXME: change to assigned color
-export const COLOR_WILDFIRE = '#c2be97';
+export const COLOR_WILDFIRE = '#ff5014';
 
 export const hazardTypeToIconMap: {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -30,8 +30,7 @@ export const hazardTypeToIconMap: {
   SS: stormSurgeIcon,
   FL: floodIcon,
   DR: droughtIcon,
-  // FIXME: change to wildfire color
-  WF: droughtIcon,
+  WF: wildfireIcon,
 };
 
 export const hazardKeys: ImminentHazardTypes[] = [
