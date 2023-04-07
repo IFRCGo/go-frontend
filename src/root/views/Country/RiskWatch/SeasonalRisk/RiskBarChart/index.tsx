@@ -16,6 +16,7 @@ import {
   Tooltip,
   ComposedChart,
   Line,
+  Area,
 } from 'recharts';
 import { scalePow } from 'd3-scale';
 import { IoBarChart } from 'react-icons/io5';
@@ -57,6 +58,93 @@ import {
 import ChartLegendItem from '../ChartLegendItem';
 import styles from './styles.module.scss';
 
+const dummyDataWildfire = [
+  {
+    "Day": "01 Jan",
+    "Min (2012-2022)": 179,
+    "Average (2012-2022)": "12314.82",
+    "Max (2012-2022)": 28173,
+    "Year 2023": 4676
+  },
+  {
+    "Day": "01 Feb",
+    "Min (2012-2022)": 0,
+    "Average (2012-2022)": "12008.91",
+    "Max (2012-2022)": 26014,
+    "Year 2023": 18459
+  },
+  {
+    "Day": "01 Mar",
+    "Min (2012-2022)": 13679,
+    "Average (2012-2022)": "219830.91",
+    "Max (2012-2022)": 543135,
+    "Year 2023": 86997
+  },
+  {
+    "Day": "01 Apr",
+    "Min (2012-2022)": 124690,
+    "Average (2012-2022)": "707805.36",
+    "Max (2012-2022)": 1464277,
+    "Year 2023": 212629
+  },
+  {
+    "Day": "01 May",
+    "Min (2012-2022)": 199536,
+    "Average (2012-2022)": "657409.82",
+    "Max (2012-2022)": 1654873,
+    "Year 2023": null
+  },
+  {
+    "Day": "01 Jun",
+    "Min (2012-2022)": 72133,
+    "Average (2012-2022)": "289333.73",
+    "Max (2012-2022)": 1850342,
+    "Year 2023": null
+  },
+  {
+    "Day": "01 Jul",
+    "Min (2012-2022)": 112869,
+    "Average (2012-2022)": "629893.73",
+    "Max (2012-2022)": 1072449,
+    "Year 2023": null
+  },
+  {
+    "Day": "01 Aug",
+    "Min (2012-2022)": 365523,
+    "Average (2012-2022)": "782197.55",
+    "Max (2012-2022)": 2753959,
+    "Year 2023": null
+  },
+  {
+    "Day": "01 Sep",
+    "Min (2012-2022)": 26938,
+    "Average (2012-2022)": "266710.91",
+    "Max (2012-2022)": 870885,
+    "Year 2023": null
+  },
+  {
+    "Day": "01 Oct",
+    "Min (2012-2022)": 55530,
+    "Average (2012-2022)": "257843.36",
+    "Max (2012-2022)": 497885,
+    "Year 2023": null
+  },
+  {
+    "Day": "01 Nov",
+    "Min (2012-2022)": 17012,
+    "Average (2012-2022)": "88686.36",
+    "Max (2012-2022)": 172291,
+    "Year 2023": null
+  },
+  {
+    "Day": "01 Dec",
+    "Min (2012-2022)": 2036,
+    "Average (2012-2022)": "14160.09",
+    "Max (2012-2022)": 47598,
+    "Year 2023": null
+  },
+];
+
 function FILegendItem({
   label,
   color,
@@ -77,7 +165,6 @@ function FILegendItem({
   );
 }
 
-
 type RiskMetricType = (typeof riskMetricOptions)[number]['value'];
 const estimationPriorityMap: {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -91,6 +178,49 @@ const estimationPriorityMap: {
 interface DetailedChartProps {
   ipcData: IPCData[],
   showHistoricalValues: boolean;
+}
+
+function DetailedWildfireChart(){
+  const chartData = dummyDataWildfire.map((wild) => (
+    {
+      day: wild.Day,
+      range : [wild['Min (2012-2022)'], wild['Max (2012-2022)']],
+      average: wild['Average (2012-2022)'],
+      year: wild['Year 2023'],
+    }
+  ));
+
+  return (
+    <ResponsiveContainer>
+      <ComposedChart
+        data={chartData}
+      >
+        <CartesianGrid strokeDasharray="3 3" />
+        <XAxis
+          dataKey="Day"
+        />
+        <YAxis />
+        <Area
+          dataKey="range"
+          fill="#e3e3e3"
+          stroke="#e3e3e3"
+        />
+        <Line
+          dataKey="average"
+          stroke="#6794dc"
+          strokeWidth={2}
+          dot={false}
+        />
+        <Line
+          dataKey="year"
+          stroke="#ff6961"
+          strokeWidth={2}
+          dot={false}
+        />
+        <Tooltip />
+      </ComposedChart>
+    </ResponsiveContainer>
+  );
 }
 
 function DetailedChart(props: DetailedChartProps) {
@@ -149,6 +279,8 @@ function DetailedChart(props: DetailedChartProps) {
       };
     });
   }, [ipcData]);
+
+  console.log('chartData', chartData);
 
   const [activeLine, setActiveLine] = React.useState<string | undefined>();
 
@@ -369,56 +501,60 @@ function RiskBarChart(props: Props) {
         )}
       </div>
       <div className={styles.chartContainer}>
-        {hazardType === 'FI' ? (
+        {hazardType === 'FI' && (
           <DetailedChart
             showHistoricalValues={showHistoricalValues}
             ipcData={ipcData}
           />
-        ) : (
-          isEmpty ? (
-            <div className={styles.emptyMessage}>
-              <IoBarChart className={styles.icon} />
-              <div className={styles.text}>
-                Not enough data in the selected criteria to show the chart
-              </div>
-            </div>
-          ) : (
-            <ResponsiveContainer>
-              <BarChart
-                data={chartData}
-                margin={chartMargin}
-                barGap={1}
-                barCategoryGap={10}
-                barSize={14}
-              >
-                <Tooltip
-                  cursor={{ fill: '#f0f0f0' }}
-                  isAnimationActive={false}
-                  formatter={(value: string | number, label: string) => {
-                    return [formatNumber(+value), hazardIdToNameMap[label]];
-                  }}
-                />
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis
-                  dataKey="month"
-                />
-                <YAxis
-                  scale={riskMetric === 'informRiskScore' ? 'linear' : scaleCbrt}
-                  type="number"
-                  label={{
-                    value: riskMetricMap[riskMetric],
-                    angle: -90,
-                    position: 'insideLeft',
-                  }}
-                  tickFormatter={formatNumber}
-                />
-                {hasFl && <Bar dataKey="FL" fill={COLOR_FLOOD} />}
-                {hasTc && <Bar dataKey="TC" fill={COLOR_CYCLONE} />}
-                {hasDr && <Bar dataKey="DR" fill={COLOR_DROUGHT} />}
-                {hasFi && <Bar dataKey="FI" fill={COLOR_FOOD_INSECURITY} />}
-              </BarChart>
-            </ResponsiveContainer>
-          )
+        )
+        // : (
+        // : (
+        //   isEmpty ? (
+        //     <div className={styles.emptyMessage}>
+        //       <IoBarChart className={styles.icon} />
+        //       <div className={styles.text}>
+        //         Not enough data in the selected criteria to show the chart
+        //       </div>
+        //     </div>
+        //   )
+            // <ResponsiveContainer>
+            //   <BarChart
+            //     data={chartData}
+            //     margin={chartMargin}
+            //     barGap={1}
+            //     barCategoryGap={10}
+            //     barSize={14}
+            //   >
+            //     <Tooltip
+            //       cursor={{ fill: '#f0f0f0' }}
+            //       isAnimationActive={false}
+            //       formatter={(value: string | number, label: string) => {
+            //         return [formatNumber(+value), hazardIdToNameMap[label]];
+            //       }}
+            //     />
+            //     <CartesianGrid strokeDasharray="3 3" />
+            //     <XAxis
+            //       dataKey="month"
+            //     />
+            //     <YAxis
+            //       scale={riskMetric === 'informRiskScore' ? 'linear' : scaleCbrt}
+            //       type="number"
+            //       label={{
+            //         value: riskMetricMap[riskMetric],
+            //         angle: -90,
+            //         position: 'insideLeft',
+            //       }}
+            //       tickFormatter={formatNumber}
+            //     />
+            //     {hasFl && <Bar dataKey="FL" fill={COLOR_FLOOD} />}
+            //     {hasTc && <Bar dataKey="TC" fill={COLOR_CYCLONE} />}
+            //     {hasDr && <Bar dataKey="DR" fill={COLOR_DROUGHT} />}
+            //     {hasFi && <Bar dataKey="FI" fill={COLOR_FOOD_INSECURITY} />}
+            //   </BarChart>
+            // </ResponsiveContainer>
+          }
+        {hazardType === 'WF' && (
+          <DetailedWildfireChart />
         )}
       </div>
       <div className={styles.legend}>

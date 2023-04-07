@@ -52,6 +52,7 @@ const visibleHazardTypeMap: {
     FL: true,
     FI: true,
     DR: true,
+    WF: true,
   };
 
 const visibleReturnPeriodHazardTypeMap: {
@@ -72,6 +73,7 @@ const hazardOrderMap: {
     TC: 2,
     DR: 3,
     FI: 4,
+    WF: 5,
   };
 
 const estimationPriorityMap: {
@@ -277,6 +279,11 @@ value: h,
     ];
   }, [response]);
 
+  const newHazardOptions = [
+    ...hazardOptions,
+    {label: 'Wildfire', value: 'WF'}
+  ];
+
   return (
     <>
       <Container
@@ -318,7 +325,7 @@ value: h,
         </div>
         <RiskBarChart
           riskData={aggregatedRiskData}
-          hazardOptions={hazardOptions}
+          hazardOptions={newHazardOptions}
           ipcData={response?.ipc_displacement_data ?? []}
         />
       </Container>
