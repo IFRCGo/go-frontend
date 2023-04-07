@@ -93,6 +93,30 @@ const adamIconLabel = (
   </div>
 );
 
+const gdacsIconLabel = (
+  <div className={styles.sourceLabel}>
+    <TextOutput
+      className={styles.source}
+      value="GDACS"
+    />
+    <React.Fragment>
+      <IoInformationCircleOutline
+        data-event="click"
+        data-tooltip-id="gdacs"
+        data-tooltip-html={ReactDOMServer.renderToStaticMarkup(
+          tooltip(adamPopupTitle, adamPopupDescription)
+        )}
+      />
+      <Tooltip
+        className={styles.tooltip}
+        id="adam"
+        place="top"
+        clickable={true}
+      />
+    </React.Fragment>
+  </div>
+);
+
 const legendItems = [
   { color: COLOR_FLOOD, label: 'Flood' },
   { color: COLOR_STORM, label: 'Storm' },
@@ -128,6 +152,7 @@ function MapFooter(props: Props) {
   const sourceOptions =[
     { value: "PDC", label: pdcIconLabel },
     { value: "WFP", label: adamIconLabel },
+    { value: "GDACS", label: gdacsIconLabel },
   ] as StringValueOption[];
 
   const handleChangeSourceType = React.useCallback(
