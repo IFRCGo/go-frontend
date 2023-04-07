@@ -58,7 +58,7 @@ function ImminentEvents(props: Props) {
           regionId={regionId}
         />
       )}
-      <MapFooter 
+      <MapFooter
         sourceType={mapSource}
         onSourceChange={sourceType}
       />
