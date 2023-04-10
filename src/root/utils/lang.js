@@ -1,6 +1,13 @@
 import React from 'react';
 import { isDefined } from '@togglecorp/fujs';
 
+export const languageOptions = {
+  en: 'English',
+  fr: 'French',
+  es: 'Spanish',
+  ar: 'Arabic',
+};
+
 
 export function resolveToString(template, params) {
   if (!isDefined(template)) {
