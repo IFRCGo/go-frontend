@@ -6,10 +6,10 @@ import Page from '#components/Page';
 import Tabs from '#components/Tabs';
 import TabList from '#components/Tabs/TabList';
 import Tab from '#components/Tabs/Tab';
-
-import styles from './styles.module.scss';
 import TabPanel from '#components/Tabs/TabPanel';
 import PerOverview from './PerOverview';
+
+import styles from './styles.module.scss';
 
 interface Props {
   className?: string;
