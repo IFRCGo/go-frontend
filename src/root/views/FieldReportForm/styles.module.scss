@@ -22,4 +22,10 @@
   .language-mismatch {
     text-align: center;
   }
+
+  .tab-content {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing*4;
+  }
 }

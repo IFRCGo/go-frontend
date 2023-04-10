@@ -11,6 +11,7 @@ import {
 import {
   _cs,
   isDefined,
+  isNotDefined,
 } from '@togglecorp/fujs';
 
 import BreadCrumb from '#components/breadcrumb';
@@ -97,11 +98,11 @@ function FieldReportForm(props: Props) {
     pending: fieldReportPending,
     response: fieldReportResponse,
   } = useRequest<FieldReportAPIResponseFields>({
-    skip: !reportId,
+    skip: isNotDefined(reportId),
     url: `api/v2/field_report/${reportId}/`,
   });
 
-  const languageMismatch = (fieldReportResponse?.translation_module_original_language !== currentLanguage) ?? false;
+  const languageMismatch = (isDefined(reportId) && fieldReportResponse?.translation_module_original_language !== currentLanguage) ?? false;
 
   const crumbs = React.useMemo(() => [
     {link: location?.pathname, name: isDefined(reportId) ? strings.breadCrumbEditFieldReport : strings.breadCrumbNewFieldReport},
@@ -411,7 +412,10 @@ function FieldReportForm(props: Props) {
             )}
             {!languageMismatch && (
               <>
-                <TabPanel name="step1">
+                <TabPanel
+                  className={styles.tabContent}
+                  name="step1"
+                >
                   <ContextFields
                     error={error}
                     onValueChange={onValueChange}
@@ -431,7 +435,10 @@ function FieldReportForm(props: Props) {
                     reportId={reportId}
                   />
                 </TabPanel>
-                <TabPanel name="step2">
+                <TabPanel
+                  className={styles.tabContent}
+                  name="step2"
+                >
                   {value.status === STATUS_EARLY_WARNING && (
                     <RiskAnalysisFields
                       sourceOptions={sourceOptions}
@@ -450,7 +457,10 @@ function FieldReportForm(props: Props) {
                     />
                   )}
                 </TabPanel>
-                <TabPanel name="step3">
+                <TabPanel
+                  name="step3"
+                  className={styles.tabContent}
+                >
                   {value.status === STATUS_EARLY_WARNING && (
                     <EarlyActionsFields
                       bulletinOptions={bulletinOptions}
@@ -475,7 +485,10 @@ function FieldReportForm(props: Props) {
                     />
                   )}
                 </TabPanel>
-                <TabPanel name="step4">
+                <TabPanel
+                  name="step4"
+                  className={styles.tabContent}
+                >
                   <ResponseFields
                     reportType={reportType}
                     error={error}

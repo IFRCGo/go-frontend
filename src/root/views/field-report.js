@@ -562,7 +562,6 @@ class FieldReport extends React.Component {
     );
     const districts = [];
     data.districts.forEach((x, i) => districts.push(data.districts[i].name));
-    console.info('data', data);
 
     return (
       <section className='inpage'>

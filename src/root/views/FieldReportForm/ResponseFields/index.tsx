@@ -6,7 +6,6 @@ import {
   getErrorObject,
 } from '@togglecorp/toggle-form';
 
-import Header from '#components/Header';
 import Container from '#components/Container';
 import InputSection from '#components/InputSection';
 import NumberInput from '#components/NumberInput';
@@ -84,29 +83,29 @@ function ResponseFields(props: Props) {
 
     if(user?.data.profile.org_type==='OTHR') {
       r = [
-          { label: strings.fieldReportConstantVisibilityPublicLabel, value: VISIBILITY_PUBLIC },
-          { label: strings.fieldReportConstantVisibilityRCRCMovementLabel, value: VISIBILITY_RCRC_MOVEMENT },
-        ];
+        { label: strings.fieldReportConstantVisibilityPublicLabel, value: VISIBILITY_PUBLIC },
+        { label: strings.fieldReportConstantVisibilityRCRCMovementLabel, value: VISIBILITY_RCRC_MOVEMENT },
+      ];
     } else if(user?.data.profile.org_type==='NTLS') {
       r =  [
-          { label: strings.fieldReportConstantVisibilityPublicLabel, value: VISIBILITY_PUBLIC },
-          { label: strings.fieldReportConstantVisibilityRCRCMovementLabel, value: VISIBILITY_RCRC_MOVEMENT },
-          { label: strings.fieldReportConstantVisibilityIFRCandNSLabel, value: VISIBILITY_IFRC_NS },
-        ];
+        { label: strings.fieldReportConstantVisibilityPublicLabel, value: VISIBILITY_PUBLIC },
+        { label: strings.fieldReportConstantVisibilityRCRCMovementLabel, value: VISIBILITY_RCRC_MOVEMENT },
+        { label: strings.fieldReportConstantVisibilityIFRCandNSLabel, value: VISIBILITY_IFRC_NS },
+      ];
     } else {
       r =  [
-          { label: strings.fieldReportConstantVisibilityPublicLabel, value: VISIBILITY_PUBLIC },
-          { label: strings.fieldReportConstantVisibilityRCRCMovementLabel, value: VISIBILITY_RCRC_MOVEMENT },
-          { label: strings.fieldReportConstantVisibilityIFRCSecretariatLabel, value: VISIBILITY_IFRC_SECRETARIAT },
-          { label: strings.fieldReportConstantVisibilityIFRCandNSLabel, value: VISIBILITY_IFRC_NS },
-        ];
-     }
+        { label: strings.fieldReportConstantVisibilityPublicLabel, value: VISIBILITY_PUBLIC },
+        { label: strings.fieldReportConstantVisibilityRCRCMovementLabel, value: VISIBILITY_RCRC_MOVEMENT },
+        { label: strings.fieldReportConstantVisibilityIFRCSecretariatLabel, value: VISIBILITY_IFRC_SECRETARIAT },
+        { label: strings.fieldReportConstantVisibilityIFRCandNSLabel, value: VISIBILITY_IFRC_NS },
+      ];
+    }
 
-   if (isReviewCountry) {
-     r = [ { label: strings.fieldReportConstantVisibilityIFRCandNSLabel, value: VISIBILITY_IFRC_NS } ];
-   }
+    if (isReviewCountry) {
+      r = [ { label: strings.fieldReportConstantVisibilityIFRCandNSLabel, value: VISIBILITY_IFRC_NS } ];
+    }
 
-  return  r;
+    return  r;
   }, [strings, user.data.profile.org_type, isReviewCountry]);
 
   return (
@@ -114,11 +113,16 @@ function ResponseFields(props: Props) {
       <Container
         heading={strings.fieldReportFormResponseTitle}
         description={(
-          <Header
-            heading={strings.fieldReportFormResponseLabel}
-            description={strings.fieldReportFormResponseDescription}
-            headingSize="extraSmall"
-          />
+          <>
+            <div>
+              <strong>
+                {strings.fieldReportFormResponseLabel}
+              </strong>
+            </div>
+            <div>
+              {strings.fieldReportFormResponseDescription}
+            </div>
+          </>
         )}
       >
         { reportType !== 'COVID' && (

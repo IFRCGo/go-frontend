@@ -189,7 +189,7 @@ export const processGoOptions: GoContextInterface['transformOptions'] = (
   }
 
   const requestBody = body ? JSON.stringify(body) : undefined;
-  return {
+  const request = {
     method,
     headers: {
       Accept: isCsvRequest ? CONTENT_TYPE_CSV : CONTENT_TYPE_JSON,
@@ -202,6 +202,8 @@ export const processGoOptions: GoContextInterface['transformOptions'] = (
     body: requestBody,
     ...otherOptions,
   };
+
+  return request;
 };
 
 export const processGoResponse: GoContextInterface['transformResponse'] = async (
