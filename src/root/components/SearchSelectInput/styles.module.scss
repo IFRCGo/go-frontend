@@ -1,8 +1,22 @@
+@import '~styles/settings/variables';
+
+.select-input {
+  &.disabled {
+    :global {
+      .go-input-internal-input-section {
+        opacity: 1;
+      }
+    }
+  }
+}
+
 .select {
   :global {
     .go__control {
       border: 0;
       box-shadow: unset;
+      min-height: unset;
+      background-color: unset;
 
       &.go__control--is-focused {
         border: 0;
@@ -12,6 +26,23 @@
           border: 0;
           box-shadow: unset;
         }
+      }
+
+      .go__value-container {
+        padding: unset;
+
+        >* {
+          margin: unset;
+          padding: unset;
+        }
+      }
+
+      .go__indicator {
+        padding: unset;
+      }
+
+      .go__indicator-separator {
+        display: none;
       }
     }
   }

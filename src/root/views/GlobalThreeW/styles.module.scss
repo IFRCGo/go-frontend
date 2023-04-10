@@ -3,10 +3,9 @@
 .global-three-w {
   .info-container {
     display: flex;
-    padding: $spacing*0.5;
+    gap: $spacing;
 
     >* {
-      margin: $spacing*0.5;
       flex-basis: 0;
       flex-grow: 1;
     }
@@ -47,8 +46,7 @@
     }
 
     .filters-container {
-      padding: $spacing 0;
-      border-bottom: $base-border-width solid $base-border-color--light;
+      padding: $spacing/2 0;
     }
 
     .ppp {

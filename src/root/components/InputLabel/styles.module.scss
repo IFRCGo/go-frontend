@@ -1,10 +1,6 @@
 @import '~styles/settings/variables';
 
 .input-label {
-  display: flex;
-  align-items: center;
-  font-weight: $base-font-medium;
-  font-size: $font-size-sm;
-  opacity: .7;
-  padding: $spacing*0.25 $spacing;
+  color: $color-input-label;
+  padding: 0 $spacing;
 }

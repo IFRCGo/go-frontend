@@ -108,6 +108,8 @@ $heading-font-bold: 700;
 $heading-font-weight: $base-font-semi-bold;
 
 
+
+
 /* Decoration
    ========================================================================== */
 
@@ -201,3 +203,42 @@ $duration-animation-slow: 1.2s;
 $width-alert: calc(200px + 16vw);
 
 $mapbox-icon-width: 88px;
+
+// --------------------------------------------------------
+// New variables: Updated from UI component design library
+// --------------------------------------------------------
+
+$color-go-red: #f5333f;
+$color-go-black: #000000;
+$color-go-grey-10: #f4f4f4;
+$color-go-grey-50: #8d8d8d;
+$color-go-grey-60: #6f6f6f;
+
+$border-radius-input: 0.25rem;
+
+$color-input-label: $color-go-grey-60;
+$color-input-placeholder: $color-go-grey-50;
+$color-input-text: $color-go-black;
+$color-input-section-background: $color-go-grey-10;
+$color-input-bottom-border-hover: $color-go-red;
+$color-input-bottom-border-selected: $color-go-red;
+$color-input-border-errored: $color-go-red;
+
+$font-size-ultra-large: 2.5rem;
+$font-size-super-large: 1.875rem;
+$font-size-extra-large: 1.5rem;
+$font-size-large: 1.25rem;
+$font-size-medium: 1.125rem;
+$font-size-small: 0.875rem;
+$font-size-extra-small:0.75rem;
+
+$font-size-h1: $font-size-ultra-large;
+$font-size-h2: $font-size-super-large;
+$font-size-h3: $font-size-extra-large;
+$font-size-h4: $font-size-large;
+$font-size-h5: $font-size-medium;
+
+$font-weight-bold: 600;
+$font-weight-medium: 500;
+$font-weight-regular: 400;
+$font-weight-light: 300;

@@ -4,7 +4,7 @@ import c from 'classnames';
 
 import Navbar from '#components/navbar';
 import MobileNavbar from '#components/mobile-navbar';
-import Footer from '#components/footer';
+import Footer from '#components/page-footer';
 import GlobalLoading from '#components/global-loading';
 // import GlobalHeaderBanner from '#components/global-header-banner';
 import SysAlerts from '#components/system-alerts';

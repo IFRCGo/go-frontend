@@ -2,6 +2,7 @@ import React from 'react';
 import { _cs } from '@togglecorp/fujs';
 
 import Container from '#components/Container';
+import Heading from '#components/Heading';
 
 import styles from './styles.module.scss';
 
@@ -40,41 +41,29 @@ function PageHeader(props: Props) {
         className,
       )}
     >
-      <Container>
-        {(actions || breadCrumbs) && (
+      <Container
+        className={styles.container}
+        icons={breadCrumbs}
+        actions={(
           <>
-          
-          <div style={{display: 'flex', justifyContent:'flex-end', paddingBottom:'8px'}}>
-             {wikiLink}
-          </div>
-          
-          <section className={styles.topSection}>
-            
-            <div className={styles.breadCrumbs}>
-              { breadCrumbs }
-            </div>
-            
-            <div className={styles.actions}>
-              { actions }
-            </div>
-          </section>
+            {actions}
+            {wikiLink}
           </>
         )}
-        {(heading || description) && (
-          <section className={styles.middleSection}>
-            <h1 className={styles.heading}>
-              { heading }
-            </h1>
-            { description && (
-              <div className={styles.description}>
-                { description }
-              </div>
-            )}
-          </section>
-        )}
-        { info && (
-          <div className={_cs(styles.info, infoContainerClassName)}>
-            { info }
+        hideHeaderBorder
+        footer={info}
+        footerContentClassName={infoContainerClassName}
+        contentClassName={styles.mainContent}
+      >
+        <Heading
+          size="extraLarge"
+          className={styles.heading}
+        >
+          { heading }
+        </Heading>
+        {description && (
+          <div className={styles.description}>
+            { description }
           </div>
         )}
       </Container>

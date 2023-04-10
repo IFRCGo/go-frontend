@@ -17,27 +17,28 @@
     overflow-y: hidden;
     display: flex;
     flex-direction: column;
-    gap: $spacing * 0.75;
     padding-right: $spacing;
-
 
     &:hover {
       overflow-y: auto;
     }
 
     .country-card {
-      border: 1px solid $grey-titanium;
-      padding: $spacing;
+      display: flex;
+      flex-direction: column;
+      border-bottom: $base-border-width solid $grey-titanium;
+      padding: $spacing 0;
+      gap: $spacing*0.5;
     }
 
     .country-name {
       font-size: $font-size-xxs;
-      font-weight: $base-font-medium;
+      font-weight: $base-font-semi-bold;
       text-transform: uppercase;
     }
 
     .bar-container {
-      border: 1px solid transparent;
+      border: $base-border-width solid transparent;
       border-radius: $base-border-radius;
       height: 0.5rem;
       display: flex;
