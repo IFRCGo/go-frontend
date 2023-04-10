@@ -8,7 +8,6 @@ export const languageOptions = {
   ar: 'Arabic',
 };
 
-
 export function resolveToString(template, params) {
   if (!isDefined(template)) {
     return '';

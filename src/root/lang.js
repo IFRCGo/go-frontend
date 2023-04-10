@@ -3929,4 +3929,6 @@ export default {
   searchSurgeDeploymentsTableEmergency: 'Emergency',
 
   reducedListDisplayMoreLabel: '... and {n} more',
+  translationWarning: 'The contents in this page was machine translated from {originalLanguage}!',
+  translationErrorEdit: 'This form was originally created in {originalLanguage} and cannot be edited in a different language!'
 };

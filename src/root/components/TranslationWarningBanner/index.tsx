@@ -2,6 +2,8 @@ import React from 'react';
 import { _cs } from '@togglecorp/fujs';
 
 import { languageOptions } from '#utils/lang';
+import Translate from '#components/Translate';
+import useReduxState from '#hooks/useReduxState';
 import styles from './styles.module.scss';
 
 interface Props {
@@ -15,9 +17,18 @@ function TranslationWarningBanner(props: Props) {
     originalContentLanguage,
   } = props;
 
+  const { current: currentLanguage } = useReduxState('lang');
+
+  if (originalContentLanguage === currentLanguage) {
+    return null;
+  }
+
   return (
     <div className={_cs(styles.translationWarningBanner, className)}>
-      The content in this page was machine translated!
+      <Translate
+        stringId="translationWarning"
+        params={{ originalLanguage: languageOptions[originalContentLanguage] }}
+      />
     </div>
   );
 }
