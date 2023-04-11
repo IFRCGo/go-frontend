@@ -72,6 +72,68 @@ export interface PDCEventExposure {
   } | null;
 }
 
+export interface GDACSEvent {
+  id: number,
+  country_details: {
+      id: number;
+      name: string;
+      iso: string;
+      iso3: string;
+      region: number;
+  },
+  hazard_type_display: string;
+  created_at: string;
+  start_date: string;
+  end_date: string;
+  hazard_id: string;
+  hazard_name: string;
+  hazard_type: ImminentHazardTypes;
+  alert_level: string;
+  event_details: {
+    url: {
+        report: string;
+        details: string;
+        geometry: string;
+    },
+    icon: string;
+    iso3: string;
+    name: string;
+    Class: string;
+    glide: string;
+    todate: string;
+    country: string;
+    eventid: number;
+    fromdate: string;
+    episodeid: number;
+    eventname: string;
+    eventtype: string;
+    iscurrent: string;
+    alertlevel: string;
+    alertscore: number;
+    description: string;
+    iconoverall: null,
+    istemporary: string;
+    polygonlabel: string;
+    severitydata: {
+        severity: number;
+        severitytext: string;
+        severityunit: string;
+    },
+    countryonland: string;
+    htmldescription: string;
+    episodealertlevel: string;
+    episodealertscore: number;
+  },
+  country: number;
+  latitude: number;
+  longitude: number;
+}
+
+export interface GDACSEventExposure{
+  footprint_geojson: GeoJSON.FeatureCollection<GeoJSON.Geometry, GDACSEvent>;
+  capital_exposure: string;
+}
+
 export interface ImminentResponse {
   oddrin_data: unknown[];
   pdc_data: PDCEvent[];
