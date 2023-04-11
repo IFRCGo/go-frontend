@@ -53,6 +53,8 @@ const SharepointLink = {
         pre + 'Ed8efoyRbQtHkU6XR5daOuMBxj9n_DqaE_gADCuspNUTmQ',
     'Public Health in Emergencies Coordinator.pdf':
         pre + 'EQQznuV_sHtGi7HH1PJ96Q0BWaetAeQgBdZlNg9vFsXOhw',
+    'Public Health in Emergencies Officer.pdf':
+        pre + 'EQI_KH-MiBVIiYUuCTZdN0wB3RvRGeSRoUdJtzt1DKK8YA',
     'Safe and Dignified Burials Coordinator.pdf':
         pre + 'EdiLb6_d41JKiiD_TjSNK1kBfVHb_j4F4WDox7lKbxmLxg',
     'Mental Health and Psychosocial Support Coordinator.pdf':
