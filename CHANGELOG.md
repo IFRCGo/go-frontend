@@ -1,3 +1,9 @@
+### Release 6.5.3 - Hotfix for a new CoS Role Profile
+Date: 2023-04-11
+
+Frontend:
+ - New Role Profile to CoS Health
+
 ### Release 6.5.2 - Hotfix for Top Tags
 Date: 2023-04-04
 

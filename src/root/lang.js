@@ -1275,6 +1275,7 @@ export default {
   catalogueOfSurgeServicesHealthCards1Card1Element1: 'Health Coordinator',
   catalogueOfSurgeServicesHealthCards1Card1Element2: 'Medical Coordinator',
   catalogueOfSurgeServicesHealthCards1Card1Element3: 'Public Health Coordinator',
+  catalogueOfSurgeServicesHealthCards1Card1Element3a: 'Public Health Officer',
   catalogueOfSurgeServicesHealthCards1Card1Element4: 'Safe and Dignified Burials (SDB) Coordinator',
   catalogueOfSurgeServicesHealthCards1Card1Element5: 'Staff Health Officer (details coming soon)',// coming soon not wanted 6
   catalogueOfSurgeServicesHealthCards1Card1Element6: 'Mental Health and Psychosocial Support Coordinator',
