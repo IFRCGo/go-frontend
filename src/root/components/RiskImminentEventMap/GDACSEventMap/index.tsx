@@ -8,6 +8,19 @@ import Map,
   MapTooltip
 } from '@togglecorp/re-map';
 import {
+  isDefined,
+  isNotDefined,
+  listToMap,
+  noOp,
+  _cs
+} from '@togglecorp/fujs';
+import {
+  bbox as turfBbox,
+} from '@turf/turf';
+import { LngLat } from 'mapbox-gl';
+import { BoundingBox, viewport } from '@mapbox/geo-viewport';
+
+import {
   BBOXType,
   defaultMapOptions,
   defaultMapStyle,
@@ -31,26 +44,14 @@ import {
   COLOR_STORM,
   COLOR_WILDFIRE,
 } from '#utils/risk';
+import MapEaseTo from '#components/MapEaseTo';
 import GoMapDisclaimer from '#components/GoMapDisclaimer';
 import { GDACSEvent, GDACSEventExposure, ImminentHazardTypes } from '#types/risk';
 
-import styles from './styles.module.scss';
-import {
-  isDefined,
-  isNotDefined,
-  listToMap,
-  noOp,
-  _cs
-} from '@togglecorp/fujs';
-import {
-  bbox as turfBbox,
-} from '@turf/turf';
 import Sidebar from './Sidebar';
 import HazardMapImage from '../PDCEventMap/HazardMapImage';
-import MapEaseTo from '#components/MapEaseTo';
-import { BoundingBox, viewport } from '@mapbox/geo-viewport';
 import PointDetails from './PointDetails';
-import { LngLat } from 'mapbox-gl';
+import styles from './styles.module.scss';
 
 const hazardTypeFillColorPaint = [
   'match',
@@ -86,13 +87,12 @@ const alertLevelFillColorPaint = [
   COLOR_BLACK,
 ];
 
-
 const footprintLayerOptions = {
   type: 'fill',
   paint: {
     'fill-color': alertLevelFillColorPaint,
+    'fill-opacity': 0.5,
   },
-  filter: ['==', ['get', 'type'], 'MultiPolygon'],
 };
 
 const mapPadding = {
@@ -126,9 +126,9 @@ function GDACSEventMap(props: Props) {
   } = props;
 
   const [
-    hazardIconLoadedStatusMap,
-    setHazardIconLoadedStatusMap,
-  ] = React.useState<Record<ImminentHazardTypes, boolean>>({
+  hazardIconLoadedStatusMap,
+  setHazardIconLoadedStatusMap,
+] = React.useState<Record<ImminentHazardTypes, boolean>>({
     EQ: false,
     FL: false,
     CY: false,
@@ -143,7 +143,7 @@ function GDACSEventMap(props: Props) {
     return hazardListFromProps.filter(h => supportedHazards[h.hazard_type]);
   }, [hazardListFromProps]);
 
-  const activeEvent = hazardList?.find(d => d.event_details.eventid === activeEventUuid);
+  const activeEvent = hazardList?.find(d => d.hazard_id === activeEventUuid);
 
   const activeEventPopUpDetails = React.useMemo(() => {
     if (isNotDefined(activeEvent)) {
@@ -159,12 +159,12 @@ function GDACSEventMap(props: Props) {
       activeEventExposure,
       hazardDetails: activeEvent,
       lngLat,
-      uuid: activeEvent?.event_details.eventid,
+      uuid: activeEvent.hazard_id,
     };
   }, [
-    activeEvent,
-    activeEventExposure
-  ]);
+      activeEvent,
+      activeEventExposure
+    ]);
 
   const allIconsLoaded = React.useMemo(() => (
     Object.values(hazardIconLoadedStatusMap).every(d => d)
@@ -190,16 +190,15 @@ function GDACSEventMap(props: Props) {
           },
           properties: {
             hazardId: hazard.id,
-            hazardUuid: hazard.event_details.eventid,
+            hazardUuid: hazard.hazard_id,
             hazardType: hazard.hazard_type,
-            alert_level: hazard.event_details.alertlevel,
           },
         };
       }),
     };
   }, [hazardList]);
 
-  const stormPositionGeoJson = React.useMemo(
+  const footprintPositionGeoJson = React.useMemo(
     () => {
       if (isNotDefined(activeEventExposure)) {
         return {
@@ -208,34 +207,35 @@ function GDACSEventMap(props: Props) {
         };
       }
 
-      const stormPoints = activeEventExposure?.footprint_geojson;
+      const footprintPositions = activeEventExposure?.footprint_geojson;
 
-      if (isNotDefined(stormPoints)) {
+      if (isNotDefined(footprintPositions)) {
         return {
           type: 'FeatureCollection' as const,
           features: [],
         };
       }
       return {
-        ...stormPoints,
-        features: stormPoints.features.map((feature) => ({
+        ...footprintPositions,
+        features: footprintPositions.features.map((feature) => ({
           ...feature,
           properties: {
             ...feature.properties,
             type: feature.geometry.type,
           },
         })),
-      };
+        };
     },
     [activeEventExposure],
   );
   const boundsBoxPoints = React.useMemo(
     () => {
-      if (stormPositionGeoJson.features.length > 1) {
-        const bounds = turfBbox(stormPositionGeoJson) as BoundingBox;
+      if (footprintPositionGeoJson.features.length > 1) {
+        const bounds = turfBbox(footprintPositionGeoJson) as BoundingBox;
         const viewPort = viewport(bounds, [600, 400]);
         return viewPort;
       }
+
       if (activeEvent) {
         return {
           center: [
@@ -246,7 +246,7 @@ function GDACSEventMap(props: Props) {
         };
       }
 
-      if (isNotDefined(activeEvent) && isDefined(hazardPointGeoJson)) {
+      if (isNotDefined(activeEvent) && hazardPointGeoJson.features.length > 1) {
         const bounds = turfBbox(hazardPointGeoJson) as BoundingBox;
         const viewPort = viewport(bounds, [600, 400], 1, 2.5);
 
@@ -254,7 +254,7 @@ function GDACSEventMap(props: Props) {
       }
     },
     [
-      stormPositionGeoJson,
+      footprintPositionGeoJson,
       hazardPointGeoJson,
       activeEvent,
     ],
@@ -263,21 +263,21 @@ function GDACSEventMap(props: Props) {
   const pointActiveState = React.useMemo(() => {
     return hazardList.map((h) => ({
       id: h.id,
-      value: h.event_details.eventid === activeEventUuid,
+      value: h.hazard_id === activeEventUuid,
     }));
   }, [activeEventUuid, hazardList]);
 
   const handlePointMouseClick = React.useCallback((
     feature: mapboxgl.MapboxGeoJSONFeature,
   ) => {
-    const uuid = feature?.properties?.hazardUuid;
-    if (isDefined(uuid) && activeEventUuid !== uuid) {
-      onActiveEventChange(uuid);
-    } else {
-      onActiveEventChange(undefined);
-    }
-    return false;
-  },
+      const uuid = feature?.properties?.hazardUuid;
+      if (isDefined(uuid) && activeEventUuid !== uuid) {
+        onActiveEventChange(uuid);
+      } else {
+        onActiveEventChange(undefined);
+      }
+      return false;
+    },
     [activeEventUuid, onActiveEventChange],
   );
 
@@ -314,16 +314,16 @@ function GDACSEventMap(props: Props) {
           onLoad={handleIconLoad}
         />
       ))}
-      {stormPositionGeoJson && (
+      {footprintPositionGeoJson && (
         <MapSource
           sourceKey='type'
           sourceOptions={geoJsonSourceOptions}
-          geoJson={stormPositionGeoJson}
+          geoJson={footprintPositionGeoJson}
         >
           <MapLayer
             layerKey="cyclone-tracks-points-circle"
             layerOptions={{
-              type: 'Point',
+              type: 'circle',
               paint: {
                 'circle-color': hazardTypeFillColorPaint,
                 'circle-radius': 6,
@@ -376,7 +376,7 @@ function GDACSEventMap(props: Props) {
                 'icon-size': 0.8,
                 'icon-rotate': 90,
               },
-              filter: ['==', ['get', 'type'], 'MultiLineString'],
+              filter: ['==', ['get', 'type'], 'LineString'],
             }}
           />
           {/* Note: for boundry line */}
@@ -389,24 +389,9 @@ function GDACSEventMap(props: Props) {
                 'line-opacity': 0.5,
                 'line-width': 1,
               },
-              filter: ['==', ['get', 'type'], 'LineString'],
             }}
           />
         </MapSource>
-      )}
-
-      {activeEventPopUpDetails && activeEventPopUpDetails.hazardDetails && (
-        <MapTooltip
-          coordinates={activeEventPopUpDetails.lngLat}
-          onHide={handlePointClose}
-          tooltipOptions={defaultTooltipOptions}
-        >
-          <PointDetails
-            onCloseButtonClick={handlePointClose}
-            hazardDetails={activeEventPopUpDetails.hazardDetails}
-          // exposureDetails={activeEventPopUpDetails.activeEventExposure}
-          />
-        </MapTooltip>
       )}
       {hazardPointGeoJson && (
         <MapSource
@@ -461,6 +446,18 @@ function GDACSEventMap(props: Props) {
           />
         </MapSource>
       )}
+      {activeEventPopUpDetails && activeEventPopUpDetails.hazardDetails && (
+        <MapTooltip
+          coordinates={activeEventPopUpDetails.lngLat}
+          onHide={handlePointClose}
+          tooltipOptions={defaultTooltipOptions}
+        >
+          <PointDetails
+            onCloseButtonClick={handlePointClose}
+            hazardDetails={activeEventPopUpDetails.hazardDetails}
+          />
+        </MapTooltip>
+      )}
       {boundsBoxPoints &&
         <MapEaseTo
           padding={mapPadding}
@@ -474,3 +471,4 @@ function GDACSEventMap(props: Props) {
 }
 
 export default GDACSEventMap;
+

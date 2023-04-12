@@ -85,7 +85,7 @@ export interface GDACSEvent {
   created_at: string;
   start_date: string;
   end_date: string;
-  hazard_id: string;
+  hazard_id: number;
   hazard_name: string;
   hazard_type: ImminentHazardTypes;
   alert_level: string;

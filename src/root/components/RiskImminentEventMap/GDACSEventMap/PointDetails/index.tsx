@@ -6,19 +6,18 @@ import {
 
 import TextOutput from '#components/TextOutput';
 import MapTooltipContent from '#components/MapTooltipContent';
-
+import Link from '#components/Link';
 import { GDACSEvent } from '#types';
 
 import styles from './styles.module.scss';
-import Link from '#components/Link';
 
 function EstimatedOutput({
   value,
   attribute,
 }: {
-  value: number | undefined | null;
-  attribute: string;
-}) {
+    value: number | undefined | null;
+    attribute: string;
+  }) {
   if (isNotDefined(value)) {
     return null;
   }
@@ -52,7 +51,6 @@ function PointDetails(props: PointDetailsProps) {
     hazardDetails: {
       hazard_name,
       start_date,
-      created_at,
       event_details,
       alert_level,
     },
@@ -69,7 +67,7 @@ function PointDetails(props: PointDetailsProps) {
 
         {isDefined(event_details.url.details) && (
           <TextOutput
-            label="Details"
+            label="Details Link"
             value={
               <Link
                 className={styles.url}
@@ -84,7 +82,7 @@ function PointDetails(props: PointDetailsProps) {
         )}
         {isDefined(event_details.url.geometry) && (
           <TextOutput
-            label="Geometry"
+            label="Geometry Link"
             value={
               <Link
                 className={styles.url}
@@ -99,7 +97,7 @@ function PointDetails(props: PointDetailsProps) {
         )}
         {isDefined(event_details.url.report) && (
           <TextOutput
-            label="Report"
+            label="Report Link"
             value={
               <Link
                 className={styles.url}
@@ -120,23 +118,19 @@ function PointDetails(props: PointDetailsProps) {
       <hr />
       <div className={styles.eventDates}>
         <TextOutput
-          label="Event start date"
+          label="Event Start Date"
           value={start_date}
           valueType="date"
         />
         <TextOutput
-          label="Created on"
-          value={created_at}
-          valueType="date"
+          label="Alert Type"
+          value={alert_level}
+          valueType="text"
         />
-         <TextOutput
-            label="Alert Type"
-            value={alert_level}
-            valueType="text"
-          />
       </div>
     </MapTooltipContent>
   );
 }
 
 export default PointDetails;
+
