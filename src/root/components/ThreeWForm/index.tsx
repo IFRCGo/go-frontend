@@ -183,6 +183,7 @@ function ThreeWForm(props: Props) {
     shouldDisableTotalTarget,
     shouldDisableTotalReached,
     disasterTypeLabel,
+    countriesResponse,
   } = useThreeWOptions(value);
 
 
@@ -318,6 +319,11 @@ function ThreeWForm(props: Props) {
     onValueChange,
   );
 
+  const filterCountryDetails = React.useMemo(
+    () => countriesResponse?.results.find(country => country.id === value.project_country),
+    [countriesResponse, value.project_country],
+  );
+
   // if(!projectResponse)
   // {
   //   return(
@@ -445,7 +451,7 @@ function ThreeWForm(props: Props) {
                 <ProvinceMapModal
                   className={styles.provinceModal}
                   onCloseButtonClick ={setShowProvinceModalFalse}
-                  countryId={value.project_country}
+                  countryDetails={filterCountryDetails}
                 />
               )}
 

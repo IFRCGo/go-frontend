@@ -437,6 +437,7 @@ export function useThreeWOptions(value: PartialForm<FormType>) {
     shouldDisableTotalTarget,
     shouldDisableTotalReached,
     disasterTypeLabel,
+    countriesResponse,
   } as const;
 }
 

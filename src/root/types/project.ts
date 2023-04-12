@@ -264,7 +264,7 @@ export interface EmergencyProjectResponse {
 }
 
 export interface ProvinceResponse {
-  district_id: number;
+  district_id: string;
   name: string;
   code: string;
   bbox: BBox;
