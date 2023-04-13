@@ -201,7 +201,6 @@ function DrefOverview(props: Props) {
       <Container
         className={styles.sharing}
         heading={strings.drefFormSharingHeading}
-        visibleOverflow
       >
         <InputSection
           title={strings.drefFormSharingTitle}

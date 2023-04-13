@@ -358,7 +358,6 @@ function Response(props: Props) {
       </Container>
       <Container
         heading={strings.drefFormRiskSecurity}
-        visibleOverflow
       >
         <InputSection
           title={strings.drefFormRiskSecurityPotentialRisk}
@@ -400,7 +399,6 @@ function Response(props: Props) {
       <Container
         heading={strings.drefFormPlannedIntervention}
         className={styles.plannedIntervention}
-        visibleOverflow
       >
         <InputSection>
           <DREFFileInput

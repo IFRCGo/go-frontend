@@ -658,7 +658,6 @@ function EmergencyThreeWForm(props: Props) {
           <Container
             sub
             contentClassName={styles.operationDetailContent}
-            visibleOverflow
           >
             <InputSection
               title="IFRC supported Operation"
@@ -829,7 +828,6 @@ function EmergencyThreeWForm(props: Props) {
           <Container
             heading="Activity Reporting"
             sub
-            visibleOverflow
             contentClassName={styles.activityReportingContent}
           >
             <InputSection

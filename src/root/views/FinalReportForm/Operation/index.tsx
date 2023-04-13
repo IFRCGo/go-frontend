@@ -360,7 +360,6 @@ function Operation(props: Props) {
       </Container>
       <Container
         heading={strings.drefFormRiskSecurity}
-        visibleOverflow
       >
         <InputSection
           title={strings.drefFormRiskSecurityPotentialRisk}
@@ -402,7 +401,6 @@ function Operation(props: Props) {
       <Container
         heading={strings.finalReportImplementation}
         className={styles.plannedIntervention}
-        visibleOverflow
       >
         <InputSection>
           <SelectInput
@@ -437,7 +435,6 @@ function Operation(props: Props) {
       </Container>
       <Container
         heading={strings.finalReportFinancialReport}
-        visibleOverflow
       >
         <InputSection>
           <DREFFileInput

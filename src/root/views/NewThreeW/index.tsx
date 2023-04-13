@@ -82,7 +82,6 @@ function NewThreeW(props: Props) {
       }
     >
       <Container
-        visibleOverflow
         heading="Operation Details"
       >
         <InputSection className={styles.segementInputWrapper}>

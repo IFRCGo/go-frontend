@@ -140,7 +140,6 @@ function SectorInput(props: Props) {
       heading={sectorTitle}
       headingSize="small"
       sub
-      visibleOverflow
       description={<NonFieldError error={error} />}
     >
       <Checklist

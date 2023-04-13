@@ -172,7 +172,6 @@ function Context(props: Props) {
       <Container
         className={styles.context}
         heading={strings.flashUpdateFormContextHeading}
-        visibleOverflow
       >
         <InputSection
           title={strings.flashUpdateFormContextCountryTitle}
