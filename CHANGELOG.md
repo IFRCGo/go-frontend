@@ -1,3 +1,9 @@
+### Release 6.5.4 - Hotfix for an Operational Toolbox link
+Date: 2023-04-13
+
+Frontend:
+ - Change referred URL in Operational Toolbox 
+
 ### Release 6.5.3 - Hotfix for a new CoS Role Profile
 Date: 2023-04-11
 
