@@ -3960,4 +3960,10 @@ export default {
   perFormContactInformation: 'Contact Information',
   perFormNsFocalPoint: 'NS Focal Point',
   perFormPartnerFocalPoint: 'Partner Focal Point',
+  perFormPERFacilitator: 'PER Facilitator / Team Lead',
+  perFormArea1Tab: 'Area 1: Policy strategy and standards',
+  perFormArea2Tab: 'Area 2: Analysis and planning',
+  perFormArea3Tab: 'Area 3: Operational Capacity',
+  perFormArea4Tab: 'Area 4: Coordination',
+  perFormArea5Tab: 'Area 5: Operations Support',
 };

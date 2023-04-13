@@ -1,0 +1,34 @@
+@import '~styles/settings/variables';
+
+.custom-activity {
+  background-color: $color-background;
+  border-top: 2px solid transparent;
+
+  .input-section {
+    background-color: $color-background;
+    overflow-y: visible;
+    display: flex;
+  }
+
+//   .content {
+//     overflow-y: visible;
+//   }
+
+//   .empty-message {
+//     padding: 0 $spacing;
+//     color: $color-text-light;
+//   }
+
+//   .actions {
+//     display: flex;
+//     justify-content: flex-end;
+//   }
+
+//   .point-count-input {
+//     width: 10rem;
+//   }
+
+//   &.errored {
+//     border-top-color: $primary-color;
+//   }
+}

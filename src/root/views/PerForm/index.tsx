@@ -8,8 +8,10 @@ import TabList from '#components/Tabs/TabList';
 import Tab from '#components/Tabs/Tab';
 import TabPanel from '#components/Tabs/TabPanel';
 import PerOverview from './PerOverview';
+import Assessment from './Assessment';
 
 import styles from './styles.module.scss';
+import scrollToTop from '#utils/scrollToTop';
 
 interface Props {
   className?: string;
@@ -28,12 +30,18 @@ function PerForm(props: Props) {
   } = props;
 
   const { strings } = React.useContext(LanguageContext);
-  const [currentStep, setCurrentStep] = React.useState<StepTypes>('overview');
+  const [currentStep, setCurrentStep] = React.useState<StepTypes>('assessment');
+
+  const handleTabChange = React.useCallback((newStep: StepTypes) => {
+    scrollToTop();
+
+    setCurrentStep(newStep);
+  }, []);
 
   return (
     <Tabs
       disabled={undefined}
-      onChange={undefined}
+      onChange={handleTabChange}
       value={currentStep}
       variant="step"
     >
@@ -77,6 +85,9 @@ function PerForm(props: Props) {
       >
         <TabPanel name="overview">
           <PerOverview />
+        </TabPanel>
+        <TabPanel name="assessment">
+          <Assessment />
         </TabPanel>
       </Page>
     </Tabs>
