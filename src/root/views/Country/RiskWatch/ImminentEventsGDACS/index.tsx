@@ -17,27 +17,29 @@ import styles from './styles.module.scss';
 
 interface Props {
   className?: string;
-  regionId: number;
+  countryId: number;
 }
 
 function ImminentEventsGDACS(props: Props) {
   const {
     className,
-    regionId,
+    countryId,
   } = props;
-  const allRegions = useReduxState('allRegions');
+
   const [activeEventUuid, setActiveEventUuid] = React.useState<number>();
+  const allCountries = useReduxState('allCountries');
+
+  const country = React.useMemo(() => (
+    allCountries?.data.results.find(d => d.id === countryId)
+  ), [allCountries, countryId]);
 
   const {
     pending,
     response: gdacsResponse,
   } = useRequest<ListResponse<GDACSEvent>>({
-    skip: isNotDefined(regionId),
+    skip: isNotDefined(country),
     url: 'risk://api/v1/gdacs/',
-    query: {
-      region: regionId,
-      limit: 200,
-    },
+    query: { iso3: country?.iso3?.toLocaleLowerCase() },
   });
 
   const data = React.useMemo(() => {
@@ -75,10 +77,6 @@ function ImminentEventsGDACS(props: Props) {
 
   const eventId = isDefined(activeEventUuid) ? eventUuidToIdMap[activeEventUuid] : undefined;
 
-  const region = React.useMemo(() => (
-    allRegions?.data.results.find(d => d.id === regionId)
-  ), [allRegions, regionId]);
-
   const handleEventClick = React.useCallback((eventUuid: number | undefined) => {
     setActiveEventUuid((oldEventUuid) => {
       if (oldEventUuid === eventUuid) {
@@ -103,7 +101,7 @@ function ImminentEventsGDACS(props: Props) {
       {pending && <BlockLoading />}
       {!pending && data && (
         <GDACSEventMap
-          sidebarHeading={region?.region_name}
+          sidebarHeading={country?.name}
           className={_cs(className, styles.map)}
           hazardList={data}
           onActiveEventChange={handleEventClick}
@@ -124,4 +122,3 @@ function ImminentEventsGDACS(props: Props) {
 }
 
 export default ImminentEventsGDACS;
-

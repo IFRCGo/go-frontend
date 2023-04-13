@@ -21,7 +21,6 @@ import { LngLat } from 'mapbox-gl';
 import { BoundingBox, viewport } from '@mapbox/geo-viewport';
 
 import {
-  BBOXType,
   defaultMapOptions,
   defaultMapStyle,
   COLOR_BLACK,
@@ -46,7 +45,11 @@ import {
 } from '#utils/risk';
 import MapEaseTo from '#components/MapEaseTo';
 import GoMapDisclaimer from '#components/GoMapDisclaimer';
-import { GDACSEvent, GDACSEventExposure, ImminentHazardTypes } from '#types/risk';
+import { 
+  GDACSEvent,
+  GDACSEventExposure,
+  ImminentHazardTypes,
+} from '#types/risk';
 
 import Sidebar from './Sidebar';
 import HazardMapImage from '../PDCEventMap/HazardMapImage';
@@ -105,7 +108,6 @@ const mapPadding = {
 const MAP_BOUNDS_ANIMATION_DURATION = 1800;
 
 interface Props {
-  defaultBounds: BBOXType;
   hazardList: GDACSEvent[];
   className?: string;
   activeEventUuid: number | undefined;
