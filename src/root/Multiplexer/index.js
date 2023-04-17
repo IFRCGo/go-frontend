@@ -73,6 +73,8 @@ const FinalReport = lazy(() => import('#views/FinalReportForm'));
 const FinalReportPdfPreview = lazy(() => import('#views/FinalReportPdfPreview'));
 const Search = lazy (() => import('#views/Search'));
 
+const GoUI = lazy(() => import('#views/GoUI'));
+
 function LoadingGlobal() {
   return (
     <div className={styles.loadingGlobal}>
@@ -299,6 +301,7 @@ function Multiplexer(props) {
 
               <PrivateRoute exact path='/dref-final-report/:id/edit/' component={FinalReport} />
               <PrivateRoute exact path='/dref-final-report/:id/export/' component={FinalReportPdfPreview} />
+              <Route exact path='/go-ui/' component={GoUI} />
               <Route
                 exact
                 path='/search/'
