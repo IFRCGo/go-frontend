@@ -1,0 +1,13 @@
+@import '~styles/settings/variables';
+
+.link {
+    text-decoration: underline;
+
+    &.table {
+        font-weight: $base-font-medium;
+    }
+    &:hover {
+        color: $primary-color;
+        opacity: 1;
+    }
+}
