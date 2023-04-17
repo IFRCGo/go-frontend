@@ -197,7 +197,6 @@ function ActivityInput(props: Props) {
             sub
             heading="Supplies"
             headingSize="small"
-            visibleOverflow
             actions={(
               <Button
                 name={undefined}
@@ -230,7 +229,6 @@ function ActivityInput(props: Props) {
           <Container
             heading="Custom Supplies"
             sub
-            visibleOverflow
             headingSize="small"
             actions={(
               <Button
@@ -274,7 +272,6 @@ function ActivityInput(props: Props) {
               <Container
                 heading="Locations"
                 sub
-                visibleOverflow
                 headingSize="small"
                 actions={(
                   <Button

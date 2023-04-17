@@ -95,7 +95,6 @@ function Activities(props: Props) {
     <Container
       className={_cs(styles.activities, className)}
       contentClassName={styles.activityContent}
-      visibleOverflow
       hideHeaderBorder
       actions={(
         <Link
@@ -172,7 +171,6 @@ function Activities(props: Props) {
               />
             )}
             contentClassName={styles.responseActivityContent}
-            visibleOverflow
             sub
           >
             <Filters

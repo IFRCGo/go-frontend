@@ -107,7 +107,6 @@ function Needs(props: Props) {
         heading={strings.finalReportNationalSocietiesActions}
         description={strings.drefFormNationalSocietiesActionsDescription}
         className={styles.nationalSocietyActions}
-        visibleOverflow
       >
 
         <InputSection title={strings.finalReportHaveNationalSocietyConducted}>
@@ -245,7 +244,6 @@ function Needs(props: Props) {
       <Container
         heading={strings.finalReportNeedsIdentified}
         className={styles.needsIdentified}
-        visibleOverflow
       >
         <InputSection>
           <SelectInput

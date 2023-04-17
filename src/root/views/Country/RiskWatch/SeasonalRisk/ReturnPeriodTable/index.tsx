@@ -143,7 +143,6 @@ function ReturnPeriodTable(props: Props) {
 
   return (
     <Container
-      visibleOverflow
       className={styles.returnPeriodTableContainer}
       heading="Expected Return Periods"
       descriptionClassName={styles.containerDescription}

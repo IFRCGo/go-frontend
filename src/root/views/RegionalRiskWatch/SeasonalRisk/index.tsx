@@ -257,7 +257,6 @@ function SeasonalRisk(props: Props) {
   return (
     <>
       <Container
-        visibleOverflow
         heading="Risk map"
         sub
         description={(

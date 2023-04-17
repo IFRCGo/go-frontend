@@ -41,7 +41,6 @@ function Submission(props: Props) {
       <Container
         heading={strings.drefFormTimeFrames}
         className={styles.timeframes}
-        visibleOverflow
       >
         <InputSection fullWidthColumn>
           {drefType !== TYPE_LOAN &&

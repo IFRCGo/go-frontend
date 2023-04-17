@@ -305,7 +305,6 @@ value: h,
             headingSize="small"
             hideHeaderBorder
             contentClassName={styles.eapDescription}
-            visibleOverflow
             actions={(
               <a
                 target="_blank"
