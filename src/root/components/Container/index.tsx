@@ -24,6 +24,7 @@ export interface Props {
   footer?: React.ReactNode;
   footerActions?: React.ReactNode;
   footerClassName?: string,
+  actionsContainerClassName?: string;
 }
 
 function Container(props: Props) {
@@ -45,6 +46,7 @@ function Container(props: Props) {
     footer,
     footerClassName,
     footerActions,
+    actionsContainerClassName
   } = props;
 
   return (
@@ -71,6 +73,7 @@ function Container(props: Props) {
             actions={actions}
             headingSize={headingSize}
             elementRef={headerElementRef}
+            actionsContainerClassName={actionsContainerClassName}
           />
         )}
         {description && (

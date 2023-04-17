@@ -28,6 +28,7 @@ function ExpandableContainer(props: Props) {
     initiallyExpanded = false,
     headerClassName,
     componentRef,
+    actionsContainerClassName,
     ...otherProps
   } = props;
 
@@ -66,6 +67,7 @@ function ExpandableContainer(props: Props) {
       className={_cs(styles.expandableContainer, className)}
       headerElementRef={headerRef}
       headerClassName={_cs(styles.header, headerClassName)}
+      actionsContainerClassName={actionsContainerClassName}
       actions={(
         <>
           {actions}

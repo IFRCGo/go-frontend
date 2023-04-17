@@ -42,7 +42,7 @@ function Assessment(props: Props) {
   });
 
   const data = assessmentResponse?.results[0];
-  console.log("data-----", data);
+  console.log("data-----", assessmentResponse);
   return (
     <Tabs
       disabled={undefined}
@@ -91,8 +91,10 @@ function Assessment(props: Props) {
         <TabPanel name="area1">
           {
             assessmentResponse?.results.map((item) => (
-              <CustomActivityInput data={item} />
-
+              <CustomActivityInput
+                key={item.id}
+                data={item}
+                />
             ))
           }
         </TabPanel>

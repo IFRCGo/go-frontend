@@ -6,6 +6,7 @@ import { BooleanValueOption } from '#types';
 import ExpandableContainer from '#components/ExpandableContainer';
 import Container from '#components/Container';
 import TextArea from '#components/TextArea';
+import SelectInput from '#components/SelectInput';
 
 import RadioInput from '#components/RadioInput';
 import { AssessmentQuestion } from '#views/PerForm/usePerFormOptions';
@@ -40,9 +41,9 @@ export interface Answer {
 }
 
 interface Props {
-  yesNoOptions: BooleanValueOption[];
-  onValueChange: (...entries: EntriesAsList<null>) => void;
-  id: number;
+  yesNoOptions?: BooleanValueOption[];
+  onValueChange?: (...entries: EntriesAsList<null>) => void;
+  id?: number;
   data?: AssessmentQuestion;
 }
 
@@ -53,22 +54,34 @@ function CustomActivityInput(props: Props) {
     onValueChange,
     data,
   } = props;
-  console.warn("hghjkhjk", data);
 
   return (
     <>
       <ExpandableContainer
-        className={_cs(styles.customActivity && styles.errored)}
+        className={_cs(styles.customActivity, styles.errored)}
         componentRef={undefined}
         heading={data?.component.title}
+        actionsContainerClassName={styles}
         headingSize="small"
         sub
+        actions={
+        <>
+          <SelectInput
+            className={styles.improvementSelect}
+            name="improvement"
+            onChange={() => {}}
+            value={""}
+          />
+        </>
+        }
       >
         <Container
           description="NS DRM strategy reflects the NS mandate, analysis of country context, trends, operational objectives, success indicators."
           className={styles.inputSection}
+          contentClassName={styles.questionContent}
         >
           <TextArea
+            className={styles.noteSection}
             name="details"
             label="Notes"
             placeholder='This is placeholder'
@@ -76,36 +89,41 @@ function CustomActivityInput(props: Props) {
             onChange={undefined}
             error={undefined}
             rows={2}
+            disabled
           />
-          <label>
-            <input
-              type="radio"
-              name="yes-no-na"
-              value="no"
-            />
-            Yes
-          </label>
-          <label>
-            <input
-              type="radio"
-              name="yes-no-na"
-              value="no"
-            />
-            No
-          </label>
-          <label>
-            <input
-              type="radio"
-              name="yes-no-na"
-              value="no"
-            />
-            Not Revised
-          </label>
-          <RadioInput
+          <div
+            className={styles.answers}
+          >
+            <label>
+              <input
+                type="radio"
+                name="yes-no-na"
+                value="no"
+              />
+              Yes
+            </label>
+            <label>
+              <input
+                type="radio"
+                name="yes-no-na"
+                value="no"
+              />
+              No
+            </label>
+            <label>
+              <input
+                type="radio"
+                name="yes-no-na"
+                value="no"
+              />
+              Not Revised
+            </label>
+          </div>
+          {/* <RadioInput
             options={yesNoOptions}
             value={undefined}
             onChange={onValueChange}
-          />
+          /> */}
         </Container>
       </ExpandableContainer>
     </>
