@@ -172,7 +172,7 @@ const defaultSchema = {
   ifrc_emergency_email: [emailCondition],
   ifrc_emergency_phone_number: [],
   regional_focal_point_name: [],
-  regional_focal_point_email: [],
+  regional_focal_point_email: [emailCondition],
   regional_focal_point_title: [],
   regional_focal_point_phone_number: [],
   media_contact_name: [],
