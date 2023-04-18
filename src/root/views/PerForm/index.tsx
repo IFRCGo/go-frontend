@@ -1,6 +1,7 @@
 import React from 'react';
 import type { match as Match } from 'react-router-dom';
 import LanguageContext from '#root/languageContext';
+import scrollToTop from '#utils/scrollToTop';
 
 import Page from '#components/Page';
 import Tabs from '#components/Tabs';
@@ -11,26 +12,30 @@ import PerOverview from './PerOverview';
 import Assessment from './Assessment';
 
 import styles from './styles.module.scss';
-import scrollToTop from '#utils/scrollToTop';
+import usePerFormOptions from './usePerFormOptions';
 
 interface Props {
   className?: string;
-  match: Match<{ drefId?: string }>;
   history: History;
   location: Location;
 }
 
-type StepTypes = 'overview' | 'assessment' | 'prioritisation' | 'workPaln';
+type StepTypes = 'overview' | 'assessment' | 'prioritization' | 'workPlan';
 
 function PerForm(props: Props) {
   const {
     className,
     history,
-    match,
   } = props;
 
+  const {
+    nationalSocietyOptions,
+    yesNoOptions,
+  } = usePerFormOptions();
+
   const { strings } = React.useContext(LanguageContext);
-  const [currentStep, setCurrentStep] = React.useState<StepTypes>('assessment');
+
+  const [currentStep, setCurrentStep] = React.useState<StepTypes>('overview');
 
   const handleTabChange = React.useCallback((newStep: StepTypes) => {
     scrollToTop();
@@ -84,7 +89,10 @@ function PerForm(props: Props) {
         )}
       >
         <TabPanel name="overview">
-          <PerOverview />
+          <PerOverview
+            nationalSocietyOptions={nationalSocietyOptions}
+            yesNoOptions={yesNoOptions}
+          />
         </TabPanel>
         <TabPanel name="assessment">
           <Assessment />

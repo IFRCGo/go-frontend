@@ -4,7 +4,6 @@ import LanguageContext from '#root/languageContext';
 import styles from './styles.module.scss';
 import Tabs from '#components/Tabs';
 import TabList from '#components/Tabs/TabList';
-import Page from '#components/Page';
 import Tab from '#components/Tabs/Tab';
 import TabPanel from '#components/Tabs/TabPanel';
 import Container from '#components/Container';
@@ -29,10 +28,8 @@ function Assessment(props: Props) {
 
   const handleTabChange = React.useCallback((newStep: StepTypes) => {
     scrollToTop();
-
     setCurrentStep(newStep);
   }, []);
-
 
   const {
     pending: fetchingAssessmentOptions,
@@ -41,8 +38,6 @@ function Assessment(props: Props) {
     url: 'api/v2/per-formquestion/',
   });
 
-  const data = assessmentResponse?.results[0];
-  console.log("data-----", assessmentResponse);
   return (
     <Tabs
       disabled={undefined}

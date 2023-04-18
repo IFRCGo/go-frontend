@@ -1,17 +1,63 @@
 import React from 'react';
 import LanguageContext from '#root/languageContext';
+import {
+  EntriesAsList,
+  getErrorObject,
+  PartialForm,
+  Error,
+} from '@togglecorp/toggle-form';
+import { ListResponse, useRequest } from '#utils/restRequest';
+
 import Container from '#components/Container';
 import InputSection from '#components/InputSection';
 import SelectInput from '#components/SelectInput';
 import DateInput from '#components/DateInput';
+import {
+  BooleanValueOption,
+  NumericValueOption,
+} from '#types';
 
 import DREFFileInput from '#components/DREFFileInput';
 import TextInput from '#components/TextInput';
 import RadioInput from '#components/RadioInput';
 
 import styles from './styles.module.scss';
+import { PerOverviewFields,
+  optionLabelSelector,
+  booleanOptionKeySelector,
+ } from '../usePerFormOptions';
 
-function PerOverview() {
+type Value = PartialForm<PerOverviewFields>;
+
+interface Props {
+  value?: Value;
+  error?: Error<Value> | undefined;
+  onValueChange?: (...entries: EntriesAsList<Value>) => void;
+  nationalSocietyOptions: NumericValueOption[];
+  yesNoOptions: BooleanValueOption[],
+}
+
+function PerOverview(props: Props) {
+  const {
+    value,
+    error: formError,
+    onValueChange,
+    nationalSocietyOptions,
+    yesNoOptions,
+  } = props;
+
+  const {
+    pending: fetchingOverview,
+    response: overviewResponse,
+  } = useRequest<ListResponse<PerOverviewFields>>({
+    url: 'api/v2/new-per/',
+  });
+
+  const error = React.useMemo(
+    () => getErrorObject(formError),
+    [formError]
+  );
+
   const { strings } = React.useContext(LanguageContext);
 
   return (
@@ -25,9 +71,9 @@ function PerOverview() {
         >
           <SelectInput
             error={undefined}
-            name="national society"
-            onChange={undefined}
-            options={undefined}
+            name="national_society"
+            onChange={onValueChange}
+            options={nationalSocietyOptions}
             pending={undefined}
             value={undefined}
           />
@@ -43,10 +89,10 @@ function PerOverview() {
           description={strings.perFormDateOfOrientationDescription}
         >
           <DateInput
-            error={undefined}
-            name="date of orientation"
-            onChange={undefined}
-            value={undefined}
+            error={error?.date_of_orientation}
+            name="date_of_orientation"
+            onChange={onValueChange}
+            value={value?.date_of_orientation}
           />
         </InputSection>
         <InputSection
@@ -128,27 +174,28 @@ function PerOverview() {
           description={strings.perFormEpiConsiderationsDescription}
         >
           <RadioInput
-            name={"emergency_appeal_planned" as const}
-            options={undefined}
-            keySelector={undefined}
-            labelSelector={undefined}
-            value={undefined}
-            onChange={undefined}
-            error={undefined}
+            name={"is_epi" as const}
+            options={yesNoOptions}
+            keySelector={booleanOptionKeySelector}
+            labelSelector={optionLabelSelector}
+            value={value?.is_epi}
+            onChange={onValueChange}
+            error={error?.is_epi}
           />
         </InputSection>
         <InputSection
           title={strings.perFormUrbanConsiderations}
           description={strings.perFormUrbanConsiderationsDescription}
         >
+          { /* FIX ME: Add Urban Radoi button API */}
           <RadioInput
-            name={"emergency_appeal_planned" as const}
-            options={undefined}
-            keySelector={undefined}
-            labelSelector={undefined}
-            value={undefined}
-            onChange={undefined}
-            error={undefined}
+            name={"is_epi" as const}
+            options={yesNoOptions}
+            keySelector={booleanOptionKeySelector}
+            labelSelector={optionLabelSelector}
+            value={value?.is_epi}
+            onChange={onValueChange}
+            error={error?.is_epi}
           />
         </InputSection>
         <InputSection
