@@ -1,0 +1,46 @@
+.link {
+    &.regular-link {
+        font-weight: var(--font-weight-bold);
+    }
+
+    &.highlighted-link {
+        font-size: var(--font-size-small);
+        font-weight: var(--font-weight-medium);
+        color: var(--color-primary);
+    }
+
+    &.popup {
+        font-size: var(--font-size-small);
+        font-weight: var(--font-weight-medium);
+        color: var(--color-primary);
+        text-transform: capitalize;
+    }
+
+    &.table {
+        font-weight: var(--font-weight-medium);
+        text-decoration: underline;
+        font-size: var(--font-size-medium);
+    }
+
+    &.text-link {
+        font-weight: var(--font-weight-medium);
+        text-decoration: underline;
+        font-size: var(--font-size-extra-small);
+    }
+
+    &.special-email {
+        font-weight: var(--font-weight-medium);
+        text-decoration: underline;
+        font-size: var(--font-size-medium);
+    }
+
+    &.secondary-button {
+        background-color: var(--color-primary);
+    }
+
+    &:hover {
+        color: var(--color-primary);
+        opacity: 1;
+        text-decoration: underline;
+    }
+}
