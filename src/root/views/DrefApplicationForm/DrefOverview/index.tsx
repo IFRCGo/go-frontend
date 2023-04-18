@@ -247,11 +247,11 @@ function DrefOverview(props: Props) {
           />
         </InputSection>
         {drefType !== TYPE_LOAN &&
-        <CopyFieldReportSection
-          value={value}
-          onValueSet={onValueSet}
-        />
-}
+          <CopyFieldReportSection
+            value={value}
+            onValueSet={onValueSet}
+          />
+        }
         <InputSection title="DREF Type">
           <SelectInput
             error={error?.type_of_dref}
@@ -465,18 +465,16 @@ function DrefOverview(props: Props) {
           />
           <div />
         </InputSection>
-        {drefType !== TYPE_LOAN &&
-          <InputSection
-            title={strings.drefFormRequestAmount}
-          >
-            <NumberInput
-              name="amount_requested"
-              value={value.amount_requested}
-              onChange={onValueChange}
-              error={error?.amount_requested}
-            />
-          </InputSection>
-        }
+        <InputSection
+          title={strings.drefFormRequestAmount}
+        >
+          <NumberInput
+            name="amount_requested"
+            value={value.amount_requested}
+            onChange={onValueChange}
+            error={error?.amount_requested}
+          />
+        </InputSection>
         {drefType !== TYPE_LOAN &&
           <InputSection
             title={strings.drefFormEmergencyAppealPlanned}
