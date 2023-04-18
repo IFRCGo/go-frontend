@@ -13,7 +13,8 @@ export interface Props extends Omit<React.HTMLProps<HTMLAnchorElement>, 'childre
   hash?: string;
   state?: unknown;
   children?: React.ReactNode;
-  variant?: 'general' | 'table';
+  icons?: React.ReactNode;
+  variant?: 'regular' | 'secondary' | 'table' | 'highlighted' | 'popup' | 'textLink' | 'specialEmail';
 }
 
 function Link(props: Props) {
@@ -23,7 +24,7 @@ function Link(props: Props) {
     hash,
     state,
     children,
-    variant = 'general',
+    variant = 'regular',
     ...otherProps
   } = props;
 
@@ -36,7 +37,12 @@ function Link(props: Props) {
 
   const className = _cs(
     styles.link,
+    variant === 'regular' && styles.regularLink,
+    variant === 'highlighted' && styles.highlightedLink,
+    variant === 'popup' && styles.popup,
     variant === 'table' && styles.table,
+    variant === 'textLink' && styles.textLink,
+    variant === 'specialEmail' && styles.specialEmail,
     classNameFromProps,
   );
 
