@@ -144,7 +144,6 @@ function ProjectDetail(props: Props) {
               value={get(projectResponse, 'description', false)}
               style={{backgroundColor: '#faf9f9', padding: '1.5rem'}}
           /> : null }
-
       {projectPending ? (
         <BlockLoading />
       ) : (

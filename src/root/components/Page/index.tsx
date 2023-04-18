@@ -19,6 +19,8 @@ import {
 } from '#components/NewGlobalLoading';
 
 import styles from './styles.module.scss';
+import { Language } from '#types/project';
+import TranslationWarningBanner from '#components/TranslationWarningBanner';
 
 interface Props {
   className?: string;
@@ -33,6 +35,7 @@ interface Props {
   infoContainerClassName?: string;
   withMainContentBackground?: boolean;
   wikiLink?: React.ReactNode;
+  originalContentLanguage?: Language
 }
 
 
@@ -50,6 +53,7 @@ function Page(props: Props) {
     infoContainerClassName,
     withMainContentBackground,
     wikiLink,
+    originalContentLanguage,
   } = props;
 
   const [loading, setLoading] = React.useState(0);
@@ -82,8 +86,13 @@ function Page(props: Props) {
         <GlobalLoadingContext.Provider value={loadingContextValue}>
           <Navbar />
           <MobileNavbar />
+          {originalContentLanguage && (
+            <TranslationWarningBanner
+              originalContentLanguage={originalContentLanguage}
+            />
+          )}
           <GlobalLoading />
-          { loading > 0 && <NewGlobalLoadingParent /> }
+          {loading > 0 && <NewGlobalLoadingParent />}
           <AlertContainer>
             <SysAlerts />
           </AlertContainer>
@@ -103,9 +112,9 @@ function Page(props: Props) {
               mainSectionClassName,
             )}
           >
-            { children }
+            {children}
           </main>
-          <PageFooter/>
+          <PageFooter />
         </GlobalLoadingContext.Provider>
       </ThroughProvider>
     </div>

@@ -82,7 +82,7 @@ function NewThreeW(props: Props) {
               justifyContent:'flex-end',
               paddingBottom:'8px'
             }}
-          > 
+          >
             <a href={strings.wikiJsLinkGOWiki+'/'+currentLanguage +'/'+ strings.wikiJsLink3WForm} title='GO Wiki' target='_blank' ><img className='' src='/assets/graphics/content/wiki-help-section.svg' alt='IFRC GO logo'/></a>
         </div>:null
       }

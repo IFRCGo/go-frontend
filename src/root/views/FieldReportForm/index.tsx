@@ -63,7 +63,7 @@ const defaultFormValues: PartialForm<FormType> = {
   bulletin: BULLETIN_PUBLISHED_NO,
 };
 
-function scrollToTop () {
+function scrollToTop() {
   window.setTimeout(() => {
     window.scrollTo({
       top: Math.min(145, window.scrollY),
@@ -105,8 +105,8 @@ function FieldReportForm(props: Props) {
   const languageMismatch = (isDefined(reportId) && fieldReportResponse?.translation_module_original_language !== currentLanguage) ?? false;
 
   const crumbs = React.useMemo(() => [
-    {link: location?.pathname, name: isDefined(reportId) ? strings.breadCrumbEditFieldReport : strings.breadCrumbNewFieldReport},
-    {link: '/', name: strings.breadCrumbHome},
+    { link: location?.pathname, name: isDefined(reportId) ? strings.breadCrumbEditFieldReport : strings.breadCrumbNewFieldReport },
+    { link: '/', name: strings.breadCrumbHome },
   ], [
     strings.breadCrumbHome,
     strings.breadCrumbEditFieldReport,
@@ -124,7 +124,7 @@ function FieldReportForm(props: Props) {
     setValue: onValueSet,
   } = useForm(schema, { value: defaultFormValues });
 
-   React.useEffect(() => {
+  React.useEffect(() => {
     if (fieldReportResponse) {
       const formValue = transformAPIFieldsToFormFields(fieldReportResponse);
       onValueSet(formValue);
@@ -263,26 +263,26 @@ function FieldReportForm(props: Props) {
       const apiFields = transformFormFieldsToAPIFields(finalValues as FormType);
       const definedValues = getDefinedValues(apiFields);
       // COVID-19
-      if(definedValues.is_covid_report) {
+      if (definedValues.is_covid_report) {
         // FIXME: simplify and document following conditions
-        if (eventOptions.find(x => x.value===value.event)?.label === undefined) {
-          if(reportId === undefined){   
-            definedValues.summary = countryIsoOptions.find(x => x.value===value.country)?.label + ': ' + strings.fieldReportCOVID19; 
+        if (eventOptions.find(x => x.value === value.event)?.label === undefined) {
+          if (reportId === undefined) {
+            definedValues.summary = countryIsoOptions.find(x => x.value === value.country)?.label + ': ' + strings.fieldReportCOVID19;
           }
         } else {
-          if(reportId === undefined){
-            definedValues.summary = countryIsoOptions.find(x => x.value===value.country)?.label + ': ' + strings.fieldReportCOVID19 + ' #'+ eventOptions.find(x => x.value===value.event)?.label + ' (' + new Date().toISOString().slice(0, 10) + ')'; 
+          if (reportId === undefined) {
+            definedValues.summary = countryIsoOptions.find(x => x.value === value.country)?.label + ': ' + strings.fieldReportCOVID19 + ' #' + eventOptions.find(x => x.value === value.event)?.label + ' (' + new Date().toISOString().slice(0, 10) + ')';
           }
         }
       } else {
         // NON-COVID-19
-        if (eventOptions.find(x => x.value===value.event)?.label === undefined) {
-          if(reportId === undefined){
-            definedValues.summary = countryIsoOptions.find(x => x.value===value.country)?.label + ': ' + disasterTypeOptions.find( x=> x.value === definedValues.dtype)?.label + ' - ' + definedValues.start_date?.substring(0,7) + ' - ' + definedValues.summary;
+        if (eventOptions.find(x => x.value === value.event)?.label === undefined) {
+          if (reportId === undefined) {
+            definedValues.summary = countryIsoOptions.find(x => x.value === value.country)?.label + ': ' + disasterTypeOptions.find(x => x.value === definedValues.dtype)?.label + ' - ' + definedValues.start_date?.substring(0, 7) + ' - ' + definedValues.summary;
           }
         } else {
-          if(reportId === undefined){
-             definedValues.summary = countryIsoOptions.find(x => x.value===value.country)?.label + ': ' + disasterTypeOptions.find( x=> x.value === definedValues.dtype)?.label + ' - ' + definedValues.start_date?.substring(0,7) + ' - ' + definedValues.summary + ' #'+ eventOptions.find(x => x.value===value.event)?.label + ' (' + new Date().toISOString().slice(0, 10) + ')';
+          if (reportId === undefined) {
+            definedValues.summary = countryIsoOptions.find(x => x.value === value.country)?.label + ': ' + disasterTypeOptions.find(x => x.value === definedValues.dtype)?.label + ' - ' + definedValues.start_date?.substring(0, 7) + ' - ' + definedValues.summary + ' #' + eventOptions.find(x => x.value === value.event)?.label + ' (' + new Date().toISOString().slice(0, 10) + ')';
           }
         }
       }
@@ -307,7 +307,7 @@ function FieldReportForm(props: Props) {
 
       setCurrentStep(nextStepMap[currentStep]);
     }
-  }, [submitRequest, userDetails, currentStep, setCurrentStep, validate, onErrorSet,countryIsoOptions, disasterTypeOptions, eventOptions, strings.fieldReportCOVID19, value.country, value.event, reportId]);
+  }, [submitRequest, userDetails, currentStep, setCurrentStep, validate, onErrorSet, countryIsoOptions, disasterTypeOptions, eventOptions, strings.fieldReportCOVID19, value.country, value.event, reportId]);
 
   const handleBackButtonClick = React.useCallback(() => {
     scrollToTop();
@@ -344,8 +344,8 @@ function FieldReportForm(props: Props) {
         heading={isDefined(reportId) ? strings.fieldReportUpdate : strings.fieldReportCreate}
         breadCrumbs={<BreadCrumb crumbs={crumbs} compact />}
         actions={
-          strings.wikiJsLinkFRForm !== undefined && strings.wikiJsLinkFRForm.length>0 ?
-            <div style={{display: 'flex', justifyContent:'flex-end', paddingBottom:'8px'}}> 
+          strings.wikiJsLinkFRForm !== undefined && strings.wikiJsLinkFRForm.length > 0 ?
+            <div style={{ display: 'flex', justifyContent: 'flex-end', paddingBottom: '8px' }}>
               <a
                 href={`${strings.wikiJsLinkGOWiki}/${currentLanguage}/${strings.wikiJsLinkFRForm}`}
                 title='GO Wiki'
@@ -357,7 +357,7 @@ function FieldReportForm(props: Props) {
                   alt='IFRC GO logo'
                 />
               </a>
-            </div>:null
+            </div> : null
         }
         info={(
           <TabList className={styles.tabList}>
@@ -371,21 +371,21 @@ function FieldReportForm(props: Props) {
               name="step2"
               step={2}
             >
-              { value.status === STATUS_EARLY_WARNING && strings.fieldReportFormItemRiskAnalysisLabel }
-              { value.status === STATUS_EVENT && strings.fieldReportFormItemSituationLabel }
+              {value.status === STATUS_EARLY_WARNING && strings.fieldReportFormItemRiskAnalysisLabel}
+              {value.status === STATUS_EVENT && strings.fieldReportFormItemSituationLabel}
             </Tab>
             <Tab
               name="step3"
               step={3}
             >
-              { value.status === STATUS_EARLY_WARNING && strings.fieldReportFormItemEarlyActionsLabel }
-              { value.status === STATUS_EVENT && strings.fieldReportFormItemActionsLabel }
+              {value.status === STATUS_EARLY_WARNING && strings.fieldReportFormItemEarlyActionsLabel}
+              {value.status === STATUS_EVENT && strings.fieldReportFormItemActionsLabel}
             </Tab>
             <Tab
               name="step4"
               step={4}
             >
-              { strings.fieldReportFormItemResponseLabel }
+              {strings.fieldReportFormItemResponseLabel}
             </Tab>
           </TabList>
         )}

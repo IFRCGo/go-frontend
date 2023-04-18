@@ -1,6 +1,10 @@
 @import '~styles/settings/variables';
 
 .three-w-form {
+  .languageMismatch {
+    text-align: center;
+  }
+
   .form-actions {
     display: flex;
     flex-direction: column;

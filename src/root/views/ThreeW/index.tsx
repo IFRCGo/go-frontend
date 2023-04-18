@@ -43,9 +43,9 @@ function ThreeW(props: Props) {
   const [projectDetails, setProjectDetails] = React.useState<Project | undefined>();
   const { strings } = React.useContext(LanguageContext);
   const crumbs = React.useMemo(() => [
-    {link: location?.pathname, name: projectDetails?.name },
-    {link: '/three-w/all/', name: strings.breadCrumbThreeW},
-    {link: '/', name: strings.breadCrumbHome},
+    { link: location?.pathname, name: projectDetails?.name },
+    { link: '/three-w/all/', name: strings.breadCrumbThreeW },
+    { link: '/', name: strings.breadCrumbHome },
   ], [
     strings.breadCrumbHome,
     strings.breadCrumbThreeW,
@@ -88,6 +88,7 @@ function ThreeW(props: Props) {
       breadCrumbs={<BreadCrumb crumbs={crumbs} compact />}
       heading={projectDetails?.name ?? '--'}
       withMainContentBackground
+      originalContentLanguage={projectDetails?.translation_module_original_language}
       description={projectDetails ? (
         <TextOutput
           className={styles.lastModified}
@@ -101,7 +102,7 @@ function ThreeW(props: Props) {
             />
           ) : undefined}
         />
-      ) : undefined }
+      ) : undefined}
       actions={(
         <Link
           to={`/three-w/${projectId}/edit/`}
