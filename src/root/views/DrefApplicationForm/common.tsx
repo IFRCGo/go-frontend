@@ -233,6 +233,10 @@ export interface DrefFields {
   is_assessment_report: boolean;
   type_of_dref: number;
   type_of_dref_display: string;
+  regional_focal_point_name: string;
+  regional_focal_point_email: string;
+  regional_focal_point_title: string;
+  regional_focal_point_phone_number: string;
 }
 
 export interface DrefApiFields extends Omit<DrefFields, 'event_map_details' | 'cover_image_file' | 'district_details' | 'planned_interventions' | 'national_society_actions' | 'needs_identified' | 'images_file'> {
@@ -399,4 +403,8 @@ export const submissionFields: (keyof DrefFields)[] = [
   'media_contact_email',
   'media_contact_phone_number',
   'media_contact_title',
+  'regional_focal_point_name',
+  'regional_focal_point_email',
+  'regional_focal_point_title',
+  'regional_focal_point_phone_number',
 ];

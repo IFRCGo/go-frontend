@@ -620,7 +620,7 @@ function DrefApplication(props: Props) {
                   Import from Document
                 </FileInput>
               )}
-              {isDefined(drefId) && (
+              {isDefined(drefId) && drefType !== TYPE_LOAN && (
                 <Link
                   to={`/dref-application/${drefId}/export/`}
                   {...exportLinkProps}

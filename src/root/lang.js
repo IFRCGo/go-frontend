@@ -3298,6 +3298,7 @@ export default {
   drefFormProjectManager: 'IFRC Project Manager:',
   drefFormProjectManagerDescription: 'Added by the regional office',
   drefFormNationalSocietyContact: 'National Society contact:',
+  drefFormDrefRegionalPoint: 'DREF Regional Focal point:',
   drefFormIfrcEmergency: 'IFRC focal point for the emergency:',
   drefFormMediaContact: 'Media Contact:',
   drefFormSubmissionEndDate: 'End date of Operation',
