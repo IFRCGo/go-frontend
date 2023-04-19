@@ -54,6 +54,8 @@ import BlockLoading from '#components/block-loading';
 import useReduxState from '#hooks/useReduxState';
 import { isIfrcUser } from '#utils/common';
 import FourHundredFour from '#views/FourHundredFour';
+import Translate from '#components/Translate';
+import { languageOptions } from '#utils/lang';
 
 interface Props {
   className?: string;
@@ -135,6 +137,7 @@ function FlashUpdateForm(props: Props) {
   const submitButtonLabel = currentStep === 'focal' ? strings.flashUpdateSubmitButtonLabel : strings.flashUpdateContinueButtonLabel;
   const shouldDisabledBackButton = currentStep === 'context';
   const bypassTitleGeneration = React.useRef<boolean>(false);
+  const { current: currentLanguage } = useReduxState('lang');
 
   const {
     pending: flashUpdatePending,
@@ -237,6 +240,8 @@ function FlashUpdateForm(props: Props) {
     }
   });
 
+  const languageMismatch = (isDefined(id) && FlashUpdateResponse?.translation_module_original_language !== currentLanguage) ?? false;
+
   const erroredTabs = React.useMemo(() => {
     const safeErrors = getErrorObject(error) ?? {};
 
@@ -322,6 +327,7 @@ function FlashUpdateForm(props: Props) {
     url: id ? `api/v2/flash-update/${id}/` : 'api/v2/flash-update/',
     method: id ? 'PUT' : 'POST',
     body: ctx => ctx,
+    useCurrentLanguage: true,
     onSuccess: (response) => {
       alert.show(
         strings.flashUpdateFormRedirectMessage,
@@ -703,57 +709,69 @@ function FlashUpdateForm(props: Props) {
                   message={strings.flashUpdateFormFieldGeneralError}
                 />
               </Container>
-              <TabPanel name="context">
-                <Context
-                  error={error}
-                  onValueChange={setFieldValue}
-                  value={value}
-                  disasterTypeOptions={disasterTypeOptions}
-                  countryOptions={countryOptions}
-                  fetchingCountries={fetchingCountries}
-                  fetchingDisasterTypes={fetchingDisasterTypes}
-                  fileIdToUrlMap={fileIdToUrlMap}
-                  setFileIdToUrlMap={setFileIdToUrlMap}
-                  onCreateAndShareButtonClick={submitFlashUpdate}
-                  fetchingDistricts={fetchingDistricts}
-                  districtOptions={districtOptions}
-                />
-              </TabPanel>
-              <TabPanel name="action">
-                <ActionsInput
-                  error={error}
-                  onValueChange={setFieldValue}
-                  value={value}
-                  actionOptionsMap={actionOptionsMap}
-                />
-              </TabPanel>
-              <TabPanel name="focal">
-                <FocalPoints
-                  error={error}
-                  onValueChange={setFieldValue}
-                  value={value}
-                  shareWithOptions={shareWithOptions}
-                />
-              </TabPanel>
-              <div className={styles.actions}>
-                <Button
-                  name={undefined}
-                  variant="secondary"
-                  onClick={handleBackButtonClick}
-                  disabled={shouldDisabledBackButton}
-                >
-                  {strings.flashUpdateBackButtonLabel}
-                </Button>
-                <Button
-                  name={undefined}
-                  variant="secondary"
-                  onClick={handleSubmitButtonClick}
-                  type="submit"
-                  disabled={flashUpdateSubmitPending}
-                >
-                  {submitButtonLabel}
-                </Button>
-              </div>
+              {languageMismatch && FlashUpdateResponse && (
+                <Container contentClassName={styles.languageMismatch}>
+                  <Translate
+                    stringId="translationErrorEdit"
+                    params={{ originalLanguage: <strong>{languageOptions[FlashUpdateResponse.translation_module_original_language]}</strong> }}
+                  />
+                </Container>
+              )}
+              {!languageMismatch && (
+                <>
+                  <TabPanel name="context">
+                    <Context
+                      error={error}
+                      onValueChange={setFieldValue}
+                      value={value}
+                      disasterTypeOptions={disasterTypeOptions}
+                      countryOptions={countryOptions}
+                      fetchingCountries={fetchingCountries}
+                      fetchingDisasterTypes={fetchingDisasterTypes}
+                      fileIdToUrlMap={fileIdToUrlMap}
+                      setFileIdToUrlMap={setFileIdToUrlMap}
+                      onCreateAndShareButtonClick={submitFlashUpdate}
+                      fetchingDistricts={fetchingDistricts}
+                      districtOptions={districtOptions}
+                    />
+                  </TabPanel>
+                  <TabPanel name="action">
+                    <ActionsInput
+                      error={error}
+                      onValueChange={setFieldValue}
+                      value={value}
+                      actionOptionsMap={actionOptionsMap}
+                    />
+                  </TabPanel>
+                  <TabPanel name="focal">
+                    <FocalPoints
+                      error={error}
+                      onValueChange={setFieldValue}
+                      value={value}
+                      shareWithOptions={shareWithOptions}
+                    />
+                  </TabPanel>
+                  <div className={styles.actions}>
+                    <Button
+                      name={undefined}
+                      variant="secondary"
+                      onClick={handleBackButtonClick}
+                      disabled={shouldDisabledBackButton}
+                    >
+                      {strings.flashUpdateBackButtonLabel}
+                    </Button>
+                    <Button
+                      name={undefined}
+                      variant="secondary"
+                      onClick={handleSubmitButtonClick}
+                      type="submit"
+                      disabled={flashUpdateSubmitPending}
+                    >
+                      {submitButtonLabel}
+                    </Button>
+                  </div>
+                </>
+              )}
             </>
           )
         }

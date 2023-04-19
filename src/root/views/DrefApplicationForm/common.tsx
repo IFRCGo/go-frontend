@@ -5,6 +5,7 @@ import {
   NumericValueOption,
   BooleanValueOption,
   StringValueOption,
+  Language,
 } from '#types';
 
 export const ONSET_SLOW = 1;
@@ -295,6 +296,7 @@ export interface DrefApiFields extends Omit<DrefFields, 'event_map_details' | 'c
   }[] | null;
   modified_by_details: User;
   users_details: User[];
+  translation_module_original_language: Language;
 }
 
 export const overviewFields: (keyof DrefFields)[] = [
