@@ -24,9 +24,7 @@ function ObjectiveAndStrategy(props: Props) {
   return (
     <>
       {isDefined(data.operation_objective) && (
-        <View
-          style={pdfStyles.section}
-        >
+        <View style={pdfStyles.section}>
           <Text
             style={pdfStyles.sectionHeading}
             minPresenceAhead={20}

@@ -33,24 +33,26 @@ function AboutServicesOutput(props: Props) {
   }
 
   return (
-    <View style={pdfStyles.section}>
-      <Text
-        style={pdfStyles.sectionHeading}
-        minPresenceAhead={10}
-      >
-        {strings.drefFormSupportServices}
-      </Text>
+    <>
       {isDefined(data.human_resource) && (
-        <View style={pdfStyles.qna}>
+        <View style={pdfStyles.section}>
           <Text
-            style={pdfStyles.textLabelSection}
-            minPresenceAhead={10}
+            style={pdfStyles.sectionHeading}
+            minPresenceAhead={20}
           >
-            {strings.drefFormHumanResourceDescription}
+            {strings.drefFormSupportServices}
           </Text>
-          <Text style={pdfStyles.answer}>
-            {reTab(data.human_resource)}
-          </Text>
+          <View style={pdfStyles.qna}>
+            <Text
+              style={pdfStyles.textLabelSection}
+              minPresenceAhead={10}
+            >
+              {strings.drefFormHumanResourceDescription}
+            </Text>
+            <Text style={pdfStyles.answer}>
+              {reTab(data.human_resource)}
+            </Text>
+          </View>
         </View>
       )}
       {isDefined(data.surge_personnel_deployed) && (
@@ -113,7 +115,7 @@ function AboutServicesOutput(props: Props) {
           )}
         </>
       )}
-    </View>
+    </>
   );
 }
 
