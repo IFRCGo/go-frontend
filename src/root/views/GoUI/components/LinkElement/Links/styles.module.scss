@@ -1,15 +1,12 @@
 .link {
+    display: flex;
+    width: fit-content;
+
     &.regular-link {
         font-weight: var(--font-weight-bold);
     }
 
-    &.highlighted-link {
-        font-size: var(--font-size-small);
-        font-weight: var(--font-weight-medium);
-        color: var(--color-primary);
-    }
-
-    &.popup {
+    &.title-link {
         font-size: var(--font-size-small);
         font-weight: var(--font-weight-medium);
         color: var(--color-primary);
@@ -25,7 +22,7 @@
     &.text-link {
         font-weight: var(--font-weight-medium);
         text-decoration: underline;
-        font-size: var(--font-size-extra-small);
+        font-size: var(--font-size-small);
     }
 
     &.special-email {
@@ -36,6 +33,12 @@
 
     &.secondary-button {
         background-color: var(--color-primary);
+    }
+
+    &.external-link {
+        font-size: var(--font-size-extra-small);
+        font-weight: var(--font-weight-medium);
+        pointer-events: none;
     }
 
     &:hover {
