@@ -10,7 +10,7 @@ import Container from '#components/Container';
 import scrollToTop from '#utils/scrollToTop';
 import CustomActivityInput from './CustomActivityInput';
 import { ListResponse, useRequest } from '#utils/restRequest';
-import { AssessmentQuestion } from '../usePerFormOptions';
+import { AssessmentQuestion } from '../common';
 
 interface Props {
   className?: string;

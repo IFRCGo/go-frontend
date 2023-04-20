@@ -1,31 +1,35 @@
 import React from 'react';
-import LanguageContext from '#root/languageContext';
 import {
   EntriesAsList,
   getErrorObject,
   PartialForm,
   Error,
 } from '@togglecorp/toggle-form';
+
 import { ListResponse, useRequest } from '#utils/restRequest';
+import LanguageContext from '#root/languageContext';
+import scrollToTop from '#utils/scrollToTop';
+import {
+  BooleanValueOption,
+  NumericValueOption,
+  StringValueOption,
+} from '#types';
 
 import Container from '#components/Container';
 import InputSection from '#components/InputSection';
 import SelectInput from '#components/SelectInput';
 import DateInput from '#components/DateInput';
-import {
-  BooleanValueOption,
-  NumericValueOption,
-} from '#types';
-
-import DREFFileInput from '#components/DREFFileInput';
+import PerFileInput from '#components/PERFileInput';
+import Button from '#components/Button';
 import TextInput from '#components/TextInput';
 import RadioInput from '#components/RadioInput';
+import {
+  PerOverviewFields,
+  booleanOptionKeySelector,
+  optionLabelSelector,
+} from '../common';
 
 import styles from './styles.module.scss';
-import { PerOverviewFields,
-  optionLabelSelector,
-  booleanOptionKeySelector,
- } from '../usePerFormOptions';
 
 type Value = PartialForm<PerOverviewFields>;
 
@@ -35,6 +39,9 @@ interface Props {
   onValueChange?: (...entries: EntriesAsList<Value>) => void;
   nationalSocietyOptions: NumericValueOption[];
   yesNoOptions: BooleanValueOption[],
+  assessmentOptions: NumericValueOption[];
+  setFileIdToUrlMap?: React.Dispatch<React.SetStateAction<Record<number, string>>>;
+  fileIdToUrlMap: Record<number, string>;
 }
 
 function PerOverview(props: Props) {
@@ -44,7 +51,12 @@ function PerOverview(props: Props) {
     onValueChange,
     nationalSocietyOptions,
     yesNoOptions,
+    assessmentOptions,
+    fileIdToUrlMap,
+    setFileIdToUrlMap,
   } = props;
+
+  const { strings } = React.useContext(LanguageContext);
 
   const {
     pending: fetchingOverview,
@@ -58,7 +70,9 @@ function PerOverview(props: Props) {
     [formError]
   );
 
-  const { strings } = React.useContext(LanguageContext);
+  const handleSubmitButtonClick = React.useCallback(() => {
+    scrollToTop();
+  }, []);
 
   return (
     <>
@@ -98,17 +112,17 @@ function PerOverview(props: Props) {
         <InputSection
           title={strings.perFormUploadADoc}
         >
-          <DREFFileInput
+          <PerFileInput
             accept=".pdf, .docx, .pptx"
-            error={undefined}
-            fileIdToUrlMap={undefined}
-            name="supporting_document"
-            onChange={undefined}
-            setFileIdToUrlMap={undefined}
-            value={undefined}
+            error={error?.orientation_document}
+            fileIdToUrlMap={fileIdToUrlMap}
+            name="orientation_document"
+            onChange={onValueChange}
+            setFileIdToUrlMap={setFileIdToUrlMap}
+            value={value?.orientation_document}
           >
             {strings.drefFormUploadSupportingDocumentButtonLabel}
-          </DREFFileInput>
+          </PerFileInput>
         </InputSection>
       </Container>
       <Container
@@ -121,21 +135,21 @@ function PerOverview(props: Props) {
           description={strings.perFormDateOfAssessmentDescription}
         >
           <DateInput
-            error={undefined}
-            name="date of orientation"
-            onChange={undefined}
-            value={undefined}
+            error={error?.date_of_previous_assessment}
+            name="date_of_previous_assessment"
+            onChange={onValueChange}
+            value={value?.date_of_previous_assessment}
           />
         </InputSection>
         <InputSection
           title={strings.perFormTypeOfAssessment}
         >
           <SelectInput
-            name={"reporting_ns" as const}
-            options={undefined}
-            onChange={undefined}
-            value={undefined}
-            error={undefined}
+            name={"type_of_per_assessment" as const}
+            options={assessmentOptions}
+            onChange={onValueChange}
+            value={value?.type_of_assessment}
+            error={error?.type_of_assessment}
           />
         </InputSection>
         <InputSection
@@ -143,30 +157,30 @@ function PerOverview(props: Props) {
           description={strings.perFormAssessmentNumberDescription}
         >
           <TextInput
-            name="reporting_ns_contact_name"
-            value={undefined}
-            onChange={undefined}
-            error={undefined}
+            name="assessment_number"
+            value={value?.assessment_number}
+            onChange={onValueChange}
+            error={error?.assessment_number}
           />
         </InputSection>
         <InputSection
           title={strings.perFormBranchesInvolved}
         >
           <TextInput
-            name="reporting_ns_contact_name"
-            value={undefined}
-            onChange={undefined}
-            error={undefined}
+            name="branches_involved"
+            value={value?.branches_involved}
+            onChange={onValueChange}
+            error={error?.branches_involved}
           />
         </InputSection>
         <InputSection
           title={strings.perFormWhatMethodHasThisAssessmentUsed}
         >
           <TextInput
-            name="reporting_ns_contact_name"
-            value={undefined}
-            onChange={undefined}
-            error={undefined}
+            name="method_asmt_used"
+            value={value?.method_asmt_used}
+            onChange={onValueChange}
+            error={error?.method_asmt_used}
           />
         </InputSection>
         <InputSection
@@ -187,15 +201,14 @@ function PerOverview(props: Props) {
           title={strings.perFormUrbanConsiderations}
           description={strings.perFormUrbanConsiderationsDescription}
         >
-          { /* FIX ME: Add Urban Radoi button API */}
           <RadioInput
-            name={"is_epi" as const}
+            name={"assess_urban_aspect_of_country" as const}
             options={yesNoOptions}
             keySelector={booleanOptionKeySelector}
             labelSelector={optionLabelSelector}
-            value={value?.is_epi}
+            value={value?.assess_urban_aspect_of_country}
             onChange={onValueChange}
-            error={error?.is_epi}
+            error={error?.assess_urban_aspect_of_country}
           />
         </InputSection>
         <InputSection
@@ -203,13 +216,13 @@ function PerOverview(props: Props) {
           description={strings.perFormClimateAndEnvironmentalConsiderationsDescription}
         >
           <RadioInput
-            name={"emergency_appeal_planned" as const}
-            options={undefined}
-            keySelector={undefined}
-            labelSelector={undefined}
-            value={undefined}
-            onChange={undefined}
-            error={undefined}
+            name={"assess_climate_environment_of_country" as const}
+            options={yesNoOptions}
+            keySelector={booleanOptionKeySelector}
+            labelSelector={optionLabelSelector}
+            value={value?.assess_climate_environment_of_country}
+            onChange={onValueChange}
+            error={error?.assess_climate_environment_of_country}
           />
         </InputSection>
       </Container>
@@ -222,20 +235,20 @@ function PerOverview(props: Props) {
           title={strings.perFormDateOfPreviousPerAssessment}
         >
           <DateInput
-            error={undefined}
-            name="date of orientation"
-            onChange={undefined}
-            value={undefined}
+            error={error?.date_of_previous_assessment}
+            name="date_of_previous_assessment"
+            onChange={onValueChange}
+            value={value?.date_of_previous_assessment}
           />
         </InputSection>
         <InputSection
           title={strings.perFormTypeOfPreviousPerAssessment}
         >
           <TextInput
-            name="reporting_ns_contact_name"
-            value={undefined}
-            onChange={undefined}
-            error={undefined}
+            name="type_of_per_assessment"
+            value={value?.type_of_per_assessment}
+            onChange={onValueChange}
+            error={error?.type_of_per_assessment}
           />
         </InputSection>
       </Container>
@@ -248,48 +261,20 @@ function PerOverview(props: Props) {
           title={strings.perFormEstimatedDateOfMidTermReview}
         >
           <DateInput
-            error={undefined}
-            name="date of orientation"
-            onChange={undefined}
-            value={undefined}
+            error={error?.date_of_mid_term_review}
+            name="date_of_mid_term_review"
+            onChange={onValueChange}
+            value={value?.date_of_mid_term_review}
           />
         </InputSection>
         <InputSection
           title={strings.perFormEstimatedDateOfAssessment}
         >
           <DateInput
-            error={undefined}
-            name="date of orientation"
-            onChange={undefined}
-            value={undefined}
-          />
-        </InputSection>
-      </Container>
-      <Container
-        heading={strings.perFormReviewsPlanned}
-        className={styles.sharing}
-        visibleOverflow
-      >
-        <InputSection
-          title={strings.perFormEstimatedDateOfMidTermReview}
-          multiRow
-          oneColumn
-        >
-          <DateInput
-            error={undefined}
-            name="date of orientation"
-            onChange={undefined}
-            value={undefined}
-          />
-        </InputSection>
-        <InputSection
-          title={strings.perFormEstimatedDateOfAssessment}
-        >
-          <DateInput
-            error={undefined}
-            name="date of orientation"
-            onChange={undefined}
-            value={undefined}
+            error={error?.date_of_next_asmt}
+            name="date_of_next_asmt"
+            onChange={onValueChange}
+            value={value?.date_of_next_asmt}
           />
         </InputSection>
       </Container>
@@ -304,24 +289,24 @@ function PerOverview(props: Props) {
         >
           <TextInput
             label="Name"
-            name="ifrc_appeal_manager_name"
-            value={undefined}
-            onChange={undefined}
-            error={undefined}
+            name="ns_focal_point_name"
+            value={value?.ns_focal_point_name}
+            onChange={onValueChange}
+            error={error?.ns_focal_point_name}
           />
           <TextInput
             label="Email"
-            name="ifrc_appeal_manager_email"
-            value={undefined}
-            onChange={undefined}
-            error={undefined}
+            name="ns_focal_point_email"
+            value={value?.ns_focal_point_email}
+            onChange={onValueChange}
+            error={error?.ns_focal_point_email}
           />
           <TextInput
             label="Phone Number"
-            name="ifrc_appeal_manager_phone_number"
-            value={undefined}
-            onChange={undefined}
-            error={undefined}
+            name="ns_focal_point_phone"
+            value={value?.ns_focal_point_phone}
+            onChange={onValueChange}
+            error={error?.ns_focal_point_phone}
           />
         </InputSection>
         <InputSection
@@ -331,31 +316,31 @@ function PerOverview(props: Props) {
         >
           <TextInput
             label="Name"
-            name="ifrc_appeal_manager_name"
-            value={undefined}
-            onChange={undefined}
-            error={undefined}
+            name="partner_focal_point_name"
+            value={value?.partner_focal_point_name}
+            onChange={onValueChange}
+            error={error?.partner_focal_point_name}
           />
           <TextInput
             label="Email"
-            name="ifrc_appeal_manager_email"
-            value={undefined}
-            onChange={undefined}
-            error={undefined}
+            name="partner_focal_point_email"
+            value={value?.partner_focal_point_name}
+            onChange={onValueChange}
+            error={error?.partner_focal_point_name}
           />
           <TextInput
             label="Phone Number"
-            name="ifrc_appeal_manager_phone_number"
-            value={undefined}
-            onChange={undefined}
-            error={undefined}
+            name="partner_focal_point_phone"
+            value={value?.partner_focal_point_phone}
+            onChange={onValueChange}
+            error={error?.partner_focal_point_phone}
           />
           <TextInput
             label="Organization"
-            name="ifrc_appeal_manager_title"
-            value={undefined}
-            onChange={undefined}
-            error={undefined}
+            name="partner_focal_point_organization"
+            value={value?.partner_focal_point_organization}
+            onChange={onValueChange}
+            error={error?.partner_focal_point_organization}
           />
         </InputSection>
         <InputSection
@@ -365,33 +350,43 @@ function PerOverview(props: Props) {
         >
           <TextInput
             label="Name"
-            name="ifrc_appeal_manager_name"
-            value={undefined}
-            onChange={undefined}
-            error={undefined}
+            name="facilitator_name"
+            value={value?.facilitator_name}
+            onChange={onValueChange}
+            error={error?.facilitator_name}
           />
           <TextInput
             label="Email"
-            name="ifrc_appeal_manager_email"
-            value={undefined}
-            onChange={undefined}
-            error={undefined}
+            name="facilitator_email"
+            value={value?.facilitator_email}
+            onChange={onValueChange}
+            error={error?.facilitator_email}
           />
           <TextInput
             label="Phone Number"
-            name="ifrc_appeal_manager_phone_number"
-            value={undefined}
-            onChange={undefined}
-            error={undefined}
+            name="facilitator_phone"
+            value={value?.facilitator_phone}
+            onChange={onValueChange}
+            error={error?.facilitator_phone}
           />
           <TextInput
             label="Other contact method"
-            name="ifrc_appeal_manager_title"
-            value={undefined}
-            onChange={undefined}
-            error={undefined}
+            name="facilitator_contact"
+            value={value?.facilitator_contact}
+            onChange={onValueChange}
+            error={error?.facilitator_contact}
           />
         </InputSection>
+        <div className={styles.actions}>
+          <Button
+            name={undefined}
+            variant="secondary"
+            onClick={undefined}
+            disabled={undefined}
+          >
+            {strings.PerOverviewSetUpPerProcess}
+          </Button>
+        </div>
       </Container>
     </>
   );

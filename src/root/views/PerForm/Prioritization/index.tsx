@@ -1,76 +1,54 @@
 import React from 'react';
-import { _cs } from '@togglecorp/fujs';
-import { EntriesAsList } from '@togglecorp/toggle-form';
+import LanguageContext from '#root/languageContext';
 
-import { BooleanValueOption } from '#types';
+import styles from './styles.module.scss';
 import ExpandableContainer from '#components/ExpandableContainer';
 import Container from '#components/Container';
 import TextArea from '#components/TextArea';
 import SelectInput from '#components/SelectInput';
-
-import { AssessmentQuestion } from '#views/PerForm/usePerFormOptions';
-
-import styles from './styles.module.scss';
-
-export interface Area {
-  id: string;
-  title: string;
-  title_en: string;
-  title_es: string;
-  title_fr: string;
-  title_ar: string | null;
-  area_num: number;
-}
-export interface Component {
-  area: Area[];
-  title: string;
-  component: string;
-  component_letter: string | null;
-  description: string;
-  id: string;
-}
-
-export interface Answer {
-  id: string;
-  text: string;
-  text_en: string;
-  text_es: string | null;
-  text_fr: string | null;
-  text_ar: string | null;
-}
+import { _cs } from '@togglecorp/fujs';
+import Table from '#components/Table';
+import { createStringColumn } from '#components/Table/predefinedColumns';
 
 interface Props {
-  yesNoOptions?: BooleanValueOption[];
-  onValueChange?: (...entries: EntriesAsList<null>) => void;
-  id?: number;
-  data?: AssessmentQuestion;
+  className?: string;
 }
 
-function CustomActivityInput(props: Props) {
-
+function Prioritization(props: Props) {
   const {
-    yesNoOptions,
-    onValueChange,
-    data,
+    className,
   } = props;
 
+  const { strings } = React.useContext(LanguageContext);
+
   return (
-    <>
+    <Container>
+      <div className={styles.componentTitle}>
+        <h5>Component</h5>
+        <h5>Ranking</h5>
+        <h5>Justification</h5>
+      </div>
       <ExpandableContainer
         className={_cs(styles.customActivity, styles.errored)}
         componentRef={undefined}
-        heading={data?.component.title}
+        heading="prioritization"
         actionsContainerClassName={styles}
         headingSize="small"
         sub
         actions={
           <>
+            <div>
+              Needs Improvement
+            </div>
             <SelectInput
               className={styles.improvementSelect}
               name="improvement"
               onChange={() => { }}
               value={""}
             />
+            <div>
+              Show Benchmarks
+            </div>
           </>
         }
       >
@@ -119,14 +97,14 @@ function CustomActivityInput(props: Props) {
             </label>
           </div>
           {/* <RadioInput
-            options={yesNoOptions}
-            value={undefined}
-            onChange={onValueChange}
-          /> */}
+        options={yesNoOptions}
+        value={undefined}
+        onChange={onValueChange}
+      /> */}
         </Container>
       </ExpandableContainer>
-    </>
+    </Container>
   );
 }
 
-export default CustomActivityInput;
+export default Prioritization;

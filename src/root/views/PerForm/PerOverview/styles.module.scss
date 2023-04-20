@@ -51,3 +51,14 @@
   flex-basis: initial!important;
   flex-shrink: 0!important;
 }
+
+.actions {
+  padding: $spacing*3 $spacing;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  >* {
+    margin: 0 $spacing*0.5;
+  }
+}

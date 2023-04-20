@@ -3966,4 +3966,14 @@ export default {
   perFormArea3Tab: 'Area 3: Operational Capacity',
   perFormArea4Tab: 'Area 4: Coordination',
   perFormArea5Tab: 'Area 5: Operations Support',
+  PerOverviewSetUpPerProcess: 'Set up PER Process',
+
+  //Per WorkPlan
+  perWorkPlanComponents: 'Components',
+  perWorkPlanArea: 'Area',
+  perWorkPlanActions: 'Actions',
+  perWorkPlanDueDate: 'Due Date',
+  perWorkPlanResponsible: 'Responsible',
+  perWorkPlanSupportedBy: 'Supported by',
+  perWorkPlanStatus: 'Status',
 };
