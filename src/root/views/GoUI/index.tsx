@@ -1,3 +1,4 @@
+import Card from './components/Card';
 import React from 'react';
 import Links from './examples/Links';
 import styles from './styles.module.scss';
