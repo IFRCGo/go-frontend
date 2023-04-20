@@ -17,10 +17,10 @@ import {
   GlobalLoadingContext,
   NewGlobalLoadingParent,
 } from '#components/NewGlobalLoading';
+import TranslationWarningBanner from '#components/TranslationWarningBanner';
+import { Language } from '#types/project';
 
 import styles from './styles.module.scss';
-import { Language } from '#types/project';
-import TranslationWarningBanner from '#components/TranslationWarningBanner';
 
 interface Props {
   className?: string;

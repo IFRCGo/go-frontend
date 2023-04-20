@@ -5,6 +5,7 @@ import {
   isDefined,
   listToMap,
   isNotDefined,
+  isTruthy,
 } from '@togglecorp/fujs';
 import {
   PartialForm,
@@ -29,14 +30,17 @@ import Tabs from '#components/Tabs';
 import { getDisplayName } from '#components/UserSearchSelectInput';
 import { Option } from '#components/SearchSelectInput';
 import { useButtonFeatures } from '#components/Button';
+import Translate from '#components/Translate';
+import useAlert from '#hooks/useAlert';
 import {
   useLazyRequest,
   useRequest,
 } from '#utils/restRequest';
 import { ymdToDateString } from '#utils/common';
-import LanguageContext from '#root/languageContext';
-import useAlert from '#hooks/useAlert';
+import { languageOptions } from '#utils/lang';
 import scrollToTop from '#utils/scrollToTop';
+import LanguageContext from '#root/languageContext';
+import useReduxState from '#hooks/useReduxState';
 
 import DrefOverview from './DrefOverview';
 import EventDetails from './EventDetails';
@@ -63,9 +67,6 @@ import {
 } from './import';
 
 import styles from './styles.module.scss';
-import useReduxState from '#hooks/useReduxState';
-import { languageOptions } from '#utils/lang';
-import Translate from '#components/Translate';
 
 const defaultFormValues: PartialForm<DrefFields> = {
   planned_interventions: [],
@@ -349,7 +350,7 @@ function DrefApplication(props: Props) {
     }
   });
 
-  const languageMismatch = (isDefined(drefId) && drefResponse?.translation_module_original_language !== currentLanguage) ?? false;
+  const languageMismatch = isTruthy(drefResponse?.translation_module_original_language !== currentLanguage);
 
   const validateCurrentTab = React.useCallback((exceptions: (keyof DrefFields)[] = []) => {
     const validationError = getErrorObject(accumulateErrors(value, schema, value, undefined));

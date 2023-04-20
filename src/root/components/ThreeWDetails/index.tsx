@@ -138,11 +138,10 @@ function ProjectDetail(props: Props) {
           ) : undefined }
         />
       )}
-      { projectResponse?.description
+      {projectResponse?.description
           ? <RichTextOutput
-              className='rich-text-section'
+              className={_cs('rich-text-section', styles.richTextOutput)}
               value={get(projectResponse, 'description', false)}
-              style={{backgroundColor: '#faf9f9', padding: '1.5rem'}}
           /> : null }
       {projectPending ? (
         <BlockLoading />

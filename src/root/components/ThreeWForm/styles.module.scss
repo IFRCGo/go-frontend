@@ -1,7 +1,7 @@
 @import '~styles/settings/variables';
 
 .three-w-form {
-  .languageMismatch {
+  .language-mismatch {
     text-align: center;
   }
 
@@ -27,7 +27,7 @@
   }
 
   .disable {
-    color: grey
+    color: $light-base-color;
   }
 
   .region-selection-input {

@@ -728,7 +728,9 @@ function DrefOperationalUpdate(props: Props) {
                 )}
               </Container>
               {languageMismatch && drefOperationalResponse && (
-                <Container contentClassName={styles.languageMismatch}>
+                <Container
+                  contentClassName={styles.languageMismatch}
+                >
                   <Translate
                     stringId="translationErrorEdit"
                     params={{ originalLanguage: <strong>{languageOptions[drefOperationalResponse.translation_module_original_language]}</strong> }}

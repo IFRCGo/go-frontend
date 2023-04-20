@@ -5,6 +5,7 @@ import {
   isFalsy,
   isNotDefined,
   randomString,
+  isTruthy,
 } from '@togglecorp/fujs';
 import {
   useForm,
@@ -30,6 +31,7 @@ import LanguageContext from '#root/languageContext';
 import RichTextArea from '#components/RichTextArea';
 import Switch from '#components/Switch';
 import RegionOutput from '#components/RegionOutput';
+import Container from '#components/Container';
 
 import useAlert from '#hooks/useAlert';
 import useReduxState from '#hooks/useReduxState';
@@ -54,12 +56,10 @@ import {
   FormType,
   transformResponseFieldsToFormFields,
 } from './useThreeWOptions';
-
 import AnnualSplitInput from './AnnualSplitInput';
 import RegionSelectionInput from './RegionSelectionInput';
 
 import styles from './styles.module.scss';
-import Container from '#components/Container';
 
 const defaultFormValues: PartialForm<FormType> = {
   project_districts: [],
@@ -118,7 +118,7 @@ function ThreeWForm(props: Props) {
     },
   });
 
-  const languageMismatch = (isDefined(projectId) && projectDetailsResponse?.translation_module_original_language !== currentLanguage) ?? false;
+  const languageMismatch = isTruthy(projectDetailsResponse?.translation_module_original_language !== currentLanguage);
 
   const {
     pending: submitRequestPending,
@@ -158,9 +158,6 @@ function ThreeWForm(props: Props) {
     onValueSet(finalValues);
     submitRequest(finalValues);
   }, [onValueSet, submitRequest]);
-
-  // const languageMismatch = (isDefined(projectId) && fieldReportResponse?.translation_module_original_language !== currentLanguage) ?? false;
-
 
   const {
     fetchingCountries,
@@ -332,7 +329,9 @@ function ThreeWForm(props: Props) {
       ) : (
         <>
           {languageMismatch && projectDetailsResponse && (
-            <Container contentClassName={styles.languageMismatch}>
+            <Container
+              contentClassName={styles.languageMismatch}
+            >
               <Translate
                 stringId="translationErrorEdit"
                 params={{

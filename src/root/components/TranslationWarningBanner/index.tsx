@@ -1,9 +1,9 @@
 import React from 'react';
 import { _cs } from '@togglecorp/fujs';
-
 import { languageOptions } from '#utils/lang';
-import Translate from '#components/Translate';
 import useReduxState from '#hooks/useReduxState';
+import Translate from '#components/Translate';
+
 import styles from './styles.module.scss';
 
 interface Props {

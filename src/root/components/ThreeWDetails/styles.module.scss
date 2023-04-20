@@ -9,6 +9,11 @@
     }
   }
 
+  .rich-text-output {
+    background-color: $grey-mist;
+    padding: $global-spacing-2;
+  }
+
   .people-label {
     text-transform: uppercase;
     font-weight: 500;
