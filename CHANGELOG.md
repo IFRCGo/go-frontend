@@ -1,3 +1,9 @@
+### Release 6.5.5 - Hotfix for a new CoS Role Profile
+Date: 2023-04-21
+
+Frontend:
+ - New Role Profile to CoS Livelihoods and Basic Needs
+
 ### Release 6.5.4 - Hotfix for an Operational Toolbox link
 Date: 2023-04-13
 
