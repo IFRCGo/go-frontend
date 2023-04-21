@@ -682,7 +682,6 @@ const CatalogueOfSurgeServicesContent = [
         sectionTitle: "catalogueOfSurgeServicesSelectorLivelihoods",
         sectionText: "catalogueOfSurgeServicesLivelihoodsSectionText",
         sectionCards: [
-            /* coming soon not wanted 1
             {
                 cardsTitle: "catalogueOfSurgeServicesCardsTitleRapidResponsePersonnel",
                 cards: [
@@ -692,21 +691,16 @@ const CatalogueOfSurgeServicesContent = [
                         elements: [
                             {
                                 name: "catalogueOfSurgeServicesLivelihoodsCards1Card1Element1",
-                                url: ''
+                                url: SharepointLink['Livelihoods and Basic Needs Coordinator.pdf']
                             },
                             {
                                 name: "catalogueOfSurgeServicesLivelihoodsCards1Card1Element2",
-                                url: ''
-                            },
-                            {
-                                name: "catalogueOfSurgeServicesLivelihoodsCards1Card1Element3",
-                                url: ''
+                                url: SharepointLink['Livelihoods and Basic Needs Officer.pdf']
                             }
                         ]
                     }
                 ]
             },
-            */
             {
                 cardsTitle: 'catalogueOfSurgeServicesCardsTitleServices',
                 cards: [

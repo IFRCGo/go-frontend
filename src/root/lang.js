@@ -1140,9 +1140,8 @@ export default {
   catalogueOfSurgeServicesInformationTechCards1Card1Element2: 'IT & Telecom Officer',
   catalogueOfSurgeServicesInformationTechCards2Card1Text: 'ERU IT/Telecom',
   catalogueOfSurgeServicesLivelihoodsSectionText: 'IFRC operates within the Sustainable Livelihoods Framework and has identified 5 types of Livelihoods assistance: 1. provisioning for lost livelihoods sources (basic needs assistance), 2. livelihoods recovery including replacement of lost Livelihoods assets, 3. livelihoods strengthening, 4. livelihoods diversification and 5. livelihoods protection. In Surge context, interventions will first focus on meeting basic needs through livelihoods provisioning, which includes that immediate food and nutrition needs are met (typically through in-kind support, cash or voucher assistance). Meanwhile other activities can be designed aiming at preventing further erosion of productive assets (livelihoods protection) or supporting the recovery of livelihoods through assets’ replacement and skills strengthening.',
-  catalogueOfSurgeServicesLivelihoodsCards1Card1Element1: 'Food Security and Basic Needs Coordinator (details coming soon)', // coming soon not wanted 1
-  catalogueOfSurgeServicesLivelihoodsCards1Card1Element2: 'Market-based Livelihoods Interventions Officer (details coming soon)', // coming soon not wanted 1
-  catalogueOfSurgeServicesLivelihoodsCards1Card1Element3: 'Primary Production Support and Income Generation Officer (details coming soon)', // coming soon not wanted 1
+  catalogueOfSurgeServicesLivelihoodsCards1Card1Element1: 'Livelihoods and Basic Needs Coordinator',
+  catalogueOfSurgeServicesLivelihoodsCards1Card1Element2: 'Livelihoods and Basic Needs Officer',
   catalogueOfSurgeServicesLivelihoodsCards3Card1Title: 'IFRC Livelihoods Resource Centre (LRC)',
   catalogueOfSurgeServicesLivelihoodsCards3Card1Text: 'The Centre plays an active role in raising awareness and common understanding around livelihoods.',
   catalogueOfSurgeServicesLivelihoodsCards3Card2Title: 'Livelihoods Toolbox',
