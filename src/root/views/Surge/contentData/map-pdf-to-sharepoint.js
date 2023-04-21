@@ -92,6 +92,11 @@ const SharepointLink = {
     'IT and Telecom Officer.pdf':
         pre + 'ETEdR5wmWSdHqw2o2nJRMeYBN9M7VZBZJ5blIgn67vFdzQ',
 
+    'Livelihoods and Basic Needs Coordinator.pdf':
+        pre + 'EfES4Wzw9FhMuuheDrmLAgUB6hOMdb4Q_PxRvZNHI4PS9g',
+    'Livelihoods and Basic Needs Officer.pdf':
+        pre + 'Ed_cp5Q9QVhBvX4Z2Awb0tYBirpsEI4ApLByl_X3HBX8eA',
+
     'Supply Chain Coordinator.pdf':
         pre + 'ETRk5roTyxpGu2HPqfkLbpMBbeOkEaT9s9DPYZ51Noy0UQ',
     'Logistics ERU Team Leader.pdf':
