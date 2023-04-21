@@ -1,12 +1,11 @@
 import React from 'react';
-import LinkElement from './components/LinkElement';
-
+import Links from './examples/Links';
 import styles from './styles.module.scss';
 
 function GoUI() {
     return (
         <div className={styles.linksContainer}>
-            <LinkElement />
+          <Links />
         </div>
     );
 }
