@@ -176,6 +176,10 @@ export interface DrefOperationalUpdateFields {
   national_society_contact_name: string;
   national_society_contact_phone_number: string;
   national_society_contact_title: string;
+  regional_focal_point_name: string;
+  regional_focal_point_email: string;
+  regional_focal_point_title: string;
+  regional_focal_point_phone_number: string;
   media_contact_email: string;
   media_contact_name: string;
   media_contact_phone_number: string;
@@ -407,4 +411,8 @@ export const submissionFields: (keyof DrefOperationalUpdateFields)[] = [
   'reporting_end_date',
   'ns_request_date',
   'date_of_approval',
+  'regional_focal_point_name',
+  'regional_focal_point_email',
+  'regional_focal_point_title',
+  'regional_focal_point_phone_number',
 ];
