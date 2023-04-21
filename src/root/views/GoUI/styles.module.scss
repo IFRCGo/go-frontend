@@ -144,3 +144,10 @@
 
     --go-ui-color-background: #F7F7F7;
 }
+
+.links-container {
+  font-family: var(--go-ui-font-family-sans);
+  font-size: var(--go-ui-font-size-sm);
+  font-weight: var(--go-ui-font-weight-light);
+  line-height: var(--go-ui-line-height-normal);
+}

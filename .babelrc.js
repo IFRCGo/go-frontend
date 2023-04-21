@@ -48,6 +48,7 @@ module.exports = {
           "#utils": "./src/root/utils",
           "#views": "./src/root/views",
           "#root": "./src/root",
+          "#goui": "./src/root/views/GoUI/components",
         },
       },
     ],
