@@ -6,6 +6,7 @@ import BlockLoading from '#components/block-loading';
 import MapFooter from '#components/RiskImminentEventMap/MapFooter';
 import ImminentEventsADAM from './ImminentEventsADAM';
 import ImminentEventsPDC from './ImminentEventsPDC';
+import ImminentEventsGDACS from '../ImminentEventsGDACS';
 
 import styles from './styles.module.scss';
 
@@ -82,6 +83,12 @@ function ImminentEvents(props: Props) {
           className={styles.map}
           countryId={countryId}
           onLoad={handleWfpEventLoad}
+        />
+      )}
+      {(mapSource === "GDACS") && (
+        <ImminentEventsGDACS
+          className={styles.map}
+          countryId={countryId}
         />
       )}
       <MapFooter

@@ -2,11 +2,12 @@ import React from 'react';
 
 import Container from '#components/Container';
 import WikiLink from '#components/WikiLink';
+import MapFooter from '#components/RiskImminentEventMap/MapFooter';
 import ImminentEventsPDC from './ImminentEventsPDC';
 import ImminentEventsADAM from './ImminentEventsADAM';
+import ImminentEventsGDACS from './ImminentEventsGDACS';
 
 import styles from './styles.module.scss';
-import MapFooter from '#components/RiskImminentEventMap/MapFooter';
 
 const eventDescription = "This map displays information about the modeled impact of specific forecasted or detected natural hazards (floods, storms, droughts, wildfires, earthquakes). By hovering over the icons, if available, you can see the forecasted/observed footprint of the hazard; when you click on it, the table of modeled impact estimates will appear, as well as an information about who produced the impact estimate.";
 
@@ -54,6 +55,12 @@ function ImminentEvents(props: Props) {
       )}
       {(mapSource === "WFP") && (
         <ImminentEventsADAM
+          className={styles.map}
+          regionId={regionId}
+        />
+      )}
+      {(mapSource === "GDACS") && (
+        <ImminentEventsGDACS
           className={styles.map}
           regionId={regionId}
         />
