@@ -26,10 +26,7 @@ function BudgetFileOutput(props: Props) {
   }
 
   return (
-    <View
-      wrap={false}
-      break
-    >
+    <View break>
       <Text style={[
         pdfStyles.sectionHeading, {
           marginTop: 0,
