@@ -694,7 +694,7 @@ function EmergencyThreeWForm(props: Props) {
                 onChange={setFieldValue}
                 pending={fetchingDistricts}
                 error={error?.districts}
-                placeholder={isDefined(value?.country) ? 'Select one or more region' : 'Select a country first'}
+                placeholder={isDefined(value?.country) ? 'Select region(s) optionally' : 'Select a country first'}
                 disabled={inputsDisabled || isNotDefined(value?.country)}
                 isMulti
                 actions={(

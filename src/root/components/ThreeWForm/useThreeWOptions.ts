@@ -137,7 +137,7 @@ export const schema: FormSchema = {
       primary_sector: [requiredCondition],
       programme_type: [requiredCondition],
       project_country: [requiredCondition],
-      project_districts: [requiredListCondition],
+      project_districts: [],
       reached_female: [positiveIntegerCondition],
       reached_male: [positiveIntegerCondition],
       reached_other: [positiveIntegerCondition],
