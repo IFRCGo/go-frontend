@@ -1,0 +1,65 @@
+@import '~styles/settings/variables';
+
+.alert {
+  padding: calc(var(--go-ui-spacing-md) * 0.5);
+  background-color: var(--go-ui-color-gray-80);
+  color: var(--go-ui-color-white);
+  border-radius: var(--go-ui-border-radius-md);
+  width: calc(200px + 16vw);
+
+  .content {
+    display: flex;
+    align-items: center;
+    font-weight: var(--go-ui-font-weight-medium);
+    padding: calc(var(--go-ui-spacing-md) * 0.5);;
+
+    .close-button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .icon {
+      font-size: 1.2em;
+      margin-top: calc(var(--go-ui-spacing-md) * 0.25);;
+    }
+
+    .content {
+      flex-direction: column;
+      align-items: initial;
+    }
+
+    p {
+      margin: 0;
+    }
+
+    strong {
+      font-weight: var(--go-ui-font-weight-bold);
+    }
+  }
+
+  .actions {
+    display: flex;
+    justify-content: flex-end;
+    padding: $spacing * 0.5;
+    font-weight: var(--go-ui-font-weight-bold);
+
+    .copy-debug-message-button {
+      padding: $spacing * 0.5;
+      text-transform: uppercase;
+      font-size: var(--go-ui-font-size-sm);
+    }
+  }
+
+  &.success {
+    background-color: var(--go-ui-color-success);
+  }
+
+  &.danger {
+    background-color: var(--go-ui-color-danger);
+  }
+
+  &.warning {
+    background-color: var(--go-ui-color-warning);
+  }
+}
