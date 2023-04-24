@@ -26,7 +26,8 @@
       "#selectors/*": ["./src/root/selectors/*"],
       "#utils/*": ["./src/root/utils/*"],
       "#views/*": ["./src/root/views/*"],
-      "#root/*": ["./src/root/*"]
+      "#root/*": ["./src/root/*"],
+      "#goui/*": ["./src/root/views/GoUI/components/*"]
     }
   },
   "include": [

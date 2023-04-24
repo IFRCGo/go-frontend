@@ -1,77 +1,108 @@
 import React from 'react';
+import { _cs } from '@togglecorp/fujs';
+import { Link as InternalLink, LinkProps as RouterLinkProps } from 'react-router-dom';
 import {
-  _cs,
-  isValidUrl,
-} from '@togglecorp/fujs';
-import { Link as InternalLink } from 'react-router-dom';
+  IoChevronForward,
+  IoOpenOutline,
+} from 'react-icons/io5';
+import ButtonLikeLink from '#components/ButtonLikeLink';
 
 import styles from './styles.module.scss';
 
-export interface Props extends Omit<React.HTMLProps<HTMLAnchorElement>, 'children' | 'href' | 'className'> {
-  className?: string;
-  href: string;
-  hash?: string;
-  state?: unknown;
-  children?: React.ReactNode;
-  variant?: 'general' | 'table';
+type LinkVariant = 'regular' | 'title' | 'text' | 'external' | 'secondary';
+
+const variantToIconMap: Record<LinkVariant, React.ReactElement | undefined> = {
+  regular: <IoChevronForward />,
+  title: <IoChevronForward />,
+  external: <IoOpenOutline />,
+  secondary: undefined,
+  text: undefined,
+};
+
+const variantStyleMap: Record<LinkVariant, string | undefined> = {
+  regular: undefined,
+  title: styles.title,
+  text: styles.text,
+  external: undefined,
+  secondary: undefined,
+};
+
+export interface Props extends RouterLinkProps {
+  actionsContainerClassName?: string;
+  iconsContainerClassName?: string;
+  linkElementClassName?: string;
+  actions?: React.ReactNode;
+  icons?: React.ReactNode;
+  variant?: LinkVariant;
 }
 
 function Link(props: Props) {
   const {
-    className: classNameFromProps,
-    href,
-    hash,
-    state,
+    className,
+    to,
+    variant = 'regular',
+    icons,
+    actions,
+    actionsContainerClassName,
+    iconsContainerClassName,
+    linkElementClassName,
     children,
-    variant = 'general',
     ...otherProps
   } = props;
 
-  const isExternalLink = React.useMemo(() => (
-    href
-    && typeof href === 'string'
-    && (isValidUrl(href)
-      || href.startsWith('mailto:'))
-  ), [href]);
+  const icon = variantToIconMap[variant];
 
-  const className = _cs(
-    styles.link,
-    variant === 'table' && styles.table,
-    classNameFromProps,
-  );
-
-  if (isExternalLink) {
-    return (
-      <a
-        {...otherProps}
-        className={className}
-        href={href}
-        target="_blank"
-        rel="noopener nofollow"
-      >
-        {children}
-      </a>
-    );
-  }
-
-  const {
-    ref,
-    ...otherPropsExceptRef
-  } = otherProps;
+  const specialLink = (variant === 'external') ||  (variant === 'secondary');
 
   return (
-    <InternalLink
-      className={className}
-      to={{
-        pathname: href,
-        state: state,
-        hash: hash,
-      }}
-      {...otherPropsExceptRef}
-    >
-      {children}
-    </InternalLink>
+    <div className={_cs(className, styles.linkContainer, variantStyleMap[variant])}>
+      {icons && (
+        <div className={_cs(iconsContainerClassName, styles.icons)}>
+          {icons}
+        </div>
+      )}
+      {variant === 'external' && (
+        <a
+          className={_cs(linkElementClassName, styles.link)}
+          href={to as string}
+          target="_blank"
+          rel="noopener noreferrer external"
+          {...otherProps}
+        >
+          {children}
+        </a>
+      )}
+
+      {variant === 'secondary' && (
+        <ButtonLikeLink
+          className={_cs(linkElementClassName, styles.buttonLikeLink)}
+          to={to}
+          external
+          icons={icons}
+        >
+          {children}
+        </ButtonLikeLink>
+      )}
+
+      {!specialLink && (
+        <InternalLink
+          className={_cs(linkElementClassName, styles.link)}
+          to={to}
+          {...otherProps}
+        >
+          {children}
+        </InternalLink>
+      )}
+
+      {(actions || icon) && (
+        <div
+          className={_cs(actionsContainerClassName, styles.actions)}
+        >
+          {actions}
+          {icon && icon}
+        </div>
+      )}
+    </div>
   );
 }
-
 export default Link;

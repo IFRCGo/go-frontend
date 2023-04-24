@@ -1,17 +1,11 @@
 import React from 'react';
-import Link from './components/Link';
+import Links from './examples/Links';
 import styles from './styles.module.scss';
 
 function GoUI() {
     return (
-        <div>
-            <Link
-                className={styles.url}
-                href={'www.gooogle.com'}
-                target="_blank"
-            >
-                More Info
-            </Link>
+        <div className={styles.linksContainer}>
+          <Links />
         </div>
     );
 }

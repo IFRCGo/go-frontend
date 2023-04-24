@@ -1,13 +1,57 @@
-@import '~styles/settings/variables';
+.link-container {
+  --color: var(--go-ui-color-black);
+  --decoration: none;
+  --background-color: none;
 
-.link {
-    text-decoration: underline;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  text-decoration: var(--decoration);
+  width: fit-content;
+  color: var(--color);
+  gap: var(--go-ui-spacing-xs);
+  background-color: var(--background-color);
+  cursor: pointer;
 
-    &.table {
-        font-weight: $base-font-medium;
-    }
+  &:hover {
+    --color: var(--go-ui-color-primary-red);
+    --decoration: underline;
+  }
+
+  .icons {
+    flex-shrink: 0;
+  }
+
+  .actions {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+  }
+
+  .link {
+    display: flex;
+    align-items: center;
+    flex-grow: 1;
+    text-transform: none;
+    text-decoration: none;
+    color: var(--color);
+    font-weight: var(--go-ui-font-weight-medium);
+  }
+
+  .button-like-link {
+    --color: var(--go-ui-color-primary-red);
+
     &:hover {
-        color: $primary-color;
-        opacity: 1;
+      --color: var(--go-ui-color-red-80);
     }
+  }
+
+  &.title {
+    text-transform: uppercase;
+    --color: var(--go-ui-color-primary-red);
+  }
+
+  &.text {
+    --decoration: underline;
+  }
 }
