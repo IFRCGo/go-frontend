@@ -22,7 +22,6 @@ import {
   positiveNumberCondition,
   requiredCondition,
   requiredStringCondition,
-  requiredListCondition,
 } from '#utils/form';
 import {
   statuses,

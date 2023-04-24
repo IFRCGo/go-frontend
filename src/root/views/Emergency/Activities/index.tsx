@@ -15,7 +15,7 @@ import Card from '#components/Card';
 import KeyFigure from '#components/KeyFigure';
 import ThreeWSankey from '#components/ThreeWSankey';
 import { useButtonFeatures } from '#components/Button';
-import { EmergencyProjectResponse } from '#types';
+import { EmergencyProjectResponse, District } from '#types';
 import {
   useRequest,
   ListResponse,
@@ -47,6 +47,17 @@ function Activities(props: Props) {
   } = props;
 
   const linkProps = useButtonFeatures({ variant: 'primary' });
+
+  const {
+    response: districtListResponse,
+  } = useRequest<ListResponse<District>>({
+    url: 'api/v2/district/',
+    query: {
+      country__in: eventCountryIdList,
+      limit: 300,
+    },
+  });
+  const districtList = districtListResponse?.results?.map(d => d.id).flat(1) ?? [];
 
   const [activePage, setActivePage] = React.useState(1);
   const {
@@ -80,6 +91,18 @@ function Activities(props: Props) {
     projectListResponse?.results,
     filteredProjectList,
   );
+
+  // If not having data in projectCountByDistrict, use full districtList of these countries:
+  const projectsCount = Object.keys(projectCountByDistrict).length ?
+    projectCountByDistrict :
+    districtList.reduce((acc, val) => {
+      const newAcc = {...acc};
+      if (!newAcc[val]) {
+        newAcc[val] = 0;
+      }
+      newAcc[val] += 1;
+      return newAcc;
+    }, {} as Record<number, number>);
 
   const columns = React.useMemo(
     () => getColumns(styles.actionColumn),
@@ -178,7 +201,7 @@ function Activities(props: Props) {
               onFilterChange={setFilteredProjectList}
             />
             <ActivityMap
-              projectCountByDistrict={projectCountByDistrict}
+              projectCountByDistrict={projectsCount}
               countryIdList={eventCountryIdList}
               sectorGroupedProjectList={sectorGroupedProjectList}
             />
