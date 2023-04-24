@@ -1,0 +1,16 @@
+.progress-wrapper {
+    display: flex;
+
+    .progress-bar-wrapper {
+        display: flex;
+        flex-grow: 1;
+        border-radius: var(--go-ui-border-radius-md);
+        gap: var(--go-ui-spacing-md);
+        background-color: var(--go-ui-color-gray-20);
+
+        .progress-bar {
+            transition: 200ms width ease-in-out;
+            border-radius: var(--go-ui-border-radius-md);
+        }
+    }
+}
