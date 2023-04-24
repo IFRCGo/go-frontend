@@ -16,7 +16,7 @@ interface Props {
   addSeparator?: boolean;
   fixedTo?: number;
   description?: string;
-  progressValue?: number;
+  progressBar?: boolean;
   progressTotalValue?: number;
 }
 function Card(props: Props) {
@@ -29,7 +29,8 @@ function Card(props: Props) {
     addSeparator,
     fixedTo,
     description,
-    progressValue,
+    progressBar,
+    title,
     progressTotalValue = 100,
   } = props;
   return (
@@ -45,18 +46,21 @@ function Card(props: Props) {
         addSeparator={addSeparator}
         fixedTo={fixedTo}
       />
-      {progressValue && (
+      {progressBar && (
         <ProgressBar
-          value={progressValue}
+          title={title}
+          value={value}
           totalValue={progressTotalValue}
         />
       )}
       <div className={styles.description}>
         {description}
       </div>
-      <div className={_cs(styles.content, contentClassName)}>
-        {children}
-      </div>
+      {children && (
+        <div className={_cs(styles.content, contentClassName)}>
+          {children}
+        </div>
+      )}
     </div>
   );
 }
