@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, LinkProps } from 'react-router-dom';
 
 import {
   useButtonFeatures,
@@ -7,7 +7,7 @@ import {
 } from '#components/Button';
 
 function ButtonLikeLink(props: ButtonFeatureProps<undefined> & {
-  to: string | React.ReactNode;
+  to: LinkProps['to'];
   external?: boolean;
 }) {
   const {
@@ -23,7 +23,7 @@ function ButtonLikeLink(props: ButtonFeatureProps<undefined> & {
       <a
         target="_blank"
         rel="noopener noreferrer"
-        href={to}
+        href={to as string}
         {...linkProps}
       />
     );
