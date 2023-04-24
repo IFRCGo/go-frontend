@@ -24,6 +24,8 @@
 
   .actions {
     flex-shrink: 0;
+    display: flex;
+    align-items: center;
   }
 
   .link {
@@ -34,6 +36,14 @@
     text-decoration: none;
     color: var(--color);
     font-weight: var(--go-ui-font-weight-medium);
+  }
+
+  .button-like-link {
+    --color: var(--go-ui-color-primary-red);
+
+    &:hover {
+      --color: var(--go-ui-color-red-80);
+    }
   }
 
   &.title {

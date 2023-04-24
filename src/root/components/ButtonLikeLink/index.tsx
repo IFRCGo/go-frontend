@@ -7,7 +7,7 @@ import {
 } from '#components/Button';
 
 function ButtonLikeLink(props: ButtonFeatureProps<undefined> & {
-  to: string;
+  to: string | React.ReactNode;
   external?: boolean;
 }) {
   const {

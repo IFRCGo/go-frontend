@@ -12,7 +12,7 @@ function Links() {
       />
       <div className={styles.linksContainer}>
         <Header
-          heading="REGULAR LINK"
+          heading="VIEW LINK"
           headingSize="small"
         />
         <Link
@@ -49,6 +49,19 @@ function Links() {
           variant="text"
         >
           Preparedness
+        </Link>
+      </div>
+      <div className={styles.linksContainer}>
+        <Header
+          heading="SECONDARY LINK"
+          headingSize="small"
+        />
+        <Link
+          to="www.gooogle.com"
+          target="_blank"
+          variant="secondary"
+        >
+          im@ifrc.org
         </Link>
       </div>
       <div className={styles.linksContainer}>
