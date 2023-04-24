@@ -2,6 +2,7 @@ import React from 'react';
 import {
   addSeparator as addCommaSeparator,
   formattedNormalize,
+  Lang,
   _cs,
 } from '@togglecorp/fujs';
 
@@ -33,7 +34,7 @@ const FormattedNumber = (props: Props) => {
       const {
         number,
         normalizeSuffix,
-      } = formattedNormalize(value, 'en');
+      } = formattedNormalize(value, 'en' as Lang);
 
       displayNumber = number;
       suffix = normalizeSuffix;
@@ -41,9 +42,11 @@ const FormattedNumber = (props: Props) => {
 
     if (addSeparator) {
       displayCommaNumber = addCommaSeparator(displayNumber);
-    } else if (fixedTo) {
+    }
+
+    if (fixedTo) {
       const shouldFix = ((displayNumber - Math.floor(displayNumber)) !== 0);
-      displayCommaNumber = Number.parseFloat(displayNumber).toFixed(shouldFix ? fixedTo : 0);
+      displayCommaNumber = Number.parseFloat(String(displayNumber)).toFixed(shouldFix ? fixedTo : 0);
     }
   }
 
