@@ -1,6 +1,8 @@
 .link-collection {
   display: flex;
   flex-direction: column;
+  padding: 2rem;
+  gap: 2rem;
 
   .links-container {
     display: flex;
