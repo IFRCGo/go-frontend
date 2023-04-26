@@ -1,0 +1,83 @@
+.button {
+    display: flex;
+    position: relative;
+    align-items: center;
+    padding: var(--go-ui-spacing-px) var(--go-ui-spacing-xl);
+    border-radius: var(--go-ui-spacing-md);
+    font-weight: var(--go-ui-font-weight-normal);
+    width: fit-content;
+    gap: var(--go-ui-spacing-sm);
+
+    .icons {
+        display: flex;
+        flex-shrink: 0;
+        align-items: center;
+        font-size: var(--go-ui-font-size-sm);
+    }
+
+    .actions {
+        display: flex;
+        flex-shrink: 0;
+        align-items: center;
+        font-size: var(--go-ui-font-size-lg);
+    }
+
+    .children {
+        display: flex;
+        flex-grow: 1;
+        align-items: center;
+    }
+
+    &.primary {
+        border: var(--go-ui-width-separator-thin) solid var(--go-ui-color-primary-red);
+        background-color: var(--go-ui-color-primary-red);
+        color: var(--go-ui-color-white);
+
+        &:hover {
+            background-color: var(--go-ui-color-red-hover);
+        }
+    }
+
+    &.secondary {
+        border: var(--go-ui-width-separator-thin) solid var(--go-ui-color-primary-red);
+        background-color: var(--go-ui-color-primary-white);
+        color: var(--go-ui-color-primary-red);
+
+        &:hover {
+            background-color: var(--go-ui-color-gray-20);
+        }
+    }
+
+    &.tertiary {
+        color: var(--go-ui-color-gray-90);
+        background-color: var(--go-ui-color-gray-30);
+        padding: var(--go-ui-spacing-px) var(--go-ui-spacing-xl);
+        border-radius: var(--go-ui-spacing-md);
+        font-weight: var(--go-ui-font-weight-normal);
+        font-size: var(--go-ui-font-size-sm);
+
+        &:hover {
+            background-color: var(--go-ui-color-gray-40);
+        }
+    }
+
+    &.action {
+        padding: 0;
+        font-size: var(--go-ui-font-size-lg);
+    }
+
+    &.transparent {
+        padding: 0;
+    }
+
+    &:not(.disabled) {
+        cursor: pointer;
+    }
+
+    &.disabled,
+    &:disabled {
+        opacity: var(--opacity-disabled-element);
+        filter: var(--saturation-disabled-element);
+        pointer-events: none;
+    }
+}

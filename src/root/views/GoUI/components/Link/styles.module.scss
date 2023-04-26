@@ -38,11 +38,14 @@
     font-weight: var(--go-ui-font-weight-medium);
   }
 
-  .button-like-link {
-    --color: var(--go-ui-color-primary-red);
+  .button-link {
+    background-color: var(--go-ui-color-primary-red);
+    align-items: center;
+    padding: var(--go-ui-spacing-px) var(--go-ui-spacing-lg);
+    border-radius: var(--go-ui-spacing-md);
 
     &:hover {
-      --color: var(--go-ui-color-red-80);
+      background-color: var(--go-ui-color-red-hover);
     }
   }
 

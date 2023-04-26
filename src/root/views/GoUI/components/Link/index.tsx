@@ -52,7 +52,7 @@ function Link(props: Props) {
 
   const icon = variantToIconMap[variant];
 
-  const specialLink = (variant === 'external') ||  (variant === 'secondary');
+  const specialLink = (variant === 'external') || (variant === 'secondary');
 
   return (
     <div className={_cs(className, styles.linkContainer, variantStyleMap[variant])}>
@@ -75,7 +75,7 @@ function Link(props: Props) {
 
       {variant === 'secondary' && (
         <ButtonLikeLink
-          className={_cs(linkElementClassName, styles.buttonLikeLink)}
+          className={_cs(styles.buttonLink, linkElementClassName)}
           to={to}
           external
           icons={icons}
