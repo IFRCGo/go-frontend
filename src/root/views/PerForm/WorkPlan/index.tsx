@@ -1,5 +1,5 @@
 import React from 'react';
-import { _cs } from '@togglecorp/fujs';
+import { randomString, _cs } from '@togglecorp/fujs';
 
 import Container from '#components/Container';
 import Table from '#components/Table';
@@ -16,23 +16,36 @@ import DateInput from '#components/DateInput';
 import TextInput from '#components/TextInput';
 import SelectInput from '#components/SelectInput';
 import Button from '#components/Button';
+import { IoAdd, IoTrash } from 'react-icons/io5';
+import { PartialForm } from '@togglecorp/toggle-form';
+import { PerOverviewFields } from '../common';
 
 interface Props {
   className?: string;
+  onRemove: (index: number) => void;
+  index: number;
 }
 
 function WorkPlan(props: Props) {
   const {
     className,
+    onRemove,
+    index,
   } = props;
 
   const { strings } = React.useContext(LanguageContext);
+
+  const handleAddCustomActivity = React.useCallback(() => {
+    const id = randomString();
+    const newCustomActivity : PartialForm<PerOverviewFields> = {
+      id,
+    };
+  }, []);
 
   return (
     <Container
       className={_cs(styles.strategicPrioritiesTable, className)}
       contentClassName={styles.content}
-      sub
     >
       <table>
         <thead>
@@ -115,14 +128,25 @@ function WorkPlan(props: Props) {
               >
               </SelectInput>
             </td>
+            <td>
+              <Button
+                className={styles.removeButton}
+                name="select"
+                onClick={onRemove}
+                variant="action"
+              >
+                <IoTrash />
+              </Button>
+            </td>
           </tr>
         </tbody>
         <Button
           name={undefined}
           variant="secondary"
-          onClick={undefined}
+          onClick={handleAddCustomActivity}
+          icons={<IoAdd />}
         >
-          + Add row
+           Add row
         </Button>
       </table>
     </Container>

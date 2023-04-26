@@ -1,35 +1,36 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import {
   EntriesAsList,
   getErrorObject,
   PartialForm,
   Error,
+  SetBaseValueArg,
 } from '@togglecorp/toggle-form';
 
 import { ListResponse, useRequest } from '#utils/restRequest';
 import LanguageContext from '#root/languageContext';
-import scrollToTop from '#utils/scrollToTop';
 import {
   BooleanValueOption,
   NumericValueOption,
-  StringValueOption,
 } from '#types';
 
 import Container from '#components/Container';
 import InputSection from '#components/InputSection';
 import SelectInput from '#components/SelectInput';
 import DateInput from '#components/DateInput';
-import PerFileInput from '#components/PERFileInput';
-import Button from '#components/Button';
 import TextInput from '#components/TextInput';
 import RadioInput from '#components/RadioInput';
 import {
   PerOverviewFields,
   booleanOptionKeySelector,
   optionLabelSelector,
+  TypeOfAssessment,
+  emptyNumericOptionList,
 } from '../common';
 
 import styles from './styles.module.scss';
+import FileInput from '#components/FileInput';
+import { compareString } from '#utils/utils';
 
 type Value = PartialForm<PerOverviewFields>;
 
@@ -39,40 +40,63 @@ interface Props {
   onValueChange?: (...entries: EntriesAsList<Value>) => void;
   nationalSocietyOptions: NumericValueOption[];
   yesNoOptions: BooleanValueOption[],
-  assessmentOptions: NumericValueOption[];
+  fetchingCountries?: boolean;
   setFileIdToUrlMap?: React.Dispatch<React.SetStateAction<Record<number, string>>>;
   fileIdToUrlMap: Record<number, string>;
+  onValueSet: (value: SetBaseValueArg<Value>) => void;
+  fetchingNationalSociety?: boolean;
 }
 
 function PerOverview(props: Props) {
   const {
     value,
     error: formError,
+    fetchingNationalSociety,
     onValueChange,
     nationalSocietyOptions,
     yesNoOptions,
-    assessmentOptions,
     fileIdToUrlMap,
+    onValueSet,
     setFileIdToUrlMap,
   } = props;
 
   const { strings } = React.useContext(LanguageContext);
 
   const {
-    pending: fetchingOverview,
-    response: overviewResponse,
-  } = useRequest<ListResponse<PerOverviewFields>>({
-    url: 'api/v2/new-per/',
+    pending: fetchingPerOptions,
+    response: assessmentResponse,
+  } = useRequest<ListResponse<TypeOfAssessment>>({
+    url: 'api/v2/per-assessmenttype/',
   });
+
+  const assessmentOptions = React.useMemo(() => (
+    assessmentResponse?.results?.map(d => ({
+      value: d.id,
+      label: d.name,
+    })).sort(compareString) ?? emptyNumericOptionList
+  ), [assessmentResponse]);
 
   const error = React.useMemo(
     () => getErrorObject(formError),
     [formError]
   );
 
-  const handleSubmitButtonClick = React.useCallback(() => {
-    scrollToTop();
-  }, []);
+  const handleNSChange = useCallback((ns) => {
+    onValueSet({
+      ...value,
+      national_society: ns,
+      country: ns,
+    });
+  }, [value, onValueSet]);
+
+  const handleImageChange = (event: any) => {
+    const file = event.target.files[0];
+    console.warn(file);
+    // setFile({
+    //   picturePreview: URL.createObjectURL(event.target.files[0]),
+    //   pictureAsFile: event.target.files[0]
+    // });
+  };
 
   return (
     <>
@@ -84,12 +108,12 @@ function PerOverview(props: Props) {
           title={strings.perFormNationalSociety}
         >
           <SelectInput
-            error={undefined}
-            name="national_society"
-            onChange={onValueChange}
+            error={error?.national_society}
+            name={"national_society" as const}
+            onChange={handleNSChange}
             options={nationalSocietyOptions}
-            pending={undefined}
-            value={undefined}
+            pending={fetchingNationalSociety}
+            value={value?.national_society}
           />
         </InputSection>
       </Container>
@@ -112,17 +136,19 @@ function PerOverview(props: Props) {
         <InputSection
           title={strings.perFormUploadADoc}
         >
-          <PerFileInput
-            accept=".pdf, .docx, .pptx"
+          <FileInput
+            type='file'
+            accept='.docx'
+            buttonVariant="secondary"
             error={error?.orientation_document}
             fileIdToUrlMap={fileIdToUrlMap}
             name="orientation_document"
-            onChange={onValueChange}
-            setFileIdToUrlMap={setFileIdToUrlMap}
+            onChange={handleImageChange}
+            // setFileIdToUrlMap={setFileIdToUrlMap}
             value={value?.orientation_document}
           >
             {strings.drefFormUploadSupportingDocumentButtonLabel}
-          </PerFileInput>
+          </FileInput>
         </InputSection>
       </Container>
       <Container
@@ -148,8 +174,8 @@ function PerOverview(props: Props) {
             name={"type_of_per_assessment" as const}
             options={assessmentOptions}
             onChange={onValueChange}
-            value={value?.type_of_assessment}
-            error={error?.type_of_assessment}
+            value={value?.type_of_per_assessment}
+            error={error?.type_of_per_assessment}
           />
         </InputSection>
         <InputSection
@@ -324,9 +350,9 @@ function PerOverview(props: Props) {
           <TextInput
             label="Email"
             name="partner_focal_point_email"
-            value={value?.partner_focal_point_name}
+            value={value?.partner_focal_point_email}
             onChange={onValueChange}
-            error={error?.partner_focal_point_name}
+            error={error?.partner_focal_point_email}
           />
           <TextInput
             label="Phone Number"
@@ -377,16 +403,6 @@ function PerOverview(props: Props) {
             error={error?.facilitator_contact}
           />
         </InputSection>
-        <div className={styles.actions}>
-          <Button
-            name={undefined}
-            variant="secondary"
-            onClick={undefined}
-            disabled={undefined}
-          >
-            {strings.PerOverviewSetUpPerProcess}
-          </Button>
-        </div>
       </Container>
     </>
   );

@@ -3976,4 +3976,5 @@ export default {
   perWorkPlanResponsible: 'Responsible',
   perWorkPlanSupportedBy: 'Supported by',
   perWorkPlanStatus: 'Status',
+  perSelectAndAddToWorkPlan: 'Select and add to Work-Plan',
 };

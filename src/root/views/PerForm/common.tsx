@@ -18,7 +18,7 @@ export interface TypeOfAssessment {
   name_ar: string | null;
 }
 
-export interface CountryDetails {
+export interface Country {
   iso: string;
   iso3: string;
   id: string;
@@ -40,6 +40,40 @@ export interface userDetails {
   last_name: string;
 }
 
+export interface Area {
+  id: string;
+  title: string;
+  title_en: string;
+  title_es: string;
+  title_fr: string;
+  title_ar: string | null;
+  area_num: number;
+}
+
+export interface Component {
+  area: Area;
+  title: string;
+  component: string;
+  component_letter: string | null;
+  description: string;
+  id: string;
+}
+export interface Answer {
+  id: string;
+  text: string;
+  text_en: string;
+  text_es: string | null;
+  text_fr: string | null;
+  text_ar: string | null;
+}
+export interface ComponentQuestion {
+  answer: Answer[];
+  component: Component;
+  description: string;
+  id: string;
+  question: string;
+}
+
 export type Option = NumericValueOption | BooleanValueOption | StringValueOption;
 
 export const emptyOptionList: Option[] = [];
@@ -55,14 +89,14 @@ export const optionLabelSelector = (o: Option) => o.label;
 
 export interface PerOverviewFields {
   id: string;
-  type_of_assessment_details: TypeOfAssessment[];
-  country_details: CountryDetails[];
+  type_of_assessment_details: TypeOfAssessment;
+  country_details: Country;
   userDetails: userDetails;
   workplan: string[];
   created_at: string;
   updated_at: string;
   date_of_orientation: string | null;
-  orientation_document: number | null;
+  orientation_document: File | File[] | null | undefined;
   assessment_number: number;
   branches_involved: string;
   date_of_assessment: string;
@@ -91,6 +125,12 @@ export interface PerOverviewFields {
   country: number;
   user: number;
   type_of_assessment: number;
+  national_society: number;
+  component: Component[];
+  question: string;
+  question_num: number;
+  answers: Answer[];
+  description: string | [];
 }
 
 export const perOverviewFields: (keyof PerOverviewFields)[] = [
@@ -131,4 +171,13 @@ export const perOverviewFields: (keyof PerOverviewFields)[] = [
   'country',
   'user',
   'type_of_assessment',
+  'national_society',
+];
+
+export const perAssessmentFields: (keyof PerOverviewFields)[] = [
+  'component',
+  'question',
+  'question_num',
+  'answers',
+  'id',
 ];

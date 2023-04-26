@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { ListResponse, useRequest } from '#utils/restRequest';
-import { Answer, Component } from './Assessment/CustomActivityInput';
 import LanguageContext from '#root/languageContext';
 
 import { compareString } from '#utils/utils';
@@ -12,8 +11,16 @@ import {
   StringKeyValuePair,
   NumericKeyValuePair,
 } from '#types';
-import { emptyNumericOptionList, emptyStringOptionList, PerOverviewFields } from './common';
-import { ObjectSchema, PartialForm } from '@togglecorp/toggle-form';
+import {
+  positiveNumberCondition,
+  positiveIntegerCondition,
+  requiredCondition,
+  emailCondition,
+  lessThanOrEqualToCondition,
+} from '#utils/form';
+
+import { emptyNumericOptionList, PerOverviewFields } from './common';
+import { ObjectSchema, PartialForm, defaultEmptyArrayType } from '@togglecorp/toggle-form';
 
 export type FormSchema = ObjectSchema<PartialForm<PerOverviewFields>>;
 export type FormSchemaFields = ReturnType<FormSchema['fields']>;
@@ -47,6 +54,37 @@ export const schema: FormSchema = {
     assessment_number: [],
     branches_involved: [],
     date_of_assessment: [],
+    method_asmt_used: [],
+    assess_preparedness_of_country: [],
+    assess_urban_aspect_of_country: [],
+    assess_climate_environment_of_country: [],
+    date_of_previous_assessment: [],
+    type_of_per_assessment: [],
+    date_of_mid_term_review: [],
+    date_of_next_asmt: [],
+    facilitator_name: [],
+    facilitator_email: [emailCondition],
+    facilitator_phone: [],
+    facilitator_contact: [],
+    is_epi: [],
+    is_finalized: [],
+    ns_focal_point_name: [],
+    ns_focal_point_email: [emailCondition],
+    ns_focal_point_phone: [],
+    other_consideration: [],
+    partner_focal_point_name: [],
+    partner_focal_point_email: [emailCondition],
+    partner_focal_point_phone: [],
+    partner_focal_point_organization: [],
+    country: [],
+    user: [],
+    type_of_assessment: [],
+    national_society: [requiredCondition],
+    component: [],
+    question: [],
+    question_num: [],
+    answers: [],
+    description: [],
   })
 };
 
@@ -54,32 +92,18 @@ function usePerFormOptions() {
   const { strings } = React.useContext(LanguageContext);
 
   const {
+    pending: fetchingPerOptions,
+    response: perOptions,
+  } = useRequest<PerOptions>({
+    url: 'api/v2/new-per/',
+  });
+
+  const {
     pending: fetchingCountries,
     response: countriesResponse,
   } = useRequest<ListResponse<Country>>({
     url: 'api/v2/country/',
   });
-
-  const {
-    pending: fetchingPerOptions,
-    response: perOptions,
-  } = useRequest<PerOptions>({
-    url: 'api/v2/per-assessmenttype/',
-  });
-
-  const [
-    assessmentOptions,
-  ] = React.useMemo(() => {
-    if (!perOptions) {
-      return [
-        emptyNumericOptionList,
-      ];
-    }
-
-    return [
-      // perOptions.type_of_per_assessment.map(transformKeyValueToLabelValue),
-    ];
-  }, [perOptions]);
 
   const [
     nationalSocietyOptions,
@@ -117,7 +141,6 @@ function usePerFormOptions() {
     nationalSocietyOptions,
     countryOptions,
     yesNoOptions,
-    assessmentOptions,
   };
 }
 

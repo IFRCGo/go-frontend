@@ -1,91 +1,69 @@
 import React from 'react';
-import { _cs } from '@togglecorp/fujs';
-import { EntriesAsList } from '@togglecorp/toggle-form';
+import { isNotDefined, _cs } from '@togglecorp/fujs';
+import { EntriesAsList, PartialForm } from '@togglecorp/toggle-form';
 
+import { ListResponse, useRequest } from '#utils/restRequest';
 import { BooleanValueOption } from '#types';
 import ExpandableContainer from '#components/ExpandableContainer';
 import Container from '#components/Container';
 import TextArea from '#components/TextArea';
 import SelectInput from '#components/SelectInput';
 
-import { AssessmentQuestion } from '#views/PerForm/usePerFormOptions';
+import RadioInput from '#components/RadioInput';
+import {
+  booleanOptionKeySelector,
+  optionLabelSelector,
+  Component,
+  ComponentQuestion,
+} from '../../common';
 
 import styles from './styles.module.scss';
-
-export interface Area {
-  id: string;
-  title: string;
-  title_en: string;
-  title_es: string;
-  title_fr: string;
-  title_ar: string | null;
-  area_num: number;
-}
-export interface Component {
-  area: Area[];
-  title: string;
-  component: string;
-  component_letter: string | null;
-  description: string;
-  id: string;
-}
-
-export interface Answer {
-  id: string;
-  text: string;
-  text_en: string;
-  text_es: string | null;
-  text_fr: string | null;
-  text_ar: string | null;
-}
 
 interface Props {
   yesNoOptions?: BooleanValueOption[];
   onValueChange?: (...entries: EntriesAsList<null>) => void;
-  id?: number;
-  data?: AssessmentQuestion;
+  id: string;
 }
 
-function CustomActivityInput(props: Props) {
+type Value = PartialForm<ComponentQuestion>;
 
+interface QuestionProps {
+  id: string;
+  yesNoOptions?: BooleanValueOption[];
+  onValueChange?: (...entries: EntriesAsList<Value>) => void;
+}
+
+function QuestionComponent(props: QuestionProps) {
   const {
+    id,
     yesNoOptions,
     onValueChange,
-    data,
   } = props;
+
+  const {
+    pending: fetchingComponents,
+    response: questionResponse,
+  } = useRequest<ListResponse<ComponentQuestion>>({
+    skip: isNotDefined(id),
+    url: `api/v2/per-formquestion/?component=${id}`,
+  });
 
   return (
     <>
-      <ExpandableContainer
-        className={_cs(styles.customActivity, styles.errored)}
-        componentRef={undefined}
-        heading={data?.component.title}
-        actionsContainerClassName={styles}
-        headingSize="small"
-        sub
-        actions={
-          <>
-            <SelectInput
-              className={styles.improvementSelect}
-              name="improvement"
-              onChange={() => { }}
-              value={""}
-            />
-          </>
-        }
-      >
+      {questionResponse?.results.map((qn) => (
         <Container
-          description="NS DRM strategy reflects the NS mandate, analysis of country context, trends, operational objectives, success indicators."
+          description={qn.question}
           className={styles.inputSection}
           contentClassName={styles.questionContent}
         >
+          <div className={styles.bullets} />
           <TextArea
             className={styles.noteSection}
             name="details"
             label="Notes"
-            placeholder='This is placeholder'
-            value={undefined}
-            onChange={undefined}
+            placeholder={undefined}
+            value={qn.description}
+            onChange={onValueChange}
             error={undefined}
             rows={2}
             disabled
@@ -93,6 +71,15 @@ function CustomActivityInput(props: Props) {
           <div
             className={styles.answers}
           >
+            <RadioInput
+              name={"text" as const}
+              options={yesNoOptions}
+              keySelector={booleanOptionKeySelector}
+              labelSelector={optionLabelSelector}
+              value={undefined}
+              onChange={undefined}
+              error={undefined}
+            />
             <label>
               <input
                 type="radio"
@@ -118,13 +105,55 @@ function CustomActivityInput(props: Props) {
               Not Revised
             </label>
           </div>
-          {/* <RadioInput
-            options={yesNoOptions}
-            value={undefined}
-            onChange={onValueChange}
-          /> */}
         </Container>
-      </ExpandableContainer>
+      ))}
+    </>
+  );
+}
+
+function CustomActivityInput(props: Props) {
+  const childrefRef = React.useRef(null);
+  const {
+    yesNoOptions,
+    onValueChange,
+    // data,
+    id,
+  } = props;
+
+  const {
+    pending: fetchingComponents,
+    response: componentResponse,
+  } = useRequest<ListResponse<Component>>({
+    skip: isNotDefined(id),
+    url: `api/v2/per-formcomponent/?area_id=${id}`,
+  });
+
+  return (
+    <>
+      {
+        componentResponse?.results.map((component) => (
+          <ExpandableContainer
+            className={_cs(styles.customActivity, styles.errored)}
+            componentRef={undefined}
+            heading={`Component: ${component.title}`}
+            // actionsContainerClassName={styles}
+            headingSize="small"
+            sub
+            actions={
+              <>
+                <SelectInput
+                  className={styles.improvementSelect}
+                  name="improvement"
+                  onChange={() => { }}
+                  value={""}
+                />
+              </>
+            }
+          >
+            <QuestionComponent id={component.id} />
+          </ExpandableContainer>
+        ))
+      }
     </>
   );
 }

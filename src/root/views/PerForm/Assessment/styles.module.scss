@@ -1,5 +1,16 @@
-.container-header {
-  .inner {
-    display: none;
+@import '~styles/settings/variables';
+
+.progress-bar {
+  display: flex;
+}
+
+.actions {
+  padding: $spacing*3 $spacing;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  >* {
+    margin: 0 $spacing*0.5;
   }
 }

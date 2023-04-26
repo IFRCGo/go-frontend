@@ -1,5 +1,5 @@
 import React from 'react';
-import { PartialForm, useForm } from '@togglecorp/toggle-form';
+import { getErrorObject, ObjectError, PartialForm, useForm, accumulateErrors } from '@togglecorp/toggle-form';
 import type { match as Match } from 'react-router-dom';
 import LanguageContext from '#root/languageContext';
 
@@ -19,11 +19,12 @@ import TabPanel from '#components/Tabs/TabPanel';
 import PerOverview from './PerOverview';
 import Assessment from './Assessment';
 import usePerFormOptions, { schema } from './usePerFormOptions';
-import { PerOverviewFields } from './common';
+import { perAssessmentFields, PerOverviewFields } from './common';
 import Prioritization from './Prioritization';
 import WorkPlan from './WorkPlan';
 
 import styles from './styles.module.scss';
+import { listToMap } from '@togglecorp/fujs';
 
 interface Props {
   className?: string;
@@ -33,6 +34,16 @@ interface Props {
 }
 
 type StepTypes = 'overview' | 'assessment' | 'prioritization' | 'workPlan';
+
+const stepTypesToFieldsMap: {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  [key in StepTypes]: (keyof PerOverviewFields)[];
+} = {
+  overview: perAssessmentFields,
+  assessment: perAssessmentFields,
+  prioritization: perAssessmentFields,
+  workPlan: perAssessmentFields,
+};
 
 function PerForm(props: Props) {
   const {
@@ -68,6 +79,7 @@ function PerForm(props: Props) {
   const { strings } = React.useContext(LanguageContext);
 
   const [currentStep, setCurrentStep] = React.useState<StepTypes>('overview');
+  const submitButtonLabel = currentStep === 'workPlan';
 
   const handlePerLoad = React.useCallback((response: PerOverviewFields) => {
   }, []);
@@ -158,6 +170,49 @@ function PerForm(props: Props) {
     }
   });
 
+  const validateCurrentTab = React.useCallback((exceptions: (keyof PerOverviewFields)[] = []) => {
+    const validationError = getErrorObject(accumulateErrors(value, schema, value, undefined));
+    const currentFields = stepTypesToFieldsMap[currentStep];
+    const exceptionsMap = listToMap(exceptions, d => d, d => true);
+
+    const currentTabErrors = listToMap(
+      currentFields.filter(field => (!exceptionsMap[field])),
+      field => field,
+    ) as ObjectError<PerOverviewFields>;
+
+    const newError: typeof error = {
+      ...currentTabErrors,
+    };
+
+    setError(newError);
+
+    const hasError = Object.keys(currentTabErrors).some(d => !!d);
+    return !hasError;
+  }, [value, currentStep, setError]);
+
+  const handleSubmitButtonClick = React.useCallback(() => {
+    scrollToTop();
+
+    const isCurrentTabValid = validateCurrentTab(['orientation_document']);
+    if (!isCurrentTabValid) {
+      return;
+    }
+
+    if (currentStep === 'overview') {
+    } else {
+      const nextStepMap: {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        [key in Exclude<StepTypes, 'workPlan'>]: Exclude<StepTypes, 'overview'>;
+      } = {
+        overview: 'assessment',
+        assessment: 'prioritization',
+        prioritization: 'workPlan',
+      };
+
+      handleTabChange(nextStepMap[currentStep]);
+    }
+  }, []);
+
   return (
     <Tabs
       disabled={undefined}
@@ -173,7 +228,7 @@ function PerForm(props: Props) {
               variant='secondary'
               name={undefined}
               onClick={undefined}
-              >
+            >
               Cancel
             </Button>
             <Button
@@ -231,12 +286,30 @@ function PerForm(props: Props) {
             fileIdToUrlMap={fileIdToUrlMap}
             setFileIdToUrlMap={setFileIdToUrlMap}
           />
+          <div className={styles.actions}>
+            <Button
+              name={undefined}
+              variant="secondary"
+              onClick={handleSubmitButtonClick}
+            >
+              {strings.PerOverviewSetUpPerProcess}
+            </Button>
+          </div>
         </TabPanel>
         <TabPanel name="assessment">
           <Assessment />
         </TabPanel>
         <TabPanel name="prioritization">
           <Prioritization />
+          <div className={styles.actions}>
+            <Button
+              name={undefined}
+              variant="secondary"
+              onClick={handleSubmitButtonClick}
+            >
+              {strings.perSelectAndAddToWorkPlan}
+            </Button>
+          </div>
         </TabPanel>
         <TabPanel name="workPlan">
           <WorkPlan />

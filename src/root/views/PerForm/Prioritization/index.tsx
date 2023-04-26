@@ -9,6 +9,7 @@ import SelectInput from '#components/SelectInput';
 import { _cs } from '@togglecorp/fujs';
 import Table from '#components/Table';
 import { createStringColumn } from '#components/Table/predefinedColumns';
+import TextInput from '#components/TextInput';
 
 interface Props {
   className?: string;
@@ -32,7 +33,6 @@ function Prioritization(props: Props) {
         className={_cs(styles.customActivity, styles.errored)}
         componentRef={undefined}
         heading="prioritization"
-        actionsContainerClassName={styles}
         headingSize="small"
         sub
         actions={
@@ -40,11 +40,12 @@ function Prioritization(props: Props) {
             <div>
               Needs Improvement
             </div>
-            <SelectInput
+            <TextInput
               className={styles.improvementSelect}
               name="improvement"
-              onChange={() => { }}
+              onChange={undefined}
               value={""}
+              placeholder="Enter"
             />
             <div>
               Show Benchmarks

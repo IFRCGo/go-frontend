@@ -1,6 +1,5 @@
 import React from 'react';
 import LanguageContext from '#root/languageContext';
-
 import styles from './styles.module.scss';
 import Tabs from '#components/Tabs';
 import TabList from '#components/Tabs/TabList';
@@ -10,13 +9,15 @@ import Container from '#components/Container';
 import scrollToTop from '#utils/scrollToTop';
 import CustomActivityInput from './CustomActivityInput';
 import { ListResponse, useRequest } from '#utils/restRequest';
-import { AssessmentQuestion } from '../common';
+import ProgressBar from '#components/ProgressBar';
+import ExpandableContainer from '#components/ExpandableContainer';
+import { _cs } from '@togglecorp/fujs';
+import Button from '#components/Button';
+import { Area, Component } from '../common';
 
 interface Props {
   className?: string;
 }
-
-type StepTypes = 'area1' | 'area2' | 'area3' | 'area4';
 
 function Assessment(props: Props) {
   const {
@@ -24,9 +25,10 @@ function Assessment(props: Props) {
   } = props;
 
   const { strings } = React.useContext(LanguageContext);
-  const [currentStep, setCurrentStep] = React.useState<StepTypes>('area1');
 
-  const handleTabChange = React.useCallback((newStep: StepTypes) => {
+  const [currentStep, setCurrentStep] = React.useState(1);
+
+  const handleTabChange = React.useCallback((newStep) => {
     scrollToTop();
     setCurrentStep(newStep);
   }, []);
@@ -34,70 +36,109 @@ function Assessment(props: Props) {
   const {
     pending: fetchingAssessmentOptions,
     response: assessmentResponse,
-  } = useRequest<ListResponse<AssessmentQuestion>>({
+  } = useRequest<ListResponse<Component>>({
     url: 'api/v2/per-formquestion/',
   });
 
+  const {
+    pending: fetchingAreas,
+    response: areaResponse,
+  } = useRequest<ListResponse<Area>>({
+    url: 'api/v2/per-formarea/',
+  });
+
   return (
-    <Tabs
-      disabled={undefined}
-      onChange={handleTabChange}
-      value={currentStep}
-      variant="primary"
-    >
-      <Container>
+    <Container>
+      <ExpandableContainer
+        className={_cs(styles.customActivity, styles.errored)}
+        componentRef={undefined}
+        // actionsContainerClassName={styles}
+        headingSize='small'
+        sub
+        actions='Show Summary'
+      >
+        <Container
+          className={styles.inputSection}
+        >
+          <div className={styles.progressBar}>
+            <ProgressBar
+              // className={styles.questionAnswered}
+              label='Answered'
+              value={20}
+            />
+            <h5>5 Yes;</h5>
+            <h5>4 NO</h5>
+            <ProgressBar
+              // className={styles.questionAnswered}
+              label='Answered'
+              value={20}
+            />
+          </div>
+        </Container>
+      </ExpandableContainer>
+      <Tabs
+        disabled={undefined}
+        onChange={handleTabChange}
+        value={currentStep}
+        variant='primary'
+      >
         <TabList className={styles.tabList}>
-          <Tab
-            name="area1"
-            step={1}
-            errored={undefined}
-          >
-            {strings.perFormArea1Tab}
-          </Tab>
-          <Tab
-            name="area2"
-            step={2}
-            errored={undefined}
-          >
-            {strings.perFormArea2Tab}
-          </Tab>
-          <Tab
-            name="area3"
-            step={3}
-            errored={undefined}
-          >
-            {strings.perFormArea2Tab}
-          </Tab>
-          <Tab
-            name="area4"
-            step={4}
-            errored={undefined}
-          >
-            {strings.perFormArea4Tab}
-          </Tab>
-          <Tab
-            name="area5"
-            step={4}
-            errored={undefined}
-          >
-            {strings.perFormArea5Tab}
-          </Tab>
+          {areaResponse?.results?.map((item) => (
+            <Tab
+              name={item.id}
+              step={item?.area_num}
+              errored={undefined}
+            >
+              Area {item?.area_num}: {item?.title}
+            </Tab>
+          ))}
         </TabList>
-        <TabPanel name="area1">
-          {
-            assessmentResponse?.results.map((item) => (
-              <CustomActivityInput
-                key={item.id}
-                data={item}
-                />
-            ))
-          }
-        </TabPanel>
-        <TabPanel name="area2">
-          <>world</>
-        </TabPanel>
-      </Container>
-    </Tabs>
+        {areaResponse?.results?.map((item) => (
+          <TabPanel
+            name={item.id}
+          >
+            <div className={styles.actions}>
+              <h3>
+                Area {item?.area_num}: {item?.title}
+              </h3>
+            </div>
+            <CustomActivityInput
+              id={item.id}
+            />
+          </TabPanel>
+        ))}
+        <div className={styles.actions}>
+          <Button
+            name={undefined}
+            variant="secondary"
+            onClick={undefined}
+            disabled={undefined}
+          >
+            Back
+          </Button>
+          <div className={styles.actions}>
+            <Button
+              name={undefined}
+              variant="secondary"
+              onClick={undefined}
+              disabled={undefined}
+            >
+              Next
+            </Button>
+            <div className={styles.actions}>
+              <Button
+                name={undefined}
+                variant="secondary"
+                onClick={undefined}
+                disabled={undefined}
+              >
+                Submit
+              </Button>
+            </div>
+          </div>
+        </div>
+      </Tabs>
+    </Container>
   );
 }
 
