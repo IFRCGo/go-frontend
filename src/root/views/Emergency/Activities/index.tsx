@@ -48,17 +48,6 @@ function Activities(props: Props) {
 
   const linkProps = useButtonFeatures({ variant: 'primary' });
 
-  const {
-    response: districtListResponse,
-  } = useRequest<ListResponse<District>>({
-    url: 'api/v2/district/',
-    query: {
-      country__in: eventCountryIdList,
-      limit: 300,
-    },
-  });
-  const districtList = districtListResponse?.results?.map(d => d.id).flat(1) ?? [];
-
   const [activePage, setActivePage] = React.useState(1);
   const {
     pending: projectListPending,
@@ -92,17 +81,32 @@ function Activities(props: Props) {
     filteredProjectList,
   );
 
-  // If not having data in projectCountByDistrict, use full districtList of these countries:
-  const projectsCount = Object.keys(projectCountByDistrict).length ?
-    projectCountByDistrict :
-    districtList.reduce((acc, val) => {
+  const {
+    response: districtListResponse,
+  } = useRequest<ListResponse<District>>({
+    url: 'api/v2/district/',
+    query: {
+      country__in: eventCountryIdList,
+      limit: 300,
+    },
+  });
+  const districtList = districtListResponse?.results?.map(d => d.id).flat(1) ?? [];
+  let countEmpties = 0;
+  if (projectListResponse?.count) {
+    for (const res of projectListResponse?.results){
+      if (res.districts?.length === 0) countEmpties += 1;
+    }
+  }
+
+  // Where no specified districts in projectCountByDistrict, add full districtList of these countries:
+  const projectsCount = districtList.reduce((acc, val) => {
       const newAcc = {...acc};
       if (!newAcc[val]) {
         newAcc[val] = 0;
       }
-      newAcc[val] += 1;
+      newAcc[val] += countEmpties;
       return newAcc;
-    }, {} as Record<number, number>);
+    }, projectCountByDistrict as Record<number, number>);
 
   const columns = React.useMemo(
     () => getColumns(styles.actionColumn),
