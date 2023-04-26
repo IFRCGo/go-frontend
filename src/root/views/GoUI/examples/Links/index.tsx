@@ -13,7 +13,7 @@ function Links() {
       <div className={styles.linksContainer}>
         <Header
           heading="VIEW LINK"
-          headingSize="small"
+          headingSize="ultraSmall"
         />
         <Link
           to={{
@@ -28,7 +28,7 @@ function Links() {
       <div className={styles.linksContainer}>
         <Header
           heading="TITLE LINK"
-          headingSize="small"
+          headingSize="ultraSmall"
         />
         <Link
           to="/deployments/overview"
@@ -41,7 +41,7 @@ function Links() {
       <div className={styles.linksContainer}>
         <Header
           heading="TEXT LINK"
-          headingSize="small"
+          headingSize="ultraSmall"
         />
         <Link
           to="/disaster-preparedness"
@@ -54,7 +54,7 @@ function Links() {
       <div className={styles.linksContainer}>
         <Header
           heading="SECONDARY LINK"
-          headingSize="small"
+          headingSize="ultraSmall"
         />
         <Link
           to="www.gooogle.com"
@@ -67,7 +67,7 @@ function Links() {
       <div className={styles.linksContainer}>
         <Header
           heading="EXTERNAL LINK"
-          headingSize="small"
+          headingSize="ultraSmall"
         />
         <Link
           to="www.gooogle.com"
