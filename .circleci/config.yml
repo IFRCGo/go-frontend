@@ -44,6 +44,7 @@ jobs:
       - run:
           name: Building site
           command: |
+            export NODE_OPTIONS="--max_old_space_size=4096"
             if [ "${CIRCLE_BRANCH}" == "${STAGING_BRANCH}" ]; then
               yarn build-staging
             elif [ "${CIRCLE_BRANCH}" == "${PRODUCTION_BRANCH}" ]; then
