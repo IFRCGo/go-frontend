@@ -1,0 +1,31 @@
+@import '~styles/settings/variables';
+
+.filter-output {
+  display: flex;
+  align-items: baseline;
+  gap: $spacing;
+
+  .label {
+    color: $light-base-color;
+    font-size: $font-size-sm;
+    font-weight: $base-font-light;
+  }
+
+  .selected-values {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $spacing*0.5;
+
+    .chip {
+      border: none;
+      background-color: $color-filter-tag;
+      color: $color-filter-tag-text;
+    }
+  }
+
+  .reduced-list-details {
+    display: flex;
+    gap: $spacing;
+    align-items: center;
+  }
+}

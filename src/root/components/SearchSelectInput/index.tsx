@@ -2,6 +2,7 @@ import React from 'react';
 import {
   isDefined,
   unique,
+  _cs,
 } from '@togglecorp/fujs';
 import AsyncSelect, { Props as SelectProps } from 'react-select/async';
 
@@ -152,7 +153,11 @@ function SearchSelectInput<N, V extends Key>(props: Props<N, V>) {
 
   return (
     <InputContainer
-      className={className}
+      className={_cs(
+        disabled && styles.disabled,
+        styles.selectInput,
+        className,
+      )}
       actions={actions}
       icons={icons}
       error={error}
@@ -173,6 +178,7 @@ function SearchSelectInput<N, V extends Key>(props: Props<N, V>) {
           isLoading={pending}
           noOptionsMessage={getSelectInputNoOptionsMessage as unknown as (obj: { inputValue: string }) => string}
           defaultOptions={defaultOptions}
+          unstyled
         />
       )}
     />

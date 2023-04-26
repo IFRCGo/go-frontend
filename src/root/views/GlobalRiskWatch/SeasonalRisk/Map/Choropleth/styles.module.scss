@@ -1,0 +1,48 @@
+@import '~styles/settings/variables';
+
+.tooltip {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing;
+  padding: $spacing-2 * 0.75;
+  border: $base-border-width * 0.5 solid $base-border-color--light;
+  box-shadow: $box-shadow-component;
+
+  .heading {
+    display: flex;
+    gap: 0 $spacing-2;
+    font-weight: $base-font-semi-bold;
+    font-size: $font-size-sm;
+    color: $primary-color;
+
+    .icon {
+      font-size: $font-size-lg;
+    }
+  }
+
+  .sub-content {
+
+    .hazard {
+
+      a {
+        font-size: $font-size-xxs;
+        font-weight: $base-font-semi-bold;
+        text-decoration: underline;
+      }
+      .hazard-status {
+        font-size: $font-size-xxs;
+      }
+    }
+
+    hr {
+      margin: $spacing*0.5 0;
+      border-bottom: $base-border-width solid $base-border-color--light;
+
+      &:last-child {
+        display: none;
+        margin: 0;
+      }
+    }
+  }
+}
+

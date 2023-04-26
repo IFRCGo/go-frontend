@@ -1,9 +1,11 @@
 import React from 'react';
+import { _cs } from '@togglecorp/fujs';
 
 import Heading, { Props as HeadingProps } from '#components/Heading';
 import Description from '#components/Description';
 
 import useBasicLayout from '#hooks/useBasicLayout';
+import styles from './styles.module.scss';
 
 export interface Props {
   className?: string;
@@ -66,7 +68,7 @@ function Header(props: Props) {
   return (
     <header
       ref={elementRef}
-      className={containerClassName}
+      className={_cs(styles.header, containerClassName)}
     >
       {content}
     </header>

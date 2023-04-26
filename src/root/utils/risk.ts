@@ -3,7 +3,7 @@ import {
   COLOR_WHITE,
   CIRCLE_RADIUS_SUPER_LARGE,
 } from '#utils/map';
-import {ImminentHazardTypes } from '#types';
+import { ImminentHazardTypes } from '#types';
 
 import earthquakeIcon from './risk-icons/earthquake.png';
 import cycloneIcon from './risk-icons/cyclone.png';
@@ -20,7 +20,7 @@ export const COLOR_EARTHQUAKE = '#b09db2';
 export const COLOR_STORM = '#97b8c2';
 export const COLOR_WILDFIRE = '#ff5014';
 
-export const hazardTypeToIconMap: {
+export const imminentHazardTypeToIconMap: {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   [key in ImminentHazardTypes]: string;
 } = {
@@ -43,7 +43,7 @@ export const hazardKeys: ImminentHazardTypes[] = [
   'WF',
 ];
 
-export const hazardKeyToColorMap: Record<ImminentHazardTypes, string> = {
+export const imminentHazardTypeToColorMap: Record<ImminentHazardTypes, string> = {
   EQ: COLOR_EARTHQUAKE,
   CY: COLOR_CYCLONE,
   TC: COLOR_CYCLONE,
@@ -72,7 +72,7 @@ export const pointCirclePaint: mapboxgl.CirclePaint = {
     [
       'match',
       ['get', 'hazardType'],
-      ...(hazardKeys.map(hk => [hk, `${hazardKeyToColorMap[hk]}`]).flat(1)),
+      ...(hazardKeys.map(hk => [hk, `${imminentHazardTypeToColorMap[hk]}`]).flat(1)),
       COLOR_WHITE,
     ],
   ],

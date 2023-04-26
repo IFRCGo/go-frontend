@@ -72,6 +72,7 @@ const OperationalUpdatePdfPreview = lazy(() => import('#views/DrefOpPdfPreview')
 const FinalReport = lazy(() => import('#views/FinalReportForm'));
 const FinalReportPdfPreview = lazy(() => import('#views/FinalReportPdfPreview'));
 const Search = lazy (() => import('#views/Search'));
+const GlobalRiskWatch = lazy(() => import('#views/GlobalRiskWatch'));
 
 function LoadingGlobal() {
   return (
@@ -303,6 +304,11 @@ function Multiplexer(props) {
                 exact
                 path='/search/'
                 render={(searchProps) => <Search key={searchProps.location.key} {...searchProps} />}
+              />
+              <Route
+                exact
+                path='/risk-watch/'
+                component={GlobalRiskWatch}
               />
 
               <Route component={FourHundredFour} />

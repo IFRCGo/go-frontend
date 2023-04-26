@@ -3,7 +3,7 @@
 .container {
   --overflow: unset;
   --inner-container-padding: 0 #{$spacing};
-  --inner-gap: #{$spacing*0.75};
+  --inner-gap: #{$spacing};
   --header-padding: 0 #{$spacing};
 
   overflow: var(--overflow);
