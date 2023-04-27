@@ -7,6 +7,7 @@ import {
   unique,
   mapToMap,
   isDefined,
+  randomString,
 } from '@togglecorp/fujs';
 
 import {
@@ -173,6 +174,7 @@ function SeasonalRisk(props: Props) {
                 hazard_type: riskData.hazard_type,
                 hazard_type_display: riskData.hazard_type_display,
                 value: getSumForSelectedMonths(riskData),
+                uuid: randomString(),
               })),
             (r) => r.hazard_type,
           );
