@@ -92,7 +92,6 @@ const footprintLayerOptions = {
   type: 'fill',
   paint: {
     'fill-color': alertLevelFillColorPaint,
-    // 'fill-opacity': 0.8,
   },
   filter: ['==', ['get', 'type'], 'MultiPolygon'],
 };

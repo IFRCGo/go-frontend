@@ -11,6 +11,13 @@ import { ADAMEvent, ADAMEventExposure } from '#types';
 
 import styles from './styles.module.scss';
 
+function RoundPopulation(population?: number) {
+  if(isNotDefined(population)) {
+    return null;
+  }
+  return Math.round(population);
+}
+
 function EstimatedOutput({
   value,
   attribute,
@@ -82,6 +89,7 @@ function PointDetails(props: PointDetailsProps) {
     }, []);
 
   const dashboardUrl = dashboard_url ?? url.map;
+  const populationImpact = RoundPopulation(population_impact) ?? RoundPopulation(population);
 
   return (
     <MapTooltipContent
@@ -186,7 +194,7 @@ function PointDetails(props: PointDetailsProps) {
         <>
           <EstimatedOutput
             attribute="People Exposed / Potentially Affected"
-            value={population_impact ?? population}
+            value={populationImpact}
           />
           <hr />
         </>
@@ -252,7 +260,7 @@ function PointDetails(props: PointDetailsProps) {
           isDefined (hazardDetails.population_exposure['exposure_60km/h']) &&
           <TextOutput
             label="Exposure (60km/h)"
-            value={hazardDetails.population_exposure['exposure_60km/h']}
+            value={RoundPopulation(hazardDetails.population_exposure['exposure_60km/h'])}
             valueType="number"
           />
         }
@@ -260,7 +268,7 @@ function PointDetails(props: PointDetailsProps) {
           isDefined(hazardDetails.population_exposure['exposure_90km/h']) &&
           <TextOutput
             label="Exposure (90km/h)"
-            value={hazardDetails.population_exposure['exposure_90km/h']}
+            value={RoundPopulation(hazardDetails.population_exposure['exposure_90km/h'])}
             valueType="number"
           />
         }
@@ -268,7 +276,7 @@ function PointDetails(props: PointDetailsProps) {
           isDefined(hazardDetails.population_exposure['exposure_120km/h']) &&
           <TextOutput
             label="Exposure (120km/h)"
-            value={hazardDetails.population_exposure['exposure_120km/h']}
+            value={RoundPopulation(hazardDetails.population_exposure['exposure_120km/h'])}
             valueType="number"
           />
         }
