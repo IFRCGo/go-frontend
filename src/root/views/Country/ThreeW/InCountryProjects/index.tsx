@@ -129,6 +129,14 @@ function InCountryProjects(props: Props) {
   }, [projectsUpdatedOn, reTriggerProjectListRequest]);
 
   const [projectIdToEdit, setProjectIdToEdit] = React.useState<number | undefined>();
+
+  if (projectListResponse?.count) {
+    for (const res of projectListResponse?.results){
+      // If no data in project_districts, put full districtList there to cover the country:
+      if (res.project_districts?.length === 0) {res.project_districts_detail = districtList;}
+    }
+  }
+
   const projectList = projectListResponse?.results ?? emptyProjectList;
   const filteredProjectList = filterProjects(projectList, filters);
 
