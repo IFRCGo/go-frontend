@@ -1,8 +1,13 @@
 import React from 'react';
 import {
     IoChevronForward,
-    IoAirplaneOutline,
-    IoDownload,
+    IoArrowDownOutline,
+    IoChevronBack,
+    IoLockClosed,
+    IoCaretBackSharp,
+    IoCheckmarkSharp,
+    IoClose,
+    IoArrowUp,
 } from 'react-icons/io5';
 import Header from '#components/Header';
 import Button from '#views/GoUI/components/Button';
@@ -31,7 +36,7 @@ function Buttons() {
                     name="primary-button"
                     type="button"
                     variant="primary"
-                    icons={<IoAirplaneOutline />}
+                    actions={<IoChevronForward />}
                 >
                     Countries on ifrc-go
                 </Button>
@@ -52,7 +57,7 @@ function Buttons() {
                     name="secondary-button"
                     type="button"
                     variant="secondary"
-                    icons={<IoChevronForward />}
+                    actions={<IoChevronForward />}
                 >
                     Secondary
                 </Button>
@@ -63,19 +68,33 @@ function Buttons() {
                     headingSize="ultraSmall"
                 />
                 <Button
-                    name="primary-button"
+                    name="tertiary-button"
                     type="button"
                     variant="tertiary"
                 >
                     Tertiary
                 </Button>
                 <Button
-                    name="primary-button"
+                    name="tertiary-button"
                     type="button"
                     variant="tertiary"
-                    icons={<IoChevronForward />}
+                    actions={<IoChevronForward />}
                 >
                     Tertiary
+                </Button>
+            </div>
+            <div className={styles.buttonsContainer}>
+                <Header
+                    heading="Tertiary Icon Button"
+                    headingSize="ultraSmall"
+                />
+                <Button
+                    name="tertiary-icon-button"
+                    type="button"
+                    variant="navigationPrimary"
+                    icons={<IoChevronBack />}
+                >
+                    Expand
                 </Button>
             </div>
             <div className={styles.buttonsContainer}>
@@ -87,9 +106,62 @@ function Buttons() {
                     name="primary-button"
                     type="button"
                     variant="download"
-                    icons={<IoDownload />}
+                    icons={<IoArrowDownOutline />}
                 >
                     EAP - Complete Download
+                </Button>
+            </div>
+            <div className={styles.buttonsContainer}>
+                <Header
+                    heading="Navigation primary"
+                    headingSize="ultraSmall"
+                />
+                <Button
+                    name="navigation-secondary"
+                    type="button"
+                    variant="navigationSecondary"
+                    icons={<IoCaretBackSharp />}
+                >
+                    All Countries
+                </Button>
+            </div>
+            <div className={styles.buttonsContainer}>
+                <Header
+                    heading="Tertiary Icon Button"
+                    headingSize="ultraSmall"
+                />
+                <Button
+                    name="dialog-confirm-button"
+                    type="button"
+                    variant="dialogConfirmOk"
+                    icons={<IoCheckmarkSharp />}
+                />
+                <Button
+                    name="dialog-confirm-button"
+                    type="button"
+                    variant="dialogConfirmCancel"
+                    icons={<IoClose />}
+                />
+                <Button
+                    name="navigate-top"
+                    type="button"
+                    variant="navigateTop"
+                    icons={<IoArrowUp />}
+                />
+            </div>
+            <div className={styles.buttonsContainer}>
+                <Header
+                    heading="Button with description"
+                    headingSize="ultraSmall"
+                />
+                <Button
+                    name="primary-button"
+                    type="button"
+                    variant="buttonWithDescription"
+                    actions={<IoLockClosed />}
+                    buttonWithDescription="If you are an IFRC member, please login to see more details"
+                >
+                    login to see more
                 </Button>
             </div>
         </div >

@@ -24,7 +24,7 @@ const variantStyleMap: Record<LinkVariant, string | undefined> = {
   title: styles.title,
   text: styles.text,
   external: undefined,
-  secondary: undefined,
+  secondary: styles.buttonLink,
 };
 
 export interface Props extends RouterLinkProps {
@@ -75,7 +75,7 @@ function Link(props: Props) {
 
       {variant === 'secondary' && (
         <ButtonLikeLink
-          className={_cs(styles.buttonLink, linkElementClassName)}
+          className={_cs(linkElementClassName, styles.buttonLink)}
           to={to}
           external
           icons={icons}
