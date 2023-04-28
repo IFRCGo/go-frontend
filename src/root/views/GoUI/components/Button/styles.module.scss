@@ -2,9 +2,10 @@
     display: flex;
     position: relative;
     align-items: center;
-    padding: var(--go-ui-spacing-px) var(--go-ui-spacing-xl);
+    padding: calc(var(--go-ui-spacing-xxs)/6) var(--go-ui-spacing-2xl);
     border-radius: var(--go-ui-spacing-md);
     font-weight: var(--go-ui-font-weight-normal);
+    font-size: var(--go-ui-font-size-xs);
     width: fit-content;
     gap: var(--go-ui-spacing-sm);
 
@@ -12,14 +13,21 @@
         display: flex;
         flex-shrink: 0;
         align-items: center;
-        font-size: var(--go-ui-font-size-sm);
+        font-size: var(--go-ui-font-size-xs);
+    }
+
+    .navigate-top-icon {
+        display: flex;
+        flex-shrink: 0;
+        align-items: center;
+        font-size: var(--go-ui-font-size-lg);
     }
 
     .actions {
         display: flex;
         flex-shrink: 0;
         align-items: center;
-        font-size: var(--go-ui-font-size-lg);
+        font-size: var(--go-ui-font-size-xs);
     }
 
     .children {
@@ -51,13 +59,89 @@
     &.tertiary {
         color: var(--go-ui-color-gray-90);
         background-color: var(--go-ui-color-gray-30);
-        padding: var(--go-ui-spacing-px) var(--go-ui-spacing-xl);
         border-radius: var(--go-ui-spacing-md);
         font-weight: var(--go-ui-font-weight-normal);
-        font-size: var(--go-ui-font-size-sm);
 
         &:hover {
             background-color: var(--go-ui-color-gray-40);
+        }
+    }
+
+    &.navigation-primary {
+        color: var(--go-ui-color-gray-90);
+        border-radius: var(--go-ui-spacing-md);
+        font-weight: var(--go-ui-font-weight-normal);
+        transition: transform 250ms linear;
+
+        &:hover {
+            transform: translateY(-2px);
+            color: var(--go-ui-color-primary-red);
+        }
+    }
+
+    &.navigation-secondary {
+        background-color: var(--go-ui-color-primary-white);
+        color: var(--go-ui-color-primary-red);
+        border: 2px solid var(--go-ui-color-gray-20);
+        border-radius: var(--go-ui-spacing-xs);
+        padding: var(--go-ui-spacing-xs) var(--go-ui-spacing-3xl);
+        font-weight: var(--go-ui-font-weight-normal);
+        font-size: var(--go-ui-font-size-xs);
+
+        &:hover {
+            background-color: var(--go-ui-color-gray-10);
+        }
+    }
+
+    &.dialog-confirm-ok {
+        background-color: var(--go-ui-color-primary-white);
+        color: var(--go-ui-color-green);
+        padding: var(--go-ui-spacing-xxs);
+        border: 2px solid var(--go-ui-color-green);
+        border-radius: 100%;
+        font-size: var(--go-ui-font-size-xs);
+
+        &:hover {
+            background-color: var(--go-ui-color-gray-20);
+        }
+    }
+
+    &.dialog-confirm-cancel {
+        background-color: var(--go-ui-color-primary-white);
+        color: var(--go-ui-color-primary-red);
+        padding: var(--go-ui-spacing-xxs);
+        border: 2px solid var(--go-ui-color-primary-red);
+        border-radius: 100%;
+        font-size: var(--go-ui-font-size-xs);
+
+        &:hover {
+            background-color: var(--go-ui-color-gray-20);
+        }
+    }
+
+    &.navigate-top {
+        background-color: var(--go-ui-color-primary-red);
+        color: var(--go-ui-color-primary-white);
+        padding: var(--go-ui-spacing-lg) var(--go-ui-spacing-xs);
+        border: 2px solid var(--go-ui-color-primary-red);
+        font-size: var(--go-ui-font-size-xl) !important;
+        transition: transform 300ms linear;
+
+        &:hover {
+            background-color: var(--go-ui-color-red-hover);
+            transform: translateY(-3px);
+        }
+    }
+
+    &.button-with-description {
+        border: var(--go-ui-width-separator-thin) solid var(--go-ui-color-primary-red);
+        background-color: var(--go-ui-color-primary-red);
+        color: var(--go-ui-color-white);
+        font-weight: var(--go-ui-font-weight-normal);
+        font-size: var(--go-ui-font-size-xs);
+
+        &:hover {
+            background-color: var(--go-ui-color-red-hover);
         }
     }
 
@@ -80,4 +164,15 @@
         filter: var(--saturation-disabled-element);
         pointer-events: none;
     }
+}
+
+.button-description-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    align-items: center;
+    font-size: var(--go-ui-font-size-xs);
+    gap: var(--go-ui-spacing-xs);
+    font-weight: var(--go-ui-font-weight-normal);
+    color: var(--go-ui-color-gray-light);
 }
