@@ -14,6 +14,7 @@ import {
   emailCondition,
   lessThanOrEqualToCondition,
   defaultUndefinedType,
+  defaultEmptyArrayType,
 } from '@togglecorp/toggle-form';
 
 import {
@@ -239,7 +240,7 @@ export const schema: FormSchema = {
       event: [requiredCondition],
       activity_lead: [requiredCondition],
       country: [requiredCondition],
-      districts: [],
+      districts: [defaultEmptyArrayType],
       start_date: [requiredCondition],
       end_date: [(endDateValue) => {
         const start = value?.start_date;
