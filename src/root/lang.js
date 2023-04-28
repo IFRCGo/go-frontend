@@ -3930,7 +3930,7 @@ export default {
   perFormTabAssessmentLabel: '2. Assessment',
   perFormTabPrioritizationLabel: '3. Prioritization',
   perFormTabWorkPlanLabel: '4. Work-Plan',
-
+  perFormSetUpPerProcess: 'Set up Per Process',
   //PER Overview
   perFormNationalSociety: 'National Society*',
   perFormOrientation: 'Orientation',
@@ -3967,6 +3967,8 @@ export default {
   perFormArea4Tab: 'Area 4: Coordination',
   perFormArea5Tab: 'Area 5: Operations Support',
   PerOverviewSetUpPerProcess: 'Set up PER Process',
+  perFormSaveRequestSuccessMessage: 'PER Process created/updated successfully',
+  perFormSaveRequestFailureMessage: 'Failed to create/update PER Process',
 
   //Per WorkPlan
   perWorkPlanComponents: 'Components',

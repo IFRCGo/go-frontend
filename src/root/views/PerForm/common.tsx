@@ -106,7 +106,7 @@ export interface PerOverviewFields {
   assess_urban_aspect_of_country: boolean;
   assess_climate_environment_of_country: boolean;
   date_of_previous_assessment: string;
-  type_of_per_assessment: string;
+  type_of_per_assessment: number;
   date_of_mid_term_review: string;
   date_of_next_asmt: string;
   facilitator_name: string;

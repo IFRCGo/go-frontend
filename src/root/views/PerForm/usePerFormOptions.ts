@@ -53,7 +53,7 @@ export const schema: FormSchema = {
     orientation_document: [],
     assessment_number: [],
     branches_involved: [],
-    date_of_assessment: [],
+    date_of_assessment: [requiredCondition],
     method_asmt_used: [],
     assess_preparedness_of_country: [],
     assess_urban_aspect_of_country: [],

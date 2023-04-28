@@ -10,6 +10,9 @@ import {
 
 import { ListResponse, useLazyRequest, useRequest } from '#utils/restRequest';
 import LanguageContext from '#root/languageContext';
+import { compareString } from '#utils/utils';
+import useAlertContext from '#hooks/useAlert';
+import { schema } from '../usePerFormOptions';
 import {
   BooleanValueOption,
   NumericValueOption,
@@ -21,6 +24,8 @@ import SelectInput from '#components/SelectInput';
 import DateInput from '#components/DateInput';
 import TextInput from '#components/TextInput';
 import RadioInput from '#components/RadioInput';
+import Button from '#components/Button';
+import NumberInput from '#components/NumberInput';
 import {
   PerOverviewFields,
   booleanOptionKeySelector,
@@ -30,12 +35,6 @@ import {
 } from '../common';
 
 import styles from './styles.module.scss';
-import { compareString } from '#utils/utils';
-import Button from '#components/Button';
-import type { match as Match } from 'react-router-dom';
-import { schema } from '../usePerFormOptions';
-import useAlertContext from '#hooks/useAlert';
-import NumberInput from '#components/NumberInput';
 
 type Value = PartialForm<PerOverviewFields>;
 
@@ -49,12 +48,8 @@ interface Props {
   countryOptions: NumericValueOption[];
   yesNoOptions: BooleanValueOption[],
   fetchingCountries?: boolean;
-  setFileIdToUrlMap?: React.Dispatch<React.SetStateAction<Record<number, string>>>;
-  fileIdToUrlMap: Record<number, string>;
   onValueSet: (value: SetBaseValueArg<Value>) => void;
   fetchingNationalSociety?: boolean;
-  match: Match<{ perId?: string }>;
-  history: History;
   perId?: string;
 }
 
@@ -66,12 +61,8 @@ function PerOverview(props: Props) {
     onValueChange,
     nationalSocietyOptions,
     yesNoOptions,
-    fileIdToUrlMap,
     onValueSet,
-    setFileIdToUrlMap,
-    history,
     countryOptions,
-    match,
     perId
   } = props;
 
@@ -81,9 +72,6 @@ function PerOverview(props: Props) {
 
   const {
     setFieldValue,
-    validate,
-    setError,
-    setValue,
   } = useForm(schema, { value: {} as PartialForm<PerOverviewFields> });
 
   const [currentStep, setCurrentStep] = React.useState<StepTypes>('overview');
@@ -125,7 +113,7 @@ function PerOverview(props: Props) {
     body: ctx => ctx,
     onSuccess: (response) => {
       alert.show(
-        strings.drefFormSaveRequestSuccessMessage,
+        strings.perFormSaveRequestSuccessMessage,
         { variant: 'success' },
       );
 
@@ -154,7 +142,7 @@ function PerOverview(props: Props) {
 
       alert.show(
         <p>
-          {strings.drefFormSaveRequestFailureMessage}
+          {strings.perFormSaveRequestFailureMessage}
           &nbsp;
           <strong>
             {messageForNotification}
@@ -230,6 +218,9 @@ function PerOverview(props: Props) {
         className={styles.sharing}
         visibleOverflow
       >
+        <div className={styles.perFormTitle}>
+          {strings.perFormSetUpPerProcess}
+        </div>
         <InputSection
           title={strings.perFormNationalSociety}
         >
@@ -263,6 +254,7 @@ function PerOverview(props: Props) {
           title={strings.perFormUploadADoc}
         >
           <input
+            className={styles.fileInput}
             name="orientation_document"
             accept='.docx, pdf'
             type="file"
@@ -304,11 +296,11 @@ function PerOverview(props: Props) {
           title={strings.perFormTypeOfAssessment}
         >
           <SelectInput
-            name={"type_of_per_assessment" as const}
+            name={"type_of_assessment" as const}
             options={assessmentOptions}
             onChange={onValueChange}
-            value={value?.type_of_per_assessment}
-            error={error?.type_of_per_assessment}
+            value={value?.type_of_assessment}
+            error={error?.type_of_assessment}
           />
         </InputSection>
         <InputSection
@@ -403,10 +395,11 @@ function PerOverview(props: Props) {
         <InputSection
           title={strings.perFormTypeOfPreviousPerAssessment}
         >
-          <TextInput
-            name="type_of_per_assessment"
-            value={value?.type_of_per_assessment}
+          <SelectInput
+            name={"type_of_per_assessment" as const}
+            options={assessmentOptions}
             onChange={onValueChange}
+            value={value?.type_of_per_assessment}
             error={error?.type_of_per_assessment}
           />
         </InputSection>
