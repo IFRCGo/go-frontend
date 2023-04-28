@@ -66,6 +66,7 @@ export interface Answer {
   text_fr: string | null;
   text_ar: string | null;
 }
+
 export interface ComponentQuestion {
   answer: Answer[];
   component: Component;
@@ -95,19 +96,19 @@ export interface PerOverviewFields {
   workplan: string[];
   created_at: string;
   updated_at: string;
-  date_of_orientation: string | null;
-  orientation_document: File | File[] | null | undefined;
+  date_of_orientation: string;
+  orientation_document: string;
   assessment_number: number;
   branches_involved: string;
   date_of_assessment: string;
   method_asmt_used: string;
-  assess_preparedness_of_country: string | null;
-  assess_urban_aspect_of_country: boolean | null;
-  assess_climate_environment_of_country: boolean | null;
-  date_of_previous_assessment: string | null;
-  type_of_per_assessment: string | null;
-  date_of_mid_term_review: string | null;
-  date_of_next_asmt: string | null;
+  assess_preparedness_of_country: string;
+  assess_urban_aspect_of_country: boolean;
+  assess_climate_environment_of_country: boolean;
+  date_of_previous_assessment: string;
+  type_of_per_assessment: string;
+  date_of_mid_term_review: string;
+  date_of_next_asmt: string;
   facilitator_name: string;
   facilitator_email: string;
   facilitator_phone: string;
@@ -117,8 +118,8 @@ export interface PerOverviewFields {
   ns_focal_point_name: string;
   ns_focal_point_email: string;
   ns_focal_point_phone: string;
-  other_consideration: string | null;
-  partner_focal_point_name: string | null;
+  other_consideration: string;
+  partner_focal_point_name: string;
   partner_focal_point_email: string;
   partner_focal_point_phone: string;
   partner_focal_point_organization: string;
@@ -130,7 +131,7 @@ export interface PerOverviewFields {
   question: string;
   question_num: number;
   answers: Answer[];
-  description: string | [];
+  description: string;
 }
 
 export const perOverviewFields: (keyof PerOverviewFields)[] = [

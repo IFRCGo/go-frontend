@@ -15,9 +15,12 @@ import {
   optionLabelSelector,
   Component,
   ComponentQuestion,
+  PerOverviewFields,
 } from '../../common';
 
 import styles from './styles.module.scss';
+
+// type Value = PartialForm<PerOverviewFields>;
 
 interface Props {
   yesNoOptions?: BooleanValueOption[];
@@ -29,6 +32,7 @@ type Value = PartialForm<ComponentQuestion>;
 
 interface QuestionProps {
   id: string;
+  value?: Value;
   yesNoOptions?: BooleanValueOption[];
   onValueChange?: (...entries: EntriesAsList<Value>) => void;
 }
@@ -36,8 +40,9 @@ interface QuestionProps {
 function QuestionComponent(props: QuestionProps) {
   const {
     id,
-    yesNoOptions,
+    value,
     onValueChange,
+    yesNoOptions,
   } = props;
 
   const {
@@ -51,61 +56,64 @@ function QuestionComponent(props: QuestionProps) {
   return (
     <>
       {questionResponse?.results.map((qn) => (
-        <Container
-          description={qn.question}
-          className={styles.inputSection}
-          contentClassName={styles.questionContent}
-        >
-          <div className={styles.bullets} />
-          <TextArea
-            className={styles.noteSection}
-            name="details"
-            label="Notes"
-            placeholder={undefined}
-            value={qn.description}
-            onChange={onValueChange}
-            error={undefined}
-            rows={2}
-            disabled
-          />
-          <div
-            className={styles.answers}
-          >
-            <RadioInput
-              name={"text" as const}
-              options={yesNoOptions}
-              keySelector={booleanOptionKeySelector}
-              labelSelector={optionLabelSelector}
-              value={undefined}
-              onChange={undefined}
-              error={undefined}
-            />
-            <label>
-              <input
-                type="radio"
-                name="yes-no-na"
-                value="no"
+        <>
+          <div className={styles.dot} />
+          <div className={styles.dotConnector}>
+            <Container
+              description={qn.question}
+              className={styles.inputSection}
+              contentClassName={styles.questionContent}
+            >
+              <TextArea
+                className={styles.noteSection}
+                name="details"
+                label="Notes"
+                placeholder={undefined}
+                value={value?.description}
+                onChange={onValueChange}
+                error={undefined}
+                rows={2}
               />
-              Yes
-            </label>
-            <label>
-              <input
-                type="radio"
-                name="yes-no-na"
-                value="no"
-              />
-              No
-            </label>
-            <label>
-              <input
-                type="radio"
-                name="yes-no-na"
-                value="no"
-              />
-              Not Revised
-            </label>
+              <div
+                className={styles.answers}
+              >
+                <RadioInput
+                  name={"text" as const}
+                  options={yesNoOptions}
+                  keySelector={booleanOptionKeySelector}
+                  labelSelector={optionLabelSelector}
+                  value={undefined}
+                  onChange={onValueChange}
+                  error={undefined}
+                />
+                {/* <label>
+                  <input
+                    type="radio"
+                    name="yes-no-na"
+                    value="no"
+                  />
+                  Yes
+                </label>
+                <label>
+                  <input
+                    type="radio"
+                    name="yes-no-na"
+                    value="no"
+                  />
+                  No
+                </label>
+                <label>
+                  <input
+                    type="radio"
+                    name="yes-no-na"
+                    value="no"
+                  />
+                  Not Revised
+                </label> */}
+              </div>
+            </Container>
           </div>
-        </Container>
+        </>
       ))}
     </>
   );
@@ -139,18 +147,19 @@ function CustomActivityInput(props: Props) {
             // actionsContainerClassName={styles}
             headingSize="small"
             sub
-            actions={
-              <>
-                <SelectInput
-                  className={styles.improvementSelect}
-                  name="improvement"
-                  onChange={() => { }}
-                  value={""}
-                />
-              </>
-            }
+            // actions={
+            //   <>
+            //     <SelectInput
+            //       className={styles.improvementSelect}
+            //       name="improvement"
+            //       onChange={() => { }}
+            //       value={""}
+            //     />
+            //   </>
+            // }
           >
             <QuestionComponent id={component.id} />
+            <div className={styles.dot} />
           </ExpandableContainer>
         ))
       }

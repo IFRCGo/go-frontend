@@ -1,13 +1,14 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import {
   EntriesAsList,
   getErrorObject,
   PartialForm,
   Error,
   SetBaseValueArg,
+  useForm,
 } from '@togglecorp/toggle-form';
 
-import { ListResponse, useRequest } from '#utils/restRequest';
+import { ListResponse, useLazyRequest, useRequest } from '#utils/restRequest';
 import LanguageContext from '#root/languageContext';
 import {
   BooleanValueOption,
@@ -29,22 +30,32 @@ import {
 } from '../common';
 
 import styles from './styles.module.scss';
-import FileInput from '#components/FileInput';
 import { compareString } from '#utils/utils';
+import Button from '#components/Button';
+import type { match as Match } from 'react-router-dom';
+import { schema } from '../usePerFormOptions';
+import useAlertContext from '#hooks/useAlert';
+import NumberInput from '#components/NumberInput';
 
 type Value = PartialForm<PerOverviewFields>;
 
+type StepTypes = 'overview' | 'assessment';
+
 interface Props {
-  value?: Value;
-  error?: Error<Value> | undefined;
-  onValueChange?: (...entries: EntriesAsList<Value>) => void;
+  value: Value;
+  error: Error<Value> | undefined;
+  onValueChange: (...entries: EntriesAsList<Value>) => void;
   nationalSocietyOptions: NumericValueOption[];
+  countryOptions: NumericValueOption[];
   yesNoOptions: BooleanValueOption[],
   fetchingCountries?: boolean;
   setFileIdToUrlMap?: React.Dispatch<React.SetStateAction<Record<number, string>>>;
   fileIdToUrlMap: Record<number, string>;
   onValueSet: (value: SetBaseValueArg<Value>) => void;
   fetchingNationalSociety?: boolean;
+  match: Match<{ perId?: string }>;
+  history: History;
+  perId?: string;
 }
 
 function PerOverview(props: Props) {
@@ -58,9 +69,24 @@ function PerOverview(props: Props) {
     fileIdToUrlMap,
     onValueSet,
     setFileIdToUrlMap,
+    history,
+    countryOptions,
+    match,
+    perId
   } = props;
 
   const { strings } = React.useContext(LanguageContext);
+  // const { perId } = match.params;
+  const alert = useAlertContext();
+
+  const {
+    setFieldValue,
+    validate,
+    setError,
+    setValue,
+  } = useForm(schema, { value: {} as PartialForm<PerOverviewFields> });
+
+  const [currentStep, setCurrentStep] = React.useState<StepTypes>('overview');
 
   const {
     pending: fetchingPerOptions,
@@ -81,7 +107,7 @@ function PerOverview(props: Props) {
     [formError]
   );
 
-  const handleNSChange = useCallback((ns) => {
+  const handleNSChange = React.useCallback((ns) => {
     onValueSet({
       ...value,
       national_society: ns,
@@ -89,14 +115,114 @@ function PerOverview(props: Props) {
     });
   }, [value, onValueSet]);
 
-  const handleImageChange = (event: any) => {
-    const file = event.target.files[0];
-    console.warn(file);
-    // setFile({
-    //   picturePreview: URL.createObjectURL(event.target.files[0]),
-    //   pictureAsFile: event.target.files[0]
-    // });
-  };
+
+  const {
+    pending: perSubmitPending,
+    trigger: submitRequest,
+  } = useLazyRequest<PerOverviewFields, Partial<PerOverviewFields>>({
+    url: perId ? `api/v2/new-per/${perId}/` : 'api/v2/new-per/',
+    method: perId ? 'PUT' : 'POST',
+    body: ctx => ctx,
+    onSuccess: (response) => {
+      alert.show(
+        strings.drefFormSaveRequestSuccessMessage,
+        { variant: 'success' },
+      );
+
+      // if (!perId) {
+      //   window.setTimeout(
+      //     () => history.push(`/new-per/${response?.id}/edit/`),
+      //     250,
+      //   );
+      // }
+      //  else {
+      //   handlePerLoad(response);
+      // }
+    },
+    onFailure: ({
+      value: {
+        messageForNotification,
+        formErrors,
+      },
+      debugMessage,
+    }) => {
+      // setError(formErrors);
+      // if (formErrors.modified_at === 'OBSOLETE_PAYLOAD') {
+      //   // There was a save conflict due to obsolete payload
+      //   setShowObsoletePayloadResolutionModal(true);
+      // }
+
+      alert.show(
+        <p>
+          {strings.drefFormSaveRequestFailureMessage}
+          &nbsp;
+          <strong>
+            {messageForNotification}
+          </strong>
+        </p>,
+        {
+          variant: 'danger',
+          debugMessage,
+        },
+      );
+    },
+  });
+
+  const handleSubmit = React.useCallback((finalValues) => {
+    onValueSet(finalValues);
+    submitRequest(finalValues);
+  }, [onValueSet, submitRequest]);
+
+
+  const uploadFile = React.useCallback(
+    (file: File) => {
+      const formData = new FormData();
+      const formFile = formData.append('file', file);
+
+      console.log("form data file", file);
+      console.log("FORMDATA ", formFile);
+
+      // onValueSet({...value, orientation_document: formFile});
+      setFieldValue(file, 'orientation_document');
+    }, [setFieldValue]);
+
+  const handleFileInputChange = React.useCallback((event) => {
+    const files = event.target.files;
+    if (files && files.length > 0) {
+      const file = files[0];
+      setFieldValue(file, 'orientation_document');
+      // uploadFile(file);
+    }
+  }, [setFieldValue]);
+  console.log('value', value);
+
+  const handleTabChange = React.useCallback((newStep: StepTypes) => {
+    const isCurrentTabValid = (['orientation_document']);
+
+    if (!isCurrentTabValid) {
+      return;
+    }
+
+    setCurrentStep(newStep);
+  }, []);
+
+  const handleSubmitButtonClick = React.useCallback(() => {
+    if (currentStep === 'overview') {
+      const nextStepMap: {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        [key in Exclude<StepTypes, 'assessment'>]: Exclude<StepTypes, 'overview'>;
+      } = {
+        overview: 'assessment',
+      };
+      submitRequest(value as PerOverviewFields);
+      handleTabChange(nextStepMap[currentStep]);
+    }
+  }, [
+    value,
+    currentStep,
+    handleTabChange,
+    submitRequest,
+  ]);
 
   return (
     <>
@@ -136,19 +262,26 @@ function PerOverview(props: Props) {
         <InputSection
           title={strings.perFormUploadADoc}
         >
-          <FileInput
+          <input
+            name="orientation_document"
+            accept='.docx, pdf'
+            type="file"
+            onChange={handleFileInputChange}
+            value={value?.orientation_document}
+          />
+          {/* <FileInput
             type='file'
             accept='.docx'
             buttonVariant="secondary"
             error={error?.orientation_document}
             fileIdToUrlMap={fileIdToUrlMap}
             name="orientation_document"
-            onChange={handleImageChange}
+            onChange={handleFileInputChange}
             // setFileIdToUrlMap={setFileIdToUrlMap}
             value={value?.orientation_document}
           >
             {strings.drefFormUploadSupportingDocumentButtonLabel}
-          </FileInput>
+          </FileInput> */}
         </InputSection>
       </Container>
       <Container
@@ -161,10 +294,10 @@ function PerOverview(props: Props) {
           description={strings.perFormDateOfAssessmentDescription}
         >
           <DateInput
-            error={error?.date_of_previous_assessment}
-            name="date_of_previous_assessment"
+            error={error?.date_of_assessment}
+            name="date_of_assessment"
             onChange={onValueChange}
-            value={value?.date_of_previous_assessment}
+            value={value?.date_of_assessment}
           />
         </InputSection>
         <InputSection
@@ -182,7 +315,7 @@ function PerOverview(props: Props) {
           title={strings.perFormAssessmentNumber}
           description={strings.perFormAssessmentNumberDescription}
         >
-          <TextInput
+          <NumberInput
             name="assessment_number"
             value={value?.assessment_number}
             onChange={onValueChange}
@@ -232,7 +365,7 @@ function PerOverview(props: Props) {
             options={yesNoOptions}
             keySelector={booleanOptionKeySelector}
             labelSelector={optionLabelSelector}
-            value={value?.assess_urban_aspect_of_country}
+            value={value.assess_urban_aspect_of_country}
             onChange={onValueChange}
             error={error?.assess_urban_aspect_of_country}
           />
@@ -403,6 +536,15 @@ function PerOverview(props: Props) {
             error={error?.facilitator_contact}
           />
         </InputSection>
+        <div className={styles.actions}>
+          <Button
+            name={undefined}
+            variant="secondary"
+            onClick={handleSubmitButtonClick}
+          >
+            {strings.PerOverviewSetUpPerProcess}
+          </Button>
+        </div>
       </Container>
     </>
   );

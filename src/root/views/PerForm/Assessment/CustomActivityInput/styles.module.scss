@@ -6,6 +6,12 @@
 
   .improvement-select {
     width: $global-spacing-table;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .dot-connector {
+    border-left: 1px solid grey;
   }
 
   .input-section {
@@ -16,6 +22,7 @@
     .question-content {
       display: flex;
       gap: $global-spacing-3;
+      padding-right: 20%;
       // overflow-y: visible;
 
       .note-section {
@@ -32,8 +39,10 @@
   }
 }
 
-.bullets {
-  background-color: red;
+.dot {
+  height: 12px;
+  width: 12px;
+  background-color: grey;
   border-radius: 50%;
-  border: 1px solid gray;
+  display: inline-block;
 }

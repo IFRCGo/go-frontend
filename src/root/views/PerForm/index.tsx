@@ -91,57 +91,6 @@ function PerForm(props: Props) {
   }, []);
 
   const {
-    pending: drefSubmitPending,
-    trigger: submitRequest,
-  } = useLazyRequest<PerOverviewFields, Partial<PerOverviewFields>>({
-    url: perId ? `api/v2/new-per/${perId}/` : 'api/v2/new-per/',
-    method: perId ? 'PUT' : 'POST',
-    body: ctx => ctx,
-    onSuccess: (response) => {
-      alert.show(
-        strings.drefFormSaveRequestSuccessMessage,
-        { variant: 'success' },
-      );
-
-      if (!perId) {
-        window.setTimeout(
-          () => history.push(`/new-per/${response?.id}/edit/`),
-          250,
-        );
-      } else {
-        handlePerLoad(response);
-      }
-    },
-    onFailure: ({
-      value: {
-        messageForNotification,
-        formErrors,
-      },
-      debugMessage,
-    }) => {
-      // setError(formErrors);
-      // if (formErrors.modified_at === 'OBSOLETE_PAYLOAD') {
-      //   // There was a save conflict due to obsolete payload
-      //   setShowObsoletePayloadResolutionModal(true);
-      // }
-
-      alert.show(
-        <p>
-          {strings.drefFormSaveRequestFailureMessage}
-          &nbsp;
-          <strong>
-            {messageForNotification}
-          </strong>
-        </p>,
-        {
-          variant: 'danger',
-          debugMessage,
-        },
-      );
-    },
-  });
-
-  const {
     pending: drefApplicationPending,
     response: drefResponse,
   } = useRequest<PerOverviewFields>({
@@ -285,16 +234,8 @@ function PerForm(props: Props) {
             assessmentOptions={assessmentOptions}
             fileIdToUrlMap={fileIdToUrlMap}
             setFileIdToUrlMap={setFileIdToUrlMap}
+            perId={perId}
           />
-          <div className={styles.actions}>
-            <Button
-              name={undefined}
-              variant="secondary"
-              onClick={handleSubmitButtonClick}
-            >
-              {strings.PerOverviewSetUpPerProcess}
-            </Button>
-          </div>
         </TabPanel>
         <TabPanel name="assessment">
           <Assessment />
