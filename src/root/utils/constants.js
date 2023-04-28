@@ -23,162 +23,180 @@ export const programmeTypes = listToMap(programmeTypeList, d => d.key, d => d.ti
 export const sectorList = [
   {
     key: '0',
-    title: 'WASH',
+    title: 'Water, Sanitation, and Hygiene',
     color: '#66c2a5',
-    inputValue: '0',
+    inputValue: '0'
   },
   {
     key: '1',
-    title: 'PGI',
+    title: 'Protection, Gender, and Inclusion',
     color: '#fc8d62',
-    inputValue: '1',
+    inputValue: '1'
   },
   {
     key: '2',
-    title: 'CEA',
+    title: 'Community Engagement and Accountability',
     color: '#8da0cb',
-    inputValue: '2',
+    inputValue: '2'
   },
   {
     key: '3',
     title: 'Migration',
     color: '#e78ac3',
-    inputValue: '3',
+    inputValue: '3'
   },
   {
     key: '4',
-    title: 'Health',
+    title: 'Health and Care',
     color: '#a6d854',
-    inputValue: '4',
+    inputValue: '4'
   },
   {
     key: '5',
     title: 'DRR',
     color: '#ffd92f',
-    inputValue: '5',
+    inputValue: '5'
   },
   {
     key: '6',
-    title: 'Shelter',
+    title: 'Shelter, Housing and Settlement',
     color: '#e5c494',
-    inputValue: '6',
+    inputValue: '6'
   },
   {
     key: '7',
-    title: 'NS Strengthening',
+    title: 'National Society Strengthening',
     color: '#b3b3b3',
-    inputValue: '7',
+    inputValue: '7'
   },
   {
     key: '8',
     title: 'Education',
     color: '#b3b3b3',
-    inputValue: '8',
+    inputValue: '8'
   },
   {
     key: '9',
-    title: 'Livelihoods and basic needs',
+    title: 'Livelihoods',
     color: '#b3b3b3',
-    inputValue: '9',
+    inputValue: '9'
   },
   {
     key: '10',
     title: 'Multi-purpose Cash',
-    color: '#eeeeee',
-    inputValue: '10',
+    color: '#eeee63',
+    inputValue: '10'
+  },
+  {
+    key: '11',
+    title: 'Risk Reduction, Climate Adaptation and Recovery',
+    color: '#eeee69',
+    inputValue: '11'
+  },
+  {
+    key: '12',
+    title: 'Environmental Sustainability',
+    color: '#eeee75',
+    inputValue: '12'
   },
 ];
 
 export const secondarySectorList = [
   {
     key: '0',
-    title: 'WASH',
+    title: 'Water, Sanitation, and Hygiene',
     color: '#66c2a5',
-    inputValue: '0',
+    inputValue: '0'
   },
   {
     key: '1',
-    title: 'PGI',
+    title: 'Protection, Gender, and Inclusion',
     color: '#fc8d62',
-    inputValue: '1',
+    inputValue: '1'
   },
   {
     key: '2',
-    title: 'CEA',
+    title: 'Community Engagement and Accountability',
     color: '#8da0cb',
-    inputValue: '2',
+    inputValue: '2'
   },
   {
     key: '3',
     title: 'Migration',
     color: '#e78ac3',
-    inputValue: '3',
+    inputValue: '3'
   },
   {
     key: '4',
     title: 'Health (public)',
     color: '#a6d854',
-    inputValue: '4',
+    inputValue: '4'
   },
   {
     key: '5',
-    title: 'DRR',
+    title: 'Risk Reduction, Climate Adaptation and Recovery',
     color: '#ffd92f',
-    inputValue: '5',
+    inputValue: '5'
   },
   {
     key: '6',
-    title: 'Shelter',
+    title: 'Shelter, Housing and Settlement',
     color: '#e5c494',
-    inputValue: '6',
+    inputValue: '6'
   },
   {
     key: '7',
-    title: 'NS Strengthening',
+    title: 'National Society Strengthening',
     color: '#b3b3b3',
-    inputValue: '7',
+    inputValue: '7'
   },
   {
     key: '8',
     title: 'Education',
     color: '#b3b3b3',
-    inputValue: '8',
+    inputValue: '8'
   },
   {
     key: '9',
-    title: 'Livelihoods and basic needs',
+    title: 'Livelihoods',
     color: '#b3b3b3',
-    inputValue: '9',
+    inputValue: '9'
   },
   {
     key: '10',
     title: 'Recovery',
     color: '#b3b3b3',
-    inputValue: '10',
+    inputValue: '10'
   },
   {
     key: '11',
     title: 'Internal displacement',
     color: '#b3b3b3',
-    inputValue: '11',
+    inputValue: '11'
   },
   {
     key: '12',
     title: 'Health (clinical)',
     color: '#a6d854',
-    inputValue: '12',
+    inputValue: '12'
   },
   {
     key: '13',
     title: 'COVID-19',
     color: '#a6d854',
-    inputValue: '13',
+    inputValue: '13'
   },
   {
     key: '14',
-    title: 'Multi-purpose Cash',
-    color: '#eeeeee',
-    inputValue: '14',
+    title: 'Multi-Purpose Cash (Unconditional)',
+    color: '#eeee87',
+    inputValue: '14'
+  },
+  {
+    key: '15',
+    title: 'Multi-Purpose Voucher (Conditional)',
+    color: '#eeee93',
+    inputValue: '15'
   },
 ];
 
