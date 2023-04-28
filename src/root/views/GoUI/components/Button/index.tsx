@@ -11,6 +11,13 @@ export type ButtonVariant = (
     | 'action'
     | 'transparent'
     | 'download'
+    | 'navigationPrimary'
+    | 'navigationSecondary'
+    | 'buttonWithDescription'
+    | 'dialogConfirmOk'
+    | 'dialogConfirmCancel'
+    | 'navigateTop'
+    | 'dropdown'
 );
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -21,6 +28,13 @@ const buttonVariantToStyleMap: { [key in ButtonVariant]: string; } = {
     action: styles.action,
     transparent: styles.transparent,
     download: styles.tertiary,
+    navigationPrimary: styles.navigationPrimary,
+    navigationSecondary: styles.navigationSecondary,
+    buttonWithDescription: styles.buttonWithDescription,
+    dialogConfirmOk: styles.dialogConfirmOk,
+    dialogConfirmCancel: styles.dialogConfirmCancel,
+    navigateTop: styles.navigateTop,
+    dropdown: styles.dropdownButton,
 };
 
 export interface Props<N> extends Omit<
@@ -37,6 +51,7 @@ export interface Props<N> extends Omit<
     childrenClassName?: string;
     actionsClassName?: string;
     disabled?: boolean;
+    buttonWithDescription?: String;
     name: N;
     onClick?: (name: N, e: React.MouseEvent<HTMLButtonElement>) => void;
 }
@@ -50,7 +65,9 @@ type ButtonFeatureKeys =
     | 'children'
     | 'icons'
     | 'actions'
-    | 'disabled';
+    | 'disabled'
+    | 'buttonWithDescription'
+
 export type ButtonFeatureProps<N> = Pick<Props<N>, ButtonFeatureKeys>;
 export function useButtonFeatures<N>(
     props: ButtonFeatureProps<N>,
@@ -65,6 +82,7 @@ export function useButtonFeatures<N>(
         children,
         icons,
         actions,
+        buttonWithDescription,
     } = props;
 
     const buttonClassName = _cs(
@@ -77,39 +95,22 @@ export function useButtonFeatures<N>(
 
     const buttonChildren = (
         <>
-            {props.variant === ('download' || 'tertiary') && (
-                <>
-                    {icons && (
-                        <div className={_cs(iconsClassName, styles.icons)}>
-                            {icons}
-                        </div>
-                    )}
-                    {children && (
-                        <div className={_cs(childrenClassName, styles.children)}>
-                            {children}
-                        </div>
-                    )}
-                </>
+            {icons && (
+                <div className={_cs(iconsClassName,
+                    (variant === 'navigateTop' ? styles.navigateTopIcon : styles.icons),
+                )}>
+                    {icons}
+                </div>
             )}
-            {props.variant !== 'download' && (
-                <>
-                    {children && (
-                        <div className={_cs(childrenClassName, styles.children)}>
-                            {children}
-                        </div>
-                    )}
-                    {icons && (
-                        <div className={_cs(iconsClassName, styles.icons)}>
-                            {icons}
-                        </div>
-                    )}
-                    {actions && (
-                        <div className={_cs(actionsClassName, styles.actions)}>
-                            {actions}
-                        </div>
-                    )}
-                </>
-
+            {children && (
+                <div className={_cs(childrenClassName, styles.children)}>
+                    {children}
+                </div>
+            )}
+            {actions && (
+                <div className={_cs(actionsClassName, styles.actions)}>
+                    {actions}
+                </div>
             )}
         </>
     );
@@ -118,6 +119,7 @@ export function useButtonFeatures<N>(
         className: buttonClassName,
         children: buttonChildren,
         disabled,
+        buttonWithDescription,
     };
 }
 
@@ -132,6 +134,7 @@ function Button<N>(props: Props<N>) {
         icons,
         actions,
         disabled,
+        buttonWithDescription,
         name,
         onClick,
         readOnly,
@@ -155,16 +158,32 @@ function Button<N>(props: Props<N>) {
         icons,
         actions,
         disabled,
+        buttonWithDescription,
     });
 
     return (
-        <RawButton
-            name={name}
-            type="button"
-            onClick={handleButtonClick}
-            {...otherProps}
-            {...buttonProps}
-        />
+        <>
+            {buttonWithDescription ? (
+                <div className={styles.buttonDescriptionWrapper}>
+                    <RawButton
+                        name={name}
+                        type="button"
+                        onClick={handleButtonClick}
+                        {...otherProps}
+                        {...buttonProps}
+                    />
+                    {buttonWithDescription}
+                </div>
+            ) : (
+                <RawButton
+                    name={name}
+                    type="button"
+                    onClick={handleButtonClick}
+                    {...otherProps}
+                    {...buttonProps}
+                />
+            )}
+        </>
     );
 }
 
