@@ -1,3 +1,9 @@
+### Release 6.5.6 - Hotfix for a Data Playbook
+Date: 2023-04-28
+
+Frontend:
+ - New URL on Resource page for Data Playbook
+
 ### Release 6.5.5 - Hotfix for a new CoS Role Profile
 Date: 2023-04-21
 
