@@ -822,7 +822,9 @@ class Emergency extends React.Component {
         <thead>
           <tr>
             <th>{strings.emergencyAppealDocHeaderDate}</th>
+            <th>{strings.emergencyAppealDocHeaderLocation}</th>
             <th>{strings.emergencyAppealDocHeaderCode}</th>
+            <th>{strings.emergencyAppealDocHeaderDescription}</th>
             <th>{strings.emergencyAppealDocHeaderName}</th>
           </tr>
         </thead>
@@ -838,7 +840,13 @@ class Emergency extends React.Component {
                 { isoDate(o.created_at) }
               </td>
               <td>
-                {o.appeal_code}
+                {o.iso}
+              </td>
+              <td>
+                {o.appeal}
+              </td>
+              <td>
+                {o.description}
               </td>
               <td>
                 <a className="link-underline" href={href} target="_blank">
