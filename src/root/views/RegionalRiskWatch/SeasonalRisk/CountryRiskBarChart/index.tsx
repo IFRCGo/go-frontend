@@ -73,6 +73,7 @@ function CountryRiskBarChart(props: Props) {
       headingSize="superSmall"
       contentClassName={styles.content}
       sub
+      compact
     >
       {sortedData.length === 0 && (
         <div className={styles.emptyMessage}>

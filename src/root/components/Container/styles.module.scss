@@ -52,16 +52,7 @@
   }
 
   &.compact {
-    padding: 0;
     --inner-container-padding: 0;
-
-    .inner-container {
-      .footer,
-      .content,
-      .header {
-        padding: 0;
-      }
-    }
   }
 
   &.visible-overflow {

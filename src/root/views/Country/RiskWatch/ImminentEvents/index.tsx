@@ -35,6 +35,7 @@ function ImminentEvents(props: Props) {
     [],
   );
 
+  // FIXME: handle for GDACS and other sources
   const handlePdcEventLoad = React.useCallback((numEvents: number | undefined) => {
     if (!numEvents && triggered.current === false) {
       sourceType('WFP');

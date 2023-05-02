@@ -32,6 +32,7 @@ function Sidebar(props: Props) {
       heading={heading}
       headingSize="superSmall"
       sub
+      compact
     >
       {hazardList?.map((hazard) => (
         <EventDetail

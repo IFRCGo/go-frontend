@@ -152,7 +152,7 @@ function MapFooter(props: Props) {
   const sourceOptions =[
     { value: "PDC", label: pdcIconLabel },
     { value: "WFP", label: adamIconLabel },
-    { value: "GDACS", label: gdacsIconLabel },
+    // { value: "GDACS", label: gdacsIconLabel },
   ] as StringValueOption[];
 
   const handleChangeSourceType = React.useCallback(
