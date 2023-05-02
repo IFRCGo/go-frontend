@@ -1,8 +1,8 @@
 .link-collection {
   display: flex;
   flex-direction: column;
-  padding: 2rem;
-  gap: 2rem;
+  padding: var(--go-ui-spacing-2xl);
+  gap: var(--go-ui-spacing-2xl);
 
   .links-container {
     display: flex;
