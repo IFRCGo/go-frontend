@@ -1,23 +1,12 @@
 @import '~styles/settings/variables';
 
 .country-risk-bar-chart {
-  display: flex;
-  flex-direction: column;
-
-  .heading {
-    display: block;
-    padding: $spacing 0;
-    font-size: $font-size-sm;
-    font-weight: $base-font-medium;
-  }
-
   .content {
     flex-grow: 1;
     scrollbar-gutter: stable;
     overflow-y: hidden;
     display: flex;
     flex-direction: column;
-    padding-right: $spacing;
 
     &:hover {
       overflow-y: auto;

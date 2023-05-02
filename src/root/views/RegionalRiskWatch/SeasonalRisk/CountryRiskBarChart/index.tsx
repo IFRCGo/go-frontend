@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOMServer from 'react-dom/server';
 import { _cs } from '@togglecorp/fujs';
 
-import Heading from '#components/Heading';
+import Container from '#components/Container';
 import { HazardType, hazardTypeColorMap } from '../common';
 import { Tooltip as ReactTooltip} from 'react-tooltip';
 import styles from './styles.module.scss';
@@ -67,59 +67,57 @@ function CountryRiskBarChart(props: Props) {
     ),
     []);
   return (
-    <div className={_cs(styles.countryRiskBarChart, className)}>
-      <Heading
-        size="small"
-        className={styles.heading}
-      >
-        Countries by Risk
-      </Heading>
-      <div className={styles.content}>
-        {sortedData.length === 0 && (
-          <div className={styles.emptyMessage}>
-            No countries selected
+    <Container
+      className={_cs(styles.countryRiskBarChart, className)}
+      heading="Countries by Risk"
+      headingSize="superSmall"
+      contentClassName={styles.content}
+      sub
+    >
+      {sortedData.length === 0 && (
+        <div className={styles.emptyMessage}>
+          No countries selected
+        </div>
+      )}
+      {sortedData.map((rd) => (
+        <div key={rd.iso3} className={styles.countryCard}>
+          <div className={styles.countryName}>
+            {rd.countryName}
           </div>
-        )}
-        {sortedData.map((rd) => (
-          <div key={rd.iso3} className={styles.countryCard}>
-            <div className={styles.countryName}>
-              {rd.countryName}
-            </div>
-            <div className={styles.barContainer}>
-              {rd.byHazard.sort(
-                (a, b) => hazardDisplayOrder[a.hazard_type] - hazardDisplayOrder[b.hazard_type],
-              ).map(
-                  (hrd) => {
-                    const width = 100 * hrd.value / maxValueSafe;
+          <div className={styles.barContainer}>
+            {rd.byHazard.sort(
+              (a, b) => hazardDisplayOrder[a.hazard_type] - hazardDisplayOrder[b.hazard_type],
+            ).map(
+                (hrd) => {
+                  const width = 100 * hrd.value / maxValueSafe;
 
-                    return (
-                      <React.Fragment key={hrd.hazard_type}>
-                        <div
-                          data-tooltip-id={hrd.hazard_type}
-                          data-for={hrd.hazard_type}
-                          className={styles.hazardRiskBar}
-                          style={{
-                            width: `${width}%`,
-                            backgroundColor: hazardTypeColorMap[hrd.hazard_type],
-                          }}
-                          data-tooltip-html={ReactDOMServer.renderToStaticMarkup(tooltip(hrd))}
-                        />
-                        <ReactTooltip
-                          id={hrd.hazard_type}
-                          className={styles.tooltip}
-                          classNameArrow={styles.arrow}
-                          place="top"
-                          variant='light'
-                        />
-                      </React.Fragment>
-                    );
-                  }
-                )}
-            </div>
+                  return (
+                    <React.Fragment key={hrd.hazard_type}>
+                      <div
+                        data-tooltip-id={hrd.hazard_type}
+                        data-for={hrd.hazard_type}
+                        className={styles.hazardRiskBar}
+                        style={{
+                          width: `${width}%`,
+                          backgroundColor: hazardTypeColorMap[hrd.hazard_type],
+                        }}
+                        data-tooltip-html={ReactDOMServer.renderToStaticMarkup(tooltip(hrd))}
+                      />
+                      <ReactTooltip
+                        id={hrd.hazard_type}
+                        className={styles.tooltip}
+                        classNameArrow={styles.arrow}
+                        place="top"
+                        variant='light'
+                      />
+                    </React.Fragment>
+                  );
+                }
+              )}
           </div>
-        ))}
-      </div>
-    </div>
+        </div>
+      ))}
+    </Container>
   );
 }
 

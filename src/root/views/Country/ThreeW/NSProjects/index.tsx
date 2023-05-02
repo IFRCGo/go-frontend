@@ -294,6 +294,7 @@ function NSProjects(props: Props) {
                 heading={strings.threeWNSMapSidebarTitle}
                 contentClassName={styles.content}
                 innerContainerClassName={styles.innerContainer}
+                headingSize="extraSmall"
                 sub
               >
                 {Object.values(countryGroupedProjects).map((pl) => {
@@ -315,7 +316,8 @@ function NSProjects(props: Props) {
                           }}
                         />
                       )}
-                      headingSize="small"
+                      headingSize="superSmall"
+                      contentClassName={styles.expandableContent}
                       sub
                     >
                       {pl.map((project) => (
