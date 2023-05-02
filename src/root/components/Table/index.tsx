@@ -33,6 +33,11 @@ export interface Column<D, K, C, H> {
   cellContainerClassName?: string;
 
   cellAsHeader?: boolean;
+  columnClassName?: string;
+  columnWidth?: number;
+  columnStretch?: boolean;
+  columnStyle?: React.CSSProperties;
+
 }
 
 type VerifyColumn<T, D, K> = unknown extends (
@@ -66,7 +71,7 @@ type VerifyColumn<T, D, K> = unknown extends (
     rowClassName?: string;
     cellClassName?: string;
     variant?: TableVariant;
-    rowModifier?: (rowOptions: RowOptions<D, K>) => React.ReactElement;
+    rowModifier?: (rowOptions: RowOptions<D, K>) => React.ReactNode;
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
