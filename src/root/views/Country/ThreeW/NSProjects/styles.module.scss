@@ -57,11 +57,16 @@
         .inner-container {
           display: flex;
           flex-direction: column;
+          padding: 0;
 
           .content {
             flex-grow: 1;
             overflow: auto;
-            padding: $spacing;
+            padding: 0;
+
+            .expandable-content {
+              padding: 0 $spacing;
+            }
 
             .project-detail-item {
               align-items: flex-start;

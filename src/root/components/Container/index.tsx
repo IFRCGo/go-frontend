@@ -27,6 +27,7 @@ export interface Props {
   footerActions?: React.ReactNode;
   footerClassName?: string,
   footerContentClassName?: string;
+  compact?: boolean;
 }
 
 function Container(props: Props) {
@@ -50,6 +51,7 @@ function Container(props: Props) {
     footerContentClassName,
     footerActions,
     footerIcons,
+    compact,
   } = props;
 
   const showHeader = icons || heading || actions;
@@ -61,6 +63,7 @@ function Container(props: Props) {
       className={_cs(
         styles.container,
         sub && styles.sub,
+        compact && styles.compact,
         className,
       )}
     >

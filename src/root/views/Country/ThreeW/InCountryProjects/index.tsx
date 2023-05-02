@@ -356,6 +356,7 @@ function InCountryProjects(props: Props) {
                 heading={strings.threeWInCountryMapSidebarTitle}
                 contentClassName={styles.content}
                 innerContainerClassName={styles.innerContainer}
+                headingSize="extraSmall"
                 sub
               >
                 {Object.values(districtGroupedProject).map((pl) => {
@@ -375,8 +376,9 @@ function InCountryProjects(props: Props) {
                             params={{ numProjects: pl.length }}
                           />
                         )}
-                        headingSize="small"
+                        headingSize="superSmall"
                         initiallyExpanded
+                        contentClassName={styles.expandableContent}
                         sub
                       >
                         {pl.map((project) => (
@@ -413,7 +415,8 @@ function InCountryProjects(props: Props) {
                           }}
                         />
                       )}
-                      headingSize="small"
+                      headingSize="superSmall"
+                      contentClassName={styles.expandableContent}
                       sub
                     >
                       {pl.map((project) => (

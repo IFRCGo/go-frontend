@@ -30,7 +30,8 @@ function Sidebar(props: Props) {
       className={_cs(styles.sidebar, className)}
       contentClassName={styles.eventList}
       heading={heading}
-      headingSize="small"
+      headingSize="superSmall"
+      compact
       sub
     >
       {hazardList?.map((hazard) => (
