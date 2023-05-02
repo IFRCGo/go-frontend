@@ -2903,7 +2903,7 @@ export default {
   emergencyAppealDocumentsTitle: 'Appeal Documents',
   emergencyAppealDocHeaderDate: 'Date',
   emergencyAppealDocHeaderCode: 'Code',
-  emergencyAppealDocHeaderLocation: 'Country',
+  emergencyAppealDocHeaderLocation: 'Location',
   emergencyAppealDocHeaderDescription: 'Description',
   emergencyAppealDocHeaderName: 'Name',
   emergencyResponseDocumentsTitle: 'Response Documents',
