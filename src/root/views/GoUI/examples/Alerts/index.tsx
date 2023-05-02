@@ -18,7 +18,7 @@ function Alerts() {
       <Alert
         variant="success"
         name="Success"
-        children={<p>This is alert for Success message</p>}
+        children="This is alert for Success message"
       />
       <Header
         heading="DANGER ALERT WITH ERROR MESSAGE"
@@ -27,7 +27,7 @@ function Alerts() {
       <Alert
         variant="danger"
         name="Danger"
-        children={<p>This is alert for Danger message</p>}
+        children="This is alert for Danger message"
         debugMessage="Error message"
       />
       <Header
@@ -37,7 +37,7 @@ function Alerts() {
       <Alert
         variant="info"
         name="Info"
-        children={<p>This is alert for Info message</p>}
+        children="This is alert for Info message"
       />
       <Header
         heading="WARNING ALERT"
@@ -46,7 +46,7 @@ function Alerts() {
       <Alert
         variant="warning"
         name="Waring"
-        children={<p>This is alert for Warning message</p>}
+        children="This is alert for Warning message"
       />
     </div>
   );
