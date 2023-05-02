@@ -3,6 +3,7 @@ import Links from './examples/Links';
 import styles from './styles.module.scss';
 import Cards from './examples/Cards';
 import Alerts from './examples/Alerts';
+import OverlayExample from './examples/OverlayExample';
 
 function GoUI() {
   return (
@@ -16,8 +17,12 @@ function GoUI() {
       <div>
         <Alerts />
       </div>
+      <div>
+        <OverlayExample />
+      </div>
     </>
   );
 }
 
 export default GoUI;
+
