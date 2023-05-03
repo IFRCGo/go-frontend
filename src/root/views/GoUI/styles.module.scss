@@ -4,19 +4,20 @@
   --go-ui-font-family-serif: Georgia, Cambria, "Times New Roman", Times, serif;
   --go-ui-font-family-mono: SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 
-  --go-ui-font-size-xs: 0.75rem; /* 12px */
-  --go-ui-font-size-sm: 0.875rem; /* 14px */
-  --go-ui-font-size-md: 1rem; /* 16px */
-  --go-ui-font-size-lg: 1.124rem; /* 18px */
-  --go-ui-font-size-xl: 1.25rem; /* 20px */
-  --go-ui-font-size-2xl: 1.5rem; /* 24px */
-  --go-ui-font-size-3xl: 1.875rem; /* 30px */
-  --go-ui-font-size-4xl: 2.25rem; /* 36px */
-  --go-ui-font-size-5xl: 3rem; /* 48px */
-  --go-ui-font-size-6xl: 3.75rem; /* 60px */
-  --go-ui-font-size-7xl: 4.5rem; /* 72px */
-  --go-ui-font-size-8xl: 6rem; /* 96px */
-  --go-ui-font-size-9xl: 8rem; /* 128px */
+  --go-ui-font-size-xs: 0.75rem; // 12px
+  --go-ui-font-size-sm: 0.875rem; // 14px
+  --go-ui-font-size-md: 1rem; // 16px
+  --go-ui-font-size-lg: 1.124rem; // 18px
+  --go-ui-font-size-xl: 1.25rem; // 20px
+  --go-ui-font-size-2xl: 1.5rem; // 24px
+  --go-ui-font-size-3xl: 1.875rem; // 30px
+  --go-ui-font-size-4xl: 2.25rem; // 36px
+  --go-ui-font-size-5xl: 3rem; // 48px
+  --go-ui-font-size-6xl: 3.75rem; // 60px
+  --go-ui-font-size-7xl: 4.5rem; // 72px
+  --go-ui-font-size-8xl: 6rem; // 96px
+  --go-ui-font-size-9xl: 8rem; // 128px
+
   --go-ui-line-height-none: 1;
   --go-ui-line-height-tight: 1.25;
   --go-ui-line-height-snug: 1.375;
@@ -44,7 +45,6 @@
   // Spacing
   --go-ui-spacing-none: 0px;
   --go-ui-spacing-px: 1px;
-  --go-ui-spacing-ultra-small: 0.020833;
   --go-ui-spacing-xxs: 0.125rem;
   --go-ui-spacing-xs: 0.25rem;
   --go-ui-spacing-sm: 0.5rem;
@@ -65,14 +65,14 @@
   --go-ui-width-separator-thick: 4px;
   --go-ui-width-separator-dense: 8px;
 
- // Borders
+  // Borders
   --go-ui-border-radius-none: 0px;
-  --go-ui-border-radius-sm: 0.125rem; /* 2px */
-  --go-ui-border-radius-md: 0.25rem; /* 4px */
-  --go-ui-border-radius-lg: 0.5rem; /* 8px */
-  --go-ui-border-radius-xl: 0.75rem; /* 12px */
-  --go-ui-border-radius-2xl: 1rem; /* 16px */
-  --go-ui-border-radius-3xl: 1.5rem; /* 24px */
+  --go-ui-border-radius-sm: 0.125rem; // 2px
+  --go-ui-border-radius-md: 0.25rem; // 4px
+  --go-ui-border-radius-lg: 0.5rem; // 8px
+  --go-ui-border-radius-xl: 0.75rem; // 12px
+  --go-ui-border-radius-2xl: 1rem; //16px
+  --go-ui-border-radius-3xl: 1.5rem; //24px
   --go-ui-border-radius-full: 9999px;
 
   // Shadows
@@ -84,11 +84,6 @@
   --go-ui-box-shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
   --go-ui-box-shadow-inner: inset 0 2px 4px 0 rgb(0 0 0 / 0.05);
   --go-ui-box-shadow-none: 0 0 #0000;
-
-  // Opacity
-  --opacity-disabled-element: .5;
-  --saturation-disabled-element: 60%;
-
 
   // Layers
   --go-ui-z-index-0: 0;
@@ -112,7 +107,6 @@
   --go-ui-color-black: #000000;
   --go-ui-color-white: #ffffff;
 
-  --go-ui-color-gray-light: #919191;
   --go-ui-color-gray-10: #FAFAFA;
   --go-ui-color-gray-20: #F2F2F2;
   --go-ui-color-gray-30: #E0E0E0;
@@ -132,10 +126,7 @@
   --go-ui-color-red-70: #F75C65;
   --go-ui-color-red-80: #F64752;
   --go-ui-color-red-90: #F5333F;
-  --go-ui-color-red-hover: #DE2934;
 
-  --go-ui-color-background: #F7F7F7;
-  --go-ui-color-overlay: var(--go-ui-color-gray-50);
   --go-ui-color-blue-10: #E0E3E7;
   --go-ui-color-blue-20: #CCD2D9;
   --go-ui-color-blue-30: #AEB7C2;
@@ -167,13 +158,51 @@
   --go-ui-opacity-90: 0.9;
   --go-ui-opacity-95: 0.95;
   --go-ui-opacity-100: 1;
+  --go-ui-color-background: #F7F7F7;
+  --go-ui-color-overlay: var(--go-ui-color-gray-50);
 }
 
-.element-wrapper {
-  display: flex;
-  flex-wrap: wrap;
 
-  .elements-container {
+.main-container {
+  display: flex;
+  width: 100%;
+  gap: var(--go-ui-spacing-lg);
+
+  .component-layout {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    overflow-x: auto;
+    gap: var(--go-ui-spacing-md);
+  }
+
+  .side-content {
+    display: flex;
+    flex-direction: column;
+    padding: var(--go-ui-spacing-xl);
+    flex-shrink: 0;
+    width: calc(160px + 10vw);
+
+    .option {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      font-size: var(--go-ui-font-size-md);
+      padding: var(--go-ui-spacing-sm);
+      background-color: var(--go-ui-color-red-50);
+      border: 1px solid var(--go-ui-color-red-20);
+      border-radius: var(--go-ui-border-radius-md);
+
+      &:hover {
+        cursor: pointer;
+        text-decoration: underline;
+      }
+    }
+  }
+
+
+  .main-content {
     font-family: var(--go-ui-font-family-sans);
     font-size: var(--go-ui-font-size-sm);
     font-weight: var(--go-ui-font-weight-light);
