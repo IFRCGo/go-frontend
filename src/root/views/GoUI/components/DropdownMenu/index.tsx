@@ -8,7 +8,7 @@ import { _cs } from '@togglecorp/fujs';
 import {
     useBlurEffect,
     useFloatPlacement,
-} from '#hooks';
+} from '#root/hooks';
 
 import Portal from '../Portal';
 import styles from './styles.module.scss';
