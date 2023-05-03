@@ -1,54 +1,38 @@
 .heading {
   --font-size: var(--go-ui-font-size-xl);
   --line-height: var(--go-ui-line-height-snug);
-  --margin-top: var(--go-ui-spacing-xl);
-  --margin-bottom: var(--go-ui-spacing-sm);
   display: flex;
   font-size: var(--font-size);
   font-weight: var(--go-ui-font-weight-bold);
-  margin-top: var(--margin-top);
-  margin-bottom: var(--margin-bottom);
 
   &.level-1 {
     --font-size: var(--go-ui-font-size-4xl);
     --line-height: var(--go-ui-line-height-none);
-    --margin-top: 0;
-    --margin-bottom: var(--go-ui-spacing-md);
   }
 
   &.level-2 {
     --font-size: var(--go-ui-font-size-2xl);
     --line-height: var(--go-ui-line-height-tight);
-    --margin-top: var(--go-ui-spacing-2xl);
-    --margin-bottom: var(--go-ui-spacing-lg);
   }
 
 
   &.level-3 {
     --font-size: var(--go-ui-font-size-xl);
     --line-height: var(--go-ui-line-height-snug);
-    --margin-top: var(--go-ui-spacing-xl);
-    --margin-bottom: var(--go-ui-spacing-sm);
   }
 
   &.level-4 {
     --font-size: var(--go-ui-font-size-lg);
     --line-height: var(--go-ui-line-height-normal);
-    --margin-top: var(--go-ui-spacing-xl);
-    --margin-bottom: var(--go-ui-spacing-sm);
   }
 
   &.level-5 {
     --font-size: var(--go-ui-font-size-md);
     --line-height: var(--go-ui-line-height-normal);
-    --margin-top: var(--go-ui-spacing-xl);
-    --margin-bottom: var(--go-ui-spacing-sm);
   }
 
   &.level-6 {
     --font-size: var(--go-ui-font-size-sm);
     --line-height: var(--go-ui-line-height-normal);
-    --margin-top: var(--go-ui-spacing-xl);
-    --margin-bottom: var(--go-ui-spacing-sm);
   }
 }
