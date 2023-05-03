@@ -4,33 +4,19 @@
   --go-ui-font-family-serif: Georgia, Cambria, "Times New Roman", Times, serif;
   --go-ui-font-family-mono: SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 
-  --go-ui-font-size-xs: 0.75rem;
-  /* 12px */
-  --go-ui-font-size-sm: 0.875rem;
-  /* 14px */
-  --go-ui-font-size-md: 1rem;
-  /* 16px */
-  --go-ui-font-size-lg: 1.124rem;
-  /* 18px */
-  --go-ui-font-size-xl: 1.25rem;
-  /* 20px */
-  --go-ui-font-size-2xl: 1.5rem;
-  /* 24px */
-  --go-ui-font-size-3xl: 1.875rem;
-  /* 30px */
-  --go-ui-font-size-4xl: 2.25rem;
-  /* 36px */
-  --go-ui-font-size-5xl: 3rem;
-  /* 48px */
-  --go-ui-font-size-6xl: 3.75rem;
-  /* 60px */
-  --go-ui-font-size-7xl: 4.5rem;
-  /* 72px */
-  --go-ui-font-size-8xl: 6rem;
-  /* 96px */
-  --go-ui-font-size-9xl: 8rem;
-  /* 128px */
-
+  --go-ui-font-size-xs: 0.75rem; /* 12px */
+  --go-ui-font-size-sm: 0.875rem; /* 14px */
+  --go-ui-font-size-md: 1rem; /* 16px */
+  --go-ui-font-size-lg: 1.124rem; /* 18px */
+  --go-ui-font-size-xl: 1.25rem; /* 20px */
+  --go-ui-font-size-2xl: 1.5rem; /* 24px */
+  --go-ui-font-size-3xl: 1.875rem; /* 30px */
+  --go-ui-font-size-4xl: 2.25rem; /* 36px */
+  --go-ui-font-size-5xl: 3rem; /* 48px */
+  --go-ui-font-size-6xl: 3.75rem; /* 60px */
+  --go-ui-font-size-7xl: 4.5rem; /* 72px */
+  --go-ui-font-size-8xl: 6rem; /* 96px */
+  --go-ui-font-size-9xl: 8rem; /* 128px */
   --go-ui-line-height-none: 1;
   --go-ui-line-height-tight: 1.25;
   --go-ui-line-height-snug: 1.375;
@@ -58,6 +44,7 @@
   // Spacing
   --go-ui-spacing-none: 0px;
   --go-ui-spacing-px: 1px;
+  --go-ui-spacing-ultra-small: 0.020833;
   --go-ui-spacing-xxs: 0.125rem;
   --go-ui-spacing-xs: 0.25rem;
   --go-ui-spacing-sm: 0.5rem;
@@ -78,20 +65,14 @@
   --go-ui-width-separator-thick: 4px;
   --go-ui-width-separator-dense: 8px;
 
-  // Borders
+ // Borders
   --go-ui-border-radius-none: 0px;
-  --go-ui-border-radius-sm: 0.125rem;
-  /* 2px */
-  --go-ui-border-radius-md: 0.25rem;
-  /* 4px */
-  --go-ui-border-radius-lg: 0.5rem;
-  /* 8px */
-  --go-ui-border-radius-xl: 0.75rem;
-  /* 12px */
-  --go-ui-border-radius-2xl: 1rem;
-  /* 16px */
-  --go-ui-border-radius-3xl: 1.5rem;
-  /* 24px */
+  --go-ui-border-radius-sm: 0.125rem; /* 2px */
+  --go-ui-border-radius-md: 0.25rem; /* 4px */
+  --go-ui-border-radius-lg: 0.5rem; /* 8px */
+  --go-ui-border-radius-xl: 0.75rem; /* 12px */
+  --go-ui-border-radius-2xl: 1rem; /* 16px */
+  --go-ui-border-radius-3xl: 1.5rem; /* 24px */
   --go-ui-border-radius-full: 9999px;
 
   // Shadows
@@ -169,8 +150,6 @@
   --go-ui-color-information: var(--go-ui-color-blue);
   --go-ui-color-warning: var(--go-ui-color-yellow);
   --go-ui-color-negative: var(--go-ui-color-red);
-
-  --go-ui-color-background: #F7F7F7;
 }
 
 .element-wrapper {
