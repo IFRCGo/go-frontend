@@ -2,7 +2,7 @@
     display: flex;
     position: relative;
     align-items: center;
-    padding: calc(var(--go-ui-spacing-xxs)/6) var(--go-ui-spacing-2xl);
+    padding: calc(var(--go-ui-spacing-xxs)) var(--go-ui-spacing-2xl);
     border-radius: var(--go-ui-spacing-md);
     font-weight: var(--go-ui-font-weight-normal);
     font-size: var(--go-ui-font-size-xs);
@@ -63,7 +63,7 @@
         font-weight: var(--go-ui-font-weight-normal);
 
         &:hover {
-            background-color: var(--go-ui-color-gray-40);
+            background-color: var(--go-ui-color-gray-20);
         }
     }
 
@@ -89,7 +89,7 @@
         font-size: var(--go-ui-font-size-xs);
 
         &:hover {
-            background-color: var(--go-ui-color-gray-10);
+            background-color: var(--go-ui-color-gray-20);
         }
     }
 
@@ -124,7 +124,7 @@
         color: var(--go-ui-color-primary-white);
         padding: var(--go-ui-spacing-lg) var(--go-ui-spacing-xs);
         border: 2px solid var(--go-ui-color-primary-red);
-        font-size: var(--go-ui-font-size-xl) !important;
+        font-size: var(--go-ui-font-size-xl);
         transition: transform 300ms linear;
 
         &:hover {

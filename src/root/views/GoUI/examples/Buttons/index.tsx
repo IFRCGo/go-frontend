@@ -27,14 +27,12 @@ function Buttons() {
                 />
                 <Button
                     name="primary-button"
-                    type="button"
                     variant="primary"
                 >
                     Emergencies
                 </Button>
                 <Button
                     name="primary-button"
-                    type="button"
                     variant="primary"
                     actions={<IoChevronForward />}
                 >
@@ -48,14 +46,12 @@ function Buttons() {
                 />
                 <Button
                     name="secondary-button"
-                    type="button"
                     variant="secondary"
                 >
                     Secondary
                 </Button>
                 <Button
                     name="secondary-button"
-                    type="button"
                     variant="secondary"
                     actions={<IoChevronForward />}
                 >
@@ -69,14 +65,12 @@ function Buttons() {
                 />
                 <Button
                     name="tertiary-button"
-                    type="button"
                     variant="tertiary"
                 >
                     Tertiary
                 </Button>
                 <Button
                     name="tertiary-button"
-                    type="button"
                     variant="tertiary"
                     actions={<IoChevronForward />}
                 >
@@ -90,7 +84,6 @@ function Buttons() {
                 />
                 <Button
                     name="tertiary-icon-button"
-                    type="button"
                     variant="navigationPrimary"
                     icons={<IoChevronBack />}
                 >
@@ -104,7 +97,6 @@ function Buttons() {
                 />
                 <Button
                     name="primary-button"
-                    type="button"
                     variant="download"
                     icons={<IoArrowDownOutline />}
                 >
@@ -118,7 +110,6 @@ function Buttons() {
                 />
                 <Button
                     name="navigation-secondary"
-                    type="button"
                     variant="navigationSecondary"
                     icons={<IoCaretBackSharp />}
                 >
@@ -132,19 +123,16 @@ function Buttons() {
                 />
                 <Button
                     name="dialog-confirm-button"
-                    type="button"
                     variant="dialogConfirmOk"
                     icons={<IoCheckmarkSharp />}
                 />
                 <Button
                     name="dialog-confirm-button"
-                    type="button"
                     variant="dialogConfirmCancel"
                     icons={<IoClose />}
                 />
                 <Button
                     name="navigate-top"
-                    type="button"
                     variant="navigateTop"
                     icons={<IoArrowUp />}
                 />
@@ -156,7 +144,6 @@ function Buttons() {
                 />
                 <Button
                     name="primary-button"
-                    type="button"
                     variant="buttonWithDescription"
                     actions={<IoLockClosed />}
                     buttonWithDescription="If you are an IFRC member, please login to see more details"
