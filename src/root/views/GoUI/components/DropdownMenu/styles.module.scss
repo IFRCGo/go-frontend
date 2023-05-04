@@ -1,3 +1,20 @@
 .dropdown {
-    padding: var(--go-ui-spacing-xs);
+    display: flex;
+    align-items: center;
+    background-color: var(--go-ui-color-primary-red);
+    color: var(--go-ui-color-white);
+    padding: calc(var(--go-ui-spacing-xxs)) var(--go-ui-spacing-3xl);
+    border-radius: var(--go-ui-spacing-md);
+    font-weight: var(--go-ui-font-weight-normal);
+    font-size: var(--go-ui-font-size-xs);
+    width: fit-content;
+    gap: var(--go-ui-spacing-sm);
+
+    &:hover {
+        background-color: var(--go-ui-color-red-hover);
+    }
+}
+
+.menu-container {
+    padding: calc(var(--go-ui-spacing-xs)) var(--go-ui-spacing-3xl);
 }

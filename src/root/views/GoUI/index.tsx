@@ -7,6 +7,7 @@ import Alerts from './examples/Alerts';
 import OverlayExample from './examples/OverlayExample';
 import Headings from './examples/Headings';
 import Button from './components/Button';
+import DropdownExample from './examples/DropdownExample';
 
 function GoUI() {
 
@@ -41,6 +42,13 @@ function GoUI() {
           Headings
         </Button>
         <Button
+          name="dropdown"
+          className={styles.option}
+          onClick={handleNewComponent}
+        >
+          Dropdown
+        </Button>
+        <Button
           name="cards"
           className={styles.option}
           onClick={handleNewComponent}
@@ -59,7 +67,7 @@ function GoUI() {
           className={styles.option}
           onClick={handleNewComponent}
         >
-          Overlay Example
+          Overlay
         </Button>
       </div>
       <div className={styles.componentLayout}>
@@ -69,8 +77,9 @@ function GoUI() {
         {element === "overlay" && <OverlayExample />}
         {element === "buttons" && <Buttons />}
         {element === "headings" && <Headings />}
-      </div>
-    </div>
+        {element === "dropdown" && <DropdownExample />}
+      </div >
+    </div >
   );
 }
 
