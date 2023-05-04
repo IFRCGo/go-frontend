@@ -8,6 +8,46 @@ interface ExposureObject {
   valueFormattedNoTrunc: string;
 }
 
+export interface MeteoSwissExposure {
+  footprint_geojson: {
+    geojson: {
+      id: number;
+      impact_type: string;
+      footprint_geojson: GeoJSON.FeatureCollection<GeoJSON.Geometry, {}>;
+    }[];
+  }
+}
+
+interface MeteoSwissEventImpact {
+  id: number;
+  max: number;
+  min: number;
+  mean: number;
+  impact_type: string;
+}
+
+export interface MeteoSwissEvent {
+  id: number,
+  hazard_name: string;
+  hazard_type: ImminentHazardTypes;
+  hazard_type_display: string;
+  start_date: string;
+  end_date: string;
+  latitude: number;
+  longitude: number;
+  country: number;
+  country_details: {
+      id: number;
+      name: string;
+      iso: string;
+      iso3: string;
+      region: number;
+  },
+  event_details: {
+    impacts: MeteoSwissEventImpact[];
+  }
+}
+
 export interface PDCEvent {
   created_at: string;
   description: string | null;
