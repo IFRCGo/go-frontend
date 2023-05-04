@@ -4,7 +4,7 @@ import React, {
     useRef,
 } from 'react';
 import { _cs } from '@togglecorp/fujs';
-
+import { IoCaretDownSharp, IoCaretForward } from 'react-icons/io5';
 import {
     useBlurEffect,
     useFloatPlacement,
@@ -34,7 +34,7 @@ function Dropdown(props: DropdownProps) {
         <div
             ref={elementRef}
             style={placement}
-            className={_cs('tc-dropdown-container', className)}
+            className={_cs(styles.menuContainer, 'tc-dropdown-container', className)}
         >
             {children}
         </div>
@@ -48,6 +48,7 @@ interface DropdownMenuProps {
     label?: React.ReactNode;
     activeClassName?: string;
     persistent?: boolean;
+    icons?: React.ReactNode;
 }
 
 function DropdownMenu(props: DropdownMenuProps) {
@@ -58,6 +59,7 @@ function DropdownMenu(props: DropdownMenuProps) {
         label,
         activeClassName,
         persistent,
+        icons,
     } = props;
 
     const buttonRef = useRef(null);
@@ -76,6 +78,14 @@ function DropdownMenu(props: DropdownMenuProps) {
 
     useBlurEffect(showDropdown, handleBlurCallback, dropdownRef, buttonRef);
 
+    const conditionalIcons = useCallback(() => {
+        const defaultIcons = showDropdown ? <IoCaretDownSharp /> : <IoCaretForward />;
+        if (icons) {
+            return icons;
+        }
+        return defaultIcons;
+    }, [icons, showDropdown]);
+
     return (
         <>
             <button
@@ -83,7 +93,7 @@ function DropdownMenu(props: DropdownMenuProps) {
                 ref={buttonRef}
                 onClick={handleMenuClick}
             >
-                {label}
+                {label} {conditionalIcons()}
             </button>
             {showDropdown && (
                 <Portal>

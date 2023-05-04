@@ -8,7 +8,7 @@ function OverlayExample() {
     <div className={styles.overlayContent}>
       <Overlay>
         <Header
-          heading="CARD COLLECTION"
+          heading="OVERLAY EXAMPLE"
           headingSize="medium"
         />
         <div className={styles.content}>

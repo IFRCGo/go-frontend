@@ -52,23 +52,21 @@
         color: var(--go-ui-color-primary-red);
 
         &:hover {
-            background-color: var(--go-ui-color-gray-20);
+            background-color: var(--go-ui-color-gray-30);
         }
     }
 
     &.tertiary {
-        color: var(--go-ui-color-gray-90);
-        background-color: var(--go-ui-color-gray-30);
+        background-color: var(--go-ui-color-gray-40);
         border-radius: var(--go-ui-spacing-md);
         font-weight: var(--go-ui-font-weight-normal);
 
         &:hover {
-            background-color: var(--go-ui-color-gray-20);
+            background-color: var(--go-ui-color-gray-30);
         }
     }
 
     &.navigation-primary {
-        color: var(--go-ui-color-gray-90);
         border-radius: var(--go-ui-spacing-md);
         font-weight: var(--go-ui-font-weight-normal);
         transition: transform 250ms linear;
@@ -89,7 +87,7 @@
         font-size: var(--go-ui-font-size-xs);
 
         &:hover {
-            background-color: var(--go-ui-color-gray-20);
+            background-color: var(--go-ui-color-gray-30);
         }
     }
 
@@ -102,7 +100,7 @@
         font-size: var(--go-ui-font-size-xs);
 
         &:hover {
-            background-color: var(--go-ui-color-gray-20);
+            background-color: var(--go-ui-color-gray-30);
         }
     }
 
@@ -115,7 +113,7 @@
         font-size: var(--go-ui-font-size-xs);
 
         &:hover {
-            background-color: var(--go-ui-color-gray-20);
+            background-color: var(--go-ui-color-gray-30);
         }
     }
 
@@ -125,11 +123,11 @@
         padding: var(--go-ui-spacing-lg) var(--go-ui-spacing-xs);
         border: 2px solid var(--go-ui-color-primary-red);
         font-size: var(--go-ui-font-size-xl);
-        transition: transform 300ms linear;
+        transition: transform 200ms linear;
 
         &:hover {
-            background-color: var(--go-ui-color-red-hover);
             transform: translateY(-3px);
+            background-color: var(--go-ui-color-red-hover);
         }
     }
 
