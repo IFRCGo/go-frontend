@@ -6,7 +6,7 @@ import {
   TabContext,
 } from './TabContext';
 
-import useHash from '#hooks/useHash';
+import useHash from '#views/GoUI/hooks/useHash';
 
 export interface BaseProps {
   children: React.ReactNode;

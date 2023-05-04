@@ -3,7 +3,6 @@ import { _cs } from '@togglecorp/fujs';
 import {
   ImCheckmark,
   ImCross,
-  // ImNotification,
 } from 'react-icons/im';
 
 import RawButton, { Props as RawButtonProps } from '#components/RawButton';
@@ -87,9 +86,6 @@ export default function Tab<T extends TabKey>(props: Props<T>) {
       onClick={context.useHash ? setHashToBrowser : context.setActiveTab}
       name={name}
       disabled={disabled}
-      // Note removing this for now,
-      // since it has weird behaviour with react-tabs
-      // role="tab"
       type="button"
       // eslint-disable-next-line react/jsx-props-no-spreading
       {...otherProps}
