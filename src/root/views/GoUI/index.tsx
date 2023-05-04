@@ -8,6 +8,7 @@ import OverlayExample from './examples/OverlayExample';
 import Headings from './examples/Headings';
 import Button from './components/Button';
 import DropdownExample from './examples/DropdownExample';
+import Navigation from './examples/Navigation';
 
 function GoUI() {
 
@@ -69,6 +70,13 @@ function GoUI() {
         >
           Overlay
         </Button>
+        <Button
+          name="tabs"
+          className={styles.option}
+          onClick={handleNewComponent}
+        >
+          Tab Panel
+        </Button>
       </div>
       <div className={styles.componentLayout}>
         {element === "links" && <Links />}
@@ -78,6 +86,7 @@ function GoUI() {
         {element === "buttons" && <Buttons />}
         {element === "headings" && <Headings />}
         {element === "dropdown" && <DropdownExample />}
+        {element === "tabs" && <Navigation />}
       </div >
     </div >
   );

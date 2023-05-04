@@ -1,0 +1,168 @@
+@use "sass:math";
+
+@import '~styles/settings/_variables.scss';
+
+.tab {
+  border: 0;
+  border-radius: 0;
+  padding: $spacing $spacing*3;
+  color: $color-text;
+  font-weight: $base-font-bold;
+
+  &.disabled {
+    pointer-events: none;
+  }
+
+  &.primary {
+    background-color: $color-background;
+    position: relative;
+
+    .active-border {
+      position: absolute;
+      bottom: 0;
+      left: $spacing*0.5;
+      width: calc(100% - #{$spacing});
+      background-color: $primary-color;
+      height: $base-border-width;
+      animation: grow-h .2s ease-in;
+    }
+
+    &.active {
+      background-color: $color-foreground;
+      color: $primary-color;
+    }
+
+    &.disabled {
+      color: $color-text-disabled;
+
+      .active-border {
+        background-color: $base-border-color;
+      }
+    }
+  }
+
+  &.secondary {
+    background-color: $color-background;
+    text-transform: uppercase;
+    border-radius: calc(1em + #{$spacing});
+
+    &.active {
+      color: $color-text-on-dark;
+      background-color: $primary-color;
+
+    }
+
+    &.disabled {
+      color: $color-text-disabled;
+    }
+
+  }
+
+  &.step {
+    position: relative;
+    text-transform: uppercase;
+    color: $color-text-light;
+    transition: $duration-transition-medium color, background-color ease-in-out;
+    padding: $spacing;
+
+    &:hover {
+      color: $color-text;
+    }
+
+    &.active {
+      color: $primary-color;
+    }
+
+    &.disabled {
+      color: $color-text-disabled;
+    }
+  }
+
+  &.errored {
+    position: relative;
+
+    .error-icon {
+      position: absolute;
+      color: $danger-color;
+      width: .75em;
+      height: .75em;
+      background-color: $danger-color;
+      border-radius: 50%;
+      transform: translate(-100%, -100%);
+    }
+  }
+}
+
+.primary-tab-wrapper {
+  padding: 0 $spacing*0.5;
+  border: $base-border-width solid transparent;
+  border-bottom-color: $base-border-color;
+
+  &.active {
+    border-color: $base-border-color;
+    border-bottom-color: transparent;
+  }
+}
+
+@keyframes grow-h {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(100%); }
+}
+
+.step-tab-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  flex-basis: 0;
+  flex-grow: 1;
+
+  .step-circle {
+    border-radius: 50%;
+    padding: math.div($spacing*1, 3);
+    border: $base-border-width*2 solid transparent;
+    transition: $duration-transition-slow border-color ease-in-out;
+    background-color: $color-background;
+
+    .inner-circle {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: lighten($color-text, 50%);
+      border-radius: 50%;
+      width: 1rem;
+      height: 1rem;
+      transition: $duration-transition-slow background-color ease-in-out;
+
+      .icon {
+        color: $color-text-on-dark;
+        padding: 0.1em;
+      }
+    }
+  }
+
+  &.completed {
+    .step-circle {
+      .inner-circle {
+        background-color: lighten($color-text, 20%);
+      }
+    }
+  }
+
+  &.active {
+    .step-circle {
+      border-color: $primary-color;
+
+      .inner-circle {
+        background-color: $primary-color;
+      }
+    }
+  }
+
+  &.disabled {
+    .step-circle {
+      opacity: $opacity-disabled-element;
+      filter: saturate(50%);
+    }
+  }
+}
