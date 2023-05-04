@@ -79,7 +79,7 @@ function ThreeW(props: Props) {
                 </a>
             </div>
           )}
-          <div className={styles.headerActions}>           
+          <div className={styles.headerActions}>
             <Button
               onClick={setShowProjectFormModalTrue}
               name={undefined}
