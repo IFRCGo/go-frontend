@@ -1,33 +1,31 @@
 import React from 'react';
-import { isDefined, isNotDefined, listToGroupList, listToMap, _cs } from '@togglecorp/fujs';
-
+import { isNotDefined, listToGroupList, _cs } from '@togglecorp/fujs';
 import useReduxState from '#hooks/useReduxState';
 import BlockLoading from '#components/block-loading';
 import MeteoSwissEevnt from '#components/RiskImminentEventMap/MeteoSwissEvent';
 import { ListResponse, useRequest } from '#utils/restRequest';
 import { MeteoSwissEvent, MeteoSwissExposure } from '#types/risk';
-
 import styles from './styles.module.scss';
 
 interface Props {
   className: string;
   regionId: number;
 }
+
 function ImminentEventsMeteoSwiss(props: Props) {
   const {
     className,
     regionId,
   } = props;
-
   const allRegions = useReduxState('allRegions');
 
-  const [activeEventUuid, setActiveEventUuid] = React.useState<number | undefined>(undefined);
+  const [activeEventId, setActiveEventId] = React.useState<number | undefined>(undefined);
   const region = React.useMemo(() => (
     allRegions?.data.results.find(d => d.id === regionId)
   ), [allRegions, regionId]);
 
   const handleEventClick = React.useCallback((eventUuid: number | undefined) => {
-    setActiveEventUuid((oldEventUuid) => {
+    setActiveEventId((oldEventUuid) => {
       if (oldEventUuid === eventUuid) {
         return undefined;
       }
@@ -48,25 +46,14 @@ function ImminentEventsMeteoSwiss(props: Props) {
     },
   });
 
-  const eventUuidToIdMap = React.useMemo(() => {
-    if (!meteoSwissResponse?.results) {
-      return {};
-    }
-
-    return listToMap(meteoSwissResponse.results, d => d.id, d => d.id);
-  }, [meteoSwissResponse?.results]);
-
-  const eventId = isDefined(activeEventUuid) ? eventUuidToIdMap[activeEventUuid] : undefined;
-
   const {
     pending: activeEventExposurePending,
     response: activeEventExposure,
   } = useRequest<MeteoSwissExposure>({
-    skip: isNotDefined(eventId),
-    url: `risk://api/v1/meteoswiss/${eventId}/exposure`,
+    skip: isNotDefined(activeEventId),
+    url: `risk://api/v1/meteoswiss/${activeEventId}/exposure`,
   });
 
-  // console.log("active exposure", activeEventExposurePending, activeEventExposure);
   const data = React.useMemo(() => {
     if (!meteoSwissResponse || !meteoSwissResponse.results) {
       return undefined;
@@ -105,7 +92,7 @@ function ImminentEventsMeteoSwiss(props: Props) {
           sidebarHeading={region?.region_name}
           hazardList={data}
           onActiveEventChange={handleEventClick}
-          activeEventUuid={activeEventUuid}
+          activeEventUuid={activeEventId}
           activeEventExposure={activeEventExposure}
           activeEventExposurePending={activeEventExposurePending}
         />
