@@ -94,6 +94,14 @@
   --go-ui-z-index-50: 50;
   --go-ui-z-index-auto: auto;
 
+  // Transition
+  --go-ui-duration-transition-fast: .13s;
+  --go-ui-duration-transition-medium: .3s;
+  --go-ui-duration-transition-slow: .56s;
+  --go-ui-duration-animation-fast: .2s;
+  --go-ui-duration-animation-medium: .5s;
+  --go-ui-duration-animation-slow: 1.2s;
+
   //Colors
   --go-ui-color-primary-red: #F5333F;
   --go-ui-color-primary-blue: #011E41;
