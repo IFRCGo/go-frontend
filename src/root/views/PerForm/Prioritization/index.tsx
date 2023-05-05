@@ -1,24 +1,50 @@
 import React from 'react';
 import LanguageContext from '#root/languageContext';
 
-import styles from './styles.module.scss';
 import ExpandableContainer from '#components/ExpandableContainer';
 import Container from '#components/Container';
-import TextArea from '#components/TextArea';
-import SelectInput from '#components/SelectInput';
 import { _cs } from '@togglecorp/fujs';
-import Table from '#components/Table';
-import { createStringColumn } from '#components/Table/predefinedColumns';
 import TextInput from '#components/TextInput';
+import ComponentsInput from '../Assessment/CustomActivityInput';
+import { Area, Component, PerOverviewFields } from '../common';
+import { EntriesAsList, PartialForm, SetBaseValueArg, useForm } from '@togglecorp/toggle-form';
+import { ListResponse, useLazyRequest, useRequest } from '#utils/restRequest';
+
+import styles from './styles.module.scss';
+import { prioritizationSchema } from '../usePerFormOptions';
+import ComponentsList from './ComponentList';
+
+type Value = PartialForm<PerOverviewFields>;
 
 interface Props {
   className?: string;
+  initialValue: Value;
+  onValueChange: (...entries: EntriesAsList<Value>) => void;
+  onValueSet: (value: SetBaseValueArg<Value>) => void;
+  perId?: string;
+  onSubmitSuccess?: (result: Component) => void;
 }
 
 function Prioritization(props: Props) {
   const {
     className,
+    perId,
+    onSubmitSuccess,
+    initialValue,
   } = props;
+
+  const {
+    value,
+    setFieldValue: onValueChange,
+    setValue: onValueSet,
+  } = useForm(prioritizationSchema, { value: {} });
+
+  const {
+    pending: fetchingAreas,
+    response: areaResponse,
+  } = useRequest<ListResponse<Area>>({
+    url: 'api/v2/per-formarea/',
+  });
 
   const { strings } = React.useContext(LanguageContext);
 
@@ -29,81 +55,13 @@ function Prioritization(props: Props) {
         <h5>Ranking</h5>
         <h5>Justification</h5>
       </div>
-      <ExpandableContainer
-        className={_cs(styles.customActivity, styles.errored)}
-        componentRef={undefined}
-        heading="prioritization"
-        headingSize="small"
-        sub
-        actions={
-          <>
-            <div>
-              Needs Improvement
-            </div>
-            <TextInput
-              className={styles.improvementSelect}
-              name="improvement"
-              onChange={undefined}
-              value={""}
-              placeholder="Enter"
-            />
-            <div>
-              Show Benchmarks
-            </div>
-          </>
-        }
-      >
-        <Container
-          description="NS DRM strategy reflects the NS mandate, analysis of country context, trends, operational objectives, success indicators."
-          className={styles.inputSection}
-          contentClassName={styles.questionContent}
-        >
-          <TextArea
-            className={styles.noteSection}
-            name="details"
-            label="Notes"
-            placeholder='This is placeholder'
-            value={undefined}
-            onChange={undefined}
-            error={undefined}
-            rows={2}
-            disabled
-          />
-          <div
-            className={styles.answers}
-          >
-            <label>
-              <input
-                type="radio"
-                name="yes-no-na"
-                value="no"
-              />
-              Yes
-            </label>
-            <label>
-              <input
-                type="radio"
-                name="yes-no-na"
-                value="no"
-              />
-              No
-            </label>
-            <label>
-              <input
-                type="radio"
-                name="yes-no-na"
-                value="no"
-              />
-              Not Revised
-            </label>
-          </div>
-          {/* <RadioInput
-        options={yesNoOptions}
-        value={undefined}
-        onChange={onValueChange}
-      /> */}
-        </Container>
-      </ExpandableContainer>
+      {areaResponse?.results?.map((item) => (
+        <ComponentsList
+          id={item.id}
+          onValueChange={onValueChange}
+          value={value}
+        />
+      ))}
     </Container>
   );
 }

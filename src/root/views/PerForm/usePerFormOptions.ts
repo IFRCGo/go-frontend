@@ -12,23 +12,18 @@ import {
   NumericKeyValuePair,
 } from '#types';
 import {
-  positiveNumberCondition,
-  positiveIntegerCondition,
   requiredCondition,
   emailCondition,
-  lessThanOrEqualToCondition,
 } from '#utils/form';
 
-import { emptyNumericOptionList, PerOverviewFields } from './common';
-import { ObjectSchema, PartialForm, defaultEmptyArrayType } from '@togglecorp/toggle-form';
+import { ComponentQuestion, emptyNumericOptionList, PerOverviewFields } from './common';
+import { ObjectSchema, PartialForm } from '@togglecorp/toggle-form';
 
-export type FormSchema = ObjectSchema<PartialForm<PerOverviewFields>>;
-export type FormSchemaFields = ReturnType<FormSchema['fields']>;
+export type OverviewFormSchema = ObjectSchema<PartialForm<PerOverviewFields>>;
+export type OverviewFormSchemaFields = ReturnType<OverviewFormSchema['fields']>;
 
-interface PerOptions {
-  type_of_assessment_details: NumericKeyValuePair[];
-  type_of_per_assessment: NumericKeyValuePair[];
-}
+export type PrioritizationFormSchema = ObjectSchema<PartialForm<ComponentQuestion>>;
+export type PrioritizationFormSchemaFields = ReturnType<PrioritizationFormSchema['fields']>;
 
 function transformKeyValueToLabelValue<O extends NumericKeyValuePair | StringKeyValuePair>(o: O): {
   label: string;
@@ -40,8 +35,8 @@ function transformKeyValueToLabelValue<O extends NumericKeyValuePair | StringKey
   };
 }
 
-export const schema: FormSchema = {
-  fields: (value): FormSchemaFields => ({
+export const overviewSchema: OverviewFormSchema = {
+  fields: (value): OverviewFormSchemaFields => ({
     id: [],
     type_of_assessment_details: [],
     country_details: [],
@@ -88,15 +83,18 @@ export const schema: FormSchema = {
   })
 };
 
+export const prioritizationSchema: PrioritizationFormSchema = {
+  fields: (value): PrioritizationFormSchemaFields => ({
+    id: [],
+    answer: [],
+    component: [],
+    description: [],
+    question: [],
+  })
+};
+
 function usePerFormOptions() {
   const { strings } = React.useContext(LanguageContext);
-
-  const {
-    pending: fetchingPerOptions,
-    response: perOptions,
-  } = useRequest<PerOptions>({
-    url: 'api/v2/new-per/',
-  });
 
   const {
     pending: fetchingCountries,

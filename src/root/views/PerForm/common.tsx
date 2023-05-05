@@ -58,6 +58,7 @@ export interface Component {
   description: string;
   id: string;
 }
+
 export interface Answer {
   id: string;
   text: string;
@@ -73,6 +74,11 @@ export interface ComponentQuestion {
   description: string;
   id: string;
   question: string;
+}
+
+export interface FormComponentStatus {
+  key: string;
+  value: string;
 }
 
 export type Option = NumericValueOption | BooleanValueOption | StringValueOption;
@@ -97,7 +103,7 @@ export interface PerOverviewFields {
   created_at: string;
   updated_at: string;
   date_of_orientation: string;
-  orientation_document: string;
+  orientation_document: File;
   assessment_number: number;
   branches_involved: string;
   date_of_assessment: string;
@@ -132,6 +138,8 @@ export interface PerOverviewFields {
   question_num: number;
   answers: Answer[];
   description: string;
+  workplan_development_date: string;
+  workplan_revision_date: string;
 }
 
 export const perOverviewFields: (keyof PerOverviewFields)[] = [
@@ -173,12 +181,15 @@ export const perOverviewFields: (keyof PerOverviewFields)[] = [
   'user',
   'type_of_assessment',
   'national_society',
+  'workplan_development_date',
+  'workplan_revision_date',
+  'description',
 ];
 
-export const perAssessmentFields: (keyof PerOverviewFields)[] = [
+export const perAssessmentFields: (keyof ComponentQuestion)[] = [
   'component',
   'question',
-  'question_num',
-  'answers',
+  'answer',
+  'description',
   'id',
 ];

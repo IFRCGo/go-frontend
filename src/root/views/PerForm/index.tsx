@@ -1,11 +1,10 @@
 import React from 'react';
-import { getErrorObject, ObjectError, PartialForm, useForm, accumulateErrors } from '@togglecorp/toggle-form';
+import { getErrorObject, ObjectError, PartialForm, useForm, accumulateErrors, EntriesAsList } from '@togglecorp/toggle-form';
 import type { match as Match } from 'react-router-dom';
 import LanguageContext from '#root/languageContext';
 
 import scrollToTop from '#utils/scrollToTop';
 import {
-  useLazyRequest,
   useRequest,
 } from '#utils/restRequest';
 
@@ -18,8 +17,8 @@ import TabPanel from '#components/Tabs/TabPanel';
 
 import PerOverview from './PerOverview';
 import Assessment from './Assessment';
-import usePerFormOptions, { schema } from './usePerFormOptions';
-import { perAssessmentFields, PerOverviewFields } from './common';
+import usePerFormOptions, { overviewSchema } from './usePerFormOptions';
+import { Area, Component, perAssessmentFields, PerOverviewFields } from './common';
 import Prioritization from './Prioritization';
 import WorkPlan from './WorkPlan';
 
@@ -59,7 +58,7 @@ function PerForm(props: Props) {
     validate,
     setError,
     setValue,
-  } = useForm(schema, { value: {} as PartialForm<PerOverviewFields> });
+  } = useForm(overviewSchema, { value: {} as PartialForm<PerOverviewFields> });
 
   const {
     nationalSocietyOptions,
@@ -78,7 +77,7 @@ function PerForm(props: Props) {
 
   const { strings } = React.useContext(LanguageContext);
 
-  const [currentStep, setCurrentStep] = React.useState<StepTypes>('overview');
+  const [currentStep, setCurrentStep] = React.useState<StepTypes>('prioritization');
   const submitButtonLabel = currentStep === 'workPlan';
 
   const handlePerLoad = React.useCallback((response: PerOverviewFields) => {
@@ -120,7 +119,7 @@ function PerForm(props: Props) {
   });
 
   const validateCurrentTab = React.useCallback((exceptions: (keyof PerOverviewFields)[] = []) => {
-    const validationError = getErrorObject(accumulateErrors(value, schema, value, undefined));
+    const validationError = getErrorObject(accumulateErrors(value, overviewSchema, value, undefined));
     const currentFields = stepTypesToFieldsMap[currentStep];
     const exceptionsMap = listToMap(exceptions, d => d, d => true);
 
@@ -238,7 +237,8 @@ function PerForm(props: Props) {
           />
         </TabPanel>
         <TabPanel name="assessment">
-          <Assessment />
+          <Assessment
+          />
         </TabPanel>
         <TabPanel name="prioritization">
           <Prioritization />

@@ -12,7 +12,7 @@ import { ListResponse, useLazyRequest, useRequest } from '#utils/restRequest';
 import LanguageContext from '#root/languageContext';
 import { compareString } from '#utils/utils';
 import useAlertContext from '#hooks/useAlert';
-import { schema } from '../usePerFormOptions';
+import { overviewSchema } from '../usePerFormOptions';
 import {
   BooleanValueOption,
   NumericValueOption,
@@ -55,7 +55,7 @@ interface Props {
 
 function PerOverview(props: Props) {
   const {
-    value,
+    value: outvalue,
     error: formError,
     fetchingNationalSociety,
     onValueChange,
@@ -71,8 +71,9 @@ function PerOverview(props: Props) {
   const alert = useAlertContext();
 
   const {
+    value,
     setFieldValue,
-  } = useForm(schema, { value: {} as PartialForm<PerOverviewFields> });
+  } = useForm(overviewSchema, { value: {} as PartialForm<PerOverviewFields> });
 
   const [currentStep, setCurrentStep] = React.useState<StepTypes>('overview');
 
@@ -102,7 +103,6 @@ function PerOverview(props: Props) {
       country: ns,
     });
   }, [value, onValueSet]);
-
 
   const {
     pending: perSubmitPending,
@@ -157,27 +157,17 @@ function PerOverview(props: Props) {
   });
 
   const handleSubmit = React.useCallback((finalValues) => {
+    console.warn('finalValues', finalValues);
     onValueSet(finalValues);
     submitRequest(finalValues);
   }, [onValueSet, submitRequest]);
-
-
-  const uploadFile = React.useCallback(
-    (file: File) => {
-      const formData = new FormData();
-      const formFile = formData.append('file', file);
-
-      console.log("form data file", file);
-      console.log("FORMDATA ", formFile);
-
-      // onValueSet({...value, orientation_document: formFile});
-      setFieldValue(file, 'orientation_document');
-    }, [setFieldValue]);
 
   const handleFileInputChange = React.useCallback((event) => {
     const files = event.target.files;
     if (files && files.length > 0) {
       const file = files[0];
+      console.warn('file', file);
+      setFieldValue(1, 'national_society');
       setFieldValue(file, 'orientation_document');
       // uploadFile(file);
     }
@@ -261,19 +251,6 @@ function PerOverview(props: Props) {
             onChange={handleFileInputChange}
             value={value?.orientation_document}
           />
-          {/* <FileInput
-            type='file'
-            accept='.docx'
-            buttonVariant="secondary"
-            error={error?.orientation_document}
-            fileIdToUrlMap={fileIdToUrlMap}
-            name="orientation_document"
-            onChange={handleFileInputChange}
-            // setFileIdToUrlMap={setFileIdToUrlMap}
-            value={value?.orientation_document}
-          >
-            {strings.drefFormUploadSupportingDocumentButtonLabel}
-          </FileInput> */}
         </InputSection>
       </Container>
       <Container
@@ -431,6 +408,32 @@ function PerOverview(props: Props) {
         </InputSection>
       </Container>
       <Container
+        heading={strings.perFormWorkPlanReviewsPlanned}
+        className={styles.sharing}
+        visibleOverflow
+      >
+        <InputSection
+          title={strings.perFormWorkPlanDevelopmentDate}
+        >
+          <DateInput
+            error={error?.workplan_development_date}
+            name="workplan_development_date"
+            onChange={onValueChange}
+            value={value?.workplan_development_date}
+          />
+        </InputSection>
+        <InputSection
+          title={strings.perFormWorkPlanRevisionDate}
+        >
+          <DateInput
+            error={error?.workplan_revision_date}
+            name="workplan_revision_date"
+            onChange={onValueChange}
+            value={value?.workplan_revision_date}
+          />
+        </InputSection>
+      </Container>
+      <Container
         heading={strings.perFormContactInformation}
         className={styles.sharing}
         visibleOverflow>
@@ -542,6 +545,5 @@ function PerOverview(props: Props) {
     </>
   );
 }
-
 
 export default PerOverview;
