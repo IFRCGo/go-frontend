@@ -1,5 +1,3 @@
-@import '~styles/settings/_variables.scss';
-
 .tab-list {
   position: relative;
   display: flex;
@@ -9,35 +7,35 @@
   .step-border {
     position: absolute;
     z-index: -1;
-    top: calc((#{$spacing} + 1rem) / 2);
+    top: calc((#{var(--go-ui-spacing-md)} + 1rem) / 2);
     width: 100%;
-    height: $base-border-width*2;
-    background-color: $base-border-color;
+    height: calc(var(--go-ui-spacing-px)*2);
+    background-color: var(--go-ui-color-gray-30);
 
     .progress {
       width: 0%;
       height: 100%;
-      background-color: $primary-color;
-      transition: $duration-transition-medium width ease-in-out;
+      background-color: var(--go-ui-color-primary-red);
+      transition: var(--go-ui-duration-transition-medium) width ease-in-out;
     }
   }
 
   .start-dummy-content,
   .end-dummy-content {
-    border-bottom: $base-border-width solid $base-border-color;
+    border-bottom: var(--go-ui-spacing-px) solid var(--go-ui-color-gray-30);
     flex-grow: 1;
     align-self: flex-end;
   }
 
   &.disabled {
     .step-border {
-      opacity: $opacity-disabled-element;
+      opacity: var(--opacity-disabled-element);
     }
   }
 
   &.secondary {
     width: fit-content;
-    background-color: $color-background;
-    border-radius: calc(1em + #{$spacing});
+    background-color: var(--go-ui-color-background);
+    border-radius: calc(1em + #{var(--go-ui-spacing-md)});
   }
 }
