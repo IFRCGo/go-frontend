@@ -1,22 +1,26 @@
 import React from 'react';
-import Map, { MapChildContext, MapContainer, MapLayer, MapShapeEditor, MapSource } from '@togglecorp/re-map';
-import { isNotDefined, noOp, _cs } from '@togglecorp/fujs';
+import { isDefined, _cs } from '@togglecorp/fujs';
 import { bbox as turfBbox } from '@turf/turf';
 import { BoundingBox, viewport } from '@mapbox/geo-viewport';
+import Map, {
+  MapChildContext,
+  MapContainer,
+  MapShapeEditor,
+} from '@togglecorp/re-map';
 
-import { defaultMapOptions, defaultMapStyle } from '#utils/map';
+import { defaultMapStyle } from '#utils/map';
+import { ListResponse, useRequest } from '#utils/restRequest';
 import BasicModal from '#components/BasicModal';
 import GoMapDisclaimer from '#components/GoMapDisclaimer';
 import Container from '#components/Container';
 import ExportButton from '#components/ExportableView/ExportButton';
 import { ProvinceResponse } from '#types/project';
-import { ListResponse, useRequest } from '#utils/restRequest';
 import MapEaseTo from '#components/MapEaseTo';
 import BlockLoading from '#components/block-loading';
+import { Country } from '#types/country';
 
 import styles from './styles.module.scss';
-import { GeoJSONSourceRaw } from 'mapbox-gl';
-import { Country } from '#types/country';
+
 const mapPadding = {
   left: 0,
   top: 0,
@@ -36,12 +40,6 @@ const defaultDrawOptions = ({
   touchEnabled: false,
 });
 
-interface Props {
-  className: string;
-  onCloseButtonClick?: () => void;
-  countryDetails?: Country;
-}
-
 const mapOptions = {
   logoPosition: 'top-left' as const,
   scrollZoom: false,
@@ -54,54 +52,16 @@ const mapOptions = {
   displayControlsDefault: false,
 };
 
-const geojsonNew ={
-  type: "FeatureCollection" as const,
-  features: [
-    {
-      type: "Feature" as const,
-      properties: {},
-      geometry: {
-        coordinates: [
-          [
-            [
-              60.503889000065236,
-              29.377476867128088
-            ],
-            [
-              74.87943118675915,
-              29.377476867128088
-            ],
-            [
-              74.87943118675915,
-              38.48893683918417
-            ],
-            [
-              60.503889000065236,
-              38.48893683918417
-            ],
-            [
-              60.503889000065236,
-              29.377476867128088
-            ]
-          ]
-        ],
-        type: "Polygon" as const,
-      }
-    }
-  ]
-};
+interface Props {
+  className: string;
+  onCloseButtonClick?: () => void;
+  countryDetails?: Country;
+}
 
-const testData = [
-  {
-    name:'abc',
-    iso3:'NPL',
-    value:32,
-    "alpha-2": 'NP-P3'
-  }
-];
 interface ChoroplethProps {
   data?: ProvinceResponse[];
 }
+
 function Choropleth(props:ChoroplethProps) {
   const {data} = props;
   const mc = React.useContext(MapChildContext);
@@ -109,41 +69,26 @@ function Choropleth(props:ChoroplethProps) {
   if (!mc || !mc.map || !mc.map.isStyleLoaded() || !data) {
     return null;
   }
-  const colorProperty = testData.reduce((acc, rd) => {
-    acc.push(rd['alpha-2']);
-    const color = "#00dd00";
-    acc.push(color);
-
-    return acc;
-  }, [
-      'match',
-      ['get', 'alpha-2'],
-    ]);
-  colorProperty.push('#c7c7c7');
-
-  console.log("color props", colorProperty);
 
   mc.map.on('click', (e) => {
-    console.log('A click event has occurred at', e);
+    const selectedFeatures = mc.map?.queryRenderedFeatures(e.point);
+    const districtId = selectedFeatures?.map((feature) => feature?.properties?.district_id).filter(el => isDefined(el));
+
+    if(isDefined(districtId) && districtId?.length > 0){
+      //eslint-disable-next-line
+      mc.map?.setPaintProperty('admin-1-highlight', 'fill-color', [
+        'match',
+        ['get', 'district_id'],
+        districtId,
+        '#ff0000',
+        '#fefefe'
+      ]);
+
+      //eslint-disable-next-line
+      mc.map?.setLayoutProperty('admin-1-highlight', 'visibility', 'visible');
+    }
   });
 
-  mc.map.setPaintProperty(
-    'admin-1-highlight',
-    'fill-color',
-    colorProperty,
-  );
-
-  mc.map.setLayoutProperty(
-    'admin-1-highlight',
-    'visibility',
-    'visible',
-  );
-  mc.map.setLayoutProperty(
-    'admin-1-boundary',
-    'visibility',
-    'visible',
-  );
-  console.log('data choropleth', data);
   return null;
 }
 
@@ -153,19 +98,9 @@ function ProvinceMapModal(props: Props) {
     onCloseButtonClick,
     countryDetails,
   } = props;
-  const mc = React.useContext(MapChildContext);
 
-  const [drawGeoJSON, setDrawGeoJSON] = React.useState<GeoJSONSourceRaw>();
+  // const [drawGeoJSON, setDrawGeoJSON] = React.useState<GeoJSONSourceRaw>();
 
-  const {
-    // pending: countryPending,
-    response: countryResponse,
-  } = useRequest<ListResponse<Country>>({
-    skip: !countryDetails,
-    url: `api/v2/country/?search=${countryDetails?.name}`,
-  });
-
-  console.info("country response ", countryResponse, countryDetails);
   const {
     pending: provinceDetailsPending,
     response: provinceResponse,
@@ -188,63 +123,61 @@ function ProvinceMapModal(props: Props) {
     }, [countryDetails],
   );
 
-  const handleMapDraw = React.useCallback(
-    (data, draw) => {
-      console.log(data,"----", draw);
-      setDrawGeoJSON(data);
-    }, []);
+  /* const handleMapDraw = React.useCallback(
+  (data, draw) => {
+  console.log(data,"----", draw);
+  setDrawGeoJSON(data);
+  }, []); */
 
-  const handleMode = React.useCallback (
+  /* const handleMode = React.useCallback (
     (mode, draw) => {
-      console.log("mode chande callback", mode, draw);
+    console.log("mode chande callback", mode, draw);
 
     },[]
-  );
+  ); */
 
-  const handleDoubleClick = (
+  /* const handleDoubleClick = (
     feature: mapboxgl.MapboxGeoJSONFeature, lngLat: mapboxgl.LngLat, point: mapboxgl.Point, map: mapboxgl.Map
-  ) => {
-    console.log("double click", feature);
-    return false;
-  };
+      ) => {
+      console.log("double click", feature);
+      return false;
+  }; */
 
-  const polygonGeoJson = React.useMemo(() => {
-    if (isNotDefined(countryDetails && countryDetails.bbox)) {
+  /* const polygonGeoJson = React.useMemo(() => {
+  if (isNotDefined(countryDetails && countryDetails.bbox)) {
       return {
-        type: 'FeatureCollection' as const,
-        features: [
-          {
-            type: "Feature" as const,
-            properties: {},
-            geometry: {
-              type: "Polygon" as const,
-              coordinates: [],
-            }
-          }
-        ]
-      };
-    }
-    return {
       type: 'FeatureCollection' as const,
       features: [
-        {
-          type: "Feature" as const,
-          properties: {},
-          geometry: {
-            type: "Polygon" as const,
-            coordinates: countryDetails?.bbox.coordinates,
-          }
-        }
+      {
+      type: "Feature" as const,
+      properties: {},
+      geometry: {
+      type: "Polygon" as const,
+      coordinates: [],
+      }
+      }
       ]
-    };
-  }, [countryDetails]);
+      };
+      }
+      return {
+      type: 'FeatureCollection' as const,
+      features: [
+      {
+      type: "Feature" as const,
+      properties: {},
+      geometry: {
+      type: "Polygon" as const,
+      coordinates: countryDetails?.bbox.coordinates,
+      }
+      }
+      ]
+      };
+}, [countryDetails]); */
 
-  console.log("geojson", polygonGeoJson);
-  console.info("new geo", geojsonNew);
-  console.info('map loaded', mc.map);
+  // console.log("geojson", polygonGeoJson);
+  // console.info("new geo", geojsonNew);
+  // console.info('map loaded', mc.map);
 
-  const mapLoaded = !mc || !mc.map || !mc.map.isStyleLoaded();
-  console.info("load--------", mapLoaded);
   return (
     <BasicModal
       className={_cs(styles.modal, className)}

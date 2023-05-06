@@ -53,9 +53,9 @@ import {
 } from './useThreeWOptions';
 
 import AnnualSplitInput from './AnnualSplitInput';
+import ProvinceMapModal from './ProvinceMapModal';
 
 import styles from './styles.module.scss';
-import ProvinceMapModal from './ProvinceMapModal';
 
 const defaultFormValues: PartialForm<FormType> = {
   project_districts: [],
@@ -450,7 +450,7 @@ function ThreeWForm(props: Props) {
               {showProvinceModal && (
                 <ProvinceMapModal
                   className={styles.provinceModal}
-                  onCloseButtonClick ={setShowProvinceModalFalse}
+                  onCloseButtonClick={setShowProvinceModalFalse}
                   countryDetails={filterCountryDetails}
                 />
               )}
