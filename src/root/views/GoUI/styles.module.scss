@@ -66,6 +66,14 @@
   --go-ui-width-separator-md: 2px;
   --go-ui-width-separator-lg: 4px;
   --go-ui-width-separator-xl: 8px;
+  // This will be refactored in the next upcoming PR
+  --go-ui-width-separator-thin: 1px;
+  --go-ui-width-separator-small: 2px;
+  --go-ui-width-separator-thick: 4px;
+  --go-ui-width-separator-medium: 6px;
+  --go-ui-width-separator-large: 8px;
+  --go-ui-width-separator-dense: 12px;
+  --go-ui-width-separator-extra-dense: 14px;
 
   // Borders
   --go-ui-border-radius-none: 0px;
