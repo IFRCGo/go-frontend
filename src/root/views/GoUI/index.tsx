@@ -5,6 +5,7 @@ import styles from './styles.module.scss';
 import Cards from './examples/Cards';
 import Alerts from './examples/Alerts';
 import OverlayExample from './examples/OverlayExample';
+import Headings from './examples/Headings';
 
 function GoUI() {
   return (
@@ -23,6 +24,9 @@ function GoUI() {
       </div>
       <div className={styles.elementsContainer}>
         <OverlayExample />
+      </div>
+      <div>
+        <Headings />
       </div>
     </div>
   );
