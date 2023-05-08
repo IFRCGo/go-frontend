@@ -1,0 +1,66 @@
+@import '~styles/settings/variables';
+
+.input-container {
+  position: relative;
+
+  .input-section {
+    display: flex;
+    align-items: center;
+    border-radius: $border-radius-input;
+    transition: $duration-transition-medium border-color ease-in-out;
+    z-index: 0;
+    background-color: $color-input-section-background;
+    padding: $spacing*0.5 $spacing;
+    border: $base-border-width solid transparent;
+
+    .internal-input-container {
+      flex-grow: 1;
+    }
+
+    &:focus-within {
+      border-bottom-color: $color-input-bottom-border-selected;
+    }
+  }
+
+  .input-hint {
+    font-size: $font-size-sm;
+    opacity: .7;
+    padding: $spacing*0.25 $spacing;
+  }
+
+  &.errored {
+    .input-section {
+      border-color: $color-input-border-errored;
+    }
+  }
+
+  &.disabled {
+    opacity: .5;
+  }
+
+  &.general {
+    .input-section {
+      border: none;
+      border-radius: 0;
+      border-bottom: $base-border-width solid $base-border-color;
+    }
+  }
+
+  .input-error {
+    position: absolute;
+    min-width: 8rem;
+    z-index: 1;
+  }
+
+  :global {
+    .go__menu {
+      z-index: 10;
+    }
+  }
+
+  &:hover {
+    .input-section {
+      border-bottom-color: $color-input-bottom-border-hover;
+    }
+  }
+}
