@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom';
 import Root from '#root';
 import 'react-tooltip/dist/react-tooltip.css';
 
-import './styles/main.scss';
+// import './styles/main.scss';
 
 var isIE = !!document.documentMode;
 if (!isIE) {
