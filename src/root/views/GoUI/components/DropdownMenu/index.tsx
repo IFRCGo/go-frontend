@@ -8,15 +8,15 @@ import { IoCaretDownSharp, IoCaretForward } from 'react-icons/io5';
 import {
     useBlurEffect,
     useFloatPlacement,
-} from '#root/hooks';
+} from '../../hooks';
 
 import Portal from '../Portal';
 import styles from './styles.module.scss';
 
 interface DropdownProps {
     className?: string;
-    elementRef?: React.MutableRefObject<null>;
-    parentRef?: React.MutableRefObject<null>;
+    elementRef: React.MutableRefObject<null>;
+    parentRef: React.MutableRefObject<null>;
     children?: React.ReactNode;
 }
 
@@ -34,7 +34,7 @@ function Dropdown(props: DropdownProps) {
         <div
             ref={elementRef}
             style={placement}
-            className={_cs(styles.menuContainer, 'tc-dropdown-container', className)}
+            className={_cs(styles.menuContainer, className)}
         >
             {children}
         </div>
