@@ -5,6 +5,7 @@ import styles from './styles.module.scss';
 import Cards from './examples/Cards';
 import Alerts from './examples/Alerts';
 import OverlayExample from './examples/OverlayExample';
+import Modals from './examples/Modals';
 import Headings from './examples/Headings';
 import Button from './components/Button';
 import DropdownExample from './examples/DropdownExample';
@@ -77,6 +78,13 @@ function GoUI() {
         >
           Tab Panel
         </Button>
+        <Button
+          name="modals"
+          className={styles.option}
+          onClick={handleNewComponent}
+        >
+          Modal
+        </Button>
       </div>
       <div className={styles.componentLayout}>
         {element === "links" && <Links />}
@@ -87,6 +95,7 @@ function GoUI() {
         {element === "headings" && <Headings />}
         {element === "dropdown" && <DropdownExample />}
         {element === "tabs" && <Navigation />}
+        {element === 'modals' && <Modals />}
       </div >
     </div >
   );
