@@ -16,5 +16,15 @@
 }
 
 .menu-container {
-    padding: calc(var(--go-ui-spacing-xs)) var(--go-ui-spacing-3xl);
+    padding: calc(var(--go-ui-spacing-md)*0.5) 0;
+    z-index: 10;
+    box-sizing: border-box;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    min-width: 15rem;
+    overflow: auto;
+    background: var(--go-ui-color-white);
+    border-radius: var(--go-ui-spacing-xs);
+    box-shadow: 0 0 0 var(--go-ui-spacing-px) var(--go-ui-color-gray-30), 0 4px 16px 2px var(--go-ui-color-gray-30);
 }
