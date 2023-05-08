@@ -13,9 +13,9 @@ export interface TypeOfAssessment {
   id: string;
   name: string;
   name_en: string;
-  name_es: string | null;
-  name_fr: string | null;
-  name_ar: string | null;
+  name_es: string;
+  name_fr: string;
+  name_ar: string;
 }
 
 export interface Country {
@@ -46,7 +46,7 @@ export interface Area {
   title_en: string;
   title_es: string;
   title_fr: string;
-  title_ar: string | null;
+  title_ar: string;
   area_num: number;
 }
 
@@ -54,7 +54,8 @@ export interface Component {
   area: Area;
   title: string;
   component: string;
-  component_letter: string | null;
+  component_letter: string;
+  component_num: number;
   description: string;
   id: string;
 }
@@ -63,9 +64,9 @@ export interface Answer {
   id: string;
   text: string;
   text_en: string;
-  text_es: string | null;
-  text_fr: string | null;
-  text_ar: string | null;
+  text_es: string;
+  text_fr: string;
+  text_ar: string;
 }
 
 export interface ComponentQuestion {
@@ -140,6 +141,9 @@ export interface PerOverviewFields {
   description: string;
   workplan_development_date: string;
   workplan_revision_date: string;
+  ns_second_focal_point_name: string;
+  ns_second_focal_point_email: string;
+  ns_second_focal_point_phone: string;
 }
 
 export const perOverviewFields: (keyof PerOverviewFields)[] = [
@@ -183,7 +187,9 @@ export const perOverviewFields: (keyof PerOverviewFields)[] = [
   'national_society',
   'workplan_development_date',
   'workplan_revision_date',
-  'description',
+  'ns_second_focal_point_name',
+  'ns_second_focal_point_email',
+  'ns_second_focal_point_phone',
 ];
 
 export const perAssessmentFields: (keyof ComponentQuestion)[] = [

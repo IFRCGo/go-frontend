@@ -18,24 +18,6 @@
     background-color: $color-background;
     overflow-y: visible;
     display: flex;
-
-    .question-content {
-      display: flex;
-      gap: $global-spacing-3;
-      padding-right: 20%;
-      // overflow-y: visible;
-
-      .note-section {
-        display: flex;
-        flex-direction: column;
-        flex-grow: 1;
-      }
-
-      .answers {
-        display: flex;
-        gap: $global-spacing-2;
-      }
-    }
   }
 }
 

@@ -1,9 +1,10 @@
 import React from 'react';
 
+import { ObjectSchema, PartialForm } from '@togglecorp/toggle-form';
 import { ListResponse, useRequest } from '#utils/restRequest';
+import { compareString } from '#utils/utils';
 import LanguageContext from '#root/languageContext';
 
-import { compareString } from '#utils/utils';
 import {
   Country,
   NumericValueOption,
@@ -17,13 +18,12 @@ import {
 } from '#utils/form';
 
 import { ComponentQuestion, emptyNumericOptionList, PerOverviewFields } from './common';
-import { ObjectSchema, PartialForm } from '@togglecorp/toggle-form';
 
 export type OverviewFormSchema = ObjectSchema<PartialForm<PerOverviewFields>>;
 export type OverviewFormSchemaFields = ReturnType<OverviewFormSchema['fields']>;
 
-export type PrioritizationFormSchema = ObjectSchema<PartialForm<ComponentQuestion>>;
-export type PrioritizationFormSchemaFields = ReturnType<PrioritizationFormSchema['fields']>;
+export type AssessmentFormScheme = ObjectSchema<PartialForm<ComponentQuestion>>;
+export type AssessmentFormSchemeFields = ReturnType<AssessmentFormScheme['fields']>;
 
 function transformKeyValueToLabelValue<O extends NumericKeyValuePair | StringKeyValuePair>(o: O): {
   label: string;
@@ -75,16 +75,14 @@ export const overviewSchema: OverviewFormSchema = {
     user: [],
     type_of_assessment: [],
     national_society: [requiredCondition],
-    component: [],
-    question: [],
-    question_num: [],
-    answers: [],
-    description: [],
+    ns_second_focal_point_name: [],
+    ns_second_focal_point_email: [],
+    ns_second_focal_point_phone: [],
   })
 };
 
-export const prioritizationSchema: PrioritizationFormSchema = {
-  fields: (value): PrioritizationFormSchemaFields => ({
+export const assessmentSchema: AssessmentFormScheme = {
+  fields: (value): AssessmentFormSchemeFields => ({
     id: [],
     answer: [],
     component: [],
@@ -93,11 +91,10 @@ export const prioritizationSchema: PrioritizationFormSchema = {
   })
 };
 
-function usePerFormOptions() {
+function usePerFormOptions(value: PartialForm<PerOverviewFields>) {
   const { strings } = React.useContext(LanguageContext);
 
   const {
-    pending: fetchingCountries,
     response: countriesResponse,
   } = useRequest<ListResponse<Country>>({
     url: 'api/v2/country/',
@@ -105,7 +102,6 @@ function usePerFormOptions() {
 
   const [
     nationalSocietyOptions,
-    countryOptions,
   ] = React.useMemo(() => {
     if (!countriesResponse) {
       return [emptyNumericOptionList, emptyNumericOptionList];
@@ -137,7 +133,6 @@ function usePerFormOptions() {
 
   return {
     nationalSocietyOptions,
-    countryOptions,
     yesNoOptions,
   };
 }

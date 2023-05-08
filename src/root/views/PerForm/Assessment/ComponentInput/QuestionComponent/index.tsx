@@ -1,10 +1,10 @@
 import React from 'react';
-import Container from "#components/Container";
-import { ListResponse } from "#utils/restRequest";
-import { ComponentQuestion, PerOverviewFields } from "#views/PerForm/common";
-import { isNotDefined } from "@togglecorp/fujs";
-import { EntriesAsList, PartialForm } from "@togglecorp/toggle-form";
-import { useRequest } from "@togglecorp/toggle-request";
+import Container from '#components/Container';
+import { ListResponse } from '#utils/restRequest';
+import { ComponentQuestion, PerOverviewFields } from '#views/PerForm/common';
+import { isNotDefined } from '@togglecorp/fujs';
+import { EntriesAsList, PartialForm } from '@togglecorp/toggle-form';
+import { useRequest } from '@togglecorp/toggle-request';
 import styles from './styles.module.scss';
 import TextArea from '#components/TextArea';
 
@@ -42,12 +42,14 @@ function QuestionComponent(props: Props) {
 
   return (
     <>
-      {questionResponse?.results.map((question) => (
+      {questionResponse?.results.map((question, i) => (
         <>
           <div className={styles.dot} />
           <div className={styles.dotConnector}>
             <Container
-              description={question.question}
+              description={
+                `${question?.component?.component_num}. ${i + 1} ${question?.question}`
+              }
               className={styles.inputSection}
               contentClassName={styles.questionContent}
             >
@@ -55,8 +57,8 @@ function QuestionComponent(props: Props) {
                 key={question.id}
                 id={question.id}
                 className={styles.noteSection}
-                label="Notes"
-                name="description"
+                label='Notes'
+                name='description'
                 value={value?.description}
                 onChange={onValueChange}
                 placeholder={undefined}
@@ -65,39 +67,30 @@ function QuestionComponent(props: Props) {
               />
               <div className={styles.answers}
               >
-                {/* <RadioInput
-                    name="text"
-                    options={yesNoOptions}
-                    keySelector={booleanOptionKeySelector}
-                    labelSelector={optionLabelSelector}
-                    value={undefined}
-                    onChange={onValueChange}
-                    error={undefined}
-                  /> */}
-                {/* <label>
-                    <input
-                      type="radio"
-                      name="yes-no-na"
-                      value="no"
-                    />
-                    Yes
-                  </label>
-                  <label>
-                    <input
-                      type="radio"
-                      name="yes-no-na"
-                      value="no"
-                    />
-                    No
-                  </label>
-                  <label>
-                    <input
-                      type="radio"
-                      name="yes-no-na"
-                      value="no"
-                    />
-                    Not Revised
-                  </label> */}
+                <label>
+                  <input
+                    type='radio'
+                    name='yes-no-na'
+                    value='no'
+                  />
+                  Yes
+                </label>
+                <label>
+                  <input
+                    type='radio'
+                    name='yes-no-na'
+                    value='no'
+                  />
+                  No
+                </label>
+                <label>
+                  <input
+                    type='radio'
+                    name='yes-no-na'
+                    value='no'
+                  />
+                  Not Revised
+                </label>
               </div>
             </Container>
           </div>

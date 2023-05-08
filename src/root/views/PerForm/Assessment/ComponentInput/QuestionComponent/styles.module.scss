@@ -1,3 +1,5 @@
+@import '~styles/settings/variables';
+
 .dot {
   height: 12px;
   width: 12px;
@@ -7,4 +9,21 @@
 }
 .dot-connector {
   border-left: 1px solid grey;
+}
+.question-content {
+  display: flex;
+  gap: $global-spacing-3;
+  padding-right: 20%;
+  // overflow-y: visible;
+
+  .note-section {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+  }
+
+  .answers {
+    display: flex;
+    gap: $global-spacing-2;
+  }
 }

@@ -1,20 +1,21 @@
 import React from 'react';
+import { _cs } from '@togglecorp/fujs';
+import { EntriesAsList, PartialForm, SetBaseValueArg, useForm } from '@togglecorp/toggle-form';
 import LanguageContext from '#root/languageContext';
+import { ListResponse, useLazyRequest, useRequest } from '#utils/restRequest';
+import useAlert from '#hooks/useAlert';
+
+import { assessmentSchema } from '../usePerFormOptions';
 import Tabs from '#components/Tabs';
 import TabList from '#components/Tabs/TabList';
 import Tab from '#components/Tabs/Tab';
 import TabPanel from '#components/Tabs/TabPanel';
 import Container from '#components/Container';
-import { ListResponse, useLazyRequest, useRequest } from '#utils/restRequest';
 import ProgressBar from '#components/ProgressBar';
 import ExpandableContainer from '#components/ExpandableContainer';
-import { _cs } from '@togglecorp/fujs';
 import Button from '#components/Button';
-import { Area, Component, PerOverviewFields } from '../common';
-import { EntriesAsList, PartialForm, SetBaseValueArg, useForm } from '@togglecorp/toggle-form';
-import { prioritizationSchema } from '../usePerFormOptions';
-import useAlert from '#hooks/useAlert';
 import ComponentsInput from './ComponentInput';
+import { Area, Component, PerOverviewFields } from '../common';
 
 import styles from './styles.module.scss';
 
@@ -22,36 +23,38 @@ type Value = PartialForm<PerOverviewFields>;
 
 interface Props {
   className?: string;
-  initialValue: Value;
-  onValueChange: (...entries: EntriesAsList<Value>) => void;
-  onValueSet: (value: SetBaseValueArg<Value>) => void;
+  initialValue?: Value;
+  onValueChange?: (...entries: EntriesAsList<Value>) => void;
+  onValueSet?: (value: SetBaseValueArg<Value>) => void;
   perId?: string;
   onSubmitSuccess?: (result: Component) => void;
 }
+
 type StepTypes = 'assessment' | 'prioritization';
 
 function Assessment(props: Props) {
   const {
     className,
     perId,
-    onSubmitSuccess,
     initialValue,
+    onSubmitSuccess,
+    onValueSet,
   } = props;
-  const alert = useAlert();
 
   const {
     value,
-    setFieldValue: onValueChange,
-    setValue: onValueSet,
-  } = useForm(prioritizationSchema, { value: {} });
+    setFieldValue,
+    setError: onErrorSet,
+  } = useForm(assessmentSchema, { value: {} as PartialForm<PerOverviewFields> });
 
+  const alert = useAlert();
   const { strings } = React.useContext(LanguageContext);
-  const {
-    pending: fetchingAssessmentOptions,
-    response: assessmentResponse,
-  } = useRequest<ListResponse<Component>>({
-    url: 'api/v2/per-formquestion/',
-  });
+  // const {
+  //   pending: fetchingAssessmentOptions,
+  //   response: assessmentResponse,
+  // } = useRequest<ListResponse<Component>>({
+  //   url: 'api/v2/per-formquestion/',
+  // });
 
   const {
     pending: fetchingAreas,
@@ -208,8 +211,9 @@ function Assessment(props: Props) {
               </h3>
             </div>
             <ComponentsInput
+              key={item.id}
               id={item.id}
-              onValueChange={onValueChange}
+              onValueChange={setFieldValue}
               value={value}
             />
           </TabPanel>

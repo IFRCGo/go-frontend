@@ -3,20 +3,19 @@ import { isNotDefined, _cs } from '@togglecorp/fujs';
 import { EntriesAsList, PartialForm } from '@togglecorp/toggle-form';
 
 import { ListResponse, useRequest } from '#utils/restRequest';
-import ExpandableContainer from '#components/ExpandableContainer';
 import { compareString } from '#utils/utils';
+import ExpandableContainer from '#components/ExpandableContainer';
+import TextInput from '#components/TextInput';
 
 import {
   PerOverviewFields,
   FormComponentStatus,
   emptyNumericOptionList,
+  Component,
 } from '../../common';
-import { Component } from '../../common';
+import QuestionList from './QuestionComponent';
 
 import styles from './styles.module.scss';
-import SelectInput from '#components/SelectInput';
-import QuestionList from './QuestionComponent';
-import TextInput from '#components/TextInput';
 
 type Value = PartialForm<PerOverviewFields>;
 

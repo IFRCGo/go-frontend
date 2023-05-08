@@ -22,8 +22,8 @@ import { PerOverviewFields } from '../common';
 
 interface Props {
   className?: string;
-  onRemove: (index: number) => void;
-  index: number;
+  onRemove?: (index: number) => void;
+  index?: number;
 }
 
 function WorkPlan(props: Props) {

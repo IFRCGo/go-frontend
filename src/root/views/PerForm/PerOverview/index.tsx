@@ -1,22 +1,27 @@
 import React from 'react';
 import {
-  EntriesAsList,
   getErrorObject,
   PartialForm,
   Error,
-  SetBaseValueArg,
   useForm,
+  createSubmitHandler,
+  SetBaseValueArg,
 } from '@togglecorp/toggle-form';
 
 import { ListResponse, useLazyRequest, useRequest } from '#utils/restRequest';
 import LanguageContext from '#root/languageContext';
 import { compareString } from '#utils/utils';
 import useAlertContext from '#hooks/useAlert';
-import { overviewSchema } from '../usePerFormOptions';
+import { NumericValueOption } from '#types';
+import usePerFormOptions, { overviewSchema } from '../usePerFormOptions';
+
 import {
-  BooleanValueOption,
-  NumericValueOption,
-} from '#types';
+  PerOverviewFields,
+  booleanOptionKeySelector,
+  optionLabelSelector,
+  TypeOfAssessment,
+  emptyNumericOptionList,
+} from '../common';
 
 import Container from '#components/Container';
 import InputSection from '#components/InputSection';
@@ -26,62 +31,53 @@ import TextInput from '#components/TextInput';
 import RadioInput from '#components/RadioInput';
 import Button from '#components/Button';
 import NumberInput from '#components/NumberInput';
-import {
-  PerOverviewFields,
-  booleanOptionKeySelector,
-  optionLabelSelector,
-  TypeOfAssessment,
-  emptyNumericOptionList,
-} from '../common';
 
 import styles from './styles.module.scss';
+import scrollToTop from '#utils/scrollToTop';
 
 type Value = PartialForm<PerOverviewFields>;
 
 type StepTypes = 'overview' | 'assessment';
 
 interface Props {
-  value: Value;
-  error: Error<Value> | undefined;
-  onValueChange: (...entries: EntriesAsList<Value>) => void;
-  nationalSocietyOptions: NumericValueOption[];
-  countryOptions: NumericValueOption[];
-  yesNoOptions: BooleanValueOption[],
-  fetchingCountries?: boolean;
+  className?: string;
+  error?: Error<Value> | undefined;
   onValueSet: (value: SetBaseValueArg<Value>) => void;
+  nationalSocietyOptions?: NumericValueOption[];
   fetchingNationalSociety?: boolean;
   perId?: string;
 }
 
 function PerOverview(props: Props) {
   const {
-    value: outvalue,
-    error: formError,
-    fetchingNationalSociety,
-    onValueChange,
-    nationalSocietyOptions,
-    yesNoOptions,
+    // initialValue,
     onValueSet,
-    countryOptions,
-    perId
+    perId,
   } = props;
-
-  const { strings } = React.useContext(LanguageContext);
-  // const { perId } = match.params;
-  const alert = useAlertContext();
 
   const {
     value,
-    setFieldValue,
+    error: formError,
+    validate,
+    setFieldValue: onValueChange,
+    setError: onErrorSet,
   } = useForm(overviewSchema, { value: {} as PartialForm<PerOverviewFields> });
 
+  const { strings } = React.useContext(LanguageContext);
+  const alert = useAlertContext();
+
   const [currentStep, setCurrentStep] = React.useState<StepTypes>('overview');
+
+  const {
+    nationalSocietyOptions,
+    yesNoOptions,
+  } = usePerFormOptions(value);
 
   const {
     pending: fetchingPerOptions,
     response: assessmentResponse,
   } = useRequest<ListResponse<TypeOfAssessment>>({
-    url: 'api/v2/per-assessmenttype/',
+    url: `api/v2/per-assessmenttype/`,
   });
 
   const assessmentOptions = React.useMemo(() => (
@@ -95,14 +91,6 @@ function PerOverview(props: Props) {
     () => getErrorObject(formError),
     [formError]
   );
-
-  const handleNSChange = React.useCallback((ns) => {
-    onValueSet({
-      ...value,
-      national_society: ns,
-      country: ns,
-    });
-  }, [value, onValueSet]);
 
   const {
     pending: perSubmitPending,
@@ -167,12 +155,11 @@ function PerOverview(props: Props) {
     if (files && files.length > 0) {
       const file = files[0];
       console.warn('file', file);
-      setFieldValue(1, 'national_society');
-      setFieldValue(file, 'orientation_document');
+      onValueChange(1, 'national_society');
+      onValueChange(file, 'orientation_document');
       // uploadFile(file);
     }
-  }, [setFieldValue]);
-  console.log('value', value);
+  }, [onValueChange]);
 
   const handleTabChange = React.useCallback((newStep: StepTypes) => {
     const isCurrentTabValid = (['orientation_document']);
@@ -185,6 +172,7 @@ function PerOverview(props: Props) {
   }, []);
 
   const handleSubmitButtonClick = React.useCallback(() => {
+    scrollToTop();
     if (currentStep === 'overview') {
       const nextStepMap: {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -203,7 +191,9 @@ function PerOverview(props: Props) {
   ]);
 
   return (
-    <>
+    <form
+      onSubmit={createSubmitHandler(validate, onErrorSet, handleSubmit)}
+    >
       <Container
         className={styles.sharing}
         visibleOverflow
@@ -215,12 +205,11 @@ function PerOverview(props: Props) {
           title={strings.perFormNationalSociety}
         >
           <SelectInput
-            error={error?.national_society}
             name={"national_society" as const}
-            onChange={handleNSChange}
+            onChange={onValueChange}
             options={nationalSocietyOptions}
-            pending={fetchingNationalSociety}
             value={value?.national_society}
+            error={error?.national_society}
           />
         </InputSection>
       </Container>
@@ -234,10 +223,10 @@ function PerOverview(props: Props) {
           description={strings.perFormDateOfOrientationDescription}
         >
           <DateInput
-            error={error?.date_of_orientation}
             name="date_of_orientation"
             onChange={onValueChange}
             value={value?.date_of_orientation}
+            error={error?.date_of_orientation}
           />
         </InputSection>
         <InputSection
@@ -250,6 +239,7 @@ function PerOverview(props: Props) {
             type="file"
             onChange={handleFileInputChange}
             value={value?.orientation_document}
+            error={error?.orientation_document}
           />
         </InputSection>
       </Container>
@@ -263,10 +253,10 @@ function PerOverview(props: Props) {
           description={strings.perFormDateOfAssessmentDescription}
         >
           <DateInput
-            error={error?.date_of_assessment}
             name="date_of_assessment"
             onChange={onValueChange}
             value={value?.date_of_assessment}
+            error={error?.date_of_assessment}
           />
         </InputSection>
         <InputSection
@@ -275,24 +265,36 @@ function PerOverview(props: Props) {
           <SelectInput
             name={"type_of_assessment" as const}
             options={assessmentOptions}
+            pending={fetchingPerOptions}
             onChange={onValueChange}
             value={value?.type_of_assessment}
             error={error?.type_of_assessment}
           />
         </InputSection>
         <InputSection
-          title={strings.perFormAssessmentNumber}
-          description={strings.perFormAssessmentNumberDescription}
+          title={strings.perFormDateOfPreviousPerAssessment}
         >
-          <NumberInput
-            name="assessment_number"
-            value={value?.assessment_number}
+          <DateInput
+            name="date_of_previous_assessment"
             onChange={onValueChange}
-            error={error?.assessment_number}
+            value={value?.date_of_previous_assessment}
+            error={error?.date_of_previous_assessment}
+          />
+        </InputSection>
+        <InputSection
+          title={strings.perFormTypeOfPreviousPerAssessment}
+        >
+          <SelectInput
+            name={"type_of_per_assessment" as const}
+            options={assessmentOptions}
+            onChange={onValueChange}
+            value={value?.type_of_per_assessment}
+            error={error?.type_of_per_assessment}
           />
         </InputSection>
         <InputSection
           title={strings.perFormBranchesInvolved}
+          description={strings.perFormbranchesInvolvedDescription}
         >
           <TextInput
             name="branches_involved"
@@ -355,55 +357,18 @@ function PerOverview(props: Props) {
         </InputSection>
       </Container>
       <Container
-        heading={strings.perFormPreviousPerAssessment}
-        className={styles.sharing}
+        heading={strings.perFormProcessCycleHeading}
         visibleOverflow
       >
         <InputSection
-          title={strings.perFormDateOfPreviousPerAssessment}
+          title={strings.perFormPerProcessCycleNumber}
+          description={strings.perFormAssessmentNumberDescription}
         >
-          <DateInput
-            error={error?.date_of_previous_assessment}
-            name="date_of_previous_assessment"
+          <NumberInput
+            name="assessment_number"
+            value={value?.assessment_number}
             onChange={onValueChange}
-            value={value?.date_of_previous_assessment}
-          />
-        </InputSection>
-        <InputSection
-          title={strings.perFormTypeOfPreviousPerAssessment}
-        >
-          <SelectInput
-            name={"type_of_per_assessment" as const}
-            options={assessmentOptions}
-            onChange={onValueChange}
-            value={value?.type_of_per_assessment}
-            error={error?.type_of_per_assessment}
-          />
-        </InputSection>
-      </Container>
-      <Container
-        heading={strings.perFormReviewsPlanned}
-        className={styles.sharing}
-        visibleOverflow
-      >
-        <InputSection
-          title={strings.perFormEstimatedDateOfMidTermReview}
-        >
-          <DateInput
-            error={error?.date_of_mid_term_review}
-            name="date_of_mid_term_review"
-            onChange={onValueChange}
-            value={value?.date_of_mid_term_review}
-          />
-        </InputSection>
-        <InputSection
-          title={strings.perFormEstimatedDateOfAssessment}
-        >
-          <DateInput
-            error={error?.date_of_next_asmt}
-            name="date_of_next_asmt"
-            onChange={onValueChange}
-            value={value?.date_of_next_asmt}
+            error={error?.assessment_number}
           />
         </InputSection>
       </Container>
@@ -426,19 +391,21 @@ function PerOverview(props: Props) {
           title={strings.perFormWorkPlanRevisionDate}
         >
           <DateInput
-            error={error?.workplan_revision_date}
             name="workplan_revision_date"
             onChange={onValueChange}
             value={value?.workplan_revision_date}
+            error={error?.workplan_revision_date}
           />
         </InputSection>
       </Container>
       <Container
         heading={strings.perFormContactInformation}
         className={styles.sharing}
-        visibleOverflow>
+        visibleOverflow
+      >
         <InputSection
           title={strings.perFormNsFocalPoint}
+          description={strings.perFormNSFocalPointDescription}
           multiRow
           twoColumn
         >
@@ -462,6 +429,34 @@ function PerOverview(props: Props) {
             value={value?.ns_focal_point_phone}
             onChange={onValueChange}
             error={error?.ns_focal_point_phone}
+          />
+        </InputSection>
+        <InputSection
+          title={strings.perFormNSSecondFocalPoint}
+          description={strings.perFormNSSecondFocalPointDescription}
+          multiRow
+          twoColumn
+        >
+          <TextInput
+            label="Name"
+            name="ns_second_focal_point_name"
+            value={value?.ns_second_focal_point_name}
+            onChange={onValueChange}
+            error={error?.ns_second_focal_point_name}
+          />
+          <TextInput
+            label="Email"
+            name="ns_second_focal_point_email"
+            value={value?.ns_second_focal_point_email}
+            onChange={onValueChange}
+            error={error?.ns_second_focal_point_email}
+          />
+          <TextInput
+            label="Phone Number"
+            name="ns_second_focal_point_phone"
+            value={value?.ns_second_focal_point_phone}
+            onChange={onValueChange}
+            error={error?.ns_second_focal_point_phone}
           />
         </InputSection>
         <InputSection
@@ -542,7 +537,7 @@ function PerOverview(props: Props) {
           </Button>
         </div>
       </Container>
-    </>
+    </form>
   );
 }
 
