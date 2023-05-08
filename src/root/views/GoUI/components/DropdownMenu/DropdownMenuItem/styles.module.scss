@@ -1,7 +1,7 @@
 .dropdown-menu-item {
   display: flex;
   width: 100%;
-  align-items: center;
+  justify-content: center;
   padding: var(--go-ui-spacing-sm);
 
   .icon-container {
