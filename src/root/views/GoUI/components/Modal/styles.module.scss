@@ -1,0 +1,63 @@
+.focus {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-grow: 1;
+}
+
+.modal {
+    --spacing: var(--go-ui-spacing-md);
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    border: var(--go-ui-width-separator-thin) solid var(--go-ui-color-separator);
+    border-radius: var(--go-ui-border-radius-md);
+    background-color: var(--go-ui-color-background);
+    padding: var(--spacing);
+    min-width: var(--go-ui-width-min-modal);
+    min-height: var(--go-ui-height-min-modal);
+    gap: var(--spacing);
+    overflow: auto;
+
+    .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      .close-button {
+        align-self: flex-end;
+      }
+    }
+
+    .modal-body {
+      display: flex;
+      flex-grow: 1;
+      overflow: auto;
+    }
+
+    .modal-footer {
+      display: flex;
+      flex-grow: 1;
+    }
+
+    &.size-sm {
+      max-width: var(--go-ui-width-modal-sm);
+    }
+
+    &.size-md {
+      max-width: var(--go-ui-width-modal-md);
+    }
+
+    &.size-lg {
+      max-width: var(--go-ui-width-modal-lg);
+    }
+
+    &.size-xl {
+      max-width: var(--go-ui-width-modal-xl);
+    }
+
+    &.size-full {
+      width: 100vw;
+      height: 100vh;
+    }
+  }
