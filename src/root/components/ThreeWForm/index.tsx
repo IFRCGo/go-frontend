@@ -156,12 +156,12 @@ function ThreeWForm(props: Props) {
 
   const {
     fetchingCountries,
-    fetchingDistricts,
+    // fetchingDistricts,
     fetchingEvents,
     fetchingDisasterTypes,
     nationalSocietyOptions,
     countryOptions,
-    districtOptions,
+    // districtOptions,
     sectorOptions,
     secondarySectorOptions,
     programmeTypeOptions,
@@ -170,10 +170,10 @@ function ThreeWForm(props: Props) {
     currentEmergencyOperationOptions,
     operationToDisasterMap,
     projectVisibilityOptions,
-    shouldDisableDistrictInput,
+    // shouldDisableDistrictInput,
     shouldShowCurrentEmergencyOperation,
     shouldShowCurrentOperation,
-    districtPlaceholder,
+    // districtPlaceholder,
     disasterTypeOptions,
     currentOperationPlaceholder,
     disasterTypePlaceholder,
@@ -281,10 +281,12 @@ function ThreeWForm(props: Props) {
     }, 'budget_amount');
   }, [onValueChange, value.actual_expenditure]);
 
+  /*
   const handleSelectAllDistrictButtonClick = React.useCallback(() => {
     const allDistricts = districtOptions.map(d => d.value);
     onValueChange(allDistricts, 'project_districts');
   }, [onValueChange, districtOptions]);
+*/
 
   const projectFormPending = submitRequestPending;
   const shouldDisableSubmitButton = submitRequestPending || projectDetailsPending;
@@ -441,13 +443,13 @@ function ThreeWForm(props: Props) {
               <Button
                 className={styles.provinceButton}
                 name="district"
-                variant="transparent"
                 onClick={setShowProvinceModalTrue}
+                disabled={!value.project_country}
               >
                 Select a Province/Region
               </Button>
 
-              {showProvinceModal && (
+              {showProvinceModal && filterCountryDetails && (
                 <ProvinceMapModal
                   className={styles.provinceModal}
                   onCloseButtonClick={setShowProvinceModalFalse}

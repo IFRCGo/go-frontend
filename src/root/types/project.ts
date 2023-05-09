@@ -263,10 +263,12 @@ export interface EmergencyProjectResponse {
   districts: number[];
 }
 
-export interface ProvinceResponse {
-  district_id: string;
-  name: string;
-  code: string;
+export interface Admin2 {
+  id: number;
   bbox: BBox;
   centroid: GeoJSON.Point;
+  code: string;
+  district_id: number;
+  is_deprecated: boolean;
+  name: string;
 }
