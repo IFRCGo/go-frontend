@@ -1,6 +1,5 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { _cs } from '@togglecorp/fujs';
-import Portal from '#goui/Portal';
 import BodyOverlay from '#goui/BodyOverlay';
 import Header from '#goui/Header';
 import Footer from '#goui/Footer';
@@ -9,12 +8,13 @@ import { IoClose } from 'react-icons/io5';
 import { FocusOn } from 'react-focus-on';
 import styles from './styles.module.scss';
 
-export type SizeType = 'sm' | 'md' | 'lg' | 'xl' | 'full';
+export type SizeType = 'sm' | 'md' | 'lg' | 'xl' | 'full' | 'auto';
 
 interface Props {
-  bodyClassName?: string;
   children: React.ReactNode;
   className?: string;
+  closeOnClickOutside?: boolean;
+  closeOnEscape?: boolean;
   footerClassName?: string;
   footerContent?: React.ReactNode;
   headerClassName?: string;
@@ -24,6 +24,7 @@ interface Props {
   size?: SizeType;
   title?: React.ReactNode;
   withCloseButton?: boolean;
+  bodyClassName?: string;
 }
 
 function Modal(props: Props) {
@@ -31,6 +32,8 @@ function Modal(props: Props) {
     bodyClassName,
     children,
     className,
+    closeOnClickOutside = true,
+    closeOnEscape = true,
     footerClassName,
     footerContent,
     headerClassName,
@@ -45,41 +48,60 @@ function Modal(props: Props) {
   const hasHeader = !!title || withCloseButton;
   const sizeStyle = styles[`size-${size}`];
 
+  const handleClickOutside = useCallback(() => {
+    if (closeOnClickOutside) {
+      onCloseButtonClick();
+    }
+  }, [onCloseButtonClick, closeOnClickOutside]);
+
+  const handleEscape = useCallback(() => {
+    if (closeOnEscape) {
+      onCloseButtonClick();
+    }
+  }, [onCloseButtonClick, closeOnEscape]);
+
   return (
     <>
       {opened && (
-        <Portal>
-          <BodyOverlay className={overlayClassName}>
-            <FocusOn className={styles.focus}>
-              <div className={_cs(styles.modal, sizeStyle, className)}>
-                {hasHeader && (
-                  <Header className={_cs(headerClassName, styles.modalHeader)}>
-                    {title && (
-                      title
-                    )}
-                    {withCloseButton && (
-                      <Button
-                        name={undefined}
-                        onClick={onCloseButtonClick}
-                        variant="action"
-                      >
-                        <IoClose />
-                      </Button>
-                    )}
-                  </Header>
-                )}
-                <div className={_cs(styles.modalBody, bodyClassName)}>
-                  {children}
-                </div>
-                <Footer className={_cs(styles.modalFooter, footerClassName)}>
-                  {footerContent}
-                </Footer>
+        <BodyOverlay className={overlayClassName}>
+          <FocusOn
+            className={_cs(styles.modalContainer, sizeStyle)}
+            onClickOutside={handleClickOutside}
+            onEscapeKey={handleEscape}
+          >
+            <div
+              className={_cs(styles.modal, className)}
+              role="dialog"
+              aria-modal={true}
+              aria-labelledby="modalLabel"
+              aria-describedby="modalBody"
+            >
+              {hasHeader && (
+                <Header className={_cs(headerClassName, styles.modalHeader)} id="modalLabel">
+                  {title && (
+                    title
+                  )}
+                  {withCloseButton && (
+                    <Button
+                      name={undefined}
+                      onClick={onCloseButtonClick}
+                      variant="action"
+                    >
+                      <IoClose />
+                    </Button>
+                  )}
+                </Header>
+              )}
+              <div className={_cs(styles.modalBody, bodyClassName)} id="modalBody">
+                {children}
               </div>
-            </FocusOn>
-          </BodyOverlay>
-        </Portal>
-      )
-      }
+              <Footer className={_cs(styles.modalFooter, footerClassName)}>
+                {footerContent}
+              </Footer>
+            </div>
+          </FocusOn>
+        </BodyOverlay>
+      )}
     </>
   );
 }
