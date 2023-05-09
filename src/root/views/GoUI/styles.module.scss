@@ -196,6 +196,12 @@
   --go-ui-saturate-100: 1;
   --go-ui-saturate-150: 1.5;
   --go-ui-saturate-200: 2;
+
+  font-family: var( --go-ui-font-family-sans);
+  font-family: var(--go-ui-font-family-sans);
+  font-size: var(--go-ui-font-size-sm);
+  font-weight: var(--go-ui-font-weight-light);
+  line-height: var(--go-ui-line-height-normal);
 }
 
 
@@ -235,13 +241,5 @@
         text-decoration: underline;
       }
     }
-  }
-
-
-  .main-content {
-    font-family: var(--go-ui-font-family-sans);
-    font-size: var(--go-ui-font-size-sm);
-    font-weight: var(--go-ui-font-weight-light);
-    line-height: var(--go-ui-line-height-normal);
   }
 }
