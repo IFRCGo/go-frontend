@@ -4,7 +4,7 @@ import SegmentInput from '#components/SegmentInput';
 import Button from '#components/Button';
 import Header from '#components/Header';
 import Heading from '#goui/Heading';
-import Headings from '../Headings';
+import TextInput from '#components/TextInput';
 
 import styles from './styles.module.scss';
 
@@ -33,6 +33,10 @@ const options: Option[] = [
   {
     key: 'full',
     label: 'full screen',
+  },
+  {
+    key: 'auto',
+    label: 'auto',
   }
 ];
 
@@ -42,6 +46,8 @@ const keySelector = (d: Option) => d.key;
 function Modals() {
   const [option, setOption] = useState<Option['key']>('md');
   const [opened, setOpened] = useState<boolean>(false);
+  const [value, setValue] = useState<string>();
+  const [surname, setSurname] = useState<string>();
 
   const handleChange = useCallback((value: SizeType | undefined) => {
     if (value) {
@@ -88,8 +94,20 @@ function Modals() {
           </Heading>
         )}
         onCloseButtonClick={handleCloseButtonClick}
+        bodyClassName={styles.content}
       >
-        <Headings />
+        <TextInput
+          name="name"
+          label="What is your name?"
+          onChange={setValue}
+          value={value}
+        />
+        <TextInput
+          name="surname"
+          label="What is your surname?"
+          onChange={setSurname}
+          value={surname}
+        />
       </Modal>
     </div>
   );

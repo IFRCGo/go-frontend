@@ -3,17 +3,19 @@ import { _cs } from '@togglecorp/fujs';
 import styles from './styles.module.scss';
 
 interface Props {
-  className?: string;
   children: React.ReactNode;
+  className?: string;
+  id?: string;
 }
 
 function Header(props: Props) {
   const {
-    className,
     children,
+    className,
+    id,
   } = props;
   return (
-    <header className={_cs(styles.header, className)}>
+    <header className={_cs(styles.header, className)} id={id}>
       {children}
     </header>
   );
