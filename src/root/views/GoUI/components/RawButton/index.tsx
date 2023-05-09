@@ -7,11 +7,10 @@ import styles from './styles.module.scss';
 
 export interface Props<N> extends Omit<React.HTMLProps<HTMLButtonElement>, 'ref' | 'onClick' | 'name'>{
   className?: string;
+  elementRef?: React.Ref<HTMLButtonElement>;
+  name: N;
   onClick?: (name: N, e: React.MouseEvent<HTMLButtonElement>) => void;
   type?: 'button' | 'submit' | 'reset';
-  name: N;
-  elementRef?: React.Ref<HTMLButtonElement>;
-  focused?: boolean;
 }
 
 /**
@@ -24,13 +23,12 @@ export interface Props<N> extends Omit<React.HTMLProps<HTMLButtonElement>, 'ref'
  */
 function RawButton<N>(props: Props<N>) {
   const {
-    className,
-    onClick,
     children,
+    className,
     disabled,
     elementRef,
     name,
-    focused,
+    onClick,
     ...otherProps
   } = props;
 
@@ -50,7 +48,6 @@ function RawButton<N>(props: Props<N>) {
       type="button"
       className={_cs(
         styles.rawButton,
-        focused && styles.focused,
         className,
       )}
       disabled={disabled}
