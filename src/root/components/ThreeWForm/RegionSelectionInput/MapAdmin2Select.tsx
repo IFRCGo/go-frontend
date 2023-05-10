@@ -17,8 +17,8 @@ import {
 interface Props {
   countryIso: string;
   districtId: number;
-  selectedAdmin2s: string[];
-  onClick: (admin2Id: string) => void;
+  selectedAdmin2s: number[] | undefined | null;
+  onClick: (admin2Id: number) => void;
 }
 
 function MapAdmin2Select(props: Props) {
@@ -52,8 +52,8 @@ function MapAdmin2Select(props: Props) {
     const handleMapClick = (e: mapboxgl.MapMouseEvent) => {
       const selectedFeatures = map.queryRenderedFeatures(e.point);
       const admin2Id = selectedFeatures?.filter(
-        (feature) => feature?.properties?.admin1_id === districtId && feature?.properties?.name
-      )[0]?.properties?.name as string | undefined;
+        (feature) => feature?.properties?.admin1_id === districtId && feature?.properties?.id
+      )[0]?.properties?.id as number| undefined;
 
       if (admin2Id && onClick) {
         onClick(admin2Id);
@@ -67,9 +67,9 @@ function MapAdmin2Select(props: Props) {
     };
   }, [map, mapStyleLoaded, onClick, districtId]);
 
-  const paintProperty = selectedAdmin2s.length > 0 ? [
+  const paintProperty = selectedAdmin2s && selectedAdmin2s.length > 0 ? [
     'match',
-    ['get', 'name'],
+    ['get', 'id'],
     ...selectedAdmin2s.map((admin2) => [
       admin2,
       HIGHLIGHT_COLOR,
@@ -77,9 +77,9 @@ function MapAdmin2Select(props: Props) {
     DEFAULT_FILL_COLOR,
   ] : DEFAULT_FILL_COLOR;
 
-  const textColor = selectedAdmin2s.length > 0 ? [
+  const textColor = selectedAdmin2s && selectedAdmin2s.length > 0 ? [
     'match',
-    ['get', 'name'],
+    ['get', 'id'],
     ...selectedAdmin2s.map((admin2) => [
       admin2,
       TEXT_COLOR_ON_DARK,

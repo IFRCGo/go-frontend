@@ -53,7 +53,7 @@ import {
 } from './useThreeWOptions';
 
 import AnnualSplitInput from './AnnualSplitInput';
-import ProvinceMapModal from './ProvinceMapModal';
+import RegionSelectionInput from './RegionSelectionInput';
 
 import styles from './styles.module.scss';
 
@@ -413,50 +413,16 @@ function ThreeWForm(props: Props) {
               pending={fetchingCountries}
               value={value.project_country}
             />
-              {/* <SelectInput<"project_districts", number>
-              disabled={shouldDisableDistrictInput}
-              pending={fetchingDistricts}
-              error={error?.project_districts}
-              isMulti
-              label={strings.projectFormDistrictLabel}
-              name="project_districts"
-              onChange={onValueChange}
-              options={districtOptions}
-              placeholder={districtPlaceholder}
-              value={value.project_districts}
-              actions={(
-                <button
-                  title={strings.projectFormSelectAllDistricts}
-                  type="button"
-                  className={_cs(
-                    styles.selectAllDistrictsButton,
-                    'button button--secondary',
-                    shouldDisableDistrictInput && 'disabled',
-                  )}
-                  disabled={shouldDisableDistrictInput}
-                  onClick={handleSelectAllDistrictButtonClick}
-                >
-                  <MdDoneAll />
-                </button>
-              )}
-            /> */}
-              <Button
-                className={styles.provinceButton}
-                name="district"
-                onClick={setShowProvinceModalTrue}
-                disabled={!value.project_country}
-              >
-                Select a Province/Region
-              </Button>
-
-              {showProvinceModal && filterCountryDetails && (
-                <ProvinceMapModal
-                  className={styles.provinceModal}
-                  onCloseButtonClick={setShowProvinceModalFalse}
-                  countryDetails={filterCountryDetails}
-                />
-              )}
-
+            <RegionSelectionInput
+              className={styles.regionSelectionInput}
+              districtsInputName={"project_districts" as const}
+              districtsInputValue={value.project_districts}
+              onDistrictsChange={onValueChange}
+              onAdmin2sChange={onValueChange}
+              admin2sInputName={"project_admin2" as const}
+              admin2sInputValue={value.project_admin2}
+              countryId={value.project_country}
+            />
           </InputSection>
           <InputSection
             title={strings.projectFormTypeOfOperation}

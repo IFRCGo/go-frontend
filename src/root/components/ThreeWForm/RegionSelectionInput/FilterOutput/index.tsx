@@ -14,19 +14,21 @@ interface Value {
   label: string;
 }
 
-interface Props {
+interface Props<D, A> {
+  districtsInputName: D;
   className?: string;
   districtOptions: Value[];
   admin2IdToLabelMap: Record<string, string>
   districts: number[];
-  admin2s: string[];
-  onDistrictsChange: (newValue: number[]) => void;
-  onAdmin2sChange: (newValue: string[]) => void;
+  admin2sInputName: A;
+  admin2s: number[];
+  onDistrictsChange: (newValue: number[], name: D) => void;
+  onAdmin2sChange: (newValue: number[], name: A) => void;
   admin2ToDistrictMap: Record<string, number>;
   doubleClickedDistrict?: number;
 }
 
-function FilterOutput(props: Props) {
+function FilterOutput<D, A>(props: Props<D, A>) {
   const {
     className,
     districtOptions,
@@ -37,6 +39,8 @@ function FilterOutput(props: Props) {
     admin2IdToLabelMap,
     onAdmin2sChange,
     doubleClickedDistrict,
+    districtsInputName,
+    admin2sInputName,
   } = props;
 
   const districtLabelMap = React.useMemo(() => (
@@ -50,18 +54,18 @@ function FilterOutput(props: Props) {
       newDistricts.splice(index, 1);
     }
 
-    onDistrictsChange(newDistricts);
-  }, [districts, onDistrictsChange]);
+    onDistrictsChange(newDistricts, districtsInputName);
+  }, [districts, onDistrictsChange, districtsInputName]);
 
-  const handleAdmin2Dismiss = React.useCallback((admin2Id: string)=> {
+  const handleAdmin2Dismiss = React.useCallback((admin2Id: number)=> {
     const newAdmin2s = [...admin2s];
     const index = newAdmin2s.findIndex((admin2) => admin2 === admin2Id);
     if (index !== -1) {
       newAdmin2s.splice(index, 1);
     }
 
-    onAdmin2sChange(newAdmin2s);
-  }, [admin2s, onAdmin2sChange]);
+    onAdmin2sChange(newAdmin2s, admin2sInputName);
+  }, [admin2s, onAdmin2sChange, admin2sInputName]);
 
   const admin2sForSelectedDistricts = React.useMemo(() => {
     return listToGroupList(

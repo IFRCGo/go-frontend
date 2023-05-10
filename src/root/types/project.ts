@@ -56,6 +56,7 @@ export interface ProjectFormFields {
   programme_type: number;
   project_country: number;
   project_districts: number[];
+  project_admin2: number[];
   reached_female: number | null;
   reached_male: number | null;
   reached_other: number | null;
@@ -100,6 +101,9 @@ export interface Project {
   project_country_detail: CountryMini;
   project_districts: number[];
   project_districts_detail: DistrictMini[];
+  project_admin2: number[];
+  project_admin2_detail: {
+  }[]
   reached_female: number | null;
   reached_male: number | null;
   reached_other: number | null;

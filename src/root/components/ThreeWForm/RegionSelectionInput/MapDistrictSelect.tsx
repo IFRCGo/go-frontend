@@ -36,7 +36,7 @@ function useMap() {
 
 interface Props {
   countryId: number;
-  selectedDistricts: number[];
+  selectedDistricts: number[] | undefined | null;
   onClick: (districtId: number) => void;
   onDoubleClick?: (districtId: number) => void;
 }
