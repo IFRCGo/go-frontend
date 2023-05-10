@@ -13,6 +13,9 @@ import Navigation from './examples/Navigation';
 import RawTextAreaExample from './examples/RawTextExample';
 import TextAreaExample from './examples/TextAreaExample';
 import TextInputExample from './examples/TextInputExample';
+import SwitchExample from './examples/SwitchExample';
+import CheckboxExample from './examples/CheckboxExample';
+import DateInputExample from './examples/DateInputExample';
 
 function GoUI() {
 
@@ -75,6 +78,27 @@ function GoUI() {
           Text Input
         </Button>
         <Button
+          name="dateInput"
+          className={styles.option}
+          onClick={handleNewComponent}
+        >
+          DateInput
+        </Button>
+        <Button
+          name="switch"
+          className={styles.option}
+          onClick={handleNewComponent}
+        >
+          Switch
+        </Button>
+        <Button
+          name="checkbox"
+          className={styles.option}
+          onClick={handleNewComponent}
+        >
+          Checkbox
+        </Button>
+        <Button
           name="cards"
           className={styles.option}
           onClick={handleNewComponent}
@@ -123,6 +147,9 @@ function GoUI() {
         {element === "raw-text-area" && <RawTextAreaExample />}
         {element === "text-area" && <TextAreaExample />}
         {element === "text-input" && <TextInputExample />}
+        {element === "switch" && <SwitchExample />}
+        {element === "checkbox" && <CheckboxExample />}
+        {element === "dateInput" && <DateInputExample />}
       </div >
     </div >
   );

@@ -1,0 +1,34 @@
+@import '~styles/settings/variables';
+
+.checkbox {
+  display: flex;
+  align-items: flex-start;
+  cursor: pointer;
+  gap: calc(var(--go-ui-spacing-md)*0.5);
+
+  .checkmark {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    font-size: 1.5em;
+    transition: var(--go-ui-duration-transition-medium) color ease-in-out;
+  }
+
+  .input {
+    display: none;
+  }
+
+  &.checked {
+    .checkmark {
+      color: var(--go-ui-color-primary-red);
+    }
+  }
+
+  &:focus,
+  &:hover {
+    .checkmark {
+      color: var(--go-ui-color-primary-red);
+    }
+  }
+}
+
