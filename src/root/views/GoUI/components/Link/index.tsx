@@ -1,107 +1,82 @@
 import React from 'react';
 import { _cs } from '@togglecorp/fujs';
+import useBasicLayout from '#goui/hooks/useBasicLayout';
 import { Link as InternalLink, LinkProps as RouterLinkProps } from 'react-router-dom';
-import {
-  IoChevronForward,
-  IoOpenOutline,
-} from 'react-icons/io5';
-import ButtonLikeLink from '#goui/components/ButtonLikeLink';
-
 import styles from './styles.module.scss';
 
-type LinkVariant = 'regular' | 'title' | 'text' | 'external' | 'secondary';
-
-const variantToIconMap: Record<LinkVariant, React.ReactElement | undefined> = {
-  regular: <IoChevronForward />,
-  title: <IoChevronForward />,
-  external: <IoOpenOutline />,
-  secondary: undefined,
-  text: undefined,
-};
-
-const variantStyleMap: Record<LinkVariant, string | undefined> = {
-  regular: undefined,
-  title: styles.title,
-  text: styles.text,
-  external: undefined,
-  secondary: styles.buttonLink,
-};
-
 export interface Props extends RouterLinkProps {
+  actions?: React.ReactNode;
   actionsContainerClassName?: string;
+  disabled?: boolean;
+  external?: boolean;
+  icons?: React.ReactNode;
   iconsContainerClassName?: string;
   linkElementClassName?: string;
-  actions?: React.ReactNode;
-  icons?: React.ReactNode;
-  variant?: LinkVariant;
+  underline?: boolean;
 }
 
 function Link(props: Props) {
   const {
-    className,
-    to,
-    variant = 'regular',
-    icons,
     actions,
     actionsContainerClassName,
+    children,
+    className,
+    disabled,
+    external,
+    icons,
     iconsContainerClassName,
     linkElementClassName,
-    children,
+    to,
+    underline,
     ...otherProps
   } = props;
 
-  const icon = variantToIconMap[variant];
+    const link = external ? (
+      <a
+        className={_cs(
+          linkElementClassName,
+          styles.link,
+        )}
+        href={to as string}
+        target="_blank"
+        rel="noopener noreferrer"
+        {...otherProps}
+      >
+        {children}
+      </a>
+    ) : (
+    <InternalLink
+      className={_cs(
+        linkElementClassName,
+        styles.link,
+      )}
+      to={to}
+      {...otherProps}
+    >
+      {children}
+    </InternalLink>
+  );
 
-  const specialLink = (variant === 'external') || (variant === 'secondary');
+  const {
+    content,
+    containerClassName,
+  } = useBasicLayout({
+    className,
+    icons,
+    children: link,
+    actions,
+    iconsContainerClassName,
+    actionsContainerClassName,
+  });
 
   return (
-    <div className={_cs(className, styles.linkContainer, variantStyleMap[variant])}>
-      {icons && (
-        <div className={_cs(iconsContainerClassName, styles.icons)}>
-          {icons}
-        </div>
-      )}
-      {variant === 'external' && (
-        <a
-          className={_cs(linkElementClassName, styles.link)}
-          href={to as string}
-          target="_blank"
-          rel="noopener noreferrer external"
-          {...otherProps}
-        >
-          {children}
-        </a>
-      )}
-
-      {variant === 'secondary' && (
-        <ButtonLikeLink
-          className={_cs(linkElementClassName, styles.buttonLink)}
-          to={to}
-          external
-          icons={icons}
-        >
-          {children}
-        </ButtonLikeLink>
-      )}
-
-      {!specialLink && (
-        <InternalLink
-          className={_cs(linkElementClassName, styles.link)}
-          to={to}
-          {...otherProps}
-        >
-          {children}
-        </InternalLink>
-      )}
-
-      {(actions || icon) && (
-        <div
-          className={_cs(actionsContainerClassName, styles.actions)}
-        >
-          {actions}
-          {icon && icon}
-        </div>
-      )}
+    <div className={_cs(
+      styles.linkContainer,
+      containerClassName,
+      underline && styles.underline,
+      disabled && styles.disabled,
+    )}>
+      {content}
     </div>
   );
 }
