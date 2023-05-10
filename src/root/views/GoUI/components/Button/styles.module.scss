@@ -47,26 +47,26 @@
   }
 
   &.primary {
-    border: var(--go-ui-width-separator-sm) solid var(--go-ui-color-primary-red);
-    background-color: var(--go-ui-color-primary-red);
-    color: var(--go-ui-color-white);
+    --border-color: var(--go-ui-color-primary-red);
+    --color-background: var(--go-ui-color-primary-red);
+    --color-text: var(--go-ui-color-white);
 
     &:not(:disabled) {
       &:hover {
-        background-color: var(--go-ui-color-red-hover);
+        --color-background: var(--go-ui-color-red-hover);
       }
     }
 
     &:disabled {
-      border: var(--go-ui-width-separator-sm) solid var(--go-ui-color-gray-40);
-      background-color: var(--go-ui-color-gray-40);
+      --border-color: var(--go-ui-color-gray-40);
+      --color-background: var(--go-ui-color-gray-40);
     }
   }
 
   &.secondary {
-    border: var(--go-ui-width-separator-sm) solid var(--go-ui-color-primary-red);
-    background-color: var(--go-ui-color-primary-white);
-    color: var(--go-ui-color-primary-red);
+    --color-border: var(--go-ui-color-primary-red);
+    --color-background: var(--go-ui-color-primary-white);
+    --color-text: var(--go-ui-color-primary-red);
 
     &:not(:disabled) {
       &:hover {
@@ -75,18 +75,15 @@
       }
     }
     &:disabled {
-      color: var(--go-ui-color-gray-40);
-      border: var(--go-ui-width-separator-sm) solid var(--go-ui-color-gray-40);
+      --color-text: var(--go-ui-color-gray-40);
+      --color-border: var(--go-ui-color-gray-40);
     }
   }
 
   &.tertiary {
-    --padding: 0;
     --color-border: transparent;
     --color-background: transparent;
     --color-text: inherit;
-    --border-radius: 0;
-    border: none;
 
     &:not(:disabled) {
       &:hover {
@@ -95,7 +92,7 @@
     }
 
     &:disabled {
-      color: var(--go-ui-color-gray-40);
+      --color-text: var(--go-ui-color-gray-40);
     }
   }
 
