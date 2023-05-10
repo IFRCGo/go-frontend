@@ -78,7 +78,7 @@ function FilterOutput<D, A>(props: Props<D, A>) {
   return (
     <div className={_cs(styles.filterOutput, className)}>
       <div className={styles.districtList}>
-          {[...districts].reverse().map((district) => (
+          {[...districts ?? []].reverse().map((district) => (
             <div
               className={styles.districtItem}
               key={String(district)}

@@ -139,7 +139,7 @@ function RegionSelectionInput<DN, DV extends number[], AN, AV extends number[]>(
     query: {
       country: countryId,
     },
-    skip: isNotDefined(countryId),
+    skip: !showModal && isNotDefined(countryId),
   });
 
   const districtOptions = React.useMemo(() => {
@@ -170,7 +170,7 @@ function RegionSelectionInput<DN, DV extends number[], AN, AV extends number[]>(
     response: admin2Response,
   } = useRequest<ListResponse<Admin2>>({
     url: 'api/v2/admin2/',
-    skip: isNotDefined(countryId),
+    skip: !showModal && isNotDefined(countryId),
     query: {
       admin1__country: countryId,
       limit: 10000,
@@ -221,8 +221,10 @@ function RegionSelectionInput<DN, DV extends number[], AN, AV extends number[]>(
         name="district"
         onClick={setShowModalTrue}
         disabled={!countryId}
+        variant="tertiary"
       >
-        Select a Province/Region
+        {!districtsInputValue || districtsInputValue.length === 0 ?
+          'Select Province/Region' : 'Edit Province/Region'}
       </Button>
       {showModal && countryDetails && (
         <BasicModal

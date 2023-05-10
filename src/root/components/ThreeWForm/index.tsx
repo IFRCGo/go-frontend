@@ -29,6 +29,7 @@ import TextOutput from '#components/text-output';
 import LanguageContext from '#root/languageContext';
 import RichTextArea from '#components/RichTextArea';
 import Switch from '#components/Switch';
+import RegionOutput from '#components/RegionOutput';
 
 import useAlert from '#hooks/useAlert';
 import {
@@ -40,7 +41,6 @@ import {
   ProjectFormFields,
   AnnualSplit,
 } from '#types';
-import useBooleanState from '#hooks/useBooleanState';
 
 import {
   schema,
@@ -98,11 +98,6 @@ function ThreeWForm(props: Props) {
     },
   );
 
-  const [
-    showProvinceModal,
-    setShowProvinceModalTrue,
-    setShowProvinceModalFalse,
-  ] = useBooleanState(false);
   const error = React.useMemo(() => getErrorObject(formError), [formError]);
   const annualSplitErrors = React.useMemo(() => getErrorObject(error?.annual_split_detail), [error]);
 
@@ -183,7 +178,7 @@ function ThreeWForm(props: Props) {
     shouldDisableTotalTarget,
     shouldDisableTotalReached,
     disasterTypeLabel,
-    countriesResponse,
+    // countriesResponse,
   } = useThreeWOptions(value);
 
 
@@ -281,13 +276,6 @@ function ThreeWForm(props: Props) {
     }, 'budget_amount');
   }, [onValueChange, value.actual_expenditure]);
 
-  /*
-  const handleSelectAllDistrictButtonClick = React.useCallback(() => {
-    const allDistricts = districtOptions.map(d => d.value);
-    onValueChange(allDistricts, 'project_districts');
-  }, [onValueChange, districtOptions]);
-*/
-
   const projectFormPending = submitRequestPending;
   const shouldDisableSubmitButton = submitRequestPending || projectDetailsPending;
 
@@ -295,6 +283,7 @@ function ThreeWForm(props: Props) {
     (val: number | undefined, name: 'project_country') => {
       onValueChange(val, name);
       onValueChange(undefined, 'project_districts' as const);
+      onValueChange(undefined, 'project_admin2' as const);
     },
     [onValueChange],
   );
@@ -321,41 +310,8 @@ function ThreeWForm(props: Props) {
     onValueChange,
   );
 
-  const filterCountryDetails = React.useMemo(
-    () => countriesResponse?.results.find(country => country.id === value.project_country),
-    [countriesResponse, value.project_country],
-  );
-
-  // if(!projectResponse)
-  // {
-  //   return(
-  //         <section className='inpage'>
-  //           <header className='inpage__header'>
-  //             <div className='inner'>
-  //               <div className='inpage__headline-content'>
-  //                 <h1 className='inpage__title'>
-  //                   <Translate stringId='fieldReportResourceNotFound'/>
-  //                 </h1>
-  //               </div>
-  //             </div>
-  //           </header>
-  //           <div className='inpage__body'>
-  //             <div className='inner'>
-  //               <div className='prose fold prose--responsive'>
-  //                 <div className='inner'>
-  //                   <p className='inpage_note'>
-  //                     <Translate stringId='fieldReportResourceDescription'/>
-  //                   </p>
-  //                 </div>
-  //               </div>
-  //             </div>
-  //           </div>
-  //         </section>
-  //   );
-  // }
   return (
-    <form
-      onSubmit={createSubmitHandler(validate, onErrorSet, handleSubmit)}
+    <div
       className={_cs(styles.threeWForm, className)}
     >
       {projectDetailsPending ? (
@@ -403,6 +359,8 @@ function ThreeWForm(props: Props) {
             title={strings.projectFormCountryTitle}
             description={strings.projectFormCountryHelpText}
             tooltip={strings.projectFormCountryTooltip}
+            multiRow
+            twoColumn
           >
             <SelectInput
               error={error?.project_country}
@@ -422,6 +380,11 @@ function ThreeWForm(props: Props) {
               admin2sInputName={"project_admin2" as const}
               admin2sInputValue={value.project_admin2}
               countryId={value.project_country}
+            />
+            <RegionOutput
+                districts={value.project_districts}
+                admin2s={value.project_admin2}
+                countryId={value.project_country}
             />
           </InputSection>
           <InputSection
@@ -779,7 +742,7 @@ function ThreeWForm(props: Props) {
             />
             <Button
               name={undefined}
-              type="submit"
+              onClick={createSubmitHandler(validate, onErrorSet, handleSubmit)}
               disabled={shouldDisableSubmitButton}
               variant="secondary"
             >
@@ -788,7 +751,7 @@ function ThreeWForm(props: Props) {
           </div>
         </>
       )}
-    </form>
+    </div>
   );
 }
 
