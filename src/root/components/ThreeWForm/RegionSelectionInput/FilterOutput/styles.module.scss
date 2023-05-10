@@ -3,19 +3,19 @@
 .filter-output {
   display: flex;
   flex-direction: column;
-  padding: $spacing 0;
+  padding: 0;
 
   .district-list {
     display: flex;
     flex-direction: column;
     gap: $spacing*0.75;
-    padding: $spacing 0;
+    padding: 0;
 
     .district-name {
       display: flex;
       gap: $spacing*0.5;
       align-items: center;
-      background-color: $grey-titanium;
+      background-color: $grey-pearl;
       padding: $spacing*0.5;
 
       .label {
@@ -40,7 +40,7 @@
       display: flex;
       flex-direction: column;
       gap: $spacing*0.5;
-      background-color: $grey-pearl;
+      background-color: $grey-titanium;
 
       .admin-two-item {
         display: flex;

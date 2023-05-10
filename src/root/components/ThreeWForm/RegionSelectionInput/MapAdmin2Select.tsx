@@ -154,6 +154,8 @@ function MapAdmin2Select(props: Props) {
               ],
             },
             layout: {
+              // FIXME: fix this in remap
+              // @ts-ignore
               'text-field': ['get', 'name'],
               'text-anchor': 'center',
               'text-size': 10,

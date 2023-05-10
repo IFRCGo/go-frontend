@@ -65,6 +65,7 @@ function ThreeWEdit(props: Props) {
       className={_cs(styles.threeWDetails, className)}
       title={strings.threeWEditPageTitle}
       breadCrumbs={<BreadCrumb crumbs={crumbs} compact />}
+      heading={strings.threeWEditProject}
     >
       <Container>
         {isDefined(projectId) && (

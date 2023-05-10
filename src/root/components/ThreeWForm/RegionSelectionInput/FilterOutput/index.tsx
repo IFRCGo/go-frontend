@@ -14,21 +14,19 @@ interface Value {
   label: string;
 }
 
-interface Props<D, A> {
-  districtsInputName: D;
+interface Props<DV extends number, AV extends number> {
   className?: string;
   districtOptions: Value[];
   admin2IdToLabelMap: Record<string, string>
-  districts: number[];
-  admin2sInputName: A;
-  admin2s: number[];
-  onDistrictsChange: (newValue: number[], name: D) => void;
-  onAdmin2sChange: (newValue: number[], name: A) => void;
+  districts: DV[];
+  admin2s: AV[];
+  onDistrictsChange: (newValue: DV[]) => void;
+  onAdmin2sChange: (newValue: AV[]) => void;
   admin2ToDistrictMap: Record<string, number>;
   doubleClickedDistrict?: number;
 }
 
-function FilterOutput<D, A>(props: Props<D, A>) {
+function FilterOutput<DV extends number, AV extends number>(props: Props<DV, AV>) {
   const {
     className,
     districtOptions,
@@ -39,8 +37,6 @@ function FilterOutput<D, A>(props: Props<D, A>) {
     admin2IdToLabelMap,
     onAdmin2sChange,
     doubleClickedDistrict,
-    districtsInputName,
-    admin2sInputName,
   } = props;
 
   const districtLabelMap = React.useMemo(() => (
@@ -48,28 +44,36 @@ function FilterOutput<D, A>(props: Props<D, A>) {
   ), [districtOptions]);
 
   const handleDistrictDismiss = React.useCallback((districtId: number)=> {
+    if (!districts) {
+      return undefined;
+    }
+
     const newDistricts = [...districts];
     const index = newDistricts.findIndex((district) => district === districtId);
     if (index !== -1) {
       newDistricts.splice(index, 1);
     }
 
-    onDistrictsChange(newDistricts, districtsInputName);
-  }, [districts, onDistrictsChange, districtsInputName]);
+    onDistrictsChange(newDistricts);
+  }, [districts, onDistrictsChange]);
 
   const handleAdmin2Dismiss = React.useCallback((admin2Id: number)=> {
+    if (!admin2s) {
+      return undefined;
+    }
+
     const newAdmin2s = [...admin2s];
     const index = newAdmin2s.findIndex((admin2) => admin2 === admin2Id);
     if (index !== -1) {
       newAdmin2s.splice(index, 1);
     }
 
-    onAdmin2sChange(newAdmin2s, admin2sInputName);
-  }, [admin2s, onAdmin2sChange, admin2sInputName]);
+    onAdmin2sChange(newAdmin2s);
+  }, [admin2s, onAdmin2sChange]);
 
   const admin2sForSelectedDistricts = React.useMemo(() => {
     return listToGroupList(
-      admin2s,
+      admin2s ?? [],
       (admin2) => admin2ToDistrictMap[admin2],
       (admin2) => admin2,
     );

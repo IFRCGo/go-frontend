@@ -57,10 +57,11 @@ function MapDistrictSelect(props: Props) {
       return;
     }
 
+    map.setLayoutProperty(LAYER_NAME, 'visibility', 'visible');
+    map.setPaintProperty(LAYER_NAME, 'fill-color', DEFAULT_FILL_COLOR);
     highlightLayer(map, 'admin-1', 'country_id', countryId);
     highlightLayer(map, 'admin-0', 'country_id', countryId);
 
-    map.setLayoutProperty(LAYER_NAME, 'visibility', 'visible');
     map.doubleClickZoom.disable();
   }, [map, countryId]);
 
