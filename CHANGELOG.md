@@ -6,7 +6,7 @@ Frontend:
  - Add more columns to AppealDoc listing
  - Add new sectors temporary copy from backend
  - Make districts field optional for Response Activity
-   · in 3W maps use whole country, when no districts are selected
+   - in 3W maps use whole country, when no districts are selected
  - Add wildfire events for PDC events in Risk pages
  - Fix title width and text overlap issue in the DREF pdf export
  - Add DREF loan type to DREF application and DREF Operational Update
