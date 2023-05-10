@@ -1,0 +1,64 @@
+.input-container {
+  position: relative;
+
+  .input-section {
+    display: flex;
+    align-items: center;
+    border-radius: var(--go-ui-border-radius-md);
+    transition: var(--go-ui-duration-transition-medium) var(--go-ui-color-gray-10) ease-in-out;
+    z-index: 0;
+    background-color: var(--go-ui-color-gray-10);
+    padding: calc(var(--go-ui-spacing-md)*0.5) var(--go-ui-spacing-md);
+    border: var(--go-ui-width-separator-thin) solid transparent;
+
+    .internal-input-container {
+      flex-grow: 1;
+    }
+
+    &:focus-within {
+      border-bottom-color: var(--go-ui-color-red);
+    }
+  }
+
+  .input-hint {
+    font-size: var(--go-ui-font-size-sm);
+    opacity: .7;
+    padding: calc(var(--go-ui-spacing-md)*0.5) var(--go-ui-spacing-md);
+  }
+
+  &.errored {
+    .input-section {
+      border-color: var(--go-ui-color-red);
+    }
+  }
+
+  &.disabled {
+    opacity: .5;
+  }
+
+  &.general {
+    .input-section {
+      border: none;
+      border-radius: 0;
+      border-bottom: var(--go-ui-width-separator-thin) solid var(--go-ui-color-gray-80);
+    }
+  }
+
+  .input-error {
+    position: absolute;
+    min-width: var(-go-ui-spacing-8xl);
+    z-index: 1;
+  }
+
+  :global {
+    .go__menu {
+      z-index: 10;
+    }
+  }
+
+  &:hover {
+    .input-section {
+      border-bottom-color: var(--go-ui-color-red);
+    }
+  }
+}

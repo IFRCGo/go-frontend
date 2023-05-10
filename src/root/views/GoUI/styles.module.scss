@@ -28,7 +28,7 @@
   --go-ui-line-height-loose: 2;
 
   --go-ui-font-weight-thin: 100;
-  --go-ui-font-weight-extralight: 200;
+  --go-ui-font-weight-extra-light: 200;
   --go-ui-font-weight-light: 300;
   --go-ui-font-weight-normal: 400;
   --go-ui-font-weight-medium: 500;
@@ -66,6 +66,14 @@
   --go-ui-width-separator-md: 2px;
   --go-ui-width-separator-lg: 4px;
   --go-ui-width-separator-xl: 8px;
+  // This will be refactored in the next upcoming PR
+  --go-ui-width-separator-thin: 1px;
+  --go-ui-width-separator-small: 2px;
+  --go-ui-width-separator-thick: 4px;
+  --go-ui-width-separator-medium: 6px;
+  --go-ui-width-separator-large: 8px;
+  --go-ui-width-separator-dense: 12px;
+  --go-ui-width-separator-extra-dense: 14px;
 
   // Borders
   --go-ui-border-radius-none: 0px;
@@ -155,7 +163,7 @@
   --go-ui-color-negative: var(--go-ui-color-red);
   --go-ui-color-background: #F7F7F7;
   --go-ui-color-separator: var(--go-ui-color-gray-50);
-  --go-ui-color-background-overlay: rgb(0 0 0  / .6);
+  --go-ui-color-background-overlay: rgb(0 0 0 / .6);
 
   //Opacity
   --go-ui-opacity-0: 0;
@@ -178,7 +186,7 @@
   --go-ui-width-min-modal: 18rem;
   --go-ui-height-min-height: 11rem;
 
- --go-ui-width-modal-sm: 32rem;
+  --go-ui-width-modal-sm: 32rem;
   --go-ui-height-modal-sm: 100%;
 
   --go-ui-width-modal-md: 42rem;
@@ -197,7 +205,7 @@
   --go-ui-saturate-150: 1.5;
   --go-ui-saturate-200: 2;
 
-  font-family: var( --go-ui-font-family-sans);
+  font-family: var(--go-ui-font-family-sans);
   font-family: var(--go-ui-font-family-sans);
   font-size: var(--go-ui-font-size-sm);
   font-weight: var(--go-ui-font-weight-light);
@@ -213,6 +221,7 @@
   .component-layout {
     display: flex;
     flex-direction: column;
+    flex-wrap: wrap;
     flex-grow: 1;
     overflow-x: auto;
     gap: var(--go-ui-spacing-md);
@@ -241,5 +250,12 @@
         text-decoration: underline;
       }
     }
+  }
+
+  .main-content {
+    font-family: var(--go-ui-font-family-sans);
+    font-size: var(--go-ui-font-size-sm);
+    font-weight: var(--go-ui-font-weight-light);
+    line-height: var(--go-ui-line-height-normal);
   }
 }
