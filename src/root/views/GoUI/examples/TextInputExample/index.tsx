@@ -1,8 +1,8 @@
 import React, { useCallback, useState } from "react";
-import TextArea from "../../components/TextArea";
+import TextInput from '#goui/components/TextInput';
 import styles from './styles.module.scss';
 
-function TextAreaExample() {
+function TextInputExample() {
     const [textGroup, setTextGroup] = useState('');
 
     const handleTextChange = useCallback((val) => {
@@ -12,41 +12,41 @@ function TextAreaExample() {
     return (
         <>
             <div className={styles.textBox}>
-                <TextArea
+                <TextInput
                     className={styles.textExample}
-                    name="anonymous"
+                    name="Candidate"
                     labelClassName={styles.textLabel}
-                    label="Write some random stuff"
+                    label="Candidate Name"
                     value={textGroup}
                     onChange={handleTextChange}
-                    rows={5}
+                    rows={2}
                 />
             </div>
             <div className={styles.textBox}>
-                <TextArea
+                <TextInput
                     className={styles.textExample}
-                    name="anonymous"
+                    name="Candidate"
                     labelClassName={styles.textLabel}
-                    label="An example of disabled text box"
+                    label="Disabled Candidate Name"
                     value={textGroup}
                     onChange={handleTextChange}
-                    rows={5}
+                    rows={2}
                     disabled={true}
                 />
             </div>
             <div className={styles.textBox}>
-                <TextArea
+                <TextInput
                     className={styles.textExample}
-                    name="anonymous"
+                    name="Candidate"
                     labelClassName={styles.textLabel}
-                    label="An example of error text box"
+                    label="Error in text input"
                     value={textGroup}
                     onChange={handleTextChange}
-                    rows={5}
-                    error="Please enter the right text"
+                    rows={2}
+                    error="Is that your real name ?"
                 />
             </div>
         </>
     );
 }
-export default TextAreaExample;
+export default TextInputExample;

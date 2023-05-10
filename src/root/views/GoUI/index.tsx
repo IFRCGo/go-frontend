@@ -12,6 +12,7 @@ import DropdownExample from './examples/DropdownExample';
 import Navigation from './examples/Navigation';
 import RawTextAreaExample from './examples/RawTextExample';
 import TextAreaExample from './examples/TextAreaExample';
+import TextInputExample from './examples/TextInputExample';
 
 function GoUI() {
 
@@ -67,6 +68,13 @@ function GoUI() {
           Text Area
         </Button>
         <Button
+          name="text-input"
+          className={styles.option}
+          onClick={handleNewComponent}
+        >
+          Text Input
+        </Button>
+        <Button
           name="cards"
           className={styles.option}
           onClick={handleNewComponent}
@@ -114,6 +122,7 @@ function GoUI() {
         {element === 'modals' && <Modals />}
         {element === "raw-text-area" && <RawTextAreaExample />}
         {element === "text-area" && <TextAreaExample />}
+        {element === "text-input" && <TextInputExample />}
       </div >
     </div >
   );
