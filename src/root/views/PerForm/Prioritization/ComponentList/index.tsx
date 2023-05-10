@@ -5,7 +5,6 @@ import { EntriesAsList, PartialForm } from '@togglecorp/toggle-form';
 import { ListResponse, useRequest } from '#utils/restRequest';
 import { compareString } from '#utils/utils';
 import ExpandableContainer from '#components/ExpandableContainer';
-import TextInput from '#components/TextInput';
 
 import {
   PerOverviewFields,
@@ -14,15 +13,16 @@ import {
   Component,
 } from '../../common';
 import QuestionList from './QuestionComponent';
+import SelectInput from '#components/SelectInput';
 
 import styles from './styles.module.scss';
 
 type Value = PartialForm<PerOverviewFields>;
 
 interface Props {
-  id: string;
-  value: Value;
-  onValueChange: (...entries: EntriesAsList<Value>) => void;
+  id?: string;
+  value?: Value;
+  onValueChange?: (...entries: EntriesAsList<Value>) => void;
 }
 
 function ComponentsList(props: Props) {
@@ -68,7 +68,7 @@ function ComponentsList(props: Props) {
             headingSize="small"
             sub
             actions={
-              <TextInput
+              <SelectInput
                 className={styles.improvementSelect}
                 name="improvement"
                 onChange={onValueChange}

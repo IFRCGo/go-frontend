@@ -35,3 +35,36 @@
   display: flex;
   justify-content: space-between;
 }
+.actions {
+  padding: $spacing*3 $spacing;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  >* {
+    margin: 0 $spacing*0.5;
+  }
+}
+.prioritization-table {
+  .content {
+    table {
+      width: 100%;
+
+      th {
+        padding: 0;
+        text-align: left;
+        border-bottom: $base-border-width solid $base-border-color;
+        background-color: $color-background;
+      }
+
+      td {
+        padding: $spacing;
+        border-bottom: $base-border-width solid $base-border-color;
+
+        >* {
+          padding: 0!important;
+        }
+      }
+    }
+  }
+}

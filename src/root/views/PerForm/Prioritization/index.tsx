@@ -5,20 +5,24 @@ import {
   SetBaseValueArg,
   useForm
 } from '@togglecorp/toggle-form';
+import { _cs } from '@togglecorp/fujs';
 import LanguageContext from '#root/languageContext';
 import { ListResponse, useRequest } from '#utils/restRequest';
-import { Area, Component, PerOverviewFields } from '../common';
 import { assessmentSchema } from '../usePerFormOptions';
-
+import { Area, Component } from '../common';
 import Container from '#components/Container';
 import ComponentsList from './ComponentList';
 
-import styles from './styles.module.scss';
 import Button from '#components/Button';
+import { createStringColumn } from '#components/Table/predefinedColumns';
+import Table from '#components/Table';
+import TextInput from '#components/TextInput';
 
-type Value = PartialForm<PerOverviewFields>;
+import styles from './styles.module.scss';
 
-interface Props {
+type Value = PartialForm<Component>;
+
+export interface Props {
   className?: string;
   onValueChange?: (...entries: EntriesAsList<Value>) => void;
   onValueSet?: (value: SetBaseValueArg<Value>) => void;
@@ -26,11 +30,22 @@ interface Props {
   onSubmitSuccess?: (result: Component) => void;
 }
 
-function Prioritization(props: Props) {
+function prioritizationKeySelector(prioritization: Value) {
+  return prioritization.id;
+}
+
+interface AreaProps {
+  className?: string;
+  data: Component[] | undefined;
+}
+
+function Prioritization(props: AreaProps) {
   const {
     className,
+    data,
   } = props;
 
+  const { strings } = React.useContext(LanguageContext);
   const {
     value,
     setFieldValue,
@@ -44,7 +59,49 @@ function Prioritization(props: Props) {
     url: 'api/v2/per-formarea/',
   });
 
-  const { strings } = React.useContext(LanguageContext);
+  const showComponent = () => {
+    return (
+      <>
+        {areaResponse?.results?.map((item) => (
+          <ComponentsList
+            key={item.area_num}
+            id={item.id}
+            onValueChange={setFieldValue}
+            value={value}
+          />
+        ))}
+      </>
+    );
+  };
+
+  const showText = () => {
+    return (
+      <TextInput
+        name={undefined}
+        value={undefined}
+      >
+      </TextInput>
+    );
+  };
+
+  const columns = [
+    createStringColumn<Component, string | number>(
+      'component',
+      'Component',
+      showComponent,
+    ),
+    createStringColumn<Component, string | number>(
+      'ranking',
+      'Ranking',
+      (prioritization) => prioritization.id,
+    ),
+    createStringColumn<Component, string | number>(
+      'code',
+      'Justification',
+      showText,
+    ),
+  ];
+
   /*
   const handleSubmitButtonClick = React.useCallback(() => {
     scrollToTop();
@@ -71,12 +128,16 @@ function Prioritization(props: Props) {
   */
 
   return (
-    <Container>
-      <div className={styles.componentTitle}>
-        <h5>Component</h5>
-        <h5>Ranking</h5>
-        <h5>Justification</h5>
-      </div>
+    <Container
+      className={_cs(styles.prioritizationTable, className)}
+      contentClassName={styles.content}
+    >
+      <Table
+        data={data}
+        columns={columns}
+        keySelector={prioritizationKeySelector}
+        variant="large"
+      />
       {areaResponse?.results?.map((item) => (
         <ComponentsList
           key={item.area_num}

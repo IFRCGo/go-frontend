@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { _cs } from '@togglecorp/fujs';
 import { EntriesAsList, PartialForm, SetBaseValueArg, useForm } from '@togglecorp/toggle-form';
 import LanguageContext from '#root/languageContext';
@@ -18,6 +18,7 @@ import ComponentsInput from './ComponentInput';
 import { Area, Component, PerOverviewFields } from '../common';
 
 import styles from './styles.module.scss';
+import Translate from '#components/Translate';
 
 type Value = PartialForm<PerOverviewFields>;
 
@@ -47,8 +48,11 @@ function Assessment(props: Props) {
     setError: onErrorSet,
   } = useForm(assessmentSchema, { value: {} as PartialForm<PerOverviewFields> });
 
-  const alert = useAlert();
   const { strings } = React.useContext(LanguageContext);
+  const alert = useAlert();
+  const maxArea = 5;
+  const minArea = 1;
+
   // const {
   //   pending: fetchingAssessmentOptions,
   //   response: assessmentResponse,
@@ -125,7 +129,41 @@ function Assessment(props: Props) {
     setCurrentStep(newStep);
   }, []);
 
+
+  const handleButtonCancel = React.useCallback(() => {
+  }, []);
+
   const handleSubmitButtonClick = React.useCallback(() => {
+    alert.show(
+      <p className={styles.alertMessage}>
+        <strong>
+          {strings.perFormSubmitAssessmentTitle}
+          <br />
+        </strong>
+        {strings.perFormSubmitAssessmentDescription}
+        <div className={styles.alertButtons}>
+            <Button
+              name='cancel'
+              variant='secondary'
+              type='reset'
+              onClick={handleButtonCancel}
+            >
+              Cancel
+            </Button>
+          <Button
+            name='submit'
+            variant='secondary'
+            type='submit'
+            onClick={undefined}
+          >
+            Save
+          </Button>
+        </div>
+      </p>,
+      {
+        variant: 'info',
+      }
+    );
     if (currentStep === 'assessment') {
       const nextStepMap: {
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -219,23 +257,27 @@ function Assessment(props: Props) {
           </TabPanel>
         ))}
         <div className={styles.actions}>
-          <Button
-            name={undefined}
-            variant='secondary'
-            onClick={handlePrevTab}
-            disabled={undefined}
-          >
-            Back
-          </Button>
-          <div className={styles.actions}>
+          {currentStep > minArea &&
             <Button
               name={undefined}
               variant='secondary'
-              onClick={handleNextTab}
+              onClick={handlePrevTab}
               disabled={undefined}
             >
-              Next
+              Back
             </Button>
+          }
+          <div className={styles.actions}>
+            {currentStep < maxArea &&
+              <Button
+                name={undefined}
+                variant='secondary'
+                onClick={handleNextTab}
+                disabled={undefined}
+              >
+                Next
+              </Button>
+            }
             <div className={styles.actions}>
               <Button
                 name={undefined}

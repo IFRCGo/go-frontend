@@ -43,7 +43,7 @@ function PerForm(props: Props) {
 
   const { strings } = React.useContext(LanguageContext);
 
-  const [currentStep, setCurrentStep] = React.useState<StepTypes>('assessment');
+  const [currentStep, setCurrentStep] = React.useState<StepTypes>('workPlan');
 
   const handleTabChange = React.useCallback((newStep: StepTypes) => {
     scrollToTop();

@@ -77,6 +77,19 @@ export interface ComponentQuestion {
   question: string;
 }
 
+//FIX ME: fix due date
+
+export interface WorkPlanComponent {
+  id: string;
+  actions: string;
+  responsible_email: string;
+  responsible_name: string;
+  component: Component[];
+  area: string;
+  status: string;
+  due_date: string;
+}
+
 export interface FormComponentStatus {
   key: string;
   value: string;
@@ -100,7 +113,7 @@ export interface PerOverviewFields {
   type_of_assessment_details: TypeOfAssessment;
   country_details: Country;
   userDetails: userDetails;
-  workplan: string[];
+  workplan: WorkPlanComponent[];
   created_at: string;
   updated_at: string;
   date_of_orientation: string;
@@ -198,4 +211,14 @@ export const perAssessmentFields: (keyof ComponentQuestion)[] = [
   'answer',
   'description',
   'id',
+];
+
+export const perWorkPlanFields: (keyof WorkPlanComponent)[] = [
+  'actions',
+  'area',
+  'component',
+  'responsible_email',
+  'responsible_name',
+  'status',
+  'due_date',
 ];

@@ -3932,6 +3932,7 @@ export default {
   perFormTabPrioritizationLabel: '3. Prioritization',
   perFormTabWorkPlanLabel: '4. Work-Plan',
   perFormSetUpPerProcess: 'Set up Per Process',
+
   //PER Overview
   perFormNationalSociety: 'National Society*',
   perFormOrientation: 'Orientation',
@@ -3972,6 +3973,8 @@ export default {
   perFormNSSecondFocalPoint: 'NS Second Focal Point (optional)',
   perFormNSSecondFocalPointDescription: 'The second focal point can be assigned to receive notifications and reminders for the final PER work-plan',
   perFormPERFacilitator: 'PER Facilitator / Team Lead',
+
+  //Per Assessment Form
   perFormArea1Tab: 'Area 1: Policy strategy and standards',
   perFormArea2Tab: 'Area 2: Analysis and planning',
   perFormArea3Tab: 'Area 3: Operational Capacity',
@@ -3980,13 +3983,13 @@ export default {
   PerOverviewSetUpPerProcess: 'Set up PER Process',
   perFormSaveRequestSuccessMessage: 'PER Process created/updated successfully',
   perFormSaveRequestFailureMessage: 'Failed to create/update PER Process',
+  perFormSubmitAssessmentTitle: 'Submit PER Assessment Results',
+  perFormSubmitAssessmentDescription: 'You are about to submit the results of the PER Assessment. Once submitted, the results cannot be edited. Click on the Submit to proceed. To go to back and edit, click on Cancel.',
 
   //Per WorkPlan
   perWorkPlanComponents: 'Components',
-  perWorkPlanArea: 'Area',
   perWorkPlanActions: 'Actions',
   perWorkPlanDueDate: 'Due Date',
-  perWorkPlanResponsible: 'Responsible',
   perWorkPlanSupportedBy: 'Supported by',
   perWorkPlanStatus: 'Status',
   perSelectAndAddToWorkPlan: 'Select and add to Work-Plan',

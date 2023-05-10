@@ -14,3 +14,13 @@
     margin: 0 $spacing*0.5;
   }
 }
+.alert-message {
+  text-align: center;
+
+  .alert-buttons {
+    display: flex;
+    justify-content: space-around;
+    margin: $spacing;
+  }
+}
+

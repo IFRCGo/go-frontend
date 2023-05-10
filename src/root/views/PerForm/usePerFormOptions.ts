@@ -17,13 +17,16 @@ import {
   emailCondition,
 } from '#utils/form';
 
-import { ComponentQuestion, emptyNumericOptionList, PerOverviewFields } from './common';
+import { ComponentQuestion, emptyNumericOptionList, PerOverviewFields, WorkPlanComponent } from './common';
 
 export type OverviewFormSchema = ObjectSchema<PartialForm<PerOverviewFields>>;
 export type OverviewFormSchemaFields = ReturnType<OverviewFormSchema['fields']>;
 
 export type AssessmentFormScheme = ObjectSchema<PartialForm<ComponentQuestion>>;
 export type AssessmentFormSchemeFields = ReturnType<AssessmentFormScheme['fields']>;
+
+export type WorkPlanFormScheme = ObjectSchema<PartialForm<WorkPlanComponent>>;
+export type WorkPlanFormSchemeFields = ReturnType<WorkPlanFormScheme['fields']>;
 
 function transformKeyValueToLabelValue<O extends NumericKeyValuePair | StringKeyValuePair>(o: O): {
   label: string;
@@ -88,6 +91,18 @@ export const assessmentSchema: AssessmentFormScheme = {
     component: [],
     description: [],
     question: [],
+  })
+};
+
+export const workplanSchema: WorkPlanFormScheme = {
+  fields: (value): WorkPlanFormSchemeFields => ({
+    actions: [],
+    area: [],
+    component: [],
+    responsible_email: [],
+    responsible_name: [],
+    status: [],
+    due_date: [],
   })
 };
 
