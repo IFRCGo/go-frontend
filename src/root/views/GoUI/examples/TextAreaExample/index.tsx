@@ -1,5 +1,6 @@
 import React, { useCallback, useState } from "react";
 import TextArea from "#goui/components/TextArea";
+import Header from "#goui/components/Header";
 import styles from './styles.module.scss';
 
 function TextAreaExample() {
@@ -12,6 +13,7 @@ function TextAreaExample() {
     return (
         <>
             <div className={styles.textBox}>
+                <Header>Simple Text Area</Header>
                 <TextArea
                     className={styles.textExample}
                     name="anonymous"
@@ -23,6 +25,7 @@ function TextAreaExample() {
                 />
             </div>
             <div className={styles.textBox}>
+                <Header>Text Area Disabled</Header>
                 <TextArea
                     className={styles.textExample}
                     name="anonymous"
@@ -31,10 +34,11 @@ function TextAreaExample() {
                     value={textGroup}
                     onChange={handleTextChange}
                     rows={5}
-                    disabled={true}
+                    disabled
                 />
             </div>
             <div className={styles.textBox}>
+                <Header>Text Area with error</Header>
                 <TextArea
                     className={styles.textExample}
                     name="anonymous"

@@ -1,5 +1,5 @@
 import React from 'react';
-import Header from '#components/Header';
+import Header from '#goui/components/Header';
 import Card from '#views/GoUI/components/Card';
 
 import styles from './styles.module.scss';
@@ -7,14 +7,9 @@ import styles from './styles.module.scss';
 function Cards() {
   return (
     <div className={styles.cardsCollection}>
-      <Header
-        heading="CARD COLLECTION"
-        headingSize="medium"
-      />
-      <Header
-        heading="INFO BOX"
-        headingSize="small"
-      />
+      <Header>
+        INFO BOX
+      </Header>
       <Card
         value={1000000}
         progressTotalValue={2000000}
@@ -23,10 +18,9 @@ function Cards() {
         description='50% received'
         title='This is test card templete'
       />
-      <Header
-        heading="INFO BOX 2"
-        headingSize="small"
-      />
+      <Header>
+        INFO BOX 2
+      </Header>
       <Card
         value={8}
         description='This is UI Card'

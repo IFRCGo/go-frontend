@@ -1,23 +1,18 @@
 import React from 'react';
 import {
-    IoChevronForward,
+  IoChevronForward,
 } from 'react-icons/io5';
-import Header from '#components/Header';
+import Header from '#goui/components/Header';
 import Button from '#goui/components/Button';
 import styles from './styles.module.scss';
 
 function Buttons() {
   return (
     <div className={styles.buttonCollection}>
-      <Header
-        heading="BUTTON COLLECTION"
-        headingSize="medium"
-      />
       <div className={styles.buttonsContainer}>
-        <Header
-          heading="Primary Button"
-          headingSize="ultraSmall"
-        />
+        <Header>
+          Primary Button
+        </Header>
         <Button
           name="primary-button"
           variant="primary"
@@ -41,10 +36,9 @@ function Buttons() {
         </Button>
       </div>
       <div className={styles.buttonsContainer}>
-        <Header
-          heading="Secondary Button"
-          headingSize="ultraSmall"
-        />
+        <Header>
+          Secondary Button
+        </Header>
         <Button
           name="secondary-button"
           variant="secondary"
@@ -68,10 +62,9 @@ function Buttons() {
         </Button>
       </div>
       <div className={styles.buttonsContainer}>
-        <Header
-          heading="Tertiary Button"
-          headingSize="ultraSmall"
-        />
+        <Header>
+          Tertiary Button
+        </Header>
         <Button
           name="tertiary-button"
           variant="tertiary"
