@@ -1,6 +1,6 @@
 import React from 'react';
 import { _cs } from '@togglecorp/fujs';
-import { TabContext } from '#views/GoUI/components/Tabs/TabContext';
+import { TabContext } from '#goui/components/Tabs/TabContext';
 
 import styles from './styles.module.scss';
 
@@ -70,7 +70,7 @@ export default function TabList(props: Props) {
       {variant === 'primary' && (
         <div className={styles.startDummyContent} />
       )}
-      { children }
+      {children}
       {variant === 'primary' && (
         <div className={styles.endDummyContent} />
       )}
