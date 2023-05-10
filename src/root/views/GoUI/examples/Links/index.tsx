@@ -1,22 +1,17 @@
 import React from 'react';
 import Link from '#goui/components/Link';
-import Header from '#components/Header';
 import Heading from '#goui/components/Heading';
+import Header from '#goui/components/Header';
 import styles from './styles.module.scss';
 import { IoChevronForward, IoOpenOutline } from 'react-icons/io5';
 
 function Links() {
   return (
     <div className={styles.linkCollection}>
-      <Header
-        heading="LINK COLLECTION"
-        headingSize="medium"
-      />
       <div className={styles.linksContainer}>
-        <Header
-          heading="VIEW LINK"
-          headingSize="ultraSmall"
-        />
+        <Header>
+          VIEW LINK
+        </Header>
         <Link
           to={{
             pathname: '/emergencies',
@@ -27,10 +22,9 @@ function Links() {
         </Link>
       </div>
       <div className={styles.linksContainer}>
-        <Header
-          heading="TITLE LINK"
-          headingSize="ultraSmall"
-        />
+        <Header>
+          TITLE LINK
+        </Header>
         <Heading level={2}>
           <Link
             to="/deployments/overview"
@@ -40,12 +34,11 @@ function Links() {
             Surge
           </Link>
         </Heading>
-      </div>
+      </div >
       <div className={styles.linksContainer}>
-        <Header
-          heading="TEXT LINK"
-          headingSize="ultraSmall"
-        />
+        <Header>
+          TEXT LINK
+        </Header>
         <Link
           to="/disaster-preparedness"
           underline
@@ -54,10 +47,20 @@ function Links() {
         </Link>
       </div>
       <div className={styles.linksContainer}>
-        <Header
-          heading="EXTERNAL LINK"
-          headingSize="ultraSmall"
-        />
+        <Header>
+          SECONDARY LINK
+        </Header>
+        <Link
+          to="www.gooogle.com"
+          target="_blank"
+        >
+          im@ifrc.org
+        </Link>
+      </div>
+      <div className={styles.linksContainer}>
+        <Header>
+          EXTERNAL LINK
+        </Header>
         <Link
           to="https://www.gooogle.com"
           external
@@ -73,7 +76,7 @@ function Links() {
         >
           Google
         </Link>
-      </div>
+      </div >
     </div >
   );
 }

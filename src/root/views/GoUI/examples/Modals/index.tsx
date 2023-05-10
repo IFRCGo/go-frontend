@@ -2,7 +2,7 @@ import React, { useState, useCallback } from 'react';
 import Modal, { SizeType } from '#goui/components/Modal';
 import SegmentInput from '#components/SegmentInput';
 import Button from '#components/Button';
-import Header from '#components/Header';
+import Header from '#goui/components/Header';
 import Heading from '#goui/components/Heading';
 import TextInput from '#components/TextInput';
 
@@ -65,10 +65,7 @@ function Modals() {
 
   return (
     <div className={styles.modals}>
-      <Header
-        heading="Modals"
-        headingSize="medium"
-      />
+      <Header>MODALS</Header>
       <SegmentInput
         name={undefined}
         onChange={handleChange}

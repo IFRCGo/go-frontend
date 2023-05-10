@@ -1,7 +1,6 @@
 import React from 'react';
-
-import InputContainer, { Props as InputContainerProps } from '../InputContainer';
-import RawInput, { Props as RawInputProps } from '../RawInput';
+import InputContainer, { Props as InputContainerProps } from '#goui/components/InputContainer';
+import RawInput, { Props as RawInputProps } from '#goui/components/RawInput';
 
 type InheritedProps<T> = (Omit<InputContainerProps, 'input'> & RawInputProps<T>);
 export interface Props<T extends string | undefined> extends InheritedProps<T> {

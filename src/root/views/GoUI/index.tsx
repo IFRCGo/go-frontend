@@ -17,6 +17,7 @@ import TextInputExample from './examples/TextInputExample';
 import SwitchExample from './examples/SwitchExample';
 import CheckboxExample from './examples/CheckboxExample';
 import DateInputExample from './examples/DateInputExample';
+import NumberInputExample from './examples/NumberInputExample';
 
 function GoUI() {
 
@@ -97,7 +98,14 @@ function GoUI() {
           className={styles.option}
           onClick={handleNewComponent}
         >
-          Checkbox
+          Check Box
+        </Button>
+        <Button
+          name="number-input"
+          className={styles.option}
+          onClick={handleNewComponent}
+        >
+          Number Input
         </Button>
         <Button
           name="cards"
@@ -159,6 +167,7 @@ function GoUI() {
         {element === "checkbox" && <CheckboxExample />}
         {element === "dateInput" && <DateInputExample />}
         {element === 'iconButton' && <IconButtons />}
+        {element === "number-input" && <NumberInputExample />}
       </div >
     </div >
   );
