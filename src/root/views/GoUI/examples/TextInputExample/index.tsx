@@ -31,7 +31,7 @@ function TextInputExample() {
                     value={textGroup}
                     onChange={handleTextChange}
                     rows={2}
-                    disabled={true}
+                    disabled
                 />
             </div>
             <div className={styles.textBox}>

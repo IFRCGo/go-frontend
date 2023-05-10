@@ -1,6 +1,6 @@
 import React from 'react';
 import Header from '#components/Header';
-import Alert from '#views/GoUI/components/Alert';
+import Alert from '#goui/components/Alert';
 
 import styles from './styles.module.scss';
 
