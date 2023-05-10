@@ -85,7 +85,7 @@ function Modal(props: Props) {
                     <Button
                       name={undefined}
                       onClick={onCloseButtonClick}
-                      variant="action"
+                      variant="tertiary"
                     >
                       <IoClose />
                     </Button>
