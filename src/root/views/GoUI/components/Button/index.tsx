@@ -1,7 +1,8 @@
 import React, { useCallback } from 'react';
 import { _cs } from '@togglecorp/fujs';
 
-import RawButton, { Props as RawButtonProps } from '#goui/RawButton';
+import RawButton, { Props as RawButtonProps } from '#goui/components/RawButton';
+import useBasicLayout from '#goui/hooks/useBasicLayout';
 import styles from './styles.module.scss';
 
 export type ButtonVariant = 'primary' | 'secondary' | 'tertiary';
@@ -47,29 +48,22 @@ export function useButtonFeatures<N>(
     className,
   );
 
-  const buttonChildren = (
-    <>
-      {icons && (
-        <div className={_cs(iconsClassName, styles.icon)}>
-          {icons}
-        </div>
-      )}
-      {children && (
-        <div className={_cs(childrenClassName, styles.children)}>
-          {children}
-        </div>
-      )}
-      {actions && (
-        <div className={_cs(actionsClassName, styles.actions)}>
-          {actions}
-        </div>
-      )}
-    </>
-  );
+  const {
+    content,
+    containerClassName,
+  } = useBasicLayout({
+    className: buttonClassName,
+    icons,
+    children,
+    actions,
+    iconsContainerClassName: iconsClassName,
+    childrenContainerClassName: childrenClassName,
+    actionsContainerClassName: actionsClassName,
+  });
 
   return {
-    className: buttonClassName,
-    children: buttonChildren,
+    className: containerClassName,
+    children: content,
     disabled,
   };
 }

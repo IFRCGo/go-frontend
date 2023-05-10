@@ -1,8 +1,8 @@
 import React, { useCallback } from 'react';
 import { _cs } from '@togglecorp/fujs';
-import BodyOverlay from '#goui/BodyOverlay';
-import Header from '#goui/Header';
-import Footer from '#goui/Footer';
+import BodyOverlay from '#goui/components/BodyOverlay';
+import Header from '#goui/components/Header';
+import Footer from '#goui/components/Footer';
 import Button from '#components/Button';
 import { IoClose } from 'react-icons/io5';
 import { FocusOn } from 'react-focus-on';
