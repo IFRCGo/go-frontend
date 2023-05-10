@@ -1,0 +1,15 @@
+.text-box {
+    display: flex;
+    padding: var(--go-ui-spacing-2xl);
+
+    .text-example {
+        padding: var(--go-ui-spacing-sm);
+        background-color: var(--go-ui-color-gray-40);
+        width: 50%;
+    }
+
+    .text-label {
+        color: var(--go-ui-color-gray-80);
+        font-weight: var(--go-ui-font-weight-medium);
+    }
+}

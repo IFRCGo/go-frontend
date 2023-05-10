@@ -1,36 +1,34 @@
-@import '~styles/settings/variables';
-
 .input-container {
   position: relative;
 
   .input-section {
     display: flex;
     align-items: center;
-    border-radius: $border-radius-input;
-    transition: $duration-transition-medium border-color ease-in-out;
+    border-radius: var(--go-ui-border-radius-md);
+    transition: var(--go-ui-duration-transition-medium) var(--go-ui-color-gray-10) ease-in-out;
     z-index: 0;
-    background-color: $color-input-section-background;
-    padding: $spacing*0.5 $spacing;
-    border: $base-border-width solid transparent;
+    background-color: var(--go-ui-color-gray-10);
+    padding: calc(var(--go-ui-spacing-md)*0.5) var(--go-ui-spacing-md);
+    border: var(--go-ui-width-separator-thin) solid transparent;
 
     .internal-input-container {
       flex-grow: 1;
     }
 
     &:focus-within {
-      border-bottom-color: $color-input-bottom-border-selected;
+      border-bottom-color: var(--go-ui-color-red);
     }
   }
 
   .input-hint {
-    font-size: $font-size-sm;
+    font-size: var(--go-ui-font-size-sm);
     opacity: .7;
-    padding: $spacing*0.25 $spacing;
+    padding: calc(var(--go-ui-spacing-md)*0.5) var(--go-ui-spacing-md);
   }
 
   &.errored {
     .input-section {
-      border-color: $color-input-border-errored;
+      border-color: var(--go-ui-color-red);
     }
   }
 
@@ -42,13 +40,13 @@
     .input-section {
       border: none;
       border-radius: 0;
-      border-bottom: $base-border-width solid $base-border-color;
+      border-bottom: var(--go-ui-width-separator-thin) solid var(--go-ui-color-gray-80);
     }
   }
 
   .input-error {
     position: absolute;
-    min-width: 8rem;
+    min-width: var(-go-ui-spacing-8xl);
     z-index: 1;
   }
 
@@ -60,7 +58,7 @@
 
   &:hover {
     .input-section {
-      border-bottom-color: $color-input-bottom-border-hover;
+      border-bottom-color: var(--go-ui-color-red);
     }
   }
 }
