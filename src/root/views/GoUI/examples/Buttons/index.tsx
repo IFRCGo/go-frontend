@@ -3,7 +3,7 @@ import {
     IoChevronForward,
 } from 'react-icons/io5';
 import Header from '#components/Header';
-import Button from '#goui/Button';
+import Button from '#goui/components/Button';
 import styles from './styles.module.scss';
 
 function Buttons() {

@@ -1,8 +1,8 @@
 import React from 'react';
 import { _cs } from '@togglecorp/fujs';
 
-import Portal from '#goui/Portal';
-import Overlay from '#goui/Overlay';
+import Portal from '#goui/components/Portal';
+import Overlay from '#goui/components/Overlay';
 
 import styles from './styles.module.scss';
 
