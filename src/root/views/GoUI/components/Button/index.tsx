@@ -1,190 +1,117 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { _cs } from '@togglecorp/fujs';
 
-import RawButton, { Props as RawButtonProps } from './RawButton';
+import RawButton, { Props as RawButtonProps } from '#goui/components/RawButton';
+import useBasicLayout from '#goui/hooks/useBasicLayout';
 import styles from './styles.module.scss';
 
-export type ButtonVariant = (
-    'primary'
-    | 'secondary'
-    | 'tertiary'
-    | 'action'
-    | 'transparent'
-    | 'download'
-    | 'navigationPrimary'
-    | 'navigationSecondary'
-    | 'buttonWithDescription'
-    | 'dialogConfirmOk'
-    | 'dialogConfirmCancel'
-    | 'navigateTop'
-    | 'dropdown'
-);
+export type ButtonVariant = 'primary' | 'secondary' | 'tertiary';
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const buttonVariantToStyleMap: { [key in ButtonVariant]: string; } = {
-    primary: styles.primary,
-    secondary: styles.secondary,
-    tertiary: styles.tertiary,
-    action: styles.action,
-    transparent: styles.transparent,
-    download: styles.tertiary,
-    navigationPrimary: styles.navigationPrimary,
-    navigationSecondary: styles.navigationSecondary,
-    buttonWithDescription: styles.buttonWithDescription,
-    dialogConfirmOk: styles.dialogConfirmOk,
-    dialogConfirmCancel: styles.dialogConfirmCancel,
-    navigateTop: styles.navigateTop,
-    dropdown: styles.dropdownButton,
+const buttonVariantToStyleMap: Record<ButtonVariant, string>= {
+  primary: styles.primary,
+  secondary: styles.secondary,
+  tertiary: styles.tertiary,
 };
 
-export interface Props<N> extends Omit<
-    React.HTMLProps<HTMLButtonElement>,
-    'ref' | 'onClick' | 'name' | 'type'
-> {
-    type?: 'button' | 'submit' | 'reset';
-    variant?: ButtonVariant;
-    children?: React.ReactNode;
-    className?: string;
-    icons?: React.ReactNode;
-    actions?: React.ReactNode;
-    iconsClassName?: string;
-    childrenClassName?: string;
-    actionsClassName?: string;
-    disabled?: boolean;
-    buttonWithDescription?: String;
-    name: N;
-    onClick?: (name: N, e: React.MouseEvent<HTMLButtonElement>) => void;
+export interface Props<N> extends RawButtonProps<N> {
+  variant?: ButtonVariant;
+  actions?: React.ReactNode;
+  actionsClassName?: string;
+  childrenClassName?: string;
+  disabled?: boolean;
+  icons?: React.ReactNode;
+  iconsClassName?: string;
+  name: N;
+  onClick?: (name: N, e: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
-type ButtonFeatureKeys =
-    'variant'
-    | 'className'
-    | 'actionsClassName'
-    | 'iconsClassName'
-    | 'childrenClassName'
-    | 'children'
-    | 'icons'
-    | 'actions'
-    | 'disabled'
-    | 'buttonWithDescription'
-
-export type ButtonFeatureProps<N> = Pick<Props<N>, ButtonFeatureKeys>;
+export type ButtonFeatureProps<N> = Omit<Props<N>, 'name' | 'onClick'>;
 export function useButtonFeatures<N>(
-    props: ButtonFeatureProps<N>,
+  props: ButtonFeatureProps<N>,
 ) {
-    const {
-        variant = 'primary',
-        className,
-        actionsClassName,
-        iconsClassName,
-        childrenClassName,
-        disabled,
-        children,
-        icons,
-        actions,
-        buttonWithDescription,
-    } = props;
+  const {
+    actions,
+    actionsClassName,
+    children,
+    childrenClassName,
+    className,
+    disabled,
+    icons,
+    iconsClassName,
+    variant = 'primary',
+  } = props;
 
-    const buttonClassName = _cs(
-        styles.button,
-        variant,
-        buttonVariantToStyleMap[variant] ?? styles.primary,
-        disabled && styles.disabled,
-        className,
-    );
+  const buttonClassName = _cs(
+    styles.button,
+    buttonVariantToStyleMap[variant],
+    disabled && styles.disabled,
+    className,
+  );
 
-    const buttonChildren = (
-        <>
-            {icons && (
-                <div className={_cs(iconsClassName,
-                    (variant === 'navigateTop' ? styles.navigateTopIcon : styles.icons),
-                )}>
-                    {icons}
-                </div>
-            )}
-            {children && (
-                <div className={_cs(childrenClassName, styles.children)}>
-                    {children}
-                </div>
-            )}
-            {actions && (
-                <div className={_cs(actionsClassName, styles.actions)}>
-                    {actions}
-                </div>
-            )}
-        </>
-    );
+  const {
+    content,
+    containerClassName,
+  } = useBasicLayout({
+    className: buttonClassName,
+    icons,
+    children,
+    actions,
+    iconsContainerClassName: iconsClassName,
+    childrenContainerClassName: childrenClassName,
+    actionsContainerClassName: actionsClassName,
+  });
 
-    return {
-        className: buttonClassName,
-        children: buttonChildren,
-        disabled,
-        buttonWithDescription,
-    };
+  return {
+    className: containerClassName,
+    children: content,
+    disabled,
+  };
 }
 
 function Button<N>(props: Props<N>) {
-    const {
-        variant,
-        className,
-        actionsClassName,
-        iconsClassName,
-        childrenClassName,
-        children,
-        icons,
-        actions,
-        disabled,
-        buttonWithDescription,
-        name,
-        onClick,
-        readOnly,
-        ...otherProps
-    } = props;
+  const {
+    actions,
+    actionsClassName,
+    children,
+    childrenClassName,
+    className,
+    disabled,
+    icons,
+    iconsClassName,
+    name,
+    onClick,
+    variant,
+    ...otherProps
+  } = props;
 
-    const handleButtonClick: RawButtonProps<N>['onClick'] = React.useCallback(
-        (n, e) => {
-            if (onClick && !readOnly) {
-                onClick(name, e);
-            }
-        }, [name, onClick, readOnly]);
+  const handleButtonClick= useCallback(
+    (n, e) => {
+      if (onClick) {
+        onClick(n, e);
+      }
+    }, [onClick]);
 
-    const buttonProps = useButtonFeatures({
-        variant,
-        className,
-        actionsClassName,
-        iconsClassName,
-        childrenClassName,
-        children,
-        icons,
-        actions,
-        disabled,
-        buttonWithDescription,
-    });
+  const buttonProps = useButtonFeatures({
+    variant,
+    className,
+    actionsClassName,
+    iconsClassName,
+    childrenClassName,
+    children,
+    icons,
+    actions,
+    disabled,
+  });
 
-    return (
-        <>
-            {buttonWithDescription ? (
-                <div className={styles.buttonDescriptionWrapper}>
-                    <RawButton
-                        name={name}
-                        type="button"
-                        onClick={handleButtonClick}
-                        {...otherProps}
-                        {...buttonProps}
-                    />
-                    {buttonWithDescription}
-                </div>
-            ) : (
-                <RawButton
-                    name={name}
-                    type="button"
-                    onClick={handleButtonClick}
-                    {...otherProps}
-                    {...buttonProps}
-                />
-            )}
-        </>
-    );
+  return (
+    <RawButton
+      name={name}
+      type="button"
+      onClick={handleButtonClick}
+      {...otherProps}
+      {...buttonProps}
+    />
+  );
 }
 
 export default Button;

@@ -1,5 +1,5 @@
 import React from 'react';
-import Link from '#goui/Link';
+import Link from '#goui/components/Link';
 import Header from '#components/Header';
 import styles from './styles.module.scss';
 

@@ -1,9 +1,9 @@
 import React, { useState, useCallback } from 'react';
-import Modal, { SizeType } from '#goui/Modal';
+import Modal, { SizeType } from '#goui/components/Modal';
 import SegmentInput from '#components/SegmentInput';
 import Button from '#components/Button';
 import Header from '#components/Header';
-import Heading from '#goui/Heading';
+import Heading from '#goui/components/Heading';
 import TextInput from '#components/TextInput';
 
 import styles from './styles.module.scss';
