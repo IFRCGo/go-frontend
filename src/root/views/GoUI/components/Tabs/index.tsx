@@ -6,7 +6,7 @@ import {
   TabContext,
 } from './TabContext';
 
-import useHash from '#views/GoUI/hooks/useHash';
+import useHash from '#goui/hooks/useHash';
 
 export interface BaseProps {
   children: React.ReactNode;
@@ -108,7 +108,7 @@ export function Tabs<T extends TabKey>(props: Props<T>) {
 
   return (
     <TabContext.Provider value={contextValue}>
-      { children }
+      {children}
     </TabContext.Provider>
   );
 }

@@ -5,7 +5,7 @@ import {
   IoChevronForward,
   IoOpenOutline,
 } from 'react-icons/io5';
-import ButtonLikeLink from '#components/ButtonLikeLink';
+import ButtonLikeLink from '#goui/components/ButtonLikeLink';
 
 import styles from './styles.module.scss';
 

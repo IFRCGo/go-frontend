@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from "react";
-import TextArea from "../../components/TextArea";
+import TextArea from "#goui/components/TextArea";
 import styles from './styles.module.scss';
 
 function TextAreaExample() {
