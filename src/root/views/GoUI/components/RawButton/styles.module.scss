@@ -8,8 +8,4 @@
   font-size: inherit;
   background-color: transparent;
   outline-offset: var(--go-ui-width-separator-lg);
-
-  &:focus {
-    outline-color: var(--go-ui-color-primary-red);
-  }
 }
