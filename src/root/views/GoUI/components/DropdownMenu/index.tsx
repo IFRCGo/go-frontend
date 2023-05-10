@@ -8,7 +8,7 @@ import { IoCaretDownSharp, IoCaretForward } from 'react-icons/io5';
 import {
     useBlurEffect,
     useFloatPlacement,
-} from '../../hooks';
+} from '#goui/hooks';
 
 import Portal from '../Portal';
 import styles from './styles.module.scss';

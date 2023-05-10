@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 
 import RawButton, {
   Props as RawButtonProps,
-} from '../../RawButton';
+} from '#goui/components/RawButton';
 
 import styles from './styles.module.scss';
 

@@ -5,8 +5,8 @@ import {
   ImCross,
 } from 'react-icons/im';
 
-import RawButton, { Props as RawButtonProps } from '#components/RawButton';
-import { TabKey, TabContext, TabVariant } from '#views/GoUI/components/Tabs/TabContext';
+import RawButton, { Props as RawButtonProps } from '#goui/components/RawButton';
+import { TabKey, TabContext, TabVariant } from '#goui/components/Tabs/TabContext';
 import { setHashToBrowser } from '#utils/common';
 
 import styles from './styles.module.scss';
@@ -20,7 +20,7 @@ const tabVariantToStyleMap: {
   step: styles.step,
 };
 
-export interface Props<T extends TabKey> extends Omit<RawButtonProps<T>, 'onClick' | 'variant'>{
+export interface Props<T extends TabKey> extends Omit<RawButtonProps<T>, 'onClick' | 'variant'> {
   name: T;
   activeClassName?: string;
   borderWrapperClassName?: string;
@@ -90,7 +90,7 @@ export default function Tab<T extends TabKey>(props: Props<T>) {
       // eslint-disable-next-line react/jsx-props-no-spreading
       {...otherProps}
     >
-      {errored && <span className={styles.errorIcon } />}
+      {errored && <span className={styles.errorIcon} />}
       {children}
       {variant === 'primary' && isActive && (
         <div className={styles.activeBorder} />
@@ -114,11 +114,11 @@ export default function Tab<T extends TabKey>(props: Props<T>) {
       >
         <div className={styles.stepCircle}>
           <div className={styles.innerCircle}>
-            { errored && <ImCross className={styles.icon} /> }
-            { (!errored && completed) && <ImCheckmark className={styles.icon} /> }
+            {errored && <ImCross className={styles.icon} />}
+            {(!errored && completed) && <ImCheckmark className={styles.icon} />}
           </div>
         </div>
-        { button }
+        {button}
       </div>
     );
   }
