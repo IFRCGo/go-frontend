@@ -4,13 +4,14 @@ import {
   isDefined,
 } from '@togglecorp/fujs';
 
-import InputLabel from '#components/InputLabel';
-import InputError from '#components/InputError';
+import InputLabel from '../InputLabel';
+import InputError from '../InputError';
 
 import styles from './styles.module.scss';
 
 export interface Props {
   className?: string;
+  labelClassName?: string;
   actions?: React.ReactNode;
   disabled?: boolean;
   error?: React.ReactNode;
@@ -27,6 +28,7 @@ function InputContainer(props: Props) {
   const {
     actions,
     className,
+    labelClassName,
     disabled,
     error,
     icons,
@@ -35,7 +37,7 @@ function InputContainer(props: Props) {
     input,
     errorOnTooltip = false,
     hint,
-    variant='form',
+    variant = 'form',
   } = props;
 
   return (
@@ -50,43 +52,45 @@ function InputContainer(props: Props) {
         variant === 'general' && styles.general,
         className,
       )}
-      title={(errorOnTooltip && isDefined(error) && typeof error === 'string') ? error : undefined}
+      title={(errorOnTooltip && isDefined(error) && typeof error === 'string')
+        ? error
+        : undefined
+      }
     >
-      <InputLabel disabled={disabled}>
-        { label }
+      <InputLabel
+        className={labelClassName}
+        disabled={disabled}
+      >
+        {label}
       </InputLabel>
-      <div
-        className={_cs(
-          'go-input-internal-input-section',
-          styles.inputSection,
-        )}
+      <div className={_cs(
+        'go-input-internal-input-section',
+        styles.inputSection,
+      )}
       >
         {icons && (
-          <div
-            className={_cs(
-              styles.iconContainer,
-              'go-input-icon-container',
-            )}
+          <div className={_cs(
+            styles.iconContainer,
+            'go-input-icon-container',
+          )}
           >
-            { icons }
+            {icons}
           </div>
         )}
-        <div
-          className={_cs(
-            styles.internalInputContainer,
-            'go-internal-input-container',
-          )}
+        <div className={_cs(
+          styles.internalInputContainer,
+          'go-internal-input-container',
+        )}
         >
-          { input }
+          {input}
         </div>
         {actions && (
-          <div
-            className={_cs(
-              styles.actionContainer,
-              'go-input-action-container',
-            )}
+          <div className={_cs(
+            styles.actionContainer,
+            'go-input-action-container',
+          )}
           >
-            { actions }
+            {actions}
           </div>
         )}
       </div>
@@ -100,7 +104,7 @@ function InputContainer(props: Props) {
           disabled={disabled}
           className={styles.inputError}
         >
-          { error }
+          {error}
         </InputError>
       )}
     </div>
