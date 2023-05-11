@@ -5,7 +5,6 @@
   width: 12px;
   background-color: grey;
   border-radius: 50%;
-  display: inline-block;
 }
 .dot-connector {
   border-left: 1px solid grey;
@@ -13,8 +12,6 @@
 .question-content {
   display: flex;
   gap: $global-spacing-3;
-  padding-right: 20%;
-  // overflow-y: visible;
 
   .note-section {
     display: flex;
@@ -24,6 +21,6 @@
 
   .answers {
     display: flex;
-    gap: $global-spacing-2;
+    align-items: center;
   }
 }

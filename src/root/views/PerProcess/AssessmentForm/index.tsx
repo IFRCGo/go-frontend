@@ -5,7 +5,7 @@ import LanguageContext from '#root/languageContext';
 import { ListResponse, useLazyRequest, useRequest } from '#utils/restRequest';
 import useAlert from '#hooks/useAlert';
 
-import { assessmentSchema } from '../usePerFormOptions';
+import { assessmentSchema } from '../usePerProcessOptions';
 import Tabs from '#components/Tabs';
 import TabList from '#components/Tabs/TabList';
 import Tab from '#components/Tabs/Tab';
@@ -18,28 +18,18 @@ import ComponentsInput from './ComponentInput';
 import { Area, Component, PerOverviewFields } from '../common';
 
 import styles from './styles.module.scss';
-import Translate from '#components/Translate';
-
-type Value = PartialForm<PerOverviewFields>;
-
-interface Props {
-  className?: string;
-  initialValue?: Value;
-  onValueChange?: (...entries: EntriesAsList<Value>) => void;
-  onValueSet?: (value: SetBaseValueArg<Value>) => void;
-  perId?: string;
-  onSubmitSuccess?: (result: Component) => void;
-}
 
 type StepTypes = 'assessment' | 'prioritization';
 
-function Assessment(props: Props) {
+interface Props {
+  className?: string;
+  perId?: string;
+}
+
+function AssessmentForm(props: Props) {
   const {
     className,
     perId,
-    initialValue,
-    onSubmitSuccess,
-    onValueSet,
   } = props;
 
   const {
@@ -50,15 +40,9 @@ function Assessment(props: Props) {
 
   const { strings } = React.useContext(LanguageContext);
   const alert = useAlert();
+
   const maxArea = 5;
   const minArea = 1;
-
-  // const {
-  //   pending: fetchingAssessmentOptions,
-  //   response: assessmentResponse,
-  // } = useRequest<ListResponse<Component>>({
-  //   url: 'api/v2/per-formquestion/',
-  // });
 
   const {
     pending: fetchingAreas,
@@ -161,7 +145,7 @@ function Assessment(props: Props) {
         </div>
       </p>,
       {
-        variant: 'info',
+        variant: 'warning',
       }
     );
     if (currentStep === 'assessment') {
@@ -295,4 +279,4 @@ function Assessment(props: Props) {
   );
 }
 
-export default Assessment;
+export default AssessmentForm;

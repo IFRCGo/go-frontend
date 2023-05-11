@@ -13,7 +13,7 @@ import LanguageContext from '#root/languageContext';
 import { compareString } from '#utils/utils';
 import useAlertContext from '#hooks/useAlert';
 import { NumericValueOption } from '#types';
-import usePerFormOptions, { overviewSchema } from '../usePerFormOptions';
+import usePerProcessOptions, { overviewSchema } from '../usePerProcessOptions';
 
 import {
   PerOverviewFields,
@@ -48,7 +48,7 @@ interface Props {
   perId?: string;
 }
 
-function PerOverview(props: Props) {
+function OverviewForm(props: Props) {
   const {
     // initialValue,
     onValueSet,
@@ -71,7 +71,7 @@ function PerOverview(props: Props) {
   const {
     nationalSocietyOptions,
     yesNoOptions,
-  } = usePerFormOptions(value);
+  } = usePerProcessOptions(value);
 
   const {
     pending: fetchingPerOptions,
@@ -541,4 +541,4 @@ function PerOverview(props: Props) {
   );
 }
 
-export default PerOverview;
+export default OverviewForm;

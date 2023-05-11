@@ -10,11 +10,11 @@ import Tab from '#components/Tabs/Tab';
 import Button from '#components/Button';
 import TabPanel from '#components/Tabs/TabPanel';
 
-import PerOverview from './PerOverview';
-import Assessment from './Assessment';
+import PerOverview from './OverviewForm';
+import Assessment from './AssessmentForm';
 import { perAssessmentFields, PerOverviewFields } from './common';
-import Prioritization from './Prioritization';
-import WorkPlan from './WorkPlan';
+import Prioritization from './PrioritizationForm';
+import WorkPlan from './WorkPlanForm';
 
 import styles from './styles.module.scss';
 
@@ -36,14 +36,14 @@ const stepTypesToFieldsMap: {
   workPlan: perAssessmentFields,
 };
 
-function PerForm(props: Props) {
+function PerProcess(props: Props) {
   const {
     className,
   } = props;
 
   const { strings } = React.useContext(LanguageContext);
 
-  const [currentStep, setCurrentStep] = React.useState<StepTypes>('workPlan');
+  const [currentStep, setCurrentStep] = React.useState<StepTypes>('assessment');
 
   const handleTabChange = React.useCallback((newStep: StepTypes) => {
     scrollToTop();
@@ -150,4 +150,4 @@ function PerForm(props: Props) {
   );
 }
 
-export default PerForm;
+export default PerProcess;

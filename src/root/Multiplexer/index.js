@@ -45,7 +45,7 @@ const Country = lazy(() => import('../views/Country'));
 const Deployments = lazy(() => import('../views/deployments'));
 const Table = lazy(() => import('../views/table'));
 const Covid19ThreeWSankey = lazy(() => import('../views/Covid19ThreeWSankey'));
-// const PerForm = lazy(() => import('../components/per-forms/per-form'));
+// const PerProcess = lazy(() => import('../components/per-forms/per-form'));
 const PerAssessment = lazy(() => import('../views/per-assessment'));
 const Preparedness = lazy(() => import('../views/preparedness'));
 const TranslationDashboard = lazy(() => import('../views/TranslationDashboard'));
@@ -72,7 +72,7 @@ const OperationalUpdatePdfPreview = lazy(() => import('#views/DrefOpPdfPreview')
 const FinalReport = lazy(() => import('#views/FinalReportForm'));
 const FinalReportPdfPreview = lazy(() => import('#views/FinalReportPdfPreview'));
 const Search = lazy (() => import('#views/Search'));
-const PerForm = lazy(() => import('#views/PerForm'));
+const PerProcess = lazy(() => import('#views/PerProcess'));
 
 function LoadingGlobal() {
   return (
@@ -267,8 +267,8 @@ function Multiplexer(props) {
               <Route exact path='/deployments/personnel/all' render={props => <Table {...props} type='personnel' />} />
               <Route exact path='/deployments/erus/all' render={props => <Table {...props} type='eru' />} />
               <Route path='/deployments' component={Deployments} />
-              <Route exact path='/per-form/:perId/' component={PerForm} />
-              <Route exact path='/per-form/:perId/edit/' render={props => <PerForm {...props} isEdit={true} />} />
+              <Route exact path='/per-process/:perId/' component={PerProcess} />
+              <Route exact path='/per-process/:perId/edit/' render={props => <PerProcess {...props} isEdit={true} />} />
               {/* <Route path='/per-assessment/create' render={props => <PerAssessment {...props} isCreate={true} />} /> */}
               <Route exact path='/per-assessment/:id' component={PerAssessment} />
               <Route exact path='/per-assessment/:id/edit' render={props => <PerAssessment {...props} isEdit={true} />} />
@@ -282,7 +282,7 @@ function Multiplexer(props) {
               <PrivateRoute exact path='/emergency-three-w/:projectId/edit/' component={EmergencyThreeWEdit} />
               <Route exact path='/three-w/' component={GlobalThreeW} />
               <PrivateRoute exact path='/emergency-three-w-form/' component={EmergencyThreeWForm} />
-              <Route path='/per-form' component={PerForm} />
+              <Route path='/per-form' component={PerProcess} />
 
               <PrivateRoute key="new-flash-update-application-form" exact path='/flash-update/new/' component={FlashUpdateApplicationForm} />
               <PrivateRoute exact path='/flash-update/all/' component={AllFlashUpdates} />

@@ -1,11 +1,10 @@
 import React from 'react';
 import { isNotDefined, _cs } from '@togglecorp/fujs';
-import { useForm, PartialForm, SetBaseValueArg } from '@togglecorp/toggle-form';
+import { EntriesAsList, PartialForm } from '@togglecorp/toggle-form';
 
-import { compareString } from '#utils/utils';
 import { ListResponse, useRequest } from '#utils/restRequest';
+import { compareString } from '#utils/utils';
 import ExpandableContainer from '#components/ExpandableContainer';
-import SelectInput from '#components/SelectInput';
 
 import {
   PerOverviewFields,
@@ -13,31 +12,25 @@ import {
   emptyNumericOptionList,
   Component,
 } from '../../common';
-import QuestionComponent from './QuestionComponent';
+import QuestionList from './QuestionInput';
+import SelectInput from '#components/SelectInput';
 
 import styles from './styles.module.scss';
-import { assessmentSchema } from '#views/PerForm/usePerFormOptions';
 
 type Value = PartialForm<PerOverviewFields>;
 
 interface Props {
-  className?: string;
-  onValueSet: (value: SetBaseValueArg<Value>) => void;
   id?: string;
+  value?: Value;
+  onValueChange?: (...entries: EntriesAsList<Value>) => void;
 }
 
 function ComponentsInput(props: Props) {
   const {
-    className,
-    onValueSet,
+    value,
+    onValueChange,
     id,
   } = props;
-
-  const {
-    value,
-    setFieldValue: onValueChange,
-    setError: onErrorSet,
-  } = useForm(assessmentSchema, { value: {} as PartialForm<PerOverviewFields> });
 
   const {
     pending: fetchingComponents,
@@ -61,6 +54,8 @@ function ComponentsInput(props: Props) {
     })).sort(compareString) ?? emptyNumericOptionList
   ), [formStatusResponse]);
 
+  console.warn('value', value);
+
   return (
     <>
       {
@@ -68,27 +63,25 @@ function ComponentsInput(props: Props) {
           <ExpandableContainer
             className={_cs(styles.customActivity, styles.errored)}
             componentRef={undefined}
-            heading={`Component ${component.component_num} : ${component.title}`}
+            heading={`Component ${i + 1} : ${component.title}`}
             // actionsContainerClassName={styles}
-            headingSize='small'
+            headingSize="small"
             sub
             actions={
               <SelectInput
                 className={styles.improvementSelect}
-                name='improvement'
+                name="improvement"
                 onChange={onValueChange}
                 options={formStatusOptions}
-                pending={fetchingFormStatus}
               />
             }
           >
-            <QuestionComponent
+            <QuestionList
               index={i}
               id={component.id}
               value={value}
               onValueChange={onValueChange}
             />
-            <div className={styles.dot} />
           </ExpandableContainer>
         ))
       }

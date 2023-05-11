@@ -69,12 +69,21 @@ export interface Answer {
   text_ar: string;
 }
 
-export interface ComponentQuestion {
-  answer: Answer[];
-  component: Component;
-  description: string;
+export interface Assessment {
   id: string;
+  component: Component;
+  answer: Answer[];
+  description: string;
   question: string;
+  is_benchmark: boolean;
+  status: string;
+  benchmarks: Benchmarks;
+}
+
+export interface Benchmarks {
+  id: string;
+  notes: string;
+  is_benchmark: boolean;
 }
 
 //FIX ME: fix due date
@@ -159,6 +168,7 @@ export interface PerOverviewFields {
   ns_second_focal_point_phone: string;
 }
 
+
 export const perOverviewFields: (keyof PerOverviewFields)[] = [
   'id',
   'type_of_assessment_details',
@@ -205,7 +215,7 @@ export const perOverviewFields: (keyof PerOverviewFields)[] = [
   'ns_second_focal_point_phone',
 ];
 
-export const perAssessmentFields: (keyof ComponentQuestion)[] = [
+export const perAssessmentFields: (keyof Assessment)[] = [
   'component',
   'question',
   'answer',
@@ -222,3 +232,54 @@ export const perWorkPlanFields: (keyof WorkPlanComponent)[] = [
   'status',
   'due_date',
 ];
+
+// --------------------------------------------------------------
+
+// Queries
+
+interface PerOverivew {
+
+}
+
+interface PerAssessment {
+
+}
+
+interface PerPrioritization {
+
+}
+
+interface PerWorkPlan {
+
+}
+
+// Mutations
+
+interface PerOverviewForm {
+
+}
+
+export interface PerAssessmentForm {
+  id: string;
+  components: {
+    id: string;
+    componentId: string;
+    status: string;
+    benchmarks: {
+      id: string;
+      benchmarkId: string;
+      notes: string;
+      is_benchmark: boolean;
+    }[];
+  }[];
+}
+
+interface PerPrioritizationForm {
+
+}
+
+interface PerWorkPlanForm {
+
+}
+
+

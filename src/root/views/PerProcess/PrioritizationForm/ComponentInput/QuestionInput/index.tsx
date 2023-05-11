@@ -4,7 +4,7 @@ import { isNotDefined } from '@togglecorp/fujs';
 import { EntriesAsList, PartialForm } from '@togglecorp/toggle-form';
 
 import { ListResponse } from '#utils/restRequest';
-import { ComponentQuestion, PerOverviewFields } from '#views/PerForm/common';
+import { Assessment, PerOverviewFields } from '#views/PerProcess/common';
 import Container from '#components/Container';
 
 import styles from './styles.module.scss';
@@ -18,7 +18,7 @@ interface Props {
   index: number;
 }
 
-function QuestionList(props: Props) {
+function QuestionInput(props: Props) {
   const {
     id,
     index,
@@ -31,7 +31,7 @@ function QuestionList(props: Props) {
   const {
     pending: fetchingComponents,
     response: questionResponse,
-  } = useRequest<ListResponse<ComponentQuestion>, unknown, {}>({
+  } = useRequest<ListResponse<Assessment>, unknown, {}>({
     skip: isNotDefined(id),
     url: `api/v2/per-formquestion/?component=${id}`,
   });
@@ -55,4 +55,4 @@ function QuestionList(props: Props) {
   );
 }
 
-export default QuestionList;
+export default QuestionInput;

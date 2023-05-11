@@ -1,36 +1,51 @@
 import React from 'react';
-import Container from '#components/Container';
-import { ListResponse } from '#utils/restRequest';
-import { ComponentQuestion, PerOverviewFields } from '#views/PerForm/common';
+
 import { isNotDefined } from '@togglecorp/fujs';
-import { EntriesAsList, PartialForm } from '@togglecorp/toggle-form';
 import { useRequest } from '@togglecorp/toggle-request';
-import styles from './styles.module.scss';
+import { PartialForm, SetBaseValueArg, useForm } from '@togglecorp/toggle-form';
+
+import { ListResponse } from '#utils/restRequest';
+import { Assessment, booleanOptionKeySelector, optionLabelSelector, perAssessmentFields, PerOverviewFields } from '#views/PerProcess/common';
+import usePerProcessOptions, { assessmentSchema } from '../../../usePerProcessOptions';
+import Container from '#components/Container';
+import RadioInput from '#components/RadioInput';
 import TextArea from '#components/TextArea';
 
-type Value = PartialForm<PerOverviewFields>;
+import styles from './styles.module.scss';
+
+type Value = PartialForm<Assessment>;
 
 interface Props {
   id: string;
-  value?: Value;
-  onValueChange?: (...entries: EntriesAsList<Value>) => void;
-  index: number;
+  onValueSet: (value: SetBaseValueArg<Value>) => void;
+  index: string;
 }
 
-function QuestionComponent(props: Props) {
+function QuestionInput(props: Props) {
   const {
     id,
     index,
-    value,
-    onValueChange,
+    onValueSet,
   } = props;
+
+  const {
+    value,
+    error: formError,
+    validate,
+    setFieldValue: onValueChange,
+    setError: onErrorSet,
+  } = useForm(assessmentSchema, { value: {} as PartialForm<Assessment> });
+
+  const {
+    yesNoOptions,
+  } = usePerProcessOptions(value);
 
   console.log('value', value);
 
   const {
     pending: fetchingComponents,
     response: questionResponse,
-  } = useRequest<ListResponse<ComponentQuestion>, unknown, {}>({
+  } = useRequest<ListResponse<Assessment>, unknown, {}>({
     skip: isNotDefined(id),
     url: `api/v2/per-formquestion/?component=${id}`,
   });
@@ -65,39 +80,25 @@ function QuestionComponent(props: Props) {
                 error={undefined}
                 rows={2}
               />
-              <div className={styles.answers}
-              >
-                <label>
-                  <input
-                    type='radio'
-                    name='yes-no-na'
-                    value='no'
-                  />
-                  Yes
-                </label>
-                <label>
-                  <input
-                    type='radio'
-                    name='yes-no-na'
-                    value='no'
-                  />
-                  No
-                </label>
-                <label>
-                  <input
-                    type='radio'
-                    name='yes-no-na'
-                    value='no'
-                  />
-                  Not Revised
-                </label>
+              <div className={styles.answers}>
+                <RadioInput
+                  name={"is_benchmark" as const}
+                  options={yesNoOptions}
+                  keySelector={booleanOptionKeySelector}
+                  labelSelector={optionLabelSelector}
+                  value={value?.is_benchmark}
+                  onChange={onValueChange}
+                />
               </div>
             </Container>
           </div>
         </>
       ))}
+      <TextArea
+        name={undefined} value={undefined}>
+      </TextArea>
     </>
   );
 }
 
-export default QuestionComponent;
+export default QuestionInput;

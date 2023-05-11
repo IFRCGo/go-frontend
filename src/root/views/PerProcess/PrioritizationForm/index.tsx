@@ -8,10 +8,10 @@ import {
 import { _cs } from '@togglecorp/fujs';
 import LanguageContext from '#root/languageContext';
 import { ListResponse, useRequest } from '#utils/restRequest';
-import { assessmentSchema } from '../usePerFormOptions';
+import { assessmentSchema } from '../usePerProcessOptions';
 import { Area, Component } from '../common';
 import Container from '#components/Container';
-import ComponentsList from './ComponentList';
+import ComponentsList from './ComponentInput';
 
 import Button from '#components/Button';
 import { createStringColumn } from '#components/Table/predefinedColumns';
@@ -39,7 +39,7 @@ interface AreaProps {
   data: Component[] | undefined;
 }
 
-function Prioritization(props: AreaProps) {
+function PrioritizationForm(props: AreaProps) {
   const {
     className,
     data,
@@ -159,4 +159,4 @@ function Prioritization(props: AreaProps) {
   );
 }
 
-export default Prioritization;
+export default PrioritizationForm;

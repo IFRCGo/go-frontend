@@ -142,13 +142,13 @@ function CustomActivityInput(props: Props) {
         oneColumn
         contentSectionClassName={styles.content}
       >
-        {/* <TextInput
+        <TextInput
           label="Activity Title"
           name="custom_action"
           value={value.custom_action}
           onChange={setFieldValue}
           error={error?.custom_action}
-        /> */}
+        />
         <DisaggregationInputs
           isFirstSubmission={isFirstSubmission}
           index={index}

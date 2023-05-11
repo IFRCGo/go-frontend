@@ -19,7 +19,7 @@ import { WorkPlanComponent } from '../common';
 import TextArea from '#components/TextArea';
 
 import styles from './styles.module.scss';
-import { workplanSchema } from '../usePerFormOptions';
+import { workplanSchema } from '../usePerProcessOptions';
 import { useLazyRequest } from '#utils/restRequest';
 import useAlertContext from '#hooks/useAlert';
 
@@ -35,7 +35,7 @@ interface Props {
   onValueChange: (...entries: EntriesAsList<Value>) => void;
 }
 
-function WorkPlan(props: Props) {
+function WorkPlanForm(props: Props) {
   const {
     className,
     onRemove,
@@ -224,4 +224,4 @@ function WorkPlan(props: Props) {
   );
 }
 
-export default WorkPlan;
+export default WorkPlanForm;

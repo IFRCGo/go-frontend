@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { ObjectSchema, PartialForm } from '@togglecorp/toggle-form';
+import { ObjectSchema, PartialForm, ArraySchema } from '@togglecorp/toggle-form';
 import { ListResponse, useRequest } from '#utils/restRequest';
 import { compareString } from '#utils/utils';
 import LanguageContext from '#root/languageContext';
@@ -17,12 +17,12 @@ import {
   emailCondition,
 } from '#utils/form';
 
-import { ComponentQuestion, emptyNumericOptionList, PerOverviewFields, WorkPlanComponent } from './common';
+import { PerAssessmentForm, emptyNumericOptionList, PerOverviewFields, WorkPlanComponent } from './common';
 
 export type OverviewFormSchema = ObjectSchema<PartialForm<PerOverviewFields>>;
 export type OverviewFormSchemaFields = ReturnType<OverviewFormSchema['fields']>;
 
-export type AssessmentFormScheme = ObjectSchema<PartialForm<ComponentQuestion>>;
+export type AssessmentFormScheme = ObjectSchema<PartialForm<PerAssessmentForm>>;
 export type AssessmentFormSchemeFields = ReturnType<AssessmentFormScheme['fields']>;
 
 export type WorkPlanFormScheme = ObjectSchema<PartialForm<WorkPlanComponent>>;
@@ -87,11 +87,28 @@ export const overviewSchema: OverviewFormSchema = {
 export const assessmentSchema: AssessmentFormScheme = {
   fields: (value): AssessmentFormSchemeFields => ({
     id: [],
-    answer: [],
-    component: [],
-    description: [],
-    question: [],
-  })
+    components: {
+      keySelector: (val) => val.componentId as string,
+      member: () => ({
+        fields: () => ({
+          id: [],
+          componentId: [],
+          status: [],
+          benchmarks: {
+            keySelector: (n) => n.benchmarkId as string,
+            member: () => ({
+              fields: () => ({
+                id: [],
+                benchmarkId: [],
+                notes: [],
+                is_benchmark: [],
+              }),
+            }),
+          },
+        }),
+      })
+    },
+  }),
 };
 
 export const workplanSchema: WorkPlanFormScheme = {
@@ -106,7 +123,7 @@ export const workplanSchema: WorkPlanFormScheme = {
   })
 };
 
-function usePerFormOptions(value: PartialForm<PerOverviewFields>) {
+function usePerProcessOptions(value: PartialForm<PerOverviewFields>) {
   const { strings } = React.useContext(LanguageContext);
 
   const {
@@ -152,4 +169,4 @@ function usePerFormOptions(value: PartialForm<PerOverviewFields>) {
   };
 }
 
-export default usePerFormOptions;
+export default usePerProcessOptions;
