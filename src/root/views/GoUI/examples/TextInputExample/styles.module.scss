@@ -1,10 +1,12 @@
 .text-box {
     display: flex;
+    flex-direction: column;
     padding: var(--go-ui-spacing-2xl);
+
 
     .text-example {
         padding: var(--go-ui-spacing-sm);
-        background-color: var(--go-ui-color-gray-40);
+        // background-color: var(--go-ui-color-gray-40);
         width: 30%;
     }
 

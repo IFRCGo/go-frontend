@@ -1,4 +1,8 @@
 .input-label {
-  color: var(--go-ui-color-gray-60);
-  padding: 0 var(--go-ui-width-separator-dense);
+  color: var(--go-ui-color-gray-70);
+  padding: 0 var(--go-ui-spacing-xxs);
+
+  &.disabled {
+    color: var(--go-ui-color-gray-40);
+  }
 }
