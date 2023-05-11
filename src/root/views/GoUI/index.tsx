@@ -18,6 +18,8 @@ import SwitchExample from './examples/SwitchExample';
 import CheckboxExample from './examples/CheckboxExample';
 import DateInputExample from './examples/DateInputExample';
 import NumberInputExample from './examples/NumberInputExample';
+import RichTextAreaExample from './examples/RichTextAreaExample';
+import RadioInputExample from './examples/RadioInputExample';
 
 function GoUI() {
 
@@ -80,11 +82,18 @@ function GoUI() {
           Text Input
         </Button>
         <Button
-          name="dateInput"
+          name="date-input"
           className={styles.option}
           onClick={handleNewComponent}
         >
           DateInput
+        </Button>
+        <Button
+          name="rich-text-area"
+          className={styles.option}
+          onClick={handleNewComponent}
+        >
+          RichTextArea
         </Button>
         <Button
           name="switch"
@@ -106,6 +115,13 @@ function GoUI() {
           onClick={handleNewComponent}
         >
           Number Input
+        </Button>
+        <Button
+          name="radio-input"
+          className={styles.option}
+          onClick={handleNewComponent}
+        >
+          RadioInput
         </Button>
         <Button
           name="cards"
@@ -165,9 +181,11 @@ function GoUI() {
         {element === "text-input" && <TextInputExample />}
         {element === "switch" && <SwitchExample />}
         {element === "checkbox" && <CheckboxExample />}
-        {element === "dateInput" && <DateInputExample />}
         {element === 'iconButton' && <IconButtons />}
         {element === "number-input" && <NumberInputExample />}
+        {element === "date-input" && <DateInputExample />}
+        {element === "rich-text-area" && <RichTextAreaExample />}
+        {element === "radio-input" && <RadioInputExample />}
       </div >
     </div >
   );
