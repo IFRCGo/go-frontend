@@ -6,9 +6,8 @@
     align-items: center;
     border-radius: var(--go-ui-border-radius-md);
     transition: var(--go-ui-duration-transition-medium) var(--go-ui-color-gray-10) ease-in-out;
-    z-index: 0;
     background-color: var(--go-ui-color-gray-10);
-    padding: calc(var(--go-ui-spacing-md)*0.5) var(--go-ui-spacing-md);
+    padding: var(--go-ui-spacing-sm) var(--go-ui-spacing-md);
     border: var(--go-ui-width-separator-thin) solid transparent;
 
     .internal-input-container {
@@ -16,7 +15,7 @@
     }
 
     &:focus-within {
-      border-bottom-color: var(--go-ui-color-red);
+      border-bottom-color: var(--go-ui-color-primary-red);
     }
 
     &:hover {
@@ -24,20 +23,10 @@
     }
   }
 
-  &.disabled {
-    opacity: .5;
-
-    .input-section {
-      &:hover {
-        border-bottom-color: transparent;
-      }
-    }
-  }
-
   .input-hint {
     font-size: var(--go-ui-font-size-sm);
-    opacity: .7;
-    padding: calc(var(--go-ui-spacing-md)*0.5) var(--go-ui-spacing-md);
+    color: var(--go-ui-color-gray-70);
+    padding: var(--go-ui-spacing-xs);
   }
 
   &.errored {
@@ -48,15 +37,24 @@
 
   &.general {
     .input-section {
-      border: none;
       border-radius: 0;
-      border-bottom: var(--go-ui-width-separator-thin) solid var(--go-ui-color-gray-80);
     }
   }
 
   .input-error {
     position: absolute;
     min-width: var(-go-ui-spacing-8xl);
-    z-index: 1;
+    z-index: var(--go-ui-z-index-10);
+  }
+
+  &:hover:enabled {
+    .input-section {
+      border-bottom-color: var(--go-ui-color-primary-red);
+    }
+  }
+
+  &.disabled {
+    background-color: var(--go-ui-color-gray-10);
+    color: var(--go-ui-color-gray-40);
   }
 }

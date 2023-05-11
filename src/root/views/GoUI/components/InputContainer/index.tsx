@@ -4,8 +4,8 @@ import {
   isDefined,
 } from '@togglecorp/fujs';
 
-import InputLabel from '../InputLabel';
-import InputError from '../InputError';
+import InputLabel from '#goui/components/InputLabel';
+import InputError from '#goui/components/InputError';
 
 import styles from './styles.module.scss';
 
@@ -18,7 +18,6 @@ export interface Props {
   hint?: React.ReactNode;
   icons?: React.ReactNode;
   label?: React.ReactNode;
-  readOnly?: boolean;
   input: React.ReactNode;
   errorOnTooltip?: boolean;
   variant?: 'form' | 'general';
@@ -33,7 +32,6 @@ function InputContainer(props: Props) {
     error,
     icons,
     label,
-    readOnly,
     input,
     errorOnTooltip = false,
     hint,
@@ -46,7 +44,6 @@ function InputContainer(props: Props) {
         styles.inputContainer,
         !!error && styles.errored,
         disabled && styles.disabled,
-        readOnly && styles.readOnly,
         variant === 'form' && styles.form,
         variant === 'general' && styles.general,
         className,
