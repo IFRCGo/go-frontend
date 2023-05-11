@@ -31,6 +31,12 @@ function DropdownExample() {
                     label="Google Link"
                     href="https://www.google.com"
                 />
+                <DropdownMenuItem
+                    className={styles.menuItem}
+                    onClick={undefined}
+                    label="Disabled Menu"
+                    disabled
+                />
             </DropdownMenu>
         </div>
     );
