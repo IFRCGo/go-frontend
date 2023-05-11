@@ -10,43 +10,57 @@ function TextInputExample() {
     }, [setTextGroup]);
 
     return (
-        <>
-            <div className={styles.textBox}>
-                <TextInput
-                    className={styles.textExample}
-                    name="Candidate"
-                    labelClassName={styles.textLabel}
-                    label="Candidate Name"
-                    value={textGroup}
-                    onChange={handleTextChange}
-                    rows={2}
-                />
-            </div>
-            <div className={styles.textBox}>
-                <TextInput
-                    className={styles.textExample}
-                    name="Candidate"
-                    labelClassName={styles.textLabel}
-                    label="Disabled Candidate Name"
-                    value={textGroup}
-                    onChange={handleTextChange}
-                    rows={2}
-                    disabled
-                />
-            </div>
-            <div className={styles.textBox}>
-                <TextInput
-                    className={styles.textExample}
-                    name="Candidate"
-                    labelClassName={styles.textLabel}
-                    label="Error in text input"
-                    value={textGroup}
-                    onChange={handleTextChange}
-                    rows={2}
-                    error="Is that your real name ?"
-                />
-            </div>
-        </>
-    );
+    <>
+      <div className={styles.textBox}>
+        <TextInput
+          className={styles.textExample}
+          name="Candidate"
+          labelClassName={styles.textLabel}
+          label="Candidate Name"
+          hint="This is hint"
+          value={textGroup}
+          onChange={handleTextChange}
+          rows={2}
+        />
+      </div>
+      <div className={styles.textBox}>
+        <TextInput
+          variant="general"
+          className={styles.textExample}
+          name="Candidate"
+          labelClassName={styles.textLabel}
+          label="Candidate Name"
+          hint="This is hint"
+          value={textGroup}
+          onChange={handleTextChange}
+          rows={2}
+        />
+      </div>
+      <div className={styles.textBox}>
+        <TextInput
+          className={styles.textExample}
+          name="Candidate"
+          labelClassName={styles.textLabel}
+          label="Disabled Candidate Name"
+          value={textGroup}
+          onChange={handleTextChange}
+          rows={2}
+          disabled
+        />
+      </div>
+      <div className={styles.textBox}>
+        <TextInput
+          className={styles.textExample}
+          name="Candidate"
+          labelClassName={styles.textLabel}
+          label="Error in text input"
+          value={textGroup}
+          onChange={handleTextChange}
+          rows={2}
+          error="Is that your real name ?"
+        />
+      </div>
+    </>
+  );
 }
 export default TextInputExample;
