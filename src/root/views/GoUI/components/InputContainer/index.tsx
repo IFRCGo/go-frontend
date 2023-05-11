@@ -18,6 +18,7 @@ export interface Props {
   hint?: React.ReactNode;
   icons?: React.ReactNode;
   label?: React.ReactNode;
+  readOnly?: boolean;
   input: React.ReactNode;
   errorOnTooltip?: boolean;
   variant?: 'form' | 'general';
@@ -32,6 +33,7 @@ function InputContainer(props: Props) {
     error,
     icons,
     label,
+    readOnly,
     input,
     errorOnTooltip = false,
     hint,
@@ -44,6 +46,7 @@ function InputContainer(props: Props) {
         styles.inputContainer,
         !!error && styles.errored,
         disabled && styles.disabled,
+        readOnly && styles.readOnly,
         variant === 'form' && styles.form,
         variant === 'general' && styles.general,
         className,
