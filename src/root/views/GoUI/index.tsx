@@ -20,6 +20,7 @@ import DateInputExample from './examples/DateInputExample';
 import NumberInputExample from './examples/NumberInputExample';
 import RichTextAreaExample from './examples/RichTextAreaExample';
 import RadioInputExample from './examples/RadioInputExample';
+import BlockLoadingExample from './examples/BlockLoadingExample';
 
 function GoUI() {
 
@@ -124,6 +125,13 @@ function GoUI() {
           RadioInput
         </Button>
         <Button
+          name="block-loading"
+          className={styles.option}
+          onClick={handleNewComponent}
+        >
+          BlockLoading
+        </Button>
+        <Button
           name="cards"
           className={styles.option}
           onClick={handleNewComponent}
@@ -186,6 +194,7 @@ function GoUI() {
         {element === "date-input" && <DateInputExample />}
         {element === "rich-text-area" && <RichTextAreaExample />}
         {element === "radio-input" && <RadioInputExample />}
+        {element === "block-loading" && <BlockLoadingExample />}
       </div >
     </div >
   );

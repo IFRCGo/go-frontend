@@ -1,5 +1,3 @@
-@import '~styles/settings/variables';
-
 .message {
-  color: $primary-color;
+  color: var(--go-ui-color-primary-red);
 }
