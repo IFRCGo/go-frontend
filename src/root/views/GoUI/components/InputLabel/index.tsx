@@ -23,13 +23,12 @@ function InputLabel(props: Props) {
   return (
     <div
       className={_cs(
-        'go-input-label',
         styles.inputLabel,
         disabled && styles.disabled,
         className,
       )}
     >
-      { children }
+      {children}
     </div>
   );
 }

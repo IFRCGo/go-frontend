@@ -1,7 +1,6 @@
 import React from 'react';
 import Link from '#goui/components/Link';
 import Heading from '#goui/components/Heading';
-import Header from '#goui/components/Header';
 import styles from './styles.module.scss';
 import { IoChevronForward, IoOpenOutline } from 'react-icons/io5';
 
@@ -9,9 +8,9 @@ function Links() {
   return (
     <div className={styles.linkCollection}>
       <div className={styles.linksContainer}>
-        <Header>
+        <Heading level={5}>
           VIEW LINK
-        </Header>
+        </Heading>
         <Link
           to={{
             pathname: '/emergencies',
@@ -22,9 +21,9 @@ function Links() {
         </Link>
       </div>
       <div className={styles.linksContainer}>
-        <Header>
+        <Heading level={5}>
           TITLE LINK
-        </Header>
+        </Heading>
         <Heading level={2}>
           <Link
             to="/deployments/overview"
@@ -36,9 +35,9 @@ function Links() {
         </Heading>
       </div >
       <div className={styles.linksContainer}>
-        <Header>
+        <Heading level={5}>
           TEXT LINK
-        </Header>
+        </Heading>
         <Link
           to="/disaster-preparedness"
           underline
@@ -47,9 +46,9 @@ function Links() {
         </Link>
       </div>
       <div className={styles.linksContainer}>
-        <Header>
+        <Heading level={5}>
           SECONDARY LINK
-        </Header>
+        </Heading>
         <Link
           to="www.gooogle.com"
           target="_blank"
@@ -58,9 +57,9 @@ function Links() {
         </Link>
       </div>
       <div className={styles.linksContainer}>
-        <Header>
+        <Heading level={5}>
           EXTERNAL LINK
-        </Header>
+        </Heading>
         <Link
           to="https://www.gooogle.com"
           external
