@@ -1,63 +1,43 @@
 .link-container {
-  --color: var(--go-ui-color-black);
+  --color: transparent;
   --decoration: none;
-  --background-color: none;
+  --spacing: var(--go-ui-spacing-xs);
 
   display: flex;
   align-items: center;
   justify-content: space-around;
-  text-decoration: var(--decoration);
   width: fit-content;
+  text-decoration: var(--decoration);
   color: var(--color);
-  gap: var(--go-ui-spacing-xs);
-  background-color: var(--background-color);
-  cursor: pointer;
+  gap: var(--spacing);
 
-  &:hover {
-    --color: var(--go-ui-color-primary-red);
+  &:not(.disabled) {
+    --color: var(--go-ui-color-black);
+    cursor: pointer;
+
+    &:hover {
+      --color: var(--go-ui-color-primary-red);
+      --decoration: underline;
+    }
+  }
+
+  &.disabled {
+    --color: var(--go-ui-color-gray-40);
+    pointer-events: none;
+  }
+
+  &.underline {
     --decoration: underline;
-  }
-
-  .icons {
-    flex-shrink: 0;
-  }
-
-  .actions {
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
   }
 
   .link {
     display: flex;
     align-items: center;
     flex-grow: 1;
-    text-transform: none;
     text-decoration: none;
-    color: var(--color);
-    font-weight: var(--go-ui-font-weight-medium);
-  }
-
-  .button-link {
-    background-color: var(--go-ui-color-primary-red);
-    align-items: center;
-    padding: calc(var(--go-ui-spacing-xxs)) var(--go-ui-spacing-2xl);
-    border-radius: var(--go-ui-spacing-md);
-    font-weight: var(--go-ui-font-weight-normal);
-    font-size: var(--go-ui-font-size-xs);
-    width: fit-content;
-
-    &:hover {
-      background-color: var(--go-ui-color-red-hover);
-    }
-  }
-
-  &.title {
-    text-transform: uppercase;
-    --color: var(--go-ui-color-primary-red);
-  }
-
-  &.text {
-    --decoration: underline;
+    color: inherit;
   }
 }
+
+
+

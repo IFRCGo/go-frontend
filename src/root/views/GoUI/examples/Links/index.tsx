@@ -1,7 +1,9 @@
 import React from 'react';
 import Link from '#goui/components/Link';
 import Header from '#components/Header';
+import Heading from '#goui/components/Heading';
 import styles from './styles.module.scss';
+import { IoChevronForward, IoOpenOutline } from 'react-icons/io5';
 
 function Links() {
   return (
@@ -19,8 +21,7 @@ function Links() {
           to={{
             pathname: '/emergencies',
           }}
-          target="_blank"
-          variant="regular"
+          actions={<IoChevronForward />}
         >
           Emergencies
         </Link>
@@ -30,13 +31,15 @@ function Links() {
           heading="TITLE LINK"
           headingSize="ultraSmall"
         />
-        <Link
-          to="/deployments/overview"
-          target="_blank"
-          variant="title"
-        >
-          Surge
-        </Link>
+        <Heading level={2}>
+          <Link
+            to="/deployments/overview"
+            underline
+            actions={<IoChevronForward />}
+          >
+            Surge
+          </Link>
+        </Heading>
       </div>
       <div className={styles.linksContainer}>
         <Header
@@ -45,23 +48,9 @@ function Links() {
         />
         <Link
           to="/disaster-preparedness"
-          target="_blank"
-          variant="text"
+          underline
         >
           Preparedness
-        </Link>
-      </div>
-      <div className={styles.linksContainer}>
-        <Header
-          heading="SECONDARY LINK"
-          headingSize="ultraSmall"
-        />
-        <Link
-          to="www.gooogle.com"
-          target="_blank"
-          variant="secondary"
-        >
-          im@ifrc.org
         </Link>
       </div>
       <div className={styles.linksContainer}>
@@ -70,9 +59,17 @@ function Links() {
           headingSize="ultraSmall"
         />
         <Link
-          to="www.gooogle.com"
-          target="_blank"
-          variant="external"
+          to="https://www.gooogle.com"
+          external
+          actions={<IoOpenOutline />}
+        >
+          Google
+        </Link>
+        <Link
+          to="https://www.gooogle.com"
+          external
+          disabled
+          actions={<IoOpenOutline />}
         >
           Google
         </Link>
