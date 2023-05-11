@@ -27,7 +27,6 @@ function InputError(props: Props) {
     <div
       style={style}
       className={_cs(
-        'go-input-error',
         styles.inputError,
         disabled && styles.disabled,
         className,

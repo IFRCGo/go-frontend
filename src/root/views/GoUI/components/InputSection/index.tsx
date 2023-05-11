@@ -50,7 +50,6 @@ function InputSection(props: Props) {
 
   return (
     <div className={_cs(
-      'go-input-section',
       className,
       styles.inputSection,
       multiRow && styles.multiRow,

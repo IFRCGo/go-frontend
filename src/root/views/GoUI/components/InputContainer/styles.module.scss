@@ -18,6 +18,20 @@
     &:focus-within {
       border-bottom-color: var(--go-ui-color-red);
     }
+
+    &:hover {
+      border-bottom-color: var(--go-ui-color-red);
+    }
+  }
+
+  &.disabled {
+    opacity: .5;
+
+    .input-section {
+      &:hover {
+        border-bottom-color: transparent;
+      }
+    }
   }
 
   .input-hint {
@@ -32,10 +46,6 @@
     }
   }
 
-  &.disabled {
-    opacity: .5;
-  }
-
   &.general {
     .input-section {
       border: none;
@@ -48,17 +58,5 @@
     position: absolute;
     min-width: var(-go-ui-spacing-8xl);
     z-index: 1;
-  }
-
-  :global {
-    .go__menu {
-      z-index: 10;
-    }
-  }
-
-  &:hover {
-    .input-section {
-      border-bottom-color: var(--go-ui-color-red);
-    }
   }
 }

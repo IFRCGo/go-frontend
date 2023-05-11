@@ -43,7 +43,6 @@ function InputContainer(props: Props) {
   return (
     <div
       className={_cs(
-        'go-input-container',
         styles.inputContainer,
         !!error && styles.errored,
         disabled && styles.disabled,
@@ -64,7 +63,6 @@ function InputContainer(props: Props) {
         {label}
       </InputLabel>
       <div className={_cs(
-        'go-input-internal-input-section',
         styles.inputSection,
       )}
       >
@@ -77,18 +75,12 @@ function InputContainer(props: Props) {
             {icons}
           </div>
         )}
-        <div className={_cs(
-          styles.internalInputContainer,
-          'go-internal-input-container',
-        )}
+        <div className={styles.internalInputContainer}
         >
           {input}
         </div>
         {actions && (
-          <div className={_cs(
-            styles.actionContainer,
-            'go-input-action-container',
-          )}
+          <div className={styles.actionContainer}
           >
             {actions}
           </div>

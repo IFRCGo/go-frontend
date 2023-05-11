@@ -2,7 +2,7 @@ import React from 'react';
 import {
   IoChevronForward,
 } from 'react-icons/io5';
-import Header from '#goui/components/Header';
+import Heading from '#goui/components/Heading';
 import Button from '#goui/components/Button';
 import styles from './styles.module.scss';
 
@@ -10,9 +10,9 @@ function Buttons() {
   return (
     <div className={styles.buttonCollection}>
       <div className={styles.buttonsContainer}>
-        <Header>
+        <Heading level={5}>
           Primary Button
-        </Header>
+        </Heading>
         <Button
           name="primary-button"
           variant="primary"
@@ -36,9 +36,9 @@ function Buttons() {
         </Button>
       </div>
       <div className={styles.buttonsContainer}>
-        <Header>
+        <Heading level={5}>
           Secondary Button
-        </Header>
+        </Heading>
         <Button
           name="secondary-button"
           variant="secondary"
@@ -62,9 +62,9 @@ function Buttons() {
         </Button>
       </div>
       <div className={styles.buttonsContainer}>
-        <Header>
+        <Heading level={5}>
           Tertiary Button
-        </Header>
+        </Heading>
         <Button
           name="tertiary-button"
           variant="tertiary"

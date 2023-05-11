@@ -89,7 +89,7 @@ function DropdownMenu(props: DropdownMenuProps) {
     return (
         <>
             <button
-                className={_cs(styles.dropdown, className, 'tc-dropdown-menu', showDropdown && activeClassName)}
+                className={_cs(styles.dropdown, className, showDropdown && activeClassName)}
                 ref={buttonRef}
                 onClick={handleMenuClick}
             >

@@ -53,7 +53,6 @@ function Checkbox<N>(props: Props<N>) {
   const checked = invertedLogic ? !value : value;
 
   const className = _cs(
-    'go-checkbox',
     styles.checkbox,
     classNameFromProps,
     indeterminate && styles.indeterminate,
@@ -83,7 +82,7 @@ function Checkbox<N>(props: Props<N>) {
         readOnly
       />
       <div className={labelContainerClassName}>
-        { label }
+        {label}
       </div>
     </label>
   );
