@@ -21,6 +21,8 @@ function TextInput<T extends string | undefined>(props: Props<T>) {
     errorOnTooltip,
     inputClassName,
     variant,
+    required,
+    withAsterisk,
     ...otherInputProps
   } = props;
 
@@ -35,9 +37,12 @@ function TextInput<T extends string | undefined>(props: Props<T>) {
       disabled={disabled}
       errorOnTooltip={errorOnTooltip}
       variant={variant}
+      required={required}
+      withAsterisk={withAsterisk}
       input={(
         <RawInput
           {...otherInputProps}
+          required={required}
           readOnly={readOnly}
           disabled={disabled}
           className={inputClassName}

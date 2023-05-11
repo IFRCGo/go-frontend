@@ -26,6 +26,7 @@ function TextInputExample() {
         label="Candidate Name"
         hint="This is hint"
         value={textGroup}
+        required
         onChange={handleTextChange}
       />
       <TextInput
