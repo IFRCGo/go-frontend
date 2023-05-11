@@ -1,8 +1,8 @@
 import React from 'react';
 import { _cs } from '@togglecorp/fujs';
 
-import BlockLoading from '#components/block-loading';
 import styles from './styles.module.scss';
+import BlockLoading from '#goui/components/BlockLoading';
 
 export interface Props {
   className?: string;
