@@ -7,6 +7,7 @@ export interface Props {
   children?: React.ReactNode;
   className?: string;
   disabled?: boolean;
+  required?: boolean;
 }
 
 function InputLabel(props: Props) {
@@ -14,6 +15,7 @@ function InputLabel(props: Props) {
     children,
     className,
     disabled,
+    required,
   } = props;
 
   if (!children) {
@@ -29,6 +31,11 @@ function InputLabel(props: Props) {
       )}
     >
       {children}
+      {required && (
+        <span aria-hidden className={styles.required}>
+          {' *'}
+        </span>
+      )}
     </div>
   );
 }
