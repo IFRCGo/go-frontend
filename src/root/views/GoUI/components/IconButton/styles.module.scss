@@ -2,16 +2,17 @@
   --color-border: transparent;
   --color-text: transparent;
   --color-background: transparent;
-  --font-size: var(--go-ui-font-size-md);
-  --border-radius: var(--go-ui-border-radius-full);
+  --font-size: var(--go-ui-font-size-xl);
+  --border-radius: var(--go-ui-border-radius-md);
   --text-transform: none;
   --cursor: default;
-  --padding: var(--go-ui-spacing-xs) var(--go-ui-spacing-md);
+  --spacing: var(--go-ui-spacing-sm);
+  --padding: calc(var(--spacing) / 2);
 
   display: flex;
   position: relative;
   align-items: center;
-  border: var(--go-ui-width-separator-sm) solid var(--color-border);
+  justify-content: center;
   border-radius: var(--border-radius);
   background-color: var(--color-background);
   cursor: var(--cursor);
@@ -23,29 +24,13 @@
   color: var(--color-text);
   font-family: inherit;
   font-size: var(--font-size);
-  font-weight: var(--go-ui-font-weight-medium);
-  gap: var(--go-ui-spacing-xs);
+  font-weight: var(--go-ui-font-weight-normal);
+  gap: var(--spacing);
+  border: var(--go-ui-width-separator-sm) solid var(--color-border);
 
-  .icons {
-    display: flex;
-    flex-shrink: 0;
-    align-items: center;
-    font-size: var(--font-size);
+  &.round {
+    --border-radius: 50%;
   }
-
-  .actions {
-    display: flex;
-    flex-shrink: 0;
-    align-items: center;
-    font-size: var(--font-size);
-  }
-
-  .children {
-    display: flex;
-    flex-grow: 1;
-    align-items: center;
-  }
-
   &.primary {
     --border-color: var(--go-ui-color-primary-red);
     --color-background: var(--go-ui-color-primary-red);
@@ -70,8 +55,8 @@
 
     &:not(:disabled) {
       &:hover {
-        color: var(--go-ui-color-white);
-        background-color: var(--go-ui-color-red-hover);
+        --color-text: var(--go-ui-color-white);
+        --color-background: var(--go-ui-color-red-hover);
       }
     }
     &:disabled {
@@ -81,12 +66,11 @@
   }
 
   &.tertiary {
-    --color-border: transparent;
-    --color-background: transparent;
+    --color-background: var(--go-ui-color-primary-white);
     --color-text: inherit;
-
     &:not(:disabled) {
       &:hover {
+        --color-background: var(--go-ui-color-gray-20);
         --color-text: var(--go-ui-color-primary-red);
       }
     }

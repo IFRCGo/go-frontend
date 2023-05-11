@@ -9,6 +9,7 @@ import Modals from './examples/Modals';
 import Headings from './examples/Headings';
 import Button from './components/Button';
 import DropdownExample from './examples/DropdownExample';
+import IconButtons from './examples/IconButtons';
 import Navigation from './examples/Navigation';
 import RawTextAreaExample from './examples/RawTextExample';
 import TextAreaExample from './examples/TextAreaExample';
@@ -133,6 +134,13 @@ function GoUI() {
         >
           Modal
         </Button>
+        <Button
+          name="iconButton"
+          className={styles.option}
+          onClick={handleNewComponent}
+        >
+          IconButton
+        </Button>
       </div>
       <div className={styles.componentLayout}>
         {element === "links" && <Links />}
@@ -150,6 +158,7 @@ function GoUI() {
         {element === "switch" && <SwitchExample />}
         {element === "checkbox" && <CheckboxExample />}
         {element === "dateInput" && <DateInputExample />}
+        {element === 'iconButton' && <IconButtons />}
       </div >
     </div >
   );
