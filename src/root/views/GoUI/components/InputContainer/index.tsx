@@ -22,6 +22,8 @@ export interface Props {
   input: React.ReactNode;
   errorOnTooltip?: boolean;
   variant?: 'form' | 'general';
+  required?: boolean;
+  withAsterisk?: boolean;
 }
 
 function InputContainer(props: Props) {
@@ -38,7 +40,11 @@ function InputContainer(props: Props) {
     errorOnTooltip = false,
     hint,
     variant = 'form',
+    required,
+    withAsterisk,
   } = props;
+
+  const isRequired = withAsterisk ?? required;
 
   return (
     <div
@@ -59,6 +65,7 @@ function InputContainer(props: Props) {
       <InputLabel
         className={labelClassName}
         disabled={disabled}
+        required={isRequired}
       >
         {label}
       </InputLabel>
