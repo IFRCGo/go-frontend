@@ -14,6 +14,7 @@ import Map, {
   MapLayer,
   MapSource,
   MapState,
+  MapTooltip,
 } from '@togglecorp/re-map';
 import GoMapDisclaimer from '#components/GoMapDisclaimer';
 import MapEaseTo from '#components/MapEaseTo';
@@ -24,10 +25,7 @@ import {
   defaultMapStyle,
   COLOR_BLACK,
   COLOR_WHITE,
-  ADAM_COLOR_ORANGE,
-  ADAM_COLOR_GREEN,
-  ADAM_COLOR_RED,
-  ADAM_COLOR_CONES,
+  defaultTooltipOptions,
 } from '#utils/map';
 import {
   COLOR_DROUGHT,
@@ -44,6 +42,7 @@ import {
 import HazardMapImage from '../PDCEventMap/HazardMapImage';
 import styles from './styles.module.scss';
 import Sidebar from './Sidebar';
+import PointDetails from './PointDetails';
 
 const hazardTypeFillColorPaint = [
   'match',
@@ -179,7 +178,10 @@ function MeteoSwissEevnt(props: Props) {
 
 
   const footprintGeoJson = React.useMemo(() => {
-    if (!activeEventExposure || activeEventExposure?.footprint_geojson.geojson.length < 1) {
+    if (isNotDefined(activeEventExposure)
+      || isNotDefined(activeEventExposure?.footprint_geojson.footprint_geojson)
+      || !activeEventExposurePending
+    ) {
       return {
         type: 'FeatureCollection' as const,
         features:[],
@@ -188,16 +190,16 @@ function MeteoSwissEevnt(props: Props) {
 
     return {
       type: 'FeatureCollection' as const,
-      features: activeEventExposure.footprint_geojson.geojson[0].footprint_geojson.features.map((feature) => ({
-        ...feature,
-        properties: {
-          ...feature.properties,
-          type: feature.geometry.type,
-          // track_date: trackDate(feature.properties.track_date),
-        },
-      })),
+      features: activeEventExposure.footprint_geojson.footprint_geojson.features.map(
+        (feature) => ({
+          ...feature,
+          properties: {
+            ...feature.properties,
+            type: feature.geometry.type,
+          },
+        })),
     };
-  }, [activeEventExposure]);
+  }, [activeEventExposure, activeEventExposurePending]);
 
   const boundsBoxPoints = React.useMemo(
     () => {
@@ -427,6 +429,18 @@ function MeteoSwissEevnt(props: Props) {
             attributes={pointActiveState}
           />
         </MapSource>
+      )}
+      {activeEventPopupDetails && activeEventPopupDetails.activeEvent && (
+        <MapTooltip
+          coordinates={activeEventPopupDetails.lngLat}
+          onHide={handlePointClose}
+          tooltipOptions={defaultTooltipOptions}
+        >
+          <PointDetails
+            onCloseButtonClick={handlePointClose}
+            hazardDetails={activeEventPopupDetails.activeEvent}
+          />
+        </MapTooltip>
       )}
       {boundsBoxPoints &&
         <MapEaseTo

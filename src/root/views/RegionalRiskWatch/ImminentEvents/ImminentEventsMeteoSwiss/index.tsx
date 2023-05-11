@@ -81,7 +81,6 @@ function ImminentEventsMeteoSwiss(props: Props) {
   }, [meteoSwissResponse]);
 
   const hasMeteoSwissEvents = meteoSwissResponse && meteoSwissResponse.results && meteoSwissResponse.results.length > 0;
-  console.log("meteo swiss", meteoSwissResponse, data);
 
   return  (
     <>
