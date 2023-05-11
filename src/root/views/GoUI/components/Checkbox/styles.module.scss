@@ -1,0 +1,32 @@
+.checkbox {
+  display: flex;
+  align-items: flex-start;
+  cursor: pointer;
+  gap: var(--go-ui-spacing-sm);
+
+  .checkmark {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    font-size: var(--go-ui-font-size-2xl);
+    transition: var(--go-ui-duration-transition-medium) color ease-in-out;
+  }
+
+  .input {
+    display: none;
+  }
+
+  &.checked {
+    .checkmark {
+      color: var(--go-ui-color-primary-red);
+    }
+  }
+
+  &:focus,
+  &:hover {
+    .checkmark {
+      color: var(--go-ui-color-primary-red);
+    }
+  }
+}
+
