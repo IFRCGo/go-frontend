@@ -1,16 +1,14 @@
-@import '~styles/settings/variables';
-
 .checkbox {
   display: flex;
   align-items: flex-start;
   cursor: pointer;
-  gap: calc(var(--go-ui-spacing-md)*0.5);
+  gap: var(--go-ui-spacing-sm);
 
   .checkmark {
     display: flex;
     flex-shrink: 0;
     align-items: center;
-    font-size: 1.5em;
+    font-size: var(--go-ui-font-size-2xl);
     transition: var(--go-ui-duration-transition-medium) color ease-in-out;
   }
 
