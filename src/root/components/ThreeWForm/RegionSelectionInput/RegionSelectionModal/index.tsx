@@ -177,7 +177,8 @@ function RegionSelectionModal<DV extends number, AV extends number>(props: Props
     },
   });
 
-  const hasAdmin2s = (admin2Response?.results ?? []).length > 0;
+  // NOTE: Now map is always double clickable to see admin2
+  // const hasAdmin2s = (admin2Response?.results ?? []).length > 0;
 
   const admin2IdToLabelMap = React.useMemo(() => {
     return listToMap(
@@ -272,7 +273,7 @@ function RegionSelectionModal<DV extends number, AV extends number>(props: Props
                   selectedDistricts={districts}
                   onClick={handleDistrictClick}
                   countryId={countryDetails.id}
-                  onDoubleClick={hasAdmin2s ? handleDistrictDoubleClick : undefined}
+                  onDoubleClick={handleDistrictDoubleClick}
                 />
               )}
               {bounds &&
