@@ -26,12 +26,13 @@ import PasswordInputExample from './examples/PasswordInputExample';
 import ChecklistExample from './examples/ChecklistExample';
 import TopBannerExample from './examples/TopBannerExample';
 import PagerExample from './examples/PagerExample';
+import SelectInputExample from './examples/SelectInputExample';
 
 function GoUI() {
 
   const [element, setElement] = useState<string | undefined>("links");
 
-  const handleNewComponent = useCallback((name) => {
+  const handleNewComponent = useCallback((name: string) => {
     setElement(name);
   }, [setElement]);
 
@@ -213,6 +214,13 @@ function GoUI() {
         >
           Pager
         </Button>
+        <Button
+          name="select-input"
+          className={styles.option}
+          onClick={handleNewComponent}
+        >
+          Select Input
+        </Button>
       </div>
       <div className={styles.componentLayout}>
         {element === "links" && <Links />}
@@ -240,6 +248,7 @@ function GoUI() {
         {element === "checklist" && <ChecklistExample />}
         {element === "top-banner" && <TopBannerExample />}
         {element === "pager" && <PagerExample />}
+        {element === "select-input" && <SelectInputExample />}
       </div >
     </div >
   );
