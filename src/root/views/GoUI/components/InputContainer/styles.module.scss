@@ -17,10 +17,6 @@
     &:focus-within {
       border-bottom-color: var(--go-ui-color-primary-red);
     }
-
-    &:hover {
-      border-bottom-color: var(--go-ui-color-red);
-    }
   }
 
   .input-hint {

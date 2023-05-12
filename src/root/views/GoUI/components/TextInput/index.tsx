@@ -1,27 +1,29 @@
 import React from 'react';
 import InputContainer, { Props as InputContainerProps } from '#goui/components/InputContainer';
 import RawInput, { Props as RawInputProps } from '#goui/components/RawInput';
+import { NameType } from '#goui/components/types';
 
-type InheritedProps<T> = (Omit<InputContainerProps, 'input'> & Omit<RawInputProps<T>, 'type'>);
-export interface Props<T extends string | undefined> extends InheritedProps<T> {
+type InheritedProps<T extends NameType> = (Omit<InputContainerProps, 'input'> & Omit<RawInputProps<T>, 'type'>);
+
+export interface Props<T extends NameType> extends InheritedProps<T> {
   inputElementRef?: React.RefObject<HTMLInputElement>;
   inputClassName?: string;
 }
 
-function TextInput<T extends string | undefined>(props: Props<T>) {
+function TextInput<T extends NameType>(props: Props<T>) {
   const {
-    className,
     actions,
-    icons,
-    error,
-    hint,
-    label,
+    className,
     disabled,
-    readOnly,
+    error,
     errorOnTooltip,
+    hint,
+    icons,
     inputClassName,
-    variant,
+    label,
+    readOnly,
     required,
+    variant,
     withAsterisk,
     ...otherInputProps
   } = props;
@@ -30,14 +32,14 @@ function TextInput<T extends string | undefined>(props: Props<T>) {
     <InputContainer
       className={className}
       actions={actions}
-      icons={icons}
-      hint={hint}
-      error={error}
-      label={label}
       disabled={disabled}
+      error={error}
       errorOnTooltip={errorOnTooltip}
-      variant={variant}
+      hint={hint}
+      icons={icons}
+      label={label}
       required={required}
+      variant={variant}
       withAsterisk={withAsterisk}
       input={(
         <RawInput
