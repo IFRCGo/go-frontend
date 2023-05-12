@@ -11,10 +11,10 @@ function TextAreaExample() {
   }, [setTextGroup]);
 
   return (
-    <div className={styles.textBox}>
+    <div className={styles.textAreaInputs}>
       <Heading level={5}>Simple Text Area</Heading>
       <TextArea
-        className={styles.textExample}
+        className={styles.textArea}
         name="anonymous"
         labelClassName={styles.textLabel}
         label="Write some random stuff"
@@ -24,7 +24,7 @@ function TextAreaExample() {
       />
       <Heading level={5}>Text Area Disabled</Heading>
       <TextArea
-        className={styles.textExample}
+        className={styles.textArea}
         name="anonymous"
         labelClassName={styles.textLabel}
         label="An example of disabled text box"
@@ -35,7 +35,7 @@ function TextAreaExample() {
       />
       <Heading level={5}>Text Area with error</Heading>
       <TextArea
-        className={styles.textExample}
+        className={styles.textArea}
         name="anonymous"
         labelClassName={styles.textLabel}
         label="An example of error text box"
