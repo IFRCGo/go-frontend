@@ -24,6 +24,7 @@ import BlockLoadingExample from './examples/BlockLoadingExample';
 import BreadcrumbsExample from './examples/BreadcrumbsExample';
 import PasswordInputExample from './examples/PasswordInputExample';
 import ChecklistExample from './examples/ChecklistExample';
+import TopBannerExample from './examples/TopBannerExample';
 
 function GoUI() {
 
@@ -163,6 +164,13 @@ function GoUI() {
           Alerts
         </Button>
         <Button
+          name="top-banner"
+          className={styles.option}
+          onClick={handleNewComponent}
+        >
+          TopBanner
+        </Button>
+        <Button
           name="overlay"
           className={styles.option}
           onClick={handleNewComponent}
@@ -222,6 +230,7 @@ function GoUI() {
         {element === "breadcrumbs" && <BreadcrumbsExample />}
         {element === "password-input" && <PasswordInputExample />}
         {element === "checklist" && <ChecklistExample />}
+        {element === "top-banner" && <TopBannerExample />}
       </div >
     </div >
   );
