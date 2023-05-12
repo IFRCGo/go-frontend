@@ -3,7 +3,7 @@ import { _cs } from '@togglecorp/fujs';
 import BodyOverlay from '#goui/components/BodyOverlay';
 import Header from '#goui/components/Header';
 import Footer from '#goui/components/Footer';
-import Button from '#goui/components/Button';
+import IconButton from '#goui/components/IconButton';
 import { IoClose } from 'react-icons/io5';
 import { FocusOn } from 'react-focus-on';
 import styles from './styles.module.scss';
@@ -82,13 +82,14 @@ function Modal(props: Props) {
                     title
                   )}
                   {withCloseButton && (
-                    <Button
+                    <IconButton
                       name={undefined}
                       onClick={onCloseButtonClick}
+                      ariaLabel="Close"
                       variant="tertiary"
                     >
                       <IoClose />
-                    </Button>
+                    </IconButton>
                   )}
                 </Header>
               )}
