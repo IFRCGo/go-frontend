@@ -18,12 +18,11 @@
     align-items: center;
     background-color: var(--go-ui-color-primary-red);
     color: var(--go-ui-color-primary-white);
-    font-weight: var(--go-ui-font-weight-medium);
-    font-size: var(--go-ui-font-size-xs);
-    padding: var(--go-ui-width-separator-dense);
+    font-size: var(--go-ui-font-size-sm);
+    padding: var(--go-ui-spacing-md);
 
     .icon {
-      margin-right: var(--go-ui-width-separator-dense);
+      margin-right: var(--go-ui-spacing-md);
       font-size: var(--go-ui-font-size-md);
       flex-shrink: 0;
       align-self: flex-start;

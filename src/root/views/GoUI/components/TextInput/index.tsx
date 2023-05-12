@@ -2,7 +2,7 @@ import React from 'react';
 import InputContainer, { Props as InputContainerProps } from '#goui/components/InputContainer';
 import RawInput, { Props as RawInputProps } from '#goui/components/RawInput';
 
-type InheritedProps<T> = (Omit<InputContainerProps, 'input'> & RawInputProps<T>);
+type InheritedProps<T> = (Omit<InputContainerProps, 'input'> & Omit<RawInputProps<T>, 'type'>);
 export interface Props<T extends string | undefined> extends InheritedProps<T> {
   inputElementRef?: React.RefObject<HTMLInputElement>;
   inputClassName?: string;
@@ -20,8 +20,9 @@ function TextInput<T extends string | undefined>(props: Props<T>) {
     readOnly,
     errorOnTooltip,
     inputClassName,
-    type = 'text',
     variant,
+    required,
+    withAsterisk,
     ...otherInputProps
   } = props;
 
@@ -36,13 +37,16 @@ function TextInput<T extends string | undefined>(props: Props<T>) {
       disabled={disabled}
       errorOnTooltip={errorOnTooltip}
       variant={variant}
+      required={required}
+      withAsterisk={withAsterisk}
       input={(
         <RawInput
           {...otherInputProps}
+          required={required}
           readOnly={readOnly}
           disabled={disabled}
           className={inputClassName}
-          type={type}
+          type="text"
         />
       )}
     />
