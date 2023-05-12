@@ -1,6 +1,5 @@
 import React from 'react';
 import Link from '#goui/components/Link';
-import Header from '#components/Header';
 import Heading from '#goui/components/Heading';
 import styles from './styles.module.scss';
 import { IoChevronForward, IoOpenOutline } from 'react-icons/io5';
@@ -8,15 +7,10 @@ import { IoChevronForward, IoOpenOutline } from 'react-icons/io5';
 function Links() {
   return (
     <div className={styles.linkCollection}>
-      <Header
-        heading="LINK COLLECTION"
-        headingSize="medium"
-      />
       <div className={styles.linksContainer}>
-        <Header
-          heading="VIEW LINK"
-          headingSize="ultraSmall"
-        />
+        <Heading level={5}>
+          VIEW LINK
+        </Heading>
         <Link
           to={{
             pathname: '/emergencies',
@@ -27,10 +21,9 @@ function Links() {
         </Link>
       </div>
       <div className={styles.linksContainer}>
-        <Header
-          heading="TITLE LINK"
-          headingSize="ultraSmall"
-        />
+        <Heading level={5}>
+          TITLE LINK
+        </Heading>
         <Heading level={2}>
           <Link
             to="/deployments/overview"
@@ -40,12 +33,11 @@ function Links() {
             Surge
           </Link>
         </Heading>
-      </div>
+      </div >
       <div className={styles.linksContainer}>
-        <Header
-          heading="TEXT LINK"
-          headingSize="ultraSmall"
-        />
+        <Heading level={5}>
+          TEXT LINK
+        </Heading>
         <Link
           to="/disaster-preparedness"
           underline
@@ -54,10 +46,20 @@ function Links() {
         </Link>
       </div>
       <div className={styles.linksContainer}>
-        <Header
-          heading="EXTERNAL LINK"
-          headingSize="ultraSmall"
-        />
+        <Heading level={5}>
+          SECONDARY LINK
+        </Heading>
+        <Link
+          to="www.gooogle.com"
+          target="_blank"
+        >
+          im@ifrc.org
+        </Link>
+      </div>
+      <div className={styles.linksContainer}>
+        <Heading level={5}>
+          EXTERNAL LINK
+        </Heading>
         <Link
           to="https://www.gooogle.com"
           external
@@ -73,7 +75,7 @@ function Links() {
         >
           Google
         </Link>
-      </div>
+      </div >
     </div >
   );
 }

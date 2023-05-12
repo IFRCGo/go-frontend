@@ -43,7 +43,6 @@ function RawInput<N>(props: Props<N>) {
       {...otherProps}
       ref={elementRef}
       className={_cs(
-        'go-raw-input',
         styles.rawInput,
         className,
       )}
