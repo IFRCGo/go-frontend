@@ -66,7 +66,7 @@
   }
 
   &.tertiary {
-    --color-background: var(--go-ui-color-primary-white);
+    --color-background: transparent;
     --color-text: inherit;
     &:not(:disabled) {
       &:hover {
