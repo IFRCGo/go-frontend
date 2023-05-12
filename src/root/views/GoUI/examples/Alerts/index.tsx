@@ -1,5 +1,5 @@
 import React from 'react';
-import Header from '#components/Header';
+import Heading from '#goui/components/Heading';
 import Alert from '#goui/components/Alert';
 
 import styles from './styles.module.scss';
@@ -7,42 +7,37 @@ import styles from './styles.module.scss';
 function Alerts() {
   return (
     <div className={styles.alertCollection}>
-      <Header
-        heading="ALERTS COLLECTION"
-        headingSize="medium"
-      />
-      <Header
-        heading="SUCCESS ALERT"
-        headingSize="small"
-      />
+      <Heading level={4}>
+        ALERT COLLECTION
+      </Heading>
+      <Heading level={5}>
+        Success alert example
+      </Heading>
       <Alert
         variant="success"
         name="Success"
         children="This is alert for Success message"
       />
-      <Header
-        heading="DANGER ALERT WITH ERROR MESSAGE"
-        headingSize="small"
-      />
+      <Heading level={5}>
+        Danger alert example
+      </Heading>
       <Alert
         variant="danger"
         name="Danger"
         children="This is alert for Danger message"
         debugMessage="Error message"
       />
-      <Header
-        heading="INFO ALERT"
-        headingSize="small"
-      />
+      <Heading level={5}>
+        Info alert example
+      </Heading>
       <Alert
         variant="info"
         name="Info"
         children="This is alert for Info message"
       />
-      <Header
-        heading="WARNING ALERT"
-        headingSize="small"
-      />
+      <Heading level={5}>
+        Warning alert example
+      </Heading>
       <Alert
         variant="warning"
         name="Waring"
