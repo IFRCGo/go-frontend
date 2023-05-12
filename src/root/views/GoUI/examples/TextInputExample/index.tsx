@@ -1,20 +1,22 @@
 import React, { useCallback, useState } from "react";
 import TextInput from '#goui/components/TextInput';
+import Heading from '#goui/components/Heading';
 import styles from './styles.module.scss';
 
 function TextInputExample() {
-    const [textGroup, setTextGroup] = useState('');
+  const [textGroup, setTextGroup] = useState('');
 
-    const handleTextChange = useCallback((val) => {
-        setTextGroup(val);
-    }, [setTextGroup]);
+  const handleTextChange = useCallback((val) => {
+    setTextGroup(val);
+  }, [setTextGroup]);
 
-    return (
+  return (
     <div className={styles.textInputs}>
+      <Heading level={5}>Text Input Variations</Heading>
       <TextInput
         className={styles.textInput}
-        name="Candidate"
-        label="Candidate Name"
+        name="inputData"
+        label="Simple Input with hint"
         hint="This is hint"
         value={textGroup}
         onChange={handleTextChange}
@@ -22,8 +24,8 @@ function TextInputExample() {
       <TextInput
         variant="general"
         className={styles.textInput}
-        name="Candidate"
-        label="Candidate Name"
+        name="inputData"
+        label="Input Required Example"
         hint="This is hint"
         value={textGroup}
         required
@@ -32,8 +34,8 @@ function TextInputExample() {
       <TextInput
         variant="general"
         className={styles.textInput}
-        name="Candidate"
-        label="Candidate Name Readonly"
+        name="inputData"
+        label="Read-Only Input Field"
         hint="This is hint"
         value={textGroup}
         onChange={handleTextChange}
@@ -41,16 +43,16 @@ function TextInputExample() {
       />
       <TextInput
         className={styles.textInput}
-        name="Candidate"
-        label="Disabled Candidate Name"
+        name="inputData"
+        label="Disabled Input Field"
         value={textGroup}
         onChange={handleTextChange}
         disabled
       />
       <TextInput
         className={styles.textInput}
-        name="Candidate"
-        label="Error in text input"
+        name="inputData"
+        label="Input with error message"
         value={textGroup}
         onChange={handleTextChange}
         error="Is that your real name ?"
