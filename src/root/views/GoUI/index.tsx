@@ -25,6 +25,7 @@ import BreadcrumbsExample from './examples/BreadcrumbsExample';
 import PasswordInputExample from './examples/PasswordInputExample';
 import ChecklistExample from './examples/ChecklistExample';
 import TopBannerExample from './examples/TopBannerExample';
+import PagerExample from './examples/PagerExample';
 
 function GoUI() {
 
@@ -205,6 +206,13 @@ function GoUI() {
         >
           Breadcrumbs
         </Button>
+        <Button
+          name="pager"
+          className={styles.option}
+          onClick={handleNewComponent}
+        >
+          Pager
+        </Button>
       </div>
       <div className={styles.componentLayout}>
         {element === "links" && <Links />}
@@ -231,6 +239,7 @@ function GoUI() {
         {element === "password-input" && <PasswordInputExample />}
         {element === "checklist" && <ChecklistExample />}
         {element === "top-banner" && <TopBannerExample />}
+        {element === "pager" && <PagerExample />}
       </div >
     </div >
   );
