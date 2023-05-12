@@ -1,0 +1,12 @@
+.select-example {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    width: 50%;
+    padding: var(--go-ui-spacing-2xl);
+    gap: var(--go-ui-spacing-sm);
+
+    .select-box {
+        padding: var(--go-ui-spacing-sm);
+    }
+}

@@ -168,8 +168,8 @@ function ContextFields(props: Props) {
       <InputSection
         title='Search for existing emergency *'
         description='Type the name of the country you want to report on in the box above to begin the search.'
-       >     
-        
+       >
+
                 <SearchSelectInput
                   label={strings.fieldReportFormTitleSelectLabel}
                   placeholder={strings.fieldReportFormTitleSelectPlaceholder}
@@ -182,7 +182,7 @@ function ContextFields(props: Props) {
                 />
         </InputSection>
 
-      
+
       <InputSection
         title={countrySectionTitle}
         description={countrySectionDescription}

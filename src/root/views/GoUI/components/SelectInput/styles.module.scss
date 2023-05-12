@@ -1,0 +1,27 @@
+.select-input {
+  .select {
+    margin: 0 calc(-1*var(--go-ui-spacing-md));
+    background-color: unset;
+    padding: 0 var(--go-ui-spacing-md);
+
+    &:focus-within {
+      border: 0;
+      box-shadow: unset;
+    }
+
+    &:active {
+      border: 0;
+      box-shadow: unset;
+      min-height: unset;
+    }
+
+    &:hover {
+      border: 0;
+      box-shadow: unset;
+    }
+  }
+
+  &.disabled {
+    opacity: 1;
+  }
+}
