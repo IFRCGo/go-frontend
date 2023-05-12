@@ -1,17 +1,10 @@
-.text-box {
-    display: flex;
-    flex-wrap: wrap;
-    flex-direction: column;
-    padding: var(--go-ui-spacing-2xl);
+.text-area-inputs {
+  display: flex;
+  flex-direction: column;
+  gap: var(--go-ui-spacing-md);
+  padding: var(--go-ui-spacing-md);
 
-    .text-example {
-        padding: var(--go-ui-spacing-sm);
-        background-color: var(--go-ui-color-gray-40);
-        width: 50%;
-    }
-
-    .text-label {
-        color: var(--go-ui-color-gray-80);
-        font-weight: var(--go-ui-font-weight-medium);
-    }
+  .text-area {
+    width: 50%;
+  }
 }

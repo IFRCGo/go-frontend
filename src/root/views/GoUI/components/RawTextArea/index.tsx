@@ -1,9 +1,10 @@
 import React from 'react';
 import { _cs } from '@togglecorp/fujs';
+import { NameType } from '#goui/components/types';
 
 import styles from './styles.module.scss';
 
-export interface Props<N> extends Omit<React.HTMLProps<HTMLTextAreaElement>, 'ref' | 'onChange' | 'value' | 'name'> {
+export interface Props<N extends NameType> extends Omit<React.HTMLProps<HTMLTextAreaElement>, 'ref' | 'onChange' | 'value' | 'name'> {
   className?: string;
   name: N;
   value: string | undefined | null;
@@ -15,7 +16,7 @@ export interface Props<N> extends Omit<React.HTMLProps<HTMLTextAreaElement>, 're
   elementRef?: React.Ref<HTMLTextAreaElement>;
 }
 
-function RawTextArea<N>(props: Props<N>) {
+function RawTextArea<N extends NameType>(props: Props<N>) {
   const {
     className,
     onChange,
@@ -45,7 +46,7 @@ function RawTextArea<N>(props: Props<N>) {
         styles.rawInput,
         className,
       )}
-      name={typeof name === 'string' ? name : undefined}
+      name={name}
       onChange={handleChange}
       value={value ?? ''}
     />

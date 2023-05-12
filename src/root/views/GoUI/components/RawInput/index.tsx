@@ -1,9 +1,10 @@
 import React from 'react';
 import { _cs } from '@togglecorp/fujs';
+import { NameType } from '#goui/components/types';
 
 import styles from './styles.module.scss';
 
-export interface Props<N> extends Omit<React.HTMLProps<HTMLInputElement>, 'ref' | 'onChange' | 'value' | 'name' | 'label'> {
+export interface Props<N extends NameType> extends Omit<React.HTMLProps<HTMLInputElement>, 'ref' | 'onChange' | 'value' | 'name' | 'label'> {
   className?: string;
   name: N;
   value: string | undefined | null;
@@ -15,7 +16,7 @@ export interface Props<N> extends Omit<React.HTMLProps<HTMLInputElement>, 'ref' 
   elementRef?: React.Ref<HTMLInputElement>;
 }
 
-function RawInput<N>(props: Props<N>) {
+function RawInput<N extends NameType>(props: Props<N>) {
   const {
     className,
     onChange,
@@ -46,7 +47,7 @@ function RawInput<N>(props: Props<N>) {
         styles.rawInput,
         className,
       )}
-      name={typeof name === 'string' ? name : undefined}
+      name={name}
       onChange={handleChange}
       value={value ?? ''}
     />

@@ -2,14 +2,15 @@ import React from 'react';
 
 import InputContainer, { Props as InputContainerProps } from '#goui/components/InputContainer';
 import RawInput, { Props as RawInputProps } from '#goui/components/RawInput';
+import { NameType } from '#goui/components/types';
 
-type InheritedProps<T> = (Omit<InputContainerProps, 'input'> & RawInputProps<T>);
-export interface Props<T extends string | undefined> extends InheritedProps<T> {
+type InheritedProps<T extends NameType> = (Omit<InputContainerProps, 'input'> & RawInputProps<T>);
+export interface Props<T extends NameType> extends InheritedProps<T> {
     inputElementRef?: React.RefObject<HTMLInputElement>;
     inputClassName?: string;
 }
 
-function DateInput<T extends string | undefined>(props: Props<T>) {
+function DateInput<T extends NameType>(props: Props<T>) {
   const {
     className,
     actions,

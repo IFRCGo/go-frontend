@@ -1,47 +1,54 @@
 import React from 'react';
 import InputContainer, { Props as InputContainerProps } from '../InputContainer';
 import RawTextArea, { Props as RawTextAreaProps } from '../RawTextArea';
+import { NameType } from '#goui/components/types';
 
-type InheritedProps<T> = (Omit<InputContainerProps, 'input'> & RawTextAreaProps<T>);
+type InheritedProps<N extends NameType> = (Omit<InputContainerProps, 'input'> & Omit<RawTextAreaProps<N>, 'type'>);
 export interface Props<T extends string | undefined> extends InheritedProps<T> {
   inputElementRef?: React.RefObject<HTMLInputElement>;
   inputClassName?: string;
 }
 
-function TextArea<T extends string | undefined>(props: Props<T>) {
+function TextArea<N extends NameType>(props: Props<N>) {
   const {
-    className,
-    labelClassName,
     actions,
-    icons,
-    error,
-    label,
-    hint,
+    className,
     disabled,
-    readOnly,
-    inputClassName,
+    error,
     errorOnTooltip,
+    hint,
+    icons,
+    inputClassName,
+    label,
+    labelClassName,
+    readOnly,
+    required,
+    variant,
+    withAsterisk,
+    rows = 5,
     ...otherInputProps
   } = props;
 
   return (
     <InputContainer
       className={className}
-      labelClassName={labelClassName}
       actions={actions}
-      icons={icons}
-      error={error}
-      hint={hint}
-      label={label}
       disabled={disabled}
+      error={error}
       errorOnTooltip={errorOnTooltip}
+      hint={hint}
+      icons={icons}
+      label={label}
+      required={required}
+      variant={variant}
+      withAsterisk={withAsterisk}
       input={(
         <RawTextArea
-          rows={5}
           {...otherInputProps}
           readOnly={readOnly}
           disabled={disabled}
           className={inputClassName}
+          rows={rows}
         />
       )}
     />
