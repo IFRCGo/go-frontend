@@ -180,7 +180,7 @@ function MeteoSwissEevnt(props: Props) {
   const footprintGeoJson = React.useMemo(() => {
     if (isNotDefined(activeEventExposure)
       || isNotDefined(activeEventExposure?.footprint_geojson.footprint_geojson)
-      || !activeEventExposurePending
+      || activeEventExposurePending
     ) {
       return {
         type: 'FeatureCollection' as const,
@@ -190,7 +190,11 @@ function MeteoSwissEevnt(props: Props) {
 
     return {
       type: 'FeatureCollection' as const,
-      features: activeEventExposure.footprint_geojson.footprint_geojson.features.map(
+      features: activeEventExposure
+      .footprint_geojson.footprint_geojson
+      .features
+      .filter((feature) => !!feature.geometry)
+      .map(
         (feature) => ({
           ...feature,
           properties: {
