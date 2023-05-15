@@ -23,6 +23,7 @@ import RadioInputExample from './examples/RadioInputExample';
 import BlockLoadingExample from './examples/BlockLoadingExample';
 import BreadcrumbsExample from './examples/BreadcrumbsExample';
 import PasswordInputExample from './examples/PasswordInputExample';
+import ChecklistExample from './examples/ChecklistExample';
 
 function GoUI() {
 
@@ -134,6 +135,13 @@ function GoUI() {
           PasswordInput
         </Button>
         <Button
+          name="checklist"
+          className={styles.option}
+          onClick={handleNewComponent}
+        >
+          Checklist
+        </Button>
+        <Button
           name="block-loading"
           className={styles.option}
           onClick={handleNewComponent}
@@ -213,6 +221,7 @@ function GoUI() {
         {element === "block-loading" && <BlockLoadingExample />}
         {element === "breadcrumbs" && <BreadcrumbsExample />}
         {element === "password-input" && <PasswordInputExample />}
+        {element === "checklist" && <ChecklistExample />}
       </div >
     </div >
   );
