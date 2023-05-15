@@ -1,24 +1,25 @@
 import React, { useCallback, useMemo } from 'react';
 import { _cs } from '@togglecorp/fujs';
-import Select, { Props as SelectProps, GroupBase } from 'react-select';
+import AsyncSelect, { AsyncProps } from 'react-select/async';
 import InputContainer, { Props as InputContainerProps } from '#goui/components/InputContainer';
+import { GroupBase } from 'react-select';
 import { NameType, ValueType } from '#goui/components/types';
 
 import styles from './styles.module.scss';
 
-type InheritedProps<O> = Omit<InputContainerProps, 'input'>
-  & Omit<SelectProps<O, false, GroupBase<O>>, 'className' | 'onChange' | 'value' | 'isMulti' | 'name' | 'options' | 'isDisabled' | 'classNames' | 'required'>
 
+type InheritedProps<O> = Omit<InputContainerProps, 'input'>
+  & Omit<AsyncProps<O, false, GroupBase<O>>, 'className' | 'onChange' | 'value' | 'isMulti' | 'name' | 'isDisabled' | 'classNames' | 'required' | 'options'>
 type Props<N, O, V extends ValueType> = InheritedProps<O> & {
   inputClassName?: string;
   name: N;
-  options: O[];
   keySelector: (option: O) => V;
+  options: O[];
   value: V | null | undefined;
   onChange: (newValue: V | undefined, name: N) => void;
 };
 
-function SelectInput<N extends NameType, O, V extends ValueType>(props: Props<N, O, V>) {
+function SearchSelectInput<N extends NameType, O, V extends ValueType>(props: Props<N, O, V>) {
   const {
     actions,
     className,
@@ -34,13 +35,14 @@ function SelectInput<N extends NameType, O, V extends ValueType>(props: Props<N,
     variant,
     withAsterisk,
     onChange,
+    loadOptions,
     name,
     options,
     value,
     keySelector,
+    defaultOptions = true,
     ...otherProps
   } = props;
-
 
   const handleChange = useCallback((selectedOption: O | null) => {
     if (selectedOption) {
@@ -51,10 +53,6 @@ function SelectInput<N extends NameType, O, V extends ValueType>(props: Props<N,
     }
   }, [onChange, name, keySelector]);
 
-  const selectedValue = useMemo(() => (
-    options?.find((option) => keySelector(option) === value) ?? null
-  ), [options, keySelector, value]);
-
   const readOnlyProps = useMemo(() => (
     readOnly ? {
       isClearable: false,
@@ -63,6 +61,10 @@ function SelectInput<N extends NameType, O, V extends ValueType>(props: Props<N,
       menuIsOpen: false,
     } : undefined
   ), [readOnly]);
+
+  const selectedOption = useMemo(() => (
+    options?.find((option) => keySelector(option) === value)
+  ), [options, keySelector, value]);
 
   return (
     <InputContainer
@@ -83,10 +85,13 @@ function SelectInput<N extends NameType, O, V extends ValueType>(props: Props<N,
       withAsterisk={withAsterisk}
       inputSectionClassName={styles.inputSection}
       input={(
-        <Select
+        <AsyncSelect
           {...otherProps}
           {...readOnlyProps}
-          value={selectedValue}
+          cacheOptions
+          options={options}
+          value={selectedOption}
+          loadOptions={loadOptions}
           classNames={{
             control: (state) => _cs(styles.control, state.isFocused ? styles.isFocused : undefined),
             valueContainer: () => styles.valueContainer,
@@ -95,17 +100,17 @@ function SelectInput<N extends NameType, O, V extends ValueType>(props: Props<N,
             dropdownIndicator: () => styles.dropdownIndicator,
             clearIndicator: () => styles.clearIndicator,
           }}
-          options={options}
           className={_cs(styles.select, inputClassName)}
           name={name}
           isDisabled={disabled}
           required={required}
           isMulti={false}
           onChange={handleChange}
+          defaultOptions={defaultOptions}
         />
       )}
     />
   );
 }
 
-export default SelectInput;
+export default SearchSelectInput;
