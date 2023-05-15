@@ -69,7 +69,7 @@ function DropdownMenu(props: DropdownMenuProps) {
         setShowDropdown(true);
     }, [setShowDropdown]);
 
-    const handleBlurCallback = useCallback((insideClick) => {
+    const handleBlurCallback = useCallback((insideClick: boolean) => {
         if (persistent && insideClick) {
             return;
         }

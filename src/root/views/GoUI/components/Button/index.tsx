@@ -84,7 +84,7 @@ function Button<N>(props: Props<N>) {
   } = props;
 
   const handleButtonClick= useCallback(
-    (n, e) => {
+    (n: N, e: React.MouseEvent<HTMLButtonElement>) => {
       if (onClick) {
         onClick(n, e);
       }
