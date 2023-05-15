@@ -21,6 +21,7 @@ import NumberInputExample from './examples/NumberInputExample';
 import RichTextAreaExample from './examples/RichTextAreaExample';
 import RadioInputExample from './examples/RadioInputExample';
 import BlockLoadingExample from './examples/BlockLoadingExample';
+import BreadcrumbsExample from './examples/BreadcrumbsExample';
 
 function GoUI() {
 
@@ -173,6 +174,13 @@ function GoUI() {
         >
           IconButton
         </Button>
+        <Button
+          name="breadcrumbs"
+          className={styles.option}
+          onClick={handleNewComponent}
+        >
+          Breadcrumbs
+        </Button>
       </div>
       <div className={styles.componentLayout}>
         {element === "links" && <Links />}
@@ -195,6 +203,7 @@ function GoUI() {
         {element === "rich-text-area" && <RichTextAreaExample />}
         {element === "radio-input" && <RadioInputExample />}
         {element === "block-loading" && <BlockLoadingExample />}
+        {element === "breadcrumbs" && <BreadcrumbsExample />}
       </div >
     </div >
   );
