@@ -20,6 +20,7 @@ function TextInput<T extends NameType>(props: Props<T>) {
     hint,
     icons,
     inputClassName,
+    inputSectionClassName,
     label,
     readOnly,
     required,
@@ -37,6 +38,7 @@ function TextInput<T extends NameType>(props: Props<T>) {
       errorOnTooltip={errorOnTooltip}
       hint={hint}
       icons={icons}
+      inputSectionClassName={inputSectionClassName}
       label={label}
       required={required}
       variant={variant}

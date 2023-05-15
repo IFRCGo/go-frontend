@@ -10,37 +10,39 @@ import InputError from '#goui/components/InputError';
 import styles from './styles.module.scss';
 
 export interface Props {
-  className?: string;
-  labelClassName?: string;
   actions?: React.ReactNode;
   disabled?: boolean;
   error?: React.ReactNode;
+  errorOnTooltip?: boolean;
   hint?: React.ReactNode;
   icons?: React.ReactNode;
-  label?: React.ReactNode;
-  readOnly?: boolean;
   input: React.ReactNode;
-  errorOnTooltip?: boolean;
-  variant?: 'form' | 'general';
+  inputSectionClassName?: string;
+  label?: React.ReactNode;
+  labelClassName?: string;
+  readOnly?: boolean;
   required?: boolean;
+  variant?: 'form' | 'general';
   withAsterisk?: boolean;
+  className?: string;
 }
 
 function InputContainer(props: Props) {
   const {
     actions,
     className,
-    labelClassName,
     disabled,
     error,
-    icons,
-    label,
-    readOnly,
-    input,
     errorOnTooltip = false,
     hint,
-    variant = 'form',
+    icons,
+    input,
+    inputSectionClassName,
+    label,
+    labelClassName,
+    readOnly,
     required,
+    variant = 'form',
     withAsterisk,
   } = props;
 
@@ -71,6 +73,7 @@ function InputContainer(props: Props) {
       </InputLabel>
       <div className={_cs(
         styles.inputSection,
+        inputSectionClassName,
       )}
       >
         {icons && (
