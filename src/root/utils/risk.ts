@@ -3,13 +3,14 @@ import {
   COLOR_WHITE,
   CIRCLE_RADIUS_SUPER_LARGE,
 } from '#utils/map';
-import {ImminentHazardTypes } from '#types';
+import { ImminentHazardTypes } from '#types';
 
 import earthquakeIcon from './risk-icons/earthquake.png';
 import cycloneIcon from './risk-icons/cyclone.png';
 import stormSurgeIcon from './risk-icons/storm-surge.png';
 import floodIcon from './risk-icons/flood.png';
 import droughtIcon from './risk-icons/drought.png';
+import wildfireIcon from './risk-icons/wildfire.png';
 
 export const COLOR_CYCLONE = '#a4bede';
 export const COLOR_FLOOD = '#5a80b0';
@@ -17,9 +18,9 @@ export const COLOR_DROUGHT = '#dca592';
 export const COLOR_FOOD_INSECURITY = '#c8ccb7';
 export const COLOR_EARTHQUAKE = '#b09db2';
 export const COLOR_STORM = '#97b8c2';
+export const COLOR_WILDFIRE = '#ff5014';
 
-
-export const hazardTypeToIconMap: {
+export const imminentHazardTypeToIconMap: {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   [key in ImminentHazardTypes]: string;
 } = {
@@ -29,6 +30,7 @@ export const hazardTypeToIconMap: {
   SS: stormSurgeIcon,
   FL: floodIcon,
   DR: droughtIcon,
+  WF: wildfireIcon,
 };
 
 export const hazardKeys: ImminentHazardTypes[] = [
@@ -38,15 +40,17 @@ export const hazardKeys: ImminentHazardTypes[] = [
   'SS',
   'FL',
   'DR',
+  'WF',
 ];
 
-export const hazardKeyToColorMap: Record<ImminentHazardTypes, string> = {
+export const imminentHazardTypeToColorMap: Record<ImminentHazardTypes, string> = {
   EQ: COLOR_EARTHQUAKE,
   CY: COLOR_CYCLONE,
   TC: COLOR_CYCLONE,
   SS: COLOR_STORM,
   FL: COLOR_FLOOD,
   DR: COLOR_DROUGHT,
+  WF: COLOR_WILDFIRE,
 };
 
 
@@ -68,7 +72,7 @@ export const pointCirclePaint: mapboxgl.CirclePaint = {
     [
       'match',
       ['get', 'hazardType'],
-      ...(hazardKeys.map(hk => [hk, `${hazardKeyToColorMap[hk]}`]).flat(1)),
+      ...(hazardKeys.map(hk => [hk, `${imminentHazardTypeToColorMap[hk]}`]).flat(1)),
       COLOR_WHITE,
     ],
   ],

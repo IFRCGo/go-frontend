@@ -10,13 +10,20 @@ import { PDCEvent, PDCEventExposure } from '#types';
 
 import styles from './styles.module.scss';
 
+function RoundPopulation(population?: number) {
+  if(isNotDefined(population)) {
+    return null;
+  }
+  return Math.round(population);
+}
+
 function EstimatedOutput({
   value,
   attribute,
 }: {
-  value: number | undefined | null;
-  attribute: string;
-}) {
+    value: number | undefined | null;
+    attribute: string;
+  }) {
   if (isNotDefined(value)) {
     return null;
   }
@@ -86,16 +93,16 @@ function PointDetails(props: PointDetailsProps) {
       </div>
       <EstimatedOutput
         attribute="People Exposed / Potentially Affected"
-        value={population_exposure?.total?.value}
+        value={RoundPopulation(population_exposure?.total.value)}
       />
       <hr />
       <EstimatedOutput
         attribute="Households Exposed"
-        value={population_exposure?.households?.value}
+        value={RoundPopulation(population_exposure?.households?.value)}
       />
       <EstimatedOutput
         attribute="People in vulnerable groups exposed to the hazard"
-        value={population_exposure?.vulnerable?.value}
+        value={RoundPopulation(population_exposure?.vulnerable?.value)}
       />
       <EstimatedOutput
         attribute="value (USD) of exposed buildings"
@@ -103,11 +110,11 @@ function PointDetails(props: PointDetailsProps) {
       />
       <EstimatedOutput
         attribute="Schools Exposed"
-        value={capital_exposure?.school?.value}
+        value={RoundPopulation(capital_exposure?.school?.value)}
       />
       <EstimatedOutput
         attribute="Hospitals Exposed"
-        value={capital_exposure?.hospital?.value}
+        value={RoundPopulation(capital_exposure?.hospital?.value)}
       />
     </MapTooltipContent>
   );

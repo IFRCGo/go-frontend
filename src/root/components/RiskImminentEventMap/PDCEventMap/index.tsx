@@ -39,6 +39,7 @@ import {
   COLOR_FLOOD,
   COLOR_DROUGHT,
   COLOR_STORM,
+  COLOR_WILDFIRE,
 } from '#utils/risk';
 import {
   PDCEvent,
@@ -68,6 +69,8 @@ const hazardTypeFillColorPaint = [
   COLOR_FLOOD,
   'DR',
   COLOR_DROUGHT,
+  'WF',
+  COLOR_WILDFIRE,
   COLOR_BLACK,
 ];
 
@@ -259,6 +262,7 @@ function PDCEventMap(props: Props) {
     TC: false,
     SS: false,
     DR: false,
+    WF: false,
   });
 
 

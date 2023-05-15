@@ -1,0 +1,97 @@
+@import '~styles/settings/variables';
+
+.seasonal-risk-content {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: $spacing*3;
+  z-index: 0;
+
+  .map-container {
+    display: flex;
+
+    .map {
+      flex-grow: 1;
+      z-index: 0;
+    }
+
+    .bar-chart {
+      z-index: 1;
+      height: 40rem;
+      flex-shrink: 0;
+      width: calc(5% + 16rem);
+      box-shadow: 0 0 5px rgba(0, 0, 0, .3);
+    }
+  }
+
+  .legend {
+    display: flex;
+    background-color: $color-background;
+    padding: $spacing $spacing*2;
+    gap: $spacing*3;
+
+    .separator {
+      width: $base-border-width;
+      background-color: $base-border-color;
+      align-self: stretch;
+    }
+
+    .legend-label {
+      font-size: $font-size-sm;
+      font-weight: $base-font-medium;
+    }
+
+    .risk-legend {
+      display: flex;
+      align-items: center;
+      gap: $spacing*2;
+
+      .legend-content {
+        display: flex;
+        flex-direction: column;
+
+        .label {
+          font-size: $font-size-xs;
+          font-weight: $base-font-medium;
+        }
+
+        .gradient {
+          width: 10rem;
+          height: 0.5em;
+        }
+
+        .label-list {
+          display: flex;
+          justify-content: space-between;
+        }
+      }
+    }
+
+    .hazard-legend {
+      display: flex;
+      gap: $spacing*2;
+      align-items: center;
+
+      .legend-content {
+        gap: $spacing;
+        display: flex;
+
+        .legend-item {
+          display: flex;
+          gap: $spacing*0.5;
+          align-items: center;
+
+          .color {
+            height: 0.75em;
+            width: 0.75em;
+          }
+
+          .label {
+            font-weight: $base-font-medium;
+            font-size: $font-size-xs;
+          }
+        }
+      }
+    }
+  }
+}

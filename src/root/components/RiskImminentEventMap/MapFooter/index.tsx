@@ -9,6 +9,7 @@ import {
   COLOR_DROUGHT,
   COLOR_EARTHQUAKE,
   COLOR_FLOOD,
+  COLOR_WILDFIRE,
 } from "#utils/risk";
 import RadioInput from "#components/RadioInput";
 import {
@@ -92,11 +93,36 @@ const adamIconLabel = (
   </div>
 );
 
+const gdacsIconLabel = (
+  <div className={styles.sourceLabel}>
+    <TextOutput
+      className={styles.source}
+      value="GDACS"
+    />
+    <React.Fragment>
+      <IoInformationCircleOutline
+        data-event="click"
+        data-tooltip-id="gdacs"
+        data-tooltip-html={ReactDOMServer.renderToStaticMarkup(
+          tooltip(adamPopupTitle, adamPopupDescription)
+        )}
+      />
+      <Tooltip
+        className={styles.tooltip}
+        id="adam"
+        place="top"
+        clickable={true}
+      />
+    </React.Fragment>
+  </div>
+);
+
 const legendItems = [
   { color: COLOR_FLOOD, label: 'Flood' },
   { color: COLOR_STORM, label: 'Storm' },
   { color: COLOR_EARTHQUAKE, label: 'Earthquake' },
   { color: COLOR_DROUGHT, label: 'Drought' },
+  { color: COLOR_WILDFIRE, label: 'Wildfire' }
 ];
 
 function tooltip(title:string, description: React.ReactNode) {
@@ -126,6 +152,7 @@ function MapFooter(props: Props) {
   const sourceOptions =[
     { value: "PDC", label: pdcIconLabel },
     { value: "WFP", label: adamIconLabel },
+    // { value: "GDACS", label: gdacsIconLabel },
   ] as StringValueOption[];
 
   const handleChangeSourceType = React.useCallback(

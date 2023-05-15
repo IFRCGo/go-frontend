@@ -13,7 +13,7 @@ import LanguageContext from '#root/languageContext';
 import DateInput from '#components/DateInput';
 import NumberInput from '#components/NumberInput';
 
-import { DrefFields } from '../common';
+import { DrefFields, TYPE_LOAN } from '../common';
 
 import styles from './styles.module.scss';
 
@@ -22,6 +22,7 @@ interface Props {
   error: Error<Value> | undefined;
   onValueChange: (...entries: EntriesAsList<Value>) => void;
   value: Value;
+  drefType?: number;
 }
 
 function Submission(props: Props) {
@@ -31,6 +32,7 @@ function Submission(props: Props) {
     error: formError,
     onValueChange,
     value,
+    drefType,
   } = props;
 
   const error = getErrorObject(formError);
@@ -79,23 +81,27 @@ function Submission(props: Props) {
             onChange={onValueChange}
             error={error?.operation_timeframe}
           />
-          <DateInput
-            label={strings.drefFormSubmissionEndDate}
-            hint={strings.drefFormSubmissionEndDateDescription}
-            name="end_date"
-            value={value.end_date}
-            onChange={onValueChange}
-            error={error?.end_date}
-            readOnly
-          />
-          <DateInput
-            label={strings.drefFormPublishingDate}
-            name="publishing_date"
-            value={value.publishing_date}
-            onChange={onValueChange}
-            error={error?.publishing_date}
-            hint={strings.drefFormAddedByGeneva}
-          />
+          {drefType !== TYPE_LOAN &&
+            <DateInput
+              label={strings.drefFormSubmissionEndDate}
+              hint={strings.drefFormSubmissionEndDateDescription}
+              name="end_date"
+              value={value.end_date}
+              onChange={onValueChange}
+              error={error?.end_date}
+              readOnly
+            />
+          }
+          {drefType !== TYPE_LOAN &&
+            <DateInput
+              label={strings.drefFormPublishingDate}
+              name="publishing_date"
+              value={value.publishing_date}
+              onChange={onValueChange}
+              error={error?.publishing_date}
+              hint={strings.drefFormAddedByGeneva}
+            />
+          }
         </InputSection>
       </Container>
       <Container
@@ -113,16 +119,18 @@ function Submission(props: Props) {
             error={error?.appeal_code}
           />
         </InputSection>
-        <InputSection
-          title={strings.drefFormGlideNum}
-        >
-          <TextInput
-            name="glide_code"
-            value={value.glide_code}
-            onChange={onValueChange}
-            error={error?.glide_code}
-          />
-        </InputSection>
+        {drefType !== TYPE_LOAN &&
+          <InputSection
+            title={strings.drefFormGlideNum}
+          >
+            <TextInput
+              name="glide_code"
+              value={value.glide_code}
+              onChange={onValueChange}
+              error={error?.glide_code}
+            />
+          </InputSection>
+        }
         <InputSection
           title={strings.drefFormAppealManager}
           description={strings.drefFormAppealManagerDescription}
@@ -193,108 +201,150 @@ function Submission(props: Props) {
             error={error?.ifrc_project_manager_phone_number}
           />
         </InputSection>
-        <InputSection
-          title={strings.drefFormNationalSocietyContact}
-          multiRow
-          twoColumn
-        >
-          <TextInput
-            label="Name"
-            name="national_society_contact_name"
-            value={value.national_society_contact_name}
-            onChange={onValueChange}
-            error={error?.national_society_contact_name}
-          />
-          <TextInput
-            label="Title"
-            name="national_society_contact_title"
-            value={value.national_society_contact_title}
-            onChange={onValueChange}
-            error={error?.national_society_contact_title}
-          />
-          <TextInput
-            label="Email"
-            name="national_society_contact_email"
-            value={value.national_society_contact_email}
-            onChange={onValueChange}
-            error={error?.national_society_contact_email}
-          />
-          <TextInput
-            label="Phone Number"
-            name="national_society_contact_phone_number"
-            value={value.national_society_contact_phone_number}
-            onChange={onValueChange}
-            error={error?.national_society_contact_phone_number}
-          />
-        </InputSection>
-        <InputSection
-          title={strings.drefFormIfrcEmergency}
-          multiRow
-          twoColumn
-        >
-          <TextInput
-            label="Name"
-            name="ifrc_emergency_name"
-            value={value.ifrc_emergency_name}
-            onChange={onValueChange}
-            error={error?.ifrc_emergency_name}
-          />
-          <TextInput
-            label="Title"
-            name="ifrc_emergency_title"
-            value={value.ifrc_emergency_title}
-            onChange={onValueChange}
-            error={error?.ifrc_emergency_title}
-          />
-          <TextInput
-            label="Email"
-            name="ifrc_emergency_email"
-            value={value.ifrc_emergency_email}
-            onChange={onValueChange}
-            error={error?.ifrc_emergency_email}
-          />
-          <TextInput
-            label="Phone Number"
-            name="ifrc_emergency_phone_number"
-            value={value.ifrc_emergency_phone_number}
-            onChange={onValueChange}
-            error={error?.ifrc_emergency_phone_number}
-          />
-        </InputSection>
-        <InputSection
-          title={strings.drefFormMediaContact}
-          multiRow
-          twoColumn
-        >
-          <TextInput
-            label="Name"
-            name="media_contact_name"
-            value={value.media_contact_name}
-            onChange={onValueChange}
-            error={error?.media_contact_name}
-          />
-          <TextInput
-            label="Title"
-            name="media_contact_title"
-            value={value.media_contact_title}
-            onChange={onValueChange}
-            error={error?.media_contact_title}
-          />
-          <TextInput
-            label="Email"
-            name="media_contact_email"
-            value={value.media_contact_email}
-            onChange={onValueChange}
-            error={error?.media_contact_email}
-          />
-          <TextInput
-            label="Phone Number"
-            name="media_contact_phone_number"
-            value={value.media_contact_phone_number}
-            onChange={onValueChange}
-            error={error?.media_contact_phone_number}
-          />
-        </InputSection>
+        {drefType !== TYPE_LOAN &&
+          <InputSection
+            title={strings.drefFormNationalSocietyContact}
+            multiRow
+            twoColumn
+          >
+            <TextInput
+              label="Name"
+              name="national_society_contact_name"
+              value={value.national_society_contact_name}
+              onChange={onValueChange}
+              error={error?.national_society_contact_name}
+            />
+            <TextInput
+              label="Title"
+              name="national_society_contact_title"
+              value={value.national_society_contact_title}
+              onChange={onValueChange}
+              error={error?.national_society_contact_title}
+            />
+            <TextInput
+              label="Email"
+              name="national_society_contact_email"
+              value={value.national_society_contact_email}
+              onChange={onValueChange}
+              error={error?.national_society_contact_email}
+            />
+            <TextInput
+              label="Phone Number"
+              name="national_society_contact_phone_number"
+              value={value.national_society_contact_phone_number}
+              onChange={onValueChange}
+              error={error?.national_society_contact_phone_number}
+            />
+          </InputSection>
+        }
+        {drefType !== TYPE_LOAN &&
+          <InputSection
+            title={strings.drefFormIfrcEmergency}
+            multiRow
+            twoColumn
+          >
+            <TextInput
+              label="Name"
+              name="ifrc_emergency_name"
+              value={value.ifrc_emergency_name}
+              onChange={onValueChange}
+              error={error?.ifrc_emergency_name}
+            />
+            <TextInput
+              label="Title"
+              name="ifrc_emergency_title"
+              value={value.ifrc_emergency_title}
+              onChange={onValueChange}
+              error={error?.ifrc_emergency_title}
+            />
+            <TextInput
+              label="Email"
+              name="ifrc_emergency_email"
+              value={value.ifrc_emergency_email}
+              onChange={onValueChange}
+              error={error?.ifrc_emergency_email}
+            />
+            <TextInput
+              label="Phone Number"
+              name="ifrc_emergency_phone_number"
+              value={value.ifrc_emergency_phone_number}
+              onChange={onValueChange}
+              error={error?.ifrc_emergency_phone_number}
+            />
+          </InputSection>
+        }
+        {drefType === TYPE_LOAN &&
+          <InputSection
+            title={strings.drefFormDrefRegionalPoint}
+            multiRow
+            twoColumn
+          >
+            <TextInput
+              label="Name"
+              name="regional_focal_point_name"
+              value={value.regional_focal_point_name}
+              onChange={onValueChange}
+              error={error?.regional_focal_point_name}
+            />
+            <TextInput
+              label="Title"
+              name="regional_focal_point_title"
+              value={value.regional_focal_point_title}
+              onChange={onValueChange}
+              error={error?.regional_focal_point_title}
+            />
+            <TextInput
+              label="Email"
+              name="regional_focal_point_email"
+              value={value.regional_focal_point_email}
+              onChange={onValueChange}
+              error={error?.regional_focal_point_email}
+            />
+            <TextInput
+              label="Phone Number"
+              name="regional_focal_point_phone_number"
+              value={value.regional_focal_point_phone_number}
+              onChange={onValueChange}
+              error={error?.regional_focal_point_phone_number}
+            />
+          </InputSection>
+        }
+        {drefType !== TYPE_LOAN &&
+          <InputSection
+            title={strings.drefFormMediaContact}
+            multiRow
+            twoColumn
+          >
+            <TextInput
+              label="Name"
+              name="media_contact_name"
+              value={value.media_contact_name}
+              onChange={onValueChange}
+              error={error?.media_contact_name}
+            />
+            <TextInput
+              label="Title"
+              name="media_contact_title"
+              value={value.media_contact_title}
+              onChange={onValueChange}
+              error={error?.media_contact_title}
+            />
+            <TextInput
+              label="Email"
+              name="media_contact_email"
+              value={value.media_contact_email}
+              onChange={onValueChange}
+              error={error?.media_contact_email}
+            />
+            <TextInput
+              label="Phone Number"
+              name="media_contact_phone_number"
+              value={value.media_contact_phone_number}
+              onChange={onValueChange}
+              error={error?.media_contact_phone_number}
+            />
+          </InputSection>
+        }
       </Container>
     </>
   );

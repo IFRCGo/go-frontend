@@ -27,7 +27,7 @@ function HeadingOutput(props: Props) {
           style={pdfStyles.titleIfrcLogo}
           src={logoUrl}
         />
-        <View>
+        <View style={pdfStyles.pdfTitleContent}>
           <Text style={pdfStyles.pageTitle}>
             {strings.drefExportTitle}
           </Text>

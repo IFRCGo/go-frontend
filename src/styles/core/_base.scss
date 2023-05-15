@@ -29,7 +29,6 @@ html {
 /* Reset HTML, body, etc */
 
 html {
-  font-size: $root-font-size;
   /* Changes the default tap highlight to be completely transparent in iOS. */
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }

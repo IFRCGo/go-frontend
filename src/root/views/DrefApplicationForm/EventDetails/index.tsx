@@ -27,6 +27,7 @@ import {
   FileWithCaption,
   TYPE_IMMINENT,
   TYPE_ASSESSMENT,
+  TYPE_LOAN,
   ONSET_SUDDEN,
 } from '../common';
 
@@ -87,10 +88,13 @@ function EventDetails(props: Props) {
   }, [value?.images_file, onValueChange]);
 
   const operationalLearningPlatformUrl = resolveUrl(window.location.origin, 'preparedness#operational-learning');
+  const isLoanDrefType = drefType === TYPE_LOAN;
+  const isImminentDrefType = drefType === TYPE_IMMINENT;
+  const isAssessmentDrefType = drefType === TYPE_ASSESSMENT;
 
   return (
     <>
-      {drefType !== TYPE_ASSESSMENT &&
+      {(!isAssessmentDrefType && !isLoanDrefType) &&
         <Container
           heading={strings.drefFormPreviousOperations}
           className={styles.previousOperations}
@@ -227,22 +231,24 @@ function EventDetails(props: Props) {
             />
           )}
         </InputSection>
-        <InputSection
-          title={
-            drefType !== TYPE_IMMINENT
-              ? strings.drefFormWhatWhereWhen
-              : strings.drefFormImminentDisaster
-          }
-          oneColumn
-          multiRow
-        >
-          <TextArea
-            name="event_description"
-            onChange={onValueChange}
-            value={value.event_description}
-            error={error?.event_description}
-          />
-        </InputSection>
+        {drefType !== TYPE_LOAN &&
+          <InputSection
+            title={
+              drefType !== TYPE_IMMINENT
+                ? strings.drefFormWhatWhereWhen
+                : strings.drefFormImminentDisaster
+            }
+            oneColumn
+            multiRow
+          >
+            <TextArea
+              name="event_description"
+              onChange={onValueChange}
+              value={value.event_description}
+              error={error?.event_description}
+            />
+          </InputSection>
+        }
         {drefType === TYPE_IMMINENT &&
           <InputSection
             title={strings.drefFormTargetCommunities}
@@ -258,7 +264,7 @@ function EventDetails(props: Props) {
             />
           </InputSection>
         }
-        {drefType === TYPE_IMMINENT && (
+        {(isImminentDrefType && !isLoanDrefType) && (
           <InputSection
             title={strings.drefFormUploadSupportingDocument}
             description={strings.drefFormUploadSupportingDocumentDescription}
@@ -276,39 +282,41 @@ function EventDetails(props: Props) {
             </DREFFileInput>
           </InputSection>
         )}
-        <InputSection
-          title={strings.drefFormUploadPhotos}
-          description={strings.drefFormUploadPhotosLimitation}
-          contentSectionClassName={styles.imageInputContent}
-        >
-          <DREFFileInput
-            name="images_file"
-            value={imagesValue}
-            onChange={handleImageInputChange}
-            accept="image/*"
-            multiple
-            error={error?.images_file}
-            fileIdToUrlMap={fileIdToUrlMap}
-            setFileIdToUrlMap={setFileIdToUrlMap}
-            hidePreview
+        {drefType !== TYPE_LOAN &&
+          <InputSection
+            title={strings.drefFormUploadPhotos}
+            description={strings.drefFormUploadPhotosLimitation}
+            contentSectionClassName={styles.imageInputContent}
           >
-            Select images
-          </DREFFileInput>
-          <div className={styles.previewList}>
-            {value?.images_file?.map((g, i) => (
-              <CaptionInput
-                key={g.client_id}
-                index={i}
-                value={g}
-                onChange={onImageChange}
-                onRemove={onImageRemove}
-                error={getErrorObject(error?.images_file)}
-                fileIdToUrlMap={fileIdToUrlMap}
-              />
-            ))}
-          </div>
-        </InputSection>
-        {drefType !== TYPE_ASSESSMENT &&
+            <DREFFileInput
+              name="images_file"
+              value={imagesValue}
+              onChange={handleImageInputChange}
+              accept="image/*"
+              multiple
+              error={error?.images_file}
+              fileIdToUrlMap={fileIdToUrlMap}
+              setFileIdToUrlMap={setFileIdToUrlMap}
+              hidePreview
+            >
+              Select images
+            </DREFFileInput>
+            <div className={styles.previewList}>
+              {value?.images_file?.map((g, i) => (
+                <CaptionInput
+                  key={g.client_id}
+                  index={i}
+                  value={g}
+                  onChange={onImageChange}
+                  onRemove={onImageRemove}
+                  error={getErrorObject(error?.images_file)}
+                  fileIdToUrlMap={fileIdToUrlMap}
+                />
+              ))}
+            </div>
+          </InputSection>
+        }
+        {(!isAssessmentDrefType && !isLoanDrefType) &&
           <InputSection
             title={strings.drefFormScopeAndScaleEvent}
             description={strings.drefFormScopeAndScaleDescription}

@@ -15,7 +15,7 @@ import Card from '#components/Card';
 import KeyFigure from '#components/KeyFigure';
 import ThreeWSankey from '#components/ThreeWSankey';
 import { useButtonFeatures } from '#components/Button';
-import { EmergencyProjectResponse } from '#types';
+import { EmergencyProjectResponse, District } from '#types';
 import {
   useRequest,
   ListResponse,
@@ -81,6 +81,33 @@ function Activities(props: Props) {
     filteredProjectList,
   );
 
+  const {
+    response: districtListResponse,
+  } = useRequest<ListResponse<District>>({
+    url: 'api/v2/district/',
+    query: {
+      country__in: eventCountryIdList,
+      limit: 300,
+    },
+  });
+  const districtList = districtListResponse?.results?.map(d => d.id).flat(1) ?? [];
+  let countEmpties = 0;
+  if (projectListResponse?.count) {
+    for (const res of projectListResponse?.results){
+      if (res.districts?.length === 0) countEmpties += 1;
+    }
+  }
+
+  // Where no specified districts in projectCountByDistrict, add full districtList of these countries:
+  const projectsCount = districtList.reduce((acc, val) => {
+      const newAcc = {...acc};
+      if (!newAcc[val]) {
+        newAcc[val] = 0;
+      }
+      newAcc[val] += countEmpties;
+      return newAcc;
+    }, projectCountByDistrict as Record<number, number>);
+
   const columns = React.useMemo(
     () => getColumns(styles.actionColumn),
     [],
@@ -95,7 +122,6 @@ function Activities(props: Props) {
     <Container
       className={_cs(styles.activities, className)}
       contentClassName={styles.activityContent}
-      visibleOverflow
       hideHeaderBorder
       actions={(
         <Link
@@ -172,7 +198,6 @@ function Activities(props: Props) {
               />
             )}
             contentClassName={styles.responseActivityContent}
-            visibleOverflow
             sub
           >
             <Filters
@@ -180,7 +205,7 @@ function Activities(props: Props) {
               onFilterChange={setFilteredProjectList}
             />
             <ActivityMap
-              projectCountByDistrict={projectCountByDistrict}
+              projectCountByDistrict={projectsCount}
               countryIdList={eventCountryIdList}
               sectorGroupedProjectList={sectorGroupedProjectList}
             />

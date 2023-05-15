@@ -168,7 +168,6 @@ function ActionsFields(props: Props) {
         heading={strings.drefFormNationalSocietiesActions}
         description={strings.drefFormNationalSocietiesActionsDescription}
         className={styles.nationalSocietyActions}
-        visibleOverflow
       >
         <InputSection
           title={
@@ -352,7 +351,6 @@ function ActionsFields(props: Props) {
               ? strings.drefFormImminentNeedsIdentified
               : strings.drefFormNeedsIdentified
           }
-          visibleOverflow
         >
           {drefType !== TYPE_IMMINENT &&
             <InputSection>

@@ -658,7 +658,6 @@ function EmergencyThreeWForm(props: Props) {
           <Container
             sub
             contentClassName={styles.operationDetailContent}
-            visibleOverflow
           >
             <InputSection
               title="IFRC supported Operation"
@@ -695,7 +694,7 @@ function EmergencyThreeWForm(props: Props) {
                 onChange={setFieldValue}
                 pending={fetchingDistricts}
                 error={error?.districts}
-                placeholder={isDefined(value?.country) ? 'Select one or more region' : 'Select a country first'}
+                placeholder={isDefined(value?.country) ? 'Select region(s) optionally' : 'Select a country first'}
                 disabled={inputsDisabled || isNotDefined(value?.country)}
                 isMulti
                 actions={(
@@ -829,7 +828,6 @@ function EmergencyThreeWForm(props: Props) {
           <Container
             heading="Activity Reporting"
             sub
-            visibleOverflow
             contentClassName={styles.activityReportingContent}
           >
             <InputSection

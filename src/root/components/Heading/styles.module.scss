@@ -3,36 +3,42 @@
 .heading {
   display: flex;
   align-items: center;
-  padding: $spacing * 0.5;
   color: $color-text;
-  font-weight: $heading-font-weight;
+  line-height: 1;
   margin: 0;
 
   &.extra-large {
-    font-size: $font-size-xxl;
-    font-weight: $heading-font-weight;
+    font-size: $font-size-h1;
+    font-weight: $font-weight-bold;
   }
 
   &.large {
-    font-size: $font-size-xl;
-    text-transform: uppercase;
-    font-weight: $heading-font-weight;
-    letter-spacing: $letter-spacing-lg;
+    font-size: $font-size-h2;
+    font-weight: $font-weight-bold;
   }
 
   &.medium {
-    font-size: $font-size-lg;
+    font-size: $font-size-h3;
+    font-weight: $font-weight-bold;
     text-transform: uppercase;
-    font-weight: $heading-font-weight;
-    letter-spacing: $letter-spacing-lg;
+    letter-spacing: 0.05em;
   }
 
   &.small {
-    font-size: $font-size-md;
+    font-size: $font-size-h4;
+    font-weight: $font-weight-bold;
   }
 
   &.extra-small {
-    font-size: $font-size-sm;
+    font-size: $font-size-h5;
+    font-weight: $font-weight-bold;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  &.super-small {
+    font-size: $font-size-h6;
+    font-weight: $font-weight-bold;
   }
 }
 

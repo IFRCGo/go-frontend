@@ -243,6 +243,10 @@ const defaultSchema: FormSchemaFields = {
   ifrc_emergency_title: [],
   ifrc_emergency_email: [emailCondition],
   ifrc_emergency_phone_number: [],
+  regional_focal_point_name: [],
+  regional_focal_point_email: [emailCondition],
+  regional_focal_point_title: [],
+  regional_focal_point_phone_number: [],
   media_contact_name: [],
   media_contact_title: [],
   media_contact_email: [emailCondition],
@@ -253,6 +257,8 @@ const defaultSchema: FormSchemaFields = {
   is_there_major_coordination_mechanism: [],
   is_surge_personnel_deployed: [],
   people_in_need: [],
+  date_of_approval: [],
+  ns_request_date: [],
   // supporting_document: [],
   risk_security_concern: [],
   photos_file: [lessThanEqualToTwoImagesCondition],
@@ -433,6 +439,18 @@ function useDrefOperationalFormOptions(value: PartialForm<DrefOperationalUpdateF
   });
 
   const {
+    response: userResponse,
+  } = useRequest<ListResponse<UserListItem>>({
+    url: 'api/v2/users/'
+  });
+
+const userOptions = React.useMemo(
+    () => userResponse?.results.map((u) => ({
+      label: `${u.first_name} ${u.last_name}`,
+      value: u.id,
+    })) ?? [], [userResponse]);
+
+  const {
     pending: fetchingDrefOptions,
     response: drefOptions,
   } = useRequest<DrefOperationalUpdateOptions>({
@@ -440,14 +458,13 @@ function useDrefOperationalFormOptions(value: PartialForm<DrefOperationalUpdateF
   });
 
   const [
-  disasterCategoryOptions,
-  nsActionOptions,
-  needOptions,
-  interventionOptions,
-  onsetOptions,
-  userOptions,
-  drefTypeOptions,
-] = React.useMemo(() => {
+    disasterCategoryOptions,
+    nsActionOptions,
+    needOptions,
+    interventionOptions,
+    onsetOptions,
+    drefTypeOptions,
+  ] = React.useMemo(() => {
     if (!drefOptions) {
       return [
         emptyNumericOptionList,
@@ -466,10 +483,6 @@ function useDrefOperationalFormOptions(value: PartialForm<DrefOperationalUpdateF
       drefOptions.needs_identified.map(transformKeyValueToLabelValue),
       drefOptions.planned_interventions.map(transformKeyValueToLabelValue),
       drefOptions.type_of_onset.map(transformKeyValueToLabelValue),
-      drefOptions.users.map((u) => ({
-        label: `${u.first_name} ${u.last_name}`,
-        value: u.id,
-      })),
       drefOptions.type_of_dref.map(transformKeyValueToLabelValue)
     ];
   }, [drefOptions]);
@@ -485,7 +498,7 @@ function useDrefOperationalFormOptions(value: PartialForm<DrefOperationalUpdateF
   const [
   nationalSocietyOptions,
   countryOptions,
-] = React.useMemo(() => {
+  ] = React.useMemo(() => {
     if (!countriesResponse) {
       return [emptyNumericOptionList, emptyNumericOptionList];
     }

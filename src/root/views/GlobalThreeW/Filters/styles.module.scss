@@ -3,10 +3,10 @@
 .filters {
   display: flex;
   flex-wrap: wrap;
+  gap: $spacing;
 
   >* {
     flex-grow: 1;
     flex-basis: 0;
-    padding: 0 $spacing*0.5;
   }
 }

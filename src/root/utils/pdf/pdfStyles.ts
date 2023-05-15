@@ -108,6 +108,11 @@ const pdfStyles = StyleSheet.create({
     fontWeight: 'extrabold',
   },
 
+  pdfTitleContent: {
+    width: '50vw',
+    alignItems:'flex-end',
+  },
+
   pageTitle: {
     fontFamily: 'Montserrat',
     fontWeight: 'bold',
@@ -166,7 +171,7 @@ const pdfStyles = StyleSheet.create({
     width: styles.SECTION_WIDTH,
     height: styles.SECTION_WIDTH * 0.75,
     alignItems: 'center',
-    marginVertical: styles.SPACING_SUPER_LARGE,
+    marginVertical: styles.SPACING_LARGE,
   },
 
   bannerImage: {

@@ -1,0 +1,26 @@
+@import '~styles/settings/variables';
+
+.filters {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: $spacing * 2;
+
+  .inputs {
+    display: flex;
+    align-items: center;
+    gap: $spacing;
+    flex-wrap: wrap;
+
+    .filter-input {
+      width: 11.25rem;
+    }
+  }
+
+  .outputs {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: $spacing*1.5;
+  }
+}

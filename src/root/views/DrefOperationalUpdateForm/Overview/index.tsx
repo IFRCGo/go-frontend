@@ -42,6 +42,7 @@ import {
   optionLabelSelector,
   TYPE_IMMINENT,
   ONSET_SUDDEN,
+  TYPE_LOAN,
 } from '../common';
 
 import styles from './styles.module.scss';
@@ -202,7 +203,6 @@ function Overview(props: Props) {
       <Container
         className={styles.sharing}
         heading={strings.drefFormSharingHeading}
-        visibleOverflow
       >
         <InputSection
           title={strings.drefFormSharingTitle}
@@ -260,8 +260,8 @@ function Overview(props: Props) {
         <InputSection
           title={
             drefType === TYPE_IMMINENT
-             ? strings.drefFormImminentDisasterDetails
-             : strings.drefFormDisasterDetails
+              ? strings.drefFormImminentDisasterDetails
+              : strings.drefFormDisasterDetails
           }
           multiRow
           twoColumn
@@ -270,8 +270,8 @@ function Overview(props: Props) {
             error={error?.disaster_type}
             label={
               drefType === TYPE_IMMINENT
-              ? strings.drefFormImminentDisasterTypeLabel
-              : strings.drefFormDisasterTypeLabel
+                ? strings.drefFormImminentDisasterTypeLabel
+                : strings.drefFormDisasterTypeLabel
             }
             name={"disaster_type" as const}
             onChange={onValueChange}
@@ -323,8 +323,8 @@ function Overview(props: Props) {
         <InputSection
           title={
             drefType !== TYPE_IMMINENT
-            ? strings.drefFormAffectedCountryAndProvinceImminent
-            : strings.drefFormRiskCountryLabel
+              ? strings.drefFormAffectedCountryAndProvinceImminent
+              : strings.drefFormRiskCountryLabel
           }
           twoColumn
         >
@@ -404,33 +404,35 @@ function Overview(props: Props) {
               : strings.drefFormPeopleAffectedDescriptionSlowSudden
             }
           />
-          <NumberInput
-            label={(
-              <>
-                {
-                  drefType === TYPE_IMMINENT
-                    ? strings.drefFormEstimatedPeopleInNeed
-                    : strings.drefFormPeopleInNeed
-                }
-                <a
-                  className={styles.peopleTargetedHelpLink}
-                  target="_blank"
-                  title="Click to view Emergency Response Framework"
-                  href={peopleInNeedLink}
-                >
-                  <IoHelpCircle />
-                </a>
-              </>
-            )}
-            name="people_in_need"
-            value={value.people_in_need}
-            onChange={onValueChange}
-            error={error?.people_in_need}
-            hint={drefType === TYPE_IMMINENT
-              ? strings.drefFormPeopleInNeedDescriptionImminent
-              : strings.drefFormPeopleInNeedDescriptionSlowSudden
-            }
-          />
+          {drefType !== TYPE_LOAN &&
+            <NumberInput
+              label={(
+                <>
+                  {
+                    drefType === TYPE_IMMINENT
+                      ? strings.drefFormEstimatedPeopleInNeed
+                      : strings.drefFormPeopleInNeed
+                  }
+                  <a
+                    className={styles.peopleTargetedHelpLink}
+                    target="_blank"
+                    title="Click to view Emergency Response Framework"
+                    href={peopleInNeedLink}
+                  >
+                    <IoHelpCircle />
+                  </a>
+                </>
+              )}
+              name="people_in_need"
+              value={value.people_in_need}
+              onChange={onValueChange}
+              error={error?.people_in_need}
+              hint={drefType === TYPE_IMMINENT
+                ? strings.drefFormPeopleInNeedDescriptionImminent
+                : strings.drefFormPeopleInNeedDescriptionSlowSudden
+              }
+            />
+          }
           <NumberInput
             label={(
               <>
@@ -453,18 +455,19 @@ function Overview(props: Props) {
           />
           <div />
         </InputSection>
-
-        <InputSection
-          title={strings.drefOperationalUpdateAllocationSoFar}
-        >
-          <NumberInput
-            name="dref_allocated_so_far"
-            value={value.dref_allocated_so_far}
-            onChange={undefined}
-            error={error?.dref_allocated_so_far}
-            readOnly
-          />
-        </InputSection>
+        {drefType !== TYPE_LOAN &&
+          <InputSection
+            title={strings.drefOperationalUpdateAllocationSoFar}
+          >
+            <NumberInput
+              name="dref_allocated_so_far"
+              value={value.dref_allocated_so_far}
+              onChange={undefined}
+              error={error?.dref_allocated_so_far}
+              readOnly
+            />
+          </InputSection>
+        }
         <InputSection
           title={strings.drefOperationalUpdateAdditionalAllocationRequested}
         >
@@ -486,58 +489,66 @@ function Overview(props: Props) {
             readOnly
           />
         </InputSection>
-        <InputSection
-          title={strings.drefFormEmergencyAppealPlanned}
-        >
-          <RadioInput
-            name={"emergency_appeal_planned" as const}
-            options={yesNoOptions}
-            keySelector={booleanOptionKeySelector}
-            labelSelector={optionLabelSelector}
-            value={value.emergency_appeal_planned}
-            onChange={onValueChange}
-            error={error?.emergency_appeal_planned}
-          />
-        </InputSection>
-        <InputSection
-          title={strings.drefFormUploadMap}
-          description={strings.drefFormUploadMapDescription}
-        >
-          <ImageWithCaptionInput
-            name={"event_map_file" as const}
-            value={value?.event_map_file}
-            onChange={onValueChange}
-            error={error?.event_map_file}
-            fileIdToUrlMap={fileIdToUrlMap}
-            setFileIdToUrlMap={setFileIdToUrlMap}
-            label={strings.drefFormUploadAnImageLabel}
-          />
-        </InputSection>
-        <InputSection
-          title={strings.drefFormUploadCoverImage}
-          description={strings.drefFormUploadCoverImageDescription}
-        >
-          <ImageWithCaptionInput
-            name={"cover_image_file" as const}
-            value={value?.cover_image_file}
-            onChange={onValueChange}
-            error={error?.cover_image_file}
-            fileIdToUrlMap={fileIdToUrlMap}
-            setFileIdToUrlMap={setFileIdToUrlMap}
-            label={strings.drefFormUploadAnImageLabel}
-          />
-        </InputSection>
-        <InputSection
-          title={strings.drefOperationalUpdateNumber}
-        >
-          <NumberInput
-            readOnly
-            name="operational_update_number"
-            value={value.operational_update_number}
-            onChange={onValueChange}
-            error={error?.operational_update_number}
-          />
-        </InputSection>
+        {drefType !== TYPE_LOAN &&
+          <InputSection
+            title={strings.drefFormEmergencyAppealPlanned}
+          >
+            <RadioInput
+              name={"emergency_appeal_planned" as const}
+              options={yesNoOptions}
+              keySelector={booleanOptionKeySelector}
+              labelSelector={optionLabelSelector}
+              value={value.emergency_appeal_planned}
+              onChange={onValueChange}
+              error={error?.emergency_appeal_planned}
+            />
+          </InputSection>
+        }
+        {drefType !== TYPE_LOAN &&
+          <InputSection
+            title={strings.drefFormUploadMap}
+            description={strings.drefFormUploadMapDescription}
+          >
+            <ImageWithCaptionInput
+              name={"event_map_file" as const}
+              value={value?.event_map_file}
+              onChange={onValueChange}
+              error={error?.event_map_file}
+              fileIdToUrlMap={fileIdToUrlMap}
+              setFileIdToUrlMap={setFileIdToUrlMap}
+              label={strings.drefFormUploadAnImageLabel}
+            />
+          </InputSection>
+        }
+        {drefType !== TYPE_LOAN &&
+          <InputSection
+            title={strings.drefFormUploadCoverImage}
+            description={strings.drefFormUploadCoverImageDescription}
+          >
+            <ImageWithCaptionInput
+              name={"cover_image_file" as const}
+              value={value?.cover_image_file}
+              onChange={onValueChange}
+              error={error?.cover_image_file}
+              fileIdToUrlMap={fileIdToUrlMap}
+              setFileIdToUrlMap={setFileIdToUrlMap}
+              label={strings.drefFormUploadAnImageLabel}
+            />
+          </InputSection>
+        }
+        {drefType !== TYPE_LOAN &&
+          <InputSection
+            title={strings.drefOperationalUpdateNumber}
+          >
+            <NumberInput
+              readOnly
+              name="operational_update_number"
+              value={value.operational_update_number}
+              onChange={onValueChange}
+              error={error?.operational_update_number}
+            />
+          </InputSection>
+        }
       </Container>
     </>
   );

@@ -6,7 +6,7 @@ import styles from './styles.module.scss';
 export interface Props {
   className?: string;
   children?: React.ReactNode;
-  size?: 'extraSmall' | 'small' | 'medium' | 'large' | 'extraLarge';
+  size?: 'superSmall' | 'extraSmall' | 'small' | 'medium' | 'large' | 'extraLarge';
 }
 
 function Heading(props: Props) {
@@ -18,6 +18,11 @@ function Heading(props: Props) {
 
   return (
     <>
+      {size === 'superSmall' && (
+        <h6 className={_cs(styles.heading, styles.superSmall, className)}>
+          { children }
+        </h6>
+      )}
       {size === 'extraSmall' && (
         <h5 className={_cs(styles.heading, styles.extraSmall, className)}>
           { children }

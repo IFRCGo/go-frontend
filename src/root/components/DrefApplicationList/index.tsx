@@ -20,6 +20,7 @@ import {
   PartialForm,
 } from '@togglecorp/toggle-form';
 
+import { TYPE_LOAN } from '#views/DrefApplicationForm/common';
 import LanguageContext from '#root/languageContext';
 import Backdrop from '#components/backdrop';
 import Button from '#components/Button';
@@ -80,6 +81,7 @@ interface DrefApplicationResponse {
   operational_update_details: OperationalUpdateDetails[];
   dref_final_report_details: FinalReportDetails;
   is_final_report_created: boolean;
+  type_of_dref?: number;
 }
 
 const ITEM_PER_PAGE = 6;
@@ -437,6 +439,8 @@ function DrefApplicationList(props: Props) {
 
             const lastFinalReportId = item.dref_final_report_details?.id;
 
+            const isDrefLoan = item.type_of_dref === TYPE_LOAN;
+
             return {
               extraActions: (
                 <>
@@ -445,7 +449,7 @@ function DrefApplicationList(props: Props) {
                     name={rowKey}
                     onClick={postDrefNewFinalReport}
                     label={strings.finalReportCreateButtonLabel}
-                    disabled={!canAddFinalReport || finalReportPublishPending}
+                    disabled={!canAddFinalReport || finalReportPublishPending || isDrefLoan}
                   />
                   <DropdownMenuItem
                     icon={<MdEdit />}

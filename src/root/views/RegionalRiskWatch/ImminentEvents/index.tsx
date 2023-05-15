@@ -2,22 +2,23 @@ import React from 'react';
 
 import Container from '#components/Container';
 import WikiLink from '#components/WikiLink';
+import MapFooter from '#components/RiskImminentEventMap/MapFooter';
 import ImminentEventsPDC from './ImminentEventsPDC';
 import ImminentEventsADAM from './ImminentEventsADAM';
+import ImminentEventsGDACS from './ImminentEventsGDACS';
 
 import styles from './styles.module.scss';
-import MapFooter from '#components/RiskImminentEventMap/MapFooter';
 
 const eventDescription = "This map displays information about the modeled impact of specific forecasted or detected natural hazards (floods, storms, droughts, wildfires, earthquakes). By hovering over the icons, if available, you can see the forecasted/observed footprint of the hazard; when you click on it, the table of modeled impact estimates will appear, as well as an information about who produced the impact estimate.";
+export const stringOptionKeySelector = (o: StringValueOption) => o.value;
+export const optionLabelSelector = (o: Option) => o.label;
 
+export type Option = StringValueOption;
 export interface StringValueOption {
   value: string;
   label: React.ReactNode;
 }
 
-export type Option = StringValueOption;
-export const stringOptionKeySelector = (o: StringValueOption) => o.value;
-export const optionLabelSelector = (o: Option) => o.label;
 interface Props {
   className?: string;
   regionId: number;
@@ -58,7 +59,13 @@ function ImminentEvents(props: Props) {
           regionId={regionId}
         />
       )}
-      <MapFooter 
+      {(mapSource === "GDACS") && (
+        <ImminentEventsGDACS
+          className={styles.map}
+          regionId={regionId}
+        />
+      )}
+      <MapFooter
         sourceType={mapSource}
         onSourceChange={sourceType}
       />

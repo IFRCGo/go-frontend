@@ -44,6 +44,7 @@ import {
   DISASTER_FLASH_FLOOD,
   emptyNumericOptionList,
   TYPE_IMMINENT,
+  TYPE_LOAN,
   ONSET_SUDDEN,
 } from '../common';
 
@@ -116,10 +117,10 @@ function DrefOverview(props: Props) {
     const suddenDependentValue = onsetType === ONSET_SUDDEN ? false : value.emergency_appeal_planned;
     onValueChange(suddenDependentValue, 'emergency_appeal_planned');
   }, [
-      onsetType,
-      value.emergency_appeal_planned,
-      onValueChange,
-    ]);
+    onsetType,
+    value.emergency_appeal_planned,
+    onValueChange,
+  ]);
 
   const handleUserSearch = React.useCallback((input: string | undefined, callback) => {
     if (!input) {
@@ -152,7 +153,7 @@ function DrefOverview(props: Props) {
       national_society: ns,
       country: ns,
     });
-  }, [ value, onValueSet ]);
+  }, [value, onValueSet]);
 
   const handleTitleChange = useCallback(() => {
     const getCurrentCountryValue = value?.country;
@@ -163,12 +164,12 @@ function DrefOverview(props: Props) {
     const title = `${countryName} ${filteredDisasterTypeName} ${currentYear}`;
     onValueChange(title, 'title');
   }, [
-      countryOptions,
-      disasterTypeOptions,
-      value.disaster_type,
-      value.country,
-      onValueChange,
-    ]);
+    countryOptions,
+    disasterTypeOptions,
+    value.disaster_type,
+    value.country,
+    onValueChange,
+  ]);
 
   const countryQuery = React.useMemo(() => ({
     country: value.country,
@@ -200,7 +201,6 @@ function DrefOverview(props: Props) {
       <Container
         className={styles.sharing}
         heading={strings.drefFormSharingHeading}
-        visibleOverflow
       >
         <InputSection
           title={strings.drefFormSharingTitle}
@@ -246,10 +246,12 @@ function DrefOverview(props: Props) {
             value={value.national_society}
           />
         </InputSection>
-        <CopyFieldReportSection
-          value={value}
-          onValueSet={onValueSet}
-        />
+        {drefType !== TYPE_LOAN &&
+          <CopyFieldReportSection
+            value={value}
+            onValueSet={onValueSet}
+          />
+        }
         <InputSection title="DREF Type">
           <SelectInput
             error={error?.type_of_dref}
@@ -272,7 +274,7 @@ function DrefOverview(props: Props) {
           <SelectInput
             error={error?.disaster_type}
             label={
-            drefType === TYPE_IMMINENT
+              drefType === TYPE_IMMINENT
                 ? strings.drefFormImminentDisasterTypeLabel
                 : strings.drefFormDisasterTypeLabel
             }
@@ -412,33 +414,35 @@ function DrefOverview(props: Props) {
               : strings.drefFormPeopleAffectedDescriptionSlowSudden
             }
           />
-          <NumberInput
-            label={(
-              <>
-                {
-                  drefType === TYPE_IMMINENT
-                    ? strings.drefFormEstimatedPeopleInNeed
-                    : strings.drefFormPeopleInNeed
-                }
-                <a
-                  className={styles.peopleTargetedHelpLink}
-                  target="_blank"
-                  title="Click to view Emergency Response Framework"
-                  href={peopleInNeedLink}
-                >
-                  <IoHelpCircle />
-                </a>
-              </>
-            )}
-            name="people_in_need"
-            value={value.people_in_need}
-            onChange={onValueChange}
-            error={error?.people_in_need}
-            hint={drefType === TYPE_IMMINENT
-              ? strings.drefFormPeopleInNeedDescriptionImminent
-              : strings.drefFormPeopleInNeedDescriptionSlowSudden
-            }
-          />
+          {drefType !== TYPE_LOAN &&
+            <NumberInput
+              label={(
+                <>
+                  {
+                    drefType === TYPE_IMMINENT
+                      ? strings.drefFormEstimatedPeopleInNeed
+                      : strings.drefFormPeopleInNeed
+                  }
+                  <a
+                    className={styles.peopleTargetedHelpLink}
+                    target="_blank"
+                    title="Click to view Emergency Response Framework"
+                    href={peopleInNeedLink}
+                  >
+                    <IoHelpCircle />
+                  </a>
+                </>
+              )}
+              name="people_in_need"
+              value={value.people_in_need}
+              onChange={onValueChange}
+              error={error?.people_in_need}
+              hint={drefType === TYPE_IMMINENT
+                ? strings.drefFormPeopleInNeedDescriptionImminent
+                : strings.drefFormPeopleInNeedDescriptionSlowSudden
+              }
+            />
+          }
           <NumberInput
             label={(
               <>
@@ -471,49 +475,55 @@ function DrefOverview(props: Props) {
             error={error?.amount_requested}
           />
         </InputSection>
-        <InputSection
-          title={strings.drefFormEmergencyAppealPlanned}
-        >
-          <RadioInput
-            name={"emergency_appeal_planned" as const}
-            options={yesNoOptions}
-            keySelector={booleanOptionKeySelector}
-            labelSelector={optionLabelSelector}
-            value={value.emergency_appeal_planned}
-            onChange={onValueChange}
-            error={error?.emergency_appeal_planned}
-          />
-        </InputSection>
-        <InputSection
-          title={strings.drefFormUploadMap}
-          description={strings.drefFormUploadMapDescription}
-          contentSectionClassName={styles.imageInputContent}
-        >
-          <ImageWithCaptionInput
-            name={"event_map_file" as const}
-            value={value?.event_map_file}
-            onChange={onValueChange}
-            error={error?.event_map_file}
-            fileIdToUrlMap={fileIdToUrlMap}
-            setFileIdToUrlMap={setFileIdToUrlMap}
-            label={strings.drefFormUploadAnImageLabel}
-          />
-        </InputSection>
-        <InputSection
-          title={strings.drefFormUploadCoverImage}
-          description={strings.drefFormUploadCoverImageDescription}
-          contentSectionClassName={styles.imageInputContent}
-        >
-          <ImageWithCaptionInput
-            name={"cover_image_file" as const}
-            value={value?.cover_image_file}
-            onChange={onValueChange}
-            error={error?.cover_image_file}
-            fileIdToUrlMap={fileIdToUrlMap}
-            setFileIdToUrlMap={setFileIdToUrlMap}
-            label={strings.drefFormUploadAnImageLabel}
-          />
-        </InputSection>
+        {drefType !== TYPE_LOAN &&
+          <InputSection
+            title={strings.drefFormEmergencyAppealPlanned}
+          >
+            <RadioInput
+              name={"emergency_appeal_planned" as const}
+              options={yesNoOptions}
+              keySelector={booleanOptionKeySelector}
+              labelSelector={optionLabelSelector}
+              value={value.emergency_appeal_planned}
+              onChange={onValueChange}
+              error={error?.emergency_appeal_planned}
+            />
+          </InputSection>
+        }
+        {drefType !== TYPE_LOAN &&
+          <InputSection
+            title={strings.drefFormUploadMap}
+            description={strings.drefFormUploadMapDescription}
+            contentSectionClassName={styles.imageInputContent}
+          >
+            <ImageWithCaptionInput
+              name={"event_map_file" as const}
+              value={value?.event_map_file}
+              onChange={onValueChange}
+              error={error?.event_map_file}
+              fileIdToUrlMap={fileIdToUrlMap}
+              setFileIdToUrlMap={setFileIdToUrlMap}
+              label={strings.drefFormUploadAnImageLabel}
+            />
+          </InputSection>
+        }
+        {drefType !== TYPE_LOAN &&
+          <InputSection
+            title={strings.drefFormUploadCoverImage}
+            description={strings.drefFormUploadCoverImageDescription}
+            contentSectionClassName={styles.imageInputContent}
+          >
+            <ImageWithCaptionInput
+              name={"cover_image_file" as const}
+              value={value?.cover_image_file}
+              onChange={onValueChange}
+              error={error?.cover_image_file}
+              fileIdToUrlMap={fileIdToUrlMap}
+              setFileIdToUrlMap={setFileIdToUrlMap}
+              label={strings.drefFormUploadAnImageLabel}
+            />
+          </InputSection>
+        }
       </Container>
     </>
   );

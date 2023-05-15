@@ -49,9 +49,9 @@ interface DotProps {
 }
 
 const crisisTypeColorMap: Record<CrisisType, string> = {
-  Red: '#f5333f',
-  Orange: '#ff5014',
-  Yellow: '#ffee00',
+  Yellow: '#ff9e00',
+  Orange: '#ff6b00',
+  Red: '#de2934',
 };
 
 function Dot(props: DotProps) {

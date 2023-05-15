@@ -1,10 +1,10 @@
 import React from 'react';
 import { _cs } from '@togglecorp/fujs';
 
-import ElementFragments from '#components/ElementFragments';
 import Heading, { Props as HeadingProps } from '#components/Heading';
 import Description from '#components/Description';
 
+import useBasicLayout from '#hooks/useBasicLayout';
 import styles from './styles.module.scss';
 
 export interface Props {
@@ -38,36 +38,39 @@ function Header(props: Props) {
     elementRef,
   } = props;
 
-  return (
-    <header
-      ref={elementRef}
-      className={_cs(className, styles.header)}
-    >
-      <ElementFragments
-        icons={icons}
-        iconsContainerClassName={iconsContainerClassName}
-        actions={actions}
-        actionsContainerClassName={actionsContainerClassName}
-        childrenContainerClassName={_cs(styles.headingContainer, headingContainerClassName)}
-      >
+  const {
+    content,
+    containerClassName,
+  } = useBasicLayout({
+    className,
+    icons,
+    children: (
+      <>
         <Heading
           size={headingSize}
-          className={_cs(styles.heading, headingClassName)}
+          className={headingClassName}
         >
           { heading }
         </Heading>
         {description && (
-          <Description
-            className={_cs(
-              styles.description,
-              descriptionClassName,
-              headingSize === 'extraSmall' && styles.small,
-            )}
-          >
+          <Description className={descriptionClassName}>
             {description}
           </Description>
         )}
-      </ElementFragments>
+      </>
+    ),
+    actions,
+    iconsContainerClassName,
+    actionsContainerClassName,
+    childrenContainerClassName: headingContainerClassName,
+  });
+
+  return (
+    <header
+      ref={elementRef}
+      className={_cs(styles.header, containerClassName)}
+    >
+      {content}
     </header>
   );
 }

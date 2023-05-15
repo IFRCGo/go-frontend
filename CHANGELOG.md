@@ -1,4 +1,20 @@
-### Release 6.5.6 - Hotfix for a Data Playbook
+### Release 6.6.0 - UI, 3W, DREF, Risk Module improvements
+Date: 2023-05-12
+
+Frontend:
+ - Improve UI for input components in various pages
+ - Add more columns to AppealDoc listing
+ - Add new sectors temporary copy from backend
+ - Make districts field optional for Response Activity
+   - in 3W maps use whole country, when no districts are selected
+ - Add wildfire events for PDC events in Risk pages
+ - Fix title width and text overlap issue in the DREF pdf export
+ - Add DREF loan type to DREF application and DREF Operational Update
+ - New Role Profile to CoS Health
+ - Top Tags to be visible on 3W page
+ - Change in Tableau PPP map
+
+### Release 6.5.6 - Hotfix for a Resource page link
 Date: 2023-04-28
 
 Frontend:

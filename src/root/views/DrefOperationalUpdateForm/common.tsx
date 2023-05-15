@@ -9,6 +9,7 @@ export const ONSET_SUDDEN = 2;
 export const TYPE_IMMINENT = 0;
 export const TYPE_ASSESSMENT = 1;
 export const TYPE_RESPONSE = 2;
+export const TYPE_LOAN = 3;
 
 export const DISASTER_FIRE = 15;
 export const DISASTER_FLASH_FLOOD = 27;
@@ -175,6 +176,10 @@ export interface DrefOperationalUpdateFields {
   national_society_contact_name: string;
   national_society_contact_phone_number: string;
   national_society_contact_title: string;
+  regional_focal_point_name: string;
+  regional_focal_point_email: string;
+  regional_focal_point_title: string;
+  regional_focal_point_phone_number: string;
   media_contact_email: string;
   media_contact_name: string;
   media_contact_phone_number: string;
@@ -233,6 +238,8 @@ export interface DrefOperationalUpdateFields {
   reporting_start_date: string;
   reporting_end_date: string;
   type_of_dref: number;
+  date_of_approval: string;
+  ns_request_date: string;
 }
 
 export interface DrefApplicationValidateConditionalField {
@@ -402,4 +409,10 @@ export const submissionFields: (keyof DrefOperationalUpdateFields)[] = [
   'total_operation_timeframe',
   'reporting_start_date',
   'reporting_end_date',
+  'ns_request_date',
+  'date_of_approval',
+  'regional_focal_point_name',
+  'regional_focal_point_email',
+  'regional_focal_point_title',
+  'regional_focal_point_phone_number',
 ];

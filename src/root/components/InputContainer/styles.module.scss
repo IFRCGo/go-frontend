@@ -6,18 +6,19 @@
   .input-section {
     display: flex;
     align-items: center;
-    border: $base-border-width solid $base-border-color;
-    border-radius: $base-border-radius;
+    border-radius: $border-radius-input;
     transition: $duration-transition-medium border-color ease-in-out;
     z-index: 0;
-    padding: 0 $spacing;
+    background-color: $color-input-section-background;
+    padding: $spacing*0.5 $spacing;
+    border: $base-border-width solid transparent;
 
     .internal-input-container {
       flex-grow: 1;
     }
 
     &:focus-within {
-      border-color: $color-text-light;
+      border-bottom-color: $color-input-bottom-border-selected;
     }
   }
 
@@ -29,15 +30,12 @@
 
   &.errored {
     .input-section {
-      border-left-width: $border-width-errored-input;
-      border-left-color: $danger-color;
+      border-color: $color-input-border-errored;
     }
   }
 
   &.disabled {
-    .input-section {
-      opacity: .5;
-    }
+    opacity: .5;
   }
 
   &.general {
@@ -57,6 +55,12 @@
   :global {
     .go__menu {
       z-index: 10;
+    }
+  }
+
+  &:hover {
+    .input-section {
+      border-bottom-color: $color-input-bottom-border-hover;
     }
   }
 }

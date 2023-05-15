@@ -1,0 +1,28 @@
+@import "~styles/settings/variables";
+
+.map {
+  position: relative;
+
+  .map-container {
+    height: 40rem;
+  }
+
+  .map-disclaimer {
+    position: absolute;
+    left: $mapbox-icon-width + $spacing*0.5;
+    bottom: $spacing*0.25;
+  }
+
+  :global {
+
+    .mapboxgl-popup-close-button {
+      position: absolute;
+      right: $spacing !important;
+      top: $spacing !important;
+      font-size: $font-size-heading-widget !important;
+      font-weight: $base-font-light !important;
+      opacity: 0.6 !important;
+    }
+  }
+}
+

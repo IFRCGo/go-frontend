@@ -157,6 +157,13 @@ function Navbar(props) {
                     <Translate stringId="headerMenuThreeW" />
                   </NavLink>
                 </li>
+                {/*
+                <li>
+                  <NavLink to='/risk-watch/' title={strings.headerMenuThreeWTooltip} activeClassName='navbar-highlighted' exact>
+                    Risk Watch
+                  </NavLink>
+                </li>
+                */}
               </ul>
             </nav>
             <div className='nav-global-search col'>

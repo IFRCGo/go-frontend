@@ -43,12 +43,12 @@ function InputContainer(props: Props) {
       className={_cs(
         'go-input-container',
         styles.inputContainer,
-        className,
         !!error && styles.errored,
         disabled && styles.disabled,
         readOnly && styles.readOnly,
         variant === 'form' && styles.form,
         variant === 'general' && styles.general,
+        className,
       )}
       title={(errorOnTooltip && isDefined(error) && typeof error === 'string') ? error : undefined}
     >

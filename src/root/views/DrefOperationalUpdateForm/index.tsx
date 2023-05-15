@@ -49,6 +49,7 @@ import {
   operationFields,
   submissionFields,
   DrefOperationalUpdateApiFields,
+  TYPE_LOAN,
 } from './common';
 import useDrefOperationalFormOptions, {
   schema
@@ -105,6 +106,13 @@ const intermittentValidationExceptions: (keyof DrefOperationalUpdateFields)[] = 
   'district',
   'additional_allocation',
   'changing_budget',
+];
+
+const intermittentLoanValidationExceptions: (keyof DrefOperationalUpdateFields)[] = [
+  'total_operation_timeframe',
+  'number_of_people_targeted',
+  'district',
+  'additional_allocation',
 ];
 
 function DrefOperationalUpdate(props: Props) {
@@ -435,6 +443,21 @@ function DrefOperationalUpdate(props: Props) {
     },
   });
 
+  const handleLoanBackButtonClick = React.useCallback(() => {
+    if (currentStep !== 'operationOverview') {
+      const prevStepMap: {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        [key in Exclude<StepTypes, 'operationOverview'>]: Exclude<StepTypes, 'submission'>;
+      } = {
+        eventDetails: 'operationOverview',
+        submission: 'eventDetails',
+        operation: 'needs',
+        needs: 'operation',
+      };
+      handleTabChange(prevStepMap[currentStep]);
+    }
+  }, [handleTabChange, currentStep]);
+
   const handleBackButtonClick = React.useCallback(() => {
     if (currentStep !== 'operationOverview') {
       const prevStepMap: {
@@ -484,6 +507,30 @@ function DrefOperationalUpdate(props: Props) {
         eventDetails: 'needs',
         needs: 'operation',
         operation: 'submission',
+      };
+
+      handleTabChange(nextStepMap[currentStep]);
+    }
+  }, [validateCurrentTab, currentStep, handleTabChange, submitDrefOperationalUpdate]);
+
+  const handleLoanSubmitButtonClick = React.useCallback(() => {
+    scrollToTop();
+    const isCurrentTabValid = validateCurrentTab(intermittentLoanValidationExceptions);
+    if (!isCurrentTabValid) {
+      return;
+    }
+
+    if (currentStep === 'submission') {
+      submitDrefOperationalUpdate();
+    } else {
+      const nextStepMap: {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        [key in Exclude<StepTypes, 'submission'>]: Exclude<StepTypes, 'operationOverview'>;
+      } = {
+        operationOverview: 'eventDetails',
+        eventDetails: 'submission',
+        needs: 'operation',
+        operation: 'needs',
       };
 
       handleTabChange(nextStepMap[currentStep]);
@@ -578,7 +625,7 @@ function DrefOperationalUpdate(props: Props) {
       <Page
         actions={(
           <>
-            {isDefined(opsUpdateId) && (
+            {isDefined(opsUpdateId) && drefType!== TYPE_LOAN && (
               <Link
                 to={`/dref-operational-update/${opsUpdateId}/export/`}
                 {...exportLinkProps}
@@ -612,20 +659,24 @@ function DrefOperationalUpdate(props: Props) {
             >
               {strings.drefOperationalUpdateEventDetailsLabel}
             </Tab>
-            <Tab
-              name='needs'
-              step={3}
-              errored={erroredTabs['needs']}
-            >
-              {strings.drefOperationalUpdateNeedsLabel}
-            </Tab>
-            <Tab
-              name='operation'
-              step={4}
-              errored={erroredTabs['operation']}
-            >
-              {strings.drefOperationalUpdateOperationLabel}
-            </Tab>
+            {drefType !== TYPE_LOAN &&
+              <Tab
+                name='needs'
+                step={3}
+                errored={erroredTabs['needs']}
+              >
+                {strings.drefOperationalUpdateNeedsLabel}
+              </Tab>
+            }
+            {drefType !== TYPE_LOAN &&
+              <Tab
+                name='operation'
+                step={4}
+                errored={erroredTabs['operation']}
+              >
+                {strings.drefOperationalUpdateOperationLabel}
+              </Tab>
+            }
             <Tab
               name='submission'
               step={5}
@@ -633,7 +684,6 @@ function DrefOperationalUpdate(props: Props) {
             >
               {strings.drefOperationalUpdateSubmissionLabel}
             </Tab>
-
           </TabList>
         )}
       >
@@ -684,6 +734,7 @@ function DrefOperationalUpdate(props: Props) {
                   userOptions={userOptions}
                   onCreateAndShareButtonClick={submitDrefOperationalUpdate}
                   drefTypeOptions={drefTypeOptions}
+                  drefType={drefType}
                   onsetType={onsetType}
                 />
               </TabPanel>
@@ -699,55 +750,81 @@ function DrefOperationalUpdate(props: Props) {
                   onsetType={onsetType}
                 />
               </TabPanel>
-              <TabPanel name='needs'>
-                <Needs
-                  error={error}
-                  onValueChange={onValueChange}
-                  value={value}
-                  yesNoOptions={yesNoOptions}
-                  needOptions={needOptions}
-                  nsActionOptions={nsActionOptions}
-                  fileIdToUrlMap={fileIdToUrlMap}
-                  setFileIdToUrlMap={setFileIdToUrlMap}
-                  drefType={drefType}
-                />
-              </TabPanel>
-              <TabPanel name='operation'>
-                <Operation
-                  interventionOptions={interventionOptions}
-                  error={error}
-                  onValueChange={onValueChange}
-                  value={value}
-                  fileIdToUrlMap={fileIdToUrlMap}
-                  setFileIdToUrlMap={setFileIdToUrlMap}
-                  drefType={drefType}
-                  yesNoOptions={yesNoOptions}
-                />
-              </TabPanel>
+              {drefType !== TYPE_LOAN &&
+                <TabPanel name='needs'>
+                  <Needs
+                    error={error}
+                    onValueChange={onValueChange}
+                    value={value}
+                    yesNoOptions={yesNoOptions}
+                    needOptions={needOptions}
+                    nsActionOptions={nsActionOptions}
+                    fileIdToUrlMap={fileIdToUrlMap}
+                    setFileIdToUrlMap={setFileIdToUrlMap}
+                    drefType={drefType}
+                  />
+                </TabPanel>
+              }
+              {drefType !== TYPE_LOAN &&
+                <TabPanel name='operation'>
+                  <Operation
+                    interventionOptions={interventionOptions}
+                    error={error}
+                    onValueChange={onValueChange}
+                    value={value}
+                    fileIdToUrlMap={fileIdToUrlMap}
+                    setFileIdToUrlMap={setFileIdToUrlMap}
+                    drefType={drefType}
+                    yesNoOptions={yesNoOptions}
+                  />
+                </TabPanel>
+              }
               <TabPanel name='submission'>
                 <Submission
                   error={error}
                   onValueChange={onValueChange}
                   value={value}
+                  drefType={drefType}
                 />
               </TabPanel>
-              <div className={styles.actions}>
-                <Button
-                  name={undefined}
-                  variant="secondary"
-                  onClick={handleBackButtonClick}
-                  disabled={shouldDisabledBackButton}
-                >
-                  {strings.drefFormBackButtonLabel}
-                </Button>
-                <Button
-                  name={undefined}
-                  variant="secondary"
-                  onClick={handleSubmitButtonClick}
-                >
-                  {submitButtonLabel}
-                </Button>
-              </div>
+              {drefType !== TYPE_LOAN &&
+                <div className={styles.actions}>
+                  <Button
+                    name={undefined}
+                    variant="secondary"
+                    onClick={handleBackButtonClick}
+                    disabled={shouldDisabledBackButton}
+                  >
+                    {strings.drefFormBackButtonLabel}
+                  </Button>
+                  <Button
+                    name={undefined}
+                    variant="secondary"
+                    onClick={handleSubmitButtonClick}
+                  >
+                    {submitButtonLabel}
+                  </Button>
+                </div>
+              }
+              {drefType === TYPE_LOAN &&
+                <div className={styles.actions}>
+                  <Button
+                    name={undefined}
+                    variant="secondary"
+                    onClick={handleLoanBackButtonClick}
+                    disabled={shouldDisabledBackButton}
+                  >
+                    {strings.drefFormBackButtonLabel}
+                  </Button>
+                  <Button
+                    name={undefined}
+                    variant="secondary"
+                    onClick={handleLoanSubmitButtonClick}
+                  >
+                    {submitButtonLabel}
+                  </Button>
+                </div>
+              }
               {isDefined(opsUpdateId) && showObsoletePayloadResolutionModal && (
                 <ObsoletePayloadResolutionModal
                   opsUpdateId={+opsUpdateId}

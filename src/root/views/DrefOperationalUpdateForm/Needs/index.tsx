@@ -179,7 +179,6 @@ function Needs(props: Props) {
         heading={strings.drefFormNationalSocietiesActions}
         description={strings.drefFormNationalSocietiesActionsDescription}
         className={styles.nationalSocietyActions}
-        visibleOverflow
       >
         <InputSection
           title={
@@ -394,7 +393,6 @@ function Needs(props: Props) {
               ? strings.drefFormImminentNeedsIdentified
               : strings.drefFormNeedsIdentified
           }
-          visibleOverflow
         >
           {drefType !== TYPE_IMMINENT &&
             <InputSection>
