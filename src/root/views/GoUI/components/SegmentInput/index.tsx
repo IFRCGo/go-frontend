@@ -4,7 +4,7 @@ import { _cs } from '@togglecorp/fujs';
 import Button, { Props as ButtonProps } from '#goui/components/Button';
 import RadioInput, { Props as RadioInputProps } from '#goui/components/RadioInput';
 import { Props as RadioProps } from '#goui/components/RadioInput/Radio';
-import { genericMemo } from '#goui/utils/common';
+import { genericMemo } from '#utils/common';
 
 import styles from './styles.module.scss';
 

@@ -22,6 +22,10 @@ const randomOptions: Option[] = [
     label: 'Option 3',
     value: 30,
   },
+  {
+    label: 'Option 23',
+    value: 23,
+  },
 ];
 
 const keySelector = (d: Option) => d.value;
