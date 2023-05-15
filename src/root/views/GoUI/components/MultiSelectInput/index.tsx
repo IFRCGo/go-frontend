@@ -7,18 +7,18 @@ import { NameType, ValueType } from '#goui/components/types';
 import styles from './styles.module.scss';
 
 type InheritedProps<O> = Omit<InputContainerProps, 'input'>
-  & Omit<SelectProps<O, false, GroupBase<O>>, 'className' | 'onChange' | 'value' | 'isMulti' | 'name' | 'options' | 'isDisabled' | 'classNames' | 'required'>
+  & Omit<SelectProps<O, true, GroupBase<O>>, 'className' | 'onChange' | 'value' | 'isMulti' | 'name' | 'options' | 'isDisabled' | 'classNames' | 'required'>
 
 type Props<N, O, V extends ValueType> = InheritedProps<O> & {
   inputClassName?: string;
   name: N;
   options: O[];
   keySelector: (option: O) => V;
-  value: V | null | undefined;
-  onChange: (newValue: V | undefined, name: N) => void;
+  value: V[] | null | undefined;
+  onChange: (newValue: V[] | undefined, name: N) => void;
 };
 
-function SelectInput<N extends NameType, O, V extends ValueType>(props: Props<N, O, V>) {
+function MultiSelectInput<N extends NameType, O, V extends ValueType>(props: Props<N, O, V>) {
   const {
     actions,
     className,
@@ -42,17 +42,17 @@ function SelectInput<N extends NameType, O, V extends ValueType>(props: Props<N,
   } = props;
 
 
-  const handleChange = useCallback((selectedOptions: O | null) => {
+  const handleChange = useCallback((selectedOptions: readonly O[] | null) => {
     if (selectedOptions) {
-      const value = keySelector(selectedOptions);
-      onChange(value, name);
+      const values = selectedOptions.map((option) => keySelector(option));
+      onChange(values, name);
     } else {
       onChange(undefined, name);
     }
   }, [onChange, name, keySelector]);
 
-  const selectedValue = useMemo(() => (
-    options?.find((option) => keySelector(option) === value) ?? null
+  const selectedValues = useMemo(() => (
+    options?.filter((option) => value?.includes(keySelector(option))) ?? null
   ), [options, keySelector, value]);
 
   const readOnlyProps = useMemo(() => (
@@ -67,7 +67,7 @@ function SelectInput<N extends NameType, O, V extends ValueType>(props: Props<N,
   return (
     <InputContainer
       className={_cs(
-        styles.selectInput,
+        styles.multiSelectInput,
         className,
       )}
       actions={actions}
@@ -76,17 +76,17 @@ function SelectInput<N extends NameType, O, V extends ValueType>(props: Props<N,
       errorOnTooltip={errorOnTooltip}
       hint={hint}
       icons={icons}
+      inputSectionClassName={styles.inputSection}
       label={label}
+      readOnly={readOnly}
       required={required}
       variant={variant}
-      readOnly={readOnly}
       withAsterisk={withAsterisk}
-      inputSectionClassName={styles.inputSection}
       input={(
         <Select
           {...otherProps}
           {...readOnlyProps}
-          value={selectedValue}
+          value={selectedValues}
           classNames={{
             control: (state) => _cs(styles.control, state.isFocused ? styles.isFocused : undefined),
             valueContainer: () => styles.valueContainer,
@@ -94,13 +94,14 @@ function SelectInput<N extends NameType, O, V extends ValueType>(props: Props<N,
             indicatorSeparator: () => styles.indicatorSeparator,
             dropdownIndicator: () => styles.dropdownIndicator,
             clearIndicator: () => styles.clearIndicator,
+            multiValue: () => styles.multiValue,
           }}
           options={options}
           className={_cs(styles.select, inputClassName)}
           name={name}
           isDisabled={disabled}
           required={required}
-          isMulti={false}
+          isMulti
           onChange={handleChange}
         />
       )}
@@ -108,4 +109,4 @@ function SelectInput<N extends NameType, O, V extends ValueType>(props: Props<N,
   );
 }
 
-export default SelectInput;
+export default MultiSelectInput;
