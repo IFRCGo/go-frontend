@@ -46,11 +46,11 @@ export function fetchEventsFromApi (input: string | undefined, callback: (option
     callback([]);
   }
 
-  request(`${api}api/v1/es_search/?type=event&keyword=${input}`)
+  request(`${api}api/v1/search/?keyword=${input}`)
     .then(data => {
-      const options = data.hits.map((o: any) => ({
-        value: o._source.id,
-        label: `${o._source.name} (${DateTime.fromISO(o._source.date).toISODate()})`
+      const options = data.emergencies.map((o: any) => ({
+        value: o.id,
+        label: `${o.name} (${DateTime.fromISO(o.start_date).toISODate()})`
       }));
 
       callback(options);
