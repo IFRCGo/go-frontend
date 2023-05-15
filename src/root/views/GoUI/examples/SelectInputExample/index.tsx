@@ -1,13 +1,15 @@
-import React, { useState, useCallback, useRef, useMemo } from "react";
+import React, { useState } from "react";
 import SelectInput from "#goui/components/SelectInput";
 import Heading from "#goui/components/Heading";
-import useInputState from '#goui/hooks/useInputState';
-import { NumericValueOption } from '#types';
 
 import styles from './styles.module.scss';
-import SearchSelectInput from "#components/SearchSelectInput";
 
-const randomOptions = [
+interface Option {
+  label: string;
+  value: number;
+}
+
+const randomOptions: Option[] = [
   {
     label: 'Option 1',
     value: 10,
@@ -22,107 +24,66 @@ const randomOptions = [
   },
 ];
 
-const searchOptions = [
-  {
-    label: 'Option 1',
-    value: 10,
-  },
-  {
-    label: 'Option 2',
-    value: 20,
-  },
-  {
-    label: 'Option 3',
-    value: 30,
-  },
-];
-
-type FRCallback = (options: NumericValueOption[]) => void;
+const keySelector = (d: Option) => d.value;
 
 function SelectInputExample() {
-  const [options, setOptions] = useState([]);
-  const [multiOptions, setMultiOptions] = useState([]);
-  const [searchResults, setSearchResults] = useState<string | undefined>();
-  const [searchData, setSearchData] = useInputState<number | undefined>(23);
-
-  const searchResultCallback = useRef<FRCallback>();
-
-  const handleOptionsChange = useCallback((val) => {
-    setOptions(val);
-  }, [setOptions]);
-
-  const initialOptions = useMemo(() => {
-    const optionList = searchOptions.map((opt) => ({
-      value: opt.value,
-      label: opt.label,
-    }));
-
-    return optionList;
-  }, []);
-
-  const handleMultiOptions = useCallback((val) => {
-    setMultiOptions(val);
-  }, [setMultiOptions]);
-
-  const handleSearchLoad = useCallback((
-    input: string | undefined,
-    callback: FRCallback,
-  ) => {
-    if (!input) {
-      return setSearchResults('Some result');
-    }
-
-    setSearchResults(input);
-    searchResultCallback.current = callback;
-  }, [
-    setSearchResults,
-  ]);
+  const [selectedOption, setSelectedOption] = useState<number | null | undefined>(null);
 
   return (
     <div className={styles.selectExample}>
       <Heading>Single Select Input</Heading>
       <SelectInput
-        className={styles.selectBox}
         label="Basic Single Select"
-        name={"country" as const}
+        name="Country"
         options={randomOptions}
-        value={options}
-        onChange={handleOptionsChange}
-        placeholder="Select options wisely"
+        keySelector={keySelector}
+        value={selectedOption}
+        onChange={setSelectedOption}
       />
       <SelectInput
-        className={styles.selectBox}
-        label="Single Select input that can be cleared"
-        name={"country" as const}
+        label="Single Select input that is clearable"
+        name="country"
         options={randomOptions}
-        value={options}
-        onChange={handleOptionsChange}
-        placeholder="Select options wisely"
+        value={selectedOption}
+        keySelector={keySelector}
+        onChange={setSelectedOption}
         isClearable
       />
-
-      <Heading>Multi Select Input</Heading>
       <SelectInput
-        className={styles.selectBox}
-        label="Basic Multi Select"
-        name={"country" as const}
+        label="Single Select input that is searchable"
+        name="country"
         options={randomOptions}
-        value={multiOptions}
-        onChange={handleMultiOptions}
-        placeholder="Select options wisely"
-        isMulti
+        value={selectedOption}
+        keySelector={keySelector}
+        onChange={setSelectedOption}
+        isSearchable
       />
-
-      <Heading>Search Select Input</Heading>
-      <SearchSelectInput
-        className={styles.selectBox}
-        label="Search your options"
-        name={undefined}
-        value={searchData}
-        onChange={setSearchData}
-        loadOptions={handleSearchLoad}
-        initialOptions={initialOptions}
-        isClearable
+      <SelectInput
+        label="Single Select input that is required"
+        name="country"
+        options={randomOptions}
+        value={selectedOption}
+        keySelector={keySelector}
+        onChange={setSelectedOption}
+        required
+      />
+      <SelectInput
+        label="Single Select input that is disabled"
+        name="country"
+        options={randomOptions}
+        value={selectedOption}
+        keySelector={keySelector}
+        onChange={setSelectedOption}
+        disabled
+      />
+      <SelectInput
+        label="Single Select input that is read only"
+        name="country"
+        options={randomOptions}
+        value={selectedOption}
+        keySelector={keySelector}
+        onChange={setSelectedOption}
+        readOnly
       />
     </div>
   );
