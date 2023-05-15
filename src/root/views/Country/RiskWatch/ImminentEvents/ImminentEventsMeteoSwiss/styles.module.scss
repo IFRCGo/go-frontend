@@ -1,0 +1,12 @@
+@import '~styles/settings/variables';
+
+.empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: $color-text-disabled;
+  padding: $spacing;
+  height: 16rem;
+  font-size: $font-size-lg;
+  font-weight: $base-font-medium;
+}
