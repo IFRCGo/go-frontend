@@ -36,7 +36,7 @@ function RadioInput<
   N,
   O extends object,
   V extends string | number | boolean,
-RRP extends RadioProps<V, N>,
+  RRP extends RadioProps<V, N>,
 >(props: Props<N, O, V, RRP>) {
   const {
     className,
@@ -59,7 +59,7 @@ RRP extends RadioProps<V, N>,
     clearable,
   } = props;
 
-  const handleRadioClick = React.useCallback((radioKey) => {
+  const handleRadioClick = React.useCallback((radioKey: V | undefined) => {
     if (onChange && !readOnly) {
       onChange(radioKey, name);
     }
@@ -124,7 +124,7 @@ RRP extends RadioProps<V, N>,
         className={labelContainerClassName}
         disabled={disabled}
       >
-        { label }
+        {label}
       </InputLabel>
       <div className={_cs(styles.radioListContainer, listContainerClassName)}>
         <List<O, RadioProps<V, N> & RRP, V, any, any>

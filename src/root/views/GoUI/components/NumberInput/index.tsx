@@ -41,22 +41,23 @@ function NumberInput<T extends NameType>(props: Props<T>) {
     setTempValue(String(valueFromProps ?? ''));
   }, [valueFromProps]);
 
-  const handleChange: RawInputProps<T>['onChange'] = React.useCallback((v, n, e) => {
-    setTempValue(v);
+  const handleChange: RawInputProps<T>['onChange'] = React.useCallback(
+    (v, n, e) => {
+      setTempValue(v);
 
-    if (!onChange) {
-      return;
-    }
-
-    if (isDefined(v)) {
-      const floatValue = +v;
-      if (!Number.isNaN(floatValue)) {
-        onChange(floatValue, n, e);
+      if (!onChange) {
+        return;
       }
-    } else {
-      onChange(undefined, n, e);
-    }
-  }, [onChange]);
+
+      if (isDefined(v)) {
+        const floatValue = +v;
+        if (!Number.isNaN(floatValue)) {
+          onChange(floatValue, n, e);
+        }
+      } else {
+        onChange(undefined, n, e);
+      }
+    }, [onChange]);
 
   return (
     <InputContainer

@@ -8,7 +8,7 @@ export interface Props<N extends NameType> extends Omit<React.HTMLProps<HTMLInpu
   className?: string;
   name: N;
   value: string | undefined | null;
-  onChange?: (
+  onChange: (
     value: string | undefined,
     name: N,
     e?: React.FormEvent<HTMLInputElement> | undefined,
