@@ -5,9 +5,9 @@ import DateInput from '#goui/components/DateInput';
 import styles from './styles.module.scss';
 
 function DateInputExample() {
-  const [dateInput, setDateInput] = React.useState('');
+  const [dateInput, setDateInput] = React.useState<string | undefined>('');
 
-  const handleDateChange = React.useCallback((val) => {
+  const handleDateChange = React.useCallback((val: string | undefined) => {
     setDateInput(val);
   }, [setDateInput]);
 

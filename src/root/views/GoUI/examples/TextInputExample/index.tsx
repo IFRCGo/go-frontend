@@ -4,9 +4,9 @@ import Heading from '#goui/components/Heading';
 import styles from './styles.module.scss';
 
 function TextInputExample() {
-  const [textGroup, setTextGroup] = useState('');
+  const [textGroup, setTextGroup] = useState<string | undefined>('');
 
-  const handleTextChange = useCallback((val) => {
+  const handleTextChange = useCallback((val: string | undefined) => {
     setTextGroup(val);
   }, [setTextGroup]);
 

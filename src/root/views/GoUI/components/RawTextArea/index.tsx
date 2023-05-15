@@ -8,7 +8,7 @@ export interface Props<N extends NameType> extends Omit<React.HTMLProps<HTMLText
   className?: string;
   name: N;
   value: string | undefined | null;
-  onChange?: (
+  onChange: (
     value: string | undefined,
     name: N,
     e?: React.FormEvent<HTMLTextAreaElement> | undefined,
@@ -26,8 +26,8 @@ function RawTextArea<N extends NameType>(props: Props<N>) {
     ...otherProps
   } = props;
 
-  const handleChange = React.useCallback((e) => {
-    const v = e.target.value;
+  const handleChange = React.useCallback((e: React.FormEvent<HTMLTextAreaElement>) => {
+    const v = e?.target?.value;
 
     if (onChange) {
       onChange(
