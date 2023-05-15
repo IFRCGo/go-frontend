@@ -26,6 +26,7 @@ import ChecklistExample from './examples/ChecklistExample';
 import TopBannerExample from './examples/TopBannerExample';
 import PagerExample from './examples/PagerExample';
 import SelectInputExample from './examples/SelectInputExample';
+import SearchSelectInputExample from './examples/SearchSelectInputExample';
 import MultiSelectInputExample from './examples/MultiSelectInputExample';
 
 function GoUI() {
@@ -215,6 +216,13 @@ function GoUI() {
           Select Input
         </Button>
         <Button
+          name="search-select-input"
+          className={element === 'search-select-input' ? styles.selectedOption : styles.option}
+          onClick={handleNewComponent}
+        >
+         Search Select Input
+        </Button>
+        <Button
           name="multi-select-input"
           className={element === 'multi-select-input' ? styles.selectedOption : styles.option}
           onClick={handleNewComponent}
@@ -249,6 +257,7 @@ function GoUI() {
         {element === "pager" && <PagerExample />}
         {element === "select-input" && <SelectInputExample />}
         {element === "multi-select-input" && <MultiSelectInputExample />}
+        {element === "search-select-input" && <SearchSelectInputExample />}
       </div >
     </div >
   );

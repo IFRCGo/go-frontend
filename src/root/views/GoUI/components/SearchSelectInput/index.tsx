@@ -66,6 +66,7 @@ function SearchSelectInput<N extends NameType, O, V extends ValueType>(props: Pr
     options?.find((option) => keySelector(option) === value)
   ), [options, keySelector, value]);
 
+
   return (
     <InputContainer
       className={_cs(
