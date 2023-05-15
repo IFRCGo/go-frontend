@@ -1,134 +1,106 @@
 import React, { useCallback, useMemo } from 'react';
-import {
-  _cs,
-  isDefined,
-} from '@togglecorp/fujs';
-import Select, { Props as SelectProps } from 'react-select';
-
-import InputContainer from '#goui/components/InputContainer';
+import { _cs } from '@togglecorp/fujs';
+import Select, { Props as SelectProps, GroupBase } from 'react-select';
+import InputContainer, { Props as InputContainerProps } from '#goui/components/InputContainer';
+import { NameType, ValueType } from '#goui/components/types';
 
 import styles from './styles.module.scss';
 
-type ValueType = string | number;
+type InheritedProps<O> = Omit<InputContainerProps, 'input'>
+  & Omit<SelectProps<O, false, GroupBase<O>>, 'className' | 'onChange' | 'value' | 'isMulti' | 'name' | 'options' | 'isDisabled' | 'classNames' | 'required'>
 
-interface Option {
-  value: ValueType;
-  label: string;
-}
-
-const emptyOptionList: Option[] = [];
-
-interface BaseProps<N> {
-  className?: string;
-  actions?: React.ReactNode;
-  icons?: React.ReactNode;
-  hint?: React.ReactNode;
-  error?: React.ReactNode,
-  label?: React.ReactNode,
-  disabled?: boolean;
-  pending?: boolean;
-  readOnly?: boolean;
-  options?: Option[];
-  placeholder?: string;
-  isOptionDisabled?: SelectProps<Option>['isOptionDisabled'];
-  isClearable?: boolean;
-  hideValue?: boolean;
+type Props<N, O, V extends ValueType> = InheritedProps<O> & {
+  inputClassName?: string;
   name: N;
-}
+  options: O[];
+  keySelector: (option: O) => V;
+  value: V | null | undefined;
+  onChange: (newValue: V | undefined, name: N) => void;
+};
 
-type Props<N, V extends ValueType> = BaseProps<N> & ({
-  isMulti?: never;
-  value: V | undefined | null;
-  onChange: (newValue: V, name: N) => void;
-} | {
-  isMulti?: true;
-  value: V[] | undefined | null;
-  onChange: (newValue: V[], name: N) => void;
-})
-
-function SelectInput<N, V extends ValueType>(props: Props<N, V>) {
+function SelectInput<N extends NameType, O, V extends ValueType>(props: Props<N, O, V>) {
   const {
-    className,
     actions,
-    icons,
-    error,
-    hint,
-    label,
+    className,
     disabled,
-    pending,
+    error,
+    errorOnTooltip,
+    hint,
+    icons,
+    inputClassName,
+    label,
     readOnly,
-    name,
-    value,
-    options = emptyOptionList,
-    isMulti,
+    required,
+    variant,
+    withAsterisk,
     onChange,
-    hideValue,
-    ...otherSelectInputProps
+    name,
+    options,
+    value,
+    keySelector,
+    ...otherProps
   } = props;
 
-  const handleChange = useCallback((newValue) => {
-    if (!props.onChange) {
-      return;
-    }
 
-    if (isDefined(newValue)) {
-      if (props.isMulti) {
-        props.onChange(newValue.map((d: Option) => d.value), name);
-      } else {
-        props.onChange(newValue.value, name);
-      }
+  const handleChange = useCallback((val: O | null) => {
+    if (val) {
+      const value = keySelector(val);
+      onChange(value, name);
     } else {
-      if (props.isMulti) {
-        props.onChange([], name);
-      } else {
-        props.onChange(undefined as unknown as V, name);
-      }
+      onChange(undefined, name);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [name, props.isMulti, props.onChange]);
+  }, [onChange, name, keySelector]);
 
-  const selectValue = useMemo(() => {
-    if (!props.isMulti) {
-      return options.find(o => (
-        String(props.value) === String(o.value)
-      )) ?? null;
-    }
+  const selectedValue = useMemo(() => (
+    options?.find((option) => keySelector(option) === value) ?? null
+  ), [options, keySelector, value]);
 
-    return options.filter(
-      o => (props.value || []).findIndex(
-        v => String(v) === String(o.value)
-      ) !== -1
-    );
-  }, [props.isMulti, options, props.value]);
+  const readOnlyProps = useMemo(() => (
+    readOnly ? {
+      isClearable: false,
+      isSearchable: false,
+      openMenuOnClick: false,
+      menuIsOpen: false,
+    } : undefined
+  ), [readOnly]);
 
   return (
     <InputContainer
       className={_cs(
-        disabled && styles.disabled,
         styles.selectInput,
         className,
       )}
       actions={actions}
-      icons={icons}
-      hint={hint}
-      error={error}
-      label={label}
       disabled={disabled}
+      error={error}
+      errorOnTooltip={errorOnTooltip}
+      hint={hint}
+      icons={icons}
+      label={label}
+      required={required}
+      variant={variant}
+      readOnly={readOnly}
+      withAsterisk={withAsterisk}
       input={(
         <Select
-          {...otherSelectInputProps}
-          className={styles.select}
-          classNamePrefix="go"
-          readOnly={readOnly}
-          onChange={handleChange}
-          value={selectValue}
+          {...otherProps}
+          {...readOnlyProps}
+          value={selectedValue}
+          classNames={{
+            control: (state) => _cs(styles.control, state.isFocused ? styles.isFocused : undefined),
+            valueContainer: () => styles.valueContainer,
+            indicatorsContainer: () => styles.indicatorContainer,
+            indicatorSeparator: () => styles.indicatorSeparator,
+            dropdownIndicator: () => styles.dropdownIndicator,
+            clearIndicator: () => styles.clearIndicator,
+          }}
           options={options}
-          isMulti={isMulti}
-          isDisabled={pending || disabled}
-          isLoading={pending}
-          controlShouldRenderValue={!hideValue}
-          // menuPortalTarget={document.body}
-          unstyled
+          className={_cs(styles.select, inputClassName)}
+          name={name}
+          isDisabled={disabled}
+          required={required}
+          isMulti={false}
+          onChange={handleChange}
         />
       )}
     />
