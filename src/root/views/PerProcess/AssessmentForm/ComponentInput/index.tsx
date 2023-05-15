@@ -1,43 +1,56 @@
 import React from 'react';
-import { isNotDefined, _cs } from '@togglecorp/fujs';
-import { useForm, PartialForm, EntriesAsList } from '@togglecorp/toggle-form';
+import { isNotDefined, randomString, _cs } from '@togglecorp/fujs';
+import { PartialForm, ArrayError, useFormObject, getErrorObject, useFormArray, useForm } from '@togglecorp/toggle-form';
 
 import { compareString } from '#utils/utils';
 import { ListResponse, useRequest } from '#utils/restRequest';
 import ExpandableContainer from '#components/ExpandableContainer';
 import SelectInput from '#components/SelectInput';
+import QuestionInput from './QuestionInput';
 
 import {
-  PerOverviewFields,
-  FormComponentStatus,
   emptyNumericOptionList,
   Component,
+  PerAssessmentForm,
 } from '../../common';
 
 import styles from './styles.module.scss';
 import { assessmentSchema } from '#views/PerProcess/usePerProcessOptions';
-import QuestionInput from './QuestionInput';
 
-type Value = PartialForm<PerOverviewFields>;
+type SetValueArg<T> = T | ((value: T) => T);
+
+type Value = PartialForm<PerAssessmentForm>;
+
+const defaultComponentValue: PartialForm<PerAssessmentForm> = {
+  id: randomString(),
+};
 
 interface Props {
   className?: string;
-  onValueChange: (...entries: EntriesAsList<Value>) => void;
-  id?: string;
+  id: string;
+  error: ArrayError<PerAssessmentForm> | undefined;
+  onChange: (value: SetValueArg<PartialForm<PerAssessmentForm>>, index: number) => void;
+  onRemove: (index: number) => void;
+  index: number;
 }
 
 function ComponentsInput(props: Props) {
   const {
     className,
-    onValueChange,
     id,
+    error: errorFromProps,
+    onChange,
+    onRemove,
+    index,
   } = props;
 
   const {
     value,
     setFieldValue,
-    setError: onErrorSet,
-  } = useForm(assessmentSchema, { value: {} as PartialForm<PerOverviewFields> });
+  } = useForm(
+    assessmentSchema,
+    { value: {} }
+  );
 
   const {
     pending: fetchingComponents,
@@ -50,21 +63,25 @@ function ComponentsInput(props: Props) {
   const {
     pending: fetchingFormStatus,
     response: formStatusResponse,
-  } = useRequest<ListResponse<FormComponentStatus>>({
+  } = useRequest<ListResponse<PerAssessmentForm>>({
     url: `api/v2/per-options/`,
   });
 
-  const formStatusOptions = React.useMemo(() => (
-    formStatusResponse?.results?.map(d => ({
-      value: d.key,
-      label: d.value,
-    })).sort(compareString) ?? emptyNumericOptionList
-  ), [formStatusResponse]);
+
+  const onFieldChange = useFormObject(index, onChange, defaultComponentValue);
+  const error = (value && value.id && errorFromProps)
+    ? getErrorObject(errorFromProps?.[value.id])
+    : undefined;
+
+  const {
+    setValue: setBenchmarkValue,
+    removeValue: removeBenchmarkValue,
+  } = useFormArray('benchmark', setFieldValue);
 
   return (
     <>
       {
-        componentResponse?.results.map((component, i) => (
+        componentResponse?.results.map((component) => (
           <ExpandableContainer
             className={_cs(styles.customActivity, styles.errored)}
             componentRef={undefined}
@@ -75,18 +92,19 @@ function ComponentsInput(props: Props) {
             actions={
               <SelectInput
                 className={styles.improvementSelect}
-                name='improvement'
-                onChange={setFieldValue}
-                options={formStatusOptions}
-                pending={fetchingFormStatus}
+                name={undefined}
+                onChange={onFieldChange}
+                options={undefined}
+                value={undefined}
               />
             }
           >
             <QuestionInput
-              index={component.id}
+              key={component.id}
               id={component.id}
+              onChange={setBenchmarkValue}
+              onRemove={removeBenchmarkValue}
               value={value}
-              onValueChange={setFieldValue}
             />
             <div className={styles.dot} />
           </ExpandableContainer>

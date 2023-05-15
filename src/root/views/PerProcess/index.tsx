@@ -12,7 +12,6 @@ import TabPanel from '#components/Tabs/TabPanel';
 
 import PerOverview from './OverviewForm';
 import Assessment from './AssessmentForm';
-import { perAssessmentFields, PerOverviewFields } from './common';
 import Prioritization from './PrioritizationForm';
 import WorkPlan from './WorkPlanForm';
 
@@ -25,16 +24,6 @@ interface Props {
 }
 
 type StepTypes = 'overview' | 'assessment' | 'prioritization' | 'workPlan';
-
-const stepTypesToFieldsMap: {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  [key in StepTypes]: (keyof PerOverviewFields)[];
-} = {
-  overview: perAssessmentFields,
-  assessment: perAssessmentFields,
-  prioritization: perAssessmentFields,
-  workPlan: perAssessmentFields,
-};
 
 function PerProcess(props: Props) {
   const {
@@ -50,26 +39,7 @@ function PerProcess(props: Props) {
 
     setCurrentStep(newStep);
   }, []);
-  /*
-    const validateCurrentTab = React.useCallback((exceptions: (keyof PerOverviewFields)[] = []) => {
-      const validationError = getErrorObject(accumulateErrors(value, overviewSchema, value, undefined));
-      const currentFields = stepTypesToFieldsMap[currentStep];
-      const exceptionsMap = listToMap(exceptions, d => d, d => true);
 
-      const currentTabErrors = listToMap(
-        currentFields.filter(field => (!exceptionsMap[field])),
-        field => field,
-      ) as ObjectError<PerOverviewFields>;
-
-      const newError: typeof error = {
-        ...currentTabErrors,
-      };
-
-      setError(newError);
-      const hasError = Object.keys(currentTabErrors).some(d => !!d);
-      return !hasError;
-    }, [value, currentStep, setError]);
-  */
   return (
     <Tabs
       disabled={undefined}

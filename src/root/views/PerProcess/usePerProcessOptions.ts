@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { ObjectSchema, PartialForm, ArraySchema } from '@togglecorp/toggle-form';
+import { ObjectSchema, PartialForm } from '@togglecorp/toggle-form';
 import { ListResponse, useRequest } from '#utils/restRequest';
 import { compareString } from '#utils/utils';
 import LanguageContext from '#root/languageContext';
@@ -17,7 +17,12 @@ import {
   emailCondition,
 } from '#utils/form';
 
-import { PerAssessmentForm, emptyNumericOptionList, PerOverviewFields, WorkPlanComponent } from './common';
+import {
+  PerAssessmentForm,
+  emptyNumericOptionList,
+  PerOverviewFields,
+  WorkPlanComponent,
+} from './common';
 
 export type OverviewFormSchema = ObjectSchema<PartialForm<PerOverviewFields>>;
 export type OverviewFormSchemaFields = ReturnType<OverviewFormSchema['fields']>;
@@ -43,39 +48,28 @@ export const overviewSchema: OverviewFormSchema = {
     id: [],
     type_of_assessment_details: [],
     country_details: [],
-    userDetails: [],
-    workplan: [],
-    created_at: [],
-    updated_at: [],
     date_of_orientation: [],
     orientation_document: [],
     assessment_number: [],
     branches_involved: [],
     date_of_assessment: [requiredCondition],
     method_asmt_used: [],
-    assess_preparedness_of_country: [],
     assess_urban_aspect_of_country: [],
     assess_climate_environment_of_country: [],
     date_of_previous_assessment: [],
     type_of_per_assessment: [],
-    date_of_mid_term_review: [],
-    date_of_next_asmt: [],
     facilitator_name: [],
     facilitator_email: [emailCondition],
     facilitator_phone: [],
     facilitator_contact: [],
     is_epi: [],
-    is_finalized: [],
     ns_focal_point_name: [],
     ns_focal_point_email: [emailCondition],
     ns_focal_point_phone: [],
-    other_consideration: [],
     partner_focal_point_name: [],
     partner_focal_point_email: [emailCondition],
     partner_focal_point_phone: [],
     partner_focal_point_organization: [],
-    country: [],
-    user: [],
     type_of_assessment: [],
     national_society: [requiredCondition],
     ns_second_focal_point_name: [],
@@ -92,6 +86,7 @@ export const assessmentSchema: AssessmentFormScheme = {
       member: () => ({
         fields: () => ({
           id: [],
+          component_num: [],
           componentId: [],
           status: [],
           benchmarks: {
@@ -106,7 +101,7 @@ export const assessmentSchema: AssessmentFormScheme = {
             }),
           },
         }),
-      })
+      }),
     },
   }),
 };

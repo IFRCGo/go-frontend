@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import {
   getErrorObject,
   PartialForm,
@@ -19,8 +19,8 @@ import {
   PerOverviewFields,
   booleanOptionKeySelector,
   optionLabelSelector,
-  TypeOfAssessment,
   emptyNumericOptionList,
+  TypeOfAssessment,
 } from '../common';
 
 import Container from '#components/Container';
@@ -161,14 +161,9 @@ function OverviewForm(props: Props) {
     }
   }, [onValueChange]);
 
-  const handleTabChange = React.useCallback((newStep: StepTypes) => {
-    const isCurrentTabValid = (['orientation_document']);
-
-    if (!isCurrentTabValid) {
-      return;
-    }
-
-    setCurrentStep(newStep);
+  const handleTabChange = useCallback((newStep: string) => {
+    scrollToTop();
+    setCurrentStep(Number(newStep));
   }, []);
 
   const handleSubmitButtonClick = React.useCallback(() => {
@@ -531,7 +526,7 @@ function OverviewForm(props: Props) {
           <Button
             name={undefined}
             variant="secondary"
-            onClick={handleSubmitButtonClick}
+            onClick={handleTabChange}
           >
             {strings.PerOverviewSetUpPerProcess}
           </Button>

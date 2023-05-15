@@ -10,14 +10,15 @@ import {
   PerOverviewFields,
   FormComponentStatus,
   emptyNumericOptionList,
-  Component,
+  PerWorkPlanForm,
+  PerAssessmentForm,
 } from '../../common';
 import QuestionList from './QuestionInput';
-import SelectInput from '#components/SelectInput';
+import TextInput from '#components/TextInput';
 
 import styles from './styles.module.scss';
 
-type Value = PartialForm<PerOverviewFields>;
+type Value = PartialForm<PerAssessmentForm>;
 
 interface Props {
   id?: string;
@@ -35,7 +36,7 @@ function ComponentsInput(props: Props) {
   const {
     pending: fetchingComponents,
     response: componentResponse,
-  } = useRequest<ListResponse<Component>>({
+  } = useRequest<ListResponse<PerWorkPlanForm>>({
     skip: isNotDefined(id),
     url: `api/v2/per-formcomponent/?area_id=${id}`,
   });
@@ -68,11 +69,11 @@ function ComponentsInput(props: Props) {
             headingSize="small"
             sub
             actions={
-              <SelectInput
+              <TextInput
                 className={styles.improvementSelect}
-                name="improvement"
+                name="description"
+                value={value?.description}
                 onChange={onValueChange}
-                options={formStatusOptions}
               />
             }
           >

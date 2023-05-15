@@ -2,39 +2,29 @@ import React from 'react';
 
 import { isNotDefined } from '@togglecorp/fujs';
 import { useRequest } from '@togglecorp/toggle-request';
-import { PartialForm, SetBaseValueArg, useForm } from '@togglecorp/toggle-form';
+import { EntriesAsList, PartialForm } from '@togglecorp/toggle-form';
 
 import { ListResponse } from '#utils/restRequest';
-import { Assessment, booleanOptionKeySelector, optionLabelSelector, perAssessmentFields, PerOverviewFields } from '#views/PerProcess/common';
-import usePerProcessOptions, { assessmentSchema } from '../../../usePerProcessOptions';
+import { booleanOptionKeySelector, emptyNumericOptionList, optionLabelSelector, PerAssessmentForm, PerFormAnswer, PerOverviewFields } from '#views/PerProcess/common';
+import usePerProcessOptions from '../../../usePerProcessOptions';
 import Container from '#components/Container';
 import RadioInput from '#components/RadioInput';
 import TextArea from '#components/TextArea';
 
 import styles from './styles.module.scss';
 
-type Value = PartialForm<Assessment>;
+type Value = PartialForm<PerAssessmentForm>;
 
 interface Props {
   id: string;
-  onValueSet: (value: SetBaseValueArg<Value>) => void;
-  index: string;
+  value: Value;
 }
 
 function QuestionInput(props: Props) {
   const {
     id,
-    index,
-    onValueSet,
-  } = props;
-
-  const {
     value,
-    error: formError,
-    validate,
-    setFieldValue: onValueChange,
-    setError: onErrorSet,
-  } = useForm(assessmentSchema, { value: {} as PartialForm<Assessment> });
+  } = props;
 
   const {
     yesNoOptions,
@@ -45,10 +35,17 @@ function QuestionInput(props: Props) {
   const {
     pending: fetchingComponents,
     response: questionResponse,
-  } = useRequest<ListResponse<Assessment>, unknown, {}>({
+  } = useRequest<ListResponse<PerAssessmentForm>, unknown, {}>({
     skip: isNotDefined(id),
     url: `api/v2/per-formquestion/?component=${id}`,
   });
+
+  // const {
+  //   pending: fetchingAnswer,
+  //   response: answerResponse,
+  // } = useRequest<ListResponse<PerFormAnswer>, unknown, {}>({
+  //   url: `api/v2/per-formanswer/`
+  // });
 
   // const handleSubmit = React.useCallback((finalValues) => {
   //   onValueSet(finalValues);
@@ -63,31 +60,27 @@ function QuestionInput(props: Props) {
           <div className={styles.dotConnector}>
             <Container
               description={
-                `${question?.component?.component_num}. ${i + 1} ${question?.question}`
+                `${question?.question_num}. ${i + 1} ${question?.question}`
               }
               className={styles.inputSection}
               contentClassName={styles.questionContent}
             >
               <TextArea
-                key={question.id}
-                id={question.id}
                 className={styles.noteSection}
                 label='Notes'
-                name='description'
+                name={value?.description}
                 value={value?.description}
-                onChange={onValueChange}
                 placeholder={undefined}
-                error={undefined}
                 rows={2}
               />
               <div className={styles.answers}>
                 <RadioInput
-                  name={"is_benchmark" as const}
+                  name={"status" as const}
                   options={yesNoOptions}
                   keySelector={booleanOptionKeySelector}
                   labelSelector={optionLabelSelector}
-                  value={value?.is_benchmark}
-                  onChange={onValueChange}
+                  value={value}
+                  onChange={undefined}
                 />
               </div>
             </Container>
@@ -95,7 +88,9 @@ function QuestionInput(props: Props) {
         </>
       ))}
       <TextArea
-        name={undefined} value={undefined}>
+        name={undefined}
+        value={undefined}
+      >
       </TextArea>
     </>
   );
