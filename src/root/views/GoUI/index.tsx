@@ -22,6 +22,7 @@ import RichTextAreaExample from './examples/RichTextAreaExample';
 import RadioInputExample from './examples/RadioInputExample';
 import BlockLoadingExample from './examples/BlockLoadingExample';
 import BreadcrumbsExample from './examples/BreadcrumbsExample';
+import PasswordInputExample from './examples/PasswordInputExample';
 
 function GoUI() {
 
@@ -126,6 +127,13 @@ function GoUI() {
           RadioInput
         </Button>
         <Button
+          name="password-input"
+          className={styles.option}
+          onClick={handleNewComponent}
+        >
+          PasswordInput
+        </Button>
+        <Button
           name="block-loading"
           className={styles.option}
           onClick={handleNewComponent}
@@ -204,6 +212,7 @@ function GoUI() {
         {element === "radio-input" && <RadioInputExample />}
         {element === "block-loading" && <BlockLoadingExample />}
         {element === "breadcrumbs" && <BreadcrumbsExample />}
+        {element === "password-input" && <PasswordInputExample />}
       </div >
     </div >
   );
