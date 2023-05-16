@@ -9,4 +9,8 @@
   font-family: inherit;
   font-weight: inherit;
   font-size: inherit;
+
+  &:disabled {
+    cursor: not-allowed;
+  }
 }

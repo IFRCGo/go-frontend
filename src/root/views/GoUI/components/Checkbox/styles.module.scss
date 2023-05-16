@@ -22,11 +22,22 @@
     }
   }
 
-  &:focus,
-  &:hover {
+  &:not(:focus),
+  &:not(:hover) {
     .checkmark {
       color: var(--go-ui-color-primary-red);
     }
   }
-}
 
+  &.disabled-checkbox {
+    display: flex;
+    align-items: flex-start;
+    cursor: not-allowed;
+    gap: var(--go-ui-spacing-sm);
+    color: var(--go-ui-color-gray-40);
+
+    .checkmark {
+      color: var(--go-ui-color-gray-40);
+    }
+  }
+}
