@@ -295,6 +295,7 @@ export interface DrefOperationalUpdateApiFields extends Omit<DrefOperationalUpda
   event_map_file: FileWithCaption;
   photos_file: FileWithCaption[];
   modified_by_details: User;
+  users_details: User[];
 }
 
 export const overviewFields: (keyof DrefOperationalUpdateFields)[] = [

@@ -28,6 +28,7 @@ export interface Props {
   footerClassName?: string,
   footerContentClassName?: string;
   compact?: boolean;
+  visibleOverflow?: boolean;
 }
 
 function Container(props: Props) {
@@ -52,6 +53,7 @@ function Container(props: Props) {
     footerActions,
     footerIcons,
     compact,
+    visibleOverflow,
   } = props;
 
   const showHeader = icons || heading || actions;
@@ -64,6 +66,7 @@ function Container(props: Props) {
         styles.container,
         sub && styles.sub,
         compact && styles.compact,
+        visibleOverflow && styles.visibleOverflow,
         className,
       )}
     >

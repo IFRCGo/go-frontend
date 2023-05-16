@@ -32,6 +32,8 @@ import TabPanel from '#components/Tabs/TabPanel';
 import languageContext from '#root/languageContext';
 import Container from '#components/Container';
 import BlockLoading from '#components/block-loading';
+import { getDisplayName } from '#components/UserSearchSelectInput';
+import { Option } from '#components/SearchSelectInput';
 import useAlert from '#hooks/useAlert';
 import {
   useLazyRequest,
@@ -120,9 +122,14 @@ function DrefOperationalUpdate(props: Props) {
   const { id: opsUpdateId } = match.params;
   const alert = useAlert();
   const lastModifiedAtRef = React.useRef<string | undefined>();
+  const [userOptions, setUserOptions] = React.useState<Option[]>([]);
 
   const transformApiFieldsToFormFields = React.useCallback((response: DrefOperationalUpdateApiFields) => {
     lastModifiedAtRef.current = response?.modified_at;
+    setUserOptions(response.users_details.map((user) => ({
+      label: getDisplayName(user),
+      value: user.id,
+    })));
 
     setFileIdToUrlMap((prevMap) => {
       const newMap = {
@@ -302,7 +309,6 @@ function DrefOperationalUpdate(props: Props) {
     onsetOptions,
     yesNoOptions,
     userDetails,
-    userOptions,
     drefTypeOptions,
   } = useDrefOperationalFormOptions(value);
 

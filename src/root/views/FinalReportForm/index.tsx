@@ -34,6 +34,8 @@ import TabPanel from '#components/Tabs/TabPanel';
 import languageContext from '#root/languageContext';
 import Container from '#components/Container';
 import BlockLoading from '#components/block-loading';
+import { getDisplayName } from '#components/UserSearchSelectInput';
+import { Option } from '#components/SearchSelectInput';
 import useAlert from '#hooks/useAlert';
 import {
   useLazyRequest,
@@ -122,12 +124,12 @@ function FinalReport(props: Props) {
     onsetOptions,
     yesNoOptions,
     userDetails,
-    userOptions,
     drefTypeOptions,
     nsActionOptions,
   } = useDrefFinalReportFormOptions(value);
 
   const [fileIdToUrlMap, setFileIdToUrlMap] = useState<Record<number, string>>({});
+  const [userOptions, setUserOptions] = React.useState<Option[]>([]);
   const { strings } = useContext(languageContext);
   const [currentStep, setCurrentStep] = useState<StepTypes>('operationOverview');
   const submitButtonLabel = currentStep === 'submission' ? strings.drefFormSaveButtonLabel : strings.drefFormContinueButtonLabel;
@@ -207,6 +209,10 @@ function FinalReport(props: Props) {
   const handleFinalReportLoad = React.useCallback(
     (response: DrefFinalReportApiFields) => {
       lastModifiedAtRef.current = response?.modified_at;
+      setUserOptions(response.users_details.map((user) => ({
+        label: getDisplayName(user),
+        value: user.id,
+      })));
       setFileIdToUrlMap((prevMap) => {
         const newMap = {
           ...prevMap,

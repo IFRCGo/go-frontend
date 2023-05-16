@@ -294,6 +294,7 @@ export interface DrefApiFields extends Omit<DrefFields, 'event_map_details' | 'c
     title: string;
   }[] | null;
   modified_by_details: User;
+  users_details: User[];
 }
 
 export const overviewFields: (keyof DrefFields)[] = [

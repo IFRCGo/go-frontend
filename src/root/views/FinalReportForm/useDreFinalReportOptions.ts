@@ -264,18 +264,6 @@ function useDrefFinalReportFormOptions(value: PartialForm<DrefFinalReportFields>
   });
 
   const {
-    response: userResponse,
-  } = useRequest<ListResponse<UserListItem>>({
-    url: 'api/v2/users/'
-  });
-
-  const userOptions = React.useMemo(
-    () => userResponse?.results.map((u) => ({
-      label: `${u.first_name} ${u.last_name}`,
-      value: u.id,
-    })) ?? [], [userResponse]);
-
-  const {
     pending: fetchingDrefOptions,
     response: drefOptions,
   } = useRequest<DrefFinalReportOptions>({
@@ -379,7 +367,6 @@ function useDrefFinalReportFormOptions(value: PartialForm<DrefFinalReportFields>
     userDetails,
     yesNoOptions,
     nationalSocietyOptions,
-    userOptions,
     drefTypeOptions,
   };
 }

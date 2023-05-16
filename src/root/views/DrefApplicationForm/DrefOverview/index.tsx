@@ -7,7 +7,6 @@ import {
   SetBaseValueArg,
 } from '@togglecorp/toggle-form';
 import {
-  listToMap,
   isNotDefined,
 } from '@togglecorp/fujs';
 import { IoHelpCircle } from 'react-icons/io5';
@@ -17,11 +16,11 @@ import InputSection from '#components/InputSection';
 import Button from '#components/Button';
 import TextInput from '#components/TextInput';
 import SelectInput from '#components/SelectInput';
-import SearchSelectInput from '#components/SearchSelectInput';
 import LanguageContext from '#root/languageContext';
 import RadioInput from '#components/RadioInput';
 import NumberInput from '#components/NumberInput';
-import { rankedSearchOnList } from '#utils/common';
+import UserSearchSelectInput from '#components/UserSearchSelectInput';
+import { Option } from '#components/SearchSelectInput';
 import {
   useRequest,
   ListResponse,
@@ -68,7 +67,7 @@ interface Props {
   fileIdToUrlMap: Record<number, string>;
   setFileIdToUrlMap?: React.Dispatch<React.SetStateAction<Record<number, string>>>;
   onValueSet: (value: SetBaseValueArg<Value>) => void;
-  userOptions: NumericValueOption[];
+  userOptions: Option[];
   onCreateAndShareButtonClick: () => void;
   drefTypeOptions: NumericValueOption[];
   onsetType?: number;
@@ -100,18 +99,17 @@ function DrefOverview(props: Props) {
     setFileIdToUrlMap,
     fileIdToUrlMap,
     onValueSet,
-    userOptions,
     onCreateAndShareButtonClick,
     drefTypeOptions,
     onsetType,
     drefType,
+    userOptions,
   } = props;
 
   const error = React.useMemo(
     () => getErrorObject(formError),
     [formError]
   );
-
 
   React.useMemo(() => {
     const suddenDependentValue = onsetType === ONSET_SUDDEN ? false : value.emergency_appeal_planned;
@@ -121,31 +119,6 @@ function DrefOverview(props: Props) {
     value.emergency_appeal_planned,
     onValueChange,
   ]);
-
-  const handleUserSearch = React.useCallback((input: string | undefined, callback) => {
-    if (!input) {
-      callback(emptyNumericOptionList);
-    }
-
-    callback(rankedSearchOnList(
-      userOptions,
-      input,
-      d => d.label,
-    ));
-  }, [userOptions]);
-
-  const userMap = React.useMemo(() => listToMap(
-    userOptions,
-    u => u.value,
-    u => u.label
-  ), [userOptions]);
-
-  const initialOptions = React.useMemo(() => (
-    value.users?.map((u) => ({
-      label: userMap[u],
-      value: u,
-    }))
-  ), [userMap, value.users]);
 
   const handleNSChange = useCallback((ns) => {
     onValueSet({
@@ -201,18 +174,18 @@ function DrefOverview(props: Props) {
       <Container
         className={styles.sharing}
         heading={strings.drefFormSharingHeading}
+        visibleOverflow
       >
         <InputSection
           title={strings.drefFormSharingTitle}
           description={strings.drefFormSharingDescription}
         >
-          <SearchSelectInput
+          <UserSearchSelectInput<"users", number>
             name={"users" as const}
             isMulti
-            initialOptions={initialOptions}
+            initialOptions={userOptions}
             value={value.users}
             onChange={onValueChange}
-            loadOptions={handleUserSearch}
           />
           {isNotDefined(value.id) && (
             <div className={styles.actions}>
@@ -231,6 +204,7 @@ function DrefOverview(props: Props) {
       <Container
         heading={strings.drefFormEssentialInformation}
         className={styles.essentialInformation}
+        visibleOverflow
       >
         <InputSection
           title={strings.drefFormNationalSociety}
@@ -310,7 +284,6 @@ function DrefOverview(props: Props) {
             label={(
               <>
                 {drefType === TYPE_IMMINENT
-
                   ? strings.drefFormImminentDisasterCategoryLabel
                   : strings.drefFormDisasterCategoryLabel}
                 <a

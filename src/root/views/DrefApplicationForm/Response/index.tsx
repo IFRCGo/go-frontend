@@ -190,6 +190,7 @@ function Response(props: Props) {
       <Container
         heading={strings.drefFormObjectiveAndStrategy}
         className={styles.objectiveRationale}
+        visibleOverflow
       >
         <InputSection
           title={strings.drefFormObjectiveOperation}
@@ -218,6 +219,7 @@ function Response(props: Props) {
       <Container
         heading={strings.drefFormTargetingStrategy}
         className={styles.targetingStrategy}
+        visibleOverflow
       >
         <InputSection
           title={strings.drefFormPeopleAssistedThroughOperation}
@@ -247,6 +249,7 @@ function Response(props: Props) {
       <Container
         heading={strings.drefFormAssistedPopulation}
         className={styles.assistedPopulation}
+        visibleOverflow
         description={(
           drefType !== TYPE_ASSESSMENT &&
             warnings?.map((w, i) => (
@@ -358,6 +361,7 @@ function Response(props: Props) {
       </Container>
       <Container
         heading={strings.drefFormRiskSecurity}
+        visibleOverflow
       >
         <InputSection
           title={strings.drefFormRiskSecurityPotentialRisk}
@@ -399,6 +403,7 @@ function Response(props: Props) {
       <Container
         heading={strings.drefFormPlannedIntervention}
         className={styles.plannedIntervention}
+        visibleOverflow
       >
         <InputSection>
           <DREFFileInput
@@ -455,6 +460,7 @@ function Response(props: Props) {
       </Container>
       <Container
         heading={strings.drefFormSupportServices}
+        visibleOverflow
       >
         <InputSection
           title={strings.drefFormHumanResourceDescription}
