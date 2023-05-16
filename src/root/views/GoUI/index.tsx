@@ -28,6 +28,7 @@ import PagerExample from './examples/PagerExample';
 import SelectInputExample from './examples/SelectInputExample';
 import SearchSelectInputExample from './examples/SearchSelectInputExample';
 import MultiSelectInputExample from './examples/MultiSelectInputExample';
+import SearchMultiSelectInputExample from './examples/SearchMultiSelectInputExample';
 
 function GoUI() {
 
@@ -227,7 +228,14 @@ function GoUI() {
           className={element === 'multi-select-input' ? styles.selectedOption : styles.option}
           onClick={handleNewComponent}
         >
-          MultiSelect Input
+          Multi Select Input
+        </Button>
+        <Button
+          name="search-multi-select-input"
+          className={element === 'search-multi-select-input' ? styles.selectedOption : styles.option}
+          onClick={handleNewComponent}
+        >
+          Search Multi Select Input
         </Button>
       </div>
       <div className={styles.componentLayout}>
@@ -258,6 +266,7 @@ function GoUI() {
         {element === "select-input" && <SelectInputExample />}
         {element === "multi-select-input" && <MultiSelectInputExample />}
         {element === "search-select-input" && <SearchSelectInputExample />}
+        {element === "search-multi-select-input" && <SearchMultiSelectInputExample />}
       </div >
     </div >
   );
