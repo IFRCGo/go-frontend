@@ -57,7 +57,7 @@ function Checkbox<N>(props: Props<N>) {
     classNameFromProps,
     indeterminate && styles.indeterminate,
     !indeterminate && checked && styles.checked,
-    disabled && styles.disabled,
+    disabled && styles.disabledCheckbox,
     readOnly && styles.readOnly,
   );
 

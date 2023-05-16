@@ -12,6 +12,10 @@
 
     .internal-input-container {
       flex-grow: 1;
+
+      &.disabled {
+        cursor: not-allowed;
+      }
     }
 
     &:focus-within {
@@ -52,5 +56,6 @@
   &.disabled {
     background-color: var(--go-ui-color-gray-10);
     color: var(--go-ui-color-gray-40);
+    cursor: not-allowed;
   }
 }
