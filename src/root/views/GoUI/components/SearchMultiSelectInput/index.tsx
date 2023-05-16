@@ -1,13 +1,14 @@
 import React, { useCallback, useMemo } from 'react';
 import { _cs } from '@togglecorp/fujs';
-import Select, { Props as SelectProps, GroupBase } from 'react-select';
+import { GroupBase } from 'react-select';
+import AsyncSelect, { AsyncProps } from 'react-select/async';
 import InputContainer, { Props as InputContainerProps } from '#goui/components/InputContainer';
 import { NameType, ValueType } from '#goui/components/types';
 
 import styles from './styles.module.scss';
 
 type InheritedProps<O> = Omit<InputContainerProps, 'input'>
-  & Omit<SelectProps<O, true, GroupBase<O>>, 'className' | 'onChange' | 'value' | 'isMulti' | 'name' | 'options' | 'isDisabled' | 'classNames' | 'required'>
+  & Omit<AsyncProps<O, true, GroupBase<O>>, 'className' | 'onChange' | 'value' | 'isMulti' | 'name' | 'options' | 'isDisabled' | 'classNames' | 'required' | 'isSearchable'>
 
 type Props<N, O, V extends ValueType> = InheritedProps<O> & {
   inputClassName?: string;
@@ -18,7 +19,7 @@ type Props<N, O, V extends ValueType> = InheritedProps<O> & {
   onChange: (newValue: V[] | undefined, name: N) => void;
 };
 
-function MultiSelectInput<N extends NameType, O, V extends ValueType>(props: Props<N, O, V>) {
+function SearchMultiSelectInput<N extends NameType, O, V extends ValueType>(props: Props<N, O, V>) {
   const {
     actions,
     className,
@@ -38,6 +39,7 @@ function MultiSelectInput<N extends NameType, O, V extends ValueType>(props: Pro
     options,
     value,
     keySelector,
+    defaultOptions = true,
     ...otherProps
   } = props;
 
@@ -67,7 +69,7 @@ function MultiSelectInput<N extends NameType, O, V extends ValueType>(props: Pro
   return (
     <InputContainer
       className={_cs(
-        styles.multiSelectInput,
+        styles.searchMultiSelectInput,
         className,
       )}
       actions={actions}
@@ -83,7 +85,7 @@ function MultiSelectInput<N extends NameType, O, V extends ValueType>(props: Pro
       variant={variant}
       withAsterisk={withAsterisk}
       input={(
-        <Select
+        <AsyncSelect
           {...otherProps}
           {...readOnlyProps}
           value={selectedValues}
@@ -103,10 +105,11 @@ function MultiSelectInput<N extends NameType, O, V extends ValueType>(props: Pro
           required={required}
           isMulti
           onChange={handleChange}
+          defaultOptions={defaultOptions}
         />
       )}
     />
   );
 }
 
-export default MultiSelectInput;
+export default SearchMultiSelectInput;
