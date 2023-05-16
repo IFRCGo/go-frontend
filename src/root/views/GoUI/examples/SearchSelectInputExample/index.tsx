@@ -61,16 +61,6 @@ function SearchSelectInputExample() {
         isClearable
       />
       <SearchSelectInput
-        label="Search Select input that is searchable"
-        name="country"
-        options={options}
-        value={selectedOption}
-        keySelector={keySelector}
-        onChange={handleChange}
-        loadOptions={callApi}
-        isSearchable
-      />
-      <SearchSelectInput
         label="Search Select input that is required"
         name="country"
         options={options}

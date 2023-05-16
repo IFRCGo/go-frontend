@@ -9,7 +9,8 @@ import styles from './styles.module.scss';
 
 
 type InheritedProps<O> = Omit<InputContainerProps, 'input'>
-  & Omit<AsyncProps<O, false, GroupBase<O>>, 'className' | 'onChange' | 'value' | 'isMulti' | 'name' | 'isDisabled' | 'classNames' | 'required' | 'options'>
+  & Omit<AsyncProps<O, false, GroupBase<O>>, 'className' | 'onChange' | 'value' | 'isMulti' | 'name' | 'options' | 'isDisabled' | 'classNames' | 'required' | 'isSearchable'>
+
 type Props<N, O, V extends ValueType> = InheritedProps<O> & {
   inputClassName?: string;
   name: N;
@@ -62,7 +63,7 @@ function SearchSelectInput<N extends NameType, O, V extends ValueType>(props: Pr
     } : undefined
   ), [readOnly]);
 
-  const selectedOption = useMemo(() => (
+  const selectedValue = useMemo(() => (
     options?.find((option) => keySelector(option) === value)
   ), [options, keySelector, value]);
 
@@ -91,7 +92,7 @@ function SearchSelectInput<N extends NameType, O, V extends ValueType>(props: Pr
           {...readOnlyProps}
           cacheOptions
           options={options}
-          value={selectedOption}
+          value={selectedValue}
           loadOptions={loadOptions}
           classNames={{
             control: (state) => _cs(styles.control, state.isFocused ? styles.isFocused : undefined),
