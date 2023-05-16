@@ -98,6 +98,7 @@ function EventDetails(props: Props) {
         <Container
           heading={strings.drefFormPreviousOperations}
           className={styles.previousOperations}
+          visibleOverflow
           description={
             <a
               href={operationalLearningPlatformUrl}
@@ -205,6 +206,7 @@ function EventDetails(props: Props) {
       }
       <Container
         heading={strings.drefFormDescriptionEvent}
+        visibleOverflow
       >
         <InputSection
           title={

@@ -42,6 +42,7 @@ function Submission(props: Props) {
       <Container
         heading={strings.drefFormOperationalTimeframes}
         className={styles.operationalTimeframes}
+        visibleOverflow
       >
         <InputSection
           fullWidthColumn
@@ -107,6 +108,7 @@ function Submission(props: Props) {
       <Container
         heading={strings.drefFormTrackingData}
         className={styles.trackingData}
+        visibleOverflow
       >
         <InputSection
           title={strings.drefFormAppealCode}

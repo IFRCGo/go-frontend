@@ -2,7 +2,6 @@ import React from 'react';
 import { Tooltip as ReactTooltip} from 'react-tooltip';
 import { _cs } from '@togglecorp/fujs';
 
-import Heading from '#components/Heading';
 import Container from '#components/Container';
 import { hazardTypeColorMap } from '../common';
 import { SeasonalHazardTypes } from '#types';

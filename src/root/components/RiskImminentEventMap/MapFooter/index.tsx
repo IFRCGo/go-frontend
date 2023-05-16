@@ -93,6 +93,7 @@ const adamIconLabel = (
   </div>
 );
 
+/*
 const gdacsIconLabel = (
   <div className={styles.sourceLabel}>
     <TextOutput
@@ -116,6 +117,7 @@ const gdacsIconLabel = (
     </React.Fragment>
   </div>
 );
+*/
 
 const legendItems = [
   { color: COLOR_FLOOD, label: 'Flood' },

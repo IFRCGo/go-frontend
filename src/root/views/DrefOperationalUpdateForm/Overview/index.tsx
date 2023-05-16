@@ -15,8 +15,8 @@ import languageContext from '#root/languageContext';
 import TextInput from '#components/TextInput';
 import SelectInput from '#components/SelectInput';
 import RadioInput from '#components/RadioInput';
+import UserSearchSelectInput from '#components/UserSearchSelectInput';
 import {
-  rankedSearchOnList,
   sumSafe,
 } from '#utils/common';
 import {
@@ -25,10 +25,10 @@ import {
 } from '#utils/restRequest';
 import { DistrictMini } from '#types/country';
 import { compareString } from '#utils/utils';
-import SearchSelectInput from '#components/SearchSelectInput';
-import { isNotDefined, listToMap } from '@togglecorp/fujs';
+import { isNotDefined } from '@togglecorp/fujs';
 import Button from '#components/Button';
 import ImageWithCaptionInput from '#views/DrefApplicationForm/DrefOverview/ImageWithCaptionInput';
+import { Option } from '#components/SearchSelectInput';
 
 import {
   booleanOptionKeySelector,
@@ -65,7 +65,7 @@ interface Props {
   fileIdToUrlMap: Record<number, string>;
   setFileIdToUrlMap?: React.Dispatch<React.SetStateAction<Record<number, string>>>;
   onValueSet: (value: SetBaseValueArg<Value>) => void;
-  userOptions: NumericValueOption[];
+  userOptions: Option[];
   onCreateAndShareButtonClick: () => void;
   drefTypeOptions: NumericValueOption[];
   onsetType?: number;
@@ -163,31 +163,6 @@ function Overview(props: Props) {
     onValueSet,
   ]);
 
-  const handleUserSearch = useCallback((input: string | undefined, callback) => {
-    if (!input) {
-      callback(emptyNumericOptionList);
-    }
-
-    callback(rankedSearchOnList(
-      userOptions,
-      input,
-      d => d.label,
-    ));
-  }, [userOptions]);
-
-  const userMap = useMemo(() => listToMap(
-    userOptions,
-    u => u.value,
-    u => u.label
-  ), [userOptions]);
-
-  const initialOptions = useMemo(() => (
-    value.users?.map((u) => ({
-      label: userMap[u],
-      value: u,
-    }))
-  ), [userMap, value.users]);
-
   const showManMadeEventInput = value?.disaster_type === DISASTER_FIRE
     || value?.disaster_type === DISASTER_FLASH_FLOOD
     || value?.disaster_category === DISASTER_FLOOD;
@@ -208,13 +183,12 @@ function Overview(props: Props) {
           title={strings.drefFormSharingTitle}
           description={strings.drefFormSharingDescription}
         >
-          <SearchSelectInput
+          <UserSearchSelectInput<"users", number>
             name={"users" as const}
             isMulti
-            initialOptions={initialOptions}
+            initialOptions={userOptions}
             value={value.users}
             onChange={onValueChange}
-            loadOptions={handleUserSearch}
           />
           {isNotDefined(value.id) && (
             <div className={styles.actions}>

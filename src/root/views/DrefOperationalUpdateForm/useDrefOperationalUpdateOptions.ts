@@ -439,18 +439,6 @@ function useDrefOperationalFormOptions(value: PartialForm<DrefOperationalUpdateF
   });
 
   const {
-    response: userResponse,
-  } = useRequest<ListResponse<UserListItem>>({
-    url: 'api/v2/users/'
-  });
-
-const userOptions = React.useMemo(
-    () => userResponse?.results.map((u) => ({
-      label: `${u.first_name} ${u.last_name}`,
-      value: u.id,
-    })) ?? [], [userResponse]);
-
-  const {
     pending: fetchingDrefOptions,
     response: drefOptions,
   } = useRequest<DrefOperationalUpdateOptions>({
@@ -555,7 +543,6 @@ const userOptions = React.useMemo(
     userDetails,
     yesNoOptions,
     nationalSocietyOptions,
-    userOptions,
     drefTypeOptions,
   };
 }

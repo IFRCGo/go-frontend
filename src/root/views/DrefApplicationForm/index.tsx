@@ -26,6 +26,8 @@ import TabList from '#components/Tabs/TabList';
 import TabPanel from '#components/Tabs/TabPanel';
 import FileInput from '#components/FileInput';
 import Tabs from '#components/Tabs';
+import { getDisplayName } from '#components/UserSearchSelectInput';
+import { Option } from '#components/SearchSelectInput';
 import { useButtonFeatures } from '#components/Button';
 import {
   useLazyRequest,
@@ -138,11 +140,11 @@ function DrefApplication(props: Props) {
     onsetOptions,
     yesNoOptions,
     userDetails,
-    userOptions,
     drefTypeOptions,
   } = useDrefFormOptions(value);
 
   const [fileIdToUrlMap, setFileIdToUrlMap] = React.useState<Record<number, string>>({});
+  const [userOptions, setUserOptions] = React.useState<Option[]>([]);
   const [currentStep, setCurrentStep] = React.useState<StepTypes>('operationOverview');
   const submitButtonLabel = currentStep === 'submission' ? strings.drefFormSaveButtonLabel : strings.drefFormContinueButtonLabel;
   const shouldDisabledBackButton = currentStep === 'operationOverview';
@@ -180,6 +182,10 @@ function DrefApplication(props: Props) {
 
   const handleDrefLoad = React.useCallback((response: DrefApiFields) => {
     lastModifiedAtRef.current = response?.modified_at;
+    setUserOptions(response.users_details.map((user) => ({
+      label: getDisplayName(user),
+      value: user.id,
+    })));
 
     setFileIdToUrlMap((prevMap) => {
       const newMap = {
