@@ -77,10 +77,7 @@ function InputContainer(props: Props) {
       )}
       >
         {icons && (
-          <div className={_cs(
-            styles.iconContainer,
-            'go-input-icon-container',
-          )}
+          <div className={_cs(styles.iconContainer)}
           >
             {icons}
           </div>

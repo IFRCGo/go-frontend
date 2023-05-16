@@ -126,14 +126,14 @@ function GoUI() {
         </Button>
         <Button
           name="password-input"
-          className={styles.option}
+          className={element === 'password-input' ? styles.selectedOption : styles.option}
           onClick={handleNewComponent}
         >
           PasswordInput
         </Button>
         <Button
           name="checklist"
-          className={styles.option}
+          className={element === 'checklist' ? styles.selectedOption : styles.option}
           onClick={handleNewComponent}
         >
           Checklist
@@ -161,7 +161,7 @@ function GoUI() {
         </Button>
         <Button
           name="top-banner"
-          className={styles.option}
+          className={element === 'top-banner' ? styles.selectedOption : styles.option}
           onClick={handleNewComponent}
         >
           TopBanner
@@ -196,7 +196,7 @@ function GoUI() {
         </Button>
         <Button
           name="breadcrumbs"
-          className={styles.option}
+          className={element === 'breadcrumbs' ? styles.selectedOption : styles.option}
           onClick={handleNewComponent}
         >
           Breadcrumbs
@@ -220,7 +220,7 @@ function GoUI() {
           className={element === 'search-select-input' ? styles.selectedOption : styles.option}
           onClick={handleNewComponent}
         >
-         Search Select Input
+          Search Select Input
         </Button>
         <Button
           name="multi-select-input"
