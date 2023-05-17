@@ -1,3 +1,9 @@
+### Release 6.6.1 - Hotfix for FieldReport creation
+Date: 2023-05-15
+
+Frontend:
+ - Fix FieldReport creation search for Emergencies
+
 ### Release 6.6.0 - UI, 3W, DREF, Risk Module improvements
 Date: 2023-05-12
 

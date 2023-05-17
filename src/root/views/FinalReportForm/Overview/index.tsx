@@ -6,6 +6,7 @@ import {
   PartialForm,
 } from '@togglecorp/toggle-form';
 import { IoHelpCircle } from 'react-icons/io5';
+import { isNotDefined } from '@togglecorp/fujs';
 
 import Container from '#components/Container';
 import InputSection from '#components/InputSection';
@@ -13,14 +14,13 @@ import NumberInput from '#components/NumberInput';
 import languageContext from '#root/languageContext';
 import TextInput from '#components/TextInput';
 import SelectInput from '#components/SelectInput';
-import { ListResponse, useRequest } from '#utils/restRequest';
-import { DistrictMini } from '#types/country';
-import { compareString } from '#utils/utils';
-import SearchSelectInput from '#components/SearchSelectInput';
-import { isNotDefined, listToMap } from '@togglecorp/fujs';
-import { rankedSearchOnList } from '#utils/common';
 import Button from '#components/Button';
+import UserSearchSelectInput from '#components/UserSearchSelectInput';
+import { Option } from '#components/SearchSelectInput';
 import ImageWithCaptionInput from '#views/DrefApplicationForm/DrefOverview/ImageWithCaptionInput';
+import { ListResponse, useRequest } from '#utils/restRequest';
+import { compareString } from '#utils/utils';
+import { DistrictMini } from '#types/country';
 import {
   BooleanValueOption,
   DrefFinalReportFields,
@@ -44,7 +44,7 @@ interface Props {
   value: Value;
   disasterCategoryOptions: NumericValueOption[];
   onsetOptions: NumericValueOption[];
-  userOptions: NumericValueOption[];
+  userOptions: Option[];
   onCreateAndShareButtonClick: () => void;
   yesNoOptions: BooleanValueOption[];
   fileIdToUrlMap: Record<number, string>;
@@ -102,36 +102,12 @@ function Overview(props: Props) {
     query: countryQuery,
   });
 
-  const handleUserSearch = React.useCallback((input: string | undefined, callback) => {
-    if (!input) {
-      callback(emptyNumericOptionList);
-    }
-
-    callback(rankedSearchOnList(
-      userOptions,
-      input,
-      d => d.label,
-    ));
-  }, [userOptions]);
   const districtOptions = React.useMemo(() => (
     districtsResponse?.results?.map(d => ({
       value: d.id,
       label: d.name,
     })).sort(compareString) ?? emptyNumericOptionList
   ), [districtsResponse]);
-
-  const userMap = React.useMemo(() => listToMap(
-    userOptions,
-    u => u.value,
-    u => u.label
-  ), [userOptions]);
-
-  const initialOptions = React.useMemo(() => (
-    value.users?.map((u) => ({
-      label: userMap[u],
-      value: u,
-    }))
-  ), [userMap, value.users]);
 
   return (
     <>
@@ -143,13 +119,12 @@ function Overview(props: Props) {
           title={strings.drefFormSharingTitle}
           description={strings.drefFormSharingDescription}
         >
-          <SearchSelectInput
+          <UserSearchSelectInput<"users", number>
             name={"users" as const}
             isMulti
-            initialOptions={initialOptions}
+            initialOptions={userOptions}
             value={value.users}
             onChange={onValueChange}
-            loadOptions={handleUserSearch}
           />
           {isNotDefined(value.id) && (
             <div className={styles.actions}>

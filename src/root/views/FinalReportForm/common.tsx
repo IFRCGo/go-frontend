@@ -39,6 +39,9 @@ export interface StringKeyValuePair {
 
 export interface User {
   id: number;
+  first_name: string;
+  last_name: string;
+  username: string;
 }
 
 export type Option = NumericValueOption | BooleanValueOption | StringValueOption;
@@ -242,6 +245,7 @@ export interface DrefFinalReportApiFields extends Omit<DrefFinalReportFields, 'd
     id: number;
     file: string;
   }
+  users_details: User[];
 }
 
 export const overviewFields: (keyof DrefFinalReportFields)[] = [

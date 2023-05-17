@@ -168,6 +168,7 @@ function ActionsFields(props: Props) {
         heading={strings.drefFormNationalSocietiesActions}
         description={strings.drefFormNationalSocietiesActionsDescription}
         className={styles.nationalSocietyActions}
+        visibleOverflow
       >
         <InputSection
           title={
@@ -235,6 +236,7 @@ function ActionsFields(props: Props) {
       </Container>
       <Container
         heading={strings.drefFormMovementPartners}
+        visibleOverflow
       >
         <InputSection
           title={strings.drefFormIfrc}
@@ -273,6 +275,7 @@ function ActionsFields(props: Props) {
         </InputSection>
       </Container>
       <Container
+        visibleOverflow
         heading={strings.drefFormNationalOtherActors}
         className={styles.otherActors}
       >
@@ -346,6 +349,7 @@ function ActionsFields(props: Props) {
       {drefType !== TYPE_ASSESSMENT &&
         <Container
           className={styles.needsIdentified}
+          visibleOverflow
           heading={
             drefType === TYPE_IMMINENT
               ? strings.drefFormImminentNeedsIdentified
