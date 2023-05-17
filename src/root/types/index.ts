@@ -8,5 +8,6 @@ export * from './risk';
 export * from './eru';
 export * from './event';
 export * from './dref';
+export * from './emergency';
 
 export type Strings = typeof lang;

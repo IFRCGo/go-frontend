@@ -1,12 +1,15 @@
 .layout-container {
+  --gap: var(--go-ui-spacing-md);
+  --inner-gap: var(--go-ui-spacing-sm);
+
   display: flex;
   align-items: center;
-  gap: var(--go-ui-spacing-md);
+  gap: var(--gap);
 
   .icons-container {
     display: flex;
     flex-shrink: 0;
-    gap: var(--go-ui-spacing-sm);
+    gap: var(--inner-gap);
   }
 
   .children-container {
@@ -16,6 +19,6 @@
   .actions-container {
     display: flex;
     flex-shirnk: 0;
-    gap: var(--go-ui-spacing-sm);
+    gap: var(--inner-gap);
   }
 }
