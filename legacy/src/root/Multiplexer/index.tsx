@@ -4,8 +4,8 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import { BreadcrumbsProvider } from 'react-breadcrumbs-dynamic';
 
 import AlertContext, { AlertParams } from '#components/AlertContext';
-import Navbar from '#goui/components/Navbar';
-import GlobalFooter from '#goui/components/GlobalFooter';
+import Navbar from '#components/Navbar';
+import GlobalFooter from '#components/GlobalFooter';
 
 import InitialLoading from './InitialLoading';
 import styles from './styles.module.scss';
