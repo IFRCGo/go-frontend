@@ -1,108 +1,96 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { _cs } from '@togglecorp/fujs';
 
-import InputLabel from '#goui/components/InputLabel';
-import InputError from '#goui/components/InputError';
-import List from '#goui/components/List';
-import Checkbox from '#goui/components/Checkbox';
-
+import InputLabel from '../InputLabel';
+import InputError from '../InputError';
+import InputHint from '../InputHint';
+import List from '../List';
+import Checkbox from '../Checkbox';
+import { NameType, ValueType } from '#goui/components/types';
 import styles from './styles.module.scss';
 
-type OptionKey = string | number;
-
-export interface Props<V, O, N> {
+export interface Props<
+    T extends ValueType,
+    K extends NameType,
+    O extends object,
+> {
   className?: string;
-  name: N;
-  options: O[];
-  onChange: (value: V[] | undefined, name: N) => void;
-  value: V[] | undefined | null;
-  label?: React.ReactNode;
-  hint?: React.ReactNode;
-  error?: string;
-  labelContainerClassName?: string;
-  hintContainerClassName?: string;
-  errorContainerClassName?: string;
-  checkboxListContainerClassName?: string;
   checkboxClassName?: string;
-  keySelector: (option: O) => V;
-  labelSelector: (option: O) => React.ReactNode;
-  tooltipSelector?: (option: O) => string | undefined;
+  checkboxLabelContainerClassName?: string;
+  direction?: 'horizontal' | 'vertical';
   disabled?: boolean;
+  error?: string;
+  errorContainerClassName?: string;
+  hint?: React.ReactNode;
+  hintContainerClassName?: string;
+  keySelector: (option: O) => T;
+  label?: React.ReactNode;
+  labelContainerClassName?: string;
+  labelSelector: (option: O) => string;
+  listContainerClassName?: string;
+  name: K;
+  onChange: (newValue: T[], name: K) => void;
+  options: O[] | undefined;
   readOnly?: boolean;
+  value: T[] | undefined | null;
 }
 
-function Checklist<
-  V extends OptionKey,
+function CheckList<
+  T extends ValueType,
+  K extends NameType,
   O extends object,
-  N,
->(props: Props<V, O, N>) {
+  >(props: Props<T, K, O>) {
   const {
     className,
-    name,
-    options,
-    value,
-    onChange,
-    label,
-    keySelector,
-    labelSelector,
-    labelContainerClassName,
-    checkboxListContainerClassName,
     checkboxClassName,
+    direction = 'horizontal',
+    disabled,
     error,
     errorContainerClassName,
-    disabled,
+    hint,
+    hintContainerClassName,
+    keySelector,
+    label,
+    labelContainerClassName,
+    labelSelector,
+    listContainerClassName,
+    name,
+    onChange,
+    options,
     readOnly,
-    tooltipSelector,
+    value,
   } = props;
 
-  const valueRef = React.useRef<V[]>(value ?? []);
-
-  React.useEffect(() => {
-    valueRef.current = value ?? [];
-  }, [value]);
-
-  const handleChange = React.useCallback((checked: boolean, key: V) => {
-    const i = valueRef.current.findIndex(k => k === key);
-    if (i === -1) {
-      if (checked) {
-        onChange([...valueRef.current, key], name);
-      } else {
-        // Should never occur
-      }
+  const handleCheck = useCallback((isSelected: boolean, key: T) => {
+    if (isSelected) {
+      onChange([...(value ?? []), key], name);
     } else {
-      if (checked) {
-        // Should never occur
-      } else {
-        const newValue = [...valueRef.current];
-        newValue.splice(i, 1);
-        onChange(newValue, name);
-      }
+      onChange([...(value ?? []).filter((v) => v !== key)], name);
     }
-  }, [name, onChange]);
+  }, [value, onChange, name]);
 
-  const checkboxRendererParams = React.useCallback((key: V, option: O) => ({
+  const optionListRendererParams = useCallback((key: T, data: O) => ({
     name: key,
-    label: labelSelector(option),
-    onChange: handleChange,
-    value: value ? value.findIndex(k => k === key) !== -1 : false,
-    tooltip: tooltipSelector ? tooltipSelector(option) : undefined,
-    className: checkboxClassName,
-    disabled: disabled,
+    value: (value ?? []).some((v) => v === key),
+    onChange: handleCheck,
+    label: labelSelector(data),
+    disabled,
+    readOnly,
   }), [
     value,
+    handleCheck,
     labelSelector,
-    handleChange,
-    tooltipSelector,
-    checkboxClassName,
-    disabled
+    disabled,
+    readOnly,
   ]);
 
   return (
     <div
       className={_cs(
-        styles.checklist,
-        readOnly && styles.readOnly,
+        styles.checkListInput,
         className,
+        direction === 'horizontal' && styles.horizontal,
+        direction === 'vertical' && styles.vertical,
       )}
     >
       <InputLabel
@@ -111,19 +99,25 @@ function Checklist<
       >
         {label}
       </InputLabel>
-      <div className={_cs(styles.checkboxListContainer, checkboxListContainerClassName)}>
+      <div className={_cs(styles.checkListContainer, listContainerClassName)}>
         <List
           data={options}
-          rendererParams={checkboxRendererParams}
-          renderer={Checkbox}
           keySelector={keySelector}
+          renderer={Checkbox}
+          rendererParams={optionListRendererParams}
+          rendererClassName={checkboxClassName}
         />
       </div>
       <InputError className={errorContainerClassName}>
         {error}
       </InputError>
+      {!error && hint && (
+        <InputHint className={hintContainerClassName}>
+          {hint}
+        </InputHint>
+      )}
     </div>
   );
 }
 
-export default Checklist;
+export default CheckList;
