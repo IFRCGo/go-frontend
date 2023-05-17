@@ -1,3 +1,9 @@
+### Release 6.6.2 - Hotfix for DREF applications
+Date: 2023-05-16
+
+Frontend:
+ - Fix DREF applications name listing
+
 ### Release 6.6.1 - Hotfix for FieldReport creation
 Date: 2023-05-15
 
