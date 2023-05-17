@@ -2,7 +2,7 @@ import React, { ElementType, ReactNode } from 'react';
 import { _cs } from '@togglecorp/fujs';
 import styles from './styles.module.scss';
 
-interface Props {
+export interface Props {
   className?: string;
   level?: 1 | 2 | 3 | 4 | 5 | 6;
   children: ReactNode;
