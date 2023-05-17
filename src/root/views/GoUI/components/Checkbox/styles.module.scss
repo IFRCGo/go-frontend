@@ -4,16 +4,28 @@
   cursor: pointer;
   gap: var(--go-ui-spacing-sm);
 
-  .checkmark {
-    display: flex;
-    flex-shrink: 0;
-    align-items: center;
-    font-size: var(--go-ui-font-size-2xl);
-    transition: var(--go-ui-duration-transition-medium) color ease-in-out;
-  }
+  .inner {
+    position: relative;
+    width: var(--go-ui-font-size-xl);
+    height: var(--go-ui-font-size-xl);
 
-  .input {
-    display: none;
+    .checkmark {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      right: 0;
+      left: 0;
+      font-size: var(--go-ui-font-size-xl);
+      z-index: var(--go-ui-z-index-10);
+    }
+
+    .input {
+      appearance: none;
+      width: var(--go-ui-font-size-xl);
+      height: var(--go-ui-font-size-xl);
+      margin: 0;
+      padding: 0;
+    }
   }
 
   &.checked {

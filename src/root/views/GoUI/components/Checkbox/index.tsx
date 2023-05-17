@@ -7,35 +7,37 @@ import styles from './styles.module.scss';
 
 export interface Props<N> {
   className?: string;
-  labelContainerClassName?: string;
   checkmark?: (p: CheckmarkProps) => React.ReactElement;
   checkmarkClassName?: string;
-  label?: React.ReactNode;
   disabled?: boolean;
-  readOnly?: boolean;
+  error?: React.ReactNode;
   indeterminate?: boolean;
+  invertedLogic?: boolean;
+  label?: React.ReactNode;
+  labelContainerClassName?: string;
+  name: N;
+  onChange: (value: boolean, name: N) => void;
+  readOnly?: boolean;
   tooltip?: string;
   value: boolean | undefined | null;
-  onChange: (value: boolean, name: N) => void;
-  name: N;
-  invertedLogic?: boolean;
 }
 
 function Checkbox<N>(props: Props<N>) {
   const {
-    label,
-    tooltip,
-    checkmark: Checkmark = DefaultCheckmark,
     className: classNameFromProps,
-    value,
-    disabled,
-    readOnly,
-    onChange,
+    checkmark: Checkmark = DefaultCheckmark,
     checkmarkClassName,
-    labelContainerClassName,
+    disabled,
+    error,
     indeterminate,
-    name,
     invertedLogic = false,
+    label,
+    labelContainerClassName,
+    name,
+    onChange,
+    readOnly,
+    tooltip,
+    value,
     ...otherProps
   } = props;
 
@@ -55,7 +57,6 @@ function Checkbox<N>(props: Props<N>) {
   const className = _cs(
     styles.checkbox,
     classNameFromProps,
-    indeterminate && styles.indeterminate,
     !indeterminate && checked && styles.checked,
     disabled && styles.disabledCheckbox,
     readOnly && styles.readOnly,
@@ -63,27 +64,35 @@ function Checkbox<N>(props: Props<N>) {
 
 
   return (
-    <label // eslint-disable-line jsx-a11y/label-has-associated-control, jsx-a11y/label-has-for
+    <label
       className={className}
       title={tooltip}
     >
-      <Checkmark
-        className={_cs(checkmarkClassName, styles.checkmark)}
-        value={checked ?? false}
-        indeterminate={indeterminate}
-      />
-      <input
-        onChange={handleChange}
-        className={styles.input}
-        type="checkbox"
-        checked={checked ?? false}
-        disabled={disabled || readOnly}
-        {...otherProps}
-        readOnly
-      />
+      <div className={styles.inner}>
+        <Checkmark
+          className={_cs(checkmarkClassName, styles.checkmark)}
+          value={checked ?? false}
+          indeterminate={indeterminate}
+          aria-hidden="true"
+        />
+        <input
+          onChange={handleChange}
+          className={styles.input}
+          type="checkbox"
+          checked={checked ?? false}
+          disabled={disabled || readOnly}
+          readOnly={readOnly}
+          {...otherProps}
+        />
+      </div>
       <div className={labelContainerClassName}>
         {label}
       </div>
+      {error && (
+        <div className={labelContainerClassName}>
+          {error}
+        </div>
+      )}
     </label>
   );
 }
