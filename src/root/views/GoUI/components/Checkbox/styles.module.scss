@@ -1,13 +1,15 @@
 .checkbox {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   cursor: pointer;
   gap: var(--go-ui-spacing-sm);
+  --width: var(--go-ui-font-size-xl);
+  --height: var(--go-ui-font-size-xl);
 
   .inner {
     position: relative;
-    width: var(--go-ui-font-size-xl);
-    height: var(--go-ui-font-size-xl);
+    width: var(--width);
+    height: var(--height);
 
     .checkmark {
       position: absolute;
@@ -21,8 +23,8 @@
 
     .input {
       appearance: none;
-      width: var(--go-ui-font-size-xl);
-      height: var(--go-ui-font-size-xl);
+      width: var(--width);
+      height: var(--height);
       margin: 0;
       padding: 0;
     }

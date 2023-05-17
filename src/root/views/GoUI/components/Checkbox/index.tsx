@@ -9,9 +9,11 @@ export interface Props<N> {
   className?: string;
   checkmark?: (p: CheckmarkProps) => React.ReactElement;
   checkmarkClassName?: string;
+  checkmarkContainerClassName?: string;
   disabled?: boolean;
   error?: React.ReactNode;
   indeterminate?: boolean;
+  inputClassName?: string;
   invertedLogic?: boolean;
   label?: React.ReactNode;
   labelContainerClassName?: string;
@@ -27,9 +29,11 @@ function Checkbox<N>(props: Props<N>) {
     className: classNameFromProps,
     checkmark: Checkmark = DefaultCheckmark,
     checkmarkClassName,
+    checkmarkContainerClassName,
     disabled,
     error,
     indeterminate,
+    inputClassName,
     invertedLogic = false,
     label,
     labelContainerClassName,
@@ -68,16 +72,16 @@ function Checkbox<N>(props: Props<N>) {
       className={className}
       title={tooltip}
     >
-      <div className={styles.inner}>
+      <div className={_cs(styles.inner, checkmarkContainerClassName)}>
         <Checkmark
-          className={_cs(checkmarkClassName, styles.checkmark)}
+          className={_cs(styles.checkmark, checkmarkClassName)}
           value={checked ?? false}
           indeterminate={indeterminate}
           aria-hidden="true"
         />
         <input
           onChange={handleChange}
-          className={styles.input}
+          className={_cs(styles.input, inputClassName)}
           type="checkbox"
           checked={checked ?? false}
           disabled={disabled || readOnly}

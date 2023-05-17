@@ -21,6 +21,7 @@ function SwitchIcon(props: SwitchIconProps) {
         className,
         value ? styles.on : styles.off,
       )}
+      aria-hidden="true"
     >
       <div className={styles.knob} />
     </div>
