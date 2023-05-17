@@ -178,6 +178,7 @@ function Overview(props: Props) {
       <Container
         className={styles.sharing}
         heading={strings.drefFormSharingHeading}
+        visibleOverflow
       >
         <InputSection
           title={strings.drefFormSharingTitle}
@@ -205,6 +206,7 @@ function Overview(props: Props) {
         </InputSection>
       </Container>
       <Container
+        visibleOverflow
         heading={strings.drefFormEssentialInformation}
         className={styles.essentialInformation}
       >

@@ -37,6 +37,7 @@ function Submission(props: Props) {
   return (
     <>
       <Container
+        visibleOverflow
         heading={strings.finalReportTimeFrame}
         className={styles.timeframes}
       >
@@ -79,6 +80,7 @@ function Submission(props: Props) {
       </Container>
 
       <Container
+        visibleOverflow
         heading={strings.drefFormTrackingData}
         className={styles.trackingData}
       >
