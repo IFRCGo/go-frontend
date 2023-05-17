@@ -182,10 +182,10 @@ function DrefApplication(props: Props) {
 
   const handleDrefLoad = React.useCallback((response: DrefApiFields) => {
     lastModifiedAtRef.current = response?.modified_at;
-    setUserOptions(response.users_details.map((user) => ({
+    setUserOptions(response.users_details?.map((user) => ({
       label: getDisplayName(user),
       value: user.id,
-    })));
+    })) ?? []);
 
     setFileIdToUrlMap((prevMap) => {
       const newMap = {

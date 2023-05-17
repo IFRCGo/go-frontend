@@ -209,10 +209,10 @@ function FinalReport(props: Props) {
   const handleFinalReportLoad = React.useCallback(
     (response: DrefFinalReportApiFields) => {
       lastModifiedAtRef.current = response?.modified_at;
-      setUserOptions(response.users_details.map((user) => ({
+      setUserOptions(response.users_details?.map((user) => ({
         label: getDisplayName(user),
         value: user.id,
-      })));
+      })) ?? []);
       setFileIdToUrlMap((prevMap) => {
         const newMap = {
           ...prevMap,
