@@ -145,8 +145,8 @@ export interface ADAMEvent {
   }>;
 
   population_exposure:{
-    "exposure_60km/h": number;
-    "exposure_90km/h": number;
-    "exposure_120km/h": number;
+    'exposure_60km/h': number;
+    'exposure_90km/h': number;
+    'exposure_120km/h': number;
   }
 }
