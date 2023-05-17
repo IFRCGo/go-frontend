@@ -11,7 +11,6 @@ import Button from './components/Button';
 import DropdownExample from './examples/DropdownExample';
 import IconButtons from './examples/IconButtons';
 import Navigation from './examples/Navigation';
-import RawTextAreaExample from './examples/RawTextExample';
 import TextAreaExample from './examples/TextAreaExample';
 import TextInputExample from './examples/TextInputExample';
 import SwitchExample from './examples/SwitchExample';
@@ -26,12 +25,16 @@ import PasswordInputExample from './examples/PasswordInputExample';
 import ChecklistExample from './examples/ChecklistExample';
 import TopBannerExample from './examples/TopBannerExample';
 import PagerExample from './examples/PagerExample';
+import SelectInputExample from './examples/SelectInputExample';
+import SearchSelectInputExample from './examples/SearchSelectInputExample';
+import MultiSelectInputExample from './examples/MultiSelectInputExample';
+import SearchMultiSelectInputExample from './examples/SearchMultiSelectInputExample';
 
 function GoUI() {
 
   const [element, setElement] = useState<string | undefined>("links");
 
-  const handleNewComponent = useCallback((name) => {
+  const handleNewComponent = useCallback((name: string) => {
     setElement(name);
   }, [setElement]);
 
@@ -40,168 +43,161 @@ function GoUI() {
       <div className={styles.sideContent}>
         <Button
           name="links"
-          className={styles.option}
+          className={element === 'links' ? styles.selectedOption : styles.option}
           onClick={handleNewComponent}
         >
           Links
         </Button>
         <Button
           name="buttons"
-          className={styles.option}
+          className={element === 'buttons' ? styles.selectedOption : styles.option}
           onClick={handleNewComponent}
         >
           Buttons
         </Button>
         <Button
           name="headings"
-          className={styles.option}
+          className={element === 'headings' ? styles.selectedOption : styles.option}
           onClick={handleNewComponent}
         >
           Headings
         </Button>
         <Button
           name="dropdown"
-          className={styles.option}
+          className={element === 'dropdown' ? styles.selectedOption : styles.option}
           onClick={handleNewComponent}
         >
           Dropdown
         </Button>
         <Button
-          name="raw-text-area"
-          className={styles.option}
-          onClick={handleNewComponent}
-        >
-          Raw Text Area
-        </Button>
-        <Button
           name="text-area"
-          className={styles.option}
+          className={element === 'text-area' ? styles.selectedOption : styles.option}
           onClick={handleNewComponent}
         >
           Text Area
         </Button>
         <Button
           name="text-input"
-          className={styles.option}
+          className={element === 'text-input' ? styles.selectedOption : styles.option}
           onClick={handleNewComponent}
         >
           Text Input
         </Button>
         <Button
           name="date-input"
-          className={styles.option}
+          className={element === 'date-input' ? styles.selectedOption : styles.option}
           onClick={handleNewComponent}
         >
           DateInput
         </Button>
         <Button
           name="rich-text-area"
-          className={styles.option}
+          className={element === 'rich-text-area' ? styles.selectedOption : styles.option}
           onClick={handleNewComponent}
         >
           RichTextArea
         </Button>
         <Button
           name="switch"
-          className={styles.option}
+          className={element === 'switch' ? styles.selectedOption : styles.option}
           onClick={handleNewComponent}
         >
           Switch
         </Button>
         <Button
           name="checkbox"
-          className={styles.option}
+          className={element === 'checkbox' ? styles.selectedOption : styles.option}
           onClick={handleNewComponent}
         >
           Check Box
         </Button>
         <Button
           name="number-input"
-          className={styles.option}
+          className={element === 'number-input' ? styles.selectedOption : styles.option}
           onClick={handleNewComponent}
         >
           Number Input
         </Button>
         <Button
           name="radio-input"
-          className={styles.option}
+          className={element === 'radio-input' ? styles.selectedOption : styles.option}
           onClick={handleNewComponent}
         >
           RadioInput
         </Button>
         <Button
           name="password-input"
-          className={styles.option}
+          className={element === 'password-input' ? styles.selectedOption : styles.option}
           onClick={handleNewComponent}
         >
           PasswordInput
         </Button>
         <Button
           name="checklist"
-          className={styles.option}
+          className={element === 'checklist' ? styles.selectedOption : styles.option}
           onClick={handleNewComponent}
         >
           Checklist
         </Button>
         <Button
           name="block-loading"
-          className={styles.option}
+          className={element === 'block-loading' ? styles.selectedOption : styles.option}
           onClick={handleNewComponent}
         >
           BlockLoading
         </Button>
         <Button
           name="cards"
-          className={styles.option}
+          className={element === 'cards' ? styles.selectedOption : styles.option}
           onClick={handleNewComponent}
         >
           Cards
         </Button>
         <Button
           name="alerts"
-          className={styles.option}
+          className={element === 'alerts' ? styles.selectedOption : styles.option}
           onClick={handleNewComponent}
         >
           Alerts
         </Button>
         <Button
           name="top-banner"
-          className={styles.option}
+          className={element === 'top-banner' ? styles.selectedOption : styles.option}
           onClick={handleNewComponent}
         >
           TopBanner
         </Button>
         <Button
           name="overlay"
-          className={styles.option}
+          className={element === 'overlay' ? styles.selectedOption : styles.option}
           onClick={handleNewComponent}
         >
           Overlay
         </Button>
         <Button
           name="tabs"
-          className={styles.option}
+          className={element === 'tabs' ? styles.selectedOption : styles.option}
           onClick={handleNewComponent}
         >
           Tab Panel
         </Button>
         <Button
           name="modals"
-          className={styles.option}
+          className={element === 'modals' ? styles.selectedOption : styles.option}
           onClick={handleNewComponent}
         >
           Modal
         </Button>
         <Button
           name="iconButton"
-          className={styles.option}
+          className={element === 'iconButton' ? styles.selectedOption : styles.option}
           onClick={handleNewComponent}
         >
           IconButton
         </Button>
         <Button
           name="breadcrumbs"
-          className={styles.option}
+          className={element === 'breadcrumbs' ? styles.selectedOption : styles.option}
           onClick={handleNewComponent}
         >
           Breadcrumbs
@@ -212,6 +208,34 @@ function GoUI() {
           onClick={handleNewComponent}
         >
           Pager
+        </Button>
+        <Button
+          name="select-input"
+          className={element === 'select-input' ? styles.selectedOption : styles.option}
+          onClick={handleNewComponent}
+        >
+          Select Input
+        </Button>
+        <Button
+          name="search-select-input"
+          className={element === 'search-select-input' ? styles.selectedOption : styles.option}
+          onClick={handleNewComponent}
+        >
+          Search Select Input
+        </Button>
+        <Button
+          name="multi-select-input"
+          className={element === 'multi-select-input' ? styles.selectedOption : styles.option}
+          onClick={handleNewComponent}
+        >
+          Multi Select Input
+        </Button>
+        <Button
+          name="search-multi-select-input"
+          className={element === 'search-multi-select-input' ? styles.selectedOption : styles.option}
+          onClick={handleNewComponent}
+        >
+          Search Multi Select Input
         </Button>
       </div>
       <div className={styles.componentLayout}>
@@ -224,7 +248,6 @@ function GoUI() {
         {element === "dropdown" && <DropdownExample />}
         {element === "tabs" && <Navigation />}
         {element === 'modals' && <Modals />}
-        {element === "raw-text-area" && <RawTextAreaExample />}
         {element === "text-area" && <TextAreaExample />}
         {element === "text-input" && <TextInputExample />}
         {element === "switch" && <SwitchExample />}
@@ -240,6 +263,10 @@ function GoUI() {
         {element === "checklist" && <ChecklistExample />}
         {element === "top-banner" && <TopBannerExample />}
         {element === "pager" && <PagerExample />}
+        {element === "select-input" && <SelectInputExample />}
+        {element === "multi-select-input" && <MultiSelectInputExample />}
+        {element === "search-select-input" && <SearchSelectInputExample />}
+        {element === "search-multi-select-input" && <SearchMultiSelectInputExample />}
       </div >
     </div >
   );

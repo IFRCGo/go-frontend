@@ -6,7 +6,7 @@ import styles from './styles.module.scss';
 function NumberInputExample() {
   const [numberData, setDataGroup] = useState<number | null | undefined>();
 
-  const handleTextChange = useCallback((val) => {
+  const handleTextChange = useCallback((val: number | null | undefined) => {
     setDataGroup(val);
   }, [setDataGroup]);
 

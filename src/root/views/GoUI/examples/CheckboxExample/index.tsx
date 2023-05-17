@@ -37,7 +37,7 @@ function CheckboxExample() {
         Disabled
       </Heading>
       <Checkbox
-        label="Detailed Reporting"
+        label="Disabled Detailed Reporting"
         name="is_simplified_report"
         value={false}
         onChange={handleSwitch}

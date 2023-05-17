@@ -37,7 +37,7 @@ export function Tabs<T extends TabKey>(props: Props<T>) {
   const [tabs, setTabs] = React.useState<TabKey[]>([]);
   const [step, setStep] = React.useState(0);
 
-  const registerTab = React.useCallback((name) => {
+  const registerTab = React.useCallback((name: string) => {
     setTabs((prevTabs) => {
       const i = prevTabs.findIndex(d => d === name);
       if (i === -1) {
@@ -48,7 +48,7 @@ export function Tabs<T extends TabKey>(props: Props<T>) {
     });
   }, [setTabs]);
 
-  const unregisterTab = React.useCallback((name) => {
+  const unregisterTab = React.useCallback((name: string) => {
     setTabs((prevTabs) => {
       const i = prevTabs.findIndex(d => d === name);
       if (i !== -1) {

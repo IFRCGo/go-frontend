@@ -249,6 +249,23 @@
         text-decoration: underline;
       }
     }
+
+    .selected-option {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+      font-size: var(--go-ui-font-size-md);
+      padding: var(--go-ui-spacing-sm);
+      background-color: var(--go-ui-color-red-hover);
+      border: 1px solid var(--go-ui-color-red-20);
+      border-radius: var(--go-ui-border-radius-md);
+
+      &:hover {
+        cursor: pointer;
+        text-decoration: underline;
+      }
+    }
   }
 
   .main-content {

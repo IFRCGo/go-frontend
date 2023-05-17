@@ -13,7 +13,7 @@
   border-radius: var(--go-ui-border-radius-full);
   display: inline-block;
   margin: 0 var(--go-ui-spacing-xs);
-  animation: spinner-bouncedelay var(--go-ui-duration-animation-slow) infinite ease-in-out both;
+  animation: spinner-bounce-delay var(--go-ui-duration-animation-slow) infinite ease-in-out both;
 
   &:first-child {
     margin-inline-start: 0;
@@ -28,7 +28,9 @@
     margin-inline-end: 0;
   }
 }
-@keyframes spinner-bouncedelay {
+
+@keyframes spinner-bounce-delay {
+
   0%,
   80%,
   100% {
