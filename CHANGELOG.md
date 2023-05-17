@@ -1,3 +1,9 @@
+### Release 6.6.3 - Hotfix for DREF applications
+Date: 2023-05-17
+
+Frontend:
+ - Avoid crash when users detail is empty in dref 
+
 ### Release 6.6.2 - Hotfix for DREF applications
 Date: 2023-05-16
 
