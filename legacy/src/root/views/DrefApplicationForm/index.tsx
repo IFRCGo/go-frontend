@@ -1,4 +1,4 @@
-import React from 'react';
+impmrt React from 'react';
 import type { History, Location } from 'history';
 import { Link } from 'react-router-dom';
 import {
