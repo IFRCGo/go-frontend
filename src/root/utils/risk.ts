@@ -3,7 +3,10 @@ import {
   COLOR_WHITE,
   CIRCLE_RADIUS_SUPER_LARGE,
 } from '#utils/map';
-import { ImminentHazardTypes } from '#types';
+import {
+  ImminentHazardTypes,
+  HazardTypes,
+} from '#types';
 
 import earthquakeIcon from './risk-icons/earthquake.png';
 import cycloneIcon from './risk-icons/cyclone.png';
@@ -11,6 +14,7 @@ import stormSurgeIcon from './risk-icons/storm-surge.png';
 import floodIcon from './risk-icons/flood.png';
 import droughtIcon from './risk-icons/drought.png';
 import wildfireIcon from './risk-icons/wildfire.png';
+import foodInsecurityIcon from '#utils/risk-icons/food-insecurity.svg';
 
 export const COLOR_CYCLONE = '#a4bede';
 export const COLOR_FLOOD = '#5a80b0';
@@ -32,6 +36,18 @@ export const imminentHazardTypeToIconMap: {
   DR: droughtIcon,
   WF: wildfireIcon,
 };
+
+export const hazardTypeToIconMap: {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  [key in HazardTypes]: string;
+} = {
+  TC: cycloneIcon,
+  FL: floodIcon,
+  DR: droughtIcon,
+  WF: wildfireIcon,
+  FI: foodInsecurityIcon,
+};
+
 
 export const hazardKeys: ImminentHazardTypes[] = [
   'EQ',

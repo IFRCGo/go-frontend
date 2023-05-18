@@ -27,6 +27,36 @@ export interface Report {
   report_name: string;
 }
 
+export interface GWIS {
+  id: number;
+  country_details: {
+      id: number;
+      name: string;
+      iso: string;
+      iso3: string;
+      region: number;
+  };
+  hazard_type_display: string,
+  month: string;
+  dsr: number;
+  dsr_min: number;
+  dsr_avg: number;
+  dsr_max: number;
+  year: number;
+  hazard_type: string;
+  dsr_type: string;
+  country: number;
+}
+
+export interface GWISChart {
+  id: number;
+  month?: string;
+  dsr?: number;
+  dsr_avg?: number;
+  dsr_max?: number;
+  dsr_min?: number;
+}
+
 export interface RiskData {
   hazardType: HazardTypes;
   hazardTypeDisplay: string;

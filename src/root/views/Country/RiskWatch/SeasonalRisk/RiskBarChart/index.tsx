@@ -35,16 +35,14 @@ import {
   COLOR_CYCLONE,
   COLOR_DROUGHT,
   COLOR_FOOD_INSECURITY,
+  COLOR_WILDFIRE,
+  hazardTypeToIconMap
 } from '#utils/risk';
+
 import {
   HazardTypes,
   StringValueOption,
 } from '#types';
-
-import cycloneIcon from '#utils/risk-icons/cyclone.svg';
-import droughtIcon from '#utils/risk-icons/drought.svg';
-import floodIcon from '#utils/risk-icons/flood.svg';
-import foodInsecurityIcon from '#utils/risk-icons/food-insecurity.svg';
 
 import {
   RiskData,
@@ -54,96 +52,10 @@ import {
   riskMetricMap,
   formatNumber,
   chartMargin,
+  GWISChart,
 } from '../common';
 import ChartLegendItem from '../ChartLegendItem';
 import styles from './styles.module.scss';
-
-const dummyDataWildfire = [
-  {
-    "Day": "01 Jan",
-    "Min (2012-2022)": 179,
-    "Average (2012-2022)": "12314.82",
-    "Max (2012-2022)": 28173,
-    "Year 2023": 4676
-  },
-  {
-    "Day": "01 Feb",
-    "Min (2012-2022)": 0,
-    "Average (2012-2022)": "12008.91",
-    "Max (2012-2022)": 26014,
-    "Year 2023": 18459
-  },
-  {
-    "Day": "01 Mar",
-    "Min (2012-2022)": 13679,
-    "Average (2012-2022)": "219830.91",
-    "Max (2012-2022)": 543135,
-    "Year 2023": 86997
-  },
-  {
-    "Day": "01 Apr",
-    "Min (2012-2022)": 124690,
-    "Average (2012-2022)": "707805.36",
-    "Max (2012-2022)": 1464277,
-    "Year 2023": 212629
-  },
-  {
-    "Day": "01 May",
-    "Min (2012-2022)": 199536,
-    "Average (2012-2022)": "657409.82",
-    "Max (2012-2022)": 1654873,
-    "Year 2023": null
-  },
-  {
-    "Day": "01 Jun",
-    "Min (2012-2022)": 72133,
-    "Average (2012-2022)": "289333.73",
-    "Max (2012-2022)": 1850342,
-    "Year 2023": null
-  },
-  {
-    "Day": "01 Jul",
-    "Min (2012-2022)": 112869,
-    "Average (2012-2022)": "629893.73",
-    "Max (2012-2022)": 1072449,
-    "Year 2023": null
-  },
-  {
-    "Day": "01 Aug",
-    "Min (2012-2022)": 365523,
-    "Average (2012-2022)": "782197.55",
-    "Max (2012-2022)": 2753959,
-    "Year 2023": null
-  },
-  {
-    "Day": "01 Sep",
-    "Min (2012-2022)": 26938,
-    "Average (2012-2022)": "266710.91",
-    "Max (2012-2022)": 870885,
-    "Year 2023": null
-  },
-  {
-    "Day": "01 Oct",
-    "Min (2012-2022)": 55530,
-    "Average (2012-2022)": "257843.36",
-    "Max (2012-2022)": 497885,
-    "Year 2023": null
-  },
-  {
-    "Day": "01 Nov",
-    "Min (2012-2022)": 17012,
-    "Average (2012-2022)": "88686.36",
-    "Max (2012-2022)": 172291,
-    "Year 2023": null
-  },
-  {
-    "Day": "01 Dec",
-    "Min (2012-2022)": 2036,
-    "Average (2012-2022)": "14160.09",
-    "Max (2012-2022)": 47598,
-    "Year 2023": null
-  },
-];
 
 function FILegendItem({
   label,
@@ -180,13 +92,23 @@ interface DetailedChartProps {
   showHistoricalValues: boolean;
 }
 
-function DetailedWildfireChart(){
-  const chartData = dummyDataWildfire.map((wild) => (
+interface DetailedWildfireChartProps {
+  gwisData?: GWISChart[]
+}
+
+function DetailedWildfireChart(props: DetailedWildfireChartProps) {
+  const { gwisData } = props;
+
+  const { strings } = React.useContext(languageContext);
+
+  const monthNameList = React.useMemo(() => (
+    (getFullMonthNameList(strings)).map(m => m.substr(0, 3))
+  ), [strings]);
+
+  const chartData = gwisData?.map((wild) => (
     {
-      day: wild.Day,
-      range : [wild['Min (2012-2022)'], wild['Max (2012-2022)']],
-      average: wild['Average (2012-2022)'],
-      year: wild['Year 2023'],
+      ...wild,
+      range: [formatNumber(wild.dsr_min ?? 0), formatNumber(wild.dsr_max ?? 0)],
     }
   ));
 
@@ -194,30 +116,48 @@ function DetailedWildfireChart(){
     <ResponsiveContainer>
       <ComposedChart
         data={chartData}
+        margin={chartMargin}
       >
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis
-          dataKey="Day"
+          dataKey="month"
+          tickFormatter={(m: number) => monthNameList[m - 1]}
         />
-        <YAxis />
+        <YAxis
+          tickFormatter={formatNumber}
+          label={{
+            value: 'Monthly Severity Rating',
+            angle: -90,
+            position: 'insideLeft',
+            className: styles.label,
+          }}
+        />
         <Area
+          name="Min-max"
           dataKey="range"
           fill="#e3e3e3"
           stroke="#e3e3e3"
         />
         <Line
-          dataKey="average"
+          name="Average"
+          dataKey="dsr_avg"
           stroke="#6794dc"
           strokeWidth={2}
           dot={false}
         />
         <Line
-          dataKey="year"
+          name="Year"
+          dataKey="dsr"
           stroke="#ff6961"
           strokeWidth={2}
           dot={false}
         />
-        <Tooltip />
+        <Tooltip
+          cursor={{ fill: '#f0f0f0' }}
+          formatter={(value: number) => {
+            return formatNumber(value);
+          }}
+        />
       </ComposedChart>
     </ResponsiveContainer>
   );
@@ -280,8 +220,6 @@ function DetailedChart(props: DetailedChartProps) {
     });
   }, [ipcData]);
 
-  console.log('chartData', chartData);
-
   const [activeLine, setActiveLine] = React.useState<string | undefined>();
 
   const getLine = (
@@ -292,18 +230,18 @@ function DetailedChart(props: DetailedChartProps) {
     strokeWidth = 2,
   ) => (
     <Line
-        type="monotone"
-        dataKey={dataKey}
-        stroke={(isDefined(activeLine) && activeLine !== dataKey) ? inactiveStroke : stroke}
-        strokeWidth={strokeWidth}
-        name={label}
-        onMouseOver={() => { setActiveLine(dataKey); }}
-        onMouseOut={() => { setActiveLine(undefined); }}
-        dot={{
-          r: strokeWidth + 2,
-          onMouseOver: () => { setActiveLine(dataKey); },
-          onMouseOut: () => { setActiveLine(undefined); },
-        }}
+      type="monotone"
+      dataKey={dataKey}
+      stroke={(isDefined(activeLine) && activeLine !== dataKey) ? inactiveStroke : stroke}
+      strokeWidth={strokeWidth}
+      name={label}
+      onMouseOver={() => { setActiveLine(dataKey); }}
+      onMouseOut={() => { setActiveLine(undefined); }}
+      dot={{
+        r: strokeWidth + 2,
+        onMouseOver: () => { setActiveLine(dataKey); },
+        onMouseOut: () => { setActiveLine(undefined); },
+      }}
     />
   );
 
@@ -381,11 +319,23 @@ function DetailedChart(props: DetailedChartProps) {
   );
 }
 
+function EmptyBox() {
+  return (
+    <div className={styles.emptyMessage}>
+      <IoBarChart className={styles.icon} />
+      <div className={styles.text}>
+        Not enough data in the selected criteria to show the chart
+      </div>
+    </div>
+  );
+}
+
 
 interface Props {
   riskData: RiskData[];
   hazardOptions: StringValueOption[];
   ipcData: IPCData[];
+  gwisData?: GWISChart[];
 }
 
 function RiskBarChart(props: Props) {
@@ -393,6 +343,7 @@ function RiskBarChart(props: Props) {
     riskData,
     hazardOptions,
     ipcData,
+    gwisData,
   } = props;
 
   const { strings } = React.useContext(languageContext);
@@ -463,11 +414,21 @@ function RiskBarChart(props: Props) {
 
   const isEmpty = !chartData.some(c => {
     const keys = Object.keys(c) as (keyof typeof c)[];
+    console.log('keys', keys);
     if (keys.length <= 1) {
       return false;
     }
 
     return keys.some(k => k !== 'month' && !!c[k]);
+  });
+
+  const isGwisEmpty = gwisData?.some((gwis) => {
+    const keys = Object.keys(gwis) as (keyof typeof gwis)[];
+    if (keys.length > 0) {
+      return false;
+    }
+
+    return true;
   });
 
   return (
@@ -482,7 +443,7 @@ function RiskBarChart(props: Props) {
           isClearable
           placeholder="All hazards"
         />
-        {hazardType !== 'FI' && (
+        {(hazardType !== 'FI' && hazardType !== 'WF') && (
           <SelectInput
             className={styles.filterInput}
             value={riskMetric}
@@ -506,56 +467,54 @@ function RiskBarChart(props: Props) {
             showHistoricalValues={showHistoricalValues}
             ipcData={ipcData}
           />
-        )
-        // : (
-        // : (
-        //   isEmpty ? (
-        //     <div className={styles.emptyMessage}>
-        //       <IoBarChart className={styles.icon} />
-        //       <div className={styles.text}>
-        //         Not enough data in the selected criteria to show the chart
-        //       </div>
-        //     </div>
-        //   )
-            // <ResponsiveContainer>
-            //   <BarChart
-            //     data={chartData}
-            //     margin={chartMargin}
-            //     barGap={1}
-            //     barCategoryGap={10}
-            //     barSize={14}
-            //   >
-            //     <Tooltip
-            //       cursor={{ fill: '#f0f0f0' }}
-            //       isAnimationActive={false}
-            //       formatter={(value: string | number, label: string) => {
-            //         return [formatNumber(+value), hazardIdToNameMap[label]];
-            //       }}
-            //     />
-            //     <CartesianGrid strokeDasharray="3 3" />
-            //     <XAxis
-            //       dataKey="month"
-            //     />
-            //     <YAxis
-            //       scale={riskMetric === 'informRiskScore' ? 'linear' : scaleCbrt}
-            //       type="number"
-            //       label={{
-            //         value: riskMetricMap[riskMetric],
-            //         angle: -90,
-            //         position: 'insideLeft',
-            //       }}
-            //       tickFormatter={formatNumber}
-            //     />
-            //     {hasFl && <Bar dataKey="FL" fill={COLOR_FLOOD} />}
-            //     {hasTc && <Bar dataKey="TC" fill={COLOR_CYCLONE} />}
-            //     {hasDr && <Bar dataKey="DR" fill={COLOR_DROUGHT} />}
-            //     {hasFi && <Bar dataKey="FI" fill={COLOR_FOOD_INSECURITY} />}
-            //   </BarChart>
-            // </ResponsiveContainer>
-          }
-        {hazardType === 'WF' && (
-          <DetailedWildfireChart />
         )}
+        {hazardType === 'WF' && (
+          isGwisEmpty ? (
+            <EmptyBox />
+          ) : (
+            <DetailedWildfireChart
+              gwisData={gwisData}
+            />
+          )
+        )}
+        {isEmpty && (
+          <EmptyBox />
+        )}
+        <ResponsiveContainer>
+          <BarChart
+            data={chartData}
+            margin={chartMargin}
+            barGap={1}
+            barCategoryGap={10}
+            barSize={14}
+          >
+            <Tooltip
+              cursor={{ fill: '#f0f0f0' }}
+              isAnimationActive={false}
+              formatter={(value: string | number, label: string) => {
+                return [formatNumber(+value), hazardIdToNameMap[label]];
+              }}
+            />
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis
+              dataKey="month"
+            />
+            <YAxis
+              scale={riskMetric === 'informRiskScore' ? 'linear' : scaleCbrt}
+              type="number"
+              label={{
+                value: riskMetricMap[riskMetric],
+                angle: -90,
+                position: 'insideLeft',
+              }}
+              tickFormatter={formatNumber}
+            />
+            {hasFl && <Bar dataKey="FL" fill={COLOR_FLOOD} />}
+            {hasTc && <Bar dataKey="TC" fill={COLOR_CYCLONE} />}
+            {hasDr && <Bar dataKey="DR" fill={COLOR_DROUGHT} />}
+            {hasFi && <Bar dataKey="FI" fill={COLOR_FOOD_INSECURITY} />}
+          </BarChart>
+        </ResponsiveContainer>
       </div>
       <div className={styles.legend}>
         <div className={styles.heading}>
@@ -565,27 +524,33 @@ function RiskBarChart(props: Props) {
           <div className={styles.hazardLegendItems}>
             <ChartLegendItem
               color={COLOR_FLOOD}
-              icon={floodIcon}
+              icon={hazardTypeToIconMap['FL']}
               label="Floods"
               isActive={!hazardType || hazardType === 'FL'}
             />
             <ChartLegendItem
               color={COLOR_CYCLONE}
-              icon={cycloneIcon}
+              icon={hazardTypeToIconMap['TC']}
               label="Cyclone"
               isActive={!hazardType || hazardType === 'TC'}
             />
             <ChartLegendItem
               color={COLOR_DROUGHT}
-              icon={droughtIcon}
+              icon={hazardTypeToIconMap['DR']}
               label="Drought"
               isActive={!hazardType || hazardType === 'DR'}
             />
             <ChartLegendItem
               color={COLOR_FOOD_INSECURITY}
-              icon={foodInsecurityIcon}
+              icon={hazardTypeToIconMap['FI']}
               label="Food Insecurity"
               isActive={!hazardType || hazardType === 'FI'}
+            />
+            <ChartLegendItem
+              color={COLOR_WILDFIRE}
+              icon={hazardTypeToIconMap['WF']}
+              label="Wildfire"
+              isActive={!hazardType || hazardType === 'WF'}
             />
           </div>
           {hazardType === 'FI' && (
@@ -604,6 +569,16 @@ function RiskBarChart(props: Props) {
                     <FILegendItem color="#101637" label="2022" />
                   </>
                 )}
+              </div>
+            </>
+          )}
+          {hazardType === 'WF' && (
+            <>
+              <div className={styles.separator}/>
+              <div className={styles.fiLegendItems}>
+                <FILegendItem color="#6794dc" label="Average" />
+                <FILegendItem color="#e3e3e3" label="Min-max" />
+                <FILegendItem color="#ff6961" label="Year" />
               </div>
             </>
           )}
