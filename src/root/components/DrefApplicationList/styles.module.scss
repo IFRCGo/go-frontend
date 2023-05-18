@@ -26,21 +26,13 @@
     flex-direction: column;
     gap: $spacing*4;
 
-    .in-progress-dref-table {
+    .dref-table {
+      background-color: #fafafa;
       width: 100%;
 
-      .actions-header {
-        width: 10rem;
+      .table-header {
+        background-color: #f2f2f2;
       }
-
-      .actions-cell {
-        display: flex;
-        gap: $spacing * 0.5;
-      }
-    }
-
-    .published-dref-table {
-      width: 100%;
 
       .actions-header {
         width: 10rem;
@@ -98,6 +90,23 @@
         display: flex;
         gap: $spacing * 0.5;
       }
+    }
+  }
+}
+
+.expanded-row {
+  background-color: #fff;
+
+  td {
+    border: none;
+    padding: $spacing;
+  }
+
+  .expanded-row-actions {
+
+    span {
+      display: flex;
+      gap: $spacing-half;
     }
   }
 }

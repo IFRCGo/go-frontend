@@ -19,8 +19,6 @@ function useRowExpansion<D, K>(
   const {
     expandedRowClassName,
     expandedCellClassName,
-    expansionCellClassName,
-    expansionRowClassName,
   } = options;
 
   const rowModifier: (
@@ -50,16 +48,7 @@ function useRowExpansion<D, K>(
           )),
         })}
         {isActive && (
-          <tr
-            key={`${rowKey}-expanded`}
-            className={expansionRowClassName}
-          >
-            <tr
-              className={expansionCellClassName}
-            >
-              { expansionRowChildren(rowOptions) }
-            </tr>
-          </tr>
+          expansionRowChildren(rowOptions)
         )}
       </>
     );
@@ -68,8 +57,6 @@ function useRowExpansion<D, K>(
       expansionRowChildren,
       expandedRowClassName,
       expandedCellClassName,
-      expansionRowClassName,
-      expansionCellClassName,
     ]);
 
   return rowModifier;

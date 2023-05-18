@@ -2,7 +2,8 @@ import React from 'react';
 import { _cs } from '@togglecorp/fujs';
 
 import { BaseHeader } from './types';
-
+import TableRow from './TableRow';
+import TableData from './TableData';
 import styles from './styles.module.scss';
 
 export type TableVariant = (
@@ -110,7 +111,7 @@ type VerifyColumn<T, D, K> = unknown extends (
           </caption>
         )}
         <thead>
-          <tr className={_cs(styles.headerRow, headerRowClassName)}>
+          <TableRow className={_cs(styles.headerRow, headerRowClassName)}>
             {columns.map((column, index) => {
               const {
                 id,
@@ -146,7 +147,7 @@ type VerifyColumn<T, D, K> = unknown extends (
                 </th>
               );
             })}
-          </tr>
+          </TableRow>
         </thead>
         <tbody>
           {data?.map((datum, index) => {
@@ -187,7 +188,7 @@ type VerifyColumn<T, D, K> = unknown extends (
                 );
               }
               return (
-                <td
+                <TableData
                   key={id}
                   className={_cs(
                     styles.cell,
@@ -196,17 +197,17 @@ type VerifyColumn<T, D, K> = unknown extends (
                   )}
                 >
                   {children}
-                </td>
+                </TableData>
               );
             });
 
             const row = (
-              <tr
+              <TableRow
                 key={key}
                 className={_cs(styles.row, rowClassName)}
               >
                 { cells }
-              </tr>
+              </TableRow>
             );
 
             let modifiedRow: React.ReactNode = row;
