@@ -117,27 +117,22 @@ export interface PerOverviewFields {
 }
 
 export interface PerAssessmentForm {
-  id: string;
-  components: {
-    id: string;
+  id: number | string;
+  status: string;
+  question: string;
+  description: string;
+  answer: boolean;
+  component_responses: {
+    id: number | string;
+    component_id: number | string;
     component_num: string;
-    componentId: string;
-    status: string;
-    benchmarks: {
-      id: string;
-      benchmarkId: string;
+    title: string;
+    benchmark_responses: {
+      id: number | string;
+      benchmark_id: number | string;
       notes: string;
-      is_benchmark: boolean;
     }[];
   }[];
-  question: string;
-  question_num: number;
-  answers: {
-    id: string;
-    text: string;
-  }[];
-  description: string;
-
 }
 
 /*
@@ -162,13 +157,13 @@ interface PerPrioritizationForm {
 }
 
 export interface Area {
-  id: string;
+  id: number;
   title: string;
   area_num: number;
 }
 
 interface PerWorkPlanForm {
-  id: string;
+  id: number;
   actions: string;
   responsible_email: string;
   responsible_name: string;

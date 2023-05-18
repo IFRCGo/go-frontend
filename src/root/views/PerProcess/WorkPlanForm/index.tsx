@@ -19,7 +19,7 @@ import { WorkPlanComponent } from '../common';
 import TextArea from '#components/TextArea';
 
 import styles from './styles.module.scss';
-import { workplanSchema } from '../usePerProcessOptions';
+import usePerProcessOptions, { workplanSchema } from '../usePerProcessOptions';
 import { useLazyRequest } from '#utils/restRequest';
 import useAlertContext from '#hooks/useAlert';
 
@@ -52,6 +52,10 @@ function WorkPlanForm(props: Props) {
     setFieldValue,
     setError: onErrorSet,
   } = useForm(workplanSchema, { value: {} as PartialForm<WorkPlanComponent> });
+
+  const {
+    workPlanStatusOptions,
+  } = usePerProcessOptions(value);
 
   const { strings } = React.useContext(LanguageContext);
   const alert = useAlertContext();
@@ -181,8 +185,9 @@ function WorkPlanForm(props: Props) {
               </td>
               <td>
                 <SelectInput
-                  name={undefined}
-                  onChange={undefined}
+                  name='status'
+                  options={workPlanStatusOptions}
+                  onChange={setFieldValue}
                   value={undefined}
                 >
                 </SelectInput>

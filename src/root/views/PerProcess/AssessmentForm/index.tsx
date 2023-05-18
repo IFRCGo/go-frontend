@@ -1,11 +1,11 @@
 import React, { useContext, useCallback } from 'react';
-import { _cs } from '@togglecorp/fujs';
-import { EntriesAsList, PartialForm, useForm, useFormArray } from '@togglecorp/toggle-form';
+import { isNotDefined, _cs } from '@togglecorp/fujs';
+import { EntriesAsList, PartialForm, SetValueArg, useForm, useFormArray, useFormObject } from '@togglecorp/toggle-form';
 import LanguageContext from '#root/languageContext';
 import { ListResponse, useLazyRequest, useRequest } from '#utils/restRequest';
 import useAlert from '#hooks/useAlert';
 
-import { assessmentSchema } from '../usePerProcessOptions';
+import usePerProcessOptions, { assessmentSchema } from '../usePerProcessOptions';
 import Tabs from '#components/Tabs';
 import TabList from '#components/Tabs/TabList';
 import Tab from '#components/Tabs/Tab';
@@ -14,31 +14,44 @@ import Container from '#components/Container';
 import ProgressBar from '#components/ProgressBar';
 import ExpandableContainer from '#components/ExpandableContainer';
 import Button from '#components/Button';
-import { Area, PerAssessmentForm } from '../common';
-import ComponentInput from './ComponentInput';
+import { Area, Component, PerAssessmentForm } from '../common';
+import scrollToTop from '#utils/scrollToTop';
+import SelectInput from '#components/SelectInput';
+import QuestionInput from './QuestionInput';
 
 import styles from './styles.module.scss';
 
-type Value = PartialForm<PerAssessmentForm>;
+type Value = PerAssessmentForm;
+type InputValue = PartialForm<Value>;
 
 interface Props {
   className?: string;
   perId?: string;
+  onChange: (value: SetValueArg<InputValue>) => void;
+  // onRemove: (index: number) => void;
+  index: number | string;
+  value: InputValue | undefined | null;
 }
 
 function AssessmentForm(props: Props) {
   const {
     className,
     perId,
+    onChange,
+    index,
+    value,
   } = props;
 
   const {
-    value,
-    setFieldValue,
-  } = useForm(
-    assessmentSchema,
-    { value: {} }
-  );
+    error: formError,
+    validate,
+    setFieldValue: onValueChange,
+    setError: onErrorSet,
+  } = useForm(assessmentSchema, { value: {} });
+
+  const {
+    formStatusOptions,
+  } = usePerProcessOptions(value);
 
   const minArea = 1;
   const maxArea = 5;
@@ -47,12 +60,25 @@ function AssessmentForm(props: Props) {
 
   const alert = useAlert();
 
-  const [currentStep, setCurrentStep] = React.useState("1");
+  const [currentAreaStep, setAreaCurrentStep] = React.useState("1");
 
   const {
     response: areaResponse,
   } = useRequest<ListResponse<Area>>({
     url: 'api/v2/per-formarea/',
+  });
+
+  const {
+    pending: fetchingComponents,
+    response: componentResponse,
+  } = useRequest<ListResponse<Component>>({
+    url: `api/v2/per-formcomponent/?area_id=${currentAreaStep}`,
+  });
+
+  const {
+    response: questionResponse,
+  } = useRequest<ListResponse<PerAssessmentForm>>({
+    url: `api/v2/per-formquestion/?component=&area_id=${currentAreaStep}`,
   });
 
   const {
@@ -91,12 +117,17 @@ function AssessmentForm(props: Props) {
     },
   });
 
-  const handleTabChange = useCallback((newStep: string) => {
-    setCurrentStep(Number(newStep));
+
+  const handlePerTabChange = useCallback((newStep: string) => {
+    scrollToTop();
+    setAreaCurrentStep(Number(newStep));
   }, []);
 
-  /* Rename to handleSubmitCancel */
-  const handleButtonCancel = useCallback(() => {
+  const handleAreaTabChange = useCallback((newStep: string) => {
+    setAreaCurrentStep(Number(newStep));
+  }, []);
+
+  const handleSubmitCancel = useCallback(() => {
     console.warn('Cancelling submit');
   }, []);
 
@@ -113,7 +144,7 @@ function AssessmentForm(props: Props) {
             name='cancel'
             variant='secondary'
             type='reset'
-            onClick={handleButtonCancel}
+            onClick={handleSubmitCancel}
           >
             Cancel
           </Button>
@@ -121,7 +152,7 @@ function AssessmentForm(props: Props) {
             name='submit'
             variant='secondary'
             type='submit'
-            onClick={undefined}
+            onClick={handlePerTabChange}
           >
             Save
           </Button>
@@ -131,22 +162,23 @@ function AssessmentForm(props: Props) {
         variant: 'warning',
       }
     );
-  }, [alert, handleButtonCancel, strings]);
+  }, [alert, handleSubmitCancel, strings, handlePerTabChange]);
 
   const noOfAreas = (areaResponse?.results.length ?? 0) + 1;
 
   const handleNextTab = () => {
-    setCurrentStep(Math.min(currentStep + 1, noOfAreas));
+    setAreaCurrentStep(Math.min(currentAreaStep + 1, noOfAreas));
   };
 
   const handlePrevTab = () => {
-    setCurrentStep(Math.max(currentStep - 1, 1));
+    setAreaCurrentStep(Math.max(currentAreaStep - 1, 1));
   };
+  const onFieldChange = useFormObject(index, onChange, () => ({ component_id: index }));
 
   const {
-    setValue: setComponentValue,
-    removeValue: removeComponentValue,
-  } = useFormArray('components', setFieldValue);
+    setValue: setBenchmarkValue,
+    removeValue: removeBenchmarkValue,
+  } = useFormArray('component_responses', onFieldChange);
 
   return (
     <Container>
@@ -179,8 +211,8 @@ function AssessmentForm(props: Props) {
       </ExpandableContainer>
       <Tabs
         disabled={undefined}
-        onChange={handleTabChange}
-        value={String(currentStep)}
+        onChange={handleAreaTabChange}
+        value={String(currentAreaStep)}
         variant='primary'
       >
         <TabList
@@ -196,21 +228,46 @@ function AssessmentForm(props: Props) {
             </Tab>
           ))}
         </TabList>
-        {areaResponse?.results?.map((area) => (
+        {areaResponse?.results?.map((component) => (
           <TabPanel
-            name={String(area.id)}
-            key={area.id}
+            name={String(component.id)}
+            key={component.id}
           >
-            <ComponentInput
-              id={area.id}
-              onChange={setComponentValue}
-              onRemove={removeComponentValue}
-              value={value?.components?.find(component => component.componentId === area.id)}
-            />
+            {componentResponse?.results.map((cr, i) => (
+              <ExpandableContainer
+                className={_cs(styles.customActivity, styles.errored)}
+                heading={`Component ${i + 1}: ${cr?.title}`}
+                headingSize='small'
+                sub
+                actions={
+                  <SelectInput
+                    className={styles.improvementSelect}
+                    name={"status" as const}
+                    onChange={onValueChange}
+                    options={formStatusOptions}
+                    value={value?.status}
+                  />
+                }
+              >
+                {questionResponse?.results.map((question, i) => (
+                  <QuestionInput
+                    key={question.id}
+                    name={question.id}
+                    index={i}
+                    onChange={setBenchmarkValue}
+                    // onRemove={removeBenchmarkValue}
+                    value={question}
+                  // index={value?.component_responses?.filter(Boolean)?.findIndex(res => res.component_id === component.id)}
+                  // value={value?.component_responses?.filter(Boolean)?.find(res => res.component_id === component.id)}
+                  />
+                ))}
+                {/* <div className={styles.dot} /> */}
+              </ExpandableContainer>
+            ))}
           </TabPanel>
         ))}
         <div className={styles.actions}>
-          {currentStep > minArea &&
+          {currentAreaStep > minArea &&
             <Button
               name={undefined}
               variant='secondary'
@@ -221,7 +278,7 @@ function AssessmentForm(props: Props) {
             </Button>
           }
           <div className={styles.actions}>
-            {currentStep < maxArea &&
+            {currentAreaStep < maxArea &&
               <Button
                 name={undefined}
                 variant='secondary'

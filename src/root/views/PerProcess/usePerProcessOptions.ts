@@ -22,6 +22,7 @@ import {
   emptyNumericOptionList,
   PerOverviewFields,
   WorkPlanComponent,
+  emptyStringOptionList,
 } from './common';
 
 export type OverviewFormSchema = ObjectSchema<PartialForm<PerOverviewFields>>;
@@ -32,6 +33,11 @@ export type AssessmentFormSchemeFields = ReturnType<AssessmentFormScheme['fields
 
 export type WorkPlanFormScheme = ObjectSchema<PartialForm<WorkPlanComponent>>;
 export type WorkPlanFormSchemeFields = ReturnType<WorkPlanFormScheme['fields']>;
+
+interface FormStatusOptions {
+  formcomponentstatus: StringKeyValuePair[];
+  workplanstatus: NumericKeyValuePair[];
+}
 
 function transformKeyValueToLabelValue<O extends NumericKeyValuePair | StringKeyValuePair>(o: O): {
   label: string;
@@ -81,22 +87,25 @@ export const overviewSchema: OverviewFormSchema = {
 export const assessmentSchema: AssessmentFormScheme = {
   fields: (value): AssessmentFormSchemeFields => ({
     id: [],
-    components: {
-      keySelector: (val) => val.componentId as string,
+    status: [],
+    question: [],
+    description:[],
+    answer: [],
+    component_responses: {
+      keySelector: (val) => val.component_id as string,
       member: () => ({
         fields: () => ({
           id: [],
           component_num: [],
           componentId: [],
-          status: [],
-          benchmarks: {
-            keySelector: (n) => n.benchmarkId as string,
+          benchmark_responses: {
+            keySelector: (n) => n.benchmark_id as string,
             member: () => ({
               fields: () => ({
                 id: [],
                 benchmarkId: [],
                 notes: [],
-                is_benchmark: [],
+                answer: [],
               }),
             }),
           },
@@ -122,34 +131,27 @@ function usePerProcessOptions(value: PartialForm<PerOverviewFields>) {
   const { strings } = React.useContext(LanguageContext);
 
   const {
-    response: countriesResponse,
-  } = useRequest<ListResponse<Country>>({
-    url: 'api/v2/country/',
+    response: formOptions,
+  } = useRequest<FormStatusOptions>({
+    url: 'api/v2/per-options/',
   });
 
   const [
-    nationalSocietyOptions,
+    formStatusOptions,
+    workPlanStatusOptions,
   ] = React.useMemo(() => {
-    if (!countriesResponse) {
-      return [emptyNumericOptionList, emptyNumericOptionList];
+    if (!formOptions) {
+      return [
+        emptyStringOptionList,
+        emptyNumericOptionList,
+      ];
     }
 
-    const ns: NumericValueOption[] = countriesResponse.results
-      .filter(d => d.independent && d.society_name)
-      .map(d => ({
-        value: d.id,
-        label: d.society_name,
-      })).sort(compareString);
-
-    const c: NumericValueOption[] = countriesResponse.results
-      .filter(d => d.independent && d.iso)
-      .map(d => ({
-        value: d.id,
-        label: d.name,
-      })).sort(compareString);
-
-    return [ns, c] as const;
-  }, [countriesResponse]);
+    return [
+      formOptions.formcomponentstatus.map(transformKeyValueToLabelValue),
+      formOptions.workplanstatus.map(transformKeyValueToLabelValue),
+    ];
+  }, [formOptions]);
 
   const yesNoOptions = React.useMemo(() => {
     return [
@@ -159,8 +161,9 @@ function usePerProcessOptions(value: PartialForm<PerOverviewFields>) {
   }, [strings]);
 
   return {
-    nationalSocietyOptions,
     yesNoOptions,
+    formStatusOptions,
+    workPlanStatusOptions,
   };
 }
 

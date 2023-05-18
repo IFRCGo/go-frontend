@@ -12,7 +12,7 @@ import { ListResponse, useLazyRequest, useRequest } from '#utils/restRequest';
 import LanguageContext from '#root/languageContext';
 import { compareString } from '#utils/utils';
 import useAlertContext from '#hooks/useAlert';
-import { NumericValueOption } from '#types';
+import { Country, NumericValueOption } from '#types';
 import usePerProcessOptions, { overviewSchema } from '../usePerProcessOptions';
 
 import {
@@ -69,7 +69,6 @@ function OverviewForm(props: Props) {
   const [currentStep, setCurrentStep] = React.useState<StepTypes>('overview');
 
   const {
-    nationalSocietyOptions,
     yesNoOptions,
   } = usePerProcessOptions(value);
 
@@ -91,6 +90,36 @@ function OverviewForm(props: Props) {
     () => getErrorObject(formError),
     [formError]
   );
+
+  const {
+    response: countriesResponse,
+  } = useRequest<ListResponse<Country>>({
+    url: 'api/v2/country/',
+  });
+
+  const [
+    nationalSocietyOptions,
+  ] = React.useMemo(() => {
+    if (!countriesResponse) {
+      return [emptyNumericOptionList, emptyNumericOptionList];
+    }
+
+    const ns: NumericValueOption[] = countriesResponse.results
+      .filter(d => d.independent && d.society_name)
+      .map(d => ({
+        value: d.id,
+        label: d.society_name,
+      })).sort(compareString);
+
+    const c: NumericValueOption[] = countriesResponse.results
+      .filter(d => d.independent && d.iso)
+      .map(d => ({
+        value: d.id,
+        label: d.name,
+      })).sort(compareString);
+
+    return [ns, c] as const;
+  }, [countriesResponse]);
 
   const {
     pending: perSubmitPending,
@@ -526,7 +555,7 @@ function OverviewForm(props: Props) {
           <Button
             name={undefined}
             variant="secondary"
-            onClick={handleTabChange}
+            onClick={handleSubmitButtonClick}
           >
             {strings.PerOverviewSetUpPerProcess}
           </Button>
