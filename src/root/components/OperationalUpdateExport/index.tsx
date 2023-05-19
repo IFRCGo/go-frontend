@@ -1,6 +1,5 @@
 import React from 'react';
 import { pdf } from '@react-pdf/renderer';
-import { IoDownload } from 'react-icons/io5';
 
 import languageContext from '#root/languageContext';
 import { useRequest } from '#utils/restRequest';
@@ -92,7 +91,6 @@ function OperationalUpdateExport(props: Props) {
 
   return (
     <DropdownMenuItem
-      icon={<IoDownload />}
       label="Export"
       onClick={handleExportRender}
       disabled={pending}

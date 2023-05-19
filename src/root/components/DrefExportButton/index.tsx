@@ -4,14 +4,12 @@ import { pdf } from '@react-pdf/renderer';
 import { useRequest } from '#utils/restRequest';
 import LanguageContext from '#root/languageContext';
 import { DrefApiFields } from '#views/DrefApplicationForm/common';
-
 import {
   NumericKeyValuePair,
   StringKeyValuePair,
 } from '#types';
-
 import DrefPdfDocument from '#components/DrefPdfDocument';
-import Button from '#components/Button';
+import Button, { ButtonVariant } from '#components/Button';
 
 interface DrefOptions {
   disaster_category: NumericKeyValuePair[];
@@ -32,6 +30,7 @@ interface DrefOptions {
 interface Props {
   className?: string;
   drefId: number;
+  variant?: ButtonVariant;
 }
 
 function DrefExportButton(props: Props) {
@@ -39,6 +38,7 @@ function DrefExportButton(props: Props) {
   const {
     className,
     drefId,
+    variant,
   } = props;
 
   const [shouldRender, setShouldRender] = React.useState(false);
@@ -106,7 +106,7 @@ function DrefExportButton(props: Props) {
       className={className}
       disabled={pending || shouldRender}
       onClick={handleClick}
-      variant="secondary"
+      variant= {variant ?? "secondary"}
     >
       {shouldRender ? 'Exporting...' : 'Export'}
     </Button>

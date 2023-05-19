@@ -40,6 +40,7 @@
 
       .actions-cell {
         display: flex;
+        justify-content: end;
         gap: $spacing * 0.5;
       }
     }
@@ -107,6 +108,15 @@
     span {
       display: flex;
       gap: $spacing-half;
+      justify-content: end;
     }
+  }
+}
+
+.dref-export-button {
+  padding: 3px 18px !important;
+
+  * {
+    padding: 0px 6px;
   }
 }

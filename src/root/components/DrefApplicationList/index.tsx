@@ -19,8 +19,8 @@ import {
   ListResponse,
   useRequest,
 } from '#utils/restRequest';
-import DrefApplicationTable from './DrefApplicationTable';
 
+import DrefApplicationTable from './DrefApplicationTable';
 import styles from './styles.module.scss';
 
 export interface BaseProps {
@@ -34,9 +34,11 @@ export interface BaseProps {
   type_of_dref_display: string;
   type_of_onset_display: string;
   operational_update_number: number;
-  type_application: string;
-  type_application_display: string;
+  application_type: string;
+  application_type_display: string;
   status: string;
+  has_ops_update: boolean;
+  has_final_reprot: boolean;
   country_details: {
     id: number;
     country: number;
@@ -74,6 +76,7 @@ interface Props {
 
 
 function DrefApplicationList(props: Props) {
+  const {history} = props;
   const { strings } = React.useContext(LanguageContext);
   const allCountries = useReduxState('allCountries');
   const [country, setCountry] = useInputState<number | undefined>(undefined);
@@ -108,17 +111,19 @@ function DrefApplicationList(props: Props) {
     let rowData = [];
     const hasOpsUpdateOnly = drefResponse?.results.filter(
       (d) => d.operational_update_details.length > 0 && !d.final_report_details);
+
     const opsUpdateData = hasOpsUpdateOnly?.map(
       (d) => {
         const opsLatest = d.operational_update_details?.sort(
           (a,b) => b.operational_update_number - a.operational_update_number)[0];
 
+        const filterSubRowOpsUpdate = d.operational_update_details.filter(
+          (ops) => ops.id !== opsLatest.id
+        );
         let obj = {
           ...opsLatest,
-          type_application: "OPS_UPDATE",
-          type_application_display: `Operational update #${opsLatest.operational_update_number}`,
-
-          firstLevel:[{
+          firstLevel: filterSubRowOpsUpdate,
+          secondLevel: [{
             id: d.id,
             created_at: d.created_at,
             title: d.title,
@@ -126,10 +131,12 @@ function DrefApplicationList(props: Props) {
             type_of_dref_display: d.type_of_dref_display,
             submission_to_geneva: d.submission_to_geneva,
             country_details: d.country_details,
-            type_application:'DREF',
-            type_application_display: "DREF application",
+            application_type: d.application_type,
+            application_type_display: d.application_type_display,
+            is_published: d.is_published,
+            has_ops_update: d.has_ops_update,
+            has_final_reprot: d.has_final_reprot,
           }],
-          secondLevel: [],
         };
         return obj;
       });
@@ -141,10 +148,8 @@ function DrefApplicationList(props: Props) {
       (d) => {
         let obj = {
           ...d.final_report_details,
-          type_application: "FINAL_REPORT",
-          type_application_display: "Final report",
-
-          firstLevel: [{
+          firstLevel: [],
+          secondLevel: [{
             id: d.id,
             created_at: d.created_at,
             title: d.title,
@@ -152,10 +157,12 @@ function DrefApplicationList(props: Props) {
             type_of_dref_display: d.type_of_dref_display,
             submission_to_geneva: d.submission_to_geneva,
             country_details: d.country_details,
-            type_application: 'DREF',
-            type_application_display: "DREF application",
+            application_type: d.application_type,
+            application_type_display: d.application_type_display,
+            is_published: d.is_published,
+            has_ops_update: d.has_ops_update,
+            has_final_reprot: d.has_final_reprot,
           }],
-          secondLevel: [],
         };
         return obj;
       });
@@ -167,10 +174,10 @@ function DrefApplicationList(props: Props) {
       (d) => {
         let obj = {
           ...d.final_report_details,
-          type_application: "FINAL_REPORT",
-          type_application_display: "Final report",
-
-          firstLevel:[{
+          firstLevel: d.operational_update_details.map((ops) => ({
+            ...ops,
+          })),
+          secondLevel:[{
             id: d.id,
             created_at: d.created_at,
             title: d.title,
@@ -178,14 +185,12 @@ function DrefApplicationList(props: Props) {
             type_of_dref_display: d.type_of_dref_display,
             submission_to_geneva: d.submission_to_geneva,
             country_details: d.country_details,
-            type_application: 'DREF',
-            type_application_display: "DREF application",
+            application_type: d.application_type,
+            application_type_display: d.application_type_display,
+            is_published: d.is_published,
+            has_ops_update: d.has_ops_update,
+            has_final_reprot: d.has_final_reprot,
           }],
-          secondLevel: d.operational_update_details.map((ops) => ({
-            ...ops,
-            type_application: "OPS_UPDATE",
-            type_application_display: `Operational update #${ops.operational_update_number}`
-          }))
         };
         return obj;
       });
@@ -196,8 +201,6 @@ function DrefApplicationList(props: Props) {
       (d) => {
         let obj = {
           ...d,
-          type_application: 'DREF',
-          type_application_display: "DREF application",
           firstLevel: [],
           secondLevel: [],
         };
@@ -249,6 +252,7 @@ function DrefApplicationList(props: Props) {
             className={styles.drefTable}
             data={data}
             refetch={refetchDrefList}
+            history={history}
           />
         )}
         {!drefPending && drefResponse?.results?.length === 0 && data.length === 0 && (
