@@ -3,7 +3,7 @@ import { _cs } from '@togglecorp/fujs';
 import {
   getErrorObject,
   analyzeErrors,
-  internal,
+  nonFieldError,
   Error,
 } from '@togglecorp/toggle-form';
 
@@ -33,7 +33,7 @@ function NonFieldError<T>(props: Props<T>) {
     return null;
   }
 
-  const stringError = errorObject?.[internal] ?? message;
+  const stringError = errorObject?.[nonFieldError] ?? message;
   if (!stringError) {
     return null;
   }
