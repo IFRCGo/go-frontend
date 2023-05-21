@@ -36,7 +36,6 @@ function PageHeader(props: Props) {
   return (
     <header
       className={_cs(
-        'go-page-header',
         styles.pageHeader,
         className,
       )}
