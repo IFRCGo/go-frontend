@@ -1,0 +1,6 @@
+.overlay {
+    position: absolute;
+    background-color: var(--go-ui-color-background-overlay);
+    width: 100%;
+    height: 100%;
+}

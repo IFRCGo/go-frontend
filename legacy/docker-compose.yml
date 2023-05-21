@@ -1,0 +1,17 @@
+version: '3.2'
+
+services:
+  frontend:
+    image: ifrc/go-frontend:latest
+    build: ./
+    tty: true
+    env_file:
+      - .env
+    command: bash -c 'git config --global --add safe.directory /code ; yarn install --frozen-lockfile && yarn start'
+# This git config command ^^^^^^ is required by git-revision-webpack-plugin – otherwise:
+# Command failed: git rev-parse HEAD, detected dubious ownership in repository
+    volumes:
+      - ./:/code
+    ports:
+      - '3000:3000'
+

@@ -1,9 +1,10 @@
-FROM node:18.14.1-buster
+FROM node:18-bullseye
 
-LABEL maintainer="Togglecorp dev@togglecorp.com"
-
-RUN apt-get -y update\
-  && apt-get -y install --no-install-recommends git bash
+RUN apt-get update -y \
+    && apt-get install -y --no-install-recommends \
+        git bash g++ make \
+    && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /code
-COPY . /code/
+
+RUN git config --global --add safe.directory /code

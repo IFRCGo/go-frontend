@@ -1,0 +1,29 @@
+.footer {
+    background-color: var(--go-ui-color-primary-gray);
+    color: var(--go-ui-color-white);
+
+    .content {
+        display: flex;
+        gap: var(--go-ui-spacing-4xl);
+        flex-wrap: wrap;
+
+        .section {
+            display: flex;
+            flex-basis: 0;
+            flex-direction: column;
+            flex-grow: 1;
+            gap: var(--go-ui-spacing-xl);
+
+            .sub-section {
+                display: flex;
+                flex-direction: column;
+                gap: var(--go-ui-spacing-md);
+            }
+
+            .social-icons {
+                display: flex;
+                gap: var(--go-ui-spacing-md);
+            }
+        }
+    }
+}

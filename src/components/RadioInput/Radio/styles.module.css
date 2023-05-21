@@ -1,0 +1,50 @@
+.radio {
+    --cursor: default;
+    display: flex;
+    align-items: flex-start;
+    gap: var(--go-ui-spacing-sm);
+    cursor: var(--cursor);
+
+    .icon {
+        transition: var(--go-ui-duration-transition-medium) color ease-in-out;
+        font-size: 1.3em;
+    }
+
+    .children {
+        align-items: flex-start;
+        flex-direction: column;
+
+        .description {
+            color: var(--go-ui-color-white);
+            font-size: var(--go-ui-font-size-xs);
+        }
+    }
+
+    .input {
+        display: none;
+    }
+
+    &.active {
+        .icon {
+            color: var(--go-ui-color-primary-red);
+        }
+    }
+
+    &.disabled {
+        opacity: var(--go-ui-opacity-50);
+    }
+
+    &:not(.disabled) {
+
+        &:focus,
+        &:hover {
+            .icon {
+                color: var(--go-ui-color-primary-red);
+            }
+        }
+
+        &:not(.read-only) {
+            --cursor: pointer;
+        }
+    }
+}

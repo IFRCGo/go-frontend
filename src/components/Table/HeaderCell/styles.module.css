@@ -1,0 +1,10 @@
+.header-cell {
+    display: flex;
+    align-items: center;
+    font-weight: var(--go-ui-font-weight-medium);
+    gap: var(--go-ui-spacing-sm);
+
+    .sort-button {
+        flex-shrink: 0;
+    }
+}

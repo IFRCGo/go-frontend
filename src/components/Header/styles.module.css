@@ -1,0 +1,24 @@
+.header {
+    .header-content {
+        display: flex;
+        align-items: baseline;
+        flex-wrap: unset;
+    }
+    &.heading-ellipsized {
+        .header-content {
+            .heading-container {
+                overflow: auto;
+
+                .heading {
+                    width: 100%;
+
+                    .overflow-wrapper {
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        white-space: nowrap;
+                    }
+                }
+            }
+        }
+    }
+}

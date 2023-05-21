@@ -1,0 +1,11 @@
+.raw-button {
+    position: relative;
+    outline-offset: var(--go-ui-width-separator-lg);
+    border: 0;
+    background-color: transparent;
+    cursor: pointer;
+    padding: 0;
+    color: inherit;
+    font-family: inherit;
+    font-size: inherit;
+}

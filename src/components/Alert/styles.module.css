@@ -1,0 +1,54 @@
+.alert {
+    border-radius: var(--go-ui-border-radius-md);
+    box-shadow: var(--go-ui-box-shadow-xl);
+    background-color: var(--go-ui-color-gray-80);
+    padding: var(--go-ui-spacing-lg);
+    width: calc(14rem + 16vw);
+    color: var(--go-ui-color-white);
+
+    .content {
+        display: flex;
+        align-items: flex-start;
+        gap: var(--go-ui-spacing-md);
+
+        .close-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .icon {
+            flex-shrink: 0;
+            font-size: var(--go-ui-font-size-xl);
+        }
+
+        .content {
+            align-items: initial;
+            flex-direction: column;
+            font-weight: var(--go-ui-font-weight-medium);
+        }
+    }
+
+    .actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: var(--go-ui-spacing-sm);
+
+        .copy-debug-message-button {
+            text-transform: uppercase;
+            font-size: var(--go-ui-font-size-sm);
+        }
+    }
+
+    &.success {
+        background-color: var(--go-ui-color-positive);
+    }
+
+    &.danger {
+        background-color: var(--go-ui-color-negative);
+    }
+
+    &.warning {
+        background-color: var(--go-ui-color-warning);
+    }
+}

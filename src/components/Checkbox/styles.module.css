@@ -1,0 +1,57 @@
+.checkbox {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    gap: var(--go-ui-spacing-sm);
+    --width: var(--go-ui-font-size-xl);
+    --height: var(--go-ui-font-size-xl);
+
+    .inner {
+        position: relative;
+        width: var(--width);
+        height: var(--height);
+
+        .checkmark {
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            z-index: var(--go-ui-z-index-10);
+            font-size: var(--go-ui-font-size-xl);
+        }
+
+        .input {
+            margin: 0;
+            padding: 0;
+            width: var(--width);
+            height: var(--height);
+            appearance: none;
+        }
+    }
+
+    &.checked {
+        .checkmark {
+            color: var(--go-ui-color-primary-red);
+        }
+    }
+
+    &:not(:focus),
+    &:not(:hover) {
+        .checkmark {
+            color: var(--go-ui-color-primary-red);
+        }
+    }
+
+    &.disabled-checkbox {
+        display: flex;
+        align-items: flex-start;
+        cursor: not-allowed;
+        gap: var(--go-ui-spacing-sm);
+        color: var(--go-ui-color-gray-40);
+
+        .checkmark {
+            color: var(--go-ui-color-gray-40);
+        }
+    }
+}

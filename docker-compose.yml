@@ -1,17 +1,11 @@
-version: '3.2'
-
+version: '3.8'
 services:
-  frontend:
-    image: ifrc/go-frontend:latest
-    build: ./
-    tty: true
-    env_file:
-      - .env
-    command: bash -c 'git config --global --add safe.directory /code ; yarn install --frozen-lockfile && yarn start'
-# This git config command ^^^^^^ is required by git-revision-webpack-plugin – otherwise:
-# Command failed: git rev-parse HEAD, detected dubious ownership in repository
+  react:
+    build: .
+    command: sh -c 'yarn install && yarn dev --host'
+    environment:
+      APP_TITLE: ${APP_TITLE:-IFRC GO}
     volumes:
-      - ./:/code
+      - .:/code
     ports:
       - '3000:3000'
-

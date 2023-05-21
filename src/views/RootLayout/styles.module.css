@@ -1,0 +1,19 @@
+.root {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+
+    .navbar {
+        flex-shrink: 0;
+    }
+
+    .page-content {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+    }
+
+    .footer {
+        flex-shrink: 0;
+    }
+}
