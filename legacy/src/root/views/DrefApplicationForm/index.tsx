@@ -1,4 +1,4 @@
-impmrt React from 'react';
+import React from 'react';
 import type { History, Location } from 'history';
 import { Link } from 'react-router-dom';
 import {
@@ -561,7 +561,7 @@ function DrefApplication(props: Props) {
       return;
     }
 
-    const importData = await getImportData(newValue);
+    const importData = getImportData(newValue);
     // FIXME: Check if component is still mounted
 
     if (importData) {

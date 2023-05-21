@@ -38,8 +38,8 @@ function getChildren(node: Node | undefined, name: string) {
   return nodeList;
 }
 
-export async function getImportData(file: File) {
-  const docx = await docxReader.load(file);
+export function getImportData(file: File) {
+  const docx = docxReader.load(file);
   const body: Node | undefined = docx?.officeDocument?.content?._root?.children?.[1]?.children?.[0];
   const sdtList = body?.children?.map((ch: Node | undefined) => {
     // w:sdt is a standard block
