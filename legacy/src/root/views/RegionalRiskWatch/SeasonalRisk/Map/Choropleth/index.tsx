@@ -174,4 +174,3 @@ function Choropleth(props: Props) {
 }
 
 export default Choropleth;
-
