@@ -5,6 +5,7 @@ import {
   Error,
   PartialForm,
 } from '@togglecorp/toggle-form';
+import { ArrowDropRightLineIcon } from '@ifrc-go/icons';
 
 import LanguageContext from '#root/languageContext';
 import Container from '#components/Container';
@@ -21,7 +22,9 @@ import {
 } from '#utils/restRequest';
 
 import DrefApplicationTable from './DrefApplicationTable';
+import useDrefApplicationListOptions from './useDrefApplicationListOptions';
 import styles from './styles.module.scss';
+import ButtonLikeLink from '#components/ButtonLikeLink';
 
 export interface BaseProps {
   id: number;
@@ -77,9 +80,15 @@ interface Props {
 
 function DrefApplicationList(props: Props) {
   const {history} = props;
+  const { drefTypeOptions,fetchingDrefOptions } = useDrefApplicationListOptions();
   const { strings } = React.useContext(LanguageContext);
   const allCountries = useReduxState('allCountries');
   const [country, setCountry] = useInputState<number | undefined>(undefined);
+  const [drefType, setDrefType] = React.useState<number>();
+  const [dateRange, setDateRange] = React.useState({
+    start_date:'',
+    end_date:'',
+  });
   const countryOptions = React.useMemo(
     () => allCountries?.data?.results.filter((c) => (
       c.independent && !c.is_deprecated && c.name
@@ -99,8 +108,10 @@ function DrefApplicationList(props: Props) {
   } = useRequest<ListResponse<DrefApplicationResponse>>({
     url: 'api/v2/active-dref/',
     query: {
-      // country,
-      // is_published: false,
+      country,
+      type_of_dref: drefType,
+      // created_at__lte: '',
+      // created_at__gte: '',
       limit: ITEM_PER_PAGE,
       offset: ITEM_PER_PAGE * (inProgressDrefActivePage - 1),
     },
@@ -212,14 +223,11 @@ function DrefApplicationList(props: Props) {
 
   },[drefResponse]);
 
-  const pending = drefPending;
+  const pending = drefPending || fetchingDrefOptions;
 
-  return (
-    <Container
-      className={styles.drefApplicationList}
-      contentClassName={styles.content}
-      descriptionClassName={styles.filters}
-      description={(
+  const filters = React.useMemo(
+    () => (
+      <>
         <SelectInput
           name={undefined}
           className={styles.countryFilter}
@@ -230,13 +238,58 @@ function DrefApplicationList(props: Props) {
           isClearable
           disabled={pending}
         />
-      )}
+        <SelectInput
+          name={undefined}
+          className={styles.countryFilter}
+          placeholder="Type of DREF"
+          options={drefTypeOptions}
+          value={drefType}
+          onChange={setDrefType}
+          isClearable
+          disabled={pending}
+        />
+      </>
+
+    ),[
+      drefType,
+      setDrefType,
+      drefTypeOptions,
+      country,
+      countryOptions,
+      setCountry,
+      pending,
+    ]
+  );
+
+  return (
+    <Container
+      className={styles.drefApplicationList}
+      contentClassName={styles.content}
+      descriptionClassName={styles.newDrefButton}
+      description={
+        <ButtonLikeLink
+          variant='secondary'
+          to='/dref-application/new/'
+        >
+          Start a New DREF Application
+        </ButtonLikeLink>
+      }
     >
 
       <Container
-        // heading={strings.drefTableInProgressHeading}
-        heading="Active DREF Operations"
-        sub
+        heading={strings.drefTableHeading}
+        description={filters}
+        descriptionClassName={styles.filters}
+        actions={
+          <ButtonLikeLink
+            variant="transparent"
+            to="#"
+            disabled
+          >
+            View previous DREF operations
+            <ArrowDropRightLineIcon fontSize='2rem' />
+          </ButtonLikeLink>
+        }
         footerActions={drefResponse && (
           <Pager
             activePage={inProgressDrefActivePage}
@@ -245,6 +298,7 @@ function DrefApplicationList(props: Props) {
             maxItemsPerPage={ITEM_PER_PAGE}
           />
         )}
+        sub
       >
         {pending && <BlockLoading />}
         {!pending && data.length > 0 && (
@@ -269,3 +323,4 @@ function DrefApplicationList(props: Props) {
 }
 
 export default DrefApplicationList;
+

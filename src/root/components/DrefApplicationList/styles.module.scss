@@ -3,28 +3,18 @@
 .dref-application-list {
   min-height: 50vh;
 
-  .filters {
+  .new-dref-button {
     display: flex;
-    padding: $spacing 0;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: $spacing*2;
-    gap: $spacing;
-
-    .country-filter {
-      flex-grow: 1;
-      max-width: 30rem;
-    }
-
-    .import-button {
-      flex-shrink: 0;
-    }
+    justify-content: center;
+    margin: $spacing*3;
   }
 
   .content {
     display: flex;
     flex-direction: column;
     gap: $spacing*4;
+    justify-content: center;
+    align-items:center;
 
     .dref-table {
       background-color: #fafafa;
@@ -40,8 +30,33 @@
 
       .actions-cell {
         display: flex;
-        justify-content: end;
+        justify-content: flex-end;
         gap: $spacing * 0.5;
+      }
+
+      .expanded-row {
+        background-color: #fff;
+
+        td {
+          border: none;
+          padding: $spacing;
+        }
+
+        .expanded-row-actions {
+          span {
+            display: flex;
+            gap: $spacing-half;
+            justify-content: flex-end;
+          }
+        }
+      }
+
+      .dref-export-button {
+        padding: 3px 18px !important;
+
+        * {
+          padding: 0px 6px;
+        }
       }
     }
 
@@ -61,10 +76,20 @@
     }
   }
 
-  .button-import {
+  .filters {
     display: flex;
-    justify-content: flex-end;
+    padding: $spacing 0;
     align-items: center;
+    gap: $spacing;
+
+    .country-filter {
+      flex-grow: 1;
+      max-width: 30rem;
+    }
+
+    .import-button {
+      flex-shrink: 0;
+    }
   }
 }
 
@@ -95,28 +120,3 @@
   }
 }
 
-.expanded-row {
-  background-color: #fff;
-
-  td {
-    border: none;
-    padding: $spacing;
-  }
-
-  .expanded-row-actions {
-
-    span {
-      display: flex;
-      gap: $spacing-half;
-      justify-content: end;
-    }
-  }
-}
-
-.dref-export-button {
-  padding: 3px 18px !important;
-
-  * {
-    padding: 0px 6px;
-  }
-}
