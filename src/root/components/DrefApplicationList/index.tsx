@@ -5,26 +5,25 @@ import {
   Error,
   PartialForm,
 } from '@togglecorp/toggle-form';
-import { ArrowDropRightLineIcon } from '@ifrc-go/icons';
+import {
+  ArrowDropRightLineIcon,
+  ArrowDropLeftLineIcon,
+} from '@ifrc-go/icons';
 
 import LanguageContext from '#root/languageContext';
 import Container from '#components/Container';
-import BlockLoading from '#components/block-loading';
 import SelectInput from '#components/SelectInput';
 import Pager from '#components/Pager';
-import EmptyMessage from '#components/EmptyMessage';
 import useReduxState from '#hooks/useReduxState';
 import useInputState from '#hooks/useInputState';
 import { compareLabel } from '#utils/common';
-import {
-  ListResponse,
-  useRequest,
-} from '#utils/restRequest';
-
-import DrefApplicationTable from './DrefApplicationTable';
-import useDrefApplicationListOptions from './useDrefApplicationListOptions';
-import styles from './styles.module.scss';
 import ButtonLikeLink from '#components/ButtonLikeLink';
+import Button from '#components/Button';
+
+import useDrefApplicationListOptions from './useDrefApplicationListOptions';
+import ActiveDrefTable from './ActiveDrefTable';
+import styles from './styles.module.scss';
+import CompletedDrefTable from './CompletedDrefTable';
 
 export interface BaseProps {
   id: number;
@@ -50,12 +49,6 @@ export interface BaseProps {
   };
 }
 
-export interface DrefApplicationResponse extends BaseProps {
-  is_final_report_created: boolean;
-  operational_update_details: BaseProps[];
-  final_report_details: BaseProps;
-}
-
 export interface TableDataDetail extends BaseProps {
   firstLevel: BaseProps[];
   secondLevel: BaseProps[];
@@ -77,18 +70,17 @@ interface Props {
   onValueChange: (...entries: EntriesAsList<Value>) => void;
 }
 
-
 function DrefApplicationList(props: Props) {
   const {history} = props;
+  const [drefActivePage, setDrefActivePage] = React.useState(1);
+  const [country, setCountry] = useInputState<number | undefined>(undefined); const [drefVisibility, setDrefVisibility] = React.useState<'ACTIVE' | 'COMPLETED'>('ACTIVE');
+  const [drefType, setDrefType] = React.useState<number>();
+  const [drefCount, setDrefCount] = React.useState<number>(0);
+
   const { drefTypeOptions,fetchingDrefOptions } = useDrefApplicationListOptions();
   const { strings } = React.useContext(LanguageContext);
   const allCountries = useReduxState('allCountries');
-  const [country, setCountry] = useInputState<number | undefined>(undefined);
-  const [drefType, setDrefType] = React.useState<number>();
-  const [dateRange, setDateRange] = React.useState({
-    start_date:'',
-    end_date:'',
-  });
+
   const countryOptions = React.useMemo(
     () => allCountries?.data?.results.filter((c) => (
       c.independent && !c.is_deprecated && c.name
@@ -99,131 +91,7 @@ function DrefApplicationList(props: Props) {
     [allCountries],
   ); // a code duplication can be found in per-account.js
 
-  const [inProgressDrefActivePage, setInProgressDrefActivePage] = React.useState(1);
-
-  const {
-    pending: drefPending,
-    response: drefResponse,
-    retrigger: refetchDrefList,
-  } = useRequest<ListResponse<DrefApplicationResponse>>({
-    url: 'api/v2/active-dref/',
-    query: {
-      country,
-      type_of_dref: drefType,
-      // created_at__lte: '',
-      // created_at__gte: '',
-      limit: ITEM_PER_PAGE,
-      offset: ITEM_PER_PAGE * (inProgressDrefActivePage - 1),
-    },
-  });
-
-  const data = React.useMemo(() => {
-
-    let rowData = [];
-    const hasOpsUpdateOnly = drefResponse?.results.filter(
-      (d) => d.operational_update_details.length > 0 && !d.final_report_details);
-
-    const opsUpdateData = hasOpsUpdateOnly?.map(
-      (d) => {
-        const opsLatest = d.operational_update_details?.sort(
-          (a,b) => b.operational_update_number - a.operational_update_number)[0];
-
-        const filterSubRowOpsUpdate = d.operational_update_details.filter(
-          (ops) => ops.id !== opsLatest.id
-        );
-        let obj = {
-          ...opsLatest,
-          firstLevel: filterSubRowOpsUpdate,
-          secondLevel: [{
-            id: d.id,
-            created_at: d.created_at,
-            title: d.title,
-            appeal_code: d.appeal_code,
-            type_of_dref_display: d.type_of_dref_display,
-            submission_to_geneva: d.submission_to_geneva,
-            country_details: d.country_details,
-            application_type: d.application_type,
-            application_type_display: d.application_type_display,
-            is_published: d.is_published,
-            has_ops_update: d.has_ops_update,
-            has_final_reprot: d.has_final_reprot,
-          }],
-        };
-        return obj;
-      });
-    rowData.push(opsUpdateData);
-
-    const hasfinalReportOnly = drefResponse?.results.filter(
-      (d) => !d.operational_update_details && d.final_report_details);
-    const finalReportData = hasfinalReportOnly?.map(
-      (d) => {
-        let obj = {
-          ...d.final_report_details,
-          firstLevel: [],
-          secondLevel: [{
-            id: d.id,
-            created_at: d.created_at,
-            title: d.title,
-            appeal_code: d.appeal_code,
-            type_of_dref_display: d.type_of_dref_display,
-            submission_to_geneva: d.submission_to_geneva,
-            country_details: d.country_details,
-            application_type: d.application_type,
-            application_type_display: d.application_type_display,
-            is_published: d.is_published,
-            has_ops_update: d.has_ops_update,
-            has_final_reprot: d.has_final_reprot,
-          }],
-        };
-        return obj;
-      });
-    rowData.push(finalReportData);
-
-    const hasfinalReportAndOpsUpdate = drefResponse?.results.filter(
-      (d) => d.operational_update_details && d.final_report_details);
-    const finalReportAndOpsUpdateData = hasfinalReportAndOpsUpdate?.map(
-      (d) => {
-        let obj = {
-          ...d.final_report_details,
-          firstLevel: d.operational_update_details.map((ops) => ({
-            ...ops,
-          })),
-          secondLevel:[{
-            id: d.id,
-            created_at: d.created_at,
-            title: d.title,
-            appeal_code: d.appeal_code,
-            type_of_dref_display: d.type_of_dref_display,
-            submission_to_geneva: d.submission_to_geneva,
-            country_details: d.country_details,
-            application_type: d.application_type,
-            application_type_display: d.application_type_display,
-            is_published: d.is_published,
-            has_ops_update: d.has_ops_update,
-            has_final_reprot: d.has_final_reprot,
-          }],
-        };
-        return obj;
-      });
-    rowData.push(finalReportAndOpsUpdateData);
-
-    const hasDrefOnly = drefResponse?.results.filter((d) => d.operational_update_details.length === 0 && !d.final_report_details);
-    const drefData = hasDrefOnly?.map(
-      (d) => {
-        let obj = {
-          ...d,
-          firstLevel: [],
-          secondLevel: [],
-        };
-        return obj;
-      });
-    rowData.push(drefData);
-
-    return rowData.flat() as TableDataDetail[];
-
-  },[drefResponse]);
-
-  const pending = drefPending || fetchingDrefOptions;
+  const pending = fetchingDrefOptions;
 
   const filters = React.useMemo(
     () => (
@@ -261,6 +129,13 @@ function DrefApplicationList(props: Props) {
     ]
   );
 
+  const handleToggleDref = React.useCallback(
+    (name) => setDrefVisibility(name), [ setDrefVisibility]);
+
+  const handleDrefCount = React.useCallback(
+    (count: number) => setDrefCount(count), [setDrefCount]
+  );
+
   return (
     <Container
       className={styles.drefApplicationList}
@@ -275,47 +150,65 @@ function DrefApplicationList(props: Props) {
         </ButtonLikeLink>
       }
     >
-
+      {drefVisibility === 'COMPLETED' && (
+        <Button
+          name='ACTIVE'
+          variant="transparent"
+          onClick={handleToggleDref}
+        >
+          <ArrowDropLeftLineIcon fontSize='2rem' />
+          View active DREF operations
+        </Button>
+      )}
       <Container
-        heading={strings.drefTableHeading}
+        heading={drefVisibility === 'ACTIVE' ?
+          strings.drefActiveTableHeading
+          :strings.drefCompletedTableHeading
+        }
         description={filters}
         descriptionClassName={styles.filters}
-        actions={
-          <ButtonLikeLink
+        actions={drefVisibility === 'ACTIVE' && (
+          <Button
+            name='COMPLETED'
             variant="transparent"
-            to="#"
-            disabled
+            onClick={handleToggleDref}
           >
-            View previous DREF operations
+            View completed DREF operations
             <ArrowDropRightLineIcon fontSize='2rem' />
-          </ButtonLikeLink>
-        }
-        footerActions={drefResponse && (
+          </Button>
+        )}
+        footerActions={drefCount > 0 && (
           <Pager
-            activePage={inProgressDrefActivePage}
-            onActivePageChange={setInProgressDrefActivePage}
-            itemsCount={drefResponse.count}
+            activePage={drefActivePage}
+            onActivePageChange={setDrefActivePage}
+            itemsCount={drefCount}
             maxItemsPerPage={ITEM_PER_PAGE}
           />
         )}
         sub
       >
-        {pending && <BlockLoading />}
-        {!pending && data.length > 0 && (
-          <DrefApplicationTable
+        {drefVisibility === 'ACTIVE' && (
+          <ActiveDrefTable
             className={styles.drefTable}
-            data={data}
-            refetch={refetchDrefList}
             history={history}
+            country={country}
+            drefType={drefType}
+            drefActivePage={drefActivePage}
+            itemPerPage={ITEM_PER_PAGE}
+            onChanngeDrefCount={handleDrefCount}
           />
         )}
-        {!drefPending && drefResponse?.results?.length === 0 && data.length === 0 && (
-          <EmptyMessage />
-        )}
-        {!pending && !drefResponse && (
-          <div className={styles.error}>
-            {strings.drefFetchingErrorMessage}
-          </div>
+
+        {drefVisibility === 'COMPLETED' && (
+          <CompletedDrefTable
+            className={styles.drefTable}
+            history={history}
+            country={country}
+            drefType={drefType}
+            drefActivePage={drefActivePage}
+            itemPerPage={ITEM_PER_PAGE}
+            onChanngeDrefCount={handleDrefCount}
+          />
         )}
       </Container>
     </Container>
