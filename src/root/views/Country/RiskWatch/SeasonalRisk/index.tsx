@@ -168,6 +168,12 @@ function SeasonalRisk(props: Props) {
       (key) => key,
       (val) => {
         const remainingValue = val.find((v) => v.year === new Date().getFullYear());
+        const minDate = Math.min(
+          ...val.map((v) => v.year)
+        );
+        const maxDate = Math.max(
+          ...val.map((v) => v.year)
+        );
         return {
           dsr_avg: sum(val.map((v) => v.dsr_avg)) / val.length,
           dsr_max: sum(val.map((v) => v.dsr_max)) / val.length,
@@ -175,6 +181,8 @@ function SeasonalRisk(props: Props) {
           id: remainingValue?.id ?? 0,
           dsr: remainingValue?.dsr,
           month: remainingValue?.month,
+          minDate,
+          maxDate,
         };
       }
     );

@@ -55,6 +55,8 @@ export interface GWISChart {
   dsr_avg?: number;
   dsr_max?: number;
   dsr_min?: number;
+  minDate?: number;
+  maxDate?: number;
 }
 
 export interface RiskData {
@@ -342,4 +344,3 @@ export function formatNumber(value: number) {
 
   return addSeparator(number) ?? '';
 }
-

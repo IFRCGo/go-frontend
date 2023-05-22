@@ -94,10 +94,16 @@ interface DetailedChartProps {
 
 interface DetailedWildfireChartProps {
   gwisData?: GWISChart[]
+  maxDate?: number;
+  minDate?: number;
 }
 
 function DetailedWildfireChart(props: DetailedWildfireChartProps) {
-  const { gwisData } = props;
+  const {
+    gwisData,
+    maxDate,
+    minDate
+  } = props;
 
   const { strings } = React.useContext(languageContext);
 
@@ -105,12 +111,13 @@ function DetailedWildfireChart(props: DetailedWildfireChartProps) {
     (getFullMonthNameList(strings)).map(m => m.substr(0, 3))
   ), [strings]);
 
-  const chartData = gwisData?.map((wild) => (
-    {
+
+  const chartData = gwisData?.map((wild) => {
+    return {
       ...wild,
       range: [formatNumber(wild.dsr_min ?? 0), formatNumber(wild.dsr_max ?? 0)],
-    }
-  ));
+    };
+  });
 
   return (
     <ResponsiveContainer>
@@ -133,20 +140,20 @@ function DetailedWildfireChart(props: DetailedWildfireChartProps) {
           }}
         />
         <Area
-          name="Min-max"
+          name={`Min-max (${minDate} - ${maxDate})`}
           dataKey="range"
           fill="#e3e3e3"
           stroke="#e3e3e3"
         />
         <Line
-          name="Average"
+          name={`Average (${minDate} - ${maxDate})`}
           dataKey="dsr_avg"
           stroke="#6794dc"
           strokeWidth={2}
           dot={false}
         />
         <Line
-          name="Year"
+          name={`Year ${maxDate}`}
           dataKey="dsr"
           stroke="#ff6961"
           strokeWidth={2}
@@ -157,6 +164,7 @@ function DetailedWildfireChart(props: DetailedWildfireChartProps) {
           formatter={(value: number) => {
             return formatNumber(value);
           }}
+          labelFormatter={(m) => monthNameList[+m - 1]}
         />
       </ComposedChart>
     </ResponsiveContainer>
@@ -360,6 +368,9 @@ function RiskBarChart(props: Props) {
     }
   }, [hazardType, setRiskMetric]);
 
+  const minDate = gwisData?.find((date) => date.minDate)?.minDate;
+  const maxDate = gwisData?.find((date) => date.maxDate)?.maxDate;
+
   const monthNameList = React.useMemo(() => (
     (getFullMonthNameList(strings)).map(m => m.substr(0, 3))
   ), [strings]);
@@ -414,7 +425,6 @@ function RiskBarChart(props: Props) {
 
   const isEmpty = !chartData.some(c => {
     const keys = Object.keys(c) as (keyof typeof c)[];
-    console.log('keys', keys);
     if (keys.length <= 1) {
       return false;
     }
@@ -474,6 +484,8 @@ function RiskBarChart(props: Props) {
           ) : (
             <DetailedWildfireChart
               gwisData={gwisData}
+              maxDate={maxDate}
+              minDate={minDate}
             />
           )
         )}
@@ -574,11 +586,11 @@ function RiskBarChart(props: Props) {
           )}
           {hazardType === 'WF' && (
             <>
-              <div className={styles.separator}/>
+              <div className={styles.separator} />
               <div className={styles.fiLegendItems}>
-                <FILegendItem color="#6794dc" label="Average" />
-                <FILegendItem color="#e3e3e3" label="Min-max" />
-                <FILegendItem color="#ff6961" label="Year" />
+                <FILegendItem color="#6794dc" label={`Average (${minDate}-${maxDate})`} />
+                <FILegendItem color="#e3e3e3" label={`Min-max (${minDate}-${maxDate})`} />
+                <FILegendItem color="#ff6961" label={`Year ${maxDate}`} />
               </div>
             </>
           )}
