@@ -27,7 +27,7 @@ interface Props {
 export interface DrefApplicationResponse extends BaseProps {
   is_final_report_created: boolean;
   operational_update_details: BaseProps[];
-  final_report_details: BaseProps;
+  final_report_details: BaseProps[];
 }
 
 function ActiveDrefTable(props:Props) {
@@ -64,7 +64,7 @@ function ActiveDrefTable(props:Props) {
 
     let rowData = [];
     const hasOpsUpdateOnly = drefResponse?.results.filter(
-      (d) => d.operational_update_details.length > 0 && !d.final_report_details);
+      (d) => d.operational_update_details.length > 0 && d.final_report_details.length === 0);
 
     const opsUpdateData = hasOpsUpdateOnly?.map(
       (d) => {
@@ -97,11 +97,12 @@ function ActiveDrefTable(props:Props) {
     rowData.push(opsUpdateData);
 
     const hasfinalReportOnly = drefResponse?.results.filter(
-      (d) => !d.operational_update_details && d.final_report_details);
+      (d) => d.operational_update_details.length === 0 && d.final_report_details.length > 0);
+
     const finalReportData = hasfinalReportOnly?.map(
       (d) => {
         let obj = {
-          ...d.final_report_details,
+          ...d.final_report_details[0],
           firstLevel: [],
           secondLevel: [{
             id: d.id,
@@ -123,11 +124,12 @@ function ActiveDrefTable(props:Props) {
     rowData.push(finalReportData);
 
     const hasfinalReportAndOpsUpdate = drefResponse?.results.filter(
-      (d) => d.operational_update_details && d.final_report_details);
+      (d) => d.operational_update_details.length > 0 && d.final_report_details.length > 0);
+
     const finalReportAndOpsUpdateData = hasfinalReportAndOpsUpdate?.map(
       (d) => {
         let obj = {
-          ...d.final_report_details,
+          ...d.final_report_details[0],
           firstLevel: d.operational_update_details.map((ops) => ({
             ...ops,
           })),
@@ -150,7 +152,8 @@ function ActiveDrefTable(props:Props) {
       });
     rowData.push(finalReportAndOpsUpdateData);
 
-    const hasDrefOnly = drefResponse?.results.filter((d) => d.operational_update_details.length === 0 && !d.final_report_details);
+    const hasDrefOnly = drefResponse?.results.filter(
+      (d) => d.operational_update_details.length === 0 && d.final_report_details.length === 0);
     const drefData = hasDrefOnly?.map(
       (d) => {
         let obj = {
@@ -172,12 +175,12 @@ function ActiveDrefTable(props:Props) {
     <>
       {pending && <BlockLoading />}
       {!pending &&(
-      <DrefApplicationTable
-        className={_cs(className, styles.drefTable)}
-        data={data}
-        history={history}
-        refetch={refetchDrefList}
-      />
+        <DrefApplicationTable
+          className={_cs(className, styles.drefTable)}
+          data={data}
+          history={history}
+          refetch={refetchDrefList}
+        />
       )}
 
       {!drefPending && drefResponse?.results?.length === 0 && data.length === 0 && (

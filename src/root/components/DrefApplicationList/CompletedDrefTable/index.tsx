@@ -26,7 +26,7 @@ interface Props {
 
 interface DrefDetails extends BaseProps {
   operational_update_details: BaseProps[];
-  final_report_details: BaseProps;
+  final_report_details: BaseProps[];
 }
 export interface DrefApplicationResponse extends BaseProps {
   dref: DrefDetails;
@@ -68,7 +68,7 @@ function CompletedDrefTable(props:Props) {
         let obj = {
           ...d,
           firstLevel: d.dref.operational_update_details,
-          secondLevel: [d.dref.final_report_details],
+          secondLevel: d.dref.final_report_details,
         };
         return obj;
     });

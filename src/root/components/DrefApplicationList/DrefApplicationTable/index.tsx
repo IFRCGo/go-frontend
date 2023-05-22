@@ -287,17 +287,19 @@ function DrefApplicationTable(props:Props) {
                 disabled={item.is_published || finalReportPublishPending}
               />
             )}
+            <DropdownMenuItem
+              name={item.id}
+              onClick={undefined}
+              label="share"
+              disabled
+            />
             {item.is_published && (
               <>
                 <DropdownMenuItem
                   name={item.id}
                   onClick={undefined}
-                  label="share"
-                />
-                <DropdownMenuItem
-                  name={item.id}
-                  onClick={undefined}
                   label="view"
+                  disabled
                 />
               </>
             )}
@@ -323,12 +325,8 @@ function DrefApplicationTable(props:Props) {
                 <DropdownMenuItem
                   name={item.id}
                   onClick={undefined}
-                  label="share"
-                />
-                <DropdownMenuItem
-                  name={item.id}
-                  onClick={undefined}
                   label="view"
+                  disabled
                 />
               </>
             )}
@@ -373,7 +371,7 @@ function DrefApplicationTable(props:Props) {
             />
           </>
         );
-      }
+        }
 
       return;
     },[
@@ -551,7 +549,6 @@ function DrefApplicationTable(props:Props) {
       {publishDrefConfirmationModal}
       {publishOperationalUpdateConfirmationModal}
       {publishFinalReportConfirmationModal}
-
     </>
   );
 }
