@@ -42,6 +42,7 @@ function ActiveDrefTable(props:Props) {
   } = props;
 
   const { strings } = React.useContext(languageContext);
+  const [drefId, setDrefId] = React.useState<number>();
 
   const {
     pending: drefPending,
@@ -174,6 +175,19 @@ function ActiveDrefTable(props:Props) {
 
   const pending = drefPending;
 
+  const getDrefId = React.useCallback(
+    (applicationType, id) => {
+
+      if(applicationType === 'FINAL_REPORT'){
+        const newDrefId = drefResponse?.results.find((d) => d['final_report_details'].filter(
+          (fd) => fd.id === Number(id)
+        ));
+
+        setDrefId(newDrefId?.id);
+      }
+    },[drefResponse]
+  );
+
   return (
     <>
       {pending && <BlockLoading />}
@@ -183,10 +197,12 @@ function ActiveDrefTable(props:Props) {
           data={data}
           history={history}
           refetch={refetchDrefList}
+          getDrefId={getDrefId}
+          drefId={drefId}
         />
       )}
 
-      {!drefPending && drefResponse?.results?.length === 0 && data.length === 0 && (
+      {!drefPending && data.length === 0 && (
         <EmptyMessage />
       )}
 

@@ -26,6 +26,7 @@ import { TYPE_LOAN } from '#views/DrefApplicationForm/common';
 import DrefExportButton from '#components/DrefExportButton';
 
 import { BaseProps, TableDataDetail } from '../useDrefApplicationListOptions';
+import ShareUserModal from './ShareUserModal';
 import styles from '../styles.module.scss';
 
 interface Props {
@@ -33,6 +34,8 @@ interface Props {
   data?: TableDataDetail[];
   refetch:() => void;
   history: History;
+  getDrefId: (applicationType: string, id:number) => void;
+  drefId?: number;
 }
 
 interface DrefOperationalResponseFields {
@@ -47,11 +50,14 @@ function DrefApplicationTable(props:Props) {
     data,
     refetch,
     history,
+    getDrefId,
+    drefId,
   } = props;
 
   const alert = useAlertContext();
   const { strings } = React.useContext(languageContext);
   const [expandedRow, setExpandedRow] = React.useState<number>();
+  const [showModal, setShowModal] = React.useState<boolean>(false);
 
   const {
     pending: drefPublishPending,
@@ -270,9 +276,15 @@ function DrefApplicationTable(props:Props) {
     ]
   );
 
+  const handleShareModal = React.useCallback(
+    (name, e) => {
+      setShowModal(true);
+      getDrefId(name, e.currentTarget.value);
+    },[getDrefId]
+  );
+
   const getTableActions = React.useCallback(
     (item: BaseProps) => {
-
 
       if(item.application_type === "FINAL_REPORT"){
         return (
@@ -284,12 +296,15 @@ function DrefApplicationTable(props:Props) {
                 disabled={item.is_published || finalReportPublishPending}
               />
             )}
-            <DropdownMenuItem
-              name={item.id}
-              onClick={undefined}
-              label="share"
-              disabled
-            />
+            <Button
+              className={styles.shareButton}
+              variant='transparent'
+              name={item.application_type}
+              onClick={handleShareModal}
+              value={item.id}
+            >
+              share
+            </Button>
             {item.is_published && (
               <>
                 <DropdownMenuItem
@@ -300,8 +315,11 @@ function DrefApplicationTable(props:Props) {
                 />
               </>
             )}
-            <OperationalUpdateExport
-              operationalId={item.id}
+            <DropdownMenuItem
+              name={item.id}
+              onClick={undefined}
+              label="export"
+              disabled
             />
           </>
         );
@@ -389,11 +407,11 @@ function DrefApplicationTable(props:Props) {
       finalReportPublishPending,
       newOperationalUpdatePending,
       newFinalReportPending,
+      handleShareModal,
     ]);
 
   const getRowLevelData = React.useCallback(
     (expandedData?: BaseProps[])=> {
-
       return (
         expandedData?.sort(
           (a,b) => Date.parse(b.created_at) - Date.parse(a.created_at)).map(
@@ -546,16 +564,22 @@ function DrefApplicationTable(props:Props) {
     <>
       <Table
         className={_cs(className, styles.drefTable)}
+        headerRowClassName={styles.tableHeader}
         data={data}
         columns={drefApplicationColumns}
         keySelector={drefKeySelector}
         variant="large"
         rowModifier={rowModifier}
-        headerRowClassName={styles.tableHeader}
       />
       {publishDrefConfirmationModal}
       {publishOperationalUpdateConfirmationModal}
       {publishFinalReportConfirmationModal}
+      {showModal && (
+        <ShareUserModal
+          id={drefId}
+          onClose={()=> setShowModal(!showModal)}
+        />
+      )}
     </>
   );
 }
