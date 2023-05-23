@@ -11,7 +11,7 @@ import EmptyMessage from '#components/EmptyMessage';
 import BlockLoading from '#components/block-loading';
 
 import DrefApplicationTable from '../DrefApplicationTable';
-import { BaseProps, TableDataDetail } from '..';
+import { BaseProps, TableDataDetail } from '../useDrefApplicationListOptions';
 import styles from '../styles.module.scss';
 
 interface Props {
@@ -61,10 +61,9 @@ function ActiveDrefTable(props:Props) {
 
   onChanngeDrefCount(drefResponse?.count ?? 0);
   const data = React.useMemo(() => {
-
     let rowData = [];
     const hasOpsUpdateOnly = drefResponse?.results.filter(
-      (d) => d.operational_update_details.length > 0 && d.final_report_details.length === 0);
+      (d) => (d.operational_update_details.length > 0 && d.final_report_details.length === 0));
 
     const opsUpdateData = hasOpsUpdateOnly?.map(
       (d) => {
@@ -90,6 +89,8 @@ function ActiveDrefTable(props:Props) {
             is_published: d.is_published,
             has_ops_update: d.has_ops_update,
             has_final_reprot: d.has_final_reprot,
+            unpublished_op_update_count: d.unpublished_op_update_count,
+            unpublished_final_report_count: d.unpublished_final_report_count,
           }],
         };
         return obj;
@@ -97,7 +98,7 @@ function ActiveDrefTable(props:Props) {
     rowData.push(opsUpdateData);
 
     const hasfinalReportOnly = drefResponse?.results.filter(
-      (d) => d.operational_update_details.length === 0 && d.final_report_details.length > 0);
+      (d) => (d.operational_update_details.length === 0 && d.final_report_details.length > 0));
 
     const finalReportData = hasfinalReportOnly?.map(
       (d) => {
@@ -117,6 +118,8 @@ function ActiveDrefTable(props:Props) {
             is_published: d.is_published,
             has_ops_update: d.has_ops_update,
             has_final_reprot: d.has_final_reprot,
+            unpublished_op_update_count: d.unpublished_op_update_count,
+            unpublished_final_report_count: d.unpublished_final_report_count,
           }],
         };
         return obj;
@@ -124,15 +127,13 @@ function ActiveDrefTable(props:Props) {
     rowData.push(finalReportData);
 
     const hasfinalReportAndOpsUpdate = drefResponse?.results.filter(
-      (d) => d.operational_update_details.length > 0 && d.final_report_details.length > 0);
+      (d) => (d.operational_update_details.length > 0 && d.final_report_details.length > 0));
 
     const finalReportAndOpsUpdateData = hasfinalReportAndOpsUpdate?.map(
       (d) => {
         let obj = {
           ...d.final_report_details[0],
-          firstLevel: d.operational_update_details.map((ops) => ({
-            ...ops,
-          })),
+          firstLevel: d.operational_update_details,
           secondLevel:[{
             id: d.id,
             created_at: d.created_at,
@@ -146,6 +147,8 @@ function ActiveDrefTable(props:Props) {
             is_published: d.is_published,
             has_ops_update: d.has_ops_update,
             has_final_reprot: d.has_final_reprot,
+            unpublished_op_update_count: d.unpublished_op_update_count,
+            unpublished_final_report_count: d.unpublished_final_report_count,
           }],
         };
         return obj;
@@ -153,7 +156,8 @@ function ActiveDrefTable(props:Props) {
     rowData.push(finalReportAndOpsUpdateData);
 
     const hasDrefOnly = drefResponse?.results.filter(
-      (d) => d.operational_update_details.length === 0 && d.final_report_details.length === 0);
+      (d) => (d.operational_update_details.length === 0 && d.final_report_details.length === 0));
+
     const drefData = hasDrefOnly?.map(
       (d) => {
         let obj = {
@@ -166,7 +170,6 @@ function ActiveDrefTable(props:Props) {
     rowData.push(drefData);
 
     return rowData.flat() as TableDataDetail[];
-
   },[drefResponse]);
 
   const pending = drefPending;

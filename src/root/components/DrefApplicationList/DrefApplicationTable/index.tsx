@@ -25,7 +25,7 @@ import Button from '#components/Button';
 import { TYPE_LOAN } from '#views/DrefApplicationForm/common';
 import DrefExportButton from '#components/DrefExportButton';
 
-import { BaseProps, TableDataDetail } from '..';
+import { BaseProps, TableDataDetail } from '../useDrefApplicationListOptions';
 import styles from '../styles.module.scss';
 
 interface Props {
@@ -273,9 +273,6 @@ function DrefApplicationTable(props:Props) {
   const getTableActions = React.useCallback(
     (item: BaseProps) => {
 
-      // NOTE: This has to be calculate in server in dref main object
-      // const hasUnpublishedOperationalUpdate = item.operational_update_details?.some(d => !d.is_published) ?? false;
-      // const hasUnpublishedFinalReport = hasFinalReport && !item.dref_final_report_details?.is_published;
 
       if(item.application_type === "FINAL_REPORT"){
         return (
@@ -338,6 +335,9 @@ function DrefApplicationTable(props:Props) {
       }
 
       if(item.application_type === "DREF"){
+        const hasUnpublishedOperationalUpdate = item.unpublished_op_update_count > 0;
+        const hasUnpublishedFinalReport = item.unpublished_final_report_count > 0;
+
         const isDrefLoan = item.type_of_dref === TYPE_LOAN;
         return(
           <>
@@ -348,22 +348,29 @@ function DrefApplicationTable(props:Props) {
               />
             )}
 
-            {item.is_published && !item.has_final_reprot && (
-              <DropdownMenuItem
-                name={item.id}
-                onClick={postDrefNewOperationalUpdate}
-                label={strings.drefOperationalUpdateNewLabel}
-                disabled={newOperationalUpdatePending}
-              />
-            )}
-            {item.is_published && !item.has_final_reprot && (
-              <DropdownMenuItem
-                name={item.id}
-                onClick={postDrefNewFinalReport}
-                label={strings.finalReportCreateButtonLabel}
-                disabled={isDrefLoan || newFinalReportPending}
-              />
-            )}
+            {!hasUnpublishedOperationalUpdate
+              && item.is_published
+              && !item.has_final_reprot
+              && (
+                <DropdownMenuItem
+                  name={item.id}
+                  onClick={postDrefNewOperationalUpdate}
+                  label={strings.drefOperationalUpdateNewLabel}
+                  disabled={newOperationalUpdatePending}
+                />
+              )}
+            {!hasUnpublishedFinalReport
+              && !hasUnpublishedOperationalUpdate
+              && item.is_published
+              && !item.has_final_reprot
+              && (
+                <DropdownMenuItem
+                  name={item.id}
+                  onClick={postDrefNewFinalReport}
+                  label={strings.finalReportCreateButtonLabel}
+                  disabled={isDrefLoan || newFinalReportPending}
+                />
+              )}
             <DrefExportButton
               className={styles.drefExportButton}
               variant="transparent"
@@ -371,7 +378,7 @@ function DrefApplicationTable(props:Props) {
             />
           </>
         );
-        }
+      }
 
       return;
     },[
@@ -385,10 +392,10 @@ function DrefApplicationTable(props:Props) {
     ]);
 
   const getRowLevelData = React.useCallback(
-    (opsData?: BaseProps[])=> {
+    (expandedData?: BaseProps[])=> {
 
       return (
-        opsData?.sort(
+        expandedData?.sort(
           (a,b) => Date.parse(b.created_at) - Date.parse(a.created_at)).map(
           (detail) => (
             <TableRow key={detail.id} className={styles.expandedRow}>

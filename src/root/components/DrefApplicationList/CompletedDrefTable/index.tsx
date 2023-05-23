@@ -11,7 +11,7 @@ import EmptyMessage from '#components/EmptyMessage';
 import BlockLoading from '#components/block-loading';
 
 import DrefApplicationTable from '../DrefApplicationTable';
-import { BaseProps } from '..';
+import { BaseProps } from '../useDrefApplicationListOptions';
 import styles from '../styles.module.scss';
 
 interface Props {
@@ -28,7 +28,8 @@ interface DrefDetails extends BaseProps {
   operational_update_details: BaseProps[];
   final_report_details: BaseProps[];
 }
-export interface DrefApplicationResponse extends BaseProps {
+
+interface DrefApplicationResponse extends BaseProps {
   dref: DrefDetails;
 }
 
@@ -71,7 +72,7 @@ function CompletedDrefTable(props:Props) {
           secondLevel: d.dref.final_report_details,
         };
         return obj;
-    });
+      });
     return rowData;
 
   },[drefResponse]);

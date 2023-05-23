@@ -1,8 +1,7 @@
 import React from 'react';
 import { History } from 'history';
 import {
-  EntriesAsList,
-  Error,
+  EntriesAsList, Error,
   PartialForm,
 } from '@togglecorp/toggle-form';
 import {
@@ -22,37 +21,8 @@ import Button from '#components/Button';
 
 import useDrefApplicationListOptions from './useDrefApplicationListOptions';
 import ActiveDrefTable from './ActiveDrefTable';
-import styles from './styles.module.scss';
 import CompletedDrefTable from './CompletedDrefTable';
-
-export interface BaseProps {
-  id: number;
-  title: string;
-  appeal_code: string;
-  created_at: string;
-  submission_to_geneva: string;
-  is_published: boolean;
-  type_of_dref?: number;
-  type_of_dref_display: string;
-  type_of_onset_display: string;
-  operational_update_number: number;
-  application_type: string;
-  application_type_display: string;
-  status: string;
-  has_ops_update: boolean;
-  has_final_reprot: boolean;
-  country_details: {
-    id: number;
-    country: number;
-    district: number[];
-    name: string;
-  };
-}
-
-export interface TableDataDetail extends BaseProps {
-  firstLevel: BaseProps[];
-  secondLevel: BaseProps[];
-}
+import styles from './styles.module.scss';
 
 const ITEM_PER_PAGE = 6;
 
