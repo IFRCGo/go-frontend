@@ -45,6 +45,7 @@ function CompletedDrefTable(props:Props) {
   } = props;
 
   const { strings } = React.useContext(languageContext);
+  const [drefId, setDrefId] = React.useState<number>();
 
   const {
     pending: drefPending,
@@ -55,8 +56,6 @@ function CompletedDrefTable(props:Props) {
     query: {
       country,
       type_of_dref: drefType,
-      // created_at__lte: '',
-      // created_at__gte: '',
       limit: itemPerPage,
       offset: itemPerPage * (drefActivePage - 1),
     },
@@ -79,6 +78,32 @@ function CompletedDrefTable(props:Props) {
 
   const pending = drefPending;
 
+  const getDrefId = React.useCallback(
+    (applicationType, id) => {
+      if(applicationType === 'FINAL_REPORT'){
+        let newDrefId = drefResponse?.results.filter(
+          (d) => d.dref.final_report_details.find(
+            (fd) => fd.id === Number(id)
+          ))[0];
+
+        setDrefId(newDrefId?.id);
+      }else if(applicationType === 'OPS_UPDATE'){
+        let newDrefId = drefResponse?.results.filter(
+          (d) => d.dref.operational_update_details.find(
+            (fd) => fd.id === Number(id)
+          ))[0];
+
+        setDrefId(newDrefId?.id);
+      }else{
+        let newDrefId = drefResponse?.results.find(
+          (fd) => fd.id === Number(id)
+        );
+
+        setDrefId(newDrefId?.id);
+      }
+    },[drefResponse]
+  );
+
   return (
     <>
       {pending && <BlockLoading />}
@@ -88,6 +113,8 @@ function CompletedDrefTable(props:Props) {
           data={data}
           history={history}
           refetch={refetchDrefList}
+          getDrefId={getDrefId}
+          drefId={drefId}
         />
       )}
 

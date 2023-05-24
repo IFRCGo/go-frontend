@@ -53,8 +53,6 @@ function ActiveDrefTable(props:Props) {
     query: {
       country,
       type_of_dref: drefType,
-      // created_at__lte: '',
-      // created_at__gte: '',
       limit: itemPerPage,
       offset: itemPerPage * (drefActivePage - 1),
     },
@@ -177,11 +175,24 @@ function ActiveDrefTable(props:Props) {
 
   const getDrefId = React.useCallback(
     (applicationType, id) => {
-
       if(applicationType === 'FINAL_REPORT'){
-        const newDrefId = drefResponse?.results.find((d) => d['final_report_details'].filter(
+        let newDrefId = drefResponse?.results.filter(
+          (d) => d.final_report_details.find(
+            (fd) => fd.id === Number(id)
+          ))[0];
+
+        setDrefId(newDrefId?.id);
+      }else if(applicationType === 'OPS_UPDATE'){
+        let newDrefId = drefResponse?.results.filter(
+          (d) => d.operational_update_details.find(
+            (fd) => fd.id === Number(id)
+          ))[0];
+
+        setDrefId(newDrefId?.id);
+      }else{
+        let newDrefId = drefResponse?.results.find(
           (fd) => fd.id === Number(id)
-        ));
+        );
 
         setDrefId(newDrefId?.id);
       }

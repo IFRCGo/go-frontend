@@ -279,8 +279,8 @@ function DrefApplicationTable(props:Props) {
 
   const handleShareModal = React.useCallback(
     (name, e) => {
-      setShowModal(true);
       getDrefId(name, e.currentTarget.value);
+      setShowModal(true);
     },[getDrefId]
   );
 
@@ -325,6 +325,15 @@ function DrefApplicationTable(props:Props) {
                 disabled={item.is_published || operationalUpdatePublishPending}
               />
             )}
+            <Button
+              className={styles.menuItemButton}
+              variant='transparent'
+              name={item.application_type}
+              onClick={handleShareModal}
+              value={item.id}
+            >
+              share
+            </Button>
             <OperationalUpdateExport
               className={styles.menuItemButton}
               variant="transparent"
@@ -347,7 +356,15 @@ function DrefApplicationTable(props:Props) {
                 label= {`${strings.drefTableEdit} ${item.application_type_display}`}
               />
             )}
-
+            <Button
+              className={styles.menuItemButton}
+              variant='transparent'
+              name={item.application_type}
+              onClick={handleShareModal}
+              value={item.id}
+            >
+              share
+            </Button>
             {!hasUnpublishedOperationalUpdate
               && item.is_published
               && !item.has_final_reprot
