@@ -1,14 +1,11 @@
 import React from 'react';
-import { isNotDefined, randomString, _cs } from '@togglecorp/fujs';
 import {
   PartialForm,
-  useForm,
   SetValueArg,
   useFormObject,
 } from '@togglecorp/toggle-form';
 
 import usePerProcessOptions from '../../usePerProcessOptions';
-import { assessmentSchema } from '#views/PerProcess/usePerProcessOptions';
 import {
   booleanOptionKeySelector,
   optionLabelSelector,
@@ -20,44 +17,27 @@ import RadioInput from '#components/RadioInput';
 
 import styles from './styles.module.scss';
 
-// type SetValueArg<T> = T | ((value: T) => T);
-
 type Value = PerAssessmentForm;
 type InputValue = PartialForm<Value>;
 
 interface Props {
-  className?: string;
-  name: string | number | undefined;
   onChange: (value: SetValueArg<InputValue>, index: number) => void;
-  // onRemove: (index: number) => void;
   index: number;
   value: InputValue | undefined | null;
-  // error: ArrayError<PerAssessmentForm> | undefined;
 }
 
 function QuestionInput(props: Props) {
   const {
-    className,
-    name,
-    // error: errorFromProps,
     onChange,
-    // onRemove,
     index,
     value,
   } = props;
 
   const {
     yesNoOptions,
-  } = usePerProcessOptions(value);
+  } = usePerProcessOptions();
 
-  const {
-    value: initialValue,
-    setFieldValue: onValueChange,
-  } = useForm(
-    assessmentSchema,
-    { value: {} }
-  );
-  const onFieldChange = useFormObject(index, onChange, () => ({ benchmark_id: index }));
+  const onFieldChange = useFormObject(index, onChange, {});
 
   return (
     <>
@@ -70,7 +50,7 @@ function QuestionInput(props: Props) {
           className={styles.noteSection}
           label='Notes'
           name="description"
-          value={value?.description}
+          value={value?.notes}
           placeholder="This is placeholder"
           onChange={onFieldChange}
           rows={2}

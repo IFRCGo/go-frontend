@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { randomString, _cs } from '@togglecorp/fujs';
 import {
   EntriesAsList,
@@ -55,7 +55,7 @@ function WorkPlanForm(props: Props) {
 
   const {
     workPlanStatusOptions,
-  } = usePerProcessOptions(value);
+  } = usePerProcessOptions();
 
   const { strings } = React.useContext(LanguageContext);
   const alert = useAlertContext();
@@ -73,15 +73,6 @@ function WorkPlanForm(props: Props) {
         { variant: 'success' },
       );
 
-      // if (!perId) {
-      //   window.setTimeout(
-      //     () => history.push(`/new-per/${response?.id}/edit/`),
-      //     250,
-      //   );
-      // }
-      //  else {
-      //   handlePerLoad(response);
-      // }
     },
     onFailure: ({
       value: {
@@ -90,11 +81,6 @@ function WorkPlanForm(props: Props) {
       },
       debugMessage,
     }) => {
-      // setError(formErrors);
-      // if (formErrors.modified_at === 'OBSOLETE_PAYLOAD') {
-      //   // There was a save conflict due to obsolete payload
-      //   setShowObsoletePayloadResolutionModal(true);
-      // }
 
       alert.show(
         <p>
@@ -112,13 +98,13 @@ function WorkPlanForm(props: Props) {
     },
   });
 
-  const handleSubmit = React.useCallback((finalValues) => {
+  const handleSubmit = useCallback((finalValues) => {
     console.warn('finalValues', finalValues);
     onValueSet(finalValues);
     submitRequest(finalValues);
   }, [onValueSet, submitRequest]);
 
-  const handleAddCustomActivity = React.useCallback(() => {
+  const handleAddCustomActivity = useCallback(() => {
     const newList: PartialForm<WorkPlanComponent> = {
       id: randomString(),
     };
@@ -188,31 +174,27 @@ function WorkPlanForm(props: Props) {
                   name='status'
                   options={workPlanStatusOptions}
                   onChange={setFieldValue}
-                  value={undefined}
-                >
-                </SelectInput>
+                  value={value?.status}
+                />
               </td>
               <td>
                 <SelectInput
-                  name={undefined}
-                  onChange={undefined}
-                  value={undefined}
-                >
-                </SelectInput>
+                  name='status'
+                  options={undefined}
+                  onChange={setFieldValue}
+                  value={value?.status}
+                />
               </td>
-              {value?.component?.map((c, i) => (
-                <td>
-                  <Button
-                    key={i}
-                    className={styles.removeButton}
-                    name="select"
-                    onRemove={onRemove}
-                    variant="action"
-                  >
-                    <IoTrash />
-                  </Button>
-                </td>
-              ))}
+              <td>
+                <Button
+                  className={styles.removeButton}
+                  name="select"
+                  // onRemove={onRemove}
+                  variant="action"
+                >
+                  <IoTrash />
+                </Button>
+              </td>
             </tr>
           </tbody>
           <Button

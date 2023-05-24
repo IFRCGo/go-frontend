@@ -65,6 +65,8 @@ export interface Component {
   component_num: number;
   description: string;
   id: string;
+  question: string;
+  status: string;
 }
 
 // Mutations
@@ -121,18 +123,29 @@ export interface PerAssessmentForm {
   status: string;
   question: string;
   description: string;
+  title: string;
   answer: boolean;
   component_responses: {
     id: number | string;
     component_id: number | string;
     component_num: string;
     title: string;
+    question: string;
     benchmark_responses: {
       id: number | string;
       benchmark_id: number | string;
       notes: string;
     }[];
   }[];
+
+  selected_answer: string;
+  notes: string;
+  selected_answer_details: string;
+  question_details: {
+    id: string;
+    question: string;
+    question_num: number;
+  }
 }
 
 /*

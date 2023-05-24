@@ -23,6 +23,7 @@ import {
   PerOverviewFields,
   WorkPlanComponent,
   emptyStringOptionList,
+  FormComponentStatus,
 } from './common';
 
 export type OverviewFormSchema = ObjectSchema<PartialForm<PerOverviewFields>>;
@@ -33,6 +34,9 @@ export type AssessmentFormSchemeFields = ReturnType<AssessmentFormScheme['fields
 
 export type WorkPlanFormScheme = ObjectSchema<PartialForm<WorkPlanComponent>>;
 export type WorkPlanFormSchemeFields = ReturnType<WorkPlanFormScheme['fields']>;
+
+export type FormStatusScheme = ObjectSchema<PartialForm<FormStatusOptions>>;
+export type FormStatusSchemeFields = ReturnType<FormStatusScheme['fields']>;
 
 interface FormStatusOptions {
   formcomponentstatus: StringKeyValuePair[];
@@ -89,15 +93,24 @@ export const assessmentSchema: AssessmentFormScheme = {
     id: [],
     status: [],
     question: [],
-    description:[],
+    description: [],
+    title: [],
     answer: [],
+
+    selected_answer: [],
+    notes: [],
+    selected_answer_details: [],
+
     component_responses: {
       keySelector: (val) => val.component_id as string,
       member: () => ({
         fields: () => ({
           id: [],
           component_num: [],
+          title: [],
+          status: [],
           componentId: [],
+          question: [],
           benchmark_responses: {
             keySelector: (n) => n.benchmark_id as string,
             member: () => ({
@@ -127,7 +140,7 @@ export const workplanSchema: WorkPlanFormScheme = {
   })
 };
 
-function usePerProcessOptions(value: PartialForm<PerOverviewFields>) {
+function usePerProcessOptions() {
   const { strings } = React.useContext(LanguageContext);
 
   const {

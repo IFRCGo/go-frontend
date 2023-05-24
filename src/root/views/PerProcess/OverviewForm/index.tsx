@@ -50,7 +50,6 @@ interface Props {
 
 function OverviewForm(props: Props) {
   const {
-    // initialValue,
     onValueSet,
     perId,
   } = props;
@@ -70,7 +69,7 @@ function OverviewForm(props: Props) {
 
   const {
     yesNoOptions,
-  } = usePerProcessOptions(value);
+  } = usePerProcessOptions();
 
   const {
     pending: fetchingPerOptions,
@@ -133,16 +132,6 @@ function OverviewForm(props: Props) {
         strings.perFormSaveRequestSuccessMessage,
         { variant: 'success' },
       );
-
-      // if (!perId) {
-      //   window.setTimeout(
-      //     () => history.push(`/new-per/${response?.id}/edit/`),
-      //     250,
-      //   );
-      // }
-      //  else {
-      //   handlePerLoad(response);
-      // }
     },
     onFailure: ({
       value: {
@@ -151,12 +140,6 @@ function OverviewForm(props: Props) {
       },
       debugMessage,
     }) => {
-      // setError(formErrors);
-      // if (formErrors.modified_at === 'OBSOLETE_PAYLOAD') {
-      //   // There was a save conflict due to obsolete payload
-      //   setShowObsoletePayloadResolutionModal(true);
-      // }
-
       alert.show(
         <p>
           {strings.perFormSaveRequestFailureMessage}
@@ -180,11 +163,10 @@ function OverviewForm(props: Props) {
   }, [onValueSet, submitRequest]);
 
   const handleFileInputChange = React.useCallback((event) => {
+    event.preventDefault();
     const files = event.target.files;
     if (files && files.length > 0) {
       const file = files[0];
-      console.warn('file', file);
-      onValueChange(1, 'national_society');
       onValueChange(file, 'orientation_document');
       // uploadFile(file);
     }
@@ -192,7 +174,7 @@ function OverviewForm(props: Props) {
 
   const handleTabChange = useCallback((newStep: string) => {
     scrollToTop();
-    setCurrentStep(Number(newStep));
+    // setCurrentStep(Number(newStep));
   }, []);
 
   const handleSubmitButtonClick = React.useCallback(() => {

@@ -5,12 +5,14 @@ import styles from './styles.module.scss';
 interface Props {
   label?: string;
   value?: number;
+  width?: number;
 }
 
 function ProgressBar(props: Props) {
   const {
     label,
     value,
+    width,
   } = props;
 
   if (value && value > 100) {

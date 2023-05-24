@@ -1,9 +1,10 @@
-import React, { useContext, useCallback } from 'react';
+import React, { useContext, useCallback, useState } from 'react';
 import { isNotDefined, _cs } from '@togglecorp/fujs';
-import { EntriesAsList, PartialForm, SetValueArg, useForm, useFormArray, useFormObject } from '@togglecorp/toggle-form';
+import { ArrayError, createSubmitHandler, PartialForm, SetBaseValueArg, useForm, useFormArray, useFormObject } from '@togglecorp/toggle-form';
 import LanguageContext from '#root/languageContext';
 import { ListResponse, useLazyRequest, useRequest } from '#utils/restRequest';
 import useAlert from '#hooks/useAlert';
+import { Tooltip as ReactTooltip } from 'react-tooltip';
 
 import usePerProcessOptions, { assessmentSchema } from '../usePerProcessOptions';
 import Tabs from '#components/Tabs';
@@ -16,42 +17,37 @@ import ExpandableContainer from '#components/ExpandableContainer';
 import Button from '#components/Button';
 import { Area, Component, PerAssessmentForm } from '../common';
 import scrollToTop from '#utils/scrollToTop';
-import SelectInput from '#components/SelectInput';
-import QuestionInput from './QuestionInput';
 
 import styles from './styles.module.scss';
+import ComponentsInput from './ComponentInput';
 
 type Value = PerAssessmentForm;
 type InputValue = PartialForm<Value>;
 
 interface Props {
-  className?: string;
   perId?: string;
-  onChange: (value: SetValueArg<InputValue>) => void;
-  // onRemove: (index: number) => void;
-  index: number | string;
-  value: InputValue | undefined | null;
+  error: ArrayError<Value> | undefined;
+  onValueSet: (value: SetBaseValueArg<Value>) => void;
 }
 
 function AssessmentForm(props: Props) {
   const {
-    className,
     perId,
-    onChange,
-    index,
-    value,
+    error: errorFromProps,
+    onValueSet,
   } = props;
 
   const {
+    value,
     error: formError,
     validate,
     setFieldValue: onValueChange,
     setError: onErrorSet,
-  } = useForm(assessmentSchema, { value: {} });
+  } = useForm(assessmentSchema, { value: {} }); // TODO: move this to separate variable
 
   const {
     formStatusOptions,
-  } = usePerProcessOptions(value);
+  } = usePerProcessOptions();
 
   const minArea = 1;
   const maxArea = 5;
@@ -60,29 +56,49 @@ function AssessmentForm(props: Props) {
 
   const alert = useAlert();
 
-  const [currentAreaStep, setAreaCurrentStep] = React.useState("1");
+  const [currentArea, setCurrentArea] = useState<number | undefined>();
+
+  const [currentComponent, setCurrentComponent] = useState<number | undefined>();
 
   const {
     response: areaResponse,
   } = useRequest<ListResponse<Area>>({
     url: 'api/v2/per-formarea/',
+    onSuccess: (value) => {
+      const firstArea = value?.results?.[0];
+      if (firstArea) {
+        setCurrentArea(firstArea.id);
+      }
+    }
   });
 
   const {
-    pending: fetchingComponents,
     response: componentResponse,
   } = useRequest<ListResponse<Component>>({
-    url: `api/v2/per-formcomponent/?area_id=${currentAreaStep}`,
+    skip: isNotDefined(currentArea),
+    url: `api/v2/per-formcomponent/`,
+    query: {
+      area_id: currentArea,
+    },
+    onSuccess: (value) => {
+      const componentArea = value?.results?.[0];
+      if (componentArea) {
+        setCurrentComponent(componentArea.id);
+      }
+    }
   });
 
   const {
     response: questionResponse,
   } = useRequest<ListResponse<PerAssessmentForm>>({
-    url: `api/v2/per-formquestion/?component=&area_id=${currentAreaStep}`,
+    url: `api/v2/per-formquestion/`,
+    query: {
+      component: currentComponent,
+      area_id: currentArea,
+    },
   });
 
   const {
-    pending: perSubmitPending,
     trigger: submitRequest,
   } = useLazyRequest({
     url: perId ? `api/v2/updatemultipleperforms/${perId}/` : 'api/v2/updatemultipleperforms/',
@@ -117,14 +133,24 @@ function AssessmentForm(props: Props) {
     },
   });
 
+  const handleSubmit = React.useCallback((finalValues) => {
+    console.warn('finalValues', finalValues);
+    onValueSet(finalValues);
+    submitRequest(finalValues);
+  }, [onValueSet, submitRequest]);
+
+  const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    const buttonId = event.currentTarget.id;
+    console.log('Button ID:', buttonId);
+  };
 
   const handlePerTabChange = useCallback((newStep: string) => {
     scrollToTop();
-    setAreaCurrentStep(Number(newStep));
+    setCurrentArea(newStep);
   }, []);
 
   const handleAreaTabChange = useCallback((newStep: string) => {
-    setAreaCurrentStep(Number(newStep));
+    setCurrentArea(newStep);
   }, []);
 
   const handleSubmitCancel = useCallback(() => {
@@ -167,140 +193,150 @@ function AssessmentForm(props: Props) {
   const noOfAreas = (areaResponse?.results.length ?? 0) + 1;
 
   const handleNextTab = () => {
-    setAreaCurrentStep(Math.min(currentAreaStep + 1, noOfAreas));
+    setCurrentArea(Math.min(currentArea + 1, noOfAreas));
   };
 
   const handlePrevTab = () => {
-    setAreaCurrentStep(Math.max(currentAreaStep - 1, 1));
+    setCurrentArea(Math.max(currentArea - 1, 1));
   };
-  const onFieldChange = useFormObject(index, onChange, () => ({ component_id: index }));
 
   const {
-    setValue: setBenchmarkValue,
-    removeValue: removeBenchmarkValue,
-  } = useFormArray('component_responses', onFieldChange);
+    setValue: setComponentValue,
+    removeValue: removeComponentValue,
+  } = useFormArray(
+    'component_responses',
+    onValueChange,
+  );
 
   return (
     <Container>
-      <ExpandableContainer
-        className={_cs(styles.customActivity, styles.errored)}
-        componentRef={undefined}
-        // actionsContainerClassName={styles}
-        headingSize='small'
-        sub
-        actions='Show Summary'
-      >
-        <Container
-          className={styles.inputSection}
+      <form onSubmit={createSubmitHandler(validate, onErrorSet, handleSubmit)}>
+        <ExpandableContainer
+          className={_cs(styles.customActivity, styles.errored)}
+          componentRef={undefined}
+          // actionsContainerClassName={styles}
+          headingSize='small'
+          sub
+          actions='Show Summary'
         >
-          <div className={styles.progressBar}>
-            <ProgressBar
-              // className={styles.questionAnswered}
-              label='Answered'
-              value={20}
-            />
-            <h5>5 Yes;</h5>
-            <h5>4 NO</h5>
-            <ProgressBar
-              // className={styles.questionAnswered}
-              label='Answered'
-              value={20}
-            />
-          </div>
-        </Container>
-      </ExpandableContainer>
-      <Tabs
-        disabled={undefined}
-        onChange={handleAreaTabChange}
-        value={String(currentAreaStep)}
-        variant='primary'
-      >
-        <TabList
-          className={styles.tabList}
-        >
-          {areaResponse?.results?.map((item) => (
-            <Tab
-              name={String(item.id)}
-              step={item?.area_num}
-              errored={undefined}
-            >
-              Area {item?.area_num}: {item?.title}
-            </Tab>
-          ))}
-        </TabList>
-        {areaResponse?.results?.map((component) => (
-          <TabPanel
-            name={String(component.id)}
-            key={component.id}
+          <Container
+            className={styles.inputSection}
           >
-            {componentResponse?.results.map((cr, i) => (
-              <ExpandableContainer
-                className={_cs(styles.customActivity, styles.errored)}
-                heading={`Component ${i + 1}: ${cr?.title}`}
-                headingSize='small'
-                sub
-                actions={
-                  <SelectInput
-                    className={styles.improvementSelect}
-                    name={"status" as const}
-                    onChange={onValueChange}
-                    options={formStatusOptions}
-                    value={value?.status}
-                  />
-                }
+            <div className={styles.progressBar}>
+              <ProgressBar
+                // className={styles.questionAnswered}
+                label='Answered'
+                value={20}
+              />
+              {/* <StackedProgressBar
+                label='this is stacked bar'
+                value={100}
+                width={20}
+              /> */}
+              <React.Fragment key={undefined}>
+                <div
+                  data-tooltip-id="1"
+                  data-for="5"
+                  className={styles.hazardRiskBar}
+                  style={{
+                    width: `50%`,
+                    backgroundColor: 'green',
+                  }}
+                />
+                <ReactTooltip
+                  id="1"
+                  className={styles.tooltip}
+                  classNameArrow={styles.arrow}
+                  place="top"
+                  variant='light'
+                />
+              </React.Fragment>
+              <h5>5 Yes;</h5>
+              <h5>4 NO</h5>
+              <ProgressBar
+                // className={styles.questionAnswered}
+                label='Answered'
+                value={20}
+              />
+            </div>
+          </Container>
+        </ExpandableContainer>
+        <Tabs
+          disabled={undefined}
+          onChange={handleAreaTabChange}
+          value={String(currentArea)}
+          variant='primary'
+        >
+          <TabList
+            className={styles.tabList}
+          >
+            {areaResponse?.results?.map((item) => (
+              <Tab
+                name={String(item.id)}
+                step={item?.area_num}
+                errored={undefined}
               >
-                {questionResponse?.results.map((question, i) => (
-                  <QuestionInput
-                    key={question.id}
-                    name={question.id}
-                    index={i}
-                    onChange={setBenchmarkValue}
-                    // onRemove={removeBenchmarkValue}
-                    value={question}
-                  // index={value?.component_responses?.filter(Boolean)?.findIndex(res => res.component_id === component.id)}
-                  // value={value?.component_responses?.filter(Boolean)?.find(res => res.component_id === component.id)}
-                  />
-                ))}
-                {/* <div className={styles.dot} /> */}
-              </ExpandableContainer>
+                Area {item?.area_num}: {item?.title}
+              </Tab>
             ))}
-          </TabPanel>
-        ))}
-        <div className={styles.actions}>
-          {currentAreaStep > minArea &&
-            <Button
-              name={undefined}
-              variant='secondary'
-              onClick={handlePrevTab}
-              disabled={undefined}
+          </TabList>
+          {areaResponse?.results?.map((component) => (
+            <TabPanel
+              name={String(component.id)}
+              key={component.id}
+              value={String(currentComponent)}
             >
-              Back
-            </Button>
-          }
+              {componentResponse?.results?.map((a, i) => (
+                <ComponentsInput
+                  key={a.component}
+                  value={a}
+                  index={i}
+                  formStatusOptions={formStatusOptions}
+                  componentId={a.id}
+                  areaId={component.id}
+                  onChange={setComponentValue}
+                  onRemove={removeComponentValue}
+                // error={getErrorObject(error?.component)}
+                />
+              ))}
+            </TabPanel>
+          ))}
           <div className={styles.actions}>
-            {currentAreaStep < maxArea &&
+            {currentArea > minArea &&
               <Button
                 name={undefined}
                 variant='secondary'
-                onClick={handleNextTab}
+                onClick={handlePrevTab}
                 disabled={undefined}
               >
-                Next
+                Back
               </Button>
             }
             <div className={styles.actions}>
-              <Button
-                name={undefined}
-                variant='secondary'
-                onClick={handleSubmitButtonClick}
-                disabled={undefined}
-              >
-                Submit
-              </Button>
+              {currentArea < maxArea &&
+                <Button
+                  name={undefined}
+                  variant='secondary'
+                  onClick={handleNextTab}
+                  disabled={undefined}
+                >
+                  Next
+                </Button>
+              }
+              <div className={styles.actions}>
+                <Button
+                  name={undefined}
+                  variant='secondary'
+                  onClick={handleSubmitButtonClick}
+                  disabled={undefined}
+                >
+                  Submit
+                </Button>
+              </div>
             </div>
           </div>
-        </div>
-      </Tabs>
+        </Tabs>
+      </form>
     </Container>
   );
 }
