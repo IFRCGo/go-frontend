@@ -10,6 +10,9 @@ if (!window.appSettings) {
     riskApi: '',
     riskAdminUrl: '',
     tinyApiKey: '',
+    sentryDsn: '',
+    setnryTracesSampleRate: '',
+    sentryNormalizeDepth: '',
   };
 }
 
