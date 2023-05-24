@@ -305,16 +305,6 @@ function DrefApplicationTable(props:Props) {
             >
               share
             </Button>
-            {item.is_published && (
-              <>
-                <DropdownMenuItem
-                  name={item.id}
-                  onClick={undefined}
-                  label="view"
-                  disabled
-                />
-              </>
-            )}
             <DropdownMenuItem
               name={item.id}
               onClick={undefined}
@@ -334,16 +324,6 @@ function DrefApplicationTable(props:Props) {
                 label="Edit"
                 disabled={item.is_published || operationalUpdatePublishPending}
               />
-            )}
-            {item.is_published && (
-              <>
-                <DropdownMenuItem
-                  name={item.id}
-                  onClick={undefined}
-                  label="view"
-                  disabled
-                />
-              </>
             )}
             <OperationalUpdateExport
               operationalId={item.id}

@@ -78,11 +78,13 @@ function ShareUserModal(props: Props) {
   return(
     <BasicModal
       className={styles.shareModal}
+      bodyClassName={styles.body}
       onCloseButtonClick={onClose}
       heading={
         <div className={styles.headingContent}>
           <div className={styles.heading}>Share this application</div>
           <div className={styles.description}>You can share this application by adding the collaborators to it. Please note that anyone who is added can edit the file. </div>
+          <hr/>
         </div>
       }
       footerActions={!toggleInput &&(
