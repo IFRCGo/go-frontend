@@ -9,6 +9,7 @@ import {
   useRequest,
 } from '#utils/restRequest';
 import BasicModal from '#components/BasicModal';
+import { NumericValueOption } from '#types/common';
 
 import styles from './styles.module.scss';
 
@@ -17,7 +18,7 @@ interface Props {
   onClose: () =>void;
 }
 
-interface UserListItem {
+interface UserDetail {
   id?: number;
   first_name: string;
   last_name: string;
@@ -28,6 +29,8 @@ interface UserListItem {
 interface ShareUsers {
   users: number[];
   dref: number;
+  id: number;
+  users_details: UserDetail[];
 }
 
 function ShareUserModal(props: Props) {
@@ -36,30 +39,52 @@ function ShareUserModal(props: Props) {
     onClose,
   } = props;
 
-  const [user, setUser] = React.useState<number[] | undefined>(undefined);
+  const [user, setUser] = React.useState<number | undefined>(undefined);
   const [toggleInput, setToggleInput] = React.useState<boolean>(false);
 
   const {
-    response: userResponse,
-  } = useRequest<ListResponse<UserListItem>>({
+    pending: fetchingUserList,
+    response: userListResponse,
+  } = useRequest<ListResponse<UserDetail>>({
     url: 'api/v2/users/'
   });
 
-  const userOptions = React.useMemo(
-    () => userResponse?.results.map((u) => ({
-      label: `${u.first_name} ${u.last_name}`,
-      value: u.id,
-    })) ?? [],
-    [userResponse]);
+  const {
+    pending: fetchingSharedUser,
+    response: shareUserResponse,
+    retrigger: refetchShareUser,
+  } = useRequest<ListResponse<ShareUsers>>({
+    url: `api/v2/dref-share-user/`,
+    query: {id},
+  });
 
   const {
-    pending,
+    pending: submitPending,
     trigger: submitShare,
   } = useLazyRequest<ShareUsers>({
     url: '/api/v2/dref-share/',
     method: 'POST',
     body: ctx => ctx,
+    onSuccess: () => {
+      refetchShareUser();
+    },
+    onFailure: ({
+      value: {
+        messageForNotification,
+        formErrors,
+      },
+      debugMessage,
+    }) => {
+      console.log(formErrors, messageForNotification, debugMessage);
+    }
   });
+
+  const userOptions = React.useMemo(
+    () => userListResponse?.results.map((u) => ({
+      label: `${u.first_name} ${u.last_name}`,
+      value: u.id,
+    })) as NumericValueOption[],
+    [userListResponse]);
 
   const handleUserChange = React.useCallback(
     (value) => {
@@ -74,6 +99,8 @@ function ShareUserModal(props: Props) {
   const handleToggleInput = React.useCallback(
     () => setToggleInput(true), []
   );
+
+  const pending = fetchingUserList || fetchingSharedUser || submitPending;
 
   return(
     <BasicModal
@@ -97,8 +124,11 @@ function ShareUserModal(props: Props) {
         </Button>
       )}
     >
+      {shareUserResponse?.results[0].users_details.map(
+        (detail) => <div>{detail.username}</div>
+      )}
       {toggleInput && (
-        <SelectInput<undefined, number>
+        <SelectInput
           name={undefined}
           options={userOptions}
           value={user}
