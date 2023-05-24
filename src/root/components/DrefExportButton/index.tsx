@@ -34,20 +34,20 @@ interface Props {
 }
 
 function DrefExportButton(props: Props) {
-  const { strings } = React.useContext(LanguageContext);
   const {
     className,
     drefId,
     variant,
   } = props;
 
+  const { strings } = React.useContext(LanguageContext);
   const [shouldRender, setShouldRender] = React.useState(false);
 
   const {
     pending: fetchingDref,
     response: dref,
   } = useRequest<DrefApiFields>({
-    skip: !drefId || !shouldRender,
+    skip: !drefId,
     url: `api/v2/dref/${drefId}/`,
   });
 
@@ -55,18 +55,15 @@ function DrefExportButton(props: Props) {
     pending: fetchingDrefOptions,
     response: drefOptions,
   } = useRequest<DrefOptions>({
-    skip: !shouldRender,
+    skip: !drefId,
     url: 'api/v2/dref-options/',
   });
 
-  const handleClick = React.useCallback(() => {
-    setShouldRender(true);
-  }, []);
-
   const pending = fetchingDref || fetchingDrefOptions;
 
-  React.useEffect(() => {
-    if (!pending && dref && drefOptions && shouldRender) {
+  const handleExportRender = React.useCallback(() => {
+    setShouldRender(true);
+    if (!pending && dref && drefOptions) {
       const exportToPdf = async () => {
         const drefDocument = DrefPdfDocument({
           dref,
@@ -97,16 +94,15 @@ function DrefExportButton(props: Props) {
 
       exportToPdf();
     }
-  }, [pending, dref, drefOptions, shouldRender, strings]);
-
+  }, [pending, dref, drefOptions, strings]);
 
   return (
     <Button
-      name="dref-export-button"
       className={className}
+      name='dref-export-button'
+      onClick={handleExportRender}
+      variant= {variant ?? 'secondary'}
       disabled={pending || shouldRender}
-      onClick={handleClick}
-      variant= {variant ?? "secondary"}
     >
       {shouldRender ? 'Exporting...' : 'Export'}
     </Button>

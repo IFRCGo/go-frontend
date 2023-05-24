@@ -6,7 +6,6 @@ import { History } from 'history';
 import DateOutput from '#components/DateOutput';
 import DropdownMenu from '#components/dropdown-menu';
 import DropdownMenuItem from '#components/DropdownMenuItem';
-import OperationalUpdateExport from '#components/OperationalUpdateExport';
 import useRowExpansion from '#components/Table/useRowExpansion';
 import {
   createStringColumn,
@@ -24,6 +23,8 @@ import useAlertContext from '#hooks/useAlert';
 import Button from '#components/Button';
 import { TYPE_LOAN } from '#views/DrefApplicationForm/common';
 import DrefExportButton from '#components/DrefExportButton';
+import OperationalUpdateExport from '#components/OperationalUpdateExport';
+import FinalReportExport from '#components/FinalReportExport';
 
 import { BaseProps, TableDataDetail } from '../useDrefApplicationListOptions';
 import ShareUserModal from './ShareUserModal';
@@ -297,7 +298,7 @@ function DrefApplicationTable(props:Props) {
               />
             )}
             <Button
-              className={styles.shareButton}
+              className={styles.menuItemButton}
               variant='transparent'
               name={item.application_type}
               onClick={handleShareModal}
@@ -305,11 +306,10 @@ function DrefApplicationTable(props:Props) {
             >
               share
             </Button>
-            <DropdownMenuItem
-              name={item.id}
-              onClick={undefined}
-              label="export"
-              disabled
+            <FinalReportExport
+              className={styles.menuItemButton}
+              id={item.id}
+              variant='transparent'
             />
           </>
         );
@@ -326,6 +326,8 @@ function DrefApplicationTable(props:Props) {
               />
             )}
             <OperationalUpdateExport
+              className={styles.menuItemButton}
+              variant="transparent"
               operationalId={item.id}
             />
           </>
@@ -370,7 +372,7 @@ function DrefApplicationTable(props:Props) {
                 />
               )}
             <DrefExportButton
-              className={styles.drefExportButton}
+              className={styles.menuItemButton}
               variant="transparent"
               drefId={item.id}
             />
@@ -501,7 +503,9 @@ function DrefApplicationTable(props:Props) {
                 name={item.application_type}
                 value={rowKey}
                 onClick={handlePublishApplication}
-                disabled={drefPublishPending || operationalUpdatePublishPending || finalReportPublishPending}
+                disabled={drefPublishPending
+                  || operationalUpdatePublishPending
+                  || finalReportPublishPending}
               >
                 Approved
               </Button>

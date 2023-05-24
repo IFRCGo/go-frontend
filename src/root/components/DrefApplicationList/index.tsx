@@ -42,14 +42,15 @@ interface Props {
 
 function DrefApplicationList(props: Props) {
   const {history} = props;
+  const { strings } = React.useContext(LanguageContext);
+  const allCountries = useReduxState('allCountries');
+  const { drefTypeOptions,fetchingDrefOptions } = useDrefApplicationListOptions();
   const [drefActivePage, setDrefActivePage] = React.useState(1);
-  const [country, setCountry] = useInputState<number | undefined>(undefined); const [drefVisibility, setDrefVisibility] = React.useState<'ACTIVE' | 'COMPLETED'>('ACTIVE');
+  const [country, setCountry] = useInputState<number | undefined>(undefined);
+  const [drefVisibility, setDrefVisibility] = React.useState<'ACTIVE' | 'COMPLETED'>('ACTIVE');
   const [drefType, setDrefType] = React.useState<number>();
   const [drefCount, setDrefCount] = React.useState<number>(0);
 
-  const { drefTypeOptions,fetchingDrefOptions } = useDrefApplicationListOptions();
-  const { strings } = React.useContext(LanguageContext);
-  const allCountries = useReduxState('allCountries');
 
   const countryOptions = React.useMemo(
     () => allCountries?.data?.results.filter((c) => (

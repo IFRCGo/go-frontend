@@ -1,6 +1,5 @@
 import React from 'react';
 import { pdf } from '@react-pdf/renderer';
-import { IoDownload } from 'react-icons/io5';
 
 import languageContext from '#root/languageContext';
 import { useRequest } from '#utils/restRequest';
@@ -8,8 +7,8 @@ import {
   NumericKeyValuePair,
   StringKeyValuePair,
 } from '#types';
-import DropdownMenuItem from '#components/DropdownMenuItem';
 import { DrefFinalReportApiFields } from '#views/FinalReportForm/common';
+import Button, { ButtonVariant } from '#components/Button';
 import FinalReportPdfDocument from '../FinalReportPdfDocument';
 
 interface DrefOptions {
@@ -30,14 +29,18 @@ interface DrefOptions {
 interface Props {
   className?: string;
   id: number;
+  variant?: ButtonVariant;
 }
 
 function FinalReportExport(props: Props) {
   const { strings } = React.useContext(languageContext);
   const {
+    className,
     id,
+    variant,
   } = props;
 
+  const [shouldRender, setShouldRender] = React.useState(false);
   const {
     pending: fetchingFinalReport,
     response: finalReportResponse,
@@ -57,6 +60,7 @@ function FinalReportExport(props: Props) {
   const pending = fetchingFinalReport || fetchingDrefOptions;
 
   const handleExportRender = React.useCallback(() => {
+    setShouldRender(true);
     if (!pending && finalReportResponse && drefOptions) {
       const exportToPdf = async () => {
         const drefDocument = FinalReportPdfDocument({
@@ -82,6 +86,7 @@ function FinalReportExport(props: Props) {
           downloadLink.download = fileName;
           downloadLink.click();
           document.body.removeChild(downloadLink);
+          setShouldRender(false);
         }
       };
 
@@ -90,12 +95,15 @@ function FinalReportExport(props: Props) {
   }, [pending, finalReportResponse, drefOptions, strings]);
 
   return (
-    <DropdownMenuItem
-      icon={<IoDownload />}
-      label="Export"
+    <Button
+      className={className}
+      name='final-report-export'
       onClick={handleExportRender}
-      disabled={pending}
-    />
+      variant= {variant ?? 'secondary'}
+      disabled={pending || shouldRender}
+    >
+    {shouldRender ? 'Exporting' : 'Export'}
+    </Button>
   );
 }
 
