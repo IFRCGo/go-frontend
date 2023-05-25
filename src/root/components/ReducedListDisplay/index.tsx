@@ -9,12 +9,16 @@ import styles from './styles.module.scss';
 interface Props {
   value?: string[];
   title?: React.ReactNode;
+  maxItems?: number;
+  minItems?: number;
 }
 
 export function ReducedListDisplay(props: Props) {
   const {
     value,
     title,
+    maxItems = 4,
+    minItems = 2,
   } = props;
 
   const { strings } = React.useContext(LanguageContext);
@@ -23,7 +27,7 @@ export function ReducedListDisplay(props: Props) {
     return null;
   }
 
-  if (value.length < 4) {
+  if (value.length < maxItems) {
     return (
       <>
         {value.join(', ')}
@@ -31,10 +35,10 @@ export function ReducedListDisplay(props: Props) {
     );
   }
 
-  const newList = value.slice(0, 2);
+  const newList = value.slice(0, minItems);
   const infoLabel = resolveToString(
     strings.reducedListDisplayMoreLabel,
-    { n: value.length - 2 },
+    { n: value.length - minItems },
   );
 
   return (

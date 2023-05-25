@@ -13,7 +13,6 @@ import {
   getErrorObject,
   useFormArray,
 } from '@togglecorp/toggle-form';
-import { MdDoneAll } from 'react-icons/md';
 
 import BlockLoading from '#components/block-loading';
 import Translate from '#components/Translate';
@@ -30,6 +29,7 @@ import TextOutput from '#components/text-output';
 import LanguageContext from '#root/languageContext';
 import RichTextArea from '#components/RichTextArea';
 import Switch from '#components/Switch';
+import RegionOutput from '#components/RegionOutput';
 
 import useAlert from '#hooks/useAlert';
 import {
@@ -53,6 +53,7 @@ import {
 } from './useThreeWOptions';
 
 import AnnualSplitInput from './AnnualSplitInput';
+import RegionSelectionInput from './RegionSelectionInput';
 
 import styles from './styles.module.scss';
 
@@ -150,12 +151,12 @@ function ThreeWForm(props: Props) {
 
   const {
     fetchingCountries,
-    fetchingDistricts,
+    // fetchingDistricts,
     fetchingEvents,
     fetchingDisasterTypes,
     nationalSocietyOptions,
     countryOptions,
-    districtOptions,
+    // districtOptions,
     sectorOptions,
     secondarySectorOptions,
     programmeTypeOptions,
@@ -164,10 +165,10 @@ function ThreeWForm(props: Props) {
     currentEmergencyOperationOptions,
     operationToDisasterMap,
     projectVisibilityOptions,
-    shouldDisableDistrictInput,
+    // shouldDisableDistrictInput,
     shouldShowCurrentEmergencyOperation,
     shouldShowCurrentOperation,
-    districtPlaceholder,
+    // districtPlaceholder,
     disasterTypeOptions,
     currentOperationPlaceholder,
     disasterTypePlaceholder,
@@ -177,6 +178,7 @@ function ThreeWForm(props: Props) {
     shouldDisableTotalTarget,
     shouldDisableTotalReached,
     disasterTypeLabel,
+    // countriesResponse,
   } = useThreeWOptions(value);
 
 
@@ -274,11 +276,6 @@ function ThreeWForm(props: Props) {
     }, 'budget_amount');
   }, [onValueChange, value.actual_expenditure]);
 
-  const handleSelectAllDistrictButtonClick = React.useCallback(() => {
-    const allDistricts = districtOptions.map(d => d.value);
-    onValueChange(allDistricts, 'project_districts');
-  }, [onValueChange, districtOptions]);
-
   const projectFormPending = submitRequestPending;
   const shouldDisableSubmitButton = submitRequestPending || projectDetailsPending;
 
@@ -286,6 +283,7 @@ function ThreeWForm(props: Props) {
     (val: number | undefined, name: 'project_country') => {
       onValueChange(val, name);
       onValueChange(undefined, 'project_districts' as const);
+      onValueChange(undefined, 'project_admin2' as const);
     },
     [onValueChange],
   );
@@ -312,36 +310,8 @@ function ThreeWForm(props: Props) {
     onValueChange,
   );
 
-  // if(!projectResponse)
-  // {
-  //   return(
-  //         <section className='inpage'>
-  //           <header className='inpage__header'>
-  //             <div className='inner'>
-  //               <div className='inpage__headline-content'>
-  //                 <h1 className='inpage__title'>
-  //                   <Translate stringId='fieldReportResourceNotFound'/>
-  //                 </h1>
-  //               </div>
-  //             </div>
-  //           </header>
-  //           <div className='inpage__body'>
-  //             <div className='inner'>
-  //               <div className='prose fold prose--responsive'>
-  //                 <div className='inner'>
-  //                   <p className='inpage_note'>
-  //                     <Translate stringId='fieldReportResourceDescription'/>
-  //                   </p>
-  //                 </div>
-  //               </div>
-  //             </div>
-  //           </div>
-  //         </section>
-  //   );
-  // }
   return (
-    <form
-      onSubmit={createSubmitHandler(validate, onErrorSet, handleSubmit)}
+    <div
       className={_cs(styles.threeWForm, className)}
     >
       {projectDetailsPending ? (
@@ -389,6 +359,8 @@ function ThreeWForm(props: Props) {
             title={strings.projectFormCountryTitle}
             description={strings.projectFormCountryHelpText}
             tooltip={strings.projectFormCountryTooltip}
+            multiRow
+            twoColumn
           >
             <SelectInput
               error={error?.project_country}
@@ -399,32 +371,20 @@ function ThreeWForm(props: Props) {
               pending={fetchingCountries}
               value={value.project_country}
             />
-            <SelectInput<"project_districts", number>
-              disabled={shouldDisableDistrictInput}
-              pending={fetchingDistricts}
-              error={error?.project_districts}
-              isMulti
-              label={strings.projectFormDistrictLabel}
-              name="project_districts"
-              onChange={onValueChange}
-              options={districtOptions}
-              placeholder={districtPlaceholder}
-              value={value.project_districts}
-              actions={(
-                <button
-                  title={strings.projectFormSelectAllDistricts}
-                  type="button"
-                  className={_cs(
-                    styles.selectAllDistrictsButton,
-                    'button button--secondary',
-                    shouldDisableDistrictInput && 'disabled',
-                  )}
-                  disabled={shouldDisableDistrictInput}
-                  onClick={handleSelectAllDistrictButtonClick}
-                >
-                  <MdDoneAll />
-                </button>
-              )}
+            <RegionSelectionInput
+              className={styles.regionSelectionInput}
+              districtsInputName={"project_districts" as const}
+              districtsInputValue={value.project_districts}
+              onDistrictsChange={onValueChange}
+              onAdmin2sChange={onValueChange}
+              admin2sInputName={"project_admin2" as const}
+              admin2sInputValue={value.project_admin2}
+              countryId={value.project_country}
+            />
+            <RegionOutput
+                districts={value.project_districts}
+                admin2s={value.project_admin2}
+                countryId={value.project_country}
             />
           </InputSection>
           <InputSection
@@ -782,7 +742,7 @@ function ThreeWForm(props: Props) {
             />
             <Button
               name={undefined}
-              type="submit"
+              onClick={createSubmitHandler(validate, onErrorSet, handleSubmit)}
               disabled={shouldDisableSubmitButton}
               variant="secondary"
             >
@@ -791,7 +751,7 @@ function ThreeWForm(props: Props) {
           </div>
         </>
       )}
-    </form>
+    </div>
   );
 }
 
