@@ -14,6 +14,7 @@ const hazardDisplayOrder: Record<SeasonalHazardTypes, number> = {
   DR: 3,
   FI: 4,
   EQ: 5,
+  WF: 6,
 };
 
 function getHazardStatus(hazardValue: number) {

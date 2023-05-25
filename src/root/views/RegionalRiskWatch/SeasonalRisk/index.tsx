@@ -17,11 +17,11 @@ import {
 import Container from '#components/Container';
 import WikiLink from '#components/WikiLink';
 import { avgSafe } from '#utils/common';
+import { SeasonalHazardTypes } from '#types/risk';
 
 import {
   SeasonalResponse,
   MonthlyValues,
-  HazardType,
   CountryDetail,
   RiskScoreData,
   RISK_HIGH_COLOR,
@@ -152,7 +152,7 @@ function SeasonalRisk(props: Props) {
     );
 
     const getRiskValueList = (riskList: (MonthlyValues & {
-      hazard_type: HazardType,
+      hazard_type: SeasonalHazardTypes,
       hazard_type_display: string,
       country_details: CountryDetail,
     })[]) => {

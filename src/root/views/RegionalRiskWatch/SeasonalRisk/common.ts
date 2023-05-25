@@ -1,5 +1,5 @@
 import { listToMap } from '@togglecorp/fujs';
-import { HazardTypes } from '#types';
+import { SeasonalHazardTypes } from '#types';
 import {
   COLOR_RED,
   COLOR_ORANGE,
@@ -13,10 +13,11 @@ import {
   COLOR_DROUGHT,
   COLOR_FOOD_INSECURITY,
   COLOR_EARTHQUAKE,
+  COLOR_WILDFIRE,
 } from '#utils/risk';
 
 export type RiskType = 'absolute' | 'normalized';
-export type HazardType = 'TC' | 'FL' | 'DR' | 'FI' | 'EQ';
+export type HazardType = SeasonalHazardTypes;
 
 export function labelSelector<D extends { label: React.ReactNode }>(d: D) {
   return d.label;
@@ -49,6 +50,7 @@ export const hazardTypeToNameMap: Record<HazardType, string> = {
   DR: 'Drought',
   FI: 'Food Insecurity',
   EQ: 'Earthquake',
+  WF: 'Wildfire',
 };
 
 export const riskTypeOptions: {
@@ -116,7 +118,7 @@ export const hazardTypeToLabelMap = listToMap(
 
 export interface RiskData {
   countryIso3: string;
-  hazardType: HazardTypes;
+  hazardType: SeasonalHazardTypes;
   hazardTypeDisplay: string;
   displacement: {
     annualAverage: number | null;
@@ -194,7 +196,7 @@ export interface IPCData {
   id: number;
   country: number;
   country_details: CountryDetail;
-  hazard_type: HazardTypes;
+  hazard_type: SeasonalHazardTypes;
   hazard_type_display: string;
   month: number;
   total_displacement: number;
@@ -366,5 +368,6 @@ export const hazardTypeColorMap: Record<HazardType, string> = {
   DR: COLOR_DROUGHT,
   FI: COLOR_FOOD_INSECURITY,
   EQ: COLOR_EARTHQUAKE,
+  WF: COLOR_WILDFIRE,
 };
 

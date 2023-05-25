@@ -43,7 +43,7 @@ type Props<N, V extends Key> = BaseProps<N> & ({
   isMulti: true;
   isOptionDisabled?: SelectProps<Option, true>['isOptionDisabled'];
   value: V[] | undefined | null;
-  onChange: (newValue: NonNullable<V>[] | undefined, name: N) => void;
+  onChange: (newValue: V[] | undefined, name: N) => void;
 } | {
   isMulti?: false;
   isOptionDisabled?: SelectProps<Option, false>['isOptionDisabled'];
