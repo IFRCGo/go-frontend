@@ -9,5 +9,8 @@ window.appSettings.showEnvBanner = 'false';
 window.appSettings.riskApi = 'https://go-risk-staging.northeurope.cloudapp.azure.com/';
 window.appSettings.riskAdminUrl = 'https://go-risk-staging.northeurope.cloudapp.azure.com/';
 window.appSettings.tinyApiKey = '';
+window.appSettings.sentryDsn = '';
+window.appSettings.sentryTracesSampleRate = '';
+window.appSettings.sentryNormalizeDepth = '';
 
 

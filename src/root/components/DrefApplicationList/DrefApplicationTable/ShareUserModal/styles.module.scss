@@ -1,0 +1,42 @@
+@import '~styles/settings/variables';
+
+.share-modal {
+  width: $row-min-width;
+  height: 20rem;
+  padding: $spacing;
+  align-items: center;
+  overflow: auto;
+
+  .body {
+    width: 100%;
+  }
+
+  header {
+    align-items: baseline;
+  }
+
+  hr {
+    margin: 0px;
+  }
+
+  .heading-content {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing;
+    text-transform: initial;
+    letter-spacing: 0;
+    line-height: 1rem;
+
+    .heading {
+      font-size: $font-size-md;
+      font-weight: $base-font-medium;
+    }
+
+    .description {
+      font-size: $font-size-sm;
+      font-weight: $base-font-regular;
+      color: $grey-coal;
+    }
+  }
+
+}

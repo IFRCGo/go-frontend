@@ -3591,8 +3591,8 @@ export default {
 
   // DREF operational update new field only
   //Table
-  drefTableInProgressHeading: 'In-progress applications',
-  drefTablePublishedHeading: 'Published applications',
+  drefActiveTableHeading: 'Active DREF Operations',
+  drefCompletedTableHeading: 'Completed DREF Operations',
   drefOperationalUpdateNewLabel: 'New Operational Update',
   drefOperationalUpdateEditLastLabel: 'Edit last Operational Update',
   drefOperationalUpdateViewAllLabel: 'View all Operational Update',

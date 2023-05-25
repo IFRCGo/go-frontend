@@ -1,6 +1,5 @@
 import React from 'react';
 import { pdf } from '@react-pdf/renderer';
-import { IoDownload } from 'react-icons/io5';
 
 import languageContext from '#root/languageContext';
 import { useRequest } from '#utils/restRequest';
@@ -10,7 +9,7 @@ import {
 } from '#types';
 import { DrefOperationalUpdateApiFields } from '#views/DrefOperationalUpdateForm/common';
 import OperationalUpdatePdfDocument from '#components/OperationalUpdatePdfDocument';
-import DropdownMenuItem from '#components/DropdownMenuItem';
+import Button, { ButtonVariant } from '#components/Button';
 
 interface OperationalUpdateOptions {
   disaster_category: NumericKeyValuePair[];
@@ -31,14 +30,18 @@ interface OperationalUpdateOptions {
 interface Props {
   className?: string;
   operationalId: number;
+  variant?: ButtonVariant;
 }
 
 function OperationalUpdateExport(props: Props) {
   const { strings } = React.useContext(languageContext);
   const {
+    className,
     operationalId,
+    variant,
   } = props;
 
+  const [shouldRender, setShouldRender] = React.useState(false);
   const {
     pending: fetchingOperationalUpdate,
     response: operationalUpdateResponse,
@@ -58,6 +61,7 @@ function OperationalUpdateExport(props: Props) {
   const pending = fetchingOperationalUpdate || fetchingDrefOptions;
 
   const handleExportRender = React.useCallback(() => {
+    setShouldRender(true);
     if (!pending && operationalUpdateResponse && drefOptions) {
       const exportToPdf = async () => {
         const drefDocument = OperationalUpdatePdfDocument({
@@ -83,6 +87,7 @@ function OperationalUpdateExport(props: Props) {
           downloadLink.download = fileName;
           downloadLink.click();
           document.body.removeChild(downloadLink);
+          setShouldRender(false);
         }
       };
 
@@ -91,12 +96,15 @@ function OperationalUpdateExport(props: Props) {
   }, [pending, operationalUpdateResponse, drefOptions, strings]);
 
   return (
-    <DropdownMenuItem
-      icon={<IoDownload />}
-      label="Export"
+    <Button
+      className={className}
+      name='operational-update-export'
+      variant={variant ?? 'secondary'}
       onClick={handleExportRender}
-      disabled={pending}
-    />
+      disabled={pending || shouldRender}
+    >
+      {shouldRender ? 'Exporting' : 'Export'}
+    </Button>
   );
 }
 

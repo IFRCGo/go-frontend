@@ -1,5 +1,4 @@
-import {
-  compareString,
+import { compareString,
   compareNumber,
 } from '@togglecorp/fujs';
 import Link, { Props as LinkProps } from '#components/Link';
@@ -18,6 +17,23 @@ import TableActions, {
 
 import { Column } from './index';
 import { SortDirection, FilterType } from './types';
+import ExpandButton, { ExpandButtonProps } from '#components/ExpandButton';
+
+type Options<D, K, CompProps, HeaderProps> = {
+  sortable?: boolean,
+  defaultSortDirection?: SortDirection,
+  filterType?: FilterType,
+  orderable?: boolean;
+  hideable?: boolean;
+  columnClassName?: string;
+  headerCellRendererClassName?: string;
+  headerContainerClassName?: string;
+  cellRendererClassName?: string;
+  cellContainerClassName?: string;
+  columnWidth?: Column<D, K, CompProps, HeaderProps>['columnWidth'];
+  columnStretch?: Column<D, K, CompProps, HeaderProps>['columnStretch'];
+  columnStyle?: Column<D, K, CompProps, HeaderProps>['columnStyle'];
+}
 
 export function createStringColumn<D, K>(
   id: string,
@@ -193,4 +209,39 @@ export function createActionColumn<D, K>(
   };
 
   return item;
+}
+
+export function createExpandColumn<D, K extends number | string | undefined>(
+    id: string,
+    title: string,
+    onClick: (rowId: K) => void,
+    expandedRowId: K | undefined,
+    options?: Options<D, K, ExpandButtonProps<K>, HeaderCellProps>,
+) {
+    const item: Column<D, K, ExpandButtonProps<K>, HeaderCellProps> = {
+        id,
+        title,
+        columnClassName: options?.columnClassName,
+        headerCellRenderer: HeaderCell,
+        headerCellRendererClassName: options?.headerCellRendererClassName,
+        headerContainerClassName: options?.headerContainerClassName,
+        headerCellRendererParams: {
+            sortable: false,
+            filterType: undefined,
+            orderable: false,
+            hideable: false,
+        },
+        cellRendererClassName: options?.cellRendererClassName,
+        cellContainerClassName: options?.cellContainerClassName,
+        cellRenderer: ExpandButton,
+        cellRendererParams: (rowId: K) => ({
+            rowId,
+            onClick,
+            expanded: rowId === expandedRowId,
+        }),
+        columnWidth: options?.columnWidth,
+        columnStretch: options?.columnStretch,
+        columnStyle: options?.columnStyle,
+    };
+    return item;
 }

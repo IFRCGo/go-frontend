@@ -1,0 +1,11 @@
+@import '~styles/settings/_variables.scss';
+
+.td {
+  border-top: 0;
+  border-bottom: $base-border-width solid $base-border-color--light;
+  background-color: inherit;
+  // padding: $spacing-half;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
