@@ -93,7 +93,6 @@ const adamIconLabel = (
   </div>
 );
 
-/*
 const gdacsIconLabel = (
   <div className={styles.sourceLabel}>
     <TextOutput
@@ -141,7 +140,6 @@ const meteoSwissIconLabel = (
     </React.Fragment>
   </div>
 );
-*/
 
 const legendItems = [
   { color: COLOR_FLOOD, label: 'Flood' },
@@ -178,11 +176,8 @@ function MapFooter(props: Props) {
   const sourceOptions =[
     { value: "PDC", label: pdcIconLabel },
     { value: "WFP", label: adamIconLabel },
-    { value: "GDACS", label: "GDACS" },
-    { value: "MS", label: "MeteoSwiss" },
-    //NOTE: fix when icon popup description is finalized
-    // { value: "GDACS", label: gdacsIconLabel },
-    // { value: "MS", label: meteoSwissIconLabel },
+    { value: "GDACS", label: gdacsIconLabel },
+    { value: "MS", label: meteoSwissIconLabel },
   ] as StringValueOption[];
 
   const handleChangeSourceType = React.useCallback(
