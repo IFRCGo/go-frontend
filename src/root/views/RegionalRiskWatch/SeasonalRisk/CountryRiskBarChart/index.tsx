@@ -13,6 +13,7 @@ const hazardDisplayOrder: Record<HazardType, number> = {
   DR: 3,
   FI: 4,
   EQ: 5,
+  WF: 6,
 };
 
 interface HazardDetails {

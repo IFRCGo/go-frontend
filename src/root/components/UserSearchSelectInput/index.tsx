@@ -31,7 +31,7 @@ interface BaseProps<N> {
 interface MultiSelectProps<N, V extends Key> {
   isMulti: true;
   value: V[] | undefined | null;
-  onChange: (newValue: V[], name: N) => void;
+  onChange: (newValue: V[] | undefined, name: N) => void;
 }
 
 interface SingleSelectProps<N, V extends Key> {
@@ -70,7 +70,6 @@ function UserSearchSelectInput<N, V extends Key>(props: Props<N, V>) {
       }
     },
   });
-
 
   const handleUserSearch = React.useCallback((searchString: string | undefined, callback) => {
     if (searchString && searchString.length > 2) {

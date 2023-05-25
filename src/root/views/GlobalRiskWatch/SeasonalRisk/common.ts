@@ -13,6 +13,7 @@ import {
   COLOR_DROUGHT,
   COLOR_FOOD_INSECURITY,
   COLOR_EARTHQUAKE,
+  COLOR_WILDFIRE,
 } from '#utils/risk';
 
 export type RiskType = 'absolute' | 'normalized';
@@ -48,6 +49,7 @@ export const seasonalHazardTypeToNameMap: Record<SeasonalHazardTypes, string> = 
   DR: 'Drought',
   FI: 'Food Insecurity',
   EQ: 'Earthquake',
+  WF: 'Wildfire',
 };
 
 export const riskTypeOptions: {
@@ -365,5 +367,6 @@ export const hazardTypeColorMap: Record<SeasonalHazardTypes, string> = {
   DR: COLOR_DROUGHT,
   FI: COLOR_FOOD_INSECURITY,
   EQ: COLOR_EARTHQUAKE,
+  WF: COLOR_WILDFIRE,
 };
 

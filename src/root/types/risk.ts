@@ -1,5 +1,5 @@
 export type ImminentHazardTypes = 'EQ' | 'FL' | 'CY' | 'TC' | 'SS' | 'DR' | 'WF';
-export type SeasonalHazardTypes = 'EQ' | 'FL' | 'TC' | 'DR' | 'FI';
+export type SeasonalHazardTypes = 'EQ' | 'FL' | 'TC' | 'DR' | 'FI' | 'WF';
 export type HazardTypes = 'DR' | 'FL' | 'TC' | 'FI' | 'WF';
 
 interface ExposureObject {
