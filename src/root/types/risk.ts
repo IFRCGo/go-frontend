@@ -8,6 +8,42 @@ interface ExposureObject {
   valueFormattedNoTrunc: string;
 }
 
+export interface MeteoSwissExposure {
+  footprint_geojson: {
+    footprint_geojson: GeoJSON.FeatureCollection<GeoJSON.Geometry, { type?: string;}>;
+    id: number;
+    impact_type: string;
+  }
+}
+
+interface MeteoSwissEventImpact {
+  id: number;
+  max: number;
+  min: number;
+  mean: number;
+  impact_type: string;
+}
+
+export interface MeteoSwissEvent {
+  id: number,
+  hazard_name: string;
+  hazard_type: ImminentHazardTypes;
+  hazard_type_display: string;
+  start_date: string;
+  end_date: string;
+  latitude: number;
+  longitude: number;
+  country: number;
+  country_details: {
+    id: number;
+    name: string;
+    iso: string;
+    iso3: string;
+    region: number;
+  },
+  event_details: MeteoSwissEventImpact[];
+}
+
 export interface PDCEvent {
   created_at: string;
   description: string | null;
@@ -76,11 +112,11 @@ export interface PDCEventExposure {
 export interface GDACSEvent {
   id: number,
   country_details: {
-      id: number;
-      name: string;
-      iso: string;
-      iso3: string;
-      region: number;
+    id: number;
+    name: string;
+    iso: string;
+    iso3: string;
+    region: number;
   },
   hazard_type_display: string;
   created_at: string;
@@ -92,9 +128,9 @@ export interface GDACSEvent {
   alert_level: string;
   event_details: {
     url: {
-        report: string;
-        details: string;
-        geometry: string;
+      report: string;
+      details: string;
+      geometry: string;
     },
     icon: string;
     iso3: string;
@@ -116,9 +152,9 @@ export interface GDACSEvent {
     istemporary: string;
     polygonlabel: string;
     severitydata: {
-        severity: number;
-        severitytext: string;
-        severityunit: string;
+      severity: number;
+      severitytext: string;
+      severityunit: string;
     },
     countryonland: string;
     htmldescription: string;

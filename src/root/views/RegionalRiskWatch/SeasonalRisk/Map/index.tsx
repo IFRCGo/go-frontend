@@ -15,7 +15,6 @@ import {
   defaultMapOptions,
   fixBounds,
 } from '#utils/map';
-
 import Choropleth from './Choropleth';
 
 import styles from './styles.module.scss';
