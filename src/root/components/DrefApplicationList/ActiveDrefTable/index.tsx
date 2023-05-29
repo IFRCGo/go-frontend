@@ -9,19 +9,19 @@ import {
 } from '#utils/restRequest';
 import EmptyMessage from '#components/EmptyMessage';
 import BlockLoading from '#components/block-loading';
+import Pager from '#components/Pager';
 
 import DrefApplicationTable from '../DrefApplicationTable';
 import { BaseProps, TableDataDetail } from '../useDrefApplicationListOptions';
 import styles from '../styles.module.scss';
+
+const ITEM_PER_PAGE = 6;
 
 interface Props {
   className?: string;
   history: History;
   country?: number;
   drefType?: number;
-  itemPerPage: number;
-  onChanngeDrefCount: (count: number) => void;
-  drefActivePage: number;
 }
 
 export interface DrefApplicationResponse extends BaseProps {
@@ -36,13 +36,11 @@ function ActiveDrefTable(props:Props) {
     history,
     country,
     drefType,
-    itemPerPage,
-    onChanngeDrefCount,
-    drefActivePage,
   } = props;
 
   const { strings } = React.useContext(languageContext);
   const [drefId, setDrefId] = React.useState<number>();
+  const [drefActivePage, setDrefActivePage] = React.useState(1);
 
   const {
     pending: drefPending,
@@ -53,12 +51,11 @@ function ActiveDrefTable(props:Props) {
     query: {
       country,
       type_of_dref: drefType,
-      limit: itemPerPage,
-      offset: itemPerPage * (drefActivePage - 1),
+      limit: ITEM_PER_PAGE,
+      offset: ITEM_PER_PAGE * (drefActivePage - 1),
     },
   });
 
-  onChanngeDrefCount(drefResponse?.count ?? 0);
   const data = React.useMemo(() => {
     let rowData = [];
     const hasOpsUpdateOnly = drefResponse?.results.filter(
@@ -203,14 +200,23 @@ function ActiveDrefTable(props:Props) {
     <>
       {pending && <BlockLoading />}
       {!pending &&(
-        <DrefApplicationTable
-          className={_cs(className, styles.drefTable)}
-          data={data}
-          history={history}
-          refetch={refetchDrefList}
-          getDrefId={getDrefId}
-          drefId={drefId}
-        />
+        <div className={styles.drefOperationTable}>
+          <DrefApplicationTable
+            className={_cs(className, styles.drefTable)}
+            data={data}
+            history={history}
+            refetch={refetchDrefList}
+            getDrefId={getDrefId}
+            drefId={drefId}
+          />
+          <Pager
+            className={styles.pagination}
+            activePage={drefActivePage}
+            onActivePageChange={setDrefActivePage}
+            itemsCount={drefResponse?.count ?? 0}
+            maxItemsPerPage={ITEM_PER_PAGE}
+          />
+        </div>
       )}
 
       {!drefPending && data.length === 0 && (

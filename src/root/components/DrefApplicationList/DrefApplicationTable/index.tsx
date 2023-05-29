@@ -431,7 +431,7 @@ function DrefApplicationTable(props:Props) {
               <TableData>{detail.country_details.name}</TableData>
               <TableData>{detail.type_of_dref_display}</TableData>
               <TableData>{detail.status}</TableData>
-              <TableData className={styles.expandedRowActions}>
+              <TableData colSpan={2} className={styles.expandedRowActions}>
                 <span>
                   {!detail.is_published && (
                     <Button
@@ -505,7 +505,7 @@ function DrefApplicationTable(props:Props) {
       ),
       createStringColumn<TableDataDetail, string | number>(
         'type_of_dref_display',
-        'Type of display',
+        'Type of DREF',
         (item) => item?.type_of_dref_display,
       ),
       createStringColumn<TableDataDetail, string | number>(

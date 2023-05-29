@@ -12,7 +12,6 @@ import {
 import LanguageContext from '#root/languageContext';
 import Container from '#components/Container';
 import SelectInput from '#components/SelectInput';
-import Pager from '#components/Pager';
 import useReduxState from '#hooks/useReduxState';
 import useInputState from '#hooks/useInputState';
 import { compareLabel } from '#utils/common';
@@ -24,20 +23,8 @@ import ActiveDrefTable from './ActiveDrefTable';
 import CompletedDrefTable from './CompletedDrefTable';
 import styles from './styles.module.scss';
 
-const ITEM_PER_PAGE = 6;
-
-interface DrefImportFields {
-  file: number;
-  dref: number;
-  id: number;
-}
-
-type Value = PartialForm<DrefImportFields>;
 interface Props {
   history: History;
-  value: Value,
-  error: Error<Value> | undefined;
-  onValueChange: (...entries: EntriesAsList<Value>) => void;
 }
 
 function DrefApplicationList(props: Props) {
@@ -45,12 +32,9 @@ function DrefApplicationList(props: Props) {
   const { strings } = React.useContext(LanguageContext);
   const allCountries = useReduxState('allCountries');
   const { drefTypeOptions,fetchingDrefOptions } = useDrefApplicationListOptions();
-  const [drefActivePage, setDrefActivePage] = React.useState(1);
   const [country, setCountry] = useInputState<number | undefined>(undefined);
   const [drefVisibility, setDrefVisibility] = React.useState<'ACTIVE' | 'COMPLETED'>('ACTIVE');
   const [drefType, setDrefType] = React.useState<number>();
-  const [drefCount, setDrefCount] = React.useState<number>(0);
-
 
   const countryOptions = React.useMemo(
     () => allCountries?.data?.results.filter((c) => (
@@ -103,10 +87,6 @@ function DrefApplicationList(props: Props) {
   const handleToggleDref = React.useCallback(
     (name) => setDrefVisibility(name), [ setDrefVisibility]);
 
-  const handleDrefCount = React.useCallback(
-    (count: number) => setDrefCount(count), [setDrefCount]
-  );
-
   return (
     <Container
       className={styles.drefApplicationList}
@@ -148,14 +128,6 @@ function DrefApplicationList(props: Props) {
             <ArrowDropRightLineIcon fontSize='2rem' />
           </Button>
         )}
-        footerActions={drefCount > 0 && (
-          <Pager
-            activePage={drefActivePage}
-            onActivePageChange={setDrefActivePage}
-            itemsCount={drefCount}
-            maxItemsPerPage={ITEM_PER_PAGE}
-          />
-        )}
         sub
       >
         {drefVisibility === 'ACTIVE' && (
@@ -164,9 +136,6 @@ function DrefApplicationList(props: Props) {
             history={history}
             country={country}
             drefType={drefType}
-            drefActivePage={drefActivePage}
-            itemPerPage={ITEM_PER_PAGE}
-            onChanngeDrefCount={handleDrefCount}
           />
         )}
 
@@ -176,9 +145,6 @@ function DrefApplicationList(props: Props) {
             history={history}
             country={country}
             drefType={drefType}
-            drefActivePage={drefActivePage}
-            itemPerPage={ITEM_PER_PAGE}
-            onChanngeDrefCount={handleDrefCount}
           />
         )}
       </Container>
