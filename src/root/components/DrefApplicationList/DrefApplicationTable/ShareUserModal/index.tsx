@@ -81,7 +81,7 @@ function ShareUserModal(props: Props) {
 
   const userOptions = React.useMemo(
     () => userListResponse?.results.map((u) => ({
-      label: `${u.first_name} ${u.last_name}`,
+      label: `${u.first_name} ${u.last_name} - ${u.email}`,
       value: u.id,
     })) as NumericValueOption[],
     [userListResponse]);

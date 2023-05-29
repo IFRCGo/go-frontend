@@ -22,6 +22,7 @@ interface Props {
   history: History;
   country?: number;
   drefType?: number;
+  appealCode?: string;
 }
 
 export interface DrefApplicationResponse extends BaseProps {
@@ -36,6 +37,7 @@ function ActiveDrefTable(props:Props) {
     history,
     country,
     drefType,
+    appealCode,
   } = props;
 
   const { strings } = React.useContext(languageContext);
@@ -49,6 +51,7 @@ function ActiveDrefTable(props:Props) {
   } = useRequest<ListResponse<DrefApplicationResponse>>({
     url: 'api/v2/active-dref/',
     query: {
+      appeal_code: appealCode,
       country,
       type_of_dref: drefType,
       limit: ITEM_PER_PAGE,
@@ -87,6 +90,7 @@ function ActiveDrefTable(props:Props) {
             has_final_reprot: d.has_final_reprot,
             unpublished_op_update_count: d.unpublished_op_update_count,
             unpublished_final_report_count: d.unpublished_final_report_count,
+            status_display: d.status_display,
           }],
         };
         return obj;
@@ -116,6 +120,7 @@ function ActiveDrefTable(props:Props) {
             has_final_reprot: d.has_final_reprot,
             unpublished_op_update_count: d.unpublished_op_update_count,
             unpublished_final_report_count: d.unpublished_final_report_count,
+            status_display: d.status_display,
           }],
         };
         return obj;
@@ -145,6 +150,7 @@ function ActiveDrefTable(props:Props) {
             has_final_reprot: d.has_final_reprot,
             unpublished_op_update_count: d.unpublished_op_update_count,
             unpublished_final_report_count: d.unpublished_final_report_count,
+            status_display: d.status_display,
           }],
         };
         return obj;

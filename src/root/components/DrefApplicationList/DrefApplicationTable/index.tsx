@@ -430,20 +430,13 @@ function DrefApplicationTable(props:Props) {
               <TableData>{detail.application_type_display}</TableData>
               <TableData>{detail.country_details.name}</TableData>
               <TableData>{detail.type_of_dref_display}</TableData>
-              <TableData>{detail.status}</TableData>
+              <TableData>
+                {detail.status_display === 'Completed' 
+                  ? 'Approved'
+                  : detail.status_display}
+              </TableData>
               <TableData colSpan={2} className={styles.expandedRowActions}>
                 <span>
-                  {!detail.is_published && (
-                    <Button
-                      variant='secondary'
-                      name={detail.application_type}
-                      value={detail.id}
-                      onClick={handlePublishApplication}
-                      disabled={drefPublishPending || operationalUpdatePublishPending || finalReportPublishPending}
-                    >
-                      Approve
-                    </Button>
-                  )}
                   <DropdownMenu
                     label={<IoEllipsisHorizontal />}
                   >
@@ -454,13 +447,7 @@ function DrefApplicationTable(props:Props) {
             </TableRow>
           )
         ));
-    },[
-      getTableActions,
-      handlePublishApplication,
-      drefPublishPending,
-      operationalUpdatePublishPending,
-      finalReportPublishPending,
-    ]);
+    },[ getTableActions ]);
 
   const rowModifier = useRowExpansion<TableDataDetail, number>(
     expandedRow,
@@ -509,9 +496,9 @@ function DrefApplicationTable(props:Props) {
         (item) => item?.type_of_dref_display,
       ),
       createStringColumn<TableDataDetail, string | number>(
-        'status',
+        'status_display',
         'Status',
-        (item) => item.status,
+        (item) => item.status_display === 'Completed' ? 'Approved' : item.status_display,
       ),
     ];
 

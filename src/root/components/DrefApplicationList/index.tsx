@@ -22,6 +22,7 @@ import useDrefApplicationListOptions from './useDrefApplicationListOptions';
 import ActiveDrefTable from './ActiveDrefTable';
 import CompletedDrefTable from './CompletedDrefTable';
 import styles from './styles.module.scss';
+import TextInput from '#components/TextInput';
 
 interface Props {
   history: History;
@@ -33,6 +34,7 @@ function DrefApplicationList(props: Props) {
   const allCountries = useReduxState('allCountries');
   const { drefTypeOptions,fetchingDrefOptions } = useDrefApplicationListOptions();
   const [country, setCountry] = useInputState<number | undefined>(undefined);
+  const [appealCode, setAppealCode] = React.useState<string | undefined>();
   const [drefVisibility, setDrefVisibility] = React.useState<'ACTIVE' | 'COMPLETED'>('ACTIVE');
   const [drefType, setDrefType] = React.useState<number>();
 
@@ -71,9 +73,18 @@ function DrefApplicationList(props: Props) {
           isClearable
           disabled={pending}
         />
+        <TextInput
+          // className={styles.countryFilter}
+          name={undefined}
+          value={appealCode}
+          placeholder="Appeal code"
+          onChange={setAppealCode}
+          disabled={pending}
+        />
       </>
 
     ),[
+      appealCode,
       drefType,
       setDrefType,
       drefTypeOptions,
@@ -136,6 +147,7 @@ function DrefApplicationList(props: Props) {
             history={history}
             country={country}
             drefType={drefType}
+            appealCode={appealCode}
           />
         )}
 
