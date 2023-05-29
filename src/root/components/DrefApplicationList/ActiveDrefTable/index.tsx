@@ -23,6 +23,7 @@ interface Props {
   country?: number;
   drefType?: number;
   appealCode?: string;
+  disasterType?: number;
 }
 
 export interface DrefApplicationResponse extends BaseProps {
@@ -38,6 +39,7 @@ function ActiveDrefTable(props:Props) {
     country,
     drefType,
     appealCode,
+    disasterType,
   } = props;
 
   const { strings } = React.useContext(languageContext);
@@ -51,6 +53,7 @@ function ActiveDrefTable(props:Props) {
   } = useRequest<ListResponse<DrefApplicationResponse>>({
     url: 'api/v2/active-dref/',
     query: {
+      disaster_type: disasterType,
       appeal_code: appealCode,
       country,
       type_of_dref: drefType,

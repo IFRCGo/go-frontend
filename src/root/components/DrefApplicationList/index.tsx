@@ -1,10 +1,6 @@
 import React from 'react';
 import { History } from 'history';
 import {
-  EntriesAsList, Error,
-  PartialForm,
-} from '@togglecorp/toggle-form';
-import {
   ArrowDropRightLineIcon,
   ArrowDropLeftLineIcon,
 } from '@ifrc-go/icons';
@@ -17,12 +13,12 @@ import useInputState from '#hooks/useInputState';
 import { compareLabel } from '#utils/common';
 import ButtonLikeLink from '#components/ButtonLikeLink';
 import Button from '#components/Button';
+import TextInput from '#components/TextInput';
 
 import useDrefApplicationListOptions from './useDrefApplicationListOptions';
 import ActiveDrefTable from './ActiveDrefTable';
 import CompletedDrefTable from './CompletedDrefTable';
 import styles from './styles.module.scss';
-import TextInput from '#components/TextInput';
 
 interface Props {
   history: History;
@@ -32,11 +28,13 @@ function DrefApplicationList(props: Props) {
   const {history} = props;
   const { strings } = React.useContext(LanguageContext);
   const allCountries = useReduxState('allCountries');
+  const allDisasterTypes = useReduxState('disasterTypes');
   const { drefTypeOptions,fetchingDrefOptions } = useDrefApplicationListOptions();
   const [country, setCountry] = useInputState<number | undefined>(undefined);
-  const [appealCode, setAppealCode] = React.useState<string | undefined>();
-  const [drefVisibility, setDrefVisibility] = React.useState<'ACTIVE' | 'COMPLETED'>('ACTIVE');
   const [drefType, setDrefType] = React.useState<number>();
+  const [appealCode, setAppealCode] = React.useState<string | undefined>();
+  const [disasterType, setDisasterType] = React.useState<number>();
+  const [drefVisibility, setDrefVisibility] = React.useState<'ACTIVE' | 'COMPLETED'>('ACTIVE');
 
   const countryOptions = React.useMemo(
     () => allCountries?.data?.results.filter((c) => (
@@ -49,6 +47,15 @@ function DrefApplicationList(props: Props) {
   ); // a code duplication can be found in per-account.js
 
   const pending = fetchingDrefOptions;
+
+  const disasterOptions = React.useMemo(
+    () => allDisasterTypes.data.results.map(
+      (disaster) => ({
+        label: disaster.name,
+        value: disaster.id
+      })).sort(compareLabel),
+    [allDisasterTypes],
+  );
 
   const filters = React.useMemo(
     () => (
@@ -73,17 +80,29 @@ function DrefApplicationList(props: Props) {
           isClearable
           disabled={pending}
         />
+        <SelectInput
+          className={styles.countryFilter}
+          name={undefined}
+          placeholder="Select Hazard Type"
+          options={disasterOptions}
+          value={disasterType}
+          onChange={setDisasterType}
+          isClearable
+          disabled={pending}
+        />
         <TextInput
-          // className={styles.countryFilter}
+          className={styles.countryFilter}
           name={undefined}
           value={appealCode}
-          placeholder="Appeal code"
+          placeholder="Appeal Code"
           onChange={setAppealCode}
           disabled={pending}
         />
       </>
 
     ),[
+      disasterOptions,
+      disasterType,
       appealCode,
       drefType,
       setDrefType,
@@ -148,6 +167,7 @@ function DrefApplicationList(props: Props) {
             country={country}
             drefType={drefType}
             appealCode={appealCode}
+            disasterType={disasterType}
           />
         )}
 
@@ -157,6 +177,8 @@ function DrefApplicationList(props: Props) {
             history={history}
             country={country}
             drefType={drefType}
+            appealCode={appealCode}
+            disasterType={disasterType}
           />
         )}
       </Container>

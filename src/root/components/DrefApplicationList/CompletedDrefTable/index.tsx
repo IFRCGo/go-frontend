@@ -22,6 +22,8 @@ interface Props {
   history: History;
   country?: number;
   drefType?: number;
+  appealCode?: string;
+  disasterType?: number;
 }
 
 interface DrefDetails extends BaseProps {
@@ -39,6 +41,8 @@ function CompletedDrefTable(props:Props) {
     history,
     country,
     drefType,
+    appealCode,
+    disasterType,
   } = props;
 
   const { strings } = React.useContext(languageContext);
@@ -52,6 +56,8 @@ function CompletedDrefTable(props:Props) {
   } = useRequest<ListResponse<DrefApplicationResponse>>({
     url: 'api/v2/completed-dref/',
     query: {
+      disaster_type: disasterType,
+      appeal_code: appealCode,
       country,
       type_of_dref: drefType,
       limit: ITEM_PER_PAGE,
