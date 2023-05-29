@@ -29,8 +29,8 @@ export const tinyApiKey = process.env.REACT_APP_TINY_API_KEY ?? window.appSettin
 
 // NOTE: New variables required by Sentry
 export const sentryAppDsn = process.env.REACT_APP_SENTRY_DSN ?? window.appSettings.sentryDsn;
-export const sentryTraceSampleRate = Number(process.env.REACT_APP_SENTRY_TRACES_SAMPLE_RATE) ?? window.appSettings.sentryTracesSampleRate ?? 0.2;
-export const sentryNormalizeDepth = Number(process.env.REACT_APP_SENTRY_NORMALIZE_DEPTH) ?? window.appSettings.sentryNormalizeDepth ?? 5;
+export const sentryTraceSampleRate = Number(process.env.REACT_APP_SENTRY_TRACES_SAMPLE_RATE) ?? Number(window.appSettings.sentryTracesSampleRate) ?? 0.2;
+export const sentryNormalizeDepth = Number(process.env.REACT_APP_SENTRY_NORMALIZE_DEPTH) ?? Number(window.appSettings.sentryNormalizeDepth) ?? 5;
 
 const config = {
   api,
