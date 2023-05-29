@@ -291,21 +291,23 @@ function DrefApplicationTable(props:Props) {
         return (
           <>
             {!item.is_published && (
-              <DropdownMenuItem
-                href={`/dref-final-report/${item.id}/edit/`}
-                label="Edit"
-                disabled={item.is_published || finalReportPublishPending}
-              />
+              <>
+                <DropdownMenuItem
+                  href={`/dref-final-report/${item.id}/edit/`}
+                  label="Edit"
+                  disabled={item.is_published || finalReportPublishPending}
+                />
+                <Button
+                  className={styles.menuItemButton}
+                  variant='transparent'
+                  name={item.application_type}
+                  onClick={handleShareModal}
+                  value={item.id}
+                >
+                  Share
+                </Button>
+              </>
             )}
-            <Button
-              className={styles.menuItemButton}
-              variant='transparent'
-              name={item.application_type}
-              onClick={handleShareModal}
-              value={item.id}
-            >
-              share
-            </Button>
             <FinalReportExport
               className={styles.menuItemButton}
               id={item.id}
@@ -319,21 +321,23 @@ function DrefApplicationTable(props:Props) {
         return(
           <>
             {!item.is_published && (
-              <DropdownMenuItem
-                href={`/dref-operational-update/${item.id}/edit/`}
-                label="Edit"
-                disabled={item.is_published || operationalUpdatePublishPending}
-              />
+              <>
+                <DropdownMenuItem
+                  href={`/dref-operational-update/${item.id}/edit/`}
+                  label="Edit"
+                  disabled={item.is_published || operationalUpdatePublishPending}
+                />
+                <Button
+                  className={styles.menuItemButton}
+                  variant='transparent'
+                  name={item.application_type}
+                  onClick={handleShareModal}
+                  value={item.id}
+                >
+                  Share
+                </Button>
+              </>
             )}
-            <Button
-              className={styles.menuItemButton}
-              variant='transparent'
-              name={item.application_type}
-              onClick={handleShareModal}
-              value={item.id}
-            >
-              share
-            </Button>
             <OperationalUpdateExport
               className={styles.menuItemButton}
               variant="transparent"
@@ -351,20 +355,22 @@ function DrefApplicationTable(props:Props) {
         return(
           <>
             {!item.is_published && (
-              <DropdownMenuItem
-                href={`/dref-application/${item.id}/edit/`}
-                label= {`${strings.drefTableEdit} ${item.application_type_display}`}
-              />
+              <>
+                <DropdownMenuItem
+                  href={`/dref-application/${item.id}/edit/`}
+                  label= {`${strings.drefTableEdit} ${item.application_type_display}`}
+                />
+                <Button
+                  className={styles.menuItemButton}
+                  variant='transparent'
+                  name={item.application_type}
+                  onClick={handleShareModal}
+                  value={item.id}
+                >
+                  Share
+                </Button>
+              </>
             )}
-            <Button
-              className={styles.menuItemButton}
-              variant='transparent'
-              name={item.application_type}
-              onClick={handleShareModal}
-              value={item.id}
-            >
-              share
-            </Button>
             {!hasUnpublishedOperationalUpdate
               && item.is_published
               && !item.has_final_reprot
@@ -435,7 +441,7 @@ function DrefApplicationTable(props:Props) {
                       onClick={handlePublishApplication}
                       disabled={drefPublishPending || operationalUpdatePublishPending || finalReportPublishPending}
                     >
-                      Approved
+                      Approve
                     </Button>
                   )}
                   <DropdownMenu
@@ -524,7 +530,7 @@ function DrefApplicationTable(props:Props) {
                   || operationalUpdatePublishPending
                   || finalReportPublishPending}
               >
-                Approved
+                Approve
               </Button>
             )
           ),
