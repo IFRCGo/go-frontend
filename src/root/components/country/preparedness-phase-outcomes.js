@@ -25,7 +25,7 @@ class PreparednessPhaseOutcomes extends React.Component {
     return (
       <Fold id='per-outcomes' title='PER Phase Outcomes' foldTitleClass='margin-reset' foldWrapperClass='preparedness fold--main' foldContainerClass='container--padding-reset'>
         <div className='spacing'>
-          <a href='https://dsgocdnapi.azureedge.net/admin/per/nicedocument/' target='_blank' className='button button--small button--primary-bounded'>
+          <a href='https://goadmin-stage.ifrc.org/admin/per/nicedocument/' target='_blank' className='button button--small button--primary-bounded'>
             <Translate stringId="preparednessPhaseOutcomesUploadLinkLabel" />
           </a>&nbsp;
         </div>

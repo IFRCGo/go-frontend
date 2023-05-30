@@ -99,7 +99,7 @@ function PreparednessOverview (props) {
 
         <div className='text-center'>
           {/* <div style={{float: 'left', width: '50%'}}>
-            <a href='https://dsgocdnapi.azureedge.net/admin/per/nsphase/' target='_blank' className='button button--medium button--primary-filled'>Set phase</a>
+            <a href='https://goadmin-stage.ifrc.org/admin/per/nsphase/' target='_blank' className='button button--medium button--primary-filled'>Set phase</a>
           </div> */}
           <a href='mailto:PER.Team@ifrc.org' className='button button--medium button--primary-filled'>
             <Translate stringId="preparednessOverviewContactLabel" />
