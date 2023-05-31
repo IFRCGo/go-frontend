@@ -38,7 +38,6 @@ mapboxgl.accessToken = mbtoken;
 
 if (sentryConfig) {
   init(sentryConfig);
-  console.log('SSSS', sentryConfig);
 }
 
 const requestContextValue = {
