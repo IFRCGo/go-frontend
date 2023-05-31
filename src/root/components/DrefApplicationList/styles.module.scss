@@ -120,3 +120,12 @@
   }
 }
 
+.dref-operation-table {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-2;
+
+  .pagination {
+    align-self: flex-end;
+  }
+}

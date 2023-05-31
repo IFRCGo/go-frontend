@@ -16,6 +16,7 @@ export interface BaseProps {
   application_type: string;
   application_type_display: string;
   status: string;
+  status_display: string;
   has_ops_update: boolean;
   has_final_reprot: boolean;
   unpublished_op_update_count: number;

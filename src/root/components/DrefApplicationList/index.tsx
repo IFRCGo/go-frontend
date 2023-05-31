@@ -1,10 +1,6 @@
 import React from 'react';
 import { History } from 'history';
 import {
-  EntriesAsList, Error,
-  PartialForm,
-} from '@togglecorp/toggle-form';
-import {
   ArrowDropRightLineIcon,
   ArrowDropLeftLineIcon,
 } from '@ifrc-go/icons';
@@ -12,45 +8,33 @@ import {
 import LanguageContext from '#root/languageContext';
 import Container from '#components/Container';
 import SelectInput from '#components/SelectInput';
-import Pager from '#components/Pager';
 import useReduxState from '#hooks/useReduxState';
 import useInputState from '#hooks/useInputState';
 import { compareLabel } from '#utils/common';
 import ButtonLikeLink from '#components/ButtonLikeLink';
 import Button from '#components/Button';
+import TextInput from '#components/TextInput';
 
 import useDrefApplicationListOptions from './useDrefApplicationListOptions';
 import ActiveDrefTable from './ActiveDrefTable';
 import CompletedDrefTable from './CompletedDrefTable';
 import styles from './styles.module.scss';
 
-const ITEM_PER_PAGE = 6;
-
-interface DrefImportFields {
-  file: number;
-  dref: number;
-  id: number;
-}
-
-type Value = PartialForm<DrefImportFields>;
 interface Props {
   history: History;
-  value: Value,
-  error: Error<Value> | undefined;
-  onValueChange: (...entries: EntriesAsList<Value>) => void;
 }
 
 function DrefApplicationList(props: Props) {
   const {history} = props;
   const { strings } = React.useContext(LanguageContext);
   const allCountries = useReduxState('allCountries');
+  const allDisasterTypes = useReduxState('disasterTypes');
   const { drefTypeOptions,fetchingDrefOptions } = useDrefApplicationListOptions();
-  const [drefActivePage, setDrefActivePage] = React.useState(1);
   const [country, setCountry] = useInputState<number | undefined>(undefined);
-  const [drefVisibility, setDrefVisibility] = React.useState<'ACTIVE' | 'COMPLETED'>('ACTIVE');
   const [drefType, setDrefType] = React.useState<number>();
-  const [drefCount, setDrefCount] = React.useState<number>(0);
-
+  const [appealCode, setAppealCode] = React.useState<string | undefined>();
+  const [disasterType, setDisasterType] = React.useState<number>();
+  const [drefVisibility, setDrefVisibility] = React.useState<'ACTIVE' | 'COMPLETED'>('ACTIVE');
 
   const countryOptions = React.useMemo(
     () => allCountries?.data?.results.filter((c) => (
@@ -63,6 +47,15 @@ function DrefApplicationList(props: Props) {
   ); // a code duplication can be found in per-account.js
 
   const pending = fetchingDrefOptions;
+
+  const disasterOptions = React.useMemo(
+    () => allDisasterTypes.data.results.map(
+      (disaster) => ({
+        label: disaster.name,
+        value: disaster.id
+      })).sort(compareLabel),
+    [allDisasterTypes],
+  );
 
   const filters = React.useMemo(
     () => (
@@ -87,9 +80,30 @@ function DrefApplicationList(props: Props) {
           isClearable
           disabled={pending}
         />
+        <SelectInput
+          className={styles.countryFilter}
+          name={undefined}
+          placeholder="Select Hazard Type"
+          options={disasterOptions}
+          value={disasterType}
+          onChange={setDisasterType}
+          isClearable
+          disabled={pending}
+        />
+        <TextInput
+          className={styles.countryFilter}
+          name={undefined}
+          value={appealCode}
+          placeholder="Appeal Code"
+          onChange={setAppealCode}
+          disabled={pending}
+        />
       </>
 
     ),[
+      disasterOptions,
+      disasterType,
+      appealCode,
       drefType,
       setDrefType,
       drefTypeOptions,
@@ -102,10 +116,6 @@ function DrefApplicationList(props: Props) {
 
   const handleToggleDref = React.useCallback(
     (name) => setDrefVisibility(name), [ setDrefVisibility]);
-
-  const handleDrefCount = React.useCallback(
-    (count: number) => setDrefCount(count), [setDrefCount]
-  );
 
   return (
     <Container
@@ -148,14 +158,6 @@ function DrefApplicationList(props: Props) {
             <ArrowDropRightLineIcon fontSize='2rem' />
           </Button>
         )}
-        footerActions={drefCount > 0 && (
-          <Pager
-            activePage={drefActivePage}
-            onActivePageChange={setDrefActivePage}
-            itemsCount={drefCount}
-            maxItemsPerPage={ITEM_PER_PAGE}
-          />
-        )}
         sub
       >
         {drefVisibility === 'ACTIVE' && (
@@ -164,9 +166,8 @@ function DrefApplicationList(props: Props) {
             history={history}
             country={country}
             drefType={drefType}
-            drefActivePage={drefActivePage}
-            itemPerPage={ITEM_PER_PAGE}
-            onChanngeDrefCount={handleDrefCount}
+            appealCode={appealCode}
+            disasterType={disasterType}
           />
         )}
 
@@ -176,9 +177,8 @@ function DrefApplicationList(props: Props) {
             history={history}
             country={country}
             drefType={drefType}
-            drefActivePage={drefActivePage}
-            itemPerPage={ITEM_PER_PAGE}
-            onChanngeDrefCount={handleDrefCount}
+            appealCode={appealCode}
+            disasterType={disasterType}
           />
         )}
       </Container>
