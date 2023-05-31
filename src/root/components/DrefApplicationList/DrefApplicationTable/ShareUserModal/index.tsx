@@ -1,5 +1,7 @@
 import React from 'react';
 import { AddLineIcon } from '@ifrc-go/icons';
+import { IoTrash } from 'react-icons/io5';
+import { PartialForm } from '@togglecorp/toggle-form';
 
 import Button from '#components/Button';
 import SelectInput from '#components/SelectInput';
@@ -10,6 +12,9 @@ import {
 } from '#utils/restRequest';
 import BasicModal from '#components/BasicModal';
 import { NumericValueOption } from '#types/common';
+import { DrefApiFields } from '#views/DrefApplicationForm/common';
+import languageContext from '#root/languageContext';
+import  useAlert from '#hooks/useAlert';
 
 import styles from './styles.module.scss';
 
@@ -19,18 +24,12 @@ interface Props {
 }
 
 interface UserDetail {
-  id?: number;
+  client_id: string;
+  id: number;
   first_name: string;
   last_name: string;
   email: string;
   username: string;
-}
-
-interface ShareUsers {
-  users: number[];
-  dref: number;
-  id: number;
-  users_details: UserDetail[];
 }
 
 function ShareUserModal(props: Props) {
@@ -39,7 +38,11 @@ function ShareUserModal(props: Props) {
     onClose,
   } = props;
 
-  const [user, setUser] = React.useState<number | undefined>(undefined);
+  const alert = useAlert();
+  const {strings} = React.useContext(languageContext);
+  const lastModifiedAtRef = React.useRef<string | undefined>();
+  const [users, setUsers] = React.useState<number[] | undefined>(undefined);
+  const [userDetails, setUserDetails] = React.useState<PartialForm<UserDetail[]>>();
   const [toggleInput, setToggleInput] = React.useState<boolean>(false);
 
   const {
@@ -50,34 +53,79 @@ function ShareUserModal(props: Props) {
   });
 
   const {
-    pending: fetchingSharedUser,
-    response: shareUserResponse,
-    retrigger: refetchShareUser,
-  } = useRequest<ListResponse<ShareUsers>>({
-    url: `api/v2/dref-share-user/`,
-    query: {id},
+    pending: drefApplicationPending,
+    response: drefResponse,
+  } = useRequest<DrefApiFields>({
+    skip: !id,
+    url: `api/v2/dref/${id}/`,
+    onSuccess: (response) => {
+      setUsers(response.users);
+      setUserDetails(response.users_details);
+      lastModifiedAtRef.current = response?.modified_at;
+    },
+    onFailure: ({
+      value: { messageForNotification },
+      debugMessage,
+    }) => {
+      alert.show(
+        <p>
+          {strings.drefFormLoadRequestFailureMessage}
+          &nbsp;
+          <strong>
+            {messageForNotification}
+          </strong>
+        </p>,
+        {
+          variant: 'danger',
+          debugMessage,
+        },
+      );
+    }
   });
 
   const {
-    pending: submitPending,
-    trigger: submitShare,
-  } = useLazyRequest<ShareUsers>({
-    url: '/api/v2/dref-share/',
-    method: 'POST',
-    body: ctx => ctx,
-    onSuccess: () => {
-      refetchShareUser();
+    pending: drefSubmitting,
+    trigger: submitRequest,
+  } = useLazyRequest<DrefApiFields, Partial<DrefApiFields>>({
+    url: id ? `api/v2/dref/${id}` : 'api/v2/dref/',
+    method: id ? 'PATCH' : 'POST',
+    body : ctx => ctx,
+    onSuccess: (response) => {
+      console.log('this is patch response', response);
     },
     onFailure: ({
-      value: {
-        messageForNotification,
-        formErrors,
-      },
+      value: { messageForNotification },
       debugMessage,
     }) => {
-      console.log(formErrors, messageForNotification, debugMessage);
+      alert.show(
+        <p>
+          {strings.drefFormLoadRequestFailureMessage}
+          &nbsp;
+          <strong>
+            {messageForNotification}
+          </strong>
+        </p>,
+        {
+          variant: 'danger',
+          debugMessage,
+        },
+      );
     }
   });
+
+  const submitDref = React.useCallback((modifiedAt?: string) => {
+    const body = {
+      ...drefResponse,
+      users: users,
+      modified_at: modifiedAt ?? lastModifiedAtRef.current,
+      disability_people_per: 0,
+      people_per_local: 0,
+      people_per_urban: 0,
+    };
+
+    submitRequest(body as DrefApiFields);
+  }, [submitRequest, drefResponse, users]);
+
 
   const userOptions = React.useMemo(
     () => userListResponse?.results.map((u) => ({
@@ -86,21 +134,26 @@ function ShareUserModal(props: Props) {
     })) as NumericValueOption[],
     [userListResponse]);
 
+
   const handleUserChange = React.useCallback(
-    (value) => {
-      submitShare({
-        users:[value],
-        dref: id
-      });
-      setToggleInput(false);
-    }, [id, submitShare]
+    (val) => {
+      setUsers(val);
+    }, []
   );
 
   const handleToggleInput = React.useCallback(
     () => setToggleInput(true), []
   );
 
-  const pending = fetchingUserList || fetchingSharedUser || submitPending;
+  const handleUserDelete = React.useCallback(
+    (value) => {
+      const filterOutUser = users?.filter(
+        (u) => u !== value );
+      setUsers(filterOutUser);
+    },[users]
+  );
+
+  const pending = fetchingUserList || drefApplicationPending || drefSubmitting;
 
   return(
     <BasicModal
@@ -114,26 +167,52 @@ function ShareUserModal(props: Props) {
           <hr/>
         </div>
       }
-      footerActions={!toggleInput &&(
-        <Button
-          name={undefined}
-          variant='secondary'
-          onClick={handleToggleInput}
-        >
-          <AddLineIcon/> Add Collaborator
-        </Button>
+      footerContent={(
+        <>
+          {toggleInput && (
+            <Button
+              name={undefined}
+              variant='secondary'
+              onClick={submitDref}
+            >
+              save
+            </Button>
+          )}
+          {!toggleInput && (
+            <Button
+              name={undefined}
+              variant='secondary'
+              onClick={handleToggleInput}
+            >
+              <AddLineIcon/> Add Collaborator
+            </Button>
+          )}
+        </>
       )}
     >
-      {shareUserResponse?.results[0].users_details.map(
-        (detail) => <div>{detail.username}</div>
+      {userDetails?.map(
+        (item) => (
+          <div className={styles.userList}>
+            <div>{item.first_name}</div>
+            <Button
+              name={item.id}
+              variant='transparent'
+              onClick={handleUserDelete}
+            >
+              <IoTrash />
+            </Button>
+          </div>
+        )
       )}
       {toggleInput && (
-        <SelectInput
-          name={undefined}
+        <SelectInput<'users', number>
+          name={'users' as const}
           options={userOptions}
-          value={user}
+          value={users}
           onChange={handleUserChange}
           disabled={pending}
+          isMulti
+          isClearable
         />
       )}
     </BasicModal>

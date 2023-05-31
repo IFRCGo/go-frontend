@@ -1,7 +1,7 @@
 @import '~styles/settings/variables';
 
 .share-modal {
-  width: $row-min-width;
+  width: 400px;
   height: 20rem;
   padding: $spacing;
   align-items: center;
@@ -37,6 +37,12 @@
       font-weight: $base-font-regular;
       color: $grey-coal;
     }
+  }
+
+  .user-list {
+    display:flex;
+    justify-content: space-between;
+    margin: $spacing 0;
   }
 
 }
