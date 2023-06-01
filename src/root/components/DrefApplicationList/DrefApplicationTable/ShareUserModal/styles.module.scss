@@ -1,14 +1,15 @@
 @import '~styles/settings/variables';
 
 .share-modal {
-  width: 400px;
-  height: 20rem;
+  width: $row-min-width;
+  min-height: 18rem;
   padding: $spacing;
   align-items: center;
   overflow: auto;
 
   .body {
     width: 100%;
+    overflow: visible;
   }
 
   header {

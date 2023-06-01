@@ -71,7 +71,23 @@ function CompletedDrefTable(props:Props) {
         let obj = {
           ...d,
           firstLevel: d.dref.operational_update_details,
-          secondLevel: d.dref.final_report_details,
+          secondLevel: [{
+            id: d.id,
+            created_at: d.dref.created_at,
+            title: d.dref.title,
+            appeal_code: d.dref.appeal_code,
+            type_of_dref_display: d.dref.type_of_dref_display,
+            submission_to_geneva: d.dref.submission_to_geneva,
+            country_details: d.dref.country_details,
+            application_type: d.dref.application_type,
+            application_type_display: d.dref.application_type_display,
+            is_published: d.dref.is_published,
+            has_ops_update: d.dref.has_ops_update,
+            has_final_reprot: d.dref.has_final_reprot,
+            unpublished_op_update_count: d.dref.unpublished_op_update_count,
+            unpublished_final_report_count: d.dref.unpublished_final_report_count,
+            status_display: d.dref.status_display,
+          }],
         };
         return obj;
       });

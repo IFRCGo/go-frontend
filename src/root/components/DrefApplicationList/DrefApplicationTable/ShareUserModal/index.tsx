@@ -12,7 +12,6 @@ import {
 } from '#utils/restRequest';
 import BasicModal from '#components/BasicModal';
 import { NumericValueOption } from '#types/common';
-import { DrefApiFields } from '#views/DrefApplicationForm/common';
 import languageContext from '#root/languageContext';
 import  useAlert from '#hooks/useAlert';
 
@@ -21,6 +20,13 @@ import styles from './styles.module.scss';
 interface Props {
   id?: number;
   onClose: () =>void;
+}
+
+interface ShareUsers {
+  users: number[];
+  dref: number;
+  id: number;
+  users_details: UserDetail[];
 }
 
 interface UserDetail {
@@ -40,66 +46,49 @@ function ShareUserModal(props: Props) {
 
   const alert = useAlert();
   const {strings} = React.useContext(languageContext);
-  const lastModifiedAtRef = React.useRef<string | undefined>();
-  const [users, setUsers] = React.useState<number[] | undefined>(undefined);
+  const [users, setUsers] = React.useState<number[]>([]);
   const [userDetails, setUserDetails] = React.useState<PartialForm<UserDetail[]>>();
   const [toggleInput, setToggleInput] = React.useState<boolean>(false);
 
   const {
-    pending: fetchingUserList,
+    pending: userListPending,
     response: userListResponse,
   } = useRequest<ListResponse<UserDetail>>({
     url: 'api/v2/users/'
   });
 
   const {
-    pending: drefApplicationPending,
-    response: drefResponse,
-  } = useRequest<DrefApiFields>({
-    skip: !id,
-    url: `api/v2/dref/${id}/`,
+    pending: shareUserPending,
+    retrigger: refetchShareUser,
+  } = useRequest<ListResponse<ShareUsers>>({
+    url: `api/v2/dref-share-user/`,
+    query: {id},
     onSuccess: (response) => {
-      setUsers(response.users);
-      setUserDetails(response.users_details);
-      lastModifiedAtRef.current = response?.modified_at;
-    },
-    onFailure: ({
-      value: { messageForNotification },
-      debugMessage,
-    }) => {
-      alert.show(
-        <p>
-          {strings.drefFormLoadRequestFailureMessage}
-          &nbsp;
-          <strong>
-            {messageForNotification}
-          </strong>
-        </p>,
-        {
-          variant: 'danger',
-          debugMessage,
-        },
-      );
+      setUsers(response.results[0].users);
+      setUserDetails(response.results[0].users_details);
     }
   });
 
   const {
-    pending: drefSubmitting,
-    trigger: submitRequest,
-  } = useLazyRequest<DrefApiFields, Partial<DrefApiFields>>({
-    url: id ? `api/v2/dref/${id}` : 'api/v2/dref/',
-    method: id ? 'PATCH' : 'POST',
-    body : ctx => ctx,
-    onSuccess: (response) => {
-      console.log('this is patch response', response);
+    pending: submitPending,
+    trigger: submitShare,
+  } = useLazyRequest<ShareUsers>({
+    url: '/api/v2/dref-share/',
+    method: 'POST',
+    body: ctx => ctx,
+    onSuccess: () => {
+      setToggleInput(false);
+      refetchShareUser();
     },
     onFailure: ({
-      value: { messageForNotification },
+      value: {
+        messageForNotification,
+      },
       debugMessage,
     }) => {
       alert.show(
         <p>
-          {strings.drefFormLoadRequestFailureMessage}
+          {strings.drefFormSaveRequestFailureMessage}
           &nbsp;
           <strong>
             {messageForNotification}
@@ -110,22 +99,8 @@ function ShareUserModal(props: Props) {
           debugMessage,
         },
       );
-    }
+    },
   });
-
-  const submitDref = React.useCallback((modifiedAt?: string) => {
-    const body = {
-      ...drefResponse,
-      users: users,
-      modified_at: modifiedAt ?? lastModifiedAtRef.current,
-      disability_people_per: 0,
-      people_per_local: 0,
-      people_per_urban: 0,
-    };
-
-    submitRequest(body as DrefApiFields);
-  }, [submitRequest, drefResponse, users]);
-
 
   const userOptions = React.useMemo(
     () => userListResponse?.results.map((u) => ({
@@ -134,26 +109,37 @@ function ShareUserModal(props: Props) {
     })) as NumericValueOption[],
     [userListResponse]);
 
+  const handleSubmit = React.useCallback(
+    (finalUsers) => {
+      let body = {
+        users: finalUsers,
+        dref: id,
+      };
+      submitShare(body);
+    },[submitShare, id]
+  );
 
   const handleUserChange = React.useCallback(
     (val) => {
-      setUsers(val);
-    }, []
+      let userList = [...users, val];
+      handleSubmit(userList);
+    },[users, handleSubmit]
+  );
+
+  const handleUserDelete = React.useCallback(
+    (value) => {
+      const filterDeleteUser = users?.filter(
+        (u) => u !== value );
+      handleSubmit(filterDeleteUser);
+
+    },[users, handleSubmit]
   );
 
   const handleToggleInput = React.useCallback(
     () => setToggleInput(true), []
   );
 
-  const handleUserDelete = React.useCallback(
-    (value) => {
-      const filterOutUser = users?.filter(
-        (u) => u !== value );
-      setUsers(filterOutUser);
-    },[users]
-  );
-
-  const pending = fetchingUserList || drefApplicationPending || drefSubmitting;
+  const pending = userListPending || shareUserPending || submitPending;
 
   return(
     <BasicModal
@@ -169,15 +155,6 @@ function ShareUserModal(props: Props) {
       }
       footerContent={(
         <>
-          {toggleInput && (
-            <Button
-              name={undefined}
-              variant='secondary'
-              onClick={submitDref}
-            >
-              save
-            </Button>
-          )}
           {!toggleInput && (
             <Button
               name={undefined}
@@ -192,7 +169,7 @@ function ShareUserModal(props: Props) {
     >
       {userDetails?.map(
         (item) => (
-          <div className={styles.userList}>
+          <div key={item.id} className={styles.userList}>
             <div>{item.first_name}</div>
             <Button
               name={item.id}
@@ -205,14 +182,12 @@ function ShareUserModal(props: Props) {
         )
       )}
       {toggleInput && (
-        <SelectInput<'users', number>
-          name={'users' as const}
+        <SelectInput
+          name={undefined}
           options={userOptions}
-          value={users}
+          value={undefined}
           onChange={handleUserChange}
           disabled={pending}
-          isMulti
-          isClearable
         />
       )}
     </BasicModal>

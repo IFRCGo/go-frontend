@@ -431,7 +431,7 @@ function DrefApplicationTable(props:Props) {
               <TableData>{detail.country_details.name}</TableData>
               <TableData>{detail.type_of_dref_display}</TableData>
               <TableData>
-                {detail.status_display === 'Completed' 
+                {detail.status_display === 'Completed'
                   ? 'Approved'
                   : detail.status_display}
               </TableData>

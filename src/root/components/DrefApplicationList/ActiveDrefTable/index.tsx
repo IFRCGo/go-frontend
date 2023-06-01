@@ -208,7 +208,7 @@ function ActiveDrefTable(props:Props) {
   return (
     <>
       {pending && <BlockLoading />}
-      {!pending &&(
+      {!pending && drefResponse &&(
         <div className={styles.drefOperationTable}>
           <DrefApplicationTable
             className={_cs(className, styles.drefTable)}
@@ -218,13 +218,15 @@ function ActiveDrefTable(props:Props) {
             getDrefId={getDrefId}
             drefId={drefId}
           />
+          {drefResponse?.count > 0 &&(
           <Pager
             className={styles.pagination}
             activePage={drefActivePage}
             onActivePageChange={setDrefActivePage}
-            itemsCount={drefResponse?.count ?? 0}
+            itemsCount={drefResponse?.count}
             maxItemsPerPage={ITEM_PER_PAGE}
           />
+          )}
         </div>
       )}
 
