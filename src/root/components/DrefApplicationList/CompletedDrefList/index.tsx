@@ -65,38 +65,6 @@ function CompletedDrefList(props:Props) {
     },
   });
 
-  const data = React.useMemo(() => {
-    let rowData = drefResponse?.results.map(
-      (d) => {
-        let obj = {
-          ...d,
-          firstLevel: d.dref.operational_update_details,
-          secondLevel: [{
-            id: d.id,
-            created_at: d.dref.created_at,
-            title: d.dref.title,
-            appeal_code: d.dref.appeal_code,
-            type_of_dref_display: d.dref.type_of_dref_display,
-            submission_to_geneva: d.dref.submission_to_geneva,
-            country_details: d.dref.country_details,
-            application_type: d.dref.application_type,
-            application_type_display: d.dref.application_type_display,
-            is_published: d.dref.is_published,
-            has_ops_update: d.dref.has_ops_update,
-            has_final_reprot: d.dref.has_final_reprot,
-            unpublished_op_update_count: d.dref.unpublished_op_update_count,
-            unpublished_final_report_count: d.dref.unpublished_final_report_count,
-            status_display: d.dref.status_display,
-          }],
-        };
-        return obj;
-      });
-    return rowData;
-
-  },[drefResponse]);
-
-  const pending = drefPending;
-
   const getDrefId = React.useCallback(
     (applicationType, id) => {
       if(applicationType === 'FINAL_REPORT'){
@@ -123,14 +91,16 @@ function CompletedDrefList(props:Props) {
     },[drefResponse]
   );
 
+  const pending = drefPending;
+
   return (
     <>
       {pending && <BlockLoading />}
-      {!pending &&(
+      {!pending && drefResponse && (
         <div className={styles.drefOperationTable}>
           <CompletedDrefTable
             className={_cs(className, styles.drefTable)}
-            data={data}
+            data={drefResponse?.results}
             history={history}
             refetch={refetchDrefList}
             getDrefId={getDrefId}
@@ -140,13 +110,13 @@ function CompletedDrefList(props:Props) {
             className={styles.pagination}
             activePage={drefActivePage}
             onActivePageChange={setDrefActivePage}
-            itemsCount={drefResponse?.count ?? 0}
+            itemsCount={drefResponse?.count}
             maxItemsPerPage={ITEM_PER_PAGE}
           />
         </div>
       )}
 
-      {!drefPending && drefResponse?.results?.length === 0 && data?.length === 0 && (
+      {!drefPending && drefResponse?.results?.length === 0 && (
         <EmptyMessage />
       )}
 

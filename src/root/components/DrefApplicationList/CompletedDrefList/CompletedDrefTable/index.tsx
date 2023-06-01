@@ -1,11 +1,10 @@
 import React from 'react';
-import { isDefined, _cs } from '@togglecorp/fujs';
+import { _cs } from '@togglecorp/fujs';
 import { IoEllipsisHorizontal } from 'react-icons/io5';
 import { History } from 'history';
 
 import DateOutput from '#components/DateOutput';
 import DropdownMenu from '#components/dropdown-menu';
-import DropdownMenuItem from '#components/DropdownMenuItem';
 import useRowExpansion from '#components/Table/useRowExpansion';
 import {
   createStringColumn,
@@ -17,265 +16,51 @@ import Table from '#components/Table';
 import TableData from '#components/Table/TableData';
 import TableRow from '#components/Table/TableRow';
 import languageContext from '#root/languageContext';
-import useConfirmation from '#hooks/useConfirmation';
-import { useLazyRequest } from '#utils/restRequest';
-import useAlertContext from '#hooks/useAlert';
 import Button from '#components/Button';
-import { TYPE_LOAN } from '#views/DrefApplicationForm/common';
 import DrefExportButton from '#components/DrefExportButton';
 import OperationalUpdateExport from '#components/OperationalUpdateExport';
 import FinalReportExport from '#components/FinalReportExport';
-import { BaseProps, TableDataDetail } from '#components/DrefApplicationList/useDrefApplicationListOptions';
+import { BaseProps } from '#components/DrefApplicationList/useDrefApplicationListOptions';
 import ShareUserModal from '#components/DrefApplicationList/ShareUserModal';
 
 import styles from '../styles.module.scss';
 
+interface DrefDetails extends BaseProps {
+  operational_update_details: BaseProps[];
+  final_report_details: BaseProps[];
+}
+
+interface DrefApplicationResponse extends BaseProps {
+  dref: DrefDetails;
+}
+
 interface Props {
   className?: string;
-  data?: TableDataDetail[];
+  data?: DrefApplicationResponse[];
   refetch:() => void;
   history: History;
   getDrefId: (applicationType: string, id:number) => void;
   drefId?: number;
 }
 
-interface DrefOperationalResponseFields {
-  id: number;
-}
-
-const drefKeySelector = (d: TableDataDetail) => d.id;
+const APPROVED = 1;
+const drefKeySelector = (d: DrefApplicationResponse) => d.id;
 
 function CompletedDrefTable(props:Props) {
   const {
     className,
     data,
-    refetch,
-    history,
     getDrefId,
     drefId,
   } = props;
 
-  const alert = useAlertContext();
   const { strings } = React.useContext(languageContext);
   const [expandedRow, setExpandedRow] = React.useState<number>();
   const [showModal, setShowModal] = React.useState<boolean>(false);
 
-  const {
-    pending: drefPublishPending,
-    trigger: postDrefPublishRequest,
-  } = useLazyRequest<DrefOperationalResponseFields, number>({
-    url: (drefId) => drefId ? `api/v2/dref/${drefId}/publish/` : undefined,
-    body: () => ({}),
-    method: 'POST',
-    onSuccess: () => {
-      refetch();
-    },
-    onFailure: ({
-      value: { messageForNotification },
-      debugMessage,
-    }) => {
-      alert.show(
-        <p>
-          {strings.drefFormLoadRequestFailureMessage}
-          &nbsp;
-          <strong>
-            {messageForNotification}
-          </strong>
-        </p>,
-        {
-          variant: 'danger',
-          debugMessage,
-        },
-      );
-    }
-  });
-
-  const {
-    pending: newOperationalUpdatePending,
-    trigger: postDrefNewOperationalUpdate,
-  } = useLazyRequest<BaseProps, number>({
-    url: (drefId) => drefId ? `api/v2/dref-op-update/` : undefined,
-    body: (drefId) => ({ dref: drefId }),
-    method: 'POST',
-    onSuccess: (response) => {
-      if (isDefined(response?.id)) {
-        history.push(`/dref-operational-update/${response.id}/edit/`);
-      }
-    },
-    onFailure: ({
-      value: { messageForNotification },
-      debugMessage,
-    }) => {
-      alert.show(
-        <p>
-          {strings.drefOperationalUpdateFailureMessage}
-          &nbsp;
-          <strong>
-            {messageForNotification}
-          </strong>
-        </p>,
-        {
-          variant: 'danger',
-          debugMessage,
-        },
-      );
-    }
-  });
-  const {
-    pending: newFinalReportPending,
-    trigger: postDrefNewFinalReport,
-  } = useLazyRequest<BaseProps, number>({
-    url: (drefId) => drefId ? `api/v2/dref-final-report/` : undefined,
-    body: (drefId) => ({ dref: drefId }),
-    method: 'POST',
-    onSuccess: (response) => {
-      if (isDefined(response?.id)) {
-        history.push(`/dref-final-report/${response.id}/edit/`);
-      }
-    },
-    onFailure: ({
-      value: { messageForNotification },
-      debugMessage,
-    }) => {
-      alert.show(
-        <p>
-          {strings.drefOperationalUpdateFailureMessage}
-          &nbsp;
-          <strong>
-            {messageForNotification}
-          </strong>
-        </p>,
-        {
-          variant: 'danger',
-          debugMessage,
-        },
-      );
-    }
-  });
-
-  const {
-    pending: operationalUpdatePublishPending,
-    trigger: postOperationalUpdatePublishRequest,
-  } = useLazyRequest<DrefOperationalResponseFields, number>({
-    url: (operationalUpdateId) => operationalUpdateId ? `api/v2/dref-op-update/${operationalUpdateId}/publish/` : undefined,
-    body: () => ({}),
-    method: 'POST',
-    onSuccess: () => {
-      refetch();
-    },
-    onFailure: ({
-      value: { messageForNotification },
-      debugMessage,
-    }) => {
-      alert.show(
-        <p>
-          {strings.drefOperationalUpdatePublishConfirmationFailureMessage}
-          &nbsp;
-          <strong>
-            {messageForNotification}
-          </strong>
-        </p>,
-        {
-          variant: 'danger',
-          debugMessage,
-        },
-      );
-    }
-  });
-
-  const {
-    pending: finalReportPublishPending,
-    trigger: postFinalReportPublishRequest,
-  } = useLazyRequest<DrefOperationalResponseFields, number | undefined>({
-    url: (finalReportId) => finalReportId ? `api/v2/dref-final-report/${finalReportId}/publish/` : undefined,
-    body: () => ({}),
-    method: 'POST',
-    onSuccess: () => {
-      refetch();
-    },
-    onFailure: ({
-      value: { messageForNotification },
-      debugMessage,
-    }) => {
-      alert.show(
-        <p>
-          {strings.finalReportPublishConfirmationFailureMessage}
-          &nbsp;
-          <strong>
-            {messageForNotification}
-          </strong>
-        </p>,
-        {
-          variant: 'danger',
-          debugMessage,
-        },
-      );
-    }
-  });
-
-  const handleDrefPublishConfirm = React.useCallback((drefId: number) => {
-    postDrefPublishRequest(drefId);
-  }, [postDrefPublishRequest]);
-
-  const handleOperationalUpdatePublishConfirm = React.useCallback((operationalUpdateId: number) => {
-    postOperationalUpdatePublishRequest(operationalUpdateId);
-  }, [postOperationalUpdatePublishRequest]);
-
-  const handleFinalReportPublishConfirm = React.useCallback((finalReportId) => {
-    postFinalReportPublishRequest(finalReportId);
-  }, [
-      postFinalReportPublishRequest,
-    ]);
-
-  const [
-  publishDrefConfirmationModal,
-  onDrefPublishClick,
-] = useConfirmation({
-    message: strings.drefPublishConfirmationMessage,
-    onConfirm: handleDrefPublishConfirm,
-  });
-
-  const [
-  publishOperationalUpdateConfirmationModal,
-  onOperationalUpdatePublishClick,
-] = useConfirmation({
-    message: strings.drefOperationalUpdatePublishConfirmationMessage,
-    onConfirm: handleOperationalUpdatePublishConfirm,
-  });
-
-  const [
-  publishFinalReportConfirmationModal,
-  onFinalReportPublishClick,
-] = useConfirmation({
-    message: strings.finalReportPublishConfirmationMessage,
-    onConfirm: handleFinalReportPublishConfirm,
-  });
-
   const handleExpandedClick = React.useCallback((rowId: number) => {
     setExpandedRow(expandedRow === rowId ? undefined : rowId);
   }, [expandedRow, setExpandedRow]);
-
-  const handlePublishApplication = React.useCallback(
-    (name, e) =>{
-      const value = e.currentTarget.value;
-
-      if(name === "DREF") {
-        onDrefPublishClick(value);
-      }
-
-      if(name === "OPS_UPDATE") {
-        onOperationalUpdatePublishClick(value);
-      }
-
-      if(name === "FINAL_REPORT") {
-        onFinalReportPublishClick(value);
-      }
-    },[
-      onDrefPublishClick,
-      onOperationalUpdatePublishClick,
-      onFinalReportPublishClick
-    ]
-  );
 
   const handleShareModal = React.useCallback(
     (name, e) => {
@@ -290,24 +75,15 @@ function CompletedDrefTable(props:Props) {
       if(item.application_type === "FINAL_REPORT"){
         return (
           <>
-            {!item.is_published && (
-              <>
-                <DropdownMenuItem
-                  href={`/dref-final-report/${item.id}/edit/`}
-                  label="Edit"
-                  disabled={item.is_published || finalReportPublishPending}
-                />
-                <Button
-                  className={styles.menuItemButton}
-                  variant='transparent'
-                  name={item.application_type}
-                  onClick={handleShareModal}
-                  value={item.id}
-                >
-                  Share
-                </Button>
-              </>
-            )}
+            <Button
+              className={styles.menuItemButton}
+              variant='transparent'
+              name={item.application_type}
+              onClick={handleShareModal}
+              value={item.id}
+            >
+              Share
+            </Button>
             <FinalReportExport
               className={styles.menuItemButton}
               id={item.id}
@@ -320,24 +96,15 @@ function CompletedDrefTable(props:Props) {
       if(item.application_type === "OPS_UPDATE"){
         return(
           <>
-            {!item.is_published && (
-              <>
-                <DropdownMenuItem
-                  href={`/dref-operational-update/${item.id}/edit/`}
-                  label="Edit"
-                  disabled={item.is_published || operationalUpdatePublishPending}
-                />
-                <Button
-                  className={styles.menuItemButton}
-                  variant='transparent'
-                  name={item.application_type}
-                  onClick={handleShareModal}
-                  value={item.id}
-                >
-                  Share
-                </Button>
-              </>
-            )}
+            <Button
+              className={styles.menuItemButton}
+              variant='transparent'
+              name={item.application_type}
+              onClick={handleShareModal}
+              value={item.id}
+            >
+              Share
+            </Button>
             <OperationalUpdateExport
               className={styles.menuItemButton}
               variant="transparent"
@@ -348,52 +115,17 @@ function CompletedDrefTable(props:Props) {
       }
 
       if(item.application_type === "DREF"){
-        const hasUnpublishedOperationalUpdate = item.unpublished_op_update_count > 0;
-        const hasUnpublishedFinalReport = item.unpublished_final_report_count > 0;
-
-        const isDrefLoan = item.type_of_dref === TYPE_LOAN;
         return(
           <>
-            {!item.is_published && (
-              <>
-                <DropdownMenuItem
-                  href={`/dref-application/${item.id}/edit/`}
-                  label= {`${strings.drefTableEdit} ${item.application_type_display}`}
-                />
-                <Button
-                  className={styles.menuItemButton}
-                  variant='transparent'
-                  name={item.application_type}
-                  onClick={handleShareModal}
-                  value={item.id}
-                >
-                  Share
-                </Button>
-              </>
-            )}
-            {!hasUnpublishedOperationalUpdate
-              && item.is_published
-              && !item.has_final_reprot
-              && (
-                <DropdownMenuItem
-                  name={item.id}
-                  onClick={postDrefNewOperationalUpdate}
-                  label={strings.drefOperationalUpdateNewLabel}
-                  disabled={newOperationalUpdatePending}
-                />
-              )}
-            {!hasUnpublishedFinalReport
-              && !hasUnpublishedOperationalUpdate
-              && item.is_published
-              && !item.has_final_reprot
-              && (
-                <DropdownMenuItem
-                  name={item.id}
-                  onClick={postDrefNewFinalReport}
-                  label={strings.finalReportCreateButtonLabel}
-                  disabled={isDrefLoan || newFinalReportPending}
-                />
-              )}
+            <Button
+              className={styles.menuItemButton}
+              variant='transparent'
+              name={item.application_type}
+              onClick={handleShareModal}
+              value={item.id}
+            >
+              Share
+            </Button>
             <DrefExportButton
               className={styles.menuItemButton}
               variant="transparent"
@@ -404,16 +136,7 @@ function CompletedDrefTable(props:Props) {
       }
 
       return;
-    },[
-      strings,
-      postDrefNewOperationalUpdate,
-      postDrefNewFinalReport,
-      operationalUpdatePublishPending,
-      finalReportPublishPending,
-      newOperationalUpdatePending,
-      newFinalReportPending,
-      handleShareModal,
-    ]);
+    },[ handleShareModal ]);
 
   const getRowLevelData = React.useCallback(
     (expandedData?: BaseProps[])=> {
@@ -431,7 +154,7 @@ function CompletedDrefTable(props:Props) {
               <TableData>{detail.country_details.name}</TableData>
               <TableData>{detail.type_of_dref_display}</TableData>
               <TableData>
-                {detail.status_display === 'Completed'
+                {detail.status === APPROVED
                   ? 'Approved'
                   : detail.status_display}
               </TableData>
@@ -449,13 +172,13 @@ function CompletedDrefTable(props:Props) {
         ));
     },[ getTableActions ]);
 
-  const rowModifier = useRowExpansion<TableDataDetail, number>(
+  const rowModifier = useRowExpansion<DrefApplicationResponse, number>(
     expandedRow,
     ({datum}) => {
       return(
         <>
-          {getRowLevelData(datum.firstLevel)}
-          {getRowLevelData(datum.secondLevel)}
+          {getRowLevelData(datum.dref.operational_update_details)}
+          {getRowLevelData([datum.dref])}
         </>
       );
     }
@@ -465,62 +188,47 @@ function CompletedDrefTable(props:Props) {
   drefApplicationColumns,
 ] = React.useMemo(() => {
     const baseDrefColumns = [
-      createDateColumn<TableDataDetail, string | number>(
+      createDateColumn<DrefApplicationResponse, string | number>(
         'created_at',
         strings.drefTableCreatedOn,
         (item) => item?.created_at,
       ),
-      createStringColumn<TableDataDetail, string | number>(
-        'appeal_code',
-        strings.drefTableAppealNumber,
-        (item) => item?.appeal_code,
-      ),
-      createStringColumn<TableDataDetail, string | number>(
-        'title',
-        strings.drefTableName,
-        (item) => item?.title,
-      ),
-      createStringColumn<TableDataDetail, string | number>(
+      createStringColumn<DrefApplicationResponse, string | number>(
         'type',
         'Type',
         (item) => item.application_type_display,
       ),
-      createStringColumn<TableDataDetail, string | number>(
+      createStringColumn<DrefApplicationResponse, string | number>(
+        'title',
+        strings.drefTableName,
+        (item) => item?.title,
+      ),
+      createStringColumn<DrefApplicationResponse, string | number>(
+        'appeal_code',
+        strings.drefTableAppealNumber,
+        (item) => item?.appeal_code,
+      ),
+      createStringColumn<DrefApplicationResponse, string | number>(
         'country_details',
         'Country',
         (item) => item.country_details.name,
       ),
-      createStringColumn<TableDataDetail, string | number>(
+      createStringColumn<DrefApplicationResponse, string | number>(
         'type_of_dref_display',
-        'Type of DREF',
-        (item) => item?.type_of_dref_display,
+        'Submitted/Approved on',
+        () => '',
       ),
-      createStringColumn<TableDataDetail, string | number>(
+      createStringColumn<DrefApplicationResponse, string | number>(
         'status_display',
         'Status',
-        (item) => item.status_display === 'Completed' ? 'Approved' : item.status_display,
+        (item) => item.status === APPROVED ? 'Approved' : item.status_display,
       ),
     ];
 
     const columnWithActions = [
-      createActionColumn<TableDataDetail, number>(
+      createActionColumn<DrefApplicationResponse, number>(
         'actions',
-        (rowKey: number, item: TableDataDetail) => ({
-          children: (
-            !item.is_published && (
-              <Button
-                variant='secondary'
-                name={item.application_type}
-                value={rowKey}
-                onClick={handlePublishApplication}
-                disabled={drefPublishPending
-                  || operationalUpdatePublishPending
-                  || finalReportPublishPending}
-              >
-                Approve
-              </Button>
-            )
-          ),
+        (_, item: DrefApplicationResponse) => ({
           extraActions: (
             getTableActions(item)
           ),
@@ -535,7 +243,7 @@ function CompletedDrefTable(props:Props) {
       [
         ...baseDrefColumns,
         ...columnWithActions,
-        createExpandColumn<TableDataDetail, number>(
+        createExpandColumn<DrefApplicationResponse, number>(
           'expand-button',
           '',
           handleExpandedClick,
@@ -548,10 +256,6 @@ function CompletedDrefTable(props:Props) {
       handleExpandedClick,
       strings,
       getTableActions,
-      handlePublishApplication,
-      drefPublishPending,
-      operationalUpdatePublishPending,
-      finalReportPublishPending,
     ]);
 
   return (
@@ -565,9 +269,6 @@ function CompletedDrefTable(props:Props) {
         variant="large"
         rowModifier={rowModifier}
       />
-      {publishDrefConfirmationModal}
-      {publishOperationalUpdateConfirmationModal}
-      {publishFinalReportConfirmationModal}
       {showModal && (
         <ShareUserModal
           id={drefId}
