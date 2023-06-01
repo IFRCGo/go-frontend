@@ -20,23 +20,14 @@ import Button from '#components/Button';
 import DrefExportButton from '#components/DrefExportButton';
 import OperationalUpdateExport from '#components/OperationalUpdateExport';
 import FinalReportExport from '#components/FinalReportExport';
-import { BaseProps } from '#components/DrefApplicationList/useDrefApplicationListOptions';
+import { BaseProps, CompletedDrefResponse } from '#components/DrefApplicationList/useDrefApplicationListOptions';
 import ShareUserModal from '#components/DrefApplicationList/ShareUserModal';
 
 import styles from '../styles.module.scss';
 
-interface DrefDetails extends BaseProps {
-  operational_update_details: BaseProps[];
-  final_report_details: BaseProps[];
-}
-
-interface DrefApplicationResponse extends BaseProps {
-  dref: DrefDetails;
-}
-
 interface Props {
   className?: string;
-  data?: DrefApplicationResponse[];
+  data?: CompletedDrefResponse[];
   refetch:() => void;
   history: History;
   getDrefId: (applicationType: string, id:number) => void;
@@ -44,7 +35,7 @@ interface Props {
 }
 
 const APPROVED = 1;
-const drefKeySelector = (d: DrefApplicationResponse) => d.id;
+const drefKeySelector = (d: CompletedDrefResponse) => d.id;
 
 function CompletedDrefTable(props:Props) {
   const {
@@ -172,7 +163,7 @@ function CompletedDrefTable(props:Props) {
         ));
     },[ getTableActions ]);
 
-  const rowModifier = useRowExpansion<DrefApplicationResponse, number>(
+  const rowModifier = useRowExpansion<CompletedDrefResponse, number>(
     expandedRow,
     ({datum}) => {
       return(
@@ -188,37 +179,37 @@ function CompletedDrefTable(props:Props) {
   drefApplicationColumns,
 ] = React.useMemo(() => {
     const baseDrefColumns = [
-      createDateColumn<DrefApplicationResponse, string | number>(
+      createDateColumn<CompletedDrefResponse, string | number>(
         'created_at',
         strings.drefTableCreatedOn,
         (item) => item?.created_at,
       ),
-      createStringColumn<DrefApplicationResponse, string | number>(
+      createStringColumn<CompletedDrefResponse, string | number>(
         'type',
         'Type',
         (item) => item.application_type_display,
       ),
-      createStringColumn<DrefApplicationResponse, string | number>(
+      createStringColumn<CompletedDrefResponse, string | number>(
         'title',
         strings.drefTableName,
         (item) => item?.title,
       ),
-      createStringColumn<DrefApplicationResponse, string | number>(
+      createStringColumn<CompletedDrefResponse, string | number>(
         'appeal_code',
         strings.drefTableAppealNumber,
         (item) => item?.appeal_code,
       ),
-      createStringColumn<DrefApplicationResponse, string | number>(
+      createStringColumn<CompletedDrefResponse, string | number>(
         'country_details',
         'Country',
         (item) => item.country_details.name,
       ),
-      createStringColumn<DrefApplicationResponse, string | number>(
+      createStringColumn<CompletedDrefResponse, string | number>(
         'type_of_dref_display',
         'Submitted/Approved on',
         () => '',
       ),
-      createStringColumn<DrefApplicationResponse, string | number>(
+      createStringColumn<CompletedDrefResponse, string | number>(
         'status_display',
         'Status',
         (item) => item.status === APPROVED ? 'Approved' : item.status_display,
@@ -226,9 +217,9 @@ function CompletedDrefTable(props:Props) {
     ];
 
     const columnWithActions = [
-      createActionColumn<DrefApplicationResponse, number>(
+      createActionColumn<CompletedDrefResponse, number>(
         'actions',
-        (_, item: DrefApplicationResponse) => ({
+        (_, item: CompletedDrefResponse) => ({
           extraActions: (
             getTableActions(item)
           ),
@@ -243,7 +234,7 @@ function CompletedDrefTable(props:Props) {
       [
         ...baseDrefColumns,
         ...columnWithActions,
-        createExpandColumn<DrefApplicationResponse, number>(
+        createExpandColumn<CompletedDrefResponse, number>(
           'expand-button',
           '',
           handleExpandedClick,

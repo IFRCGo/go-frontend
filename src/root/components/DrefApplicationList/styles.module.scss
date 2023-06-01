@@ -9,6 +9,10 @@
     margin: $spacing*3;
   }
 
+  .view-operation-heading {
+    color: $primary-color;
+  }
+
   .content {
     display: flex;
     flex-direction: column;

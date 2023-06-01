@@ -134,12 +134,13 @@ function DrefApplicationList(props: Props) {
     >
       {drefVisibility === 'COMPLETED' && (
         <Button
+          className={styles.viewOperationHeading}
           name='ACTIVE'
           variant="transparent"
           onClick={handleToggleDref}
         >
           <ArrowDropLeftLineIcon fontSize='2rem' />
-          View active DREF operations
+          Bact to active DREF operations
         </Button>
       )}
       <Container

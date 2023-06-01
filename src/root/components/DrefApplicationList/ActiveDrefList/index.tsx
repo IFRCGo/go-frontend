@@ -2,7 +2,6 @@ import React from 'react';
 import { _cs } from '@togglecorp/fujs';
 import { History } from 'history';
 
-import languageContext from '#root/languageContext';
 import {
   ListResponse,
   useRequest,
@@ -11,7 +10,7 @@ import EmptyMessage from '#components/EmptyMessage';
 import BlockLoading from '#components/block-loading';
 import Pager from '#components/Pager';
 
-import { BaseProps, TableDataDetail } from '../useDrefApplicationListOptions';
+import { BaseProps, ActiveDrefTableDetail } from '../useDrefApplicationListOptions';
 import ActiveDrefTable from './ActiveDrefTable';
 import styles from './styles.module.scss';
 
@@ -42,7 +41,6 @@ function ActiveDrefList(props:Props) {
     disasterType,
   } = props;
 
-  const { strings } = React.useContext(languageContext);
   const [drefId, setDrefId] = React.useState<number>();
   const [drefActivePage, setDrefActivePage] = React.useState(1);
 
@@ -174,7 +172,7 @@ function ActiveDrefList(props:Props) {
       });
     rowData.push(drefData);
 
-    return rowData.flat() as TableDataDetail[];
+    return rowData.flat() as ActiveDrefTableDetail[];
   },[drefResponse]);
 
   const pending = drefPending;
@@ -218,26 +216,20 @@ function ActiveDrefList(props:Props) {
             getDrefId={getDrefId}
             drefId={drefId}
           />
-          {drefResponse?.count > 0 &&(
-          <Pager
-            className={styles.pagination}
-            activePage={drefActivePage}
-            onActivePageChange={setDrefActivePage}
-            itemsCount={drefResponse?.count}
-            maxItemsPerPage={ITEM_PER_PAGE}
-          />
+          {drefResponse?.results.length > 0 &&(
+            <Pager
+              className={styles.pagination}
+              activePage={drefActivePage}
+              onActivePageChange={setDrefActivePage}
+              itemsCount={drefResponse?.count}
+              maxItemsPerPage={ITEM_PER_PAGE}
+            />
           )}
         </div>
       )}
 
-      {!drefPending && data.length === 0 && (
+      {!drefPending && drefResponse?.results.length === 0 && (
         <EmptyMessage />
-      )}
-
-      {!pending && !drefResponse && (
-        <div className={styles.error}>
-          {strings.drefFetchingErrorMessage}
-        </div>
       )}
     </>
   );

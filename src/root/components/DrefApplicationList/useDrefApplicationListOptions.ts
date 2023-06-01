@@ -29,9 +29,18 @@ export interface BaseProps {
   };
 }
 
-export interface TableDataDetail extends BaseProps {
+export interface ActiveDrefTableDetail extends BaseProps {
   firstLevel: BaseProps[];
   secondLevel: BaseProps[];
+}
+
+export interface CompletedDrefDetails extends BaseProps {
+  operational_update_details: BaseProps[];
+  final_report_details: BaseProps[];
+}
+
+export interface CompletedDrefResponse extends BaseProps {
+  dref: CompletedDrefDetails;
 }
 
 interface DrefOptions {
