@@ -11,9 +11,9 @@ import EmptyMessage from '#components/EmptyMessage';
 import BlockLoading from '#components/block-loading';
 import Pager from '#components/Pager';
 
-import DrefApplicationTable from '../DrefApplicationTable';
 import { BaseProps, TableDataDetail } from '../useDrefApplicationListOptions';
-import styles from '../styles.module.scss';
+import ActiveDrefTable from './ActiveDrefTable';
+import styles from './styles.module.scss';
 
 const ITEM_PER_PAGE = 6;
 
@@ -32,7 +32,7 @@ export interface DrefApplicationResponse extends BaseProps {
   final_report_details: BaseProps[];
 }
 
-function ActiveDrefTable(props:Props) {
+function ActiveDrefList(props:Props) {
   const {
     className,
     history,
@@ -210,7 +210,7 @@ function ActiveDrefTable(props:Props) {
       {pending && <BlockLoading />}
       {!pending && drefResponse &&(
         <div className={styles.drefOperationTable}>
-          <DrefApplicationTable
+          <ActiveDrefTable
             className={_cs(className, styles.drefTable)}
             data={data}
             history={history}
@@ -243,5 +243,5 @@ function ActiveDrefTable(props:Props) {
   );
 }
 
-export default ActiveDrefTable;
+export default ActiveDrefList;
 

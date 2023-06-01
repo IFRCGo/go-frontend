@@ -25,9 +25,9 @@ import { TYPE_LOAN } from '#views/DrefApplicationForm/common';
 import DrefExportButton from '#components/DrefExportButton';
 import OperationalUpdateExport from '#components/OperationalUpdateExport';
 import FinalReportExport from '#components/FinalReportExport';
+import { BaseProps, TableDataDetail } from '#components/DrefApplicationList/useDrefApplicationListOptions';
+import ShareUserModal from '#components/DrefApplicationList/ShareUserModal';
 
-import { BaseProps, TableDataDetail } from '../useDrefApplicationListOptions';
-import ShareUserModal from './ShareUserModal';
 import styles from '../styles.module.scss';
 
 interface Props {
@@ -45,7 +45,7 @@ interface DrefOperationalResponseFields {
 
 const drefKeySelector = (d: TableDataDetail) => d.id;
 
-function DrefApplicationTable(props:Props) {
+function ActiveDrefTable(props:Props) {
   const {
     className,
     data,
@@ -578,5 +578,5 @@ function DrefApplicationTable(props:Props) {
   );
 }
 
-export default DrefApplicationTable;
+export default ActiveDrefTable;
 

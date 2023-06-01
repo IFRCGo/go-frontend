@@ -14,43 +14,7 @@
     flex-direction: column;
     gap: $spacing*4;
     justify-content: center;
-    // align-items:center;
 
-    .dref-table {
-      background-color: #fafafa;
-      width: 100%;
-
-      .table-header {
-        background-color: #f2f2f2;
-      }
-
-      .actions-header {
-        width: 10rem;
-      }
-
-      .actions-cell {
-        display: flex;
-        justify-content: flex-end;
-        gap: $spacing * 0.5;
-      }
-
-      .expanded-row {
-        background-color: #fff;
-
-        td {
-          border: none;
-          padding: $spacing;
-        }
-
-        .expanded-row-actions {
-          span {
-            display: flex;
-            gap: $spacing-half;
-            justify-content: flex-end;
-          }
-        }
-      }
-    }
 
     .footer {
       display: flex;
@@ -112,20 +76,3 @@
   }
 }
 
-.menu-item-button {
-  padding: 3px 18px !important;
-
-  * {
-    padding: 0px 6px;
-  }
-}
-
-.dref-operation-table {
-  display: flex;
-  flex-direction: column;
-  gap: $spacing-2;
-
-  .pagination {
-    align-self: flex-end;
-  }
-}

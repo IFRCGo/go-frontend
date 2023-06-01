@@ -16,8 +16,9 @@ import Button from '#components/Button';
 import TextInput from '#components/TextInput';
 
 import useDrefApplicationListOptions from './useDrefApplicationListOptions';
-import ActiveDrefTable from './ActiveDrefTable';
-import CompletedDrefTable from './CompletedDrefTable';
+import ActiveDrefList from './ActiveDrefList';
+import CompletedDrefList from './CompletedDrefList';
+
 import styles from './styles.module.scss';
 
 interface Props {
@@ -161,7 +162,7 @@ function DrefApplicationList(props: Props) {
         sub
       >
         {drefVisibility === 'ACTIVE' && (
-          <ActiveDrefTable
+          <ActiveDrefList
             className={styles.drefTable}
             history={history}
             country={country}
@@ -172,7 +173,7 @@ function DrefApplicationList(props: Props) {
         )}
 
         {drefVisibility === 'COMPLETED' && (
-          <CompletedDrefTable
+          <CompletedDrefList
             className={styles.drefTable}
             history={history}
             country={country}
