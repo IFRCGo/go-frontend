@@ -139,11 +139,11 @@ function CompletedDrefTable(props:Props) {
               <TableData>
                 <DateOutput value={detail.created_at} />
               </TableData>
-              <TableData>{detail.appeal_code}</TableData>
-              <TableData>{detail.title}</TableData>
               <TableData>{detail.application_type_display}</TableData>
+              <TableData>{detail.title}</TableData>
+              <TableData>{detail.appeal_code}</TableData>
               <TableData>{detail.country_details.name}</TableData>
-              <TableData>{detail.type_of_dref_display}</TableData>
+              <TableData></TableData>
               <TableData>
                 {detail.status === APPROVED
                   ? 'Approved'
