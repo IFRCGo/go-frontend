@@ -2,7 +2,6 @@ import React from 'react';
 import { _cs } from '@togglecorp/fujs';
 import { History } from 'history';
 
-import languageContext from '#root/languageContext';
 import {
   ListResponse,
   useRequest,
@@ -11,9 +10,9 @@ import EmptyMessage from '#components/EmptyMessage';
 import BlockLoading from '#components/block-loading';
 import Pager from '#components/Pager';
 
-import DrefApplicationTable from '../DrefApplicationTable';
-import { BaseProps, TableDataDetail } from '../useDrefApplicationListOptions';
-import styles from '../styles.module.scss';
+import { BaseProps, ActiveDrefTableDetail } from '../useDrefApplicationListOptions';
+import ActiveDrefTable from './ActiveDrefTable';
+import styles from './styles.module.scss';
 
 const ITEM_PER_PAGE = 6;
 
@@ -32,7 +31,7 @@ export interface DrefApplicationResponse extends BaseProps {
   final_report_details: BaseProps[];
 }
 
-function ActiveDrefTable(props:Props) {
+function ActiveDrefList(props:Props) {
   const {
     className,
     history,
@@ -42,7 +41,6 @@ function ActiveDrefTable(props:Props) {
     disasterType,
   } = props;
 
-  const { strings } = React.useContext(languageContext);
   const [drefId, setDrefId] = React.useState<number>();
   const [drefActivePage, setDrefActivePage] = React.useState(1);
 
@@ -58,7 +56,9 @@ function ActiveDrefTable(props:Props) {
       country,
       type_of_dref: drefType,
       limit: ITEM_PER_PAGE,
-      offset: ITEM_PER_PAGE * (drefActivePage - 1),
+      offset: (disasterType || drefType || appealCode || country)
+        ? 0
+        : ITEM_PER_PAGE * (drefActivePage - 1),
     },
   });
 
@@ -174,7 +174,7 @@ function ActiveDrefTable(props:Props) {
       });
     rowData.push(drefData);
 
-    return rowData.flat() as TableDataDetail[];
+    return rowData.flat() as ActiveDrefTableDetail[];
   },[drefResponse]);
 
   const pending = drefPending;
@@ -208,9 +208,9 @@ function ActiveDrefTable(props:Props) {
   return (
     <>
       {pending && <BlockLoading />}
-      {!pending &&(
+      {!pending && drefResponse &&(
         <div className={styles.drefOperationTable}>
-          <DrefApplicationTable
+          <ActiveDrefTable
             className={_cs(className, styles.drefTable)}
             data={data}
             history={history}
@@ -218,28 +218,24 @@ function ActiveDrefTable(props:Props) {
             getDrefId={getDrefId}
             drefId={drefId}
           />
-          <Pager
-            className={styles.pagination}
-            activePage={drefActivePage}
-            onActivePageChange={setDrefActivePage}
-            itemsCount={drefResponse?.count ?? 0}
-            maxItemsPerPage={ITEM_PER_PAGE}
-          />
+          {drefResponse?.results.length > 0 &&(
+            <Pager
+              className={styles.pagination}
+              activePage={drefActivePage}
+              onActivePageChange={setDrefActivePage}
+              itemsCount={drefResponse?.count}
+              maxItemsPerPage={ITEM_PER_PAGE}
+            />
+          )}
         </div>
       )}
 
-      {!drefPending && data.length === 0 && (
+      {!drefPending && drefResponse?.results.length === 0 && (
         <EmptyMessage />
-      )}
-
-      {!pending && !drefResponse && (
-        <div className={styles.error}>
-          {strings.drefFetchingErrorMessage}
-        </div>
       )}
     </>
   );
 }
 
-export default ActiveDrefTable;
+export default ActiveDrefList;
 

@@ -1,5 +1,7 @@
 import React from 'react';
 import { AddLineIcon } from '@ifrc-go/icons';
+import { IoTrash } from 'react-icons/io5';
+import { PartialForm } from '@togglecorp/toggle-form';
 
 import Button from '#components/Button';
 import SelectInput from '#components/SelectInput';
@@ -10,20 +12,14 @@ import {
 } from '#utils/restRequest';
 import BasicModal from '#components/BasicModal';
 import { NumericValueOption } from '#types/common';
+import languageContext from '#root/languageContext';
+import  useAlert from '#hooks/useAlert';
 
 import styles from './styles.module.scss';
 
 interface Props {
   id?: number;
   onClose: () =>void;
-}
-
-interface UserDetail {
-  id?: number;
-  first_name: string;
-  last_name: string;
-  email: string;
-  username: string;
 }
 
 interface ShareUsers {
@@ -33,29 +29,44 @@ interface ShareUsers {
   users_details: UserDetail[];
 }
 
+interface UserDetail {
+  client_id: string;
+  id: number;
+  first_name: string;
+  last_name: string;
+  email: string;
+  username: string;
+}
+
 function ShareUserModal(props: Props) {
   const {
     id,
     onClose,
   } = props;
 
-  const [user, setUser] = React.useState<number | undefined>(undefined);
+  const alert = useAlert();
+  const {strings} = React.useContext(languageContext);
+  const [users, setUsers] = React.useState<number[]>([]);
+  const [userDetails, setUserDetails] = React.useState<PartialForm<UserDetail[]>>();
   const [toggleInput, setToggleInput] = React.useState<boolean>(false);
 
   const {
-    pending: fetchingUserList,
+    pending: userListPending,
     response: userListResponse,
   } = useRequest<ListResponse<UserDetail>>({
     url: 'api/v2/users/'
   });
 
   const {
-    pending: fetchingSharedUser,
-    response: shareUserResponse,
+    pending: shareUserPending,
     retrigger: refetchShareUser,
   } = useRequest<ListResponse<ShareUsers>>({
     url: `api/v2/dref-share-user/`,
     query: {id},
+    onSuccess: (response) => {
+      setUsers(response.results[0].users);
+      setUserDetails(response.results[0].users_details);
+    }
   });
 
   const {
@@ -66,17 +77,29 @@ function ShareUserModal(props: Props) {
     method: 'POST',
     body: ctx => ctx,
     onSuccess: () => {
+      setToggleInput(false);
       refetchShareUser();
     },
     onFailure: ({
       value: {
         messageForNotification,
-        formErrors,
       },
       debugMessage,
     }) => {
-      console.log(formErrors, messageForNotification, debugMessage);
-    }
+      alert.show(
+        <p>
+          {strings.drefFormSaveRequestFailureMessage}
+          &nbsp;
+          <strong>
+            {messageForNotification}
+          </strong>
+        </p>,
+        {
+          variant: 'danger',
+          debugMessage,
+        },
+      );
+    },
   });
 
   const userOptions = React.useMemo(
@@ -86,21 +109,37 @@ function ShareUserModal(props: Props) {
     })) as NumericValueOption[],
     [userListResponse]);
 
+  const handleSubmit = React.useCallback(
+    (finalUsers) => {
+      let body = {
+        users: finalUsers,
+        dref: id,
+      };
+      submitShare(body);
+    },[submitShare, id]
+  );
+
   const handleUserChange = React.useCallback(
+    (val) => {
+      let userList = [...users, val];
+      handleSubmit(userList);
+    },[users, handleSubmit]
+  );
+
+  const handleUserDelete = React.useCallback(
     (value) => {
-      submitShare({
-        users:[value],
-        dref: id
-      });
-      setToggleInput(false);
-    }, [id, submitShare]
+      const filterDeleteUser = users?.filter(
+        (u) => u !== value );
+      handleSubmit(filterDeleteUser);
+
+    },[users, handleSubmit]
   );
 
   const handleToggleInput = React.useCallback(
     () => setToggleInput(true), []
   );
 
-  const pending = fetchingUserList || fetchingSharedUser || submitPending;
+  const pending = userListPending || shareUserPending || submitPending;
 
   return(
     <BasicModal
@@ -114,24 +153,39 @@ function ShareUserModal(props: Props) {
           <hr/>
         </div>
       }
-      footerActions={!toggleInput &&(
-        <Button
-          name={undefined}
-          variant='secondary'
-          onClick={handleToggleInput}
-        >
-          <AddLineIcon/> Add Collaborator
-        </Button>
+      footerContent={(
+        <>
+          {!toggleInput && (
+            <Button
+              name={undefined}
+              variant='secondary'
+              onClick={handleToggleInput}
+            >
+              <AddLineIcon/> Add Collaborator
+            </Button>
+          )}
+        </>
       )}
     >
-      {shareUserResponse?.results[0].users_details.map(
-        (detail) => <div>{detail.username}</div>
+      {userDetails?.map(
+        (item) => (
+          <div key={item.id} className={styles.userList}>
+            <div>{item.first_name}</div>
+            <Button
+              name={item.id}
+              variant='transparent'
+              onClick={handleUserDelete}
+            >
+              <IoTrash />
+            </Button>
+          </div>
+        )
       )}
       {toggleInput && (
         <SelectInput
           name={undefined}
           options={userOptions}
-          value={user}
+          value={undefined}
           onChange={handleUserChange}
           disabled={pending}
         />

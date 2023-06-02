@@ -15,7 +15,7 @@ export interface BaseProps {
   operational_update_number: number;
   application_type: string;
   application_type_display: string;
-  status: string;
+  status: number;
   status_display: string;
   has_ops_update: boolean;
   has_final_reprot: boolean;
@@ -29,9 +29,18 @@ export interface BaseProps {
   };
 }
 
-export interface TableDataDetail extends BaseProps {
+export interface ActiveDrefTableDetail extends BaseProps {
   firstLevel: BaseProps[];
   secondLevel: BaseProps[];
+}
+
+export interface CompletedDrefDetails extends BaseProps {
+  operational_update_details: BaseProps[];
+  final_report_details: BaseProps[];
+}
+
+export interface CompletedDrefResponse extends BaseProps {
+  dref: CompletedDrefDetails;
 }
 
 interface DrefOptions {

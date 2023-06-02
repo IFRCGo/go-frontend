@@ -2,7 +2,6 @@ import React from 'react';
 import { _cs } from '@togglecorp/fujs';
 import { History } from 'history';
 
-import languageContext from '#root/languageContext';
 import {
   ListResponse,
   useRequest,
@@ -11,9 +10,9 @@ import EmptyMessage from '#components/EmptyMessage';
 import BlockLoading from '#components/block-loading';
 import Pager from '#components/Pager';
 
-import DrefApplicationTable from '../DrefApplicationTable';
-import { BaseProps } from '../useDrefApplicationListOptions';
-import styles from '../styles.module.scss';
+import { CompletedDrefResponse } from '../useDrefApplicationListOptions';
+import CompletedDrefTable from './CompletedDrefTable';
+import styles from './styles.module.scss';
 
 const ITEM_PER_PAGE = 6;
 
@@ -26,16 +25,7 @@ interface Props {
   disasterType?: number;
 }
 
-interface DrefDetails extends BaseProps {
-  operational_update_details: BaseProps[];
-  final_report_details: BaseProps[];
-}
-
-interface DrefApplicationResponse extends BaseProps {
-  dref: DrefDetails;
-}
-
-function CompletedDrefTable(props:Props) {
+function CompletedDrefList(props:Props) {
   const {
     className,
     history,
@@ -45,7 +35,6 @@ function CompletedDrefTable(props:Props) {
     disasterType,
   } = props;
 
-  const { strings } = React.useContext(languageContext);
   const [drefId, setDrefId] = React.useState<number>();
   const [drefActivePage, setDrefActivePage] = React.useState(1);
 
@@ -53,7 +42,7 @@ function CompletedDrefTable(props:Props) {
     pending: drefPending,
     response: drefResponse,
     retrigger: refetchDrefList,
-  } = useRequest<ListResponse<DrefApplicationResponse>>({
+  } = useRequest<ListResponse<CompletedDrefResponse>>({
     url: 'api/v2/completed-dref/',
     query: {
       disaster_type: disasterType,
@@ -61,25 +50,11 @@ function CompletedDrefTable(props:Props) {
       country,
       type_of_dref: drefType,
       limit: ITEM_PER_PAGE,
-      offset: ITEM_PER_PAGE * (drefActivePage - 1),
+      offset: (disasterType || drefType || appealCode || country)
+        ? 0
+        : ITEM_PER_PAGE * (drefActivePage - 1),
     },
   });
-
-  const data = React.useMemo(() => {
-    let rowData = drefResponse?.results.map(
-      (d) => {
-        let obj = {
-          ...d,
-          firstLevel: d.dref.operational_update_details,
-          secondLevel: d.dref.final_report_details,
-        };
-        return obj;
-      });
-    return rowData;
-
-  },[drefResponse]);
-
-  const pending = drefPending;
 
   const getDrefId = React.useCallback(
     (applicationType, id) => {
@@ -107,41 +82,39 @@ function CompletedDrefTable(props:Props) {
     },[drefResponse]
   );
 
+  const pending = drefPending;
+
   return (
     <>
       {pending && <BlockLoading />}
-      {!pending &&(
+      {!pending && drefResponse && (
         <div className={styles.drefOperationTable}>
-          <DrefApplicationTable
+          <CompletedDrefTable
             className={_cs(className, styles.drefTable)}
-            data={data}
+            data={drefResponse?.results}
             history={history}
             refetch={refetchDrefList}
             getDrefId={getDrefId}
             drefId={drefId}
           />
-          <Pager
-            className={styles.pagination}
-            activePage={drefActivePage}
-            onActivePageChange={setDrefActivePage}
-            itemsCount={drefResponse?.count ?? 0}
-            maxItemsPerPage={ITEM_PER_PAGE}
-          />
+          {drefResponse?.results.length > 0 &&(
+            <Pager
+              className={styles.pagination}
+              activePage={drefActivePage}
+              onActivePageChange={setDrefActivePage}
+              itemsCount={drefResponse?.count}
+              maxItemsPerPage={ITEM_PER_PAGE}
+            />
+          )}
         </div>
       )}
 
-      {!drefPending && drefResponse?.results?.length === 0 && data?.length === 0 && (
+      {!drefPending && drefResponse?.results.length === 0 && (
         <EmptyMessage />
-      )}
-
-      {!pending && !drefResponse && (
-        <div className={styles.error}>
-          {strings.drefFetchingErrorMessage}
-        </div>
       )}
     </>
   );
 }
 
-export default CompletedDrefTable;
+export default CompletedDrefList;
 

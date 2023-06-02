@@ -25,14 +25,14 @@ import { TYPE_LOAN } from '#views/DrefApplicationForm/common';
 import DrefExportButton from '#components/DrefExportButton';
 import OperationalUpdateExport from '#components/OperationalUpdateExport';
 import FinalReportExport from '#components/FinalReportExport';
+import { BaseProps, ActiveDrefTableDetail } from '#components/DrefApplicationList/useDrefApplicationListOptions';
+import ShareUserModal from '#components/DrefApplicationList/ShareUserModal';
 
-import { BaseProps, TableDataDetail } from '../useDrefApplicationListOptions';
-import ShareUserModal from './ShareUserModal';
 import styles from '../styles.module.scss';
 
 interface Props {
   className?: string;
-  data?: TableDataDetail[];
+  data?: ActiveDrefTableDetail[];
   refetch:() => void;
   history: History;
   getDrefId: (applicationType: string, id:number) => void;
@@ -43,9 +43,10 @@ interface DrefOperationalResponseFields {
   id: number;
 }
 
-const drefKeySelector = (d: TableDataDetail) => d.id;
+const APPROVED = 1;
+const drefKeySelector = (d: ActiveDrefTableDetail) => d.id;
 
-function DrefApplicationTable(props:Props) {
+function ActiveDrefTable(props:Props) {
   const {
     className,
     data,
@@ -294,8 +295,8 @@ function DrefApplicationTable(props:Props) {
               <>
                 <DropdownMenuItem
                   href={`/dref-final-report/${item.id}/edit/`}
-                  label="Edit"
-                  disabled={item.is_published || finalReportPublishPending}
+                  label={item.application_type_display}
+                  disabled={finalReportPublishPending}
                 />
                 <Button
                   className={styles.menuItemButton}
@@ -324,8 +325,8 @@ function DrefApplicationTable(props:Props) {
               <>
                 <DropdownMenuItem
                   href={`/dref-operational-update/${item.id}/edit/`}
-                  label="Edit"
-                  disabled={item.is_published || operationalUpdatePublishPending}
+                  label={item.application_type_display}
+                  disabled={operationalUpdatePublishPending}
                 />
                 <Button
                   className={styles.menuItemButton}
@@ -431,7 +432,7 @@ function DrefApplicationTable(props:Props) {
               <TableData>{detail.country_details.name}</TableData>
               <TableData>{detail.type_of_dref_display}</TableData>
               <TableData>
-                {detail.status_display === 'Completed' 
+                {detail.status === APPROVED
                   ? 'Approved'
                   : detail.status_display}
               </TableData>
@@ -449,7 +450,7 @@ function DrefApplicationTable(props:Props) {
         ));
     },[ getTableActions ]);
 
-  const rowModifier = useRowExpansion<TableDataDetail, number>(
+  const rowModifier = useRowExpansion<ActiveDrefTableDetail, number>(
     expandedRow,
     ({datum}) => {
       return(
@@ -465,47 +466,47 @@ function DrefApplicationTable(props:Props) {
   drefApplicationColumns,
 ] = React.useMemo(() => {
     const baseDrefColumns = [
-      createDateColumn<TableDataDetail, string | number>(
+      createDateColumn<ActiveDrefTableDetail, string | number>(
         'created_at',
         strings.drefTableCreatedOn,
         (item) => item?.created_at,
       ),
-      createStringColumn<TableDataDetail, string | number>(
+      createStringColumn<ActiveDrefTableDetail, string | number>(
         'appeal_code',
         strings.drefTableAppealNumber,
         (item) => item?.appeal_code,
       ),
-      createStringColumn<TableDataDetail, string | number>(
+      createStringColumn<ActiveDrefTableDetail, string | number>(
         'title',
         strings.drefTableName,
         (item) => item?.title,
       ),
-      createStringColumn<TableDataDetail, string | number>(
+      createStringColumn<ActiveDrefTableDetail, string | number>(
         'type',
         'Type',
         (item) => item.application_type_display,
       ),
-      createStringColumn<TableDataDetail, string | number>(
+      createStringColumn<ActiveDrefTableDetail, string | number>(
         'country_details',
         'Country',
         (item) => item.country_details.name,
       ),
-      createStringColumn<TableDataDetail, string | number>(
+      createStringColumn<ActiveDrefTableDetail, string | number>(
         'type_of_dref_display',
         'Type of DREF',
         (item) => item?.type_of_dref_display,
       ),
-      createStringColumn<TableDataDetail, string | number>(
+      createStringColumn<ActiveDrefTableDetail, string | number>(
         'status_display',
         'Status',
-        (item) => item.status_display === 'Completed' ? 'Approved' : item.status_display,
+        (item) => item.status === APPROVED ? 'Approved' : item.status_display,
       ),
     ];
 
     const columnWithActions = [
-      createActionColumn<TableDataDetail, number>(
+      createActionColumn<ActiveDrefTableDetail, number>(
         'actions',
-        (rowKey: number, item: TableDataDetail) => ({
+        (rowKey: number, item: ActiveDrefTableDetail) => ({
           children: (
             !item.is_published && (
               <Button
@@ -517,7 +518,7 @@ function DrefApplicationTable(props:Props) {
                   || operationalUpdatePublishPending
                   || finalReportPublishPending}
               >
-                Approve
+                Approved
               </Button>
             )
           ),
@@ -535,7 +536,7 @@ function DrefApplicationTable(props:Props) {
       [
         ...baseDrefColumns,
         ...columnWithActions,
-        createExpandColumn<TableDataDetail, number>(
+        createExpandColumn<ActiveDrefTableDetail, number>(
           'expand-button',
           '',
           handleExpandedClick,
@@ -578,5 +579,5 @@ function DrefApplicationTable(props:Props) {
   );
 }
 
-export default DrefApplicationTable;
+export default ActiveDrefTable;
 
