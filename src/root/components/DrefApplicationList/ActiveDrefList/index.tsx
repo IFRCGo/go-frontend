@@ -56,7 +56,9 @@ function ActiveDrefList(props:Props) {
       country,
       type_of_dref: drefType,
       limit: ITEM_PER_PAGE,
-      offset: ITEM_PER_PAGE * (drefActivePage - 1),
+      offset: (disasterType || drefType || appealCode || country)
+        ? 0
+        : ITEM_PER_PAGE * (drefActivePage - 1),
     },
   });
 
