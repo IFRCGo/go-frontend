@@ -123,6 +123,7 @@ function OperationalUpdatePdfDocument(props: Props) {
             strings={strings}
           />
         }
+
         <ObjectiveAndStrategy
           data={operationalUpdateResponse}
           strings={strings}
