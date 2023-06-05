@@ -85,6 +85,18 @@ function NeedIdentifiedOutput(props: BaseProps) {
           strings={strings}
         />
       ))}
+      {drefType !== TYPE_IMMINENT && (
+        <View style={pdfStyles.qna}>
+          <Text
+            style={pdfStyles.strategySubSectionHeading}
+          >
+            {strings.drefFormGapsInAssessment}
+          </Text>
+          <Text style={pdfStyles.answer}>
+            {reTab(data.identified_gaps)}
+          </Text>
+        </View>
+      )}
     </View>
   );
 }
