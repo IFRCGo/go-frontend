@@ -1,3 +1,9 @@
+### Release 6.6.4 - Hotfix for DREF export
+Date: 2023-07-05
+
+Frontend:
+ - Add gaps in assesment section in DREF PDF export
+
 ### Release 6.6.3 - Hotfix for DREF applications
 Date: 2023-05-17
 
