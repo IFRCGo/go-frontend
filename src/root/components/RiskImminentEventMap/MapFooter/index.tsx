@@ -103,9 +103,10 @@ const gdacsIconLabel = (
       <IoInformationCircleOutline
         data-event="click"
         data-tooltip-id="gdacs"
-        data-tooltip-html={ReactDOMServer.renderToStaticMarkup(
-          tooltip(adamPopupTitle, adamPopupDescription)
-        )}
+        // NOTE: fix when popup data is finalized
+        // data-tooltip-html={ReactDOMServer.renderToStaticMarkup(
+        //   tooltip(adamPopupTitle, adamPopupDescription)
+        // )}
       />
       <Tooltip
         className={styles.tooltip}
@@ -127,9 +128,10 @@ const meteoSwissIconLabel = (
       <IoInformationCircleOutline
         data-event="click"
         data-tooltip-id="ms"
-        data-tooltip-html={ReactDOMServer.renderToStaticMarkup(
-          tooltip(adamPopupTitle, adamPopupDescription)
-        )}
+        // NOTE: fix when popup data is finalized
+        // data-tooltip-html={ReactDOMServer.renderToStaticMarkup(
+        //   tooltip(adamPopupTitle, adamPopupDescription)
+        // )}
       />
       <Tooltip
         className={styles.tooltip}
@@ -182,7 +184,7 @@ function MapFooter(props: Props) {
 
   const handleChangeSourceType = React.useCallback(
     (value?: string) => {
-        onSourceChange(value);
+      onSourceChange(value);
     },[onSourceChange],
   );
 
