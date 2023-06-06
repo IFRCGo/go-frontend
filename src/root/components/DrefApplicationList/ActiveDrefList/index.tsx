@@ -69,9 +69,7 @@ function ActiveDrefList(props:Props) {
 
     const opsUpdateData = hasOpsUpdateOnly?.map(
       (d) => {
-        const opsLatest = d.operational_update_details?.sort(
-          (a,b) => b.operational_update_number - a.operational_update_number)[0];
-
+        const opsLatest = d.operational_update_details[0];
         const filterSubRowOpsUpdate = d.operational_update_details.filter(
           (ops) => ops.id !== opsLatest.id
         );
@@ -174,7 +172,10 @@ function ActiveDrefList(props:Props) {
       });
     rowData.push(drefData);
 
-    return rowData.flat() as ActiveDrefTableDetail[];
+    const mergeArray = rowData.flat() as ActiveDrefTableDetail[];
+    const sortedData = mergeArray.sort((a,b) => Date.parse(b?.created_at) - Date.parse(a?.created_at));
+
+    return sortedData;
   },[drefResponse]);
 
   const pending = drefPending;
