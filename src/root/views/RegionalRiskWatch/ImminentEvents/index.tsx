@@ -66,7 +66,7 @@ function ImminentEvents(props: Props) {
           regionId={regionId}
         />
       )}
-      {(mapSource ==="MS") && (
+      {(mapSource ==="MeteoSwiss") && (
         <ImminentEventsMeteoSwiss
           className={styles.map}
           regionId={regionId}
