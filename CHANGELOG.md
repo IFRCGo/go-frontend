@@ -1,5 +1,11 @@
+### Release 6.6.5 - Hotfix for displaying Contacts
+Date: 2023-06-06
+
+Frontend:
+ - Remove unnecessary spaces from Contact info
+
 ### Release 6.6.4 - Hotfix for DREF export
-Date: 2023-07-05
+Date: 2023-06-05
 
 Frontend:
  - Add gaps in assesment section in DREF PDF export
