@@ -45,7 +45,7 @@ import {
 } from '#utils/risk';
 import MapEaseTo from '#components/MapEaseTo';
 import GoMapDisclaimer from '#components/GoMapDisclaimer';
-import { 
+import {
   GDACSEvent,
   GDACSEventExposure,
   ImminentHazardTypes,
@@ -224,6 +224,7 @@ function GDACSEventMap(props: Props) {
           properties: {
             ...feature.properties,
             type: feature.geometry.type,
+            alertlevel: feature.properties.alertlevel,
           },
         })),
         };
@@ -457,6 +458,7 @@ function GDACSEventMap(props: Props) {
           <PointDetails
             onCloseButtonClick={handlePointClose}
             hazardDetails={activeEventPopUpDetails.hazardDetails}
+            populationExposure={activeEventExposure?.population_exposure}
           />
         </MapTooltip>
       )}
