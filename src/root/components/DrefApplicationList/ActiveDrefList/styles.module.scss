@@ -13,9 +13,8 @@
   }
 
   .actions-cell {
-    display: flex;
-    justify-content: flex-end;
-    gap: $spacing * 0.5;
+    display: grid;
+    grid-auto-flow: column;
   }
 
   .expanded-row {
@@ -28,9 +27,8 @@
 
     .expanded-row-actions {
       span {
-        display: flex;
-        gap: $spacing-half;
-        justify-content: flex-end;
+        display: grid;
+        grid-auto-flow: column;
       }
     }
   }
