@@ -65,6 +65,11 @@ function CompletedDrefTable(props:Props) {
       if(item.application_type === "FINAL_REPORT"){
         return (
           <>
+            <FinalReportExport
+              className={styles.menuItemButton}
+              id={item.id}
+              variant='transparent'
+            />
             <Button
               className={styles.menuItemButton}
               variant='transparent'
@@ -74,11 +79,6 @@ function CompletedDrefTable(props:Props) {
             >
               Share
             </Button>
-            <FinalReportExport
-              className={styles.menuItemButton}
-              id={item.id}
-              variant='transparent'
-            />
           </>
         );
       }
@@ -86,6 +86,11 @@ function CompletedDrefTable(props:Props) {
       if(item.application_type === "OPS_UPDATE"){
         return(
           <>
+            <OperationalUpdateExport
+              className={styles.menuItemButton}
+              variant="transparent"
+              operationalId={item.id}
+            />
             <Button
               className={styles.menuItemButton}
               variant='transparent'
@@ -95,11 +100,6 @@ function CompletedDrefTable(props:Props) {
             >
               Share
             </Button>
-            <OperationalUpdateExport
-              className={styles.menuItemButton}
-              variant="transparent"
-              operationalId={item.id}
-            />
           </>
         );
       }
@@ -107,6 +107,11 @@ function CompletedDrefTable(props:Props) {
       if(item.application_type === "DREF"){
         return(
           <>
+            <DrefExportButton
+              className={styles.menuItemButton}
+              variant="transparent"
+              drefId={item.id}
+            />
             <Button
               className={styles.menuItemButton}
               variant='transparent'
@@ -116,11 +121,6 @@ function CompletedDrefTable(props:Props) {
             >
               Share
             </Button>
-            <DrefExportButton
-              className={styles.menuItemButton}
-              variant="transparent"
-              drefId={item.id}
-            />
           </>
         );
       }
@@ -163,7 +163,7 @@ function CompletedDrefTable(props:Props) {
     ({datum}) => {
       return(
         <>
-         {getRowLevelData(datum.dref.operational_update_details)}
+          {getRowLevelData(datum.dref.operational_update_details)}
           {getRowLevelData([datum.dref])}
         </>
       );

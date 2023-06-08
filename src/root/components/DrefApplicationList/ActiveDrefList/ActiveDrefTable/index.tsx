@@ -27,6 +27,7 @@ import OperationalUpdateExport from '#components/OperationalUpdateExport';
 import FinalReportExport from '#components/FinalReportExport';
 import { BaseProps, ActiveDrefTableDetail } from '#components/DrefApplicationList/useDrefApplicationListOptions';
 import ShareUserModal from '#components/DrefApplicationList/ShareUserModal';
+import ButtonLikeLink from '#components/ButtonLikeLink';
 
 import styles from '../styles.module.scss';
 
@@ -285,35 +286,35 @@ function ActiveDrefTable(props:Props) {
     },[getDrefId]
   );
 
-  const getTableActions = React.useCallback(
+  const getDropDownActions = React.useCallback(
     (item: BaseProps) => {
       if(item.application_type === "FINAL_REPORT"){
         return (
-          <>
-            {!item.is_published && (
-              <>
-                <DropdownMenuItem
-                  href={`/dref-final-report/${item.id}/edit/`}
-                  label={item.application_type_display}
-                  disabled={finalReportPublishPending}
-                />
-                <Button
-                  className={styles.menuItemButton}
-                  variant='transparent'
-                  name={item.application_type}
-                  onClick={handleShareModal}
-                  value={item.id}
-                >
-                  Share
-                </Button>
-              </>
-            )}
-            <FinalReportExport
-              className={styles.menuItemButton}
-              id={item.id}
-              variant='transparent'
-            />
-          </>
+          !item.is_published && (
+            <>
+              <Button
+                className={styles.menuItemButton}
+                variant='transparent'
+                name={item.application_type}
+                value={item.id}
+                onClick={handlePublishApplication}
+                disabled={drefPublishPending
+                  || operationalUpdatePublishPending
+                  || finalReportPublishPending}
+              >
+                Approved
+              </Button>
+              <Button
+                className={styles.menuItemButton}
+                variant='transparent'
+                name={item.application_type}
+                onClick={handleShareModal}
+                value={item.id}
+              >
+                Share
+              </Button>
+            </>
+          )
         );
       }
 
@@ -322,27 +323,34 @@ function ActiveDrefTable(props:Props) {
           <>
             {!item.is_published && (
               <>
-                <DropdownMenuItem
-                  href={`/dref-operational-update/${item.id}/edit/`}
-                  label={item.application_type_display}
-                  disabled={operationalUpdatePublishPending}
-                />
                 <Button
                   className={styles.menuItemButton}
                   variant='transparent'
                   name={item.application_type}
-                  onClick={handleShareModal}
                   value={item.id}
+                  onClick={handlePublishApplication}
+                  disabled={drefPublishPending
+                    || operationalUpdatePublishPending
+                    || finalReportPublishPending}
                 >
-                  Share
+                  Approved
                 </Button>
+                <OperationalUpdateExport
+                  className={styles.menuItemButton}
+                  variant="transparent"
+                  operationalId={item.id}
+                />
               </>
             )}
-            <OperationalUpdateExport
+            <Button
               className={styles.menuItemButton}
-              variant="transparent"
-              operationalId={item.id}
-            />
+              variant='transparent'
+              name={item.application_type}
+              onClick={handleShareModal}
+              value={item.id}
+            >
+              Share
+            </Button>
           </>
         );
       }
@@ -356,19 +364,23 @@ function ActiveDrefTable(props:Props) {
           <>
             {!item.is_published && (
               <>
-                <DropdownMenuItem
-                  href={`/dref-application/${item.id}/edit/`}
-                  label= {`${strings.drefTableEdit} ${item.application_type_display}`}
-                />
                 <Button
                   className={styles.menuItemButton}
                   variant='transparent'
                   name={item.application_type}
-                  onClick={handleShareModal}
                   value={item.id}
+                  onClick={handlePublishApplication}
+                  disabled={drefPublishPending
+                    || operationalUpdatePublishPending
+                    || finalReportPublishPending}
                 >
-                  Share
+                  Approved
                 </Button>
+                <DrefExportButton
+                  className={styles.menuItemButton}
+                  variant="transparent"
+                  drefId={item.id}
+                />
               </>
             )}
             {!hasUnpublishedOperationalUpdate
@@ -394,26 +406,96 @@ function ActiveDrefTable(props:Props) {
                   disabled={isDrefLoan || newFinalReportPending}
                 />
               )}
-            <DrefExportButton
+            <Button
               className={styles.menuItemButton}
-              variant="transparent"
-              drefId={item.id}
-            />
+              variant='transparent'
+              name={item.application_type}
+              onClick={handleShareModal}
+              value={item.id}
+            >
+              Share
+            </Button>
           </>
         );
       }
-
       return;
     },[
       strings,
       postDrefNewOperationalUpdate,
       postDrefNewFinalReport,
-      operationalUpdatePublishPending,
-      finalReportPublishPending,
       newOperationalUpdatePending,
       newFinalReportPending,
+      drefPublishPending,
+      operationalUpdatePublishPending,
+      finalReportPublishPending,
+      handlePublishApplication,
       handleShareModal,
     ]);
+
+  const getEditActions = React.useCallback(
+    (item: BaseProps) => {
+      if(item.application_type === "FINAL_REPORT"){
+        return(
+          <>
+            {!item.is_published && (
+              <ButtonLikeLink
+                variant='secondary'
+                to={`/dref-final-report/${item.id}/edit/`}
+                disabled={finalReportPublishPending}
+              >
+                Edit
+              </ButtonLikeLink>
+            )}
+            {item.is_published && (
+              <FinalReportExport id={item.id} />
+            )}
+          </>
+        );
+      }
+
+      if(item.application_type === "OPS_UPDATE"){
+        return(
+          <>
+            {!item.is_published && (
+              <ButtonLikeLink
+                variant='secondary'
+                to={`/dref-operational-update/${item.id}/edit/`}
+                disabled={operationalUpdatePublishPending}
+              >
+                Edit
+              </ButtonLikeLink>
+            )}
+            {item.is_published && (
+              <OperationalUpdateExport operationalId={item.id} />
+            )}
+          </>
+        );
+      }
+
+      if(item.application_type === "DREF"){
+        return(
+          <>
+            {!item.is_published && (
+              <ButtonLikeLink
+                variant="secondary"
+                to={`/dref-application/${item.id}/edit/`}
+                disabled={drefPublishPending}
+              >
+                Edit
+              </ButtonLikeLink>
+            )}
+            {item.is_published && (
+              <DrefExportButton drefId={item.id} />
+            )}
+          </>
+        );
+      }
+    },[
+      finalReportPublishPending,
+      operationalUpdatePublishPending,
+      drefPublishPending,
+    ]
+  );
 
   const getRowLevelData = React.useCallback(
     (expandedData?: BaseProps[])=> {
@@ -437,17 +519,18 @@ function ActiveDrefTable(props:Props) {
               </TableData>
               <TableData colSpan={2} className={styles.expandedRowActions}>
                 <span>
+                  {getEditActions(detail)}
                   <DropdownMenu
                     label={<IoEllipsisHorizontal />}
                   >
-                    {getTableActions(detail)}
+                    {getDropDownActions(detail)}
                   </DropdownMenu>
                 </span>
               </TableData>
             </TableRow>
           )
         ));
-    },[ getTableActions ]);
+    },[ getEditActions, getDropDownActions ]);
 
   const rowModifier = useRowExpansion<ActiveDrefTableDetail, number>(
     expandedRow,
@@ -478,7 +561,7 @@ function ActiveDrefTable(props:Props) {
       createStringColumn<ActiveDrefTableDetail, string | number>(
         'title',
         strings.drefTableName,
-        (item) => item?.title,
+        (item) => item.title,
       ),
       createStringColumn<ActiveDrefTableDetail, string | number>(
         'type',
@@ -505,24 +588,12 @@ function ActiveDrefTable(props:Props) {
     const columnWithActions = [
       createActionColumn<ActiveDrefTableDetail, number>(
         'actions',
-        (rowKey: number, item: ActiveDrefTableDetail) => ({
+        (_, item: ActiveDrefTableDetail) => ({
           children: (
-            !item.is_published && (
-              <Button
-                variant='secondary'
-                name={item.application_type}
-                value={rowKey}
-                onClick={handlePublishApplication}
-                disabled={drefPublishPending
-                  || operationalUpdatePublishPending
-                  || finalReportPublishPending}
-              >
-                Approved
-              </Button>
-            )
+            getEditActions(item)
           ),
           extraActions: (
-            getTableActions(item)
+            getDropDownActions(item)
           ),
         }),
         {
@@ -547,11 +618,8 @@ function ActiveDrefTable(props:Props) {
       expandedRow,
       handleExpandedClick,
       strings,
-      getTableActions,
-      handlePublishApplication,
-      drefPublishPending,
-      operationalUpdatePublishPending,
-      finalReportPublishPending,
+      getEditActions,
+      getDropDownActions,
     ]);
 
   return (
