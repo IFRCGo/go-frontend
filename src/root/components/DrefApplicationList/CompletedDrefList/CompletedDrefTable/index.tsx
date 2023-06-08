@@ -34,7 +34,6 @@ interface Props {
   drefId?: number;
 }
 
-const APPROVED = 1;
 const drefKeySelector = (d: CompletedDrefResponse) => d.id;
 
 function CompletedDrefTable(props:Props) {
@@ -143,12 +142,8 @@ function CompletedDrefTable(props:Props) {
               <TableData>{detail.title}</TableData>
               <TableData>{detail.appeal_code}</TableData>
               <TableData>{detail.country_details.name}</TableData>
-              <TableData></TableData>
-              <TableData>
-                {detail.status === APPROVED
-                  ? 'Approved'
-                  : detail.status_display}
-              </TableData>
+              <TableData>{detail.date_of_approval}</TableData>
+              <TableData>{detail.status_display}</TableData>
               <TableData colSpan={2} className={styles.expandedRowActions}>
                 <span>
                   <DropdownMenu
@@ -168,7 +163,7 @@ function CompletedDrefTable(props:Props) {
     ({datum}) => {
       return(
         <>
-          {getRowLevelData(datum.dref.operational_update_details)}
+         {getRowLevelData(datum.dref.operational_update_details)}
           {getRowLevelData([datum.dref])}
         </>
       );
@@ -207,12 +202,12 @@ function CompletedDrefTable(props:Props) {
       createStringColumn<CompletedDrefResponse, string | number>(
         'type_of_dref_display',
         'Submitted/Approved on',
-        () => '',
+        (item) => item.date_of_approval,
       ),
       createStringColumn<CompletedDrefResponse, string | number>(
         'status_display',
         'Status',
-        (item) => item.status === APPROVED ? 'Approved' : item.status_display,
+        (item) => item.status_display,
       ),
     ];
 

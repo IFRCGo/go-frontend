@@ -21,6 +21,7 @@ export interface BaseProps {
   has_final_reprot: boolean;
   unpublished_op_update_count: number;
   unpublished_final_report_count: number;
+  date_of_approval: string;
   country_details: {
     id: number;
     country: number;

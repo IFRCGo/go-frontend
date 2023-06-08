@@ -287,7 +287,6 @@ function ActiveDrefTable(props:Props) {
 
   const getTableActions = React.useCallback(
     (item: BaseProps) => {
-
       if(item.application_type === "FINAL_REPORT"){
         return (
           <>
@@ -351,8 +350,8 @@ function ActiveDrefTable(props:Props) {
       if(item.application_type === "DREF"){
         const hasUnpublishedOperationalUpdate = item.unpublished_op_update_count > 0;
         const hasUnpublishedFinalReport = item.unpublished_final_report_count > 0;
-
         const isDrefLoan = item.type_of_dref === TYPE_LOAN;
+
         return(
           <>
             {!item.is_published && (
