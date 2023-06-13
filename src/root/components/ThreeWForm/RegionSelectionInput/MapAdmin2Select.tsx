@@ -3,6 +3,7 @@ import {
   MapChildContext,
   MapSource,
   MapLayer,
+  MapShapeEditor,
 } from '@togglecorp/re-map';
 
 import {
@@ -14,6 +15,19 @@ import {
   LINE_COLOR,
 } from './common';
 import styles from './styles.module.scss';
+import { GeoJSONSourceRaw } from 'mapbox-gl';
+import { Polygon } from '@turf/turf';
+
+const defaultDrawOptions = ({
+  displayControlsDefault: false,
+  controls: {
+    point: false,
+    polygon: true,
+    line_string: false,
+    trash: true,
+  },
+  touchEnabled: false,
+});
 
 interface Props {
   countryIso: string;
@@ -36,8 +50,12 @@ function MapAdmin2Select(props: Props) {
   const layerName = `go-admin2-${countryIso}-staging`;
   const centroidLayerName = `go-admin2-${countryIso}-centroids`;
 
+  const [drawGeoJSON, setDrawGeoJSON] = React.useState<GeoJSONSourceRaw[]>();
+  const [lineStringSelect, setLineStringSelect] = React.useState<boolean>(false);
+  // const [drawMode, setDrawMode] = React.useState<'simple_select' | 'draw_line_string'>('simple_select');
+
   React.useEffect(() => {
-    if (!map || !mapStyleLoaded) {
+    if (!map || !mapStyleLoaded || lineStringSelect) {
       return;
     }
 
@@ -47,10 +65,10 @@ function MapAdmin2Select(props: Props) {
 
     highlightLayer(map, 'admin-0', 'country_id', 0);
     highlightLayer(map, 'admin-1', 'district_id', 0);
-  }, [map, mapStyleLoaded, districtId]);
+  }, [map, mapStyleLoaded, districtId, lineStringSelect]);
 
   React.useEffect(() => {
-    if (!map || !mapStyleLoaded) {
+    if (!map || !mapStyleLoaded || lineStringSelect) {
       return;
     }
 
@@ -59,7 +77,7 @@ function MapAdmin2Select(props: Props) {
       const admin2Id = selectedFeatures?.filter(
         (feature) => feature?.properties?.admin1_id === districtId && feature?.properties?.id
       )[0]?.properties?.id as number| undefined;
-
+     console.log("admin2 id", admin2Id, selectedFeatures, e);
       if (admin2Id && onClick) {
         onClick(admin2Id);
       }
@@ -70,7 +88,20 @@ function MapAdmin2Select(props: Props) {
     return () => {
       map.off('click', handleMapClick);
     };
-  }, [map, mapStyleLoaded, onClick, districtId]);
+  }, [map, mapStyleLoaded, onClick, districtId, lineStringSelect]);
+
+  const handleMapDraw = React.useCallback(
+    (data: mapboxgl.MapboxGeoJSONFeature[], draw) => {
+      console.log("****", data);
+      // setDrawGeoJSON(data);
+      // setDrawMode(draw.getMode());
+      // setLineStringSelect(false);
+    }, []);
+
+  const handleMode = React.useCallback (
+    (mode, draw) => {
+      setLineStringSelect(true);
+    }, []);
 
   const paintProperty = selectedAdmin2s && selectedAdmin2s.length > 0 ? [
     'match',
@@ -106,8 +137,8 @@ function MapAdmin2Select(props: Props) {
           <MapSource
             sourceKey="country-admin-2"
             sourceOptions={{
-                type: 'vector',
-                url: `mapbox://go-ifrc.go-admin2-${countryIso}-staging`
+              type: 'vector',
+              url: `mapbox://go-ifrc.go-admin2-${countryIso}-staging`
             }}
           >
             <MapLayer
@@ -177,6 +208,11 @@ function MapAdmin2Select(props: Props) {
               }}
             />
           </MapSource>
+          <MapShapeEditor
+            drawOptions={defaultDrawOptions}
+            onCreate={handleMapDraw}
+            onModeChange={handleMode}
+          />
         </>
       )}
     </>

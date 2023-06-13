@@ -1,5 +1,6 @@
 import React from 'react';
-import { _cs, listToMap } from '@togglecorp/fujs'; import { bbox as turfBbox } from '@turf/turf';
+import { _cs, listToMap } from '@togglecorp/fujs';
+import { bbox as turfBbox } from '@turf/turf';
 import { BoundingBox } from '@mapbox/geo-viewport';
 import Map, {
   MapContainer,
@@ -151,11 +152,11 @@ function RegionSelectionModal<DV extends number, AV extends number>(props: Props
     return districtsResponse.results.filter(
       (district) => !district.is_deprecated
     ).map(
-      (district) => ({
-        value: district.id,
-        label: district.name,
-      })
-    );
+        (district) => ({
+          value: district.id,
+          label: district.name,
+        })
+      );
   }, [districtsResponse]);
 
   const districtIdToNameMap = React.useMemo(() => {
