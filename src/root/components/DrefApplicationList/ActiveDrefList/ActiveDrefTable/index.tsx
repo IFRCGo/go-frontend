@@ -528,7 +528,7 @@ function ActiveDrefTable(props:Props) {
               <TableData>
                 {detail.status === APPROVED
                   ? 'Approved'
-                  : detail.status_display}
+                  : 'In Progress'}
               </TableData>
               <TableData colSpan={2} className={styles.expandedRowActions}>
                 <span>
@@ -594,7 +594,7 @@ function ActiveDrefTable(props:Props) {
       createStringColumn<ActiveDrefTableDetail, string | number>(
         'status_display',
         'Status',
-        (item) => item.status === APPROVED ? 'Approved' : item.status_display,
+        (item) => item.status === APPROVED ? 'Approved' : 'In Progress',
       ),
     ];
 
