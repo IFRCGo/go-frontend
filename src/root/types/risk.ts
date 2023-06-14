@@ -177,6 +177,7 @@ export interface GDACSEventExposure {
     displaced: number;
     exposed_population: string;
     people_affected: string;
+    impact: string;
   }
 }
 
