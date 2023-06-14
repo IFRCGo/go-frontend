@@ -3,6 +3,8 @@ import { NumericKeyValuePair, StringKeyValuePair } from '#types/common';
 import { useRequest } from '#utils/restRequest';
 
 export interface BaseProps {
+  drefId: number;
+  initial_row: boolean;
   id: number;
   title: string;
   appeal_code: string;
