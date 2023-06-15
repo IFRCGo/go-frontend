@@ -23,34 +23,26 @@ import styles from "./styles.module.scss";
 
 const gdacsPopupTitle = " Source: GDACS";
 const gdacsPopupDescription = (
-  <>
-    <p>
-    </p>
-    <p>
-      Click <Link
-        target="_blank"
-        href="https://www.gdacs.org/default.aspx"
-      >
-        here
-      </Link> for more information about the model and its inputs.
-    </p>
-  </>
+  <p>
+    Click <Link
+      target="_blank"
+      href="https://www.gdacs.org/default.aspx"
+    >
+      here
+    </Link> for more information about the model and its inputs.
+  </p>
 );
 
 const meteoSwissPopupTitle = "Source: MeteoSwiss";
 const meteoSwissPopupDescription = (
-  <>
-    <p>
-    </p>
-    <p>
-      Click <Link
-        target="_blank"
-        href="https://meteofrance.re/fr"
-      >
-        here
-      </Link> for more information about the model and its inputs.
-    </p>
-  </>
+  <p>
+    Click <Link
+      target="_blank"
+      href="https://meteofrance.re/fr"
+    >
+      here
+    </Link> for more information about the model and its inputs.
+  </p>
 );
 
 const pdcPopupTitle ="Source: Pacific Disaster Center";
