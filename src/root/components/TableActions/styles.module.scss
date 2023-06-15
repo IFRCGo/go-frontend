@@ -1,0 +1,8 @@
+@import '~styles/settings/variables';
+
+.table-actions {
+  display: flex;
+  gap: $spacing * 0.25;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+}

@@ -20,7 +20,6 @@ import languageContext from '#root/languageContext';
 import useConfirmation from '#hooks/useConfirmation';
 import { useLazyRequest } from '#utils/restRequest';
 import useAlertContext from '#hooks/useAlert';
-import Button from '#components/Button';
 import { TYPE_LOAN } from '#views/DrefApplicationForm/common';
 import DrefExportButton from '#components/DrefExportButton';
 import OperationalUpdateExport from '#components/OperationalUpdateExport';
@@ -258,19 +257,17 @@ function ActiveDrefTable(props:Props) {
   }, [expandedRow, setExpandedRow]);
 
   const handlePublishApplication = React.useCallback(
-    (name, e) =>{
-      const value = e.currentTarget.value;
-
-      if(name === "DREF") {
-        onDrefPublishClick(value);
+    ({ id, type }) =>{
+      if(type === "DREF") {
+        onDrefPublishClick(id);
       }
 
-      if(name === "OPS_UPDATE") {
-        onOperationalUpdatePublishClick(value);
+      if(type === "OPS_UPDATE") {
+        onOperationalUpdatePublishClick(id);
       }
 
-      if(name === "FINAL_REPORT") {
-        onFinalReportPublishClick(value);
+      if(type === "FINAL_REPORT") {
+        onFinalReportPublishClick(id);
       }
     },[
       onDrefPublishClick,
@@ -280,8 +277,8 @@ function ActiveDrefTable(props:Props) {
   );
 
   const handleShareModal = React.useCallback(
-    (name, e) => {
-      getDrefId(name, e.currentTarget.value);
+    ({ type, id }) => {
+      getDrefId(type, id);
       setShowModal(true);
     },[getDrefId]
   );
@@ -334,27 +331,25 @@ function ActiveDrefTable(props:Props) {
         return (
           !item.is_published && (
             <>
-              <Button
-                className={styles.menuItemButton}
-                variant='transparent'
-                name={item.application_type}
-                value={item.id}
+              <DropdownMenuItem
+                name={{
+                  id: item.id,
+                  type: item.application_type,
+                }}
                 onClick={handlePublishApplication}
                 disabled={drefPublishPending
                   || operationalUpdatePublishPending
                   || finalReportPublishPending}
-              >
-                Approved
-              </Button>
-              <Button
-                className={styles.menuItemButton}
-                variant='transparent'
-                name={item.application_type}
+                label="Approved"
+              />
+              <DropdownMenuItem
+                name={{
+                  id: item.id,
+                  type: item.application_type,
+                }}
                 onClick={handleShareModal}
-                value={item.id}
-              >
-                Share
-              </Button>
+                label="share"
+              />
             </>
           )
         );
@@ -366,34 +361,31 @@ function ActiveDrefTable(props:Props) {
             {getInitialDropdownItems(item)}
             {!item.is_published && (
               <>
-                <Button
-                  className={styles.menuItemButton}
-                  variant='transparent'
-                  name={item.application_type}
-                  value={item.id}
+                <DropdownMenuItem
+                  name={{
+                    type: item.application_type,
+                    id: item.id
+                  }}
                   onClick={handlePublishApplication}
                   disabled={drefPublishPending
                     || operationalUpdatePublishPending
                     || finalReportPublishPending}
-                >
-                  Approved
-                </Button>
+                  label="Approved"
+                />
                 <OperationalUpdateExport
-                  className={styles.menuItemButton}
-                  variant="transparent"
+                  variant="dropdown"
                   operationalId={item.id}
                 />
               </>
             )}
-            <Button
-              className={styles.menuItemButton}
-              variant='transparent'
-              name={item.application_type}
+            <DropdownMenuItem
               onClick={handleShareModal}
-              value={item.id}
-            >
-              Share
-            </Button>
+              name={{
+                type: item.application_type,
+                id: item.id
+              }}
+              label="Share"
+            />
           </>
         );
       }
@@ -404,34 +396,31 @@ function ActiveDrefTable(props:Props) {
             {getInitialDropdownItems(item)}
             {!item.is_published && (
               <>
-                <Button
-                  className={styles.menuItemButton}
-                  variant='transparent'
-                  name={item.application_type}
-                  value={item.id}
+                <DropdownMenuItem
+                  name={{
+                    type: item.application_type,
+                    id: item.id
+                  }}
                   onClick={handlePublishApplication}
                   disabled={drefPublishPending
                     || operationalUpdatePublishPending
                     || finalReportPublishPending}
-                >
-                  Approved
-                </Button>
-                <DrefExportButton
-                  className={styles.menuItemButton}
+                  label="Approved"
+                />
+                <OperationalUpdateExport
                   variant="transparent"
-                  drefId={item.id}
+                  operationalId={item.id}
                 />
               </>
             )}
-            <Button
-              className={styles.menuItemButton}
-              variant='transparent'
-              name={item.application_type}
+            <DropdownMenuItem
               onClick={handleShareModal}
-              value={item.id}
-            >
-              Share
-            </Button>
+              name={{
+                type: item.application_type,
+                id: item.id
+              }}
+              label="Share"
+            />
           </>
         );
       }

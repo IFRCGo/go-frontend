@@ -1,7 +1,6 @@
 import React from 'react';
 import { AddLineIcon } from '@ifrc-go/icons';
 import { IoTrash } from 'react-icons/io5';
-import { PartialForm } from '@togglecorp/toggle-form';
 import { isNotDefined } from '@togglecorp/fujs';
 
 import Button from '#components/Button';
@@ -13,7 +12,7 @@ import {
 import BasicModal from '#components/BasicModal';
 import languageContext from '#root/languageContext';
 import  useAlert from '#hooks/useAlert';
-import UserSearchSelectInput from '#components/UserSearchSelectInput';
+import UserSearchSelectInput, { getDisplayName } from '#components/UserSearchSelectInput';
 
 import styles from './styles.module.scss';
 
@@ -46,21 +45,34 @@ function ShareUserModal(props: Props) {
 
   const alert = useAlert();
   const {strings} = React.useContext(languageContext);
-  const [users, setUsers] = React.useState<number[]>([]);
-  const [userDetails, setUserDetails] = React.useState<PartialForm<UserDetail[]>>();
   const [toggleInput, setToggleInput] = React.useState<boolean>(false);
   const [searchUser, setSearchUser] = React.useState<string | undefined>(undefined);
-
   const {
     retrigger: refetchShareUser,
+    response: userShareResponse,
   } = useRequest<ListResponse<ShareUsers>>({
     url: `api/v2/dref-share-user/`,
     query: {id},
-    onSuccess: (response) => {
-      setUsers(response.results[0].users);
-      setUserDetails(response.results[0].users_details);
-    }
   });
+
+  const [
+    users,
+    userDetails,
+    initialUserOptions,
+  ] = React.useMemo(() => {
+    if (!userShareResponse || !userShareResponse.results[0]) {
+      return [[], [], []];
+    }
+
+    return [
+      userShareResponse.results[0].users,
+      userShareResponse.results[0].users_details,
+      userShareResponse.results[0].users_details.map((user) => ({
+        label: getDisplayName(user),
+        value: user.id,
+      })),
+    ];
+  },[userShareResponse]);
 
   const {
     trigger: submitShare,
@@ -132,13 +144,11 @@ function ShareUserModal(props: Props) {
       className={styles.shareModal}
       bodyClassName={styles.body}
       onCloseButtonClick={onClose}
-      heading={
-        <div className={styles.headingContent}>
-          <div className={styles.heading}>Share this application</div>
+      heading="Share this application"
+      headingSize="small"
+      description={(
           <div className={styles.description}>You can share this application by adding the collaborators to it. Please note that anyone who is added can edit the file. </div>
-          <hr/>
-        </div>
-      }
+      )}
       footerContent={(
         <>
           {!toggleInput && (
@@ -154,11 +164,11 @@ function ShareUserModal(props: Props) {
       )}
     >
       {userDetails?.map(
-        (item) => (
-          <div key={item.id} className={styles.userList}>
-            <div>{item.first_name}</div>
+        (user) => (
+          <div key={user.id} className={styles.userList}>
+            <div>{getDisplayName(user)}</div>
             <Button
-              name={item.id}
+              name={user.id}
               variant='transparent'
               onClick={handleUserDelete}
             >
@@ -170,7 +180,7 @@ function ShareUserModal(props: Props) {
       {toggleInput && (
         <UserSearchSelectInput
           name={undefined}
-          initialOptions={[]}
+          initialOptions={initialUserOptions}
           value={searchUser}
           onChange={setSearchUser}
           isMulti={false}

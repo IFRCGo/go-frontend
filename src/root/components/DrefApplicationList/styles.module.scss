@@ -17,8 +17,6 @@
     display: flex;
     flex-direction: column;
     gap: $spacing*4;
-    justify-content: center;
-
 
     .footer {
       display: flex;
@@ -37,10 +35,10 @@
   }
 
   .filters {
-    display: flex;
-    padding: $spacing 0;
-    align-items: center;
-    gap: $spacing;
+    display: grid;
+    grid-gap: $spacing;
+    grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+    padding: $spacing;
 
     .country-filter {
       flex-grow: 1;
