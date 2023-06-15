@@ -2,18 +2,18 @@ import React from 'react';
 import { AddLineIcon } from '@ifrc-go/icons';
 import { IoTrash } from 'react-icons/io5';
 import { PartialForm } from '@togglecorp/toggle-form';
+import { isNotDefined } from '@togglecorp/fujs';
 
 import Button from '#components/Button';
-import SelectInput from '#components/SelectInput';
 import {
   ListResponse,
   useLazyRequest,
   useRequest,
 } from '#utils/restRequest';
 import BasicModal from '#components/BasicModal';
-import { NumericValueOption } from '#types/common';
 import languageContext from '#root/languageContext';
 import  useAlert from '#hooks/useAlert';
+import UserSearchSelectInput from '#components/UserSearchSelectInput';
 
 import styles from './styles.module.scss';
 
@@ -49,16 +49,9 @@ function ShareUserModal(props: Props) {
   const [users, setUsers] = React.useState<number[]>([]);
   const [userDetails, setUserDetails] = React.useState<PartialForm<UserDetail[]>>();
   const [toggleInput, setToggleInput] = React.useState<boolean>(false);
+  const [searchUser, setSearchUser] = React.useState<string | undefined>(undefined);
 
   const {
-    pending: userListPending,
-    response: userListResponse,
-  } = useRequest<ListResponse<UserDetail>>({
-    url: 'api/v2/users/'
-  });
-
-  const {
-    pending: shareUserPending,
     retrigger: refetchShareUser,
   } = useRequest<ListResponse<ShareUsers>>({
     url: `api/v2/dref-share-user/`,
@@ -70,7 +63,6 @@ function ShareUserModal(props: Props) {
   });
 
   const {
-    pending: submitPending,
     trigger: submitShare,
   } = useLazyRequest<ShareUsers>({
     url: '/api/v2/dref-share/',
@@ -102,13 +94,6 @@ function ShareUserModal(props: Props) {
     },
   });
 
-  const userOptions = React.useMemo(
-    () => userListResponse?.results.map((u) => ({
-      label: `${u.first_name} ${u.last_name} - ${u.email}`,
-      value: u.id,
-    })) as NumericValueOption[],
-    [userListResponse]);
-
   const handleSubmit = React.useCallback(
     (finalUsers) => {
       let body = {
@@ -117,13 +102,6 @@ function ShareUserModal(props: Props) {
       };
       submitShare(body);
     },[submitShare, id]
-  );
-
-  const handleUserChange = React.useCallback(
-    (val) => {
-      let userList = [...users, val];
-      handleSubmit(userList);
-    },[users, handleSubmit]
   );
 
   const handleUserDelete = React.useCallback(
@@ -139,7 +117,15 @@ function ShareUserModal(props: Props) {
     () => setToggleInput(true), []
   );
 
-  const pending = userListPending || shareUserPending || submitPending;
+  React.useMemo(() => {
+    if(isNotDefined(searchUser)) {
+      return;
+    }
+
+    let userList = [...users, searchUser];
+    handleSubmit(userList);
+    setSearchUser(undefined);
+  },[users, handleSubmit, searchUser]);
 
   return(
     <BasicModal
@@ -182,12 +168,12 @@ function ShareUserModal(props: Props) {
         )
       )}
       {toggleInput && (
-        <SelectInput
+        <UserSearchSelectInput
           name={undefined}
-          options={userOptions}
-          value={undefined}
-          onChange={handleUserChange}
-          disabled={pending}
+          initialOptions={[]}
+          value={searchUser}
+          onChange={setSearchUser}
+          isMulti={false}
         />
       )}
     </BasicModal>
