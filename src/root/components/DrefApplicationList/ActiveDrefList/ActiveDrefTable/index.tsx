@@ -286,6 +286,48 @@ function ActiveDrefTable(props:Props) {
     },[getDrefId]
   );
 
+  const getInitialDropdownItems = React.useCallback(
+    (item) => {
+      const hasUnpublishedOperationalUpdate = item.unpublished_op_update_count > 0;
+      const hasUnpublishedFinalReport = item.unpublished_final_report_count > 0;
+      const isDrefLoan = item.type_of_dref === TYPE_LOAN;
+
+      return (
+        item.initial_row
+          && !hasUnpublishedOperationalUpdate
+          && item.is_published
+          && !item.has_final_reprot
+          && (
+            <>
+              {!hasUnpublishedOperationalUpdate
+                && (
+                  <DropdownMenuItem
+                    name={item.drefId}
+                    onClick={postDrefNewOperationalUpdate}
+                    label={strings.drefOperationalUpdateNewLabel}
+                    disabled={newOperationalUpdatePending}
+                  />
+                )}
+              {!hasUnpublishedFinalReport
+                && (
+                  <DropdownMenuItem
+                    name={item.drefId}
+                    onClick={postDrefNewFinalReport}
+                    label={strings.finalReportCreateButtonLabel}
+                    disabled={isDrefLoan || newFinalReportPending}
+                  />
+                )}
+            </>
+          ));
+    },[
+      newFinalReportPending,
+      newOperationalUpdatePending,
+      postDrefNewFinalReport,
+      postDrefNewOperationalUpdate,
+      strings,
+    ]
+  );
+
   const getDropDownActions = React.useCallback(
     (item: BaseProps) => {
       if(item.application_type === "FINAL_REPORT"){
@@ -321,6 +363,7 @@ function ActiveDrefTable(props:Props) {
       if(item.application_type === "OPS_UPDATE"){
         return(
           <>
+            {getInitialDropdownItems(item)}
             {!item.is_published && (
               <>
                 <Button
@@ -356,12 +399,9 @@ function ActiveDrefTable(props:Props) {
       }
 
       if(item.application_type === "DREF"){
-        const hasUnpublishedOperationalUpdate = item.unpublished_op_update_count > 0;
-        const hasUnpublishedFinalReport = item.unpublished_final_report_count > 0;
-        const isDrefLoan = item.type_of_dref === TYPE_LOAN;
-
         return(
           <>
+            {getInitialDropdownItems(item)}
             {!item.is_published && (
               <>
                 <Button
@@ -383,29 +423,6 @@ function ActiveDrefTable(props:Props) {
                 />
               </>
             )}
-            {!hasUnpublishedOperationalUpdate
-              && item.is_published
-              && !item.has_final_reprot
-              && (
-                <DropdownMenuItem
-                  name={item.id}
-                  onClick={postDrefNewOperationalUpdate}
-                  label={strings.drefOperationalUpdateNewLabel}
-                  disabled={newOperationalUpdatePending}
-                />
-              )}
-            {!hasUnpublishedFinalReport
-              && !hasUnpublishedOperationalUpdate
-              && item.is_published
-              && !item.has_final_reprot
-              && (
-                <DropdownMenuItem
-                  name={item.id}
-                  onClick={postDrefNewFinalReport}
-                  label={strings.finalReportCreateButtonLabel}
-                  disabled={isDrefLoan || newFinalReportPending}
-                />
-              )}
             <Button
               className={styles.menuItemButton}
               variant='transparent'
@@ -420,16 +437,12 @@ function ActiveDrefTable(props:Props) {
       }
       return;
     },[
-      strings,
-      postDrefNewOperationalUpdate,
-      postDrefNewFinalReport,
-      newOperationalUpdatePending,
-      newFinalReportPending,
       drefPublishPending,
       operationalUpdatePublishPending,
       finalReportPublishPending,
       handlePublishApplication,
       handleShareModal,
+      getInitialDropdownItems,
     ]);
 
   const getEditActions = React.useCallback(
@@ -515,7 +528,7 @@ function ActiveDrefTable(props:Props) {
               <TableData>
                 {detail.status === APPROVED
                   ? 'Approved'
-                  : detail.status_display}
+                  : 'In Progress'}
               </TableData>
               <TableData colSpan={2} className={styles.expandedRowActions}>
                 <span>
@@ -581,7 +594,7 @@ function ActiveDrefTable(props:Props) {
       createStringColumn<ActiveDrefTableDetail, string | number>(
         'status_display',
         'Status',
-        (item) => item.status === APPROVED ? 'Approved' : item.status_display,
+        (item) => item.status === APPROVED ? 'Approved' : 'In Progress',
       ),
     ];
 
