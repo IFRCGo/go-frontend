@@ -9,6 +9,7 @@ import {
 } from '#types';
 import { DrefOperationalUpdateApiFields } from '#views/DrefOperationalUpdateForm/common';
 import OperationalUpdatePdfDocument from '#components/OperationalUpdatePdfDocument';
+import DropdownMenuItem from '#components/DropdownMenuItem';
 import Button, { ButtonVariant } from '#components/Button';
 
 interface OperationalUpdateOptions {
@@ -27,10 +28,11 @@ interface OperationalUpdateOptions {
     username: string;
   }[];
 }
+
 interface Props {
   className?: string;
   operationalId: number;
-  variant?: ButtonVariant;
+  variant?: ButtonVariant | 'dropdown';
 }
 
 function OperationalUpdateExport(props: Props) {
@@ -94,6 +96,18 @@ function OperationalUpdateExport(props: Props) {
       exportToPdf();
     }
   }, [pending, operationalUpdateResponse, drefOptions, strings]);
+
+  if (variant === 'dropdown') {
+    return (
+      <DropdownMenuItem
+        className={className}
+        name='operational-update-export'
+        label={shouldRender ? 'Exporting' : 'Export'}
+        disabled={pending || shouldRender}
+        onClick={handleExportRender}
+      />
+    );
+  }
 
   return (
     <Button

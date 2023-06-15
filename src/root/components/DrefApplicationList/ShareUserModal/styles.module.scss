@@ -1,11 +1,12 @@
 @import '~styles/settings/variables';
 
 .share-modal {
-  width: $row-min-width;
+  width: calc(100% - #{$spacing * 4});
+  max-width: 30rem;
   min-height: 18rem;
   padding: $spacing;
   align-items: center;
-  overflow: auto;
+  overflow: visible;
 
   .body {
     width: 100%;
