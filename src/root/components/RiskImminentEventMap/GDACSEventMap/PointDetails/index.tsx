@@ -7,7 +7,7 @@ import {
 import TextOutput from '#components/TextOutput';
 import MapTooltipContent from '#components/MapTooltipContent';
 import Link from '#components/Link';
-import { GDACSEvent, GDACSEventExposure } from '#types';
+import { GDACSEvent, GDACSEventExposure, ImminentHazardTypes } from '#types';
 
 import styles from './styles.module.scss';
 
@@ -61,15 +61,25 @@ function PointDetails(props: PointDetailsProps) {
     onCloseButtonClick,
   } = props;
 
+  const showSeverity: Record<ImminentHazardTypes, boolean> = React.useMemo(() => ({
+    EQ: true,
+    CY: true,
+    TC: true,
+    SS: true,
+    WF: true,
+    FL: false,
+    DR: false,
+  }),[]);
+
   const severityDetail = React.useCallback(
-    (hd) => (
-      !["FL", "DR"].includes(hd) && (
+    (hd: ImminentHazardTypes) => (
+      showSeverity[hd] && (
         <TextOutput
           label="Severity"
           value={event_details.severitydata.severitytext}
         />
       )
-    ),[event_details]
+    ),[event_details, showSeverity]
   );
 
   return (
