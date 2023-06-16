@@ -407,9 +407,9 @@ function ActiveDrefTable(props:Props) {
                     || finalReportPublishPending}
                   label="Approved"
                 />
-                <OperationalUpdateExport
-                  variant="transparent"
-                  operationalId={item.id}
+                <DrefExportButton
+                  variant="dropdown"
+                  drefId={item.id}
                 />
               </>
             )}

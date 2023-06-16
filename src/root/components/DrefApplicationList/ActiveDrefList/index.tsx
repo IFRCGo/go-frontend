@@ -141,10 +141,7 @@ function ActiveDrefList(props:Props) {
           ...d.final_report_details[0],
           drefId: d.id,
           initial_row: true,
-          firstLevel:{
-            ...d.operational_update_details,
-            drefId: d.id,
-          },
+          firstLevel: d.operational_update_details,
           secondLevel:[{
             id: d.id,
             created_at: d.created_at,
@@ -174,6 +171,7 @@ function ActiveDrefList(props:Props) {
       (d) => {
         let obj = {
           ...d,
+          drefId: d.id,
           initial_row: true,
           firstLevel: [],
           secondLevel: [],

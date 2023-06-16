@@ -10,6 +10,7 @@ import {
 } from '#types';
 import DrefPdfDocument from '#components/DrefPdfDocument';
 import Button, { ButtonVariant } from '#components/Button';
+import DropdownMenuItem from '#components/DropdownMenuItem';
 
 interface DrefOptions {
   disaster_category: NumericKeyValuePair[];
@@ -30,7 +31,7 @@ interface DrefOptions {
 interface Props {
   className?: string;
   drefId: number;
-  variant?: ButtonVariant;
+  variant?: ButtonVariant | 'dropdown';
 }
 
 function DrefExportButton(props: Props) {
@@ -96,6 +97,17 @@ function DrefExportButton(props: Props) {
     }
   }, [pending, dref, drefOptions, strings]);
 
+  if (variant === 'dropdown') {
+    return (
+      <DropdownMenuItem
+        className={className}
+        name='dref-export-button'
+        onClick={handleExportRender}
+        label={shouldRender ? 'Exporting' : 'Export'}
+        disabled={pending || shouldRender}
+      />
+    );
+  }
   return (
     <Button
       className={className}
