@@ -21,20 +21,28 @@ import Container from "#components/Container";
 
 import styles from "./styles.module.scss";
 
+const gdacsPopupTitle = " Source: GDACS";
+const gdacsPopupDescription = (
+  <p>
+    Click <Link
+      target="_blank"
+      href="https://www.gdacs.org/default.aspx"
+    >
+      here
+    </Link> for more information about the model and its inputs.
+  </p>
+);
+
 const meteoSwissPopupTitle = "Source: MeteoSwiss";
 const meteoSwissPopupDescription = (
-  <>
-    <p>
-    </p>
-    <p>
-      Click <Link
-        target="_blank"
-        href="https://meteofrance.re/fr"
-      >
-        here
-      </Link> for more information about the model and its inputs.
-    </p>
-  </>
+  <p>
+    Click <Link
+      target="_blank"
+      href="https://meteofrance.re/fr"
+    >
+      here
+    </Link> for more information about the model and its inputs.
+  </p>
 );
 
 const pdcPopupTitle ="Source: Pacific Disaster Center";
@@ -120,10 +128,9 @@ const gdacsIconLabel = (
       <IoInformationCircleOutline
         data-event="click"
         data-tooltip-id="gdacs"
-        // NOTE: fix when popup data is finalized
-        // data-tooltip-html={ReactDOMServer.renderToStaticMarkup(
-        //   tooltip(adamPopupTitle, adamPopupDescription)
-        // )}
+        data-tooltip-html={ReactDOMServer.renderToStaticMarkup(
+          tooltip(gdacsPopupTitle, gdacsPopupDescription)
+        )}
       />
       <Tooltip
         className={styles.tooltip}
