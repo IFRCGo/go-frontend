@@ -348,7 +348,7 @@ function ActiveDrefTable(props:Props) {
                   type: item.application_type,
                 }}
                 onClick={handleShareModal}
-                label="share"
+                label="Share"
               />
             </>
           )
