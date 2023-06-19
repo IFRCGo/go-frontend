@@ -91,6 +91,8 @@ const SharepointLink = {
         pre + 'EdRtpzYtoFhNnrXHDiEc74ABKv7njX3cz1-jPl1SxWqWSg',
     'IT and Telecom Officer.pdf':
         pre + 'ETEdR5wmWSdHqw2o2nJRMeYBN9M7VZBZJ5blIgn67vFdzQ',
+    'ITT Services Catalogue.pdf':
+        pre + 'Ed9M59SwliBMvgVU3I7XilwBG7EYMGvXuvResKhy9ut5TA',
 
     'Livelihoods and Basic Needs Coordinator.pdf':
         pre + 'EfES4Wzw9FhMuuheDrmLAgUB6hOMdb4Q_PxRvZNHI4PS9g',
