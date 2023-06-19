@@ -16,7 +16,6 @@ import {
 } from './common';
 import styles from './styles.module.scss';
 import { GeoJSONSourceRaw } from 'mapbox-gl';
-import { Polygon } from '@turf/turf';
 
 const defaultDrawOptions = ({
   displayControlsDefault: false,
@@ -77,7 +76,7 @@ function MapAdmin2Select(props: Props) {
       const admin2Id = selectedFeatures?.filter(
         (feature) => feature?.properties?.admin1_id === districtId && feature?.properties?.id
       )[0]?.properties?.id as number| undefined;
-     console.log("admin2 id", admin2Id, selectedFeatures, e);
+
       if (admin2Id && onClick) {
         onClick(admin2Id);
       }
@@ -90,13 +89,39 @@ function MapAdmin2Select(props: Props) {
     };
   }, [map, mapStyleLoaded, onClick, districtId, lineStringSelect]);
 
+  const getPolygonRegion = React.useCallback(
+    (polygon: GeoJSON.Geometry) => {
+      console.log("----polygon", polygon);
+      const tilesetId = 'go-ifrc.go-admin2-AFG-staging';
+      const accessToken = 'pk.eyJ1IjoiZ28taWZyYyIsImEiOiJjams3b2ZhZWswMGFvM3hxeHp2ZHFhOTRrIn0._pqO9OQ2iNeDGrpopJNjpg';
+
+      const requestData = {
+        layers: ['admin-2-fill', 'admin-2-line'], // Specify the layers containing the region data
+        geometry: polygon,
+      };
+
+      fetch(`https://api.mapbox.com/v4/${tilesetId}/tilequery?access_token=${accessToken}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(requestData)
+      })
+        .then(response => response.json())
+        .then(data => {
+          console.log(data.features); // Log the intersecting regions
+          // Process the intersecting regions as needed
+        })
+        .catch(error => console.error(error));
+    }, []
+  );
   const handleMapDraw = React.useCallback(
-    (data: mapboxgl.MapboxGeoJSONFeature[], draw) => {
-      console.log("****", data);
+    (data: mapboxgl.MapboxGeoJSONFeature[]) => {
       // setDrawGeoJSON(data);
       // setDrawMode(draw.getMode());
       // setLineStringSelect(false);
-    }, []);
+      getPolygonRegion(data[0].geometry);
+    }, [ getPolygonRegion ]);
 
   const handleMode = React.useCallback (
     (mode, draw) => {
@@ -207,12 +232,12 @@ function MapAdmin2Select(props: Props) {
                 },
               }}
             />
-          </MapSource>
           <MapShapeEditor
             drawOptions={defaultDrawOptions}
             onCreate={handleMapDraw}
             onModeChange={handleMode}
           />
+          </MapSource>
         </>
       )}
     </>
