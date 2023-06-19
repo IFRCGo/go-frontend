@@ -263,6 +263,10 @@ export default class CatalogueOfSurgeServicesSubPage extends React.Component {
                     this.renderContent(content.textSection.emergencyServices, strings['catalogueEmergencyTitle'])
                     : <></>
                 }
+                {content.textSection.ittServiceCatalogue !== undefined ?
+                    <div>{strings[content.textSection.ittServiceCatalogue.pre]} <a href={content.textSection.ittServiceCatalogue.url}>{strings[content.textSection.ittServiceCatalogue.link]}</a></div>
+                    : <></>
+                }
                 {content.textSection.designedFor !== undefined ?
                     this.renderContent(content.textSection.designedFor, strings['catalogueDesignedTitle'])
                     : <></>

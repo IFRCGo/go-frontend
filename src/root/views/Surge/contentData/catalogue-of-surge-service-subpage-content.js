@@ -33,12 +33,12 @@ const CatalogueOfSurgeServiceSubpageContent = [
             personnel: {
                 total: 'catalogueHwtsPersonnelTotal',
                 compositions: [
-                    'catalogueHwtsPersonnelCompoistion1',
-                    'catalogueHwtsPersonnelCompoistion2',
-                    'catalogueHwtsPersonnelCompoistion3',
-                    'catalogueHwtsPersonnelCompoistion4',
-                    'catalogueHwtsPersonnelCompoistion5',
-                    'catalogueHwtsPersonnelCompoistion6'
+                    'catalogueHwtsPersonnelComposition1',
+                    'catalogueHwtsPersonnelComposition2',
+                    'catalogueHwtsPersonnelComposition3',
+                    'catalogueHwtsPersonnelComposition4',
+                    'catalogueHwtsPersonnelComposition5',
+                    'catalogueHwtsPersonnelComposition6'
                 ]
             },
             standardComponents: {
@@ -89,11 +89,11 @@ const CatalogueOfSurgeServiceSubpageContent = [
             personnel: {
                 total: 'catalogueWsrPersonnelTotal',
                 compositions: [
-                    'catalogueWsrPersonnelCompoistion1',
-                    'catalogueWsrPersonnelCompoistion2',
-                    'catalogueWsrPersonnelCompoistion3',
-                    'catalogueWsrPersonnelCompoistion4',
-                    'catalogueWsrPersonnelCompoistion5'
+                    'catalogueWsrPersonnelComposition1',
+                    'catalogueWsrPersonnelComposition2',
+                    'catalogueWsrPersonnelComposition3',
+                    'catalogueWsrPersonnelComposition4',
+                    'catalogueWsrPersonnelComposition5'
                 ]
             },
             standardComponents: {
@@ -185,7 +185,7 @@ const CatalogueOfSurgeServiceSubpageContent = [
             },
             personnel: {
                 total: 'catalogueM40PersonnelTotal',
-                composition: 'catalogueM40PersonnelCompoistion',
+                composition: 'catalogueM40PersonnelComposition',
                 subText: 'catalogueM40PersonnelSubText'
             },
             specifications: {
@@ -285,7 +285,7 @@ const CatalogueOfSurgeServiceSubpageContent = [
             },
             personnel: {
                 total: 'catalogueMsm20PersonnelTotal',
-                composition: 'catalogueMsm20PersonnelCompoistion',
+                composition: 'catalogueMsm20PersonnelComposition',
                 subText: 'catalogueMsm20PersonnelSubText'
             },
             specifications: {
@@ -384,7 +384,7 @@ const CatalogueOfSurgeServiceSubpageContent = [
             },
             personnel: {
                 total: 'catalogueM15PersonnelTotal',
-                composition: 'catalogueM15PersonnelCompoistion'
+                composition: 'catalogueM15PersonnelComposition'
             },
             specifications: {
                 weight: 'catalogueM15SpecifiationWeight',
@@ -586,7 +586,7 @@ const CatalogueOfSurgeServiceSubpageContent = [
             },
             personnel: {
                 total: 'catalogueSttPersonnelTotal',
-                composition: 'catalogueSttPersonnelCompoistion'
+                composition: 'catalogueSttPersonnelComposition'
             },
             specifications: {
                 nationalSocieties: 'catalogueSttSpecifiationNationalSocieties'
@@ -679,7 +679,7 @@ const CatalogueOfSurgeServiceSubpageContent = [
             },
             personnel: {
                 total: 'catalogueSctPersonnelTotal',
-                composition: 'catalogueSctPersonnelCompoistion'
+                composition: 'catalogueSctPersonnelComposition'
             },
             specifications: {
                 nationalSocieties: 'catalogueSctSpecifiationNationalSocieties'
@@ -889,7 +889,7 @@ const CatalogueOfSurgeServiceSubpageContent = [
             },
             personnel: {
                 total: 'catalogueReliefPersonnelTotal',
-                composition: 'catalogueReliefPersonnelCompoistion',
+                composition: 'catalogueReliefPersonnelComposition',
                 subText: 'catalogueReliefPersonnelSubText'
             },
             standardComponents: {
@@ -1040,7 +1040,7 @@ const CatalogueOfSurgeServiceSubpageContent = [
             },
             personnel: {
                 total: 'catalogueProtectionPersonnelTotal',
-                composition: 'catalogueProtectionPersonnelCompoistion'
+                composition: 'catalogueProtectionPersonnelComposition'
             },
             standardComponents: {
                 text: 'catalogueProtectionStandardCompText'
@@ -1266,7 +1266,7 @@ const CatalogueOfSurgeServiceSubpageContent = [
             },
             personnel: {
                 total: 'catalogueLogisticsPersonnelTotal',
-                composition: 'catalogueLogisticsPersonnelCompoistion',
+                composition: 'catalogueLogisticsPersonnelComposition',
             },
             standardComponents: {
                 text: 'catalogueLogisticsStandardCompText',
@@ -1413,12 +1413,18 @@ const CatalogueOfSurgeServiceSubpageContent = [
             emergencyServices: {
                 text: 'catalogueItTelecomEmergencyText'
             },
+            ittServiceCatalogue:
+            {
+                pre: "catalogueItTelecomEmergencyPre",
+                link: "catalogueItTelecomEmergencyLink",
+                url: SharepointLink['ITT Services Catalogue.pdf']
+            },
             designedFor: {
                 text: 'catalogueItTelecomDesignedText'
             },
             personnel: {
                 total: 'catalogueItTelecomPersonnelTotal',
-                composition: 'catalogueItTelecomPersonnelCompoistion'
+                composition: 'catalogueItTelecomPersonnelComposition'
             },
             standardComponents: {
                 listItems: [
@@ -1501,7 +1507,7 @@ const CatalogueOfSurgeServiceSubpageContent = [
             },
             personnel: {
                 total: 'cataloguePssModulePersonnelTotal',
-                composition: 'cataloguePssModulePersonnelCompoistion'
+                composition: 'cataloguePssModulePersonnelComposition'
             },
             standardComponents: {
                 text: 'cataloguePssModuleStandardCompText',
@@ -1551,7 +1557,7 @@ const CatalogueOfSurgeServiceSubpageContent = [
             },
             personnel: {
                 total: 'catalogueSafeDignifiedPersonnelTotal',
-                composition: 'catalogueSafeDignifiedPersonnelCompoistion',
+                composition: 'catalogueSafeDignifiedPersonnelComposition',
             },
             standardComponents: {
                 listItems: [
@@ -1591,8 +1597,8 @@ const CatalogueOfSurgeServiceSubpageContent = [
             personnel: {
                 total: 'catalogueSurveillancePersonnelTotal',
                 compositions: [
-                    'catalogueSurveillancePersonnelCompoistion1',
-                    'catalogueSurveillancePersonnelCompoistion2'
+                    'catalogueSurveillancePersonnelComposition1',
+                    'catalogueSurveillancePersonnelComposition2'
                 ],
                 subText: 'catalogueSurveillancePersonnelSubText'
             },
@@ -1650,7 +1656,7 @@ const CatalogueOfSurgeServiceSubpageContent = [
             },
             personnel: {
                 total: 'catalogueManagementCholeraPersonnelTotal',
-                composition: 'catalogueManagementCholeraPersonnelCompoistion'
+                composition: 'catalogueManagementCholeraPersonnelComposition'
             },
             standardComponents: {
                 listItems: [
@@ -1722,7 +1728,7 @@ const CatalogueOfSurgeServiceSubpageContent = [
             },
             personnel: {
                 total: 'catalogueCholeraTreatmentPersonnelTotal',
-                composition: 'catalogueCholeraTreatmentPersonnelCompoistion'
+                composition: 'catalogueCholeraTreatmentPersonnelComposition'
             },
             standardComponents: {
                 text: 'catalogueCholeraTreatmentStandardCompText',
@@ -1811,7 +1817,7 @@ const CatalogueOfSurgeServiceSubpageContent = [
             },
             personnel: {
                 total: 'catalogueMobileClinicPersonnelTotal',
-                composition: 'catalogueMobileClinicPersonnelCompoistion'
+                composition: 'catalogueMobileClinicPersonnelComposition'
             },
             standardComponents: {
                 text: 'catalogueMobileClinicStandardCompText',
@@ -1855,7 +1861,7 @@ const CatalogueOfSurgeServiceSubpageContent = [
             },
             personnel: {
                 total: 'catalogueHealthClinicPersonnelTotal',
-                composition: 'catalogueHealthClinicPersonnelCompoistion'
+                composition: 'catalogueHealthClinicPersonnelComposition'
             },
             standardComponents: {
                 text: 'catalogueHealthClinicStandardCompText',
@@ -1902,7 +1908,7 @@ const CatalogueOfSurgeServiceSubpageContent = [
             },
             personnel: {
                 total: 'catalogueSurgicalSurgePersonnelTotal',
-                composition: 'catalogueSurgicalSurgePersonnelCompoistion',
+                composition: 'catalogueSurgicalSurgePersonnelComposition',
             },
             standardComponents: {
                 text: 'catalogueSurgicalSurgeStandardCompText',
@@ -2019,7 +2025,7 @@ const CatalogueOfSurgeServiceSubpageContent = [
             },
             personnel: {
                 total: 'catalogueEmergencyHospitalPersonnelTotal',
-                composition: 'catalogueEmergencyHospitalPersonnelCompoistion'
+                composition: 'catalogueEmergencyHospitalPersonnelComposition'
             },
             standardComponents: {
                 text: 'catalogueEmergencyHospitalStandardCompText',
@@ -2134,7 +2140,7 @@ const CatalogueOfSurgeServiceSubpageContent = [
             },
             personnel: {
                 total: 'catalogueEmergencyClinicPersonnelTotal',
-                composition: 'catalogueEmergencyClinicPersonnelCompoistion'
+                composition: 'catalogueEmergencyClinicPersonnelComposition'
             },
             standardComponents: {
                 text: 'catalogueEmergencyClinicStandardCompText',
@@ -2265,7 +2271,7 @@ const CatalogueOfSurgeServiceSubpageContent = [
             },
             personnel: {
                 total: 'catalogueCert3PersonnelTotal',
-                composition: 'catalogueCert3PersonnelCompoistion'
+                composition: 'catalogueCert3PersonnelComposition'
             },
             standardComponents: {
                 text: 'catalogueCert3StandardCompText'
@@ -2349,7 +2355,7 @@ const CatalogueOfSurgeServiceSubpageContent = [
             },
             personnel: {
                 total: 'catalogueCert2PersonnelTotal',
-                composition: 'catalogueCert2PersonnelCompoistion',
+                composition: 'catalogueCert2PersonnelComposition',
             },
             standardComponents: {
                 text: 'catalogueCert2StandardCompText'
@@ -2425,7 +2431,7 @@ const CatalogueOfSurgeServiceSubpageContent = [
             },
             personnel: {
                 total: 'catalogueCert1PersonnelTotal',
-                composition: 'catalogueCert1PersonnelCompoistion',
+                composition: 'catalogueCert1PersonnelComposition',
             },
             standardComponents: {
                 text: 'catalogueCert1StandardCompText'
@@ -2502,7 +2508,7 @@ const CatalogueOfSurgeServiceSubpageContent = [
             },
             personnel: {
                 total: 'catalogueCommunityEngagementPersonnelTotal',
-                composition: 'catalogueCommunityEngagementPersonnelCompoistion'
+                composition: 'catalogueCommunityEngagementPersonnelComposition'
             }
         }
     },
@@ -2576,9 +2582,9 @@ const CatalogueOfSurgeServiceSubpageContent = [
             personnel: {
                 total: 'catalogueCvaPersonnelTotal',
                 compositions: [
-                    'catalogueCvaPersonnelCompoistion1',
-                    'catalogueCvaPersonnelCompoistion2',
-                    'catalogueCvaPersonnelCompoistion3'
+                    'catalogueCvaPersonnelComposition1',
+                    'catalogueCvaPersonnelComposition2',
+                    'catalogueCvaPersonnelComposition3'
                 ]
             },
             standardComponents: {
@@ -2748,7 +2754,7 @@ const CatalogueOfSurgeServiceSubpageContent = [
             },
             personnel: {
                 total: 'catalogueBaseCampMediumPersonnelTotal',
-                composition: 'catalogueBaseCampMediumPersonnelCompoistion',
+                composition: 'catalogueBaseCampMediumPersonnelComposition',
                 subText: 'catalogueBaseCampMediumPersonnelSubText'
             },
             standardComponents: {
@@ -2847,7 +2853,7 @@ const CatalogueOfSurgeServiceSubpageContent = [
             },
             personnel: {
                 total: 'catalogueBaseCampLargePersonnelTotal',
-                composition: 'catalogueBaseCampLargePersonnelCompoistion',
+                composition: 'catalogueBaseCampLargePersonnelComposition',
                 subText: 'catalogueBaseCampLargePersonnelSubText'
             },
             standardComponents: {
@@ -2967,7 +2973,7 @@ const CatalogueOfSurgeServiceSubpageContent = [
             },
             personnel: {
                 total: 'catalogueAssesmentPersonnelTotal',
-                composition: 'catalogueAssesmentPersonnelCompoistion'
+                composition: 'catalogueAssesmentPersonnelComposition'
             },
             variationOnConfiguration: {
                 text: 'catalogueAssesmentVariationText'
