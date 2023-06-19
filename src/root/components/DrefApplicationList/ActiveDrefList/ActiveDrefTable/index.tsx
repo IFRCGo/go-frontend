@@ -348,7 +348,7 @@ function ActiveDrefTable(props:Props) {
                   type: item.application_type,
                 }}
                 onClick={handleShareModal}
-                label="share"
+                label="Share"
               />
             </>
           )
@@ -407,9 +407,9 @@ function ActiveDrefTable(props:Props) {
                     || finalReportPublishPending}
                   label="Approved"
                 />
-                <OperationalUpdateExport
-                  variant="transparent"
-                  operationalId={item.id}
+                <DrefExportButton
+                  variant="dropdown"
+                  drefId={item.id}
                 />
               </>
             )}
