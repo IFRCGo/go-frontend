@@ -1,3 +1,9 @@
+### Release 6.6.6 - Hotfix for Surge Catalogue
+Date: 2023-06-20
+
+Frontend:
+ - New data to Catalogue of Surge Services
+
 ### Release 6.6.5 - Hotfix for displaying Contacts
 Date: 2023-06-06
 
