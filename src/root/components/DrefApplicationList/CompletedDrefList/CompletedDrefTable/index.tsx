@@ -143,7 +143,7 @@ function CompletedDrefTable(props:Props) {
               <TableData>{detail.appeal_code}</TableData>
               <TableData>{detail.country_details.name}</TableData>
               <TableData>{detail.date_of_approval}</TableData>
-              <TableData>{detail.status_display}</TableData>
+              <TableData>{"Approved"}</TableData>
               <TableData colSpan={2} className={styles.expandedRowActions}>
                 <span>
                   <DropdownMenu
@@ -207,7 +207,7 @@ function CompletedDrefTable(props:Props) {
       createStringColumn<CompletedDrefResponse, string | number>(
         'status_display',
         'Status',
-        (item) => item.status_display,
+        () => "Approved",
       ),
     ];
 

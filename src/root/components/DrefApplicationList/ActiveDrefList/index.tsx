@@ -26,7 +26,6 @@ interface Props {
 }
 
 export interface DrefApplicationResponse extends BaseProps {
-  is_final_report_created: boolean;
   operational_update_details: BaseProps[];
   final_report_details: BaseProps[];
 }
@@ -93,6 +92,7 @@ function ActiveDrefList(props:Props) {
             has_final_reprot: d.has_final_reprot,
             unpublished_op_update_count: d.unpublished_op_update_count,
             unpublished_final_report_count: d.unpublished_final_report_count,
+            status: d.status,
             status_display: d.status_display,
           }],
         };
@@ -125,6 +125,7 @@ function ActiveDrefList(props:Props) {
             has_final_reprot: d.has_final_reprot,
             unpublished_op_update_count: d.unpublished_op_update_count,
             unpublished_final_report_count: d.unpublished_final_report_count,
+            status: d.status,
             status_display: d.status_display,
           }],
         };
@@ -157,6 +158,7 @@ function ActiveDrefList(props:Props) {
             has_final_reprot: d.has_final_reprot,
             unpublished_op_update_count: d.unpublished_op_update_count,
             unpublished_final_report_count: d.unpublished_final_report_count,
+            status: d.status,
             status_display: d.status_display,
           }],
         };
