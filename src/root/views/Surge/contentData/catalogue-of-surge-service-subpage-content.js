@@ -3032,12 +3032,11 @@ const CatalogueOfSurgeServiceSubpageContent = [
                 title: 'catalogueOtherServiceTextTitle2',
                 text: 'catalogueOtherService3Text2',
                 urls: [
-                    { text: 'catalogueOtherService3Text2Url', url: SharepointLink['Human Resources Coordinator.pdf'] },
-                    /* coming soon not wanted 6
-                    { text: 'catalogueOfSurgeServicesHealthCards1Card1Element5', url: '' }
-                    */
+                    { text: 'catalogueOtherService3Text2Url1', url: SharepointLink['Human Resources Coordinator.pdf'] },
+                    { text: 'catalogueOtherService3Text2Url2', url: SharepointLink['Human Resources Officer.pdf'] }
                 ]
             }
+
         ]
     },
     {

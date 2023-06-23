@@ -189,7 +189,10 @@ const SharepointLink = {
     'Disaster Risk Reduction and Climate Action Coordinator.pdf':
         pre + 'EbivNvjEqjxLkiJA3xeaLlUBDCyH8Oh4U8Y7gaRA3XROUQ',
     'Human Resources Coordinator.pdf':
-        pre + 'Ebd935X260FFuCsCh5ujYTkBDjPnZI2fWz-3zTfSPeCNJw',
+        pre + 'EaFKXg0cmyZOs0v93LEB36EBHSs_A8A-SCvBciYIDwMUvg',
+     // old:  'Ebd935X260FFuCsCh5ujYTkBDjPnZI2fWz-3zTfSPeCNJw',
+    'Human Resources Officer.pdf':
+        pre + 'EcgYGSB0UUBMouLr2CNNT0wBd6vuFr9OJhOJI7VwdWU5yA',
     'International Disaster Response Law Coordinator - Emergency Phase.pdf':
         pre + 'EbPlgWopXL9JmKb6Pz0didgB8XKBb3RhIo6g--XB9wD5sw',
     'Migration and Displacement Coordinator.pdf':
