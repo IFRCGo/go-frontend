@@ -1,3 +1,9 @@
+### Release 6.6.7 - Hotfix for Surge Catalogue
+Date: 2023-06-23
+
+Frontend:
+ - HR role profiles to Catalogue of Surge Services
+
 ### Release 6.6.6 - Hotfix for Surge Catalogue
 Date: 2023-06-20
 
