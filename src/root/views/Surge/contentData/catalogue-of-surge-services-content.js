@@ -357,11 +357,11 @@ const CatalogueOfSurgeServicesContent = [
                                 url: SharepointLink['Public Health in Emergencies Coordinator.pdf']
                             },
                             {
-                                name: "catalogueOfSurgeServicesHealthCards1Card1Element3a",
+                                name: "catalogueOfSurgeServicesHealthCards1Card1Element4",
                                 url: SharepointLink['Public Health in Emergencies Officer.pdf']
                             },
                             {
-                                name: "catalogueOfSurgeServicesHealthCards1Card1Element4",
+                                name: "catalogueOfSurgeServicesHealthCards1Card1Element5",
                                 url: SharepointLink['Safe and Dignified Burials Coordinator.pdf']
                             },
                             
