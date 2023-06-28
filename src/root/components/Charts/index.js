@@ -9,7 +9,7 @@ export const TimeLineChart = ({ data }) => {
   const zone = 'utc';
   const tickFormatter = (date) => DateTime.fromISO(date, {zone}).toFormat('MMM');
   const contentFormatter = (payload) => {
-    if (!payload.payload[0]) { return null; }
+    if (!payload.payload?.[0]) { return null; }
 
     const item = payload.payload[0].payload;
     return (
