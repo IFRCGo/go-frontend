@@ -1,0 +1,9 @@
+@import '~styles/settings/variables';
+
+.translation-warning-banner {
+  padding: $spacing;
+  text-align: center;
+  background-color: $warning-color;
+  color: $color-text-on-dark;
+  font-weight: $base-font-medium;
+}

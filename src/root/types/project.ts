@@ -1,4 +1,6 @@
 import { BBox } from '@turf/turf';
+import { languageOptions } from '#utils/lang';
+
 import {
   CountryMini,
   DistrictMini,
@@ -77,6 +79,8 @@ export interface ProjectFormFields {
   annual_split_detail: AnnualSplit[];
 }
 
+export type Language = keyof typeof languageOptions;
+
 export interface Project {
   actual_expenditure: number;
   budget_amount: number;
@@ -129,6 +133,8 @@ export interface Project {
   visibility_display: string;
   is_annual_report: boolean;
   annual_split_detail: Omit<AnnualSplit, 'client_id'>[];
+  translation_module_original_language: Language;
+  translation_module_skip_auto_translation: boolean;
 }
 
 interface Point {

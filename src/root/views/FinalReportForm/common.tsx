@@ -2,6 +2,7 @@ import {
   Country,
   DistrictMini,
 } from "#types/country";
+import { Language } from "#types/project";
 import { SingleFileWithCaption } from "#views/DrefApplicationForm/common";
 
 export const ONSET_SLOW = 1;
@@ -244,8 +245,9 @@ export interface DrefFinalReportApiFields extends Omit<DrefFinalReportFields, 'd
   financial_report_details: {
     id: number;
     file: string;
-  }
+  };
   users_details: User[];
+  translation_module_original_language: Language;
 }
 
 export const overviewFields: (keyof DrefFinalReportFields)[] = [

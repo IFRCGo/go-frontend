@@ -168,27 +168,25 @@ function ContextFields(props: Props) {
       <InputSection
         title='Search for existing emergency *'
         description='Type the name of the country you want to report on in the box above to begin the search.'
-       >     
-        
-                <SearchSelectInput
-                  label={strings.fieldReportFormTitleSelectLabel}
-                  placeholder={strings.fieldReportFormTitleSelectPlaceholder}
-                  name={"event" as const}
-                  value={value.event}
-                  onChange={onValueChange}
-                  loadOptions={fetchEventsFromApi}
-                  initialOptions={initialEventOptions as SearchSelectOption[]}
-                  error={error?.event}
-                />
-        </InputSection>
+       >
+        <SearchSelectInput
+          label={strings.fieldReportFormTitleSelectLabel}
+          placeholder={strings.fieldReportFormTitleSelectPlaceholder}
+          name={"event" as const}
+          value={value.event}
+          onChange={onValueChange}
+          loadOptions={fetchEventsFromApi}
+          initialOptions={initialEventOptions as SearchSelectOption[]}
+          error={error?.event}
+        />
+      </InputSection>
 
-      
       <InputSection
         title={countrySectionTitle}
         description={countrySectionDescription}
       >
         <SelectInput
-        //className={reportId === undefined ? 'visually-hidden' : ''}
+          // className={reportId === undefined ? 'visually-hidden' : ''}
           error={error?.country}
           label={strings.projectFormCountryLabel}
           name={"country" as const}

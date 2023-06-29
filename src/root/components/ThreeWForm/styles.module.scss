@@ -1,6 +1,10 @@
 @import '~styles/settings/variables';
 
 .three-w-form {
+  .language-mismatch {
+    text-align: center;
+  }
+
   .form-actions {
     display: flex;
     flex-direction: column;
@@ -23,7 +27,7 @@
   }
 
   .disable {
-    color: grey
+    color: $light-base-color;
   }
 
   .region-selection-input {
@@ -33,5 +37,4 @@
     align-self: flex-start;
     margin-top: 1.5rem;
   }
-
 }

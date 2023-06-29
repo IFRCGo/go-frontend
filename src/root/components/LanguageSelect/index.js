@@ -7,6 +7,7 @@ import {
   currentLanguageSelector,
   languageStringsSelector,
 } from '#selectors';
+import { languageOptions } from '#utils/lang';
 
 import {
   setCurrentLanguageAction,
@@ -16,13 +17,6 @@ import languageContext from '#root/languageContext';
 import DropdownMenu from '#components/dropdown-menu';
 
 import styles from './styles.module.scss';
-
-const languageOptions = {
-  en: 'English',
-  fr: 'French',
-  es: 'Spanish',
-  ar: 'Arabic',
-};
 
 function LanguageButton(p) {
   const {

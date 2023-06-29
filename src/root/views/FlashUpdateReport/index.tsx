@@ -133,6 +133,7 @@ function FlashUpdateReport(props: Props) {
         </>
       )}
       mainSectionClassName={styles.mainContent}
+      originalContentLanguage={response?.translation_module_original_language}
     >
       {pending && <BlockLoading />}
       {!pending && response && (

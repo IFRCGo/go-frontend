@@ -4,7 +4,9 @@ import { DateTime } from 'luxon';
 
 import { api } from '#config';
 import { request } from '#utils/network';
+import { languageOptions } from '#utils/lang';
 import type { Option as SearchSelectOption } from '#components/SearchSelectInput';
+type Language = keyof typeof languageOptions;
 
 export const STATUS_EARLY_WARNING = 8;
 export const STATUS_EVENT = 9;
@@ -710,6 +712,8 @@ export interface FieldReportAPIResponseFields extends Omit<FieldReportAPIFields,
     summary?: string;
     actions: ActionFields[];
   }[];
+  translation_module_original_language: Language;
+  translation_module_skip_auto_translation: false;
 }
 
 export function transformAPIFieldsToFormFields(apiValues: FieldReportAPIResponseFields): PartialForm<FormType> {

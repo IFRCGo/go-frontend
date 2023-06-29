@@ -9,6 +9,7 @@ import { environment } from '#config';
 import { showGlobalLoading, hideGlobalLoading } from '#components/global-loading';
 import { getFieldReportById } from '#actions';
 import BreadCrumb from '#components/breadcrumb';
+import TranslationWarningBanner from '#components/TranslationWarningBanner';
 
 import {
   commaSeparatedNumber as n,
@@ -569,6 +570,9 @@ class FieldReport extends React.Component {
             {title}
           </title>
         </Helmet>
+        <TranslationWarningBanner
+          originalContentLanguage={data.translation_module_original_language}
+        />
         <BreadCrumb
           crumbs={[
             {link: `/reports/${data.id}`, name: get(data, 'summary', strings.breadCrumbFieldReport)},

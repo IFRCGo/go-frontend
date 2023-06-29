@@ -2,6 +2,7 @@ import {
   Country,
   DistrictMini,
 } from "#types/country";
+import { Language } from "#types/project";
 
 export const ONSET_SLOW = 1;
 export const ONSET_SUDDEN = 2;
@@ -296,6 +297,7 @@ export interface DrefOperationalUpdateApiFields extends Omit<DrefOperationalUpda
   photos_file: FileWithCaption[];
   modified_by_details: User;
   users_details: User[];
+  translation_module_original_language: Language;
 }
 
 export const overviewFields: (keyof DrefOperationalUpdateFields)[] = [
