@@ -206,7 +206,7 @@ function CompletedDrefTable(props:Props) {
       ),
       createStringColumn<CompletedDrefResponse, string | number>(
         'status_display',
-        strings.drefTableStatus,
+        strings.drefTableDrefStatus,
         () => "Approved",
       ),
     ];

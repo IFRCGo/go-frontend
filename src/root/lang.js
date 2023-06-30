@@ -3112,7 +3112,7 @@ export default {
   drefTableName: 'Name',
   drefTableStageOfDref: 'Stage of DREF',
   drefTableTypeOfDref: 'Type of DREF',
-  drefTableStatus: 'Status',
+  drefTableDrefStatus: 'Status',
   drefTableApprovedOn: 'Submitted/Approved on',
   drefTableRegionalTechReview: 'Regional Technical Review',
   drefTableSubmittedToGeneva: 'Submitted to Geneva',

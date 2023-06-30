@@ -582,7 +582,7 @@ function ActiveDrefTable(props:Props) {
       ),
       createStringColumn<ActiveDrefTableDetail, string | number>(
         'status_display',
-        strings.drefTableStatus,
+        strings.drefTableDrefStatus,
         (item) => item.status === APPROVED ? 'Approved' : 'In Progress',
       ),
     ];
