@@ -181,7 +181,7 @@ function CompletedDrefTable(props:Props) {
       ),
       createStringColumn<CompletedDrefResponse, string | number>(
         'type',
-        'Type',
+        strings.drefTableStageOfDref,
         (item) => item.application_type_display,
       ),
       createStringColumn<CompletedDrefResponse, string | number>(
@@ -196,17 +196,17 @@ function CompletedDrefTable(props:Props) {
       ),
       createStringColumn<CompletedDrefResponse, string | number>(
         'country_details',
-        'Country',
+        strings.drefTableCountry,
         (item) => item.country_details.name,
       ),
       createStringColumn<CompletedDrefResponse, string | number>(
-        'type_of_dref_display',
-        'Submitted/Approved on',
+        'date_of_approval',
+        strings.drefTableApprovedOn,
         (item) => item.date_of_approval,
       ),
       createStringColumn<CompletedDrefResponse, string | number>(
         'status_display',
-        'Status',
+        strings.drefTableStatus,
         () => "Approved",
       ),
     ];

@@ -3103,10 +3103,17 @@ export default {
   emptyMessageHelpText: 'Please refresh the browser or visit the platform in a little bit.',
 
   // dref table headings
+  drefTableStartNewApplication: 'Start a New DREF Application',
+  drefTableActiveDescription: 'Back to active DREF operations',
+  drefTableCompletedDescription: 'View completed DREF operations',
   drefTableCreatedOn: 'Created On',
   drefTableCountry: 'Country',
   drefTableAppealNumber: 'Appeal Number',
   drefTableName: 'Name',
+  drefTableStageOfDref: 'Stage of DREF',
+  drefTableTypeOfDref: 'Type of DREF',
+  drefTableStatus: 'Status',
+  drefTableApprovedOn: 'Submitted/Approved on',
   drefTableRegionalTechReview: 'Regional Technical Review',
   drefTableSubmittedToGeneva: 'Submitted to Geneva',
   drefTableLastUpdate: 'Last Update',
