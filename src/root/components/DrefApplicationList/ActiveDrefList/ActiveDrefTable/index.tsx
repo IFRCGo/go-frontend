@@ -567,22 +567,22 @@ function ActiveDrefTable(props:Props) {
       ),
       createStringColumn<ActiveDrefTableDetail, string | number>(
         'type',
-        'Type',
+        strings.drefTableStageOfDref,
         (item) => item.application_type_display,
       ),
       createStringColumn<ActiveDrefTableDetail, string | number>(
         'country_details',
-        'Country',
+        strings.drefTableCountry,
         (item) => item.country_details.name,
       ),
       createStringColumn<ActiveDrefTableDetail, string | number>(
         'type_of_dref_display',
-        'Type of DREF',
+        strings.drefTableTypeOfDref,
         (item) => item?.type_of_dref_display,
       ),
       createStringColumn<ActiveDrefTableDetail, string | number>(
         'status_display',
-        'Status',
+        strings.drefTableDrefStatus,
         (item) => item.status === APPROVED ? 'Approved' : 'In Progress',
       ),
     ];

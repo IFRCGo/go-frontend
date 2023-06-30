@@ -128,7 +128,7 @@ function DrefApplicationList(props: Props) {
           variant='secondary'
           to='/dref-application/new/'
         >
-          Start a New DREF Application
+          {strings.drefTableStartNewApplication}
         </ButtonLikeLink>
       }
     >
@@ -140,7 +140,7 @@ function DrefApplicationList(props: Props) {
           onClick={handleToggleDref}
         >
           <ArrowDropLeftLineIcon fontSize='2rem' />
-          Bact to active DREF operations
+            {strings.drefTableActiveDescription}
         </Button>
       )}
       <Container
@@ -156,7 +156,7 @@ function DrefApplicationList(props: Props) {
             variant="transparent"
             onClick={handleToggleDref}
           >
-            View completed DREF operations
+            {strings.drefTableCompletedDescription}
             <ArrowDropRightLineIcon fontSize='2rem' />
           </Button>
         )}
