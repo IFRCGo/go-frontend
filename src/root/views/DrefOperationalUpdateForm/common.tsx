@@ -321,6 +321,7 @@ export const overviewFields: (keyof DrefOperationalUpdateFields)[] = [
   'is_man_made_event',
   'people_in_need',
   'type_of_dref',
+  'dref_allocated_so_far',
 ];
 export const eventFields: (keyof DrefOperationalUpdateFields)[] = [
   'changing_timeframe_operation',

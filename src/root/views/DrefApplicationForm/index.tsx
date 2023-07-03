@@ -350,7 +350,7 @@ function DrefApplication(props: Props) {
     }
   });
 
-  const languageMismatch = isTruthy(drefResponse?.translation_module_original_language !== currentLanguage);
+  const languageMismatch = isTruthy(isDefined(drefId) && drefResponse?.translation_module_original_language !== currentLanguage) ?? false;
 
   const validateCurrentTab = React.useCallback((exceptions: (keyof DrefFields)[] = []) => {
     const validationError = getErrorObject(accumulateErrors(value, schema, value, undefined));

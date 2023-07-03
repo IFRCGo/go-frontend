@@ -431,7 +431,6 @@ function Overview(props: Props) {
           />
           <div />
         </InputSection>
-        {drefType !== TYPE_LOAN &&
           <InputSection
             title={strings.drefOperationalUpdateAllocationSoFar}
           >
@@ -443,7 +442,6 @@ function Overview(props: Props) {
               readOnly
             />
           </InputSection>
-        }
         <InputSection
           title={strings.drefOperationalUpdateAdditionalAllocationRequested}
         >
