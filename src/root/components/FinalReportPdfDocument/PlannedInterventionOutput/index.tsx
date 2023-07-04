@@ -4,6 +4,7 @@ import {
   Text,
   View,
 } from '@react-pdf/renderer';
+import { isTruthyString } from '@togglecorp/fujs';
 
 import { Strings } from '#types';
 import { formatNumber } from '#utils/common';
@@ -95,7 +96,6 @@ function PlannedIntervention(props: PlannedInterventionProps) {
           </View>
         </>
       )}
-
       {data?.indicators?.map((indicator) => (
         <View
           key={indicator?.id}
@@ -156,7 +156,7 @@ function PlannedIntervention(props: PlannedInterventionProps) {
           </View>
         </>
       )}
-      {data?.challenges && (
+      {isTruthyString(data?.challenges) && (
         <>
           <View style={pdfStyles.piRow}>
             <View style={pdfStyles.piContentHeadingCell}>
@@ -168,7 +168,7 @@ function PlannedIntervention(props: PlannedInterventionProps) {
           <View style={pdfStyles.piRow}>
             <View style={pdfStyles.piBorderCell}>
               <Text>
-                {data.challenges}
+                {reTab(data.challenges)}
               </Text>
             </View>
           </View>
