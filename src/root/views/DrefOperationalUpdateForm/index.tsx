@@ -12,6 +12,7 @@ import {
   listToMap,
   mapToMap,
   isNotDefined,
+  isTruthy,
 } from '@togglecorp/fujs';
 import {
   analyzeErrors,
@@ -322,7 +323,7 @@ function DrefOperationalUpdate(props: Props) {
   const shouldDisabledBackButton = currentStep === 'operationOverview';
   const { current: currentLanguage } = useReduxState('lang');
 
-  const languageMismatch = (isDefined(opsUpdateId) && drefOperationalResponse?.translation_module_original_language !== currentLanguage) ?? false;
+  const languageMismatch = isTruthy(isDefined(opsUpdateId) && drefOperationalResponse?.translation_module_original_language !== currentLanguage) ?? false;
 
   const [
     showObsoletePayloadResolutionModal,
@@ -612,11 +613,17 @@ function DrefOperationalUpdate(props: Props) {
       ? contextValue.value?.operation_timeframe
       : contextValue.value?.total_operation_timeframe;
 
-    if (value?.changing_timeframe_operation && defaultTotalOperaitonTimeframe === newContextValue) {
+    if (value.type_of_dref !== TYPE_LOAN
+      && value?.changing_timeframe_operation
+      && defaultTotalOperaitonTimeframe === newContextValue
+    ) {
       return 'Please select a different timeframe when selected yes on changing the operation timeframe';
     }
 
-    if (value.total_operation_timeframe !== newContextValue && !value.changing_timeframe_operation) {
+    if (value.type_of_dref !== TYPE_LOAN
+      && value.total_operation_timeframe !== newContextValue
+      && !value.changing_timeframe_operation
+    ) {
       return 'Please select yes on changing the operation timeframe first';
     }
 
@@ -625,7 +632,8 @@ function DrefOperationalUpdate(props: Props) {
     contextValue.type,
     contextValue.value,
     value.total_operation_timeframe,
-    value.changing_timeframe_operation
+    value.changing_timeframe_operation,
+    value.type_of_dref
   ]);
 
   return (

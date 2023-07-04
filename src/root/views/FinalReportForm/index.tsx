@@ -11,6 +11,7 @@ import {
 } from 'history';
 import {
   isDefined,
+  isTruthy,
   listToMap,
   mapToMap,
 } from '@togglecorp/fujs';
@@ -138,6 +139,7 @@ function FinalReport(props: Props) {
   const submitButtonLabel = currentStep === 'submission' ? strings.drefFormSaveButtonLabel : strings.drefFormContinueButtonLabel;
   const shouldDisabledBackButton = currentStep === 'operationOverview';
   const lastModifiedAtRef = React.useRef<string | undefined>();
+  const { current: currentLanguage } = useReduxState('lang');
 
   const erroredTabs = useMemo(() => {
     const safeErrors = getErrorObject(error) ?? {};
@@ -356,8 +358,8 @@ function FinalReport(props: Props) {
       );
     }
   });
-  const { current: currentLanguage } = useReduxState('lang');
-  const languageMismatch = (isDefined(id) && drefFinalReportResponse?.translation_module_original_language !== currentLanguage) ?? false;
+
+  const languageMismatch = isTruthy(isDefined(id) && drefFinalReportResponse?.translation_module_original_language !== currentLanguage) ?? false;
 
   React.useEffect(() => {
     if (isDefined(value.operation_start_date) && isDefined(value.total_operation_timeframe)) {
