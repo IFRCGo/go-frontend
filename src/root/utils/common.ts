@@ -496,3 +496,14 @@ export function reTab(str: string | undefined | null) {
   // Remove all \r characters
   return reTabbed.replaceAll('\r', '');
 }
+
+export function checkLanguageMismatch(
+  id?: string | number,
+  originalLanguage?: string,
+  currentLanguage?: string,
+) {
+  if(isDefined(id) && originalLanguage !== currentLanguage) {
+    return true;
+  } else return false;
+}
+

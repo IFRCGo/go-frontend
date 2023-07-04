@@ -5,7 +5,6 @@ import {
   isDefined,
   listToMap,
   isNotDefined,
-  isTruthy,
 } from '@togglecorp/fujs';
 import {
   PartialForm,
@@ -36,7 +35,7 @@ import {
   useLazyRequest,
   useRequest,
 } from '#utils/restRequest';
-import { ymdToDateString } from '#utils/common';
+import { checkLanguageMismatch, ymdToDateString } from '#utils/common';
 import { languageOptions } from '#utils/lang';
 import scrollToTop from '#utils/scrollToTop';
 import LanguageContext from '#root/languageContext';
@@ -157,8 +156,6 @@ function DrefApplication(props: Props) {
     setShowObsoletePayloadResolutionModal,
   ] = React.useState(false);
   const { current: currentLanguage } = useReduxState('lang');
-
-
   const lastModifiedAtRef = React.useRef<string | undefined>();
 
   const erroredTabs = React.useMemo(() => {
@@ -350,7 +347,11 @@ function DrefApplication(props: Props) {
     }
   });
 
-  const languageMismatch = isTruthy(isDefined(drefId) && drefResponse?.translation_module_original_language !== currentLanguage) ?? false;
+  const languageMismatch = checkLanguageMismatch(
+    drefId,
+    drefResponse?.translation_module_original_language,
+    currentLanguage,
+  );
 
   const validateCurrentTab = React.useCallback((exceptions: (keyof DrefFields)[] = []) => {
     const validationError = getErrorObject(accumulateErrors(value, schema, value, undefined));
