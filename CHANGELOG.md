@@ -1,3 +1,6 @@
+### Release 6.6.8 - Hotfix for Final Report export
+Date: 2023-07-04
+
 ### Release 6.6.7 - Hotfix for Surge Catalogue
 Date: 2023-06-23
 
