@@ -12,7 +12,6 @@ import {
   listToMap,
   mapToMap,
   isNotDefined,
-  isTruthy,
 } from '@togglecorp/fujs';
 import {
   analyzeErrors,
