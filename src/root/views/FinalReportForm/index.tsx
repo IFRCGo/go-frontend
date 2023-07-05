@@ -11,7 +11,6 @@ import {
 } from 'history';
 import {
   isDefined,
-  isTruthy,
   listToMap,
   mapToMap,
 } from '@togglecorp/fujs';
@@ -61,7 +60,7 @@ import Submission from './Submission';
 import useDrefFinalReportFormOptions, {
   schema,
 } from './useDreFinalReportOptions';
-import { ymdToDateString } from '#utils/common';
+import { checkLanguageMismatch, ymdToDateString } from '#utils/common';
 
 import styles from './styles.module.scss';
 import Translate from '#components/Translate';
@@ -359,7 +358,11 @@ function FinalReport(props: Props) {
     }
   });
 
-  const languageMismatch = isTruthy(isDefined(id) && drefFinalReportResponse?.translation_module_original_language !== currentLanguage) ?? false;
+  const languageMismatch = checkLanguageMismatch(
+    id,
+    drefFinalReportResponse?.translation_module_original_language,
+    currentLanguage,
+  );
 
   React.useEffect(() => {
     if (isDefined(value.operation_start_date) && isDefined(value.total_operation_timeframe)) {

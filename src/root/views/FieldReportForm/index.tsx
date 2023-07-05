@@ -31,6 +31,7 @@ import {
   useLazyRequest,
 } from '#utils/restRequest';
 import { languageOptions } from '#utils/lang';
+import { checkLanguageMismatch } from '#utils/common';
 
 import ContextFields from './ContextFields';
 import SituationFields from './SituationFields';
@@ -38,7 +39,6 @@ import RiskAnalysisFields from './RiskAnalysisFields';
 import ActionsFields from './ActionsFields';
 import EarlyActionsFields from './EarlyActionsFields';
 import ResponseFields from './ResponseFields';
-
 import useFieldReportOptions, { schema } from './useFieldReportOptions';
 import {
   STATUS_EVENT,
@@ -102,7 +102,11 @@ function FieldReportForm(props: Props) {
     url: `api/v2/field_report/${reportId}/`,
   });
 
-  const languageMismatch = (isDefined(reportId) && fieldReportResponse?.translation_module_original_language !== currentLanguage) ?? false;
+  const languageMismatch = checkLanguageMismatch(
+    reportId,
+    fieldReportResponse?.translation_module_original_language,
+    currentLanguage,
+  );
 
   const crumbs = React.useMemo(() => [
     { link: location?.pathname, name: isDefined(reportId) ? strings.breadCrumbEditFieldReport : strings.breadCrumbNewFieldReport },

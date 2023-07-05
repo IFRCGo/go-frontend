@@ -12,7 +12,6 @@ import {
   listToMap,
   mapToMap,
   isNotDefined,
-  isTruthy,
 } from '@togglecorp/fujs';
 import {
   analyzeErrors,
@@ -42,7 +41,10 @@ import {
 } from '#utils/restRequest';
 import scrollToTop from '#utils/scrollToTop';
 import { DrefApiFields } from '#views/DrefApplicationForm/common';
-import { ymdToDateString } from '#utils/common';
+import { checkLanguageMismatch, ymdToDateString } from '#utils/common';
+import Translate from '#components/Translate';
+import useReduxState from '#hooks/useReduxState';
+import { languageOptions } from '#utils/lang';
 
 import {
   DrefOperationalUpdateFields,
@@ -63,11 +65,7 @@ import Needs from './Needs';
 import Operation from './Operation';
 import Submission from './Submission';
 import ObsoletePayloadResolutionModal from './ObsoletePayloadResolutionModal';
-
 import styles from './styles.module.scss';
-import Translate from '#components/Translate';
-import useReduxState from '#hooks/useReduxState';
-import { languageOptions } from '#utils/lang';
 
 interface Props {
   match: match<{ id?: string }>;
@@ -323,7 +321,11 @@ function DrefOperationalUpdate(props: Props) {
   const shouldDisabledBackButton = currentStep === 'operationOverview';
   const { current: currentLanguage } = useReduxState('lang');
 
-  const languageMismatch = isTruthy(isDefined(opsUpdateId) && drefOperationalResponse?.translation_module_original_language !== currentLanguage) ?? false;
+  const languageMismatch = checkLanguageMismatch(
+    opsUpdateId,
+    drefOperationalResponse?.translation_module_original_language,
+    currentLanguage,
+  );
 
   const [
     showObsoletePayloadResolutionModal,

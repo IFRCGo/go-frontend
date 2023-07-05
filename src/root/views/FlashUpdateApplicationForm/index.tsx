@@ -29,11 +29,16 @@ import NonFieldError from '#components/NonFieldError';
 import TabPanel from '#components/Tabs/TabPanel';
 import useAlert from '#hooks/useAlert';
 import { useLazyRequest, useRequest } from '#utils/restRequest';
+import BlockLoading from '#components/block-loading';
+import useReduxState from '#hooks/useReduxState';
+import { checkLanguageMismatch, isIfrcUser } from '#utils/common';
+import FourHundredFour from '#views/FourHundredFour';
+import Translate from '#components/Translate';
+import { languageOptions } from '#utils/lang';
 
 import Context from './Context';
 import FocalPoints from './FocalPoint';
 import ActionsInput from './ActionsInput';
-
 import {
   FlashUpdateFields,
   FlashUpdateAPIFields,
@@ -44,18 +49,10 @@ import {
   actionsFields,
   focalFields
 } from './common';
-
 import useFlashUpdateFormOptions, {
   schema
 } from './useFlashUpdateFormOptions';
-
 import styles from './styles.module.scss';
-import BlockLoading from '#components/block-loading';
-import useReduxState from '#hooks/useReduxState';
-import { isIfrcUser } from '#utils/common';
-import FourHundredFour from '#views/FourHundredFour';
-import Translate from '#components/Translate';
-import { languageOptions } from '#utils/lang';
 
 interface Props {
   className?: string;
@@ -141,7 +138,7 @@ function FlashUpdateForm(props: Props) {
 
   const {
     pending: flashUpdatePending,
-    response: FlashUpdateResponse
+    response: flashUpdateResponse
   } = useRequest<FlashUpdateAPIResponseFields>({
     skip: !id,
     url: `api/v2/flash-update/${id}`,
@@ -240,7 +237,11 @@ function FlashUpdateForm(props: Props) {
     }
   });
 
-  const languageMismatch = (isDefined(id) && FlashUpdateResponse?.translation_module_original_language !== currentLanguage) ?? false;
+  const languageMismatch = checkLanguageMismatch(
+    id,
+    flashUpdateResponse?.translation_module_original_language,
+    currentLanguage,
+  );
 
   const erroredTabs = React.useMemo(() => {
     const safeErrors = getErrorObject(error) ?? {};
@@ -626,7 +627,7 @@ function FlashUpdateForm(props: Props) {
     || flashUpdateSubmitPending
     || flashUpdatePending;
 
-  const failedToLoadFlashUpdate = !pending && isDefined(id) && !FlashUpdateResponse;
+  const failedToLoadFlashUpdate = !pending && isDefined(id) && !flashUpdateResponse;
 
   const ifrcUser = React.useMemo(() => isIfrcUser(user?.data), [user]);
   if (!ifrcUser) {
@@ -709,11 +710,11 @@ function FlashUpdateForm(props: Props) {
                   message={strings.flashUpdateFormFieldGeneralError}
                 />
               </Container>
-              {languageMismatch && FlashUpdateResponse && (
+              {languageMismatch && flashUpdateResponse && (
                 <Container contentClassName={styles.languageMismatch}>
                   <Translate
                     stringId="translationErrorEdit"
-                    params={{ originalLanguage: <strong>{languageOptions[FlashUpdateResponse.translation_module_original_language]}</strong> }}
+                    params={{ originalLanguage: <strong>{languageOptions[flashUpdateResponse.translation_module_original_language]}</strong> }}
                   />
                 </Container>
               )}

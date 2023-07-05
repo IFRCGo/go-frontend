@@ -5,7 +5,6 @@ import {
   isFalsy,
   isNotDefined,
   randomString,
-  isTruthy,
 } from '@togglecorp/fujs';
 import {
   useForm,
@@ -32,11 +31,10 @@ import RichTextArea from '#components/RichTextArea';
 import Switch from '#components/Switch';
 import RegionOutput from '#components/RegionOutput';
 import Container from '#components/Container';
-
 import useAlert from '#hooks/useAlert';
 import useReduxState from '#hooks/useReduxState';
-
 import { languageOptions } from '#utils/lang';
+import { checkLanguageMismatch } from '#utils/common';
 import {
   useLazyRequest,
   useRequest,
@@ -118,7 +116,11 @@ function ThreeWForm(props: Props) {
     },
   });
 
-  const languageMismatch = isTruthy(projectDetailsResponse?.translation_module_original_language !== currentLanguage);
+  const languageMismatch = checkLanguageMismatch(
+    projectId,
+    projectDetailsResponse?.translation_module_original_language,
+    currentLanguage,
+  );
 
   const {
     pending: submitRequestPending,

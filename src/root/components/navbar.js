@@ -85,20 +85,20 @@ function Navbar(props) {
                     >
                       {strings.headerDropdownNewFieldReport}
                     </Link>
-                    <a
+                    {/* <a
                       href='https://eenew.ifrc.org/single/y300V3lY?returnURL=https://go.ifrc.org/emergencies/3972#actions'
                       target='_blank'
                       className='drop__menu-item'
                     >
                       {strings.headerDropdownCovid19IndicatorTracking}
-                    </a>
-                    <a
+                    </a> */}
+                    {/* <a
                       className='drop__menu-item'
                       href='https://eenew.ifrc.org/single/VmcTHDMh?returnURL=https://go.ifrc.org/emergencies/3972#actions'
                       target='_blank'
                     >
                       {strings.headerDropdownCovid19NSFinancialOverview}
-                    </a>
+                    </a> */}
                     <Link
                       to='/three-w/new'
                       className='drop__menu-item'
