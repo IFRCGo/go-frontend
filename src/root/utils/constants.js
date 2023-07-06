@@ -1,5 +1,9 @@
 import { listToMap } from '@togglecorp/fujs';
 
+const gitData = process.env.REACT_APP_VERSION.split('-');
+export const APP_VERSION = gitData[0] ?? '-';
+export const GIT_HASH = gitData.length > 2 ? ( gitData[2].substring(1) ?? '-' ) : '-';
+
 export const URL_SEARCH_KEY = 'keyword';
 export const NO_DATA = 'No data to display.';
 

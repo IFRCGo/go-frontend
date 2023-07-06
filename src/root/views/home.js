@@ -9,6 +9,7 @@ import Translate from '#components/Translate';
 class Home extends React.Component {
   render () {
     const { strings } = this.context;
+
     return (
       <App className='page--homepage'>
         <section className='inpage'>

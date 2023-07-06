@@ -2,12 +2,10 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import mapboxgl from 'mapbox-gl';
 import {
-  init,
   ErrorBoundary,
   withProfiler,
 } from '@sentry/react';
 
-import sentryConfig from './sentry';
 import store from '#utils/store';
 import { detectIE } from '#utils/ie';
 
@@ -35,10 +33,6 @@ mapboxgl.setRTLTextPlugin(
 );
 
 mapboxgl.accessToken = mbtoken;
-
-if (sentryConfig) {
-  init(sentryConfig);
-}
 
 const requestContextValue = {
   transformUrl: processGoUrls,
