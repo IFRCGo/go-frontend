@@ -9,7 +9,7 @@ import browserHistory from '#root/Multiplexer/history';
 import { APP_VERSION, GIT_HASH } from '#utils/constants';
 
 import {
-    api,
+    // api,
     environment,
     sentryAppDsn,
     sentryNormalizeDepth,
@@ -25,7 +25,8 @@ const sentryConfig: BrowserOptions | undefined = isTruthyString(sentryAppDsn) ? 
   release: `${APP_VERSION} ${GIT_HASH}`,
   integrations: [
     new Integrations.BrowserTracing({
-      tracingOrigins: ['localhost', api],
+      // TODO: enable this when supported by server
+      // tracingOrigins: ['localhost', api],
       routingInstrumentation: reactRouterV5Instrumentation(
         browserHistory,
       ),
