@@ -1,3 +1,5 @@
+import { isTruthyString } from '@togglecorp/fujs';
+
 // NOTE: for some reason, old pipeline doesn't load env.js file and window.appSettings is undefined
 if (!window.appSettings) {
   window.appSettings = {
@@ -27,10 +29,11 @@ export const riskApi = process.env.REACT_APP_RISK_API_ENDPOINT ?? window.appSett
 export const riskAdminUrl = process.env.REACT_APP_RISK_ADMIN_URL ?? window.appSettings.riskAdminUrl;
 export const tinyApiKey = process.env.REACT_APP_TINY_API_KEY ?? window.appSettings.tinyApiKey;
 
-// NOTE: New variables required by Sentry
 export const sentryAppDsn = process.env.REACT_APP_SENTRY_DSN ?? window.appSettings.sentryDsn;
-export const sentryTraceSampleRate = Number(process.env.REACT_APP_SENTRY_TRACES_SAMPLE_RATE) ?? Number(window.appSettings.sentryTracesSampleRate) ?? 0.2;
-export const sentryNormalizeDepth = Number(process.env.REACT_APP_SENTRY_NORMALIZE_DEPTH) ?? Number(window.appSettings.sentryNormalizeDepth) ?? 5;
+const sentryTraceSampleRateStr = process.env.REACT_APP_SENTRY_TRACES_SAMPLE_RATE ?? window.appSettings.sentryTracesSampleRate;
+export const sentryTraceSampleRate = isTruthyString(sentryTraceSampleRateStr) ? Number(sentryTraceSampleRateStr) : 0.2;
+export const sentryNormalizeDepthStr = process.env.REACT_APP_SENTRY_NORMALIZE_DEPTH ?? window.appSettings.sentryNormalizeDepth;
+export const sentryNormalizeDepth = isTruthyString(sentryNormalizeDepthStr) ? Number(sentryNormalizeDepthStr) : 5;
 
 const config = {
   api,
