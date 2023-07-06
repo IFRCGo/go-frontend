@@ -1,7 +1,7 @@
 import React, { Suspense, lazy } from 'react';
 import { connect } from 'react-redux';
 import { unique } from '@togglecorp/fujs';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { Router, Route, Switch } from 'react-router-dom';
 import { BreadcrumbsProvider } from 'react-breadcrumbs-dynamic';
 
 import PrivateRoute from '#components/PrivateRoute';
@@ -24,6 +24,7 @@ import {
   disasterTypesSelectSelector,
 } from '#selectors';
 
+import browserHistory from './history';
 import styles from './styles.module.scss';
 
 const Home = lazy(() => import('../views/home'));
@@ -233,7 +234,7 @@ function Multiplexer(props) {
 
   return (
     <AlertContext.Provider value={alertContextValue}>
-      <Router>
+      <Router history={browserHistory}>
         <Suspense fallback={<InitialLoading />}>
           <BreadcrumbsProvider>
             <Switch>

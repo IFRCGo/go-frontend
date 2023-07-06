@@ -1,6 +1,5 @@
 import { createStore, applyMiddleware, compose } from 'redux';
 import thunkMiddleware from 'redux-thunk';
-import { createLogger } from 'redux-logger';
 import listen from 'redux-listener-middleware';
 import * as localStorage from 'local-storage';
 import { setUser as setUserOnSentry } from '@sentry/react';
@@ -143,15 +142,6 @@ const initialState = {
   disasterTypes: hydrateDisasterTypes(),
 };
 
-
-const logger = createLogger({
-  level: 'info',
-  collapsed: true,
-  predicate: () => {
-    return (config.environment !== 'production');
-  }
-});
-
 /* Listeners */
 const tokenListener = ({ data }) => {
   const userData = {
@@ -231,7 +221,6 @@ const store = createStore(
     applyMiddleware(
       thunkMiddleware,
       listener,
-      logger
     ),
   ),
 );

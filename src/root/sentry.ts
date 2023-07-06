@@ -1,43 +1,36 @@
-// import { matchPath } from 'react-router-dom';
 import {
-    //  reactRouterV5Instrumentation,
-    BrowserOptions,
+  reactRouterV5Instrumentation,
+  BrowserOptions,
 } from '@sentry/react';
-// import { Integrations } from '@sentry/tracing';
-// import browserHistory from '#root/Multiplexer/history';
-// import routes from '#base/configs/routes';
+ import { Integrations } from '@sentry/tracing';
+import { isTruthyString } from '@togglecorp/fujs';
+import browserHistory from '#root/Multiplexer/history';
+
+import { APP_VERSION, GIT_HASH } from '#utils/constants';
+
 import {
-    // api,
+    api,
     environment,
     sentryAppDsn,
     sentryNormalizeDepth,
     sentryTraceSampleRate,
 } from './config';
 
-const sentryConfig: BrowserOptions | undefined = sentryAppDsn ? {
-    dsn: sentryAppDsn,
-    // FIXME: release needs to be defined
-    release: undefined,
-    environment: environment,
-    // FIXME: debug needs to be defined
-    debug: undefined,
-    // sendDefaultPii: true,
-    normalizeDepth: sentryNormalizeDepth,
-    tracesSampleRate: sentryTraceSampleRate,
-    /*
-    //FIXME: In order to complete the integrations, routes must be defined first
-    integrations: [
-        new Integrations.BrowserTracing({
-            // NOTE: api is actually the domain for the api endpoint
-            tracingOrigins: ['localhost', api],
-            routingInstrumentation: reactRouterV5Instrumentation(
-                browserHistory,
-                Object.entries(routes),
-                matchPath,
-            ),
-        }),
-    ],
-    */
+const sentryConfig: BrowserOptions | undefined = isTruthyString(sentryAppDsn) ? {
+  dsn: sentryAppDsn,
+  environment: environment,
+  normalizeDepth: sentryNormalizeDepth,
+  tracesSampleRate: sentryTraceSampleRate,
+  debug: false,
+  release: `${APP_VERSION} ${GIT_HASH}`,
+  integrations: [
+    new Integrations.BrowserTracing({
+      tracingOrigins: ['localhost', api],
+      routingInstrumentation: reactRouterV5Instrumentation(
+        browserHistory,
+      ),
+    }),
+  ],
 } : undefined;
 
 export default sentryConfig;
