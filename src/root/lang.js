@@ -649,8 +649,8 @@ export default {
   // not used -   fieldReportFix: 'To continue please fix:',
   fieldReportSubmit: 'Submit',
   fieldReportContinue: 'Continue',
+  fieldReportBack: 'Back',
   // not used -   fieldReportGoBack: 'Go back to previous step',
-  // not used -   fieldReportBack: 'Back',
   cmpActionDescriptionLabel: 'Description',
   cmpContactName: 'Name',
   cmpContactTitle: 'Title',
@@ -2759,10 +2759,12 @@ export default {
   fieldsStep4PlannedResponseRowsFactValueFieldLabel: 'Number of people',
   fieldsStep4PlannedResponseRowsFactEVTEPIEWLabel: 'Rapid Response Personnel',
   // not used -   fieldsStep4PlannedResponseRowsFactDescription: 'This is the new name for FACT/RDRT/RIT',
+  fieldReportRdrtRitsLabel: 'RDRT/RITS',
   fieldsStep4PlannedResponseRowsIFRCStaffValueFieldLabel: 'Units',
   fieldsStep4PlannedResponseRowsIFRCStaffEVTEPIEWLabel: 'Emergency Response Units',
   fieldsStep4PlannedResponseRowsForecastBasedActionValueFieldLabel: 'Amount CHF',
   fieldsStep4PlannedResponseRowsForecastBasedActionEWLabel: 'Forecast Based Action',
+  fieldReportForecastBasedResponseLabel: 'Forecast Based Response',
   fieldsStep4ContactRowsOriginatorLabel: 'Originator',
   fieldsStep4ContactRowsOriginatorEVTEPIEWDesc: 'NS or IFRC Staff completing the Field Report.',
   fieldsStep4ContactRowsNSContactLabel: 'National Society Contact',
@@ -2811,6 +2813,9 @@ export default {
   fieldReportFormOptionPlannedLabel: 'Planned',
   fieldReportFormOptionPublishedLabel: 'Yes/Published',
 
+  fieldReportFormSearchEmergencyTitle: 'Search for existing emergency *',
+  fieldReportFormSearchEmergencyDescription: 'Type the name of the country you want to report on in the box above to begin the search.',
+  fieldReportFormTitlePrefixLabel: 'Prefix',
   fieldReportFormTitleSecondaryLabel: 'Add Title',
   fieldReportFormTitleSelectLabel: 'Please check for, and link to an existing emergency if available',
   fieldReportFormTitleInputPlaceholder: 'Example: Cyclone Cody',
@@ -3937,5 +3942,12 @@ export default {
 
   reducedListDisplayMoreLabel: '... and {n} more',
   translationWarning: 'The contents in this page was machine translated from {originalLanguage}!',
-  translationErrorEdit: 'This form was originally created in {originalLanguage} and cannot be edited in a different language!'
+  translationErrorEdit: 'This form was originally created in {originalLanguage} and cannot be edited in a different language!',
+
+  selectInputDefaultPlaceholder: 'Select...',
+  requestedLabel: 'Requested',
+  plannedLabel: 'Planned',
+  deployedLabel: 'Deployed',
+  launchedLabel: 'Launched',
+  publishedLabel: 'Published',
 };

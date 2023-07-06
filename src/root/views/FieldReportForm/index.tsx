@@ -522,7 +522,7 @@ function FieldReportForm(props: Props) {
                     disabled={shouldDisabledBackButton}
                     onClick={handleBackButtonClick}
                   >
-                    Back
+                    {strings.fieldReportBack}
                   </button>
                   <button
                     className={_cs('button', submitButtonClassName)}

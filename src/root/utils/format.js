@@ -140,31 +140,37 @@ export const apiPropertyValue = (propOrPath, object) => {
   return formatter(value);
 };
 
-export const drefDefinition = {
-  1: 'Requested',
-  2: 'Planned',
-  3: 'Deployed'
-};
+export const getResponseStatus = (data, dataPath, strings = {
+    requestedLabel: 'Requested',
+    plannedLabel: 'Planned',
+    deployedLabel: 'Deployed',
+    launchedLabel: 'Launched',
+    publishedLabel: 'Published',
+}) => {
+  const drefDefinition = {
+    1: strings.requestedLabel,
+    2: strings.plannedLabel,
+    3: strings.deployedLabel,
+  };
 
-export const appealDefinition = {
-  1: 'Requested',
-  2: 'Planned',
-  3: 'Launched'
-};
+  const appealDefinition = {
+    1: strings.requestedLabel,
+    2: strings.plannedLabel,
+    3: strings.launchedLabel,
+  };
 
-export const bulletinDefinition = {
-  1: 'Requested',
-  2: 'Planned',
-  3: 'Published'
-};
+  const bulletinDefinition = {
+    1: strings.requestedLabel,
+    2: strings.plannedLabel,
+    3: strings.publishedLabel,
+  };
 
-export const deployDefinition = {
-  1: 'Requested',
-  2: 'Planned',
-  3: 'Deployed'
-};
+  const deployDefinition = {
+    1: strings.requestedLabel,
+    2: strings.plannedLabel,
+    3: strings.deployedLabel,
+  };
 
-export const getResponseStatus = (data, dataPath) => {
   const status = get(data, dataPath, null);
   if (status === null || status === 0) { return null; }
   switch (getPropertyFromPath(dataPath)) {
@@ -181,8 +187,6 @@ export const getResponseStatus = (data, dataPath) => {
       return deployDefinition[status];
   }
 };
-
-export const privateSurgeAlert = 'This is a private alert. You must be logged in to view it.';
 
 export function isoDate (d) {
   const result = DateTime.fromISO(d).toISODate();
@@ -206,9 +210,12 @@ export function intersperse (arr, sep) {
   }, [arr[0]]);
 }
 
-export function yesno (bool) {
+export function yesno (bool, strings = {
+    yesLabel: 'Yes',
+    noLabel: 'No',
+}) {
   if (isNotDefined(bool)) {
     return '-';
   }
-  return bool ? 'Yes' : 'No';
+  return bool ? strings.yesLabel: strings.noLabel;
 }

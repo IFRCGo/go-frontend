@@ -131,8 +131,7 @@ function ContextFields(props: Props) {
 
   return (
     <Container
-      // FIXME: use translation
-      heading="Context"
+      heading={strings.fieldReportFormItemContextLabel}
       className={styles.contextFields}
     >
       <InputSection
@@ -166,8 +165,8 @@ function ContextFields(props: Props) {
       </InputSection>
 
       <InputSection
-        title='Search for existing emergency *'
-        description='Type the name of the country you want to report on in the box above to begin the search.'
+        title={strings.fieldReportFormSearchEmergencyTitle}
+        description={strings.fieldReportFormSearchEmergencyDescription}
        >
         <SearchSelectInput
           label={strings.fieldReportFormTitleSelectLabel}
@@ -248,8 +247,7 @@ function ContextFields(props: Props) {
                     <TextInput
                       // FIXME: move styling to styles.module.scss
                       style={{ backgroundColor: '#E0DDDD', borderRadius: 0, padding:'offset' }}
-                      label='prefix '//{strings.fieldReportFormCountryLabel}
-                      placeholder=""
+                      label={strings.fieldReportFormTitlePrefixLabel}
                       name="pref2"
                       //value={(countryIsoOptions.find(x=> x.value === value.country)?.label + ': ' +  disasterTypeOptions.find(x=>x.value === value.dtype)?.label + ' -' + value.start_date?.substring(0,7)).replaceAll('undefined',' ' )}
                       value={value.country !== undefined && value.dtype !== undefined && value.start_date !== undefined ? countryIsoOptions.find(x=> x.value === value.country)?.label + ': ' +  (value.is_covid_report ? strings.fieldReportCOVID19 : disasterTypeOptions.find(x=>x.value === value.dtype)?.label) + ' -' + value.start_date?.substring(0,7) : ' '}
