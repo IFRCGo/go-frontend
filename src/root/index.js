@@ -50,7 +50,7 @@ function Root() {
 
   return (
     <ErrorBoundary
-      showDialog
+      // showDialog
       fallback={(
         <FullPageErrorMessage
           errorTitle="Oh no!"

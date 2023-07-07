@@ -54,7 +54,7 @@ function EmergencyOverview(props) {
                 </div>
               </div>
               <div className='flex row emergency__overview-row'>
-                <div className='col emergency__overview-col-cat'>{strings.finalReportGlideNum}</div>
+                <div className='col emergency__overview-col-cat'>{strings.emergencyGlideNum}</div>
                 <div className='col emergency__overview-col-desc'>
                   <div className='emergency__overview-desc'>
                     {data.glide === '' ? '-' : data.glide}
@@ -82,7 +82,7 @@ function EmergencyOverview(props) {
                 </div>
               </div>
               <div className='flex row emergency__overview-row'>
-                <div className='col emergency__overview-col-cat'>{strings.finalReportAppealCode}</div>
+                <div className='col emergency__overview-col-cat'>{strings.emergencyAppealCode}</div>
                 <div className='col emergency__overview-col-desc'>
                   <div className='emergency__overview-desc'>
                     {data.appeals.length === 0 || data.appeals[0].code === '' ? '-' : data.appeals[0].code}

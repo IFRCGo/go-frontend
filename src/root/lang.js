@@ -726,7 +726,7 @@ export default {
   fieldReportPotentiallyAffectedOther: 'Potentially Affected (Other): ',
   fieldReportHighestRiskOther: 'People at Highest Risk (Other): ',
   fieldReportAffectedPopOther: 'Affected Pop Centres (Other): ',
-  fieldReportNumericTitle: 'Numeric details',
+  fieldReportNumericTitle: 'Numeric Details (People)',
   fieldReportSourcesOther: 'Sources for data marked as Other',
   fieldReportNationalSocietyLabel: 'National Society',
   fieldReportIFRCLabel: 'IFRC',
@@ -2896,6 +2896,8 @@ export default {
   emergencyDisasterCat: 'Disaster Categorization',
   emergencyGovtReqIntlAsst: 'Government Requests International Assistance',
   emergencyNSReqIntlAsst: 'NS Requests International Assistance',
+  emergencyAppealCode: 'MDR Code',
+  emergencyGlideNum: 'GLIDE number',
   // not used -   emergencyDREF: 'DREF',
   // not used -   emergencyRapidResponsePersonnel: 'Rapid Response Personnel',
   emergencyAffectedRegions: 'Affected Provinces',
@@ -3950,4 +3952,5 @@ export default {
   deployedLabel: 'Deployed',
   launchedLabel: 'Launched',
   publishedLabel: 'Published',
+  allocatedLabel: 'Allocated',
 };
