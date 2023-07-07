@@ -62,21 +62,21 @@ function ResponseFields(props: Props) {
     ] = React.useMemo(() => [
     // FIXME: use translations
     [
-      { label: 'Planned', value: 2 },
-      { label: 'Requested', value: 1 },
-      { label: 'Allocated', value: 3 },
+      { label: strings.plannedLabel, value: 2 },
+      { label: strings.requestedLabel, value: 1 },
+      { label: strings.allocatedLabel, value: 3 },
     ] as NumericValueOption[],
     [
-      { label: 'Planned', value: 2 },
-      { label: 'Requested', value: 1 },
-      { label: 'Launched', value: 3 },
+      { label: strings.plannedLabel, value: 2 },
+      { label: strings.requestedLabel, value: 1 },
+      { label: strings.launchedLabel, value: 3 },
     ] as NumericValueOption[],
     [
-      { label: 'Planned', value: 2 },
-      { label: 'Requested', value: 1 },
-      { label: 'Deployed', value: 3 },
+      { label: strings.plannedLabel, value: 2 },
+      { label: strings.requestedLabel, value: 1 },
+      { label: strings.deployedLabel, value: 3 },
     ] as NumericValueOption[],
-  ], []);
+  ], [strings]);
 
   const visibilityOptions = useCallback(() => {
     let r = [] as NumericValueOption[];
