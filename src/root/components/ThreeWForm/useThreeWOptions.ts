@@ -36,7 +36,6 @@ import {
   ProjectFormFields,
   Disaster,
   Country,
-  District,
   EventMini,
   AnnualSplit,
   Project,
@@ -138,6 +137,7 @@ export const schema: FormSchema = {
       programme_type: [requiredCondition],
       project_country: [requiredCondition],
       project_districts: [defaultEmptyArrayType],
+      project_admin2: [defaultEmptyArrayType],
       reached_female: [positiveIntegerCondition],
       reached_male: [positiveIntegerCondition],
       reached_other: [positiveIntegerCondition],
@@ -275,22 +275,6 @@ export function useThreeWOptions(value: PartialForm<FormType>) {
   }), [value.project_country]);
 
   const {
-    pending: fetchingDistricts,
-    response: districtsResponse,
-  } = useRequest<ListResponse<District>>({
-    skip: !value.project_country,
-    url: 'api/v2/district/',
-    query: projectCountryQuery,
-  });
-
-  const districtOptions: LabelValue[] = React.useMemo(() => (
-    districtsResponse?.results.map(d => ({
-      value: d.id,
-      label: d.name,
-    })).sort(compareString) ?? emptyLabelValueList 
-  ), [districtsResponse]);
-
-  const {
     pending: fetchingEvents,
     response: eventsResponse,
   } = useRequest<ListResponse<EventMini>>({
@@ -350,10 +334,6 @@ export function useThreeWOptions(value: PartialForm<FormType>) {
     return dto;
   }, [disasterTypesResponse]);
 
-  const shouldDisableDistrictInput = fetchingDistricts
-    || !isDefined(value.project_country)
-    || districtOptions?.length === 0;
-
   const [
     shouldShowCurrentEmergencyOperation,
     shouldShowCurrentOperation
@@ -370,19 +350,6 @@ export function useThreeWOptions(value: PartialForm<FormType>) {
   }, [value]);
 
   let currentOperationPlaceholder = strings.projectFormOperationDefaultPlaceholder;
-  let districtPlaceholder = strings.projectFormDistrictSelect;
-  if (!isDefined(value.project_country)) {
-    currentOperationPlaceholder = strings.projectFormNoCountryOperationPlaceholder;
-    districtPlaceholder = strings.projectFormNoCountryDistrictPlaceholder;
-  } else {
-    if (fetchingEvents) {
-      currentOperationPlaceholder = strings.projectFormFetchingCurrentOperationPlaceholder;
-    }
-
-    if (fetchingDistricts) {
-      districtPlaceholder = strings.projectFormDistrictFetching;
-    }
-  }
 
   const shouldDisableDisasterType = shouldShowCurrentEmergencyOperation || shouldShowCurrentOperation;
   let disasterTypePlaceholder = strings.projectFormDisasterTypeDefaultPlaceholder;
@@ -410,12 +377,10 @@ export function useThreeWOptions(value: PartialForm<FormType>) {
 
   return {
     fetchingCountries,
-    fetchingDistricts,
     fetchingEvents,
     fetchingDisasterTypes,
     nationalSocietyOptions,
     countryOptions,
-    districtOptions,
     sectorOptions,
     disasterTypeOptions,
     secondarySectorOptions,
@@ -425,11 +390,9 @@ export function useThreeWOptions(value: PartialForm<FormType>) {
     currentEmergencyOperationOptions,
     operationToDisasterMap,
     projectVisibilityOptions,
-    shouldDisableDistrictInput,
     shouldShowCurrentEmergencyOperation,
     shouldShowCurrentOperation,
     currentOperationPlaceholder,
-    districtPlaceholder,
     disasterTypePlaceholder,
     shouldDisableDisasterType,
     statuses,
@@ -437,6 +400,7 @@ export function useThreeWOptions(value: PartialForm<FormType>) {
     shouldDisableTotalTarget,
     shouldDisableTotalReached,
     disasterTypeLabel,
+    countriesResponse,
   } as const;
 }
 
@@ -454,6 +418,7 @@ export function transformResponseFieldsToFormFields(projectResponse: Project): F
     programme_type,
     project_country,
     project_districts,
+    project_admin2,
     reached_female,
     reached_male,
     reached_other,
@@ -488,6 +453,7 @@ export function transformResponseFieldsToFormFields(projectResponse: Project): F
     programme_type,
     project_country,
     project_districts,
+    project_admin2,
     reached_female,
     reached_male,
     reached_other,

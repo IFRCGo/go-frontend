@@ -41,7 +41,10 @@ import {
 } from '#utils/restRequest';
 import scrollToTop from '#utils/scrollToTop';
 import { DrefApiFields } from '#views/DrefApplicationForm/common';
-import { ymdToDateString } from '#utils/common';
+import { checkLanguageMismatch, ymdToDateString } from '#utils/common';
+import Translate from '#components/Translate';
+import useReduxState from '#hooks/useReduxState';
+import { languageOptions } from '#utils/lang';
 
 import {
   DrefOperationalUpdateFields,
@@ -62,7 +65,6 @@ import Needs from './Needs';
 import Operation from './Operation';
 import Submission from './Submission';
 import ObsoletePayloadResolutionModal from './ObsoletePayloadResolutionModal';
-
 import styles from './styles.module.scss';
 
 interface Props {
@@ -317,6 +319,13 @@ function DrefOperationalUpdate(props: Props) {
   const [currentStep, setCurrentStep] = React.useState<StepTypes>('operationOverview');
   const submitButtonLabel = currentStep === 'submission' ? strings.drefFormSaveButtonLabel : strings.drefFormContinueButtonLabel;
   const shouldDisabledBackButton = currentStep === 'operationOverview';
+  const { current: currentLanguage } = useReduxState('lang');
+
+  const languageMismatch = checkLanguageMismatch(
+    opsUpdateId,
+    drefOperationalResponse?.translation_module_original_language,
+    currentLanguage,
+  );
 
   const [
     showObsoletePayloadResolutionModal,
@@ -409,6 +418,7 @@ function DrefOperationalUpdate(props: Props) {
     url: `api/v2/dref-op-update/${opsUpdateId}`,
     method: 'PUT',
     body: ctx => ctx,
+    useCurrentLanguage: true,
     onSuccess: (response) => {
       alert.show(
         strings.drefOperationalUpdateSuccessMessage,
@@ -605,11 +615,17 @@ function DrefOperationalUpdate(props: Props) {
       ? contextValue.value?.operation_timeframe
       : contextValue.value?.total_operation_timeframe;
 
-    if (value?.changing_timeframe_operation && defaultTotalOperaitonTimeframe === newContextValue) {
+    if (value.type_of_dref !== TYPE_LOAN
+      && value?.changing_timeframe_operation
+      && defaultTotalOperaitonTimeframe === newContextValue
+    ) {
       return 'Please select a different timeframe when selected yes on changing the operation timeframe';
     }
 
-    if (value.total_operation_timeframe !== newContextValue && !value.changing_timeframe_operation) {
+    if (value.type_of_dref !== TYPE_LOAN
+      && value.total_operation_timeframe !== newContextValue
+      && !value.changing_timeframe_operation
+    ) {
       return 'Please select yes on changing the operation timeframe first';
     }
 
@@ -618,7 +634,8 @@ function DrefOperationalUpdate(props: Props) {
     contextValue.type,
     contextValue.value,
     value.total_operation_timeframe,
-    value.changing_timeframe_operation
+    value.changing_timeframe_operation,
+    value.type_of_dref
   ]);
 
   return (
@@ -631,7 +648,7 @@ function DrefOperationalUpdate(props: Props) {
       <Page
         actions={(
           <>
-            {isDefined(opsUpdateId) && drefType!== TYPE_LOAN && (
+            {isDefined(opsUpdateId) && drefType !== TYPE_LOAN && (
               <Link
                 to={`/dref-operational-update/${opsUpdateId}/export/`}
                 {...exportLinkProps}
@@ -720,123 +737,137 @@ function DrefOperationalUpdate(props: Props) {
                   <div className={styles.warning}>{operationTimeframeWarning}</div>
                 )}
               </Container>
-              <TabPanel name='operationOverview'>
-                <Overview
-                  error={error}
-                  onValueChange={onValueChange}
-                  value={value}
-                  yesNoOptions={yesNoOptions}
-                  disasterTypeOptions={disasterTypeOptions}
-                  onsetOptions={onsetOptions}
-                  disasterCategoryOptions={disasterCategoryOptions}
-                  countryOptions={countryOptions}
-                  fetchingCountries={fetchingCountries}
-                  fetchingDisasterTypes={fetchingDisasterTypes}
-                  nationalSocietyOptions={nationalSocietyOptions}
-                  fetchingNationalSociety={fetchingCountries}
-                  fileIdToUrlMap={fileIdToUrlMap}
-                  setFileIdToUrlMap={setFileIdToUrlMap}
-                  onValueSet={setValue}
-                  userOptions={userOptions}
-                  onCreateAndShareButtonClick={submitDrefOperationalUpdate}
-                  drefTypeOptions={drefTypeOptions}
-                  drefType={drefType}
-                  onsetType={onsetType}
-                />
-              </TabPanel>
-              <TabPanel name='eventDetails'>
-                <EventDetails
-                  error={error}
-                  onValueChange={onValueChange}
-                  value={value}
-                  yesNoOptions={yesNoOptions}
-                  fileIdToUrlMap={fileIdToUrlMap}
-                  setFileIdToUrlMap={setFileIdToUrlMap}
-                  drefType={drefType}
-                  onsetType={onsetType}
-                />
-              </TabPanel>
-              {drefType !== TYPE_LOAN &&
-                <TabPanel name='needs'>
-                  <Needs
-                    error={error}
-                    onValueChange={onValueChange}
-                    value={value}
-                    yesNoOptions={yesNoOptions}
-                    needOptions={needOptions}
-                    nsActionOptions={nsActionOptions}
-                    fileIdToUrlMap={fileIdToUrlMap}
-                    setFileIdToUrlMap={setFileIdToUrlMap}
-                    drefType={drefType}
+              {languageMismatch && drefOperationalResponse && (
+                <Container
+                  contentClassName={styles.languageMismatch}
+                >
+                  <Translate
+                    stringId="translationErrorEdit"
+                    params={{ originalLanguage: <strong>{languageOptions[drefOperationalResponse.translation_module_original_language]}</strong> }}
                   />
-                </TabPanel>
-              }
-              {drefType !== TYPE_LOAN &&
-                <TabPanel name='operation'>
-                  <Operation
-                    interventionOptions={interventionOptions}
-                    error={error}
-                    onValueChange={onValueChange}
-                    value={value}
-                    fileIdToUrlMap={fileIdToUrlMap}
-                    setFileIdToUrlMap={setFileIdToUrlMap}
-                    drefType={drefType}
-                    yesNoOptions={yesNoOptions}
-                  />
-                </TabPanel>
-              }
-              <TabPanel name='submission'>
-                <Submission
-                  error={error}
-                  onValueChange={onValueChange}
-                  value={value}
-                  drefType={drefType}
-                />
-              </TabPanel>
-              {drefType !== TYPE_LOAN &&
-                <div className={styles.actions}>
-                  <Button
-                    name={undefined}
-                    variant="secondary"
-                    onClick={handleBackButtonClick}
-                    disabled={shouldDisabledBackButton}
-                  >
-                    {strings.drefFormBackButtonLabel}
-                  </Button>
-                  <Button
-                    name={undefined}
-                    variant="secondary"
-                    onClick={handleSubmitButtonClick}
-                  >
-                    {submitButtonLabel}
-                  </Button>
-                </div>
-              }
-              {drefType === TYPE_LOAN &&
-                <div className={styles.actions}>
-                  <Button
-                    name={undefined}
-                    variant="secondary"
-                    onClick={handleLoanBackButtonClick}
-                    disabled={shouldDisabledBackButton}
-                  >
-                    {strings.drefFormBackButtonLabel}
-                  </Button>
-                  <Button
-                    name={undefined}
-                    variant="secondary"
-                    onClick={handleLoanSubmitButtonClick}
-                  >
-                    {submitButtonLabel}
-                  </Button>
-                </div>
-              }
-              {isDefined(opsUpdateId) && showObsoletePayloadResolutionModal && (
-                <ObsoletePayloadResolutionModal
-                  opsUpdateId={+opsUpdateId}
-                  onOverwriteButtonClick={handleObsoletePayloadResolutionOverwiteButtonClick}
-                  onCancelButtonClick={handleObsoletePayloadResolutionCancelButtonClick}
-                />
+                </Container>
+              )}
+              {!languageMismatch && (
+                <>
+                  <TabPanel name='operationOverview'>
+                    <Overview
+                      error={error}
+                      onValueChange={onValueChange}
+                      value={value}
+                      yesNoOptions={yesNoOptions}
+                      disasterTypeOptions={disasterTypeOptions}
+                      onsetOptions={onsetOptions}
+                      disasterCategoryOptions={disasterCategoryOptions}
+                      countryOptions={countryOptions}
+                      fetchingCountries={fetchingCountries}
+                      fetchingDisasterTypes={fetchingDisasterTypes}
+                      nationalSocietyOptions={nationalSocietyOptions}
+                      fetchingNationalSociety={fetchingCountries}
+                      fileIdToUrlMap={fileIdToUrlMap}
+                      setFileIdToUrlMap={setFileIdToUrlMap}
+                      onValueSet={setValue}
+                      userOptions={userOptions}
+                      onCreateAndShareButtonClick={submitDrefOperationalUpdate}
+                      drefTypeOptions={drefTypeOptions}
+                      drefType={drefType}
+                      onsetType={onsetType}
+                    />
+                  </TabPanel>
+                  <TabPanel name='eventDetails'>
+                    <EventDetails
+                      error={error}
+                      onValueChange={onValueChange}
+                      value={value}
+                      yesNoOptions={yesNoOptions}
+                      fileIdToUrlMap={fileIdToUrlMap}
+                      setFileIdToUrlMap={setFileIdToUrlMap}
+                      drefType={drefType}
+                      onsetType={onsetType}
+                    />
+                  </TabPanel>
+                  {drefType !== TYPE_LOAN &&
+                    <TabPanel name='needs'>
+                      <Needs
+                        error={error}
+                        onValueChange={onValueChange}
+                        value={value}
+                        yesNoOptions={yesNoOptions}
+                        needOptions={needOptions}
+                        nsActionOptions={nsActionOptions}
+                        fileIdToUrlMap={fileIdToUrlMap}
+                        setFileIdToUrlMap={setFileIdToUrlMap}
+                        drefType={drefType}
+                      />
+                    </TabPanel>
+                  }
+                  {drefType !== TYPE_LOAN &&
+                    <TabPanel name='operation'>
+                      <Operation
+                        interventionOptions={interventionOptions}
+                        error={error}
+                        onValueChange={onValueChange}
+                        value={value}
+                        fileIdToUrlMap={fileIdToUrlMap}
+                        setFileIdToUrlMap={setFileIdToUrlMap}
+                        drefType={drefType}
+                        yesNoOptions={yesNoOptions}
+                      />
+                    </TabPanel>
+                  }
+                  <TabPanel name='submission'>
+                    <Submission
+                      error={error}
+                      onValueChange={onValueChange}
+                      value={value}
+                      drefType={drefType}
+                    />
+                  </TabPanel>
+                  {drefType !== TYPE_LOAN &&
+                    <div className={styles.actions}>
+                      <Button
+                        name={undefined}
+                        variant="secondary"
+                        onClick={handleBackButtonClick}
+                        disabled={shouldDisabledBackButton}
+                      >
+                        {strings.drefFormBackButtonLabel}
+                      </Button>
+                      <Button
+                        name={undefined}
+                        variant="secondary"
+                        onClick={handleSubmitButtonClick}
+                      >
+                        {submitButtonLabel}
+                      </Button>
+                    </div>
+                  }
+                  {drefType === TYPE_LOAN &&
+                    <div className={styles.actions}>
+                      <Button
+                        name={undefined}
+                        variant="secondary"
+                        onClick={handleLoanBackButtonClick}
+                        disabled={shouldDisabledBackButton}
+                      >
+                        {strings.drefFormBackButtonLabel}
+                      </Button>
+                      <Button
+                        name={undefined}
+                        variant="secondary"
+                        onClick={handleLoanSubmitButtonClick}
+                      >
+                        {submitButtonLabel}
+                      </Button>
+                    </div>
+                  }
+                  {isDefined(opsUpdateId) && showObsoletePayloadResolutionModal && (
+                    <ObsoletePayloadResolutionModal
+                      opsUpdateId={+opsUpdateId}
+                      onOverwriteButtonClick={handleObsoletePayloadResolutionOverwiteButtonClick}
+                      onCancelButtonClick={handleObsoletePayloadResolutionCancelButtonClick}
+                    />
+                  )}
+                </>
               )}
             </>
           )

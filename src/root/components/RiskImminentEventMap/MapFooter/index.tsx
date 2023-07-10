@@ -21,15 +21,44 @@ import Container from "#components/Container";
 
 import styles from "./styles.module.scss";
 
+const gdacsPopupTitle = " Source: GDACS";
+const gdacsPopupDescription = (
+  <p>
+    Click <Link
+      target="_blank"
+      href="https://www.gdacs.org/default.aspx"
+    >
+      here
+    </Link> for more information about the model and its inputs.
+  </p>
+);
+
+const meteoSwissPopupTitle = "Source: MeteoSwiss";
+const meteoSwissPopupDescription = (
+  <p>
+    Click <Link
+      target="_blank"
+      href="https://meteofrance.re/fr"
+    >
+      here
+    </Link> for more information about the model and its inputs.
+  </p>
+);
+
 const pdcPopupTitle ="Source: Pacific Disaster Center";
 const pdcPopupDescription = (
   <>
     <p>
       These impacts are produced by the Pacific Disaster Center's All-hazards Impact Model (AIM) 3.0.
     </p>
-    <div>
-      Click <a className={styles.pdcLink} target="_blank" href="https://www.pdc.org/wp-content/uploads/AIM-3-Fact-Sheet-Screen-1.pdf">here</a> for more information about the model and its inputs.
-    </div>
+    <p>
+      Click <Link
+        target="_blank"
+        href="https://www.pdc.org/wp-content/uploads/AIM-3-Fact-Sheet-Screen-1.pdf"
+      >
+        here
+      </Link> for more information about the model and its inputs.
+    </p>
   </>
 );
 
@@ -40,17 +69,19 @@ const adamPopupDescription = (
       These data points are recieved from the WFP ADAM, which performs a 24/7 automated data harvesting, analysis and mapping of natural hazards events.
     </p>
     <p>
-      Click <Link href="https://gis.wfp.org/adam/">here</Link> for more information.
+      Click <Link
+        target="_blank"
+        href="https://gis.wfp.org/adam/"
+      >
+        here
+      </Link> for more information.
     </p>
   </>
 );
 
 const pdcIconLabel = (
   <div className={styles.sourceLabel}>
-    <TextOutput
-      className={styles.source}
-      value="PDC"
-    />
+    <TextOutput value="PDC" />
     <React.Fragment>
       <IoInformationCircleOutline
         data-event="click"
@@ -71,10 +102,7 @@ const pdcIconLabel = (
 
 const adamIconLabel = (
   <div className={styles.sourceLabel}>
-    <TextOutput
-      className={styles.source}
-      value="WFP ADAM"
-    />
+    <TextOutput value="WFP ADAM" />
     <React.Fragment>
       <IoInformationCircleOutline
         data-event="click"
@@ -93,31 +121,47 @@ const adamIconLabel = (
   </div>
 );
 
-/*
 const gdacsIconLabel = (
   <div className={styles.sourceLabel}>
-    <TextOutput
-      className={styles.source}
-      value="GDACS"
-    />
+    <TextOutput value="GDACS" />
     <React.Fragment>
       <IoInformationCircleOutline
         data-event="click"
         data-tooltip-id="gdacs"
         data-tooltip-html={ReactDOMServer.renderToStaticMarkup(
-          tooltip(adamPopupTitle, adamPopupDescription)
+          tooltip(gdacsPopupTitle, gdacsPopupDescription)
         )}
       />
       <Tooltip
         className={styles.tooltip}
-        id="adam"
+        id="gdacs"
         place="top"
         clickable={true}
       />
     </React.Fragment>
   </div>
 );
-*/
+
+const meteoSwissIconLabel = (
+  <div className={styles.sourceLabel}>
+    <TextOutput value="MeteoSwiss" />
+    <React.Fragment>
+      <IoInformationCircleOutline
+        data-event="click"
+        data-tooltip-id="ms"
+        data-tooltip-html={ReactDOMServer.renderToStaticMarkup(
+          tooltip(meteoSwissPopupTitle, meteoSwissPopupDescription)
+        )}
+      />
+      <Tooltip
+        className={styles.tooltip}
+        id="ms"
+        place="top"
+        clickable={true}
+      />
+    </React.Fragment>
+  </div>
+);
 
 const legendItems = [
   { color: COLOR_FLOOD, label: 'Flood' },
@@ -154,12 +198,13 @@ function MapFooter(props: Props) {
   const sourceOptions =[
     { value: "PDC", label: pdcIconLabel },
     { value: "WFP", label: adamIconLabel },
-    // { value: "GDACS", label: gdacsIconLabel },
+    { value: "GDACS", label: gdacsIconLabel },
+    { value: "MeteoSwiss", label: meteoSwissIconLabel },
   ] as StringValueOption[];
 
   const handleChangeSourceType = React.useCallback(
     (value?: string) => {
-        onSourceChange(value);
+      onSourceChange(value);
     },[onSourceChange],
   );
 

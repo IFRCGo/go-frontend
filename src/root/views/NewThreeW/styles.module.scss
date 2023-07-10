@@ -1,16 +1,21 @@
 @import '~styles/settings/variables';
 
 .new-three-w {
+  .main-content {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing;
+  }
+
   .three-w-program {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing;
+
     :global {
       .go-input-section {
-        margin: $spacing 0;
         box-shadow: $box-shadow-component;
       }
     }
-  }
-
-  .segment-input-wrapper {
-    margin-bottom: $spacing;
   }
 }

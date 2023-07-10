@@ -20,7 +20,7 @@ import languageContext from '#root/languageContext';
 import { compareString } from '#utils/utils';
 import { Disaster } from '#types/project';
 import { Country } from '#types/country';
-import { DrefApiFields } from '#views/DrefApplicationForm/common';
+import { DrefApiFields, TYPE_LOAN } from '#views/DrefApplicationForm/common';
 import {
   positiveIntegerCondition,
   positiveNumberCondition,
@@ -264,17 +264,24 @@ const defaultSchema: FormSchemaFields = {
   photos_file: [lessThanEqualToTwoImagesCondition],
   additional_allocation: [
     (currentValue, allValue, _) => {
-      if ((allValue?.changing_budget || allValue?.request_for_second_allocation) && !currentValue) {
+      if (allValue.type_of_dref !== TYPE_LOAN
+        && (allValue?.changing_budget || allValue?.request_for_second_allocation)
+        && !currentValue
+      ) {
         return 'Please add a value when selected yes on changing budget or on request for a second allocation!';
       }
 
-      if ((!allValue?.changing_budget || !allValue?.request_for_second_allocation) && currentValue) {
+      if (allValue.type_of_dref !== TYPE_LOAN
+        && (!allValue?.changing_budget || !allValue?.request_for_second_allocation)
+        && currentValue
+      ) {
         return 'Please select yes on both changing budget and on request for a second allocation!';
       }
 
       return undefined;
     },
   ],
+  dref_allocated_so_far: [],
   total_dref_allocation: [],
   is_man_made_event: [],
   is_assessment_report: [],

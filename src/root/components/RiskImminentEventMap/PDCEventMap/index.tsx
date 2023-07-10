@@ -265,8 +265,6 @@ function PDCEventMap(props: Props) {
     WF: false,
   });
 
-
-
   const [
     trackPointsGeoJson,
     trackLinestringGeoJson,

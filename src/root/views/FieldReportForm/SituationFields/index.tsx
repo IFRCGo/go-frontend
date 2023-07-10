@@ -52,8 +52,7 @@ function SituationFields(props: Props) {
     [formError]
   );
 
-  // FIXME: use translations
-  const sectionHeading = "Numeric Details (People)";
+  const sectionHeading = strings.fieldReportNumericTitle;
 
   if (reportType === 'COVID') {
     return (

@@ -11,6 +11,7 @@ import {
 import {
   _cs,
   isDefined,
+  isNotDefined,
 } from '@togglecorp/fujs';
 
 import BreadCrumb from '#components/breadcrumb';
@@ -20,13 +21,17 @@ import Tabs from '#components/Tabs';
 import TabPanel from '#components/Tabs/TabPanel';
 import TabList from '#components/Tabs/TabList';
 import Tab from '#components/Tabs/Tab';
+import Translate from '#components/Translate';
 
 import useAlert from '#hooks/useAlert';
+import useReduxState from '#hooks/useReduxState';
 import LanguageContext from '#root/languageContext';
 import {
   useRequest,
   useLazyRequest,
 } from '#utils/restRequest';
+import { languageOptions } from '#utils/lang';
+import { checkLanguageMismatch } from '#utils/common';
 
 import ContextFields from './ContextFields';
 import SituationFields from './SituationFields';
@@ -34,7 +39,6 @@ import RiskAnalysisFields from './RiskAnalysisFields';
 import ActionsFields from './ActionsFields';
 import EarlyActionsFields from './EarlyActionsFields';
 import ResponseFields from './ResponseFields';
-
 import useFieldReportOptions, { schema } from './useFieldReportOptions';
 import {
   STATUS_EVENT,
@@ -52,10 +56,6 @@ import {
 } from './common';
 import styles from './styles.module.scss';
 
-import store from '#utils/store';
-
-const currentLanguage = store.getState().lang.current;
-
 const defaultFormValues: PartialForm<FormType> = {
   status: STATUS_EVENT,
   is_covid_report: false,
@@ -63,7 +63,7 @@ const defaultFormValues: PartialForm<FormType> = {
   bulletin: BULLETIN_PUBLISHED_NO,
 };
 
-function scrollToTop () {
+function scrollToTop() {
   window.setTimeout(() => {
     window.scrollTo({
       top: Math.min(145, window.scrollY),
@@ -92,18 +92,25 @@ function FieldReportForm(props: Props) {
   const { reportId } = match.params;
   const { strings } = React.useContext(LanguageContext);
   const [initialEventOptions, setInitialEventOptions] = React.useState<Option[]>([]);
+  const { current: currentLanguage } = useReduxState('lang');
 
   const {
     pending: fieldReportPending,
     response: fieldReportResponse,
   } = useRequest<FieldReportAPIResponseFields>({
-    skip: !reportId,
+    skip: isNotDefined(reportId),
     url: `api/v2/field_report/${reportId}/`,
   });
 
+  const languageMismatch = checkLanguageMismatch(
+    reportId,
+    fieldReportResponse?.translation_module_original_language,
+    currentLanguage,
+  );
+
   const crumbs = React.useMemo(() => [
-    {link: location?.pathname, name: isDefined(reportId) ? strings.breadCrumbEditFieldReport : strings.breadCrumbNewFieldReport},
-    {link: '/', name: strings.breadCrumbHome},
+    { link: location?.pathname, name: isDefined(reportId) ? strings.breadCrumbEditFieldReport : strings.breadCrumbNewFieldReport },
+    { link: '/', name: strings.breadCrumbHome },
   ], [
     strings.breadCrumbHome,
     strings.breadCrumbEditFieldReport,
@@ -121,7 +128,7 @@ function FieldReportForm(props: Props) {
     setValue: onValueSet,
   } = useForm(schema, { value: defaultFormValues });
 
-   React.useEffect(() => {
+  React.useEffect(() => {
     if (fieldReportResponse) {
       const formValue = transformAPIFieldsToFormFields(fieldReportResponse);
       onValueSet(formValue);
@@ -172,6 +179,7 @@ function FieldReportForm(props: Props) {
         },
       );
     },
+    useCurrentLanguage: true,
   });
 
   const {
@@ -255,39 +263,30 @@ function FieldReportForm(props: Props) {
       return;
     }
 
-      if (currentStep === 'step4') {
+    if (currentStep === 'step4') {
       const apiFields = transformFormFieldsToAPIFields(finalValues as FormType);
       const definedValues = getDefinedValues(apiFields);
-      
       // COVID-19
-      if(definedValues.is_covid_report)
-      {
-        if (eventOptions.find(x => x.value===value.event)?.label === undefined)
-        {      
-          if(reportId === undefined){   
-            definedValues.summary = countryIsoOptions.find(x => x.value===value.country)?.label + ': ' + strings.fieldReportCOVID19; 
+      if (definedValues.is_covid_report) {
+        // FIXME: simplify and document following conditions
+        if (eventOptions.find(x => x.value === value.event)?.label === undefined) {
+          if (reportId === undefined) {
+            definedValues.summary = countryIsoOptions.find(x => x.value === value.country)?.label + ': ' + strings.fieldReportCOVID19;
+          }
+        } else {
+          if (reportId === undefined) {
+            definedValues.summary = countryIsoOptions.find(x => x.value === value.country)?.label + ': ' + strings.fieldReportCOVID19 + ' #' + eventOptions.find(x => x.value === value.event)?.label + ' (' + new Date().toISOString().slice(0, 10) + ')';
           }
         }
-        else
-        {
-          if(reportId === undefined){
-            definedValues.summary = countryIsoOptions.find(x => x.value===value.country)?.label + ': ' + strings.fieldReportCOVID19 + ' #'+ eventOptions.find(x => x.value===value.event)?.label + ' (' + new Date().toISOString().slice(0, 10) + ')'; 
+      } else {
+        // NON-COVID-19
+        if (eventOptions.find(x => x.value === value.event)?.label === undefined) {
+          if (reportId === undefined) {
+            definedValues.summary = countryIsoOptions.find(x => x.value === value.country)?.label + ': ' + disasterTypeOptions.find(x => x.value === definedValues.dtype)?.label + ' - ' + definedValues.start_date?.substring(0, 7) + ' - ' + definedValues.summary;
           }
-        }
-      }
-      // NON-COVID-19
-      else
-      {
-        if (eventOptions.find(x => x.value===value.event)?.label === undefined)
-        {
-          if(reportId === undefined){
-            definedValues.summary = countryIsoOptions.find(x => x.value===value.country)?.label + ': ' + disasterTypeOptions.find( x=> x.value === definedValues.dtype)?.label + ' - ' + definedValues.start_date?.substring(0,7) + ' - ' + definedValues.summary;
-          }
-        }
-        else
-        {
-          if(reportId === undefined){
-             definedValues.summary = countryIsoOptions.find(x => x.value===value.country)?.label + ': ' + disasterTypeOptions.find( x=> x.value === definedValues.dtype)?.label + ' - ' + definedValues.start_date?.substring(0,7) + ' - ' + definedValues.summary + ' #'+ eventOptions.find(x => x.value===value.event)?.label + ' (' + new Date().toISOString().slice(0, 10) + ')';
+        } else {
+          if (reportId === undefined) {
+            definedValues.summary = countryIsoOptions.find(x => x.value === value.country)?.label + ': ' + disasterTypeOptions.find(x => x.value === definedValues.dtype)?.label + ' - ' + definedValues.start_date?.substring(0, 7) + ' - ' + definedValues.summary + ' #' + eventOptions.find(x => x.value === value.event)?.label + ' (' + new Date().toISOString().slice(0, 10) + ')';
           }
         }
       }
@@ -312,7 +311,21 @@ function FieldReportForm(props: Props) {
 
       setCurrentStep(nextStepMap[currentStep]);
     }
-  }, [submitRequest, userDetails, currentStep, setCurrentStep, validate, onErrorSet,countryIsoOptions, disasterTypeOptions, eventOptions, strings.fieldReportCOVID19, value.country, value.event, reportId]);
+  }, [
+    submitRequest,
+    userDetails,
+    currentStep,
+    setCurrentStep,
+    validate,
+    onErrorSet,
+    countryIsoOptions,
+    disasterTypeOptions,
+    eventOptions,
+    strings.fieldReportCOVID19,
+    value.country,
+    value.event,
+    reportId,
+  ]);
 
   const handleBackButtonClick = React.useCallback(() => {
     scrollToTop();
@@ -338,7 +351,7 @@ function FieldReportForm(props: Props) {
 
   return (
     <Tabs
-      disabled={pending}
+      disabled={pending || languageMismatch}
       onChange={handleTabChange}
       value={currentStep}
       variant="step"
@@ -349,10 +362,20 @@ function FieldReportForm(props: Props) {
         heading={isDefined(reportId) ? strings.fieldReportUpdate : strings.fieldReportCreate}
         breadCrumbs={<BreadCrumb crumbs={crumbs} compact />}
         actions={
-          strings.wikiJsLinkFRForm !== undefined && strings.wikiJsLinkFRForm.length>0 ?
-            <div style={{display: 'flex', justifyContent:'flex-end', paddingBottom:'8px'}}> 
-                <a href={strings.wikiJsLinkGOWiki+'/'+currentLanguage +'/'+ strings.wikiJsLinkFRForm} title='GO Wiki' target='_blank' ><img className='' src='/assets/graphics/content/wiki-help-section.svg' alt='IFRC GO logo'/></a>
-            </div>:null
+          strings.wikiJsLinkFRForm !== undefined && strings.wikiJsLinkFRForm.length > 0 ?
+            <div style={{ display: 'flex', justifyContent: 'flex-end', paddingBottom: '8px' }}>
+              <a
+                href={`${strings.wikiJsLinkGOWiki}/${currentLanguage}/${strings.wikiJsLinkFRForm}`}
+                title='GO Wiki'
+                target='_blank'
+              >
+                <img
+                  className=''
+                  src='/assets/graphics/content/wiki-help-section.svg'
+                  alt='IFRC GO logo'
+                />
+              </a>
+            </div> : null
         }
         info={(
           <TabList className={styles.tabList}>
@@ -366,21 +389,21 @@ function FieldReportForm(props: Props) {
               name="step2"
               step={2}
             >
-              { value.status === STATUS_EARLY_WARNING && strings.fieldReportFormItemRiskAnalysisLabel }
-              { value.status === STATUS_EVENT && strings.fieldReportFormItemSituationLabel }
+              {value.status === STATUS_EARLY_WARNING && strings.fieldReportFormItemRiskAnalysisLabel}
+              {value.status === STATUS_EVENT && strings.fieldReportFormItemSituationLabel}
             </Tab>
             <Tab
               name="step3"
               step={3}
             >
-              { value.status === STATUS_EARLY_WARNING && strings.fieldReportFormItemEarlyActionsLabel }
-              { value.status === STATUS_EVENT && strings.fieldReportFormItemActionsLabel }
+              {value.status === STATUS_EARLY_WARNING && strings.fieldReportFormItemEarlyActionsLabel}
+              {value.status === STATUS_EVENT && strings.fieldReportFormItemActionsLabel}
             </Tab>
             <Tab
               name="step4"
               step={4}
             >
-              { strings.fieldReportFormItemResponseLabel }
+              {strings.fieldReportFormItemResponseLabel}
             </Tab>
           </TabList>
         )}
@@ -397,96 +420,120 @@ function FieldReportForm(props: Props) {
                 message={strings.fieldReportFormNonFieldError}
               />
             </Container>
-            <TabPanel name="step1">
-              <ContextFields
-                error={error}
-                onValueChange={onValueChange}
-                statusOptions={statusOptions}
-                value={value}
-                yesNoOptions={yesNoOptions}
-                disasterTypeOptions={disasterTypeOptions}
-                reportType={reportType}
-                countryOptions={countryOptions}
-                countryIsoOptions={countryIsoOptions}
-                districtOptions={districtOptions}
-                fetchingCountries={fetchingCountries}
-                fetchingDistricts={fetchingDistricts}
-                fetchingDisasterTypes={fetchingDisasterTypes}
-                initialEventOptions={initialEventOptions}
-                eventOptions={eventOptions}
-                reportId={reportId}
-              />
-            </TabPanel>
-            <TabPanel name="step2">
-              {value.status === STATUS_EARLY_WARNING && (
-                <RiskAnalysisFields
-                  sourceOptions={sourceOptions}
-                  error={error}
-                  onValueChange={onValueChange}
-                  value={value}
+            {languageMismatch && fieldReportResponse && (
+              <Container contentClassName={styles.languageMismatch}>
+                <Translate
+                  stringId="translationErrorEdit"
+                  params={{ originalLanguage: <strong>{languageOptions[fieldReportResponse.translation_module_original_language]}</strong> }}
                 />
-              )}
-              {value.status === STATUS_EVENT && (
-                <SituationFields
-                  sourceOptions={sourceOptions}
-                  reportType={reportType}
-                  error={error}
-                  onValueChange={onValueChange}
-                  value={value}
-                />
-              )}
-            </TabPanel>
-            <TabPanel name="step3">
-              {value.status === STATUS_EARLY_WARNING && (
-                <EarlyActionsFields
-                  bulletinOptions={bulletinOptions}
-                  actionOptions={orgGroupedActionForCurrentReport}
-                  error={error}
-                  onValueChange={onValueChange}
-                  value={value}
-                />
-              )}
-              {value.status === STATUS_EVENT && (
-                <ActionsFields
-                  bulletinOptions={bulletinOptions}
-                  actionOptions={orgGroupedActionForCurrentReport}
-                  reportType={reportType}
-                  error={error}
-                  onValueChange={onValueChange}
-                  value={value}
-                  externalPartnerOptions={externalPartnerOptions}
-                  supportedActivityOptions={supportedActivityOptions}
-                  fetchingExternalPartners={fetchingExternalPartners}
-                  fetchingSupportedActivities={fetchingSupportedActivities}
-                />
-              )}
-            </TabPanel>
-            <TabPanel name="step4">
-              <ResponseFields
-                reportType={reportType}
-                error={error}
-                onValueChange={onValueChange}
-                value={value}
-                isReviewCountry={isReviewCountry}
-              />
-            </TabPanel>
-            <div className={styles.actions}>
-              <button
-                className={_cs('button button--secondary-bounded', shouldDisabledBackButton && 'disabled')}
-                type="button"
-                disabled={shouldDisabledBackButton}
-                onClick={handleBackButtonClick}
-              >
-                Back
-              </button>
-              <button
-                className={_cs('button', submitButtonClassName)}
-                onClick={handleSubmitButtonClick}
-                type="submit"
-              >
-                {submitButtonLabel}
-              </button>
-            </div>
+              </Container>
+            )}
+            {!languageMismatch && (
+              <>
+                <TabPanel
+                  className={styles.tabContent}
+                  name="step1"
+                >
+                  <ContextFields
+                    error={error}
+                    onValueChange={onValueChange}
+                    statusOptions={statusOptions}
+                    value={value}
+                    yesNoOptions={yesNoOptions}
+                    disasterTypeOptions={disasterTypeOptions}
+                    reportType={reportType}
+                    countryOptions={countryOptions}
+                    countryIsoOptions={countryIsoOptions}
+                    districtOptions={districtOptions}
+                    fetchingCountries={fetchingCountries}
+                    fetchingDistricts={fetchingDistricts}
+                    fetchingDisasterTypes={fetchingDisasterTypes}
+                    initialEventOptions={initialEventOptions}
+                    eventOptions={eventOptions}
+                    reportId={reportId}
+                  />
+                </TabPanel>
+                <TabPanel
+                  className={styles.tabContent}
+                  name="step2"
+                >
+                  {value.status === STATUS_EARLY_WARNING && (
+                    <RiskAnalysisFields
+                      sourceOptions={sourceOptions}
+                      error={error}
+                      onValueChange={onValueChange}
+                      value={value}
+                    />
+                  )}
+                  {value.status === STATUS_EVENT && (
+                    <SituationFields
+                      sourceOptions={sourceOptions}
+                      reportType={reportType}
+                      error={error}
+                      onValueChange={onValueChange}
+                      value={value}
+                    />
+                  )}
+                </TabPanel>
+                <TabPanel
+                  name="step3"
+                  className={styles.tabContent}
+                >
+                  {value.status === STATUS_EARLY_WARNING && (
+                    <EarlyActionsFields
+                      bulletinOptions={bulletinOptions}
+                      actionOptions={orgGroupedActionForCurrentReport}
+                      error={error}
+                      onValueChange={onValueChange}
+                      value={value}
+                    />
+                  )}
+                  {value.status === STATUS_EVENT && (
+                    <ActionsFields
+                      bulletinOptions={bulletinOptions}
+                      actionOptions={orgGroupedActionForCurrentReport}
+                      reportType={reportType}
+                      error={error}
+                      onValueChange={onValueChange}
+                      value={value}
+                      externalPartnerOptions={externalPartnerOptions}
+                      supportedActivityOptions={supportedActivityOptions}
+                      fetchingExternalPartners={fetchingExternalPartners}
+                      fetchingSupportedActivities={fetchingSupportedActivities}
+                    />
+                  )}
+                </TabPanel>
+                <TabPanel
+                  name="step4"
+                  className={styles.tabContent}
+                >
+                  <ResponseFields
+                    reportType={reportType}
+                    error={error}
+                    onValueChange={onValueChange}
+                    value={value}
+                    isReviewCountry={isReviewCountry}
+                  />
+                </TabPanel>
+                <div className={styles.actions}>
+                  <button
+                    className={_cs('button button--secondary-bounded', shouldDisabledBackButton && 'disabled')}
+                    type="button"
+                    disabled={shouldDisabledBackButton}
+                    onClick={handleBackButtonClick}
+                  >
+                    {strings.fieldReportBack}
+                  </button>
+                  <button
+                    className={_cs('button', submitButtonClassName)}
+                    onClick={handleSubmitButtonClick}
+                    type="submit"
+                  >
+                    {submitButtonLabel}
+                  </button>
+                </div>
+              </>
+            )}
           </>
         )}
       </Page>

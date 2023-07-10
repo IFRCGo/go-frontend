@@ -39,9 +39,9 @@ function ThreeWEdit(props: Props) {
   const alert = useAlert();
   const { strings } = React.useContext(LanguageContext);
   const crumbs = React.useMemo(() => [
-    {link: location?.pathname, name: strings.breadCrumbEditProject},
-    {link: '/three-w/all/', name: strings.breadCrumbThreeW},
-    {link: '/', name: strings.breadCrumbHome},
+    { link: location?.pathname, name: strings.breadCrumbEditProject },
+    { link: '/three-w/all/', name: strings.breadCrumbThreeW },
+    { link: '/', name: strings.breadCrumbHome },
   ], [
     strings.breadCrumbHome,
     strings.breadCrumbThreeW,
@@ -65,6 +65,7 @@ function ThreeWEdit(props: Props) {
       className={_cs(styles.threeWDetails, className)}
       title={strings.threeWEditPageTitle}
       breadCrumbs={<BreadCrumb crumbs={crumbs} compact />}
+      heading={strings.threeWEditProject}
     >
       <Container>
         {isDefined(projectId) && (

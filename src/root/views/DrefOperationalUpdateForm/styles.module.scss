@@ -19,3 +19,7 @@
   animation: flash $duration-animation-fast 5 ease-in-out;
   animation-delay: $duration-animation-medium;
 }
+
+.language-mismatch {
+  text-align: center;
+}

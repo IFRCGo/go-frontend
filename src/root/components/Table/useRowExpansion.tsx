@@ -3,7 +3,7 @@ import { _cs } from '@togglecorp/fujs';
 
 import { RowOptions } from './index';
 
-export type ExpansionRowChildrenProps<D, K> = (rowOptions: RowOptions<D, K>) => React.ReactElement;
+export type ExpansionRowChildrenProps<D, K> = (rowOptions: RowOptions<D, K>) => React.ReactNode;
 export interface ExpansionOptions {
   expandedRowClassName?: string;
   expandedCellClassName?: string;
@@ -12,39 +12,28 @@ export interface ExpansionOptions {
 }
 
 function useRowExpansion<D, K>(
+  expandedRowKey: K | undefined,
   expansionRowChildren: ExpansionRowChildrenProps<D, K>,
   options: ExpansionOptions = {},
-) : [
-  (rowOptions: RowOptions<D, K>) => React.ReactElement,
-  boolean,
-] {
+) : (rowOptions: RowOptions<D, K>) => React.ReactNode {
   const {
     expandedRowClassName,
     expandedCellClassName,
-    expansionCellClassName,
-    expansionRowClassName,
   } = options;
 
-  const [expandedRow, setExpandedRow] = React.useState<K | undefined>();
   const rowModifier: (
     o: RowOptions<D, K>
-  ) => React.ReactElement = React.useCallback((rowOptions) => {
+  ) => React.ReactNode = React.useCallback((rowOptions) => {
     const {
       rowKey,
       row,
-      columns,
     } = rowOptions;
 
-    const isActive = rowKey === expandedRow;
+    const isActive = rowKey === expandedRowKey;
 
     return (
       <>
         {React.cloneElement(row, {
-          onClick: () => {
-            setExpandedRow((oldValue) => (
-              oldValue === rowKey ? undefined : rowKey
-            ));
-          },
           className: _cs(
             row.props.className,
             isActive && expandedRowClassName,
@@ -59,31 +48,18 @@ function useRowExpansion<D, K>(
           )),
         })}
         {isActive && (
-          <tr
-            key={`${rowKey}-expanded`}
-            className={expansionRowClassName}
-          >
-            <td
-              colSpan={columns.length}
-              className={expansionCellClassName}
-            >
-              { expansionRowChildren(rowOptions) }
-            </td>
-          </tr>
+          expansionRowChildren(rowOptions)
         )}
       </>
     );
   }, [
-    expandedRow,
-    setExpandedRow,
-    expansionRowChildren,
-    expandedRowClassName,
-    expandedCellClassName,
-    expansionRowClassName,
-    expansionCellClassName,
-  ]);
+      expandedRowKey,
+      expansionRowChildren,
+      expandedRowClassName,
+      expandedCellClassName,
+    ]);
 
-  return [rowModifier, !!expandedRow];
+  return rowModifier;
 }
 
 export default useRowExpansion;

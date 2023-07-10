@@ -6,6 +6,7 @@ import {
 import Select, { Props as SelectProps } from 'react-select';
 
 import InputContainer from '#components/InputContainer';
+import LanguageContext from '#root/languageContext';
 
 import styles from './styles.module.scss';
 
@@ -47,6 +48,8 @@ type Props<N, V extends ValueType> = BaseProps<N> & ({
 })
 
 function SelectInput<N, V extends ValueType>(props: Props<N, V>) {
+  const { strings } = React.useContext(LanguageContext);
+
   const {
     className,
     actions,
@@ -63,6 +66,7 @@ function SelectInput<N, V extends ValueType>(props: Props<N, V>) {
     isMulti,
     onChange,
     hideValue,
+    placeholder = strings.selectInputDefaultPlaceholder,
     ...otherSelectInputProps
   } = props;
 
@@ -127,6 +131,7 @@ function SelectInput<N, V extends ValueType>(props: Props<N, V>) {
           isDisabled={pending || disabled}
           isLoading={pending}
           controlShouldRenderValue={!hideValue}
+          placeholder={placeholder}
           unstyled
         />
       )}

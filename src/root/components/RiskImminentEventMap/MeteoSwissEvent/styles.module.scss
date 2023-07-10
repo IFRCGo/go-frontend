@@ -1,0 +1,40 @@
+@import '~styles/settings/variables';
+
+.map-container {
+  outline: none;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+
+  .map-disclaimer {
+    position: absolute;
+    left: $mapbox-icon-width + $spacing*0.5;
+    bottom: $spacing*0.25;
+  }
+
+  :global {
+    .mapboxgl-popup {
+      height: 18rem;
+    }
+  }
+
+  .wrapper-for-sidebar {
+    display: flex;
+    flex-grow: 1;
+    position: relative;
+
+    .map {
+      flex-grow: 1;
+    }
+
+    .sidebar {
+      background-color: $white;
+      box-shadow: $base-box-shadow;
+      position: absolute;
+      width: 20rem;
+      max-height: calc(100% - #{$spacing*2} - 1rem);
+      right: $spacing;
+      top: $spacing;
+    }
+  }
+}

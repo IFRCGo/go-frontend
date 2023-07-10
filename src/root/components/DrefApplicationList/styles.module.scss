@@ -3,54 +3,20 @@
 .dref-application-list {
   min-height: 50vh;
 
-  .filters {
+  .new-dref-button {
     display: flex;
-    padding: $spacing 0;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: $spacing*2;
-    gap: $spacing;
+    justify-content: center;
+    margin: $spacing*3;
+  }
 
-    .country-filter {
-      flex-grow: 1;
-      max-width: 30rem;
-    }
-
-    .import-button {
-      flex-shrink: 0;
-    }
+  .view-operation-heading {
+    color: $primary-color;
   }
 
   .content {
     display: flex;
     flex-direction: column;
     gap: $spacing*4;
-
-    .in-progress-dref-table {
-      width: 100%;
-
-      .actions-header {
-        width: 10rem;
-      }
-
-      .actions-cell {
-        display: flex;
-        gap: $spacing * 0.5;
-      }
-    }
-
-    .published-dref-table {
-      width: 100%;
-
-      .actions-header {
-        width: 10rem;
-      }
-
-      .actions-cell {
-        display: flex;
-        gap: $spacing * 0.5;
-      }
-    }
 
     .footer {
       display: flex;
@@ -68,10 +34,20 @@
     }
   }
 
-  .button-import {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
+  .filters {
+    display: grid;
+    grid-gap: $spacing;
+    grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+    padding: $spacing;
+
+    .country-filter {
+      flex-grow: 1;
+      max-width: 30rem;
+    }
+
+    .import-button {
+      flex-shrink: 0;
+    }
   }
 }
 
@@ -101,3 +77,4 @@
     }
   }
 }
+

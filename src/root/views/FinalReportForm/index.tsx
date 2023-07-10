@@ -57,12 +57,15 @@ import EventDetails from './EventDetails';
 import Needs from './Needs';
 import Operation from './Operation';
 import Submission from './Submission';
-import useDrefFinalReportFormOptions,{
+import useDrefFinalReportFormOptions, {
   schema,
 } from './useDreFinalReportOptions';
-import { ymdToDateString } from '#utils/common';
+import { checkLanguageMismatch, ymdToDateString } from '#utils/common';
 
 import styles from './styles.module.scss';
+import Translate from '#components/Translate';
+import useReduxState from '#hooks/useReduxState';
+import { languageOptions } from '#utils/lang';
 
 interface Props {
   match: match<{ id?: string }>;
@@ -135,6 +138,7 @@ function FinalReport(props: Props) {
   const submitButtonLabel = currentStep === 'submission' ? strings.drefFormSaveButtonLabel : strings.drefFormContinueButtonLabel;
   const shouldDisabledBackButton = currentStep === 'operationOverview';
   const lastModifiedAtRef = React.useRef<string | undefined>();
+  const { current: currentLanguage } = useReduxState('lang');
 
   const erroredTabs = useMemo(() => {
     const safeErrors = getErrorObject(error) ?? {};
@@ -354,6 +358,12 @@ function FinalReport(props: Props) {
     }
   });
 
+  const languageMismatch = checkLanguageMismatch(
+    id,
+    drefFinalReportResponse?.translation_module_original_language,
+    currentLanguage,
+  );
+
   React.useEffect(() => {
     if (isDefined(value.operation_start_date) && isDefined(value.total_operation_timeframe)) {
       const operationEndDate = new Date(value.operation_start_date);
@@ -546,85 +556,97 @@ function FinalReport(props: Props) {
                 message={strings.drefFormFieldGeneralError}
               />
             </Container>
-            <TabPanel name='operationOverview'>
-              <Overview
-                error={error}
-                onValueChange={onValueChange}
-                value={value}
-                disasterTypeOptions={disasterTypeOptions}
-                onsetOptions={onsetOptions}
-                disasterCategoryOptions={disasterCategoryOptions}
-                countryOptions={countryOptions}
-                fetchingCountries={fetchingCountries}
-                fetchingDisasterTypes={fetchingDisasterTypes}
-                nationalSocietyOptions={nationalSocietyOptions}
-                fetchingNationalSociety={fetchingCountries}
-                yesNoOptions={yesNoOptions}
-                userOptions={userOptions}
-                onCreateAndShareButtonClick={submitDrefFinalReport}
-                fileIdToUrlMap={fileIdToUrlMap}
-                setFileIdToUrlMap={setFileIdToUrlMap}
-                drefTypeOptions={drefTypeOptions}
-                drefType={drefType}
-              />
-            </TabPanel>
-            <TabPanel name='eventDetails'>
-              <EventDetails
-                error={error}
-                onValueChange={onValueChange}
-                value={value}
-                drefType={drefType}
-                fileIdToUrlMap={fileIdToUrlMap}
-                setFileIdToUrlMap={setFileIdToUrlMap}
-                onsetType={onsetType}
-              />
-            </TabPanel>
-            <TabPanel name='needs'>
-              <Needs
-                error={error}
-                onValueChange={onValueChange}
-                value={value}
-                yesNoOptions={yesNoOptions}
-                needOptions={needOptions}
-                nsActionOptions={nsActionOptions}
-              />
-            </TabPanel>
-            <TabPanel name='operation'>
-              <Operation
-                interventionOptions={interventionOptions}
-                error={error}
-                onValueChange={onValueChange}
-                value={value}
-                fileIdToUrlMap={fileIdToUrlMap}
-                setFileIdToUrlMap={setFileIdToUrlMap}
-                yesNoOptions={yesNoOptions}
-                drefType={drefType}
-              />
-            </TabPanel>
-            <TabPanel name='submission'>
-              <Submission
-                error={error}
-                onValueChange={onValueChange}
-                value={value}
-              />
-            </TabPanel>
-            <div className={styles.actions}>
-              <Button
-                name={undefined}
-                variant="secondary"
-                onClick={handleBackButtonClick}
-                disabled={shouldDisabledBackButton}
-              >
-                {strings.drefFormBackButtonLabel}
-              </Button>
-              <Button
-                name={undefined}
-                variant="secondary"
-                onClick={handleSubmitButtonClick}
-              >
-                {submitButtonLabel}
-              </Button>
-            </div>
+            {languageMismatch && drefFinalReportResponse && (
+              <Container contentClassName={styles.languageMismatch}>
+                <Translate
+                  stringId="translationErrorEdit"
+                  params={{ originalLanguage: <strong>{languageOptions[drefFinalReportResponse.translation_module_original_language]}</strong> }}
+                />
+              </Container>
+            )}
+            {!languageMismatch && (
+              <>
+                <TabPanel name='operationOverview'>
+                  <Overview
+                    error={error}
+                    onValueChange={onValueChange}
+                    value={value}
+                    disasterTypeOptions={disasterTypeOptions}
+                    onsetOptions={onsetOptions}
+                    disasterCategoryOptions={disasterCategoryOptions}
+                    countryOptions={countryOptions}
+                    fetchingCountries={fetchingCountries}
+                    fetchingDisasterTypes={fetchingDisasterTypes}
+                    nationalSocietyOptions={nationalSocietyOptions}
+                    fetchingNationalSociety={fetchingCountries}
+                    yesNoOptions={yesNoOptions}
+                    userOptions={userOptions}
+                    onCreateAndShareButtonClick={submitDrefFinalReport}
+                    fileIdToUrlMap={fileIdToUrlMap}
+                    setFileIdToUrlMap={setFileIdToUrlMap}
+                    drefTypeOptions={drefTypeOptions}
+                    drefType={drefType}
+                  />
+                </TabPanel>
+                <TabPanel name='eventDetails'>
+                  <EventDetails
+                    error={error}
+                    onValueChange={onValueChange}
+                    value={value}
+                    drefType={drefType}
+                    fileIdToUrlMap={fileIdToUrlMap}
+                    setFileIdToUrlMap={setFileIdToUrlMap}
+                    onsetType={onsetType}
+                  />
+                </TabPanel>
+                <TabPanel name='needs'>
+                  <Needs
+                    error={error}
+                    onValueChange={onValueChange}
+                    value={value}
+                    yesNoOptions={yesNoOptions}
+                    needOptions={needOptions}
+                    nsActionOptions={nsActionOptions}
+                  />
+                </TabPanel>
+                <TabPanel name='operation'>
+                  <Operation
+                    interventionOptions={interventionOptions}
+                    error={error}
+                    onValueChange={onValueChange}
+                    value={value}
+                    fileIdToUrlMap={fileIdToUrlMap}
+                    setFileIdToUrlMap={setFileIdToUrlMap}
+                    yesNoOptions={yesNoOptions}
+                    drefType={drefType}
+                  />
+                </TabPanel>
+                <TabPanel name='submission'>
+                  <Submission
+                    error={error}
+                    onValueChange={onValueChange}
+                    value={value}
+                  />
+                </TabPanel>
+                <div className={styles.actions}>
+                  <Button
+                    name={undefined}
+                    variant="secondary"
+                    onClick={handleBackButtonClick}
+                    disabled={shouldDisabledBackButton}
+                  >
+                    {strings.drefFormBackButtonLabel}
+                  </Button>
+                  <Button
+                    name={undefined}
+                    variant="secondary"
+                    onClick={handleSubmitButtonClick}
+                  >
+                    {submitButtonLabel}
+                  </Button>
+                </div>
+              </>
+            )}
           </>
         )}
       </Page>

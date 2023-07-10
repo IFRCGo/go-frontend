@@ -76,15 +76,22 @@ function NewThreeW(props: Props) {
       breadCrumbs={<BreadCrumb crumbs={crumbs} compact />}
       actions={
         strings.wikiJsLink3WForm !== undefined && strings.wikiJsLink3WForm.length>0 ?
-        <div style={{display: 'flex', justifyContent:'flex-end', paddingBottom:'8px'}}> 
+        <div
+            style={{
+              display: 'flex',
+              justifyContent:'flex-end',
+              paddingBottom:'8px'
+            }}
+          >
             <a href={strings.wikiJsLinkGOWiki+'/'+currentLanguage +'/'+ strings.wikiJsLink3WForm} title='GO Wiki' target='_blank' ><img className='' src='/assets/graphics/content/wiki-help-section.svg' alt='IFRC GO logo'/></a>
         </div>:null
       }
     >
       <Container
         heading="Operation Details"
+        contentClassName={styles.mainContent}
       >
-        <InputSection className={styles.segementInputWrapper}>
+        <InputSection>
           <SegmentInput
             name={undefined}
             options={operationTypeOptions}

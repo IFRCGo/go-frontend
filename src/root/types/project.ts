@@ -1,3 +1,6 @@
+import { BBox } from '@turf/turf';
+import { languageOptions } from '#utils/lang';
+
 import {
   CountryMini,
   DistrictMini,
@@ -55,6 +58,7 @@ export interface ProjectFormFields {
   programme_type: number;
   project_country: number;
   project_districts: number[];
+  project_admin2: number[];
   reached_female: number | null;
   reached_male: number | null;
   reached_other: number | null;
@@ -74,6 +78,8 @@ export interface ProjectFormFields {
   is_annual_report: boolean;
   annual_split_detail: AnnualSplit[];
 }
+
+export type Language = keyof typeof languageOptions;
 
 export interface Project {
   actual_expenditure: number;
@@ -99,6 +105,9 @@ export interface Project {
   project_country_detail: CountryMini;
   project_districts: number[];
   project_districts_detail: DistrictMini[];
+  project_admin2: number[];
+  project_admin2_detail: {
+  }[]
   reached_female: number | null;
   reached_male: number | null;
   reached_other: number | null;
@@ -124,6 +133,8 @@ export interface Project {
   visibility_display: string;
   is_annual_report: boolean;
   annual_split_detail: Omit<AnnualSplit, 'client_id'>[];
+  translation_module_original_language: Language;
+  translation_module_skip_auto_translation: boolean;
 }
 
 interface Point {
@@ -260,4 +271,14 @@ export interface EmergencyProjectResponse {
   reporting_ns: number | null;
   deployed_eru: number | null;
   districts: number[];
+}
+
+export interface Admin2 {
+  id: number;
+  bbox: BBox;
+  centroid: GeoJSON.Point;
+  code: string;
+  district_id: number;
+  is_deprecated: boolean;
+  name: string;
 }

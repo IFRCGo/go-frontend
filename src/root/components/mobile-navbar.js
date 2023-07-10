@@ -126,16 +126,16 @@ function MobileNavbar(props) {
                   <li className='drop__menu-item'>
                     <Link to='/reports/new'>{strings.headerDropdownNewFieldReport}</Link>
                   </li>
-                  <li className='drop__menu-item'>
+                  {/* <li className='drop__menu-item'>
                     <a href='https://eenew.ifrc.org/single/y300V3lY?returnURL=https://go.ifrc.org/emergencies/3972#actions' target='_blank'>
                       {strings.headerDropdownCovid19IndicatorTracking}
                     </a>
-                  </li>
-                  <li className='drop__menu-item'>
+                  </li> */}
+                  {/* <li className='drop__menu-item'>
                     <a href='https://eenew.ifrc.org/single/VmcTHDMh?returnURL=https://go.ifrc.org/emergencies/3972#actions' target='_blank'>
                       {strings.headerDropdownCovid19NSFinancialOverview}
                     </a>
-                  </li>
+                  </li> */}
                   <li className='drop__menu-item'>
                     <Link
                       to='/three-w/new'

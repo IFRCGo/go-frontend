@@ -7,6 +7,7 @@ import {
   unique,
   mapToMap,
   isDefined,
+  randomString,
 } from '@togglecorp/fujs';
 
 import {
@@ -16,11 +17,11 @@ import {
 import Container from '#components/Container';
 import WikiLink from '#components/WikiLink';
 import { avgSafe } from '#utils/common';
+import { SeasonalHazardTypes } from '#types/risk';
 
 import {
   SeasonalResponse,
   MonthlyValues,
-  HazardType,
   CountryDetail,
   RiskScoreData,
   RISK_HIGH_COLOR,
@@ -151,7 +152,7 @@ function SeasonalRisk(props: Props) {
     );
 
     const getRiskValueList = (riskList: (MonthlyValues & {
-      hazard_type: HazardType,
+      hazard_type: SeasonalHazardTypes,
       hazard_type_display: string,
       country_details: CountryDetail,
     })[]) => {
@@ -173,6 +174,7 @@ function SeasonalRisk(props: Props) {
                 hazard_type: riskData.hazard_type,
                 hazard_type_display: riskData.hazard_type_display,
                 value: getSumForSelectedMonths(riskData),
+                uuid: randomString(),
               })),
             (r) => r.hazard_type,
           );

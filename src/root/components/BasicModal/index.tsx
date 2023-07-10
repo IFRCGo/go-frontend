@@ -12,6 +12,7 @@ export interface Props {
   className?: string;
   heading?: React.ReactNode;
   headingSize?: HeaderProps['headingSize'];
+  description?: React.ReactNode;
   headerActions?: React.ReactNode;
   onCloseButtonClick?: () => void;
   footerActions?: React.ReactNode;
@@ -26,6 +27,7 @@ function BasicModal(props: Props) {
     className,
     heading,
     headingSize,
+    description,
     headerActions,
     onCloseButtonClick,
     footerActions,
@@ -46,6 +48,7 @@ function BasicModal(props: Props) {
           <Header
             className={styles.header}
             heading={heading}
+            description={description}
             headingSize={headingSize}
             actions={(
               <>

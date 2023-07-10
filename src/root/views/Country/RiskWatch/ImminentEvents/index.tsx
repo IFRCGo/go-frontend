@@ -7,6 +7,7 @@ import MapFooter from '#components/RiskImminentEventMap/MapFooter';
 import ImminentEventsADAM from './ImminentEventsADAM';
 import ImminentEventsPDC from './ImminentEventsPDC';
 import ImminentEventsGDACS from '../ImminentEventsGDACS';
+import ImminentEventsMeteoSwiss from './ImminentEventsMeteoSwiss';
 
 import styles from './styles.module.scss';
 
@@ -88,6 +89,12 @@ function ImminentEvents(props: Props) {
       )}
       {(mapSource === "GDACS") && (
         <ImminentEventsGDACS
+          className={styles.map}
+          countryId={countryId}
+        />
+      )}
+      {(mapSource ==="MS") && (
+        <ImminentEventsMeteoSwiss
           className={styles.map}
           countryId={countryId}
         />

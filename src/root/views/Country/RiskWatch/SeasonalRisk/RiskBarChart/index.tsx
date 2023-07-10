@@ -16,6 +16,7 @@ import {
   Tooltip,
   ComposedChart,
   Line,
+  Area,
 } from 'recharts';
 import { scalePow } from 'd3-scale';
 import { IoBarChart } from 'react-icons/io5';
@@ -34,16 +35,14 @@ import {
   COLOR_CYCLONE,
   COLOR_DROUGHT,
   COLOR_FOOD_INSECURITY,
+  COLOR_WILDFIRE,
+  hazardTypeToIconMap
 } from '#utils/risk';
+
 import {
   HazardTypes,
   StringValueOption,
 } from '#types';
-
-import cycloneIcon from '#utils/risk-icons/cyclone.svg';
-import droughtIcon from '#utils/risk-icons/drought.svg';
-import floodIcon from '#utils/risk-icons/flood.svg';
-import foodInsecurityIcon from '#utils/risk-icons/food-insecurity.svg';
 
 import {
   RiskData,
@@ -53,6 +52,7 @@ import {
   riskMetricMap,
   formatNumber,
   chartMargin,
+  GWISChart,
 } from '../common';
 import ChartLegendItem from '../ChartLegendItem';
 import styles from './styles.module.scss';
@@ -77,7 +77,6 @@ function FILegendItem({
   );
 }
 
-
 type RiskMetricType = (typeof riskMetricOptions)[number]['value'];
 const estimationPriorityMap: {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -91,6 +90,85 @@ const estimationPriorityMap: {
 interface DetailedChartProps {
   ipcData: IPCData[],
   showHistoricalValues: boolean;
+}
+
+interface DetailedWildfireChartProps {
+  gwisData?: GWISChart[]
+  maxDate?: number;
+  minDate?: number;
+}
+
+function DetailedWildfireChart(props: DetailedWildfireChartProps) {
+  const {
+    gwisData,
+    maxDate,
+    minDate
+  } = props;
+
+  const { strings } = React.useContext(languageContext);
+
+  const monthNameList = React.useMemo(() => (
+    (getFullMonthNameList(strings)).map(m => m.substr(0, 3))
+  ), [strings]);
+
+
+  const chartData = gwisData?.map((wild) => {
+    return {
+      ...wild,
+      range: [formatNumber(wild.dsr_min ?? 0), formatNumber(wild.dsr_max ?? 0)],
+    };
+  });
+
+  return (
+    <ResponsiveContainer>
+      <ComposedChart
+        data={chartData}
+        margin={chartMargin}
+      >
+        <CartesianGrid strokeDasharray="3 3" />
+        <XAxis
+          dataKey="month"
+          tickFormatter={(m: number) => monthNameList[m - 1]}
+        />
+        <YAxis
+          tickFormatter={formatNumber}
+          label={{
+            value: 'Monthly Severity Rating',
+            angle: -90,
+            position: 'insideLeft',
+            className: styles.label,
+          }}
+        />
+        <Area
+          name={`Min-max (${minDate} - ${maxDate})`}
+          dataKey="range"
+          fill="#e3e3e3"
+          stroke="#e3e3e3"
+        />
+        <Line
+          name={`Average (${minDate} - ${maxDate})`}
+          dataKey="dsr_avg"
+          stroke="#6794dc"
+          strokeWidth={2}
+          dot={false}
+        />
+        <Line
+          name={`Year ${maxDate}`}
+          dataKey="dsr"
+          stroke="#ff6961"
+          strokeWidth={2}
+          dot={false}
+        />
+        <Tooltip
+          cursor={{ fill: '#f0f0f0' }}
+          formatter={(value: number) => {
+            return formatNumber(value);
+          }}
+          labelFormatter={(m) => monthNameList[+m - 1]}
+        />
+      </ComposedChart>
+    </ResponsiveContainer>
+  );
 }
 
 function DetailedChart(props: DetailedChartProps) {
@@ -160,18 +238,18 @@ function DetailedChart(props: DetailedChartProps) {
     strokeWidth = 2,
   ) => (
     <Line
-        type="monotone"
-        dataKey={dataKey}
-        stroke={(isDefined(activeLine) && activeLine !== dataKey) ? inactiveStroke : stroke}
-        strokeWidth={strokeWidth}
-        name={label}
-        onMouseOver={() => { setActiveLine(dataKey); }}
-        onMouseOut={() => { setActiveLine(undefined); }}
-        dot={{
-          r: strokeWidth + 2,
-          onMouseOver: () => { setActiveLine(dataKey); },
-          onMouseOut: () => { setActiveLine(undefined); },
-        }}
+      type="monotone"
+      dataKey={dataKey}
+      stroke={(isDefined(activeLine) && activeLine !== dataKey) ? inactiveStroke : stroke}
+      strokeWidth={strokeWidth}
+      name={label}
+      onMouseOver={() => { setActiveLine(dataKey); }}
+      onMouseOut={() => { setActiveLine(undefined); }}
+      dot={{
+        r: strokeWidth + 2,
+        onMouseOver: () => { setActiveLine(dataKey); },
+        onMouseOut: () => { setActiveLine(undefined); },
+      }}
     />
   );
 
@@ -249,11 +327,23 @@ function DetailedChart(props: DetailedChartProps) {
   );
 }
 
+function EmptyBox() {
+  return (
+    <div className={styles.emptyMessage}>
+      <IoBarChart className={styles.icon} />
+      <div className={styles.text}>
+        Not enough data in the selected criteria to show the chart
+      </div>
+    </div>
+  );
+}
+
 
 interface Props {
   riskData: RiskData[];
   hazardOptions: StringValueOption[];
   ipcData: IPCData[];
+  gwisData?: GWISChart[];
 }
 
 function RiskBarChart(props: Props) {
@@ -261,6 +351,7 @@ function RiskBarChart(props: Props) {
     riskData,
     hazardOptions,
     ipcData,
+    gwisData,
   } = props;
 
   const { strings } = React.useContext(languageContext);
@@ -276,6 +367,9 @@ function RiskBarChart(props: Props) {
       setRiskMetric('exposure');
     }
   }, [hazardType, setRiskMetric]);
+
+  const minDate = gwisData?.find((date) => date.minDate)?.minDate;
+  const maxDate = gwisData?.find((date) => date.maxDate)?.maxDate;
 
   const monthNameList = React.useMemo(() => (
     (getFullMonthNameList(strings)).map(m => m.substr(0, 3))
@@ -338,6 +432,15 @@ function RiskBarChart(props: Props) {
     return keys.some(k => k !== 'month' && !!c[k]);
   });
 
+  const isGwisEmpty = gwisData?.some((gwis) => {
+    const keys = Object.keys(gwis) as (keyof typeof gwis)[];
+    if (keys.length > 0) {
+      return false;
+    }
+
+    return true;
+  });
+
   return (
     <div className={styles.riskChart}>
       <div className={styles.filters}>
@@ -350,7 +453,7 @@ function RiskBarChart(props: Props) {
           isClearable
           placeholder="All hazards"
         />
-        {hazardType !== 'FI' && (
+        {(hazardType !== 'FI' && hazardType !== 'WF') && (
           <SelectInput
             className={styles.filterInput}
             value={riskMetric}
@@ -369,57 +472,61 @@ function RiskBarChart(props: Props) {
         )}
       </div>
       <div className={styles.chartContainer}>
-        {hazardType === 'FI' ? (
+        {hazardType === 'FI' && (
           <DetailedChart
             showHistoricalValues={showHistoricalValues}
             ipcData={ipcData}
           />
-        ) : (
-          isEmpty ? (
-            <div className={styles.emptyMessage}>
-              <IoBarChart className={styles.icon} />
-              <div className={styles.text}>
-                Not enough data in the selected criteria to show the chart
-              </div>
-            </div>
+        )}
+        {hazardType === 'WF' && (
+          isGwisEmpty ? (
+            <EmptyBox />
           ) : (
-            <ResponsiveContainer>
-              <BarChart
-                data={chartData}
-                margin={chartMargin}
-                barGap={1}
-                barCategoryGap={10}
-                barSize={14}
-              >
-                <Tooltip
-                  cursor={{ fill: '#f0f0f0' }}
-                  isAnimationActive={false}
-                  formatter={(value: string | number, label: string) => {
-                    return [formatNumber(+value), hazardIdToNameMap[label]];
-                  }}
-                />
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis
-                  dataKey="month"
-                />
-                <YAxis
-                  scale={riskMetric === 'informRiskScore' ? 'linear' : scaleCbrt}
-                  type="number"
-                  label={{
-                    value: riskMetricMap[riskMetric],
-                    angle: -90,
-                    position: 'insideLeft',
-                  }}
-                  tickFormatter={formatNumber}
-                />
-                {hasFl && <Bar dataKey="FL" fill={COLOR_FLOOD} />}
-                {hasTc && <Bar dataKey="TC" fill={COLOR_CYCLONE} />}
-                {hasDr && <Bar dataKey="DR" fill={COLOR_DROUGHT} />}
-                {hasFi && <Bar dataKey="FI" fill={COLOR_FOOD_INSECURITY} />}
-              </BarChart>
-            </ResponsiveContainer>
+            <DetailedWildfireChart
+              gwisData={gwisData}
+              maxDate={maxDate}
+              minDate={minDate}
+            />
           )
         )}
+        {isEmpty && (
+          <EmptyBox />
+        )}
+        <ResponsiveContainer>
+          <BarChart
+            data={chartData}
+            margin={chartMargin}
+            barGap={1}
+            barCategoryGap={10}
+            barSize={14}
+          >
+            <Tooltip
+              cursor={{ fill: '#f0f0f0' }}
+              isAnimationActive={false}
+              formatter={(value: string | number, label: string) => {
+                return [formatNumber(+value), hazardIdToNameMap[label]];
+              }}
+            />
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis
+              dataKey="month"
+            />
+            <YAxis
+              scale={riskMetric === 'informRiskScore' ? 'linear' : scaleCbrt}
+              type="number"
+              label={{
+                value: riskMetricMap[riskMetric],
+                angle: -90,
+                position: 'insideLeft',
+              }}
+              tickFormatter={formatNumber}
+            />
+            {hasFl && <Bar dataKey="FL" fill={COLOR_FLOOD} />}
+            {hasTc && <Bar dataKey="TC" fill={COLOR_CYCLONE} />}
+            {hasDr && <Bar dataKey="DR" fill={COLOR_DROUGHT} />}
+            {hasFi && <Bar dataKey="FI" fill={COLOR_FOOD_INSECURITY} />}
+          </BarChart>
+        </ResponsiveContainer>
       </div>
       <div className={styles.legend}>
         <div className={styles.heading}>
@@ -429,27 +536,33 @@ function RiskBarChart(props: Props) {
           <div className={styles.hazardLegendItems}>
             <ChartLegendItem
               color={COLOR_FLOOD}
-              icon={floodIcon}
+              icon={hazardTypeToIconMap['FL']}
               label="Floods"
               isActive={!hazardType || hazardType === 'FL'}
             />
             <ChartLegendItem
               color={COLOR_CYCLONE}
-              icon={cycloneIcon}
+              icon={hazardTypeToIconMap['TC']}
               label="Cyclone"
               isActive={!hazardType || hazardType === 'TC'}
             />
             <ChartLegendItem
               color={COLOR_DROUGHT}
-              icon={droughtIcon}
+              icon={hazardTypeToIconMap['DR']}
               label="Drought"
               isActive={!hazardType || hazardType === 'DR'}
             />
             <ChartLegendItem
               color={COLOR_FOOD_INSECURITY}
-              icon={foodInsecurityIcon}
+              icon={hazardTypeToIconMap['FI']}
               label="Food Insecurity"
               isActive={!hazardType || hazardType === 'FI'}
+            />
+            <ChartLegendItem
+              color={COLOR_WILDFIRE}
+              icon={hazardTypeToIconMap['WF']}
+              label="Wildfire"
+              isActive={!hazardType || hazardType === 'WF'}
             />
           </div>
           {hazardType === 'FI' && (
@@ -468,6 +581,16 @@ function RiskBarChart(props: Props) {
                     <FILegendItem color="#101637" label="2022" />
                   </>
                 )}
+              </div>
+            </>
+          )}
+          {hazardType === 'WF' && (
+            <>
+              <div className={styles.separator} />
+              <div className={styles.fiLegendItems}>
+                <FILegendItem color="#6794dc" label={`Average (${minDate}-${maxDate})`} />
+                <FILegendItem color="#e3e3e3" label={`Min-max (${minDate}-${maxDate})`} />
+                <FILegendItem color="#ff6961" label={`Year ${maxDate}`} />
               </div>
             </>
           )}

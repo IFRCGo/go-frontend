@@ -7,7 +7,7 @@ import {
 import TextOutput from '#components/TextOutput';
 import MapTooltipContent from '#components/MapTooltipContent';
 import Link from '#components/Link';
-import { GDACSEvent } from '#types';
+import { GDACSEvent, GDACSEventExposure, ImminentHazardTypes } from '#types';
 
 import styles from './styles.module.scss';
 
@@ -43,6 +43,7 @@ function EstimatedOutput({
 
 interface PointDetailsProps {
   hazardDetails: GDACSEvent;
+  populationExposure?: GDACSEventExposure['population_exposure'];
   onCloseButtonClick: () => void;
 }
 
@@ -51,11 +52,35 @@ function PointDetails(props: PointDetailsProps) {
     hazardDetails: {
       hazard_name,
       start_date,
+      end_date,
       event_details,
       alert_level,
+      hazard_type
     },
+    populationExposure,
     onCloseButtonClick,
   } = props;
+
+  const showSeverity: Record<ImminentHazardTypes, boolean> = React.useMemo(() => ({
+    EQ: true,
+    CY: true,
+    TC: true,
+    SS: true,
+    WF: true,
+    FL: false,
+    DR: false,
+  }),[]);
+
+  const severityDetail = React.useCallback(
+    (hd: ImminentHazardTypes) => (
+      showSeverity[hd] && (
+        <TextOutput
+          label="Severity"
+          value={event_details.severitydata.severitytext}
+        />
+      )
+    ),[event_details, showSeverity]
+  );
 
   return (
     <MapTooltipContent
@@ -64,7 +89,6 @@ function PointDetails(props: PointDetailsProps) {
       contentClassName={styles.tooltipContent}
     >
       <div className={styles.eventDates}>
-
         {isDefined(event_details.url.details) && (
           <TextOutput
             label="Details Link"
@@ -111,15 +135,45 @@ function PointDetails(props: PointDetailsProps) {
           />
         )}
       </div>
-      <EstimatedOutput
-        attribute={event_details.severitydata.severitytext}
-        value={event_details.severitydata.severity}
-      />
+      <div className={styles.eventDates}>
+        <EstimatedOutput
+          attribute="Death"
+          value={populationExposure?.death}
+        />
+        <EstimatedOutput
+          attribute="Displaced"
+          value={populationExposure?.displaced}
+        />
+        {isDefined(populationExposure?.exposed_population) && (
+          <TextOutput
+            label="Population Exposed"
+            value={populationExposure?.exposed_population}
+          />
+        )}
+        {isDefined(populationExposure?.people_affected) && (
+          <TextOutput
+            label="Population Affected"
+            value={populationExposure?.people_affected}
+          />
+        )}
+        {isDefined(populationExposure?.impact) && (
+          <TextOutput
+            label="Impact"
+            value={populationExposure?.impact}
+          />
+        )}
+      </div>
+      {severityDetail(hazard_type)}
       <hr />
       <div className={styles.eventDates}>
         <TextOutput
           label="Event Start Date"
           value={start_date}
+          valueType="date"
+        />
+        <TextOutput
+          label="Event End Date"
+          value={end_date}
           valueType="date"
         />
         <TextOutput

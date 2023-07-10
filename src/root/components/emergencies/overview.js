@@ -54,7 +54,7 @@ function EmergencyOverview(props) {
                 </div>
               </div>
               <div className='flex row emergency__overview-row'>
-                <div className='col emergency__overview-col-cat'>{strings.drefFormGlideNum}</div>
+                <div className='col emergency__overview-col-cat'>{strings.emergencyGlideNum}</div>
                 <div className='col emergency__overview-col-desc'>
                   <div className='emergency__overview-desc'>
                     {data.glide === '' ? '-' : data.glide}
@@ -82,7 +82,7 @@ function EmergencyOverview(props) {
                 </div>
               </div>
               <div className='flex row emergency__overview-row'>
-                <div className='col emergency__overview-col-cat'>{strings.drefFormAppealCode}</div>
+                <div className='col emergency__overview-col-cat'>{strings.emergencyAppealCode}</div>
                 <div className='col emergency__overview-col-desc'>
                   <div className='emergency__overview-desc'>
                     {data.appeals.length === 0 || data.appeals[0].code === '' ? '-' : data.appeals[0].code}
@@ -93,7 +93,7 @@ function EmergencyOverview(props) {
                 <div className='col emergency__overview-col-cat'>{strings.emergencyNSReqIntlAsst}</div>
                 <div className='col emergency__overview-col-desc'>
                   <div className='emergency__overview-desc'>
-                    { hasFieldReports ? yesno(firstFieldReport.ns_request_assistance) : '-' }
+                    { hasFieldReports ? yesno(firstFieldReport.ns_request_assistance, strings) : '-' }
                   </div>
                 </div>
               </div>
@@ -101,7 +101,7 @@ function EmergencyOverview(props) {
                 <div className='col emergency__overview-col-cat'>{strings.emergencyGovtReqIntlAsst}</div>
                 <div className='col emergency__overview-col-desc'>
                   <div className='emergency__overview-desc'>
-                    { hasFieldReports ? yesno(firstFieldReport.request_assistance) : '-' }
+                    { hasFieldReports ? yesno(firstFieldReport.request_assistance, strings) : '-' }
                   </div>
                 </div>
               </div>

@@ -1,11 +1,47 @@
-export type HazardTypes = 'DR' | 'FL' | 'TC' | 'FI';
 export type ImminentHazardTypes = 'EQ' | 'FL' | 'CY' | 'TC' | 'SS' | 'DR' | 'WF';
-export type SeasonalHazardTypes = 'EQ' | 'FL' | 'TC' | 'DR' | 'FI';
+export type SeasonalHazardTypes = 'EQ' | 'FL' | 'TC' | 'DR' | 'FI' | 'WF';
+export type HazardTypes = 'DR' | 'FL' | 'TC' | 'FI' | 'WF';
 
 interface ExposureObject {
   value: number;
   valueFormatted: string;
   valueFormattedNoTrunc: string;
+}
+
+export interface MeteoSwissExposure {
+  footprint_geojson: {
+    footprint_geojson: GeoJSON.FeatureCollection<GeoJSON.Geometry, { type?: string;}>;
+    id: number;
+    impact_type: string;
+  }
+}
+
+interface MeteoSwissEventImpact {
+  id: number;
+  max: number;
+  min: number;
+  mean: number;
+  impact_type: string;
+}
+
+export interface MeteoSwissEvent {
+  id: number,
+  hazard_name: string;
+  hazard_type: ImminentHazardTypes;
+  hazard_type_display: string;
+  start_date: string;
+  end_date: string;
+  latitude: number;
+  longitude: number;
+  country: number;
+  country_details: {
+    id: number;
+    name: string;
+    iso: string;
+    iso3: string;
+    region: number;
+  },
+  event_details: MeteoSwissEventImpact[];
 }
 
 export interface PDCEvent {
@@ -73,14 +109,51 @@ export interface PDCEventExposure {
   } | null;
 }
 
+export interface GDACSEventDetails {
+  url: {
+    report: string;
+    details: string;
+    geometry: string;
+  },
+  icon: string;
+  iso3: string;
+  name: string;
+  Class: string;
+  glide: string;
+  todate: string;
+  country: string;
+  eventid: number;
+  fromdate: string;
+  episodeid: number;
+  eventname: string;
+  eventtype: string;
+  iscurrent: string;
+  alertlevel: string;
+  alertscore: number;
+  description: string;
+  iconoverall: null,
+  istemporary: string;
+  polygonlabel: string;
+  severitydata: {
+    severity: number;
+    severitytext: string;
+    severityunit: string;
+  },
+  countryonland: string;
+  htmldescription: string;
+  episodealertlevel: string;
+  episodealertscore: number;
+
+}
+
 export interface GDACSEvent {
   id: number,
   country_details: {
-      id: number;
-      name: string;
-      iso: string;
-      iso3: string;
-      region: number;
+    id: number;
+    name: string;
+    iso: string;
+    iso3: string;
+    region: number;
   },
   hazard_type_display: string;
   created_at: string;
@@ -90,49 +163,22 @@ export interface GDACSEvent {
   hazard_name: string;
   hazard_type: ImminentHazardTypes;
   alert_level: string;
-  event_details: {
-    url: {
-        report: string;
-        details: string;
-        geometry: string;
-    },
-    icon: string;
-    iso3: string;
-    name: string;
-    Class: string;
-    glide: string;
-    todate: string;
-    country: string;
-    eventid: number;
-    fromdate: string;
-    episodeid: number;
-    eventname: string;
-    eventtype: string;
-    iscurrent: string;
-    alertlevel: string;
-    alertscore: number;
-    description: string;
-    iconoverall: null,
-    istemporary: string;
-    polygonlabel: string;
-    severitydata: {
-        severity: number;
-        severitytext: string;
-        severityunit: string;
-    },
-    countryonland: string;
-    htmldescription: string;
-    episodealertlevel: string;
-    episodealertscore: number;
-  },
+  event_details: GDACSEventDetails;
   country: number;
   latitude: number;
   longitude: number;
 }
 
-export interface GDACSEventExposure{
-  footprint_geojson: GeoJSON.FeatureCollection<GeoJSON.Geometry, GDACSEvent>;
+export interface GDACSEventExposure {
+  footprint_geojson: GeoJSON.FeatureCollection<GeoJSON.Geometry, GDACSEventDetails>;
   capital_exposure: string;
+  population_exposure: {
+    death: number;
+    displaced: number;
+    exposed_population: string;
+    people_affected: string;
+    impact: string;
+  }
 }
 
 export interface ImminentResponse {

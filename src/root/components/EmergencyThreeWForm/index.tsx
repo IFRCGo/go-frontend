@@ -670,7 +670,7 @@ function EmergencyThreeWForm(props: Props) {
                 error={error?.event}
                 fetchedEvents={fetchedEvents}
                 setFetchedEvents={setFetchedEvents}
-            />
+              />
             </InputSection>
             <InputSection
               title="Country and Province/Region"

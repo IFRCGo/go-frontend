@@ -14,6 +14,7 @@ import NewGlobalLoading from '#components/NewGlobalLoading';
 import Translate from '#components/Translate';
 import BreadCrumb from '#components/breadcrumb';
 import ContactRow from '#components/contact-row';
+import TranslationWarningBanner from '#components/TranslationWarningBanner';
 import { withLanguage } from '#root/languageContext';
 import { resolveToString } from '#utils/lang';
 import {
@@ -1224,7 +1225,9 @@ class Emergency extends React.Component {
             { resolveToString(strings.emergencyPageTitle, { name: get(data, 'name', 'Emergency') }) }
           </title>
         </Helmet>
-
+        <TranslationWarningBanner
+          originalContentLanguage={data.translation_module_original_language}
+        />
         <div className='container-lg'>
           <div className='row flex-sm'>
             <div className='col col-6-sm col-7-mid'>

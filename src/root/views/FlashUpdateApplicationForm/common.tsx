@@ -8,6 +8,7 @@ import {
   NumericValueOption,
   StringValueOption,
 } from '#types/common';
+import { Language } from '#types/project';
 
 export const ONSET_IMMINENT = 0;
 export const ONSET_SLOW = 1;
@@ -139,6 +140,7 @@ export interface FlashUpdateAPIResponseFields extends Omit<FlashUpdateFields, 'c
     })[];
     organization_display: string;
   })[];
+  translation_module_original_language: Language;
 }
 
 export type FlashUpdateAPIFields = FlashUpdateFields;

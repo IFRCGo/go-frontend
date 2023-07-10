@@ -9,6 +9,7 @@ import { environment } from '#config';
 import { showGlobalLoading, hideGlobalLoading } from '#components/global-loading';
 import { getFieldReportById } from '#actions';
 import BreadCrumb from '#components/breadcrumb';
+import TranslationWarningBanner from '#components/TranslationWarningBanner';
 
 import {
   commaSeparatedNumber as n,
@@ -62,14 +63,16 @@ class FieldReport extends React.Component {
   }
 
   renderPlannedResponse (data) {
+    const { strings } = this.context;
+
     const response = [
-      ['DREF', getResponseStatus(data, 'dref')],
-      ['Emergency Appeal', getResponseStatus(data, 'appeal')],
-      ['RDRT/RITS', getResponseStatus(data, 'rdrt')],
-      ['Rapid Response Personnel', getResponseStatus(data, 'fact')],
-      ['Emergency Response Units', getResponseStatus(data, 'ifrc_staff')],
-      ['Forecast Based Response', getResponseStatus(data, 'forecast_based_response')],
-      ['Forecast Based Action', getResponseStatus(data, 'forecast_based_action')]
+      ['DREF', getResponseStatus(data, 'dref', strings)],
+      [ strings.fieldsStep4PlannedResponseRowsEmergencyAppealEVTEPIEWLabel, getResponseStatus(data, 'appeal', strings)],
+      [ strings.fieldReportRdrtRitsLabel, getResponseStatus(data, 'rdrt', strings)],
+      [ strings.fieldsStep4PlannedResponseRowsFactEVTEPIEWLabel, getResponseStatus(data, 'fact', strings)],
+      [ strings.fieldsStep4PlannedResponseRowsIFRCStaffEVTEPIEWLabel, getResponseStatus(data, 'ifrc_staff', strings)],
+      [ strings.fieldReportForecastBasedResponseLabel, getResponseStatus(data, 'forecast_based_response', strings)],
+      [ strings.fieldsStep4PlannedResponseRowsForecastBasedActionEWLabel, getResponseStatus(data, 'forecast_based_action', strings)]
     ].filter(d => Boolean(d[1]));
 
     // Every response is either 0 (not planned) or null.
@@ -78,7 +81,7 @@ class FieldReport extends React.Component {
     }
 
     return (
-      <DisplaySection title='Planned International Response'>
+      <DisplaySection title={strings.fieldReportFormResponseLabel}>
         <dl className='dl-horizontal numeric-list'>
           {response.map(d => d[1] ? [
             <dt key={`${d[0]}-dt`}>{d[0]}</dt>,
@@ -569,6 +572,9 @@ class FieldReport extends React.Component {
             {title}
           </title>
         </Helmet>
+        <TranslationWarningBanner
+          originalContentLanguage={data.translation_module_original_language}
+        />
         <BreadCrumb
           crumbs={[
             {link: `/reports/${data.id}`, name: get(data, 'summary', strings.breadCrumbFieldReport)},
@@ -649,11 +655,11 @@ class FieldReport extends React.Component {
                 <DisplaySection title={strings.fieldReportRequest}>
                   <p>
                     <Translate stringId='fieldReportGovernmentRequest'/>
-                    <span> {yesno(get(data, 'request_assistance'))}</span>
+                    <span> {yesno(get(data, 'request_assistance'), strings)}</span>
                   </p>
                   <p>
                     <Translate stringId='fieldReportInternationalRequest'/>
-                    <span> {yesno(get(data, 'ns_request_assistance'))}</span>
+                    <span> {yesno(get(data, 'ns_request_assistance'), strings)}</span>
                   </p>
                 </DisplaySection>
                 { !isCOVID
