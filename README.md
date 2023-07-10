@@ -10,7 +10,7 @@ The steps below will walk you through setting up a development environment for t
 ### Install Project Dependencies
 To set up the development environment for this website, you'll need to install the following on your system:
 
-- [Node](http://nodejs.org/) v13 (To manage multiple node versions we recommend [nvm](https://github.com/creationix/nvm))
+- [Node](http://nodejs.org/) v18 (To manage multiple node versions we recommend [nvm](https://github.com/creationix/nvm))
 - [Yarn](https://yarnpkg.com/) Package manager
 
 ### Install Application Dependencies
@@ -57,6 +57,9 @@ yarn start
 Compiles the sass files, javascript, and launches the server making the site available at `http://localhost:3000/`
 The system will watch files and execute tasks whenever one of them changes.
 The site will automatically refresh since it is bundled with livereload.
+
+Another possibility is to use a docker image for local development; it can be started via: `docker-compose up`
+This will arrange all steps concerning yarn install and yarn start; this is the recommended way.
 
 # Deployment
 
