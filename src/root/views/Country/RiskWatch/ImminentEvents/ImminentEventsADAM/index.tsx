@@ -60,7 +60,7 @@ function ImminentEventsADAM(props: Props) {
 
   const data = React.useMemo(() => {
     if (!response || !response.results) {
-      return undefined;
+      return [];
     }
 
     const uuidGroupedHazardList = listToGroupList(
@@ -84,25 +84,24 @@ function ImminentEventsADAM(props: Props) {
     return uniqueList;
   }, [response]);
 
-  if ((!pending && !response?.results) || data?.length === 0) {
-    return (
-      <div className={styles.empty}>
-        There are currently no events!
-      </div>
-    );
-  }
+  const hasAdamEvents = response && response.results && response.results.length > 0;
 
   return (
     <>
-      {pending && <BlockLoading />}
-      {!pending && data && (
-        <ADAMEventMap
-          className={_cs(className, styles.map)}
-          sidebarHeading={country?.name}
-          hazardList={data}
-          onActiveEventChange={handleEventClick}
-          activeEventUuid={activeEventUuid}
-        />
+      {pending && <BlockLoading className={styles.loading} />}
+      <ADAMEventMap
+        className={_cs(className, styles.map)}
+        sidebarHeading={country?.name}
+        hazardList={data}
+        onActiveEventChange={handleEventClick}
+        activeEventUuid={activeEventUuid}
+      />
+      {!pending && !hasAdamEvents && (
+        <div className={styles.emptyMessage}>
+          <div className={styles.text}>
+            No ADAM events
+          </div>
+        </div>
       )}
     </>
   );

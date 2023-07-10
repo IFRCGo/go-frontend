@@ -1,3 +1,6 @@
+### Release 6.7.1 - Hotfix to hide MeteoSwiss from source list in Risk pages
+Date: 2023-07-10
+
 ### Release 6.7.0 - Translation, DREF, Sentry, Risk Module improvements
 Date: 2023-07-10
 
