@@ -72,7 +72,7 @@ function ImminentEventsPDC(props: Props) {
 
   const data = React.useMemo(() => {
     if (!pdcResponse || !pdcResponse.results) {
-      return undefined;
+      return [];
     }
 
     const uuidGroupedHazardList = listToGroupList(
@@ -115,28 +115,27 @@ function ImminentEventsPDC(props: Props) {
     });
   }, []);
 
-  if ((!pending && !pdcResponse?.results) || data?.length === 0) {
-    return (
-      <div className={styles.empty}>
-        There are currently no events!
-      </div>
-    );
-  }
+  const hasPdcEvents = pdcResponse && pdcResponse.results && pdcResponse.results.length > 0;
 
   return (
     <>
-      {pending && <BlockLoading />}
-      {!pending && data && (
-        <PDCEventMap
-          className={className}
-          sidebarHeading={country?.name}
-          hazardList={data}
-          defaultBounds={countryBounds}
-          onActiveEventChange={handleEventClick}
-          activeEventUuid={activeEventUuid}
-          activeEventExposure={activeEventExposure}
-          activeEventExposurePending={activeEventExposurePending}
-        />
+      {pending && <BlockLoading className={styles.loading} />}
+      <PDCEventMap
+        className={className}
+        sidebarHeading={country?.name}
+        hazardList={data}
+        defaultBounds={countryBounds}
+        onActiveEventChange={handleEventClick}
+        activeEventUuid={activeEventUuid}
+        activeEventExposure={activeEventExposure}
+        activeEventExposurePending={activeEventExposurePending}
+      />
+      {!pending && !hasPdcEvents && (
+        <div className={styles.emptyMessage}>
+          <div className={styles.text}>
+            No PDC events
+          </div>
+        </div>
       )}
     </>
   );

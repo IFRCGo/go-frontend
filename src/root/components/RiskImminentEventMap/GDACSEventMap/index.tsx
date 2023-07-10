@@ -145,7 +145,7 @@ function GDACSEventMap(props: Props) {
     return hazardListFromProps.filter(h => supportedHazards[h.hazard_type]);
   }, [hazardListFromProps]);
 
-  const activeEvent = hazardList?.find(d => d.hazard_id === activeEventUuid);
+  const activeEvent = hazardList?.find(d => d.event_details.eventid === activeEventUuid);
 
   const activeEventPopUpDetails = React.useMemo(() => {
     if (isNotDefined(activeEvent)) {
@@ -161,7 +161,7 @@ function GDACSEventMap(props: Props) {
       activeEventExposure,
       hazardDetails: activeEvent,
       lngLat,
-      uuid: activeEvent.hazard_id,
+      uuid: activeEvent.event_details.eventid,
     };
   }, [
       activeEvent,
@@ -192,7 +192,7 @@ function GDACSEventMap(props: Props) {
           },
           properties: {
             hazardId: hazard.id,
-            hazardUuid: hazard.hazard_id,
+            hazardUuid: hazard.event_details.eventid,
             hazardType: hazard.hazard_type,
           },
         };
