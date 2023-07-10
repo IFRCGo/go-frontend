@@ -46,7 +46,7 @@ Environment variables for sentry:
 Sample `.env` file
 ```
 REACT_APP_MAPBOX_ACCESS_TOKEN=<your_mapbox_token>
-REACT_APP_API_ENDPOINT=https://dsgocdnapi.azureedge.net/
+REACT_APP_API_ENDPOINT=https://goadmin-stage.ifrc.org/
 ```
 
 #### Starting the app
