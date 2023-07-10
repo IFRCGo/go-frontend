@@ -1,5 +1,29 @@
+### Release 6.7.0 - Translation, DREF, Sentry, Risk Module improvements
+Date: 2023-07-10
+
+Frontend:
+ - Add missing translation in field report
+ - Implement sentry for error tracking
+ - Remove redux logger
+ - Add user content translation
+ - Add warning banners for translated content
+ - Remove covid tracking from create report dropdown
+ - Remove validation on loan type dref
+ - Catalogue of Surge Services: HR
+ - Fix status in completed dref
+ - Revamp DREF listing in account page
+ - New surge data for ERU IT
+ - Fix user search select in DREF account page
+ - Fix map footer for meteoswiss data in risk pages
+ - Remove separation in contact field
+ - Fix GDACS map visualization
+ - Add GWIS chart in country risk page
+
 ### Release 6.6.8 - Hotfix for Final Report export
 Date: 2023-07-04
+
+Frontend:
+ - Final Report Export fix for special types
 
 ### Release 6.6.7 - Hotfix for Surge Catalogue
 Date: 2023-06-23
