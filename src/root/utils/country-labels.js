@@ -46,8 +46,8 @@ export const countryNonIndependentLabels = {
   },
   filter: ['==', ['get', 'independent'], false],
   paint: {
-   'text-color': '#aaaaaa',
-   'text-halo-color': '#000000',
+   'text-color': '#716f6f',
+   'text-halo-color': '#ffffff',
    'text-halo-width': 0.2
   }
 };
