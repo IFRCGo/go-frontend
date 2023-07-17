@@ -182,9 +182,10 @@ export const countriesGeojsonSelector = (state) => {
     state.allCountries.data.results.forEach(country => {
       // select only independent = true or null and record_type = 1
       // also remove ICRC and IFRC
+      // don't filter independent=false Kosovo using id 335
       if (
         country.centroid &&
-        (country.independent || country.independent === null) &&
+        (country.independent || country.independent === null || country.id === 335) &&
         country.record_type === 1 &&
 
         // This filters out the ICRC and IFRC "countries". FIXME: this should be handled better
@@ -198,7 +199,9 @@ export const countriesGeojsonSelector = (state) => {
             'name': country.iso === 'ps' ? palestineLabel(currentLang) : country.name,
             'iso': country.iso,
             'iso3': country.iso3,
-            'society_name': country.society_name
+            'society_name': country.society_name,
+            'independent': country.independent,
+            'id': country.id
           }
         };
         featureCollection.features.push(f);
