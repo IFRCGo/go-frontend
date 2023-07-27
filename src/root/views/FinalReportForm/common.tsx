@@ -248,6 +248,7 @@ export interface DrefFinalReportApiFields extends Omit<DrefFinalReportFields, 'd
   };
   users_details: User[];
   translation_module_original_language: Language;
+  financial_report_preview: string;
 }
 
 export const overviewFields: (keyof DrefFinalReportFields)[] = [
