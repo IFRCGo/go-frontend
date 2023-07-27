@@ -187,7 +187,8 @@ export interface DrefFinalReportFields {
   id: string;
   created_at: string;
   modified_at: string;
-  modified_by: number;
+  modified_by: number | null;
+  modified_by_details: User | null;
   users: number[];
   dref?: string;
   country: number;
