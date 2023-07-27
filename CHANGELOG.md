@@ -1,3 +1,14 @@
+### Release 6.7.2 - Hotfix DREF Final Report export
+Date: 2023-07-27
+
+Frontend:
+- Add an option to download the final report pdf export from dref listing
+- Add operation report section to the final report export
+- Add obsolete payload modal to final report
+
+### Release 6.7.1 - Hotfix to hide MeteoSwiss from source list in Risk pages
+Date: 2023-07-10
+
 ### Release 6.7.0 - Translation, DREF, Sentry, Risk Module improvements
 Date: 2023-07-10
 

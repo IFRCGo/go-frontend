@@ -342,6 +342,10 @@ function ActiveDrefTable(props:Props) {
                   || finalReportPublishPending}
                 label="Approved"
               />
+                <FinalReportExport
+                  id={item.id}
+                  variant='dropdown'
+                />
               <DropdownMenuItem
                 name={{
                   id: item.id,

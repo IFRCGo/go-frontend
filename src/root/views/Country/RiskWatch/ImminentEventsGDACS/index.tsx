@@ -18,12 +18,14 @@ import styles from './styles.module.scss';
 interface Props {
   className?: string;
   countryId: number;
+  onLoad: (numEvents: number | undefined) => void;
 }
 
 function ImminentEventsGDACS(props: Props) {
   const {
     className,
     countryId,
+    onLoad,
   } = props;
 
   const [activeEventUuid, setActiveEventUuid] = React.useState<number>();
@@ -40,11 +42,17 @@ function ImminentEventsGDACS(props: Props) {
     skip: isNotDefined(country),
     url: 'risk://api/v1/gdacs/',
     query: { iso3: country?.iso3?.toLocaleLowerCase() },
+    onSuccess: (response) => {
+      onLoad(response.results?.length);
+    },
+    onFailure: () => {
+      onLoad(undefined);
+    }
   });
 
   const data = React.useMemo(() => {
     if (isNotDefined(gdacsResponse) || isNotDefined(gdacsResponse.results)) {
-      return undefined;
+      return [];
     }
 
     const uuidGroupedHazardList = listToGroupList(
@@ -98,18 +106,16 @@ function ImminentEventsGDACS(props: Props) {
 
   return (
     <>
-      {pending && <BlockLoading />}
-      {!pending && data && (
-        <GDACSEventMap
-          sidebarHeading={country?.name}
-          className={_cs(className, styles.map)}
-          hazardList={data}
-          onActiveEventChange={handleEventClick}
-          activeEventUuid={activeEventUuid}
-          activeEventExposure={activeEventExposure}
-          activeEventExposurePending={activeEventExposurePending}
-        />
-      )}
+      {pending && <BlockLoading className={styles.loading} />}
+      <GDACSEventMap
+        sidebarHeading={country?.name}
+        className={_cs(className, styles.map)}
+        hazardList={data}
+        onActiveEventChange={handleEventClick}
+        activeEventUuid={activeEventUuid}
+        activeEventExposure={activeEventExposure}
+        activeEventExposurePending={activeEventExposurePending}
+      />
       {!pending && !hasGdacsEvents && (
         <div className={styles.emptyMessage}>
           <div className={styles.text}>

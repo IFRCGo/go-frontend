@@ -28,32 +28,48 @@ function ImminentEvents(props: Props) {
   const { countryId } = props;
   const [numWfpEvents, setNumWfpEvents] = React.useState<number | undefined>();
   const [numPdcEvents, setNumPdcEvents] = React.useState<number | undefined>();
+  const [numGdacsEvents, setNumGdacsEvents] = React.useState<number | undefined>();
   const [mapSource, setMapSource] = React.useState<string | undefined>("PDC");
   const triggered = React.useRef(false);
 
-  const sourceType = React.useCallback(
-    (data?: string) => setMapSource(data),
-    [],
-  );
-
   // FIXME: handle for GDACS and other sources
   const handlePdcEventLoad = React.useCallback((numEvents: number | undefined) => {
-    if (!numEvents && triggered.current === false) {
-      sourceType('WFP');
+    if (numEvents) {
       triggered.current = true;
     }
+
+    if (triggered.current === false) {
+      setMapSource('WFP');
+    }
+
     setNumPdcEvents(numEvents ?? 0);
-  }, [sourceType, triggered]);
+  }, []);
 
   const handleWfpEventLoad = React.useCallback((numEvents: number | undefined) => {
-    if (!numEvents && triggered.current === false) {
-      sourceType('PDC');
+    if (numEvents) {
       triggered.current = true;
     }
-    setNumWfpEvents(numEvents ?? 0);
-  }, [sourceType, triggered]);
 
-  if (numWfpEvents === 0 && numPdcEvents === 0) {
+    if (triggered.current === false) {
+      setMapSource('GDACS');
+    }
+
+    setNumWfpEvents(numEvents ?? 0);
+  }, []);
+
+  const handleGdacsEventLoad = React.useCallback((numEvents: number | undefined) => {
+    if (numEvents) {
+      triggered.current = true;
+    }
+
+    if (triggered.current === false) {
+      triggered.current = true;
+    }
+
+    setNumGdacsEvents(numEvents ?? 0);
+  }, []);
+
+  if (numWfpEvents === 0 && numPdcEvents === 0 && numGdacsEvents === 0) {
     return null;
   }
 
@@ -87,13 +103,14 @@ function ImminentEvents(props: Props) {
           onLoad={handleWfpEventLoad}
         />
       )}
-      {(mapSource === "GDACS") && (
+      {mapSource === "GDACS" && (
         <ImminentEventsGDACS
           className={styles.map}
           countryId={countryId}
+          onLoad={handleGdacsEventLoad}
         />
       )}
-      {(mapSource ==="MS") && (
+      {mapSource ==="MS" && (
         <ImminentEventsMeteoSwiss
           className={styles.map}
           countryId={countryId}
@@ -101,7 +118,7 @@ function ImminentEvents(props: Props) {
       )}
       <MapFooter
         sourceType={mapSource}
-        onSourceChange={sourceType}
+        onSourceChange={setMapSource}
       />
     </Container>
   );

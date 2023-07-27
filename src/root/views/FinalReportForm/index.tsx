@@ -62,10 +62,11 @@ import useDrefFinalReportFormOptions, {
 } from './useDreFinalReportOptions';
 import { checkLanguageMismatch, ymdToDateString } from '#utils/common';
 
-import styles from './styles.module.scss';
 import Translate from '#components/Translate';
 import useReduxState from '#hooks/useReduxState';
 import { languageOptions } from '#utils/lang';
+import ObsoletePayloadResolutionModal from './ObsoletePayloadResolutionModal';
+import styles from './styles.module.scss';
 
 interface Props {
   match: match<{ id?: string }>;
@@ -96,10 +97,8 @@ const defaultFormValues: PartialForm<DrefFinalReportFields> = {
 };
 
 function FinalReport(props: Props) {
-  const {
-    match,
-  } = props;
-  const { id } = match.params;
+  const { match } = props;
+  const { id: finalReportId } = match.params;
   const alert = useAlert();
   const {
     value,
@@ -291,7 +290,7 @@ function FinalReport(props: Props) {
     pending: drefFinalReportSubmitPending,
     trigger: submitRequest,
   } = useLazyRequest<DrefFinalReportApiFields, Partial<DrefFinalReportApiFields>>({
-    url: `api/v2/dref-final-report/${id}`,
+    url: `api/v2/dref-final-report/${finalReportId}/`,
     method: 'PUT',
     body: ctx => ctx,
     onSuccess: (response) => {
@@ -313,6 +312,11 @@ function FinalReport(props: Props) {
         [internal]: formErrors?.non_field_errors as string | undefined,
       });
 
+      if (formErrors.modified_at === 'OBSOLETE_PAYLOAD') {
+        // There was a save conflict due to obsolete payload
+        setShowObsoletePayloadResolutionModal(true);
+      }
+
       alert.show(
         <p>
           {strings.drefFormSaveRequestFailureMessage}
@@ -333,8 +337,8 @@ function FinalReport(props: Props) {
     pending: finalReportPending,
     response: drefFinalReportResponse,
   } = useRequest<DrefFinalReportApiFields>({
-    skip: !id,
-    url: `api/v2/dref-final-report/${id}/`,
+    skip: !finalReportId,
+    url: `api/v2/dref-final-report/${finalReportId}/`,
     onSuccess: (response) => {
       handleFinalReportLoad(response);
     },
@@ -359,10 +363,15 @@ function FinalReport(props: Props) {
   });
 
   const languageMismatch = checkLanguageMismatch(
-    id,
+    finalReportId,
     drefFinalReportResponse?.translation_module_original_language,
     currentLanguage,
   );
+
+  const [
+    showObsoletePayloadResolutionModal,
+    setShowObsoletePayloadResolutionModal,
+  ] = React.useState(false);
 
   React.useEffect(() => {
     if (isDefined(value.operation_start_date) && isDefined(value.total_operation_timeframe)) {
@@ -402,7 +411,7 @@ function FinalReport(props: Props) {
     }
   }, [handleTabChange, currentStep]);
 
-  const submitDrefFinalReport = useCallback(() => {
+  const submitDrefFinalReport = useCallback((modifiedAt?: string) => {
     const result = validate();
 
     if (result.errored) {
@@ -411,7 +420,7 @@ function FinalReport(props: Props) {
       const body = {
         user: userDetails.id,
         ...result.value,
-        modified_at: lastModifiedAtRef.current,
+        modified_at: modifiedAt ?? lastModifiedAtRef.current,
       };
       submitRequest(body as DrefFinalReportApiFields);
     }
@@ -448,7 +457,7 @@ function FinalReport(props: Props) {
     || finalReportPending
     || drefFinalReportSubmitPending;
 
-  const failedToLoadDref = !pending && isDefined(id) && !drefFinalReportResponse;
+  const failedToLoadDref = !pending && isDefined(finalReportId) && !drefFinalReportResponse;
 
   const exportLinkProps = useButtonFeatures({
     variant: 'secondary',
@@ -457,6 +466,15 @@ function FinalReport(props: Props) {
 
   const drefType = value?.type_of_dref;
   const onsetType = value?.type_of_onset;
+
+  const handleObsoletePayloadResolutionOverwiteButtonClick = React.useCallback((newModifiedAt: string | undefined) => {
+    setShowObsoletePayloadResolutionModal(false);
+    submitDrefFinalReport(newModifiedAt);
+  }, [submitDrefFinalReport]);
+
+  const handleObsoletePayloadResolutionCancelButtonClick = React.useCallback(() => {
+    setShowObsoletePayloadResolutionModal(false);
+  }, []);
 
   return (
     <Tabs
@@ -468,9 +486,9 @@ function FinalReport(props: Props) {
       <Page
         actions={(
           <>
-            {isDefined(id) && (
+            {isDefined(finalReportId) && (
               <Link
-                to={`/dref-final-report/${id}/export/`}
+                to={`/dref-final-report/${finalReportId}/export/`}
                 {...exportLinkProps}
               />
             )}
@@ -646,6 +664,13 @@ function FinalReport(props: Props) {
                   </Button>
                 </div>
               </>
+            )}
+            {isDefined(finalReportId) && showObsoletePayloadResolutionModal && (
+              <ObsoletePayloadResolutionModal
+                opsUpdateId={+finalReportId}
+                onOverwriteButtonClick={handleObsoletePayloadResolutionOverwiteButtonClick}
+                onCancelButtonClick={handleObsoletePayloadResolutionCancelButtonClick}
+              />
             )}
           </>
         )}
