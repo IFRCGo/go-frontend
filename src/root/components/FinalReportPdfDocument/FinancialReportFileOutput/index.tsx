@@ -1,0 +1,63 @@
+import React from 'react';
+import {
+  Image,
+  Text,
+  View,
+} from '@react-pdf/renderer';
+import { isDefined, isNotDefined } from '@togglecorp/fujs';
+
+import { DrefFinalReportApiFields } from '#views/FinalReportForm/common';
+import { Strings } from '#types';
+import pdfStyles from '#utils/pdf/pdfStyles';
+
+interface Props {
+  data: DrefFinalReportApiFields;
+  strings: Strings;
+}
+
+function FinancialReportFileOutput(props: Props) {
+  const {
+    data,
+    strings,
+  } = props;
+
+  if (isNotDefined(data.financial_report_preview) && isDefined(data.financial_report_description)) {
+    return null;
+  }
+
+  return (
+    <View break>
+      <Text style={[
+        pdfStyles.sectionHeading, {
+          marginTop: 0,
+          marginBottom: 0,
+        }
+      ]}
+      >
+        {strings.finalReportFinancialReport}
+      </Text>
+
+      {isDefined(data.financial_report_description) && (
+        <View style={pdfStyles.subSection}>
+          <Text
+            style={pdfStyles.subSectionHeading}
+            minPresenceAhead={20}
+          >
+            {strings.finalReportFinancialReportVariances}
+          </Text>
+          <Text style={pdfStyles.text}>
+            {data.financial_report_description}
+          </Text>
+        </View>
+      )}
+      {isDefined(data.financial_report_preview) && (
+        <Image
+          style={pdfStyles.budgetImage}
+          src={data.financial_report_preview}
+        />
+      )}
+    </View>
+  );
+}
+
+export default FinancialReportFileOutput;

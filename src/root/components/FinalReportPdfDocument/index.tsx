@@ -25,6 +25,7 @@ import PlannedInterventionOutput from './PlannedInterventionOutput';
 import TargetedPopulationOutput from './TargetedPopulationOutput';
 import ContactInformationOutput from './ContactInformationOutput';
 import PageNumberPdf from '#components/DrefPdfDocument/PageNumberPdf';
+import FinancialReportFileOutput from './FinancialReportFileOutput';
 
 interface DrefOptions {
   disaster_category: NumericKeyValuePair[];
@@ -124,6 +125,10 @@ function FinalReportPdfDocument(props: Props) {
           strings={strings}
           data={finalReportResponse}
           piMap={piMap}
+        />
+        <FinancialReportFileOutput
+          strings={strings}
+          data={finalReportResponse}
         />
         <ContactInformationOutput
           data={finalReportResponse}
