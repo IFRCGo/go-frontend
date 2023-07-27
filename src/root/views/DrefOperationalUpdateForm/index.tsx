@@ -354,7 +354,7 @@ function DrefOperationalUpdate(props: Props) {
         const currentFieldsMap = listToMap(
           currentFields,
           d => d,
-          d => true,
+          () => true,
         );
 
         const partialErrors: typeof error = mapToMap(
@@ -371,7 +371,7 @@ function DrefOperationalUpdate(props: Props) {
   const validateCurrentTab = React.useCallback((exceptions: (keyof DrefOperationalUpdateFields)[] = []) => {
     const validationError = getErrorObject(accumulateErrors(value, schema, value, contextValue));
     const currentFields = stepTypesToFieldsMap[currentStep];
-    const exceptionsMap = listToMap(exceptions, d => d, d => true);
+    const exceptionsMap = listToMap(exceptions, d => d, () => true);
 
     if (!validationError) {
       return true;

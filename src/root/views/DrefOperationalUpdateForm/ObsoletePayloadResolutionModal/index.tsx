@@ -47,8 +47,6 @@ function ObsoletePayloadResolutionModal(props: Props) {
   } = useRequest<DrefOperationalUpdateApiFields>({
     skip: !opsUpdateId,
     url: `api/v2/dref-op-update/${opsUpdateId}/`,
-    onSuccess: (response) => {
-    },
   });
 
   return (
