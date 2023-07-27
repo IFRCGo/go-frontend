@@ -8,6 +8,7 @@ import {
   StringKeyValuePair,
 } from '#types';
 import { DrefFinalReportApiFields } from '#views/FinalReportForm/common';
+import DropdownMenuItem from '#components/DropdownMenuItem';
 import Button, { ButtonVariant } from '#components/Button';
 import FinalReportPdfDocument from '../FinalReportPdfDocument';
 
@@ -29,7 +30,7 @@ interface DrefOptions {
 interface Props {
   className?: string;
   id: number;
-  variant?: ButtonVariant;
+  variant?: ButtonVariant | 'dropdown';
 }
 
 function FinalReportExport(props: Props) {
@@ -93,6 +94,18 @@ function FinalReportExport(props: Props) {
       exportToPdf();
     }
   }, [pending, finalReportResponse, drefOptions, strings]);
+
+  if (variant === 'dropdown') {
+    return (
+      <DropdownMenuItem
+        className={className}
+        name='final-report-export'
+        label={shouldRender ? 'Exporting' : 'Export'}
+        disabled={pending || shouldRender}
+        onClick={handleExportRender}
+      />
+    );
+  }
 
   return (
     <Button
