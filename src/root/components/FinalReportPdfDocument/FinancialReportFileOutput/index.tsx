@@ -21,22 +21,16 @@ function FinancialReportFileOutput(props: Props) {
     strings,
   } = props;
 
-  if (isNotDefined(data.financial_report_preview) && isDefined(data.financial_report_description)) {
+  if (isNotDefined(data.financial_report_preview) && isNotDefined(data.financial_report_description)) {
     return null;
   }
 
   return (
     <View break>
-      <Text style={[
-        pdfStyles.sectionHeading, {
-          marginTop: 0,
-          marginBottom: 0,
-        }
-      ]}
+      <Text style={pdfStyles.sectionHeading}
       >
         {strings.finalReportFinancialReport}
       </Text>
-
       {isDefined(data.financial_report_description) && (
         <View style={pdfStyles.subSection}>
           <Text
