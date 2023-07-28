@@ -1,3 +1,9 @@
+### Release 6.7.3 - Hotfix DREF Final Report Financial Preview
+Date: 2023-07-28
+
+Frontend:
+- Fix condition for Financial Preview in Final Report Export
+
 ### Release 6.7.2 - Hotfix DREF Final Report export
 Date: 2023-07-27
 
