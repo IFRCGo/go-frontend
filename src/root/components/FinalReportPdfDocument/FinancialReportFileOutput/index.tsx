@@ -27,10 +27,17 @@ function FinancialReportFileOutput(props: Props) {
 
   return (
     <View break>
-      <Text style={pdfStyles.sectionHeading}
-      >
+      <Text style={pdfStyles.sectionHeading}>
         {strings.finalReportFinancialReport}
       </Text>
+      <View>
+        {isDefined(data.financial_report_preview) && (
+          <Image
+            style={pdfStyles.budgetImage}
+            src={data.financial_report_preview}
+          />
+        )}
+      </View>
       {isDefined(data.financial_report_description) && (
         <View style={pdfStyles.subSection}>
           <Text
@@ -43,12 +50,6 @@ function FinancialReportFileOutput(props: Props) {
             {data.financial_report_description}
           </Text>
         </View>
-      )}
-      {isDefined(data.financial_report_preview) && (
-        <Image
-          style={pdfStyles.budgetImage}
-          src={data.financial_report_preview}
-        />
       )}
     </View>
   );
