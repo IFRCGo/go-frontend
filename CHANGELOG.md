@@ -1,3 +1,8 @@
+### Release 6.7.4 - Hotfix DREF Final Report Export
+Date: 2023-08-02
+Frontend:
+- Fix financial preview text not being properly shown
+
 ### Release 6.7.3 - Hotfix DREF Final Report Financial Preview
 Date: 2023-07-28
 
