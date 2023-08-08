@@ -264,8 +264,6 @@ class PersonnelTable extends SFPComponent {
                       <Tooltip
                         className='tooltip'
                         id="tooltip"
-                        globalEventOff='click'
-                        aria-haspopup='true'
                       />
                       <Progress start={progressValues.start} value={progressValues.value} max='100'></Progress>
                     </div>
