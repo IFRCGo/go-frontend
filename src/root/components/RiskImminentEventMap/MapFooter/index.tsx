@@ -33,17 +33,24 @@ const gdacsPopupDescription = (
   </p>
 );
 
-// const meteoSwissPopupTitle = "Source: MeteoSwiss";
-// const meteoSwissPopupDescription = (
-//   <p>
-//     Click <Link
-//       target="_blank"
-//       href="https://meteofrance.re/fr"
-//     >
-//       here
-//     </Link> for more information about the model and its inputs.
-//   </p>
-// );
+const meteoSwissPopupTitle = "Source: MeteoSwiss";
+const meteoSwissPopupDescription = (
+  <>
+    <p>
+      This impact estimates are produced by MeteoSwiss HydroMet Impact Outlook. © 2022 MeteoSwiss. All Rights reserved.
+    </p>
+    <p>
+      Disclaimer: HydroMet Impact Outlook is in a pilot phase. MeteoSwiss makes no warranty with respect to the correctness or completeness of this information.
+      This information does not replace the advice and guidance provided by the official meteorological and hydrological services for these regions. For further information click&nbsp;
+      <Link
+        target="_blank"
+        href="https://www.meteoswiss.admin.ch/about-us/research-and-cooperation/projects/2021/weather4un.html"
+      >
+        [here]
+      </Link>
+    </p>
+  </>
+);
 
 const pdcPopupTitle ="Source: Pacific Disaster Center";
 const pdcPopupDescription = (
@@ -142,26 +149,26 @@ const gdacsIconLabel = (
   </div>
 );
 
-// const meteoSwissIconLabel = (
-//   <div className={styles.sourceLabel}>
-//     <TextOutput value="MeteoSwiss" />
-//     <React.Fragment>
-//       <IoInformationCircleOutline
-//         data-event="click"
-//         data-tooltip-id="ms"
-//         data-tooltip-html={ReactDOMServer.renderToStaticMarkup(
-//           tooltip(meteoSwissPopupTitle, meteoSwissPopupDescription)
-//         )}
-//       />
-//       <Tooltip
-//         className={styles.tooltip}
-//         id="ms"
-//         place="top"
-//         clickable={true}
-//       />
-//     </React.Fragment>
-//   </div>
-// );
+const meteoSwissIconLabel = (
+  <div className={styles.sourceLabel}>
+    <TextOutput value="MeteoSwiss" />
+    <React.Fragment>
+      <IoInformationCircleOutline
+        data-event="click"
+        data-tooltip-id="ms"
+        data-tooltip-html={ReactDOMServer.renderToStaticMarkup(
+          tooltip(meteoSwissPopupTitle, meteoSwissPopupDescription)
+        )}
+      />
+      <Tooltip
+        className={styles.tooltip}
+        id="ms"
+        place="top"
+        clickable={true}
+      />
+    </React.Fragment>
+  </div>
+);
 
 const legendItems = [
   { color: COLOR_FLOOD, label: 'Flood' },
@@ -199,7 +206,7 @@ function MapFooter(props: Props) {
     { value: "PDC", label: pdcIconLabel },
     { value: "WFP", label: adamIconLabel },
     { value: "GDACS", label: gdacsIconLabel },
-    // { value: "MeteoSwiss", label: meteoSwissIconLabel },
+    { value: "MeteoSwiss", label: meteoSwissIconLabel },
   ] as StringValueOption[];
 
   const handleChangeSourceType = React.useCallback(

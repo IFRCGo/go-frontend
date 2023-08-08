@@ -1,6 +1,7 @@
 import React from 'react';
 import Map,
 {
+    MapBounds,
   MapContainer,
   MapLayer,
   MapSource,
@@ -15,10 +16,11 @@ import {
   _cs
 } from '@togglecorp/fujs';
 import {
+  point as turfPoint,
   bbox as turfBbox,
+  buffer as turfBuffer,
 } from '@turf/turf';
 import { LngLat } from 'mapbox-gl';
-import { BoundingBox, viewport } from '@mapbox/geo-viewport';
 
 import {
   defaultMapOptions,
@@ -30,6 +32,8 @@ import {
   ADAM_COLOR_GREEN,
   ADAM_COLOR_RED,
   ADAM_COLOR_CONES,
+  BBOXType,
+  fixBounds,
 } from '#utils/map';
 import {
   geoJsonSourceOptions,
@@ -43,7 +47,6 @@ import {
   COLOR_STORM,
   COLOR_WILDFIRE,
 } from '#utils/risk';
-import MapEaseTo from '#components/MapEaseTo';
 import GoMapDisclaimer from '#components/GoMapDisclaimer';
 import {
   GDACSEvent,
@@ -115,6 +118,7 @@ interface Props {
   activeEventExposurePending?: boolean;
   onActiveEventChange: (eventUuid: number | undefined) => void;
   sidebarHeading?: React.ReactNode;
+  defaultBounds: BBOXType;
 }
 
 function GDACSEventMap(props: Props) {
@@ -125,6 +129,8 @@ function GDACSEventMap(props: Props) {
     onActiveEventChange,
     sidebarHeading,
     activeEventExposure,
+    activeEventExposurePending,
+    defaultBounds,
   } = props;
 
   const [
@@ -233,33 +239,32 @@ function GDACSEventMap(props: Props) {
   );
   const boundsBoxPoints = React.useMemo(
     () => {
-      if (footprintPositionGeoJson.features.length > 1) {
-        const bounds = turfBbox(footprintPositionGeoJson) as BoundingBox;
-        const viewPort = viewport(bounds, [600, 400]);
-        return viewPort;
-      }
+      if(!activeEvent || activeEventExposurePending) {
+        return defaultBounds;
 
-      if (activeEvent) {
-        return {
-          center: [
-            activeEvent.longitude,
-            activeEvent.latitude,
-          ] as [number, number],
-          zoom: 5,
-        };
       }
+      const point = turfPoint([
+        activeEvent.longitude,
+        activeEvent.latitude,
+      ]);
 
-      if (isNotDefined(activeEvent) && hazardPointGeoJson.features.length > 1) {
-        const bounds = turfBbox(hazardPointGeoJson) as BoundingBox;
-        const viewPort = viewport(bounds, [600, 400], 1, 2.5);
+      const pointBuffer = turfBuffer(point, 50, { units: 'kilometers' });
 
-        return viewPort;
-      }
+      const geojson = {
+        type: 'FeatureCollection',
+        features: [
+          pointBuffer,
+          ...(footprintPositionGeoJson?.features ?? []),
+        ].filter(isDefined),
+      };
+
+      return fixBounds(turfBbox(geojson) as BBOXType);
     },
     [
-      footprintPositionGeoJson,
-      hazardPointGeoJson,
       activeEvent,
+      activeEventExposurePending,
+      defaultBounds,
+      footprintPositionGeoJson
     ],
   );
 
@@ -463,10 +468,9 @@ function GDACSEventMap(props: Props) {
         </MapTooltip>
       )}
       {boundsBoxPoints &&
-        <MapEaseTo
+        <MapBounds
+          bounds={boundsBoxPoints}
           padding={mapPadding}
-          center={boundsBoxPoints.center}
-          zoom={boundsBoxPoints.zoom}
           duration={MAP_BOUNDS_ANIMATION_DURATION}
         />
       }
