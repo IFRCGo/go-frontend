@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { PropTypes as T } from 'prop-types';
 import { Link } from 'react-router-dom';
 import { DateTime } from 'luxon';
+import ReactDOMServer from 'react-dom/server';
 
 import { environment } from '#config';
 import { getPersonnel } from '#actions';
@@ -216,43 +217,53 @@ class PersonnelTable extends SFPComponent {
           type: o.type === 'rr' ? typeLongNames[o.type] : o.type.toUpperCase(),
           country: o.country_from ? getCountryDisplay(o.country_from, strings)  : nope,
           name: nameString,
-          progress__personnel: 
-                    <div className='progress__block__personnel'
-                      data-html={true}
-                      data-tip={`
-                        <div class="row-sm flex flex-align-center progress__block__tooltip__heading">
-                          <div class="col-sm text-uppercase base-font-medium">${nameString}</div>
-                          <div class="col-sm margin-left-auto"><span class="collecticon-sm-xmark font-size-lg"></span></div>
-                        </div>
-                        <div class="row-sm spacing-half-b flex">
-                          <div class="col-sm">Start - End Dates</div>
-                          <div class="col-sm base-font-semi-bold">
-                            ${formatDateMonth(o.start_date)} - ${formatDateMonth(o.end_date)} ${getYear(o.end_date)}
+          progress__personnel:
+                    <div
+                      className='progress__block__personnel'
+                      data-tooltip-id="tooltip"
+                      data-tooltip-html={ReactDOMServer.renderToStaticMarkup(
+                        <>
+                          <div className="row-sm flex flex-align-center progress__block__tooltip__heading">
+                            <div className="col-sm text-uppercase base-font-medium">{nameString}</div>
+                            <div className="col-sm margin-left-auto"><span className="collecticon-sm-xmark font-size-lg"></span></div>
                           </div>
-                        </div>
-                        <div class="row-sm spacing-half-b flex">
-                          <div class="col-sm">Position</div>
-                          <div class="col-sm base-font-semi-bold">${o.role}</div>
-                        </div>
-                        <div class="row-sm spacing-half-b flex">
-                          <div class="col-sm">Type</div>
-                          <div class="col-sm base-font-semi-bold">${o.type === 'rr' ? typeLongNames[o.type] : o.type.toUpperCase()}</div>
-                        </div>
-                        <div class="row-sm spacing-half-b flex">
-                          <div class="col-sm">Deploying Party</div>
-                          <div class="col-sm base-font-semi-bold">${o.country_from ? o.country_from.society_name : '-'}</div>
-                        </div>
-                        <div class="row-sm spacing-half-b flex">
-                          <div class="col-sm">Deployed To</div>
-                          <div class="col-sm base-font-semi-bold">${o.country_to ? o.country_to.name : o.deployment.country_deployed_to.name}</div>
-                        </div>
-                      `}
+                          <div className="row-sm spacing-half-b flex">
+                            <div className="col-sm">Start - End Dates</div>
+                            <div className="col-sm base-font-semi-bold">
+                              {formatDateMonth(o.start_date)} - {formatDateMonth(o.end_date)}
+                              {getYear(o.end_date)}
+                            </div>
+                          </div>
+                          <div className="row-sm spacing-half-b flex">
+                            <div className="col-sm">Position</div>
+                            <div className="col-sm base-font-semi-bold">{o.role}</div>
+                          </div>
+                          <div className="row-sm spacing-half-b flex">
+                            <div className="col-sm">Type</div>
+                            <div className="col-sm base-font-semi-bold">
+                              {o.type === 'rr' ? typeLongNames[o.type] : o.type.toUpperCase()}
+                            </div>
+                          </div>
+                          <div className="row-sm spacing-half-b flex">
+                            <div className="col-sm">Deploying Party</div>
+                            <div className="col-sm base-font-semi-bold">
+                              {o.country_from ? o.country_from.society_name : '-'}
+                            </div>
+                          </div>
+                          <div className="row-sm spacing-half-b flex">
+                            <div className="col-sm">Deployed To</div>
+                            <div className="col-sm base-font-semi-bold">
+                              {o.country_to ?
+                              o.country_to.name
+                              : o.deployment.country_deployed_to.name}
+                            </div>
+                          </div>
+                        </>
+                      )}
                     >
                       <Tooltip
                         className='tooltip'
-                        html={true}
-                        globalEventOff='click'
-                        aria-haspopup='true'
+                        id="tooltip"
                       />
                       <Progress start={progressValues.start} value={progressValues.value} max='100'></Progress>
                     </div>

@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOMServer from 'react-dom/server';
 import { environment } from '#config';
 import { PropTypes as T } from 'prop-types';
 import InfoIcon from '#components/common/info-icon';
@@ -7,25 +8,29 @@ import { Tooltip } from 'react-tooltip';
 const TooltipComponent = ({title, description}) => {
   return (
     <React.Fragment>
-      <a data-tip data-for={title ? title : description} data-event='click focus'>
+      <a
+        data-tooltip-id="tooltip"
+        data-tooltip-html= {ReactDOMServer.renderToStaticMarkup(
+          <>
+            {title
+              ? (
+                <header className='tooltip__header' >
+                  {title}
+                </header>
+              ) : null }
+
+            {description
+              ? (<span className='tooltip__text' dangerouslySetInnerHTML={{ __html: description }} ></span>)
+              : null }
+          </>
+        )}
+      >
         <InfoIcon className='tooltip' />
       </a>
       <Tooltip
         className='tooltip'
-        globalEventOff='click'
-        id={title ? title : description}
-        aria-haspopup='true'
-      >
-        { title
-          ? (
-            <header className='tooltip__header' >
-              {title}
-            </header>
-          ) : null }
-        { description
-          ? (<span className='tooltip__text' dangerouslySetInnerHTML={{ __html: description }} ></span>)
-          : null }
-      </Tooltip>
+        id="tooltip"
+      />
     </React.Fragment>
   );
 };

@@ -6,12 +6,14 @@ import {
   listToMap,
   _cs,
 } from '@togglecorp/fujs';
+import turfBbox from '@turf/bbox';
 
 import { useRequest, ListResponse } from '#utils/restRequest';
 import useReduxState from '#hooks/useReduxState';
 import { GDACSEvent, GDACSEventExposure } from '#types/risk';
 import BlockLoading from '#components/block-loading';
 import GDACSEventMap from '#components/RiskImminentEventMap/GDACSEventMap';
+import {BBOXType, fixBounds } from '#utils/map';
 
 import styles from './styles.module.scss';
 
@@ -96,6 +98,13 @@ function ImminentEventsGDACS(props: Props) {
     url: `risk://api/v1/gdacs/${eventId}/exposure`,
   });
 
+  const regionBounds = React.useMemo(
+    () => {
+      let bbox = turfBbox(region?.bbox ?? []);
+      return fixBounds(bbox as BBOXType);
+    },
+    [region?.bbox],
+  );
   const hasGdacsEvents = gdacsResponse && gdacsResponse.results && gdacsResponse.results.length > 0;
 
   return (
@@ -110,6 +119,7 @@ function ImminentEventsGDACS(props: Props) {
           activeEventUuid={activeEventUuid}
           activeEventExposure={activeEventExposure}
           activeEventExposurePending={activeEventExposurePending}
+          defaultBounds={regionBounds}
         />
       )}
       {!pending && !hasGdacsEvents && (
