@@ -30,6 +30,7 @@ import {
 } from '../common';
 
 import styles from './styles.module.scss';
+import TextArea from '#components/TextArea';
 
 type Value = PartialForm<DrefFinalReportFields>;
 interface Props {
@@ -397,6 +398,16 @@ function Overview(props: Props) {
             fileIdToUrlMap={fileIdToUrlMap}
             setFileIdToUrlMap={setFileIdToUrlMap}
             label={strings.drefFormUploadAnImageLabel}
+          />
+        </InputSection>
+        <InputSection
+          title={strings.finalReportMainDonor}
+        >
+          <TextArea
+            name="main_donors"
+            value={value.main_donors}
+            onChange={onValueChange}
+            error={error?.main_donors}
           />
         </InputSection>
       </Container>
