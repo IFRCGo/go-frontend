@@ -1,7 +1,7 @@
 import React from 'react';
 import Map,
 {
-    MapBounds,
+  MapBounds,
   MapContainer,
   MapLayer,
   MapSource,
@@ -479,4 +479,3 @@ function GDACSEventMap(props: Props) {
 }
 
 export default GDACSEventMap;
-
