@@ -1,6 +1,7 @@
 import React from 'react';
 import {
   Image,
+  Text,
   View,
 } from '@react-pdf/renderer';
 import { isDefined } from '@togglecorp/fujs';
@@ -33,6 +34,7 @@ function EssentialInformationOutput(props: Props) {
         <View style={[
           pdfStyles.section,
           pdfStyles.bannerImageContainer,
+          pdfStyles.finalReportBannerImageContainer,
         ]}>
           <Image
             style={pdfStyles.bannerImage}
@@ -129,6 +131,17 @@ function EssentialInformationOutput(props: Props) {
             />
           </View>
         </View>
+
+        {isDefined(data.main_donors) && (
+          <View style={pdfStyles.subSection}>
+            <Text style={pdfStyles.subSectionHeading}>
+              {strings.finalReportMainDonor}
+            </Text>
+            <Text style={pdfStyles.mainDonorText}>
+              {data.main_donors}
+            </Text>
+          </View>
+        )}
       </View>
     </>
   );
