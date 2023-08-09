@@ -5,6 +5,7 @@ import {
   defaultUndefinedType,
   emailCondition,
   greaterThanOrEqualToCondition,
+  lengthSmallerThanCondition,
   lessThanOrEqualToCondition,
   ObjectSchema,
   PartialForm,
@@ -154,6 +155,7 @@ export const schema: FormSchema = {
     financial_report: [],
     financial_report_description: [],
     users: [defaultEmptyArrayType],
+    main_donors: [lengthSmallerThanCondition(500)],
 
     cover_image_file: {
       fields: () => ({

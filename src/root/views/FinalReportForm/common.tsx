@@ -213,6 +213,7 @@ export interface DrefFinalReportFields {
   financial_report: number;
   financial_report_description: string;
   type_of_dref: number;
+  main_donors: string;
 }
 
 export interface DrefFinalReportApiFields extends Omit<DrefFinalReportFields, 'district_details' | 'planned_interventions' | 'national_society_actions' | 'needs_identified' | 'images_file'> {

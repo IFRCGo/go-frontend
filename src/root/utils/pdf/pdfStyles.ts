@@ -7,6 +7,7 @@ import {
 import montserratFont from '#root/resources/montserrat.bold.ttf';
 import openSansFont from '#root/resources/open-sans.regular.ttf';
 import openSansBoldFont from '#root/resources/open-sans.bold.ttf';
+import openSansItalicFont from '#root/resources/open-sans.italic.ttf';
 
 import * as styles from './pdfVariables';
 
@@ -36,6 +37,13 @@ Font.register({
   family: 'OpenSans',
   src: openSansBoldFont,
   fontWeight: 'bold',
+});
+
+Font.register({
+  family: 'OpenSans',
+  src: openSansItalicFont,
+  fontWeight: 'normal',
+  fontStyle: 'italic',
 });
 
 const section = StyleSheet.create({
@@ -665,6 +673,16 @@ const pdfStyles = StyleSheet.create({
     width: 40,
     alignSelf: 'flex-start',
     marginBottom: 10,
+  },
+
+  mainDonorText: {
+    fontFamily: 'OpenSans',
+    fontSize: styles.FONT_SIZE_MEDIUM,
+    fontStyle: 'italic',
+  },
+
+  finalReportBannerImageContainer: {
+    height: styles.SECTION_WIDTH * 0.60,
   },
 });
 

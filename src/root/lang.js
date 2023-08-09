@@ -3838,6 +3838,7 @@ export default {
   finalReportExportIndicators: 'Indicators',
   finalReportExport: 'Final Report Export',
   clickToViewEmergencyResponseFramework: 'Click to view Emergency Response Framework',
+  finalReportMainDonor: 'Main Donors',
 
   //Country Plan
   activeCountryPlanTitle: 'Active Country Plan',
