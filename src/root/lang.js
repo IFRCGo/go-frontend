@@ -3339,6 +3339,10 @@ export default {
   drefFormUploadAnImageLabel: 'Select an Image',
   drefFormAddCountryLabel: 'Add Country',
 
+  drefFormCreateNonEnglishErrorTitle: 'Cannot create DREF in selected language',
+  drefFormCreateNonEnglishErrorDescription: 'DREF forms can only be created in English at the moment',
+  drefFormCreateNonEnglishErrorHelpText: 'Please switch the language to English to create a new DREF Application',
+
   drefFormSaveRequestSuccessMessage: 'DREF Application created/updated successfully',
   drefFormSaveRequestFailureMessage: 'Failed to create/update DREF Application',
   drefFormLoadRequestFailureMessage: 'Failed to load DREF Application',

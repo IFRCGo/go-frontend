@@ -5,6 +5,7 @@ import {
   isDefined,
   listToMap,
   isNotDefined,
+  isFalsyString,
 } from '@togglecorp/fujs';
 import {
   PartialForm,
@@ -353,6 +354,8 @@ function DrefApplication(props: Props) {
     currentLanguage,
   );
 
+  const shouldBlockForNonEnglish = isFalsyString(drefId) && currentLanguage !== 'en';
+
   const validateCurrentTab = React.useCallback((exceptions: (keyof DrefFields)[] = []) => {
     const validationError = getErrorObject(accumulateErrors(value, schema, value, undefined));
     const currentFields = stepTypesToFieldsMap[currentStep];
@@ -612,6 +615,8 @@ function DrefApplication(props: Props) {
     setShowObsoletePayloadResolutionModal(false);
   }, []);
 
+  const disableActions = pending || shouldBlockForNonEnglish || languageMismatch;
+
   return (
     <Tabs
       disabled={failedToLoadDref}
@@ -622,29 +627,31 @@ function DrefApplication(props: Props) {
       <Page
         className={className}
         actions={(
-            <>
-              {isNotDefined(drefId) && drefType !== TYPE_LOAN && (
-                <FileInput
-                  type='file'
-                  accept='.docx'
-                  name="dref-docx-import"
-                  value={undefined}
-                  onChange={handleDocumentImport}
-                  icons={<IoCloudUploadSharp />}
-                  buttonVariant="secondary"
-                >
-                  Import from Document
-                </FileInput>
-              )}
-              {isDefined(drefId) && drefType !== TYPE_LOAN && (
-                <Link
-                  to={`/dref-application/${drefId}/export/`}
-                  {...exportLinkProps}
-                />
-              )}
-              <Button
-                name={undefined}
-                onClick={submitDref}
+          <>
+            {isNotDefined(drefId) && drefType !== TYPE_LOAN && (
+              <FileInput
+                type='file'
+                accept='.docx'
+                name="dref-docx-import"
+                value={undefined}
+                onChange={handleDocumentImport}
+                icons={<IoCloudUploadSharp />}
+                buttonVariant="secondary"
+                disabled={disableActions}
+              >
+                Import from Document
+              </FileInput>
+            )}
+            {isDefined(drefId) && drefType !== TYPE_LOAN && (
+              <Link
+                to={`/dref-application/${drefId}/export/`}
+                {...exportLinkProps}
+              />
+            )}
+            <Button
+              name={undefined}
+              onClick={submitDref}
+              disabled={disableActions}
             >
               {strings.drefFormSaveButtonLabel}
             </Button>
@@ -658,6 +665,7 @@ function DrefApplication(props: Props) {
               name="operationOverview"
               step={1}
               errored={erroredTabs['operationOverview']}
+              disabled={disableActions}
             >
               {strings.drefFormTabOperationOverviewLabel}
             </Tab>
@@ -665,6 +673,7 @@ function DrefApplication(props: Props) {
               name="eventDetails"
               step={2}
               errored={erroredTabs['eventDetails']}
+              disabled={disableActions}
             >
               {strings.drefFormTabEventDetailLabel}
             </Tab>
@@ -673,6 +682,7 @@ function DrefApplication(props: Props) {
                 name="action"
                 step={3}
                 errored={erroredTabs['action']}
+                disabled={disableActions}
               >
                 {strings.drefFormTabActionsLabel}
               </Tab>
@@ -682,6 +692,7 @@ function DrefApplication(props: Props) {
                 name="response"
                 step={4}
                 errored={erroredTabs['response']}
+                disabled={disableActions}
               >
                 {strings.drefFormTabResponseLabel}
               </Tab>
@@ -690,23 +701,33 @@ function DrefApplication(props: Props) {
               name="submission"
               step={5}
               errored={erroredTabs['submission']}
+              disabled={disableActions}
             >
               {strings.drefFormTabSubmissionLabel}
             </Tab>
           </TabList>
         )}
       >
-        {
-          pending &&
+        {shouldBlockForNonEnglish && (
+          <Container contentClassName={styles.errorMessage}>
+            <h3>
+              {strings.drefFormCreateNonEnglishErrorTitle}
+            </h3>
+            <p>
+              {strings.drefFormCreateNonEnglishErrorDescription}
+            </p>
+            <p>
+              {strings.drefFormCreateNonEnglishErrorHelpText}
+            </p>
+          </Container>
+        )}
+        {pending && (
           <Container>
             <BlockLoading />
           </Container>
-        }
-        {
-          failedToLoadDref &&
-          <Container
-            contentClassName={styles.errorMessage}
-          >
+        )}
+        {failedToLoadDref && (
+          <Container contentClassName={styles.errorMessage}>
             <h3>
               {strings.drefFormLoadErrorTitle}
             </h3>
@@ -717,8 +738,16 @@ function DrefApplication(props: Props) {
               {strings.drefFormLoadErrorHelpText}
             </p>
           </Container>
-        }
-        {!pending && !failedToLoadDref && (
+        )}
+        {!pending && drefResponse && languageMismatch && (
+          <Container contentClassName={styles.languageMismatch}>
+            <Translate
+              stringId="translationErrorEdit"
+              params={{ originalLanguage: <strong>{languageOptions[drefResponse.translation_module_original_language]}</strong> }}
+            />
+          </Container>
+        )}
+        {!pending && !failedToLoadDref && !languageMismatch && !shouldBlockForNonEnglish && (
           <>
             <Container>
               <NonFieldError
@@ -726,135 +755,123 @@ function DrefApplication(props: Props) {
                 message={strings.drefFormFieldGeneralError}
               />
             </Container>
-            {languageMismatch && drefResponse && (
-              <Container contentClassName={styles.languageMismatch}>
-                <Translate
-                  stringId="translationErrorEdit"
-                  params={{ originalLanguage: <strong>{languageOptions[drefResponse.translation_module_original_language]}</strong> }}
+            <TabPanel name="operationOverview">
+              <DrefOverview
+                error={error}
+                onValueChange={setFieldValue}
+                value={value}
+                yesNoOptions={yesNoOptions}
+                disasterTypeOptions={disasterTypeOptions}
+                onsetOptions={onsetOptions}
+                disasterCategoryOptions={disasterCategoryOptions}
+                countryOptions={countryOptions}
+                fetchingCountries={fetchingCountries}
+                fetchingDisasterTypes={fetchingDisasterTypes}
+                nationalSocietyOptions={nationalSocietyOptions}
+                fetchingNationalSociety={fetchingCountries}
+                fileIdToUrlMap={fileIdToUrlMap}
+                setFileIdToUrlMap={setFileIdToUrlMap}
+                onValueSet={setValue}
+                onCreateAndShareButtonClick={submitDref}
+                drefTypeOptions={drefTypeOptions}
+                onsetType={onsetType}
+                drefType={drefType}
+                userOptions={userOptions}
+              />
+            </TabPanel>
+            <TabPanel name="eventDetails">
+              <EventDetails
+                onsetType={onsetType}
+                drefType={drefType}
+                error={error}
+                onValueChange={setFieldValue}
+                value={value}
+                yesNoOptions={yesNoOptions}
+                fileIdToUrlMap={fileIdToUrlMap}
+                setFileIdToUrlMap={setFileIdToUrlMap}
+              />
+            </TabPanel>
+            {drefType !== TYPE_LOAN &&
+              <TabPanel name="action">
+                <ActionsFields
+                  error={error}
+                  onValueChange={setFieldValue}
+                  value={value}
+                  yesNoOptions={yesNoOptions}
+                  needOptions={needOptions}
+                  nsActionOptions={nsActionOptions}
+                  fileIdToUrlMap={fileIdToUrlMap}
+                  setFileIdToUrlMap={setFileIdToUrlMap}
+                  drefType={drefType}
                 />
-              </Container>
-            )}
-            {!languageMismatch && (
-              <>
-                <TabPanel name="operationOverview">
-                  <DrefOverview
-                    error={error}
-                    onValueChange={setFieldValue}
-                    value={value}
-                    yesNoOptions={yesNoOptions}
-                    disasterTypeOptions={disasterTypeOptions}
-                    onsetOptions={onsetOptions}
-                    disasterCategoryOptions={disasterCategoryOptions}
-                    countryOptions={countryOptions}
-                    fetchingCountries={fetchingCountries}
-                    fetchingDisasterTypes={fetchingDisasterTypes}
-                    nationalSocietyOptions={nationalSocietyOptions}
-                    fetchingNationalSociety={fetchingCountries}
-                    fileIdToUrlMap={fileIdToUrlMap}
-                    setFileIdToUrlMap={setFileIdToUrlMap}
-                    onValueSet={setValue}
-                    onCreateAndShareButtonClick={submitDref}
-                    drefTypeOptions={drefTypeOptions}
-                    onsetType={onsetType}
-                    drefType={drefType}
-                    userOptions={userOptions}
-                  />
-                </TabPanel>
-                <TabPanel name="eventDetails">
-                  <EventDetails
-                    onsetType={onsetType}
-                    drefType={drefType}
-                    error={error}
-                    onValueChange={setFieldValue}
-                    value={value}
-                    yesNoOptions={yesNoOptions}
-                    fileIdToUrlMap={fileIdToUrlMap}
-                    setFileIdToUrlMap={setFileIdToUrlMap}
-                  />
-                </TabPanel>
-                {drefType !== TYPE_LOAN &&
-                  <TabPanel name="action">
-                    <ActionsFields
-                      error={error}
-                      onValueChange={setFieldValue}
-                      value={value}
-                      yesNoOptions={yesNoOptions}
-                      needOptions={needOptions}
-                      nsActionOptions={nsActionOptions}
-                      fileIdToUrlMap={fileIdToUrlMap}
-                      setFileIdToUrlMap={setFileIdToUrlMap}
-                      drefType={drefType}
-                    />
-                  </TabPanel>
-                }
-                {drefType !== TYPE_LOAN &&
-                  <TabPanel name="response">
-                    <Response
-                      interventionOptions={interventionOptions}
-                      error={error}
-                      onValueChange={setFieldValue}
-                      value={value}
-                      fileIdToUrlMap={fileIdToUrlMap}
-                      setFileIdToUrlMap={setFileIdToUrlMap}
-                      yesNoOptions={yesNoOptions}
-                      drefType={drefType}
-                    />
-                  </TabPanel>
-                }
-                <TabPanel name="submission">
-                  <Submission
-                    error={error}
-                    onValueChange={setFieldValue}
-                    drefType={drefType}
-                    value={value}
-                  />
-                </TabPanel>
-                {drefType !== TYPE_LOAN &&
-                  <div className={styles.actions}>
-                    <Button
-                      name={undefined}
-                      variant="secondary"
-                      onClick={handleBackButtonClick}
-                      disabled={shouldDisabledBackButton}
-                    >
-                      {strings.drefFormBackButtonLabel}
-                    </Button>
-                    <Button
-                      name={undefined}
-                      variant="secondary"
-                      onClick={handleSubmitButtonClick}
-                    >
-                      {submitButtonLabel}
-                    </Button>
-                  </div>
-                }
-                {drefType === TYPE_LOAN &&
-                  <div className={styles.actions}>
-                    <Button
-                      name={undefined}
-                      variant="secondary"
-                      onClick={handleLoanBackButtonClick}
-                      disabled={shouldDisabledBackButton}
-                    >
-                      {strings.drefFormBackButtonLabel}
-                    </Button>
-                    <Button
-                      name={undefined}
-                      variant="secondary"
-                      onClick={handleLoanSubmitButtonClick}
-                    >
-                      {submitButtonLabel}
-                    </Button>
-                  </div>
-                }
-                {isDefined(drefId) && showObsoletePayloadResolutionModal && (
-                  <ObsoletePayloadResolutionModal
-                    drefId={+drefId}
-                    onOverwriteButtonClick={handleObsoletePayloadResolutionOverwiteButtonClick}
-                    onCancelButtonClick={handleObsoletePayloadResolutionCancelButtonClick}
-                  />
-                )}
-              </>
+              </TabPanel>
+            }
+            {drefType !== TYPE_LOAN &&
+              <TabPanel name="response">
+                <Response
+                  interventionOptions={interventionOptions}
+                  error={error}
+                  onValueChange={setFieldValue}
+                  value={value}
+                  fileIdToUrlMap={fileIdToUrlMap}
+                  setFileIdToUrlMap={setFileIdToUrlMap}
+                  yesNoOptions={yesNoOptions}
+                  drefType={drefType}
+                />
+              </TabPanel>
+            }
+            <TabPanel name="submission">
+              <Submission
+                error={error}
+                onValueChange={setFieldValue}
+                drefType={drefType}
+                value={value}
+              />
+            </TabPanel>
+            {drefType !== TYPE_LOAN &&
+              <div className={styles.actions}>
+                <Button
+                  name={undefined}
+                  variant="secondary"
+                  onClick={handleBackButtonClick}
+                  disabled={shouldDisabledBackButton}
+                >
+                  {strings.drefFormBackButtonLabel}
+                </Button>
+                <Button
+                  name={undefined}
+                  variant="secondary"
+                  onClick={handleSubmitButtonClick}
+                >
+                  {submitButtonLabel}
+                </Button>
+              </div>
+            }
+            {drefType === TYPE_LOAN &&
+              <div className={styles.actions}>
+                <Button
+                  name={undefined}
+                  variant="secondary"
+                  onClick={handleLoanBackButtonClick}
+                  disabled={shouldDisabledBackButton}
+                >
+                  {strings.drefFormBackButtonLabel}
+                </Button>
+                <Button
+                  name={undefined}
+                  variant="secondary"
+                  onClick={handleLoanSubmitButtonClick}
+                >
+                  {submitButtonLabel}
+                </Button>
+              </div>
+            }
+            {isDefined(drefId) && showObsoletePayloadResolutionModal && (
+              <ObsoletePayloadResolutionModal
+                drefId={+drefId}
+                onOverwriteButtonClick={handleObsoletePayloadResolutionOverwiteButtonClick}
+                onCancelButtonClick={handleObsoletePayloadResolutionCancelButtonClick}
+              />
             )}
           </>
         )}

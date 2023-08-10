@@ -17,7 +17,8 @@
 
   .actions-container {
     display: flex;
-    flex-shirnk: 0;
+    align-items: center;
+    flex-shrink: 0;
     gap: $spacing*0.5;
   }
 }
