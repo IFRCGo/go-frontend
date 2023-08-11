@@ -684,6 +684,14 @@ const pdfStyles = StyleSheet.create({
   finalReportBannerImageContainer: {
     height: styles.SECTION_WIDTH * 0.60,
   },
+
+  financialReportLink: {
+    // TODO: absolute color variable
+    color: '#2000ff',
+    fontSize: styles.FONT_SIZE_MEDIUM,
+    textDecoration: 'underline',
+  }
+
 });
 
 export default pdfStyles;
