@@ -691,7 +691,6 @@ const pdfStyles = StyleSheet.create({
     fontSize: styles.FONT_SIZE_MEDIUM,
     textDecoration: 'underline',
   }
-
 });
 
 export default pdfStyles;
