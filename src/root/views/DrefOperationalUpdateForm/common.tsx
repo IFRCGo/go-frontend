@@ -285,6 +285,7 @@ export interface DrefOperationalUpdateApiFields extends Omit<DrefOperationalUpda
     summary: string;
   };
   disaster_category_display: 'Yellow' | 'Red' | 'Orange';
+  type_of_dref_display: string;
   type_of_onset_display: string;
   supporting_document_details: {
     id: number;
