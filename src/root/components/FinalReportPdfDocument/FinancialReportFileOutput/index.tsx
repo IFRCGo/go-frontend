@@ -45,8 +45,9 @@ function FinancialReportFileOutput(props: Props) {
               style={pdfStyles.financialReportLink}
               href={data.financial_report_details.file}
               target="_blank"
+              rel="noreferrer noopener"
             >
-              Click here for the financial report
+              Click here for the complete financial report
             </a>
           </Text>
         </View>
