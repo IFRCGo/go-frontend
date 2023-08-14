@@ -30,20 +30,31 @@ function FinancialReportFileOutput(props: Props) {
       <Text style={pdfStyles.sectionHeading}>
         {strings.finalReportFinancialReport}
       </Text>
-      <View>
         {isDefined(data.financial_report_preview) && (
+        <View>
           <Image
             style={pdfStyles.budgetImage}
             src={data.financial_report_preview}
           />
-        )}
-      </View>
+        </View>
+      )}
+      {isDefined(data.financial_report_details) && (
+        <View>
+          <Text>
+            <a
+              style={pdfStyles.financialReportLink}
+              href={data.financial_report_details.file}
+              target="_blank"
+              rel="noreferrer noopener"
+            >
+              Click here for the complete financial report
+            </a>
+          </Text>
+        </View>
+      )}
       {isDefined(data.financial_report_description) && (
         <View style={pdfStyles.subSection}>
-          <Text
-            style={pdfStyles.subSectionHeading}
-            minPresenceAhead={20}
-          >
+          <Text style={pdfStyles.subSectionHeading}>
             {strings.finalReportFinancialReportVariances}
           </Text>
           <Text style={pdfStyles.text}>

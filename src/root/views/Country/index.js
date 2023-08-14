@@ -8,7 +8,7 @@ import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import { Helmet } from 'react-helmet';
 import url from 'url';
 
-import { environment, api } from '#config';
+import { environment, adminUrl } from '#config';
 import NewGlobalLoading from '#components/NewGlobalLoading';
 import { resolveToString } from '#utils/lang';
 // import BasicTable from '#components/common/table-basic';
@@ -640,7 +640,7 @@ class AdminArea extends SFPComponent {
               <div className='row-sm flex flex-justify-flex-end'>
                 <div className='col-sm spacing-half-v'>
                   <a
-                    href={url.resolve(api, `api/country/${data.id}/change/`)}
+                    href={url.resolve(adminUrl, `api/country/${data.id}/change/`)}
                     className='button button--xsmall button--primary-bounded button--edit-action'
                   >
                     <span className='f-icon-pencil margin-half-r'></span>

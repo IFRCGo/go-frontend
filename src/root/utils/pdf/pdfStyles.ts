@@ -666,6 +666,23 @@ const pdfStyles = StyleSheet.create({
     alignSelf: 'flex-start',
     marginBottom: 10,
   },
+
+  mainDonorText: {
+    fontFamily: 'OpenSans',
+    fontSize: styles.FONT_SIZE_MEDIUM,
+    fontStyle: 'italic',
+  },
+
+  finalReportBannerImageContainer: {
+    height: styles.SECTION_WIDTH * 0.60,
+  },
+
+  financialReportLink: {
+    // TODO: absolute color variable
+    color: '#2000ff',
+    fontSize: styles.FONT_SIZE_MEDIUM,
+    textDecoration: 'underline',
+  }
 });
 
 export default pdfStyles;
