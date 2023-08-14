@@ -1,3 +1,9 @@
+### Release 6.7.5 - Hotfix Edit Country link
+Date: 2023-08-14
+Frontend:
+- Fix country editing link to Admin page
+- Add financial report link in DREF Final Report export
+
 ### Release 6.7.4 - Hotfix DREF Final Report Export
 Date: 2023-08-02
 Frontend:
