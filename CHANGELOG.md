@@ -1,3 +1,8 @@
+### Release 6.7.6 - Hotfix main donor fields in DREF Final Report
+Date: 2023-08-16
+Frontend:
+- Add Main donors field in Final Report form and export
+
 ### Release 6.7.5 - Hotfix Edit Country link
 Date: 2023-08-14
 Frontend:
