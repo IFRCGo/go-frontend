@@ -135,7 +135,7 @@ function EssentialInformationOutput(props: Props) {
         {isDefined(data.main_donors) && (
           <View style={pdfStyles.subSection}>
             <Text style={pdfStyles.subSectionHeading}>
-              {strings.finalReportMainDonor}
+              {/* hiding Main Donors title: strings.finalReportMainDonor */}
             </Text>
             <Text style={pdfStyles.mainDonorText}>
               {data.main_donors}
