@@ -191,6 +191,14 @@ function tooltip(title:string, description: React.ReactNode) {
   );
 }
 
+const sourceOptions: StringValueOption[] = [
+  { value: "PDC", label: pdcIconLabel },
+  { value: "WFP", label: adamIconLabel },
+  { value: "GDACS", label: gdacsIconLabel },
+  { value: "MeteoSwiss", label: meteoSwissIconLabel },
+].filter(({ value }) => value !== 'MeteoSwiss');
+
+
 interface Props {
   sourceType?: string;
   onSourceChange: (source?: string) => void;
@@ -201,13 +209,6 @@ function MapFooter(props: Props) {
     sourceType,
     onSourceChange,
   } = props;
-
-  const sourceOptions =[
-    { value: "PDC", label: pdcIconLabel },
-    { value: "WFP", label: adamIconLabel },
-    { value: "GDACS", label: gdacsIconLabel },
-    { value: "MeteoSwiss", label: meteoSwissIconLabel },
-  ] as StringValueOption[];
 
   const handleChangeSourceType = React.useCallback(
     (value?: string) => {

@@ -32,7 +32,7 @@ function ImminentEvents(props: Props) {
   const [mapSource, setMapSource] = React.useState<string | undefined>("PDC");
   const triggered = React.useRef(false);
 
-  // FIXME: handle for GDACS and other sources
+  // FIXME: handle for MeteoSwiss
   const handlePdcEventLoad = React.useCallback((numEvents: number | undefined) => {
     if (numEvents) {
       triggered.current = true;
@@ -69,6 +69,7 @@ function ImminentEvents(props: Props) {
     setNumGdacsEvents(numEvents ?? 0);
   }, []);
 
+  // FIXME: handle for MeteoSwiss
   if (numWfpEvents === 0 && numPdcEvents === 0 && numGdacsEvents === 0) {
     return null;
   }
