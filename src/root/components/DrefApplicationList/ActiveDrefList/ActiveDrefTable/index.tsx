@@ -70,6 +70,9 @@ interface ExportData {
 const APPROVED = 1;
 const drefKeySelector = (d: ActiveDrefTableDetail) => d.id;
 
+// NOTE: temporarily used to hide the allocation form
+const featureReady = false;
+
 function ActiveDrefTable(props:Props) {
   const {
     className,
@@ -110,7 +113,7 @@ function ActiveDrefTable(props:Props) {
         focalPointName: response?.regional_focal_point_name,
       };
       handleExport(exportData);
-      }
+    }
   });
 
    async function handleExport(exportData: ExportData) {
@@ -671,7 +674,7 @@ function ActiveDrefTable(props:Props) {
               }}
               label="Share"
             />
-            {item.is_published && (
+            {item.is_published && featureReady && (
               <DropdownMenuItem
                 name={{
                   type: item.application_type,

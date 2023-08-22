@@ -191,6 +191,7 @@ function tooltip(title:string, description: React.ReactNode) {
   );
 }
 
+// NOTE: applying filter temporarily to hide MeteoSwiss option
 const sourceOptions: StringValueOption[] = [
   { value: "PDC", label: pdcIconLabel },
   { value: "WFP", label: adamIconLabel },
