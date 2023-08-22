@@ -1,3 +1,8 @@
+### Release 6.7.7 - Hide in progress features
+Date: 2023-08-22
+Frontend:
+- Hide in progress features
+
 ### Release 6.7.6 - Hotfix main donor fields in DREF Final Report
 Date: 2023-08-16
 Frontend:
