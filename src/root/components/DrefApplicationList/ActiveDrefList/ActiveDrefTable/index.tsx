@@ -73,7 +73,7 @@ const APPROVED = 1;
 const drefKeySelector = (d: ActiveDrefTableDetail) => d.id;
 
 // NOTE: temporarily used to hide the allocation form
-const featureReady = false;
+const featureReady = true;
 
 function ActiveDrefTable(props:Props) {
   const {
@@ -153,6 +153,13 @@ function ActiveDrefTable(props:Props) {
         showGridLines: false,
       },
     });
+    const borderStyles: Partial<xlsx.Borders> = {
+      top: { style: 'thin' },
+      left: { style: 'thin' },
+      bottom: { style: 'thin' },
+      right: { style: 'thin' }
+    };
+
     worksheet.addImage(image, "A1:B6");
     worksheet.getCell("C1").value = "DISASTER RESPONSE EMERGENCY FUND";
     worksheet.mergeCells("C1:L3");
@@ -703,6 +710,12 @@ function ActiveDrefTable(props:Props) {
         argb: "00DCE6F2",
       },
     };
+
+    worksheet.eachRow({ includeEmpty: false }, (row) => {
+      row.eachCell({ includeEmpty: false }, (cell) => {
+        cell.border = borderStyles;
+      });
+    });
 
     await workbook.xlsx.writeBuffer().then((buffer) => {
       return FileSaver.saveAs(
