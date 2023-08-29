@@ -30,6 +30,7 @@ import BudgetFileOutput from './BudgetFileOutput';
 import ContactInformationOutput from './ContactInformationOutput';
 
 import pdfStyles from '#utils/pdf/pdfStyles';
+import IcrcActionsOutput from './IcrcActionsOutput';
 
 interface DrefOptions {
   disaster_category: NumericKeyValuePair[];
@@ -107,6 +108,11 @@ function OperationalUpdatePdfDocument(props: Props) {
         />
 
         <MovementPartnerOutput
+          data={operationalUpdateResponse}
+          strings={strings}
+        />
+
+        <IcrcActionsOutput
           data={operationalUpdateResponse}
           strings={strings}
         />

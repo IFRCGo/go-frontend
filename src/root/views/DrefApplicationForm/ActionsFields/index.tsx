@@ -239,7 +239,7 @@ function ActionsFields(props: Props) {
         visibleOverflow
       >
         <InputSection
-          title={strings.drefFormIfrc}
+          title={strings.drefFormSecretariatLabel}
           description={strings.drefFormIfrcDescription}
         >
           <TextArea
@@ -251,6 +251,22 @@ function ActionsFields(props: Props) {
           />
         </InputSection>
         <InputSection
+          title={strings.drefFormPartnerNationalSociety}
+          description={strings.drefFormPartnerNationalSocietyDescription}
+        >
+          <TextArea
+            name="partner_national_society"
+            onChange={onValueChange}
+            value={value.partner_national_society}
+            error={error?.partner_national_society}
+          />
+        </InputSection>
+      </Container>
+      <Container
+        visibleOverflow
+        heading={strings.drefFormIcrcActionsHeading}
+      >
+        <InputSection
           title={strings.drefFormIcrc}
           description={strings.drefFormIcrcDescription}
         >
@@ -260,17 +276,6 @@ function ActionsFields(props: Props) {
             onChange={onValueChange}
             value={value.icrc}
             error={error?.icrc}
-          />
-        </InputSection>
-        <InputSection
-          title={strings.drefFormPartnerNationalSociety}
-          description={strings.drefFormPartnerNationalSocietyDescription}
-        >
-          <TextArea
-            name="partner_national_society"
-            onChange={onValueChange}
-            value={value.partner_national_society}
-            error={error?.partner_national_society}
           />
         </InputSection>
       </Container>

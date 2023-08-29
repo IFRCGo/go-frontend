@@ -32,6 +32,7 @@ import RiskAndSecurityOutput from './RiskAndSecurityOutput';
 import HeadingOutput from './HeadingOutput';
 import BudgetFileOutput from './BudgetFileOutput';
 import PageNumberPdf from './PageNumberPdf';
+import IcrcActionsOutput from './IcrcActionsOutput';
 
 interface DrefOptions {
   disaster_category: NumericKeyValuePair[];
@@ -107,6 +108,11 @@ function DrefPdfDocument(props: Props) {
         />
 
         <MovementPartnerOutput
+          data={dref}
+          strings={strings}
+        />
+
+        <IcrcActionsOutput
           data={dref}
           strings={strings}
         />

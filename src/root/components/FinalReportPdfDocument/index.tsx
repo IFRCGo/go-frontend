@@ -26,6 +26,7 @@ import TargetedPopulationOutput from './TargetedPopulationOutput';
 import ContactInformationOutput from './ContactInformationOutput';
 import PageNumberPdf from '#components/DrefPdfDocument/PageNumberPdf';
 import FinancialReportFileOutput from './FinancialReportFileOutput';
+import IcrcActionsOutput from './IcrcActionsOutput';
 
 interface DrefOptions {
   disaster_category: NumericKeyValuePair[];
@@ -93,6 +94,10 @@ function FinalReportPdfDocument(props: Props) {
           strings={strings}
         />
         <MovementPartnerOutput
+          data={finalReportResponse}
+          strings={strings}
+        />
+        <IcrcActionsOutput
           data={finalReportResponse}
           strings={strings}
         />
