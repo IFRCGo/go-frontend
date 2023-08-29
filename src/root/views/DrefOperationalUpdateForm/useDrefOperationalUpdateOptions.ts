@@ -20,18 +20,13 @@ import languageContext from '#root/languageContext';
 import { compareString } from '#utils/utils';
 import { Disaster } from '#types/project';
 import { Country } from '#types/country';
-import { DrefApiFields, TYPE_LOAN } from '#views/DrefApplicationForm/common';
 import {
   positiveIntegerCondition,
   positiveNumberCondition,
 } from '#utils/form';
-import {
-  isSimilarArray,
-} from '#utils/common';
 
 import {
   BooleanValueOption,
-  DrefOperationalUpdateApiFields,
   DrefOperationalUpdateFields,
   emptyNumericOptionList,
   emptyStringOptionList,
@@ -41,88 +36,69 @@ import {
   User,
 } from './common';
 
-export type ContextType = {
-  type: 'dref';
-  value: DrefApiFields | undefined;
-} | {
-  type: 'opsUpdate';
-  value: DrefOperationalUpdateApiFields | undefined;
-}
-
 export type FormSchema = ObjectSchema<
-PartialForm<DrefOperationalUpdateFields>,
-PartialForm<DrefOperationalUpdateFields>,
-ContextType
+  PartialForm<DrefOperationalUpdateFields>,
+  PartialForm<DrefOperationalUpdateFields>
 >;
 export type FormSchemaFields = ReturnType<FormSchema['fields']>;
 
 export type NeedType = NonNullable<NonNullable<DrefOperationalUpdateFields['needs_identified']>>[number];
 export type NeedSchema = ObjectSchema<
-PartialForm<NeedType>,
-PartialForm<DrefOperationalUpdateFields>,
-ContextType
+  PartialForm<NeedType>,
+  PartialForm<DrefOperationalUpdateFields>
 >;
 export type NeedSchemaFields = ReturnType<NeedSchema['fields']>;
 export type NeedsSchema = ArraySchema<
-PartialForm<NeedType>,
-PartialForm<DrefOperationalUpdateFields>,
-ContextType
+  PartialForm<NeedType>,
+  PartialForm<DrefOperationalUpdateFields>
 >;
 export type NeedsSchemaMember = ReturnType<NeedsSchema['member']>;
 
 export type NsActionType = NonNullable<NonNullable<DrefOperationalUpdateFields['national_society_actions']>>[number];
 export type NsActionSchema = ObjectSchema<
-PartialForm<NsActionType>,
-PartialForm<DrefOperationalUpdateFields>,
-ContextType
+  PartialForm<NsActionType>,
+  PartialForm<DrefOperationalUpdateFields>
 >;
 export type NsActionSchemaFields = ReturnType<NsActionSchema['fields']>;
 export type NsActionsSchema = ArraySchema<
-PartialForm<NsActionType>,
-PartialForm<DrefOperationalUpdateFields>,
-ContextType
+  PartialForm<NsActionType>,
+  PartialForm<DrefOperationalUpdateFields>
 >;
 export type NsActionsSchemaMember = ReturnType<NsActionsSchema['member']>;
 
 export type InterventionType = NonNullable<NonNullable<DrefOperationalUpdateFields['planned_interventions']>>[number];
 export type InterventionSchema = ObjectSchema<
-PartialForm<InterventionType>,
-PartialForm<DrefOperationalUpdateFields>,
-ContextType
+  PartialForm<InterventionType>,
+  PartialForm<DrefOperationalUpdateFields>
 >;
 export type InterventionSchemaFields = ReturnType<InterventionSchema['fields']>;
 export type InterventionsSchema = ArraySchema<
-PartialForm<InterventionType>,
-PartialForm<DrefOperationalUpdateFields>,
-ContextType
+  PartialForm<InterventionType>,
+  PartialForm<DrefOperationalUpdateFields>
 >;
 export type InterventionsSchemaMember = ReturnType<InterventionsSchema['member']>;
 
 export type IndicatorType = InterventionType['indicators'][number];
 export type IndicatorSchema = ObjectSchema<
-PartialForm<IndicatorType>,
-PartialForm<DrefOperationalUpdateFields>,
-ContextType
+  PartialForm<IndicatorType>,
+  PartialForm<DrefOperationalUpdateFields>
 >;
 export type IndicatorSchemaFields = ReturnType<IndicatorSchema['fields']>;
 export type IndicatorsSchema = ArraySchema<
-PartialForm<IndicatorType>,
-PartialForm<DrefOperationalUpdateFields>,
-ContextType
+  PartialForm<IndicatorType>,
+  PartialForm<DrefOperationalUpdateFields>
 >;
 export type IndicatorsSchemaMember = ReturnType<IndicatorsSchema['member']>;
 
 export type RiskSecurityType = NonNullable<NonNullable<DrefOperationalUpdateFields['risk_security']>>[number];
 export type RiskSecuritySchema = ObjectSchema<
-PartialForm<RiskSecurityType>,
-PartialForm<DrefOperationalUpdateFields>,
-ContextType
+  PartialForm<RiskSecurityType>,
+  PartialForm<DrefOperationalUpdateFields>
 >;
 export type RiskSecuritySchemaFields = ReturnType<RiskSecuritySchema['fields']>;
 export type RiskSecuritiesSchema = ArraySchema<
-PartialForm<RiskSecurityType>,
-PartialForm<DrefOperationalUpdateFields>,
-ContextType
+  PartialForm<RiskSecurityType>,
+  PartialForm<DrefOperationalUpdateFields>
 >;
 export type RiskSecuritiesSchemaMember = ReturnType<RiskSecuritiesSchema['member']>;
 
@@ -150,38 +126,8 @@ const defaultSchema: FormSchemaFields = {
   type_of_onset: [requiredCondition],
   type_of_dref: [requiredCondition],
   country: [],
-  district: [
-    (currentValue, allValue, context) => {
-      const contextValue = context.value?.district;
-      const areDistrictsSimilar = isSimilarArray(currentValue, contextValue ?? []);
-      if (allValue?.changing_geographic_location && areDistrictsSimilar) {
-        return 'Please select a different value when selected yes on changing geographic location';
-      }
-
-      if (!allValue?.changing_geographic_location && !areDistrictsSimilar) {
-        return 'Please select yes on changing geographic location first';
-      }
-
-      return undefined;
-    },
-  ],
-  number_of_people_targeted: [
-    positiveIntegerCondition,
-    (currentValue, allValue, context) => {
-      const defaultCurrentValue = isDefined(currentValue) ? currentValue : null;
-      const contextValue = context.type === 'dref' ? context.value?.total_targeted_population : context.value?.number_of_people_targeted;
-
-      if (allValue.changing_target_population_of_operation && defaultCurrentValue === contextValue) {
-        return 'Please select a different value when selected yes on changing target population';
-      }
-
-      if (!allValue.changing_target_population_of_operation && defaultCurrentValue !== contextValue) {
-        return 'Please select yes on changing target population first';
-      }
-
-      return undefined;
-    },
-  ],
+  district: [],
+  number_of_people_targeted: [positiveIntegerCondition],
   number_of_people_affected: [positiveIntegerCondition],
   emergency_appeal_planned: [],
   cover_image_file: {
@@ -262,25 +208,7 @@ const defaultSchema: FormSchemaFields = {
   // supporting_document: [],
   risk_security_concern: [],
   photos_file: [lessThanEqualToTwoImagesCondition],
-  additional_allocation: [
-    (currentValue, allValue, _) => {
-      if (allValue.type_of_dref !== TYPE_LOAN
-        && (allValue?.changing_budget || allValue?.request_for_second_allocation)
-        && !currentValue
-      ) {
-        return 'Please add a value when selected yes on changing budget or on request for a second allocation!';
-      }
-
-      if (allValue.type_of_dref !== TYPE_LOAN
-        && (!allValue?.changing_budget || !allValue?.request_for_second_allocation)
-        && currentValue
-      ) {
-        return 'Please select yes on both changing budget and on request for a second allocation!';
-      }
-
-      return undefined;
-    },
-  ],
+  additional_allocation: [positiveIntegerCondition],
   dref_allocated_so_far: [],
   total_dref_allocation: [],
   is_man_made_event: [],
@@ -435,7 +363,7 @@ function transformKeyValueToLabelValue<O extends NumericKeyValuePair | StringKey
   };
 }
 
-function useDrefOperationalFormOptions(value: PartialForm<DrefOperationalUpdateFields>) {
+function useDrefOperationalFormOptions() {
   const { strings } = React.useContext(languageContext);
 
   const {

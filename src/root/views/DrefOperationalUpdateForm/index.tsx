@@ -41,7 +41,7 @@ import {
 } from '#utils/restRequest';
 import scrollToTop from '#utils/scrollToTop';
 import { DrefApiFields } from '#views/DrefApplicationForm/common';
-import { checkLanguageMismatch, ymdToDateString } from '#utils/common';
+import { checkLanguageMismatch, isSimilarArray, ymdToDateString } from '#utils/common';
 import Translate from '#components/Translate';
 import useReduxState from '#hooks/useReduxState';
 import { languageOptions } from '#utils/lang';
@@ -277,12 +277,6 @@ function DrefOperationalUpdate(props: Props) {
     url: `api/v2/dref-op-update/${prevOperationalUpdateId}/`,
   });
 
-  const contextValue = React.useMemo(() => (
-    isDefined(prevOperationalUpdateId)
-      ? ({ type: 'opsUpdate' as const, value: prevOperationalUpdate })
-      : ({ type: 'dref' as const, value: drefFields })
-  ), [prevOperationalUpdateId, prevOperationalUpdate, drefFields]);
-
   const {
     value,
     error,
@@ -293,7 +287,6 @@ function DrefOperationalUpdate(props: Props) {
   } = useForm(
     schema,
     { value: defaultFormValues },
-    contextValue,
   );
 
   const {
@@ -312,7 +305,7 @@ function DrefOperationalUpdate(props: Props) {
     yesNoOptions,
     userDetails,
     drefTypeOptions,
-  } = useDrefOperationalFormOptions(value);
+  } = useDrefOperationalFormOptions();
 
   const [fileIdToUrlMap, setFileIdToUrlMap] = React.useState<Record<number, string>>({});
   const { strings } = React.useContext(languageContext);
@@ -369,7 +362,7 @@ function DrefOperationalUpdate(props: Props) {
   }, [error]);
 
   const validateCurrentTab = React.useCallback((exceptions: (keyof DrefOperationalUpdateFields)[] = []) => {
-    const validationError = getErrorObject(accumulateErrors(value, schema, value, contextValue));
+    const validationError = getErrorObject(accumulateErrors(value, schema, value, undefined));
     const currentFields = stepTypesToFieldsMap[currentStep];
     const exceptionsMap = listToMap(exceptions, d => d, () => true);
 
@@ -398,7 +391,6 @@ function DrefOperationalUpdate(props: Props) {
     value,
     currentStep,
     setError,
-    contextValue,
   ]);
 
   const handleTabChange = React.useCallback((newStep: StepTypes) => {
@@ -605,38 +597,99 @@ function DrefOperationalUpdate(props: Props) {
     setShowObsoletePayloadResolutionModal(false);
   }, []);
 
-  const operationTimeframeWarning = React.useMemo(() => {
+  const operationTimeframeWarning = React.useMemo(
+    () => {
+      if (value.type_of_dref === TYPE_LOAN) {
+        return undefined;
+      }
 
-    const defaultTotalOperaitonTimeframe = isDefined(value.total_operation_timeframe)
-      ? value.total_operation_timeframe
-      : null;
+      const currentValue = value.total_operation_timeframe;
+      const prevValue = prevOperationalUpdate?.total_operation_timeframe ?? drefFields?.operation_timeframe;
 
-    const newContextValue = contextValue.type === 'dref'
-      ? contextValue.value?.operation_timeframe
-      : contextValue.value?.total_operation_timeframe;
+      if (value.changing_timeframe_operation && currentValue === prevValue) {
+        return 'Please select a different timeframe when selected yes on changing the operation timeframe';
+      }
 
-    if (value.type_of_dref !== TYPE_LOAN
-      && value?.changing_timeframe_operation
-      && defaultTotalOperaitonTimeframe === newContextValue
-    ) {
-      return 'Please select a different timeframe when selected yes on changing the operation timeframe';
-    }
+      if (value.total_operation_timeframe !== prevValue && !value.changing_timeframe_operation) {
+        return 'Please select yes on changing the operation timeframe';
+      }
 
-    if (value.type_of_dref !== TYPE_LOAN
-      && value.total_operation_timeframe !== newContextValue
-      && !value.changing_timeframe_operation
-    ) {
-      return 'Please select yes on changing the operation timeframe first';
-    }
+      return undefined;
+    },
+    [
+      value.total_operation_timeframe,
+      value.changing_timeframe_operation,
+      value.type_of_dref,
+      drefFields,
+      prevOperationalUpdate,
+    ],
+  );
 
-    return undefined;
-  }, [
-    contextValue.type,
-    contextValue.value,
-    value.total_operation_timeframe,
-    value.changing_timeframe_operation,
-    value.type_of_dref
-  ]);
+  const budgetWarning = React.useMemo(
+    () => {
+      if (isDefined(value.additional_allocation) && value.additional_allocation > 0) {
+        if (!value.changing_budget || !value.request_for_second_allocation) {
+          return 'When requesting for additional budget allocation, the fields "Are you making changes to the budget" and "Is this a request for a second allocation" both should be marked "Yes" in "Event Details" section';
+        }
+      } else if (value.changing_budget || value.request_for_second_allocation) {
+        return 'The field "Additional Allocation Requested" should be filled in "Operation Overview" section to change the budget or for a second allocation';
+      }
+
+      return undefined;
+    },
+    [
+      value.request_for_second_allocation,
+      value.changing_budget,
+      value.additional_allocation,
+    ],
+  );
+
+  const geoWarning = React.useMemo(
+    () => {
+      const prevValue = prevOperationalUpdate?.district ?? drefFields?.district;
+      const currentValue = value.district;
+      const areDistrictsSimilar = isSimilarArray(currentValue, prevValue);
+
+      if (value.changing_geographic_location && areDistrictsSimilar) {
+        return 'Please select a different district when selected yes on changing geographic location';
+      }
+
+      if (!value.changing_geographic_location && !areDistrictsSimilar) {
+        return 'Please select yes on changing geographic location';
+      }
+
+      return undefined;
+    },
+    [
+      value.district,
+      value.changing_geographic_location,
+      prevOperationalUpdate,
+      drefFields
+    ],
+  );
+
+  const peopleTargetedWarning = React.useMemo(
+    () => {
+      const prevValue = prevOperationalUpdate?.total_targeted_population ?? drefFields?.total_targeted_population;
+      const currentValue = value.total_targeted_population;
+
+      if (value.changing_target_population_of_operation && currentValue === prevValue) {
+        return 'Please select a different value for targeted population when selected yes on changing target population';
+      }
+
+      if (!value.changing_target_population_of_operation && currentValue !== prevValue) {
+        return 'Please select yes on changing target population';
+      }
+
+      return undefined;
+    },
+    [
+      value.total_targeted_population,
+      value.changing_target_population_of_operation,
+      prevOperationalUpdate,
+      drefFields,
+    ],
+  );
 
   return (
     <Tabs
@@ -735,6 +788,15 @@ function DrefOperationalUpdate(props: Props) {
                 />
                 {operationTimeframeWarning && (
                   <div className={styles.warning}>{operationTimeframeWarning}</div>
+                )}
+                {budgetWarning && (
+                  <div className={styles.warning}>{budgetWarning}</div>
+                )}
+                {geoWarning && (
+                  <div className={styles.warning}>{geoWarning}</div>
+                )}
+                {peopleTargetedWarning && (
+                  <div className={styles.warning}>{peopleTargetedWarning}</div>
                 )}
               </Container>
               {languageMismatch && drefOperationalResponse && (
