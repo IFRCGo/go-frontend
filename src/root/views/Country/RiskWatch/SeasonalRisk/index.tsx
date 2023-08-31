@@ -251,7 +251,7 @@ function SeasonalRisk(props: Props) {
           }) ?? [];
 
         if (hazard === 'FI') {
-          const maxYear = 2021;
+          const maxYear = 2023;
 
           const foodInsecurityRaw = (response?.ipc_displacement_data.filter(
             d => (isDefined(d.total_displacement) && d.year === maxYear)
