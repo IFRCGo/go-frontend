@@ -197,7 +197,8 @@ const sourceOptions: StringValueOption[] = [
   { value: "WFP", label: adamIconLabel },
   { value: "GDACS", label: gdacsIconLabel },
   { value: "MeteoSwiss", label: meteoSwissIconLabel },
-].filter(({ value }) => value !== 'MeteoSwiss');
+];
+// .filter(({ value }) => value !== 'MeteoSwiss');
 
 
 interface Props {
