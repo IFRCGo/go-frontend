@@ -205,7 +205,26 @@ function DetailedChart(props: DetailedChartProps) {
     );
 
     return months.map((m) => {
-      const historicData = (groupedData[m] ?? []).filter(d => d.estimation_type === 'current');
+      const historicData = (groupedData[m] ?? []).filter(
+        d => {
+          if (d.estimation_type === 'current') {
+            return true;
+          }
+
+          const current = new Date(d.analysis_date);
+          const latest = new Date(latestAnalysisDate);
+
+          if (current.getFullYear() < latest.getFullYear()) {
+            return true;
+          }
+
+          if (current.getFullYear() === latest.getFullYear() && current.getMonth() < latest.getMonth()) {
+            return true;
+          }
+
+          return false;
+        }
+      );
       const prediction = (groupedData[m] ?? []).filter(d => d.analysis_date === latestAnalysisDate && d.estimation_type !== 'current');
       const yearDisaggregatedHistoricData = listToMap(
         historicData.map(d => ({ [d.year]: d.total_displacement })),
@@ -295,17 +314,12 @@ function DetailedChart(props: DetailedChartProps) {
             {getLine('2020', '#464f6d')}
             {getLine('2021', '#273657')}
             {getLine('2022', '#101637')}
+            {getLine('2023', '#001027')}
           </>
         )}
 
         {getLine('average', '#011e41', 'Average', undefined, 4)}
 
-        {getLine('prediction-2017', '#f04355', 'Prediction (2017)', '#ffdfe7')}
-        {getLine('prediction-2018', '#f04355', 'Prediction (2018)', '#ffdfe7')}
-        {getLine('prediction-2019', '#f04355', 'Prediction (2019)', '#ffdfe7')}
-        {getLine('prediction-2020', '#f04355', 'Prediction (2020)', '#ffdfe7')}
-        {getLine('prediction-2021', '#f04355', 'Prediction (2021)', '#ffdfe7')}
-        {getLine('prediction-2022', '#f04355', 'Prediction (2022)', '#ffdfe7')}
         {getLine('prediction-2023', '#f04355', 'Prediction (2023)', '#ffdfe7')}
 
         <Tooltip
@@ -579,6 +593,7 @@ function RiskBarChart(props: Props) {
                     <FILegendItem color="#464f6d" label="2020" />
                     <FILegendItem color="#273657" label="2021" />
                     <FILegendItem color="#101637" label="2022" />
+                    <FILegendItem color="#001027" label="2023" />
                   </>
                 )}
               </div>

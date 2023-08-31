@@ -73,7 +73,7 @@ const APPROVED = 1;
 const drefKeySelector = (d: ActiveDrefTableDetail) => d.id;
 
 // NOTE: temporarily used to hide the allocation form
-const featureReady = true;
+const featureReady = false;
 
 function ActiveDrefTable(props:Props) {
   const {

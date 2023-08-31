@@ -137,7 +137,7 @@ function getFormData(jsonData: FormDataCompatibleObj) {
 }
 
 export const processGoOptions: GoContextInterface['transformOptions'] = (
-  url,
+  _,
   requestOptions,
   extraOptions,
 ) => {
@@ -180,7 +180,7 @@ export const processGoOptions: GoContextInterface['transformOptions'] = (
       method,
       headers: {
         Accept: 'application/json',
-          ...defaultHeaders,
+        ...defaultHeaders,
         ...headers,
       },
       body: requestBody,
@@ -239,7 +239,6 @@ export const processGoError: GoContextInterface['transformError'] = (
   responseError,
   url,
   requestOptions,
-  extraOptions,
 ) => {
   if (responseError === 'network') {
     return {
