@@ -1,3 +1,13 @@
+### Release 6.8.0 - DREF ICRC changes, Update DREF Ops. update logic
+Date: 2023-08-31
+Frontend: 
+- Move ICRC fields in DREF forms and exports to a separate section
+- Change IFRC label in the DREF forms and exports to Secretariat
+- Include word DREF in operational update export title
+- Include word DREF in final report export title
+- Convert ops update change question errors to warnings
+- Update Risk IPC chart to include 2023 "current" values
+
 ### Release 6.7.7 - Hide in progress features
 Date: 2023-08-22
 Frontend:

@@ -3155,9 +3155,11 @@ export default {
   drefFormNationalSocietiesActions: 'Current National Society Actions',
   drefFormNationalSocietiesActionsDescription: 'Please indicate a description of the ongoing response with if possible: Branches involved, number of volunteers/staff involved in actions, assets deployed/distributed, number of people reach. Impact/added value of the NS in the response already ongoing.',
   drefFormNationalSocietiesActionsLabel: 'Select the actions that apply.',
-  drefFormMovementPartners: 'Movement Partners Actions Related To The Current Event',
+  drefFormMovementPartners: 'IFRC Network Actions Related To The Current Event',
   drefFormIfrc: 'IFRC',
+  drefFormSecretariatLabel: 'Secretariat',
   drefFormIfrcDescription: 'Presence or not of IFRC in country (if not, indicate the cluster covering), support provided for this response, domestic coordination, technical, strategic, surge. Explain what support provided in terms of Secretariat services: PMER, Finance, Admin, HR, Security, logistics, NSD.',
+  drefFormIcrcActionsHeading: 'ICRC Actions Related To The Current Event',
   drefFormIcrc: 'ICRC',
   drefFormIcrcDescription: 'Presence or not of ICRC in country, and support directly provided for this emergency response. Other programs and support provided outside of the scope of this emergency should not be indicated here.',
   drefFormPartnerNationalSociety: 'Participating National Societies',
@@ -3681,7 +3683,7 @@ export default {
   drefOperationalUpdateIndicatorFemaleLabel: 'Female',
 
   //pdf export
-  operationalUpdateExportTitle: 'operational update',
+  operationalUpdateExportTitle: 'DREF Operational Update',
   operationalUpdateExportPeopleAffected: 'People affected:',
   operationalUpdateExportPeopleTargeted: 'People targeted:',
   operationalUpdateExportNewOperationalEndDate: 'New Operational end date:',
@@ -3812,7 +3814,7 @@ export default {
   finalReportPublishConfirmationFailureMessage: 'Failed to publish the Final Report',
 
   // export
-  finalReportExportTitle: 'Final Report',
+  finalReportExportTitle: 'DREF Final Report',
   finalReportExportAppealNum: 'Appeal no:',
   finalReportExportGlideNum: 'Glide no:',
   finalReportExportTotalAllocation: 'Total DREF Allocation:',

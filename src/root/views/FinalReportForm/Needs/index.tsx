@@ -90,7 +90,7 @@ function Needs(props: Props) {
     listToMap(
       value?.needs_identified,
       need => need.title ?? '',
-      need => true
+      () => true
     )
   ), [value.needs_identified]);
 
@@ -132,10 +132,10 @@ function Needs(props: Props) {
         }
       </Container>
       <Container
-        heading={strings.finalReportMovementPartners}
+        heading={strings.drefFormMovementPartners}
       >
         <InputSection
-          title={strings.finalReportIfrc}
+          title={strings.drefFormSecretariatLabel}
           description={strings.drefFormIfrcDescription}
         >
           <TextArea
@@ -147,6 +147,21 @@ function Needs(props: Props) {
           />
         </InputSection>
         <InputSection
+          title={strings.finalReportPartnerNationalSociety}
+          description={strings.drefFormPartnerNationalSocietyDescription}
+        >
+          <TextArea
+            name="partner_national_society"
+            onChange={onValueChange}
+            value={value.partner_national_society}
+            error={error?.partner_national_society}
+          />
+        </InputSection>
+      </Container>
+      <Container
+        heading={strings.drefFormIcrcActionsHeading}
+      >
+        <InputSection
           title={strings.finalReportIcrc}
           description={strings.drefFormIcrcDescription}
         >
@@ -156,17 +171,6 @@ function Needs(props: Props) {
             onChange={onValueChange}
             value={value.icrc}
             error={error?.icrc}
-          />
-        </InputSection>
-        <InputSection
-          title={strings.finalReportPartnerNationalSociety}
-          description={strings.drefFormPartnerNationalSocietyDescription}
-        >
-          <TextArea
-            name="partner_national_society"
-            onChange={onValueChange}
-            value={value.partner_national_society}
-            error={error?.partner_national_society}
           />
         </InputSection>
       </Container>

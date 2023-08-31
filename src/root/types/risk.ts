@@ -194,6 +194,7 @@ export interface ADAMEventExposure {
     map: string;
     shakemap: string;
     population: string;
+    population_csv: string;
     wind: string;
     rainfall: string;
     shapefile: string

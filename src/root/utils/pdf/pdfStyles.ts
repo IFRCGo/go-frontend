@@ -540,6 +540,13 @@ const pdfStyles = StyleSheet.create({
     textAlign: 'justify',
   },
 
+  niFullWidthContentCell: {
+    padding: styles.SMALL_PADDING,
+    border: styles.TABLE_BORDER,
+    flexBasis: '100%',
+    textAlign: 'justify',
+  },
+
   budgetOverview: {
     height: 680,
   },

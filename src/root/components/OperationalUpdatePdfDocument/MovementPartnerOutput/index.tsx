@@ -21,7 +21,6 @@ function MovementPartnerOutput(props: Props) {
   } = props;
 
   if (isNotDefined(data.ifrc)
-    && isNotDefined(data.icrc)
     && isNotDefined(data.partner_national_society)
   ) {
     return null;
@@ -40,18 +39,10 @@ function MovementPartnerOutput(props: Props) {
       <View>
         <View style={pdfStyles.row}>
           <View style={pdfStyles.niHeaderCell}>
-            <Text>{strings.drefFormIfrc}</Text>
+            <Text>{strings.drefFormSecretariatLabel}</Text>
           </View>
           <View style={pdfStyles.niContentCell}>
             <Text>{data.ifrc}</Text>
-          </View>
-        </View>
-        <View style={pdfStyles.row}>
-          <View style={pdfStyles.niHeaderCell}>
-            <Text>{strings.drefFormIcrc}</Text>
-          </View>
-          <View style={pdfStyles.niContentCell}>
-            <Text>{data.icrc}</Text>
           </View>
         </View>
         <View style={pdfStyles.row}>
