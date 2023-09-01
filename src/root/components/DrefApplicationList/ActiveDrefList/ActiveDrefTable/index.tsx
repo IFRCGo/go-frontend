@@ -151,6 +151,7 @@ function ActiveDrefTable(props:Props) {
       pageSetup: {
         paperSize: 9,
         showGridLines: false,
+          fitToPage: true,
       },
     });
     const borderStyles: Partial<xlsx.Borders> = {
@@ -168,7 +169,7 @@ function ActiveDrefTable(props:Props) {
         name: "Montserrat",
         family: 2,
         bold: true,
-        size: 24,
+        size: 20,
         color: { argb: "00F5333F" },
       },
       alignment: { horizontal: "center", vertical: "middle" },
@@ -184,6 +185,7 @@ function ActiveDrefTable(props:Props) {
       alignment: { horizontal: "center", vertical: "middle" },
     };
     worksheet.addRow("");
+    worksheet.mergeCells("A1:B6");
     worksheet.mergeCells("A7:L7");
     worksheet.mergeCells("A8:L8");
     worksheet.getCell("A7").value = "To Be Completed By The DREF Focal Point";
@@ -198,7 +200,7 @@ function ActiveDrefTable(props:Props) {
         argb: "00D9D9D9",
       },
     };
-    worksheet.getCell("A9").value = "Dref Allocation is requested for";
+    worksheet.getCell("A9").value = "DREF Allocation is requested for";
     worksheet.getCell("A9").style = { font: { color: { argb: "00404040" } } };
     worksheet.getCell("A9").fill = {
       type: "pattern",
@@ -413,7 +415,7 @@ function ActiveDrefTable(props:Props) {
     worksheet.mergeCells("E20:H20");
     worksheet.mergeCells("I20:L20");
     worksheet.mergeCells("A21:L21");
-    worksheet.addRow(["For DREF Operations and Emergency Appeals"]);
+    worksheet.getCell("A22").value = "For DREF Operations and Emergency Appeals";
     worksheet.getCell("A22").style = { font: { color: { argb: "002E75B5" } } };
     worksheet.mergeCells("A22:L22");
     worksheet.getCell("A23").value = "National Society Request Date";
@@ -485,9 +487,9 @@ function ActiveDrefTable(props:Props) {
     worksheet.getCell("A27").style = { font: { color: { argb: "00404040" } } };
     worksheet.getCell("E27").style = { font: { color: { argb: "00404040" } } };
     worksheet.getCell("I27").style = { font: { color: { argb: "00404040" } } };
-    worksheet.getCell("A29").value = `CHF ${allocationRequested}`;
-    worksheet.getCell("E29").value = `CHF ${previousAllocation}`;
-    worksheet.getCell("I29").value = `CHF ${totalDREFAllocation}`;
+    worksheet.getCell("A28").value = `CHF ${allocationRequested}`;
+    worksheet.getCell("E28").value = `CHF ${previousAllocation}`;
+    worksheet.getCell("I28").value = `CHF ${totalDREFAllocation}`;
     worksheet.getCell("A27").fill = {
       type: "pattern",
       pattern: "solid",
@@ -745,7 +747,7 @@ function ActiveDrefTable(props:Props) {
           disasterStartDate: response?.event_date,
           implementationPeriod: response?.total_operation_timeframe,
           allocationRequested: response?.additional_allocation,
-          previousAllocation: 0,
+          previousAllocation: response?.dref_allocated_so_far ?? 0,
           totalDREFAllocation: response?.total_dref_allocation,
           toBeAllocatedFrom:
             response?.type_of_dref_display === "Imminent"
@@ -753,7 +755,7 @@ function ActiveDrefTable(props:Props) {
               : "Response Pillar",
           focalPointName: response?.regional_focal_point_name,
         };
-        handleExport(exportData);
+          handleExport(exportData);
       },
     });
 
@@ -1082,7 +1084,7 @@ function ActiveDrefTable(props:Props) {
               }}
               label="Share"
             />
-            {item.is_published && featureReady && (
+            {featureReady && (
               <DropdownMenuItem
                 name={{
                   type: item.application_type,
@@ -1133,7 +1135,7 @@ function ActiveDrefTable(props:Props) {
               }}
               label="Share"
             />
-            {item.is_published && (
+            {featureReady && (
               <DropdownMenuItem
                 name={{
                   type: item.application_type,
