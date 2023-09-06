@@ -63,7 +63,7 @@ interface ExportData {
   disasterStartDate: string;
   implementationPeriod: number;
   allocationRequested: number;
-  previousAllocation: number;
+  previousAllocation?: number;
   totalDREFAllocation: number;
   toBeAllocatedFrom: string;
   focalPointName: string;
@@ -109,7 +109,7 @@ function ActiveDrefTable(props:Props) {
         disasterStartDate: response?.event_date,
         implementationPeriod: response?.operation_timeframe,
         allocationRequested: response?.amount_requested,
-        previousAllocation: 0,
+        previousAllocation: undefined,
         totalDREFAllocation: response?.amount_requested,
         toBeAllocatedFrom: response?.type_of_dref_display === 'Imminent' ? 'Anticipatory Pillar' : 'Response Pillar',
         focalPointName: response?.regional_focal_point_name,
@@ -223,8 +223,12 @@ function ActiveDrefTable(props:Props) {
     worksheet.getCell("A10").style = { font: { color: { argb: "00404040" } } };
     worksheet.getCell("G10").value = "Project Manager";
     worksheet.getCell("G10").style = { font: { color: { argb: "00404040" } } };
-    worksheet.getCell("A11").value = appealManager;
-    worksheet.getCell("G11").value = projectManager;
+    if (isDefined(appealManager)) {
+      worksheet.getCell("A11").value = appealManager;
+    }
+    if (isDefined(projectManager)) {
+      worksheet.getCell("G11").value = projectManager;
+    }
     worksheet.getCell("A10").fill = {
       type: "pattern",
       pattern: "solid",
@@ -263,8 +267,12 @@ function ActiveDrefTable(props:Props) {
     worksheet.getCell("G12").value = "Name of Operation (as published)";
     worksheet.getCell("A12").style = { font: { color: { argb: "00404040" } } };
     worksheet.getCell("G12").style = { font: { color: { argb: "00404040" } } };
-    worksheet.getCell("A13").value = affectedCountry;
-    worksheet.getCell("G13").value = name;
+    if (isDefined(affectedCountry)) {
+      worksheet.getCell("A13").value = affectedCountry;
+    }
+    if (isDefined(name)) {
+      worksheet.getCell("G13").value = name;
+    }
     worksheet.getCell("A12").fill = {
       type: "pattern",
       pattern: "solid",
@@ -302,9 +310,15 @@ function ActiveDrefTable(props:Props) {
     worksheet.getCell("A15").style = { font: { color: { argb: "00404040" } } };
     worksheet.getCell("G15").style = { font: { color: { argb: "00404040" } } };
     worksheet.getCell("J15").style = { font: { color: { argb: "00404040" } } };
-    worksheet.getCell("A16").value = disasterType;
-    worksheet.getCell("G16").value = responseType;
-    worksheet.getCell("J16").value = `${noOfPeopleTargeted} people`;
+    if (isDefined(disasterType)) {
+      worksheet.getCell("A16").value = disasterType;
+    }
+    if (isDefined(responseType)) {
+      worksheet.getCell("G16").value = responseType;
+    }
+    if (isDefined(noOfPeopleTargeted)) {
+      worksheet.getCell("J16").value = `${noOfPeopleTargeted} people`;
+    }
     worksheet.getCell("A15").fill = {
       type: "pattern",
       pattern: "solid",
@@ -424,9 +438,15 @@ function ActiveDrefTable(props:Props) {
     worksheet.getCell("A23").style = { font: { color: { argb: "00404040" } } };
     worksheet.getCell("E23").style = { font: { color: { argb: "00404040" } } };
     worksheet.getCell("I23").style = { font: { color: { argb: "00404040" } } };
-    worksheet.getCell("A24").value = nsRequestDate;
-    worksheet.getCell("E24").value = disasterStartDate;
-    worksheet.getCell("I24").value = `${implementationPeriod} months`;
+    if (isDefined(nsRequestDate)) {
+      worksheet.getCell("A24").value = nsRequestDate;
+    }
+    if (isDefined(disasterStartDate)) {
+      worksheet.getCell("E24").value = disasterStartDate;
+    }
+    if (isDefined(implementationPeriod)) {
+      worksheet.getCell("I24").value = `${implementationPeriod} months`;
+    }
     worksheet.getCell("A23").fill = {
       type: "pattern",
       pattern: "solid",
@@ -487,9 +507,15 @@ function ActiveDrefTable(props:Props) {
     worksheet.getCell("A27").style = { font: { color: { argb: "00404040" } } };
     worksheet.getCell("E27").style = { font: { color: { argb: "00404040" } } };
     worksheet.getCell("I27").style = { font: { color: { argb: "00404040" } } };
-    worksheet.getCell("A28").value = `CHF ${allocationRequested}`;
-    worksheet.getCell("E28").value = `CHF ${previousAllocation}`;
-    worksheet.getCell("I28").value = `CHF ${totalDREFAllocation}`;
+    if (isDefined(allocationRequested)) {
+      worksheet.getCell("A28").value = `CHF ${allocationRequested}`;
+    }
+    if (isDefined(previousAllocation)) {
+      worksheet.getCell("E28").value = `CHF ${previousAllocation}`;
+    }
+    if (isDefined(totalDREFAllocation)) {
+      worksheet.getCell("I28").value = `CHF ${totalDREFAllocation}`;
+    }
     worksheet.getCell("A27").fill = {
       type: "pattern",
       pattern: "solid",
@@ -544,7 +570,9 @@ function ActiveDrefTable(props:Props) {
     worksheet.mergeCells("A30:L30");
     worksheet.getCell("A29").value = "To be allocated from";
     worksheet.getCell("A29").style = { font: { color: { argb: "00404040" } } };
-    worksheet.getCell("F29").value = toBeAllocatedFrom;
+    if (isDefined(toBeAllocatedFrom)) {
+      worksheet.getCell("F29").value = toBeAllocatedFrom;
+    }
     worksheet.getCell("A29").fill = {
       type: "pattern",
       pattern: "solid",
@@ -566,7 +594,9 @@ function ActiveDrefTable(props:Props) {
     worksheet.getCell("A31").style = { font: { color: { argb: "00404040" } } };
     worksheet.getCell("I31").style = { font: { color: { argb: "00404040" } } };
     worksheet.getCell("F31").style = { font: { color: { argb: "00404040" } } };
-    worksheet.getCell("A32").value = focalPointName;
+    if (isDefined(focalPointName)) {
+      worksheet.getCell("A32").value = focalPointName;
+    }
     worksheet.getCell("A31").fill = {
       type: "pattern",
       pattern: "solid",
