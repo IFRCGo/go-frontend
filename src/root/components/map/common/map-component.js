@@ -9,7 +9,7 @@ import exportMap from '#utils/export-map';
 import DownloadButton from './download-button';
 import MapHeader from './map-header';
 import Translate from '#components/Translate';
-import { countryLabels } from '#utils/country-labels';
+import { countryLabels, countryNonIndependentLabels } from '#utils/country-labels';
 
 export default class MapComponent extends React.Component {
   constructor (props) {
@@ -39,6 +39,7 @@ export default class MapComponent extends React.Component {
 
       // add custom language labels
       this.theMap.addLayer(countryLabels);
+      this.theMap.addLayer(countryNonIndependentLabels);
     }
 
     get(this.props, 'layers', []).forEach(layer => this.theMap.addLayer(layer));
