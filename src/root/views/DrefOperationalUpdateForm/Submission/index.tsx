@@ -277,42 +277,40 @@ function Submission(props: Props) {
             />
           </InputSection>
         }
-        {drefType === TYPE_LOAN &&
-          <InputSection
-            title={strings.drefFormDrefRegionalPoint}
-            multiRow
-            twoColumn
-          >
-            <TextInput
-              label="Name"
-              name="regional_focal_point_name"
-              value={value.regional_focal_point_name}
-              onChange={onValueChange}
-              error={error?.regional_focal_point_name}
-            />
-            <TextInput
-              label="Title"
-              name="regional_focal_point_title"
-              value={value.regional_focal_point_title}
-              onChange={onValueChange}
-              error={error?.regional_focal_point_title}
-            />
-            <TextInput
-              label="Email"
-              name="regional_focal_point_email"
-              value={value.regional_focal_point_email}
-              onChange={onValueChange}
-              error={error?.regional_focal_point_email}
-            />
-            <TextInput
-              label="Phone Number"
-              name="regional_focal_point_phone_number"
-              value={value.regional_focal_point_phone_number}
-              onChange={onValueChange}
-              error={error?.regional_focal_point_phone_number}
-            />
-          </InputSection>
-        }
+        <InputSection
+          title={strings.drefFormDrefRegionalPoint}
+          multiRow
+          twoColumn
+        >
+          <TextInput
+            label="Name"
+            name="regional_focal_point_name"
+            value={value.regional_focal_point_name}
+            onChange={onValueChange}
+            error={error?.regional_focal_point_name}
+          />
+          <TextInput
+            label="Title"
+            name="regional_focal_point_title"
+            value={value.regional_focal_point_title}
+            onChange={onValueChange}
+            error={error?.regional_focal_point_title}
+          />
+          <TextInput
+            label="Email"
+            name="regional_focal_point_email"
+            value={value.regional_focal_point_email}
+            onChange={onValueChange}
+            error={error?.regional_focal_point_email}
+          />
+          <TextInput
+            label="Phone Number"
+            name="regional_focal_point_phone_number"
+            value={value.regional_focal_point_phone_number}
+            onChange={onValueChange}
+            error={error?.regional_focal_point_phone_number}
+          />
+        </InputSection>
         {drefType !== TYPE_LOAN &&
           <InputSection
             title={strings.drefFormMediaContact}
